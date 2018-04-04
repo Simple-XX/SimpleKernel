@@ -1,12 +1,45 @@
-# LinuxLike
-一个模仿Linux的简单内核.
-A simple kernel imitating Linux.
+# SimpleKernel
+
+## 简介 INTRODUCE
+
+一个用来练手的简单内核.
+A simple kernel for practice.
+
+- bootloader
+
+使用 GNU Grub 进行引导
+
+Loaded by GRUB.
+
+## 开发环境 DEVELOPMENTENVIRONMENT
+
+- macOS High Sierra 10.13.3
+- Bochs x86 Emulator 2.6.9
+
+        brew install bochs
 
 
-- boot 
+- GNU toolchain
 
-这部分的 as86 汇编需要用 as 重写,我没有找到在 mac 上使用 as86 与 ld86 这些东西的方法.
+        brew install binutils
 
-I will conversion as86 to as.I can't solve as86 for mac.
+- GRUB
+
+
+
+## 文件说明
+- run_bochs.sh
+- update_image.sh
+- Makefile
+- Link.ld
+- bochsrc.txt
+- bochsout.txt
+- 
+
+
+## 参考资料 REFERENCES
+
+[JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html)
+
 
 
