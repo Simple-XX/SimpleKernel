@@ -1,26 +1,20 @@
 ###############################################################
-# bochsrc.txt file for LinuxLike.
+# bochsrc.txt file for SimpleKernel (https://github.com/MRNIU).
+# From JamesM's kernel development tutorials: 
+# (http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html).
 ###############################################################
 
-# how much memory the emulated machine will have
-megs: 16
-
-# filename of ROM images
-# BIOS已经修改，地址可以不加，可以根据文件大小进行推断，如果加地址要与文件大小相匹配
-romimage: file=$BXSHARE/BIOS-bochs-latest
-vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
-
-# what disk images will be used 
-# 配置镜像名
-floppya: 1_44=kernel.img, status=inserted
-
-# choose the boot disk.
-boot: c
-
-# where do we send log messages?
+megs: 32
+romimage: file=/usr/share/bochs/BIOS-bochs-latest, address=0xf0000
+vgaromimage: file=/usr/share/bochs/VGABIOS-elpin-2.40
+# 这里需要根据实际路径进行修改
+# Here needs to change as your real path.
+floppya: 1_44=/dev/loop0, status=inserted
+boot: a
 log: bochsout.txt
-
-# disable the mouse, since Finix is text only
 mouse: enabled=0
+clock: sync=realtime
+cpu: ips=1000000
 
-# enable key mapping, using US layout as default.
+# ips 表示 cpu 速度,已经不支持原先的 500000, 修改为 1000000
+# ips: Instructions per second. '500000' already allowed, so use '1000000'. 
