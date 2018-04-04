@@ -1,7 +1,7 @@
 # Copy from JamesM's kernel development tutorials: 
 # (http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html). 
 
-# This file is apart in MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel). 
+# This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel). 
 
 # Makefile for JamesM's kernel tutorials.
 # The C and C++ rules are already setup by default.
