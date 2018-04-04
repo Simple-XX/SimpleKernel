@@ -22,6 +22,10 @@ Loaded by GRUB.
 - GNU toolchain
 
         brew install binutils
+        
+- gcc
+
+        brew install gcc
 
 - GRUB
 
@@ -42,4 +46,6 @@ Loaded by GRUB.
 [JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html)
 
 
+
+[OS X Man Pages: hdiutil](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/hdiutil.1.html)
 
