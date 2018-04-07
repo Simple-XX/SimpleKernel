@@ -6,12 +6,13 @@
 ###############################################################
 
 megs: 32
-romimage: file=/usr/local/share/bochs/BIOS-bochs-latest, address=0xf0000
+romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
+# 因为 bochs 的版本问题, 删掉 'address=0xf0000'
 vgaromimage: file=/usr/local/share/bochs/VGABIOS-elpin-2.40
 # 这里需要根据实际路径进行修改
 # Here needs to change as your real path.
 
-floppya: 1_44=/Volumes/test \1, status=inserted
+floppya: 1_44=boot.img, status=inserted
 boot: a
 log: bochsout.txt
 mouse: enabled=0

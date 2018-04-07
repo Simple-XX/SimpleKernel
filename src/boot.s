@@ -1,4 +1,4 @@
-; Copy from JamesM's kernel development tutorials:
+; Based on JamesM's kernel development tutorials:
 ; (http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html).
 
 ; This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
@@ -38,6 +38,7 @@ mboot:
 
 [GLOBAL start]                  ; Kernel entry point.
 [EXTERN main]                   ; This is the entry point of our C code
+
 
 start:
   push    ebx                   ; Load multiboot header location
