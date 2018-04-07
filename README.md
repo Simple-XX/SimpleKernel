@@ -7,9 +7,10 @@ A simple kernel for practice.
 
 - bootloader
 
-使用 GNU Grub 进行引导
 
-Loaded by GRUB.
+    使用 GNU Grub 进行引导. Loaded by GRUB.
+    
+
 
 ## 开发环境 DEVELOPMENTENVIRONMENT
 
@@ -29,13 +30,14 @@ Loaded by GRUB.
 
 - GRUB
 
+        git clone git://git.savannah.gnu.org/grub.git
+
 
 
 ## 文件说明
-- run_bochs.sh
-- update_image.sh
+- setup.sh
 - Makefile
-- Link.ld
+- link.ld
 - bochsrc.txt
 - bochsout.txt
 - 
@@ -48,4 +50,6 @@ Loaded by GRUB.
 
 
 [OS X Man Pages: hdiutil](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/hdiutil.1.html)
+
+[xOS](https://github.com/fengleicn/xOS)
 
