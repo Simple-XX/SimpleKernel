@@ -1,43 +1,34 @@
-# Copy from JamesM's kernel development tutorials:
-# (http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html).
 
 # This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-# Makefile for JamesM's kernel tutorials.
-# The C and C++ rules are already setup by default.
-# The only one that needs changing is the assembler
-# rule, as we use nasm instead of GNU as.
+# Makefile for MRNIU/SimpleKernel.
 
-OBJ=  main.o boot.o
-CC= gcc-7
-CFLAGS= -nostdlib -nostartfiles -nodefaultlibs -nostdinc -ffreestanding \
-        -fno-stack-protector -arch i386 -m32 -c
-# -ffreestanding 按独立环境编译;
-# 他隐含声明了`-fno-builtin'选项,而且对main函数没有特别要求.
-# (译注:宿主环境(hosted environment)下所有的标准库可用,
-# main函数返回一个int值,典型例子是除了内核以外几乎所有的程序.
-# 对应的独立环境(freestanding environment)不存在标准库,
-# 程序入口也不一定是 main,最明显的例子就是操作系统内核.
-# 详情参考gcc网站最近的资料)
-LD= gcc-7
-#LD= ld
-LDFLAGS= -arch i386 -t link.ld
-#LDFLAGS= -arch i386 -m32 -nostdlib -T link.ld
-#LDFLAGS= -arch i386 -m32 -nostdlib -map link.ld
-#LDFLAGS= -m elf_i386 -m32 -nostdlib -map link.ld
-AS= nasm
-ASFLAGS= -f macho
+BOOT_DIR= ./boot
 
+OBJ=  kernel.o $(BOOT_DIR)/boot.o
+CC= i386-elf-gcc
+CFLAGS= -std=gnu99 -ffreestanding -O2 -Wall -Wextra -c
+# -ffreestanding 按独立环境编译,允许指定程序入口.
+# 详情参考gcc网站最近的资料
+
+LD= i386-elf-ld
+LDFLAGS= -A elf32_i386 -T$(BOOT_DIR)/link.ld
+AS= i386-elf-as
+ASFLAGS= -march=i386
+
+# 生成 ketnel
 kernel: $(OBJ)
 	$(LD) $(LDFLAGS) $^ -o $@
-	#$(LD) $(LDFLAGS) $^ -o $@
 
-main.o: main.c
+# 生成 main.o
+kernel.o: kernel.c
 	$(CC) $(CFLAGS) $^ -o $@
 
-boot.o: boot.s
+# 生成 boot.o
+boot.o: $(BOOT_DIR)/boot.s
 	$(AS) $(ASFLAGS) $^ -o $@
 
+# 删除源码外的所有文件
 clean:
-	-rm *.o
-	-rm kernel.img
+	find . -name "*.o"  | xargs rm -f
+	-rm kernel
