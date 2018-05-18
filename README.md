@@ -1,6 +1,6 @@
 # SimpleKernel
 
-## 简介 INTRODUCE
+## 简介 Abstract
 
 一个用来练手的简单内核.
 A simple kernel for practice.
