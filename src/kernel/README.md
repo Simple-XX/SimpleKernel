@@ -1,4 +1,4 @@
-# kernel/
+# src/kernel/
 ## 文件说明
 
 - kernel.c
