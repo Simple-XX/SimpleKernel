@@ -5,7 +5,7 @@
 
 //#include <stdbool.h>
 #include "include/kernel.h"
-#include "include/graphic.h"
+#include "include/vga.h"
 #include "include/tty.h"
 
 /* Check if the compiler thinks we are targeting the wrong operating system. */
@@ -24,5 +24,10 @@ void kernel_main(void)
 	terminal_initialize();
 
 	/* Newline support is left as an exercise. */
-	terminal_writestring("Hello, kernel World!\n");
+	int a=213;
+	char c='!';
+	char * s="gg";
+	printk("%c%d\n%s",c,a,s);
+
+
 }
