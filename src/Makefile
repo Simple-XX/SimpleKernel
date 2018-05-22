@@ -3,9 +3,11 @@
 
 # Makefile for MRNIU/SimpleKernel.
 
-BOOT_DIR= ../boot
+BOOT_DIR= ./boot
+KERNEL_DIR= ./kernel
 
-OBJ= $(BOOT_DIR)/boot.o kernel.o vsprintf.o printk.o
+OBJ= $(BOOT_DIR)/boot.o $(KERNEL_DIR)/kernel.o $(KERNEL_DIR)/vsprintf.o \
+     $(KERNEL_DIR)/printk.o
 CC= i386-elf-gcc
 CFLAGS= -std=gnu99 -ffreestanding -O2 -Wall -Wextra -c
 # -ffreestanding 按独立环境编译,允许指定程序入口.
@@ -17,17 +19,17 @@ AS= i386-elf-as
 ASFLAGS= -march=i386
 
 # 生成 ketnel
-kernel: $(OBJ)
+kernel.kernel: $(OBJ)
 	$(LD) $(LDFLAGS) $^ -o $@
 
 # 生成 main.o
-kernel.o: kernel.c
+kernel.o: $(KERNEL_DIR)/kernel.c
 	$(CC) $(CFLAGS) $^ -o $@
 
-vsprintf.o: vsprintf.c
+vsprintf.o: $(KERNEL_DIR)/vsprintf.c
 	$(CC) $(CFLAGS) $^ -o $@
 
-printk.o: printk.c
+printk.o: $(KERNEL_DIR)/printk.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 # 生成 boot.o
@@ -37,4 +39,4 @@ boot.o: $(BOOT_DIR)/boot.s
 # 删除源码外的所有文件
 clean:
 	find . -name "*.o"  | xargs rm -f
-	-rm kernel
+	-rm kernel.kernel
