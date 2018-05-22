@@ -1,4 +1,4 @@
-# boot/
+# src/boot/
 ## 文件说明
 
 - boot.s
