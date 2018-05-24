@@ -24,7 +24,7 @@ static int skip_atoi(const char **s){
 #define LEFT 16 // left justified 左调整
 #define SPECIAL 32  // 0x
 #define SMALL 64  // use 'abcdef' instead of 'ABCDEF'  使用小写字母
-// 除操作。n 被除数；base 除数。结果 n 为商，函数返回值为余数，见 4.5.3 节有关嵌入汇编信息
+// 除操作。n 被除数；base 除数。结果 n 为商，函数返回值为余数。
 #define do_div(n,base)({\
 int __res;\
 __asm__("divl %4":"=a"(n),"=d"(__res):"0"(n),"1"(0),"r"(base));\
@@ -57,7 +57,7 @@ static char * number(char * str,int num,int base,int size,int precision,int type
     if(base==16) size-=2;
     else if(base==8) size--;
 // 如果数值 num 为 0，则临时字符串='0'；否则根据给定的基数将数值 num 转换成字符形式
-  i;
+  i=0;
   if(num==0)
     tmp[i++]='0';
   else while(num!=0)
@@ -94,9 +94,7 @@ static char * number(char * str,int num,int base,int size,int precision,int type
     *str++=' ';
   return str; // 返回转换好的字符串。
 }
-// 下面函数是送格式化输出到字符串。为了能在内核中使用格式化的输出，Linus 在内核实现了该 C 标准函数。
-// 其中参数 fmt 是格式字符串；args 是个数变化的值；buf 是输出字符缓冲区。请参见本代码列表后面
-// 的有关格式转换字符的介绍。
+//  fmt 是格式字符串；args 是个数变化的值；buf 是输出字符缓冲区。
 int vsprintf(char * buf,const char * fmt,va_list args){
   int len;
   int i;

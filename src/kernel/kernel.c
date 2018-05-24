@@ -14,10 +14,13 @@ void kernel_main(void)
 	terminal_initialize();
 
 	/* Newline support is left as an exercise. */
-	int a='!';
+	int a=233;
 	char c='!';
 	char * s="gg";
-	printk("__%c__%s",c,s);
+	printk("__%d__%s__%c",a,s,c);
+	printk("\n");
+	printk("_%c_%d_%s\n/n",c,a,s);
+	printk("end");
 
 
 }
