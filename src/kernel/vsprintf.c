@@ -3,6 +3,12 @@
 // Based on Linux kernel 0.11
 // vsprintf.c for MRNIU/SimpleKernel.
 
+
+// TODO
+// 修复整数和其它类型数据同时输出时只显示整数的问题
+
+
+
 #include "../include/kernel.h"
 #include "../include/stdinclude.h"
 

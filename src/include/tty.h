@@ -51,15 +51,14 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
-
 // 转义字符处理
 void terminal_escapeconv(char c){
 	switch(c){
 		case '\n':
-			terminal_column+=1;
+			terminal_row+=1;
 			break;
 		case '\t':
-			terminal_row+=4;
+			terminal_column+=4;
 			break;
 	}
 }
@@ -85,7 +84,6 @@ void terminal_write(const char* data, size_t size)
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
 }
-
 
 // 命令行写字符串
 void terminal_writestring(const char* data)

@@ -17,10 +17,11 @@ void kernel_main(void)
 	int a=233;
 	char c='!';
 	char * s="gg";
-	printk("__%d__%s__%c",a,s,c);
+	printk("%d",a);
+	printk("____%s__%c\t",s,c);
 	printk("\n");
-	printk("_%c_%d_%s\n/n",c,a,s);
 	printk("end");
+	
 
 
 }
