@@ -13,10 +13,10 @@ Loaded by GRUB.
 提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 Provides kernels with different degrees of completion in each stage, you can start from your favorite place.
 
-## 开发环境 DEVELOPMENTENVIRONMENT
+## 开发环境 Dependencies
 
 - macOS High Sierra 10.13.3
-- Bochs x86 Emulator 2.6.9
+- Bochs x86 Emulator 2.6.9, optionally for testing the operating system.
 
         brew install bochs
 
@@ -24,7 +24,7 @@ Provides kernels with different degrees of completion in each stage, you can sta
 
         sudo port install i386-elf-gcc
 
-- GRUB
+- GRUB, for the grub-mkrescue command, along with the appropriate runtime files.
 
     1. clone 源代码
 
