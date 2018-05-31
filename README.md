@@ -62,9 +62,15 @@ Provides kernels with different degrees of completion in each stage, you can sta
 - bochsout.txt
 
     bochs 输出
+    
+    
+## TODO
+
+对代码重新进行架构。
+    
 
     
-### 参考资料 REFERENCES
+## 参考资料 REFERENCES
 
 [交叉编译](https://wiki.osdev.org/GCC_Cross-Compiler)
 
