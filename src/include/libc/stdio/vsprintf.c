@@ -7,11 +7,7 @@
 // TODO
 // 修复整数和其它类型数据同时输出时只显示整数的问题
 
-
-
-#include "../include/kernel.h"
-#include "../include/stdinclude.h"
-
+#include "../stdarg.h"
 
 #define is_digit(c) ((c) >= '0' &&(c) <='9')  // 判断字符是否数字字符
 // 该函数将字符数字转换成整数。输入是数字串指针的指针，返回值是结果数值。另外指针将前移。
