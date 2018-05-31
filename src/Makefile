@@ -3,11 +3,12 @@
 
 # Makefile for MRNIU/SimpleKernel.
 
-BOOT_DIR= ./boot
+BOOT_DIR= ./arch/i386
 KERNEL_DIR= ./kernel
+LIBC_DIR= ./include/libc
 
-OBJ= $(BOOT_DIR)/boot.o $(KERNEL_DIR)/kernel.o $(KERNEL_DIR)/vsprintf.o \
-     $(KERNEL_DIR)/printk.o
+OBJ= $(BOOT_DIR)/boot.o $(KERNEL_DIR)/kernel.o $(LIBC_DIR)/stdio/vsprintf.o \
+     $(LIBC_DIR)/stdio/printk.o
 CC= i386-elf-gcc
 CFLAGS= -std=gnu99 -ffreestanding -O2 -Wall -Wextra -c
 # -ffreestanding 按独立环境编译,允许指定程序入口.
@@ -26,10 +27,10 @@ kernel.kernel: $(OBJ)
 kernel.o: $(KERNEL_DIR)/kernel.c
 	$(CC) $(CFLAGS) $^ -o $@
 
-vsprintf.o: $(KERNEL_DIR)/vsprintf.c
+vsprintf.o: $(LIBC_DIR)/stdio/vsprintf.c
 	$(CC) $(CFLAGS) $^ -o $@
 
-printk.o: $(KERNEL_DIR)/printk.c
+printk.o: $(LIBC_DIR)/stdio/printk.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 # 生成 boot.o
