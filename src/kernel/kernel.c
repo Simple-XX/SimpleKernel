@@ -14,14 +14,9 @@ void kernel_main(void)
 	terminal_initialize();
 
 	/* Newline support is left as an exercise. */
-	int a=233;
-	char c='!';
-	char * s="gg";
-	printk("%d",a);
-	printk("____%s__%c\t",s,c);
-	printk("\n");
-	printk("end");
-	
+	printk("Hello Kernel!");
+
+
 
 
 }
