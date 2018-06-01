@@ -2,6 +2,7 @@
 # (https://wiki.osdev.org/Bare_Bones).
 
 # This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# boot.s for MRNIU/SimpleKernel.
 
 /* Declare constants for the multiboot header. */
 .set ALIGN,    1<<0             /* align loaded modules on page boundaries */
