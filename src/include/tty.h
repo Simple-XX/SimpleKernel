@@ -60,6 +60,9 @@ void terminal_escapeconv(char c){
 		case '\t':
 			terminal_column+=4;
 			break;
+		case '\b':
+			terminal_column-=1;
+			break;
 	}
 }
 
