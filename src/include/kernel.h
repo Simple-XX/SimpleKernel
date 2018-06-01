@@ -32,6 +32,11 @@ int vsprintf(char * buf, const char * fmt, va_list args);
 int printk(const char * fmt, ...);
 
 //------------------------------------------------------------------------------
+// string.c
+
+size_t strlen(const char* str); // 获取字符串长度
+
+//------------------------------------------------------------------------------
 // tty.h
 
 size_t terminal_row; // 命令行行数
@@ -43,7 +48,7 @@ uint8_t terminal_color; // 当前命令行颜色
 volatile uint16_t* terminal_buffer;
 
 // Hardware text mode color constants.
-size_t strlen(const char* str); // 获取字符串长度
+
 
 void terminal_initialize(void); // 命令行初始化
 
@@ -56,6 +61,8 @@ void terminal_putchar(char c); // 在当前位置输出字符
 void terminal_write(const char* data, size_t size); // 命令行写
 
 void terminal_writestring(const char* data); // 命令行写字符串
+
+void terminal_setcursor(size_t x, size_t y)	// 设置光标位置
 
 //------------------------------------------------------------------------------
 // vga.h
@@ -88,5 +95,12 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color);
 // 规定显示行数、列数
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
+
+//------------------------------------------------------------------------------
+// port.h
+
+static inline void outb(uint16_t port, uint8_t value);	// 端口写一个字节
+static inline uint8_t inb(uint16_t port);	// 端口读一个字节
+static inline uint16_t inw(uint16_t port);	// 端口读一个字
 
 #endif
