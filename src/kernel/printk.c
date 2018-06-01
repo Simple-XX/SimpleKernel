@@ -3,7 +3,7 @@
 
 // printk.c for MRNIU/SimpleKernel.
 
-#include "../stdarg.h"
+#include "../include/stdarg.h"
 
 static char buf[1024];
 
