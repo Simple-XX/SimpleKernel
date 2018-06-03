@@ -12,8 +12,9 @@ S_SOURCES = $(shell find . -name "*.s")
 OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
      $(patsubst %.s, %.o, $(S_SOURCES))
 
+
 CC= i386-elf-gcc
-CFLAGS= -std=gnu99 -ffreestanding -O2 -Wall -Wextra -c
+CFLAGS= -std=gnu99 -ffreestanding -nostdinc -O2 -Wall -Wextra -c -I$(LIBC_DIR)
 
 LD= i386-elf-ld
 LDFLAGS= -A elf32_i386 -T$(BOOT_DIR)/link.ld

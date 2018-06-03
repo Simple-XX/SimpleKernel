@@ -11,15 +11,6 @@
 #ifndef _VGA_H
 #define _VGA_H
 
-#define VGA_ADDR 0x3D4	// CRT 控制寄存器-地址
-#define VGA_DATA 0x3D5	// CRT 控制寄存器-数据
-#define VGA_CURSOR_H	0xE	// 光标高位
-#define VGA_CURSOR_L	0xF	// 光标低位
-#define VGA_MEM_BASE	0xB8000	// VGA 缓存基址
-#define VGA_MEM_SIZE	0x8000	// VGA 缓存大小
-
-
-
 // 设置颜色，详解见 '颜色设置与位运算.md'
 // fg-font
 // bg-back

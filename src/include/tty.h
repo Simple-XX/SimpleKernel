@@ -81,7 +81,6 @@ void terminal_writestring(const char* data){
 	terminal_write(data, strlen(data));
 }
 
-
 // 设置光标位置
 void terminal_setcursor(size_t x, size_t y){
     const uint16_t index = y * VGA_WIDTH + x;
@@ -91,7 +90,6 @@ void terminal_setcursor(size_t x, size_t y){
     outb(VGA_ADDR, VGA_CURSOR_L);	// 告诉 VGA 我们要设置光标的低字节
     outb(VGA_DATA, index);	// 发送低 8 位
 }
-
 
 
 #endif
