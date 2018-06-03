@@ -15,6 +15,7 @@ void kernel_main(void)
 {
 	/* Initialize terminal interface */
 	terminal_initialize();
+	gdt_init();
 
 	/* Newline support is left as an exercise. */
 	printk("Hello Kernel!\t");
