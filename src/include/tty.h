@@ -25,6 +25,7 @@ void terminal_initialize(void){
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
+	terminal_setcursor(0, 0);
 }
 
 // 设置命令行颜色
@@ -66,6 +67,7 @@ void terminal_putchar(char c){
 		if (++terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
+	terminal_setcursor(terminal_column, terminal_row);
 }
 
 // 命令行写
@@ -79,15 +81,17 @@ void terminal_writestring(const char* data){
 	terminal_write(data, strlen(data));
 }
 
+
 // 设置光标位置
 void terminal_setcursor(size_t x, size_t y){
-    const uint16_t index = y * 80 + x;
+    const uint16_t index = y * VGA_WIDTH + x;
     // 光标的设置，见参考资料
     outb(VGA_ADDR, VGA_CURSOR_H);	// 告诉 VGA 我们要设置光标的高字节
     outb(VGA_DATA, index >> 8);	// 发送高 8 位
     outb(VGA_ADDR, VGA_CURSOR_L);	// 告诉 VGA 我们要设置光标的低字节
     outb(VGA_DATA, index);	// 发送低 8 位
 }
+
 
 
 #endif

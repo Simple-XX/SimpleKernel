@@ -17,7 +17,12 @@ void kernel_main(void)
 	terminal_initialize();
 
 	/* Newline support is left as an exercise. */
+	printk("Hello Kernel!\t");
 	printk("Hello Kernel!\n");
+	printk("Hello Kernel!");
+	printk("Hello Kernel!\b");
+	int a=2;
+	printk("Hello Kernel! %d\t", a);
 
 
 }

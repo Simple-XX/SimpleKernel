@@ -43,6 +43,7 @@ size_t terminal_row; // 命令行行数
 size_t terminal_column; // 当前命令行列数
 uint8_t terminal_color; // 当前命令行颜色
 
+
 // Note the use of the volatile keyword to prevent the compiler
 // from eliminating dead stores.
 volatile uint16_t* terminal_buffer;
@@ -62,7 +63,7 @@ void terminal_write(const char* data, size_t size); // 命令行写
 
 void terminal_writestring(const char* data); // 命令行写字符串
 
-void terminal_setcursor(size_t x, size_t y)	// 设置光标位置
+void terminal_setcursor(size_t x, size_t y);	// 设置光标位置
 
 //------------------------------------------------------------------------------
 // vga.h
