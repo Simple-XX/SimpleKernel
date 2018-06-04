@@ -66,6 +66,7 @@ void terminal_putchar(char c){
 			terminal_row = 0;
 	}
 	terminal_escapeconv(c);	// 转义字符处理
+	terminal_scroll(); // 屏幕滚动
 	terminal_setcursorpos(terminal_column, terminal_row);
 }
 
@@ -90,6 +91,7 @@ void terminal_setcursorpos(size_t x, size_t y){
     outb(VGA_DATA, index);	// 发送低 8 位
 }
 
+// 获取光标位置
 uint16_t terminal_getcursorpos(){
 	outb(VGA_ADDR, VGA_CURSOR_H);
 	size_t cursor_pos_h = inb(VGA_DATA);
@@ -97,6 +99,20 @@ uint16_t terminal_getcursorpos(){
 	size_t cursor_pos_l = inb(VGA_DATA);
   //返回光标位置
   return (cursor_pos_h << 8) | cursor_pos_l;
+}
+
+// 滚动显示
+void terminal_scroll(){
+	if (terminal_row >= VGA_HEIGHT) {
+		// 将所有行的显示数据复制到上一行
+		for (size_t i= 0; i < (VGA_HEIGHT-1)* VGA_WIDTH; i++)
+			terminal_buffer[i] = terminal_buffer[i+80];
+		// 最后的一行数据现在填充空格，不显示任何字符
+		for (size_t i= (VGA_HEIGHT-1)* VGA_WIDTH; i< VGA_HEIGHT* VGA_WIDTH; i++)
+			terminal_buffer[i] = vga_entry(' ', terminal_color);
+		// 向上移动了一行，所以 cursor_y 现在是 24
+		terminal_row = 24;
+  }
 }
 
 
