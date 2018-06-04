@@ -58,6 +58,7 @@ void terminal_escapeconv(char c){
 // 在当前位置输出字符
 void terminal_putchar(char c){
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+
 	// 如果到达最后一列则换行
   if (++terminal_column == VGA_WIDTH)
 		terminal_row += 1;
