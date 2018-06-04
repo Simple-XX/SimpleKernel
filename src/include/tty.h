@@ -59,7 +59,7 @@ void terminal_escapeconv(char c){
 void terminal_putchar(char c){
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 	// 转义字符处理
-	terminal_escapeconv(c);
+
 	// 如果到达最后一列则换行
   if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
@@ -67,6 +67,7 @@ void terminal_putchar(char c){
 		if (++terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
+	terminal_escapeconv(c);
 	terminal_setcursor(terminal_column, terminal_row);
 }
 
