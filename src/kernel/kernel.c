@@ -17,13 +17,9 @@ void kernel_main(void)
 	terminal_initialize();
 	gdt_init();
 
-
-	//printk("terminal_color: %d\n", vga_color[terminal_color]);
-	//printk("%d", terminal_getcursorpos());
-	for(int i=0;i<30;i++)
-		printk("%dwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", i);
-
-
+	printk("Welcome to my kernel.\n");
+	printk("terminal_color: %d\n", terminal_color);
+	printk("current cursor pos: %d\n", terminal_getcursorpos());
 
 
 }
