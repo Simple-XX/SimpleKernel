@@ -17,13 +17,13 @@ void kernel_main(void)
 	terminal_initialize();
 	gdt_init();
 
-	/* Newline support is left as an exercise. */
-	printk("Hello Kernel!\t");
-	printk("Hello Kernel!\n");
-	printk("Hello Kernel!");
-	printk("Hello Kernel!\b");
-	int a=2;
-	printk("Hello Kernel! %d\t", a);
+
+	//printk("terminal_color: %d\n", vga_color[terminal_color]);
+	//printk("%d", terminal_getcursorpos());
+	for(int i=0;i<30;i++)
+		printk("%dwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", i);
+
+
 
 
 }
