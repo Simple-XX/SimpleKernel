@@ -12,8 +12,6 @@
 
 具体请参阅 Intel 文档
 
-- 0-7
-    
 
 
 - 8-11
@@ -74,7 +72,7 @@
     对于存储段描述符而言，S=1，以区别与系统段描述符和门描述符(S=0)。 
     
 - 13-14
-    DPL: 表示描述符特权级(Descriptor Privilege level)，共2位。它规定了所描述段的特权级，用于特权检查，以决定对该段能否访问。 
+    DPL: 表示描述符特权级(Descriptor Privilege level)，共 2 位。它规定了所描述段的特权级，用于特权检查，以决定对该段能否访问。 
 
 - 15
     P: 存在(Present)位。
@@ -117,6 +115,8 @@
 
 [JamesM's kernel development tutorials: The GDT and IDT](http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html)
 
+[GDT(Global Descriptor Table)全局描述符表](http://www.cnblogs.com/starlitnext/archive/2013/03/07/2948929.html)
 
+[hurlex <六> 添加全局段描述符表](http://wiki.0xffffff.org/posts/hurlex-6.html)
 
 

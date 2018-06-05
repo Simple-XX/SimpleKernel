@@ -11,7 +11,7 @@
 #define _TTY_H
 
 // 命令行初始化
-void terminal_initialize(void){
+void terminal_init(void){
   // 从左上角开始
 	terminal_row = 0;
 	terminal_column = 0;
