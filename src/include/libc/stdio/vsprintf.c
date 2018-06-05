@@ -8,16 +8,20 @@
 // 修复整数和其它类型数据同时输出时只显示整数的问题
 
 #include "../stdarg.h"
+#include "../stddef.h"
+
+extern size_t strlen(const char* str);
 
 #define is_digit(c) ((c) >= '0' &&(c) <='9')  // 判断字符是否数字字符
+
 // 该函数将字符数字转换成整数。输入是数字串指针的指针，返回值是结果数值。另外指针将前移。
 static int skip_atoi(const char **s){
   int i=0;
-
   while(is_digit(**s))
     i=i*10+*((*s)++)-'0';
   return i;
 }
+
 // 这里定义转换类型的各种符号常数
 #define ZEROPAD 1 // pad with zero 填充 0
 #define SIGN 2  // unsigned/signed long 无符号/符号长整数
@@ -26,11 +30,13 @@ static int skip_atoi(const char **s){
 #define LEFT 16 // left justified 左调整
 #define SPECIAL 32  // 0x
 #define SMALL 64  // use 'abcdef' instead of 'ABCDEF'  使用小写字母
+
 // 除操作。n 被除数；base 除数。结果 n 为商，函数返回值为余数。
 #define do_div(n,base)({\
 int __res;\
 __asm__("divl %4":"=a"(n),"=d"(__res):"0"(n),"1"(0),"r"(base));\
 __res;})
+
 // 将整数转换为指定进制的字符串。输入：num-整数；base-进制；size-字符串长度;precision-数字长度
 // (精读)；type-类型选项。输出：str-字符串指针
 static char * number(char * str,int num,int base,int size,int precision,int type){
@@ -55,9 +61,13 @@ static char * number(char * str,int num,int base,int size,int precision,int type
 // 若带符号，则宽度值减 1.若类型指出是特殊转换，则对于十六进制宽度再减少 2 位(用于 0x)，对于
 // 八进制宽度减 1 (用于八进制转换结果)
   if(sign) size--;
-  if(type & SPECIAL)
-    if(base==16) size-=2;
-    else if(base==8) size--;
+  if(type & SPECIAL){
+    if(base==16)
+      size-=2;
+    else
+      if(base==8)
+        size--;
+  }
 // 如果数值 num 为 0，则临时字符串='0'；否则根据给定的基数将数值 num 转换成字符形式
   i=0;
   if(num==0)
@@ -75,13 +85,14 @@ static char * number(char * str,int num,int base,int size,int precision,int type
   if(sign)
     *str++=sign;
 // 若类型指出是特殊转换，则对于八进制转换结果头一位放置一个 '0';而对于十六进制则存放 '0x'.
-  if(type & SPECIAL)
+  if(type & SPECIAL){
     if(base==8)
       *str++='0';
     else if(base==16){
       *str++='0';
       *str++=digits[33];  // 'X' 或 'x'
     }
+  }
 // 若类型中没有左调整(左靠齐)标志，则在剩余宽度中存放 c 字符('0' 或空格)，见 49 行。
   if(!(type & LEFT))
     while(size-->0)
@@ -231,7 +242,7 @@ int vsprintf(char * buf,const char * fmt,va_list args){
 // 若格式转换指示符是 'n'，则表示要把到目前为止转换输出的字符保存到对应参数指针指定的位置中。
 // 首先利用 va_arg() 取得该参数指针，然后将已经转换好的字符存入该指针所指的位置。
       case 'n':
-        ip=va_arg(args,int *);
+        ip=(char *)va_arg(args,int *);
         *ip=(str-buf);
         break;
 // 若格式转换符不是 '%' ，则表示格式字符串有错，直接将一个 '%' 写入输出中。如果格式转换符的

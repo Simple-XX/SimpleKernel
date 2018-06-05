@@ -1,4 +1,4 @@
-# src/boot/
+# src/arch/i386/
 ## 文件说明
 
 - boot.s

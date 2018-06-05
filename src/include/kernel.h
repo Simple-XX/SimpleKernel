@@ -32,20 +32,21 @@ int vsprintf(char * buf, const char * fmt, va_list args);
 int printk(const char * fmt, ...);
 
 //------------------------------------------------------------------------------
+// string.c
+size_t strlen(const char* str); // 获取字符串长度
+
+//------------------------------------------------------------------------------
 // tty.h
 
 size_t terminal_row; // 命令行行数
 size_t terminal_column; // 当前命令行列数
 uint8_t terminal_color; // 当前命令行颜色
 
-// Note the use of the volatile keyword to prevent the compiler
-// from eliminating dead stores.
-volatile uint16_t* terminal_buffer;
+volatile uint16_t * terminal_buffer;
 
 // Hardware text mode color constants.
-size_t strlen(const char* str); // 获取字符串长度
 
-void terminal_initialize(void); // 命令行初始化
+void terminal_init(void); // 命令行初始化
 
 void terminal_setcolor(uint8_t color); // 设置命令行颜色
 
@@ -56,6 +57,12 @@ void terminal_putchar(char c); // 在当前位置输出字符
 void terminal_write(const char* data, size_t size); // 命令行写
 
 void terminal_writestring(const char* data); // 命令行写字符串
+
+void terminal_setcursorpos(size_t x, size_t y);	// 设置光标位置
+
+uint16_t terminal_getcursorpos();	// 获取光标位置
+
+void terminal_scroll();	// 滚动显示
 
 //------------------------------------------------------------------------------
 // vga.h
@@ -79,6 +86,13 @@ enum vga_color {
 	VGA_COLOR_WHITE = 15,
 };
 
+#define VGA_ADDR 0x3D4	// CRT 控制寄存器-地址
+#define VGA_DATA 0x3D5	// CRT 控制寄存器-数据
+#define VGA_CURSOR_H	0xE	// 光标高位
+#define VGA_CURSOR_L	0xF	// 光标低位
+#define VGA_MEM_BASE	0xB8000	// VGA 缓存基址
+#define VGA_MEM_SIZE	0x8000	// VGA 缓存大小
+
 // 设置颜色，详解见 '颜色设置与位运算.md'
 // fg-font
 // bg-back
@@ -88,5 +102,22 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color);
 // 规定显示行数、列数
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
+
+//------------------------------------------------------------------------------
+// port.h
+
+static inline void outb(uint16_t port, uint8_t value);	// 端口写一个字节
+static inline uint8_t inb(uint16_t port);	// 端口读一个字节
+static inline uint16_t inw(uint16_t port);	// 端口读一个字
+
+
+
+//------------------------------------------------------------------------------
+// gdt.h
+
+void gdt_init(void);	// 初始化全局描述符表
+extern void gdt_flush();	// GDT 加载到 GDTR 的函数
+extern void tss_flush();	// TSS 刷新[汇编实现]
+
 
 #endif
