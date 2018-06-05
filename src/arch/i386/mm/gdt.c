@@ -6,7 +6,7 @@
 #include "gdt.h"
 
 // 全局描述符表构造函数，根据下标构造
-// 参数分别是 数组下标、基地址、限长、访问标志，其它访问标志
+// 参数: num-数组下标、base-基地址、limit-限长、access-访问标志，gran-粒度
 static void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran){
   gdt_entries[num].base_low     = (base & 0xFFFF);
   gdt_entries[num].base_middle  = (base >> 16) & 0xFF;
@@ -43,11 +43,12 @@ void gdt_init(void){
   gdt_ptr.base = (uint32_t)&gdt_entries;
 
   // 采用 Intel 平坦模型
+  // 0xC0: 粒度为 4096?
   gdt_set_gate(SEG_NULL,  0x0, 0x0, 0x0, 0x0);            // Intel文档要求首个描述符全0
-  gdt_set_gate(SEG_KTEXT, 0x0, 0xFFFFFFFF, 0x9A, 0xC0);   // 内核指令段
-  gdt_set_gate(SEG_KDATA, 0x0, 0xFFFFFFFF, 0x92, 0xC0);   // 内核数据段
-  gdt_set_gate(SEG_UTEXT, 0x0, 0xFFFFFFFF, 0xFA, 0xC0);   // 用户模式代码段
-  gdt_set_gate(SEG_UDATA, 0x0, 0xFFFFFFFF, 0xF2, 0xC0);   // 用户模式数据段
+  gdt_set_gate(SEG_KTEXT, 0x0, 0xFFFFFFFF, KREAD_EXEC, 0xC0);   // 内核指令段
+  gdt_set_gate(SEG_KDATA, 0x0, 0xFFFFFFFF, KREAD_WRITE, 0xC0);   // 内核数据段
+  gdt_set_gate(SEG_UTEXT, 0x0, 0xFFFFFFFF, UREAD_EXEC, 0xC0);   // 用户模式代码段
+  gdt_set_gate(SEG_UDATA, 0x0, 0xFFFFFFFF, UREAD_WRITE, 0xC0);   // 用户模式数据段
   tss_set_gate(SEG_TSS, KERNEL_DS, 0);
 
   // 加载全局描述符表地址到 GPTR 寄存器
