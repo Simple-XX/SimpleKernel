@@ -3,11 +3,13 @@
 
 // printk.c for MRNIU/SimpleKernel.
 
-#include "../stdarg.h"
+
+#include "stdarg.h"
 
 static char buf[1024];
 
 extern int vsprintf(char * buf, const char * fmt, va_list args);
+extern void terminal_writestring(const char* data);
 
 int printk(const char * fmt, ...){
   va_list args;
