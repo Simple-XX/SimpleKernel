@@ -46,7 +46,7 @@ volatile uint16_t * terminal_buffer;
 
 // Hardware text mode color constants.
 
-void terminal_initialize(void); // 命令行初始化
+void terminal_init(void); // 命令行初始化
 
 void terminal_setcolor(uint8_t color); // 设置命令行颜色
 
