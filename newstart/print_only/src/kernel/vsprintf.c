@@ -1,5 +1,5 @@
 
-// This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 // Based on Linux kernel 0.11
 // vsprintf.c for MRNIU/SimpleKernel.
 
