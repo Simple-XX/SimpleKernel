@@ -1,5 +1,5 @@
 
-# This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
 # 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
 # 以 bochrc.txt 为配置文件运行 bochs。
