@@ -3,55 +3,55 @@
 
 // pic.h for MRNIU/SimpleKernel.
 
-
-
-
 #ifndef _PIC_H_
 #define _PIC_H_
 
+#define IO_PIC1   (0x20)	  // Master (IRQs 0-7)
+#define IO_PIC2   (0xA0)	  // Slave  (IRQs 8-15)
+#define IO_PIC1C  (IO_PIC1+1)
+#define IO_PIC2C  (IO_PIC2+1)
 
-#define PIC1_CMD                    0x20
-#define PIC1_DATA                   0x21
-#define PIC2_CMD                    0xA0
-#define PIC2_DATA                   0xA1
-#define PIC_READ_IRR                0x0a    /* OCW3 irq ready next CMD read */
-#define PIC_READ_ISR                0x0b    /* OCW3 irq service next CMD read */
+#define PIC_EOI		0x20		/* End-of-interrupt command code */
 
-// Master - command: 0x20, data: 0x21
-// Slave - command: 0xA0, data: 0xA1
+// 设置 8259A 芯片
+void init_interrupt_chip(void)
+{
+  // 重新映射 IRQ 表
+  // 两片级联的 Intel 8259A 芯片
+  // 主片端口 0x20 0x21
+  // 从片端口 0xA0 0xA1
 
-void pic_init(){
-  //PIC configuration:
-  //设置主8259A和从8259A
-  outb(0x20,0x11);
-  outb(0xa0,0x11);
-  //设置IRQ0-IRQ7的中断向量为0x20-0x27
-  outb(0x21,0x20);
-  //设置IRQ8-IRQ15的中断向量为0x28-0x2f
-  outb(0xa1,0x28);
-  //使从片PIC2连接到主片上
-  outb(0x21,0x04);
-  outb(0xa1,0x02);
-  //打开8086模式
-  outb(0x21,0x01);
-  outb(0xa1,0x01);
-  //关闭IRQ0-IRQ7的0x20-0x27中断
-  outb(0x21,0xff);
-  //关闭IRQ8-IRQ15的0x28-0x2f中断
-  outb(0xa1,0xff);
+  // 初始化主片、从片
+  // 0001 0001
+  outb(IO_PIC1, 0x11);
+  outb(IO_PIC2, 0x11);
 
+  outb(IO_PIC1C, 0x20); // 设置主片 IRQ 从 0x20(32) 号中断开始
+  outb(IO_PIC2C, 0x28); // 设置从片 IRQ 从 0x28(40) 号中断开始
+  outb(IO_PIC1C, 0x04); // 设置主片 IR2 引脚连接从片
+  outb(IO_PIC2C, 0x02);   // 告诉从片输出引脚和主片 IR2 号相连
 
- outb(0x20, 0x11);
- outb(0xA0, 0x11);
+  // 设置主片和从片按照 8086 的方式工作
+  outb(IO_PIC1C, 0x01);
+  outb(IO_PIC2C, 0x01);
 
- outb(0x21, 0x20);
- outb(0xA1, 0x28);
- outb(0x21, 0x04);
- outb(0xA1, 0x02);
- outb(0x21, 0x01);
- outb(0xA1, 0x01);
- outb(0x21, 0x0);
- outb(0xA1, 0x0);
+  // 设置主从片允许中断
+  outb(IO_PIC1C, 0x0);
+  outb(IO_PIC2C, 0x0);
+}
+
+// 重设 8259A 芯片
+void clear_interrupt_chip(uint32_t intr_no){
+  // 发送中断结束信号给 PICs
+  // 按照我们的设置，从 32 号中断起为用户自定义中断
+  // 因为单片的 Intel 8259A 芯片只能处理 8 级中断
+  // 故大于等于 40 的中断号是由从片处理的
+  if (intr_no >= 40) {
+    // 发送重设信号给从片
+    outb(IO_PIC2, 0x20);
+  }
+  // 发送重设信号给主片
+  outb(IO_PIC1, 0x20);
 }
 
 

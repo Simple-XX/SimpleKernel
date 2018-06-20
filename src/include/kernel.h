@@ -12,7 +12,7 @@
 
 
 //------------------------------------------------------------------------------
-// kerne.c
+// kernel.c
 /* Check if the compiler thinks we are targeting the wrong operating system. */
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -121,7 +121,7 @@ static inline uint16_t inw(uint16_t port);	// 端口读一个字
 #define SEG_UTEXT   3
 #define SEG_UDATA   4
 #define SEG_TSS     5
-#define GD_KTEXT    ((SEG_KTEXT) << 3)      // 内核代码段
+#define GD_KTEXT    ((SEG_KTEXT) << 3)      // 内核代码段 0x08
 #define GD_KDATA    ((SEG_KDATA) << 3)      // 内核数据段
 #define GD_UTEXT    ((SEG_UTEXT) << 3)      // 用户代码段
 #define GD_UDATA    ((SEG_UDATA) << 3)      // 用户数据段
@@ -129,6 +129,7 @@ static inline uint16_t inw(uint16_t port);	// 端口读一个字
 // 段描述符 DPL
 #define DPL_KERNEL  (0)	// 内核级
 #define DPL_USER    (3)	// 用户级
+
 
 // 各个段的全局描述符表的选择子
 #define KERNEL_CS   ((GD_KTEXT) | DPL_KERNEL)
@@ -147,7 +148,27 @@ extern void gdt_load();	// GDT 加载到 GDTR 的函数
 extern void tss_load();	// TSS 刷新[汇编实现]
 
 //------------------------------------------------------------------------------
-// idt.h
+// intr.h
+
+#define INTERRUPT_MAX 256	// 中断表最大值
+
+// 定义IRQ
+#define  IRQ0     32    // 电脑系统计时器
+#define  IRQ1     33    // 键盘
+#define  IRQ2     34    // 与 IRQ9 相接，MPU-401 MD 使用
+#define  IRQ3     35    // 串口设备
+#define  IRQ4     36    // 串口设备
+#define  IRQ5     37    // 建议声卡使用
+#define  IRQ6     38    // 软驱传输控制使用
+#define  IRQ7     39    // 打印机传输控制使用
+#define  IRQ8     40    // 即时时钟
+#define  IRQ9     41    // 与 IRQ2 相接，可设定给其他硬件
+#define  IRQ10    42    // 建议网卡使用
+#define  IRQ11    43    // 建议 AGP 显卡使用
+#define  IRQ12    44    // 接 PS/2 鼠标，也可设定给其他硬件
+#define  IRQ13    45    // 协处理器使用
+#define  IRQ14    46    // IDE0 传输控制使用
+#define  IRQ15    47    // IDE1 传输控制使用
 
 
 
