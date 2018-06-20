@@ -3,9 +3,9 @@
 
 # gdt.s for MRNIU/SimpleKernel.
 
-.global gdt_flush
+.global gdt_load
 
-gdt_flush:
+gdt_load:
   mov 4(%esp), %eax   #参数存入 eax 寄存器
   lgdt (%eax)      # 加载到 GDTR [修改原先GRUB设置]
 
@@ -21,9 +21,9 @@ gdt_flush:
 flush:
   ret
 
-.global tss_flush # TSS 刷新
+.global tss_load # TSS 刷新
 
-tss_flush:
+tss_load:
   mov $0x28, %ax  # TSS 在全局描述符表里是第 5 个故而 00101000B 即就是 0x28
   ltr %ax            # 加载到 TR 寄存器
   ret
