@@ -147,6 +147,20 @@ void gdt_init(void);	// 初始化全局描述符表
 extern void gdt_load();	// GDT 加载到 GDTR 的函数
 extern void tss_load();	// TSS 刷新[汇编实现]
 
+
+//------------------------------------------------------------------------------
+// pic.h
+
+#define IO_PIC1   (0x20)	  // Master (IRQs 0-7)
+#define IO_PIC2   (0xA0)	  // Slave  (IRQs 8-15)
+#define IO_PIC1C  (IO_PIC1+1)
+#define IO_PIC2C  (IO_PIC2+1)
+#define PIC_EOI		0x20		/* End-of-interrupt command code */
+
+void init_interrupt_chip(void);	// 设置 8259A 芯片
+
+void clear_interrupt_chip(uint32_t intr_no);	// 重设 8259A 芯片
+
 //------------------------------------------------------------------------------
 // intr.h
 
@@ -170,7 +184,9 @@ extern void tss_load();	// TSS 刷新[汇编实现]
 #define  IRQ14    46    // IDE0 传输控制使用
 #define  IRQ15    47    // IDE1 传输控制使用
 
+void idt_init(void);	// idt 初始化
 
+extern void clear_interrupt_chip(uint32_t intr_no);
 
 
 

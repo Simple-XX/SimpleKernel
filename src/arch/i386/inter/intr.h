@@ -10,6 +10,7 @@
 #include "stdint.h"
 #include "../../../include/kernel.h"
 
+
 // 寄存器类型
 typedef
 struct pt_regs_t {
@@ -90,6 +91,8 @@ void irq13();           // 协处理器使用
 void irq14();           // IDE0 传输控制使用
 void irq15();           // IDE1 传输控制使用
 
+
+void irq_handler(pt_regs_t *regs);  // IRQ 处理函数
 
 typedef void (*interrupt_handler_t)(pt_regs_t *); // 定义中断处理函数指针
 
