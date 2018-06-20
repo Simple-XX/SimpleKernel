@@ -10,7 +10,8 @@
 #include "../../../include/kernel.h"
 
 // 全局描述符类型
-typedef struct gdt_entry_t {
+typedef
+struct gdt_entry_t {
   uint16_t limit_low;     // 段界限   15～0
   uint16_t base_low;      // 段基地址 15～0
   uint8_t  base_middle;   // 段基地址 23～16
@@ -23,7 +24,8 @@ typedef struct gdt_entry_t {
 static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__ ((aligned(8)));
 
 // GDTR
-typedef struct gdt_ptr_t {
+typedef
+struct gdt_ptr_t {
   uint16_t limit; // 全局描述符表限长
   uint32_t base; // 全局描述符表 32位 基地址
 } __attribute__((packed)) gdt_ptr_t;
@@ -48,7 +50,8 @@ static gdt_ptr_t gdt_ptr;
 */
 // TSS(任务状态段) 描述符
 // TSS的使用是为了解决调用门中特权级变换时堆栈发生的变化.
-typedef struct tss_entry_t {
+typedef
+struct tss_entry_t {
   uint32_t ts_link; // old ts selector
   uint32_t ts_esp0; // stack pointers and segment selectors
   uint16_t ts_ss0; // after an increase in privilege level

@@ -44,7 +44,7 @@ void gdt_init(void){
 
   // 采用 Intel 平坦模型
   // 0xC0: 粒度为 4096?
-  gdt_set_gate(SEG_NULL,  0x0, 0x0, 0x0, 0x0);            // Intel文档要求首个描述符全0
+  gdt_set_gate(SEG_NULL, 0x0, 0x0, 0x0, 0x0);            // Intel 文档要求首个描述符全 0
   gdt_set_gate(SEG_KTEXT, 0x0, 0xFFFFFFFF, KREAD_EXEC, 0xC0);   // 内核指令段
   gdt_set_gate(SEG_KDATA, 0x0, 0xFFFFFFFF, KREAD_WRITE, 0xC0);   // 内核数据段
   gdt_set_gate(SEG_UTEXT, 0x0, 0xFFFFFFFF, UREAD_EXEC, 0xC0);   // 用户模式代码段
@@ -52,7 +52,7 @@ void gdt_init(void){
   tss_set_gate(SEG_TSS, KERNEL_DS, 0);
 
   // 加载全局描述符表地址到 GPTR 寄存器
-  gdt_flush((uint32_t)&gdt_ptr);
+  gdt_load((uint32_t)&gdt_ptr);
   // 加载任务寄存器
-  tss_flush();
+  tss_load();
 }
