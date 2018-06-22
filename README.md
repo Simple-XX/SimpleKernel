@@ -66,11 +66,13 @@ Provides kernels with different degrees of completion in each stage, you can sta
     
 ## TODO
 
-对代码重新进行架构。-done
+对代码重新进行架构 -done
 
 gdt -done
 
-idt
+idt -done
+
+主要中断
 
     
 
