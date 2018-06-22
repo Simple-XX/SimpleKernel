@@ -1,5 +1,5 @@
 
-// This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
 // kernel.h for MRNIU/SimpleKernel.
 
@@ -12,7 +12,7 @@
 
 
 //------------------------------------------------------------------------------
-// kerne.c
+// kernel.c
 /* Check if the compiler thinks we are targeting the wrong operating system. */
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -110,14 +110,107 @@ static inline void outb(uint16_t port, uint8_t value);	// 端口写一个字节
 static inline uint8_t inb(uint16_t port);	// 端口读一个字节
 static inline uint16_t inw(uint16_t port);	// 端口读一个字
 
-
-
 //------------------------------------------------------------------------------
 // gdt.h
 
+#define GDT_LENGTH 6	// 全局描述符表长度
+// 各个内存段所在全局描述符表下标
+#define SEG_NULL    0
+#define SEG_KTEXT   1
+#define SEG_KDATA   2
+#define SEG_UTEXT   3
+#define SEG_UDATA   4
+#define SEG_TSS     5
+#define GD_KTEXT    ((SEG_KTEXT) << 3)      // 内核代码段 0x08
+#define GD_KDATA    ((SEG_KDATA) << 3)      // 内核数据段
+#define GD_UTEXT    ((SEG_UTEXT) << 3)      // 用户代码段
+#define GD_UDATA    ((SEG_UDATA) << 3)      // 用户数据段
+#define GD_TSS      ((SEG_TSS) << 3)        // 任务段
+// 段描述符 DPL
+#define DPL_KERNEL  (0)	// 内核级
+#define DPL_USER    (3)	// 用户级
+
+
+// 各个段的全局描述符表的选择子
+#define KERNEL_CS   ((GD_KTEXT) | DPL_KERNEL)
+#define KERNEL_DS   ((GD_KDATA) | DPL_KERNEL)
+#define USER_CS     ((GD_UTEXT) | DPL_USER)
+#define USER_DS     ((GD_UDATA) | DPL_USER)
+
+// 访问权限
+#define KREAD_EXEC 0x9A
+#define KREAD_WRITE 0x92
+#define UREAD_EXEC 0xFA
+#define UREAD_WRITE 0xF2
+
 void gdt_init(void);	// 初始化全局描述符表
-extern void gdt_flush();	// GDT 加载到 GDTR 的函数
-extern void tss_flush();	// TSS 刷新[汇编实现]
+extern void gdt_load();	// GDT 加载到 GDTR 的函数
+extern void tss_load();	// TSS 刷新[汇编实现]
+
+
+//------------------------------------------------------------------------------
+// pic.h
+
+#define IO_PIC1   (0x20)	  // Master (IRQs 0-7)
+#define IO_PIC2   (0xA0)	  // Slave  (IRQs 8-15)
+#define IO_PIC1C  (IO_PIC1+1)
+#define IO_PIC2C  (IO_PIC2+1)
+#define PIC_EOI		0x20		/* End-of-interrupt command code */
+
+void init_interrupt_chip(void);	// 设置 8259A 芯片
+
+void clear_interrupt_chip(uint32_t intr_no);	// 重设 8259A 芯片
+
+//------------------------------------------------------------------------------
+// intr.h
+
+#define INTERRUPT_MAX 256	// 中断表最大值
+
+// 定义IRQ
+#define  IRQ0     32    // 电脑系统计时器
+#define  IRQ1     33    // 键盘
+#define  IRQ2     34    // 与 IRQ9 相接，MPU-401 MD 使用
+#define  IRQ3     35    // 串口设备
+#define  IRQ4     36    // 串口设备
+#define  IRQ5     37    // 建议声卡使用
+#define  IRQ6     38    // 软驱传输控制使用
+#define  IRQ7     39    // 打印机传输控制使用
+#define  IRQ8     40    // 即时时钟
+#define  IRQ9     41    // 与 IRQ2 相接，可设定给其他硬件
+#define  IRQ10    42    // 建议网卡使用
+#define  IRQ11    43    // 建议 AGP 显卡使用
+#define  IRQ12    44    // 接 PS/2 鼠标，也可设定给其他硬件
+#define  IRQ13    45    // 协处理器使用
+#define  IRQ14    46    // IDE0 传输控制使用
+#define  IRQ15    47    // IDE1 传输控制使用
+
+// 中断号定义
+#define INT_DIVIDE_ERROR         0
+#define INT_DEBUG                1
+#define INT_NMI                  2
+#define INT_BREAKPOINT           3
+#define INT_OVERFLOW             4
+#define INT_BOUND                5
+#define INT_INVALID_OPCODE       6
+#define INT_DEVICE_NOT_AVAIL     7
+#define INT_DOUBLE_FAULT         8
+#define INT_COPROCESSOR          9
+#define INT_INVALID_TSS         10
+#define INT_SEGMENT             11
+#define INT_STACK_FAULT         12
+#define INT_GENERAL_PROTECT     13
+#define INT_PAGE_FAULT          14
+
+#define INT_X87_FPU             16
+#define INT_ALIGNMENT           17
+#define INT_MACHINE_CHECK       18
+#define INT_SIMD_FLOAT          19
+#define INT_VIRTUAL_EXCE        20
+
+void idt_init(void);	// idt 初始化
+
+extern void clear_interrupt_chip(uint32_t intr_no);
+
 
 
 #endif

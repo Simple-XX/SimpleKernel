@@ -1,7 +1,7 @@
 /* Copy from osdev.org Bare_Bones:*/
 /* (https://wiki.osdev.org/Bare_Bones).*/
 
-/* This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
+/* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
 /* linker script for MRNIU/SimpleKernel.*/
 
 
