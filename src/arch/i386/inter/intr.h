@@ -136,6 +136,7 @@ struct idt_entry_t {
   uint16_t base_high;        // 中断处理函数地址 31～16 位
 } __attribute__((packed)) idt_entry_t;
 
+
 // IDTR
 typedef
 struct idt_ptr_t {
