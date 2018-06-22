@@ -2,7 +2,7 @@
 # bochsrc.txt file for SimpleKernel (https://github.com/MRNIU).
 # From JamesM's kernel development tutorials:
 # (http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html).
-# This file is apart of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 ###############################################################
 
 megs: 32
