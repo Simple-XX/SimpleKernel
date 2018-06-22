@@ -120,7 +120,6 @@ int vsprintf(char * buf,const char * fmt,va_list args){
   int field_width;  // width of output field 输出字符宽度
   int precision;  // min. # of digits for integers;max number of chars for from
                   // fields.  min.整数数字个数；max. 字符串中字符个数
-  int qualifier;  // 'h','l',or 'L' for integer fields  'h','l',或 'L' 用于整数字段
 // 首先将字符指针指向 buf，然后扫描格式字符串，对各个格式转换只是进行相应的处理
   for(str=buf;*fmt;++fmt){
 // 格式转换指示字符串均以 '%' 开始，这里从 fmt 格式字符串中扫描 '%'，寻找格式转换字符串的开始。
@@ -172,13 +171,18 @@ int vsprintf(char * buf,const char * fmt,va_list args){
       if(precision<0)
         precision=0;
     }
+
+/*
 // 下面这段代码分析长度修饰符，并将其存入 qualifier 变量。(h,l,L 的含义参见列表后的说明)
     // get the conversion qualifier
+    int qualifier;  // 'h','l',or 'L' for integer fields  'h','l',或 'L' 用于整数字段
     qualifier=-1;
     if(*fmt=='h'||*fmt=='l'||*fmt=='L'){
       qualifier=*fmt;
       ++fmt;
     }
+*/
+
 // 下面分析转换指示符。如果转换指示符是 'c'，则表示对应参数应是字符。此时如果标志域表明不是左
 // 对齐，则该字段前面放入宽度域值 -1 个空格字符，然后再被放入参数字符。如果宽度域还大于 0，
 // 则表示为左对齐，则在参数字符后面添加宽度值 -1 个空格字符
