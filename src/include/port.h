@@ -38,7 +38,7 @@ static inline uint16_t inw(uint16_t port){
 }
 
 // 执行CPU空操作
-static inline void hlt(void){
+static inline void cpu_hlt(void){
   asm volatile ("hlt");
 }
 

@@ -23,10 +23,11 @@ void kernel_main(void)
 	printk("terminal_color: %d\n", terminal_color);
 	printk("current cursor pos: %d\n", terminal_getcursorpos());
 
-	//asm volatile ("int $0x03");
-	//asm volatile ("int $0x04");
+	asm("int $0x4");
+	asm("int $0x13");
 
-	//printk("int 0x03 successful!");
+
+	printk("int 0x03 successful!");
 
 	return;
 }
