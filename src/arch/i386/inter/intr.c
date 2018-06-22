@@ -1,11 +1,14 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+// Based on http://wiki.0xffffff.org/posts/hurlex-kernel.html
 // intr.c for MRNIU/SimpleKernel.
 
 
 #include "intr.h"
-#include "../../../include/pic.h"
+#include "port.hpp"
+#include "stdio.h"
+#include "pic.hpp"
+
 
 // idt 初始化
 void idt_init(void){

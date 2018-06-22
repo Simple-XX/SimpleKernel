@@ -1,16 +1,19 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-// pic.h for MRNIU/SimpleKernel.
+// pic.hpp for MRNIU/SimpleKernel.
 
-#ifndef _PIC_H_
-#define _PIC_H_
+#ifndef _PIC_HPP_
+#define _PIC_HPP_
 
 #include "stdint.h"
-#include "kernel.h"
-#include "stddef.h"
-#include "port.h"
+#include "port.hpp"
 
+#define IO_PIC1   (0x20)	  // Master (IRQs 0-7)
+#define IO_PIC2   (0xA0)	  // Slave  (IRQs 8-15)
+#define IO_PIC1C  (IO_PIC1+1)
+#define IO_PIC2C  (IO_PIC2+1)
+#define PIC_EOI		0x20		/* End-of-interrupt command code */
 
 // 设置 8259A 芯片
 void init_interrupt_chip(void)

@@ -3,14 +3,10 @@
 
 // stdarg.h for MRNIU/SimpleKernel.
 
-
-
-#ifndef _STDARG_H
-#define _STDARG_H
-
+#ifndef _STDARG_H_
+#define _STDARG_H_
 
 typedef char * va_list;
-
 
 // 用来得到 TYPE 元素类型的字节大小，若不足4字节(short,char),那么认为这个元素的大小为4字节，
 // 简单的说就是检测元素的大小，不足4字节的当作4字节看待.
@@ -26,8 +22,6 @@ typedef char * va_list;
 // 然后 AP-__va_SIZE(TYPE)得到当前变参的内存地址，类型转换后返回当前变参值。
 //#define va_arg(AP, TYPE) (*(TYPE *)((AP+=__va_SIZE(TYPE))-__va_SIZE(TYPE)))
 #define va_arg(AP, TYPE) (AP+=__va_SIZE(TYPE), *((TYPE *)(AP-__va_SIZE (TYPE))))
-
-
 
 // 把指针 va_list 置 0
 #define va_end(AP) (AP = (va_list) 0)

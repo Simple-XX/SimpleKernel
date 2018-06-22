@@ -3,10 +3,7 @@
 
 // kernel.c for MRNIU/SimpleKernel.
 
-#include "../include/kernel.h"
-#include "../include/port.h"
-#include "../include/vga.h"
-#include "../include/tty.h"
+#include "headers.h"
 
 // 内核入口
 void kernel_main(void)

@@ -1,14 +1,32 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-// tty.h for MRNIU/SimpleKernel.
+// tty.hpp for MRNIU/SimpleKernel.
 
-#include "kernel.h"
+#ifndef _TTY_HPP_
+#define _TTY_HPP_
+
 #include "stdint.h"
 #include "stddef.h"
+#include "vga.hpp"
+#include "string.h"
 
-#ifndef _TTY_H
-#define _TTY_H
+
+size_t terminal_row; // 命令行行数
+size_t terminal_column; // 当前命令行列数
+uint8_t terminal_color; // 当前命令行颜色
+
+volatile uint16_t * terminal_buffer;
+
+void terminal_scroll(void);
+uint16_t terminal_getcursorpos(void);
+void terminal_setcursorpos(size_t, size_t);
+void terminal_writestring(const char*);
+void terminal_write(const char*, size_t);
+void terminal_putchar(char);
+void terminal_escapeconv(char);
+void terminal_putentryat(char, uint8_t, size_t, size_t);
+void terminal_setcolor(uint8_t);
 
 // 命令行初始化
 void terminal_init(void){

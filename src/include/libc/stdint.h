@@ -3,8 +3,8 @@
 
 // stdint.h for MRNIU/SimpleKernel.
 
-#ifndef _STDINT_H
-#define _STDINT_H
+#ifndef _STDINT_H_
+#define _STDINT_H_
 
 typedef signed char     int8_t;
 typedef short int       int16_t;

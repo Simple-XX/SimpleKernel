@@ -3,12 +3,7 @@
 
 // string.c for MRNIU/SimpleKernel.
 
-#include "stdint.h"
 #include "stddef.h"
-#include "stdarg.h"
-
-#ifndef _STRING_H
-#define _STRING_H
 
 // 获取字符串长度
 size_t strlen(const char* str){
@@ -17,6 +12,3 @@ size_t strlen(const char* str){
 		len++;
 	return len;
 }
-
-
-#endif
