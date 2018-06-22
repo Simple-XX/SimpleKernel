@@ -5,18 +5,6 @@
 
 #include "gdt.h"
 
-// 全局描述符表构造函数，根据下标构造
-// 参数: num-数组下标、base-基地址、limit-限长、access-访问标志，gran-粒度
-static void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran){
-  gdt_entries[num].base_low     = (base & 0xFFFF);
-  gdt_entries[num].base_middle  = (base >> 16) & 0xFF;
-  gdt_entries[num].base_high    = (base >> 24) & 0xFF;
-  gdt_entries[num].limit_low    = (limit & 0xFFFF);
-  gdt_entries[num].granularity  = (limit >> 16) & 0x0F;
-  gdt_entries[num].granularity |= gran & 0xF0;
-  gdt_entries[num].access       = access;
-}
-
 static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0){
 	// 获取 TSS 描述符的位置和长度
 	uint32_t base = (uint32_t)&tss_entry;
@@ -51,7 +39,7 @@ void gdt_init(void){
   gdt_set_gate(SEG_UDATA, 0x0, 0xFFFFFFFF, UREAD_WRITE, 0xC0);   // 用户模式数据段
   tss_set_gate(SEG_TSS, KERNEL_DS, 0);
 
-  // 加载全局描述符表地址到 GPTR 寄存器
+  // 加载全局描述符表地址到 GDTR 寄存器
   gdt_load((uint32_t)&gdt_ptr);
   // 加载任务寄存器
   tss_load();

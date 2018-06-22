@@ -17,8 +17,9 @@ void idt_init(void){
   // GD_KTEXT: 内核代码段
   // 0x8E: 10001110
   // 0x08: 0000 1000
-  for(uint32_t i=0; i<48; i++){
-    idt_set_gate( i, (uint32_t)isr_irq_func[i], 0x08, 0x8E);
+
+  for(uint32_t i=0; i<48; ++i){
+    idt_set_gate(i, (uint32_t)isr_irq_func[i], 0x08, 0x8E);
   }
   // 128 (0x80) 将来用于实现系统调用
   // 0xEF: 1110 1111
@@ -33,6 +34,7 @@ void isr_handler(pt_regs_t *regs){
   }
   else {
     printk("Unhandled interrupt: %d\n", regs->int_no);
+    cpu_hlt();
   }
 }
 

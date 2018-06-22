@@ -3,13 +3,11 @@
 
 # intr_s.s for MRNIU/SimpleKernel.
 
-
 # 加载 idt
 .global idt_load
 idt_load:
-  mov 4(%esp), %edx # 参数保存在 eax
-  lidt (%edx)
-  sti 				# turn on interrupts
+  mov 4(%esp), %eax # 参数保存在 eax
+  lidt (%eax)
   ret
 
 # 定义两个构造中断处理函数的宏(有的中断有错误代码，有的没有)
@@ -17,9 +15,9 @@ idt_load:
 .macro ISR_NOERRCODE no
 .global isr\no
 isr\no:
-    cli                  # 首先关闭中断
-    push $0               # push 无效的中断错误代码
-    push \no              # push 中断号
+    #cli                  # 首先关闭中断
+    push $0               # push 无效的中断错误代码,占位用
+    push $\no              # push 中断号
     jmp isr_common_stub
 .endm
 
@@ -27,8 +25,8 @@ isr\no:
 .macro ISR_ERRCODE er
 .global isr\er
 isr\er:
-    cli                  # 关闭中断
-    push \er              # push 中断号
+    #cli                  # 关闭中断
+    push $\er              # push 中断号
     jmp isr_common_stub
 .endm
 
@@ -73,6 +71,8 @@ ISR_NOERRCODE 128
 
 
 # 中断服务程序
+.global isr_common_stub
+.extern isr_handler
 isr_common_stub:
   pusha    # Pushes edi, esi, ebp, esp, ebx, edx, ecx, eax
   mov %ds, %ax
@@ -132,7 +132,6 @@ IRQ  15,    47 	# IDE1 传输控制使用
 .extern irq_handler
 irq_common_stub:
   pusha                    # pushes edi, esi, ebp, esp, ebx, edx, ecx, eax
-
   mov %ds, %ax
   push %eax                 # 保存数据段描述符
 
@@ -154,7 +153,6 @@ forkret_s:
   mov %bx, %fs
   mov %bx, %gs
   mov %bx, %ss
-
   popa                     # Pops edi,esi,ebp...
   add $8, %esp   		 # 清理压栈的 错误代码 和 ISR 编号
   iret          		 # 出栈 CS, EIP, EFLAGS, SS, ESP
