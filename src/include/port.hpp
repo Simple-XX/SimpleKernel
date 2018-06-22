@@ -3,8 +3,10 @@
 
 // port.h for MRNIU/SimpleKernel.
 
-#ifndef _PORT_H
-#define _PORT_H
+#ifndef _PORT_HPP_
+#define _PORT_HPP_
+
+#include "stdint.h"
 
 // 端口写一个字节
 static inline void outb(uint16_t port, uint8_t value){
