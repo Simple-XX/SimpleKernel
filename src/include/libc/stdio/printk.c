@@ -1,7 +1,10 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-// printk.c for MRNIU/SimpleKernel.
+// printk.hpp for MRNIU/SimpleKernel.
+
+#ifndef _PRINTK_HPP_
+#define _PRINTK_HPP_
 
 
 #include "stdarg.h"
@@ -20,3 +23,17 @@ int printk(const char * fmt, ...){
   terminal_writestring(buf);
   return i;
 }
+
+int printk_color(unsigned char color, const char *fmt, ...){
+  va_list args;
+  int i;
+  va_start(args, fmt);
+  i=vsprintf(buf, fmt, args);
+  va_end(args);
+  terminal_setcolor(color);
+  terminal_writestring(buf);
+  return i;
+}
+
+
+#endif
