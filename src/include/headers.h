@@ -19,7 +19,12 @@
 
 #include "stdio.h"
 #include "tty.hpp"
+#include "multiboot.h"
+#include "elf.h"
+#include "debug.h"
+#include "vmm.h"
 
+void debug_init(void);
 void gdt_init(void);
 void idt_init(void);
 
