@@ -3,9 +3,10 @@
 
 # Makefile for MRNIU/SimpleKernel.
 
-BOOT_DIR= ./arch/i386
+BOOT_DIR= ./arch/i386/boot
 HPP_DIR= ./include
 LIBC_DIR= ./include/libc
+ARCH_DIR= ./arch/i386
 
 C_SOURCES = $(shell find . -name "*.c")
 S_SOURCES = $(shell find . -name "*.s")
@@ -15,7 +16,7 @@ OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
 
 CC= i386-elf-gcc
 CFLAGS= -std=gnu99 -ffreestanding -nostdinc -O2 -Wall -Wextra -c -I$(LIBC_DIR)\
- 				-I$(HPP_DIR)
+ 				-I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include
 
 LD= i386-elf-ld
 LDFLAGS= -A elf32_i386 -T$(BOOT_DIR)/link.ld
