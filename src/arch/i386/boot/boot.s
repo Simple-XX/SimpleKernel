@@ -24,9 +24,9 @@ stack_top:
 glb_mboot_ptr:
 
 .section .text
-.global glb_mboot_ptr
 .global _start
 .type _start, @function
+.global glb_mboot_ptr
 
 _start:
 	mov $stack_top, %esp

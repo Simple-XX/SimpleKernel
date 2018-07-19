@@ -7,7 +7,13 @@
 #ifndef _PMM_H_
 #define _PMM_H_
 
-void show_memory_map();
+#include "stdint.h"
+#include "stdio.h"
+#include "multiboot.h"
 
+extern uint8_t kern_start[];
+extern uint8_t kern_end[];
+
+void show_memory_map();
 
 #endif
