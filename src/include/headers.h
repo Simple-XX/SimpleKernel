@@ -22,7 +22,8 @@
 #include "multiboot.h"
 #include "elf.h"
 #include "debug.h"
-#include "vmm.h"
+#include "mm/pmm.h"
+#include "mm/mm.h"
 
 void debug_init(void);
 void gdt_init(void);
