@@ -13,9 +13,11 @@
 #include "string.h"
 #include "elf.h"
 #include "multiboot.h"
+#include "intr/intr.h"
 
 
 void debug_init(void);
+void print_registers(pt_regs_t * regs);
 
 
 
