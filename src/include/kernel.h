@@ -24,10 +24,12 @@
 #include "debug.h"
 #include "mm/pmm.h"
 #include "mm/mm.h"
+#include "clock.h"
 
 void debug_init(void);
 void gdt_init(void);
 void idt_init(void);
+void clock_init(void);
 
 
 
