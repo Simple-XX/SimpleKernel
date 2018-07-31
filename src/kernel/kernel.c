@@ -3,10 +3,10 @@
 
 // kernel.c for MRNIU/SimpleKernel.
 
-#include "headers.h"
+#include "kernel.h"
 
 // 内核入口
-void kernel_main(multiboot_t *mboot_ptr)
+void kernel_main()
 {
 	// 系统初始化
 	debug_init();
@@ -25,13 +25,14 @@ void kernel_main(multiboot_t *mboot_ptr)
 
 	printk("kernel in memory start: 0x%08X\n", kern_start);
 	printk("kernel in memory end:   0x%08X\n", kern_end);
-	printk("kernel in memory used:   %d KB\n\n", (kern_end - kern_start + 1023) / 1024);
+	printk("kernel in memory size:   %d KB\n\n", (kern_end - kern_start + 1023) / 1024);
+
+
+	asm volatile("sti");
+	clock_init();
+
 
 	printk("End.\n");
-
-	//print_cur_status();
-	//print_stack_trace();
-
 
 	return;
 }

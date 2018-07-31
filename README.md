@@ -73,8 +73,10 @@ gdt -done
 idt -done
 
 主要中断
+    键盘
+    鼠标
 
-调试函数
+调试函数 -done
 
     
 

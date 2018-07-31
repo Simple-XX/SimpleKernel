@@ -30,13 +30,42 @@ void idt_init(void){
   idt_load((uint32_t)&idt_ptr);
 }
 
+static const char *intrname(uint32_t intrno){
+  static const char *const intrnames[] = {
+    "Divide error",
+    "Debug",
+    "Non-Maskable Interrupt",
+    "Breakpoint",
+    "Overflow",
+    "BOUND Range Exceeded",
+    "Invalid Opcode",
+    "Device Not Available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Invalid TSS",
+    "Segment Not Present",
+    "Stack Fault",
+    "General Protection",
+    "Page Fault",
+    "(unknown trap)",
+    "x87 FPU Floating-Point Error",
+    "Alignment Check",
+    "Machine-Check",
+    "SIMD Floating-Point Exception"
+  };
+  if(intrno < sizeof(intrnames)/sizeof(const char *const)){
+    return intrnames[intrno];
+  }
+  return "(unknown trap)";
+}
+
 // 调用中断处理函数
 void isr_handler(pt_regs_t *regs){
   if (interrupt_handlers[regs->int_no]) {
     interrupt_handlers[regs->int_no](regs);
   }
   else {
-    printk("Unhandled interrupt: %d\n", regs->int_no);
+    printk("Unhandled interrupt: %d %s\n", regs->int_no, intrname(regs->int_no));
     cpu_hlt();
   }
 }

@@ -13,6 +13,7 @@ static char buf[1024];
 
 extern int vsprintf(char * buf, const char * fmt, va_list args);
 extern void terminal_writestring(const char* data);
+extern void terminal_setcolor(unsigned char color);
 
 int printk(const char * fmt, ...){
   va_list args;
