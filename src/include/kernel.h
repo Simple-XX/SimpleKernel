@@ -25,7 +25,7 @@
 #include "mm/pmm.h"
 #include "mm/mm.h"
 #include "clock.h"
-#include "port.hpp"
+#include "cpu.hpp"
 
 void debug_init(void);
 void gdt_init(void);
