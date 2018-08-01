@@ -78,7 +78,7 @@ isr_common_stub:
   mov %ds, %ax
   push %eax  # 保存数据段描述符
 
-  mov $0x10, %ax # 加载内核数据段描述符表
+  mov $0x10, %ax # 加载内核数据段描述符表, 0x10:内核数据段标识符
   mov %ax, %ds
   mov %ax, %es
   mov %ax, %fs
@@ -97,7 +97,7 @@ isr_common_stub:
   mov %bx, %ss
 
   popa                     # Pops edi, esi, ebp, esp, ebx, edx, ecx, eax
-  add $8, %esp  # 清理栈里的 error code 和 ISR
+  add $0x08, %esp  # 清理栈里的 error code 和 ISR
   iret
 
 

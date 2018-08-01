@@ -15,7 +15,7 @@
 #define FREQUENCY       100
 
 // 定时中断由 8253/8254 芯片从 IRQ0 提供
-#define IO_TIMER        0x40               // 8253 Timer #1
+#define IO_TIMER        0x40              // 8253 Timer #1
 
 // 输入频率为 1193180，frequency 即每秒中断次数
 #define TIMER_FREQ      1193180

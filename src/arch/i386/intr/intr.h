@@ -55,22 +55,40 @@
 // 寄存器类型
 typedef
 struct pt_regs_t {
-  uint32_t ds;        // 用于保存用户的数据段描述符
-  uint32_t edi;       // 从 edi 到 eax 由 pusha 指令压入
+  uint16_t ds;        // 用于保存用户的数据段描述符
+  uint16_t padding_ds; // padding 为占位
+
+  // 从 edi 到 eax 由 pusha 指令压入
+  uint32_t edi;
   uint32_t esi;
   uint32_t ebp;
-  uint32_t esp;
+  uint32_t oesp;
   uint32_t ebx;
   uint32_t edx;
   uint32_t ecx;
   uint32_t eax;
-  uint32_t int_no;    // 中断号
+/*
+  uint16_t gs;
+  uint16_t padding_gs;
+  uint16_t fs;
+  uint16_t padding_fs;
+  uint16_t es;
+  uint16_t padding_es;
+  uint16_t ds;
+  uint16_t padding_ds;
+*/
+  uint32_t int_no;  // 中断号(内核代码自行压栈)
   uint32_t err_code;      // 错误代码(有中断错误代码的中断会由CPU压入)
-  uint32_t eip;       // 以下由处理器自动压入
-  uint32_t cs;
+  // 以下由处理器自动压入
+  uint32_t eip;
+  uint16_t cs;
+  uint16_t padding_cs;
   uint32_t eflags;
-  uint32_t useresp;
-  uint32_t ss;
+
+  // 如果发生了特权级的切换CPU会压栈
+  uint32_t esp;
+  uint16_t ss;
+  uint16_t padding_ss;
 } pt_regs_t;
 
 // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
@@ -141,9 +159,6 @@ void isr_handler(pt_regs_t *regs);  // 调用中断处理函数
 
 void register_interrupt_handler(uint8_t n, interrupt_handler_t h);  // 注册一个中断处理函数
 
-// 中断处理函数指针数组
-static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX] __attribute__ ((aligned(4)));
-
 void irq_handler(pt_regs_t *regs);  // IRQ 处理函数
 
 extern void idt_load(uint32_t);  // 声明加载 IDTR 的函数
@@ -153,23 +168,6 @@ typedef void (*isr_irq_func_t)(); // 中断处理函数指针类型
 void idt_init(void);	// idt 初始化
 
 extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
-
-// 中断处理函数指针数组
-static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
-  [0]  = &isr0,  [1]  = &isr1,  [2]  = &isr2,  [3]  = &isr3,
-  [4]  = &isr4,  [5]  = &isr5,  [6]  = &isr6,  [7]  = &isr7,
-  [8]  = &isr8,  [9]  = &isr9,  [10] = &isr10, [11] = &isr11,
-  [12] = &isr12, [13] = &isr13, [14] = &isr14, [15] = &isr15,
-  [16] = &isr16, [17] = &isr17, [18] = &isr18, [19] = &isr19,
-  [20] = &isr20, [21] = &isr21, [22] = &isr22, [23] = &isr23,
-  [24] = &isr24, [25] = &isr25, [26] = &isr26, [27] = &isr27,
-  [28] = &isr28, [29] = &isr29, [30] = &isr30, [31] = &isr31,
-
-  [32] = &irq0,  [33] = &irq1,  [34] = &irq2,  [35] = &irq3,
-  [36] = &irq4,  [37] = &irq5,  [38] = &irq6,  [39] = &irq7,
-  [40] = &irq8,  [41] = &irq9,  [42] = &irq10, [43] = &irq11,
-  [44] = &irq12, [45] = &irq13, [46] = &irq14, [47] = &irq15,
-};
 
 // 中断描述符
 typedef
@@ -187,19 +185,5 @@ struct idt_ptr_t {
   uint16_t limit;        // 限长
   uint32_t base;         // 基址
 } __attribute__((packed)) idt_ptr_t;
-
-// 中断描述符表
-static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__ ((aligned(16)));
-
-static idt_ptr_t idt_ptr; // IDTR
-
-// 设置中断描述符
-static void idt_set_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags){
-  idt_entries[num].base_low = (base & 0xFFFF);
-  idt_entries[num].base_high = (base >> 16) & 0xFFFF;
-  idt_entries[num].selector = selector;
-  idt_entries[num].zero = 0;
-  idt_entries[num].flags = flags;
-}
 
 #endif
