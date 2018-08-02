@@ -95,5 +95,12 @@ idt -done
 
 [系统初始化](https://wiki.osdev.org/Bare_Bones)
 
+[hurlex](http://wiki.0xffffff.org/posts/hurlex-8.html)
+
+[howerj/os](https://github.com/howerj/os)
+
+[cfenollosa/os-tutorial](https://github.com/cfenollosa/os-tutorial)
+
+[omarrx024/xos](https://github.com/omarrx024/xos)
 
 
