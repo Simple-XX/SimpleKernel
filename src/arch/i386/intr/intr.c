@@ -17,13 +17,16 @@ static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__ ((aligned(16)));
 static idt_ptr_t idt_ptr; // IDTR
 
 // 设置中断描述符
-static void idt_set_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags){
+static void idt_set_gate(uint8_t num, uint32_t base, uint16_t target, uint8_t flags){
   idt_entries[num].base_low = (base & 0xFFFF);
   idt_entries[num].base_high = (base >> 16) & 0xFFFF;
-  idt_entries[num].selector = selector;
+  idt_entries[num].selector = target;
   idt_entries[num].zero = 0;
   idt_entries[num].flags = flags;
+  // 0x8E: DPL=0
+  // 0xEF: DPL=3
 }
+
 
 // 中断处理函数指针数组
 static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX] __attribute__ ((aligned(4)));
@@ -98,6 +101,14 @@ static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
   [44] = &irq12, [45] = &irq13, [46] = &irq14, [47] = &irq15,
 };
 
+static void die(char * str, uint32_t  oesp, uint32_t code){
+  uint32_t * old_esp = (uint32_t *)oesp;
+  printk_color(red, "%s\t: %04x\n\r", str, code&0xffff);
+  printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%p\nESP:\t%08x:%p\n",
+          old_esp[1], old_esp[0], old_esp[2], old_esp[4], old_esp[3]);
+  cpu_hlt();
+}
+
 // idt 初始化
 void idt_init(void){
   init_interrupt_chip();
@@ -106,14 +117,109 @@ void idt_init(void){
 
   // 0-32:  用于 CPU 的中断处理
   // GD_KTEXT: 内核代码段
-  // 0x8E: 10001110
+  // 0x8E: 10001110: DPL=0s
   // 0x08: 0000 1000
 
   for(uint32_t i=0; i<48; ++i){
     idt_set_gate(i, (uint32_t)isr_irq_func[i], 0x08, 0x8E);
   }
   // 128 (0x80) 将来用于实现系统调用
-  // 0xEF: 1110 1111
+  // 0xEF: 1110 1111, DPL=3
+  idt_set_gate(INT_DEBUG, (uint32_t)isr_irq_func[INT_DEBUG], 0x08, 0xEF);
+  idt_set_gate(INT_OVERFLOW, (uint32_t)isr_irq_func[INT_OVERFLOW], 0x08, 0xEF);
+  idt_set_gate(INT_BOUND, (uint32_t)isr_irq_func[INT_BOUND], 0x08, 0xEF);
   idt_set_gate(128, (uint32_t)isr128, 0x08, 0xEF);
+
   idt_load((uint32_t)&idt_ptr);
+
+  register_interrupt_handler(INT_DIVIDE_ERROR, &divide_error);
+  register_interrupt_handler(INT_DEBUG, &debug);
+  register_interrupt_handler(INT_NMI, &nmi);
+  register_interrupt_handler(INT_BREAKPOINT, &breakpoint);
+  register_interrupt_handler(INT_OVERFLOW, &overflow);
+  register_interrupt_handler(INT_BOUND, &bound);
+  register_interrupt_handler(INT_INVALID_OPCODE, &invalid_opcode);
+  register_interrupt_handler(INT_DEVICE_NOT_AVAIL, &device_not_available);
+  register_interrupt_handler(INT_DOUBLE_FAULT, &double_fault);
+  register_interrupt_handler(INT_COPROCESSOR, &coprocessor_error);
+  register_interrupt_handler(INT_INVALID_TSS, &invalid_TSS);
+  register_interrupt_handler(INT_SEGMENT, &segment_not_present);
+  register_interrupt_handler(INT_STACK_FAULT, &stack_segment);
+  register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
+  register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
+}
+
+void divide_error(pt_regs_t * regs){
+  die("Divide Error.", regs->oesp, regs->int_no);
+}
+
+void debug(pt_regs_t * regs){
+  int tr;
+  uint32_t * old_esp = (uint32_t *)regs->oesp;
+
+  // 取任务寄存器值->tr
+	asm volatile("str %%ax"
+              :"=a"(tr)
+              :"0"(0));
+  printk_color(light_red, "Also have error! Can't use it!");
+	printk_color(red, "eax\t\tebx\t\tecx\t\tedx\n\r%8X\t%8X\t%8X\t%8X\n\r",
+		regs->eax, regs->ebx, regs->ecx, regs->edx);
+	printk_color(red, "esi\t\tedi\t\tebp\t\tesp\n\r%8X\t%8X\t%8X\t%8X\n\r",
+		           regs->esi, regs->edi, regs->ebp, (uint32_t) regs->esp);
+	//printk_color(red, "\n\rds\tes\tfs\ttr\n\r%4x\t%4x\t%4x\t%4x\n\r",
+		//           ds,es,fs,tr);
+	printk_color(red, "EIP: %8X   CS: %4X  EFLAGS: %8X\n\r",
+               old_esp[0], old_esp[1], old_esp[2]);
+}
+
+void nmi(pt_regs_t * regs){
+  die("NMI.", regs->oesp, regs->int_no);
+}
+
+void breakpoint(pt_regs_t * regs){
+  die("Breakpoint.", regs->oesp, regs->int_no);
+}
+
+void overflow(pt_regs_t * regs){
+  die("Overflow.", regs->oesp, regs->int_no);
+}
+
+void bound(pt_regs_t * regs){
+  die("Bound.", regs->oesp, regs->int_no);
+}
+
+void invalid_opcode(pt_regs_t * regs){
+	die("Invalid Opcode.", regs->oesp, regs->int_no);
+}
+
+void device_not_available(pt_regs_t * regs){
+	die("Device Not Available.", regs->oesp, regs->int_no);
+}
+
+void double_fault(pt_regs_t * regs){
+  die("Double Fault.", regs->oesp, regs->int_no);
+}
+
+void coprocessor_error(pt_regs_t * regs){
+	die("Coprocessor Error.", regs->oesp, regs->int_no);
+}
+
+void invalid_TSS(pt_regs_t * regs){
+	die("Invalid TSS.", regs->oesp, regs->int_no);
+}
+
+void segment_not_present(pt_regs_t * regs){
+	die("Segment Not Present.", regs->oesp, regs->int_no);
+}
+
+void stack_segment(pt_regs_t * regs){
+	die("Stack Segment.", regs->oesp, regs->int_no);
+}
+
+void general_protection(pt_regs_t * regs){
+  die("General Protection.", regs->oesp, regs->int_no);
+}
+
+void page_fault(pt_regs_t * regs){
+  die("Page Fault.", regs->oesp, regs->int_no);
 }

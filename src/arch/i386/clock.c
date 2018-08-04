@@ -1,10 +1,10 @@
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-// time.c for MRNIU/SimpleKernel.
+// clock.c for MRNIU/SimpleKernel.
 
 #include "clock.h"
 
-void clock_callback(pt_regs_t *regs){
+void clock_callback(){
   static uint32_t tick = 0;
   printk_color(light_green, "Tick: %d\n", tick++);
 }
