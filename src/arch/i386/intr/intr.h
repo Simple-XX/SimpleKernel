@@ -91,6 +91,23 @@ struct pt_regs_t {
   uint16_t padding_ss;
 } pt_regs_t;
 
+// 中断描述符
+typedef
+struct idt_entry_t {
+  uint16_t base_low;        // 中断处理函数地址 15～0 位
+  uint16_t selector;            // 目标代码段描述符选择子
+  uint8_t  zero;        // 置 0 段
+  uint8_t  flags;          // 一些标志，文档有解释
+  uint16_t base_high;        // 中断处理函数地址 31～16 位
+} __attribute__((packed)) idt_entry_t;
+
+// IDTR
+typedef
+struct idt_ptr_t {
+  uint16_t limit;        // 限长
+  uint32_t base;         // 基址
+} __attribute__((packed)) idt_ptr_t;
+
 // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
 // ISR:中断服务程序(interrupt service routine)
 extern void isr0();        // 0 #DE 除 0 异常
@@ -151,7 +168,7 @@ extern void irq14();           // IDE0 传输控制使用
 extern void irq15();           // IDE1 传输控制使用
 
 
-void irq_handler(pt_regs_t *regs);  // IRQ 处理函数
+void irq_handler(pt_regs_t * regs);  // IRQ 处理函数
 
 typedef void (*interrupt_handler_t)(pt_regs_t *); // 定义中断处理函数指针
 
@@ -169,21 +186,31 @@ void idt_init(void);	// idt 初始化
 
 extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
 
-// 中断描述符
-typedef
-struct idt_entry_t {
-  uint16_t base_low;        // 中断处理函数地址 15～0 位
-  uint16_t selector;            // 目标代码段描述符选择子
-  uint8_t  zero;        // 置 0 段
-  uint8_t  flags;          // 一些标志，文档有解释
-  uint16_t base_high;        // 中断处理函数地址 31～16 位
-} __attribute__((packed)) idt_entry_t;
+// 系统中断
+void divide_error(pt_regs_t * regs);
+void debug(pt_regs_t * regs);
+void nmi(pt_regs_t * regs);
+void breakpoint(pt_regs_t * regs);
+void overflow(pt_regs_t * regs);
+void bound(pt_regs_t * regs);
+void invalid_opcode(pt_regs_t * regs);
+void device_not_available(pt_regs_t * regs);
+void double_fault(pt_regs_t * regs);
+void coprocessor_error(pt_regs_t * regs);
+void invalid_TSS(pt_regs_t * regs);
+void segment_not_present(pt_regs_t * regs);
+void stack_segment(pt_regs_t * regs);
+void general_protection(pt_regs_t * regs);
+void page_fault(pt_regs_t * regs);
 
-// IDTR
-typedef
-struct idt_ptr_t {
-  uint16_t limit;        // 限长
-  uint32_t base;         // 基址
-} __attribute__((packed)) idt_ptr_t;
+
+
+
+
+
+
+
+
+
 
 #endif

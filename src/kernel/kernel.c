@@ -23,35 +23,16 @@ void kernel_main()
 							(kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
 
   cpu_sti();
-	printk_color(white, "sti\n");
-  if(canint())
-		printk_color(white, "interrupt accept!\n");
-	else
-		printk_color(light_red, "interrupt can't accept!\n");
-
-	//cpu_cli();// close intr
-	for(int i=0;i<5;i++){
-		if(canint())
-			printk_color(white, "before hlt, interrupt accept!\n");
-		else
-			printk_color(light_red, "before hlt, interrupt accept!\n");
-
-		cpu_hlt();
-
-		if(canint())
-			printk_color(white, "after hlt, interrupt accept!\n\n");
-		else
-			printk_color(light_red, "after hlt, interrupt accept!\n\n");
-	}
-	//cpu_hlt();
-	//cpu_cli();
-
 	if(canint())
 		printk_color(white, "interrupt accept!\n");
 	else
 		printk_color(light_red, "interrupt closed!\n");
 
+	//asm volatile("int $7");
+	asm volatile("int $8");
+
 
 	printk_color(white, "\nEnd.\n");
+
 	return;
 }
