@@ -102,10 +102,12 @@ static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
 };
 
 static void die(char * str, uint32_t  oesp, uint32_t code){
+  printk_color(light_red, "Unuseable.\n");
   uint32_t * old_esp = (uint32_t *)oesp;
   printk_color(red, "%s\t: %04x\n\r", str, code&0xffff);
   printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%p\nESP:\t%08x:%p\n",
-          old_esp[1], old_esp[0], old_esp[2], old_esp[4], old_esp[3]);
+          //old_esp[1], old_esp[0], old_esp[4], old_esp[3]);
+          old_esp[1], read_eflags(), old_esp[2], old_esp[4], old_esp[3]);
   cpu_hlt();
 }
 
@@ -154,22 +156,24 @@ void divide_error(pt_regs_t * regs){
 }
 
 void debug(pt_regs_t * regs){
-  int tr;
+  uint32_t tr;
   uint32_t * old_esp = (uint32_t *)regs->oesp;
 
   // 取任务寄存器值->tr
 	asm volatile("str %%ax"
               :"=a"(tr)
               :"0"(0));
-  printk_color(light_red, "Also have error! Can't use it!");
+  printk_color(light_red, "Unuseable.\n");
+
 	printk_color(red, "eax\t\tebx\t\tecx\t\tedx\n\r%8X\t%8X\t%8X\t%8X\n\r",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
 	printk_color(red, "esi\t\tedi\t\tebp\t\tesp\n\r%8X\t%8X\t%8X\t%8X\n\r",
 		           regs->esi, regs->edi, regs->ebp, (uint32_t) regs->esp);
 	//printk_color(red, "\n\rds\tes\tfs\ttr\n\r%4x\t%4x\t%4x\t%4x\n\r",
 		//           ds,es,fs,tr);
-	printk_color(red, "EIP: %8X   CS: %4X  EFLAGS: %8X\n\r",
-               old_esp[0], old_esp[1], old_esp[2]);
+	printk_color(red, "EIP: %8X   EFLAGS: %d  CS: %4X\n\r",
+               //old_esp[0], old_esp[1], old_esp[2]);
+               old_esp[0], read_eflags(), old_esp[2]);
 }
 
 void nmi(pt_regs_t * regs){

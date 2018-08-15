@@ -204,13 +204,4 @@ void general_protection(pt_regs_t * regs);
 void page_fault(pt_regs_t * regs);
 
 
-
-
-
-
-
-
-
-
-
 #endif
