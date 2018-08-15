@@ -28,10 +28,6 @@ void kernel_main()
 	else
 		printk_color(light_red, "interrupt closed!\n");
 
-	//asm volatile("int $7");
-	asm volatile("int $8");
-
-
 	printk_color(white, "\nEnd.\n");
 
 	return;

@@ -49,8 +49,8 @@ static inline void cpu_cli(void){
 // 读取 EFLAGS
 static inline uint32_t read_eflags(void){
   uint32_t eflags;
-  asm volatile("pushf;popl %0"
-                :"=r"(eflags));
+  asm volatile("pushf;pop %0"
+               :"=r"(eflags));
   return eflags;
 }
 
