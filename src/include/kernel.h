@@ -34,6 +34,14 @@ void gdt_init(void);
 void idt_init(void);
 void clock_init(void);
 
+void issti(void){
+  cpu_sti();
+  if(canint())
+    printk_color(white, "interrupt accept!\n");
+  else
+    printk_color(light_red, "interrupt closed!\n");
+}
+
 
 
 #endif

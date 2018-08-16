@@ -22,11 +22,7 @@ void kernel_main()
 	printk_color(light_red ,"kernel in memory size: %d KB, %d pages\n",
 							(kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
 
-  cpu_sti();
-	if(canint())
-		printk_color(white, "interrupt accept!\n");
-	else
-		printk_color(light_red, "interrupt closed!\n");
+	issti();
 
 	printk_color(white, "\nEnd.\n");
 
