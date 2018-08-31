@@ -88,18 +88,7 @@ isr_common_stub:
   push %esp        # 此时的 esp 寄存器的值等价于 pt_regs 结构体的指针
   call isr_handler        # 在 C 语言代码里
   add $4, %esp  # 清除压入的参数
-
-  pop %ebx                 # 恢复原来的数据段描述符
-  mov %bx, %ds
-  mov %bx, %es
-  mov %bx, %fs
-  mov %bx, %gs
-  mov %bx, %ss
-
-  popa                     # Pops edi, esi, ebp, esp, ebx, edx, ecx, eax
-  add $0x08, %esp  # 清理栈里的 error code 和 ISR
-  iret
-
+  call forkret_s
 
 # 构造中断请求的宏
 .macro IRQ name, no
@@ -145,6 +134,7 @@ irq_common_stub:
   push %esp
   call irq_handler
   add $4, %esp
+  call forkret_s
 
 forkret_s:
   pop %ebx                   # 恢复原来的数据段描述符

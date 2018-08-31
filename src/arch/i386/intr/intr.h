@@ -176,8 +176,6 @@ void isr_handler(pt_regs_t *regs);  // 调用中断处理函数
 
 void register_interrupt_handler(uint8_t n, interrupt_handler_t h);  // 注册一个中断处理函数
 
-void irq_handler(pt_regs_t *regs);  // IRQ 处理函数
-
 extern void idt_load(uint32_t);  // 声明加载 IDTR 的函数
 
 typedef void (*isr_irq_func_t)(); // 中断处理函数指针类型

@@ -28,6 +28,7 @@
 #include "mm/mm.h"
 #include "clock.h"
 #include "cpu.hpp"
+#include "drv/keyboard.h"
 
 void debug_init(void);
 void gdt_init(void);
@@ -42,6 +43,14 @@ void issti(void){
     printk_color(light_red, "interrupt closed!\n");
 }
 
-
+void showinfo(void){
+  // 输出一些基本信息
+  printk_color(magenta ,"Welcome to my kernel.\n");
+  printk_color(light_red ,"kernel in memory start: 0x%08X\n", kern_start);
+  printk_color(light_red ,"kernel in memory end: 0x%08X\n", kern_end);
+  printk_color(light_red ,"kernel in memory size: %d KB, %d pages\n",
+              (kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
+  issti();
+}
 
 #endif

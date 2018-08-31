@@ -31,3 +31,25 @@ char *strcpy(char *dest, const char *src){
 	while((*dest++ = *src++) != '\0');
 	return address;
 }
+
+void backspace(char *src){
+	int32_t len = strlen(src);
+	src[len-1] = '\0';
+}
+
+void append(char *src, char dest){
+    int len = strlen(src);
+    src[len] = dest;
+    src[len+1] = '\0';
+}
+
+char *strcat(char *dest, const char *src){
+	int8_t * add_d= (int8_t *)dest;
+	if(dest!=NULL && src !=NULL){
+		while(*add_d)
+			add_d++;
+		while(*src)
+			*add_d++ = *src++;
+	}
+	return dest;
+}
