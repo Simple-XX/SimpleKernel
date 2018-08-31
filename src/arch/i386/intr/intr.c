@@ -84,6 +84,7 @@ void irq_handler(pt_regs_t *regs){
   }
 }
 
+
 // 中断处理函数指针数组
 static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
   [0]  = &isr0,  [1]  = &isr1,  [2]  = &isr2,  [3]  = &isr3,
@@ -100,6 +101,7 @@ static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
   [40] = &irq8,  [41] = &irq9,  [42] = &irq10, [43] = &irq11,
   [44] = &irq12, [45] = &irq13, [46] = &irq14, [47] = &irq15,
 };
+
 
 static void die(char * str, uint32_t  oesp, uint32_t code){
   printk_color(light_red, "Unuseable.\n");

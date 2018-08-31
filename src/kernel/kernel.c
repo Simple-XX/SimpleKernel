@@ -5,6 +5,20 @@
 
 #include "kernel.h"
 
+
+void test(pt_regs_t * regs){
+	unsigned char x;
+	x=inb(0x60);
+	printk("%c\n", x);
+	outb(0x20, 0x20);
+	UNUSED(regs);
+}
+
+void keyboard_init(void){
+	printk("initialize keyboard\n");
+	//register_interrupt_handler(IRQ1, &keyboard_callback);
+	register_interrupt_handler(IRQ1, &test);
+}
 // 内核入口
 void kernel_main()
 {
@@ -14,17 +28,17 @@ void kernel_main()
 	gdt_init();	// GDT 初始化
 	idt_init();	// IDT 初始化
 	clock_init();	// 时钟初始化
+	keyboard_init(); // 键盘初始化
+	showinfo();
+	//asm("int $33");
 
-	// 输出一些基本信息
-	printk_color(magenta ,"Welcome to my kernel.\n");
-	printk_color(light_red ,"kernel in memory start: 0x%08X\n", kern_start);
-	printk_color(light_red ,"kernel in memory end: 0x%08X\n", kern_end);
-	printk_color(light_red ,"kernel in memory size: %d KB, %d pages\n",
-							(kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
+	while(1){
+		
+	}
 
-	issti();
+
+
 
 	printk_color(white, "\nEnd.\n");
-
 	return;
 }

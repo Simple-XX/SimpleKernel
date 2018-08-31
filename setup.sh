@@ -8,7 +8,7 @@ set -e
 # 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
 # 以 bochrc.txt 为配置文件运行 bochs。
 cd src/
-# make clean
+make clean
 make
 cd ../
 hdiutil attach -mountpoint ./boot_folder boot.img
