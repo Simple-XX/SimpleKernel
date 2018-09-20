@@ -6,19 +6,6 @@
 #include "kernel.h"
 
 
-void test(pt_regs_t * regs){
-	unsigned char x;
-	x=inb(0x60);
-	printk("%c\n", x);
-	outb(0x20, 0x20);
-	UNUSED(regs);
-}
-
-void keyboard_init(void){
-	printk("initialize keyboard\n");
-	//register_interrupt_handler(IRQ1, &keyboard_callback);
-	register_interrupt_handler(IRQ1, &test);
-}
 // 内核入口
 void kernel_main()
 {
@@ -32,12 +19,7 @@ void kernel_main()
 	showinfo();
 	//asm("int $33");
 
-	while(1){
-		
-	}
-
-
-
+	while(1);
 
 	printk_color(white, "\nEnd.\n");
 	return;

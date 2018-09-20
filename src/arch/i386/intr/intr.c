@@ -102,17 +102,6 @@ static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
   [44] = &irq12, [45] = &irq13, [46] = &irq14, [47] = &irq15,
 };
 
-
-static void die(char * str, uint32_t  oesp, uint32_t code){
-  printk_color(light_red, "Unuseable.\n");
-  uint32_t * old_esp = (uint32_t *)oesp;
-  printk_color(red, "%s\t: %04x\n\r", str, code&0xffff);
-  printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%p\nESP:\t%08x:%p\n",
-          //old_esp[1], old_esp[0], old_esp[4], old_esp[3]);
-          old_esp[1], read_eflags(), old_esp[2], old_esp[4], old_esp[3]);
-  cpu_hlt();
-}
-
 // idt 初始化
 void idt_init(void){
   init_interrupt_chip();
@@ -152,6 +141,17 @@ void idt_init(void){
   register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
   register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
 }
+
+static void die(char * str, uint32_t  oesp, uint32_t int_no){
+  uint32_t * old_esp = (uint32_t *)oesp;
+  printk_color(red, "%s\t: %d\n\r", str, int_no);
+  printk_color(light_red, "Unuseable.\n");
+  printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%p\nESP:\t%08x:%p\n",
+          //old_esp[1], old_esp[0], old_esp[4], old_esp[3]);
+          old_esp[1], read_eflags(), old_esp[2], old_esp[4], old_esp[3]);
+  cpu_hlt();
+}
+
 
 void divide_error(pt_regs_t * regs){
   die("Divide Error.", regs->oesp, regs->int_no);
