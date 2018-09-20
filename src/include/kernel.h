@@ -14,7 +14,7 @@
 
 /* This tutorial will only work for the 32-bit ix86 targets. */
 #if !defined(__i386__)
-#error "This tutorial needs to be compiled with a ix86-elf compiler"
+#error "Please compile that with a ix86-elf compiler"
 #endif
 
 #include "stdint.h"
@@ -34,10 +34,12 @@ void debug_init(void);
 void gdt_init(void);
 void idt_init(void);
 void clock_init(void);
+void keyboard_init(void);
+void mouse_init(void);
 
 void issti(void){
   cpu_sti();
-  if(canint())
+  if(FL_IF_status())
     printk_color(white, "interrupt accept!\n");
   else
     printk_color(light_red, "interrupt closed!\n");

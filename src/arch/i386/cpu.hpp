@@ -54,11 +54,99 @@ static inline uint32_t read_eflags(void){
   return eflags;
 }
 
-// 判断是否允许中断
-static inline bool canint(void){
-	uint32_t eflags = read_eflags();
-	uint32_t if_bit = FL_IF;
-	return (eflags&if_bit);
+static inline bool FL_ID_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_ID);
+}
+
+static inline bool FL_VIP_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_VIP);
+}
+
+static inline bool FL_VIF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_VIF);
+}
+
+static inline bool FL_AC_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_AC);
+}
+
+static inline bool FL_VM_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_VM);
+}
+
+static inline bool FL_RF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_RF);
+}
+
+static inline bool FL_NT_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_NT);
+}
+
+static inline uint32_t get_IOPL(void){
+  uint32_t eflags= read_eflags();
+  uint32_t level=0;
+  if(eflags&FL_IOPL_0)
+    level=0;
+  else if(eflags&FL_IOPL_1)
+    level=1;
+  else if(eflags&FL_IOPL_2)
+    level=2;
+  else if(eflags&FL_IOPL_3)
+    level=3;
+  else return 2333;
+  return level;
+}
+
+static inline bool FL_OF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_OF);
+}
+
+static inline bool FL_DF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_DF);
+}
+
+static inline bool FL_IF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_IF);
+}
+
+static inline bool FL_TF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_TF);
+}
+
+static inline bool FL_SF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_SF);
+}
+
+static inline bool FL_ZF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_ZF);
+}
+
+static inline bool FL_AF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_AF);
+}
+
+static inline bool FL_PF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_PF);
+}
+
+static inline bool FL_CF_status(void){
+  uint32_t eflags= read_eflags();
+  return (eflags&FL_CF);
 }
 
 
