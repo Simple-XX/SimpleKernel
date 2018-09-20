@@ -18,7 +18,7 @@
 #define KB_READ 0x20
 #define KB_INIT_MODE 0x47
 #define BACKSPACE 0x0E
-#define ENTER 0x1C
+#define KB_ENTER 0x1C
 
 enum KB_CTRL_STATS_MASK {
 	KB_CTRL_STATS_MASK_OUT_BUF	=	1,		//00000001
@@ -30,7 +30,6 @@ enum KB_CTRL_STATS_MASK {
 	KB_CTRL_STATS_MASK_TIMEOUT	=	0x40,		//01000000
 	KB_CTRL_STATS_MASK_PARITY	=	0x80		//10000000
 };
-
 
 // 等待输入缓冲区满
 #define wait_to_write() while(inb(KB_STATUS) & KB_CTRL_STATS_MASK_IN_BUF)
@@ -50,6 +49,7 @@ struct kb_buffer_t{
 extern void init_interrupt_chip(void);
 extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
 void keyboard_init(void);
-void keyboard_callback(pt_regs_t * regs);
+void keyboard_handler(pt_regs_t * regs);
+
 
 #endif
