@@ -53,6 +53,7 @@
 #define INT_VIRTUAL_EXCE        20
 
 // 寄存器类型
+/*
 typedef
 struct pt_regs_t {
   uint16_t ds;        // 用于保存用户的数据段描述符
@@ -62,12 +63,12 @@ struct pt_regs_t {
   uint32_t edi;
   uint32_t esi;
   uint32_t ebp;
-  uint32_t oesp;
+  uint32_t old_esp;
   uint32_t ebx;
   uint32_t edx;
   uint32_t ecx;
   uint32_t eax;
-/*
+/s*
   uint16_t gs;
   uint16_t padding_gs;
   uint16_t fs;
@@ -76,7 +77,7 @@ struct pt_regs_t {
   uint16_t padding_es;
   uint16_t ds;
   uint16_t padding_ds;
-*/
+*s/
   uint32_t int_no;  // 中断号(内核代码自行压栈)
   uint32_t err_code;      // 错误代码(有中断错误代码的中断会由CPU压入)
   // 以下由处理器自动压入
@@ -89,6 +90,36 @@ struct pt_regs_t {
   uint32_t esp;
   uint16_t ss;
   uint16_t padding_ss;
+} pt_regs_t;
+*/
+
+typedef
+struct pt_regs_t {
+  /* segment registers */
+  uint32_t gs;    // 16 bits
+  uint32_t fs;    // 16 bits
+  uint32_t es;    // 16 bits
+  uint32_t ds;          // 16 bits
+
+  /* registers save by pusha */
+  uint32_t edi;
+  uint32_t esi;
+  uint32_t ebp;
+  uint32_t old_esp;
+  uint32_t ebx;
+  uint32_t edx;
+  uint32_t ecx;
+  uint32_t eax;
+
+  uint32_t int_no;
+
+  /* save by `int` instruction */
+  uint32_t err_code;
+  uint32_t eip;
+  uint32_t cs;    // 16 bits
+  uint32_t eflags;
+  uint32_t user_esp;
+  uint32_t ss;    // 16 bits
 } pt_regs_t;
 
 // 中断描述符

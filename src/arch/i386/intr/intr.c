@@ -146,20 +146,20 @@ static void die(char * str, uint32_t  oesp, uint32_t int_no){
   uint32_t * old_esp = (uint32_t *)oesp;
   printk_color(red, "%s\t: %d\n\r", str, int_no);
   printk_color(light_red, "Unuseable.\n");
-  printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%p\nESP:\t%08x:%p\n",
-          //old_esp[1], old_esp[0], old_esp[4], old_esp[3]);
-          old_esp[1], read_eflags(), old_esp[2], old_esp[4], old_esp[3]);
+  printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
+          old_esp[1], read_eflags(), read_eflags(), old_esp[4], old_esp[3]);
+          //old_esp[0]
   cpu_hlt();
 }
 
 
 void divide_error(pt_regs_t * regs){
-  die("Divide Error.", regs->oesp, regs->int_no);
+  die("Divide Error.", regs->old_esp, regs->int_no);
 }
 
 void debug(pt_regs_t * regs){
   uint32_t tr;
-  uint32_t * old_esp = (uint32_t *)regs->oesp;
+  uint32_t * old_esp = (uint32_t *)regs->old_esp;
 
   // 取任务寄存器值->tr
 	asm volatile("str %%ax"
@@ -170,62 +170,62 @@ void debug(pt_regs_t * regs){
 	printk_color(red, "eax\t\tebx\t\tecx\t\tedx\n\r%8X\t%8X\t%8X\t%8X\n\r",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
 	printk_color(red, "esi\t\tedi\t\tebp\t\tesp\n\r%8X\t%8X\t%8X\t%8X\n\r",
-		           regs->esi, regs->edi, regs->ebp, (uint32_t) regs->esp);
-	//printk_color(red, "\n\rds\tes\tfs\ttr\n\r%4x\t%4x\t%4x\t%4x\n\r",
-		//           ds,es,fs,tr);
+		           regs->esi, regs->edi, regs->ebp, (uint32_t) regs->user_esp);
+	printk_color(red, "\n\rds\tes\tfs\tgs\n\r%4x\t%4x\t%4x\t%4x\n\r",
+		           regs->ds, regs->es, regs->fs, regs->gs);
 	printk_color(red, "EIP: %8X   EFLAGS: %d  CS: %4X\n\r",
                //old_esp[0], old_esp[1], old_esp[2]);
                old_esp[0], read_eflags(), old_esp[2]);
 }
 
 void nmi(pt_regs_t * regs){
-  die("NMI.", regs->oesp, regs->int_no);
+  die("NMI.", regs->old_esp, regs->int_no);
 }
 
 void breakpoint(pt_regs_t * regs){
-  die("Breakpoint.", regs->oesp, regs->int_no);
+  die("Breakpoint.", regs->old_esp, regs->int_no);
 }
 
 void overflow(pt_regs_t * regs){
-  die("Overflow.", regs->oesp, regs->int_no);
+  die("Overflow.", regs->old_esp, regs->int_no);
 }
 
 void bound(pt_regs_t * regs){
-  die("Bound.", regs->oesp, regs->int_no);
+  die("Bound.", regs->old_esp, regs->int_no);
 }
 
 void invalid_opcode(pt_regs_t * regs){
-	die("Invalid Opcode.", regs->oesp, regs->int_no);
+	die("Invalid Opcode.", regs->old_esp, regs->int_no);
 }
 
 void device_not_available(pt_regs_t * regs){
-	die("Device Not Available.", regs->oesp, regs->int_no);
+	die("Device Not Available.", regs->old_esp, regs->int_no);
 }
 
 void double_fault(pt_regs_t * regs){
-  die("Double Fault.", regs->oesp, regs->int_no);
+  die("Double Fault.", regs->old_esp, regs->int_no);
 }
 
 void coprocessor_error(pt_regs_t * regs){
-	die("Coprocessor Error.", regs->oesp, regs->int_no);
+	die("Coprocessor Error.", regs->old_esp, regs->int_no);
 }
 
 void invalid_TSS(pt_regs_t * regs){
-	die("Invalid TSS.", regs->oesp, regs->int_no);
+	die("Invalid TSS.", regs->old_esp, regs->int_no);
 }
 
 void segment_not_present(pt_regs_t * regs){
-	die("Segment Not Present.", regs->oesp, regs->int_no);
+	die("Segment Not Present.", regs->old_esp, regs->int_no);
 }
 
 void stack_segment(pt_regs_t * regs){
-	die("Stack Segment.", regs->oesp, regs->int_no);
+	die("Stack Segment.", regs->old_esp, regs->int_no);
 }
 
 void general_protection(pt_regs_t * regs){
-  die("General Protection.", regs->oesp, regs->int_no);
+  die("General Protection.", regs->old_esp, regs->int_no);
 }
 
 void page_fault(pt_regs_t * regs){
-  die("Page Fault.", regs->oesp, regs->int_no);
+  die("Page Fault.", regs->old_esp, regs->int_no);
 }
