@@ -147,8 +147,7 @@ static void die(char * str, uint32_t  oesp, uint32_t int_no){
   printk_color(red, "%s\t: %d\n\r", str, int_no);
   printk_color(light_red, "Unuseable.\n");
   printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
-          old_esp[1], read_eflags(), read_eflags(), old_esp[4], old_esp[3]);
-          //old_esp[0]
+               old_esp[1], read_eflags(), read_eflags(), old_esp[4], old_esp[3]);
   cpu_hlt();
 }
 

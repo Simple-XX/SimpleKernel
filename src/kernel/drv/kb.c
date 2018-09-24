@@ -53,7 +53,7 @@ void keyboard_init(void){
   printk("kb init\n");
 	/* 0xFD is 11111101 - enables only IRQ1 (keyboard)*/
 	outb(0x21 , 0xFD);
-  register_interrupt_handler(IRQ0, &keyboard_handler);
+  register_interrupt_handler(IRQ1, &keyboard_handler);
 }
 
 void keyboard_handler(pt_regs_t * regs){

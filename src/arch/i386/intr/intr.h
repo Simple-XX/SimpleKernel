@@ -112,12 +112,12 @@ struct pt_regs_t {
   uint32_t eax;
 
   uint32_t int_no;
-
   /* save by `int` instruction */
   uint32_t err_code;
   uint32_t eip;
   uint32_t cs;    // 16 bits
   uint32_t eflags;
+  // 如果发生了特权级切换，CPU 会压入以下两个参数
   uint32_t user_esp;
   uint32_t ss;    // 16 bits
 } pt_regs_t;
