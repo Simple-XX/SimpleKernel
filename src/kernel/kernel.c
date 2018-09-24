@@ -17,7 +17,7 @@ void kernel_main()
 	clock_init();	// 时钟初始化
 	keyboard_init(); // 键盘初始化
 	showinfo();
-	//asm("int $33");
+	//asm("int $1");
 
 	while(1);
 

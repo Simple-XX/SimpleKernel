@@ -13,10 +13,6 @@ idt_load:
 # 定义两个构造中断处理函数的宏(有的中断有错误代码，有的没有)
 # 用于没有错误代码的中断
 
-# !NOTE!
-# 要解决的问题
-# 汇编压栈后栈内数据与pt_regs_t的正确性
-
 .macro ISR_NOERRCODE no
 .global isr\no
 isr\no:
@@ -79,10 +75,6 @@ ISR_NOERRCODE 128
 .global isr_common_stub
 .extern isr_handler
 isr_common_stub:
-  #push %esp        # 此时的 esp 寄存器的值等价于 pt_regs 结构体的指针
-  #call isr_handler        # 在 C 语言代码里
-  #add $4, %esp  # 清除压入的参数
-  #call forkret_s
   pusha
   push %ds
   push %es
@@ -98,11 +90,14 @@ isr_common_stub:
 
   push %esp
   call isr_handler
+  add $4, %esp  # 清除压入的参数
+  call forkret_s
 
 # 构造中断请求的宏
 .macro IRQ name, no
 .global irq\name
 irq\name:
+  cli
   push $0
   push $\no
   jmp irq_common_stub
@@ -129,11 +124,15 @@ IRQ  15,    47 	# IDE1 传输控制使用
 .global forkret_s
 .extern irq_handler
 irq_common_stub:
-  pusha                    # pushes edi, esi, ebp, esp, ebx, edx, ecx, eax
-  mov %ds, %ax
-  push %eax                 # 保存数据段描述符
+  pusha
+  #mov %ds, %ax
+  #push %eax
+  push %ds
+  push %es
+  push %fs
+  push %gs
 
-  mov $0x10, %ax   # 加载内核数据段描述符
+  mov $0x10, %ax  # 加载内核数据段描述符表, 0x10:内核数据段标识符
   mov %ax, %ds
   mov %ax, %es
   mov %ax, %fs
@@ -142,7 +141,7 @@ irq_common_stub:
 
   push %esp
   call irq_handler
-  add $4, %esp
+  add $4, %esp  # 清除压入的参数
   call forkret_s
 
 forkret_s:
