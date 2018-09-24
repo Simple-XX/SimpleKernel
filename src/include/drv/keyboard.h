@@ -17,7 +17,7 @@
 #define KB_CMD 0x64
 #define KB_READ 0x20
 #define KB_INIT_MODE 0x47
-#define BACKSPACE 0x0E
+#define KB_BACKSPACE 0x0E
 #define KB_ENTER 0x1C
 
 enum KB_CTRL_STATS_MASK {
@@ -35,16 +35,6 @@ enum KB_CTRL_STATS_MASK {
 #define wait_to_write() while(inb(KB_STATUS) & KB_CTRL_STATS_MASK_IN_BUF)
 // 等待输出缓冲区满
 #define wait_to_read() while(inb(KB_STATUS) & KB_CTRL_STATS_MASK_OUT_BUF)
-
-
-// 键盘缓冲区结构
-typedef
-struct kb_buffer_t{
-  uint8_t * head;
-  uint8_t * tail;
-  uint32_t count;
-  uint8_t buf[KB_BUFSIZE];
-} kb_buffer_t;
 
 extern void init_interrupt_chip(void);
 extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A

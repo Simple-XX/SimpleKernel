@@ -16,18 +16,18 @@ idt_load:
 .macro ISR_NOERRCODE no
 .global isr\no
 isr\no:
-    #cli                  # 首先关闭中断
+    cli                  # 首先关闭中断
     push $0               # push 无效的中断错误代码,占位用
     push $\no              # push 中断号
     jmp isr_common_stub
 .endm
 
 # 用于有错误代码的中断
-.macro ISR_ERRCODE er
-.global isr\er
-isr\er:
-    #cli                  # 关闭中断
-    push $\er              # push 中断号
+.macro ISR_ERRCODE no
+.global isr\no
+isr\no:
+    cli                  # 关闭中断
+    push $\no            # push 中断号
     jmp isr_common_stub
 .endm
 
@@ -125,8 +125,6 @@ IRQ  15,    47 	# IDE1 传输控制使用
 .extern irq_handler
 irq_common_stub:
   pusha
-  #mov %ds, %ax
-  #push %eax
   push %ds
   push %es
   push %fs

@@ -84,7 +84,6 @@ void irq_handler(pt_regs_t *regs){
   }
 }
 
-
 // 中断处理函数指针数组
 static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
   [0]  = &isr0,  [1]  = &isr1,  [2]  = &isr2,  [3]  = &isr3,
