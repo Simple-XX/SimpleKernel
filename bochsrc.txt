@@ -6,14 +6,14 @@
 
 megs: 32
 romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
-vgaromimage: file=/usr/local/share/bochs/VGABIOS-elpin-2.40
+vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 # 这里需要根据实际路径进行修改
 # Here needs to change as your real path.
 
 floppya: 1_44=boot.img, status=inserted
 boot: a
 log: bochsout.txt
-mouse: enabled=1
-keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
+# mouse: enabled=1
+# keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
 clock: sync=realtime
 cpu: ips=1000000
