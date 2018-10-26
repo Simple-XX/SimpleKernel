@@ -1,17 +1,15 @@
 os: osx
 language: c
 
+addons:
+  homebrew:
+    update: false
+
 before_install:
   - brew tap MRNIU/i386-elf-binutils
   - brew install MRNIU/homebrew-i386-elf-binutils/i386-elf-binutils
   - brew tap MRNIU/i386-elf-gcc
   - brew install MRNIU/homebrew-i386-elf-gcc/i386-elf-gcc
-
-#env:
-  #- CC=i386-elf-gcc
-  #- AS=i386-elf-as
-  #- LD=i386-elf-ld
-
 
 script:
   - cd ./src
