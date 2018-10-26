@@ -2,8 +2,10 @@ os: osx
 language: c
 
 before_install:
-  - brew install ./tools/i386-elf-gcc.rb
-  - brew install ./tools/i386-binutils.rb
+  - brew tap MRNIU/i386-elf-binutils
+  - brew install MRNIU/homebrew-i386-elf-binutils/i386-elf-binutils
+  - brew tap MRNIU/i386-elf-gcc
+  - brew install MRNIU/homebrew-i386-elf-gcc/i386-elf-gcc
 
 #env:
   #- CC=i386-elf-gcc
