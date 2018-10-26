@@ -1,3 +1,4 @@
+os: osx
 language: c
 
 install:
