@@ -14,5 +14,6 @@ before_install:
 script:
   - cd ./src
   - make
+  
 after_script:
   - make clean
