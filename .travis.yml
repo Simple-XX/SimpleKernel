@@ -1,19 +1,15 @@
 os: osx
 language: c
 
-matrix:
-    - os: osx
-      env:
-        - MATRIX_EVAL="brew install ./tools/i386-elf-gcc.rb && CC=i386-elf-gcc && CXX=i386-elf-g++\
-                       brew install ./tools/i386-binutils.rb"
-
 before_install:
-    - eval "${MATRIX_EVAL}"
+  - brew install ./tools/i386-elf-gcc.rb
+  - brew install ./tools/i386-binutils.rb
 
-install:
-  - i386-elf-gcc
-  - i386-elf-as
-  - i386-elf-ld
+#env:
+  #- CC=i386-elf-gcc
+  #- AS=i386-elf-as
+  #- LD=i386-elf-ld
+
 
 script:
   - cd ./src
