@@ -1,0 +1,18 @@
+language: c
+
+install:
+  - brew install ./tools/i386-elf-gcc.rb
+  - brew install ./tools/i386-elf-binutils.rb
+
+compiler:
+  - i386-elf-gcc
+  - i386-elf-as
+  - i386-elf-ld
+
+
+script:
+  - cd ./src
+  - make
+
+after_script:
+  - make clean

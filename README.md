@@ -1,4 +1,5 @@
 
+[![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)](https://travis-ci.org/hebbely/UIAutomatorTest)
 # SimpleKernel
 
 ## 简介 Abstract
