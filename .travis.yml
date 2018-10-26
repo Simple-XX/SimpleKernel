@@ -16,4 +16,4 @@ script:
   - make
 
 after_script:
-  #- make clean
+  - make clean
