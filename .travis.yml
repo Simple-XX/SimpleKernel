@@ -6,10 +6,7 @@ addons:
     update: false
 
 before_install:
-  - brew tap MRNIU/i386-elf-binutils
-  - brew install MRNIU/homebrew-i386-elf-binutils/i386-elf-binutils
-  - brew tap MRNIU/i386-elf-gcc
-  - brew install MRNIU/homebrew-i386-elf-gcc/i386-elf-gcc
+  - brew install i386-elf-gcc
 
 script:
   - cd ./src
