@@ -21,9 +21,10 @@ Provides kernels with different degrees of completion in each stage, you can sta
 
         brew install bochs
 
-- GCC Cross-Compiler
+- i386-elf Cross-Compiler
 
-        sudo port install i386-elf-gcc
+        brew install i386-elf-binutils
+        brew install i386-elf-gcc
 
 - GRUB, for the grub-mkrescue command, along with the appropriate runtime files.
 
