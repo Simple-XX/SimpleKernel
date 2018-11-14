@@ -15,8 +15,10 @@ OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
 
 
 CC= i386-elf-gcc
-CFLAGS= -std=gnu99 -ffreestanding -nostdinc -O2 -Wall -Wextra -c -I$(LIBC_DIR)\
- 				-I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include
+CFLAGS= -std=gnu99 -ffreestanding -nostdinc -O2 \
+ 				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
+				-g -ggdb -C -c \
+				-I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
 
 LD= i386-elf-ld
 LDFLAGS= -A elf32_i386 -T$(BOOT_DIR)/link.ld
