@@ -27,21 +27,21 @@ void kernel_main()
   if(canint())
 		printk_color(white, "interrupt accept!\n");
 	else
-		printk_color(light_red, "interrupt can't accept!\n");
+		printk_color(light_red, "interrupt not accept!\n");
 
 	//cpu_cli();// close intr
 	for(int i=0;i<5;i++){
 		if(canint())
 			printk_color(white, "before hlt, interrupt accept!\n");
 		else
-			printk_color(light_red, "before hlt, interrupt accept!\n");
+			printk_color(light_red, "before hlt, interrupt not accept!\n");
 
 		cpu_hlt();
 
 		if(canint())
 			printk_color(white, "after hlt, interrupt accept!\n\n");
 		else
-			printk_color(light_red, "after hlt, interrupt accept!\n\n");
+			printk_color(light_red, "after hlt, interrupt not accept!\n\n");
 	}
 	//cpu_hlt();
 	//cpu_cli();
@@ -49,7 +49,7 @@ void kernel_main()
 	if(canint())
 		printk_color(white, "interrupt accept!\n");
 	else
-		printk_color(light_red, "interrupt closed!\n");
+		printk_color(light_red, "interrupt not accept!\n");
 
 
 	printk_color(white, "\nEnd.\n");
