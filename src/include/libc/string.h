@@ -7,6 +7,8 @@
 #define _STRING_H_
 
 #include "stdint.h"
+#include "stddef.h"
+
 
 extern void memcpy(void *dest, void *src, uint32_t len);
 extern void memset(void *dest, uint8_t val, uint32_t len);

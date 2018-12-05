@@ -139,8 +139,7 @@ irq_common_stub:
 
   push %esp
   call irq_handler
-  add $4, %esp  # 清除压入的参数
-  call forkret_s
+  add $0x04, %esp  # 清除压入的参数
 
 forkret_s:
   pop %gs
@@ -148,5 +147,5 @@ forkret_s:
   pop %es
   pop %ds
   popa                     # Pops edi,esi,ebp...
-  add $8, %esp   		 # 清理压栈的 错误代码 和 ISR 编号
+  add $0x08, %esp   		 # 清理压栈的 错误代码 和 ISR 编号
   iret          		 # 出栈 CS, EIP, EFLAGS, SS, ESP

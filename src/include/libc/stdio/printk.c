@@ -6,7 +6,7 @@
 #ifndef _PRINTK_HPP_
 #define _PRINTK_HPP_
 
-
+#include "stdio.h"
 #include "stdarg.h"
 
 

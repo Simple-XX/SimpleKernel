@@ -73,7 +73,8 @@ struct pt_regs_t {
   uint32_t int_no;
   /* save by `int` instruction */
   uint32_t err_code;
-  uint32_t eip;
+  // 以下指令由cpu压入，参见x86/x64 532页
+  uint32_t eip; // 指向产生异常的指令
   uint32_t cs;    // 16 bits
   uint32_t eflags;
   // 如果发生了特权级切换，CPU 会压入以下两个参数

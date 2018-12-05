@@ -3,8 +3,8 @@
 
 // string.c for MRNIU/SimpleKernel.
 
-#include "stddef.h"
-#include "stdint.h"
+
+#include "string.h"
 
 
 // 获取字符串长度

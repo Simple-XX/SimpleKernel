@@ -6,6 +6,9 @@
 #ifndef _KEYBOARD_HPP_
 #define _KEYBOARD_HPP_
 
+#include "stddef.h"
+#include "string.h"
+#include "stdio.h"
 #include "stdint.h"
 #include "intr/intr.h"
 

@@ -45,7 +45,7 @@ struct gdt_entry_t {
   uint16_t base_low;      // 段基地址 15～0
   uint8_t  base_middle;   // 段基地址 23～16
   uint8_t  access;        // 段存在位、描述符特权级、描述符类型、描述符子类别
-  uint8_t  granularity;   // 其他标志、段界限 19～16
+  uint8_t  granularity;  // 其他标志、段界限 19～16 (unsigned limit_high: 4;unsigned flags: 4;)
   uint8_t  base_high;     // 段基地址 31～24
 } __attribute__((packed)) gdt_entry_t;
 
@@ -83,11 +83,11 @@ typedef
 struct tss_entry_t {
   uint32_t ts_link; // old ts selector
   uint32_t ts_esp0; // stack pointers and segment selectors
-  uint16_t ts_ss0; // after an increase in privilege level
+  uint32_t ts_ss0; // after an increase in privilege level
   uint32_t ts_esp1;
-  uint16_t ts_ss1;
+  uint32_t ts_ss1;
   uint32_t ts_esp2;
-  uint16_t ts_ss2;
+  uint32_t ts_ss2;
   uint32_t ts_cr3; // page directory base
   uint32_t ts_eip; // saved state from last task switch
   uint32_t ts_eflags;
@@ -99,15 +99,15 @@ struct tss_entry_t {
   uint32_t ts_ebp;
   uint32_t ts_esi;
   uint32_t ts_edi;
-  uint16_t ts_es; // even more saved state (segment selectors)
-  uint16_t ts_cs;
-  uint16_t ts_ss;
-  uint16_t ts_ds;
-  uint16_t ts_fs;
-  uint16_t ts_gs;
-  uint16_t ts_ldt;
-  uint16_t ts_t; // trap on task switch
-  uint16_t ts_iomb; // i/o map base address
+  uint32_t ts_es; // even more saved state (segment selectors)
+  uint32_t ts_cs;
+  uint32_t ts_ss;
+  uint32_t ts_ds;
+  uint32_t ts_fs;
+  uint32_t ts_gs;
+  uint32_t ts_ldt;
+  uint32_t ts_t; // trap on task switch
+  uint32_t ts_iomb; // i/o map base address
 } __attribute__((packed)) tss_entry_t;
 
 // TSS 段定义
