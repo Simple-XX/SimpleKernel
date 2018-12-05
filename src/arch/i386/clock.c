@@ -3,8 +3,10 @@
 // clock.c for MRNIU/SimpleKernel.
 
 #include "clock.h"
+#include "stddef.h"
 
-void clock_callback(){
+void clock_callback(pt_regs_t * regs){
+  UNUSED(regs);
   static uint32_t tick = 0;
   printk_color(light_green, "Tick: %d\n", tick++);
 }

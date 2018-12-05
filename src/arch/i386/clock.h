@@ -29,5 +29,6 @@
 #define TIMER_16BIT     0x30                   // r/w counter 16 bits, LSB first
 
 void clock_init(void);
+void clock_callback(pt_regs_t *);
 
 #endif

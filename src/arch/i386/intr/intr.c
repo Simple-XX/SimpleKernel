@@ -142,11 +142,30 @@ void idt_init(void){
 }
 
 static void die(char * str, uint32_t  oesp, uint32_t int_no){
-  uint32_t * old_esp = (uint32_t *)oesp;
+  // uint32_t * old_esp = (uint32_t *)oesp;
+  pt_regs_t * old_esp = (pt_regs_t *) oesp;
   printk_color(red, "%s\t: %d\n\r", str, int_no);
-  printk_color(light_red, "Unuseable.\n");
-  printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
-               old_esp[1], read_eflags(), read_eflags(), old_esp[4], old_esp[3]);
+  printk_color(light_red, "die_Unuseable.\n");
+  // cs::EIP
+  // oss:oesp
+  // printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
+  //              old_esp[1], read_eflags(), read_eflags(), old_esp[4], old_esp[3]);
+  // printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
+  //              &old_esp[1], &old_esp[0], &old_esp[2], &old_esp[4], &old_esp[3]);
+  // printk_color(red, "EIP:\t%08x:%08X\nEFLAGS:\t%08x\nESP:\t%08x:%08X\n",
+               // old_esp->cs, old_esp->eip, old_esp->eflags, old_esp->ss, old_esp->old_esp);
+  printk_color(red, "gs: %08x\tfs: %08x\tes: %08x\tds: %08x\n",
+               old_esp->gs, old_esp->fs, old_esp->es, old_esp->ds);
+  printk_color(red, "edi: %08x\tesi: %08x\tebp: %08x\told_esp: %08x\n",
+               old_esp->edi, old_esp->esi, old_esp->ebp, old_esp->old_esp);
+  printk_color(red, "ebx: %08x\tedx: %08x\tecx: %08x\teax: %08x\n",
+               old_esp->ebx, old_esp->edx, old_esp->ecx, old_esp->eax);
+  printk_color(red, "int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
+                old_esp->int_no, old_esp->err_code, old_esp->eip, old_esp->cs);
+  printk_color(red, "eflags: %08x\tuser_esp: %08x\tss: %08x\n",
+                old_esp->eflags, old_esp->user_esp, old_esp->ss);
+  printk_color(red, "addr: %08x, %08X\n", &old_esp->gs, &old_esp->ss);
+
   cpu_hlt();
 }
 

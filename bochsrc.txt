@@ -13,7 +13,8 @@ vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 floppya: 1_44=boot.img, status=inserted
 boot: a
 log: bochsout.txt
-# mouse: enabled=1
-# keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
-clock: sync=realtime
+#mouse: enabled=1
+keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
+display_library: sdl2
+clock: sync=realtime, time0=local
 cpu: ips=1000000

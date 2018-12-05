@@ -17,6 +17,7 @@
 #define PIC_EOI		0x20		/* End-of-interrupt command code */
 
 // 设置 8259A 芯片
+void init_interrupt_chip(void);
 void init_interrupt_chip(void){
   // 重新映射 IRQ 表
   // 两片级联的 Intel 8259A 芯片

@@ -3,8 +3,6 @@
 // kb.c for MRNIU/SimpleKernel.
 
 #include "drv/keyboard.h"
-#include "stdio.h"
-#include "stddef.h"
 #include "port.hpp"
 
 

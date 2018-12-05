@@ -37,14 +37,7 @@ void clock_init(void);
 void keyboard_init(void);
 void mouse_init(void);
 
-void issti(void){
-  cpu_sti();
-  if(FL_IF_status())
-    printk_color(white, "interrupt accept!\n");
-  else
-    printk_color(light_red, "interrupt closed!\n");
-}
-
+void showinfo(void);
 void showinfo(void){
   // 输出一些基本信息
   printk_color(magenta ,"Welcome to my kernel.\n");
@@ -52,7 +45,9 @@ void showinfo(void){
   printk_color(light_red ,"kernel in memory end: 0x%08X\n", kern_end);
   printk_color(light_red ,"kernel in memory size: %d KB, %d pages\n",
               (kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
-  issti();
+  // for(int i=0;i<20;i++)
+    // printk_color(light_red ,"kernel start data: 0x%08X\n", *(kern_start+i));
+
 }
 
 #endif
