@@ -39,14 +39,14 @@ void mouse_init(void);
 
 void showinfo(void);
 void showinfo(void){
-  // 输出一些基本信息
-  printk_color(magenta ,"Welcome to my kernel.\n");
-  printk_color(light_red ,"kernel in memory start: 0x%08X\n", kern_start);
-  printk_color(light_red ,"kernel in memory end: 0x%08X\n", kern_end);
-  printk_color(light_red ,"kernel in memory size: %d KB, %d pages\n",
-              (kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
-  // for(int i=0;i<20;i++)
-    // printk_color(light_red ,"kernel start data: 0x%08X\n", *(kern_start+i));
+		// 输出一些基本信息
+		printk_color(magenta,"Welcome to my kernel.\n");
+		printk_color(light_red,"kernel in memory start: 0x%08X\n", kern_start);
+		printk_color(light_red,"kernel in memory end: 0x%08X\n", kern_end);
+		printk_color(light_red,"kernel in memory size: %d KB, %d pages\n",
+		             (kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
+		// for(int i=0;i<20;i++)
+		// printk_color(light_red ,"kernel start data: 0x%08X\n", *(kern_start+i));
 
 }
 

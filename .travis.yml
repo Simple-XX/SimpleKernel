@@ -6,6 +6,7 @@ addons:
     update: false
 
 before_install:
+  - brew install i386-elf-binutils
   - brew install i386-elf-gcc
 
 script:

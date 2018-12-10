@@ -10,7 +10,7 @@
 [English]() | [中文]()
 # SimpleKernel
 
-## 简介
+## Abstract
 
 SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 
@@ -45,7 +45,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 注：
 Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试通过。
 
-## 如何运行
+## RUN
 
     git clone https://github.com/MRNIU/SimpleKernel.git
     cd SimpleKernel/
@@ -64,26 +64,26 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 更多 bochs 使用方式请参考 bochs 的相关资料。
 
 
-## 快速上手
+## QUICK START
 
-├── bochsout.txt bochs 输出
-├── bochsrc.txt bochs 配置文件
+├── bochsout.txt bochs output
+├── bochsrc.txt bochs configuration file
 ├── setup.sh
 ├── simplekernel.img
 ├── someknowledge
-├── src/ 源码目录
-│   ├── Makefile 构建规则
+├── src/ source directory
+│   ├── Makefile build rules
 │   ├── arch/ 架构相关代码
 │   │   ├── README.md
 │   │   ├── i386/ i386 架构
 │   │   │   ├── README.md
-│   │   │   ├── boot/ 启动代码，使用 multiboot
+│   │   │   ├── boot/ boot code，use multiboot
 │   │   │   │   ├── boot.s
 │   │   │   │   └── link.ld
-│   │   │   ├── clock.c 时钟
+│   │   │   ├── clock.c
 │   │   │   ├── clock.h
 │   │   │   ├── cpu.hpp CPU操作
-│   │   │   ├── debug/ 调试函数
+│   │   │   ├── debug/ debug function
 │   │   │   │   └── debug.c
 │   │   │   ├── intr/ 中断设置
 │   │   │   │   ├── README.md
@@ -102,10 +102,10 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 │   │   └── x64/ x64 架构
 │   │       └── TODO
 │   ├── include/ 头文件
-│   │   ├── DataStructure/ 可能会用到的数据结构与算法
-│   │   │   ├── BinarySearchTree.cpp 二叉树
+│   │   ├── DataStructuer/ data structure
+│   │   │   ├── BinarySearchTree.cpp
 │   │   │   ├── DataStructuer.h
-│   │   │   ├── LinkedList.cpp 链表
+│   │   │   ├── LinkedList.cpp
 │   │   │   ├── Queue.cpp 队列
 │   │   │   ├── SortAlgorithm.cpp 排序算法
 │   │   │   └── Stack.cpp 栈

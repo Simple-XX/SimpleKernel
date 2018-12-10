@@ -4,8 +4,9 @@
 // debug.c for MRNIU/SimpleKernel.
 
 #include "debug.h"
+#include "cpu.hpp"
 
 void debug_init(){
-
-  return;
+	// debug_intr();
+	return;
 }
