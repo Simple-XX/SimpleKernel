@@ -1,13 +1,10 @@
 
 ![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)
-
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
-
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
-
 ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
 
-[English]() | [中文]()
+[English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
 # SimpleKernel
 
 ## Abstract
@@ -66,6 +63,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 
 ## QUICK START
 
+```
 ├── bochsout.txt bochs output
 ├── bochsrc.txt bochs configuration file
 ├── setup.sh
@@ -147,6 +145,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 └── tools/ 工具，在 .rb 文件中你可以找到 gcc 和 binutils 的编译选项
     ├── i386-elf-binutils.rb
     └── i386-elf-gcc.rb
+```
 
 ## 测试
 
