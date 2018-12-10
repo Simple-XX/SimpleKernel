@@ -107,10 +107,8 @@ static char * number(char * str,int num,int base,int size,int precision,int type
     *str++=' ';
   return str; // 返回转换好的字符串。
 }
-
-int vsprintf(char * buf, const char * fmt, va_list args);
 //  fmt 是格式字符串；args 是个数变化的值；buf 是输出字符缓冲区。
-int vsprintf(char * buf, const char * fmt, va_list args){
+int vsprintf(char * buf,const char * fmt,va_list args){
   int len;
   int i;
   char * str; // 用于存放转换过程中的字符串
@@ -234,7 +232,6 @@ int vsprintf(char * buf, const char * fmt, va_list args){
 // 若格式转换指示是 'x'  或 'X'，则表示对应参数需打印成十六进制数输出。'x' 表示用小写字母表示。
       case 'x':
         flags|=SMALL;
-        // break;
       case 'X':
         str=number(str,va_arg(args,unsigned long),16,field_width,precision,flags);
         break;
@@ -243,7 +240,6 @@ int vsprintf(char * buf, const char * fmt, va_list args){
       case 'd':
       case 'i':
         flags|=SIGN;
-        // break;
       case 'u':
         str=number(str,va_arg(args,unsigned long),10,field_width,precision,flags);
         break;
