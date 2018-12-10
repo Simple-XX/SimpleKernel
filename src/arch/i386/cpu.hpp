@@ -33,120 +33,126 @@
 
 // 执行CPU空操作
 static inline void cpu_hlt(void){
-  asm volatile("hlt");
+		asm volatile ("hlt");
 }
 
 // 开启中断
 static inline void cpu_sti(void){
-  asm volatile("sti");
+		asm volatile ("sti");
 }
 
 // 关闭中断
 static inline void cpu_cli(void){
-  asm volatile("cli":::"memory");
+		asm volatile ("cli" ::: "memory");
 }
 
 // 读取 EFLAGS
 static inline uint32_t read_eflags(void){
-  uint32_t eflags;
-  asm volatile("pushf;pop %0"
-               :"=r"(eflags));
-  return eflags;
+		uint32_t eflags;
+		asm volatile ("pushf;pop %0"
+																: "=r" (eflags));
+		return eflags;
+}
+
+// 读取 EFLAGS
+static inline void debug_intr(void){
+		__asm__ __volatile__ ("int $0x01");
+		return;
 }
 
 static inline bool FL_ID_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_ID);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_ID);
 }
 
 static inline bool FL_VIP_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_VIP);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_VIP);
 }
 
 static inline bool FL_VIF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_VIF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_VIF);
 }
 
 static inline bool FL_AC_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_AC);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_AC);
 }
 
 static inline bool FL_VM_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_VM);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_VM);
 }
 
 static inline bool FL_RF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_RF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_RF);
 }
 
 static inline bool FL_NT_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_NT);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_NT);
 }
 
 static inline uint32_t get_IOPL(void){
-  uint32_t eflags= read_eflags();
-  uint32_t level=0;
-  if(eflags&FL_IOPL_0)
-    level=0;
-  else if(eflags&FL_IOPL_1)
-    level=1;
-  else if(eflags&FL_IOPL_2)
-    level=2;
-  else if(eflags&FL_IOPL_3)
-    level=3;
-  else return 2333;
-  return level;
+		uint32_t eflags= read_eflags();
+		uint32_t level=0;
+		if(eflags&FL_IOPL_0)
+				level=0;
+		else if(eflags&FL_IOPL_1)
+				level=1;
+		else if(eflags&FL_IOPL_2)
+				level=2;
+		else if(eflags&FL_IOPL_3)
+				level=3;
+		else return 2333;
+		return level;
 }
 
 static inline bool FL_OF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_OF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_OF);
 }
 
 static inline bool FL_DF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_DF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_DF);
 }
 
 static inline bool FL_IF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_IF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_IF);
 }
 
 static inline bool FL_TF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_TF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_TF);
 }
 
 static inline bool FL_SF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_SF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_SF);
 }
 
 static inline bool FL_ZF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_ZF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_ZF);
 }
 
 static inline bool FL_AF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_AF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_AF);
 }
 
 static inline bool FL_PF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_PF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_PF);
 }
 
 static inline bool FL_CF_status(void){
-  uint32_t eflags= read_eflags();
-  return (eflags&FL_CF);
+		uint32_t eflags= read_eflags();
+		return (eflags&FL_CF);
 }
 
 

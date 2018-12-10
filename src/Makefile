@@ -44,7 +44,7 @@ kernel.kernel: $(OBJ)
 	@$(CC) $(CFLAGS) $< -o $@
 
 .cpp.o:
-	@echo 编译C文件... $<
+	@echo 编译C++文件... $<
 	@$(CXX) $(CXXFLAGS) $< -o $@
 
 .s.o:
