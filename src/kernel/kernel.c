@@ -3,24 +3,21 @@
 
 // kernel.c for MRNIU/SimpleKernel.
 
-#include "kernel.h"
-#include "assert.h"
+//#include <stdbool.h>
+#include "../include/kernel.h"
+#include "../include/vga.h"
+#include "../include/tty.h"
 
-// 内核入口
-void kernel_main(void);
-void kernel_main(){
-	// 系统初始化
-	debug_init();
-	terminal_init();        // 控制台初始化
-	gdt_init();        // GDT 初始化
-	idt_init();        // IDT 初始化
-	clock_init();        // 时钟初始化
-	keyboard_init();        // 键盘初始化
-	showinfo();
+void kernel_main(void)
+{
+	/* Initialize terminal interface */
+	terminal_initialize();
+
+	/* Newline support is left as an exercise. */
+	int a='!';
+	char c='!';
+	char * s="gg";
+	printk("__%c__%s",c,s);
 
 
-	while(1);
-
-	printk_color(white, "\nEnd.\n");
-	return;
 }
