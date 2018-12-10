@@ -19,6 +19,8 @@ disk='simplekernel.img'
 boot_folder='./boot_folder/boot/'
 # 挂载目录
 folder='./boot_folder'
+# 工具目录
+tool='./tools'
 
 # 判断操作系统类型
 OS=0
@@ -36,7 +38,7 @@ if ! [ -x "$(command -v bochs)" ]; then
   if [ ${OS} == 0 ]; then
     brew install bochs
   elif [ ${OS} == 1 ]; then
-    exit 1
+    shell ${tool}/bochs.sh
   fi
 fi
 
@@ -46,7 +48,7 @@ if ! [ -x "$(command -v i386-elf-ld)" ]; then
   if [ ${OS} == 0 ]; then
     brew install i386-elf-binutils
   elif [ ${OS} == 1 ]; then
-    exit 1
+    shell ${tool}/i386-elf-binutils.sh
   fi
 fi
 
@@ -56,7 +58,7 @@ if ! [ -x "$(command -v i386-elf-gcc)" ]; then
   if [ ${OS} == 0 ]; then
     brew install i386-elf-gcc
   elif [ ${OS} == 1 ]; then
-    exit 1
+    shell ${tool}/i386-elf-gcc.sh
   fi
 fi
 
@@ -75,5 +77,10 @@ if [ ${OS} == 0 ]; then
   hdiutil detach ${folder}
   bochs -q -f ${bochsrc}
 elif [ ${OS} == 1 ]; then
-  exit 1
+  mkdir ${folder}
+  mount ${disk} ${folder}
+  cp ${img} ${boot_folder}
+  unmount ${folder}
+  rm -rf ${folder}
+  bochs -q -f ${bochsrc}
 fi
