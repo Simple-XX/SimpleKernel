@@ -10,14 +10,15 @@
 
 void kernel_main(void)
 {
-	/* Initialize terminal interface */
-	terminal_initialize();
+		/* Initialize terminal interface */
+		terminal_initialize();
 
-	/* Newline support is left as an exercise. */
-	int a='!';
-	char c='!';
-	char * s="gg";
-	printk("__%c__%s",c,s);
+		/* Newline support is left as an exercise. */
+		int a='!';
+		char c='!';
+		char * s="gg";
+		printk("__%c__%s\n",c,s);
+		printk("Hello Kernel!\n");
 
 
 }
