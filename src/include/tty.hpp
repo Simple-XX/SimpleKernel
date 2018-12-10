@@ -31,7 +31,6 @@ uint8_t terminal_getcolor(void);
 
 
 // 命令行初始化
-void terminal_init(void);
 void terminal_init(void){
   // 从左上角开始
 	terminal_row = 0;

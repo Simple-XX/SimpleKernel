@@ -12,22 +12,21 @@ idt_load:
 
 # 定义两个构造中断处理函数的宏(有的中断有错误代码，有的没有)
 # 用于没有错误代码的中断
-
 .macro ISR_NOERRCODE no
 .global isr\no
 isr\no:
-    cli                  # 首先关闭中断
+    #cli                  # 首先关闭中断
     push $0               # push 无效的中断错误代码,占位用
     push $\no              # push 中断号
     jmp isr_common_stub
 .endm
 
 # 用于有错误代码的中断
-.macro ISR_ERRCODE no
-.global isr\no
-isr\no:
-    cli                  # 关闭中断
-    push $\no            # push 中断号
+.macro ISR_ERRCODE er
+.global isr\er
+isr\er:
+    #cli                  # 关闭中断
+    push $\er              # push 中断号
     jmp isr_common_stub
 .endm
 
@@ -75,29 +74,37 @@ ISR_NOERRCODE 128
 .global isr_common_stub
 .extern isr_handler
 isr_common_stub:
-  pusha
-  push %ds
-  push %es
-  push %fs
-  push %gs
+  pusha    # Pushes edi, esi, ebp, esp, ebx, edx, ecx, eax
+  mov %ds, %ax
+  push %eax  # 保存数据段描述符
 
-  mov $0x10, %ax  # 加载内核数据段描述符表, 0x10:内核数据段标识符
+  mov $0x10, %ax # 加载内核数据段描述符表, 0x10:内核数据段标识符
   mov %ax, %ds
   mov %ax, %es
   mov %ax, %fs
   mov %ax, %gs
   mov %ax, %ss
 
-  push %esp
-  call isr_handler
+  push %esp        # 此时的 esp 寄存器的值等价于 pt_regs 结构体的指针
+  call isr_handler        # 在 C 语言代码里
   add $4, %esp  # 清除压入的参数
-  call forkret_s
+
+  pop %ebx                 # 恢复原来的数据段描述符
+  mov %bx, %ds
+  mov %bx, %es
+  mov %bx, %fs
+  mov %bx, %gs
+  mov %bx, %ss
+
+  popa                     # Pops edi, esi, ebp, esp, ebx, edx, ecx, eax
+  add $0x08, %esp  # 清理栈里的 error code 和 ISR
+  iret
+
 
 # 构造中断请求的宏
 .macro IRQ name, no
 .global irq\name
 irq\name:
-  cli
   push $0
   push $\no
   jmp irq_common_stub
@@ -124,13 +131,11 @@ IRQ  15,    47 	# IDE1 传输控制使用
 .global forkret_s
 .extern irq_handler
 irq_common_stub:
-  pusha
-  push %ds
-  push %es
-  push %fs
-  push %gs
+  pusha                    # pushes edi, esi, ebp, esp, ebx, edx, ecx, eax
+  mov %ds, %ax
+  push %eax                 # 保存数据段描述符
 
-  mov $0x10, %ax  # 加载内核数据段描述符表, 0x10:内核数据段标识符
+  mov $0x10, %ax   # 加载内核数据段描述符
   mov %ax, %ds
   mov %ax, %es
   mov %ax, %fs
@@ -139,13 +144,15 @@ irq_common_stub:
 
   push %esp
   call irq_handler
-  add $0x04, %esp  # 清除压入的参数
+  add $4, %esp
 
 forkret_s:
-  pop %gs
-  pop %fs
-  pop %es
-  pop %ds
+  pop %ebx                   # 恢复原来的数据段描述符
+  mov %bx, %ds
+  mov %bx, %es
+  mov %bx, %fs
+  mov %bx, %gs
+  mov %bx, %ss
   popa                     # Pops edi,esi,ebp...
-  add $0x08, %esp   		 # 清理压栈的 错误代码 和 ISR 编号
+  add $8, %esp   		 # 清理压栈的 错误代码 和 ISR 编号
   iret          		 # 出栈 CS, EIP, EFLAGS, SS, ESP

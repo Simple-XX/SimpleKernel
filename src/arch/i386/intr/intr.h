@@ -9,7 +9,7 @@
 
 #include "stdint.h"
 
-#define INTERRUPT_MAX 256 // 中断表最大值
+#define INTERRUPT_MAX 256	// 中断表最大值
 
 // 定义IRQ
 #define  IRQ0     32    // 电脑系统计时器
@@ -52,52 +52,44 @@
 #define INT_SIMD_FLOAT          19
 #define INT_VIRTUAL_EXCE        20
 
+// 寄存器类型
 typedef
-  struct pt_regs_t {
-/* segment registers */
-		uint32_t gs;      // 16 bits
-		uint32_t fs;      // 16 bits
-		uint32_t es;      // 16 bits
-		uint32_t ds;      // 16 bits
+struct pt_regs_t {
+  uint16_t ds;        // 用于保存用户的数据段描述符
+  uint16_t padding_ds; // padding 为占位
 
-/* registers save by pusha */
-		uint32_t edi;
-		uint32_t esi;
-		uint32_t ebp;
-		uint32_t old_esp;
-		uint32_t ebx;
-		uint32_t edx;
-		uint32_t ecx;
-		uint32_t eax;
+  // 从 edi 到 eax 由 pusha 指令压入
+  uint32_t edi;
+  uint32_t esi;
+  uint32_t ebp;
+  uint32_t oesp;
+  uint32_t ebx;
+  uint32_t edx;
+  uint32_t ecx;
+  uint32_t eax;
+/*
+  uint16_t gs;
+  uint16_t padding_gs;
+  uint16_t fs;
+  uint16_t padding_fs;
+  uint16_t es;
+  uint16_t padding_es;
+  uint16_t ds;
+  uint16_t padding_ds;
+*/
+  uint32_t int_no;  // 中断号(内核代码自行压栈)
+  uint32_t err_code;      // 错误代码(有中断错误代码的中断会由CPU压入)
+  // 以下由处理器自动压入
+  uint32_t eip;
+  uint16_t cs;
+  uint16_t padding_cs;
+  uint32_t eflags;
 
-		uint32_t int_no;
-/* save by `int` instruction */
-		uint32_t err_code;
-// 以下指令由cpu压入，参见x86/x64 532页
-		uint32_t eip;      // 指向产生异常的指令
-		uint32_t cs;      // 16 bits
-		uint32_t eflags;
-// 如果发生了特权级切换，CPU 会压入以下两个参数
-		uint32_t user_esp;
-		uint32_t ss;      // 16 bits
+  // 如果发生了特权级的切换CPU会压栈
+  uint32_t esp;
+  uint16_t ss;
+  uint16_t padding_ss;
 } pt_regs_t;
-
-// 中断描述符
-typedef
-  struct idt_entry_t {
-		uint16_t base_low;       // 中断处理函数地址 15～0 位
-		uint16_t selector;           // 目标代码段描述符选择子
-		uint8_t zero;        // 置 0 段
-		uint8_t flags;          // 一些标志，文档有解释
-		uint16_t base_high;       // 中断处理函数地址 31～16 位
-} __attribute__((packed)) idt_entry_t;
-
-// IDTR
-typedef
-  struct idt_ptr_t {
-		uint16_t limit;       // 限长
-		uint32_t base;        // 基址
-} __attribute__((packed)) idt_ptr_t;
 
 // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
 // ISR:中断服务程序(interrupt service routine)
@@ -159,7 +151,7 @@ extern void irq14();           // IDE0 传输控制使用
 extern void irq15();           // IDE1 传输控制使用
 
 
-void irq_handler(pt_regs_t * regs);  // IRQ 处理函数
+void irq_handler(pt_regs_t *regs);  // IRQ 处理函数
 
 typedef void (*interrupt_handler_t)(pt_regs_t *); // 定义中断处理函数指针
 
@@ -167,30 +159,31 @@ void isr_handler(pt_regs_t *regs);  // 调用中断处理函数
 
 void register_interrupt_handler(uint8_t n, interrupt_handler_t h);  // 注册一个中断处理函数
 
+void irq_handler(pt_regs_t *regs);  // IRQ 处理函数
+
 extern void idt_load(uint32_t);  // 声明加载 IDTR 的函数
 
 typedef void (*isr_irq_func_t)(); // 中断处理函数指针类型
 
-void idt_init(void);  // idt 初始化
+void idt_init(void);	// idt 初始化
 
 extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
 
-// 系统中断
-void divide_error(pt_regs_t * regs);
-void debug(pt_regs_t * regs);
-void nmi(pt_regs_t * regs);
-void breakpoint(pt_regs_t * regs);
-void overflow(pt_regs_t * regs);
-void bound(pt_regs_t * regs);
-void invalid_opcode(pt_regs_t * regs);
-void device_not_available(pt_regs_t * regs);
-void double_fault(pt_regs_t * regs);
-void coprocessor_error(pt_regs_t * regs);
-void invalid_TSS(pt_regs_t * regs);
-void segment_not_present(pt_regs_t * regs);
-void stack_segment(pt_regs_t * regs);
-void general_protection(pt_regs_t * regs);
-void page_fault(pt_regs_t * regs);
+// 中断描述符
+typedef
+struct idt_entry_t {
+  uint16_t base_low;        // 中断处理函数地址 15～0 位
+  uint16_t selector;            // 目标代码段描述符选择子
+  uint8_t  zero;        // 置 0 段
+  uint8_t  flags;          // 一些标志，文档有解释
+  uint16_t base_high;        // 中断处理函数地址 31～16 位
+} __attribute__((packed)) idt_entry_t;
 
+// IDTR
+typedef
+struct idt_ptr_t {
+  uint16_t limit;        // 限长
+  uint32_t base;         // 基址
+} __attribute__((packed)) idt_ptr_t;
 
 #endif
