@@ -5,8 +5,7 @@
 #include "drv/keyboard.h"
 #include "port.hpp"
 
-uint32_t keymap[NR_SCAN_CODES * MAP_COLS] = {
-
+static uint32_t keymap[NR_SCAN_CODES * MAP_COLS] = {
 /* scan-code			!Shift		Shift		E0 XX	*/
 /* ==================================================================== */
 /* 0x00 - none	*/ 0,      0,      0,
@@ -142,11 +141,11 @@ uint32_t keymap[NR_SCAN_CODES * MAP_COLS] = {
 #define SC_MAX NR_SCAN_CODES * MAP_COLS
 static char key_buffer[KB_BUFSIZE];
 
-bool shift=false;
-bool caps=false;
-bool ctrl=false;
-bool num=true;
-bool alt=false;
+static bool shift=false;
+static bool caps=false;
+static bool ctrl=false;
+static bool num=true;
+static bool alt=false;
 
 void keyboard_handler(pt_regs_t * regs){
 		uint8_t scancode = inb(KB_DATA); // 获取一个扫描码

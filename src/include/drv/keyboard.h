@@ -33,16 +33,6 @@
 #define KB_CTRL_L 0x1D
 #define KB_NUM_LOCK 0x45
 
-#define KB_CTRL_STATS_MASK_OUT_BUF 0x01,  //00000001
-#define KB_CTRL_STATS_MASK_IN_BUF 0x02,  //00000010
-
-
-// 等待输入缓冲区满
-#define wait_to_write() while(inb(KB_STATUS) & KB_CTRL_STATS_MASK_IN_BUF)
-// 等待输出缓冲区满
-#define wait_to_read() while(inb(KB_STATUS) & KB_CTRL_STATS_MASK_OUT_BUF)
-
-
 
 #define KB_IN_BYTES 32 /* size of keyboard input buffer */
 #define MAP_COLS 3 /* Number of columns in keymap */
@@ -53,13 +43,7 @@
 // 该宏可以和获取的扫描码用来判断一个键是按下还是抬起
 #define RELEASED_MASK 0x80
 
-
 #define FLAG_EXT 0x00  /* Normal function keys		*/
-
-
-#define MASK_RAW 0x01FF  /* raw key value = code passed to tty & MASK_RAW
-	                           the value can be found either in the keymap column 0
-	                           or in the list below */
 
 /* Special keys */
 #define ESC  (0x01 & FLAG_EXT) /* Esc		*/
@@ -145,8 +129,6 @@
 #define PAD_INS  PAD_0   /* Ins		*/
 #define PAD_MID  PAD_5   /* Middle key	*/
 #define PAD_DEL  PAD_DOT   /* Del		*/
-
-
 
 
 extern void init_interrupt_chip(void);
