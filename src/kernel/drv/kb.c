@@ -145,33 +145,51 @@ static char key_buffer[KB_BUFSIZE];
 bool shift=false;
 bool caps=false;
 bool ctrl=false;
+bool num=true;
+bool alt=false;
 
 void keyboard_handler(pt_regs_t * regs){
-		uint8_t scancode = inb(KB_DATA);
-		// printk_color(red, "scancode: %08X, %d\n", scancode, scancode);
-		// printk_color(red, "shift: %d\n", (int)shift);
-		if(scancode>SC_MAX) {
-				// printk_color(red, "scancode error.\n");
+		uint8_t scancode = inb(KB_DATA); // 获取一个扫描码
+		// 判断是否出错
+		if(scancode>SC_MAX||scancode<0) {
+				printk_color(red, "scancode error.\n");
 				return;
 		}
-		if((scancode*3)&FLAG_EXT) {
-				// printk_color(green, "if *3\n");
+		// 开始处理
+		if(scancode) {
+				uint8_t letter=NULL;
+				uint8_t str[2]={NULL}; // 在 default 中用到
 				switch (scancode) {
+				// 如果是特殊字符，则单独处理
 				case KB_SHIFT_L:
+						shift = true;
+						break;
+				case KB_SHIFT_L|RELEASED_MASK: // 扫描码 + 0x80 即为松开的编码
+						shift = false;
+						break;
 				case KB_SHIFT_R:
-						// shift =((~shift)&0x01);
-						shift=true;
-						// printk_color(green, "KB_SHIFT_R");
+						shift = true;
 						break;
-				case KB_SHIFT_L|FLAG_BREAK:
-				case KB_SHIFT_R|FLAG_BREAK:
-						shift=false;
-						break;
-				case KB_CAPS_LOCK:
-						caps =((~caps)&0x01);
+				case KB_SHIFT_R|RELEASED_MASK:
+						shift = false;
 						break;
 				case KB_CTRL_L:
-						ctrl =((~ctrl)&0x01);
+						ctrl = true;
+						break;
+				case KB_CTRL_L|RELEASED_MASK:
+						ctrl = false;
+						break;
+				case KB_ALT_L:
+						alt = true;
+						break;
+				case KB_ALT_L|RELEASED_MASK:
+						alt = false;
+						break;
+				case KB_CAPS_LOCK:
+						caps = ((~caps)&0x01); // 与上次按下的状态相反
+						break;
+				case KB_NUM_LOCK:
+						num = ((~num)&0x01);
 						break;
 				case KB_BACKSPACE:
 						backspace(key_buffer);
@@ -183,14 +201,14 @@ void keyboard_handler(pt_regs_t * regs){
 				case KB_TAB:
 						printk("\t");
 						break;
-				default:
+				default: // 一般字符输出
+						letter = keymap[(int)(scancode*3)+(int)shift]; // 计算在 keymap 中的位置
+						str[0]=letter;
+						str[1]='\0';
+						append(key_buffer, letter);
+						printk("%s", str);
 						break;
 				}
-		} else{
-				char letter = keymap[(int)(scancode*3)+(int)shift];
-				char str[2]={letter,'\0'};
-				append(key_buffer, letter);
-				printk("%s", str);
 		}
 		UNUSED(regs);
 }
