@@ -39,21 +39,5 @@ static inline uint16_t inw(uint16_t port){
     return ret;
 }
 
-// 执行CPU空操作
-static inline void cpu_hlt(void){
-  asm volatile ("hlt");
-}
-
-// 开启中断
-static inline void enable_intr(void){
-  asm volatile ("sti");
-}
-
-// 关闭中断
-static inline void disable_intr(void){
-  asm volatile ("cli":::"memory");
-}
-
-
 
 #endif

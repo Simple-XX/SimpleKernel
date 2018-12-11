@@ -3,15 +3,84 @@
 
 # setup.sh for MRNIU/SimpleKernel.
 
-# 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
-# 以 bochrc.txt 为配置文件运行 bochs。
+#!/usr/bin/env bash
+# shell 执行出错时终止运行
+set -e
+# 输出实际执行内容
+# set -x
+
+# bochs 配置文件
+bochsrc="bochsrc.txt"
+# 内核映像
+img='./src/kernel.kernel'
+# 软盘
+disk='simplekernel.img'
+# 安装目录
+boot_folder='./boot_folder/boot/'
+# 挂载目录
+folder='./boot_folder'
+# 工具目录
+tool='./tools'
+
+# 判断操作系统类型
+OS=0
+which_os=`uname -s`
+if [ ${which_os} == "Darwin" ]; then
+  OS=0
+elif [ ${which_os} == "Darwin" ]; then
+  OS=1
+fi
+
+# 检测环境，如果没有安装需要的软件，则安装
+if ! [ -x "$(command -v bochs)" ]; then
+  echo 'Error: bochs is not installed.'
+  echo 'Install bochs...'
+  if [ ${OS} == 0 ]; then
+    brew install bochs
+  elif [ ${OS} == 1 ]; then
+    shell ${tool}/bochs.sh
+  fi
+fi
+
+if ! [ -x "$(command -v i386-elf-ld)" ]; then
+  echo 'Error: i386-elf-binutils is not installed.'
+  echo 'Install i386-elf-binutils...'
+  if [ ${OS} == 0 ]; then
+    brew install i386-elf-binutils
+  elif [ ${OS} == 1 ]; then
+    shell ${tool}/i386-elf-binutils.sh
+  fi
+fi
+
+if ! [ -x "$(command -v i386-elf-gcc)" ]; then
+  echo 'Error: i386-elf-gcc is not installed.'
+  echo 'Install i386-elf-gcc...'
+  if [ ${OS} == 0 ]; then
+    brew install i386-elf-gcc
+  elif [ ${OS} == 1 ]; then
+    shell ${tool}/i386-elf-gcc.sh
+  fi
+fi
+
+# 重新编译
 cd src/
 make clean
 make
 cd ../
-hdiutil attach -mountpoint ./boot_folder boot.img
-# mac 下的命令与 linux 的不同
-# mac's command is different from linux
-cp ./src/kernel.kernel boot_folder/boot
-hdiutil detach boot_folder
-bochs -f bochsrc.txt
+
+# 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
+# 以 bochrc.txt 为配置文件运行 bochs。
+if [ ${OS} == 0 ]; then
+  # mac 下的命令与 linux 的不同
+  hdiutil attach -mountpoint ${folder} ${disk}
+  cp ${img} ${boot_folder}
+  hdiutil detach ${folder}
+  bochs -q -f ${bochsrc}
+elif [ ${OS} == 1 ]; then
+  mkdir ${folder}
+  mount ${disk} ${folder}
+  cp ${img} ${boot_folder}
+  unmount ${folder}
+  rm -rf ${folder}
+  bochs -q -f ${bochsrc}
+fi

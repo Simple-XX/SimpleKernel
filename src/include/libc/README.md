@@ -20,5 +20,7 @@
 
     字符串。     
      
+- stdbool.h
 
+    bool 类型定义
 

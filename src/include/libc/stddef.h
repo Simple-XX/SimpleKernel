@@ -20,4 +20,6 @@ typedef unsigned long size_t;
 #undef NULL
 #define NULL ((void *)0)
 
+#define UNUSED(x) (void)(x)
+
 #endif

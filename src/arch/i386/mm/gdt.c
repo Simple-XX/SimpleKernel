@@ -16,7 +16,7 @@ static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0){
 	// 设置内核栈的地址
 	tss_entry.ts_ss0  = ss0;
 	tss_entry.ts_esp0 = esp0;
-  tss_entry.ts_cs = USER_CS;
+	tss_entry.ts_cs = USER_CS;
 	tss_entry.ts_ss = USER_DS;
 	tss_entry.ts_ds = USER_DS;
 	tss_entry.ts_es = USER_DS;
