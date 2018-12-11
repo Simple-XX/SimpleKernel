@@ -6,7 +6,7 @@
 #ifndef _MM_H_
 #define _MM_H_
 
-#include "mm/vmm.h"
+
 #include "mm/pmm.h"
 
 void mm_init(void);

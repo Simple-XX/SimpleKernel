@@ -26,7 +26,7 @@
 #include "debug.h"
 #include "mm/pmm.h"
 #include "mm/mm.h"
-#include "clock.h"
+#include "intr/clock.h"
 #include "cpu.hpp"
 #include "drv/keyboard.h"
 
