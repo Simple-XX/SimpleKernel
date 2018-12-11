@@ -159,25 +159,24 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 
 ## 镜像文件
 
-simplekernel.img 是 1.44 软盘，我们的内核就在这里。
+simplekernel.img is 1.44 floppy, our kernel is right here.
     
 ## TODO
 
-- 修复 bug
-- 键盘输入处理
-- 鼠标输入处理
-- debug 函数
-- 添加编码规范测试
+- fix bugs
+- mouse input
+- debug function
+- checlstyle
 
-## 作者
+## AUTHOR
 
-作者：[MRNIU](https://github.com/MRNIU)
+Author: [MRNIU](https://github.com/MRNIU)
 
 您也可以在贡献者名单中参看所有参与该项目的开发者。
 
-## 贡献
+## CONTRIBUTING
 
-请阅读 CONTRIBUTING.md 查阅为该项目做出贡献的开发者。
+Read CONTRIBUTING.md.
 
 ## 鸣谢
 
