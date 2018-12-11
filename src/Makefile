@@ -12,8 +12,8 @@ C_SOURCES = $(shell find . -name "*.c")
 # CXX_SOURCES = $(shell find ./include/DataStructuer/ -name "*.cpp")
 S_SOURCES = $(shell find . -name "*.s")
 OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
-     $(patsubst %.s, %.o, $(S_SOURCES))
-	 # $(patsubst %.cpp, %.o, $(CXX_SOURCES))
+     $(patsubst %.s, %.o, $(S_SOURCES)) \
+	   $(patsubst %.cpp, %.o, $(CXX_SOURCES))
 
 
 CXX= i386-elf-g++
