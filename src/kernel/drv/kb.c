@@ -155,60 +155,58 @@ void keyboard_handler(pt_regs_t * regs){
 				printk_color(red, "scancode error.\n");
 				return;
 		}
+		uint8_t letter=NULL;
+		uint8_t str[2]={NULL};   // 在 default 中用到
 		// 开始处理
-		if(scancode) {
-				uint8_t letter=NULL;
-				uint8_t str[2]={NULL}; // 在 default 中用到
-				switch (scancode) {
-				// 如果是特殊字符，则单独处理
-				case KB_SHIFT_L:
-						shift = true;
-						break;
-				case KB_SHIFT_L|RELEASED_MASK: // 扫描码 + 0x80 即为松开的编码
-						shift = false;
-						break;
-				case KB_SHIFT_R:
-						shift = true;
-						break;
-				case KB_SHIFT_R|RELEASED_MASK:
-						shift = false;
-						break;
-				case KB_CTRL_L:
-						ctrl = true;
-						break;
-				case KB_CTRL_L|RELEASED_MASK:
-						ctrl = false;
-						break;
-				case KB_ALT_L:
-						alt = true;
-						break;
-				case KB_ALT_L|RELEASED_MASK:
-						alt = false;
-						break;
-				case KB_CAPS_LOCK:
-						caps = ((~caps)&0x01); // 与上次按下的状态相反
-						break;
-				case KB_NUM_LOCK:
-						num = ((~num)&0x01);
-						break;
-				case KB_BACKSPACE:
-						backspace(key_buffer);
-						break;
-				case KB_ENTER:
-						printk("\n");
-						key_buffer[0] = '\0';
-						break;
-				case KB_TAB:
-						printk("\t");
-						break;
-				default: // 一般字符输出
-						letter = keymap[(int)(scancode*3)+(int)shift]; // 计算在 keymap 中的位置
-						str[0]=letter;
-						str[1]='\0';
-						append(key_buffer, letter);
-						printk("%s", str);
-						break;
-				}
+		switch (scancode) {
+		// 如果是特殊字符，则单独处理
+		case KB_SHIFT_L:
+				shift = true;
+				break;
+		case KB_SHIFT_L|RELEASED_MASK:   // 扫描码 + 0x80 即为松开的编码
+				shift = false;
+				break;
+		case KB_SHIFT_R:
+				shift = true;
+				break;
+		case KB_SHIFT_R|RELEASED_MASK:
+				shift = false;
+				break;
+		case KB_CTRL_L:
+				ctrl = true;
+				break;
+		case KB_CTRL_L|RELEASED_MASK:
+				ctrl = false;
+				break;
+		case KB_ALT_L:
+				alt = true;
+				break;
+		case KB_ALT_L|RELEASED_MASK:
+				alt = false;
+				break;
+		case KB_CAPS_LOCK:
+				caps = ((~caps)&0x01);   // 与上次按下的状态相反
+				break;
+		case KB_NUM_LOCK:
+				num = ((~num)&0x01);
+				break;
+		case KB_BACKSPACE:
+				backspace(key_buffer);
+				break;
+		case KB_ENTER:
+				printk("\n");
+				key_buffer[0] = '\0';
+				break;
+		case KB_TAB:
+				printk("\t");
+				break;
+		default:   // 一般字符输出
+				letter = keymap[(int)(scancode*3)+(int)shift];   // 计算在 keymap 中的位置
+				str[0]=letter;
+				str[1]='\0';
+				append(key_buffer, letter);
+				printk("%s", str);
+				break;
 		}
 		UNUSED(regs);
 }
