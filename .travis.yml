@@ -1,0 +1,16 @@
+os: osx
+language: c
+
+addons:
+  homebrew:
+    update: false
+
+before_install:
+  - brew install i386-elf-binutils
+  - brew install i386-elf-gcc
+
+script:
+  - cd ./src
+  - make
+after_script:
+  - make clean

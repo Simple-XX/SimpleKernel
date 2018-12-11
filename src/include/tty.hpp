@@ -27,8 +27,11 @@ void terminal_putchar(char);
 void terminal_escapeconv(char);
 void terminal_putentryat(char, uint8_t, size_t, size_t);
 void terminal_setcolor(uint8_t);
+uint8_t terminal_getcolor(void);
+
 
 // 命令行初始化
+void terminal_init(void);
 void terminal_init(void){
   // 从左上角开始
 	terminal_row = 0;
@@ -49,6 +52,11 @@ void terminal_init(void){
 // 设置命令行颜色
 void terminal_setcolor(uint8_t color){
 	terminal_color = color;
+}
+
+// 获取当前颜色
+uint8_t terminal_getcolor(void){
+	return terminal_color;
 }
 
 // 在指定位置输出字符

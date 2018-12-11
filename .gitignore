@@ -1,2 +1,8 @@
+
 bochsout.txt
+
+snapshot.txt
+
 *.o
+
+*.gch
