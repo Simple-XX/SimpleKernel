@@ -11,8 +11,6 @@
 #include "stddef.h"
 #include "stdio.h"
 #include "string.h"
-#include "elf.h"
-#include "multiboot.h"
 #include "intr/intr.h"
 
 

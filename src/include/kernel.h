@@ -22,7 +22,6 @@
 #include "stdio.h"
 #include "tty.hpp"
 #include "multiboot.h"
-#include "elf.h"
 #include "debug.h"
 #include "mm/pmm.h"
 #include "mm/mm.h"
