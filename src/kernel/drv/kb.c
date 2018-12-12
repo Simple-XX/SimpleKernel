@@ -5,7 +5,7 @@
 #include "drv/keyboard.h"
 #include "port.hpp"
 
-static uint32_t keymap[NR_SCAN_CODES * MAP_COLS] = {
+static uint8_t keymap[NR_SCAN_CODES * MAP_COLS] = {
 /* scan-code			!Shift		Shift		E0 XX	*/
 /* ==================================================================== */
 /* 0x00 - none	*/ 0,      0,      0,
@@ -139,7 +139,6 @@ static uint32_t keymap[NR_SCAN_CODES * MAP_COLS] = {
 };
 
 #define SC_MAX NR_SCAN_CODES * MAP_COLS
-static char key_buffer[KB_BUFSIZE];
 
 static bool shift=false;
 static bool caps=false;
@@ -190,22 +189,26 @@ void keyboard_handler(pt_regs_t * regs){
 				num = ((~num)&0x01);
 				break;
 		case KB_BACKSPACE:
-				backspace(key_buffer);
+				printk("\b");
 				break;
 		case KB_ENTER:
 				printk("\n");
-				key_buffer[0] = '\0';
 				break;
 		case KB_TAB:
 				printk("\t");
 				break;
 		default:   // 一般字符输出
-				letter = keymap[(int)(scancode*3)+(int)shift];   // 计算在 keymap 中的位置
-				str[0]=letter;
-				str[1]='\0';
-				append(key_buffer, letter);
-				printk("%s", str);
-				break;
+				// 首先排除释放按键
+				if(!(scancode&RELEASED_MASK)) {
+						letter = keymap[(uint8_t)(scancode*3)+(uint8_t)shift]; // 计算在 keymap 中的位置
+						// printk_color(green, "%s\t", letter);
+						str[0]=letter;
+						str[1]='\0';
+						printk("%s", str);
+						break;
+				} else{
+						break;
+				}
 		}
 		UNUSED(regs);
 }
