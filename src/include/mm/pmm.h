@@ -11,8 +11,12 @@
 #include "stdio.h"
 #include "multiboot.h"
 
-extern uint8_t kern_start[];
-extern uint8_t kern_end[];
+extern uint8_t kernel_start[];
+extern uint8_t kernel_end[];
+
+
+
+
 
 void show_memory_map();
 

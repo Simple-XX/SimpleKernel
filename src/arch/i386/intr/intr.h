@@ -79,7 +79,7 @@ typedef
 		uint32_t eflags;
 // 如果发生了特权级切换，CPU 会压入以下两个参数
 		uint32_t user_esp;
-		uint32_t ss;      // 16 bits
+		uint32_t user_ss;      // 16 bits
 } pt_regs_t;
 
 // 中断描述符

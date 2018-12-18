@@ -146,6 +146,11 @@ static bool ctrl=false;
 static bool num=true;
 static bool alt=false;
 
+// 改进方向：
+// 将输入输出与 tty 结合起来
+// 维护一个保存 tty 信息的结构体，包括 缓冲区信息，sh 设置，颜色等
+
+
 void keyboard_handler(pt_regs_t * regs){
 		uint8_t scancode = inb(KB_DATA); // 获取一个扫描码
 		// 判断是否出错

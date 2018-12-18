@@ -8,6 +8,18 @@
 
 #include "stdint.h"
 
+/**
+ * 启动后，在32位内核进入点，机器状态如下：
+ *   1. CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
+ *   2. DS，SS，ES，FS 和 GS 指向基地址为0x00000000，限长为4G – 1的数据段描述符。
+ *   3. A20 地址线已经打开。
+ *   4. 页机制被禁止。
+ *   5. 中断被禁止。
+ *   6. EAX = 0x2BADB002
+ *   7. 系统信息和启动信息块的线性地址保存在 EBX中（相当于一个指针）。
+ *      以下即为这个信息块的结构
+ */
+
 typedef
   struct multiboot_t {
 		uint32_t flags;     // Multiboot 的版本信息
@@ -71,6 +83,9 @@ typedef
 }__attribute__((packed)) mmap_entry_t;
 
 // 声明全局的 multiboot_t * 指针
-extern multiboot_t * glb_mboot_ptr;
+// 内核未建立分页机制前暂存的指针
+extern multiboot_t *mboot_ptr_tmp;
+// 内核页表建立后的指针
+extern multiboot_t *glb_mboot_ptr;
 
 #endif
