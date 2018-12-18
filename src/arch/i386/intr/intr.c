@@ -163,8 +163,8 @@ static void die(char * str, uint32_t oesp, uint32_t int_no){
 		printk_color(red, "int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
 		             old_esp->int_no, old_esp->err_code, old_esp->eip, old_esp->cs);
 		printk_color(red, "eflags: %08x\tuser_esp: %08x\tss: %08x\n",
-		             old_esp->eflags, old_esp->user_esp, old_esp->ss);
-		printk_color(red, "addr: %08x, %08X\n", &old_esp->gs, &old_esp->ss);
+		             old_esp->eflags, old_esp->user_esp, old_esp->user_ss);
+		printk_color(red, "addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
 
 		cpu_hlt();
 }

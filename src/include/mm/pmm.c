@@ -6,7 +6,12 @@
 #include "mm/pmm.h"
 
 
-void show_memory_map(){
 
-		return;
-}
+
+
+
+
+// void show_memory_map(){
+//
+//   return;
+// }

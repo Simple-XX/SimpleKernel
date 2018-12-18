@@ -202,6 +202,8 @@ Read CONTRIBUTING.md.
 
 [0xAX weblong](http://0xax.blogspot.com/search/label/asm)
 
+[How-to-Make-a-Computer-Operating-System](https://github.com/SamyPesse/How-to-Make-a-Computer-Operating-System)
+
 ## 版权信息
 
 此项目使用 MIT 许可证

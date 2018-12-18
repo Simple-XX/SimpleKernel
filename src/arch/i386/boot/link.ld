@@ -1,8 +1,8 @@
-/* Copy from osdev.org Bare_Bones:*/
+/* Based on osdev.org Bare_Bones:*/
 /* (https://wiki.osdev.org/Bare_Bones).*/
 
 /* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
-/* linker script for MRNIU/SimpleKernel.*/
+/* link.ld for MRNIU/SimpleKernel.*/
 
 ENTRY(_start)
 
@@ -12,17 +12,17 @@ SECTIONS
 	   loaded at by the bootloader. */
 	. = 1M;
 
-  PROVIDE(kern_start = .);
-  PROVIDE(kern_text_start = .);
+  PROVIDE(kernel_start = .);
+  PROVIDE(kernel_text_start = .);
 
 	.text BLOCK(4K) : ALIGN(4K)
 	{
 		*(.multiboot)
 		*(.text)
 	}
-  PROVIDE(kern_text_end = .);
+  PROVIDE(kernel_text_end = .);
 
-  PROVIDE(kern_data_start = .);
+  PROVIDE(kernel_data_start = .);
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
 		*(.rodata)
@@ -32,7 +32,7 @@ SECTIONS
 	{
 		*(.data)
 	}
-  PROVIDE(kern_data_end = .);
+  PROVIDE(kernel_data_end = .);
 
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
@@ -40,7 +40,7 @@ SECTIONS
 		*(.bss)
 	}
 
-  PROVIDE(kern_end = .);
+  PROVIDE(kernel_end = .);
 	/* The compiler may produce other sections, by default it will put them in
 	   a segment with the same name. Simply add stuff here as needed. */
 }

@@ -19,6 +19,21 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 - Shell
 - make
 
+- x86
+- 使用 Grub 启动
+- UXIN-like
+- 多任务
+- ELF
+- IDE disk
+- 时钟
+- 键盘
+- 鼠标
+- EXT2 文件系统
+- POSIX API
+- libc
+- 一些 shell命令
+
+
 ## 开发环境
 
 - Ubuntu Linux
@@ -202,6 +217,8 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 [PurpleBooth/project-title](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2%23project-title)
 
 [0xAX weblong](http://0xax.blogspot.com/search/label/asm)
+
+[How-to-Make-a-Computer-Operating-System](https://github.com/SamyPesse/How-to-Make-a-Computer-Operating-System)
 
 ## 版权信息
 
