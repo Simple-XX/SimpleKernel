@@ -22,10 +22,12 @@
 stack_bottom:
 .skip 16384 # 16 KB 0x4000  STACK_SIZE
 stack_top:
+glb_mboot_ptr:
 
 .text
 .global _start
 .type _start, @function
+.global glb_mboot_ptr
 
 _start:
 
@@ -37,6 +39,7 @@ _start:
 	popf
 
 	# Push the pointer to the Multiboot information structure.
+	mov glb_mboot_ptr, %ebx
 	push %ebx
 
 	# Push the magic value.

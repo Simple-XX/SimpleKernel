@@ -13,6 +13,8 @@
 #include "string.h"
 #include "intr/intr.h"
 
+/* Check if the bit BIT in FLAGS is set. */
+#define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 
 void debug_init(uint32_t magic, uint32_t addr);
 void print_registers(pt_regs_t * regs);

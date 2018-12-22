@@ -305,7 +305,7 @@ struct multiboot_apm_info {
 		uint16_t dseg_len;
 };
 
-static multiboot_info_t * multiboot_info;
-static uint32_t mag;
+extern multiboot_info_t * glb_mboot_ptr;
+
 
 #endif /* ! MULTIBOOT_HEADER */
