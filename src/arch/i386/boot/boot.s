@@ -16,23 +16,34 @@
 .long FLAGS
 .long CHECKSUM
 
-.section .bss
+
+.bss
 .align 16
 stack_bottom:
-.skip 16384 # 16 KB
+.skip 16384 # 16 KB 0x4000  STACK_SIZE
 stack_top:
-glb_mboot_ptr:
 
-.section .text
+.text
 .global _start
 .type _start, @function
-.global glb_mboot_ptr
 
 _start:
+	# 初始化栈指针
 	mov $stack_top, %esp
-	mov glb_mboot_ptr, %ebx  /* 将 ebx 中存储的指针存入全局变量 */
+
+	# 还原 EFLAGES
+	pushl $0
+	popf
+
+	# Push the pointer to the Multiboot information structure.
+	pushl %ebx
+
+	# Push the magic value.
+	pushl %eax
+	# 跳转到 C 入口函数
 	call kernel_main
 	cli
+
 1:hlt
 	jmp 1b
 

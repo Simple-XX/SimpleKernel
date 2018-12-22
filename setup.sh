@@ -68,6 +68,14 @@ make clean
 make
 cd ../
 
+if i386-elf-grub-file --is-x86-multiboot ${img}; then
+  echo multiboot confirmed
+else
+  echo the file is not multiboot
+fi
+
+
+
 # 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
 # 以 bochrc.txt 为配置文件运行 bochs。
 if [ ${OS} == 0 ]; then
