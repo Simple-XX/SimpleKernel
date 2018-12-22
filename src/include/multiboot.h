@@ -17,12 +17,6 @@
  */
 
 
-// 声明全局的 multiboot_t * 指针
-// 内核未建立分页机制前暂存的指针
-// extern multiboot_t *mboot_ptr_tmp;
-// 内核页表建立后的指针
-// extern multiboot_t *glb_mboot_ptr;
-
 
 // This is the source code in the file multiboot.h:
 
@@ -237,8 +231,8 @@ typedef
 		uint32_t framebuffer_width;
 		uint32_t framebuffer_height;
 		uint8_t framebuffer_bpp;
-#define MULTIBOOT_FRAMEBUFFER_TYPE_INDEXED 0
-#define MULTIBOOT_FRAMEBUFFER_TYPE_RGB     1
+#define MULTIBOOT_FRAMEBUFFER_TYPE_INDEXED      0
+#define MULTIBOOT_FRAMEBUFFER_TYPE_RGB          1
 #define MULTIBOOT_FRAMEBUFFER_TYPE_EGA_TEXT     2
 		uint8_t framebuffer_type;
 		union {
@@ -310,6 +304,5 @@ struct multiboot_apm_info {
 		uint16_t cseg_16_len;
 		uint16_t dseg_len;
 };
-
 
 #endif /* ! MULTIBOOT_HEADER */
