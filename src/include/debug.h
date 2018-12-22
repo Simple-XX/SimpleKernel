@@ -14,7 +14,7 @@
 #include "intr/intr.h"
 
 
-void debug_init(void);
+void debug_init(uint32_t magic, uint32_t addr);
 void print_registers(pt_regs_t * regs);
 
 
