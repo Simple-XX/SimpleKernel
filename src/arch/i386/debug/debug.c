@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-// Based on http://wiki.0xffffff.org/posts/hurlex-5.html
+// Based on https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#multiboot_002eh
 // debug.c for MRNIU/SimpleKernel.
 
 #include "debug.h"
@@ -109,7 +109,7 @@ bool is_section_header_table_elf_valid(){
 }
 
 /* Are mmap_* valid? */
-bool id_mmap_valid(){
+bool is_mmap_valid(){
 		if (CHECK_FLAG (glb_mboot_ptr->flags, 6)) {
 				multiboot_mmap_entry_t *mmap;
 				printk ("mmap_addr = 0x%x, mmap_length = 0x%x\n",
@@ -218,7 +218,7 @@ void debug_init(uint32_t magic, uint32_t addr) {
 		is_bits4_bits5_mutually_exclusive();
 		is_symbol_table_aout_valid();
 		is_section_header_table_elf_valid();
-		id_mmap_valid();
+		is_mmap_valid();
 		draw_blue_line();
 
 		return;
