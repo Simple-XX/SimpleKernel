@@ -276,7 +276,7 @@ typedef
 #define MULTIBOOT_MEMORY_NVS                    4
 #define MULTIBOOT_MEMORY_BADRAM                 5
 		uint32_t type;
-} __attribute__((packed)) multiboot_memory_map_t;
+} __attribute__((packed)) multiboot_mmap_entry_t;
 
 typedef
   struct multiboot_mod_list {
@@ -289,7 +289,7 @@ typedef
 
 		/* padding to take it to 16 bytes (must be zero) */
 		uint32_t pad;
-} multiboot_module_t;
+} multiboot_module_list_t;
 
 
 /* APM BIOS info. */
@@ -304,5 +304,8 @@ struct multiboot_apm_info {
 		uint16_t cseg_16_len;
 		uint16_t dseg_len;
 };
+
+static multiboot_info_t * multiboot_info;
+static uint32_t mag;
 
 #endif /* ! MULTIBOOT_HEADER */

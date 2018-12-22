@@ -28,6 +28,7 @@ stack_top:
 .type _start, @function
 
 _start:
+
 	# 初始化栈指针
 	mov $stack_top, %esp
 
@@ -36,10 +37,10 @@ _start:
 	popf
 
 	# Push the pointer to the Multiboot information structure.
-	pushl %ebx
+	push %ebx
 
 	# Push the magic value.
-	pushl %eax
+	push %eax
 	# 跳转到 C 入口函数
 	call kernel_main
 	cli

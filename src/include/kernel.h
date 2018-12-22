@@ -29,7 +29,9 @@
 #include "cpu.hpp"
 #include "drv/keyboard.h"
 
-void debug_init(void);
+
+
+void debug_init(uint32_t magic, uint32_t addr);
 void gdt_init(void);
 void idt_init(void);
 void clock_init(void);

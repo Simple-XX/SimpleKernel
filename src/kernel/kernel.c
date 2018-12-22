@@ -6,16 +6,15 @@
 #include "kernel.h"
 #include "assert.h"
 
-extern void tmp();
 
 /* Check if the bit BIT in FLAGS is set. */
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 
 // 内核入口
-void kernel_main(uint64_t magic, uint64_t addr);
-void kernel_main(uint64_t magic, uint64_t addr){
+void kernel_main(uint32_t magic, uint32_t addr);
+void kernel_main(uint32_t magic, uint32_t addr){
 		// 系统初始化
-		debug_init();
+		debug_init(magic, addr);
 		terminal_init();       // 控制台初始化
 		gdt_init();        // GDT 初始化
 		idt_init();       // IDT 初始化
@@ -24,12 +23,13 @@ void kernel_main(uint64_t magic, uint64_t addr){
 		keyboard_init();       // 键盘初始化
 		showinfo();
 
+		printk("flags = 0x%x\n", (unsigned) multiboot_info->flags);
+
 
 		while(1);
 
 		printk_color(white, "\nEnd.\n");
 		return;
-		// printk_color(red, "0\n");
 
 
 		// multiboot_info_t *mbi;
