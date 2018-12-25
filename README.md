@@ -192,7 +192,7 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 ## 贡献
 
-请阅读 CONTRIBUTING.md 查阅为该项目做出贡献的开发者。
+请阅读 CONTRIBUTING.md。
 
 ## 鸣谢
 
@@ -203,6 +203,8 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 [GRUB 在 Mac 上的安装](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
 
 [multiboot](https://www.gnu.org/software/grub/manual/multiboot/multiboot.html)
+
+《程序员的自我修养--链接、装载与库》(俞甲子 石凡 潘爱民)
 
 [JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html)
 
@@ -222,8 +224,10 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 [How-to-Make-a-Computer-Operating-System](https://github.com/SamyPesse/How-to-Make-a-Computer-Operating-System)
 
-
+[coding-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
 
 ## 版权信息
 
 此项目使用 MIT 许可证
+
+
