@@ -9,88 +9,7 @@
 
 #include "stdint.h"
 
-typedef
-  struct dynamic {
-		int32_t tag;
-		union {
-				int32_t val;
-				uint32_t ptr;
-		} un;
-} Elf32_Dyn;
-
-typedef
-  struct elf32_rel {
-		uint32_t offset;
-		uint32_t info;
-} Elf32_Rel;
-
-typedef
-  struct elf32_rela {
-		uint32_t offset;
-		uint32_t info;
-		int32_t addend;
-} Elf32_Rela;
-
-// ELF 格式符号
-typedef
-  struct elf32_symbol {
-		uint32_t name;
-		uint32_t value;
-		uint32_t size;
-		unsigned char info;
-		unsigned char other;
-		uint16_t shndx;
-} elf_symbol_t;
-
-
-// ELF 文件头
 #define EI_NIDENT 16
-typedef
-  struct elf32_hdr {
-		unsigned char ident[EI_NIDENT];
-		uint16_t type;
-		uint16_t machine;
-		uint32_t version;
-		uint32_t entry;  /* Entry point */
-		uint32_t phoff;
-		uint32_t shoff;
-		uint32_t flags;
-		uint16_t ehsize;
-		uint16_t phentsize;
-		uint16_t phnum;
-		uint16_t shentsize;
-		uint16_t shnum;
-		uint16_t shstrndx;
-} Elf32_Ehdr;
-
-
-typedef
-  struct elf32_phdr {
-		uint32_t type;
-		uint32_t offset;
-		uint32_t vaddr;
-		uint32_t paddr;
-		uint32_t filesz;
-		uint32_t memsz;
-		uint32_t flags;
-		uint32_t align;
-} Elf32_Phdr;
-
-// ELF 格式头
-typedef
-  struct elf32_section_header {
-		uint32_t name;
-		uint32_t type;
-		uint32_t flags;
-		uint32_t addr;
-		uint32_t offset;
-		uint32_t size;
-		uint32_t link;
-		uint32_t info;
-		uint32_t addralign;
-		uint32_t entsize;
-} elf32_section_header_t;
-
 #define EI_MAG0  0  /* e_ident[] indexes */
 #define EI_MAG1  1
 #define EI_MAG2  2
@@ -108,14 +27,61 @@ typedef
 #define ELFMAG  "\177ELF"
 #define SELFMAG  4
 
-/* Note header in a PT_NOTE section */
+// ELF 格式符号
 typedef
-  struct elf32_note {
-		uint32_t namesz; /* Name size */
-		uint32_t descsz; /* Content size */
-		uint32_t type;  /* Content type */
-} Elf32_Nhdr;
+  struct elf32_symbol {
+		uint32_t name;
+		uint32_t value;
+		uint32_t size;
+		unsigned char info;
+		unsigned char other;
+		uint16_t shndx;
+} elf_symbol_t;
 
+
+// ELF 文件头
+typedef
+  struct elf32_hdr {
+		unsigned char ident[EI_NIDENT]; // 见 EI_ 宏定义
+		uint16_t type;  // ELF 文件类型
+		uint16_t machine; // ELF 文件 CPU 平台属性
+		uint32_t version; // ELF 版本号
+		uint32_t entry; // 入口点
+		uint32_t phoff; //
+		uint32_t shoff; // 段表在文件中的偏移
+		uint32_t flags; // 标志位 0x0
+		uint16_t ehsize;  // ELF 文件头本身的大小
+		uint16_t phentsize; //
+		uint16_t phnum; //
+		uint16_t shentsize;// 段表描述符的大小
+		uint16_t shnum; // 段表描述符数量
+		uint16_t shstrndx;  // 段表字符串所在的段在表中的下标
+} Elf32_Ehdr;
+
+// ELF 段描述符
+typedef
+  struct elf32_section_header {
+		uint32_t name;  // 段名，位于 .shstrtab
+		uint32_t type;  // 段类型
+		uint32_t flags; // 段标志
+		uint32_t addr;  // 段虚拟地址
+		uint32_t offset;  // 段偏移
+		uint32_t size;  // 段长度
+		uint32_t link;  //
+		uint32_t info;  // 段链接信息
+		uint32_t addralign; // 端地址对齐
+		uint32_t entsize; // 项长度
+} elf32_section_header_t;
+
+
+// ELF 信息
+typedef
+  struct elf_info {
+		elf_symbol_t * symtab;
+		uint32_t symtabsz;
+		const char * strtab;
+		uint32_t strtabsz;
+} elf_info_t;
 
 
 #endif

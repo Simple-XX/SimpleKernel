@@ -31,7 +31,7 @@
 
 
 
-void debug_init(uint32_t magic, uint32_t addr);
+void debug_init(uint32_t magic, multiboot_info_t * mb);
 void gdt_init(void);
 void idt_init(void);
 void clock_init(void);
