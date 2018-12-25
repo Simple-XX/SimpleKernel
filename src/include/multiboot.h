@@ -189,7 +189,6 @@ typedef
 		uint32_t mods_count;
 		uint32_t mods_addr;
 
-		// ELF 格式内核映像的 section 头表。包括每项的大小、一共有几项以及作为名字索引的字符串。
 		union {
 				multiboot_aout_symbol_table_t aout_sym;
 				multiboot_elf_section_header_table_t elf_sec;

@@ -11,12 +11,15 @@
 #include "stddef.h"
 #include "stdio.h"
 #include "string.h"
+#include "multiboot.h"
+#include "elf.h"
 #include "intr/intr.h"
 
 /* Check if the bit BIT in FLAGS is set. */
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
+#define ELF32_ST_TYPE(i) ((i)&0xf)
 
-void debug_init(uint32_t magic, uint32_t addr);
+void debug_init(uint32_t magic, multiboot_info_t * mb);
 void print_registers(pt_regs_t * regs);
 
 
