@@ -149,6 +149,8 @@ typedef
 
 
 /* The section header table for ELF. */
+// ELF 格式内核映像的 section 头表。
+// 包括每项的大小、一共有几项以及作为名字索引的字符串表。
 typedef
   struct multiboot_elf_section_header_table {
 		uint32_t num;

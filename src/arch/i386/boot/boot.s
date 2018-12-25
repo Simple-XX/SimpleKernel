@@ -39,9 +39,9 @@ _start:
 	popf
 
 	# Push the pointer to the Multiboot information structure.
+	# GRUB 会把 multiboot_t 结构体指针放在 ebx 寄存器里
 	mov glb_mboot_ptr, %ebx
 	push %ebx
-
 	# Push the magic value.
 	push %eax
 	# 跳转到 C 入口函数

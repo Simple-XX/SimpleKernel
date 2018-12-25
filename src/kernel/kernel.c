@@ -8,6 +8,7 @@
 
 
 // 内核入口
+// magic 魔数 addr multiboot 结构体的地址
 void kernel_main(uint32_t magic, uint32_t addr);
 void kernel_main(uint32_t magic, uint32_t addr){
 		// 系统初始化
