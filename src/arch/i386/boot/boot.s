@@ -10,6 +10,7 @@
 .set FLAGS,    ALIGN | MEMINFO  /* this is the Multiboot 'flag' field */
 .set MAGIC,    0x1BADB002       /* 'magic number' lets bootloader find the header */
 .set CHECKSUM, -(MAGIC + FLAGS) /* checksum of above, to prove we are multiboot */
+
 .section .multiboot
 .align 4
 .long MAGIC
@@ -40,10 +41,10 @@ _start:
 
 	# Push the pointer to the Multiboot information structure.
 	# GRUB 会把 multiboot_t 结构体指针放在 ebx 寄存器里
-	mov glb_mboot_ptr, %ebx
-	push %ebx
+	movl glb_mboot_ptr, %ebx
+	pushl %ebx
 	# Push the magic value.
-	push %eax
+	pushl %eax
 	# 跳转到 C 入口函数
 	call kernel_main
 	cli
