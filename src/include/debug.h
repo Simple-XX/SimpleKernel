@@ -10,6 +10,7 @@
 #include "stdarg.h"
 #include "stddef.h"
 #include "stdio.h"
+#include "stdbool.h"
 #include "string.h"
 #include "multiboot.h"
 #include "elf.h"
@@ -19,9 +20,8 @@
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 #define ELF32_ST_TYPE(i) ((i)&0xf)
 
-void debug_init(uint64_t magic, multiboot_info_t * mb);
-void print_registers(pt_regs_t * regs);
 
+// void debug_init(uint64_t magic, multiboot_info_t * mb);
 
 
 #endif
