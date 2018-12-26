@@ -4,12 +4,11 @@
 /* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
 /* link.ld for MRNIU/SimpleKernel.*/
 
-ENTRY(_start)
+ENTRY(start)
 
 SECTIONS
 {
-	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
-	   loaded at by the bootloader. */
+	/* 指定内核从地址 1M 处开始 */
 	. = 1M;
 
   PROVIDE(kernel_start = .);
@@ -41,6 +40,5 @@ SECTIONS
 	}
 
   PROVIDE(kernel_end = .);
-	/* The compiler may produce other sections, by default it will put them in
-	   a segment with the same name. Simply add stuff here as needed. */
+
 }
