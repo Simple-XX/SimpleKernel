@@ -71,7 +71,7 @@ bool is_mods_valid(multiboot_info_t * mb){
 }
 
 /* Bits 4 and 5 are mutually exclusive! */
-bool is_bits4_bits5_mutually_exclusive(multiboot_info_t * mb){
+bool is_bits4_bits5_both_set(multiboot_info_t * mb){
 		if (CHECK_FLAG (mb->flags, 4) && CHECK_FLAG (mb->flags, 5)) {
 				printk ("Both bits 4 and 5 are set.\n");
 				return true;
@@ -145,6 +145,7 @@ elf_info_t elf_from_multiboot(multiboot_info_t * mb){
 				const char *name = (const char *)(shstrtab + sh[i].name);
 				// printk_color(red, "w");
 				printk_color(red, "num: %d ", mb->u.elf_sec.num);
+				printk_color(red, "size: %d ", mb->u.elf_sec.size);
 				printk_color(red, "i: %d ",i);
 				// 在 GRUB 提供的 multiboot 信息中寻找内核 ELF 格式所提取的字符串表和符号表
 				if (strcmp(name, ".strtab") == 0) {
@@ -179,7 +180,6 @@ const char *elf_lookup_symbol(uint32_t addr, elf_info_t *elf){
 void print_cur_status(){
 		static int round = 0;
 		uint16_t reg1, reg2, reg3, reg4;
-
 		asm volatile (  "mov %%cs, %0;"
 		                "mov %%ds, %1;"
 		                "mov %%es, %2;"
@@ -196,11 +196,11 @@ void print_cur_status(){
 }
 
 static elf_info_t kernel_elf;
-void debug_init(uint32_t magic, multiboot_info_t * mb) {
+void debug_init(uint64_t magic, multiboot_info_t * mb) {
 
 
 		// 从 GRUB 提供的信息中获取到内核符号表和代码地址信息
-		kernel_elf = elf_from_multiboot(mb);
+		// kernel_elf = elf_from_multiboot(mb);
 
 		is_magic(magic);
 		show_multiboot_flags(mb);
@@ -208,12 +208,11 @@ void debug_init(uint32_t magic, multiboot_info_t * mb) {
 		is_boot_device_vaild(mb);
 		is_command_line_passed(mb);
 		is_mods_valid(mb);
-		is_bits4_bits5_mutually_exclusive(mb);
+		is_bits4_bits5_both_set(mb);
 		is_symbol_table_aout_valid(mb);
 		is_section_header_table_elf_valid(mb);
 		is_mmap_valid(mb);
 		print_cur_status();
-		printk("2333333d6964013462085628");
 		return;
 }
 

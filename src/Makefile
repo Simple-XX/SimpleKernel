@@ -63,6 +63,10 @@ info:
 	@echo AS: $(AS)
 	@echo ASFLAGS: $(ASFLAGS)
 
+.PHONY:code_line_count
+code_line_count:
+	find . -type f -name "*.[c|h|s|cpp|hpp]" -exec cat {} \; | wc -l
+
 # 删除源码外的所有文件
 .PHONY: clean
 clean:
