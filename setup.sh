@@ -83,9 +83,9 @@ fi
 # 以 bochrc.txt 为配置文件运行 bochs。
 if [ ${OS} == 0 ]; then
   # mac 下的命令与 linux 的不同
-  hdiutil attach -mountpoint ${folder} ${disk}
-  cp ${img} ${boot_folder}
-  hdiutil detach ${folder}
+  # hdiutil attach -mountpoint ${folder} ${disk}
+  # cp ${img} ${boot_folder}
+  # hdiutil detach ${folder}
   i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
   cp ${img} ${iso_boot}
   bochs -q -f ${bochsrc}
