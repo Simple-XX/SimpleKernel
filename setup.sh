@@ -7,7 +7,7 @@
 # shell 执行出错时终止运行
 set -e
 # 输出实际执行内容
-# set -x
+set -x
 
 # bochs 配置文件
 bochsrc="bochsrc.txt"
@@ -22,6 +22,9 @@ folder='./boot_folder'
 # 工具目录
 tool='./tools'
 
+iso_boot='./iso/boot/kernel.kernel'
+iso='./simplekernel.iso'
+iso_folder='./iso/'
 # 判断操作系统类型
 OS=0
 which_os=`uname -s`
@@ -68,7 +71,7 @@ make clean
 make
 cd ../
 
-if i386-elf-grub-file --is-x86-multiboot ${img}; then
+if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
   echo multiboot confirmed
 else
   echo the file is not multiboot
@@ -83,6 +86,8 @@ if [ ${OS} == 0 ]; then
   hdiutil attach -mountpoint ${folder} ${disk}
   cp ${img} ${boot_folder}
   hdiutil detach ${folder}
+  i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
+  cp ${img} ${iso_boot}
   bochs -q -f ${bochsrc}
 elif [ ${OS} == 1 ]; then
   mkdir ${folder}

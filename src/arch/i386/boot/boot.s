@@ -3,6 +3,7 @@
 # boot.s for MRNIU/SimpleKernel.
 
 /* Declare constants for the multiboot header. */
+.align  8
 
 /*  How many bytes from the start of the file we search for the header. */
 .set MULTIBOOT_SEARCH,                        32768
@@ -59,6 +60,9 @@
 .set MULTIBOOT_HEADER_TAG_RELOCATABLE,  10
 
 .set MULTIBOOT_ARCHITECTURE_I386,  0
+
+.set GRUB_MULTIBOOT_ARCHITECTURE_I386, 0
+
 .set MULTIBOOT_ARCHITECTURE_MIPS32,  4
 .set MULTIBOOT_HEADER_TAG_OPTIONAL, 1
 
@@ -83,7 +87,8 @@
 
 .text
 .globl  start, _start
-
+.globl multiboot_header
+.globl multiboot_header_end
 
 start:
 _start:
@@ -100,8 +105,8 @@ multiboot_header:
   /*  Header length. */
   .long   multiboot_header_end - multiboot_header
   /*  checksum */
-  .long   -(MULTIBOOT2_HEADER_MAGIC + GRUB_MULTIBOOT_ARCHITECTURE_I386 + (multiboot_header_end - multiboot_header))
-
+  #.long   -(MULTIBOOT2_HEADER_MAGIC + GRUB_MULTIBOOT_ARCHITECTURE_I386 + (multiboot_header_end - multiboot_header))
+	.long 0x100000000 - (0xe85250d6 + 0 + (multiboot_header_end - multiboot_header))
 #ifndef __ELF__
 #address_tag_start:
 #  .short MULTIBOOT_HEADER_TAG_ADDRESS
@@ -125,6 +130,8 @@ multiboot_header:
 #entry_address_tag_end:
 #endif /*  __ELF__ */
 
+
+
 framebuffer_tag_start:
   .short MULTIBOOT_HEADER_TAG_FRAMEBUFFER
   .short MULTIBOOT_HEADER_TAG_OPTIONAL
@@ -132,10 +139,14 @@ framebuffer_tag_start:
   .long 1024
   .long 768
   .long 32
+
+
 framebuffer_tag_end:
   .short MULTIBOOT_HEADER_TAG_END
   .short 0
-  .long 8
+  .long 0
+
+
 multiboot_header_end:
 multiboot_entry:
   /*  Initialize the stack pointer. */
