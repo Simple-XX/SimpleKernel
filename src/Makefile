@@ -51,7 +51,6 @@ kernel.kernel: $(OBJ)
 	@echo 编译汇编文件... $<
 	@$(AS) $(ASFLAGS) $< -o $@
 
-
 .PHONY: info
 info:
 	@echo CC: $(CC)
