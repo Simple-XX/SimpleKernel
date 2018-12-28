@@ -21,7 +21,7 @@
 #include "stdbool.h"
 #include "stdio.h"
 #include "tty.hpp"
-#include "multiboot.h"
+#include "multiboot2.h"
 #include "debug.h"
 #include "mm/pmm.h"
 #include "mm/mm.h"

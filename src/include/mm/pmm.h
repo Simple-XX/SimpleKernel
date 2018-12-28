@@ -9,7 +9,7 @@
 
 #include "stdint.h"
 #include "stdio.h"
-#include "multiboot.h"
+#include "multiboot2.h"
 
 extern uint8_t kernel_start[];
 extern uint8_t kernel_end[];

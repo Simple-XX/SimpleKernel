@@ -4,6 +4,7 @@
 /* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
 /* link.ld for MRNIU/SimpleKernel.*/
 
+OUTPUT_FORMAT(elf32-i386)
 ENTRY(start)
 
 SECTIONS
@@ -12,8 +13,8 @@ SECTIONS
 	. = 1M;
 
   PROVIDE(kernel_start = .);
-  PROVIDE(kernel_text_start = .);
 
+	PROVIDE(kernel_text_start = .);
 	.text BLOCK(4K) : ALIGN(4K)
 	{
 		*(.multiboot_header)
@@ -21,23 +22,27 @@ SECTIONS
 	}
   PROVIDE(kernel_text_end = .);
 
-  PROVIDE(kernel_data_start = .);
+  PROVIDE(kernel_rodata_start = .);
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
 		*(.rodata)
 	}
+	PROVIDE(kernel_rodata_end = .);
 
+	PROVIDE(kernel_data_start = .);
 	.data BLOCK(4K) : ALIGN(4K)
 	{
 		*(.data)
 	}
   PROVIDE(kernel_data_end = .);
 
+	PROVIDE(kernel_bss_start = .);
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
 		*(COMMON)
 		*(.bss)
 	}
+	PROVIDE(kernel_bss_end = .);
 
   PROVIDE(kernel_end = .);
 
