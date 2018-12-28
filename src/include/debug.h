@@ -12,7 +12,7 @@
 #include "stdio.h"
 #include "stdbool.h"
 #include "string.h"
-#include "multiboot.h"
+#include "multiboot2.h"
 #include "elf.h"
 #include "intr/intr.h"
 
