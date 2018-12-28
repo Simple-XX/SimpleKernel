@@ -16,6 +16,8 @@
  *      以下即为这个信息块的结构
  */
 
+#ifndef _MULTIBOOT2_H_
+#define _MULTIBOOT2_H_
 
 /*   multiboot2.h - Multiboot 2 header file. */
 /*   Copyright (C) 1999,2003,2007,2008,2009,2010  Free Software Foundation, Inc.
@@ -38,8 +40,6 @@
  *  IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _MULTIBOOT_H_
-#define _MULTIBOOT_H_
 
 #ifndef MULTIBOOT_HEADER
 #define MULTIBOOT_HEADER 1
