@@ -7,7 +7,7 @@
 # shell 执行出错时终止运行
 set -e
 # 输出实际执行内容
-set -x
+# set -x
 
 # bochs 配置文件
 bochsrc="bochsrc.txt"
@@ -75,6 +75,7 @@ if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
   echo multiboot confirmed
 else
   echo the file is not multiboot
+  exit
 fi
 
 

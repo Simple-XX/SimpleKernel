@@ -226,6 +226,8 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 [coding-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
 
+[DNKernel](https://github.com/morimolymoly/DNKernel)
+
 ## 版权信息
 
 此项目使用 MIT 许可证
