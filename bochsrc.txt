@@ -10,8 +10,9 @@ vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 # 这里需要根据实际路径进行修改
 # Here needs to change as your real path.
 
-ata0-master: type=disk, path="simplekernel.iso", mode=flat
-boot: c
+ata0-master: type=disk, path="fs.img", mode=flat
+ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
+boot: cdrom
 
 log: bochsout.txt
 #mouse: enabled=1

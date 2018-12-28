@@ -15,7 +15,6 @@ OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
      $(patsubst %.s, %.o, $(S_SOURCES)) \
 	   $(patsubst %.cpp, %.o, $(CXX_SOURCES))
 
-
 CXX= i386-elf-g++
 CXXFLAGS= -std=c++11 -ffreestanding -nostdinc -O2 \
  				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wsign-compare \
