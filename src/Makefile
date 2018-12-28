@@ -70,5 +70,6 @@ code_line_count:
 clean:
 	@echo 正在删除... $<
 	@find . -name "*.o"  | xargs rm -f
+	@find . -name "*.gch"  | xargs rm -f
 	@-rm -f kernel.kernel
 	@echo 删除完毕

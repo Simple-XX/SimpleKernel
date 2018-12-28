@@ -72,7 +72,7 @@ make
 cd ../
 
 if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
-  echo multiboot confirmed
+  echo Multiboot2 Confirmed!
 else
   echo the file is not multiboot
   exit

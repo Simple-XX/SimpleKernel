@@ -1,0 +1,3637 @@
+1163c1163
+<   100c65:	ba 37 14 10 00       	mov    $0x101437,%edx
+---
+>   100c65:	ba 1f 14 10 00       	mov    $0x10141f,%edx
+1182c1182
+<   100caa:	b8 41 14 10 00       	mov    $0x101441,%eax
+---
+>   100caa:	b8 29 14 10 00       	mov    $0x101429,%eax
+1188c1188
+<   100cc8:	b8 5f 14 10 00       	mov    $0x10145f,%eax
+---
+>   100cc8:	b8 47 14 10 00       	mov    $0x101447,%eax
+1194c1194
+<   100ce6:	b8 69 14 10 00       	mov    $0x101469,%eax
+---
+>   100ce6:	b8 51 14 10 00       	mov    $0x101451,%eax
+1200c1200
+<   100d04:	b8 33 15 10 00       	mov    $0x101533,%eax
+---
+>   100d04:	b8 1b 15 10 00       	mov    $0x10151b,%eax
+1208c1208
+<   100d2a:	e8 00 07 00 00       	call   10142f <idt_load>
+---
+>   100d2a:	e8 e8 06 00 00       	call   101417 <idt_load>
+1301c1301
+<   100edb:	e8 19 07 00 00       	call   1015f9 <gdt_load>
+---
+>   100edb:	e8 01 07 00 00       	call   1015e1 <gdt_load>
+1303c1303
+<   100ee3:	e9 2e 07 00 00       	jmp    101616 <tss_load>
+---
+>   100ee3:	e9 16 07 00 00       	jmp    1015fe <tss_load>
+1774c1774
+<   1013f8:	30 00                	xor    %al,(%eax)
+---
+>   1013f8:	18 00                	sbb    %al,(%eax)
+1776,1868c1776,1866
+<   1013fc:	fa                   	cli    
+<   1013fd:	ae                   	scas   %es:(%edi),%al
+<   1013fe:	ad                   	lods   %ds:(%esi),%eax
+<   1013ff:	17                   	pop    %ss
+< 
+< 00101400 <framebuffer_tag_start>:
+<   101400:	05 00 01 00 18       	add    $0x18000100,%eax
+<   101405:	00 00                	add    %al,(%eax)
+<   101407:	00 00                	add    %al,(%eax)
+<   101409:	04 00                	add    $0x0,%al
+<   10140b:	00 00                	add    %al,(%eax)
+<   10140d:	03 00                	add    (%eax),%eax
+<   10140f:	00 20                	add    %ah,(%eax)
+<   101411:	00 00                	add    %al,(%eax)
+<   101413:	00 8d 74 26 00     	add    %cl,0x2674(%ebp)
+< 
+< 00101418 <framebuffer_tag_end>:
+<   101418:	00 00                	add    %al,(%eax)
+<   10141a:	00 00                	add    %al,(%eax)
+<   10141c:	08 00                	or     %al,(%eax)
+< 	...
+< 
+< 00101420 <start>:
+<   101420:	bc 10 90 10 00       	mov    $0x109010,%esp
+<   101425:	6a 00                	push   $0x0
+<   101427:	9d                   	popf   
+<   101428:	53                   	push   %ebx
+<   101429:	50                   	push   %eax
+<   10142a:	e8 9d ff ff ff       	call   1013cc <kernel_main>
+< 
+< 0010142f <idt_load>:
+<   10142f:	8b 44 24 04          	mov    0x4(%esp),%eax
+<   101433:	0f 01 18             	lidtl  (%eax)
+<   101436:	c3                   	ret    
+< 
+< 00101437 <isr0>:
+<   101437:	fa                   	cli    
+<   101438:	6a 00                	push   $0x0
+<   10143a:	6a 00                	push   $0x0
+<   10143c:	e9 fc 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 00101441 <isr1>:
+<   101441:	fa                   	cli    
+<   101442:	6a 00                	push   $0x0
+<   101444:	6a 01                	push   $0x1
+<   101446:	e9 f2 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 0010144b <isr2>:
+<   10144b:	fa                   	cli    
+<   10144c:	6a 00                	push   $0x0
+<   10144e:	6a 02                	push   $0x2
+<   101450:	e9 e8 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 00101455 <isr3>:
+<   101455:	fa                   	cli    
+<   101456:	6a 00                	push   $0x0
+<   101458:	6a 03                	push   $0x3
+<   10145a:	e9 de 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 0010145f <isr4>:
+<   10145f:	fa                   	cli    
+<   101460:	6a 00                	push   $0x0
+<   101462:	6a 04                	push   $0x4
+<   101464:	e9 d4 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 00101469 <isr5>:
+<   101469:	fa                   	cli    
+<   10146a:	6a 00                	push   $0x0
+<   10146c:	6a 05                	push   $0x5
+<   10146e:	e9 ca 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 00101473 <isr6>:
+<   101473:	fa                   	cli    
+<   101474:	6a 00                	push   $0x0
+<   101476:	6a 06                	push   $0x6
+<   101478:	e9 c0 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 0010147d <isr7>:
+<   10147d:	fa                   	cli    
+<   10147e:	6a 00                	push   $0x0
+<   101480:	6a 07                	push   $0x7
+<   101482:	e9 b6 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 00101487 <isr8>:
+<   101487:	fa                   	cli    
+<   101488:	6a 08                	push   $0x8
+<   10148a:	e9 ae 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 0010148f <isr9>:
+<   10148f:	fa                   	cli    
+<   101490:	6a 00                	push   $0x0
+<   101492:	6a 09                	push   $0x9
+<   101494:	e9 a4 00 00 00       	jmp    10153d <isr_common_stub>
+---
+>   1013fc:	12 af ad 17 00 00    	adc    0x17ad(%edi),%ch
+>   101402:	00 00                	add    %al,(%eax)
+>   101404:	08 00                	or     %al,(%eax)
+> 	...
+> 
+> 00101408 <start>:
+>   101408:	bc 10 90 10 00       	mov    $0x109010,%esp
+>   10140d:	6a 00                	push   $0x0
+>   10140f:	9d                   	popf   
+>   101410:	53                   	push   %ebx
+>   101411:	50                   	push   %eax
+>   101412:	e8 b5 ff ff ff       	call   1013cc <kernel_main>
+> 
+> 00101417 <idt_load>:
+>   101417:	8b 44 24 04          	mov    0x4(%esp),%eax
+>   10141b:	0f 01 18             	lidtl  (%eax)
+>   10141e:	c3                   	ret    
+> 
+> 0010141f <isr0>:
+>   10141f:	fa                   	cli    
+>   101420:	6a 00                	push   $0x0
+>   101422:	6a 00                	push   $0x0
+>   101424:	e9 fc 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101429 <isr1>:
+>   101429:	fa                   	cli    
+>   10142a:	6a 00                	push   $0x0
+>   10142c:	6a 01                	push   $0x1
+>   10142e:	e9 f2 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101433 <isr2>:
+>   101433:	fa                   	cli    
+>   101434:	6a 00                	push   $0x0
+>   101436:	6a 02                	push   $0x2
+>   101438:	e9 e8 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 0010143d <isr3>:
+>   10143d:	fa                   	cli    
+>   10143e:	6a 00                	push   $0x0
+>   101440:	6a 03                	push   $0x3
+>   101442:	e9 de 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101447 <isr4>:
+>   101447:	fa                   	cli    
+>   101448:	6a 00                	push   $0x0
+>   10144a:	6a 04                	push   $0x4
+>   10144c:	e9 d4 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101451 <isr5>:
+>   101451:	fa                   	cli    
+>   101452:	6a 00                	push   $0x0
+>   101454:	6a 05                	push   $0x5
+>   101456:	e9 ca 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 0010145b <isr6>:
+>   10145b:	fa                   	cli    
+>   10145c:	6a 00                	push   $0x0
+>   10145e:	6a 06                	push   $0x6
+>   101460:	e9 c0 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101465 <isr7>:
+>   101465:	fa                   	cli    
+>   101466:	6a 00                	push   $0x0
+>   101468:	6a 07                	push   $0x7
+>   10146a:	e9 b6 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 0010146f <isr8>:
+>   10146f:	fa                   	cli    
+>   101470:	6a 08                	push   $0x8
+>   101472:	e9 ae 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101477 <isr9>:
+>   101477:	fa                   	cli    
+>   101478:	6a 00                	push   $0x0
+>   10147a:	6a 09                	push   $0x9
+>   10147c:	e9 a4 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101481 <isr10>:
+>   101481:	fa                   	cli    
+>   101482:	6a 0a                	push   $0xa
+>   101484:	e9 9c 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101489 <isr11>:
+>   101489:	fa                   	cli    
+>   10148a:	6a 0b                	push   $0xb
+>   10148c:	e9 94 00 00 00       	jmp    101525 <isr_common_stub>
+> 
+> 00101491 <isr12>:
+>   101491:	fa                   	cli    
+>   101492:	6a 0c                	push   $0xc
+>   101494:	e9 8c 00 00 00       	jmp    101525 <isr_common_stub>
+1870c1868
+< 00101499 <isr10>:
+---
+> 00101499 <isr13>:
+1872,1873c1870,1871
+<   10149a:	6a 0a                	push   $0xa
+<   10149c:	e9 9c 00 00 00       	jmp    10153d <isr_common_stub>
+---
+>   10149a:	6a 0d                	push   $0xd
+>   10149c:	e9 84 00 00 00       	jmp    101525 <isr_common_stub>
+1875c1873
+< 001014a1 <isr11>:
+---
+> 001014a1 <isr14>:
+1877,1878c1875,1876
+<   1014a2:	6a 0b                	push   $0xb
+<   1014a4:	e9 94 00 00 00       	jmp    10153d <isr_common_stub>
+---
+>   1014a2:	6a 0e                	push   $0xe
+>   1014a4:	eb 7f                	jmp    101525 <isr_common_stub>
+1880,1888c1878,1893
+< 001014a9 <isr12>:
+<   1014a9:	fa                   	cli    
+<   1014aa:	6a 0c                	push   $0xc
+<   1014ac:	e9 8c 00 00 00       	jmp    10153d <isr_common_stub>
+< 
+< 001014b1 <isr13>:
+<   1014b1:	fa                   	cli    
+<   1014b2:	6a 0d                	push   $0xd
+<   1014b4:	e9 84 00 00 00       	jmp    10153d <isr_common_stub>
+---
+> 001014a6 <isr15>:
+>   1014a6:	fa                   	cli    
+>   1014a7:	6a 00                	push   $0x0
+>   1014a9:	6a 0f                	push   $0xf
+>   1014ab:	eb 78                	jmp    101525 <isr_common_stub>
+> 
+> 001014ad <isr16>:
+>   1014ad:	fa                   	cli    
+>   1014ae:	6a 00                	push   $0x0
+>   1014b0:	6a 10                	push   $0x10
+>   1014b2:	eb 71                	jmp    101525 <isr_common_stub>
+> 
+> 001014b4 <isr17>:
+>   1014b4:	fa                   	cli    
+>   1014b5:	6a 11                	push   $0x11
+>   1014b7:	eb 6c                	jmp    101525 <isr_common_stub>
+1890c1895
+< 001014b9 <isr14>:
+---
+> 001014b9 <isr18>:
+1892,2157c1897,2140
+<   1014ba:	6a 0e                	push   $0xe
+<   1014bc:	eb 7f                	jmp    10153d <isr_common_stub>
+< 
+< 001014be <isr15>:
+<   1014be:	fa                   	cli    
+<   1014bf:	6a 00                	push   $0x0
+<   1014c1:	6a 0f                	push   $0xf
+<   1014c3:	eb 78                	jmp    10153d <isr_common_stub>
+< 
+< 001014c5 <isr16>:
+<   1014c5:	fa                   	cli    
+<   1014c6:	6a 00                	push   $0x0
+<   1014c8:	6a 10                	push   $0x10
+<   1014ca:	eb 71                	jmp    10153d <isr_common_stub>
+< 
+< 001014cc <isr17>:
+<   1014cc:	fa                   	cli    
+<   1014cd:	6a 11                	push   $0x11
+<   1014cf:	eb 6c                	jmp    10153d <isr_common_stub>
+< 
+< 001014d1 <isr18>:
+<   1014d1:	fa                   	cli    
+<   1014d2:	6a 00                	push   $0x0
+<   1014d4:	6a 12                	push   $0x12
+<   1014d6:	eb 65                	jmp    10153d <isr_common_stub>
+< 
+< 001014d8 <isr19>:
+<   1014d8:	fa                   	cli    
+<   1014d9:	6a 00                	push   $0x0
+<   1014db:	6a 13                	push   $0x13
+<   1014dd:	eb 5e                	jmp    10153d <isr_common_stub>
+< 
+< 001014df <isr20>:
+<   1014df:	fa                   	cli    
+<   1014e0:	6a 00                	push   $0x0
+<   1014e2:	6a 14                	push   $0x14
+<   1014e4:	eb 57                	jmp    10153d <isr_common_stub>
+< 
+< 001014e6 <isr21>:
+<   1014e6:	fa                   	cli    
+<   1014e7:	6a 00                	push   $0x0
+<   1014e9:	6a 15                	push   $0x15
+<   1014eb:	eb 50                	jmp    10153d <isr_common_stub>
+< 
+< 001014ed <isr22>:
+<   1014ed:	fa                   	cli    
+<   1014ee:	6a 00                	push   $0x0
+<   1014f0:	6a 16                	push   $0x16
+<   1014f2:	eb 49                	jmp    10153d <isr_common_stub>
+< 
+< 001014f4 <isr23>:
+<   1014f4:	fa                   	cli    
+<   1014f5:	6a 00                	push   $0x0
+<   1014f7:	6a 17                	push   $0x17
+<   1014f9:	eb 42                	jmp    10153d <isr_common_stub>
+< 
+< 001014fb <isr24>:
+<   1014fb:	fa                   	cli    
+<   1014fc:	6a 00                	push   $0x0
+<   1014fe:	6a 18                	push   $0x18
+<   101500:	eb 3b                	jmp    10153d <isr_common_stub>
+< 
+< 00101502 <isr25>:
+<   101502:	fa                   	cli    
+<   101503:	6a 00                	push   $0x0
+<   101505:	6a 19                	push   $0x19
+<   101507:	eb 34                	jmp    10153d <isr_common_stub>
+< 
+< 00101509 <isr26>:
+<   101509:	fa                   	cli    
+<   10150a:	6a 00                	push   $0x0
+<   10150c:	6a 1a                	push   $0x1a
+<   10150e:	eb 2d                	jmp    10153d <isr_common_stub>
+< 
+< 00101510 <isr27>:
+<   101510:	fa                   	cli    
+<   101511:	6a 00                	push   $0x0
+<   101513:	6a 1b                	push   $0x1b
+<   101515:	eb 26                	jmp    10153d <isr_common_stub>
+< 
+< 00101517 <isr28>:
+<   101517:	fa                   	cli    
+<   101518:	6a 00                	push   $0x0
+<   10151a:	6a 1c                	push   $0x1c
+<   10151c:	eb 1f                	jmp    10153d <isr_common_stub>
+< 
+< 0010151e <isr29>:
+<   10151e:	fa                   	cli    
+<   10151f:	6a 00                	push   $0x0
+<   101521:	6a 1d                	push   $0x1d
+<   101523:	eb 18                	jmp    10153d <isr_common_stub>
+< 
+< 00101525 <isr30>:
+<   101525:	fa                   	cli    
+<   101526:	6a 00                	push   $0x0
+<   101528:	6a 1e                	push   $0x1e
+<   10152a:	eb 11                	jmp    10153d <isr_common_stub>
+< 
+< 0010152c <isr31>:
+<   10152c:	fa                   	cli    
+<   10152d:	6a 00                	push   $0x0
+<   10152f:	6a 1f                	push   $0x1f
+<   101531:	eb 0a                	jmp    10153d <isr_common_stub>
+< 
+< 00101533 <isr128>:
+<   101533:	fa                   	cli    
+<   101534:	6a 00                	push   $0x0
+<   101536:	68 80 00 00 00       	push   $0x80
+<   10153b:	eb 00                	jmp    10153d <isr_common_stub>
+< 
+< 0010153d <isr_common_stub>:
+<   10153d:	60                   	pusha  
+<   10153e:	1e                   	push   %ds
+<   10153f:	06                   	push   %es
+<   101540:	0f a0                	push   %fs
+<   101542:	0f a8                	push   %gs
+<   101544:	66 b8 10 00          	mov    $0x10,%ax
+<   101548:	8e d8                	mov    %eax,%ds
+<   10154a:	8e c0                	mov    %eax,%es
+<   10154c:	8e e0                	mov    %eax,%fs
+<   10154e:	8e e8                	mov    %eax,%gs
+<   101550:	8e d0                	mov    %eax,%ss
+<   101552:	54                   	push   %esp
+<   101553:	e8 48 f6 ff ff       	call   100ba0 <isr_handler>
+<   101558:	83 c4 04             	add    $0x4,%esp
+<   10155b:	e8 8e 00 00 00       	call   1015ee <forkret_s>
+< 
+< 00101560 <irq0>:
+<   101560:	fa                   	cli    
+<   101561:	6a 00                	push   $0x0
+<   101563:	6a 20                	push   $0x20
+<   101565:	eb 69                	jmp    1015d0 <irq_common_stub>
+< 
+< 00101567 <irq1>:
+<   101567:	fa                   	cli    
+<   101568:	6a 00                	push   $0x0
+<   10156a:	6a 21                	push   $0x21
+<   10156c:	eb 62                	jmp    1015d0 <irq_common_stub>
+< 
+< 0010156e <irq2>:
+<   10156e:	fa                   	cli    
+<   10156f:	6a 00                	push   $0x0
+<   101571:	6a 22                	push   $0x22
+<   101573:	eb 5b                	jmp    1015d0 <irq_common_stub>
+< 
+< 00101575 <irq3>:
+<   101575:	fa                   	cli    
+<   101576:	6a 00                	push   $0x0
+<   101578:	6a 23                	push   $0x23
+<   10157a:	eb 54                	jmp    1015d0 <irq_common_stub>
+< 
+< 0010157c <irq4>:
+<   10157c:	fa                   	cli    
+<   10157d:	6a 00                	push   $0x0
+<   10157f:	6a 24                	push   $0x24
+<   101581:	eb 4d                	jmp    1015d0 <irq_common_stub>
+< 
+< 00101583 <irq5>:
+<   101583:	fa                   	cli    
+<   101584:	6a 00                	push   $0x0
+<   101586:	6a 25                	push   $0x25
+<   101588:	eb 46                	jmp    1015d0 <irq_common_stub>
+< 
+< 0010158a <irq6>:
+<   10158a:	fa                   	cli    
+<   10158b:	6a 00                	push   $0x0
+<   10158d:	6a 26                	push   $0x26
+<   10158f:	eb 3f                	jmp    1015d0 <irq_common_stub>
+< 
+< 00101591 <irq7>:
+<   101591:	fa                   	cli    
+<   101592:	6a 00                	push   $0x0
+<   101594:	6a 27                	push   $0x27
+<   101596:	eb 38                	jmp    1015d0 <irq_common_stub>
+< 
+< 00101598 <irq8>:
+<   101598:	fa                   	cli    
+<   101599:	6a 00                	push   $0x0
+<   10159b:	6a 28                	push   $0x28
+<   10159d:	eb 31                	jmp    1015d0 <irq_common_stub>
+< 
+< 0010159f <irq9>:
+<   10159f:	fa                   	cli    
+<   1015a0:	6a 00                	push   $0x0
+<   1015a2:	6a 29                	push   $0x29
+<   1015a4:	eb 2a                	jmp    1015d0 <irq_common_stub>
+< 
+< 001015a6 <irq10>:
+<   1015a6:	fa                   	cli    
+<   1015a7:	6a 00                	push   $0x0
+<   1015a9:	6a 2a                	push   $0x2a
+<   1015ab:	eb 23                	jmp    1015d0 <irq_common_stub>
+< 
+< 001015ad <irq11>:
+<   1015ad:	fa                   	cli    
+<   1015ae:	6a 00                	push   $0x0
+<   1015b0:	6a 2b                	push   $0x2b
+<   1015b2:	eb 1c                	jmp    1015d0 <irq_common_stub>
+< 
+< 001015b4 <irq12>:
+<   1015b4:	fa                   	cli    
+<   1015b5:	6a 00                	push   $0x0
+<   1015b7:	6a 2c                	push   $0x2c
+<   1015b9:	eb 15                	jmp    1015d0 <irq_common_stub>
+< 
+< 001015bb <irq13>:
+<   1015bb:	fa                   	cli    
+<   1015bc:	6a 00                	push   $0x0
+<   1015be:	6a 2d                	push   $0x2d
+<   1015c0:	eb 0e                	jmp    1015d0 <irq_common_stub>
+< 
+< 001015c2 <irq14>:
+<   1015c2:	fa                   	cli    
+<   1015c3:	6a 00                	push   $0x0
+<   1015c5:	6a 2e                	push   $0x2e
+<   1015c7:	eb 07                	jmp    1015d0 <irq_common_stub>
+< 
+< 001015c9 <irq15>:
+<   1015c9:	fa                   	cli    
+<   1015ca:	6a 00                	push   $0x0
+<   1015cc:	6a 2f                	push   $0x2f
+<   1015ce:	eb 00                	jmp    1015d0 <irq_common_stub>
+< 
+< 001015d0 <irq_common_stub>:
+<   1015d0:	60                   	pusha  
+<   1015d1:	1e                   	push   %ds
+<   1015d2:	06                   	push   %es
+<   1015d3:	0f a0                	push   %fs
+<   1015d5:	0f a8                	push   %gs
+<   1015d7:	66 b8 10 00          	mov    $0x10,%ax
+<   1015db:	8e d8                	mov    %eax,%ds
+<   1015dd:	8e c0                	mov    %eax,%es
+<   1015df:	8e e0                	mov    %eax,%fs
+<   1015e1:	8e e8                	mov    %eax,%gs
+<   1015e3:	8e d0                	mov    %eax,%ss
+<   1015e5:	54                   	push   %esp
+<   1015e6:	e8 0d f6 ff ff       	call   100bf8 <irq_handler>
+<   1015eb:	83 c4 04             	add    $0x4,%esp
+< 
+< 001015ee <forkret_s>:
+<   1015ee:	0f a9                	pop    %gs
+<   1015f0:	0f a1                	pop    %fs
+<   1015f2:	07                   	pop    %es
+<   1015f3:	1f                   	pop    %ds
+<   1015f4:	61                   	popa   
+<   1015f5:	83 c4 08             	add    $0x8,%esp
+<   1015f8:	cf                   	iret   
+< 
+< 001015f9 <gdt_load>:
+<   1015f9:	8b 44 24 04          	mov    0x4(%esp),%eax
+<   1015fd:	0f 01 10             	lgdtl  (%eax)
+<   101600:	66 b8 10 00          	mov    $0x10,%ax
+<   101604:	8e d8                	mov    %eax,%ds
+<   101606:	8e c0                	mov    %eax,%es
+<   101608:	8e e0                	mov    %eax,%fs
+<   10160a:	8e e8                	mov    %eax,%gs
+<   10160c:	8e d0                	mov    %eax,%ss
+<   10160e:	ea 15 16 10 00 08 00 	ljmp   $0x8,$0x101615
+< 
+< 00101615 <flush>:
+<   101615:	c3                   	ret    
+< 
+< 00101616 <tss_load>:
+<   101616:	66 b8 28 00          	mov    $0x28,%ax
+<   10161a:	0f 00 d8             	ltr    %ax
+<   10161d:	c3                   	ret    
+---
+>   1014ba:	6a 00                	push   $0x0
+>   1014bc:	6a 12                	push   $0x12
+>   1014be:	eb 65                	jmp    101525 <isr_common_stub>
+> 
+> 001014c0 <isr19>:
+>   1014c0:	fa                   	cli    
+>   1014c1:	6a 00                	push   $0x0
+>   1014c3:	6a 13                	push   $0x13
+>   1014c5:	eb 5e                	jmp    101525 <isr_common_stub>
+> 
+> 001014c7 <isr20>:
+>   1014c7:	fa                   	cli    
+>   1014c8:	6a 00                	push   $0x0
+>   1014ca:	6a 14                	push   $0x14
+>   1014cc:	eb 57                	jmp    101525 <isr_common_stub>
+> 
+> 001014ce <isr21>:
+>   1014ce:	fa                   	cli    
+>   1014cf:	6a 00                	push   $0x0
+>   1014d1:	6a 15                	push   $0x15
+>   1014d3:	eb 50                	jmp    101525 <isr_common_stub>
+> 
+> 001014d5 <isr22>:
+>   1014d5:	fa                   	cli    
+>   1014d6:	6a 00                	push   $0x0
+>   1014d8:	6a 16                	push   $0x16
+>   1014da:	eb 49                	jmp    101525 <isr_common_stub>
+> 
+> 001014dc <isr23>:
+>   1014dc:	fa                   	cli    
+>   1014dd:	6a 00                	push   $0x0
+>   1014df:	6a 17                	push   $0x17
+>   1014e1:	eb 42                	jmp    101525 <isr_common_stub>
+> 
+> 001014e3 <isr24>:
+>   1014e3:	fa                   	cli    
+>   1014e4:	6a 00                	push   $0x0
+>   1014e6:	6a 18                	push   $0x18
+>   1014e8:	eb 3b                	jmp    101525 <isr_common_stub>
+> 
+> 001014ea <isr25>:
+>   1014ea:	fa                   	cli    
+>   1014eb:	6a 00                	push   $0x0
+>   1014ed:	6a 19                	push   $0x19
+>   1014ef:	eb 34                	jmp    101525 <isr_common_stub>
+> 
+> 001014f1 <isr26>:
+>   1014f1:	fa                   	cli    
+>   1014f2:	6a 00                	push   $0x0
+>   1014f4:	6a 1a                	push   $0x1a
+>   1014f6:	eb 2d                	jmp    101525 <isr_common_stub>
+> 
+> 001014f8 <isr27>:
+>   1014f8:	fa                   	cli    
+>   1014f9:	6a 00                	push   $0x0
+>   1014fb:	6a 1b                	push   $0x1b
+>   1014fd:	eb 26                	jmp    101525 <isr_common_stub>
+> 
+> 001014ff <isr28>:
+>   1014ff:	fa                   	cli    
+>   101500:	6a 00                	push   $0x0
+>   101502:	6a 1c                	push   $0x1c
+>   101504:	eb 1f                	jmp    101525 <isr_common_stub>
+> 
+> 00101506 <isr29>:
+>   101506:	fa                   	cli    
+>   101507:	6a 00                	push   $0x0
+>   101509:	6a 1d                	push   $0x1d
+>   10150b:	eb 18                	jmp    101525 <isr_common_stub>
+> 
+> 0010150d <isr30>:
+>   10150d:	fa                   	cli    
+>   10150e:	6a 00                	push   $0x0
+>   101510:	6a 1e                	push   $0x1e
+>   101512:	eb 11                	jmp    101525 <isr_common_stub>
+> 
+> 00101514 <isr31>:
+>   101514:	fa                   	cli    
+>   101515:	6a 00                	push   $0x0
+>   101517:	6a 1f                	push   $0x1f
+>   101519:	eb 0a                	jmp    101525 <isr_common_stub>
+> 
+> 0010151b <isr128>:
+>   10151b:	fa                   	cli    
+>   10151c:	6a 00                	push   $0x0
+>   10151e:	68 80 00 00 00       	push   $0x80
+>   101523:	eb 00                	jmp    101525 <isr_common_stub>
+> 
+> 00101525 <isr_common_stub>:
+>   101525:	60                   	pusha  
+>   101526:	1e                   	push   %ds
+>   101527:	06                   	push   %es
+>   101528:	0f a0                	push   %fs
+>   10152a:	0f a8                	push   %gs
+>   10152c:	66 b8 10 00          	mov    $0x10,%ax
+>   101530:	8e d8                	mov    %eax,%ds
+>   101532:	8e c0                	mov    %eax,%es
+>   101534:	8e e0                	mov    %eax,%fs
+>   101536:	8e e8                	mov    %eax,%gs
+>   101538:	8e d0                	mov    %eax,%ss
+>   10153a:	54                   	push   %esp
+>   10153b:	e8 60 f6 ff ff       	call   100ba0 <isr_handler>
+>   101540:	83 c4 04             	add    $0x4,%esp
+>   101543:	e8 8e 00 00 00       	call   1015d6 <forkret_s>
+> 
+> 00101548 <irq0>:
+>   101548:	fa                   	cli    
+>   101549:	6a 00                	push   $0x0
+>   10154b:	6a 20                	push   $0x20
+>   10154d:	eb 69                	jmp    1015b8 <irq_common_stub>
+> 
+> 0010154f <irq1>:
+>   10154f:	fa                   	cli    
+>   101550:	6a 00                	push   $0x0
+>   101552:	6a 21                	push   $0x21
+>   101554:	eb 62                	jmp    1015b8 <irq_common_stub>
+> 
+> 00101556 <irq2>:
+>   101556:	fa                   	cli    
+>   101557:	6a 00                	push   $0x0
+>   101559:	6a 22                	push   $0x22
+>   10155b:	eb 5b                	jmp    1015b8 <irq_common_stub>
+> 
+> 0010155d <irq3>:
+>   10155d:	fa                   	cli    
+>   10155e:	6a 00                	push   $0x0
+>   101560:	6a 23                	push   $0x23
+>   101562:	eb 54                	jmp    1015b8 <irq_common_stub>
+> 
+> 00101564 <irq4>:
+>   101564:	fa                   	cli    
+>   101565:	6a 00                	push   $0x0
+>   101567:	6a 24                	push   $0x24
+>   101569:	eb 4d                	jmp    1015b8 <irq_common_stub>
+> 
+> 0010156b <irq5>:
+>   10156b:	fa                   	cli    
+>   10156c:	6a 00                	push   $0x0
+>   10156e:	6a 25                	push   $0x25
+>   101570:	eb 46                	jmp    1015b8 <irq_common_stub>
+> 
+> 00101572 <irq6>:
+>   101572:	fa                   	cli    
+>   101573:	6a 00                	push   $0x0
+>   101575:	6a 26                	push   $0x26
+>   101577:	eb 3f                	jmp    1015b8 <irq_common_stub>
+> 
+> 00101579 <irq7>:
+>   101579:	fa                   	cli    
+>   10157a:	6a 00                	push   $0x0
+>   10157c:	6a 27                	push   $0x27
+>   10157e:	eb 38                	jmp    1015b8 <irq_common_stub>
+> 
+> 00101580 <irq8>:
+>   101580:	fa                   	cli    
+>   101581:	6a 00                	push   $0x0
+>   101583:	6a 28                	push   $0x28
+>   101585:	eb 31                	jmp    1015b8 <irq_common_stub>
+> 
+> 00101587 <irq9>:
+>   101587:	fa                   	cli    
+>   101588:	6a 00                	push   $0x0
+>   10158a:	6a 29                	push   $0x29
+>   10158c:	eb 2a                	jmp    1015b8 <irq_common_stub>
+> 
+> 0010158e <irq10>:
+>   10158e:	fa                   	cli    
+>   10158f:	6a 00                	push   $0x0
+>   101591:	6a 2a                	push   $0x2a
+>   101593:	eb 23                	jmp    1015b8 <irq_common_stub>
+> 
+> 00101595 <irq11>:
+>   101595:	fa                   	cli    
+>   101596:	6a 00                	push   $0x0
+>   101598:	6a 2b                	push   $0x2b
+>   10159a:	eb 1c                	jmp    1015b8 <irq_common_stub>
+> 
+> 0010159c <irq12>:
+>   10159c:	fa                   	cli    
+>   10159d:	6a 00                	push   $0x0
+>   10159f:	6a 2c                	push   $0x2c
+>   1015a1:	eb 15                	jmp    1015b8 <irq_common_stub>
+> 
+> 001015a3 <irq13>:
+>   1015a3:	fa                   	cli    
+>   1015a4:	6a 00                	push   $0x0
+>   1015a6:	6a 2d                	push   $0x2d
+>   1015a8:	eb 0e                	jmp    1015b8 <irq_common_stub>
+> 
+> 001015aa <irq14>:
+>   1015aa:	fa                   	cli    
+>   1015ab:	6a 00                	push   $0x0
+>   1015ad:	6a 2e                	push   $0x2e
+>   1015af:	eb 07                	jmp    1015b8 <irq_common_stub>
+> 
+> 001015b1 <irq15>:
+>   1015b1:	fa                   	cli    
+>   1015b2:	6a 00                	push   $0x0
+>   1015b4:	6a 2f                	push   $0x2f
+>   1015b6:	eb 00                	jmp    1015b8 <irq_common_stub>
+> 
+> 001015b8 <irq_common_stub>:
+>   1015b8:	60                   	pusha  
+>   1015b9:	1e                   	push   %ds
+>   1015ba:	06                   	push   %es
+>   1015bb:	0f a0                	push   %fs
+>   1015bd:	0f a8                	push   %gs
+>   1015bf:	66 b8 10 00          	mov    $0x10,%ax
+>   1015c3:	8e d8                	mov    %eax,%ds
+>   1015c5:	8e c0                	mov    %eax,%es
+>   1015c7:	8e e0                	mov    %eax,%fs
+>   1015c9:	8e e8                	mov    %eax,%gs
+>   1015cb:	8e d0                	mov    %eax,%ss
+>   1015cd:	54                   	push   %esp
+>   1015ce:	e8 25 f6 ff ff       	call   100bf8 <irq_handler>
+>   1015d3:	83 c4 04             	add    $0x4,%esp
+> 
+> 001015d6 <forkret_s>:
+>   1015d6:	0f a9                	pop    %gs
+>   1015d8:	0f a1                	pop    %fs
+>   1015da:	07                   	pop    %es
+>   1015db:	1f                   	pop    %ds
+>   1015dc:	61                   	popa   
+>   1015dd:	83 c4 08             	add    $0x8,%esp
+>   1015e0:	cf                   	iret   
+> 
+> 001015e1 <gdt_load>:
+>   1015e1:	8b 44 24 04          	mov    0x4(%esp),%eax
+>   1015e5:	0f 01 10             	lgdtl  (%eax)
+>   1015e8:	66 b8 10 00          	mov    $0x10,%ax
+>   1015ec:	8e d8                	mov    %eax,%ds
+>   1015ee:	8e c0                	mov    %eax,%es
+>   1015f0:	8e e0                	mov    %eax,%fs
+>   1015f2:	8e e8                	mov    %eax,%gs
+>   1015f4:	8e d0                	mov    %eax,%ss
+>   1015f6:	ea fd 15 10 00 08 00 	ljmp   $0x8,$0x1015fd
+> 
+> 001015fd <flush>:
+>   1015fd:	c3                   	ret    
+> 
+> 001015fe <tss_load>:
+>   1015fe:	66 b8 28 00          	mov    $0x28,%ax
+>   101602:	0f 00 d8             	ltr    %ax
+>   101605:	c3                   	ret    
+2285c2268
+<   102140:	37                   	aaa    
+---
+>   102140:	1f                   	pop    %ds
+2287,2289c2270,2272
+<   102143:	00 41 14             	add    %al,0x14(%ecx)
+<   102146:	10 00                	adc    %al,(%eax)
+<   102148:	4b                   	dec    %ebx
+---
+>   102143:	00 29                	add    %ch,(%ecx)
+>   102145:	14 10                	adc    $0x10,%al
+>   102147:	00 33                	add    %dh,(%ebx)
+2291,2293c2274
+<   10214b:	00 55 14             	add    %dl,0x14(%ebp)
+<   10214e:	10 00                	adc    %al,(%eax)
+<   102150:	5f                   	pop    %edi
+---
+>   10214b:	00 3d 14 10 00 47    	add    %bh,0x47001014
+2295c2276
+<   102153:	00 69 14             	add    %ch,0x14(%ecx)
+---
+>   102153:	00 51 14             	add    %dl,0x14(%ecx)
+2297,2299c2278,2280
+<   102158:	73 14                	jae    10216e <isr_irq_func+0x2e>
+<   10215a:	10 00                	adc    %al,(%eax)
+<   10215c:	7d 14                	jge    102172 <isr_irq_func+0x32>
+---
+>   102158:	5b                   	pop    %ebx
+>   102159:	14 10                	adc    $0x10,%al
+>   10215b:	00 65 14             	add    %ah,0x14(%ebp)
+2301,2310c2282,2291
+<   102160:	87 14 10             	xchg   %edx,(%eax,%edx,1)
+<   102163:	00 8f 14 10 00 99    	add    %cl,-0x66ffefec(%edi)
+<   102169:	14 10                	adc    $0x10,%al
+<   10216b:	00 a1 14 10 00 a9    	add    %ah,-0x56ffefec(%ecx)
+<   102171:	14 10                	adc    $0x10,%al
+<   102173:	00 b1 14 10 00 b9    	add    %dh,-0x46ffefec(%ecx)
+<   102179:	14 10                	adc    $0x10,%al
+<   10217b:	00 be 14 10 00 c5    	add    %bh,-0x3affefec(%esi)
+<   102181:	14 10                	adc    $0x10,%al
+<   102183:	00 cc                	add    %cl,%ah
+---
+>   102160:	6f                   	outsl  %ds:(%esi),(%dx)
+>   102161:	14 10                	adc    $0x10,%al
+>   102163:	00 77 14             	add    %dh,0x14(%edi)
+>   102166:	10 00                	adc    %al,(%eax)
+>   102168:	81 14 10 00 89 14 10 	adcl   $0x10148900,(%eax,%edx,1)
+>   10216f:	00 91 14 10 00 99    	add    %dl,-0x66ffefec(%ecx)
+>   102175:	14 10                	adc    $0x10,%al
+>   102177:	00 a1 14 10 00 a6    	add    %ah,-0x59ffefec(%ecx)
+>   10217d:	14 10                	adc    $0x10,%al
+>   10217f:	00 ad 14 10 00 b4    	add    %ch,-0x4bffefec(%ebp)
+2312,2314c2293
+<   102187:	00 d1                	add    %dl,%cl
+<   102189:	14 10                	adc    $0x10,%al
+<   10218b:	00 d8                	add    %bl,%al
+---
+>   102187:	00 b9 14 10 00 c0    	add    %bh,-0x3fffefec(%ecx)
+2316c2295
+<   10218f:	00 df                	add    %bl,%bh
+---
+>   10218f:	00 c7                	add    %al,%bh
+2318c2297
+<   102193:	00 e6                	add    %ah,%dh
+---
+>   102193:	00 ce                	add    %cl,%dh
+2320c2299
+<   102197:	00 ed                	add    %ch,%ch
+---
+>   102197:	00 d5                	add    %dl,%ch
+2322c2301
+<   10219b:	00 f4                	add    %dh,%ah
+---
+>   10219b:	00 dc                	add    %bl,%ah
+2324c2303
+<   10219f:	00 fb                	add    %bh,%bl
+---
+>   10219f:	00 e3                	add    %ah,%bl
+2326,2332c2305,2314
+<   1021a3:	00 02                	add    %al,(%edx)
+<   1021a5:	15 10 00 09 15       	adc    $0x15090010,%eax
+<   1021aa:	10 00                	adc    %al,(%eax)
+<   1021ac:	10 15 10 00 17 15    	adc    %dl,0x15170010
+<   1021b2:	10 00                	adc    %al,(%eax)
+<   1021b4:	1e                   	push   %ds
+<   1021b5:	15 10 00 25 15       	adc    $0x15250010,%eax
+---
+>   1021a3:	00 ea                	add    %ch,%dl
+>   1021a5:	14 10                	adc    $0x10,%al
+>   1021a7:	00 f1                	add    %dh,%cl
+>   1021a9:	14 10                	adc    $0x10,%al
+>   1021ab:	00 f8                	add    %bh,%al
+>   1021ad:	14 10                	adc    $0x10,%al
+>   1021af:	00 ff                	add    %bh,%bh
+>   1021b1:	14 10                	adc    $0x10,%al
+>   1021b3:	00 06                	add    %al,(%esi)
+>   1021b5:	15 10 00 0d 15       	adc    $0x150d0010,%eax
+2334c2316
+<   1021bc:	2c 15                	sub    $0x15,%al
+---
+>   1021bc:	14 15                	adc    $0x15,%al
+2336,2337c2318,2319
+<   1021c0:	60                   	pusha  
+<   1021c1:	15 10 00 67 15       	adc    $0x15670010,%eax
+---
+>   1021c0:	48                   	dec    %eax
+>   1021c1:	15 10 00 4f 15       	adc    $0x154f0010,%eax
+2339,2340c2321,2322
+<   1021c8:	6e                   	outsb  %ds:(%esi),(%dx)
+<   1021c9:	15 10 00 75 15       	adc    $0x15750010,%eax
+---
+>   1021c8:	56                   	push   %esi
+>   1021c9:	15 10 00 5d 15       	adc    $0x155d0010,%eax
+2342,2351c2324,2332
+<   1021d0:	7c 15                	jl     1021e7 <isr_irq_func+0xa7>
+<   1021d2:	10 00                	adc    %al,(%eax)
+<   1021d4:	83 15 10 00 8a 15 10 	adcl   $0x10,0x158a0010
+<   1021db:	00 91 15 10 00 98    	add    %dl,-0x67ffefeb(%ecx)
+<   1021e1:	15 10 00 9f 15       	adc    $0x159f0010,%eax
+<   1021e6:	10 00                	adc    %al,(%eax)
+<   1021e8:	a6                   	cmpsb  %es:(%edi),%ds:(%esi)
+<   1021e9:	15 10 00 ad 15       	adc    $0x15ad0010,%eax
+<   1021ee:	10 00                	adc    %al,(%eax)
+<   1021f0:	b4 15                	mov    $0x15,%ah
+---
+>   1021d0:	64 15 10 00 6b 15    	fs adc $0x156b0010,%eax
+>   1021d6:	10 00                	adc    %al,(%eax)
+>   1021d8:	72 15                	jb     1021ef <isr_irq_func+0xaf>
+>   1021da:	10 00                	adc    %al,(%eax)
+>   1021dc:	79 15                	jns    1021f3 <isr_irq_func+0xb3>
+>   1021de:	10 00                	adc    %al,(%eax)
+>   1021e0:	80 15 10 00 87 15 10 	adcb   $0x10,0x15870010
+>   1021e7:	00 8e 15 10 00 95    	add    %cl,-0x6affefeb(%esi)
+>   1021ed:	15 10 00 9c 15       	adc    $0x159c0010,%eax
+2353,2354c2334,2335
+<   1021f4:	bb 15 10 00 c2       	mov    $0xc2001015,%ebx
+<   1021f9:	15 10 00 c9 15       	adc    $0x15c90010,%eax
+---
+>   1021f4:	a3 15 10 00 aa       	mov    %eax,0xaa001015
+>   1021f9:	15 10 00 b1 15       	adc    $0x15b10010,%eax
+4001c3982
+<       a0:	74 00                	je     a2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9d>
+---
+>       a0:	74 00                	je     a2 <MULTIBOOT_ARCHITECTURE_I386+0xa2>
+4048c4029
+<      111:	76 00                	jbe    113 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10e>
+---
+>      111:	76 00                	jbe    113 <MULTIBOOT_ARCHITECTURE_I386+0x113>
+4076c4057
+<      14b:	74 00                	je     14d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x148>
+---
+>      14b:	74 00                	je     14d <MULTIBOOT_ARCHITECTURE_I386+0x14d>
+4157c4138
+<      21e:	74 05                	je     225 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x220>
+---
+>      21e:	74 05                	je     225 <MULTIBOOT_ARCHITECTURE_I386+0x225>
+4171c4152
+<      238:	74 15                	je     24f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x24a>
+---
+>      238:	74 15                	je     24f <MULTIBOOT_ARCHITECTURE_I386+0x24f>
+4175c4156
+<      244:	74 00                	je     246 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x241>
+---
+>      244:	74 00                	je     246 <MULTIBOOT_ARCHITECTURE_I386+0x246>
+4183c4164
+<      25b:	74 32                	je     28f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x28a>
+---
+>      25b:	74 32                	je     28f <MULTIBOOT_ARCHITECTURE_I386+0x28f>
+4192c4173
+<      26f:	75 07                	jne    278 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x273>
+---
+>      26f:	75 07                	jne    278 <MULTIBOOT_ARCHITECTURE_I386+0x278>
+4206,4207c4187,4188
+<      290:	73 74                	jae    306 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x301>
+<      292:	72 00                	jb     294 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x28f>
+---
+>      290:	73 74                	jae    306 <MULTIBOOT_ARCHITECTURE_I386+0x306>
+>      292:	72 00                	jb     294 <MULTIBOOT_ARCHITECTURE_I386+0x294>
+4224c4205
+<      2ba:	79 09                	jns    2c5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2c0>
+---
+>      2ba:	79 09                	jns    2c5 <MULTIBOOT_ARCHITECTURE_I386+0x2c5>
+4231c4212
+<      2ce:	7b 07                	jnp    2d7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2d2>
+---
+>      2ce:	7b 07                	jnp    2d7 <MULTIBOOT_ARCHITECTURE_I386+0x2d7>
+4238c4219
+<      2dd:	72 01                	jb     2e0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2db>
+---
+>      2dd:	72 01                	jb     2e0 <MULTIBOOT_ARCHITECTURE_I386+0x2e0>
+4317c4298
+<      393:	75 00                	jne    395 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x390>
+---
+>      393:	75 00                	jne    395 <MULTIBOOT_ARCHITECTURE_I386+0x395>
+4340,4341c4321,4322
+<      3ce:	73 74                	jae    444 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x43f>
+<      3d0:	72 00                	jb     3d2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3cd>
+---
+>      3ce:	73 74                	jae    444 <MULTIBOOT_ARCHITECTURE_I386+0x444>
+>      3d0:	72 00                	jb     3d2 <MULTIBOOT_ARCHITECTURE_I386+0x3d2>
+4350c4331
+<      3e3:	75 6d                	jne    452 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x44d>
+---
+>      3e3:	75 6d                	jne    452 <MULTIBOOT_ARCHITECTURE_I386+0x452>
+4356c4337
+<      3f6:	7e 01                	jle    3f9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3f4>
+---
+>      3f6:	7e 01                	jle    3f9 <MULTIBOOT_ARCHITECTURE_I386+0x3f9>
+4370c4351
+<      415:	75 0b                	jne    422 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x41d>
+---
+>      415:	75 0b                	jne    422 <MULTIBOOT_ARCHITECTURE_I386+0x422>
+4408,4409c4389,4390
+<      46c:	74 6d                	je     4db <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4d6>
+<      46e:	70 00                	jo     470 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x46b>
+---
+>      46c:	74 6d                	je     4db <MULTIBOOT_ARCHITECTURE_I386+0x4db>
+>      46e:	70 00                	jo     470 <MULTIBOOT_ARCHITECTURE_I386+0x470>
+4416c4397
+<      482:	e0 01                	loopne 485 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x480>
+---
+>      482:	e0 01                	loopne 485 <MULTIBOOT_ARCHITECTURE_I386+0x485>
+4458c4439
+<      4e1:	73 00                	jae    4e3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4de>
+---
+>      4e1:	73 00                	jae    4e3 <MULTIBOOT_ARCHITECTURE_I386+0x4e3>
+4554c4535
+<      5c6:	73 72                	jae    63a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x635>
+---
+>      5c6:	73 72                	jae    63a <MULTIBOOT_ARCHITECTURE_I386+0x63a>
+4596c4577
+<      61e:	7c 01                	jl     621 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x61c>
+---
+>      61e:	7c 01                	jl     621 <MULTIBOOT_ARCHITECTURE_I386+0x621>
+4599c4580
+<      623:	73 72                	jae    697 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x692>
+---
+>      623:	73 72                	jae    697 <MULTIBOOT_ARCHITECTURE_I386+0x697>
+4618c4599
+<      652:	7f 02                	jg     656 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x651>
+---
+>      652:	7f 02                	jg     656 <MULTIBOOT_ARCHITECTURE_I386+0x656>
+4648c4629
+<      69b:	73 72                	jae    70f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x70a>
+---
+>      69b:	73 72                	jae    70f <MULTIBOOT_ARCHITECTURE_I386+0x70f>
+4663c4644
+<      6bb:	7f 02                	jg     6bf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6ba>
+---
+>      6bb:	7f 02                	jg     6bf <MULTIBOOT_ARCHITECTURE_I386+0x6bf>
+4703c4684
+<      71c:	73 72                	jae    790 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x78b>
+---
+>      71c:	73 72                	jae    790 <MULTIBOOT_ARCHITECTURE_I386+0x790>
+4727c4708
+<      75a:	7f 02                	jg     75e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x759>
+---
+>      75a:	7f 02                	jg     75e <MULTIBOOT_ARCHITECTURE_I386+0x75e>
+4730c4711
+<      75f:	73 72                	jae    7d3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7ce>
+---
+>      75f:	73 72                	jae    7d3 <MULTIBOOT_ARCHITECTURE_I386+0x7d3>
+4750,4751c4731,4732
+<      799:	73 74                	jae    80f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x80a>
+<      79b:	72 00                	jb     79d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x798>
+---
+>      799:	73 74                	jae    80f <MULTIBOOT_ARCHITECTURE_I386+0x80f>
+>      79b:	72 00                	jb     79d <MULTIBOOT_ARCHITECTURE_I386+0x79d>
+4757c4738
+<      7ac:	7c 00                	jl     7ae <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a9>
+---
+>      7ac:	7c 00                	jl     7ae <MULTIBOOT_ARCHITECTURE_I386+0x7ae>
+4822c4803
+<      84b:	73 00                	jae    84d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x848>
+---
+>      84b:	73 00                	jae    84d <MULTIBOOT_ARCHITECTURE_I386+0x84d>
+4835c4816
+<      86b:	67 73 00             	addr16 jae 86e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x869>
+---
+>      86b:	67 73 00             	addr16 jae 86e <MULTIBOOT_ARCHITECTURE_I386+0x86e>
+4841c4822
+<      877:	66 73 00             	data16 jae 87a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x875>
+---
+>      877:	66 73 00             	data16 jae 87a <MULTIBOOT_ARCHITECTURE_I386+0x87a>
+4846c4827
+<      883:	65 73 00             	gs jae 886 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x881>
+---
+>      883:	65 73 00             	gs jae 886 <MULTIBOOT_ARCHITECTURE_I386+0x886>
+4852c4833
+<      88f:	64 73 00             	fs jae 892 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x88d>
+---
+>      88f:	64 73 00             	fs jae 892 <MULTIBOOT_ARCHITECTURE_I386+0x892>
+4862c4843
+<      8a8:	65 73 69             	gs jae 914 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x90f>
+---
+>      8a8:	65 73 69             	gs jae 914 <MULTIBOOT_ARCHITECTURE_I386+0x914>
+4885c4866
+<      8dc:	65 64 78 00          	gs fs js 8e0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8db>
+---
+>      8dc:	65 64 78 00          	gs fs js 8e0 <MULTIBOOT_ARCHITECTURE_I386+0x8e0>
+4897c4878
+<      8f8:	78 00                	js     8fa <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8f5>
+---
+>      8f8:	78 00                	js     8fa <MULTIBOOT_ARCHITECTURE_I386+0x8fa>
+4961c4942
+<      985:	7c 08                	jl     98f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x98a>
+---
+>      985:	7c 08                	jl     98f <MULTIBOOT_ARCHITECTURE_I386+0x98f>
+4976c4957
+<      9a4:	77 00                	ja     9a6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9a1>
+---
+>      9a4:	77 00                	ja     9a6 <MULTIBOOT_ARCHITECTURE_I386+0x9a6>
+4981c4962
+<      9ae:	7f 0c                	jg     9bc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9b7>
+---
+>      9ae:	7f 0c                	jg     9bc <MULTIBOOT_ARCHITECTURE_I386+0x9bc>
+5053c5034
+<      a58:	7d 12                	jge    a6c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa67>
+---
+>      a58:	7d 12                	jge    a6c <MULTIBOOT_ARCHITECTURE_I386+0xa6c>
+5073c5054
+<      a8e:	78 08                	js     a98 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa93>
+---
+>      a8e:	78 08                	js     a98 <MULTIBOOT_ARCHITECTURE_I386+0xa98>
+5078c5059
+<      a9d:	7a 02                	jp     aa1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa9c>
+---
+>      a9d:	7a 02                	jp     aa1 <MULTIBOOT_ARCHITECTURE_I386+0xaa1>
+5236c5217
+<      c27:	73 00                	jae    c29 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc24>
+---
+>      c27:	73 00                	jae    c29 <MULTIBOOT_ARCHITECTURE_I386+0xc29>
+5242c5223
+<      c32:	66 73 00             	data16 jae c35 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc30>
+---
+>      c32:	66 73 00             	data16 jae c35 <MULTIBOOT_ARCHITECTURE_I386+0xc35>
+5247c5228
+<      c3e:	65 73 00             	gs jae c41 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc3c>
+---
+>      c3e:	65 73 00             	gs jae c41 <MULTIBOOT_ARCHITECTURE_I386+0xc41>
+5253c5234
+<      c4a:	64 73 00             	fs jae c4d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc48>
+---
+>      c4a:	64 73 00             	fs jae c4d <MULTIBOOT_ARCHITECTURE_I386+0xc4d>
+5262c5243
+<      c63:	65 73 69             	gs jae ccf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xcca>
+---
+>      c63:	65 73 69             	gs jae ccf <MULTIBOOT_ARCHITECTURE_I386+0xccf>
+5289c5270
+<      c97:	65 64 78 00          	gs fs js c9b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc96>
+---
+>      c97:	65 64 78 00          	gs fs js c9b <MULTIBOOT_ARCHITECTURE_I386+0xc9b>
+5303c5284
+<      cb3:	78 00                	js     cb5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xcb0>
+---
+>      cb3:	78 00                	js     cb5 <MULTIBOOT_ARCHITECTURE_I386+0xcb5>
+5415c5396
+<      d9a:	7e 01                	jle    d9d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xd98>
+---
+>      d9a:	7e 01                	jle    d9d <MULTIBOOT_ARCHITECTURE_I386+0xd9d>
+5474c5455
+<      e1a:	72 65                	jb     e81 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xe7c>
+---
+>      e1a:	72 65                	jb     e81 <MULTIBOOT_ARCHITECTURE_I386+0xe81>
+5570c5551
+<      efa:	7a 02                	jp     efe <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xef9>
+---
+>      efa:	7a 02                	jp     efe <MULTIBOOT_ARCHITECTURE_I386+0xefe>
+5589c5570
+<      f33:	7a 02                	jp     f37 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xf32>
+---
+>      f33:	7a 02                	jp     f37 <MULTIBOOT_ARCHITECTURE_I386+0xf37>
+5610c5591
+<      f6c:	7a 02                	jp     f70 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xf6b>
+---
+>      f6c:	7a 02                	jp     f70 <MULTIBOOT_ARCHITECTURE_I386+0xf70>
+5655c5636
+<      fde:	7a 02                	jp     fe2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xfdd>
+---
+>      fde:	7a 02                	jp     fe2 <MULTIBOOT_ARCHITECTURE_I386+0xfe2>
+5673c5654
+<     1006:	e2 06                	loop   100e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1009>
+---
+>     1006:	e2 06                	loop   100e <MULTIBOOT_ARCHITECTURE_I386+0x100e>
+5679c5660
+<     1017:	7a 02                	jp     101b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1016>
+---
+>     1017:	7a 02                	jp     101b <MULTIBOOT_ARCHITECTURE_I386+0x101b>
+5704c5685
+<     1050:	7a 02                	jp     1054 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x104f>
+---
+>     1050:	7a 02                	jp     1054 <MULTIBOOT_ARCHITECTURE_I386+0x1054>
+5728c5709
+<     1089:	7a 02                	jp     108d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1088>
+---
+>     1089:	7a 02                	jp     108d <MULTIBOOT_ARCHITECTURE_I386+0x108d>
+5751c5732
+<     10c2:	7a 02                	jp     10c6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10c1>
+---
+>     10c2:	7a 02                	jp     10c6 <MULTIBOOT_ARCHITECTURE_I386+0x10c6>
+5778c5759
+<     10fb:	7a 02                	jp     10ff <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10fa>
+---
+>     10fb:	7a 02                	jp     10ff <MULTIBOOT_ARCHITECTURE_I386+0x10ff>
+5803c5784
+<     1134:	7a 02                	jp     1138 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1133>
+---
+>     1134:	7a 02                	jp     1138 <MULTIBOOT_ARCHITECTURE_I386+0x1138>
+5828c5809
+<     116d:	7a 02                	jp     1171 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x116c>
+---
+>     116d:	7a 02                	jp     1171 <MULTIBOOT_ARCHITECTURE_I386+0x1171>
+5847c5828
+<     11a6:	7a 02                	jp     11aa <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x11a5>
+---
+>     11a6:	7a 02                	jp     11aa <MULTIBOOT_ARCHITECTURE_I386+0x11aa>
+5871c5852
+<     11df:	7a 02                	jp     11e3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x11de>
+---
+>     11df:	7a 02                	jp     11e3 <MULTIBOOT_ARCHITECTURE_I386+0x11e3>
+5877c5858
+<     11ee:	74 72                	je     1262 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x125d>
+---
+>     11ee:	74 72                	je     1262 <MULTIBOOT_ARCHITECTURE_I386+0x1262>
+5943c5924
+<     1279:	74 09                	je     1284 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x127f>
+---
+>     1279:	74 09                	je     1284 <MULTIBOOT_ARCHITECTURE_I386+0x1284>
+5948c5929
+<     1288:	7a 02                	jp     128c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1287>
+---
+>     1288:	7a 02                	jp     128c <MULTIBOOT_ARCHITECTURE_I386+0x128c>
+5973c5954
+<     12c3:	72 00                	jb     12c5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x12c0>
+---
+>     12c3:	72 00                	jb     12c5 <MULTIBOOT_ARCHITECTURE_I386+0x12c5>
+6089c6070
+<     13c4:	74 05                	je     13cb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x13c6>
+---
+>     13c4:	74 05                	je     13cb <MULTIBOOT_ARCHITECTURE_I386+0x13cb>
+6098c6079
+<     13d4:	7b 10                	jnp    13e6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x13e1>
+---
+>     13d4:	7b 10                	jnp    13e6 <MULTIBOOT_ARCHITECTURE_I386+0x13e6>
+6158c6139
+<     145a:	e2 08                	loop   1464 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x145f>
+---
+>     145a:	e2 08                	loop   1464 <MULTIBOOT_ARCHITECTURE_I386+0x1464>
+6368c6349
+<     1642:	78 03                	js     1647 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1642>
+---
+>     1642:	78 03                	js     1647 <MULTIBOOT_ARCHITECTURE_I386+0x1647>
+6377c6358
+<     1656:	7b 10                	jnp    1668 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1663>
+---
+>     1656:	7b 10                	jnp    1668 <MULTIBOOT_ARCHITECTURE_I386+0x1668>
+6410c6391
+<     169c:	7b 10                	jnp    16ae <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x16a9>
+---
+>     169c:	7b 10                	jnp    16ae <MULTIBOOT_ARCHITECTURE_I386+0x16ae>
+6430c6411
+<     16c5:	eb 0c                	jmp    16d3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x16ce>
+---
+>     16c5:	eb 0c                	jmp    16d3 <MULTIBOOT_ARCHITECTURE_I386+0x16d3>
+6447c6428
+<     16e2:	7b 10                	jnp    16f4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x16ef>
+---
+>     16e2:	7b 10                	jnp    16f4 <MULTIBOOT_ARCHITECTURE_I386+0x16f4>
+6459c6440
+<     16f8:	78 16                	js     1710 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x170b>
+---
+>     16f8:	78 16                	js     1710 <MULTIBOOT_ARCHITECTURE_I386+0x1710>
+6461c6442
+<     16fc:	76 16                	jbe    1714 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x170f>
+---
+>     16fc:	76 16                	jbe    1714 <MULTIBOOT_ARCHITECTURE_I386+0x1714>
+6481c6462
+<     1728:	7b 10                	jnp    173a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1735>
+---
+>     1728:	7b 10                	jnp    173a <MULTIBOOT_ARCHITECTURE_I386+0x173a>
+6496c6477
+<     1748:	78 0f                	js     1759 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1754>
+---
+>     1748:	78 0f                	js     1759 <MULTIBOOT_ARCHITECTURE_I386+0x1759>
+6539c6520
+<     17b0:	78 0f                	js     17c1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x17bc>
+---
+>     17b0:	78 0f                	js     17c1 <MULTIBOOT_ARCHITECTURE_I386+0x17c1>
+6563c6544
+<     17e4:	78 0f                	js     17f5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x17f0>
+---
+>     17e4:	78 0f                	js     17f5 <MULTIBOOT_ARCHITECTURE_I386+0x17f5>
+6581c6562
+<     180e:	7c 17                	jl     1827 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1822>
+---
+>     180e:	7c 17                	jl     1827 <MULTIBOOT_ARCHITECTURE_I386+0x1827>
+6583c6564
+<     1812:	7a 17                	jp     182b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1826>
+---
+>     1812:	7a 17                	jp     182b <MULTIBOOT_ARCHITECTURE_I386+0x182b>
+6586c6567
+<     1818:	78 0f                	js     1829 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1824>
+---
+>     1818:	78 0f                	js     1829 <MULTIBOOT_ARCHITECTURE_I386+0x1829>
+6612c6593
+<     184c:	78 0f                	js     185d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1858>
+---
+>     184c:	78 0f                	js     185d <MULTIBOOT_ARCHITECTURE_I386+0x185d>
+6634c6615
+<     1880:	78 0f                	js     1891 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x188c>
+---
+>     1880:	78 0f                	js     1891 <MULTIBOOT_ARCHITECTURE_I386+0x1891>
+6656c6637
+<     18b4:	78 0f                	js     18c5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x18c0>
+---
+>     18b4:	78 0f                	js     18c5 <MULTIBOOT_ARCHITECTURE_I386+0x18c5>
+6658c6639
+<     18b8:	75 0d                	jne    18c7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x18c2>
+---
+>     18b8:	75 0d                	jne    18c7 <MULTIBOOT_ARCHITECTURE_I386+0x18c7>
+6680c6661
+<     18e8:	78 0f                	js     18f9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x18f4>
+---
+>     18e8:	78 0f                	js     18f9 <MULTIBOOT_ARCHITECTURE_I386+0x18f9>
+6682c6663
+<     18ec:	7f 0d                	jg     18fb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x18f6>
+---
+>     18ec:	7f 0d                	jg     18fb <MULTIBOOT_ARCHITECTURE_I386+0x18fb>
+6704c6685
+<     191c:	78 0f                	js     192d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1928>
+---
+>     191c:	78 0f                	js     192d <MULTIBOOT_ARCHITECTURE_I386+0x192d>
+6752c6733
+<     19a1:	e2 18                	loop   19bb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x19b6>
+---
+>     19a1:	e2 18                	loop   19bb <MULTIBOOT_ARCHITECTURE_I386+0x19bb>
+6754c6735
+<     19a5:	e0 18                	loopne 19bf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x19ba>
+---
+>     19a5:	e0 18                	loopne 19bf <MULTIBOOT_ARCHITECTURE_I386+0x19bf>
+6786c6767
+<     19ec:	78 0f                	js     19fd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x19f8>
+---
+>     19ec:	78 0f                	js     19fd <MULTIBOOT_ARCHITECTURE_I386+0x19fd>
+6811c6792
+<     1a20:	78 0f                	js     1a31 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1a2c>
+---
+>     1a20:	78 0f                	js     1a31 <MULTIBOOT_ARCHITECTURE_I386+0x1a31>
+6821c6802
+<     1a3d:	72 19                	jb     1a58 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1a53>
+---
+>     1a3d:	72 19                	jb     1a58 <MULTIBOOT_ARCHITECTURE_I386+0x1a58>
+6823c6804
+<     1a41:	70 19                	jo     1a5c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1a57>
+---
+>     1a41:	70 19                	jo     1a5c <MULTIBOOT_ARCHITECTURE_I386+0x1a5c>
+6845c6826
+<     1a6f:	78 0f                	js     1a80 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1a7b>
+---
+>     1a6f:	78 0f                	js     1a80 <MULTIBOOT_ARCHITECTURE_I386+0x1a80>
+6975c6956
+<     1b9e:	7b 04                	jnp    1ba4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1b9f>
+---
+>     1b9e:	7b 04                	jnp    1ba4 <MULTIBOOT_ARCHITECTURE_I386+0x1ba4>
+6988c6969
+<     1bbb:	71 05                	jno    1bc2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1bbd>
+---
+>     1bbb:	71 05                	jno    1bc2 <MULTIBOOT_ARCHITECTURE_I386+0x1bc2>
+7015c6996
+<     1bfc:	75 6d                	jne    1c6b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c66>
+---
+>     1bfc:	75 6d                	jne    1c6b <MULTIBOOT_ARCHITECTURE_I386+0x1c6b>
+7021c7002
+<     1c07:	7e 01                	jle    1c0a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c05>
+---
+>     1c07:	7e 01                	jle    1c0a <MULTIBOOT_ARCHITECTURE_I386+0x1c0a>
+7040c7021
+<     1c33:	7c 0b                	jl     1c40 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c3b>
+---
+>     1c33:	7c 0b                	jl     1c40 <MULTIBOOT_ARCHITECTURE_I386+0x1c40>
+7060c7041
+<     1c65:	7d 1a                	jge    1c81 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c7c>
+---
+>     1c65:	7d 1a                	jge    1c81 <MULTIBOOT_ARCHITECTURE_I386+0x1c81>
+7121c7102
+<     1cec:	7e 11                	jle    1cff <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1cfa>
+---
+>     1cec:	7e 11                	jle    1cff <MULTIBOOT_ARCHITECTURE_I386+0x1cff>
+7143c7124
+<     1d1f:	78 00                	js     1d21 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d1c>
+---
+>     1d1f:	78 00                	js     1d21 <MULTIBOOT_ARCHITECTURE_I386+0x1d21>
+7200c7181
+<     1d97:	e3 1b                	jecxz  1db4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1daf>
+---
+>     1d97:	e3 1b                	jecxz  1db4 <MULTIBOOT_ARCHITECTURE_I386+0x1db4>
+7202c7183
+<     1d9b:	e1 1b                	loope  1db8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1db3>
+---
+>     1d9b:	e1 1b                	loope  1db8 <MULTIBOOT_ARCHITECTURE_I386+0x1db8>
+7240c7221
+<     1df1:	74 0b                	je     1dfe <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1df9>
+---
+>     1df1:	74 0b                	je     1dfe <MULTIBOOT_ARCHITECTURE_I386+0x1dfe>
+7305c7286
+<     1e85:	74 0c                	je     1e93 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1e8e>
+---
+>     1e85:	74 0c                	je     1e93 <MULTIBOOT_ARCHITECTURE_I386+0x1e93>
+7324,7325c7305,7306
+<     1ebc:	72 65                	jb     1f23 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1f1e>
+<     1ebe:	74 00                	je     1ec0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1ebb>
+---
+>     1ebc:	72 65                	jb     1f23 <MULTIBOOT_ARCHITECTURE_I386+0x1f23>
+>     1ebe:	74 00                	je     1ec0 <MULTIBOOT_ARCHITECTURE_I386+0x1ec0>
+7490c7471
+<     2034:	7d 1d                	jge    2053 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x204e>
+---
+>     2034:	7d 1d                	jge    2053 <MULTIBOOT_ARCHITECTURE_I386+0x2053>
+7642c7623
+<     218c:	78 1e                	js     21ac <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21a7>
+---
+>     218c:	78 1e                	js     21ac <MULTIBOOT_ARCHITECTURE_I386+0x21ac>
+7648c7629
+<     2199:	78 1e                	js     21b9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21b4>
+---
+>     2199:	78 1e                	js     21b9 <MULTIBOOT_ARCHITECTURE_I386+0x21b9>
+7652c7633
+<     21a0:	78 0f                	js     21b1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21ac>
+---
+>     21a0:	78 0f                	js     21b1 <MULTIBOOT_ARCHITECTURE_I386+0x21b1>
+7669c7650
+<     21d0:	79 03                	jns    21d5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21d0>
+---
+>     21d0:	79 03                	jns    21d5 <MULTIBOOT_ARCHITECTURE_I386+0x21d5>
+7671c7652
+<     21d4:	79 03                	jns    21d9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21d4>
+---
+>     21d4:	79 03                	jns    21d9 <MULTIBOOT_ARCHITECTURE_I386+0x21d9>
+7687c7668
+<     21f9:	7e 06                	jle    2201 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21fc>
+---
+>     21f9:	7e 06                	jle    2201 <MULTIBOOT_ARCHITECTURE_I386+0x2201>
+7732c7713
+<     2263:	7f 00                	jg     2265 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2260>
+---
+>     2263:	7f 00                	jg     2265 <MULTIBOOT_ARCHITECTURE_I386+0x2265>
+7812c7793
+<     2322:	7e 01                	jle    2325 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2320>
+---
+>     2322:	7e 01                	jle    2325 <MULTIBOOT_ARCHITECTURE_I386+0x2325>
+7846c7827
+<     236f:	73 00                	jae    2371 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x236c>
+---
+>     236f:	73 00                	jae    2371 <MULTIBOOT_ARCHITECTURE_I386+0x2371>
+7871c7852
+<     23a3:	73 00                	jae    23a5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x23a0>
+---
+>     23a3:	73 00                	jae    23a5 <MULTIBOOT_ARCHITECTURE_I386+0x23a5>
+7878c7859
+<     23b0:	73 00                	jae    23b2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x23ad>
+---
+>     23b0:	73 00                	jae    23b2 <MULTIBOOT_ARCHITECTURE_I386+0x23b2>
+7884c7865
+<     23bd:	73 00                	jae    23bf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x23ba>
+---
+>     23bd:	73 00                	jae    23bf <MULTIBOOT_ARCHITECTURE_I386+0x23bf>
+7898c7879
+<     23d7:	73 00                	jae    23d9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x23d4>
+---
+>     23d7:	73 00                	jae    23d9 <MULTIBOOT_ARCHITECTURE_I386+0x23d9>
+7915c7896
+<     23fe:	73 00                	jae    2400 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x23fb>
+---
+>     23fe:	73 00                	jae    2400 <MULTIBOOT_ARCHITECTURE_I386+0x2400>
+7919c7900
+<     240b:	73 00                	jae    240d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2408>
+---
+>     240b:	73 00                	jae    240d <MULTIBOOT_ARCHITECTURE_I386+0x240d>
+7941c7922
+<     243f:	73 00                	jae    2441 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x243c>
+---
+>     243f:	73 00                	jae    2441 <MULTIBOOT_ARCHITECTURE_I386+0x2441>
+7949c7930
+<     244c:	73 00                	jae    244e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2449>
+---
+>     244c:	73 00                	jae    244e <MULTIBOOT_ARCHITECTURE_I386+0x244e>
+7960c7941
+<     2466:	73 00                	jae    2468 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2463>
+---
+>     2466:	73 00                	jae    2468 <MULTIBOOT_ARCHITECTURE_I386+0x2468>
+7970c7951
+<     2480:	73 00                	jae    2482 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x247d>
+---
+>     2480:	73 00                	jae    2482 <MULTIBOOT_ARCHITECTURE_I386+0x2482>
+7977c7958
+<     248d:	73 00                	jae    248f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x248a>
+---
+>     248d:	73 00                	jae    248f <MULTIBOOT_ARCHITECTURE_I386+0x248f>
+7988c7969
+<     24a7:	73 00                	jae    24a9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x24a4>
+---
+>     24a7:	73 00                	jae    24a9 <MULTIBOOT_ARCHITECTURE_I386+0x24a9>
+8009c7990
+<     24da:	75 06                	jne    24e2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x24dd>
+---
+>     24da:	75 06                	jne    24e2 <MULTIBOOT_ARCHITECTURE_I386+0x24e2>
+8123c8104
+<     25eb:	73 1f                	jae    260c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2607>
+---
+>     25eb:	73 1f                	jae    260c <MULTIBOOT_ARCHITECTURE_I386+0x260c>
+8125c8106
+<     25ef:	71 1f                	jno    2610 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x260b>
+---
+>     25ef:	71 1f                	jno    2610 <MULTIBOOT_ARCHITECTURE_I386+0x2610>
+8131c8112
+<     25fe:	70 01                	jo     2601 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x25fc>
+---
+>     25fe:	70 01                	jo     2601 <MULTIBOOT_ARCHITECTURE_I386+0x2601>
+8160c8141
+<     2646:	e2 1f                	loop   2667 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2662>
+---
+>     2646:	e2 1f                	loop   2667 <MULTIBOOT_ARCHITECTURE_I386+0x2667>
+8188c8169
+<     2695:	e0 05                	loopne 269c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2697>
+---
+>     2695:	e0 05                	loopne 269c <MULTIBOOT_ARCHITECTURE_I386+0x269c>
+8203c8184
+<     26b7:	76 05                	jbe    26be <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x26b9>
+---
+>     26b7:	76 05                	jbe    26be <MULTIBOOT_ARCHITECTURE_I386+0x26be>
+8261c8242
+<     275f:	e0 0e                	loopne 276f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x276a>
+---
+>     275f:	e0 0e                	loopne 276f <MULTIBOOT_ARCHITECTURE_I386+0x276f>
+8285c8266
+<     279d:	3e 73 00             	jae,pt 27a0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x279b>
+---
+>     279d:	3e 73 00             	jae,pt 27a0 <MULTIBOOT_ARCHITECTURE_I386+0x27a0>
+8288c8269
+<     27a3:	7e 01                	jle    27a6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x27a1>
+---
+>     27a3:	7e 01                	jle    27a6 <MULTIBOOT_ARCHITECTURE_I386+0x27a6>
+8308c8289
+<     27d5:	7e 01                	jle    27d8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x27d3>
+---
+>     27d5:	7e 01                	jle    27d8 <MULTIBOOT_ARCHITECTURE_I386+0x27d8>
+8311c8292
+<     27dc:	73 00                	jae    27de <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x27d9>
+---
+>     27dc:	73 00                	jae    27de <MULTIBOOT_ARCHITECTURE_I386+0x27de>
+8317c8298
+<     27e8:	73 00                	jae    27ea <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x27e5>
+---
+>     27e8:	73 00                	jae    27ea <MULTIBOOT_ARCHITECTURE_I386+0x27ea>
+8458c8439
+<     2925:	77 0f                	ja     2936 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2931>
+---
+>     2925:	77 0f                	ja     2936 <MULTIBOOT_ARCHITECTURE_I386+0x2936>
+8592c8573
+<     2a59:	72 65                	jb     2ac0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2abb>
+---
+>     2a59:	72 65                	jb     2ac0 <MULTIBOOT_ARCHITECTURE_I386+0x2ac0>
+8632c8613
+<     2aaf:	67 73 00             	addr16 jae 2ab2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2aad>
+---
+>     2aaf:	67 73 00             	addr16 jae 2ab2 <MULTIBOOT_ARCHITECTURE_I386+0x2ab2>
+8642c8623
+<     2ac7:	65 73 00             	gs jae 2aca <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2ac5>
+---
+>     2ac7:	65 73 00             	gs jae 2aca <MULTIBOOT_ARCHITECTURE_I386+0x2aca>
+8677c8658
+<     2b22:	78 00                	js     2b24 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2b1f>
+---
+>     2b22:	78 00                	js     2b24 <MULTIBOOT_ARCHITECTURE_I386+0x2b24>
+8688c8669
+<     2b3c:	78 00                	js     2b3e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2b39>
+---
+>     2b3c:	78 00                	js     2b3e <MULTIBOOT_ARCHITECTURE_I386+0x2b3e>
+8744c8725
+<     2bc2:	7f 07                	jg     2bcb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2bc6>
+---
+>     2bc2:	7f 07                	jg     2bcb <MULTIBOOT_ARCHITECTURE_I386+0x2bcb>
+8755c8736
+<     2bd4:	7a 07                	jp     2bdd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2bd8>
+---
+>     2bd4:	7a 07                	jp     2bdd <MULTIBOOT_ARCHITECTURE_I386+0x2bdd>
+8769c8750
+<     2bf4:	7f 01                	jg     2bf7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2bf2>
+---
+>     2bf4:	7f 01                	jg     2bf7 <MULTIBOOT_ARCHITECTURE_I386+0x2bf7>
+8795c8776
+<     2c3b:	75 6d                	jne    2caa <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2ca5>
+---
+>     2c3b:	75 6d                	jne    2caa <MULTIBOOT_ARCHITECTURE_I386+0x2caa>
+8803c8784
+<     2c4e:	74 00                	je     2c50 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2c4b>
+---
+>     2c4e:	74 00                	je     2c50 <MULTIBOOT_ARCHITECTURE_I386+0x2c50>
+8819c8800
+<     2c73:	e0 03                	loopne 2c78 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2c73>
+---
+>     2c73:	e0 03                	loopne 2c78 <MULTIBOOT_ARCHITECTURE_I386+0x2c78>
+8845c8826
+<     2cb2:	7a 02                	jp     2cb6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2cb1>
+---
+>     2cb2:	7a 02                	jp     2cb6 <MULTIBOOT_ARCHITECTURE_I386+0x2cb6>
+8855c8836
+<     2ccc:	7f 21                	jg     2cef <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2cea>
+---
+>     2ccc:	7f 21                	jg     2cef <MULTIBOOT_ARCHITECTURE_I386+0x2cef>
+8857c8838
+<     2cd0:	71 21                	jno    2cf3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2cee>
+---
+>     2cd0:	71 21                	jno    2cf3 <MULTIBOOT_ARCHITECTURE_I386+0x2cf3>
+8868,8869c8849,8850
+<     2ce9:	73 74                	jae    2d5f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2d5a>
+<     2ceb:	72 00                	jb     2ced <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2ce8>
+---
+>     2ce9:	73 74                	jae    2d5f <MULTIBOOT_ARCHITECTURE_I386+0x2d5f>
+>     2ceb:	72 00                	jb     2ced <MULTIBOOT_ARCHITECTURE_I386+0x2ced>
+8938,8939c8919,8920
+<     2d88:	72 65                	jb     2def <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2dea>
+<     2d8a:	74 00                	je     2d8c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2d87>
+---
+>     2d88:	72 65                	jb     2def <MULTIBOOT_ARCHITECTURE_I386+0x2def>
+>     2d8a:	74 00                	je     2d8c <MULTIBOOT_ARCHITECTURE_I386+0x2d8c>
+8958c8939
+<     2db6:	e0 03                	loopne 2dbb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2db6>
+---
+>     2db6:	e0 03                	loopne 2dbb <MULTIBOOT_ARCHITECTURE_I386+0x2dbb>
+9020c9001
+<     2e45:	73 0a                	jae    2e51 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2e4c>
+---
+>     2e45:	73 0a                	jae    2e51 <MULTIBOOT_ARCHITECTURE_I386+0x2e51>
+9235c9216
+<     3071:	7e 13                	jle    3086 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3081>
+---
+>     3071:	7e 13                	jle    3086 <MULTIBOOT_ARCHITECTURE_I386+0x3086>
+9288c9269
+<     30f4:	73 22                	jae    3118 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3113>
+---
+>     30f4:	73 22                	jae    3118 <MULTIBOOT_ARCHITECTURE_I386+0x3118>
+9355c9336
+<     3184:	71 09                	jno    318f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x318a>
+---
+>     3184:	71 09                	jno    318f <MULTIBOOT_ARCHITECTURE_I386+0x318f>
+9400c9381
+<     31e7:	78 00                	js     31e9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x31e4>
+---
+>     31e7:	78 00                	js     31e9 <MULTIBOOT_ARCHITECTURE_I386+0x31e9>
+9403c9384
+<     31f1:	79 00                	jns    31f3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x31ee>
+---
+>     31f1:	79 00                	jns    31f3 <MULTIBOOT_ARCHITECTURE_I386+0x31f3>
+9507c9488
+<     32f9:	e0 23                	loopne 331e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3319>
+---
+>     32f9:	e0 23                	loopne 331e <MULTIBOOT_ARCHITECTURE_I386+0x331e>
+9559c9540
+<     3361:	79 24                	jns    3387 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3382>
+---
+>     3361:	79 24                	jns    3387 <MULTIBOOT_ARCHITECTURE_I386+0x3387>
+9604c9585
+<     33cb:	71 09                	jno    33d6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x33d1>
+---
+>     33cb:	71 09                	jno    33d6 <MULTIBOOT_ARCHITECTURE_I386+0x33d6>
+9619c9600
+<     33ea:	e2 12                	loop   33fe <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x33f9>
+---
+>     33ea:	e2 12                	loop   33fe <MULTIBOOT_ARCHITECTURE_I386+0x33fe>
+9625c9606
+<     33fb:	71 09                	jno    3406 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3401>
+---
+>     33fb:	71 09                	jno    3406 <MULTIBOOT_ARCHITECTURE_I386+0x3406>
+9643c9624
+<     342f:	71 09                	jno    343a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3435>
+---
+>     342f:	71 09                	jno    343a <MULTIBOOT_ARCHITECTURE_I386+0x343a>
+9661c9642
+<     345f:	71 09                	jno    346a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3465>
+---
+>     345f:	71 09                	jno    346a <MULTIBOOT_ARCHITECTURE_I386+0x346a>
+9667c9648
+<     3470:	79 25                	jns    3497 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3492>
+---
+>     3470:	79 25                	jns    3497 <MULTIBOOT_ARCHITECTURE_I386+0x3497>
+9669c9650
+<     3474:	77 25                	ja     349b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3496>
+---
+>     3474:	77 25                	ja     349b <MULTIBOOT_ARCHITECTURE_I386+0x349b>
+9707c9688
+<     34be:	73 0a                	jae    34ca <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x34c5>
+---
+>     34be:	73 0a                	jae    34ca <MULTIBOOT_ARCHITECTURE_I386+0x34ca>
+9713c9694
+<     34ca:	78 00                	js     34cc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x34c7>
+---
+>     34ca:	78 00                	js     34cc <MULTIBOOT_ARCHITECTURE_I386+0x34cc>
+9716c9697
+<     34d4:	79 00                	jns    34d6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x34d1>
+---
+>     34d4:	79 00                	jns    34d6 <MULTIBOOT_ARCHITECTURE_I386+0x34d6>
+9745c9726
+<     3517:	73 0a                	jae    3523 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x351e>
+---
+>     3517:	73 0a                	jae    3523 <MULTIBOOT_ARCHITECTURE_I386+0x3523>
+9758c9739
+<     3532:	71 00                	jno    3534 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x352f>
+---
+>     3532:	71 00                	jno    3534 <MULTIBOOT_ARCHITECTURE_I386+0x3534>
+9772c9753
+<     355d:	78 00                	js     355f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x355a>
+---
+>     355d:	78 00                	js     355f <MULTIBOOT_ARCHITECTURE_I386+0x355f>
+9819c9800
+<     35e1:	71 09                	jno    35ec <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x35e7>
+---
+>     35e1:	71 09                	jno    35ec <MULTIBOOT_ARCHITECTURE_I386+0x35ec>
+9839c9820
+<     3615:	71 09                	jno    3620 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x361b>
+---
+>     3615:	71 09                	jno    3620 <MULTIBOOT_ARCHITECTURE_I386+0x3620>
+9857c9838
+<     3649:	71 09                	jno    3654 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x364f>
+---
+>     3649:	71 09                	jno    3654 <MULTIBOOT_ARCHITECTURE_I386+0x3654>
+9877c9858
+<     3679:	71 09                	jno    3684 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x367f>
+---
+>     3679:	71 09                	jno    3684 <MULTIBOOT_ARCHITECTURE_I386+0x3684>
+9879c9860
+<     367d:	73 26                	jae    36a5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x36a0>
+---
+>     367d:	73 26                	jae    36a5 <MULTIBOOT_ARCHITECTURE_I386+0x36a5>
+9881c9862
+<     3681:	71 26                	jno    36a9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x36a4>
+---
+>     3681:	71 26                	jno    36a9 <MULTIBOOT_ARCHITECTURE_I386+0x36a9>
+9899c9880
+<     36a8:	75 63                	jne    370d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3708>
+---
+>     36a8:	75 63                	jne    370d <MULTIBOOT_ARCHITECTURE_I386+0x370d>
+9905c9886
+<     36b3:	73 0a                	jae    36bf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x36ba>
+---
+>     36b3:	73 0a                	jae    36bf <MULTIBOOT_ARCHITECTURE_I386+0x36bf>
+9969c9950
+<     3746:	eb 09                	jmp    3751 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x374c>
+---
+>     3746:	eb 09                	jmp    3751 <MULTIBOOT_ARCHITECTURE_I386+0x3751>
+10004c9985
+<     37a9:	7c 11                	jl     37bc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x37b7>
+---
+>     37a9:	7c 11                	jl     37bc <MULTIBOOT_ARCHITECTURE_I386+0x37bc>
+10009c9990
+<     37b8:	e2 06                	loop   37c0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x37bb>
+---
+>     37b8:	e2 06                	loop   37c0 <MULTIBOOT_ARCHITECTURE_I386+0x37c0>
+10047c10028
+<     3825:	71 09                	jno    3830 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x382b>
+---
+>     3825:	71 09                	jno    3830 <MULTIBOOT_ARCHITECTURE_I386+0x3830>
+10067c10048
+<     3855:	71 09                	jno    3860 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x385b>
+---
+>     3855:	71 09                	jno    3860 <MULTIBOOT_ARCHITECTURE_I386+0x3860>
+10096c10077
+<     3889:	71 09                	jno    3894 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x388f>
+---
+>     3889:	71 09                	jno    3894 <MULTIBOOT_ARCHITECTURE_I386+0x3894>
+10098c10079
+<     388d:	76 27                	jbe    38b6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x38b1>
+---
+>     388d:	76 27                	jbe    38b6 <MULTIBOOT_ARCHITECTURE_I386+0x38b6>
+10100c10081
+<     3891:	74 27                	je     38ba <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x38b5>
+---
+>     3891:	74 27                	je     38ba <MULTIBOOT_ARCHITECTURE_I386+0x38ba>
+10109c10090
+<     38a8:	e1 11                	loope  38bb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x38b6>
+---
+>     38a8:	e1 11                	loope  38bb <MULTIBOOT_ARCHITECTURE_I386+0x38bb>
+10116c10097
+<     38b9:	71 09                	jno    38c4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x38bf>
+---
+>     38b9:	71 09                	jno    38c4 <MULTIBOOT_ARCHITECTURE_I386+0x38c4>
+10168c10149
+<     3933:	e8 27 00 00 00       	call   395f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x395a>
+---
+>     3933:	e8 27 00 00 00       	call   395f <MULTIBOOT_ARCHITECTURE_I386+0x395f>
+10200c10181
+<     3983:	75 06                	jne    398b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3986>
+---
+>     3983:	75 06                	jne    398b <MULTIBOOT_ARCHITECTURE_I386+0x398b>
+12103c12084
+<       47:	7f 00                	jg     49 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x44>
+---
+>       47:	7f 00                	jg     49 <MULTIBOOT_ARCHITECTURE_I386+0x49>
+12121c12102
+<       73:	7e 00                	jle    75 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x70>
+---
+>       73:	7e 00                	jle    75 <MULTIBOOT_ARCHITECTURE_I386+0x75>
+12123c12104
+<       77:	7f 00                	jg     79 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x74>
+---
+>       77:	7f 00                	jg     79 <MULTIBOOT_ARCHITECTURE_I386+0x79>
+12209c12190
+<      183:	7f 03                	jg     188 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x183>
+---
+>      183:	7f 03                	jg     188 <MULTIBOOT_ARCHITECTURE_I386+0x188>
+12258c12239
+<      201:	7d 06                	jge    209 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x204>
+---
+>      201:	7d 06                	jge    209 <MULTIBOOT_ARCHITECTURE_I386+0x209>
+12286c12267
+<      271:	e3 02                	jecxz  275 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x270>
+---
+>      271:	e3 02                	jecxz  275 <MULTIBOOT_ARCHITECTURE_I386+0x275>
+12366c12347
+<      341:	77 04                	ja     347 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x342>
+---
+>      341:	77 04                	ja     347 <MULTIBOOT_ARCHITECTURE_I386+0x347>
+12368c12349
+<      344:	7f 05                	jg     34b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x346>
+---
+>      344:	7f 05                	jg     34b <MULTIBOOT_ARCHITECTURE_I386+0x34b>
+12409c12390
+<      395:	7d 06                	jge    39d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x398>
+---
+>      395:	7d 06                	jge    39d <MULTIBOOT_ARCHITECTURE_I386+0x39d>
+12414c12395
+<      39d:	7d 06                	jge    3a5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3a0>
+---
+>      39d:	7d 06                	jge    3a5 <MULTIBOOT_ARCHITECTURE_I386+0x3a5>
+12460c12441
+<      401:	7d 06                	jge    409 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x404>
+---
+>      401:	7d 06                	jge    409 <MULTIBOOT_ARCHITECTURE_I386+0x409>
+12552c12533
+<      4de:	7f 04                	jg     4e4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4df>
+---
+>      4de:	7f 04                	jg     4e4 <MULTIBOOT_ARCHITECTURE_I386+0x4e4>
+12572c12553
+<      50d:	75 01                	jne    510 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x50b>
+---
+>      50d:	75 01                	jne    510 <MULTIBOOT_ARCHITECTURE_I386+0x510>
+12612c12593
+<      569:	75 01                	jne    56c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x567>
+---
+>      569:	75 01                	jne    56c <MULTIBOOT_ARCHITECTURE_I386+0x56c>
+12628c12609
+<      58e:	75 01                	jne    591 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x58c>
+---
+>      58e:	75 01                	jne    591 <MULTIBOOT_ARCHITECTURE_I386+0x591>
+12635c12616
+<      59b:	72 01                	jb     59e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x599>
+---
+>      59b:	72 01                	jb     59e <MULTIBOOT_ARCHITECTURE_I386+0x59e>
+12651c12632
+<      5b3:	75 01                	jne    5b6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5b1>
+---
+>      5b3:	75 01                	jne    5b6 <MULTIBOOT_ARCHITECTURE_I386+0x5b6>
+12665c12646
+<      5cb:	75 01                	jne    5ce <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5c9>
+---
+>      5cb:	75 01                	jne    5ce <MULTIBOOT_ARCHITECTURE_I386+0x5ce>
+12723c12704
+<      645:	77 01                	ja     648 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x643>
+---
+>      645:	77 01                	ja     648 <MULTIBOOT_ARCHITECTURE_I386+0x648>
+12733c12714
+<      657:	7d 06                	jge    65f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x65a>
+---
+>      657:	7d 06                	jge    65f <MULTIBOOT_ARCHITECTURE_I386+0x65f>
+12755,12756c12736,12737
+<      68a:	77 00                	ja     68c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x687>
+<      68c:	7f 05                	jg     693 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x68e>
+---
+>      68a:	77 00                	ja     68c <MULTIBOOT_ARCHITECTURE_I386+0x68c>
+>      68c:	7f 05                	jg     693 <MULTIBOOT_ARCHITECTURE_I386+0x693>
+12759c12740
+<      696:	77 7c                	ja     714 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x70f>
+---
+>      696:	77 7c                	ja     714 <MULTIBOOT_ARCHITECTURE_I386+0x714>
+12841c12822
+<      77c:	75 00                	jne    77e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x779>
+---
+>      77c:	75 00                	jne    77e <MULTIBOOT_ARCHITECTURE_I386+0x77e>
+12847,12848c12828,12829
+<      790:	73 00                	jae    792 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x78d>
+<      792:	72 00                	jb     794 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x78f>
+---
+>      790:	73 00                	jae    792 <MULTIBOOT_ARCHITECTURE_I386+0x792>
+>      792:	72 00                	jb     794 <MULTIBOOT_ARCHITECTURE_I386+0x794>
+12851c12832
+<      799:	73 06                	jae    7a1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x79c>
+---
+>      799:	73 06                	jae    7a1 <MULTIBOOT_ARCHITECTURE_I386+0x7a1>
+12853c12834
+<      79d:	75 06                	jne    7a5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a0>
+---
+>      79d:	75 06                	jne    7a5 <MULTIBOOT_ARCHITECTURE_I386+0x7a5>
+12856,12857c12837,12838
+<      7a3:	72 00                	jb     7a5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a0>
+<      7a5:	73 00                	jae    7a7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a2>
+---
+>      7a3:	72 00                	jb     7a5 <MULTIBOOT_ARCHITECTURE_I386+0x7a5>
+>      7a5:	73 00                	jae    7a7 <MULTIBOOT_ARCHITECTURE_I386+0x7a7>
+12860c12841
+<      7ab:	75 06                	jne    7b3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7ae>
+---
+>      7ab:	75 06                	jne    7b3 <MULTIBOOT_ARCHITECTURE_I386+0x7b3>
+12862c12843
+<      7af:	7d 06                	jge    7b7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7b2>
+---
+>      7af:	7d 06                	jge    7b7 <MULTIBOOT_ARCHITECTURE_I386+0x7b7>
+12865c12846
+<      7b5:	76 7f                	jbe    836 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x831>
+---
+>      7b5:	76 7f                	jbe    836 <MULTIBOOT_ARCHITECTURE_I386+0x836>
+12871c12852
+<      7c2:	72 7f                	jb     843 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x83e>
+---
+>      7c2:	72 7f                	jb     843 <MULTIBOOT_ARCHITECTURE_I386+0x843>
+12876c12857
+<      7cf:	76 7f                	jbe    850 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x84b>
+---
+>      7cf:	76 7f                	jbe    850 <MULTIBOOT_ARCHITECTURE_I386+0x850>
+12893c12874
+<      80b:	7f 03                	jg     810 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x80b>
+---
+>      80b:	7f 03                	jg     810 <MULTIBOOT_ARCHITECTURE_I386+0x810>
+12930c12911
+<      875:	77 00                	ja     877 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x872>
+---
+>      875:	77 00                	ja     877 <MULTIBOOT_ARCHITECTURE_I386+0x877>
+12956c12937
+<      8a3:	70 7c                	jo     921 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x91c>
+---
+>      8a3:	70 7c                	jo     921 <MULTIBOOT_ARCHITECTURE_I386+0x921>
+12960c12941
+<      8a9:	7d 06                	jge    8b1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8ac>
+---
+>      8a9:	7d 06                	jge    8b1 <MULTIBOOT_ARCHITECTURE_I386+0x8b1>
+12990c12971
+<      8e6:	71 00                	jno    8e8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8e3>
+---
+>      8e6:	71 00                	jno    8e8 <MULTIBOOT_ARCHITECTURE_I386+0x8e8>
+13021c13002
+<      92c:	72 00                	jb     92e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x929>
+---
+>      92c:	72 00                	jb     92e <MULTIBOOT_ARCHITECTURE_I386+0x92e>
+13029c13010
+<      94a:	e2 05                	loop   951 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x94c>
+---
+>      94a:	e2 05                	loop   951 <MULTIBOOT_ARCHITECTURE_I386+0x951>
+13085c13066
+<      9d9:	78 01                	js     9dc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9d7>
+---
+>      9d9:	78 01                	js     9dc <MULTIBOOT_ARCHITECTURE_I386+0x9dc>
+13115c13096
+<      a2c:	70 02                	jo     a30 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa2b>
+---
+>      a2c:	70 02                	jo     a30 <MULTIBOOT_ARCHITECTURE_I386+0xa30>
+13119c13100
+<      a33:	70 02                	jo     a37 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa32>
+---
+>      a33:	70 02                	jo     a37 <MULTIBOOT_ARCHITECTURE_I386+0xa37>
+13121c13102
+<      a37:	73 02                	jae    a3b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa36>
+---
+>      a37:	73 02                	jae    a3b <MULTIBOOT_ARCHITECTURE_I386+0xa3b>
+13124c13105
+<      a3d:	73 01                	jae    a40 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa3b>
+---
+>      a3d:	73 01                	jae    a40 <MULTIBOOT_ARCHITECTURE_I386+0xa40>
+13126c13107
+<      a40:	73 02                	jae    a44 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa3f>
+---
+>      a40:	73 02                	jae    a44 <MULTIBOOT_ARCHITECTURE_I386+0xa44>
+13128c13109
+<      a44:	7f 02                	jg     a48 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa43>
+---
+>      a44:	7f 02                	jg     a48 <MULTIBOOT_ARCHITECTURE_I386+0xa48>
+13131c13112
+<      a4a:	73 02                	jae    a4e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa49>
+---
+>      a4a:	73 02                	jae    a4e <MULTIBOOT_ARCHITECTURE_I386+0xa4e>
+13133c13114
+<      a4d:	7f 02                	jg     a51 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa4c>
+---
+>      a4d:	7f 02                	jg     a51 <MULTIBOOT_ARCHITECTURE_I386+0xa51>
+13168c13149
+<      ab9:	eb 01                	jmp    abc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xab7>
+---
+>      ab9:	eb 01                	jmp    abc <MULTIBOOT_ARCHITECTURE_I386+0xabc>
+13218c13199
+<      b79:	70 00                	jo     b7b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xb76>
+---
+>      b79:	70 00                	jo     b7b <MULTIBOOT_ARCHITECTURE_I386+0xb7b>
+13251,13252c13232,13233
+<      bbc:	73 00                	jae    bbe <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xbb9>
+<      bbe:	76 00                	jbe    bc0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xbbb>
+---
+>      bbc:	73 00                	jae    bbe <MULTIBOOT_ARCHITECTURE_I386+0xbbe>
+>      bbe:	76 00                	jbe    bc0 <MULTIBOOT_ARCHITECTURE_I386+0xbc0>
+13260c13241
+<      bd1:	70 00                	jo     bd3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xbce>
+---
+>      bd1:	70 00                	jo     bd3 <MULTIBOOT_ARCHITECTURE_I386+0xbd3>
+13270,13271c13251,13252
+<      be4:	73 00                	jae    be6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xbe1>
+<      be6:	76 00                	jbe    be8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xbe3>
+---
+>      be4:	73 00                	jae    be6 <MULTIBOOT_ARCHITECTURE_I386+0xbe6>
+>      be6:	76 00                	jbe    be8 <MULTIBOOT_ARCHITECTURE_I386+0xbe8>
+13279c13260
+<      bf9:	76 00                	jbe    bfb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xbf6>
+---
+>      bf9:	76 00                	jbe    bfb <MULTIBOOT_ARCHITECTURE_I386+0xbfb>
+13288c13269
+<      c0c:	71 00                	jno    c0e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc09>
+---
+>      c0c:	71 00                	jno    c0e <MULTIBOOT_ARCHITECTURE_I386+0xc0e>
+13298,13299c13279,13280
+<      c1f:	70 00                	jo     c21 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc1c>
+<      c21:	76 00                	jbe    c23 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc1e>
+---
+>      c1f:	70 00                	jo     c21 <MULTIBOOT_ARCHITECTURE_I386+0xc21>
+>      c21:	76 00                	jbe    c23 <MULTIBOOT_ARCHITECTURE_I386+0xc23>
+13302c13283
+<      c28:	eb 01                	jmp    c2b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc26>
+---
+>      c28:	eb 01                	jmp    c2b <MULTIBOOT_ARCHITECTURE_I386+0xc2b>
+13304c13285
+<      c2c:	70 02                	jo     c30 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc2b>
+---
+>      c2c:	70 02                	jo     c30 <MULTIBOOT_ARCHITECTURE_I386+0xc30>
+13324c13305
+<      c63:	76 7f                	jbe    ce4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xcdf>
+---
+>      c63:	76 7f                	jbe    ce4 <MULTIBOOT_ARCHITECTURE_I386+0xce4>
+13359c13340
+<      ce0:	eb 01                	jmp    ce3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xcde>
+---
+>      ce0:	eb 01                	jmp    ce3 <MULTIBOOT_ARCHITECTURE_I386+0xce3>
+13361c13342
+<      ce4:	70 02                	jo     ce8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xce3>
+---
+>      ce4:	70 02                	jo     ce8 <MULTIBOOT_ARCHITECTURE_I386+0xce8>
+13399c13380
+<      d69:	eb 01                	jmp    d6c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xd67>
+---
+>      d69:	eb 01                	jmp    d6c <MULTIBOOT_ARCHITECTURE_I386+0xd6c>
+13634c13615
+<      fdf:	7c 00                	jl     fe1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xfdc>
+---
+>      fdf:	7c 00                	jl     fe1 <MULTIBOOT_ARCHITECTURE_I386+0xfe1>
+13708c13689
+<     10a2:	73 00                	jae    10a4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x109f>
+---
+>     10a2:	73 00                	jae    10a4 <MULTIBOOT_ARCHITECTURE_I386+0x10a4>
+13713c13694
+<     10ab:	72 00                	jb     10ad <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10a8>
+---
+>     10ab:	72 00                	jb     10ad <MULTIBOOT_ARCHITECTURE_I386+0x10ad>
+13716c13697
+<     10b5:	79 00                	jns    10b7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10b2>
+---
+>     10b5:	79 00                	jns    10b7 <MULTIBOOT_ARCHITECTURE_I386+0x10b7>
+13740c13721
+<     10f3:	73 00                	jae    10f5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10f0>
+---
+>     10f3:	73 00                	jae    10f5 <MULTIBOOT_ARCHITECTURE_I386+0x10f5>
+13745c13726
+<     10fc:	72 00                	jb     10fe <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10f9>
+---
+>     10fc:	72 00                	jb     10fe <MULTIBOOT_ARCHITECTURE_I386+0x10fe>
+13748c13729
+<     1106:	79 00                	jns    1108 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1103>
+---
+>     1106:	79 00                	jns    1108 <MULTIBOOT_ARCHITECTURE_I386+0x1108>
+13773c13754
+<     1151:	70 00                	jo     1153 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x114e>
+---
+>     1151:	70 00                	jo     1153 <MULTIBOOT_ARCHITECTURE_I386+0x1153>
+13779c13760
+<     1161:	70 00                	jo     1163 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x115e>
+---
+>     1161:	70 00                	jo     1163 <MULTIBOOT_ARCHITECTURE_I386+0x1163>
+13788c13769
+<     1173:	70 00                	jo     1175 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1170>
+---
+>     1173:	70 00                	jo     1175 <MULTIBOOT_ARCHITECTURE_I386+0x1175>
+13805c13786
+<     119f:	70 00                	jo     11a1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x119c>
+---
+>     119f:	70 00                	jo     11a1 <MULTIBOOT_ARCHITECTURE_I386+0x11a1>
+13811c13792
+<     11af:	70 00                	jo     11b1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x11ac>
+---
+>     11af:	70 00                	jo     11b1 <MULTIBOOT_ARCHITECTURE_I386+0x11b1>
+13820c13801
+<     11c1:	70 00                	jo     11c3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x11be>
+---
+>     11c1:	70 00                	jo     11c3 <MULTIBOOT_ARCHITECTURE_I386+0x11c3>
+14021c14002
+<     1403:	79 03                	jns    1408 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1403>
+---
+>     1403:	79 03                	jns    1408 <MULTIBOOT_ARCHITECTURE_I386+0x1408>
+14028c14009
+<     1415:	73 03                	jae    141a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1415>
+---
+>     1415:	73 03                	jae    141a <MULTIBOOT_ARCHITECTURE_I386+0x141a>
+14030c14011
+<     1419:	79 03                	jns    141e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1419>
+---
+>     1419:	79 03                	jns    141e <MULTIBOOT_ARCHITECTURE_I386+0x141e>
+14037c14018
+<     142c:	79 03                	jns    1431 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x142c>
+---
+>     142c:	79 03                	jns    1431 <MULTIBOOT_ARCHITECTURE_I386+0x1431>
+14039c14020
+<     1430:	7d 03                	jge    1435 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1430>
+---
+>     1430:	7d 03                	jge    1435 <MULTIBOOT_ARCHITECTURE_I386+0x1435>
+14046c14027
+<     1443:	79 03                	jns    1448 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1443>
+---
+>     1443:	79 03                	jns    1448 <MULTIBOOT_ARCHITECTURE_I386+0x1448>
+14048c14029
+<     1447:	7d 03                	jge    144c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1447>
+---
+>     1447:	7d 03                	jge    144c <MULTIBOOT_ARCHITECTURE_I386+0x144c>
+14055c14036
+<     145a:	7d 03                	jge    145f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x145a>
+---
+>     145a:	7d 03                	jge    145f <MULTIBOOT_ARCHITECTURE_I386+0x145f>
+14061c14042
+<     1470:	7d 03                	jge    1475 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1470>
+---
+>     1470:	7d 03                	jge    1475 <MULTIBOOT_ARCHITECTURE_I386+0x1475>
+14292c14273
+<     16dd:	74 09                	je     16e8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x16e3>
+---
+>     16dd:	74 09                	je     16e8 <MULTIBOOT_ARCHITECTURE_I386+0x16e8>
+14297c14278
+<     16ec:	7b 04                	jnp    16f2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x16ed>
+---
+>     16ec:	7b 04                	jnp    16f2 <MULTIBOOT_ARCHITECTURE_I386+0x16f2>
+14528c14509
+<     197d:	78 0a                	js     1989 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1984>
+---
+>     197d:	78 0a                	js     1989 <MULTIBOOT_ARCHITECTURE_I386+0x1989>
+14632c14613
+<     1a95:	e1 02                	loope  1a99 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1a94>
+---
+>     1a95:	e1 02                	loope  1a99 <MULTIBOOT_ARCHITECTURE_I386+0x1a99>
+14636c14617
+<     1a9d:	72 00                	jb     1a9f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1a9a>
+---
+>     1a9d:	72 00                	jb     1a9f <MULTIBOOT_ARCHITECTURE_I386+0x1a9f>
+14644c14625
+<     1ab9:	72 00                	jb     1abb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1ab6>
+---
+>     1ab9:	72 00                	jb     1abb <MULTIBOOT_ARCHITECTURE_I386+0x1abb>
+14674c14655
+<     1aff:	72 00                	jb     1b01 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1afc>
+---
+>     1aff:	72 00                	jb     1b01 <MULTIBOOT_ARCHITECTURE_I386+0x1b01>
+14710c14691
+<     1b5c:	72 00                	jb     1b5e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1b59>
+---
+>     1b5c:	72 00                	jb     1b5e <MULTIBOOT_ARCHITECTURE_I386+0x1b5e>
+14739c14720
+<     1bb9:	72 00                	jb     1bbb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1bb6>
+---
+>     1bb9:	72 00                	jb     1bbb <MULTIBOOT_ARCHITECTURE_I386+0x1bbb>
+14750c14731
+<     1bd5:	72 00                	jb     1bd7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1bd2>
+---
+>     1bd5:	72 00                	jb     1bd7 <MULTIBOOT_ARCHITECTURE_I386+0x1bd7>
+14775c14756
+<     1c1b:	72 00                	jb     1c1d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c18>
+---
+>     1c1b:	72 00                	jb     1c1d <MULTIBOOT_ARCHITECTURE_I386+0x1c1d>
+14811c14792
+<     1c78:	72 00                	jb     1c7a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c75>
+---
+>     1c78:	72 00                	jb     1c7a <MULTIBOOT_ARCHITECTURE_I386+0x1c7a>
+14869c14850
+<     1d0e:	72 02                	jb     1d12 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d0d>
+---
+>     1d0e:	72 02                	jb     1d12 <MULTIBOOT_ARCHITECTURE_I386+0x1d12>
+14871c14852
+<     1d12:	78 02                	js     1d16 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d11>
+---
+>     1d12:	78 02                	js     1d16 <MULTIBOOT_ARCHITECTURE_I386+0x1d16>
+14878c14859
+<     1d24:	72 02                	jb     1d28 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d23>
+---
+>     1d24:	72 02                	jb     1d28 <MULTIBOOT_ARCHITECTURE_I386+0x1d28>
+14880c14861
+<     1d28:	78 02                	js     1d2c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d27>
+---
+>     1d28:	78 02                	js     1d2c <MULTIBOOT_ARCHITECTURE_I386+0x1d2c>
+14887c14868
+<     1d3b:	78 02                	js     1d3f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d3a>
+---
+>     1d3b:	78 02                	js     1d3f <MULTIBOOT_ARCHITECTURE_I386+0x1d3f>
+14889c14870
+<     1d3f:	7c 02                	jl     1d43 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d3e>
+---
+>     1d3f:	7c 02                	jl     1d43 <MULTIBOOT_ARCHITECTURE_I386+0x1d43>
+14896c14877
+<     1d51:	78 02                	js     1d55 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d50>
+---
+>     1d51:	78 02                	js     1d55 <MULTIBOOT_ARCHITECTURE_I386+0x1d55>
+14898c14879
+<     1d55:	7c 02                	jl     1d59 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d54>
+---
+>     1d55:	7c 02                	jl     1d59 <MULTIBOOT_ARCHITECTURE_I386+0x1d59>
+14912c14893
+<     1d7f:	7c 02                	jl     1d83 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1d7e>
+---
+>     1d7f:	7c 02                	jl     1d83 <MULTIBOOT_ARCHITECTURE_I386+0x1d83>
+15197c15178
+<     206b:	7a 00                	jp     206d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2068>
+---
+>     206b:	7a 00                	jp     206d <MULTIBOOT_ARCHITECTURE_I386+0x206d>
+15206c15187
+<     2081:	7a 00                	jp     2083 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x207e>
+---
+>     2081:	7a 00                	jp     2083 <MULTIBOOT_ARCHITECTURE_I386+0x2083>
+15215c15196
+<     2097:	7a 00                	jp     2099 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2094>
+---
+>     2097:	7a 00                	jp     2099 <MULTIBOOT_ARCHITECTURE_I386+0x2099>
+15309c15290
+<     21a0:	7e 00                	jle    21a2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x219d>
+---
+>     21a0:	7e 00                	jle    21a2 <MULTIBOOT_ARCHITECTURE_I386+0x21a2>
+15343c15324
+<     21ea:	e1 00                	loope  21ec <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21e7>
+---
+>     21ea:	e1 00                	loope  21ec <MULTIBOOT_ARCHITECTURE_I386+0x21ec>
+15351c15332
+<     21fd:	e0 a0                	loopne 219f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x219a>
+---
+>     21fd:	e0 a0                	loopne 219f <MULTIBOOT_ARCHITECTURE_I386+0x219f>
+15501c15482
+<     2379:	75 02                	jne    237d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2378>
+---
+>     2379:	75 02                	jne    237d <MULTIBOOT_ARCHITECTURE_I386+0x237d>
+15515c15496
+<     2399:	75 02                	jne    239d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2398>
+---
+>     2399:	75 02                	jne    239d <MULTIBOOT_ARCHITECTURE_I386+0x239d>
+15531c15512
+<     23bc:	73 00                	jae    23be <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x23b9>
+---
+>     23bc:	73 00                	jae    23be <MULTIBOOT_ARCHITECTURE_I386+0x23be>
+15578c15559
+<     2454:	71 00                	jno    2456 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2451>
+---
+>     2454:	71 00                	jno    2456 <MULTIBOOT_ARCHITECTURE_I386+0x2456>
+15955c15936
+<     282e:	73 00                	jae    2830 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x282b>
+---
+>     282e:	73 00                	jae    2830 <MULTIBOOT_ARCHITECTURE_I386+0x2830>
+15982c15963
+<   14:	7f 00                	jg     16 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x11>
+---
+>   14:	7f 00                	jg     16 <MULTIBOOT_ARCHITECTURE_I386+0x16>
+16017c15998
+<   70:	78 08                	js     7a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x75>
+---
+>   70:	78 08                	js     7a <MULTIBOOT_ARCHITECTURE_I386+0x7a>
+16125c16106
+<       4e:	72 67                	jb     b7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xb2>
+---
+>       4e:	72 67                	jb     b7 <MULTIBOOT_ARCHITECTURE_I386+0xb7>
+16169c16150
+<       e0:	75 64                	jne    146 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x141>
+---
+>       e0:	75 64                	jne    146 <MULTIBOOT_ARCHITECTURE_I386+0x146>
+16174,16175c16155,16156
+<       f3:	76 73                	jbe    168 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x163>
+<       f5:	70 72                	jo     169 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x164>
+---
+>       f3:	76 73                	jbe    168 <MULTIBOOT_ARCHITECTURE_I386+0x168>
+>       f5:	70 72                	jo     169 <MULTIBOOT_ARCHITECTURE_I386+0x169>
+16180c16161
+<      105:	72 67                	jb     16e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x169>
+---
+>      105:	72 67                	jb     16e <MULTIBOOT_ARCHITECTURE_I386+0x16e>
+16191c16172
+<      12e:	75 05                	jne    135 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x130>
+---
+>      12e:	75 05                	jne    135 <MULTIBOOT_ARCHITECTURE_I386+0x135>
+16294c16275
+<      28d:	77 05                	ja     294 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x28f>
+---
+>      28d:	77 05                	ja     294 <MULTIBOOT_ARCHITECTURE_I386+0x294>
+16353c16334
+<      345:	7f 74                	jg     3bb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3b6>
+---
+>      345:	7f 74                	jg     3bb <MULTIBOOT_ARCHITECTURE_I386+0x3bb>
+16393c16374
+<      3c8:	74 05                	je     3cf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3ca>
+---
+>      3c8:	74 05                	je     3cf <MULTIBOOT_ARCHITECTURE_I386+0x3cf>
+16418c16399
+<      41c:	74 ba                	je     3d8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3d3>
+---
+>      41c:	74 ba                	je     3d8 <MULTIBOOT_ARCHITECTURE_I386+0x3d8>
+16438c16419
+<      460:	7e c8                	jle    42a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x425>
+---
+>      460:	7e c8                	jle    42a <MULTIBOOT_ARCHITECTURE_I386+0x42a>
+16564c16545
+<      5e1:	7e 90                	jle    573 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x56e>
+---
+>      5e1:	7e 90                	jle    573 <MULTIBOOT_ARCHITECTURE_I386+0x573>
+16582c16563
+<      61b:	7f 2e                	jg     64b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x646>
+---
+>      61b:	7f 2e                	jg     64b <MULTIBOOT_ARCHITECTURE_I386+0x64b>
+16592c16573
+<      63a:	75 05                	jne    641 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x63c>
+---
+>      63a:	75 05                	jne    641 <MULTIBOOT_ARCHITECTURE_I386+0x641>
+16607c16588
+<      65e:	7f 58                	jg     6b8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6b3>
+---
+>      65e:	7f 58                	jg     6b8 <MULTIBOOT_ARCHITECTURE_I386+0x6b8>
+16615c16596
+<      677:	74 05                	je     67e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x679>
+---
+>      677:	74 05                	je     67e <MULTIBOOT_ARCHITECTURE_I386+0x67e>
+16617c16598
+<      67b:	76 3c                	jbe    6b9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6b4>
+---
+>      67b:	76 3c                	jbe    6b9 <MULTIBOOT_ARCHITECTURE_I386+0x6b9>
+16657c16638
+<      6eb:	72 69                	jb     756 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x751>
+---
+>      6eb:	72 69                	jb     756 <MULTIBOOT_ARCHITECTURE_I386+0x756>
+16665c16646
+<      701:	73 74                	jae    777 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x772>
+---
+>      701:	73 74                	jae    777 <MULTIBOOT_ARCHITECTURE_I386+0x777>
+16770c16751
+<      846:	76 06                	jbe    84e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x849>
+---
+>      846:	76 06                	jbe    84e <MULTIBOOT_ARCHITECTURE_I386+0x84e>
+16788c16769
+<      878:	75 05                	jne    87f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x87a>
+---
+>      878:	75 05                	jne    87f <MULTIBOOT_ARCHITECTURE_I386+0x87f>
+16825c16806
+<      8eb:	72 63                	jb     950 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x94b>
+---
+>      8eb:	72 63                	jb     950 <MULTIBOOT_ARCHITECTURE_I386+0x950>
+16835c16816
+<      907:	72 74                	jb     97d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x978>
+---
+>      907:	72 74                	jb     97d <MULTIBOOT_ARCHITECTURE_I386+0x97d>
+16838c16819
+<      911:	73 74                	jae    987 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x982>
+---
+>      911:	73 74                	jae    987 <MULTIBOOT_ARCHITECTURE_I386+0x987>
+16849c16830
+<      938:	78 08                	js     942 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x93d>
+---
+>      938:	78 08                	js     942 <MULTIBOOT_ARCHITECTURE_I386+0x942>
+16899c16880
+<      9d3:	73 74                	jae    a49 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa44>
+---
+>      9d3:	73 74                	jae    a49 <MULTIBOOT_ARCHITECTURE_I386+0xa49>
+16913c16894
+<      9fc:	72 63                	jb     a61 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa5c>
+---
+>      9fc:	72 63                	jb     a61 <MULTIBOOT_ARCHITECTURE_I386+0xa61>
+16924c16905
+<      a26:	74 72                	je     a9a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa95>
+---
+>      a26:	74 72                	je     a9a <MULTIBOOT_ARCHITECTURE_I386+0xa9a>
+16928c16909
+<      a30:	75 2e                	jne    a60 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa5b>
+---
+>      a30:	75 2e                	jne    a60 <MULTIBOOT_ARCHITECTURE_I386+0xa60>
+16931c16912
+<      a39:	70 69                	jo     aa4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa9f>
+---
+>      a39:	70 69                	jo     aa4 <MULTIBOOT_ARCHITECTURE_I386+0xaa4>
+16935,16936c16916,16917
+<      a44:	70 6f                	jo     ab5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xab0>
+<      a46:	72 74                	jb     abc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xab7>
+---
+>      a44:	70 6f                	jo     ab5 <MULTIBOOT_ARCHITECTURE_I386+0xab5>
+>      a46:	72 74                	jb     abc <MULTIBOOT_ARCHITECTURE_I386+0xabc>
+16939c16920
+<      a50:	73 74                	jae    ac6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xac1>
+---
+>      a50:	73 74                	jae    ac6 <MULTIBOOT_ARCHITECTURE_I386+0xac6>
+17023c17004
+<      b6a:	7e 3c                	jle    ba8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xba3>
+---
+>      b6a:	7e 3c                	jle    ba8 <MULTIBOOT_ARCHITECTURE_I386+0xba8>
+17172c17153
+<      d90:	74 05                	je     d97 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xd92>
+---
+>      d90:	74 05                	je     d97 <MULTIBOOT_ARCHITECTURE_I386+0xd97>
+17221c17202
+<      e34:	74 05                	je     e3b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xe36>
+---
+>      e34:	74 05                	je     e3b <MULTIBOOT_ARCHITECTURE_I386+0xe3b>
+17293c17274
+<      f4a:	75 05                	jne    f51 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xf4c>
+---
+>      f4a:	75 05                	jne    f51 <MULTIBOOT_ARCHITECTURE_I386+0xf51>
+17462c17443
+<     11ae:	72 63                	jb     1213 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x120e>
+---
+>     11ae:	72 63                	jb     1213 <MULTIBOOT_ARCHITECTURE_I386+0x1213>
+17473c17454
+<     11cc:	74 2e                	je     11fc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x11f7>
+---
+>     11cc:	74 2e                	je     11fc <MULTIBOOT_ARCHITECTURE_I386+0x11fc>
+17477c17458
+<     11d5:	74 2e                	je     1205 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1200>
+---
+>     11d5:	74 2e                	je     1205 <MULTIBOOT_ARCHITECTURE_I386+0x1205>
+17479c17460
+<     11dc:	73 74                	jae    1252 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x124d>
+---
+>     11dc:	73 74                	jae    1252 <MULTIBOOT_ARCHITECTURE_I386+0x1252>
+17532c17513
+<     1296:	7f 01                	jg     1299 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1294>
+---
+>     1296:	7f 01                	jg     1299 <MULTIBOOT_ARCHITECTURE_I386+0x1299>
+17555c17536
+<     12fc:	7f 01                	jg     12ff <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x12fa>
+---
+>     12fc:	7f 01                	jg     12ff <MULTIBOOT_ARCHITECTURE_I386+0x12ff>
+17596c17577
+<     136a:	72 63                	jb     13cf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x13ca>
+---
+>     136a:	72 63                	jb     13cf <MULTIBOOT_ARCHITECTURE_I386+0x13cf>
+17613c17594
+<     13a0:	73 74                	jae    1416 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1411>
+---
+>     13a0:	73 74                	jae    1416 <MULTIBOOT_ARCHITECTURE_I386+0x1416>
+17656c17637
+<     1410:	64 72 76             	fs jb  1489 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1484>
+---
+>     1410:	64 72 76             	fs jb  1489 <MULTIBOOT_ARCHITECTURE_I386+0x1489>
+17666c17647
+<     1430:	72 63                	jb     1495 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1490>
+---
+>     1430:	72 63                	jb     1495 <MULTIBOOT_ARCHITECTURE_I386+0x1495>
+17674c17655
+<     1449:	72 74                	jb     14bf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x14ba>
+---
+>     1449:	72 74                	jb     14bf <MULTIBOOT_ARCHITECTURE_I386+0x14bf>
+17677c17658
+<     1453:	73 74                	jae    14c9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x14c4>
+---
+>     1453:	73 74                	jae    14c9 <MULTIBOOT_ARCHITECTURE_I386+0x14c9>
+17687c17668
+<     1476:	73 74                	jae    14ec <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x14e7>
+---
+>     1476:	73 74                	jae    14ec <MULTIBOOT_ARCHITECTURE_I386+0x14ec>
+17705c17686
+<     14b6:	76 05                	jbe    14bd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x14b8>
+---
+>     14b6:	76 05                	jbe    14bd <MULTIBOOT_ARCHITECTURE_I386+0x14bd>
+17736c17717
+<     1529:	74 3c                	je     1567 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1562>
+---
+>     1529:	74 3c                	je     1567 <MULTIBOOT_ARCHITECTURE_I386+0x1567>
+17764c17745
+<     1575:	72 6e                	jb     15e5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x15e0>
+---
+>     1575:	72 6e                	jb     15e5 <MULTIBOOT_ARCHITECTURE_I386+0x15e5>
+17778,17779c17759,17760
+<     1597:	74 74                	je     160d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1608>
+<     1599:	79 2e                	jns    15c9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x15c4>
+---
+>     1597:	74 74                	je     160d <MULTIBOOT_ARCHITECTURE_I386+0x160d>
+>     1599:	79 2e                	jns    15c9 <MULTIBOOT_ARCHITECTURE_I386+0x15c9>
+17782c17763
+<     15a2:	76 67                	jbe    160b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1606>
+---
+>     15a2:	76 67                	jbe    160b <MULTIBOOT_ARCHITECTURE_I386+0x160b>
+17786,17787c17767,17768
+<     15ad:	70 6f                	jo     161e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1619>
+<     15af:	72 74                	jb     1625 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1620>
+---
+>     15ad:	70 6f                	jo     161e <MULTIBOOT_ARCHITECTURE_I386+0x161e>
+>     15af:	72 74                	jb     1625 <MULTIBOOT_ARCHITECTURE_I386+0x1625>
+17801c17782
+<     15dd:	73 74                	jae    1653 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x164e>
+---
+>     15dd:	73 74                	jae    1653 <MULTIBOOT_ARCHITECTURE_I386+0x1653>
+17805c17786
+<     15e9:	73 74                	jae    165f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x165a>
+---
+>     15e9:	73 74                	jae    165f <MULTIBOOT_ARCHITECTURE_I386+0x165f>
+17811,17812c17792,17793
+<     15fd:	73 74                	jae    1673 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x166e>
+<     15ff:	72 69                	jb     166a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1665>
+---
+>     15fd:	73 74                	jae    1673 <MULTIBOOT_ARCHITECTURE_I386+0x1673>
+>     15ff:	72 69                	jb     166a <MULTIBOOT_ARCHITECTURE_I386+0x166a>
+18003c17984
+<     18a1:	74 05                	je     18a8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x18a3>
+---
+>     18a1:	74 05                	je     18a8 <MULTIBOOT_ARCHITECTURE_I386+0x18a8>
+18007c17988
+<     18b3:	74 05                	je     18ba <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x18b5>
+---
+>     18b3:	74 05                	je     18ba <MULTIBOOT_ARCHITECTURE_I386+0x18ba>
+18053c18034
+<     195e:	7e 01                	jle    1961 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x195c>
+---
+>     195e:	7e 01                	jle    1961 <MULTIBOOT_ARCHITECTURE_I386+0x1961>
+18109c18090
+<     1a1c:	7f 4a                	jg     1a68 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1a63>
+---
+>     1a1c:	7f 4a                	jg     1a68 <MULTIBOOT_ARCHITECTURE_I386+0x1a68>
+18139,18140c18120,18121
+<    0:	74 65                	je     67 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x62>
+<    2:	72 6d                	jb     71 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6c>
+---
+>    0:	74 65                	je     67 <MULTIBOOT_ARCHITECTURE_I386+0x67>
+>    2:	72 6d                	jb     71 <MULTIBOOT_ARCHITECTURE_I386+0x71>
+18145c18126
+<   17:	72 6d                	jb     86 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x81>
+---
+>   17:	72 6d                	jb     86 <MULTIBOOT_ARCHITECTURE_I386+0x86>
+18147c18128
+<   20:	74 63                	je     85 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x80>
+---
+>   20:	74 63                	je     85 <MULTIBOOT_ARCHITECTURE_I386+0x85>
+18151,18153c18132,18134
+<   25:	72 00                	jb     27 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x22>
+<   27:	74 65                	je     8e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x89>
+<   29:	72 6d                	jb     98 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x93>
+---
+>   25:	72 00                	jb     27 <MULTIBOOT_ARCHITECTURE_I386+0x27>
+>   27:	74 65                	je     8e <MULTIBOOT_ARCHITECTURE_I386+0x8e>
+>   29:	72 6d                	jb     98 <MULTIBOOT_ARCHITECTURE_I386+0x98>
+18155c18136
+<   32:	74 63                	je     97 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x92>
+---
+>   32:	74 63                	je     97 <MULTIBOOT_ARCHITECTURE_I386+0x97>
+18159,18160c18140,18141
+<   37:	72 00                	jb     39 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x34>
+<   39:	70 72                	jo     ad <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa8>
+---
+>   37:	72 00                	jb     39 <MULTIBOOT_ARCHITECTURE_I386+0x39>
+>   39:	70 72                	jo     ad <MULTIBOOT_ARCHITECTURE_I386+0xad>
+18164,18165c18145,18146
+<   44:	72 00                	jb     46 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x41>
+<   46:	70 72                	jo     ba <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xb5>
+---
+>   44:	72 00                	jb     46 <MULTIBOOT_ARCHITECTURE_I386+0x46>
+>   46:	70 72                	jo     ba <MULTIBOOT_ARCHITECTURE_I386+0xba>
+18170,18172c18151,18153
+<   55:	72 00                	jb     57 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x52>
+<   57:	76 73                	jbe    cc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc7>
+<   59:	70 72                	jo     cd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc8>
+---
+>   55:	72 00                	jb     57 <MULTIBOOT_ARCHITECTURE_I386+0x57>
+>   57:	76 73                	jbe    cc <MULTIBOOT_ARCHITECTURE_I386+0xcc>
+>   59:	70 72                	jo     cd <MULTIBOOT_ARCHITECTURE_I386+0xcd>
+18174c18155
+<   62:	73 69                	jae    cd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc8>
+---
+>   62:	73 69                	jae    cd <MULTIBOOT_ARCHITECTURE_I386+0xcd>
+18178c18159
+<   6c:	72 00                	jb     6e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x69>
+---
+>   6c:	72 00                	jb     6e <MULTIBOOT_ARCHITECTURE_I386+0x6e>
+18184c18165
+<   85:	74 6b                	je     f2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xed>
+---
+>   85:	74 6b                	je     f2 <MULTIBOOT_ARCHITECTURE_I386+0xf2>
+18186c18167
+<   8a:	76 61                	jbe    ed <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xe8>
+---
+>   8a:	76 61                	jbe    ed <MULTIBOOT_ARCHITECTURE_I386+0xed>
+18190c18171
+<   95:	65 72 73             	gs jb  10b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x106>
+---
+>   95:	65 72 73             	gs jb  10b <MULTIBOOT_ARCHITECTURE_I386+0x10b>
+18193c18174
+<   9a:	7a 68                	jp     104 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xff>
+---
+>   9a:	7a 68                	jp     104 <MULTIBOOT_ARCHITECTURE_I386+0x104>
+18199c18180
+<   a4:	74 73                	je     119 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x114>
+---
+>   a4:	74 73                	je     119 <MULTIBOOT_ARCHITECTURE_I386+0x119>
+18205c18186
+<   b1:	70 6c                	jo     11f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x11a>
+---
+>   b1:	70 6c                	jo     11f <MULTIBOOT_ARCHITECTURE_I386+0x11f>
+18207c18188
+<   b5:	65 72 6e             	gs jb  126 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x121>
+---
+>   b5:	65 72 6e             	gs jb  126 <MULTIBOOT_ARCHITECTURE_I386+0x126>
+18210c18191
+<   bb:	73 72                	jae    12f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x12a>
+---
+>   bb:	73 72                	jae    12f <MULTIBOOT_ARCHITECTURE_I386+0x12f>
+18221c18202
+<   d2:	74 75                	je     149 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x144>
+---
+>   d2:	74 75                	je     149 <MULTIBOOT_ARCHITECTURE_I386+0x149>
+18229c18210
+<   f6:	73 74                	jae    16c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x167>
+---
+>   f6:	73 74                	jae    16c <MULTIBOOT_ARCHITECTURE_I386+0x16c>
+18233c18214
+<  105:	65 73 74             	gs jae 17c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x177>
+---
+>  105:	65 73 74             	gs jae 17c <MULTIBOOT_ARCHITECTURE_I386+0x17c>
+18238,18240c18219,18221
+<  112:	73 00                	jae    114 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x10f>
+<  114:	73 69                	jae    17f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x17a>
+<  116:	7a 65                	jp     17d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x178>
+---
+>  112:	73 00                	jae    114 <MULTIBOOT_ARCHITECTURE_I386+0x114>
+>  114:	73 69                	jae    17f <MULTIBOOT_ARCHITECTURE_I386+0x17f>
+>  116:	7a 65                	jp     17d <MULTIBOOT_ARCHITECTURE_I386+0x17d>
+18244,18245c18225,18226
+<  125:	72 65                	jb     18c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x187>
+<  127:	73 00                	jae    129 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x124>
+---
+>  125:	72 65                	jb     18c <MULTIBOOT_ARCHITECTURE_I386+0x18c>
+>  127:	73 00                	jae    129 <MULTIBOOT_ARCHITECTURE_I386+0x129>
+18247c18228
+<  12a:	75 6d                	jne    199 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x194>
+---
+>  12a:	75 6d                	jne    199 <MULTIBOOT_ARCHITECTURE_I386+0x199>
+18250c18231
+<  132:	70 65                	jo     199 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x194>
+---
+>  132:	70 65                	jo     199 <MULTIBOOT_ARCHITECTURE_I386+0x199>
+18252,18254c18233,18235
+<  135:	74 00                	je     137 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x132>
+<  137:	74 79                	je     1b2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1ad>
+<  139:	70 65                	jo     1a0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x19b>
+---
+>  135:	74 00                	je     137 <MULTIBOOT_ARCHITECTURE_I386+0x137>
+>  137:	74 79                	je     1b2 <MULTIBOOT_ARCHITECTURE_I386+0x1b2>
+>  139:	70 65                	jo     1a0 <MULTIBOOT_ARCHITECTURE_I386+0x1a0>
+18264c18245
+<  162:	72 65                	jb     1c9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c4>
+---
+>  162:	72 65                	jb     1c9 <MULTIBOOT_ARCHITECTURE_I386+0x1c9>
+18272,18273c18253,18254
+<  178:	77 69                	ja     1e3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1de>
+<  17a:	64 74 68             	fs je  1e5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1e0>
+---
+>  178:	77 69                	ja     1e3 <MULTIBOOT_ARCHITECTURE_I386+0x1e3>
+>  17a:	64 74 68             	fs je  1e5 <MULTIBOOT_ARCHITECTURE_I386+0x1e5>
+18275c18256
+<  180:	73 65                	jae    1e7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1e2>
+---
+>  180:	73 65                	jae    1e7 <MULTIBOOT_ARCHITECTURE_I386+0x1e7>
+18287,18288c18268,18269
+<  19e:	74 00                	je     1a0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x19b>
+<  1a0:	73 68                	jae    20a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x205>
+---
+>  19e:	74 00                	je     1a0 <MULTIBOOT_ARCHITECTURE_I386+0x1a0>
+>  1a0:	73 68                	jae    20a <MULTIBOOT_ARCHITECTURE_I386+0x20a>
+18290c18271
+<  1a3:	72 74                	jb     219 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x214>
+---
+>  1a3:	72 74                	jb     219 <MULTIBOOT_ARCHITECTURE_I386+0x219>
+18292c18273
+<  1a8:	73 69                	jae    213 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x20e>
+---
+>  1a8:	73 69                	jae    213 <MULTIBOOT_ARCHITECTURE_I386+0x213>
+18295,18296c18276,18277
+<  1b1:	74 00                	je     1b3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1ae>
+<  1b3:	64 65 73 74          	fs gs jae 22b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x226>
+---
+>  1b1:	74 00                	je     1b3 <MULTIBOOT_ARCHITECTURE_I386+0x1b3>
+>  1b3:	64 65 73 74          	fs gs jae 22b <MULTIBOOT_ARCHITECTURE_I386+0x22b>
+18298,18299c18279,18280
+<  1ba:	72 63                	jb     21f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x21a>
+<  1bc:	70 79                	jo     237 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x232>
+---
+>  1ba:	72 63                	jb     21f <MULTIBOOT_ARCHITECTURE_I386+0x21f>
+>  1bc:	70 79                	jo     237 <MULTIBOOT_ARCHITECTURE_I386+0x237>
+18301c18282
+<  1c1:	7a 65                	jp     228 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x223>
+---
+>  1c1:	7a 65                	jp     228 <MULTIBOOT_ARCHITECTURE_I386+0x228>
+18303c18284
+<  1c4:	74 00                	je     1c6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1c1>
+---
+>  1c4:	74 00                	je     1c6 <MULTIBOOT_ARCHITECTURE_I386+0x1c6>
+18305,18306c18286,18287
+<  1c7:	64 64 72 65          	fs fs jb 230 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x22b>
+<  1cb:	73 73                	jae    240 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x23b>
+---
+>  1c7:	64 64 72 65          	fs fs jb 230 <MULTIBOOT_ARCHITECTURE_I386+0x230>
+>  1cb:	73 73                	jae    240 <MULTIBOOT_ARCHITECTURE_I386+0x240>
+18311c18292
+<  1da:	73 69                	jae    245 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x240>
+---
+>  1da:	73 69                	jae    245 <MULTIBOOT_ARCHITECTURE_I386+0x245>
+18314c18295
+<  1e3:	74 00                	je     1e5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1e0>
+---
+>  1e3:	74 00                	je     1e5 <MULTIBOOT_ARCHITECTURE_I386+0x1e5>
+18318c18299
+<  1ed:	72 63                	jb     252 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x24d>
+---
+>  1ed:	72 63                	jb     252 <MULTIBOOT_ARCHITECTURE_I386+0x252>
+18320,18322c18301,18303
+<  1f0:	74 00                	je     1f2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1ed>
+<  1f2:	73 74                	jae    268 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x263>
+<  1f4:	72 63                	jb     259 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x254>
+---
+>  1f0:	74 00                	je     1f2 <MULTIBOOT_ARCHITECTURE_I386+0x1f2>
+>  1f2:	73 74                	jae    268 <MULTIBOOT_ARCHITECTURE_I386+0x268>
+>  1f4:	72 63                	jb     259 <MULTIBOOT_ARCHITECTURE_I386+0x259>
+18324c18305
+<  1f7:	70 00                	jo     1f9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x1f4>
+---
+>  1f7:	70 00                	jo     1f9 <MULTIBOOT_ARCHITECTURE_I386+0x1f9>
+18326c18307
+<  1fa:	70 70                	jo     26c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x267>
+---
+>  1fa:	70 70                	jo     26c <MULTIBOOT_ARCHITECTURE_I386+0x26c>
+18339c18320
+<  231:	70 74                	jo     2a7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2a2>
+---
+>  231:	70 74                	jo     2a7 <MULTIBOOT_ARCHITECTURE_I386+0x2a7>
+18341,18346c18322,18327
+<  234:	72 65                	jb     29b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x296>
+<  236:	67 73 5f             	addr16 jae 298 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x293>
+<  239:	74 00                	je     23b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x236>
+<  23b:	75 73                	jne    2b0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2ab>
+<  23d:	65 72 5f             	gs jb  29f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x29a>
+<  240:	65 73 70             	gs jae 2b3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2ae>
+---
+>  234:	72 65                	jb     29b <MULTIBOOT_ARCHITECTURE_I386+0x29b>
+>  236:	67 73 5f             	addr16 jae 298 <MULTIBOOT_ARCHITECTURE_I386+0x298>
+>  239:	74 00                	je     23b <MULTIBOOT_ARCHITECTURE_I386+0x23b>
+>  23b:	75 73                	jne    2b0 <MULTIBOOT_ARCHITECTURE_I386+0x2b0>
+>  23d:	65 72 5f             	gs jb  29f <MULTIBOOT_ARCHITECTURE_I386+0x29f>
+>  240:	65 73 70             	gs jae 2b3 <MULTIBOOT_ARCHITECTURE_I386+0x2b3>
+18349c18330
+<  247:	75 65                	jne    2ae <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2a9>
+---
+>  247:	75 65                	jne    2ae <MULTIBOOT_ARCHITECTURE_I386+0x2ae>
+18356,18359c18337,18340
+<  25a:	74 65                	je     2c1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2bc>
+<  25c:	72 72                	jb     2d0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2cb>
+<  25e:	75 70                	jne    2d0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2cb>
+<  260:	74 5f                	je     2c1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2bc>
+---
+>  25a:	74 65                	je     2c1 <MULTIBOOT_ARCHITECTURE_I386+0x2c1>
+>  25c:	72 72                	jb     2d0 <MULTIBOOT_ARCHITECTURE_I386+0x2d0>
+>  25e:	75 70                	jne    2d0 <MULTIBOOT_ARCHITECTURE_I386+0x2d0>
+>  260:	74 5f                	je     2c1 <MULTIBOOT_ARCHITECTURE_I386+0x2c1>
+18361c18342
+<  267:	65 72 00             	gs jb  26a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x265>
+---
+>  267:	65 72 00             	gs jb  26a <MULTIBOOT_ARCHITECTURE_I386+0x26a>
+18365c18346
+<  26e:	65 73 70             	gs jae 2e1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2dc>
+---
+>  26e:	65 73 70             	gs jae 2e1 <MULTIBOOT_ARCHITECTURE_I386+0x2e1>
+18367,18368c18348,18349
+<  274:	65 72 5f             	gs jb  2d6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2d1>
+<  277:	73 73                	jae    2ec <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2e7>
+---
+>  274:	65 72 5f             	gs jb  2d6 <MULTIBOOT_ARCHITECTURE_I386+0x2d6>
+>  277:	73 73                	jae    2ec <MULTIBOOT_ARCHITECTURE_I386+0x2ec>
+18370,18371c18351,18352
+<  27c:	67 73 00             	addr16 jae 27f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x27a>
+<  27f:	74 69                	je     2ea <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2e5>
+---
+>  27c:	67 73 00             	addr16 jae 27f <MULTIBOOT_ARCHITECTURE_I386+0x27f>
+>  27f:	74 69                	je     2ea <MULTIBOOT_ARCHITECTURE_I386+0x2ea>
+18374c18355
+<  285:	75 74                	jne    2fb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2f6>
+---
+>  285:	75 74                	jne    2fb <MULTIBOOT_ARCHITECTURE_I386+0x2fb>
+18376c18357
+<  289:	75 69                	jne    2f4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2ef>
+---
+>  289:	75 69                	jne    2f4 <MULTIBOOT_ARCHITECTURE_I386+0x2f4>
+18378c18359
+<  28c:	74 38                	je     2c6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2c1>
+---
+>  28c:	74 38                	je     2c6 <MULTIBOOT_ARCHITECTURE_I386+0x2c6>
+18380c18361
+<  28f:	74 00                	je     291 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x28c>
+---
+>  28f:	74 00                	je     291 <MULTIBOOT_ARCHITECTURE_I386+0x291>
+18386c18367
+<  2a3:	65 72 00             	gs jb  2a6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2a1>
+---
+>  2a3:	65 72 00             	gs jb  2a6 <MULTIBOOT_ARCHITECTURE_I386+0x2a6>
+18400,18401c18381,18382
+<  2cf:	70 6f                	jo     340 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x33b>
+<  2d1:	72 74                	jb     347 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x342>
+---
+>  2cf:	70 6f                	jo     340 <MULTIBOOT_ARCHITECTURE_I386+0x340>
+>  2d1:	72 74                	jb     347 <MULTIBOOT_ARCHITECTURE_I386+0x347>
+18404c18385
+<  2d7:	74 31                	je     30a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x305>
+---
+>  2d7:	74 31                	je     30a <MULTIBOOT_ARCHITECTURE_I386+0x30a>
+18406,18407c18387,18388
+<  2db:	74 00                	je     2dd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x2d8>
+<  2dd:	75 69                	jne    348 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x343>
+---
+>  2db:	74 00                	je     2dd <MULTIBOOT_ARCHITECTURE_I386+0x2dd>
+>  2dd:	75 69                	jne    348 <MULTIBOOT_ARCHITECTURE_I386+0x348>
+18409c18390
+<  2e0:	74 33                	je     315 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x310>
+---
+>  2e0:	74 33                	je     315 <MULTIBOOT_ARCHITECTURE_I386+0x315>
+18416c18397
+<  2fb:	72 6e                	jb     36b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x366>
+---
+>  2fb:	72 6e                	jb     36b <MULTIBOOT_ARCHITECTURE_I386+0x36b>
+18421c18402
+<  306:	72 6e                	jb     376 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x371>
+---
+>  306:	72 6e                	jb     376 <MULTIBOOT_ARCHITECTURE_I386+0x376>
+18424c18405
+<  30b:	73 74                	jae    381 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x37c>
+---
+>  30b:	73 74                	jae    381 <MULTIBOOT_ARCHITECTURE_I386+0x381>
+18426c18407
+<  30e:	72 74                	jb     384 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x37f>
+---
+>  30e:	72 74                	jb     384 <MULTIBOOT_ARCHITECTURE_I386+0x384>
+18433c18414
+<  31c:	70 6d                	jo     38b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x386>
+---
+>  31c:	70 6d                	jo     38b <MULTIBOOT_ARCHITECTURE_I386+0x38b>
+18438c18419
+<  32a:	74 5f                	je     38b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x386>
+---
+>  32a:	74 5f                	je     38b <MULTIBOOT_ARCHITECTURE_I386+0x38b>
+18446,18448c18427,18429
+<  345:	74 5f                	je     3a6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3a1>
+<  347:	70 74                	jo     3bd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3b8>
+<  349:	72 00                	jb     34b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x346>
+---
+>  345:	74 5f                	je     3a6 <MULTIBOOT_ARCHITECTURE_I386+0x3a6>
+>  347:	70 74                	jo     3bd <MULTIBOOT_ARCHITECTURE_I386+0x3bd>
+>  349:	72 00                	jb     34b <MULTIBOOT_ARCHITECTURE_I386+0x34b>
+18451,18452c18432,18433
+<  353:	79 5f                	jns    3b4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3af>
+<  355:	74 00                	je     357 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x352>
+---
+>  353:	79 5f                	jns    3b4 <MULTIBOOT_ARCHITECTURE_I386+0x3b4>
+>  355:	74 00                	je     357 <MULTIBOOT_ARCHITECTURE_I386+0x357>
+18456c18437
+<  362:	74 61                	je     3c5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3c0>
+---
+>  362:	74 61                	je     3c5 <MULTIBOOT_ARCHITECTURE_I386+0x3c5>
+18458c18439
+<  368:	67 65 74 00          	addr16 gs je 36c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x367>
+---
+>  368:	67 65 74 00          	addr16 gs je 36c <MULTIBOOT_ARCHITECTURE_I386+0x36c>
+18461c18442
+<  374:	66 75 6e             	data16 jne 3e5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3e0>
+---
+>  374:	66 75 6e             	data16 jne 3e5 <MULTIBOOT_ARCHITECTURE_I386+0x3e5>
+18468c18449
+<  38d:	72 00                	jb     38f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x38a>
+---
+>  38d:	72 00                	jb     38f <MULTIBOOT_ARCHITECTURE_I386+0x38f>
+18471,18472c18452,18453
+<  397:	65 79 00             	gs jns 39a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x395>
+<  39a:	72 65                	jb     401 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3fc>
+---
+>  397:	65 79 00             	gs jns 39a <MULTIBOOT_ARCHITECTURE_I386+0x39a>
+>  39a:	72 65                	jb     401 <MULTIBOOT_ARCHITECTURE_I386+0x401>
+18477c18458
+<  3a3:	67 73 00             	addr16 jae 3a6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3a1>
+---
+>  3a3:	67 73 00             	addr16 jae 3a6 <MULTIBOOT_ARCHITECTURE_I386+0x3a6>
+18480c18461
+<  3aa:	73 74                	jae    420 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x41b>
+---
+>  3aa:	73 74                	jae    420 <MULTIBOOT_ARCHITECTURE_I386+0x420>
+18482c18463
+<  3b2:	72 61                	jb     415 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x410>
+---
+>  3b2:	72 61                	jb     415 <MULTIBOOT_ARCHITECTURE_I386+0x415>
+18485c18466
+<  3b6:	70 72                	jo     42a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x425>
+---
+>  3b6:	70 72                	jo     42a <MULTIBOOT_ARCHITECTURE_I386+0x42a>
+18487c18468
+<  3b9:	74 65                	je     420 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x41b>
+---
+>  3b9:	74 65                	je     420 <MULTIBOOT_ARCHITECTURE_I386+0x420>
+18491c18472
+<  3c3:	70 72                	jo     437 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x432>
+---
+>  3c3:	70 72                	jo     437 <MULTIBOOT_ARCHITECTURE_I386+0x437>
+18494,18496c18475,18477
+<  3c9:	73 6f                	jae    43a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x435>
+<  3cb:	72 5f                	jb     42c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x427>
+<  3cd:	65 72 72             	gs jb  442 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x43d>
+---
+>  3c9:	73 6f                	jae    43a <MULTIBOOT_ARCHITECTURE_I386+0x43a>
+>  3cb:	72 5f                	jb     42c <MULTIBOOT_ARCHITECTURE_I386+0x42c>
+>  3cd:	65 72 72             	gs jb  442 <MULTIBOOT_ARCHITECTURE_I386+0x442>
+18498c18479
+<  3d1:	72 00                	jb     3d3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3ce>
+---
+>  3d1:	72 00                	jb     3d3 <MULTIBOOT_ARCHITECTURE_I386+0x3d3>
+18504,18507c18485,18488
+<  3e0:	74 65                	je     447 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x442>
+<  3e2:	72 72                	jb     456 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x451>
+<  3e4:	75 70                	jne    456 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x451>
+<  3e6:	74 5f                	je     447 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x442>
+---
+>  3e0:	74 65                	je     447 <MULTIBOOT_ARCHITECTURE_I386+0x447>
+>  3e2:	72 72                	jb     456 <MULTIBOOT_ARCHITECTURE_I386+0x456>
+>  3e4:	75 70                	jne    456 <MULTIBOOT_ARCHITECTURE_I386+0x456>
+>  3e6:	74 5f                	je     447 <MULTIBOOT_ARCHITECTURE_I386+0x447>
+18509,18510c18490,18491
+<  3ed:	65 72 5f             	gs jb  44f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x44a>
+<  3f0:	74 00                	je     3f2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x3ed>
+---
+>  3ed:	65 72 5f             	gs jb  44f <MULTIBOOT_ARCHITECTURE_I386+0x44f>
+>  3f0:	74 00                	je     3f2 <MULTIBOOT_ARCHITECTURE_I386+0x3f2>
+18512,18515c18493,18496
+<  3f9:	74 65                	je     460 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x45b>
+<  3fb:	72 72                	jb     46f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x46a>
+<  3fd:	75 70                	jne    46f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x46a>
+<  3ff:	74 5f                	je     460 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x45b>
+---
+>  3f9:	74 65                	je     460 <MULTIBOOT_ARCHITECTURE_I386+0x460>
+>  3fb:	72 72                	jb     46f <MULTIBOOT_ARCHITECTURE_I386+0x46f>
+>  3fd:	75 70                	jne    46f <MULTIBOOT_ARCHITECTURE_I386+0x46f>
+>  3ff:	74 5f                	je     460 <MULTIBOOT_ARCHITECTURE_I386+0x460>
+18517c18498
+<  404:	70 00                	jo     406 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x401>
+---
+>  404:	70 00                	jo     406 <MULTIBOOT_ARCHITECTURE_I386+0x406>
+18519c18500
+<  40a:	72 5f                	jb     46b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x466>
+---
+>  40a:	72 5f                	jb     46b <MULTIBOOT_ARCHITECTURE_I386+0x46b>
+18521c18502
+<  413:	70 74                	jo     489 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x484>
+---
+>  413:	70 74                	jo     489 <MULTIBOOT_ARCHITECTURE_I386+0x489>
+18524c18505
+<  419:	70 00                	jo     41b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x416>
+---
+>  419:	70 00                	jo     41b <MULTIBOOT_ARCHITECTURE_I386+0x41b>
+18526c18507
+<  422:	73 65                	jae    489 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x484>
+---
+>  422:	73 65                	jae    489 <MULTIBOOT_ARCHITECTURE_I386+0x489>
+18529c18510
+<  428:	74 5f                	je     489 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x484>
+---
+>  428:	74 5f                	je     489 <MULTIBOOT_ARCHITECTURE_I386+0x489>
+18532,18534c18513,18515
+<  42c:	74 5f                	je     48d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x488>
+<  42e:	70 72                	jo     4a2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x49d>
+<  430:	65 73 65             	gs jae 498 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x493>
+---
+>  42c:	74 5f                	je     48d <MULTIBOOT_ARCHITECTURE_I386+0x48d>
+>  42e:	70 72                	jo     4a2 <MULTIBOOT_ARCHITECTURE_I386+0x4a2>
+>  430:	65 73 65             	gs jae 498 <MULTIBOOT_ARCHITECTURE_I386+0x498>
+18536c18517
+<  434:	74 00                	je     436 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x431>
+---
+>  434:	74 00                	je     436 <MULTIBOOT_ARCHITECTURE_I386+0x436>
+18538c18519
+<  438:	72 6b                	jb     4a5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4a0>
+---
+>  438:	72 6b                	jb     4a5 <MULTIBOOT_ARCHITECTURE_I386+0x4a5>
+18540,18541c18521,18522
+<  43b:	67 72 61             	addr16 jb 49f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x49a>
+<  43e:	79 00                	jns    440 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x43b>
+---
+>  43b:	67 72 61             	addr16 jb 49f <MULTIBOOT_ARCHITECTURE_I386+0x49f>
+>  43e:	79 00                	jns    440 <MULTIBOOT_ARCHITECTURE_I386+0x440>
+18545c18526
+<  449:	74 61                	je     4ac <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4a7>
+---
+>  449:	74 61                	je     4ac <MULTIBOOT_ARCHITECTURE_I386+0x4ac>
+18547c18528
+<  44e:	73 65                	jae    4b5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4b0>
+---
+>  44e:	73 65                	jae    4b5 <MULTIBOOT_ARCHITECTURE_I386+0x4b5>
+18550c18531
+<  454:	74 00                	je     456 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x451>
+---
+>  454:	74 00                	je     456 <MULTIBOOT_ARCHITECTURE_I386+0x456>
+18554c18535
+<  45f:	77 6e                	ja     4cf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4ca>
+---
+>  45f:	77 6e                	ja     4cf <MULTIBOOT_ARCHITECTURE_I386+0x4cf>
+18556c18537
+<  464:	76 61                	jbe    4c7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4c2>
+---
+>  464:	76 61                	jbe    4c7 <MULTIBOOT_ARCHITECTURE_I386+0x4c7>
+18560,18562c18541,18543
+<  46f:	64 74 5f             	fs je  4d1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4cc>
+<  472:	73 65                	jae    4d9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4d4>
+<  474:	74 5f                	je     4d5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4d0>
+---
+>  46f:	64 74 5f             	fs je  4d1 <MULTIBOOT_ARCHITECTURE_I386+0x4d1>
+>  472:	73 65                	jae    4d9 <MULTIBOOT_ARCHITECTURE_I386+0x4d9>
+>  474:	74 5f                	je     4d5 <MULTIBOOT_ARCHITECTURE_I386+0x4d5>
+18564c18545
+<  478:	74 65                	je     4df <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4da>
+---
+>  478:	74 65                	je     4df <MULTIBOOT_ARCHITECTURE_I386+0x4df>
+18566c18547
+<  47d:	74 72                	je     4f1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4ec>
+---
+>  47d:	74 72                	je     4f1 <MULTIBOOT_ARCHITECTURE_I386+0x4f1>
+18573,18575c18554,18556
+<  48b:	75 6c                	jne    4f9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4f4>
+<  48d:	74 00                	je     48f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x48a>
+<  48f:	64 65 76 69          	fs gs jbe 4fc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4f7>
+---
+>  48b:	75 6c                	jne    4f9 <MULTIBOOT_ARCHITECTURE_I386+0x4f9>
+>  48d:	74 00                	je     48f <MULTIBOOT_ARCHITECTURE_I386+0x48f>
+>  48f:	64 65 76 69          	fs gs jbe 4fc <MULTIBOOT_ARCHITECTURE_I386+0x4fc>
+18579c18560
+<  498:	74 5f                	je     4f9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4f4>
+---
+>  498:	74 5f                	je     4f9 <MULTIBOOT_ARCHITECTURE_I386+0x4f9>
+18581c18562
+<  49b:	76 61                	jbe    4fe <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4f9>
+---
+>  49b:	76 61                	jbe    4fe <MULTIBOOT_ARCHITECTURE_I386+0x4fe>
+18585c18566
+<  4aa:	73 65                	jae    511 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x50c>
+---
+>  4aa:	73 65                	jae    511 <MULTIBOOT_ARCHITECTURE_I386+0x511>
+18589c18570
+<  4b5:	71 5f                	jno    516 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x511>
+---
+>  4b5:	71 5f                	jno    516 <MULTIBOOT_ARCHITECTURE_I386+0x516>
+18593,18596c18574,18577
+<  4bc:	74 5f                	je     51d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x518>
+<  4be:	70 74                	jo     534 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x52f>
+<  4c0:	72 5f                	jb     521 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x51c>
+<  4c2:	74 00                	je     4c4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4bf>
+---
+>  4bc:	74 5f                	je     51d <MULTIBOOT_ARCHITECTURE_I386+0x51d>
+>  4be:	70 74                	jo     534 <MULTIBOOT_ARCHITECTURE_I386+0x534>
+>  4c0:	72 5f                	jb     521 <MULTIBOOT_ARCHITECTURE_I386+0x521>
+>  4c2:	74 00                	je     4c4 <MULTIBOOT_ARCHITECTURE_I386+0x4c4>
+18601c18582
+<  4cd:	74 00                	je     4cf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4ca>
+---
+>  4cd:	74 00                	je     4cf <MULTIBOOT_ARCHITECTURE_I386+0x4cf>
+18607c18588
+<  4e3:	72 5f                	jb     544 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x53f>
+---
+>  4e3:	72 5f                	jb     544 <MULTIBOOT_ARCHITECTURE_I386+0x544>
+18611c18592
+<  4f3:	75 67                	jne    55c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x557>
+---
+>  4f3:	75 67                	jne    55c <MULTIBOOT_ARCHITECTURE_I386+0x55c>
+18613c18594
+<  4f8:	71 5f                	jno    559 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x554>
+---
+>  4f8:	71 5f                	jno    559 <MULTIBOOT_ARCHITECTURE_I386+0x559>
+18615c18596
+<  4ff:	65 72 00             	gs jb  502 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x4fd>
+---
+>  4ff:	65 72 00             	gs jb  502 <MULTIBOOT_ARCHITECTURE_I386+0x502>
+18617,18618c18598,18599
+<  503:	76 65                	jbe    56a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x565>
+<  505:	72 66                	jb     56d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x568>
+---
+>  503:	76 65                	jbe    56a <MULTIBOOT_ARCHITECTURE_I386+0x56a>
+>  505:	72 66                	jb     56d <MULTIBOOT_ARCHITECTURE_I386+0x56d>
+18621c18602
+<  509:	77 00                	ja     50b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x506>
+---
+>  509:	77 00                	ja     50b <MULTIBOOT_ARCHITECTURE_I386+0x50b>
+18624c18605
+<  514:	65 72 00             	gs jb  517 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x512>
+---
+>  514:	65 72 00             	gs jb  517 <MULTIBOOT_ARCHITECTURE_I386+0x517>
+18631c18612
+<  52d:	74 72                	je     5a1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x59c>
+---
+>  52d:	74 72                	je     5a1 <MULTIBOOT_ARCHITECTURE_I386+0x5a1>
+18636c18617
+<  535:	76 61                	jbe    598 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x593>
+---
+>  535:	76 61                	jbe    598 <MULTIBOOT_ARCHITECTURE_I386+0x598>
+18641c18622
+<  544:	73 6b                	jae    5b1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5ac>
+---
+>  544:	73 6b                	jae    5b1 <MULTIBOOT_ARCHITECTURE_I386+0x5b1>
+18643c18624
+<  549:	73 65                	jae    5b0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5ab>
+---
+>  549:	73 65                	jae    5b0 <MULTIBOOT_ARCHITECTURE_I386+0x5b0>
+18647c18628
+<  54e:	77 00                	ja     550 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x54b>
+---
+>  54e:	77 00                	ja     550 <MULTIBOOT_ARCHITECTURE_I386+0x550>
+18649c18630
+<  551:	72 63                	jb     5b6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5b1>
+---
+>  551:	72 63                	jb     5b6 <MULTIBOOT_ARCHITECTURE_I386+0x5b6>
+18653c18634
+<  561:	74 72                	je     5d5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5d0>
+---
+>  561:	74 72                	je     5d5 <MULTIBOOT_ARCHITECTURE_I386+0x5d5>
+18657c18638
+<  56e:	75 65                	jne    5d5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5d0>
+---
+>  56e:	75 65                	jne    5d5 <MULTIBOOT_ARCHITECTURE_I386+0x5d5>
+18659c18640
+<  573:	74 72                	je     5e7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5e2>
+---
+>  573:	74 72                	je     5e7 <MULTIBOOT_ARCHITECTURE_I386+0x5e7>
+18663c18644
+<  578:	65 73 00             	gs jae 57b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x576>
+---
+>  578:	65 73 00             	gs jae 57b <MULTIBOOT_ARCHITECTURE_I386+0x57b>
+18667c18648
+<  58a:	70 00                	jo     58c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x587>
+---
+>  58a:	70 00                	jo     58c <MULTIBOOT_ARCHITECTURE_I386+0x58c>
+18669c18650
+<  58e:	75 62                	jne    5f2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5ed>
+---
+>  58e:	75 62                	jne    5f2 <MULTIBOOT_ARCHITECTURE_I386+0x5f2>
+18673,18674c18654,18655
+<  595:	75 6c                	jne    603 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5fe>
+<  597:	74 00                	je     599 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x594>
+---
+>  595:	75 6c                	jne    603 <MULTIBOOT_ARCHITECTURE_I386+0x603>
+>  597:	74 00                	je     599 <MULTIBOOT_ARCHITECTURE_I386+0x599>
+18676c18657
+<  5a0:	70 74                	jo     616 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x611>
+---
+>  5a0:	70 74                	jo     616 <MULTIBOOT_ARCHITECTURE_I386+0x616>
+18679c18660
+<  5a8:	65 72 73             	gs jb  61e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x619>
+---
+>  5a8:	65 72 73             	gs jb  61e <MULTIBOOT_ARCHITECTURE_I386+0x61e>
+18681c18662
+<  5ae:	72 6f                	jb     61f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x61a>
+---
+>  5ae:	72 6f                	jb     61f <MULTIBOOT_ARCHITECTURE_I386+0x61f>
+18688,18689c18669,18670
+<  5bd:	64 73 00             	fs jae 5c0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5bb>
+<  5c0:	74 73                	je     635 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x630>
+---
+>  5bd:	64 73 00             	fs jae 5c0 <MULTIBOOT_ARCHITECTURE_I386+0x5c0>
+>  5c0:	74 73                	je     635 <MULTIBOOT_ARCHITECTURE_I386+0x635>
+18692c18673
+<  5c7:	67 64 74 5f          	addr16 fs je 62a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x625>
+---
+>  5c7:	67 64 74 5f          	addr16 fs je 62a <MULTIBOOT_ARCHITECTURE_I386+0x62a>
+18700,18703c18681,18684
+<  5dc:	64 74 00             	fs je  5df <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5da>
+<  5df:	67 64 74 5f          	addr16 fs je 642 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x63d>
+<  5e3:	73 65                	jae    64a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x645>
+<  5e5:	74 5f                	je     646 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x641>
+---
+>  5dc:	64 74 00             	fs je  5df <MULTIBOOT_ARCHITECTURE_I386+0x5df>
+>  5df:	67 64 74 5f          	addr16 fs je 642 <MULTIBOOT_ARCHITECTURE_I386+0x642>
+>  5e3:	73 65                	jae    64a <MULTIBOOT_ARCHITECTURE_I386+0x64a>
+>  5e5:	74 5f                	je     646 <MULTIBOOT_ARCHITECTURE_I386+0x646>
+18705c18686
+<  5e9:	74 65                	je     650 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x64b>
+---
+>  5e9:	74 65                	je     650 <MULTIBOOT_ARCHITECTURE_I386+0x650>
+18708,18709c18689,18690
+<  5f1:	78 00                	js     5f3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x5ee>
+<  5f3:	74 73                	je     668 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x663>
+---
+>  5f1:	78 00                	js     5f3 <MULTIBOOT_ARCHITECTURE_I386+0x5f3>
+>  5f3:	74 73                	je     668 <MULTIBOOT_ARCHITECTURE_I386+0x668>
+18719,18722c18700,18703
+<  60f:	74 5f                	je     670 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x66b>
+<  611:	70 74                	jo     687 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x682>
+<  613:	72 00                	jb     615 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x610>
+<  615:	74 73                	je     68a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x685>
+---
+>  60f:	74 5f                	je     670 <MULTIBOOT_ARCHITECTURE_I386+0x670>
+>  611:	70 74                	jo     687 <MULTIBOOT_ARCHITECTURE_I386+0x687>
+>  613:	72 00                	jb     615 <MULTIBOOT_ARCHITECTURE_I386+0x615>
+>  615:	74 73                	je     68a <MULTIBOOT_ARCHITECTURE_I386+0x68a>
+18727c18708
+<  620:	73 73                	jae    695 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x690>
+---
+>  620:	73 73                	jae    695 <MULTIBOOT_ARCHITECTURE_I386+0x695>
+18731c18712
+<  627:	75 6c                	jne    695 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x690>
+---
+>  627:	75 6c                	jne    695 <MULTIBOOT_ARCHITECTURE_I386+0x695>
+18733,18734c18714,18715
+<  62a:	72 69                	jb     695 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x690>
+<  62c:	74 79                	je     6a7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6a2>
+---
+>  62a:	72 69                	jb     695 <MULTIBOOT_ARCHITECTURE_I386+0x695>
+>  62c:	74 79                	je     6a7 <MULTIBOOT_ARCHITECTURE_I386+0x6a7>
+18739c18720
+<  63c:	74 72                	je     6b0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6ab>
+---
+>  63c:	74 72                	je     6b0 <MULTIBOOT_ARCHITECTURE_I386+0x6b0>
+18743,18746c18724,18727
+<  648:	74 72                	je     6bc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6b7>
+<  64a:	79 5f                	jns    6ab <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6a6>
+<  64c:	74 00                	je     64e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x649>
+<  64e:	74 73                	je     6c3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6be>
+---
+>  648:	74 72                	je     6bc <MULTIBOOT_ARCHITECTURE_I386+0x6bc>
+>  64a:	79 5f                	jns    6ab <MULTIBOOT_ARCHITECTURE_I386+0x6ab>
+>  64c:	74 00                	je     64e <MULTIBOOT_ARCHITECTURE_I386+0x64e>
+>  64e:	74 73                	je     6c3 <MULTIBOOT_ARCHITECTURE_I386+0x6c3>
+18748c18729
+<  651:	65 73 70             	gs jae 6c4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6bf>
+---
+>  651:	65 73 70             	gs jae 6c4 <MULTIBOOT_ARCHITECTURE_I386+0x6c4>
+18750c18731
+<  656:	74 73                	je     6cb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6c6>
+---
+>  656:	74 73                	je     6cb <MULTIBOOT_ARCHITECTURE_I386+0x6cb>
+18752c18733
+<  659:	65 73 70             	gs jae 6cc <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6c7>
+---
+>  659:	65 73 70             	gs jae 6cc <MULTIBOOT_ARCHITECTURE_I386+0x6cc>
+18754,18755c18735,18736
+<  65e:	74 73                	je     6d3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6ce>
+<  660:	73 5f                	jae    6c1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6bc>
+---
+>  65e:	74 73                	je     6d3 <MULTIBOOT_ARCHITECTURE_I386+0x6d3>
+>  660:	73 5f                	jae    6c1 <MULTIBOOT_ARCHITECTURE_I386+0x6c1>
+18757,18762c18738,18743
+<  664:	74 72                	je     6d8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6d3>
+<  666:	79 00                	jns    668 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x663>
+<  668:	74 73                	je     6dd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6d8>
+<  66a:	73 5f                	jae    6cb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6c6>
+<  66c:	73 65                	jae    6d3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6ce>
+<  66e:	74 5f                	je     6cf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6ca>
+---
+>  664:	74 72                	je     6d8 <MULTIBOOT_ARCHITECTURE_I386+0x6d8>
+>  666:	79 00                	jns    668 <MULTIBOOT_ARCHITECTURE_I386+0x668>
+>  668:	74 73                	je     6dd <MULTIBOOT_ARCHITECTURE_I386+0x6dd>
+>  66a:	73 5f                	jae    6cb <MULTIBOOT_ARCHITECTURE_I386+0x6cb>
+>  66c:	73 65                	jae    6d3 <MULTIBOOT_ARCHITECTURE_I386+0x6d3>
+>  66e:	74 5f                	je     6cf <MULTIBOOT_ARCHITECTURE_I386+0x6cf>
+18764c18745
+<  672:	74 65                	je     6d9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6d4>
+---
+>  672:	74 65                	je     6d9 <MULTIBOOT_ARCHITECTURE_I386+0x6d9>
+18766c18747
+<  677:	74 5f                	je     6d8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6d3>
+---
+>  677:	74 5f                	je     6d8 <MULTIBOOT_ARCHITECTURE_I386+0x6d8>
+18772c18753
+<  68b:	67 64 74 2e          	addr16 fs je 6bd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6b8>
+---
+>  68b:	67 64 74 2e          	addr16 fs je 6bd <MULTIBOOT_ARCHITECTURE_I386+0x6bd>
+18774c18755
+<  691:	74 73                	je     706 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x701>
+---
+>  691:	74 73                	je     706 <MULTIBOOT_ARCHITECTURE_I386+0x706>
+18776c18757
+<  694:	65 73 69             	gs jae 700 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6fb>
+---
+>  694:	65 73 69             	gs jae 700 <MULTIBOOT_ARCHITECTURE_I386+0x700>
+18778,18782c18759,18763
+<  69a:	74 5f                	je     6fb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6f6>
+<  69c:	70 74                	jo     712 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x70d>
+<  69e:	72 5f                	jb     6ff <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6fa>
+<  6a0:	74 00                	je     6a2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x69d>
+<  6a2:	74 73                	je     717 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x712>
+---
+>  69a:	74 5f                	je     6fb <MULTIBOOT_ARCHITECTURE_I386+0x6fb>
+>  69c:	70 74                	jo     712 <MULTIBOOT_ARCHITECTURE_I386+0x712>
+>  69e:	72 5f                	jb     6ff <MULTIBOOT_ARCHITECTURE_I386+0x6ff>
+>  6a0:	74 00                	je     6a2 <MULTIBOOT_ARCHITECTURE_I386+0x6a2>
+>  6a2:	74 73                	je     717 <MULTIBOOT_ARCHITECTURE_I386+0x717>
+18784c18765
+<  6a5:	65 73 70             	gs jae 718 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x713>
+---
+>  6a5:	65 73 70             	gs jae 718 <MULTIBOOT_ARCHITECTURE_I386+0x718>
+18787c18768
+<  6b0:	74 73                	je     725 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x720>
+---
+>  6b0:	74 73                	je     725 <MULTIBOOT_ARCHITECTURE_I386+0x725>
+18789,18790c18770,18771
+<  6b3:	67 73 00             	addr16 jae 6b6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6b1>
+<  6b6:	67 64 74 5f          	addr16 fs je 719 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x714>
+---
+>  6b3:	67 73 00             	addr16 jae 6b6 <MULTIBOOT_ARCHITECTURE_I386+0x6b6>
+>  6b6:	67 64 74 5f          	addr16 fs je 719 <MULTIBOOT_ARCHITECTURE_I386+0x719>
+18792,18795c18773,18776
+<  6bc:	74 72                	je     730 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x72b>
+<  6be:	79 5f                	jns    71f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x71a>
+<  6c0:	74 00                	je     6c2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6bd>
+<  6c2:	74 73                	je     737 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x732>
+---
+>  6bc:	74 72                	je     730 <MULTIBOOT_ARCHITECTURE_I386+0x730>
+>  6be:	79 5f                	jns    71f <MULTIBOOT_ARCHITECTURE_I386+0x71f>
+>  6c0:	74 00                	je     6c2 <MULTIBOOT_ARCHITECTURE_I386+0x6c2>
+>  6c2:	74 73                	je     737 <MULTIBOOT_ARCHITECTURE_I386+0x737>
+18797c18778
+<  6c5:	65 73 70             	gs jae 738 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x733>
+---
+>  6c5:	65 73 70             	gs jae 738 <MULTIBOOT_ARCHITECTURE_I386+0x738>
+18799c18780
+<  6ca:	74 73                	je     73f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x73a>
+---
+>  6ca:	74 73                	je     73f <MULTIBOOT_ARCHITECTURE_I386+0x73f>
+18803,18804c18784,18785
+<  6d5:	64 78 00             	fs js  6d8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6d3>
+<  6d8:	74 73                	je     74d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x748>
+---
+>  6d5:	64 78 00             	fs js  6d8 <MULTIBOOT_ARCHITECTURE_I386+0x6d8>
+>  6d8:	74 73                	je     74d <MULTIBOOT_ARCHITECTURE_I386+0x74d>
+18806c18787
+<  6db:	73 73                	jae    750 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x74b>
+---
+>  6db:	73 73                	jae    750 <MULTIBOOT_ARCHITECTURE_I386+0x750>
+18810,18811c18791,18792
+<  6e8:	74 00                	je     6ea <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6e5>
+<  6ea:	67 72 61             	addr16 jb 74e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x749>
+---
+>  6e8:	74 00                	je     6ea <MULTIBOOT_ARCHITECTURE_I386+0x6ea>
+>  6ea:	67 72 61             	addr16 jb 74e <MULTIBOOT_ARCHITECTURE_I386+0x74e>
+18814,18815c18795,18796
+<  6f2:	65 73 00             	gs jae 6f5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6f0>
+<  6f5:	74 73                	je     76a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x765>
+---
+>  6f2:	65 73 00             	gs jae 6f5 <MULTIBOOT_ARCHITECTURE_I386+0x6f5>
+>  6f5:	74 73                	je     76a <MULTIBOOT_ARCHITECTURE_I386+0x76a>
+18819,18820c18800,18801
+<  6fc:	67 73 00             	addr16 jae 6ff <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x6fa>
+<  6ff:	74 73                	je     774 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x76f>
+---
+>  6fc:	67 73 00             	addr16 jae 6ff <MULTIBOOT_ARCHITECTURE_I386+0x6ff>
+>  6ff:	74 73                	je     774 <MULTIBOOT_ARCHITECTURE_I386+0x774>
+18822,18823c18803,18804
+<  702:	66 73 00             	data16 jae 705 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x700>
+<  705:	74 73                	je     77a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x775>
+---
+>  702:	66 73 00             	data16 jae 705 <MULTIBOOT_ARCHITECTURE_I386+0x705>
+>  705:	74 73                	je     77a <MULTIBOOT_ARCHITECTURE_I386+0x77a>
+18825c18806
+<  708:	73 73                	jae    77d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x778>
+---
+>  708:	73 73                	jae    77d <MULTIBOOT_ARCHITECTURE_I386+0x77d>
+18829,18830c18810,18811
+<  714:	77 00                	ja     716 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x711>
+<  716:	74 73                	je     78b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x786>
+---
+>  714:	77 00                	ja     716 <MULTIBOOT_ARCHITECTURE_I386+0x716>
+>  716:	74 73                	je     78b <MULTIBOOT_ARCHITECTURE_I386+0x78b>
+18832c18813
+<  719:	73 73                	jae    78e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x789>
+---
+>  719:	73 73                	jae    78e <MULTIBOOT_ARCHITECTURE_I386+0x78e>
+18834c18815
+<  71d:	74 73                	je     792 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x78d>
+---
+>  71d:	74 73                	je     792 <MULTIBOOT_ARCHITECTURE_I386+0x792>
+18836c18817
+<  720:	73 73                	jae    795 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x790>
+---
+>  720:	73 73                	jae    795 <MULTIBOOT_ARCHITECTURE_I386+0x795>
+18838,18839c18819,18820
+<  724:	72 6f                	jb     795 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x790>
+<  726:	75 6e                	jne    796 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x791>
+---
+>  724:	72 6f                	jb     795 <MULTIBOOT_ARCHITECTURE_I386+0x795>
+>  726:	75 6e                	jne    796 <MULTIBOOT_ARCHITECTURE_I386+0x796>
+18843c18824
+<  734:	73 74                	jae    7aa <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a5>
+---
+>  734:	73 74                	jae    7aa <MULTIBOOT_ARCHITECTURE_I386+0x7aa>
+18845,18847c18826,18828
+<  737:	74 75                	je     7ae <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a9>
+<  739:	73 00                	jae    73b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x736>
+<  73b:	72 65                	jb     7a2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x79d>
+---
+>  737:	74 75                	je     7ae <MULTIBOOT_ARCHITECTURE_I386+0x7ae>
+>  739:	73 00                	jae    73b <MULTIBOOT_ARCHITECTURE_I386+0x73b>
+>  73b:	72 65                	jb     7a2 <MULTIBOOT_ARCHITECTURE_I386+0x7a2>
+18849c18830
+<  740:	72 65                	jb     7a7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a2>
+---
+>  740:	72 65                	jb     7a7 <MULTIBOOT_ARCHITECTURE_I386+0x7a7>
+18851c18832
+<  745:	72 65                	jb     7ac <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7a7>
+---
+>  745:	72 65                	jb     7ac <MULTIBOOT_ARCHITECTURE_I386+0x7ac>
+18853c18834
+<  74a:	72 65                	jb     7b1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7ac>
+---
+>  74a:	72 65                	jb     7b1 <MULTIBOOT_ARCHITECTURE_I386+0x7b1>
+18856c18837
+<  750:	72 63                	jb     7b5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7b0>
+---
+>  750:	72 63                	jb     7b5 <MULTIBOOT_ARCHITECTURE_I386+0x7b5>
+18866c18847
+<  76e:	64 72 76             	fs jb  7e7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7e2>
+---
+>  76e:	64 72 76             	fs jb  7e7 <MULTIBOOT_ARCHITECTURE_I386+0x7e7>
+18870c18851
+<  774:	75 73                	jne    7e9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7e4>
+---
+>  774:	75 73                	jne    7e9 <MULTIBOOT_ARCHITECTURE_I386+0x7e9>
+18872,18873c18853,18854
+<  77a:	74 72                	je     7ee <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7e9>
+<  77c:	75 65                	jne    7e3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7de>
+---
+>  77a:	74 72                	je     7ee <MULTIBOOT_ARCHITECTURE_I386+0x7ee>
+>  77c:	75 65                	jne    7e3 <MULTIBOOT_ARCHITECTURE_I386+0x7e3>
+18885c18866
+<  795:	70 00                	jo     797 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x792>
+---
+>  795:	70 00                	jo     797 <MULTIBOOT_ARCHITECTURE_I386+0x797>
+18887c18868
+<  79a:	73 00                	jae    79c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x797>
+---
+>  79a:	73 00                	jae    79c <MULTIBOOT_ARCHITECTURE_I386+0x79c>
+18893c18874
+<  7a3:	79 62                	jns    807 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x802>
+---
+>  7a3:	79 62                	jns    807 <MULTIBOOT_ARCHITECTURE_I386+0x807>
+18896c18877
+<  7a7:	72 64                	jb     80d <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x808>
+---
+>  7a7:	72 64                	jb     80d <MULTIBOOT_ARCHITECTURE_I386+0x80d>
+18900c18881
+<  7b2:	73 65                	jae    819 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x814>
+---
+>  7b2:	73 65                	jae    819 <MULTIBOOT_ARCHITECTURE_I386+0x819>
+18902c18883
+<  7b7:	72 6c                	jb     825 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x820>
+---
+>  7b7:	72 6c                	jb     825 <MULTIBOOT_ARCHITECTURE_I386+0x825>
+18908c18889
+<  7c5:	79 62                	jns    829 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x824>
+---
+>  7c5:	79 62                	jns    829 <MULTIBOOT_ARCHITECTURE_I386+0x829>
+18911c18892
+<  7c9:	72 64                	jb     82f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x82a>
+---
+>  7c9:	72 64                	jb     82f <MULTIBOOT_ARCHITECTURE_I386+0x82f>
+18914c18895
+<  7d1:	65 72 00             	gs jb  7d4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7cf>
+---
+>  7d1:	65 72 00             	gs jb  7d4 <MULTIBOOT_ARCHITECTURE_I386+0x7d4>
+18916,18917c18897,18898
+<  7d5:	65 74 74             	gs je  84c <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x847>
+<  7d8:	65 72 00             	gs jb  7db <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7d6>
+---
+>  7d5:	65 74 74             	gs je  84c <MULTIBOOT_ARCHITECTURE_I386+0x84c>
+>  7d8:	65 72 00             	gs jb  7db <MULTIBOOT_ARCHITECTURE_I386+0x7db>
+18921c18902
+<  7e2:	64 72 76             	fs jb  85b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x856>
+---
+>  7e2:	64 72 76             	fs jb  85b <MULTIBOOT_ARCHITECTURE_I386+0x85b>
+18930c18911
+<  800:	74 00                	je     802 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x7fd>
+---
+>  800:	74 00                	je     802 <MULTIBOOT_ARCHITECTURE_I386+0x802>
+18948c18929
+<  81c:	74 63                	je     881 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x87c>
+---
+>  81c:	74 63                	je     881 <MULTIBOOT_ARCHITECTURE_I386+0x881>
+18950,18951c18931,18932
+<  823:	64 64 72 00          	fs fs jb 827 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x822>
+<  827:	76 67                	jbe    890 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x88b>
+---
+>  823:	64 64 72 00          	fs fs jb 827 <MULTIBOOT_ARCHITECTURE_I386+0x827>
+>  827:	76 67                	jbe    890 <MULTIBOOT_ARCHITECTURE_I386+0x890>
+18955,18956c18936,18937
+<  82d:	74 72                	je     8a1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x89c>
+<  82f:	79 5f                	jns    890 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x88b>
+---
+>  82d:	74 72                	je     8a1 <MULTIBOOT_ARCHITECTURE_I386+0x8a1>
+>  82f:	79 5f                	jns    890 <MULTIBOOT_ARCHITECTURE_I386+0x890>
+18959c18940
+<  835:	72 00                	jb     837 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x832>
+---
+>  835:	72 00                	jb     837 <MULTIBOOT_ARCHITECTURE_I386+0x837>
+18977c18958
+<  851:	77 00                	ja     853 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x84e>
+---
+>  851:	77 00                	ja     853 <MULTIBOOT_ARCHITECTURE_I386+0x853>
+18979,18982c18960,18963
+<  856:	73 6f                	jae    8c7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8c2>
+<  858:	72 5f                	jb     8b9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8b4>
+<  85a:	70 6f                	jo     8cb <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8c6>
+<  85c:	73 5f                	jae    8bd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8b8>
+---
+>  856:	73 6f                	jae    8c7 <MULTIBOOT_ARCHITECTURE_I386+0x8c7>
+>  858:	72 5f                	jb     8b9 <MULTIBOOT_ARCHITECTURE_I386+0x8b9>
+>  85a:	70 6f                	jo     8cb <MULTIBOOT_ARCHITECTURE_I386+0x8cb>
+>  85c:	73 5f                	jae    8bd <MULTIBOOT_ARCHITECTURE_I386+0x8bd>
+19019,19022c19000,19003
+<  88f:	74 63                	je     8f4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8ef>
+<  891:	75 72                	jne    905 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x900>
+<  893:	73 6f                	jae    904 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8ff>
+<  895:	72 70                	jb     907 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x902>
+---
+>  88f:	74 63                	je     8f4 <MULTIBOOT_ARCHITECTURE_I386+0x8f4>
+>  891:	75 72                	jne    905 <MULTIBOOT_ARCHITECTURE_I386+0x905>
+>  893:	73 6f                	jae    904 <MULTIBOOT_ARCHITECTURE_I386+0x904>
+>  895:	72 70                	jb     907 <MULTIBOOT_ARCHITECTURE_I386+0x907>
+19024c19005
+<  898:	73 00                	jae    89a <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x895>
+---
+>  898:	73 00                	jae    89a <MULTIBOOT_ARCHITECTURE_I386+0x89a>
+19049,19050c19030,19031
+<  8b5:	74 72                	je     929 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x924>
+<  8b7:	79 00                	jns    8b9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x8b4>
+---
+>  8b5:	74 72                	je     929 <MULTIBOOT_ARCHITECTURE_I386+0x929>
+>  8b7:	79 00                	jns    8b9 <MULTIBOOT_ARCHITECTURE_I386+0x8b9>
+19062c19043
+<  8c6:	72 6e                	jb     936 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x931>
+---
+>  8c6:	72 6e                	jb     936 <MULTIBOOT_ARCHITECTURE_I386+0x936>
+19105c19086
+<  90c:	76 00                	jbe    90e <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x909>
+---
+>  90c:	76 00                	jbe    90e <MULTIBOOT_ARCHITECTURE_I386+0x90e>
+19125c19106
+<  92a:	75 6d                	jne    999 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x994>
+---
+>  92a:	75 6d                	jne    999 <MULTIBOOT_ARCHITECTURE_I386+0x999>
+19148,19151c19129,19132
+<  94d:	74 63                	je     9b2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9ad>
+<  94f:	75 72                	jne    9c3 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9be>
+<  951:	73 6f                	jae    9c2 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9bd>
+<  953:	72 70                	jb     9c5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9c0>
+---
+>  94d:	74 63                	je     9b2 <MULTIBOOT_ARCHITECTURE_I386+0x9b2>
+>  94f:	75 72                	jne    9c3 <MULTIBOOT_ARCHITECTURE_I386+0x9c3>
+>  951:	73 6f                	jae    9c2 <MULTIBOOT_ARCHITECTURE_I386+0x9c2>
+>  953:	72 70                	jb     9c5 <MULTIBOOT_ARCHITECTURE_I386+0x9c5>
+19153,19155c19134,19136
+<  956:	73 00                	jae    958 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x953>
+<  958:	74 65                	je     9bf <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9ba>
+<  95a:	72 6d                	jb     9c9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9c4>
+---
+>  956:	73 00                	jae    958 <MULTIBOOT_ARCHITECTURE_I386+0x958>
+>  958:	74 65                	je     9bf <MULTIBOOT_ARCHITECTURE_I386+0x9bf>
+>  95a:	72 6d                	jb     9c9 <MULTIBOOT_ARCHITECTURE_I386+0x9c9>
+19157c19138
+<  963:	66 66 65 72 00       	data16 data16 gs jb 968 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x963>
+---
+>  963:	66 66 65 72 00       	data16 data16 gs jb 968 <MULTIBOOT_ARCHITECTURE_I386+0x968>
+19182c19163
+<  982:	72 73                	jb     9f7 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9f2>
+---
+>  982:	72 73                	jb     9f7 <MULTIBOOT_ARCHITECTURE_I386+0x9f7>
+19184,19186c19165,19167
+<  985:	72 5f                	jb     9e6 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9e1>
+<  987:	70 6f                	jo     9f8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9f3>
+<  989:	73 5f                	jae    9ea <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9e5>
+---
+>  985:	72 5f                	jb     9e6 <MULTIBOOT_ARCHITECTURE_I386+0x9e6>
+>  987:	70 6f                	jo     9f8 <MULTIBOOT_ARCHITECTURE_I386+0x9f8>
+>  989:	73 5f                	jae    9ea <MULTIBOOT_ARCHITECTURE_I386+0x9ea>
+19227c19208
+<  9c2:	72 00                	jb     9c4 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9bf>
+---
+>  9c2:	72 00                	jb     9c4 <MULTIBOOT_ARCHITECTURE_I386+0x9c4>
+19251c19232
+<  9ea:	72 6f                	jb     a5b <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa56>
+---
+>  9ea:	72 6f                	jb     a5b <MULTIBOOT_ARCHITECTURE_I386+0xa5b>
+19259c19240
+<  a02:	78 00                	js     a04 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x9ff>
+---
+>  a02:	78 00                	js     a04 <MULTIBOOT_ARCHITECTURE_I386+0xa04>
+19323c19304
+<  a55:	77 69                	ja     ac0 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xabb>
+---
+>  a55:	77 69                	ja     ac0 <MULTIBOOT_ARCHITECTURE_I386+0xac0>
+19329c19310
+<  a66:	74 65                	je     acd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xac8>
+---
+>  a66:	74 65                	je     acd <MULTIBOOT_ARCHITECTURE_I386+0xacd>
+19331,19334c19312,19315
+<  a69:	74 72                	je     add <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xad8>
+<  a6b:	79 61                	jns    ace <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xac9>
+<  a6d:	74 00                	je     a6f <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa6a>
+<  a6f:	76 67                	jbe    ad8 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xad3>
+---
+>  a69:	74 72                	je     add <MULTIBOOT_ARCHITECTURE_I386+0xadd>
+>  a6b:	79 61                	jns    ace <MULTIBOOT_ARCHITECTURE_I386+0xace>
+>  a6d:	74 00                	je     a6f <MULTIBOOT_ARCHITECTURE_I386+0xa6f>
+>  a6f:	76 67                	jbe    ad8 <MULTIBOOT_ARCHITECTURE_I386+0xad8>
+19339c19320
+<  a77:	72 00                	jb     a79 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xa74>
+---
+>  a77:	72 00                	jb     a79 <MULTIBOOT_ARCHITECTURE_I386+0xa79>
+19416c19397
+<   ac:	73 03                	jae    b1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xac>
+---
+>   ac:	73 03                	jae    b1 <MULTIBOOT_ARCHITECTURE_I386+0xb1>
+19418c19399
+<   b0:	73 03                	jae    b5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xb0>
+---
+>   b0:	73 03                	jae    b5 <MULTIBOOT_ARCHITECTURE_I386+0xb5>
+19420c19401
+<   b4:	79 03                	jns    b9 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xb4>
+---
+>   b4:	79 03                	jns    b9 <MULTIBOOT_ARCHITECTURE_I386+0xb9>
+19422c19403
+<   b8:	79 03                	jns    bd <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xb8>
+---
+>   b8:	79 03                	jns    bd <MULTIBOOT_ARCHITECTURE_I386+0xbd>
+19424c19405
+<   bc:	7d 03                	jge    c1 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xbc>
+---
+>   bc:	7d 03                	jge    c1 <MULTIBOOT_ARCHITECTURE_I386+0xc1>
+19426c19407
+<   c0:	7d 03                	jge    c5 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0xc0>
+---
+>   c0:	7d 03                	jge    c5 <MULTIBOOT_ARCHITECTURE_I386+0xc5>
+19499c19480
+<  194:	7a 00                	jp     196 <MULTIBOOT_HEADER_TAG_FRAMEBUFFER+0x191>
+---
+>  194:	7a 00                	jp     196 <MULTIBOOT_ARCHITECTURE_I386+0x196>
