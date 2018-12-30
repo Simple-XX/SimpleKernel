@@ -57,6 +57,7 @@ Next: Specification, Previous: Overview, Up: Top
 - `must`
 We use the term must, when any boot loader or OS image needs to follow a rule — otherwise, the boot loader or OS image is not Multiboot2- compliant.
 
+
 - `should`
 We use the term should, when any boot loader or OS image is recommended to follow a rule, but it doesn't need to follow the rule.
                                     
@@ -96,7 +97,7 @@ There are three main aspects of a boot loader/OS image interface:
 3. The format of information passed by a boot loader to an operating system.
 OS image format Machine state
 Boot information format
-Next: Machine state, Up: Specification
+
 
 ## 3.1 OS image format
 An OS image may be an ordinary 32-bit executable file in the standard format for that particular operating system, except that it may be linked at a non- default load address to avoid loading on top of the PC's I/O region or other reserved areas, and of course it should not use shared libraries or other fancy features.
