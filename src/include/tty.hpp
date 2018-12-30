@@ -38,7 +38,7 @@ void terminal_init(void){
 		terminal_column = 0;
 		// 字体为灰色，背景为黑色
 		terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-		terminal_buffer = (uint16_t*) 0xB8000;
+		terminal_buffer = (uint16_t*) VGA_MEM_BASE;
 		// 用 ' ' 填满屏幕
 		for (size_t y = 0; y < VGA_HEIGHT; y++) {
 				for (size_t x = 0; x < VGA_WIDTH; x++) {

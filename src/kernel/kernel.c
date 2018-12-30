@@ -13,14 +13,18 @@ void kernel_main(uint64_t magic, uint64_t addr);
 void kernel_main(uint64_t magic, uint64_t addr) {
 		// multiboot_info_t * mboot_ptr = (multiboot_info_t *)addr;
 		// 系统初始化
-		// debug_init(magic, mboot_ptr);
+		// print_cur_status();
+		// debug_init(magic, addr);
 		terminal_init();       // 控制台初始化
 		gdt_init();        // GDT 初始化
 		idt_init();       // IDT 初始化
 		clock_init();       // 时钟初始化
 		keyboard_init();       // 键盘初始化
 		showinfo();
-		// debug_init(magic, mboot_ptr);
+		printk("66666");
+		print_cur_status();
+		debug_init(magic, addr);
+		printk("11111");
 
 
 

@@ -50,6 +50,15 @@ kernel.kernel: $(OBJ)
 	@echo 编译汇编文件... $<
 	@$(AS) $(ASFLAGS) $< -o $@
 
+
+default:
+	make
+
+.PHONY: remake
+remake:
+	$(MAKE) clean
+	$(MAKE) default
+
 .PHONY: info
 info:
 	@echo CC: $(CC)
@@ -69,7 +78,7 @@ code_line_count:
 .PHONY: clean
 clean:
 	@echo 正在删除... $<
+	@-rm -f kernel.kernel
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.gch"  | xargs rm -f
-	@-rm -f kernel.kernel
 	@echo 删除完毕
