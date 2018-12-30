@@ -38,22 +38,23 @@ multiboot_header:
 +-------------------+
 u32     | type = 9          |
 u32     | size              |
-u16     | num               |
-u16     | entsize           |
-u16     | shndx             |
-u16     | reserved          |
+u32     | num               |
+u32     | entsize           |
+u32     | shndx             |
+u32     | reserved          |
 varies  | section headers   |
 		 +-------------------+
 */
 /*
+# 这里原文有错误，见 https://github.com/rust-osdev/multiboot2-elf64/blob/master/README.md
 .align 8
 elf_symbols_tag:
 	.long MULTIBOOT_TAG_TYPE_ELF_SECTIONS
 	.long elf_symbols_tag_end - elf_symbols_tag
-	.short
-	.short
-	.short
-	.short
+	.long
+	.long
+	.long
+	.long
 
 .align 8
 elf_symbols_tag_end:
