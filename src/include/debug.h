@@ -22,6 +22,6 @@
 
 
 // void debug_init(uint64_t magic, multiboot_info_t * mb);
-
+void debug_init(uint64_t magic, unsigned long addr);
 
 #endif

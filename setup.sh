@@ -67,8 +67,7 @@ fi
 
 # 重新编译
 cd src/
-make clean
-make
+make remake
 cd ../
 
 if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
@@ -87,8 +86,8 @@ if [ ${OS} == 0 ]; then
   # hdiutil attach -mountpoint ${folder} ${disk}
   # cp ${img} ${boot_folder}
   # hdiutil detach ${folder}
-  i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
   cp ${img} ${iso_boot}
+  i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
   bochs -q -f ${bochsrc}
 elif [ ${OS} == 1 ]; then
   mkdir ${folder}
