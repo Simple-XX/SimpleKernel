@@ -12,7 +12,10 @@
 .set MULTIBOOT_HEADER_TAG_END, 0
 
 .set MULTIBOOT_TAG_TYPE_ELF_SECTIONS, 9
-
+.set MULTIBOOT_HEADER_TAG_OPTIONAL, 1
+.set MULTIBOOT_HEADER_TAG_ADDRESS, 2
+.set MULTIBOOT_HEADER_TAG_ENTRY_ADDRESS, 3
+.set MULTIBOOT_HEADER_TAG_FRAMEBUFFER,5
 
 .text
 .align 8
@@ -30,6 +33,7 @@ multiboot_header:
   .long -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + multiboot_header_end - multiboot_header)
 
 # 添加其它内容在此，见 Multiboot2 Specification version 2.0.pdf
+
 /*
 +-------------------+
 u32     | type = 9          |
@@ -40,6 +44,8 @@ u16     | shndx             |
 u16     | reserved          |
 varies  | section headers   |
 		 +-------------------+
+*/
+/*
 .align 8
 elf_symbols_tag:
 	.long MULTIBOOT_TAG_TYPE_ELF_SECTIONS
