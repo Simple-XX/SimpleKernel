@@ -60,7 +60,7 @@ We use the term must, when any boot loader or OS image needs to follow a rule �
 
 - `should`
 We use the term should, when any boot loader or OS image is recommended to follow a rule, but it doesn't need to follow the rule.
-                                    
+  
 - `may`
 We use the term may, when any boot loader or OS image is allowed to follow a rule.
 
@@ -117,7 +117,7 @@ The layout of the Multiboot2 header must be as follows:
 The type of unsigned 8-bit data.
 The type of unsigned 16-bit data. Because the target architecture is little-endian, u16 is coded in little-endian.
 The type of unsigned 32-bit data. Because the target architecture is little-endian, u32 is coded in little-endian.
-                                           Offset Type 0 u32 4 u32 8 u32 12 u32 16-XX
+​                                           Offset Type 0 u32 4 u32 8 u32 12 u32 16-XX
 Field Name magic architecture header_length checksum tags
 Note required required required required required
 
@@ -151,7 +151,7 @@ header_addr
 Contains the address corresponding to the beginning of the Multiboot2 header — the physical memory location at which the magic value is supposed to be loaded. This field serves to synchronize the mapping between OS image offsets and physical memory addresses.
 load_addr
 Contains the physical address of the beginning of the text segment. The offset in the OS image file at which to start loading is defined by the offset at which the header was found, minus (header_addr - load_addr). load_addr must be less than or equal to header_addr.
-                              
+​                              
  Special value -1 means that the file must be loaded from its beginning.
 load_end_addr
 Contains the physical address of the end of the data segment. (load_end_addr - load_addr) specifies how much data to load. This implies that the text and data segments must be consecutive in the OS image; this is true for existing a.out executable formats. If this field is zero, the boot loader assumes that the text and data segments occupy the whole OS image file.
@@ -178,11 +178,12 @@ Next: Module alignment tag, Previous: Address header tag, Up: OS image format 3.
 +-------------------+ u16 |type=4 | u16 | flags | u32 |size=12 | u32 | console_flags | +-------------------+
 If this tag is present and bit 0 of ‘console_flags’ is set at least one of supported consoles must be present and information about it must be available in mbi. If bit ‘1’ of ‘console_flags’ is set it indicates that the OS image has EGA text support.
 3.1.10 The framebuffer tag of Multiboot2 header
-             +-------------------+
-     u16     | type = 5          |
-     u16     | flags             |
-     u32     | size = 20         |
-       
+​             +-------------------+
+​     u16     | type = 5          |
+​     u16     | flags             |
+​     u32     | size = 20         |
+​       
+
       u32     | width             |
      u32     | height            |
      u32     | depth             |
@@ -216,8 +217,8 @@ When the boot loader invokes the operating system, the machine must have the fol
 ‘R4 (also known as A0)’
 Must contain the magic value ‘0x36d76289’; the presence of this value indicates to the operating system that it was loaded by a Multiboot2-
 Contains the number of the columns. This is specified in pixels in a graphics mode, and in characters in a text mode. The value zero indicates that the OS image has no preference.
-                    Image alignment in memory, e.g. 4096.
-       
+​                    Image alignment in memory, e.g. 4096.
+​       
  compliant boot loader (e.g. as opposed to another type of boot loader that the operating system can also be loaded from). ‘R5 (also known as A1)’
 Must contain the 32-bit physical address of the Multiboot2 information structure provided by the boot loader (see Boot information format).
 All other processor registers and flag bits are undefined. This includes, in particular:
@@ -257,7 +258,7 @@ Must contain the magic value ‘0x36d76289’; the presence of this value indica
 Must contain the 64-bit physical address (paging mode is enabled and any memory space defined by the UEFI memory map is identity mapped, hence, virtual address equals physical address; Unified Extensible Firmware Interface Specification, Version 2.6, section 2.3.4, x64 Platforms, boot services) of the Multiboot2 information structure provided by the boot loader (see Boot information format).
 All other processor registers, flag bits and state are set accordingly to Unified Extensible Firmware Interface Specification, Version 2.6, section 2.3.4, x64 Platforms, boot services.
 The bootloader must not load any part of the kernel, the modules, the Multiboot2 information structure, etc. higher than 4 GiB - 1. This requirement is put in force because most of currently specified tags supports 32-bit addresses only. Additionally, some kernels, even if they run on EFI 64-bit platform,
-    
+​    
  still execute some parts of its initialization code in 32-bit mode.
 Note: If at some point there is a need for full 64-bit mode support in Multiboot2 protocol then it should be designed very carefully. Especially it should be taken into account that 32-bit and 64-bit mode code should coexist in an image without any issue. The image should have a chance to inform the bootloader that it supports full 64-bit mode. If it is the case then the bootloader should provide 64-bit tags if it is desired and possible. Otherwise 32-bit tags should be used.
 Previous: Machine state, Up: Specification 3.6 Boot information
@@ -266,16 +267,16 @@ Upon entry to the operating system, the EBX register contains the physical addre
 The Multiboot2 information structure and its related substructures may be placed anywhere in memory by the boot loader (with the exception of the memory reserved for the kernel and boot modules, of course). It is the operating system's responsibility to avoid overwriting this memory until it is done using it.
 3.6.2 Basic tags structure
 Boot information consists of fixed part and a series of tags. Its start is 8-bytes aligned. Fixed part is as following:
-             +-------------------+
-     u32     | total_size        |
-     u32     | reserved          |
-             +-------------------+
+​             +-------------------+
+​     u32     | total_size        |
+​     u32     | reserved          |
+​             +-------------------+
 ‘total_size’ contains the total size of boot information including this field and terminating tag in bytes ‘reserved’ is always set to zero and must be ignored by OS image
 Every tag begins with following fields:
-             +-------------------+
-     u32     | type              |
-     u32     | size              |
-             +-------------------+
+​             +-------------------+
+​     u32     | type              |
+​     u32     | size              |
+​             +-------------------+
 ‘type’ contains an identifier of contents of the rest of the tag. ‘size’ contains the size of tag including header fields but not including padding. Tags follow one another padded when necessary in order for each tag to start at 8-bytes aligned address. Tags are terminated by a tag of type ‘0’ and size ‘8’.
 3.6.3 Basic memory information
 +-------------------+ u32 |type=4 | u32 |size=16 | u32 | mem_lower | u32 | mem_upper | +-------------------+
@@ -286,7 +287,7 @@ This tag may not be provided by some boot loaders on EFI platforms if EFI boot s
 This tag indicates which BIOS disk device the boot loader loaded the OS image from. If the OS image was not loaded from a BIOS disk, then this tag must not be present. The operating system may use this field as a hint for determining its own root device, but is not required to.
 The ‘biosdev’ contains the BIOS drive number as understood by the BIOS INT 0x13 low-level disk interface: e.g. 0x00 for the first floppy disk or 0x80 for the first hard disk.
 The three remaining bytes specify the boot partition. ‘partition’ specifies the top-level partition number, ‘sub_partition’ specifies a sub-partition in the top-level partition, etc. Partition numbers always start from zero. Unused partition bytes must be set to 0xFFFFFFFF. For example, if the disk is partitioned using a simple one-level DOS partitioning scheme, then ‘partition’ contains the DOS partition number, and ‘sub_partition’ if
-      
+​      
  0xFFFFFF. As another example, if a disk is partitioned first into DOS partitions, and then one of those DOS partitions is subdivided into several BSD partitions using BSD's disklabel strategy, then ‘partition’ contains the DOS partition number and ‘sub_partition’ contains the BSD sub-partition within that DOS partition.
 DOS extended partitions are indicated as partition numbers starting from 4 and increasing, rather than as nested sub-partitions, even though the underlying disk layout of extended partitions is hierarchical in nature. For example, if the boot loader boots from the second extended partition on a disk partitioned in conventional DOS style, then ‘partition’ will be 5, and ‘sub_partiton’ will be 0xFFFFFFFF.
 3.6.5 Boot command line
@@ -323,26 +324,26 @@ The rest fields ‘vbe_interface_seg’, ‘vbe_interface_off’, and ‘vbe_int
 3.6.12 Framebuffer info
 +--------------------+ u32 |type=8 | u32 | size | u64 | framebuffer_addr | u32 | framebuffer_pitch | u32 | framebuffer_width | u32 | framebuffer_height | u8 | framebuffer_bpp | u8 | framebuffer_type | u8 | reserved | varies | color_info | +--------------------+
 The field ‘framebuffer_addr’ contains framebuffer physical address. This field is 64-bit wide but bootloader should set it under 4GiB if possible for compatibility with payloads which aren't aware of PAE or amd64. The field ‘framebuffer_pitch’ contains pitch in bytes. The fields ‘framebuffer_width’, ‘framebuffer_height’ contain framebuffer dimensions in pixels. The field ‘framebuffer_bpp’ contains number of bits per pixel. ‘reserved’ always contains 0 in current version of specification and must be ignored by OS image. If ‘framebuffer_type’ is set to 0 it means indexed color. In this case color_info is defined as follows:
-  
+
               +----------------------------------+
      u32     | framebuffer_palette_num_colors   |
      varies  | framebuffer_palette              |
 +----------------------------------+
 ‘framebuffer_palette’ is an array of colour descriptors. Each colour descriptor has following structure:
-             +-------------+
-     u8      | red_value   |
-     u8      | green_value |
-     u8      | blue_value  |
-             +-------------+
+​             +-------------+
+​     u8      | red_value   |
+​     u8      | green_value |
+​     u8      | blue_value  |
+​             +-------------+
 If ‘framebuffer_type’ is set to ‘1’ it means direct RGB color. Then color_type is defined as follows:
-            +----------------------------------+
-     u8     | framebuffer_red_field_position   |
-     u8     | framebuffer_red_mask_size        |
-     u8     | framebuffer_green_field_position |
-     u8     | framebuffer_green_mask_size      |
-     u8     | framebuffer_blue_field_position  |
-     u8     | framebuffer_blue_mask_size       |
-            +----------------------------------+
+​            +----------------------------------+
+​     u8     | framebuffer_red_field_position   |
+​     u8     | framebuffer_red_mask_size        |
+​     u8     | framebuffer_green_field_position |
+​     u8     | framebuffer_green_mask_size      |
+​     u8     | framebuffer_blue_field_position  |
+​     u8     | framebuffer_blue_mask_size       |
+​            +----------------------------------+
 If ‘framebuffer_type’ is set to ‘2’ it means EGA text. In this case ‘framebuffer_width’ and ‘framebuffer_height’ are expressed in characters and not in pixels. ‘framebuffer_bpp’ is equal 16 (16 bits per character) and ‘framebuffer_pitch’ is expressed in bytes per text line. All further values of ‘framebuffer_type’ are reserved for future expansion
 3.6.13 EFI 32-bit system table pointer
 +-------------------+ u32 |type=11 | u32 |size=12 | u32 | pointer | +-------------------+
@@ -351,35 +352,35 @@ This tag contains pointer to i386 EFI system table.
 +-------------------+ u32 |type=12 | u32 |size=16 | u64 | pointer | +-------------------+
 This tag contains pointer to amd64 EFI system table.
 3.6.15 SMBIOS tables
-             +-------------------+
-     u32     | type = 13         |
-     u32     | size              |
-     u8      | major             |
-     u8      | minor             |
-     u8[6]   | reserved          |
-             | smbios tables     |
-             +-------------------+
+​             +-------------------+
+​     u32     | type = 13         |
+​     u32     | size              |
+​     u8      | major             |
+​     u8      | minor             |
+​     u8[6]   | reserved          |
+​             | smbios tables     |
+​             +-------------------+
 This tag contains a copy of SMBIOS tables as well as their version.
 3.6.16 ACPI old RSDP
 +-------------------+ u32 | type =14 |
 u32     | size
-        | copy of RSDPv1    |
-                    |
+​        | copy of RSDPv1    |
+​                    |
 +-------------------+
 This tag contains a copy of RSDP as defined per ACPI 1.0 specification.
 3.6.17 ACPI new RSDP
 +-------------------+ u32 | type =15 |
 u32     | size
-        | copy of RSDPv2    |
-                    |
+​        | copy of RSDPv2    |
+​                    |
 +-------------------+
 This tag contains a copy of RSDP as defined per ACPI 2.0 or later specification.
 3.6.18 Networking information
 
  +-------------------+ u32 | type =16 |
 u32     | size
-        | DHCP ACK          |
-                    |
+​        | DHCP ACK          |
+​                    |
 +-------------------+
 This tag contains network information in the format specified as DHCP. It may be either a real DHCP reply or just the configuration info in the same format. This tag appears once per card.
 3.6.19 EFI memory map
@@ -387,10 +388,10 @@ This tag contains network information in the format specified as DHCP. It may be
 This tag contains EFI memory map as per EFI specification.
 This tag may not be provided by some boot loaders on EFI platforms if EFI boot services are enabled and available for the loaded image (EFI boot services not terminated tag exists in Multiboot2 information structure).
 3.6.20 EFI boot services not terminated
-             +-------------------+
-     u32     | type = 18         |
-     u32     | size = 8          |
-             +-------------------+
+​             +-------------------+
+​     u32     | type = 18         |
+​     u32     | size = 8          |
+​             +-------------------+
 This tag indicates ExitBootServices wasn't called
 3.6.21 EFI 32-bit image handle pointer
 +-------------------+ u32 |type=19 | u32 |size=12 | u32 | pointer | +-------------------+
@@ -409,7 +410,7 @@ Example OS code
 Example boot loader code
 Next: Notes on PC, Up: Examples
 4.1 C structure members alignment and padding consideration
-                       
+​                       
  It is preferred that the structures used for communication between the bootloader and the OS image conform to chosen ABI for a given architecture. If it is not possible then GCC ‘__attribute__ ((__packed__))’ (or anything else which has similar meaning for chosen C compiler) have to be added to relevant structures definitions to avoid spurious, in this case, padding and alignment.
 Next: BIOS device mapping techniques, Previous: C structure members alignment and padding consideration, Up: Examples 4.2 Notes on PC
 In reference to bit 0 of the ‘flags’ parameter in the Multiboot2 information structure, if the bootloader in question uses older BIOS interfaces, or the newest ones are not available (see description about bit 6), then a maximum of either 15 or 63 megabytes of memory may be reported. It is highly recommended that boot loaders perform a thorough memory probe.
@@ -436,8 +437,9 @@ For each device driver brought online, determine which BIOS devices become inacc
 4. Record which devices succeed, and those which try to access the restricted I/O areas (hopefully, this will be an xor situation).
 For each device driver, given how many of the BIOS devices were subsumed by it (there should be no gaps in this list), it should be easy to determine which devices on the controller these are.
 In general, you have at most 2 disks from each controller given BIOS numbers, but they pretty much always count from the lowest logically numbered devices on the controller.
-                                    Next: Example boot loader code, Previous: BIOS device mapping techniques, Up: Examples
-   
+  ​                                  Next: Example boot loader code, Previous: BIOS device mapping techniques, Up: Examples
+  
+
  4.4 Example OS code
 In this distribution, the example Multiboot2 kernel kernel is included. The kernel just prints out the Multiboot2 information structure on the screen, so you can make use of the kernel to test a Multiboot2-compliant boot loader and for reference to how to implement a Multiboot2 kernel. The source files can be found under the directory doc in the Multiboot2 source distribution.
 The kernel kernel consists of only three files: boot.S, kernel.c and multiboot2.h. The assembly source boot.S is written in GAS (see GNU assembler), and contains the Multiboot2 information structure to comply with the specification. When a Multiboot2-compliant boot loader loads and execute it, it initialize the stack pointer and EFLAGS, and then call the function cmain defined in kernel.c. If cmain returns to the callee, then it shows a message to inform the user of the halt state and stops forever until you push the reset key. The file kernel.c contains the function cmain, which checks if the magic number passed by the boot loader is valid and so on, and some functions to print messages on the screen. The file multiboot2.h defines some macros, such as the magic number for the Multiboot2 header, the Multiboot2 header structure and the Multiboot2 information structure.
@@ -815,10 +817,10 @@ struct multiboot_tag_apm
 ```
 
 ### 4.4.2 boot.S
-       
+
  In the file boot.S:
- 
- 
+
+
 ```
 /* boot.S - bootstrap the kernel */
 /* Copyright (C) 1999, 2001, 2010 Free Software Foundation, Inc. *
@@ -1226,10 +1228,10 @@ int pad0 = 0, pad = 0;
 c = *format++;
 if (c == '0')
   {
-    pad0 = 1;
-    c = *format++;
-                        0.7
-   
+​    pad0 = 1;
+​    c = *format++;
+​                        0.7
+
         0.6
 0.5
 0.4
@@ -1242,7 +1244,7 @@ A few wording changes.
 Header checksum.
 Classification of machine state passed to an operating system.
 Name change.
-    Major changes plus HTMLification. Previous: History, Up: Top
+​    Major changes plus HTMLification. Previous: History, Up: Top
 Index
 Table of Contents
 Multiboot2 Specification
@@ -1278,7 +1280,7 @@ Multiboot2 Specification
 3.6.11 VBE info
 3.6.12 Framebuffer info
 3.6.13 EFI 32-bit system table pointer 3.6.14 EFI 64-bit system table pointer 3.6.15 SMBIOS tables
-                                                                                                 
+​                                                                                                 
  3.6.16 ACPI old RSDP
 3.6.17 ACPI new RSDP
 3.6.18 Networking information
@@ -1294,5 +1296,5 @@ Multiboot2 Specification
 4.4.3 kernel.c
 4.4.4 Other Multiboot2 kernels
 4.5 Example boot loader code 5 The change log of this specification Index
-                                            
+​                                            
 
