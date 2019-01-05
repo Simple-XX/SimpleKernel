@@ -22,7 +22,7 @@ CXXFLAGS= -std=c++11 -ffreestanding -nostdinc -O2 \
 				-I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
 
 CC= i386-elf-gcc
-CFLAGS= -std=gnu99 -ffreestanding -nostdinc -O2 \
+CFLAGS= -std=gnu11 -ffreestanding -nostdinc -O2 \
  				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
 				-g -ggdb -C -c \
 				-I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
