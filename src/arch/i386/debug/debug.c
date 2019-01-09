@@ -26,23 +26,23 @@ void print_cur_status(){
 }
 
 /*  Forward declarations. */
-void debug233 (uint64_t magic, uint64_t addr);
+void debug233 (uint32_t magic, uint32_t addr);
 
 /*  Check if MAGIC is valid and print the Multiboot information structure
    pointed by ADDR. */
 
-void debug233 (uint64_t magic, uint64_t addr){
+void debug233 (uint32_t magic, uint32_t addr){
 		struct multiboot_tag *tag;
-		unsigned long size;
-		size = *(unsigned long *) addr;
-		uint32_t tmp233=addr;
-		printk ("addr: %X\n", addr);
+		uint64_t size;
+		size = *(uint64_t *) addr;
+		printk ("addr: %d\n", addr);
 		printk ("size: %X\n", size);
-		printk ("tmp233: %X\n", tmp233);
 		/*  Am I booted by a Multiboot-compliant boot loader? */
 		if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
-				printk ("Invalid magic number: 0x%x\n", (unsigned) magic);
+				printk ("Invalid magic number: %x\n", (unsigned) magic);
 				printk("%X\n", MULTIBOOT2_BOOTLOADER_MAGIC);
+				printk("%d\n", (unsigned)magic);
+				printk("%d\n", MULTIBOOT2_BOOTLOADER_MAGIC);
 				return;
 		}
 		unsigned long tmp=addr;
