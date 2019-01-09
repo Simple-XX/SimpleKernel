@@ -101,12 +101,12 @@ multiboot_header_end:
 multiboot_entry:
 	# 设置栈地址
   mov $stack_top, %esp
-  pushl $0
+  push $0
   popf
 	# multiboot2_info 结构体指针
-  pushl %ebx
+  push %ebx
 	# 魔数
-	pushl %eax
+	push %eax
   call kernel_main
   cli
 1:
