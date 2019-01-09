@@ -104,9 +104,9 @@ multiboot_entry:
   push $0
   popf
 	# multiboot2_info 结构体指针
-  push %ebx
+  pushl %ebx
 	# 魔数
-	push %eax
+	pushl %eax
   call kernel_main
   cli
 1:
