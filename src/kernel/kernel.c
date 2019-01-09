@@ -9,8 +9,8 @@
 
 // 内核入口
 // magic 魔数 addr multiboot 结构体的地址
-void kernel_main(uint64_t magic, uint64_t addr);
-void kernel_main(uint64_t magic, uint64_t addr) {
+void kernel_main(uint32_t magic, uint32_t addr);
+void kernel_main(uint32_t magic, uint32_t addr) {
 		// multiboot_info_t * mboot_ptr = (multiboot_info_t *)addr;
 		// 系统初始化
 		// print_cur_status();
@@ -20,9 +20,9 @@ void kernel_main(uint64_t magic, uint64_t addr) {
 		idt_init();       // IDT 初始化
 		clock_init();       // 时钟初始化
 		keyboard_init();       // 键盘初始化
-		showinfo();
+		// showinfo();
 		printk("66666");
-		print_cur_status();
+		// print_cur_status();
 		debug_init(magic, addr);
 		printk("11111");
 
