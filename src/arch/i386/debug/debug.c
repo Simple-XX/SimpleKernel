@@ -35,25 +35,17 @@ void debug233 (uint32_t magic, uint32_t addr){
 		struct multiboot_tag *tag;
 		uint64_t size;
 		size = *(uint64_t *) addr;
-		printk ("addr: %d\n", addr);
-		printk ("size: %X\n", size);
 		/*  Am I booted by a Multiboot-compliant boot loader? */
 		if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
 				printk ("Invalid magic number: %x\n", (unsigned) magic);
-				printk("%X\n", MULTIBOOT2_BOOTLOADER_MAGIC);
-				printk("%d\n", (unsigned)magic);
-				printk("%d\n", MULTIBOOT2_BOOTLOADER_MAGIC);
 				return;
 		}
-		unsigned long tmp=addr;
-		if (tmp & 7) {
+		if (addr & 7) {
 				printk ("Unaligned addr: 0x%08x\n", addr);
-				printk ("Unaligned tmp: 0x%08x\n", tmp);
 				return;
 		}
 
 		printk ("Announced mbi size 0x%x\n", size);
-
 
 		tag = (struct multiboot_tag *) (addr + 8);
 		printk("tag type: %X\n", tag->type);
