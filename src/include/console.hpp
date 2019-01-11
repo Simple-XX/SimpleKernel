@@ -15,7 +15,7 @@ size_t console_row; // 命令行行数
 size_t console_column; // 当前命令行列数
 uint8_t console_color; // 当前命令行颜色
 
-volatile uint16_t * console_buffer;
+static uint16_t * console_buffer = (uint16_t*) VGA_MEM_BASE;
 
 void console_scroll(void);
 uint16_t console_getcursorpos(void);
@@ -37,12 +37,11 @@ void console_init(void){
 		console_column = 0;
 		// 字体为灰色，背景为黑色
 		console_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-		console_buffer = (uint16_t*) VGA_MEM_BASE;
 		// 用 ' ' 填满屏幕
 		for (size_t y = 0; y < VGA_HEIGHT; y++) {
 				for (size_t x = 0; x < VGA_WIDTH; x++) {
 						const size_t index = y * VGA_WIDTH + x;
-						console_buffer[index] = vga_entry(' ', console_color);
+						console_buffer[index] = vga_entry(NULL, console_color);
 				}
 		}
 		console_setcursorpos(0, 0);
@@ -81,7 +80,8 @@ void console_escapeconv(char c){
 				}
 				break;
 		case '\b':
-				console_column--;
+				if(console_column)
+						console_column-=2;
 				break;
 		}
 }
@@ -89,7 +89,6 @@ void console_escapeconv(char c){
 // 在当前位置输出字符
 void console_putchar(char c){
 		console_putentryat(c, console_color, console_column, console_row);
-
 		// 如果到达最后一列则换行
 		if (++console_column >= VGA_WIDTH) {
 				console_column=0;
@@ -136,7 +135,7 @@ void console_scroll(){
 		if (console_row >= VGA_HEIGHT) {
 				// 将所有行的显示数据复制到上一行
 				for (size_t i= 0; i < (VGA_HEIGHT-1)* VGA_WIDTH; i++)
-						console_buffer[i] = console_buffer[i+80];
+						console_buffer[i] = console_buffer[i+VGA_WIDTH];
 				// 最后的一行数据现在填充空格，不显示任何字符
 				for (size_t i= (VGA_HEIGHT-1)* VGA_WIDTH; i< VGA_HEIGHT* VGA_WIDTH; i++)
 						console_buffer[i] = vga_entry(' ', console_color);
