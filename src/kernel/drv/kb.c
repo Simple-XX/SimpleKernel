@@ -153,6 +153,7 @@ static bool alt=false;
 
 void keyboard_handler(pt_regs_t * regs){
 		uint8_t scancode = inb(KB_DATA); // 获取一个扫描码
+		printk("0x%X", scancode);
 		// 判断是否出错
 		if(scancode>SC_MAX||scancode<0) {
 				printk_color(red, "scancode error.\n");
