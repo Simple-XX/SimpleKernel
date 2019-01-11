@@ -140,22 +140,22 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						// print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_MODULE:
-						print_MULTIBOOT_TAG_TYPE_MODULE(tag);
+						// print_MULTIBOOT_TAG_TYPE_MODULE(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_BASIC_MEMINFO:
-						print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(tag);
+						// print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_BOOTDEV:
-						print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
+						// print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_MMAP:
-						print_MULTIBOOT_TAG_TYPE_MMAP(tag);
+						// print_MULTIBOOT_TAG_TYPE_MMAP(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
 						print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_APM:
-						print_MULTIBOOT_TAG_TYPE_APM(tag);
+						// print_MULTIBOOT_TAG_TYPE_APM(tag);
 						break;
 				}
 		}
@@ -165,7 +165,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 
 void debug_init(uint32_t magic, uint32_t addr) {
 		multiboot2_init(magic, addr);
-
+		elf_check_file();
 
 
 		return;
