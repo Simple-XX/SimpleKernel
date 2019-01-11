@@ -18,11 +18,11 @@ void kernel_main(uint32_t magic, uint32_t addr) {
 		idt_init();       // IDT 初始化
 		clock_init();       // 时钟初始化
 		keyboard_init();       // 键盘初始化
-		// showinfo();
-		// printk("66666");
-		// print_cur_status();
+		showinfo();
+		printk("66666");
+		print_cur_status();
 		debug_init(magic, addr);
-		// printk("11111");
+		printk("11111");
 
 
 

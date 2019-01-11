@@ -274,8 +274,6 @@ struct multiboot_tag_vbe {
 		struct multiboot_vbe_mode_info_block vbe_mode_info;
 };
 
-
-
 struct multiboot_tag_elf_sections {
 		multiboot_uint32_t type;
 		multiboot_uint32_t size;
