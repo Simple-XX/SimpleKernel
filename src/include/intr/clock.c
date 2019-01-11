@@ -9,6 +9,7 @@ void clock_handler(pt_regs_t * regs){
 		static uint32_t tick = 0;
 		// printk_color(light_green, "Tick: %d\n", tick++);
 		UNUSED(regs);
+		UNUSED(tick);
 }
 
 void clock_init(void){
