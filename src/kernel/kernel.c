@@ -13,7 +13,7 @@ void kernel_main(uint32_t magic, uint32_t addr) {
 		// 系统初始化
 		// print_cur_status();
 		// debug_init(magic, addr);
-		terminal_init();       // 控制台初始化
+		console_init();       // 控制台初始化
 		gdt_init();        // GDT 初始化
 		idt_init();       // IDT 初始化
 		clock_init();       // 时钟初始化
