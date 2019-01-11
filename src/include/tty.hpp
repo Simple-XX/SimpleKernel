@@ -49,21 +49,6 @@ void terminal_init(void){
 		terminal_setcursorpos(0, 0);
 }
 
-// /* Clear the screen and initialize VIDEO, XPOS and YPOS. */
-// static void
-// cls (void)
-// {
-//   int i;
-//
-//   video = (unsigned char *) VIDEO;
-//
-//   for (i = 0; i < COLUMNS * LINES * 2; i++)
-//     *(video + i) = 0;
-//
-//   xpos = 0;
-//   ypos = 0;
-// }
-
 // 设置命令行颜色
 void terminal_setcolor(uint8_t color){
 		terminal_color = color;
@@ -101,14 +86,15 @@ void terminal_putchar(char c){
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 
 		// 如果到达最后一列则换行
-		if (++terminal_column == VGA_WIDTH)
+		if (terminal_column++ == VGA_WIDTH) {
 				terminal_row += 1;
+		}
 		terminal_escapeconv(c); // 转义字符处理
 		terminal_scroll(); // 屏幕滚动
 		terminal_setcursorpos(terminal_column, terminal_row);
 }
 
-
+//
 // /* Put the character C on the screen. */
 // static void
 // putchar (int c)
