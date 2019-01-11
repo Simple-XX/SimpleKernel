@@ -37,7 +37,7 @@ void idt_init(void);
 void clock_init(void);
 void keyboard_init(void);
 void mouse_init(void);
-
+void debug_init(uint32_t magic, uint32_t addr);
 
 void showinfo(void);
 void showinfo(void){
