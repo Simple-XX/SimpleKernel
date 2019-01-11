@@ -33,7 +33,7 @@ char *strcpy(char *dest, const char *src){
 }
 
 void backspace(char *src){
-		int32_t len = strlen(src);
+		size_t len = strlen(src);
 		src[len-1] = '\0';
 }
 
