@@ -89,7 +89,6 @@ if [ ${OS} == 0 ]; then
   cp ${img} ${iso_boot}
   i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
   bochs -q -f ${bochsrc}
-
 elif [ ${OS} == 1 ]; then
   mkdir ${folder}
   mount ${disk} ${folder}

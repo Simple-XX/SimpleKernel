@@ -140,11 +140,9 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						// print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_MODULE:
-						printk("--------------------------------------module\n");
 						print_MULTIBOOT_TAG_TYPE_MODULE(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_BASIC_MEMINFO:
-						printk("--------------------------------------meminfo\n");
 						print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_BOOTDEV:
@@ -154,7 +152,6 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						print_MULTIBOOT_TAG_TYPE_MMAP(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
-						printk("--------------------------------------\n");
 						print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_APM:
