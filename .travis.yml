@@ -1,9 +1,7 @@
 os: osx
 language: c
 
-
 before_install:
-  - brew install i386-elf-binutils
   - brew install i386-elf-gcc
 
 script:
