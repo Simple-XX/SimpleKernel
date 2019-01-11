@@ -1,9 +1,6 @@
 os: osx
 language: c
 
-addons:
-  homebrew:
-    update: false
 
 before_install:
   - brew install i386-elf-binutils
