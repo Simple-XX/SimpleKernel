@@ -21,6 +21,7 @@
 #include "stdbool.h"
 #include "stdio.h"
 #include "tty.hpp"
+#include "console.hpp"
 #include "multiboot2.h"
 #include "debug.h"
 #include "mm/pmm.h"
@@ -32,6 +33,7 @@
 
 void kernel_main(uint32_t magic, uint32_t addr);
 // void debug_init(uint64_t magic, multiboot_info_t * mb);
+void console_init(void);
 void gdt_init(void);
 void idt_init(void);
 void clock_init(void);
