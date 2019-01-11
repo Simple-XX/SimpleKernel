@@ -69,14 +69,14 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y){
 void terminal_escapeconv(char c){
 		switch(c) {
 		case '\n':
-				terminal_row+=1;
 				terminal_column=0;
+				terminal_row++;
 				break;
 		case '\t':
-				terminal_column+=4;
+				terminal_column=(terminal_column+8)&~(8-1);
 				break;
 		case '\b':
-				terminal_column-=1;
+				terminal_column--;
 				break;
 		}
 }
@@ -86,36 +86,14 @@ void terminal_putchar(char c){
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 
 		// 如果到达最后一列则换行
-		if (terminal_column++ == VGA_WIDTH) {
-				terminal_row += 1;
+		if (++terminal_column >= VGA_WIDTH) {
+				terminal_column=0;
+				terminal_row++;
 		}
 		terminal_escapeconv(c); // 转义字符处理
 		terminal_scroll(); // 屏幕滚动
 		terminal_setcursorpos(terminal_column, terminal_row);
 }
-
-//
-// /* Put the character C on the screen. */
-// static void
-// putchar (int c)
-// {
-//   if (c == '\n' || c == '\r')
-//   {
-// newline:
-//     xpos = 0;
-//     ypos++;
-//     if (ypos >= LINES)
-//       ypos = 0;
-//     return;
-//   }
-//
-//   *(video + (xpos + ypos * COLUMNS) * 2) = c & 0xFF;
-//   *(video + (xpos + ypos * COLUMNS) * 2 + 1) = ATTRIBUTE;
-//
-//   xpos++;
-//   if (xpos >= COLUMNS)
-//     goto newline;
-// }
 
 // 命令行写
 void terminal_write(const char* data, size_t size){
