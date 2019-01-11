@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. MacOS 10.14.2]
  - Compile tools: [e.g. i386-elf-gcc i386-elf-ld]
  - Emulator: [e.g. Bochs 2.6.9]
- - Branch [e.g. TODO]
+ - Branch: [e.g. TODO]
 
 **Additional context**
 Add any other context about the problem here.
