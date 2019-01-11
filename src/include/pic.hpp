@@ -3,15 +3,13 @@
 
 // pic.hpp for MRNIU/SimpleKernel.
 
-// TODO
-
 #ifndef _PIC_HPP_
 #define _PIC_HPP_
 
 #include "stdint.h"
 #include "port.hpp"
 #include "cpu.hpp"
-#include "intr/intr.h"
+// #include "intr/intr.h"
 // #include "stdio.h"
 
 #define IO_PIC1   (0x20)   // Master (IRQs 0-7)
@@ -47,6 +45,7 @@ void init_interrupt_chip(void){
 }
 
 // 重设 8259A 芯片
+void clear_interrupt_chip(uint32_t intr_no);
 void clear_interrupt_chip(uint32_t intr_no){
 		// 发送中断结束信号给 PICs
 		// 按照我们的设置，从 32 号中断起为用户自定义中断
@@ -60,6 +59,7 @@ void clear_interrupt_chip(uint32_t intr_no){
 		outb(IO_PIC1, PIC_EOI);
 }
 
+void enable_irq(uint32_t irq_no);
 void enable_irq(uint32_t irq_no){
 		uint8_t mask =0;
 		// printk_color(green, "enable_irq mask: %X", mask);
@@ -72,6 +72,7 @@ void enable_irq(uint32_t irq_no){
 		}
 }
 
+void disable_irq(uint32_t irq_no);
 void disable_irq(uint32_t irq_no){
 		uint8_t mask=0;
 		// printk_color(green, "disable_irq mask: %X", mask);

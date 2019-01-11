@@ -166,7 +166,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 		printk ("Total mbi size 0x%x\n", (unsigned) tag - addr);
 }
 
-void debug_init(uint64_t magic, unsigned long addr) {
+void debug_init(uint32_t magic, uint32_t addr) {
 		multiboot2_init(magic, addr);
 
 
