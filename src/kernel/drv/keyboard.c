@@ -138,8 +138,6 @@ static uint8_t keymap[NR_SCAN_CODES * MAP_COLS] = {
 /* 0x7F - ???		*/ 0,      0,      0
 };
 
-#define SC_MAX NR_SCAN_CODES * MAP_COLS
-
 static bool shift=false;
 static bool caps=false;
 static bool ctrl=false;
@@ -150,77 +148,109 @@ static bool alt=false;
 // 将输入输出与 tty 结合起来
 // 维护一个保存 tty 信息的结构体，包括 缓冲区信息，sh 设置，颜色等
 
+kb_input_t kb_in;
 
-void keyboard_handler(pt_regs_t * regs){
-		uint8_t scancode = inb(KB_DATA); // 获取一个扫描码
-		// printk("0x%X", scancode);
-		// 判断是否出错
-		if(scancode>SC_MAX||scancode<0) {
-				printk_color(red, "scancode error.\n");
-				return;
+void keyboard_handler(){
+		// 从8042读取数据
+		uint8_t scan_code = inb(KB_DATA);
+		if (kb_in.count < KB_BUFSIZE) {
+				*(kb_in.tail) = scan_code;
+				++kb_in.tail;
+				if (kb_in.tail == kb_in.buff + KB_BUFSIZE)
+						kb_in.tail = kb_in.buff;
+				++kb_in.count;
 		}
-		uint8_t letter=NULL;
-		uint8_t str[2]={NULL};   // 在 default 中用到
-		// 开始处理
-		switch (scancode) {
-		// 如果是特殊字符，则单独处理
-		case KB_SHIFT_L:
-				shift = true;
-				break;
-		case KB_SHIFT_L|RELEASED_MASK:   // 扫描码 + 0x80 即为松开的编码
-				shift = false;
-				break;
-		case KB_SHIFT_R:
-				shift = true;
-				break;
-		case KB_SHIFT_R|RELEASED_MASK:
-				shift = false;
-				break;
-		case KB_CTRL_L:
-				ctrl = true;
-				break;
-		case KB_CTRL_L|RELEASED_MASK:
-				ctrl = false;
-				break;
-		case KB_ALT_L:
-				alt = true;
-				break;
-		case KB_ALT_L|RELEASED_MASK:
-				alt = false;
-				break;
-		case KB_CAPS_LOCK:
-				caps = ((~caps)&0x01);   // 与上次按下的状态相反
-				break;
-		case KB_NUM_LOCK:
-				num = ((~num)&0x01);
-				break;
-		case KB_BACKSPACE:
-				printk("\b");
-				break;
-		case KB_ENTER:
-				printk("\n");
-				break;
-		case KB_TAB:
-				printk("\t");
-				break;
-		default:   // 一般字符输出
-				// 首先排除释放按键
-				if(!(scancode&RELEASED_MASK)) {
-						letter = keymap[(uint8_t)(scancode*3)+(uint8_t)shift]; // 计算在 keymap 中的位置
-						// printk_color(green, "%s\t", letter);
-						str[0]=letter;
-						str[1]='\0';
-						printk("%s", str);
+		// 缓冲区满了直接丢弃
+}
+
+// 从缓冲区读取
+uint8_t keyboard_read_from_buff(){
+		uint8_t scancode;
+		while (kb_in.count <= 0) {}     /* 等待下一个字节到来 */
+		// 进入临界区
+		cpu_cli();
+		scancode = *(kb_in.head);
+		kb_in.head++;
+		if (kb_in.head == kb_in.buff + KB_BUFSIZE)
+				kb_in.head = kb_in.buff;
+		kb_in.count--;
+		cpu_sti();
+		return scancode;
+}
+
+void keyboard_read(pt_regs_t* regs){
+		keyboard_handler();
+		if(kb_in.count>0) {
+				uint8_t scancode=keyboard_read_from_buff();
+				// 判断是否出错
+				if(scancode>SC_MAX||scancode<0) {
+						printk_color(red, "scancode error.\n");
+						return;
+				}
+				uint8_t letter=NULL;
+				uint8_t str[2]={NULL}; // 在 default 中用到
+				// 开始处理
+				switch (scancode) {
+				// 如果是特殊字符，则单独处理
+				case KB_SHIFT_L:
+						shift = true;
 						break;
-				} else {
+				case KB_SHIFT_L|RELEASED_MASK: // 扫描码 + 0x80 即为松开的编码
+						shift = false;
 						break;
+				case KB_SHIFT_R:
+						shift = true;
+						break;
+				case KB_SHIFT_R|RELEASED_MASK:
+						shift = false;
+						break;
+				case KB_CTRL_L:
+						ctrl = true;
+						break;
+				case KB_CTRL_L|RELEASED_MASK:
+						ctrl = false;
+						break;
+				case KB_ALT_L:
+						alt = true;
+						break;
+				case KB_ALT_L|RELEASED_MASK:
+						alt = false;
+						break;
+				case KB_CAPS_LOCK:
+						caps = ((~caps)&0x01); // 与上次按下的状态相反
+						break;
+				case KB_NUM_LOCK:
+						num = ((~num)&0x01);
+						break;
+				case KB_BACKSPACE:
+						printk("\b");
+						break;
+				case KB_ENTER:
+						printk("\n");
+						break;
+				case KB_TAB:
+						printk("\t");
+						break;
+				default: // 一般字符输出
+						// 首先排除释放按键
+						if(!(scancode&RELEASED_MASK)) {
+								letter = keymap[(uint8_t)(scancode*3)+(uint8_t)shift]; // 计算在 keymap 中的位置
+								// printk_color(green, "%s\t", letter);
+								str[0]=letter;
+								str[1]='\0';
+								printk("%s", str);
+								break;
+						} else {
+								break;
+						}
 				}
 		}
-		UNUSED(regs);
 }
 
 void keyboard_init(void){
 		printk("kb init\n");
-		register_interrupt_handler(IRQ1, &keyboard_handler);
+		kb_in.count=0;
+		kb_in.head = kb_in.tail = kb_in.buff;
+		register_interrupt_handler(IRQ1, &keyboard_read);
 		enable_irq(IRQ1);
 }
