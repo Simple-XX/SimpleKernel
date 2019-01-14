@@ -13,7 +13,7 @@ void kernel_main(void);
 void kernel_main(){
 		// 系统初始化
 		debug_init();
-		terminal_init();       // 控制台初始化
+		console_init();       // 控制台初始化
 		gdt_init();       // GDT 初始化
 		idt_init();       // IDT 初始化
 

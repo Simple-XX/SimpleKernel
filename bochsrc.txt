@@ -10,9 +10,11 @@ vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 # 这里需要根据实际路径进行修改
 # Here needs to change as your real path.
 
-floppya: 1_44=simplekernel.img, status=inserted
-boot: a
-log: bochsout.txt
+ata0-master: type=disk, path="fs.img", mode=flat
+ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
+boot: cdrom
+
+log: ./debug_info/bochsout.txt
 #mouse: enabled=1
 keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
 display_library: sdl2

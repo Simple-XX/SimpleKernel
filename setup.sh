@@ -22,6 +22,9 @@ folder='./boot_folder'
 # 工具目录
 tool='./tools'
 
+iso_boot='./iso/boot/kernel.kernel'
+iso='./simplekernel.iso'
+iso_folder='./iso/'
 # 判断操作系统类型
 OS=0
 which_os=`uname -s`
@@ -64,17 +67,27 @@ fi
 
 # 重新编译
 cd src/
-make clean
-make
+make remake
 cd ../
+
+if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
+  echo Multiboot2 Confirmed!
+else
+  echo the file is not multiboot
+  exit
+fi
+
+
 
 # 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
 # 以 bochrc.txt 为配置文件运行 bochs。
 if [ ${OS} == 0 ]; then
   # mac 下的命令与 linux 的不同
-  hdiutil attach -mountpoint ${folder} ${disk}
-  cp ${img} ${boot_folder}
-  hdiutil detach ${folder}
+  # hdiutil attach -mountpoint ${folder} ${disk}
+  # cp ${img} ${boot_folder}
+  # hdiutil detach ${folder}
+  cp ${img} ${iso_boot}
+  i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
   bochs -q -f ${bochsrc}
 elif [ ${OS} == 1 ]; then
   mkdir ${folder}

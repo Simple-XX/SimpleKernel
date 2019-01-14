@@ -4,43 +4,46 @@
 /* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
 /* link.ld for MRNIU/SimpleKernel.*/
 
-ENTRY(_start)
+OUTPUT_FORMAT(elf32-i386)
+ENTRY(start)
 
 SECTIONS
 {
-	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
-	   loaded at by the bootloader. */
+	/* 指定内核从地址 1M 处开始 */
 	. = 1M;
 
   PROVIDE(kernel_start = .);
-  PROVIDE(kernel_text_start = .);
 
+	PROVIDE(kernel_text_start = .);
 	.text BLOCK(4K) : ALIGN(4K)
 	{
-		*(.multiboot)
+		*(.multiboot_header)
 		*(.text)
 	}
   PROVIDE(kernel_text_end = .);
 
-  PROVIDE(kernel_data_start = .);
+  PROVIDE(kernel_rodata_start = .);
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
 		*(.rodata)
 	}
+	PROVIDE(kernel_rodata_end = .);
 
+	PROVIDE(kernel_data_start = .);
 	.data BLOCK(4K) : ALIGN(4K)
 	{
 		*(.data)
 	}
   PROVIDE(kernel_data_end = .);
 
+	PROVIDE(kernel_bss_start = .);
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
 		*(COMMON)
 		*(.bss)
 	}
+	PROVIDE(kernel_bss_end = .);
 
   PROVIDE(kernel_end = .);
-	/* The compiler may produce other sections, by default it will put them in
-	   a segment with the same name. Simply add stuff here as needed. */
+
 }
