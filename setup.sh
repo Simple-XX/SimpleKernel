@@ -19,7 +19,12 @@ disk='simplekernel.img'
 boot_folder='./boot_folder/boot/'
 # 挂载目录
 folder='./boot_folder'
+# 工具目录
+tool='./tools'
 
+iso_boot='./iso/boot/kernel.kernel'
+iso='./simplekernel.iso'
+iso_folder='./iso/'
 # 判断操作系统类型
 OS=0
 which_os=`uname -s`
@@ -36,7 +41,7 @@ if ! [ -x "$(command -v bochs)" ]; then
   if [ ${OS} == 0 ]; then
     brew install bochs
   elif [ ${OS} == 1 ]; then
-    exit 1
+    shell ${tool}/bochs.sh
   fi
 fi
 
@@ -46,7 +51,7 @@ if ! [ -x "$(command -v i386-elf-ld)" ]; then
   if [ ${OS} == 0 ]; then
     brew install i386-elf-binutils
   elif [ ${OS} == 1 ]; then
-    exit 1
+    shell ${tool}/i386-elf-binutils.sh
   fi
 fi
 
@@ -56,24 +61,39 @@ if ! [ -x "$(command -v i386-elf-gcc)" ]; then
   if [ ${OS} == 0 ]; then
     brew install i386-elf-gcc
   elif [ ${OS} == 1 ]; then
-    exit 1
+    shell ${tool}/i386-elf-gcc.sh
   fi
 fi
 
 # 重新编译
 cd src/
-make clean
-make
+make remake
 cd ../
+
+if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
+  echo Multiboot2 Confirmed!
+else
+  echo the file is not multiboot
+  exit
+fi
+
+
 
 # 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
 # 以 bochrc.txt 为配置文件运行 bochs。
 if [ ${OS} == 0 ]; then
   # mac 下的命令与 linux 的不同
-  hdiutil attach -mountpoint ${folder} ${disk}
-  cp ${img} ${boot_folder}
-  hdiutil detach ${folder}
+  # hdiutil attach -mountpoint ${folder} ${disk}
+  # cp ${img} ${boot_folder}
+  # hdiutil detach ${folder}
+  cp ${img} ${iso_boot}
+  i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
   bochs -q -f ${bochsrc}
 elif [ ${OS} == 1 ]; then
-  exit 1
+  mkdir ${folder}
+  mount ${disk} ${folder}
+  cp ${img} ${boot_folder}
+  unmount ${folder}
+  rm -rf ${folder}
+  bochs -q -f ${bochsrc}
 fi
