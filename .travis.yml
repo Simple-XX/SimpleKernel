@@ -1,7 +1,13 @@
 os: osx
 language: c
 
+env:
+  global:
+  - HOMEBREW_LOGS=~/homebrew-logs
+  - HOMEBREW_TEMP=~/homebrew-temp
+
 before_install:
+  - brew install i386-elf-binutils
   - brew install i386-elf-gcc
 
 script:
