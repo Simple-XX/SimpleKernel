@@ -9,10 +9,14 @@
 
 #include "stdint.h"
 #include "stdio.h"
-#include "multiboot.h"
+#include "multiboot2.h"
 
-extern uint8_t kern_start[];
-extern uint8_t kern_end[];
+extern uint8_t kernel_start[];
+extern uint8_t kernel_end[];
+
+
+
+
 
 void show_memory_map();
 
