@@ -1,50 +1,49 @@
-/* Copy from osdev.org Bare_Bones:*/
+/* Based on osdev.org Bare_Bones:*/
 /* (https://wiki.osdev.org/Bare_Bones).*/
 
 /* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
-/* linker script for MRNIU/SimpleKernel.*/
+/* link.ld for MRNIU/SimpleKernel.*/
 
+OUTPUT_FORMAT(elf32-i386)
+ENTRY(start)
 
-/* The bootloader will look at this image and start execution at the symbol
-   designated as the entry point. */
-ENTRY(_start)
-
-/* Tell where the various sections of the object files will be put in the final
-   kernel image. */
 SECTIONS
 {
-	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
-	   loaded at by the bootloader. */
+	/* 指定内核从地址 1M 处开始 */
 	. = 1M;
 
-	/* First put the multiboot header, as it is required to be put very early
-	   early in the image or the bootloader won't recognize the file format.
-	   Next we'll put the .text section. */
+  PROVIDE(kernel_start = .);
+
+	PROVIDE(kernel_text_start = .);
 	.text BLOCK(4K) : ALIGN(4K)
 	{
-		*(.multiboot)
+		*(.multiboot_header)
 		*(.text)
 	}
+  PROVIDE(kernel_text_end = .);
 
-	/* Read-only data. */
+  PROVIDE(kernel_rodata_start = .);
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
 		*(.rodata)
 	}
+	PROVIDE(kernel_rodata_end = .);
 
-	/* Read-write data (initialized) */
+	PROVIDE(kernel_data_start = .);
 	.data BLOCK(4K) : ALIGN(4K)
 	{
 		*(.data)
 	}
+  PROVIDE(kernel_data_end = .);
 
-	/* Read-write data (uninitialized) and stack */
+	PROVIDE(kernel_bss_start = .);
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
 		*(COMMON)
 		*(.bss)
 	}
+	PROVIDE(kernel_bss_end = .);
 
-	/* The compiler may produce other sections, by default it will put them in
-	   a segment with the same name. Simply add stuff here as needed. */
+  PROVIDE(kernel_end = .);
+
 }
