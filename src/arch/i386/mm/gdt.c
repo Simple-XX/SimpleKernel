@@ -4,6 +4,7 @@
 // gdt.c for MRNIU/SimpleKernel.
 
 #include "gdt.h"
+#include "stdio.h"
 
 static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0){
 		// 获取 TSS 描述符的位置和长度
@@ -43,4 +44,7 @@ void gdt_init(void){
 		gdt_load((uint32_t)&gdt_ptr);
 		// 加载任务寄存器
 		tss_load();
+
+		printk_color(COL_INFO, "[INFO] ");
+		printk("gdt_init\n");
 }

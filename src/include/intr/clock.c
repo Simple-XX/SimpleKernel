@@ -13,7 +13,6 @@ void clock_handler(pt_regs_t * regs){
 }
 
 void clock_init(void){
-		printk("initialize timer\n");
 		uint32_t divisor = TIMER_FREQ / FREQUENCY;
 		outb(TIMER_MODE, TIMER_SEL0 | TIMER_RATEGEN | TIMER_16BIT);       // 0x34
 		// 拆分低字节和高字节
@@ -25,4 +24,7 @@ void clock_init(void){
 		// 注册时间相关的处理函数
 		register_interrupt_handler(IRQ0, &clock_handler);
 		enable_irq(IRQ0);
+
+		printk_color(COL_INFO, "[INFO] ");
+		printk("clock_init\n");
 }
