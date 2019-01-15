@@ -41,7 +41,7 @@ void console_init(void){
 		for (size_t y = 0; y < VGA_HEIGHT; y++) {
 				for (size_t x = 0; x < VGA_WIDTH; x++) {
 						const size_t index = y * VGA_WIDTH + x;
-						console_buffer[index] = vga_entry(NULL, console_color);
+						console_buffer[index] = vga_entry(' ', console_color);
 				}
 		}
 		console_setcursorpos(0, 0);
@@ -72,7 +72,7 @@ void console_escapeconv(char c){
 				break;
 		case '\t':
 				// 取整对齐
-				console_column=(console_column+8)&~(8-1);
+				console_column=(console_column+7)& ~7;
 				// 如果到达最后一列则换行
 				if (++console_column >= VGA_WIDTH) {
 						console_column=0;

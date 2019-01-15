@@ -59,31 +59,6 @@ void clear_interrupt_chip(uint32_t intr_no){
 		outb(IO_PIC1, PIC_EOI);
 }
 
-void enable_irq(uint32_t irq_no);
-void enable_irq(uint32_t irq_no){
-		uint8_t mask =0;
-		// printk_color(green, "enable_irq mask: %X", mask);
-		if(irq_no >= IRQ8) {
-				mask = ((inb(IO_PIC2C))&(~(1<<(irq_no%8))));
-				outb(IO_PIC2C, mask);
-		} else {
-				mask = ((inb(IO_PIC1C))&(~(1<<(irq_no%8))));
-				outb(IO_PIC1C, mask);
-		}
-}
-
-void disable_irq(uint32_t irq_no);
-void disable_irq(uint32_t irq_no){
-		uint8_t mask=0;
-		// printk_color(green, "disable_irq mask: %X", mask);
-		if(irq_no >= IRQ8) {
-				mask = ((inb(IO_PIC2C))|(1<<(irq_no%8)));
-				outb(IO_PIC2C, mask);
-		} else {
-				mask = ((inb(IO_PIC1C))|(1<<(irq_no%8)));
-				outb(IO_PIC1C, mask);
-		}
-}
 
 
 #endif

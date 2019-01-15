@@ -275,11 +275,11 @@ struct multiboot_tag_vbe {
 };
 
 struct multiboot_tag_elf_sections {
-		multiboot_uint32_t type;
+		multiboot_uint32_t type; // 0x09
 		multiboot_uint32_t size;
 		multiboot_uint32_t num;
 		multiboot_uint32_t entsize;
-		multiboot_uint32_t shndx;
+		multiboot_uint32_t shndx; // 段字符串表索引
 		char sections[0];
 };
 
