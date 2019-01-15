@@ -35,7 +35,6 @@
 #define KB_NUM_LOCK 0x45
 
 
-#define KB_IN_BYTES 32 /* size of keyboard input buffer */
 #define MAP_COLS 3 /* Number of columns in keymap */
 #define NR_SCAN_CODES 0x80 /* Number of scan codes (rows in keymap) */
 #define SC_MAX NR_SCAN_CODES * MAP_COLS
@@ -136,8 +135,10 @@
 extern void init_interrupt_chip(void);
 extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
 void keyboard_init(void);
-void keyboard_handler();
+void keyboard_handler(void);
 void keyboard_read(pt_regs_t * regs);
+void keyboard_read(pt_regs_t* regs);
+uint8_t keyboard_read_from_buff(void);
 
 typedef
   struct kb_input {

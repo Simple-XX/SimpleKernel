@@ -179,16 +179,17 @@ uint8_t keyboard_read_from_buff(){
 }
 
 void keyboard_read(pt_regs_t* regs){
+		UNUSED(regs);
 		keyboard_handler();
 		if(kb_in.count>0) {
 				uint8_t scancode=keyboard_read_from_buff();
 				// 判断是否出错
-				if(scancode>SC_MAX||scancode<0) {
+				if(!scancode) {
 						printk_color(red, "scancode error.\n");
 						return;
 				}
 				uint8_t letter=NULL;
-				uint8_t str[2]={NULL}; // 在 default 中用到
+				uint8_t str[2]={'\0', '\0'}; // 在 default 中用到
 				// 开始处理
 				switch (scancode) {
 				// 如果是特殊字符，则单独处理

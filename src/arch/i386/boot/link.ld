@@ -13,11 +13,15 @@ SECTIONS
 	. = 1M;
 
   PROVIDE(kernel_start = .);
-
+	PROVIDE(multiboot_start = .);
+	.multiboot	:
+	{
+		*(.multiboot_header)
+	}
+	PROVIDE(multiboot_end = .);
 	PROVIDE(kernel_text_start = .);
 	.text BLOCK(4K) : ALIGN(4K)
 	{
-		*(.multiboot_header)
 		*(.text)
 	}
   PROVIDE(kernel_text_end = .);
@@ -45,5 +49,4 @@ SECTIONS
 	PROVIDE(kernel_bss_end = .);
 
   PROVIDE(kernel_end = .);
-
 }
