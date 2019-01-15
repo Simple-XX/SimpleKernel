@@ -60,15 +60,7 @@
 # 设置栈大小
 .set STACK_SIZE, 0x4000
 
-.text
-.global start, _start
-.extern kernel_main
-
-start:
-_start:
-  jmp multiboot_entry
-
-
+.section .multiboot_header
 # multiboot2 文件头
 .align 8
 multiboot_header:
@@ -98,15 +90,23 @@ mbi_tag_end:
   .long 8
 multiboot_header_end:
 
+.text
+.global start, _start
+.extern kernel_main
+
+start:
+_start:
+  jmp multiboot_entry
+
 multiboot_entry:
 	# 设置栈地址
   mov $stack_top, %esp
   push $0
   popf
 	# multiboot2_info 结构体指针
-  pushl %ebx
+  push %ebx
 	# 魔数
-	pushl %eax
+	push %eax
   call kernel_main
   cli
 1:
