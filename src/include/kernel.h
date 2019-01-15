@@ -49,9 +49,6 @@ void showinfo(void){
 		printk_color(light_red,"kernel in memory end: 0x%08X\n", kernel_end);
 		printk_color(light_red,"kernel in memory size: %d KB, %d pages\n",
 		             (kernel_end - kernel_start) / 1024, (kernel_end - kernel_start) / 1024 / 4);
-		// for(int i=0;i<20;i++)
-		// printk_color(light_red ,"kernel start data: 0x%08X\n", *(kernel_start+i));
-
 }
 
 #endif

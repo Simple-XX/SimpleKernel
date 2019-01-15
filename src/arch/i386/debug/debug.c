@@ -158,9 +158,12 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 		tag = (struct multiboot_tag *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
 		printk_color(COL_INFO, "[INFO] ");
 		printk ("Total mbi size 0x%x\n", (unsigned) tag - addr);
+		return;
 }
 
 void debug_init(uint32_t magic, uint32_t addr) {
+		printk_color(COL_INFO, "[INFO]");
+		printk("debug_init");
 		multiboot2_init(magic, addr);
 		return;
 }

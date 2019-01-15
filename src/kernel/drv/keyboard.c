@@ -249,9 +249,10 @@ void keyboard_read(pt_regs_t* regs){
 }
 
 void keyboard_init(void){
-		printk("kb init\n");
 		kb_in.count=0;
 		kb_in.head = kb_in.tail = kb_in.buff;
 		register_interrupt_handler(IRQ1, &keyboard_read);
 		enable_irq(IRQ1);
+		printk_color(COL_INFO, "[INFO] ");
+		printk("keyboard_init\n");
 }

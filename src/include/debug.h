@@ -30,4 +30,5 @@ void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
 void print_cur_status(void);
 
+
 #endif
