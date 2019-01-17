@@ -44,7 +44,7 @@ void debug_init(uint32_t magic, uint32_t addr);
 void showinfo(void);
 void showinfo(void){
 		// 输出一些基本信息
-		printk_color(magenta,"Welcome to my kernel.\n");
+		printk_color(magenta,"SimpleKernel\n");
 		printk_color(light_red,"kernel in memory start: 0x%08X\n", kernel_start);
 		printk_color(light_red,"kernel in memory end: 0x%08X\n", kernel_end);
 		printk_color(light_red,"kernel in memory size: %d KB, %d pages\n",
