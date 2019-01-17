@@ -17,32 +17,11 @@
  */
 
 #ifndef _MULTIBOOT2_H_
-#define _MULTIBOOT2_H_
+#define _MULTIBOOT2_H_ 1
 
-/*   multiboot2.h - Multiboot 2 header file. */
-/*   Copyright (C) 1999,2003,2007,2008,2009,2010  Free Software Foundation, Inc.
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to
- *  deal in the Software without restriction, including without limitation the
- *  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
- *  sell copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL ANY
- *  DEVELOPER OR DISTRIBUTOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- *  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
- *  IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
-
-#ifndef MULTIBOOT_HEADER
-#define MULTIBOOT_HEADER 1
+#include "stdint.h"
+#include "stdbool.h"
+#include "stdio.h"
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH                        32768
@@ -117,17 +96,10 @@ typedef unsigned int multiboot_uint32_t;
 typedef unsigned long long multiboot_uint64_t;
 
 struct multiboot_header {
-		/*  Must be MULTIBOOT_MAGIC - see above. */
-		multiboot_uint32_t magic;
-
-		/*  ISA */
-		multiboot_uint32_t architecture;
-
-		/*  Total header length. */
-		multiboot_uint32_t header_length;
-
-		/*  The above fields plus this one must equal 0 mod 2^32. */
-		multiboot_uint32_t checksum;
+		multiboot_uint32_t magic; // Must be MULTIBOOT_MAGIC - see above.
+		multiboot_uint32_t architecture; // ISA
+		multiboot_uint32_t header_length; // Total header length.
+		multiboot_uint32_t checksum; // The above fields plus this one must equal 0 mod 2^32.
 };
 
 struct multiboot_header_tag {
@@ -198,18 +170,18 @@ struct multiboot_color {
 		multiboot_uint8_t blue;
 };
 
-struct multiboot_mmap_entry {
-		multiboot_uint64_t addr;
-		multiboot_uint64_t len;
 #define MULTIBOOT_MEMORY_AVAILABLE              1
 #define MULTIBOOT_MEMORY_RESERVED               2
 #define MULTIBOOT_MEMORY_ACPI_RECLAIMABLE       3
 #define MULTIBOOT_MEMORY_NVS                    4
 #define MULTIBOOT_MEMORY_BADRAM                 5
+struct multiboot_mmap_entry {
+		multiboot_uint64_t addr;
+		multiboot_uint64_t len;
 		multiboot_uint32_t type;
 		multiboot_uint32_t zero;
 };
-typedef struct multiboot_mmap_entry multiboot_memory_map_t;
+typedef struct multiboot_mmap_entry multiboot_memory_map_entry_t;
 
 struct multiboot_tag {
 		multiboot_uint32_t type;
@@ -362,8 +334,23 @@ struct multiboot_tag_load_base_addr {
 		multiboot_uint32_t load_base_addr;
 };
 
+// extern uint32_t glb_multi_ptr;
+multiboot_memory_map_entry_t * mmap_entries;
+
+
+bool is_multiboot2_header(uint32_t magic, uint32_t addr);
+void multiboot2_init(uint32_t magic, uint32_t addr);
+void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_MODULE(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_BOOTDEV(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_MMAP(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
+void set_mem_info(struct multiboot_tag *tag);
+
 #endif /*  ! ASM_FILE */
 
 #endif /*  ! MULTIBOOT_HEADER */
-
-#endif
