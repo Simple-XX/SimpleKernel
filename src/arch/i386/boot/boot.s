@@ -92,6 +92,7 @@ multiboot_header_end:
 
 .text
 .global start, _start
+.global glb_multi_ptr
 .extern kernel_main
 
 start:
@@ -105,6 +106,7 @@ multiboot_entry:
   popf
 	# multiboot2_info 结构体指针
   push %ebx
+#  mov %ebx, (glb_multi_ptr)
 	# 魔数
 	push %eax
   call kernel_main
@@ -122,6 +124,8 @@ multiboot_entry:
 stack_bottom:
   .skip STACK_SIZE
 stack_top:
+#glb_multi_ptr:
+#  .skip 4
 
 edata:
 end:
