@@ -13,8 +13,9 @@ void kernel_main(uint32_t magic, uint32_t addr) {
 		idt_init();       // IDT 初始化
 		clock_init();       // 时钟初始化
 		keyboard_init();       // 键盘初始化
-		pmm_init();
 		showinfo();
+
+
 
 		while(1);
 

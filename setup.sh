@@ -65,6 +65,26 @@ if ! [ -x "$(command -v i386-elf-gcc)" ]; then
   fi
 fi
 
+if ! [ -x "$(command -v i386-elf-grub-file)" ]; then
+  echo 'Error: i386-elf-grub is not installed.'
+  echo 'Install i386-elf-grub...'
+  if [ ${OS} == 0 ]; then
+    brew install ${tool}/i386-elf-grub.rb
+  elif [ ${OS} == 1 ]; then
+    shell ${tool}/i386-elf-grub.sh
+  fi
+fi
+
+if ! [ -x "$(command -v xorriso)" ]; then
+  echo 'Error: xorriso is not installed.'
+  echo 'Install xorriso...'
+  if [ ${OS} == 0 ]; then
+    brew install xorriso
+  elif [ ${OS} == 1 ]; then
+    shell ${tool}/xorriso.sh
+  fi
+fi
+
 # 重新编译
 cd src/
 make remake
@@ -76,8 +96,6 @@ else
   echo the file is not multiboot
   exit
 fi
-
-
 
 # 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
 # 以 bochrc.txt 为配置文件运行 bochs。

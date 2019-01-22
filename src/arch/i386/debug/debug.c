@@ -10,7 +10,7 @@
 
 
 void debug_init(uint32_t magic, uint32_t addr) {
-		printk_color(COL_DEBUG, "[DEBUG]");
+		printk_color(COL_DEBUG, "[DEBUG] ");
 		printk("debug_init\n");
 		multiboot2_init(magic, addr);
 		return;
