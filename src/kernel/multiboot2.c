@@ -99,6 +99,15 @@ void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag){
 		return;
 }
 
+void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag){
+		printk_color(COL_DEBUG, "[DEBUG] ");
+		printk ("Image load base physical address type 0x%X, size 0x%X, addr 0x%X.\n",
+		        ((struct multiboot_tag_load_base_addr *) tag)->type,
+		        ((struct multiboot_tag_load_base_addr *) tag)->size,
+		        ((struct multiboot_tag_load_base_addr *) tag)->load_base_addr);
+		return;
+}
+
 bool is_multiboot2_header(uint32_t magic, uint32_t addr){
 		if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
 				printk_color(COL_ERROR, "[Error] ");
@@ -133,8 +142,8 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 		     tag->type != MULTIBOOT_TAG_TYPE_END;
 		     // (tag 低八位) + (tag->size 八位对齐)
 		     tag = (struct multiboot_tag *) ((uint8_t *) tag + ((tag->size + 7) & ~7))) {
-				printk_color(COL_DEBUG, "[DEBUG] ");
-				printk ("Tag 0x%X, Size 0x%X\n", tag->type, tag->size);
+				// printk_color(COL_DEBUG, "[DEBUG] ");
+				// printk ("Tag 0x%X, Size 0x%X\n", tag->type, tag->size);
 				switch (tag->type) {
 				case MULTIBOOT_TAG_TYPE_CMDLINE:
 						// print_MULTIBOOT_TAG_TYPE_CMDLINE(tag);
@@ -152,14 +161,18 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						// print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_MMAP:
+						print_MULTIBOOT_TAG_TYPE_MMAP(tag);
 						set_mem_info(tag);
-						// print_MULTIBOOT_TAG_TYPE_MMAP(tag);
+						pmm_init(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
 						// print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_APM:
 						// print_MULTIBOOT_TAG_TYPE_APM(tag);
+						break;
+				case MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR:
+						print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(tag);
 						break;
 				}
 		}
