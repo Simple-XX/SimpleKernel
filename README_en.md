@@ -25,7 +25,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
     - Bochs
         编译安装
-        
+
     - i386-elf 交叉编译工具链
         编译安装
 
@@ -33,7 +33,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
     - Bochs
 
             brew install bochs
-            
+
     - i386-elf 交叉编译工具链
 
             brew install i386-elf-binutils
@@ -51,9 +51,9 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 在出现的 bochs 命令行中 输入 `c` 即可运行。
 
 运行截图
-    
+
 ![屏幕快照 2018-12-10 下午8.40.12](https://lh3.googleusercontent.com/-bMiOQG70raM/XA5ijMqVcLI/AAAAAAAAAGU/YB_HvVl8JD4PiKbV1UHfQA4HqeD6xWCxACHMYCw/I/%255BUNSET%255D)
-    
+
 ![屏幕快照 2018-12-10 下午8.40.38](https://lh3.googleusercontent.com/-Lp2Xea_cLgM/XA5ijHG93RI/AAAAAAAAAGc/wpYAqRo7wGIABAAi6jGz3NRhASB2aOQywCHMYCw/I/%255BUNSET%255D)
 
 ![屏幕快照 2018-12-10 下午8.40.50](https://lh3.googleusercontent.com/-DwLqMLIWGps/XA5ijD1nZvI/AAAAAAAAAGY/PeRQd2FN8qoOEGq4LEx1vxgmFCmq8qUYACHMYCw/I/%255BUNSET%255D)
@@ -160,7 +160,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 ## 镜像文件
 
 simplekernel.img is 1.44 floppy, our kernel is right here.
-    
+
 ## TODO
 
 - fix bugs
@@ -184,7 +184,9 @@ Read CONTRIBUTING.md.
 
 [osdev](https://wiki.osdev.org)
 
-[GRUB 在 Mac 上的安装](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
+[install GRUB on Mac](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
+
+[multiboot](https://www.gnu.org/software/grub/manual/multiboot/multiboot.html)
 
 [JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html)
 
@@ -202,8 +204,10 @@ Read CONTRIBUTING.md.
 
 [0xAX weblong](http://0xax.blogspot.com/search/label/asm)
 
+[How-to-Make-a-Computer-Operating-System](https://github.com/SamyPesse/How-to-Make-a-Computer-Operating-System)
+
+[coding-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
+
 ## 版权信息
 
 此项目使用 MIT 许可证
-
-

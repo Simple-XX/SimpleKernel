@@ -15,7 +15,6 @@ size_t strlen(const char* str){
 		return len;
 }
 
-
 // 如果 src > dest, 则返回值大于 0，如果 src = dest, 则返回值等于 0，
 // 如果 srd  < dest ,则返回值小于 0。
 int8_t strcmp(const char * src, const char * dest){
@@ -33,23 +32,25 @@ char *strcpy(char *dest, const char *src){
 }
 
 void backspace(char *src){
-		int32_t len = strlen(src);
+		size_t len = strlen(src);
 		src[len-1] = '\0';
 }
 
 void append(char *src, char dest){
-		int len = strlen(src);
+		size_t len = strlen(src);
 		src[len] = dest;
 		src[len+1] = '\0';
 }
 
 char *strcat(char *dest, const char *src){
-		int8_t * add_d= (int8_t *)dest;
+		uint8_t * add_d= (uint8_t *)dest;
 		if(dest!=NULL && src !=NULL) {
 				while(*add_d)
 						add_d++;
 				while(*src)
 						*add_d++ = *src++;
 		}
+		// size_t len = strlen(dest);
+		// dest[len+1]='\0';
 		return dest;
 }
