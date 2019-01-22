@@ -1,46 +1,52 @@
-/* Copy from osdev.org Bare_Bones:*/
+/* Based on osdev.org Bare_Bones:*/
 /* (https://wiki.osdev.org/Bare_Bones).*/
 
 /* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
-/* linker script for MRNIU/SimpleKernel.*/
+/* link.ld for MRNIU/SimpleKernel.*/
 
-ENTRY(_start)
+OUTPUT_FORMAT(elf32-i386)
+ENTRY(start)
 
 SECTIONS
 {
-	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
-	   loaded at by the bootloader. */
+	/* 指定内核从地址 1M 处开始 */
 	. = 1M;
 
-  PROVIDE(kern_start = .);
-  PROVIDE(kern_text_start = .);
-
+  PROVIDE(kernel_start = .);
+	PROVIDE(multiboot_start = .);
+	.multiboot	:
+	{
+		*(.multiboot_header)
+	}
+	PROVIDE(multiboot_end = .);
+	PROVIDE(kernel_text_start = .);
 	.text BLOCK(4K) : ALIGN(4K)
 	{
-		*(.multiboot)
 		*(.text)
 	}
-  PROVIDE(kern_text_end = .);
+  PROVIDE(kernel_text_end = .);
 
-  PROVIDE(kern_data_start = .);
+  PROVIDE(kernel_rodata_start = .);
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
 		*(.rodata)
 	}
+	PROVIDE(kernel_rodata_end = .);
 
+	PROVIDE(kernel_data_start = .);
 	.data BLOCK(4K) : ALIGN(4K)
 	{
 		*(.data)
 	}
-  PROVIDE(kern_data_end = .);
+  PROVIDE(kernel_data_end = .);
 
+	PROVIDE(kernel_bss_start = .);
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
 		*(COMMON)
 		*(.bss)
 	}
+	PROVIDE(kernel_bss_end = .);
 
-  PROVIDE(kern_end = .);
-	/* The compiler may produce other sections, by default it will put them in
-	   a segment with the same name. Simply add stuff here as needed. */
+  PROVIDE(kernel_end = .);
 }

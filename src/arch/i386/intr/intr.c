@@ -139,6 +139,9 @@ void idt_init(void){
 		register_interrupt_handler(INT_STACK_FAULT, &stack_segment);
 		register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
 		register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
+
+		printk_color(COL_INFO, "[INFO] ");
+		printk("intr_init\n");
 }
 
 static void die(char * str, uint32_t oesp, uint32_t int_no){
@@ -163,8 +166,8 @@ static void die(char * str, uint32_t oesp, uint32_t int_no){
 		printk_color(red, "int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
 		             old_esp->int_no, old_esp->err_code, old_esp->eip, old_esp->cs);
 		printk_color(red, "eflags: %08x\tuser_esp: %08x\tss: %08x\n",
-		             old_esp->eflags, old_esp->user_esp, old_esp->ss);
-		printk_color(red, "addr: %08x, %08X\n", &old_esp->gs, &old_esp->ss);
+		             old_esp->eflags, old_esp->user_esp, old_esp->user_ss);
+		printk_color(red, "addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
 
 		cpu_hlt();
 }
@@ -245,4 +248,28 @@ void general_protection(pt_regs_t * regs){
 
 void page_fault(pt_regs_t * regs){
 		die("Page Fault.", regs->old_esp, regs->int_no);
+}
+
+void enable_irq(uint32_t irq_no){
+		uint8_t mask =0;
+		// printk_color(green, "enable_irq mask: %X", mask);
+		if(irq_no >= IRQ8) {
+				mask = ((inb(IO_PIC2C))&(~(1<<(irq_no%8))));
+				outb(IO_PIC2C, mask);
+		} else {
+				mask = ((inb(IO_PIC1C))&(~(1<<(irq_no%8))));
+				outb(IO_PIC1C, mask);
+		}
+}
+
+void disable_irq(uint32_t irq_no){
+		uint8_t mask=0;
+		// printk_color(green, "disable_irq mask: %X", mask);
+		if(irq_no >= IRQ8) {
+				mask = ((inb(IO_PIC2C))|(1<<(irq_no%8)));
+				outb(IO_PIC2C, mask);
+		} else {
+				mask = ((inb(IO_PIC1C))|(1<<(irq_no%8)));
+				outb(IO_PIC1C, mask);
+		}
 }
