@@ -79,7 +79,7 @@ typedef
 		uint32_t eflags;
 // 如果发生了特权级切换，CPU 会压入以下两个参数
 		uint32_t user_esp;
-		uint32_t ss;      // 16 bits
+		uint32_t user_ss;      // 16 bits
 } pt_regs_t;
 
 // 中断描述符
@@ -191,6 +191,9 @@ void segment_not_present(pt_regs_t * regs);
 void stack_segment(pt_regs_t * regs);
 void general_protection(pt_regs_t * regs);
 void page_fault(pt_regs_t * regs);
+
+void enable_irq(uint32_t irq_no);
+void disable_irq(uint32_t irq_no);
 
 
 #endif

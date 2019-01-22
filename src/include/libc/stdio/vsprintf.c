@@ -9,6 +9,7 @@
 
 #include "../stdarg.h"
 #include "../stddef.h"
+#include "../stdint.h"
 
 extern size_t strlen(const char* str);
 
@@ -114,22 +115,21 @@ int vsprintf(char * buf, const char * fmt, va_list args);
 // 其中参数 fmt 是格式字符串；args 是个数变化的值；buf 是输出字符缓冲区。请参见本代码列表后面
 // 的有关格式转换字符的介绍。
 int vsprintf(char * buf,const char * fmt,va_list args){
-		int len;
-		int i;
+		int32_t len;
+		int32_t i;
 		char * str; // 用于存放转换过程中的字符串
 		char * s;
-		int * ip;
+		int32_t * ip;
+		uint32_t flags;  // flags to number()
+		int32_t field_width;  // width of output field
+		int32_t precision;  // min. # of digits for integers;max number of chars for from
+		// fields.  min.整数数字个数；max. 字符串中字符个数
+		int32_t qualifier;  // 'h','l',or 'L' for integer fields
 
-		int flags;  // flags to number()
-		            // number() 函数使用的标志
-		int field_width;  // width of output field 输出字符宽度
-		int precision;  // min. # of digits for integers;max number of chars for from
-		                // fields.  min.整数数字个数；max. 字符串中字符个数
-		int qualifier;  // 'h','l',or 'L' for integer fields  'h','l',或 'L' 用于整数字段
-// 首先将字符指针指向 buf，然后扫描格式字符串，对各个格式转换只是进行相应的处理
-		for(str=buf; *fmt; ++fmt) {
+// 首先将字符指针指向 buf，然后扫描格式字符串，对各个格式转换只是进行相应的处理.
 // 格式转换指示字符串均以 '%' 开始，这里从 fmt 格式字符串中扫描 '%'，寻找格式转换字符串的开始。
 // 不是格式指示的一般字符均被依次存入 str
+		for(str=buf; *fmt; ++fmt) {
 				if(*fmt!='%') {
 						*str++=*fmt;
 						continue;
@@ -207,7 +207,6 @@ repeat:
 								precision=len;
 						else if(len>precision)
 								len=precision;
-
 						if(!(flags & LEFT))
 								while(len<field_width--)
 										*str++=' ';

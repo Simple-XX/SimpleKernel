@@ -19,13 +19,28 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 - Shell
 - make
 
+- x86
+- 使用 Grub 启动
+- UXIN-like
+- 多任务
+- ELF
+- IDE disk
+- 时钟
+- 键盘
+- 鼠标
+- EXT2 文件系统
+- POSIX API
+- libc
+- 一些 shell命令
+
+
 ## 开发环境
 
 - Ubuntu Linux
 
     - Bochs
         编译安装
-        
+
     - i386-elf 交叉编译工具链
         编译安装
 
@@ -33,7 +48,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
     - Bochs
 
             brew install bochs
-            
+
     - i386-elf 交叉编译工具链
 
             brew install i386-elf-binutils
@@ -51,9 +66,9 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 在出现的 bochs 命令行中 输入 `c` 即可运行。
 
 运行截图
-    
+
 ![屏幕快照 2018-12-10 下午8.40.12](https://lh3.googleusercontent.com/-bMiOQG70raM/XA5ijMqVcLI/AAAAAAAAAGU/YB_HvVl8JD4PiKbV1UHfQA4HqeD6xWCxACHMYCw/I/%255BUNSET%255D)
-    
+
 ![屏幕快照 2018-12-10 下午8.40.38](https://lh3.googleusercontent.com/-Lp2Xea_cLgM/XA5ijHG93RI/AAAAAAAAAGc/wpYAqRo7wGIABAAi6jGz3NRhASB2aOQywCHMYCw/I/%255BUNSET%255D)
 
 ![屏幕快照 2018-12-10 下午8.40.50](https://lh3.googleusercontent.com/-DwLqMLIWGps/XA5ijD1nZvI/AAAAAAAAAGY/PeRQd2FN8qoOEGq4LEx1vxgmFCmq8qUYACHMYCw/I/%255BUNSET%255D)
@@ -145,7 +160,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 └── tools/ 工具，在 .rb 文件中你可以找到 gcc 和 binutils 的编译选项
     ├── i386-elf-binutils.rb
     └── i386-elf-gcc.rb
-    
+
 ```
 
 ## 测试
@@ -161,7 +176,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 ## 镜像文件
 
 simplekernel.img 是 1.44 软盘，我们的内核就在这里。
-    
+
 ## TODO
 
 - 修复 bug
@@ -177,7 +192,7 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 ## 贡献
 
-请阅读 CONTRIBUTING.md 查阅为该项目做出贡献的开发者。
+请阅读 CONTRIBUTING.md。
 
 ## 鸣谢
 
@@ -186,6 +201,10 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 [osdev](https://wiki.osdev.org)
 
 [GRUB 在 Mac 上的安装](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
+
+[multiboot](https://www.gnu.org/software/grub/manual/multiboot/multiboot.html)
+
+《程序员的自我修养--链接、装载与库》(俞甲子 石凡 潘爱民)
 
 [JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html)
 
@@ -202,6 +221,12 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 [PurpleBooth/project-title](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2%23project-title)
 
 [0xAX weblong](http://0xax.blogspot.com/search/label/asm)
+
+[How-to-Make-a-Computer-Operating-System](https://github.com/SamyPesse/How-to-Make-a-Computer-Operating-System)
+
+[coding-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
+
+[DNKernel](https://github.com/morimolymoly/DNKernel)
 
 ## 版权信息
 

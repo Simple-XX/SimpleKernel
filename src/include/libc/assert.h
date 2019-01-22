@@ -9,9 +9,8 @@
 #include "stdio.h"
 
 #define assert(test) \
-  if(!(test)) \
-    printk_color(light_red, "ASSERT ERROR!");
-
+		if(!(test)) { \
+				printk_color(COL_ERROR, "[ERROR] ASSERT ERROR!");
 
 
 #endif

@@ -21,8 +21,8 @@
 #include "stdbool.h"
 #include "stdio.h"
 #include "tty.hpp"
-#include "multiboot.h"
-#include "elf.h"
+#include "console.hpp"
+#include "multiboot2.h"
 #include "debug.h"
 #include "mm/pmm.h"
 #include "mm/mm.h"
@@ -30,24 +30,25 @@
 #include "cpu.hpp"
 #include "drv/keyboard.h"
 
-void debug_init(void);
+
+void kernel_main(uint32_t magic, uint32_t addr);
+// void debug_init(uint64_t magic, multiboot_info_t * mb);
+void console_init(void);
 void gdt_init(void);
 void idt_init(void);
 void clock_init(void);
 void keyboard_init(void);
 void mouse_init(void);
+void debug_init(uint32_t magic, uint32_t addr);
 
 void showinfo(void);
 void showinfo(void){
 		// 输出一些基本信息
-		printk_color(magenta,"Welcome to my kernel.\n");
-		printk_color(light_red,"kernel in memory start: 0x%08X\n", kern_start);
-		printk_color(light_red,"kernel in memory end: 0x%08X\n", kern_end);
+		printk_color(magenta,"SimpleKernel\n");
+		printk_color(light_red,"kernel in memory start: 0x%08X\n", kernel_start);
+		printk_color(light_red,"kernel in memory end: 0x%08X\n", kernel_end);
 		printk_color(light_red,"kernel in memory size: %d KB, %d pages\n",
-		             (kern_end - kern_start) / 1024, (kern_end - kern_start) / 1024 / 4);
-		// for(int i=0;i<20;i++)
-		// printk_color(light_red ,"kernel start data: 0x%08X\n", *(kern_start+i));
-
+		             (kernel_end - kernel_start) / 1024, (kernel_end - kernel_start) / 1024 / 4);
 }
 
 #endif

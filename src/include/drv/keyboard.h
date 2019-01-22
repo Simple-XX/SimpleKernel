@@ -12,9 +12,10 @@
 #include "stdint.h"
 #include "intr/intr.h"
 #include "stdbool.h"
+#include "cpu.hpp"
 
 // 键盘缓冲区大小
-#define KB_BUFSIZE 50
+#define KB_BUFSIZE 128
 
 #define KB_DATA 0x60
 #define KB_WRITE 0x60
@@ -34,9 +35,9 @@
 #define KB_NUM_LOCK 0x45
 
 
-#define KB_IN_BYTES 32 /* size of keyboard input buffer */
 #define MAP_COLS 3 /* Number of columns in keymap */
 #define NR_SCAN_CODES 0x80 /* Number of scan codes (rows in keymap) */
+#define SC_MAX NR_SCAN_CODES * MAP_COLS
 
 // 8 位的键盘扫描码的接通码使用前7位
 // 其最高位置 1 即是其对应的断开码
@@ -134,7 +135,18 @@
 extern void init_interrupt_chip(void);
 extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
 void keyboard_init(void);
-void keyboard_handler(pt_regs_t * regs);
+void keyboard_handler(void);
+void keyboard_read(pt_regs_t * regs);
+void keyboard_read(pt_regs_t* regs);
+uint8_t keyboard_read_from_buff(void);
+
+typedef
+  struct kb_input {
+		uint8_t * head;
+		uint8_t * tail;
+		size_t count;
+		uint8_t buff[KB_BUFSIZE];
+}kb_input_t;
 
 
 #endif
