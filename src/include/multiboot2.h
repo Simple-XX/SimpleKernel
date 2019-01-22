@@ -22,6 +22,7 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
+#include "mm/pmm.h"
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH                        32768
@@ -337,7 +338,6 @@ struct multiboot_tag_load_base_addr {
 // extern uint32_t glb_multi_ptr;
 multiboot_memory_map_entry_t * mmap_entries;
 
-
 bool is_multiboot2_header(uint32_t magic, uint32_t addr);
 void multiboot2_init(uint32_t magic, uint32_t addr);
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
@@ -349,6 +349,7 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_MMAP(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
 void set_mem_info(struct multiboot_tag *tag);
 
 #endif /*  ! ASM_FILE */
