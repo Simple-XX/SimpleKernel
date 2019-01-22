@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-// Based on http://wiki.0xffffff.org/posts/hurlex-5.html
+//
 // debug.h for MRNIU/SimpleKernel.
 
 
@@ -10,15 +10,14 @@
 #include "stdarg.h"
 #include "stddef.h"
 #include "stdio.h"
+#include "stdbool.h"
 #include "string.h"
+#include "multiboot2.h"
 #include "elf.h"
-#include "multiboot.h"
 #include "intr/intr.h"
 
-
-void debug_init(void);
-void print_registers(pt_regs_t * regs);
-
+void debug_init(uint32_t magic, uint32_t addr);
+void print_cur_status(void);
 
 
 #endif
