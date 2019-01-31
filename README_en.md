@@ -8,7 +8,9 @@
 
 ## Abstract
 
-SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
+SimpleKernel, a simple kernel for learning. Contains the basic functionality of an operating system
+
+Kernels with different levels of completion are available, and you can start from where you like.
 
 Languages: 
 
@@ -18,15 +20,14 @@ Languages:
 - Shell
 - make
 
-## 开发环境
+## Environment
 
 - Ubuntu Linux
 
     - Bochs
         Install by compiling
-
     - i386-elf Cross-compiling tool chain
-        Install by compiling
+        Install by compiling (./tools/)
 
 - Mac
     - Bochs
@@ -35,8 +36,11 @@ Languages:
 
     - i386-elf Cross-compiling tool chain
 
-            brew install i386-elf-binutils
-            brew install i386-elf-gcc
+        ```shell
+        brew install i386-elf-binutils
+        brew install i386-elf-gcc
+        cd SimpleKernel/ && brew install ./i386-elf-grub.rb
+        ```
 
 NOTE：
 Mac 10.14.1, bochs 2.6.9, i386-elf-binutils 2.31.1, i386-elf-gcc 8.2.0 pass-test.
@@ -57,123 +61,145 @@ Screenshot
 
 ![屏幕快照 2018-12-10 下午8.40.50](https://lh3.googleusercontent.com/-DwLqMLIWGps/XA5ijD1nZvI/AAAAAAAAAGY/PeRQd2FN8qoOEGq4LEx1vxgmFCmq8qUYACHMYCw/I/%255BUNSET%255D)
 
-更多 bochs 使用方式请参考 bochs 的相关资料。
-
 If you need more bochs usage, please refer to bochs official documentation.
 
 
 ## QUICK START
 
 ```
-├── bochsout.txt
+├── LICENSE
+├── README.md
+├── README_en.md
 ├── bochsrc.txt
+├── debug_info
+│   ├── bochsout.txt
+│   ├── diff.log
+│   ├── error.log
+│   └── normal.log
+├── docs
+│   └── README.md
+├── fs.img
+├── iso
+│   └── boot
+│       ├── grub
+│       │   └── grub.cfg
+│       └── kernel.kernel
+├── related_docs
 ├── setup.sh
 ├── simplekernel.img
-├── someknowledge
-├── src/
+├── simplekernel.iso
+├── src
 │   ├── Makefile
-│   ├── arch/
+│   ├── READMD.md
+│   ├── arch
 │   │   ├── README.md
-│   │   ├── i386/
+│   │   ├── i386
 │   │   │   ├── README.md
-│   │   │   ├── boot/
+│   │   │   ├── boot
 │   │   │   │   ├── boot.s
 │   │   │   │   └── link.ld
-│   │   │   ├── clock.c
-│   │   │   ├── clock.h
-│   │   │   ├── cpu.hpp
-│   │   │   ├── debug/
+│   │   │   ├── debug
 │   │   │   │   └── debug.c
-│   │   │   ├── intr/
+│   │   │   ├── intr
 │   │   │   │   ├── README.md
 │   │   │   │   ├── intr.c
 │   │   │   │   ├── intr.h
 │   │   │   │   └── intr_s.s
-│   │   │   └── mm/
+│   │   │   └── mm
 │   │   │       ├── README.md
 │   │   │       ├── gdt.c
 │   │   │       ├── gdt.h
-│   │   │       ├── gdt_s.s
-│   │   │       ├── pmm.c
-│   │   │       ├── pmm.h
-│   │   │       ├── vmm.c
-│   │   │       └── vmm.h
-│   │   └── x64/
+│   │   │       └── gdt_s.s
+│   │   └── x64
 │   │       └── TODO
-│   ├── include/
-│   │   ├── DataStructuer/
-│   │   │   ├── BinarySearchTree.cpp
+│   ├── include
+│   │   ├── DataStructure
 │   │   │   ├── DataStructuer.h
+│   │   │   ├── LinkedList.c
 │   │   │   ├── LinkedList.cpp
 │   │   │   ├── Queue.cpp
 │   │   │   ├── SortAlgorithm.cpp
 │   │   │   └── Stack.cpp
 │   │   ├── README.md
+│   │   ├── console.hpp
+│   │   ├── cpu.hpp
 │   │   ├── debug.h
-│   │   ├── drv/
+│   │   ├── drv
 │   │   │   ├── keyboard.h
 │   │   │   └── mouse.h
 │   │   ├── elf.h
+│   │   ├── intr
+│   │   │   ├── clock.c
+│   │   │   └── clock.h
 │   │   ├── kernel.h
-│   │   ├── libc/
+│   │   ├── libc
 │   │   │   ├── README.md
 │   │   │   ├── assert.h
 │   │   │   ├── stdarg.h
 │   │   │   ├── stdbool.h
 │   │   │   ├── stddef.h
 │   │   │   ├── stdint.h
-│   │   │   ├── stdio/
+│   │   │   ├── stdio
 │   │   │   │   ├── printk.c
 │   │   │   │   └── vsprintf.c
 │   │   │   ├── stdio.h
-│   │   │   ├── string/
+│   │   │   ├── string
 │   │   │   │   └── string.c
-│   │   │   ├── string.h
-│   │   ├── mm/
+│   │   │   └── string.h
+│   │   ├── mm
 │   │   │   ├── README.md
-│   │   │   └── mm.h
-│   │   ├── multiboot.h
+│   │   │   ├── mm.h
+│   │   │   ├── pmm.c
+│   │   │   └── pmm.h
+│   │   ├── multiboot2.h
 │   │   ├── pic.hpp
 │   │   ├── port.hpp
 │   │   ├── tty.hpp
 │   │   └── vga.hpp
-│   └── kernel/
+│   └── kernel
 │       ├── README.md
-│       ├── drv/
-│       │   ├── kb.c
+│       ├── drv
+│       │   ├── keyboard.c
 │       │   └── mouse.c
-│       └── kernel.c
-└── tools/
-    ├── i386-elf-binutils.rb
-    └── i386-elf-gcc.rb
+│       ├── elf.c
+│       ├── kernel.c
+│       └── multiboot2.c
+└── tools
+    ├── bochs.sh
+    ├── i386-elf-binutils.sh
+    ├── i386-elf-gcc.sh
+    ├── i386-elf-grub.rb
+    └── i386-elf-grub.sh
 ```
 
 ## Test
 
-目前只有很简陋的 CI。
+Not yet.
 
-### 自动化集成
+### CI
 
-合并到 master 分支时需要通过 Travis CI 测试。编译没有错误即可。
+See `.travis.yml`
 
 ## Code Style
 
-## 镜像文件
+## Image Files
 
-simplekernel.img is 1.44 floppy, our kernel is right here.
+simplekernel.img: multiboot1 boot(not updated)
+
+simplekernel.iso: multiboot2 boot
+
+fs.img: file system, unuse
 
 ## TODO
 
 - fix bugs
 - mouse input
-- debug function
-- checlstyle
+- memory management
+- checkstyle
 
-## AUTHOR
+## CONTRIBUTORS
 
-Author: [MRNIU](https://github.com/MRNIU)
-
-您也可以在贡献者名单中参看所有参与该项目的开发者。
+[MRNIU](https://github.com/MRNIU)
 
 ## CONTRIBUTING
 
