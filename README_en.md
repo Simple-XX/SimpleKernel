@@ -1,4 +1,3 @@
-
 ![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
@@ -11,9 +10,9 @@
 
 SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 
-使用的语言：
+Languages: 
 
-- x86 汇编
+- x86 Assembly
 - C
 - C++
 - Shell
@@ -24,23 +23,23 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 - Ubuntu Linux
 
     - Bochs
-        编译安装
+        Install by compiling
 
-    - i386-elf 交叉编译工具链
-        编译安装
+    - i386-elf Cross-compiling tool chain
+        Install by compiling
 
 - Mac
     - Bochs
 
             brew install bochs
 
-    - i386-elf 交叉编译工具链
+    - i386-elf Cross-compiling tool chain
 
             brew install i386-elf-binutils
             brew install i386-elf-gcc
 
-注：
-Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试通过。
+NOTE：
+Mac 10.14.1, bochs 2.6.9, i386-elf-binutils 2.31.1, i386-elf-gcc 8.2.0 pass-test.
 
 ## RUN
 
@@ -48,9 +47,9 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
     cd SimpleKernel/
     sh setup.sh
 
-在出现的 bochs 命令行中 输入 `c` 即可运行。
+Input `c` to bochs to run.
 
-运行截图
+Screenshot
 
 ![屏幕快照 2018-12-10 下午8.40.12](https://lh3.googleusercontent.com/-bMiOQG70raM/XA5ijMqVcLI/AAAAAAAAAGU/YB_HvVl8JD4PiKbV1UHfQA4HqeD6xWCxACHMYCw/I/%255BUNSET%255D)
 
@@ -60,94 +59,96 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 
 更多 bochs 使用方式请参考 bochs 的相关资料。
 
+If you need more bochs usage, please refer to bochs official documentation.
+
 
 ## QUICK START
 
 ```
-├── bochsout.txt bochs output
-├── bochsrc.txt bochs configuration file
+├── bochsout.txt
+├── bochsrc.txt
 ├── setup.sh
 ├── simplekernel.img
 ├── someknowledge
-├── src/ source directory
-│   ├── Makefile build rules
-│   ├── arch/ 架构相关代码
+├── src/
+│   ├── Makefile
+│   ├── arch/
 │   │   ├── README.md
-│   │   ├── i386/ i386 架构
+│   │   ├── i386/
 │   │   │   ├── README.md
-│   │   │   ├── boot/ boot code，use multiboot
+│   │   │   ├── boot/
 │   │   │   │   ├── boot.s
 │   │   │   │   └── link.ld
 │   │   │   ├── clock.c
 │   │   │   ├── clock.h
-│   │   │   ├── cpu.hpp CPU操作
-│   │   │   ├── debug/ debug function
+│   │   │   ├── cpu.hpp
+│   │   │   ├── debug/
 │   │   │   │   └── debug.c
-│   │   │   ├── intr/ 中断设置
+│   │   │   ├── intr/
 │   │   │   │   ├── README.md
-│   │   │   │   ├── intr.c idt 设置
+│   │   │   │   ├── intr.c
 │   │   │   │   ├── intr.h
 │   │   │   │   └── intr_s.s
-│   │   │   └── mm/ 内存管理
+│   │   │   └── mm/
 │   │   │       ├── README.md
-│   │   │       ├── gdt.c gdt 设置
+│   │   │       ├── gdt.c
 │   │   │       ├── gdt.h
 │   │   │       ├── gdt_s.s
-│   │   │       ├── pmm.c 物理内存管理
+│   │   │       ├── pmm.c
 │   │   │       ├── pmm.h
-│   │   │       ├── vmm.c 虚拟内存管理
+│   │   │       ├── vmm.c
 │   │   │       └── vmm.h
-│   │   └── x64/ x64 架构
+│   │   └── x64/
 │   │       └── TODO
-│   ├── include/ 头文件
-│   │   ├── DataStructuer/ data structure
+│   ├── include/
+│   │   ├── DataStructuer/
 │   │   │   ├── BinarySearchTree.cpp
 │   │   │   ├── DataStructuer.h
 │   │   │   ├── LinkedList.cpp
-│   │   │   ├── Queue.cpp 队列
-│   │   │   ├── SortAlgorithm.cpp 排序算法
-│   │   │   └── Stack.cpp 栈
+│   │   │   ├── Queue.cpp
+│   │   │   ├── SortAlgorithm.cpp
+│   │   │   └── Stack.cpp
 │   │   ├── README.md
 │   │   ├── debug.h
-│   │   ├── drv/ 设备头文件
+│   │   ├── drv/
 │   │   │   ├── keyboard.h
 │   │   │   └── mouse.h
-│   │   ├── elf.h elf 格式定义
-│   │   ├── kernel.h 内核函数直接引用的头文件
-│   │   ├── libc/ c 标准库
+│   │   ├── elf.h
+│   │   ├── kernel.h
+│   │   ├── libc/
 │   │   │   ├── README.md
-│   │   │   ├── assert.h 断言
+│   │   │   ├── assert.h
 │   │   │   ├── stdarg.h
 │   │   │   ├── stdbool.h
 │   │   │   ├── stddef.h
 │   │   │   ├── stdint.h
-│   │   │   ├── stdio/ 标准输入输出
+│   │   │   ├── stdio/
 │   │   │   │   ├── printk.c
 │   │   │   │   └── vsprintf.c
 │   │   │   ├── stdio.h
-│   │   │   ├── string/ 字符串处理
+│   │   │   ├── string/
 │   │   │   │   └── string.c
 │   │   │   ├── string.h
-│   │   ├── mm/ 内存相关头文件
+│   │   ├── mm/
 │   │   │   ├── README.md
 │   │   │   └── mm.h
-│   │   ├── multiboot.h 多重引导规范定义
-│   │   ├── pic.hpp 8259A 中断芯片设置
-│   │   ├── port.hpp 端口操作
-│   │   ├── tty.hpp tty 定义
-│   │   └── vga.hpp vga 显示定义
+│   │   ├── multiboot.h
+│   │   ├── pic.hpp
+│   │   ├── port.hpp
+│   │   ├── tty.hpp
+│   │   └── vga.hpp
 │   └── kernel/
 │       ├── README.md
-│       ├── drv/ 设备
+│       ├── drv/
 │       │   ├── kb.c
 │       │   └── mouse.c
-│       └── kernel.c 内核入口
-└── tools/ 工具，在 .rb 文件中你可以找到 gcc 和 binutils 的编译选项
+│       └── kernel.c
+└── tools/
     ├── i386-elf-binutils.rb
     └── i386-elf-gcc.rb
 ```
 
-## 测试
+## Test
 
 目前只有很简陋的 CI。
 
@@ -155,7 +156,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 
 合并到 master 分支时需要通过 Travis CI 测试。编译没有错误即可。
 
-## 代码风格
+## Code Style
 
 ## 镜像文件
 
@@ -178,9 +179,7 @@ Author: [MRNIU](https://github.com/MRNIU)
 
 Read CONTRIBUTING.md.
 
-## 鸣谢
-
-此项目参考了很多优秀的项目和资料
+## Thanks
 
 [osdev](https://wiki.osdev.org)
 
@@ -208,6 +207,6 @@ Read CONTRIBUTING.md.
 
 [coding-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
 
-## 版权信息
+## CopyRight
 
-此项目使用 MIT 许可证
+MIT LICENCE
