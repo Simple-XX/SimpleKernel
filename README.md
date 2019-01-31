@@ -14,23 +14,41 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 使用的语言：
 
 - x86 汇编
+
 - C
+
 - C++
+
 - Shell
+
 - make
 
 - x86
-- 使用 Grub 启动
+
+关键字
+
+- Grub2
+
 - UXIN-like
+
 - 多任务
+
 - ELF
+
 - IDE disk
+
 - 时钟
+
 - 键盘
+
 - 鼠标
+
 - EXT2 文件系统
+
 - POSIX API
+
 - libc
+
 - 一些 shell命令
 
 
@@ -42,7 +60,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
         编译安装
 
     - i386-elf 交叉编译工具链
-        编译安装
+        编译安装（./tools/）
 
 - Mac
     - Bochs
@@ -53,6 +71,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
             brew install i386-elf-binutils
             brew install i386-elf-gcc
+            cd SimpleKernel/ && brew install ./i386-elf-grub.rb
 
 注：
 Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试通过。
@@ -79,88 +98,109 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 ## 快速上手
 
 ```
-├── bochsout.txt bochs 输出
-├── bochsrc.txt bochs 配置文件
+├── LICENSE
+├── README.md
+├── README_en.md
+├── bochsrc.txt
+├── debug_info
+│   ├── bochsout.txt
+│   ├── diff.log
+│   ├── error.log
+│   └── normal.log
+├── docs
+│   └── README.md
+├── fs.img
+├── iso
+│   └── boot
+│       ├── grub
+│       │   └── grub.cfg
+│       └── kernel.kernel
+├── related_docs
 ├── setup.sh
 ├── simplekernel.img
-├── someknowledge
-├── src/ 源码目录
-│   ├── Makefile 构建规则
-│   ├── arch/ 架构相关代码
+├── simplekernel.iso
+├── src
+│   ├── Makefile
+│   ├── READMD.md
+│   ├── arch
 │   │   ├── README.md
-│   │   ├── i386/ i386 架构
+│   │   ├── i386
 │   │   │   ├── README.md
-│   │   │   ├── boot/ 启动代码，使用 multiboot
+│   │   │   ├── boot
 │   │   │   │   ├── boot.s
 │   │   │   │   └── link.ld
-│   │   │   ├── clock.c 时钟
-│   │   │   ├── clock.h
-│   │   │   ├── cpu.hpp CPU操作
-│   │   │   ├── debug/ 调试函数
+│   │   │   ├── debug
 │   │   │   │   └── debug.c
-│   │   │   ├── intr/ 中断设置
+│   │   │   ├── intr
 │   │   │   │   ├── README.md
-│   │   │   │   ├── intr.c idt 设置
+│   │   │   │   ├── intr.c
 │   │   │   │   ├── intr.h
 │   │   │   │   └── intr_s.s
-│   │   │   └── mm/ 内存管理
+│   │   │   └── mm
 │   │   │       ├── README.md
-│   │   │       ├── gdt.c gdt 设置
+│   │   │       ├── gdt.c
 │   │   │       ├── gdt.h
-│   │   │       ├── gdt_s.s
-│   │   │       ├── pmm.c 物理内存管理
-│   │   │       ├── pmm.h
-│   │   │       ├── vmm.c 虚拟内存管理
-│   │   │       └── vmm.h
-│   │   └── x64/ x64 架构
+│   │   │       └── gdt_s.s
+│   │   └── x64
 │   │       └── TODO
-│   ├── include/ 头文件
-│   │   ├── DataStructure/ 可能会用到的数据结构与算法
-│   │   │   ├── BinarySearchTree.cpp 二叉树
+│   ├── include
+│   │   ├── DataStructure
 │   │   │   ├── DataStructuer.h
-│   │   │   ├── LinkedList.cpp 链表
-│   │   │   ├── Queue.cpp 队列
-│   │   │   ├── SortAlgorithm.cpp 排序算法
-│   │   │   └── Stack.cpp 栈
+│   │   │   ├── LinkedList.c
+│   │   │   ├── LinkedList.cpp
+│   │   │   ├── Queue.cpp
+│   │   │   ├── SortAlgorithm.cpp
+│   │   │   └── Stack.cpp
 │   │   ├── README.md
+│   │   ├── console.hpp
+│   │   ├── cpu.hpp
 │   │   ├── debug.h
-│   │   ├── drv/ 设备头文件
+│   │   ├── drv
 │   │   │   ├── keyboard.h
 │   │   │   └── mouse.h
-│   │   ├── elf.h elf 格式定义
-│   │   ├── kernel.h 内核函数直接引用的头文件
-│   │   ├── libc/ c 标准库
+│   │   ├── elf.h
+│   │   ├── intr
+│   │   │   ├── clock.c
+│   │   │   └── clock.h
+│   │   ├── kernel.h
+│   │   ├── libc
 │   │   │   ├── README.md
-│   │   │   ├── assert.h 断言
+│   │   │   ├── assert.h
 │   │   │   ├── stdarg.h
 │   │   │   ├── stdbool.h
 │   │   │   ├── stddef.h
 │   │   │   ├── stdint.h
-│   │   │   ├── stdio/ 标准输入输出
+│   │   │   ├── stdio
 │   │   │   │   ├── printk.c
 │   │   │   │   └── vsprintf.c
 │   │   │   ├── stdio.h
-│   │   │   ├── string/ 字符串处理
+│   │   │   ├── string
 │   │   │   │   └── string.c
-│   │   │   ├── string.h
-│   │   ├── mm/ 内存相关头文件
+│   │   │   └── string.h
+│   │   ├── mm
 │   │   │   ├── README.md
-│   │   │   └── mm.h
-│   │   ├── multiboot.h 多重引导规范定义
-│   │   ├── pic.hpp 8259A 中断芯片设置
-│   │   ├── port.hpp 端口操作
-│   │   ├── tty.hpp tty 定义
-│   │   └── vga.hpp vga 显示定义
-│   └── kernel/
+│   │   │   ├── mm.h
+│   │   │   ├── pmm.c
+│   │   │   └── pmm.h
+│   │   ├── multiboot2.h
+│   │   ├── pic.hpp
+│   │   ├── port.hpp
+│   │   ├── tty.hpp
+│   │   └── vga.hpp
+│   └── kernel
 │       ├── README.md
-│       ├── drv/ 设备
-│       │   ├── kb.c
+│       ├── drv
+│       │   ├── keyboard.c
 │       │   └── mouse.c
-│       └── kernel.c 内核入口
-└── tools/ 工具，在 .rb 文件中你可以找到 gcc 和 binutils 的编译选项
-    ├── i386-elf-binutils.rb
-    └── i386-elf-gcc.rb
-
+│       ├── elf.c
+│       ├── kernel.c
+│       └── multiboot2.c
+└── tools
+    ├── bochs.sh
+    ├── i386-elf-binutils.sh
+    ├── i386-elf-gcc.sh
+    ├── i386-elf-grub.rb
+    └── i386-elf-grub.sh
 ```
 
 ## 测试
@@ -184,9 +224,9 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 - debug 函数
 - 添加编码规范测试
 
-## 作者
+## 贡献者
 
-作者：[MRNIU](https://github.com/MRNIU)
+[MRNIU](https://github.com/MRNIU)
 
 您也可以在贡献者名单中参看所有参与该项目的开发者。
 
@@ -194,7 +234,7 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 请阅读 CONTRIBUTING.md。
 
-## 鸣谢
+## 感谢
 
 此项目参考了很多优秀的项目和资料
 
