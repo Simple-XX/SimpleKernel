@@ -9,7 +9,6 @@ LIBC_DIR= ./include/libc
 ARCH_DIR= ./arch/i386
 
 C_SOURCES = $(shell find . -name "*.c")
-# CXX_SOURCES = $(shell find ./include/DataStructuer/ -name "*.cpp")
 S_SOURCES = $(shell find . -name "*.s")
 OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
      $(patsubst %.s, %.o, $(S_SOURCES)) \
@@ -42,14 +41,9 @@ kernel.kernel: $(OBJ)
 	@echo 编译C文件... $<
 	@$(CC) $(CFLAGS) $< -o $@
 
-.cpp.o:
-	@echo 编译C++文件... $<
-	@$(CXX) $(CXXFLAGS) $< -o $@
-
 .s.o:
 	@echo 编译汇编文件... $<
 	@$(AS) $(ASFLAGS) $< -o $@
-
 
 default:
 	make
@@ -72,7 +66,7 @@ info:
 
 .PHONY:code_line_count
 code_line_count:
-	find . -type f -name "*.[c|h|s|cpp|hpp]" -exec cat {} \; | wc -l
+	find . -type f -name "*.[c|h|s|hpp]" -exec cat {} \; | wc -l
 
 # 删除源码外的所有文件
 .PHONY: clean
