@@ -1,7 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 //
-// DataStructuer.h for MRNIU/SimpleKernel.
+// datastructuer.h for MRNIU/SimpleKernel.
 
 
 #ifndef _DATASTRUCTURE_H_
