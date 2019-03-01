@@ -71,7 +71,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
             brew install i386-elf-binutils
             brew install i386-elf-gcc
-            cd SimpleKernel/ && brew install ./i386-elf-grub.rb
+            cd SimpleKernel/ && brew install tools/i386-elf-grub.rb
 
 注：
 Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试通过。
