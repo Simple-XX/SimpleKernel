@@ -268,6 +268,8 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 [DNKernel](https://github.com/morimolymoly/DNKernel)
 
+[c-algorithms](https://github.com/fragglet/c-algorithms)
+
 ## 版权信息
 
 此项目使用 MIT 许可证
