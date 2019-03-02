@@ -69,7 +69,7 @@ if ! [ -x "$(command -v i386-elf-grub-file)" ]; then
   echo 'Error: i386-elf-grub is not installed.'
   echo 'Install i386-elf-grub...'
   if [ ${OS} == 0 ]; then
-    brew install ${tool}/i386-elf-grub.rb
+    brew install i386-elf-grub
   elif [ ${OS} == 1 ]; then
     shell ${tool}/i386-elf-grub.sh
   fi
