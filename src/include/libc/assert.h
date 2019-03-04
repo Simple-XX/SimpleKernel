@@ -10,7 +10,8 @@
 
 #define assert(test) \
 		if(!(test)) { \
-				printk_color(COL_ERROR, "[ERROR] ASSERT ERROR!");
-
+				printk_color(COL_ERROR, "[ERROR] ASSERT ERROR!"); \
+				while(1); \
+		}
 
 #endif
