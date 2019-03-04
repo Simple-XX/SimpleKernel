@@ -13,8 +13,19 @@ void kernel_main(uint32_t magic, uint32_t addr) {
 		idt_init();       // IDT 初始化
 		clock_init();       // 时钟初始化
 		keyboard_init();       // 键盘初始化
+		pmm_init(addr);
 		showinfo();
 
+		uint32_t allc_addr = NULL;
+		printk_color(red, "Test Physical Memory Alloc :\n");
+		allc_addr = pmm_alloc_page();
+		printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+		allc_addr = pmm_alloc_page();
+		printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+		allc_addr = pmm_alloc_page();
+		printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+		allc_addr = pmm_alloc_page();
+		printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
 
 
 		while(1);
