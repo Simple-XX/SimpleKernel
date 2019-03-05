@@ -32,7 +32,8 @@ extern int printf(const char * fmt, ...);
 
 #define COL_DEBUG light_cyan
 #define COL_ERROR light_red
-#define COL_INFO green
+#define COL_INFO light_green
+#define COL_TEST green
 
 
 #endif

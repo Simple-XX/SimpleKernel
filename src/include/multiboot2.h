@@ -22,7 +22,6 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
-#include "mm/pmm.h"
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH                        32768
@@ -91,10 +90,10 @@
 
 #ifndef ASM_FILE
 
-typedef unsigned char multiboot_uint8_t;
-typedef unsigned short multiboot_uint16_t;
-typedef unsigned int multiboot_uint32_t;
-typedef unsigned long long multiboot_uint64_t;
+typedef uint8_t multiboot_uint8_t;
+typedef uint16_t multiboot_uint16_t;
+typedef uint32_t multiboot_uint32_t;
+typedef uint64_t multiboot_uint64_t;
 
 struct multiboot_header {
 		multiboot_uint32_t magic; // Must be MULTIBOOT_MAGIC - see above.
@@ -188,6 +187,7 @@ struct multiboot_tag {
 		multiboot_uint32_t type;
 		multiboot_uint32_t size;
 };
+typedef struct multiboot_tag multiboot_tag_t;
 
 struct multiboot_tag_string {
 		multiboot_uint32_t type;

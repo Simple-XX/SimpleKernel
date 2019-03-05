@@ -5,6 +5,7 @@
 
 
 #include "multiboot2.h"
+#include "mm/pmm.h"
 
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag){
 		printk_color(COL_DEBUG, "[DEBUG] ");
