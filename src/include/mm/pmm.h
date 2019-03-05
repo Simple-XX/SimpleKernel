@@ -23,6 +23,9 @@ extern uint32_t kernel_end[];
 
 
 // 初始化内存管理
-void pmm_init(struct multiboot_tag *tag);
+void pmm_init(multiboot_tag_t * tag);
 
+uint32_t pmm_alloc_page(void);
+
+void pmm_free_page(uint64_t page);
 #endif
