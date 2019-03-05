@@ -2,6 +2,15 @@
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 # boot.s for MRNIU/SimpleKernel.
 
+# 3.1.1 The layout of Multiboot2 header
+# The layout of the Multiboot2 header must be as follows:
+# Offset Type Field Name        Note
+# 0       u32   magic          required
+# 4       u32   architecture   required
+# 8       u32   header_length  required
+# 12      u32   checksum       required
+# 16-XX         tags           required
+
 # multiboot2 定义
 .set  MULTIBOOT_SEARCH,                        32768
 .set  MULTIBOOT_HEADER_ALIGN,                  8

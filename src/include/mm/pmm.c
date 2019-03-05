@@ -7,21 +7,21 @@
 #include "assert.h"
 
 // 物理页帧数组长度
-static uint32_t phy_pages_count;
+static uint64_t phy_pages_count;
 
 // 可用物理内存页起始地址
-static uint32_t pmm_addr_start;
+// static uint32_t pmm_addr_start;
 
 // 可用物理内存页结束地址
-static uint32_t pmm_addr_end;
+// static uint32_t pmm_addr_end;
 
 // 物理内存页面管理的栈
-static uint32_t pmm_stack[PAGE_MAX_SIZE+1];
+static uint32_t pmm_stack[PAGE_MAX_SIZE+1]; //内存占用 64 pages
 
 // 物理内存管理的栈指针
 static uint32_t pmm_stack_top;
 
-void pmm_init(struct multiboot_tag *tag) {
+void pmm_init(multiboot_tag_t * tag) {
 		multiboot_memory_map_entry_t * mmap;
 		mmap = ((struct multiboot_tag_mmap *) tag)->entries;
 		for (; (uint8_t *) mmap< (uint8_t *) tag + tag->size;
@@ -31,8 +31,8 @@ void pmm_init(struct multiboot_tag *tag) {
 				if ((unsigned) mmap->type == MULTIBOOT_MEMORY_AVAILABLE
 				    && (unsigned) (mmap->addr & 0xffffffff) == 0x100000) {
 						// 把内核结束位置到结束位置的内存段，按页存储到页管理栈里
-						uint32_t page_addr = (mmap->addr);
-						uint32_t length = (mmap->len);
+						uint64_t page_addr = (mmap->addr);
+						uint64_t length = (mmap->len);
 						while (page_addr < length && page_addr <= PMM_MAX_SIZE) {
 								pmm_free_page(page_addr);
 								page_addr += PMM_PAGE_SIZE;
@@ -45,14 +45,14 @@ void pmm_init(struct multiboot_tag *tag) {
 		return;
 }
 
-uint32_t pmm_alloc_page(){
+uint32_t pmm_alloc_page(void){
 		assert(pmm_stack_top != 0);
 		uint32_t page = pmm_stack[pmm_stack_top--];
 		return page;
 }
 
-void pmm_free_page(uint32_t p){
+void pmm_free_page(uint64_t page){
 		assert(pmm_stack_top != PAGE_MAX_SIZE);
-		pmm_stack[++pmm_stack_top] = p;
+		pmm_stack[++pmm_stack_top] = page;
 		return;
 }
