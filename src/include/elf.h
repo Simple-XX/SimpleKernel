@@ -8,7 +8,6 @@
 #define _ELF_H_
 
 #include "stdint.h"
-#include "multiboot2.h"
 
 typedef uint16_t Elf32_Half; // Unsigned half int
 typedef uint32_t Elf32_Off; // Unsigned offset
@@ -67,18 +66,17 @@ enum Elf_Type {
 # define EV_CURRENT (1)  // ELF Current Version
 
 typedef struct {
-		Elf32_Word sh_name;
-		Elf32_Word sh_type;
-		Elf32_Word sh_flags;
-		Elf32_Addr sh_addr;
-		Elf32_Off sh_offset;
-		Elf32_Word sh_size;
-		Elf32_Word sh_link;
-		Elf32_Word sh_info;
-		Elf32_Word sh_addralign;
-		Elf32_Word sh_entsize;
+		Elf32_Word sh_name; // Section name, index in string tbl
+		Elf32_Word sh_type; // Type of section
+		Elf32_Word sh_flags; // Miscellaneous section attributes
+		Elf32_Addr sh_addr; // Section virtual addr at execution
+		Elf32_Off sh_offset; // Section file offset
+		Elf32_Word sh_size; // Size of section in bytes
+		Elf32_Word sh_link; // Index of another section
+		Elf32_Word sh_info; // Additional section information
+		Elf32_Word sh_addralign; // Section alignment
+		Elf32_Word sh_entsize; // Entry size if section holds table
 } Elf32_Shdr;
-
 
 # define SHN_UNDEF (0x00) // Undefined/Not present
 
@@ -142,7 +140,7 @@ enum RtT_Types {
 		R_386_PC32  = 2 // Symbol + Offset - Section Offset
 };
 
-
+// Program header
 typedef struct {
 		Elf32_Word p_type;
 		Elf32_Off p_offset;
@@ -153,5 +151,10 @@ typedef struct {
 		Elf32_Word p_flags;
 		Elf32_Word p_align;
 } Elf32_Phdr;
+
+
+// bool elf_check_file(struct multiboot_tag_elf_sections * tag);
+
+
 
 #endif
