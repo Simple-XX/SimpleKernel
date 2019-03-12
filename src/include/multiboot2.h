@@ -22,6 +22,8 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
+#include "elf.h"
+
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH                        32768
@@ -351,7 +353,15 @@ void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
 void set_mem_info(struct multiboot_tag *tag);
-
+// ELF 信息
+typedef
+  struct elf_t {
+		Elf32_Sym *symtab;
+		uint32_t symtabsz;
+		const char *strtab;
+		uint32_t strtabsz;
+} elf_t;
+static elf_t kernel_elf;
 #endif /*  ! ASM_FILE */
 
 #endif /*  ! MULTIBOOT_HEADER */

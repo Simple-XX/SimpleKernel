@@ -29,6 +29,7 @@
 #include "intr/clock.h"
 #include "cpu.hpp"
 #include "drv/keyboard.h"
+#include "elf.h"
 
 
 void kernel_main(uint32_t magic, uint32_t addr);
