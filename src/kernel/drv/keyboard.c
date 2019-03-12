@@ -188,7 +188,7 @@ void keyboard_read(pt_regs_t* regs){
 						printk_color(red, "scancode error.\n");
 						return;
 				}
-				uint8_t letter=NULL;
+				uint8_t letter=0;
 				uint8_t str[2]={'\0', '\0'}; // 在 default 中用到
 				// 开始处理
 				switch (scancode) {

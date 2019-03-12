@@ -6,6 +6,7 @@
 #include "elf.h"
 #include "stdbool.h"
 #include "stddef.h"
+#include "multiboot2.h"
 
 // bool elf_check_file(struct multiboot_tag_elf_sections * tag) {
 //   Elf32_Ehdr *hdr=(Elf32_Shdr *)tag;
@@ -82,8 +83,9 @@
 // }
 //
 // void elf_from_multiboot(uint32_t addr){
-//   struct multiboot_tag *tag;
-//   tag = (struct multiboot_tag *) (addr + 8);
-//   tag = (struct multiboot_tag *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
+//   multiboot_tag_t *tag;
+//   tag = (multiboot_tag_t *) (addr + 8);
+//   tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
 //
 // }
+//
