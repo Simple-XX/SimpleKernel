@@ -174,23 +174,29 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						// BUG!!!
 						Elf32_Shdr * shdr=(Elf32_Shdr*)((uint32_t)tag + sizeof(struct multiboot_tag_elf_sections));
 						uint32_t shstrtab = shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_addr;
+						// printk("shstrtabsz: 0x%X\n", shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_size); // correct
+						printk("shstrtab addr: 0x%X\n", shstrtab);
 						for (uint32_t i = 0; i < ((struct multiboot_tag_elf_sections*)tag)->num; i++) {
-								// printk("mt1\n");
 								const char *name = (const char *)(shstrtab + shdr[i].sh_name);
+								// printk(" sh_name: %s ", name); // correct
+								// printk("shaddr: 0x%X\t", shdr[i].sh_addr); // correct
 								// 在 GRUB 提供的 multiboot 信息中寻找内核 ELF 格式所提取的字符串表和符号表
 								if (strcmp(name, ".strtab") == 0) {
-										printk("mt2\n");
-										printk("%x\n", shdr[i].sh_size);
 										kernel_elf.strtab = (const char *)shdr[i].sh_addr;
+										printk("strtab: 0x%X\n", kernel_elf.strtab);
+										printk("strtab: %s\n", kernel_elf.strtab);
 										kernel_elf.strtabsz = shdr[i].sh_size;
+										// printk("strtabsz: 0x%X\n", kernel_elf.strtabsz); // correct
 								}
 								if (strcmp(name, ".symtab") == 0) {
-										printk("mt3\n");
-										printk("%x\n", shdr[i].sh_size);
 										kernel_elf.symtab = (Elf32_Sym *)(shdr[i].sh_addr);
+										// printk("symtab addr: 0x%X\n", kernel_elf.symtab);
 										kernel_elf.symtabsz = shdr[i].sh_size;
+										// printk("symtab->: 0x%X\n", (kernel_elf.symtab->st_value));
+										// printk("symtabsz: 0x%X\n", kernel_elf.symtabsz); // correct
 								}
 						}
+						printk("\n");
 						printk("!!!!!!!!!!!!!!!!!!!\n");
 						break;
 				case MULTIBOOT_TAG_TYPE_APM:
