@@ -53,7 +53,7 @@ void kernel_main(uint32_t magic, uint32_t addr) {
 		keyboard_init();       // 键盘初始化
 		pmm_init((multiboot_tag_t *)addr);
 		debug_init(magic, addr);
-		showinfo();
+		// showinfo();
 		// test();
 		panic("test");
 
