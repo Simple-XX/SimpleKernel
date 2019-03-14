@@ -169,7 +169,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						break;
 				case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
 						print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
-						printk("!!!!!!!!!!!!!!!!!!!\n");
+						// printk("!!!!!!!!!!!!!!!!!!!\n");
 						// 获取 shdr 的地址：tag 的地址加上 multiboot_tag_elf_sections 结构体大小即是第一项符号表
 						// BUG!!!
 						// 获取到的 size 和 name 均正确，然而 symtab 的成员全为 0x00
@@ -177,7 +177,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						Elf32_Shdr * shdr=(Elf32_Shdr*)((uint32_t)tag + sizeof(struct multiboot_tag_elf_sections));
 						uint32_t shstrtab = shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_addr;
 						// printk("shstrtabsz: 0x%X\n", shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_size); // correct
-						printk("shstrtab addr: 0x%X\n", shstrtab);
+						// printk("shstrtab addr: 0x%X\n", shstrtab);
 						for (uint32_t i = 0; i < ((struct multiboot_tag_elf_sections*)tag)->num; i++) {
 								const char *name = (const char *)(shstrtab + shdr[i].sh_name);
 								// printk(" sh_name: %s ", name); // correct
@@ -185,8 +185,8 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 								// 在 GRUB 提供的 multiboot 信息中寻找内核 ELF 格式所提取的字符串表和符号表
 								if (strcmp(name, ".strtab") == 0) {
 										kernel_elf.strtab = (const char *)shdr[i].sh_addr;
-										printk("strtab: 0x%X\n", kernel_elf.strtab);
-										printk("strtab: %s\n", kernel_elf.strtab);
+										// printk("strtab: 0x%X\n", kernel_elf.strtab);
+										// printk("strtab: %s\n", kernel_elf.strtab);
 										kernel_elf.strtabsz = shdr[i].sh_size;
 										// printk("strtabsz: 0x%X\n", kernel_elf.strtabsz); // correct
 								}
@@ -198,8 +198,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 										// printk("symtabsz: 0x%X\n", kernel_elf.symtabsz); // correct
 								}
 						}
-						printk("\n");
-						printk("!!!!!!!!!!!!!!!!!!!\n");
+						// printk("!!!!!!!!!!!!!!!!!!!\n");
 						break;
 				case MULTIBOOT_TAG_TYPE_APM:
 						// print_MULTIBOOT_TAG_TYPE_APM(tag);
