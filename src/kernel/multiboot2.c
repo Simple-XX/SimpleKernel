@@ -172,6 +172,8 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						printk("!!!!!!!!!!!!!!!!!!!\n");
 						// 获取 shdr 的地址：tag 的地址加上 multiboot_tag_elf_sections 结构体大小即是第一项符号表
 						// BUG!!!
+						// 获取到的 size 和 name 均正确，然而 symtab 的成员全为 0x00
+						// TODO
 						Elf32_Shdr * shdr=(Elf32_Shdr*)((uint32_t)tag + sizeof(struct multiboot_tag_elf_sections));
 						uint32_t shstrtab = shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_addr;
 						// printk("shstrtabsz: 0x%X\n", shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_size); // correct
