@@ -5,6 +5,7 @@
 
 #include "mm/pmm.h"
 #include "assert.h"
+#include "string.h"
 
 // 物理页帧数组长度
 static uint64_t phy_pages_count;
@@ -25,8 +26,9 @@ void pmm_init(multiboot_tag_t * tag) {
 		multiboot_memory_map_entry_t * mmap;
 		mmap = ((struct multiboot_tag_mmap *) tag)->entries;
 		for (; (uint8_t *) mmap< (uint8_t *) tag + tag->size;
-		     mmap = (multiboot_memory_map_entry_t *)((unsigned long) mmap +
-		                                             ((struct multiboot_tag_mmap *) tag)->entry_size)) {
+		     mmap = (multiboot_memory_map_entry_t *)
+		            ((unsigned long) mmap +
+		             ((struct multiboot_tag_mmap *) tag)->entry_size)) {
 				// 如果是可用内存
 				if ((unsigned) mmap->type == MULTIBOOT_MEMORY_AVAILABLE
 				    && (unsigned) (mmap->addr & 0xffffffff) == 0x100000) {
@@ -48,6 +50,7 @@ void pmm_init(multiboot_tag_t * tag) {
 uint32_t pmm_alloc_page(void){
 		assert(pmm_stack_top != 0);
 		uint32_t page = pmm_stack[pmm_stack_top--];
+		memset((void*)page, 0, PMM_PAGE_SIZE);
 		return page;
 }
 
