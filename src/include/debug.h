@@ -18,6 +18,8 @@
 
 void debug_init(uint32_t magic, uint32_t addr);
 void print_cur_status(void);
-
+void panic(const char *msg);
+const char * elf_lookup_symbol(uint32_t addr, elf_t *elf);
+void print_stack_trace(void);
 
 #endif
