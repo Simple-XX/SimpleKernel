@@ -353,6 +353,7 @@ void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
 void set_mem_info(struct multiboot_tag *tag);
+
 // ELF 信息
 typedef
   struct elf_t {
@@ -362,6 +363,7 @@ typedef
 		uint32_t strtabsz;
 } elf_t;
 static elf_t kernel_elf;
+
 #endif /*  ! ASM_FILE */
 
 #endif /*  ! MULTIBOOT_HEADER */
