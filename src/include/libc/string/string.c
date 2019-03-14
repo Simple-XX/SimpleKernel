@@ -54,3 +54,22 @@ char *strcat(char *dest, const char *src){
 		// dest[len+1]='\0';
 		return dest;
 }
+
+void memcpy(void *dest, void *src, uint32_t len){
+		uint8_t *sr = src;
+		uint8_t *dst = dest;
+		while (len != 0) {
+				*dst++ = *sr++;
+				len--;
+		}
+}
+void memset(void *dest, uint8_t val, uint32_t len){
+		for (uint8_t *dst = (uint8_t *)dest; len != 0; len--) {
+				*dst++ = val;
+		}
+}
+
+void bzero(void *dest, uint32_t len)
+{
+		memset(dest, 0, len);
+}
