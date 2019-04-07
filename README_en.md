@@ -2,8 +2,8 @@
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
 ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![LICENSE](https://img.shields.io/badge/license-NPL%20(The%20996%20Prohibited%20License)-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
-<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg"></a>
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 [![HitCount](http://hits.dwyl.io/MRNIU/SimpleKernel.svg)](http://hits.dwyl.io/MRNIU/SimpleKernel)
 
 [English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
