@@ -10,17 +10,11 @@
 // 物理页帧数组长度
 static uint64_t phy_pages_count;
 
-// 可用物理内存页起始地址
-// static uint32_t pmm_addr_start;
-
-// 可用物理内存页结束地址
-// static uint32_t pmm_addr_end;
-
 // 物理内存页面管理的栈
-static uint32_t pmm_stack[PAGE_MAX_SIZE+1]; //内存占用 64 pages
+static uint64_t pmm_stack[PAGE_MAX_SIZE+1];
 
 // 物理内存管理的栈指针
-static uint32_t pmm_stack_top;
+static uint64_t pmm_stack_top;
 
 void pmm_init(multiboot_tag_t * tag) {
 		multiboot_memory_map_entry_t * mmap;
@@ -32,7 +26,7 @@ void pmm_init(multiboot_tag_t * tag) {
 				// 如果是可用内存
 				if ((unsigned) mmap->type == MULTIBOOT_MEMORY_AVAILABLE
 				    && (unsigned) (mmap->addr & 0xffffffff) == 0x100000) {
-						// 把内核结束位置到结束位置的内存段，按页存储到页管理栈里
+						// 把内核位置到结束位置的内存段，按页存储到页管理栈里
 						uint64_t page_addr = (mmap->addr);
 						uint64_t length = (mmap->len);
 						while (page_addr < length && page_addr <= PMM_MAX_SIZE) {
@@ -44,12 +38,14 @@ void pmm_init(multiboot_tag_t * tag) {
 		}
 		printk_color(COL_INFO, "[INFO] ");
 		printk ("pmm_init\n");
+		printk_color(COL_INFO, "[INFO] ");
+		printk ("phy_pages_count: %d\n", phy_pages_count);
 		return;
 }
 
-uint32_t pmm_alloc_page(void){
+uint64_t pmm_alloc_page(void){
 		assert(pmm_stack_top != 0);
-		uint32_t page = pmm_stack[pmm_stack_top--];
+		uint64_t page = pmm_stack[pmm_stack_top--];
 		memset((void*)page, 0, PMM_PAGE_SIZE);
 		return page;
 }

@@ -59,7 +59,6 @@ typedef
 		uint32_t base; // 全局描述符表 32位 基地址
 } __attribute__((packed)) gdt_ptr_t;
 
-// GDTR
 static gdt_ptr_t gdt_ptr;
 
 /*

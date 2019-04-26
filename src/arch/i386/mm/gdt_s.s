@@ -1,7 +1,7 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-# gdt.s for MRNIU/SimpleKernel.
+# gdt_s.s for MRNIU/SimpleKernel.
 
 .global gdt_load
 
