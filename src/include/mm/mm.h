@@ -8,6 +8,7 @@
 
 
 #include "mm/pmm.h"
+#include "mm/vmm.h"
 
 void mm_init(void);
 

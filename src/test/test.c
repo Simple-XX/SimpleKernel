@@ -6,7 +6,7 @@
 #include "test.h"
 
 bool test_pmm(){
-		uint32_t allc_addr = 0;
+		uint64_t allc_addr = 0;
 		printk_color(COL_TEST, "[TEST] ");
 		printk_color(red, "Test Physical Memory Alloc :\n");
 		allc_addr = pmm_alloc_page();

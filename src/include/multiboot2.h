@@ -337,7 +337,6 @@ struct multiboot_tag_load_base_addr {
 		multiboot_uint32_t load_base_addr;
 };
 
-// extern uint32_t glb_multi_ptr;
 multiboot_memory_map_entry_t * mmap_entries;
 
 bool is_multiboot2_header(uint32_t magic, uint32_t addr);

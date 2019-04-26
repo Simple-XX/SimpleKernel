@@ -125,14 +125,15 @@ bool is_multiboot2_header(uint32_t magic, uint32_t addr){
 		return true;
 }
 
+// 处理 multiboot 信息
 void multiboot2_init(uint32_t magic, uint32_t addr){
 		// Am I booted by a Multiboot-compliant boot loader?
 		is_multiboot2_header(magic, addr);
 
 		uint32_t size=*(uint32_t *) addr;
 		// addr+0 保存大小，下一字节开始为 tag 信息
-		printk_color(COL_DEBUG, "[DEBUG] ");
-		printk ("Announced mbi size 0x%X\n", size);
+		// printk_color(COL_DEBUG, "[DEBUG] ");
+		// printk ("Announced mbi size 0x%X\n", size);
 
 		uint32_t tag_addr = (uint32_t)addr+8;
 		multiboot_tag_t *tag;
@@ -204,12 +205,12 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						// print_MULTIBOOT_TAG_TYPE_APM(tag);
 						break;
 				case MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR:
-						print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(tag);
+						// print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(tag);
 						break;
 				}
 		}
 		tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
-		printk_color(COL_DEBUG, "[DEBUG] ");
-		printk ("Total mbi size 0x%X\n", (unsigned) tag - addr);
+		// printk_color(COL_DEBUG, "[DEBUG] ");
+		// printk ("Total mbi size 0x%X\n", (unsigned) tag - addr);
 		return;
 }
