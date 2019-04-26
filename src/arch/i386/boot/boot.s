@@ -67,7 +67,7 @@
 .set  MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED, 2
 
 # 设置栈大小
-.set STACK_SIZE, 0x4000
+.set stack_size, 0x4000
 
 .section .multiboot_header
 # multiboot2 文件头
@@ -116,7 +116,6 @@ multiboot_entry:
   popf
 	# multiboot2_info 结构体指针
   push %ebx
-#  mov %ebx, (glb_multi_ptr)
 	# 魔数
 	push %eax
   call kernel_main
@@ -132,10 +131,8 @@ multiboot_entry:
 
 .align 8
 stack_bottom:
-  .skip STACK_SIZE
+  .skip stack_size
 stack_top:
-#glb_multi_ptr:
-#  .skip 4
 
 edata:
 end:
