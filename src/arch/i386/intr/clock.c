@@ -2,7 +2,7 @@
 
 // clock.c for MRNIU/SimpleKernel.
 
-#include "clock.h"
+#include "intr/clock.h"
 #include "stddef.h"
 
 void clock_handler(pt_regs_t * regs){

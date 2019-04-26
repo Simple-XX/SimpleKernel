@@ -13,19 +13,19 @@
 #include "stddef.h"
 
 
-#define STACK_SIZE    8192
-#define PMM_MAX_SIZE  0x40000000
+#define STACK_SIZE    0x1000  // 4096
+#define PMM_MAX_SIZE  0x40000000 // 4 gib
 #define PMM_PAGE_SIZE 0x1000      // 页面大小 4KB
 #define PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)
 
-extern uint32_t kernel_start[];
-extern uint32_t kernel_end[];
+extern uint64_t kernel_start[];
+extern uint64_t kernel_end[];
 
 
 // 初始化内存管理
 void pmm_init(multiboot_tag_t * tag);
 
-uint32_t pmm_alloc_page(void);
+uint64_t pmm_alloc_page(void);
 
 void pmm_free_page(uint64_t page);
 #endif

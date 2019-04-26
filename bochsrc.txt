@@ -4,7 +4,7 @@
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 ###############################################################
 
-megs: 128
+megs: 512
 romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
 vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 # 这里需要根据实际路径进行修改
