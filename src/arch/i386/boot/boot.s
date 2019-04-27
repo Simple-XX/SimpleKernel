@@ -66,9 +66,6 @@
 .set  MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED, 1
 .set  MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED, 2
 
-# 设置栈大小
-.set stack_size, 0x4000
-
 .section .multiboot_header
 # multiboot2 文件头
 .align 8
@@ -100,18 +97,81 @@ mbi_tag_end:
   .long 8
 multiboot_header_end:
 
-.text
-.global start, _start
-.global glb_multi_ptr
-.extern kernel_main
+# Allocate the initial stack. 分配初始化栈
+.section .bootstrap_stack, "aw", @nobits
+stack_bottom:
+.skip 16384 # 16 KiB
+stack_top:
 
+# Preallocate pages used for paging. Don't hard-code addresses and assume they
+# are available, as the bootloader might have loaded its multiboot structures or
+# modules there. This lets the bootloader know it must avoid the addresses.
+# 预分配用于开启分页的内存页。此地址不能硬编码
+.section .bss, "aw", @nobits
+	.align 4096
+boot_page_directory:
+	.skip 4096
+boot_page_table1:
+	.skip 4096
+# Further page tables may be required if the kernel grows beyond 3 MiB.
+
+.section .text
+.global start
+.type start, @function
 start:
-_start:
+  movl $(boot_page_table1 - 0xC0000000), %edi
+  movl $0, %esi
+  movl $1023, %ecx
+
+1:
+  # Only map the kernel.
+	cmpl $(kernel_start - 0xC0000000), %esi
+	jl 2f
+	cmpl $(kernel_end - 0xC0000000), %esi
+	jge 3f
+  movl %esi, %edx
+  orl $0x003, %edx
+  movl %edx, (%edi)
+
+2:
+  # Size of page is 4096 bytes.
+  addl $4096, %esi
+  # Size of entries in boot_page_table1 is 4 bytes.
+  addl $4, %edi
+  # Loop to the next entry if we haven't finished.
+  loop 1b
+
+  3:
+  # Map VGA video memory to 0xC03FF000 as "present, writable".
+  movl $(0x000B8000 | 0x003), boot_page_table1 - 0xC0000000 + 1023 * 4
+
+  # The page table is used at both page directory entry 0 (virtually from 0x0
+  # to 0x3FFFFF) (thus identity mapping the kernel) and page directory entry
+  # 768 (virtually from 0xC0000000 to 0xC03FFFFF) (thus mapping it in the
+  # higher half). The kernel is identity mapped because enabling paging does
+  # not change the next instruction, which continues to be physical. The CPU
+  # would instead page fault if there was no identity mapping.
+
+  # Map the page table to both virtual addresses 0x00000000 and 0xC0000000.
+  movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 0
+  movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 768 * 4
+
+  # Set cr3 to the address of the boot_page_directory.
+  movl $(boot_page_directory - 0xC0000000), %ecx
+  movl %ecx, %cr3
+
+  # Enable paging and the write-protect bit.
+  movl %cr0, %ecx
+  orl $0x80010000, %ecx
+  movl %ecx, %cr0
+
   jmp multiboot_entry
 
 multiboot_entry:
 	# 设置栈地址
   mov $stack_top, %esp
+  and $0xFFFFFFF0, %esp     # 栈地址按照 16 字节对齐
+  mov $0, %ebp          # 帧指针修改为 0
   push $0
   popf
 	# multiboot2_info 结构体指针
@@ -125,14 +185,4 @@ multiboot_entry:
   jmp 1b
   ret
 
-.size _start, . - _start
-
-.section .bss
-
-.align 8
-stack_bottom:
-  .skip stack_size
-stack_top:
-
-edata:
-end:
+.size start, . - start
