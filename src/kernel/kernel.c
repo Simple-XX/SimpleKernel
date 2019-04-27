@@ -17,6 +17,9 @@ void kernel_main(uint32_t magic, uint32_t addr) {
 		clock_init();       // 时钟初始化
 		keyboard_init();       // 键盘初始化
 		multiboot2_init(magic, addr);
+		// 注册页错误中断的处理函数 ( 14 是页故障的中断号 )
+		register_interrupt_handler(14, &page_fault);
+
 		// debug_init(magic, addr);
 		showinfo();
 		test();
