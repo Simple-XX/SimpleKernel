@@ -247,5 +247,10 @@ static inline bool EFLAGS_CF_status(void){
 		return (eflags&EFLAGS_CF);
 }
 
+static inline void __native_flush_tlb_single(unsigned long addr){
+		asm volatile ("invlpg (%0)" : : "r" (addr) : "memory");
+		return;
+}
+
 
 #endif

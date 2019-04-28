@@ -12,9 +12,10 @@
 #include "multiboot2.h"
 #include "debug.h"
 #include "mm/pmm.h"
-#include "mm/mm.h"
-#include "intr/clock.h"
+#include "mm/vmm.h"
+#include "clock.h"
 #include "drv/keyboard.h"
+#include "heap.h"
 
 bool test(void);
 bool test_pmm(void);
