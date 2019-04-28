@@ -250,7 +250,6 @@ void page_fault(pt_regs_t * regs){
 		// die("Page Fault.", regs->old_esp, regs->int_no);
 		uint32_t cr2;
 		asm volatile ("mov %%cr2,%0" : "=r" (cr2));
-
 		printk("Page fault at 0x%x, virtual faulting address 0x%x\n", regs->eip, cr2);
 		printk("Error code: %x\n", regs->err_code);
 
@@ -273,7 +272,6 @@ void page_fault(pt_regs_t * regs){
 		// bit 4 为 1 表示错误发生在取指令的时候
 		if (regs->err_code & 0x10)
 				printk_color(red, "The fault occurred during an instruction fetch.\n");
-
 		while (1);
 }
 

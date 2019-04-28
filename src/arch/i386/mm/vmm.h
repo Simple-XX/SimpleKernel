@@ -7,10 +7,9 @@
 #ifndef _VMM_H_
 #define _VMM_H_
 
-
 #include "stdint.h"
 #include "intr/intr.h"
-#include "mm/vmm.h"
+#include "mm/pmm.h"
 
 // 内核的偏移地址
 #define PAGE_OFFSET     0xC0000000
@@ -74,7 +73,7 @@ typedef uint32_t pte_t;
 extern pgd_t pgd_kern[PGD_SIZE];
 
 // 初始化虚拟内存管理
-void init_vmm();
+void vmm_init(void);
 
 // 更换当前的页目录
 void switch_pgd(uint32_t pd);
@@ -92,9 +91,4 @@ uint32_t get_mapping(pgd_t *pgd_now, uint32_t va, uint32_t *pa);
 // 页错误中断的函数处理
 void page_fault(pt_regs_t *regs);
 
-
-
-
-
-
-#endif
+#endif  // INCLUDE_VMM_H

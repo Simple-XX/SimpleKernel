@@ -25,11 +25,12 @@
 #include "multiboot2.h"
 #include "debug.h"
 #include "mm/pmm.h"
-#include "mm/mm.h"
-#include "intr/clock.h"
+#include "mm/vmm.h"
+#include "clock.h"
 #include "cpu.hpp"
 #include "drv/keyboard.h"
 #include "elf.h"
+#include "heap.h"
 
 
 void kernel_main(uint32_t magic, uint32_t addr);
@@ -41,6 +42,9 @@ void clock_init(void);
 void keyboard_init(void);
 void mouse_init(void);
 void debug_init(uint32_t magic, uint32_t addr);
+void pmm_init(multiboot_tag_t * tag);
+void vmm_init();
+
 
 void showinfo(void);
 void showinfo(void){

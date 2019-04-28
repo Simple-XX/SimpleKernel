@@ -24,6 +24,8 @@
 #include "stdio.h"
 #include "elf.h"
 
+#define DEBUG 0
+
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH                        32768
