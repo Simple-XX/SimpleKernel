@@ -6,7 +6,7 @@
 
 #include "multiboot2.h"
 #include "mm/pmm.h"
-
+#include "mm/vmm.h"
 #include "string.h"
 
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag){
@@ -53,6 +53,7 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag){
 void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag){
 		multiboot_memory_map_entry_t *mmap;
 		mmap = ((struct multiboot_tag_mmap *) tag)->entries;
+#if DEBUG
 		printk_color(COL_DEBUG, "[DEBUG] ");
 		printk ("mmap\n");
 		for (; (uint8_t *) mmap< (uint8_t *) tag + tag->size;
@@ -65,6 +66,7 @@ void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag){
 				        (unsigned) (mmap->len & 0xffffffff), // low
 				        (unsigned) mmap->type);
 		}
+#endif
 		return;
 }
 
@@ -74,6 +76,7 @@ void set_mem_info(multiboot_tag_t *tag){
 }
 
 void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag){
+#if DEBUG
 		printk_color(COL_DEBUG, "[DEBUG] ");
 		printk ("Elf type 0x%X, Size 0x%X, num 0x%X, entsize 0x%X, shndx 0x%X.\n",
 		        ((struct multiboot_tag_elf_sections *) tag)->type,
@@ -81,6 +84,7 @@ void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag){
 		        ((struct multiboot_tag_elf_sections *) tag)->num,
 		        ((struct multiboot_tag_elf_sections *) tag)->entsize,
 		        ((struct multiboot_tag_elf_sections *) tag)->shndx);
+#endif
 		return;
 }
 
@@ -130,7 +134,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 		// Am I booted by a Multiboot-compliant boot loader?
 		is_multiboot2_header(magic, addr);
 
-		uint32_t size=*(uint32_t *) addr;
+		// uint32_t size=*(uint32_t *) addr;
 		// addr+0 保存大小，下一字节开始为 tag 信息
 		// printk_color(COL_DEBUG, "[DEBUG] ");
 		// printk ("Announced mbi size 0x%X\n", size);
@@ -167,6 +171,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						print_MULTIBOOT_TAG_TYPE_MMAP(tag);
 						set_mem_info(tag);
 						pmm_init(tag);
+						// vmm_init();
 						break;
 				case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
 						print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
@@ -209,8 +214,10 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						break;
 				}
 		}
-		tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
+		//tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
 		// printk_color(COL_DEBUG, "[DEBUG] ");
 		// printk ("Total mbi size 0x%X\n", (unsigned) tag - addr);
+		printk_color(COL_INFO, "[INFO] ");
+		printk("multiboot2_init\n");
 		return;
 }

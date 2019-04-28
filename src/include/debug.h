@@ -23,12 +23,4 @@ const char * elf_lookup_symbol(uint32_t addr, elf_t *elf);
 void print_stack_trace(void);
 
 
-// #define PRINT_INFO(message) { \
-//     if(DEBUG) { \
-//       printk_color(COL_INFO, "[INFO] "); \
-//       printk_color(COL_INFO, (message)); \
-//     } \
-// }
-
-
 #endif
