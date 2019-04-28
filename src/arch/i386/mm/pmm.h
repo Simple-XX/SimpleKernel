@@ -21,7 +21,6 @@
 extern uint64_t kernel_start[];
 extern uint64_t kernel_end[];
 
-
 // 初始化内存管理
 void pmm_init(multiboot_tag_t * tag);
 

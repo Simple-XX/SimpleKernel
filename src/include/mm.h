@@ -6,10 +6,11 @@
 #ifndef _MM_H_
 #define _MM_H_
 
-
-#include "mm/pmm.h"
-#include "mm/vmm.h"
-
-void mm_init(void);
+// #include "multiboot2.h"
+// #include "mm/pmm.h"
+// #include "mm/vmm.h"
+//
+// void pmm_init(multiboot_tag_t * tag);
+// void vmm_init(void);
 
 #endif
