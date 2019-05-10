@@ -2,14 +2,6 @@
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 # boot.s for MRNIU/SimpleKernel.
 
-# 3.1.1 The layout of Multiboot2 header
-# The layout of the Multiboot2 header must be as follows:
-# Offset Type Field Name        Note
-# 0       u32   magic          required
-# 4       u32   architecture   required
-# 8       u32   header_length  required
-# 12      u32   checksum       required
-# 16-XX         tags           required
 
 # multiboot2 定义
 .set  MULTIBOOT_SEARCH,                        32768
@@ -66,6 +58,7 @@
 .set  MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED, 1
 .set  MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED, 2
 
+
 .section .multiboot_header
 # multiboot2 文件头
 .align 8
@@ -97,74 +90,10 @@ mbi_tag_end:
   .long 8
 multiboot_header_end:
 
-# Allocate the initial stack. 分配初始化栈
-.section .bootstrap_stack, "aw", @nobits
-stack_bottom:
-.skip 16384 # 16 KiB
-stack_top:
-
-# Preallocate pages used for paging. Don't hard-code addresses and assume they
-# are available, as the bootloader might have loaded its multiboot structures or
-# modules there. This lets the bootloader know it must avoid the addresses.
-# 预分配用于开启分页的内存页。此地址不能硬编码
-.section .bss, "aw", @nobits
-	.align 4096
-boot_page_directory:
-	.skip 4096
-boot_page_table1:
-	.skip 4096
-# Further page tables may be required if the kernel grows beyond 3 MiB.
-
-.section .text
+.section .init.text  # 临时代码段从这里开始
 .global start
 .type start, @function
 start:
-  movl $(boot_page_table1 - 0xC0000000), %edi
-  movl $0, %esi
-  movl $1023, %ecx
-
-1:
-  # Only map the kernel.
-	cmpl $(kernel_start - 0xC0000000), %esi
-	jl 2f
-	cmpl $(kernel_end - 0xC0000000), %esi
-	jge 3f
-  movl %esi, %edx
-  orl $0x003, %edx
-  movl %edx, (%edi)
-
-2:
-  # Size of page is 4096 bytes.
-  addl $4096, %esi
-  # Size of entries in boot_page_table1 is 4 bytes.
-  addl $4, %edi
-  # Loop to the next entry if we haven't finished.
-  loop 1b
-
-  3:
-  # Map VGA video memory to 0xC03FF000 as "present, writable".
-  movl $(0x000B8000 | 0x003), boot_page_table1 - 0xC0000000 + 1023 * 4
-
-  # The page table is used at both page directory entry 0 (virtually from 0x0
-  # to 0x3FFFFF) (thus identity mapping the kernel) and page directory entry
-  # 768 (virtually from 0xC0000000 to 0xC03FFFFF) (thus mapping it in the
-  # higher half). The kernel is identity mapped because enabling paging does
-  # not change the next instruction, which continues to be physical. The CPU
-  # would instead page fault if there was no identity mapping.
-
-  # Map the page table to both virtual addresses 0x00000000 and 0xC0000000.
-  movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 0
-  movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 768 * 4
-
-  # Set cr3 to the address of the boot_page_directory.
-  movl $(boot_page_directory - 0xC0000000), %ecx
-  movl %ecx, %cr3
-
-  # Enable paging and the write-protect bit.
-  movl %cr0, %ecx
-  orl $0x80010000, %ecx
-  movl %ecx, %cr0
-
   jmp multiboot_entry
 
 multiboot_entry:
@@ -178,7 +107,7 @@ multiboot_entry:
   push %ebx
 	# 魔数
 	push %eax
-  call kernel_main
+  call kern_entry
   cli
 1:
   hlt
@@ -186,3 +115,8 @@ multiboot_entry:
   ret
 
 .size start, . - start
+
+.section .init.data
+stack:
+  .skip 1024
+stack_top:
