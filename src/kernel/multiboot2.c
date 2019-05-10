@@ -171,7 +171,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
 						print_MULTIBOOT_TAG_TYPE_MMAP(tag);
 						set_mem_info(tag);
 						pmm_init(tag);
-						// vmm_init();
+						vmm_init();
 						break;
 				case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
 						print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
