@@ -32,32 +32,7 @@ bool test_libc(){
 		return true;
 }
 
-
-void test_heap()
-{
-		printk_color(magenta, "Test kmalloc() && kfree() now ...\n\n");
-		void *addr1 = kmalloc(50);
-		printk("kmalloc    50 byte in 0x%X\n", addr1);
-		void *addr2 = kmalloc(500);
-		printk("kmalloc   500 byte in 0x%X\n", addr2);
-		void *addr3 = kmalloc(5000);
-		printk("kmalloc  5000 byte in 0x%X\n", addr3);
-		void *addr4 = kmalloc(50000);
-		printk("kmalloc 50000 byte in 0x%X\n\n", addr4);
-
-		printk("free mem in 0x%X\n", addr1);
-		kfree(addr1);
-		printk("free mem in 0x%X\n", addr2);
-		kfree(addr2);
-		printk("free mem in 0x%X\n", addr3);
-		kfree(addr3);
-		printk("free mem in 0x%X\n\n", addr4);
-		kfree(addr4);
-}
-
-
 bool test(void){
 		test_pmm();
-		// test_heap();
 		return true;
 }

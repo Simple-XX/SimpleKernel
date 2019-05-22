@@ -58,7 +58,6 @@
 .set  MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED, 1
 .set  MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED, 2
 
-
 .section .multiboot_header
 # multiboot2 文件头
 .align 8
@@ -118,5 +117,5 @@ multiboot_entry:
 
 .section .init.data
 stack:
-  .skip 1024
+  .skip 4096
 stack_top:
