@@ -26,5 +26,7 @@ void pmm_init(multiboot_tag_t * tag);
 
 uint32_t pmm_alloc_page(void);
 
+uint32_t pmm_alloc_pages(uint32_t size);
+
 void pmm_free_page(uint32_t page);
 #endif

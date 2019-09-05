@@ -50,6 +50,17 @@ uint32_t pmm_alloc_page(void){
     return page;
 }
 
+uint32_t pmm_alloc_pages(uint32_t size){
+    uint32_t page;
+    do {
+        assert(pmm_stack_top != 0);
+        page = pmm_stack[pmm_stack_top--];
+        size--;
+    } while(size > 0);
+    memset( (void*)page, 0, PMM_PAGE_SIZE * size );
+    return page;
+}
+
 void pmm_free_page(uint32_t page){
     assert(pmm_stack_top != PAGE_MAX_SIZE);
     pmm_stack[++pmm_stack_top] = page;
