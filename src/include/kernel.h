@@ -34,7 +34,7 @@
 
 
 void kernel_main(uint32_t magic, uint32_t addr);
-// void debug_init(uint64_t magic, multiboot_info_t * mb);
+// void debug_init(uint32_t magic, multiboot_info_t * mb);
 void console_init(void);
 void gdt_init(void);
 void idt_init(void);

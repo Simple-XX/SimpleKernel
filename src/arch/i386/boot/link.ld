@@ -20,14 +20,15 @@ SECTIONS
 		*(.multiboot_header)
 	}
 	PROVIDE(multiboot_end = .);
+    
 	PROVIDE(kernel_text_start = .);
 	.text BLOCK(4K) : ALIGN(4K)
 	{
 		*(.text)
 	}
-  PROVIDE(kernel_text_end = .);
+    PROVIDE(kernel_text_end = .);
 
-  PROVIDE(kernel_rodata_start = .);
+    PROVIDE(kernel_rodata_start = .);
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
 		*(.rodata)
@@ -39,7 +40,7 @@ SECTIONS
 	{
 		*(.data)
 	}
-  PROVIDE(kernel_data_end = .);
+    PROVIDE(kernel_data_end = .);
 
 	PROVIDE(kernel_bss_start = .);
 	.bss BLOCK(4K) : ALIGN(4K)
@@ -49,5 +50,5 @@ SECTIONS
 	}
 	PROVIDE(kernel_bss_end = .);
 
-  PROVIDE(kernel_end = .);
+    PROVIDE(kernel_end = .);
 }

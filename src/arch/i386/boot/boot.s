@@ -2,7 +2,6 @@
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 # boot.s for MRNIU/SimpleKernel.
 
-
 # multiboot2 定义
 .set  MULTIBOOT_SEARCH,                        32768
 .set  MULTIBOOT_HEADER_ALIGN,                  8
@@ -117,5 +116,5 @@ multiboot_entry:
 
 .section .bss
 stack:
-  .skip 4096
+    .skip 4096
 stack_top:
