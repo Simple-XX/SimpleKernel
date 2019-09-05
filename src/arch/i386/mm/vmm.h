@@ -44,13 +44,13 @@
 #define PAGE_MASK      0xFFFFF000
 
 // 获取一个地址的页目录项
-#define PGD_INDEX(x) (((x) >> 22) & 0x3FF)
+#define PGD_INDEX(x) ( ( (x) >> 22 ) & 0x3FF )
 
 // 获取一个地址的页表项
-#define PTE_INDEX(x) (((x) >> 12) & 0x3FF)
+#define PTE_INDEX(x) ( ( (x) >> 12 ) & 0x3FF )
 
 // 获取一个地址的页內偏移
-#define OFFSET_INDEX(x) ((x) & 0xFFF)
+#define OFFSET_INDEX(x) ( (x) & 0xFFF )
 
 // 页目录数据类型
 typedef uint32_t pgd_t;
@@ -59,10 +59,10 @@ typedef uint32_t pgd_t;
 typedef uint32_t pte_t;
 
 // 页表成员数
-#define PGD_SIZE (PAGE_SIZE/sizeof(pte_t))
+#define PGD_SIZE ( PAGE_SIZE / sizeof(pte_t) )
 
 // 页表成员数
-#define PTE_SIZE (PAGE_SIZE/sizeof(uint32_t))
+#define PTE_SIZE ( PAGE_SIZE / sizeof(uint32_t) )
 
 // 映射 512MB 内存所需要的页表数
 #define PTE_COUNT 128

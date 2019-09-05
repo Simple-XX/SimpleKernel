@@ -38,8 +38,8 @@ typedef void *ListValue;
  */
 
 struct _ListIterator {
-		ListEntry **prev_next;
-		ListEntry *current;
+    ListEntry **prev_next;
+    ListEntry *current;
 };
 
 /* A doubly-linked list */
@@ -54,7 +54,7 @@ struct _ListIterator {
  * A null @ref ListValue.
  */
 
-#define LIST_NULL ((void *) 0)
+#define LIST_NULL ( (void *) 0 )
 
 /**
  * Callback function used to compare values in a list when sorting.
