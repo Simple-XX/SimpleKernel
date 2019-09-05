@@ -18,26 +18,26 @@ extern void console_setcolor(unsigned char color);
 extern unsigned char console_getcolor(void);
 
 int printk(const char * fmt, ...){
-		va_list args;
-		int i;
-		va_start(args, fmt);
-		i=vsprintf(buf, fmt, args);
-		va_end(args);
-		console_writestring(buf);
-		return i;
+    va_list args;
+    int i;
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    console_writestring(buf);
+    return i;
 }
 
 int printk_color(unsigned char color, const char *fmt, ...){
-		va_list args;
-		int i;
-		va_start(args, fmt);
-		i=vsprintf(buf, fmt, args);
-		va_end(args);
-		unsigned char old_color = console_getcolor();
-		console_setcolor(color);
-		console_writestring(buf);
-		console_setcolor(old_color);
-		return i;
+    va_list args;
+    int i;
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    unsigned char old_color = console_getcolor();
+    console_setcolor(color);
+    console_writestring(buf);
+    console_setcolor(old_color);
+    return i;
 }
 
 
