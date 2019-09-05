@@ -62,60 +62,60 @@
 # multiboot2 文件头
 .align 8
 multiboot_header:
-  .long MULTIBOOT2_HEADER_MAGIC
-  .long MULTIBOOT_ARCHITECTURE_I386
-  .long multiboot_header_end - multiboot_header
-  .long -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + multiboot_header_end - multiboot_header)
+    .long MULTIBOOT2_HEADER_MAGIC
+    .long MULTIBOOT_ARCHITECTURE_I386
+    .long multiboot_header_end - multiboot_header
+    .long -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + multiboot_header_end - multiboot_header)
 
 # 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
 
 # multiboot2 information request
 .align 8
 mbi_tag_start:
-  .short MULTIBOOT_HEADER_TAG_INFORMATION_REQUEST
-  .short MULTIBOOT_HEADER_TAG_OPTIONAL
-  .long mbi_tag_end - mbi_tag_start
-  .long MULTIBOOT_TAG_TYPE_CMDLINE
-  .long MULTIBOOT_TAG_TYPE_MODULE
-  .long MULTIBOOT_TAG_TYPE_BOOTDEV
-  .long MULTIBOOT_TAG_TYPE_MMAP
-  .long MULTIBOOT_TAG_TYPE_ELF_SECTIONS
-  .long MULTIBOOT_TAG_TYPE_APM
-  .long MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR
+    .short MULTIBOOT_HEADER_TAG_INFORMATION_REQUEST
+    .short MULTIBOOT_HEADER_TAG_OPTIONAL
+    .long mbi_tag_end - mbi_tag_start
+    .long MULTIBOOT_TAG_TYPE_CMDLINE
+    .long MULTIBOOT_TAG_TYPE_MODULE
+    .long MULTIBOOT_TAG_TYPE_BOOTDEV
+    .long MULTIBOOT_TAG_TYPE_MMAP
+    .long MULTIBOOT_TAG_TYPE_ELF_SECTIONS
+    .long MULTIBOOT_TAG_TYPE_APM
+    .long MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR
 .align 8
 mbi_tag_end:
 	.short MULTIBOOT_HEADER_TAG_END
-  .short 0
-  .long 8
+    .short 0
+    .long 8
 multiboot_header_end:
 
-.section .init.text  # 临时代码段从这里开始
+.section .text
 .global start
 .type start, @function
 start:
-  jmp multiboot_entry
+    jmp multiboot_entry
 
 multiboot_entry:
 	# 设置栈地址
-  mov $stack_top, %esp
-  and $0xFFFFFFF0, %esp     # 栈地址按照 16 字节对齐
-  mov $0, %ebp          # 帧指针修改为 0
-  push $0
-  popf
+    mov $stack_top, %esp
+    and $0xFFFFFFF0, %esp     # 栈地址按照 16 字节对齐
+    mov $0, %ebp          # 帧指针修改为 0
+    push $0
+    popf
 	# multiboot2_info 结构体指针
-  push %ebx
+    push %ebx
 	# 魔数
 	push %eax
-  call kern_entry
-  cli
+    call kernel_main
+    cli
 1:
-  hlt
-  jmp 1b
-  ret
+    hlt
+    jmp 1b
+    ret
 
 .size start, . - start
 
-.section .init.data
+.section .bss
 stack:
   .skip 4096
 stack_top:
