@@ -3,34 +3,42 @@
 
 # Makefile for MRNIU/SimpleKernel.
 
-BOOT_DIR= ./arch/i386/boot
-HPP_DIR= ./include
-LIBC_DIR= ./include/libc
-ARCH_DIR= ./arch/i386
+BOOT_DIR = ./arch/i386/boot
+HPP_DIR = ./include
+LIBC_DIR = ./include/libc
+ARCH_DIR = ./arch/i386
 
 C_SOURCES = $(shell find . -name "*.c")
 S_SOURCES = $(shell find . -name "*.s")
 OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
      $(patsubst %.s, %.o, $(S_SOURCES)) \
-	   $(patsubst %.cpp, %.o, $(CXX_SOURCES))
+	 $(patsubst %.cpp, %.o, $(CXX_SOURCES))
 
-CXX= i386-elf-g++
-CXXFLAGS= -std=c++11 -ffreestanding -nostdinc -O2 \
+CXX = i386-elf-g++
+CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -O2 \
  				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wsign-compare \
 				-g -ggdb -C -c \
 				-I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
 
-CC= i386-elf-gcc
-CFLAGS= -std=gnu11 -ffreestanding -nostdinc -O2 \
- 				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
-				-g -ggdb -C -c \
-				-I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
+OBJCPY = i386-elf-objcopy
+STRIP = i386-elf-strip
+NM = i386-elf-gcc-nm
+READELF = i386-elf-readelf
 
-LD= i386-elf-ld
-LDFLAGS= -A elf32_i386 -T$(BOOT_DIR)/link.ld
+CC = i386-elf-gcc
+CFLAGS = -std=gnu11 -ffreestanding -nostdinc -O2 \
+		 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
+		 -g -ggdb -C -c \
+		 -I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
 
-AS= i386-elf-as
-ASFLAGS= -march=i386
+LD = i386-elf-ld
+LDFLAGS = -A elf32_i386 -T$(BOOT_DIR)/link.ld
+
+AS = i386-elf-as
+ASFLAGS = -march=i386
+
+IMAGE = kernel.kernel
+MAP = kernel.map
 
 # 生成 kernel
 kernel.kernel: $(OBJ)
@@ -46,12 +54,7 @@ kernel.kernel: $(OBJ)
 	@$(AS) $(ASFLAGS) $< -o $@
 
 default:
-	make
-
-.PHONY: remake
-remake:
-	$(MAKE) clean
-	$(MAKE) default
+	make kernel.kernel
 
 .PHONY: info
 info:
@@ -64,15 +67,29 @@ info:
 	@echo AS: $(AS)
 	@echo ASFLAGS: $(ASFLAGS)
 
-.PHONY:code_line_count
+.PHONY: code_line_count
 code_line_count:
 	find . -type f -name "*.[c|h|s|hpp]" -exec cat {} \; | wc -l
+
+.PHONY: generate_map
+generate_map:
+	$(READELF) -s $(IMAGE) >> $(MAP)
+
+.PHONY: generate_nm
+generate_nm:
+	$(NM) $(IMAGE)
+
+.PHONY: remake
+remake:
+	$(MAKE) clean
+	$(MAKE) default
 
 # 删除源码外的所有文件
 .PHONY: clean
 clean:
 	@echo 正在删除... $<
-	@-rm -f kernel.kernel
+	@-rm -f $(IMAGE)
+	@-rm -f $(MAP)
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.gch"  | xargs rm -f
 	@echo 删除完毕
