@@ -90,6 +90,7 @@ multiboot_header_end:
 
 .section .init.text
 .global start
+.extern kernel_entry
 .type start, @function
 start:
     jmp multiboot_entry
@@ -102,13 +103,11 @@ multiboot_entry:
     mov $0, %ebp          # 帧指针修改为 0
     push $0
     popf
-    #add $0xc0000000, %ebx
 	# multiboot2_info 结构体指针
-    pushl %ebx
+    push %ebx
 	# 魔数
-	pushl %eax
-    #jmp kernel_main
-    jmp kernel_entry
+	push %eax
+    call kernel_entry
 
 1:
     hlt
