@@ -1,10 +1,11 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-// boot .s for MRNIU/SimpleKernel.
+// init.c for MRNIU/SimpleKernel.
 
 #include "stdint.h"
 
-// #include "kernel.h"
+extern void kernel_main(uint32_t magic, uint32_t addr);
+
 //
 // uint8_t kern_stack[0x1000]  __attribute__ ( ( aligned(0x1000) ) );
 //
@@ -15,7 +16,8 @@
 
 
 // 内核入口函数
-__attribute__( ( section(".init.text") ) ) void kernel_entry(uint32_t magic, uint32_t addr)
-{
+__attribute__( ( section(".init.text") ) ) void kernel_entry(uint32_t magic, uint32_t addr);
+void kernel_entry(uint32_t magic, uint32_t addr) {
     kernel_main(magic, addr);
+    return;
 }

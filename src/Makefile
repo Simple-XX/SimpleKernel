@@ -3,10 +3,11 @@
 
 # Makefile for MRNIU/SimpleKernel.
 
-BOOT_DIR = ./arch/i386/boot
-HPP_DIR = ./include
-LIBC_DIR = ./include/libc
-ARCH_DIR = ./arch/i386
+BOOT_DIR = ./arch/x86_64/boot
+LIBC_DIR = ./libc
+DRV_DIR = ./drv
+KERNEL_DIR = ./kernel
+ARCH_DIR = ./arch/x86_64
 
 C_SOURCES = $(shell find . -name "*.c")
 S_SOURCES = $(shell find . -name "*.s")
@@ -18,7 +19,7 @@ CXX = i386-elf-g++
 CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -O2 \
  				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wsign-compare \
 				-g -ggdb -C -c \
-				-I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
+				-I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR)  # -v
 
 OBJCPY = i386-elf-objcopy
 STRIP = i386-elf-strip
@@ -29,7 +30,7 @@ CC = i386-elf-gcc
 CFLAGS = -std=gnu11 -ffreestanding -nostdinc -O2 \
 		 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
 		 -g -ggdb -C -c \
-		 -I$(LIBC_DIR) -I$(HPP_DIR) -I$(ARCH_DIR) -I$(ARCH_DIR)/include  # -v
+		 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR)  # -v
 
 LD = i386-elf-ld
 LDFLAGS = -A elf32_i386 -T$(BOOT_DIR)/link.ld
