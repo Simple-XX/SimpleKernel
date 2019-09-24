@@ -1,12 +1,12 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // elf.h for MRNIU/SimpleKernel.
 
-#include "elf.h"
 #include "stdbool.h"
 #include "stddef.h"
-#include "multiboot2.h"
+#include "include/elf.h"
+#include "include/multiboot2.h"
 
 // bool elf_check_file(struct multiboot_tag_elf_sections * tag) {
 //   Elf32_Ehdr *hdr=(Elf32_Shdr *)tag;

@@ -3,8 +3,8 @@
 
 // kernel.c for MRNIU/SimpleKernel.
 
-#include "kernel.h"
-#include "../test/test.h"
+#include "include/kernel.h"
+#include "../test/include/test.h"
 
 // 内核入口
 // 指针是 32 位的
@@ -20,7 +20,7 @@ void kernel_main(uint32_t magic, uint32_t addr) {
     showinfo();
     test();
 
-    while(1);
+    while (1);
 
     return;
 }
