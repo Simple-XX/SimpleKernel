@@ -168,6 +168,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
             // print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
             break;
         case MULTIBOOT_TAG_TYPE_MMAP:
+            printk("-------------\n");
             print_MULTIBOOT_TAG_TYPE_MMAP(tag);
             set_mem_info(tag);
             pmm_init(tag);
