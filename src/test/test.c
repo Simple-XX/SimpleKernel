@@ -3,9 +3,9 @@
 
 // test.c for MRNIU/SimpleKernel.
 
-#include "test.h"
+#include "include/test.h"
 
-bool test_pmm(){
+bool test_pmm() {
     uint32_t allc_addr = 0;
     printk_color(COL_TEST, "[TEST] ");
     printk_color(red, "Test Physical Memory Alloc :\n");
@@ -24,15 +24,15 @@ bool test_pmm(){
     return true;
 }
 
-bool test_vmm(){
+bool test_vmm() {
     return true;
 }
 
-bool test_libc(){
+bool test_libc() {
     return true;
 }
 
-bool test(void){
+bool test(void) {
     test_pmm();
     return true;
 }

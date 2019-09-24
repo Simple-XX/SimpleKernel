@@ -4,26 +4,26 @@
 // debug.c for MRNIU/SimpleKernel.
 
 
-#include "multiboot2.h"
-#include "mm/pmm.h"
-#include "mm/vmm.h"
+#include "../kernel/include/multiboot2.h"
+#include "mm/include/pmm.h"
+#include "mm/include/vmm.h"
 #include "string.h"
 
-void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag) {
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk ("Command line = %s\n",
             ( (struct multiboot_tag_string *) tag )->string);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(multiboot_tag_t *tag) {
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk ("Boot loader name = %s\n",
             ( (struct multiboot_tag_string *) tag )->string);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag) {
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk ("Module at 0x%X-0x%X. Command line %s\n",
             ( (struct multiboot_tag_module *) tag )->mod_start,
@@ -32,7 +32,7 @@ void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag){
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t *tag) {
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk("meminfo: \n");
     printk ("mem_lower = %uKB, mem_upper = %uKB\n",
@@ -41,7 +41,7 @@ void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t *tag){
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk ("Boot device 0x%X,%u,%u\n",
             ( (struct multiboot_tag_bootdev *) tag )->biosdev,
@@ -50,7 +50,7 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag){
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
     multiboot_memory_map_entry_t *mmap;
     mmap = ( (struct multiboot_tag_mmap *) tag )->entries;
 #if DEBUG
@@ -60,22 +60,22 @@ void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag){
           mmap = (multiboot_memory_map_entry_t *)( (unsigned long) mmap + ( (struct multiboot_tag_mmap *) tag )->entry_size ) ) {
         printk_color(COL_DEBUG, "[DEBUG] ");
         printk ("base_addr = 0x%X%X, length = 0x%X%X, type = 0x%X\n",
-                (unsigned) (mmap->addr >> 32), // high
-                (unsigned) (mmap->addr & 0xffffffff), // low
-                (unsigned) (mmap->len >> 32), // high
-                (unsigned) (mmap->len & 0xffffffff), // low
+                (unsigned) ( mmap->addr >> 32 ),   // high
+                (unsigned) ( mmap->addr & 0xffffffff ),   // low
+                (unsigned) ( mmap->len >> 32 ),   // high
+                (unsigned) ( mmap->len & 0xffffffff ),   // low
                 (unsigned) mmap->type);
     }
 #endif
     return;
 }
 
-void set_mem_info(multiboot_tag_t *tag){
+void set_mem_info(multiboot_tag_t *tag) {
     mmap_entries = ( (struct multiboot_tag_mmap *) tag )->entries;
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag) {
 #if DEBUG
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk ("Elf type 0x%X, Size 0x%X, num 0x%X, entsize 0x%X, shndx 0x%X.\n",
@@ -88,7 +88,7 @@ void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag){
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag) {
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk ("APM type 0x%X, Size 0x%X, version 0x%X, cseg 0x%X, offset 0x%X, cseg_16 0x%X, "
             "dseg 0x%X, flags 0x%X, cseg_len 0x%X, cseg_16_len 0x%X, dseg_len 0x%X\n",
@@ -106,7 +106,7 @@ void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag){
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag){
+void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
     printk_color(COL_DEBUG, "[DEBUG] ");
     printk ("Image load base physical address type 0x%X, size 0x%X, addr 0x%X.\n",
             ( (struct multiboot_tag_load_base_addr *) tag )->type,
@@ -115,7 +115,7 @@ void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag){
     return;
 }
 
-bool is_multiboot2_header(uint32_t magic, uint32_t addr){
+bool is_multiboot2_header(uint32_t magic, uint32_t addr) {
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
         printk_color(COL_ERROR, "[Error] ");
         printk ("Invalid magic number: %X\n", (unsigned) magic);
@@ -130,7 +130,7 @@ bool is_multiboot2_header(uint32_t magic, uint32_t addr){
 }
 
 // 处理 multiboot 信息
-void multiboot2_init(uint32_t magic, uint32_t addr){
+void multiboot2_init(uint32_t magic, uint32_t addr) {
     // Am I booted by a Multiboot-compliant boot loader?
     is_multiboot2_header(magic, addr);
 
@@ -148,70 +148,69 @@ void multiboot2_init(uint32_t magic, uint32_t addr){
     for ( tag = (multiboot_tag_t *)tag_addr;
           tag->type != MULTIBOOT_TAG_TYPE_END;
           // (tag 低八位) + (tag->size 八位对齐)
-          tag = (multiboot_tag_t *) ( (uint8_t *) tag + ( (tag->size + 7) & ~7 ) ) ) {
+          tag = (multiboot_tag_t *) ( (uint8_t *) tag + ( ( tag->size + 7 ) & ~7 ) ) ) {
         // printk_color(COL_DEBUG, "[DEBUG] ");
         // printk ("Tag 0x%X, Size 0x%X\n", tag->type, tag->size);
         switch (tag->type) {
-        case MULTIBOOT_TAG_TYPE_CMDLINE:
-            // print_MULTIBOOT_TAG_TYPE_CMDLINE(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME:
-            // print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_MODULE:
-            // print_MULTIBOOT_TAG_TYPE_MODULE(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_BASIC_MEMINFO:
-            // print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_BOOTDEV:
-            // print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_MMAP:
-            printk("-------------\n");
-            print_MULTIBOOT_TAG_TYPE_MMAP(tag);
-            set_mem_info(tag);
-            pmm_init(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
-            print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
-            // printk("!!!!!!!!!!!!!!!!!!!\n");
-            // 获取 shdr 的地址：tag 的地址加上 multiboot_tag_elf_sections 结构体大小即是第一项符号表
-            // BUG!!!
-            // 获取到的 size 和 name 均正确，然而 symtab 的成员全为 0x00
-            // TODO
-            Elf32_Shdr * shdr = (Elf32_Shdr*)( (uint32_t)tag + sizeof(struct multiboot_tag_elf_sections) );
-            uint32_t shstrtab = shdr[( (struct multiboot_tag_elf_sections*)tag )->shndx].sh_addr;
-            // printk("shstrtabsz: 0x%X\n", shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_size); // correct
-            // printk("shstrtab addr: 0x%X\n", shstrtab);
-            // for (uint32_t i = 0; i < ( (struct multiboot_tag_elf_sections*)tag )->num; i++) {
-            //     const char *name = (const char *)(shstrtab + shdr[i].sh_name);
-            //     // printk(" sh_name: %s ", name); // correct
-            //     // printk("shaddr: 0x%X\t", shdr[i].sh_addr); // correct
-            //     // 在 GRUB 提供的 multiboot 信息中寻找内核 ELF 格式所提取的字符串表和符号表
-            //     if (strcmp(name, ".strtab") == 0) {
-            //         kernel_elf.strtab = (const char *)shdr[i].sh_addr;
-            //         // printk("strtab: 0x%X\n", kernel_elf.strtab);
-            //         // printk("strtab: %s\n", kernel_elf.strtab);
-            //         kernel_elf.strtabsz = shdr[i].sh_size;
-            //         // printk("strtabsz: 0x%X\n", kernel_elf.strtabsz); // correct
-            //     }
-            //     if (strcmp(name, ".symtab") == 0) {
-            //         kernel_elf.symtab = (Elf32_Sym *)(shdr[i].sh_addr);
-            //         // printk("symtab addr: 0x%X\n", kernel_elf.symtab);
-            //         kernel_elf.symtabsz = shdr[i].sh_size;
-            //         // printk("symtab->: 0x%X\n", (kernel_elf.symtab->st_value));
-            //         // printk("symtabsz: 0x%X\n", kernel_elf.symtabsz); // correct
-            //     }
-            // }
-            // // printk("!!!!!!!!!!!!!!!!!!!\n");
-            break;
-        case MULTIBOOT_TAG_TYPE_APM:
-            // print_MULTIBOOT_TAG_TYPE_APM(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR:
-            // print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(tag);
-            break;
+            case MULTIBOOT_TAG_TYPE_CMDLINE:
+                // print_MULTIBOOT_TAG_TYPE_CMDLINE(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME:
+                // print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_MODULE:
+                // print_MULTIBOOT_TAG_TYPE_MODULE(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_BASIC_MEMINFO:
+                // print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_BOOTDEV:
+                // print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_MMAP:
+                print_MULTIBOOT_TAG_TYPE_MMAP(tag);
+                set_mem_info(tag);
+                pmm_init(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_ELF_SECTIONS:
+                print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
+                // printk("!!!!!!!!!!!!!!!!!!!\n");
+                // 获取 shdr 的地址：tag 的地址加上 multiboot_tag_elf_sections 结构体大小即是第一项符号表
+                // BUG!!!
+                // 获取到的 size 和 name 均正确，然而 symtab 的成员全为 0x00
+                // TODO
+                Elf32_Shdr * shdr = (Elf32_Shdr*)( (uint32_t)tag + sizeof( struct multiboot_tag_elf_sections ) );
+                uint32_t shstrtab = shdr[( (struct multiboot_tag_elf_sections*)tag )->shndx].sh_addr;
+                // printk("shstrtabsz: 0x%X\n", shdr[((struct multiboot_tag_elf_sections*)tag)->shndx].sh_size); // correct
+                // printk("shstrtab addr: 0x%X\n", shstrtab);
+                // for (uint32_t i = 0; i < ( (struct multiboot_tag_elf_sections*)tag )->num; i++) {
+                //     const char *name = (const char *)(shstrtab + shdr[i].sh_name);
+                //     // printk(" sh_name: %s ", name); // correct
+                //     // printk("shaddr: 0x%X\t", shdr[i].sh_addr); // correct
+                //     // 在 GRUB 提供的 multiboot 信息中寻找内核 ELF 格式所提取的字符串表和符号表
+                //     if (strcmp(name, ".strtab") == 0) {
+                //         kernel_elf.strtab = (const char *)shdr[i].sh_addr;
+                //         // printk("strtab: 0x%X\n", kernel_elf.strtab);
+                //         // printk("strtab: %s\n", kernel_elf.strtab);
+                //         kernel_elf.strtabsz = shdr[i].sh_size;
+                //         // printk("strtabsz: 0x%X\n", kernel_elf.strtabsz); // correct
+                //     }
+                //     if (strcmp(name, ".symtab") == 0) {
+                //         kernel_elf.symtab = (Elf32_Sym *)(shdr[i].sh_addr);
+                //         // printk("symtab addr: 0x%X\n", kernel_elf.symtab);
+                //         kernel_elf.symtabsz = shdr[i].sh_size;
+                //         // printk("symtab->: 0x%X\n", (kernel_elf.symtab->st_value));
+                //         // printk("symtabsz: 0x%X\n", kernel_elf.symtabsz); // correct
+                //     }
+                // }
+                // // printk("!!!!!!!!!!!!!!!!!!!\n");
+                break;
+            case MULTIBOOT_TAG_TYPE_APM:
+                // print_MULTIBOOT_TAG_TYPE_APM(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR:
+                // print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(tag);
+                break;
         }
     }
     //tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));

@@ -3,7 +3,7 @@
 
 // heap.c for MRNIU/SimpleKernel.
 
-#include "heap.h"
-#include "debug.h"
-#include "mm/pmm.h"
-#include "mm/vmm.h"
+#include "include/heap.h"
+#include "include/debug.h"
+#include "mm/include/pmm.h"
+#include "mm/include/vmm.h"
