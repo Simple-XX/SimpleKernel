@@ -32,8 +32,10 @@
 #include "elf.h"
 #include "heap.h"
 
+#define DEBUG 1
 
-void kernel_main(uint32_t magic, uint32_t addr);
+
+void kernel_main(uint64_t magic, uint64_t addr);
 // void debug_init(uint32_t magic, multiboot_info_t * mb);
 void console_init(void);
 void gdt_init(void);
