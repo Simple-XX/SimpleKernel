@@ -51,13 +51,13 @@
 #define PAGE_MASK      0xFFFFF000
 
 // 获取一个地址的页目录项
-#define PGD_INDEX(x) ( ( ( x ) >> 22 ) & 0x3FF )
+#define PGD_INDEX(x) ( ( ( x ) >> 22 ) & 0x03FF )
 
 // 获取一个地址的页表项
-#define PTE_INDEX(x) ( ( ( x ) >> 12 ) & 0x3FF )
+#define PTE_INDEX(x) ( ( ( x ) >> 12 ) & 0x03FF )
 
 // 获取一个地址的页內偏移
-#define OFFSET_INDEX(x) ( ( x ) & 0xFFF )
+#define OFFSET_INDEX(x) ( ( x ) & 0x0FFF )
 
 // 页目录数据类型
 typedef uint32_t pgd_t;

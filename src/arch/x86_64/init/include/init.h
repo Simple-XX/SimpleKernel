@@ -16,10 +16,12 @@
 __attribute__( ( section(".init.data") ) ) pgd_t *pgd_tmp  = (pgd_t *)0x1000;
 __attribute__( ( section(".init.data") ) ) pte_t *pte_low  = (pte_t *)0x2000;
 __attribute__( ( section(".init.data") ) ) pte_t *pte_hign = (pte_t *)0x3000;
+__attribute__( ( section(".init.data") ) ) pte_t *pte_hign = (pte_t *)0x3000;
 
 
 __attribute__( ( section(".init.text") ) ) void kernel_entry(uint32_t magic, uint32_t addr);
 
+extern void kernel_main(uint32_t magic, uint32_t addr);
 
 
 #endif /* _INIT_H_ */
