@@ -15,8 +15,8 @@ void kernel_main(uint32_t magic, uint32_t addr) {
     multiboot2_init(magic, addr); // 包括 pmm_init 与 vmm_init
 
     debug_init(magic, addr);
-    showinfo();
-    test();
+    // showinfo();
+    // test();
 
     while (1);
 
