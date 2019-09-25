@@ -3,8 +3,8 @@
 
 # gdt_s.s for MRNIU/SimpleKernel.
 
+.section .init.text
 .global gdt_load
-
 gdt_load:
     cli
     mov 4(%esp), %eax   #参数存入 eax 寄存器
@@ -18,13 +18,11 @@ gdt_load:
     mov %ax, %ss
     jmp $0x08, $flush # 远跳转，0x08是代码段描述符
     # 远跳目的是清空流水线并串行化处理器
-    sti
 
 flush:
     ret
 
 .global tss_load # TSS 刷新
-
 tss_load:
     mov $0x28, %ax  # TSS 在全局描述符表里是第 5 个故而 00101000B 即就是 0x28
     ltr %ax            # 加载到 TR 寄存器

@@ -9,6 +9,13 @@
 #include "intr/include/intr.h"
 #include "mm/include/pmm.h"
 
+// 每个页表可以映射的内存数
+#define PAGE_MAP_SIZE    ( 0x400000 )
+
+// 映射 KMEM_SIZE 的内存所需要的页数
+#define PTE_COUNT         ( KMEMSIZE / PAGE_MAP_SIZE )
+
+
 // 内核的偏移地址
 #define PAGE_OFFSET     0xC0000000
 

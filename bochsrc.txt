@@ -23,7 +23,7 @@ ata0-master: type=disk, path="fs.img", mode=flat
 ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
 boot: cdrom
 
-log: ./debug_info/bochsout.txt
+#log: ./debug_info/bochsout.txt
 #mouse: enabled=1
 keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
 display_library: sdl2
