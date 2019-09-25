@@ -13,17 +13,15 @@ SECTIONS
     PROVIDE(kernel_start = .);
 
     PROVIDE(init_start = .);
-	.init.multiboot : ALIGN(4K)
+	.init.text : ALIGN(4K)
 	{
 		*(.multiboot_header)
-	}
-    .init.text : ALIGN(4K)
-	{
         *(.init.text)
 	}
     .init.data : ALIGN(4K)
 	{
-		*(.init.bss)
+        *(.init.data)
+        *(.init.bss)
 	}
 	PROVIDE(init_end = .);
 
