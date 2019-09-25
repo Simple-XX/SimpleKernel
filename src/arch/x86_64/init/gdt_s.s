@@ -16,7 +16,7 @@ gdt_load:
     mov %ax, %fs
     mov %ax, %gs
     mov %ax, %ss
-    jmp $0x08, $flush # 远跳转，0x08是代码段描述符
+    jmpl $0x08, $flush # 远跳转，0x08是代码段描述符
     # 远跳目的是清空流水线并串行化处理器
 
 flush:
