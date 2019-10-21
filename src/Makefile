@@ -10,13 +10,14 @@ KERNEL_DIR = ./kernel
 ARCH_DIR = ./arch/x86_64
 
 C_SOURCES = $(shell find . -name "*.c")
+CXX_SOURCES = $(shell find . -name "*.cpp")
 S_SOURCES = $(shell find . -name "*.s")
 OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
-     $(patsubst %.s, %.o, $(S_SOURCES)) \
-	 $(patsubst %.cpp, %.o, $(CXX_SOURCES))
+     $(patsubst %.cpp, %.o, $(CXX_SOURCES)) \
+	 $(patsubst %.s, %.o, $(S_SOURCES))
 
 CXX = i386-elf-g++
-CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -O2 \
+CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -fno-exceptions -fno-rtti -O2 \
  				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wsign-compare \
 				-g -ggdb -C -c \
 				-I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR)  # -v
