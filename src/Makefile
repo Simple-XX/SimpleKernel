@@ -17,7 +17,7 @@ OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
 	 $(patsubst %.s, %.o, $(S_SOURCES))
 
 CXX = i386-elf-g++
-CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -fno-exceptions -fno-rtti -O2 \
+CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -fno-rtti -O2 \
  				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wsign-compare \
 				-g -ggdb -C -c \
 				-I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR)  # -v
@@ -28,7 +28,7 @@ NM = i386-elf-gcc-nm
 READELF = i386-elf-readelf
 
 CC = i386-elf-gcc
-CFLAGS = -std=gnu11 -ffreestanding -nostdinc -O2 \
+CFLAGS = -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -O2 \
 		 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
 		 -g -ggdb -C -c \
 		 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR)  # -v
