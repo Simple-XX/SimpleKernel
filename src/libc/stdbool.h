@@ -6,12 +6,17 @@
 #ifndef _STDBOOL_H_
 #define _STDBOOL_H_
 
+#ifndef __cplusplus
+
 typedef
-    enum {
-    FALSE = 0,
-    false = 0,
-    TRUE = 1,
-    true = 1,
+        enum {
+	FALSE = 0,
+	false = 0,
+	TRUE = 1,
+	true = 1,
 } bool;
+
+
+#endif
 
 #endif
