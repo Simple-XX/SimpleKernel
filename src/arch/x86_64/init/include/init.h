@@ -15,8 +15,8 @@
 // 该地址必须是页对齐的地址，内存 0-640KB 肯定是空闲的
 __attribute__( ( section(".init.data") ) ) pgd_t *pgd_tmp  = (pgd_t *)0x1000;
 __attribute__( ( section(".init.data") ) ) pte_t *pte_low  = (pte_t *)0x2000;
-__attribute__( ( section(".init.data") ) ) pte_t *pte_hign = (pte_t *)0x3000;
-__attribute__( ( section(".init.data") ) ) pte_t *pte_hign = (pte_t *)0x3000;
+__attribute__( ( section(".init.data") ) ) pte_t *pte_high = (pte_t *)0x3000;
+
 
 
 __attribute__( ( section(".init.text") ) ) void kernel_entry(uint32_t magic, uint32_t addr);
