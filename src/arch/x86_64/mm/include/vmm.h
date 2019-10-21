@@ -6,6 +6,11 @@
 #ifndef _HEAP_H_
 #define _HEAP_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #include "intr/include/intr.h"
 #include "mm/include/pmm.h"
 
@@ -95,6 +100,10 @@ uint32_t get_mapping(pgd_t *pgd_now, uint32_t va, uint32_t *pa);
 
 // 页错误中断的函数处理
 void page_fault(pt_regs_t *regs);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif  // INCLUDE_VMM_H

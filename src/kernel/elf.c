@@ -3,6 +3,10 @@
 //
 // elf.h for MRNIU/SimpleKernel.
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdbool.h"
 #include "stddef.h"
 #include "include/elf.h"
@@ -89,3 +93,8 @@
 //
 // }
 //
+
+
+#ifdef __cplusplus
+}
+#endif
