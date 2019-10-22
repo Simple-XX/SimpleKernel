@@ -3,6 +3,8 @@
 
 # intr_s.s for MRNIU/SimpleKernel.
 
+.code32
+
 # 加载 idt
 .global idt_load
 idt_load:

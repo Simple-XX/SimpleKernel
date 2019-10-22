@@ -117,8 +117,8 @@ static inline void cpu_cli(void) {
 }
 
 // 读取 EFLAGS
-static inline uint32_t read_eflags(void) {
-	uint32_t eflags;
+static inline uint64_t read_eflags(void) {
+	uint64_t eflags;
 	asm volatile ( "pushf;pop %0"
 	               : "=r" ( eflags ) );
 	return eflags;
@@ -134,7 +134,7 @@ static inline void debug_intr(void) {
 // Identification flag
 //程序能够设置或清除这个标志指示了处理器对 CPUID 指令的支持。
 static inline bool FL_ID_status(void) {
-	uint32_t eflags = read_eflags();
+	uint64_t eflags = read_eflags();
 	return ( eflags & EFLAGS_ID );
 }
 
