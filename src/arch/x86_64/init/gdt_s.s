@@ -3,6 +3,8 @@
 
 # gdt_s.s for MRNIU/SimpleKernel.
 
+.code32
+
 .section .init.text
 .global gdt_load
 gdt_load:
@@ -16,7 +18,7 @@ gdt_load:
     mov %ax, %fs
     mov %ax, %gs
     mov %ax, %ss
-    jmpl $0x08, $flush # 远跳转，0x08是代码段描述符
+    jmp $0x08, $flush # 远跳转，0x08是代码段描述符
     # 远跳目的是清空流水线并串行化处理器
 
 flush:

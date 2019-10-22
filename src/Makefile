@@ -8,6 +8,8 @@ LIBC_DIR = ./libc
 DRV_DIR = ./drv
 KERNEL_DIR = ./kernel
 ARCH_DIR = ./arch/x86_64
+TARGET = x86_64-elf
+# TARGET = i386-elf
 
 C_SOURCES = $(shell find . -name "*.c")
 CXX_SOURCES = $(shell find . -name "*.cpp")
@@ -16,28 +18,37 @@ OBJ= $(patsubst %.c, %.o, $(C_SOURCES)) \
      $(patsubst %.cpp, %.o, $(CXX_SOURCES)) \
 	 $(patsubst %.s, %.o, $(S_SOURCES))
 
-CXX = i386-elf-g++
-CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -fno-rtti -O2 \
- 				-Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wsign-compare \
+CXX = $(TARGET)-g++
+CXXFLAGS = -std=c++11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -fno-rtti -fno-builtin \
+ 				 -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wsign-compare \
 				-g -ggdb -C -c \
 				-I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR)  # -v
 
-OBJCPY = i386-elf-objcopy
-STRIP = i386-elf-strip
-NM = i386-elf-gcc-nm
-READELF = i386-elf-readelf
+ifeq ($(TARGET), "x86_64-elf")
+	CXXFLAGS += -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2
+endif
 
-CC = i386-elf-gcc
-CFLAGS = -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -O2 \
-		 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
+OBJCPY = $(TARGET)-objcopy
+STRIP = $(TARGET)-strip
+NM = $(TARGET)-gcc-nm
+READELF = $(TARGET)-readelf
+
+CC = $(TARGET)-gcc
+CFLAGS = -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -fno-builtin \
+		 -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
 		 -g -ggdb -C -c \
 		 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR)  # -v
 
-LD = i386-elf-ld
-LDFLAGS = -A elf32_i386 -T$(BOOT_DIR)/link.ld
+ifeq ($(TARGET), "x86_64-elf")
+	CFLAGS += -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2
+endif
 
-AS = i386-elf-as
-ASFLAGS = -march=i386
+
+LD = $(TARGET)-ld
+LDFLAGS = -A x86_64 -m elf_x86_64 -T$(BOOT_DIR)/link.ld
+
+AS = $(TARGET)-as
+ASFLAGS = -march=corei7
 
 IMAGE = kernel.kernel
 MAP = kernel.map
@@ -71,7 +82,7 @@ info:
 
 .PHONY: code_line_count
 code_line_count:
-	find . -type f -name "*.[c|h|s|hpp]" -exec cat {} \; | wc -l
+	find . -type f -name "*.[c|cpp|s|h|hpp]" -exec cat {} \; | wc -l
 
 .PHONY: generate_map
 generate_map:

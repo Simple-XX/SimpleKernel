@@ -2,7 +2,8 @@
 /* This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).*/
 /* link.ld for MRNIU/SimpleKernel.*/
 
-OUTPUT_FORMAT(elf32-i386)
+
+OUTPUT_FORMAT(elf64-x86-64)
 ENTRY(start)
 
 SECTIONS
