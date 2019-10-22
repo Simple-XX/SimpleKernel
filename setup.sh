@@ -9,6 +9,9 @@ set -e
 # 输出实际执行内容
 # set -x
 
+TARGET="x86_64-elf"
+# TARGET="i386-elf"
+
 # bochs 配置文件
 bochsrc="bochsrc.txt"
 # 内核映像
@@ -45,33 +48,33 @@ if ! [ -x "$(command -v bochs)" ]; then
     fi
 fi
 
-if ! [ -x "$(command -v i386-elf-ld)" ]; then
-    echo 'Error: i386-elf-binutils is not installed.'
-    echo 'Install i386-elf-binutils...'
+if ! [ -x "$(command -v ${TARGET}-ld)" ]; then
+    echo 'Error: '${TARGET}'-binutils is not installed.'
+    echo 'Install '${TARGET}'-binutils...'
     if [ ${OS} == 0 ]; then
-        brew install i386-elf-binutils
+        brew install ${TARGET}-binutils
     elif [ ${OS} == 1 ]; then
         shell ${tool}/i386-elf-binutils.sh
     fi
 fi
 
-if ! [ -x "$(command -v i386-elf-gcc)" ]; then
-    echo 'Error: i386-elf-gcc is not installed.'
-    echo 'Install i386-elf-gcc...'
+if ! [ -x "$(command -v ${TARGET}-gcc)" ]; then
+    echo 'Error: '${TARGET}'-gcc is not installed.'
+    echo 'Install '${TARGET}'-gcc...'
     if [ ${OS} == 0 ]; then
-        brew install i386-elf-gcc
+        brew install ${TARGET}-gcc
     elif [ ${OS} == 1 ]; then
-        shell ${tool}/i386-elf-gcc.sh
+        shell ${tool}/${TARGET}-gcc.sh
     fi
 fi
 
-if ! [ -x "$(command -v i386-elf-grub-file)" ]; then
-    echo 'Error: i386-elf-grub is not installed.'
-    echo 'Install i386-elf-grub...'
+if ! [ -x "$(command -v ${TARGET}-grub-file)" ]; then
+    echo 'Error: '${TARGET}'-grub is not installed.'
+    echo 'Install '${TARGET}'-grub...'
     if [ ${OS} == 0 ]; then
-        brew install i386-elf-grub
+        brew install ${TARGET}-grub
     elif [ ${OS} == 1 ]; then
-        shell ${tool}/i386-elf-grub.sh
+        shell ${tool}/${TARGET}-grub.sh
     fi
 fi
 
@@ -90,7 +93,7 @@ cd src/
 make remake
 cd ../
 
-if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
+if ${TARGET}-grub-file --is-x86-multiboot2 ${img}; then
     echo Multiboot2 Confirmed!
 else
     echo the file is not multiboot
@@ -98,5 +101,5 @@ else
 fi
 
 cp ${img} ${iso_boot}
-i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
+${TARGET}-grub-mkrescue -o ${iso} ${iso_folder}
 bochs -q -f ${bochsrc}

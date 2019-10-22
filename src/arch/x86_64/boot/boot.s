@@ -2,6 +2,8 @@
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 # boot.s for MRNIU/SimpleKernel.
 
+.code32
+
 # multiboot2 定义
 .set  MULTIBOOT_SEARCH,                        32768
 .set  MULTIBOOT_HEADER_ALIGN,                  8
