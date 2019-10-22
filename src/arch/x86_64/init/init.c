@@ -13,10 +13,10 @@ extern "C" {
 // 内核入口函数
 
 void kernel_entry(uint32_t magic, uint32_t addr) {
-	uint32_t cr4;
-	__asm__ volatile ( "mov %%cr3, %0" : "=r" ( cr4 ) );
+	uint64_t cr4;
+	__asm__ volatile ( "movq %%cr3, %0" : "=r" ( cr4 ) );
 	cr4 |= ( 1 << 5 );
-	__asm__ volatile ( "mov %0, %%cr4" : : "r" ( cr4 ) );
+	__asm__ volatile ( "movq %0, %%cr4" : : "r" ( cr4 ) );
 	__asm__ volatile ( "mov %0, %%cr3" : : "r" ( pgd_tmp ) );
 	__asm__ volatile ( "mov $0xC0000080, %%ecx" : : );
 	__asm__ volatile ( "rdmsr" : : );
