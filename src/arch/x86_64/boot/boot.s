@@ -2,8 +2,6 @@
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 # boot.s for MRNIU/SimpleKernel.
 
-.code32
-
 # multiboot2 定义
 .set  MULTIBOOT_SEARCH,                        32768
 .set  MULTIBOOT_HEADER_ALIGN,                  8
@@ -59,9 +57,11 @@
 .set  MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED, 1
 .set  MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED, 2
 
+.code32
+
 .section .multiboot_header
 # multiboot2 文件头
-.align 8
+.align MULTIBOOT_HEADER_ALIGN
 multiboot_header:
     .long MULTIBOOT2_HEADER_MAGIC
     .long MULTIBOOT_ARCHITECTURE_I386
@@ -71,7 +71,7 @@ multiboot_header:
 # 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
 
 # multiboot2 information request
-.align 8
+.align MULTIBOOT_HEADER_ALIGN
 mbi_tag_start:
     .short MULTIBOOT_HEADER_TAG_INFORMATION_REQUEST
     .short MULTIBOOT_HEADER_TAG_OPTIONAL
@@ -83,7 +83,7 @@ mbi_tag_start:
     .long MULTIBOOT_TAG_TYPE_ELF_SECTIONS
     .long MULTIBOOT_TAG_TYPE_APM
     .long MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR
-.align 8
+.align MULTIBOOT_HEADER_ALIGN
 mbi_tag_end:
 	.short MULTIBOOT_HEADER_TAG_END
     .short 0

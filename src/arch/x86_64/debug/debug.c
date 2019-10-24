@@ -70,7 +70,13 @@ const char * elf_lookup_symbol(uint32_t addr, elf_t *elf) {
 
 void print_stack_trace(void) {
 	uint64_t *ebp, *eip;
+#ifdef __x86_64__
 	__asm__ volatile ( "movq %%rbp, %0" : "=r" ( ebp ) );
+#else
+	__asm__ volatile ( "mov %%ebp, %0" : "=r" ( ebp ) );
+#endif
+
+
 	while (*ebp) {
 		eip = ebp + 1;
 		printk( "   [0x%x] %s\n", *eip, elf_lookup_symbol(*eip, &kernel_elf) );
