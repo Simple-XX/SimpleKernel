@@ -28,4 +28,5 @@ boot: cdrom
 keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
 display_library: sdl2
 clock: sync=realtime, time0=local
-cpu: ips=1000000
+
+cpu: model=corei7_haswell_4770
