@@ -10,7 +10,7 @@ set -e
 # set -x
 
 TARGET="x86_64-elf"
-# TARGET="i386-elf"
+ARCH="x86_64"
 
 # bochs 配置文件
 bochsrc="bochsrc.txt"
@@ -68,7 +68,7 @@ if ! [ -x "$(command -v ${TARGET}-gcc)" ]; then
     fi
 fi
 
-if ! [ -x "$(command -v ${TARGET}-grub-file)" ]; then
+if ! [ -x "$(command -v x86_64-elf-grub-file)" ]; then
     echo 'Error: '${TARGET}'-grub is not installed.'
     echo 'Install '${TARGET}'-grub...'
     if [ ${OS} == 0 ]; then
@@ -93,7 +93,8 @@ cd src/
 make remake
 cd ../
 
-if ${TARGET}-grub-file --is-x86-multiboot2 ${img}; then
+if x86_64-elf-grub-file --is-x86-multiboot2 ${img}; then
+# if x86_64-elf-grub-file --is-x86_64-efi ${img}; then
     echo Multiboot2 Confirmed!
 else
     echo the file is not multiboot
@@ -101,5 +102,5 @@ else
 fi
 
 cp ${img} ${iso_boot}
-${TARGET}-grub-mkrescue -o ${iso} ${iso_folder}
+x86_64-elf-grub-mkrescue -o ${iso} ${iso_folder}
 bochs -q -f ${bochsrc}
