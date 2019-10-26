@@ -3,23 +3,23 @@
 //
 // bootinit.c for MRNIU/SimpleKernel.
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "include/multiboot2.h"
+// 内核入口函数
 
-/* This function gets called by the bootloader */
-void bootinit(const void* multiboot_struct) {
-	// Set up GDT
+// extern void kernel_main(uint32_t magic, uint32_t addr);
 
-	// const multiboot_info_t* mb_info = multiboot_struct;            /* Make pointer to multiboot_info_t struct */
-	// multiboot_uint32_t mb_flags = mb_info->flags;                  /* Get flags from mb_info */
-	//
-	// void* kentry = NULL;                                           /* Pointer to the kernel entry point */
-	//
-	// if (mb_flags & MULTIBOOT_INFO_MODS) {                          /* Check if modules are available */
-	// 	multiboot_uint32_t mods_count = mb_info->mods_count;   /* Get the amount of modules available */
-	// 	multiboot_uint32_t mods_addr = mb_info->mods_addr;     /* And the starting address of the modules */
-	//
-	// 	for (uint32_t mod = 0; mod < mods_count; mod++) {
-	// 		multiboot_module_t* module = (multiboot_module_t*)(mods_addr + (mod * sizeof(multiboot_module_t)));     /* Loop through all modules */
-	// 	}
-	// }
+void kernel_entry(uint32_t magic, uint32_t addr) {
+
+
+	// kernel_main(magic, addr);
+	return;
 }
+
+
+#ifdef __cplusplus
+}
+#endif
