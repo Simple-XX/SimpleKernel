@@ -81,144 +81,17 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 更多 bochs 使用方式请参考 bochs 的相关资料。
 
 
-## 快速上手
+## 目录结构
 
-```
-├── LICENSE
-├── README.md
-├── README_en.md
-├── bochsrc.txt
-├── debug_info
-│   ├── bochsout.txt
-│   ├── diff.log
-│   ├── error.log
-│   └── normal.log
-├── docs
-│   └── README.md
-├── fs.img
-├── iso
-│   └── boot
-│       ├── grub
-│       │   └── grub.cfg
-│       └── kernel.kernel
-├── setup.sh
-├── simplekernel.img
-├── simplekernel.iso
-├── src
-│   ├── Makefile
-│   ├── READMD.md
-│   ├── arch
-│   │   ├── README.md
-│   │   ├── i386
-│   │   │   ├── README.md
-│   │   │   ├── boot
-│   │   │   │   ├── boot.o
-│   │   │   │   ├── boot.s
-│   │   │   │   └── link.ld
-│   │   │   ├── debug
-│   │   │   │   ├── debug.c
-│   │   │   │   └── debug.o
-│   │   │   ├── intr
-│   │   │   │   ├── README.md
-│   │   │   │   ├── intr.c
-│   │   │   │   ├── intr.h
-│   │   │   │   ├── intr.o
-│   │   │   │   ├── intr_s.o
-│   │   │   │   └── intr_s.s
-│   │   │   └── mm
-│   │   │       ├── README.md
-│   │   │       ├── gdt.c
-│   │   │       ├── gdt.h
-│   │   │       ├── gdt.o
-│   │   │       ├── gdt_s.o
-│   │   │       └── gdt_s.s
-│   │   └── x64
-│   │       └── TODO
-│   ├── include
-│   │   ├── README.md
-│   │   ├── console.hpp
-│   │   ├── cpu.hpp
-│   │   ├── debug.h
-│   │   ├── drv
-│   │   │   ├── keyboard.h
-│   │   │   └── mouse.h
-│   │   ├── ds_alg
-│   │   │   ├── LinkedList.c
-│   │   │   ├── LinkedList.o
-│   │   │   ├── alg.h
-│   │   │   └── datastructure.h
-│   │   ├── elf.h
-│   │   ├── fs
-│   │   ├── heap.c
-│   │   ├── heap.h
-│   │   ├── heap.o
-│   │   ├── intr
-│   │   │   ├── clock.c
-│   │   │   ├── clock.h
-│   │   │   └── clock.o
-│   │   ├── kernel.h
-│   │   ├── libc
-│   │   │   ├── README.md
-│   │   │   ├── assert.h
-│   │   │   ├── stdarg.h
-│   │   │   ├── stdbool.h
-│   │   │   ├── stddef.h
-│   │   │   ├── stdint.h
-│   │   │   ├── stdio
-│   │   │   │   ├── printk.c
-│   │   │   │   ├── printk.o
-│   │   │   │   ├── vsprintf.c
-│   │   │   │   └── vsprintf.o
-│   │   │   ├── stdio.h
-│   │   │   ├── stdlib.h
-│   │   │   ├── string
-│   │   │   │   ├── string.c
-│   │   │   │   └── string.o
-│   │   │   └── string.h
-│   │   ├── mm
-│   │   │   ├── README.md
-│   │   │   ├── mm.h
-│   │   │   ├── pmm.c
-│   │   │   ├── pmm.h
-│   │   │   ├── pmm.o
-│   │   │   ├── vmm.c
-│   │   │   ├── vmm.h
-│   │   │   └── vmm.o
-│   │   ├── multiboot2.h
-│   │   ├── pic.hpp
-│   │   ├── port.hpp
-│   │   ├── tty.hpp
-│   │   ├── vfs
-│   │   │   └── vfs.h
-│   │   └── vga.hpp
-│   ├── kernel
-│   │   ├── README.md
-│   │   ├── drv
-│   │   │   ├── keyboard.c
-│   │   │   ├── keyboard.o
-│   │   │   ├── mouse.c
-│   │   │   └── mouse.o
-│   │   ├── elf.c
-│   │   ├── elf.o
-│   │   ├── fs.c
-│   │   ├── fs.o
-│   │   ├── kernel.c
-│   │   ├── kernel.o
-│   │   ├── multiboot2.c
-│   │   ├── multiboot2.o
-│   │   ├── vfs.c
-│   │   └── vfs.o
-│   ├── kernel.kernel
-│   └── test
-│       ├── test.c
-│       ├── test.h
-│       └── test.o
-└── tools
-    ├── bochs.sh
-    ├── i386-elf-binutils.sh
-    ├── i386-elf-gcc.sh
-    └── i386-elf-grub.sh
-```
+
+
+## Makefile
+
+
+
+
+
+
 
 ## 测试
 
@@ -294,5 +167,3 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## 版权信息
 
 此项目使用 MIT 许可证
-
-
