@@ -50,17 +50,19 @@ clean:
 	@echo 删除完毕
 	@echo Leave $(CURR_DIR)
 
-C_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.c" -print)
-CXX_SOURCES := $(shell find . -name "*.cpp")
-S_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.s" -print)
+KERNEL_C_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.c" -print)
+KERNEL_CXX_SOURCES := $(shell find . -name "*.cpp")
+KERNEL_S_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.s" -print)
+KERNEL_OBJ := $(patsubst %.c, %.o, $(KERNEL_C_SOURCES)) \
+     		  $(patsubst %.cpp, %.o, $(KERNEL_CXX_SOURCES)) \
+	 		  $(patsubst %.s, %.o, $(KERNEL_S_SOURCES))
 
-BOOTLOADER_OBJ := $(patsubst %.s, %.o, /Users/nzh/Documents/GitHub/SimpleKernel/src/arch/x86_64/boot/boot.s) \
-				$(patsubst %.c, %.o, /Users/nzh/Documents/GitHub/SimpleKernel/src/arch/x86_64/boot/bootinit.c)
-
-KERNEL_OBJ := $(patsubst %.c, %.o, $(C_SOURCES)) \
-     $(patsubst %.cpp, %.o, $(CXX_SOURCES)) \
-	 $(patsubst %.s, %.o, $(S_SOURCES))
-
+BOOTLOADER_C_SOURCES := $(shell find ./arch/$(ARCH)/boot -name "*.c")
+BOOTLOADER_CXX_SOURCES := $(shell find ./arch/$(ARCH)/boot -name "*.cpp")
+BOOTLOADER_S_SOURCES := $(shell find ./arch/$(ARCH)/boot -name "*.s")
+BOOTLOADER_OBJ := $(patsubst %.s, %.o, $(BOOTLOADER_S_SOURCES)) \
+				  $(patsubst %.c, %.o, $(BOOTLOADER_C_SOURCES)) \
+				  $(patsubst %.cpp, %.o, $(BOOTLOADER_CXX_SOURCES))
 
 .PHONY: bootloader
 bootloader.bin: LDFLAGS = -A i386 -m elf_i386 -T$(BOOT_DIR)/link32.ld
