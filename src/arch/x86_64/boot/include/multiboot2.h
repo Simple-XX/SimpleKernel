@@ -22,7 +22,7 @@
 #include "stdbool.h"
 #include "stdio.h"
 #include "stddef.h"
-#include "elf.h"
+#include "include/elf.h"
 #include "include/debug.h"
 
 /*  How many bytes from the start of the file we search for the header. */

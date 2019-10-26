@@ -22,7 +22,6 @@
 #include "stdio.h"
 #include "../drv/console/include/tty.h"
 #include "../drv/console/include/console.h"
-#include "include/multiboot2.h"
 #include "include/debug.h"
 #include "mm/include/pmm.h"
 #include "mm/include/vmm.h"
@@ -41,7 +40,7 @@ void clock_init(void);
 void keyboard_init(void);
 void mouse_init(void);
 void debug_init(uint32_t magic, uint32_t addr);
-void pmm_init(multiboot_tag_t * tag);
+// void pmm_init(multiboot_tag_t * tag);
 void vmm_init();
 
 

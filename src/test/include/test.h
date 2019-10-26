@@ -9,7 +9,6 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
-#include "../kernel/include/multiboot2.h"
 #include "../kernel/include/debug.h"
 #include "mm/include/pmm.h"
 #include "mm/include/vmm.h"

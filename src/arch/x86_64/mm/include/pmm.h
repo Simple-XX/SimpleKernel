@@ -11,7 +11,6 @@
 #include "stdio.h"
 #include "stddef.h"
 #include "include/debug.h"
-#include "../kernel/include/multiboot2.h"
 
 #define STACK_SIZE    0x1000  // 4096
 #define PMM_MAX_SIZE  0x40000000 // 4 gib
@@ -22,7 +21,7 @@ extern uint32_t kernel_start[];
 extern uint32_t kernel_end[];
 
 // 初始化内存管理
-void pmm_init(multiboot_tag_t * tag);
+// void pmm_init(multiboot_tag_t * tag);
 
 uint32_t pmm_alloc_page(void);
 

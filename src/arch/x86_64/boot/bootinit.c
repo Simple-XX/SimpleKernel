@@ -15,6 +15,8 @@ extern "C" {
 void kernel_entry(uint32_t magic, uint32_t addr) {
 
 
+
+
 	// kernel_main(magic, addr);
 	return;
 }
