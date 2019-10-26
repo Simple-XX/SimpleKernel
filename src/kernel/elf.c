@@ -10,7 +10,6 @@ extern "C" {
 #include "stdbool.h"
 #include "stddef.h"
 #include "include/elf.h"
-#include "include/multiboot2.h"
 
 // bool elf_check_file(struct multiboot_tag_elf_sections * tag) {
 //   Elf32_Ehdr *hdr=(Elf32_Shdr *)tag;

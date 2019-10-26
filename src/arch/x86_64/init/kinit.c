@@ -8,7 +8,7 @@
 // extern "C" {
 // #endif
 //
-// #include "include/init.h"
+// #include "include/kinit.h"
 // #include "console/include/console.h"
 // // 内核入口函数
 //
