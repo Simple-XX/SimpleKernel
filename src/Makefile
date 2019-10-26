@@ -50,18 +50,20 @@ clean:
 	@echo 删除完毕
 	@echo Leave $(CURR_DIR)
 
-C_SOURCES = $(shell find . -name "*.c")
-CXX_SOURCES = $(shell find . -name "*.cpp")
-S_SOURCES = $(shell find . -name "*.s")
-BOOTLOADER_OBJ = $(patsubst %.s, %.o, /Users/nzh/Documents/GitHub/SimpleKernel/src/arch/x86_64/boot/boot.s)
+C_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.c" -print)
+CXX_SOURCES := $(shell find . -name "*.cpp")
+S_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.s" -print)
 
-KERNEL_OBJ = $(patsubst %.c, %.o, $(C_SOURCES)) \
+BOOTLOADER_OBJ := $(patsubst %.s, %.o, /Users/nzh/Documents/GitHub/SimpleKernel/src/arch/x86_64/boot/boot.s) \
+				$(patsubst %.c, %.o, /Users/nzh/Documents/GitHub/SimpleKernel/src/arch/x86_64/boot/bootinit.c)
+
+KERNEL_OBJ := $(patsubst %.c, %.o, $(C_SOURCES)) \
      $(patsubst %.cpp, %.o, $(CXX_SOURCES)) \
 	 $(patsubst %.s, %.o, $(S_SOURCES))
 
 
 .PHONY: bootloader
-bootloader.bin: LDFLAGS = -A x86_64 -m elf_x86_64 -T$(BOOT_DIR)/link32.ld
+bootloader.bin: LDFLAGS = -A i386 -m elf_i386 -T$(BOOT_DIR)/link32.ld
 bootloader.bin: $(BOOTLOADER_OBJ)
 	@echo 正在生成 BootLoader... $<
 	@$(LD) $(LDFLAGS) $^ -o $@
@@ -97,3 +99,5 @@ info:
 	@echo ASFLAGS: $(ASFLAGS)
 	@echo exclude_dirs: $(exclude_dirs)
 	@echo SUBDIRS: $(SUB_DIR)
+	@echo BOOTLOADER_OBJ: $(BOOTLOADER_OBJ)
+	@echo KERNEL_OBJ: $(KERNEL_OBJ)
