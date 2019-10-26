@@ -8,7 +8,7 @@
 
 CURR_DIR := $(shell pwd)
 ROOT_DIR := $(CURR_DIR)
-ARCH_DIR := $(ROOT_DIR)/arch/$(ARCH)
+ARCH_DIR := $(ROOT_DIR)/arch/x86_64
 BOOT_DIR := $(ARCH_DIR)/boot
 DRV_DIR := $(ROOT_DIR)/drv
 KERNEL_DIR := $(ROOT_DIR)/kernel
@@ -44,36 +44,55 @@ clean:
 	@echo 正在删除... $<
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.gch"  | xargs rm -f
+	@rm *.bin
 	@for subdir in $(SUB_DIR); \
 		do $(MAKE) -C $$subdir clean || exit 1; \
 	done
 	@echo 删除完毕
 	@echo Leave $(CURR_DIR)
 
-KERNEL_C_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.c" -print)
-KERNEL_CXX_SOURCES := $(shell find . -name "*.cpp")
-KERNEL_S_SOURCES := $(shell find . -path './arch/$(ARCH)/boot' -prune -o -name "*.s" -print)
-KERNEL_OBJ := $(patsubst %.c, %.o, $(KERNEL_C_SOURCES)) \
-     		  $(patsubst %.cpp, %.o, $(KERNEL_CXX_SOURCES)) \
-	 		  $(patsubst %.s, %.o, $(KERNEL_S_SOURCES))
+ifeq ($(ARCH),x86_64)
+    KERNEL_C_SOURCES := $(shell find . -path './arch/x86_64/boot' -prune -o -name "*.c" -print)
+    KERNEL_CXX_SOURCES := $(shell find . -name "*.cpp")
+    KERNEL_S_SOURCES := $(shell find . -path './arch/x86_64/boot' -prune -o -name "*.s" -print)
+    KERNEL_OBJ := $(patsubst %.c, %.o, $(KERNEL_C_SOURCES)) \
+         		  $(patsubst %.cpp, %.o, $(KERNEL_CXX_SOURCES)) \
+	 	    	  $(patsubst %.s, %.o, $(KERNEL_S_SOURCES))
 
-BOOTLOADER_C_SOURCES := $(shell find ./arch/$(ARCH)/boot -name "*.c")
-BOOTLOADER_CXX_SOURCES := $(shell find ./arch/$(ARCH)/boot -name "*.cpp")
-BOOTLOADER_S_SOURCES := $(shell find ./arch/$(ARCH)/boot -name "*.s")
-BOOTLOADER_OBJ := $(patsubst %.s, %.o, $(BOOTLOADER_S_SOURCES)) \
-				  $(patsubst %.c, %.o, $(BOOTLOADER_C_SOURCES)) \
-				  $(patsubst %.cpp, %.o, $(BOOTLOADER_CXX_SOURCES))
+    BOOTLOADER_C_SOURCES := $(shell find ./arch/x86_64/boot -name "*.c")
+    BOOTLOADER_CXX_SOURCES := $(shell find ./arch/x86_64/boot -name "*.cpp")
+    BOOTLOADER_S_SOURCES := $(shell find ./arch/x86_64/boot -name "*.s")
+    BOOTLOADER_OBJ := $(patsubst %.s, %.o, $(BOOTLOADER_S_SOURCES)) \
+	    			  $(patsubst %.c, %.o, $(BOOTLOADER_C_SOURCES)) \
+		    		  $(patsubst %.cpp, %.o, $(BOOTLOADER_CXX_SOURCES))
 
-.PHONY: bootloader
-bootloader.bin: LDFLAGS = -A i386 -m elf_i386 -T$(BOOT_DIR)/link32.ld
-bootloader.bin: $(BOOTLOADER_OBJ)
-	@echo 正在生成 BootLoader... $<
-	@$(LD) $(LDFLAGS) $^ -o $@
+    .PHONY: bootloader
+    bootloader.bin: LDFLAGS = -A i386 -m elf_i386 -T$(BOOT_DIR)/link32.ld
+    bootloader.bin: $(BOOTLOADER_OBJ)
+	    @echo 正在生成 BootLoader... $<
+    	@$(LD) $(LDFLAGS) $^ -o $@
 
-.PHONY: kernel.bin
-kernel.bin: $(KERNEL_OBJ)
-	@echo 正在生成内核... $<
-	@$(LD) $(LDFLAGS) $^ -o $@
+    .PHONY: kernel.bin
+    kernel.bin: $(KERNEL_OBJ)
+	    @echo 正在生成内核... $<
+        @$(LD) $(LDFLAGS) $^ -o $@
+else
+    C_SOURCES := $(shell find . -name "*.c")
+    CXX_SOURCES := $(shell find . -name "*.cpp")
+    S_SOURCES := $(shell find . -name "*.s")
+    OBJ := $(patsubst %.c, %.o, $(C_SOURCES)) \
+         		  $(patsubst %.cpp, %.o, $(CXX_SOURCES)) \
+	 	    	  $(patsubst %.s, %.o, $(S_SOURCES))
+
+    .PHONY: bootloader
+    bootloader.bin:
+	    @echo i386 不会生成 bootloader.bin
+
+    .PHONY: kernel.bin
+    kernel.bin: $(OBJ)
+	    @echo 正在生成内核... $<
+		@$(LD) $(LDFLAGS) $^ -o $@
+endif
 
 .PHONY: code_line_count
 code_line_count:

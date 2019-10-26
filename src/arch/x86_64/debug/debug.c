@@ -51,20 +51,20 @@ void panic(const char *msg) {
 		cpu_hlt();
 }
 
-const char * elf_lookup_symbol(uint32_t addr, elf_t *elf) {
-	printk("%x\n", elf->symtabsz);
-	for (uint32_t i = 0; i < ( elf->symtabsz / sizeof( Elf32_Sym ) ); i++) {
-		printk("66666666666\n");
-		if (ELF32_ST_TYPE(elf->symtab[i].st_info) != 0x2) {
-			continue;
-		}
-		// 通过函数调用地址查到函数的名字(地址在该函数的代码段地址区间之内)
-		if ( ( addr >= elf->symtab[i].st_value ) && ( addr < ( elf->symtab[i].st_value + elf->symtab[i].st_size ) ) ) {
-			return (const char *)( (uint32_t)elf->strtab + elf->symtab[i].st_name );
-		}
-	}
-	return (char *)NULL;
-}
+// const char * elf_lookup_symbol(uint32_t addr, elf_t *elf) {
+// 	printk("%x\n", elf->symtabsz);
+// 	for (uint32_t i = 0; i < ( elf->symtabsz / sizeof( Elf32_Sym ) ); i++) {
+// 		printk("66666666666\n");
+// 		if (ELF32_ST_TYPE(elf->symtab[i].st_info) != 0x2) {
+// 			continue;
+// 		}
+// 		// 通过函数调用地址查到函数的名字(地址在该函数的代码段地址区间之内)
+// 		if ( ( addr >= elf->symtab[i].st_value ) && ( addr < ( elf->symtab[i].st_value + elf->symtab[i].st_size ) ) ) {
+// 			return (const char *)( (uint32_t)elf->strtab + elf->symtab[i].st_name );
+// 		}
+// 	}
+// 	return (char *)NULL;
+// }
 
 void print_stack_trace(void) {
 	uint64_t *ebp, *eip;
@@ -77,7 +77,7 @@ void print_stack_trace(void) {
 
 	while (*ebp) {
 		eip = ebp + 1;
-		printk( "   [0x%x] %s\n", *eip, elf_lookup_symbol(*eip, &kernel_elf) );
+		// printk( "   [0x%x] %s\n", *eip, elf_lookup_symbol(*eip, &kernel_elf) );
 		ebp = (uint64_t*)*ebp;
 	}
 }
