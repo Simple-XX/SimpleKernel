@@ -5,12 +5,13 @@
 
 #!/usr/bin/env bash
 # shell 执行出错时终止运行
-set -e
+# set -e
 # 输出实际执行内容
 # set -x
 
 TARGET="x86_64-elf"
-ARCH="x86_64"
+# ARCH="x86_64"
+ARCH="i386"
 
 # bochs 配置文件
 bochsrc="bochsrc.txt"
@@ -25,7 +26,7 @@ boot_folder='./boot_folder/boot/'
 folder='./boot_folder'
 # 工具目录
 tool='./tools'
-
+iso_boot_grub='./iso/boot/grub'
 iso_boot='./iso/boot/'
 iso='./simplekernel.iso'
 iso_folder='./iso/'
@@ -94,14 +95,36 @@ cd src/
 make remake
 cd ../
 
-if x86_64-elf-grub-file --is-x86-multiboot2 ${bootloader}; then
+if x86_64-elf-grub-file --is-x86-multiboot2 ${kernel}; then
     echo Multiboot2 Confirmed!
-else
-    echo the file is not multiboot
-    exit
+elif [ ${ARCH} == "x86_64" ]; then
+    if x86_64-elf-grub-file --is-x86-multiboot2 ${bootloader}; then
+        echo Multiboot2 Confirmed!
+    else
+        echo the file is not multiboot
+        exit
+    fi
 fi
 
+rm -rf ${iso_boot}/*
 cp ${kernel} ${iso_boot}
-cp ${bootloader} ${iso_boot}
+mkdir ${iso_boot_grub}
+touch ${iso_boot_grub}/grub.cfg
+if [ ${ARCH} == "x86_64" ]; then
+    cp ${bootloader} ${iso_boot}
+    echo 'set timeout=15
+    set default=0
+    menuentry "SimpleKernel" {
+       multiboot2 /boot/bootloader.bin
+       module /boot/kernel.bin "KERNEL_BIN"
+
+   }' >${iso_boot_grub}/grub.cfg
+else
+    echo 'set timeout=15
+    set default=0
+    menuentry "SimpleKernel" {
+       multiboot2 /boot/kernel.bin "KERNEL_BIN"
+   }' >${iso_boot_grub}/grub.cfg
+fi
 x86_64-elf-grub-mkrescue -o ${iso} ${iso_folder}
-bochs -q -f ${bochsrc}
+bochs -q -f ${bochsrc} -rc ./tools/bochsinit
