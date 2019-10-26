@@ -17,7 +17,7 @@ void kernel_main(uint32_t magic, uint32_t addr) {
 
 	clock_init(); // 时钟初始化
 	keyboard_init(); // 键盘初始化
-	multiboot2_init(magic, addr); // 包括 pmm_init 与 vmm_init
+	// multiboot2_init(magic, addr); // 包括 pmm_init 与 vmm_init
 
 	debug_init(magic, addr);
 	// showinfo();

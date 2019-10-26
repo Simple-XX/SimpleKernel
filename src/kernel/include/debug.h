@@ -10,7 +10,6 @@
 #include "stddef.h"
 #include "stdio.h"
 #include "string.h"
-#include "multiboot2.h"
 #include "intr/include/intr.h"
 #include "elf.h"
 
