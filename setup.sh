@@ -15,7 +15,8 @@ ARCH="x86_64"
 # bochs 配置文件
 bochsrc="bochsrc.txt"
 # 内核映像
-img='./src/kernel.kernel'
+kernel='./src/kernel.bin'
+bootloader='./src/bootloader.bin'
 # 软盘
 disk='simplekernel.img'
 # 安装目录
@@ -25,7 +26,7 @@ folder='./boot_folder'
 # 工具目录
 tool='./tools'
 
-iso_boot='./iso/boot/kernel.kernel'
+iso_boot='./iso/boot/'
 iso='./simplekernel.iso'
 iso_folder='./iso/'
 # 判断操作系统类型
@@ -93,14 +94,14 @@ cd src/
 make remake
 cd ../
 
-if x86_64-elf-grub-file --is-x86-multiboot2 ${img}; then
-# if x86_64-elf-grub-file --is-x86_64-efi ${img}; then
+if x86_64-elf-grub-file --is-x86-multiboot2 ${bootloader}; then
     echo Multiboot2 Confirmed!
 else
     echo the file is not multiboot
     exit
 fi
 
-cp ${img} ${iso_boot}
+cp ${kernel} ${iso_boot}
+cp ${bootloader} ${iso_boot}
 x86_64-elf-grub-mkrescue -o ${iso} ${iso_folder}
 bochs -q -f ${bochsrc}

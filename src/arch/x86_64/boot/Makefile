@@ -28,8 +28,8 @@ all: $(SUB_DIR)
     done
 	@# $(MAKE) info
 	@$(MAKE) boot.o
-	@$(MAKE) bootinit.o
-	# @$(MAKE) $(patsubst %.s, %.o, $(wildcard *.s))
+	# @$(MAKE) bootinit.o
+	@$(MAKE) $(patsubst %.c, %.o, $(wildcard *.c))
 	@echo Leave $(CURR_DIR)
 
 .PHONY: boot.o
@@ -39,20 +39,23 @@ boot.o: boot.s
 	@$(AS) $(ASFLAGS) $< -o $@
 	@echo 编译完成
 
-.PHONY: bootinit.o
-bootinit.o: CFLAGS = -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -fno-builtin \
-		 -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
-		 -g -ggdb -C -c \
-		 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR) -m32
-bootinit.o: bootinit.c
-	@echo 编译 C 文件 $< ...
-	@$(CC) $(CFLAGS) $< -o $@
-	@echo 编译完成
-
-# %.o: %.s
-# 	@echo 编译汇编文件 $< ...
-# 	@$(AS) $(ASFLAGS) $< -o $@
+# .PHONY: bootinit.o
+# bootinit.o: CFLAGS = -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -fno-builtin \
+# 		 -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
+# 		 -g -ggdb -C -c \
+# 		 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR) -m32
+# bootinit.o: bootinit.c
+# 	@echo 编译 C 文件 $< ...
+# 	@$(CC) $(CFLAGS) $< -o $@
 # 	@echo 编译完成
+
+%.o: %.c
+	@echo 编译 C 文件 $< ...
+	@$(CC) -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -fno-builtin \
+			 -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
+			 -g -ggdb -C -c \
+			 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR) -m32 $< -o $@
+	@echo 编译完成
 
 .PHONY: clean
 clean:
