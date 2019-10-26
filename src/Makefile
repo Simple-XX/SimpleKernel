@@ -9,8 +9,8 @@ DRV_DIR = ./drv
 KERNEL_DIR = ./kernel
 ARCH_DIR = ./arch/x86_64
 TARGET = x86_64-elf
-# ARCH = x86_64
-ARCH = i386
+ARCH = x86_64
+# ARCH = i386
 
 C_SOURCES = $(shell find . -name "*.c")
 CXX_SOURCES = $(shell find . -name "*.cpp")
@@ -41,9 +41,9 @@ CFLAGS = -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartf
 		 -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
 		 -g -ggdb -C -c \
 		 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR) #-v
-CFLAGS += -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2
+
 ifeq ($(ARCH),x86_64)
-    CFLAGS += -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2
+    CFLAGS += -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -z max-page-size=0x1000 -lgcc
 else
     CFLAGS += -m32
 endif
