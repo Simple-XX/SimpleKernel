@@ -92,7 +92,7 @@ multiboot_header_end:
 
 .section .init.text
 .global start
-.extern kernel_entry
+.extern bootinit
 .type start, @function
 start:
     jmp multiboot_entry
@@ -109,7 +109,7 @@ multiboot_entry:
     push %ebx
 	# 魔数
 	push %eax
-    call kernel_entry
+    call bootinit
 
 1:
     hlt
