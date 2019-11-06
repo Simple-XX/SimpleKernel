@@ -5,7 +5,7 @@
 
 #!/usr/bin/env bash
 # shell 执行出错时终止运行
-# set -e
+set -e
 # 输出实际执行内容
 # set -x
 
@@ -106,7 +106,7 @@ elif [ ${ARCH} == "x86_64" ]; then
     fi
 fi
 
-rm -rf ${iso_boot}/*
+rm -rf -f ${iso_boot}/*
 cp ${kernel} ${iso_boot}
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg

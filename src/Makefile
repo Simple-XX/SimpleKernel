@@ -3,7 +3,6 @@
 
 # Makefile.env for MRNIU/SimpleKernel.
 
-
 # 设置 make 环境
 
 CURR_DIR := $(shell pwd)
@@ -44,7 +43,7 @@ clean:
 	@echo 正在删除... $<
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.gch"  | xargs rm -f
-	@rm *.bin
+	@rm -f *.bin
 	@for subdir in $(SUB_DIR); \
 		do $(MAKE) -C $$subdir clean || exit 1; \
 	done
