@@ -10,6 +10,7 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "stddef.h"
+#include "../../boot/include/multiboot2.h"
 #include "include/debug.h"
 
 #define STACK_SIZE    0x1000  // 4096
@@ -19,9 +20,11 @@
 
 extern uint32_t kernel_start[];
 extern uint32_t kernel_end[];
+extern multiboot_memory_map_entry_t * mmap_entries;
+extern multiboot_mmap_tag_t * mmap_tag;
 
 // 初始化内存管理
-// void pmm_init(multiboot_tag_t * tag);
+void pmm_init(void);
 
 uint32_t pmm_alloc_page(void);
 
