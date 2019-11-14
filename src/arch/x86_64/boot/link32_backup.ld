@@ -23,6 +23,7 @@ SECTIONS
     .init.data : ALIGN(4K)
 	{
         *(.init.data)
+        *(.init.bss)
 	}
 	PROVIDE(init_end = .);
 

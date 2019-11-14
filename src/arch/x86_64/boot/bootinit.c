@@ -18,12 +18,13 @@ void showinfo(void);
 void kernel_entry(uint32_t magic, uint32_t addr) {
 
 	console_init(); // 控制台初始化
+	multiboot2_init(magic, addr); // 从 multiboot 获得系统初始信息
 	gdt_init(); // GDT 初始化
 	idt_init(); // IDT 初始化
 	clock_init(); // 时钟初始化
 	keyboard_init(); // 键盘初始化
-	multiboot2_init(magic, addr); // 从 multiboot 获得系统初始信息
 	pmm_init();
+	vmm_init();
 	debug_init(magic, addr);
 	showinfo();
 
@@ -32,7 +33,6 @@ void kernel_entry(uint32_t magic, uint32_t addr) {
 	kernel_main(magic, addr);
 	return;
 }
-
 
 void showinfo(void) {
 	// 输出一些基本信息
