@@ -10,7 +10,6 @@
 extern "C" {
 #endif
 
-
 #include "intr/include/intr.h"
 #include "mm/include/pmm.h"
 
@@ -19,7 +18,6 @@ extern "C" {
 
 // 映射 KMEM_SIZE 的内存所需要的页数
 #define PTE_COUNT         ( KMEMSIZE / PAGE_MAP_SIZE )
-
 
 // 内核的偏移地址
 #define PAGE_OFFSET     0xC0000000
@@ -64,13 +62,13 @@ extern "C" {
 // 获取一个地址的页內偏移
 #define OFFSET_INDEX(x) ( ( x ) & 0x0FFF )
 
-// 页目录数据类型
+// 页目录
 typedef uint64_t pgd_t;
 
-// 页表数据类型
+// 页表
 typedef uint64_t pte_t;
 
-// 页表成员数
+// 页目录成员数
 #define PGD_SIZE ( PAGE_SIZE / sizeof( pte_t ) )
 
 // 页表成员数
@@ -80,7 +78,7 @@ typedef uint64_t pte_t;
 #define PTE_COUNT 128
 
 // 内核页目录区域
-extern pgd_t pgd_kern[PGD_SIZE];
+extern pgd_t pgd_kernel[PGD_SIZE];
 
 // 初始化虚拟内存管理
 void vmm_init(void);
@@ -89,21 +87,23 @@ void vmm_init(void);
 void switch_pgd(uint32_t pd);
 
 // 使用 flags 指出的页权限，把物理地址 pa 映射到虚拟地址 va
-void map(pgd_t *pgd_now, uint32_t va, uint32_t pa, uint32_t flags);
+void map(pgd_t *pgd_low, uint32_t va, uint32_t pa, uint32_t flags);
 
 // 取消虚拟地址 va 的物理映射
-void unmap(pgd_t *pgd_now, uint32_t va);
+void unmap(pgd_t *pgd_low, uint32_t va);
 
 // 如果虚拟地址 va 映射到物理地址则返回 1
 // 同时如果 pa 不是空指针则把物理地址写入 pa 参数
-uint32_t get_mapping(pgd_t *pgd_now, uint32_t va, uint32_t *pa);
+uint32_t get_mapping(pgd_t *pgd_low, uint32_t va, uint32_t *pa);
 
 // 页错误中断的函数处理
 void page_fault(pt_regs_t *regs);
 
+void vmm_init(void);
+
 #ifdef __cplusplus
 }
-#endif
+#endif // __cplusplus
 
 
 #endif  // INCLUDE_VMM_H
