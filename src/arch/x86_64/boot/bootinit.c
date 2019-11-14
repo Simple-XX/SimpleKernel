@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #include "include/multiboot2.h"
-#include "mm/include/pmm.h"
+#include "mm/include/vmm.h"
 
 __attribute__( ( section(".init.text") ) ) void kernel_entry(uint32_t magic, uint32_t addr);
 extern void kernel_main(uint32_t magic, uint32_t addr);
@@ -22,7 +22,8 @@ void kernel_entry(uint32_t magic, uint32_t addr) {
 	idt_init(); // IDT 初始化
 	clock_init(); // 时钟初始化
 	keyboard_init(); // 键盘初始化
-	// multiboot2_init(magic, addr); // 包括 pmm_init 与 vmm_init
+	multiboot2_init(magic, addr); // 从 multiboot 获得系统初始信息
+	pmm_init();
 	debug_init(magic, addr);
 	showinfo();
 
