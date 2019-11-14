@@ -91,10 +91,10 @@ mbi_tag_end:
 multiboot_header_end:
 
 .section .init.text
-.global start
+.global _start
 .extern kernel_entry
 .type start, @function
-start:
+_start:
     jmp multiboot_entry
 
 multiboot_entry:
@@ -116,9 +116,9 @@ multiboot_entry:
     jmp 1b
     ret
 
-.size start, . - start
+.size _start, . - _start
 
-.section .init.bss
+.section .init.data
 STACK:
-    .skip 4096
+    .skip 16384
 STACK_TOP:
