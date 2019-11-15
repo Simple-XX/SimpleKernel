@@ -20,9 +20,6 @@ extern "C" {
 // 5. Jump to higher half.
 // 6. Remove the lower half kernel mapping.
 
-// 开启分页机制之后的内核栈
-char kern_stack[STACK_SIZE];
-
 // 内核使用的临时页表和页目录
 // 该地址必须是页对齐的地址，内存 0-640KB 肯定是空闲的
 __attribute__((section(".init.data"))) pgd_t *pgd_tmp  = (pgd_t *)0x1000;
@@ -59,6 +56,7 @@ void vmm_init(){
 	// 最高位 PG 位置 1，分页开启
 	cr0 |= (1u << 31);
 	__asm__ volatile ( "mov %0, %%cr0" : : "r" (cr0) );
+
 
 	return;
 }

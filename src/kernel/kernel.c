@@ -14,7 +14,8 @@ extern "C" {
 // 内核入口
 // 指针是 32 位的
 void kernel_main(uint32_t magic, uint32_t addr) {
-
+	UNUSED(magic);
+	UNUSED(addr);
 
 	while (1);
 
