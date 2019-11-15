@@ -20,27 +20,7 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
-// #include "../drv/console/include/tty.h"
-// #include "../drv/console/include/console.h"
-// #include "include/debug.h"
-// #include "mm/include/pmm.h"
-// #include "mm/include/vmm.h"
-// #include "../drv/clock/include/clock.h"
-// #include "cpu.hpp"
-// #include "../drv/keyboard/include/keyboard.h"
-// #include "include/elf.h"
-// #include "include/heap.h"
-//
-//
-// void kernel_main(uint32_t magic, uint32_t addr);
-// void console_init(void);
-// void gdt_init(void);
-// void idt_init(void);
-// void clock_init(void);
-// void keyboard_init(void);
-// void mouse_init(void);
-// void debug_init(uint32_t magic, uint32_t addr);
-// void pmm_init(multiboot_tag_t * tag);
-// void vmm_init();
+
+void kernel_main(uint32_t magic, uint32_t addr);
 
 #endif /* _KERNEL_H_ */
