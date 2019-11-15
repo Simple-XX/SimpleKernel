@@ -16,6 +16,8 @@ extern "C" {
 // 每个页表可以映射的内存数
 #define PAGE_MAP_SIZE    ( 0x400000 )
 
+#define KMEMSIZE PMM_MAX_SIZE
+
 // 映射 KMEM_SIZE 的内存所需要的页数
 #define PTE_COUNT         ( KMEMSIZE / PAGE_MAP_SIZE )
 
@@ -63,19 +65,16 @@ extern "C" {
 #define OFFSET_INDEX(x) ( ( x ) & 0x0FFF )
 
 // 页目录
-typedef uint64_t pgd_t;
+typedef uint32_t pgd_t;
 
 // 页表
-typedef uint64_t pte_t;
+typedef uint32_t pte_t;
 
 // 页目录成员数
 #define PGD_SIZE ( PAGE_SIZE / sizeof( pte_t ) )
 
 // 页表成员数
-#define PTE_SIZE ( PAGE_SIZE / sizeof( uint64_t ) )
-
-// 映射 512MB 内存所需要的页表数
-#define PTE_COUNT 128
+#define PTE_SIZE ( PAGE_SIZE / sizeof( uint32_t ) )
 
 // 内核页目录区域
 extern pgd_t pgd_kernel[PGD_SIZE];
