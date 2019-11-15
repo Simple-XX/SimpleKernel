@@ -7,12 +7,7 @@
 extern "C" {
 #endif
 
-#include "include/multiboot2.h"
-#include "mm/include/vmm.h"
-
-__attribute__( ( section(".init.text") ) ) void kernel_entry(uint32_t magic, uint32_t addr);
-extern void kernel_main(uint32_t magic, uint32_t addr);
-void showinfo(void);
+#include "include/bootinit.h"
 
 // 内核入口函数
 void kernel_entry(uint32_t magic, uint32_t addr) {
@@ -34,14 +29,7 @@ void kernel_entry(uint32_t magic, uint32_t addr) {
 	return;
 }
 
-void showinfo(void) {
-	// 输出一些基本信息
-	printk_color(magenta,"SimpleKernel\n");
-	printk_color(light_red,"kernel in memory start: 0x%08X\n", kernel_start);
-	printk_color(light_red,"kernel in memory end: 0x%08X\n", kernel_end);
-	printk_color(light_red,"kernel in memory size: %d KB, %d pages\n",
-	             ( kernel_end - kernel_start ) / 1024, ( kernel_end - kernel_start ) / 1024 / 4);
-}
+
 
 #ifdef __cplusplus
 }
