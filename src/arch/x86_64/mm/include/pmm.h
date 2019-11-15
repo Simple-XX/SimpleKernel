@@ -14,7 +14,7 @@
 #include "include/debug.h"
 
 #define STACK_SIZE    0x1000  // 4096
-#define PMM_MAX_SIZE  0x40000000 // 4 gib
+#define PMM_MAX_SIZE  0x20000000// 512MB
 #define PMM_PAGE_SIZE 0x1000      // 页面大小 4KB
 #define PAGE_MAX_SIZE ( PMM_MAX_SIZE / PMM_PAGE_SIZE )
 
