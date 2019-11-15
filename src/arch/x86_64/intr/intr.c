@@ -195,6 +195,7 @@ void debug(pt_regs_t * regs) {
 	printk_color(red, "EIP: %08X   EFLAGS: %08X  CS: %04X\n\r",
 	             //old_esp[0], old_esp[1], old_esp[2]);
 	             old_esp[0], read_eflags(), old_esp[2]);
+	return;
 }
 
 void nmi(pt_regs_t * regs) {

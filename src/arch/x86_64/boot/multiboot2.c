@@ -134,7 +134,7 @@ bool is_multiboot2_header(uint32_t magic, uint32_t addr) {
 // 处理 multiboot 信息
 void multiboot2_init(uint32_t magic, uint32_t addr) {
 	// Am I booted by a Multiboot-compliant boot loader?
-	// is_multiboot2_header(magic, addr);
+	is_multiboot2_header(magic, addr);
 
 	uint32_t size=*(uint32_t *) addr;
 	// addr+0 保存大小，下一字节开始为 tag 信息
@@ -172,7 +172,6 @@ void multiboot2_init(uint32_t magic, uint32_t addr) {
 		case MULTIBOOT_TAG_TYPE_MMAP:
 			print_MULTIBOOT_TAG_TYPE_MMAP(tag);
 			set_mem_info(tag);
-			pmm_init(tag);
 			break;
 		case MULTIBOOT_TAG_TYPE_ELF_SECTIONS: {
 			// print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
