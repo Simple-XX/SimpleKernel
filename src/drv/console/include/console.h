@@ -1,7 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-// tty.hpp for MRNIU/SimpleKernel.
+// console.h for MRNIU/SimpleKernel.
 
 #ifndef _CONSOLE_H_
 #define _CONSOLE_H_

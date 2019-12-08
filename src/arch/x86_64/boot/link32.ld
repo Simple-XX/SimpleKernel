@@ -27,34 +27,36 @@ SECTIONS
 	}
 	PROVIDE(init_end = .);
 
-	PROVIDE(kernel_text_start = .);
-	.text : ALIGN(4K)
+    . += 0xC0000000;
+
+	PROVIDE(kernel_text_start = . - 0xC0000000);
+	.text ALIGN(4K) : AT(ADDR(.text) - 0xC0000000)
 	{
 		*(.text)
 	}
-    PROVIDE(kernel_text_end = .);
+    PROVIDE(kernel_text_end = . - 0xC0000000);
 
-    PROVIDE(kernel_data_start = .);
-    .data : ALIGN(4K)
+    PROVIDE(kernel_data_start = . - 0xC0000000);
+    .data ALIGN(4K) : AT(ADDR(.data) - 0xC0000000)
     {
         *(.data)
     }
-    PROVIDE(kernel_data_end = .);
+    PROVIDE(kernel_data_end = . - 0xC0000000);
 
-    PROVIDE(kernel_rodata_start = .);
-	.rodata : ALIGN(4K)
+    PROVIDE(kernel_rodata_start = . - 0xC0000000);
+	.rodata ALIGN(4K) : AT(ADDR(.rodata) - 0xC0000000)
 	{
 		*(.rodata)
 	}
-	PROVIDE(kernel_rodata_end = .);
+	PROVIDE(kernel_rodata_end = . - 0xC0000000);
 
-	PROVIDE(kernel_bss_start = .);
-	.bss : ALIGN(4K)
+	PROVIDE(kernel_bss_start = . - 0xC0000000);
+	.bss ALIGN(4K) : AT(ADDR(.bss) - 0xC0000000)
 	{
 		*(COMMON)
 		*(.bss)
 	}
-	PROVIDE(kernel_bss_end = .);
+	PROVIDE(kernel_bss_end = . - 0xC0000000);
 
-    PROVIDE(kernel_end = .);
+    PROVIDE(kernel_end = . - 0xC0000000);
 }
