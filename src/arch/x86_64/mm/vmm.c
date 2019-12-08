@@ -7,7 +7,6 @@
 #include "include/debug.h"
 #include "stdio.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -57,6 +56,8 @@ void vmm_init(){
 	cr0 |= (1u << 31);
 	__asm__ volatile ( "mov %0, %%cr0" : : "r" (cr0) );
 
+	printk_color(COL_INFO, "[INFO] ");
+	printk("vmm_init\n");
 
 	return;
 }
