@@ -7,6 +7,7 @@
 #include "include/debug.h"
 #include "stdio.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -19,35 +20,34 @@ extern "C" {
 // 5. Jump to higher half.
 // 6. Remove the lower half kernel mapping.
 
-// 内核使用的临时页表和页目录
-// 该地址必须是页对齐的地址，内存 0-640KB 肯定是空闲的
-__attribute__((section(".init.data"))) pgd_t *pgd_tmp  = (pgd_t *)0x1000;
-__attribute__((section(".init.data"))) pgd_t *pte_low  = (pgd_t *)0x2000;
-__attribute__((section(".init.data"))) pgd_t *pte_high = (pgd_t *)0x3000;
+uint32_t page_directory[1024] __attribute__((aligned(4096)));
+uint32_t first_page_table[1024] __attribute__((aligned(4096)));
 
-void vmm_init(){
-	pgd_tmp[0] = (uint32_t)pte_low | PAGE_PRESENT | PAGE_WRITE;
+void vmm_init() {
+	//set each entry to not present
+	for(int i = 0; i < 1024; i++) {
+		// This sets the following flags to the pages:
+		//   Supervisor: Only kernel-mode can access them
+		//   Write Enabled: It can be both read from and written to
+		//   Not Present: The page table is not present
+		page_directory[i] = 0x00000002;
+	}
+	// holds the physical address where we want to start mapping these pages to.
+// in this case, we want to map these pages to the very beginning of memory.
 
-	for (int i = 0; i < 4; ++i) {
-		uint32_t pgd_idx = PGD_INDEX(PAGE_OFFSET + PAGE_MAP_SIZE * i);
-		pgd_tmp[pgd_idx] = ( (uint32_t)pte_high + PAGE_SIZE * i ) | PAGE_PRESENT | PAGE_WRITE;
+//we will fill all 1024 entries in the table, mapping 4 megabytes
+	for(int i = 0; i < 1024; i++) {
+		// As the address is page aligned, it will always leave 12 bits zeroed.
+		// Those bits are used by the attributes ;)
+		first_page_table[i] = (i * 0x1000) | 3; // attributes: supervisor level, read/write, present.
 	}
 
-	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
-	// 因为 .init.text 段的代码在物理地址前 4MB 处(肯定不会超出这个范围)，
-	// 开启分页后若此处不映射，代码执行立即会出错，离开 .init.text 段后的代码执行，
-	// 不再需要映射物理前 4MB 的内存
-	for (int i = 0; i < 1024; i++) {
-		pte_low[i] = (i << 12) | PAGE_PRESENT | PAGE_WRITE;
-	}
+	// attributes: supervisor level, read/write, present
+	page_directory[0] = ((unsigned int)first_page_table) | 3;
 
-	// 映射 0x00000000-0x01000000 的物理地址到虚拟地址 0xC0000000-0xC1000000
-	for (int i = 0; i < 1024 * 4; i++) {
-		pte_high[i] = (i << 12) | PAGE_PRESENT | PAGE_WRITE;
-	}
 
 	// 设置临时页表
-	__asm__ volatile ( "mov %0, %%cr3" : : "r" (pgd_tmp) );
+	__asm__ volatile ( "mov %0, %%cr3" : : "r" (page_directory) );
 
 	uint32_t cr0;
 
