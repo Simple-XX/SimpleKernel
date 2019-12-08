@@ -10,7 +10,7 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "stddef.h"
-#include "../../boot/include/multiboot2.h"
+#include "../../../../include/multiboot2.h"
 #include "include/debug.h"
 
 #define STACK_SIZE    0x1000  // 4096

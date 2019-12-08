@@ -1,7 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-// tty.hpp for MRNIU/SimpleKernel.
+// tty.h for MRNIU/SimpleKernel.
 
 #ifndef _TTY_H_
 #define _TTY_H_
