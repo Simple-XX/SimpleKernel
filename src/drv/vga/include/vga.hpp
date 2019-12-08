@@ -13,6 +13,7 @@ extern "C" {
 #include "stdint.h"
 #include "stddef.h"
 #include "port.hpp"
+#include "mm/include/vmm.h"
 
 enum vga_color {
 	VGA_COLOR_BLACK = 0,
@@ -37,7 +38,7 @@ enum vga_color {
 #define VGA_DATA 0x3D5 // CRT 控制寄存器-数据
 #define VGA_CURSOR_H 0xE // 光标高位
 #define VGA_CURSOR_L 0xF // 光标低位
-#define VGA_MEM_BASE (0xB8000) // VGA 缓存基址
+#define VGA_MEM_BASE (0xB8000 + PAGE_OFFSET) // VGA 缓存基址
 #define VGA_MEM_SIZE 0x8000 // VGA 缓存大小
 
 // 规定显示行数、列数
