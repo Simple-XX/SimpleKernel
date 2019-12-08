@@ -1,7 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 
-// port.h for MRNIU/SimpleKernel.
+// cpu.hpp for MRNIU/SimpleKernel.
 
 
 #ifndef _CPU_HPP_
@@ -103,30 +103,30 @@ extern "C" {
 
 // 执行CPU空操作
 static inline void cpu_hlt(void) {
-	asm volatile ( "hlt" );
+	__asm__ volatile ( "hlt" );
 }
 
 // 开启中断
 static inline void cpu_sti(void) {
-	asm volatile ( "sti" );
+	__asm__ volatile ( "sti" );
 }
 
 // 关闭中断
 static inline void cpu_cli(void) {
-	asm volatile ( "cli" ::: "memory" );
+	__asm__ volatile ( "cli" ::: "memory" );
 }
 
 // 读取 EFLAGS
 static inline uint64_t read_eflags(void) {
 	uint64_t eflags;
-	asm volatile ( "pushf;pop %0"
-	               : "=r" ( eflags ) );
+	__asm__ volatile ( "pushf;pop %0"
+	                   : "=r" ( eflags ) );
 	return eflags;
 }
 
 // 读取 EFLAGS
 static inline void debug_intr(void) {
-	__asm__ __volatile__ ( "int $0x01" );
+	__asm__ volatile ( "int $0x01" );
 	return;
 }
 
@@ -253,7 +253,7 @@ static inline bool EFLAGS_CF_status(void) {
 }
 
 static inline void __native_flush_tlb_single(unsigned long addr) {
-	asm volatile ( "invlpg (%0)" : : "r" ( addr ) : "memory" );
+	__asm__ volatile ( "invlpg (%0)" : : "r" ( addr ) : "memory" );
 	return;
 }
 
