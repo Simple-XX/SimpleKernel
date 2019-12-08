@@ -119,5 +119,6 @@ info:
 	@echo ASFLAGS: $(ASFLAGS)
 	@echo exclude_dirs: $(exclude_dirs)
 	@echo SUBDIRS: $(SUB_DIR)
+	@echo Include dir: $(INCLUDE_DIR)
 	@echo BOOTLOADER_OBJ: $(BOOTLOADER_OBJ)
 	@echo KERNEL_OBJ: $(KERNEL_OBJ)

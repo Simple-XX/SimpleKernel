@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#include "include/multiboot2.h"
+#include "multiboot2.h"
 #include "string.h"
 
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag) {
