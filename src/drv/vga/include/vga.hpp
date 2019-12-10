@@ -13,7 +13,7 @@ extern "C" {
 #include "stdint.h"
 #include "stddef.h"
 #include "port.hpp"
-#include "mm/include/vmm.h"
+#include "mem/vmm.h"
 
 enum vga_color {
 	VGA_COLOR_BLACK = 0,

@@ -131,7 +131,6 @@ void console_scroll() {
 	}
 }
 
-
 #ifdef __cplusplus
 }
 #endif

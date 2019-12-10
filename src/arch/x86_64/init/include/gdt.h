@@ -8,7 +8,7 @@
 
 #include "stdint.h"
 #include "stdio.h"
-#include "include/debug.h"
+#include "debug.h"
 
 #define GDT_LENGTH 6 // 全局描述符表长度
 // 各个内存段所在全局描述符表下标

@@ -3,15 +3,15 @@
 
 // vmm.h for MRNIU/SimpleKernel.
 
-#ifndef _HEAP_H_
-#define _HEAP_H_
+#ifndef _VMM_H_
+#define _VMM_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "intr/include/intr.h"
-#include "mm/include/pmm.h"
+#include "pmm.h"
 
 // 最大内存
 #define KMEM_SIZE PMM_MAX_SIZE
