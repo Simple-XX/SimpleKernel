@@ -19,7 +19,7 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
-#include "mm/include/vmm.h"
+#include "mem/vmm.h"
 
 // 内核使用的临时页表和页目录
 // 该地址必须是页对齐的地址，内存 0-640KB 肯定是空闲的

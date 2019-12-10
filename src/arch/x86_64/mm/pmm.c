@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#include "include/pmm.h"
+#include "mem/pmm.h"
 #include "assert.h"
 #include "string.h"
 
