@@ -35,7 +35,6 @@ all: $(SUB_DIR)
 	@$(CC) $(CFLAGS) $< -o $@
 	@echo 编译完成
 
-
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)

@@ -6,7 +6,6 @@
 extern "C" {
 #endif
 
-
 #include "include/keyboard.h"
 #include "port.hpp"
 

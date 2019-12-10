@@ -3,7 +3,6 @@
 //
 // debug.h for MRNIU/SimpleKernel.
 
-
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
 

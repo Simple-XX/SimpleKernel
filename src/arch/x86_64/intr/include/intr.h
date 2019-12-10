@@ -15,7 +15,7 @@ extern "C" {
 #include "stdint.h"
 #include "stdio.h"
 #include "port.hpp"
-#include "include/debug.h"
+#include "debug.h"
 #include "../drv/8259A/include/8259A.h"
 #include "cpu.hpp"
 

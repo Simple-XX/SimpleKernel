@@ -1,6 +1,6 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+#
 # Makefile for MRNIU/SimpleKernel.
 
 CURR_DIR := $(shell pwd)
@@ -54,7 +54,7 @@ boot.o: boot.s
 	@$(CC) -std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -fno-builtin \
 			 -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare \
 			 -g -ggdb -C -c \
-			 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR) -m32 $< -o $@
+			 -I$(LIBC_DIR) -I$(ARCH_DIR) -I$(DRV_DIR) -I$(KERNEL_DIR) -I$(INCLUDE_DIR) -m32 $< -o $@
 	@echo 编译完成
 
 .PHONY: clean
