@@ -21,7 +21,7 @@
 #include "stdbool.h"
 #include "stdio.h"
 #include "multiboot2.h"
-#include "mm/include/pmm.h"
+#include "mem/pmm.h"
 
 
 void kernel_main(uint32_t magic, uint32_t addr);

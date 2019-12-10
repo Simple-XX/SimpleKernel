@@ -11,8 +11,8 @@
 #include "stdio.h"
 #include "stdint.h"
 #include "stdbool.h"
+#include "debug.h"
 #include "intr/include/intr.h"
-#include "include/debug.h"
 #include "cpu.hpp"
 
 // 键盘缓冲区大小
@@ -142,11 +142,11 @@ void keyboard_read(pt_regs_t* regs);
 uint8_t keyboard_read_from_buff(void);
 
 typedef
-    struct kb_input {
-    uint8_t * head;
-    uint8_t * tail;
-    size_t count;
-    uint8_t buff[KB_BUFSIZE];
+        struct kb_input {
+	uint8_t * head;
+	uint8_t * tail;
+	size_t count;
+	uint8_t buff[KB_BUFSIZE];
 }kb_input_t;
 
 

@@ -8,7 +8,7 @@ PAR_DIR := $(CURR_DIR)/..
 ROOT_DIR := $(CURR_DIR)/../../..
 include $(ROOT_DIR)/make.env
 
-exclude_dirs := include
+exclude_dirs :=
 subdirs := $(shell find . -maxdepth 1 -type d)
 subdirs := $(basename $(patsubst ./%, %, $(subdirs)))
 subdirs := $(filter-out $(exclude_dirs), $(subdirs))

@@ -14,7 +14,6 @@ extern "C" {
 #include "stddef.h"
 #include "string.h"
 #include "stdio.h"
-#include "include/debug.h"
 #include "vga/include/vga.hpp"
 
 // size_t console_row; // 命令行行数

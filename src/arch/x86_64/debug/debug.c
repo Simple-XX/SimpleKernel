@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#include "include/debug.h"
+#include "debug.h"
 
 void debug_init(uint32_t magic, uint32_t addr) {
 	UNUSED(magic);

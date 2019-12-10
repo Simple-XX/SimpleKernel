@@ -3,8 +3,8 @@
 //
 // vmm.c for MRNIU/SimpleKernel.
 
-#include "mm/include/vmm.h"
-#include "include/debug.h"
+#include "mem/vmm.h"
+#include "debug.h"
 #include "stdio.h"
 
 

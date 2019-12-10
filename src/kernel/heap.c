@@ -8,9 +8,9 @@ extern "C" {
 #endif
 
 #include "include/heap.h"
-#include "include/debug.h"
-#include "mm/include/pmm.h"
-#include "mm/include/vmm.h"
+#include "debug.h"
+#include "mem/pmm.h"
+#include "mem/vmm.h"
 
 
 #ifdef __cplusplus

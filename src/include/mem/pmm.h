@@ -10,8 +10,8 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "stddef.h"
-#include "../../../../include/multiboot2.h"
-#include "include/debug.h"
+#include "debug.h"
+#include "multiboot2.h"
 
 #define STACK_SIZE    0x1000  // 4096
 #define PMM_MAX_SIZE  0x20000000// 512MB

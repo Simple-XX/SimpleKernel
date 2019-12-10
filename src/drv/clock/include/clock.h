@@ -10,7 +10,7 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "port.hpp"
-#include "include/debug.h"
+#include "debug.h"
 #include "intr/include/intr.h"
 
 
