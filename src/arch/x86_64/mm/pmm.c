@@ -15,10 +15,10 @@ extern "C" {
 static uint32_t phy_pages_count;
 
 // 物理内存页面管理的栈
-static uint32_t pmm_stack[PAGE_MAX_SIZE + 1];
+static ptr_t pmm_stack[PAGE_MAX_SIZE + 1];
 
 // 物理内存管理的栈指针
-static uint32_t pmm_stack_top;
+static ptr_t pmm_stack_top;
 
 void pmm_init() {
 	for ( ; (uint8_t *) mmap_entries < (uint8_t *) mmap_tag + mmap_tag->size;
@@ -29,7 +29,7 @@ void pmm_init() {
 		if ( (unsigned) mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE
 		     && (unsigned) ( mmap_entries->addr & 0xffffffff ) == 0x100000 ) {
 			// 把内核位置到结束位置的内存段，按页存储到页管理栈里
-			uint32_t page_addr = ( mmap_entries->addr );
+			ptr_t page_addr = ( mmap_entries->addr );
 			uint32_t length = ( mmap_entries->len );
 			while (page_addr < length && page_addr <= PMM_MAX_SIZE) {
 				pmm_free_page(page_addr);
