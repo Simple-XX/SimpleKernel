@@ -9,7 +9,7 @@ extern "C" {
 
 #include "debug.h"
 
-void debug_init(uint32_t magic, uint32_t addr) {
+void debug_init(ptr_t magic, ptr_t addr) {
 	UNUSED(magic);
 	UNUSED(addr);
 	printk_color(COL_DEBUG, "[DEBUG] ");
@@ -19,7 +19,7 @@ void debug_init(uint32_t magic, uint32_t addr) {
 }
 
 void print_cur_status() {
-	static int round = 0;
+	static uint32_t round = 0;
 	uint16_t reg1, reg2, reg3, reg4;
 	asm volatile (  "mov %%cs, %0;"
 	                "mov %%ds, %1;"
@@ -41,7 +41,7 @@ void print_cur_status() {
 	++round;
 }
 
-void panic(const char *msg) {
+void panic(const char * msg) {
 	printk("*** System panic: %s\n", msg);
 	print_stack_trace();
 	printk("***\n");
@@ -51,7 +51,7 @@ void panic(const char *msg) {
 		cpu_hlt();
 }
 
-const char * elf_lookup_symbol(uint32_t addr, elf_t *elf) {
+const char * elf_lookup_symbol(ptr_t addr, elf_t * elf) {
 	printk("%x\n", elf->symtabsz);
 	for (uint32_t i = 0; i < ( elf->symtabsz / sizeof( Elf32_Sym ) ); i++) {
 		printk("66666666666\n");
@@ -60,14 +60,14 @@ const char * elf_lookup_symbol(uint32_t addr, elf_t *elf) {
 		}
 		// 通过函数调用地址查到函数的名字(地址在该函数的代码段地址区间之内)
 		if ( ( addr >= elf->symtab[i].st_value ) && ( addr < ( elf->symtab[i].st_value + elf->symtab[i].st_size ) ) ) {
-			return (const char *)( (uint32_t)elf->strtab + elf->symtab[i].st_name );
+			return (const char *)( (ptr_t)elf->strtab + elf->symtab[i].st_name );
 		}
 	}
 	return (char *)NULL;
 }
 
 void print_stack_trace(void) {
-	uint32_t *ebp, *eip;
+	uint32_t * ebp, * eip;
 #ifdef __x86_64__
 	__asm__ volatile ( "movq %%rbp, %0" : "=r" ( ebp ) );
 #else

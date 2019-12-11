@@ -63,16 +63,16 @@ extern "C" {
 #define OFFSET_INDEX(x) ( ( x ) & 0x0FFF )
 
 // 页目录
-typedef uint32_t pgd_t;
+typedef ptr_t pgd_t;
 
 // 页表
-typedef uint32_t pte_t;
+typedef ptr_t pte_t;
 
 // 页目录成员数
 #define PGD_SIZE ( PAGE_SIZE / sizeof( pte_t ) )
 
 // 页表成员数
-#define PTE_SIZE ( PAGE_SIZE / sizeof( uint32_t ) )
+#define PTE_SIZE ( PAGE_SIZE / sizeof( ptr_t ) )
 
 // 内核页目录区域
 extern pgd_t pgd_kernel[PGD_SIZE];
@@ -100,12 +100,12 @@ typedef
 
 	// Array of pointers to the pagetables above, but gives their *physical*
 	// location, for loading into the CR3 register.
-	uint32_t tablesPhysical[1024];
+	ptr_t tablesPhysical[1024];
 
 	// The physical address of tablesPhysical. This comes into play
 	// when we get our kernel heap allocated and the directory
 	// may be in a different location in virtual memory.
-	uint32_t physicalAddr;
+	ptr_t physicalAddr;
 } page_directory_t;
 
 // 初始化虚拟内存管理
@@ -115,4 +115,4 @@ void vmm_init(void);
 }
 #endif // __cplusplus
 
-#endif  // INCLUDE_VMM_H
+#endif /* INCLUDE_VMM_H */

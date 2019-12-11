@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // console.h for MRNIU/SimpleKernel.
 
 #ifndef _CONSOLE_H_
@@ -20,7 +20,7 @@ extern "C" {
 // size_t console_column; // 当前命令行列数
 // uint8_t console_color; // 当前命令行颜色
 
-static uint16_t * console_buffer __attribute__( ( unused ) ) = (uint16_t*) VGA_MEM_BASE;
+static uint16_t * console_buffer __attribute__((unused)) = (uint16_t *) VGA_MEM_BASE;
 
 void console_init(void);
 void console_scroll(void);
@@ -37,6 +37,5 @@ uint8_t console_getcolor(void);
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* _CONSOLE_H_ */

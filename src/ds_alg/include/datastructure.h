@@ -3,13 +3,11 @@
 //
 // datastructuer.h for MRNIU/SimpleKernel.
 
-
 #ifndef _DATASTRUCTURE_H_
 #define _DATASTRUCTURE_H_
 
 #include "stddef.h"
 #include "stdbool.h"
-
 
 // linkedlist
 /**
@@ -38,8 +36,8 @@ typedef void *ListValue;
  */
 
 struct _ListIterator {
-    ListEntry **prev_next;
-    ListEntry *current;
+	ListEntry **prev_next;
+	ListEntry *current;
 };
 
 /* A doubly-linked list */
@@ -277,4 +275,4 @@ ListValue list_iter_next(ListIterator *iterator);
 
 void list_iter_remove(ListIterator *iterator);
 
-#endif
+#endif /* _DATASTRUCTURE_H_ */

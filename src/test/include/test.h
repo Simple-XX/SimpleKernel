@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // test.h for MRNIU/SimpleKernel.
 
 #ifndef _TEST_H_
@@ -21,4 +21,4 @@ bool test_pmm(void);
 bool test_vmm(void);
 bool test_libc(void);
 
-#endif
+#endif /* _TEST_H_ */

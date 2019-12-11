@@ -1,3 +1,4 @@
+
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 // Based on Orange's 一个操作系统的实现
 // kb.c for MRNIU/SimpleKernel.
@@ -170,7 +171,7 @@ void keyboard_handler() {
 // 从缓冲区读取
 uint8_t keyboard_read_from_buff() {
 	uint8_t scancode;
-	while (kb_in.count <= 0) {} /* 等待下一个字节到来 */
+	while (kb_in.count <= 0) {}  // 等待下一个字节到来
 	// 进入临界区
 	cpu_cli();
 	scancode = *( kb_in.head );
@@ -240,7 +241,6 @@ void keyboard_read(pt_regs_t* regs) {
 			// 首先排除释放按键
 			if ( !( scancode & RELEASED_MASK ) ) {
 				letter = keymap[(uint8_t)( scancode * 3 ) + (uint8_t)shift]; // 计算在 keymap 中的位置
-				// printk_color(green, "%s\t", letter);
 				str[0] = letter;
 				str[1] = '\0';
 				printk("%s", str);
@@ -260,8 +260,6 @@ void keyboard_init(void) {
 	printk_color(COL_INFO, "[INFO] ");
 	printk("keyboard_init\n");
 }
-
-
 
 #ifdef __cplusplus
 }

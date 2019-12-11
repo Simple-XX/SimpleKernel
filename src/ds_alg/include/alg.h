@@ -7,9 +7,4 @@
 #ifndef _ALG_H_
 #define _ALH_H_
 
-
-
-
-
-
 #endif

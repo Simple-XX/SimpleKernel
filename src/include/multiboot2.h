@@ -3,17 +3,15 @@
 //
 // multiboot2.h for MRNIU/SimpleKernel.
 
-/**
- * 启动后，在32位内核进入点，机器状态如下：
- *   1. CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
- *   2. DS，SS，ES，FS 和 GS 指向基地址为0x00000000，限长为4G – 1的数据段描述符。
- *   3. A20 地址线已经打开。
- *   4. 页机制被禁止。
- *   5. 中断被禁止。
- *   6. EAX = 0x2BADB002
- *   7. 系统信息和启动信息块的线性地址保存在 EBX中（相当于一个指针）。
- *      以下即为这个信息块的结构
- */
+// 启动后，在 32 位内核进入点，机器状态如下：
+//   1. CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
+//   2. DS，SS，ES，FS 和 GS 指向基地址为0x00000000，限长为4G – 1的数据段描述符。
+//   3. A20 地址线已经打开。
+//   4. 页机制被禁止。
+//   5. 中断被禁止。
+//   6. EAX = 0x2BADB002
+//   7. 系统信息和启动信息块的线性地址保存在 EBX中（相当于一个指针）。
+//      以下即为这个信息块的结构
 
 #ifndef _MULTIBOOT2_H_
 #define _MULTIBOOT2_H_
@@ -340,8 +338,8 @@ struct multiboot_tag_load_base_addr {
 
 // multiboot_memory_map_entry_t * mmap_entries;
 
-bool is_multiboot2_header(uint32_t magic, uint32_t addr);
-void multiboot2_init(uint32_t magic, uint32_t addr);
+bool is_multiboot2_header(ptr_t magic, ptr_t addr);
+void multiboot2_init(ptr_t magic, ptr_t addr);
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag *tag);
@@ -358,4 +356,4 @@ multiboot_mmap_tag_t * mmap_tag;
 
 #endif /*  ! ASM_FILE */
 
-#endif /*  ! MULTIBOOT_HEADER */
+#endif /* _MULTIBOOT2_H_ */

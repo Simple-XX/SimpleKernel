@@ -1,8 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // stddef.h for MRNIU/SimpleKernel.
-
 
 #ifndef _STDDEF_H_
 #define _STDDEF_H_
@@ -19,7 +18,7 @@ typedef long ptrdiff_t;
 #ifndef _SIZE_T
 #define _SIZE_T
 #undef size_t
-typedef unsigned long size_t;
+typedef unsigned int size_t;
 #endif
 
 #undef NULL
@@ -31,4 +30,4 @@ typedef unsigned long size_t;
 }
 #endif
 
-#endif
+#endif /* _STDDEF_H_ */

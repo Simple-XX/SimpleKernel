@@ -3,7 +3,6 @@
 // Based on https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h
 // elf.h for MRNIU/SimpleKernel.
 
-
 #ifndef _ELF_H_
 #define _ELF_H_
 
@@ -130,7 +129,6 @@ typedef struct {
 	Elf32_Sword r_addend;
 } Elf32_Rela;
 
-
 # define ELF32_R_SYM(INFO) ( ( INFO ) >> 8 )
 # define ELF32_R_TYPE(INFO) ( (uint8_t)( INFO ) )
 
@@ -164,6 +162,4 @@ typedef
 static elf_t kernel_elf __attribute__( ( unused ) );
 // bool elf_check_file(struct multiboot_tag_elf_sections * tag);
 
-
-
-#endif
+#endif /* _ELF_H_ */

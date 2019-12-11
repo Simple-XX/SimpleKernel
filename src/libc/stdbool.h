@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // stdbool.h for MRNIU/SimpleKernel.
 
 #ifndef _STDBOOL_H_
@@ -17,6 +17,6 @@ typedef
 } bool;
 
 
-#endif
+#endif /* __cplusplus */
 
-#endif
+#endif /* _STDBOOL_H_ */
