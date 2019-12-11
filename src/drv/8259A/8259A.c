@@ -18,14 +18,14 @@ void init_interrupt_chip(void) {
 	// 初始化主片、从片
 	// 0001 0001
 	outb(IO_PIC1, 0x11);
-	outb(IO_PIC1C, IRQ0); // 设置主片 IRQ 从 0x20(32) 号中断开始
-	outb(IO_PIC1C, 0x04); // 设置主片 IR2 引脚连接从片
-	outb(IO_PIC1C, 0x01); // // 设置主片按照 8086 的方式工作
+	outb(IO_PIC1C, IRQ0);  // 设置主片 IRQ 从 0x20(32) 号中断开始
+	outb(IO_PIC1C, 0x04);  // 设置主片 IR2 引脚连接从片
+	outb(IO_PIC1C, 0x01);  // 设置主片按照 8086 的方式工作
 
 	outb(IO_PIC2, 0x11);
-	outb(IO_PIC2C, IRQ8); // 设置从片 IRQ 从 0x28(40) 号中断开始
-	outb(IO_PIC2C, 0x02); // 告诉从片输出引脚和主片 IR2 号相连
-	outb(IO_PIC2C, 0x01); // 设置从片按照 8086 的方式工作
+	outb(IO_PIC2C, IRQ8);  // 设置从片 IRQ 从 0x28(40) 号中断开始
+	outb(IO_PIC2C, 0x02);  // 告诉从片输出引脚和主片 IR2 号相连
+	outb(IO_PIC2C, 0x01);  // 设置从片按照 8086 的方式工作
 
 	// 默认关闭所有中断
 	outb(IO_PIC1C, 0xFF);
@@ -45,7 +45,6 @@ void clear_interrupt_chip(uint32_t intr_no) {
 	// 发送重设信号给主片
 	outb(IO_PIC1, PIC_EOI);
 }
-
 
 #ifdef __cplusplus
 }

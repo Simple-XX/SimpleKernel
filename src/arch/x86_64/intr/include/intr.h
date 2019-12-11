@@ -1,8 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // intr.h for MRNIU/SimpleKernel.
-
 
 #ifndef _INTR_H_
 #define _INTR_H_
@@ -10,7 +9,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 #include "stdint.h"
 #include "stdio.h"
@@ -64,13 +62,13 @@ extern "C" {
 
 typedef
         struct pt_regs_t {
-/* segment registers */
-	uint32_t gs; // 16 bits
-	uint32_t fs; // 16 bits
-	uint32_t es; // 16 bits
-	uint32_t ds; // 16 bits
+// segment registers
+	uint32_t gs;  // 16 bits
+	uint32_t fs;  // 16 bits
+	uint32_t es;  // 16 bits
+	uint32_t ds;  // 16 bits
 
-/* registers save by pusha */
+// registers save by pusha
 	uint32_t edi;
 	uint32_t esi;
 	uint32_t ebp;
@@ -81,7 +79,7 @@ typedef
 	uint32_t eax;
 
 	uint32_t int_no;
-/* save by `int` instruction */
+// save by `int` instruction
 	uint32_t err_code;
 // 以下指令由cpu压入，参见x86/x64 532页
 	uint32_t eip; // 指向产生异常的指令
@@ -168,7 +166,6 @@ extern void irq13();           // 协处理器使用
 extern void irq14();           // IDE0 传输控制使用
 extern void irq15();           // IDE1 传输控制使用
 
-
 void irq_handler(pt_regs_t * regs);  // IRQ 处理函数
 
 typedef void (*interrupt_handler_t)(pt_regs_t *); // 定义中断处理函数指针
@@ -209,4 +206,4 @@ void disable_irq(uint32_t irq_no);
 }
 #endif
 
-#endif
+#endif /* _INTR_H_ */

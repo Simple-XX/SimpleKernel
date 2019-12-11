@@ -3,14 +3,12 @@
 // Based on Linux kernel 0.11
 // vsprintf.c for MRNIU/SimpleKernel.
 
-
 // TODO
 // 修复整数和其它类型数据同时输出时只显示整数的问题
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 #include "../stdarg.h"
 #include "../stddef.h"
@@ -79,7 +77,7 @@ static char * number(char * str,int num,int base,int size,int precision,int type
 	if(num == 0)
 		tmp[i++] = '0';
 	else while(num != 0)
-			tmp[i++] = digits[do_div(num,base)];
+			tmp[i++] = digits[do_div(num, base)];
 // 若数值字符个数大于精读值，则精度值扩展为数字个数值。宽度值减去用于存放数值字符的个数。
 	if(i > precision) precision = i;
 	size -= precision;
@@ -160,7 +158,7 @@ repeat:
 			field_width = skip_atoi(&fmt);
 		else if(*fmt == '*') {
 			// it's the next argument     这里应该插入 ++fmt;
-			field_width = va_arg(args,int);
+			field_width = va_arg(args, int);
 			if(field_width < 0) {
 				field_width = -field_width;
 				flags |= LEFT;
@@ -177,7 +175,7 @@ repeat:
 				precision = skip_atoi(&fmt);
 			else if(*fmt == '*') {
 				// it's the next argument
-				precision = va_arg(args,int);
+				precision = va_arg(args, int);
 			}
 			if(precision < 0)
 				precision = 0;
@@ -197,7 +195,7 @@ repeat:
 			if( !(flags & LEFT) )
 				while(--field_width > 0)
 					*str++ = ' ';
-			*str++ = (unsigned char) va_arg(args,int);
+			*str++ = (uint8_t)va_arg(args, int);
 			while(--field_width > 0)
 				*str++ = ' ';
 			break;
@@ -206,7 +204,7 @@ repeat:
 // 字符。然后再放入参数字符串。如果宽度域还大于 0，则表示为左靠齐，则在参数字符串后面添加(宽度值-
 // 字符串长度)个空格字符。
 		case 's':
-			s = va_arg(args,char *);
+			s = va_arg(args, char *);
 			len = strlen(s);
 			if(precision < 0)
 				precision = len;
@@ -222,7 +220,7 @@ repeat:
 			break;
 // 如果格式转换符是 'o',则表示需要将对应的参数转换成八进制数的字符串。调用 number() 函数处理。
 		case 'o':
-			str = number(str,va_arg(args,unsigned long),8,field_width,precision,flags);
+			str = number(str, va_arg(args, uint32_t), 8, field_width, precision, flags);
 			break;
 // 如果格式转换符是 'p'，表示对应参数的一个指针类型。此时若该参数没有设置宽度域，则默认宽度为 8，
 // 并且需要添零。然后调用 number() 函数进行处理。
@@ -231,14 +229,14 @@ repeat:
 				field_width = 8;
 				flags |= ZEROPAD;
 			}
-			str = number(str,(unsigned long)va_arg(args,void *),16,field_width,
-			             precision,flags);
+			str = number(str, (uint32_t)va_arg(args,void *), 16, field_width,
+			             precision, flags);
 			break;
 // 若格式转换指示是 'x'  或 'X'，则表示对应参数需打印成十六进制数输出。'x' 表示用小写字母表示。
 		case 'x':
 			flags |= SMALL;
 		case 'X':
-			str = number(str,va_arg(args,unsigned long),16,field_width,precision,flags);
+			str = number(str, va_arg(args, uint32_t), 16, field_width, precision, flags);
 			break;
 // 如果格式转换字符是 'd','i' 或 'u'，则表示对应参数是整数。'd','i' 代表符号整数，
 // 因此需要加上带符号标志。'u' 代表无符号整数。
@@ -246,7 +244,7 @@ repeat:
 		case 'i':
 			flags |= SIGN;
 		case 'u':
-			str = number(str,va_arg(args,unsigned long),10,field_width,precision,flags);
+			str = number(str, va_arg(args, uint32_t), 10, field_width, precision, flags);
 			break;
 // 若格式转换指示符是 'n'，则表示要把到目前为止转换输出的字符保存到对应参数指针指定的位置中。
 // 首先利用 va_arg() 取得该参数指针，然后将已经转换好的字符存入该指针所指的位置。

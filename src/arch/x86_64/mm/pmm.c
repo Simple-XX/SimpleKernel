@@ -45,15 +45,15 @@ void pmm_init() {
 	return;
 }
 
-uint32_t pmm_alloc_page(void) {
+ptr_t pmm_alloc_page(void) {
 	assert(pmm_stack_top != 0);
-	uint32_t page = pmm_stack[pmm_stack_top--];
+	ptr_t page = pmm_stack[pmm_stack_top--];
 	memset( (void*)page, 0, PMM_PAGE_SIZE );
 	return page;
 }
 
-uint32_t pmm_alloc_pages(uint32_t size) {
-	uint32_t page;
+ptr_t pmm_alloc_pages(uint32_t size) {
+	ptr_t page;
 	do {
 		assert(pmm_stack_top != 0);
 		page = pmm_stack[pmm_stack_top--];
@@ -63,7 +63,7 @@ uint32_t pmm_alloc_pages(uint32_t size) {
 	return page;
 }
 
-void pmm_free_page(uint32_t page) {
+void pmm_free_page(ptr_t page) {
 	assert(pmm_stack_top != PAGE_MAX_SIZE);
 	pmm_stack[++pmm_stack_top] = page;
 	return;

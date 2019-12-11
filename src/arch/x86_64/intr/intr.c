@@ -3,7 +3,6 @@
 // Based on http://wiki.0xffffff.org/posts/hurlex-kernel.html
 // intr.c for MRNIU/SimpleKernel.
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -25,7 +24,6 @@ static void idt_set_gate(uint8_t num, uint32_t base, uint16_t target, uint8_t fl
 	// 0x8E: DPL=0
 	// 0xEF: DPL=3
 }
-
 
 // 中断处理函数指针数组
 static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX] __attribute__ ( ( aligned(4) ) );
