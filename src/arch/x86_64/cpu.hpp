@@ -1,8 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // cpu.hpp for MRNIU/SimpleKernel.
-
 
 #ifndef _CPU_HPP_
 #define _CPU_HPP_
@@ -80,7 +79,6 @@ extern "C" {
 // 如果PG=1、PE=0，此时由于不在保护模式下不能启用分页机制，因此处理器会产生一个一般保护异常，即这种标志组合无效；
 // 如果PG=1、PE=1，则处理器工作在开启了分页机制的保护模式下。
 
-
 #define CR3_PWT     0x00000008
 #define CR3_PCD     0x00000010
 
@@ -129,7 +127,6 @@ static inline void debug_intr(void) {
 	__asm__ volatile ( "int $0x01" );
 	return;
 }
-
 
 // Identification flag
 //程序能够设置或清除这个标志指示了处理器对 CPUID 指令的支持。

@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // pmm.h for MRNIU/SimpleKernel.
 
 
@@ -20,6 +20,12 @@
 
 extern uint32_t kernel_start[];
 extern uint32_t kernel_end[];
+
+// 开启分页机制之后的内核栈
+extern uint8_t kernel_stack[STACK_SIZE];
+// 内核栈的栈顶
+extern uint32_t kernel_stack_top;
+
 extern multiboot_memory_map_entry_t * mmap_entries;
 extern multiboot_mmap_tag_t * mmap_tag;
 
@@ -31,4 +37,5 @@ uint32_t pmm_alloc_page(void);
 uint32_t pmm_alloc_pages(uint32_t size);
 
 void pmm_free_page(uint32_t page);
-#endif
+
+#endif /* _PMM_H_ */

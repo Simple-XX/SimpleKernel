@@ -27,10 +27,17 @@ __attribute__( ( section(".init.data") ) ) pgd_t *pgd_tmp  = (pgd_t *)0x1000;
 __attribute__( ( section(".init.data") ) ) pte_t *pte_low  = (pte_t *)0x2000;
 __attribute__( ( section(".init.data") ) ) pte_t *pte_high = (pte_t *)0x3000;
 
+// 开启分页机制之后的内核栈
+uint8_t kernel_stack[STACK_SIZE] __attribute__((aligned(STACK_SIZE)));
+
+// 内核栈顶
+uint32_t kernel_stack_top = ((uint32_t)kernel_stack + STACK_SIZE);
+
 __attribute__( ( section(".init.text") ) ) void kernel_entry(uint32_t magic, uint32_t addr);
 __attribute__( ( section(".init.text") ) ) void enable_page(uint32_t * pgd);
+__attribute__( ( section(".init.text") ) ) void switch_stack(ptr_t stack_top);
 __attribute__( ( section(".init.text") ) ) void mm_init(void);
-extern void kernel_main(uint32_t magic, uint32_t addr);
 
+extern void kernel_main(uint32_t magic, uint32_t addr);
 
 #endif /* _BOOTINIT_H_ */
