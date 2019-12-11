@@ -52,9 +52,11 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
 }
 
 void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
+	mmap_entries = ( (struct multiboot_tag_mmap *) tag )->entries;
+	mmap_tag = tag;
+#if DEBUG
 	multiboot_memory_map_entry_t * mmap;
 	mmap = ( (struct multiboot_tag_mmap *) tag )->entries;
-#if DEBUG
 	printk_color(COL_DEBUG, "[DEBUG] ");
 	printk ("mmap\n");
 	for ( ; (uint8_t *) mmap < (uint8_t *) tag + tag->size;
@@ -68,12 +70,6 @@ void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
 		        (unsigned) mmap->type);
 	}
 #endif
-	return;
-}
-
-void set_mem_info(multiboot_tag_t *tag) {
-	mmap_entries = ( (struct multiboot_tag_mmap *) tag )->entries;
-	mmap_tag = tag;
 	return;
 }
 
@@ -171,7 +167,6 @@ void multiboot2_init(ptr_t magic, ptr_t addr) {
 			break;
 		case MULTIBOOT_TAG_TYPE_MMAP:
 			print_MULTIBOOT_TAG_TYPE_MMAP(tag);
-			set_mem_info(tag);
 			break;
 		case MULTIBOOT_TAG_TYPE_ELF_SECTIONS: {
 			// print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);

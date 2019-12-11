@@ -3,7 +3,6 @@
 //
 // kernel.h for MRNIU/SimpleKernel.
 
-
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
@@ -23,7 +22,6 @@
 #include "multiboot2.h"
 #include "mem/pmm.h"
 
-
 void kernel_main(uint32_t magic, uint32_t addr);
 void console_init(void);
 void gdt_init(void);
@@ -39,10 +37,25 @@ void showinfo(void);
 void showinfo(void) {
 	// 输出一些基本信息
 	printk_color(magenta,"SimpleKernel\n");
-	printk_color(light_red,"kernel in memory start: 0x%08X\n", kernel_start);
-	printk_color(light_red,"kernel in memory end: 0x%08X\n", kernel_end);
-	printk_color(light_red,"kernel in memory size: %d KB, %d pages\n",
-	             ( kernel_end - kernel_start ) / 1024, ( kernel_end - kernel_start ) / 1024 / 4);
+	printk_color(COL_INFO, "[INFO] ");
+	printk("kernel init in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n", kernel_init_start, kernel_init_end);
+	printk_color(COL_INFO, "[INFO] ");
+	printk(".init.text in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n", kernel_init_text_start, kernel_init_text_end);
+	printk_color(COL_INFO, "[INFO] ");
+	printk(".init.data in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n", kernel_init_data_start, kernel_init_data_end);
+	printk_color(COL_INFO, "[INFO] ");
+	printk("kernel init in memory size: %d KB, %d pages\n",
+	       ( kernel_init_end - kernel_init_start ) / 1024, ( kernel_init_end - kernel_init_start ) / 1024 / 4);
+
+	printk_color(COL_INFO, "[INFO] ");
+	printk("kernel in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n", kernel_start, kernel_end);
+	printk_color(COL_INFO, "[INFO] ");
+	printk(".text in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n", kernel_text_start, kernel_text_end);
+	printk_color(COL_INFO, "[INFO] ");
+	printk(".data in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n", kernel_data_start, kernel_data_end);
+	printk_color(COL_INFO, "[INFO] ");
+	printk("kernel in memory size: %d KB, %d pages\n",
+	       ( kernel_end - kernel_start ) / 1024, ( kernel_end - kernel_start ) / 1024 / 4);
 }
 
 #endif /* _KERNEL_H_ */

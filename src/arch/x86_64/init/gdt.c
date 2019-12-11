@@ -9,6 +9,18 @@ extern "C" {
 
 #include "include/gdt.h"
 
+void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
+	gdt_entries[num].base_low     = ( base & 0xFFFF );
+	gdt_entries[num].base_middle  = ( base >> 16 ) & 0xFF;
+	gdt_entries[num].base_high    = ( base >> 24 ) & 0xFF;
+
+	gdt_entries[num].limit_low    = ( limit & 0xFFFF );
+	gdt_entries[num].granularity  = ( limit >> 16 ) & 0x0F;
+
+	gdt_entries[num].granularity |= gran & 0xF0;
+	gdt_entries[num].access       = access;
+}
+
 static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0) {
 	// 获取 TSS 描述符的位置和长度
 	uint32_t base = (uint32_t)&tss_entry;
