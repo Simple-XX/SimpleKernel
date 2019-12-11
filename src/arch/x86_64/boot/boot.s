@@ -1,5 +1,6 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+#
 # boot.s for MRNIU/SimpleKernel.
 
 # multiboot2 定义
