@@ -17,7 +17,18 @@
 #define PMM_PAGE_SIZE 0x1000      // 页面大小 4KB
 #define PAGE_MAX_SIZE ( PMM_MAX_SIZE / PMM_PAGE_SIZE )
 
+extern ptr_t kernel_init_start[];
+extern ptr_t kernel_init_text_start[];
+extern ptr_t kernel_init_text_end[];
+extern ptr_t kernel_init_data_start[];
+extern ptr_t kernel_init_data_end[];
+extern ptr_t kernel_init_end[];
+
 extern ptr_t kernel_start[];
+extern ptr_t kernel_text_start[];
+extern ptr_t kernel_text_end[];
+extern ptr_t kernel_data_start[];
+extern ptr_t kernel_data_end[];
 extern ptr_t kernel_end[];
 
 // 开启分页机制之后的内核栈
