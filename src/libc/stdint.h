@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // stdint.h for MRNIU/SimpleKernel.
 
 #ifndef _STDINT_H_
@@ -16,4 +16,10 @@ typedef unsigned short int uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
 
+#ifdef __x86_64__
+typedef uint64_t ptr_t;
+#else
+typedef uint32_t ptr_t;
 #endif
+
+#endif /* _STDINT_H_ */

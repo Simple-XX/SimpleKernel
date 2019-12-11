@@ -47,13 +47,21 @@ void mm_init() {
 	return;
 }
 
-// 内核入口函数
-void kernel_entry(uint32_t magic, uint32_t addr) {
-	mm_init();
-	kernel_main(PAGE_OFFSET + magic, PAGE_OFFSET + addr);
+void switch_stack(ptr_t stack_top) {
+	// 切换内核栈
+	__asm__ volatile ("mov %0, %%esp" : : "r" (stack_top));
+	__asm__ volatile ("xor %%ebp, %%ebp" : : );
 	return;
 }
 
+// 内核入口函数
+void kernel_entry(uint32_t magic, uint32_t addr) {
+	mm_init();
+	switch_stack(kernel_stack_top);
+
+	kernel_main(PAGE_OFFSET + magic, PAGE_OFFSET + addr);
+	return;
+}
 
 #ifdef __cplusplus
 }
