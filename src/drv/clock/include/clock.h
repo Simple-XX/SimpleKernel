@@ -1,8 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // clock.h for MRNIU/SimpleKernel.
-
 
 #ifndef _CLOCK_H_
 #define _CLOCK_H_
@@ -12,7 +11,6 @@
 #include "port.hpp"
 #include "debug.h"
 #include "intr/include/intr.h"
-
 
 #define FREQUENCY       100
 
@@ -33,4 +31,4 @@
 void clock_init(void);
 void clock_handler(pt_regs_t *);
 
-#endif
+#endif /* _CLOCK_H_ */

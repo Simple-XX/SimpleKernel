@@ -52,13 +52,13 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
 }
 
 void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
-	multiboot_memory_map_entry_t *mmap;
+	multiboot_memory_map_entry_t * mmap;
 	mmap = ( (struct multiboot_tag_mmap *) tag )->entries;
 #if DEBUG
 	printk_color(COL_DEBUG, "[DEBUG] ");
 	printk ("mmap\n");
 	for ( ; (uint8_t *) mmap < (uint8_t *) tag + tag->size;
-	      mmap = (multiboot_memory_map_entry_t *)( (unsigned long) mmap + ( (struct multiboot_tag_mmap *) tag )->entry_size ) ) {
+	      mmap = (multiboot_memory_map_entry_t *)( (uint32_t) mmap + ( (struct multiboot_tag_mmap *) tag )->entry_size ) ) {
 		printk_color(COL_DEBUG, "[DEBUG] ");
 		printk ("base_addr = 0x%X%X, length = 0x%X%X, type = 0x%X\n",
 		        (unsigned) ( mmap->addr >> 32 ), // high
@@ -117,7 +117,7 @@ void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
 	return;
 }
 
-bool is_multiboot2_header(uint32_t magic, uint32_t addr) {
+bool is_multiboot2_header(ptr_t magic, ptr_t addr) {
 	if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
 		printk_color(COL_ERROR, "[Error] ");
 		printk ("Invalid magic number: %X\n", (unsigned) magic);
@@ -132,7 +132,7 @@ bool is_multiboot2_header(uint32_t magic, uint32_t addr) {
 }
 
 // 处理 multiboot 信息
-void multiboot2_init(uint32_t magic, uint32_t addr) {
+void multiboot2_init(ptr_t magic, ptr_t addr) {
 	// Am I booted by a Multiboot-compliant boot loader?
 	is_multiboot2_header(magic, addr);
 
@@ -141,7 +141,7 @@ void multiboot2_init(uint32_t magic, uint32_t addr) {
 	printk_color(COL_DEBUG, "[DEBUG] ");
 	printk ("Announced mbi size 0x%X\n", size);
 
-	uint32_t tag_addr = (uint32_t)addr + 8;
+	ptr_t tag_addr = (ptr_t)addr + 8;
 	multiboot_tag_t *tag;
 	tag = (multiboot_tag_t *) tag_addr;
 	printk("tag type: %X\n", tag->type);

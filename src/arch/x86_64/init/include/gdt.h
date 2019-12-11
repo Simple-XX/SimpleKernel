@@ -63,36 +63,35 @@ typedef
 
 static gdt_ptr_t gdt_ptr;
 
-/*
-   TSS 状态段由两部分组成：
-    1、 动态部分(处理器在每次任务切换时会设置这些字段值)
-        通用寄存器(EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI)
-        段寄存器(ES，CS，SS，DS，FS，GS)
-        状态寄存器(EFLAGS)
-        指令指针(EIP)
-        前一个执行的任务的TSS段的选择子(只有当要返回时才更新)
-    2、 静态字段(处理器读取，但从不更改)
-        任务的LDT选择子
-        页目录基址寄存器(PDBR)(当启用分页时，只读)
-        内层堆栈指针，特权级 0-2
-        T-位，指示了处理器在任务切换时是否引发一个调试异常
-        I/O 位图基址
- */
+// TSS 状态段由两部分组成：
+// 1. 动态部分(处理器在每次任务切换时会设置这些字段值)
+//    通用寄存器(EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI)
+//    段寄存器(ES，CS，SS，DS，FS，GS)
+//    状态寄存器(EFLAGS)
+//    指令指针(EIP)
+//    前一个执行的任务的TSS段的选择子(只有当要返回时才更新)
+// 2. 静态字段(处理器读取，但从不更改)
+//    任务的LDT选择子
+//    页目录基址寄存器(PDBR)(当启用分页时，只读)
+//    内层堆栈指针，特权级 0-2
+//    T-位，指示了处理器在任务切换时是否引发一个调试异常
+//    I/O 位图基址
+
 // TSS(任务状态段) 描述符
 // TSS的使用是为了解决调用门中特权级变换时堆栈发生的变化.
 typedef
         struct tss_entry_t {
-	uint32_t ts_link; // old ts selector
-	uint32_t ts_esp0; // stack pointers and segment selectors
-	uint32_t ts_ss0; // after an increase in privilege level
+	uint32_t ts_link;  // old ts selector
+	uint32_t ts_esp0;  // stack pointers and segment selectors
+	uint32_t ts_ss0;  // after an increase in privilege level
 	uint32_t ts_esp1;
 	uint32_t ts_ss1;
 	uint32_t ts_esp2;
 	uint32_t ts_ss2;
-	uint32_t ts_cr3; // page directory base
-	uint32_t ts_eip; // saved state from last task switch
+	uint32_t ts_cr3;  // page directory base
+	uint32_t ts_eip;  // saved state from last task switch
 	uint32_t ts_eflags;
-	uint32_t ts_eax; // more saved state (registers)
+	uint32_t ts_eax;  // more saved state (registers)
 	uint32_t ts_ecx;
 	uint32_t ts_edx;
 	uint32_t ts_ebx;
@@ -100,15 +99,15 @@ typedef
 	uint32_t ts_ebp;
 	uint32_t ts_esi;
 	uint32_t ts_edi;
-	uint32_t ts_es; // even more saved state (segment selectors)
+	uint32_t ts_es;  // even more saved state (segment selectors)
 	uint32_t ts_cs;
 	uint32_t ts_ss;
 	uint32_t ts_ds;
 	uint32_t ts_fs;
 	uint32_t ts_gs;
 	uint32_t ts_ldt;
-	uint32_t ts_t; // trap on task switch
-	uint32_t ts_iomb; // i/o map base address
+	uint32_t ts_t;  // trap on task switch
+	uint32_t ts_iomb;  // i/o map base address
 } __attribute__( ( packed ) ) tss_entry_t;
 
 // TSS 段定义
@@ -132,4 +131,5 @@ static void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t acc
 extern void gdt_load(uint32_t); // GDT 加载到 GDTR 的函数
 extern void tss_load(); // TSS 刷新[汇编实现]
 void gdt_init(void); // 初始化全局描述符表
-#endif
+
+#endif /* _GDT_H_ */

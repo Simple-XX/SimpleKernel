@@ -1,11 +1,10 @@
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // clock.c for MRNIU/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 #include "include/clock.h"
 #include "stddef.h"

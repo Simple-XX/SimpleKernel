@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // gdt.c for MRNIU/SimpleKernel.
 
 #ifdef __cplusplus
@@ -51,7 +51,6 @@ void gdt_init(void) {
 	printk_color(COL_INFO, "[INFO] ");
 	printk("gdt_init\n");
 }
-
 
 #ifdef __cplusplus
 }

@@ -87,7 +87,7 @@ void console_putchar(char c) {
 }
 
 // 命令行写
-void console_write(const char* data, size_t size) {
+void console_write(const char * data, size_t size) {
 	for (size_t i = 0; i < size; i++)
 		console_putchar(data[i]);
 }
