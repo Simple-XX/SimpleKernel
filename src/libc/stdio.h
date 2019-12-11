@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // stdio.h for MRNIU/SimpleKernel.
 
 #ifndef _STDIO_H_
@@ -10,9 +10,10 @@
 extern "C" {
 #endif
 
-
 extern int printk(const char * fmt, ...);
-extern int printk_color(unsigned char color, const char *format, ...);
+extern int printk_color(unsigned char color, const char * format, ...);
+extern int printf(const char * fmt, ...);
+
 // 枚举颜色，与 vga_color 相同
 enum color {
 	black = 0,
@@ -33,10 +34,8 @@ enum color {
 	white = 15,
 };
 
-extern int printf(const char * fmt, ...);
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* _STDIO_H_ */

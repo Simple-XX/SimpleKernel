@@ -1,17 +1,16 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // test.c for MRNIU/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
 #include "include/test.h"
 
 bool test_pmm() {
-	uint32_t allc_addr = 0;
+	ptr_t allc_addr = 0;
 	printk_color(COL_TEST, "[TEST] ");
 	printk_color(red, "Test Physical Memory Alloc :\n");
 	allc_addr = pmm_alloc_page();

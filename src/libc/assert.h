@@ -1,8 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // assert.h for MRNIU/SimpleKernel.
-
 
 #ifndef _ASSERT_H_
 #define _ASSERT_H_
@@ -14,4 +13,4 @@
 				while(1); \
 		}
 
-#endif
+#endif /* _ASSERT_H_ */

@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // stdarg.h for MRNIU/SimpleKernel.
 
 #ifndef _STDARG_H_
@@ -26,4 +26,4 @@ typedef char * va_list;
 // 把指针 va_list 置 0
 #define va_end(AP) (AP = (va_list) 0)
 
-#endif
+#endif /* _STDARG_H_ */

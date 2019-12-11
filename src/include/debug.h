@@ -19,10 +19,10 @@
 #define COL_INFO light_green
 #define COL_TEST green
 
-void debug_init(uint32_t magic, uint32_t addr);
+void debug_init(ptr_t magic, ptr_t addr);
 void print_cur_status(void);
 void panic(const char * msg);
-const char * elf_lookup_symbol(uint32_t addr, elf_t * elf);
+const char * elf_lookup_symbol(ptr_t addr, elf_t * elf);
 void print_stack_trace(void);
 
 #endif /* _DEBUG_H_ */

@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // port.hpp for MRNIU/SimpleKernel.
 
 #ifndef _PORT_HPP_
@@ -46,6 +46,5 @@ static inline uint16_t inw(uint16_t port) {
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* _PORT_HPP_ */

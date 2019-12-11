@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // vga.hpp for MRNIU/SimpleKernel.
 
 #ifndef _VGA_HPP_
@@ -61,6 +61,5 @@ static inline uint16_t vga_entry(uint8_t uc, uint8_t color) {
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* _VGA_HPP_ */
