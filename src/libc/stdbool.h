@@ -16,7 +16,6 @@ typedef
 	true = 1,
 } bool;
 
-
 #endif /* __cplusplus */
 
 #endif /* _STDBOOL_H_ */
