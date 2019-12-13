@@ -1,24 +1,24 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // kernel.c for MRNIU/SimpleKernel.
 
-//#include <stdbool.h>
-#include "../include/kernel.h"
-#include "../include/vga.h"
-#include "../include/tty.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void kernel_main(void)
-{
-		/* Initialize terminal interface */
-		terminal_initialize();
+#include "include/kernel.h"
 
-		/* Newline support is left as an exercise. */
-		int a='!';
-		char c='!';
-		char * s="gg";
-		printk("__%c__%s\n",c,s);
-		printk("Hello Kernel!\n");
+void kernel_main(void) {
+	console_init(); // 控制台初始化
 
-
+	char c='!';
+	char * s="gg";
+	printk("__%c__%s\n",c,s);
+	printk("Simple Kernel\n");
+	return;
 }
+
+#ifdef __cplusplus
+}
+#endif
