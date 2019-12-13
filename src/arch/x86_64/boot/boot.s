@@ -1,5 +1,6 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+#
 # boot.s for MRNIU/SimpleKernel.
 
 # multiboot2 定义
@@ -57,71 +58,67 @@
 .set  MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED, 1
 .set  MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED, 2
 
-# 设置栈大小
-.set STACK_SIZE, 0x4000
+.code32
 
-.text
-.global start, _start
-.extern kernel_main
-
-start:
-_start:
-  jmp multiboot_entry
-
-
+.section .multiboot_header
 # multiboot2 文件头
-.align 8
+.align MULTIBOOT_HEADER_ALIGN
 multiboot_header:
-  .long MULTIBOOT2_HEADER_MAGIC
-  .long MULTIBOOT_ARCHITECTURE_I386
-  .long multiboot_header_end - multiboot_header
-  .long -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + multiboot_header_end - multiboot_header)
+    .long MULTIBOOT2_HEADER_MAGIC
+    .long MULTIBOOT_ARCHITECTURE_I386
+    .long multiboot_header_end - multiboot_header
+    .long -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + multiboot_header_end - multiboot_header)
 
 # 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
 
 # multiboot2 information request
-.align 8
+.align MULTIBOOT_HEADER_ALIGN
 mbi_tag_start:
-  .short MULTIBOOT_HEADER_TAG_INFORMATION_REQUEST
-  .short MULTIBOOT_HEADER_TAG_OPTIONAL
-  .long mbi_tag_end - mbi_tag_start
-  .long MULTIBOOT_TAG_TYPE_CMDLINE
-  .long MULTIBOOT_TAG_TYPE_MODULE
-  .long MULTIBOOT_TAG_TYPE_BOOTDEV
-  .long MULTIBOOT_TAG_TYPE_MMAP
-  .long MULTIBOOT_TAG_TYPE_ELF_SECTIONS
-  .long MULTIBOOT_TAG_TYPE_APM
-.align 8
+    .short MULTIBOOT_HEADER_TAG_INFORMATION_REQUEST
+    .short MULTIBOOT_HEADER_TAG_OPTIONAL
+    .long mbi_tag_end - mbi_tag_start
+    .long MULTIBOOT_TAG_TYPE_CMDLINE
+    .long MULTIBOOT_TAG_TYPE_MODULE
+    .long MULTIBOOT_TAG_TYPE_BOOTDEV
+    .long MULTIBOOT_TAG_TYPE_MMAP
+    .long MULTIBOOT_TAG_TYPE_ELF_SECTIONS
+    .long MULTIBOOT_TAG_TYPE_APM
+    .long MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR
+.align MULTIBOOT_HEADER_ALIGN
 mbi_tag_end:
 	.short MULTIBOOT_HEADER_TAG_END
-  .short 0
-  .long 8
+    .short 0
+    .long 8
 multiboot_header_end:
 
+.global _start
+.extern kernel_main
+.type start, @function
+_start:
+    jmp multiboot_entry
+
 multiboot_entry:
+    cli
 	# 设置栈地址
-  mov $stack_top, %esp
-  push $0
-  popf
+    mov $STACK_TOP, %esp
+    and $0xFFFFFFF0, %esp     # 栈地址按照 16 字节对齐
+    mov $0, %ebp          # 帧指针修改为 0
+    push $0
+    popf
 	# multiboot2_info 结构体指针
-  pushl %ebx
+    push %ebx
 	# 魔数
-	pushl %eax
-  call kernel_main
-  cli
+	push %eax
+    call kernel_main
+
 1:
-  hlt
-  jmp 1b
-  ret
+    hlt
+    jmp 1b
+    ret
 
 .size _start, . - _start
 
-.section .bss
-
-.align 8
-stack_bottom:
-  .skip STACK_SIZE
-stack_top:
-
-edata:
-end:
+.section .init.data
+STACK:
+    .skip 16384
+STACK_TOP:
