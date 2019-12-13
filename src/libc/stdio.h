@@ -10,9 +10,15 @@
 extern "C" {
 #endif
 
-extern int printk(const char * fmt, ...);
-extern int printk_color(unsigned char color, const char * format, ...);
-extern int printf(const char * fmt, ...);
+#include "stdint.h"
+
+int32_t printk(const char * fmt, ...);
+int32_t printk_color(unsigned char color, const char * format, ...);
+int32_t printf(const char * fmt, ...);
+int32_t printk_info(const char * fmt, ...);
+int32_t printk_debug(const char * fmt, ...);
+int32_t printk_test(const char * fmt, ...);
+int32_t printk_err(const char * fmt, ...);
 
 // 枚举颜色，与 vga_color 相同
 enum color {
@@ -33,6 +39,11 @@ enum color {
 	light_brown = 14,
 	white = 15,
 };
+
+#define COL_DEBUG light_cyan
+#define COL_ERROR light_red
+#define COL_INFO light_green
+#define COL_TEST green
 
 #ifdef __cplusplus
 }

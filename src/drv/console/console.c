@@ -30,8 +30,7 @@ void console_init(void) {
 	}
 	console_setcursorpos(0, 0);
 
-	printk_color(COL_INFO, "[INFO] ");
-	printk("console_init\n");
+	printk_info("console_init\n");
 }
 
 // 设置命令行颜色

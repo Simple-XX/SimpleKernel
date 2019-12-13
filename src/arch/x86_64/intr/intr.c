@@ -137,8 +137,7 @@ void idt_init(void) {
 	register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
 	register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
 
-	printk_color(COL_INFO, "[INFO] ");
-	printk("intr_init\n");
+	printk_info("intr_init\n");
 }
 
 static void die(char * str, uint32_t oesp, uint32_t int_no) {

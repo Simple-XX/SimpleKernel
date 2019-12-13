@@ -12,8 +12,7 @@ extern "C" {
 #endif
 
 void vmm_init() {
-	printk_color(COL_INFO, "[INFO] ");
-	printk("vmm_init\n");
+	printk_info("vmm_init\n");
 
 	return;
 }
