@@ -21,6 +21,7 @@
 #include "stdio.h"
 #include "multiboot2.h"
 #include "mem/pmm.h"
+#include "mem/vmm.h"
 
 void kernel_main(uint32_t magic, uint32_t addr);
 void console_init(void);
