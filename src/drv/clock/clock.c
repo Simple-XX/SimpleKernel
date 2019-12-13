@@ -29,8 +29,7 @@ void clock_init(void) {
 	register_interrupt_handler(IRQ0, &clock_handler);
 	enable_irq(IRQ0);
 
-	printk_color(COL_INFO, "[INFO] ");
-	printk("clock_init\n");
+	printk_info("clock_init\n");
 }
 
 #ifdef __cplusplus

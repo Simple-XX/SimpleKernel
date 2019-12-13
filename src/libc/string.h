@@ -6,6 +6,10 @@
 #ifndef _STRING_H_
 #define _STRING_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stddef.h"
 
@@ -19,5 +23,9 @@ extern char * strcat(char * dest, const char * src); // 字符串合并
 extern size_t strlen(const char * src);  // length of string
 extern void backspace(char * src);
 extern void append(char * src, char dest);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _STRING_H_ */

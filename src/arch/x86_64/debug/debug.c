@@ -12,8 +12,7 @@ extern "C" {
 void debug_init(ptr_t magic, ptr_t addr) {
 	UNUSED(magic);
 	UNUSED(addr);
-	printk_color(COL_DEBUG, "[DEBUG] ");
-	printk("debug_init\n");
+	printk_debug("debug_init\n");
 	// multiboot2_init(magic, addr);
 	return;
 }
@@ -28,16 +27,11 @@ void print_cur_status() {
 	                : "=m" ( reg1 ), "=m" ( reg2 ), "=m" ( reg3 ), "=m" ( reg4 ) );
 
 	// 打印当前的运行级别
-	printk_color(COL_DEBUG, "[DEBUG] ");
-	printk("%d:  @ring %d\n", round, reg1 & 0x3);
-	printk_color(COL_DEBUG, "[DEBUG] ");
-	printk("%d:  cs = %X\n", round, reg1);
-	printk_color(COL_DEBUG, "[DEBUG] ");
-	printk("%d:  ds = %X\n", round, reg2);
-	printk_color(COL_DEBUG, "[DEBUG] ");
-	printk("%d:  es = %X\n", round, reg3);
-	printk_color(COL_DEBUG, "[DEBUG] ");
-	printk("%d:  ss = %X\n", round, reg4);
+	printk_debug("%d:  @ring %d\n", round, reg1 & 0x3);
+	printk_debug("%d:  cs = %X\n", round, reg1);
+	printk_debug("%d:  ds = %X\n", round, reg2);
+	printk_debug("%d:  es = %X\n", round, reg3);
+	printk_debug("%d:  ss = %X\n", round, reg4);
 	++round;
 }
 

@@ -60,8 +60,7 @@ void gdt_init(void) {
 	// 加载任务寄存器
 	tss_load();
 
-	printk_color(COL_INFO, "[INFO] ");
-	printk("gdt_init\n");
+	printk_info("gdt_init\n");
 }
 
 #ifdef __cplusplus

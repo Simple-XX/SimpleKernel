@@ -21,6 +21,9 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	keyboard_init(); // 键盘初始化
 	debug_init(magic, addr);
 	showinfo();
+
+
+
 	while (1);
 
 	return;
