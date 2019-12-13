@@ -11,20 +11,15 @@ extern "C" {
 
 bool test_pmm() {
 	ptr_t allc_addr = 0;
-	printk_color(COL_TEST, "[TEST] ");
-	printk_color(red, "Test Physical Memory Alloc :\n");
+	printk_test("Test Physical Memory Alloc :\n");
 	allc_addr = pmm_alloc_page();
-	printk_color(COL_TEST, "[TEST] ");
-	printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc_page();
-	printk_color(COL_TEST, "[TEST] ");
-	printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc_page();
-	printk_color(COL_TEST, "[TEST] ");
-	printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc_page();
-	printk_color(COL_TEST, "[TEST] ");
-	printk_color(red, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	return true;
 }
 
