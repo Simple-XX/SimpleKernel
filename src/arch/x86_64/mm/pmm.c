@@ -38,10 +38,8 @@ void pmm_init() {
 			}
 		}
 	}
-	printk_color(COL_INFO, "[INFO] ");
-	printk ("pmm_init\n");
-	printk_color(COL_INFO, "[INFO] ");
-	printk ("phy_pages_count: %d\n", phy_pages_count);
+	printk_info("pmm_init\n");
+	printk_info ("phy_pages_count: %d\n", phy_pages_count);
 	return;
 }
 

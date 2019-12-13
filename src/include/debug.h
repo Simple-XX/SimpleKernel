@@ -14,11 +14,6 @@
 
 #define DEBUG 1
 
-#define COL_DEBUG light_cyan
-#define COL_ERROR light_red
-#define COL_INFO light_green
-#define COL_TEST green
-
 void debug_init(ptr_t magic, ptr_t addr);
 void print_cur_status(void);
 void panic(const char * msg);
