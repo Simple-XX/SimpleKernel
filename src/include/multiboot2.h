@@ -16,6 +16,10 @@
 #ifndef _MULTIBOOT2_H_
 #define _MULTIBOOT2_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
@@ -354,5 +358,9 @@ multiboot_memory_map_entry_t * mmap_entries;
 multiboot_mmap_tag_t * mmap_tag;
 
 #endif /*  ! ASM_FILE */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _MULTIBOOT2_H_ */

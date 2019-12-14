@@ -6,6 +6,10 @@
 #ifndef _CLOCK_H_
 #define _CLOCK_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stdio.h"
 #include "port.hpp"
@@ -30,5 +34,9 @@
 
 void clock_init(void);
 void clock_handler(pt_regs_t *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CLOCK_H_ */

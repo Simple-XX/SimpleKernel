@@ -6,6 +6,10 @@
 #ifndef _8259A_H_
 #define _8259A_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "port.hpp"
 #include "cpu.hpp"
@@ -22,5 +26,9 @@ void init_interrupt_chip(void);
 
 // 重设 8259A 芯片
 void clear_interrupt_chip(uint32_t intr_no);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _8259A_H_ */

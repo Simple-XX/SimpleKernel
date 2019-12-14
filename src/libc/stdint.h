@@ -6,6 +6,10 @@
 #ifndef _STDINT_H_
 #define _STDINT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef signed char int8_t;
 typedef short int int16_t;
 typedef int int32_t;
@@ -20,6 +24,10 @@ typedef unsigned long long uint64_t;
 typedef uint64_t ptr_t;
 #else
 typedef uint32_t ptr_t;
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* _STDINT_H_ */

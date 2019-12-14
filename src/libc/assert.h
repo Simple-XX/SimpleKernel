@@ -5,6 +5,11 @@
 
 #ifndef _ASSERT_H_
 #define _ASSERT_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdio.h"
 
 #define assert(test) \
@@ -12,5 +17,9 @@
 				printk_err("ASSERT ERROR!"); \
 				while(1); \
 		}
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _ASSERT_H_ */

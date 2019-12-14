@@ -11,6 +11,10 @@
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* This tutorial will only work for the 32-bit ix86 targets. */
 // #if !defined( __i386__ ) | !defined(__x86_64__)
 // #error "Please compile that with a ix86-elf compiler"
@@ -39,5 +43,9 @@ __attribute__( ( section(".init.text") ) ) void switch_stack(ptr_t stack_top);
 __attribute__( ( section(".init.text") ) ) void mm_init(void);
 
 extern void kernel_main(ptr_t magic, ptr_t addr);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _BOOTINIT_H_ */
