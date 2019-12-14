@@ -6,6 +6,10 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stddef.h"
 #include "string.h"
 #include "stdio.h"
@@ -146,5 +150,9 @@ typedef
 	size_t count;
 	uint8_t buff[KB_BUFSIZE];
 } kb_input_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _KEYBOARD_H_ */

@@ -1,11 +1,11 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+#
 # gdt_s.s for MRNIU/SimpleKernel.
 
 .code32
 
-.section .init.text
+.section .text
 .global gdt_load
 gdt_load:
     cli

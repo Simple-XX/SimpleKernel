@@ -5,6 +5,8 @@
 
 .code32
 
+.section .text
+
 # 加载 idt
 .global idt_load
 idt_load:

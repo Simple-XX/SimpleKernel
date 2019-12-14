@@ -6,6 +6,10 @@
 #ifndef _PMM_H_
 #define _PMM_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stdio.h"
 #include "stddef.h"
@@ -47,5 +51,9 @@ ptr_t pmm_alloc_page(void);
 ptr_t pmm_alloc_pages(uint32_t size);
 
 void pmm_free_page(ptr_t page);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _PMM_H_ */
