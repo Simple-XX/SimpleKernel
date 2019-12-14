@@ -6,6 +6,10 @@
 #ifndef _TEST_H_
 #define _TEST_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
@@ -14,11 +18,14 @@
 #include "mem/vmm.h"
 #include "../drv/clock/include/clock.h"
 #include "../drv/keyboard/include/keyboard.h"
-#include "../kernel/include/heap.h"
 
 bool test(void);
 bool test_pmm(void);
 bool test_vmm(void);
 bool test_libc(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _TEST_H_ */

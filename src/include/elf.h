@@ -6,6 +6,10 @@
 #ifndef _ELF_H_
 #define _ELF_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 
 typedef uint16_t Elf32_Half; // Unsigned half int
@@ -161,5 +165,9 @@ typedef
 
 static elf_t kernel_elf __attribute__( ( unused ) );
 // bool elf_check_file(struct multiboot_tag_elf_sections * tag);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _ELF_H_ */

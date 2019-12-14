@@ -6,6 +6,10 @@
 #ifndef _DATASTRUCTURE_H_
 #define _DATASTRUCTURE_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stddef.h"
 #include "stdbool.h"
 
@@ -274,5 +278,9 @@ ListValue list_iter_next(ListIterator *iterator);
  */
 
 void list_iter_remove(ListIterator *iterator);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _DATASTRUCTURE_H_ */

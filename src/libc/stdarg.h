@@ -6,6 +6,10 @@
 #ifndef _STDARG_H_
 #define _STDARG_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef char * va_list;
 
 // 用来得到 TYPE 元素类型的字节大小，若不足4字节(short,char),那么认为这个元素的大小为4字节，
@@ -25,5 +29,9 @@ typedef char * va_list;
 
 // 把指针 va_list 置 0
 #define va_end(AP) (AP = (va_list) 0)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _STDARG_H_ */

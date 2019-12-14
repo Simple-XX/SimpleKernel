@@ -6,4 +6,12 @@
 #ifndef _STDLIB_H_
 #define _STDLIB_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _STDLIB_H_ */

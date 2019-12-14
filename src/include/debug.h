@@ -6,6 +6,10 @@
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stddef.h"
 #include "stdio.h"
 #include "string.h"
@@ -19,5 +23,9 @@ void print_cur_status(void);
 void panic(const char * msg);
 const char * elf_lookup_symbol(ptr_t addr, elf_t * elf);
 void print_stack_trace(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _DEBUG_H_ */

@@ -6,6 +6,10 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Check if the compiler thinks we are targeting the wrong operating system. */
 #if defined( __linux__ )
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -50,5 +54,9 @@ void showinfo(void) {
 	printk_info("kernel in memory size: %d KB, %d pages\n",
 	            ( kernel_end - kernel_start ) / 1024, ( kernel_end - kernel_start ) / 1024 / 4);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _KERNEL_H_ */
