@@ -8,8 +8,8 @@ env:
   - HOMEBREW_TEMP=~/homebrew-temp
 
 before_install:
-  - brew install i386-elf-binutils
-  - brew install i386-elf-gcc
+  - brew install ./tools/x86_64-elf-binutils.rb
+  - brew install ./tools/x86_64-elf-gcc.rb
 
 script:
   - cd ./src
