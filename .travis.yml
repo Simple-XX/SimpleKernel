@@ -1,9 +1,10 @@
 os: osx
 language: c
 
-addons:
-  homebrew:
-    update: false
+env:
+  global:
+  - HOMEBREW_LOGS=~/homebrew-logs
+  - HOMEBREW_TEMP=~/homebrew-temp
 
 before_install:
   - brew install i386-elf-binutils
