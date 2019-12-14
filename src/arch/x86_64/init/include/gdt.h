@@ -6,6 +6,10 @@
 #ifndef _GDT_H_
 #define _GDT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stdio.h"
 #include "debug.h"
@@ -120,5 +124,9 @@ void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, ui
 extern void gdt_load(uint32_t); // GDT 加载到 GDTR 的函数
 extern void tss_load(); // TSS 刷新[汇编实现]
 void gdt_init(void); // 初始化全局描述符表
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _GDT_H_ */

@@ -113,6 +113,6 @@ void vmm_init(void);
 
 #ifdef __cplusplus
 }
-#endif // __cplusplus
+#endif
 
 #endif /* INCLUDE_VMM_H */
