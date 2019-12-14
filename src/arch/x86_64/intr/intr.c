@@ -168,7 +168,6 @@ static void die(char * str, uint32_t oesp, uint32_t int_no) {
 	cpu_hlt();
 }
 
-
 void divide_error(pt_regs_t * regs) {
 	die("Divide Error.", regs->old_esp, regs->int_no);
 }
