@@ -1,5 +1,6 @@
 os: osx
 language: c
+osx_image: xcode11.2
 
 env:
   global:
@@ -7,8 +8,8 @@ env:
   - HOMEBREW_TEMP=~/homebrew-temp
 
 before_install:
-  - brew install i386-elf-binutils
-  - brew install i386-elf-gcc
+  - brew install x86_64-elf-binutils
+  - brew install x86_64-elf-gcc
 
 script:
   - cd ./src
