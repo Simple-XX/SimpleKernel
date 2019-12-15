@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // mouse.h for MRNIU/SimpleKernel.
 #ifndef _MOUSE_H_
 #define _MOUSE_H_
