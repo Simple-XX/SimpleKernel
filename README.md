@@ -160,9 +160,9 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 请我喝杯咖啡吧！
 
-![](https://tva1.sinaimg.cn/large/006tNbRwly1g9yjfoboa4j30go0p0411.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjfoboa4j30go0p0411.jpg" width="30%" height="50%">
 
-![](https://tva1.sinaimg.cn/large/006tNbRwly1g9yjg7p0auj30u014qn7q.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjg7p0auj30u014qn7q.jpg" width="30%" height="50%">
 
 ## 版权信息
 
