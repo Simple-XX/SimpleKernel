@@ -6,7 +6,6 @@
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 [![HitCount](http://hits.dwyl.io/MRNIU/SimpleKernel.svg)](http://hits.dwyl.io/MRNIU/SimpleKernel)
 
-
 [English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
 
 # SimpleKernel
@@ -60,14 +59,11 @@ sh setup.sh
 
 ![](https://ws3.sinaimg.cn/large/006tKfTcly1g16s317uw8j316r0u0tkt.jpg)
 
-
-
 ## 目录结构
 
 - 原则
 
     整个工程按照功能模块划分子目录，每个子目录再划分头文件和源文件目录，以便架构清晰、易懂。
-
 
 ### 目录设计
 - 原则
@@ -94,17 +90,9 @@ sh setup.sh
 
 ## Makefile
 
-
-
-
-
-
-
 ## 测试
 
-
-
-### 自动化集成
+### 自动集成
 
 合并到 master 分支时需要通过 Travis CI 测试。编译没有错误即可。
 
@@ -168,13 +156,13 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 [c-algorithms](https://github.com/fragglet/c-algorithms)
 
-
-
 ## 支持作者
 
 请我喝杯咖啡吧！
 
+![](https://tva1.sinaimg.cn/large/006tNbRwly1g9yjfoboa4j30go0p0411.jpg)
 
+![](https://tva1.sinaimg.cn/large/006tNbRwly1g9yjg7p0auj30u014qn7q.jpg)
 
 ## 版权信息
 
