@@ -1,6 +1,6 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+#
 # Makefile.env for MRNIU/SimpleKernel.
 
 # 设置 make 环境
@@ -69,12 +69,12 @@ ifeq ($(ARCH),x86_64)
     bootloader.bin: LDFLAGS = -A i386 -m elf_i386 -T$(BOOT_DIR)/link32.ld
     bootloader.bin: $(BOOTLOADER_OBJ)
 	    @echo 正在生成 BootLoader... $<
-    	@$(LD) $(LDFLAGS) $^ -o $@
+    	# @$(LD) $(LDFLAGS) $^ -o $@
 
     .PHONY: kernel.bin
     kernel.bin: $(KERNEL_OBJ)
 	    @echo 正在生成内核... $<
-        @$(LD) $(LDFLAGS) $^ -o $@
+		@$(LD) $(LDFLAGS) $^ -o $@
 else
     C_SOURCES := $(shell find . -name "*.c")
     CXX_SOURCES := $(shell find . -name "*.cpp")
