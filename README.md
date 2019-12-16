@@ -13,77 +13,84 @@
 
 ## 关键词
 
-- Grub2
+- Kernel
+- C/C++
+
 - UXIN-like
-- 多任务
-- ELF
-- IDE disk
-- EXT2 文件系统
-- POSIX API
-- libc
-- 一些 shell命令
+- Multiboot2
 
 ## 简介
 
 SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 
-使用的语言：
-
-- x86 汇编
-
-- C
-
-- C++
-
-- Shell
-
-- make
-
-- x86
-
-
 ## 开发环境
 
 - Ubuntu Linux
 
-    - Bochs
-        编译安装
-
-    - i386-elf 交叉编译工具链
-        编译安装（./tools/）
-
+    - bochs
+    - i386-elf tool chain
+    i386-elf-binutils, i386-elf-gcc, i386-elf-grub
+    - xorriso
+    
 - Mac
-    - Bochs
 
-            brew install bochs
+    - Homebrew
 
-    - i386-elf 交叉编译工具链
+        https://brew.sh
 
-            brew install i386-elf-binutils
-            brew install i386-elf-gcc
-            cd SimpleKernel/ && brew install tools/i386-elf-grub.rb
+    - bochs
 
-注：
-Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试通过。
+    - i386-elf tool chain
+
+        i386-elf-binutils, i386-elf-gcc, i386-elf-grub
+
+    - xorriso
+
+注：可以使用 setup.sh 自动安装环境
 
 ## 如何运行
 
-    git clone https://github.com/MRNIU/SimpleKernel.git
-    cd SimpleKernel/
-    sh setup.sh
-
-在出现的 bochs 命令行中 输入 `c` 即可运行。
+```shell
+git clone https://github.com/MRNIU/SimpleKernel.git
+cd SimpleKernel/
+sh setup.sh
+```
 
 运行截图
 
-![屏幕快照 2019-03-18 上午11.16.19](https://ws3.sinaimg.cn/large/006tKfTcly1g16s317uw8j316r0u0tkt.jpg)
+![](https://ws3.sinaimg.cn/large/006tKfTcly1g16s317uw8j316r0u0tkt.jpg)
 
-更多 bochs 使用方式请参考 bochs 的相关资料。
 
 
 ## 目录结构
 
+- 原则
 
+    整个工程按照功能模块划分子目录，每个子目录再划分头文件和源文件目录，以便架构清晰、易懂。
+
+
+### 目录设计
+- 原则
+
+    目录的命名能准确描述模块的基本功能，建议用小写字母且不含下划线、点等特殊符号；
+
+    目录必须放于相包含的父目录之下，并需要明确与其他目录间的耦合性。
+
+- 示例
+
+	kernel：系统内核部分；
+	libs：依赖库；
+
+### 依赖关系
+- 原则
+
+    新添加组件往往依赖于系统原有组件，必须以最小耦合的方式明确所直接依赖的组件。
+
+### 头文件
+
+#### 文件命名
+
+​	头文件命名能准确描述文件所包含的模块内容，达到通俗、易懂的目的。
 
 ## Makefile
 
@@ -95,7 +102,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 
 ## 测试
 
-目前只有很简陋的 CI。
+
 
 ### 自动化集成
 
@@ -110,7 +117,6 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## TODO
 
 - 修复 bug
-- 鼠标输入处理
 - debug 函数
 - 添加编码规范测试
 - 并发
@@ -121,8 +127,6 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## 贡献者
 
 [MRNIU](https://github.com/MRNIU)
-
-您也可以在贡献者名单中参看所有参与该项目的开发者。
 
 ## 贡献
 
@@ -163,6 +167,14 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 [DNKernel](https://github.com/morimolymoly/DNKernel)
 
 [c-algorithms](https://github.com/fragglet/c-algorithms)
+
+
+
+## 支持作者
+
+请我喝杯咖啡吧！
+
+
 
 ## 版权信息
 
