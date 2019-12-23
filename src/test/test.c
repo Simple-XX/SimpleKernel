@@ -9,16 +9,16 @@ extern "C" {
 
 #include "include/test.h"
 
-bool test_pmm() {
+bool test_pmm(void) {
 	ptr_t allc_addr = 0;
 	printk_test("Test Physical Memory Alloc :\n");
-	allc_addr = pmm_alloc_page();
+	allc_addr = pmm_alloc(9000);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc_page();
+	allc_addr = pmm_alloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc_page();
+	allc_addr = pmm_alloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc_page();
+	allc_addr = pmm_alloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	return true;
 }

@@ -10,6 +10,8 @@ extern "C" {
 #include "include/kernel.h"
 #include "../test/include/test.h"
 
+extern pgd_t pgd_kernel[PGD_SIZE];
+
 // 内核入口
 // 指针是 32 位的
 void kernel_main(ptr_t magic, ptr_t addr) {
@@ -24,9 +26,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	vmm_init();
 
 	showinfo();
-
-	uint32_t * ptr = (uint32_t*)0xA0000000;
-	uint32_t do_page_fault = *ptr;
+	test_pmm();
 
 	while (1);
 
