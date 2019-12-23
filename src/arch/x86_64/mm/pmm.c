@@ -43,21 +43,20 @@ void pmm_init() {
 	return;
 }
 
-ptr_t pmm_alloc_page(void) {
+ptr_t pmm_alloc(uint32_t byte) {
 	assert(pmm_stack_top != 0);
-	ptr_t page = pmm_stack[pmm_stack_top--];
-	memset( (void*)page, 0, PMM_PAGE_SIZE );
-	return page;
-}
-
-ptr_t pmm_alloc_pages(uint32_t size) {
+	uint32_t count = byte/PMM_PAGE_SIZE;
+	// 将 size 向上取整 4KB
+	if(byte % PMM_PAGE_SIZE != 0) {
+		count += 1;
+	}
 	ptr_t page;
 	do {
 		assert(pmm_stack_top != 0);
 		page = pmm_stack[pmm_stack_top--];
-		size--;
-	} while ((size/PMM_PAGE_SIZE) > 0);
-	memset( (void*)page, 0, PMM_PAGE_SIZE * (size/PMM_PAGE_SIZE) );
+		count--;
+	} while (count > 0);
+	memset( (void*)page, 0, PMM_PAGE_SIZE * count );
 	return page;
 }
 

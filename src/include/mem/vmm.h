@@ -103,6 +103,17 @@ typedef
 // 初始化虚拟内存管理
 void vmm_init(void);
 
+// 使用 flags 指出的页权限，把物理地址 pa 映射到虚拟地址 va
+void map(pgd_t *pgd_now, ptr_t va, ptr_t pa, uint32_t flags);
+
+// 取消虚拟地址 va 的物理映射
+void unmap(pgd_t *pgd_now, ptr_t va);
+
+// 如果虚拟地址 va 映射到物理地址则返回 1
+// 同时如果 pa 不是空指针则把物理地址写入 pa 参数
+uint32_t get_mapping(pgd_t *pgd_now, ptr_t va, ptr_t pa);
+
+// 更换当前页目录
 void switch_pgd(ptr_t pd);
 
 #ifdef __cplusplus

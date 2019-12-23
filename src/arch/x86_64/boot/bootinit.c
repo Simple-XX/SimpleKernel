@@ -66,7 +66,7 @@ void switch_stack(ptr_t stack_top) {
 void kernel_entry(ptr_t magic, ptr_t addr) {
 	mm_init();
 	switch_stack(kernel_stack_top);
-	kernel_main(PAGE_OFFSET + magic, PAGE_OFFSET + addr);
+	kernel_main(magic, PAGE_OFFSET + addr);
 	return;
 }
 
