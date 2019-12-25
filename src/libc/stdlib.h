@@ -10,6 +10,14 @@
 extern "C" {
 #endif
 
+int abs(int);
+int atoi(const char *);
+long atol(const char *);
+long long atoll(const char *);
+
+void * malloc(size_t);
+void free(void *);
+
 #ifdef __cplusplus
 }
 #endif
