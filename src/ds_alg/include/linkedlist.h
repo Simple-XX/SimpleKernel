@@ -1,10 +1,10 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 //
-// datastructuer.h for MRNIU/SimpleKernel.
+// linkedlist.h for MRNIU/SimpleKernel.
 
-#ifndef _DATASTRUCTURE_H_
-#define _DATASTRUCTURE_H_
+#ifndef _LINKEDLIST_H_
+#define _LINKEDLIST_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -283,4 +283,4 @@ void list_iter_remove(ListIterator *iterator);
 }
 #endif
 
-#endif /* _DATASTRUCTURE_H_ */
+#endif /* _LINKEDLIST_H_ */
