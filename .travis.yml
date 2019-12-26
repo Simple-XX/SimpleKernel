@@ -8,11 +8,11 @@ env:
   - HOMEBREW_TEMP=~/homebrew-temp
 
 before_install:
-  - brew install x86_64-elf-binutils
-  - brew install x86_64-elf-gcc
+  - brew install i386-elf-binutils
+  - brew install i386-elf-gcc
 
 script:
   - cd ./src
-  - make
+  - make remake
 after_script:
   - make clean
