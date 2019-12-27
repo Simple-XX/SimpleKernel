@@ -1,6 +1,6 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+#
 # setup.sh for MRNIU/SimpleKernel.
 
 #!/usr/bin/env bash
@@ -9,10 +9,16 @@ set -e
 # 输出实际执行内容
 # set -x
 
+TARGET="i386-elf"
+# ARCH: i386, x86_64
+ARCH="i386"
+# 虚拟机
+SIMULATOR="bochs"
 # bochs 配置文件
 bochsrc="bochsrc.txt"
 # 内核映像
-img='./src/kernel.kernel'
+kernel='./src/kernel.bin'
+bootloader='./src/bootloader.bin'
 # 软盘
 disk='simplekernel.img'
 # 安装目录
@@ -21,48 +27,62 @@ boot_folder='./boot_folder/boot/'
 folder='./boot_folder'
 # 工具目录
 tool='./tools'
-
-iso_boot='./iso/boot/kernel.kernel'
+iso_boot_grub='./iso/boot/grub'
+iso_boot='./iso/boot/'
 iso='./simplekernel.iso'
 iso_folder='./iso/'
 # 判断操作系统类型
-OS=0
-which_os=`uname -s`
-if [ ${which_os} == "Darwin" ]; then
-  OS=0
-elif [ ${which_os} == "Darwin" ]; then
-  OS=1
-fi
+OS=`uname -s`
 
 # 检测环境，如果没有安装需要的软件，则安装
-if ! [ -x "$(command -v bochs)" ]; then
-  echo 'Error: bochs is not installed.'
-  echo 'Install bochs...'
-  if [ ${OS} == 0 ]; then
-    brew install bochs
-  elif [ ${OS} == 1 ]; then
-    shell ${tool}/bochs.sh
-  fi
+if ! [ -x "$(command -v ${SIMULATOR})" ]; then
+    echo 'Error: '${SIMULATOR}' is not installed.'
+    echo 'Install '${SIMULATOR}'...'
+    if [ ${OS} == "Darwin" ]; then
+        brew install ${SIMULATOR}
+    elif [ ${OS} == "Linux" ]; then
+        shell ${tool}/${SIMULATOR}.sh
+    fi
 fi
 
-if ! [ -x "$(command -v i386-elf-ld)" ]; then
-  echo 'Error: i386-elf-binutils is not installed.'
-  echo 'Install i386-elf-binutils...'
-  if [ ${OS} == 0 ]; then
-    brew install i386-elf-binutils
-  elif [ ${OS} == 1 ]; then
-    shell ${tool}/i386-elf-binutils.sh
-  fi
+if ! [ -x "$(command -v ${TARGET}-ld)" ]; then
+    echo 'Error: '${TARGET}'-binutils is not installed.'
+    echo 'Install '${TARGET}'-binutils...'
+    if [ ${OS} == "Darwin" ]; then
+        brew install ${TARGET}-binutils
+    elif [ ${OS} == "Linux" ]; then
+        shell ${tool}/${TARGET}-binutils.sh
+    fi
 fi
 
-if ! [ -x "$(command -v i386-elf-gcc)" ]; then
-  echo 'Error: i386-elf-gcc is not installed.'
-  echo 'Install i386-elf-gcc...'
-  if [ ${OS} == 0 ]; then
-    brew install i386-elf-gcc
-  elif [ ${OS} == 1 ]; then
-    shell ${tool}/i386-elf-gcc.sh
-  fi
+if ! [ -x "$(command -v ${TARGET}-gcc)" ]; then
+    echo 'Error: '${TARGET}'-gcc is not installed.'
+    echo 'Install '${TARGET}'-gcc...'
+    if [ ${OS} == "Darwin" ]; then
+        brew install ${TARGET}-gcc
+    elif [ ${OS} == "Linux" ]; then
+        shell ${tool}/${TARGET}-gcc.sh
+    fi
+fi
+
+if ! [ -x "$(command -v ${TARGET}-grub-file)" ]; then
+    echo 'Error: '${TARGET}'-grub is not installed.'
+    echo 'Install '${TARGET}'-grub...'
+    if [ ${OS} == "Darwin" ]; then
+        brew install ${TARGET}-grub
+    elif [ ${OS} == "Linux" ]; then
+        shell ${tool}/${TARGET}-grub.sh
+    fi
+fi
+
+if ! [ -x "$(command -v xorriso)" ]; then
+    echo 'Error: xorriso is not installed.'
+    echo 'Install xorriso...'
+    if [ ${OS} == "Darwin" ]; then
+        brew install xorriso
+    elif [ ${OS} == "Linux" ]; then
+        shell ${tool}/xorriso.sh
+    fi
 fi
 
 # 重新编译
@@ -70,30 +90,35 @@ cd src/
 make remake
 cd ../
 
-if i386-elf-grub-file --is-x86-multiboot2 ${img}; then
-  echo Multiboot2 Confirmed!
+if ${TARGET}-grub-file --is-x86-multiboot2 ${kernel}; then
+    echo Multiboot2 Confirmed!
+elif [ ${ARCH} == "x86_64" ]; then
+    if ${TARGET}-grub-file --is-x86-multiboot2 ${bootloader}; then
+        echo Multiboot2 Confirmed!
+    else
+        echo The File is Not Multiboot.
+        exit
+    fi
+fi
+
+rm -rf -f ${iso_boot}/*
+cp ${kernel} ${iso_boot}
+mkdir ${iso_boot_grub}
+touch ${iso_boot_grub}/grub.cfg
+if [ ${ARCH} == "x86_64" ]; then
+    cp ${bootloader} ${iso_boot}
+    echo 'set timeout=15
+    set default=0
+    menuentry "SimpleKernel" {
+       multiboot2 /boot/bootloader.bin
+       module /boot/kernel.bin "KERNEL_BIN"
+   }' >${iso_boot_grub}/grub.cfg
 else
-  echo the file is not multiboot
-  exit
+    echo 'set timeout=15
+    set default=0
+    menuentry "SimpleKernel" {
+       multiboot2 /boot/kernel.bin "KERNEL_BIN"
+   }' >${iso_boot_grub}/grub.cfg
 fi
-
-
-
-# 把 boot.img 挂载到当前目录，然后将 kernel.img 写入 boot 目录，取消挂载。
-# 以 bochrc.txt 为配置文件运行 bochs。
-if [ ${OS} == 0 ]; then
-  # mac 下的命令与 linux 的不同
-  # hdiutil attach -mountpoint ${folder} ${disk}
-  # cp ${img} ${boot_folder}
-  # hdiutil detach ${folder}
-  cp ${img} ${iso_boot}
-  i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
-  bochs -q -f ${bochsrc}
-elif [ ${OS} == 1 ]; then
-  mkdir ${folder}
-  mount ${disk} ${folder}
-  cp ${img} ${boot_folder}
-  unmount ${folder}
-  rm -rf ${folder}
-  bochs -q -f ${bochsrc}
-fi
+${TARGET}-grub-mkrescue -o ${iso} ${iso_folder}
+${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
