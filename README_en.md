@@ -1,46 +1,56 @@
-
 ![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
 ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+[![HitCount](http://hits.dwyl.io/MRNIU/SimpleKernel.svg)](http://hits.dwyl.io/MRNIU/SimpleKernel)
 
 [English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
+
 # SimpleKernel
+
+## Key Words
+
+- bochs
+- multiboot2
+- grub2
+- kernel
+- Linux-like
+- Operating system
+- POSIX
+- concurrent
 
 ## Abstract
 
-SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
+SimpleKernel, a simple kernel for learning. Contains the basic functionality of an operating system
 
-使用的语言：
+Kernels with different levels of completion are available, and you can start from where you like.
 
-- x86 汇编
-- C
-- C++
-- Shell
-- make
-
-## 开发环境
+## Environment
 
 - Ubuntu Linux
 
     - Bochs
-        编译安装
-
-    - i386-elf 交叉编译工具链
-        编译安装
+        Install by compiling
+    - i386-elf Cross-compiling tool chain
+        Install by compiling (./tools/)
 
 - Mac
     - Bochs
 
             brew install bochs
 
-    - i386-elf 交叉编译工具链
+    - i386-elf Cross-compiling tool chain
 
-            brew install i386-elf-binutils
-            brew install i386-elf-gcc
+        ```shell
+        brew install i386-elf-binutils
+        brew install i386-elf-gcc
+        cd SimpleKernel/ && brew install ./i386-elf-grub.rb
+        ```
 
-注：
-Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试通过。
+NOTE：
+Mac 10.14.1, bochs 2.6.9, i386-elf-binutils 2.31.1, i386-elf-gcc 8.2.0 pass-test.
 
 ## RUN
 
@@ -48,139 +58,192 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
     cd SimpleKernel/
     sh setup.sh
 
-在出现的 bochs 命令行中 输入 `c` 即可运行。
+Input `c` to bochs to run.
 
-运行截图
+Screenshot
 
-![屏幕快照 2018-12-10 下午8.40.12](https://lh3.googleusercontent.com/-bMiOQG70raM/XA5ijMqVcLI/AAAAAAAAAGU/YB_HvVl8JD4PiKbV1UHfQA4HqeD6xWCxACHMYCw/I/%255BUNSET%255D)
+![屏幕快照 2019-03-18 上午11.16.19](https://ws2.sinaimg.cn/large/006tKfTcly1g16s32dgywj316r0u0tkt.jpg)
 
-![屏幕快照 2018-12-10 下午8.40.38](https://lh3.googleusercontent.com/-Lp2Xea_cLgM/XA5ijHG93RI/AAAAAAAAAGc/wpYAqRo7wGIABAAi6jGz3NRhASB2aOQywCHMYCw/I/%255BUNSET%255D)
-
-![屏幕快照 2018-12-10 下午8.40.50](https://lh3.googleusercontent.com/-DwLqMLIWGps/XA5ijD1nZvI/AAAAAAAAAGY/PeRQd2FN8qoOEGq4LEx1vxgmFCmq8qUYACHMYCw/I/%255BUNSET%255D)
-
-更多 bochs 使用方式请参考 bochs 的相关资料。
+If you need more bochs usage, please refer to bochs official documentation.
 
 
 ## QUICK START
 
 ```
-├── bochsout.txt bochs output
-├── bochsrc.txt bochs configuration file
+├── LICENSE
+├── README.md
+├── README_en.md
+├── bochsrc.txt
+├── debug_info
+│   ├── bochsout.txt
+│   ├── diff.log
+│   ├── error.log
+│   └── normal.log
+├── docs
+│   └── README.md
+├── fs.img
+├── iso
+│   └── boot
+│       ├── grub
+│       │   └── grub.cfg
+│       └── kernel.kernel
 ├── setup.sh
 ├── simplekernel.img
-├── someknowledge
-├── src/ source directory
-│   ├── Makefile build rules
-│   ├── arch/ 架构相关代码
+├── simplekernel.iso
+├── src
+│   ├── Makefile
+│   ├── READMD.md
+│   ├── arch
 │   │   ├── README.md
-│   │   ├── i386/ i386 架构
+│   │   ├── i386
 │   │   │   ├── README.md
-│   │   │   ├── boot/ boot code，use multiboot
+│   │   │   ├── boot
+│   │   │   │   ├── boot.o
 │   │   │   │   ├── boot.s
 │   │   │   │   └── link.ld
-│   │   │   ├── clock.c
-│   │   │   ├── clock.h
-│   │   │   ├── cpu.hpp CPU操作
-│   │   │   ├── debug/ debug function
-│   │   │   │   └── debug.c
-│   │   │   ├── intr/ 中断设置
+│   │   │   ├── debug
+│   │   │   │   ├── debug.c
+│   │   │   │   └── debug.o
+│   │   │   ├── intr
 │   │   │   │   ├── README.md
-│   │   │   │   ├── intr.c idt 设置
+│   │   │   │   ├── intr.c
 │   │   │   │   ├── intr.h
+│   │   │   │   ├── intr.o
+│   │   │   │   ├── intr_s.o
 │   │   │   │   └── intr_s.s
-│   │   │   └── mm/ 内存管理
+│   │   │   └── mm
 │   │   │       ├── README.md
-│   │   │       ├── gdt.c gdt 设置
+│   │   │       ├── gdt.c
 │   │   │       ├── gdt.h
-│   │   │       ├── gdt_s.s
-│   │   │       ├── pmm.c 物理内存管理
-│   │   │       ├── pmm.h
-│   │   │       ├── vmm.c 虚拟内存管理
-│   │   │       └── vmm.h
-│   │   └── x64/ x64 架构
+│   │   │       ├── gdt.o
+│   │   │       ├── gdt_s.o
+│   │   │       └── gdt_s.s
+│   │   └── x64
 │   │       └── TODO
-│   ├── include/ 头文件
-│   │   ├── DataStructuer/ data structure
-│   │   │   ├── BinarySearchTree.cpp
-│   │   │   ├── DataStructuer.h
-│   │   │   ├── LinkedList.cpp
-│   │   │   ├── Queue.cpp 队列
-│   │   │   ├── SortAlgorithm.cpp 排序算法
-│   │   │   └── Stack.cpp 栈
+│   ├── include
 │   │   ├── README.md
+│   │   ├── console.hpp
+│   │   ├── cpu.hpp
 │   │   ├── debug.h
-│   │   ├── drv/ 设备头文件
+│   │   ├── drv
 │   │   │   ├── keyboard.h
 │   │   │   └── mouse.h
-│   │   ├── elf.h elf 格式定义
-│   │   ├── kernel.h 内核函数直接引用的头文件
-│   │   ├── libc/ c 标准库
+│   │   ├── ds_alg
+│   │   │   ├── LinkedList.c
+│   │   │   ├── LinkedList.o
+│   │   │   ├── alg.h
+│   │   │   └── datastructure.h
+│   │   ├── elf.h
+│   │   ├── fs
+│   │   ├── heap.c
+│   │   ├── heap.h
+│   │   ├── heap.o
+│   │   ├── intr
+│   │   │   ├── clock.c
+│   │   │   ├── clock.h
+│   │   │   └── clock.o
+│   │   ├── kernel.h
+│   │   ├── libc
 │   │   │   ├── README.md
-│   │   │   ├── assert.h 断言
+│   │   │   ├── assert.h
 │   │   │   ├── stdarg.h
 │   │   │   ├── stdbool.h
 │   │   │   ├── stddef.h
 │   │   │   ├── stdint.h
-│   │   │   ├── stdio/ 标准输入输出
+│   │   │   ├── stdio
 │   │   │   │   ├── printk.c
-│   │   │   │   └── vsprintf.c
+│   │   │   │   ├── printk.o
+│   │   │   │   ├── vsprintf.c
+│   │   │   │   └── vsprintf.o
 │   │   │   ├── stdio.h
-│   │   │   ├── string/ 字符串处理
-│   │   │   │   └── string.c
-│   │   │   ├── string.h
-│   │   ├── mm/ 内存相关头文件
+│   │   │   ├── stdlib.h
+│   │   │   ├── string
+│   │   │   │   ├── string.c
+│   │   │   │   └── string.o
+│   │   │   └── string.h
+│   │   ├── mm
 │   │   │   ├── README.md
-│   │   │   └── mm.h
-│   │   ├── multiboot.h 多重引导规范定义
-│   │   ├── pic.hpp 8259A 中断芯片设置
-│   │   ├── port.hpp 端口操作
-│   │   ├── tty.hpp tty 定义
-│   │   └── vga.hpp vga 显示定义
-│   └── kernel/
-│       ├── README.md
-│       ├── drv/ 设备
-│       │   ├── kb.c
-│       │   └── mouse.c
-│       └── kernel.c 内核入口
-└── tools/ 工具，在 .rb 文件中你可以找到 gcc 和 binutils 的编译选项
-    ├── i386-elf-binutils.rb
-    └── i386-elf-gcc.rb
+│   │   │   ├── mm.h
+│   │   │   ├── pmm.c
+│   │   │   ├── pmm.h
+│   │   │   ├── pmm.o
+│   │   │   ├── vmm.c
+│   │   │   ├── vmm.h
+│   │   │   └── vmm.o
+│   │   ├── multiboot2.h
+│   │   ├── pic.hpp
+│   │   ├── port.hpp
+│   │   ├── tty.hpp
+│   │   ├── vfs
+│   │   │   └── vfs.h
+│   │   └── vga.hpp
+│   ├── kernel
+│   │   ├── README.md
+│   │   ├── drv
+│   │   │   ├── keyboard.c
+│   │   │   ├── keyboard.o
+│   │   │   ├── mouse.c
+│   │   │   └── mouse.o
+│   │   ├── elf.c
+│   │   ├── elf.o
+│   │   ├── fs.c
+│   │   ├── fs.o
+│   │   ├── kernel.c
+│   │   ├── kernel.o
+│   │   ├── multiboot2.c
+│   │   ├── multiboot2.o
+│   │   ├── vfs.c
+│   │   └── vfs.o
+│   ├── kernel.kernel
+│   └── test
+│       ├── test.c
+│       ├── test.h
+│       └── test.o
+└── tools
+    ├── bochs.sh
+    ├── i386-elf-binutils.sh
+    ├── i386-elf-gcc.sh
+    └── i386-elf-grub.sh
 ```
 
-## 测试
+## Test
 
-目前只有很简陋的 CI。
+Not yet.
 
-### 自动化集成
+### CI
 
-合并到 master 分支时需要通过 Travis CI 测试。编译没有错误即可。
+See `.travis.yml`
 
-## 代码风格
+## Code Style
 
-## 镜像文件
+## Image Files
 
-simplekernel.img is 1.44 floppy, our kernel is right here.
+simplekernel.img: multiboot1 boot(not updated)
+
+simplekernel.iso: multiboot2 boot
+
+fs.img: file system, unuse
 
 ## TODO
 
 - fix bugs
 - mouse input
-- debug function
-- checlstyle
+- memory management
+- checkstyle
+- concurrent
+- File system
+- drive
+- Virtual memory management
 
-## AUTHOR
+## CONTRIBUTORS
 
-Author: [MRNIU](https://github.com/MRNIU)
-
-您也可以在贡献者名单中参看所有参与该项目的开发者。
+[MRNIU](https://github.com/MRNIU)
 
 ## CONTRIBUTING
 
 Read CONTRIBUTING.md.
 
-## 鸣谢
-
-此项目参考了很多优秀的项目和资料
+## Thanks
 
 [osdev](https://wiki.osdev.org)
 
@@ -208,6 +271,6 @@ Read CONTRIBUTING.md.
 
 [coding-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
 
-## 版权信息
+## CopyRight
 
-此项目使用 MIT 许可证
+MIT LICENCE
