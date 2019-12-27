@@ -1,7 +1,11 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+//
 // elf.h for MRNIU/SimpleKernel.
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "elf.h"
 #include "stdbool.h"
@@ -82,8 +86,13 @@
 // }
 //
 // void elf_from_multiboot(uint32_t addr){
-//   struct multiboot_tag *tag;
-//   tag = (struct multiboot_tag *) (addr + 8);
-//   tag = (struct multiboot_tag *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
+//   multiboot_tag_t *tag;
+//   tag = (multiboot_tag_t *) (addr + 8);
+//   tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
 //
 // }
+//
+
+#ifdef __cplusplus
+}
+#endif
