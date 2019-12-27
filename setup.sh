@@ -9,7 +9,7 @@ set -e
 # 输出实际执行内容
 # set -x
 
-TARGET="i386-elf"
+TARGET="x86_64-elf"
 # ARCH: i386, x86_64
 ARCH="i386"
 # 虚拟机
@@ -65,13 +65,13 @@ if ! [ -x "$(command -v ${TARGET}-gcc)" ]; then
     fi
 fi
 
-if ! [ -x "$(command -v ${TARGET}-grub-file)" ]; then
-    echo 'Error: '${TARGET}'-grub is not installed.'
-    echo 'Install '${TARGET}'-grub...'
+if ! [ -x "$(command -v i386-elf-grub-file)" ]; then
+    echo 'Error: i386-elf-grub is not installed.'
+    echo 'Install i386-elf-grub...'
     if [ ${OS} == "Darwin" ]; then
-        brew install ${TARGET}-grub
+        brew install i386-elf-grub
     elif [ ${OS} == "Linux" ]; then
-        shell ${tool}/${TARGET}-grub.sh
+        shell ${tool}/i386-elf-grub.sh
     fi
 fi
 
@@ -90,10 +90,10 @@ cd src/
 make remake
 cd ../
 
-if ${TARGET}-grub-file --is-x86-multiboot2 ${kernel}; then
+if i386-elf-grub-file --is-x86-multiboot2 ${kernel}; then
     echo Multiboot2 Confirmed!
 elif [ ${ARCH} == "x86_64" ]; then
-    if ${TARGET}-grub-file --is-x86-multiboot2 ${bootloader}; then
+    if i386-elf-grub-file --is-x86-multiboot2 ${bootloader}; then
         echo Multiboot2 Confirmed!
     else
         echo The File is Not Multiboot.

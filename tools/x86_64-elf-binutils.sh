@@ -12,13 +12,14 @@ elif ! [ -x "$(command -v tar)" ]; then
   echo 'Error: tar is not installed.'
   exit 1
 else
-  wget https://ftp.gnu.org/gnu/binutils/binutils-2.31.1.tar.xz
-  tar xvJf binutils-2.31.1.tar.xz
-  cd binutils-2.31.1
+  wget https://ftp.gnu.org/gnu/binutils/binutils-2.33.1.tar.xz
+  tar zxvf binutils-2.33.1.tar.xz
+  cd binutils-2.33.1
   ./configure \
-    --target=i386-elf \
-    --disable-multilib \
-    --disable-nls \
+    --target=x86_64-elf \
+    --enable-targets=all \
+    --enable-multilib \
+    --enable-64-bit-bfd \
     --disable-werror
   make
   make install

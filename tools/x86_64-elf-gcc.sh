@@ -1,7 +1,7 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 #
-# i386-elf-gcc.sh for MRNIU/SimpleKernel.
+# x86_64-elf-gcc.sh for MRNIU/SimpleKernel.
 
 #!/usr/bin/env bash
 
@@ -9,7 +9,7 @@ if ! [ -x "$(command -v gmp)" ]; then
   echo 'Error: gmp is not installed.'
   exit 1
 elif ! [ -x "$(command -v i386-elf-binutils)" ]; then
-  echo 'Error: i386-elf-binutils is not installed.'
+  echo 'Error: x86_64-elf-binutils is not installed.'
   exit 1
 elif ! [ -x "$(command -v libmpc)" ]; then
   echo 'Error: libmpc is not installed.'
@@ -24,18 +24,18 @@ elif ! [ -x "$(command -v tar)" ]; then
   echo 'Error: tar is not installed.'
   exit 1
 else
-  wget https://mirrors.nju.edu.cn/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.xz
-  tar zxvf gcc-8.2.0.tar.xz
-  cd gcc-8.2.0
+  wget https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
+  tar zxvf gcc-9.2.0.tar.xz
+  cd gcc-9.2.0
   ./configure \
-    --target=i386-elf \
+    --target=x86_64-elf \
+    --enable-targets=all \
+    --enable-multilib \
     --without-isl \
-    --disable-multilib \
-    --disable-nls \
     --disable-werror \
     --without-headers \
-    --with-as=i386-elf-as \
-    --with-ld=i386-elf-ld \
+    --with-as=x86_64-elf-as \
+    --with-ld=x86_64-elf-ld \
     --enable-languages=c,c++
   make all-gcc
   make install-gcc
