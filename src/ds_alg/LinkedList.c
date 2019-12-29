@@ -26,7 +26,7 @@ void list_free(ListEntry * list){
 	ListEntry * next;
 	while(entry!=NULL) {
 		next=entry->next;
-		free(entry);
+		kfree(entry);
 		entry=next;
 	}
 }
@@ -37,7 +37,7 @@ ListEntry *list_prepend(ListEntry **list, ListValue data){
 		/* not a valid list */
 		return NULL;
 	/* Create new entry */
-	newentry = malloc(sizeof(ListEntry));
+	newentry = kmalloc(sizeof(ListEntry));
 	if (newentry == NULL)
 		return NULL;
 	newentry->data = data;
@@ -56,7 +56,7 @@ ListEntry *list_append(ListEntry **list, ListValue data){
 	if (list == NULL)
 		return NULL;
 	/* Create new list entry */
-	newentry = malloc(sizeof(ListEntry));
+	newentry = kmalloc(sizeof(ListEntry));
 	if (newentry == NULL)
 		return NULL;
 	newentry->data = data;
@@ -146,7 +146,7 @@ ListValue *list_to_array(ListEntry *list){
 	unsigned int i;
 	/* Allocate an array equal in size to the list length */
 	length = list_length(list);
-	array = malloc(sizeof(ListValue) * length);
+	array = kmalloc(sizeof(ListValue) * length);
 	if (array == NULL)
 		return NULL;
 	/* Add all entries to the array */
@@ -184,7 +184,7 @@ bool list_remove_entry(ListEntry **list, ListEntry *entry){
 			entry->next->prev = entry->prev;
 	}
 	/* Free the list entry */
-	free(entry);
+	kfree(entry);
 	/* Operation successful */
 	return true;
 }
@@ -214,7 +214,7 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
 			if (rover->next != NULL)
 				rover->next->prev = rover->prev;
 			/* Free the entry */
-			free(rover);
+			kfree(rover);
 			++entries_removed;
 		}
 		/* Advance to the next list entry */
@@ -360,7 +360,7 @@ void list_iter_remove(ListIterator *iter){
 		*iter->prev_next = iter->current->next;
 		if (iter->current->next != NULL)
 			iter->current->next->prev = iter->current->prev;
-		free(iter->current);
+		kfree(iter->current);
 		iter->current = NULL;
 	}
 }

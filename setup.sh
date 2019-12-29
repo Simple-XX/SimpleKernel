@@ -120,5 +120,5 @@ else
        multiboot2 /boot/kernel.bin "KERNEL_BIN"
    }' >${iso_boot_grub}/grub.cfg
 fi
-${TARGET}-grub-mkrescue -o ${iso} ${iso_folder}
+i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
 ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
