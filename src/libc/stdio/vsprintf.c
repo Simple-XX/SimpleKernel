@@ -117,7 +117,7 @@ int vsprintf(char * buf, const char * fmt, va_list args);
 // 下面函数是送格式化输出到字符串。为了能在内核中使用格式化的输出，Linus 在内核实现了该 C 标准函数。
 // 其中参数 fmt 是格式字符串；args 是个数变化的值；buf 是输出字符缓冲区。请参见本代码列表后面
 // 的有关格式转换字符的介绍。
-int vsprintf(char * buf,const char * fmt,va_list args){
+int vsprintf(char * buf,const char * fmt,va_list args) {
 	int32_t len;
 	int32_t i;
 	char * str; // 用于存放转换过程中的字符串
@@ -127,7 +127,7 @@ int vsprintf(char * buf,const char * fmt,va_list args){
 	int32_t field_width; // width of output field
 	int32_t precision; // min. # of digits for integers;max number of chars for from
 	// fields.  min.整数数字个数；max. 字符串中字符个数
-	int32_t qualifier; // 'h','l',or 'L' for integer fields
+	int32_t qualifier __attribute__ ((unused)); // 'h','l',or 'L' for integer fields
 
 // 首先将字符指针指向 buf，然后扫描格式字符串，对各个格式转换只是进行相应的处理.
 // 格式转换指示字符串均以 '%' 开始，这里从 fmt 格式字符串中扫描 '%'，寻找格式转换字符串的开始。
@@ -235,6 +235,7 @@ repeat:
 // 若格式转换指示是 'x'  或 'X'，则表示对应参数需打印成十六进制数输出。'x' 表示用小写字母表示。
 		case 'x':
 			flags |= SMALL;
+			__attribute__ ((fallthrough));
 		case 'X':
 			str = number(str, va_arg(args, uint32_t), 16, field_width, precision, flags);
 			break;
@@ -243,6 +244,7 @@ repeat:
 		case 'd':
 		case 'i':
 			flags |= SIGN;
+			__attribute__ ((fallthrough));
 		case 'u':
 			str = number(str, va_arg(args, uint32_t), 10, field_width, precision, flags);
 			break;

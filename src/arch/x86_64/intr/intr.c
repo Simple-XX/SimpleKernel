@@ -178,18 +178,18 @@ void debug(pt_regs_t * regs) {
 	uint32_t * old_esp = (uint32_t *)regs->old_esp;
 
 	// 取任务寄存器值->tr
-	asm volatile ( "str %%ax"
-	               : "=a" ( tr )
-	               : "0" ( 0 ) );
+	__asm__ volatile ( "str %%ax"
+	                   : "=a" ( tr )
+	                   : "0" ( 0 ) );
 	printk_color(light_red, "Unuseable.\n");
 
-	printk_color(red, "eax\t\tebx\t\tecx\t\tedx\n\r%08X\t%08X\t%08X\t%08X\n\r",
+	printk_color(red, "eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
 	             regs->eax, regs->ebx, regs->ecx, regs->edx);
-	printk_color(red, "esi\t\tedi\t\tebp\t\tesp\n\r%08X\t%08X\t%08X\t%08X\n\r",
+	printk_color(red, "esi 0x%08X\tedi 0x%08X\tebp 0x%08X\tesp 0x%08X\n",
 	             regs->esi, regs->edi, regs->ebp, (uint32_t) regs->user_esp);
-	printk_color(red, "\n\rds\tes\tfs\tgs\n\r%04X\t%04X\t%04X\t%04X\n\r",
+	printk_color(red, "ds 0x%08X\tes 0x%08X\tfs 0x%08X\tgs 0x%08X\n",
 	             regs->ds, regs->es, regs->fs, regs->gs);
-	printk_color(red, "EIP: %08X   EFLAGS: %08X  CS: %04X\n\r",
+	printk_color(red, "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
 	             //old_esp[0], old_esp[1], old_esp[2]);
 	             old_esp[0], read_eflags(), old_esp[2]);
 	return;
