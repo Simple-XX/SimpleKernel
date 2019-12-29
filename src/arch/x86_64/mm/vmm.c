@@ -124,13 +124,13 @@ void switch_pgd(ptr_t pd) {
 }
 
 void page_fault(pt_regs_t * regs) {
-	uint64_t cr2;
+	uint32_t cr2;
 #ifdef __x86_64__
-	asm volatile ( "movq %%cr2,%0" : "=r" ( cr2 ) );
+	// asm volatile ( "movq %%cr2,%0" : "=r" ( cr2 ) );
 #else
 	asm volatile ( "mov %%cr2,%0" : "=r" ( cr2 ) );
 #endif
-	printk("Page fault at 0x%x, virtual faulting address 0x%x\n", regs->eip, cr2);
+	printk("Page fault at 0x%08X, virtual faulting address 0x%08X\n", regs->eip, cr2);
 	printk_err("Error code: 0x%08X\n", regs->err_code);
 
 	// bit 0 为 0 指页面不存在内存里

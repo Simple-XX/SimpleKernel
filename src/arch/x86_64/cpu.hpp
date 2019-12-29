@@ -115,8 +115,8 @@ static inline void cpu_cli(void) {
 }
 
 // 读取 EFLAGS
-static inline uint64_t read_eflags(void) {
-	uint64_t eflags;
+static inline uint32_t read_eflags(void) {
+	uint32_t eflags;
 	__asm__ volatile ( "pushf;pop %0"
 	                   : "=r" ( eflags ) );
 	return eflags;
