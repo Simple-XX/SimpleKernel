@@ -9,11 +9,9 @@ extern "C" {
 #include "include/clock.h"
 #include "stddef.h"
 
-void clock_handler(pt_regs_t * regs) {
-	static uint32_t tick = 0;
+void clock_handler(pt_regs_t * regs UNUSED) {
+	static uint32_t tick UNUSED = 0;
 	// printk_color(light_green, "Tick: %d\n", tick++);
-	UNUSED(regs);
-	UNUSED(tick);
 }
 
 void clock_init(void) {

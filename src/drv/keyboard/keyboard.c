@@ -183,8 +183,7 @@ uint8_t keyboard_read_from_buff() {
 	return scancode;
 }
 
-void keyboard_read(pt_regs_t* regs) {
-	UNUSED(regs);
+void keyboard_read(pt_regs_t* regs UNUSED) {
 	keyboard_handler();
 	if (kb_in.count > 0) {
 		uint8_t scancode = keyboard_read_from_buff();
@@ -223,10 +222,10 @@ void keyboard_read(pt_regs_t* regs) {
 			alt = false;
 			break;
 		case KB_CAPS_LOCK:
-			caps = ( ( ~caps ) & 0x01 ); // 与上次按下的状态相反
+			caps = ( ( !caps ) & 0x01 ); // 与上次按下的状态相反
 			break;
 		case KB_NUM_LOCK:
-			num = ( ( ~num ) & 0x01 );
+			num = ( ( !num ) & 0x01 );
 			break;
 		case KB_BACKSPACE:
 			printk("\b");
