@@ -9,9 +9,7 @@ extern "C" {
 
 #include "debug.h"
 
-void debug_init(ptr_t magic, ptr_t addr) {
-	UNUSED(magic);
-	UNUSED(addr);
+void debug_init(ptr_t magic UNUSED, ptr_t addr UNUSED) {
 	printk_debug("debug_init\n");
 	// multiboot2_init(magic, addr);
 	return;
@@ -68,13 +66,11 @@ void print_stack_trace(void) {
 	__asm__ volatile ( "mov %%ebp, %0" : "=r" ( ebp ) );
 #endif
 
-
 	while (*ebp) {
 		eip = ebp + 1;
 		printk( "   [0x%x] %s\n", *eip, elf_lookup_symbol(*eip, &kernel_elf) );
 		ebp = (uint32_t*)*ebp;
 	}
-	UNUSED(ebp);
 }
 
 #ifdef __cplusplus
