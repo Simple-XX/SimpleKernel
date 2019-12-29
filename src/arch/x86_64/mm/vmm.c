@@ -126,7 +126,7 @@ void switch_pgd(ptr_t pd) {
 void page_fault(pt_regs_t * regs) {
 	uint32_t cr2;
 #ifdef __x86_64__
-	// asm volatile ( "movq %%cr2,%0" : "=r" ( cr2 ) );
+	asm volatile ( "movq %%cr2,%0" : "=r" ( cr2 ) );
 #else
 	asm volatile ( "mov %%cr2,%0" : "=r" ( cr2 ) );
 #endif
