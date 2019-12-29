@@ -178,18 +178,18 @@ void debug(pt_regs_t * regs) {
 	uint32_t * old_esp = (uint32_t *)regs->old_esp;
 
 	// 取任务寄存器值->tr
-	asm volatile ( "str %%ax"
-	               : "=a" ( tr )
-	               : "0" ( 0 ) );
+	__asm__ volatile ( "str %%ax"
+	                   : "=a" ( tr )
+	                   : "0" ( 0 ) );
 	printk_color(light_red, "Unuseable.\n");
 
-	printk_color(red, "eax\t\tebx\t\tecx\t\tedx\n\r%08X\t%08X\t%08X\t%08X\n\r",
+	printk_color(red, "eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
 	             regs->eax, regs->ebx, regs->ecx, regs->edx);
-	printk_color(red, "esi\t\tedi\t\tebp\t\tesp\n\r%08X\t%08X\t%08X\t%08X\n\r",
+	printk_color(red, "esi 0x%08X\tedi 0x%08X\tebp 0x%08X\tesp 0x%08X\n",
 	             regs->esi, regs->edi, regs->ebp, (uint32_t) regs->user_esp);
-	printk_color(red, "\n\rds\tes\tfs\tgs\n\r%04X\t%04X\t%04X\t%04X\n\r",
+	printk_color(red, "ds 0x%08X\tes 0x%08X\tfs 0x%08X\tgs 0x%08X\n",
 	             regs->ds, regs->es, regs->fs, regs->gs);
-	printk_color(red, "EIP: %08X   EFLAGS: %08X  CS: %04X\n\r",
+	printk_color(red, "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
 	             //old_esp[0], old_esp[1], old_esp[2]);
 	             old_esp[0], read_eflags(), old_esp[2]);
 	return;
@@ -244,35 +244,35 @@ void general_protection(pt_regs_t * regs) {
 }
 
 void page_fault(pt_regs_t * regs) {
-	// die("Page Fault.", regs->old_esp, regs->int_no);
-	uint64_t cr2;
 #ifdef __x86_64__
+	uint64_t cr2;
 	asm volatile ( "movq %%cr2,%0" : "=r" ( cr2 ) );
 #else
+	uint32_t cr2;
 	asm volatile ( "mov %%cr2,%0" : "=r" ( cr2 ) );
 #endif
-	printk("Page fault at 0x%x, virtual faulting address 0x%x\n", regs->eip, cr2);
-	printk("Error code: %x\n", regs->err_code);
+	printk("Page fault at 0x%08X, virtual faulting address 0x%08X\n", regs->eip, cr2);
+	printk_err("Error code: 0x%08X\n", regs->err_code);
 
 	// bit 0 为 0 指页面不存在内存里
 	if ( !( regs->err_code & 0x1 ) )
 		printk_color(red, "Because the page wasn't present.\n");
 	// bit 1 为 0 表示读错误，为 1 为写错误
 	if (regs->err_code & 0x2)
-		printk_color(red, "Write error.\n");
+		printk_err("Write error.\n");
 	else
-		printk_color(red, "Read error.\n");
+		printk_err("Read error.\n");
 	// bit 2 为 1 表示在用户模式打断的，为 0 是在内核模式打断的
 	if (regs->err_code & 0x4)
-		printk_color(red, "In user mode.\n");
+		printk_err("In user mode.\n");
 	else
-		printk_color(red, "In kernel mode.\n");
+		printk_err("In kernel mode.\n");
 	// bit 3 为 1 表示错误是由保留位覆盖造成的
 	if (regs->err_code & 0x8)
-		printk_color(red, "Reserved bits being overwritten.\n");
+		printk_err("Reserved bits being overwritten.\n");
 	// bit 4 为 1 表示错误发生在取指令的时候
 	if (regs->err_code & 0x10)
-		printk_color(red, "The fault occurred during an instruction fetch.\n");
+		printk_err("The fault occurred during an instruction fetch.\n");
 	while (1);
 }
 
