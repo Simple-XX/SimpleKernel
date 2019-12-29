@@ -10,13 +10,15 @@
 extern "C" {
 #endif
 
+#include "stdint.h"
+
 int abs(int);
 int atoi(const char *);
 long atol(const char *);
 long long atoll(const char *);
 
-void * malloc(size_t);
-void free(void *);
+void * kmalloc(uint32_t);
+void kfree(void *);
 
 #ifdef __cplusplus
 }
