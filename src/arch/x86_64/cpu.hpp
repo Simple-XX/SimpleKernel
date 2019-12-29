@@ -115,8 +115,8 @@ static inline void cpu_cli(void) {
 }
 
 // 读取 EFLAGS
-static inline uint64_t read_eflags(void) {
-	uint64_t eflags;
+static inline uint32_t read_eflags(void) {
+	uint32_t eflags;
 	__asm__ volatile ( "pushf;pop %0"
 	                   : "=r" ( eflags ) );
 	return eflags;
@@ -249,16 +249,9 @@ static inline bool EFLAGS_CF_status(void) {
 	return ( eflags & EFLAGS_CF );
 }
 
-static inline void __native_flush_tlb_single(unsigned long addr) {
+static inline void __native_flush_tlb_single(ptr_t addr) {
 	__asm__ volatile ( "invlpg (%0)" : : "r" ( addr ) : "memory" );
 	return;
-}
-
-// 判断是否允许中断
-static inline bool canint(void){
-	uint32_t eflags = read_eflags();
-	uint32_t if_bit = EFLAGS_IF;
-	return (eflags&if_bit);
 }
 
 #ifdef __cplusplus
