@@ -243,6 +243,39 @@ void general_protection(pt_regs_t * regs) {
 	die("General Protection.", regs->old_esp, regs->int_no);
 }
 
+void page_fault(pt_regs_t * regs) {
+#ifdef __x86_64__
+	uint64_t cr2;
+	asm volatile ( "movq %%cr2,%0" : "=r" ( cr2 ) );
+#else
+	uint32_t cr2;
+	asm volatile ( "mov %%cr2,%0" : "=r" ( cr2 ) );
+#endif
+	printk("Page fault at 0x%08X, virtual faulting address 0x%08X\n", regs->eip, cr2);
+	printk_err("Error code: 0x%08X\n", regs->err_code);
+
+	// bit 0 为 0 指页面不存在内存里
+	if ( !( regs->err_code & 0x1 ) )
+		printk_color(red, "Because the page wasn't present.\n");
+	// bit 1 为 0 表示读错误，为 1 为写错误
+	if (regs->err_code & 0x2)
+		printk_err("Write error.\n");
+	else
+		printk_err("Read error.\n");
+	// bit 2 为 1 表示在用户模式打断的，为 0 是在内核模式打断的
+	if (regs->err_code & 0x4)
+		printk_err("In user mode.\n");
+	else
+		printk_err("In kernel mode.\n");
+	// bit 3 为 1 表示错误是由保留位覆盖造成的
+	if (regs->err_code & 0x8)
+		printk_err("Reserved bits being overwritten.\n");
+	// bit 4 为 1 表示错误发生在取指令的时候
+	if (regs->err_code & 0x10)
+		printk_err("The fault occurred during an instruction fetch.\n");
+	while (1);
+}
+
 void enable_irq(uint32_t irq_no) {
 	uint8_t mask = 0;
 	// printk_color(green, "enable_irq mask: %X", mask);
