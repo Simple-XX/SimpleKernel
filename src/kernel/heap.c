@@ -14,7 +14,7 @@ void * kmalloc(size_t byte) {
 	return (void *)pmm_alloc(byte);
 }
 void kfree(void * page) {
-	pmm_free_page(*(ptr_t*)page);
+	pmm_free_page((ptr_t)page);
 	return;
 }
 

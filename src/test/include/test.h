@@ -23,6 +23,7 @@ bool test(void);
 bool test_pmm(void);
 bool test_vmm(void);
 bool test_libc(void);
+bool test_heap(void);
 
 #ifdef __cplusplus
 }

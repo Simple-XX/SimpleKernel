@@ -23,6 +23,7 @@ extern "C" {
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
+#include "stdlib.h"
 #include "multiboot2.h"
 #include "mem/pmm.h"
 #include "mem/vmm.h"
