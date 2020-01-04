@@ -31,7 +31,7 @@ extern "C" {
 // 页掩码，用于 4KB 对齐
 #define PAGE_MASK    0xFFFFF000
 
-// 页目录成员数, 128, 0x80
+// 页目录成员数, 128, 0x80，取决于实际内存
 #define PGD_SIZE    (PAGE_SIZE / sizeof(pte_t))
 
 // 页表成员数, 128, 0x80
@@ -77,7 +77,8 @@ typedef
 	uint32_t accessed   : 1;  // Has the page been accessed since last refresh?
 	uint32_t dirty      : 1;  // Has the page been written to since last refresh?
 	uint32_t unused     : 7;  // Amalgamation of unused and reserved bits
-	uint32_t frame      : 20;  // Frame address (shifted right 12 bits)
+	uint32_t pte        : 10; // (((x)>>12) & 0x03FF ) middle 10 bits, PTE
+	uint32_t pgd        : 10; // (((x) >> 22) & 0x03FF) high 10 bits, PGD
 } page_t;
 
 typedef
