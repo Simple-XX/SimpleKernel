@@ -26,7 +26,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	vmm_init();
 
 	showinfo();
-	test_pmm();
+	test();
 
 	while (1);
 
