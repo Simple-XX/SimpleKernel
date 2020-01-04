@@ -24,11 +24,18 @@ void vmm_init(void) {
 	// TODO
 	// 使用 vmm.h 中的结构体重写该部分
 
+	// 首先需要这么几个东西
+	// 页目录，页表，页表项
+	// 页目录用于保存页表地址
+	// 页表每个项对应一个页表
+	// 页表项保存了相关属性信息，见 page 结构体
+	pgd_t pgd[PGD_SIZE]
+
+	ptr_t i, j;
 	// 0xC0000000 这个地址在页目录的索引，0x0300
 	ptr_t kernel_pte_first_idx = PGD_INDEX(PAGE_OFFSET);
 
-	// 映射所有内核地址
-	ptr_t i, j;
+	// 页目录
 	for (i = kernel_pte_first_idx, j = 0; i < PTE_COUNT + kernel_pte_first_idx; i++, j++) {
 		// 此处是内核虚拟地址，MMU 需要物理地址，所以减去偏移，下同
 		pgd_kernel[i] = ((ptr_t)pte_kernel[j] - PAGE_OFFSET) | PAGE_PRESENT | PAGE_WRITE;

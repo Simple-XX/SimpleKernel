@@ -86,7 +86,11 @@ extern "C" {
 #define CR4_PVI        0x00000002
 #define CR4_TSD        0x00000004
 #define CR4_DE         0x00000008
+// PSE 为 1 时，32bits 的页面大小变为 4MB
+// 32bits 模式的分页模式支持物理地址宽度超过 32bit，这种情况下的页面大小必须是 4MB,并且处理器必须支持 PSE-3
 #define CR4_PSE        0x00000010
+// 物理地址拓展
+// 32bits 下寻址变为三级
 #define CR4_PAE        0x00000020
 #define CR4_MCE        0x00000040
 #define CR4_PGE        0x00000080
