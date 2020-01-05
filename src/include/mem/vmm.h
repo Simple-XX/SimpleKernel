@@ -11,63 +11,90 @@ extern "C" {
 #endif
 
 #include "intr/include/intr.h"
-#include "pmm.h"
 
 // 内核的偏移地址
 #define PAGE_OFFSET    0xC0000000
 
-// 最大内存, 512MB, 0x20000000
-#define KMEM_SIZE    PMM_MAX_SIZE
-
-// 每个页表可以映射的内存数, 4MB
-#define PAGE_MAP_SIZE    (0x400000)
-
-// 映射 KMEM_SIZE 的内存所需要的页数 0x80, 128
-#define PTE_COUNT    (KMEM_SIZE / PAGE_MAP_SIZE)
-
-// 虚拟分页大小 4096
-#define PAGE_SIZE    0x1000
-
 // 页掩码，用于 4KB 对齐
-#define PAGE_MASK    0xFFFFF000
+#define VMM_PAGE_MASK    0xFFFFF000
 
-// 页目录成员数, 128, 0x80，取决于实际内存
-#define PGD_SIZE    (PAGE_SIZE / sizeof(pte_t))
+#ifdef __x86_64__
+// 最大虚拟内存
+#define VMEM_SIZE
+#else
+// 最大虚拟内存
+// 4GB
+#define VMEM_SIZE       (1 << 22)
+// 页目录数量
+#define VMM_PGD_COUNT   (1 << 10)
+// 页表数量
+#define VMM_PTE_COUNT   (1 << 10)
+#endif
 
-// 页表成员数, 128, 0x80
-#define PTE_SIZE    (PAGE_SIZE / sizeof(ptr_t))
+// PAE 标志的处理
+#ifdef CPU_PAE
+// 4MB
+#define VMM_PAGE_SIZE    0x400000
+#else
+// 4KB
+#define VMM_PAGE_SIZE    0x1000
+#endif
+
+// PSE 标志的处理
+#ifdef CPU_PSE
+#else
+#endif
+
+// 虚拟页数量
+// 0x100000000/0x1000 = 0x100000(32bits without PSE and PAE)
+#define VMM_PAGE_COUNT      (VMEM_SIZE/VMM_PAGE_SIZE)
+
+// 页目录大小
+#define VMM_PGD_SIZE    (sizeof(pte_t))
+
+// 页表大小
+#define VMM_PTE_SIZE    (sizeof(ptr_t))
+
+// 每个页表可以映射的内存数 4KB*
+#define VMM_PTE_MAP_SIZE    ( VMM_PTE_COUNT * VMM_PAGE_SIZE)
 
 // P-- 位 0 是存在 (Present) 标志，用于指明表项对地址转换是否有效。
 // P = 1 表示有效； P = 0 表示无效。
-#define PAGE_PRESENT    0x00000001
+#define VMM_PAGE_PRESENT    0x00000001
 
 // R/W-- 位 1 是读 / 写 (Read/Write) 标志。如果等于 1  表示页面可以被读、写或执行。
 // 如果为 0  表示页面只读或可执行。
-#define PAGE_WRITE    0x00000002
+#define VMM_PAGE_WRITE    0x00000002
 
 // U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
 // 如果为 1  那么运行在任何特权级上的程序都可以访问该页面。
 // 如果为 0  那么页面只能被运行在超级用户特权级 (0,1 或 2)  的程序访问。
+#define VMM_PAGE_USER    0x00000004
 
-#define PAGE_USER    0x00000004
+// 获取一个地址的页目录，高 10 位
+#define VMM_PGD_INDEX(x) (((x) >> 22) & 0x03FF)
 
-// 获取一个地址的页目录项，高 10 位
-#define PGD_INDEX(x) (((x) >> 22) & 0x03FF)
-
-// 获取一个地址的页表项，中间 10 位
-#define PTE_INDEX(x) ( ( ( x ) >> 12 ) & 0x03FF )
+// 获取一个地址的页表，中间 10 位
+#define VMM_PTE_INDEX(x) ( ( ( x ) >> 12 ) & 0x03FF )
 
 // 获取一个地址的页內偏移，低 12 位
-#define OFFSET_INDEX(x) ( ( x ) & 0x0FFF )
+#define VMM_OFFSET_INDEX(x) ( ( x ) & 0x0FFF )
 
-// 页目录
+// 映射内核页需要的页数 0x40000
+// #define VMM_KERNEL_PAGE_COUNT   (0x40000000/VMM_PAGE_SIZE)
+#define VMM_KERNEL_PAGE_COUNT   (0x20000000/VMM_PAGE_SIZE)
+
+// 页全局目录
 typedef ptr_t pgd_t;
+
+// 页上级目录
+typedef ptr_t pmd_t;
+
+// 页中间目录
+typedef ptr_t pud_t;
 
 // 页表
 typedef ptr_t pte_t;
-
-// 内核页目录区域
-extern pgd_t pgd_kernel[PGD_SIZE];
 
 typedef
         struct page {
