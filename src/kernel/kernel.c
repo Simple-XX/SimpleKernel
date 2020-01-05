@@ -10,8 +10,6 @@ extern "C" {
 #include "include/kernel.h"
 #include "../test/include/test.h"
 
-extern pgd_t pgd_kernel[PGD_SIZE];
-
 // 内核入口
 // 指针是 32 位的
 void kernel_main(ptr_t magic, ptr_t addr) {

@@ -15,11 +15,12 @@ extern "C" {
 #include "stddef.h"
 #include "debug.h"
 #include "multiboot2.h"
+#include "vmm.h"
 
 #define STACK_SIZE    0x1000  // 4096
 #define PMM_MAX_SIZE  0x20000000  // 512 MB
-#define PMM_PAGE_SIZE 0x1000      // 页面大小 4KB
-#define PAGE_MAX_SIZE ( PMM_MAX_SIZE / PMM_PAGE_SIZE ) // 131072, 0x20000
+#define PMM_PAGE_SIZE VMM_PAGE_SIZE      // 页面大小 4KB
+#define PAGE_MAX_SIZE ( PMM_MAX_SIZE / PMM_PAGE_SIZE ) // 物理页数量 131072, 0x20000
 
 extern ptr_t kernel_init_start[];
 extern ptr_t kernel_init_text_start[];
