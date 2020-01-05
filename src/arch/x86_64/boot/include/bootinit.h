@@ -23,6 +23,7 @@ extern "C" {
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
+#include "mem/pmm.h"
 #include "mem/vmm.h"
 
 // 内核使用的临时页表和页目录
