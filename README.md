@@ -159,6 +159,7 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## 支持作者
 
 请我喝杯咖啡吧！
+(ps: 请注明 GitHub id 以便加入捐献者名单
 
 <img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjfoboa4j30go0p0411.jpg" width="30%" height="50%">
 
