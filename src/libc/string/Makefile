@@ -6,7 +6,7 @@
 CURR_DIR := $(shell pwd)
 PAR_DIR := $(CURR_DIR)/..
 ROOT_DIR := $(CURR_DIR)/../..
-include $(ROOT_DIR)/make.env
+include $(ROOT_DIR)/Makefile.env
 
 exclude_dirs := include
 subdirs := $(shell find . -maxdepth 1 -type d)
