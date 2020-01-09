@@ -13,7 +13,7 @@ DRV_DIR := $(ROOT_DIR)/drv
 KERNEL_DIR := $(ROOT_DIR)/kernel
 LIBC_DIR := $(ROOT_DIR)/libc
 
-include $(ROOT_DIR)/make.env
+include $(ROOT_DIR)/Makefile.env
 
 .PHONY: default
 default:
