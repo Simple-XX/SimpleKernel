@@ -25,7 +25,7 @@ extern "C" {
 #define TIMER_FREQ      1193180
 
 // Intel 8253/8254 PIT芯片 I/O端口地址范围是40h~43h
-#define TIMER_MODE      ( IO_TIMER + 3 )         // timer mode port
+#define TIMER_MODE      (IO_TIMER + 3)        // timer mode port
 
 #define TIMER_SEL0      0x00                    // select counter 0
 #define TIMER_RATEGEN   0x04                    // mode 2

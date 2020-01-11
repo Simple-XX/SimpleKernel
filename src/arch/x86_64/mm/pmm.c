@@ -21,17 +21,17 @@ static ptr_t pmm_stack[PAGE_MAX_SIZE + 1];
 static ptr_t pmm_stack_top;
 
 void pmm_init() {
-	for ( ; (uint8_t *) mmap_entries < (uint8_t *) mmap_tag + mmap_tag->size;
-	      mmap_entries = (multiboot_memory_map_entry_t *)
-	                     ( (unsigned long) mmap_entries +
-	                       ( (struct multiboot_tag_mmap *) mmap_tag )->entry_size ) ) {
+	for( ; (uint8_t *)mmap_entries < (uint8_t *)mmap_tag + mmap_tag->size ;
+	    mmap_entries = (multiboot_memory_map_entry_t *)
+	                   ( (unsigned long)mmap_entries +
+	                    ( (struct multiboot_tag_mmap *)mmap_tag)->entry_size) ) {
 		// 如果是可用内存
-		if ( (unsigned) mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE
-		     && (unsigned) ( mmap_entries->addr & 0xffffffff ) == 0x100000 ) {
+		if( (unsigned)mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE
+		   && (unsigned)(mmap_entries->addr & 0xffffffff) == 0x100000) {
 			// 把内核位置到结束位置的内存段，按页存储到页管理栈里
-			ptr_t page_addr = ( mmap_entries->addr );
-			uint32_t length = ( mmap_entries->len );
-			while (page_addr < length && page_addr <= PMM_MAX_SIZE) {
+			ptr_t page_addr = (mmap_entries->addr);
+			uint32_t length = (mmap_entries->len);
+			while(page_addr < length && page_addr <= PMM_MAX_SIZE) {
 				pmm_free_page(page_addr);
 				page_addr += PMM_PAGE_SIZE;
 				phy_pages_count++;
@@ -39,13 +39,13 @@ void pmm_init() {
 		}
 	}
 	printk_info("pmm_init\n");
-	printk_info ("phy_pages_count: %d\n", phy_pages_count);
+	printk_info("phy_pages_count: %d\n", phy_pages_count);
 	return;
 }
 
 ptr_t pmm_alloc(uint32_t byte) {
 	assert(pmm_stack_top != 0);
-	uint32_t count = byte/PMM_PAGE_SIZE;
+	uint32_t count = byte / PMM_PAGE_SIZE;
 	// 将 size 向上取整 4KB
 	if(byte % PMM_PAGE_SIZE != 0) {
 		count += 1;
@@ -55,8 +55,8 @@ ptr_t pmm_alloc(uint32_t byte) {
 		assert(pmm_stack_top != 0);
 		page = pmm_stack[pmm_stack_top--];
 		count--;
-	} while (count > 0);
-	memset( (void*)page, 0, PMM_PAGE_SIZE * count );
+	} while(count > 0);
+	memset( (void *)page, 0, PMM_PAGE_SIZE * count);
 	return page;
 }
 

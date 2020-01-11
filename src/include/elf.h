@@ -56,8 +56,8 @@ typedef struct {
 # define ELFMAG2 'L'  // e_ident[EI_MAG2]
 # define ELFMAG3 'F'  // e_ident[EI_MAG3]
 
-# define ELFDATA2LSB ( 1 )  // Little Endian
-# define ELFCLASS32 ( 1 )  // 32-bit Architecture
+# define ELFDATA2LSB (1) // Little Endian
+# define ELFCLASS32 (1) // 32-bit Architecture
 
 // enum Elf_Type {
 // 	ET_NONE  = 0,// Unkown Type
@@ -65,8 +65,8 @@ typedef struct {
 // 	ET_EXEC  = 2// Executable File
 // };
 
-# define EM_386  ( 3 )  // x86 Machine Type
-# define EV_CURRENT ( 1 )  // ELF Current Version
+# define EM_386  (3) // x86 Machine Type
+# define EV_CURRENT (1) // ELF Current Version
 
 typedef struct {
 	Elf32_Word sh_name; // Section name, index in string tbl
@@ -81,7 +81,7 @@ typedef struct {
 	Elf32_Word sh_entsize; // Entry size if section holds table
 } Elf32_Shdr;
 
-# define SHN_UNDEF ( 0x00 ) // Undefined/Not present
+# define SHN_UNDEF (0x00)// Undefined/Not present
 
 // enum ShT_Types {
 // 	SHT_NULL = 0, // Null section
@@ -107,8 +107,8 @@ typedef struct {
 	Elf32_Half st_shndx;
 } Elf32_Sym;
 
-# define ELF32_ST_BIND(INFO) ( ( INFO ) >> 4 )
-# define ELF32_ST_TYPE(INFO) ( ( INFO ) & 0x0F )
+# define ELF32_ST_BIND(INFO) ( (INFO) >> 4)
+# define ELF32_ST_TYPE(INFO) ( (INFO) & 0x0F)
 
 // enum StT_Bindings {
 // 	STB_LOCAL  = 0,// Local scope
@@ -133,8 +133,8 @@ typedef struct {
 	Elf32_Sword r_addend;
 } Elf32_Rela;
 
-# define ELF32_R_SYM(INFO) ( ( INFO ) >> 8 )
-# define ELF32_R_TYPE(INFO) ( (uint8_t)( INFO ) )
+# define ELF32_R_SYM(INFO) ( (INFO) >> 8)
+# define ELF32_R_TYPE(INFO) ( (uint8_t)(INFO) )
 
 // enum RtT_Types {
 // 	R_386_NONE  = 0,// No relocation
@@ -157,13 +157,13 @@ typedef struct {
 // ELF 信息
 typedef
         struct elf_t {
-	Elf32_Sym *symtab;
+	Elf32_Sym * symtab;
 	uint32_t symtabsz;
-	const char *strtab;
+	const char * strtab;
 	uint32_t strtabsz;
 } elf_t;
 
-static elf_t kernel_elf __attribute__( ( unused ) );
+static elf_t kernel_elf __attribute__( (unused) );
 // bool elf_check_file(struct multiboot_tag_elf_sections * tag);
 
 #ifdef __cplusplus
