@@ -22,8 +22,8 @@ void console_init(void) {
 	// 字体为灰色，背景为黑色
 	console_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	// 用 ' ' 填满屏幕
-	for (size_t y = 0; y < VGA_HEIGHT; y++) {
-		for (size_t x = 0; x < VGA_WIDTH; x++) {
+	for(size_t y = 0 ; y < VGA_HEIGHT ; y++) {
+		for(size_t x = 0 ; x < VGA_WIDTH ; x++) {
 			const size_t index = y * VGA_WIDTH + x;
 			console_buffer[index] = vga_entry(' ', console_color);
 		}
@@ -51,24 +51,24 @@ void console_putentryat(char c, uint8_t color, size_t x, size_t y) {
 
 // 转义字符处理
 void console_escapeconv(char c) {
-	switch (c) {
-	case '\n':
-		console_column = 0;
-		console_row++;
-		break;
-	case '\t':
-		// 取整对齐
-		console_column = ( console_column + 7 ) & ~7;
-		// 如果到达最后一列则换行
-		if (++console_column >= VGA_WIDTH) {
-			console_column = 0;
-			console_row++;
-		}
-		break;
-	case '\b':
-		if (console_column)
-			console_column -= 2;
-		break;
+	switch(c) {
+	    case '\n':
+		    console_column = 0;
+		    console_row++;
+		    break;
+	    case '\t':
+		    // 取整对齐
+		    console_column = (console_column + 7) & ~7;
+		    // 如果到达最后一列则换行
+		    if(++console_column >= VGA_WIDTH) {
+			    console_column = 0;
+			    console_row++;
+		    }
+		    break;
+	    case '\b':
+		    if(console_column)
+			    console_column -= 2;
+		    break;
 	}
 }
 
@@ -76,7 +76,7 @@ void console_escapeconv(char c) {
 void console_putchar(char c) {
 	console_putentryat(c, console_color, console_column, console_row);
 	// 如果到达最后一列则换行
-	if (++console_column >= VGA_WIDTH) {
+	if(++console_column >= VGA_WIDTH) {
 		console_column = 0;
 		console_row++;
 	}
@@ -87,13 +87,13 @@ void console_putchar(char c) {
 
 // 命令行写
 void console_write(const char * data, size_t size) {
-	for (size_t i = 0; i < size; i++)
+	for(size_t i = 0 ; i < size ; i++)
 		console_putchar(data[i]);
 }
 
 // 命令行写字符串
-void console_writestring(const char* data) {
-	console_write( data, strlen(data) );
+void console_writestring(const char * data) {
+	console_write(data, strlen(data) );
 }
 
 // 设置光标位置
@@ -112,18 +112,18 @@ uint16_t console_getcursorpos() {
 	size_t cursor_pos_h = inb(VGA_DATA);
 	outb(VGA_ADDR, VGA_CURSOR_L);
 	size_t cursor_pos_l = inb(VGA_DATA);
-	//返回光标位置
-	return ( cursor_pos_h << 8 ) | cursor_pos_l;
+	// 返回光标位置
+	return (cursor_pos_h << 8) | cursor_pos_l;
 }
 
 // 滚动显示
 void console_scroll() {
-	if (console_row >= VGA_HEIGHT) {
+	if(console_row >= VGA_HEIGHT) {
 		// 将所有行的显示数据复制到上一行
-		for (size_t i = 0; i < ( VGA_HEIGHT - 1 ) * VGA_WIDTH; i++)
+		for(size_t i = 0 ; i < (VGA_HEIGHT - 1) * VGA_WIDTH ; i++)
 			console_buffer[i] = console_buffer[i + VGA_WIDTH];
 		// 最后的一行数据现在填充空格，不显示任何字符
-		for (size_t i = ( VGA_HEIGHT - 1 ) * VGA_WIDTH; i < VGA_HEIGHT * VGA_WIDTH; i++)
+		for(size_t i = (VGA_HEIGHT - 1) * VGA_WIDTH ; i < VGA_HEIGHT * VGA_WIDTH ; i++)
 			console_buffer[i] = vga_entry(' ', console_color);
 		// 向上移动了一行，所以 cursor_y 现在是 24
 		console_row = 24;

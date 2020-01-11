@@ -15,12 +15,31 @@ extern "C" {
 #include "stddef.h"
 #include "debug.h"
 #include "multiboot2.h"
-#include "vmm.h"
 
 #define STACK_SIZE    0x1000  // 4096
 #define PMM_MAX_SIZE  0x20000000  // 512 MB
-#define PMM_PAGE_SIZE VMM_PAGE_SIZE      // 页面大小 4KB
-#define PAGE_MAX_SIZE ( PMM_MAX_SIZE / PMM_PAGE_SIZE ) // 物理页数量 131072, 0x20000
+
+// 内核的偏移地址
+#define PMM_PAGE_OFFSET    0xC0000000
+
+// 页掩码，用于 4KB 对齐
+#define PMM_PAGE_MASK    0xFFFFF000
+
+// PAE 标志的处理
+#ifdef CPU_PAE
+#else
+#endif
+
+// PSE 标志的处理
+#ifdef CPU_PSE
+// 页大小 4MB
+#define PMM_PAGE_SIZE    0x400000
+#else
+// 页大小 4KB
+#define PMM_PAGE_SIZE    0x1000
+#endif
+
+#define PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)// 物理页数量 131072, 0x20000
 
 extern ptr_t kernel_init_start[];
 extern ptr_t kernel_init_text_start[];

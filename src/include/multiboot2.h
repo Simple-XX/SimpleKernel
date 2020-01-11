@@ -344,16 +344,16 @@ struct multiboot_tag_load_base_addr {
 
 bool is_multiboot2_header(ptr_t magic, ptr_t addr);
 void multiboot2_init(ptr_t magic, ptr_t addr);
-void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_MODULE(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_BOOTDEV(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_MMAP(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
-void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
+void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_MODULE(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_BOOTDEV(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_MMAP(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag * tag);
+void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag * tag);
 multiboot_memory_map_entry_t * mmap_entries;
 multiboot_mmap_tag_t * mmap_tag;
 

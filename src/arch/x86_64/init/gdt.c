@@ -10,12 +10,12 @@ extern "C" {
 #include "include/gdt.h"
 
 void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
-	gdt_entries[num].base_low     = ( base & 0xFFFF );
-	gdt_entries[num].base_middle  = ( base >> 16 ) & 0xFF;
-	gdt_entries[num].base_high    = ( base >> 24 ) & 0xFF;
+	gdt_entries[num].base_low     = (base & 0xFFFF);
+	gdt_entries[num].base_middle  = (base >> 16) & 0xFF;
+	gdt_entries[num].base_high    = (base >> 24) & 0xFF;
 
-	gdt_entries[num].limit_low    = ( limit & 0xFFFF );
-	gdt_entries[num].granularity  = ( limit >> 16 ) & 0x0F;
+	gdt_entries[num].limit_low    = (limit & 0xFFFF);
+	gdt_entries[num].granularity  = (limit >> 16) & 0x0F;
 
 	gdt_entries[num].granularity |= gran & 0xF0;
 	gdt_entries[num].access       = access;
@@ -24,7 +24,7 @@ void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, ui
 static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0) {
 	// 获取 TSS 描述符的位置和长度
 	uint32_t base = (uint32_t)&tss_entry;
-	uint32_t limit = base + sizeof( tss_entry );
+	uint32_t limit = base + sizeof(tss_entry);
 
 	// 在 GDT 表中增加 TSS 段描述
 	gdt_set_gate(num, base, limit, 0x89, 0x40);
@@ -43,7 +43,7 @@ static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0) {
 // 初始化全局描述符表
 void gdt_init(void) {
 	// 全局描述符表界限  从 0 开始，所以总长要 - 1
-	gdt_ptr.limit = sizeof( gdt_entry_t ) * GDT_LENGTH - 1;
+	gdt_ptr.limit = sizeof(gdt_entry_t) * GDT_LENGTH - 1;
 	gdt_ptr.base = (uint32_t)&gdt_entries;
 
 	// 采用 Intel 平坦模型
@@ -56,7 +56,7 @@ void gdt_init(void) {
 	tss_set_gate(SEG_TSS, KERNEL_DS, 0);
 
 	// 加载全局描述符表地址到 GDTR 寄存器
-	gdt_load( (uint32_t)&gdt_ptr );
+	gdt_load( (uint32_t)&gdt_ptr);
 	// 加载任务寄存器
 	tss_load();
 
