@@ -62,13 +62,13 @@ extern "C" {
 
 typedef
         struct pt_regs_t {
-// segment registers
+	// segment registers
 	uint32_t gs;  // 16 bits
 	uint32_t fs;  // 16 bits
 	uint32_t es;  // 16 bits
 	uint32_t ds;  // 16 bits
 
-// registers save by pusha
+	// registers save by pusha
 	uint32_t edi;
 	uint32_t esi;
 	uint32_t ebp;
@@ -79,13 +79,13 @@ typedef
 	uint32_t eax;
 
 	uint32_t int_no;
-// save by `int` instruction
+	// save by `int` instruction
 	uint32_t err_code;
-// 以下指令由cpu压入，参见x86/x64 532页
+	// 以下指令由cpu压入，参见x86/x64 532页
 	uint32_t eip; // 指向产生异常的指令
 	uint32_t cs; // 16 bits
 	uint32_t eflags;
-// 如果发生了特权级切换，CPU 会压入以下两个参数
+	// 如果发生了特权级切换，CPU 会压入以下两个参数
 	uint32_t user_esp;
 	uint32_t user_ss; // 16 bits
 } pt_regs_t;
@@ -98,14 +98,14 @@ typedef
 	uint8_t zero;  // 置 0 段
 	uint8_t flags;    // 一些标志，文档有解释
 	uint16_t base_high; // 中断处理函数地址 31～16 位
-} __attribute__( ( packed ) ) idt_entry_t;
+} __attribute__( (packed) ) idt_entry_t;
 
 // IDTR
 typedef
         struct idt_ptr_t {
 	uint16_t limit; // 限长
 	uint32_t base;  // 基址
-} __attribute__( ( packed ) ) idt_ptr_t;
+} __attribute__( (packed) ) idt_ptr_t;
 
 // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
 // ISR:中断服务程序(interrupt service routine)
@@ -168,15 +168,15 @@ extern void irq15();           // IDE1 传输控制使用
 
 void irq_handler(pt_regs_t * regs);  // IRQ 处理函数
 
-typedef void (*interrupt_handler_t)(pt_regs_t *); // 定义中断处理函数指针
+typedef void (* interrupt_handler_t)(pt_regs_t *); // 定义中断处理函数指针
 
-void isr_handler(pt_regs_t *regs);  // 调用中断处理函数
+void isr_handler(pt_regs_t * regs);  // 调用中断处理函数
 
 void register_interrupt_handler(uint8_t n, interrupt_handler_t h);  // 注册一个中断处理函数
 
 extern void idt_load(uint32_t);  // 声明加载 IDTR 的函数
 
-typedef void (*isr_irq_func_t)(); // 中断处理函数指针类型
+typedef void (* isr_irq_func_t)(); // 中断处理函数指针类型
 
 void idt_init(void);  // idt 初始化
 

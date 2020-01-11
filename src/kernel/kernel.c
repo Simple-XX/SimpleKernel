@@ -26,7 +26,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	showinfo();
 	test();
 
-	while (1);
+	while(1);
 
 	return;
 }

@@ -22,9 +22,9 @@ typedef unsigned int size_t;
 #endif
 
 #undef NULL
-#define NULL ( (void *)0 )
+#define NULL ( (void *)0)
 
-#define UNUSED __attribute__ ((unused))
+#define UNUSED __attribute__( (unused) )
 
 
 #ifdef __cplusplus

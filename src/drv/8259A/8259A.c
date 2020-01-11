@@ -38,7 +38,7 @@ void clear_interrupt_chip(uint32_t intr_no) {
 	// 按照我们的设置，从 32 号中断起为用户自定义中断
 	// 因为单片的 Intel 8259A 芯片只能处理 8 级中断
 	// 故大于等于 40 的中断号是由从片处理的
-	if (intr_no >= IRQ8) {
+	if(intr_no >= IRQ8) {
 		// 发送重设信号给从片
 		outb(IO_PIC2, PIC_EOI);
 	}
