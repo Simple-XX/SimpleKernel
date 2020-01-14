@@ -15,7 +15,7 @@ extern "C" {
 static uint32_t phy_pages_count;
 
 // 物理内存页面管理的栈
-static ptr_t pmm_stack[PAGE_MAX_SIZE + 1];
+static ptr_t pmm_stack[PMM_PAGE_MAX_SIZE + 1];
 
 // 物理内存管理的栈指针
 static ptr_t pmm_stack_top;
@@ -61,7 +61,7 @@ ptr_t pmm_alloc(uint32_t byte) {
 }
 
 void pmm_free_page(ptr_t page) {
-	assert(pmm_stack_top != PAGE_MAX_SIZE);
+	assert(pmm_stack_top != PMM_PAGE_MAX_SIZE);
 	pmm_stack[++pmm_stack_top] = page;
 	return;
 }

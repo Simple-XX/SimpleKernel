@@ -30,26 +30,26 @@ void enable_page(pgd_t * pgd) {
 
 // 这时操作的是临时对象，正式初始化交给 kernel_main()
 void mm_init() {
-	pgd_tmp[0] = (ptr_t)pte_low | VMM_PAGE_PRESENT | VMM_PAGE_RW;
-
-	for(int i = 0 ; i < 4 ; ++i) {
-		uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE + VMM_PTE_PRE_PAGE * VMM_PAGE_SIZE * i);
-		pgd_tmp[pgd_idx] = ( (ptr_t)pte_high + VMM_PAGE_SIZE * i) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
-	}
-	pgd_tmp[0] = ( (ptr_t)pte_high) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	// init 段, 4MB
+	// 因为 mm_init 返回后仍然在 init 段，不映射的话会爆炸的
+	pgd_tmp[0] = (uint32_t)pte_init | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	// 内核段 pgd_tmp[0x300], 4MB
+	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (uint32_t)pte_kernel | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 
 	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
-	// 因为 .init.text 段的代码在物理地址前 4MB 处(肯定不会超出这个范围)，
-	// 开启分页后若此处不映射，代码执行立即会出错，离开 .init.text 段后的代码执行，
-	// 不再需要映射物理前 4MB 的内存
+	// 将每个页表项赋值
+	// pgd_tmp[0] => pte_init
 	for(uint32_t i = 0 ; i < 1024 ; i++) {
-		pte_low[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+		pte_init[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
-	// 映射 0x00000000-0x01000000 的物理地址到虚拟地址 0xC0000000-0xC1000000
-	for(uint32_t i = 0 ; i < 1024 * 4 ; i++) {
-		pte_high[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	// 映射 kernel 段 4MB
+	// 映射 0x00000000-0x00400000 的物理地址到虚拟地址 0xC0000000-0xC0400000
+	// pgd_tmp[0x300] => pte_kernel
+	for(uint32_t i = 0 ; i < 1024 ; i++) {
+		pte_kernel[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
+
 	enable_page(pgd_tmp);
 
 	return;
