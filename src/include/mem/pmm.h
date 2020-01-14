@@ -16,14 +16,18 @@ extern "C" {
 #include "debug.h"
 #include "multiboot2.h"
 
-#define STACK_SIZE    (0x1000)  // 4096
-#define PMM_MAX_SIZE  (0x20000000)  // 512 MB
+#define STACK_SIZE    (0x1000U)  // 4096
+#define PMM_MAX_SIZE  (0x20000000U)  // 512 MB
 
 // 内核的偏移地址
-#define KERNEL_BASE    (0xC0000000)
+#define KERNEL_BASE    (0xC0000000U)
+// 内核占用大小 4MB
+#define KERNEL_SIZE    (0x400000U)
+// 映射内核需要的页数
+#define PMM_PAGES_KERNEL    (KERNEL_SIZE / PMM_PAGE_SIZE)
 
 // 页掩码，用于 4KB 对齐
-#define PMM_PAGE_MASK    (0xFFFFF000)
+#define PMM_PAGE_MASK    (0xFFFFF000U)
 
 // PAE 标志的处理
 #ifdef CPU_PAE
@@ -33,13 +37,13 @@ extern "C" {
 // PSE 标志的处理
 #ifdef CPU_PSE
 // 页大小 4MB
-#define PMM_PAGE_SIZE    (0x400000)
+#define PMM_PAGE_SIZE    (0x400000U)
 #else
 // 页大小 4KB
-#define PMM_PAGE_SIZE    (0x1000)
+#define PMM_PAGE_SIZE    (0x1000U)
 #endif
 
-#define PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)// 物理页数量 131072, 0x20000
+#define PMM_PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)// 物理页数量 131072, 0x20000
 
 extern ptr_t kernel_init_start[];
 extern ptr_t kernel_init_text_start[];
