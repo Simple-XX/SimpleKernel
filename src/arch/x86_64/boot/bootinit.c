@@ -39,14 +39,14 @@ void mm_init() {
 	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
 	// 将每个页表项赋值
 	// pgd_tmp[0] => pte_init
-	for(uint32_t i = 0 ; i < 1024 ; i++) {
+	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++) {
 		pte_init[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
 	// 映射 kernel 段 4MB
 	// 映射 0x00000000-0x00400000 的物理地址到虚拟地址 0xC0000000-0xC0400000
 	// pgd_tmp[0x300] => pte_kernel
-	for(uint32_t i = 0 ; i < 1024 ; i++) {
+	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++) {
 		pte_kernel[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
