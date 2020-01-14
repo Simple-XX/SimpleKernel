@@ -1,6 +1,6 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+#
 # Makefile for MRNIU/SimpleKernel.
 
 CURR_DIR := $(shell pwd)
