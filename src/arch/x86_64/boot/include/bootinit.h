@@ -27,12 +27,7 @@ extern "C" {
 #include "mem/vmm.h"
 
 // 内核使用的临时页表和页目录
-// 该地址必须是页对齐的地址，内存 0-640KB 肯定是空闲的
-// __attribute__( (section(".init.data") ) ) pgd_t * pgd_tmp  = (pgd_t *)0x1000;
-// __attribute__( (section(".init.data") ) ) pte_t * pte_low  = (pte_t *)0x2000;
-// __attribute__( (section(".init.data") ) ) pte_t * pte_high = (pte_t *)0x3000;
-
-// 用于映射 init 段于内核段
+// 用于映射 init 段与内核段
 __attribute__( (section(".init.data") ) ) pgd_t pgd_tmp[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // init 段
 __attribute__( (section(".init.data") ) ) pte_t pte_init[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );

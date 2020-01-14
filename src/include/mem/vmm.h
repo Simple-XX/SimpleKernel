@@ -34,11 +34,11 @@ extern "C" {
 // 页表大小，一页表能映射多少 Byte 内存 = 页表项数量*页表项映射大小 2^22
 #define VMM_PAGE_TABLE_SIZE (VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_SIZE)
 // 页目录大小，一页目录能映射多少 Byte 内存 = 页表数量*页表映射大小 2^32
-#define VMM_PAGE_DIRECTORY_SIZE     (VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY * VMM_PAGE_TABLE_SIZE)
+#define VMM_PAGE_DIRECTORY_SIZE     ( (uint64_t)VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY * (uint64_t)VMM_PAGE_TABLE_SIZE)
 // 虚拟内存位数
-#define VMM_VMEM_BITS       (32U)
+#define VMM_VMEM_BITS       (32UL)
 // 虚拟内存大小
-#define VMM_VMEM_SIZE       (1U << (VMM_VMEM_BITS - 1U) )
+#define VMM_VMEM_SIZE       (1UL << (VMM_VMEM_BITS - 1UL) )
 // 映射全部虚拟内存需要的页数 = 虚拟内存大小/页大小 2^20
 #define VMM_PAGES_TOTAL     (VMM_VMEM_SIZE / VMM_PAGE_SIZE)
 // 映射全部虚拟内存需要的页表数 = 虚拟内存大小/页表大小 2^12
@@ -48,9 +48,9 @@ extern "C" {
 // 映射内核需要的页数
 #define VMM_PAGES_KERNEL    (PMM_PAGES_KERNEL)
 // 映射内核需要的页表数
-#define VMM_PAGE_TABLES_KERNEL      (KERNEL_SIZE / VMM_PAGE_TABLE_SIZE)
+#define VMM_PAGE_TABLES_KERNEL      ( (KERNEL_SIZE / VMM_PAGE_TABLE_SIZE) + 1UL)
 // 映射内核需要的页目录数
-#define VMM_PAGE_DIRECTORIES_KERNEL      (1U)
+#define VMM_PAGE_DIRECTORIES_KERNEL      ( (KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
 
 
 // P = 1 表示有效； P = 0 表示无效。
