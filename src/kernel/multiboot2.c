@@ -118,17 +118,14 @@ bool is_multiboot2_header(ptr_t magic, ptr_t addr) {
 void multiboot2_init(ptr_t magic, ptr_t addr) {
 	// Am I booted by a Multiboot-compliant boot loader?
 	is_multiboot2_header(magic, addr);
-
 	uint32_t size = *(uint32_t *)addr;
 	// addr+0 保存大小，下一字节开始为 tag 信息
 	printk_info("Announced mbi size 0x%X\n", size);
-
 	ptr_t tag_addr = (ptr_t)addr + 8;
 	multiboot_tag_t * tag;
 	tag = (multiboot_tag_t *)tag_addr;
 	printk("tag type: %X\n", tag->type);
 	printk("tag size: %X\n", tag->size);
-
 	for(tag = (multiboot_tag_t *)tag_addr ;
 	    tag->type != MULTIBOOT_TAG_TYPE_END ;
 	    // (tag 低八位) + (tag->size 八位对齐)

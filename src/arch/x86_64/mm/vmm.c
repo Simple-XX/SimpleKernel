@@ -20,7 +20,47 @@ static pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (alig
 // 内核页表区域
 static pte_t pte_kernel[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
+// 内核页表起始
+// static pte_t * pte_addr = (pte_t *)( (uint32_t)kern_end + KERNBASE);
+// 页表数组指针
+// pte_t(*pte_kern)[PTE_SIZE] = (pte_t(*)[PTE_SIZE])pte_addr;
+
+
 void vmm_init(void) {
+	register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
+
+	// 内核段 pgd_tmp[0x300], 4MB
+	// pgd_kernel[VMM_PGD_INDEX(KERNEL_BASE)] = ( (uint32_t)pte_kernel - KERNEL_BASE) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
+	for(uint32_t i = pgd_idx  ; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx ; i++) {
+		pgd_kernel[i] = (vmm_la_to_pa( (ptr_t)pte_kernel) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
+	}
+
+	// 将每个页表项赋值
+	// 映射 kernel 段 4MB
+	// 映射 0x00000000-0x00400000 的物理地址到虚拟地址 0xC0000000-0xC0400000
+	// pgd_tmp[0x300] => pte_kernel
+	for(uint32_t i = 0 ; i < 1024 ; i++) {
+		pte_kernel[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	}
+
+	// 首先映射内核页目录
+	// ptr_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
+	// for(uint32_t i = pgd_idx, j = 0 ; i < VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY + pgd_idx ; i++, j++) {
+	// 	pgd_kernel[i] = (pgd_t)vmm_la_to_pa( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	// }
+	// // 映射所有页到页表中
+	// printk_test("------111111\n");
+	// // ptr_t * tmp = (ptr_t *)(pte_kernel + VMM_PAGES_PRE_PAGE_TABLE * pgd_idx);
+	// ptr_t * tmp = (ptr_t *)pte_kernel;
+	// printk_test("090000\n");
+	// for(uint32_t i = 0 ; i < VMM_PAGES_TOTAL ; i++) {
+	// 	tmp[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	// }
+
+	printk_test("111111\n");
+	switch_pgd( (ptr_t)pgd_kernel - KERNEL_BASE);
+	printk_test("22222\n");
 
 	printk_info("vmm_init\n");
 
