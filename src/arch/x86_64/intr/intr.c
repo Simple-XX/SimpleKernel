@@ -135,7 +135,6 @@ void idt_init(void) {
 	register_interrupt_handler(INT_SEGMENT, &segment_not_present);
 	register_interrupt_handler(INT_STACK_FAULT, &stack_segment);
 	register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
-	register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
 
 	printk_info("intr_init\n");
 }

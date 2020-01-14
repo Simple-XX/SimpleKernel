@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 #include "intr/include/intr.h"
-#include "vmm.h"
+#include "pmm.h"
 
 // 页大小，一页能映射多少 Byte 内存 2^12
 #define VMM_PAGE_SIZE       (PMM_PAGE_SIZE)
@@ -38,13 +38,20 @@ extern "C" {
 // 虚拟内存位数
 #define VMM_VMEM_BITS       (32U)
 // 虚拟内存大小
-#define VMM_VMEM_SIZE       (1U << (VMM_VMEM_BITS - 1) )
+#define VMM_VMEM_SIZE       (1U << (VMM_VMEM_BITS - 1U) )
 // 映射全部虚拟内存需要的页数 = 虚拟内存大小/页大小 2^20
 #define VMM_PAGES_TOTAL     (VMM_VMEM_SIZE / VMM_PAGE_SIZE)
 // 映射全部虚拟内存需要的页表数 = 虚拟内存大小/页表大小 2^12
 #define VMM_PAGE_TABLES_TOTAL       (VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE)
 // 映射全部虚拟内存需要的页目录数 = 虚拟内存大小/页目录大小 2^0
 #define VMM_PAGE_DIRECTORIES_TOTAL  (VMM_VMEM_SIZE / VMM_PAGE_DIRECTORY_SIZE)
+// 映射内核需要的页数
+#define VMM_PAGES_KERNEL    (PMM_PAGES_KERNEL)
+// 映射内核需要的页表数
+#define VMM_PAGE_TABLES_KERNEL      (KERNEL_SIZE / VMM_PAGE_TABLE_SIZE)
+// 映射内核需要的页目录数
+#define VMM_PAGE_DIRECTORIES_KERNEL      (1U)
+
 
 // P = 1 表示有效； P = 0 表示无效。
 #define VMM_PAGE_PRESENT    (0x00000001)
@@ -60,6 +67,14 @@ extern "C" {
 
 // 线性地址转换为物理地址
 #define VMM_LA_TO_PA(la)    (la - KERNEL_BASE)
+
+static inline ptr_t vmm_la_to_pa(ptr_t la) {
+	return la - KERNEL_BASE;
+}
+
+static inline ptr_t vmm_pa_to_la(ptr_t pa) {
+	return pa + KERNEL_BASE;
+}
 
 // 获取一个地址的页目录，高 10 位
 #define VMM_PGD_INDEX(x)        ( ( (x) >> 22) & 0x03FF)
@@ -77,10 +92,10 @@ extern "C" {
 // 页全局目录项
 typedef ptr_t pgd_t;
 
-// 页上级目录项
+// 页上级目录项，以后拓展的时候用
 typedef ptr_t pmd_t;
 
-// 页中间目录项
+// 页中间目录项，以后拓展的时候用
 typedef ptr_t pud_t;
 
 // 页表项
