@@ -15,7 +15,7 @@ extern "C" {
 #include "cpu.hpp"
 
 // 内核页目录区域
-static pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核页表区域
 static pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
@@ -25,14 +25,15 @@ void vmm_init(void) {
 	// 内核段 pgd_tmp[0x300], 4MB
 	uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
 	for(uint32_t i = pgd_idx, j = 0 ; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx ; i++, j++) {
-		pgd_kernel[i] = (vmm_la_to_pa( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
+		pgd_kernel[i] = ( (ptr_t)vmm_la_to_pa( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
 	}
 
 	// 将每个页表项赋值
 	// 映射 kernel 段 4MB
-	// 映射 0x00000000-0x00400000 的物理地址到虚拟地址 0xC0000000-0xC0400000
+	// 映射虚拟地址 0xC0000000-0xC0400000 到物理地址 0x00000000-0x00400000
 	ptr_t * pte = (ptr_t *)pte_kernel;
 	for(uint32_t i = 0 ; i < VMM_PAGE_TABLES_KERNEL * VMM_PAGES_PRE_PAGE_TABLE ; i++) {
+		// 物理地址由 (i << 12) 给出
 		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
@@ -46,25 +47,12 @@ void vmm_init(void) {
 void map(pgd_t * pgd_now, ptr_t va, ptr_t pa, uint32_t flags) {
 	uint32_t pgd_idx = VMM_PGD_INDEX(va);
 	uint32_t pte_idx = VMM_PTE_INDEX(va);
-
 	pte_t * pte = (pte_t *)(pgd_now[pgd_idx] & VMM_PAGE_MASK);
-	if(!pte) {
-		pte = (pte_t *)pmm_alloc(1);
-		pgd_now[pgd_idx] = (ptr_t)pte | VMM_PAGE_PRESENT | VMM_PAGE_RW;
-
-		// 转换到内核线性地址并清 0
-		pte = (pte_t *)( (ptr_t)pte + KERNEL_BASE);
-		bzero(pte, VMM_PAGE_SIZE);
-	} else {
-		// 转换到内核线性地址
-		pte = (pte_t *)( (ptr_t)pte + KERNEL_BASE);
-	}
-
+	// 转换到内核线性地址
+	pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
 	pte[pte_idx] = (pa & VMM_PAGE_MASK) | flags;
-
 	// 通知 CPU 更新页表缓存
-	__asm__ volatile ("invlpg (%0)" : : "a" (va) );
-	// __native_flush_tlb_single(va);
+	CPU_INVLPG(va);
 }
 
 void unmap(pgd_t * pgd_now, ptr_t va) {
@@ -78,13 +66,12 @@ void unmap(pgd_t * pgd_now, ptr_t va) {
 	}
 
 	// 转换到内核线性地址
-	pte = (pte_t *)( (ptr_t)pte + KERNEL_BASE);
+	pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
 
 	pte[pte_idx] = 0;
 
 	// 通知 CPU 更新页表缓存
-	__asm__ volatile ("invlpg (%0)" : : "a" (va) );
-	// __native_flush_tlb_single(va);
+	CPU_INVLPG(va);
 }
 
 uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
@@ -97,7 +84,7 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
 	}
 
 	// 转换到内核线性地址
-	pte = (pte_t *)( (ptr_t)pte + KERNEL_BASE);
+	pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
 
 	// 如果地址有效而且指针不为NULL，则返回地址
 	if(pte[pte_idx] != 0 && pa) {
