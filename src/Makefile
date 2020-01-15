@@ -43,6 +43,8 @@ clean:
 	@echo 正在删除... $<
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.gch"  | xargs rm -f
+	@rm -f *.map
+	@rm -f *.nm
 	@rm -f *.bin
 	@for subdir in $(SUB_DIR); \
 		do $(MAKE) -C $$subdir clean || exit 1; \
@@ -99,11 +101,17 @@ code_line_count:
 
 .PHONY: generate_map
 generate_map:
-	$(READELF) -s $(IMAGE) >> $(MAP)
+	$(READELF) -s $(IMAGE_KERNEL) >> $(RES_KERNEL_MAP)
+ifeq ($(ARCH),x86_64)
+	$(READELF) -s $(IMAGE_BOOT) >> $(RES_BOOT_MAP)
+endif
 
 .PHONY: generate_nm
 generate_nm:
-	$(NM) $(IMAGE)
+	$(NM) $(IMAGE_KERNEL) >> $(RES_KERNEL_NM)
+ifeq ($(ARCH),x86_64)
+	$(NM) $(IMAGE_BOOT) >> $(RES_BOOT_NM)
+endif
 
 .PHONY: info
 info:
