@@ -70,7 +70,7 @@ extern multiboot_mmap_tag_t * mmap_tag;
 // 初始化内存管理
 void pmm_init(void);
 
-ptr_t pmm_alloc(uint32_t byte);
+ptr_t pmm_alloc(size_t byte);
 
 void pmm_free_page(ptr_t page);
 

@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #include "include/test.h"
-#include "stdlib.h"
+#include "heap/heap.h"
 
 bool test_pmm(void) {
 	ptr_t allc_addr = 0;
@@ -44,10 +44,10 @@ bool test_heap() {
 	ptr_t allc_addr4 = (ptr_t)kmalloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr4);
 	printk_test("Test Heap kfree :\n");
-	kfree( (void *)allc_addr1);
-	kfree( (void *)allc_addr2);
-	kfree( (void *)allc_addr3);
-	kfree( (void *)allc_addr4);
+	kfree( (ptr_t)allc_addr1);
+	kfree( (ptr_t)allc_addr2);
+	kfree( (ptr_t)allc_addr3);
+	kfree( (ptr_t)allc_addr4);
 	ptr_t new_addr = (ptr_t)kmalloc(9000);
 	printk_test("New Alloc Physical Addr: 0x%08X\n", new_addr);
 

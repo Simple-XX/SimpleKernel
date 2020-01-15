@@ -32,9 +32,9 @@ void enable_page(pgd_t * pgd) {
 void mm_init() {
 	// init 段, 4MB
 	// 因为 mm_init 返回后仍然在 init 段，不映射的话会爆炸的
-	pgd_tmp[0] = (uint32_t)pte_init | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	pgd_tmp[0] = (ptr_t)pte_init | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	// 内核段 pgd_tmp[0x300], 4MB
-	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (uint32_t)pte_kernel | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (ptr_t)pte_kernel_tmp | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 
 	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
 	// 将每个页表项赋值
@@ -44,10 +44,10 @@ void mm_init() {
 	}
 
 	// 映射 kernel 段 4MB
-	// 映射 0x00000000-0x00400000 的物理地址到虚拟地址 0xC0000000-0xC0400000
+	// 映射虚拟地址 0xC0000000-0xC0400000 到物理地址 0x00000000-0x00400000
 	// pgd_tmp[0x300] => pte_kernel
 	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++) {
-		pte_kernel[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+		pte_kernel_tmp[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
 	enable_page(pgd_tmp);

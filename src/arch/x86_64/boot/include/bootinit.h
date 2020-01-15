@@ -32,8 +32,9 @@ __attribute__( (section(".init.data") ) ) pgd_t pgd_tmp[VMM_PAGE_TABLES_PRE_PAGE
 // init 段
 __attribute__( (section(".init.data") ) ) pte_t pte_init[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核段
-__attribute__( (section(".init.data") ) ) pte_t pte_kernel[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
-
+__attribute__( (section(".init.data") ) ) pte_t pte_kernel_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+// 内核栈段
+__attribute__( (section(".init.data") ) ) pte_t pte_stack_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 // 开启分页机制之后的内核栈
 uint8_t kernel_stack[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
