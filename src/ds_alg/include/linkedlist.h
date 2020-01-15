@@ -12,6 +12,8 @@ extern "C" {
 
 #include "stddef.h"
 #include "stdbool.h"
+// NOTE!!!
+// 只能在 heap_init() 返回后使用
 
 // linkedlist
 /**
