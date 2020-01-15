@@ -283,7 +283,7 @@ static inline bool EFLAGS_CF_status(void) {
 	return ( eflags & EFLAGS_CF );
 }
 
-static inline void __native_flush_tlb_single(ptr_t addr) {
+static inline void CPU_INVLPG(ptr_t addr) {
 	__asm__ volatile ( "invlpg (%0)" : : "r" ( addr ) : "memory" );
 	return;
 }

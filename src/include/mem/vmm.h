@@ -85,10 +85,6 @@ static inline ptr_t vmm_pa_to_la(ptr_t pa) {
 // 获取一个地址的页內偏移，低 12 位
 #define VMM_OFFSET_INDEX(x)     ( (x) & 0x0FFF)
 
-// 映射内核页需要的页数 0x40000
-// #define VMM_KERNEL_PAGE_COUNT   (0x40000000/VMM_PAGE_SIZE)
-#define VMM_KERNEL_PAGE_COUNT   (0x20000000 / VMM_PAGE_SIZE)
-
 // 页全局目录项
 typedef ptr_t pgd_t;
 
@@ -100,6 +96,9 @@ typedef ptr_t pud_t;
 
 // 页表项
 typedef ptr_t pte_t;
+
+// 内核页目录区域
+extern pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 // 初始化虚拟内存管理
 void vmm_init(void);
