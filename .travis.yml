@@ -1,5 +1,6 @@
 os: osx
 language: c
+osx_image: xcode11.2
 
 env:
   global:
@@ -12,6 +13,6 @@ before_install:
 
 script:
   - cd ./src
-  - make
+  - make remake
 after_script:
   - make clean

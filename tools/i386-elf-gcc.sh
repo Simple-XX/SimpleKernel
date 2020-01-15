@@ -1,6 +1,6 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-
+#
 # i386-elf-gcc.sh for MRNIU/SimpleKernel.
 
 #!/usr/bin/env bash
