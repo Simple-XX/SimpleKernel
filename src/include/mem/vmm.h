@@ -52,7 +52,6 @@ extern "C" {
 // 映射内核需要的页目录数
 #define VMM_PAGE_DIRECTORIES_KERNEL      ( (KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
 
-
 // P = 1 表示有效； P = 0 表示无效。
 #define VMM_PAGE_PRESENT    (0x00000001)
 

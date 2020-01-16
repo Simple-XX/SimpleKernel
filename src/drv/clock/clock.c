@@ -6,12 +6,15 @@
 extern "C" {
 #endif
 
-#include "include/clock.h"
 #include "stddef.h"
+#include "include/clock.h"
+#include "sched/sched.h"
+
 
 void clock_handler(pt_regs_t * regs UNUSED) {
 	static uint32_t tick UNUSED = 0;
 	// printk_color(light_green, "Tick: %d\n", tick++);
+	schedule();
 }
 
 void clock_init(void) {
