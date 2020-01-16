@@ -10,6 +10,7 @@ extern "C" {
 #include "stdio.h"
 #include "stdarg.h"
 #include "stdint.h"
+#include "debug.h"
 
 static char buf[1024];
 
@@ -28,7 +29,7 @@ int32_t printk(const char * fmt, ...) {
 	return i;
 }
 
-int32_t printk_color(uint8_t color, const char * fmt, ...){
+int32_t printk_color(uint8_t color, const char * fmt, ...) {
 	va_list args;
 	int i;
 	va_start(args, fmt);
@@ -56,6 +57,7 @@ int32_t printk_info(const char * fmt, ...) {
 }
 
 int32_t printk_debug(const char * fmt, ...) {
+#ifdef DEBUG
 	printk_color(COL_DEBUG, "[DEBUG] ");
 	va_list args;
 	int i;
@@ -64,6 +66,9 @@ int32_t printk_debug(const char * fmt, ...) {
 	va_end(args);
 	console_writestring(buf);
 	return i;
+#else
+	return 0;
+#endif
 }
 
 int32_t printk_test(const char * fmt, ...) {
