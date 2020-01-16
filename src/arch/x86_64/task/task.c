@@ -10,6 +10,10 @@ extern "C" {
 
 #include "task/task.h"
 
+void task_init(void) {
+	return;
+}
+
 #ifdef __cplusplus
 }
 #endif
