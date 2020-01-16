@@ -34,7 +34,11 @@ bool test_libc() {
 }
 
 bool test_task() {
+	return true;
+}
 
+bool test_sched() {
+	return true;
 }
 
 bool test_heap() {
@@ -60,7 +64,11 @@ bool test_heap() {
 
 bool test(void) {
 	test_pmm();
+	test_vmm();
+	test_libc();
 	test_heap();
+	test_task();
+	test_sched();
 	return true;
 }
 

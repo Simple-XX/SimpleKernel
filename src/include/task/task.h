@@ -11,6 +11,9 @@ extern "C" {
 #endif
 
 #include "stdint.h"
+#include "types.h"
+#include "heap/heap.h"
+#include "mem/vmm.h"
 
 // 进程状态描述
 typedef
@@ -19,21 +22,25 @@ typedef
 	TASK_UNINIT = 0,
 	// 睡眠中
 	TASK_SLEEPING = 1,
-	// 可运行(也许正在运行)
+	// 可运行
 	TASK_RUNNABLE = 2,
+	// 正在运行
+	TASK_RUNNING = 3,
 	// 僵尸状态
-	TASK_ZOMBIE = 3,
+	TASK_ZOMBIE = 4,
 } task_status_t;
 
 // 内核线程的上下文切换保存的信息
 typedef
         struct task_context {
+	uint32_t eip;
 	uint32_t esp;
-	uint32_t ebp;
 	uint32_t ebx;
+	uint32_t ecx;
+	uint32_t edx;
 	uint32_t esi;
 	uint32_t edi;
-	uint32_t eflags;
+	uint32_t ebp;
 } task_context_t;
 
 // 进程内存地址结构
@@ -50,7 +57,7 @@ typedef
 	// 进程标识符
 	pid_t pid;
 	// 进程的内核栈地址
-	void    * stack;
+	ptr_t stack;
 	// 当前进程的内存地址映像
 	task_mem_t * mm;
 	// 进程切换需要的上下文信息
@@ -61,11 +68,17 @@ typedef
 
 // 全局 pid 值
 extern pid_t curr_pid;
-
-// 内核线程创建
-// 线程退出函数
-
+// 初始化
 void task_init(void);
+// 线程创建
+pid_t kfork(int (* fn)(void *), void * arg);
+// 线程退出
+void kexit(void);
+
+int32_t kexec();
+int32_t kwait();
+void kwakeup();
+void kkill();
 
 #ifdef __cplusplus
 }
