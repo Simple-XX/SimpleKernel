@@ -45,33 +45,42 @@ void vmm_init(void) {
 }
 
 void map(pgd_t * pgd_now, ptr_t va, ptr_t pa, uint32_t flags) {
-	uint32_t pgd_idx = VMM_PGD_INDEX(va);
-	uint32_t pte_idx = VMM_PTE_INDEX(va);
+	uint32_t pgd_idx = VMM_PGD_INDEX(va);// 0x200
+	uint32_t pte_idx = VMM_PTE_INDEX(va);// 0x0
+	printk_debug("pgd_now = %X\n", pgd_now);
+	printk_debug("pgd_idx = %X\n", pgd_idx);
+	printk_debug("pte_idx = %X\n", pte_idx);
 	pte_t * pte = (pte_t *)(pgd_now[pgd_idx] & VMM_PAGE_MASK);
+	printk_debug("pte1 = %X\n", pte);
 	// 转换到内核线性地址
-	pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
+	if(pte != NULL) {
+		printk_debug("pte20 = %X\n", pte);
+		pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
+		printk_debug("pte21 = %X\n", pte);
+	} else {
+		pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
+		printk_debug("pte2 = %X\n", pte);
+		pgd_now[pgd_idx] = (uint32_t)pte | flags;
+		printk_debug("pgd_now[pgd_idx] = %X\n", pgd_now[pgd_idx]);
+	}
+
 	pte[pte_idx] = (pa & VMM_PAGE_MASK) | flags;
-	// 通知 CPU 更新页表缓存
+	printk_debug("pte[pte_idx] = %X\n", pte[pte_idx]);
+	// // 通知 CPU 更新页表缓存
 	CPU_INVLPG(va);
+	return;
 }
 
 void unmap(pgd_t * pgd_now, ptr_t va) {
 	uint32_t pgd_idx = VMM_PGD_INDEX(va);
 	uint32_t pte_idx = VMM_PTE_INDEX(va);
-
 	pte_t * pte = (pte_t *)(pgd_now[pgd_idx] & VMM_PAGE_MASK);
-
-	if(!pte) {
-		return;
-	}
-
 	// 转换到内核线性地址
 	pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
-
 	pte[pte_idx] = 0;
-
 	// 通知 CPU 更新页表缓存
 	CPU_INVLPG(va);
+	return;
 }
 
 uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
@@ -82,7 +91,6 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
 	if(!pte) {
 		return 0;
 	}
-
 	// 转换到内核线性地址
 	pte = (pte_t *)vmm_pa_to_la( (ptr_t)pte);
 
@@ -91,7 +99,6 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
 		pa = pte[pte_idx] & VMM_PAGE_MASK;
 		return 1;
 	}
-
 	return 0;
 }
 
