@@ -109,10 +109,10 @@ void switch_pgd(ptr_t pd) {
 void page_fault(pt_regs_t * regs) {
 #ifdef __x86_64__
 	uint64_t cr2;
-	asm volatile ("movq %%cr2,%0" : "=r" (cr2) );
+	__asm__ volatile ("movq %%cr2,%0" : "=r" (cr2) );
 #else
 	uint32_t cr2;
-	asm volatile ("mov %%cr2,%0" : "=r" (cr2) );
+	__asm__ volatile ("mov %%cr2,%0" : "=r" (cr2) );
 #endif
 	printk("Page fault at 0x%08X, virtual faulting address 0x%08X\n", regs->eip, cr2);
 	printk_err("Error code: 0x%08X\n", regs->err_code);

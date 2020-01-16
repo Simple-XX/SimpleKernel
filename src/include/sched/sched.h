@@ -11,8 +11,28 @@ extern "C" {
 #endif
 
 #include "stdint.h"
+#include "task/task.h"
 
+// 可调度进程链表
+extern task_pcb_t * running_proc_head;
+
+// 等待进程链表
+extern task_pcb_t * wait_proc_head;
+
+// 当前运行的任务
+extern task_pcb_t * current;
+
+// 初始化任务调度
 void sched_init(void);
+
+// 任务调度
+void schedule(void);
+
+// 任务切换准备
+void change_task_to(task_pcb_t * next);
+
+// 任务切换
+extern void switch_to(task_context_t * prev, task_context_t * next);
 
 #ifdef __cplusplus
 }

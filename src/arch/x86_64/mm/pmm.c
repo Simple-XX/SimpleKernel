@@ -44,7 +44,7 @@ void pmm_init() {
 }
 
 ptr_t pmm_alloc(uint32_t byte) {
-	assert(pmm_stack_top != 0);
+	assert(pmm_stack_top != 0, "pmm_stack_top != 0");
 	uint32_t count = byte / PMM_PAGE_SIZE;
 	// 将 size 向上取整 4KB
 	if(byte % PMM_PAGE_SIZE != 0) {
@@ -52,7 +52,7 @@ ptr_t pmm_alloc(uint32_t byte) {
 	}
 	ptr_t page;
 	do {
-		assert(pmm_stack_top != 0);
+		assert(pmm_stack_top != 0, "pmm_stack_top != 0");
 		page = pmm_stack[pmm_stack_top--];
 		count--;
 	} while(count > 0);
@@ -61,7 +61,7 @@ ptr_t pmm_alloc(uint32_t byte) {
 }
 
 void pmm_free_page(ptr_t page) {
-	assert(pmm_stack_top != PMM_PAGE_MAX_SIZE);
+	assert(pmm_stack_top != PMM_PAGE_MAX_SIZE, "pmm_stack_top != PMM_PAGE_MAX_SIZE");
 	pmm_stack[++pmm_stack_top] = page;
 	return;
 }
