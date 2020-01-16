@@ -45,19 +45,27 @@ extern "C" {
 
 #define PMM_PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)// 物理页数量 131072, 0x20000
 
-extern ptr_t kernel_init_start[];
-extern ptr_t kernel_init_text_start[];
-extern ptr_t kernel_init_text_end[];
-extern ptr_t kernel_init_data_start[];
-extern ptr_t kernel_init_data_end[];
-extern ptr_t kernel_init_end[];
+// A common problem is getting garbage data when trying to use a value defined in a linker script.
+// This is usually because they're dereferencing the symbol. A symbol defined in a linker script (e.g. _ebss = .;)
+// is only a symbol, not a variable. If you access the symbol using extern uint32_t _ebss;
+// and then try to use _ebss the code will try to read a 32-bit integer from the address indicated by _ebss.
+// The solution to this is to take the address of _ebss either by using it as & _ebss or by defining it as
+// an unsized array(extern char _ebss[]; ) and casting to an integer.(The array notation prevents accidental
+// reads from _ebss as arrays must be explicitly dereferenced)
+// ref: http://wiki.osdev.org/Using_Linker_Script_Values
+extern ptr_t * kernel_init_start;
+extern ptr_t * kernel_init_text_start;
+extern ptr_t * kernel_init_text_end;
+extern ptr_t * kernel_init_data_start;
+extern ptr_t * kernel_init_data_end;
+extern ptr_t * kernel_init_end;
 
-extern ptr_t kernel_start[];
-extern ptr_t kernel_text_start[];
-extern ptr_t kernel_text_end[];
-extern ptr_t kernel_data_start[];
-extern ptr_t kernel_data_end[];
-extern ptr_t kernel_end[];
+extern ptr_t * kernel_start;
+extern ptr_t * kernel_text_start;
+extern ptr_t * kernel_text_end;
+extern ptr_t * kernel_data_start;
+extern ptr_t * kernel_data_end;
+extern ptr_t * kernel_end;
 
 // 开启分页机制之后的内核栈
 extern uint8_t kernel_stack[STACK_SIZE];
