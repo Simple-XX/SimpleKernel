@@ -12,9 +12,9 @@ extern "C" {
 
 #include "stdio.h"
 
-#define assert(test) \
+#define assert(test, info) \
 		if(!(test)) { \
-				printk_err("ASSERT ERROR!"); \
+				printk_err(info); \
 				while(1); \
 		}
 
