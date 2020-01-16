@@ -12,7 +12,7 @@ extern "C" {
 
 #include "stdint.h"
 
-
+void sched_init(void);
 
 #ifdef __cplusplus
 }

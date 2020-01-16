@@ -18,12 +18,15 @@ extern "C" {
 #include "mem/vmm.h"
 #include "../drv/clock/include/clock.h"
 #include "../drv/keyboard/include/keyboard.h"
+#include "task/task.h"
+#include "sched/sched.h"
 
 bool test(void);
 bool test_pmm(void);
 bool test_vmm(void);
 bool test_libc(void);
 bool test_heap(void);
+bool test_task(void);
 
 #ifdef __cplusplus
 }

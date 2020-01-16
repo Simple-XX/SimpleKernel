@@ -28,6 +28,8 @@ extern "C" {
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "heap/heap.h"
+#include "task/task.h"
+#include "sched/sched.h"
 
 void kernel_main(uint32_t magic, uint32_t addr);
 void console_init(void);
@@ -40,6 +42,8 @@ void debug_init(uint32_t magic, uint32_t addr);
 void pmm_init(void);
 void vmm_init(void);
 void heap_init(void);
+void task_init(void);
+void sched_init(void);
 void showinfo(void);
 
 void showinfo(void) {
