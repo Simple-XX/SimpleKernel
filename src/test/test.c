@@ -33,6 +33,10 @@ bool test_libc() {
 	return true;
 }
 
+bool test_task() {
+
+}
+
 bool test_heap() {
 	printk_test("Test Heap kmalloc :\n");
 	ptr_t allc_addr1 = (ptr_t)kmalloc(9000);
