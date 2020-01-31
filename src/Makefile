@@ -1,7 +1,7 @@
 
 # This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 #
-# Makefile.env for MRNIU/SimpleKernel.
+# Makefile for MRNIU/SimpleKernel.
 
 # 设置 make 环境
 
