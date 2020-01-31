@@ -19,10 +19,10 @@ extern "C" {
 #define KBCMD_EN_MOUSE_INTFACE 0xA8
 
 typedef
-        struct mouse_desc_t {
-	uint8_t buf[3];
-	uint8_t phase;
-	uint32_t x, y, btn;
+    struct mouse_desc_t {
+	uint8_t		buf[3];
+	uint8_t		phase;
+	uint32_t	x, y, btn;
 } mouse_desc_t;
 
 #ifdef __cplusplus
