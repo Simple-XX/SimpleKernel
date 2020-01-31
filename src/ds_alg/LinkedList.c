@@ -13,9 +13,9 @@ extern "C" {
 #include "include/linkedlist.h"
 
 struct _ListEntry {
-	ListValue data;
-	ListEntry * prev;
-	ListEntry * next;
+	ListValue		data;
+	ListEntry *		prev;
+	ListEntry *		next;
 };
 
 void list_free(ListEntry * list) {

@@ -42,8 +42,8 @@ typedef void * ListValue;
  */
 
 struct _ListIterator {
-	ListEntry * * prev_next;
-	ListEntry * current;
+	ListEntry * *		prev_next;
+	ListEntry *		current;
 };
 
 /* A doubly-linked list */
@@ -216,7 +216,7 @@ bool list_remove_entry(ListEntry * * list, ListEntry * entry);
  */
 
 unsigned int list_remove_data(ListEntry * * list, ListEqualFunc callback,
-	ListValue data);
+    ListValue data);
 
 /**
  * Sort a list.
@@ -239,8 +239,8 @@ void list_sort(ListEntry * * list, ListCompareFunc compare_func);
  */
 
 ListEntry * list_find_data(ListEntry * list,
-	ListEqualFunc callback,
-	ListValue data);
+    ListEqualFunc callback,
+    ListValue data);
 
 /**
  * Initialise a @ref ListIterator structure to iterate over a list.
