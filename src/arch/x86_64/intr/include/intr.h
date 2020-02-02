@@ -61,7 +61,7 @@ extern "C" {
 #define INT_VIRTUAL_EXCE        20
 
 typedef
-    struct pt_regs_t {
+    struct pt_regs {
 	// segment registers
 	uint32_t	gs;  // 16 bits
 	uint32_t	fs;  // 16 bits
