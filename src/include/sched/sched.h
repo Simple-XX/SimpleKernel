@@ -28,11 +28,8 @@ void sched_init(void);
 // 任务调度
 void schedule(void);
 
-// 任务切换准备
-void change_task_to(task_pcb_t * next);
-
 // 任务切换
-extern void switch_to(task_context_t * prev, task_context_t * next);
+extern void sched_switch(task_context_t * prev, task_context_t * next);
 
 #ifdef __cplusplus
 }

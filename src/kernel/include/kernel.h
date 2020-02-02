@@ -46,6 +46,8 @@ void task_init(void);
 void sched_init(void);
 void showinfo(void);
 
+int thread(void * arg UNUSED);
+
 void showinfo(void) {
 	// 输出一些基本信息
 	printk_color(magenta, "SimpleKernel\n");
