@@ -17,7 +17,7 @@ extern "C" {
 
 // 进程状态描述
 typedef
-        enum task_status {
+    enum task_status {
 	// 未初始化
 	TASK_UNINIT = 0,
 	// 睡眠中
@@ -32,28 +32,21 @@ typedef
 
 // 内核线程的上下文切换保存的信息
 typedef
-        struct task_context {
-	uint32_t eip;
-	uint32_t esp;
-	uint32_t ebx;
-	uint32_t ecx;
-	uint32_t edx;
-	uint32_t esi;
-	uint32_t edi;
-	uint32_t ebp;
+    struct task_context {
+
 } task_context_t;
 
 // 进程内存地址结构
 typedef
-        struct task_mem {
-	pgd_t * pgd_dir;     // 进程页表
+    struct task_mem {
+	pgd_t *      pgd_dir;     // 进程页表
 } task_mem_t;
 
 // 进程控制块 PCB
 typedef
-        struct task_pcb {
+    struct task_pcb {
 	// 进程当前状态
-	volatile task_status_t state;
+	volatile task_status_t		state;
 	// 进程标识符
 	pid_t pid;
 	// 进程的内核栈地址
@@ -61,9 +54,9 @@ typedef
 	// 当前进程的内存地址映像
 	task_mem_t * mm;
 	// 进程切换需要的上下文信息
-	task_context_t context;
+	task_context_t			context;
 	// 链表指针
-	struct task_pcb * next;
+	struct task_pcb *		next;
 } task_pcb_t;
 
 // 全局 pid 值
