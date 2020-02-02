@@ -42,11 +42,11 @@ void debug_init(uint32_t magic, uint32_t addr);
 void pmm_init(void);
 void vmm_init(void);
 void heap_init(void);
-void task_init(void);
-void sched_init(void);
+// void task_init(void);
+// void sched_init(void);
 void showinfo(void);
 
-int thread(void * arg UNUSED);
+// int thread(void * arg UNUSED);
 
 void showinfo(void) {
 	// 输出一些基本信息

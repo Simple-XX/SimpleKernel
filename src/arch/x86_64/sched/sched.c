@@ -22,6 +22,10 @@ void sched_init() {
 	return;
 }
 
+void sched_switch(task_context_t * curr UNUSED, task_context_t * next UNUSED) {
+	return;
+}
+
 void schedule() {
 	return;
 }
