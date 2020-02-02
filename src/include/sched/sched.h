@@ -25,11 +25,17 @@ extern task_pcb_t * current;
 // 初始化任务调度
 void sched_init(void);
 
+// 任务切换
+void sched_switch(task_context_t * curr, task_context_t * next);
+
 // 任务调度
 void schedule(void);
 
-// 任务切换
-extern void sched_switch(task_context_t * prev, task_context_t * next);
+
+
+
+
+
 
 #ifdef __cplusplus
 }

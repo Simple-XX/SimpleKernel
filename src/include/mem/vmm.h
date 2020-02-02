@@ -115,6 +115,12 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa);
 // 更换当前页目录
 void switch_pgd(ptr_t pd);
 
+// 映射内核进程
+
+// 映射用户进程
+// 把从 0x00 到 0x80000000 的所有内存（包含内核，未分配内存 和 不存在的内存）映射到页表中
+void map_user_task_init(pgd_t * pgd);
+
 #ifdef __cplusplus
 }
 #endif
