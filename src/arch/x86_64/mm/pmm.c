@@ -10,59 +10,69 @@ extern "C" {
 #include "mem/pmm.h"
 #include "assert.h"
 #include "string.h"
+#include "mem/firstfit.h"
 
 // 物理页帧数组长度
 static uint32_t phy_pages_count;
 
-// 物理内存页面管理的栈
-static ptr_t pmm_stack[PMM_PAGE_MAX_SIZE + 1];
+static const pmm_manage_t * pmm_manage  = &firstfit_manage;
 
-// 物理内存管理的栈指针
-static ptr_t pmm_stack_top;
-
-void pmm_init() {
+// 从 GRUB 读取物理内存信息
+static void pmm_get_ram_info(e820map_t * e820map);
+void pmm_get_ram_info(e820map_t * e820map) {
 	for( ; (uint8_t *)mmap_entries < (uint8_t *)mmap_tag + mmap_tag->size ;
-	    mmap_entries = (multiboot_memory_map_entry_t *)
-	                   ( (unsigned long)mmap_entries +
-	                    ( (struct multiboot_tag_mmap *)mmap_tag)->entry_size) ) {
+	    mmap_entries = (multiboot_memory_map_entry_t *)( (uint32_t)mmap_entries
+	    + ( (struct multiboot_tag_mmap *)mmap_tag)->entry_size) ) {
 		// 如果是可用内存
 		if( (unsigned)mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE
-		   && (unsigned)(mmap_entries->addr & 0xffffffff) == 0x100000) {
-			// 把内核位置到结束位置的内存段，按页存储到页管理栈里
-			ptr_t page_addr = (mmap_entries->addr);
-			uint32_t length = (mmap_entries->len);
-			while(page_addr < length && page_addr <= PMM_MAX_SIZE) {
-				pmm_free_page(page_addr);
-				page_addr += PMM_PAGE_SIZE;
-				phy_pages_count++;
-			}
+		    && (unsigned)(mmap_entries->addr & 0xFFFFFFFF) == 0x100000) {
+			e820map->map[e820map->nr_map].addr = mmap_entries->addr;
+			e820map->map[e820map->nr_map].length = mmap_entries->len;
+			e820map->map[e820map->nr_map].type = mmap_entries->type;
+			e820map->nr_map++;
 		}
 	}
+	return;
+}
+
+void pmm_phy_init(e820map_t * e820map) {
+	// 计算物理页总数
+	for(uint32_t i = 0 ; i < e820map->nr_map ; i++) {
+		for(uint64_t addr = e820map->map[i].addr ;
+		    addr < e820map->map[i].addr + e820map->map[i].length ;
+		    addr += PMM_PAGE_SIZE) {
+			phy_pages_count++;
+		}
+	}
+	return;
+}
+
+void pmm_mamage_init(e820map_t * e820map) {
+	// 因为只有一个可用内存区域，所以直接传递
+	pmm_manage->pmm_manage_init( (ptr_t)e820map->map[0].addr, phy_pages_count);
+	return;
+}
+
+void pmm_init() {
+	e820map_t e820map;
+	bzero(&e820map, sizeof(e820map_t) );
+	pmm_get_ram_info(&e820map);
+	pmm_phy_init(&e820map);
+	pmm_mamage_init(&e820map);
+
 	printk_info("pmm_init\n");
 	printk_info("phy_pages_count: %d\n", phy_pages_count);
 	return;
 }
 
 ptr_t pmm_alloc(uint32_t byte) {
-	assert(pmm_stack_top != 0, "pmm_stack_top != 0");
-	uint32_t count = byte / PMM_PAGE_SIZE;
-	// 将 size 向上取整 4KB
-	if(byte % PMM_PAGE_SIZE != 0) {
-		count += 1;
-	}
 	ptr_t page;
-	do {
-		assert(pmm_stack_top != 0, "pmm_stack_top != 0");
-		page = pmm_stack[pmm_stack_top--];
-		count--;
-	} while(count > 0);
-	memset( (void *)page, 0, PMM_PAGE_SIZE * count);
+	page = pmm_manage->pmm_manage_alloc(byte);
 	return page;
 }
 
-void pmm_free_page(ptr_t page) {
-	assert(pmm_stack_top != PMM_PAGE_MAX_SIZE, "pmm_stack_top != PMM_PAGE_MAX_SIZE");
-	pmm_stack[++pmm_stack_top] = page;
+void pmm_free_page(ptr_t addr UNUSED) {
+	// pmm_manage->free(byte);
 	return;
 }
 
