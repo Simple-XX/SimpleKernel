@@ -13,10 +13,10 @@ extern "C" {
 #include "stdio.h"
 
 #define assert(test, info) \
-		if(!(test)) { \
-				printk_err(info); \
-				while(1); \
-		}
+	if(!(test) ) { \
+		printk_err(info); \
+		while(1) { }; \
+	}
 
 #ifdef __cplusplus
 }
