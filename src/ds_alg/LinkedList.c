@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-
 #include "stddef.h"
 #include "heap/heap.h"
 #include "include/linkedlist.h"

@@ -21,11 +21,11 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	keyboard_init(); // 键盘初始化
 	debug_init(magic, addr);
 	pmm_init();
-	vmm_init();
-	heap_init();
+	// vmm_init();
+	// heap_init();
 
-	showinfo();
-	test();
+	// showinfo();
+	// test();
 
 	while(1);
 
