@@ -7,6 +7,9 @@
 extern "C" {
 #endif
 
+#include "stdio.h"
+#include "mem/pmm.h"
+#include "mem/vmm.h"
 #include "include/bootinit.h"
 
 // When writing a higher-half kernel, the steps required are:
@@ -16,6 +19,12 @@ extern "C" {
 // 4. Enable paging.
 // 5. Jump to higher half.
 // 6. Remove the lower half kernel mapping.
+
+// 开启分页机制之后的内核栈
+uint8_t kernel_stack[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
+
+// 内核栈顶
+ptr_t kernel_stack_top = ( (ptr_t)kernel_stack + STACK_SIZE);
 
 void enable_page(pgd_t * pgd) {
 	// 设置临时页表
