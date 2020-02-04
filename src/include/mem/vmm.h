@@ -64,9 +64,6 @@ extern "C" {
 // 如果为 0  那么页面只能被运行在超级用户特权级 (0,1 或 2)  的程序访问。
 #define VMM_PAGE_KERNEL     (0x00000000)
 
-// 线性地址转换为物理地址
-#define VMM_LA_TO_PA(la)    (la - KERNEL_BASE)
-
 static inline ptr_t vmm_la_to_pa(ptr_t la) {
 	return la - KERNEL_BASE;
 }
