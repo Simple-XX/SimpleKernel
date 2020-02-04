@@ -1,6 +1,6 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-// Based on https://github.com/torvalds/linux/blob/master/arch/x86/include/uapi/asm/e820.h
+//
 // e820.h for MRNIU/SimpleKernel.
 
 

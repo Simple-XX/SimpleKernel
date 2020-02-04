@@ -20,12 +20,13 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	clock_init(); // 时钟初始化
 	keyboard_init(); // 键盘初始化
 	debug_init(magic, addr);
+	showinfo();
 	pmm_init();
-	// vmm_init();
+	vmm_init();
 	// heap_init();
 
 	// showinfo();
-	// test();
+	test();
 
 	while(1);
 

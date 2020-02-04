@@ -22,8 +22,8 @@ extern "C" {
 
 // 内核的偏移地址
 #define KERNEL_BASE    (0xC0000000UL)
-// 内核占用大小 4MB
-#define KERNEL_SIZE    (0x400000UL)
+// 内核占用大小 8MB
+#define KERNEL_SIZE    (0x800000UL)
 // 映射内核需要的页数
 #define PMM_PAGES_KERNEL    (KERNEL_SIZE / PMM_PAGE_SIZE)
 
