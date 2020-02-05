@@ -7,6 +7,11 @@
 extern "C" {
 #endif
 
+#include "stdio.h"
+#include "port.hpp"
+#include "debug.h"
+#include "../drv/8259A/include/8259A.h"
+#include "cpu.hpp"
 #include "include/intr.h"
 
 // 中断描述符表
@@ -25,10 +30,13 @@ static void idt_set_gate(uint8_t num, uint32_t base, uint16_t target, uint8_t fl
 	// 0xEF: DPL=3
 }
 
+static void die(char * str, uint32_t oesp, uint32_t int_no);
+static const char * intrname(uint32_t intrno);
+
 // 中断处理函数指针数组
 static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX] __attribute__( (aligned(4) ) );
 
-static const char * intrname(uint32_t intrno) {
+const char * intrname(uint32_t intrno) {
 	static const char * const intrnames[] = {
 		"Divide error",
 		"Debug",
@@ -99,7 +107,8 @@ static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
 };
 
 // idt 初始化
-void idt_init(void) {
+void intr_init(void) {
+	cpu_cli();
 	init_interrupt_chip();
 	idt_ptr.limit = sizeof(idt_entry_t) * INTERRUPT_MAX - 1;
 	idt_ptr.base = (uint32_t)&idt_entries;
@@ -137,9 +146,11 @@ void idt_init(void) {
 	register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
 
 	printk_info("intr_init\n");
+	cpu_sti();
+	return;
 }
 
-static void die(char * str, uint32_t oesp, uint32_t int_no) {
+void die(char * str, uint32_t oesp, uint32_t int_no) {
 	// uint32_t * old_esp = (uint32_t *)oesp;
 	pt_regs_t * old_esp = (pt_regs_t *)oesp;
 	printk_color(red, "%s\t: %d\n\r", str, int_no);

@@ -22,10 +22,6 @@ extern "C" {
 
 #include "stdint.h"
 #include "stdbool.h"
-#include "stdio.h"
-#include "stddef.h"
-#include "debug.h"
-#include "elf64.h"
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH                        32768

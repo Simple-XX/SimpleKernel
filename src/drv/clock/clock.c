@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 #include "stddef.h"
+#include "cpu.hpp"
 #include "include/clock.h"
 #include "sched/sched.h"
 
@@ -18,6 +19,7 @@ void clock_handler(pt_regs_t * regs UNUSED) {
 }
 
 void clock_init(void) {
+	cpu_cli();
 	uint32_t divisor = TIMER_FREQ / FREQUENCY;
 	outb(TIMER_MODE, TIMER_SEL0 | TIMER_RATEGEN | TIMER_16BIT); // 0x34
 	// 拆分低字节和高字节
@@ -31,6 +33,8 @@ void clock_init(void) {
 	enable_irq(IRQ0);
 
 	printk_info("clock_init\n");
+	cpu_sti();
+	return;
 }
 
 #ifdef __cplusplus
