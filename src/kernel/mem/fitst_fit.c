@@ -1,7 +1,7 @@
 
 // This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
 //
-// firstfit.c for MRNIU/SimpleKernel.
+// first_fit.c for MRNIU/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,7 +81,6 @@ void list_init_head(list_entry_t * list) {
 
 // 在中间添加元素
 void list_add_middle(list_entry_t * prev,  list_entry_t * next, list_entry_t * new) {
-	// printk_debug("------list_add_middle------\n");
 	next->prev = new;
 	new->next = next;
 	new->prev = prev;
@@ -96,7 +95,6 @@ void list_add_after(list_entry_t * prev, list_entry_t * new) {
 
 // 在 next 前添加项
 void list_add_before(list_entry_t * next, list_entry_t * new) {
-	// printk_debug("------list_add_before------\n");
 	list_add_middle(next->prev, next, new);
 	return;
 }
@@ -242,7 +240,7 @@ void free(ptr_t addr_start, uint32_t bytes) {
 	return;
 }
 
-uint32_t free_pages_count(void) {
+uint32_t free_pages_count() {
 	return ff_manage.phy_page_now_count;
 }
 
