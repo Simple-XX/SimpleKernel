@@ -16,8 +16,8 @@ bool test_pmm(void) {
 	allc_addr = pmm_alloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc(9000);
-	pmm_free_page(allc_addr);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+	pmm_free_page(allc_addr, 9000);
 	allc_addr = pmm_alloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc(1);
@@ -64,11 +64,11 @@ bool test_heap() {
 
 bool test(void) {
 	test_pmm();
-	test_vmm();
-	test_libc();
-	test_heap();
-	test_task();
-	test_sched();
+	// test_vmm();
+	// test_libc();
+	// test_heap();
+	// test_task();
+	// test_sched();
 	return true;
 }
 
