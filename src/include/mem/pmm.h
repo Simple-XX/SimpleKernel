@@ -100,7 +100,7 @@ void pmm_init(void);
 
 ptr_t pmm_alloc(size_t byte);
 
-void pmm_free_page(ptr_t addr);
+void pmm_free_page(ptr_t addr, uint32_t byte);
 
 #ifdef __cplusplus
 }
