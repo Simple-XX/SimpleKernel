@@ -42,9 +42,11 @@ void debug_init(uint32_t magic, uint32_t addr);
 void pmm_init(void);
 void vmm_init(void);
 void heap_init(void);
-void task_init(void);
-void sched_init(void);
+// void task_init(void);
+// void sched_init(void);
 void showinfo(void);
+
+// int thread(void * arg UNUSED);
 
 void showinfo(void) {
 	// 输出一些基本信息
@@ -53,13 +55,13 @@ void showinfo(void) {
 	printk_info(".init.text in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n", &kernel_init_text_start, &kernel_init_text_end);
 	printk_info(".init.data in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n", &kernel_init_data_start, &kernel_init_data_end);
 	printk_info("kernel init in memory size: %d KB, %d pages\n",
-		(&kernel_init_end - &kernel_init_start) / 1024, (&kernel_init_end - &kernel_init_start) / 1024 / 4);
+	    (&kernel_init_end - &kernel_init_start) / 1024, (&kernel_init_end - &kernel_init_start) / 1024 / 4);
 
 	printk_info("kernel in memory(VMA=LMA+0xC0000000) start: 0x%08X, end 0x%08X\n", &kernel_start, &kernel_end);
 	printk_info(".text in memory(VMA=LMA+0xC0000000) start: 0x%08X, end 0x%08X\n", &kernel_text_start, &kernel_text_end);
 	printk_info(".data in memory(VMA=LMA+0xC0000000) start: 0x%08X, end 0x%08X\n", &kernel_data_start, &kernel_data_end);
 	printk_info("kernel in memory size: %d KB, %d pages\n",
-		(&kernel_end - &kernel_start) / 1024, (&kernel_end - &kernel_start) / 1024 / 4);
+	    (&kernel_end - &kernel_start) / 1024, (&kernel_end - &kernel_start) / 1024 / 4);
 }
 
 #ifdef __cplusplus

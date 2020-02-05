@@ -20,17 +20,17 @@ extern "C" {
 
 // 内存块管理结构
 typedef
-        struct heap_header {
-	struct heap_header * prev;    // 前后内存块管理结构指针
-	struct heap_header * next;
-	uint32_t allocated : 1; // 该内存块是否已经被申请
-	uint32_t length : 31;   // 当前内存块的长度
+    struct heap_header {
+	struct heap_header *		prev;    // 前后内存块管理结构指针
+	struct heap_header *		next;
+	uint32_t allocated	: 1; // 该内存块是否已经被申请
+	uint32_t length		: 31;   // 当前内存块的长度
 } heap_header_t;
 
 // 初始化堆
 void heap_init(void);
 
-// 内存申请
+// 内存申请，单位为 Byte
 ptr_t kmalloc(size_t len);
 
 // 内存释放
