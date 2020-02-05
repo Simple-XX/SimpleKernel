@@ -29,9 +29,6 @@ extern "C" {
 #include "arch_init.h"
 #include "mem/pmm.h"
 #include "mem/vmm.h"
-#include "heap/heap.h"
-#include "task/task.h"
-#include "sched/sched.h"
 
 void kernel_main(uint32_t magic, uint32_t addr);
 // void gdt_init(void);
@@ -53,8 +50,6 @@ void showinfo(void) {
 	printk_info("kernel in memory size: %d KB, %d pages\n",
 	    (&kernel_end - &kernel_start) / 1024, (&kernel_end - &kernel_start) / 1024 / 4);
 }
-
-// int thread(void * arg UNUSED);
 
 #ifdef __cplusplus
 }

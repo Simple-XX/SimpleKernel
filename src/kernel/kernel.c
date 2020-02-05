@@ -28,10 +28,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	pmm_init();
 	// 虚拟内存初始化
 	vmm_init();
-	// 堆初始化
-	// heap_init();
 
-	// showinfo();
+	showinfo();
 	test();
 
 	while(1);

@@ -9,13 +9,11 @@ extern "C" {
 #include "stddef.h"
 #include "cpu.hpp"
 #include "include/clock.h"
-#include "sched/sched.h"
 
 
 void clock_handler(pt_regs_t * regs UNUSED) {
 	static uint32_t tick UNUSED = 0;
 	// printk_color(light_green, "Tick: %d\n", tick++);
-	schedule();
 }
 
 void clock_init(void) {
