@@ -7,15 +7,14 @@
 extern "C" {
 #endif
 
-
 #include "stddef.h"
 #include "heap/heap.h"
 #include "include/linkedlist.h"
 
 struct _ListEntry {
-	ListValue data;
-	ListEntry * prev;
-	ListEntry * next;
+	ListValue		data;
+	ListEntry *		prev;
+	ListEntry *		next;
 };
 
 void list_free(ListEntry * list) {
