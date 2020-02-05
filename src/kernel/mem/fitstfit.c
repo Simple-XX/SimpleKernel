@@ -81,7 +81,7 @@ void list_init_head(list_entry_t * list) {
 
 // 在中间添加元素
 void list_add_middle(list_entry_t * prev,  list_entry_t * next, list_entry_t * new) {
-	printk_debug("------list_add_middle------\n");
+	// printk_debug("------list_add_middle------\n");
 	next->prev = new;
 	new->next = next;
 	new->prev = prev;
@@ -96,7 +96,7 @@ void list_add_after(list_entry_t * prev, list_entry_t * new) {
 
 // 在 next 前添加项
 void list_add_before(list_entry_t * next, list_entry_t * new) {
-	printk_debug("------list_add_before------\n");
+	// printk_debug("------list_add_before------\n");
 	list_add_middle(next->prev, next, new);
 	return;
 }
@@ -168,7 +168,9 @@ void init(ptr_t page_start, uint32_t page_count) {
 }
 
 ptr_t alloc(uint32_t bytes) {
+	// 计算需要的页数
 	uint32_t pages = bytes / PMM_PAGE_SIZE;
+	// 不足一页的+1
 	if(bytes % PMM_PAGE_SIZE != 0) {
 		pages++;
 	}
@@ -184,7 +186,7 @@ ptr_t alloc(uint32_t bytes) {
 				list_chunk_info(tmp)->npages =  entry->chunk_info.npages - pages;
 				list_chunk_info(tmp)->ref = 0;
 				list_chunk_info(tmp)->flag = FF_UNUSED;
-				list_add_before(entry, tmp);
+				list_add_after(entry, tmp);
 			}
 			// 不够的话直接分配
 			list_chunk_info(entry)->npages = pages;
@@ -207,6 +209,39 @@ ptr_t alloc(uint32_t bytes) {
 }
 
 void free(ptr_t addr_start, uint32_t bytes) {
+	// 计算需要的页数
+	uint32_t pages = bytes / PMM_PAGE_SIZE;
+	// 不足一页的+1
+	if(bytes % PMM_PAGE_SIZE != 0) {
+		pages++;
+	}
+	// 首先找到地址对应的管理节点，有两种方法
+	// 第一种是直接计算出来
+	// list_entry_t * entry = pmm_info + ( (ff_manage.pmm_addr_start - addr_start) / sizeof(list_entry_t));
+	// 第二种是遍历链表找到
+	list_entry_t * entry = ff_manage.free_list;
+	while( ( (entry = list_next(entry) ) != ff_manage.free_list) && (list_chunk_info(entry)->addr != addr_start) );
+
+	// 释放所有页
+	list_chunk_info(entry)->ref = 0;
+	list_chunk_info(entry)->flag = FF_UNUSED;
+
+	// 如果于相邻链表有空闲的则合并
+	// 后面
+	if(entry->next != entry && list_chunk_info(entry->next)->flag == FF_UNUSED) {
+		list_entry_t * next = entry->next;
+		list_chunk_info(entry)->npages += list_chunk_info(next)->npages;
+		list_chunk_info(next)->npages = 0;
+		list_del(next);
+	}
+	// 前面
+	if(entry->prev != entry && list_chunk_info(entry->prev)->flag == FF_UNUSED) {
+		list_entry_t * prev = entry->prev;
+		list_chunk_info(prev)->npages += list_chunk_info(entry)->npages;
+		list_chunk_info(entry)->npages = 0;
+		list_del(entry);
+	}
+	ff_manage.phy_page_now_count += pages;
 	return;
 }
 
