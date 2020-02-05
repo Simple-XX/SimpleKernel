@@ -71,8 +71,8 @@ ptr_t pmm_alloc(uint32_t byte) {
 	return page;
 }
 
-void pmm_free_page(ptr_t addr UNUSED) {
-	// pmm_manage->free(byte);
+void pmm_free_page(ptr_t addr, uint32_t byte) {
+	pmm_manage->pmm_manage_free(addr, byte);
 	return;
 }
 

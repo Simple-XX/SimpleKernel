@@ -15,6 +15,19 @@ extern "C" {
 #define FF_USED 0x00
 #define FF_UNUSED 0x01
 
+static void init(ptr_t page_start, uint32_t page_count);
+static ptr_t alloc(uint32_t bytes);
+static void free(ptr_t addr_start, uint32_t bytes);
+static uint32_t free_pages_count(void);
+
+pmm_manage_t firstfit_manage = {
+	"Fitst Fit",
+	&init,
+	&alloc,
+	&free,
+	&free_pages_count
+};
+
 // 块
 typedef
     struct chunk_info {
@@ -68,7 +81,7 @@ void list_init_head(list_entry_t * list) {
 
 // 在中间添加元素
 void list_add_middle(list_entry_t * prev,  list_entry_t * next, list_entry_t * new) {
-	// printk_debug("------list_add_middle------\n");
+	printk_debug("------list_add_middle------\n");
 	next->prev = new;
 	new->next = next;
 	new->prev = prev;
@@ -83,7 +96,7 @@ void list_add_after(list_entry_t * prev, list_entry_t * new) {
 
 // 在 next 前添加项
 void list_add_before(list_entry_t * next, list_entry_t * new) {
-	// printk_debug("------list_add_before------\n");
+	printk_debug("------list_add_before------\n");
 	list_add_middle(next->prev, next, new);
 	return;
 }
@@ -130,7 +143,7 @@ static firstfit_manage_t ff_manage;
 // 物理页信息保存地址
 static list_entry_t * pmm_info = NULL;
 
-static void init(ptr_t page_start, uint32_t page_count) {
+void init(ptr_t page_start, uint32_t page_count) {
 	// 位于内核结束后，大小为 (PMM_MAX_SIZE / PMM_PAGE_SIZE)*sizeof(list_entry_t)
 	// 后面的操作是进行页对齐
 	pmm_info = (list_entry_t *)( ( (ptr_t)(&kernel_end + PMM_PAGE_SIZE) & PMM_PAGE_MASK) );
@@ -154,7 +167,7 @@ static void init(ptr_t page_start, uint32_t page_count) {
 	return;
 }
 
-static ptr_t alloc(uint32_t bytes) {
+ptr_t alloc(uint32_t bytes) {
 	uint32_t pages = bytes / PMM_PAGE_SIZE;
 	if(bytes % PMM_PAGE_SIZE != 0) {
 		pages++;
@@ -165,9 +178,6 @@ static ptr_t alloc(uint32_t bytes) {
 		if( (list_chunk_info(entry)->npages >= pages) && (list_chunk_info(entry)->flag == FF_UNUSED) ) {
 			// 如果剩余大小足够
 			if(list_chunk_info(entry)->npages - pages > 1) {
-				printk_debug("------if start------\n");
-				printk_debug("addr: 0x%08X\n", (list_chunk_info(entry)->addr) );
-				printk_debug("addr+pages * PMM_PAGE_SIZE: 0x%08X\n", (list_chunk_info(entry)->addr + pages * PMM_PAGE_SIZE) );
 				// 添加新的链表项
 				list_entry_t * tmp = (list_entry_t *)(entry + sizeof(list_entry_t) );
 				list_chunk_info(tmp)->addr = entry->chunk_info.addr + pages * PMM_PAGE_SIZE;
@@ -175,12 +185,12 @@ static ptr_t alloc(uint32_t bytes) {
 				list_chunk_info(tmp)->ref = 0;
 				list_chunk_info(tmp)->flag = FF_UNUSED;
 				list_add_before(entry, tmp);
-				printk_debug("------if end------\n");
 			}
 			// 不够的话直接分配
 			list_chunk_info(entry)->npages = pages;
 			list_chunk_info(entry)->ref = 1;
 			list_chunk_info(entry)->flag = FF_USED;
+			ff_manage.phy_page_now_count -= pages;
 			return list_chunk_info(entry)->addr;
 		}
 		// 没找到的话就查找下一个
@@ -191,25 +201,18 @@ static ptr_t alloc(uint32_t bytes) {
 			printk_err("Error at firstfit.c: ptr_t alloc(uint32_t)\n");
 			break;
 		}
-		return (ptr_t)NULL;
 	}
+	printk_err("Error at firstfit.c: ptr_t alloc(uint32_t)\n");
+	return (ptr_t)NULL;
 }
 
-static void free(ptr_t addr_start UNUSED, uint32_t bytes UNUSED) {
+void free(ptr_t addr_start, uint32_t bytes) {
 	return;
 }
 
-static uint32_t free_pages_count(void) {
+uint32_t free_pages_count(void) {
 	return 0;
 }
-
-pmm_manage_t firstfit_manage = {
-	"Fitst Fit",
-	&init,
-	&alloc,
-	&free,
-	&free_pages_count
-};
 
 #ifdef __cplusplus
 }
