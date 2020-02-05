@@ -62,6 +62,7 @@ void pmm_init() {
 
 	printk_info("pmm_init\n");
 	printk_info("phy_pages_count: %d\n", phy_pages_count);
+	printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count() );
 	return;
 }
 
@@ -79,7 +80,6 @@ void pmm_free_page(ptr_t addr, uint32_t byte) {
 uint32_t pmm_free_pages_count(void) {
 	return pmm_manager->pmm_manage_free_pages_count();
 }
-
 
 #ifdef __cplusplus
 }
