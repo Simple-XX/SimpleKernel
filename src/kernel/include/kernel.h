@@ -24,7 +24,9 @@ extern "C" {
 #include "stdbool.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "console/include/console.h"
 #include "multiboot2.h"
+#include "arch_init.h"
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "heap/heap.h"
@@ -32,22 +34,10 @@ extern "C" {
 #include "sched/sched.h"
 
 void kernel_main(uint32_t magic, uint32_t addr);
-void console_init(void);
-void gdt_init(void);
-void idt_init(void);
-void clock_init(void);
-void keyboard_init(void);
-void mouse_init(void);
-void debug_init(uint32_t magic, uint32_t addr);
-void pmm_init(void);
-void vmm_init(void);
-void heap_init(void);
-// void task_init(void);
-// void sched_init(void);
+// void gdt_init(void);
+
+
 void showinfo(void);
-
-// int thread(void * arg UNUSED);
-
 void showinfo(void) {
 	// 输出一些基本信息
 	printk_color(magenta, "SimpleKernel\n");
@@ -63,6 +53,8 @@ void showinfo(void) {
 	printk_info("kernel in memory size: %d KB, %d pages\n",
 	    (&kernel_end - &kernel_start) / 1024, (&kernel_end - &kernel_start) / 1024 / 4);
 }
+
+// int thread(void * arg UNUSED);
 
 #ifdef __cplusplus
 }

@@ -7,9 +7,12 @@
 extern "C" {
 #endif
 
-#include "heap/heap.h"
+#include "stdio.h"
+#include "cpu.hpp"
 #include "mem/pmm.h"
 #include "mem/vmm.h"
+#include "heap/heap.h"
+
 
 // 空闲块链表
 static heap_header_t * heap_free_chunk_ll = NULL;
@@ -18,6 +21,7 @@ static ptr_t heap_top = HEAP_START;
 
 // 初始化堆
 void heap_init(void) {
+	cpu_cli();
 	// 首先给链表中添加一个大小为 1 页的块
 	// 物理地址
 	ptr_t pa = pmm_alloc(1);
@@ -39,6 +43,8 @@ void heap_init(void) {
 	// printk_debug("heap_top1 = %X\n", heap_top);
 	heap_top += VMM_PAGE_SIZE;
 	// printk_debug("heap_top2 = %X\n", heap_top);
+	cpu_sti();
+	return;
 }
 
 // 内存申请
