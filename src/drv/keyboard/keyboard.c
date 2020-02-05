@@ -7,8 +7,13 @@
 extern "C" {
 #endif
 
-#include "include/keyboard.h"
+#include "stddef.h"
+#include "stdio.h"
+#include "stdbool.h"
+#include "intr/include/intr.h"
 #include "port.hpp"
+#include "cpu.hpp"
+#include "include/keyboard.h"
 
 static uint8_t keymap[NR_SCAN_CODES * MAP_COLS] = {
 	/* scan-code			!Shift		Shift		E0 XX	*/
@@ -252,11 +257,14 @@ void keyboard_read(pt_regs_t * regs UNUSED) {
 }
 
 void keyboard_init(void) {
+	cpu_cli();
 	kb_in.count = 0;
 	kb_in.head = kb_in.tail = kb_in.buff;
 	register_interrupt_handler(IRQ1, &keyboard_read);
 	enable_irq(IRQ1);
 	printk_info("keyboard_init\n");
+	cpu_sti();
+	return;
 }
 
 #ifdef __cplusplus
