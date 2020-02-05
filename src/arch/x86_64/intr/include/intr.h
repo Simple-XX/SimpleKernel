@@ -11,11 +11,6 @@ extern "C" {
 #endif
 
 #include "stdint.h"
-#include "stdio.h"
-#include "port.hpp"
-#include "debug.h"
-#include "../drv/8259A/include/8259A.h"
-#include "cpu.hpp"
 
 #define INTERRUPT_MAX 256 // 中断表最大值
 
@@ -168,19 +163,23 @@ extern void irq15();           // IDE1 传输控制使用
 
 void irq_handler(pt_regs_t * regs);  // IRQ 处理函数
 
-typedef void (* interrupt_handler_t)(pt_regs_t *); // 定义中断处理函数指针
+// 中断处理函数指针
+typedef void (* interrupt_handler_t)(pt_regs_t *);
 
-void isr_handler(pt_regs_t * regs);  // 调用中断处理函数
+// 调用中断处理函数
+void isr_handler(pt_regs_t * regs);
 
-void register_interrupt_handler(uint8_t n, interrupt_handler_t h);  // 注册一个中断处理函数
+// 注册一个中断处理函数
+void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
 
-extern void idt_load(uint32_t);  // 声明加载 IDTR 的函数
+// 声明加载 IDTR 的函数
+extern void idt_load(uint32_t);
 
-typedef void (* isr_irq_func_t)(); // 中断处理函数指针类型
+// 中断处理函数指针
+typedef void (* isr_irq_func_t)();
 
-void idt_init(void);  // idt 初始化
-
-extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
+// intr 初始化
+void intr_init(void);
 
 // 系统中断
 void divide_error(pt_regs_t * regs);
