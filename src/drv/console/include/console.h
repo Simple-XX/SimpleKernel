@@ -11,16 +11,7 @@ extern "C" {
 #endif
 
 #include "stdint.h"
-#include "stddef.h"
-#include "string.h"
-#include "stdio.h"
 #include "vga/include/vga.hpp"
-
-// size_t console_row; // 命令行行数
-// size_t console_column; // 当前命令行列数
-// uint8_t console_color; // 当前命令行颜色
-
-static uint16_t * console_buffer __attribute__( (unused) ) = (uint16_t *)VGA_MEM_BASE;
 
 void console_init(void);
 void console_scroll(void);

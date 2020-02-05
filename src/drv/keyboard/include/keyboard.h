@@ -10,14 +10,7 @@
 extern "C" {
 #endif
 
-#include "stddef.h"
-#include "string.h"
-#include "stdio.h"
 #include "stdint.h"
-#include "stdbool.h"
-#include "debug.h"
-#include "intr/include/intr.h"
-#include "cpu.hpp"
 
 // 键盘缓冲区大小
 #define KB_BUFSIZE 128
@@ -135,8 +128,6 @@ extern "C" {
 #define PAD_MID  PAD_5  // Middle key
 #define PAD_DEL  PAD_DOT  // Del
 
-extern void init_interrupt_chip(void);
-extern void clear_interrupt_chip(uint32_t intr_no); // 重置 8259A
 void keyboard_init(void);
 void keyboard_handler(void);
 void keyboard_read(pt_regs_t * regs);
@@ -144,11 +135,11 @@ void keyboard_read(pt_regs_t * regs);
 uint8_t keyboard_read_from_buff(void);
 
 typedef
-        struct kb_input {
-	uint8_t * head;
-	uint8_t * tail;
-	size_t count;
-	uint8_t buff[KB_BUFSIZE];
+    struct kb_input {
+	uint8_t *	head;
+	uint8_t *	tail;
+	size_t		count;
+	uint8_t		buff[KB_BUFSIZE];
 } kb_input_t;
 
 #ifdef __cplusplus

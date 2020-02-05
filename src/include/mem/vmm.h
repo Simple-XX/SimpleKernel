@@ -10,7 +10,6 @@
 extern "C" {
 #endif
 
-#include "intr/include/intr.h"
 #include "pmm.h"
 
 // 页大小，一页能映射多少 Byte 内存 2^12
@@ -52,7 +51,6 @@ extern "C" {
 // 映射内核需要的页目录数
 #define VMM_PAGE_DIRECTORIES_KERNEL      ( (KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
 
-
 // P = 1 表示有效； P = 0 表示无效。
 #define VMM_PAGE_PRESENT    (0x00000001)
 
@@ -65,17 +63,6 @@ extern "C" {
 // 如果为 0  那么页面只能被运行在超级用户特权级 (0,1 或 2)  的程序访问。
 #define VMM_PAGE_KERNEL     (0x00000000)
 
-// 线性地址转换为物理地址
-#define VMM_LA_TO_PA(la)    (la - KERNEL_BASE)
-
-static inline ptr_t vmm_la_to_pa(ptr_t la) {
-	return la - KERNEL_BASE;
-}
-
-static inline ptr_t vmm_pa_to_la(ptr_t pa) {
-	return pa + KERNEL_BASE;
-}
-
 // 获取一个地址的页目录，高 10 位
 #define VMM_PGD_INDEX(x)        ( ( (x) >> 22) & 0x03FF)
 
@@ -84,10 +71,6 @@ static inline ptr_t vmm_pa_to_la(ptr_t pa) {
 
 // 获取一个地址的页內偏移，低 12 位
 #define VMM_OFFSET_INDEX(x)     ( (x) & 0x0FFF)
-
-// 映射内核页需要的页数 0x40000
-// #define VMM_KERNEL_PAGE_COUNT   (0x40000000/VMM_PAGE_SIZE)
-#define VMM_KERNEL_PAGE_COUNT   (0x20000000 / VMM_PAGE_SIZE)
 
 // 页全局目录项
 typedef ptr_t pgd_t;
@@ -100,6 +83,9 @@ typedef ptr_t pud_t;
 
 // 页表项
 typedef ptr_t pte_t;
+
+// 内核页目录区域
+extern pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 // 初始化虚拟内存管理
 void vmm_init(void);
@@ -116,6 +102,12 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa);
 
 // 更换当前页目录
 void switch_pgd(ptr_t pd);
+
+// 映射内核进程
+
+// 映射用户进程
+// 把从 0x00 到 0x80000000 的所有内存（包含内核，未分配内存 和 不存在的内存）映射到页表中
+void map_user_task_init(pgd_t * pgd);
 
 #ifdef __cplusplus
 }

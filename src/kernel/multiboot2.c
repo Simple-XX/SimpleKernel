@@ -7,59 +7,61 @@
 extern "C" {
 #endif
 
+#include "stdio.h"
+#include "debug.h"
+#include "cpu.hpp"
 #include "multiboot2.h"
-#include "string.h"
 
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t * tag) {
 	printk_info("Command line = %s\n",
-		( (struct multiboot_tag_string *)tag)->string);
+	    ( (struct multiboot_tag_string *)tag)->string);
 	return;
 }
 
 void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(multiboot_tag_t * tag) {
 	printk_info("Boot loader name = %s\n",
-		( (struct multiboot_tag_string *)tag)->string);
+	    ( (struct multiboot_tag_string *)tag)->string);
 	return;
 }
 
 void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t * tag) {
 	printk_info("Module at 0x%X-0x%X. Command line %s\n",
-		( (struct multiboot_tag_module *)tag)->mod_start,
-		( (struct multiboot_tag_module *)tag)->mod_end,
-		( (struct multiboot_tag_module *)tag)->cmdline);
+	    ( (struct multiboot_tag_module *)tag)->mod_start,
+	    ( (struct multiboot_tag_module *)tag)->mod_end,
+	    ( (struct multiboot_tag_module *)tag)->cmdline);
 	return;
 }
 
 void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t * tag) {
 	printk_info("mem_lower = %uKB, mem_upper = %uKB\n",
-		( (struct multiboot_tag_basic_meminfo *)tag)->mem_lower,
-		( (struct multiboot_tag_basic_meminfo *)tag)->mem_upper);
+	    ( (struct multiboot_tag_basic_meminfo *)tag)->mem_lower,
+	    ( (struct multiboot_tag_basic_meminfo *)tag)->mem_upper);
 	return;
 }
 
 void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t * tag) {
 	printk_info("Boot device 0x%X,%u,%u\n",
-		( (struct multiboot_tag_bootdev *)tag)->biosdev,
-		( (struct multiboot_tag_bootdev *)tag)->slice,
-		( (struct multiboot_tag_bootdev *)tag)->part);
+	    ( (struct multiboot_tag_bootdev *)tag)->biosdev,
+	    ( (struct multiboot_tag_bootdev *)tag)->slice,
+	    ( (struct multiboot_tag_bootdev *)tag)->part);
 	return;
 }
 
 void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t * tag) {
 	mmap_entries = ( (struct multiboot_tag_mmap *)tag)->entries;
 	mmap_tag = tag;
+#if DEBUG
 	multiboot_memory_map_entry_t * mmap;
 	mmap = ( (struct multiboot_tag_mmap *)tag)->entries;
-#if DEBUG
 	printk_info("mmap\n");
 	for( ; (uint8_t *)mmap < (uint8_t *)tag + tag->size ;
 	    mmap = (multiboot_memory_map_entry_t *)( (uint32_t)mmap + ( (struct multiboot_tag_mmap *)tag)->entry_size) ) {
 		printk_info("base_addr = 0x%X%X, length = 0x%X%X, type = 0x%X\n",
-			(unsigned)(mmap->addr >> 32),// high
-			(unsigned)(mmap->addr & 0xffffffff),// low
-			(unsigned)(mmap->len >> 32),// high
-			(unsigned)(mmap->len & 0xffffffff),// low
-			(unsigned)mmap->type);
+		    (unsigned)(mmap->addr >> 32),// high
+		    (unsigned)(mmap->addr & 0xffffffff),// low
+		    (unsigned)(mmap->len >> 32),// high
+		    (unsigned)(mmap->len & 0xffffffff),// low
+		    (unsigned)mmap->type);
 	}
 #endif
 	return;
@@ -68,37 +70,37 @@ void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t * tag) {
 void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t * tag) {
 #if DEBUG
 	printk_info("Elf type 0x%X, Size 0x%X, num 0x%X, entsize 0x%X, shndx 0x%X.\n",
-		( (struct multiboot_tag_elf_sections *)tag)->type,
-		( (struct multiboot_tag_elf_sections *)tag)->size,
-		( (struct multiboot_tag_elf_sections *)tag)->num,
-		( (struct multiboot_tag_elf_sections *)tag)->entsize,
-		( (struct multiboot_tag_elf_sections *)tag)->shndx);
+	    ( (struct multiboot_tag_elf_sections *)tag)->type,
+	    ( (struct multiboot_tag_elf_sections *)tag)->size,
+	    ( (struct multiboot_tag_elf_sections *)tag)->num,
+	    ( (struct multiboot_tag_elf_sections *)tag)->entsize,
+	    ( (struct multiboot_tag_elf_sections *)tag)->shndx);
 #endif
 	return;
 }
 
 void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t * tag) {
 	printk_info("APM type 0x%X, Size 0x%X, version 0x%X, cseg 0x%X, offset 0x%X, cseg_16 0x%X, "
-		"dseg 0x%X, flags 0x%X, cseg_len 0x%X, cseg_16_len 0x%X, dseg_len 0x%X\n",
-		( (struct multiboot_tag_apm *)tag)->type,
-		( (struct multiboot_tag_apm *)tag)->size,
-		( (struct multiboot_tag_apm *)tag)->version,
-		( (struct multiboot_tag_apm *)tag)->cseg,
-		( (struct multiboot_tag_apm *)tag)->offset,
-		( (struct multiboot_tag_apm *)tag)->cseg_16,
-		( (struct multiboot_tag_apm *)tag)->dseg,
-		( (struct multiboot_tag_apm *)tag)->flags,
-		( (struct multiboot_tag_apm *)tag)->cseg_len,
-		( (struct multiboot_tag_apm *)tag)->cseg_16_len,
-		( (struct multiboot_tag_apm *)tag)->dseg_len);
+	    "dseg 0x%X, flags 0x%X, cseg_len 0x%X, cseg_16_len 0x%X, dseg_len 0x%X\n",
+	    ( (struct multiboot_tag_apm *)tag)->type,
+	    ( (struct multiboot_tag_apm *)tag)->size,
+	    ( (struct multiboot_tag_apm *)tag)->version,
+	    ( (struct multiboot_tag_apm *)tag)->cseg,
+	    ( (struct multiboot_tag_apm *)tag)->offset,
+	    ( (struct multiboot_tag_apm *)tag)->cseg_16,
+	    ( (struct multiboot_tag_apm *)tag)->dseg,
+	    ( (struct multiboot_tag_apm *)tag)->flags,
+	    ( (struct multiboot_tag_apm *)tag)->cseg_len,
+	    ( (struct multiboot_tag_apm *)tag)->cseg_16_len,
+	    ( (struct multiboot_tag_apm *)tag)->dseg_len);
 	return;
 }
 
 void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t * tag) {
 	printk_info("Image load base physical address type 0x%X, size 0x%X, addr 0x%X.\n",
-		( (struct multiboot_tag_load_base_addr *)tag)->type,
-		( (struct multiboot_tag_load_base_addr *)tag)->size,
-		( (struct multiboot_tag_load_base_addr *)tag)->load_base_addr);
+	    ( (struct multiboot_tag_load_base_addr *)tag)->type,
+	    ( (struct multiboot_tag_load_base_addr *)tag)->size,
+	    ( (struct multiboot_tag_load_base_addr *)tag)->load_base_addr);
 	return;
 }
 
@@ -116,6 +118,7 @@ bool is_multiboot2_header(ptr_t magic, ptr_t addr) {
 
 // 处理 multiboot 信息
 void multiboot2_init(ptr_t magic, ptr_t addr) {
+	cpu_cli();
 	// Am I booted by a Multiboot-compliant boot loader?
 	is_multiboot2_header(magic, addr);
 	uint32_t size = *(uint32_t *)addr;
@@ -197,6 +200,7 @@ void multiboot2_init(ptr_t magic, ptr_t addr) {
 	// tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
 	// printk_info ("Total mbi size 0x%X\n", (unsigned) tag - addr);
 	// printk_info("multiboot2_init\n");
+	cpu_sti();
 	return;
 }
 

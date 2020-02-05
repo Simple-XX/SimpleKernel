@@ -12,11 +12,11 @@ extern "C" {
 
 #include "stdio.h"
 
-#define assert(test) \
-		if(!(test)) { \
-				printk_err("ASSERT ERROR!"); \
-				while(1); \
-		}
+#define assert(test, info) \
+	if(!(test) ) { \
+		printk_err(info); \
+		while(1) { }; \
+	}
 
 #ifdef __cplusplus
 }

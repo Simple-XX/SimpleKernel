@@ -7,6 +7,11 @@
 extern "C" {
 #endif
 
+#include "stdio.h"
+#include "port.hpp"
+#include "debug.h"
+#include "../drv/8259A/include/8259A.h"
+#include "cpu.hpp"
 #include "include/intr.h"
 
 // 中断描述符表
@@ -25,10 +30,13 @@ static void idt_set_gate(uint8_t num, uint32_t base, uint16_t target, uint8_t fl
 	// 0xEF: DPL=3
 }
 
+static void die(char * str, uint32_t oesp, uint32_t int_no);
+static const char * intrname(uint32_t intrno);
+
 // 中断处理函数指针数组
 static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX] __attribute__( (aligned(4) ) );
 
-static const char * intrname(uint32_t intrno) {
+const char * intrname(uint32_t intrno) {
 	static const char * const intrnames[] = {
 		"Divide error",
 		"Debug",
@@ -99,7 +107,8 @@ static isr_irq_func_t isr_irq_func[INTERRUPT_MAX] = {
 };
 
 // idt 初始化
-void idt_init(void) {
+void intr_init(void) {
+	cpu_cli();
 	init_interrupt_chip();
 	idt_ptr.limit = sizeof(idt_entry_t) * INTERRUPT_MAX - 1;
 	idt_ptr.base = (uint32_t)&idt_entries;
@@ -137,9 +146,11 @@ void idt_init(void) {
 	register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
 
 	printk_info("intr_init\n");
+	cpu_sti();
+	return;
 }
 
-static void die(char * str, uint32_t oesp, uint32_t int_no) {
+void die(char * str, uint32_t oesp, uint32_t int_no) {
 	// uint32_t * old_esp = (uint32_t *)oesp;
 	pt_regs_t * old_esp = (pt_regs_t *)oesp;
 	printk_color(red, "%s\t: %d\n\r", str, int_no);
@@ -153,15 +164,15 @@ static void die(char * str, uint32_t oesp, uint32_t int_no) {
 	// printk_color(red, "EIP:\t%08x:%08X\nEFLAGS:\t%08x\nESP:\t%08x:%08X\n",
 	// old_esp->cs, old_esp->eip, old_esp->eflags, old_esp->ss, old_esp->old_esp);
 	printk_color(red, "gs: %08x\tfs: %08x\tes: %08x\tds: %08x\n",
-		old_esp->gs, old_esp->fs, old_esp->es, old_esp->ds);
+	    old_esp->gs, old_esp->fs, old_esp->es, old_esp->ds);
 	printk_color(red, "edi: %08x\tesi: %08x\tebp: %08x\told_esp: %08x\n",
-		old_esp->edi, old_esp->esi, old_esp->ebp, old_esp->old_esp);
+	    old_esp->edi, old_esp->esi, old_esp->ebp, old_esp->old_esp);
 	printk_color(red, "ebx: %08x\tedx: %08x\tecx: %08x\teax: %08x\n",
-		old_esp->ebx, old_esp->edx, old_esp->ecx, old_esp->eax);
+	    old_esp->ebx, old_esp->edx, old_esp->ecx, old_esp->eax);
 	printk_color(red, "int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
-		old_esp->int_no, old_esp->err_code, old_esp->eip, old_esp->cs);
+	    old_esp->int_no, old_esp->err_code, old_esp->eip, old_esp->cs);
 	printk_color(red, "eflags: %08x\tuser_esp: %08x\tss: %08x\n",
-		old_esp->eflags, old_esp->user_esp, old_esp->user_ss);
+	    old_esp->eflags, old_esp->user_esp, old_esp->user_ss);
 	printk_color(red, "addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
 
 	cpu_hlt();
@@ -178,19 +189,19 @@ void debug(pt_regs_t * regs) {
 
 	// 取任务寄存器值->tr
 	__asm__ volatile ("str %%ax"
-	                  : "=a" (tr)
-	                  : "0" (0) );
+	: "=a" (tr)
+	: "0" (0) );
 	printk_color(light_red, "Unuseable.\n");
 
 	printk_color(red, "eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-		regs->eax, regs->ebx, regs->ecx, regs->edx);
+	    regs->eax, regs->ebx, regs->ecx, regs->edx);
 	printk_color(red, "esi 0x%08X\tedi 0x%08X\tebp 0x%08X\tesp 0x%08X\n",
-		regs->esi, regs->edi, regs->ebp, (uint32_t)regs->user_esp);
+	    regs->esi, regs->edi, regs->ebp, (uint32_t)regs->user_esp);
 	printk_color(red, "ds 0x%08X\tes 0x%08X\tfs 0x%08X\tgs 0x%08X\n",
-		regs->ds, regs->es, regs->fs, regs->gs);
+	    regs->ds, regs->es, regs->fs, regs->gs);
 	printk_color(red, "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
 		// old_esp[0], old_esp[1], old_esp[2]);
-		old_esp[0], read_eflags(), old_esp[2]);
+	    old_esp[0], read_eflags(), old_esp[2]);
 	return;
 }
 

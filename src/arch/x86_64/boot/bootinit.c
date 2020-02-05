@@ -7,6 +7,9 @@
 extern "C" {
 #endif
 
+#include "stdio.h"
+#include "mem/pmm.h"
+#include "mem/vmm.h"
 #include "include/bootinit.h"
 
 // When writing a higher-half kernel, the steps required are:
@@ -16,6 +19,12 @@ extern "C" {
 // 4. Enable paging.
 // 5. Jump to higher half.
 // 6. Remove the lower half kernel mapping.
+
+// 开启分页机制之后的内核栈
+uint8_t kernel_stack[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
+
+// 内核栈顶
+ptr_t kernel_stack_top = ( (ptr_t)kernel_stack + STACK_SIZE);
 
 void enable_page(pgd_t * pgd) {
 	// 设置临时页表
@@ -32,22 +41,29 @@ void enable_page(pgd_t * pgd) {
 void mm_init() {
 	// init 段, 4MB
 	// 因为 mm_init 返回后仍然在 init 段，不映射的话会爆炸的
-	pgd_tmp[0] = (uint32_t)pte_init | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	pgd_tmp[0] = (ptr_t)pte_init | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	// 内核段 pgd_tmp[0x300], 4MB
-	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (uint32_t)pte_kernel | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (ptr_t)pte_kernel_tmp | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	// 内核段 pgd_tmp[0x301], 4MB
+	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE) + 1] = (ptr_t)pte_kernel_tmp2 | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 
 	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
 	// 将每个页表项赋值
 	// pgd_tmp[0] => pte_init
 	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++) {
+		// 物理地址由 (i << 12) 给出
 		pte_init[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
 	// 映射 kernel 段 4MB
-	// 映射 0x00000000-0x00400000 的物理地址到虚拟地址 0xC0000000-0xC0400000
+	// 映射虚拟地址 0xC0000000-0xC0400000 到物理地址 0x00000000-0x00400000
 	// pgd_tmp[0x300] => pte_kernel
-	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++) {
-		pte_kernel[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE  ; i++) {
+		pte_kernel_tmp[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	}
+	// 映射虚拟地址 0xC0400000-0xC0800000 到物理地址 0x00400000-0x00800000
+	for(uint32_t i = 0, j = VMM_PAGES_PRE_PAGE_TABLE ; i < VMM_PAGES_PRE_PAGE_TABLE  ; i++, j++) {
+		pte_kernel_tmp2[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
 	enable_page(pgd_tmp);

@@ -7,11 +7,17 @@
 extern "C" {
 #endif
 
+#include "stddef.h"
+#include "stdio.h"
+#include "intr/include/intr.h"
+#include "cpu.hpp"
 #include "debug.h"
 
 void debug_init(ptr_t magic UNUSED, ptr_t addr UNUSED) {
+	cpu_cli();
 	printk_debug("debug_init\n");
 	// multiboot2_init(magic, addr);
+	cpu_sti();
 	return;
 }
 
@@ -19,10 +25,10 @@ void print_cur_status() {
 	static uint32_t round = 0;
 	uint16_t reg1, reg2, reg3, reg4;
 	asm volatile ("mov %%cs, %0;"
-	              "mov %%ds, %1;"
-	              "mov %%es, %2;"
-	              "mov %%ss, %3;"
-	              : "=m" (reg1), "=m" (reg2), "=m" (reg3), "=m" (reg4) );
+	"mov %%ds, %1;"
+	"mov %%es, %2;"
+	"mov %%ss, %3;"
+	: "=m" (reg1), "=m" (reg2), "=m" (reg3), "=m" (reg4) );
 
 	// 打印当前的运行级别
 	printk_debug("%d:  @ring %d\n", round, reg1 & 0x3);
