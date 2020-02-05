@@ -33,7 +33,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// 堆初始化
 	// heap_init();
 
-	showinfo();
+	// showinfo();
 	test();
 
 	while(1);
