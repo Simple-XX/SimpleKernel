@@ -17,10 +17,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	console_init();
 	// 从 multiboot 获得系统初始信息
 	multiboot2_init(magic, addr);
-	// GDT 初始化
-	gdt_init();
-	// IDT 初始化
-	idt_init();
+	// GDT、IDT 初始化
+	arch_init();
 	// 时钟初始化
 	clock_init();
 	// 键盘初始化
