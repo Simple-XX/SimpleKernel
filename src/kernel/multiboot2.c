@@ -7,8 +7,10 @@
 extern "C" {
 #endif
 
+#include "stdio.h"
+#include "debug.h"
+#include "cpu.hpp"
 #include "multiboot2.h"
-#include "string.h"
 
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t * tag) {
 	printk_info("Command line = %s\n",
@@ -116,6 +118,7 @@ bool is_multiboot2_header(ptr_t magic, ptr_t addr) {
 
 // 处理 multiboot 信息
 void multiboot2_init(ptr_t magic, ptr_t addr) {
+	cpu_cli();
 	// Am I booted by a Multiboot-compliant boot loader?
 	is_multiboot2_header(magic, addr);
 	uint32_t size = *(uint32_t *)addr;
@@ -197,6 +200,7 @@ void multiboot2_init(ptr_t magic, ptr_t addr) {
 	// tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
 	// printk_info ("Total mbi size 0x%X\n", (unsigned) tag - addr);
 	// printk_info("multiboot2_init\n");
+	cpu_sti();
 	return;
 }
 

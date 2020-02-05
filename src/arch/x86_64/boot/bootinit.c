@@ -51,6 +51,7 @@ void mm_init() {
 	// 将每个页表项赋值
 	// pgd_tmp[0] => pte_init
 	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++) {
+		// 物理地址由 (i << 12) 给出
 		pte_init[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 

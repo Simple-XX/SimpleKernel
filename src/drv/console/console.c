@@ -7,15 +7,23 @@
 extern "C" {
 #endif
 
+#include "stddef.h"
+#include "string.h"
+#include "stdio.h"
+#include "cpu.hpp"
 #include "include/console.h"
 
-extern uint16_t * console_buffer;
-
-size_t console_row; // 命令行行数
-size_t console_column; // 当前命令行列数
-uint8_t console_color; // 当前命令行颜色
+// 命令行行数
+static size_t console_row;
+// 当前命令行列数
+static size_t console_column;
+// 当前命令行颜色
+static uint8_t console_color;
+// 显存地址
+static uint16_t * console_buffer __attribute__( (unused) ) = (uint16_t *)VGA_MEM_BASE;
 
 void console_init(void) {
+	cpu_cli();
 	// 从左上角开始
 	console_row = 0;
 	console_column = 0;
@@ -31,6 +39,8 @@ void console_init(void) {
 	console_setcursorpos(0, 0);
 
 	printk_info("console_init\n");
+	cpu_sti();
+	return;
 }
 
 // 设置命令行颜色
