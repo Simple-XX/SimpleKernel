@@ -102,6 +102,8 @@ ptr_t pmm_alloc(size_t byte);
 
 void pmm_free_page(ptr_t addr, uint32_t byte);
 
+uint32_t pmm_free_pages_count(void);
+
 #ifdef __cplusplus
 }
 #endif
