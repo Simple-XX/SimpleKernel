@@ -15,7 +15,7 @@ extern "C" {
 // 物理页帧数组长度
 static uint32_t phy_pages_count;
 
-static const pmm_manage_t * pmm_manage  = &firstfit_manage;
+static const pmm_manage_t * pmm_manager  = &firstfit_manage;
 
 // 从 GRUB 读取物理内存信息
 static void pmm_get_ram_info(e820map_t * e820map);
@@ -49,7 +49,7 @@ void pmm_phy_init(e820map_t * e820map) {
 
 void pmm_mamage_init(e820map_t * e820map) {
 	// 因为只有一个可用内存区域，所以直接传递
-	pmm_manage->pmm_manage_init( (ptr_t)e820map->map[0].addr, phy_pages_count);
+	pmm_manager->pmm_manage_init( (ptr_t)e820map->map[0].addr, phy_pages_count);
 	return;
 }
 
@@ -67,14 +67,19 @@ void pmm_init() {
 
 ptr_t pmm_alloc(uint32_t byte) {
 	ptr_t page;
-	page = pmm_manage->pmm_manage_alloc(byte);
+	page = pmm_manager->pmm_manage_alloc(byte);
 	return page;
 }
 
 void pmm_free_page(ptr_t addr, uint32_t byte) {
-	pmm_manage->pmm_manage_free(addr, byte);
+	pmm_manager->pmm_manage_free(addr, byte);
 	return;
 }
+
+uint32_t pmm_free_pages_count(void) {
+	return pmm_manager->pmm_manage_free_pages_count();
+}
+
 
 #ifdef __cplusplus
 }
