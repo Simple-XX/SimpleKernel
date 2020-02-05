@@ -13,19 +13,27 @@ extern "C" {
 
 // 内核入口
 void kernel_main(ptr_t magic, ptr_t addr) {
-	console_init(); // 控制台初始化
-	multiboot2_init(magic, addr); // 从 multiboot 获得系统初始信息
-	gdt_init(); // GDT 初始化
-	idt_init(); // IDT 初始化
-	clock_init(); // 时钟初始化
-	keyboard_init(); // 键盘初始化
+	// 控制台初始化
+	console_init();
+	// 从 multiboot 获得系统初始信息
+	multiboot2_init(magic, addr);
+	// GDT 初始化
+	gdt_init();
+	// IDT 初始化
+	idt_init();
+	// 时钟初始化
+	clock_init();
+	// 键盘初始化
+	keyboard_init();
 	debug_init(magic, addr);
-	showinfo();
+	// 物理内存初始化
 	pmm_init();
+	// 虚拟内存初始化
 	vmm_init();
+	// 堆初始化
 	// heap_init();
 
-	// showinfo();
+	showinfo();
 	test();
 
 	while(1);
