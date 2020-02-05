@@ -215,10 +215,7 @@ void free(ptr_t addr_start, uint32_t bytes) {
 	if(bytes % PMM_PAGE_SIZE != 0) {
 		pages++;
 	}
-	// 首先找到地址对应的管理节点，有两种方法
-	// 第一种是直接计算出来
-	// list_entry_t * entry = pmm_info + ( (ff_manage.pmm_addr_start - addr_start) / sizeof(list_entry_t));
-	// 第二种是遍历链表找到
+	// 首先找到地址对应的管理节点
 	list_entry_t * entry = ff_manage.free_list;
 	while( ( (entry = list_next(entry) ) != ff_manage.free_list) && (list_chunk_info(entry)->addr != addr_start) );
 
@@ -246,7 +243,7 @@ void free(ptr_t addr_start, uint32_t bytes) {
 }
 
 uint32_t free_pages_count(void) {
-	return 0;
+	return ff_manage.phy_page_now_count;
 }
 
 #ifdef __cplusplus
