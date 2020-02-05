@@ -10,10 +10,8 @@
 extern "C" {
 #endif
 
-#include "stdint.h"
-#include "stdio.h"
 #include "stddef.h"
-#include "debug.h"
+#include "stdint.h"
 #include "e820.h"
 #include "multiboot2.h"
 

@@ -10,10 +10,6 @@
 extern "C" {
 #endif
 
-#include "stddef.h"
-#include "stdio.h"
-#include "string.h"
-#include "intr/include/intr.h"
 #include "elf.h"
 
 #define DEBUG 1

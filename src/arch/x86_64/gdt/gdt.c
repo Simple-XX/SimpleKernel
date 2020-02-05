@@ -7,7 +7,18 @@
 extern "C" {
 #endif
 
+#include "stdio.h"
+#include "debug.h"
+#include "cpu.hpp"
 #include "include/gdt.h"
+
+static gdt_ptr_t gdt_ptr;
+// 全局描述符表定义
+static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__( (aligned(8) ) );
+
+// TSS 段定义
+static tss_entry_t tss_entry __attribute__( (aligned(8) ) );
+static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0);
 
 void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
 	gdt_entries[num].base_low     = (base & 0xFFFF);
@@ -21,7 +32,7 @@ void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, ui
 	gdt_entries[num].access       = access;
 }
 
-static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0) {
+void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0) {
 	// 获取 TSS 描述符的位置和长度
 	uint32_t base = (uint32_t)&tss_entry;
 	uint32_t limit = base + sizeof(tss_entry);
@@ -42,6 +53,7 @@ static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0) {
 
 // 初始化全局描述符表
 void gdt_init(void) {
+	cpu_cli();
 	// 全局描述符表界限  从 0 开始，所以总长要 - 1
 	gdt_ptr.limit = sizeof(gdt_entry_t) * GDT_LENGTH - 1;
 	gdt_ptr.base = (uint32_t)&gdt_entries;
@@ -61,6 +73,8 @@ void gdt_init(void) {
 	tss_load();
 
 	printk_info("gdt_init\n");
+	cpu_sti();
+	return;
 }
 
 #ifdef __cplusplus
