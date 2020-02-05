@@ -21,26 +21,22 @@ extern "C" {
 // #endif
 
 #include "stdint.h"
-#include "stdbool.h"
-#include "stdio.h"
-#include "mem/pmm.h"
-#include "mem/vmm.h"
 
 // 内核使用的临时页表和页目录
 // 用于映射 init 段与内核段
-__attribute__( (section(".init.data") ) ) pgd_t pgd_tmp[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+__attribute__( (section(".init.data") ) )
+pgd_t pgd_tmp[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // init 段
-__attribute__( (section(".init.data") ) ) pte_t pte_init[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
-// 内核段
-__attribute__( (section(".init.data") ) ) pte_t pte_kernel_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
-// 内核栈段
-__attribute__( (section(".init.data") ) ) pte_t pte_stack_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
-
-// 开启分页机制之后的内核栈
-uint8_t kernel_stack[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
-
-// 内核栈顶
-ptr_t kernel_stack_top = ( (ptr_t)kernel_stack + STACK_SIZE);
+__attribute__( (section(".init.data") ) )
+pte_t pte_init[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+// 内核段，共 8MB
+__attribute__( (section(".init.data") ) )
+pte_t pte_kernel_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+__attribute__( (section(".init.data") ) )
+pte_t pte_kernel_tmp2[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+// 内核栈段(还没用上)
+__attribute__( (section(".init.data") ) )
+pte_t pte_stack_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 __attribute__( (section(".init.text") ) ) void kernel_entry(ptr_t magic, ptr_t addr);
 __attribute__( (section(".init.text") ) ) void enable_page(pgd_t * pgd);
