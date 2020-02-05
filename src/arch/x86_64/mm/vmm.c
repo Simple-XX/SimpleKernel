@@ -7,40 +7,47 @@
 extern "C" {
 #endif
 
-#include "mem/vmm.h"
-#include "mem/pmm.h"
-#include "debug.h"
 #include "stdio.h"
 #include "string.h"
 #include "cpu.hpp"
+#include "debug.h"
+#include "intr/include/intr.h"
+#include "mem/vmm.h"
 
 // 内核页目录区域
 pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核页表区域
 static pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
+static inline ptr_t vmm_la_to_pa(ptr_t la);
+static inline ptr_t vmm_pa_to_la(ptr_t pa);
+
+ptr_t vmm_la_to_pa(ptr_t la) {
+	return la - KERNEL_BASE;
+}
+
+ptr_t vmm_pa_to_la(ptr_t pa) {
+	return pa + KERNEL_BASE;
+}
+
 void vmm_init(void) {
+	cpu_cli();
 	register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
 
-	// 内核段 pgd_tmp[0x300], 4MB
+	// 映射全部内核
 	uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
 	for(uint32_t i = pgd_idx, j = 0 ; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx ; i++, j++) {
 		pgd_kernel[i] = ( (ptr_t)vmm_la_to_pa( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
 	}
-
-	// 将每个页表项赋值
-	// 映射 kernel 段 4MB
-	// 映射虚拟地址 0xC0000000-0xC0400000 到物理地址 0x00000000-0x00400000
 	ptr_t * pte = (ptr_t *)pte_kernel;
 	for(uint32_t i = 0 ; i < VMM_PAGE_TABLES_KERNEL * VMM_PAGES_PRE_PAGE_TABLE ; i++) {
-		// 物理地址由 (i << 12) 给出
 		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
 	switch_pgd(vmm_la_to_pa( (ptr_t)pgd_kernel) );
 
 	printk_info("vmm_init\n");
-
+	cpu_sti();
 	return;
 }
 

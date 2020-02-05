@@ -17,11 +17,15 @@ bool test_pmm(void) {
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc(9000);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
 	pmm_free_page(allc_addr, 9000);
+	printk_test("Free!\n");
+	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
 	allc_addr = pmm_alloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc(1);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
 	return true;
 }
 
