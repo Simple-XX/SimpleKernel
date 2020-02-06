@@ -18,14 +18,18 @@ extern "C" {
 // 堆最大容量 4MB
 #define HEAP_MAX_SIZE   (0x400000)
 
-// 内存块管理结构
+// 堆管理结构体
 typedef
-    struct heap_header {
-	struct heap_header *		prev;    // 前后内存块管理结构指针
-	struct heap_header *		next;
-	uint32_t allocated	: 1; // 该内存块是否已经被申请
-	uint32_t length		: 31;   // 当前内存块的长度
-} heap_header_t;
+    struct heap_manage {
+	// 管理算法的名称
+	const char *      name;
+	// 初始化
+	void (* heap_manage_init)(ptr_t addr_start);
+	// 申请物理内存，单位为 Byte
+	ptr_t (* heap_manage_malloc)(size_t bytes);
+	// 释放内存
+	void (* heap_manage_free)(ptr_t addr);
+} heap_manage_t;
 
 // 初始化堆
 void heap_init(void);
