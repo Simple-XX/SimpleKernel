@@ -95,11 +95,11 @@ void pmm_phy_init(e820map_t * e820map);
 void pmm_mamage_init(e820map_t * e820map);
 // 初始化内存管理
 void pmm_init(void);
-
+// 分配内存，单位为 byte，返回的是物理地址
 ptr_t pmm_alloc(size_t byte);
-
-void pmm_free_page(ptr_t addr, uint32_t byte);
-
+// 回收内存，单位为 byte
+void pmm_free(ptr_t addr, uint32_t byte);
+// 返回可用物理内存页数
 uint32_t pmm_free_pages_count(void);
 
 #ifdef __cplusplus
