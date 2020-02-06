@@ -37,7 +37,7 @@ typedef
     struct slab_block {
 	// 该内存块是否已经被申请
 	uint32_t	allocated;
-	// 当前内存块的长度
+	// 当前内存块的长度，不包括头长度
 	uint32_t	len;
 } slab_block_t;
 
@@ -60,6 +60,8 @@ typedef
 	uint32_t		mm_total;
 	// 当前空闲内存大小
 	uint32_t		mm_free;
+	// 当前存在的内存数量
+	uint32_t		block_count;
 	// 内存头链表
 	list_entry_t *		slab_list;
 } slab_manage_t;
@@ -104,9 +106,7 @@ void list_add_middle(list_entry_t * prev,  list_entry_t * next, list_entry_t * n
 
 // 在 prev 后添加项
 void list_add_after(list_entry_t * prev, list_entry_t * new) {
-	printk_debug("----slab list_add_after start----\n");
 	list_add_middle(prev, prev->next, new);
-	printk_debug("----slab list_add_after end----\n");
 	return;
 }
 
@@ -157,6 +157,7 @@ void init(ptr_t addr_start) {
 	sb_manage.addr_end = addr_start + VMM_PAGE_SIZE;
 	sb_manage.mm_total = VMM_PAGE_SIZE;
 	sb_manage.mm_free = VMM_PAGE_SIZE - sizeof(list_entry_t);
+	sb_manage.block_count = 1;
 	sb_manage.slab_list = sb_list;
 	list_init_head(sb_manage.slab_list);
 	// 设置第一块内存的相关信息
@@ -174,13 +175,14 @@ void slab_split(list_entry_t * list, uint32_t len) {
 	if(list_slab_block(list)->len - len > sizeof(list_entry_t) + SLAB_MIN) {
 		// printk_debug("----slab_split start----\n");
 		// 添加新的链表项，位于旧表项开始地址+旧表项长度
-		list_entry_t * new_list = (list_entry_t *)( (uint32_t)list + len);
+		list_entry_t * new_list = (list_entry_t *)( (ptr_t)list + len);
 		new_list->next = new_list;
 		new_list->prev = new_list;
 		list_slab_block(new_list)->allocated = SLAB_UNUSED;
 		// 新表项的长度为：list->len（申请的大小）- 需要的大小 - 头大小
 		list_slab_block(new_list)->len = list_slab_block(list)->len - len - sizeof(list_entry_t);
-
+		sb_manage.mm_free += list_slab_block(new_list)->len;
+		sb_manage.block_count += 1;
 		// printk_debug("list_slab_block(list)->len: 0x%08X\n", list_slab_block(list)->len);
 		// printk_debug("sizeof(list_entry_t): 0x%08X\n", sizeof(list_entry_t) );
 		// printk_debug("list_slab_block(new_list)->allocated: 0x%08X\n", list_slab_block(new_list)->allocated);
@@ -204,51 +206,58 @@ void slab_split(list_entry_t * list, uint32_t len) {
 
 // 合并内存块
 void slab_merge(list_entry_t * list) {
+	// printk_debug("----slab_merge start----\n");
 	list_entry_t * entry = list;
+	// printk_debug("entry = 0x%08X\n", entry);
+	// printk_debug("entry->next = 0x%08X\n", entry->next);
 	// 合并后面的
-	if(entry->next != entry && list_slab_block(entry->next)->allocated == SLAB_UNUSED) {
+	if(entry->next != list && list_slab_block(entry->next)->allocated == SLAB_UNUSED) {
+		// printk_debug("----slab_merge after start----\n");
 		list_entry_t * next = entry->next;
 		list_slab_block(entry)->len += list_slab_block(entry->next)->len + sizeof(list_entry_t);
 		list_del(next);
+		sb_manage.block_count -= 1;
 	}
 	// 合并前面的
-	if(entry->prev != entry && list_slab_block(entry->prev)->allocated == SLAB_UNUSED) {
+	if(entry->prev != list && list_slab_block(entry->prev)->allocated == SLAB_UNUSED) {
+		printk_debug("----slab_merge prev start----\n");
 		list_entry_t * prev = entry->prev;
 		list_slab_block(prev)->len += (list_slab_block(entry)->len + sizeof(list_entry_t) );
 		list_del(entry);
-		entry = prev;
+		sb_manage.block_count -= 1;
 	}
+	printk_debug("----slab_merge end----\n");
 	return;
 }
 
 ptr_t alloc(uint32_t bytes) {
-	printk_debug("----slab alloc start----\n");
+	// printk_debug("----slab alloc start----\n");
 	// 所有申请的内存长度(限制最小大小)加上管理头的长度
 	uint32_t len = (bytes > SLAB_MIN) ? bytes : SLAB_MIN;
 	len += sizeof(list_entry_t);
 	list_entry_t * entry = sb_manage.slab_list;
-	printk_debug("entry->prev: 0x%08X\n", entry->prev);
-	printk_debug("entry->next: 0x%08X\n", entry->next);
+	// printk_debug("entry->prev: 0x%08X\n", entry->prev);
+	// printk_debug("entry->next: 0x%08X\n", entry->next);
 	while(entry->next != sb_manage.slab_list) {
-		printk_debug("while entry = 0x%08X\n", entry);
+		// printk_debug("while entry = 0x%08X\n", entry);
 		// 查找符合长度且未使用的内存
 		if( (list_slab_block(entry)->len >= len) && (list_slab_block(entry)->allocated == SLAB_UNUSED) ) {
-			// 进行分割
+			// 进行分割，这个函数会同时设置 entry 的信息
 			slab_split(entry, len);
-			list_slab_block(entry)->len = len;
 			list_slab_block(entry)->allocated = SLAB_USED;
-			printk_debug("----slab alloc end----\n");
-			return (ptr_t)(entry + sizeof(list_entry_t) );
+			sb_manage.mm_free -= list_slab_block(entry)->len;
+			// printk_debug("----slab alloc end----\n");
+			return (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) );
 		}
 		// 没找到的话就查找下一个
 		entry = list_next(entry);
 	}
-	printk_debug("----end while entry = 0x%08X---\n", entry);
+	// printk_debug("----end while entry = 0x%08X---\n", entry);
 	// 如果执行到这里，说明没有可用空间了，那么申请新的内存页
 	// 注意：第一次执行 alloc 函数的时候会直接跳到这里，造成第一页内存无法分配，下次调用就ok了
 	list_entry_t * new_entry;
 	ptr_t pa = pmm_alloc(len);
-	ptr_t va = (ptr_t)(entry + list_slab_block(new_entry)->len);
+	ptr_t va = (ptr_t)( (ptr_t)entry + list_slab_block(entry)->len + sizeof(list_entry_t) );
 	uint32_t pages = len / VMM_PAGE_SIZE;
 	if(len % VMM_PAGE_SIZE != 0) {
 		pages += 1;
@@ -262,33 +271,35 @@ ptr_t alloc(uint32_t bytes) {
 	new_entry = (list_entry_t *)va;
 	new_entry->next = new_entry;
 	new_entry->prev = new_entry;
-	list_slab_block(new_entry)->allocated = SLAB_UNUSED;
+	sb_manage.block_count += 1;
+	list_slab_block(new_entry)->allocated = SLAB_USED;
 	// 新表项的可用长度为减去头的大小
-	list_slab_block(new_entry)->len = pages * VMM_PAGE_SIZE;
+	list_slab_block(new_entry)->len = (ptr_t)(pages * VMM_PAGE_SIZE) - sizeof(list_entry_t);
 
 	// 进行分割
 	slab_split(new_entry, len);
-
-	printk_debug("entry->prev: 0x%08X\n", entry->prev);
-	printk_debug("entry->next: 0x%08X\n", entry->next);
-	printk_debug("new_entry->prev: 0x%08X\n", new_entry->prev);
-	printk_debug("new_entry->next: 0x%08X\n", new_entry->next);
-
+	sb_manage.mm_free -= list_slab_block(new_entry)->len;
 	list_add_after(entry, new_entry);
-	printk_debug("----slab alloc end----\n");
-	return (ptr_t)(new_entry + sizeof(list_entry_t) );
+	// printk_debug("new_entry = 0x%08X\n", new_entry);
+	// printk_debug("sizeof(list_entry_t) = 0x%08X\n",  sizeof(list_entry_t) );
+	// printk_debug("new_entry + sizeof(list_entry_t) = 0x%08X\n", (ptr_t)new_entry + sizeof(list_entry_t) );
+	// printk_debug("----slab alloc end----\n");
+	return (ptr_t)( (ptr_t)new_entry + sizeof(list_entry_t) );
 }
 
 void free(ptr_t addr) {
+	// printk_debug("----slab free start----\n");
 	// 获取实际开始地址
 	list_entry_t * entry = (list_entry_t *)( (ptr_t)addr - sizeof(list_entry_t) );
-
+	// printk_debug("entry = 0x%08X\n", entry);
+	// printk_debug("entry->next = 0x%08X\n", entry->next);
 	if(list_slab_block(entry)->allocated != SLAB_USED) {
 		printk_err("Error at slab.c void free(ptr_t)\n");
 		return;
 	}
 	list_slab_block(entry)->allocated = SLAB_UNUSED;
 	slab_merge(entry);
+	// printk_debug("----slab free end----\n");
 	return;
 }
 
