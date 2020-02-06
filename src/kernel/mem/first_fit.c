@@ -13,8 +13,8 @@ extern "C" {
 #include "assert.h"
 #include "mem/firstfit.h"
 
-#define FF_USED 0x00
-#define FF_UNUSED 0x01
+#define FF_USED         (0x00)
+#define FF_UNUSED       (0x01)
 
 static void init(ptr_t page_start, uint32_t page_count);
 static ptr_t alloc(uint32_t bytes);
