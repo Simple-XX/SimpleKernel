@@ -46,34 +46,45 @@ typedef
 // 进程内存地址结构
 typedef
     struct task_mem {
-	pgd_t *      pgd_dir;     // 进程页表
+	// 进程页表
+	pgd_t *		pgd_dir;
+	// 任务的栈指针
+	ptr_t		stack;
+	// 任务起
+	ptr_t		task_start;
+	// 代码段起止
+	ptr_t		code_start;
+	ptr_t		code_end;
+	// 数据段起止
+	ptr_t		data_start;
+	ptr_t		data_end;
+	// 任务止
+	ptr_t		task_end;
 } task_mem_t;
 
 // 进程控制块 PCB
 typedef
     struct task_pcb {
 	// 任务状态
-	volatile task_status_t        status;
-	// 任务的内核栈指针
-	ptr_t			stack;
+	volatile task_status_t		status;
 	// 任务的 pid
-	pid_t			pid;
+	pid_t pid;
 	// 任务名称
-	char *			name;
+	char * name;
 	// 当前任务运行时间
-	uint32_t		run_time;
+	uint32_t run_time;
 	// 父进程指针
-	struct task_pcb *	parent;
+	struct task_pcb *		parent;
 	// 任务的内存信息
-	task_mem_t		mm;
+	task_mem_t * mm;
 	// 任务中断保存的寄存器信息
-	pt_regs_t *		pt_regs;
+	pt_regs_t * pt_regs;
 	// 任务切换上下文信息
-	task_context_t *	context;
+	task_context_t *		context;
 	// 任务的退出代码
-	int32_t			exit_code;
+	int32_t	exit_code;
 	// 链表指针
-	struct task_pcb *	next;
+	struct task_pcb *		next;
 } task_pcb_t;
 
 // 全局 pid 值

@@ -15,7 +15,7 @@ extern "C" {
 #include "e820.h"
 #include "multiboot2.h"
 
-#define STACK_SIZE    (0x4000UL)  // 16KB
+#define STACK_SIZE    (0x8000UL)  // 32KB
 #define PMM_MAX_SIZE  (0x20000000UL)  // 512 MB
 
 // 内核的偏移地址
