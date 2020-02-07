@@ -75,6 +75,7 @@ typedef
 
 // TSS(任务状态段) 描述符
 // TSS的使用是为了解决调用门中特权级变换时堆栈发生的变化.
+// 资料：intel 手册 3ACh7
 typedef
     struct tss_entry_t {
 	uint32_t	ts_link;  // old ts selector

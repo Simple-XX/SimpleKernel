@@ -175,7 +175,8 @@ static inline void slab_merge(list_entry_t * list);
 // 切分内存块，len 为调用者申请的大小，不包括头大小
 void slab_split(list_entry_t * entry, uint32_t len) {
 	// 如果剩余内存大于内存头的长度+设定的最小长度
-	if(list_slab_block(entry)->len - len > sizeof(list_entry_t) + SLAB_MIN) {
+	if( (list_slab_block(entry)->len > len)
+	    && (list_slab_block(entry)->len - len > sizeof(list_entry_t) + SLAB_MIN) ) {
 		// 添加新的链表项，位于旧表项开始地址+旧表项长度
 		list_entry_t * new_entry = (list_entry_t *)( (ptr_t)entry + len + sizeof(list_entry_t) );
 		new_entry->next = new_entry;
@@ -232,12 +233,13 @@ ptr_t alloc(uint32_t bytes) {
 
 	// 如果执行到这里，说明没有可用空间了，那么申请新的内存页
 	list_entry_t * new_entry;
+	len += sizeof(list_entry_t);
 	ptr_t pa = pmm_alloc(len);
 	if(pa == (ptr_t)NULL) {
 		printk_err("Error at slab.c ptr_t alloc(): no enough physical memory\n");
 		return (ptr_t)NULL;
 	}
-	ptr_t va = (ptr_t)( (ptr_t)entry + list_slab_block(entry)->len + sizeof(list_entry_t) );
+	ptr_t va = (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) + list_slab_block(entry)->len);
 	uint32_t pages = len / VMM_PAGE_SIZE;
 	if(len % VMM_PAGE_SIZE != 0) {
 		pages += 1;
@@ -256,8 +258,7 @@ ptr_t alloc(uint32_t bytes) {
 	list_slab_block(new_entry)->allocated = SLAB_USED;
 	// 新表项的可用长度为减去头的大小
 	list_slab_block(new_entry)->len = (ptr_t)(pages * VMM_PAGE_SIZE) - sizeof(list_entry_t);
-
-	// // 进行分割
+	// 进行分割
 	slab_split(new_entry, len);
 	sb_manage.mm_free -= list_slab_block(new_entry)->len;
 	return (ptr_t)( (ptr_t)new_entry + sizeof(list_entry_t) );
