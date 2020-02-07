@@ -9,14 +9,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+// 关于任务管理的资料见 intel 手册 3ACh7
 #include "stdint.h"
 #include "types.h"
+#include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "intr/include/intr.h"
 
 // 最长任务名
 #define TASK_NAME_MAX 64
+// 最大任务数量
+#define TASK_MAX 128
+// 任务栈大小
+#define TASK_STACK_SIZE STACK_SIZE
 
 // 进程状态描述
 typedef
@@ -34,6 +39,14 @@ typedef
 } task_status_t;
 
 // 内核线程的上下文切换保存的信息
+// Saved registers for kernel context switches.
+// Don't need to save all the segment registers (%cs, etc),
+// because they are constant across kernel contexts.
+// Don't need to save %eax, %ecx, %edx, because the
+// x86 convention is that the caller has saved them.
+// Contexts are stored at the bottom of the stack they
+// describe; the stack pointer is the address of the context.
+// The layout of the context must match the code in swtch.S.
 typedef
     struct task_context {
 	uint32_t	edi;
@@ -83,14 +96,23 @@ typedef
 	task_context_t *		context;
 	// 任务的退出代码
 	int32_t	exit_code;
-	// 链表指针
-	struct task_pcb *		next;
 } task_pcb_t;
 
-// 全局 pid 值
-extern pid_t curr_pid;
+// 内核线程入口函数 tasl_s.s
+extern int32_t kthread_entry(void * args);
+// intr_s.s
+extern void forkret_s(pt_regs_t * pt_regs);
+
 // 初始化
 void task_init(void);
+// 创建内核线程
+int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags);
+// 将进程放入进程队列
+pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags);
+// 将进程移除进程队列
+void do_exit(int32_t exit_code);
+// 获取正在运行的进程
+task_pcb_t * get_current_task(void);
 // 线程创建
 pid_t kfork(int (* fn)(void *), void * arg);
 // 线程退出
@@ -100,31 +122,6 @@ int32_t kexec();
 int32_t kwait();
 void kwakeup();
 void kkill();
-
-// 任务切换宏
-// void SWITCH_TO(task_context_t * old, task_context_t * new);
-#define SWITCH_TO(curr, next) \
-	{ \
-		__asm__ volatile ( \
-		/*  */             \
-		"mov 4(%esp), %eax\n\t" \
-		"mov 8(%esp), %edx\n\t" \
-		/*  */                        \
-		"push %ebp\n\t" \
-		"push %ebx\n\t" \
-		"push %esi\n\t" \
-		"push %edi\n\t" \
-		/*  */        \
-		"mov %esp, (%eax)\n\t" \
-		"mov (%edx), %esp\n\t" \
-		/*  */           \
-		"pop %edi\n\t" \
-		"pop %esi\n\t" \
-		"pop %ebx\n\t" \
-		"pop %ebp\n\t" \
-		"ret" \
-		); \
-	}
 
 #ifdef __cplusplus
 }

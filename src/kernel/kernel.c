@@ -12,6 +12,23 @@ extern "C" {
 #include "../drv/clock/include/clock.h"
 #include "../drv/keyboard/include/keyboard.h"
 #include "../test/include/test.h"
+#include "../ds_alg/include/linkedlist.h"
+
+int flag = 0;
+
+int thread(void * arg) {
+	while(1) {
+		if(flag == 1) {
+			printk_test("B");
+			flag = 0;
+		}
+	}
+
+	return 0;
+}
+
+extern task_pcb_t kernel_task;
+extern ListEntry * task_list;
 
 // 内核入口
 void kernel_main(ptr_t magic, ptr_t addr) {
@@ -36,7 +53,23 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	task_init();
 
 	// showinfo();
-	test();
+	// test();
+
+	// kernel_thread(thread, NULL, 0);
+	// task_pcb_t * curr = get_current_task();
+	// printk_debug("addr: 0x%08X\n", curr);
+	// printk_debug("name: %s\n", curr->name);
+	// struct task_struct * next = get_current_task();
+	// switch_to(&(curr->context), &(current->context) );
+
+	//
+	// while(1) {
+	// 	if(flag == 0) {
+	// 		printk_test("A");
+	// 		flag = 1;
+	// 	}
+	// }
+
 
 	while(1);
 
