@@ -10,16 +10,7 @@
 extern "C" {
 #endif
 
-#include "stdint.h"
 #include "stdbool.h"
-#include "stdio.h"
-#include "debug.h"
-#include "mem/pmm.h"
-#include "mem/vmm.h"
-#include "../drv/clock/include/clock.h"
-#include "../drv/keyboard/include/keyboard.h"
-#include "task/task.h"
-#include "sched/sched.h"
 
 bool test(void);
 bool test_pmm(void);
