@@ -8,14 +8,17 @@ extern "C" {
 #endif
 
 #include "string.h"
-#include "mem/pmm.h"
 #include "assert.h"
+#include "cpu.hpp"
+#include "mem/pmm.h"
 #include "heap/heap.h"
 #include "task/task.h"
 #include "include/linkedlist.h"
 
 // 全局 pid 值
 pid_t curr_pid = 0;
+// 内核进程指针
+static task_pcb_t kernel_task;
 
 // 返回一个空的任务控制块
 static task_pcb_t * alloc_task_pcb(void) {
@@ -24,33 +27,41 @@ static task_pcb_t * alloc_task_pcb(void) {
 	task_pcb = (task_pcb_t *)kmalloc(sizeof(task_pcb_t) );
 	bzero(task_pcb, sizeof(task_pcb_t) );
 	// 填充
-	task_pcb->status = TASK_UNINIT;
-	// 如果是在用户模式下，分配 8KB 栈
-	// task_pcb->stack = kmalloc(2 * VMM_PAGE_SIZE);
-	// 内核模式下指向内核栈
-	task_pcb->stack = (ptr_t)kernel_stack_top;
-	task_pcb->pid = -1;
-	task_pcb->name = (char *)kmalloc(TASK_NAME_MAX + 1);
-	task_pcb->name[0] = 'a';
-	task_pcb->name[1] = 'a';
-	task_pcb->name[2] = 'a';
-	task_pcb->name[3] = 'a';
-	task_pcb->name[4] = 'a';
-	task_pcb->name[5] = 'a';
-	task_pcb->name[6] = '\0';
-	task_pcb->run_time = 0;
-	task_pcb->parent = NULL;
-	task_pcb->mm.pgd_dir = (pgd_t *)kmalloc(sizeof(pgd_t) );
-	task_pcb->pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
-	task_pcb->context = (task_context_t *)kmalloc(sizeof(task_context_t) );
-	task_pcb->next = NULL;
+
 
 	return task_pcb;
 }
 
 void task_init(void) {
-	task_pcb_t * kernel_task = alloc_task_pcb();
-	printk_test("name: %s\n", *(kernel_task->name) );
+	cpu_cli();
+	kernel_task.status = TASK_RUNNING;
+	kernel_task.pid = 1;
+
+	char * name = (char *)kmalloc(TASK_NAME_MAX + 1);
+	kernel_task.name = name;
+	strcpy(kernel_task.name, "Kernel task");
+
+	kernel_task.run_time = 0;
+	kernel_task.parent = &kernel_task;
+
+	task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
+	bzero(mm, sizeof(task_mem_t) );
+	mm->pgd_dir = pgd_kernel;
+	mm->stack = kernel_stack_top;
+	mm->task_start = (ptr_t)&kernel_start;
+	mm->code_start = (ptr_t)&kernel_text_start;
+	mm->code_end = (ptr_t)&kernel_text_end;
+	mm->data_start = (ptr_t)&kernel_data_start;
+	mm->data_end = (ptr_t)&kernel_data_end;
+	mm->task_end = (ptr_t)&kernel_end;
+	kernel_task.mm = mm;
+
+	kernel_task.pt_regs = NULL;
+	kernel_task.context = NULL;
+	kernel_task.exit_code = 0;
+	kernel_task.next = NULL;
+	printk_info("task_init\n");
+	cpu_sti();
 	return;
 }
 

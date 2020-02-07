@@ -7,8 +7,17 @@
 extern "C" {
 #endif
 
-#include "include/test.h"
+#include "stdio.h"
+#include "stdint.h"
+#include "debug.h"
+#include "mem/pmm.h"
+#include "mem/vmm.h"
+#include "../drv/clock/include/clock.h"
+#include "../drv/keyboard/include/keyboard.h"
 #include "heap/heap.h"
+#include "task/task.h"
+#include "sched/sched.h"
+#include "include/test.h"
 
 bool test_pmm(void) {
 	ptr_t allc_addr = 0;

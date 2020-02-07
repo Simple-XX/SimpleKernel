@@ -7,9 +7,11 @@
 extern "C" {
 #endif
 
-#include "include/kernel.h"
-#include "../test/include/test.h"
 #include "debug.h"
+#include "include/kernel.h"
+#include "../drv/clock/include/clock.h"
+#include "../drv/keyboard/include/keyboard.h"
+#include "../test/include/test.h"
 
 // 内核入口
 void kernel_main(ptr_t magic, ptr_t addr) {
@@ -30,6 +32,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	vmm_init();
 	// 堆初始化
 	heap_init();
+	// 任务初始化
+	task_init();
 
 	// showinfo();
 	test();
