@@ -18,6 +18,7 @@ static const heap_manage_t * heap_manager = &slab_manage;
 void heap_init(void) {
 	cpu_cli();
 	heap_manager->heap_manage_init(HEAP_START);
+	printk_info("heap_init\n");
 	cpu_sti();
 	return;
 }
