@@ -22,6 +22,9 @@ extern task_pcb_t * wait_proc_head;
 // 当前运行的任务
 extern task_pcb_t * current;
 
+// 上下文切换
+extern void switch_to(task_context_t * * prev, task_context_t * * curr);
+
 // 初始化任务调度
 void sched_init(void);
 
