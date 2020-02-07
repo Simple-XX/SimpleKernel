@@ -94,7 +94,7 @@ multiboot_header_end:
 .section .init.text
 .global _start
 .extern kernel_entry
-.type start, @function
+.type _start, @function
 _start:
     jmp multiboot_entry
 

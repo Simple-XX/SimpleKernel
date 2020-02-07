@@ -58,10 +58,14 @@ extern "C" {
 typedef
     struct pt_regs {
 	// segment registers
-	uint32_t	gs;  // 16 bits
-	uint32_t	fs;  // 16 bits
-	uint32_t	es;  // 16 bits
-	uint32_t	ds;  // 16 bits
+	// 16 bits
+	uint32_t	gs;
+	// 16 bits
+	uint32_t	fs;
+	// 16 bits
+	uint32_t	es;
+	// 16 bits
+	uint32_t	ds;
 
 	// registers save by pusha
 	uint32_t	edi;
@@ -77,12 +81,15 @@ typedef
 	// save by `int` instruction
 	uint32_t	err_code;
 	// 以下指令由cpu压入，参见x86/x64 532页
-	uint32_t	eip; // 指向产生异常的指令
-	uint32_t	cs; // 16 bits
+	// 指向产生异常的指令
+	uint32_t	eip;
+	// 16 bits
+	uint32_t	cs;
 	uint32_t	eflags;
 	// 如果发生了特权级切换，CPU 会压入以下两个参数
 	uint32_t	user_esp;
-	uint32_t	user_ss; // 16 bits
+	// 16 bits
+	uint32_t	user_ss;
 } pt_regs_t;
 
 // 中断描述符

@@ -125,7 +125,6 @@ IRQ  14,    46 	# IDE0 传输控制使用
 IRQ  15,    47 	# IDE1 传输控制使用
 
 .global irq_common_stub
-.global forkret_s
 .extern irq_handler
 irq_common_stub:
     pusha
@@ -134,7 +133,8 @@ irq_common_stub:
     push %fs
     push %gs
 
-    mov $0x10, %ax  # 加载内核数据段描述符表, 0x10:内核数据段标识符
+    # 加载内核数据段描述符表, 0x10:内核数据段标识符
+    mov $0x10, %ax
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
@@ -143,13 +143,18 @@ irq_common_stub:
 
     push %esp
     call irq_handler
-    add $0x04, %esp  # 清除压入的参数
+    # 清除压入的参数
+    add $0x04, %esp
 
+.global forkret_s
 forkret_s:
     pop %gs
     pop %fs
     pop %es
     pop %ds
-    popa                     # Pops edi,esi,ebp...
-    add $0x08, %esp   		 # 清理压栈的 错误代码 和 ISR 编号
-    iret          		 # 出栈 CS, EIP, EFLAGS, SS, ESP
+    # Pops edi,esi,ebp...
+    popa
+    # 清理压栈的 错误代码 和 ISR 编号
+    add $0x08, %esp
+    # 出栈 EIP, CS, EFLAGS, ESP, SS
+    iret
