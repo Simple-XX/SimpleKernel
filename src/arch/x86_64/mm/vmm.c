@@ -36,7 +36,6 @@ void vmm_init(void) {
 	switch_pgd(VMM_LA_PA( (ptr_t)pgd_kernel) );
 
 	printk_info("vmm_init\n");
-	cpu_sti();
 	return;
 }
 

@@ -17,7 +17,6 @@ void debug_init(ptr_t magic UNUSED, ptr_t addr UNUSED) {
 	cpu_cli();
 	printk_debug("debug_init\n");
 	// multiboot2_init(magic, addr);
-	cpu_sti();
 	return;
 }
 

@@ -73,7 +73,6 @@ void gdt_init(void) {
 	tss_load();
 
 	printk_info("gdt_init\n");
-	cpu_sti();
 	return;
 }
 

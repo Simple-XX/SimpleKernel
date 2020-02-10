@@ -67,7 +67,7 @@ extern ptr_t * kernel_data_end;
 extern ptr_t * kernel_end;
 
 // 开启分页机制之后的内核栈
-extern uint8_t kernel_stack[STACK_SIZE];
+extern ptr_t kernel_stack[STACK_SIZE];
 // 内核栈的栈顶
 extern ptr_t kernel_stack_top;
 

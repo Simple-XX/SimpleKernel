@@ -15,6 +15,7 @@ extern "C" {
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "intr/include/intr.h"
+#include "include/linkedlist.h"
 
 // 最长任务名
 #define TASK_NAME_MAX 64
@@ -49,11 +50,12 @@ typedef
 // The layout of the context must match the code in swtch.S.
 typedef
     struct task_context {
-	uint32_t	edi;
-	uint32_t	esi;
-	uint32_t	ebx;
+	uint32_t	esp;
 	uint32_t	ebp;
-	uint32_t	eip;
+	uint32_t	ebx;
+	uint32_t	esi;
+	uint32_t	edi;
+	uint32_t	eflags;
 } task_context_t;
 
 // 进程内存地址结构
@@ -61,8 +63,10 @@ typedef
     struct task_mem {
 	// 进程页表
 	pgd_t *		pgd_dir;
-	// 任务的栈指针
-	ptr_t		stack;
+	// 栈顶
+	ptr_t		stack_top;
+	// 栈底
+	ptr_t		stack_bottom;
 	// 内存起点
 	ptr_t		task_start;
 	// 代码段起止
@@ -98,6 +102,12 @@ typedef
 	int32_t	exit_code;
 } task_pcb_t;
 
+// 全部任务链表
+extern ListEntry * task_list;
+// 可调度进程链表
+extern ListEntry * runnable_list;
+// 等待进程链表
+extern ListEntry * wait_list;
 // 内核线程入口函数 tasl_s.s
 extern int32_t kthread_entry(void * args);
 // intr_s.s
@@ -107,6 +117,8 @@ extern void forkret_s(pt_regs_t * pt_regs);
 void task_init(void);
 // 创建内核线程
 int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags);
+// 线程退出函数
+void kthread_exit();
 // 将进程放入进程队列
 pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags);
 // 将进程移除进程队列
