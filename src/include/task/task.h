@@ -63,7 +63,7 @@ typedef
 	pgd_t *		pgd_dir;
 	// 任务的栈指针
 	ptr_t		stack;
-	// 任务起
+	// 内存起点
 	ptr_t		task_start;
 	// 代码段起止
 	ptr_t		code_start;
@@ -71,7 +71,7 @@ typedef
 	// 数据段起止
 	ptr_t		data_start;
 	ptr_t		data_end;
-	// 任务止
+	// 内存结束
 	ptr_t		task_end;
 } task_mem_t;
 

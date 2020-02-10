@@ -17,7 +17,7 @@ static gdt_ptr_t gdt_ptr;
 static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__( (aligned(8) ) );
 
 // TSS 段定义
-static tss_entry_t tss_entry __attribute__( (aligned(8) ) );
+static tss_struct_t tss_entry __attribute__( (aligned(8) ) );
 static void tss_set_gate(int32_t num, uint16_t ss0, uint32_t esp0);
 
 void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
