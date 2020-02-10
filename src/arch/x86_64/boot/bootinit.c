@@ -21,7 +21,7 @@ extern "C" {
 // 6. Remove the lower half kernel mapping.
 
 // 开启分页机制之后的内核栈
-uint8_t kernel_stack[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
+ptr_t kernel_stack[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
 
 // 内核栈顶
 ptr_t kernel_stack_top = ( (ptr_t)kernel_stack + STACK_SIZE);
