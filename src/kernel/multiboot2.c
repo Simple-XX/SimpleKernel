@@ -200,7 +200,6 @@ void multiboot2_init(ptr_t magic, ptr_t addr) {
 	// tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
 	// printk_info ("Total mbi size 0x%X\n", (unsigned) tag - addr);
 	// printk_info("multiboot2_init\n");
-	cpu_sti();
 	return;
 }
 

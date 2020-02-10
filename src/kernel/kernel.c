@@ -7,6 +7,7 @@
 extern "C" {
 #endif
 
+#include "cpu.hpp"
 #include "debug.h"
 #include "include/kernel.h"
 #include "../drv/clock/include/clock.h"
@@ -19,19 +20,37 @@ int flag = 0;
 int thread(void * arg) {
 	while(1) {
 		if(flag == 1) {
-			printk_test("B");
+			printk("B");
 			flag = 0;
 		}
 	}
-
 	return 0;
 }
 
-extern task_pcb_t kernel_task;
-extern ListEntry * task_list;
+int thread2(void * arg) {
+	while(1) {
+		if(flag == 1) {
+			printk("B2");
+			flag = 0;
+		}
+	}
+	return 0;
+}
+
+int thread3(void * arg) {
+	while(1) {
+		if(flag == 1) {
+			printk("B3");
+			flag = 0;
+		}
+	}
+	return 0;
+}
+
 
 // 内核入口
 void kernel_main(ptr_t magic, ptr_t addr) {
+	cpu_cli();
 	// 控制台初始化
 	console_init();
 	// 从 multiboot 获得系统初始信息
@@ -51,25 +70,24 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	heap_init();
 	// 任务初始化
 	task_init();
+	// 调度初始化
+	sched_init();
 
 	// showinfo();
 	// test();
+	cpu_sti();
 
-	// kernel_thread(thread, NULL, 0);
-	// task_pcb_t * curr = get_current_task();
-	// printk_debug("addr: 0x%08X\n", curr);
-	// printk_debug("name: %s\n", curr->name);
-	// struct task_struct * next = get_current_task();
-	// switch_to(&(curr->context), &(current->context) );
+	kernel_thread(thread, NULL, 0);
+	// kernel_thread(thread2, NULL, 0);
+	// kernel_thread(thread3, NULL, 0);
 
-	//
-	// while(1) {
-	// 	if(flag == 0) {
-	// 		printk_test("A");
-	// 		flag = 1;
-	// 	}
-	// }
 
+	while(1) {
+		if(flag == 0) {
+			printk("A");
+			flag = 1;
+		}
+	}
 
 	while(1);
 

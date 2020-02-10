@@ -68,7 +68,6 @@ void pmm_init() {
 	printk_info("pmm_init\n");
 	printk_info("phy_pages_count: %d\n", phy_pages_count);
 	printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count() );
-	cpu_sti();
 	return;
 }
 

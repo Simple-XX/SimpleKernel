@@ -18,7 +18,6 @@ void arch_init(void) {
 	gdt_init();
 	// IDT 初始化
 	intr_init();
-	cpu_sti();
 	return;
 }
 

@@ -5,22 +5,26 @@
 
 .global switch_to
 switch_to:
-    movl 4(%esp), %eax
-    movl 8(%esp), %edx
+    mov 4(%esp), %eax
 
-    # Save old callee-save registers
-    pushl %ebp
-    pushl %ebx
-    pushl %esi
-    pushl %edi
+    mov %esp, 0(%eax)
+    mov %ebp, 4(%eax)
+    mov %ebx, 8(%eax)
+    mov %esi, 12(%eax)
+    mov %edi, 16(%eax)
+    pushf
+    pop %ecx
+    mov %ecx, 20(%eax)
 
-    # Switch stacks
-    movl %esp, (%eax)
-    movl (%edx), %esp
+    mov 8(%esp), %eax
 
-    # Load new callee-save registers
-    popl %edi
-    popl %esi
-    popl %ebx
-    popl %ebp
+    mov 0(%eax), %esp
+    mov 4(%eax), %ebp
+    mov 8(%eax), %ebx
+    mov 12(%eax), %esi
+    mov 16(%eax), %edi
+    mov 20(%eax), %eax
+    push %eax
+    popf
+
     ret
