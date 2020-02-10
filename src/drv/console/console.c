@@ -39,7 +39,6 @@ void console_init(void) {
 	console_setcursorpos(0, 0);
 
 	printk_info("console_init\n");
-	cpu_sti();
 	return;
 }
 

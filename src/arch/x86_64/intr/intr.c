@@ -146,7 +146,6 @@ void intr_init(void) {
 	register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
 
 	printk_info("intr_init\n");
-	cpu_sti();
 	return;
 }
 

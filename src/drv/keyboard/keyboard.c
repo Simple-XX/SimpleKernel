@@ -263,7 +263,6 @@ void keyboard_init(void) {
 	register_interrupt_handler(IRQ1, &keyboard_read);
 	enable_irq(IRQ1);
 	printk_info("keyboard_init\n");
-	cpu_sti();
 	return;
 }
 
