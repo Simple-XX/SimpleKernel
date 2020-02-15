@@ -218,19 +218,26 @@ ptr_t alloc(uint32_t bytes) {
 	uint32_t len = (bytes > SLAB_MIN) ? bytes : SLAB_MIN;
 	list_entry_t * entry = sb_manage.slab_list;
 
+	printk_debug("------1\n");
 	do {
 		// 查找符合长度且未使用的内存
+		printk_debug("entry: 0x%08X\n", entry);
+		printk_debug("list_slab_block(entry)->len: 0x%08X\n", list_slab_block(entry)->len);
+		printk_debug("------1.0\n");
 		if( (list_slab_block(entry)->len >= len) && (list_slab_block(entry)->allocated == SLAB_UNUSED) ) {
+			printk_debug("------1.1\n");
 			// 进行分割，这个函数会同时设置 entry 的信息
 			slab_split(entry, len);
+			printk_debug("------1.2\n");
 			list_slab_block(entry)->allocated = SLAB_USED;
+			printk_debug("------1.3\n");
 			sb_manage.mm_free -= list_slab_block(entry)->len;
+			printk_debug("------1.4\n");
 			return (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) );
 		}
 		// 没找到的话就查找下一个
 		entry = list_next(entry);
 	} while(entry->next != sb_manage.slab_list);
-
 	// 如果执行到这里，说明没有可用空间了，那么申请新的内存页
 	list_entry_t * new_entry;
 	len += sizeof(list_entry_t);
@@ -249,7 +256,6 @@ ptr_t alloc(uint32_t bytes) {
 	    pa_start += VMM_PAGE_SIZE, va_start += VMM_PAGE_SIZE) {
 		map(pgd_kernel, va_start, pa_start, VMM_PAGE_PRESENT | VMM_PAGE_RW);
 	}
-
 	new_entry = (list_entry_t *)va;
 	new_entry->next = new_entry;
 	new_entry->prev = new_entry;
