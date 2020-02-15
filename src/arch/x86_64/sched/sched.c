@@ -23,7 +23,7 @@ void clock_handler(pt_regs_t * regs UNUSED) {
 void sched_init() {
 	cpu_cli();
 	// 获取内核进程控制结构体信息
-	curr_task = (task_pcb_t *)(kernel_stack);
+	curr_task = (task_pcb_t *)(kernel_stack_top);
 	// 注册时间相关的处理函数
 	register_interrupt_handler(IRQ0, &clock_handler);
 	enable_irq(IRQ0);
@@ -65,6 +65,7 @@ void change_task_to(task_pcb_t * next) {
 		switch_to( (prev->context), (curr_task->context) );
 	}
 	cpu_sti();
+	return;
 }
 
 #ifdef __cplusplus

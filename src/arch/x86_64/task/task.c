@@ -46,10 +46,8 @@ static task_pcb_t * alloc_task_pcb(void) {
 	task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
 	bzero(mm, sizeof(task_mem_t) );
 	task_pcb->mm = mm;
-	// ptr_t stack_bottom = (ptr_t)kmalloc(TASK_STACK_SIZE);
-	// bzero( (void *)stack_bottom, TASK_STACK_SIZE);
-	task_pcb->mm->stack_top = (ptr_t)task_pcb + TASK_STACK_SIZE;
-	task_pcb->mm->stack_bottom = (ptr_t)task_pcb;
+	task_pcb->mm->stack_top = (ptr_t)task_pcb;
+	task_pcb->mm->stack_bottom = (ptr_t)task_pcb + TASK_STACK_SIZE;
 	pt_regs_t * pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
 	bzero(pt_regs, sizeof(pt_regs_t) );
 	task_pcb->pt_regs = pt_regs;
@@ -66,7 +64,7 @@ static task_pcb_t * alloc_task_pcb(void) {
 void task_init(void) {
 	cpu_cli();
 	// 为内核进程创建信息结构体，位置在内核栈的栈底
-	task_pcb_t * kernel_task = (task_pcb_t *)(kernel_stack);
+	task_pcb_t * kernel_task = (task_pcb_t *)(kernel_stack_top);
 	bzero(kernel_task, sizeof(task_pcb_t) );
 	kernel_task->status = TASK_RUNNING;
 	kernel_task->pid = 1;
@@ -82,8 +80,8 @@ void task_init(void) {
 	task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
 	bzero(mm, sizeof(task_mem_t) );
 	mm->pgd_dir = pgd_kernel;
-	mm->stack_bottom = (ptr_t)kernel_stack;
-	mm->stack_top = (ptr_t)kernel_stack + TASK_STACK_SIZE;
+	mm->stack_top = (ptr_t)kernel_stack_top;
+	mm->stack_bottom = (ptr_t)kernel_stack_top + TASK_STACK_SIZE;
 	mm->task_start = (ptr_t)&kernel_start;
 	mm->code_start = (ptr_t)&kernel_text_start;
 	mm->code_end = (ptr_t)&kernel_text_end;
@@ -113,7 +111,6 @@ void task_init(void) {
 
 int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 	task_pcb_t * new_task = alloc_task_pcb();
-	// printk_debug("new_task: 0x%08X\n", (new_task) );
 	new_task->mm->pgd_dir = pgd_kernel;
 	// 处理参数
 	ptr_t * stack_top = (ptr_t *)( (ptr_t)new_task + TASK_STACK_SIZE);
@@ -127,8 +124,19 @@ int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 	new_task->status = TASK_RUNNABLE;
 	list_append(&runnable_list, new_task);
 
-	// return do_fork(&pt_regs, flags);
 	return new_task->pid;
+
+	// pt_regs_t * pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
+	// bzero(pt_regs, sizeof(pt_regs_t) );
+	//
+	// pt_regs->cs = KERNEL_CS;
+	// pt_regs->ds = KERNEL_DS;
+	// pt_regs->user_ss = KERNEL_DS;
+	// pt_regs->ebx = (ptr_t)fun;
+	// pt_regs->edx = (ptr_t)args;
+	// pt_regs->eip = (ptr_t)kthread_entry;
+	//
+	// return do_fork(pt_regs, flags);
 }
 
 void kthread_exit() {
@@ -139,7 +147,7 @@ void kthread_exit() {
 
 
 pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
-	// // 如果到达上限则错误
+	// 如果到达上限则错误
 	// if(curr_task_count >= TASK_MAX) {
 	// 	printk_err("Error at task.c: do_fork. TASK_MAX!\n");
 	// 	return -1;
@@ -151,16 +159,16 @@ pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
 	// 	return -1;
 	// }
 	// // 将任务控制结构体放在任务栈的顶部
-	// task->pt_regs = (pt_regs_t *)( (ptr_t)task->mm->stack - sizeof(pt_regs_t) );
+	// task->pt_regs = (pt_regs_t *)( (ptr_t)task->mm->stack_top - sizeof(pt_regs_t) );
 	// *(task->pt_regs) = *pt_regs;
 	// task->pt_regs->eax = 0;
-	// task->pt_regs->user_esp = (ptr_t)task->mm->stack;
+	// task->pt_regs->user_esp = (ptr_t)task->mm->stack_top;
 	// task->pt_regs->eflags |= EFLAGS_IF;
 	// task->context->eip = (uint32_t)forkret_s;
-	// // task->context->esp = (uint32_t)task->pt_regs;
+	// task->context->esp = (uint32_t)task->pt_regs;
 	// task->status = TASK_RUNNABLE;
 	// task->pid = ++curr_pid;
-	// list_append(&task_list, &task);
+	// list_append(&runnable_list, task);
 	// curr_task_count++;
 	//
 	// return task->pid;
