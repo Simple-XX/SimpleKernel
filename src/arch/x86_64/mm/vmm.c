@@ -35,8 +35,10 @@ void vmm_init(void) {
 		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 	// 映射内核栈
+	// 0x2FF
 	pgd_idx = VMM_PGD_INDEX(STACK_TOP);
 	pgd_kernel[pgd_idx] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel_stack) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
+	// i: 0x3F8~0x400
 	for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
 		pte_kernel_stack[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
