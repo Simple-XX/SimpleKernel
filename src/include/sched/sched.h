@@ -14,7 +14,7 @@ extern "C" {
 #include "task/task.h"
 
 // 上下文切换
-extern void switch_to(task_context_t * prev, task_context_t * curr);
+extern void switch_to(task_context_t * curr, task_context_t * next);
 
 // 初始化任务调度
 void sched_init(void);
