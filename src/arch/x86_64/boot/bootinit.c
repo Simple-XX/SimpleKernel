@@ -21,10 +21,10 @@ extern "C" {
 // 6. Remove the lower half kernel mapping.
 
 // 开启分页机制之后的内核栈
-ptr_t kernel_stack[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
+ptr_t kernel_stack_top[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
 
-// 内核栈顶
-ptr_t kernel_stack_top = ( (ptr_t)kernel_stack + STACK_SIZE);
+// 内核栈底
+ptr_t kernel_stack_bottom = ( (ptr_t)kernel_stack_top + STACK_SIZE);
 
 void enable_page(pgd_t * pgd) {
 	// 设置临时页表
@@ -81,7 +81,7 @@ void switch_stack(ptr_t stack_top) {
 // 内核入口函数
 void kernel_entry(ptr_t magic, ptr_t addr) {
 	mm_init();
-	switch_stack(kernel_stack_top);
+	switch_stack(kernel_stack_bottom);
 	kernel_main(magic, KERNEL_BASE + addr);
 	return;
 }
