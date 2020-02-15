@@ -18,6 +18,8 @@ extern "C" {
 pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核页表区域
 static pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+// 内核栈区域
+static pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 void vmm_init(void) {
 	cpu_cli();
@@ -32,9 +34,13 @@ void vmm_init(void) {
 	for(uint32_t i = 0 ; i < VMM_PAGE_TABLES_KERNEL * VMM_PAGES_PRE_PAGE_TABLE ; i++) {
 		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
-
+	// 映射内核栈
+	pgd_idx = VMM_PGD_INDEX(STACK_TOP);
+	pgd_kernel[pgd_idx] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel_stack) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
+	for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
+		pte_kernel_stack[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	}
 	switch_pgd(VMM_LA_PA( (ptr_t)pgd_kernel) );
-
 	printk_info("vmm_init\n");
 	return;
 }
