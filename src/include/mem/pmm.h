@@ -67,9 +67,9 @@ extern ptr_t * kernel_data_end;
 extern ptr_t * kernel_end;
 
 // 开启分页机制之后的内核栈
-extern ptr_t kernel_stack[STACK_SIZE];
+extern ptr_t kernel_stack_top[STACK_SIZE];
 // 内核栈的栈顶
-extern ptr_t kernel_stack_top;
+extern ptr_t kernel_stack_bottom;
 
 extern multiboot_memory_map_entry_t * mmap_entries;
 extern multiboot_mmap_tag_t * mmap_tag;

@@ -36,7 +36,6 @@ int thread3(void * arg) {
 	return 0;
 }
 
-
 // 内核入口
 void kernel_main(ptr_t magic, ptr_t addr) {
 	cpu_cli();
@@ -68,8 +67,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	cpu_sti();
 
 	kernel_thread(thread, NULL, 0);
-	kernel_thread(thread2, NULL, 0);
-	kernel_thread(thread3, NULL, 0);
+	// kernel_thread(thread2, NULL, 0);
+	// kernel_thread(thread3, NULL, 0);
 
 	while(1) {
 		printk("1");

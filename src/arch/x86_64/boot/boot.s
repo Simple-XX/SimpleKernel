@@ -101,7 +101,7 @@ _start:
 multiboot_entry:
     cli
 	# 设置栈地址
-    mov $STACK_TOP, %esp
+    mov $STACK_BOTTOM, %esp
     and $0xFFFFFFF0, %esp     # 栈地址按照 16 字节对齐
     mov $0, %ebp          # 帧指针修改为 0
     push $0
@@ -120,6 +120,6 @@ multiboot_entry:
 .size _start, . - _start
 
 .section .init.data
-STACK:
-    .skip 16384
 STACK_TOP:
+    .skip 16384
+STACK_BOTTOM:
