@@ -89,13 +89,15 @@ void task_init(void) {
 	mm->data_end = (ptr_t)&kernel_data_end;
 	mm->task_end = (ptr_t)&kernel_end;
 	kernel_task->mm = mm;
-	kernel_task->pt_regs = (pt_regs_t *)( (ptr_t)kernel_task + TASK_STACK_SIZE - sizeof(pt_regs_t) );
-	printk_debug("dsds222\n");
+	kernel_task->pt_regs = (pt_regs_t *)( (ptr_t)kernel_stack_bottom);
 	bzero(kernel_task->pt_regs, sizeof(pt_regs_t) );
-	printk_debug("dsds333\n");
+	printk_debug("dsds2222\n");
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
+	printk_debug("dsds333\n");
 	bzero(context, sizeof(task_context_t) );
+	printk_debug("dsds444\n");
 	kernel_task->context = context;
+	printk_debug("dsds555\n");
 	kernel_task->context->esp = (ptr_t)kernel_task + TASK_STACK_SIZE;
 	printk_debug("kernel_task->context->esp: 0x%08X\n", (kernel_task->context->esp) );
 	kernel_task->context->eflags |= EFLAGS_IF;
