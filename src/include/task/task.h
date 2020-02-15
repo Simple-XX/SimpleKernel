@@ -50,6 +50,7 @@ typedef
 // The layout of the context must match the code in swtch.S.
 typedef
     struct task_context {
+	uint32_t	eip;
 	uint32_t	esp;
 	uint32_t	ebp;
 	uint32_t	ebx;

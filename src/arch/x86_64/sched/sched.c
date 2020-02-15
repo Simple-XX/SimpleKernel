@@ -13,12 +13,12 @@ extern "C" {
 #include "intr/include/intr.h"
 #include "sched/sched.h"
 
+// 当前任务指针
+static task_pcb_t * curr_task = NULL;
+
 void clock_handler(pt_regs_t * regs UNUSED) {
 	schedule();
 }
-
-// 当前任务指针
-static task_pcb_t * curr_task = NULL;
 
 void sched_init() {
 	cpu_cli();
@@ -40,14 +40,13 @@ int vs_med(void * v1, void * v2) {
 	return v1 == v2;
 }
 
+static int c = 1;
+
 void schedule() {
 	// 首先从链表中找到正在执行的进程，结果不为空
 	ListEntry * tmp = list_find_data(runnable_list, vs_med, curr_task);
 	assert( (tmp != NULL), "Error at sched.c, tmp == NULL!\n");
-
-	// printk_debug("(task_pcb_t *)list_data(tmp): 0x%08X\n", (task_pcb_t *)list_data(tmp) );
 	task_pcb_t * next = (task_pcb_t *)(list_data(list_next(tmp) ) );
-	// printk_debug("next: 0x%08X\n", (next) );
 	if(next != NULL) {
 		change_task_to(next);
 	}
@@ -59,17 +58,13 @@ void schedule() {
 }
 
 void change_task_to(task_pcb_t * next) {
-	if(curr_task != next) {
-		// printk_debug("current pid %d\n", current->pid);
+	cpu_cli();
+	if(curr_task->pid != next->pid) {
 		task_pcb_t * prev = curr_task;
 		curr_task = next;
-		// printk_debug("prev: 0x%08X\n", (prev) );
-		// printk_debug("prev->context->esp: 0x%08X\n", (prev->context->esp) );
-		// printk_debug("curr_task: 0x%08X\n", (curr_task) );
-		// printk_debug("curr_task->context->esp: 0x%08X\n", (curr_task->context->esp) );
 		switch_to( (prev->context), (curr_task->context) );
-		// printk_debug("333333333\n");
 	}
+	cpu_sti();
 }
 
 #ifdef __cplusplus

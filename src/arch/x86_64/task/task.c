@@ -37,7 +37,7 @@ static task_pcb_t * alloc_task_pcb(void) {
 	bzero(task_pcb, sizeof(task_pcb_t) );
 	// 填充
 	task_pcb->status = TASK_UNINIT;
-	task_pcb->pid = curr_pid++;
+	task_pcb->pid = ++curr_pid;
 	char * name = (char *)kmalloc(TASK_NAME_MAX + 1);
 	bzero(name, TASK_NAME_MAX + 1);
 	task_pcb->name = name;
@@ -59,6 +59,7 @@ static task_pcb_t * alloc_task_pcb(void) {
 	task_pcb->context->eflags |= EFLAGS_IF;
 	task_pcb->exit_code = 0;
 	list_append(&task_list, task_pcb);
+	curr_task_count++;
 	return task_pcb;
 }
 
@@ -106,13 +107,6 @@ void task_init(void) {
 	curr_task_count = 1;
 	list_append(&task_list, kernel_task);
 	list_append(&runnable_list, kernel_task);
-	// printk_debug("task_init: &kernel_task: 0x%08X\n", &kernel_task);
-
-	// uint32_t len = list_length(runnable_list);
-	// printk_debug("task_init: len: 0x%08X\n", len);
-	// for(uint32_t i = 0 ; i < len ; i++) {
-	// 	printk_debug("task_init:  list_nth_data(runnable_list, i) 0x%08X\n", list_nth_data(runnable_list, i) );
-	// }
 	printk_info("task_init\n");
 	return;
 }
@@ -129,9 +123,7 @@ int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 
 	// 指向当前栈的位置
 	new_task->context->esp = (ptr_t)new_task + TASK_STACK_SIZE - sizeof(ptr_t) * 3;
-	// printk_debug("new_task->context->esp: 0x%08X\n", (new_task->context->esp) );
-	curr_pid++;
-	curr_task_count++;
+	new_task->context->eflags |= EFLAGS_IF;
 	new_task->status = TASK_RUNNABLE;
 	list_append(&runnable_list, new_task);
 

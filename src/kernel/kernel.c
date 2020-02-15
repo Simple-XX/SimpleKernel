@@ -15,34 +15,23 @@ extern "C" {
 #include "../test/include/test.h"
 #include "../ds_alg/include/linkedlist.h"
 
-int flag = 0;
-
 int thread(void * arg) {
 	while(1) {
-		if(flag == 1) {
-			printk("B");
-			flag = 0;
-		}
+		printk("2");
 	}
 	return 0;
 }
 
 int thread2(void * arg) {
 	while(1) {
-		if(flag == 1) {
-			printk("B2");
-			flag = 0;
-		}
+		printk("3");
 	}
 	return 0;
 }
 
 int thread3(void * arg) {
 	while(1) {
-		if(flag == 1) {
-			printk("B3");
-			flag = 0;
-		}
+		printk("4");
 	}
 	return 0;
 }
@@ -75,18 +64,15 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 
 	// showinfo();
 	// test();
+
 	cpu_sti();
 
 	kernel_thread(thread, NULL, 0);
-	// kernel_thread(thread2, NULL, 0);
-	// kernel_thread(thread3, NULL, 0);
-
+	kernel_thread(thread2, NULL, 0);
+	kernel_thread(thread3, NULL, 0);
 
 	while(1) {
-		if(flag == 0) {
-			printk("A");
-			flag = 1;
-		}
+		printk("1");
 	}
 
 	while(1);
