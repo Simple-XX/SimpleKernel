@@ -15,8 +15,15 @@ extern "C" {
 #include "e820.h"
 #include "multiboot2.h"
 
-#define STACK_SIZE    (0x8000UL)  // 32KB
-#define PMM_MAX_SIZE  (0x20000000UL)  // 512 MB
+// 32KB
+#define STACK_SIZE    (0x8000UL)
+#define STACK_PAGES   (STACK_SIZE / PMM_PAGE_SIZE)
+// 内核栈底
+#define STACK_BOTTOM  (0xC0000000UL)
+// 内核栈顶
+#define STACK_TOP     (STACK_BOTTOM - STACK_SIZE)
+// 512 MB
+#define PMM_MAX_SIZE  (0x20000000UL)
 
 // 内核的偏移地址
 #define KERNEL_BASE    (0xC0000000UL)
@@ -66,9 +73,9 @@ extern ptr_t * kernel_data_start;
 extern ptr_t * kernel_data_end;
 extern ptr_t * kernel_end;
 
-// 开启分页机制之后的内核栈
-extern ptr_t kernel_stack_top[STACK_SIZE];
-// 内核栈的栈顶
+// 开启分页机制之后的内核栈顶(低地址)
+extern ptr_t kernel_stack_top;
+// 内核栈的栈底(高地址)
 extern ptr_t kernel_stack_bottom;
 
 extern multiboot_memory_map_entry_t * mmap_entries;
