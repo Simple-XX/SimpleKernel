@@ -47,10 +47,9 @@ static task_pcb_t * alloc_task_pcb(void) {
 	bzero(mm, sizeof(task_mem_t) );
 	task_pcb->mm = mm;
 	task_pcb->mm->stack_top = (ptr_t)task_pcb;
-	task_pcb->mm->stack_bottom = (ptr_t)task_pcb + TASK_STACK_SIZE;
-	pt_regs_t * pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
-	bzero(pt_regs, sizeof(pt_regs_t) );
-	task_pcb->pt_regs = pt_regs;
+	task_pcb->mm->stack_bottom = (ptr_t)task_pcb + TASK_STACK_SIZE - sizeof(pt_regs_t);
+	task_pcb->pt_regs = (pt_regs_t *)( (ptr_t)task_pcb + TASK_STACK_SIZE - sizeof(pt_regs_t) );
+	bzero(task_pcb->pt_regs, sizeof(pt_regs_t) );
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
 	bzero(context, sizeof(task_context_t) );
 	task_pcb->context = context;
@@ -81,7 +80,8 @@ void task_init(void) {
 	bzero(mm, sizeof(task_mem_t) );
 	mm->pgd_dir = pgd_kernel;
 	mm->stack_top = (ptr_t)kernel_stack_top;
-	mm->stack_bottom = (ptr_t)kernel_stack_top + TASK_STACK_SIZE;
+	// 留出 pt_regs 的空间
+	mm->stack_bottom = (ptr_t)kernel_stack_bottom - sizeof(pt_regs_t);
 	mm->task_start = (ptr_t)&kernel_start;
 	mm->code_start = (ptr_t)&kernel_text_start;
 	mm->code_end = (ptr_t)&kernel_text_end;
@@ -89,11 +89,10 @@ void task_init(void) {
 	mm->data_end = (ptr_t)&kernel_data_end;
 	mm->task_end = (ptr_t)&kernel_end;
 	kernel_task->mm = mm;
-
-	pt_regs_t * pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
-	bzero(pt_regs, sizeof(pt_regs_t) );
-	kernel_task->pt_regs = pt_regs;
-
+	kernel_task->pt_regs = (pt_regs_t *)( (ptr_t)kernel_task + TASK_STACK_SIZE - sizeof(pt_regs_t) );
+	printk_debug("dsds222\n");
+	bzero(kernel_task->pt_regs, sizeof(pt_regs_t) );
+	printk_debug("dsds333\n");
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
 	bzero(context, sizeof(task_context_t) );
 	kernel_task->context = context;
