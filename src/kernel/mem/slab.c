@@ -158,14 +158,11 @@ void init(ptr_t addr_start) {
 	sb_manage.addr_start = addr_start;
 	sb_manage.addr_end = addr_start + VMM_PAGE_SIZE;
 	sb_manage.mm_total = VMM_PAGE_SIZE;
-	// sb_manage.mm_free = VMM_PAGE_SIZE - sizeof(list_entry_t);
 	sb_manage.mm_free = 0;
 	sb_manage.block_count = 1;
 	sb_manage.slab_list = sb_list;
 	list_init(sb_manage.slab_list);
 	// 设置第一块内存的相关信息
-	// list_slab_block(sb_manage.slab_list)->allocated = SLAB_UNUSED;
-	// list_slab_block(sb_manage.slab_list)->len = VMM_PAGE_SIZE - sizeof(list_entry_t);
 	list_slab_block(sb_manage.slab_list)->allocated = SLAB_UNUSED;
 	list_slab_block(sb_manage.slab_list)->len = VMM_PAGE_SIZE - sizeof(list_entry_t);
 	return;
@@ -187,17 +184,7 @@ void slab_split(list_entry_t * entry, uint32_t len) {
 		list_slab_block(new_entry)->len = list_slab_block(entry)->len - len - sizeof(list_entry_t);
 		sb_manage.mm_free += list_slab_block(new_entry)->len;
 		sb_manage.block_count += 1;
-		// printk_debug("------------------0\n");
-		// printk_debug("entry: 0x%08X\n", entry);
-		// printk_debug("entry->prev: 0x%08X\n", entry->prev);
-		// printk_debug("entry->next: 0x%08X\n", entry->next);
-		// printk_debug("------------------1\n");
 		list_add_after(entry, new_entry);
-		// printk_debug("------------------2\n");
-		// printk_debug("entry: 0x%08X\n", entry);
-		// printk_debug("entry->prev: 0x%08X\n", entry->prev);
-		// printk_debug("entry->next: 0x%08X\n", entry->next);
-		// printk_debug("------------------3\n");
 		// 重新设置旧链表信息
 		list_slab_block(entry)->allocated = SLAB_USED;
 		list_slab_block(entry)->len = len;
@@ -257,36 +244,22 @@ ptr_t alloc(uint32_t bytes) {
 	if(len % VMM_PAGE_SIZE != 0) {
 		pages += 1;
 	}
-	// GOOD
 	for(ptr_t va_start = va, pa_start = pa ;
 	    pa_start < pa + VMM_PAGE_SIZE * pages ;
 	    pa_start += VMM_PAGE_SIZE, va_start += VMM_PAGE_SIZE) {
-		// printk_debug("va_start: 0x%08X\t", va_start);
-		// printk_debug("pa_start: 0x%08X\n", pa_start);
-		// printk_debug("entry: 0x%08X\t", entry);
-		// printk_debug("entry->prev: 0x%08X\t", entry->prev);
-		// printk_debug("entry->next: 0x%08X\n", entry->next);
 		map(pgd_kernel, va_start, pa_start, VMM_PAGE_PRESENT | VMM_PAGE_RW);
 	}
-	// BOOM
 	new_entry = (list_entry_t *)va;
 	bzero( (void *)new_entry, VMM_PAGE_SIZE * pages);
 	list_init(new_entry);
 	list_slab_block(new_entry)->allocated = SLAB_USED;
 	// 新表项的可用长度为减去头的大小
 	list_slab_block(new_entry)->len = (ptr_t)(pages * VMM_PAGE_SIZE) - sizeof(list_entry_t);
-
-	// printk_debug("entry: 0x%08X\n", entry);
-	// printk_debug("entry->prev: 0x%08X\n", entry->prev);
-	// printk_debug("entry->next: 0x%08X\n", entry->next);
 	list_add_after(entry, new_entry);
-	// printk_debug("------4.3\n");
 	sb_manage.block_count += 1;
 	// 进行分割
-	// printk_debug("------4.4\n");
 	slab_split(new_entry, len);
 	sb_manage.mm_free -= list_slab_block(new_entry)->len;
-	// printk_debug("------5.0\n");
 	return (ptr_t)( (ptr_t)new_entry + sizeof(list_entry_t) );
 }
 
