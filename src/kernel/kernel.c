@@ -15,7 +15,7 @@ extern "C" {
 #include "../test/include/test.h"
 #include "../ds_alg/include/linkedlist.h"
 
-static int thread(void * arg) {
+static int32_t thread(void * arg) {
 	for(int i = 0 ; i < 100 ; i++) {
 		printk("2");
 	}
@@ -66,10 +66,9 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// test();
 
 	cpu_sti();
-
-	kernel_thread(thread(0), NULL, 0);
-	kernel_thread(thread2(9), NULL, 0);
-	kernel_thread(thread3(2), NULL, 0);
+	kernel_thread(thread(233), NULL, 0);
+	// kernel_thread(thread2(9), NULL, 0);
+	// kernel_thread(thread3(2), NULL, 0);
 
 	for(int i = 0 ; i < 100 ; i++) {
 		printk("1");
