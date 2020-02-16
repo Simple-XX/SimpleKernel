@@ -15,21 +15,21 @@ extern "C" {
 #include "../test/include/test.h"
 #include "../ds_alg/include/linkedlist.h"
 
-int thread(void * arg) {
+static int thread(void * arg) {
 	while(1) {
 		printk("2");
 	}
 	return 0;
 }
 
-int thread2(void * arg) {
+static int thread2(void * arg) {
 	while(1) {
 		printk("3");
 	}
 	return 0;
 }
 
-int thread3(void * arg) {
+static int thread3(void * arg) {
 	while(1) {
 		printk("4");
 	}
@@ -66,9 +66,6 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// test();
 
 	cpu_sti();
-
-
-
 	kernel_thread(thread, NULL, 0);
 	// kernel_thread(thread2, NULL, 0);
 	// kernel_thread(thread3, NULL, 0);

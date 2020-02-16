@@ -28,6 +28,8 @@ void schedule(void);
 // 任务切换准备
 void change_task_to(task_pcb_t * next);
 
+// 时钟中断处理
+void clock_handler(pt_regs_t * regs);
 
 #ifdef __cplusplus
 }
