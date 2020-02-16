@@ -17,13 +17,14 @@ switch_to:
     mov %ebp, 8(%eax)
     # 保存 ebx
     mov %ebx, 12(%eax)
+    # 保存 ecx
+    mov %ecx, 16(%eax)
+    # 保存 edx
+    mov %edx, 20(%eax)
     # 保存 esi
-    mov %esi, 16(%eax)
+    mov %esi, 24(%eax)
     # 保存 edi
-    mov %edi, 20(%eax)
-    # 保存 eflags
-    pushf
-    pop 24(%eax)
+    mov %edi, 28(%eax)
 
     # 恢复 curr
     mov 8(%esp), %eax
@@ -36,11 +37,12 @@ switch_to:
     mov 8(%eax), %ebp
     # 填充 ebx
     mov 12(%eax), %ebx
+    # 填充 ebx
+    mov 16(%eax), %ecx
+    # 填充 ebx
+    mov 20(%eax), %edx
     # 填充 esi
-    mov 16(%eax), %esi
+    mov 24(%eax), %esi
     # 填充 edi
-    mov 20(%eax), %edi
-    # 填充 eflags
-    push 24(%eax)
-    popf
+    mov 28(%eax), %edi
     ret
