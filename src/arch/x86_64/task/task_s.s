@@ -9,7 +9,7 @@ kthread_entry:
     # 参数压栈
     push %edx
     # 执行函数
-    call (%ebx)
+    call *(%ebx)
     # 保存返回值
     push %eax
     call do_exit

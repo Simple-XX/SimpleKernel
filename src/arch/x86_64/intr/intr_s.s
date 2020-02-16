@@ -14,14 +14,13 @@ idt_load:
     lidt (%eax)
     ret
 
-# 定义两个构造中断处理函数的宏(有的中断有错误代码，有的没有)
+# 定义两个构造中断处理函数的宏
 # 用于没有错误代码的中断
-
 .macro ISR_NOERRCODE no
 .global isr\no
 isr\no:
     cli                  # 首先关闭中断
-    push $0               # push 无效的中断错误代码,占位用
+    push $0x00               # push 无效的中断错误代码,占位用
     push $\no              # push 中断号
     jmp isr_common_stub
 .endm
@@ -74,7 +73,6 @@ ISR_NOERRCODE 31
 # 128=0x80 用于系统调用
 ISR_NOERRCODE 128
 
-
 # 中断服务程序
 .global isr_common_stub
 .extern isr_handler
@@ -85,7 +83,8 @@ isr_common_stub:
     push %fs
     push %gs
 
-    mov $0x10, %ax  # 加载内核数据段描述符表, 0x10:内核数据段标识符
+    // 加载内核数据段描述符表, 0x10:内核数据段标识符
+    mov $0x10, %ax
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
@@ -94,7 +93,8 @@ isr_common_stub:
 
     push %esp
     call isr_handler
-    add $4, %esp  # 清除压入的参数
+    // 清除压入的参数
+    add $0x04, %esp
     call forkret_s
 
 # 构造中断请求的宏
@@ -102,7 +102,8 @@ isr_common_stub:
 .global irq\name
 irq\name:
     cli
-    push $0
+    // 占位
+    push $0x00
     push $\no
     jmp irq_common_stub
 .endm
@@ -145,6 +146,7 @@ irq_common_stub:
     call irq_handler
     # 清除压入的参数
     add $0x04, %esp
+    jmp forkret_s
 
 .global forkret_s
 forkret_s:

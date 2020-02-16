@@ -54,9 +54,10 @@ typedef
 	uint32_t	esp;
 	uint32_t	ebp;
 	uint32_t	ebx;
+	uint32_t	ecx;
+	uint32_t	edx;
 	uint32_t	esi;
 	uint32_t	edi;
-	uint32_t	eflags;
 } task_context_t;
 
 // 进程内存地址结构
@@ -119,7 +120,7 @@ void task_init(void);
 // 获取正在运行的进程
 task_pcb_t * get_current_task(void);
 // 创建内核线程
-int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags);
+pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags);
 // 线程退出函数
 void kthread_exit(void);
 // 将进程放入进程队列

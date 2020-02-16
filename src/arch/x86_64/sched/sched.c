@@ -16,8 +16,27 @@ extern "C" {
 // 当前任务指针
 static task_pcb_t * curr_task = NULL;
 
+int c = 0;
+
 void clock_handler(pt_regs_t * regs UNUSED) {
+	// if(c++ > 1) {
+	// cpu_hlt();
+	// printk_debug(" \
+	// 	    gs: 0x%08X\tfs: %08X\tes: %08X\tds: %08X\t \
+	// 	    edi: %08X\tesi: %08X\tebp: %08X\told_esp: %08X\t \
+	// 	    ebx: %08X\tedx: %08X\tecx: %08X\teax: %08X\t \
+	// 	    int_no: %08X\terr_code: %08X\teip: %08X\tcs: %08X\t \
+	// 	    eflags: %08X\tuser_esp: %08X\tss: %08X\n \
+	// 	    ",
+	//     regs->gs, regs->fs, regs->es, regs->ds,
+	//     regs->edi, regs->esi, regs->ebp, regs->old_esp,
+	//     regs->ebx, regs->edx, regs->ecx, regs->eax,
+	//     regs->int_no, regs->err_code, regs->eip, regs->cs,
+	//     regs->eflags, regs->user_esp, regs->user_ss);
+
+	// }
 	schedule();
+	// }
 }
 
 void sched_init() {
@@ -60,7 +79,9 @@ void change_task_to(task_pcb_t * next) {
 	if(curr_task->pid != next->pid) {
 		task_pcb_t * prev = curr_task;
 		curr_task = next;
+		printk_debug("2333\n");
 		switch_to( (prev->context), (curr_task->context) );
+		printk_debug("666\n");
 	}
 	cpu_sti();
 	return;
