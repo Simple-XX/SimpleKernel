@@ -54,7 +54,6 @@ static task_pcb_t * alloc_task_pcb(void) {
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
 	bzero(context, sizeof(task_context_t) );
 	task_pcb->context = context;
-	task_pcb->context->eflags |= EFLAGS_IF;
 	task_pcb->exit_code = 0;
 	list_append(&task_list, task_pcb);
 	curr_task_count++;
@@ -91,7 +90,6 @@ void task_init(void) {
 	bzero(context, sizeof(task_context_t) );
 	kernel_task->context = context;
 	kernel_task->context->esp = (ptr_t)kernel_task + TASK_STACK_SIZE;
-	kernel_task->context->eflags |= EFLAGS_IF;
 	kernel_task->exit_code = 0;
 	curr_pid = 1;
 	curr_task_count = 1;
@@ -101,24 +99,52 @@ void task_init(void) {
 	return;
 }
 
-int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
-	task_pcb_t * new_task = alloc_task_pcb();
-	new_task->mm->pgd_dir = pgd_kernel;
-	// 处理参数
-	ptr_t * stack_bottom = (ptr_t *)( (ptr_t)new_task + TASK_STACK_SIZE);
-	*(--stack_bottom) = (uint32_t)args;
-	*(--stack_bottom) = (uint32_t)kthread_exit;
-	*(--stack_bottom) = (uint32_t)fun;
-	// 指向当前栈的位置
-	new_task->context->esp = (ptr_t)stack_bottom;
-	new_task->context->eflags |= EFLAGS_IF;
-	new_task->status = TASK_RUNNABLE;
-	list_append(&runnable_list, new_task);
-	return new_task->pid;
+pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
+	pt_regs_t pt_regs;
+	bzero(&pt_regs, sizeof(pt_regs_t) );
+	pt_regs.ds = KERNEL_DS;
+	pt_regs.es = KERNEL_DS;
+	pt_regs.cs = KERNEL_CS;
+	pt_regs.user_ss = KERNEL_DS;
+	pt_regs.eflags |= EFLAGS_IF;
+
+	pt_regs.edx = (ptr_t)args;
+	pt_regs.ebx = (ptr_t)fun;
+	pt_regs.eip = (ptr_t)kthread_entry;
+
+	return do_fork(&pt_regs, flags);
+}
+
+static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
+	task->pt_regs = (pt_regs_t *)( (ptr_t)task->mm->stack_bottom - sizeof(pt_regs_t) );
+	*(task->pt_regs) = *pt_regs;
+	task->pt_regs->eax = 0;
+	task->pt_regs->user_esp = (uint32_t)task->mm->stack_bottom;
+	task->pt_regs->eflags |= EFLAGS_IF;
+
+	task->context->eip = (uint32_t)forkret_s;
+	task->context->esp = (uint32_t)task->pt_regs;
 }
 
 pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
-	return 0;
+	if(curr_task_count >= TASK_MAX) {
+		return -1;
+	}
+	task_pcb_t * task = alloc_task_pcb();
+	if(task == NULL) {
+		return -1;
+	}
+	copy_thread(task, pt_regs);
+	task->pid = ++curr_pid;
+	task->status = TASK_RUNNABLE;
+	list_append(&runnable_list, task);
+	printk_debug("task->pt_regs->edx: 0x%08X\n", task->pt_regs->edx);
+	printk_debug("task->pt_regs->ebx: 0x%08X\n", task->pt_regs->ebx);
+	printk_debug("task->pt_regs->eip: 0x%08X\n", task->pt_regs->eip);
+	printk_debug("task->esp: 0x%08X\n", task->context->esp);
+	printk_debug("task->eip: 0x%08X\n", task->context->eip);
+
+	return task->pid;
 }
 
 void do_exit(int32_t exit_code) {

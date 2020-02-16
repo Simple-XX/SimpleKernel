@@ -16,24 +16,24 @@ extern "C" {
 #include "../ds_alg/include/linkedlist.h"
 
 static int thread(void * arg) {
-	while(1) {
+	for(int i = 0 ; i < 100 ; i++) {
 		printk("2");
 	}
-	return 0;
+	return 2;
 }
 
 static int thread2(void * arg) {
-	while(1) {
+	for(int i = 0 ; i < 100 ; i++) {
 		printk("3");
 	}
-	return 0;
+	return 3;
 }
 
 static int thread3(void * arg) {
-	while(1) {
+	for(int i = 0 ; i < 100 ; i++) {
 		printk("4");
 	}
-	return 0;
+	return 4;
 }
 
 // 内核入口
@@ -66,11 +66,12 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// test();
 
 	cpu_sti();
-	kernel_thread(thread, NULL, 0);
-	// kernel_thread(thread2, NULL, 0);
-	// kernel_thread(thread3, NULL, 0);
 
-	while(1) {
+	kernel_thread(thread(0), NULL, 0);
+	kernel_thread(thread2(9), NULL, 0);
+	kernel_thread(thread3(2), NULL, 0);
+
+	for(int i = 0 ; i < 100 ; i++) {
 		printk("1");
 	}
 
