@@ -36,11 +36,9 @@ void sched_switch(task_context_t * curr UNUSED, task_context_t * next UNUSED) {
 }
 
 // 比较方法
-int vs_med(void * v1, void * v2) {
+static int vs_med(void * v1, void * v2) {
 	return v1 == v2;
 }
-
-static int c = 1;
 
 void schedule() {
 	// 首先从链表中找到正在执行的进程，结果不为空

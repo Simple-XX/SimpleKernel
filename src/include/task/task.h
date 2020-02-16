@@ -116,16 +116,16 @@ extern void forkret_s(pt_regs_t * pt_regs);
 
 // 初始化
 void task_init(void);
+// 获取正在运行的进程
+task_pcb_t * get_current_task(void);
 // 创建内核线程
 int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags);
 // 线程退出函数
-void kthread_exit();
+void kthread_exit(void);
 // 将进程放入进程队列
 pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags);
 // 将进程移除进程队列
 void do_exit(int32_t exit_code);
-// 获取正在运行的进程
-task_pcb_t * get_current_task(void);
 // 线程创建
 pid_t kfork(int (* fn)(void *), void * arg);
 // 线程退出
