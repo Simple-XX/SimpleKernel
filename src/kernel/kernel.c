@@ -49,6 +49,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	clock_init();
 	// 键盘初始化
 	keyboard_init();
+	// 调试模块初始化
 	debug_init(magic, addr);
 	// 物理内存初始化
 	pmm_init();
@@ -68,13 +69,13 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 
 
 
-	// kernel_thread(thread, NULL, 0);
+	kernel_thread(thread, NULL, 0);
 	// kernel_thread(thread2, NULL, 0);
 	// kernel_thread(thread3, NULL, 0);
 
-	// while(1) {
-	// 	printk("1");
-	// }
+	while(1) {
+		printk("1");
+	}
 
 	while(1);
 
