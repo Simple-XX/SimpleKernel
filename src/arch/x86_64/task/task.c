@@ -47,7 +47,8 @@ static task_pcb_t * alloc_task_pcb(void) {
 	bzero(mm, sizeof(task_mem_t) );
 	task_pcb->mm = mm;
 	task_pcb->mm->stack_top = (ptr_t)task_pcb;
-	task_pcb->mm->stack_bottom = (ptr_t)task_pcb + TASK_STACK_SIZE - sizeof(pt_regs_t);
+	task_pcb->mm->stack_bottom = (ptr_t)task_pcb + TASK_STACK_SIZE;
+	// 将 pt_regs 结构体放在任务栈的底部
 	task_pcb->pt_regs = (pt_regs_t *)( (ptr_t)task_pcb + TASK_STACK_SIZE - sizeof(pt_regs_t) );
 	bzero(task_pcb->pt_regs, sizeof(pt_regs_t) );
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
@@ -67,15 +68,12 @@ void task_init(void) {
 	bzero(kernel_task, sizeof(task_pcb_t) );
 	kernel_task->status = TASK_RUNNING;
 	kernel_task->pid = 1;
-
 	char * name = (char *)kmalloc(TASK_NAME_MAX + 1);
 	bzero(name, TASK_NAME_MAX + 1);
 	kernel_task->name = name;
 	strcpy(kernel_task->name, "Kernel task");
-
 	kernel_task->run_time = 0;
 	kernel_task->parent = NULL;
-
 	task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
 	bzero(mm, sizeof(task_mem_t) );
 	mm->pgd_dir = pgd_kernel;
@@ -89,15 +87,10 @@ void task_init(void) {
 	mm->data_end = (ptr_t)&kernel_data_end;
 	mm->task_end = (ptr_t)&kernel_end;
 	kernel_task->mm = mm;
-	printk_debug("dsds2222\n");
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
-	printk_debug("dsds333\n");
 	bzero(context, sizeof(task_context_t) );
-	printk_debug("dsds444\n");
 	kernel_task->context = context;
-	printk_debug("dsds555\n");
 	kernel_task->context->esp = (ptr_t)kernel_task + TASK_STACK_SIZE;
-	printk_debug("kernel_task->context->esp: 0x%08X\n", (kernel_task->context->esp) );
 	kernel_task->context->eflags |= EFLAGS_IF;
 	kernel_task->exit_code = 0;
 	curr_pid = 1;
@@ -112,65 +105,20 @@ int32_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 	task_pcb_t * new_task = alloc_task_pcb();
 	new_task->mm->pgd_dir = pgd_kernel;
 	// 处理参数
-	ptr_t * stack_top = (ptr_t *)( (ptr_t)new_task + TASK_STACK_SIZE);
-	*(--stack_top) = (uint32_t)args;
-	*(--stack_top) = (uint32_t)kthread_exit;
-	*(--stack_top) = (uint32_t)fun;
-
+	ptr_t * stack_bottom = (ptr_t *)( (ptr_t)new_task + TASK_STACK_SIZE);
+	*(--stack_bottom) = (uint32_t)args;
+	*(--stack_bottom) = (uint32_t)kthread_exit;
+	*(--stack_bottom) = (uint32_t)fun;
 	// 指向当前栈的位置
-	new_task->context->esp = (ptr_t)new_task + TASK_STACK_SIZE - sizeof(ptr_t) * 3;
+	new_task->context->esp = (ptr_t)stack_bottom;
 	new_task->context->eflags |= EFLAGS_IF;
 	new_task->status = TASK_RUNNABLE;
 	list_append(&runnable_list, new_task);
-
 	return new_task->pid;
-
-	// pt_regs_t * pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
-	// bzero(pt_regs, sizeof(pt_regs_t) );
-	//
-	// pt_regs->cs = KERNEL_CS;
-	// pt_regs->ds = KERNEL_DS;
-	// pt_regs->user_ss = KERNEL_DS;
-	// pt_regs->ebx = (ptr_t)fun;
-	// pt_regs->edx = (ptr_t)args;
-	// pt_regs->eip = (ptr_t)kthread_entry;
-	//
-	// return do_fork(pt_regs, flags);
 }
-
-void kthread_exit() {
-	register uint32_t val asm ("eax");
-	printk("Thread exited with value %d\n", val);
-	while(1);
-}
-
 
 pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
-	// 如果到达上限则错误
-	// if(curr_task_count >= TASK_MAX) {
-	// 	printk_err("Error at task.c: do_fork. TASK_MAX!\n");
-	// 	return -1;
-	// }
-	// task_pcb_t * task = alloc_task_pcb();
-	// printk_debug("do_fork task addr: 0x%08X\n", task);
-	// if(task == NULL) {
-	// 	printk_err("Error at task.c: do_fork. No enough memory.\n");
-	// 	return -1;
-	// }
-	// // 将任务控制结构体放在任务栈的顶部
-	// task->pt_regs = (pt_regs_t *)( (ptr_t)task->mm->stack_top - sizeof(pt_regs_t) );
-	// *(task->pt_regs) = *pt_regs;
-	// task->pt_regs->eax = 0;
-	// task->pt_regs->user_esp = (ptr_t)task->mm->stack_top;
-	// task->pt_regs->eflags |= EFLAGS_IF;
-	// task->context->eip = (uint32_t)forkret_s;
-	// task->context->esp = (uint32_t)task->pt_regs;
-	// task->status = TASK_RUNNABLE;
-	// task->pid = ++curr_pid;
-	// list_append(&runnable_list, task);
-	// curr_task_count++;
-	//
-	// return task->pid;
+	return 0;
 }
 
 void do_exit(int32_t exit_code) {
@@ -178,11 +126,19 @@ void do_exit(int32_t exit_code) {
 	get_current_task()->exit_code = exit_code;
 	curr_pid--;
 	curr_task_count--;
+	return;
 }
 
 task_pcb_t * get_current_task() {
 	register uint32_t esp __asm__ ("esp");
 	return (task_pcb_t *)(esp & (~(STACK_SIZE - 1) ) );
+}
+
+void kthread_exit() {
+	register uint32_t val __asm__ ("eax");
+	printk("Thread exited with value %d\n", val);
+	while(1);
+	return;
 }
 
 // 线程创建
