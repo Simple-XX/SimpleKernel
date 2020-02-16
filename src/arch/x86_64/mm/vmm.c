@@ -96,14 +96,13 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
 	uint32_t pte_idx = VMM_PTE_INDEX(va);
 
 	pte_t * pte = (pte_t *)(pgd_now[pgd_idx] & VMM_PAGE_MASK);
-	if(!pte) {
+	if(pte == NULL) {
 		return 0;
 	}
 	// 转换到内核线性地址
 	pte = (pte_t *)VMM_PA_LA( (ptr_t)pte);
-
-	// 如果地址有效而且指针不为NULL，则返回地址
-	if(pte[pte_idx] != 0 && pa) {
+	// 如果地址有效而且指针不为 NULL
+	if( (pte[pte_idx] != NULL) && (pa != NULL) ) {
 		pa = pte[pte_idx] & VMM_PAGE_MASK;
 		return 1;
 	}
