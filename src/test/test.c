@@ -20,19 +20,21 @@ extern "C" {
 #include "include/test.h"
 
 bool test_pmm(void) {
-	ptr_t allc_addr = 0;
 	printk_test("Test pmm_alloc :\n");
-	allc_addr = pmm_alloc(1);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc(9000);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr);
+	ptr_t allc_addr1 = pmm_alloc(1);
+	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr1);
+	ptr_t allc_addr2 = pmm_alloc(9000);
+	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr2);
 	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
-	pmm_free(allc_addr, 9000);
+	pmm_free(allc_addr2, 9000);
 	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
-	allc_addr = pmm_alloc(1);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc(1);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr);
+	ptr_t allc_addr3 = pmm_alloc(1);
+	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr3);
+	ptr_t allc_addr4 = pmm_alloc(1);
+	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr4);
+	pmm_free(allc_addr1, 1);
+	pmm_free(allc_addr3, 1);
+	pmm_free(allc_addr4, 1);
 	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
 	return true;
 }

@@ -89,8 +89,6 @@ void task_init(void) {
 	mm->data_end = (ptr_t)&kernel_data_end;
 	mm->task_end = (ptr_t)&kernel_end;
 	kernel_task->mm = mm;
-	kernel_task->pt_regs = (pt_regs_t *)( (ptr_t)kernel_stack_bottom);
-	bzero(kernel_task->pt_regs, sizeof(pt_regs_t) );
 	printk_debug("dsds2222\n");
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
 	printk_debug("dsds333\n");
