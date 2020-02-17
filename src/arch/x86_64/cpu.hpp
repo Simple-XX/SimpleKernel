@@ -111,7 +111,7 @@ static inline void cpu_hlt(void) {
 
 // 开启中断
 static inline void cpu_sti(void) {
-	__asm__ volatile ("sti");
+	__asm__ volatile ("sti" ::: "memory");
 	return;
 }
 
