@@ -17,9 +17,9 @@ extern "C" {
 // 内核页目录区域
 pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核页表区域
-static pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核栈区域
-static pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 void vmm_init(void) {
 	cpu_cli();
@@ -33,14 +33,6 @@ void vmm_init(void) {
 	ptr_t * pte = (ptr_t *)pte_kernel;
 	for(uint32_t i = 0 ; i < VMM_PAGE_TABLES_KERNEL * VMM_PAGES_PRE_PAGE_TABLE ; i++) {
 		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
-	}
-	// 映射内核栈
-	// 0x2FF
-	pgd_idx = VMM_PGD_INDEX(STACK_TOP);
-	pgd_kernel[pgd_idx] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel_stack) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
-	// i: 0x3F8~0x400
-	for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
-		pte_kernel_stack[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 	switch_pgd(VMM_LA_PA( (ptr_t)pgd_kernel) );
 	printk_info("vmm_init\n");
@@ -98,6 +90,13 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
 
 void switch_pgd(ptr_t pd) {
 	__asm__ volatile ("mov %0, %%cr3" : : "r" (pd) );
+}
+
+// 初始化内核页目录
+void vmm_kernel_init(pgd_t * pgd) {
+	// 填充内核使用的内存
+
+	return;
 }
 
 void page_fault(pt_regs_t * pt_regs) {

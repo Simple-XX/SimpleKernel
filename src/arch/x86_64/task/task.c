@@ -48,8 +48,9 @@ static task_pcb_t * alloc_task_pcb(void) {
 	task_pcb->mm = mm;
 	task_pcb->mm->stack_top = (ptr_t)task_pcb;
 	task_pcb->mm->stack_bottom = (ptr_t)task_pcb + TASK_STACK_SIZE;
+	// task_pcb->mm->stack_bottom = (ptr_t)task_pcb + TASK_STACK_SIZE -8;
 	// 将 pt_regs 结构体放在任务栈的底部
-	task_pcb->pt_regs = (pt_regs_t *)( (ptr_t)task_pcb + TASK_STACK_SIZE - sizeof(pt_regs_t) );
+	task_pcb->pt_regs = (pt_regs_t *)( (ptr_t)task_pcb->mm->stack_bottom - sizeof(pt_regs_t) );
 	bzero(task_pcb->pt_regs, sizeof(pt_regs_t) );
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
 	bzero(context, sizeof(task_context_t) );
@@ -62,35 +63,70 @@ static task_pcb_t * alloc_task_pcb(void) {
 
 void task_init(void) {
 	cpu_cli();
-	// 为内核进程创建信息结构体，位置在内核栈的栈底
-	task_pcb_t * kernel_task = (task_pcb_t *)(kernel_stack_top);
-	bzero(kernel_task, sizeof(task_pcb_t) );
-	kernel_task->status = TASK_RUNNING;
-	kernel_task->pid = 1;
-	char * name = (char *)kmalloc(TASK_NAME_MAX + 1);
-	bzero(name, TASK_NAME_MAX + 1);
-	kernel_task->name = name;
-	strcpy(kernel_task->name, "Kernel task");
-	kernel_task->run_time = 0;
-	kernel_task->parent = NULL;
-	task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
-	bzero(mm, sizeof(task_mem_t) );
-	mm->pgd_dir = pgd_kernel;
-	mm->stack_top = (ptr_t)kernel_stack_top;
-	// 留出 pt_regs 的空间
-	mm->stack_bottom = (ptr_t)kernel_stack_bottom - sizeof(pt_regs_t);
-	mm->task_start = (ptr_t)&kernel_start;
-	mm->code_start = (ptr_t)&kernel_text_start;
-	mm->code_end = (ptr_t)&kernel_text_end;
-	mm->data_start = (ptr_t)&kernel_data_start;
-	mm->data_end = (ptr_t)&kernel_data_end;
-	mm->task_end = (ptr_t)&kernel_end;
-	kernel_task->mm = mm;
-	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
-	bzero(context, sizeof(task_context_t) );
-	kernel_task->context = context;
-	kernel_task->context->esp = (ptr_t)kernel_task + TASK_STACK_SIZE;
-	kernel_task->exit_code = 0;
+	// 创建一个新的进程作为内核进程
+	task_pcb_t * kernel_task = alloc_task_pcb();
+	kernel_task->mm->pgd_dir = (pgd_t *)kmalloc(sizeof(pgd_t) );
+	// 初始化内核进程的虚拟内存信息
+	vmm_kernel_init(kernel_task->mm->pgd_dir);
+	// 映射内核栈
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// // 为内核进程创建信息结构体，位置在内核栈的栈底
+	// task_pcb_t * kernel_task = (task_pcb_t *)(kernel_stack_top);
+	// bzero(kernel_task, sizeof(task_pcb_t) );
+	// kernel_task->status = TASK_RUNNING;
+	// kernel_task->pid = 1;
+	// char * name = (char *)kmalloc(TASK_NAME_MAX + 1);
+	// bzero(name, TASK_NAME_MAX + 1);
+	// kernel_task->name = name;
+	// strcpy(kernel_task->name, "Kernel task");
+	// kernel_task->run_time = 0;
+	// kernel_task->parent = NULL;
+	// task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
+	// bzero(mm, sizeof(task_mem_t) );
+	// mm->pgd_dir = pgd_kernel;
+	// mm->stack_top = (ptr_t)kernel_stack_top;
+	// // 留出 pt_regs 的空间
+	// mm->stack_bottom = (ptr_t)kernel_stack_bottom - sizeof(pt_regs_t);
+	// // mm->stack_bottom = (ptr_t)kernel_stack_bottom;
+	// mm->task_start = (ptr_t)&kernel_start;
+	// mm->code_start = (ptr_t)&kernel_text_start;
+	// mm->code_end = (ptr_t)&kernel_text_end;
+	// mm->data_start = (ptr_t)&kernel_data_start;
+	// mm->data_end = (ptr_t)&kernel_data_end;
+	// mm->task_end = (ptr_t)&kernel_end;
+	// kernel_task->mm = mm;
+	// kernel_task->pt_regs = (pt_regs_t *)( (ptr_t)kernel_task->mm->stack_bottom);
+	// bzero(kernel_task->pt_regs, sizeof(pt_regs_t) );
+	// kernel_task->pt_regs->cs = KERNEL_CS;
+	// kernel_task->pt_regs->ds = KERNEL_DS;
+	// kernel_task->pt_regs->es = KERNEL_DS;
+	// kernel_task->pt_regs->fs = KERNEL_DS;
+	// kernel_task->pt_regs->gs = KERNEL_DS;
+	// kernel_task->pt_regs->user_ss = KERNEL_DS;
+	// kernel_task->pt_regs->eflags |= EFLAGS_IF;
+	// kernel_task->pt_regs->eip = (ptr_t)forkret_s;
+	// kernel_task->pt_regs->user_esp = (ptr_t)kernel_task + TASK_STACK_SIZE;
+	// task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
+	// bzero(context, sizeof(task_context_t) );
+	// kernel_task->context = context;
+	// kernel_task->exit_code = 0;
 	curr_pid = 1;
 	curr_task_count = 1;
 	list_append(&task_list, kernel_task);
@@ -102,28 +138,37 @@ void task_init(void) {
 pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 	pt_regs_t pt_regs;
 	bzero(&pt_regs, sizeof(pt_regs_t) );
-	pt_regs.ds = KERNEL_DS;
-	pt_regs.es = KERNEL_DS;
-	pt_regs.cs = KERNEL_CS;
-	pt_regs.user_ss = KERNEL_DS;
+	// pt_regs.cs = KERNEL_CS;
+	// pt_regs.ds = KERNEL_DS;
+	// pt_regs.es = KERNEL_DS;
+	// pt_regs.fs = KERNEL_DS;
+	// pt_regs.gs = KERNEL_DS;
+	// pt_regs.user_ss = KERNEL_DS;
+	pt_regs.cs = 1;
+	pt_regs.ds = 2;
+	pt_regs.es = 3;
+	pt_regs.fs = 4;
+	pt_regs.gs = 5;
+	pt_regs.user_ss = 6;
 	pt_regs.eflags |= EFLAGS_IF;
 
-	pt_regs.edx = (ptr_t)args;
 	pt_regs.ebx = (ptr_t)fun;
+	pt_regs.edx = (ptr_t)args;
 	pt_regs.eip = (ptr_t)kthread_entry;
 
 	return do_fork(&pt_regs, flags);
 }
 
 static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
-	task->pt_regs = (pt_regs_t *)( (ptr_t)task->mm->stack_bottom - sizeof(pt_regs_t) );
+	// task->pt_regs = (pt_regs_t *)( (ptr_t)task->mm->stack_bottom - sizeof(pt_regs_t) );
 	*(task->pt_regs) = *pt_regs;
 	task->pt_regs->eax = 0;
-	task->pt_regs->user_esp = (uint32_t)task->mm->stack_bottom;
+	task->pt_regs->user_esp = (ptr_t)task->mm->stack_bottom;
 	task->pt_regs->eflags |= EFLAGS_IF;
 
-	task->context->eip = (uint32_t)forkret_s;
-	task->context->esp = (uint32_t)task->pt_regs;
+	task->context->eip = (ptr_t)forkret_s;
+	task->context->esp = (ptr_t)task->pt_regs;
+	return;
 }
 
 pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
@@ -138,12 +183,22 @@ pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
 	task->pid = ++curr_pid;
 	task->status = TASK_RUNNABLE;
 	list_append(&runnable_list, task);
-	printk_debug("task->pt_regs->edx: 0x%08X\n", task->pt_regs->edx);
-	printk_debug("task->pt_regs->ebx: 0x%08X\n", task->pt_regs->ebx);
-	printk_debug("task->pt_regs->eip: 0x%08X\n", task->pt_regs->eip);
-	printk_debug("task->esp: 0x%08X\n", task->context->esp);
+	// printk_debug("task->pt_regs: 0x%08X\n", task->pt_regs);
+	// printk_debug("gs: 0x%08X, 0x%08X\tfs: %08X\tes: %08X\tds: %08X\t \
+	// 	    edi: %08X\tesi: %08X\tebp: %08X\told_esp: %08X\t \
+	// 	    ebx: %08X\tedx: %08X\tecx: %08X\teax: %08X\t \
+	// 	    int_no: %08X\terr_code: %08X\teip: %08X\tcs: %08X\t \
+	// 	    eflags: %08X\tuser_esp: %08X\tss: %08X\n",
+	//     task->pt_regs->gs, &task->pt_regs->gs, task->pt_regs->fs, task->pt_regs->es, task->pt_regs->ds,
+	//     task->pt_regs->edi, task->pt_regs->esi, task->pt_regs->ebp, task->pt_regs->old_esp,
+	//     task->pt_regs->ebx, task->pt_regs->edx, task->pt_regs->ecx, task->pt_regs->eax,
+	//     task->pt_regs->int_no, task->pt_regs->err_code, task->pt_regs->eip, task->pt_regs->cs,
+	//     task->pt_regs->eflags, task->pt_regs->user_esp, task->pt_regs->user_ss);
+	// cpu_hlt();
+	// printk_debug("task->esp: 0x%08X\n", task->context->esp);
 	printk_debug("task->eip: 0x%08X\n", task->context->eip);
-
+	// cpu_hlt();
+	printk_debug("--------\n");
 	return task->pid;
 }
 

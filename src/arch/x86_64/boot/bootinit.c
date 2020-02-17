@@ -11,6 +11,7 @@ extern "C" {
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "include/bootinit.h"
+#include "../intr/include/intr.h"
 
 // When writing a higher-half kernel, the steps required are:
 // 1. Reserve some pages for the initial mappings, so it is possible to parse GRUB structures before memory management is enabled.
@@ -21,11 +22,9 @@ extern "C" {
 // 6. Remove the lower half kernel mapping.
 
 // 开启分页机制之后的内核栈
-// ptr_t kernel_stack_top[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
-ptr_t kernel_stack_top = (ptr_t)STACK_TOP;
-
+ptr_t kernel_stack_top[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
 // 内核栈底
-ptr_t kernel_stack_bottom = (ptr_t)STACK_BOTTOM;
+ptr_t kernel_stack_bottom = (ptr_t)kernel_stack_top + STACK_SIZE;
 
 void enable_page(pgd_t * pgd) {
 	// 设置临时页表
@@ -47,8 +46,6 @@ void mm_init() {
 	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (ptr_t)pte_kernel_tmp | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	// 内核段 pgd_tmp[0x301], 4MB
 	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE) + 1] = (ptr_t)pte_kernel_tmp2 | VMM_PAGE_PRESENT | VMM_PAGE_RW;
-	// 内核栈段
-	pgd_tmp[VMM_PGD_INDEX(STACK_TOP)] = (ptr_t)pte_stack_tmp | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 
 	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
 	// 将每个页表项赋值
@@ -68,10 +65,6 @@ void mm_init() {
 	// 映射虚拟地址 0xC0400000-0xC0800000 到物理地址 0x00400000-0x00800000
 	for(uint32_t i = 0, j = VMM_PAGES_PRE_PAGE_TABLE ; i < VMM_PAGES_PRE_PAGE_TABLE  ; i++, j++) {
 		pte_kernel_tmp2[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
-	}
-	// 映射虚拟地址 0xBFFF8000-0xC0000000 到物理地址 0x00800000-0x00808000
-	for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
-		pte_stack_tmp[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	}
 
 	enable_page(pgd_tmp);
