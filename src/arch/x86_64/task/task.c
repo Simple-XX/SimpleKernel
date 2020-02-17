@@ -117,8 +117,9 @@ static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
 	task->pt_regs->user_esp = (ptr_t)task->mm->stack_bottom;
 	task->pt_regs->eflags |= EFLAGS_IF;
 
-	task->context->eip = (ptr_t)forkret_s;
-	task->context->esp = (ptr_t)task->pt_regs;
+	// task->context->eip = (ptr_t)forkret_s;
+	task->context->eip = (ptr_t)kthread_entry;
+	task->context->esp = (ptr_t)task->mm->stack_bottom;
 	return;
 }
 
@@ -141,10 +142,8 @@ pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
 	//     task->pt_regs->ebx, task->pt_regs->edx, task->pt_regs->ecx, task->pt_regs->eax,
 	//     task->pt_regs->int_no, task->pt_regs->err_code, task->pt_regs->eip, task->pt_regs->cs,
 	//     task->pt_regs->eflags, task->pt_regs->user_esp, task->pt_regs->user_ss);
-	// cpu_hlt();
-	// printk_debug("task->esp: 0x%08X\n", task->context->esp);
+	printk_debug("task->esp: 0x%08X\n", task->context->esp);
 	printk_debug("task->eip: 0x%08X\n", task->context->eip);
-	// cpu_hlt();
 	printk_debug("--------\n");
 	cpu_sti();
 	return task->pid;
