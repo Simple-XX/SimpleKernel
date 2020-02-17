@@ -34,9 +34,6 @@ __attribute__( (section(".init.data") ) )
 pte_t pte_kernel_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 __attribute__( (section(".init.data") ) )
 pte_t pte_kernel_tmp2[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
-// 内核栈段(还没用上)
-__attribute__( (section(".init.data") ) )
-pte_t pte_stack_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 __attribute__( (section(".init.text") ) ) void kernel_entry(ptr_t magic, ptr_t addr);
 __attribute__( (section(".init.text") ) ) void enable_page(pgd_t * pgd);
