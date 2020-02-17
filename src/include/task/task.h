@@ -110,6 +110,8 @@ extern ListEntry * task_list;
 extern ListEntry * runnable_list;
 // 等待进程链表
 extern ListEntry * wait_list;
+// 当前任务指针
+extern task_pcb_t * curr_task;
 // 内核线程入口函数 tasl_s.s
 extern int32_t kthread_entry(void * args);
 // intr_s.s
