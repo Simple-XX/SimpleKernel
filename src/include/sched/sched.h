@@ -25,9 +25,6 @@ void sched_switch(task_context_t * curr, task_context_t * next);
 // 任务调度
 void schedule(void);
 
-// 任务切换准备
-void change_task_to(task_pcb_t * next);
-
 // 时钟中断处理
 void clock_handler(pt_regs_t * regs);
 

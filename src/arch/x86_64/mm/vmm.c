@@ -28,11 +28,11 @@ void vmm_init(void) {
 	// 映射全部内核
 	uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
 	for(uint32_t i = pgd_idx, j = 0 ; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx ; i++, j++) {
-		pgd_kernel[i] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
+		pgd_kernel[i] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
 	}
 	ptr_t * pte = (ptr_t *)pte_kernel;
 	for(uint32_t i = 0 ; i < VMM_PAGE_TABLES_KERNEL * VMM_PAGES_PRE_PAGE_TABLE ; i++) {
-		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 	}
 	switch_pgd(VMM_LA_PA( (ptr_t)pgd_kernel) );
 	printk_info("vmm_init\n");
@@ -90,13 +90,6 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
 
 void switch_pgd(ptr_t pd) {
 	__asm__ volatile ("mov %0, %%cr3" : : "r" (pd) );
-}
-
-// 初始化内核页目录
-void vmm_kernel_init(pgd_t * pgd) {
-	// 填充内核使用的内存
-
-	return;
 }
 
 void page_fault(pt_regs_t * pt_regs) {
