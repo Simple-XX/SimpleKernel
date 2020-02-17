@@ -77,6 +77,7 @@ ISR_NOERRCODE 128
 .global isr_common_stub
 .extern isr_handler
 isr_common_stub:
+    // 保存上下文
     pusha
     push %ds
     push %es
@@ -95,6 +96,7 @@ isr_common_stub:
     call isr_handler
     // 清除压入的参数
     add $0x04, %esp
+    // 恢复上下文
     call forkret_s
 
 # 构造中断请求的宏
