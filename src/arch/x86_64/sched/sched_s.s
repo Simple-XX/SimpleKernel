@@ -6,6 +6,7 @@
 # void switch_to(task_context_t * curr, task_context_t * next);
 .global switch_to
 switch_to:
+    // hlt
     # 保存 prev
     mov 4(%esp), %eax
     # 保存 eip

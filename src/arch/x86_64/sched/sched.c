@@ -76,13 +76,14 @@ void schedule() {
 
 void change_task_to(task_pcb_t * next) {
 	cpu_cli();
-	if(curr_task->pid != next->pid) {
-		task_pcb_t * prev = curr_task;
-		curr_task = next;
-		printk_debug("2333\n");
-		switch_to( (prev->context), (curr_task->context) );
-		printk_debug("666\n");
-	}
+	// if( (curr_task->pid != next->pid) ) {
+	task_pcb_t * prev = curr_task;
+	curr_task = next;
+	// printk_debug("2333\n");
+	switch_to( (prev->context), (curr_task->context) );
+	// printk_debug("666\n");
+	// }
+	// printk_debug("111\n");
 	cpu_sti();
 	return;
 }

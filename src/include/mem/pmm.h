@@ -18,10 +18,6 @@ extern "C" {
 // 32KB
 #define STACK_SIZE    (0x8000UL)
 #define STACK_PAGES   (STACK_SIZE / PMM_PAGE_SIZE)
-// 内核栈底
-#define STACK_BOTTOM  (0xC0000000UL)
-// 内核栈顶
-#define STACK_TOP     (STACK_BOTTOM - STACK_SIZE)
 // 512 MB
 #define PMM_MAX_SIZE  (0x20000000UL)
 
@@ -74,7 +70,7 @@ extern ptr_t * kernel_data_end;
 extern ptr_t * kernel_end;
 
 // 开启分页机制之后的内核栈顶(低地址)
-extern ptr_t kernel_stack_top;
+extern ptr_t kernel_stack_top[STACK_SIZE];
 // 内核栈的栈底(高地址)
 extern ptr_t kernel_stack_bottom;
 
