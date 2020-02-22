@@ -28,6 +28,20 @@ void schedule(void);
 // 时钟中断处理
 void clock_handler(pt_regs_t * regs);
 
+// #define SWITCH_TO(curr, next) { \
+// 		__asm__ volatile ( \
+// 		"mov %%esp, %1" \
+// 		"mov %%ebp, %2" \
+// 		"mov %%ebx, %3" \
+// 		"mov %%ecx, %4" \
+// 		"mov %%edx, %5" \
+// 		"mov %%esi, %6" \
+// 		"mov %%edi, %7" \
+//         "mov %8, "
+//
+// ); \
+// }
+
 #ifdef __cplusplus
 }
 #endif
