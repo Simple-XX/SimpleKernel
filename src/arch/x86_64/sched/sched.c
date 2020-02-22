@@ -14,27 +14,8 @@ extern "C" {
 #include "sched/sched.h"
 #include "debug.h"
 
-int c = 0;
-
 void clock_handler(pt_regs_t * regs UNUSED) {
-	// if(c++ > 1) {
-	// cpu_hlt();
-	// printk_debug(" \
-	// 	    gs: 0x%08X\tfs: %08X\tes: %08X\tds: %08X\t \
-	// 	    edi: %08X\tesi: %08X\tebp: %08X\told_esp: %08X\t \
-	// 	    ebx: %08X\tedx: %08X\tecx: %08X\teax: %08X\t \
-	// 	    int_no: %08X\terr_code: %08X\teip: %08X\tcs: %08X\t \
-	// 	    eflags: %08X\tuser_esp: %08X\tss: %08X\n \
-	// 	    ",
-	//     regs->gs, regs->fs, regs->es, regs->ds,
-	//     regs->edi, regs->esi, regs->ebp, regs->old_esp,
-	//     regs->ebx, regs->edx, regs->ecx, regs->eax,
-	//     regs->int_no, regs->err_code, regs->eip, regs->cs,
-	//     regs->eflags, regs->user_esp, regs->user_ss);
-
-	// }
 	schedule();
-	// }
 	return;
 }
 
@@ -56,6 +37,9 @@ static int vs_med(void * v1, void * v2) {
 	return v1 == v2;
 }
 
+// mov - 4 (% esp), % edx
+// mov % edx, 0 (% eax)
+
 void schedule() {
 	cpu_cli();
 	// 首先从链表中找到正在执行的进程，结果不为空
@@ -68,7 +52,6 @@ void schedule() {
 	if( (curr_task->pid != next->pid) ) {
 		task_pcb_t * prev = curr_task;
 		curr_task = next;
-		printk_debug("switch_to: \n");
 		// printk_debug("prev->context: 0x%08X\t", prev->context);
 		// printk_debug("prev->pid: 0x%08X\t", prev->pid);
 		// printk_debug("prev->name: %s\t", prev->name);
@@ -91,11 +74,12 @@ void schedule() {
 		// printk_debug("next->edx 0x%08X\t", next->context->edx);
 		// printk_debug("next->esi 0x%08X\t", next->context->esi);
 		// printk_debug("next->edi 0x%08X\n", next->context->edi);
-		print_stack(15);
+		// print_stack(5);
 		printk_debug("switch_to-----\n");
 		switch_to( (prev->context), (curr_task->context) );
+		// SWITCH_TO(prev, curr_task);
 		printk_debug("switch_to END.\n");
-		asm ("hlt");
+		// asm ("hlt");
 	}
 	cpu_sti();
 	return;
