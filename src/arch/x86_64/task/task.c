@@ -33,7 +33,7 @@ static task_pcb_t * alloc_task_pcb(void) {
 	// 申请内存
 	task_pcb_t * task_pcb = (task_pcb_t *)kmalloc(TASK_STACK_SIZE);
 	assert(task_pcb != NULL, "Error at task.c: alloc_task_pcb. No enough memory!\n");
-	bzero(task_pcb, sizeof(task_pcb_t) );
+	bzero(task_pcb, TASK_STACK_SIZE);
 	// 填充
 	task_pcb->status = TASK_UNINIT;
 	task_pcb->pid = ++curr_pid;
@@ -45,18 +45,25 @@ static task_pcb_t * alloc_task_pcb(void) {
 	task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
 	bzero(mm, sizeof(task_mem_t) );
 	task_pcb->mm = mm;
-	task_pcb->mm->stack_top =  kmalloc(TASK_STACK_SIZE);
+	task_pcb->mm->stack_top =  (ptr_t)task_pcb;
 	task_pcb->mm->stack_bottom = task_pcb->mm->stack_top + TASK_STACK_SIZE;
 	task_pcb->pt_regs = (pt_regs_t *)( (ptr_t)task_pcb->mm->stack_bottom - sizeof(pt_regs_t) );
 	bzero(task_pcb->pt_regs, sizeof(pt_regs_t) );
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
 	bzero(context, sizeof(task_context_t) );
 	task_pcb->context = context;
-	task_pcb->exit_code = 0;
+	task_pcb->exit_code = 0xCD;
 	list_append(&task_list, task_pcb);
 	// 增加全局进程数量
 	curr_task_count++;
 	return task_pcb;
+}
+
+static int thread0(void * arg) {
+	for(int i = 0 ; i < 100 ; i++) {
+		printk("233");
+	}
+	return 0xCD;
 }
 
 void task_init(void) {
@@ -67,6 +74,7 @@ void task_init(void) {
 	strcpy(kernel_task->name, "Kernel task");
 	// 设置页目录
 	kernel_task->mm->pgd_dir = pgd_kernel;
+	kernel_task->context->eip = forkret_s;
 	// 设置寄存器信息
 	kernel_task->pt_regs->cs = KERNEL_CS;
 	kernel_task->pt_regs->ds = KERNEL_DS;
@@ -85,44 +93,41 @@ void task_init(void) {
 	return;
 }
 
+// 创建内核进程
 pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 	cpu_cli();
 	pt_regs_t pt_regs;
 	bzero(&pt_regs, sizeof(pt_regs_t) );
-	// pt_regs.cs = KERNEL_CS;
-	// pt_regs.ds = KERNEL_DS;
-	// pt_regs.es = KERNEL_DS;
-	// pt_regs.fs = KERNEL_DS;
-	// pt_regs.gs = KERNEL_DS;
-	// pt_regs.user_ss = KERNEL_DS;
-	pt_regs.cs = 1;
-	pt_regs.ds = 2;
-	pt_regs.es = 3;
-	pt_regs.fs = 4;
-	pt_regs.gs = 5;
-	pt_regs.user_ss = 6;
-	pt_regs.eflags |= EFLAGS_IF;
-
+	pt_regs.cs = KERNEL_CS;
+	pt_regs.ds = KERNEL_DS;
+	pt_regs.es = KERNEL_DS;
+	pt_regs.fs = KERNEL_DS;
+	pt_regs.gs = KERNEL_DS;
+	pt_regs.user_ss = KERNEL_DS;
 	pt_regs.ebx = (ptr_t)fun;
 	pt_regs.edx = (ptr_t)args;
 	pt_regs.eip = (ptr_t)kthread_entry;
-
 	return do_fork(&pt_regs, flags);
 }
 
+// 将 pt_reg 拷贝到 PCB 中
 static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
-	// task->pt_regs = (pt_regs_t *)( (ptr_t)task->mm->stack_bottom - sizeof(pt_regs_t) );
-	*(task->pt_regs) = *pt_regs;
+	memcpy(task->pt_regs, pt_regs, sizeof(pt_regs_t) );
 	task->pt_regs->eax = 0;
 	task->pt_regs->user_esp = (ptr_t)task->mm->stack_bottom;
 	task->pt_regs->eflags |= EFLAGS_IF;
+	task->context->eip = (ptr_t)forkret_s;
+	// task->context->eip = task->pt_regs->eip;
+	// task->context->ebx = task->pt_regs->ebx;
+	// task->context->edx = task->pt_regs->edx;
+	// task->context->eip = (ptr_t)kthread_entry;
+	// task->context->esp = (ptr_t)task->mm->stack_bottom;
+	task->context->esp = task->pt_regs;
 
-	// task->context->eip = (ptr_t)forkret_s;
-	task->context->eip = (ptr_t)kthread_entry;
-	task->context->esp = (ptr_t)task->mm->stack_bottom;
 	return;
 }
 
+// 创建 PCB，设置相关信息后加入调度链表
 pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
 	assert(curr_task_count < TASK_MAX, "Error: task.c curr_task_count >= TASK_MAX");
 	task_pcb_t * task = alloc_task_pcb();
@@ -131,21 +136,6 @@ pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
 	task->pid = ++curr_pid;
 	task->status = TASK_RUNNABLE;
 	list_append(&runnable_list, task);
-	// printk_debug("task->pt_regs: 0x%08X\n", task->pt_regs);
-	// printk_debug("gs: 0x%08X, 0x%08X\tfs: %08X\tes: %08X\tds: %08X\t \
-	// 	    edi: %08X\tesi: %08X\tebp: %08X\told_esp: %08X\t \
-	// 	    ebx: %08X\tedx: %08X\tecx: %08X\teax: %08X\t \
-	// 	    int_no: %08X\terr_code: %08X\teip: %08X\tcs: %08X\t \
-	// 	    eflags: %08X\tuser_esp: %08X\tss: %08X\n",
-	//     task->pt_regs->gs, &task->pt_regs->gs, task->pt_regs->fs, task->pt_regs->es, task->pt_regs->ds,
-	//     task->pt_regs->edi, task->pt_regs->esi, task->pt_regs->ebp, task->pt_regs->old_esp,
-	//     task->pt_regs->ebx, task->pt_regs->edx, task->pt_regs->ecx, task->pt_regs->eax,
-	//     task->pt_regs->int_no, task->pt_regs->err_code, task->pt_regs->eip, task->pt_regs->cs,
-	//     task->pt_regs->eflags, task->pt_regs->user_esp, task->pt_regs->user_ss);
-	printk_debug("task->esp: 0x%08X\n", task->context->esp);
-	printk_debug("task->eip: 0x%08X\n", task->context->eip);
-	printk_debug("--------\n");
-	cpu_sti();
 	return task->pid;
 }
 

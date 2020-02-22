@@ -12,6 +12,7 @@ extern "C" {
 #include "include/linkedlist.h"
 #include "intr/include/intr.h"
 #include "sched/sched.h"
+#include "debug.h"
 
 int c = 0;
 
@@ -67,9 +68,34 @@ void schedule() {
 	if( (curr_task->pid != next->pid) ) {
 		task_pcb_t * prev = curr_task;
 		curr_task = next;
-		// printk_debug("2333\n");
+		printk_debug("switch_to: \n");
+		// printk_debug("prev->context: 0x%08X\t", prev->context);
+		// printk_debug("prev->pid: 0x%08X\t", prev->pid);
+		// printk_debug("prev->name: %s\t", prev->name);
+		// printk_debug("prev->eip 0x%08X\t", prev->context->eip);
+		// printk_debug("prev->esp 0x%08X\t", prev->context->esp);
+		// printk_debug("prev->ebp 0x%08X\t", prev->context->ebp);
+		// printk_debug("prev->ebx 0x%08X\t", prev->context->ebx);
+		// printk_debug("prev->ecx 0x%08X\t", prev->context->ecx);
+		// printk_debug("prev->edx 0x%08X\t", prev->context->edx);
+		// printk_debug("prev->esi 0x%08X\t", prev->context->esi);
+		// printk_debug("prev->edi 0x%08X\n", prev->context->edi);
+		// printk_debug("next->context: 0x%08X\t", next->context);
+		// printk_debug("next->pid: 0x%08X\t", next->pid);
+		// printk_debug("next->name: %s\t", next->name);
+		// printk_debug("next->eip 0x%08X\t", next->context->eip);
+		// printk_debug("next->esp 0x%08X\t", next->context->esp);
+		// printk_debug("next->ebp 0x%08X\t", next->context->ebp);
+		// printk_debug("next->ebx 0x%08X\t", next->context->ebx);
+		// printk_debug("next->ecx 0x%08X\t", next->context->ecx);
+		// printk_debug("next->edx 0x%08X\t", next->context->edx);
+		// printk_debug("next->esi 0x%08X\t", next->context->esi);
+		// printk_debug("next->edi 0x%08X\n", next->context->edi);
+		print_stack(15);
+		printk_debug("switch_to-----\n");
 		switch_to( (prev->context), (curr_task->context) );
-		// printk_debug("666\n");
+		printk_debug("switch_to END.\n");
+		asm ("hlt");
 	}
 	cpu_sti();
 	return;
