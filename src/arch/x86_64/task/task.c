@@ -117,11 +117,6 @@ static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
 	task->pt_regs->user_esp = (ptr_t)task->mm->stack_bottom;
 	task->pt_regs->eflags |= EFLAGS_IF;
 	task->context->eip = (ptr_t)forkret_s;
-	// task->context->eip = task->pt_regs->eip;
-	// task->context->ebx = task->pt_regs->ebx;
-	// task->context->edx = task->pt_regs->edx;
-	// task->context->eip = (ptr_t)kthread_entry;
-	// task->context->esp = (ptr_t)task->mm->stack_bottom;
 	task->context->esp = task->pt_regs;
 
 	return;
