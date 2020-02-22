@@ -73,10 +73,11 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	for(int i = 0 ; i < 100 ; i++) {
 		printk("8");
 	}
-
+	// asm ("hlt");
 	// 永远不会执行到这里
 	printk_err("Never to be seen.\n");
-	// return;
+	while(1);
+	return;
 }
 
 #ifdef __cplusplus
