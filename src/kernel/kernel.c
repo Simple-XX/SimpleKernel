@@ -66,8 +66,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// test();
 
 	kernel_thread(thread(1), NULL, 0);
-	kernel_thread(thread2(2), NULL, 0);
-	kernel_thread(thread3(4), NULL, 0);
+	// kernel_thread(thread2(2), NULL, 0);
+	// kernel_thread(thread3(4), NULL, 0);
 	cpu_sti();
 
 	for(int i = 0 ; i < 100 ; i++) {
@@ -76,7 +76,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 
 	// 永远不会执行到这里
 	printk_err("Never to be seen.\n");
-	return;
+	// return;
 }
 
 #ifdef __cplusplus

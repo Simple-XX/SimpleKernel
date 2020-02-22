@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-#include "stddef.h"
 #include "stdio.h"
 #include "intr/include/intr.h"
 #include "cpu.hpp"
@@ -76,6 +75,15 @@ void print_stack_trace(void) {
 		printk("   [0x%x] %s\n", *eip, elf_lookup_symbol(*eip, &kernel_elf) );
 		ebp = (uint32_t *)*ebp;
 	}
+}
+
+// 输出 esp
+void print_stack(size_t count) {
+	register ptr_t * esp __asm__ ("esp");
+	for(size_t i = 0 ; i < count ; i++) {
+		printk_debug("esp 0x%08X [0x%08X]\n", esp + i, *(esp + i) );
+	}
+	return;
 }
 
 #ifdef __cplusplus
