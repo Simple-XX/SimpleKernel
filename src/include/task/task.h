@@ -125,8 +125,10 @@ task_pcb_t * get_current_task(void);
 pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags);
 // 线程退出函数
 void kthread_exit(void);
+// 进程切换硬件上下文处理
+task_pcb_t * __switch_to(task_pcb_t * curr, task_pcb_t * next) __attribute__( (regparm(3) ) );
 // 将进程放入进程队列
-pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags);
+pid_t do_fork(uint32_t flags, pt_regs_t * pt_regs);
 // 将进程移除进程队列
 void do_exit(int32_t exit_code);
 // 线程创建
