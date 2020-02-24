@@ -91,7 +91,7 @@ isr_common_stub:
     mov %ax, %fs
     mov %ax, %gs
     mov %ax, %ss
-
+    // 此时 esp 为 pt_regs 指针
     push %esp
     call isr_handler
     // 清除压入的参数

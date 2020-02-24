@@ -51,6 +51,8 @@ static task_pcb_t * alloc_task_pcb(void) {
 	bzero(task_pcb->pt_regs, sizeof(pt_regs_t) );
 	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
 	bzero(context, sizeof(task_context_t) );
+	context->eip = (ptr_t)forkret_s;
+	context->esp = (ptr_t)task_pcb->pt_regs;
 	task_pcb->context = context;
 	task_pcb->exit_code = 0xCD;
 	list_append(&task_list, task_pcb);
@@ -74,7 +76,6 @@ void task_init(void) {
 	strcpy(kernel_task->name, "Kernel task");
 	// 设置页目录
 	kernel_task->mm->pgd_dir = pgd_kernel;
-	kernel_task->context->eip = forkret_s;
 	// 设置寄存器信息
 	kernel_task->pt_regs->cs = KERNEL_CS;
 	kernel_task->pt_regs->ds = KERNEL_DS;
@@ -107,7 +108,7 @@ pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 	pt_regs.ebx = (ptr_t)fun;
 	pt_regs.edx = (ptr_t)args;
 	pt_regs.eip = (ptr_t)kthread_entry;
-	return do_fork(&pt_regs, flags);
+	return do_fork(flags, &pt_regs);
 }
 
 // 将 pt_reg 拷贝到 PCB 中
@@ -116,14 +117,13 @@ static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
 	task->pt_regs->eax = 0;
 	task->pt_regs->user_esp = (ptr_t)task->mm->stack_bottom;
 	task->pt_regs->eflags |= EFLAGS_IF;
+	task->context->esp = (ptr_t)task->pt_regs;
 	task->context->eip = (ptr_t)forkret_s;
-	task->context->esp = task->pt_regs;
-
 	return;
 }
 
 // 创建 PCB，设置相关信息后加入调度链表
-pid_t do_fork(pt_regs_t * pt_regs, uint32_t flags) {
+pid_t do_fork(uint32_t flags, pt_regs_t * pt_regs) {
 	assert(curr_task_count < TASK_MAX, "Error: task.c curr_task_count >= TASK_MAX");
 	task_pcb_t * task = alloc_task_pcb();
 	assert(task != NULL, "Error: task.c task==NULL");
@@ -152,6 +152,21 @@ void kthread_exit() {
 	printk("Thread exited with value %d\n", val);
 	while(1);
 	return;
+}
+
+task_pcb_t __attribute__( (regparm(3) ) ) * __switch_to(task_pcb_t * curr, task_pcb_t * next) {
+	task_context_t * curr_context = curr->context;
+	task_context_t * next_context = next->context;
+	printk_debug("curr_context: 0x%08X\t", curr_context);
+	printk_debug("next_context: 0x%08X\t", next_context);
+
+	tss_set_gate(SEG_TSS, KERNEL_DS, next_context->esp);
+	tss_load();
+
+	__asm__ volatile ("mov %%fs,%0" : "=m" (curr->pt_regs->fs) );
+	__asm__ volatile ("mov %%gs,%0" : "=m" (curr->pt_regs->gs) );
+	printk_debug("-----------\n");
+	return curr;
 }
 
 // 线程创建
