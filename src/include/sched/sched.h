@@ -40,7 +40,6 @@ void clock_handler(pt_regs_t * regs);
 		"movl $1f,%[prev_ip]\n\t" \
 		"pushl %[next_ip]\n\t" \
 		"jmp __switch_to\n" \
-		"hlt\n\t" \
 		"1:\n\t" \
 		"popl %%ebp\n\t" \
 		"popfl\n" \
