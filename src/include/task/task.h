@@ -141,6 +141,33 @@ int32_t kwait();
 void kwakeup();
 void kkill();
 
+
+inline void print_curr(task_context_t * curr) {
+	printk_debug("curr 0x%08X\t", curr);
+	printk_debug("curr->eip 0x%08X\t", curr->eip);
+	printk_debug("curr->esp 0x%08X\t", curr->esp);
+	printk_debug("curr->ebp 0x%08X\t", curr->ebp);
+	printk_debug("curr->ebx 0x%08X\t", curr->ebx);
+	printk_debug("curr->ecx 0x%08X\t", curr->ecx);
+	printk_debug("curr->edx 0x%08X\t", curr->edx);
+	printk_debug("curr->esi 0x%08X\t", curr->esi);
+	printk_debug("curr->edi 0x%08X\n", curr->edi);
+	return;
+}
+
+inline void print_next(task_context_t * next) {
+	printk_debug("next 0x%08X\t", next);
+	printk_debug("next->eip 0x%08X\t", next->eip);
+	printk_debug("next->esp 0x%08X\t", next->esp);
+	printk_debug("next->ebp 0x%08X\t", next->ebp);
+	printk_debug("next->ebx 0x%08X\t", next->ebx);
+	printk_debug("next->ecx 0x%08X\t", next->ecx);
+	printk_debug("next->edx 0x%08X\t", next->edx);
+	printk_debug("next->esi 0x%08X\t", next->esi);
+	printk_debug("next->edi 0x%08X\n", next->edi);
+	return;
+}
+
 #ifdef __cplusplus
 }
 #endif
