@@ -9,6 +9,7 @@ extern "C" {
 
 #include "cpu.hpp"
 #include "debug.h"
+#include "assert.h"
 #include "include/kernel.h"
 #include "../drv/clock/include/clock.h"
 #include "../drv/keyboard/include/keyboard.h"
@@ -26,7 +27,7 @@ static int thread2(void * arg) {
 	for(int i = 0 ; i < 100 ; i++) {
 		printk("3");
 	}
-	return 2;
+	return 3;
 }
 
 static int thread3(void * arg) {
@@ -65,18 +66,17 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// showinfo();
 	// test();
 
-	kernel_thread(thread(1), NULL, 0);
-	// kernel_thread(thread2(2), NULL, 0);
-	// kernel_thread(thread3(4), NULL, 0);
+	kernel_thread(thread, NULL, 0);
+	// kernel_thread(thread2, NULL, 0);
+	// kernel_thread(thread3, NULL, 0);
 	cpu_sti();
 
 	for(int i = 0 ; i < 100 ; i++) {
 		printk("8");
 	}
-	// asm ("hlt");
+
 	// 永远不会执行到这里
-	printk_err("Never to be seen.\n");
-	while(1);
+	assert(1, "Never to be seen.\n");
 	return;
 }
 

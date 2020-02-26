@@ -135,8 +135,8 @@ pid_t do_fork(uint32_t flags, pt_regs_t * pt_regs) {
 }
 
 void do_exit(int32_t exit_code) {
-	get_current_task()->status = TASK_ZOMBIE;
-	get_current_task()->exit_code = exit_code;
+	// get_current_task()->status = TASK_ZOMBIE;
+	// get_current_task()->exit_code = exit_code;
 	curr_pid--;
 	curr_task_count--;
 	return;
@@ -144,7 +144,9 @@ void do_exit(int32_t exit_code) {
 
 task_pcb_t * get_current_task() {
 	register uint32_t esp __asm__ ("esp");
-	return (task_pcb_t *)(esp & (~(STACK_SIZE - 1) ) );
+	// printk_debug("esp: 0x%08X\t", esp);
+	// printk_debug("(esp & (~(TASK_STACK_SIZE - 1) ) : 0x%08X\n", (esp & (~(TASK_STACK_SIZE - 1) ) ) );
+	return (task_pcb_t *)(esp & (~(TASK_STACK_SIZE - 1) ) );
 }
 
 void kthread_exit() {
@@ -155,17 +157,22 @@ void kthread_exit() {
 }
 
 task_pcb_t __attribute__( (regparm(3) ) ) * __switch_to(task_pcb_t * curr, task_pcb_t * next) {
+	// printk_debug("__switch_to\n");
 	task_context_t * curr_context = curr->context;
 	task_context_t * next_context = next->context;
-	printk_debug("curr_context: 0x%08X\t", curr_context);
-	printk_debug("next_context: 0x%08X\t", next_context);
+	// printk_debug("curr_context: 0x%08X\t", curr_context);
+	// printk_debug("next_context: 0x%08X\t", next_context);
 
 	tss_set_gate(SEG_TSS, KERNEL_DS, next_context->esp);
 	tss_load();
 
 	__asm__ volatile ("mov %%fs,%0" : "=m" (curr->pt_regs->fs) );
 	__asm__ volatile ("mov %%gs,%0" : "=m" (curr->pt_regs->gs) );
-	printk_debug("-----------\n");
+	// print_stack(15);
+	// print_curr(curr_context);
+	// print_next(next_context);
+	// printk_debug("__switch_to end.\n");
+
 	return curr;
 }
 
