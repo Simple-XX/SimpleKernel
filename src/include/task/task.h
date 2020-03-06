@@ -115,7 +115,7 @@ extern task_pcb_t * curr_task;
 // 内核线程入口函数 tasl_s.s
 extern int32_t kthread_entry(void * args);
 // intr_s.s
-extern void forkret_s(pt_regs_t * pt_regs);
+extern void forkret_s233(pt_regs_t * pt_regs);
 
 // 初始化
 void task_init(void);
