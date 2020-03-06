@@ -10,7 +10,8 @@
 # 加载 idt
 .global idt_load
 idt_load:
-    mov 4(%esp), %eax # 参数保存在 eax
+    # 参数保存在 eax
+    mov 4(%esp), %eax
     lidt (%eax)
     ret
 
@@ -161,4 +162,22 @@ forkret_s:
     # 清理压栈的 错误代码 和 ISR 编号
     add $0x08, %esp
     # 出栈 EIP, CS, EFLAGS, ESP, SS
+    iret
+
+.global forkret_s233
+.extern print_stack
+.extern print_curr
+.extern print_next
+forkret_s233:
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    # Pops edi,esi,ebp...
+    popa
+    # 清理压栈的 错误代码 和 ISR 编号
+    add $0x08, %esp
+    # 出栈 EIP, CS, EFLAGS, ESP, SS
+    push $10
+    call print_stack
     iret
