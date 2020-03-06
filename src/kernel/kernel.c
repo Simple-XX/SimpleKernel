@@ -17,9 +17,10 @@ extern "C" {
 #include "../ds_alg/include/linkedlist.h"
 
 static int32_t thread(void * arg) {
-	for(int i = 0 ; i < 100 ; i++) {
+	for(int i = 0 ; i < 1009 ; i++) {
 		printk("2");
 	}
+	asm ("hlt");
 	return 1;
 }
 
@@ -76,7 +77,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	}
 
 	// 永远不会执行到这里
-	assert(1, "Never to be seen.\n");
+	assert(0, "Never to be seen.\n");
+	cpu_hlt();
 	return;
 }
 
