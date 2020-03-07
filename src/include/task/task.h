@@ -22,7 +22,7 @@ extern "C" {
 // 最大任务数量
 #define TASK_MAX 128
 // 任务栈大小
-#define TASK_STACK_SIZE STACK_SIZE
+#define TASK_STACK_SIZE KERNEL_STACK_SIZE
 
 // 进程状态描述
 typedef

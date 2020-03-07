@@ -155,6 +155,14 @@ static inline uint32_t cpu_read_cr3(void) {
 	return cr3;
 }
 
+// 切换内核栈
+static inline void cpu_switch_stack(ptr_t stack_top) {
+	__asm__ volatile ("mov %0, %%esp" : : "r" (stack_top) );
+	__asm__ volatile ("xor %%ebp, %%ebp" : :);
+	return;
+}
+
+
 // 读取 CR4
 static inline uint32_t cpu_read_cr4(void) {
 	uint32_t cr4;
