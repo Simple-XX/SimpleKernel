@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 #include "stdio.h"
+#include "cpu.hpp"
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "include/bootinit.h"
@@ -20,11 +21,6 @@ extern "C" {
 // 4. Enable paging.
 // 5. Jump to higher half.
 // 6. Remove the lower half kernel mapping.
-
-// 开启分页机制之后的内核栈
-ptr_t kernel_stack_top[STACK_SIZE] __attribute__( (aligned(STACK_SIZE) ) );
-// 内核栈底
-ptr_t kernel_stack_bottom = (ptr_t)kernel_stack_top + STACK_SIZE;
 
 void enable_page(pgd_t * pgd) {
 	// 设置临时页表
@@ -46,7 +42,7 @@ void mm_init() {
 	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (ptr_t)pte_kernel_tmp | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 	// 内核段 pgd_tmp[0x301], 4MB
 	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE) + 1] = (ptr_t)pte_kernel_tmp2 | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
-
+	pgd_tmp[VMM_PGD_INDEX(KERNEL_STACK_TOP)] = (ptr_t)pte_kernel_stack_tmp | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
 	// 将每个页表项赋值
 	// pgd_tmp[0] => pte_init
@@ -66,23 +62,19 @@ void mm_init() {
 	for(uint32_t i = 0, j = VMM_PAGES_PRE_PAGE_TABLE ; i < VMM_PAGES_PRE_PAGE_TABLE  ; i++, j++) {
 		pte_kernel_tmp2[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 	}
-
+	// 映射虚拟地址 0xBFFF8000-0xC0000000 到物理地址 0x00800000-0x00808000
+	for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - KERNEL_STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
+		pte_kernel_stack_tmp[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+	}
 	enable_page(pgd_tmp);
 
-	return;
-}
-
-void switch_stack(ptr_t stack_top) {
-	// 切换内核栈
-	__asm__ volatile ("mov %0, %%esp" : : "r" (stack_top) );
-	__asm__ volatile ("xor %%ebp, %%ebp" : :);
 	return;
 }
 
 // 内核入口函数
 void kernel_entry(ptr_t magic, ptr_t addr) {
 	mm_init();
-	switch_stack(kernel_stack_bottom);
+	cpu_switch_stack(KERNEL_STACK_BOTTOM);
 	kernel_main(magic, KERNEL_BASE + addr);
 	return;
 }

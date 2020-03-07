@@ -16,8 +16,10 @@ extern "C" {
 #include "multiboot2.h"
 
 // 32KB
-#define STACK_SIZE    (0x8000UL)
-#define STACK_PAGES   (STACK_SIZE / PMM_PAGE_SIZE)
+#define KERNEL_STACK_SIZE    (0x8000UL)
+#define KERNEL_STACK_PAGES   (KERNEL_STACK_SIZE / PMM_PAGE_SIZE)
+#define KERNEL_STACK_BOTTOM  (0xC0000000UL)
+#define KERNEL_STACK_TOP     (KERNEL_STACK_BOTTOM - KERNEL_STACK_SIZE)
 // 512 MB
 #define PMM_MAX_SIZE  (0x20000000UL)
 
@@ -68,11 +70,6 @@ extern ptr_t * kernel_text_end;
 extern ptr_t * kernel_data_start;
 extern ptr_t * kernel_data_end;
 extern ptr_t * kernel_end;
-
-// 开启分页机制之后的内核栈顶(低地址)
-extern ptr_t kernel_stack_top[STACK_SIZE];
-// 内核栈的栈底(高地址)
-extern ptr_t kernel_stack_bottom;
 
 extern multiboot_memory_map_entry_t * mmap_entries;
 extern multiboot_mmap_tag_t * mmap_tag;
