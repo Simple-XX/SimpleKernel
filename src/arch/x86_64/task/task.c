@@ -67,22 +67,31 @@ void task_init(void) {
 	cpu_cli();
 	// 创建一个新的进程作为内核进程
 	task_pcb_t * kernel_task = get_current_task();
-	printk_debug("get_current_task(): 0x%08X\n", get_current_task() );
-	bzero(kernel_task, TASK_STACK_SIZE);
-	printk_debug("sdsdsd\n");
+	assert(kernel_task == (ptr_t)KERNEL_STACK_TOP, "kernel_task not correct\n");
+	bzero(kernel_task, sizeof(task_pcb_t) );
 	// 设置进程名
+	kernel_task->name = (char *)kmalloc(TASK_NAME_MAX + 1);
+	bzero(kernel_task->name, TASK_NAME_MAX + 1);
 	strcpy(kernel_task->name, "Kernel task");
 	// 设置页目录
+	kernel_task->mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
+	bzero(kernel_task->mm, sizeof(task_mem_t) );
 	kernel_task->mm->pgd_dir = pgd_kernel;
+	// 设置上下文
+	kernel_task->context = (task_context_t *)kmalloc(sizeof(task_context_t) );
+	bzero(kernel_task->context, sizeof(task_context_t) );
+	// context->eip = (ptr_t)forkret_s233;
+	// context->esp = (ptr_t)task_pcb->pt_regs;
 	// 设置寄存器信息
-	kernel_task->pt_regs->cs = KERNEL_CS;
-	kernel_task->pt_regs->ds = KERNEL_DS;
-	kernel_task->pt_regs->es = KERNEL_DS;
-	kernel_task->pt_regs->fs = KERNEL_DS;
-	kernel_task->pt_regs->gs = KERNEL_DS;
-	kernel_task->pt_regs->user_ss = KERNEL_DS;
-	kernel_task->pt_regs->eflags |= EFLAGS_IF;
-	kernel_task->pt_regs->eip = (ptr_t)forkret_s233;
+	// kernel_task->pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
+	// kernel_task->pt_regs->cs = KERNEL_CS;
+	// kernel_task->pt_regs->ds = KERNEL_DS;
+	// kernel_task->pt_regs->es = KERNEL_DS;
+	// kernel_task->pt_regs->fs = KERNEL_DS;
+	// kernel_task->pt_regs->gs = KERNEL_DS;
+	// kernel_task->pt_regs->user_ss = KERNEL_DS;
+	// kernel_task->pt_regs->eflags |= EFLAGS_IF;
+	// kernel_task->pt_regs->eip = (ptr_t)forkret_s233;
 	// 设置进程运行状态
 	kernel_task->status = TASK_RUNNING;
 	curr_task = kernel_task;
@@ -145,14 +154,13 @@ void do_exit(int32_t exit_code) {
 	return;
 }
 
-task_pcb_t * get_current_task() {
+// 获取正在运行进程的控制结构体
+task_pcb_t * get_current_task(void) {
 	register uint32_t esp __asm__ ("esp");
-	// printk_debug("esp: 0x%08X\t", esp);
-	// printk_debug("(esp & (~(TASK_STACK_SIZE - 1) ) : 0x%08X\n", (esp & (~(TASK_STACK_SIZE - 1) ) ) );
 	return (task_pcb_t *)(esp & (~(TASK_STACK_SIZE - 1) ) );
 }
 
-void kthread_exit() {
+void kthread_exit(void) {
 	register uint32_t val __asm__ ("eax");
 	printk("Thread exited with value %d\n", val);
 	while(1);
