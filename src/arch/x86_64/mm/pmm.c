@@ -71,18 +71,18 @@ void pmm_init() {
 	return;
 }
 
-ptr_t pmm_alloc(uint32_t byte) {
+ptr_t pmm_alloc(size_t byte) {
 	ptr_t page;
 	page = pmm_manager->pmm_manage_alloc(byte);
 	return page;
 }
 
-void pmm_free(ptr_t addr, uint32_t byte) {
+void pmm_free(ptr_t addr, size_t byte) {
 	pmm_manager->pmm_manage_free(addr, byte);
 	return;
 }
 
-uint32_t pmm_free_pages_count(void) {
+size_t pmm_free_pages_count(void) {
 	return pmm_manager->pmm_manage_free_pages_count();
 }
 
