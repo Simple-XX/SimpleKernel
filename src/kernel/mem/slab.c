@@ -211,27 +211,38 @@ void slab_merge(list_entry_t * list) {
 	return;
 }
 
-ptr_t alloc_align(size_t byte, size_t align) {
-	// 所有申请的内存长度(限制最小大小)加上管理头的长度
-	size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
+// 寻找符合要求的内存块，未找到返回 NULL
+static inline list_entry_t * find_entry(size_t len);
+list_entry_t * find_entry(size_t len) {
 	list_entry_t * entry = sb_manage.slab_list;
 
 	do {
 		// 查找符合长度且未使用，符合对齐要求的内存
 		if( (list_slab_block(entry)->len >= len)
-		    && (list_slab_block(entry)->allocated == SLAB_UNUSED)
-		    && ( ( (ptr_t)entry + sizeof(list_entry_t) ) % align == 0) ) {
+		    && (list_slab_block(entry)->allocated == SLAB_UNUSED) ) {
 			// 进行分割，这个函数会同时设置 entry 的信息
 			slab_split(entry, len);
 			sb_manage.mm_free -= list_slab_block(entry)->len;
-			return (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) );
+			return entry;
 		}
 		// 没找到的话就查找下一个
 		else {
 			entry = list_next(entry);
 		}
 	} while(list_next(entry) != sb_manage.slab_list);
-	assert(entry != NULL, "slab.c: alloc\n");
+	return (list_entry_t *)NULL;
+}
+
+ptr_t alloc_align(size_t byte, size_t align) {
+	// 所有申请的内存长度(限制最小大小)加上管理头的长度
+	size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
+	list_entry_t * entry = find_entry(len);
+	if(entry != NULL) {
+		return (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) );
+	}
+	else {
+		entry = list_prev(sb_manage.slab_list);
+	}
 	// 如果执行到这里，说明没有可用空间了，那么申请新的内存页
 	list_entry_t * new_entry;
 	len += sizeof(list_entry_t);
