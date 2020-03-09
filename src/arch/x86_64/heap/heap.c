@@ -23,15 +23,22 @@ void heap_init(void) {
 }
 
 // 内存申请
-ptr_t kmalloc(size_t len) {
+ptr_t kmalloc(size_t byte) {
 	ptr_t addr = 0;
-	addr = heap_manager->heap_manage_malloc(len);
+	addr = heap_manager->heap_manage_malloc_align(byte, 0);
+	return addr;
+}
+
+// 内存申请，单位为 Byte，align 为对齐大小
+ptr_t kmalloc_align(size_t byte, size_t align) {
+	ptr_t addr = 0;
+	addr = heap_manager->heap_manage_malloc_align(byte, align);
 	return addr;
 }
 
 // 内存释放
-void kfree(ptr_t p) {
-	heap_manager->heap_manage_free(p);
+void kfree(ptr_t addr) {
+	heap_manager->heap_manage_free(addr);
 	return;
 }
 
