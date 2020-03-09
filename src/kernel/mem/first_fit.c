@@ -16,10 +16,10 @@ extern "C" {
 #define FF_USED         (0x00)
 #define FF_UNUSED       (0x01)
 
-static void init(ptr_t page_start, uint32_t page_count);
-static ptr_t alloc(uint32_t bytes);
-static void free(ptr_t addr_start, uint32_t bytes);
-static uint32_t free_pages_count(void);
+static void init(ptr_t page_start, size_t page_count);
+static ptr_t alloc(size_t bytes);
+static void free(ptr_t addr_start, size_t bytes);
+static size_t free_pages_count(void);
 
 pmm_manage_t firstfit_manage = {
 	"Fitst Fit",
@@ -35,9 +35,9 @@ typedef
 	// 当前页的地址
 	ptr_t		addr;
 	// 拥有多少个连续的页
-	uint32_t	npages;
+	size_t		npages;
 	// 物理页被引用的次数
-	int32_t		ref;
+	size_t		ref;
 	// 当前页状态
 	uint32_t	flag;
 } chunk_info_t;
@@ -166,9 +166,9 @@ void init(ptr_t page_start, uint32_t page_count) {
 	return;
 }
 
-ptr_t alloc(uint32_t bytes) {
+ptr_t alloc(size_t bytes) {
 	// 计算需要的页数
-	uint32_t pages = bytes / PMM_PAGE_SIZE;
+	size_t pages = bytes / PMM_PAGE_SIZE;
 	// 不足一页的+1
 	if(bytes % PMM_PAGE_SIZE != 0) {
 		pages++;
@@ -207,9 +207,9 @@ ptr_t alloc(uint32_t bytes) {
 	return (ptr_t)NULL;
 }
 
-void free(ptr_t addr_start, uint32_t bytes) {
+void free(ptr_t addr_start, size_t bytes) {
 	// 计算需要的页数
-	uint32_t pages = bytes / PMM_PAGE_SIZE;
+	size_t pages = bytes / PMM_PAGE_SIZE;
 	// 不足一页的+1
 	if(bytes % PMM_PAGE_SIZE != 0) {
 		pages++;
@@ -241,7 +241,7 @@ void free(ptr_t addr_start, uint32_t bytes) {
 	return;
 }
 
-uint32_t free_pages_count() {
+size_t free_pages_count() {
 	return ff_manage.phy_page_now_count;
 }
 
