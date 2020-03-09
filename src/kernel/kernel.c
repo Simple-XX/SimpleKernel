@@ -65,7 +65,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// sched_init();
 
 	// showinfo();
-	// test();
+	test();
 
 	// kernel_thread(thread, NULL, 0);
 	// kernel_thread(thread2, NULL, 0);
