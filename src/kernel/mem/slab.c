@@ -22,24 +22,23 @@ extern "C" {
 // 最小空间
 #define SLAB_MIN (0xFF)
 
-// static void init(ptr_t addr_start);
-void init(ptr_t addr_start);
-static ptr_t alloc(uint32_t bytes);
+static void init(ptr_t addr_start);
+static ptr_t alloc_align(size_t byte, size_t align);
 static void free(ptr_t addr);
 
 heap_manage_t slab_manage = {
 	"Slab",
 	&init,
-	&alloc,
+	&alloc_align,
 	&free
 };
 
 typedef
     struct slab_block {
 	// 该内存块是否已经被申请
-	uint32_t	allocated;
+	size_t		allocated;
 	// 当前内存块的长度，不包括头长度
-	uint32_t	len;
+	size_t		len;
 } slab_block_t;
 
 // 一个仅在这里使用的简单循环链表
@@ -54,17 +53,17 @@ typedef
 typedef
     struct slab_manage {
 	// 管理的内存起始地址，包括头的位置
-	ptr_t			addr_start;
+	ptr_t		addr_start;
 	// 管理的内存结束地址
-	ptr_t			addr_end;
+	ptr_t		addr_end;
 	// 物理内存的总大小，包括头的大小
-	uint32_t		mm_total;
+	size_t		mm_total;
 	// 当前空闲内存大小
-	uint32_t		mm_free;
+	size_t		mm_free;
 	// 当前存在的内存数量
-	uint32_t		block_count;
+	size_t		block_count;
 	// 内存头链表
-	list_entry_t *		slab_list;
+	list_entry_t * slab_list;
 } slab_manage_t;
 
 // 初始化节点
@@ -168,11 +167,11 @@ void init(ptr_t addr_start) {
 	return;
 }
 
-static inline void slab_split(list_entry_t * list, uint32_t len);
+static inline void slab_split(list_entry_t * list, size_t byte);
 static inline void slab_merge(list_entry_t * list);
 
 // 切分内存块，len 为调用者申请的大小，不包括头大小
-void slab_split(list_entry_t * entry, uint32_t len) {
+void slab_split(list_entry_t * entry, size_t len) {
 	// 如果剩余内存大于内存头的长度+设定的最小长度
 	if( (list_slab_block(entry)->len - len > sizeof(list_entry_t) + SLAB_MIN) ) {
 		// 添加新的链表项，位于旧表项开始地址+旧表项长度
@@ -212,14 +211,16 @@ void slab_merge(list_entry_t * list) {
 	return;
 }
 
-ptr_t alloc(uint32_t bytes) {
+ptr_t alloc_align(size_t byte, size_t align) {
 	// 所有申请的内存长度(限制最小大小)加上管理头的长度
-	uint32_t len = (bytes > SLAB_MIN) ? bytes : SLAB_MIN;
+	size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
 	list_entry_t * entry = sb_manage.slab_list;
 
 	do {
-		// 查找符合长度且未使用的内存
-		if( (list_slab_block(entry)->len >= len) && (list_slab_block(entry)->allocated == SLAB_UNUSED) ) {
+		// 查找符合长度且未使用，符合对齐要求的内存
+		if( (list_slab_block(entry)->len >= len)
+		    && (list_slab_block(entry)->allocated == SLAB_UNUSED)
+		    && ( ( (ptr_t)entry + sizeof(list_entry_t) ) % align == 0) ) {
 			// 进行分割，这个函数会同时设置 entry 的信息
 			slab_split(entry, len);
 			sb_manage.mm_free -= list_slab_block(entry)->len;
@@ -240,7 +241,7 @@ ptr_t alloc(uint32_t bytes) {
 		return (ptr_t)NULL;
 	}
 	ptr_t va = (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) + list_slab_block(entry)->len);
-	uint32_t pages = len / VMM_PAGE_SIZE;
+	size_t pages = len / VMM_PAGE_SIZE;
 	if(len % VMM_PAGE_SIZE != 0) {
 		pages += 1;
 	}
