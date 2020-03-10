@@ -233,6 +233,24 @@ list_entry_t * find_entry(size_t len) {
 	return (list_entry_t *)NULL;
 }
 
+// 申请新的内存页
+// 参数分别为：虚拟地址起点，要申请的页数
+static inline ptr_t alloc_page(ptr_t va, size_t page);
+ptr_t alloc_page(ptr_t va, size_t page) {
+	ptr_t pa = pmm_alloc(page * VMM_PAGE_SIZE);
+	if(pa == (ptr_t)NULL) {
+		printk_err("Error at slab.c ptr_t alloc_page(): no enough physical memory\n");
+		return (ptr_t)NULL;
+	}
+	for(ptr_t va_start = va, pa_start = pa ;
+	    pa_start < pa + VMM_PAGE_SIZE * page ;
+	    pa_start += VMM_PAGE_SIZE, va_start += VMM_PAGE_SIZE) {
+		map(pgd_kernel, va_start, pa_start, VMM_PAGE_PRESENT | VMM_PAGE_RW);
+	}
+	bzero( (void *)va, VMM_PAGE_SIZE * page);
+	return va;
+}
+
 ptr_t alloc_align(size_t byte, size_t align) {
 	// 所有申请的内存长度(限制最小大小)加上管理头的长度
 	size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
@@ -240,29 +258,17 @@ ptr_t alloc_align(size_t byte, size_t align) {
 	if(entry != NULL) {
 		return (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) );
 	}
-	else {
-		entry = list_prev(sb_manage.slab_list);
-	}
+	entry = list_prev(sb_manage.slab_list);
 	// 如果执行到这里，说明没有可用空间了，那么申请新的内存页
 	list_entry_t * new_entry;
 	len += sizeof(list_entry_t);
-	ptr_t pa = pmm_alloc(len);
-	if(pa == (ptr_t)NULL) {
-		printk_err("Error at slab.c ptr_t alloc(): no enough physical memory\n");
+	size_t pages = (len % VMM_PAGE_SIZE == 0) ? (len / VMM_PAGE_SIZE) : ( (len / VMM_PAGE_SIZE) + 1);
+	ptr_t va = alloc_page( (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) + list_slab_block(entry)->len), pages);
+	if(va == (ptr_t)NULL) {
+		printk_err("Error at slab.c ptr_t alloc_align(): no enough physical memory\n");
 		return (ptr_t)NULL;
 	}
-	ptr_t va = (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) + list_slab_block(entry)->len);
-	size_t pages = len / VMM_PAGE_SIZE;
-	if(len % VMM_PAGE_SIZE != 0) {
-		pages += 1;
-	}
-	for(ptr_t va_start = va, pa_start = pa ;
-	    pa_start < pa + VMM_PAGE_SIZE * pages ;
-	    pa_start += VMM_PAGE_SIZE, va_start += VMM_PAGE_SIZE) {
-		map(pgd_kernel, va_start, pa_start, VMM_PAGE_PRESENT | VMM_PAGE_RW);
-	}
 	new_entry = (list_entry_t *)va;
-	bzero( (void *)new_entry, VMM_PAGE_SIZE * pages);
 	list_init(new_entry);
 	list_slab_block(new_entry)->allocated = SLAB_USED;
 	// 新表项的可用长度为减去头的大小
