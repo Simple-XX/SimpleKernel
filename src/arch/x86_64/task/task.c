@@ -32,6 +32,7 @@ ListEntry * wait_list = NULL;
 static inline ptr_t alloc_stack(void);
 static inline ptr_t alloc_stack(void) {
 
+	return 0;
 }
 
 // 返回一个空的任务控制块
