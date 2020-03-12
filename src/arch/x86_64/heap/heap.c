@@ -25,14 +25,7 @@ void heap_init(void) {
 // 内存申请
 ptr_t kmalloc(size_t byte) {
 	ptr_t addr = 0;
-	addr = heap_manager->heap_manage_malloc_align(byte, 0);
-	return addr;
-}
-
-// 内存申请，单位为 Byte，align 为对齐大小
-ptr_t kmalloc_align(size_t byte, size_t align) {
-	ptr_t addr = 0;
-	addr = heap_manager->heap_manage_malloc_align(byte, align);
+	addr = heap_manager->heap_manage_malloc(byte);
 	return addr;
 }
 
