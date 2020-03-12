@@ -23,13 +23,13 @@ extern "C" {
 #define SLAB_MIN (0xFF)
 
 static void init(ptr_t addr_start);
-static ptr_t alloc_align(size_t byte, size_t align);
+static ptr_t alloc(size_t byte);
 static void free(ptr_t addr);
 
 heap_manage_t slab_manage = {
 	"Slab",
 	&init,
-	&alloc_align,
+	&alloc,
 	&free
 };
 
@@ -229,8 +229,8 @@ void slab_merge(list_entry_t * list) {
 }
 
 // 寻找符合要求的内存块，未找到返回 NULL
-static inline list_entry_t * find_entry(size_t len, size_t align);
-list_entry_t * find_entry(size_t len, size_t align) {
+static inline list_entry_t * find_entry(size_t len);
+list_entry_t * find_entry(size_t len) {
 	list_entry_t * entry = sb_manage.slab_list;
 	do {
 		// 查找符合长度且未使用，符合对齐要求的内存
@@ -267,19 +267,16 @@ ptr_t alloc_page(ptr_t va, size_t page) {
 }
 
 // align 参数为按照 align 地址对齐
-ptr_t alloc_align(size_t byte, size_t align) {
+ptr_t alloc(size_t byte) {
 	// 所有申请的内存长度(限制最小大小)加上管理头的长度
 	size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
-	list_entry_t * entry = find_entry(len, align);
-	printk_debug("find_entry: 0x%08X\n", entry);
+	list_entry_t * entry = find_entry(len);
 	if(entry != NULL) {
 		printk_debug("find_entry->len: 0x%08X\n", list_slab_block(entry)->len);
 		set_used(entry);
 		return (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) );
 	}
 	entry = list_prev(sb_manage.slab_list);
-	printk_debug("entry: 0x%08X\n", entry);
-	printk_debug("list_slab_block(entry)->len: 0x%08X\n", list_slab_block(entry)->len);
 	// 如果执行到这里，说明没有可用空间了，那么申请新的内存页
 	list_entry_t * new_entry;
 	len += sizeof(list_entry_t);
@@ -290,22 +287,13 @@ ptr_t alloc_align(size_t byte, size_t align) {
 		return (ptr_t)NULL;
 	}
 	new_entry = (list_entry_t *)va;
-	// printk_debug("new_entry: 0x%08X\n", new_entry);
 	list_init(new_entry);
-	// printk_debug("1\n");
 	// 新表项的可用长度为减去头的大小
 	list_slab_block(new_entry)->len = (ptr_t)(pages * VMM_PAGE_SIZE) - sizeof(list_entry_t);
-	// printk_debug("entry: 0x%08X\n", entry);
-	// printk_debug("list_slab_block(entry)->len: 0x%08X\n", list_slab_block(entry)->len);
-	// printk_debug("new_entry: 0x%08X\n", new_entry);
-	// printk_debug("list_slab_block(new_entry)->len: 0x%08X\n", list_slab_block(new_entry)->len);
 	list_add_after(entry, new_entry);
-	// printk_debug("5\n");
 	// 进行分割
 	slab_split(new_entry, len);
-	// printk_debug("6\n");
 	set_used(new_entry);
-	// printk_debug("return new_entry: 0x%08X\n", new_entry);
 	return (ptr_t)( (ptr_t)new_entry + sizeof(list_entry_t) );
 }
 
