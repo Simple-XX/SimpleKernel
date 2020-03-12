@@ -72,21 +72,6 @@ bool test_heap() {
 	kfree( (ptr_t)allc_addr4);
 	ptr_t new_addr = (ptr_t)kmalloc(9000);
 	printk_test("New kmalloc heap addr: 0x%08X\n", new_addr);
-	printk_test("Test Heap kmalloc_align :\n");
-	allc_addr1 = (ptr_t)kmalloc_align(1, 0x1000);
-	printk_test("kmalloc_align heap addr: 0x%08X\n", allc_addr1);
-	// allc_addr2 = (ptr_t)kmalloc(9000);
-	// printk_test("kmalloc heap addr: 0x%08X\n", allc_addr2);
-	// allc_addr3 = (ptr_t)kmalloc(4095);
-	// printk_test("kmalloc heap addr: 0x%08X\n", allc_addr3);
-	// allc_addr4 = (ptr_t)kmalloc(12);
-	// printk_test("kmalloc heap addr: 0x%08X\n", allc_addr4);
-	// printk_test("Test Heap kfree :\n");
-	// kfree( (ptr_t)allc_addr1);
-	// kfree( (ptr_t)allc_addr2);
-	// kfree( (ptr_t)allc_addr3);
-	// kfree( (ptr_t)allc_addr4);
-
 	return true;
 }
 
