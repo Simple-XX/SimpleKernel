@@ -78,7 +78,7 @@ void unmap(pgd_t * pgd_now, ptr_t va) {
 	return;
 }
 
-uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
+uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t * pa) {
 	uint32_t pgd_idx = VMM_PGD_INDEX(va);
 	uint32_t pte_idx = VMM_PTE_INDEX(va);
 
@@ -89,8 +89,10 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa) {
 	// 转换到内核线性地址
 	pte = (pte_t *)VMM_PA_LA( (ptr_t)pte);
 	// 如果地址有效而且指针不为 NULL
-	if( ( (void *)pte[pte_idx] != NULL) && ( (void *)pa != NULL) ) {
-		pa = pte[pte_idx] & VMM_PAGE_MASK;
+	if( (void *)pte[pte_idx] != NULL) {
+		if( (void *)pa != NULL) {
+			pa = pte[pte_idx] & VMM_PAGE_MASK;
+		}
 		return 1;
 	}
 	return 0;
