@@ -28,6 +28,12 @@ ListEntry * runnable_list = NULL;
 // 等待进程链表
 ListEntry * wait_list = NULL;
 
+// 申请栈空间
+static inline ptr_t alloc_stack(void);
+static inline ptr_t alloc_stack(void) {
+
+}
+
 // 返回一个空的任务控制块
 static task_pcb_t * alloc_task_pcb(void) {
 	cpu_cli();
