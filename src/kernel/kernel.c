@@ -60,12 +60,12 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// 堆初始化
 	heap_init();
 	// 任务初始化
-	// task_init();
+	task_init();
 	// 调度初始化
-	// sched_init();
+	sched_init();
 
 	// showinfo();
-	test();
+	// test();
 
 	// kernel_thread(thread, NULL, 0);
 	// kernel_thread(thread2, NULL, 0);
