@@ -74,7 +74,7 @@ void task_init(void) {
 	cpu_cli();
 	// 创建一个新的进程作为内核进程
 	task_pcb_t * kernel_task = get_current_task();
-	assert(kernel_task == (ptr_t)KERNEL_STACK_TOP, "kernel_task not correct\n");
+	assert( (ptr_t)kernel_task == KERNEL_STACK_TOP, "kernel_task not correct\n");
 	bzero(kernel_task, sizeof(task_pcb_t) );
 	// 设置进程名
 	kernel_task->name = (char *)kmalloc(TASK_NAME_MAX + 1);
