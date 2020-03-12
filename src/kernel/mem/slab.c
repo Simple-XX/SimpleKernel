@@ -260,13 +260,39 @@ ptr_t alloc_page(ptr_t va, size_t page) {
 	for(ptr_t va_start = va, pa_start = pa ;
 	    pa_start < pa + VMM_PAGE_SIZE * page ;
 	    pa_start += VMM_PAGE_SIZE, va_start += VMM_PAGE_SIZE) {
-		map(pgd_kernel, va_start, pa_start, VMM_PAGE_PRESENT | VMM_PAGE_RW);
+		// 如果当前线性地址没有映射
+		if(get_mapping(pgd_kernel, va_start, (ptr_t *)NULL) == 0) {
+			map(pgd_kernel, va_start, pa_start, VMM_PAGE_PRESENT | VMM_PAGE_RW);
+		}
+		else {
+			// 如果有部分映射了，则全部 unmap
+			ptr_t addr = (ptr_t)NULL;
+			for(addr = va ; addr < va_start ; addr += VMM_PAGE_SIZE) {
+				unmap(pgd_kernel, addr);
+			}
+			// 并重新计算 va 的值
+			// 运行到这里时 addr 尚未被检测，所以下面的代码从 addr 开始
+			// 计算方法：addr~addr+page*VMM_PAGE_SIZE 的 get_mapping 结果全部为 0
+			ptr_t tmp = addr;
+			while(addr < tmp + page * VMM_PAGE_SIZE) {
+				// 如果遇到映射过的
+				if(get_mapping(pgd_kernel, addr, (ptr_t *)NULL) != 0) {
+					// 更新 addr 地址
+					addr += VMM_PAGE_SIZE;
+					tmp = addr;
+				}
+				addr += VMM_PAGE_SIZE;
+			}
+			// 这时 addr 就是符合要求的地址
+			// 全部映射即可
+			map(pgd_kernel, addr, pa_start, VMM_PAGE_PRESENT | VMM_PAGE_RW);
+			return addr;
+		}
 	}
 	bzero( (void *)va, VMM_PAGE_SIZE * page);
 	return va;
 }
 
-// align 参数为按照 align 地址对齐
 ptr_t alloc(size_t byte) {
 	// 所有申请的内存长度(限制最小大小)加上管理头的长度
 	size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
