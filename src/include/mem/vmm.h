@@ -98,7 +98,7 @@ void unmap(pgd_t * pgd_now, ptr_t va);
 
 // 如果虚拟地址 va 映射到物理地址则返回 1
 // 同时如果 pa 不是空指针则把物理地址写入 pa 参数
-uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t pa);
+uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t * pa);
 
 // 更换当前页目录
 void switch_pgd(ptr_t pd);
