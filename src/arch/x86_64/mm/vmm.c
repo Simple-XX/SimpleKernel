@@ -91,7 +91,7 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t * pa) {
 	// 如果地址有效而且指针不为 NULL
 	if( (void *)pte[pte_idx] != NULL) {
 		if( (void *)pa != NULL) {
-			pa = pte[pte_idx] & VMM_PAGE_MASK;
+			*pa = pte[pte_idx] & VMM_PAGE_MASK;
 		}
 		return 1;
 	}
