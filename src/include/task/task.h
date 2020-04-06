@@ -135,6 +135,10 @@ void do_exit(int32_t exit_code);
 pid_t kfork(int (* fn)(void *), void * arg);
 // 线程退出
 void kexit(void);
+// 显示指定 pid 进程信息，pid 为 TASK_MAX+1 时，显示所有进程信息
+void show_task(pid_t pid);
+// 显示目前运行进程信息
+void show_curr_task(void);
 
 int32_t kexec();
 int32_t kwait();
