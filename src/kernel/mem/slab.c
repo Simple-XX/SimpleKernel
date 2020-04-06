@@ -186,11 +186,12 @@ void init(ptr_t addr_start) {
 	return;
 }
 
-static inline void slab_split(list_entry_t * list, size_t byte);
+static inline list_entry_t * slab_split(list_entry_t * list, size_t byte);
 static inline void slab_merge(list_entry_t * list);
 
 // 切分内存块，len 为调用者申请的大小，不包括头大小
-void slab_split(list_entry_t * entry, size_t len) {
+// 返回分割出来的管理头地址
+list_entry_t * slab_split(list_entry_t * entry, size_t len) {
 	// 如果剩余内存大于内存头的长度+设定的最小长度
 	if( (list_slab_block(entry)->len - len > sizeof(list_entry_t) + SLAB_MIN) ) {
 		// 添加新的链表项，位于旧表项开始地址+旧表项长度
@@ -204,8 +205,9 @@ void slab_split(list_entry_t * entry, size_t len) {
 		list_add_after(entry, new_entry);
 		// 重新设置旧链表信息
 		list_slab_block(entry)->len = len;
+		return new_entry;
 	}
-	return;
+	return (list_entry_t *)NULL;
 }
 
 // 合并内存块
