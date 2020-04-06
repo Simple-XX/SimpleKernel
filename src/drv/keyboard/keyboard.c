@@ -188,7 +188,7 @@ uint8_t keyboard_read_from_buff() {
 	return scancode;
 }
 
-void keyboard_read(pt_regs_t * regs UNUSED) {
+void keyboard_read(pt_regs_t * regs __UNUSED__) {
 	keyboard_handler();
 	if(kb_in.count > 0) {
 		uint8_t scancode = keyboard_read_from_buff();
