@@ -15,8 +15,8 @@ extern "C" {
 #include "e820.h"
 #include "multiboot2.h"
 
-// 32KB
-#define KERNEL_STACK_SIZE    (0x8000UL)
+// 8KB
+#define KERNEL_STACK_SIZE    (0x2000UL)
 #define KERNEL_STACK_PAGES   (KERNEL_STACK_SIZE / PMM_PAGE_SIZE)
 #define KERNEL_STACK_BOTTOM  (0xC0000000UL)
 #define KERNEL_STACK_TOP     (KERNEL_STACK_BOTTOM - KERNEL_STACK_SIZE)
