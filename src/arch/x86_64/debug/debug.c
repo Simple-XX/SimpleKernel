@@ -12,7 +12,7 @@ extern "C" {
 #include "cpu.hpp"
 #include "debug.h"
 
-void debug_init(ptr_t magic UNUSED, ptr_t addr UNUSED) {
+void debug_init(ptr_t magic __UNUSED__, ptr_t addr __UNUSED__) {
 	cpu_cli();
 	printk_debug("debug_init\n");
 	// multiboot2_init(magic, addr);

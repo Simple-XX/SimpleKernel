@@ -24,7 +24,7 @@ typedef unsigned int size_t;
 #undef NULL
 #define NULL ( (void *)0)
 
-#define UNUSED __attribute__( (unused) )
+#define __UNUSED__ __attribute__( (unused) )
 
 
 #ifdef __cplusplus
