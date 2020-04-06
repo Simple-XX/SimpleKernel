@@ -196,33 +196,114 @@ void kexit() {
 	return;
 }
 
+// 比较方法
+static int vs_med(void * v1, void * v2) {
+	return ( (task_pcb_t *)v1)->pid == (pid_t)v2;
+}
+
+// 从 pid 获取进程结构体
+task_pcb_t * get_task(pid_t pid) {
+	// 从全局链表中查找
+	task_pcb_t * task = list_find_data(task_list, vs_med, pid);
+	// 如果为空
+	if(task == NULL) {
+		return (task_pcb_t *)NULL;
+	}
+	return task;
+}
+
+// 显示指定 pid 进程的 mem 信息
+void show_task_mem(pid_t pid) {
+	task_pcb_t * task = get_task(pid);
+	if(task != NULL) {
+		task_mem_t * task_mm = task->mm;
+		printk("mm: 0x%08X\t", task_mm);
+		printk("mm->pgd_dir: 0x%08X\t", task_mm->pgd_dir);
+		printk("mm->stack_top: 0x%08X\t", task_mm->stack_top);
+		printk("mm->stack_bottom: 0x%08X\t", task_mm->stack_bottom);
+		printk("mm->task_start: 0x%08X\t", task_mm->task_start);
+		printk("mm->code_start: 0x%08X\t", task_mm->code_start);
+		printk("mm->code_end: 0x%08X\t", task_mm->code_end);
+		printk("mm->data_start: 0x%08X\t", task_mm->data_start);
+		printk("mm->data_end: 0x%08X\t", task_mm->data_end);
+		printk("mm->task_end: 0x%08X\n", task_mm->task_end);
+		return;
+	}
+	else {
+		printk("This pid 0x%08X not exist!\n", pid);
+		return;
+	}
+}
+
+// 显示指定 pid 进程的 pt_regs 信息
+void show_task_pt_regs(pid_t pid) {
+	task_pcb_t * task = get_task(pid);
+	if(task != NULL) {
+		show_pt_regs(task->pt_regs);
+	}
+	else {
+		printk("This pid 0x%08X not exist!\n", pid);
+	}
+	return;
+}
+
+// 显示指定 pid 进程的 context 信息
+void show_task_context(pid_t pid) {
+	task_pcb_t * task = get_task(pid);
+	if(task != NULL) {
+		task_context_t * context = task->context;
+		printk("context: 0x%08X\t", context);
+		printk("context->eip: 0x%08X\t", context->eip);
+		printk("context->esp: 0x%08X\t", context->esp);
+		printk("context->ebp: 0x%08X\t", context->ebp);
+		printk("context->ebx: 0x%08X\t", context->ebx);
+		printk("context->ecx: 0x%08X\t", context->ecx);
+		printk("context->edx: 0x%08X\t", context->edx);
+		printk("context->esi: 0x%08X\t", context->esi);
+		printk("context->edi: 0x%08X\n", context->edi);
+	}
+	else {
+		printk("This pid 0x%08X not exist!\n", pid);
+	}
+	return;
+}
+
 // 显示指定 pid 进程信息，pid 为 TASK_MAX+1 时，显示所有进程信息
-void show_task(pid_t pid){
-    return;
+void show_task(pid_t pid) {
+	if(pid > TASK_MAX) {
+
+	}
+	else {
+		task_pcb_t * task = get_task(pid);
+		if(task != NULL) {
+			printk("status: 0x%08X\t", task->status);
+			printk("pid: 0x%08X\t", task->pid);
+			printk("name: %s\t", task->name);
+			printk("run_time: 0x%08X\t", task->run_time);
+			printk("parent: %s\t", task->parent);
+			show_task_mem(task->pid);
+			show_pt_regs(task->pt_regs);
+			show_task_context(task->pid);
+		}
+		else {
+			printk("This pid 0x%08X not exist!\n", pid);
+		}
+	}
+	return;
 }
 
 // 显示目前运行进程信息
-void show_curr_task(void){
-    printk("status: 0x%08X\t", get_current_task()->status);
-    printk("pid: 0x%08X\t", get_current_task()->pid);
-    printk("name: %s\t", get_current_task()->name);
-    printk("run_time: 0x%08X\t", get_current_task()->run_time);
-    printk("parent: %s\t", get_current_task()->parent);
-    printk("mm: 0x%08X\t", get_current_task()->mm);
-    printk("mm->pgd_dir: 0x%08X\t", get_current_task()->mm->pgd_dir);
-    printk("mm->stack_top: 0x%08X\t", get_current_task()->mm->stack_top);
-    printk("mm->stack_bottom: 0x%08X\t", get_current_task()->mm->stack_bottom);
-    printk("mm->task_start: 0x%08X\t", get_current_task()->mm->task_start);
-    printk("mm->code_start: 0x%08X\t", get_current_task()->mm->code_start);
-    printk("mm->code_end: 0x%08X\t", get_current_task()->mm->code_end);
-    printk("mm->data_start: 0x%08X\t", get_current_task()->mm->data_start);
-    printk("mm->data_end: 0x%08X\t", get_current_task()->mm->data_end);
-    printk("mm->task_end: %s\t", get_current_task()->mm->task_end);
-    printk("pt_regs: 0x%08X\t", get_current_task()->pt_regs);
-    show_pt_regs(get_current_task()->pt_regs);
-
-    printk("context->: 0x%08X\t", get_current_task()->context->);
-    return;
+void show_curr_task(void) {
+	task_pcb_t * task = get_current_task();
+	printk("status: 0x%08X\t", task->status);
+	printk("pid: 0x%08X\t", task->pid);
+	printk("name: %s\t", task->name);
+	printk("run_time: 0x%08X\t", task->run_time);
+	printk("parent: %s\t", task->parent);
+	show_task_mem(task->pid);
+	show_pt_regs(task->pt_regs);
+	show_task_context(task->pid);
+	return;
 }
 
 #ifdef __cplusplus
