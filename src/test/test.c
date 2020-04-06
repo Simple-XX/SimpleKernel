@@ -39,11 +39,11 @@ bool test_pmm(void) {
 	return true;
 }
 
-bool test_vmm() {
+bool test_vmm(void) {
 	return true;
 }
 
-bool test_libc() {
+bool test_libc(void) {
 	return true;
 }
 
@@ -68,7 +68,7 @@ static int32_t thread4(void * arg __UNUSED__) {
 	return 4;
 }
 
-bool test_task() {
+bool test_task(void) {
 	pid_t pid1 = kernel_thread(thread2, NULL, 0);
 	pid_t pid2 = kernel_thread(thread3, NULL, 0);
 	pid_t pid3 = kernel_thread(thread4, NULL, 0);
@@ -78,15 +78,14 @@ bool test_task() {
 	set_task_name(pid3, "test3");
 
 	show_task(TASK_MAX + 1);
-
 	return true;
 }
 
-bool test_sched() {
+bool test_sched(void) {
 	return true;
 }
 
-bool test_heap() {
+bool test_heap(void) {
 	printk_test("Test Heap kmalloc :\n");
 	ptr_t allc_addr1 = (ptr_t)kmalloc(1);
 	printk_test("kmalloc heap addr: 0x%08X\n", allc_addr1);
