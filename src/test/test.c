@@ -69,9 +69,15 @@ static int32_t thread4(void * arg __UNUSED__) {
 }
 
 bool test_task() {
-    kernel_thread(thread2, NULL, 0);
-    kernel_thread(thread3, NULL, 0);
-    kernel_thread(thread4, NULL, 0);
+	pid_t pid1 = kernel_thread(thread2, NULL, 0);
+	pid_t pid2 = kernel_thread(thread3, NULL, 0);
+	pid_t pid3 = kernel_thread(thread4, NULL, 0);
+
+	set_task_name(pid1, "test1");
+	set_task_name(pid2, "test2");
+	set_task_name(pid3, "test3");
+
+	show_task(TASK_MAX + 1);
 
 	return true;
 }
@@ -92,11 +98,11 @@ bool test_heap() {
 	printk_test("kmalloc heap addr: 0x%08X\n", allc_addr4);
 	printk_test("Test Heap kfree: 0x%08X\n", allc_addr1);
 	kfree( (ptr_t)allc_addr1);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr2);
+	printk_test("Test Heap kfree: 0x%08X\n", allc_addr2);
 	kfree( (ptr_t)allc_addr2);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr3);
+	printk_test("Test Heap kfree: 0x%08X\n", allc_addr3);
 	kfree( (ptr_t)allc_addr3);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr4);
+	printk_test("Test Heap kfree: 0x%08X\n", allc_addr4);
 	kfree( (ptr_t)allc_addr4);
 	ptr_t new_addr = (ptr_t)kmalloc(9000);
 	printk_test("New kmalloc heap addr: 0x%08X\n", new_addr);

@@ -43,7 +43,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	// sched_init();
 
 	// showinfo();
-	// test();
+	test();
 
 	cpu_sti();
 
