@@ -196,6 +196,35 @@ void kexit() {
 	return;
 }
 
+// 显示指定 pid 进程信息，pid 为 TASK_MAX+1 时，显示所有进程信息
+void show_task(pid_t pid){
+    return;
+}
+
+// 显示目前运行进程信息
+void show_curr_task(void){
+    printk("status: 0x%08X\t", get_current_task()->status);
+    printk("pid: 0x%08X\t", get_current_task()->pid);
+    printk("name: %s\t", get_current_task()->name);
+    printk("run_time: 0x%08X\t", get_current_task()->run_time);
+    printk("parent: %s\t", get_current_task()->parent);
+    printk("mm: 0x%08X\t", get_current_task()->mm);
+    printk("mm->pgd_dir: 0x%08X\t", get_current_task()->mm->pgd_dir);
+    printk("mm->stack_top: 0x%08X\t", get_current_task()->mm->stack_top);
+    printk("mm->stack_bottom: 0x%08X\t", get_current_task()->mm->stack_bottom);
+    printk("mm->task_start: 0x%08X\t", get_current_task()->mm->task_start);
+    printk("mm->code_start: 0x%08X\t", get_current_task()->mm->code_start);
+    printk("mm->code_end: 0x%08X\t", get_current_task()->mm->code_end);
+    printk("mm->data_start: 0x%08X\t", get_current_task()->mm->data_start);
+    printk("mm->data_end: 0x%08X\t", get_current_task()->mm->data_end);
+    printk("mm->task_end: %s\t", get_current_task()->mm->task_end);
+    printk("pt_regs: 0x%08X\t", get_current_task()->pt_regs);
+    show_pt_regs(get_current_task()->pt_regs);
+
+    printk("context->: 0x%08X\t", get_current_task()->context->);
+    return;
+}
+
 #ifdef __cplusplus
 }
 #endif

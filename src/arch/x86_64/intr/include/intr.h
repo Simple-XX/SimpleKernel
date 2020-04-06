@@ -187,7 +187,8 @@ typedef void (* isr_irq_func_t)();
 
 // intr 初始化
 void intr_init(void);
-
+// 输出 pt_regs 信息
+void show_pt_regs(pt_regs_t * pt_regs);
 // 系统中断
 void divide_error(pt_regs_t * regs);
 void debug(pt_regs_t * regs);
