@@ -38,24 +38,28 @@ static task_pcb_t * alloc_task_pcb(void) {
 	// 填充
 	task_pcb->status = TASK_UNINIT;
 	task_pcb->pid = ++curr_pid;
-	char * name = (char *)kmalloc(TASK_NAME_MAX + 1);
-	bzero(name, TASK_NAME_MAX + 1);
-	task_pcb->name = name;
+
+	task_pcb->name = (char *)kmalloc(TASK_NAME_MAX + 1);
+	bzero(task_pcb->name, TASK_NAME_MAX + 1);
+
 	task_pcb->run_time = 0;
 	task_pcb->parent = NULL;
-	task_mem_t * mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
-	bzero(mm, sizeof(task_mem_t) );
-	task_pcb->mm = mm;
+
+	task_pcb->mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
+	bzero(task_pcb->mm, sizeof(task_mem_t) );
 	task_pcb->mm->stack_top =  (ptr_t)task_pcb;
 	task_pcb->mm->stack_bottom = task_pcb->mm->stack_top + TASK_STACK_SIZE;
+
 	task_pcb->pt_regs = (pt_regs_t *)( (ptr_t)task_pcb->mm->stack_bottom - sizeof(pt_regs_t) );
 	bzero(task_pcb->pt_regs, sizeof(pt_regs_t) );
-	task_context_t * context = (task_context_t *)kmalloc(sizeof(task_context_t) );
-	bzero(context, sizeof(task_context_t) );
-	context->eip = (ptr_t)forkret_s233;
-	context->esp = (ptr_t)task_pcb->pt_regs;
-	task_pcb->context = context;
+
+	task_pcb->context = (task_context_t *)kmalloc(sizeof(task_context_t) );
+	bzero(task_pcb->context, sizeof(task_context_t) );
+	task_pcb->context->eip = (ptr_t)forkret_s233;
+	task_pcb->context->esp = (ptr_t)task_pcb->pt_regs;
+
 	task_pcb->exit_code = 0xCD;
+
 	list_append(&task_list, task_pcb);
 	// 增加全局进程数量
 	curr_task_count++;
@@ -97,6 +101,7 @@ void task_init(void) {
 	curr_task = kernel_task;
 	// 添加到可运行/正在运行任链表
 	list_append(&runnable_list, kernel_task);
+	list_append(&task_list, kernel_task);
 	printk_info("task_init\n");
 	return;
 }
@@ -135,7 +140,6 @@ pid_t do_fork(uint32_t flags, pt_regs_t * pt_regs) {
 	task_pcb_t * task = alloc_task_pcb();
 	assert(task != NULL, "Error: task.c task==NULL");
 	copy_thread(task, pt_regs);
-	task->pid = ++curr_pid;
 	task->status = TASK_RUNNABLE;
 	list_append(&runnable_list, task);
 	cpu_sti();
@@ -196,6 +200,20 @@ void kexit() {
 	return;
 }
 
+// 设置进程名
+int32_t set_task_name(pid_t pid, char * name) {
+	task_pcb_t * task = get_task(pid);
+	if(task != NULL) {
+		// 设置进程名
+		strcpy(task->name, name);
+		return 0;
+	}
+	else {
+		printk("This pid 0x%08X not exist!\n", pid);
+		return -1;
+	}
+}
+
 // 比较方法
 static int vs_med(void * v1, void * v2) {
 	return ( (task_pcb_t *)v1)->pid == (pid_t)v2;
@@ -203,13 +221,14 @@ static int vs_med(void * v1, void * v2) {
 
 // 从 pid 获取进程结构体
 task_pcb_t * get_task(pid_t pid) {
-	// 从全局链表中查找
-	task_pcb_t * task = list_find_data(task_list, vs_med, pid);
-	// 如果为空
-	if(task == NULL) {
+	ListEntry * tmp = list_find_data(task_list, vs_med, (void *)pid);
+	if(tmp != NULL) {
+		return (task_pcb_t *)list_data(tmp);
+	}
+	else {
+		printk("This pid 0x%08X not exist!\n", pid);
 		return (task_pcb_t *)NULL;
 	}
-	return task;
 }
 
 // 显示指定 pid 进程的 mem 信息
@@ -270,17 +289,26 @@ void show_task_context(pid_t pid) {
 
 // 显示指定 pid 进程信息，pid 为 TASK_MAX+1 时，显示所有进程信息
 void show_task(pid_t pid) {
+	task_pcb_t * task = NULL;
 	if(pid > TASK_MAX) {
-
-	}
-	else {
-		task_pcb_t * task = get_task(pid);
-		if(task != NULL) {
-			printk("status: 0x%08X\t", task->status);
+		for(uint32_t i = 0 ; i < list_length(task_list) ; i++) {
+			task = (task_pcb_t *)list_nth_data(task_list, i);
+			printk("task: 0x%08X\t", task);
 			printk("pid: 0x%08X\t", task->pid);
 			printk("name: %s\t", task->name);
+			printk("status: 0x%08X\t", task->status);
 			printk("run_time: 0x%08X\t", task->run_time);
-			printk("parent: %s\t", task->parent);
+			printk("parent: 0x%08X\n", task->parent);
+		}
+	}
+	else {
+		task = get_task(pid);
+		if(task != NULL) {
+			printk("pid: 0x%08X\t", task->pid);
+			printk("name: %s\t", task->name);
+			printk("status: 0x%08X\t", task->status);
+			printk("run_time: 0x%08X\t", task->run_time);
+			printk("parent: 0x%08X\t", task->parent);
 			show_task_mem(task->pid);
 			show_pt_regs(task->pt_regs);
 			show_task_context(task->pid);
@@ -295,11 +323,11 @@ void show_task(pid_t pid) {
 // 显示目前运行进程信息
 void show_curr_task(void) {
 	task_pcb_t * task = get_current_task();
-	printk("status: 0x%08X\t", task->status);
 	printk("pid: 0x%08X\t", task->pid);
 	printk("name: %s\t", task->name);
+	printk("status: 0x%08X\t", task->status);
 	printk("run_time: 0x%08X\t", task->run_time);
-	printk("parent: %s\t", task->parent);
+	printk("parent: 0x%08X\t", task->parent);
 	show_task_mem(task->pid);
 	show_pt_regs(task->pt_regs);
 	show_task_context(task->pid);

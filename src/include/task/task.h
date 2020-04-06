@@ -135,6 +135,8 @@ void do_exit(int32_t exit_code);
 pid_t kfork(int (* fn)(void *), void * arg);
 // 线程退出
 void kexit(void);
+// 设置进程名
+int32_t set_task_name(pid_t pid, char * name);
 
 // 从 pid 获取进程结构体
 task_pcb_t * get_task(pid_t pid);
