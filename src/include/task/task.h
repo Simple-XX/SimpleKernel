@@ -135,6 +135,15 @@ void do_exit(int32_t exit_code);
 pid_t kfork(int (* fn)(void *), void * arg);
 // 线程退出
 void kexit(void);
+
+// 从 pid 获取进程结构体
+task_pcb_t * get_task(pid_t pid);
+// 显示指定 pid 进程的 mem 信息
+void show_task_mem(pid_t pid);
+// 显示指定 pid 进程的 pt_regs 信息
+void show_task_pt_regs(pid_t pid);
+// 显示指定 pid 进程的 context 信息
+void show_task_context(pid_t pid);
 // 显示指定 pid 进程信息，pid 为 TASK_MAX+1 时，显示所有进程信息
 void show_task(pid_t pid);
 // 显示目前运行进程信息
