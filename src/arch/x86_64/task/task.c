@@ -202,14 +202,17 @@ void kexit() {
 
 // 设置进程名
 int32_t set_task_name(pid_t pid, char * name) {
+	cpu_cli();
 	task_pcb_t * task = get_task(pid);
 	if(task != NULL) {
 		// 设置进程名
 		strcpy(task->name, name);
+		cpu_sti();
 		return 0;
 	}
 	else {
 		printk("This pid 0x%08X not exist!\n", pid);
+		cpu_sti();
 		return -1;
 	}
 }
@@ -221,12 +224,15 @@ static int vs_med(void * v1, void * v2) {
 
 // 从 pid 获取进程结构体
 task_pcb_t * get_task(pid_t pid) {
+	cpu_cli();
 	ListEntry * tmp = list_find_data(task_list, vs_med, (void *)pid);
 	if(tmp != NULL) {
+		cpu_sti();
 		return (task_pcb_t *)list_data(tmp);
 	}
 	else {
 		printk("This pid 0x%08X not exist!\n", pid);
+		cpu_sti();
 		return (task_pcb_t *)NULL;
 	}
 }
