@@ -178,6 +178,6 @@ forkret_s233:
     # 清理压栈的 错误代码 和 ISR 编号
     add $0x08, %esp
     # 出栈 EIP, CS, EFLAGS, ESP, SS
-    push $10
-    call print_stack
+    // push $10
+    // call print_stack
     iret

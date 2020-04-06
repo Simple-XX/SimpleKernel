@@ -15,6 +15,7 @@ extern "C" {
 #define assert(test, info) \
 	if(!(test) ) { \
 		printk_err(info); \
+        __asm__ volatile ("cli" ::: "memory"); \
 		while(1) { }; \
 	}
 
