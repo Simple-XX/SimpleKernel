@@ -24,7 +24,7 @@ void heap_init(void) {
 
 // 内存申请
 ptr_t kmalloc(size_t byte) {
-	ptr_t addr = 0;
+	ptr_t addr = (ptr_t)NULL;
 	addr = heap_manager->heap_manage_malloc(byte);
 	return addr;
 }
