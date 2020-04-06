@@ -188,7 +188,7 @@ task_pcb_t __attribute__( (regparm(3) ) ) * __switch_to(task_pcb_t * curr, task_
 }
 
 // 线程创建
-pid_t kfork(int (* fn)(void *) UNUSED, void * arg UNUSED) {
+pid_t kfork(int (* fn)(void *) __UNUSED__, void * arg __UNUSED__) {
 	return 0;
 }
 

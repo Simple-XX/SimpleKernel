@@ -14,7 +14,7 @@ extern "C" {
 #include "sched/sched.h"
 #include "debug.h"
 
-void clock_handler(pt_regs_t * regs UNUSED) {
+void clock_handler(pt_regs_t * regs __UNUSED__) {
 	schedule();
 	return;
 }
@@ -24,12 +24,13 @@ void sched_init() {
 	// 注册时间相关的处理函数
 	register_interrupt_handler(IRQ0, &clock_handler);
 	enable_irq(IRQ0);
-	// curr_task = NULL;
+	// curr_task = get_current_task();
+    // printk_debug("curr_task: 0x%08X\n", curr_task);
 	printk_info("sched init\n");
 	return;
 }
 
-void sched_switch(task_context_t * curr UNUSED, task_context_t * next UNUSED) {
+void sched_switch(task_context_t * curr __UNUSED__, task_context_t * next __UNUSED__) {
 	return;
 }
 

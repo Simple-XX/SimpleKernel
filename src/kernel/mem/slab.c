@@ -300,7 +300,6 @@ ptr_t alloc(size_t byte) {
 	size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
 	list_entry_t * entry = find_entry(len);
 	if(entry != NULL) {
-		printk_debug("find_entry->len: 0x%08X\n", list_slab_block(entry)->len);
 		set_used(entry);
 		return (ptr_t)( (ptr_t)entry + sizeof(list_entry_t) );
 	}
