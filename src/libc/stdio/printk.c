@@ -57,7 +57,6 @@ int32_t printk_info(const char * fmt, ...) {
 }
 
 int32_t printk_debug(const char * fmt, ...) {
-#ifdef DEBUG
 	printk_color(COL_DEBUG, "[DEBUG] ");
 	va_list args;
 	int i;
@@ -66,9 +65,6 @@ int32_t printk_debug(const char * fmt, ...) {
 	va_end(args);
 	console_writestring(buf);
 	return i;
-#else
-	return 0;
-#endif
 }
 
 int32_t printk_test(const char * fmt, ...) {
