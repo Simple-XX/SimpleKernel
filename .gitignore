@@ -6,4 +6,4 @@
 bochsout.txt
 *.o
 *.gch
-*.tags
+*.tags*

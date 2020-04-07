@@ -78,6 +78,11 @@ bool test_task(void) {
 	set_task_name(pid3, "test3");
 
 	show_task(TASK_MAX + 1);
+	show_task_mem(0);
+	show_task_pt_regs(0);
+	show_task_context(0);
+	show_task(pid1);
+
 	return true;
 }
 
