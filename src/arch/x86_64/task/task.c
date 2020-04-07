@@ -14,6 +14,7 @@ extern "C" {
 #include "mem/pmm.h"
 #include "heap/heap.h"
 #include "task/task.h"
+#include "debug.h"
 
 // 当前任务指针
 task_pcb_t * curr_task = NULL;
@@ -87,7 +88,7 @@ void task_init(void) {
 	// context->eip = (ptr_t)forkret_s233;
 	// context->esp = (ptr_t)task_pcb->pt_regs;
 	// 设置寄存器信息
-	// kernel_task->pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
+	kernel_task->pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
 	// kernel_task->pt_regs->cs = KERNEL_CS;
 	// kernel_task->pt_regs->ds = KERNEL_DS;
 	// kernel_task->pt_regs->es = KERNEL_DS;
@@ -174,7 +175,7 @@ void kthread_exit(void) {
 
 task_pcb_t __attribute__( (regparm(3) ) ) * __switch_to(task_pcb_t * curr, task_pcb_t * next) {
 	// printk_debug("__switch_to\n");
-	task_context_t * curr_context = curr->context;
+	// task_context_t * curr_context = curr->context;
 	task_context_t * next_context = next->context;
 	// printk_debug("curr_context: 0x%08X\t", curr_context);
 	// printk_debug("next_context: 0x%08X\t", next_context);
