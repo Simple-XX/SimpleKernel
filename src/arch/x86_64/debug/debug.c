@@ -10,12 +10,16 @@ extern "C" {
 #include "stdio.h"
 #include "intr/include/intr.h"
 #include "cpu.hpp"
+#include "sync.hpp"
 #include "debug.h"
 
 void debug_init(ptr_t magic __UNUSED__, ptr_t addr __UNUSED__) {
-	cpu_cli();
-	printk_debug("debug_init\n");
-	// multiboot2_init(magic, addr);
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		printk_debug("debug_init\n");
+	}
+	local_intr_restore(intr_flag);
 	return;
 }
 

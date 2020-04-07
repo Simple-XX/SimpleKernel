@@ -11,6 +11,7 @@ extern "C" {
 #include "string.h"
 #include "cpu.hpp"
 #include "debug.h"
+#include "sync.hpp"
 #include "intr/include/intr.h"
 #include "mem/vmm.h"
 
@@ -22,28 +23,32 @@ pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__
 pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
 void vmm_init(void) {
-	cpu_cli();
-	register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
 
-	// 映射全部内核
-	uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
-	for(uint32_t i = pgd_idx, j = 0 ; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx ; i++, j++) {
-		pgd_kernel[i] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+		// 映射全部内核
+		uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
+		for(uint32_t i = pgd_idx, j = 0 ; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx ; i++, j++) {
+			pgd_kernel[i] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+		}
+		ptr_t * pte = (ptr_t *)pte_kernel;
+		for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_KERNEL ; i++) {
+			pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+		}
+		// 映射内核栈
+		// 0x2FF
+		pgd_idx = VMM_PGD_INDEX(KERNEL_STACK_TOP);
+		pgd_kernel[pgd_idx] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel_stack) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+		// i: 0x3F8~0x400
+		for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - KERNEL_STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
+			pte_kernel_stack[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+		}
+		switch_pgd(VMM_LA_PA( (ptr_t)pgd_kernel) );
+		printk_info("vmm_init\n");
 	}
-	ptr_t * pte = (ptr_t *)pte_kernel;
-	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_KERNEL ; i++) {
-		pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
-	}
-	// 映射内核栈
-	// 0x2FF
-	pgd_idx = VMM_PGD_INDEX(KERNEL_STACK_TOP);
-	pgd_kernel[pgd_idx] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel_stack) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
-	// i: 0x3F8~0x400
-	for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - KERNEL_STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
-		pte_kernel_stack[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
-	}
-	switch_pgd(VMM_LA_PA( (ptr_t)pgd_kernel) );
-	printk_info("vmm_init\n");
+	local_intr_restore(intr_flag);
 	return;
 }
 
@@ -61,7 +66,7 @@ void map(pgd_t * pgd_now, ptr_t va, ptr_t pa, uint32_t flags) {
 	}
 
 	pte[pte_idx] = (pa & VMM_PAGE_MASK) | flags;
-	// // 通知 CPU 更新页表缓存
+	// 通知 CPU 更新页表缓存
 	CPU_INVLPG(va);
 	return;
 }
@@ -99,7 +104,12 @@ uint32_t get_mapping(pgd_t * pgd_now, ptr_t va, ptr_t * pa) {
 }
 
 void switch_pgd(ptr_t pd) {
-	__asm__ volatile ("mov %0, %%cr3" : : "r" (pd) );
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		__asm__ volatile ("mov %0, %%cr3" : : "r" (pd) );
+	}
+	local_intr_restore(intr_flag);
 }
 
 void page_fault(pt_regs_t * pt_regs) {

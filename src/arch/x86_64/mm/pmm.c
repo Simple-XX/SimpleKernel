@@ -13,6 +13,7 @@ extern "C" {
 #include "assert.h"
 #include "debug.h"
 #include "cpu.hpp"
+#include "sync.hpp"
 #include "mem/pmm.h"
 #include "mem/firstfit.h"
 
@@ -58,16 +59,20 @@ void pmm_mamage_init(e820map_t * e820map) {
 }
 
 void pmm_init() {
-	cpu_cli();
-	e820map_t e820map;
-	bzero(&e820map, sizeof(e820map_t) );
-	pmm_get_ram_info(&e820map);
-	pmm_phy_init(&e820map);
-	pmm_mamage_init(&e820map);
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		e820map_t e820map;
+		bzero(&e820map, sizeof(e820map_t) );
+		pmm_get_ram_info(&e820map);
+		pmm_phy_init(&e820map);
+		pmm_mamage_init(&e820map);
 
-	printk_info("pmm_init\n");
-	printk_info("phy_pages_count: %d\n", phy_pages_count);
-	printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count() );
+		printk_info("pmm_init\n");
+		printk_info("phy_pages_count: %d\n", phy_pages_count);
+		printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count() );
+	}
+	local_intr_restore(intr_flag);
 	return;
 }
 
