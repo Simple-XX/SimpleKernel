@@ -10,6 +10,7 @@ extern "C" {
 #include "string.h"
 #include "assert.h"
 #include "cpu.hpp"
+#include "sync.hpp"
 #include "gdt/include/gdt.h"
 #include "mem/pmm.h"
 #include "heap/heap.h"
@@ -31,7 +32,6 @@ ListEntry * wait_list = NULL;
 
 // 返回一个空的任务控制块
 static task_pcb_t * alloc_task_pcb(void) {
-	cpu_cli();
 	// 申请内存
 	task_pcb_t * task_pcb = (task_pcb_t *)kmalloc(TASK_STACK_SIZE);
 	assert(task_pcb != NULL, "Error at task.c: alloc_task_pcb. No enough memory!\n");
@@ -69,47 +69,50 @@ static task_pcb_t * alloc_task_pcb(void) {
 
 // 为正在运行的进程初始化控制信息
 void task_init(void) {
-	cpu_cli();
-	// 创建一个新的进程作为内核进程
-	task_pcb_t * kernel_task = get_current_task();
-	assert( (ptr_t)kernel_task == KERNEL_STACK_TOP, "kernel_task not correct\n");
-	bzero(kernel_task, sizeof(task_pcb_t) );
-	// 设置进程名
-	kernel_task->name = (char *)kmalloc(TASK_NAME_MAX + 1);
-	bzero(kernel_task->name, TASK_NAME_MAX + 1);
-	strcpy(kernel_task->name, "Kernel task");
-	// 设置页目录
-	kernel_task->mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
-	bzero(kernel_task->mm, sizeof(task_mem_t) );
-	kernel_task->mm->pgd_dir = pgd_kernel;
-	// 设置上下文
-	kernel_task->context = (task_context_t *)kmalloc(sizeof(task_context_t) );
-	bzero(kernel_task->context, sizeof(task_context_t) );
-	// context->eip = (ptr_t)forkret_s233;
-	// context->esp = (ptr_t)task_pcb->pt_regs;
-	// 设置寄存器信息
-	kernel_task->pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
-	// kernel_task->pt_regs->cs = KERNEL_CS;
-	// kernel_task->pt_regs->ds = KERNEL_DS;
-	// kernel_task->pt_regs->es = KERNEL_DS;
-	// kernel_task->pt_regs->fs = KERNEL_DS;
-	// kernel_task->pt_regs->gs = KERNEL_DS;
-	// kernel_task->pt_regs->user_ss = KERNEL_DS;
-	// kernel_task->pt_regs->eflags |= EFLAGS_IF;
-	// kernel_task->pt_regs->eip = (ptr_t)forkret_s233;
-	// 设置进程运行状态
-	kernel_task->status = TASK_RUNNING;
-	curr_task = kernel_task;
-	// 添加到可运行/正在运行任链表
-	list_append(&runnable_list, kernel_task);
-	list_append(&task_list, kernel_task);
-	printk_info("task_init\n");
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		// 创建一个新的进程作为内核进程
+		task_pcb_t * kernel_task = get_current_task();
+		assert( (ptr_t)kernel_task == KERNEL_STACK_TOP, "kernel_task not correct\n");
+		bzero(kernel_task, sizeof(task_pcb_t) );
+		// 设置进程名
+		kernel_task->name = (char *)kmalloc(TASK_NAME_MAX + 1);
+		bzero(kernel_task->name, TASK_NAME_MAX + 1);
+		strcpy(kernel_task->name, "Kernel task");
+		// 设置页目录
+		kernel_task->mm = (task_mem_t *)kmalloc(sizeof(task_mem_t) );
+		bzero(kernel_task->mm, sizeof(task_mem_t) );
+		kernel_task->mm->pgd_dir = pgd_kernel;
+		// 设置上下文
+		kernel_task->context = (task_context_t *)kmalloc(sizeof(task_context_t) );
+		bzero(kernel_task->context, sizeof(task_context_t) );
+		// context->eip = (ptr_t)forkret_s233;
+		// context->esp = (ptr_t)task_pcb->pt_regs;
+		// 设置寄存器信息
+		kernel_task->pt_regs = (pt_regs_t *)kmalloc(sizeof(pt_regs_t) );
+		// kernel_task->pt_regs->cs = KERNEL_CS;
+		// kernel_task->pt_regs->ds = KERNEL_DS;
+		// kernel_task->pt_regs->es = KERNEL_DS;
+		// kernel_task->pt_regs->fs = KERNEL_DS;
+		// kernel_task->pt_regs->gs = KERNEL_DS;
+		// kernel_task->pt_regs->user_ss = KERNEL_DS;
+		// kernel_task->pt_regs->eflags |= EFLAGS_IF;
+		// kernel_task->pt_regs->eip = (ptr_t)forkret_s233;
+		// 设置进程运行状态
+		kernel_task->status = TASK_RUNNING;
+		curr_task = kernel_task;
+		// 添加到可运行/正在运行任链表
+		list_append(&runnable_list, kernel_task);
+		list_append(&task_list, kernel_task);
+		printk_info("task_init\n");
+	}
+	local_intr_restore(intr_flag);
 	return;
 }
 
 // 创建内核进程
 pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
-	cpu_cli();
 	pt_regs_t pt_regs;
 	bzero(&pt_regs, sizeof(pt_regs_t) );
 	pt_regs.cs = KERNEL_CS;
@@ -126,7 +129,6 @@ pid_t kernel_thread(int32_t (* fun)(void *), void * args, uint32_t flags) {
 
 // 将 pt_reg 拷贝到 PCB 中
 static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
-	cpu_cli();
 	memcpy(task->pt_regs, pt_regs, sizeof(pt_regs_t) );
 	task->pt_regs->eax = 0;
 	task->pt_regs->user_esp = (ptr_t)task->mm->stack_bottom;
@@ -136,19 +138,16 @@ static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
 
 // 创建 PCB，设置相关信息后加入调度链表
 pid_t do_fork(uint32_t flags __UNUSED__, pt_regs_t * pt_regs) {
-	cpu_cli();
 	assert(curr_task_count < TASK_MAX, "Error: task.c curr_task_count >= TASK_MAX");
 	task_pcb_t * task = alloc_task_pcb();
 	assert(task != NULL, "Error: task.c task==NULL");
 	copy_thread(task, pt_regs);
 	task->status = TASK_RUNNABLE;
 	list_append(&runnable_list, task);
-	cpu_sti();
 	return task->pid;
 }
 
 void do_exit(int32_t exit_code) {
-	cpu_cli();
 	printk_debug("do_exit\n");
 	get_current_task()->status = TASK_ZOMBIE;
 	get_current_task()->exit_code = exit_code;
@@ -156,14 +155,20 @@ void do_exit(int32_t exit_code) {
 	curr_task_count--;
 	print_stack(10);
 	// asm ("hlt");
-	cpu_sti();
 	return;
 }
 
 // 获取正在运行进程的控制结构体
 task_pcb_t * get_current_task(void) {
-	register uint32_t esp __asm__ ("esp");
-	return (task_pcb_t *)(esp & (~(TASK_STACK_SIZE - 1) ) );
+	task_pcb_t * task = (task_pcb_t *)NULL;
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		register uint32_t esp __asm__ ("esp");
+		task = (task_pcb_t *)(esp & (~(TASK_STACK_SIZE - 1) ) );
+	}
+	local_intr_restore(intr_flag);
+	return task;
 }
 
 void kthread_exit(void) {
@@ -204,17 +209,14 @@ void kexit() {
 
 // 设置进程名
 int32_t set_task_name(pid_t pid, char * name) {
-	cpu_cli();
 	task_pcb_t * task = get_task(pid);
 	if(task != NULL) {
 		// 设置进程名
 		strcpy(task->name, name);
-		cpu_sti();
 		return 0;
 	}
 	else {
 		printk("This pid 0x%08X not exist!\n", pid);
-		cpu_sti();
 		return -1;
 	}
 }
@@ -226,15 +228,12 @@ static int vs_med(void * v1, void * v2) {
 
 // 从 pid 获取进程结构体
 task_pcb_t * get_task(pid_t pid) {
-	cpu_cli();
 	ListEntry * tmp = list_find_data(task_list, vs_med, (void *)pid);
 	if(tmp != NULL) {
-		cpu_sti();
 		return (task_pcb_t *)list_data(tmp);
 	}
 	else {
 		printk("This pid 0x%08X not exist!\n", pid);
-		cpu_sti();
 		return (task_pcb_t *)NULL;
 	}
 }

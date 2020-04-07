@@ -8,19 +8,23 @@ extern "C" {
 #endif
 
 #include "cpu.hpp"
+#include "sync.hpp"
 #include "intr/include/intr.h"
 #include "gdt/include/gdt.h"
 #include "arch_init.h"
 
 void arch_init(void) {
-	cpu_cli();
-	// GDT 初始化
-	gdt_init();
-	// IDT 初始化
-	intr_init();
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		// GDT 初始化
+		gdt_init();
+		// IDT 初始化
+		intr_init();
+	}
+	local_intr_restore(intr_flag);
 	return;
 }
-
 
 #ifdef __cplusplus
 }
