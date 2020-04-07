@@ -134,7 +134,7 @@ static void copy_thread(task_pcb_t * task, pt_regs_t * pt_regs) {
 }
 
 // 创建 PCB，设置相关信息后加入调度链表
-pid_t do_fork(uint32_t flags, pt_regs_t * pt_regs) {
+pid_t do_fork(uint32_t flags __UNUSED__, pt_regs_t * pt_regs) {
 	cpu_cli();
 	assert(curr_task_count < TASK_MAX, "Error: task.c curr_task_count >= TASK_MAX");
 	task_pcb_t * task = alloc_task_pcb();
@@ -148,8 +148,9 @@ pid_t do_fork(uint32_t flags, pt_regs_t * pt_regs) {
 
 void do_exit(int32_t exit_code) {
 	cpu_cli();
-	// get_current_task()->status = TASK_ZOMBIE;
-	// get_current_task()->exit_code = exit_code;
+	printk_debug("do_exit\n");
+	get_current_task()->status = TASK_ZOMBIE;
+	get_current_task()->exit_code = exit_code;
 	curr_pid--;
 	curr_task_count--;
 	print_stack(10);
