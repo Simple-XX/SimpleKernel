@@ -150,7 +150,17 @@ See CONTRIBUTING.md.
 
 [c-algorithms](https://github.com/fragglet/c-algorithms)
 
-## Sponsor
+[Linux内核中的中断栈与内核栈的补充说明](http://blog.chinaunix.net/uid-23769728-id-3077874.html)
+
+[Linux进程管理 (1)进程的诞生](https://www.cnblogs.com/arnoldlu/p/8466928.html)
+
+## Donors
+
+- [digmouse233](https://github.com/digmouse233)
+
+- l*e
+
+## Donate
 
 Thank you!
 (Please specify the GitHub id for joining the sponsor list
