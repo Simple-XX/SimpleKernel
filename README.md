@@ -24,15 +24,15 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
 ## 开发环境
 
-- Ubuntu Linux 
+- Ubuntu Linux
 
     注意：未测试
-    
+
     - bochs
     - i386-elf tool chain
     i386-elf-binutils, i386-elf-gcc, i386-elf-grub
     - xorriso
-    
+
 - Mac
 
     - Homebrew
@@ -153,6 +153,16 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 [DNKernel](https://github.com/morimolymoly/DNKernel)
 
 [c-algorithms](https://github.com/fragglet/c-algorithms)
+
+[Linux内核中的中断栈与内核栈的补充说明](http://blog.chinaunix.net/uid-23769728-id-3077874.html)
+
+[Linux进程管理 (1)进程的诞生](https://www.cnblogs.com/arnoldlu/p/8466928.html)
+
+## 捐助者
+
+- [digmouse233](https://github.com/digmouse233)
+
+- l*e
 
 ## 支持作者
 
