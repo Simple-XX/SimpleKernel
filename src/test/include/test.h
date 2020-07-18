@@ -11,7 +11,6 @@ extern "C" {
 #endif
 
 #include "stdbool.h"
-
 bool test(void);
 bool test_pmm(void);
 bool test_vmm(void);
