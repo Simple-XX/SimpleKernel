@@ -35,9 +35,20 @@ void enable_page(pgd_t * pgd) {
 
 // 这时操作的是临时对象，正式初始化交给 kernel_main()
 void mm_init() {
+	//将虚拟地址前512MB全都映射到物理内存前512MB，一一对应，为物理内存分配作准备，然后在虚拟内存分配中重新映射
+	//计算512MB需要多少个目录项
+	for(uint32_t i=0;i<PMM_MAX_SIZE/VMM_PAGE_TABLE_SIZE;i++)
+	{
+		for(uint32_t j =i*VMM_PAGES_PRE_PAGE_TABLE  ; j < (i+1)*VMM_PAGES_PRE_PAGE_TABLE ; j++) 
+		{
+		// 物理地址由 (i << 12) 给出
+		pte_memory[i][j-i*VMM_PAGES_PRE_PAGE_TABLE] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+		}
+		pgd_tmp[i]=(ptr_t)pte_memory[i] | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	}
 	// init 段, 4MB
 	// 因为 mm_init 返回后仍然在 init 段，不映射的话会爆炸的
-	pgd_tmp[0] = (ptr_t)pte_init | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+	//pgd_tmp[0] = (ptr_t)pte_init | VMM_PAGE_PRESENT | VMM_PAGE_RW;
 	// 内核段 pgd_tmp[0x300], 4MB
 	pgd_tmp[VMM_PGD_INDEX(KERNEL_BASE)] = (ptr_t)pte_kernel_tmp | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 	// 内核段 pgd_tmp[0x301], 4MB
@@ -46,10 +57,10 @@ void mm_init() {
 	// 映射内核虚拟地址 4MB 到物理地址的前 4MB
 	// 将每个页表项赋值
 	// pgd_tmp[0] => pte_init
-	for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++) {
+	//for(uint32_t j =0  ; j < VMM_PAGES_PRE_PAGE_TABLE ; j++) {
 		// 物理地址由 (i << 12) 给出
-		pte_init[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
-	}
+	//	pte_init[j] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+	//}
 
 	// 映射 kernel 段 4MB
 	// 映射虚拟地址 0xC0000000-0xC0400000 到物理地址 0x00000000-0x00400000

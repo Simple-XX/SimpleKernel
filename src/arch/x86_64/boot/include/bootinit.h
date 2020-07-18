@@ -26,9 +26,10 @@ extern "C" {
 // 用于映射 init 段与内核段
 __attribute__( (section(".init.data") ) )
 pgd_t pgd_tmp[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
-// init 段
+// 所有物理内存
 __attribute__( (section(".init.data") ) )
-pte_t pte_init[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//pte_t pte_init[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+pte_t pte_memory[PMM_MAX_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核段，共 8MB
 __attribute__( (section(".init.data") ) )
 pte_t pte_kernel_tmp[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
