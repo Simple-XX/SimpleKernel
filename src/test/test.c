@@ -18,24 +18,23 @@ extern "C" {
 #include "task/task.h"
 #include "sched/sched.h"
 #include "include/test.h"
-
+#include "mem/firstfit.h"
 bool test_pmm(void) {
-	printk_test("Test pmm_alloc :\n");
-	ptr_t allc_addr1 = pmm_alloc(1);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr1);
-	ptr_t allc_addr2 = pmm_alloc(9000);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr2);
-	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
-	pmm_free(allc_addr2, 9000);
-	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
-	ptr_t allc_addr3 = pmm_alloc(1);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr3);
-	ptr_t allc_addr4 = pmm_alloc(1);
-	printk_test("pmm_alloc addr: 0x%08X\n", allc_addr4);
-	pmm_free(allc_addr1, 1);
-	pmm_free(allc_addr3, 1);
-	pmm_free(allc_addr4, 1);
-	printk_test("Free pages count: %d\n", pmm_free_pages_count() );
+	ptr_t allc_addr = 0;
+	printk_test("Test Physical Memory Alloc :\n");
+	allc_addr = pmm_alloc(1,DMA);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+	allc_addr = pmm_alloc(9000,DMA);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA) );
+	pmm_free_page(allc_addr, 9000,DMA);
+	printk_test("Free!\n");
+	printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA) );
+	allc_addr = pmm_alloc(1,DMA);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+	allc_addr = pmm_alloc(1,DMA);
+	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA) );
 	return true;
 }
 
@@ -114,11 +113,11 @@ bool test_heap(void) {
 }
 
 bool test(void) {
-	// test_pmm();
+	 test_pmm();
 	// test_vmm();
 	// test_libc();
 	// test_heap();
-	test_task();
+	//test_task();
 	// test_sched();
 	return true;
 }

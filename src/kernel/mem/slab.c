@@ -165,7 +165,7 @@ static inline void set_unused(list_entry_t * entry) {
 void init(ptr_t addr_start) {
 	// 设置第一块内存的信息
 	// 首先给链表中添加一个大小为 1 页的块
-	ptr_t pa = pmm_alloc(VMM_PAGE_SIZE);
+	ptr_t pa = pmm_alloc(VMM_PAGE_SIZE,NORMAL);
 	ptr_t va = addr_start;
 	// 映射内存
 	map(pgd_kernel, va, pa, VMM_PAGE_PRESENT | VMM_PAGE_RW);
@@ -254,7 +254,7 @@ list_entry_t * find_entry(size_t len) {
 // 参数分别为：虚拟地址起点，要申请的页数
 static inline ptr_t alloc_page(ptr_t va, size_t page);
 ptr_t alloc_page(ptr_t va, size_t page) {
-	ptr_t pa = pmm_alloc(page * VMM_PAGE_SIZE);
+	ptr_t pa = pmm_alloc(page * VMM_PAGE_SIZE,NORMAL);
 	if(pa == (ptr_t)NULL) {
 		printk_err("Error at slab.c ptr_t alloc_page(): no enough physical memory\n");
 		return (ptr_t)NULL;

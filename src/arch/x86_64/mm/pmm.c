@@ -17,8 +17,8 @@ extern "C" {
 #include "mem/pmm.h"
 #include "mem/firstfit.h"
 
-// 物理页帧数组长度
-static uint32_t phy_pages_count;
+// 物理页帧数组长度,可用内存总页数
+static uint32_t phy_pages_count=0;
 
 static const pmm_manage_t * pmm_manager  = &firstfit_manage;
 
@@ -29,8 +29,9 @@ void pmm_get_ram_info(e820map_t * e820map) {
 	    mmap_entries = (multiboot_memory_map_entry_t *)( (uint32_t)mmap_entries
 	    + ( (struct multiboot_tag_mmap *)mmap_tag)->entry_size) ) {
 		// 如果是可用内存
-		if( (unsigned)mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE
-		    && (unsigned)(mmap_entries->addr & 0xFFFFFFFF) == 0x100000) {
+		//printk("addr:%x%x,len:%x%x,type:%x:\n",mmap_entries->addr,mmap_entries->len,mmap_entries->type);
+		if((unsigned)mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE)//&& (unsigned)(mmap_entries->addr & 0xFFFFFFFF) == 0x100000
+		{   
 			e820map->map[e820map->nr_map].addr = mmap_entries->addr;
 			e820map->map[e820map->nr_map].length = mmap_entries->len;
 			e820map->map[e820map->nr_map].type = mmap_entries->type;
@@ -41,54 +42,144 @@ void pmm_get_ram_info(e820map_t * e820map) {
 }
 
 void pmm_phy_init(e820map_t * e820map) {
-	// 计算物理页总数
+	//分区页面总数
+	uint32_t count_dma=0,count_normal=0,count_highmem=0;
+	//分区空闲页面总数
+	uint32_t free_dma=0,free_normal=0,free_highmem=0;
+	/****************************/
+	//初始化mem_map数组
+	for(uint32_t i=0;i<PMM_PAGE_MAX_SIZE;i++)
+	{
+		ptr_t address=i*PMM_PAGE_SIZE;
+		mem_page[i].start=address;
+		mem_page[i].ref=-1;
+		if(address<(ptr_t)NORMAL_start_addr) //小于16MB
+			count_dma++;
+		else if(address<(ptr_t)HIGHMEM_start_addr) //大于16MB小于110MB
+			count_normal++;
+		else
+			count_highmem++;
+	}
+	/****************************/
+	// 计算可用内存段的物理页总数	
 	for(uint32_t i = 0 ; i < e820map->nr_map ; i++) {
-		for(uint64_t addr = e820map->map[i].addr ;
+		//printk_info("addr:0x%X\n",&kernel_init_start);
+		//printk_info("addr:0x%X\n",(ptr_t)&kernel_data_end);
+		for(ptr_t addr = e820map->map[i].addr ;
 		    addr < e820map->map[i].addr + e820map->map[i].length ;
 		    addr += PMM_PAGE_SIZE) {
+			/*******************************************************/
+			//初始化可用内存段的物理页数组
+			//ptr_t address=(ptr_t)addr;
+			//地址对应的物理页数组下标
+			uint32_t j=(addr&PMM_PAGE_MASK)/PMM_PAGE_SIZE;
+			//mem_page[j].start=address;
+			if(addr>=(ptr_t)&kernel_init_start && addr<=((ptr_t)&kernel_end-(ptr_t)0xc0000000))
+				//内核已占用
+				mem_page[j].ref=1;
+			else if(addr<(ptr_t)NORMAL_start_addr) //小于16MB
+			{
+				mem_page[j].zone=0;
+				mem_page[j].ref=0;
+				free_dma++;
+			}
+			else if(addr<(ptr_t)HIGHMEM_start_addr) //大于16MB小于110MB
+			{
+				mem_page[j].zone=1;
+				mem_page[j].ref=0;
+				free_normal++;
+			}
+			else
+			{
+				mem_page[j].zone=2;
+				mem_page[j].ref=0;
+				free_highmem++;
+			}	
+
 			phy_pages_count++;
 		}
 	}
+	//设置分区的总页面和空闲页面信息
+	mem_zone[DMA].all_pages=count_dma;
+	printk_info("%d\n",mem_zone[DMA].all_pages);
+	mem_zone[DMA].free_pages=free_dma;
+	mem_zone[NORMAL].all_pages=count_normal;
+	mem_zone[NORMAL].free_pages=free_normal;
+	mem_zone[HIGHMEM].all_pages=count_highmem;
+	mem_zone[HIGHMEM].free_pages=free_highmem;
+	//分别设置分区的极值点和平衡条件
+	for(int i=0;i<zone_sum;i++)
+	{
+		mem_zone[i].pages_min=mem_zone[i].all_pages/3;
+		mem_zone[i].pages_low=mem_zone[i].all_pages/2;
+		mem_zone[i].pages_high=mem_zone[i].all_pages*2/3;
+		mem_zone[i].need_balance=false;
+	}
+	/*******************************************************/
 	return;
 }
 
-void pmm_mamage_init(e820map_t * e820map) {
+void pmm_mamage_init() {
 	// 因为只有一个可用内存区域，所以直接传递
-	pmm_manager->pmm_manage_init( (ptr_t)e820map->map[0].addr, phy_pages_count);
+	pmm_manager->pmm_manage_init();
 	return;
 }
 
 void pmm_init() {
-	bool intr_flag = false;
-	local_intr_store(intr_flag);
+	cpu_cli();
+	//uint32_t cr0;
+	//cr0 |= (0u << 31);
+	//__asm__ volatile ("mov %0, %%cr0" : : "r" (cr0) );
+	e820map_t e820map;
+	bzero(&e820map, sizeof(e820map_t) );
+	pmm_get_ram_info(&e820map);
+	pmm_phy_init(&e820map);
+	pmm_mamage_init();
+	printk_info("pmm_init\n");
+	printk_info("phy_pages_count: %d\n", phy_pages_count);
+	printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count(DMA) );
+	/********************************/
+	/*printk_info("mem_page[0] addr:0x%08X\n",mem_page[0].start);
+	printk_info("mem_page[0] ref:%d\n",mem_page[0].ref);
+	printk_info("mem_dma free_pages:%d\n",mem_zone[DMA].free_pages);
+	printk_info("mem_dma pages_min:%d\n",mem_zone[DMA].pages_min);
+	printk_info("mem_dma pages_low:%d\n",mem_zone[DMA].pages_low);
+	printk_info("mem_dma pages_high:%d\n",mem_zone[DMA].pages_high);
+	printk_info("mem_dma need_balance:%d\n",mem_zone[DMA].need_balance);
+	printk_info("mem_dma all_pages:%d\n",mem_zone[DMA].all_pages);
+	printk_info("mem_normal free_pages:%d\n",mem_zone[NORMAL].free_pages);
+	printk_info("mem_normal pages_min:%d\n",mem_zone[NORMAL].pages_min);
+	printk_info("mem_normal pages_low:%d\n",mem_zone[NORMAL].pages_low);
+	printk_info("mem_normal pages_high:%d\n",mem_zone[NORMAL].pages_high);
+	printk_info("mem_normal need_balance:%d\n",mem_zone[NORMAL].need_balance);
+	printk_info("mem_normal all_pages:%d\n",mem_zone[NORMAL].all_pages);*/
+	/********************************/
+	/*list_entry_t *head=ff_manage_dma.free_list;
+	list_entry_t *p=head;
+	while(p->next!=head)
 	{
-		e820map_t e820map;
-		bzero(&e820map, sizeof(e820map_t) );
-		pmm_get_ram_info(&e820map);
-		pmm_phy_init(&e820map);
-		pmm_mamage_init(&e820map);
-
-		printk_info("pmm_init\n");
-		printk_info("phy_pages_count: %d\n", phy_pages_count);
-		printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count() );
-	}
-	local_intr_restore(intr_flag);
+		printk_test("DMA Physical Addr: 0x%08X\n",p->chunk_info.addr);
+		printk_test("DMA Physical pages: %d\n",p->chunk_info.npages);
+		printk_test("DMA Physical ref: %d\n",p->chunk_info.ref);
+		printk_test("DMA Physical flag: %d\n",p->chunk_info.flag);
+	}*/
+	cpu_sti();
 	return;
 }
 
-ptr_t pmm_alloc(size_t byte) {
+ptr_t pmm_alloc(uint32_t byte,char zone) {
 	ptr_t page;
-	page = pmm_manager->pmm_manage_alloc(byte);
+	page = pmm_manager->pmm_manage_alloc(byte,zone);
 	return page;
 }
 
-void pmm_free(ptr_t addr, size_t byte) {
-	pmm_manager->pmm_manage_free(addr, byte);
+void pmm_free_page(ptr_t addr, uint32_t byte,char zone) {
+	pmm_manager->pmm_manage_free(addr,byte,zone);
 	return;
 }
 
-size_t pmm_free_pages_count(void) {
-	return pmm_manager->pmm_manage_free_pages_count();
+uint32_t pmm_free_pages_count(char zone) {
+	return pmm_manager->pmm_manage_free_pages_count(zone);
 }
 
 #ifdef __cplusplus

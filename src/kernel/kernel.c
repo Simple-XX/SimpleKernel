@@ -37,16 +37,17 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 		// 物理内存初始化
 		pmm_init();
 		// 虚拟内存初始化
-		vmm_init();
+		//vmm_init();
 		// 堆初始化
-		heap_init();
+		//heap_init();
 		// 任务初始化
-		task_init();
+		//task_init();
 		// 调度初始化
 		// sched_init();
 
 		// showinfo();
 		test();
+		while(1);
 	}
 	local_intr_restore(intr_flag);
 
