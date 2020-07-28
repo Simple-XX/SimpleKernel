@@ -10,7 +10,7 @@
 
 <img src="E:\workspace\gsoc_china\SimpleKernel\docs\images\von Artechture.jpg" alt="von Artechture" style="zoom:70%;" />
 
-如图所示，主要包括运算器，控制器，存储器以及输入输出设备，而在CPU之中的主要包括运算器和控制器。每次CPU都要从存储器中取出数据和运行指令，然后在运算器的运算下得出结果，这一过程就是控制器的控制下进行的。
+如图所示，主要包括运算器，控制器，存储器以及输入输出设备，而在CPU之中的主要包括运算器和控制器。每次CPU都要从存储器中取出数据和运行指令，然后在运算器的运算下得出结果，这一过程就是控制器的控制下进行的，而处理器能够正确运行需要配置多个寄存器才能够让操作系统正确的运行。
 
 
 
@@ -174,6 +174,8 @@ NT(Nested Task)：控制中断返回指令IRET，它宽度为1位。若NT=0，�
 
 
 
+
+
 参考：
 
 [https://baike.baidu.com/item/IA32%E6%9E%B6%E6%9E%84/4189056?fr=aladdin](https://baike.baidu.com/item/IA32架构/4189056?fr=aladdin)
@@ -181,6 +183,8 @@ NT(Nested Task)：控制中断返回指令IRET，它宽度为1位。若NT=0，�
 https://www.cnblogs.com/shao-ye/p/10742716.html
 
 https://chyyuu.gitbooks.io/ucore_os_docs/content/lab0/lab0_2_5_1_intel_80386_modes.html
+
+https://zhuanlan.zhihu.com/p/25867829
 
 
 
