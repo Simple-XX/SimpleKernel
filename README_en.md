@@ -15,7 +15,7 @@
 - Kernel
 - C/C++
 
-- UXIN-like
+- UNIX-like
 - Multiboot2
 
 ## Abstract
