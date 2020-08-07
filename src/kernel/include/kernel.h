@@ -29,6 +29,7 @@ extern "C" {
 #include "arch_init.h"
 #include "mem/pmm.h"
 #include "mem/vmm.h"
+#include "mem/buffer.h"
 #include "heap/heap.h"
 #include "task/task.h"
 #include "sched/sched.h"
