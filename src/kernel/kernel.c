@@ -36,8 +36,10 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 		debug_init(magic, addr);
 		// 物理内存初始化
 		pmm_init();
+		//测试缓冲区
+		test_buffer();
 		// 虚拟内存初始化
-		//vmm_init();
+		vmm_init();
 		// 堆初始化
 		//heap_init();
 		// 任务初始化
@@ -46,7 +48,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 		// sched_init();
 
 		// showinfo();
-		test();
+		//test();
 		while(1);
 	}
 	local_intr_restore(intr_flag);
