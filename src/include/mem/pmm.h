@@ -56,6 +56,10 @@ extern "C" {
 #define DMA_start_addr (0x0)  //0
 #define NORMAL_start_addr (0x1000000)  //16MB
 #define HIGHMEM_start_addr (0x6e00000) //110MB
+#define DMA_SIZE (0x1000000) //16MB
+#define NORMAL_SIZE (0x5e00000) //94MB
+#define HIGHMEM_SIZE (0x19200000) //402MB
+
 /*************************/
 /*
 更正版本：由于分配512MB内存，所以可用内存不会超过131072个物理页，除去外设映射，则可用内存段的物理页数量159+130800=130959
@@ -140,13 +144,15 @@ typedef
 	uint32_t (* pmm_manage_free_pages_count)(char zone);
 } pmm_manage_t;
 
+
 // 物理内存初始化
 void pmm_phy_init(e820map_t * e820map);
 // 物理内存管理初始化
 void pmm_mamage_init();
 // 初始化内存管理
 void pmm_init(void);
-
+// 缓冲区初始化
+void buffer_init();
 ptr_t pmm_alloc(size_t byte,char zone);
 
 void pmm_free_page(ptr_t addr, uint32_t byte,char zone);
