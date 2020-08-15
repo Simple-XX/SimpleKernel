@@ -15,13 +15,21 @@ extern "C" {
 #include "intr/include/intr.h"
 #include "mem/vmm.h"
 
+
 // 内核页目录区域
 pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核页表区域
 pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//DMA页表区域
+pte_t pte_DMA[DMA_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//NORMAL页表区域
+pte_t pte_NORMAL[NORMAL_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//HIGHMEM页表区域
+pte_t pte_HIGHMEM[HIGHMEM_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核栈区域
 pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
+//根据zone机制，内核可用区域为
 void vmm_init(void) {
 	bool intr_flag = false;
 	local_intr_store(intr_flag);
