@@ -5,9 +5,9 @@
 
 #!/usr/bin/env bash
 # shell 执行出错时终止运行
-# set -e
+set -e
 # 输出实际执行内容
-# set -x
+set -x
 
 source ./tools/env.sh
 
@@ -27,7 +27,12 @@ elif [ ${ARCH} == "x86_64" ]; then
     fi
 fi
 
-rm -rf -f ${iso_boot}/*
+# 检测路径是否合法，发生过 rm -rf -f /* 的惨剧
+if [ "${iso_boot}" == "" ]; then
+    echo iso_boot path error.
+else
+    rm -rf -f ${iso_boot}/*
+fi
 cp ${kernel} ${iso_boot}
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg
