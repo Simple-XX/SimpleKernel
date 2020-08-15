@@ -140,8 +140,8 @@ void init() {
 	uint32_t dma_pmm_info_size = mem_zone[DMA].all_pages * sizeof(list_entry_t);
 	uint32_t normal_pmm_info_size = mem_zone[NORMAL].all_pages * sizeof(list_entry_t);
 	uint32_t highmem_pmm_info_size = mem_zone[HIGHMEM].all_pages * sizeof(list_entry_t);
-	//printk_info("dma_need_page:%d\n",normal_pmm_info_size/PMM_PAGE_SIZE);
-	//printk_info("dma_need_page:%d\n",normal_pmm_info_size);
+	printk_info("normal_need_page:%d\n",normal_pmm_info_size/PMM_PAGE_SIZE);
+	printk_info("normal_need_page:%d\n",normal_pmm_info_size);
 	//printk_info("addr:0x%08X\n",normal_pmm_info);
 	//printk_info("dma_need_page:%d\n",dma_pmm_info_size/PMM_PAGE_SIZE);
 	//printk_info("dma_need_page:%d\n",dma_pmm_info_size);
