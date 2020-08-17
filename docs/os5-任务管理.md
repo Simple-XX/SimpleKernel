@@ -47,7 +47,7 @@ typedef
 } task_context_t;
 ```
 
-进程内存地址结构
+进程内存地址结构，这里就是
 
 ```c
 // 进程内存地址结构
@@ -71,6 +71,12 @@ typedef
 	ptr_t		task_end;
 } task_mem_t;
 ```
+
+<img src=".\images\memory.png" alt="memory" style="zoom:80%;" />
+
+可以结合上图来看task_mem中的变量就是对应着上图中一个进程的各种段的起止节点位置。
+
+
 
 下图所示为simplekernel中一些用于管理任务的数据结构：
 
