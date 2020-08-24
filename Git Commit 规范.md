@@ -54,5 +54,6 @@ Based on https://zhuanlan.zhihu.com/p/182553920
 
 
 ```
-fix(DAO):用户查询缺少username属性 feat(Controller):用户查询接口开发
+fix(DAO):用户查询缺少username属性 
+feat(Controller):用户查询接口开发
 ```
