@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 #include "stdint.h"
-#include "vga/include/vga.hpp"
+#include "vga.hpp"
 
 void console_init(void);
 void console_scroll(void);
