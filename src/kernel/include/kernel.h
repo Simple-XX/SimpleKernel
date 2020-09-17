@@ -24,7 +24,7 @@ extern "C" {
 #include "stdbool.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "console/include/console.h"
+#include "console.h"
 #include "multiboot2.h"
 #include "arch_init.h"
 #include "mem/pmm.h"
