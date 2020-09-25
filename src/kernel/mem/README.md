@@ -1,6 +1,8 @@
 # src/kernel/mem
 ## 文件说明
 
+该文件夹中主要实现各种内存分配算法机制。
+
 - buddy.c
 
     buddy 算法实现。
@@ -8,10 +10,6 @@
 - first_fit.c
 
     firrstfit 首次适应算法实现。
-
-- mem
-
-    内存管理代码 ，页表管理。
 
 - slab.c
 
