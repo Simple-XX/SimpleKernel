@@ -19,77 +19,84 @@ endif()
 # Set debug
 set(CMAKE_BUILD_TYPE Debug)
 
-# Set c11
+# Set C gnu11
 set(CMAKE_C_STANDARD 11)
 
-# Set flags
-set(CFLAGS "-std=gnu11 -ffreestanding -nostdinc -nostdlib -fno-exceptions -nostartfiles -fno-builtin -O2 -Wall -Wextra -Wshadow -Wunreachable-code -Winline -Wmissing-prototypes -Wsign-compare -mno-sse -g -ggdb -C -c -m32 -march=corei7")
-set(CMAKE_C_FLAGS ${CFLAGS})
+# Set cmake moudle path
+set(CMAKE_MODULE_PATH "${SimpleKernel_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
-# Linker script
-set(LINKER_SCRIPT "arch/x86_64/boot/link32.ld")
-set(LDFLAGS -A i386 -m elf_i386 -T${LINKER_SCRIPT})
+# Set arch
+include(${SimpleKernel_SOURCE_DIR}/cmake/arch_detector.cmake)
+# Set platform
+include(${SimpleKernel_SOURCE_DIR}/cmake/platform_detector.cmake)
+# Set header files
+include(${SimpleKernel_SOURCE_DIR}/cmake/header_files.cmake)
+# Find asm source files
+include(${SimpleKernel_SOURCE_DIR}/cmake/find_asm_files.cmake)
 
-# Kernel name
-set(KernelName SimpleKernel.elf)
+message(STATUS "PLATFORM is ${PLATFORM}")
 
-# Add include files
-include_directories(
-    ${SimpleKernel_SOURCE_DIR}/test/include
-    ${SimpleKernel_SOURCE_DIR}/libc
-    ${SimpleKernel_SOURCE_DIR}/kernel/include
-    ${SimpleKernel_SOURCE_DIR}/include
-    ${SimpleKernel_SOURCE_DIR}/ds_alg
-    ${SimpleKernel_SOURCE_DIR}/drv/8259A/include
-    ${SimpleKernel_SOURCE_DIR}/drv/clock/include
-    ${SimpleKernel_SOURCE_DIR}/drv/console/include
-    ${SimpleKernel_SOURCE_DIR}/drv/keyboard/include
-    ${SimpleKernel_SOURCE_DIR}/drv/mouse/include
-    ${SimpleKernel_SOURCE_DIR}/drv/vga/include
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/boot/include
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/gdt/include
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/intr/include
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64
-)
+# Set C flags for arch
+if (SimpleKernelArch STREQUAL x86)
+    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -mno-sse -m32")
+elseif (SimpleKernelArch STREQUAL x86_64)
+    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -mno-sse -m32")
+else ()
+    message(FATAL_ERROR "unexpected ARCH ${SimpleKernelArch}")
+endif ()
+message(STATUS "ARCH is ${ARCH}")
 
-# Add source files
-set(source 
-    ${SimpleKernel_SOURCE_DIR}/test/test.c
-    ${SimpleKernel_SOURCE_DIR}/libc/stdio/printk.c
-    ${SimpleKernel_SOURCE_DIR}/libc/stdio/vsprintf.c
-    ${SimpleKernel_SOURCE_DIR}/libc/string/string.c
-    ${SimpleKernel_SOURCE_DIR}/kernel/multiboot2.c
-    ${SimpleKernel_SOURCE_DIR}/kernel/kernel.c
-    ${SimpleKernel_SOURCE_DIR}/kernel/elf.c
-    ${SimpleKernel_SOURCE_DIR}/kernel/mem/buddy.c
-    ${SimpleKernel_SOURCE_DIR}/kernel/mem/first_fit.c
-    ${SimpleKernel_SOURCE_DIR}/kernel/mem/slab.c
-    ${SimpleKernel_SOURCE_DIR}/ds_alg/LinkedList.c
-    ${SimpleKernel_SOURCE_DIR}/drv/8259A/8259A.c
-    ${SimpleKernel_SOURCE_DIR}/drv/clock/clock.c
-    ${SimpleKernel_SOURCE_DIR}/drv/console/console.c
-    ${SimpleKernel_SOURCE_DIR}/drv/keyboard/keyboard.c
-    ${SimpleKernel_SOURCE_DIR}/drv/mouse/mouse.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/arch_init.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/boot/bootinit.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/boot/boot.s
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/debug/debug.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/gdt/gdt.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/gdt/gdt_s.s
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/heap/heap.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/intr/intr_s.s
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/intr/intr.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/mm/buffer.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/mm/pmm.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/mm/vmm.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/sched/sched_s.s
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/sched/sched.c
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/task/task_s.s
-    ${SimpleKernel_SOURCE_DIR}/arch/x86_64/task/task.c
-)
+# Set C flags for debug
+if (CMAKE_BUILD_TYPE STREQUAL DEBUG)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb")
+    set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
+endif ()
 
+# Set common flags
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -std=gnu11 -Wall -Wextra -g -nostdlib -nostdinc -fno-exceptions -nostartfiles -fno-builtin -O2 -D${SimpleKernelPlatformMacro}")
+set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
+
+message(STATUS "CMAKE_C_FLAGS is ${CMAKE_C_FLAGS}")
+message(STATUS "CMAKE_ASM_FLAGS is ${CMAKE_ASM_FLAGS}")
+message(STATUS "TOOLCHAIN_PREFIX is ${TOOLCHAIN_PREFIX}")
+message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(CMAKE_EXE_LINKER_FLAGS -T${LINKER_SCRIPT})
+# Set kernel name
+set(KernelName kernel.bin)
 
-add_executable(${KernelName} ${source})
+# Sub dirs
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/libc)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/ds_alg)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/arch)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/kernel)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/drv)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/test)
+
+# Link
+add_executable(${KernelName}
+        $<TARGET_OBJECTS:libc>
+        $<TARGET_OBJECTS:ds_alg>
+        $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:gdt>
+        $<TARGET_OBJECTS:intr>
+        $<TARGET_OBJECTS:debug>
+        $<TARGET_OBJECTS:mm>
+        $<TARGET_OBJECTS:heap>
+        $<TARGET_OBJECTS:sched>
+        $<TARGET_OBJECTS:task>
+        $<TARGET_OBJECTS:kernel>
+        $<TARGET_OBJECTS:mem>
+        $<TARGET_OBJECTS:8259A>
+        $<TARGET_OBJECTS:clock>
+        $<TARGET_OBJECTS:vga>
+        $<TARGET_OBJECTS:console>
+        $<TARGET_OBJECTS:keyboard>
+        $<TARGET_OBJECTS:mouse>
+        $<TARGET_OBJECTS:test>)
+
+target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_DIR}/arch/${SimpleKernelArch}/boot/link32.ld)
+target_link_options(${KernelName} PRIVATE -Wl,-melf_i386)
