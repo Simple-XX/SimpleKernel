@@ -4,7 +4,7 @@
 # CMakeLists.txt for SimpleXX/SimpleKernel.
 
 # Set minimum cmake version
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.10)
 
 # skip cmake compiler check
 set(CMAKE_C_COMPILER_WORKS TRUE)
