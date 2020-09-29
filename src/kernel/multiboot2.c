@@ -48,6 +48,9 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t * tag) {
 	return;
 }
 
+multiboot_memory_map_entry_t * mmap_entries;
+multiboot_mmap_tag_t * mmap_tag;
+
 void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t * tag) {
 	mmap_entries = ( (struct multiboot_tag_mmap *)tag)->entries;
 	mmap_tag = tag;

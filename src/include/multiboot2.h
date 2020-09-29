@@ -348,8 +348,8 @@ void print_MULTIBOOT_TAG_TYPE_MMAP(struct multiboot_tag * tag);
 void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag * tag);
 void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag * tag);
 void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag * tag);
-multiboot_memory_map_entry_t * mmap_entries;
-multiboot_mmap_tag_t * mmap_tag;
+extern multiboot_memory_map_entry_t * mmap_entries;
+extern multiboot_mmap_tag_t * mmap_tag;
 
 #endif /*  ! ASM_FILE */
 

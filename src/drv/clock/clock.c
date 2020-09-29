@@ -11,11 +11,10 @@ extern "C" {
 #include "stdio.h"
 #include "stddef.h"
 #include "port.hpp"
-#include "debug.h"
 #include "cpu.hpp"
 #include "sync.hpp"
-#include "sched/sched.h"
-#include "include/clock.h"
+#include "sched.h"
+#include "clock.h"
 
 void clock_init(void) {
 	bool intr_flag = false;
