@@ -19,6 +19,7 @@ extern "C" {
 #include "sched/sched.h"
 #include "include/test.h"
 #include "mem/firstfit.h"
+#include "mem/swap.h"
 bool test_pmm(void) {
 	ptr_t allc_addr = 0;
 	printk_test("Test Physical Memory Alloc :\n");
@@ -32,6 +33,7 @@ bool test_pmm(void) {
 	printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA) );
 	allc_addr = pmm_alloc(1,DMA);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
+//	printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA) );
 	allc_addr = pmm_alloc(1,DMA);
 	printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
 	printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA) );
@@ -114,11 +116,11 @@ bool test_heap(void) {
 
 bool test(void) {
 	 test_pmm();
-	// test_vmm();
+	 //test_vmm();
 	// test_libc();
-	// test_heap();
+	//test_heap();
 	//test_task();
-	// test_sched();
+	 //test_sched();
 	return true;
 }
 
