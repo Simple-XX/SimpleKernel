@@ -10,7 +10,7 @@ extern "C" {
 #include "assert.h"
 #include "cpu.hpp"
 #include "sync.hpp"
-#include "include/linkedlist.h"
+#include "linkedlist.h"
 #include "intr/include/intr.h"
 #include "sched/sched.h"
 #include "debug.h"
