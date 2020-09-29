@@ -49,9 +49,9 @@ typedef
 // 用于管理物理地址
 extern pmm_manage_t firstfit_manage;
 //分区管理，定义3个管理器，均使用first-fit算法
-firstfit_manage_t ff_manage_dma;
-firstfit_manage_t ff_manage_normal;
-firstfit_manage_t ff_manage_highmem;
+extern firstfit_manage_t ff_manage_dma;
+extern firstfit_manage_t ff_manage_normal;
+extern firstfit_manage_t ff_manage_highmem;
 #ifdef __cplusplus
 }
 #endif

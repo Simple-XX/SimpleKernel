@@ -125,9 +125,9 @@ typedef struct page{
 }physical_page;
 
 //分区数组
-memory_zone mem_zone[zone_sum];
+extern memory_zone mem_zone[zone_sum];
 //可用内存的物理页数组
-physical_page mem_page[PMM_PAGE_MAX_SIZE];
+extern physical_page mem_page[PMM_PAGE_MAX_SIZE];
 /*******************************************************************************/
 // 内存管理结构体
 typedef

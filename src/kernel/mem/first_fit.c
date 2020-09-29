@@ -29,6 +29,9 @@ pmm_manage_t firstfit_manage = {
 	&free_pages_count
 };
 
+firstfit_manage_t ff_manage_dma;
+firstfit_manage_t ff_manage_normal;
+firstfit_manage_t ff_manage_highmem;
 
 static inline void list_init_head(list_entry_t * list);
 

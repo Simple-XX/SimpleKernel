@@ -22,6 +22,9 @@ static uint32_t phy_pages_count=0;
 
 static const pmm_manage_t * pmm_manager  = &firstfit_manage;
 
+memory_zone mem_zone[zone_sum];
+physical_page mem_page[PMM_PAGE_MAX_SIZE];
+
 // 从 GRUB 读取物理内存信息
 static void pmm_get_ram_info(e820map_t * e820map);
 void pmm_get_ram_info(e820map_t * e820map) {

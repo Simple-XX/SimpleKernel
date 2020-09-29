@@ -15,7 +15,7 @@ extern "C" {
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "intr/include/intr.h"
-#include "include/linkedlist.h"
+#include "linkedlist.h"
 
 // 最长任务名
 #define TASK_NAME_MAX 64
