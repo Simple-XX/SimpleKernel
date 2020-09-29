@@ -100,6 +100,14 @@ sh setup.sh
 
 ## 代码风格
 
+git commit 规范：
+
+https://zhuanlan.zhihu.com/p/182553920
+
+代码样式：
+
+tools/codestyle.cfg (atom-beautify 使用)
+
 ## 镜像文件
 
 simplekernel.img 是 1.44 软盘，我们的内核就在这里。
@@ -176,3 +184,4 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## 版权信息
 
 此项目使用 MIT 许可证
+
