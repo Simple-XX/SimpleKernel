@@ -135,24 +135,28 @@ void pmm_init() {
 	pmm_get_ram_info(&e820map);
 	pmm_phy_init(&e820map);
 	pmm_mamage_init();
-	printk_info("pmm_init\n");
-	printk_info("phy_pages_count: %d\n", phy_pages_count);
-	printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count(DMA) );
+	//printk_info("pmm_init\n");
+	//printk_info("phy_pages_count: %d\n", phy_pages_count);
+	//printk_info("phy_pages_allow_count: %d\n", pmm_free_pages_count(DMA) );
 	/********************************/
-	/*printk_info("mem_page[0] addr:0x%08X\n",mem_page[0].start);
-	printk_info("mem_page[0] ref:%d\n",mem_page[0].ref);
-	printk_info("mem_dma free_pages:%d\n",mem_zone[DMA].free_pages);
-	printk_info("mem_dma pages_min:%d\n",mem_zone[DMA].pages_min);
-	printk_info("mem_dma pages_low:%d\n",mem_zone[DMA].pages_low);
-	printk_info("mem_dma pages_high:%d\n",mem_zone[DMA].pages_high);
-	printk_info("mem_dma need_balance:%d\n",mem_zone[DMA].need_balance);
-	printk_info("mem_dma all_pages:%d\n",mem_zone[DMA].all_pages);
-	printk_info("mem_normal free_pages:%d\n",mem_zone[NORMAL].free_pages);
-	printk_info("mem_normal pages_min:%d\n",mem_zone[NORMAL].pages_min);
-	printk_info("mem_normal pages_low:%d\n",mem_zone[NORMAL].pages_low);
-	printk_info("mem_normal pages_high:%d\n",mem_zone[NORMAL].pages_high);
-	printk_info("mem_normal need_balance:%d\n",mem_zone[NORMAL].need_balance);
-	printk_info("mem_normal all_pages:%d\n",mem_zone[NORMAL].all_pages);*/
+	printk_info("mem_DMA free_pages:%d\n",mem_zone[DMA].free_pages);
+	printk_info("mem_DMA pages_min:%d\n",mem_zone[DMA].pages_min);
+	printk_info("mem_DMA pages_low:%d\n",mem_zone[DMA].pages_low);
+	printk_info("mem_DMA pages_high:%d\n",mem_zone[DMA].pages_high);
+	printk_info("mem_DMA need_balance:%d\n",mem_zone[DMA].need_balance);
+	printk_info("mem_DMA all_pages:%d\n",mem_zone[DMA].all_pages);
+	printk_info("mem_NORMAL free_pages:%d\n",mem_zone[NORMAL].free_pages);
+	printk_info("mem_NORMAL pages_min:%d\n",mem_zone[NORMAL].pages_min);
+	printk_info("mem_NORMAL pages_low:%d\n",mem_zone[NORMAL].pages_low);
+	printk_info("mem_NORMAL pages_high:%d\n",mem_zone[NORMAL].pages_high);
+	printk_info("mem_NORMAL need_balance:%d\n",mem_zone[NORMAL].need_balance);
+	printk_info("mem_NORMAL all_pages:%d\n",mem_zone[NORMAL].all_pages);
+	printk_info("mem_HIGHMEM free_pages:%d\n",mem_zone[HIGHMEM].free_pages);
+	printk_info("mem_HIGHMEM pages_min:%d\n",mem_zone[HIGHMEM].pages_min);
+	printk_info("mem_HIGHMEM pages_low:%d\n",mem_zone[HIGHMEM].pages_low);
+	printk_info("mem_HIGHMEM pages_high:%d\n",mem_zone[HIGHMEM].pages_high);
+	printk_info("mem_HIGHMEM need_balance:%d\n",mem_zone[HIGHMEM].need_balance);
+	printk_info("mem_HIGHMEM all_pages:%d\n",mem_zone[HIGHMEM].all_pages);
 	/********************************/
 	/*list_entry_t *head=ff_manage_dma.free_list;
 	list_entry_t *p=head;

@@ -121,7 +121,7 @@ typedef struct page{
 	//起始地址
 	ptr_t start;
 	//该页被引用次数，-1代表外设映射区域，OS无法进行操作
-	uint32_t ref;
+	int32_t ref;
 }physical_page;
 
 //分区数组

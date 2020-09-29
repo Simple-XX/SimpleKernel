@@ -14,18 +14,21 @@ extern "C" {
 #include "sync.hpp"
 #include "intr/include/intr.h"
 #include "mem/vmm.h"
+#include "mem/pmm.h"
 
-
-// 内核页目录区域
+//内核页目录区域
 pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核页表区域
-pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//前110MB直接映射
+pte_t pte_kernel[(DMA_SIZE+NORMAL_SIZE)/VMM_PAGE_TABLE_SIZE+1][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 //DMA页表区域
-pte_t pte_DMA[DMA_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//pte_t pte_DMA[DMA_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+pte_t pte_memory[PMM_MAX_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 //NORMAL页表区域
-pte_t pte_NORMAL[NORMAL_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//pte_t pte_NORMAL[NORMAL_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 //HIGHMEM页表区域
-pte_t pte_HIGHMEM[HIGHMEM_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
+//pte_t pte_HIGHMEM[HIGHMEM_SIZE/VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 // 内核栈区域
 pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE] __attribute__( (aligned(VMM_PAGE_SIZE) ) );
 
@@ -35,16 +38,30 @@ void vmm_init(void) {
 	local_intr_store(intr_flag);
 	{
 		register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
-
+		//printk_info("vmm_init-1\n");
 		// 映射全部内核
 		uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
-		for(uint32_t i = pgd_idx, j = 0 ; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx ; i++, j++) {
+// VMM_PAGE_DIRECTORIES_KERNEL
+		for(uint32_t i = pgd_idx, j = 0 ; i < (NORMAL_SIZE+DMA_SIZE)/VMM_PAGE_TABLE_SIZE+1+pgd_idx ; i++, j++) {
 			pgd_kernel[i] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_kernel[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
 		}
 		ptr_t * pte = (ptr_t *)pte_kernel;
-		for(uint32_t i = 0 ; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_KERNEL ; i++) {
+		for(uint32_t i = 0 ; i < (NORMAL_SIZE+DMA_SIZE)/VMM_PAGE_SIZE ; i++) {
+			//pte[i] = ((i+(((ptr_t)&kernel_start)&PMM_PAGE_MASK)/PMM_PAGE_SIZE) << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 			pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 		}
+		//将虚拟地址前110MB全都映射到物理内存前110MB，一一对应，可以使用对应管理器
+		//计算512MB需要多少个目录项
+		for(uint32_t i=0;i<PMM_MAX_SIZE/VMM_PAGE_TABLE_SIZE;i++)
+		{
+			for(uint32_t j =i*VMM_PAGES_PRE_PAGE_TABLE  ; j < (i+1)*VMM_PAGES_PRE_PAGE_TABLE ; j++) 
+			{
+			// 物理地址由 (i << 12) 给出
+			pte_memory[i][j-i*VMM_PAGES_PRE_PAGE_TABLE] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+			}
+			pgd_kernel[i]=(ptr_t)pte_memory[i] | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+		}
+		//printk_info("vmm_init-2\n");
 		// 映射内核栈
 		// 0x2FF
 		pgd_idx = VMM_PGD_INDEX(KERNEL_STACK_TOP);
@@ -53,6 +70,40 @@ void vmm_init(void) {
 		for(uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - KERNEL_STACK_PAGES, j = VMM_PAGES_PRE_PAGE_TABLE * 2 ; i < VMM_PAGES_PRE_PAGE_TABLE ; i++, j++) {
 			pte_kernel_stack[i] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 		}
+		//printk_info("vmm_init-3\n");
+		//将虚拟地址C0000000开始的16MB映射到DMA区域的0-16MB(物理内存)，线性映射
+		//计算16MB需要多少个目录项
+		//首先确定内核基址
+		/*pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
+		//映射页表项
+		for(uint32_t i = pgd_idx, j = 0 ; i < DMA_SIZE/VMM_PAGE_TABLE_SIZE + pgd_idx ; i++, j++) {
+			pgd_kernel[i] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_DMA[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+		}
+		pte = (ptr_t *)pte_DMA;
+		for(uint32_t i = 0 ; i < DMA_SIZE/VMM_PAGE_SIZE ; i++) {
+			pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+		}
+		//将虚拟地址C1000000开始的94MB映射到DMA区域的16-110MB(物理内存)，线性映射
+		//计算94MB需要多少个目录项
+		pgd_idx = VMM_PGD_INDEX(KERNEL_BASE+DMA_SIZE);
+		//映射页表项
+		for(uint32_t i = pgd_idx, j = 0 ; i < NORMAL_SIZE/VMM_PAGE_TABLE_SIZE + pgd_idx ; i++, j++) {
+			pgd_kernel[i] = ( (ptr_t)VMM_LA_PA( (ptr_t)pte_NORMAL[j]) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+		}
+		pte = (ptr_t *)pte_NORMAL;
+		for(uint32_t i = DMA_SIZE/VMM_PAGE_SIZE,j=0 ; i < DMA_SIZE/VMM_PAGE_SIZE+NORMAL_SIZE/VMM_PAGE_SIZE ; i++,j++) {
+			pte[j] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+		}*/
+		/*for(uint32_t i=DMA_SIZE/VMM_PAGE_SIZE;i<DMA_SIZE/VMM_PAGE_SIZE+NORMAL_SIZE/VMM_PAGE_TABLE_SIZE;i++)
+		{
+			for(uint32_t j =i*VMM_PAGES_PRE_PAGE_TABLE  ; j < (i+1)*VMM_PAGES_PRE_PAGE_TABLE ; j++) 
+			{
+				// 物理地址由 (i << 12) 给出
+				pte_NORMAL[i][j-i*VMM_PAGES_PRE_PAGE_TABLE] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+			}
+			pgd_kernel[i]=(ptr_t)pte_NORMAL[i] | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+		}*/
+
 		switch_pgd(VMM_LA_PA( (ptr_t)pgd_kernel) );
 		printk_info("vmm_init\n");
 	}
@@ -119,7 +170,7 @@ void switch_pgd(ptr_t pd) {
 	}
 	local_intr_restore(intr_flag);
 }
-
+//使用页面置换算法
 void page_fault(pt_regs_t * pt_regs) {
 #ifdef __x86_64__
 	uint64_t cr2;

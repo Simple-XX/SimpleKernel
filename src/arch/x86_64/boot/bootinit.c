@@ -42,9 +42,9 @@ void mm_init() {
 		for(uint32_t j =i*VMM_PAGES_PRE_PAGE_TABLE  ; j < (i+1)*VMM_PAGES_PRE_PAGE_TABLE ; j++) 
 		{
 		// 物理地址由 (i << 12) 给出
-		pte_memory[i][j-i*VMM_PAGES_PRE_PAGE_TABLE] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+		pte_memory[i][j-i*VMM_PAGES_PRE_PAGE_TABLE] = (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 		}
-		pgd_tmp[i]=(ptr_t)pte_memory[i] | VMM_PAGE_PRESENT | VMM_PAGE_RW;
+		pgd_tmp[i]=(ptr_t)pte_memory[i] | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
 	}
 	// init 段, 4MB
 	// 因为 mm_init 返回后仍然在 init 段，不映射的话会爆炸的

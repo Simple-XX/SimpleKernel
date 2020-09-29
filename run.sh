@@ -47,4 +47,4 @@ else
    }' >${iso_boot_grub}/grub.cfg
 fi
 i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
-${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit #-f

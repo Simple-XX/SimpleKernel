@@ -40,15 +40,16 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 		test_buffer();
 		// 虚拟内存初始化
 		vmm_init();
+		test_swap();
 		// 堆初始化
-		//heap_init();
+		heap_init();
 		// 任务初始化
-		//task_init();
+		task_init();
 		// 调度初始化
-		// sched_init();
+		sched_init();
 
-		// showinfo();
-		//test();
+		//showinfo();
+		test();
 		while(1);
 	}
 	local_intr_restore(intr_flag);

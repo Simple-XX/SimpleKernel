@@ -11,10 +11,9 @@ extern "C" {
 #endif
 
 #include "heap/heap.h"
-
-// 用于管理物理地址
+#include "mem/swap.h"
+// 用于管理堆物理地址
 extern heap_manage_t slab_manage;
-
 #ifdef __cplusplus
 }
 #endif
