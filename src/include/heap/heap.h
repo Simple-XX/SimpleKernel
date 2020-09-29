@@ -19,8 +19,7 @@ extern "C" {
 #define HEAP_MAX_SIZE   (0x400000)
 
 // 堆管理结构体
-typedef
-    struct heap_manage {
+typedef struct heap_manage {
 	// 管理算法的名称
 	const char *      name;
 	// 初始化
@@ -29,7 +28,7 @@ typedef
 	ptr_t (* heap_manage_malloc)(size_t byte);
 	// 释放内存
 	void (* heap_manage_free)(ptr_t addr);
-} heap_manage_t;
+}heap_manage_t;
 
 // 初始化堆
 void heap_init(void);
