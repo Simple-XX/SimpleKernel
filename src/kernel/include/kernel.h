@@ -30,6 +30,7 @@ extern "C" {
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 #include "mem/buffer.h"
+#include "mem/swap.h"
 #include "heap/heap.h"
 #include "task/task.h"
 #include "sched/sched.h"

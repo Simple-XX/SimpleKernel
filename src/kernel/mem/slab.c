@@ -315,7 +315,7 @@ ptr_t alloc(size_t byte) {
 	}
 	new_entry = (list_entry_t *)va;
 	list_init(new_entry);
-	// 新表项的可用长度为减去头的大小
+	// 新表项的可用长度为减去头的大小 
 	list_slab_block(new_entry)->len = (ptr_t)(pages * VMM_PAGE_SIZE) - sizeof(list_entry_t);
 	list_add_after(entry, new_entry);
 	// 进行分割

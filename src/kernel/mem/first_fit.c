@@ -140,8 +140,10 @@ void init() {
 	uint32_t dma_pmm_info_size = mem_zone[DMA].all_pages * sizeof(list_entry_t);
 	uint32_t normal_pmm_info_size = mem_zone[NORMAL].all_pages * sizeof(list_entry_t);
 	uint32_t highmem_pmm_info_size = mem_zone[HIGHMEM].all_pages * sizeof(list_entry_t);
+	printk_info("dma_need_page:%d\n",dma_pmm_info_size/PMM_PAGE_SIZE);
 	printk_info("normal_need_page:%d\n",normal_pmm_info_size/PMM_PAGE_SIZE);
-	printk_info("normal_need_page:%d\n",normal_pmm_info_size);
+	printk_info("highmem_need_page:%d\n",highmem_pmm_info_size/PMM_PAGE_SIZE);
+	//printk_info("normal_need_page:%d\n",normal_pmm_info_size);
 	//printk_info("addr:0x%08X\n",normal_pmm_info);
 	//printk_info("dma_need_page:%d\n",dma_pmm_info_size/PMM_PAGE_SIZE);
 	//printk_info("dma_need_page:%d\n",dma_pmm_info_size);
@@ -157,11 +159,11 @@ void init() {
 	//list_entry_t *dma_pmm_info_head;
 	//mem_page数组的指示变量
 	uint32_t k=0;
+	uint32_t i=0;
 	//根据dma区域的总页数和mem_page数组映射关系确定 某个物理页是否空闲
 	for(uint32_t z=0;z<zone_sum;z++)
 	{
 		//初始化DMA区域的空闲链表，当有连续的空闲页时，进行合并
-		uint32_t i=0;
 		//记录节点数
 		uint32_t num=0;
 		//count作为计数器，记录连续空闲页的个数
@@ -179,11 +181,21 @@ void init() {
 		//中间节点
 		list_entry_t *pmm_info_node;
 		if(z==DMA)
+		{
+			i=dma_pmm_info_size/PMM_PAGE_SIZE+1;
 			info_addr=(ptr_t)DMA_start_addr;
+		}
 		else if(z==NORMAL)
+		{
+			i=normal_pmm_info_size/PMM_PAGE_SIZE+1;
 			info_addr=(ptr_t)NORMAL_start_addr;
+		}
 		else if(z==HIGHMEM)
+		{
+			i=highmem_pmm_info_size/PMM_PAGE_SIZE+1;
 			info_addr=(ptr_t)HIGHMEM_start_addr;
+		}
+		k=i;
 		//printk_info("successful!\n");
 		/*****************************/
 		/*        
@@ -357,46 +369,48 @@ ptr_t alloc(uint32_t bytes,char zone) {
 	}
 
 	// 首先根据分区找到对应的管理器，然后找到地址对应的管理节点
-	firstfit_manage_t ff_manage;
+	firstfit_manage_t *ff_manage;
 	if(zone==DMA)
-		ff_manage = ff_manage_dma;
+		ff_manage = &ff_manage_dma;
 	else if(zone==NORMAL)
-		ff_manage = ff_manage_normal;
+		ff_manage = &ff_manage_normal;
 	else if(zone==HIGHMEM)
-		ff_manage = ff_manage_highmem;
-	list_entry_t *entry=ff_manage.free_list;
+		ff_manage = &ff_manage_highmem;
+	list_entry_t *entry=ff_manage->free_list;
 	//printk_info("successful-1!\n");
 	while(entry >=0) {
 		//printk_info("successful-2!\n");
 		// 查找符合长度且未使用的内存
+		//printk_info("addr:%08X\n",list_chunk_info(entry));
 		if( (list_chunk_info(entry)->npages >= pages) && (list_chunk_info(entry)->flag == FF_UNUSED) ) {
-			//printk_info("successful-2!\n");
+			//printk_info("successful-3!\n");
 			// 如果剩余大小足够
 			if(list_chunk_info(entry)->npages - pages > 1) {
 				// 添加新的链表项
-				list_entry_t * tmp = (list_entry_t *)(entry + ff_manage.node_num*sizeof(list_entry_t) );
+				list_entry_t * tmp = (list_entry_t *)(entry + ff_manage->node_num*sizeof(list_entry_t) );
 				list_chunk_info(tmp)->addr = entry->chunk_info.addr + pages * PMM_PAGE_SIZE;
 				list_chunk_info(tmp)->npages =  entry->chunk_info.npages - pages;
 				list_chunk_info(tmp)->ref = 0;
 				list_chunk_info(tmp)->flag = FF_UNUSED;
 				list_add_after(entry, tmp);
 			}
-			//printk_info("successful-3!\n");
+			//printk_info("successful-4!\n");
 			// 不够的话直接分配
 			list_chunk_info(entry)->npages = pages;
 			list_chunk_info(entry)->ref = 1;
 			list_chunk_info(entry)->flag = FF_USED;
-			ff_manage.phy_page_now_count -= pages;
+			ff_manage->phy_page_now_count -= pages;
 			return list_chunk_info(entry)->addr;
 		}
 		// 没找到的话就查找下一个
-		else if(list_next(entry) != ff_manage.free_list) {
+		else if(list_next(entry) != ff_manage->free_list) {
 			entry = list_next(entry);
 		}
 		else {
 			printk_err("Error at firstfit.c: ptr_t alloc(uint32_t)\n");
 			break;
 		}
+		//printk_info("successful-5!\n");
 	}
 	printk_err("Error at firstfit.c: ptr_t alloc(uint32_t)\n");
 	return (ptr_t)NULL;
