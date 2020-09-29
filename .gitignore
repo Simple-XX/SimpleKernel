@@ -8,3 +8,4 @@ bochsout.txt
 *.gch
 *.tags*
 build/
+.DS_Store
