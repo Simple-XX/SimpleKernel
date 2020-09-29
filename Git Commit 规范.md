@@ -14,11 +14,9 @@ Based on https://zhuanlan.zhihu.com/p/182553920
 
     - feat: 新功能(feature)。
 
-        fix/to: 修复 bug，可以是 QA 发现的 BUG，也可以是研发自己发现的 BUG。
-
-        - fix:产生diff并自动修复此问题。适合于一次提交直接修复问题
+    - fix/to: 修复 bug，可以是 QA 发现的 BUG，也可以是研发自己发现的 BUG。
+    - fix:产生diff并自动修复此问题。适合于一次提交直接修复问题
         - to:只产生diff不自动修复此问题。适合于多次提交。最终修复问题提交时使用fix
-
     - docs: 文档(documentation)。 
 
     - style: 格式(不影响代码运行的变动)。 
