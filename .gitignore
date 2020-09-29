@@ -7,7 +7,7 @@ bochsout.txt
 *.o
 *.gch
 *.tags*
-.DS_Store/
+.DS_Store
 build
 cmake-build-debug
 cmake-build-debug_simplekernel
