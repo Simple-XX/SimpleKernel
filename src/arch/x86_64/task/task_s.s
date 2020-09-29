@@ -3,6 +3,8 @@
 #
 # task_s.s for MRNIU/SimpleKernel.
 
+.code32
+
 .global kthread_entry
 .extern do_exit
 kthread_entry:
