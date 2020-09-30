@@ -130,9 +130,64 @@ flush:
 
 通过将GDT告诉给CPU后，CPU就知道了操作系统中段的设置，从而可以通过段选择子得到线性地址，这里的段选择子就是用来在段描述符表中进行选择的，可以把段描述符表理解为一个之前在实模式下的，在后面实现分页管理后，可进一步将线性地址转换为物理地址（不过当前连物理址有多大都没法知道，在后面会解决）。
 
-除了GDT之外，IA-32还允许程序员构建与GDT类似的数据结构，它们被称作LDT（Local Descriptor Table，局部描述符表），但与GDT不同的是，LDT在系统中可以存在多个，并且从LDT的名字可以得知，LDT不是全局可见的，它们只对引用它们的任务可见，每个任务最多可以拥有一个LDT。另外，每一个LDT自身作为一个段存在，它们的段描述符被放在GDT中，intel厂商本想着每一个任务都有一个LDT用于管理段的地址，不过现在很少这么使用。
+除了GDT之外，IA-32还允许程序员构建与GDT类似的数据结构，它们被称作LDT（Local Descriptor Table，局部描述符表），它主要用来进行进程管理，但与GDT不同的是，LDT在系统中可以存在多个，并且从LDT的名字可以得知，LDT不是全局可见的，它们只对引用它们的任务可见，每个任务最多可以拥有一个LDT。另外，每一个LDT自身作为一个段存在，它们的段描述符被放在GDT中，intel厂商本想着每一个任务都有一个LDT用于管理段的地址，不过现在很少这么使用。
 
+之后我们就进入到内核之中进行一系列初始化操作：
 
+```
+// 内核入口函数
+void kernel_entry(ptr_t magic, ptr_t addr) {
+	mm_init();
+	cpu_switch_stack(KERNEL_STACK_BOTTOM);
+	kernel_main(magic, KERNEL_BASE + addr);
+	return;
+}
+```
 
+其中内核主要初始化过程如下：
+
+```
+// 内核入口
+void kernel_main(ptr_t magic, ptr_t addr) {
+	bool intr_flag = false;
+	local_intr_store(intr_flag);
+	{
+		// 控制台初始化
+		console_init();
+		// 从 multiboot 获得系统初始信息
+		multiboot2_init(magic, addr);
+		// GDT、IDT 初始化
+		arch_init();
+		// 时钟初始化
+		clock_init();
+		// 键盘初始化
+		keyboard_init();
+		// 调试模块初始化
+		debug_init(magic, addr);
+		// 物理内存初始化
+		pmm_init();
+		// 虚拟内存初始化
+		vmm_init();
+		// 堆初始化
+		heap_init();
+		// 任务初始化
+		task_init();
+		// 调度初始化
+		// sched_init();
+
+		// showinfo();
+		test();
+	}
+	local_intr_restore(intr_flag);
+
+	for(int i = 0 ; i < 100 ; i++) {
+		printk("8");
+	}
+
+	// 永远不会执行到这里
+	assert(0, "Never to be seen.\n");
+	return;
+}
+```
 
 
