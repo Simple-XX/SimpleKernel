@@ -1,5 +1,6 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of MRNIU/SimpleKernel
+// (https://github.com/MRNIU/SimpleKernel).
 //
 // stddef.h for MRNIU/SimpleKernel.
 
@@ -22,10 +23,9 @@ typedef unsigned int size_t;
 #endif
 
 #undef NULL
-#define NULL ( (void *)0)
+#define NULL ((void *)0)
 
-#define __UNUSED__ __attribute__( (unused) )
-
+#define __UNUSED__ __attribute__((unused))
 
 #ifdef __cplusplus
 }
