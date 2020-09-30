@@ -1,5 +1,6 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of MRNIU/SimpleKernel
+// (https://github.com/MRNIU/SimpleKernel).
 //
 // assert.h for MRNIU/SimpleKernel.
 
@@ -12,12 +13,12 @@ extern "C" {
 
 #include "stdio.h"
 
-#define assert(test, info) \
-	if(!(test) ) { \
-		printk_err(info); \
-        __asm__ volatile ("cli" ::: "memory"); \
-		while(1) { }; \
-	}
+#define assert(test, info)                                                     \
+    if (!(test)) {                                                             \
+        printk_err(info);                                                      \
+        __asm__ volatile("cli" ::: "memory");                                  \
+        while (1) {};                                                          \
+    }
 
 #ifdef __cplusplus
 }
