@@ -10,11 +10,9 @@ TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 
 TARGET="x86_64-elf"
 # ARCH: i386, x86_64
-ARCH="i386"
+ARCH="x86_64"
 # 虚拟机
 SIMULATOR="bochs"
-# grub
-GRUB_PATH="$(pwd)/tools/grub-2.04/build/grub/bin"
 # bochs 配置文件
 bochsrc="bochsrc.txt"
 # 内核映像
@@ -33,3 +31,12 @@ iso=${TOOLS_DIR}'/../simplekernel.iso'
 iso_folder=${TOOLS_DIR}'/../iso/'
 # 判断操作系统类型
 OS=`uname -s`
+# toolchain
+if [ "${OS}" == "Linux" ]; then
+    TOOLS="toolchain_linux_x86_64.cmake"
+    GRUB_PATH="$(dirname $(which grub-file))"
+else if [ "${OS}" == "Darwin" ]; then
+    TOOLS="toolchain_mac_x86_64.cmake"
+    GRUB_PATH="$(pwd)/tools/grub-2.04/build/grub/bin"
+    fi
+fi
