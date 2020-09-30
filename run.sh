@@ -14,7 +14,7 @@ source ./tools/env.sh
 # 重新编译
 mkdir -p ./src/build/
 cd src/build
-cmake -DCMAKE_TOOLCHAIN_FILE=/Users/nzh/Documents/GitHub/SimpleKernel_be23012/src/cmake/toolchain_mac_x86_64.cmake -DPLATFORM=bochs -DARCH=x86_64 ..
+cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} ..
 make
 cd ../../
 
@@ -38,20 +38,14 @@ fi
 cp ${kernel} ${iso_boot}
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg
+
 if [ ${ARCH} == "x86_64" ]; then
-    cp ${bootloader} ${iso_boot}
-    echo 'set timeout=15
-    set default=0
-    menuentry "SimpleKernel" {
-       multiboot2 /boot/bootloader.bin
-       module /boot/kernel.bin "KERNEL_BIN"
-   }' >${iso_boot_grub}/grub.cfg
-else
     echo 'set timeout=15
     set default=0
     menuentry "SimpleKernel" {
        multiboot2 /boot/kernel.bin "KERNEL_BIN"
    }' >${iso_boot_grub}/grub.cfg
 fi
+
 ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
 ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
