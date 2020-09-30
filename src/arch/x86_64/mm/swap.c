@@ -1,3 +1,4 @@
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -62,7 +63,7 @@ void deQueue() //出队
         pmm_free_page((ptr_t)VMM_PA_LA(addr),PMM_PAGE_SIZE,HIGHMEM);
         bzero((ptr_t)VMM_PA_LA(addr),PMM_PAGE_SIZE);
     }
-         
+
     //free(k*PM)
     //kfree((ptr_t)temp);
     //队列向前进一步
@@ -72,7 +73,7 @@ void deQueue() //出队
 }
 void  test_swap()
 {
-    
+
     initQueue();
 
     //模拟内存物理页面队列被全部使用的情况
@@ -84,7 +85,7 @@ void  test_swap()
     }
     //printk_info("a[0]:%08X\n", &a[0]);
     for(ptr_t i=(ptr_t)VMM_LA_PA((ptr_t)&a[0]);i<(ptr_t)VMM_LA_PA((ptr_t)&
-                a[VMM_PAGE_SIZE*MAX_MEMORY_PAGE]);i+=VMM_PAGE_SIZE){
+            a[VMM_PAGE_SIZE*MAX_MEMORY_PAGE]);i+=VMM_PAGE_SIZE){
         enQueue(i/PMM_PAGE_SIZE);
     }
     char b;
@@ -105,5 +106,3 @@ void  test_swap()
 #ifdef __cplusplus
 }
 #endif
-    
-

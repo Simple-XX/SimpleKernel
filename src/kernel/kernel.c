@@ -24,6 +24,7 @@ void kernel_main(ptr_t magic, ptr_t addr) {
 	{
 		// 控制台初始化
 		console_init();
+		printk_debug("%d, %d", magic,addr);
 		// 从 multiboot 获得系统初始信息
 		multiboot2_init(magic, addr);
 		// GDT、IDT 初始化
