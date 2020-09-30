@@ -7,7 +7,7 @@
 # shell 执行出错时终止运行
 set -e
 # 输出实际执行内容
-set -x
+# set -x
 
 source ./tools/env.sh
 
@@ -18,7 +18,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=/Users/nzh/Documents/GitHub/SimpleKernel_be23012/sr
 make
 cd ../../
 
-if ${GEUB}-file --is-x86-multiboot2 ${kernel}; then
+if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
     echo Multiboot2 Confirmed!
 elif [ ${ARCH} == "x86_64" ]; then
     if ${GEUB}-file --is-x86-multiboot2 ${bootloader}; then
@@ -53,5 +53,5 @@ else
        multiboot2 /boot/kernel.bin "KERNEL_BIN"
    }' >${iso_boot_grub}/grub.cfg
 fi
-i386-elf-grub-mkrescue -o ${iso} ${iso_folder}
-${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit #-f
+${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit

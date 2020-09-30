@@ -14,7 +14,7 @@ ARCH="i386"
 # 虚拟机
 SIMULATOR="bochs"
 # grub
-GEUB="i386-elf-grub"
+GRUB_PATH="$(pwd)/tools/grub-2.04/build/grub/bin"
 # bochs 配置文件
 bochsrc="bochsrc.txt"
 # 内核映像
@@ -33,5 +33,3 @@ iso=${TOOLS_DIR}'/../simplekernel.iso'
 iso_folder=${TOOLS_DIR}'/../iso/'
 # 判断操作系统类型
 OS=`uname -s`
-
-IS_SIMULATOR=$(command -v ${SIMULATOR})
