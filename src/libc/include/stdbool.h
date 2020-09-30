@@ -1,16 +1,16 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
-// Baseed on GCC stdbool.h
-// stdbool.h for MRNIU/SimpleKernel.
+// This file is a part of MRNIU/SimpleKernel
+// (https://github.com/MRNIU/SimpleKernel). Baseed on GCC stdbool.h stdbool.h
+// for MRNIU/SimpleKernel.
 
 #ifndef _STDBOOL_H_
 #define _STDBOOL_H_
 
 #ifndef __cplusplus
 
-#define bool    _Bool
-#define true    1
-#define false   0
+#define bool _Bool
+#define true 1
+#define false 0
 
 #else /* __cplusplus */
 

@@ -1,5 +1,6 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of MRNIU/SimpleKernel
+// (https://github.com/MRNIU/SimpleKernel).
 //
 // elf.h for MRNIU/SimpleKernel.
 

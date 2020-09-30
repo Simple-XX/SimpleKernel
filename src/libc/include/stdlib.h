@@ -1,5 +1,6 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of MRNIU/SimpleKernel
+// (https://github.com/MRNIU/SimpleKernel).
 //
 // stdlib.h for MRNIU/SimpleKernel.
 
@@ -12,13 +13,13 @@ extern "C" {
 
 #include "stdint.h"
 
-int abs(int);
-int atoi(const char *);
-long atol(const char *);
+int       abs(int);
+int       atoi(const char *);
+long      atol(const char *);
 long long atoll(const char *);
 
-void * malloc(uint32_t);
-void free(void *);
+void *malloc(uint32_t);
+void  free(void *);
 
 #ifdef __cplusplus
 }
