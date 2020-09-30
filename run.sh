@@ -12,9 +12,11 @@ set -x
 source ./tools/env.sh
 
 # 重新编译
-cd src/
-make remake
-cd ../
+mkdir -p ./src/build/
+cd src/build
+cmake -DCMAKE_TOOLCHAIN_FILE=/Users/nzh/Documents/GitHub/SimpleKernel_be23012/src/cmake/toolchain_mac_x86_64.cmake -DPLATFORM=bochs -DARCH=x86_64 ..
+make
+cd ../../
 
 if ${GEUB}-file --is-x86-multiboot2 ${kernel}; then
     echo Multiboot2 Confirmed!
