@@ -12,21 +12,17 @@ set -e
 source ./tools/env.sh
 
 # 重新编译
-mkdir -p ./src/build/
-cd src/build
-cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} ..
+mkdir -p ./build/
+cd ./build
+cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} ..
 make
-cd ../../
+cd ../
 
 if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
     echo Multiboot2 Confirmed!
-elif [ ${ARCH} == "x86_64" ]; then
-    if ${GEUB}-file --is-x86-multiboot2 ${bootloader}; then
-        echo Multiboot2 Confirmed!
-    else
-        echo The File is Not Multiboot.
-        exit
-    fi
+else
+    echo The File is Not Multiboot.
+    exit
 fi
 
 # 检测路径是否合法，发生过 rm -rf -f /* 的惨剧
@@ -35,6 +31,7 @@ if [ "${iso_boot}" == "" ]; then
 else
     rm -rf -f ${iso_boot}/*
 fi
+
 cp ${kernel} ${iso_boot}
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg
