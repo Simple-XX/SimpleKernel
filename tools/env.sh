@@ -18,9 +18,9 @@ GEUB="i386-elf-grub"
 # bochs 配置文件
 bochsrc="bochsrc.txt"
 # 内核映像
-kernel=${TOOLS_DIR}'/../src/kernel.bin'
+kernel=${TOOLS_DIR}'/../src/build/bin/kernel.bin'
 echo ${kernel}
-bootloader=${TOOLS_DIR}'/../src/bootloader.bin'
+bootloader=${TOOLS_DIR}'/../src/build/bin/bootloader.bin'
 # 软盘
 disk=${TOOLS_DIR}'/../simplekernel.img'
 # 安装目录
