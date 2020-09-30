@@ -43,7 +43,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
     - x86_64-elf tool chain
 
-        x86_64-elf-binutils, x86_64-elf-gcc, x86_64-elf-grub
+        x86_64-elf-binutils, x86_64-elf-gcc, grub
 
     - xorriso
 

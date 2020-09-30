@@ -1,0 +1,36 @@
+
+# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+#
+# grub4mac.sh for MRNIU/SimpleKernel.
+
+#!/usr/bin/env bash
+
+# set -x
+set -e
+
+# wget https://codeload.github.com/gitGNU/objconv/zip/v2.50
+# unzip objconv-2.50.zip
+# cd objconv-2.50/src
+# ./build.sh
+# export PATH="$(pwd):$PATH"
+# cd ../..
+# wget https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
+tar zxvf grub-2.04.tar.xz
+cd grub-2.04
+./autogen.sh
+mkdir -p build
+cd build
+../configure \
+    --target=x86_64-elf \
+    --prefix=$(pwd)/grub \
+    --disable-werror \
+    TARGET_CC=x86_64-elf-gcc \
+    TARGET_OBJCOPY=x86_64-elf-objcopy \
+    TARGET_STRIP=x86_64-elf-strip \
+    TARGET_NM=x86_64-elf-nm \
+    TARGET_RANLIB=x86_64-elf-ranlib
+
+sed -i "" "s/FILE_TYPE_NO_DECOMPRESS/GRUB_FILE_TYPE_NO_DECOMPRESS/g" $(pwd)/../grub-core/osdep/generic/blocklist.c
+
+make
+make install
