@@ -56,7 +56,7 @@ jobs:
     - name: Setup brew
       shell: bash
       run: |
-        /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         brew install make
         brew install cmake
         brew install x86_64-elf-binutils
