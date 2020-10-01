@@ -29,6 +29,7 @@ jobs:
       shell: bash
       run: |
         sh ${{github.workspace}}/tools/grub4mac.sh
+        export PATH="${{github.workspace}}/tools/grub-2.04/build/grub/bin:$PATH"
 
     - name: Make build dir
       shell: bash
