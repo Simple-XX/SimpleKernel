@@ -1,0 +1,44 @@
+name: CMake
+
+on: 
+  - [push]
+  - [pull_request]
+  - [release]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build_macos:
+    runs-on: macos-latest
+
+    steps:
+    - name: Setup brew
+      shell: bash
+      run: |
+        brew install x86_64-elf-binutils
+        brew install x86_64-elf-gcc
+        brew install autogen
+        brew install tar
+        brew install wget
+
+    - name: Setup grub
+      shell: bash
+      run: |
+        sh ${{runner.workspace}}/tools/grub4mac.sh
+
+    - name: cmake
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: cmake -DCMAKE_TOOLCHAIN_FILE=${{runner.workspace}}/cmake/toolchain_mac_x86_64.cmake -DPLATFORM=bochs -DARCH=x86_64 ..
+
+    - name: make
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: make
+
+  build_ubuntu:
+    runs-on: ubuntu-latest
+
+  build_win:
+    runs-on: windows-latest
