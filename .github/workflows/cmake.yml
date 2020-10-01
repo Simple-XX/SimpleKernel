@@ -24,18 +24,18 @@ jobs:
     - name: Setup grub
       shell: bash
       run: |
-        sh ${{runner.workspace}}/tools/grub4mac.sh
+        sh ${{github.action_path}}/tools/grub4mac.sh
 
     - name: cmake
       shell: bash
-      working-directory: ${{runner.workspace}}/build
-      run: cmake -DCMAKE_TOOLCHAIN_FILE=${{runner.workspace}}/cmake/toolchain_mac_x86_64.cmake -DPLATFORM=bochs -DARCH=x86_64 ..
+      working-directory: ${{github.action_path}}/build
+      run: cmake -DCMAKE_TOOLCHAIN_FILE=${{github.action_path}}/cmake/toolchain_mac_x86_64.cmake -DPLATFORM=bochs -DARCH=x86_64 ..
 
     - name: make
       shell: bash
-      working-directory: ${{runner.workspace}}/build
+      working-directory: ${{github.action_path}}/build
       run: make
-
+    
 #   build_ubuntu:
 #     runs-on: ubuntu-latest
     
