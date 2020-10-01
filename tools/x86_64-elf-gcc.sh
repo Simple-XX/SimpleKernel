@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 #
-# x86_64-elf-gcc.sh for MRNIU/SimpleKernel.
+# x86_64-elf-gcc.sh for SimpleXX/SimpleKernel.
 
 #!/usr/bin/env bash
 

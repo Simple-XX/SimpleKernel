@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// heap.h for MRNIU/SimpleKernel.
+// heap.h for SimpleXX/SimpleKernel.
 
 #ifndef _HEAP_H_
 #define _HEAP_H_

@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel). Based on
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel). Based on
 // https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#multiboot_002eh
-// debug.c for MRNIU/SimpleKernel.
+// debug.c for SimpleXX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {

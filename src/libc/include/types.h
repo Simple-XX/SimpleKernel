@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// types.h for MRNIU/SimpleKernel.
+// types.h for SimpleXX/SimpleKernel.
 
 #ifndef _TYPES_H_
 #define _TYPES_H_

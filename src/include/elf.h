@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel). Based on
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel). Based on
 // https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h elf.h
-// for MRNIU/SimpleKernel.
+// for SimpleXX/SimpleKernel.
 
 #ifndef _ELF_H_
 #define _ELF_H_
