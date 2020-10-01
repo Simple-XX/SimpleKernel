@@ -47,4 +47,4 @@ if [ ${ARCH} == "x86_64" ]; then
 fi
 
 ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-# ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
