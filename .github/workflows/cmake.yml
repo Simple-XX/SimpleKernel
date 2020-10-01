@@ -21,15 +21,15 @@ jobs:
       run: |
         brew install x86_64-elf-binutils
         brew install x86_64-elf-gcc
-        brew install automake
-        brew install autogen
         brew install wget
+#        brew install automake
+#        brew install autogen
 
-    - name: Setup grub
-      shell: bash
-      run: |
-        sh ${{github.workspace}}/tools/grub4mac.sh
-        export PATH="${{github.workspace}}/tools/grub-2.04/build/grub/bin:$PATH"
+#     - name: Setup grub
+#       shell: bash
+#       run: |
+#         sh ${{github.workspace}}/tools/grub4mac.sh
+#         export PATH="${{github.workspace}}/tools/grub-2.04/build/grub/bin:$PATH"
 
     - name: Make build dir
       shell: bash
@@ -39,7 +39,7 @@ jobs:
     - name: cmake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/cmake/toolchain_mac_x86_64.cmake -DPLATFORM=bochs -DARCH=x86_64 ..
+      run: cmake -TOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 ..
 
     - name: make
       shell: bash
