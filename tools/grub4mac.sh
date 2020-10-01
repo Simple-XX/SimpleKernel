@@ -8,13 +8,7 @@
 # set -x
 set -e
 
-# wget https://codeload.github.com/gitGNU/objconv/zip/v2.50
-# unzip objconv-2.50.zip
-# cd objconv-2.50/src
-# ./build.sh
-# export PATH="$(pwd):$PATH"
-# cd ../..
-# wget https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
+wget https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
 tar zxvf grub-2.04.tar.xz
 cd grub-2.04
 ./autogen.sh
