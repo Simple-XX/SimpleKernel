@@ -21,7 +21,7 @@ set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
 set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
 
 # Grub
-find_program(Grub grub-file REQUIRED)
+find_program(Grub grub-file)
 if (NOT Grub)
     message(FATAL_ERROR "grub-file not found.\n"
             "Use grub4mac.sh to install grub.")
