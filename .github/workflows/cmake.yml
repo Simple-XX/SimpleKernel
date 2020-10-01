@@ -25,6 +25,10 @@ jobs:
       shell: bash
       run: |
         pwd
+        ls
+        cd ..
+        pwd
+        ls
         sh ./tools/grub4mac.sh
 
     - name: cmake
