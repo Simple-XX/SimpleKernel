@@ -28,3 +28,12 @@ if (NOT Grub)
 else ()
     message(STATUS "Found grub-file ${Grub}")
 endif ()
+
+# bochs
+find_program(Bochs bochs REQUIRED)
+if (NOT Bochs)
+    message(FATAL_ERROR "bochs not found.\n"
+            "run `brew install bochs` to install the toolchain")
+else ()
+    message(STATUS "Found bochs ${Bochs}")
+endif ()
