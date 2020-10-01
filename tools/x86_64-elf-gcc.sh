@@ -3,7 +3,7 @@
 #
 # x86_64-elf-gcc.sh for SimpleXX/SimpleKernel.
 
-#!/usr/bin/env bash
+#!/bin/bash
 
 if ! [ -x "$(command -v x86_64-elf-ld)" ]; then
     echo 'Error: i386-elf-binutils is not installed.'

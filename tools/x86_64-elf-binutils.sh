@@ -3,7 +3,7 @@
 #
 # i386-elf-binutils.sh for SimpleXX/SimpleKernel.
 
-#!/usr/bin/env bash
+#!/bin/bash
 
 if ! [ -x "$(command -v wget)" ]; then
     echo 'Error: wget is not installed.'

@@ -3,7 +3,7 @@
 
 # bochs.sh for SimpleXX/SimpleKernel.
 
-#!/usr/bin/env bash
+#!/bin/bash
 
 if ! [ -x "$(command -v pkg-config)" ]; then
     echo 'Error: pkg-config is not installed.'
