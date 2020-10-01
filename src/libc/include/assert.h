@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// assert.h for MRNIU/SimpleKernel.
+// assert.h for SimpleXX/SimpleKernel.
 
 #ifndef _ASSERT_H_
 #define _ASSERT_H_

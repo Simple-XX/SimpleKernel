@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// vga.hpp for MRNIU/SimpleKernel.
+// vga.hpp for SimpleXX/SimpleKernel.
 
 #ifndef _VGA_HPP_
 #define _VGA_HPP_

@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// bootinit.h for MRNIU/SimpleKernel.
+// bootinit.h for SimpleXX/SimpleKernel.
 
 #ifndef _BOOTINIT_H_
 #define _BOOTINIT_H_

@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// console.h for MRNIU/SimpleKernel.
+// console.h for SimpleXX/SimpleKernel.
 
 #ifndef _CONSOLE_H_
 #define _CONSOLE_H_

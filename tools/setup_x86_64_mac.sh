@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 #
-# setup_x86_64_mac.sh for MRNIU/SimpleKernel.
+# setup_x86_64_mac.sh for SimpleXX/SimpleKernel.
 
 #!/usr/bin/env bash
 

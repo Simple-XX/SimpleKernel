@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// debug.h for MRNIU/SimpleKernel.
+// debug.h for SimpleXX/SimpleKernel.
 
 #ifndef _DEBUG_H_
 #define _DEBUG_H_

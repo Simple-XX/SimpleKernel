@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel). Based on
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel). Based on
 // fragglet/c-algorithms(https://github.com/fragglet/c-algorithms) linkedlist.c
-// for MRNIU/SimpleKernel.
+// for SimpleXX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel). Based on
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel). Based on
 // http://wiki.0xffffff.org/posts/hurlex-kernel.html intr.c for
-// MRNIU/SimpleKernel.
+// SimpleXX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
