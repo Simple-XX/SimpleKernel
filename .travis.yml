@@ -1,6 +1,6 @@
 os: osx
 language: c
-osx_image: xcode11.2
+osx_image: xcode12.0
 
 env:
   global:
@@ -8,11 +8,14 @@ env:
   - HOMEBREW_TEMP=~/homebrew-temp
 
 before_install:
-  - brew install i386-elf-binutils
-  - brew install i386-elf-gcc
+  - brew install x86_64-elf-binutils
+  - brew install x86_64-elf-gcc
 
 script:
   - cd ./src
-  - make remake
+  - mkdir -p build
+  - cd build
+  - cmake -TOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 ..
+  - make
 after_script:
-  - make clean
+  - rm -rf ./build
