@@ -37,8 +37,9 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: make
 
-  build_ubuntu:
-    runs-on: ubuntu-latest
+#   build_ubuntu:
+#     runs-on: ubuntu-latest
+    
 
-  build_win:
-    runs-on: windows-latest
+#   build_win:
+#     runs-on: windows-latest
