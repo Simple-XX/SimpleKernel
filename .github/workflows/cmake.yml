@@ -19,7 +19,6 @@ jobs:
         brew install x86_64-elf-binutils
         brew install x86_64-elf-gcc
         brew install autogen
-        brew install tar
         brew install wget
 
     - name: Setup grub
