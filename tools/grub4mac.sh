@@ -3,7 +3,7 @@
 #
 # grub4mac.sh for SimpleXX/SimpleKernel.
 
-#!/usr/bin/env bash
+#!/bin/bash
 
 # set -x
 set -e

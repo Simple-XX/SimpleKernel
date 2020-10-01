@@ -3,7 +3,7 @@
 #
 # setup.sh for SimpleXX/SimpleKernel.
 
-#!/usr/bin/env bash
+#!/bin/bash
 # shell 执行出错时终止运行
 set -e
 # 输出实际执行内容
