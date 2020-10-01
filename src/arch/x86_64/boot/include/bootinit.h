@@ -7,12 +7,6 @@
 #ifndef _BOOTINIT_H_
 #define _BOOTINIT_H_
 
-/* Check if the compiler thinks we are targeting the wrong operating system. */
-#if defined(__linux__)
-#error                                                                         \
-    "You are not using a cross-compiler, you will most certainly run into trouble"
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
