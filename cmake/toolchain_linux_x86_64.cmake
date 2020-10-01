@@ -51,7 +51,7 @@ endif ()
 find_program(Bochs bochs)
 if (NOT Bochs)
     message(FATAL_ERROR "bochs not found.\n"
-            "run `brew install bochs` to install the toolchain")
+            "Please install bochs and bochs-x first.")
 else ()
     message(STATUS "Found bochs ${Bochs}")
 endif ()

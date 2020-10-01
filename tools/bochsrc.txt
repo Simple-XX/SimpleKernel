@@ -4,6 +4,12 @@
 # This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 ###############################################################
 
+ata0-master: type=disk, path="fs.img", mode=flat
+ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
+boot: cdrom
+
+# log: ./debug_info/bochsout.txt
+
 megs: 512
 # Memory Detection in Emulators
 # When you tell an emulator how much memory you want emulated, the concept is a little 
@@ -19,18 +25,16 @@ megs: 512
 # mac
 romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
 vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
-# linux
-# romimage: file=/home/linuxbrew/.linuxbrew/share/bochs/BIOS-bochs-latest
-# vgaromimage: file=/home/linuxbrew/.linuxbrew/share/bochs/VGABIOS-lgpl-latest
-
-ata0-master: type=disk, path="fs.img", mode=flat
-ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
-boot: cdrom
-
-#log: ./debug_info/bochsout.txt
-#mouse: enabled=1
+# mouse: enabled=1
 keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
 display_library: sdl2
-clock: sync=realtime, time0=local
 
+# linux
+# romimage: file=/usr/share/bochs/BIOS-bochs-latest
+# vgaromimage: file=/usr/share/bochs/VGABIOS-lgpl-latest
+# mouse: enabled=1
+# keyboard: keymap=/usr/share/bochs/keymaps/x11-pc-us.map
+# display_library: x
+
+clock: sync=realtime, time0=local
 cpu: model=corei7_haswell_4770
