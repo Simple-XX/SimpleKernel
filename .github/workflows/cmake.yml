@@ -24,6 +24,7 @@ jobs:
     - name: Setup grub
       shell: bash
       run: |
+        pwd
         sh ./tools/grub4mac.sh
 
     - name: cmake
