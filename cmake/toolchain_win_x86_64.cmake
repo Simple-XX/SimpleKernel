@@ -1,7 +1,7 @@
 
 # This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 # 
-# toolchain_linux_x86_64.cmake for SimpleXX/SimpleKernel.
+# toolchain_win_x86_64.cmake for SimpleXX/SimpleKernel.
 
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_VERSION 1)
