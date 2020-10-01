@@ -25,35 +25,47 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
 - Ubuntu Linux
 
-    注意：未测试
-
-    - bochs
-    - i386-elf tool chain
-    i386-elf-binutils, i386-elf-gcc, i386-elf-grub
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
     - xorriso
+    - grub
+    - bochs
+    - bochs-x
+    
+    Ubuntu 20.04 测试通过
+
+
+- Arch Linux
+
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
+    - mtools
+    - xorriso
+    - grub
+    - bochs
+
+    Manjaro 5.6.15-1 测试通过
 
 - Mac
 
-    - Homebrew
+    - brew
 
-        https://brew.sh
-
+    - x86_64-elf-binutils
+- x86_64-elf-gcc
+    - xorriso
+- grub
     - bochs
 
-    - x86_64-elf tool chain
-
-        x86_64-elf-binutils, x86_64-elf-gcc, grub
-
-    - xorriso
-
-注：可以使用 setup.sh 自动安装环境
+    macOS 10.15.7 测试通过
 
 ## 如何运行
 
 ```shell
 git clone https://github.com/SimpleXX/SimpleKernel.git
 cd SimpleKernel/
-sh setup.sh
+bash ./run.sh
 ```
 
 运行截图
@@ -89,23 +101,23 @@ sh setup.sh
 
 头文件命名能准确描述文件所包含的模块内容，达到通俗、易懂的目的。
 
-## Makefile
+## CMake
 
 ## 测试
 
 ### 自动集成
 
-合并到 master 分支时需要通过 Travis CI 测试。编译没有错误即可。
+每次 push 会使用 Github Action 进行测试，可以通过编译即可。
 
 ## 代码风格
 
-git commit 规范：
+- git commit 规范：
 
-https://zhuanlan.zhihu.com/p/182553920
+    https://zhuanlan.zhihu.com/p/182553920
 
-代码样式：
+- 代码样式
 
-tools/codestyle.cfg (atom-beautify 使用)
+    由 tools/clang-format 指定
 
 ## 镜像文件
 
@@ -120,6 +132,12 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## 贡献者
 
 [MRNIU](https://github.com/MRNIU)
+
+[cy295957410](https://github.com/cy295957410)
+
+[rakino](https://github.com/rakino)
+
+[xiaoerlaigeid](https://github.com/xiaoerlaigeid)
 
 ## 贡献
 
@@ -164,6 +182,8 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 [Linux内核中的中断栈与内核栈的补充说明](http://blog.chinaunix.net/uid-23769728-id-3077874.html)
 
 [Linux进程管理 (1)进程的诞生](https://www.cnblogs.com/arnoldlu/p/8466928.html)
+
+[SynestiaOS](https://github.com/SynestiaOS/SynestiaOS)
 
 ## 捐助者
 
