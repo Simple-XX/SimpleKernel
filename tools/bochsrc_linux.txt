@@ -1,8 +1,7 @@
-###############################################################
-# bochsrc.txt file for SimpleKernel (https://github.com/MRNIU).
 
 # This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
-###############################################################
+#
+# bochsrc_mac.txt file for SimpleKernel (https://github.com/MRNIU).
 
 ata0-master: type=disk, path="fs.img", mode=flat
 ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
@@ -22,19 +21,12 @@ megs: 512
 
 # 这里需要根据实际路径进行修改
 # Here needs to change as your real path.
-# mac
-romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
-vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
-# mouse: enabled=1
-keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
-display_library: sdl2
-
 # linux
-# romimage: file=/usr/share/bochs/BIOS-bochs-latest
-# vgaromimage: file=/usr/share/bochs/VGABIOS-lgpl-latest
-# mouse: enabled=1
-# keyboard: keymap=/usr/share/bochs/keymaps/x11-pc-us.map
-# display_library: x
+romimage: file=/usr/share/bochs/BIOS-bochs-latest
+vgaromimage: file=/usr/share/bochs/VGABIOS-lgpl-latest
+mouse: enabled=1
+keyboard: keymap=/usr/share/bochs/keymaps/x11-pc-us.map
+display_library: x
 
 clock: sync=realtime, time0=local
 cpu: model=corei7_haswell_4770

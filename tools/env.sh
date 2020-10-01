@@ -12,8 +12,6 @@ TARGET="x86_64-elf"
 ARCH="x86_64"
 # 虚拟机
 SIMULATOR="bochs"
-# bochs 配置文件
-bochsrc="./tools/bochsrc.txt"
 # 内核映像
 kernel='./build/bin/kernel.bin'
 bootloader='./build/bin/bootloader.bin'
@@ -33,8 +31,10 @@ OS=`uname -s`
 if [ "${OS}" == "Linux" ]; then
     TOOLS="toolchain_linux_x86_64.cmake"
     GRUB_PATH="$(dirname $(which grub-file))"
+    bochsrc="./tools/bochsrc_linux.txt"
 else if [ "${OS}" == "Darwin" ]; then
     TOOLS="toolchain_mac_x86_64.cmake"
     GRUB_PATH="$(pwd)/tools/grub-2.04/build/grub/bin"
+    bochsrc="./tools/bochsrc_mac.txt"
     fi
 fi
