@@ -1,5 +1,5 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// vga.c for MRNIU/SimpleKernel.
+// vga.c for SimpleXX/SimpleKernel.

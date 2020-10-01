@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 
-# bochs.sh for MRNIU/SimpleKernel.
+# bochs.sh for SimpleXX/SimpleKernel.
 
 #!/usr/bin/env bash
 

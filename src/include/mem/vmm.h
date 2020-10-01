@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// vmm.h for MRNIU/SimpleKernel.
+// vmm.h for SimpleXX/SimpleKernel.
 
 #ifndef _VMM_H_
 #define _VMM_H_

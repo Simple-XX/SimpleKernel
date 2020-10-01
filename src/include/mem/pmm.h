@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// pmm.h for MRNIU/SimpleKernel.
+// pmm.h for SimpleXX/SimpleKernel.
 
 #ifndef _PMM_H_
 #define _PMM_H_

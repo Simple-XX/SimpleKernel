@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// cpu.hpp for MRNIU/SimpleKernel.
+// cpu.hpp for SimpleXX/SimpleKernel.
 
 #ifndef _CPU_HPP_
 #define _CPU_HPP_

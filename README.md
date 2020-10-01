@@ -1,12 +1,12 @@
-![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)
+![Build Status](https://travis-ci.org/SimpleXX/SimpleKernel.svg?branch=TODO)
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
 ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
-[![HitCount](http://hits.dwyl.io/MRNIU/SimpleKernel.svg)](http://hits.dwyl.io/MRNIU/SimpleKernel)
+[![HitCount](http://hits.dwyl.io/SimpleXX/SimpleKernel.svg)](http://hits.dwyl.io/SimpleXX/SimpleKernel)
 
-[English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
+[English](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README.md)
 
 # SimpleKernel
 
@@ -52,7 +52,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 ## 如何运行
 
 ```shell
-git clone https://github.com/MRNIU/SimpleKernel.git
+git clone https://github.com/SimpleXX/SimpleKernel.git
 cd SimpleKernel/
 sh setup.sh
 ```

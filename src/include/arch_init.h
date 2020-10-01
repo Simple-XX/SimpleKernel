@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// arch_init.h for MRNIU/SimpleKernel.
+// arch_init.h for SimpleXX/SimpleKernel.
 
 #ifndef _ARCH_INIT_H_
 #define _ARCH_INIT_H_

@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// pic.h for MRNIU/SimpleKernel.
+// pic.h for SimpleXX/SimpleKernel.
 
 #ifndef _8259A_H_
 #define _8259A_H_

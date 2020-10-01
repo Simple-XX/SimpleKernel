@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// stdlib.h for MRNIU/SimpleKernel.
+// stdlib.h for SimpleXX/SimpleKernel.
 
 #ifndef _STDLIB_H_
 #define _STDLIB_H_

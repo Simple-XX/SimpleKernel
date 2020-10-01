@@ -1,7 +1,7 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel). Based on
-// http://wiki.0xffffff.org/posts/hurlex-6.html gdt.h for MRNIU/SimpleKernel.
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel). Based on
+// http://wiki.0xffffff.org/posts/hurlex-6.html gdt.h for SimpleXX/SimpleKernel.
 
 #ifndef _GDT_H_
 #define _GDT_H_
