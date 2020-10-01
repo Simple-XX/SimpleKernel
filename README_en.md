@@ -27,35 +27,46 @@ Kernels with different levels of completion are available, and you can start fro
 
 - Ubuntu Linux
 
-    NOTE: NO TEST
-
-    - bochs
-    - i386-elf tool chain
-        i386-elf-binutils, i386-elf-gcc, i386-elf-grub
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
     - xorriso
+    - grub
+    - bochs
+    - bochs-x
+    
+    Tested on Ubuntu 20.04
 
-Mac
 
-- Homebrew
+- Arch Linux
 
-    https://brew.sh
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
+    - mtools
+    - xorriso
+    - grub
+    - bochs
 
-- bochs
+    Tested on Manjaro 5.6.15-1
 
-- x86_64-elf tool chain
+- Mac
 
-    x86_64-elf-binutils, x86_64-elf-gcc, x86_64-elf-grub
+    - brew
 
-- xorriso
-
-NOTE：
-Mac 10.14.1, bochs 2.6.9, i386-elf-binutils 2.31.1, i386-elf-gcc 8.2.0 pass-test.
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
+    - xorriso
+    - grub
+    - bochs
+    
+    Tested on  macOS 10.15.7
 
 ## RUN
 
     git clone https://github.com/SimpleXX/SimpleKernel.git
     cd SimpleKernel/
-    sh setup.sh
+    bash ./run.sh
 
 Screenshot
 
@@ -87,15 +98,23 @@ The whole project according to the functional modules delimited molecular direct
 
     Header file naming should accurately describe the contents of the module contained in the file to achieve the purpose of easy to understand.
 
-## Makefile
+## CMake
 
 ## Test
 
 ### CI
 
-Merging into the master branch requires a Travis CI test.
+Each push will be tested using Github Action.
 
 ## Code Style
+
+- git commit：
+
+    https://zhuanlan.zhihu.com/p/182553920
+
+- code style
+
+    Specified by tools/clang-format
 
 ## Image Files
 
@@ -113,6 +132,12 @@ fs.img: file system, unuse
 
 [MRNIU](https://github.com/MRNIU)
 
+[cy295957410](https://github.com/cy295957410)
+
+[rakino](https://github.com/rakino)
+
+[xiaoerlaigeid](https://github.com/xiaoerlaigeid)
+
 ## CONTRIBUTING
 
 See CONTRIBUTING.md.
@@ -121,9 +146,11 @@ See CONTRIBUTING.md.
 
 [osdev](https://wiki.osdev.org)
 
-[install GRUB on Mac](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
+[GRUB 在 Mac 上的安装](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
 
 [multiboot](https://www.gnu.org/software/grub/manual/multiboot/multiboot.html)
+
+《程序员的自我修养--链接、装载与库》(俞甲子 石凡 潘爱民)
 
 [JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html)
 
@@ -152,6 +179,8 @@ See CONTRIBUTING.md.
 [Linux内核中的中断栈与内核栈的补充说明](http://blog.chinaunix.net/uid-23769728-id-3077874.html)
 
 [Linux进程管理 (1)进程的诞生](https://www.cnblogs.com/arnoldlu/p/8466928.html)
+
+[SynestiaOS](https://github.com/SynestiaOS/SynestiaOS)
 
 ## Donors
 
