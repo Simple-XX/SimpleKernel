@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// sync.hpp for MRNIU/SimpleKernel.
+// sync.hpp for SimpleXX/SimpleKernel.
 
 #ifndef _SYNC_HPP_
 #define _SYNC_HPP_

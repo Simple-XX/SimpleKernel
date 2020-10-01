@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 #
-# sched.s for MRNIU/SimpleKernel.
+# sched.s for SimpleXX/SimpleKernel.
 
 # void switch_to(task_pcb_t * curr, task_pcb_t * next);
 // .global switch_to

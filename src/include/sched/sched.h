@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// sched.h for MRNIU/SimpleKernel.
+// sched.h for SimpleXX/SimpleKernel.
 
 #ifndef _SCHED_H_
 #define _SCHED_H_

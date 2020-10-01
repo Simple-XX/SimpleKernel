@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// clock.h for MRNIU/SimpleKernel.
+// clock.h for SimpleXX/SimpleKernel.
 
 #ifndef _CLOCK_H_
 #define _CLOCK_H_

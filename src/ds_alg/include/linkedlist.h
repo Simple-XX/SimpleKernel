@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// linkedlist.h for MRNIU/SimpleKernel.
+// linkedlist.h for SimpleXX/SimpleKernel.
 
 #ifndef _LINKEDLIST_H_
 #define _LINKEDLIST_H_

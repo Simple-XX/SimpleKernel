@@ -1,7 +1,7 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel). Based on Orange's 一个操作系统的实现
-// kb.c for MRNIU/SimpleKernel.
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel). Based on Orange's 一个操作系统的实现
+// kb.c for SimpleXX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {

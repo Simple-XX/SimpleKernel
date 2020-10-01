@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 #
-# task_s.s for MRNIU/SimpleKernel.
+# task_s.s for SimpleXX/SimpleKernel.
 
 .code32
 

@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// port.hpp for MRNIU/SimpleKernel.
+// port.hpp for SimpleXX/SimpleKernel.
 
 #ifndef _PORT_HPP_
 #define _PORT_HPP_

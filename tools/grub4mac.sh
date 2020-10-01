@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 #
-# grub4mac.sh for MRNIU/SimpleKernel.
+# grub4mac.sh for SimpleXX/SimpleKernel.
 
 #!/usr/bin/env bash
 

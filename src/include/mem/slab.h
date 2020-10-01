@@ -1,8 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel
-// (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
 //
-// slab.h for MRNIU/SimpleKernel.
+// slab.h for SimpleXX/SimpleKernel.
 
 #ifndef _SLAB_H_
 #define _SLAB_H_
