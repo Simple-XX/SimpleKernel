@@ -10,9 +10,11 @@ set -e
 # set -x
 
 source ./tools/env.sh
+export PATH="${GRUB_PATH}:$PATH"
 
 # 重新编译
 mkdir -p ./build/
+rm -rf ./build/*
 cd ./build
 cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} ..
 make

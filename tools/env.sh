@@ -7,7 +7,6 @@
 
 # env.sh path
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
-
 TARGET="x86_64-elf"
 # ARCH: i386, x86_64
 ARCH="x86_64"
@@ -17,7 +16,6 @@ SIMULATOR="bochs"
 bochsrc="./tools/bochsrc.txt"
 # 内核映像
 kernel='./build/bin/kernel.bin'
-echo ${kernel}
 bootloader='./build/bin/bootloader.bin'
 # 软盘
 disk='./simplekernel.img'
@@ -37,6 +35,6 @@ if [ "${OS}" == "Linux" ]; then
     GRUB_PATH="$(dirname $(which grub-file))"
 else if [ "${OS}" == "Darwin" ]; then
     TOOLS="toolchain_mac_x86_64.cmake"
-    GRUB_PATH="./tools/grub-2.04/build/grub/bin"
+    GRUB_PATH="$(pwd)/tools/grub-2.04/build/grub/bin"
     fi
 fi
