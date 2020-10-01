@@ -29,6 +29,15 @@ set(TOOLCHAIN_PREFIX x86_64-elf-)
 set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
 set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
 
+# xorriso
+find_program(Xorriso xorriso REQUIRED)
+if (NOT Xorriso)
+    message(FATAL_ERROR "xorriso not found.\n"
+            "run `brew install xorriso` to install the toolchain")
+else ()
+    message(STATUS "Found xorriso ${Xorriso}")
+endif ()
+
 # Grub
 find_program(Grub grub-file REQUIRED)
 if (NOT Grub)
@@ -36,4 +45,13 @@ if (NOT Grub)
             "Please install grub2 common first.")
 else ()
     message(STATUS "Found grub-file ${Grub}")
+endif ()
+
+# bochs
+find_program(Bochs bochs REQUIRED)
+if (NOT Bochs)
+    message(FATAL_ERROR "bochs not found.\n"
+            "run `brew install bochs` to install the toolchain")
+else ()
+    message(STATUS "Found bochs ${Bochs}")
 endif ()
