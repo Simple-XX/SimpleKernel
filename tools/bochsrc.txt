@@ -14,10 +14,14 @@ megs: 512
 # total usable RAM, going from 0 to 32M + 384K -1. So don't be surprised if you see a 
 # "detected memory size" that does not exactly match your expectations.
 
-romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
-vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 # 这里需要根据实际路径进行修改
 # Here needs to change as your real path.
+# mac
+romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
+vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
+# linux
+# romimage: file=/home/linuxbrew/.linuxbrew/share/bochs/BIOS-bochs-latest
+# vgaromimage: file=/home/linuxbrew/.linuxbrew/share/bochs/VGABIOS-lgpl-latest
 
 ata0-master: type=disk, path="fs.img", mode=flat
 ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
