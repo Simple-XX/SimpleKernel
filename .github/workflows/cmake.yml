@@ -1,9 +1,9 @@
 name: CMake
 
 on: 
-  - [push]
-  - [pull_request]
-  - [release]
+  - push
+  - pull_request
+  - release
 
 env:
   BUILD_TYPE: Release
