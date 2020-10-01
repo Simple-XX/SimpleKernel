@@ -3,7 +3,7 @@
 #
 # setup_x86_64_mac.sh for SimpleXX/SimpleKernel.
 
-#!/usr/bin/env bash
+#!/bin/bash
 
 # shell 执行出错时终止运行
 set -e

@@ -3,7 +3,7 @@
 #
 # setup.sh for SimpleXX/SimpleKernel.
 
-#!/usr/bin/env bash
+#!/bin/bash
 
 # env.sh path
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
