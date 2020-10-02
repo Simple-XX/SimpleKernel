@@ -1,26 +1,27 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# intr_s.s for MRNIU/SimpleKernel.
+# intr_s.s for Simple-XX/SimpleKernel.
 
 .code32
 
-# 加载 idt
 .section .text
+
+# 加载 idt
 .global idt_load
 idt_load:
-    mov 4(%esp), %eax # 参数保存在 eax
+    # 参数保存在 eax
+    mov 4(%esp), %eax
     lidt (%eax)
     ret
 
-# 定义两个构造中断处理函数的宏(有的中断有错误代码，有的没有)
+# 定义两个构造中断处理函数的宏
 # 用于没有错误代码的中断
-
 .macro ISR_NOERRCODE no
 .global isr\no
 isr\no:
     cli                  # 首先关闭中断
-    push $0               # push 无效的中断错误代码,占位用
+    push $0x00               # push 无效的中断错误代码,占位用
     push $\no              # push 中断号
     jmp isr_common_stub
 .endm
@@ -73,27 +74,30 @@ ISR_NOERRCODE 31
 # 128=0x80 用于系统调用
 ISR_NOERRCODE 128
 
-
 # 中断服务程序
 .global isr_common_stub
 .extern isr_handler
 isr_common_stub:
+    // 保存上下文
     pusha
     push %ds
     push %es
     push %fs
     push %gs
 
-    mov $0x10, %ax  # 加载内核数据段描述符表, 0x10:内核数据段标识符
+    // 加载内核数据段描述符表, 0x10:内核数据段标识符
+    mov $0x10, %ax
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
     mov %ax, %gs
     mov %ax, %ss
-
+    // 此时 esp 为 pt_regs 指针
     push %esp
     call isr_handler
-    add $4, %esp  # 清除压入的参数
+    // 清除压入的参数
+    add $0x04, %esp
+    // 恢复上下文
     call forkret_s
 
 # 构造中断请求的宏
@@ -101,7 +105,8 @@ isr_common_stub:
 .global irq\name
 irq\name:
     cli
-    push $0
+    // 占位
+    push $0x00
     push $\no
     jmp irq_common_stub
 .endm
@@ -124,7 +129,6 @@ IRQ  14,    46 	# IDE0 传输控制使用
 IRQ  15,    47 	# IDE1 传输控制使用
 
 .global irq_common_stub
-.global forkret_s
 .extern irq_handler
 irq_common_stub:
     pusha
@@ -133,7 +137,8 @@ irq_common_stub:
     push %fs
     push %gs
 
-    mov $0x10, %ax  # 加载内核数据段描述符表, 0x10:内核数据段标识符
+    # 加载内核数据段描述符表, 0x10:内核数据段标识符
+    mov $0x10, %ax
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
@@ -142,13 +147,37 @@ irq_common_stub:
 
     push %esp
     call irq_handler
-    add $0x04, %esp  # 清除压入的参数
+    # 清除压入的参数
+    add $0x04, %esp
+    jmp forkret_s
 
+.global forkret_s
 forkret_s:
     pop %gs
     pop %fs
     pop %es
     pop %ds
-    popa                     # Pops edi,esi,ebp...
-    add $0x08, %esp   		 # 清理压栈的 错误代码 和 ISR 编号
-    iret          		 # 出栈 CS, EIP, EFLAGS, SS, ESP
+    # Pops edi,esi,ebp...
+    popa
+    # 清理压栈的 错误代码 和 ISR 编号
+    add $0x08, %esp
+    # 出栈 EIP, CS, EFLAGS, ESP, SS
+    iret
+
+.global forkret_s233
+.extern print_stack
+.extern print_curr
+.extern print_next
+forkret_s233:
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    # Pops edi,esi,ebp...
+    popa
+    # 清理压栈的 错误代码 和 ISR 编号
+    add $0x08, %esp
+    # 出栈 EIP, CS, EFLAGS, ESP, SS
+    // push $10
+    // call print_stack
+    iret
