@@ -46,21 +46,21 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: make
     
-  build_ubuntu:
-    runs-on: ubuntu-latest
+#   build_ubuntu:
+#     runs-on: ubuntu-latest
     
-    steps:
-    - name: Get code
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Get code
+#       uses: actions/checkout@v2
       
-    - name: Setup brew
-      shell: bash
-      run: |
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-        brew install make
-        brew install cmake
-        brew install x86_64-elf-binutils
-        brew install x86_64-elf-gcc
+#     - name: Setup brew
+#       shell: bash
+#       run: |
+#         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+#         brew install make
+#         brew install cmake
+#         brew install x86_64-elf-binutils
+#         brew install x86_64-elf-gcc
  #       brew install wget
  #       brew install curl
  #       brew install autogen
@@ -71,20 +71,20 @@ jobs:
 #         sh ${{github.workspace}}/tools/grub4mac.sh
 #         export PATH="${{github.workspace}}/tools/grub-2.04/build/grub/bin:$PATH"
 
-    - name: Make build dir
-      shell: bash
-      run: |
-        mkdir ${{github.workspace}}/build
+#     - name: Make build dir
+#       shell: bash
+#       run: |
+#         mkdir ${{github.workspace}}/build
 
-    - name: cmake
-      shell: bash
-      working-directory: ${{github.workspace}}/build
-      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 ..
+#     - name: cmake
+#       shell: bash
+#       working-directory: ${{github.workspace}}/build
+#       run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 ..
 
-    - name: make
-      shell: bash
-      working-directory: ${{github.workspace}}/build
-      run: make
+#     - name: make
+#       shell: bash
+#       working-directory: ${{github.workspace}}/build
+#       run: make
     
 
 #   build_win:
