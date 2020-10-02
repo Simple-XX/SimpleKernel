@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# boot.s for MRNIU/SimpleKernel.
+# boot.s for Simple-XX/SimpleKernel.
 
 # multiboot2 定义
 .set  MULTIBOOT_SEARCH,                        32768
@@ -101,8 +101,10 @@ multiboot_entry:
     cli
 	# 设置栈地址
     mov $STACK_TOP, %esp
-    and $0xFFFFFFF0, %esp     # 栈地址按照 16 字节对齐
-    mov $0, %ebp          # 帧指针修改为 0
+    # 栈地址按照 16 字节对齐
+    and $0xFFFFFFF0, %esp
+    # 帧指针修改为 0
+    mov $0, %ebp          
     push $0
     popf
 	# multiboot2_info 结构体指针
