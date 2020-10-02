@@ -3,14 +3,12 @@
 #
 # arch_detector.cmake for SimpleXX/SimpleKernel.
 
-if (ARCH STREQUAL x86)
-    set(SimpleKernelArch x86)
-elseif (ARCH STREQUAL x86_64)
+if (ARCH STREQUAL x86_64)
     set(SimpleKernelArch x86_64)
 else ()
-    message(WARNING "unexpected ARCH ${ARCH}, using default value \"x86\"")
-    set(SimpleKernelArch x86)
-    set(ARCH x86\(default\))
+    message(WARNING "Unexpected ARCH ${ARCH}, using default value \"x86_64\"")
+    set(ARCH x86_64)
+    set(SimpleKernelArch x86_64)
 endif ()
 
 message(STATUS "SimpleKernelArch is ${SimpleKernelArch}")
