@@ -1,7 +1,7 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# boot.s for MRNIU/SimpleKernel.
+# boot.s for Simple-XX/SimpleKernel.
 
 # multiboot2 定义
 .set  MULTIBOOT_SEARCH,                        32768

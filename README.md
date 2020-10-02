@@ -1,10 +1,10 @@
 
-![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)
+![Build Status](https://travis-ci.org/Simple-XX/SimpleKernel.svg?branch=TODO)
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
 ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
 
-[English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
+[English](https://github.com/Simple-XX/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/Simple-XX/SimpleKernel/blob/TODO/README.md)
 # SimpleKernel
 
 ## 简介
@@ -59,7 +59,7 @@ Mac 10.14.1，bochs 2.6.9，i386-elf-binutils 2.31.1，i386-elf-gcc 8.2.0 测试
 
 ## 如何运行
 
-    git clone https://github.com/MRNIU/SimpleKernel.git
+    git clone https://github.com/Simple-XX/SimpleKernel.git
     cd SimpleKernel/
     sh setup.sh
 
@@ -186,7 +186,7 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 ## 作者
 
-作者：[MRNIU](https://github.com/MRNIU)
+作者：[Simple-XX](https://github.com/Simple-XX)
 
 您也可以在贡献者名单中参看所有参与该项目的开发者。
 
