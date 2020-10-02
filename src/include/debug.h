@@ -1,19 +1,22 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// debug.h for MRNIU/SimpleKernel.
+// debug.h for Simple-XX/SimpleKernel.
 
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
 
-#include "stddef.h"
-#include "stdio.h"
-#include "string.h"
-#include "intr/include/intr.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#define DEBUG 1
+#include "stdint.h"
 
 void debug_init(void);
-void print_cur_status(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _DEBUG_H_ */
