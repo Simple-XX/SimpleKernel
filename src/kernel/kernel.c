@@ -1,7 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// kernel.c for MRNIU/SimpleKernel.
+// kernel.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,13 +11,13 @@ extern "C" {
 #include "include/kernel.h"
 
 void kernel_main(void) {
-	console_init(); // 控制台初始化
-
-	char c='!';
-	char * s="gg";
-	printk("__%c__%s\n",c,s);
-	printk("Simple Kernel\n");
-	return;
+    // 控制台初始化
+    console_init();
+    char  c = '!';
+    char *s = "gg";
+    printk("__%c__%s\n", c, s);
+    printk("Simple Kernel\n");
+    return;
 }
 
 #ifdef __cplusplus
