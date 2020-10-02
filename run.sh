@@ -47,4 +47,12 @@ if [ ${ARCH} == "x86_64" ]; then
 fi
 
 ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+
+if [ ${SIMULATOR} == "bochs" ]; then
+    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
+elif [ ${SIMULATOR} == "qemu" ]; then
+        qemu-system-${ARCH} -boot d -cdrom simplekernel.iso -m 512
+else
+    echo The SIMULATOR is invalid.
+    exit
+fi

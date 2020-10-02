@@ -8,9 +8,10 @@
 # env.sh path
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 TARGET="x86_64-elf"
-# ARCH: i386, x86_64
+# ARCH: x86_64
 ARCH="x86_64"
 # 虚拟机
+# SIMULATOR: bochs, qemu
 SIMULATOR="bochs"
 # 内核映像
 kernel='./build/bin/kernel.bin'
