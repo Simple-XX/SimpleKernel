@@ -1,7 +1,7 @@
 
 // This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel). Based on Orange's 一个操作系统的实现
-// kb.c for SimpleXX/SimpleKernel.
+// (https://github.com/SimpleXX/SimpleKernel). Based on Orange's
+// 一个操作系统的实现 kb.c for SimpleXX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -433,7 +433,8 @@ void keyboard_handler() {
 // 从缓冲区读取
 uint8_t keyboard_read_from_buff() {
     uint8_t scancode;
-    while (kb_in.count <= 0) {} // 等待下一个字节到来
+    // 等待下一个字节到来
+    while (kb_in.count <= 0) {}
     // 进入临界区
     bool intr_flag = false;
     local_intr_store(intr_flag);
@@ -458,14 +459,16 @@ void keyboard_read(pt_regs_t *regs __UNUSED__) {
             return;
         }
         uint8_t letter = 0;
-        uint8_t str[2] = {'\0', '\0'}; // 在 default 中用到
+        // 在 default 中用到
+        uint8_t str[2] = {'\0', '\0'};
         // 开始处理
         switch (scancode) {
         // 如果是特殊字符，则单独处理
         case KB_SHIFT_L:
             shift = true;
             break;
-        case KB_SHIFT_L | RELEASED_MASK: // 扫描码 + 0x80 即为松开的编码
+        // 扫描码 + 0x80 即为松开的编码
+        case KB_SHIFT_L | RELEASED_MASK:
             shift = false;
             break;
         case KB_SHIFT_R:
@@ -487,7 +490,8 @@ void keyboard_read(pt_regs_t *regs __UNUSED__) {
             alt = false;
             break;
         case KB_CAPS_LOCK:
-            caps = ((!caps) & 0x01); // 与上次按下的状态相反
+            // 与上次按下的状态相反
+            caps = ((!caps) & 0x01);
             break;
         case KB_NUM_LOCK:
             num = ((!num) & 0x01);
@@ -501,11 +505,12 @@ void keyboard_read(pt_regs_t *regs __UNUSED__) {
         case KB_TAB:
             printk("\t");
             break;
-        default: // 一般字符输出
+        // 一般字符输出
+        default:
             // 首先排除释放按键
             if (!(scancode & RELEASED_MASK)) {
-                letter = keymap[(uint8_t)(scancode * 3) +
-                                (uint8_t)shift]; // 计算在 keymap 中的位置
+                // 计算在 keymap 中的位置
+                letter = keymap[(uint8_t)(scancode * 3) + (uint8_t)shift];
                 str[0] = letter;
                 str[1] = '\0';
                 printk("%s", str);

@@ -11,10 +11,10 @@ extern "C" {
 #include "stdio.h"
 #include "port.hpp"
 #include "debug.h"
-#include "../drv/8259A/include/8259A.h"
+#include "8259A.h"
 #include "cpu.hpp"
 #include "sync.hpp"
-#include "include/intr.h"
+#include "intr.h"
 
 // 中断描述符表
 static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
@@ -86,7 +86,8 @@ void register_interrupt_handler(uint8_t n, interrupt_handler_t h) {
 
 // IRQ 处理函数
 void irq_handler(pt_regs_t *regs) {
-    clear_interrupt_chip(regs->int_no); // 重设PIC芯片
+    // 重设PIC芯片
+    clear_interrupt_chip(regs->int_no);
     if (interrupt_handlers[regs->int_no]) {
         interrupt_handlers[regs->int_no](regs);
     }
