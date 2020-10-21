@@ -10,7 +10,6 @@ extern "C" {
 
 #include "stdio.h"
 #include "port.hpp"
-#include "debug.h"
 #include "8259A.h"
 #include "cpu.hpp"
 #include "intr.h"
@@ -85,7 +84,8 @@ void register_interrupt_handler(uint8_t n, interrupt_handler_t h) {
 
 // IRQ 处理函数
 void irq_handler(pt_regs_t *regs) {
-    clear_interrupt_chip(regs->int_no); // 重设PIC芯片
+    // 重设PIC芯片
+    clear_interrupt_chip(regs->int_no);
     if (interrupt_handlers[regs->int_no]) {
         interrupt_handlers[regs->int_no](regs);
     }

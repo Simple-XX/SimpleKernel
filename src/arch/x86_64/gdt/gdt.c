@@ -9,7 +9,6 @@ extern "C" {
 #endif
 
 #include "stdio.h"
-#include "debug.h"
 #include "cpu.hpp"
 #include "gdt.h"
 
