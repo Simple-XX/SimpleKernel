@@ -15,6 +15,7 @@ extern "C" {
 #include "kernel.h"
 #include "clock.h"
 #include "keyboard.h"
+#include "buffer.h"
 #include "test.h"
 
 // 内核入口

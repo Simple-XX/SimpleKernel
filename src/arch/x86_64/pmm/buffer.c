@@ -317,6 +317,21 @@ void do_request() {
     }
 }
 
+//对缓冲区进行测试
+void test_buffer() {
+    buffer_head_t *h;
+    printk_info("test buffer....\n");
+    buffer_init();
+    //第一个缓冲块地址
+    printk_info("addr:%X\n", free_list->addr);
+    //模拟缓冲块建立
+    //假定读取dev为1（比如硬盘），块号为100的数据块
+    h = buffer_read(1, 100);
+    //读取缓冲块中数据块的前4个字节
+    uint32_t *data = (uint32_t *)h->addr;
+    printk_info("dev:1 block_num:100----data:%x\n", *data);
+}
+
 #ifdef __cplusplus
 }
 #endif
