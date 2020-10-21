@@ -30,7 +30,7 @@ bool test_pmm(void) {
     printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA));
     allc_addr = pmm_alloc(1, DMA);
     printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
-    //	printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA) );
+    printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA));
     allc_addr = pmm_alloc(1, DMA);
     printk_test("Alloc Physical Addr: 0x%08X\n", allc_addr);
     printk_test("Free pages count: %d\n", pmm_free_pages_count(DMA));
