@@ -14,7 +14,6 @@ extern "C" {
 #include "port.hpp"
 #include "cpu.hpp"
 #include "sync.hpp"
-#include "sched.h"
 #include "clock.h"
 
 void clock_init(void) {
@@ -22,7 +21,8 @@ void clock_init(void) {
     local_intr_store(intr_flag);
     {
         uint32_t divisor = TIMER_FREQ / FREQUENCY;
-        outb(TIMER_MODE, TIMER_SEL0 | TIMER_RATEGEN | TIMER_16BIT); // 0x34
+        // 0x34
+        outb(TIMER_MODE, TIMER_SEL0 | TIMER_RATEGEN | TIMER_16BIT);
         // 拆分低字节和高字节
         uint8_t low  = (uint8_t)(divisor & 0xFF);
         uint8_t hign = (uint8_t)((divisor >> 8) & 0xFF);
