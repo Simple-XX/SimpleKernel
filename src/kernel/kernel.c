@@ -15,14 +15,18 @@ extern "C" {
 void kernel_main() {
     // 系统初始化
     debug_init();
-    console_init(); // 控制台初始化
-    gdt_init();     // GDT 初始化
-    idt_init();     // IDT 初始化
-    clock_init();   // 时钟初始化
+    // 控制台初始化
+    console_init();
+    // GDT 初始化
+    gdt_init();
+    // IDT 初始化
+    idt_init();
+    // 时钟初始化
+    clock_init();
 
     showinfo();
 
-    // cpu_sti();
+    cpu_sti();
     printk_color(white, "sti\n");
     if (EFLAGS_IF_status()) {
         printk_color(white, "interrupt accept!\n");
@@ -31,7 +35,8 @@ void kernel_main() {
         printk_color(light_red, "interrupt not accept!\n");
     }
 
-    // cpu_cli();// close intr
+    // close intr
+    cpu_cli();
     for (int i = 0; i < 5; i++) {
         if (EFLAGS_IF_status()) {
             printk_color(white, "before hlt, interrupt accept!\n");
