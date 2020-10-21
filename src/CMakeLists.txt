@@ -41,7 +41,7 @@ add_executable(${KernelName}
         $<TARGET_OBJECTS:gdt>
         $<TARGET_OBJECTS:intr>
         $<TARGET_OBJECTS:debug>
-        $<TARGET_OBJECTS:mm>
+        $<TARGET_OBJECTS:pmm>
         $<TARGET_OBJECTS:kernel>
         $<TARGET_OBJECTS:mem>
         $<TARGET_OBJECTS:8259A>
