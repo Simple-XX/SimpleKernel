@@ -36,9 +36,11 @@ void kernel_main(ptr_t magic, ptr_t addr) {
         debug_init(magic, addr);
         // 物理内存初始化
         pmm_init();
+        //测试缓冲区
+        test_buffer();
 
         // showinfo();
-        test();
+        // test();
         while (1)
             ;
     }
