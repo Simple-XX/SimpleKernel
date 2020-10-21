@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-#include "mem/pmm.h"
+#include "pmm.h"
 // 块
 typedef struct chunk_info {
     // 当前页的地址

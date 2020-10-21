@@ -15,8 +15,8 @@ extern "C" {
 #include "debug.h"
 #include "cpu.hpp"
 #include "sync.hpp"
-#include "mem/pmm.h"
-#include "mem/firstfit.h"
+#include "pmm.h"
+#include "firstfit.h"
 
 // 物理页帧数组长度,可用内存总页数
 static uint32_t phy_pages_count = 0;

@@ -30,10 +30,6 @@ extern "C" {
 #include "multiboot2.h"
 #include "arch_init.h"
 #include "pmm.h"
-#include "vmm.h"
-#include "buffer.h"
-#include "swap.h"
-#include "heap.h"
 
 void kernel_main(uint32_t magic, uint32_t addr);
 
