@@ -12,11 +12,10 @@ extern "C" {
 #include "debug.h"
 #include "assert.h"
 #include "sync.hpp"
-#include "include/kernel.h"
+#include "kernel.h"
 #include "clock.h"
 #include "keyboard.h"
 #include "test.h"
-#include "linkedlist.h"
 
 // 内核入口
 void kernel_main(ptr_t magic, ptr_t addr) {
@@ -25,7 +24,6 @@ void kernel_main(ptr_t magic, ptr_t addr) {
     {
         // 控制台初始化
         console_init();
-        printk_debug("%p, %p", magic, addr);
         // 从 multiboot 获得系统初始信息
         multiboot2_init(magic, addr);
         // GDT、IDT 初始化
@@ -38,13 +36,6 @@ void kernel_main(ptr_t magic, ptr_t addr) {
         debug_init(magic, addr);
         // 物理内存初始化
         pmm_init();
-        //测试缓冲区
-        test_buffer();
-        // 虚拟内存初始化
-        // vmm_init();
-        // test_swap();
-        // 堆初始化
-        // heap_init();
 
         // showinfo();
         test();

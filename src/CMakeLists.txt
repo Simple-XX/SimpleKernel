@@ -29,7 +29,6 @@ message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 
 # Sub dirs
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/ds_alg)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
@@ -38,13 +37,11 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/test)
 # Link
 add_executable(${KernelName}
         $<TARGET_OBJECTS:libc>
-        $<TARGET_OBJECTS:ds_alg>
         $<TARGET_OBJECTS:boot>
         $<TARGET_OBJECTS:gdt>
         $<TARGET_OBJECTS:intr>
         $<TARGET_OBJECTS:debug>
         $<TARGET_OBJECTS:mm>
-        $<TARGET_OBJECTS:heap>
         $<TARGET_OBJECTS:kernel>
         $<TARGET_OBJECTS:mem>
         $<TARGET_OBJECTS:8259A>

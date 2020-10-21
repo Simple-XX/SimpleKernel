@@ -12,13 +12,10 @@ extern "C" {
 #include "stdint.h"
 #include "debug.h"
 #include "pmm.h"
-#include "vmm.h"
 #include "clock.h"
 #include "keyboard.h"
-#include "heap.h"
 #include "test.h"
 #include "firstfit.h"
-#include "swap.h"
 
 bool test_pmm(void) {
     ptr_t allc_addr = 0;
@@ -40,42 +37,13 @@ bool test_pmm(void) {
     return true;
 }
 
-bool test_vmm(void) {
-    return true;
-}
-
 bool test_libc(void) {
-    return true;
-}
-
-bool test_heap(void) {
-    printk_test("Test Heap kmalloc :\n");
-    ptr_t allc_addr1 = (ptr_t)kmalloc(1);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr1);
-    ptr_t allc_addr2 = (ptr_t)kmalloc(9000);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr2);
-    ptr_t allc_addr3 = (ptr_t)kmalloc(4095);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr3);
-    ptr_t allc_addr4 = (ptr_t)kmalloc(12);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr4);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr1);
-    kfree((ptr_t)allc_addr1);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr2);
-    kfree((ptr_t)allc_addr2);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr3);
-    kfree((ptr_t)allc_addr3);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr4);
-    kfree((ptr_t)allc_addr4);
-    ptr_t new_addr = (ptr_t)kmalloc(9000);
-    printk_test("New kmalloc heap addr: 0x%08X\n", new_addr);
     return true;
 }
 
 bool test(void) {
     test_pmm();
-    // test_vmm();
     // test_libc();
-    // test_heap();
     return true;
 }
 

@@ -12,7 +12,7 @@ extern "C" {
 #include "stdio.h"
 #include "string.h"
 #include "assert.h"
-#include "mem/firstfit.h"
+#include "firstfit.h"
 
 #define FF_USED (0x00)
 #define FF_UNUSED (0x01)
