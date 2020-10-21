@@ -81,18 +81,18 @@ void pmm_phy_init(e820map_t *e820map) {
             //地址对应的物理页数组下标
             uint32_t j = (addr & PMM_PAGE_MASK) / PMM_PAGE_SIZE;
             // mem_page[j].start=address;
-            if (addr >= (ptr_t)&kernel_start &&
-                addr <= ((ptr_t)&kernel_end - (ptr_t)0xc0000000))
+            if (addr >= (ptr_t)&kernel_start && addr <= ((ptr_t)&kernel_end)) {
                 //内核已占用
                 mem_page[j].ref = 1;
-            else if (addr < (ptr_t)NORMAL_start_addr) //小于16MB
-            {
+            }
+            //小于16MB
+            else if (addr < (ptr_t)NORMAL_start_addr) {
                 mem_page[j].zone = 0;
                 mem_page[j].ref  = 0;
                 free_dma++;
             }
-            else if (addr < (ptr_t)HIGHMEM_start_addr) //大于16MB小于110MB
-            {
+            //大于16MB小于110MB
+            else if (addr < (ptr_t)HIGHMEM_start_addr) {
                 mem_page[j].zone = 1;
                 mem_page[j].ref  = 0;
                 free_normal++;
