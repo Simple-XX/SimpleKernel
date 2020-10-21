@@ -45,8 +45,6 @@ add_executable(${KernelName}
         $<TARGET_OBJECTS:debug>
         $<TARGET_OBJECTS:mm>
         $<TARGET_OBJECTS:heap>
-        $<TARGET_OBJECTS:sched>
-        $<TARGET_OBJECTS:task>
         $<TARGET_OBJECTS:kernel>
         $<TARGET_OBJECTS:mem>
         $<TARGET_OBJECTS:8259A>
@@ -54,7 +52,6 @@ add_executable(${KernelName}
         $<TARGET_OBJECTS:vga>
         $<TARGET_OBJECTS:console>
         $<TARGET_OBJECTS:keyboard>
-        $<TARGET_OBJECTS:mouse>
         $<TARGET_OBJECTS:test>)
 
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/boot/link32.ld)

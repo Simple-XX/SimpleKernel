@@ -1,15 +1,22 @@
+
+// This file is a part of SimpleXX/SimpleKernel
+// (https://github.com/SimpleXX/SimpleKernel).
+//
+// buffer.h for SimpleXX/SimpleKernel.
+
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include "pmm.h"
 #include "vmm.h"
 #include "string.h"
-#include "task/task.h"
 #include "sync.hpp"
-#include "intr/include/intr.h"
+#include "intr.h"
+
 //缓冲区的数据各个进程都能访问，所以应放入内核对应的内存分区中，即NORMAL分区
 //定义缓冲区的起始地址和终止地址，为了节约内存，将缓冲区设置为20MB-24MB
 #define BUFFER_START (0x1400000) // 20MB
@@ -27,24 +34,24 @@ extern "C" {
 struct buffer_head {
     ptr_t addr; //缓冲块地址
     uint32_t block_num; //块号，假定使用的文件系统数据块大小等于页大小
-    uint8_t             dev;      //设备号
-    uint8_t             uptodate; //是否需要更新位
-    uint8_t             dirty;    //脏位
-    uint8_t             count;    //计数器，使用该块的所有进程
-    uint8_t             lock; //锁位，0-代表已解锁，1-代表未解锁
-    task_pcb_t *        wait; //进程等待链表
+    uint8_t dev;      //设备号
+    uint8_t uptodate; //是否需要更新位
+    uint8_t dirty;    //脏位
+    uint8_t count;    //计数器，使用该块的所有进程
+    uint8_t lock;     //锁位，0-代表已解锁，1-代表未解锁
+    // task_pcb_t *        wait; //进程等待链表
     struct buffer_head *ht_prev; //哈希表链表
     struct buffer_head *ht_next; //哈希表链表
     struct buffer_head *bh_prev; //缓冲块链表
     struct buffer_head *bh_next; //缓冲块链表
 };
 struct request {
-    uint8_t             dev;    //设备号
-    uint8_t             cmd;    // 0代表读/1代表写
-    uint32_t            sector; //请求项对应的扇区号
-    task_pcb_t *        wait;   //等待请求项的进程队列
-    struct buffer_head *bh;     //请求项对应的缓冲块
-    struct request *    next;   //请求项队列
+    uint8_t  dev;    //设备号
+    uint8_t  cmd;    // 0代表读/1代表写
+    uint32_t sector; //请求项对应的扇区号
+    // task_pcb_t *        wait;   //等待请求项的进程队列
+    struct buffer_head *bh;   //请求项对应的缓冲块
+    struct request *    next; //请求项队列
 };
 void                buffer_init();
 struct buffer_head *buffer_read(uint8_t dev, uint32_t block);
