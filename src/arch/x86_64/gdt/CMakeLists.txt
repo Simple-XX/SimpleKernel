@@ -12,7 +12,6 @@ set(gdt_src ${gdt_c_src} ${ASM_SOURCE_FILES})
 
 add_library(${PROJECT_NAME} OBJECT ${gdt_src})
 
-target_include_ds_alg_header_files(${PROJECT_NAME})
 target_include_libc_header_files(${PROJECT_NAME})
 target_include_common_header_files(${PROJECT_NAME})
 target_include_drv_header_files(${PROJECT_NAME})

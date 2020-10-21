@@ -12,7 +12,8 @@ extern "C" {
 
 #include "stdint.h"
 
-#define GDT_LENGTH 6 // 全局描述符表长度
+// 全局描述符表长度
+#define GDT_LENGTH 6
 // 各个内存段所在全局描述符表下标
 #define SEG_NULL 0
 #define SEG_KTEXT 1
@@ -20,14 +21,21 @@ extern "C" {
 #define SEG_UTEXT 3
 #define SEG_UDATA 4
 #define SEG_TSS 5
-#define GD_KTEXT ((SEG_KTEXT) << 3) // 内核代码段 0x08
-#define GD_KDATA ((SEG_KDATA) << 3) // 内核数据段
-#define GD_UTEXT ((SEG_UTEXT) << 3) // 用户代码段
-#define GD_UDATA ((SEG_UDATA) << 3) // 用户数据段
-#define GD_TSS ((SEG_TSS) << 3)     // 任务段
+// 内核代码段 0x08
+#define GD_KTEXT ((SEG_KTEXT) << 3)
+// 内核数据段
+#define GD_KDATA ((SEG_KDATA) << 3)
+// 用户代码段
+#define GD_UTEXT ((SEG_UTEXT) << 3)
+// 用户数据段
+#define GD_UDATA ((SEG_UDATA) << 3)
+// 任务段
+#define GD_TSS ((SEG_TSS) << 3)
 // 段描述符 DPL
-#define DPL_KERNEL (0) // 内核级
-#define DPL_USER (3)   // 用户级
+// 内核级
+#define DPL_KERNEL (0)
+// 用户级
+#define DPL_USER (3)
 
 // 各个段的全局描述符表的选择子
 #define KERNEL_CS ((GD_KTEXT) | DPL_KERNEL)
@@ -43,19 +51,26 @@ extern "C" {
 
 // 全局描述符类型
 typedef struct gdt_entry_t {
-    uint16_t limit_low;   // 段界限   15～0
-    uint16_t base_low;    // 段基地址 15～0
-    uint8_t  base_middle; // 段基地址 23～16
-    uint8_t  access; // 段存在位、描述符特权级、描述符类型、描述符子类别
-    uint8_t granularity; // 其他标志、段界限 19～16 (unsigned limit_high:
-                         // 4;unsigned flags: 4;)
-    uint8_t base_high; // 段基地址 31～24
+    // 段界限   15～0
+    uint16_t limit_low;
+    // 段基地址 15～0
+    uint16_t base_low;
+    // 段基地址 23～16
+    uint8_t base_middle;
+    // 段存在位、描述符特权级、描述符类型、描述符子类别
+    uint8_t access;
+    // 其他标志、段界限 19～16 (unsigned limit_high:4;unsigned flags: 4;)
+    uint8_t granularity;
+    // 段基地址 31～24
+    uint8_t base_high;
 } __attribute__((packed)) gdt_entry_t;
 
 // GDTR
 typedef struct gdt_ptr_t {
-    uint16_t limit; // 全局描述符表限长
-    uint32_t base;  // 全局描述符表 32位 基地址
+    // 全局描述符表限长
+    uint16_t limit;
+    // 全局描述符表 32位 基地址
+    uint32_t base;
 } __attribute__((packed)) gdt_ptr_t;
 
 // TSS 状态段由两部分组成：
@@ -76,17 +91,23 @@ typedef struct gdt_ptr_t {
 // TSS的使用是为了解决调用门中特权级变换时堆栈发生的变化.
 // 资料：intel 手册 3ACh7
 typedef struct tss_struct {
-    uint32_t ts_link; // old ts selector
-    uint32_t ts_esp0; // stack pointers and segment selectors
-    uint32_t ts_ss0;  // after an increase in privilege level
+    // old ts selector
+    uint32_t ts_link;
+    // stack pointers and segment selectors
+    uint32_t ts_esp0;
+    // after an increase in privilege level
+    uint32_t ts_ss0;
     uint32_t ts_esp1;
     uint32_t ts_ss1;
     uint32_t ts_esp2;
     uint32_t ts_ss2;
-    uint32_t ts_cr3; // page directory base
-    uint32_t ts_eip; // saved state from last task switch
+    // page directory base
+    uint32_t ts_cr3;
+    // saved state from last task switch
+    uint32_t ts_eip;
     uint32_t ts_eflags;
-    uint32_t ts_eax; // more saved state (registers)
+    // more saved state (registers)
+    uint32_t ts_eax;
     uint32_t ts_ecx;
     uint32_t ts_edx;
     uint32_t ts_ebx;
@@ -94,15 +115,18 @@ typedef struct tss_struct {
     uint32_t ts_ebp;
     uint32_t ts_esi;
     uint32_t ts_edi;
-    uint32_t ts_es; // even more saved state (segment selectors)
+    // even more saved state (segment selectors)
+    uint32_t ts_es;
     uint32_t ts_cs;
     uint32_t ts_ss;
     uint32_t ts_ds;
     uint32_t ts_fs;
     uint32_t ts_gs;
     uint32_t ts_ldt;
-    uint32_t ts_t;    // trap on task switch
-    uint32_t ts_iomb; // i/o map base address
+    // trap on task switch
+    uint32_t ts_t;
+    // i/o map base address
+    uint32_t ts_iomb;
 } __attribute__((packed)) tss_struct_t;
 
 // 全局描述符表构造函数，根据下标构造

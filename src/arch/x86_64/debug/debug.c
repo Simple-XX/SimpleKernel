@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 #include "stdio.h"
-#include "intr/include/intr.h"
+#include "intr.h"
 #include "cpu.hpp"
 #include "sync.hpp"
 #include "debug.h"
