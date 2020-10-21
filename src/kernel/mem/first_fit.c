@@ -111,8 +111,6 @@ chunk_info_t *list_chunk_info(list_entry_t *list) {
 // static firstfit_manage_t ff_manage_normal;
 // static firstfit_manage_t ff_manage_highmem;
 
-// 物理页信息保存地址
-static list_entry_t *pmm_info = NULL;
 /*****************************************/
 //管理器信息也需要物理页进行存储，所以这些页面也需要被设置为已引用
 /*****************************************/
@@ -177,12 +175,12 @@ void init() {
         // first=true代表该节点是第一个节点，否则不是
         bool first = true;
         //中转节点
-        list_entry_t *before;
-        ptr_t         info_addr;
+        list_entry_t *before    = NULL;
+        ptr_t         info_addr = 0;
         //头节点
-        list_entry_t *pmm_info_head;
+        list_entry_t *pmm_info_head = NULL;
         //中间节点
-        list_entry_t *pmm_info_node;
+        list_entry_t *pmm_info_node = NULL;
         if (z == DMA) {
             i         = dma_pmm_info_size / PMM_PAGE_SIZE + 1;
             info_addr = (ptr_t)DMA_start_addr;
@@ -362,16 +360,20 @@ ptr_t alloc(uint32_t bytes, char zone) {
     }
 
     // 首先根据分区找到对应的管理器，然后找到地址对应的管理节点
-    firstfit_manage_t *ff_manage;
-    if (zone == DMA)
+    firstfit_manage_t *ff_manage = NULL;
+    if (zone == DMA) {
         ff_manage = &ff_manage_dma;
-    else if (zone == NORMAL)
+    }
+    else if (zone == NORMAL) {
         ff_manage = &ff_manage_normal;
-    else if (zone == HIGHMEM)
+    }
+    else if (zone == HIGHMEM) {
         ff_manage = &ff_manage_highmem;
+    }
     list_entry_t *entry = ff_manage->free_list;
     // printk_info("successful-1!\n");
-    while (entry >= 0) {
+    // while (entry >= 0) {
+    while (1) {
         // printk_info("successful-2!\n");
         // 查找符合长度且未使用的内存
         // printk_info("addr:%08X\n",list_chunk_info(entry));
@@ -421,13 +423,16 @@ void free(ptr_t addr_start, uint32_t bytes, char zone) {
         pages++;
     }
     // 首先根据分区找到对应的管理器，然后找到地址对应的管理节点
-    firstfit_manage_t *ff_manage;
-    if (zone == DMA)
+    firstfit_manage_t *ff_manage = NULL;
+    if (zone == DMA) {
         ff_manage = &ff_manage_dma;
-    else if (zone == NORMAL)
+    }
+    else if (zone == NORMAL) {
         ff_manage = &ff_manage_normal;
-    else if (zone == HIGHMEM)
+    }
+    else if (zone == HIGHMEM) {
         ff_manage = &ff_manage_highmem;
+    }
     list_entry_t *entry = ff_manage->free_list;
     while (((entry = list_next(entry)) != ff_manage->free_list) &&
            (list_chunk_info(entry)->addr != addr_start))
@@ -459,12 +464,16 @@ void free(ptr_t addr_start, uint32_t bytes, char zone) {
 }
 
 uint32_t free_pages_count(char zone) {
-    if (zone == DMA)
+    if (zone == DMA) {
         return ff_manage_dma.phy_page_now_count;
-    else if (zone == NORMAL)
+    }
+    else if (zone == NORMAL) {
         return ff_manage_normal.phy_page_now_count;
-    else if (zone == HIGHMEM)
+    }
+    // zone == HIGHMEM
+    else {
         return ff_manage_highmem.phy_page_now_count;
+    }
 }
 
 #ifdef __cplusplus
