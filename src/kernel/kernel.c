@@ -41,10 +41,10 @@ void kernel_main(ptr_t magic, ptr_t addr) {
         //测试缓冲区
         test_buffer();
         // 虚拟内存初始化
-        vmm_init();
-        test_swap();
+        // vmm_init();
+        // test_swap();
         // 堆初始化
-        heap_init();
+        // heap_init();
 
         // showinfo();
         test();
