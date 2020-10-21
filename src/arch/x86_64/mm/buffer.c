@@ -41,11 +41,11 @@ void buffer_init() {
         h->dirty    = 0;
         h->count    = 0;
         h->lock     = 0;
-        h->wait     = NULL;
-        h->ht_prev  = NULL;
-        h->ht_next  = NULL;
-        h->bh_prev  = h - 1;
-        h->bh_next  = h + 1;
+        // h->wait     = NULL;
+        h->ht_prev = NULL;
+        h->ht_next = NULL;
+        h->bh_prev = h - 1;
+        h->bh_next = h + 1;
         h++;
         //对缓冲块进行计数
         BUFFER_NUM++;
@@ -240,9 +240,9 @@ void request_init() {
         all_request[i].dev    = NULL;
         all_request[i].cmd    = NULL;
         all_request[i].sector = NULL;
-        all_request[i].wait   = NULL;
-        all_request[i].bh     = NULL;
-        all_request[i].next   = NULL;
+        // all_request[i].wait   = NULL;
+        all_request[i].bh   = NULL;
+        all_request[i].next = NULL;
     }
 }
 //新添请求项，输入设备号、读/写命令、设备扇区号等

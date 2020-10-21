@@ -29,13 +29,11 @@ extern "C" {
 #include "console.h"
 #include "multiboot2.h"
 #include "arch_init.h"
-#include "mem/pmm.h"
-#include "mem/vmm.h"
-#include "mem/buffer.h"
-#include "mem/swap.h"
-#include "heap/heap.h"
-#include "task/task.h"
-#include "sched/sched.h"
+#include "pmm.h"
+#include "vmm.h"
+#include "buffer.h"
+#include "swap.h"
+#include "heap.h"
 
 void kernel_main(uint32_t magic, uint32_t addr);
 
