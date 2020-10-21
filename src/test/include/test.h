@@ -12,13 +12,12 @@ extern "C" {
 #endif
 
 #include "stdbool.h"
+
 bool test(void);
 bool test_pmm(void);
 bool test_vmm(void);
 bool test_libc(void);
 bool test_heap(void);
-bool test_task(void);
-bool test_sched(void);
 
 #ifdef __cplusplus
 }
