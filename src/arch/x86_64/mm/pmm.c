@@ -38,7 +38,7 @@ void        pmm_get_ram_info(e820map_t *e820map) {
         // printk("addr:%x%x,len:%x%x,type:%x:\n",mmap_entries->addr,mmap_entries->len,mmap_entries->type);
         if ((unsigned)mmap_entries->type ==
             MULTIBOOT_MEMORY_AVAILABLE) //&& (unsigned)(mmap_entries->addr &
-                                        //0xFFFFFFFF) == 0x100000
+                                        // 0xFFFFFFFF) == 0x100000
         {
             e820map->map[e820map->nr_map].addr   = mmap_entries->addr;
             e820map->map[e820map->nr_map].length = mmap_entries->len;
@@ -81,7 +81,7 @@ void pmm_phy_init(e820map_t *e820map) {
             //地址对应的物理页数组下标
             uint32_t j = (addr & PMM_PAGE_MASK) / PMM_PAGE_SIZE;
             // mem_page[j].start=address;
-            if (addr >= (ptr_t)&kernel_init_start &&
+            if (addr >= (ptr_t)&kernel_start &&
                 addr <= ((ptr_t)&kernel_end - (ptr_t)0xc0000000))
                 //内核已占用
                 mem_page[j].ref = 1;

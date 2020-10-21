@@ -91,9 +91,8 @@ mbi_tag_end:
     .long 8
 multiboot_header_end:
 
-.section .init.text
 .global _start
-.extern kernel_entry
+.extern kernel_main
 .type _start, @function
 _start:
     jmp multiboot_entry
@@ -101,7 +100,7 @@ _start:
 multiboot_entry:
     cli
 	# 设置栈地址
-    mov $STACK_BOTTOM, %esp
+    mov $STACK_TOP, %esp
     and $0xFFFFFFF0, %esp     # 栈地址按照 16 字节对齐
     mov $0, %ebp          # 帧指针修改为 0
     push $0
@@ -110,7 +109,7 @@ multiboot_entry:
     push %ebx
 	# 魔数
 	push %eax
-    call kernel_entry
+    call kernel_main
 
 1:
     hlt
@@ -119,7 +118,7 @@ multiboot_entry:
 
 .size _start, . - _start
 
-.section .init.data
-STACK_TOP:
+.section .data
+STACK:
     .skip 16384
-STACK_BOTTOM:
+STACK_TOP:

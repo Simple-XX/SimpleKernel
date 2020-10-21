@@ -78,13 +78,6 @@ extern "C" {
 // char _ebss[]; ) and casting to an integer.(The array notation prevents
 // accidental reads from _ebss as arrays must be explicitly dereferenced) ref:
 // http://wiki.osdev.org/Using_Linker_Script_Values
-extern ptr_t *kernel_init_start;
-extern ptr_t *kernel_init_text_start;
-extern ptr_t *kernel_init_text_end;
-extern ptr_t *kernel_init_data_start;
-extern ptr_t *kernel_init_data_end;
-extern ptr_t *kernel_init_end;
-
 extern ptr_t *kernel_start;
 extern ptr_t *kernel_text_start;
 extern ptr_t *kernel_text_end;
