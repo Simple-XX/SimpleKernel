@@ -47,6 +47,10 @@ static int skip_atoi(const char **s) {
 // (精读)；type-类型选项。输出：str-字符串指针
 static char *number(char *str, int num, int base, int size, int precision,
                     int type) {
+    //    int32_t int_max=0x7FFFFFFF;
+    //    if(num > int_max){
+    //        return str;
+    //    }
     char        c, sign, tmp[36];
     const char *digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int         i;
