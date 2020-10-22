@@ -13,8 +13,6 @@ extern "C" {
 #include "string.h"
 #include "assert.h"
 #include "debug.h"
-#include "cpu.hpp"
-#include "sync.hpp"
 #include "pmm.h"
 #include "firstfit.h"
 
@@ -132,7 +130,6 @@ void pmm_mamage_init() {
 }
 
 void pmm_init() {
-    cpu_cli();
     // uint32_t cr0;
     // cr0 |= (0u << 31);
     //__asm__ volatile ("mov %0, %%cr0" : : "r" (cr0) );
@@ -174,7 +171,6 @@ void pmm_init() {
             printk_test("DMA Physical ref: %d\n",p->chunk_info.ref);
             printk_test("DMA Physical flag: %d\n",p->chunk_info.flag);
     }*/
-    cpu_sti();
     return;
 }
 

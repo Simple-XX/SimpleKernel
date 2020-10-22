@@ -10,11 +10,9 @@ extern "C" {
 #include "stddef.h"
 #include "stdio.h"
 #include "stdbool.h"
-#include "intr/include/intr.h"
+#include "intr.h"
 #include "port.hpp"
-#include "cpu.hpp"
-#include "sync.hpp"
-#include "include/keyboard.h"
+#include "keyboard.h"
 
 static uint8_t keymap[NR_SCAN_CODES * MAP_COLS] = {
     /* scan-code			!Shift		Shift		E0 XX
@@ -434,18 +432,14 @@ void keyboard_handler() {
 uint8_t keyboard_read_from_buff() {
     uint8_t scancode;
     // 等待下一个字节到来
-    while (kb_in.count <= 0) {}
-    // 进入临界区
-    bool intr_flag = false;
-    local_intr_store(intr_flag);
-    {
-        scancode = *(kb_in.head);
-        kb_in.head++;
-        if (kb_in.head == kb_in.buff + KB_BUFSIZE)
-            kb_in.head = kb_in.buff;
-        kb_in.count--;
+    while (kb_in.count <= 0) {
+        ;
     }
-    local_intr_restore(intr_flag);
+    scancode = *(kb_in.head);
+    kb_in.head++;
+    if (kb_in.head == kb_in.buff + KB_BUFSIZE)
+        kb_in.head = kb_in.buff;
+    kb_in.count--;
     return scancode;
 }
 
@@ -524,17 +518,11 @@ void keyboard_read(pt_regs_t *regs __UNUSED__) {
 }
 
 void keyboard_init(void) {
-    bool intr_flag = false;
-    local_intr_store(intr_flag);
-    {
-        kb_in.count = 0;
-        kb_in.head = kb_in.tail = kb_in.buff;
-        register_interrupt_handler(IRQ1, &keyboard_read);
-        enable_irq(IRQ1);
-        printk_info("keyboard_init\n");
-    }
-    local_intr_restore(intr_flag);
-
+    kb_in.count = 0;
+    kb_in.head = kb_in.tail = kb_in.buff;
+    register_interrupt_handler(IRQ1, &keyboard_read);
+    enable_irq(IRQ1);
+    printk_info("keyboard_init\n");
     return;
 }
 
