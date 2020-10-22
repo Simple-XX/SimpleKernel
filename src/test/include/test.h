@@ -14,8 +14,12 @@ extern "C" {
 #include "stdbool.h"
 
 bool test(void);
-bool test_pmm(void);
+
+// C 库
 bool test_libc(void);
+
+// 物理内存
+bool test_pmm(void);
 
 #ifdef __cplusplus
 }
