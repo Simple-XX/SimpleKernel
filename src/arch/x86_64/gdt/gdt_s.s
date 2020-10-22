@@ -8,7 +8,6 @@
 .section .text
 .global gdt_load
 gdt_load:
-    cli
     # 参数存入 eax 寄存器
     mov 4(%esp), %eax   
     # 加载到 GDTR [修改原先GRUB设置]

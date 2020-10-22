@@ -11,14 +11,10 @@ extern "C" {
 #include "stdio.h"
 #include "intr.h"
 #include "cpu.hpp"
-#include "sync.hpp"
 #include "debug.h"
 
 void debug_init(ptr_t magic __UNUSED__, ptr_t addr __UNUSED__) {
-    bool intr_flag = false;
-    local_intr_store(intr_flag);
-    { printk_debug("debug_init\n"); }
-    local_intr_restore(intr_flag);
+    printk_debug("debug_init\n");
     return;
 }
 

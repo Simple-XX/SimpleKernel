@@ -26,26 +26,21 @@ static uint16_t *console_buffer __attribute__((unused)) =
     (uint16_t *)VGA_MEM_BASE;
 
 void console_init(void) {
-    bool intr_flag = false;
-    local_intr_store(intr_flag);
-    {
-        // 从左上角开始
-        console_row    = 0;
-        console_column = 0;
-        // 字体为灰色，背景为黑色
-        console_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-        // 用 ' ' 填满屏幕
-        for (size_t y = 0; y < VGA_HEIGHT; y++) {
-            for (size_t x = 0; x < VGA_WIDTH; x++) {
-                const size_t index    = y * VGA_WIDTH + x;
-                console_buffer[index] = vga_entry(' ', console_color);
-            }
+    // 从左上角开始
+    console_row    = 0;
+    console_column = 0;
+    // 字体为灰色，背景为黑色
+    console_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+    // 用 ' ' 填满屏幕
+    for (size_t y = 0; y < VGA_HEIGHT; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            const size_t index    = y * VGA_WIDTH + x;
+            console_buffer[index] = vga_entry(' ', console_color);
         }
-        console_setcursorpos(0, 0);
-
-        printk_info("console_init\n");
     }
-    local_intr_restore(intr_flag);
+    console_setcursorpos(0, 0);
+
+    printk_info("console_init\n");
     return;
 }
 
