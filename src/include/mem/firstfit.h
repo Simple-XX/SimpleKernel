@@ -12,6 +12,7 @@ extern "C" {
 #endif
 
 #include "pmm.h"
+
 // 块
 typedef struct chunk_info {
     // 当前页的地址
@@ -30,6 +31,7 @@ typedef struct list_entry {
     struct list_entry *next;
     struct list_entry *prev;
 } list_entry_t;
+
 typedef struct firstfit_manage {
     // 物理内存起始地址
     ptr_t pmm_addr_start;
@@ -39,17 +41,20 @@ typedef struct firstfit_manage {
     uint32_t phy_page_count;
     // 物理内存页的当前数量
     uint32_t phy_page_now_count;
-    //空闲链表的节点数量
+    // 空闲链表的节点数量
     uint32_t node_num;
     // 空闲链表
     list_entry_t *free_list;
 } firstfit_manage_t;
+
 // 用于管理物理地址
 extern pmm_manage_t firstfit_manage;
-//分区管理，定义3个管理器，均使用first-fit算法
+
+// 分区管理，定义3个管理器，均使用first-fit算法
 extern firstfit_manage_t ff_manage_dma;
 extern firstfit_manage_t ff_manage_normal;
 extern firstfit_manage_t ff_manage_highmem;
+
 #ifdef __cplusplus
 }
 #endif

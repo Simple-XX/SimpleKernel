@@ -33,6 +33,7 @@ static inline void intr_restore(bool flag) {
     do {                                                                       \
         x = intr_store();                                                      \
     } while (0)
+
 #define local_intr_restore(x) intr_restore(x);
 
 #ifdef __cplusplus
