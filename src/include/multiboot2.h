@@ -24,6 +24,7 @@ extern "C" {
 
 #include "stdint.h"
 #include "stdbool.h"
+#include "e820.h"
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH 32768
@@ -351,6 +352,7 @@ void print_MULTIBOOT_TAG_TYPE_MMAP(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
+
 extern multiboot_memory_map_entry_t *mmap_entries;
 extern multiboot_mmap_tag_t *        mmap_tag;
 
