@@ -11,6 +11,7 @@ extern "C" {
 #include "stdint.h"
 #include "stdio.h"
 #include "string.h"
+#include "stdbool.h"
 #include "firstfit.h"
 
 #define FF_USED (0x00UL)
@@ -107,76 +108,42 @@ chunk_info_t *list_chunk_info(list_entry_t *list) {
     return &(list->chunk_info);
 }
 
-/**********************************/
-// 分区管理，定义3个管理器，均使用first-fit算法
-// First Fit 算法需要的信息
-// static firstfit_manage_t ff_manage;
-// static firstfit_manage_t ff_manage_dma;
-// static firstfit_manage_t ff_manage_normal;
-// static firstfit_manage_t ff_manage_highmem;
-
-/*****************************************/
-// 管理器信息也需要物理页进行存储，所以这些页面也需要被设置为已引用
-/*****************************************/
+// TODO: 管理器信息也需要物理页进行存储，所以这些页面也需要被设置为已引用
 void init() {
-    // 位于内核结束后，大小为 (PMM_MAX_SIZE /
-    // PMM_PAGE_SIZE)*sizeof(list_entry_t) 后面的操作是进行页对齐
-    /****************************/
-    //每个分区初始化一个管理器
-
-    /*
-            normal_pmm_info=(list_entry_t *)((ptr_t)(0x1000000));
-            uint32_t normal_pmm_info_size = mem_zone[NORMAL].free_pages *
-       sizeof(list_entry_t); bzero(normal_pmm_info,normal_pmm_info_size);
-            highmem_pmm_info=(list_entry_t *)((ptr_t)(0x6e00000));
-            uint32_t highmem_pmm_info_size = mem_zone[HIGHMEM].free_pages *
-       sizeof(list_entry_t); bzero(highmem_pmm_info,highmem_pmm_info_size);
-    */
-    printk_info("%d\n", mem_zone[DMA].all_pages);
-    // 将DMA区域的空闲链表放在地址为0的位置,NORMAL区域的空闲链表放在16MB处，HIGHMEM放在110MB处
+    // 每个分区初始化一个管理器
+    // 将 DMA 区域的空闲链表放在地址为 0 的位置
+    // NORMAL 区域的空闲链表放在 16MB 处
+    // HIGHMEM 放在 110MB 处
     list_entry_t *dma_pmm_info = (list_entry_t *)((ptr_t)(DMA_START_ADDR));
     list_entry_t *normal_pmm_info =
         (list_entry_t *)((ptr_t)(NORMAL_START_ADDR));
     list_entry_t *highmem_pmm_info =
         (list_entry_t *)((ptr_t)(HIGHMEM_START_ADDR));
     // 最差情况，一块只有一个页，所以预先留好空间存储这些块信息
+    // 管理所有内存页需要的空间，供管理结构使用
     uint32_t dma_pmm_info_size = mem_zone[DMA].all_pages * sizeof(list_entry_t);
     uint32_t normal_pmm_info_size =
         mem_zone[NORMAL].all_pages * sizeof(list_entry_t);
     uint32_t highmem_pmm_info_size =
         mem_zone[HIGHMEM].all_pages * sizeof(list_entry_t);
-    printk_info("dma_need_page:%d\n", dma_pmm_info_size / PMM_PAGE_SIZE);
-    printk_info("normal_need_page:%d\n", normal_pmm_info_size / PMM_PAGE_SIZE);
-    printk_info("highmem_need_page:%d\n",
-                highmem_pmm_info_size / PMM_PAGE_SIZE);
-    // printk_info("normal_need_page:%d\n",normal_pmm_info_size);
-    // printk_info("addr:0x%08X\n",normal_pmm_info);
-    // printk_info("dma_need_page:%d\n",dma_pmm_info_size/PMM_PAGE_SIZE);
-    // printk_info("dma_need_page:%d\n",dma_pmm_info_size);
-    // printk_info("addr:0x%08X\n",dma_pmm_info);
-    // printk_info("successful1!\n");
-    // printk_info("successful2!\n");
     bzero(dma_pmm_info, dma_pmm_info_size);
-    // printk_info("successful2!\n");
     bzero(normal_pmm_info, normal_pmm_info_size);
-    // printk_info("successful3!\n");
     bzero(highmem_pmm_info, highmem_pmm_info_size);
-    // printk_info("successful4!\n");
-    // list_entry_t *dma_pmm_info_head;
-    // mem_page数组的指示变量
+    // mem_page 数组的指示变量
     uint32_t k = 0;
     uint32_t i = 0;
-    // 根据dma区域的总页数和mem_page数组映射关系确定 某个物理页是否空闲
+    // 根据 dma 区域的总页数和 mem_page 数组映射关系确定某个物理页是否空闲
     for (uint32_t z = 0; z < ZONE_SUM; z++) {
-        // 初始化DMA区域的空闲链表，当有连续的空闲页时，进行合并
+        // 初始化 DMA 区域的空闲链表，当有连续的空闲页时，进行合并
         // 记录节点数
         uint32_t num = 0;
-        // count作为计数器，记录连续空闲页的个数
+        // count 作为计数器，记录连续空闲页的个数
         int count = 0;
         // flag1、flag2作为标志变量，
-        int   flag1 = 0, flag2 = 0;
-        ptr_t addr = 0;
-        // first=true代表该节点是第一个节点，否则不是
+        bool  flag1 = false;
+        bool  flag2 = false;
+        ptr_t addr  = 0;
+        // first = true代表该节点是第一个节点，否则不是
         bool first = true;
         // 中转节点
         list_entry_t *before    = NULL;
@@ -198,35 +165,36 @@ void init() {
             info_addr = (ptr_t)HIGHMEM_START_ADDR;
         }
         k = i;
-        // printk_info("successful!\n");
-        /*****************************/
+
         /*
-                        需要解决两种情况
-                        1、一个可用内存页接一个不可用内存页，此时需创建节点，通过标志变量flag2和计数器count解决
-                        2、可用内存页需进行合并，且地址为第一个可用内存页的地址，通过标志变量flag1解决
+         需要解决两种情况
+         1、一个可用内存页接一个不可用内存页，此时需创建节点，通过标志变量 flag2
+            和计数器 count 解决
+         2、可用内存页需进行合并，且地址为第一个可用内存页的地址，通过标志变量
+            flag1 解决
         */
-        /*****************************/
         while (i < mem_zone[z].all_pages) {
-            //如果该页可用且空闲
-            if (!mem_page[k].ref) {
-                //记录该页前是否有空闲页，若有则地址为前面空闲页地址，然后计数加1
-                if (!flag1)
+            // 如果该页可用且空闲
+            if (mem_page[k].ref == 0) {
+                // 记录该页前是否有空闲页，若有则地址为前面空闲页地址，然后计数加1
+                if (flag1 == false) {
                     addr = mem_page[k].start;
+                }
                 count++;
-                flag1 = 1;
-                flag2 = 1;
-                //到达分区最后一页
+                flag1 = true;
+                flag2 = true;
+                // 到达分区最后一页
                 if (i == mem_zone[z].all_pages - 1)
-                    flag2 = 0;
+                    flag2 = false;
             }
             else {
-                flag1 = 0;
-                flag2 = 0;
+                flag1 = false;
+                flag2 = false;
             }
             i++;
             k++;
-            if (!flag2 && count) {
-                if (first) {
+            if ((flag2 == false) && (count != 0)) {
+                if (first == true) {
                     pmm_info_head = (list_entry_t *)(info_addr);
                     // uint32_t new_dma_nfo_size =  sizeof(list_entry_t);
                     bzero(pmm_info_head, sizeof(list_entry_t));
@@ -256,111 +224,88 @@ void init() {
                 count = 0;
             }
         }
+        // 初始化各个 zone 的管理结构
         if (z == DMA) {
             ff_manage_dma.phy_page_count     = mem_zone[z].all_pages;
             ff_manage_dma.phy_page_now_count = mem_zone[z].free_pages;
             ff_manage_dma.node_num           = num;
-            ff_manage_dma.free_list =
-                pmm_info_head; //(list_entry_t *)(ptr_t)DMA_START_ADDR;
+            // (list_entry_t *)(ptr_t)DMA_START_ADDR;
+            ff_manage_dma.free_list = pmm_info_head;
         }
         else if (z == NORMAL) {
             ff_manage_normal.phy_page_count     = mem_zone[z].all_pages;
             ff_manage_normal.phy_page_now_count = mem_zone[z].free_pages;
             ff_manage_normal.node_num           = num;
-            ff_manage_normal.free_list =
-                pmm_info_head; //(list_entry_t *)(ptr_t)NORMAL_START_ADDR;
+            // (list_entry_t *)(ptr_t)NORMAL_START_ADDR;
+            ff_manage_normal.free_list = pmm_info_head;
         }
         else if (z == HIGHMEM) {
             ff_manage_highmem.phy_page_count     = mem_zone[z].all_pages;
             ff_manage_highmem.phy_page_now_count = mem_zone[z].free_pages;
             ff_manage_highmem.node_num           = num;
-            ff_manage_highmem.free_list =
-                pmm_info_head; //(list_entry_t *)(ptr_t)HIGHMEM_START_ADDR;
+            // (list_entry_t *)(ptr_t)HIGHMEM_START_ADDR;
+            ff_manage_highmem.free_list = pmm_info_head;
         }
     }
-    /*
+#ifdef DEBUG
     // 打印DMA区域链表
-    list_entry_t *head=ff_manage_dma.free_list;
+    list_entry_t *head = ff_manage_dma.free_list;
     // 打印头节点
-    printk_test("DMA Physical Addr: 0x%08X\n",head->chunk_info.addr);
-    printk_test("DMA Physical pages: %d\n",head->chunk_info.npages);
-    printk_test("DMA Physical ref: %d\n",head->chunk_info.ref);
-    printk_test("DMA Physical flag: %d\n",head->chunk_info.flag);
-    list_entry_t *p=head->next;
-    while(p!=head)
-    {
-            printk_test("DMA Physical Addr: 0x%08X\n",p->chunk_info.addr);
-            printk_test("DMA Physical pages: %d\n",p->chunk_info.npages);
-            printk_test("DMA Physical ref: %d\n",p->chunk_info.ref);
-            printk_test("DMA Physical flag: %d\n",p->chunk_info.flag);
-            p=p->next;
+    printk_test("DMA Physical Addr: 0x%08X\n", head->chunk_info.addr);
+    printk_test("DMA Physical pages: %d\n", head->chunk_info.npages);
+    printk_test("DMA Physical ref: %d\n", head->chunk_info.ref);
+    printk_test("DMA Physical flag: %d\n", head->chunk_info.flag);
+    list_entry_t *p = head->next;
+    while (p != head) {
+        printk_test("DMA Physical Addr: 0x%08X\n", p->chunk_info.addr);
+        printk_test("DMA Physical pages: %d\n", p->chunk_info.npages);
+        printk_test("DMA Physical ref: %d\n", p->chunk_info.ref);
+        printk_test("DMA Physical flag: %d\n", p->chunk_info.flag);
+        p = p->next;
     }
 
     // 打印NORMAL区域链表
-    head=ff_manage_normal.free_list;
+    head = ff_manage_normal.free_list;
     // 打印头节点
-    printk_test("NORMAL Physical Addr: 0x%08X\n",head->chunk_info.addr);
-    printk_test("NORMAL Physical pages: %d\n",head->chunk_info.npages);
-    printk_test("NORMAL Physical ref: %d\n",head->chunk_info.ref);
-    printk_test("NORMAL Physical flag: %d\n",head->chunk_info.flag);
-    p=head->next;
-    while(p!=head)
-    {
-            printk_test("NORMAL Physical Addr: 0x%08X\n",p->chunk_info.addr);
-            printk_test("NORMAL Physical pages: %d\n",p->chunk_info.npages);
-            printk_test("NORMAL Physical ref: %d\n",p->chunk_info.ref);
-            printk_test("NORMAL Physical flag: %d\n",p->chunk_info.flag);
-            p=p->next;
+    printk_test("NORMAL Physical Addr: 0x%08X\n", head->chunk_info.addr);
+    printk_test("NORMAL Physical pages: %d\n", head->chunk_info.npages);
+    printk_test("NORMAL Physical ref: %d\n", head->chunk_info.ref);
+    printk_test("NORMAL Physical flag: %d\n", head->chunk_info.flag);
+    p = head->next;
+    while (p != head) {
+        printk_test("NORMAL Physical Addr: 0x%08X\n", p->chunk_info.addr);
+        printk_test("NORMAL Physical pages: %d\n", p->chunk_info.npages);
+        printk_test("NORMAL Physical ref: %d\n", p->chunk_info.ref);
+        printk_test("NORMAL Physical flag: %d\n", p->chunk_info.flag);
+        p = p->next;
     }
     // 打印HIGHMEM区域链表
-    head=ff_manage_highmem.free_list;
+    head = ff_manage_highmem.free_list;
     // 打印头节点
-    printk_test("HIGHMEM Physical Addr: 0x%08X\n",head->chunk_info.addr);
-    printk_test("HIGHMEM Physical pages: %d\n",head->chunk_info.npages);
-    printk_test("HIGHMEM Physical ref: %d\n",head->chunk_info.ref);
-    printk_test("HIGHMEM Physical flag: %d\n",head->chunk_info.flag);
-    p=head->next;
-    while(p!=head)
-    {
-            printk_test("HIGHMEM Physical Addr: 0x%08X\n",p->chunk_info.addr);
-            printk_test("HIGHMEM Physical pages: %d\n",p->chunk_info.npages);
-            printk_test("HIGHMEM Physical ref: %d\n",p->chunk_info.ref);
-            printk_test("HIGHMEM Physical flag: %d\n",p->chunk_info.flag);
-            p=p->next;
+    printk_test("HIGHMEM Physical Addr: 0x%08X\n", head->chunk_info.addr);
+    printk_test("HIGHMEM Physical pages: %d\n", head->chunk_info.npages);
+    printk_test("HIGHMEM Physical ref: %d\n", head->chunk_info.ref);
+    printk_test("HIGHMEM Physical flag: %d\n", head->chunk_info.flag);
+    p = head->next;
+    while (p != head) {
+        printk_test("HIGHMEM Physical Addr: 0x%08X\n", p->chunk_info.addr);
+        printk_test("HIGHMEM Physical pages: %d\n", p->chunk_info.npages);
+        printk_test("HIGHMEM Physical ref: %d\n", p->chunk_info.ref);
+        printk_test("HIGHMEM Physical flag: %d\n", p->chunk_info.flag);
+        p = p->next;
     }
-    */
-    printk_info("successful-final!\n");
-    /****************************/
-
-    /*	pmm_info = (list_entry_t *)( ( (ptr_t)(&kernel_end + PMM_PAGE_SIZE) &
-       PMM_PAGE_MASK) ); uint32_t pmm_info_size = (PMM_MAX_SIZE / PMM_PAGE_SIZE)
-       * sizeof(list_entry_t); bzero(pmm_info, pmm_info_size);
-
-            // 越过内核使用的内存
-            pmm_info->chunk_info.addr = page_start + KERNEL_SIZE;
-            pmm_info->chunk_info.npages = page_count - PMM_PAGES_KERNEL;
-            pmm_info->chunk_info.ref = 0;
-            pmm_info->chunk_info.flag = FF_UNUSED;
-
-            ff_manage.phy_page_count = page_count;
-            ff_manage.phy_page_now_count = page_count - PMM_PAGES_KERNEL;
-            // 0x100000
-            ff_manage.pmm_addr_start = page_start + KERNEL_SIZE;
-            // 0x1FFF0000
-            ff_manage.pmm_addr_end = page_start + page_count * PMM_PAGE_SIZE;
-            ff_manage.free_list = pmm_info;
-            list_init_head(ff_manage.free_list);
-    */
+#endif /* DEBUG */
+    printk_info("First fit init.\n");
     return;
 }
 
-//根据线性地址判断属于那个管理区，然后使用对应的物理分区管理器进行分配。
+// 根据线性地址判断属于那个管理区，然后使用对应的物理分区管理器进行分配。
 ptr_t alloc(uint32_t bytes, int8_t zone) {
     // 计算需要的页数
     size_t pages = bytes / PMM_PAGE_SIZE;
-    // 不足一页的+1
+    // 不足一页的 + 1
     if (bytes % PMM_PAGE_SIZE != 0) {
-        pages++;
+        pages += 1;
     }
 
     // 首先根据分区找到对应的管理器，然后找到地址对应的管理节点
@@ -374,8 +319,12 @@ ptr_t alloc(uint32_t bytes, int8_t zone) {
     else if (zone == HIGHMEM) {
         ff_manage = &ff_manage_highmem;
     }
-    list_entry_t *entry = ff_manage->free_list;
-    // printk_info("successful-1!\n");
+    else {
+        printk_err("zone is invalid\n");
+        return -1;
+    }
+    ptr_t         res_addr = 0;
+    list_entry_t *entry    = ff_manage->free_list;
     // while (entry >= 0) {
     while (1) {
         // printk_info("successful-2!\n");
@@ -383,10 +332,9 @@ ptr_t alloc(uint32_t bytes, int8_t zone) {
         // printk_info("addr:%08X\n",list_chunk_info(entry));
         if ((list_chunk_info(entry)->npages >= pages) &&
             (list_chunk_info(entry)->flag == FF_UNUSED)) {
-            // printk_info("successful-3!\n");
             // 如果剩余大小足够
             if (list_chunk_info(entry)->npages - pages > 1) {
-                // 添加新的链表项
+                // 添加为新的链表项
                 list_entry_t *tmp =
                     (list_entry_t *)(entry + ff_manage->node_num *
                                                  sizeof(list_entry_t));
@@ -397,26 +345,26 @@ ptr_t alloc(uint32_t bytes, int8_t zone) {
                 list_chunk_info(tmp)->flag   = FF_UNUSED;
                 list_add_after(entry, tmp);
             }
-            // printk_info("successful-4!\n");
             // 不够的话直接分配
             list_chunk_info(entry)->npages = pages;
             list_chunk_info(entry)->ref    = 1;
             list_chunk_info(entry)->flag   = FF_USED;
             ff_manage->phy_page_now_count -= pages;
-            return list_chunk_info(entry)->addr;
+            res_addr = list_chunk_info(entry)->addr;
+            break;
         }
         // 没找到的话就查找下一个
         else if (list_next(entry) != ff_manage->free_list) {
             entry = list_next(entry);
         }
+        // 执行到这里还没找见的话，物理内存已经全部查找过了，说明物理内存不够
         else {
-            printk_err("Error at firstfit.c: ptr_t alloc(uint32_t)\n");
+            printk_err("No enough phy mem.\n");
+            res_addr = -1;
             break;
         }
-        // printk_info("successful-5!\n");
     }
-    printk_err("Error at firstfit.c: ptr_t alloc(uint32_t)\n");
-    return (ptr_t)NULL;
+    return res_addr;
 }
 
 void free(ptr_t addr_start, uint32_t bytes, int8_t zone) {
@@ -426,6 +374,7 @@ void free(ptr_t addr_start, uint32_t bytes, int8_t zone) {
     if (bytes % PMM_PAGE_SIZE != 0) {
         pages++;
     }
+
     // 首先根据分区找到对应的管理器，然后找到地址对应的管理节点
     firstfit_manage_t *ff_manage = NULL;
     if (zone == DMA) {
@@ -437,10 +386,16 @@ void free(ptr_t addr_start, uint32_t bytes, int8_t zone) {
     else if (zone == HIGHMEM) {
         ff_manage = &ff_manage_highmem;
     }
+    else {
+        printk_err("zone is invalid\n");
+        return;
+    }
+
     list_entry_t *entry = ff_manage->free_list;
     while (((entry = list_next(entry)) != ff_manage->free_list) &&
-           (list_chunk_info(entry)->addr != addr_start))
+           (list_chunk_info(entry)->addr != addr_start)) {
         ;
+    }
 
     // 释放所有页
     list_chunk_info(entry)->ref  = 0;
@@ -474,9 +429,12 @@ uint32_t free_pages_count(int8_t zone) {
     else if (zone == NORMAL) {
         return ff_manage_normal.phy_page_now_count;
     }
-    // zone == HIGHMEM
-    else {
+    else if (zone == HIGHMEM) {
         return ff_manage_highmem.phy_page_now_count;
+    }
+    else {
+        printk_err("zone is invalid\n");
+        return -1;
     }
 }
 

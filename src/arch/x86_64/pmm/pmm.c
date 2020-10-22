@@ -73,10 +73,8 @@ void pmm_zone_init(e820map_t *e820map) {
              addr < e820map->map[i].addr + e820map->map[i].length;
              addr += PMM_PAGE_SIZE) {
             // 初始化可用内存段的物理页数组
-            // ptr_t address=(ptr_t)addr;
             // 地址对应的物理页数组下标
             size_t j = (addr & PMM_PAGE_MASK) / PMM_PAGE_SIZE;
-            // mem_page[j].start=address;
             // 内核已占用部分
             if (addr >= (ptr_t)&kernel_start && addr <= ((ptr_t)&kernel_end)) {
                 mem_page[j].ref = 1;

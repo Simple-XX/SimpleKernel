@@ -1,7 +1,8 @@
 
 // This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel). Baseed on GCC stdbool.h stdbool.h
-// for SimpleXX/SimpleKernel.
+// (https://github.com/SimpleXX/SimpleKernel).
+// Baseed on GCC stdbool.h
+// stdbool.h for SimpleXX/SimpleKernel.
 
 #ifndef _STDBOOL_H_
 #define _STDBOOL_H_
