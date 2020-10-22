@@ -26,9 +26,6 @@ extern "C" {
 #include "stdbool.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "console.h"
-#include "multiboot2.h"
-#include "arch_init.h"
 #include "pmm.h"
 
 void kernel_main(uint32_t magic, uint32_t addr);
