@@ -8,12 +8,16 @@
 extern "C" {
 #endif
 
-#include "cpu.hpp"
-#include "debug.h"
 #include "assert.h"
 #include "kernel.h"
+#include "cpu.hpp"
+#include "debug.h"
 #include "clock.h"
+#include "console.h"
+#include "multiboot2.h"
+#include "arch_init.h"
 #include "keyboard.h"
+#include "vmm.h"
 #include "test.h"
 
 // 内核入口
@@ -32,9 +36,11 @@ void kernel_main(ptr_t magic, ptr_t addr) {
     debug_init(magic, addr);
     // 物理内存初始化
     pmm_init();
-
+    // 虚拟内存初始化
+    vmm_init();
     // showinfo();
     test();
+
     cpu_sti();
     while (1) {
         ;
