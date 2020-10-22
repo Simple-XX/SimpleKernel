@@ -12,8 +12,7 @@ extern "C" {
 #include "string.h"
 #include "stdio.h"
 #include "cpu.hpp"
-#include "sync.hpp"
-#include "include/console.h"
+#include "console.h"
 
 // 命令行行数
 static size_t console_row;
@@ -91,8 +90,10 @@ void console_putchar(char c) {
         console_column = 0;
         console_row++;
     }
-    console_escapeconv(c); // 转义字符处理
-    console_scroll();      // 屏幕滚动
+    // 转义字符处理
+    console_escapeconv(c);
+    // 屏幕滚动
+    console_scroll();
     console_setcursorpos(console_column, console_row);
 }
 
