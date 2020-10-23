@@ -11,7 +11,7 @@ extern "C" {
 #include "stddef.h"
 #include "string.h"
 #include "stdio.h"
-#include "cpu.hpp"
+#include "port.hpp"
 #include "console.h"
 
 // 命令行行数

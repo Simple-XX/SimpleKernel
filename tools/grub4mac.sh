@@ -11,6 +11,16 @@ set -e
 wget https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
 tar zxvf grub-2.04.tar.xz
 cd grub-2.04
+if ! [ -x "$(command -v autoconf)" ]; then
+    echo 'Error: autoconf is not installed.'
+    echo 'Install autoconf...'
+    brew install autoconf
+fi
+if ! [ -x "$(command -v automake)" ]; then
+    echo 'Error: automake is not installed.'
+    echo 'Install automake...'
+    brew install automake
+fi
 ./autogen.sh
 mkdir -p build
 cd build
