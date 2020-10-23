@@ -170,8 +170,14 @@ void pmm_init(void);
 // 请求 zone 区域的指定大小物理内存
 ptr_t pmm_alloc(size_t byte, int8_t zone);
 
+// 请求 zone 区域的指定数量物理页
+ptr_t pmm_alloc_page(uint32_t pages, int8_t zone);
+
 // 释放内存
 void pmm_free_page(ptr_t addr, uint32_t byte, int8_t zone);
+
+// 释放内存页
+void pmm_free(ptr_t addr, uint32_t byte, int8_t zone);
 
 // 获取指定 zone 空闲内存页数量
 uint32_t pmm_free_pages_count(int8_t zone);
