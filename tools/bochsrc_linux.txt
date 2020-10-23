@@ -1,7 +1,7 @@
 
-# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# bochsrc_mac.txt file for SimpleKernel (https://github.com/MRNIU).
+# bochsrc_mac.txt for Simple-XX/SimpleKernel
 
 ata0-master: type=disk, path="fs.img", mode=flat
 ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
