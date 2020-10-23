@@ -1,7 +1,7 @@
 
-# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# setup.sh for SimpleXX/SimpleKernel.
+# setup.sh for Simple-XX/SimpleKernel.
 
 #!/bin/bash
 # shell 执行出错时终止运行
