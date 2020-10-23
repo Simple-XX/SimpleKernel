@@ -62,23 +62,23 @@ void console_putentryat(char c, uint8_t color, size_t x, size_t y) {
 // 转义字符处理
 void console_escapeconv(char c) {
     switch (c) {
-    case '\n':
-        console_column = 0;
-        console_row++;
-        break;
-    case '\t':
-        // 取整对齐
-        console_column = (console_column + 7) & ~7;
-        // 如果到达最后一列则换行
-        if (++console_column >= VGA_WIDTH) {
+        case '\n':
             console_column = 0;
             console_row++;
-        }
-        break;
-    case '\b':
-        if (console_column)
-            console_column -= 2;
-        break;
+            break;
+        case '\t':
+            // 取整对齐
+            console_column = (console_column + 7) & ~7;
+            // 如果到达最后一列则换行
+            if (++console_column >= VGA_WIDTH) {
+                console_column = 0;
+                console_row++;
+            }
+            break;
+        case '\b':
+            if (console_column)
+                console_column -= 2;
+            break;
     }
 }
 
