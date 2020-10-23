@@ -162,8 +162,19 @@ ptr_t pmm_alloc(uint32_t byte, int8_t zone) {
     return page;
 }
 
-void pmm_free_page(ptr_t addr, uint32_t byte, int8_t zone) {
+ptr_t pmm_alloc_page(uint32_t pages, int8_t zone) {
+    ptr_t page;
+    page = pmm_manager->pmm_manage_alloc(PMM_PAGE_SIZE * pages, zone);
+    return page;
+}
+
+void pmm_free(ptr_t addr, uint32_t byte, int8_t zone) {
     pmm_manager->pmm_manage_free(addr, byte, zone);
+    return;
+}
+
+void pmm_free_page(ptr_t addr, uint32_t pages, int8_t zone) {
+    pmm_manager->pmm_manage_free(addr, pages * PMM_PAGE_SIZE, zone);
     return;
 }
 
