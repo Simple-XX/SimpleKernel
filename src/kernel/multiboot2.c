@@ -1,7 +1,7 @@
 
 // This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel). Based on
-// https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#multiboot_002eh
+// (https://github.com/SimpleXX/SimpleKernel).
+// Based on https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
 // debug.c for SimpleXX/SimpleKernel.
 
 #ifdef __cplusplus

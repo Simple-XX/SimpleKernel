@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// assert.h for SimpleXX/SimpleKernel.
+// assert.h for Simple-XX/SimpleKernel.
 
 #ifndef _ASSERT_H_
 #define _ASSERT_H_

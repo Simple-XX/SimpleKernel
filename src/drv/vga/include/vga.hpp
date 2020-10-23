@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// vga.hpp for SimpleXX/SimpleKernel.
+// vga.hpp for Simple-XX/SimpleKernel.
 
 #ifndef _VGA_HPP_
 #define _VGA_HPP_
@@ -14,7 +14,6 @@ extern "C" {
 #include "stdint.h"
 #include "stddef.h"
 #include "port.hpp"
-#include "pmm.h"
 
 enum vga_color {
     VGA_COLOR_BLACK         = 0,

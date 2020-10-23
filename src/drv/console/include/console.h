@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// console.h for SimpleXX/SimpleKernel.
+// console.h for Simple-XX/SimpleKernel.
 
 #ifndef _CONSOLE_H_
 #define _CONSOLE_H_
