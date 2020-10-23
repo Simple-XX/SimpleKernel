@@ -31,7 +31,7 @@ extern "C" {
 // 每页能映射多少页目录项 = 页大小/页目录项大小 2^10
 #define VMM_PGDE_PRE_PAGE (VMM_PAGE_SIZE / VMM_PGDE_SIZE)
 
-// 每个页表能映射多少页 = 页大小/页表项大小 2^10
+// 每个页表能映射多少页 = 页大小/页表项大小: 2^10, 1024
 #define VMM_PAGES_PRE_PAGE_TABLE (VMM_PAGE_SIZE / VMM_PTE_SIZE)
 
 // 每个页目录能映射多少页表 = 页大小/页目录项大小 2^10
@@ -52,9 +52,8 @@ extern "C" {
 // 虚拟内存位数
 #define VMM_VMEM_BITS (32UL)
 
-// 虚拟内存大小
+// 虚拟内存大小 2GB
 #define VMM_VMEM_SIZE (1UL << (VMM_VMEM_BITS - 1UL))
-
 // 映射全部虚拟内存需要的页数 = 虚拟内存大小/页大小 2^20
 #define VMM_PAGES_TOTAL (VMM_VMEM_SIZE / VMM_PAGE_SIZE)
 
@@ -78,14 +77,14 @@ extern "C" {
 // 映射 DMA 需要的页数
 #define VMM_PAGES_DMA (DMA_SIZE / VMM_PAGE_SIZE)
 // 映射 DMA 需要的页表数
-#define VMM_PAGE_TABLES_DMA ((DMA_SIZE / VMM_PAGE_TABLE_SIZE) + 1UL)
+#define VMM_PAGE_TABLES_DMA ((DMA_SIZE / VMM_PAGE_TABLE_SIZE))
 // 映射 DMA 需要的页目录数
 #define VMM_PAGE_DIRECTORIES_DMA ((DMA_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
 
 // 映射 NORMAL 需要的页数
 #define VMM_PAGES_NORMAL (NORMAL_SIZE / VMM_PAGE_SIZE)
 // 映射 NORMAL 需要的页表数
-#define VMM_PAGE_TABLES_NORMAL ((NORMAL_SIZE / VMM_PAGE_TABLE_SIZE) + 1UL)
+#define VMM_PAGE_TABLES_NORMAL (NORMAL_SIZE / VMM_PAGE_TABLE_SIZE)
 // 映射 NORMAL 需要的页目录数
 #define VMM_PAGE_DIRECTORIES_NORMAL                                            \
     ((NORMAL_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
@@ -93,7 +92,7 @@ extern "C" {
 // 映射 HIGHMEM 需要的页数
 #define VMM_PAGES_HIGHMEM (HIGHMEM_SIZE / VMM_PAGE_SIZE)
 // 映射 HIGHMEM 需要的页表数
-#define VMM_PAGE_TABLES_HIGHMEM ((HIGHMEM_SIZE / VMM_PAGE_TABLE_SIZE) + 1UL)
+#define VMM_PAGE_TABLES_HIGHMEM ((HIGHMEM_SIZE / VMM_PAGE_TABLE_SIZE))
 // 映射 HIGHMEM 需要的页目录数
 #define VMM_PAGE_DIRECTORIES_HIGHMEM                                           \
     ((HIGHMEM_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
@@ -127,10 +126,10 @@ extern "C" {
 typedef ptr_t pgd_t;
 
 // 页上级目录项，以后拓展的时候用
-typedef ptr_t pmd_t;
+typedef ptr_t pud_t;
 
 // 页中间目录项，以后拓展的时候用
-typedef ptr_t pud_t;
+typedef ptr_t pmd_t;
 
 // 页表项
 typedef ptr_t pte_t;
@@ -146,13 +145,13 @@ void page_fault(pt_regs_t *pt_regs);
 void vmm_init(void);
 
 // 开启分页
-void enable_page(pgd_t pgd);
+void enable_page(pmd_t *pgd);
 
 // 更换当前页目录
-void switch_pgd(pgd_t pd);
+void switch_pgd(pmd_t *pgd);
 
 // 初始化内核页目录
-void vmm_kernel_init(pgd_t *pgd);
+void vmm_kernel_init(pmd_t *pgd);
 
 #ifdef __cplusplus
 }

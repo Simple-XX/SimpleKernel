@@ -38,9 +38,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
     pmm_init();
     // 虚拟内存初始化
     vmm_init();
-    printk_info("_______________\n");
     test();
-    // showinfo();
+    showinfo();
 
     cpu_sti();
     while (1) {
