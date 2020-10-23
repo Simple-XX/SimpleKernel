@@ -1,7 +1,7 @@
 
-# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 # 
-# toolchain_mac_x86_64.cmake for SimpleXX/SimpleKernel.
+# toolchain_mac_x86_64.cmake for Simple-XX/SimpleKernel.
 
 set(CMAKE_SYSTEM_NAME Darwin)
 set(CMAKE_SYSTEM_VERSION 1)

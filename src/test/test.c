@@ -53,6 +53,7 @@ bool test_pmm(void) {
     assert(normal_free == pmm_free_pages_count(NORMAL),
            "pmm_free_page(allc_addr1, 9000, NORMAL) error\n");
 
+    // pg
     allc_addr1 = pmm_alloc(1, HIGHMEM);
     pmm_free_page(allc_addr1, 1, HIGHMEM);
     assert(highmem_free == pmm_free_pages_count(HIGHMEM),
@@ -83,7 +84,7 @@ bool test_pmm(void) {
     pmm_free_page(allc_addr4, 9000, DMA);
     assert(dma_free == pmm_free_pages_count(DMA),
            "pmm_free_page(allc_addr1, 9000, DMA) error\n");
-
+    printk_debug("3\n");
     // 边界测试
 
     // 极限测试

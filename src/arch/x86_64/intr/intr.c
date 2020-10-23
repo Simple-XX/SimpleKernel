@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel). Based on
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel). Based on
 // http://wiki.0xffffff.org/posts/hurlex-kernel.html intr.c for
-// SimpleXX/SimpleKernel.
+// Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,10 +10,8 @@ extern "C" {
 
 #include "stdio.h"
 #include "port.hpp"
-#include "debug.h"
-#include "8259A.h"
-#include "cpu.hpp"
 #include "intr.h"
+#include "8259A.h"
 
 // 中断描述符表
 static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
@@ -39,7 +37,7 @@ static const char *intrname(uint32_t intrno);
 static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
     __attribute__((aligned(4)));
 
-const char *intrname(uint32_t intrno) {
+static const char *intrname(uint32_t intrno) {
     static const char *const intrnames[] = {"Divide error",
                                             "Debug",
                                             "Non-Maskable Interrupt",
@@ -148,27 +146,9 @@ void intr_init(void) {
     register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
 
     printk_info("intr_init\n");
-    return;
 }
 
-// 输出 pt_regs 信息
-void show_pt_regs(pt_regs_t *pt_regs) {
-    printk("addr: 0x%08X - 0x%08X, size: 0x%08X\n", &pt_regs->gs,
-           &pt_regs->user_ss);
-    printk("gs: 0x%08X\tfs: 0x%08X\tes: 0x%08X\tds: 0x%08X\n", pt_regs->gs,
-           pt_regs->fs, pt_regs->es, pt_regs->ds);
-    printk("edi: 0x%08X\tesi: 0x%08X\tebp: 0x%08X\told_esp: 0x%08X\n",
-           pt_regs->edi, pt_regs->esi, pt_regs->ebp, pt_regs->old_esp);
-    printk("ebx: 0x%08X\tedx: 0x%08X\tecx: 0x%08X\teax: 0x%08X\n", pt_regs->ebx,
-           pt_regs->edx, pt_regs->ecx, pt_regs->eax);
-    printk("int_no: 0x%08X\terr_code: %08X\teip: 0x%08X\tcs: 0x%08X\n",
-           pt_regs->int_no, pt_regs->err_code, pt_regs->eip, pt_regs->cs);
-    printk("eflags: 0x%08X\tuser_esp: 0x%08X\tss: 0x%08X\n", pt_regs->eflags,
-           pt_regs->user_esp, pt_regs->user_ss);
-    return;
-}
-
-void die(char *str, uint32_t oesp, uint32_t int_no) {
+static void die(char *str, uint32_t oesp, uint32_t int_no) {
     // uint32_t * old_esp = (uint32_t *)oesp;
     pt_regs_t *old_esp = (pt_regs_t *)oesp;
     printk_color(red, "%s\t: %d\n\r", str, int_no);
