@@ -21,6 +21,9 @@ bool test_libc(void);
 // 物理内存
 bool test_pmm(void);
 
+// 虚拟内存
+bool test_vmm(void);
+
 #ifdef __cplusplus
 }
 #endif
