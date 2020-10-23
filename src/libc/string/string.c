@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// string.c for SimpleXX/SimpleKernel.
+// string.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {

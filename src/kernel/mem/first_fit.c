@@ -130,14 +130,17 @@ void init() {
     bzero(normal_pmm_info, normal_pmm_info_size);
     bzero(highmem_pmm_info, highmem_pmm_info_size);
     //管理信息也需占用页表
-    for(unsigned int i=DMA_START_ADDR;i<DMA_START_ADDR+dma_pmm_info_size;i+=PMM_PAGE_SIZE){
-        mem_page[i/(unsigned int)PMM_PAGE_SIZE].ref=1;
+    for (unsigned int i = DMA_START_ADDR;
+         i < DMA_START_ADDR + dma_pmm_info_size; i += PMM_PAGE_SIZE) {
+        mem_page[i / (unsigned int)PMM_PAGE_SIZE].ref = 1;
     }
-    for(unsigned int i=NORMAL_START_ADDR;i<NORMAL_START_ADDR+normal_pmm_info_size;i+=PMM_PAGE_SIZE){
-        mem_page[i/(unsigned int)PMM_PAGE_SIZE].ref=1;
+    for (unsigned int i = NORMAL_START_ADDR;
+         i < NORMAL_START_ADDR + normal_pmm_info_size; i += PMM_PAGE_SIZE) {
+        mem_page[i / (unsigned int)PMM_PAGE_SIZE].ref = 1;
     }
-    for(unsigned int i=HIGHMEM_START_ADDR;i<HIGHMEM_START_ADDR+highmem_pmm_info_size;i+=PMM_PAGE_SIZE){
-        mem_page[i/(unsigned int)PMM_PAGE_SIZE].ref=1;
+    for (unsigned int i = HIGHMEM_START_ADDR;
+         i < HIGHMEM_START_ADDR + highmem_pmm_info_size; i += PMM_PAGE_SIZE) {
+        mem_page[i / (unsigned int)PMM_PAGE_SIZE].ref = 1;
     }
     // mem_page 数组的指示变量
     uint32_t k = 0;
