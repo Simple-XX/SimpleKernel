@@ -15,28 +15,20 @@ extern "C" {
 #include "intr.h"
 #include "vmm.h"
 
-// 内核页目录区域
-pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY]
+// 内核页目录区域，内容为页表
+pmd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY]
     __attribute__((aligned(VMM_PAGE_SIZE)));
 
-// 内核页表区域
-pte_t pte_kernel[VMM_PAGE_TABLES_KERNEL][VMM_PAGES_PRE_PAGE_TABLE]
+// DMA 页表区域，内容为页表项
+pte_t pte_DMA[VMM_PAGE_TABLES_DMA][VMM_PAGES_PRE_PAGE_TABLE]
     __attribute__((aligned(VMM_PAGE_SIZE)));
 
-// DMA页表区域
-pte_t pte_DMA[DMA_SIZE / VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE]
+// NORMAL 页表区域
+pte_t pte_NORMAL[VMM_PAGE_TABLES_NORMAL][VMM_PAGES_PRE_PAGE_TABLE]
     __attribute__((aligned(VMM_PAGE_SIZE)));
 
-// NORMAL页表区域
-pte_t pte_NORMAL[NORMAL_SIZE / VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE]
-    __attribute__((aligned(VMM_PAGE_SIZE)));
-
-// HIGHMEM页表区域
-pte_t pte_HIGHMEM[HIGHMEM_SIZE / VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE]
-    __attribute__((aligned(VMM_PAGE_SIZE)));
-
-// 内核栈区域
-pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE]
+// HIGHMEM 页表区域
+pte_t pte_HIGHMEM[VMM_PAGE_TABLES_HIGHMEM][VMM_PAGES_PRE_PAGE_TABLE]
     __attribute__((aligned(VMM_PAGE_SIZE)));
 
 void page_fault(pt_regs_t *pt_regs) {
@@ -87,54 +79,47 @@ void vmm_init(void) {
     register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
     uint32_t pgd_idx = 0;
     ptr_t *  pte     = NULL;
+
     // 映射 DMA
     pgd_idx = VMM_PGD_INDEX(DMA_START_ADDR);
-    for (uint32_t i = pgd_idx, j = 0; i < VMM_PAGE_DIRECTORIES_DMA + pgd_idx;
-         i++, j++) {
+    for (uint32_t i = pgd_idx, j = 0; j < VMM_PAGE_TABLES_DMA; i++, j++) {
         pgd_kernel[i] = ((ptr_t)VMM_LA_PA((ptr_t)pte_DMA[j]) |
                          VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
     pte = (ptr_t *)pte_DMA;
-    for (uint32_t i = 0; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_DMA;
-         i++) {
+    for (uint32_t i = 0; i < VMM_PAGES_DMA; i++) {
         pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
     }
+
     // 映射 NORMAL
     pgd_idx = VMM_PGD_INDEX(NORMAL_START_ADDR);
-    for (uint32_t i = pgd_idx, j = 0; i < VMM_PAGE_DIRECTORIES_NORMAL + pgd_idx;
-         i++, j++) {
+    for (uint32_t i = pgd_idx, j = 0; j < VMM_PAGE_TABLES_NORMAL; i++, j++) {
         pgd_kernel[i] = ((ptr_t)VMM_LA_PA((ptr_t)pte_NORMAL[j]) |
                          VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
     pte = (ptr_t *)pte_NORMAL;
-    for (uint32_t i = 0; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_NORMAL;
-         i++) {
+    for (uint32_t i = 0; i < VMM_PAGES_NORMAL; i++) {
         pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
     }
-    printk_debug("VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_HIGHMEM: 0x%X\n",
-                 VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_HIGHMEM);
-    printk_debug("VMM_PAGES_HIGHMEM: 0x%X\n", VMM_PAGES_HIGHMEM);
+
     // 映射 HIGHMEM
     pgd_idx = VMM_PGD_INDEX(HIGHMEM_START_ADDR);
-    for (uint32_t i = pgd_idx, j = 0;
-         i < VMM_PAGE_DIRECTORIES_HIGHMEM + pgd_idx; i++, j++) {
+    for (uint32_t i = pgd_idx, j = 0; j < VMM_PAGE_TABLES_HIGHMEM; i++, j++) {
         pgd_kernel[i] = ((ptr_t)VMM_LA_PA((ptr_t)pte_HIGHMEM[j]) |
                          VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
     pte = (ptr_t *)pte_HIGHMEM;
-    for (uint32_t i = 0; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_HIGHMEM;
-         i++) {
+    for (uint32_t i = 0; i < VMM_PAGES_HIGHMEM; i++) {
         pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
     }
-    printk_debug("3\n");
-    enable_page(VMM_LA_PA((ptr_t)pgd_kernel));
+
+    enable_page(VMM_LA_PA(pgd_kernel));
 
     printk_info("vmm_init\n");
     return;
 }
 
-void enable_page(pgd_t pgd) {
-    // 设置临时页表
+void enable_page(pmd_t *pgd) {
     __asm__ volatile("mov %0, %%cr3" : : "r"(pgd));
     uint32_t cr0;
     __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
@@ -144,8 +129,8 @@ void enable_page(pgd_t pgd) {
     return;
 }
 
-void switch_pgd(pgd_t pd) {
-    __asm__ volatile("mov %0, %%cr3" : : "r"(pd));
+void switch_pgd(pmd_t *pgd) {
+    __asm__ volatile("mov %0, %%cr3" : : "r"(pgd));
 }
 
 #ifdef __cplusplus
