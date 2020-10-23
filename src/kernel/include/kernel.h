@@ -17,16 +17,8 @@ void gdt_init(void);
 void intr_init(void);
 void clock_init(void);
 void keyboard_init(void);
-void mouse_init(void);
 void debug_init(void);
 void showinfo(void);
-
-extern ptr_t kernel_init_start[];
-extern ptr_t kernel_init_text_start[];
-extern ptr_t kernel_init_text_end[];
-extern ptr_t kernel_init_data_start[];
-extern ptr_t kernel_init_data_end[];
-extern ptr_t kernel_init_end[];
 
 extern ptr_t kernel_start[];
 extern ptr_t kernel_text_start[];
