@@ -23,8 +23,8 @@ extern "C" {
 #define KERNEL_STACK_BOTTOM (0xC0000000UL)
 // 内核栈结束地址
 #define KERNEL_STACK_TOP (KERNEL_STACK_BOTTOM - KERNEL_STACK_SIZE)
-// 物理内存大小 512 MB
-#define PMM_MAX_SIZE (0x20000000UL)
+// 物理内存大小 2GB
+#define PMM_MAX_SIZE (0x80000000UL)
 
 // 内核的偏移地址
 // #define KERNEL_BASE (0xC0000000UL)
@@ -60,28 +60,30 @@ enum zone { DMA = 0, NORMAL = 1, HIGHMEM = 2 };
 #define DMA_START_ADDR (0x0UL)
 // 16MB
 #define NORMAL_START_ADDR (0x1000000UL)
-// 110MB
-#define HIGHMEM_START_ADDR (0x6E00000UL)
+// 896MB
+#define HIGHMEM_START_ADDR (0x38000000UL)
 // 16MB
 #define DMA_SIZE (0x1000000UL)
-// 94MB
-#define NORMAL_SIZE (0x5E00000UL)
-// 402MB
-#define HIGHMEM_SIZE (0x19200000UL)
+// 880MB
+#define NORMAL_SIZE (0x37000000UL)
+// 1152MB
+#define HIGHMEM_SIZE (0x48000000UL)
 
 // 物理页数量 131072,
-// 0x20000，除去外设映射，实际可用物理页数量为 159 + 130800 = 130959
+// 0x20000，除去外设映射，实际可用物理页数量为 159 + 130800 =
+// 130959 (这是物理内存为 512MB 的情况)
 #define PMM_PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)
 
-// A common problem is getting garbage data when trying to use a value defined
-// in a linker script. This is usually because they're dereferencing the symbol.
-// A symbol defined in a linker script (e.g. _ebss = .;) is only a symbol, not a
-// variable. If you access the symbol using extern uint32_t _ebss; and then try
-// to use _ebss the code will try to read a 32-bit integer from the address
-// indicated by _ebss. The solution to this is to take the address of _ebss
-// either by using it as & _ebss or by defining it as an unsized array(extern
-// char _ebss[]; ) and casting to an integer.(The array notation prevents
-// accidental reads from _ebss as arrays must be explicitly dereferenced) ref:
+// A common problem is getting garbage data when trying to use a value
+// defined in a linker script. This is usually because they're dereferencing
+// the symbol. A symbol defined in a linker script (e.g. _ebss = .;) is only
+// a symbol, not a variable. If you access the symbol using extern uint32_t
+// _ebss; and then try to use _ebss the code will try to read a 32-bit
+// integer from the address indicated by _ebss. The solution to this is to
+// take the address of _ebss either by using it as & _ebss or by defining it
+// as an unsized array(extern char _ebss[]; ) and casting to an integer.(The
+// array notation prevents accidental reads from _ebss as arrays must be
+// explicitly dereferenced) ref:
 // http://wiki.osdev.org/Using_Linker_Script_Values
 extern ptr_t *kernel_start;
 extern ptr_t *kernel_text_start;
