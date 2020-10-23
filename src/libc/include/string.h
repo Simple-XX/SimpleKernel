@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// string.h for SimpleXX/SimpleKernel.
+// string.h for Simple-XX/SimpleKernel.
 
 #ifndef _STRING_H_
 #define _STRING_H_
