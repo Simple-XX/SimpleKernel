@@ -14,7 +14,7 @@ extern "C" {
 #include "stdint.h"
 #include "port.hpp"
 #include "cpu.hpp"
-#include "intr/include/intr.h"
+#include "intr.h"
 
 // Master (IRQs 0-7)
 #define IO_PIC1 (0x20)
