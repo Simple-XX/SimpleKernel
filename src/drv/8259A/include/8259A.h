@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// pic.h for SimpleXX/SimpleKernel.
+// pic.h for Simple-XX/SimpleKernel.
 
 #ifndef _8259A_H_
 #define _8259A_H_
@@ -14,7 +14,7 @@ extern "C" {
 #include "stdint.h"
 #include "port.hpp"
 #include "cpu.hpp"
-#include "intr/include/intr.h"
+#include "intr.h"
 
 // Master (IRQs 0-7)
 #define IO_PIC1 (0x20)
