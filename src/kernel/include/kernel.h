@@ -7,6 +7,10 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
@@ -41,5 +45,9 @@ void showinfo(void) {
                 (kernel_end - kernel_start) / 1024,
                 (kernel_end - kernel_start) / 1024 / 4);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _KERNEL_H_ */
