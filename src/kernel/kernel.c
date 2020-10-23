@@ -13,7 +13,8 @@ extern "C" {
 
 // 内核入口
 void kernel_main() {
-    cpu_cli();
+    // debug 初始化
+    debug_init();
     // 控制台初始化
     console_init();
     // GDT 初始化

@@ -39,6 +39,7 @@ add_executable(${KernelName}
         $<TARGET_OBJECTS:boot>
         $<TARGET_OBJECTS:gdt>
         $<TARGET_OBJECTS:intr>
+        $<TARGET_OBJECTS:debug>
         $<TARGET_OBJECTS:kernel>
         $<TARGET_OBJECTS:8259A>
         $<TARGET_OBJECTS:clock>
