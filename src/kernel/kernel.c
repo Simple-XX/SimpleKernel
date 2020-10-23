@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// kernel.c for SimpleXX/SimpleKernel.
+// kernel.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,8 +38,9 @@ void kernel_main(ptr_t magic, ptr_t addr) {
     pmm_init();
     // 虚拟内存初始化
     vmm_init();
-    // showinfo();
+    printk_info("_______________\n");
     test();
+    // showinfo();
 
     cpu_sti();
     while (1) {

@@ -108,7 +108,6 @@ chunk_info_t *list_chunk_info(list_entry_t *list) {
     return &(list->chunk_info);
 }
 
-// TODO: 管理器信息也需要物理页进行存储，所以这些页面也需要被设置为已引用
 void init() {
     // 每个分区初始化一个管理器
     // 将 DMA 区域的空闲链表放在地址为 0 的位置
@@ -126,6 +125,19 @@ void init() {
         mem_zone[NORMAL].all_pages * sizeof(list_entry_t);
     uint32_t highmem_pmm_info_size =
         mem_zone[HIGHMEM].all_pages * sizeof(list_entry_t);
+    // 管理信息也需占用页表
+    for (unsigned int i = DMA_START_ADDR;
+         i < DMA_START_ADDR + dma_pmm_info_size; i += PMM_PAGE_SIZE) {
+        mem_page[i / (unsigned int)PMM_PAGE_SIZE].ref = 1;
+    }
+    for (unsigned int i = NORMAL_START_ADDR;
+         i < NORMAL_START_ADDR + normal_pmm_info_size; i += PMM_PAGE_SIZE) {
+        mem_page[i / (unsigned int)PMM_PAGE_SIZE].ref = 1;
+    }
+    for (unsigned int i = HIGHMEM_START_ADDR;
+         i < HIGHMEM_START_ADDR + highmem_pmm_info_size; i += PMM_PAGE_SIZE) {
+        mem_page[i / (unsigned int)PMM_PAGE_SIZE].ref = 1;
+    }
     bzero(dma_pmm_info, dma_pmm_info_size);
     bzero(normal_pmm_info, normal_pmm_info_size);
     bzero(highmem_pmm_info, highmem_pmm_info_size);

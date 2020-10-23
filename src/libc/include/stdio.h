@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// stdio.h for SimpleXX/SimpleKernel.
+// stdio.h for Simple-XX/SimpleKernel.
 
 #ifndef _STDIO_H_
 #define _STDIO_H_
