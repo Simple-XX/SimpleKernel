@@ -11,8 +11,6 @@ extern "C" {
 #include "stdio.h"
 #include "string.h"
 #include "cpu.hpp"
-#include "debug.h"
-#include "intr.h"
 #include "vmm.h"
 
 // 内核页目录区域，内容为页表
