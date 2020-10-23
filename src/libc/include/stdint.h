@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// stdint.h for SimpleXX/SimpleKernel.
+// stdint.h for Simple-XX/SimpleKernel.
 
 #ifndef _STDINT_H_
 #define _STDINT_H_

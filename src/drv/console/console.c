@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// console.c for SimpleXX/SimpleKernel.
+// console.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,7 +11,7 @@ extern "C" {
 #include "stddef.h"
 #include "string.h"
 #include "stdio.h"
-#include "cpu.hpp"
+#include "port.hpp"
 #include "console.h"
 
 // 命令行行数
