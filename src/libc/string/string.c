@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// string.c for SimpleXX/SimpleKernel.
+// string.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,8 +13,9 @@ extern "C" {
 // 获取字符串长度
 size_t strlen(const char *str) {
     size_t len = 0;
-    while (str[len])
+    while (str[len]) {
         len++;
+    }
     return len;
 }
 
@@ -30,8 +31,9 @@ int8_t strcmp(const char *src, const char *dest) {
 
 char *strcpy(char *dest, const char *src) {
     char *address = dest;
-    while ((*dest++ = *src++) != '\0')
+    while ((*dest++ = *src++) != '\0') {
         ;
+    }
     return address;
 }
 
@@ -49,13 +51,13 @@ void append(char *src, char dest) {
 char *strcat(char *dest, const char *src) {
     uint8_t *add_d = (uint8_t *)dest;
     if (dest != NULL && src != NULL) {
-        while (*add_d)
+        while (*add_d) {
             add_d++;
-        while (*src)
+        }
+        while (*src) {
             *add_d++ = *src++;
+        }
     }
-    // size_t len = strlen(dest);
-    // dest[len+1]='\0';
     return dest;
 }
 

@@ -1,7 +1,7 @@
 
-# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 # 
-# header_files.cmake for SimpleXX/SimpleKernel.
+# header_files.cmake for Simple-XX/SimpleKernel.
 
 function(target_include_libc_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/libc/include)
