@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// port.hpp for SimpleXX/SimpleKernel.
+// port.hpp for Simple-XX/SimpleKernel.
 
 #ifndef _PORT_HPP_
 #define _PORT_HPP_

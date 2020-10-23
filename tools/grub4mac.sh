@@ -1,7 +1,7 @@
 
-# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# grub4mac.sh for SimpleXX/SimpleKernel.
+# grub4mac.sh for Simple-XX/SimpleKernel.
 
 #!/bin/bash
 
@@ -11,6 +11,16 @@ set -e
 wget https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
 tar zxvf grub-2.04.tar.xz
 cd grub-2.04
+if ! [ -x "$(command -v autoconf)" ]; then
+    echo 'Error: autoconf is not installed.'
+    echo 'Install autoconf...'
+    brew install autoconf
+fi
+if ! [ -x "$(command -v automake)" ]; then
+    echo 'Error: automake is not installed.'
+    echo 'Install automake...'
+    brew install automake
+fi
 ./autogen.sh
 mkdir -p build
 cd build
