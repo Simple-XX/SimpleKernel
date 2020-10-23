@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// printk.c for SimpleXX/SimpleKernel.
+// printk.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -12,7 +12,6 @@ extern "C" {
 #include "stdarg.h"
 #include "stdint.h"
 #include "string.h"
-#include "debug.h"
 
 static char buf[1024];
 

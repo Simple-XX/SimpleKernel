@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// console.c for SimpleXX/SimpleKernel.
+// console.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,7 +11,7 @@ extern "C" {
 #include "stddef.h"
 #include "string.h"
 #include "stdio.h"
-#include "cpu.hpp"
+#include "port.hpp"
 #include "console.h"
 
 // 命令行行数
@@ -62,23 +62,23 @@ void console_putentryat(char c, uint8_t color, size_t x, size_t y) {
 // 转义字符处理
 void console_escapeconv(char c) {
     switch (c) {
-    case '\n':
-        console_column = 0;
-        console_row++;
-        break;
-    case '\t':
-        // 取整对齐
-        console_column = (console_column + 7) & ~7;
-        // 如果到达最后一列则换行
-        if (++console_column >= VGA_WIDTH) {
+        case '\n':
             console_column = 0;
             console_row++;
-        }
-        break;
-    case '\b':
-        if (console_column)
-            console_column -= 2;
-        break;
+            break;
+        case '\t':
+            // 取整对齐
+            console_column = (console_column + 7) & ~7;
+            // 如果到达最后一列则换行
+            if (++console_column >= VGA_WIDTH) {
+                console_column = 0;
+                console_row++;
+            }
+            break;
+        case '\b':
+            if (console_column)
+                console_column -= 2;
+            break;
     }
 }
 
