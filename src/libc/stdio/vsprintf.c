@@ -1,6 +1,7 @@
 
 // This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel). Based on Linux kernel 0.11
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on Linux kernel 0.11
 // vsprintf.c for Simple-XX/SimpleKernel.
 
 // TODO
