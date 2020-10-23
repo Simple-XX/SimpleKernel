@@ -101,7 +101,7 @@ multiboot_entry:
     cli
 	# 设置栈地址
     mov $STACK_TOP, %esp
-     # 栈地址按照 16 字节对齐
+    # 栈地址按照 16 字节对齐
     and $0xFFFFFFF0, %esp 
     # 帧指针修改为 0   
     mov $0, %ebp          
