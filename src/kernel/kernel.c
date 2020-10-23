@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-#include "include/kernel.h"
+#include "kernel.h"
 
 void kernel_main(void) {
     // 控制台初始化
