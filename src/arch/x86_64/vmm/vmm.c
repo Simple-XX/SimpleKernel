@@ -39,106 +39,6 @@ pte_t pte_HIGHMEM[HIGHMEM_SIZE / VMM_PAGE_TABLE_SIZE][VMM_PAGES_PRE_PAGE_TABLE]
 pte_t pte_kernel_stack[VMM_PAGES_PRE_PAGE_TABLE]
     __attribute__((aligned(VMM_PAGE_SIZE)));
 
-//根据 zone 机制，内核可用区域为
-void vmm_init(void) {
-    register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
-
-    // 映射全部内核
-    uint32_t pgd_idx = VMM_PGD_INDEX(KERNEL_BASE);
-    for (uint32_t i = pgd_idx, j = 0; i < VMM_PAGE_DIRECTORIES_KERNEL + pgd_idx;
-         i++, j++) {
-        pgd_kernel[i] = ((ptr_t)VMM_LA_PA((ptr_t)pte_kernel[j]) |
-                         VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
-    }
-    ptr_t *pte = (ptr_t *)pte_kernel;
-    for (uint32_t i = 0; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_KERNEL;
-         i++) {
-        pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
-    }
-    // 映射内核栈
-    // 0x2FF
-    pgd_idx             = VMM_PGD_INDEX(KERNEL_STACK_TOP);
-    pgd_kernel[pgd_idx] = ((ptr_t)VMM_LA_PA((ptr_t)pte_kernel_stack) |
-                           VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
-    // i: 0x3F8~0x400
-    for (uint32_t i = VMM_PAGES_PRE_PAGE_TABLE - KERNEL_STACK_PAGES,
-                  j = VMM_PAGES_PRE_PAGE_TABLE * 2;
-         i < VMM_PAGES_PRE_PAGE_TABLE; i++, j++) {
-        pte_kernel_stack[i] =
-            (j << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
-    }
-    enable_page(VMM_LA_PA((ptr_t)pgd_kernel));
-    printk_info("vmm_init\n");
-    return;
-}
-
-// 以页为单位
-void map(pgd_t *pgd_now, ptr_t va, ptr_t pa, uint32_t flags) {
-    uint32_t pgd_idx = VMM_PGD_INDEX(va);
-    uint32_t pte_idx = VMM_PTE_INDEX(va);
-    pte_t *  pte     = (pte_t *)(pgd_now[pgd_idx] & VMM_PAGE_MASK);
-    // 转换到内核线性地址
-    if (pte == NULL) {
-        pgd_now[pgd_idx] = (uint32_t)pte | flags;
-        pte              = (pte_t *)VMM_PA_LA((ptr_t)pte);
-    }
-    else {
-        pte = (pte_t *)VMM_PA_LA((ptr_t)pte);
-    }
-
-    pte[pte_idx] = (pa & VMM_PAGE_MASK) | flags;
-    // 通知 CPU 更新页表缓存
-    CPU_INVLPG(va);
-    return;
-}
-
-void unmap(pgd_t *pgd_now, ptr_t va) {
-    uint32_t pgd_idx = VMM_PGD_INDEX(va);
-    uint32_t pte_idx = VMM_PTE_INDEX(va);
-    pte_t *  pte     = (pte_t *)(pgd_now[pgd_idx] & VMM_PAGE_MASK);
-    // 转换到内核线性地址
-    pte          = (pte_t *)VMM_PA_LA((ptr_t)pte);
-    pte[pte_idx] = 0;
-    // 通知 CPU 更新页表缓存
-    CPU_INVLPG(va);
-    return;
-}
-
-uint32_t get_mapping(pgd_t *pgd_now, ptr_t va, ptr_t *pa) {
-    uint32_t pgd_idx = VMM_PGD_INDEX(va);
-    uint32_t pte_idx = VMM_PTE_INDEX(va);
-
-    pte_t *pte = (pte_t *)(pgd_now[pgd_idx] & VMM_PAGE_MASK);
-    if (pte == NULL) {
-        return 0;
-    }
-    // 转换到内核线性地址
-    pte = (pte_t *)VMM_PA_LA((ptr_t)pte);
-    // 如果地址有效而且指针不为 NULL
-    if ((void *)pte[pte_idx] != NULL) {
-        if ((void *)pa != NULL) {
-            *pa = pte[pte_idx] & VMM_PAGE_MASK;
-        }
-        return 1;
-    }
-    return 0;
-}
-
-void enable_page(pgd_t pgd) {
-    // 设置临时页表
-    __asm__ volatile("mov %0, %%cr3" : : "r"(pgd));
-    uint32_t cr0;
-    __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
-    // 最高位 PG 位置 1，分页开启
-    cr0 |= (1u << 31);
-    __asm__ volatile("mov %0, %%cr0" : : "r"(cr0));
-    return;
-}
-
-void switch_pgd(pgd_t pd) {
-    __asm__ volatile("mov %0, %%cr3" : : "r"(pd));
-}
-
 void page_fault(pt_regs_t *pt_regs) {
 #ifdef __x86_64__
     uint64_t cr2;
@@ -180,6 +80,72 @@ void page_fault(pt_regs_t *pt_regs) {
     while (1) {
         ;
     }
+}
+
+// 根据 zone 机制，内核可用区域为
+void vmm_init(void) {
+    register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
+    uint32_t pgd_idx = 0;
+    ptr_t *  pte     = NULL;
+    // 映射 DMA
+    pgd_idx = VMM_PGD_INDEX(DMA_START_ADDR);
+    for (uint32_t i = pgd_idx, j = 0; i < VMM_PAGE_DIRECTORIES_DMA + pgd_idx;
+         i++, j++) {
+        pgd_kernel[i] = ((ptr_t)VMM_LA_PA((ptr_t)pte_DMA[j]) |
+                         VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+    }
+    pte = (ptr_t *)pte_DMA;
+    for (uint32_t i = 0; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_DMA;
+         i++) {
+        pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+    }
+    // 映射 NORMAL
+    pgd_idx = VMM_PGD_INDEX(NORMAL_START_ADDR);
+    for (uint32_t i = pgd_idx, j = 0; i < VMM_PAGE_DIRECTORIES_NORMAL + pgd_idx;
+         i++, j++) {
+        pgd_kernel[i] = ((ptr_t)VMM_LA_PA((ptr_t)pte_NORMAL[j]) |
+                         VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+    }
+    pte = (ptr_t *)pte_NORMAL;
+    for (uint32_t i = 0; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_NORMAL;
+         i++) {
+        pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+    }
+    printk_debug("VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_HIGHMEM: 0x%X\n",
+                 VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_HIGHMEM);
+    printk_debug("VMM_PAGES_HIGHMEM: 0x%X\n", VMM_PAGES_HIGHMEM);
+    // 映射 HIGHMEM
+    pgd_idx = VMM_PGD_INDEX(HIGHMEM_START_ADDR);
+    for (uint32_t i = pgd_idx, j = 0;
+         i < VMM_PAGE_DIRECTORIES_HIGHMEM + pgd_idx; i++, j++) {
+        pgd_kernel[i] = ((ptr_t)VMM_LA_PA((ptr_t)pte_HIGHMEM[j]) |
+                         VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+    }
+    pte = (ptr_t *)pte_HIGHMEM;
+    for (uint32_t i = 0; i < VMM_PAGES_PRE_PAGE_TABLE * VMM_PAGE_TABLES_HIGHMEM;
+         i++) {
+        pte[i] = (i << 12) | VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL;
+    }
+    printk_debug("3\n");
+    enable_page(VMM_LA_PA((ptr_t)pgd_kernel));
+
+    printk_info("vmm_init\n");
+    return;
+}
+
+void enable_page(pgd_t pgd) {
+    // 设置临时页表
+    __asm__ volatile("mov %0, %%cr3" : : "r"(pgd));
+    uint32_t cr0;
+    __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
+    // 最高位 PG 位置 1，分页开启
+    cr0 |= (1u << 31);
+    __asm__ volatile("mov %0, %%cr0" : : "r"(cr0));
+    return;
+}
+
+void switch_pgd(pgd_t pd) {
+    __asm__ volatile("mov %0, %%cr3" : : "r"(pd));
 }
 
 #ifdef __cplusplus
