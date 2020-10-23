@@ -12,7 +12,6 @@ extern "C" {
 #include "stdio.h"
 #include "stddef.h"
 #include "port.hpp"
-#include "cpu.hpp"
 #include "clock.h"
 
 void clock_init(void) {
