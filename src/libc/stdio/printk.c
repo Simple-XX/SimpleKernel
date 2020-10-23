@@ -11,7 +11,6 @@ extern "C" {
 #include "stdio.h"
 #include "stdarg.h"
 #include "stdint.h"
-#include "debug.h"
 
 static char buf[1024];
 
