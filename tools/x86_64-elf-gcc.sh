@@ -1,7 +1,7 @@
 
-# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# x86_64-elf-gcc.sh for SimpleXX/SimpleKernel.
+# x86_64-elf-gcc.sh for Simple-XX/SimpleKernel.
 
 #!/bin/bash
 

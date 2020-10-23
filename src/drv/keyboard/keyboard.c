@@ -1,7 +1,7 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel). Based on Orange's
-// 一个操作系统的实现 kb.c for SimpleXX/SimpleKernel.
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel). Based on Orange's
+// 一个操作系统的实现 kb.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {

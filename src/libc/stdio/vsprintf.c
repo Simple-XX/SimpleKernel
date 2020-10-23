@@ -1,7 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel). Based on Linux kernel 0.11
-// vsprintf.c for SimpleXX/SimpleKernel.
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on Linux kernel 0.11
+// vsprintf.c for Simple-XX/SimpleKernel.
 
 // TODO
 // 修复整数和其它类型数据同时输出时只显示整数的问题
@@ -47,10 +48,6 @@ static int skip_atoi(const char **s) {
 // (精读)；type-类型选项。输出：str-字符串指针
 static char *number(char *str, int num, int base, int size, int precision,
                     int type) {
-    //    int32_t int_max=0x7FFFFFFF;
-    //    if(num > int_max){
-    //        return str;
-    //    }
     char        c, sign, tmp[36];
     const char *digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int         i;

@@ -115,6 +115,9 @@ typedef ptr_t pte_t;
 extern pgd_t pgd_kernel[VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY]
     __attribute__((aligned(VMM_PAGE_SIZE)));
 
+// 缺页处理
+void page_fault(pt_regs_t *pt_regs);
+
 // 初始化虚拟内存管理
 void vmm_init(void);
 

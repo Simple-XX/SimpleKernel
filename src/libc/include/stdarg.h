@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// stdarg.h for SimpleXX/SimpleKernel.
+// stdarg.h for Simple-XX/SimpleKernel.
 
 #ifndef _STDARG_H_
 #define _STDARG_H_
