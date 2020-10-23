@@ -32,9 +32,9 @@ void kernel_main(ptr_t magic, ptr_t addr) {
     debug_init(magic, addr);
     // 物理内存初始化
     pmm_init();
-
-    // showinfo();
+    showinfo();
     test();
+
     cpu_sti();
     while (1) {
         ;
