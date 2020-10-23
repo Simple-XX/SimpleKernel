@@ -11,17 +11,6 @@
 extern "C" {
 #endif
 
-/* Check if the compiler thinks we are targeting the wrong operating system. */
-#if defined(__linux__)
-#error                                                                         \
-    "You are not using a cross-compiler, you will most certainly run into trouble"
-#endif
-
-/* This tutorial will only work for the 32-bit ix86 targets. */
-// #if !defined( __i386__ ) | !defined(__x86_64__)
-// #error "Please compile that with a ix86-elf compiler"
-// #endif
-
 #include "stdint.h"
 #include "stdbool.h"
 #include "stdio.h"
