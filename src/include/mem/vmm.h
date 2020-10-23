@@ -62,7 +62,8 @@ extern "C" {
 #define VMM_PAGE_TABLES_TOTAL (VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE)
 
 // 映射全部虚拟内存需要的页目录数 = 虚拟内存大小/页目录大小 2^0
-#define VMM_PAGE_DIRECTORIES_TOTAL (VMM_VMEM_SIZE / VMM_PAGE_DIRECTORY_SIZE)
+#define VMM_PAGE_DIRECTORIES_TOTAL                                             \
+    ((VMM_VMEM_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
 
 // 映射内核需要的页数
 #define VMM_PAGES_KERNEL (PMM_PAGES_KERNEL)
@@ -73,6 +74,29 @@ extern "C" {
 // 映射内核需要的页目录数
 #define VMM_PAGE_DIRECTORIES_KERNEL                                            \
     ((KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
+
+// 映射 DMA 需要的页数
+#define VMM_PAGES_DMA (DMA_SIZE / VMM_PAGE_SIZE)
+// 映射 DMA 需要的页表数
+#define VMM_PAGE_TABLES_DMA ((DMA_SIZE / VMM_PAGE_TABLE_SIZE) + 1UL)
+// 映射 DMA 需要的页目录数
+#define VMM_PAGE_DIRECTORIES_DMA ((DMA_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
+
+// 映射 NORMAL 需要的页数
+#define VMM_PAGES_NORMAL (NORMAL_SIZE / VMM_PAGE_SIZE)
+// 映射 NORMAL 需要的页表数
+#define VMM_PAGE_TABLES_NORMAL ((NORMAL_SIZE / VMM_PAGE_TABLE_SIZE) + 1UL)
+// 映射 NORMAL 需要的页目录数
+#define VMM_PAGE_DIRECTORIES_NORMAL                                            \
+    ((NORMAL_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
+
+// 映射 HIGHMEM 需要的页数
+#define VMM_PAGES_HIGHMEM (HIGHMEM_SIZE / VMM_PAGE_SIZE)
+// 映射 HIGHMEM 需要的页表数
+#define VMM_PAGE_TABLES_HIGHMEM ((HIGHMEM_SIZE / VMM_PAGE_TABLE_SIZE) + 1UL)
+// 映射 HIGHMEM 需要的页目录数
+#define VMM_PAGE_DIRECTORIES_HIGHMEM                                           \
+    ((HIGHMEM_SIZE / VMM_PAGE_DIRECTORY_SIZE) + 1UL)
 
 // P = 1 表示有效； P = 0 表示无效。
 #define VMM_PAGE_PRESENT (0x00000001)
@@ -120,16 +144,6 @@ void page_fault(pt_regs_t *pt_regs);
 
 // 初始化虚拟内存管理
 void vmm_init(void);
-
-// 使用 flags 指出的页权限，把物理地址 pa 映射到虚拟地址 va
-void map(pgd_t *pgd_now, ptr_t va, ptr_t pa, uint32_t flags);
-
-// 取消虚拟地址 va 的物理映射
-void unmap(pgd_t *pgd_now, ptr_t va);
-
-// 如果虚拟地址 va 映射到物理地址则返回 1
-// 同时如果 pa 不是空指针则把物理地址写入 pa 参数
-uint32_t get_mapping(pgd_t *pgd_now, ptr_t va, ptr_t *pa);
 
 // 开启分页
 void enable_page(pgd_t pgd);
