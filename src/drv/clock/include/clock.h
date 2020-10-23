@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-#include "intr/include/intr.h"
+#include "intr.h"
 
 #define FREQUENCY (100)
 
