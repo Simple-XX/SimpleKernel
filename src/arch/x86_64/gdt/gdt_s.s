@@ -1,7 +1,7 @@
 
-# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# gdt_s.s for SimpleXX/SimpleKernel.
+# gdt_s.s for Simple-XX/SimpleKernel.
 
 .code32
 

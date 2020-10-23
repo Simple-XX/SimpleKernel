@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// multiboot2.h for SimpleXX/SimpleKernel.
+// multiboot2.h for Simple-XX/SimpleKernel.
 
 // 启动后，在 32 位内核进入点，机器状态如下：
 //   1. CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
