@@ -22,6 +22,8 @@ cd ../
 
 if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
     echo Multiboot2 Confirmed!
+elif [ ${ARCH} == "raspi2" ]; then
+    echo Arm-A7.
 else
     echo The File is Not Multiboot.
     exit
@@ -43,9 +45,13 @@ if [ ${ARCH} == "x86_64" ]; then
     echo 'set timeout=15
     set default=0
     menuentry "SimpleKernel" {
-       multiboot2 /boot/kernel.bin "KERNEL_BIN"
+       multiboot2 /boot/kernel.elf "KERNEL_ELF"
    }' >${iso_boot_grub}/grub.cfg
 fi
 
-${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+if [ ${ARCH} == "x86_64" ]; then
+    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+elif [ ${ARCH} == "raspi2" ]; then
+    ${SIMULATOR}-system-arm -machine raspi2 -serial stdio -kernel ${kernel} 
+fi
