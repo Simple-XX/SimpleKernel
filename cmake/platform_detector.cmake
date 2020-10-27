@@ -15,7 +15,7 @@ elseif (PLATFORM STREQUAL qemu)
 else ()
     message(WARNING "unexpected PLATFORM ${PLATFORM}, using default value \"bochs\"")
     set(SimpleKernelPlatform bochs)
-    set(PLATFORM bochs\(default\))
+    set(SimpleKernelPlatformMacro PLATFORM_BOCHS)
 endif ()
 
 message(STATUS "SimpleKernelPlatform is ${SimpleKernelPlatform}")

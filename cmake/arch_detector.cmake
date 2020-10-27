@@ -8,7 +8,6 @@ if (ARCH STREQUAL x86_64)
 else ()
     message(WARNING "unexpected ARCH ${ARCH}, using default value \"x86_64\"")
     set(SimpleKernelArch x86_64)
-    set(ARCH x86_64\(default\))
 endif ()
 
 message(STATUS "SimpleKernelArch is ${SimpleKernelArch}")
