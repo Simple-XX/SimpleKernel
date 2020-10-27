@@ -33,8 +33,9 @@ void kernel_main(ptr_t magic, ptr_t addr) {
     // 物理内存初始化
     pmm_init();
 
-    // showinfo();
     test();
+    showinfo();
+
     cpu_sti();
     while (1) {
         ;
