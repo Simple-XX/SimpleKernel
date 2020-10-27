@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// e820.h for SimpleXX/SimpleKernel.
+// e820.h for Simple-XX/SimpleKernel.
 
 #ifndef _E820_H_
 #define _E820_H_
