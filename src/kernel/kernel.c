@@ -12,6 +12,7 @@ extern "C" {
 #include "kernel.h"
 #include "console.h"
 #include "uart.h"
+#include "framebuffer.h"
 
 void kernel_main(void) {
 #ifdef x86_64
@@ -25,7 +26,13 @@ void kernel_main(void) {
     uart_init();
     char  c = '!';
     char *s = "gg";
+    framebuffer_init();
     log_info("__%c__%s\n", c, s);
+    for (uint32_t i = 0; i < 768; i++) {
+        for (uint32_t j = 0; j < 1024; j++) {
+            framebuffer_set_pixel(j, i, 0xAA00FF);
+        }
+    }
     log_info("Simple Kernel.\n");
     while (1) {
         uart_putc(uart_getc());

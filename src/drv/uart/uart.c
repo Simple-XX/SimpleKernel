@@ -15,15 +15,11 @@ extern "C" {
 
 // Loop <delay> times in a way that the compiler won't optimize away
 static inline void delay(int32_t count) {
-    asm volatile("__delay_%=: subs %[count], %[count], #1; bne __delay_%=\n"
+    asm volatile("__delay_%=: subs %[count], %[count], #1"
                  : "=r"(count)
                  : [ count ] "0"(count)
                  : "cc");
 }
-
-// A Mailbox message with set clock rate of PL011 to 3MHz tag
-volatile unsigned int __attribute__((aligned(16)))
-mbox[9] = {9 * 4, 0, 0x38002, 12, 8, 2, 3000000, 0, 0};
 
 void uart_init(void) {
     // Disable UART0.
@@ -67,14 +63,18 @@ void uart_init(void) {
 
 void uart_putc(uint8_t c) {
     // Wait for UART to become ready to transmit.
-    while (ind(UART0_FR) & (1 << 5)) {}
+    while (ind(UART0_FR) & (1 << 5)) {
+        ;
+    }
     outd(UART0_DR, c);
     return;
 }
 
 uint8_t uart_getc() {
     // Wait for UART to have received something.
-    while (ind(UART0_FR) & (1 << 4)) {}
+    while (ind(UART0_FR) & (1 << 4)) {
+        ;
+    }
     return ind(UART0_DR);
 }
 

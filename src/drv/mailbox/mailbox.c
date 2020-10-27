@@ -8,7 +8,7 @@
 #include "hardware.h"
 #include "stdint.h"
 
-unsigned int __attribute__((aligned(16))) mbox[36];
+volatile uint32_t __attribute__((aligned(16))) mbox[36];
 
 int32_t mbox_call(uint8_t ch) {
     uint32_t r = (((uint32_t)((uint32_t)&mbox) & ~0xF) | (ch & 0xF));
