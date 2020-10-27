@@ -15,6 +15,11 @@ extern "C" {
 #include "stddef.h"
 #include "hardware.h"
 
+extern uint32_t width;
+extern uint32_t height;
+extern uint32_t pitch;
+extern uint32_t isrgb;
+
 void framebuffer_init(void);
 
 void framebuffer_set_pixel(uint32_t x, uint32_t y, uint32_t color);
