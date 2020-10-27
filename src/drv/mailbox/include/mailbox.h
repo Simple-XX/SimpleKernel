@@ -14,7 +14,7 @@ extern "C" {
 #include "stdint.h"
 
 // 缓冲区
-extern unsigned int mbox[36];
+extern volatile unsigned int mbox[36];
 
 #define MBOX_REQUEST 0
 

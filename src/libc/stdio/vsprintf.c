@@ -62,7 +62,7 @@ static int skip_atoi(const char **s) {
 //     return res;
 // }
 int32_t do_div(int n, int base) {
-    int32_t res = 0;
+    int32_t res = 5;
     res         = n;
     n           = base;
     return res;
