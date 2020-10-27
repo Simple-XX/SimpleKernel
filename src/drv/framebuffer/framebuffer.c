@@ -87,17 +87,19 @@ void framebuffer_init(void) {
     // this might not return exactly what we asked for, could be
     // the closest supported resolution instead
     if (mbox_call(MBOX_CH_PROP) && mbox[20] == 32 && mbox[28] != 0) {
-        // convert GPU address to ARM address
+        // TODO: 修正 pitch 数据错误的问题
+        // 将 GPU 地址转换为 ARM 地址
         mbox[28] &= 0x3FFFFFFF;
-        // get actual physical width
+        // 实际 width, 768
         width = mbox[5];
-        // get actual physical height
+        // 实际 height, 1024
         height = mbox[6];
-        // get number of bytes per line
+        // get number of bytes per line, 512
+        // 每行字节数, 512
         pitch = mbox[33];
         // get the actual channel order
         isrgb = mbox[24];
-        lfb   = (void *)((uint32_t)mbox[28]);
+        lfb   = (uint8_t *)mbox[28];
     }
     else {
         log_error("Unable to set screen resolution to 1024x768x32\n");
@@ -107,8 +109,13 @@ void framebuffer_init(void) {
 
 void framebuffer_set_pixel(uint32_t x, uint32_t y, uint32_t color) {
     uint8_t *ptr = lfb;
-    ptr += (width * y * 4) + x * 4;
-    *((unsigned int *)ptr) = color;
+    // 换算为 RGB
+    uint32_t r = (color >> 16) & 0xFF;
+    uint32_t g = (color >> 8) & 0xFF;
+    uint32_t b = color & 0xFF;
+    // 计算位置
+    ptr += (4 * 1024 * y) + (x << 2);
+    *((uint32_t *)ptr) = (b << 16) | (g << 24) | r;
     return;
 }
 
