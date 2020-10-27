@@ -13,13 +13,31 @@ extern "C" {
 
 #include "stdint.h"
 
+// 屏幕输出
 int32_t printk(const char *fmt, ...);
+// 可指定颜色的屏幕输出
 int32_t printk_color(unsigned char color, const char *format, ...);
-int32_t printf(const char *fmt, ...);
+// 屏幕输出 INFO
 int32_t printk_info(const char *fmt, ...);
+// 屏幕输出 WARN
+int32_t printk_warn(const char *fmt, ...);
+// 屏幕输出 DEBUG
 int32_t printk_debug(const char *fmt, ...);
+// 屏幕输出 TEST
 int32_t printk_test(const char *fmt, ...);
+// 屏幕输出 ERROR
 int32_t printk_err(const char *fmt, ...);
+
+// 串口输出 INFO
+int32_t log_info(const char *fmt, ...);
+// 串口输出 WARN
+int32_t log_warn(const char *fmt, ...);
+// 串口输出 DEBUG
+int32_t printk_debug(const char *fmt, ...);
+// 串口输出 TEST
+int32_t log_test(const char *fmt, ...);
+// 串口输出 ERROR
+int32_t log_error(const char *fmt, ...);
 
 // 枚举颜色，与 vga_color 相同
 enum color {
@@ -42,6 +60,7 @@ enum color {
 };
 
 #define COL_DEBUG light_cyan
+#define COL_WARN light_blue
 #define COL_ERROR light_red
 #define COL_INFO light_green
 #define COL_TEST green
