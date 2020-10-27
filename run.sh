@@ -31,6 +31,7 @@ fi
 if [ "${iso_boot}" == "" ]; then
     echo iso_boot path error.
 else
+    mkdir -p ${iso_boot}
     rm -rf -f ${iso_boot}/*
 fi
 
