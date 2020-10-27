@@ -3,15 +3,15 @@
 # 
 # platform_detector.cmake for Simple-XX/SimpleKernel.
 
-if (PLATFORM STREQUAL physical)
-    set(SimpleKernelPlatform physical)
-    set(SimpleKernelPlatformMacro PHY)
+if (PLATFORM STREQUAL x86_64)
+    set(SimpleKernelPlatform x86_64)
+    set(SimpleKernelPlatformMacro PLATFORM_x86_64)
 elseif (PLATFORM STREQUAL bochs)
     set(SimpleKernelPlatform bochs)
-    set(SimpleKernelPlatformMacro BOCHS)
+    set(SimpleKernelPlatformMacro PLATFORM_BOCHS)
 elseif (PLATFORM STREQUAL qemu)
     set(SimpleKernelPlatform qemu)
-    set(SimpleKernelPlatformMacro QEMU)
+    set(SimpleKernelPlatformMacro PLATFORM_QEMU)
 else ()
     message(WARNING "unexpected PLATFORM ${PLATFORM}, using default value \"bochs\"")
     set(SimpleKernelPlatform bochs)
