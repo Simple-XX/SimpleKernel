@@ -37,8 +37,8 @@ void kernel_main(ptr_t magic, ptr_t addr) {
     //测试缓冲区
     test_buffer();
 
-    test();
-    showinfo();
+    // test();
+    // showinfo();
 
     cpu_sti();
     while (1) {
