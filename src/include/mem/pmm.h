@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// pmm.h for SimpleXX/SimpleKernel.
+// pmm.h for Simple-XX/SimpleKernel.
 
 #ifndef _PMM_H_
 #define _PMM_H_
