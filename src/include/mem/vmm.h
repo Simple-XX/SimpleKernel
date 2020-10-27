@@ -11,6 +11,7 @@
 extern "C" {
 #endif
 
+#include "intr.h"
 #include "pmm.h"
 
 // 页大小，一页能映射多少 Byte 内存 2^12

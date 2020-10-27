@@ -3,7 +3,6 @@
 #
 # bochsrc_mac.txt for Simple-XX/SimpleKernel
 
-ata0-master: type=disk, path="fs.img", mode=flat
 ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
 boot: cdrom
 
