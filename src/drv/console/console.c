@@ -13,6 +13,7 @@ extern "C" {
 #include "stdio.h"
 #include "port.hpp"
 #include "console.h"
+#include "vga.hpp"
 
 // 命令行行数
 static size_t console_row;

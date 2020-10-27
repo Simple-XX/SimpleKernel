@@ -46,12 +46,28 @@ static int skip_atoi(const char **s) {
 #define SMALL 64
 
 // 除操作。n 被除数；base 除数。结果 n 为商，函数返回值为余数。
+#ifdef x86_64
 #define do_div(n, base)                                                        \
     ({                                                                         \
         int __res;                                                             \
         __asm__("divl %4" : "=a"(n), "=d"(__res) : "0"(n), "1"(0), "r"(base)); \
         __res;                                                                 \
     })
+#elif RASPI2
+// TODO: 除法不可用
+// int32_t do_div(int *n, int base) {
+//     int32_t res = 0;
+//     res         = *n % base;
+//     *n          = *n / base;
+//     return res;
+// }
+int32_t do_div(int n, int base) {
+    int32_t res = 0;
+    res         = n;
+    n           = base;
+    return res;
+}
+#endif
 
 // 将整数转换为指定进制的字符串。输入：num-整数；base-进制；size-字符串长度;precision-数字长度
 // (精读)；type-类型选项。输出：str-字符串指针
