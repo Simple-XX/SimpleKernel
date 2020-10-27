@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// sync.hpp for SimpleXX/SimpleKernel.
+// sync.hpp for Simple-XX/SimpleKernel.
 
 #ifndef _SYNC_HPP_
 #define _SYNC_HPP_

@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 // Based on https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
-// debug.c for SimpleXX/SimpleKernel.
+// debug.c for Simple-XX/SimpleKernel.
 
 #ifdef __cplusplus
 extern "C" {
@@ -142,72 +142,74 @@ void multiboot2_init(ptr_t magic, ptr_t addr) {
          tag = (multiboot_tag_t *)((uint8_t *)tag + ((tag->size + 7) & ~7))) {
         // printk_info ("Tag 0x%X, Size 0x%X\n", tag->type, tag->size);
         switch (tag->type) {
-        case MULTIBOOT_TAG_TYPE_CMDLINE:
-            // print_MULTIBOOT_TAG_TYPE_CMDLINE(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME:
-            // print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_MODULE:
-            // print_MULTIBOOT_TAG_TYPE_MODULE(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_BASIC_MEMINFO:
-            // print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_BOOTDEV:
-            // print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_MMAP:
-            print_MULTIBOOT_TAG_TYPE_MMAP(tag);
-            break;
-        case MULTIBOOT_TAG_TYPE_ELF_SECTIONS: {
-            // print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
-            // printk("!!!!!!!!!!!!!!!!!!!\n");
-            // 获取 shdr 的地址：tag 的地址加上 multiboot_tag_elf_sections
-            // 结构体大小即是第一项符号表 BUG !!! 获取到的 size 和 name
-            // 均正确，然而 symtab 的成员全为 0x00
-            // TODO
-            // Elf64_Shdr * shdr = (Elf64_Shdr*)( (uint32_t)tag + sizeof(
-            // struct multiboot_tag_elf_sections ) ); uint32_t shstrtab =
-            // shdr[( (struct multiboot_tag_elf_sections*)tag
-            // )->shndx].sh_addr; printk("shstrtabsz: 0x%X\n", shdr[((struct
-            // multiboot_tag_elf_sections*)tag)->shndx].sh_size); // correct
-            // printk("shstrtab addr: 0x%X\n", shstrtab);
-            // for (uint32_t i = 0; i < ( (struct
-            // multiboot_tag_elf_sections*)tag )->num; i++) { 	const char
-            // *name = (const char *)(shstrtab + shdr[i].sh_name);
-            // 	// printk(" sh_name: %s ", name); // correct
-            // 	// printk("shaddr: 0x%X\t", shdr[i].sh_addr); // correct
-            // 	// 在 GRUB 提供的 multiboot 信息中寻找内核 ELF
-            // 格式所提取的字符串表和符号表 	if (strcmp(name, ".strtab") ==
-            // 0) { 		kernel_elf.strtab = (const char
-            // *)shdr[i].sh_addr;
-            // 		// printk("strtab: 0x%X\n", kernel_elf.strtab);
-            // 		// printk("strtab: %s\n", kernel_elf.strtab);
-            // 		kernel_elf.strtabsz = shdr[i].sh_size;
-            // 		// printk("strtabsz: 0x%X\n", kernel_elf.strtabsz);
-            // // correct
-            // 	}
-            // 	if (strcmp(name, ".symtab") == 0) {
-            // 		kernel_elf.symtab = (Elf64_Sym
-            // *)(shdr[i].sh_addr);
-            // 		// printk("symtab addr: 0x%X\n",
-            // kernel_elf.symtab); 		kernel_elf.symtabsz =
-            // shdr[i].sh_size;
-            // 		// printk("symtab->: 0x%X\n",
-            // (kernel_elf.symtab->st_value));
-            // 		// printk("symtabsz: 0x%X\n", kernel_elf.symtabsz);
-            // // correct
-            // 	}
-            // }
-            // // printk("!!!!!!!!!!!!!!!!!!!\n");
-        } break;
-        case MULTIBOOT_TAG_TYPE_APM: {
-            // print_MULTIBOOT_TAG_TYPE_APM(tag);
-        } break;
-        case MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR: {
-            // print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(tag);
-        } break;
+            case MULTIBOOT_TAG_TYPE_CMDLINE:
+                // print_MULTIBOOT_TAG_TYPE_CMDLINE(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME:
+                // print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_MODULE:
+                // print_MULTIBOOT_TAG_TYPE_MODULE(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_BASIC_MEMINFO:
+                // print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_BOOTDEV:
+                // print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_MMAP:
+                print_MULTIBOOT_TAG_TYPE_MMAP(tag);
+                break;
+            case MULTIBOOT_TAG_TYPE_ELF_SECTIONS: {
+                // print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
+                // printk("!!!!!!!!!!!!!!!!!!!\n");
+                // 获取 shdr 的地址：tag 的地址加上 multiboot_tag_elf_sections
+                // 结构体大小即是第一项符号表 BUG !!! 获取到的 size 和 name
+                // 均正确，然而 symtab 的成员全为 0x00
+                // TODO
+                // Elf64_Shdr * shdr = (Elf64_Shdr*)( (uint32_t)tag + sizeof(
+                // struct multiboot_tag_elf_sections ) ); uint32_t shstrtab =
+                // shdr[( (struct multiboot_tag_elf_sections*)tag
+                // )->shndx].sh_addr; printk("shstrtabsz: 0x%X\n", shdr[((struct
+                // multiboot_tag_elf_sections*)tag)->shndx].sh_size); // correct
+                // printk("shstrtab addr: 0x%X\n", shstrtab);
+                // for (uint32_t i = 0; i < ( (struct
+                // multiboot_tag_elf_sections*)tag )->num; i++) { 	const
+                // char *name = (const char *)(shstrtab + shdr[i].sh_name);
+                // 	// printk(" sh_name: %s ", name); // correct
+                // 	// printk("shaddr: 0x%X\t", shdr[i].sh_addr); // correct
+                // 	// 在 GRUB 提供的 multiboot 信息中寻找内核 ELF
+                // 格式所提取的字符串表和符号表 	if (strcmp(name, ".strtab")
+                // == 0) { 		kernel_elf.strtab = (const char
+                // *)shdr[i].sh_addr;
+                // 		// printk("strtab: 0x%X\n", kernel_elf.strtab);
+                // 		// printk("strtab: %s\n", kernel_elf.strtab);
+                // 		kernel_elf.strtabsz = shdr[i].sh_size;
+                // 		// printk("strtabsz: 0x%X\n",
+                // kernel_elf.strtabsz);
+                // // correct
+                // 	}
+                // 	if (strcmp(name, ".symtab") == 0) {
+                // 		kernel_elf.symtab = (Elf64_Sym
+                // *)(shdr[i].sh_addr);
+                // 		// printk("symtab addr: 0x%X\n",
+                // kernel_elf.symtab); 		kernel_elf.symtabsz =
+                // shdr[i].sh_size;
+                // 		// printk("symtab->: 0x%X\n",
+                // (kernel_elf.symtab->st_value));
+                // 		// printk("symtabsz: 0x%X\n",
+                // kernel_elf.symtabsz);
+                // // correct
+                // 	}
+                // }
+                // // printk("!!!!!!!!!!!!!!!!!!!\n");
+            } break;
+            case MULTIBOOT_TAG_TYPE_APM: {
+                // print_MULTIBOOT_TAG_TYPE_APM(tag);
+            } break;
+            case MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR: {
+                // print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(tag);
+            } break;
         }
     }
     // tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
