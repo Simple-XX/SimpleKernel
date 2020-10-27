@@ -1,8 +1,8 @@
 
-// This file is a part of SimpleXX/SimpleKernel
-// (https://github.com/SimpleXX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// pmm.h for SimpleXX/SimpleKernel.
+// pmm.h for Simple-XX/SimpleKernel.
 
 #ifndef _PMM_H_
 #define _PMM_H_
@@ -15,19 +15,43 @@ extern "C" {
 #include "stdint.h"
 #include "multiboot2.h"
 
+// A common problem is getting garbage data when trying to use a value
+// defined in a linker script. This is usually because they're dereferencing
+// the symbol. A symbol defined in a linker script (e.g. _ebss = .;) is only
+// a symbol, not a variable. If you access the symbol using extern uint32_t
+// _ebss; and then try to use _ebss the code will try to read a 32-bit
+// integer from the address indicated by _ebss. The solution to this is to
+// take the address of _ebss either by using it as & _ebss or by defining it
+// as an unsized array(extern char _ebss[]; ) and casting to an integer.(The
+// array notation prevents accidental reads from _ebss as arrays must be
+// explicitly dereferenced) ref:
+// http://wiki.osdev.org/Using_Linker_Script_Values
+extern ptr_t *kernel_start;
+extern ptr_t *kernel_text_start;
+extern ptr_t *kernel_text_end;
+extern ptr_t *kernel_data_start;
+extern ptr_t *kernel_data_end;
+extern ptr_t *kernel_end;
+
+#define KERNEL_START_ADDR (&kernel_start)
+#define KERNEL_TEXT_START_ADDR (&kernel_text_start)
+#define KERNEL_TEXT_END_ADDR (&kernel_text_end)
+#define KERNEL_DATA_START_ADDR (&kernel_data_start)
+#define KERNEL_DATA_END_ADDR (&kernel_date_end)
+#define KERNEL_END_ADDR (&kernel_end)
+
 // 内核栈大小 8KB
 #define KERNEL_STACK_SIZE (0x2000UL)
 // 内核栈需要的内存页数
 #define KERNEL_STACK_PAGES (KERNEL_STACK_SIZE / PMM_PAGE_SIZE)
-// 内核栈开始地址
-#define KERNEL_STACK_BOTTOM (0xC0000000UL)
+// 内核栈开始地址，内核结束后
+#define KERNEL_STACK_START (((ptr_t)(KERNEL_END_ADDR)) & PMM_PAGE_MASK)
 // 内核栈结束地址
-#define KERNEL_STACK_TOP (KERNEL_STACK_BOTTOM - KERNEL_STACK_SIZE)
+#define KERNEL_STACK_END (KERNEL_STACK_START + KERNEL_STACK_SIZE)
 // 物理内存大小 2GB
 #define PMM_MAX_SIZE (0x80000000UL)
 
 // 内核的偏移地址
-// #define KERNEL_BASE (0xC0000000UL)
 #define KERNEL_BASE (0x0UL)
 // 内核占用大小 8MB
 #define KERNEL_SIZE (0x800000UL)
@@ -73,30 +97,6 @@ enum zone { DMA = 0, NORMAL = 1, HIGHMEM = 2 };
 // 0x20000，除去外设映射，实际可用物理页数量为 159 + 130800 =
 // 130959 (这是物理内存为 512MB 的情况)
 #define PMM_PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)
-
-// A common problem is getting garbage data when trying to use a value
-// defined in a linker script. This is usually because they're dereferencing
-// the symbol. A symbol defined in a linker script (e.g. _ebss = .;) is only
-// a symbol, not a variable. If you access the symbol using extern uint32_t
-// _ebss; and then try to use _ebss the code will try to read a 32-bit
-// integer from the address indicated by _ebss. The solution to this is to
-// take the address of _ebss either by using it as & _ebss or by defining it
-// as an unsized array(extern char _ebss[]; ) and casting to an integer.(The
-// array notation prevents accidental reads from _ebss as arrays must be
-// explicitly dereferenced) ref:
-// http://wiki.osdev.org/Using_Linker_Script_Values
-extern ptr_t *kernel_start;
-extern ptr_t *kernel_text_start;
-extern ptr_t *kernel_text_end;
-extern ptr_t *kernel_data_start;
-extern ptr_t *kernel_data_end;
-extern ptr_t *kernel_end;
-
-// 开启分页机制之后的内核栈
-extern uint8_t kernel_stack[KERNEL_STACK_SIZE];
-
-// 内核栈的栈顶
-extern ptr_t kernel_stack_top;
 
 extern multiboot_memory_map_entry_t *mmap_entries;
 extern multiboot_mmap_tag_t *        mmap_tag;
@@ -170,8 +170,14 @@ void pmm_init(void);
 // 请求 zone 区域的指定大小物理内存
 ptr_t pmm_alloc(size_t byte, int8_t zone);
 
+// 请求 zone 区域的指定数量物理页
+ptr_t pmm_alloc_page(uint32_t pages, int8_t zone);
+
 // 释放内存
 void pmm_free_page(ptr_t addr, uint32_t byte, int8_t zone);
+
+// 释放内存页
+void pmm_free(ptr_t addr, uint32_t byte, int8_t zone);
 
 // 获取指定 zone 空闲内存页数量
 uint32_t pmm_free_pages_count(int8_t zone);
