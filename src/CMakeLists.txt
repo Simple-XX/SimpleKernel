@@ -7,7 +7,7 @@
 if (SimpleKernelArch STREQUAL x86_64)
     set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -mno-sse -m32 -D${SimpleKernelArch}")
 elseif (SimpleKernelArch STREQUAL RASPI2)
-    set(CMAKE_C_FLAGS "-march=armv7-a -mtune=cortex-a7 -D${SimpleKernelArch}")
+    set(CMAKE_C_FLAGS "-march=armv7-a -mtune=cortex-a7 -marm -D${SimpleKernelArch}")
 else ()
     message(FATAL_ERROR "unexpected ARCH ${SimpleKernelArch}")
 endif ()
