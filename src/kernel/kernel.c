@@ -28,8 +28,9 @@ void kernel_main(void) {
     char *s = "gg";
     framebuffer_init();
     log_info("__%c__%s\n", c, s);
-    for (uint32_t i = 0; i < 768; i++) {
-        for (uint32_t j = 0; j < 1024; j++) {
+    // TODO: width 和 height 的值会出错
+    for (uint32_t i = 0; i < FRAMEBUFFER_HEIGHT; i++) {
+        for (uint32_t j = 0; j < FRAMEBUFFER_WIDTH; j++) {
             framebuffer_set_pixel(j, i, 0xAA00FF);
         }
     }
