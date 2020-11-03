@@ -7,7 +7,8 @@ PROJECT(libc C ASM)
 
 aux_source_directory(${libc_SOURCE_DIR}/stdio stdio_src)
 aux_source_directory(${libc_SOURCE_DIR}/string string_src)
-set(libc_src ${stdio_src} ${string_src})
+aux_source_directory(${libc_SOURCE_DIR}/math math_src)
+set(libc_src ${stdio_src} ${string_src} ${math_src})
 add_library(${PROJECT_NAME} OBJECT ${libc_src})
 
 target_include_libc_header_files(${PROJECT_NAME})

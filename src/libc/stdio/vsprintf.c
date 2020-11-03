@@ -47,24 +47,18 @@ static int skip_atoi(const char **s) {
 
 // 除操作。n 被除数；base 除数。结果 n 为商，函数返回值为余数。
 #ifdef x86_64
-#define do_div(n, base)                                                        \
-    ({                                                                         \
-        int __res;                                                             \
-        __asm__("divl %4" : "=a"(n), "=d"(__res) : "0"(n), "1"(0), "r"(base)); \
-        __res;                                                                 \
-    })
+int32_t do_div(int *n, int base) {
+    int32_t res = 0;
+    res         = *n % base;
+    *n          = *n / base;
+    return res;
+}
 #elif RASPI2
-// TODO: 除法不可用
-// int32_t do_div(int *n, int base) {
-//     int32_t res = 0;
-//     res         = *n % base;
-//     *n          = *n / base;
-//     return res;
-// }
-int32_t do_div(int n, int base) {
-    int32_t res = 5;
-    res         = n;
-    n           = base;
+#include "math.h"
+int32_t do_div(int *n, int base) {
+    int32_t res = 0;
+    res         = modsi3(*n, base);
+    *n          = divsi3(*n, base);
     return res;
 }
 #endif
@@ -122,7 +116,7 @@ static char *number(char *str, int num, int base, int size, int precision,
     }
     else {
         while (num != 0) {
-            tmp[i++] = digits[do_div(num, base)];
+            tmp[i++] = digits[do_div(&num, base)];
         }
     }
     // 若数值字符个数大于精读值，则精度值扩展为数字个数值。宽度值减去用于存放数值字符的个数。
