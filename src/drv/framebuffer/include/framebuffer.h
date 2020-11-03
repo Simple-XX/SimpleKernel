@@ -15,10 +15,10 @@ extern "C" {
 #include "stddef.h"
 #include "hardware.h"
 
-extern uint32_t width;
-extern uint32_t height;
-extern uint32_t pitch;
-extern uint32_t isrgb;
+#define FRAMEBUFFER_WIDTH (1024UL)
+#define FRAMEBUFFER_HEIGHT (768UL)
+#define FRAMEBUFFER_PITCH (4096UL)
+#define FRAMEBUFFER_ISRGB (1UL)
 
 void framebuffer_init(void);
 
