@@ -14,12 +14,12 @@ extern "C" {
 #include "mailbox.h"
 
 // frame 信息
-uint32_t width;
-uint32_t height;
-uint32_t pitch;
-uint32_t isrgb;
+uint32_t width  = 0;
+uint32_t height = 0;
+uint32_t pitch  = 0;
+uint32_t isrgb  = 0;
 // framebuffer 地址
-uint8_t *lfb;
+uint8_t *lfb = NULL;
 
 void framebuffer_init(void) {
     mbox[0] = 35 * 4;
@@ -94,8 +94,7 @@ void framebuffer_init(void) {
         width = mbox[5];
         // 实际 height, 1024
         height = mbox[6];
-        // get number of bytes per line, 512
-        // 每行字节数, 512
+        // 每行大小, 4096
         pitch = mbox[33];
         // get the actual channel order
         isrgb = mbox[24];
@@ -114,7 +113,7 @@ void framebuffer_set_pixel(uint32_t x, uint32_t y, uint32_t color) {
     uint32_t g = (color >> 8) & 0xFF;
     uint32_t b = color & 0xFF;
     // 计算位置
-    ptr += (4 * 1024 * y) + (x << 2);
+    ptr += (4096 * y) + (x << 2);
     *((uint32_t *)ptr) = (b << 16) | (g << 24) | r;
     return;
 }
