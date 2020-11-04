@@ -35,9 +35,6 @@ void kernel_main(void) {
         }
     }
     log_info("Simple Kernel.\n");
-    while (1) {
-        uart_putc(uart_getc());
-    }
 #endif
     return;
 }
