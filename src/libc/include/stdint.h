@@ -23,9 +23,13 @@ typedef unsigned int       uint32_t;
 // typedef unsigned long uint32_t;
 typedef unsigned long long uint64_t;
 
-#ifdef __x86_64__
+#ifdef X8664
 typedef uint64_t ptr_t;
 #else
+typedef uint32_t ptr_t;
+#endif
+
+#ifdef RASPI2
 typedef uint32_t ptr_t;
 #endif
 
