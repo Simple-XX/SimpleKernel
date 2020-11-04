@@ -11,11 +11,7 @@
 extern "C" {
 #endif
 
-#include "stdint.h"
-#include "stdio.h"
-
 void kernel_main(void);
-void console_init(void);
 
 #ifdef __cplusplus
 }

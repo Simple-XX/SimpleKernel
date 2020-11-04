@@ -1,4 +1,13 @@
 
-# newstart/print_only/
-## 文件说明
-这个目录下存放的是完成了格式化输出函数的 OS，你可以在它的基础上进行开发，相关资料可以在 docs/ 中找到。
+# print_only
+
+仅有输出函数的
+
+raspi2:
+
+运行方法：在 env.sh 中，将这两个参数修改如下即可
+
+```
+ARCH="raspi2"
+SIMULATOR="qemu"
+```
