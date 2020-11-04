@@ -8,7 +8,7 @@ if (ARCH STREQUAL x86_64)
 elseif (ARCH STREQUAL raspi2)
     set(SimpleKernelArch RASPI2)
 else ()
-    message(WARNING "unexpected ARCH ${ARCH}, using default value \"x86_64\"")
+    message(WARNING "unexpected ARCH ${ARCH}, using default value \"X8664\"")
     set(SimpleKernelArch x86_64)
 endif ()
 
