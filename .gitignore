@@ -1,8 +1,21 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# .gitinnore for MRNIU/SimpleKernel.
+# .gitinnore for Simple-XX/SimpleKernel.
 
 bochsout.txt
 *.o
 *.gch
+*.tags*
+.DS_Store
+build
+cmake-build-debug
+cmake-build-debug_simplekernel
+objconv-2.50.zip
+objconv-2.50
+grub-2.04.tar.xz
+grub-2.04
+iso
+*.img
+*.iso
+*.bin

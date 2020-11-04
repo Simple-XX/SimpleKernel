@@ -1,7 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// test.h for MRNIU/SimpleKernel.
+// test.h for Simple-XX/SimpleKernel.
 
 #ifndef _TEST_H_
 #define _TEST_H_
@@ -10,19 +11,15 @@
 extern "C" {
 #endif
 
-#include "stdint.h"
 #include "stdbool.h"
-#include "stdio.h"
-#include "debug.h"
-#include "mem/pmm.h"
-#include "mem/vmm.h"
-#include "../drv/clock/include/clock.h"
-#include "../drv/keyboard/include/keyboard.h"
 
 bool test(void);
-bool test_pmm(void);
-bool test_vmm(void);
+
+// C 库
 bool test_libc(void);
+
+// 物理内存
+bool test_pmm(void);
 
 #ifdef __cplusplus
 }
