@@ -8,11 +8,11 @@
 # env.sh path
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 # ARCH: x86_64, raspi2
-# ARCH="x86_64"
-ARCH="raspi2"
+ARCH="x86_64"
+# ARCH="raspi2"
 # 虚拟机: bochs, qemu
-# SIMULATOR="bochs"
-SIMULATOR="qemu"
+SIMULATOR="bochs"
+# SIMULATOR="qemu"
 # 内核映像
 kernel='./build/bin/kernel.elf'
 bootloader='./build/bin/bootloader.bin'
