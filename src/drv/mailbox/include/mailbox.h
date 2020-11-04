@@ -4,23 +4,23 @@
 //
 // mailbox.h for Simple-XX/SimpleKernel.
 
-#ifndef _UART_H_
-#define _UART_H_
+#ifndef _MAILBOX_H_
+#define _MAILBOX_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "stdint.h"
-
-// 缓冲区
-extern uint32_t mbox[36] __attribute__((aligned(16)));
+#include "stdbool.h"
 
 // See https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface
 // for more info
 
-// 判断是否为请求
+// 请求
 #define MAILBOX_REQUEST 0
+// 应答
+#define MAILBOX_RESPONSE 1
 
 // 通道
 // 电源管理
@@ -40,9 +40,9 @@ extern uint32_t mbox[36] __attribute__((aligned(16)));
 // TODO: 确定含义
 #define MAILBOX_CHANNEL_COUNT 7
 // 属性标签(ARM to VC)
-#define MAILBOX_CHANNEL_PROP_ARM2VC 8
+#define MAILBOX_CHANNEL_ARM2VC 8
 // 属性标签(VC to ARM)
-#define MAILBOX_CHANNEL_PROP_VC2ARM 9
+#define MAILBOX_CHANNEL_VC2ARM 9
 
 // tag 标签
 // 获取固件版本
@@ -177,214 +177,185 @@ extern uint32_t mbox[36] __attribute__((aligned(16)));
 // 表示 tag 结束
 #define MAILBOX_TAG_END (0x00000000UL)
 
-// 请求信息
-typedef struct mailbox_request {
-    uint32_t unused : 31;
-    // 为 0 时表示为 request
-    uint8_t is_request : 1;
-} mailbox_request_t __attribute__((aligned(32)));
-
-// 应答信息
-typedef struct mailbox_response {
-    uint32_t size : 31;
-    // 为 1 时表示为 request
-    uint8_t is_response : 1;
-} mailbox_response_t __attribute__((aligned(32)));
-
 // 通用信息
 typedef struct mailbox_common {
     uint32_t tag;
-    uint32_t size;
-    union {
-        mailbox_request_t  req;
-        mailbox_response_t resp;
-    } code;
-} mailbox_common_t __attribute__((aligned(32)));
+    uint32_t buffer_size;
+    uint32_t code;
+} __attribute__((packed)) mailbox_common_t;
 
-// 与 tag 对应的数据结构
-// 第一类
-// uint32_t
-// 适用 tag:
-// MAILBOX_TAG_GET_FIRMWARE_REVISION, MAILBOX_TAG_GET_BOARD_MODEL,
-// MAILBOX_TAG_GET_BOARD_REVISION, MAILBOX_TAG_GET_BOARD_SERIAL,
-// MAILBOX_TAG_GET_DMA_CHANNELS, MAILBOX_TAG_BLANK_SCREEN,
-// MAILBOX_TAG_GET_DEPTH, MAILBOX_TAG_TEST_DEPTH, MAILBOX_TAG_SET_DEPTH,
-// MAILBOX_TAG_GET_PIXEL_ORDER, MAILBOX_TAG_TEST_PIXEL_ORDER,
-// MAILBOX_TAG_SET_PIXEL_ORDER, MAILBOX_TAG_GET_ALPHA_MODE,
-// MAILBOX_TAG_TEST_ALPHA_MODE, MAILBOX_TAG_SET_ALPHA_MODE,
-// MAILBOX_TAG_GET_PITCH
-typedef struct mailbox_get_1uint32t {
+// MAILBOX_TAG_GET_PHYSICAL_DISPLAY_WH
+typedef struct mailbox_get_physical_display_wh {
     mailbox_common_t common;
-    uint32_t         data;
-} mailbox_get_1uint32t_t __attribute__((aligned(32)));
+    uint32_t         width;
+    uint32_t         height;
+} __attribute__((packed)) mailbox_get_physical_display_wh_t;
 
-// 第二类
-// 6*uint8_t
-// 适用 tag:
-// MAILBOX_TAG_GET_BOARD_MAC_ADDRESS
-typedef struct mailbox_get_6uint8t {
+// MAILBOX_TAG_TEST_PHYSICAL_DISPLAY_WH
+typedef struct mailbox_test_physical_display_wh {
     mailbox_common_t common;
-    uint8_t          data1;
-    uint8_t          data2;
-    uint8_t          data3;
-    uint8_t          data4;
-    uint8_t          data5;
-    uint8_t          data6;
-} mailbox_get_6uint8t_t __attribute__((aligned(32)));
+    uint32_t         width;
+    uint32_t         height;
+} __attribute__((packed)) mailbox_test_physical_display_wh_t;
 
-// 第三类
-// uint64_t
-// 适用 tag:
-// MAILBOX_TAG_GET_BOARD_SERIAL
-typedef struct mailbox_get_1uint64t {
+// MAILBOX_TAG_SET_PHYSICAL_DISPLAY_WH
+typedef struct mailbox_set_physical_display_wh {
     mailbox_common_t common;
-    uint64_t         data;
-} mailbox_get_1uint64t_t __attribute__((aligned(32)));
+    uint32_t         width;
+    uint32_t         height;
+} __attribute__((packed)) mailbox_set_physical_display_wh_t;
 
-// 第四类
-// 2*uint32_t
-// 适用 tag:
-// MAILBOX_TAG_GET_ARM_MEMORY, PROPERTY_TAG_GET_VIDEOCORE_MEMORY,
-// MAILBOX_TAG_GET_POWER_STATE, MAILBOX_TAG_GET_TIMING,
-// MAILBOX_TAG_SET_POWER_STATE, MAILBOX_TAG_GET_CLOCK_STATE,
-// MAILBOX_TAG_SET_CLOCK_STATE, MAILBOX_TAG_GET_CLOCK_RATE,
-// MAILBOX_TAG_GET_MAX_CLOCK_RATE, MAILBOX_TAG_GET_MIN_CLOCK_RATE,
-// MAILBOX_TAG_GET_TURBO, MAILBOX_TAG_SET_TURBO, MAILBOX_TAG_GET_VOLTAGE,
-// MAILBOX_TAG_SET_VOLTAGE, MAILBOX_TAG_GET_MAX_VOLTAGE,
-// MAILBOX_TAG_GET_MIN_VOLTAGE, MAILBOX_TAG_GET_TEMPERATURE,
-// MAILBOX_TAG_GET_MAX_TEMPERATURE, MAILBOX_TAG_LOCK_MEMORY,
-// MAILBOX_TAG_UNLOCK_MEMORY, MAILBOX_TAG_RELEASE_MEMORY,
-// MAILBOX_TAG_ALLOCATE_BUFFER, MAILBOX_TAG_GET_PHYSICAL_DISPLAY_WH,
-// MAILBOX_TAG_TEST_PHYSICAL_DISPLAY_WH, MAILBOX_TAG_SET_PHYSICAL_DISPLAY_WH,
-// MAILBOX_TAG_GET_VIRTUAL_BUFFER_WH, MAILBOX_TAG_TEST_VIRTUAL_BUFFER_WH,
-// MAILBOX_TAG_SET_VIRTUAL_BUFFER_WH, MAILBOX_TAG_GET_VIRTUAL_OFFSET,
-// MAILBOX_TAG_TEST_VIRTUAL_OFFSET, MAILBOX_TAG_SET_VIRTUAL_OFFSET
-typedef struct mailbox_get_2uint32t {
+// MAILBOX_TAG_GET_VIRTUAL_BUFFER_WH
+typedef struct mailbox_get_virtual_buffer_wh {
     mailbox_common_t common;
-    uint32_t         data1;
-    uint32_t         data2;
-} mailbox_get_2uint32t_t __attribute__((aligned(32)));
+    uint32_t         width;
+    uint32_t         height;
+} __attribute__((packed)) mailbox_get_virtual_buffer_wh_t;
 
-// 第五类
-// n*(2*uint32_t)
-// n 最大值暂取 32
-// 适用 tag:
-// PROPERTY_TAG_GET_CLOCKS
-typedef struct mailbox_get_n2uint32t {
+// MAILBOX_TAG_TEST_VIRTUAL_BUFFER_WH
+typedef struct mailbox_test_virtual_buffer_wh {
     mailbox_common_t common;
-    struct {
-        uint32_t data1;
-        uint32_t data2;
-    } data[32];
-} mailbox_get_n2uint32t_t __attribute__((aligned(32)));
+    uint32_t         width;
+    uint32_t         height;
+} __attribute__((packed)) mailbox_test_virtual_buffer_wh_t;
 
-// 第六类
-// n*uint8_t
-// n 最大值暂取 64
-// 适用 tag:
-// MAILBOX_TAG_GET_COMMAND_LINE
-typedef struct mailbox_get_nuint8t {
+// MAILBOX_TAG_SET_VIRTUAL_BUFFER_WH
+typedef struct mailbox_set_virtual_buffer_wh {
     mailbox_common_t common;
-    uint8_t          data[64];
-} mailbox_get_nuint8t_t __attribute__((aligned(32)));
+    uint32_t         width;
+    uint32_t         height;
+} __attribute__((packed)) mailbox_set_virtual_buffer_wh_t;
 
-// 第七类
-// 3*uint32_t
-// 适用 tag:
-// MAILBOX_TAG_SET_CLOCK_RATE, MAILBOX_TAG_GET_DISPMANX_RESOURCE_MEM_HANDLER,
-typedef struct mailbox_get_3uint32t {
+// MAILBOX_TAG_GET_VIRTUAL_OFFSET
+typedef struct mailbox_get_virtual_offset {
     mailbox_common_t common;
-    uint32_t         data1;
-    uint32_t         data2;
-    uint32_t         data3;
-} mailbox_get_3uint32t_t __attribute__((aligned(32)));
+    uint32_t         offset_x;
+    uint32_t         offset_y;
+} mailbox_get_virtual_offset_t __attribute__((aligned(32)));
 
-// 第八类
-// 4*uint32_t
-// 适用 tag:
-// MAILBOX_TAG_ALLOCATE_MEMORY, MAILBOX_TAG_GET_OVERSCAN,
-// MAILBOX_TAG_TEST_OVERSCAN, MAILBOX_TAG_SET_OVERSCAN,
-typedef struct mailbox_get_4uint32t {
+// MAILBOX_TAG_TEST_VIRTUAL_OFFSET
+typedef struct mailbox_test_virtual_offset {
     mailbox_common_t common;
-    uint32_t         data1;
-    uint32_t         data2;
-    uint32_t         data3;
-    uint32_t         data4;
-} mailbox_get_4uint32t_t __attribute__((aligned(32)));
+    uint32_t         offset_x;
+    uint32_t         offset_y;
+} mailbox_test_virtual_offset_t __attribute__((aligned(32)));
 
-// 第九类
-// 7*uint32_t
-// 适用 tag:
-// MAILBOX_TAG_EXECUTE_CODE, MAILBOX_TAG_SET_CURSOR_INFO
-typedef struct mailbox_get_7uint32t {
+// MAILBOX_TAG_SET_VIRTUAL_OFFSET
+typedef struct mailbox_set_virtual_offset {
     mailbox_common_t common;
-    uint32_t         data1;
-    uint32_t         data2;
-    uint32_t         data3;
-    uint32_t         data4;
-    uint32_t         data5;
-    uint32_t         data6;
-    uint32_t         data7;
-} mailbox_get_7uint32t_t __attribute__((aligned(32)));
+    uint32_t         offset_x;
+    uint32_t         offset_y;
+} __attribute__((packed)) mailbox_set_virtual_offset_t;
 
-// 第十类
-// 2*uint32_t, uint8_t[128]
-// 适用 tag:
-// MAILBOX_TAG_GET_EDID_CLOCK
-typedef struct mailbox_get_2uint32tuint8t128 {
+// MAILBOX_TAG_GET_DEPTH
+typedef struct mailbox_get_depth {
     mailbox_common_t common;
-    uint32_t         data1;
-    uint32_t         data2;
-    uint8_t          data3[128];
-} mailbox_get_2uint32tuint8t128_t __attribute__((aligned(32)));
+    uint32_t         depth;
+} mailbox_get_depth_t __attribute__((aligned(32)));
 
-// 第十一类
-// 0
-// 适用 tag:
+// MAILBOX_TAG_TEST_DEPTH
+typedef struct mailbox_test_depth {
+    mailbox_common_t common;
+    uint32_t         depth;
+} mailbox_test_depth_t __attribute__((aligned(32)));
+
+// MAILBOX_TAG_SET_DEPTH
+typedef struct mailbox_set_depth {
+    mailbox_common_t common;
+    uint32_t         depth;
+} __attribute__((packed)) mailbox_set_depth_t;
+
+// MAILBOX_TAG_GET_PIXEL_ORDER
+typedef struct mailbox_get_pixel_order {
+    mailbox_common_t common;
+    uint32_t         order;
+} mailbox_get_pixel_order_t __attribute__((aligned(32)));
+
+// MAILBOX_TAG_TEST_PIXEL_ORDER
+typedef struct mailbox_test_pixel_order {
+    mailbox_common_t common;
+    uint32_t         order;
+} mailbox_test_pixel_order_t __attribute__((aligned(32)));
+
+// MAILBOX_TAG_SET_PIXEL_ORDER
+typedef struct mailbox_set_pixel_order {
+    mailbox_common_t common;
+    uint32_t         order;
+} __attribute__((packed)) mailbox_set_pixel_order_t;
+
+// MAILBOX_TAG_ALLOCATE_BUFFER
+typedef struct mailbox_allocate_buffer {
+    mailbox_common_t common;
+    uint32_t         addr_align;
+    uint32_t         size;
+} __attribute__((packed)) mailbox_allocate_buffer_t;
+
 // MAILBOX_TAG_RELEASE_BUFFER
-typedef struct mailbox_get_0 {
+typedef struct mailbox_release_buffer {
     mailbox_common_t common;
-} mailbox_get_0_t __attribute__((aligned(32)));
+} __attribute__((packed)) mailbox_release_buffer_t;
 
-// 第十二类
-// uint32_t[256]
-// 适用 tag:
-// MAILBOX_TAG_GET_PALETTE
-typedef struct mailbox_get_uint32t256 {
+// MAILBOX_TAG_GET_PITCH
+typedef struct mailbox_get_pitch {
     mailbox_common_t common;
-    uint32_t         data[256];
-} mailbox_get_uint32t256_t __attribute__((aligned(32)));
+    uint32_t         pitch;
+} __attribute__((packed)) mailbox_get_pitch_t;
 
-// 第十三类
-// 2*uint32_t, uint32_t[256], uint32_t
-// 适用 tag:
-// MAILBOX_TAG_TEST_PALETTE, MAILBOX_TAG_SET_PALETTE
-typedef struct mailbox_get_2uint32tuint32t256uint32t {
-    mailbox_common_t common;
-    uint32_t         data1;
-    uint32_t         data2;
-    uint32_t         data3[256];
-    uint32_t         data4;
-} mailbox_get_2uint32tuint32t256uint32t_t __attribute__((aligned(32)));
+// 为每个 tag 创建对应类型
+typedef struct mailbox_set_physical_display_wh_data {
+    uint32_t                          size;
+    uint32_t                          code;
+    mailbox_set_physical_display_wh_t data;
+    uint32_t                          end;
+} __attribute__((packed)) mailbox_set_physical_display_wh_data_t;
 
-// 第十四类
-// 5*uint32_t
-// 适用 tag:
-// MAILBOX_TAG_SET_CURSOR_STATE
-typedef struct mailbox_get_5uint32t {
-    mailbox_common_t common;
-    uint32_t         data1;
-    uint32_t         data2;
-    uint32_t         data3;
-    uint32_t         data4;
-    uint32_t         data5;
-} mailbox_get_5uint32t_t __attribute__((aligned(32)));
+typedef struct mailbox_set_virtual_buffer_wh_data {
+    uint32_t                        size;
+    uint32_t                        code;
+    mailbox_set_virtual_buffer_wh_t data;
+    uint32_t                        end;
+} __attribute__((packed)) mailbox_set_virtual_buffer_wh_data_t;
+
+typedef struct mailbox_set_virtual_offset_data {
+    uint32_t                     size;
+    uint32_t                     code;
+    mailbox_set_virtual_offset_t data;
+    uint32_t                     end;
+} __attribute__((packed)) mailbox_set_virtual_offset_data_t;
+
+typedef struct mailbox_set_depth_data {
+    uint32_t            size;
+    uint32_t            code;
+    mailbox_set_depth_t data;
+    uint32_t            end;
+} __attribute__((packed)) mailbox_set_depth_data_t;
+
+typedef struct mailbox_set_pixel_order_data {
+    uint32_t                  size;
+    uint32_t                  code;
+    mailbox_set_pixel_order_t data;
+    uint32_t                  end;
+} __attribute__((packed)) mailbox_set_pixel_order_data_t;
+
+typedef struct mailbox_allocate_buffer_data {
+    uint32_t                  size;
+    uint32_t                  code;
+    mailbox_allocate_buffer_t data;
+    uint32_t                  end;
+} __attribute__((packed)) mailbox_allocate_buffer_data_t;
+
+typedef struct mailbox_get_pitch_data {
+    uint32_t            size;
+    uint32_t            code;
+    mailbox_get_pitch_t data;
+    uint32_t            end;
+} __attribute__((packed)) mailbox_get_pitch_data_t;
 
 // 0-3 位为 channel, 剩余 28 位为数据
-typedef struct mailbox_data {
+typedef struct mailbox_mail {
     uint8_t  channel : 4;
     uint32_t data : 28;
-} mailbox_data_t __attribute__((aligned(32)));
+} mailbox_mail_t __attribute__((aligned(32)));
 
 // 0-29 位未使用, 30 表示是否为空, 31 表示是否已满
 typedef struct mailbox_status {
@@ -393,19 +364,18 @@ typedef struct mailbox_status {
     uint8_t  full : 1;
 } mailbox_status_t __attribute__((aligned(32)));
 
-// 0-29 位未使用, 30 表示是否为空, 31 表示是否已满
 typedef struct mailbox_config {
 
 } mailbox_config_t __attribute__((aligned(32)));
 
 // 读取 read 寄存器
-mailbox_data_t mailbox_get(void);
+mailbox_mail_t mailbox_get(uint8_t channel);
 
 // 用 peak 方式读取 read 寄存器
-mailbox_data_t mailbox_peak(void);
+mailbox_mail_t mailbox_peak(uint8_t channel);
 
 // 写 send 寄存器
-void mailbox_set(mailbox_data_t data);
+void mailbox_set(mailbox_mail_t data);
 
 // 读取状态
 mailbox_status_t mailbox_get_status(void);
@@ -419,11 +389,11 @@ mailbox_config_t mailbox_get_config(void);
 // 写配置
 void mailbox_set_config(mailbox_config_t config);
 
-// 发送数据
-int32_t mbox_call(uint8_t ch);
+// 执行一次收发
+mailbox_mail_t mailbox_call(mailbox_mail_t mail);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _UART_H_ */
+#endif /* _MAILBOX_H_ */
