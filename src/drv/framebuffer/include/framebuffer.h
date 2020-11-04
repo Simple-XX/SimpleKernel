@@ -17,8 +17,8 @@ extern "C" {
 
 #define FRAMEBUFFER_WIDTH (1024UL)
 #define FRAMEBUFFER_HEIGHT (768UL)
-#define FRAMEBUFFER_PITCH (4096UL)
-#define FRAMEBUFFER_ISRGB (1UL)
+#define FRAMEBUFFER_RGB (1UL)
+#define FRAMEBUFFER_BGR (0UL)
 
 void framebuffer_init(void);
 

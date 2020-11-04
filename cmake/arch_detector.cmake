@@ -4,7 +4,7 @@
 # arch_detector.cmake for Simple-XX/SimpleKernel.
 
 if (ARCH STREQUAL x86_64)
-    set(SimpleKernelArch x86_64)
+    set(SimpleKernelArch X8664)
 elseif (ARCH STREQUAL raspi2)
     set(SimpleKernelArch RASPI2)
 else ()
