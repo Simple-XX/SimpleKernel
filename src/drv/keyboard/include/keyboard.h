@@ -1,7 +1,8 @@
 
 // This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel). Based on Orange's
-// 一个操作系统的实现 keyboard.h for Simple-XX/SimpleKernel.
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on Orange's 一个操作系统的实现
+// keyboard.h for Simple-XX/SimpleKernel.
 
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_

@@ -14,7 +14,7 @@
 - Kernel
 - C/C++
 
-- UNIX-like
+- Linux-like
 - Multiboot2
 
 ## 简介

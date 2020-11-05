@@ -10,8 +10,8 @@ extern "C" {
 
 #include "cpu.hpp"
 #include "sync.hpp"
-#include "intr/include/intr.h"
-#include "gdt/include/gdt.h"
+#include "intr.h"
+#include "gdt.h"
 #include "arch_init.h"
 
 void arch_init(void) {

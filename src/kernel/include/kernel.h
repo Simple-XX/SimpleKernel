@@ -34,7 +34,7 @@ void showinfo(void) {
                 &kernel_data_start, &kernel_data_end);
     printk_info("kernel in memory size: %d KB, %d pages\n",
                 (&kernel_end - &kernel_start) / 1024,
-                (&kernel_end - &kernel_start) / 1024 / 4);
+                (&kernel_end - &kernel_start) / PMM_PAGE_SIZE);
 }
 
 #ifdef __cplusplus
