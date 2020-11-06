@@ -1,13 +1,12 @@
 
-# This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# intr_s.s for MRNIU/SimpleKernel.
+# intr_s.s for Simple-XX/SimpleKernel.
 
 .code32
 
-.section .text
-
 # 加载 idt
+.section .text
 .global idt_load
 idt_load:
     mov 4(%esp), %eax # 参数保存在 eax

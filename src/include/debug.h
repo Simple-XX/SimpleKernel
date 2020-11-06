@@ -1,7 +1,8 @@
 
-// This file is a part of MRNIU/SimpleKernel (https://github.com/MRNIU/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 //
-// debug.h for MRNIU/SimpleKernel.
+// debug.h for Simple-XX/SimpleKernel.
 
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
@@ -10,15 +11,12 @@
 extern "C" {
 #endif
 
-#include "elf.h"
-
-#define DEBUG 1
+#include "stddef.h"
 
 void debug_init(ptr_t magic, ptr_t addr);
 void print_cur_status(void);
-void panic(const char * msg);
-const char * elf_lookup_symbol(ptr_t addr, elf_t * elf);
-void print_stack_trace(void);
+void panic(const char *msg);
+void print_stack(size_t count);
 
 #ifdef __cplusplus
 }

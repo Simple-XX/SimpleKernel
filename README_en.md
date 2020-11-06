@@ -1,25 +1,21 @@
-![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)
+![github ci](https://github.com/Simple-XX/SimpleKernel/workflows/CMake/badge.svg)
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
 ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
-[![HitCount](http://hits.dwyl.io/MRNIU/SimpleKernel.svg)](http://hits.dwyl.io/MRNIU/SimpleKernel)
 
-[English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
+[English](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README.md)
 
 # SimpleKernel
 
 ## Key Words
 
-- bochs
-- multiboot2
-- grub2
-- kernel
+- Kernel
+- C/C++
+
 - Linux-like
-- Operating system
-- POSIX
-- concurrent
+- Multiboot2
 
 ## Abstract
 
@@ -31,194 +27,96 @@ Kernels with different levels of completion are available, and you can start fro
 
 - Ubuntu Linux
 
-    - Bochs
-        Install by compiling
-    - i386-elf Cross-compiling tool chain
-        Install by compiling (./tools/)
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
+    - xorriso
+    - grub
+    - bochs
+    - bochs-x
+    
+    Tested on Ubuntu 20.04
+
+
+- Arch Linux
+
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
+    - mtools
+    - xorriso
+    - grub
+    - bochs
+
+    Tested on Manjaro 5.6.15-1
 
 - Mac
-    - Bochs
 
-            brew install bochs
+    - brew
 
-    - i386-elf Cross-compiling tool chain
-
-        ```shell
-        brew install i386-elf-binutils
-        brew install i386-elf-gcc
-        cd SimpleKernel/ && brew install ./i386-elf-grub.rb
-        ```
-
-NOTE：
-Mac 10.14.1, bochs 2.6.9, i386-elf-binutils 2.31.1, i386-elf-gcc 8.2.0 pass-test.
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
+    - xorriso
+    - grub
+    - bochs
+    
+    Tested on  macOS 10.15.7
 
 ## RUN
 
-    git clone https://github.com/MRNIU/SimpleKernel.git
+    git clone https://github.com/SimpleXX/SimpleKernel.git
     cd SimpleKernel/
-    sh setup.sh
-
-Input `c` to bochs to run.
+    bash ./run.sh
 
 Screenshot
 
-![屏幕快照 2019-03-18 上午11.16.19](https://ws2.sinaimg.cn/large/006tKfTcly1g16s32dgywj316r0u0tkt.jpg)
+![](https://tva1.sinaimg.cn/large/00831rSTly1gdl6i75r60j317s0u046c.jpg)
 
-If you need more bochs usage, please refer to bochs official documentation.
+## Directory Structure
 
+The whole project according to the functional modules delimited molecular directory, each subdirectory and then divided header file and source file directory, so that the architecture is clear and easy to understand.
 
-## QUICK START
+### Directory Design
 
-```
-├── LICENSE
-├── README.md
-├── README_en.md
-├── bochsrc.txt
-├── debug_info
-│   ├── bochsout.txt
-│   ├── diff.log
-│   ├── error.log
-│   └── normal.log
-├── docs
-│   └── README.md
-├── fs.img
-├── iso
-│   └── boot
-│       ├── grub
-│       │   └── grub.cfg
-│       └── kernel.kernel
-├── setup.sh
-├── simplekernel.img
-├── simplekernel.iso
-├── src
-│   ├── Makefile
-│   ├── READMD.md
-│   ├── arch
-│   │   ├── README.md
-│   │   ├── i386
-│   │   │   ├── README.md
-│   │   │   ├── boot
-│   │   │   │   ├── boot.o
-│   │   │   │   ├── boot.s
-│   │   │   │   └── link.ld
-│   │   │   ├── debug
-│   │   │   │   ├── debug.c
-│   │   │   │   └── debug.o
-│   │   │   ├── intr
-│   │   │   │   ├── README.md
-│   │   │   │   ├── intr.c
-│   │   │   │   ├── intr.h
-│   │   │   │   ├── intr.o
-│   │   │   │   ├── intr_s.o
-│   │   │   │   └── intr_s.s
-│   │   │   └── mm
-│   │   │       ├── README.md
-│   │   │       ├── gdt.c
-│   │   │       ├── gdt.h
-│   │   │       ├── gdt.o
-│   │   │       ├── gdt_s.o
-│   │   │       └── gdt_s.s
-│   │   └── x64
-│   │       └── TODO
-│   ├── include
-│   │   ├── README.md
-│   │   ├── console.hpp
-│   │   ├── cpu.hpp
-│   │   ├── debug.h
-│   │   ├── drv
-│   │   │   ├── keyboard.h
-│   │   │   └── mouse.h
-│   │   ├── ds_alg
-│   │   │   ├── LinkedList.c
-│   │   │   ├── LinkedList.o
-│   │   │   ├── alg.h
-│   │   │   └── datastructure.h
-│   │   ├── elf.h
-│   │   ├── fs
-│   │   ├── heap.c
-│   │   ├── heap.h
-│   │   ├── heap.o
-│   │   ├── intr
-│   │   │   ├── clock.c
-│   │   │   ├── clock.h
-│   │   │   └── clock.o
-│   │   ├── kernel.h
-│   │   ├── libc
-│   │   │   ├── README.md
-│   │   │   ├── assert.h
-│   │   │   ├── stdarg.h
-│   │   │   ├── stdbool.h
-│   │   │   ├── stddef.h
-│   │   │   ├── stdint.h
-│   │   │   ├── stdio
-│   │   │   │   ├── printk.c
-│   │   │   │   ├── printk.o
-│   │   │   │   ├── vsprintf.c
-│   │   │   │   └── vsprintf.o
-│   │   │   ├── stdio.h
-│   │   │   ├── stdlib.h
-│   │   │   ├── string
-│   │   │   │   ├── string.c
-│   │   │   │   └── string.o
-│   │   │   └── string.h
-│   │   ├── mm
-│   │   │   ├── README.md
-│   │   │   ├── mm.h
-│   │   │   ├── pmm.c
-│   │   │   ├── pmm.h
-│   │   │   ├── pmm.o
-│   │   │   ├── vmm.c
-│   │   │   ├── vmm.h
-│   │   │   └── vmm.o
-│   │   ├── multiboot2.h
-│   │   ├── pic.hpp
-│   │   ├── port.hpp
-│   │   ├── tty.hpp
-│   │   ├── vfs
-│   │   │   └── vfs.h
-│   │   └── vga.hpp
-│   ├── kernel
-│   │   ├── README.md
-│   │   ├── drv
-│   │   │   ├── keyboard.c
-│   │   │   ├── keyboard.o
-│   │   │   ├── mouse.c
-│   │   │   └── mouse.o
-│   │   ├── elf.c
-│   │   ├── elf.o
-│   │   ├── fs.c
-│   │   ├── fs.o
-│   │   ├── kernel.c
-│   │   ├── kernel.o
-│   │   ├── multiboot2.c
-│   │   ├── multiboot2.o
-│   │   ├── vfs.c
-│   │   └── vfs.o
-│   ├── kernel.kernel
-│   └── test
-│       ├── test.c
-│       ├── test.h
-│       └── test.o
-└── tools
-    ├── bochs.sh
-    ├── i386-elf-binutils.sh
-    ├── i386-elf-gcc.sh
-    └── i386-elf-grub.sh
-```
+- Principle
+
+    The naming of the directory should accurately describe the basic function of the module, it is recommended to use lowercase letters and do not contain underline, dot and other special symbols;
+
+    Directories must be placed under the parent directory that they contain, and they need to be explicitly coupled to other directories.
+
+### Dependencies
+
+- Principle
+
+    New components are often dependent on existing components of the system, and the components that are directly dependent must be specified with minimal coupling.
+
+### Header File
+
+#### Naming
+
+- Principle
+
+    Header file naming should accurately describe the contents of the module contained in the file to achieve the purpose of easy to understand.
+
+## CMake
 
 ## Test
 
-Not yet.
-
 ### CI
 
-See `.travis.yml`
+Each push will be tested using Github Action.
 
 ## Code Style
 
-## Image Files
+- git commit：
 
-simplekernel.img: multiboot1 boot(not updated)
+    https://zhuanlan.zhihu.com/p/182553920
+
+- code style
+
+    Specified by tools/clang-format
+
+## Image Files
 
 simplekernel.iso: multiboot2 boot
 
@@ -226,30 +124,33 @@ fs.img: file system, unuse
 
 ## TODO
 
-- fix bugs
-- mouse input
-- memory management
-- checkstyle
 - concurrent
 - File system
 - drive
-- Virtual memory management
 
 ## CONTRIBUTORS
 
 [MRNIU](https://github.com/MRNIU)
 
+[cy295957410](https://github.com/cy295957410)
+
+[rakino](https://github.com/rakino)
+
+[xiaoerlaigeid](https://github.com/xiaoerlaigeid)
+
 ## CONTRIBUTING
 
-Read CONTRIBUTING.md.
+See CONTRIBUTING.md.
 
 ## Thanks
 
 [osdev](https://wiki.osdev.org)
 
-[install GRUB on Mac](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
+[GRUB 在 Mac 上的安装](https://wiki.osdev.org/GRUB#Installing_GRUB_2_on_OS_X)
 
 [multiboot](https://www.gnu.org/software/grub/manual/multiboot/multiboot.html)
+
+《程序员的自我修养--链接、装载与库》(俞甲子 石凡 潘爱民)
 
 [JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html)
 
@@ -270,6 +171,32 @@ Read CONTRIBUTING.md.
 [How-to-Make-a-Computer-Operating-System](https://github.com/SamyPesse/How-to-Make-a-Computer-Operating-System)
 
 [coding-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
+
+[DNKernel](https://github.com/morimolymoly/DNKernel)
+
+[c-algorithms](https://github.com/fragglet/c-algorithms)
+
+[Linux内核中的中断栈与内核栈的补充说明](http://blog.chinaunix.net/uid-23769728-id-3077874.html)
+
+[Linux进程管理 (1)进程的诞生](https://www.cnblogs.com/arnoldlu/p/8466928.html)
+
+[SynestiaOS](https://github.com/SynestiaOS/SynestiaOS)
+
+## Donors
+
+- [digmouse233](https://github.com/digmouse233)
+
+- l*e
+
+## Donate
+
+Thank you!
+(Please specify the GitHub id for joining the sponsor list
+
+<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjfoboa4j30go0p0411.jpg" width="30%" height="50%">
+
+<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjg7p0auj30u014qn7q.jpg" width="30%" height="50%">
+
 
 ## CopyRight
 

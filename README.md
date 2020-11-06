@@ -1,12 +1,11 @@
-![Build Status](https://travis-ci.org/MRNIU/SimpleKernel.svg?branch=TODO)
+![github ci](https://github.com/Simple-XX/SimpleKernel/workflows/CMake/badge.svg)
 ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
 ![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
 ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
-[![HitCount](http://hits.dwyl.io/MRNIU/SimpleKernel.svg)](http://hits.dwyl.io/MRNIU/SimpleKernel)
 
-[English](https://github.com/MRNIU/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/MRNIU/SimpleKernel/blob/TODO/README.md)
+[English](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README.md)
 
 # SimpleKernel
 
@@ -15,7 +14,7 @@
 - Kernel
 - C/C++
 
-- UXIN-like
+- Linux-like
 - Multiboot2
 
 ## 简介
@@ -26,38 +25,52 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
 - Ubuntu Linux
 
-    - bochs
-    - i386-elf tool chain
-    i386-elf-binutils, i386-elf-gcc, i386-elf-grub
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
     - xorriso
+    - grub
+    - bochs
+    - bochs-x
     
+    Ubuntu 20.04 测试通过
+
+
+- Arch Linux
+
+    - brew
+    - x86_64-elf-binutils
+    - x86_64-elf-gcc
+    - mtools
+    - xorriso
+    - grub
+    - bochs
+
+    Manjaro 5.6.15-1 测试通过
+
 - Mac
 
-    - Homebrew
+    - brew
 
-        https://brew.sh
-
+    - x86_64-elf-binutils
+- x86_64-elf-gcc
+    - xorriso
+- grub
     - bochs
 
-    - i386-elf tool chain
-
-        i386-elf-binutils, i386-elf-gcc, i386-elf-grub
-
-    - xorriso
-
-注：可以使用 setup.sh 自动安装环境
+    macOS 10.15.7 测试通过
 
 ## 如何运行
 
 ```shell
-git clone https://github.com/MRNIU/SimpleKernel.git
+git clone https://github.com/SimpleXX/SimpleKernel.git
 cd SimpleKernel/
-sh setup.sh
+bash ./run.sh
 ```
 
 运行截图
 
-![](https://ws3.sinaimg.cn/large/006tKfTcly1g16s317uw8j316r0u0tkt.jpg)
+![](https://tva1.sinaimg.cn/large/00831rSTly1gdl6j8bxw7j317s0u0td9.jpg)
 
 ## 目录结构
 
@@ -86,17 +99,25 @@ sh setup.sh
 
 #### 文件命名
 
-​	头文件命名能准确描述文件所包含的模块内容，达到通俗、易懂的目的。
+头文件命名能准确描述文件所包含的模块内容，达到通俗、易懂的目的。
 
-## Makefile
+## CMake
 
 ## 测试
 
 ### 自动集成
 
-合并到 master 分支时需要通过 Travis CI 测试。编译没有错误即可。
+每次 push 会使用 Github Action 进行测试，可以通过编译即可。
 
 ## 代码风格
+
+- git commit 规范：
+
+    https://zhuanlan.zhihu.com/p/182553920
+
+- 代码样式
+
+    由 tools/clang-format 指定
 
 ## 镜像文件
 
@@ -104,17 +125,19 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 ## TODO
 
-- 修复 bug
-- debug 函数
-- 添加编码规范测试
 - 并发
 - 文件系统
 - 设备驱动
-- 虚拟内存管理
 
 ## 贡献者
 
 [MRNIU](https://github.com/MRNIU)
+
+[cy295957410](https://github.com/cy295957410)
+
+[rakino](https://github.com/rakino)
+
+[xiaoerlaigeid](https://github.com/xiaoerlaigeid)
 
 ## 贡献
 
@@ -156,6 +179,18 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 [c-algorithms](https://github.com/fragglet/c-algorithms)
 
+[Linux内核中的中断栈与内核栈的补充说明](http://blog.chinaunix.net/uid-23769728-id-3077874.html)
+
+[Linux进程管理 (1)进程的诞生](https://www.cnblogs.com/arnoldlu/p/8466928.html)
+
+[SynestiaOS](https://github.com/SynestiaOS/SynestiaOS)
+
+## 捐助者
+
+- [digmouse233](https://github.com/digmouse233)
+
+- l*e
+
 ## 支持作者
 
 请我喝杯咖啡吧！
@@ -168,3 +203,4 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## 版权信息
 
 此项目使用 MIT 许可证
+
