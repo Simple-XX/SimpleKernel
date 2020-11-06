@@ -16,7 +16,7 @@ export PATH="${GRUB_PATH}:$PATH"
 mkdir -p ./build/
 rm -rf ./build/*
 cd ./build
-cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} ..
+cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=DEBUG ..
 make
 cd ../
 
