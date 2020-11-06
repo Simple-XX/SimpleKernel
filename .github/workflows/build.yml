@@ -1,4 +1,9 @@
-name: CMake
+
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+#
+# cmake.yml for Simple-XX/SimpleKernel.
+
+name: build
 
 on: 
   - push
@@ -21,15 +26,6 @@ jobs:
       run: |
         brew install x86_64-elf-binutils
         brew install x86_64-elf-gcc
-#        brew install wget
-#        brew install automake
-#        brew install autogen
-
-#     - name: Setup grub
-#       shell: bash
-#       run: |
-#         sh ${{github.workspace}}/tools/grub4mac.sh
-#         export PATH="${{github.workspace}}/tools/grub-2.04/build/grub/bin:$PATH"
 
     - name: Make build dir
       shell: bash
@@ -39,7 +35,7 @@ jobs:
     - name: cmake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 ..
+      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE ..
 
     - name: make
       shell: bash
@@ -61,15 +57,6 @@ jobs:
 #         brew install cmake
 #         brew install x86_64-elf-binutils
 #         brew install x86_64-elf-gcc
- #       brew install wget
- #       brew install curl
- #       brew install autogen
-
-#     - name: Setup grub
-#       shell: bash
-#       run: |
-#         sh ${{github.workspace}}/tools/grub4mac.sh
-#         export PATH="${{github.workspace}}/tools/grub-2.04/build/grub/bin:$PATH"
 
 #     - name: Make build dir
 #       shell: bash
