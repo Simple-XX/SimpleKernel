@@ -61,6 +61,12 @@ extern ptr_t *kernel_end;
 // 页掩码，用于 4KB 对齐
 #define PMM_PAGE_MASK (0xFFFFF000UL)
 
+// 对齐
+#define ALIGN4K(x)                                                             \
+    (((ptr_t)(x) % PMM_PAGE_SIZE == 0)                                         \
+         ? (ptr_t)(x)                                                          \
+         : (((ptr_t)(x) + PMM_PAGE_SIZE - 1) & PMM_PAGE_MASK))
+
 // PAE 标志的处理
 #ifdef CPU_PAE
 #else
@@ -80,6 +86,10 @@ extern ptr_t *kernel_end;
 // 130959 (这是物理内存为 512MB 的情况)
 #define PMM_PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)
 
+// 4k 对齐的内核开始与结束地址
+extern ptr_t kernel_start_align4k;
+extern ptr_t kernel_end_align4k;
+
 extern multiboot_memory_map_entry_t *mmap_entries;
 extern multiboot_mmap_tag_t *        mmap_tag;
 
@@ -87,7 +97,7 @@ extern multiboot_mmap_tag_t *        mmap_tag;
 typedef struct physical_page {
     // 起始地址
     ptr_t addr;
-    // 该页被引用次数，-1代表外设映射区域，OS无法进行操作
+    // 该页被引用次数，-1 表示此页内存被保留，禁止使用
     int32_t ref;
 } physical_page_t;
 
@@ -99,7 +109,7 @@ typedef struct pmm_manage {
     // 管理算法的名称
     const char *name;
     // 初始化
-    void (*pmm_manage_init)(int pages);
+    void (*pmm_manage_init)(uint32_t pages);
     // 申请物理内存，单位为 Byte
     ptr_t (*pmm_manage_alloc)(uint32_t bytes);
     // 释放内存页
@@ -112,22 +122,16 @@ typedef struct pmm_manage {
 void pmm_get_ram_info(e820map_t *e820map);
 
 // 物理内存管理初始化 参数为实际可用物理页数量
-void pmm_mamage_init(int pages);
+void pmm_mamage_init(uint32_t pages);
 
 // 初始化内存管理
 void pmm_init(void);
-
-// 请求指定大小物理内存
-ptr_t pmm_alloc(size_t byte);
 
 // 请求指定数量物理页
 ptr_t pmm_alloc_page(uint32_t pages);
 
 // 释放内存页
 void pmm_free_page(ptr_t addr, uint32_t pages);
-
-// 释放内存
-void pmm_free(ptr_t addr, uint32_t byte);
 
 // 获取空闲内存页数量
 uint32_t pmm_free_pages_count(void);
