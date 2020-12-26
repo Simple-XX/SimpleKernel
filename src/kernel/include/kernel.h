@@ -26,15 +26,14 @@ void showinfo(void);
 void showinfo(void) {
     // 输出一些基本信息
     printk_color(magenta, "SimpleKernel\n");
-    printk_info("kernel in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n",
-                &kernel_start, &kernel_end);
-    printk_info(".text in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n",
-                &kernel_text_start, &kernel_text_end);
-    printk_info(".data in memory(VMA==LMA) start: 0x%08X, end 0x%08X\n",
-                &kernel_data_start, &kernel_data_end);
-    printk_info("kernel in memory size: %d KB, %d pages\n",
-                (&kernel_end - &kernel_start) / 1024,
-                (&kernel_end - &kernel_start) / 1024 / 4);
+    printk_info("kernel in memory(VMA==LMA) start: 0x%X, end 0x%X\n",
+                KERNEL_START_ADDR, KERNEL_END_ADDR);
+    printk_info("kernel in memory(VMA==LMA) align 4k start: 0x%X, end "
+                "0x%X\n",
+                kernel_start_align4k, kernel_end_align4k);
+    printk_info("kernel in memory size: 0x%X KB, 0x%X pages\n",
+                (KERNEL_END_ADDR - KERNEL_START_ADDR) / 1024,
+                ALIGN4K(KERNEL_END_ADDR - KERNEL_START_ADDR) / PMM_PAGE_SIZE);
 }
 
 #ifdef __cplusplus
