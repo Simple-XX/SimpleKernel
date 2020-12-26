@@ -41,7 +41,7 @@ typedef struct firstfit_manage {
     // 物理内存页的总数量
     uint32_t phy_page_count;
     // 物理内存页的当前数量
-    uint32_t phy_page_now_count;
+    uint32_t phy_page_free_count;
     // 空闲链表的节点数量
     uint32_t node_num;
     // 空闲链表
