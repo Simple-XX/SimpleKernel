@@ -15,10 +15,12 @@ extern "C" {
 #include "test.h"
 #include "debug.h"
 #include "pmm.h"
+#include "heap.h"
 
 bool test(void) {
     test_libc();
     test_pmm();
+    test_heap();
     return true;
 }
 
@@ -65,6 +67,31 @@ bool test_pmm(void) {
     assert(pmm_free_pages_count() == free_count, "pmm test addr4 free.\n");
 
     printk_test("pmm test done.\n");
+    return true;
+}
+
+bool test_heap(void) {
+    printk_test("Test Heap kmalloc :\n");
+    ptr_t allc_addr1 = (ptr_t)kmalloc(1);
+    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr1);
+    ptr_t allc_addr2 = (ptr_t)kmalloc(9000);
+    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr2);
+    ptr_t allc_addr3 = (ptr_t)kmalloc(4095);
+    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr3);
+    ptr_t allc_addr4 = (ptr_t)kmalloc(12);
+    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr4);
+    printk_test("Test Heap kfree: 0x%08X\n", allc_addr1);
+    kfree((ptr_t)allc_addr1);
+    printk_test("Test Heap kfree: 0x%08X\n", allc_addr2);
+    kfree((ptr_t)allc_addr2);
+    printk_test("Test Heap kfree: 0x%08X\n", allc_addr3);
+    kfree((ptr_t)allc_addr3);
+    printk_test("Test Heap kfree: 0x%08X\n", allc_addr4);
+    kfree((ptr_t)allc_addr4);
+    ptr_t new_addr = (ptr_t)kmalloc(9000);
+    printk_test("New kmalloc heap addr: 0x%08X\n", new_addr);
+    printk_test("heap test done.\n");
+    printk("KERNEL_END_ADDR: 0x%X\n", KERNEL_END_ADDR);
     return true;
 }
 
