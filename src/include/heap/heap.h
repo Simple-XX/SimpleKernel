@@ -32,6 +32,10 @@ typedef struct heap_manage {
     ptr_t (*heap_manage_malloc)(size_t byte);
     // 释放内存
     void (*heap_manage_free)(ptr_t addr);
+    // 获取当前管理的内存页数
+    uint32_t (*heap_manage_get_pages)(void);
+    // 获取空闲内存大小
+    uint32_t (*heap_manage_get_free_bytes)(void);
 } heap_manage_t;
 
 // 初始化堆
@@ -42,6 +46,12 @@ ptr_t kmalloc(size_t byte);
 
 // 内存释放
 void kfree(ptr_t p);
+
+// 获取空闲内存数量 单位为页
+uint32_t heap_get_pages(void);
+
+// 获取空闲内存数量 单位为 byte
+uint32_t heap_get_free_bytes(void);
 
 #ifdef __cplusplus
 }
