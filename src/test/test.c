@@ -71,25 +71,33 @@ bool test_pmm(void) {
 }
 
 bool test_heap(void) {
-    printk_test("Test Heap kmalloc :\n");
-    ptr_t allc_addr1 = (ptr_t)kmalloc(1);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr1);
-    ptr_t allc_addr2 = (ptr_t)kmalloc(9000);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr2);
-    ptr_t allc_addr3 = (ptr_t)kmalloc(4095);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr3);
-    ptr_t allc_addr4 = (ptr_t)kmalloc(12);
-    printk_test("kmalloc heap addr: 0x%08X\n", allc_addr4);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr1);
-    kfree((ptr_t)allc_addr1);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr2);
-    kfree((ptr_t)allc_addr2);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr3);
-    kfree((ptr_t)allc_addr3);
-    printk_test("Test Heap kfree: 0x%08X\n", allc_addr4);
-    kfree((ptr_t)allc_addr4);
-    ptr_t new_addr = (ptr_t)kmalloc(9000);
-    printk_test("New kmalloc heap addr: 0x%08X\n", new_addr);
+    ptr_t    addr1 = 0x00;
+    ptr_t    addr2 = 0x00;
+    ptr_t    addr3 = 0x00;
+    ptr_t    addr4 = 0x00;
+    uint32_t bytes = heap_get_free_bytes();
+    uint32_t pages = heap_get_pages();
+    addr1          = kmalloc(1);
+    // assert(pages == heap_get_pages(), "heap test addr1 heap_get_pages().\n");
+    // assert(heap_get_free_bytes() == bytes - 1,
+    //        "heap test addr1 heap_get_free_bytes.\n");
+    printk_test("kmalloc heap addr: 0x%X\n", addr1);
+    addr2 = kmalloc(9000);
+    printk_test("kmalloc heap addr: 0x%X\n", addr2);
+    addr3 = kmalloc(4095);
+    printk_test("kmalloc heap addr: 0x%X\n", addr3);
+    addr4 = kmalloc(12);
+    printk_test("kmalloc heap addr: 0x%X\n", addr4);
+    printk_test("Test Heap kfree: 0x%X\n", addr1);
+    kfree(addr1);
+    printk_test("Test Heap kfree: 0x%X\n", addr2);
+    kfree(addr2);
+    printk_test("Test Heap kfree: 0x%X\n", addr3);
+    kfree(addr3);
+    printk_test("Test Heap kfree: 0x%X\n", addr4);
+    kfree(addr4);
+    ptr_t new_addr = kmalloc(9000);
+    printk_test("New kmalloc heap addr: 0x%X\n", new_addr);
     printk_test("heap test done.\n");
     printk("KERNEL_END_ADDR: 0x%X\n", KERNEL_END_ADDR);
     return true;
