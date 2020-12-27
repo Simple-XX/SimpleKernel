@@ -16,3 +16,4 @@ target_include_arch_header_files(${PROJECT_NAME})
 target_include_tests_header_files(${PROJECT_NAME})
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/mem)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/heap)
