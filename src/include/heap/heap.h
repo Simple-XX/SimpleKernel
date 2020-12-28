@@ -27,11 +27,11 @@ typedef struct heap_manage {
     // 管理算法的名称
     const char *name;
     // 初始化
-    void (*heap_manage_init)(addr_t addr_start);
+    void (*heap_manage_init)(void *addr_start);
     // 内存申请，单位为 Byte，align 为对齐大小
-    addr_t (*heap_manage_malloc)(size_t byte);
+    void *(*heap_manage_malloc)(size_t byte);
     // 释放内存
-    void (*heap_manage_free)(addr_t addr);
+    void (*heap_manage_free)(void *addr);
     // 获取当前管理的内存页数
     uint32_t (*heap_manage_get_pages)(void);
     // 获取空闲内存大小
@@ -42,10 +42,10 @@ typedef struct heap_manage {
 void heap_init(void);
 
 // 内存申请，单位为 Byte
-addr_t kmalloc(size_t byte);
+void *kmalloc(size_t byte);
 
 // 内存释放
-void kfree(addr_t p);
+void kfree(void *p);
 
 // 获取空闲内存数量 单位为页
 uint32_t heap_get_pages(void);
