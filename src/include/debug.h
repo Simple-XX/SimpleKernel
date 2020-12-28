@@ -13,7 +13,7 @@ extern "C" {
 
 #include "stddef.h"
 
-void debug_init(ptr_t magic, ptr_t addr);
+void debug_init(addr_t magic, addr_t addr);
 void print_cur_status(void);
 void panic(const char *msg);
 void print_stack(size_t count);

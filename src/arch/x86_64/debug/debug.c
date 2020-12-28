@@ -13,7 +13,7 @@ extern "C" {
 #include "cpu.hpp"
 #include "debug.h"
 
-void debug_init(ptr_t magic __UNUSED__, ptr_t addr __UNUSED__) {
+void debug_init(addr_t magic __UNUSED__, addr_t addr __UNUSED__) {
     printk_debug("debug_init\n");
     return;
 }
@@ -48,7 +48,7 @@ void panic(const char *msg) {
 
 // 输出 esp
 void print_stack(size_t count) {
-    register ptr_t *esp __asm__("esp");
+    register addr_t *esp __asm__("esp");
     for (size_t i = 0; i < count; i++) {
         printk_debug("esp 0x%08X [0x%08X]\n", esp + i, *(esp + i));
     }
