@@ -21,6 +21,9 @@ bool test_libc(void);
 // 物理内存
 bool test_pmm(void);
 
+// 堆
+bool test_heap(void);
+
 #ifdef __cplusplus
 }
 #endif
