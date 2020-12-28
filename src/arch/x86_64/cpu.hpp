@@ -186,7 +186,7 @@ static inline uint32_t cpu_read_cr3(void) {
 }
 
 // 切换内核栈
-static inline void cpu_switch_stack(ptr_t stack_top) {
+static inline void cpu_switch_stack(void *stack_top) {
     __asm__ volatile("mov %0, %%esp" : : "r"(stack_top));
     __asm__ volatile("xor %%ebp, %%ebp" : :);
     return;
@@ -323,7 +323,7 @@ static inline bool EFLAGS_CF_status(void) {
     return (eflags & EFLAGS_CF);
 }
 
-static inline void CPU_INVLPG(ptr_t addr) {
+static inline void CPU_INVLPG(void *addr) {
     __asm__ volatile("invlpg (%0)" : : "r"(addr) : "memory");
     return;
 }
