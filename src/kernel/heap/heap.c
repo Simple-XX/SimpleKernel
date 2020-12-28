@@ -17,20 +17,20 @@ static const heap_manage_t *heap_manager = &slab_manage;
 
 // 初始化堆
 void heap_init(void) {
-    heap_manager->heap_manage_init((addr_t)HEAP_START);
+    heap_manager->heap_manage_init((void *)HEAP_START);
     printk_info("heap_init\n");
     return;
 }
 
 // 内存申请
-addr_t kmalloc(size_t byte) {
-    addr_t addr = (addr_t)NULL;
-    addr        = heap_manager->heap_manage_malloc(byte);
+void *kmalloc(size_t byte) {
+    void *addr = NULL;
+    addr       = heap_manager->heap_manage_malloc(byte);
     return addr;
 }
 
 // 内存释放
-void kfree(addr_t addr) {
+void kfree(void *addr) {
     heap_manager->heap_manage_free(addr);
     return;
 }
