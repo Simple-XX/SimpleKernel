@@ -15,8 +15,8 @@ extern "C" {
 #include "pmm.h"
 #include "firstfit.h"
 
-addr_t kernel_start_align4k = 0x00;
-addr_t kernel_end_align4k   = 0x00;
+void *kernel_start_align4k = NULL;
+void *kernel_end_align4k   = NULL;
 
 static const pmm_manage_t *pmm_manager = &firstfit_manage;
 
@@ -58,12 +58,12 @@ void pmm_mamage_init(uint32_t pages) {
 
 void pmm_init() {
     // 向下取整
-    kernel_start_align4k = ALIGN4K((addr_t)&kernel_start);
+    kernel_start_align4k = (void *)ALIGN4K(&kernel_start);
     // 向上取整
-    kernel_end_align4k = ALIGN4K((addr_t)&kernel_end);
+    kernel_end_align4k = (void *)ALIGN4K(&kernel_end);
 // #define DEBUG
 #ifdef DEBUG
-    printk_debug("kernel_start_align4k: %X, kernel_end_align4k: %X\n",
+    printk_debug("kernel_start_align4k: 0x%X, kernel_end_align4k: 0x%X\n",
                  kernel_start_align4k, kernel_end_align4k);
 #endif
     e820map_t e820map;
@@ -75,8 +75,8 @@ void pmm_init() {
     // 计算可用的内存
     // 这里需要保证 addr 是按照 PMM_PAGE_MASK 对齐的
     for (size_t i = 0; i < e820map.nr_map; i++) {
-        for (addr_t addr = (addr_t)e820map.map[i].addr;
-             addr < e820map.map[i].addr + e820map.map[i].length;
+        for (void *addr = (void *)e820map.map[i].addr;
+             addr < (void *)(e820map.map[i].addr + e820map.map[i].length);
              addr += PMM_PAGE_SIZE) {
             // 初始化可用内存段的物理页数组
             // 地址对应的物理页数组下标
@@ -96,13 +96,13 @@ void pmm_init() {
     return;
 }
 
-addr_t pmm_alloc_page(uint32_t pages) {
-    addr_t page;
+void *pmm_alloc_page(uint32_t pages) {
+    void *page;
     page = pmm_manager->pmm_manage_alloc(pages);
     return page;
 }
 
-void pmm_free_page(addr_t addr, uint32_t pages) {
+void pmm_free_page(void *addr, uint32_t pages) {
     pmm_manager->pmm_manage_free(addr, pages);
     return;
 }
