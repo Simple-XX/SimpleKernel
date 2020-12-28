@@ -24,12 +24,12 @@ void keyboard_init(void);
 void debug_init(void);
 void showinfo(void);
 
-extern ptr_t kernel_start[];
-extern ptr_t kernel_text_start[];
-extern ptr_t kernel_text_end[];
-extern ptr_t kernel_data_start[];
-extern ptr_t kernel_data_end[];
-extern ptr_t kernel_end[];
+extern addr_t kernel_start[];
+extern addr_t kernel_text_start[];
+extern addr_t kernel_text_end[];
+extern addr_t kernel_data_start[];
+extern addr_t kernel_data_end[];
+extern addr_t kernel_end[];
 
 void showinfo(void) {
     // 输出一些基本信息
