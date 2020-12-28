@@ -23,9 +23,9 @@ extern "C" {
 // 最小空间
 #define SLAB_MIN (0xFF)
 
-static void     init(addr_t addr_start);
-static addr_t   alloc(size_t byte);
-static void     free(addr_t addr);
+static void     init(void *addr_start);
+static void *   alloc(size_t byte);
+static void     free(void *addr);
 static uint32_t get_pages(void);
 static uint32_t get_free(void);
 
@@ -49,9 +49,9 @@ typedef struct list_entry {
 // 管理结构
 typedef struct slab_manage {
     // 管理的内存起始地址，包括头的位置
-    addr_t addr_start;
+    void *addr_start;
     // 管理的内存结束地址
-    addr_t addr_end;
+    void *addr_end;
     // 物理内存的总大小，包括头的大小
     size_t mm_total;
     // 当前空闲内存大小
@@ -159,7 +159,7 @@ static inline void set_unused(list_entry_t *entry) {
     return;
 }
 
-void init(addr_t addr_start) {
+void init(void *addr_start) {
     // 设置第一块内存的信息
     // 首先给链表中添加一个大小为 1 页的块
     list_entry_t *sb_list = (list_entry_t *)pmm_alloc_page(1);
@@ -194,7 +194,7 @@ list_entry_t *slab_split(list_entry_t *entry, size_t len) {
     if ((list_slab_block(entry)->len - len > sizeof(list_entry_t) + SLAB_MIN)) {
         // 添加新的链表项，位于旧表项开始地址+旧表项长度
         list_entry_t *new_entry =
-            (list_entry_t *)((addr_t)entry + sizeof(list_entry_t) + len);
+            (list_entry_t *)((void *)entry + sizeof(list_entry_t) + len);
 
         bzero((void *)new_entry, list_slab_block(entry)->len - len);
         list_init(new_entry);
@@ -249,13 +249,13 @@ list_entry_t *find_entry(size_t len) {
     return (list_entry_t *)NULL;
 }
 
-addr_t alloc(size_t byte) {
+void *alloc(size_t byte) {
     // 所有申请的内存长度(限制最小大小)加上管理头的长度
     size_t        len   = (byte > SLAB_MIN) ? byte : SLAB_MIN;
     list_entry_t *entry = find_entry(len);
     if (entry != NULL) {
         set_used(entry);
-        return (addr_t)((addr_t)entry + sizeof(list_entry_t));
+        return ((void *)entry + sizeof(list_entry_t));
     }
     entry = list_prev(sb_manage.slab_list);
     // 如果执行到这里，说明没有可用空间了，那么申请新的内存页
@@ -264,9 +264,9 @@ addr_t alloc(size_t byte) {
                                                          : ((len / PMM_PAGE_SIZE) + 1);
     list_entry_t *new_entry = (list_entry_t *)pmm_alloc_page(pages);
     if (new_entry == NULL) {
-        printk_err("Error at slab.c addr_t alloc_align(): no enough physical "
+        printk_err("Error at slab.c void *alloc(): no enough physical "
                    "memory\n");
-        return (addr_t)NULL;
+        return NULL;
     }
     list_init(new_entry);
     // 新表项的可用长度为减去头的大小
@@ -276,14 +276,14 @@ addr_t alloc(size_t byte) {
     // 进行分割
     slab_split(new_entry, len);
     set_used(new_entry);
-    return (addr_t)((addr_t)new_entry + sizeof(list_entry_t));
+    return ((void *)new_entry + sizeof(list_entry_t));
 }
 
-void free(addr_t addr) {
+void free(void *addr) {
     // 获取实际开始地址
     list_entry_t *entry = (list_entry_t *)(addr - sizeof(list_entry_t));
     if (list_slab_block(entry)->allocated != SLAB_USED) {
-        printk_err("Error at slab.c void free(addr_t)\n");
+        printk_err("Error at slab.c void free(void *)\n");
         return;
     }
     list_slab_block(entry)->allocated = SLAB_UNUSED;
