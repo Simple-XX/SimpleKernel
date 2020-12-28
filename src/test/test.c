@@ -10,14 +10,17 @@ extern "C" {
 
 #include "stdio.h"
 #include "stdint.h"
+#include "stdbool.h"
 #include "assert.h"
 #include "test.h"
 #include "debug.h"
 #include "pmm.h"
+#include "heap.h"
 
 bool test(void) {
     test_libc();
     test_pmm();
+    test_heap();
     return true;
 }
 
@@ -29,88 +32,74 @@ bool test_libc(void) {
 
 // TODO: 完善测试
 bool test_pmm(void) {
-    ptr_t    allc_addr1   = 0;
-    ptr_t    allc_addr2   = 0;
-    ptr_t    allc_addr3   = 0;
-    ptr_t    allc_addr4   = 0;
-    uint32_t dma_free     = pmm_free_pages_count(DMA);
-    uint32_t normal_free  = pmm_free_pages_count(NORMAL);
-    uint32_t highmem_free = pmm_free_pages_count(HIGHMEM);
-    // 单次分配&回收
-    allc_addr1 = pmm_alloc(1, DMA);
-    pmm_free(allc_addr1, 1, DMA);
-    assert(dma_free == pmm_free_pages_count(DMA),
-           "pmm_free(allc_addr1, 1, DMA) error\n");
-    allc_addr1 = pmm_alloc(9000, DMA);
-    pmm_free(allc_addr1, 9000, DMA);
-    assert(dma_free == pmm_free_pages_count(DMA),
-           "pmm_free(allc_addr1, 9000, DMA) error\n");
-
-    allc_addr1 = pmm_alloc(1, NORMAL);
-    pmm_free(allc_addr1, 1, NORMAL);
-    assert(normal_free == pmm_free_pages_count(NORMAL),
-           "pmm_free(allc_addr1, 1, NORMAL) error\n");
-    allc_addr1 = pmm_alloc(9000, NORMAL);
-    pmm_free(allc_addr1, 9000, NORMAL);
-    assert(normal_free == pmm_free_pages_count(NORMAL),
-           "pmm_free(allc_addr1, 9000, NORMAL) error\n");
-
-    allc_addr1 = pmm_alloc(1, HIGHMEM);
-    pmm_free(allc_addr1, 1, HIGHMEM);
-    assert(highmem_free == pmm_free_pages_count(HIGHMEM),
-           "pmm_free(allc_addr1, 1, HIGHMEM) error\n");
-    allc_addr1 = pmm_alloc(9000, HIGHMEM);
-    pmm_free(allc_addr1, 9000, HIGHMEM);
-    assert(highmem_free == pmm_free_pages_count(HIGHMEM),
-           "pmm_free(allc_addr1, 9000, HIGHMEM) error\n");
-
-    // 连续分配&回收
-    allc_addr1 = pmm_alloc(1, DMA);
-    allc_addr2 = pmm_alloc(2, DMA);
-    allc_addr3 = pmm_alloc(3, DMA);
-    allc_addr4 = pmm_alloc(4, DMA);
-    pmm_free(allc_addr1, 1, DMA);
-    pmm_free(allc_addr2, 2, DMA);
-    pmm_free(allc_addr3, 3, DMA);
-    pmm_free(allc_addr4, 4, DMA);
-    assert(dma_free == pmm_free_pages_count(DMA),
-           "pmm_free(allc_addr1, 1, DMA) error\n");
-    allc_addr1 = pmm_alloc(9000, DMA);
-    allc_addr2 = pmm_alloc(9000, DMA);
-    allc_addr3 = pmm_alloc(9000, DMA);
-    allc_addr4 = pmm_alloc(9000, DMA);
-    pmm_free(allc_addr1, 9000, DMA);
-    pmm_free(allc_addr2, 9000, DMA);
-    pmm_free(allc_addr3, 9000, DMA);
-    pmm_free(allc_addr4, 9000, DMA);
-    assert(dma_free == pmm_free_pages_count(DMA),
-           "pmm_free(allc_addr1, 9000, DMA) error\n");
-
-    // 边界测试
-    // 0x00 地址不能访问
-    int *dma_start = (void *)(DMA_START_ADDR + 0x01);
-    *dma_start     = 0x233;
-    assert(*dma_start == 0x233, "dma_start error!\n");
-    // 减去一个指针大小
-    int *dma_end = (void *)(DMA_START_ADDR + DMA_SIZE - 0x4);
-    *dma_end     = 0xcd;
-    assert(*dma_end == 0xcd, "dma_end error!\n");
-    int *normal_start = (void *)(NORMAL_START_ADDR);
-    *normal_start     = 0x233;
-    assert(*normal_start == 0x233, "normal_start error!\n");
-    int *normal_end = (void *)(NORMAL_START_ADDR + NORMAL_SIZE - 0x4);
-    *normal_end     = 0xcd;
-    assert(*normal_end == 0xcd, "normal_end error!\n");
-    int *highmem_start = (void *)(HIGHMEM_START_ADDR);
-    *highmem_start     = 0x233;
-    assert(*highmem_start == 0x233, "highmem_start error!\n");
-    int *highmem_end = (void *)(HIGHMEM_START_ADDR + HIGHMEM_SIZE - 0x4);
-    *highmem_end     = 0xcd;
-    assert(*highmem_end == 0xcd, "highmem_end error!\n");
-
-    // 极限测试
+    uint32_t cd         = 0xCD;
+    void *   addr1      = NULL;
+    void *   addr2      = NULL;
+    void *   addr3      = NULL;
+    void *   addr4      = NULL;
+    uint32_t free_count = pmm_free_pages_count();
+    addr1               = pmm_alloc_page(0x9F);
+    assert(pmm_free_pages_count() == free_count - 0x9F,
+           "pmm test addr1 alloc.\n");
+    *(uint32_t *)addr1 = cd;
+    assert((*(uint32_t *)addr1 == cd), "pmm test addr1 assignment.\n");
+    pmm_free_page(addr1, 0x9F);
+    assert(pmm_free_pages_count() == free_count, "pmm test addr1 free.\n");
+    addr2 = pmm_alloc_page(1);
+    assert(pmm_free_pages_count() == free_count - 1, "pmm test addr2 alloc.\n");
+    *(int *)addr2 = cd;
+    assert((*(uint32_t *)addr2 == cd), "pmm test addr2 assignment.\n");
+    pmm_free_page(addr2, 1);
+    assert(pmm_free_pages_count() == free_count, "pmm test addr2 free.\n");
+    addr3 = pmm_alloc_page(1024);
+    assert(pmm_free_pages_count() == free_count - 1024,
+           "pmm test addr3 alloc.\n");
+    *(int *)addr3 = cd;
+    assert((*(uint32_t *)addr3 == cd), "pmm test addr3 assignment.\n");
+    pmm_free_page(addr3, 1024);
+    assert(pmm_free_pages_count() == free_count, "pmm test addr3 free.\n");
+    addr4 = pmm_alloc_page(4096);
+    assert((*(uint32_t *)addr4 == cd), "pmm test addr4 assignment.\n");
+    assert(pmm_free_pages_count() == free_count - 4096,
+           "pmm test addr4 alloc.\n");
+    *(int *)addr4 = cd;
+    pmm_free_page(addr4, 4096);
+    assert(pmm_free_pages_count() == free_count, "pmm test addr4 free.\n");
 
     printk_test("pmm test done.\n");
+    return true;
+}
+
+bool test_heap(void) {
+    void *   addr1 = NULL;
+    void *   addr2 = NULL;
+    void *   addr3 = NULL;
+    void *   addr4 = NULL;
+    uint32_t bytes = heap_get_free_bytes();
+    uint32_t pages = heap_get_pages();
+    addr1          = kmalloc(1);
+    // assert(pages == heap_get_pages(), "heap test addr1 heap_get_pages().\n");
+    // assert(heap_get_free_bytes() == bytes - 1,
+    //        "heap test addr1 heap_get_free_bytes.\n");
+    printk_test("kmalloc heap addr: 0x%X\n", addr1);
+    addr2 = kmalloc(9000);
+    printk_test("kmalloc heap addr: 0x%X\n", addr2);
+    addr3 = kmalloc(4095);
+    printk_test("kmalloc heap addr: 0x%X\n", addr3);
+    addr4 = kmalloc(12);
+    printk_test("kmalloc heap addr: 0x%X\n", addr4);
+    printk_test("Test Heap kfree: 0x%X\n", addr1);
+    kfree(addr1);
+    printk_test("Test Heap kfree: 0x%X\n", addr2);
+    kfree(addr2);
+    printk_test("Test Heap kfree: 0x%X\n", addr3);
+    kfree(addr3);
+    printk_test("Test Heap kfree: 0x%X\n", addr4);
+    kfree(addr4);
+    void *new_addr = kmalloc(9000);
+    printk_test("New kmalloc heap addr: 0x%X\n", new_addr);
+    printk_test("heap test done.\n");
+    printk("KERNEL_END_ADDR: 0x%X\n", KERNEL_END_ADDR);
     return true;
 }
 
