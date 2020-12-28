@@ -20,9 +20,9 @@ extern "C" {
 // 初始化
 static void init(uint32_t pages);
 // 按页分配
-static ptr_t alloc(uint32_t pages);
+static addr_t alloc(uint32_t pages);
 // 按页释放
-static void free(ptr_t addr_start, uint32_t pages);
+static void free(addr_t addr_start, uint32_t pages);
 // 空闲数量
 static uint32_t free_pages_count(void);
 
@@ -161,7 +161,7 @@ void init(uint32_t pages) {
         else {
             // 新建 chunk
             list_entry_t *tmp =
-                (list_entry_t *)((ptr_t)pmm_info + i * sizeof(list_entry_t));
+                (list_entry_t *)((addr_t)pmm_info + i * sizeof(list_entry_t));
             set_chunk(tmp, &mem_page[i]);
             // 添加到链表
             list_add_before(pmm_info, tmp);
@@ -200,8 +200,8 @@ void init(uint32_t pages) {
     return;
 }
 
-ptr_t alloc(uint32_t pages) {
-    ptr_t         res_addr = 0x00;
+addr_t alloc(uint32_t pages) {
+    addr_t        res_addr = 0x00;
     list_entry_t *entry    = ff_manage.free_list;
     // do {
     //     // 当前 chunk 空闲
@@ -251,7 +251,7 @@ ptr_t alloc(uint32_t pages) {
     return res_addr;
 }
 
-void free(ptr_t addr_start, uint32_t pages) {
+void free(addr_t addr_start, uint32_t pages) {
     list_entry_t *entry = ff_manage.free_list;
     while (((entry = list_next(entry)) != ff_manage.free_list) &&
            (list_chunk_info(entry)->addr != addr_start)) {
