@@ -15,8 +15,8 @@ extern "C" {
 #include "pmm.h"
 #include "firstfit.h"
 
-ptr_t kernel_start_align4k = 0x00;
-ptr_t kernel_end_align4k   = 0x00;
+addr_t kernel_start_align4k = 0x00;
+addr_t kernel_end_align4k   = 0x00;
 
 static const pmm_manage_t *pmm_manager = &firstfit_manage;
 
@@ -36,8 +36,8 @@ void pmm_get_ram_info(e820map_t *e820map) {
 // #define DEBUG
 #ifdef DEBUG
         printk_debug("addr: 0x%X, len: 0x%X, type: 0x%X\n",
-                     (ptr_t)mmap_entries->addr, (ptr_t)mmap_entries->len,
-                     (ptr_t)mmap_entries->type);
+                     (addr_t)mmap_entries->addr, (addr_t)mmap_entries->len,
+                     (addr_t)mmap_entries->type);
 #endif
 
         if (mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE) {
@@ -58,9 +58,9 @@ void pmm_mamage_init(uint32_t pages) {
 
 void pmm_init() {
     // 向下取整
-    kernel_start_align4k = ALIGN4K((ptr_t)&kernel_start);
+    kernel_start_align4k = ALIGN4K((addr_t)&kernel_start);
     // 向上取整
-    kernel_end_align4k = ALIGN4K((ptr_t)&kernel_end);
+    kernel_end_align4k = ALIGN4K((addr_t)&kernel_end);
 // #define DEBUG
 #ifdef DEBUG
     printk_debug("kernel_start_align4k: %X, kernel_end_align4k: %X\n",
@@ -75,7 +75,7 @@ void pmm_init() {
     // 计算可用的内存
     // 这里需要保证 addr 是按照 PMM_PAGE_MASK 对齐的
     for (size_t i = 0; i < e820map.nr_map; i++) {
-        for (ptr_t addr = (ptr_t)e820map.map[i].addr;
+        for (addr_t addr = (addr_t)e820map.map[i].addr;
              addr < e820map.map[i].addr + e820map.map[i].length;
              addr += PMM_PAGE_SIZE) {
             // 初始化可用内存段的物理页数组
@@ -96,13 +96,13 @@ void pmm_init() {
     return;
 }
 
-ptr_t pmm_alloc_page(uint32_t pages) {
-    ptr_t page;
+addr_t pmm_alloc_page(uint32_t pages) {
+    addr_t page;
     page = pmm_manager->pmm_manage_alloc(pages);
     return page;
 }
 
-void pmm_free_page(ptr_t addr, uint32_t pages) {
+void pmm_free_page(addr_t addr, uint32_t pages) {
     pmm_manager->pmm_manage_free(addr, pages);
     return;
 }

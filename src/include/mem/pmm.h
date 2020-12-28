@@ -26,12 +26,12 @@ extern "C" {
 // array notation prevents accidental reads from _ebss as arrays must be
 // explicitly dereferenced) ref:
 // http://wiki.osdev.org/Using_Linker_Script_Values
-extern ptr_t *kernel_start;
-extern ptr_t *kernel_text_start;
-extern ptr_t *kernel_text_end;
-extern ptr_t *kernel_data_start;
-extern ptr_t *kernel_data_end;
-extern ptr_t *kernel_end;
+extern addr_t *kernel_start;
+extern addr_t *kernel_text_start;
+extern addr_t *kernel_text_end;
+extern addr_t *kernel_data_start;
+extern addr_t *kernel_data_end;
+extern addr_t *kernel_end;
 
 #define KERNEL_START_ADDR (&kernel_start)
 #define KERNEL_TEXT_START_ADDR (&kernel_text_start)
@@ -45,7 +45,7 @@ extern ptr_t *kernel_end;
 // 内核栈需要的内存页数
 #define KERNEL_STACK_PAGES (KERNEL_STACK_SIZE / PMM_PAGE_SIZE)
 // 内核栈开始地址，内核结束后
-#define KERNEL_STACK_START (((ptr_t)(KERNEL_END_ADDR)) & PMM_PAGE_MASK)
+#define KERNEL_STACK_START (((addr_t)(KERNEL_END_ADDR)) & PMM_PAGE_MASK)
 // 内核栈结束地址
 #define KERNEL_STACK_END (KERNEL_STACK_START + KERNEL_STACK_SIZE)
 // 物理内存大小 2GB
@@ -63,9 +63,9 @@ extern ptr_t *kernel_end;
 
 // 对齐
 #define ALIGN4K(x)                                                             \
-    (((ptr_t)(x) % PMM_PAGE_SIZE == 0)                                         \
-         ? (ptr_t)(x)                                                          \
-         : (((ptr_t)(x) + PMM_PAGE_SIZE - 1) & PMM_PAGE_MASK))
+    (((addr_t)(x) % PMM_PAGE_SIZE == 0)                                        \
+         ? (addr_t)(x)                                                         \
+         : (((addr_t)(x) + PMM_PAGE_SIZE - 1) & PMM_PAGE_MASK))
 
 // PAE 标志的处理
 #ifdef CPU_PAE
@@ -87,8 +87,8 @@ extern ptr_t *kernel_end;
 #define PMM_PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)
 
 // 4k 对齐的内核开始与结束地址
-extern ptr_t kernel_start_align4k;
-extern ptr_t kernel_end_align4k;
+extern addr_t kernel_start_align4k;
+extern addr_t kernel_end_align4k;
 
 extern multiboot_memory_map_entry_t *mmap_entries;
 extern multiboot_mmap_tag_t *        mmap_tag;
@@ -96,7 +96,7 @@ extern multiboot_mmap_tag_t *        mmap_tag;
 // 物理页结构体
 typedef struct physical_page {
     // 起始地址
-    ptr_t addr;
+    addr_t addr;
     // 该页被引用次数，-1 表示此页内存被保留，禁止使用
     int32_t ref;
 } physical_page_t;
@@ -111,9 +111,9 @@ typedef struct pmm_manage {
     // 初始化
     void (*pmm_manage_init)(uint32_t pages);
     // 申请物理内存，单位为 Byte
-    ptr_t (*pmm_manage_alloc)(uint32_t bytes);
+    addr_t (*pmm_manage_alloc)(uint32_t bytes);
     // 释放内存页
-    void (*pmm_manage_free)(ptr_t addr_start, uint32_t bytes);
+    void (*pmm_manage_free)(addr_t addr_start, uint32_t bytes);
     // 返回当前可用内存页数量
     uint32_t (*pmm_manage_free_pages_count)(void);
 } pmm_manage_t;
@@ -128,10 +128,10 @@ void pmm_mamage_init(uint32_t pages);
 void pmm_init(void);
 
 // 请求指定数量物理页
-ptr_t pmm_alloc_page(uint32_t pages);
+addr_t pmm_alloc_page(uint32_t pages);
 
 // 释放内存页
-void pmm_free_page(ptr_t addr, uint32_t pages);
+void pmm_free_page(addr_t addr, uint32_t pages);
 
 // 获取空闲内存页数量
 uint32_t pmm_free_pages_count(void);
