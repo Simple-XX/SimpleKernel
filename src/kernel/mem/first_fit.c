@@ -20,9 +20,9 @@ extern "C" {
 // 初始化
 static void init(uint32_t pages);
 // 按页分配
-static addr_t alloc(uint32_t pages);
+static void *alloc(uint32_t pages);
 // 按页释放
-static void free(addr_t addr_start, uint32_t pages);
+static void free(void *addr_start, uint32_t pages);
 // 空闲数量
 static uint32_t free_pages_count(void);
 
@@ -161,7 +161,7 @@ void init(uint32_t pages) {
         else {
             // 新建 chunk
             list_entry_t *tmp =
-                (list_entry_t *)((addr_t)pmm_info + i * sizeof(list_entry_t));
+                (list_entry_t *)((void *)pmm_info + i * sizeof(list_entry_t));
             set_chunk(tmp, &mem_page[i]);
             // 添加到链表
             list_add_before(pmm_info, tmp);
@@ -200,8 +200,8 @@ void init(uint32_t pages) {
     return;
 }
 
-addr_t alloc(uint32_t pages) {
-    addr_t        res_addr = 0x00;
+void *alloc(uint32_t pages) {
+    void *        res_addr = NULL;
     list_entry_t *entry    = ff_manage.free_list;
     // do {
     //     // 当前 chunk 空闲
@@ -244,14 +244,13 @@ addr_t alloc(uint32_t pages) {
         // 执行到这里还没找见的话，物理内存已经全部查找过了，说明物理内存不够
         else {
             printk_err("No enough phy mem.\n");
-            res_addr = -1;
             break;
         }
     }
     return res_addr;
 }
 
-void free(addr_t addr_start, uint32_t pages) {
+void free(void *addr_start, uint32_t pages) {
     list_entry_t *entry = ff_manage.free_list;
     while (((entry = list_next(entry)) != ff_manage.free_list) &&
            (list_chunk_info(entry)->addr != addr_start)) {
