@@ -31,10 +31,10 @@ bool test_libc(void) {
 // TODO: 完善测试
 bool test_pmm(void) {
     uint32_t cd         = 0xCD;
-    addr_t   addr1      = 0x233;
-    addr_t   addr2      = 0x00;
-    addr_t   addr3      = 0x00;
-    addr_t   addr4      = 0x00;
+    void *   addr1      = NULL;
+    void *   addr2      = NULL;
+    void *   addr3      = NULL;
+    void *   addr4      = NULL;
     uint32_t free_count = pmm_free_pages_count();
     addr1               = pmm_alloc_page(0x9F);
     assert(pmm_free_pages_count() == free_count - 0x9F,
