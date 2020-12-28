@@ -14,6 +14,7 @@ extern "C" {
 #include "stddef.h"
 #include "stdint.h"
 #include "multiboot2.h"
+#include "e820.h"
 
 // A common problem is getting garbage data when trying to use a value
 // defined in a linker script. This is usually because they're dereferencing
@@ -26,12 +27,12 @@ extern "C" {
 // array notation prevents accidental reads from _ebss as arrays must be
 // explicitly dereferenced) ref:
 // http://wiki.osdev.org/Using_Linker_Script_Values
-extern addr_t *kernel_start;
-extern addr_t *kernel_text_start;
-extern addr_t *kernel_text_end;
-extern addr_t *kernel_data_start;
-extern addr_t *kernel_data_end;
-extern addr_t *kernel_end;
+extern void *kernel_start;
+extern void *kernel_text_start;
+extern void *kernel_text_end;
+extern void *kernel_data_start;
+extern void *kernel_data_end;
+extern void *kernel_end;
 
 #define KERNEL_START_ADDR (&kernel_start)
 #define KERNEL_TEXT_START_ADDR (&kernel_text_start)
@@ -87,8 +88,8 @@ extern addr_t *kernel_end;
 #define PMM_PAGE_MAX_SIZE (PMM_MAX_SIZE / PMM_PAGE_SIZE)
 
 // 4k 对齐的内核开始与结束地址
-extern addr_t kernel_start_align4k;
-extern addr_t kernel_end_align4k;
+extern void *kernel_start_align4k;
+extern void *kernel_end_align4k;
 
 extern multiboot_memory_map_entry_t *mmap_entries;
 extern multiboot_mmap_tag_t *        mmap_tag;
@@ -96,7 +97,7 @@ extern multiboot_mmap_tag_t *        mmap_tag;
 // 物理页结构体
 typedef struct physical_page {
     // 起始地址
-    addr_t addr;
+    void *addr;
     // 该页被引用次数，-1 表示此页内存被保留，禁止使用
     int32_t ref;
 } physical_page_t;
@@ -111,9 +112,9 @@ typedef struct pmm_manage {
     // 初始化
     void (*pmm_manage_init)(uint32_t pages);
     // 申请物理内存，单位为 Byte
-    addr_t (*pmm_manage_alloc)(uint32_t bytes);
+    void *(*pmm_manage_alloc)(uint32_t bytes);
     // 释放内存页
-    void (*pmm_manage_free)(addr_t addr_start, uint32_t bytes);
+    void (*pmm_manage_free)(void *addr_start, uint32_t bytes);
     // 返回当前可用内存页数量
     uint32_t (*pmm_manage_free_pages_count)(void);
 } pmm_manage_t;
@@ -128,10 +129,10 @@ void pmm_mamage_init(uint32_t pages);
 void pmm_init(void);
 
 // 请求指定数量物理页
-addr_t pmm_alloc_page(uint32_t pages);
+void *pmm_alloc_page(uint32_t pages);
 
 // 释放内存页
-void pmm_free_page(addr_t addr, uint32_t pages);
+void pmm_free_page(void *addr, uint32_t pages);
 
 // 获取空闲内存页数量
 uint32_t pmm_free_pages_count(void);
