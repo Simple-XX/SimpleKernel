@@ -17,7 +17,7 @@ extern "C" {
 // 块
 typedef struct chunk_info {
     // 当前页的地址
-    addr_t addr;
+    void *addr;
     // 拥有多少个连续的页
     uint32_t npages;
     // 物理页被引用的次数
@@ -35,9 +35,9 @@ typedef struct list_entry {
 
 typedef struct firstfit_manage {
     // 物理内存起始地址
-    addr_t pmm_addr_start;
+    void *pmm_addr_start;
     // 物理内存结束地址
-    addr_t pmm_addr_end;
+    void *pmm_addr_end;
     // 物理内存页的总数量
     uint32_t phy_page_count;
     // 物理内存页的当前数量
