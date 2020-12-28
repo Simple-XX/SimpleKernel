@@ -339,8 +339,8 @@ struct multiboot_tag_load_base_addr {
     multiboot_uint32_t load_base_addr;
 };
 
-bool is_multiboot2_header(ptr_t magic, ptr_t addr);
-void multiboot2_init(ptr_t magic, ptr_t addr);
+bool is_multiboot2_header(addr_t magic, addr_t addr);
+void multiboot2_init(addr_t magic, addr_t addr);
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
 void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag *tag);
