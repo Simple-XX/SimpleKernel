@@ -113,7 +113,7 @@ void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
     return;
 }
 
-bool is_multiboot2_header(ptr_t magic, ptr_t addr) {
+bool is_multiboot2_header(addr_t magic, addr_t addr) {
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
         printk_err("Invalid magic number: %X\n", (unsigned)magic);
         return false;
@@ -126,13 +126,13 @@ bool is_multiboot2_header(ptr_t magic, ptr_t addr) {
 }
 
 // 处理 multiboot 信息
-void multiboot2_init(ptr_t magic, ptr_t addr) {
+void multiboot2_init(addr_t magic, addr_t addr) {
     // Am I booted by a Multiboot-compliant boot loader?
     is_multiboot2_header(magic, addr);
     // uint32_t size = *(uint32_t *)addr;
     // addr+0 保存大小，下一字节开始为 tag 信息
     // printk_info("Announced mbi size 0x%X\n", size);
-    ptr_t            tag_addr = (ptr_t)addr + 8;
+    addr_t           tag_addr = (addr_t)addr + 8;
     multiboot_tag_t *tag;
     tag = (multiboot_tag_t *)tag_addr;
     // printk("tag type: %X\n", tag->type);
@@ -179,7 +179,8 @@ void multiboot2_init(ptr_t magic, ptr_t addr) {
                 // 	// printk(" sh_name: %s ", name); // correct
                 // 	// printk("shaddr: 0x%X\t", shdr[i].sh_addr); // correct
                 // 	// 在 GRUB 提供的 multiboot 信息中寻找内核 ELF
-                // 格式所提取的字符串表和符号表 	if (strcmp(name, ".strtab")
+                // 格式所提取的字符串表和符号表 	if (strcmp(name,
+                // ".strtab")
                 // == 0) { 		kernel_elf.strtab = (const char
                 // *)shdr[i].sh_addr;
                 // 		// printk("strtab: 0x%X\n", kernel_elf.strtab);
