@@ -17,7 +17,7 @@ extern "C" {
 #include "test.h"
 
 // 内核入口
-void kernel_main(ptr_t magic, ptr_t addr) {
+void kernel_main(addr_t magic, addr_t addr) {
     // 控制台初始化
     console_init();
     // 从 multiboot 获得系统初始信息
