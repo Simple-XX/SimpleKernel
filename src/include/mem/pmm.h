@@ -103,7 +103,7 @@ typedef struct physical_page {
 } physical_page_t;
 
 // 可用内存的物理页数组
-extern physical_page_t mem_page[PMM_PAGE_MAX_SIZE];
+extern physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
 
 // 内存管理结构体
 typedef struct pmm_manage {
