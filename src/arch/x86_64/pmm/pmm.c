@@ -22,7 +22,7 @@ static const pmm_manage_t *pmm_manager = &firstfit_manage;
 
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
-physical_page_t mem_page[PMM_PAGE_MAX_SIZE];
+physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
 
 // TODO: 太难看了也
 // 这里的 addr 与 len 4k 对齐
@@ -69,7 +69,7 @@ void pmm_init() {
     e820map_t e820map;
     bzero(&e820map, sizeof(e820map_t));
     pmm_get_ram_info(&e820map);
-    bzero(mem_page, sizeof(physical_page_t) * PMM_PAGE_MAX_SIZE);
+    bzero(phy_pages, sizeof(physical_page_t) * PMM_PAGE_MAX_SIZE);
     // 用于记录可用内存总数
     uint32_t pages_count = 0;
     // 计算可用的内存
@@ -80,13 +80,13 @@ void pmm_init() {
              addr += PMM_PAGE_SIZE) {
             // 初始化可用内存段的物理页数组
             // 地址对应的物理页数组下标
-            mem_page[pages_count].addr = addr;
+            phy_pages[pages_count].addr = addr;
             // 内核已占用部分
             if (addr >= kernel_start_align4k && addr < kernel_end_align4k) {
-                mem_page[pages_count].ref = 1;
+                phy_pages[pages_count].ref = 1;
             }
             else {
-                mem_page[pages_count].ref = 0;
+                phy_pages[pages_count].ref = 0;
             }
             pages_count++;
         }

@@ -31,40 +31,16 @@ pmm_manage_t firstfit_manage = {"Fitst Fit", &init, &alloc, &free,
 
 firstfit_manage_t ff_manage;
 
-static inline void list_init_head(list_entry_t *list);
-
-// 在中间添加元素
-static inline void list_add_middle(list_entry_t *prev, list_entry_t *next,
-                                   list_entry_t *new);
-
-// 在 prev 后添加项
-static inline void list_add_after(list_entry_t *prev, list_entry_t *new);
-
-// 在 next 前添加项
-static inline void list_add_before(list_entry_t *next, list_entry_t *new);
-
-// 删除元素
-static inline void list_del(list_entry_t *list);
-
-// 返回前面的元素
-static inline list_entry_t *list_prev(list_entry_t *list);
-
-// 返回后面的的元素
-static inline list_entry_t *list_next(list_entry_t *list);
-
-// 返回 chunk_info
-static inline chunk_info_t *list_chunk_info(list_entry_t *list);
-
 // 初始化
-void list_init_head(list_entry_t *list) {
+static void list_init_head(list_entry_t *list) {
     list->next = list;
     list->prev = list;
     return;
 }
 
 // 在中间添加元素
-void list_add_middle(list_entry_t *prev, list_entry_t *next,
-                     list_entry_t *new) {
+static void list_add_middle(list_entry_t *prev, list_entry_t *next,
+                            list_entry_t *new) {
     next->prev = new;
     new->next  = next;
     new->prev  = prev;
@@ -73,36 +49,31 @@ void list_add_middle(list_entry_t *prev, list_entry_t *next,
 }
 
 // 在 prev 后添加项
-void list_add_after(list_entry_t *prev, list_entry_t *new) {
+static void list_add_after(list_entry_t *prev, list_entry_t *new) {
     list_add_middle(prev, prev->next, new);
     return;
 }
 
 // 在 next 前添加项
-void list_add_before(list_entry_t *next, list_entry_t *new) {
+static void list_add_before(list_entry_t *next, list_entry_t *new) {
     list_add_middle(next->prev, next, new);
     return;
 }
 
 // 删除元素
-void list_del(list_entry_t *list) {
+static void list_del(list_entry_t *list) {
     list->next->prev = list->prev;
     list->prev->next = list->next;
     return;
 }
 
-// 返回前面的元素
-list_entry_t *list_prev(list_entry_t *list) {
-    return list->prev;
-}
-
 // 返回后面的的元素
-list_entry_t *list_next(list_entry_t *list) {
+static list_entry_t *list_next(list_entry_t *list) {
     return list->next;
 }
 
 // 返回 chunk_info
-chunk_info_t *list_chunk_info(list_entry_t *list) {
+static chunk_info_t *list_chunk_info(list_entry_t *list) {
     return &(list->chunk_info);
 }
 
@@ -124,37 +95,37 @@ void init(uint32_t pages) {
     uint32_t pmm_info_size = pages * sizeof(list_entry_t);
     bzero(pmm_info, pmm_info_size);
     // 将用于保存物理地址信息的内存标记为已使用
-    // 计算内核结束处对应的 mem_page 下标与 pmm_info 使用内存结束处的下标
+    // 计算内核结束处对应的 phy_pages 下标与 pmm_info 使用内存结束处的下标
     // 不能直接计算，因为可用内存之间可能会存在空洞
     uint32_t idx = 0;
-    while (mem_page[idx].addr < kernel_end_align4k) {
+    while (phy_pages[idx].addr < kernel_end_align4k) {
         idx++;
     }
 #ifdef DEBUG
-    printk_debug("mem_page[idx]: 0x%X\n", mem_page[idx]);
+    printk_debug("phy_pages[idx]: 0x%X\n", phy_pages[idx]);
 #endif
     uint32_t idx_end = idx;
-    while (mem_page[idx_end].addr <
+    while (phy_pages[idx_end].addr <
            kernel_end_align4k + ALIGN4K(pmm_info_size)) {
         idx_end++;
     }
     while (idx < idx_end) {
-        mem_page[idx++].ref++;
+        phy_pages[idx++].ref++;
     }
     // 初始化 free_list 信息
     // 初始化头节点
     list_init_head(pmm_info);
-    set_chunk(pmm_info, &mem_page[0]);
+    set_chunk(pmm_info, &phy_pages[0]);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
     // 迭代所有页，如果下一个的地 != 当前地址+PMM_PAGE_SIZE 则新建 chunk
     list_entry_t *chunk = pmm_info;
     uint32_t      num   = 1;
-    for (uint32_t i = 1; i < pages; i++) {
+    for (uint32_t i = 0; i < pages; i++) {
         // 如果连续且 ref 相同
-        if ((mem_page[i].addr ==
+        if ((phy_pages[i].addr ==
              list_chunk_info(chunk)->addr +
                  list_chunk_info(chunk)->npages * PMM_PAGE_SIZE) &&
-            (mem_page[i].ref == list_chunk_info(chunk)->ref)) {
+            (phy_pages[i].ref == list_chunk_info(chunk)->ref)) {
             list_chunk_info(chunk)->npages++;
         }
         // 没有连续或者 ref 不同
@@ -162,7 +133,7 @@ void init(uint32_t pages) {
             // 新建 chunk
             list_entry_t *tmp =
                 (list_entry_t *)((void *)pmm_info + i * sizeof(list_entry_t));
-            set_chunk(tmp, &mem_page[i]);
+            set_chunk(tmp, &phy_pages[i]);
             // 添加到链表
             list_add_before(pmm_info, tmp);
             chunk = tmp;
@@ -184,7 +155,7 @@ void init(uint32_t pages) {
     // 计算未使用的物理内存
     uint32_t n = 0;
     for (uint32_t i = 0; i < pages; i++) {
-        if (mem_page[i].ref == 0) {
+        if (phy_pages[i].ref == 0) {
             n++;
         }
     }
@@ -203,50 +174,37 @@ void init(uint32_t pages) {
 void *alloc(uint32_t pages) {
     void *        res_addr = NULL;
     list_entry_t *entry    = ff_manage.free_list;
-    // do {
-    //     // 当前 chunk 空闲
-    //     if (list_chunk_info(entry)->flag == FF_UNUSED) {
-    //         // 判断长度是否足够
-    //         if (list_chunk_info(entry)->npages >= pages) {
-    //             // 符合条件，对 chunk 进行分割
-    //         }
-    //     }
-    // } while ((entry = list_next(entry)) != ff_manage.free_list);
-    while (1) {
-        // 查找符合长度且未使用的内存
-        if ((list_chunk_info(entry)->npages >= pages) &&
-            (list_chunk_info(entry)->flag == FF_UNUSED)) {
-            // 如果剩余大小足够
-            if (list_chunk_info(entry)->npages - pages > 1) {
-                // 添加为新的链表项
-                list_entry_t *tmp =
-                    (list_entry_t *)(entry +
-                                     ff_manage.node_num * sizeof(list_entry_t));
-                list_chunk_info(tmp)->addr =
-                    entry->chunk_info.addr + pages * PMM_PAGE_SIZE;
-                list_chunk_info(tmp)->npages = entry->chunk_info.npages - pages;
-                list_chunk_info(tmp)->ref    = 0;
-                list_chunk_info(tmp)->flag   = FF_UNUSED;
-                list_add_after(entry, tmp);
+    do {
+        // 当前 chunk 空闲
+        if (list_chunk_info(entry)->flag == FF_UNUSED) {
+            // 判断长度是否足够
+            if (list_chunk_info(entry)->npages >= pages) {
+                // 符合条件，对 chunk 进行分割
+                // 如果剩余大小足够
+                if (list_chunk_info(entry)->npages - pages > 1) {
+                    // 添加为新的链表项
+                    list_entry_t *tmp =
+                        (list_entry_t *)(entry + ff_manage.node_num *
+                                                     sizeof(list_entry_t));
+                    list_chunk_info(tmp)->addr =
+                        entry->chunk_info.addr + pages * PMM_PAGE_SIZE;
+                    list_chunk_info(tmp)->npages =
+                        entry->chunk_info.npages - pages;
+                    list_chunk_info(tmp)->ref  = 0;
+                    list_chunk_info(tmp)->flag = FF_UNUSED;
+                    list_add_after(entry, tmp);
+                }
+                // 不够的话直接分配
+                list_chunk_info(entry)->npages = pages;
+                list_chunk_info(entry)->ref    = 1;
+                list_chunk_info(entry)->flag   = FF_USED;
+                ff_manage.phy_page_free_count -= pages;
+                res_addr = list_chunk_info(entry)->addr;
+                break;
             }
-            // 不够的话直接分配
-            list_chunk_info(entry)->npages = pages;
-            list_chunk_info(entry)->ref    = 1;
-            list_chunk_info(entry)->flag   = FF_USED;
-            ff_manage.phy_page_free_count -= pages;
-            res_addr = list_chunk_info(entry)->addr;
-            break;
         }
-        // 没找到的话就查找下一个
-        else if (list_next(entry) != ff_manage.free_list) {
-            entry = list_next(entry);
-        }
-        // 执行到这里还没找见的话，物理内存已经全部查找过了，说明物理内存不够
-        else {
-            printk_err("No enough phy mem.\n");
-            break;
-        }
-    }
+    } while ((entry = list_next(entry)) != ff_manage.free_list);
+
     return res_addr;
 }
 
