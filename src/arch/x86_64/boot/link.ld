@@ -1,9 +1,11 @@
 
 /* This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
  *
- * link32.ld for Simple-XX/SimpleKernel. */
+ * link.ld for Simple-XX/SimpleKernel. */
 
-OUTPUT_FORMAT(elf32-i386)
+/* OUTPUT_FORMAT(elf32-i386) */
+OUTPUT_FORMAT(elf64-x86-64)
+OUTPUT_ARCH(i386:x86-64)
 
 ENTRY(_start)
 
