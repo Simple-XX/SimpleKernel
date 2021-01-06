@@ -1,5 +1,6 @@
 
-// This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel 
+// (https://github.com/Simple-XX/SimpleKernel).
 // Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
 // boot.s for Simple-XX/SimpleKernel.
 

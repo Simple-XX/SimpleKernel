@@ -7,8 +7,8 @@
 
 # env.sh path
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
-# ARCH: x86_64, raspi2
-ARCH="x86_64"
+# ARCH: i386, x86_64, raspi2
+ARCH="i386"
 # ARCH="raspi2"
 # 虚拟机: bochs, qemu
 SIMULATOR="bochs"
@@ -30,7 +30,9 @@ iso_folder='./iso/'
 OS=`uname -s`
 # toolchain
 if [ "${OS}" == "Linux" ]; then
-    if [ "${ARCH}" == "x86_64" ]; then
+    if [ "${ARCH}" == "i386" ]; then
+        TOOLS="toolchain_linux_x86_64.cmake"
+    elif [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_linux_x86_64.cmake"
     elif [ "${ARCH}" == "raspi2" ]; then
         TOOLS="toolchain_linux_arm.cmake"
@@ -38,7 +40,9 @@ if [ "${OS}" == "Linux" ]; then
     GRUB_PATH="$(dirname $(which grub-file))"
     bochsrc="./tools/bochsrc_linux.txt"
 elif [ "${OS}" == "Darwin" ]; then
-    if [ "${ARCH}" == "x86_64" ]; then
+    if [ "${ARCH}" == "i386" ]; then
+        TOOLS="toolchain_mac_x86_64.cmake"
+    elif [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_mac_x86_64.cmake"
     elif [ "${ARCH}" == "raspi2" ]; then
         TOOLS="toolchain_mac_arm.cmake"
