@@ -57,7 +57,10 @@ if [ ${ARCH} == "x86_64" ]; then
    }' >${iso_boot_grub}/grub.cfg
 fi
 
-if [ ${ARCH} == "x86_64" ]; then
+if [ ${ARCH} == "i386" ]; then
+    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+elif [ ${ARCH} == "x86_64" ]; then
     ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
     ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
 elif [ ${ARCH} == "raspi2" ]; then

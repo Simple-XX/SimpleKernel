@@ -41,7 +41,11 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
 
 # Link
-if (SimpleKernelArch STREQUAL x86_64)
+if (SimpleKernelArch STREQUAL i386)
+    add_executable(${KernelName}
+        $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:kernel>)
+elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:boot>
         $<TARGET_OBJECTS:kernel>)
