@@ -41,6 +41,14 @@ cp ${kernel} ${iso_boot}
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg
 
+if [ ${ARCH} == "i386" ]; then
+    echo 'set timeout=15
+    set default=0
+    menuentry "SimpleKernel" {
+       multiboot2 /boot/kernel.elf "KERNEL_ELF"
+   }' >${iso_boot_grub}/grub.cfg
+fi
+
 if [ ${ARCH} == "x86_64" ]; then
     echo 'set timeout=15
     set default=0
