@@ -3,11 +3,10 @@
  *
  * link.ld for Simple-XX/SimpleKernel. */
 
-/* OUTPUT_FORMAT(elf32-i386) */
 OUTPUT_FORMAT(elf64-x86-64)
 OUTPUT_ARCH(i386:x86-64)
 
-ENTRY(_start)
+ENTRY(_start32)
 
 SECTIONS
 {
@@ -16,10 +15,10 @@ SECTIONS
     . = 1M;
 
     PROVIDE(kernel_start = .);
-    PROVIDE(kernel_text_start = .);
+	PROVIDE(kernel_text_start = .);
 	.text : ALIGN(4K)
 	{
-        *(.multiboot_header)
+		*(.multiboot_header)
 		*(.text)
 	}
     PROVIDE(kernel_text_end = .);
