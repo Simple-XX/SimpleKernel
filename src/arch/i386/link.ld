@@ -17,7 +17,7 @@ SECTIONS
     PROVIDE(kernel_text_start = .);
 	.text : ALIGN(4K)
 	{
-        *(.multiboot_header)
+		*(.multiboot_header)
 		*(.text)
 	}
     PROVIDE(kernel_text_end = .);
