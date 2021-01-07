@@ -5,9 +5,9 @@
 
 # Set C flags for arch
 if (SimpleKernelArch STREQUAL i386)
-    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -mno-sse -m32 -D${SimpleKernelArch}")
+    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m32 -D${SimpleKernelArch}")
 elseif (SimpleKernelArch STREQUAL x86_64)
-    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -mno-sse -m64 -D${SimpleKernelArch}")
+    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -D${SimpleKernelArch}")
 elseif (SimpleKernelArch STREQUAL RASPI2)
     set(CMAKE_C_FLAGS "-march=armv7-a -mtune=cortex-a7 -marm -D${SimpleKernelArch}")
 else ()
@@ -46,8 +46,12 @@ if (SimpleKernelArch STREQUAL i386)
         $<TARGET_OBJECTS:boot>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
-    add_executable(${KernelName}
+    add_executable(${KernelName}_boot
         $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:init>
+        $<TARGET_OBJECTS:kernel>)
+    add_executable(${KernelName}
+        $<TARGET_OBJECTS:init>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL RASPI2)
     add_executable(${KernelName}
@@ -55,11 +59,13 @@ elseif (SimpleKernelArch STREQUAL RASPI2)
         $<TARGET_OBJECTS:kernel>)
 endif ()
 
-target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/boot/link.ld)
+target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
 
 if (SimpleKernelArch STREQUAL i386)
     target_link_options(${KernelName} PRIVATE -Wl,-melf_i386)
 elseif (SimpleKernelArch STREQUAL x86_64)
+    target_link_options(${KernelName}_boot PRIVATE -Wl,-melf_i386)
+    target_link_options(${KernelName}_boot PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
     target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64)
 elseif (SimpleKernelArch STREQUAL RASPI2)
     target_link_options(${KernelName} PRIVATE -Wl,-marmelf)

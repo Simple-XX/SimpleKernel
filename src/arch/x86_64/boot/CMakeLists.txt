@@ -10,3 +10,5 @@ find_asm_source_files(ASM_SOURCE_FILES ${boot_SOURCE_DIR})
 set(boot_src ${ASM_SOURCE_FILES})
 
 add_library(${PROJECT_NAME} OBJECT ${boot_src})
+
+target_include_kernel_header_files(${PROJECT_NAME})

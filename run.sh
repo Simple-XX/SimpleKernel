@@ -20,8 +20,15 @@ cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${A
 make
 cd ../
 
-if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
-    echo Multiboot2 Confirmed!
+
+if [ ${ARCH} == "i386" ]; then
+    if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
+        echo Multiboot2 Confirmed!
+    fi
+elif [ ${ARCH} == "x86_64" ]; then
+    if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}_boot; then
+        echo Multiboot2 Confirmed!
+    fi
 elif [ ${ARCH} == "raspi2" ]; then
     echo Arm-A7.
 else
@@ -38,6 +45,9 @@ else
 fi
 
 cp ${kernel} ${iso_boot}
+if [ ${ARCH} == "x86_64" ]; then
+    cp ${kernel}_boot ${iso_boot}
+fi
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg
 
@@ -53,7 +63,7 @@ if [ ${ARCH} == "x86_64" ]; then
     echo 'set timeout=15
     set default=0
     menuentry "SimpleKernel" {
-       multiboot2 /boot/kernel.elf "KERNEL_ELF"
+       multiboot2 /boot/kernel.elf_boot "KERNEL_ELF_boot"
    }' >${iso_boot_grub}/grub.cfg
 fi
 
