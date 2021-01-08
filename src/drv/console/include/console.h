@@ -47,7 +47,7 @@ public:
     // 获取颜色
     uint8_t get_color(void);
     // 格式输出
-    static int32_t printk(const char *format, ...);
+    int32_t printk(const char *format, ...);
 };
 
 extern CONSOLE console;
