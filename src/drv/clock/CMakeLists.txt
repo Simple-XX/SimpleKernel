@@ -3,7 +3,7 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(clock C ASM)
+PROJECT(clock CXX)
 
 aux_source_directory(${clock_SOURCE_DIR}/. clock_src)
 add_library(${PROJECT_NAME} OBJECT ${clock_src})
