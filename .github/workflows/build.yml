@@ -35,7 +35,7 @@ jobs:
     - name: cmake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE ..
+      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE ..
 
     - name: make
       shell: bash
