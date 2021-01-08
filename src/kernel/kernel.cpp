@@ -11,7 +11,8 @@
 #include "framebuffer.h"
 #endif
 
-KERNEL::KERNEL(void) {
+KERNEL::KERNEL(void)
+    : gdt(GDT()), intr(INTR()), clock(CLOCK()), debug(DEBUG()) {
     return;
 }
 KERNEL::~KERNEL(void) {
@@ -32,6 +33,7 @@ void KERNEL::show_info(void) {
 int32_t KERNEL::init(void) {
     char        c = '!';
     const char *s = "gg\n";
+
     console.put_char(c);
     console.write_string(s);
     console.printk("Simple Kernel.\n");
@@ -41,6 +43,7 @@ int32_t KERNEL::init(void) {
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
+    kernel.show_info();
 
 #if defined(RASPI2)
     uart_init();
