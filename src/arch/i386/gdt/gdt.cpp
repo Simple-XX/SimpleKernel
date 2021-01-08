@@ -9,8 +9,6 @@
 #include "cpu.hpp"
 #include "gdt.h"
 
-extern CONSOLE console;
-
 static gdt_ptr_t gdt_ptr;
 // 全局描述符表定义
 static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
