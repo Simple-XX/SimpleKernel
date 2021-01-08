@@ -22,6 +22,7 @@ private:
 public:
     KERNEL(void);
     ~KERNEL();
+    int k();
 };
 
 #endif /* _KERNEL_H_ */
