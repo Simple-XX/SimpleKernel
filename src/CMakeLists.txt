@@ -32,7 +32,7 @@ endif ()
 
 # Set common flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra -D${SimpleKernelPlatformMacro}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra -D${SimpleKernelPlatformMacro}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -fno-rtti -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra -D${SimpleKernelPlatformMacro}")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
@@ -52,6 +52,7 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
 if (SimpleKernelArch STREQUAL i386)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:port>
         $<TARGET_OBJECTS:kernel>
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:vga>

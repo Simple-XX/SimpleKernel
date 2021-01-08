@@ -7,22 +7,20 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "stdint.h"
+#include "console.h"
 
-void kernel_main(void);
-
-#ifdef __cplusplus
-}
-#endif
+extern "C" void kernel_main(void);
 
 class KERNEL {
 private:
+    CONSOLE console;
+
+protected:
 public:
     KERNEL(void);
-    ~KERNEL();
-    int k();
+    ~KERNEL(void);
+    int32_t init(void);
 };
 
 #endif /* _KERNEL_H_ */

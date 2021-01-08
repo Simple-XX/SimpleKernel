@@ -3,11 +3,7 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-
-if (SimpleKernelArch STREQUAL i386)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vga)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/console)
-elseif (SimpleKernelArch STREQUAL x86_64)
+if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vga)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/console)
 elseif (SimpleKernelArch STREQUAL RASPI2)
