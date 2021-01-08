@@ -3,7 +3,7 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(kernel C ASM)
+PROJECT(kernel CXX ASM)
 
 aux_source_directory(${kernel_SOURCE_DIR}/. kernel_src)
 add_library(${PROJECT_NAME} OBJECT ${kernel_src})
