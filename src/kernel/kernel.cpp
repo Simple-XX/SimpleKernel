@@ -2,31 +2,37 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// kernel.c for Simple-XX/SimpleKernel.
+// kernel.cpp for Simple-XX/SimpleKernel.
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "stdio.h"
 #include "kernel.h"
 
-#if defined(i386) || defined(x86_64)
-#include "console.h"
-#elif RASPI2
+#if defined(RASPI2)
 #include "uart.h"
 #include "framebuffer.h"
 #endif
 
+KERNEL::KERNEL(void) : console(CONSOLE()) {
+    return;
+}
+KERNEL::~KERNEL(void) {
+    return;
+}
+
+int32_t KERNEL::init(void) {
+    char        c = '!';
+    const char *s = "gg\n";
+    console.put_char(c);
+    console.write_string(s);
+    console.printk("Simple Kernel.\n");
+    return 0;
+}
+
 void kernel_main(void) {
-#if defined(i386) || defined(x86_64)
-    // 控制台初始化
-    console_init();
-    char  c = '!';
-    char *s = "gg";
-    printk("__%c__%s\n", c, s);
-    printk("Simple Kernel.\n");
-#elif RASPI2
+
+    KERNEL kernel;
+    kernel.init();
+
+#if defined(RASPI2)
     uart_init();
     char  c = '!';
     char *s = "gg";
@@ -42,7 +48,3 @@ void kernel_main(void) {
 #endif
     return;
 }
-
-#ifdef __cplusplus
-}
-#endif

@@ -23,14 +23,10 @@ typedef unsigned int       uint32_t;
 // typedef unsigned long uint32_t;
 typedef unsigned long long uint64_t;
 
-#ifdef X8664
+#if defined(__i386__) || defined(__arm__)
+typedef uint32_t addr_t;
+#elif defined(__x86_64__) || defined(__aarch64__)
 typedef uint64_t addr_t;
-#else
-typedef uint32_t addr_t;
-#endif
-
-#ifdef RASPI2
-typedef uint32_t addr_t;
 #endif
 
 #ifdef __cplusplus
