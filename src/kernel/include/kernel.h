@@ -17,4 +17,11 @@ void kernel_main(void);
 }
 #endif
 
+class KERNEL {
+private:
+public:
+    KERNEL(void);
+    ~KERNEL();
+};
+
 #endif /* _KERNEL_H_ */
