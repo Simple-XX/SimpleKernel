@@ -17,3 +17,11 @@ void kernel_main(void) {
 #ifdef __cplusplus
 }
 #endif
+
+KERNEL::KERNEL(void) {
+    return;
+}
+
+KERNEL::~KERNEL() {
+    return;
+}
