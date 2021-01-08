@@ -7,16 +7,9 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stdint.h"
 #include "stdbool.h"
-#include "stdio.h"
-#include "multiboot2.h"
 
-void kernel_main(void);
 void console_init(void);
 void gdt_init(void);
 void idt_init(void);
@@ -31,20 +24,18 @@ extern addr_t kernel_data_start[];
 extern addr_t kernel_data_end[];
 extern addr_t kernel_end[];
 
-void showinfo(void) {
-    // 输出一些基本信息
-    printk_color(magenta, "SimpleKernel\n");
+#include "console.h"
 
-    printk_info(
-        "kernel in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n",
-        kernel_start, kernel_end);
-    printk_info("kernel in memory size: %d KB, %d pages\n",
-                (kernel_end - kernel_start) / 1024,
-                (kernel_end - kernel_start) / 1024 / 4);
-}
+extern "C" void kernel_main(void);
 
-#ifdef __cplusplus
-}
-#endif
+class KERNEL : CONSOLE {
+private:
+protected:
+public:
+    KERNEL(void);
+    ~KERNEL(void);
+    int32_t init(void);
+    void    show_info(void);
+};
 
 #endif /* _KERNEL_H_ */
