@@ -14,8 +14,7 @@ extern "C" {
 #include "stdarg.h"
 #include "stddef.h"
 #include "stdint.h"
-
-extern size_t strlen(const char *str);
+#include "string.h"
 
 // 判断字符是否数字字符
 #define is_digit(c) ((c) >= '0' && (c) <= '9')

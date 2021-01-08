@@ -3,12 +3,11 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(boot ASM)
+PROJECT(port CXX)
 
-find_asm_source_files(ASM_SOURCE_FILES ${boot_SOURCE_DIR})
+aux_source_directory(${port_SOURCE_DIR} port_src)
 
-set(boot_src ${ASM_SOURCE_FILES})
+add_library(${PROJECT_NAME} OBJECT ${port_src})
 
-add_library(${PROJECT_NAME} OBJECT ${boot_src})
-
+target_include_libc_header_files(${PROJECT_NAME})
 target_include_kernel_header_files(${PROJECT_NAME})
