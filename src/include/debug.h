@@ -7,16 +7,12 @@
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "stdint.h"
-
-void debug_init(void);
-
-#ifdef __cplusplus
-}
-#endif
+class DEBUG {
+private:
+protected:
+public:
+    DEBUG(void);
+    ~DEBUG(void);
+};
 
 #endif /* _DEBUG_H_ */
