@@ -3,7 +3,7 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(boot C ASM)
+PROJECT(boot CXX ASM)
 
 find_asm_source_files(ASM_SOURCE_FILES ${boot_SOURCE_DIR})
 
