@@ -11,6 +11,8 @@ extern "C" {
 #include "kernel.h"
 
 void kernel_main(void) {
+    KERNEL k;
+    k.k();
     return;
 }
 
@@ -24,4 +26,8 @@ KERNEL::KERNEL(void) {
 
 KERNEL::~KERNEL() {
     return;
+}
+
+int KERNEL::k() {
+    return 233;
 }
