@@ -46,7 +46,7 @@ message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc++)
+add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
 
 # Link
@@ -61,7 +61,7 @@ if (SimpleKernelArch STREQUAL i386)
         $<TARGET_OBJECTS:port>
         $<TARGET_OBJECTS:kernel>
         $<TARGET_OBJECTS:libc>
-        $<TARGET_OBJECTS:libc++>
+        $<TARGET_OBJECTS:libcxx>
         $<TARGET_OBJECTS:vga>
         $<TARGET_OBJECTS:console>)
 elseif (SimpleKernelArch STREQUAL x86_64)
