@@ -4,7 +4,7 @@
 // Based on https://wiki.osdev.org/C%2B%2B
 // cxxabi.cpp for Simple-XX/SimpleKernel.
 
-#include "./include/cxxabi.h"
+#include "cxxabi.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,8 +13,9 @@ extern "C" {
 atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];
 uarch_t             __atexit_func_count = 0;
 
-void *__dso_handle = 0; // Attention! Optimally, you should remove the '= 0'
-                        // part and define this in your asm script.
+// Attention! Optimally, you should remove the '= 0' part and define this in
+// your asm script.
+void *__dso_handle = 0;
 
 int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     if (__atexit_func_count >= ATEXIT_MAX_FUNCS) {
@@ -24,8 +25,8 @@ int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     __atexit_funcs[__atexit_func_count].obj_ptr         = objptr;
     __atexit_funcs[__atexit_func_count].dso_handle      = dso;
     __atexit_func_count++;
-    return 0; /*I would prefer if functions returned 1 on success, but the ABI
-                 says...*/
+    // I would prefer if functions returned 1 on success, but the ABI says...
+    return 0;
 };
 
 void __cxa_finalize(void *f) {
