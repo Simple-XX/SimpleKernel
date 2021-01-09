@@ -4,8 +4,8 @@
 // Based on https://wiki.osdev.org/C%2B%2B
 // cxxabi.h for Simple-XX/SimpleKernel.
 
-#ifndef _ICXXABI_H_
-#define _ICXXABI_H_
+#ifndef _CXXABI_H_
+#define _CXXABI_H_
 
 #define ATEXIT_MAX_FUNCS 128
 

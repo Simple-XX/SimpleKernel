@@ -7,6 +7,10 @@ function(target_include_libc_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/libc/include)
 endfunction()
 
+function(target_include_libcxx_header_files Target)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/libcxx/include)
+endfunction()
+
 function(target_include_kernel_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/kernel/include)
 endfunction()
