@@ -8,9 +8,6 @@
 #define _CLOCK_H_
 
 #include "stdint.h"
-#include "intr.h"
-#include "port.h"
-#include "console.h"
 
 const uint32_t FREQUENCY = 100;
 // 定时中断由 8253/8254 芯片从 IRQ0 提供
@@ -33,12 +30,14 @@ const uint32_t TIMER_CLK = 0x06;
 // r/w counter 16 bits, LSB first
 const uint32_t TIMER_16BIT = 0x30;
 
-class CLOCK : virtual PORT, virtual CONSOLE {
+class CLOCK {
 private:
 protected:
 public:
     CLOCK(void);
     ~CLOCK(void);
 };
+
+extern CLOCK clockk;
 
 #endif /* _CLOCK_H_ */

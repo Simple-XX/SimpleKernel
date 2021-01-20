@@ -39,7 +39,7 @@ GDT::GDT(void) {
     gdt_load((uint32_t)&gdt_ptr);
     // 加载任务寄存器
     tss_load();
-    console.printk("gdt_init\n");
+    consolek.printk("gdt_init\n");
     return;
 }
 
@@ -80,3 +80,5 @@ void GDT::set_tss(int32_t num, uint16_t ss0, uint32_t esp0) {
     tss_entry.ts_gs   = USER_DS;
     return;
 }
+
+GDT gdtk;

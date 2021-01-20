@@ -133,7 +133,7 @@ extern "C" void gdt_load(uint32_t);
 // 刷新 TSS
 extern "C" void tss_load();
 
-class GDT : virtual CONSOLE {
+class GDT {
 private:
     // 全局描述符表构造函数，根据下标构造
     // 参数: num-数组下标、base-基地址、limit-限长、access-访问标志，gran-粒度
@@ -147,5 +147,7 @@ public:
     GDT(void);
     ~GDT(void);
 };
+
+extern GDT gdtk;
 
 #endif /* _GDT_H_ */

@@ -9,10 +9,9 @@
 
 #include "stdint.h"
 #include "stddef.h"
-#include "port.h"
 
 // vga 颜色
-typedef enum {
+typedef enum : uint8_t {
     BLACK         = 0,
     BLUE          = 1,
     GREEN         = 2,
@@ -34,49 +33,50 @@ typedef enum {
 class VGA {
 private:
     // CRT 控制寄存器-地址
-    const uint32_t VGA_ADDR = 0x3D4;
+    static constexpr const uint32_t VGA_ADDR = 0x3D4;
     // CRT 控制寄存器-数据
-    const uint32_t VGA_DATA = 0x3D5;
+    static constexpr const uint32_t VGA_DATA = 0x3D5;
     // 光标高位
-    const uint32_t VGA_CURSOR_H = 0xE;
+    static constexpr const uint32_t VGA_CURSOR_H = 0xE;
     // 光标低位
-    const uint32_t VGA_CURSOR_L = 0xF;
+    static constexpr const uint32_t VGA_CURSOR_L = 0xF;
     // VGA 缓存基址
-    const uint16_t *VGA_MEM_BASE = (uint16_t *)0xB8000;
+    const uint16_t *VGA_MEM_BASE = reinterpret_cast<const uint16_t *>(0xB8000);
     // VGA 缓存大小
-    const size_t VGA_MEM_SIZE = 0x8000;
+    static constexpr size_t VGA_MEM_SIZE = 0x8000;
     // 规定显示行数、列数
-    const size_t width  = 80;
-    const size_t height = 25;
-    // 用于端口读写
-    PORT port;
+    static constexpr const size_t width  = 80;
+    static constexpr const size_t height = 25;
+    // 缓存
+    uint16_t *const buffer = (uint16_t *)VGA_MEM_BASE;
 
 protected:
-    // 缓存
-    uint16_t *buffer = (uint16_t *)VGA_MEM_BASE;
-
 public:
     VGA(void);
     ~VGA(void);
-    // 设置颜色，详解见 '颜色设置与位运算.md'
+    // 生成颜色，详解见 '颜色设置与位运算.md'
     // fg-font
     // bg-back
-    uint8_t set_color(color_t fg, color_t bg);
+    color_t gen_color(const color_t fg, const color_t bg) const;
+    // 生成一个字符+颜色
     // uc-字符
     // color-颜色
-    uint16_t set_char_color(uint8_t uc, uint8_t color);
+    uint16_t gen_char(const uint8_t uc, const color_t color) const;
     // 获取高度
-    size_t get_height(void);
+    size_t get_height(void) const;
     // 获取宽度
-    size_t get_width(void);
+    size_t get_width(void) const;
     // 写缓存
-    void write(size_t idx, uint16_t data);
+    void write(const size_t idx, const uint16_t data);
     // 读缓存
-    uint16_t read(size_t idx);
+    uint16_t read(const size_t idx) const;
     // 设置光标位置
-    void set_cursor_pos(size_t x, size_t y);
+    void set_cursor_pos(const size_t x, const size_t y);
     // 获取光标位置
-    uint16_t get_cursor_pos(void);
+    uint16_t get_cursor_pos(void) const;
 };
+
+// 内核 vga
+extern VGA vgak;
 
 #endif /* _VGA_H_ */
