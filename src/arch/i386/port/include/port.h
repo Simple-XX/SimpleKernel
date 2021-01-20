@@ -9,18 +9,15 @@
 
 #include "stdint.h"
 
-class PORT {
-private:
-protected:
-public:
-    PORT(void);
-    ~PORT(void);
+namespace PORT {
     // 端口读一个字节
-    uint8_t inb(uint32_t port);
+    uint8_t inb(const uint32_t port);
     // 端口读一个字
-    uint16_t inw(uint32_t port);
+    uint16_t inw(const uint32_t port);
     // 端口写一个字节
-    void outb(uint32_t port, uint8_t data);
+    void outb(const uint32_t port, const uint8_t data);
+    // 端口写一个字
+    void outw(const uint32_t port, const uint16_t data);
 };
 
 #endif /* _PORT_H_ */
