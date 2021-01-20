@@ -10,16 +10,25 @@
 #include "string.h"
 #include "console.h"
 
-CONSOLE::CONSOLE(void) : vga(VGA()) {
-    rows  = vga.get_height();
-    cols  = vga.get_width();
-    color = vga.set_color(LIGHT_GREY, BLACK);
+CONSOLE::CONSOLE(void) {
+    rows  = vgak.get_height();
+    cols  = vgak.get_width();
+    color = vgak.gen_color(LIGHT_GREY, BLACK);
     clear();
+    curr_row = 0;
+    curr_col = 0;
     this->write_string("console_init\n");
     return;
 }
 
 CONSOLE::~CONSOLE(void) {
+    return;
+}
+
+void CONSOLE::put_entry_at(const char c, const color_t color, const size_t x,
+                           const size_t y) {
+    const size_t index = y * cols + x;
+    vgak.write(index, vgak.gen_char(c, color));
     return;
 }
 
@@ -30,10 +39,10 @@ void CONSOLE::clear(void) {
             const size_t index = y * cols + x;
             // 用 ' ' 填满屏幕
             // 字体为灰色，背景为黑色
-            vga.write(index, vga.set_char_color(' ', color));
+            vgak.write(index, vgak.gen_char(' ', color));
         }
     }
-    vga.set_cursor_pos(0, 0);
+    vgak.set_cursor_pos(0, 0);
     return;
 }
 
@@ -41,11 +50,11 @@ void CONSOLE::scroll(void) {
     if (curr_row >= rows) {
         // 将所有行的显示数据复制到上一行
         for (size_t i = 0; i < (rows - 1) * cols; i++) {
-            vga.write(i, vga.read(i + cols));
+            vgak.write(i, vgak.read(i + cols));
         }
         // 最后的一行数据现在填充空格，不显示任何字符
         for (size_t i = (rows - 1) * cols; i < rows * cols; i++) {
-            vga.write(i, vga.set_char_color(' ', color));
+            vgak.write(i, vgak.gen_char(' ', color));
         }
         // 向上移动了一行，所以 cursor_y 现在是 24
         curr_row = 24;
@@ -65,7 +74,7 @@ void CONSOLE::write(const char *data, size_t size) {
     return;
 }
 
-void CONSOLE::put_char(char c) {
+void CONSOLE::put_char(const char c) {
     put_entry_at(c, color, curr_col, curr_row);
     // 如果到达最后一列则换行
     if (++curr_col >= cols) {
@@ -76,11 +85,11 @@ void CONSOLE::put_char(char c) {
     escapeconv(c);
     // 屏幕滚动
     scroll();
-    vga.set_cursor_pos(curr_col, curr_row);
+    vgak.set_cursor_pos(curr_col, curr_row);
     return;
 }
 
-void CONSOLE::escapeconv(char c) {
+void CONSOLE::escapeconv(const char c) {
     switch (c) {
         case '\n': {
             curr_col = 0;
@@ -106,18 +115,12 @@ void CONSOLE::escapeconv(char c) {
     return;
 }
 
-void CONSOLE::put_entry_at(char c, uint8_t color, size_t x, size_t y) {
-    const size_t index = y * cols + x;
-    vga.write(index, vga.set_char_color(c, color));
-    return;
-}
-
-void CONSOLE::set_color(uint8_t color) {
+void CONSOLE::set_color(const color_t color) {
     this->color = color;
     return;
 }
 
-uint8_t CONSOLE::get_color(void) {
+color_t CONSOLE::get_color(void) {
     return this->color;
 }
 
@@ -135,4 +138,4 @@ int32_t CONSOLE::printk(const char *fmt, ...) {
     return i;
 }
 
-CONSOLE console;
+CONSOLE consolek;

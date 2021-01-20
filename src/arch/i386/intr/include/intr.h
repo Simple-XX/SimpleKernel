@@ -238,7 +238,7 @@ extern "C" void irq_handler(pt_regs_t *regs);
 // ISR 处理函数
 extern "C" void isr_handler(pt_regs_t *regs);
 
-class INTR : virtual A8259A, virtual PORT, virtual CONSOLE {
+class INTR : virtual A8259A {
 private:
     // 系统中断
     static void divide_error(pt_regs_t *regs);
@@ -281,5 +281,7 @@ public:
     friend void irq_handler(pt_regs_t *regs);
     friend void isr_handler(pt_regs_t *regs);
 };
+
+extern INTR intrk;
 
 #endif /* _INTR_H_ */
