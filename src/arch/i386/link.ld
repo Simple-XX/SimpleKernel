@@ -25,6 +25,12 @@ SECTIONS
     PROVIDE(kernel_data_start = .);
     .data : ALIGN(4K)
     {
+		PROVIDE(ctors_start = .);
+	    *(.ctor*)
+	    PROVIDE(ctors_end = .);
+	    PROVIDE(dtors_start = .);
+	    *(.dtor*)
+	    PROVIDE(dtors_end = .);
         *(.data)
     }
     PROVIDE(kernel_data_end = .);
