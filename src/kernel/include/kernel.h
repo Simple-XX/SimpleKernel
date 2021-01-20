@@ -7,7 +7,7 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#include "console.h"
+#include "stdint.h"
 #include "debug.h"
 #include "gdt.h"
 #include "intr.h"
@@ -18,7 +18,6 @@ void gdt_init(void);
 void idt_init(void);
 void clock_init(void);
 void debug_init(void);
-void showinfo(void);
 
 extern addr_t kernel_start[];
 extern addr_t kernel_text_start[];
@@ -29,12 +28,9 @@ extern addr_t kernel_end[];
 
 extern "C" void kernel_main(void);
 
-class KERNEL : virtual CONSOLE {
+class KERNEL {
 private:
-    GDT   gdt;
-    INTR  intr;
-    CLOCK clock;
-    DEBUG debug;
+    void arch_init(void) const;
 
 protected:
 public:

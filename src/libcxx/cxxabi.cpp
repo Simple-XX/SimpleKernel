@@ -10,12 +10,17 @@
 extern "C" {
 #endif
 
+void cpp_init(void) {
+    constructor_func *f;
+    for (f = ctors_start; f < ctors_end; f++) {
+        (*f)();
+    }
+}
+
 atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];
 uarch_t             __atexit_func_count = 0;
 
-// Attention! Optimally, you should remove the '= 0' part and define this in
-// your asm script.
-void *__dso_handle = 0;
+extern void *__dso_handle;
 
 int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     if (__atexit_func_count >= ATEXIT_MAX_FUNCS) {
@@ -25,8 +30,8 @@ int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     __atexit_funcs[__atexit_func_count].obj_ptr         = objptr;
     __atexit_funcs[__atexit_func_count].dso_handle      = dso;
     __atexit_func_count++;
-    // I would prefer if functions returned 1 on success, but the ABI says...
-    return 0;
+    return 0; /*I would prefer if functions returned 1 on success, but the ABI
+                 says...*/
 };
 
 void __cxa_finalize(void *f) {
@@ -110,6 +115,28 @@ void __cxa_finalize(void *f) {
         };
     };
 };
+
+namespace __cxxabiv1 {
+    /* guard variables */
+
+    /* The ABI requires a 64-bit type.  */
+    __extension__ typedef int __guard __attribute__((mode(__DI__)));
+
+    extern "C" int  __cxa_guard_acquire(__guard *);
+    extern "C" void __cxa_guard_release(__guard *);
+    extern "C" void __cxa_guard_abort(__guard *);
+
+    extern "C" int __cxa_guard_acquire(__guard *g) {
+        return !*(char *)(g);
+    }
+
+    extern "C" void __cxa_guard_release(__guard *g) {
+        *(char *)g = 1;
+    }
+
+    extern "C" void __cxa_guard_abort(__guard *) {
+    }
+}
 
 #ifdef __cplusplus
 };

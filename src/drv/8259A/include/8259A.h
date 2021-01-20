@@ -8,7 +8,6 @@
 #define _8259A_H_
 
 #include "stdint.h"
-#include "port.h"
 
 // Master (IRQs 0-7)
 const uint32_t IO_PIC1 = 0x20;
@@ -19,7 +18,7 @@ const uint32_t IO_PIC2C = IO_PIC2 + 1;
 // End-of-interrupt command code
 const uint32_t PIC_EOI = 0x20;
 
-class A8259A : virtual PORT {
+class A8259A {
 private:
 protected:
 public:
