@@ -55,7 +55,6 @@ if (SimpleKernelArch STREQUAL i386)
         $<TARGET_OBJECTS:boot>
         $<TARGET_OBJECTS:gdt>
         $<TARGET_OBJECTS:intr>
-        $<TARGET_OBJECTS:debug>
         $<TARGET_OBJECTS:8259A>
         $<TARGET_OBJECTS:clock>
         $<TARGET_OBJECTS:port>
@@ -63,7 +62,8 @@ if (SimpleKernelArch STREQUAL i386)
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:libcxx>
         $<TARGET_OBJECTS:vga>
-        $<TARGET_OBJECTS:console>)
+        $<TARGET_OBJECTS:console>
+        $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}_boot
         $<TARGET_OBJECTS:boot>

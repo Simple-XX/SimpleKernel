@@ -6,6 +6,7 @@
 
 #include "8259A.h"
 #include "intr.h"
+#include "io.h"
 
 A8259A::A8259A(void) {
     return;
@@ -23,25 +24,25 @@ void A8259A::init_interrupt_chip(void) {
 
     // 初始化主片、从片
     // 0001 0001
-    outb(IO_PIC1, 0x11);
+    iok.outb(IO_PIC1, 0x11);
     // 设置主片 IRQ 从 0x20(32) 号中断开始
-    outb(IO_PIC1C, IRQ0);
+    iok.outb(IO_PIC1C, IRQ0);
     // 设置主片 IR2 引脚连接从片
-    outb(IO_PIC1C, 0x04);
+    iok.outb(IO_PIC1C, 0x04);
     // 设置主片按照 8086 的方式工作
-    outb(IO_PIC1C, 0x01);
+    iok.outb(IO_PIC1C, 0x01);
 
-    outb(IO_PIC2, 0x11);
+    iok.outb(IO_PIC2, 0x11);
     // 设置从片 IRQ 从 0x28(40) 号中断开始
-    outb(IO_PIC2C, IRQ8);
+    iok.outb(IO_PIC2C, IRQ8);
     // 告诉从片输出引脚和主片 IR2 号相连
-    outb(IO_PIC2C, 0x02);
+    iok.outb(IO_PIC2C, 0x02);
     // 设置从片按照 8086 的方式工作
-    outb(IO_PIC2C, 0x01);
+    iok.outb(IO_PIC2C, 0x01);
 
     // 默认关闭所有中断
-    outb(IO_PIC1C, 0xFF);
-    outb(IO_PIC2C, 0xFF);
+    iok.outb(IO_PIC1C, 0xFF);
+    iok.outb(IO_PIC2C, 0xFF);
     return;
 }
 
@@ -52,9 +53,9 @@ void A8259A::clear_interrupt_chip(uint32_t intr_no) {
     // 故大于等于 40 的中断号是由从片处理的
     if (intr_no >= IRQ8) {
         // 发送重设信号给从片
-        outb(IO_PIC2, PIC_EOI);
+        iok.outb(IO_PIC2, PIC_EOI);
     }
     // 发送重设信号给主片
-    outb(IO_PIC1, PIC_EOI);
+    iok.outb(IO_PIC1, PIC_EOI);
     return;
 }

@@ -11,8 +11,8 @@
 void die(const char *str, uint32_t oesp, uint32_t int_no) {
     // uint32_t * old_esp = (uint32_t *)oesp;
     pt_regs_t *old_esp = (pt_regs_t *)oesp;
-    console.printk("%s\t: %d\n\r", str, int_no);
-    console.printk("die_Unuseable.\n");
+    consolek.printk("%s\t: %d\n\r", str, int_no);
+    consolek.printk("die_Unuseable.\n");
     // cs::EIP
     // oss:oesp
     // printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
@@ -24,18 +24,18 @@ void die(const char *str, uint32_t oesp, uint32_t int_no) {
     // printk_color(red, "EIP:\t%08x:%08X\nEFLAGS:\t%08x\nESP:\t%08x:%08X\n",
     // old_esp->cs, old_esp->eip, old_esp->eflags, old_esp->ss,
     // old_esp->old_esp);
-    console.printk("gs: %08x\tfs: %08x\tes: %08x\tds: %08x\n", old_esp->gs,
-                   old_esp->fs, old_esp->es, old_esp->ds);
-    console.printk("edi: %08x\tesi: %08x\tebp: %08x\told_esp: %08x\n",
-                   old_esp->edi, old_esp->esi, old_esp->ebp, old_esp->old_esp);
-    console.printk("ebx: %08x\tedx: %08x\tecx: %08x\teax: %08x\n", old_esp->ebx,
-                   old_esp->edx, old_esp->ecx, old_esp->eax);
-    console.printk("int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
-                   old_esp->int_no, old_esp->err_code, old_esp->eip,
-                   old_esp->cs);
-    console.printk("eflags: %08x\tuser_esp: %08x\tss: %08x\n", old_esp->eflags,
-                   old_esp->user_esp, old_esp->user_ss);
-    console.printk("addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
+    consolek.printk("gs: %08x\tfs: %08x\tes: %08x\tds: %08x\n", old_esp->gs,
+                    old_esp->fs, old_esp->es, old_esp->ds);
+    consolek.printk("edi: %08x\tesi: %08x\tebp: %08x\told_esp: %08x\n",
+                    old_esp->edi, old_esp->esi, old_esp->ebp, old_esp->old_esp);
+    consolek.printk("ebx: %08x\tedx: %08x\tecx: %08x\teax: %08x\n",
+                    old_esp->ebx, old_esp->edx, old_esp->ecx, old_esp->eax);
+    consolek.printk("int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
+                    old_esp->int_no, old_esp->err_code, old_esp->eip,
+                    old_esp->cs);
+    consolek.printk("eflags: %08x\tuser_esp: %08x\tss: %08x\n", old_esp->eflags,
+                    old_esp->user_esp, old_esp->user_ss);
+    consolek.printk("addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
 
     cpu_hlt();
     return;
@@ -55,9 +55,9 @@ void isr_handler(pt_regs_t *regs) {
         INTR::interrupt_handlers[regs->int_no](regs);
     }
     else {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "Unhandled interrupt: %d %s\n", regs->int_no,
-                       INTR::intrname(regs->int_no));
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "Unhandled interrupt: %d %s\n", regs->int_no,
+                        INTR::intrname(regs->int_no));
         cpu_hlt();
     }
     return;
@@ -157,7 +157,7 @@ INTR::INTR(void) {
     register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
     register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
 
-    console.printk("intr_init\n");
+    consolek.printk("intr_init\n");
     return;
 }
 
@@ -176,20 +176,20 @@ void INTR::debug(pt_regs_t *regs) {
 
     // 取任务寄存器值->tr
     __asm__ volatile("str %%ax" : "=a"(tr) : "0"(0));
-    console.printk("Unuseable.\n");
+    consolek.printk("Unuseable.\n");
 
-    console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                   regs->eax, regs->ebx, regs->ecx, regs->edx);
-    console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                   "esi 0x%08X\tedi 0x%08X\tebp 0x%08X\tesp 0x%08X\n",
-                   regs->esi, regs->edi, regs->ebp, (uint32_t)regs->user_esp);
-    console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                   "ds 0x%08X\tes 0x%08X\tfs 0x%08X\tgs 0x%08X\n", regs->ds,
-                   regs->es, regs->fs, regs->gs);
-    console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                   "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
-                   // old_esp[0], old_esp[1], old_esp[2]);
-                   old_esp[0], read_eflags(), old_esp[2]);
+    consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                    regs->eax, regs->ebx, regs->ecx, regs->edx);
+    consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                    "esi 0x%08X\tedi 0x%08X\tebp 0x%08X\tesp 0x%08X\n",
+                    regs->esi, regs->edi, regs->ebp, (uint32_t)regs->user_esp);
+    consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                    "ds 0x%08X\tes 0x%08X\tfs 0x%08X\tgs 0x%08X\n", regs->ds,
+                    regs->es, regs->fs, regs->gs);
+    consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                    "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
+                    // old_esp[0], old_esp[1], old_esp[2]);
+                    old_esp[0], read_eflags(), old_esp[2]);
     return;
 }
 
@@ -261,44 +261,44 @@ void INTR::page_fault(pt_regs_t *regs) {
     uint32_t cr2;
     asm volatile("mov %%cr2,%0" : "=r"(cr2));
 #endif
-    console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                   "Page fault at 0x%08X, virtual faulting address 0x%08X\n",
-                   regs->eip, cr2);
-    console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                   "Error code: 0x%08X\n", regs->err_code);
+    consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                    "Page fault at 0x%08X, virtual faulting address 0x%08X\n",
+                    regs->eip, cr2);
+    consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                    "Error code: 0x%08X\n", regs->err_code);
 
     // bit 0 为 0 指页面不存在内存里
     if (!(regs->err_code & 0x1)) {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "Because the page wasn't present.\n");
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "Because the page wasn't present.\n");
     }
     // bit 1 为 0 表示读错误，为 1 为写错误
     if (regs->err_code & 0x2) {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "Write error.\n");
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "Write error.\n");
     }
     else {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "Read error.\n");
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "Read error.\n");
     }
     // bit 2 为 1 表示在用户模式打断的，为 0 是在内核模式打断的
     if (regs->err_code & 0x4) {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "In user mode.\n");
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "In user mode.\n");
     }
     else {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "In kernel mode.\n");
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "In kernel mode.\n");
     }
     // bit 3 为 1 表示错误是由保留位覆盖造成的
     if (regs->err_code & 0x8) {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "Reserved bits being overwritten.\n");
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "Reserved bits being overwritten.\n");
     }
     // bit 4 为 1 表示错误发生在取指令的时候
     if (regs->err_code & 0x10) {
-        console.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                       "The fault occurred during an instruction fetch.\n");
+        consolek.printk("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                        "The fault occurred during an instruction fetch.\n");
     }
     while (1) {
         ;
@@ -376,3 +376,5 @@ void INTR::disable_irq(uint32_t irq_no) {
     }
     return;
 }
+
+INTR intrk;
