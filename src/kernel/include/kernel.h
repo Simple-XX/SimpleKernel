@@ -8,14 +8,11 @@
 #define _KERNEL_H_
 
 #include "stdint.h"
-#include "console.h"
 
 extern "C" void kernel_main(void);
 
 class KERNEL {
 private:
-    CONSOLE console;
-
 protected:
 public:
     KERNEL(void);

@@ -5,32 +5,38 @@
 // kernel.cpp for Simple-XX/SimpleKernel.
 
 #include "kernel.h"
+#include "cxxabi.h"
+#include "io.h"
 
 #if defined(RASPI2)
 #include "uart.h"
 #include "framebuffer.h"
 #endif
 
-KERNEL::KERNEL(void) : console(CONSOLE()) {
+KERNEL::KERNEL(void) {
     return;
 }
+
 KERNEL::~KERNEL(void) {
     return;
 }
 
 int32_t KERNEL::init(void) {
+    cpp_init();
     char        c = '!';
     const char *s = "gg\n";
-    console.put_char(c);
-    console.write_string(s);
-    console.printk("Simple Kernel.\n");
+    iok.put_char(c);
+    iok.write_string(s);
+    iok.printf("Simple Kernel.\n");
     return 0;
 }
 
 void kernel_main(void) {
-
     KERNEL kernel;
     kernel.init();
+    while (1) {
+        ;
+    }
 
 #if defined(RASPI2)
     uart_init();
