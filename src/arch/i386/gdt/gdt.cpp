@@ -4,42 +4,21 @@
 //
 // gdt.cpp for Simple-XX/SimpleKernel.
 
-#include "console.h"
+#include "io.h"
 #include "debug.h"
 #include "cpu.hpp"
 #include "gdt.h"
 
-static gdt_ptr_t gdt_ptr;
-// 全局描述符表定义
-static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
+extern tss_struct_t tss_entry __attribute__((aligned(8)));
+// 加载 GDTR
+extern "C" void gdt_load(uint32_t);
+// 刷新 TSS
+extern "C" void tss_load();
 
-// TSS 段定义
-tss_struct_t tss_entry __attribute__((aligned(8)));
+gdt_ptr_t   GDT::gdt_ptr;
+gdt_entry_t GDT::gdt_entries[GDT_LENGTH];
 
 GDT::GDT(void) {
-    // 全局描述符表界限  从 0 开始，所以总长要 - 1
-    gdt_ptr.limit = sizeof(gdt_entry_t) * GDT_LENGTH - 1;
-    gdt_ptr.base  = (uint32_t)&gdt_entries;
-
-    // 采用 Intel 平坦模型
-    // 0xC0: 粒度为 4096?
-    set_gdt(SEG_NULL, 0x0, 0x0, 0x0,
-            0x0); // Intel 文档要求首个描述符全 0
-    set_gdt(SEG_KTEXT, 0x0, 0xFFFFFFFF, KREAD_EXEC,
-            0xC0); // 内核指令段
-    set_gdt(SEG_KDATA, 0x0, 0xFFFFFFFF, KREAD_WRITE,
-            0xC0); // 内核数据段
-    set_gdt(SEG_UTEXT, 0x0, 0xFFFFFFFF, UREAD_EXEC,
-            0xC0); // 用户模式代码段
-    set_gdt(SEG_UDATA, 0x0, 0xFFFFFFFF, UREAD_WRITE,
-            0xC0); // 用户模式数据段
-    set_tss(SEG_TSS, KERNEL_DS, 0);
-
-    // 加载全局描述符表地址到 GDTR 寄存器
-    gdt_load((uint32_t)&gdt_ptr);
-    // 加载任务寄存器
-    tss_load();
-    consolek.printk("gdt_init\n");
     return;
 }
 
@@ -79,6 +58,32 @@ void GDT::set_tss(int32_t num, uint16_t ss0, uint32_t esp0) {
     tss_entry.ts_fs   = USER_DS;
     tss_entry.ts_gs   = USER_DS;
     return;
+}
+
+int32_t GDT::init(void) {
+    // 全局描述符表界限  从 0 开始，所以总长要 - 1
+    gdt_ptr.limit = sizeof(gdt_entry_t) * GDT_LENGTH - 1;
+    gdt_ptr.base  = (uint32_t)&gdt_entries;
+    // 采用 Intel 平坦模型
+    // 0xC0: 粒度为 4096?
+    set_gdt(SEG_NULL, 0x0, 0x0, 0x0,
+            0x0); // Intel 文档要求首个描述符全 0
+    set_gdt(SEG_KTEXT, 0x0, 0xFFFFFFFF, KREAD_EXEC,
+            0xC0); // 内核指令段
+    set_gdt(SEG_KDATA, 0x0, 0xFFFFFFFF, KREAD_WRITE,
+            0xC0); // 内核数据段
+    set_gdt(SEG_UTEXT, 0x0, 0xFFFFFFFF, UREAD_EXEC,
+            0xC0); // 用户模式代码段
+    set_gdt(SEG_UDATA, 0x0, 0xFFFFFFFF, UREAD_WRITE,
+            0xC0); // 用户模式数据段
+    set_tss(SEG_TSS, KERNEL_DS, 0);
+
+    // 加载全局描述符表地址到 GDTR 寄存器
+    gdt_load((uint32_t)&gdt_ptr);
+    // 加载任务寄存器
+    tss_load();
+    iok.printf("gdt_init\n");
+    return 0;
 }
 
 GDT gdtk;

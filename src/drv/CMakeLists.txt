@@ -6,7 +6,6 @@
 if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vga)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/console)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/8259A)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/clock)
 elseif (SimpleKernelArch STREQUAL RASPI2)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/mailbox)

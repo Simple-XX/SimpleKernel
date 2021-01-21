@@ -9,43 +9,6 @@
 
 #include "stdint.h"
 
-// 全局描述符表长度
-const uint32_t GDT_LENGTH = 6;
-// 各个内存段所在全局描述符表下标
-const uint32_t SEG_NULL  = 0;
-const uint32_t SEG_KTEXT = 1;
-const uint32_t SEG_KDATA = 2;
-const uint32_t SEG_UTEXT = 3;
-const uint32_t SEG_UDATA = 4;
-const uint32_t SEG_TSS   = 5;
-// 内核代码段 0x08
-const uint32_t GD_KTEXT = SEG_KTEXT << 3;
-// 内核数据段
-const uint32_t GD_KDATA = SEG_KDATA << 3;
-// 用户代码段
-const uint32_t GD_UTEXT = SEG_UTEXT << 3;
-// 用户数据段
-const uint32_t GD_UDATA = SEG_UDATA << 3;
-// 任务段
-const uint32_t GD_TSS = SEG_TSS << 3;
-// 段描述符 DPL
-// 内核级
-const uint32_t DPL_KERNEL = 0;
-// 用户级
-const uint32_t DPL_USER = 3;
-
-// 各个段的全局描述符表的选择子
-const uint32_t KERNEL_CS = GD_KTEXT | DPL_KERNEL;
-const uint32_t KERNEL_DS = GD_KDATA | DPL_KERNEL;
-const uint32_t USER_CS   = GD_UTEXT | DPL_USER;
-const uint32_t USER_DS   = GD_UDATA | DPL_USER;
-
-// 访问权限
-const uint32_t KREAD_EXEC  = 0x9A;
-const uint32_t KREAD_WRITE = 0x92;
-const uint32_t UREAD_EXEC  = 0xFA;
-const uint32_t UREAD_WRITE = 0xF2;
-
 // 全局描述符类型
 typedef struct gdt_entry {
     // 段界限   15～0
@@ -127,25 +90,62 @@ typedef struct tss_struct {
     uint32_t ts_iomb;
 } __attribute__((packed)) tss_struct_t;
 
-extern tss_struct_t tss_entry __attribute__((aligned(8)));
-// 加载 GDTR
-extern "C" void gdt_load(uint32_t);
-// 刷新 TSS
-extern "C" void tss_load();
-
 class GDT {
 private:
+    // 全局描述符表长度
+    static constexpr const uint32_t GDT_LENGTH = 6;
+    // 各个内存段所在全局描述符表下标
+    static constexpr const uint32_t SEG_NULL  = 0;
+    static constexpr const uint32_t SEG_KTEXT = 1;
+    static constexpr const uint32_t SEG_KDATA = 2;
+    static constexpr const uint32_t SEG_UTEXT = 3;
+    static constexpr const uint32_t SEG_UDATA = 4;
+    static constexpr const uint32_t SEG_TSS   = 5;
+    // 内核代码段 0x08
+    static constexpr const uint32_t GD_KTEXT = SEG_KTEXT << 3;
+    // 内核数据段
+    static constexpr const uint32_t GD_KDATA = SEG_KDATA << 3;
+    // 用户代码段
+    static constexpr const uint32_t GD_UTEXT = SEG_UTEXT << 3;
+    // 用户数据段
+    static constexpr const uint32_t GD_UDATA = SEG_UDATA << 3;
+    // 任务段
+    static constexpr const uint32_t GD_TSS = SEG_TSS << 3;
+    // 段描述符 DPL
+    // 内核级
+    static constexpr const uint32_t DPL_KERNEL = 0;
+    // 用户级
+    static constexpr const uint32_t DPL_USER = 3;
+
+    // 各个段的全局描述符表的选择子
+    static constexpr const uint32_t KERNEL_CS = GD_KTEXT | DPL_KERNEL;
+    static constexpr const uint32_t KERNEL_DS = GD_KDATA | DPL_KERNEL;
+    static constexpr const uint32_t USER_CS   = GD_UTEXT | DPL_USER;
+    static constexpr const uint32_t USER_DS   = GD_UDATA | DPL_USER;
+
+    // 访问权限
+    static constexpr const uint32_t KREAD_EXEC  = 0x9A;
+    static constexpr const uint32_t KREAD_WRITE = 0x92;
+    static constexpr const uint32_t UREAD_EXEC  = 0xFA;
+    static constexpr const uint32_t UREAD_WRITE = 0xF2;
     // 全局描述符表构造函数，根据下标构造
     // 参数: num-数组下标、base-基地址、limit-限长、access-访问标志，gran-粒度
     void set_gdt(int32_t num, uint32_t base, uint32_t limit, uint8_t access,
                  uint8_t gran);
     void set_tss(int32_t num, uint16_t ss0, uint32_t esp0);
+    // 全局 gdt 指针
+    static gdt_ptr_t gdt_ptr;
+    // 全局描述符表定义
+    static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
+    // TSS 段定义
+    tss_struct_t tss_entry __attribute__((aligned(8)));
 
 protected:
 public:
-    // 初始化全局描述符表
     GDT(void);
     ~GDT(void);
+    // 初始化
+    int32_t init(void);
 };
 
 extern GDT gdtk;
