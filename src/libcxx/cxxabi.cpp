@@ -15,6 +15,7 @@ void cpp_init(void) {
     for (f = ctors_start; f < ctors_end; f++) {
         (*f)();
     }
+    return;
 }
 
 atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];

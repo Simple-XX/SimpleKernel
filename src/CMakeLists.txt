@@ -52,12 +52,8 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
 # Link
 if (SimpleKernelArch STREQUAL i386)
     add_executable(${KernelName}
-        $<TARGET_OBJECTS:boot>
-        $<TARGET_OBJECTS:gdt>
-        $<TARGET_OBJECTS:intr>
-        $<TARGET_OBJECTS:8259A>
+        $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:clock>
-        $<TARGET_OBJECTS:port>
         $<TARGET_OBJECTS:kernel>
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:libcxx>

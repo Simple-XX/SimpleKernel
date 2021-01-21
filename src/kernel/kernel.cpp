@@ -8,6 +8,8 @@
 #include "cxxabi.h"
 #include "io.h"
 #include "cpu.hpp"
+#include "gdt.h"
+#include "intr.h"
 
 #if defined(RASPI2)
 #include "uart.h"
@@ -23,6 +25,8 @@ KERNEL::~KERNEL(void) {
 }
 
 void KERNEL::arch_init(void) const {
+    gdtk.init();
+    intrk.init();
     return;
 }
 
@@ -40,6 +44,7 @@ void KERNEL::show_info(void) {
 
 int32_t KERNEL::init(void) {
     cpp_init();
+    arch_init();
     return 0;
 }
 
