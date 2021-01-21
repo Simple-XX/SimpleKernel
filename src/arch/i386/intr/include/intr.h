@@ -8,69 +8,6 @@
 #define _INTR_H_
 
 #include "stdint.h"
-#include "console.h"
-#include "port.h"
-#include "8259A.h"
-
-// 中断表最大值
-const uint32_t INTERRUPT_MAX = 256;
-
-// 定义IRQ
-// 电脑系统计时器
-const uint32_t IRQ0 = 32;
-// 键盘
-const uint32_t IRQ1 = 33;
-// 与 IRQ9 相接，MPU-401 MD 使用
-const uint32_t IRQ2 = 34;
-// 串口设备
-const uint32_t IRQ3 = 35;
-// 串口设备
-const uint32_t IRQ4 = 36;
-// 建议声卡使用
-const uint32_t IRQ5 = 37;
-// 软驱传输控制使用
-const uint32_t IRQ6 = 38;
-// 打印机传输控制使用
-const uint32_t IRQ7 = 39;
-// 即时时钟
-const uint32_t IRQ8 = 40;
-// 与 IRQ2 相接，可设定给其他硬件
-const uint32_t IRQ9 = 41;
-// 建议网卡使用
-const uint32_t IRQ10 = 42;
-// 建议 AGP 显卡使用
-const uint32_t IRQ11 = 43;
-// 接 PS/2 鼠标，也可设定给其他硬件
-const uint32_t IRQ12 = 44;
-// 协处理器使用
-const uint32_t IRQ13 = 45;
-// IDE0 传输控制使用
-const uint32_t IRQ14 = 46;
-// IDE1 传输控制使用
-const uint32_t IRQ15 = 47;
-
-// 中断号定义
-const uint32_t INT_DIVIDE_ERROR     = 0;
-const uint32_t INT_DEBUG            = 1;
-const uint32_t INT_NMI              = 2;
-const uint32_t INT_BREAKPOINT       = 3;
-const uint32_t INT_OVERFLOW         = 4;
-const uint32_t INT_BOUND            = 5;
-const uint32_t INT_INVALID_OPCODE   = 6;
-const uint32_t INT_DEVICE_NOT_AVAIL = 7;
-const uint32_t INT_DOUBLE_FAULT     = 8;
-const uint32_t INT_COPROCESSOR      = 9;
-const uint32_t INT_INVALID_TSS      = 10;
-const uint32_t INT_SEGMENT          = 11;
-const uint32_t INT_STACK_FAULT      = 12;
-const uint32_t INT_GENERAL_PROTECT  = 13;
-const uint32_t INT_PAGE_FAULT       = 14;
-
-const uint32_t INT_X87_FPU       = 16;
-const uint32_t INT_ALIGNMENT     = 17;
-const uint32_t INT_MACHINE_CHECK = 18;
-const uint32_t INT_SIMD_FLOAT    = 19;
-const uint32_t INT_VIRTUAL_EXCE  = 20;
 
 typedef struct pt_regs {
     // segment registers
@@ -127,119 +64,89 @@ typedef struct idt_ptr {
     uint32_t base;
 } __attribute__((packed)) idt_ptr_t;
 
-// 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
-// ISR:中断服务程序(interrupt service routine)
-// 0 #DE 除 0 异常
-extern "C" void isr0();
-// 1 #DB 调试异常
-extern "C" void isr1();
-// 2 NMI
-extern "C" void isr2();
-// 3 BP 断点异常
-extern "C" void isr3();
-// 4 #OF 溢出
-extern "C" void isr4();
-// 5 #BR 对数组的引用超出边界
-extern "C" void isr5();
-// 6 #UD 无效或未定义的操作码
-extern "C" void isr6();
-// 7 #NM 设备不可用(无数学协处理器)
-extern "C" void isr7();
-// 8 #DF 双重故障(有错误代码)
-extern "C" void isr8();
-// 9 协处理器跨段操作
-extern "C" void isr9();
-// 10 #TS 无效TSS(有错误代码)
-extern "C" void isr10();
-// 11 #NP 段不存在(有错误代码)
-extern "C" void isr11();
-// 12 #SS 栈错误(有错误代码)
-extern "C" void isr12();
-// 13 #GP 常规保护(有错误代码)
-extern "C" void isr13();
-// 14 #PF 页故障(有错误代码)
-extern "C" void isr14();
-// 15 CPU 保留
-extern "C" void isr15();
-// 16 #MF 浮点处理单元错误
-extern "C" void isr16();
-// 17 #AC 对齐检查
-extern "C" void isr17();
-// 18 #MC 机器检查
-extern "C" void isr18();
-// 19 #XM SIMD(单指令多数据)浮点异常
-extern "C" void isr19();
-
-// 20 ~ 31 Intel 保留
-extern "C" void isr20();
-extern "C" void isr21();
-extern "C" void isr22();
-extern "C" void isr23();
-extern "C" void isr24();
-extern "C" void isr25();
-extern "C" void isr26();
-extern "C" void isr27();
-extern "C" void isr28();
-extern "C" void isr29();
-extern "C" void isr30();
-extern "C" void isr31();
-
-// 32 ~ 255 用户自定义异常
-extern "C" void isr128(); // 0x80 用于实现系统调用
-
-// 声明 IRQ 函数
-// IRQ:中断请求(Interrupt Request)
-// 电脑系统计时器
-extern "C" void irq0();
-// 键盘
-extern "C" void irq1();
-// 与 IRQ9 相接，MPU-401 MD 使用
-extern "C" void irq2();
-// 串口设备
-extern "C" void irq3();
-// 串口设备
-extern "C" void irq4();
-// 建议声卡使用
-extern "C" void irq5();
-// 软驱传输控制使用
-extern "C" void irq6();
-// 打印机传输控制使用
-extern "C" void irq7();
-// 即时时钟
-extern "C" void irq8();
-// 与 IRQ2 相接，可设定给其他硬件
-extern "C" void irq9();
-// 建议网卡使用
-extern "C" void irq10();
-// 建议 AGP 显卡使用
-extern "C" void irq11();
-// 接 PS/2 鼠标，也可设定给其他硬件
-extern "C" void irq12();
-// 协处理器使用
-extern "C" void irq13();
-// IDE0 传输控制使用
-extern "C" void irq14();
-// IDE1 传输控制使用
-extern "C" void irq15();
-
 // 定义中断处理函数指针
 typedef void (*interrupt_handler_t)(pt_regs_t *);
-
-// 声明加载 IDTR 的函数
-extern "C" void idt_load(uint32_t);
 
 // 中断处理函数指针类型
 typedef void (*isr_irq_func_t)();
 
 void die(const char *str, uint32_t oesp, uint32_t int_no);
 
-// IRQ 处理函数
-extern "C" void irq_handler(pt_regs_t *regs);
-// ISR 处理函数
-extern "C" void isr_handler(pt_regs_t *regs);
-
-class INTR : virtual A8259A {
+class INTR {
 private:
+    // 中断表最大值
+    static constexpr const uint32_t INTERRUPT_MAX = 256;
+
+    // 定义IRQ
+    // 电脑系统计时器
+    static constexpr const uint32_t IRQ0 = 32;
+    // 键盘
+    static constexpr const uint32_t IRQ1 = 33;
+    // 与 IRQ9 相接，MPU-401 MD 使用
+    static constexpr const uint32_t IRQ2 = 34;
+    // 串口设备
+    static constexpr const uint32_t IRQ3 = 35;
+    // 串口设备
+    static constexpr const uint32_t IRQ4 = 36;
+    // 建议声卡使用
+    static constexpr const uint32_t IRQ5 = 37;
+    // 软驱传输控制使用
+    static constexpr const uint32_t IRQ6 = 38;
+    // 打印机传输控制使用
+    static constexpr const uint32_t IRQ7 = 39;
+    // 即时时钟
+    static constexpr const uint32_t IRQ8 = 40;
+    // 与 IRQ2 相接，可设定给其他硬件
+    static constexpr const uint32_t IRQ9 = 41;
+    // 建议网卡使用
+    static constexpr const uint32_t IRQ10 = 42;
+    // 建议 AGP 显卡使用
+    static constexpr const uint32_t IRQ11 = 43;
+    // 接 PS/2 鼠标，也可设定给其他硬件
+    static constexpr const uint32_t IRQ12 = 44;
+    // 协处理器使用
+    static constexpr const uint32_t IRQ13 = 45;
+    // IDE0 传输控制使用
+    static constexpr const uint32_t IRQ14 = 46;
+    // IDE1 传输控制使用
+    static constexpr const uint32_t IRQ15 = 47;
+
+    // 中断号定义
+    static constexpr const uint32_t INT_DIVIDE_ERROR     = 0;
+    static constexpr const uint32_t INT_DEBUG            = 1;
+    static constexpr const uint32_t INT_NMI              = 2;
+    static constexpr const uint32_t INT_BREAKPOINT       = 3;
+    static constexpr const uint32_t INT_OVERFLOW         = 4;
+    static constexpr const uint32_t INT_BOUND            = 5;
+    static constexpr const uint32_t INT_INVALID_OPCODE   = 6;
+    static constexpr const uint32_t INT_DEVICE_NOT_AVAIL = 7;
+    static constexpr const uint32_t INT_DOUBLE_FAULT     = 8;
+    static constexpr const uint32_t INT_COPROCESSOR      = 9;
+    static constexpr const uint32_t INT_INVALID_TSS      = 10;
+    static constexpr const uint32_t INT_SEGMENT          = 11;
+    static constexpr const uint32_t INT_STACK_FAULT      = 12;
+    static constexpr const uint32_t INT_GENERAL_PROTECT  = 13;
+    static constexpr const uint32_t INT_PAGE_FAULT       = 14;
+    static constexpr const uint32_t INT_X87_FPU          = 16;
+    static constexpr const uint32_t INT_ALIGNMENT        = 17;
+    static constexpr const uint32_t INT_MACHINE_CHECK    = 18;
+    static constexpr const uint32_t INT_SIMD_FLOAT       = 19;
+    static constexpr const uint32_t INT_VIRTUAL_EXCE     = 20;
+
+    // 8259A 相关定义
+    // Master (IRQs 0-7)
+    static constexpr const uint32_t IO_PIC1 = 0x20;
+    // Slave  (IRQs 8-15)
+    static constexpr const uint32_t IO_PIC2  = 0xA0;
+    static constexpr const uint32_t IO_PIC1C = IO_PIC1 + 1;
+    static constexpr const uint32_t IO_PIC2C = IO_PIC2 + 1;
+    // End-of-interrupt command code
+    static constexpr const uint32_t PIC_EOI = 0x20;
+    // 设置 8259A 芯片
+    void init_interrupt_chip(void);
+    // 重设 8259A 芯片
+    void clear_interrupt_chip(uint32_t intr_no);
+
     // 系统中断
     static void divide_error(pt_regs_t *regs);
     static void debug(pt_regs_t *regs);
@@ -259,8 +166,29 @@ private:
     // 设置中断描述符
     static void set_idt(uint8_t num, uint32_t base, uint16_t target,
                         uint8_t flags);
-    // 返回中断名
-    static const char *intrname(uint32_t intrno);
+    // 中断名数组
+    static constexpr const char *const intrnames[] = {
+        "Divide error",
+        "Debug",
+        "Non-Maskable Interrupt",
+        "Breakpoint",
+        "Overflow",
+        "BOUND Range Exceeded",
+        "Invalid Opcode",
+        "Device Not Available",
+        "Double Fault",
+        "Coprocessor Segment Overrun",
+        "Invalid TSS",
+        "Segment Not Present",
+        "Stack Fault",
+        "General Protection",
+        "Page Fault",
+        "(unknown trap)",
+        "x87 FPU Floating-Point Error",
+        "Alignment Check",
+        "Machine-Check",
+        "SIMD Floating-Point Exception"};
+
     // 中断处理函数指针数组
     static isr_irq_func_t      isr_irq_func[INTERRUPT_MAX];
     static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
@@ -274,12 +202,17 @@ protected:
 public:
     INTR(void);
     ~INTR(void);
+    int32_t init(void);
     // 注册一个中断处理函数
     static void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
     static void enable_irq(uint32_t irq_no);
     static void disable_irq(uint32_t irq_no);
-    friend void irq_handler(pt_regs_t *regs);
-    friend void isr_handler(pt_regs_t *regs);
+    uint32_t    get_irq(uint32_t irq_no);
+    // 返回中断名
+    const char *get_intr_name(uint32_t intr_no);
+    // 执行中断
+    int32_t call_irq(uint32_t intr_no, pt_regs_t *regs);
+    int32_t call_isr(uint32_t intr_no, pt_regs_t *regs);
 };
 
 extern INTR intrk;
