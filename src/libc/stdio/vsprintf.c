@@ -14,8 +14,7 @@ extern "C" {
 #include "stdarg.h"
 #include "stddef.h"
 #include "stdint.h"
-
-extern size_t strlen(const char *str);
+#include "string.h"
 
 // 判断字符是否数字字符
 #define is_digit(c) ((c) >= '0' && (c) <= '9')
@@ -46,12 +45,22 @@ static int skip_atoi(const char **s) {
 #define SMALL 64
 
 // 除操作。n 被除数；base 除数。结果 n 为商，函数返回值为余数。
-#define do_div(n, base)                                                        \
-    ({                                                                         \
-        int __res;                                                             \
-        __asm__("divl %4" : "=a"(n), "=d"(__res) : "0"(n), "1"(0), "r"(base)); \
-        __res;                                                                 \
-    })
+#if defined(i386) || defined(x86_64)
+int32_t do_div(int *n, int base) {
+    int32_t res = 0;
+    res         = *n % base;
+    *n          = *n / base;
+    return res;
+}
+#elif RASPI2
+#include "math.h"
+int32_t do_div(int *n, int base) {
+    int32_t res = 0;
+    res         = modsi3(*n, base);
+    *n          = divsi3(*n, base);
+    return res;
+}
+#endif
 
 // 将整数转换为指定进制的字符串。输入：num-整数；base-进制；size-字符串长度;precision-数字长度
 // (精读)；type-类型选项。输出：str-字符串指针
@@ -106,7 +115,7 @@ static char *number(char *str, int num, int base, int size, int precision,
     }
     else {
         while (num != 0) {
-            tmp[i++] = digits[do_div(num, base)];
+            tmp[i++] = digits[do_div(&num, base)];
         }
     }
     // 若数值字符个数大于精读值，则精度值扩展为数字个数值。宽度值减去用于存放数值字符的个数。
