@@ -6,6 +6,14 @@
 
 #include "port.h"
 
+PORT::PORT(void) {
+    return;
+}
+
+PORT::~PORT(void) {
+    return;
+}
+
 uint8_t PORT::inb(const uint32_t port) {
     uint8_t ret;
     __asm__ volatile("inb %1, %0" : "=a"(ret) : "dN"(port));
@@ -27,3 +35,5 @@ void PORT::outb(const uint32_t port, const uint8_t data) {
     __asm__ volatile("outb %1, %0" : : "dN"(port), "a"(data));
     return;
 }
+
+PORT portk;
