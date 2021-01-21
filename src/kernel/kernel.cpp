@@ -25,9 +25,9 @@ int32_t KERNEL::init(void) {
     cpp_init();
     char        c = '!';
     const char *s = "gg\n";
-    iok.put_char(c);
-    iok.write_string(s);
-    iok.printf("Simple Kernel.\n");
+    io.put_char(c);
+    io.write_string(s);
+    io.printf("Simple Kernel.\n");
     return 0;
 }
 
