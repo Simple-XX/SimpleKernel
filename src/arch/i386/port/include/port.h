@@ -9,7 +9,12 @@
 
 #include "stdint.h"
 
-namespace PORT {
+class PORT {
+private:
+protected:
+public:
+    PORT(void);
+    ~PORT(void);
     // 端口读一个字节
     uint8_t inb(const uint32_t port);
     // 端口读一个字
@@ -19,5 +24,7 @@ namespace PORT {
     // 端口写一个字
     void outw(const uint32_t port, const uint16_t data);
 };
+
+extern PORT portk;
 
 #endif /* _PORT_H_ */
