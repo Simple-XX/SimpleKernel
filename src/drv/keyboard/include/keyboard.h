@@ -8,6 +8,7 @@
 #define _KEYBOARD_H_
 
 #include "stdint.h"
+#include "intr.h"
 
 class KEYBOARD {
 private:
@@ -609,7 +610,7 @@ public:
     KEYBOARD(void);
     ~KEYBOARD(void);
     int32_t init(void);
-    void    keyboard_read(pt_regs_t *regs);
+    void    keyboard_read(INTR::pt_regs_t *regs);
 };
 
 extern KEYBOARD keyboardk;
