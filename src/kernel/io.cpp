@@ -17,20 +17,20 @@ IO::~IO(void) {
 }
 
 uint8_t IO::inb(const uint32_t port) {
-    return portk.inb(port);
+    return PORT::inb(port);
 }
 
 uint16_t IO::inw(const uint32_t port) {
-    return portk.inw(port);
+    return PORT::inw(port);
 }
 
 void IO::outb(const uint32_t port, const uint8_t data) {
-    portk.outb(port, data);
+    PORT::outb(port, data);
     return;
 }
 
 void IO::outw(const uint32_t port, const uint16_t data) {
-    portk.outw(port, data);
+    PORT::outw(port, data);
     return;
 }
 
@@ -90,4 +90,4 @@ int32_t IO::printf(const char *format, ...) {
     return 0;
 }
 
-IO iok;
+IO io;
