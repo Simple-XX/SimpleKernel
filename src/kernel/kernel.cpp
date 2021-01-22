@@ -25,20 +25,20 @@ KERNEL::~KERNEL(void) {
 }
 
 void KERNEL::arch_init(void) const {
-    gdtk.init();
-    intrk.init();
+    GDT::init();
+    INTR::init();
     return;
 }
 
 void KERNEL::show_info(void) {
     // 输出一些基本信息
-    iok.printf("Simple Kernel\n");
-    iok.printf(
+    io.printf("Simple Kernel\n");
+    io.printf(
         "kernel in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n",
         kernel_start, kernel_end);
-    iok.printf("kernel in memory size: %d KB, %d pages\n ",
-               (kernel_end - kernel_start) / 1024,
-               (kernel_end - kernel_start) / 1024 / 4);
+    io.printf("kernel in memory size: %d KB, %d pages\n ",
+              (kernel_end - kernel_start) / 1024,
+              (kernel_end - kernel_start) / 1024 / 4);
     return;
 }
 
@@ -53,44 +53,44 @@ void kernel_main(void) {
     kernel.init();
 
     cpu_sti();
-    iok.printf("sti\n");
+    io.printf("sti\n");
     if (EFLAGS_IF_status()) {
-        iok.printf("interrupt accept!\n");
+        io.printf("interrupt accept!\n");
     }
     else {
-        iok.printf("interrupt not accept!\n");
+        io.printf("interrupt not accept!\n");
     }
 
     // close intr
     cpu_cli();
     for (int i = 0; i < 5; i++) {
         if (EFLAGS_IF_status()) {
-            iok.printf("before hlt, interrupt accept!\n");
+            io.printf("before hlt, interrupt accept!\n");
         }
         else {
-            iok.printf("before hlt, interrupt not accept!\n");
+            io.printf("before hlt, interrupt not accept!\n");
         }
 
         cpu_hlt();
 
         if (EFLAGS_IF_status()) {
-            iok.printf("after hlt, interrupt accept!\n\n");
+            io.printf("after hlt, interrupt accept!\n\n");
         }
         else {
-            iok.printf("after hlt, interrupt not accept!\n\n");
+            io.printf("after hlt, interrupt not accept!\n\n");
         }
     }
     // cpu_hlt();
     // cpu_cli();
 
     if (EFLAGS_IF_status()) {
-        iok.printf("interrupt accept!\n");
+        io.printf("interrupt accept!\n");
     }
     else {
-        iok.printf("interrupt not accept!\n");
+        io.printf("interrupt not accept!\n");
     }
 
-    iok.printf("\nEnd.\n");
+    io.printf("\nEnd.\n");
 
 #if defined(RASPI2)
     uart_init();
