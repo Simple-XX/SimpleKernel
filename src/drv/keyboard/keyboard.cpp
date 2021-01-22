@@ -6,21 +6,28 @@
 
 #include "stddef.h"
 #include "stdbool.h"
-#include "intr.h"
 #include "keyboard.h"
 #include "io.h"
-
-// KEYBOARD::shift = false;
-// KEYBOARD::caps  = false;
-// KEYBOARD::ctrl  = false;
-// KEYBOARD::num   = true;
-// KEYBOARD::alt   = false;
 
 // 改进方向：
 // 将输入输出与 tty 结合起来
 // 维护一个保存 tty 信息的结构体，包括 缓冲区信息，sh 设置，颜色等
 
+KEYBOARD::kb_input_t KEYBOARD::kb_in;
+bool                 KEYBOARD::shift;
+bool                 KEYBOARD::caps;
+bool                 KEYBOARD::ctrl;
+bool                 KEYBOARD::num;
+bool                 KEYBOARD::alt;
+
 KEYBOARD::KEYBOARD(void) {
+    shift       = false;
+    caps        = false;
+    ctrl        = false;
+    num         = true;
+    alt         = false;
+    kb_in.count = 0;
+    kb_in.head = kb_in.tail = kb_in.buff;
     return;
 }
 
@@ -30,7 +37,7 @@ KEYBOARD::~KEYBOARD(void) {
 
 void KEYBOARD::keyboard_handler() {
     // 从8042读取数据
-    uint8_t scan_code = iok.inb(KB_DATA);
+    uint8_t scan_code = io.inb(KB_DATA);
     if (kb_in.count < KB_BUFSIZE) {
         *(kb_in.tail) = scan_code;
         ++kb_in.tail;
@@ -39,6 +46,7 @@ void KEYBOARD::keyboard_handler() {
         ++kb_in.count;
     }
     // 缓冲区满了直接丢弃
+    return;
 }
 
 // 从缓冲区读取
@@ -56,18 +64,16 @@ uint8_t KEYBOARD::keyboard_read_from_buff() {
     return scancode;
 }
 
-void KEYBOARD::keyboard_read(pt_regs_t *regs) {
+void KEYBOARD::keyboard_read(INTR::pt_regs_t *regs __attribute__((unused))) {
     keyboard_handler();
     if (kb_in.count > 0) {
         uint8_t scancode = keyboard_read_from_buff();
         // 判断是否出错
         if (!scancode) {
-            iok.printf("scancode error.\n");
+            io.printf("scancode error.\n");
             return;
         }
         uint8_t letter = 0;
-        // 在 default 中用到
-        uint8_t str[2] = {'\0', '\0'};
         // 开始处理
         switch (scancode) {
             // 如果是特殊字符，则单独处理
@@ -104,13 +110,13 @@ void KEYBOARD::keyboard_read(pt_regs_t *regs) {
                 num = ((!num) & 0x01);
                 break;
             case KB_BACKSPACE:
-                iok.printf("\b");
+                io.put_char('\b');
                 break;
             case KB_ENTER:
-                iok.printf("\n");
+                io.put_char('\n');
                 break;
             case KB_TAB:
-                iok.printf("\t");
+                io.put_char('\t');
                 break;
             // 一般字符输出
             default:
@@ -118,9 +124,7 @@ void KEYBOARD::keyboard_read(pt_regs_t *regs) {
                 if (!(scancode & RELEASED_MASK)) {
                     // 计算在 keymap 中的位置
                     letter = keymap[(uint8_t)(scancode * 3) + (uint8_t)shift];
-                    str[0] = letter;
-                    str[1] = '\0';
-                    iok.printf("%s", str);
+                    io.put_char(letter);
                     break;
                 }
                 else {
@@ -130,35 +134,15 @@ void KEYBOARD::keyboard_read(pt_regs_t *regs) {
     }
 }
 
-static void kb_handle(pt_regs_t *regs) {
-    // asm("mov $0xCDCD, %eax");
-    // asm("hlt");
+static void kb_handle(INTR::pt_regs_t *regs) {
     keyboardk.keyboard_read(regs);
     return;
 }
 
-KEYBOARD::kb_input_t KEYBOARD::kb_in;
-bool                 KEYBOARD::shift;
-bool                 KEYBOARD::caps;
-bool                 KEYBOARD::ctrl;
-bool                 KEYBOARD::num;
-bool                 KEYBOARD::alt;
-
 int32_t KEYBOARD::init(void) {
-    shift = false;
-    caps  = false;
-    ctrl  = false;
-    num   = true;
-    alt   = false;
-    int a = 233;
-    int b = 0;
-    iok.printf("a/b: %d\n", a / b);
-
-    kb_in.count = 0;
-    kb_in.head = kb_in.tail = kb_in.buff;
-    intrk.register_interrupt_handler(intrk.get_irq(1), &kb_handle);
-    intrk.enable_irq(intrk.get_irq(1));
-    iok.printf("keyboard_init\n");
+    INTR::register_interrupt_handler(INTR::get_irq(1), &kb_handle);
+    INTR::enable_irq(INTR::get_irq(1));
+    io.printf("keyboard_init\n");
     return 0;
 }
 

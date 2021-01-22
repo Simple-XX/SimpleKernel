@@ -7,73 +7,11 @@
 #ifndef _INTR_H_
 #define _INTR_H_
 
+#pragma once
+
 #include "stdint.h"
 
-typedef struct pt_regs {
-    // segment registers
-    // 16 bits
-    uint32_t gs;
-    // 16 bits
-    uint32_t fs;
-    // 16 bits
-    uint32_t es;
-    // 16 bits
-    uint32_t ds;
-
-    // registers save by pusha
-    uint32_t edi;
-    uint32_t esi;
-    uint32_t ebp;
-    uint32_t old_esp;
-    uint32_t ebx;
-    uint32_t edx;
-    uint32_t ecx;
-    uint32_t eax;
-
-    uint32_t int_no;
-    // save by `int` instruction
-    uint32_t err_code;
-    // 以下指令由cpu压入，参见x86/x64 532页
-    uint32_t eip; // 指向产生异常的指令
-    uint32_t cs;  // 16 bits
-    uint32_t eflags;
-    // 如果发生了特权级切换，CPU 会压入以下两个参数
-    uint32_t user_esp;
-    uint32_t user_ss; // 16 bits
-} pt_regs_t;
-
-// 中断描述符
-typedef struct idt_entry {
-    // 中断处理函数地址 15～0 位
-    uint16_t base_low;
-    // 目标代码段描述符选择子
-    uint16_t selector;
-    // 置 0 段
-    uint8_t zero;
-    // 一些标志，文档有解释
-    uint8_t flags;
-    // 中断处理函数地址 31～16 位
-    uint16_t base_high;
-} __attribute__((packed)) idt_entry_t;
-
-// IDTR
-typedef struct idt_ptr {
-    // 限长
-    uint16_t limit;
-    // 基址
-    uint32_t base;
-} __attribute__((packed)) idt_ptr_t;
-
-// 定义中断处理函数指针
-typedef void (*interrupt_handler_t)(pt_regs_t *);
-
-// 中断处理函数指针类型
-typedef void (*isr_irq_func_t)();
-
-void die(const char *str, uint32_t oesp, uint32_t int_no);
-
-class INTR {
-private:
+namespace INTR {
     // 中断表最大值
     static constexpr const uint32_t INTERRUPT_MAX = 256;
 
@@ -142,30 +80,80 @@ private:
     static constexpr const uint32_t IO_PIC2C = IO_PIC2 + 1;
     // End-of-interrupt command code
     static constexpr const uint32_t PIC_EOI = 0x20;
+
+    typedef struct pt_regs {
+        // segment registers
+        // 16 bits
+        uint32_t gs;
+        // 16 bits
+        uint32_t fs;
+        // 16 bits
+        uint32_t es;
+        // 16 bits
+        uint32_t ds;
+
+        // registers save by pusha
+        uint32_t edi;
+        uint32_t esi;
+        uint32_t ebp;
+        uint32_t old_esp;
+        uint32_t ebx;
+        uint32_t edx;
+        uint32_t ecx;
+        uint32_t eax;
+
+        uint32_t int_no;
+        // save by `int` instruction
+        uint32_t err_code;
+        // 以下指令由cpu压入，参见x86/x64 532页
+        // 指向产生异常的指令
+        uint32_t eip;
+        // 16 bits
+        uint32_t cs;
+        uint32_t eflags;
+        // 如果发生了特权级切换，CPU 会压入以下两个参数
+        uint32_t user_esp;
+        // 16 bits
+        uint32_t user_ss;
+    } pt_regs_t;
+
+    // 中断描述符
+    typedef struct idt_entry {
+        // 中断处理函数地址 15～0 位
+        uint16_t base_low;
+        // 目标代码段描述符选择子
+        uint16_t selector;
+        // 置 0 段
+        uint8_t zero;
+        // 一些标志，文档有解释
+        uint8_t flags;
+        // 中断处理函数地址 31～16 位
+        uint16_t base_high;
+    } __attribute__((packed)) idt_entry_t;
+
+    // IDTR
+    typedef struct idt_ptr {
+        // 限长
+        uint16_t limit;
+        // 基址
+        uint32_t base;
+    } __attribute__((packed)) idt_ptr_t;
+
+    // 定义中断处理函数指针
+    typedef void (*interrupt_handler_t)(pt_regs_t *);
+
+    // 中断处理函数指针类型
+    typedef void (*isr_irq_func_t)();
+
+    void die(const char *str, uint32_t oesp, uint32_t int_no);
+
     // 设置 8259A 芯片
     void init_interrupt_chip(void);
     // 重设 8259A 芯片
     void clear_interrupt_chip(uint32_t intr_no);
 
-    // 系统中断
-    static void divide_error(pt_regs_t *regs);
-    static void debug(pt_regs_t *regs);
-    static void nmi(pt_regs_t *regs);
-    static void breakpoint(pt_regs_t *regs);
-    static void overflow(pt_regs_t *regs);
-    static void bound(pt_regs_t *regs);
-    static void invalid_opcode(pt_regs_t *regs);
-    static void device_not_available(pt_regs_t *regs);
-    static void double_fault(pt_regs_t *regs);
-    static void coprocessor_error(pt_regs_t *regs);
-    static void invalid_TSS(pt_regs_t *regs);
-    static void segment_not_present(pt_regs_t *regs);
-    static void stack_segment(pt_regs_t *regs);
-    static void general_protection(pt_regs_t *regs);
-    static void page_fault(pt_regs_t *regs);
     // 设置中断描述符
-    static void set_idt(uint8_t num, uint32_t base, uint16_t target,
-                        uint8_t flags);
+    void set_idt(uint8_t num, uint32_t base, uint16_t target, uint8_t flags);
     // 中断名数组
     static constexpr const char *const intrnames[] = {
         "Divide error",
@@ -187,34 +175,21 @@ private:
         "x87 FPU Floating-Point Error",
         "Alignment Check",
         "Machine-Check",
-        "SIMD Floating-Point Exception"};
+        "SIMD Floating-Point Exception",
+    };
 
-    // 中断处理函数指针数组
-    static isr_irq_func_t      isr_irq_func[INTERRUPT_MAX];
-    static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
-        __attribute__((aligned(4)));
-    // 中断描述符表
-    static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
-    // IDTR
-    static idt_ptr_t idt_ptr;
-
-protected:
-public:
-    INTR(void);
-    ~INTR(void);
     int32_t init(void);
     // 注册一个中断处理函数
-    static void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
-    static void enable_irq(uint32_t irq_no);
-    static void disable_irq(uint32_t irq_no);
-    uint32_t    get_irq(uint32_t irq_no);
+    void     register_interrupt_handler(uint8_t n, interrupt_handler_t h);
+    void     enable_irq(uint32_t irq_no);
+    void     disable_irq(uint32_t irq_no);
+    uint32_t get_irq(uint32_t irq_no);
     // 返回中断名
     const char *get_intr_name(uint32_t intr_no);
     // 执行中断
     int32_t call_irq(uint32_t intr_no, pt_regs_t *regs);
     int32_t call_isr(uint32_t intr_no, pt_regs_t *regs);
-};
 
-extern INTR intrk;
+};
 
 #endif /* _INTR_H_ */
