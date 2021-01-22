@@ -62,16 +62,16 @@ namespace GDT {
         gdt_ptr.base  = (uint32_t)&gdt_entries;
         // 采用 Intel 平坦模型
         // 0xC0: 粒度为 4096?
-        set_gdt(SEG_NULL, 0x0, 0x0, 0x0,
-                0x0); // Intel 文档要求首个描述符全 0
-        set_gdt(SEG_KTEXT, 0x0, 0xFFFFFFFF, KREAD_EXEC,
-                0xC0); // 内核指令段
-        set_gdt(SEG_KDATA, 0x0, 0xFFFFFFFF, KREAD_WRITE,
-                0xC0); // 内核数据段
-        set_gdt(SEG_UTEXT, 0x0, 0xFFFFFFFF, UREAD_EXEC,
-                0xC0); // 用户模式代码段
-        set_gdt(SEG_UDATA, 0x0, 0xFFFFFFFF, UREAD_WRITE,
-                0xC0); // 用户模式数据段
+        // Intel 文档要求首个描述符全 0
+        set_gdt(SEG_NULL, 0x0, 0x0, 0x0, 0x0);
+        // 内核指令段
+        set_gdt(SEG_KTEXT, 0x0, 0xFFFFFFFF, KREAD_EXEC, 0xC0);
+        // 内核数据段
+        set_gdt(SEG_KDATA, 0x0, 0xFFFFFFFF, KREAD_WRITE, 0xC0);
+        // 用户模式代码段
+        set_gdt(SEG_UTEXT, 0x0, 0xFFFFFFFF, UREAD_EXEC, 0xC0);
+        // 用户模式数据段
+        set_gdt(SEG_UDATA, 0x0, 0xFFFFFFFF, UREAD_WRITE, 0xC0);
         set_tss(SEG_TSS, KERNEL_DS, 0);
 
         // 加载全局描述符表地址到 GDTR 寄存器
