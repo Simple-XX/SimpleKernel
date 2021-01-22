@@ -5,7 +5,7 @@
 // vga.cpp for Simple-XX/SimpleKernel.
 
 #include "vga.h"
-#include "port.h"
+#include "io.h"
 
 VGA::VGA(void) {
     return;
@@ -44,21 +44,21 @@ void VGA::set_cursor_pos(const size_t x, const size_t y) {
     const uint16_t index = y * this->width + x;
     // 光标的设置，见参考资料
     // 告诉 VGA 我们要设置光标的高字节
-    portk.outb(VGA_ADDR, VGA_CURSOR_H);
+    io.outb(VGA_ADDR, VGA_CURSOR_H);
     // 发送高 8 位
-    portk.outb(VGA_DATA, index >> 8);
+    io.outb(VGA_DATA, index >> 8);
     // 告诉 VGA 我们要设置光标的低字节
-    portk.outb(VGA_ADDR, VGA_CURSOR_L);
+    io.outb(VGA_ADDR, VGA_CURSOR_L);
     // 发送低 8 位
-    portk.outb(VGA_DATA, index);
+    io.outb(VGA_DATA, index);
     return;
 }
 
 uint16_t VGA::get_cursor_pos(void) const {
-    portk.outb(VGA_ADDR, VGA_CURSOR_H);
-    size_t cursor_pos_h = portk.inb(VGA_DATA);
-    portk.outb(VGA_ADDR, VGA_CURSOR_L);
-    size_t cursor_pos_l = portk.inb(VGA_DATA);
+    io.outb(VGA_ADDR, VGA_CURSOR_H);
+    size_t cursor_pos_h = io.inb(VGA_DATA);
+    io.outb(VGA_ADDR, VGA_CURSOR_L);
+    size_t cursor_pos_l = io.inb(VGA_DATA);
     // 返回光标位置
     return (cursor_pos_h << 8) | cursor_pos_l;
 }
