@@ -10,6 +10,7 @@
 #include "cpu.hpp"
 #include "gdt.h"
 #include "intr.h"
+#include "clock.h"
 #include "keyboard.h"
 
 #if defined(RASPI2)
@@ -37,7 +38,7 @@ void KERNEL::show_info(void) {
     io.printf(
         "kernel in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n",
         kernel_start, kernel_end);
-    io.printf("kernel in memory size: %d KB, %d pages\n ",
+    io.printf("kernel in memory size: %d KB, %d pages\n",
               (kernel_end - kernel_start) / 1024,
               (kernel_end - kernel_start) / 1024 / 4);
     return;
@@ -46,6 +47,7 @@ void KERNEL::show_info(void) {
 int32_t KERNEL::init(void) {
     cpp_init();
     arch_init();
+    clockk.init();
     keyboardk.init();
     return 0;
 }
@@ -53,7 +55,6 @@ int32_t KERNEL::init(void) {
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
-    cpu_sti();
 
 #if defined(RASPI2)
     uart_init();
@@ -70,6 +71,7 @@ void kernel_main(void) {
     log_info("Simple Kernel.\n");
 #endif
     kernel.show_info();
+    cpu_sti();
     while (1) {
         ;
     }

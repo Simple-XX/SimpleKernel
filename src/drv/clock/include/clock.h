@@ -36,6 +36,7 @@ protected:
 public:
     CLOCK(void);
     ~CLOCK(void);
+    int32_t init(void);
 };
 
 extern CLOCK clockk;
