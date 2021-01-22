@@ -80,6 +80,6 @@ public:
 };
 
 // 内核 IO
-extern IO iok;
+extern IO io;
 
 #endif /* _IO_H_ */

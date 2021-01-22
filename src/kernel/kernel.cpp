@@ -26,20 +26,20 @@ KERNEL::~KERNEL(void) {
 }
 
 void KERNEL::arch_init(void) const {
-    gdtk.init();
-    intrk.init();
+    GDT::init();
+    INTR::init();
     return;
 }
 
 void KERNEL::show_info(void) {
     // 输出一些基本信息
-    iok.printf("Simple Kernel\n");
-    iok.printf(
+    io.printf("Simple Kernel\n");
+    io.printf(
         "kernel in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n",
         kernel_start, kernel_end);
-    iok.printf("kernel in memory size: %d KB, %d pages\n ",
-               (kernel_end - kernel_start) / 1024,
-               (kernel_end - kernel_start) / 1024 / 4);
+    io.printf("kernel in memory size: %d KB, %d pages\n ",
+              (kernel_end - kernel_start) / 1024,
+              (kernel_end - kernel_start) / 1024 / 4);
     return;
 }
 
@@ -53,6 +53,7 @@ int32_t KERNEL::init(void) {
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
+    cpu_sti();
 
 #if defined(RASPI2)
     uart_init();
