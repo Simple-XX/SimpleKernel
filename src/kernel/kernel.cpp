@@ -10,6 +10,7 @@
 #include "cpu.hpp"
 #include "gdt.h"
 #include "intr.h"
+#include "clock.h"
 
 #if defined(RASPI2)
 #include "uart.h"
@@ -45,6 +46,7 @@ void KERNEL::show_info(void) {
 int32_t KERNEL::init(void) {
     cpp_init();
     arch_init();
+    clockk.init();
     return 0;
 }
 
@@ -52,6 +54,7 @@ void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
 
+    // enable intr
     cpu_sti();
     io.printf("sti\n");
     if (EFLAGS_IF_status()) {
@@ -63,34 +66,13 @@ void kernel_main(void) {
 
     // close intr
     cpu_cli();
-    for (int i = 0; i < 5; i++) {
-        if (EFLAGS_IF_status()) {
-            io.printf("before hlt, interrupt accept!\n");
-        }
-        else {
-            io.printf("before hlt, interrupt not accept!\n");
-        }
-
-        cpu_hlt();
-
-        if (EFLAGS_IF_status()) {
-            io.printf("after hlt, interrupt accept!\n\n");
-        }
-        else {
-            io.printf("after hlt, interrupt not accept!\n\n");
-        }
-    }
-    // cpu_hlt();
-    // cpu_cli();
-
+    io.printf("cli\n");
     if (EFLAGS_IF_status()) {
         io.printf("interrupt accept!\n");
     }
     else {
         io.printf("interrupt not accept!\n");
     }
-
-    io.printf("\nEnd.\n");
 
 #if defined(RASPI2)
     uart_init();
@@ -107,6 +89,7 @@ void kernel_main(void) {
     log_info("Simple Kernel.\n");
 #endif
     kernel.show_info();
+    cpu_sti();
     while (1) {
         ;
     }
