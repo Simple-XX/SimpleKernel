@@ -7,37 +7,23 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "debug.h"
+#include "gdt.h"
+#include "intr.h"
+#include "clock.h"
 
-#include "stdint.h"
-#include "stdbool.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "console.h"
-#include "multiboot2.h"
-#include "arch_init.h"
-#include "pmm.h"
+extern "C" void kernel_main(void);
 
-void kernel_main(uint32_t magic, uint32_t addr);
+class KERNEL {
+private:
+    void arch_init(void) const;
 
-void showinfo(void);
-void showinfo(void) {
-    // 输出一些基本信息
-    printk_color(magenta, "SimpleKernel\n");
-    printk_info("kernel in memory(VMA==LMA) start: 0x%X, end 0x%X\n",
-                KERNEL_START_ADDR, KERNEL_END_ADDR);
-    printk_info("kernel in memory(VMA==LMA) align 4k start: 0x%X, end "
-                "0x%X\n",
-                kernel_start_align4k, kernel_end_align4k);
-    printk_info("kernel in memory size: 0x%X KB, 0x%X pages\n",
-                (KERNEL_END_ADDR - KERNEL_START_ADDR) / 1024,
-                ALIGN4K(KERNEL_END_ADDR - KERNEL_START_ADDR) / PMM_PAGE_SIZE);
-}
-
-#ifdef __cplusplus
-}
-#endif
+protected:
+public:
+    KERNEL(void);
+    ~KERNEL(void);
+    void    show_info(void);
+    int32_t init(void);
+};
 
 #endif /* _KERNEL_H_ */
