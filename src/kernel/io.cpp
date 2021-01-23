@@ -100,4 +100,19 @@ int32_t IO::printf(const char *fmt, ...) {
     return i;
 }
 
+int32_t IO::printf(color_t color, const char *fmt, ...) {
+    color_t curr_color = this->get_color();
+    this->set_color(color);
+    va_list args;
+    int32_t i;
+    char    buf[256];
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    consolek.write_string(buf);
+    bzero(buf, 256);
+    this->set_color(curr_color);
+    return i;
+}
+
 IO io;
