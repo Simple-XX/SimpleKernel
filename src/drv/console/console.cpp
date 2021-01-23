@@ -124,18 +124,4 @@ color_t CONSOLE::get_color(void) {
     return this->color;
 }
 
-extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
-
-int32_t CONSOLE::printk(const char *fmt, ...) {
-    va_list args;
-    int32_t i;
-    char    buf[256];
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    this->write_string(buf);
-    bzero(buf, 256);
-    return i;
-}
-
 CONSOLE consolek;
