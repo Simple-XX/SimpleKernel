@@ -40,8 +40,8 @@
 //     return;
 // }
 
-void kernel_main(void) {
-    KERNEL kernel;
+void kernel_main(addr_t magic, addr_t addr) {
+    KERNEL kernel(magic, addr);
     kernel.init();
 
 #if defined(RASPI2)

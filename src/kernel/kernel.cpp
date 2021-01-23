@@ -14,6 +14,7 @@
 #include "keyboard.h"
 #include "pmm.h"
 #include "test.h"
+#include "multiboot2.h"
 
 #if defined(RASPI2)
 #include "uart.h"
@@ -21,6 +22,12 @@
 #endif
 
 KERNEL::KERNEL(void) {
+    return;
+}
+
+KERNEL::KERNEL(addr_t magic, addr_t addr) {
+    this->magic = magic;
+    this->addr  = addr;
     return;
 }
 
@@ -48,10 +55,11 @@ void KERNEL::show_info(void) {
 int32_t KERNEL::init(void) {
     cpp_init();
     arch_init();
+    multiboot2_init(magic, addr);
     clockk.init();
     keyboardk.init();
     pmm_init();
-    // test();
+    test();
     this->show_info();
     return 0;
 }

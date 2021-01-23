@@ -12,15 +12,18 @@
 #include "intr.h"
 #include "clock.h"
 
-extern "C" void kernel_main(void);
+extern "C" void kernel_main(addr_t magic, addr_t addr);
 
 class KERNEL {
 private:
-    void arch_init(void) const;
+    void   arch_init(void) const;
+    addr_t magic;
+    addr_t addr;
 
 protected:
 public:
     KERNEL(void);
+    KERNEL(addr_t magic, addr_t addr);
     ~KERNEL(void);
     void    show_info(void);
     int32_t init(void);
