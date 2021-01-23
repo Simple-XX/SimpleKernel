@@ -10,17 +10,15 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_C_COMPILER_WORKS TRUE)
 set(CMAKE_CXX_COMPILER_WORKS TRUE)
 
-project(SimpleKernel LANGUAGES C ASM)
+project(SimpleKernel LANGUAGES C CXX ASM)
 
 if(${SimpleKernel_SOURCE_DIR} STREQUAL ${SimpleKernel_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there.")
 endif()
 
-# Set debug
-set(CMAKE_BUILD_TYPE Debug)
-
 # Set C gnu11
 set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # Set cmake moudle path
 set(CMAKE_MODULE_PATH "${SimpleKernel_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
@@ -39,7 +37,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Set kernel name
-set(KernelName kernel.bin)
+set(KernelName kernel.elf)
 
 set(SimpleKernel_SOURCE_CODE_DIR ${SimpleKernel_SOURCE_DIR}/src)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR})
