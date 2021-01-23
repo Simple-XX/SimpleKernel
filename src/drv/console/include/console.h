@@ -9,6 +9,7 @@
 
 #include "stddef.h"
 #include "stdint.h"
+#include "stdarg.h"
 #include "vga.h"
 
 class CONSOLE {
@@ -46,8 +47,6 @@ public:
     void set_color(const color_t color);
     // 获取颜色
     color_t get_color(void);
-    // 格式输出
-    int32_t printk(const char *format, ...);
 };
 
 // 内核 console

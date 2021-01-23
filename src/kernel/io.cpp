@@ -4,9 +4,12 @@
 //
 // io.cpp for Simple-XX/SimpleKernel.
 
+#include "string.h"
 #include "io.h"
 #include "port.h"
 #include "console.h"
+
+extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
 
 IO::IO(void) {
     return;
@@ -85,9 +88,16 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
-int32_t IO::printf(const char *format, ...) {
-    consolek.printk(format);
-    return 0;
+int32_t IO::printf(const char *fmt, ...) {
+    va_list args;
+    int32_t i;
+    char    buf[256];
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    consolek.write_string(buf);
+    bzero(buf, 256);
+    return i;
 }
 
 IO io;
