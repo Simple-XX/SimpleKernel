@@ -77,6 +77,7 @@ public:
     int32_t write_string(const char *s);
     // 格式输出
     int32_t printf(const char *format, ...);
+    int32_t printf(color_t color, const char *format, ...);
 };
 
 // 内核 IO
