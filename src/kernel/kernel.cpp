@@ -7,6 +7,7 @@
 #include "kernel.h"
 #include "cxxabi.h"
 #include "io.h"
+#include "console.h"
 
 #if defined(RASPI2)
 #include "uart.h"
@@ -21,22 +22,29 @@ KERNEL::~KERNEL(void) {
     return;
 }
 
+void KERNEL::show_info(void) {
+    io.printf("kernel in memory start: 0x%08X, end 0x%08X\n", kernel_start,
+              kernel_end);
+    io.printf("kernel in memory size: %d KB, %d pages\n",
+              (kernel_end - kernel_start) / 1024,
+              (kernel_end - kernel_start) / 1024 / 4);
+    return;
+}
+
 int32_t KERNEL::init(void) {
     cpp_init();
-    char        c = '!';
-    const char *s = "gg\n";
-    io.put_char(c);
-    io.write_string(s);
-    io.printf("Simple Kernel.\n");
     return 0;
 }
 
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
-    while (1) {
-        ;
-    }
+
+    char        c = '!';
+    const char *s = "gg\n";
+    io.put_char(c);
+    io.write_string(s);
+    io.printf("Simple Kernel.\n");
 
 #if defined(RASPI2)
     uart_init();
@@ -52,5 +60,9 @@ void kernel_main(void) {
     }
     log_info("Simple Kernel.\n");
 #endif
+    kernel.show_info();
+    while (1) {
+        ;
+    }
     return;
 }
