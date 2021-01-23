@@ -7,7 +7,6 @@
 #include "kernel.h"
 #include "cxxabi.h"
 #include "io.h"
-#include "console.h"
 
 #if defined(RASPI2)
 #include "uart.h"
@@ -28,6 +27,7 @@ void KERNEL::show_info(void) {
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               (kernel_end - kernel_start) / 1024,
               (kernel_end - kernel_start) / 1024 / 4);
+    io.printf(LIGHT_GREEN, "Simple Kernel.\n");
     return;
 }
 
