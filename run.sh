@@ -16,12 +16,21 @@ export PATH="${GRUB_PATH}:$PATH"
 mkdir -p ./build/
 rm -rf ./build/*
 cd ./build
-cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} ..
+cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=DEBUG ..
 make
 cd ../
 
-if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
-    echo Multiboot2 Confirmed!
+
+if [ ${ARCH} == "i386" ]; then
+    if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
+        echo Multiboot2 Confirmed!
+    fi
+elif [ ${ARCH} == "x86_64" ]; then
+    if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}_boot; then
+        echo Multiboot2 Confirmed!
+    fi
+elif [ ${ARCH} == "raspi2" ]; then
+    echo Arm-A7.
 else
     echo The File is Not Multiboot.
     exit
@@ -36,24 +45,34 @@ else
 fi
 
 cp ${kernel} ${iso_boot}
+if [ ${ARCH} == "x86_64" ]; then
+    cp ${kernel}_boot ${iso_boot}
+fi
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg
+
+if [ ${ARCH} == "i386" ]; then
+    echo 'set timeout=15
+    set default=0
+    menuentry "SimpleKernel" {
+       multiboot2 /boot/kernel.elf "KERNEL_ELF"
+   }' >${iso_boot_grub}/grub.cfg
+fi
 
 if [ ${ARCH} == "x86_64" ]; then
     echo 'set timeout=15
     set default=0
     menuentry "SimpleKernel" {
-       multiboot2 /boot/kernel.bin "KERNEL_BIN"
+       multiboot2 /boot/kernel.elf_boot "KERNEL_ELF_boot"
    }' >${iso_boot_grub}/grub.cfg
 fi
 
-${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-
-if [ ${SIMULATOR} == "bochs" ]; then
-    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
-elif [ ${SIMULATOR} == "qemu" ]; then
-        qemu-system-${ARCH} -boot d -cdrom simplekernel.iso -m 512
-else
-    echo The SIMULATOR is invalid.
-    exit
+if [ ${ARCH} == "i386" ]; then
+    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+elif [ ${ARCH} == "x86_64" ]; then
+    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
+elif [ ${ARCH} == "raspi2" ]; then
+    ${SIMULATOR}-system-arm -machine raspi2 -serial stdio -kernel ${kernel} 
 fi
