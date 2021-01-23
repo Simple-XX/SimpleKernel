@@ -7,21 +7,14 @@
 #ifndef _ASSERT_H_
 #define _ASSERT_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "stdio.h"
+#include "io.h"
 
 #define assert(test, info)                                                     \
     if (!(test)) {                                                             \
-        printk_err(info);                                                      \
+        io.printf(info);                                                       \
+        asm("mov $0xCDCD, %eax");                                              \
         __asm__ volatile("cli" ::: "memory");                                  \
         while (1) {};                                                          \
     }
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _ASSERT_H_ */

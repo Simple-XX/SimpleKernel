@@ -1,0 +1,78 @@
+
+# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+#
+# cmake.yml for Simple-XX/SimpleKernel.
+
+name: build
+
+on: 
+  - push
+  - pull_request
+  - release
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build_macos:
+    runs-on: macos-latest
+
+    steps:
+    - name: Get code
+      uses: actions/checkout@v2
+      
+    - name: Setup brew
+      shell: bash
+      run: |
+        brew install x86_64-elf-binutils
+        brew install x86_64-elf-gcc
+
+    - name: Make build dir
+      shell: bash
+      run: |
+        mkdir ${{github.workspace}}/build
+
+    - name: cmake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE ..
+
+    - name: make
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: make
+    
+#   build_ubuntu:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - name: Get code
+#       uses: actions/checkout@v2
+      
+#     - name: Setup brew
+#       shell: bash
+#       run: |
+#         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+#         brew install make
+#         brew install cmake
+#         brew install x86_64-elf-binutils
+#         brew install x86_64-elf-gcc
+
+#     - name: Make build dir
+#       shell: bash
+#       run: |
+#         mkdir ${{github.workspace}}/build
+
+#     - name: cmake
+#       shell: bash
+#       working-directory: ${{github.workspace}}/build
+#       run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 ..
+
+#     - name: make
+#       shell: bash
+#       working-directory: ${{github.workspace}}/build
+#       run: make
+    
+
+#   build_win:
+#     runs-on: windows-latest

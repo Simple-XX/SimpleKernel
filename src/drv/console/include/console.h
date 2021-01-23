@@ -7,27 +7,49 @@
 #ifndef _CONSOLE_H_
 #define _CONSOLE_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+#include "stddef.h"
 #include "stdint.h"
-#include "vga.hpp"
+#include "stdarg.h"
+#include "vga.h"
 
-void     console_init(void);
-void     console_scroll(void);
-uint16_t console_getcursorpos(void);
-void     console_setcursorpos(size_t, size_t);
-void     console_writestring(const char *);
-void     console_write(const char *, size_t);
-void     console_putchar(char);
-void     console_escapeconv(char);
-void     console_putentryat(char, uint8_t, size_t, size_t);
-void     console_setcolor(uint8_t);
-uint8_t  console_getcolor(void);
+class CONSOLE {
+private:
+    // 命令行行数
+    size_t rows;
+    // 命令行列数
+    size_t cols;
+    // 当前位置
+    size_t curr_row;
+    size_t curr_col;
+    // 当前命令行颜色
+    color_t color;
+    // 清屏
+    void clear(void);
+    // 转义字符处理
+    void escapeconv(const char c);
+    // 滚动显示
+    void scroll(void);
+    // 指定位置输出
+    void put_entry_at(const char c, const color_t color, const size_t x,
+                      const size_t y);
 
-#ifdef __cplusplus
-}
-#endif
+protected:
+public:
+    CONSOLE(void);
+    ~CONSOLE(void);
+    // 写字符
+    void put_char(const char c);
+    // 写字符串
+    void write_string(const char *s);
+    // 写字符串
+    void write(const char *s, size_t len);
+    // 设置颜色
+    void set_color(const color_t color);
+    // 获取颜色
+    color_t get_color(void);
+};
+
+// 内核 console
+extern CONSOLE consolek;
 
 #endif /* _CONSOLE_H_ */

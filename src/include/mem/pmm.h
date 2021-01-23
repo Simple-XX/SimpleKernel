@@ -7,10 +7,6 @@
 #ifndef _PMM_H_
 #define _PMM_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stddef.h"
 #include "stdint.h"
 #include "multiboot2.h"
@@ -27,19 +23,19 @@ extern "C" {
 // array notation prevents accidental reads from _ebss as arrays must be
 // explicitly dereferenced) ref:
 // http://wiki.osdev.org/Using_Linker_Script_Values
-extern void *kernel_start;
-extern void *kernel_text_start;
-extern void *kernel_text_end;
-extern void *kernel_data_start;
-extern void *kernel_data_end;
-extern void *kernel_end;
+extern "C" uint8_t kernel_start[];
+extern "C" uint8_t kernel_text_start[];
+extern "C" uint8_t kernel_text_end[];
+extern "C" uint8_t kernel_data_start[];
+extern "C" uint8_t kernel_data_end[];
+extern "C" uint8_t kernel_end[];
 
-#define KERNEL_START_ADDR (&kernel_start)
-#define KERNEL_TEXT_START_ADDR (&kernel_text_start)
-#define KERNEL_TEXT_END_ADDR (&kernel_text_end)
-#define KERNEL_DATA_START_ADDR (&kernel_data_start)
-#define KERNEL_DATA_END_ADDR (&kernel_date_end)
-#define KERNEL_END_ADDR (&kernel_end)
+#define KERNEL_START_ADDR (kernel_start)
+#define KERNEL_TEXT_START_ADDR (kernel_text_start)
+#define KERNEL_TEXT_END_ADDR (kernel_text_end)
+#define KERNEL_DATA_START_ADDR (kernel_data_start)
+#define KERNEL_DATA_END_ADDR (kernel_date_end)
+#define KERNEL_END_ADDR (kernel_end)
 
 // 内核栈大小 8KB
 #define KERNEL_STACK_SIZE (0x2000UL)
@@ -136,9 +132,5 @@ void pmm_free_page(void *addr, uint32_t pages);
 
 // 获取空闲内存页数量
 uint32_t pmm_free_pages_count(void);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _PMM_H_ */

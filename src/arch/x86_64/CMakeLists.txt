@@ -4,7 +4,11 @@
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/boot)
+<<<<<<< HEAD
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gdt)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/intr)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/debug)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/pmm)
+=======
+
+>>>>>>> keyboard_init
