@@ -34,13 +34,12 @@ void KERNEL::arch_init(void) const {
 
 void KERNEL::show_info(void) {
     // 输出一些基本信息
-    io.printf("Simple Kernel\n");
-    io.printf(
-        "kernel in memory(VMA=LMA-0xC0000000) start: 0x%08X, end 0x%08X\n",
-        kernel_start, kernel_end);
-    io.printf("kernel in memory size: %d KB, %d pages\n",
+    io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
+              kernel_start, kernel_end);
+    io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               (kernel_end - kernel_start) / 1024,
               (kernel_end - kernel_start) / 1024 / 4);
+    io.printf(LIGHT_GREEN, "Simple Kernel.\n");
     return;
 }
 
@@ -49,6 +48,7 @@ int32_t KERNEL::init(void) {
     arch_init();
     clockk.init();
     keyboardk.init();
+    this->show_info();
     return 0;
 }
 
@@ -70,7 +70,6 @@ void kernel_main(void) {
     }
     log_info("Simple Kernel.\n");
 #endif
-    kernel.show_info();
     cpu_sti();
     while (1) {
         ;
