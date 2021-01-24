@@ -8,41 +8,12 @@
 #include "debug.h"
 #include "assert.h"
 #include "kernel.h"
-#include "test.h"
 
-// // 内核入口
-// void kernel_main(addr_t magic, addr_t addr) {
-//     // 控制台初始化
-//     console_init();
-//     // 从 multiboot 获得系统初始信息
-//     multiboot2_init(magic, addr);
-//     // GDT、IDT 初始化
-//     arch_init();
-//     // 时钟初始化
-//     clock_init();
-//     // 键盘初始化
-//     keyboard_init();
-//     // 调试模块初始化
-//     debug_init(magic, addr);
-//     // 物理内存初始化
-//     pmm_init();
-
-//     test();
-//     showinfo();
-
-//     cpu_sti();
-//     while (1) {
-//         ;
-//     }
-
-//     // 永远不会执行到这里
-//     assert(0, "Never to be seen.\n");
-//     return;
-// }
-
+// 内核入口
 void kernel_main(addr_t magic, addr_t addr) {
     KERNEL kernel(magic, addr);
     kernel.init();
+    kernel.test();
 
 #if defined(RASPI2)
     uart_init();
@@ -62,5 +33,6 @@ void kernel_main(addr_t magic, addr_t addr) {
     while (1) {
         ;
     }
+    assert(0);
     return;
 }

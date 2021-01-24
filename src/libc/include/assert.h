@@ -9,12 +9,8 @@
 
 #include "io.h"
 
-#define assert(test, info)                                                     \
-    if (!(test)) {                                                             \
-        io.printf(info);                                                       \
-        asm("mov $0xCDCD, %eax");                                              \
-        __asm__ volatile("cli" ::: "memory");                                  \
-        while (1) {};                                                          \
-    }
+#define assert(e) ((void)((e) ? ((void)0) : __assert(#e, __FILE__, __LINE__)))
+#define __assert(e, file, line)                                                \
+    ((void)io.printf("%s:%d: failed assertion `%s'\n", file, line, e))
 
 #endif /* _ASSERT_H_ */
