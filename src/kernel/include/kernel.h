@@ -7,22 +7,14 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void kernel_main(void);
-
-#ifdef __cplusplus
-}
-#endif
+extern "C" void kernel_main(void);
 
 class KERNEL {
 private:
 public:
     KERNEL(void);
     ~KERNEL();
-    int k();
+    int init(void);
 };
 
 #endif /* _KERNEL_H_ */
