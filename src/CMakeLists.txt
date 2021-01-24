@@ -49,19 +49,17 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
 # Link
 if (SimpleKernelArch STREQUAL i386)
     add_executable(${KernelName}
-        $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}_boot
-        $<TARGET_OBJECTS:boot>
-        $<TARGET_OBJECTS:init>
-        $<TARGET_OBJECTS:kernel>)
+        $<TARGET_OBJECTS:boot>)
     add_executable(${KernelName}
-        $<TARGET_OBJECTS:init>
+        $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL RASPI2)
     add_executable(${KernelName}
-        $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>)
 endif ()
 
