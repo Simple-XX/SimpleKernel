@@ -4,10 +4,18 @@
 //
 // io.cpp for Simple-XX/SimpleKernel.
 
+#include "stdarg.h"
 #include "string.h"
 #include "io.h"
 #include "port.h"
+
+#if defined(__i386__) || defined(__x86_64__)
 #include "console.h"
+#endif
+
+#if defined(__arm__) || defined(__arm64__)
+#include "uart.h"
+#endif
 
 extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
 
@@ -27,6 +35,10 @@ uint16_t IO::inw(const uint32_t port) {
     return PORT::inw(port);
 }
 
+uint32_t IO::ind(const uint32_t port) {
+    return PORT::ind(port);
+}
+
 void IO::outb(const uint32_t port, const uint8_t data) {
     PORT::outb(port, data);
     return;
@@ -34,6 +46,11 @@ void IO::outb(const uint32_t port, const uint8_t data) {
 
 void IO::outw(const uint32_t port, const uint16_t data) {
     PORT::outw(port, data);
+    return;
+}
+
+void IO::outd(const uint32_t port, const uint32_t data) {
+    PORT::outd(port, data);
     return;
 }
 
@@ -58,7 +75,7 @@ size_t IO::get_row(void) {
 }
 
 size_t IO::get_col(void) {
-    return consolek.get_color();
+    return 0;
 }
 
 size_t IO::set_row(const size_t row __attribute__((unused))) {
@@ -69,6 +86,7 @@ size_t IO::set_col(const size_t col __attribute__((unused))) {
     return 0;
 }
 
+#if defined(__i386__) || defined(__x86_64__)
 color_t IO::get_color(void) {
     return consolek.get_color();
 }
@@ -114,5 +132,6 @@ int32_t IO::printf(color_t color, const char *fmt, ...) {
     this->set_color(curr_color);
     return i;
 }
+#endif
 
 IO io;
