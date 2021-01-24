@@ -60,7 +60,7 @@ static int32_t set_chunk(ff_list_entry_t *chunk, physical_page_t *mempage) {
     list_chunk_info(chunk)->addr   = mempage->addr;
     list_chunk_info(chunk)->npages = 1;
     list_chunk_info(chunk)->ref    = mempage->ref;
-    list_chunk_info(chunk)->flag   = mempage->ref == 0 ? 0 : 1;
+    list_chunk_info(chunk)->flag   = mempage->ref == 0 ? FF_UNUSED : FF_USED;
     return 0;
 }
 

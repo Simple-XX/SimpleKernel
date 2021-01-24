@@ -28,10 +28,11 @@ typedef struct ff_list_entry {
     struct ff_list_entry *prev;
 } ff_list_entry_t;
 
+static constexpr const uint32_t FF_USED   = 0x00;
+static constexpr const uint32_t FF_UNUSED = 0x01;
+
 class FIRSTFIT {
 private:
-    static constexpr const uint32_t FF_USED   = 0x00;
-    static constexpr const uint32_t FF_UNUSED = 0x01;
     // 物理内存起始地址
     uint8_t *addr_start;
     // 物理内存结束地址
