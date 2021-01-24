@@ -22,10 +22,10 @@ typedef struct chunk_info {
 } chunk_info_t;
 
 // 一个仅在这里使用的简单循环链表
-typedef struct list_entry {
-    chunk_info_t       chunk_info;
-    struct list_entry *next;
-    struct list_entry *prev;
+typedef struct ff_list_entry {
+    chunk_info_t          chunk_info;
+    struct ff_list_entry *next;
+    struct ff_list_entry *prev;
 } ff_list_entry_t;
 
 class FIRSTFIT {
