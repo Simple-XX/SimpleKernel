@@ -37,7 +37,7 @@ void KERNEL::show_info(void) {
               kernel_start, kernel_end);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               (kernel_end - kernel_start) / 1024,
-              (kernel_end - kernel_start) / 1024 / 4);
+              (kernel_end - kernel_start + 4095) / 1024 / 4);
     io.printf(LIGHT_GREEN, "Simple Kernel.\n");
     return;
 }
