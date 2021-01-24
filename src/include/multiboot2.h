@@ -18,10 +18,6 @@
 #ifndef _MULTIBOOT2_H_
 #define _MULTIBOOT2_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH 32768
 #define MULTIBOOT_HEADER_ALIGN 8
@@ -362,9 +358,5 @@ extern multiboot_memory_map_entry_t *mmap_entries;
 extern multiboot_mmap_tag_t *        mmap_tag;
 
 #endif /*  ! ASM_FILE */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _MULTIBOOT2_H_ */

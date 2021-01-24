@@ -11,14 +11,17 @@
 #include "gdt.h"
 #include "intr.h"
 #include "clock.h"
+#include "pmm.h"
 
 extern "C" void kernel_main(addr_t magic, addr_t addr);
 
 class KERNEL {
 private:
-    void   arch_init(void) const;
-    addr_t magic;
-    addr_t addr;
+    addr_t  magic;
+    addr_t  addr;
+    PMM     pmm;
+    void    arch_init(void) const;
+    int32_t test_pmm(void);
 
 protected:
 public:
@@ -27,6 +30,7 @@ public:
     ~KERNEL(void);
     void    show_info(void);
     int32_t init(void);
+    int32_t test(void);
 };
 
 #endif /* _KERNEL_H_ */
