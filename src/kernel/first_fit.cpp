@@ -7,25 +7,8 @@
 #include "stdint.h"
 #include "io.h"
 #include "string.h"
-#include "stdbool.h"
+#include "pmm.h"
 #include "firstfit.h"
-
-#define FF_USED (0x00UL)
-#define FF_UNUSED (0x01UL)
-
-// 初始化
-static void init(uint32_t pages);
-// 按页分配
-static void *alloc(uint32_t pages);
-// 按页释放
-static void free(void *addr_start, uint32_t pages);
-// 空闲数量
-static uint32_t free_pages_count(void);
-
-pmm_manage_t firstfit_manage = {"Fitst Fit", &init, &alloc, &free,
-                                &free_pages_count};
-
-firstfit_manage_t ff_manage;
 
 // 初始化
 static void list_init_head(list_entry_t *list) {
@@ -77,15 +60,24 @@ static int32_t set_chunk(list_entry_t *chunk, physical_page_t *mempage) {
     list_chunk_info(chunk)->addr   = mempage->addr;
     list_chunk_info(chunk)->npages = 1;
     list_chunk_info(chunk)->ref    = mempage->ref;
-    list_chunk_info(chunk)->flag   = mempage->ref == 0 ? FF_UNUSED : FF_USED;
+    list_chunk_info(chunk)->flag   = mempage->ref == 0 ? 0 : 1;
     return 0;
 }
 
-void init(uint32_t pages) {
+FIRSTFIT::FIRSTFIT(uint8_t *addr_start) {
+    this->addr_start = addr_start;
+    return;
+}
+
+FIRSTFIT::~FIRSTFIT(void) {
+    return;
+}
+
+int32_t FIRSTFIT::init(uint32_t pages) {
     // 为每一个页初始化一个记录其信息的 chunk
     // 第一个 chunk 保存在内核结束处
     // TODO: 优化空间
-    list_entry_t *pmm_info = (list_entry_t *)kernel_end_align4k;
+    list_entry_t *pmm_info = (list_entry_t *)addr_start;
     // 管理所有内存页需要的空间，供管理结构使用
     // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
     uint32_t pmm_info_size = pages * sizeof(list_entry_t);
@@ -94,15 +86,14 @@ void init(uint32_t pages) {
     // 计算内核结束处对应的 phy_pages 下标与 pmm_info 使用内存结束处的下标
     // 不能直接计算，因为可用内存之间可能会存在空洞
     uint32_t idx = 0;
-    while (phy_pages[idx].addr < kernel_end_align4k) {
+    while (phy_pages[idx].addr < addr_start) {
         idx++;
     }
 #ifdef DEBUG
     io.printf("phy_pages[idx]: 0x%X\n", phy_pages[idx]);
 #endif
     uint32_t idx_end = idx;
-    while (phy_pages[idx_end].addr <
-           kernel_end_align4k + ALIGN4K(pmm_info_size)) {
+    while (phy_pages[idx_end].addr < addr_start + ALIGN4K(pmm_info_size)) {
         idx_end++;
     }
     while (idx < idx_end) {
@@ -127,8 +118,8 @@ void init(uint32_t pages) {
         // 没有连续或者 ref 不同
         else {
             // 新建 chunk
-            list_entry_t *tmp =
-                (list_entry_t *)((void *)pmm_info + i * sizeof(list_entry_t));
+            list_entry_t *tmp = (list_entry_t *)((uint8_t *)pmm_info +
+                                                 i * sizeof(list_entry_t));
             set_chunk(tmp, &phy_pages[i]);
             // 添加到链表
             list_add_before(pmm_info, tmp);
@@ -156,20 +147,20 @@ void init(uint32_t pages) {
         }
     }
     // 填充管理结构
-    ff_manage.phy_page_count      = pages;
-    ff_manage.phy_page_free_count = n;
-    ff_manage.node_num            = num;
-    ff_manage.free_list           = pmm_info;
+    phy_page_count      = pages;
+    phy_page_free_count = n;
+    node_num            = num;
+    free_list           = pmm_info;
     io.printf("First Fit management data end: 0x%X.\n",
-              kernel_end_align4k + ALIGN4K(pmm_info_size));
+              addr_start + ALIGN4K(pmm_info_size));
     io.printf("First fit init.\n");
 
-    return;
+    return 0;
 }
 
-void *alloc(uint32_t pages) {
+void *FIRSTFIT::alloc(size_t pages) {
     void *        res_addr = NULL;
-    list_entry_t *entry    = ff_manage.free_list;
+    list_entry_t *entry    = free_list;
     do {
         // 当前 chunk 空闲
         if (list_chunk_info(entry)->flag == FF_UNUSED) {
@@ -180,8 +171,8 @@ void *alloc(uint32_t pages) {
                 if (list_chunk_info(entry)->npages - pages > 1) {
                     // 添加为新的链表项
                     list_entry_t *tmp =
-                        (list_entry_t *)(entry + ff_manage.node_num *
-                                                     sizeof(list_entry_t));
+                        (list_entry_t *)(entry +
+                                         node_num * sizeof(list_entry_t));
                     list_chunk_info(tmp)->addr =
                         entry->chunk_info.addr + pages * PMM_PAGE_SIZE;
                     list_chunk_info(tmp)->npages =
@@ -194,19 +185,19 @@ void *alloc(uint32_t pages) {
                 list_chunk_info(entry)->npages = pages;
                 list_chunk_info(entry)->ref    = 1;
                 list_chunk_info(entry)->flag   = FF_USED;
-                ff_manage.phy_page_free_count -= pages;
+                phy_page_free_count -= pages;
                 res_addr = list_chunk_info(entry)->addr;
                 break;
             }
         }
-    } while ((entry = list_next(entry)) != ff_manage.free_list);
+    } while ((entry = list_next(entry)) != free_list);
 
     return res_addr;
 }
 
-void free(void *addr_start, uint32_t pages) {
-    list_entry_t *entry = ff_manage.free_list;
-    while (((entry = list_next(entry)) != ff_manage.free_list) &&
+void FIRSTFIT::free(void *addr_start, size_t pages) {
+    list_entry_t *entry = free_list;
+    while (((entry = list_next(entry)) != free_list) &&
            (list_chunk_info(entry)->addr != addr_start)) {
         ;
     }
@@ -231,10 +222,10 @@ void free(void *addr_start, uint32_t pages) {
         list_chunk_info(entry)->npages = 0;
         list_del(entry);
     }
-    ff_manage.phy_page_free_count += pages;
+    phy_page_free_count += pages;
     return;
 }
 
-uint32_t free_pages_count(void) {
-    return ff_manage.phy_page_free_count;
+size_t FIRSTFIT::free_pages_count(void) {
+    return phy_page_free_count;
 }
