@@ -11,15 +11,15 @@
 #include "firstfit.h"
 
 // 初始化
-static void list_init_head(list_entry_t *list) {
+static void list_init_head(ff_list_entry_t *list) {
     list->next = list;
     list->prev = list;
     return;
 }
 
 // 在中间添加元素
-static void list_add_middle(list_entry_t *prev, list_entry_t *next,
-                            list_entry_t *new_entry) {
+static void list_add_middle(ff_list_entry_t *prev, ff_list_entry_t *next,
+                            ff_list_entry_t *new_entry) {
     next->prev      = new_entry;
     new_entry->next = next;
     new_entry->prev = prev;
@@ -28,35 +28,35 @@ static void list_add_middle(list_entry_t *prev, list_entry_t *next,
 }
 
 // 在 prev 后添加项
-static void list_add_after(list_entry_t *prev, list_entry_t *new_entry) {
+static void list_add_after(ff_list_entry_t *prev, ff_list_entry_t *new_entry) {
     list_add_middle(prev, prev->next, new_entry);
     return;
 }
 
 // 在 next 前添加项
-static void list_add_before(list_entry_t *next, list_entry_t *new_entry) {
+static void list_add_before(ff_list_entry_t *next, ff_list_entry_t *new_entry) {
     list_add_middle(next->prev, next, new_entry);
     return;
 }
 
 // 删除元素
-static void list_del(list_entry_t *list) {
+static void list_del(ff_list_entry_t *list) {
     list->next->prev = list->prev;
     list->prev->next = list->next;
     return;
 }
 
 // 返回后面的的元素
-static list_entry_t *list_next(list_entry_t *list) {
+static ff_list_entry_t *list_next(ff_list_entry_t *list) {
     return list->next;
 }
 
 // 返回 chunk_info
-static chunk_info_t *list_chunk_info(list_entry_t *list) {
+static chunk_info_t *list_chunk_info(ff_list_entry_t *list) {
     return &(list->chunk_info);
 }
 
-static int32_t set_chunk(list_entry_t *chunk, physical_page_t *mempage) {
+static int32_t set_chunk(ff_list_entry_t *chunk, physical_page_t *mempage) {
     list_chunk_info(chunk)->addr   = mempage->addr;
     list_chunk_info(chunk)->npages = 1;
     list_chunk_info(chunk)->ref    = mempage->ref;
@@ -77,10 +77,10 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // 为每一个页初始化一个记录其信息的 chunk
     // 第一个 chunk 保存在内核结束处
     // TODO: 优化空间
-    list_entry_t *pmm_info = (list_entry_t *)addr_start;
+    ff_list_entry_t *pmm_info = (ff_list_entry_t *)addr_start;
     // 管理所有内存页需要的空间，供管理结构使用
     // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
-    uint32_t pmm_info_size = pages * sizeof(list_entry_t);
+    uint32_t pmm_info_size = pages * sizeof(ff_list_entry_t);
     bzero(pmm_info, pmm_info_size);
     // 将用于保存物理地址信息的内存标记为已使用
     // 计算内核结束处对应的 phy_pages 下标与 pmm_info 使用内存结束处的下标
@@ -105,8 +105,8 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     set_chunk(pmm_info, &phy_pages[0]);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
     // 迭代所有页，如果下一个的地 != 当前地址+PMM_PAGE_SIZE 则新建 chunk
-    list_entry_t *chunk = pmm_info;
-    uint32_t      num   = 1;
+    ff_list_entry_t *chunk = pmm_info;
+    uint32_t         num   = 1;
     for (uint32_t i = 0; i < pages; i++) {
         // 如果连续且 ref 相同
         if ((phy_pages[i].addr ==
@@ -118,8 +118,9 @@ int32_t FIRSTFIT::init(uint32_t pages) {
         // 没有连续或者 ref 不同
         else {
             // 新建 chunk
-            list_entry_t *tmp = (list_entry_t *)((uint8_t *)pmm_info +
-                                                 i * sizeof(list_entry_t));
+            ff_list_entry_t *tmp =
+                (ff_list_entry_t *)((uint8_t *)pmm_info +
+                                    i * sizeof(ff_list_entry_t));
             set_chunk(tmp, &phy_pages[i]);
             // 添加到链表
             list_add_before(pmm_info, tmp);
@@ -159,8 +160,8 @@ int32_t FIRSTFIT::init(uint32_t pages) {
 }
 
 void *FIRSTFIT::alloc(size_t pages) {
-    void *        res_addr = NULL;
-    list_entry_t *entry    = free_list;
+    void *           res_addr = NULL;
+    ff_list_entry_t *entry    = free_list;
     do {
         // 当前 chunk 空闲
         if (list_chunk_info(entry)->flag == FF_UNUSED) {
@@ -170,9 +171,9 @@ void *FIRSTFIT::alloc(size_t pages) {
                 // 如果剩余大小足够
                 if (list_chunk_info(entry)->npages - pages > 1) {
                     // 添加为新的链表项
-                    list_entry_t *tmp =
-                        (list_entry_t *)(entry +
-                                         node_num * sizeof(list_entry_t));
+                    ff_list_entry_t *tmp =
+                        (ff_list_entry_t *)(entry +
+                                            node_num * sizeof(ff_list_entry_t));
                     list_chunk_info(tmp)->addr =
                         entry->chunk_info.addr + pages * PMM_PAGE_SIZE;
                     list_chunk_info(tmp)->npages =
@@ -196,7 +197,7 @@ void *FIRSTFIT::alloc(size_t pages) {
 }
 
 void FIRSTFIT::free(void *addr_start, size_t pages) {
-    list_entry_t *entry = free_list;
+    ff_list_entry_t *entry = free_list;
     while (((entry = list_next(entry)) != free_list) &&
            (list_chunk_info(entry)->addr != addr_start)) {
         ;
@@ -209,7 +210,7 @@ void FIRSTFIT::free(void *addr_start, size_t pages) {
     // 后面
     if (entry->next != entry &&
         list_chunk_info(entry->next)->flag == FF_UNUSED) {
-        list_entry_t *next = entry->next;
+        ff_list_entry_t *next = entry->next;
         list_chunk_info(entry)->npages += list_chunk_info(next)->npages;
         list_chunk_info(next)->npages = 0;
         list_del(next);
@@ -217,7 +218,7 @@ void FIRSTFIT::free(void *addr_start, size_t pages) {
     // 前面
     if (entry->prev != entry &&
         list_chunk_info(entry->prev)->flag == FF_UNUSED) {
-        list_entry_t *prev = entry->prev;
+        ff_list_entry_t *prev = entry->prev;
         list_chunk_info(prev)->npages += list_chunk_info(entry)->npages;
         list_chunk_info(entry)->npages = 0;
         list_del(entry);

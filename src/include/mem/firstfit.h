@@ -26,7 +26,7 @@ typedef struct list_entry {
     chunk_info_t       chunk_info;
     struct list_entry *next;
     struct list_entry *prev;
-} list_entry_t;
+} ff_list_entry_t;
 
 class FIRSTFIT {
 private:
@@ -43,7 +43,7 @@ private:
     // 空闲链表的节点数量
     uint32_t node_num;
     // 空闲链表
-    list_entry_t *free_list;
+    ff_list_entry_t *free_list;
 
 protected:
 public:
