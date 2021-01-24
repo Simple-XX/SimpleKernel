@@ -6,7 +6,9 @@
 
 #include "kernel.h"
 #include "cxxabi.h"
+#include "color.h"
 #include "io.h"
+#include "uart.h"
 
 #if defined(RASPI2)
 #include "uart.h"
@@ -22,47 +24,29 @@ KERNEL::~KERNEL(void) {
 }
 
 void KERNEL::show_info(void) {
+#if defined(__i386__) || defined(__x86_64__)
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
               kernel_start, kernel_end);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               (kernel_end - kernel_start) / 1024,
               (kernel_end - kernel_start + 4095) / 1024 / 4);
     io.printf(LIGHT_GREEN, "Simple Kernel.\n");
+#endif
+
+#if defined(__arm__) || defined(__aarch__)
+    io.log("kernel in memory start: 0x%08X, end 0x%08X\n", kernel_start,
+           kernel_end);
+    io.log("kernel in memory size: %d KB, %d pages\n",
+           (kernel_end - kernel_start) / 1024,
+           (kernel_end - kernel_start + 4095) / 1024 / 4);
+    io.log("Simple Kernel.\n");
+#endif
     return;
 }
 
 int32_t KERNEL::init(void) {
     cpp_init();
-    this->show_info();
+    uart.init();
+    show_info();
     return 0;
-}
-
-void kernel_main(void) {
-    KERNEL kernel;
-    kernel.init();
-
-    char        c = '!';
-    const char *s = "gg\n";
-    io.put_char(c);
-    io.write_string(s);
-    io.printf("Simple Kernel.\n");
-
-#if defined(RASPI2)
-    uart_init();
-    char  c = '!';
-    char *s = "gg";
-    framebuffer_init();
-    log_info("__%c__%s\n", c, s);
-    // TODO: width 和 height 的值会出错
-    for (uint32_t i = 0; i < FRAMEBUFFER_HEIGHT; i++) {
-        for (uint32_t j = 0; j < FRAMEBUFFER_WIDTH; j++) {
-            framebuffer_set_pixel(j, i, 0xAA00FF);
-        }
-    }
-    log_info("Simple Kernel.\n");
-#endif
-    while (1) {
-        ;
-    }
-    return;
 }

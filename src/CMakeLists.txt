@@ -52,24 +52,26 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
 # Link
 if (SimpleKernelArch STREQUAL i386)
     add_executable(${KernelName}
-        $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:libcxx>
-        $<TARGET_OBJECTS:port>
         $<TARGET_OBJECTS:vga>
         $<TARGET_OBJECTS:console>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}_boot
-        $<TARGET_OBJECTS:boot>
-        $<TARGET_OBJECTS:init>
-        $<TARGET_OBJECTS:kernel>)
+        $<TARGET_OBJECTS:boot>)
     add_executable(${KernelName}
-        $<TARGET_OBJECTS:init>
+        $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL RASPI2)
     add_executable(${KernelName}
-        $<TARGET_OBJECTS:boot>
+        $<TARGET_OBJECTS:arch>
+        $<TARGET_OBJECTS:libc>
+        $<TARGET_OBJECTS:libcxx>
+        $<TARGET_OBJECTS:mailbox>
+        $<TARGET_OBJECTS:framebuffer>
+        $<TARGET_OBJECTS:uart>
         $<TARGET_OBJECTS:kernel>)
 endif ()
 
