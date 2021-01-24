@@ -2,23 +2,19 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 // Based on https://github.com/bztsrc/raspi3-tutorial
-// mailbox.c for Simple-XX/SimpleKernel.
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+// mailbox.cpp for Simple-XX/SimpleKernel.
 
 #include "stdint.h"
 #include "mailbox.h"
 #include "hardware.h"
 
-mailbox_mail_t mailbox_call(mailbox_mail_t mail) {
-    mailbox_set(mail);
-    mailbox_mail_t res = mailbox_get(mail.channel);
+mailbox_mail_t MAILBOX::call(mailbox_mail_t mail) {
+    set(mail);
+    mailbox_mail_t res = get(mail.channel);
     return res;
 }
 
-mailbox_mail_t mailbox_get(uint8_t channel) {
+mailbox_mail_t MAILBOX::get(uint8_t channel) {
     mailbox_mail_t   res;
     mailbox_status_t stat;
     while (1) {
@@ -37,14 +33,14 @@ mailbox_mail_t mailbox_get(uint8_t channel) {
 }
 
 // TODO
-mailbox_mail_t mailbox_peak(uint8_t channel) {
+mailbox_mail_t MAILBOX::peak(uint8_t channel) {
     mailbox_mail_t res;
     res.data = 0;
     channel  = channel;
     return res;
 }
 
-void mailbox_set(mailbox_mail_t data) {
+void MAILBOX::set(mailbox_mail_t data) {
     mailbox_status_t stat;
     do {
         stat.empty = *((uint32_t *)MAILBOX_STATUS) & MAILBOX_EMPTY;
@@ -55,30 +51,26 @@ void mailbox_set(mailbox_mail_t data) {
 }
 
 // TODO
-mailbox_status_t mailbox_get_status(void) {
+mailbox_status_t MAILBOX::get_status(void) {
     mailbox_status_t res;
     res.empty = 1;
     return res;
 }
 
 // TODO
-void mailbox_set_status(mailbox_status_t status) {
+void MAILBOX::set_status(mailbox_status_t status) {
     status = status;
     return;
 }
 
 // TODO
-mailbox_config_t mailbox_get_config(void) {
+mailbox_config_t MAILBOX::get_config(void) {
     mailbox_config_t res;
     return res;
 }
 
 // TODO
-void mailbox_set_config(mailbox_config_t config) {
+void MAILBOX::set_config(mailbox_config_t config) {
     config = config;
     return;
 }
-
-#ifdef __cplusplus
-}
-#endif

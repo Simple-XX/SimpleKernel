@@ -7,25 +7,53 @@
 #ifndef _FRAMEBUFFER_H_
 #define _FRAMEBUFFER_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stdint.h"
 #include "stddef.h"
 #include "hardware.h"
+#include "mailbox.h"
 
-#define FRAMEBUFFER_WIDTH (1024UL)
-#define FRAMEBUFFER_HEIGHT (768UL)
-#define FRAMEBUFFER_RGB (1UL)
-#define FRAMEBUFFER_BGR (0UL)
+class FRAMEBUFFER {
+private:
+    static constexpr const uint32_t FRAMEBUFFER_WIDTH  = 1024;
+    static constexpr const uint32_t FRAMEBUFFER_HEIGHT = 768;
+    static constexpr const uint32_t FRAMEBUFFER_RGB    = 1;
+    static constexpr const uint32_t FRAMEBUFFER_BGR    = 0;
 
-void framebuffer_init(void);
+    // 宽
+    uint32_t framebuffer_width;
+    // 高
+    uint32_t framebuffer_height;
+    // 每行字节数
+    uint32_t framebuffer_pitch;
+    // framebuffer 地址
+    uint8_t *lfb = nullptr;
 
-void framebuffer_set_pixel(uint32_t x, uint32_t y, uint32_t color);
+    mailbox_set_physical_display_wh_data_t set_physical_display_wh_data
+        __attribute__((aligned(16)));
 
-#ifdef __cplusplus
-}
-#endif
+    mailbox_set_virtual_buffer_wh_data_t set_virtual_buffer_wh_data
+        __attribute__((aligned(16)));
+
+    mailbox_set_virtual_offset_data_t set_virtual_offset_data
+        __attribute__((aligned(16)));
+
+    mailbox_set_depth_data_t set_depth_data __attribute__((aligned(16)));
+
+    mailbox_set_pixel_order_data_t set_pixel_order_data
+        __attribute__((aligned(16)));
+
+    mailbox_allocate_buffer_data_t allocate_buffer_data
+        __attribute__((aligned(16)));
+
+    mailbox_get_pitch_data_t get_pitch_data __attribute__((aligned(16)));
+    NAILBOX                  mail;
+
+protected:
+public:
+    FRAMEBUFFER(void);
+    ~FRAMEBUFFER(void);
+    void init(void);
+    void set_pixel(uint32_t x, uint32_t y, uint32_t color);
+};
 
 #endif /* _FRAMEBUFFER_H_ */

@@ -7,26 +7,24 @@
 #ifndef _UART_H_
 #define _UART_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stdint.h"
 
-// uart 初始化
-void uart_init();
+class UART {
+private:
+protected:
+public:
+    UART(void);
+    ~UART(void);
+    // uart 初始化
+    int32_t init();
+    // 输出字符
+    void putc(uint8_t c);
+    // 输入字符
+    uint8_t getc(void);
+    // 输出字符串
+    void puts(const char *str);
+};
 
-// 输出字符
-void uart_putc(uint8_t c);
-
-// 输入字符
-uint8_t uart_getc();
-
-// 输出字符串
-void uart_puts(const char *str);
-
-#ifdef __cplusplus
-}
-#endif
+extern UART uart;
 
 #endif /* _UART_H_ */
