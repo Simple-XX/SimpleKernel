@@ -11,9 +11,9 @@
 #include "console.h"
 
 CONSOLE::CONSOLE(void) {
-    rows  = vgak.get_height();
-    cols  = vgak.get_width();
-    color = vgak.gen_color(LIGHT_GREY, BLACK);
+    rows  = vga.get_height();
+    cols  = vga.get_width();
+    color = vga.gen_color(LIGHT_GREY, BLACK);
     clear();
     curr_row = 0;
     curr_col = 0;
@@ -28,7 +28,7 @@ CONSOLE::~CONSOLE(void) {
 void CONSOLE::put_entry_at(const char c, const color_t color, const size_t x,
                            const size_t y) {
     const size_t index = y * cols + x;
-    vgak.write(index, vgak.gen_char(c, color));
+    vga.write(index, vga.gen_char(c, color));
     return;
 }
 
@@ -39,10 +39,10 @@ void CONSOLE::clear(void) {
             const size_t index = y * cols + x;
             // 用 ' ' 填满屏幕
             // 字体为灰色，背景为黑色
-            vgak.write(index, vgak.gen_char(' ', color));
+            vga.write(index, vga.gen_char(' ', color));
         }
     }
-    vgak.set_cursor_pos(0, 0);
+    vga.set_cursor_pos(0, 0);
     return;
 }
 
@@ -50,11 +50,11 @@ void CONSOLE::scroll(void) {
     if (curr_row >= rows) {
         // 将所有行的显示数据复制到上一行
         for (size_t i = 0; i < (rows - 1) * cols; i++) {
-            vgak.write(i, vgak.read(i + cols));
+            vga.write(i, vga.read(i + cols));
         }
         // 最后的一行数据现在填充空格，不显示任何字符
         for (size_t i = (rows - 1) * cols; i < rows * cols; i++) {
-            vgak.write(i, vgak.gen_char(' ', color));
+            vga.write(i, vga.gen_char(' ', color));
         }
         // 向上移动了一行，所以 cursor_y 现在是 24
         curr_row = 24;
@@ -85,7 +85,7 @@ void CONSOLE::put_char(const char c) {
     escapeconv(c);
     // 屏幕滚动
     scroll();
-    vgak.set_cursor_pos(curr_col, curr_row);
+    vga.set_cursor_pos(curr_col, curr_row);
     return;
 }
 
