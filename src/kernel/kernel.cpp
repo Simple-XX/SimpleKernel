@@ -45,36 +45,35 @@ void KERNEL::arch_init(void) const {
 
 int32_t KERNEL::test_pmm(void) {
     uint32_t cd         = 0xCD;
-    void *   addr1      = NULL;
-    void *   addr2      = NULL;
-    void *   addr3      = NULL;
-    void *   addr4      = NULL;
+    uint8_t *addr1      = nullptr;
+    uint8_t *addr2      = nullptr;
+    uint8_t *addr3      = nullptr;
+    uint8_t *addr4      = nullptr;
     uint32_t free_count = pmm.free_pages_count();
-    addr1               = pmm.alloc_page(0x9F);
+    addr1               = (uint8_t *)pmm.alloc_page(0x9F);
     assert(pmm.free_pages_count() == free_count - 0x9F);
     *(uint32_t *)addr1 = cd;
     assert((*(uint32_t *)addr1 == cd));
     pmm.free_page(addr1, 0x9F);
     assert(pmm.free_pages_count() == free_count);
-    addr2 = pmm.alloc_page(1);
+    addr2 = (uint8_t *)pmm.alloc_page(1);
     assert(pmm.free_pages_count() == free_count - 1);
     *(int *)addr2 = cd;
     assert((*(uint32_t *)addr2 == cd));
     pmm.free_page(addr2, 1);
     assert(pmm.free_pages_count() == free_count);
-    addr3 = pmm.alloc_page(1024);
+    addr3 = (uint8_t *)pmm.alloc_page(1024);
     assert(pmm.free_pages_count() == free_count - 1024);
     *(int *)addr3 = cd;
     assert((*(uint32_t *)addr3 == cd));
     pmm.free_page(addr3, 1024);
     assert(pmm.free_pages_count() == free_count);
-    addr4 = pmm.alloc_page(4096);
+    addr4 = (uint8_t *)pmm.alloc_page(4096);
     assert((*(uint32_t *)addr4 == cd));
     assert(pmm.free_pages_count() == free_count - 4096);
     *(int *)addr4 = cd;
     pmm.free_page(addr4, 4096);
     assert(pmm.free_pages_count() == free_count);
-    pmm.~PMM();
     io.printf("pmm test done.\n");
     return 0;
 }

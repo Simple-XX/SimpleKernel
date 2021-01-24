@@ -68,15 +68,6 @@ static constexpr const uint32_t PMM_PAGE_MAX_SIZE =
 
 // 页掩码，用于 4KB 对齐
 static constexpr const uint32_t PMM_PAGE_MASK = 0xFFFFF000;
-// 内核栈大小 8KB
-static constexpr const uint32_t KERNEL_STACK_SIZE = 0x2000;
-// 内核栈需要的内存页数
-static constexpr const uint32_t KERNEL_STACK_PAGES =
-    KERNEL_STACK_SIZE / PMM_PAGE_SIZE;
-// 内核栈开始地址，内核结束后
-static const uint32_t KERNEL_STACK_START = KERNEL_END_ADDR & PMM_PAGE_MASK;
-// 内核栈结束地址
-static const uint32_t KERNEL_STACK_END = KERNEL_STACK_START + KERNEL_STACK_SIZE;
 // 内核的偏移地址
 static constexpr const uint32_t KERNEL_BASE = 0x0;
 // 内核占用大小 8MB
@@ -84,7 +75,7 @@ static constexpr const uint32_t KERNEL_SIZE = 0x800000;
 // 映射内核需要的页数
 static constexpr const uint32_t PMM_PAGES_KERNEL = KERNEL_SIZE / PMM_PAGE_SIZE;
 
-// 对齐
+// 对齐 向上取整
 #define ALIGN4K(x)                                                             \
     (((x) % PMM_PAGE_SIZE == 0) ? (x)                                          \
                                 : (((x) + PMM_PAGE_SIZE - 1) & PMM_PAGE_MASK))
@@ -102,20 +93,6 @@ typedef struct physical_page {
 
 // 可用内存的物理页数组
 extern physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
-
-// 内存管理结构体
-typedef struct pmm_manage {
-    // 管理算法的名称
-    const char *name;
-    // 初始化
-    void (*pmm_manage_init)(uint32_t pages);
-    // 申请物理内存，单位为 Byte
-    void *(*pmm_manage_alloc)(uint32_t bytes);
-    // 释放内存页
-    void (*pmm_manage_free)(void *addr_start, uint32_t bytes);
-    // 返回当前可用内存页数量
-    uint32_t (*pmm_manage_free_pages_count)(void);
-} pmm_manage_t;
 
 class PMM {
 private:

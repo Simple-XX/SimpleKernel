@@ -5,12 +5,12 @@
 // pmm.cpp for Simple-XX/SimpleKernel.
 
 #include "io.h"
+#include "assert.h"
 #include "stdint.h"
 #include "string.h"
 #include "multiboot2.h"
 #include "pmm.h"
 #include "firstfit.h"
-#include "assert.h"
 
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
@@ -19,10 +19,9 @@ physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
 // 管理范围为内核结束到物理内存结束
 PMM::PMM(void)
     : ff(FIRSTFIT(reinterpret_cast<uint8_t *>(ALIGN4K(KERNEL_END_ADDR)))) {
-    // 向下取整
+    name = "FirstFit";
     kernel_start_align4k =
         reinterpret_cast<uint8_t *>(ALIGN4K(KERNEL_START_ADDR));
-    // 向上取整
     kernel_end_align4k = reinterpret_cast<uint8_t *>(ALIGN4K(KERNEL_END_ADDR));
     return;
 }
