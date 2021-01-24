@@ -18,7 +18,7 @@
 
 typedef struct e820entry {
     // 数据类型由位数决定
-    addr_t   addr;
+    uint8_t *addr;
     size_t   length;
     uint32_t type;
 } __attribute__((packed)) e820entry_t;
