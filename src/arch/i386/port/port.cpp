@@ -18,6 +18,12 @@ uint16_t PORT::inw(const uint32_t port) {
     return ret;
 }
 
+uint32_t PORT::ind(const uint32_t port) {
+    uint32_t ret;
+    __asm__ volatile("inl %1, %0" : "=a"(ret) : "dN"(port));
+    return ret;
+}
+
 void PORT::outw(const uint32_t port, const uint16_t data) {
     __asm__ volatile("outw %1, %0" : : "dN"(port), "a"(data));
     return;
@@ -25,5 +31,10 @@ void PORT::outw(const uint32_t port, const uint16_t data) {
 
 void PORT::outb(const uint32_t port, const uint8_t data) {
     __asm__ volatile("outb %1, %0" : : "dN"(port), "a"(data));
+    return;
+}
+
+void PORT::outd(const uint32_t port, const uint32_t data) {
+    __asm__ volatile("outl %1, %0" : : "dN"(port), "a"(data));
     return;
 }

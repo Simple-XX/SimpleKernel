@@ -44,20 +44,16 @@ protected:
 public:
     IO(void);
     ~IO(void);
-#if defined(__i386__) || defined(__x86_64__)
     // 端口读字节
     uint8_t inb(const uint32_t port);
     // 端口读字
     uint16_t inw(const uint32_t port);
-#endif
     // 端口读双字
     uint32_t ind(const uint32_t port);
-#if defined(__i386__) || defined(__x86_64__)
     // 端口写字节
     void outb(const uint32_t port, const uint8_t data);
     // 端口写字
     void outw(const uint32_t port, const uint16_t data);
-#endif
     // 端口写双字
     void outd(const uint32_t port, const uint32_t data);
     // 获取行数
