@@ -23,6 +23,10 @@ function(target_include_arch_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/port/include)
 endfunction()
 
+function(target_include_common_header_files Target)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/include)
+endfunction()
+
 function(target_include_drv_header_files Target)
     if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/8259A/include)

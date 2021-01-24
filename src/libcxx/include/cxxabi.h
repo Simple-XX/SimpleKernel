@@ -35,6 +35,9 @@ void cpp_init(void);
 int  __cxa_atexit(void (*f)(void *), void *objptr, void *dso);
 void __cxa_finalize(void *f);
 
+int  __aeabi_atexit(void (*f)(void *), void *objptr, void *dso);
+void __cxa_finalize(void *f);
+
 #ifdef __cplusplus
 };
 #endif
