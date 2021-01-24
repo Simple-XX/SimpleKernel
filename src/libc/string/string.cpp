@@ -50,7 +50,7 @@ void append(char *src, char dest) {
 
 char *strcat(char *dest, const char *src) {
     uint8_t *add_d = (uint8_t *)dest;
-    if (dest != NULL && src != NULL) {
+    if (dest != nullptr && src != nullptr) {
         while (*add_d) {
             add_d++;
         }
