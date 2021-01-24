@@ -27,7 +27,6 @@ IO::~IO(void) {
     return;
 }
 
-#if defined(__i386__) || defined(__x86_64__)
 uint8_t IO::inb(const uint32_t port) {
     return PORT::inb(port);
 }
@@ -35,13 +34,11 @@ uint8_t IO::inb(const uint32_t port) {
 uint16_t IO::inw(const uint32_t port) {
     return PORT::inw(port);
 }
-#endif
 
 uint32_t IO::ind(const uint32_t port) {
     return PORT::ind(port);
 }
 
-#if defined(__i386__) || defined(__x86_64__)
 void IO::outb(const uint32_t port, const uint8_t data) {
     PORT::outb(port, data);
     return;
@@ -51,7 +48,6 @@ void IO::outw(const uint32_t port, const uint16_t data) {
     PORT::outw(port, data);
     return;
 }
-#endif
 
 void IO::outd(const uint32_t port, const uint32_t data) {
     PORT::outd(port, data);
@@ -137,17 +133,5 @@ int32_t IO::printf(color_t color, const char *fmt, ...) {
     return i;
 }
 #endif
-
-int32_t IO::log(const char *fmt, ...) {
-    va_list args;
-    int32_t i;
-    char    buf[256];
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    uart.puts(buf);
-    bzero(buf, 256);
-    return i;
-}
 
 IO io;
