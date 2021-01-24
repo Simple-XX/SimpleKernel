@@ -7,10 +7,6 @@
 #ifndef _MAILBOX_H_
 #define _MAILBOX_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stdint.h"
 #include "stdbool.h"
 
@@ -18,164 +14,168 @@ extern "C" {
 // for more info
 
 // 请求
-#define MAILBOX_REQUEST 0
+static constexpr const uint32_t MAILBOX_REQUEST = 0;
 // 应答
-#define MAILBOX_RESPONSE 1
+static constexpr const uint32_t MAILBOX_RESPONSE = 1;
 
 // 通道
 // 电源管理
-#define MAILBOX_CHANNEL_POWER 0
+static constexpr const uint32_t MAILBOX_CHANNEL_POWER = 0;
 // 帧缓冲
-#define MAILBOX_CHANNEL_FRAMEBUFFER 1
+static constexpr const uint32_t MAILBOX_CHANNEL_FRAMEBUFFER = 1;
 // 虚拟UART
-#define MAILBOX_CHANNEL_VUART 2
+static constexpr const uint32_t MAILBOX_CHANNEL_VUART = 2;
 // VCHIQ
-#define MAILBOX_CHANNEL_VCHIQ 3
+static constexpr const uint32_t MAILBOX_CHANNEL_VCHIQ = 3;
 // LED
-#define MAILBOX_CHANNEL_LEDS 4
+static constexpr const uint32_t MAILBOX_CHANNEL_LEDS = 4;
 // 按钮
-#define MAILBOX_CHANNEL_BUTTONS 5
+static constexpr const uint32_t MAILBOX_CHANNEL_BUTTONS = 5;
 // 触摸屏
-#define MAILBOX_CHANNEL_TOUCH_SCREEN 6
+static constexpr const uint32_t MAILBOX_CHANNEL_TOUCH_SCREEN = 6;
 // TODO: 确定含义
-#define MAILBOX_CHANNEL_COUNT 7
+static constexpr const uint32_t MAILBOX_CHANNEL_COUNT = 7;
 // 属性标签(ARM to VC)
-#define MAILBOX_CHANNEL_ARM2VC 8
+static constexpr const uint32_t MAILBOX_CHANNEL_ARM2VC = 8;
 // 属性标签(VC to ARM)
-#define MAILBOX_CHANNEL_VC2ARM 9
+static constexpr const uint32_t MAILBOX_CHANNEL_VC2ARM = 9;
 
 // tag 标签
 // 获取固件版本
-#define MAILBOX_TAG_GET_FIRMWARE_REVISION (0x00000001UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_FIRMWARE_REVISION = 0x00000001;
 //  获取板子类型
-#define MAILBOX_TAG_GET_BOARD_MODEL (0x00010001UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_BOARD_MODEL = 0x00010001;
 // 获取板子版本
-#define MAILBOX_TAG_GET_BOARD_REVISION (0x00010002UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_BOARD_REVISION = 0x00010002;
 // 获取板子 mac 地址
-#define MAILBOX_TAG_GET_BOARD_MAC_ADDRESS (0x00010003UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_BOARD_MAC_ADDRESS = 0x00010003;
 // 获取串口
-#define MAILBOX_TAG_GET_BOARD_SERIAL (0x00010004UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_BOARD_SERIAL = 0x00010004;
 // 获取 arm 内存信息
-#define MAILBOX_TAG_GET_ARM_MEMORY (0x00010005UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_ARM_MEMORY = 0x00010005;
 // 获取 vc 内存信息
-#define MAILBOX_TAG_GET_VIDEOCORE_MEMORY (0x00010006UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_VIDEOCORE_MEMORY = 0x00010006;
 // 获取时钟信息
-#define MAILBOX_TAG_GET_CLOCKS (0x00010007UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_CLOCKS = 0x00010007;
 // TODO: 确定含义
-#define MAILBOX_TAG_GET_COMMAND_LINE (0x00050001UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_COMMAND_LINE = 0x00050001;
 // 获取 DMA 通道
-#define MAILBOX_TAG_GET_DMA_CHANNELS (0x00060001UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_DMA_CHANNELS = 0x00060001;
 // 获取电源状态
-#define MAILBOX_TAG_GET_POWER_STATE (0x00020001UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_POWER_STATE = 0x00020001;
 // 获取计时器
-#define MAILBOX_TAG_GET_TIMING (0x00020002UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_TIMING = 0x00020002;
 // 设置电源状态
-#define MAILBOX_TAG_SET_POWER_STATE (0x00028001UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_POWER_STATE = 0x00028001;
 // 获取时钟状态
-#define MAILBOX_TAG_GET_CLOCK_STATE (0x00030001UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_CLOCK_STATE = 0x00030001;
 // 设置时钟状态
-#define MAILBOX_TAG_SET_CLOCK_STATE (0x00038001UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_CLOCK_STATE = 0x00038001;
 // 获取时钟速率
-#define MAILBOX_TAG_GET_CLOCK_RATE (0x00030002UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_CLOCK_RATE = 0x00030002;
 // 设置时钟速率
-#define MAILBOX_TAG_SET_CLOCK_RATE (0x00038002UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_CLOCK_RATE = 0x00038002;
 // 获取最大时钟速率
-#define MAILBOX_TAG_GET_MAX_CLOCK_RATE (0x00030004UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_MAX_CLOCK_RATE = 0x00030004;
 // 获取最小时钟速率
-#define MAILBOX_TAG_GET_MIN_CLOCK_RATE (0x00030007UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_MIN_CLOCK_RATE = 0x00030007;
 // 获取 turbo
-#define MAILBOX_TAG_GET_TURBO (0x00030009UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_TURBO = 0x00030009;
 // 设置 turbo
-#define MAILBOX_TAG_SET_TURBO (0x00038009UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_TURBO = 0x00038009;
 // 获取电压
-#define MAILBOX_TAG_GET_VOLTAGE (0x00030003UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_VOLTAGE = 0x00030003;
 // 设置电压
-#define MAILBOX_TAG_SET_VOLTAGE (0x00038003UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_VOLTAGE = 0x00038003;
 // 获取最大电压
-#define MAILBOX_TAG_GET_MAX_VOLTAGE (0x00030005UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_MAX_VOLTAGE = 0x00030005;
 // 获取最小电压
-#define MAILBOX_TAG_GET_MIN_VOLTAGE (0x00030008UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_MIN_VOLTAGE = 0x00030008;
 // 获取温度
-#define MAILBOX_TAG_GET_TEMPERATURE (0x00030006UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_TEMPERATURE = 0x00030006;
 // 获取最大温度
-#define MAILBOX_TAG_GET_MAX_TEMPERATURE (0x0003000AUL)
+static constexpr const uint32_t MAILBOX_TAG_GET_MAX_TEMPERATURE = 0x0003000A;
 // 分配内存
-#define MAILBOX_TAG_ALLOCATE_MEMORY (0x0003000CUL)
+static constexpr const uint32_t MAILBOX_TAG_ALLOCATE_MEMORY = 0x0003000C;
 // 锁定内存
-#define MAILBOX_TAG_LOCK_MEMORY (0x0003000DUL)
+static constexpr const uint32_t MAILBOX_TAG_LOCK_MEMORY = 0x0003000D;
 // 解锁内存
-#define MAILBOX_TAG_UNLOCK_MEMORY (0x0003000EUL)
+static constexpr const uint32_t MAILBOX_TAG_UNLOCK_MEMORY = 0x0003000E;
 // 释放内存
-#define MAILBOX_TAG_RELEASE_MEMORY (0x0003000FUL)
+static constexpr const uint32_t MAILBOX_TAG_RELEASE_MEMORY = 0x0003000F;
 // 执行代码
-#define MAILBOX_TAG_EXECUTE_CODE (0x00030010UL)
+static constexpr const uint32_t MAILBOX_TAG_EXECUTE_CODE = 0x00030010;
 // TODO: 搞清楚用法
 // Gets the mem_handle associated with a created dispmanx resource.
-#define MAILBOX_TAG_GET_DISPMANX_RESOURCE_MEM_HANDLER (0x00030014UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_DISPMANX_RESOURCE_MEM_HANDLER =
+    0x00030014;
 // 获取 EDID 时钟
-#define MAILBOX_TAG_GET_EDID_CLOCK (0x00030020UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_EDID_CLOCK = 0x00030020;
 // 分配 frame buffer
-#define MAILBOX_TAG_ALLOCATE_BUFFER (0x00040001UL)
+static constexpr const uint32_t MAILBOX_TAG_ALLOCATE_BUFFER = 0x00040001;
 // 释放 frame buffer
-#define MAILBOX_TAG_RELEASE_BUFFER (0x00048001UL)
+static constexpr const uint32_t MAILBOX_TAG_RELEASE_BUFFER = 0x00048001;
 // 清屏
-#define MAILBOX_TAG_BLANK_SCREEN (0x00040002UL)
+static constexpr const uint32_t MAILBOX_TAG_BLANK_SCREEN = 0x00040002;
 // 获取物理显示器宽高
-#define MAILBOX_TAG_GET_PHYSICAL_DISPLAY_WH (0x00040003UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_PHYSICAL_DISPLAY_WH =
+    0x00040003;
 // 测试物理显示器宽高
-#define MAILBOX_TAG_TEST_PHYSICAL_DISPLAY_WH (0x00044003UL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_PHYSICAL_DISPLAY_WH =
+    0x00044003;
 // 设置物理显示器宽高
-#define MAILBOX_TAG_SET_PHYSICAL_DISPLAY_WH (0x00048003UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_PHYSICAL_DISPLAY_WH =
+    0x00048003;
 // 获取虚拟 buffer 宽高
-#define MAILBOX_TAG_GET_VIRTUAL_BUFFER_WH (0x00040004UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_VIRTUAL_BUFFER_WH = 0x00040004;
 // 测试虚拟 buffer 宽高
-#define MAILBOX_TAG_TEST_VIRTUAL_BUFFER_WH (0x00044004UL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_VIRTUAL_BUFFER_WH = 0x00044004;
 // 设置虚拟 buffer 宽高
-#define MAILBOX_TAG_SET_VIRTUAL_BUFFER_WH (0x00048004UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_VIRTUAL_BUFFER_WH = 0x00048004;
 // 获取深度
-#define MAILBOX_TAG_GET_DEPTH (0x00040005UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_DEPTH = 0x00040005;
 // 测试深度
-#define MAILBOX_TAG_TEST_DEPTH (0x00044005UL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_DEPTH = 0x00044005;
 // 设置深度
-#define MAILBOX_TAG_SET_DEPTH (0x00048005UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_DEPTH = 0x00048005;
 // 获取像素顺序
-#define MAILBOX_TAG_GET_PIXEL_ORDER (0x00040006UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_PIXEL_ORDER = 0x00040006;
 // 测试像素顺序
-#define MAILBOX_TAG_TEST_PIXEL_ORDER (0x00044006UL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_PIXEL_ORDER = 0x00044006;
 // 设置像素顺序
-#define MAILBOX_TAG_SET_PIXEL_ORDER (0x00048006UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_PIXEL_ORDER = 0x00048006;
 // 获取 alpha 模式
-#define MAILBOX_TAG_GET_ALPHA_MODE (0x00040007UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_ALPHA_MODE = 0x00040007;
 // 测试 alpha 模式
-#define MAILBOX_TAG_TEST_ALPHA_MODE (0x00044007UL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_ALPHA_MODE = 0x00044007;
 // 设置 alpha 模式
-#define MAILBOX_TAG_SET_ALPHA_MODE (0x00048007UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_ALPHA_MODE = 0x00048007;
 // 获取每行大小
-#define MAILBOX_TAG_GET_PITCH (0x00040008UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_PITCH = 0x00040008;
 // 获取虚拟偏移
-#define MAILBOX_TAG_GET_VIRTUAL_OFFSET (0x00040009UL)
+static constexpr const uint32_t MAILBOX_TAG_GET_VIRTUAL_OFFSET = 0x00040009;
 // 测试虚拟偏移
-#define MAILBOX_TAG_TEST_VIRTUAL_OFFSET (0x00044009UL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_VIRTUAL_OFFSET = 0x00044009;
 // 设置虚拟偏移
-#define MAILBOX_TAG_SET_VIRTUAL_OFFSET (0x00048009UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_VIRTUAL_OFFSET = 0x00048009;
 // TODO: 搞清楚用法
-#define MAILBOX_TAG_GET_OVERSCAN (0x0004000AUL)
+static constexpr const uint32_t MAILBOX_TAG_GET_OVERSCAN = 0x0004000A;
 // TODO: 搞清楚用法
-#define MAILBOX_TAG_TEST_OVERSCAN (0x0004400AUL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_OVERSCAN = 0x0004400A;
 // TODO: 搞清楚用法
-#define MAILBOX_TAG_SET_OVERSCAN (0x0004800AUL)
+static constexpr const uint32_t MAILBOX_TAG_SET_OVERSCAN = 0x0004800A;
 // 获取调色板
-#define MAILBOX_TAG_GET_PALETTE (0x0004000BUL)
+static constexpr const uint32_t MAILBOX_TAG_GET_PALETTE = 0x0004000B;
 // 测试调色板
-#define MAILBOX_TAG_TEST_PALETTE (0x0004400BUL)
+static constexpr const uint32_t MAILBOX_TAG_TEST_PALETTE = 0x0004400B;
 // 设置调色板
-#define MAILBOX_TAG_SET_PALETTE (0x0004800BUL)
+static constexpr const uint32_t MAILBOX_TAG_SET_PALETTE = 0x0004800B;
 // 设置光标信息
-#define MAILBOX_TAG_SET_CURSOR_INFO (0x00008010UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_CURSOR_INFO = 0x00008010;
 // 设置光标状态
-#define MAILBOX_TAG_SET_CURSOR_STATE (0x00008011UL)
+static constexpr const uint32_t MAILBOX_TAG_SET_CURSOR_STATE = 0x00008011;
 // 表示 tag 结束
-#define MAILBOX_TAG_END (0x00000000UL)
+static constexpr const uint32_t MAILBOX_TAG_END = 0x00000000;
 
 // 通用信息
 typedef struct mailbox_common {
@@ -351,12 +351,6 @@ typedef struct mailbox_get_pitch_data {
     uint32_t            end;
 } __attribute__((packed)) mailbox_get_pitch_data_t;
 
-// 0-3 位为 channel, 剩余 28 位为数据
-typedef struct mailbox_mail {
-    uint8_t  channel : 4;
-    uint32_t data : 28;
-} mailbox_mail_t __attribute__((aligned(32)));
-
 // 0-29 位未使用, 30 表示是否为空, 31 表示是否已满
 typedef struct mailbox_status {
     uint32_t unused : 30;
@@ -368,32 +362,32 @@ typedef struct mailbox_config {
 
 } mailbox_config_t __attribute__((aligned(32)));
 
-// 读取 read 寄存器
-mailbox_mail_t mailbox_get(uint8_t channel);
+class MAILBOX {
+private:
+    // 0-3 位为 channel, 剩余 28 位为数据
+    uint32_t channel : 4;
+    uint32_t data : 28;
 
-// 用 peak 方式读取 read 寄存器
-mailbox_mail_t mailbox_peak(uint8_t channel);
-
-// 写 send 寄存器
-void mailbox_set(mailbox_mail_t data);
-
-// 读取状态
-mailbox_status_t mailbox_get_status(void);
-
-// 写状态
-void mailbox_set_status(mailbox_status_t status);
-
-// 读取配置
-mailbox_config_t mailbox_get_config(void);
-
-// 写配置
-void mailbox_set_config(mailbox_config_t config);
-
-// 执行一次收发
-mailbox_mail_t mailbox_call(mailbox_mail_t mail);
-
-#ifdef __cplusplus
-}
-#endif
+protected:
+public:
+    MAILBOX(void);
+    ~MAILBOX(void);
+    // 读取 read 寄存器
+    mailbox_mail_t get(uint8_t channel);
+    // 用 peak 方式读取 read 寄存器
+    mailbox_mail_t peak(uint8_t channel);
+    // 写 send 寄存器
+    void set(mailbox_mail_t data);
+    // 读取状态
+    mailbox_status_t get_status(void);
+    // 写状态
+    void set_status(mailbox_status_t status);
+    // 读取配置
+    mailbox_config_t get_config(void);
+    // 写配置
+    void set_config(mailbox_config_t config);
+    // 执行一次收发
+    mailbox_mail_t call(mailbox_mail_t mail);
+};
 
 #endif /* _MAILBOX_H_ */
