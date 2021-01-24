@@ -6,6 +6,7 @@
 
 #include "kernel.h"
 #include "cxxabi.h"
+#include "color.h"
 #include "io.h"
 #include "cpu.hpp"
 #include "gdt.h"
@@ -16,11 +17,6 @@
 #include "multiboot2.h"
 #include "debug.h"
 #include "assert.h"
-
-#if defined(RASPI2)
-#include "uart.h"
-#include "framebuffer.h"
-#endif
 
 KERNEL::KERNEL(void) {
     pmm = PMM();
@@ -86,6 +82,7 @@ void KERNEL::show_info(void) {
               (kernel_end - kernel_start) / 1024,
               (kernel_end - kernel_start + 4095) / 1024 / 4);
     io.printf(LIGHT_GREEN, "Simple Kernel.\n");
+
     return;
 }
 

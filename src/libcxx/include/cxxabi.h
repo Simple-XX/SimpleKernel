@@ -52,6 +52,9 @@ namespace __cxxabiv1 {
     extern "C" void __cxa_guard_abort(__guard *);
 }
 
+int  __aeabi_atexit(void (*f)(void *), void *objptr, void *dso);
+void __cxa_finalize(void *f);
+
 #ifdef __cplusplus
 };
 #endif
