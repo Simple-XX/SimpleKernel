@@ -63,4 +63,4 @@ uint16_t VGA::get_cursor_pos(void) const {
     return (cursor_pos_h << 8) | cursor_pos_l;
 }
 
-VGA vgak;
+VGA vga;
