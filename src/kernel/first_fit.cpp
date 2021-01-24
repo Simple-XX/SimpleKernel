@@ -119,7 +119,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
 }
 
 void *FIRSTFIT::alloc(size_t pages) {
-    void *           res_addr = NULL;
+    void *           res_addr = nullptr;
     ff_list_entry_t *entry    = free_list;
     do {
         // 当前 chunk 空闲
