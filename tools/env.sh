@@ -9,11 +9,16 @@
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 # ARCH: i386, x86_64, raspi2
 ARCH="i386"
-# ARCH="x86_64"
-# ARCH="raspi2"
+# ARCH="x86_64" # TODO
+# ARCH="raspi2" # TODO
 # 虚拟机: bochs, qemu
-SIMULATOR="bochs"
-# SIMULATOR="qemu"
+if [ "${ARCH}" == "i386" ]; then
+    SIMULATOR="bochs"
+elif [ "${ARCH}" == "x86_64" ]; then
+    SIMULATOR="bochs"
+elif [ "${ARCH}" == "raspi2" ]; then
+    SIMULATOR="qemu"
+fi
 # 内核映像
 kernel='./build/bin/kernel.elf'
 bootloader='./build/bin/bootloader.bin'

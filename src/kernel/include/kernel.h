@@ -30,8 +30,8 @@ protected:
 public:
     KERNEL(void);
     ~KERNEL(void);
-    void    show_info(void);
-    int32_t init(void);
+    int  init(void);
+    void show_info(void);
 };
 
 #endif /* _KERNEL_H_ */
