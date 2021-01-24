@@ -20,12 +20,15 @@ extern "C" void kernel_main(void);
 
 class KERNEL {
 private:
+#if defined(__arm__) || defined(__aarch__)
+
+#endif
 protected:
 public:
     KERNEL(void);
     ~KERNEL(void);
-    void    show_info(void);
-    int32_t init(void);
+    int  init(void);
+    void show_info(void);
 };
 
 #endif /* _KERNEL_H_ */

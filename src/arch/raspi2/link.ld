@@ -12,15 +12,28 @@ SECTIONS
     /* 加载地址 */
     . = 0x8000;
 	
-	PROVIDE(kernel_start = .);
+    PROVIDE(kernel_start = .);
     PROVIDE(kernel_text_start = .);
-    .text : ALIGN(4K)
-    {
-        *.(.text.init)
-        *(.text)
-    }
+	.text : ALIGN(4K)
+	{
+		*(.multiboot_header)
+		*(.text)
+	}
     PROVIDE(kernel_text_end = .);
- 
+
+    PROVIDE(kernel_data_start = .);
+    .data : ALIGN(4K)
+    {
+		PROVIDE(ctors_start = .);
+	    *(.ctor*)
+	    PROVIDE(ctors_end = .);
+	    PROVIDE(dtors_start = .);
+	    *(.dtor*)
+	    PROVIDE(dtors_end = .);
+        *(.data)
+    }
+    PROVIDE(kernel_data_end = .);
+
     PROVIDE(kernel_rodata_start = .);
 	.rodata : ALIGN(4K)
 	{
@@ -28,14 +41,7 @@ SECTIONS
 	}
 	PROVIDE(kernel_rodata_end = .);
 
-    PROVIDE(kernel_data_start = .);
-    .data : ALIGN(4K)
-    {
-        *(.data)
-    }
-    PROVIDE(kernel_data_end = .);
- 
-    PROVIDE(kernel_bss_start = .);
+	PROVIDE(kernel_bss_start = .);
 	.bss : ALIGN(4K)
 	{
 		*(COMMON)
@@ -43,5 +49,5 @@ SECTIONS
 	}
 	PROVIDE(kernel_bss_end = .);
 
-	PROVIDE(kernel_end = .);
+    PROVIDE(kernel_end = .);
 }
