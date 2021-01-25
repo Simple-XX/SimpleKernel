@@ -32,11 +32,13 @@ private:
     // 指定位置输出
     void put_entry_at(const char c, const color_t color, const size_t x,
                       const size_t y);
+    VGA &vga;
 
 protected:
 public:
-    CONSOLE(void);
+    CONSOLE(VGA &vga);
     ~CONSOLE(void);
+    int32_t init(void);
     // 写字符
     void put_char(const char c);
     // 写字符串
@@ -48,8 +50,5 @@ public:
     // 获取颜色
     color_t get_color(void);
 };
-
-// 内核 console
-extern CONSOLE consolek;
 
 #endif /* _CONSOLE_H_ */

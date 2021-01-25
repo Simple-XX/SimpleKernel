@@ -13,6 +13,7 @@
 
 #if defined(__i386__) || defined(__x86_64__)
 #include "vga.h"
+#include "console.h"
 #endif
 
 class IO {
@@ -39,11 +40,13 @@ private:
     // uint8_t kattr;
     // // 显存地址
     // static char *vidmem;
+    CONSOLE &console;
 
 protected:
 public:
-    IO(void);
+    IO(CONSOLE &console);
     ~IO(void);
+    int32_t init(void);
     // 端口读字节
     uint8_t inb(const uint32_t port);
     // 端口读字
@@ -80,14 +83,8 @@ public:
     void put_char(const char c);
     // 输出字符串
     int32_t write_string(const char *s);
-    // 格式输出
-    int32_t printf(const char *format, ...);
-    int32_t printf(color_t color, const char *format, ...);
     // 串口输出
     int32_t log(const char *format, ...);
 };
-
-// 内核 IO
-extern IO io;
 
 #endif /* _IO_H_ */
