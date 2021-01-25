@@ -9,22 +9,17 @@
 #include "io.h"
 #include "port.h"
 
-#if defined(__i386__) || defined(__x86_64__)
-#include "console.h"
-#endif
-
-#if defined(__arm__) || defined(__arm64__)
-#include "uart.h"
-#endif
-
-extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
-
-IO::IO(void) {
+IO::IO(CONSOLE &console) : console(console) {
     return;
 }
 
 IO::~IO(void) {
     return;
+}
+
+int32_t IO::init(void) {
+    write_string("io init\n");
+    return 0;
 }
 
 uint8_t IO::inb(const uint32_t port) {
@@ -88,50 +83,22 @@ size_t IO::set_col(const size_t col __attribute__((unused))) {
 
 #if defined(__i386__) || defined(__x86_64__)
 color_t IO::get_color(void) {
-    return consolek.get_color();
+    return console.get_color();
 }
 
 void IO::set_color(const color_t color) {
-    consolek.set_color(color);
+    console.set_color(color);
     return;
 }
 
 void IO::put_char(char c) {
-    consolek.put_char(c);
+    console.put_char(c);
     return;
 }
 
 int32_t IO::write_string(const char *s) {
-    consolek.write_string(s);
+    console.write_string(s);
     return 0;
 }
 
-int32_t IO::printf(const char *fmt, ...) {
-    va_list args;
-    int32_t i;
-    char    buf[256];
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    consolek.write_string(buf);
-    bzero(buf, 256);
-    return i;
-}
-
-int32_t IO::printf(color_t color, const char *fmt, ...) {
-    color_t curr_color = this->get_color();
-    this->set_color(color);
-    va_list args;
-    int32_t i;
-    char    buf[256];
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    consolek.write_string(buf);
-    bzero(buf, 256);
-    this->set_color(curr_color);
-    return i;
-}
 #endif
-
-IO io;
