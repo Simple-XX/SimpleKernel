@@ -10,19 +10,24 @@
 #include "string.h"
 #include "console.h"
 
-CONSOLE::CONSOLE(void) {
-    rows  = vga.get_height();
-    cols  = vga.get_width();
-    color = vga.gen_color(LIGHT_GREY, BLACK);
-    clear();
+CONSOLE::CONSOLE(VGA &vga) : vga(vga) {
+    rows     = vga.get_height();
+    cols     = vga.get_width();
+    color    = vga.gen_color(LIGHT_GREY, BLACK);
     curr_row = 0;
     curr_col = 0;
-    this->write_string("console_init\n");
+
     return;
 }
 
 CONSOLE::~CONSOLE(void) {
     return;
+}
+
+int32_t CONSOLE::init(void) {
+    clear();
+    this->write_string("console init\n");
+    return 0;
 }
 
 void CONSOLE::put_entry_at(const char c, const color_t color, const size_t x,
@@ -96,7 +101,8 @@ void CONSOLE::escapeconv(const char c) {
             curr_row++;
             break;
         }
-        case '\t': { // 取整对齐
+        case '\t': {
+            // 取整对齐
             curr_col = (curr_col + 7) & ~7;
             // 如果到达最后一列则换行
             if (++curr_col >= cols) {
@@ -123,5 +129,3 @@ void CONSOLE::set_color(const color_t color) {
 color_t CONSOLE::get_color(void) {
     return this->color;
 }
-
-CONSOLE consolek;

@@ -38,6 +38,7 @@ public:
     // 生成颜色，详解见 '颜色设置与位运算.md'
     // fg-font
     // bg-back
+    int32_t init(void);
     color_t gen_color(const color_t fg, const color_t bg) const;
     // 生成一个字符+颜色
     // uc-字符
@@ -56,8 +57,5 @@ public:
     // 获取光标位置
     uint16_t get_cursor_pos(void) const;
 };
-
-// 内核 vga
-extern VGA vga;
 
 #endif /* _VGA_H_ */
