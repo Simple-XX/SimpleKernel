@@ -6,12 +6,11 @@
 
 #include "kernel.h"
 
+extern "C" void kernel_main(void);
+
 void kernel_main(void) {
-    KERNEL kernel;
+    KERNEL<VGA> kernel;
     kernel.init();
-
-    kernel.printf("Simple Kernel.\n");
-
     while (1) {
         ;
     }
