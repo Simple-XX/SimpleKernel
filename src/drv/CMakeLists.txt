@@ -5,5 +5,4 @@
 
 if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vga)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/console)
 endif()
