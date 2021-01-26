@@ -56,7 +56,6 @@ if (SimpleKernelArch STREQUAL i386)
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:libcxx>
         $<TARGET_OBJECTS:vga>
-        $<TARGET_OBJECTS:console>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}_boot
