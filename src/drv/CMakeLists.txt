@@ -3,8 +3,15 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vga)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/console)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/clock)
-endif()
+PROJECT(drv CXX)
+
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/clock clock_src)
+
+set(drv_src ${clock_src})
+
+add_library(${PROJECT_NAME} OBJECT ${drv_src})
+
+target_include_libc_header_files(${PROJECT_NAME})
+target_include_common_header_files(${PROJECT_NAME})
+target_include_kernel_header_files(${PROJECT_NAME})
+target_include_arch_header_files(${PROJECT_NAME})
