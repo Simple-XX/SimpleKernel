@@ -14,8 +14,12 @@
 #include "color.h"
 #include "io.hpp"
 #include "debug.h"
+
+#if defined(__i386__) || defined(__x86_64__)
 #include "gdt.h"
 #include "intr.h"
+#endif
+
 #include "clock.h"
 
 extern "C" uint8_t kernel_start[];
