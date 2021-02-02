@@ -7,7 +7,6 @@
 #include "stddef.h"
 #include "stdbool.h"
 #include "keyboard.h"
-#include "io.h"
 
 // 改进方向：
 // 将输入输出与 tty 结合起来
