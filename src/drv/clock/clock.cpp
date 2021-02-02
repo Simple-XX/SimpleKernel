@@ -5,7 +5,7 @@
 // clock.cpp for Simple-XX/SimpleKernel.
 
 #include "clock.h"
-#include "io.hpp"
+#include "io.h"
 
 static void clock_handle(INTR::pt_regs_t *pt_regs __attribute__((unused))) {
     return;
@@ -20,7 +20,6 @@ CLOCK::~CLOCK(void) {
 }
 
 int32_t CLOCK::init(void) {
-    IO<VGA>  io;
     uint32_t divisor = TIMER_FREQ / FREQUENCY;
     // 0x34
     io.outb(TIMER_MODE, TIMER_SEL0 | TIMER_RATEGEN | TIMER_16BIT);
@@ -40,3 +39,5 @@ int32_t CLOCK::set_clock_handle(INTR::interrupt_handler_t h) {
     INTR::register_interrupt_handler(INTR::IRQ0, h);
     return 0;
 }
+
+CLOCK clock;

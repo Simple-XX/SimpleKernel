@@ -41,4 +41,6 @@ public:
     int32_t set_clock_handle(INTR::interrupt_handler_t h);
 };
 
+extern CLOCK clock;
+
 #endif /* _CLOCK_H_ */
