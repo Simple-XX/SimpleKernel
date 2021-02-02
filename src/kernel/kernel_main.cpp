@@ -4,8 +4,9 @@
 //
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
-#include "kernel.hpp"
 #include "cpu.hpp"
+#include "kernel.h"
+#include "io.h"
 
 extern "C" void kernel_main(void);
 
