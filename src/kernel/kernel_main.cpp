@@ -8,28 +8,30 @@
 #include "io.h"
 #include "cpu.hpp"
 
+extern "C" void kernel_main(void);
+
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
 
     // enable intr
     cpu_sti();
-    io.printf("sti\n");
+    kernel.io.printf("sti\n");
     if (EFLAGS_IF_status()) {
-        io.printf("interrupt accept!\n");
+        kernel.io.printf("interrupt accept!\n");
     }
     else {
-        io.printf("interrupt not accept!\n");
+        kernel.io.printf("interrupt not accept!\n");
     }
 
     // close intr
     cpu_cli();
-    io.printf("cli\n");
+    kernel.io.printf("cli\n");
     if (EFLAGS_IF_status()) {
-        io.printf("interrupt accept!\n");
+        kernel.io.printf("interrupt accept!\n");
     }
     else {
-        io.printf("interrupt not accept!\n");
+        kernel.io.printf("interrupt not accept!\n");
     }
 
     cpu_sti();
