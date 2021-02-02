@@ -5,8 +5,6 @@
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
 #include "kernel.hpp"
-#include "io.hpp"
-#include "vga.h"
 
 extern "C" void kernel_main(void);
 
