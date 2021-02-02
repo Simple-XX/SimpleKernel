@@ -37,16 +37,11 @@ protected:
 public:
     KERNEL(void);
     ~KERNEL(void);
-#if defined(__i386__) || defined(__x86_64__)
-    IO<VGA> io;
-#endif
     int32_t init(void);
     void    show_info(void);
 };
 
-#if defined(__i386__) || defined(__x86_64__)
-KERNEL::KERNEL(void) : io(IO<VGA>()) {
-#endif
+KERNEL::KERNEL(void) {
     return;
 }
 
