@@ -8,6 +8,7 @@
 #define _CLOCK_H_
 
 #include "stdint.h"
+#include "intr.h"
 
 const uint32_t FREQUENCY = 100;
 // 定时中断由 8253/8254 芯片从 IRQ0 提供
@@ -37,8 +38,7 @@ public:
     CLOCK(void);
     ~CLOCK(void);
     int32_t init(void);
+    int32_t set_clock_handle(INTR::interrupt_handler_t h);
 };
-
-extern CLOCK clockk;
 
 #endif /* _CLOCK_H_ */

@@ -32,7 +32,9 @@ extern "C" uint8_t kernel_end[];
 
 class KERNEL {
 private:
-    void arch_init(void) const;
+    void     arch_init(void) const;
+    CLOCK    clock;
+    KEYBOARD keyboard;
 
 protected:
 public:
@@ -48,6 +50,8 @@ public:
 #if defined(__i386__) || defined(__x86_64__)
 KERNEL::KERNEL(void) : io(IO<VGA>()) {
 #endif
+    clock    = CLOCK();
+    keyboard = KEYBOARD();
     return;
 }
 
@@ -75,8 +79,8 @@ int32_t KERNEL::init(void) {
     cpp_init();
     arch_init();
     io.init();
-    clockk.init();
-    keyboardk.init();
+    clock.init();
+    keyboard.init();
     show_info();
     return 0;
 }
