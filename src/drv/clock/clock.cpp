@@ -7,8 +7,13 @@
 #include "clock.h"
 #include "io.h"
 
+static uint32_t i = 0;
+
 static void clock_handle(INTR::pt_regs_t *pt_regs __attribute__((unused))) {
-    io.printf("tick\n");
+    if (i++ < 10) {
+        io.printf("tick: %d.\t", i);
+    }
+
     return;
 }
 
