@@ -5,10 +5,11 @@
 
 PROJECT(drv CXX)
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/clock clock_src)
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/vga vga_src)
-
-set(drv_src ${vga_src} ${clock_src})
+if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/vga vga_src)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/clock clock_src)
+    set(drv_src ${vga_src} ${clock_src})
+endif ()
 
 add_library(${PROJECT_NAME} OBJECT ${drv_src})
 
