@@ -7,6 +7,8 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
+#pragma once
+
 #include "stdint.h"
 #include "intr.h"
 
@@ -588,31 +590,23 @@ private:
         0,
         /* 0x7F - ???		*/ 0,
         0,
-        0};
-    typedef struct kb_input {
-        uint8_t *head;
-        uint8_t *tail;
-        size_t   count;
-        uint8_t  buff[KB_BUFSIZE];
-    } kb_input_t;
-    static kb_input_t kb_in;
-    static bool       shift;
-    static bool       caps;
-    static bool       ctrl;
-    static bool       num;
-    static bool       alt;
-    void              keyboard_handler(void);
-
-    uint8_t keyboard_read_from_buff(void);
+        0,
+    };
+    bool shift;
+    bool caps;
+    bool ctrl;
+    bool num;
+    bool alt;
 
 protected:
 public:
     KEYBOARD(void);
     ~KEYBOARD(void);
     int32_t init(void);
-    void    keyboard_read(INTR::pt_regs_t *regs);
+    uint8_t read(void);
+    int32_t set_handle(INTR::interrupt_handler_t h);
 };
 
-extern KEYBOARD keyboardk;
+extern KEYBOARD keyboard;
 
 #endif /* _KEYBOARD_H_ */

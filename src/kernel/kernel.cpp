@@ -4,19 +4,23 @@
 //
 // kernel.cpp for Simple-XX/SimpleKernel.
 
-#include "kernel.h"
+#include "stdarg.h"
+#include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-#include "io.h"
-#include "cpu.hpp"
-#include "gdt.h"
-#include "intr.h"
-#include "clock.h"
-#include "keyboard.h"
-#include "pmm.h"
-#include "multiboot2.h"
 #include "debug.h"
 #include "assert.h"
+
+#if defined(__i386__) || defined(__x86_64__)
+#include "gdt.h"
+#include "intr.h"
+#endif
+
+#include "io.h"
+#include "clock.h"
+#include "keyboard.h"
+#include "multiboot2.h"
+#include "kernel.h"
 
 KERNEL::KERNEL(void) {
     pmm = PMM();
@@ -75,14 +79,12 @@ int32_t KERNEL::test_pmm(void) {
 }
 
 void KERNEL::show_info(void) {
-    // 输出一些基本信息
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
-              kernel_start, kernel_end);
+              KERNEL_START_ADDR, KERNEL_END_ADDR);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
-              (kernel_end - kernel_start) / 1024,
-              (kernel_end - kernel_start + 4095) / 1024 / 4);
+              (KERNEL_END_ADDR - KERNEL_START_ADDR) / 1024,
+              (KERNEL_END_ADDR - KERNEL_START_ADDR + 4095) / 1024 / 4);
     io.printf(LIGHT_GREEN, "Simple Kernel.\n");
-
     return;
 }
 
@@ -91,18 +93,19 @@ int32_t KERNEL::init(void) {
     cpp_init();
     // 架构相关初始化
     arch_init();
+    io.init();
     // 读取 grub2 传递的信息
     multiboot2_init(magic, addr);
     // 时钟初始化
-    clockk.init();
+    clock.init();
     // 键盘输入初始化
-    keyboardk.init();
+    keyboard.init();
     // debug 程序初始化
     debug.init(magic, addr);
     // 物理内存管理初始化
     pmm.init();
     // 显示内核信息
-    this->show_info();
+    show_info();
     return 0;
 }
 
