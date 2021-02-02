@@ -31,8 +31,7 @@ extern "C" uint8_t kernel_end[];
 
 class KERNEL {
 private:
-    void  arch_init(void) const;
-    CLOCK clock;
+    void arch_init(void) const;
 
 protected:
 public:
@@ -48,7 +47,6 @@ public:
 #if defined(__i386__) || defined(__x86_64__)
 KERNEL::KERNEL(void) : io(IO<VGA>()) {
 #endif
-    clock = CLOCK();
     return;
 }
 
