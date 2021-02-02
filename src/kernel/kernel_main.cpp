@@ -15,22 +15,22 @@ void kernel_main(void) {
 
     // enable intr
     CPU::sti();
-    kernel.io.printf("sti\n");
+    io.printf("sti\n");
     if (CPU::EFLAGS_IF_status()) {
-        kernel.io.printf("interrupt accept!\n");
+        io.printf("interrupt accept!\n");
     }
     else {
-        kernel.io.printf("interrupt not accept!\n");
+        io.printf("interrupt not accept!\n");
     }
 
     // close intr
     CPU::cli();
-    kernel.io.printf("cli\n");
+    io.printf("cli\n");
     if (CPU::EFLAGS_IF_status()) {
-        kernel.io.printf("interrupt accept!\n");
+        io.printf("interrupt accept!\n");
     }
     else {
-        kernel.io.printf("interrupt not accept!\n");
+        io.printf("interrupt not accept!\n");
     }
 
     CPU::sti();
