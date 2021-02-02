@@ -3,16 +3,16 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(io CXX)
+PROJECT(drv CXX)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/vga vga_src)
 
-set(io_src ${vga_src})
+set(drv_src ${vga_src})
 
-add_library(${PROJECT_NAME} OBJECT ${io_src})
+add_library(${PROJECT_NAME} OBJECT ${drv_src})
 
 target_include_libc_header_files(${PROJECT_NAME})
 target_include_kernel_header_files(${PROJECT_NAME})
-target_include_io_header_files(${PROJECT_NAME})
+target_include_drv_header_files(${PROJECT_NAME})
 target_include_common_header_files(${PROJECT_NAME})
 target_include_arch_header_files(${PROJECT_NAME})
