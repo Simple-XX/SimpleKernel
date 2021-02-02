@@ -7,6 +7,8 @@
 #ifndef _KERNEL_HPP_
 #define _KERNEL_HPP_
 
+#pragma once
+
 #include "stdint.h"
 #include "stdarg.h"
 #include "string.h"
