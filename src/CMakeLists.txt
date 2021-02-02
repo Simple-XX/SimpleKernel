@@ -74,6 +74,7 @@ elseif (SimpleKernelArch STREQUAL RASPI2)
         $<TARGET_OBJECTS:kernel>)
 endif ()
 
+set(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
 
 if (SimpleKernelArch STREQUAL i386)
