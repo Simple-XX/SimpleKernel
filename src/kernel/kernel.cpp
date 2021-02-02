@@ -2,17 +2,12 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// kernel.hpp for Simple-XX/SimpleKernel.
+// kernel.cpp for Simple-XX/SimpleKernel.
 
-#ifndef _KERNEL_HPP_
-#define _KERNEL_HPP_
-
-#include "stdint.h"
 #include "stdarg.h"
 #include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-#include "io.hpp"
 #include "debug.h"
 
 #if defined(__i386__) || defined(__x86_64__)
@@ -20,38 +15,12 @@
 #include "intr.h"
 #endif
 
+#include "io.h"
 #include "clock.h"
 #include "keyboard.h"
+#include "kernel.h"
 
-extern "C" uint8_t kernel_start[];
-extern "C" uint8_t kernel_text_start[];
-extern "C" uint8_t kernel_text_end[];
-extern "C" uint8_t kernel_data_start[];
-extern "C" uint8_t kernel_data_end[];
-extern "C" uint8_t kernel_end[];
-
-class KERNEL {
-private:
-    void     arch_init(void) const;
-    CLOCK    clock;
-    KEYBOARD keyboard;
-
-protected:
-public:
-    KERNEL(void);
-    ~KERNEL(void);
-#if defined(__i386__) || defined(__x86_64__)
-    IO<VGA> io;
-#endif
-    int32_t init(void);
-    void    show_info(void);
-};
-
-#if defined(__i386__) || defined(__x86_64__)
-KERNEL::KERNEL(void) : io(IO<VGA>()) {
-#endif
-    clock    = CLOCK();
-    keyboard = KEYBOARD();
+KERNEL::KERNEL(void) {
     return;
 }
 
@@ -84,5 +53,3 @@ int32_t KERNEL::init(void) {
     show_info();
     return 0;
 }
-
-#endif /* _KERNEL_HPP_ */

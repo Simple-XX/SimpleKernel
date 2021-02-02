@@ -7,9 +7,10 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
+#pragma once
+
 #include "stdint.h"
 #include "intr.h"
-#include "io.hpp"
 
 class KEYBOARD {
 private:
@@ -591,21 +592,21 @@ private:
         0,
         0,
     };
-    bool    shift;
-    bool    caps;
-    bool    ctrl;
-    bool    num;
-    bool    alt;
-    IO<VGA> io;
+    bool shift;
+    bool caps;
+    bool ctrl;
+    bool num;
+    bool alt;
 
 protected:
 public:
     KEYBOARD(void);
     ~KEYBOARD(void);
-    int32_t     init(void);
-    uint8_t     read(void);
-    int32_t     set_handle(INTR::interrupt_handler_t h);
-    friend void default_keyboard_handle(INTR::pt_regs_t *regs);
+    int32_t init(void);
+    uint8_t read(void);
+    int32_t set_handle(INTR::interrupt_handler_t h);
 };
+
+extern KEYBOARD keyboard;
 
 #endif /* _KEYBOARD_H_ */
