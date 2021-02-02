@@ -9,7 +9,6 @@
 #include "io.hpp"
 
 namespace INTR {
-    IO<VGA> io;
 #ifdef __cplusplus
     extern "C" {
 #endif
@@ -136,6 +135,7 @@ namespace INTR {
     static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
     // IDTR
     static idt_ptr_t idt_ptr;
+    IO<VGA>          io;
 
     // 系统中断
     static void divide_error(pt_regs_t *regs);
@@ -153,8 +153,7 @@ namespace INTR {
     static void stack_segment(pt_regs_t *regs);
     static void general_protection(pt_regs_t *regs);
     static void page_fault(pt_regs_t *regs);
-
-    void die(const char *str, uint32_t oesp, uint32_t int_no) {
+    void        die(const char *str, uint32_t oesp, uint32_t int_no) {
         // uint32_t * old_esp = (uint32_t *)oesp;
         pt_regs_t *old_esp = (pt_regs_t *)oesp;
         io.printf("%s\t: %d\n\r", str, int_no);
@@ -379,77 +378,6 @@ namespace INTR {
         return;
     }
 
-    uint32_t get_irq(uint32_t irq_no) {
-        uint32_t res = 0;
-        switch (irq_no) {
-            case 0: {
-                res = IRQ0;
-                break;
-            }
-            case 1: {
-                res = IRQ1;
-                break;
-            }
-            case 2: {
-                res = IRQ2;
-                break;
-            }
-            case 3: {
-                res = IRQ3;
-                break;
-            }
-            case 4: {
-                res = IRQ4;
-                break;
-            }
-            case 5: {
-                res = IRQ5;
-                break;
-            }
-            case 6: {
-                res = IRQ6;
-                break;
-            }
-            case 7: {
-                res = IRQ7;
-                break;
-            }
-            case 8: {
-                res = IRQ8;
-                break;
-            }
-            case 9: {
-                res = IRQ9;
-                break;
-            }
-            case 10: {
-                res = IRQ10;
-                break;
-            }
-            case 11: {
-                res = IRQ11;
-                break;
-            }
-            case 12: {
-                res = IRQ12;
-                break;
-            }
-            case 13: {
-                res = IRQ13;
-                break;
-            }
-            case 14: {
-                res = IRQ14;
-                break;
-            }
-            case 15: {
-                res = IRQ15;
-                break;
-            }
-        }
-        return res;
-    }
-
     void init_interrupt_chip(void) {
         // 重新映射 IRQ 表
         // 两片级联的 Intel 8259A 芯片
@@ -460,7 +388,7 @@ namespace INTR {
         // 0001 0001
         io.outb(IO_PIC1, 0x11);
         // 设置主片 IRQ 从 0x20(32) 号中断开始
-        io.outb(IO_PIC1C, get_irq(0));
+        io.outb(IO_PIC1C, IRQ0);
         // 设置主片 IR2 引脚连接从片
         io.outb(IO_PIC1C, 0x04);
         // 设置主片按照 8086 的方式工作
@@ -468,7 +396,7 @@ namespace INTR {
 
         io.outb(IO_PIC2, 0x11);
         // 设置从片 IRQ 从 0x28(40) 号中断开始
-        io.outb(IO_PIC2C, get_irq(8));
+        io.outb(IO_PIC2C, IRQ8);
         // 告诉从片输出引脚和主片 IR2 号相连
         io.outb(IO_PIC2C, 0x02);
         // 设置从片按照 8086 的方式工作
@@ -485,7 +413,7 @@ namespace INTR {
         // 按照我们的设置，从 32 号中断起为用户自定义中断
         // 因为单片的 Intel 8259A 芯片只能处理 8 级中断
         // 故大于等于 40 的中断号是由从片处理的
-        if (intr_no >= get_irq(8)) {
+        if (intr_no >= IRQ8) {
             // 发送重设信号给从片
             io.outb(IO_PIC2, PIC_EOI);
         }

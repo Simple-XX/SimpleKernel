@@ -589,32 +589,23 @@ private:
         0,
         /* 0x7F - ???		*/ 0,
         0,
-        0};
-    typedef struct kb_input {
-        uint8_t *head;
-        uint8_t *tail;
-        size_t   count;
-        uint8_t  buff[KB_BUFSIZE];
-    } kb_input_t;
-    static kb_input_t kb_in;
-    static bool       shift;
-    static bool       caps;
-    static bool       ctrl;
-    static bool       num;
-    static bool       alt;
-    void              keyboard_handler(void);
-
-    uint8_t keyboard_read_from_buff(void);
+        0,
+    };
+    bool    shift;
+    bool    caps;
+    bool    ctrl;
+    bool    num;
+    bool    alt;
     IO<VGA> io;
 
 protected:
 public:
     KEYBOARD(void);
     ~KEYBOARD(void);
-    int32_t init(void);
-    void    keyboard_read(INTR::pt_regs_t *regs);
+    int32_t     init(void);
+    uint8_t     read(void);
+    int32_t     set_handle(INTR::interrupt_handler_t h);
+    friend void default_keyboard_handle(INTR::pt_regs_t *regs);
 };
-
-extern KEYBOARD keyboardk;
 
 #endif /* _KEYBOARD_H_ */
