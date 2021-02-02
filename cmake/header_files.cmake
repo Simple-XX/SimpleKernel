@@ -1,6 +1,6 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-# 
+# Based on https://github.com/SynestiaOS/SynestiaOS
 # header_files.cmake for Simple-XX/SimpleKernel.
 
 function(target_include_libc_header_files Target)
