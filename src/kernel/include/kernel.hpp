@@ -12,7 +12,7 @@
 #include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-#include "io.h"
+#include "io.hpp"
 #include "debug.h"
 #include "gdt.h"
 #include "intr.h"
