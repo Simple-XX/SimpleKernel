@@ -45,7 +45,7 @@ message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 # Sub dirs
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/io)
+add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 
@@ -55,7 +55,7 @@ if (SimpleKernelArch STREQUAL i386)
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:libcxx>
-        $<TARGET_OBJECTS:io>
+        $<TARGET_OBJECTS:drv>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}_boot

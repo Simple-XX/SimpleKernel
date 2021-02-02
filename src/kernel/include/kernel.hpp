@@ -12,7 +12,7 @@
 #include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-#include "io.h"
+#include "io.hpp"
 
 extern "C" uint8_t kernel_start[];
 extern "C" uint8_t kernel_text_start[];
