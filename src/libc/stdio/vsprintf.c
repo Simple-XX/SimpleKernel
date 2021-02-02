@@ -45,14 +45,14 @@ static int skip_atoi(const char **s) {
 #define SMALL 64
 
 // 除操作。n 被除数；base 除数。结果 n 为商，函数返回值为余数。
-#if defined(i386) || defined(x86_64)
+#if defined(__i386__) || defined(__x86_64__)
 int32_t do_div(int *n, int base) {
     int32_t res = 0;
     res         = *n % base;
     *n          = *n / base;
     return res;
 }
-#elif RASPI2
+#elif defined(__arm__) || defined(__aarch64__)
 #include "math.h"
 int32_t do_div(int *n, int base) {
     int32_t res = 0;

@@ -26,10 +26,24 @@ private:
     // VGA 缓存大小
     static constexpr size_t VGA_MEM_SIZE = 0x8000;
     // 规定显示行数、列数
-    static constexpr const size_t width  = 80;
-    static constexpr const size_t height = 25;
+    static constexpr const size_t WIDTH  = 80;
+    static constexpr const size_t HEIGHT = 25;
     // 缓存
     uint16_t *const buffer = (uint16_t *)VGA_MEM_BASE;
+    // 当前位置
+    size_t curr_row;
+    size_t curr_col;
+    // 当前命令行颜色
+    color_t color;
+    // 清屏
+    void clear(void);
+    // 转义字符处理
+    void escapeconv(const char c);
+    // 滚动显示
+    void scroll(void);
+    // 指定位置输出
+    void put_entry_at(const char c, const color_t color, const size_t x,
+                      const size_t y);
 
 protected:
 public:
@@ -38,15 +52,12 @@ public:
     // 生成颜色，详解见 '颜色设置与位运算.md'
     // fg-font
     // bg-back
+    int32_t init(void);
     color_t gen_color(const color_t fg, const color_t bg) const;
     // 生成一个字符+颜色
     // uc-字符
     // color-颜色
     uint16_t gen_char(const uint8_t uc, const color_t color) const;
-    // 获取高度
-    size_t get_height(void) const;
-    // 获取宽度
-    size_t get_width(void) const;
     // 写缓存
     void write(const size_t idx, const uint16_t data);
     // 读缓存
@@ -55,9 +66,19 @@ public:
     void set_cursor_pos(const size_t x, const size_t y);
     // 获取光标位置
     uint16_t get_cursor_pos(void) const;
+    // 写字符
+    void put_char(const char c);
+    // 写字符串
+    void write_string(const char *s);
+    // 写字符串
+    void write(const char *s, size_t len);
+    // 设置颜色
+    void set_color(const color_t color);
+    // 获取颜色
+    color_t get_color(void);
+    // 设置行列
+    void set_row(size_t row);
+    void set_col(size_t col);
 };
-
-// 内核 vga
-extern VGA vga;
 
 #endif /* _VGA_H_ */
