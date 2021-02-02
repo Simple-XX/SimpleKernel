@@ -1,6 +1,6 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-# 
+# Based on https://github.com/SynestiaOS/SynestiaOS
 # platform_detector.cmake for Simple-XX/SimpleKernel.
 
 if (PLATFORM STREQUAL x86_64)
