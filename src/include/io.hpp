@@ -7,6 +7,8 @@
 #ifndef _IO_HPP_
 #define _IO_HPP_
 
+#pragma once
+
 #include "stdint.h"
 #include "stdarg.h"
 #include "string.h"
