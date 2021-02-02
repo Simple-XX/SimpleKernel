@@ -4,7 +4,7 @@
 //
 // gdt.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
+#include "io.hpp"
 #include "debug.h"
 #include "cpu.hpp"
 #include "gdt.h"
@@ -21,7 +21,7 @@ namespace GDT {
     static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
     // TSS 段定义
     tss_struct_t tss_entry __attribute__((aligned(8)));
-
+    IO<VGA>      io;
     void set_gdt(int32_t num, uint32_t base, uint32_t limit, uint8_t access,
                  uint8_t gran) {
         gdt_entries[num].base_low    = (base & 0xFFFF);
@@ -78,8 +78,7 @@ namespace GDT {
         gdt_load((uint32_t)&gdt_ptr);
         // 加载任务寄存器
         tss_load();
-        io.printf("gdt_init\n");
+        io.printf("gdt init\n");
         return 0;
     }
-
 };
