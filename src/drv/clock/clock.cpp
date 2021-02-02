@@ -5,18 +5,17 @@
 // clock.cpp for Simple-XX/SimpleKernel.
 
 #include "clock.h"
-#include "intr.h"
 #include "io.hpp"
+
+static void clock_handle(INTR::pt_regs_t *pt_regs __attribute__((unused))) {
+    return;
+}
 
 CLOCK::CLOCK(void) {
     return;
 }
 
 CLOCK::~CLOCK(void) {
-    return;
-}
-
-static void clock_handle(INTR::pt_regs_t *pt_regs __attribute__((unused))) {
     return;
 }
 
@@ -31,10 +30,13 @@ int32_t CLOCK::init(void) {
     // 分别写入低字节和高字节
     io.outb(IO_TIMER, low);
     io.outb(IO_TIMER, hign);
-    INTR::register_interrupt_handler(INTR::get_irq(0), &clock_handle);
-    INTR::enable_irq(INTR::get_irq(0));
+    set_clock_handle(&clock_handle);
+    INTR::enable_irq(INTR::IRQ0);
     io.printf("clock init\n");
     return 0;
 }
 
-CLOCK clockk;
+int32_t CLOCK::set_clock_handle(INTR::interrupt_handler_t h) {
+    INTR::register_interrupt_handler(INTR::IRQ0, h);
+    return 0;
+}
