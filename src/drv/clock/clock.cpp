@@ -42,3 +42,5 @@ int32_t CLOCK::set_clock_handle(INTR::interrupt_handler_t h) {
     INTR::register_interrupt_handler(INTR::IRQ0, h);
     return 0;
 }
+
+CLOCK clock;
