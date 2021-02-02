@@ -9,6 +9,7 @@
 
 #include "stdint.h"
 #include "intr.h"
+#include "io.hpp"
 
 class KEYBOARD {
 private:
@@ -604,6 +605,7 @@ private:
     void              keyboard_handler(void);
 
     uint8_t keyboard_read_from_buff(void);
+    IO<VGA> io;
 
 protected:
 public:

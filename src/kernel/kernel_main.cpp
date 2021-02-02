@@ -4,15 +4,16 @@
 //
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
-#include "kernel.h"
-#include "io.h"
+#include "kernel.hpp"
 #include "cpu.hpp"
+
+extern "C" void kernel_main(void);
 
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
 
-    cpu_sti();
+    CPU::sti();
     while (1) {
         ;
     }
