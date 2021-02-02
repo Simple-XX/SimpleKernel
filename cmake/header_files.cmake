@@ -1,6 +1,6 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-# 
+# Based on https://github.com/SynestiaOS/SynestiaOS
 # header_files.cmake for Simple-XX/SimpleKernel.
 
 function(target_include_libc_header_files Target)
@@ -28,15 +28,9 @@ endfunction()
 
 function(target_include_drv_header_files Target)
     if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
-        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/8259A/include)
-        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/clock/include)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/vga/include)
-        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/console/include)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/keyboard/include)
-    elseif (SimpleKernelArch STREQUAL RASPI2)
-        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/uart/include)
-        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/mailbox/include)
-        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/framebuffer/include)
+        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/clock/include)
     endif ()
 endfunction()
 

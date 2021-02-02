@@ -7,6 +7,8 @@
 #ifndef _PORT_H_
 #define _PORT_H_
 
+#pragma once
+
 #include "stdint.h"
 
 namespace PORT {
