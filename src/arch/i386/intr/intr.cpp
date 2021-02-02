@@ -6,7 +6,7 @@
 
 #include "intr.h"
 #include "cpu.hpp"
-#include "io.hpp"
+#include "io.h"
 
 namespace INTR {
 #ifdef __cplusplus
@@ -135,7 +135,6 @@ namespace INTR {
     static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
     // IDTR
     static idt_ptr_t idt_ptr;
-    IO<VGA>          io;
 
     // 系统中断
     static void divide_error(pt_regs_t *regs);
