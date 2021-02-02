@@ -133,19 +133,19 @@ namespace CPU {
     static constexpr const uint32_t CR4_SMEP       = 0x00100000;
 
     // 执行CPU空操作
-    static inline void cpu_hlt(void) {
+    static inline void hlt(void) {
         __asm__ volatile("hlt");
         return;
     }
 
     // 开启中断
-    static inline void cpu_sti(void) {
+    static inline void sti(void) {
         __asm__ volatile("sti" ::: "memory");
         return;
     }
 
     // 关闭中断
-    static inline void cpu_cli(void) {
+    static inline void cli(void) {
         __asm__ volatile("cli" ::: "memory");
         return;
     }
@@ -163,35 +163,35 @@ namespace CPU {
     }
 
     // 读取 CR0
-    static inline uint32_t cpu_read_cr0(void) {
+    static inline uint32_t read_cr0(void) {
         uint32_t cr0;
         __asm__ volatile("mov %%cr0, %0" : "=b"(cr0));
         return cr0;
     }
 
     // 读取 CR2
-    static inline uint32_t cpu_read_cr2(void) {
+    static inline uint32_t read_cr2(void) {
         uint32_t cr2;
         __asm__ volatile("mov %%cr2, %0" : "=b"(cr2));
         return cr2;
     }
 
     // 读取 CR3
-    static inline uint32_t cpu_read_cr3(void) {
+    static inline uint32_t read_cr3(void) {
         uint32_t cr3;
         __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
         return cr3;
     }
 
     // 切换内核栈
-    static inline void cpu_switch_stack(addr_t stack_top) {
+    static inline void switch_stack(addr_t stack_top) {
         asm("mov %0, %%esp" : : "r"(stack_top));
         asm("xor %%ebp, %%ebp" : :);
         return;
     }
 
     // 读取 CR4
-    static inline uint32_t cpu_read_cr4(void) {
+    static inline uint32_t read_cr4(void) {
         uint32_t cr4;
         __asm__ volatile("mov %%cr4, %0" : "=b"(cr4));
         return cr4;
@@ -327,137 +327,137 @@ namespace CPU {
     }
 
     static inline bool CR4_VME_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_VME);
     }
 
     static inline bool CR4_PVI_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_PVI);
     }
 
     static inline bool CR4_TSD_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_TSD);
     }
 
     static inline bool CR4_DE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_DE);
     }
 
     static inline bool CR4_PSE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_PSE);
     }
 
     static inline bool CR4_PAE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_PAE);
     }
 
     static inline bool CR4_MCE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_MCE);
     }
 
     static inline bool CR4_PGE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_PGE);
     }
 
     static inline bool CR4_PCE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_PCE);
     }
 
     static inline bool CR4_OSFXSR_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_OSFXSR);
     }
 
     static inline bool CR4_OSXMMEXCPT_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_OSXMMEXCPT);
     }
 
     static inline bool CR4_VMXE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_VMXE);
     }
 
     static inline bool CR4_SMXE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_SMXE);
     }
 
     static inline bool CR4_PCIDE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_PCIDE);
     }
 
     static inline bool CR4_OSXSAVE_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_OSXSAVE);
     }
 
     static inline bool CR4_SMEP_status(void) {
-        uint32_t cr4 = cpu_read_cr4();
+        uint32_t cr4 = read_cr4();
         return (cr4 & CR4_SMEP);
     }
 
     static inline bool CR0_PE_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_PE);
     }
 
     static inline bool CR0_MP_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_MP);
     }
 
     static inline bool CR0_EM_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_EM);
     }
 
     static inline bool CR0_TS_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_TS);
     }
 
     static inline bool CR0_ET_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_ET);
     }
 
     static inline bool CR0_NE_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_NE);
     }
 
     static inline bool CR0_WP_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_WP);
     }
 
     static inline bool CR0_AM_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_AM);
     }
 
     static inline bool CR0_NW_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_NW);
     }
 
     static inline bool CR0_CD_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_CD);
     }
 
     static inline bool CR0_PG_status(void) {
-        uint32_t cr0 = cpu_read_cr0();
+        uint32_t cr0 = read_cr0();
         return (cr0 & CR0_PG);
     }
 };
