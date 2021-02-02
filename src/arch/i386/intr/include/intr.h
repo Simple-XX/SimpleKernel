@@ -177,13 +177,11 @@ namespace INTR {
         "Machine-Check",
         "SIMD Floating-Point Exception",
     };
-
     int32_t init(void);
     // 注册一个中断处理函数
-    void     register_interrupt_handler(uint8_t n, interrupt_handler_t h);
-    void     enable_irq(uint32_t irq_no);
-    void     disable_irq(uint32_t irq_no);
-    uint32_t get_irq(uint32_t irq_no);
+    void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
+    void enable_irq(uint32_t irq_no);
+    void disable_irq(uint32_t irq_no);
     // 返回中断名
     const char *get_intr_name(uint32_t intr_no);
     // 执行中断

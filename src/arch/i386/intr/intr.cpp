@@ -9,7 +9,6 @@
 #include "io.h"
 
 namespace INTR {
-
 #ifdef __cplusplus
     extern "C" {
 #endif
@@ -153,8 +152,7 @@ namespace INTR {
     static void stack_segment(pt_regs_t *regs);
     static void general_protection(pt_regs_t *regs);
     static void page_fault(pt_regs_t *regs);
-
-    void die(const char *str, uint32_t oesp, uint32_t int_no) {
+    void        die(const char *str, uint32_t oesp, uint32_t int_no) {
         // uint32_t * old_esp = (uint32_t *)oesp;
         pt_regs_t *old_esp = (pt_regs_t *)oesp;
         io.printf("%s\t: %d\n\r", str, int_no);
@@ -183,7 +181,7 @@ namespace INTR {
                   old_esp->user_esp, old_esp->user_ss);
         io.printf("addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
 
-        cpu_hlt();
+        CPU::hlt();
         return;
     }
 
@@ -211,7 +209,7 @@ namespace INTR {
         io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
                   "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
                   // old_esp[0], old_esp[1], old_esp[2]);
-                  old_esp[0], read_eflags(), old_esp[2]);
+                  old_esp[0], CPU::read_eflags(), old_esp[2]);
         return;
     }
 
@@ -379,77 +377,6 @@ namespace INTR {
         return;
     }
 
-    uint32_t get_irq(uint32_t irq_no) {
-        uint32_t res = 0;
-        switch (irq_no) {
-            case 0: {
-                res = IRQ0;
-                break;
-            }
-            case 1: {
-                res = IRQ1;
-                break;
-            }
-            case 2: {
-                res = IRQ2;
-                break;
-            }
-            case 3: {
-                res = IRQ3;
-                break;
-            }
-            case 4: {
-                res = IRQ4;
-                break;
-            }
-            case 5: {
-                res = IRQ5;
-                break;
-            }
-            case 6: {
-                res = IRQ6;
-                break;
-            }
-            case 7: {
-                res = IRQ7;
-                break;
-            }
-            case 8: {
-                res = IRQ8;
-                break;
-            }
-            case 9: {
-                res = IRQ9;
-                break;
-            }
-            case 10: {
-                res = IRQ10;
-                break;
-            }
-            case 11: {
-                res = IRQ11;
-                break;
-            }
-            case 12: {
-                res = IRQ12;
-                break;
-            }
-            case 13: {
-                res = IRQ13;
-                break;
-            }
-            case 14: {
-                res = IRQ14;
-                break;
-            }
-            case 15: {
-                res = IRQ15;
-                break;
-            }
-        }
-        return res;
-    }
-
     void init_interrupt_chip(void) {
         // 重新映射 IRQ 表
         // 两片级联的 Intel 8259A 芯片
@@ -460,7 +387,7 @@ namespace INTR {
         // 0001 0001
         io.outb(IO_PIC1, 0x11);
         // 设置主片 IRQ 从 0x20(32) 号中断开始
-        io.outb(IO_PIC1C, get_irq(0));
+        io.outb(IO_PIC1C, IRQ0);
         // 设置主片 IR2 引脚连接从片
         io.outb(IO_PIC1C, 0x04);
         // 设置主片按照 8086 的方式工作
@@ -468,7 +395,7 @@ namespace INTR {
 
         io.outb(IO_PIC2, 0x11);
         // 设置从片 IRQ 从 0x28(40) 号中断开始
-        io.outb(IO_PIC2C, get_irq(8));
+        io.outb(IO_PIC2C, IRQ8);
         // 告诉从片输出引脚和主片 IR2 号相连
         io.outb(IO_PIC2C, 0x02);
         // 设置从片按照 8086 的方式工作
@@ -485,7 +412,7 @@ namespace INTR {
         // 按照我们的设置，从 32 号中断起为用户自定义中断
         // 因为单片的 Intel 8259A 芯片只能处理 8 级中断
         // 故大于等于 40 的中断号是由从片处理的
-        if (intr_no >= get_irq(8)) {
+        if (intr_no >= IRQ8) {
             // 发送重设信号给从片
             io.outb(IO_PIC2, PIC_EOI);
         }
@@ -511,7 +438,7 @@ namespace INTR {
             io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
                       "Unhandled interrupt: %d %s\n", intr_no,
                       get_intr_name(intr_no));
-            cpu_hlt();
+            CPU::hlt();
         }
         return 0;
     }
@@ -602,8 +529,7 @@ namespace INTR {
         register_interrupt_handler(INT_STACK_FAULT, &stack_segment);
         register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
         register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
-        io.printf("intr_init\n");
+        io.printf("intr init\n");
         return 0;
     }
-
 };

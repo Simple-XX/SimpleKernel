@@ -8,6 +8,9 @@
 #include "debug.h"
 #include "assert.h"
 #include "kernel.h"
+#include "io.h"
+
+extern "C" void kernel_main(addr_t magic, addr_t addr);
 
 // 内核入口
 void kernel_main(addr_t magic, addr_t addr) {
@@ -15,7 +18,7 @@ void kernel_main(addr_t magic, addr_t addr) {
     kernel.init();
     kernel.test();
 
-    cpu_sti();
+    CPU::sti();
     while (1) {
         ;
     }

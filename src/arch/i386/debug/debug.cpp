@@ -47,8 +47,9 @@ void DEBUG::panic(const char *msg) {
     io.printf("***\n");
 
     // 致命错误发生后打印栈信息后停止在这里
-    while (1)
-        cpu_hlt();
+    while (1) {
+        CPU::hlt();
+    }
 }
 
 // 输出 esp
