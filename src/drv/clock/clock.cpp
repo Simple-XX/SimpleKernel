@@ -8,7 +8,6 @@
 #include "io.hpp"
 
 static void clock_handle(INTR::pt_regs_t *pt_regs __attribute__((unused))) {
-    IO<VGA> io;
     io.printf("tick\n");
     return;
 }
@@ -22,7 +21,6 @@ CLOCK::~CLOCK(void) {
 }
 
 int32_t CLOCK::init(void) {
-    IO<VGA>  io;
     uint32_t divisor = TIMER_FREQ / FREQUENCY;
     // 0x34
     io.outb(TIMER_MODE, TIMER_SEL0 | TIMER_RATEGEN | TIMER_16BIT);
