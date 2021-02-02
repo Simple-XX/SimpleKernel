@@ -20,13 +20,14 @@
 
 extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
 
-template <class io_t>
 class IO {
 private:
     // io 缓冲
     static char buf[128];
     // io 对象
-    static io_t io;
+#if defined(__i386__) || defined(__x86_64__)
+    static VGA io;
+#endif
 
 protected:
 public:
@@ -58,86 +59,72 @@ public:
     int32_t printf(color_t color, const char *fmt, ...);
 };
 
-template <class io_t>
-char IO<io_t>::buf[128];
+char IO::buf[128];
 
-template <class io_t>
-io_t IO<io_t>::io;
+#if defined(__i386__) || defined(__x86_64__)
+VGA IO::io;
+#endif
 
-template <class io_t>
-IO<io_t>::IO(void) {
+IO::IO(void) {
     return;
 }
 
-template <class io_t>
-IO<io_t>::~IO(void) {
+IO::~IO(void) {
     return;
 }
 
-template <class io_t>
-int32_t IO<io_t>::init(void) {
+int32_t IO::init(void) {
     write_string("io init\n");
     return 0;
 }
 
-template <class io_t>
-uint8_t IO<io_t>::inb(const uint32_t port) {
+uint8_t IO::inb(const uint32_t port) {
     return PORT::inb(port);
 }
 
-template <class io_t>
-uint16_t IO<io_t>::inw(const uint32_t port) {
+uint16_t IO::inw(const uint32_t port) {
     return PORT::inw(port);
 }
 
-template <class io_t>
-uint32_t IO<io_t>::ind(const uint32_t port) {
+uint32_t IO::ind(const uint32_t port) {
     return PORT::ind(port);
 }
 
-template <class io_t>
-void IO<io_t>::outb(const uint32_t port, const uint8_t data) {
+void IO::outb(const uint32_t port, const uint8_t data) {
     PORT::outb(port, data);
     return;
 }
 
-template <class io_t>
-void IO<io_t>::outw(const uint32_t port, const uint16_t data) {
+void IO::outw(const uint32_t port, const uint16_t data) {
     PORT::outw(port, data);
     return;
 }
 
-template <class io_t>
-void IO<io_t>::outd(const uint32_t port, const uint32_t data) {
+void IO::outd(const uint32_t port, const uint32_t data) {
     PORT::outd(port, data);
     return;
 }
 
-template <class io_t>
-color_t IO<io_t>::get_color(void) {
+color_t IO::get_color(void) {
     return io.get_color();
 }
 
-template <class io_t>
-void IO<io_t>::set_color(const color_t color) {
+void IO::set_color(const color_t color) {
     io.set_color(color);
     return;
 }
 
-template <class io_t>
-void IO<io_t>::put_char(char c) {
+void IO::put_char(char c) {
     io.put_char(c);
     return;
 }
 
-template <class io_t>
-int32_t IO<io_t>::write_string(const char *s) {
+int32_t IO::write_string(const char *s) {
     io.write_string(s);
     return 0;
 }
 
-template <class io_t>
-int32_t IO<io_t>::printf(const char *fmt, ...) {
+int32_t IO::printf(const char *fmt, ...) {
     va_list args;
     int32_t i;
     va_start(args, fmt);
@@ -148,8 +135,7 @@ int32_t IO<io_t>::printf(const char *fmt, ...) {
     return i;
 }
 
-template <class io_t>
-int32_t IO<io_t>::printf(color_t color, const char *fmt, ...) {
+int32_t IO::printf(color_t color, const char *fmt, ...) {
     color_t curr_color = get_color();
     set_color(color);
     va_list args;
@@ -162,5 +148,7 @@ int32_t IO<io_t>::printf(color_t color, const char *fmt, ...) {
     set_color(curr_color);
     return i;
 }
+
+IO io;
 
 #endif /* _IO_HPP_ */
