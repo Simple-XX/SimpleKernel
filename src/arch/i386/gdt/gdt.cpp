@@ -4,7 +4,7 @@
 //
 // gdt.cpp for Simple-XX/SimpleKernel.
 
-#include "io.hpp"
+#include "io.h"
 #include "debug.h"
 #include "cpu.hpp"
 #include "gdt.h"

@@ -9,8 +9,6 @@
 
 extern "C" void kernel_main(void);
 
-IO io;
-
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
