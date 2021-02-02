@@ -6,6 +6,7 @@
 
 #include "stddef.h"
 #include "stdbool.h"
+#include "io.h"
 #include "keyboard.h"
 
 // 改进方向：
@@ -14,6 +15,7 @@
 
 static void default_keyboard_handle(INTR::pt_regs_t *regs
                                     __attribute__((unused))) {
+    keyboard.read();
     return;
 }
 
@@ -74,12 +76,15 @@ uint8_t KEYBOARD::read(void) {
             num = ((!num) & 0x01);
             break;
         case KB_BACKSPACE:
+            io.put_char('\b');
             letter = '\b';
             break;
         case KB_ENTER:
+            io.put_char('\n');
             letter = '\n';
             break;
         case KB_TAB:
+            io.put_char('\t');
             letter = '\t';
             break;
         // 一般字符输出
@@ -88,6 +93,7 @@ uint8_t KEYBOARD::read(void) {
             if (!(scancode & RELEASED_MASK)) {
                 // 计算在 keymap 中的位置
                 letter = keymap[(uint8_t)(scancode * 3) + (uint8_t)shift];
+                io.put_char(letter);
                 break;
             }
             else {
@@ -108,3 +114,5 @@ int32_t KEYBOARD::set_handle(INTR::interrupt_handler_t h) {
     INTR::register_interrupt_handler(INTR::IRQ1, h);
     return 0;
 }
+
+KEYBOARD keyboard;

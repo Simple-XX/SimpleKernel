@@ -10,7 +10,6 @@
 #pragma once
 
 #include "stdint.h"
-#include "io.hpp"
 
 namespace INTR {
     // 中断表最大值
