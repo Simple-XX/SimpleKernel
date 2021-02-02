@@ -2,10 +2,10 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// io.h for Simple-XX/SimpleKernel.
+// io.hpp for Simple-XX/SimpleKernel.
 
-#ifndef _IO_H_
-#define _IO_H_
+#ifndef _IO_HPP_
+#define _IO_HPP_
 
 #include "stdint.h"
 #include "stdarg.h"
@@ -163,4 +163,4 @@ int32_t IO<io_t>::printf(color_t color, const char *fmt, ...) {
     return i;
 }
 
-#endif /* _IO_H_ */
+#endif /* _IO_HPP_ */

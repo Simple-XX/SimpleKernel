@@ -2,10 +2,10 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// kernel.h for Simple-XX/SimpleKernel.
+// kernel.hpp for Simple-XX/SimpleKernel.
 
-#ifndef _KERNEL_H_
-#define _KERNEL_H_
+#ifndef _KERNEL_HPP_
+#define _KERNEL_HPP_
 
 #include "stdint.h"
 #include "stdarg.h"
@@ -61,4 +61,4 @@ int32_t KERNEL::init(void) {
     return 0;
 }
 
-#endif /* _KERNEL_H_ */
+#endif /* _KERNEL_HPP_ */
