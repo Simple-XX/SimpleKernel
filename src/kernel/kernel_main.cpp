@@ -9,7 +9,7 @@
 extern "C" void kernel_main(void);
 
 void kernel_main(void) {
-    KERNEL<VGA> kernel;
+    KERNEL kernel;
     kernel.init();
     while (1) {
         ;

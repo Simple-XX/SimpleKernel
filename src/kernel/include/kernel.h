@@ -12,13 +12,7 @@
 #include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-
-#if defined(__i386__) || defined(__x86_64__)
-#include "vga.h"
-#endif
-
 #include "io.h"
-#include "console.h"
 
 extern "C" uint8_t kernel_start[];
 extern "C" uint8_t kernel_text_start[];
@@ -27,34 +21,30 @@ extern "C" uint8_t kernel_data_start[];
 extern "C" uint8_t kernel_data_end[];
 extern "C" uint8_t kernel_end[];
 
-template <class video_t>
 class KERNEL {
 private:
-    video_t          video;
-    CONSOLE<video_t> console;
-
 protected:
 public:
     KERNEL(void);
     ~KERNEL(void);
-    IO<video_t> io;
-    int         init(void);
-    void        show_info(void);
+#if defined(__i386__) || defined(__x86_64__)
+    IO<VGA> io;
+#endif
+    int32_t init(void);
+    void    show_info(void);
 };
 
-template <class video_t>
-KERNEL<video_t>::KERNEL(void)
-    : video(video_t()), console(CONSOLE(video)), io(IO(console)) {
+#if defined(__i386__) || defined(__x86_64__)
+KERNEL::KERNEL(void) : io(IO<VGA>()) {
+#endif
     return;
 }
 
-template <class video_t>
-KERNEL<video_t>::~KERNEL(void) {
+KERNEL::~KERNEL(void) {
     return;
 }
 
-template <class video_t>
-void KERNEL<video_t>::show_info(void) {
+void KERNEL::show_info(void) {
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
               kernel_start, kernel_end);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
@@ -64,11 +54,8 @@ void KERNEL<video_t>::show_info(void) {
     return;
 }
 
-template <class video_t>
-int32_t KERNEL<video_t>::init(void) {
+int32_t KERNEL::init(void) {
     cpp_init();
-    video.init();
-    console.init();
     io.init();
     show_info();
     return 0;
