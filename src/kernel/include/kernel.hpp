@@ -14,7 +14,6 @@
 #include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-#include "io.hpp"
 #include "debug.h"
 
 #if defined(__i386__) || defined(__x86_64__)
@@ -22,6 +21,7 @@
 #include "intr.h"
 #endif
 
+#include "io.h"
 #include "clock.h"
 
 extern "C" uint8_t kernel_start[];

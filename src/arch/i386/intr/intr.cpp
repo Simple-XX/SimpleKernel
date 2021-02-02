@@ -6,7 +6,7 @@
 
 #include "intr.h"
 #include "cpu.hpp"
-#include "io.hpp"
+#include "io.h"
 
 namespace INTR {
 #ifdef __cplusplus

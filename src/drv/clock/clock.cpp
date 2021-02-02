@@ -5,7 +5,7 @@
 // clock.cpp for Simple-XX/SimpleKernel.
 
 #include "clock.h"
-#include "io.hpp"
+#include "io.h"
 
 static void clock_handle(INTR::pt_regs_t *pt_regs __attribute__((unused))) {
     io.printf("tick\n");
