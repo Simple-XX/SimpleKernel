@@ -4,8 +4,7 @@
 //
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
-#include "kernel.h"
-#include "io.h"
+#include "kernel.hpp"
 #include "cpu.hpp"
 
 extern "C" void kernel_main(void);
@@ -15,9 +14,9 @@ void kernel_main(void) {
     kernel.init();
 
     // enable intr
-    cpu_sti();
+    CPU::sti();
     kernel.io.printf("sti\n");
-    if (EFLAGS_IF_status()) {
+    if (CPU::EFLAGS_IF_status()) {
         kernel.io.printf("interrupt accept!\n");
     }
     else {
@@ -25,16 +24,16 @@ void kernel_main(void) {
     }
 
     // close intr
-    cpu_cli();
+    CPU::cli();
     kernel.io.printf("cli\n");
-    if (EFLAGS_IF_status()) {
+    if (CPU::EFLAGS_IF_status()) {
         kernel.io.printf("interrupt accept!\n");
     }
     else {
         kernel.io.printf("interrupt not accept!\n");
     }
 
-    cpu_sti();
+    CPU::sti();
     while (1) {
         ;
     }
