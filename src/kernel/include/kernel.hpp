@@ -14,7 +14,7 @@
 #include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-#include "io.hpp"
+#include "io.h"
 
 extern "C" uint8_t kernel_start[];
 extern "C" uint8_t kernel_text_start[];
