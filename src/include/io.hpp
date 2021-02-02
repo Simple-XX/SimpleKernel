@@ -24,8 +24,9 @@ template <class io_t>
 class IO {
 private:
     // io 缓冲
-    char buf[128];
-    io_t io;
+    static char buf[128];
+    // io 对象
+    static io_t io;
 
 protected:
 public:
@@ -58,7 +59,13 @@ public:
 };
 
 template <class io_t>
-IO<io_t>::IO(void) : io(io_t()) {
+char IO<io_t>::buf[128];
+
+template <class io_t>
+io_t IO<io_t>::io;
+
+template <class io_t>
+IO<io_t>::IO(void) {
     return;
 }
 
