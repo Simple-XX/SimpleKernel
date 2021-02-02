@@ -2,19 +2,52 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// kernel.cpp for Simple-XX/SimpleKernel.
+// kernel.hpp for Simple-XX/SimpleKernel.
 
-#include "kernel.h"
+#ifndef _KERNEL_HPP_
+#define _KERNEL_HPP_
+
+#include "stdint.h"
+#include "stdarg.h"
+#include "string.h"
 #include "cxxabi.h"
 #include "color.h"
-#include "io.h"
-#include "cpu.hpp"
+#include "io.hpp"
+#include "debug.h"
+
+#if defined(__i386__) || defined(__x86_64__)
 #include "gdt.h"
 #include "intr.h"
+#endif
+
 #include "clock.h"
 #include "keyboard.h"
 
-KERNEL::KERNEL(void) {
+extern "C" uint8_t kernel_start[];
+extern "C" uint8_t kernel_text_start[];
+extern "C" uint8_t kernel_text_end[];
+extern "C" uint8_t kernel_data_start[];
+extern "C" uint8_t kernel_data_end[];
+extern "C" uint8_t kernel_end[];
+
+class KERNEL {
+private:
+    void arch_init(void) const;
+
+protected:
+public:
+    KERNEL(void);
+    ~KERNEL(void);
+#if defined(__i386__) || defined(__x86_64__)
+    IO<VGA> io;
+#endif
+    int32_t init(void);
+    void    show_info(void);
+};
+
+#if defined(__i386__) || defined(__x86_64__)
+KERNEL::KERNEL(void) : io(IO<VGA>()) {
+#endif
     return;
 }
 
@@ -29,22 +62,23 @@ void KERNEL::arch_init(void) const {
 }
 
 void KERNEL::show_info(void) {
-    // 输出一些基本信息
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
               kernel_start, kernel_end);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               (kernel_end - kernel_start) / 1024,
               (kernel_end - kernel_start + 4095) / 1024 / 4);
     io.printf(LIGHT_GREEN, "Simple Kernel.\n");
-
     return;
 }
 
 int32_t KERNEL::init(void) {
     cpp_init();
     arch_init();
+    io.init();
     clockk.init();
     keyboardk.init();
-    this->show_info();
+    show_info();
     return 0;
 }
+
+#endif /* _KERNEL_HPP_ */
