@@ -149,6 +149,6 @@ int32_t IO::printf(color_t color, const char *fmt, ...) {
     return i;
 }
 
-IO io;
+extern IO io;
 
 #endif /* _IO_HPP_ */
