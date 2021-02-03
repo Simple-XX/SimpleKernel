@@ -14,7 +14,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build_macos:
+  build_osx:
     runs-on: macos-latest
 
     steps:
