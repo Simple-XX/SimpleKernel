@@ -50,7 +50,7 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 
 # Link
-if (SimpleKernelArch STREQUAL i386)
+if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL raspi2)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:libc>
@@ -62,13 +62,6 @@ elseif (SimpleKernelArch STREQUAL x86_64)
         $<TARGET_OBJECTS:boot>)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
-        $<TARGET_OBJECTS:kernel>)
-elseif (SimpleKernelArch STREQUAL raspi2)
-    add_executable(${KernelName}
-        $<TARGET_OBJECTS:arch>
-        $<TARGET_OBJECTS:libc>
-        $<TARGET_OBJECTS:libcxx>
-        $<TARGET_OBJECTS:drv>
         $<TARGET_OBJECTS:kernel>)
 endif ()
 
