@@ -1,7 +1,7 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# cmake.yml for Simple-XX/SimpleKernel.
+# build.yml for Simple-XX/SimpleKernel.
 
 name: build
 
@@ -14,20 +14,20 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build_macos:
+  build_osx:
     runs-on: macos-latest
 
     steps:
-    - name: Get code
+    - name: get code
       uses: actions/checkout@v2
       
-    - name: Setup brew
+    - name: setup brew
       shell: bash
       run: |
         brew install x86_64-elf-binutils
         brew install x86_64-elf-gcc
 
-    - name: Make build dir
+    - name: make build dir
       shell: bash
       run: |
         mkdir ${{github.workspace}}/build
@@ -35,7 +35,7 @@ jobs:
     - name: cmake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE ..
+      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
 
     - name: make
       shell: bash
