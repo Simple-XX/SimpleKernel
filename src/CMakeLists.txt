@@ -10,7 +10,7 @@ if (SimpleKernelArch STREQUAL i386)
 elseif (SimpleKernelArch STREQUAL x86_64)
     set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -D${SimpleKernelArch}")
     set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m64 -D${SimpleKernelArch}")
-elseif (SimpleKernelArch STREQUAL RASPI2)
+elseif (SimpleKernelArch STREQUAL raspi2)
     set(CMAKE_C_FLAGS "-march=armv7-a -mtune=cortex-a7 -marm -D${SimpleKernelArch}")
 else ()
     message(FATAL_ERROR "unexpected ARCH ${SimpleKernelArch}")
@@ -63,14 +63,12 @@ elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>)
-elseif (SimpleKernelArch STREQUAL RASPI2)
+elseif (SimpleKernelArch STREQUAL raspi2)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:libcxx>
-        $<TARGET_OBJECTS:mailbox>
-        $<TARGET_OBJECTS:framebuffer>
-        $<TARGET_OBJECTS:uart>
+        $<TARGET_OBJECTS:drv>
         $<TARGET_OBJECTS:kernel>)
 endif ()
 
