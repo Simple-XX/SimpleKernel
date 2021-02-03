@@ -18,16 +18,16 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Get code
+    - name: get code
       uses: actions/checkout@v2
       
-    - name: Setup brew
+    - name: setup brew
       shell: bash
       run: |
         brew install x86_64-elf-binutils
         brew install x86_64-elf-gcc
 
-    - name: Make build dir
+    - name: make build dir
       shell: bash
       run: |
         mkdir ${{github.workspace}}/build
