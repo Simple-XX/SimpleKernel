@@ -6,13 +6,8 @@
 
 #include "kernel.h"
 
-extern "C" void kernel_main(void);
-
 void kernel_main(void) {
     KERNEL kernel;
     kernel.init();
-    while (1) {
-        ;
-    }
     return;
 }
