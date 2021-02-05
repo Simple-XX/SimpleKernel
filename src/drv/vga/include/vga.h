@@ -70,6 +70,8 @@ public:
     uint16_t get_cursor_pos(void) const;
     // 写字符
     void put_char(const char c);
+    // 读字符
+    char get_char(void);
     // 写字符串
     void write_string(const char *s);
     // 写字符串
