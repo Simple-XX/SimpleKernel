@@ -31,6 +31,8 @@ function(target_include_drv_header_files Target)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/vga/include)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/keyboard/include)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/clock/include)
+    elseif (SimpleKernelArch STREQUAL raspi2)
+        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/uart/include)
     endif ()
 endfunction()
 

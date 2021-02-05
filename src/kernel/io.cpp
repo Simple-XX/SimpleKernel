@@ -16,6 +16,8 @@ char IO::buf[128];
 
 #if defined(__i386__) || defined(__x86_64__)
 VGA IO::io;
+#elif defined(__arm__) || defined(__aarch64__)
+UART IO::io;
 #endif
 
 IO::IO(void) {
@@ -27,6 +29,7 @@ IO::~IO(void) {
 }
 
 int32_t IO::init(void) {
+    io.init();
     write_string("io init\n");
     return 0;
 }
@@ -70,6 +73,10 @@ void IO::set_color(const color_t color) {
 void IO::put_char(char c) {
     io.put_char(c);
     return;
+}
+
+char IO::get_char(void) {
+    return io.get_char();
 }
 
 int32_t IO::write_string(const char *s) {

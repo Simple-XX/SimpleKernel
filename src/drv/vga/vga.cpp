@@ -110,9 +110,9 @@ void VGA::write_string(const char *data) {
     return;
 }
 
-void VGA::write(const char *data, size_t size) {
-    for (size_t i = 0; i < size; i++) {
-        put_char(data[i]);
+void VGA::write(const char *s, size_t len) {
+    for (size_t i = 0; i < len; i++) {
+        put_char(s[i]);
     }
     return;
 }
@@ -130,6 +130,10 @@ void VGA::put_char(const char c) {
     scroll();
     set_cursor_pos(curr_col, curr_row);
     return;
+}
+
+char VGA::get_char(void) {
+    return 0;
 }
 
 void VGA::escapeconv(const char c) {

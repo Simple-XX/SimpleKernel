@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-#ifdef RASPI2
+#if defined(__arm__) || defined(__aarch64__)
 
 unsigned long udivmodsi4(unsigned long num, unsigned long den, int modwanted);
 long          divsi3(long a, long b);

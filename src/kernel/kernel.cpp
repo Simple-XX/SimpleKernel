@@ -14,12 +14,12 @@
 #if defined(__i386__) || defined(__x86_64__)
 #include "gdt.h"
 #include "intr.h"
+#include "clock.h"
+#elif defined(__arm__) || defined(__aarch64__)
 #endif
 
 #include "io.h"
-#include "clock.h"
 #include "keyboard.h"
-#include "multiboot2.h"
 #include "kernel.h"
 
 KERNEL::KERNEL(void) {
@@ -79,6 +79,7 @@ int32_t KERNEL::test_pmm(void) {
 }
 
 void KERNEL::show_info(void) {
+    // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
               KERNEL_START_ADDR, KERNEL_END_ADDR);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
@@ -91,9 +92,10 @@ void KERNEL::show_info(void) {
 int32_t KERNEL::init(void) {
     // 全局对象的构造
     cpp_init();
+    // 输入输出初始化
+    io.init();
     // 架构相关初始化
     arch_init();
-    io.init();
     // 读取 grub2 传递的信息
     multiboot2_init(magic, addr);
     // 时钟初始化
