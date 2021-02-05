@@ -7,26 +7,51 @@
 #ifndef _UART_H_
 #define _UART_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stdint.h"
+#include "color.h"
+#include "hardware.h"
 
-// uart 初始化
-void uart_init();
+class UART {
+private:
+    // uart 地址
+    // uart0
+    static constexpr const uint32_t UART0_BASE   = HARDWARE::GPIO_BASE + 0x1000;
+    static constexpr const uint32_t UART0_DR     = UART0_BASE + 0x00;
+    static constexpr const uint32_t UART0_RSRECR = UART0_BASE + 0x04;
+    static constexpr const uint32_t UART0_FR     = UART0_BASE + 0x18;
+    static constexpr const uint32_t UART0_ILPR   = UART0_BASE + 0x20;
+    static constexpr const uint32_t UART0_IBRD   = UART0_BASE + 0x24;
+    static constexpr const uint32_t UART0_FBRD   = UART0_BASE + 0x28;
+    static constexpr const uint32_t UART0_LCRH   = UART0_BASE + 0x2C;
+    static constexpr const uint32_t UART0_CR     = UART0_BASE + 0x30;
+    static constexpr const uint32_t UART0_IFLS   = UART0_BASE + 0x34;
+    static constexpr const uint32_t UART0_IMSC   = UART0_BASE + 0x38;
+    static constexpr const uint32_t UART0_RIS    = UART0_BASE + 0x3C;
+    static constexpr const uint32_t UART0_MIS    = UART0_BASE + 0x40;
+    static constexpr const uint32_t UART0_ICR    = UART0_BASE + 0x44;
+    static constexpr const uint32_t UART0_DMACR  = UART0_BASE + 0x48;
+    static constexpr const uint32_t UART0_ITCR   = UART0_BASE + 0x80;
+    static constexpr const uint32_t UART0_ITIP   = UART0_BASE + 0x84;
+    static constexpr const uint32_t UART0_ITOP   = UART0_BASE + 0x88;
+    static constexpr const uint32_t UART0_TDR    = UART0_BASE + 0x8C;
+    void                            delay(int32_t count);
 
-// 输出字符
-void uart_putc(uint8_t c);
-
-// 输入字符
-uint8_t uart_getc();
-
-// 输出字符串
-void uart_puts(const char *str);
-
-#ifdef __cplusplus
-}
-#endif
+protected:
+public:
+    UART(void);
+    ~UART(void);
+    int32_t init(void);
+    void    put_char(const char c);
+    // 写字符串
+    void write_string(const char *s);
+    // 写字符串
+    void write(const char *s, size_t len);
+    // 读字符 TODO
+    uint8_t get_char(void);
+    // 设置颜色 TODO
+    void set_color(const color_t color);
+    // 获取颜色 TODO
+    color_t get_color(void);
+};
 
 #endif /* _UART_H_ */

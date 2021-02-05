@@ -4,17 +4,28 @@
 //
 // kernel.h for Simple-XX/SimpleKernel.
 
-#ifndef _KERNEL_H_
-#define _KERNEL_H_
+#ifndef _KERNEL_HPP_
+#define _KERNEL_HPP_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#pragma once
 
-void kernel_main(void);
+#include "stdint.h"
 
-#ifdef __cplusplus
-}
-#endif
+extern "C" uint8_t kernel_start[];
+extern "C" uint8_t kernel_text_start[];
+extern "C" uint8_t kernel_text_end[];
+extern "C" uint8_t kernel_data_start[];
+extern "C" uint8_t kernel_data_end[];
+extern "C" uint8_t kernel_end[];
 
-#endif /* _KERNEL_H_ */
+class KERNEL {
+private:
+protected:
+public:
+    KERNEL(void);
+    ~KERNEL(void);
+    int32_t init(void);
+    void    show_info(void);
+};
+
+#endif /* _KERNEL_HPP_ */

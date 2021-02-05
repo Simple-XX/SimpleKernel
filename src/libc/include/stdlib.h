@@ -18,9 +18,6 @@ int       atoi(const char *);
 long      atol(const char *);
 long long atoll(const char *);
 
-void *malloc(uint32_t);
-void  free(void *);
-
 #ifdef __cplusplus
 }
 #endif
