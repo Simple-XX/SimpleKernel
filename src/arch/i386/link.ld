@@ -22,6 +22,13 @@ SECTIONS
 	}
     PROVIDE(kernel_text_end = .);
 
+	PROVIDE(kernel_rodata_start = .);
+	.rodata : ALIGN(4K)
+	{
+		*(.rodata)
+	}
+	PROVIDE(kernel_rodata_end = .);
+
     PROVIDE(kernel_data_start = .);
     .data : ALIGN(4K)
     {
@@ -35,12 +42,7 @@ SECTIONS
     }
     PROVIDE(kernel_data_end = .);
 
-    PROVIDE(kernel_rodata_start = .);
-	.rodata : ALIGN(4K)
-	{
-		*(.rodata)
-	}
-	PROVIDE(kernel_rodata_end = .);
+    PROVIDE(kernel_data_end = .);
 
 	PROVIDE(kernel_bss_start = .);
 	.bss : ALIGN(4K)
