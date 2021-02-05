@@ -18,14 +18,6 @@
 #ifndef _MULTIBOOT2_H_
 #define _MULTIBOOT2_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "stdint.h"
-#include "stdbool.h"
-#include "e820.h"
-
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH 32768
 #define MULTIBOOT_HEADER_ALIGN 8
@@ -93,17 +85,24 @@ extern "C" {
 
 #ifndef ASM_FILE
 
+#include "stdint.h"
+#include "stdbool.h"
+#include "e820.h"
+
 typedef uint8_t  multiboot_uint8_t;
 typedef uint16_t multiboot_uint16_t;
 typedef uint32_t multiboot_uint32_t;
 typedef uint64_t multiboot_uint64_t;
 
 struct multiboot_header {
-    multiboot_uint32_t magic;         // Must be MULTIBOOT_MAGIC - see above.
-    multiboot_uint32_t architecture;  // ISA
-    multiboot_uint32_t header_length; // Total header length.
-    multiboot_uint32_t
-        checksum; // The above fields plus this one must equal 0 mod 2^32.
+    // Must be MULTIBOOT_MAGIC - see above.
+    multiboot_uint32_t magic;
+    // ISA
+    multiboot_uint32_t architecture;
+    // Total header length.
+    multiboot_uint32_t header_length;
+    // The above fields plus this one must equal 0 mod 2^32.
+    multiboot_uint32_t checksum;
 };
 
 struct multiboot_header_tag {
@@ -253,11 +252,13 @@ struct multiboot_tag_vbe {
 };
 
 struct multiboot_tag_elf_sections {
-    multiboot_uint32_t type; // 0x09
+    // 0x09
+    multiboot_uint32_t type;
     multiboot_uint32_t size;
     multiboot_uint32_t num;
     multiboot_uint32_t entsize;
-    multiboot_uint32_t shndx; // 段字符串表索引
+    // 段字符串表索引
+    multiboot_uint32_t shndx;
     char               sections[0];
 };
 
@@ -357,9 +358,5 @@ extern multiboot_memory_map_entry_t *mmap_entries;
 extern multiboot_mmap_tag_t *        mmap_tag;
 
 #endif /*  ! ASM_FILE */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _MULTIBOOT2_H_ */
