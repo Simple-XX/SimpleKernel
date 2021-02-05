@@ -1,7 +1,7 @@
 
 /* This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
  *
- * link32.ld for Simple-XX/SimpleKernel. */
+ * link.ld for Simple-XX/SimpleKernel. */
 
 OUTPUT_FORMAT(elf32-littlearm)
 
@@ -21,6 +21,13 @@ SECTIONS
     }
     PROVIDE(kernel_text_end = .);
 
+    PROVIDE(kernel_rodata_start = .);
+	.rodata : ALIGN(4K)
+	{
+		*(.rodata)
+	}
+	PROVIDE(kernel_rodata_end = .);
+
     PROVIDE(kernel_data_start = .);
     .data : ALIGN(4K)
     {
@@ -33,13 +40,6 @@ SECTIONS
         *(.data)
     }
     PROVIDE(kernel_data_end = .);
- 
-    PROVIDE(kernel_rodata_start = .);
-	.rodata : ALIGN(4K)
-	{
-		*(.rodata)
-	}
-	PROVIDE(kernel_rodata_end = .);
 
     PROVIDE(kernel_bss_start = .);
 	.bss : ALIGN(4K)
