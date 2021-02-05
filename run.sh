@@ -74,5 +74,5 @@ elif [ ${ARCH} == "x86_64" ]; then
     ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
     ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
 elif [ ${ARCH} == "raspi2" ]; then
-    ${SIMULATOR}-system-arm -machine raspi2 -serial stdio -kernel ${kernel} 
+    ${SIMULATOR}-system-aarch64 -machine raspi2 -serial stdio -kernel ${kernel} 
 fi
