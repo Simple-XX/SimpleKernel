@@ -1,7 +1,7 @@
 
 /* This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
  *
- * link32.ld for Simple-XX/SimpleKernel. */
+ * link.ld for Simple-XX/SimpleKernel. */
 
 OUTPUT_FORMAT(elf32-littlearm)
 
