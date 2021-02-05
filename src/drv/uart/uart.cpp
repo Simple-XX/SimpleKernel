@@ -77,20 +77,11 @@ void UART::put_char(const char c) {
 
 void UART::write_string(const char *s) {
     write(s, strlen(s));
-    if (strlen(s) == 0) {
-        put_char('X');
-    }
     return;
 }
 
 void UART::write(const char *s, size_t len) {
-    if (len == 0) {
-        put_char('Y');
-    }
     for (size_t i = 0; i < len; i++) {
-        if (len == 0) {
-            put_char('Z');
-        }
         put_char(s[i]);
     }
     return;
