@@ -9,8 +9,8 @@
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 # ARCH: i386, x86_64, raspi2
 ARCH="i386"
-# ARCH="x86_64" # TODO
-# ARCH="raspi2" # TODO
+# ARCH="x86_64" # TODO, cannot use
+# ARCH="raspi2" # TODO, cannot use
 # 虚拟机: bochs, qemu
 if [ "${ARCH}" == "i386" ]; then
     SIMULATOR="bochs"
