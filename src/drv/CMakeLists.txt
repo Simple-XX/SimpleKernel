@@ -3,11 +3,20 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-if (SimpleKernelArch STREQUAL x86_64)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vga)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/console)
-elseif (SimpleKernelArch STREQUAL RASPI2)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/mailbox)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/framebuffer)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/uart)
-endif()
+PROJECT(drv CXX)
+
+if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/vga vga_src)
+    set(drv_src ${vga_src})
+elseif (SimpleKernelArch STREQUAL raspi2)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uart uart_src)
+    set(drv_src ${uart_src})
+endif ()
+
+add_library(${PROJECT_NAME} OBJECT ${drv_src})
+
+target_include_libc_header_files(${PROJECT_NAME})
+target_include_kernel_header_files(${PROJECT_NAME})
+target_include_drv_header_files(${PROJECT_NAME})
+target_include_common_header_files(${PROJECT_NAME})
+target_include_arch_header_files(${PROJECT_NAME})
