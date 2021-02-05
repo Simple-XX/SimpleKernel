@@ -22,11 +22,6 @@ typedef long ptrdiff_t;
 typedef unsigned int size_t;
 #endif
 
-#undef NULL
-#define NULL ((void *)0)
-
-#define __UNUSED__ __attribute__((unused))
-
 #ifdef __cplusplus
 }
 #endif

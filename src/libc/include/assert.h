@@ -7,21 +7,10 @@
 #ifndef _ASSERT_H_
 #define _ASSERT_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "io.h"
 
-#include "stdio.h"
-
-#define assert(test, info)                                                     \
-    if (!(test)) {                                                             \
-        printk_err(info);                                                      \
-        __asm__ volatile("cli" ::: "memory");                                  \
-        while (1) {};                                                          \
-    }
-
-#ifdef __cplusplus
-}
-#endif
+#define assert(e) ((void)((e) ? ((void)0) : __assert(#e, __FILE__, __LINE__)))
+#define __assert(e, file, line)                                                \
+    ((void)io.printf("%s:%d: failed assertion `%s'\n", file, line, e))
 
 #endif /* _ASSERT_H_ */
