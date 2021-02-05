@@ -62,7 +62,7 @@ int32_t UART::init(void) {
 
     // Enable UART0, receive & transfer part of UART.
     PORT::outd(UART0_CR, (1 << 0) | (1 << 8) | (1 << 9));
-    write_string("uart init");
+    write_string("uart init\n");
     return 0;
 }
 

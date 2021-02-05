@@ -20,6 +20,7 @@ KERNEL::~KERNEL(void) {
 }
 
 void KERNEL::show_info(void) {
+    // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
               kernel_start, kernel_end);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",

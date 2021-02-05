@@ -46,11 +46,11 @@ public:
     void write_string(const char *s);
     // 写字符串
     void write(const char *s, size_t len);
-    // 读字符
+    // 读字符 TODO
     uint8_t get_char(void);
-    // 设置颜色
+    // 设置颜色 TODO
     void set_color(const color_t color);
-    // 获取颜色
+    // 获取颜色 TODO
     color_t get_color(void);
 };
 
