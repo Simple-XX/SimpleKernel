@@ -4,40 +4,34 @@
 //
 // kernel.h for Simple-XX/SimpleKernel.
 
-#ifndef _KERNEL_H_
-#define _KERNEL_H_
+#ifndef _KERNEL_HPP_
+#define _KERNEL_HPP_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#pragma once
 
 #include "stdint.h"
-#include "stdbool.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "console.h"
-#include "multiboot2.h"
-#include "arch_init.h"
+#include "debug.h"
+#include "gdt.h"
+#include "intr.h"
+#include "clock.h"
 #include "pmm.h"
 
-void kernel_main(uint32_t magic, uint32_t addr);
+class KERNEL {
+private:
+    addr_t  magic;
+    addr_t  addr;
+    PMM     pmm;
+    void    arch_init(void) const;
+    int32_t test_pmm(void);
 
-void showinfo(void);
-void showinfo(void) {
-    // 输出一些基本信息
-    printk_color(magenta, "SimpleKernel\n");
-    printk_info("kernel in memory(VMA==LMA) start: 0x%X, end 0x%X\n",
-                KERNEL_START_ADDR, KERNEL_END_ADDR);
-    printk_info("kernel in memory(VMA==LMA) align 4k start: 0x%X, end "
-                "0x%X\n",
-                kernel_start_align4k, kernel_end_align4k);
-    printk_info("kernel in memory size: 0x%X KB, 0x%X pages\n",
-                (KERNEL_END_ADDR - KERNEL_START_ADDR) / 1024,
-                ALIGN4K(KERNEL_END_ADDR - KERNEL_START_ADDR) / PMM_PAGE_SIZE);
-}
+protected:
+public:
+    KERNEL(void);
+    KERNEL(addr_t magic, addr_t addr);
+    ~KERNEL(void);
+    int32_t init(void);
+    int32_t test(void);
+    void    show_info(void);
+};
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* _KERNEL_H_ */
+#endif /* _KERNEL_HPP_ */
