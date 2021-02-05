@@ -30,8 +30,19 @@ KERNEL::~KERNEL(void) {
 }
 
 void KERNEL::arch_init(void) const {
+#if defined(__i386__) || defined(__x86_64__)
     GDT::init();
     INTR::init();
+#elif defined(__arm__) || defined(__aarch64__)
+#endif
+    return;
+}
+
+void KERNEL::drv_init(void) const {
+#if defined(__i386__) || defined(__x86_64__)
+    clock.init();
+#elif defined(__arm__) || defined(__aarch64__)
+#endif
     return;
 }
 
@@ -50,8 +61,12 @@ int32_t KERNEL::init(void) {
     cpp_init();
     io.init();
     arch_init();
+<<<<<<< HEAD
     clock.init();
     keyboard.init();
+=======
+    drv_init();
+>>>>>>> intr_timer
     show_info();
     return 0;
 }
