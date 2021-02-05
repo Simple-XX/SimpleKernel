@@ -5,14 +5,14 @@
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
-[English](https://github.com/SimpleXX/SimpleKernel/blob/master/README_en.md) | [中文](https://github.com/SimpleXX/SimpleKernel/blob/master/README.md)
+[English](https://github.com/Simple-XX/SimpleKernel/blob/master/README_en.md) | [中文](https://github.com/Simple-XX/SimpleKernel/blob/master/README.md)
 
 # SimpleKernel
 
 ## 关键词
 
 - Kernel
-- C/C++
+- C/C++/AT&T ASM/cmake/shell
 
 - Linux-like
 - Multiboot2
@@ -54,6 +54,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 
     - x86_64-elf-binutils
 - x86_64-elf-gcc
+  
     - xorriso
 - grub
     - bochs
@@ -63,7 +64,7 @@ SimpleKernel，一个用来练手的简单内核。提供了各个阶段完成�
 ## 如何运行
 
 ```shell
-git clone https://github.com/SimpleXX/SimpleKernel.git
+git clone https://github.com/Simple-XX/SimpleKernel.git
 cd SimpleKernel/
 bash ./run.sh
 ```
@@ -79,6 +80,7 @@ bash ./run.sh
     整个工程按照功能模块划分子目录，每个子目录再划分头文件和源文件目录，以便架构清晰、易懂。
 
 ### 目录设计
+
 - 原则
 
     目录的命名能准确描述模块的基本功能，建议用小写字母且不含下划线、点等特殊符号；
@@ -91,6 +93,7 @@ bash ./run.sh
 	libs：依赖库；
 
 ### 依赖关系
+
 - 原则
 
     新添加组件往往依赖于系统原有组件，必须以最小耦合的方式明确所直接依赖的组件。
@@ -204,37 +207,3 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 此项目使用 MIT 许可证
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-# newstart/pmm/
-=======
-<<<<<<< HEAD
->>>>>>> keyboard_init
-
-## 文件说明
-<<<<<<< HEAD
-
-物理内存管理
-=======
-键盘驱动
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-# newstart/intr_timer/
-## 文件说明
-仅完成了时钟中断，添加了调试函数函数
-=======
-# boot
-
-系统启动
->>>>>>> print_only
-=======
-# print_only
-
-简单的输出，用于内核初期的调试
-
->>>>>>> print_only
->>>>>>> intr_timer
->>>>>>> keyboard_init
->>>>>>> pmm

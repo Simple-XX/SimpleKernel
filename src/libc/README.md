@@ -1,26 +1,18 @@
-# src/include/libc
+# src/libc
 
-- stdarg.h
+- include/
 
-    定义 va_list，为变长参数函数的实现提供支持。
+    头文件
 
-- stddef.h
+- math/
 
-    定义了常用的数据类型。
+    数学库
 
-- stdint.h
+- stdio/
 
-    定义了常用整数数据类型。
+    输入输出
+    
+- string/
 
-- /stdio
-
-     标准输入输出。
-     
-- /string
-
-    字符串。     
-     
-- stdbool.h
-
-    bool 类型定义
+    字符串
 
