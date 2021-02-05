@@ -2,7 +2,7 @@
 // This file is a part of Simple-XX/SimpleKernel 
 // (https://github.com/Simple-XX/SimpleKernel).
 // Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
-// boot.s for Simple-XX/SimpleKernel.
+// boot.S for Simple-XX/SimpleKernel.
 
 .code 32
 
@@ -29,8 +29,8 @@ _start:
 	mov sp, r5
  
 	// 清空 bss
-	ldr r4, =kernel_bss_start
-	ldr r9, =kernel_bss_end
+	ldr r4, = kernel_bss_start
+	ldr r9, = kernel_bss_end
 	mov r5, #0
 	mov r6, #0
 	mov r7, #0
@@ -46,7 +46,7 @@ _start:
 	cmp r4, r9
 	blo 1b
 	// 进入 kernel_main
-	ldr r3, =kernel_main
+	ldr r3, = kernel_main
 	blx r3
  
 // halt
