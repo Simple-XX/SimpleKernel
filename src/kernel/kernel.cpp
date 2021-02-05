@@ -113,5 +113,6 @@ int32_t KERNEL::init(void) {
 
 int32_t KERNEL::test(void) {
     test_pmm();
+    io.printf("test done.\n");
     return 0;
 }
