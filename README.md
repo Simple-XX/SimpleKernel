@@ -204,3 +204,37 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 此项目使用 MIT 许可证
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+# newstart/pmm/
+=======
+<<<<<<< HEAD
+>>>>>>> keyboard_init
+
+## 文件说明
+<<<<<<< HEAD
+
+物理内存管理
+=======
+键盘驱动
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+# newstart/intr_timer/
+## 文件说明
+仅完成了时钟中断，添加了调试函数函数
+=======
+# boot
+
+系统启动
+>>>>>>> print_only
+=======
+# print_only
+
+简单的输出，用于内核初期的调试
+
+>>>>>>> print_only
+>>>>>>> intr_timer
+>>>>>>> keyboard_init
+>>>>>>> pmm

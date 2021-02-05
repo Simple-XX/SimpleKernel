@@ -7,39 +7,40 @@
 #ifndef _CLOCK_H_
 #define _CLOCK_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+#include "stdint.h"
 #include "intr.h"
 
-#define FREQUENCY (100)
-
+const uint32_t FREQUENCY = 100;
 // 定时中断由 8253/8254 芯片从 IRQ0 提供
 // 8253 Timer #1
-#define IO_TIMER (0x40)
+const uint32_t IO_TIMER = 0x40;
 
 // 输入频率为 1193180，frequency 即每秒中断次数
-#define TIMER_FREQ (1193180)
+const uint32_t TIMER_FREQ = 1193180;
 
 // Intel 8253/8254 PIT芯片 I/O端口地址范围是40h~43h
 // timer mode port
-#define TIMER_MODE (IO_TIMER + 3)
+const uint32_t TIMER_MODE = IO_TIMER + 3;
 
 // select counter 0
-#define TIMER_SEL0 (0x00)
+const uint32_t TIMER_SEL0 = 0x00;
 // mode 2
-#define TIMER_RATEGEN (0x04)
+const uint32_t TIMER_RATEGEN = 0x04;
 // mode 3
-#define TIMER_CLK (0x06)
+const uint32_t TIMER_CLK = 0x06;
 // r/w counter 16 bits, LSB first
-#define TIMER_16BIT (0x30)
+const uint32_t TIMER_16BIT = 0x30;
 
-void clock_init(void);
-void clock_handler(pt_regs_t *);
+class CLOCK {
+private:
+protected:
+public:
+    CLOCK(void);
+    ~CLOCK(void);
+    int32_t init(void);
+    int32_t set_clock_handle(INTR::interrupt_handler_t h);
+};
 
-#ifdef __cplusplus
-}
-#endif
+extern CLOCK clock;
 
 #endif /* _CLOCK_H_ */
