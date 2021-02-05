@@ -18,10 +18,11 @@ endif ()
 
 set(TOOLCHAIN_PREFIX arm-none-eabi-)
 set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
+set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
 set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
 
 # qemu
-find_program(Qemu qemu-system-arm)
+find_program(Qemu qemu-system-aarch64)
 if (NOT Qemu)
     message(FATAL_ERROR "qemu not found.\n"
             "Please install qemu first.")
