@@ -3,14 +3,13 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(boot C ASM)
+PROJECT(boot ASM)
 
-find_asm_source_files(ASM_SOURCE_FILES ${boot_SOURCE_DIR})
+find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/boot)
+set(boot_src ${boot_asm_src})
 
-set(boot_src ${ASM_SOURCE_FILES})
+set(arch_src ${boot_src})
 
-add_library(${PROJECT_NAME} OBJECT ${boot_src})
+add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
-target_include_libc_header_files(${PROJECT_NAME})
-target_include_drv_header_files(${PROJECT_NAME})
-target_include_arch_header_files(${PROJECT_NAME})
+target_include_kernel_header_files(${PROJECT_NAME})
