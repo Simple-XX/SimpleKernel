@@ -10,7 +10,7 @@ if (SimpleKernelArch STREQUAL i386)
 elseif (SimpleKernelArch STREQUAL x86_64)
     set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -D${SimpleKernelArch}")
     set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m64 -D${SimpleKernelArch}")
-elseif (SimpleKernelArch STREQUAL RASPI2)
+elseif (SimpleKernelArch STREQUAL raspi2)
     set(CMAKE_C_FLAGS "-march=armv7-a -mtune=cortex-a7 -marm -D${SimpleKernelArch}")
 else ()
     message(FATAL_ERROR "unexpected ARCH ${SimpleKernelArch}")
@@ -50,7 +50,7 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 
 # Link
-if (SimpleKernelArch STREQUAL i386)
+if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL raspi2)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:drv>
