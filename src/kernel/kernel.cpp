@@ -38,14 +38,6 @@ void KERNEL::arch_init(void) const {
     return;
 }
 
-void KERNEL::drv_init(void) const {
-#if defined(__i386__) || defined(__x86_64__)
-    clock.init();
-#elif defined(__arm__) || defined(__aarch64__)
-#endif
-    return;
-}
-
 void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
@@ -61,12 +53,8 @@ int32_t KERNEL::init(void) {
     cpp_init();
     io.init();
     arch_init();
-<<<<<<< HEAD
     clock.init();
     keyboard.init();
-=======
-    drv_init();
->>>>>>> intr_timer
     show_info();
     return 0;
 }
