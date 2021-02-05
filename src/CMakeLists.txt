@@ -10,7 +10,7 @@ if (SimpleKernelArch STREQUAL i386)
 elseif (SimpleKernelArch STREQUAL x86_64)
     set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -D${SimpleKernelArch}")
     set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m64 -D${SimpleKernelArch}")
-elseif (SimpleKernelArch STREQUAL raspi2)
+elseif (SimpleKernelArch STREQUAL RASPI2)
     set(CMAKE_C_FLAGS "-march=armv7-a -mtune=cortex-a7 -marm -D${SimpleKernelArch}")
 else ()
     message(FATAL_ERROR "unexpected ARCH ${SimpleKernelArch}")
@@ -32,7 +32,7 @@ endif ()
 
 # Set common flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra -D${SimpleKernelPlatformMacro}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -fno-rtti -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra -D${SimpleKernelPlatformMacro}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra -D${SimpleKernelPlatformMacro}")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
@@ -45,21 +45,19 @@ message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 # Sub dirs
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 
 # Link
-if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL raspi2)
+if (SimpleKernelArch STREQUAL i386)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
-        $<TARGET_OBJECTS:libc>
-        $<TARGET_OBJECTS:libcxx>
-        $<TARGET_OBJECTS:drv>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}_boot
         $<TARGET_OBJECTS:boot>)
+    add_executable(${KernelName}
+        $<TARGET_OBJECTS:arch>
+        $<TARGET_OBJECTS:kernel>)
+elseif (SimpleKernelArch STREQUAL RASPI2)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>)
