@@ -13,10 +13,11 @@
 #if defined(__i386__) || defined(__x86_64__)
 #include "gdt.h"
 #include "intr.h"
+#include "clock.h"
+#elif defined(__arm__) || defined(__aarch64__)
 #endif
 
 #include "io.h"
-#include "clock.h"
 #include "kernel.h"
 
 KERNEL::KERNEL(void) {
@@ -34,6 +35,7 @@ void KERNEL::arch_init(void) const {
 }
 
 void KERNEL::show_info(void) {
+    // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
               kernel_start, kernel_end);
     io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
@@ -45,8 +47,8 @@ void KERNEL::show_info(void) {
 
 int32_t KERNEL::init(void) {
     cpp_init();
-    arch_init();
     io.init();
+    arch_init();
     clock.init();
     show_info();
     return 0;
