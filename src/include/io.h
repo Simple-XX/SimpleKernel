@@ -14,6 +14,8 @@
 
 #if defined(__i386__) || defined(__x86_64__)
 #include "vga.h"
+#elif defined(__arm__) || defined(__aarch64__)
+#include "uart.h"
 #endif
 
 class IO {
@@ -23,6 +25,8 @@ private:
     // io 对象
 #if defined(__i386__) || defined(__x86_64__)
     static VGA io;
+#elif defined(__arm__) || defined(__aarch64__)
+    static UART io;
 #endif
 
 protected:
@@ -48,6 +52,8 @@ public:
     void set_color(const color_t color);
     // 输出字符
     void put_char(const char c);
+    // 输入字符
+    char get_char(void);
     // 输出字符串
     int32_t write_string(const char *s);
     // 格式输出

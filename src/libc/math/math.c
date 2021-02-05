@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-#ifdef RASPI2
+#if defined(__arm__) || defined(__aarch64__)
 
 #include "math.h"
 
