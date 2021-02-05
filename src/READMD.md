@@ -2,21 +2,29 @@
 
 - arch/
 
-    存放平台相关代码的目录。
+    平台相关代码
+
+- drv/
+
+    设备驱动
 
 - include/
-    
-    用到的头文件。
+  
+    通用头文件
 
 - kernel/
 
-    内核源代码。
+    内核源码
     
-- Makefile
+- libc
 
-    指定内核映像的生成规则，最终生成 kernel.kernel.
+    C 库
 
-- kernel.kernel
+- libcxx
 
-    最终的内核映像。
+    C++ 库，包含部分 abi
+    
+- CMakeLists.txt
+
+    定义构建方式
 

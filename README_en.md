@@ -5,14 +5,14 @@
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
-[English](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/SimpleXX/SimpleKernel/blob/TODO/README.md)
+[English](https://github.com/Simple-XX/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/Simple-XX/SimpleKernel/blob/TODO/README.md)
 
 # SimpleKernel
 
 ## Key Words
 
 - Kernel
-- C/C++
+- C/C++/AT&T ASM/cmake/shell
 
 - Linux-like
 - Multiboot2
@@ -64,7 +64,7 @@ Kernels with different levels of completion are available, and you can start fro
 
 ## RUN
 
-    git clone https://github.com/SimpleXX/SimpleKernel.git
+    git clone https://github.com/Simple-XX/SimpleKernel.git
     cd SimpleKernel/
     bash ./run.sh
 
