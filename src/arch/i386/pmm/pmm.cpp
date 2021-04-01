@@ -50,6 +50,10 @@ int32_t PMM::init(void) {
              addr += PMM_PAGE_SIZE) {
             // 初始化可用内存段的物理页数组
             // 地址对应的物理页数组下标
+            // 跳过 0x00 开始的一页，便于判断 nullptr
+            if (addr == nullptr) {
+                continue;
+            }
             phy_pages[pages_count].addr = addr;
             // 内核已占用部分
             if (addr >= kernel_start_align4k && addr < kernel_end_align4k) {
