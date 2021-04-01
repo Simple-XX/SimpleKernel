@@ -81,9 +81,8 @@ void PMM::get_ram_info(e820map_t *e820map) {
         // 如果是可用内存
 // #define DEBUG
 #ifdef DEBUG
-        printk_debug("addr: 0x%X, len: 0x%X, type: 0x%X\n",
-                     (addr_t)mmap_entries->addr, (addr_t)mmap_entries->len,
-                     (addr_t)mmap_entries->type);
+        printk_debug("addr: 0x%X, len: 0x%X, type: 0x%X\n", mmap_entries->addr,
+                     mmap_entries->len, mmap_entries->type);
 #endif
 
         if (mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE) {

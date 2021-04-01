@@ -27,7 +27,7 @@ KERNEL::KERNEL(void) {
     return;
 }
 
-KERNEL::KERNEL(addr_t magic, addr_t addr) {
+KERNEL::KERNEL(uint32_t magic, void *addr) {
     this->magic = magic;
     this->addr  = addr;
     return;
