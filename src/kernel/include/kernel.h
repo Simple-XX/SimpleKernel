@@ -18,16 +18,16 @@
 
 class KERNEL {
 private:
-    addr_t  magic;
-    addr_t  addr;
-    PMM     pmm;
-    void    arch_init(void) const;
-    int32_t test_pmm(void);
+    uint32_t magic;
+    void *   addr;
+    PMM      pmm;
+    void     arch_init(void) const;
+    int32_t  test_pmm(void);
 
 protected:
 public:
     KERNEL(void);
-    KERNEL(addr_t magic, addr_t addr);
+    KERNEL(uint32_t magic, void *addr);
     ~KERNEL(void);
     int32_t init(void);
     int32_t test(void);
