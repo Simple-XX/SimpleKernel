@@ -109,12 +109,12 @@ void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
     return;
 }
 
-bool is_multiboot2_header(addr_t magic, addr_t addr) {
+bool is_multiboot2_header(uint32_t magic, void *addr) {
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
         io.printf("Invalid magic number: %X\n", (unsigned)magic);
         return false;
     }
-    if (addr & 7) {
+    if (reinterpret_cast<uint32_t>(addr) & 7) {
         io.printf("Unaligned addr: 0x%08x\n", addr);
         return false;
     }
@@ -122,15 +122,15 @@ bool is_multiboot2_header(addr_t magic, addr_t addr) {
 }
 
 // 处理 multiboot 信息
-void multiboot2_init(addr_t magic, addr_t addr) {
+void multiboot2_init(uint32_t magic, void *addr) {
     // Am I booted by a Multiboot-compliant boot loader?
     is_multiboot2_header(magic, addr);
     // uint32_t size = *(uint32_t *)addr;
     // addr+0 保存大小，下一字节开始为 tag 信息
     // io.printf("Announced mbi size 0x%X\n", size);
-    addr_t           tag_addr = (addr_t)addr + 8;
-    multiboot_tag_t *tag;
-    tag = (multiboot_tag_t *)tag_addr;
+    void *tag_addr =
+        reinterpret_cast<void *>(reinterpret_cast<uint32_t>(addr) + 8);
+    multiboot_tag_t *tag = (multiboot_tag_t *)tag_addr;
     // printk("tag type: %X\n", tag->type);
     // printk("tag size: %X\n", tag->size);
     for (tag = (multiboot_tag_t *)tag_addr; tag->type != MULTIBOOT_TAG_TYPE_END;

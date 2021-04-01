@@ -17,8 +17,8 @@ DEBUG::~DEBUG(void) {
     return;
 }
 
-void DEBUG::init(addr_t magic __attribute__((unused)),
-                 addr_t addr __attribute__((unused))) {
+void DEBUG::init(uint32_t magic __attribute__((unused)),
+                 void *   addr __attribute__((unused))) {
     io.printf("debug_init\n");
     return;
 }
@@ -54,7 +54,7 @@ void DEBUG::panic(const char *msg) {
 
 // 输出 esp
 void DEBUG::print_stack(size_t count) {
-    register addr_t *esp __asm__("esp");
+    register uint32_t *esp __asm__("esp");
     for (size_t i = 0; i < count; i++) {
         io.printf("esp 0x%08X [0x%08X]\n", esp + i, *(esp + i));
     }
