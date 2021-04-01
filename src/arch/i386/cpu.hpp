@@ -184,7 +184,7 @@ namespace CPU {
     }
 
     // 切换内核栈
-    static inline void switch_stack(addr_t stack_top) {
+    static inline void switch_stack(void *stack_top) {
         asm("mov %0, %%esp" : : "r"(stack_top));
         asm("xor %%ebp, %%ebp" : :);
         return;
@@ -321,7 +321,7 @@ namespace CPU {
         return (eflags & EFLAGS_CF);
     }
 
-    static inline void CPU_INVLPG(addr_t addr) {
+    static inline void INVLPG(void *addr) {
         __asm__ volatile("invlpg (%0)" : : "r"(addr) : "memory");
         return;
     }
