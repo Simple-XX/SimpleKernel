@@ -25,7 +25,10 @@ set(debug_src ${debug_cpp_src})
 aux_source_directory(${arch_SOURCE_DIR}/pmm pmm_cpp_src)
 set(pmm_src ${pmm_cpp_src})
 
-set(arch_src ${boot_src} ${gdt_src} ${intr_src} ${port_src} ${debug_src} ${pmm_src})
+aux_source_directory(${arch_SOURCE_DIR}/vmm vmm_cpp_src)
+set(vmm_src ${vmm_cpp_src})
+
+set(arch_src ${boot_src} ${gdt_src} ${intr_src} ${port_src} ${debug_src} ${pmm_src} ${vmm_src})
 
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 

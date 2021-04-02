@@ -15,14 +15,18 @@
 #include "intr.h"
 #include "clock.h"
 #include "pmm.h"
+#include "vmm.h"
 
 class KERNEL {
 private:
     uint32_t magic;
     void *   addr;
     PMM      pmm;
-    void     arch_init(void) const;
-    int32_t  test_pmm(void);
+    VMM      vmm;
+
+    void    arch_init(void) const;
+    int32_t test_pmm(void);
+    int32_t test_vmm(void);
 
 protected:
 public:

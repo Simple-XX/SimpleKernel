@@ -81,6 +81,11 @@ int32_t KERNEL::test_pmm(void) {
     return 0;
 }
 
+int32_t KERNEL::test_vmm(void) {
+    io.printf("vmm test done.\n");
+    return 0;
+}
+
 void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
@@ -109,6 +114,8 @@ int32_t KERNEL::init(void) {
     debug.init(magic, addr);
     // 物理内存管理初始化
     pmm.init();
+    // 虚拟内存初始化
+    vmm.init();
     // 显示内核信息
     show_info();
     return 0;
@@ -116,6 +123,7 @@ int32_t KERNEL::init(void) {
 
 int32_t KERNEL::test(void) {
     test_pmm();
+    test_vmm();
     io.printf("test done.\n");
     return 0;
 }
