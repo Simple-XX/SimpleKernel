@@ -9,7 +9,6 @@
 #include "cxxabi.h"
 #include "common.h"
 #include "color.h"
-#include "debug.h"
 #include "kernel.h"
 
 #if defined(__i386__) || defined(__x86_64__)
