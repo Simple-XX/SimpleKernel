@@ -25,9 +25,7 @@ APIC KERNEL::apic;
 KERNEL::KERNEL(void) {
     cpp_init();
     arch_init();
-    // drv_init();
-    clock.init();
-    keyboard.init();
+    drv_init();
     return;
 }
 
@@ -39,6 +37,15 @@ void KERNEL::arch_init(void) const {
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
     INTR::init();
+#elif defined(__arm__) || defined(__aarch64__)
+#endif
+    return;
+}
+
+void KERNEL::drv_init(void) const {
+#if defined(__i386__) || defined(__x86_64__)
+    clock.init();
+    keyboard.init();
 #elif defined(__arm__) || defined(__aarch64__)
 #endif
     return;
