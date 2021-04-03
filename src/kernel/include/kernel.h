@@ -9,9 +9,11 @@
 
 #include "stdint.h"
 #include "io.h"
+#include "apic.h"
 
 class KERNEL {
-    static IO io;
+    static IO   io;
+    static APIC apic;
 
 private:
     void arch_init(void) const;
