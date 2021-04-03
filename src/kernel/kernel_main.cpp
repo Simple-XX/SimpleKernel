@@ -6,13 +6,12 @@
 
 #include "cpu.hpp"
 #include "kernel.h"
-#include "io.h"
 
 extern "C" void kernel_main(void);
 
 void kernel_main(void) {
     KERNEL kernel;
-    kernel.init();
+    kernel.show_info();
 
     CPU::sti();
     while (1) {
