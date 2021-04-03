@@ -6,18 +6,15 @@
 
 #include "stddef.h"
 #include "stdbool.h"
-#include "io.h"
 #include "keyboard.h"
-
-// 改进方向：
-// 将输入输出与 tty 结合起来
-// 维护一个保存 tty 信息的结构体，包括 缓冲区信息，sh 设置，颜色等
 
 static void default_keyboard_handle(INTR::pt_regs_t *regs
                                     __attribute__((unused))) {
     keyboard.read();
     return;
 }
+
+IO KEYBOARD::io;
 
 KEYBOARD::KEYBOARD(void) {
     shift = false;

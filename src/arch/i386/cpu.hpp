@@ -10,6 +10,8 @@
 #include "stdint.h"
 #include "stdbool.h"
 
+// TODO: CPUID 相关操作，补全寄存器操作，数据地址等
+
 namespace CPU {
     // Carry Flag
     static constexpr const uint32_t EFLAGS_CF = 0x00000001;
@@ -132,6 +134,10 @@ namespace CPU {
     static constexpr const uint32_t CR4_OSXSAVE    = 0x00040000;
     static constexpr const uint32_t CR4_SMEP       = 0x00100000;
 
+    static constexpr const uint32_t IA32_APIC_BASE_MSR        = 0x1B;
+    static constexpr const uint32_t IA32_APIC_BASE_MSR_BSP    = 0x100;
+    static constexpr const uint32_t IA32_APIC_BASE_MSR_ENABLE = 0x800;
+
     // 执行CPU空操作
     static inline void hlt(void) {
         __asm__ volatile("hlt");
@@ -158,7 +164,9 @@ namespace CPU {
     // 读取 EFLAGS
     static inline uint32_t read_eflags(void) {
         uint32_t eflags;
-        __asm__ volatile("pushf;pop %0" : "=r"(eflags));
+        __asm__ volatile("pushf\n\t"
+                         "pop %0\n\t"
+                         : "=r"(eflags));
         return eflags;
     }
 
@@ -459,6 +467,34 @@ namespace CPU {
     static inline bool CR0_PG_status(void) {
         uint32_t cr0 = read_cr0();
         return (cr0 & CR0_PG);
+    }
+
+    typedef struct {
+        uint32_t low;
+        uint32_t high;
+    } msr_t;
+
+    static inline msr_t MSR_READ(uint32_t _idx) {
+        msr_t msr;
+        __asm__ volatile("rdmsr" : "=a"(msr.low), "=d"(msr.high) : "c"(_idx));
+        return msr;
+    }
+
+    static inline void MSR_WRITE(uint32_t _idx, msr_t _msr) {
+        __asm__ volatile("wrmsr" : : "c"(_idx), "a"(_msr.low), "d"(_msr.high));
+        return;
+    }
+    static inline void set_apic_base(void *_base) {
+        msr_t msr;
+        msr.low = (reinterpret_cast<uint32_t>(_base) & 0xFFFFF000) |
+                  IA32_APIC_BASE_MSR_ENABLE;
+        msr.high = 0;
+        MSR_WRITE(IA32_APIC_BASE_MSR, msr);
+    }
+    static inline void *get_apic_base(void) {
+        void *addr = nullptr;
+        addr       = reinterpret_cast<void *>(MSR_READ(IA32_APIC_BASE_MSR).low);
+        return addr;
     }
 };
 
