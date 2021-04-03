@@ -7,8 +7,6 @@
 #ifndef _KERNEL_HPP_
 #define _KERNEL_HPP_
 
-#pragma once
-
 #include "stdint.h"
 
 extern "C" uint8_t kernel_start[];
