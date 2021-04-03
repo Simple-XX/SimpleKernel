@@ -10,7 +10,7 @@ extern "C" void kernel_main(void);
 
 void kernel_main(void) {
     KERNEL kernel;
-    kernel.init();
+    kernel.show_info();
     while (1) {
         ;
     }
