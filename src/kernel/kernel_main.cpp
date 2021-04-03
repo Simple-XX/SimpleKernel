@@ -11,9 +11,9 @@
 extern "C" void kernel_main(void);
 
 void kernel_main(void) {
+    IO     io;
     KERNEL kernel;
-    kernel.init();
-
+    kernel.show_info();
     // enable intr
     CPU::sti();
     io.printf("sti\n");
@@ -33,7 +33,6 @@ void kernel_main(void) {
     else {
         io.printf("interrupt not accept!\n");
     }
-
     CPU::sti();
     while (1) {
         ;

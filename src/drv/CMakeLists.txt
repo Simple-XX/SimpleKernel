@@ -6,9 +6,9 @@
 PROJECT(drv CXX)
 
 if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
-    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/vga vga_src)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/tui tui_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/clock clock_src)
-    set(drv_src ${vga_src} ${clock_src})
+    set(drv_src ${tui_src} ${clock_src})
 elseif (SimpleKernelArch STREQUAL raspi2)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uart uart_src)
     set(drv_src ${uart_src})
