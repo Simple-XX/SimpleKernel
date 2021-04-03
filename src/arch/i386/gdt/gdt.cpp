@@ -10,7 +10,7 @@
 #include "gdt.h"
 
 namespace GDT {
-
+    IO io;
     // 加载 GDTR
     extern "C" void gdt_load(uint32_t);
     // 刷新 TSS
