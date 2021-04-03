@@ -14,7 +14,7 @@
 
 APIC::APIC(void) {
     pbase = CPU::get_apic_base();
-    CPU::set_apic_base(pbase);
+    // CPU::set_apic_base(pbase);
     write(LAPIC_SIVR, read(LAPIC_SIVR) | LAPIC_ISR);
     return;
 }

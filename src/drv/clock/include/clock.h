@@ -11,6 +11,8 @@
 #include "io.h"
 #include "intr.h"
 
+// TODO: APIC
+
 const uint32_t FREQUENCY = 100;
 // 定时中断由 8253/8254 芯片从 IRQ0 提供
 // 8253 Timer #1
