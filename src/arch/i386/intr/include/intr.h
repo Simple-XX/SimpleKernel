@@ -9,6 +9,8 @@
 
 #include "stdint.h"
 
+// TODO: 升级为 APIC
+
 namespace INTR {
     // 中断表最大值
     static constexpr const uint32_t INTERRUPT_MAX = 256;
