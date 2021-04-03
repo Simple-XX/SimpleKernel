@@ -18,7 +18,8 @@
 #elif defined(__arm__) || defined(__aarch64__)
 #endif
 
-IO KERNEL::io;
+IO   KERNEL::io;
+APIC KERNEL::apic;
 
 KERNEL::KERNEL(void) {
     cpp_init();
