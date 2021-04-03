@@ -7,6 +7,7 @@
 #include "stdint.h"
 #include "io.h"
 #include "string.h"
+#include "common.h"
 #include "pmm.h"
 #include "firstfit.h"
 #include "list.hpp"
@@ -64,14 +65,13 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     list_init_head(pmm_info);
     set_chunk(pmm_info, &phy_pages[0]);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
-    // 迭代所有页，如果下一个的地 != 当前地址+PMM_PAGE_SIZE 则新建 chunk
+    // 迭代所有页，如果下一个的地 != 当前地址+PAGE_SIZE 则新建 chunk
     ff_list_entry_t *chunk = pmm_info;
     uint32_t         num   = 1;
     for (uint32_t i = 0; i < pages; i++) {
         // 如果连续且 ref 相同
         if ((phy_pages[i].addr ==
-             chunk_info(chunk)->addr +
-                 chunk_info(chunk)->npages * PMM_PAGE_SIZE) &&
+             chunk_info(chunk)->addr + chunk_info(chunk)->npages * PAGE_SIZE) &&
             (phy_pages[i].ref == chunk_info(chunk)->ref)) {
             chunk_info(chunk)->npages++;
         }
@@ -94,7 +94,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     chunk = pmm_info;
     do {
         io.printf("addr: 0x%X, len: 0x%X, ref: 0x%X\n", chunk_info(chunk)->addr,
-                  chunk_info(chunk)->npages * PMM_PAGE_SIZE,
+                  chunk_info(chunk)->npages * PAGE_SIZE,
                   chunk_info(chunk)->ref);
         chunk = list_next(chunk);
     } while (chunk != pmm_info);
@@ -134,7 +134,7 @@ void *FIRSTFIT::alloc(size_t pages) {
                         (ff_list_entry_t *)(entry +
                                             node_num * sizeof(ff_list_entry_t));
                     chunk_info(tmp)->addr =
-                        entry->chunk_info.addr + pages * PMM_PAGE_SIZE;
+                        entry->chunk_info.addr + pages * PAGE_SIZE;
                     chunk_info(tmp)->npages = entry->chunk_info.npages - pages;
                     chunk_info(tmp)->ref    = 0;
                     chunk_info(tmp)->flag   = FF_UNUSED;
