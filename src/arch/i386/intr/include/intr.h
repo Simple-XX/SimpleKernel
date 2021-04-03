@@ -7,8 +7,6 @@
 #ifndef _INTR_H_
 #define _INTR_H_
 
-#pragma once
-
 #include "stdint.h"
 
 namespace INTR {
