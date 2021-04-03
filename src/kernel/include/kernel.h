@@ -11,10 +11,10 @@ extern "C" void kernel_main(void);
 
 class KERNEL {
 private:
+protected:
 public:
     KERNEL(void);
     ~KERNEL();
-    int init(void);
 };
 
 #endif /* _KERNEL_H_ */
