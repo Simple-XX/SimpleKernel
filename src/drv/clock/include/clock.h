@@ -8,6 +8,7 @@
 #define _CLOCK_H_
 
 #include "stdint.h"
+#include "io.h"
 #include "intr.h"
 
 const uint32_t FREQUENCY = 100;
@@ -33,6 +34,8 @@ const uint32_t TIMER_16BIT = 0x30;
 
 class CLOCK {
 private:
+    static IO io;
+
 protected:
 public:
     CLOCK(void);
