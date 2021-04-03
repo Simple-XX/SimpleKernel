@@ -20,24 +20,23 @@
 // array notation prevents accidental reads from _ebss as arrays must be
 // explicitly dereferenced) ref:
 // http://wiki.osdev.org/Using_Linker_Script_Values
-extern "C" uint8_t kernel_start[];
-extern "C" uint8_t kernel_text_start[];
-extern "C" uint8_t kernel_text_end[];
-extern "C" uint8_t kernel_data_start[];
-extern "C" uint8_t kernel_data_end[];
-extern "C" uint8_t kernel_end[];
+extern "C" void *kernel_start[];
+extern "C" void *kernel_text_start[];
+extern "C" void *kernel_text_end[];
+extern "C" void *kernel_data_start[];
+extern "C" void *kernel_data_end[];
+extern "C" void *kernel_end[];
 
-static const uint32_t KERNEL_START_ADDR =
-    reinterpret_cast<uint32_t>(kernel_start);
-static const uint32_t KERNEL_TEXT_START_ADDR =
-    reinterpret_cast<uint32_t>(kernel_text_start);
-static const uint32_t KERNEL_TEXT_END_ADDR =
-    reinterpret_cast<uint32_t>(kernel_text_end);
-static const uint32_t KERNEL_DATA_START_ADDR =
-    reinterpret_cast<uint32_t>(kernel_data_start);
-static const uint32_t KERNEL_DATA_END_ADDR =
-    reinterpret_cast<uint32_t>(kernel_data_end);
-static const uint32_t KERNEL_END_ADDR = reinterpret_cast<uint32_t>(kernel_end);
+static const void *KERNEL_START_ADDR = kernel_start;
+static const void *KERNEL_TEXT_START_ADDR __attribute__((unused)) =
+    kernel_text_start;
+static const void *KERNEL_TEXT_END_ADDR __attribute__((unused)) =
+    kernel_text_end;
+static const void *KERNEL_DATA_START_ADDR __attribute__((unused)) =
+    kernel_data_start;
+static const void *KERNEL_DATA_END_ADDR __attribute__((unused)) =
+    kernel_data_end;
+static const void *KERNEL_END_ADDR = kernel_end;
 
 // PAE 标志的处理
 #ifdef CPU_PAE
@@ -74,8 +73,10 @@ static constexpr const uint32_t PAGES_KERNEL = KERNEL_SIZE / PAGE_SIZE;
 #define ALIGN4K(x)                                                             \
     (((x) % PAGE_SIZE == 0) ? (x) : (((x) + PAGE_SIZE - 1) & PAGE_MASK))
 
-static const uint32_t KERNEL_START_4K = ALIGN4K(KERNEL_START_ADDR);
-static const uint32_t KERNEL_END_4K   = ALIGN4K(KERNEL_END_ADDR);
+static const void *KERNEL_START_4K = reinterpret_cast<void *>(
+    ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_START_ADDR)));
+static const void *KERNEL_END_4K = reinterpret_cast<void *>(
+    ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_END_ADDR)));
 
 // 物理页结构体
 typedef struct physical_page {

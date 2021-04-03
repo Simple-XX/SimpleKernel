@@ -19,7 +19,8 @@ physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
 
 // 管理范围为内核结束到物理内存结束
 PMM::PMM(void)
-    : ff(FIRSTFIT(reinterpret_cast<uint8_t *>(ALIGN4K(KERNEL_END_ADDR)))) {
+    : ff(FIRSTFIT(reinterpret_cast<uint8_t *>(
+          ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_END_ADDR))))) {
     name = "FirstFit";
     return;
 }
@@ -54,8 +55,7 @@ int32_t PMM::init(void) {
             }
             phy_pages[pages_count].addr = addr;
             // 内核已占用部分
-            if (addr >= reinterpret_cast<uint8_t *>(KERNEL_START_4K) &&
-                addr < reinterpret_cast<uint8_t *>(KERNEL_END_4K)) {
+            if (addr >= KERNEL_START_4K && addr < KERNEL_END_4K) {
                 phy_pages[pages_count].ref = 1;
             }
             else {
