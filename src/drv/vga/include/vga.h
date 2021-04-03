@@ -7,8 +7,6 @@
 #ifndef _VGA_H_
 #define _VGA_H_
 
-#pragma once
-
 #include "stdint.h"
 #include "stddef.h"
 #include "color.h"
