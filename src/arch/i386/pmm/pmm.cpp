@@ -8,6 +8,7 @@
 #include "assert.h"
 #include "stdint.h"
 #include "string.h"
+#include "common.h"
 #include "multiboot2.h"
 #include "pmm.h"
 #include "firstfit.h"
@@ -20,9 +21,6 @@ physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
 PMM::PMM(void)
     : ff(FIRSTFIT(reinterpret_cast<uint8_t *>(ALIGN4K(KERNEL_END_ADDR)))) {
     name = "FirstFit";
-    kernel_start_align4k =
-        reinterpret_cast<uint8_t *>(ALIGN4K(KERNEL_START_ADDR));
-    kernel_end_align4k = reinterpret_cast<uint8_t *>(ALIGN4K(KERNEL_END_ADDR));
     return;
 }
 
@@ -33,8 +31,8 @@ PMM::~PMM(void) {
 int32_t PMM::init(void) {
 // #define DEBUG
 #ifdef DEBUG
-    printk_debug("kernel_start_align4k: 0x%X, kernel_end_align4k: 0x%X\n",
-                 kernel_start_align4k, kernel_end_align4k);
+    io.printf("KERNEL_START_4K: 0x%X, KERNEL_END_4K: 0x%X\n", KERNEL_START_4K,
+              KERNEL_END_4K);
 #endif
     e820map_t e820map;
     bzero(&e820map, sizeof(e820map_t));
@@ -47,7 +45,7 @@ int32_t PMM::init(void) {
     for (size_t i = 0; i < e820map.nr_map; i++) {
         for (uint8_t *addr = e820map.map[i].addr;
              addr < (e820map.map[i].addr + e820map.map[i].length);
-             addr += PMM_PAGE_SIZE) {
+             addr += PAGE_SIZE) {
             // 初始化可用内存段的物理页数组
             // 地址对应的物理页数组下标
             // 跳过 0x00 开始的一页，便于判断 nullptr
@@ -56,7 +54,8 @@ int32_t PMM::init(void) {
             }
             phy_pages[pages_count].addr = addr;
             // 内核已占用部分
-            if (addr >= kernel_start_align4k && addr < kernel_end_align4k) {
+            if (addr >= reinterpret_cast<uint8_t *>(KERNEL_START_4K) &&
+                addr < reinterpret_cast<uint8_t *>(KERNEL_END_4K)) {
                 phy_pages[pages_count].ref = 1;
             }
             else {
