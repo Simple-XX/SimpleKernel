@@ -17,6 +17,7 @@ class KERNEL {
 
 private:
     void arch_init(void) const;
+    void drv_init(void) const;
 
 protected:
 public:
