@@ -7,8 +7,6 @@
 #ifndef _IO_H_
 #define _IO_H_
 
-#pragma once
-
 #include "stdint.h"
 #include "color.h"
 
