@@ -117,6 +117,7 @@ static const uint32_t VMM_PAGE_KERNEL = 0x00000000;
 
 class VMM {
 private:
+    PMM &pmm;
     // 页目录
     page_dir_t page_dir;
     // 页表
@@ -124,7 +125,7 @@ private:
 
 protected:
 public:
-    VMM(void);
+    VMM(PMM &_pmm);
     ~VMM(void);
     // 初始化
     void init(void);

@@ -22,8 +22,7 @@
 #include "keyboard.h"
 #include "kernel.h"
 
-KERNEL::KERNEL(void) {
-    pmm = PMM();
+KERNEL::KERNEL(void) : pmm(PMM()), vmm(VMM(pmm)) {
     return;
 }
 

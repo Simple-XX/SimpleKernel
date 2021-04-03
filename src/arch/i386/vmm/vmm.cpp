@@ -11,7 +11,61 @@
 #include "intr.h"
 #include "vmm.h"
 
-VMM::VMM(void) {
+// TODO: 完善缺页处理
+static void page_fault(INTR::pt_regs_t *regs) {
+#ifdef __x86_64__
+    uint64_t cr2;
+    asm volatile("movq %%cr2,%0" : "=r"(cr2));
+#else
+    uint32_t cr2;
+    asm volatile("mov %%cr2,%0" : "=r"(cr2));
+#endif
+    io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+              "Page fault at 0x%08X, virtual faulting address 0x%08X\n",
+              regs->eip, cr2);
+    io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+              "Error code: 0x%08X\n", regs->err_code);
+
+    // bit 0 为 0 指页面不存在内存里
+    if (!(regs->err_code & 0x1)) {
+        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                  "Because the page wasn't present.\n");
+    }
+    // bit 1 为 0 表示读错误，为 1 为写错误
+    if (regs->err_code & 0x2) {
+        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                  "Write error.\n");
+    }
+    else {
+        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                  "Read error.\n");
+    }
+    // bit 2 为 1 表示在用户模式打断的，为 0 是在内核模式打断的
+    if (regs->err_code & 0x4) {
+        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                  "In user mode.\n");
+    }
+    else {
+        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                  "In kernel mode.\n");
+    }
+    // bit 3 为 1 表示错误是由保留位覆盖造成的
+    if (regs->err_code & 0x8) {
+        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                  "Reserved bits being overwritten.\n");
+    }
+    // bit 4 为 1 表示错误发生在取指令的时候
+    if (regs->err_code & 0x10) {
+        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+                  "The fault occurred during an instruction fetch.\n");
+    }
+    while (1) {
+        ;
+    }
+    return;
+}
+
+VMM::VMM(PMM &_pmm) : pmm(_pmm) {
     return;
 }
 
@@ -21,9 +75,9 @@ VMM::~VMM(void) {
 
 void VMM::init(void) {
     INTR::register_interrupt_handler(INTR::INT_PAGE_FAULT, &page_fault);
-    page_dir = (page_dir_t)pmm_alloc_page(VMM_PAGE_DIRECTORIES_KERNEL);
+    page_dir = (page_dir_t)pmm.alloc_page(VMM_PAGE_DIRECTORIES_KERNEL);
     bzero((void *)page_dir, VMM_PAGE_SIZE * VMM_PAGE_DIRECTORIES_KERNEL);
-    page_table = (page_table_t)pmm_alloc_page(VMM_PAGE_TABLES_KERNEL);
+    page_table = (page_table_t)pmm.alloc_page(VMM_PAGE_TABLES_KERNEL);
     bzero((void *)page_table, VMM_PAGE_SIZE * VMM_PAGE_TABLES_KERNEL);
 // #define DEBUG
 #ifdef DEBUG
@@ -82,7 +136,7 @@ void VMM::mmap(page_dir_t pgd, void *va, void *pa, uint32_t flag) {
 
     page_table_t pt = pgd[pgd_idx];
     if (pt == nullptr) {
-        pt           = (page_table_t)pmm_alloc_page(1);
+        pt           = (page_table_t)pmm.alloc_page(1);
         pgd[pgd_idx] = (page_table_t)(reinterpret_cast<uint32_t>(pt) |
                                       VMM_PAGE_PRESENT | VMM_PAGE_RW);
     }
@@ -125,48 +179,3 @@ uint32_t VMM::get_mmap(page_dir_t pgd, void *va, void *pa) {
 void VMM::vmm_kernel_init(page_dir_t pgd) {
     return;
 }
-
-// TODO: 完善缺页处理
-// void page_fault(pt_regs_t *pt_regs) {
-//     void *pg_addr = nullptr;
-// #ifdef __x86_64__
-//     __asm__ volatile("movq %%cr2,%0" : "=r"(pg_addr));
-// #else
-//     __asm__ volatile("mov %%cr2,%0" : "=r"(pg_addr));
-// #endif
-//     printk("Page fault at 0x%X, virtual faulting address 0x%X\n",
-//     pt_regs->eip,
-//            pg_addr);
-//     io.printf("Error code: 0x%X\n", pt_regs->err_code);
-
-//     // bit 0 为 0 指页面不存在内存里
-//     if ((pt_regs->err_code & 0x1) == 0x1) {
-//         io.printf("Page wasn't present.\n");
-//     }
-//     // bit 1 为 0 表示读错误，为 1 为写错误
-//     if ((pt_regs->err_code & 0x2) == 0x2) {
-//         io.printf("Write error.\n");
-//     }
-//     else {
-//         io.printf("Read error.\n");
-//     }
-//     // bit 2 为 0 是在内核模式打断的，为 1 表示在用户模式打断的，
-//     if ((pt_regs->err_code & 0x4) == 0x4) {
-//         io.printf("In user mode.\n");
-//     }
-//     else {
-//         io.printf("In kernel mode.\n");
-//     }
-//     // bit 3 为 1 表示错误是由保留位覆盖造成的
-//     if ((pt_regs->err_code & 0x8) == 0x8) {
-//         io.printf("Reserved bits being overwritten.\n");
-//     }
-//     // bit 4 为 1 表示错误发生在取指令的时候
-//     if ((pt_regs->err_code & 0x10) == 0x10) {
-//         io.printf("The fault occurred during an instruction fetch.\n");
-//     }
-//     while (1) {
-//         ;
-//     }
-//     return;
-// }
