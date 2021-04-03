@@ -4,21 +4,17 @@
 //
 // kernel.h for Simple-XX/SimpleKernel.
 
-#ifndef _KERNEL_HPP_
-#define _KERNEL_HPP_
-
-#pragma once
+#ifndef _KERNEL_H_
+#define _KERNEL_H_
 
 #include "stdint.h"
-
-extern "C" uint8_t kernel_start[];
-extern "C" uint8_t kernel_text_start[];
-extern "C" uint8_t kernel_text_end[];
-extern "C" uint8_t kernel_data_start[];
-extern "C" uint8_t kernel_data_end[];
-extern "C" uint8_t kernel_end[];
+#include "io.h"
+#include "apic.h"
 
 class KERNEL {
+    static IO   io;
+    static APIC apic;
+
 private:
     void arch_init(void) const;
 
@@ -26,8 +22,7 @@ protected:
 public:
     KERNEL(void);
     ~KERNEL(void);
-    int32_t init(void);
-    void    show_info(void);
+    void show_info(void);
 };
 
-#endif /* _KERNEL_HPP_ */
+#endif /* _KERNEL_H_ */
