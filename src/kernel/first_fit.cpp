@@ -40,7 +40,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // TODO: 优化空间
     // 管理所有内存页需要的空间，供管理结构使用
     // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
-    uint32_t pmm_info_size = PMM_PAGE_MAX_SIZE * sizeof(ff_list_entry_t);
+    uint32_t pmm_info_size = pages * sizeof(ff_list_entry_t);
     bzero(list, pmm_info_size);
     // 将用于保存物理地址信息的内存标记为已使用
     // 计算内核使用内存的 phy_pages
