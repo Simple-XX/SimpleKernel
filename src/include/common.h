@@ -79,11 +79,12 @@ static const void *KERNEL_END_4K = reinterpret_cast<void *>(
     ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_END_ADDR)));
 
 // 物理页结构体
-typedef struct physical_page {
+class physical_pages_t {
+public:
     // 起始地址
-    uint8_t *addr;
+    uint8_t *addr[PMM_PAGE_MAX_SIZE];
     // 该页被引用次数，-1 表示此页内存被保留，禁止使用
-    int32_t ref;
-} physical_page_t;
+    int32_t ref[PMM_PAGE_MAX_SIZE];
+};
 
 #endif /* _COMMON_H_ */

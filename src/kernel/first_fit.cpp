@@ -16,18 +16,19 @@ static chunk_info_t *chunk_info(ff_list_entry_t *list) {
     return &(list->chunk_info);
 }
 
-static int32_t set_chunk(ff_list_entry_t *chunk, physical_page_t *mempage) {
-    chunk_info(chunk)->addr   = mempage->addr;
+static int32_t set_chunk(ff_list_entry_t *chunk, physical_pages_t &mempage,
+                         size_t _idx) {
+    chunk_info(chunk)->addr   = mempage.addr[_idx];
     chunk_info(chunk)->npages = 1;
-    chunk_info(chunk)->ref    = mempage->ref;
-    chunk_info(chunk)->flag   = mempage->ref == 0 ? FF_UNUSED : FF_USED;
+    chunk_info(chunk)->ref    = mempage.ref[_idx];
+    chunk_info(chunk)->flag   = mempage.ref[_idx] == 0 ? FF_UNUSED : FF_USED;
     return 0;
 }
 
 IO              FIRSTFIT::io;
 ff_list_entry_t FIRSTFIT::list[PMM_PAGE_MAX_SIZE];
 
-FIRSTFIT::FIRSTFIT(void) {
+FIRSTFIT::FIRSTFIT(physical_pages_t &_phy_pages) : phy_pages(_phy_pages) {
     return;
 }
 
@@ -47,32 +48,32 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // 计算内核使用内存的 phy_pages
     // 不能直接计算，因为可用内存之间可能会存在空洞
     uint32_t idx = 0;
-    while (phy_pages[idx].addr < KERNEL_START_4K) {
+    while (phy_pages.addr[idx] < KERNEL_START_4K) {
         idx++;
     }
 #ifdef DEBUG
     io.printf("phy_pages[idx]: 0x%X\n", phy_pages[idx]);
 #endif
     uint32_t idx_end = idx;
-    while (phy_pages[idx_end].addr < KERNEL_END_4K) {
+    while (phy_pages.addr[idx_end] < KERNEL_END_4K) {
         idx_end++;
     }
     while (idx < idx_end) {
-        phy_pages[idx++].ref++;
+        phy_pages.ref[idx++]++;
     }
     // 初始化 list 信息
     // 初始化头节点
     list_init_head(list);
-    set_chunk(list, &phy_pages[0]);
+    set_chunk(list, phy_pages, 0);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
     // 迭代所有页，如果下一个的地 != 当前地址+PAGE_SIZE 则新建 chunk
     ff_list_entry_t *chunk = list;
     uint32_t         num   = 1;
     for (uint32_t i = 0; i < pages; i++) {
         // 如果连续且 ref 相同
-        if ((phy_pages[i].addr ==
+        if ((phy_pages.addr[i] ==
              chunk_info(chunk)->addr + chunk_info(chunk)->npages * PAGE_SIZE) &&
-            (phy_pages[i].ref == chunk_info(chunk)->ref)) {
+            (phy_pages.ref[i] == chunk_info(chunk)->ref)) {
             chunk_info(chunk)->npages++;
         }
         // 没有连续或者 ref 不同
@@ -81,7 +82,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
             ff_list_entry_t *tmp =
                 (ff_list_entry_t *)((uint8_t *)list +
                                     i * sizeof(ff_list_entry_t));
-            set_chunk(tmp, &phy_pages[i]);
+            set_chunk(tmp, phy_pages, i);
             // 添加到链表
             list_add_before(list, tmp);
             chunk = tmp;
@@ -102,7 +103,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // 计算未使用的物理内存
     uint32_t n = 0;
     for (uint32_t i = 0; i < pages; i++) {
-        if (phy_pages[i].ref == 0) {
+        if (phy_pages.ref[i] == 0) {
             n++;
         }
     }
