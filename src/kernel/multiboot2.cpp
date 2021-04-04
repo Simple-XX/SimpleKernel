@@ -4,9 +4,10 @@
 // Based on https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
 // multiboot2.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
-#include "debug.h"
+#include "assert.h"
 #include "multiboot2.h"
+
+using namespace MULTIBOOT2;
 
 void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag) {
     io.printf("Command line = %s\n",
@@ -46,7 +47,7 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
 multiboot_memory_map_entry_t *mmap_entries;
 multiboot_mmap_tag_t *        mmap_tag;
 
-void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
     mmap_entries = ((struct multiboot_tag_mmap *)tag)->entries;
     mmap_tag     = tag;
 #if DEBUG_LOCAL
@@ -109,22 +110,22 @@ void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
     return;
 }
 
-bool is_multiboot2_header(uint32_t magic, void *addr) {
+void MULTIBOOT2::is_multiboot2_header(uint32_t magic, void *addr) {
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
-        io.printf("Invalid magic number: %X\n", (unsigned)magic);
-        return false;
+        io.printf("Invalid magic number: %X\n", magic);
+        assert(0);
     }
     if (reinterpret_cast<uint32_t>(addr) & 7) {
         io.printf("Unaligned addr: 0x%08x\n", addr);
-        return false;
+        assert(0);
     }
-    return true;
+    return;
 }
 
 // 处理 multiboot 信息
-void multiboot2_init(uint32_t magic, void *addr) {
+void MULTIBOOT2::multiboot2_init(uint32_t magic, void *addr) {
     // Am I booted by a Multiboot-compliant boot loader?
-    is_multiboot2_header(magic, addr);
+    MULTIBOOT2::is_multiboot2_header(magic, addr);
     // uint32_t size = *(uint32_t *)addr;
     // addr+0 保存大小，下一字节开始为 tag 信息
     // io.printf("Announced mbi size 0x%X\n", size);
@@ -154,7 +155,7 @@ void multiboot2_init(uint32_t magic, void *addr) {
                 // print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
                 break;
             case MULTIBOOT_TAG_TYPE_MMAP:
-                print_MULTIBOOT_TAG_TYPE_MMAP(tag);
+                MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MMAP(tag);
                 break;
             case MULTIBOOT_TAG_TYPE_ELF_SECTIONS: {
                 // print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);

@@ -7,9 +7,12 @@
 #include "stdarg.h"
 #include "string.h"
 #include "cxxabi.h"
+#include "common.h"
 #include "color.h"
-#include "debug.h"
 #include "assert.h"
+#include "keyboard.h"
+#include "multiboot2.h"
+#include "kernel.h"
 
 #if defined(__i386__) || defined(__x86_64__)
 #include "gdt.h"
@@ -18,18 +21,20 @@
 #elif defined(__arm__) || defined(__aarch64__)
 #endif
 
-#include "io.h"
-#include "keyboard.h"
-#include "kernel.h"
-
-KERNEL::KERNEL(void) {
-    pmm = PMM();
-    return;
-}
+IO   KERNEL::io;
+APIC KERNEL::apic;
 
 KERNEL::KERNEL(uint32_t magic, void *addr) {
+    // 读取 grub2 传递的信息
+    MULTIBOOT2::multiboot2_init(magic, addr);
     this->magic = magic;
     this->addr  = addr;
+    pmm         = PMM();
+    cpp_init();
+    arch_init();
+    drv_init();
+    // 物理内存管理初始化
+    pmm.init();
     return;
 }
 
@@ -43,6 +48,17 @@ void KERNEL::arch_init(void) const {
     INTR::init();
 #elif defined(__arm__) || defined(__aarch64__)
 #endif
+    return;
+}
+
+void KERNEL::drv_init(void) const {
+#if defined(__i386__) || defined(__x86_64__)
+    // 时钟初始化
+    clock.init();
+#elif defined(__arm__) || defined(__aarch64__)
+#endif
+    // 键盘输入初始化
+    keyboard.init();
     return;
 }
 
@@ -83,39 +99,18 @@ int32_t KERNEL::test_pmm(void) {
 
 void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
-    io.printf(LIGHT_GREEN, "kernel in memory start: 0x%08X, end 0x%08X\n",
-              KERNEL_START_ADDR, KERNEL_END_ADDR);
-    io.printf(LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
+    io.printf(COLOR::LIGHT_GREEN,
+              "kernel in memory start: 0x%08X, end 0x%08X\n", KERNEL_START_ADDR,
+              KERNEL_END_ADDR);
+    io.printf(COLOR::LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               (reinterpret_cast<uint32_t>(KERNEL_END_ADDR) -
                reinterpret_cast<uint32_t>(KERNEL_START_ADDR)) /
                   1024,
               (reinterpret_cast<uint32_t>(KERNEL_END_ADDR) -
                reinterpret_cast<uint32_t>(KERNEL_START_ADDR) + 4095) /
                   1024 / 4);
-    io.printf(LIGHT_GREEN, "Simple Kernel.\n");
+    io.printf(COLOR::LIGHT_GREEN, "Simple Kernel.\n");
     return;
-}
-
-int32_t KERNEL::init(void) {
-    // 全局对象的构造
-    cpp_init();
-    // 输入输出初始化
-    io.init();
-    // 架构相关初始化
-    arch_init();
-    // 读取 grub2 传递的信息
-    multiboot2_init(magic, addr);
-    // 时钟初始化
-    clock.init();
-    // 键盘输入初始化
-    keyboard.init();
-    // debug 程序初始化
-    debug.init(magic, addr);
-    // 物理内存管理初始化
-    pmm.init();
-    // 显示内核信息
-    show_info();
-    return 0;
 }
 
 int32_t KERNEL::test(void) {

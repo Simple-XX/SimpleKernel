@@ -5,7 +5,6 @@
 // first_fit.cpp for Simple-XX/SimpleKernel.
 
 #include "stdint.h"
-#include "io.h"
 #include "string.h"
 #include "common.h"
 #include "pmm.h"
@@ -24,6 +23,8 @@ static int32_t set_chunk(ff_list_entry_t *chunk, physical_page_t *mempage) {
     chunk_info(chunk)->flag   = mempage->ref == 0 ? FF_UNUSED : FF_USED;
     return 0;
 }
+
+IO FIRSTFIT::io;
 
 FIRSTFIT::FIRSTFIT(uint8_t *addr_start) {
     this->addr_start = addr_start;
