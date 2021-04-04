@@ -21,7 +21,6 @@ UART IO::io;
 #endif
 
 IO::IO(void) {
-    printf("io init\n");
     return;
 }
 
