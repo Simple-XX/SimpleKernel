@@ -8,6 +8,7 @@
 #define _FIRTSTFIT_H_
 
 #include "stdint.h"
+#include "io.h"
 
 // 块
 typedef struct chunk_info {
@@ -33,6 +34,7 @@ static constexpr const uint32_t FF_UNUSED = 0x01;
 
 class FIRSTFIT {
 private:
+    static IO io;
     // 物理内存起始地址
     uint8_t *addr_start;
     // 物理内存结束地址

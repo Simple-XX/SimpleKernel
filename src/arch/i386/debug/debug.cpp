@@ -4,22 +4,18 @@
 //
 // debug.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
 #include "intr.h"
 #include "cpu.hpp"
 #include "debug.h"
 
-DEBUG::DEBUG(void) {
+IO DEBUG::io;
+
+DEBUG::DEBUG(uint32_t magic __attribute__((unused)),
+             void *   addr __attribute__((unused))) {
     return;
 }
 
 DEBUG::~DEBUG(void) {
-    return;
-}
-
-void DEBUG::init(uint32_t magic __attribute__((unused)),
-                 void *   addr __attribute__((unused))) {
-    io.printf("debug_init\n");
     return;
 }
 
@@ -60,5 +56,3 @@ void DEBUG::print_stack(size_t count) {
     }
     return;
 }
-
-DEBUG debug;

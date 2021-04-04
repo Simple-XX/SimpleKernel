@@ -9,19 +9,21 @@
 
 #include "stddef.h"
 #include "stdint.h"
+#include "io.h"
 #include "multiboot2.h"
 #include "e820.h"
 #include "common.h"
 #include "firstfit.h"
 
-extern multiboot_memory_map_entry_t *mmap_entries;
-extern multiboot_mmap_tag_t *        mmap_tag;
+extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
+extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 
 // 可用内存的物理页数组
 extern physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
 
 class PMM {
 private:
+    static IO io;
     // 管理算法的名称
     const char *name;
     FIRSTFIT    ff;

@@ -4,8 +4,6 @@
 //
 // pmm.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
-#include "assert.h"
 #include "stdint.h"
 #include "string.h"
 #include "common.h"
@@ -16,6 +14,8 @@
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
 physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
+
+IO PMM::io;
 
 // 管理范围为内核结束到物理内存结束
 PMM::PMM(void)
@@ -74,9 +74,10 @@ int32_t PMM::init(void) {
 void PMM::get_ram_info(e820map_t *e820map) {
     for (; (uint8_t *)mmap_entries < (uint8_t *)mmap_tag + mmap_tag->size;
          mmap_entries =
-             (multiboot_memory_map_entry_t
+             (MULTIBOOT2::multiboot_memory_map_entry_t
                   *)((uint32_t)mmap_entries +
-                     ((struct multiboot_tag_mmap *)mmap_tag)->entry_size)) {
+                     ((struct MULTIBOOT2::multiboot_tag_mmap *)mmap_tag)
+                         ->entry_size)) {
         // 如果是可用内存
 // #define DEBUG
 #ifdef DEBUG
@@ -84,7 +85,7 @@ void PMM::get_ram_info(e820map_t *e820map) {
                      mmap_entries->len, mmap_entries->type);
 #endif
 
-        if (mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE) {
+        if (mmap_entries->type == MULTIBOOT2::MULTIBOOT_MEMORY_AVAILABLE) {
             e820map->map[e820map->nr_map].addr =
                 reinterpret_cast<uint8_t *>(mmap_entries->addr);
             e820map->map[e820map->nr_map].length = mmap_entries->len;
