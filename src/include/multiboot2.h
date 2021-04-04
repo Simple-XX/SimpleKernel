@@ -359,8 +359,6 @@ namespace MULTIBOOT2 {
     void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
-    // extern multiboot_memory_map_entry_t *mmap_entries;
-    // extern multiboot_mmap_tag_t *        mmap_tag;
 };
 
 #endif /* _MULTIBOOT2_H_ */
