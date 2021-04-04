@@ -10,23 +10,22 @@
 #include "stddef.h"
 #include "stdint.h"
 #include "io.h"
-#include "multiboot2.h"
 #include "e820.h"
 #include "common.h"
 #include "firstfit.h"
-
-extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
-extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 
 class PMM {
 private:
     static IO io;
     // 可用内存的物理页数组
     static physical_pages_t phy_pages;
-
     // 管理算法的名称
-    const char *name;
-    FIRSTFIT    manage;
+    static const char *name;
+    static FIRSTFIT    manage;
+    // 从 GRUB 读取物理内存信息
+    void get_ram_info(e820map_t *e820map);
+    // 物理内存管理初始化 参数为实际可用物理页数量
+    void mamage_init(uint32_t pages);
 
 protected:
 public:
@@ -34,10 +33,6 @@ public:
     ~PMM(void);
     // 初始化内存管理
     int32_t init(void);
-    // 从 GRUB 读取物理内存信息
-    void get_ram_info(e820map_t *e820map);
-    // 物理内存管理初始化 参数为实际可用物理页数量
-    void mamage_init(uint32_t pages);
     // 请求指定数量物理页
     void *alloc_page(uint32_t pages);
     // 释放内存页

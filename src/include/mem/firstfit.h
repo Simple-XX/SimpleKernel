@@ -10,7 +10,7 @@
 #include "stdint.h"
 #include "io.h"
 
-// 一个仅在这里使用的简单循环链表
+// TODO: 面向对象重构
 class ff_list_entry_t {
 public:
     // 当前页的地址
@@ -32,11 +32,11 @@ private:
 
     static IO io;
     // 物理内存页的总数量
-    uint32_t phy_page_count;
+    static uint32_t phy_page_count;
     // 物理内存页的当前数量
-    uint32_t phy_page_free_count;
+    static uint32_t phy_page_free_count;
     // 空闲链表的节点数量
-    uint32_t node_num;
+    static uint32_t node_num;
     // 内存管理
     static ff_list_entry_t list[PMM_PAGE_MAX_SIZE];
     physical_pages_t &     phy_pages;
