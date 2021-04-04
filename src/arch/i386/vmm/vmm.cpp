@@ -4,7 +4,6 @@
 //
 // vmm.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
 #include "stdint.h"
 #include "string.h"
 #include "cpu.hpp"
@@ -13,6 +12,7 @@
 
 // TODO: 完善缺页处理
 static void page_fault(INTR::pt_regs_t *regs) {
+    IO io;
 #ifdef __x86_64__
     uint64_t cr2;
     asm volatile("movq %%cr2,%0" : "=r"(cr2));
@@ -65,7 +65,10 @@ static void page_fault(INTR::pt_regs_t *regs) {
     return;
 }
 
-VMM::VMM(PMM &_pmm) : pmm(_pmm) {
+IO  VMM::io;
+PMM VMM::pmm;
+
+VMM::VMM(void) {
     return;
 }
 
@@ -76,9 +79,9 @@ VMM::~VMM(void) {
 void VMM::init(void) {
     INTR::register_interrupt_handler(INTR::INT_PAGE_FAULT, &page_fault);
     page_dir = (page_dir_t)pmm.alloc_page(VMM_PAGE_DIRECTORIES_KERNEL);
-    bzero((void *)page_dir, VMM_PAGE_SIZE * VMM_PAGE_DIRECTORIES_KERNEL);
+    bzero((void *)page_dir, PAGE_SIZE * VMM_PAGE_DIRECTORIES_KERNEL);
     page_table = (page_table_t)pmm.alloc_page(VMM_PAGE_TABLES_KERNEL);
-    bzero((void *)page_table, VMM_PAGE_SIZE * VMM_PAGE_TABLES_KERNEL);
+    bzero((void *)page_table, PAGE_SIZE * VMM_PAGE_TABLES_KERNEL);
 // #define DEBUG
 #ifdef DEBUG
     io.printf("VMM_PAGE_DIRECTORIES_KERNEL: 0x%X\n",

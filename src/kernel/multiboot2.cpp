@@ -4,23 +4,25 @@
 // Based on https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
 // multiboot2.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
-#include "debug.h"
+#include "assert.h"
 #include "multiboot2.h"
 
-void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag) {
+using namespace MULTIBOOT2;
+
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag) {
     io.printf("Command line = %s\n",
               ((struct multiboot_tag_string *)tag)->string);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(
+    multiboot_tag_t *tag) {
     io.printf("Boot loader name = %s\n",
               ((struct multiboot_tag_string *)tag)->string);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag) {
     io.printf("Module at 0x%X-0x%X. Command line %s\n",
               ((struct multiboot_tag_module *)tag)->mod_start,
               ((struct multiboot_tag_module *)tag)->mod_end,
@@ -28,14 +30,14 @@ void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag) {
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t *tag) {
     io.printf("mem_lower = %uKB, mem_upper = %uKB\n",
               ((struct multiboot_tag_basic_meminfo *)tag)->mem_lower,
               ((struct multiboot_tag_basic_meminfo *)tag)->mem_upper);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
     io.printf("Boot device 0x%X,%u,%u\n",
               ((struct multiboot_tag_bootdev *)tag)->biosdev,
               ((struct multiboot_tag_bootdev *)tag)->slice,
@@ -43,12 +45,12 @@ void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
     return;
 }
 
-multiboot_memory_map_entry_t *mmap_entries;
-multiboot_mmap_tag_t *        mmap_tag;
+multiboot_memory_map_entry_t *MULTIBOOT2::mmap_entries;
+multiboot_mmap_tag_t *        MULTIBOOT2::mmap_tag;
 
-void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
-    mmap_entries = ((struct multiboot_tag_mmap *)tag)->entries;
-    mmap_tag     = tag;
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
+    MULTIBOOT2::mmap_entries = ((struct multiboot_tag_mmap *)tag)->entries;
+    MULTIBOOT2::mmap_tag     = tag;
 #if DEBUG_LOCAL
     multiboot_memory_map_entry_t *mmap;
     mmap = ((struct multiboot_tag_mmap *)tag)->entries;
@@ -68,8 +70,8 @@ void print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag
-                                           __attribute__((unused))) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(
+    multiboot_tag_t *tag __attribute__((unused))) {
 #if DEBUG_LOCAL
     io.printf("Elf type 0x%X, Size 0x%X, num 0x%X, entsize 0x%X, shndx 0x%X.\n",
               ((struct multiboot_tag_elf_sections *)tag)->type,
@@ -81,7 +83,7 @@ void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag) {
     io.printf("APM type 0x%X, Size 0x%X, version 0x%X, cseg 0x%X, offset "
               "0x%X, cseg_16 0x%X, "
               "dseg 0x%X, flags 0x%X, cseg_len 0x%X, cseg_16_len 0x%X, "
@@ -100,7 +102,7 @@ void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag) {
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
     io.printf(
         "Image load base physical address type 0x%X, size 0x%X, addr 0x%X.\n",
         ((struct multiboot_tag_load_base_addr *)tag)->type,
@@ -109,22 +111,22 @@ void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
     return;
 }
 
-bool is_multiboot2_header(uint32_t magic, void *addr) {
+void MULTIBOOT2::is_multiboot2_header(uint32_t magic, void *addr) {
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
-        io.printf("Invalid magic number: %X\n", (unsigned)magic);
-        return false;
+        io.printf("Invalid magic number: %X\n", magic);
+        assert(0);
     }
     if (reinterpret_cast<uint32_t>(addr) & 7) {
         io.printf("Unaligned addr: 0x%08x\n", addr);
-        return false;
+        assert(0);
     }
-    return true;
+    return;
 }
 
 // 处理 multiboot 信息
-void multiboot2_init(uint32_t magic, void *addr) {
+void MULTIBOOT2::multiboot2_init(uint32_t magic, void *addr) {
     // Am I booted by a Multiboot-compliant boot loader?
-    is_multiboot2_header(magic, addr);
+    MULTIBOOT2::is_multiboot2_header(magic, addr);
     // uint32_t size = *(uint32_t *)addr;
     // addr+0 保存大小，下一字节开始为 tag 信息
     // io.printf("Announced mbi size 0x%X\n", size);
@@ -154,7 +156,7 @@ void multiboot2_init(uint32_t magic, void *addr) {
                 // print_MULTIBOOT_TAG_TYPE_BOOTDEV(tag);
                 break;
             case MULTIBOOT_TAG_TYPE_MMAP:
-                print_MULTIBOOT_TAG_TYPE_MMAP(tag);
+                MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MMAP(tag);
                 break;
             case MULTIBOOT_TAG_TYPE_ELF_SECTIONS: {
                 // print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(tag);
