@@ -10,8 +10,8 @@
 #include "stdint.h"
 #include "io.h"
 
-// 块
-typedef struct chunk_info {
+// 一个仅在这里使用的简单循环链表
+typedef struct ff_list_entry {
     // 当前页的地址
     uint8_t *addr;
     // 拥有多少个连续的页
@@ -19,12 +19,7 @@ typedef struct chunk_info {
     // 物理页被引用的次数
     int32_t ref;
     // 当前页状态
-    uint32_t flag;
-} chunk_info_t;
-
-// 一个仅在这里使用的简单循环链表
-typedef struct ff_list_entry {
-    chunk_info_t          chunk_info;
+    uint32_t              flag;
     struct ff_list_entry *next;
     struct ff_list_entry *prev;
 } ff_list_entry_t;
