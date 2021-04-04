@@ -38,14 +38,14 @@ private:
     // 空闲链表的节点数量
     static uint32_t node_num;
     // 内存管理
-    static ff_list_entry_t list[PMM_PAGE_MAX_SIZE];
-    physical_pages_t &     phy_pages;
-    void set_chunk(ff_list_entry_t &chunk, physical_pages_t &mempage,
+    static ff_list_entry_t    list[COMMON::PMM_PAGE_MAX_SIZE];
+    COMMON::physical_pages_t &phy_pages;
+    void set_chunk(ff_list_entry_t &chunk, COMMON::physical_pages_t &mempage,
                    size_t _idx);
 
 protected:
 public:
-    FIRSTFIT(physical_pages_t &_phy_pages);
+    FIRSTFIT(COMMON::physical_pages_t &_phy_pages);
     ~FIRSTFIT(void);
     // 初始化
     int32_t init(uint32_t pages);

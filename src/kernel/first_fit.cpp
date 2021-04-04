@@ -12,12 +12,13 @@
 #include "list.hpp"
 
 IO              FIRSTFIT::io;
-ff_list_entry_t FIRSTFIT::list[PMM_PAGE_MAX_SIZE];
+ff_list_entry_t FIRSTFIT::list[COMMON::PMM_PAGE_MAX_SIZE];
 uint32_t        FIRSTFIT::phy_page_count      = 0;
 uint32_t        FIRSTFIT::phy_page_free_count = 0;
 uint32_t        FIRSTFIT::node_num            = 0;
 
-FIRSTFIT::FIRSTFIT(physical_pages_t &_phy_pages) : phy_pages(_phy_pages) {
+FIRSTFIT::FIRSTFIT(COMMON::physical_pages_t &_phy_pages)
+    : phy_pages(_phy_pages) {
     return;
 }
 
@@ -25,8 +26,8 @@ FIRSTFIT::~FIRSTFIT(void) {
     return;
 }
 
-void FIRSTFIT::set_chunk(ff_list_entry_t &chunk, physical_pages_t &mempage,
-                         size_t _idx) {
+void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
+                         COMMON::physical_pages_t &mempage, size_t _idx) {
     chunk.addr   = mempage.addr[_idx];
     chunk.npages = 1;
     chunk.ref    = mempage.ref[_idx];
@@ -46,14 +47,14 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // 计算内核使用内存的 phy_pages
     // 不能直接计算，因为可用内存之间可能会存在空洞
     uint32_t idx = 0;
-    while (phy_pages.addr[idx] < KERNEL_START_4K) {
+    while (phy_pages.addr[idx] < COMMON::KERNEL_START_4K) {
         idx++;
     }
 #ifdef DEBUG
     io.printf("phy_pages[idx]: 0x%X\n", phy_pages[idx]);
 #endif
     uint32_t idx_end = idx;
-    while (phy_pages.addr[idx_end] < KERNEL_END_4K) {
+    while (phy_pages.addr[idx_end] < COMMON::KERNEL_END_4K) {
         idx_end++;
     }
     while (idx < idx_end) {
@@ -69,7 +70,8 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     uint32_t         num   = 1;
     for (uint32_t i = 0; i < pages; i++) {
         // 如果连续且 ref 相同
-        if ((phy_pages.addr[i] == chunk->addr + chunk->npages * PAGE_SIZE) &&
+        if ((phy_pages.addr[i] ==
+             chunk->addr + chunk->npages * COMMON::PAGE_SIZE) &&
             (phy_pages.ref[i] == chunk->ref)) {
             chunk->npages++;
         }
@@ -125,7 +127,7 @@ void *FIRSTFIT::alloc(size_t pages) {
                     ff_list_entry_t *tmp =
                         (ff_list_entry_t *)(entry +
                                             node_num * sizeof(ff_list_entry_t));
-                    tmp->addr   = entry->addr + pages * PAGE_SIZE;
+                    tmp->addr   = entry->addr + pages * COMMON::PAGE_SIZE;
                     tmp->npages = entry->npages - pages;
                     tmp->ref    = 0;
                     tmp->flag   = FF_UNUSED;

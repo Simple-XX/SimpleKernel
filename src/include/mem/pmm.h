@@ -18,7 +18,7 @@ class PMM {
 private:
     static IO io;
     // 可用内存的物理页数组
-    static physical_pages_t phy_pages;
+    static COMMON::physical_pages_t phy_pages;
     // 管理算法的名称
     static const char *name;
     static FIRSTFIT    manage;
