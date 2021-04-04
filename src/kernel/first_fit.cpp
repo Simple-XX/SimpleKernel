@@ -11,12 +11,12 @@
 #include "firstfit.h"
 #include "list.hpp"
 
-static int32_t set_chunk(ff_list_entry_t *chunk, physical_pages_t &mempage,
+static int32_t set_chunk(ff_list_entry_t &chunk, physical_pages_t &mempage,
                          size_t _idx) {
-    chunk->addr   = mempage.addr[_idx];
-    chunk->npages = 1;
-    chunk->ref    = mempage.ref[_idx];
-    chunk->flag   = mempage.ref[_idx] == 0 ? FF_UNUSED : FF_USED;
+    chunk.addr   = mempage.addr[_idx];
+    chunk.npages = 1;
+    chunk.ref    = mempage.ref[_idx];
+    chunk.flag   = mempage.ref[_idx] == 0 ? FF_UNUSED : FF_USED;
     return 0;
 }
 
@@ -59,7 +59,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // 初始化 list 信息
     // 初始化头节点
     list_init_head(list);
-    set_chunk(list, phy_pages, 0);
+    set_chunk(list[0], phy_pages, 0);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
     // 迭代所有页，如果下一个的地 != 当前地址+PAGE_SIZE 则新建 chunk
     ff_list_entry_t *chunk = list;
@@ -73,13 +73,10 @@ int32_t FIRSTFIT::init(uint32_t pages) {
         // 没有连续或者 ref 不同
         else {
             // 新建 chunk
-            ff_list_entry_t *tmp =
-                (ff_list_entry_t *)((uint8_t *)list +
-                                    i * sizeof(ff_list_entry_t));
-            set_chunk(tmp, phy_pages, i);
+            set_chunk(list[i], phy_pages, i);
             // 添加到链表
-            list_add_before(list, tmp);
-            chunk = tmp;
+            list_add_before(list, &list[i]);
+            chunk = &list[i];
             num++;
         }
     }
