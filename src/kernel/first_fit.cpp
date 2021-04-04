@@ -11,15 +11,6 @@
 #include "firstfit.h"
 #include "list.hpp"
 
-static int32_t set_chunk(ff_list_entry_t &chunk, physical_pages_t &mempage,
-                         size_t _idx) {
-    chunk.addr   = mempage.addr[_idx];
-    chunk.npages = 1;
-    chunk.ref    = mempage.ref[_idx];
-    chunk.flag   = mempage.ref[_idx] == 0 ? FF_UNUSED : FF_USED;
-    return 0;
-}
-
 IO              FIRSTFIT::io;
 ff_list_entry_t FIRSTFIT::list[PMM_PAGE_MAX_SIZE];
 
@@ -28,6 +19,15 @@ FIRSTFIT::FIRSTFIT(physical_pages_t &_phy_pages) : phy_pages(_phy_pages) {
 }
 
 FIRSTFIT::~FIRSTFIT(void) {
+    return;
+}
+
+void FIRSTFIT::set_chunk(ff_list_entry_t &chunk, physical_pages_t &mempage,
+                         size_t _idx) {
+    chunk.addr   = mempage.addr[_idx];
+    chunk.npages = 1;
+    chunk.ref    = mempage.ref[_idx];
+    chunk.flag   = mempage.ref[_idx] == 0 ? FF_UNUSED : FF_USED;
     return;
 }
 
