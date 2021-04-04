@@ -24,10 +24,10 @@ static int32_t set_chunk(ff_list_entry_t *chunk, physical_page_t *mempage) {
     return 0;
 }
 
-IO FIRSTFIT::io;
+IO              FIRSTFIT::io;
+ff_list_entry_t FIRSTFIT::list[PMM_PAGE_MAX_SIZE];
 
-FIRSTFIT::FIRSTFIT(uint8_t *addr_start) {
-    this->addr_start = addr_start;
+FIRSTFIT::FIRSTFIT(void) {
     return;
 }
 
@@ -39,35 +39,34 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // 为每一个页初始化一个记录其信息的 chunk
     // 第一个 chunk 保存在内核结束处
     // TODO: 优化空间
-    ff_list_entry_t *pmm_info = (ff_list_entry_t *)addr_start;
     // 管理所有内存页需要的空间，供管理结构使用
     // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
-    uint32_t pmm_info_size = pages * sizeof(ff_list_entry_t);
-    bzero(pmm_info, pmm_info_size);
+    uint32_t pmm_info_size = PMM_PAGE_MAX_SIZE * sizeof(ff_list_entry_t);
+    bzero(list, pmm_info_size);
     // 将用于保存物理地址信息的内存标记为已使用
-    // 计算内核结束处对应的 phy_pages 下标与 pmm_info 使用内存结束处的下标
+    // 计算内核使用内存的 phy_pages
     // 不能直接计算，因为可用内存之间可能会存在空洞
     uint32_t idx = 0;
-    while (phy_pages[idx].addr < addr_start) {
+    while (phy_pages[idx].addr < KERNEL_START_4K) {
         idx++;
     }
 #ifdef DEBUG
     io.printf("phy_pages[idx]: 0x%X\n", phy_pages[idx]);
 #endif
     uint32_t idx_end = idx;
-    while (phy_pages[idx_end].addr < addr_start + ALIGN4K(pmm_info_size)) {
+    while (phy_pages[idx_end].addr < KERNEL_END_4K) {
         idx_end++;
     }
     while (idx < idx_end) {
         phy_pages[idx++].ref++;
     }
-    // 初始化 free_list 信息
+    // 初始化 list 信息
     // 初始化头节点
-    list_init_head(pmm_info);
-    set_chunk(pmm_info, &phy_pages[0]);
+    list_init_head(list);
+    set_chunk(list, &phy_pages[0]);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
     // 迭代所有页，如果下一个的地 != 当前地址+PAGE_SIZE 则新建 chunk
-    ff_list_entry_t *chunk = pmm_info;
+    ff_list_entry_t *chunk = list;
     uint32_t         num   = 1;
     for (uint32_t i = 0; i < pages; i++) {
         // 如果连续且 ref 相同
@@ -80,11 +79,11 @@ int32_t FIRSTFIT::init(uint32_t pages) {
         else {
             // 新建 chunk
             ff_list_entry_t *tmp =
-                (ff_list_entry_t *)((uint8_t *)pmm_info +
+                (ff_list_entry_t *)((uint8_t *)list +
                                     i * sizeof(ff_list_entry_t));
             set_chunk(tmp, &phy_pages[i]);
             // 添加到链表
-            list_add_before(pmm_info, tmp);
+            list_add_before(list, tmp);
             chunk = tmp;
             num++;
         }
@@ -92,13 +91,13 @@ int32_t FIRSTFIT::init(uint32_t pages) {
 // #define DEBUG
 #ifdef DEBUG
     // 输出所有内存段
-    chunk = pmm_info;
+    chunk = list;
     do {
         io.printf("addr: 0x%X, len: 0x%X, ref: 0x%X\n", chunk_info(chunk)->addr,
                   chunk_info(chunk)->npages * PAGE_SIZE,
                   chunk_info(chunk)->ref);
         chunk = list_next(chunk);
-    } while (chunk != pmm_info);
+    } while (chunk != list);
 #endif
     // 计算未使用的物理内存
     uint32_t n = 0;
@@ -111,9 +110,6 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     phy_page_count      = pages;
     phy_page_free_count = n;
     node_num            = num;
-    free_list           = pmm_info;
-    io.printf("First Fit management data end: 0x%X.\n",
-              addr_start + ALIGN4K(pmm_info_size));
     io.printf("First fit init.\n");
 
     return 0;
@@ -121,7 +117,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
 
 void *FIRSTFIT::alloc(size_t pages) {
     void *           res_addr = nullptr;
-    ff_list_entry_t *entry    = free_list;
+    ff_list_entry_t *entry    = list;
     do {
         // 当前 chunk 空闲
         if (chunk_info(entry)->flag == FF_UNUSED) {
@@ -150,14 +146,14 @@ void *FIRSTFIT::alloc(size_t pages) {
                 break;
             }
         }
-    } while ((entry = list_next(entry)) != free_list);
+    } while ((entry = list_next(entry)) != list);
 
     return res_addr;
 }
 
 void FIRSTFIT::free(void *addr_start, size_t pages) {
-    ff_list_entry_t *entry = free_list;
-    while (((entry = list_next(entry)) != free_list) &&
+    ff_list_entry_t *entry = list;
+    while (((entry = list_next(entry)) != list) &&
            (chunk_info(entry)->addr != addr_start)) {
         ;
     }
