@@ -7,9 +7,9 @@
 #ifndef _INTR_H_
 #define _INTR_H_
 
-#pragma once
-
 #include "stdint.h"
+
+// TODO: 升级为 APIC
 
 namespace INTR {
     // 中断表最大值
