@@ -104,14 +104,14 @@ int32_t KERNEL::test_vmm(void) {
 void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.printf(COLOR::LIGHT_GREEN,
-              "kernel in memory start: 0x%08X, end 0x%08X\n", KERNEL_START_ADDR,
-              KERNEL_END_ADDR);
+              "kernel in memory start: 0x%08X, end 0x%08X\n",
+              COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
     io.printf(COLOR::LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
-              (reinterpret_cast<uint32_t>(KERNEL_END_ADDR) -
-               reinterpret_cast<uint32_t>(KERNEL_START_ADDR)) /
+              (reinterpret_cast<uint32_t>(COMMON::KERNEL_END_ADDR) -
+               reinterpret_cast<uint32_t>(COMMON::KERNEL_START_ADDR)) /
                   1024,
-              (reinterpret_cast<uint32_t>(KERNEL_END_ADDR) -
-               reinterpret_cast<uint32_t>(KERNEL_START_ADDR) + 4095) /
+              (reinterpret_cast<uint32_t>(COMMON::KERNEL_END_ADDR) -
+               reinterpret_cast<uint32_t>(COMMON::KERNEL_START_ADDR) + 4095) /
                   1024 / 4);
     io.printf(COLOR::LIGHT_GREEN, "Simple Kernel.\n");
     return;
