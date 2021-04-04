@@ -9,19 +9,20 @@
 
 using namespace MULTIBOOT2;
 
-void print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_CMDLINE(multiboot_tag_t *tag) {
     io.printf("Command line = %s\n",
               ((struct multiboot_tag_string *)tag)->string);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(
+    multiboot_tag_t *tag) {
     io.printf("Boot loader name = %s\n",
               ((struct multiboot_tag_string *)tag)->string);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag) {
     io.printf("Module at 0x%X-0x%X. Command line %s\n",
               ((struct multiboot_tag_module *)tag)->mod_start,
               ((struct multiboot_tag_module *)tag)->mod_end,
@@ -29,14 +30,14 @@ void print_MULTIBOOT_TAG_TYPE_MODULE(multiboot_tag_t *tag) {
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(multiboot_tag_t *tag) {
     io.printf("mem_lower = %uKB, mem_upper = %uKB\n",
               ((struct multiboot_tag_basic_meminfo *)tag)->mem_lower,
               ((struct multiboot_tag_basic_meminfo *)tag)->mem_upper);
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
     io.printf("Boot device 0x%X,%u,%u\n",
               ((struct multiboot_tag_bootdev *)tag)->biosdev,
               ((struct multiboot_tag_bootdev *)tag)->slice,
@@ -69,8 +70,8 @@ void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag
-                                           __attribute__((unused))) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(
+    multiboot_tag_t *tag __attribute__((unused))) {
 #if DEBUG_LOCAL
     io.printf("Elf type 0x%X, Size 0x%X, num 0x%X, entsize 0x%X, shndx 0x%X.\n",
               ((struct multiboot_tag_elf_sections *)tag)->type,
@@ -82,7 +83,7 @@ void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(multiboot_tag_t *tag
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag) {
     io.printf("APM type 0x%X, Size 0x%X, version 0x%X, cseg 0x%X, offset "
               "0x%X, cseg_16 0x%X, "
               "dseg 0x%X, flags 0x%X, cseg_len 0x%X, cseg_16_len 0x%X, "
@@ -101,7 +102,7 @@ void print_MULTIBOOT_TAG_TYPE_APM(multiboot_tag_t *tag) {
     return;
 }
 
-void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
+void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(multiboot_tag_t *tag) {
     io.printf(
         "Image load base physical address type 0x%X, size 0x%X, addr 0x%X.\n",
         ((struct multiboot_tag_load_base_addr *)tag)->type,
