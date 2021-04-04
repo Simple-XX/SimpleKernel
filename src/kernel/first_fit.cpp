@@ -11,17 +11,12 @@
 #include "firstfit.h"
 #include "list.hpp"
 
-// 返回 chunk_info
-static chunk_info_t *chunk_info(ff_list_entry_t *list) {
-    return &(list->chunk_info);
-}
-
 static int32_t set_chunk(ff_list_entry_t *chunk, physical_pages_t &mempage,
                          size_t _idx) {
-    chunk_info(chunk)->addr   = mempage.addr[_idx];
-    chunk_info(chunk)->npages = 1;
-    chunk_info(chunk)->ref    = mempage.ref[_idx];
-    chunk_info(chunk)->flag   = mempage.ref[_idx] == 0 ? FF_UNUSED : FF_USED;
+    chunk->addr   = mempage.addr[_idx];
+    chunk->npages = 1;
+    chunk->ref    = mempage.ref[_idx];
+    chunk->flag   = mempage.ref[_idx] == 0 ? FF_UNUSED : FF_USED;
     return 0;
 }
 
@@ -71,10 +66,9 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     uint32_t         num   = 1;
     for (uint32_t i = 0; i < pages; i++) {
         // 如果连续且 ref 相同
-        if ((phy_pages.addr[i] ==
-             chunk_info(chunk)->addr + chunk_info(chunk)->npages * PAGE_SIZE) &&
-            (phy_pages.ref[i] == chunk_info(chunk)->ref)) {
-            chunk_info(chunk)->npages++;
+        if ((phy_pages.addr[i] == chunk->addr + chunk->npages * PAGE_SIZE) &&
+            (phy_pages.ref[i] == chunk->ref)) {
+            chunk->npages++;
         }
         // 没有连续或者 ref 不同
         else {
@@ -121,29 +115,28 @@ void *FIRSTFIT::alloc(size_t pages) {
     ff_list_entry_t *entry    = list;
     do {
         // 当前 chunk 空闲
-        if (chunk_info(entry)->flag == FF_UNUSED) {
+        if (entry->flag == FF_UNUSED) {
             // 判断长度是否足够
-            if (chunk_info(entry)->npages >= pages) {
+            if (entry->npages >= pages) {
                 // 符合条件，对 chunk 进行分割
                 // 如果剩余大小足够
-                if (chunk_info(entry)->npages - pages > 1) {
+                if (entry->npages - pages > 1) {
                     // 添加为新的链表项
                     ff_list_entry_t *tmp =
                         (ff_list_entry_t *)(entry +
                                             node_num * sizeof(ff_list_entry_t));
-                    chunk_info(tmp)->addr =
-                        entry->chunk_info.addr + pages * PAGE_SIZE;
-                    chunk_info(tmp)->npages = entry->chunk_info.npages - pages;
-                    chunk_info(tmp)->ref    = 0;
-                    chunk_info(tmp)->flag   = FF_UNUSED;
+                    tmp->addr   = entry->addr + pages * PAGE_SIZE;
+                    tmp->npages = entry->npages - pages;
+                    tmp->ref    = 0;
+                    tmp->flag   = FF_UNUSED;
                     list_add_after(entry, tmp);
                 }
                 // 不够的话直接分配
-                chunk_info(entry)->npages = pages;
-                chunk_info(entry)->ref    = 1;
-                chunk_info(entry)->flag   = FF_USED;
+                entry->npages = pages;
+                entry->ref    = 1;
+                entry->flag   = FF_USED;
                 phy_page_free_count -= pages;
-                res_addr = chunk_info(entry)->addr;
+                res_addr = entry->addr;
                 break;
             }
         }
@@ -155,26 +148,26 @@ void *FIRSTFIT::alloc(size_t pages) {
 void FIRSTFIT::free(void *addr_start, size_t pages) {
     ff_list_entry_t *entry = list;
     while (((entry = list_next(entry)) != list) &&
-           (chunk_info(entry)->addr != addr_start)) {
+           (entry->addr != addr_start)) {
         ;
     }
     // 释放所有页
-    if (--chunk_info(entry)->ref == 0) {
-        chunk_info(entry)->flag = FF_UNUSED;
+    if (--entry->ref == 0) {
+        entry->flag = FF_UNUSED;
     }
     // 如果于相邻链表有空闲的则合并
     // 后面
-    if (entry->next != entry && chunk_info(entry->next)->flag == FF_UNUSED) {
+    if (entry->next != entry && entry->next->flag == FF_UNUSED) {
         ff_list_entry_t *next = entry->next;
-        chunk_info(entry)->npages += chunk_info(next)->npages;
-        chunk_info(next)->npages = 0;
+        entry->npages += next->npages;
+        next->npages = 0;
         list_del(next);
     }
     // 前面
-    if (entry->prev != entry && chunk_info(entry->prev)->flag == FF_UNUSED) {
+    if (entry->prev != entry && entry->prev->flag == FF_UNUSED) {
         ff_list_entry_t *prev = entry->prev;
-        chunk_info(prev)->npages += chunk_info(entry)->npages;
-        chunk_info(entry)->npages = 0;
+        prev->npages += entry->npages;
+        entry->npages = 0;
         list_del(entry);
     }
     phy_page_free_count += pages;
