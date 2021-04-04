@@ -35,22 +35,18 @@ static constexpr const uint32_t FF_UNUSED = 0x01;
 class FIRSTFIT {
 private:
     static IO io;
-    // 物理内存起始地址
-    uint8_t *addr_start;
-    // 物理内存结束地址
-    uint8_t *addr_end;
     // 物理内存页的总数量
     uint32_t phy_page_count;
     // 物理内存页的当前数量
     uint32_t phy_page_free_count;
     // 空闲链表的节点数量
     uint32_t node_num;
-    // 空闲链表
-    ff_list_entry_t *free_list;
+    // 内存管理
+    static ff_list_entry_t list[PMM_PAGE_MAX_SIZE];
 
 protected:
 public:
-    FIRSTFIT(uint8_t *addr_start);
+    FIRSTFIT(void);
     ~FIRSTFIT(void);
     // 初始化
     int32_t init(uint32_t pages);
