@@ -125,8 +125,6 @@ public:
     ~VMM(void);
     // 初始化
     void init(void);
-    // 开启分页
-    void enable_page();
     // 设置当前页目录
     void set_pgd(page_dir_t pgd);
     // 映射物理地址到虚拟地址

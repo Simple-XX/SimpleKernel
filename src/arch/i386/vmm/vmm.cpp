@@ -106,30 +106,16 @@ void VMM::init(void) {
                                          VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
     set_pgd(page_dir);
-    enable_page();
+    CPU::CR0_SET_PG();
 
     io.printf("vmm_init\n");
     return;
     return;
 }
 
-void VMM::enable_page() {
-    void *cr3 = 0;
-    __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
-    if (cr3 == nullptr) {
-        io.printf("cr3 not set!\n");
-    }
-    uint32_t cr0 = 0;
-    __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
-    // 最高位 PG 位置 1，分页开启
-    cr0 |= (1u << 31);
-    __asm__ volatile("mov %0, %%cr0" : : "r"(cr0));
-    return;
-}
-
 void VMM::set_pgd(page_dir_t pgd) {
     page_dir = pgd;
-    __asm__ volatile("mov %0, %%cr3" : : "r"(pgd));
+    CPU::CR3_SET_PGD((void *)pgd);
     return;
 }
 
