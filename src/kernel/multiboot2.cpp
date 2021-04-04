@@ -45,12 +45,12 @@ void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_BOOTDEV(multiboot_tag_t *tag) {
     return;
 }
 
-multiboot_memory_map_entry_t *mmap_entries;
-multiboot_mmap_tag_t *        mmap_tag;
+multiboot_memory_map_entry_t *MULTIBOOT2::mmap_entries;
+multiboot_mmap_tag_t *        MULTIBOOT2::mmap_tag;
 
 void MULTIBOOT2::print_MULTIBOOT_TAG_TYPE_MMAP(multiboot_tag_t *tag) {
-    mmap_entries = ((struct multiboot_tag_mmap *)tag)->entries;
-    mmap_tag     = tag;
+    MULTIBOOT2::mmap_entries = ((struct multiboot_tag_mmap *)tag)->entries;
+    MULTIBOOT2::mmap_tag     = tag;
 #if DEBUG_LOCAL
     multiboot_memory_map_entry_t *mmap;
     mmap = ((struct multiboot_tag_mmap *)tag)->entries;
