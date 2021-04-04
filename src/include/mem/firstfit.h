@@ -11,7 +11,8 @@
 #include "io.h"
 
 // 一个仅在这里使用的简单循环链表
-typedef struct ff_list_entry {
+class ff_list_entry_t {
+public:
     // 当前页的地址
     uint8_t *addr;
     // 拥有多少个连续的页
@@ -19,10 +20,10 @@ typedef struct ff_list_entry {
     // 物理页被引用的次数
     int32_t ref;
     // 当前页状态
-    uint32_t              flag;
-    struct ff_list_entry *next;
-    struct ff_list_entry *prev;
-} ff_list_entry_t;
+    uint32_t         flag;
+    ff_list_entry_t *next;
+    ff_list_entry_t *prev;
+};
 
 static constexpr const uint32_t FF_USED   = 0x00;
 static constexpr const uint32_t FF_UNUSED = 0x01;
