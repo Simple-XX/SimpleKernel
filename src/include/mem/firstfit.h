@@ -43,10 +43,11 @@ private:
     uint32_t node_num;
     // 内存管理
     static ff_list_entry_t list[PMM_PAGE_MAX_SIZE];
+    physical_pages_t &     phy_pages;
 
 protected:
 public:
-    FIRSTFIT(void);
+    FIRSTFIT(physical_pages_t &_phy_pages);
     ~FIRSTFIT(void);
     // 初始化
     int32_t init(uint32_t pages);
