@@ -13,12 +13,12 @@
 
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
-physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
+physical_pages_t PMM::phy_pages;
 
 IO PMM::io;
 
 // 管理范围为内核结束到物理内存结束
-PMM::PMM(void) : ff(FIRSTFIT()) {
+PMM::PMM(void) : manage(FIRSTFIT(phy_pages)) {
     name = "FirstFit";
     return;
 }
@@ -36,7 +36,6 @@ int32_t PMM::init(void) {
     e820map_t e820map;
     bzero(&e820map, sizeof(e820map_t));
     get_ram_info(&e820map);
-    bzero(phy_pages, sizeof(physical_page_t) * PMM_PAGE_MAX_SIZE);
     // 用于记录可用内存总数
     uint32_t pages_count = 0;
     // 计算可用的内存
@@ -51,13 +50,13 @@ int32_t PMM::init(void) {
             if (addr == nullptr) {
                 continue;
             }
-            phy_pages[pages_count].addr = addr;
+            phy_pages.addr[pages_count] = addr;
             // 内核已占用部分
             if (addr >= KERNEL_START_4K && addr < KERNEL_END_4K) {
-                phy_pages[pages_count].ref = 1;
+                phy_pages.ref[pages_count] = 1;
             }
             else {
-                phy_pages[pages_count].ref = 0;
+                phy_pages.ref[pages_count] = 0;
             }
             pages_count++;
         }
@@ -99,20 +98,20 @@ void PMM::get_ram_info(e820map_t *e820map) {
 }
 
 void PMM::mamage_init(uint32_t pages) {
-    ff.init(pages);
+    manage.init(pages);
     return;
 }
 
 void *PMM::alloc_page(uint32_t pages) {
-    void *page = ff.alloc(pages);
+    void *page = manage.alloc(pages);
     return page;
 }
 
 void PMM::free_page(void *addr, uint32_t pages) {
-    ff.free(addr, pages);
+    manage.free(addr, pages);
     return;
 }
 
 uint32_t PMM::free_pages_count(void) {
-    return ff.free_pages_count();
+    return manage.free_pages_count();
 }

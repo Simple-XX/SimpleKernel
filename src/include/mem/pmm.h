@@ -18,15 +18,15 @@
 extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
 extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 
-// 可用内存的物理页数组
-extern physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
-
 class PMM {
 private:
     static IO io;
+    // 可用内存的物理页数组
+    static physical_pages_t phy_pages;
+
     // 管理算法的名称
     const char *name;
-    FIRSTFIT    ff;
+    FIRSTFIT    manage;
 
 protected:
 public:
