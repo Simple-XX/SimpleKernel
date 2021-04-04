@@ -13,10 +13,10 @@ extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
-IO               PMM::io;
-physical_pages_t PMM::phy_pages;
-FIRSTFIT         PMM::manage(phy_pages);
-const char *     PMM::name = "FirstFit";
+IO                       PMM::io;
+COMMON::physical_pages_t PMM::phy_pages;
+FIRSTFIT                 PMM::manage(phy_pages);
+const char *             PMM::name = "FirstFit";
 
 PMM::PMM(void) {
     return;
@@ -78,7 +78,7 @@ int32_t PMM::init(void) {
     for (size_t i = 0; i < e820map.nr_map; i++) {
         for (uint8_t *addr = e820map.map[i].addr;
              addr < (e820map.map[i].addr + e820map.map[i].length);
-             addr += PAGE_SIZE) {
+             addr += COMMON::PAGE_SIZE) {
             // 初始化可用内存段的物理页数组
             // 地址对应的物理页数组下标
             // 跳过 0x00 开始的一页，便于判断 nullptr
@@ -87,7 +87,8 @@ int32_t PMM::init(void) {
             }
             phy_pages.addr[pages_count] = addr;
             // 内核已占用部分
-            if (addr >= KERNEL_START_4K && addr < KERNEL_END_4K) {
+            if (addr >= COMMON::KERNEL_START_4K &&
+                addr < COMMON::KERNEL_END_4K) {
                 phy_pages.ref[pages_count] = 1;
             }
             else {
