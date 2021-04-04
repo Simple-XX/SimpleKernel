@@ -18,9 +18,7 @@ physical_page_t phy_pages[PMM_PAGE_MAX_SIZE];
 IO PMM::io;
 
 // 管理范围为内核结束到物理内存结束
-PMM::PMM(void)
-    : ff(FIRSTFIT(reinterpret_cast<uint8_t *>(
-          ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_END_ADDR))))) {
+PMM::PMM(void) : ff(FIRSTFIT()) {
     name = "FirstFit";
     return;
 }
