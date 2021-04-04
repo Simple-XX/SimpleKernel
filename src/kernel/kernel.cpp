@@ -54,11 +54,11 @@ void KERNEL::drv_init(void) const {
 void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.printf(COLOR::LIGHT_GREEN,
-              "kernel in memory start: 0x%08X, end 0x%08X\n", kernel_start,
-              kernel_end);
+              "kernel in memory start: 0x%08X, end 0x%08X\n",
+              COMMON::kernel_start, COMMON::kernel_end);
     io.printf(COLOR::LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
-              (kernel_end - kernel_start) / 1024,
-              (kernel_end - kernel_start + 4095) / 1024 / 4);
+              (COMMON::kernel_end - COMMON::kernel_start) / 1024,
+              (COMMON::kernel_end - COMMON::kernel_start + 4095) / 1024 / 4);
     io.printf(COLOR::LIGHT_GREEN, "Simple Kernel.\n");
     return;
 }
