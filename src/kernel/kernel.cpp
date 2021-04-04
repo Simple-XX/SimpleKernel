@@ -24,12 +24,10 @@
 IO   KERNEL::io;
 APIC KERNEL::apic;
 
-KERNEL::KERNEL(uint32_t magic, void *addr) {
+KERNEL::KERNEL(uint32_t _magic, void *_addr)
+    : pmm(PMM()), magic(_magic), addr(_addr) {
     // 读取 grub2 传递的信息
     MULTIBOOT2::multiboot2_init(magic, addr);
-    this->magic = magic;
-    this->addr  = addr;
-    pmm         = PMM();
     cpp_init();
     arch_init();
     drv_init();

@@ -348,6 +348,9 @@ namespace MULTIBOOT2 {
         multiboot_uint32_t load_base_addr;
     };
 
+    extern multiboot_memory_map_entry_t *mmap_entries;
+    extern multiboot_mmap_tag_t *        mmap_tag;
+
     void is_multiboot2_header(uint32_t magic, void *addr);
     void multiboot2_init(uint32_t magic, void *addr);
     void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);

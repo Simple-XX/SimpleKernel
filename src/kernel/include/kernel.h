@@ -28,7 +28,7 @@ private:
 
 protected:
 public:
-    KERNEL(uint32_t magic, void *addr);
+    KERNEL(uint32_t _magic, void *_addr);
     ~KERNEL(void);
     int32_t test(void);
     void    show_info(void);
