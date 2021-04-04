@@ -4,12 +4,9 @@
 //
 // pmm.cpp for Simple-XX/SimpleKernel.
 
-#include "stdint.h"
 #include "string.h"
-#include "common.h"
 #include "multiboot2.h"
 #include "pmm.h"
-#include "firstfit.h"
 
 extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
 extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
