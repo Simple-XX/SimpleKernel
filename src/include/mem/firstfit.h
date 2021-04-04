@@ -25,11 +25,11 @@ public:
     ff_list_entry_t *prev;
 };
 
-static constexpr const uint32_t FF_USED   = 0x00;
-static constexpr const uint32_t FF_UNUSED = 0x01;
-
 class FIRSTFIT {
 private:
+    static constexpr const uint32_t FF_USED   = 0x00;
+    static constexpr const uint32_t FF_UNUSED = 0x01;
+
     static IO io;
     // 物理内存页的总数量
     uint32_t phy_page_count;
@@ -40,6 +40,8 @@ private:
     // 内存管理
     static ff_list_entry_t list[PMM_PAGE_MAX_SIZE];
     physical_pages_t &     phy_pages;
+    void set_chunk(ff_list_entry_t &chunk, physical_pages_t &mempage,
+                   size_t _idx);
 
 protected:
 public:
