@@ -21,20 +21,21 @@ typedef page_dir_entry_t *  page_dir_t;
 static const uint64_t VMM_PTE_SIZE = sizeof(page_table_entry_t);
 
 // 每页能映射多少页表项 = 页大小/页表项大小 2^10
-static const uint64_t VMM_PTE_PRE_PAGE = PAGE_SIZE / VMM_PTE_SIZE;
+static const uint64_t VMM_PTE_PRE_PAGE = COMMON::PAGE_SIZE / VMM_PTE_SIZE;
 
 // 页目录项 sizeof(pgd_t) 大小 = 4B 2^2
 static const uint64_t VMM_PGDE_SIZE = sizeof(page_dir_entry_t);
 
 // 每页能映射多少页目录项 = 页大小/页目录项大小 2^10
-static const uint64_t VMM_PGDE_PRE_PAGE = PAGE_SIZE / VMM_PGDE_SIZE;
+static const uint64_t VMM_PGDE_PRE_PAGE = COMMON::PAGE_SIZE / VMM_PGDE_SIZE;
 
 // 每个页表能映射多少页 = 页大小/页表项大小: 2^10, 1024
-static const uint64_t VMM_PAGES_PRE_PAGE_TABLE = PAGE_SIZE / VMM_PTE_SIZE;
+static const uint64_t VMM_PAGES_PRE_PAGE_TABLE =
+    COMMON::PAGE_SIZE / VMM_PTE_SIZE;
 
 // 每个页目录能映射多少页表 = 页大小/页目录项大小 2^10
 static const uint64_t VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY =
-    PAGE_SIZE / VMM_PGDE_SIZE;
+    COMMON::PAGE_SIZE / VMM_PGDE_SIZE;
 
 // 每个页目录能映射多少页 = 页表数量*每个页表能映射多少页 2^20
 static const uint64_t VMM_PAGES_PRE_PAGE_DIRECTORY =
@@ -42,7 +43,7 @@ static const uint64_t VMM_PAGES_PRE_PAGE_DIRECTORY =
 
 // 页表大小，一页表能映射多少 Byte 内存 = 页表项数量*页表项映射大小 2^22
 static const uint64_t VMM_PAGE_TABLE_SIZE =
-    VMM_PAGES_PRE_PAGE_TABLE * PAGE_SIZE;
+    VMM_PAGES_PRE_PAGE_TABLE * COMMON::PAGE_SIZE;
 
 // 页目录大小，一页目录能映射多少 Byte 内存 = 页表数量*页表映射大小 2^32
 static const uint64_t VMM_PAGE_DIRECTORY_SIZE =
@@ -54,18 +55,18 @@ static const uint64_t VMM_VMEM_BITS = 32;
 // 虚拟内存大小 4GB
 static const uint64_t VMM_VMEM_SIZE = (uint64_t)1 << VMM_VMEM_BITS;
 // 映射全部虚拟内存需要的页数 = 虚拟内存大小/页大小 2^20
-static const uint64_t VMM_PAGES_TOTAL = VMM_VMEM_SIZE / PAGE_SIZE;
+static const uint64_t VMM_PAGES_TOTAL = VMM_VMEM_SIZE / COMMON::PAGE_SIZE;
 
 // 映射全部虚拟内存需要的页表数 = 虚拟内存大小/页表大小 2^12
 static const uint64_t VMM_PAGE_TABLES_TOTAL =
     VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE;
 
-// 为内核大小+用于管理物理内存的管理结构空间大小 KERNEL_SIZE+16MB
+// 为内核大小+用于管理物理内存的管理结构空间大小 COMMON::KERNEL_SIZE+16MB
 // 24MB
-static const uint64_t VMM_KERNEL_SIZE = KERNEL_SIZE + 0x1000000;
+static const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE + 0x1000000;
 
 // 映射内核需要的页数
-static const uint32_t VMM_PAGES_KERNEL = VMM_KERNEL_SIZE / PAGE_SIZE;
+static const uint32_t VMM_PAGES_KERNEL = VMM_KERNEL_SIZE / COMMON::PAGE_SIZE;
 
 // P = 1 表示有效； P = 0 表示无效。
 static const uint32_t VMM_PAGE_PRESENT = 0x00000001;
@@ -105,10 +106,10 @@ static const uint32_t VMM_PAGE_KERNEL = 0x00000000;
 #define VMM_OFFSET_INDEX(x) ((x)&0x0FFF)
 
 // 逻辑地址到物理地址转换
-#define VMM_LA_PA(la) (la - KERNEL_BASE)
+#define VMM_LA_PA(la) (la - COMMON::KERNEL_BASE)
 
 // 物理地址到逻辑地址转换
-#define VMM_PA_LA(pa) (pa + KERNEL_BASE)
+#define VMM_PA_LA(pa) (pa + COMMON::KERNEL_BASE)
 
 class VMM {
 private:

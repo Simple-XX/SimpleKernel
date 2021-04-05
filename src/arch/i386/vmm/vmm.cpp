@@ -79,9 +79,9 @@ VMM::~VMM(void) {
 void VMM::init(void) {
     INTR::register_interrupt_handler(INTR::INT_PAGE_FAULT, &page_fault);
     page_dir = (page_dir_t)pmm.alloc_page(VMM_PAGE_DIRECTORIES_KERNEL);
-    bzero((void *)page_dir, PAGE_SIZE * VMM_PAGE_DIRECTORIES_KERNEL);
+    bzero((void *)page_dir, COMMON::PAGE_SIZE * VMM_PAGE_DIRECTORIES_KERNEL);
     page_table = (page_table_t)pmm.alloc_page(VMM_PAGE_TABLES_KERNEL);
-    bzero((void *)page_table, PAGE_SIZE * VMM_PAGE_TABLES_KERNEL);
+    bzero((void *)page_table, COMMON::PAGE_SIZE * VMM_PAGE_TABLES_KERNEL);
 // #define DEBUG
 #ifdef DEBUG
     io.printf("VMM_PAGE_DIRECTORIES_KERNEL: 0x%X\n",
@@ -90,7 +90,7 @@ void VMM::init(void) {
     io.printf("pgd_krnel: 0x%X\n", page_dir);
     io.printf("page_table: 0x%X\n", page_table);
 #endif
-    for (uint32_t i = VMM_PGD_INDEX(KERNEL_BASE), j = 0;
+    for (uint32_t i = VMM_PGD_INDEX(COMMON::KERNEL_BASE), j = 0;
          j < VMM_PAGE_TABLES_KERNEL; i++, j++) {
         page_dir[i] = reinterpret_cast<page_dir_entry_t>(
             reinterpret_cast<uint32_t>(
