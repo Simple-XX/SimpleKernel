@@ -64,14 +64,9 @@ static constexpr const uint64_t VMM_PAGES_TOTAL =
 static constexpr const uint64_t VMM_PAGE_TABLES_TOTAL =
     VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE;
 
-// 为内核大小+用于管理物理内存的管理结构空间大小 COMMON::KERNEL_SIZE+16MB
-// 24MB
-static constexpr const uint64_t VMM_KERNEL_SIZE =
-    COMMON::KERNEL_SIZE + 0x1000000;
-
 // 映射内核需要的页数
 static constexpr const uint32_t VMM_PAGES_KERNEL =
-    VMM_KERNEL_SIZE / COMMON::PAGE_SIZE;
+    COMMON::KERNEL_SIZE / COMMON::PAGE_SIZE;
 
 // P = 1 表示有效； P = 0 表示无效。
 static constexpr const uint32_t VMM_PAGE_PRESENT = 0x00000001;
@@ -93,13 +88,13 @@ static constexpr const uint32_t VMM_PAGE_DIRECTORIES_TOTAL =
 
 // 映射内核需要的页表数
 static constexpr const uint32_t VMM_PAGE_TABLES_KERNEL =
-    (VMM_KERNEL_SIZE / VMM_PAGE_TABLE_SIZE) +
-    (VMM_KERNEL_SIZE % VMM_PAGE_TABLE_SIZE == 0 ? 0 : 1);
+    (COMMON::KERNEL_SIZE / VMM_PAGE_TABLE_SIZE) +
+    (COMMON::KERNEL_SIZE % VMM_PAGE_TABLE_SIZE == 0 ? 0 : 1);
 
 // 映射内核需要的页目录数
 static constexpr const uint32_t VMM_PAGE_DIRECTORIES_KERNEL =
-    (VMM_KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) +
-    (VMM_KERNEL_SIZE % VMM_PAGE_DIRECTORY_SIZE == 0 ? 0 : 1);
+    (COMMON::KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) +
+    (COMMON::KERNEL_SIZE % VMM_PAGE_DIRECTORY_SIZE == 0 ? 0 : 1);
 
 // 获取一个地址的页目录，高 10 位
 #define VMM_PGD_INDEX(x) (((x) >> 22) & 0x03FF)
