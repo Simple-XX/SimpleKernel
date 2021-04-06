@@ -330,7 +330,7 @@ namespace CPU {
         return (eflags & EFLAGS_CF);
     }
 
-    static inline void INVLPG(void *addr) {
+    static inline void INVLPG(const void *addr) {
         __asm__ volatile("invlpg (%0)" : : "r"(addr) : "memory");
         return;
     }

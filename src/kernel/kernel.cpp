@@ -100,7 +100,16 @@ int32_t KERNEL::test_pmm(void) {
 
 int32_t KERNEL::test_vmm(void) {
     // 首先确认内核空间被映射了
-    // assert(vmm.get_mmap(0x00, 0x00) == 1);
+    assert(vmm.get_pgd() != nullptr);
+    assert(vmm.get_mmap(vmm.get_pgd(), 0x00, nullptr) == 1);
+    assert(vmm.get_mmap(vmm.get_pgd(),
+                        (void *)((uint32_t)COMMON::KERNEL_START_4K +
+                                 VMM_KERNEL_SIZE - 1),
+                        nullptr) == 1);
+    assert(vmm.get_mmap(vmm.get_pgd(),
+                        (void *)((uint32_t)COMMON::KERNEL_START_4K +
+                                 VMM_KERNEL_SIZE - 1),
+                        nullptr) == 0);
     io.printf("vmm test done.\n");
     return 0;
 }
