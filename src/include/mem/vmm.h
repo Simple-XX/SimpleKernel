@@ -12,6 +12,7 @@
 #include "pmm.h"
 #include "io.h"
 
+// TODO: 结合这几个结构给出更直观的写法
 // Format of a 32-Bit Page-Table Entry that Maps a 4-KByte Page
 class page_table32_entry_t {
 private:
@@ -111,15 +112,21 @@ public:
     uint32_t addr : 20;
 };
 
+typedef void *              page_t;
+typedef page_t              page_table_entry_t;
+typedef page_table_entry_t *page_table_t;
+typedef page_table_t        page_dir_entry_t;
+typedef page_dir_entry_t *  page_dir_t;
+
 // 页表项 sizeof(pte_t) 大小 = 4B 2^3
-static constexpr const uint32_t VMM_PTE_SIZE = sizeof(page_table32_entry_t);
+static constexpr const uint32_t VMM_PTE_SIZE = sizeof(page_table_entry_t);
 
 // 每页能映射多少页表项 = 页大小/页表项大小 2^9
 static constexpr const uint32_t VMM_PTE_PRE_PAGE =
     COMMON::PAGE_SIZE / VMM_PTE_SIZE;
 
 // 页目录项 sizeof(pgd_t) 大小 = 4B 2^3
-static constexpr const uint32_t VMM_PGDE_SIZE = sizeof(page_dir32_entry_t);
+static constexpr const uint32_t VMM_PGDE_SIZE = sizeof(page_dir_entry_t);
 
 // 每页能映射多少页目录项 = 页大小/页目录项大小 2^9
 static constexpr const uint32_t VMM_PGDE_PRE_PAGE =
@@ -209,13 +216,14 @@ static constexpr const uint32_t VMM_PAGE_USER = 0x00000004;
 
 class VMM {
 private:
-    static IO                   io;
-    static PMM                  pmm;
-    static page_table32_entry_t pte_kernel[VMM_KERNEL_PAGES]
+    static IO  io;
+    static PMM pmm;
+    // 页目录
+    static page_dir_t pgd_kernel[VMM_KERNEL_PAGE_TABLES]
         __attribute__((aligned(0x1000)));
-    static page_dir32_entry_t pgde_kernel[VMM_KERNEL_PAGE_TABLES]
+    // 页表
+    static page_table_t pte_kernel[VMM_KERNEL_PAGES]
         __attribute__((aligned(0x1000)));
-    static cr3_t cr3_kernel;
 
 protected:
 public:
@@ -224,7 +232,7 @@ public:
     // 初始化
     void init(void);
     // 设置当前页目录
-    // void set_pgd(page_dir_t pgd);
+    void set_pgd(page_dir_t pgd);
     // 映射物理地址到虚拟地址
     void mmap(void *va, void *pa, uint32_t flag);
     // 取消映射

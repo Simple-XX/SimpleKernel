@@ -56,11 +56,10 @@ static void page_fault(INTR::pt_regs_t *regs) {
     return;
 }
 
-IO                   VMM::io;
-PMM                  VMM::pmm;
-page_table32_entry_t VMM::pte_kernel[VMM_KERNEL_PAGES];
-page_dir32_entry_t   VMM::pgde_kernel[VMM_KERNEL_PAGE_TABLES];
-cr3_t                VMM::cr3_kernel;
+IO           VMM::io;
+PMM          VMM::pmm;
+page_dir_t   VMM::pgd_kernel[VMM_KERNEL_PAGE_TABLES];
+page_table_t VMM::pte_kernel[VMM_KERNEL_PAGES];
 
 VMM::VMM(void) {
     return;
@@ -79,99 +78,78 @@ void VMM::init(void) {
 #undef DEBUG
 #endif
     for (uint32_t i = 0; i < VMM_KERNEL_PAGES; i++) {
-        pte_kernel[i].p    = 1;
-        pte_kernel[i].rw   = 1;
-        pte_kernel[i].us   = 0;
-        pte_kernel[i].addr = i & 0x000FFFFF;
+        pte_kernel[i] = (page_table_t)((i << 12) | VMM_PAGE_PRESENT |
+                                       VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
-    // 内核用一个页目录就够了，不需要多余处理
-    for (uint32_t i = VMM_PTE_INDEX(COMMON::KERNEL_BASE);
+    for (uint32_t i = VMM_PGD_INDEX(COMMON::KERNEL_BASE);
          i < VMM_KERNEL_PAGE_TABLES; i++) {
-        pgde_kernel[i].p  = 1;
-        pgde_kernel[i].rw = 1;
-        pgde_kernel[i].us = 0;
-        pgde_kernel[i].addr =
-            ((uint32_t)&pte_kernel[VMM_PAGES_PRE_PAGE_TABLE * i]) >> 12;
-#define DEBUG
-#ifdef DEBUG
-        pte_kernel[VMM_PAGES_PRE_PAGE_TABLE * i].printf();
-        io.printf("\t");
-        pgde_kernel[i].printf();
-        io.printf("\n");
-#undef DEBUG
-#endif
+        pgd_kernel[i] = reinterpret_cast<page_dir_t>(
+            reinterpret_cast<uint32_t>(
+                &pte_kernel[VMM_PAGES_PRE_PAGE_TABLE * i]) |
+            VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
 // #define DEBUG
 #ifdef DEBUG
-    // asm("hlt");
-    // pte_kernel[VMM_PAGES_PRE_PAGE_TABLE * i].printf();
-    // pgde_kernel[i].printf();
+    asm("hlt");
 #undef DEBUG
 #endif
-    // CPU::CR3_SET_PGD((uint32_t)cr3_kernel);
-    // __asm__ volatile("mov %0, %%cr3" : : "r"(cr3_kernel));
-    io.printf("pgde_kernel: 0x%08X\n", pgde_kernel);
-    __asm__ volatile("mov %0, %%cr3" : : "r"(pgde_kernel));
-    asm("hlt");
+    CPU::CR3_SET_PGD(pgd_kernel);
     CPU::CR0_SET_PG();
     io.printf("vmm_init\n");
     return;
 }
 
-// void VMM::set_pgd(page_dir_t pgd) {
-//     page_dir = pgd;
-//     CPU::CR3_SET_PGD((void *)pgd);
-//     return;
-// }
+void VMM::set_pgd(page_dir_t pgd) {
+    // pgd_kernel = pgd;
+    CPU::CR3_SET_PGD((void *)pgd);
+    return;
+}
 
-// void VMM::mmap(void *va, void *pa, uint32_t flag) {
-//     uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
-//     uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
+void VMM::mmap(void *va, void *pa, uint32_t flag) {
+    uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
+    uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
 
-//     page_table_t pt = page_dir[pgd_idx];
-//     if (pt == nullptr) {
-//         pt                = (page_table_t)pmm.alloc_page(1);
-//         page_dir[pgd_idx] = (page_table_t)(reinterpret_cast<uint32_t>(pt)
-//         |
-//                                            VMM_PAGE_PRESENT |
-//                                            VMM_PAGE_RW);
-//     }
-//     pt          = (page_table_t)VMM_PA_LA(pt);
-//     pt[pte_idx] = (page_table_entry_t)(reinterpret_cast<uint32_t>(pa) |
-//     flag);
+    page_table_t pt = (page_table_t)pgd_kernel[pgd_idx];
+    if (pt == nullptr) {
+        pt                  = (page_table_t)pmm.alloc_page(1);
+        pgd_kernel[pgd_idx] = (page_dir_t)(reinterpret_cast<uint32_t>(pt) |
+                                           VMM_PAGE_PRESENT | VMM_PAGE_RW);
+    }
+    pt          = (page_table_t)VMM_PA_LA(pt);
+    pt[pte_idx] = (page_table_entry_t)(reinterpret_cast<uint32_t>(pa) | flag);
 
-//     CPU::INVLPG(va);
-//     return;
-// }
+    CPU::INVLPG(va);
+    return;
+}
 
-// void VMM::unmmap(void *va) {
-//     uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
-//     uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
-//     page_table_t pt      = page_dir[pgd_idx];
-//     if (pt == nullptr) {
-//         io.printf("pt == nullptr\n");
-//         return;
-//     }
-//     pt          = (page_table_t)VMM_PA_LA(pt);
-//     pt[pte_idx] = nullptr;
-//     CPU::INVLPG(va);
-// }
+void VMM::unmmap(void *va) {
+    uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
+    uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
+    page_table_t pt      = (page_table_t)pgd_kernel[pgd_idx];
+    if (pt == nullptr) {
+        io.printf("pt == nullptr\n");
+        return;
+    }
+    pt          = (page_table_t)VMM_PA_LA(pt);
+    pt[pte_idx] = nullptr;
+    CPU::INVLPG(va);
+}
 
-// uint32_t VMM::get_mmap(void *va, void *pa) {
-//     uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
-//     uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
-//     io.printf("pgd_idx: 0x%08X, pte_idx: 0x%08X\n", pgd_idx, pte_idx);
-//     io.printf("page_dir[0]: 0x%08X\n", page_dir[1]);
-//     page_table_t pt = page_dir[pgd_idx];
-//     io.printf("pt: 0x%08X\n", pt);
-//     if (pt == nullptr) {
-//         return 0;
-//     }
-//     pt = (page_table_t)(VMM_PA_LA(pt));
-//     if (pt[pte_idx] != nullptr && pa != nullptr) {
-//         io.printf("pt[pte_idx]: 0x%X\n", pt[pte_idx]);
-//         *(uint32_t *)pa = reinterpret_cast<uint32_t>(pt[pte_idx]);
-//         return 1;
-//     }
-//     return 0;
-// }
+uint32_t VMM::get_mmap(void *va, void *pa) {
+    uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
+    uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
+    io.printf("pgd_idx: 0x%08X, pte_idx: 0x%08X\n", pgd_idx, pte_idx);
+    io.printf("pgd_kernel[0]: 0x%08X\n", pgd_kernel[1]);
+    page_table_t pt = (page_table_t)pgd_kernel[pgd_idx];
+    io.printf("pt: 0x%08X\n", pt);
+    if (pt == nullptr) {
+        return 0;
+    }
+    pt = (page_table_t)(VMM_PA_LA(pt));
+    if (pt[pte_idx] != nullptr && pa != nullptr) {
+        io.printf("pt[pte_idx]: 0x%X\n", pt[pte_idx]);
+        *(uint32_t *)pa = reinterpret_cast<uint32_t>(pt[pte_idx]);
+        return 1;
+    }
+    return 0;
+}
