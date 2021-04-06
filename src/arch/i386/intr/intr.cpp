@@ -435,8 +435,7 @@ namespace INTR {
             interrupt_handlers[intr_no](regs);
         }
         else {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "Unhandled interrupt: %d %s\n", intr_no,
+            io.printf("Unhandled interrupt: %d %s\n", intr_no,
                       get_intr_name(intr_no));
             CPU::hlt();
         }
