@@ -101,7 +101,7 @@ void VMM::init(void) {
         io.printf("page_dir[%d] = 0x%X\n", i, page_dir[i]);
 #endif
     }
-    for (uint32_t i = 0; i < VMM_PAGES_KERNEL; i++) {
+    for (uint32_t i = 0; i < COMMON::PAGES_KERNEL; i++) {
         page_table[i] = (page_table_t *)((i << 12) | VMM_PAGE_PRESENT |
                                          VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }

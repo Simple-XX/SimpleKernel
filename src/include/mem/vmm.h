@@ -7,6 +7,7 @@
 #ifndef _VMM_H_
 #define _VMM_H_
 
+#include "limits.h"
 #include "common.h"
 #include "pmm.h"
 #include "io.h"
@@ -18,14 +19,14 @@ typedef page_table_t        page_dir_entry_t;
 typedef page_dir_entry_t *  page_dir_t;
 
 // 页表项 sizeof(pte_t) 大小 = 4B 2^2
-static constexpr const uint64_t VMM_PTE_SIZE = sizeof(page_table_entry_t);
+static constexpr const uint32_t VMM_PTE_SIZE = sizeof(page_table_entry_t);
 
 // 每页能映射多少页表项 = 页大小/页表项大小 2^10
-static constexpr const uint64_t VMM_PTE_PRE_PAGE =
+static constexpr const uint32_t VMM_PTE_PRE_PAGE =
     COMMON::PAGE_SIZE / VMM_PTE_SIZE;
 
 // 页目录项 sizeof(pgd_t) 大小 = 4B 2^2
-static constexpr const uint64_t VMM_PGDE_SIZE = sizeof(page_dir_entry_t);
+static constexpr const uint32_t VMM_PGDE_SIZE = sizeof(page_dir_entry_t);
 
 // 每页能映射多少页目录项 = 页大小/页目录项大小 2^10
 static constexpr const uint64_t VMM_PGDE_PRE_PAGE =
@@ -51,22 +52,15 @@ static constexpr const uint64_t VMM_PAGE_TABLE_SIZE =
 static constexpr const uint64_t VMM_PAGE_DIRECTORY_SIZE =
     VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY * VMM_PAGE_TABLE_SIZE;
 
-// 虚拟内存位数
-static constexpr const uint64_t VMM_VMEM_BITS = 32;
-
 // 虚拟内存大小 4GB
-static constexpr const uint64_t VMM_VMEM_SIZE = (uint64_t)1 << VMM_VMEM_BITS;
+static constexpr const uint32_t VMM_VMEM_SIZE = UINT_MAX;
 // 映射全部虚拟内存需要的页数 = 虚拟内存大小/页大小 2^20
-static constexpr const uint64_t VMM_PAGES_TOTAL =
+static constexpr const uint32_t VMM_PAGES_TOTAL =
     VMM_VMEM_SIZE / COMMON::PAGE_SIZE;
 
 // 映射全部虚拟内存需要的页表数 = 虚拟内存大小/页表大小 2^12
-static constexpr const uint64_t VMM_PAGE_TABLES_TOTAL =
+static constexpr const uint32_t VMM_PAGE_TABLES_TOTAL =
     VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE;
-
-// 映射内核需要的页数
-static constexpr const uint32_t VMM_PAGES_KERNEL =
-    COMMON::KERNEL_SIZE / COMMON::PAGE_SIZE;
 
 // P = 1 表示有效； P = 0 表示无效。
 static constexpr const uint32_t VMM_PAGE_PRESENT = 0x00000001;
