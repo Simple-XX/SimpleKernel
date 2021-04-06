@@ -20,44 +20,35 @@ static void page_fault(INTR::pt_regs_t *regs) {
     uint32_t cr2;
     asm volatile("mov %%cr2,%0" : "=r"(cr2));
 #endif
-    io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-              "Page fault at 0x%08X, virtual faulting address 0x%08X\n",
+    io.printf("Page fault at 0x%08X, virtual faulting address 0x%08X, ",
               regs->eip, cr2);
-    io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-              "Error code: 0x%08X\n", regs->err_code);
+    io.printf("Error code: 0x%08X\n", regs->err_code);
 
     // bit 0 为 0 指页面不存在内存里
     if (!(regs->err_code & 0x1)) {
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "Because the page wasn't present.\n");
+        io.printf("Because the page wasn't present.\n");
     }
     // bit 1 为 0 表示读错误，为 1 为写错误
     if (regs->err_code & 0x2) {
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "Write error.\n");
+        io.printf("Write error.\n");
     }
     else {
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "Read error.\n");
+        io.printf("Read error.\n");
     }
     // bit 2 为 1 表示在用户模式打断的，为 0 是在内核模式打断的
     if (regs->err_code & 0x4) {
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "In user mode.\n");
+        io.printf("In user mode.\n");
     }
     else {
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "In kernel mode.\n");
+        io.printf("In kernel mode.\n");
     }
     // bit 3 为 1 表示错误是由保留位覆盖造成的
     if (regs->err_code & 0x8) {
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "Reserved bits being overwritten.\n");
+        io.printf("Reserved bits being overwritten.\n");
     }
     // bit 4 为 1 表示错误发生在取指令的时候
     if (regs->err_code & 0x10) {
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "The fault occurred during an instruction fetch.\n");
+        io.printf("The fault occurred during an instruction fetch.\n");
     }
     while (1) {
         ;
@@ -119,15 +110,15 @@ void VMM::set_pgd(page_dir_t pgd) {
     return;
 }
 
-void VMM::mmap(page_dir_t pgd, void *va, void *pa, uint32_t flag) {
+void VMM::mmap(void *va, void *pa, uint32_t flag) {
     uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
 
-    page_table_t pt = pgd[pgd_idx];
+    page_table_t pt = page_dir[pgd_idx];
     if (pt == nullptr) {
-        pt           = (page_table_t)pmm.alloc_page(1);
-        pgd[pgd_idx] = (page_table_t)(reinterpret_cast<uint32_t>(pt) |
-                                      VMM_PAGE_PRESENT | VMM_PAGE_RW);
+        pt                = (page_table_t)pmm.alloc_page(1);
+        page_dir[pgd_idx] = (page_table_t)(reinterpret_cast<uint32_t>(pt) |
+                                           VMM_PAGE_PRESENT | VMM_PAGE_RW);
     }
     pt          = (page_table_t)VMM_PA_LA(pt);
     pt[pte_idx] = (page_table_entry_t)(reinterpret_cast<uint32_t>(pa) | flag);
@@ -136,10 +127,10 @@ void VMM::mmap(page_dir_t pgd, void *va, void *pa, uint32_t flag) {
     return;
 }
 
-void VMM::unmmap(page_dir_t pgd, void *va) {
+void VMM::unmmap(void *va) {
     uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
-    page_table_t pt      = pgd[pgd_idx];
+    page_table_t pt      = page_dir[pgd_idx];
     if (pt == nullptr) {
         io.printf("pt == nullptr\n");
         return;
@@ -149,10 +140,13 @@ void VMM::unmmap(page_dir_t pgd, void *va) {
     CPU::INVLPG(va);
 }
 
-uint32_t VMM::get_mmap(page_dir_t pgd, void *va, void *pa) {
-    uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
-    uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
-    page_table_t pt      = pgd[pgd_idx];
+uint32_t VMM::get_mmap(void *va, void *pa) {
+    uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
+    uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
+    io.printf("pgd_idx: 0x%08X, pte_idx: 0x%08X\n", pgd_idx, pte_idx);
+    io.printf("page_dir[0]: 0x%08X\n", page_dir[1]);
+    page_table_t pt = page_dir[pgd_idx];
+    io.printf("pt: 0x%08X\n", pt);
     if (pt == nullptr) {
         return 0;
     }
@@ -163,8 +157,4 @@ uint32_t VMM::get_mmap(page_dir_t pgd, void *va, void *pa) {
         return 1;
     }
     return 0;
-}
-
-void VMM::vmm_kernel_init(page_dir_t pgd) {
-    return;
 }

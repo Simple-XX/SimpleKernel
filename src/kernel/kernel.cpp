@@ -99,6 +99,8 @@ int32_t KERNEL::test_pmm(void) {
 }
 
 int32_t KERNEL::test_vmm(void) {
+    // 首先确认内核空间被映射了
+    assert(vmm.get_mmap(0x00, 0x00) == 1);
     io.printf("vmm test done.\n");
     return 0;
 }

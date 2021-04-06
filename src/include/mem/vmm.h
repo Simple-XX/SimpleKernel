@@ -123,13 +123,12 @@ public:
     // 设置当前页目录
     void set_pgd(page_dir_t pgd);
     // 映射物理地址到虚拟地址
-    void mmap(page_dir_t pgd, void *va, void *pa, uint32_t flag);
+    void mmap(void *va, void *pa, uint32_t flag);
     // 取消映射
-    void unmmap(page_dir_t pgd, void *va);
+    void unmmap(void *va);
     // 获取映射的物理地址
-    uint32_t get_mmap(page_dir_t pgd, void *va, void *pa);
-    // 初始化内核页目录
-    void vmm_kernel_init(page_dir_t pgd);
+    // 已映射返回 1，未映射返回 0
+    uint32_t get_mmap(void *va, void *pa);
 };
 
 #endif /* INCLUDE_VMM_H */
