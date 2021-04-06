@@ -68,11 +68,16 @@ namespace COMMON {
     static constexpr const uint32_t KERNEL_BASE = 0x0;
 
     // 对齐 向上取整
-    static inline const void *ALIGN4K(const void *x) {
-        return ((reinterpret_cast<uint32_t>(x) % PAGE_SIZE == 0)
-                    ? x
-                    : reinterpret_cast<void *>(
-                          (reinterpret_cast<uint32_t>(x) + PAGE_SIZE - 1) &
+
+    inline uint32_t ALIGN4K(const uint32_t x) {
+        return (x % PAGE_SIZE == 0) ? x : (x + PAGE_SIZE - 1) & PAGE_MASK;
+    }
+
+    inline const void *ALIGN4K(const void *x) {
+        return (reinterpret_cast<uint32_t>(x) % PAGE_SIZE == 0)
+                   ? x
+                   : reinterpret_cast<void *>(
+                         ((reinterpret_cast<uint32_t>(x) + PAGE_SIZE - 1) &
                           PAGE_MASK));
     }
 
@@ -81,8 +86,8 @@ namespace COMMON {
 
     // 内核占用大小
     static const uint32_t KERNEL_SIZE =
-        reinterpret_cast<uint32_t>(KERNEL_END_4K) + 0x1000;
-    //  -reinterpret_cast<uint32_t>(KERNEL_START_4K) + 0x200000;
+        (uint8_t *)KERNEL_END_4K - (uint8_t *)KERNEL_START_4K + 0x101000;
+
     // 映射内核需要的页数
     static const uint32_t PAGES_KERNEL = KERNEL_SIZE / PAGE_SIZE;
 
