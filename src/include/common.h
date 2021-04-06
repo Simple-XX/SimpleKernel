@@ -49,7 +49,7 @@ namespace COMMON {
     // 页大小 4MB
     static constexpr const uint32_t PAGE_SIZE = 0x400000;
 #else
-    // 页大小 4KB
+    // 页大小 4KB 2^12
     static constexpr const uint32_t PAGE_SIZE = 0x1000;
 #endif
 
@@ -68,11 +68,6 @@ namespace COMMON {
     static constexpr const uint32_t KERNEL_BASE = 0x0;
 
     // 对齐 向上取整
-
-    inline uint32_t ALIGN4K(const uint32_t x) {
-        return (x % PAGE_SIZE == 0) ? x : (x + PAGE_SIZE - 1) & PAGE_MASK;
-    }
-
     inline const void *ALIGN4K(const void *x) {
         return (reinterpret_cast<uint32_t>(x) % PAGE_SIZE == 0)
                    ? x
