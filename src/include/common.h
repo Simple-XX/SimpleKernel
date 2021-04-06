@@ -28,16 +28,16 @@ namespace COMMON {
     extern "C" void *kernel_data_end[];
     extern "C" void *kernel_end[];
 
-    static const void *KERNEL_START_ADDR = kernel_start;
-    static const void *KERNEL_TEXT_START_ADDR __attribute__((unused)) =
-        kernel_text_start;
-    static const void *KERNEL_TEXT_END_ADDR __attribute__((unused)) =
+    static constexpr const void *KERNEL_START_ADDR = kernel_start;
+    static constexpr const void *KERNEL_TEXT_START_ADDR
+        __attribute__((unused)) = kernel_text_start;
+    static constexpr const void *KERNEL_TEXT_END_ADDR __attribute__((unused)) =
         kernel_text_end;
-    static const void *KERNEL_DATA_START_ADDR __attribute__((unused)) =
-        kernel_data_start;
-    static const void *KERNEL_DATA_END_ADDR __attribute__((unused)) =
+    static constexpr const void *KERNEL_DATA_START_ADDR
+        __attribute__((unused)) = kernel_data_start;
+    static constexpr const void *KERNEL_DATA_END_ADDR __attribute__((unused)) =
         kernel_data_end;
-    static const void *KERNEL_END_ADDR = kernel_end;
+    static constexpr const void *KERNEL_END_ADDR = kernel_end;
 
 // PAE 标志的处理
 #ifdef CPU_PAE
@@ -66,19 +66,25 @@ namespace COMMON {
     static constexpr const uint32_t PAGE_MASK = 0xFFFFF000;
     // 内核的偏移地址
     static constexpr const uint32_t KERNEL_BASE = 0x0;
-    // 内核占用大小 32MB
-    static constexpr const uint32_t KERNEL_SIZE = 0x2000000;
+
+    // 对齐 向上取整
+    static inline const void *ALIGN4K(const void *x) {
+        return ((reinterpret_cast<uint32_t>(x) % PAGE_SIZE == 0)
+                    ? x
+                    : reinterpret_cast<void *>(
+                          (reinterpret_cast<uint32_t>(x) + PAGE_SIZE - 1) &
+                          PAGE_MASK));
+    }
+
+    static const void *KERNEL_START_4K = ALIGN4K(KERNEL_START_ADDR);
+    static const void *KERNEL_END_4K   = ALIGN4K(KERNEL_END_ADDR);
+
+    // 内核占用大小
+    static const uint32_t KERNEL_SIZE =
+        reinterpret_cast<uint32_t>(KERNEL_END_4K) + 0x1000;
+    //  -reinterpret_cast<uint32_t>(KERNEL_START_4K) + 0x200000;
     // 映射内核需要的页数
-    static constexpr const uint32_t PAGES_KERNEL = KERNEL_SIZE / PAGE_SIZE;
-
-// 对齐 向上取整
-#define ALIGN4K(x)                                                             \
-    (((x) % PAGE_SIZE == 0) ? (x) : (((x) + PAGE_SIZE - 1) & PAGE_MASK))
-
-    static const void *KERNEL_START_4K = reinterpret_cast<void *>(
-        ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_START_ADDR)));
-    static const void *KERNEL_END_4K = reinterpret_cast<void *>(
-        ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_END_ADDR)));
+    static const uint32_t PAGES_KERNEL = KERNEL_SIZE / PAGE_SIZE;
 
     // 物理页结构体
     class physical_pages_t {

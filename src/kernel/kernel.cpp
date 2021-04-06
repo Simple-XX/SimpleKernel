@@ -106,6 +106,10 @@ void KERNEL::show_info(void) {
     io.printf(COLOR::LIGHT_GREEN,
               "kernel in memory start: 0x%08X, end 0x%08X\n",
               COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
+    io.printf(COLOR::LIGHT_GREEN,
+              "kernel in memory start4k: 0x%08X, end4k 0x%08X, size: 0x%08X\n",
+              COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K,
+              COMMON::KERNEL_SIZE);
     io.printf(COLOR::LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               (reinterpret_cast<uint32_t>(COMMON::KERNEL_END_ADDR) -
                reinterpret_cast<uint32_t>(COMMON::KERNEL_START_ADDR)) /

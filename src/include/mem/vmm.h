@@ -81,12 +81,12 @@ static constexpr const uint32_t VMM_PAGE_DIRECTORIES_TOTAL =
         : 1;
 
 // 映射内核需要的页表数
-static constexpr const uint32_t VMM_PAGE_TABLES_KERNEL =
+static const uint32_t VMM_PAGE_TABLES_KERNEL =
     (COMMON::KERNEL_SIZE / VMM_PAGE_TABLE_SIZE) +
     (COMMON::KERNEL_SIZE % VMM_PAGE_TABLE_SIZE == 0 ? 0 : 1);
 
 // 映射内核需要的页目录数
-static constexpr const uint32_t VMM_PAGE_DIRECTORIES_KERNEL =
+static const uint32_t VMM_PAGE_DIRECTORIES_KERNEL =
     (COMMON::KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) +
     (COMMON::KERNEL_SIZE % VMM_PAGE_DIRECTORY_SIZE == 0 ? 0 : 1);
 
