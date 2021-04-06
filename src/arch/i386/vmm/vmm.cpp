@@ -101,7 +101,6 @@ void VMM::init(void) {
 
     io.printf("vmm_init\n");
     return;
-    return;
 }
 
 void VMM::set_pgd(page_dir_t pgd) {
