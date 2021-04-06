@@ -62,6 +62,7 @@ page_dir_t   VMM::pgd_kernel[VMM_KERNEL_PAGE_TABLES];
 page_table_t VMM::pte_kernel[VMM_KERNEL_PAGES];
 
 VMM::VMM(void) {
+    curr_dir = (page_dir_t)CPU::read_cr3();
     return;
 }
 
@@ -93,27 +94,28 @@ void VMM::init(void) {
     asm("hlt");
 #undef DEBUG
 #endif
-    CPU::CR3_SET_PGD(pgd_kernel);
+    // CPU::CR3_SET_PGD(pgd_kernel);
+    set_pgd((page_dir_t)pgd_kernel);
     CPU::CR0_SET_PG();
     io.printf("vmm_init\n");
     return;
 }
 
 void VMM::set_pgd(page_dir_t pgd) {
-    // pgd_kernel = pgd;
-    CPU::CR3_SET_PGD((void *)pgd);
+    curr_dir = pgd;
+    CPU::CR3_SET_PGD((void *)curr_dir);
     return;
 }
 
-void VMM::mmap(void *va, void *pa, uint32_t flag) {
+void VMM::mmap(page_dir_t pgd, void *va, void *pa, uint32_t flag) {
     uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
 
-    page_table_t pt = (page_table_t)pgd_kernel[pgd_idx];
+    page_table_t pt = (page_table_t)pgd[pgd_idx];
     if (pt == nullptr) {
-        pt                  = (page_table_t)pmm.alloc_page(1);
-        pgd_kernel[pgd_idx] = (page_dir_t)(reinterpret_cast<uint32_t>(pt) |
-                                           VMM_PAGE_PRESENT | VMM_PAGE_RW);
+        pt           = (page_table_t)pmm.alloc_page(1);
+        pgd[pgd_idx] = (page_dir_entry_t)(reinterpret_cast<uint32_t>(pt) |
+                                          VMM_PAGE_PRESENT | VMM_PAGE_RW);
     }
     pt          = (page_table_t)VMM_PA_LA(pt);
     pt[pte_idx] = (page_table_entry_t)(reinterpret_cast<uint32_t>(pa) | flag);
@@ -122,10 +124,10 @@ void VMM::mmap(void *va, void *pa, uint32_t flag) {
     return;
 }
 
-void VMM::unmmap(void *va) {
+void VMM::unmmap(page_dir_t pgd, void *va) {
     uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
-    page_table_t pt      = (page_table_t)pgd_kernel[pgd_idx];
+    page_table_t pt      = (page_table_t)pgd[pgd_idx];
     if (pt == nullptr) {
         io.printf("pt == nullptr\n");
         return;
@@ -135,12 +137,12 @@ void VMM::unmmap(void *va) {
     CPU::INVLPG(va);
 }
 
-uint32_t VMM::get_mmap(void *va, void *pa) {
+uint32_t VMM::get_mmap(page_dir_t pgd, void *va, void *pa) {
     uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
     io.printf("pgd_idx: 0x%08X, pte_idx: 0x%08X\n", pgd_idx, pte_idx);
-    io.printf("pgd_kernel[0]: 0x%08X\n", pgd_kernel[1]);
-    page_table_t pt = (page_table_t)pgd_kernel[pgd_idx];
+    io.printf("pgd_kernel[0]: 0x%08X\n", pgd[1]);
+    page_table_t pt = (page_table_t)pgd[pgd_idx];
     io.printf("pt: 0x%08X\n", pt);
     if (pt == nullptr) {
         return 0;
