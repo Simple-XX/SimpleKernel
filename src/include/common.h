@@ -86,7 +86,7 @@ namespace COMMON {
 
     // 内核占用大小
     static const uint32_t KERNEL_SIZE =
-        (uint8_t *)KERNEL_END_4K - (uint8_t *)KERNEL_START_4K + 0x101000;
+        (uint8_t *)KERNEL_END_4K - (uint8_t *)KERNEL_START_4K;
 
     // 映射内核需要的页数
     static const uint32_t PAGES_KERNEL = KERNEL_SIZE / PAGE_SIZE;

@@ -11,9 +11,9 @@ SECTIONS
 {
     /* VMA 为顺序排列，LMA 按照 AT(addr) 排列 */
     /* 指定内核从地址 1M 处开始 */
+	PROVIDE(kernel_start = .);
     . = 1M;
 
-    PROVIDE(kernel_start = .);
     PROVIDE(kernel_text_start = .);
 	.text : ALIGN(4K)
 	{

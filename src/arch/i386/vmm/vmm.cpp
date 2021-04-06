@@ -84,9 +84,9 @@ void VMM::init(void) {
     bzero((void *)page_table, COMMON::PAGE_SIZE * VMM_PAGE_TABLES_KERNEL);
 // #define DEBUG
 #ifdef DEBUG
-    io.printf("VMM_PAGE_DIRECTORIES_KERNEL: 0x%X\n",
-              VMM_PAGE_DIRECTORIES_KERNEL);
-    io.printf("VMM_PAGE_TABLES_KERNEL: 0x%X\n", VMM_PAGE_TABLES_KERNEL);
+    io.printf(
+        "VMM_PAGE_DIRECTORIES_KERNEL: 0x%08X, VMM_PAGE_TABLES_KERNEL: 0x%08X\n",
+        VMM_PAGE_DIRECTORIES_KERNEL, VMM_PAGE_TABLES_KERNEL);
     io.printf("pgd_krnel: 0x%X\n", page_dir);
     io.printf("page_table: 0x%X\n", page_table);
 #endif

@@ -33,7 +33,9 @@ KERNEL::KERNEL(uint32_t _magic, void *_addr)
     drv_init();
     // 物理内存管理初始化
     pmm.init();
+    test_pmm();
     vmm.init();
+    test_vmm();
     return;
 }
 
@@ -111,19 +113,17 @@ void KERNEL::show_info(void) {
               COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K,
               COMMON::KERNEL_SIZE);
     io.printf(COLOR::LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
-              (reinterpret_cast<uint32_t>(COMMON::KERNEL_END_ADDR) -
-               reinterpret_cast<uint32_t>(COMMON::KERNEL_START_ADDR)) /
+              ((uint8_t *)COMMON::KERNEL_END_ADDR -
+               (uint8_t *)COMMON::KERNEL_START_ADDR) /
                   1024,
-              (reinterpret_cast<uint32_t>(COMMON::KERNEL_END_ADDR) -
-               reinterpret_cast<uint32_t>(COMMON::KERNEL_START_ADDR) + 4095) /
+              ((uint8_t *)COMMON::KERNEL_END_ADDR -
+               (uint8_t *)COMMON::KERNEL_START_ADDR + 4095) /
                   1024 / 4);
     io.printf(COLOR::LIGHT_GREEN, "Simple Kernel.\n");
     return;
 }
 
 int32_t KERNEL::test(void) {
-    test_pmm();
-    test_vmm();
     io.printf("test done.\n");
     return 0;
 }
