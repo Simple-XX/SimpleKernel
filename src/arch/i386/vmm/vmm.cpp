@@ -121,15 +121,17 @@ void VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
     uint32_t pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
 
-    page_table_t pt = (page_table_t)pgd[pgd_idx];
+    page_table_t pt =
+        (page_table_t)((uint32_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
+        // TODO: 保证 alloc 的地址已经被映射
         pt           = (page_table_t)pmm.alloc_page(1);
         pgd[pgd_idx] = (page_dir_entry_t)(reinterpret_cast<uint32_t>(pt) |
                                           VMM_PAGE_PRESENT | VMM_PAGE_RW);
     }
     pt          = (page_table_t)VMM_PA_LA(pt);
-    pt[pte_idx] = (page_table_entry_t)(reinterpret_cast<uint32_t>(pa) | flag);
-
+    pt[pte_idx] = (page_table_entry_t)(
+        (reinterpret_cast<uint32_t>(pa) & COMMON::PAGE_MASK) | flag);
     CPU::INVLPG(va);
     return;
 }
@@ -137,13 +139,15 @@ void VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
 void VMM::unmmap(const page_dir_t pgd, const void *va) {
     uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
-    page_table_t pt      = (page_table_t)pgd[pgd_idx];
+    page_table_t pt =
+        (page_table_t)((uint32_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
         io.printf("pt == nullptr\n");
         return;
     }
     pt          = (page_table_t)VMM_PA_LA(pt);
     pt[pte_idx] = nullptr;
+    // TODO: 如果一页都被 unmap，释放占用的物理内存
     CPU::INVLPG(va);
 }
 
@@ -153,6 +157,9 @@ uint32_t VMM::get_mmap(const page_dir_t pgd, const void *va, const void *pa) {
     page_table_t pt =
         (page_table_t)((uint32_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
+        if (pa != nullptr) {
+            *(uint32_t *)pa = (uint32_t) nullptr;
+        }
         return 0;
     }
     pt = (page_table_t)(VMM_PA_LA(pt));
@@ -162,5 +169,10 @@ uint32_t VMM::get_mmap(const page_dir_t pgd, const void *va, const void *pa) {
         }
         return 1;
     }
-    return 0;
+    else {
+        if (pa != nullptr) {
+            *(uint32_t *)pa = (uint32_t) nullptr;
+        }
+        return 0;
+    }
 }

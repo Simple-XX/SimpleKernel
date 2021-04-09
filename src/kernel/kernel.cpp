@@ -99,7 +99,7 @@ int32_t KERNEL::test_pmm(void) {
 }
 
 int32_t KERNEL::test_vmm(void) {
-    uint32_t addr = 0x00;
+    uint32_t addr = (uint32_t) nullptr;
     // 首先确认内核空间被映射了
     assert(vmm.get_pgd() != nullptr);
     // 0x00 留空
@@ -110,7 +110,7 @@ int32_t KERNEL::test_vmm(void) {
     assert(addr == (uint32_t) nullptr);
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)0x1000, &addr) == 1);
     assert(addr == COMMON::KERNEL_BASE + 0x1000);
-    addr = 0x00;
+    addr = (uint32_t) nullptr;
     assert(vmm.get_mmap(vmm.get_pgd(),
                         (void *)((uint32_t)COMMON::KERNEL_START_4K +
                                  VMM_KERNEL_SIZE - 1),
@@ -118,19 +118,37 @@ int32_t KERNEL::test_vmm(void) {
     assert(addr == ((COMMON::KERNEL_BASE + (uint32_t)COMMON::KERNEL_START_4K +
                      VMM_KERNEL_SIZE - 1) &
                     COMMON::PAGE_MASK));
-    addr = 0x00;
+    addr = (uint32_t) nullptr;
     assert(vmm.get_mmap(
                vmm.get_pgd(),
                (void *)((uint32_t)COMMON::KERNEL_START_4K + VMM_KERNEL_SIZE),
                &addr) == 0);
     assert(addr == (uint32_t) nullptr);
-    addr = 0x00;
+    addr = (uint32_t) nullptr;
     assert(vmm.get_mmap(vmm.get_pgd(),
                         (void *)((uint32_t)COMMON::KERNEL_START_4K +
                                  VMM_KERNEL_SIZE + 0x1024),
                         nullptr) == 0);
     // 测试映射与取消映射
 
+    addr = (uint32_t) nullptr;
+    // 准备映射的虚拟地址 3GB 处
+    uint32_t va = 0xC0000000;
+    // 准备映射的物理地址 0.75GB 处
+    uint32_t pa = 0x30000000;
+    // 确定一块未映射的内存
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, nullptr) == 0);
+    // 映射
+    vmm.mmap(vmm.get_pgd(), (void *)va, (void *)pa,
+             VMM_PAGE_PRESENT | VMM_PAGE_RW);
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, &addr) == 1);
+    assert(addr == pa);
+    // 写测试
+    *(uint32_t *)va = 0xCD;
+    //取消映射
+    vmm.unmmap(vmm.get_pgd(), (void *)va);
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, &addr) == 0);
+    assert(addr == (uint32_t) nullptr);
     io.printf("vmm test done.\n");
     return 0;
 }
