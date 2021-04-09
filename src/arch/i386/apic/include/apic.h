@@ -8,6 +8,7 @@
 #define _APIC_H_
 
 #include "stdint.h"
+#include "io.h"
 
 class APIC {
 private:
@@ -62,9 +63,9 @@ private:
     static constexpr const uint32_t LAPIC_TIMER_CURR_COUNT = 0x390;
     // Divide Configuration Register (for Timer)	Read/Write
     static constexpr const uint32_t LAPIC_TIMER_DIVIDE = 0x3E0;
-
-    void *pbase;
-    void *vbase;
+    static IO                       io;
+    void *                          pbase;
+    void *                          vbase;
 
 protected:
 public:
