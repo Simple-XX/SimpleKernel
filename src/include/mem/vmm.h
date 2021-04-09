@@ -222,7 +222,7 @@ private:
     static page_table_t pte_kernel[VMM_KERNEL_PAGES]
         __attribute__((aligned(0x1000)));
     // 页目录
-    static page_dir_t pgd_kernel[VMM_KERNEL_PAGE_TABLES]
+    static page_dir_t pgd_kernel[VMM_PAGE_TABLES_TOTAL]
         __attribute__((aligned(0x1000)));
 
     page_dir_t curr_dir;

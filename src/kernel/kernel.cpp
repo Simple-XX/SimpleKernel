@@ -101,14 +101,23 @@ int32_t KERNEL::test_pmm(void) {
 int32_t KERNEL::test_vmm(void) {
     // 首先确认内核空间被映射了
     assert(vmm.get_pgd() != nullptr);
-    assert(vmm.get_mmap(vmm.get_pgd(), 0x00, nullptr) == 1);
+    // 0x00 留空
+    assert(vmm.get_mmap(vmm.get_pgd(), 0x00, nullptr) == 0);
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)0x03, nullptr) == 0);
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)0xCD, nullptr) == 0);
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)0xFFF, nullptr) == 0);
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)0x1000, nullptr) == 1);
     assert(vmm.get_mmap(vmm.get_pgd(),
                         (void *)((uint32_t)COMMON::KERNEL_START_4K +
                                  VMM_KERNEL_SIZE - 1),
                         nullptr) == 1);
+    assert(vmm.get_mmap(
+               vmm.get_pgd(),
+               (void *)((uint32_t)COMMON::KERNEL_START_4K + VMM_KERNEL_SIZE),
+               nullptr) == 0);
     assert(vmm.get_mmap(vmm.get_pgd(),
                         (void *)((uint32_t)COMMON::KERNEL_START_4K +
-                                 VMM_KERNEL_SIZE - 1),
+                                 VMM_KERNEL_SIZE + 0x1024),
                         nullptr) == 0);
     io.printf("vmm test done.\n");
     return 0;

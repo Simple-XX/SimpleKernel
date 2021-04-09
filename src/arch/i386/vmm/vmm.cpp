@@ -58,7 +58,7 @@ static void page_fault(INTR::pt_regs_t *regs) {
 
 IO           VMM::io;
 PMM          VMM::pmm;
-page_dir_t   VMM::pgd_kernel[VMM_KERNEL_PAGE_TABLES];
+page_dir_t   VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
 page_table_t VMM::pte_kernel[VMM_KERNEL_PAGES];
 
 VMM::VMM(void) {
@@ -89,9 +89,15 @@ void VMM::init(void) {
                 &pte_kernel[VMM_PAGES_PRE_PAGE_TABLE * i]) |
             VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
+    // 虚拟地址 0x00 设为 nullptr
+    pte_kernel[0] = nullptr;
+
 // #define DEBUG
 #ifdef DEBUG
-    asm("hlt");
+    io.printf("&pte_kernel[0]: 0x%X, pte_kernel[0]: %X\n", &pte_kernel[0],
+              pte_kernel[0]);
+    io.printf("&pgd_kernel[0]: 0x%X, pgd_kernel[0]: 0x%X\n", &pgd_kernel[0],
+              pgd_kernel[0]);
 #undef DEBUG
 #endif
     set_pgd((page_dir_t)pgd_kernel);
@@ -145,7 +151,8 @@ void VMM::unmmap(const page_dir_t pgd, const void *va) {
 uint32_t VMM::get_mmap(const page_dir_t pgd, const void *va, const void *pa) {
     uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
-    page_table_t pt      = (page_table_t)pgd[pgd_idx];
+    page_table_t pt =
+        (page_table_t)((uint32_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
         return 0;
     }
