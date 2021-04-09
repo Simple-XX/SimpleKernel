@@ -6,16 +6,18 @@
 
 #include "intr.h"
 #include "cpu.hpp"
-#include "io.h"
 #include "apic.h"
 
 // TODO: 完善
 // TODO: 加入内核
 
+IO APIC::io;
+
 APIC::APIC(void) {
     pbase = CPU::get_apic_base();
     // CPU::set_apic_base(pbase);
     write(LAPIC_SIVR, read(LAPIC_SIVR) | LAPIC_ISR);
+    io.printf("apic init\n");
     return;
 }
 
