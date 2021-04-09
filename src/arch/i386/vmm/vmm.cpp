@@ -147,7 +147,7 @@ void VMM::unmmap(const page_dir_t pgd, const void *va) {
     }
     pt          = (page_table_t)VMM_PA_LA(pt);
     pt[pte_idx] = nullptr;
-    // TODO: 如果一页都被 unmap，释放占用的物理内存
+    // TODO: 如果一页表都被 unmap，释放占用的物理内存
     CPU::INVLPG(va);
 }
 
