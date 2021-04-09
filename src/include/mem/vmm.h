@@ -220,10 +220,10 @@ private:
     static PMM pmm;
     // 页表
     static page_table_t pte_kernel[VMM_KERNEL_PAGES]
-        __attribute__((aligned(0x1000)));
+        __attribute__((aligned(COMMON::PAGE_SIZE)));
     // 页目录
     static page_dir_t pgd_kernel[VMM_PAGE_TABLES_TOTAL]
-        __attribute__((aligned(0x1000)));
+        __attribute__((aligned(COMMON::PAGE_SIZE)));
 
     page_dir_t curr_dir;
 
