@@ -14,7 +14,7 @@ extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
 IO                       PMM::io;
-COMMON::physical_pages_t PMM::phy_pages;
+COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
 FIRSTFIT                 PMM::manage(phy_pages);
 const char *             PMM::name = "FirstFit";
 
@@ -85,14 +85,14 @@ int32_t PMM::init(void) {
             if (addr == nullptr) {
                 continue;
             }
-            phy_pages.addr[pages_count] = addr;
+            phy_pages[pages_count].addr = addr;
             // 内核已占用部分
             if (addr >= COMMON::KERNEL_START_4K &&
                 addr < COMMON::KERNEL_END_4K) {
-                phy_pages.ref[pages_count] = 1;
+                phy_pages[pages_count].ref = 1;
             }
             else {
-                phy_pages.ref[pages_count] = 0;
+                phy_pages[pages_count].ref = 0;
             }
             pages_count++;
         }

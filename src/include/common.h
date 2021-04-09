@@ -84,9 +84,9 @@ namespace COMMON {
     class physical_pages_t {
     public:
         // 起始地址
-        uint8_t *addr[PMM_PAGE_MAX_SIZE];
+        uint8_t *addr;
         // 该页被引用次数，-1 表示此页内存被保留，禁止使用
-        int32_t ref[PMM_PAGE_MAX_SIZE];
+        int32_t ref;
     };
 
 };
