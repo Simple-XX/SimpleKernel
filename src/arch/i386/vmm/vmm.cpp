@@ -147,7 +147,6 @@ void VMM::unmmap(const page_dir_t pgd, const void *va) {
     CPU::INVLPG(va);
 }
 
-// BUG: 访问未映射的地址时会 pg
 uint32_t VMM::get_mmap(const page_dir_t pgd, const void *va, const void *pa) {
     uint32_t     pgd_idx = VMM_PGD_INDEX(reinterpret_cast<uint32_t>(va));
     uint32_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint32_t>(va));
@@ -159,7 +158,7 @@ uint32_t VMM::get_mmap(const page_dir_t pgd, const void *va, const void *pa) {
     pt = (page_table_t)(VMM_PA_LA(pt));
     if (pt[pte_idx] != nullptr) {
         if (pa != nullptr) {
-            *(uint32_t *)pa = reinterpret_cast<uint32_t>(pt[pte_idx]);
+            *(uint32_t *)pa = (uint32_t)pt[pte_idx] & COMMON::PAGE_MASK;
         }
         return 1;
     }
