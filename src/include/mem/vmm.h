@@ -247,4 +247,4 @@ public:
     uint32_t get_mmap(const page_dir_t pgd, const void *va, const void *pa);
 };
 
-#endif /* INCLUDE_VMM_H */
+#endif /* _VMM_H */
