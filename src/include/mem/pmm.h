@@ -14,17 +14,14 @@
 #include "common.h"
 #include "firstfit.h"
 
-// TODO: 这里的 ZONE 与 Linux 中的划分不同，只是方便控制分配内存的位置，正式的
-// ZONE 要等到内核更完善后 DMA 区域大小 1MB-系统使用
+// NOTE: 这里的 ZONE 与 Linux 中的划分不同，只是方便控制分配内存的位置
 
-static constexpr const size_t DMA_SIZE = 0x9E000;
 // NORMAL 区域大小
 static constexpr const size_t NORMAL_SIZE = COMMON::KERNEL_SIZE;
+// TODO: 这个大小与 get_ram_info() 获得的有冲突
 // HIGH 区域大小 剩余所有
-static constexpr const size_t HIGH_SIZE =
-    COMMON::PMM_MAX_SIZE - DMA_SIZE - NORMAL_SIZE;
+static constexpr const size_t HIGH_SIZE = COMMON::PMM_MAX_SIZE - NORMAL_SIZE;
 
-static constexpr const size_t DMA_PAGES    = DMA_SIZE / COMMON::PAGE_SIZE;
 static constexpr const size_t NORMAL_PAGES = NORMAL_SIZE / COMMON::PAGE_SIZE;
 static constexpr const size_t HIGH_PAGES   = HIGH_SIZE / COMMON::PAGE_SIZE;
 
@@ -33,9 +30,6 @@ private:
     static IO io;
     // 可用内存的物理页数组
     static COMMON::physical_pages_t phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
-    // DMA 区域
-    static size_t   dma_pages;
-    static FIRSTFIT dma;
     // NORMAL 区域
     static size_t   normal_pages;
     static FIRSTFIT normal;
