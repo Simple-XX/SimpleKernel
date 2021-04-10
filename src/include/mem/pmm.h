@@ -14,8 +14,8 @@
 #include "common.h"
 #include "firstfit.h"
 
-// DMA 区域大小 1MB
-static constexpr const size_t DMA_SIZE = 0x100000;
+// DMA 区域大小 1MB-系统使用
+static constexpr const size_t DMA_SIZE = 0x9E000;
 // NORMAL 区域大小
 static constexpr const size_t NORMAL_SIZE = COMMON::KERNEL_SIZE;
 // HIGH 区域大小 剩余所有

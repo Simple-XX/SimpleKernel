@@ -44,12 +44,6 @@ void PMM::get_ram_info(e820map_t *e820map) {
                           MULTIBOOT2::mmap_tag)
                          ->entry_size)) {
         // 如果是可用内存
-// #define DEBUG
-#ifdef DEBUG
-        printk_debug("addr: 0x%X, len: 0x%X, type: 0x%X\n", mmap_entries->addr,
-                     mmap_entries->len, mmap_entries->type);
-#endif
-
         if (MULTIBOOT2::mmap_entries->type ==
             MULTIBOOT2::MULTIBOOT_MEMORY_AVAILABLE) {
             e820map->map[e820map->nr_map].addr =
@@ -82,6 +76,12 @@ int32_t PMM::init(void) {
     // 计算可用的内存
     // 这里需要保证 addr 是按照 PMM_PAGE_MASK 对齐的
     for (size_t i = 0; i < e820map.nr_map; i++) {
+// #define DEBUG
+#ifdef DEBUG
+        io.printf("addr: 0x%X, len: 0x%X, type: 0x%X\n", e820map.map[i].addr,
+                  e820map.map[i].length, e820map.map[i].type);
+#undef DEBUG
+#endif
         for (uint8_t *addr = e820map.map[i].addr;
              addr < (e820map.map[i].addr + e820map.map[i].length);
              addr += COMMON::PAGE_SIZE) {
@@ -106,7 +106,8 @@ int32_t PMM::init(void) {
     // 计算各个分区大小
     dma_pages    = DMA_PAGES;
     normal_pages = NORMAL_PAGES;
-    high_pages   = HIGH_PAGES;
+    // high_pages   = HIGH_PAGES;
+    high_pages = pages - DMA_PAGES - NORMAL_PAGES;
     mamage_init();
     io.printf("pmm_init\n");
     return 0;
