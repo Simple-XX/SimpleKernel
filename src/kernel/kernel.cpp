@@ -63,6 +63,7 @@ void KERNEL::drv_init(void) const {
 }
 
 int32_t KERNEL::test_pmm(void) {
+    // TODO: 分配的地址应该在相应区域内
     uint32_t cd         = 0xCD;
     uint8_t *addr1      = nullptr;
     uint8_t *addr2      = nullptr;
