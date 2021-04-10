@@ -55,14 +55,12 @@ void IO::outd(const uint32_t port, const uint32_t data) {
     return;
 }
 
-// TODO
 COLOR::color_t IO::get_color(void) {
-    return COLOR::BLACK;
-    // return io.get_color();
+    return io.get_color();
 }
 
-// TODO
-void IO::set_color(const COLOR::color_t color __attribute__((unused))) {
+void IO::set_color(const COLOR::color_t color) {
+    io.set_color(color);
     return;
 }
 
@@ -91,9 +89,37 @@ int32_t IO::printf(const char *fmt, ...) {
     return i;
 }
 
-int32_t IO::printf(COLOR::color_t color, const char *fmt, ...) {
+int32_t IO::info(const char *fmt, ...) {
     COLOR::color_t curr_color = get_color();
-    set_color(color);
+    set_color(COLOR::LIGHT_GREEN);
+    va_list args;
+    int32_t i;
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    write_string(buf);
+    bzero(buf, 128);
+    set_color(curr_color);
+    return i;
+}
+
+int32_t IO::warn(const char *fmt, ...) {
+    COLOR::color_t curr_color = get_color();
+    set_color(COLOR::LIGHT_MAGENTA);
+    va_list args;
+    int32_t i;
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    write_string(buf);
+    bzero(buf, 128);
+    set_color(curr_color);
+    return i;
+}
+
+int32_t IO::err(const char *fmt, ...) {
+    COLOR::color_t curr_color = get_color();
+    set_color(COLOR::LIGHT_RED);
     va_list args;
     int32_t i;
     va_start(args, fmt);
