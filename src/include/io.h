@@ -55,7 +55,9 @@ public:
     int32_t write_string(const char *s);
     // 格式输出
     int32_t printf(const char *fmt, ...);
-    int32_t printf(COLOR::color_t color, const char *fmt, ...);
+    int32_t info(const char *fmt, ...);
+    int32_t warn(const char *fmt, ...);
+    int32_t err(const char *fmt, ...);
 };
 
 #endif /* _IO_H_ */
