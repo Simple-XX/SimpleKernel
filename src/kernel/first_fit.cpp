@@ -35,31 +35,24 @@ void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
     return;
 }
 
-int32_t FIRSTFIT::init(uint32_t _pages) {
-    // 为每一个页初始化一个记录其信息的 chunk
-    // 第一个 chunk 保存在内核结束处
-    // TODO: 优化空间
-    // 管理所有内存页需要的空间，供管理结构使用
-    // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
-    uint32_t pmm_info_size = _pages * sizeof(ff_list_entry_t);
-    bzero(list, pmm_info_size);
-    // 将用于保存物理地址信息的内存标记为已使用
-    // 计算内核使用内存的 phy_pages
-    // 不能直接计算，因为可用内存之间可能会存在空洞
-    uint32_t idx = 0;
-    while (phy_pages[idx].addr < COMMON::KERNEL_START_4K) {
+void FIRSTFIT::set_used(const void *start, const void *end, size_t ref) {
+    size_t idx = 0;
+    while (1) {
+        if (phy_pages[idx].addr >= start && phy_pages[idx].addr < end) {
+            phy_pages[idx].ref += ref;
+        }
+        if (phy_pages[idx].addr == end) {
+            break;
+        }
         idx++;
     }
-#ifdef DEBUG
-    io.printf("phy_pages[idx]: 0x%X\n", phy_pages[idx]);
-#endif
-    uint32_t idx_end = idx;
-    while (phy_pages[idx_end].addr < COMMON::KERNEL_END_4K) {
-        idx_end++;
-    }
-    while (idx < idx_end) {
-        phy_pages[idx++].ref++;
-    }
+    return;
+}
+
+int32_t FIRSTFIT::init(uint32_t _pages) {
+    // TODO: 优化空间
+    // 将内核使用的内存设为已使用
+    set_used(COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, 1);
     // 初始化 list 信息
     // 初始化头节点
     list_init_head(list);
@@ -90,11 +83,11 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
     // 输出所有内存段
     chunk = list;
     do {
-        io.printf("addr: 0x%X, len: 0x%X, ref: 0x%X\n", chunk_info(chunk)->addr,
-                  chunk_info(chunk)->npages * PAGE_SIZE,
-                  chunk_info(chunk)->ref);
+        io.printf("addr: 0x%X, len: 0x%X, ref: 0x%X\n", chunk->addr,
+                  chunk->npages * COMMON::PAGE_SIZE, chunk->ref);
         chunk = list_next(chunk);
     } while (chunk != list);
+#undef DEBUG
 #endif
     // 计算未使用的物理内存
     uint32_t n = 0;
