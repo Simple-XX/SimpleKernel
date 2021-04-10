@@ -39,6 +39,7 @@ private:
     COMMON::physical_pages_t *phy_pages;
     // 管理所有内存页需要的空间，供管理结构使用
     // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
+    // TODO: 优化空间
     ff_list_entry_t list[COMMON::PMM_PAGE_MAX_SIZE];
     void set_chunk(ff_list_entry_t &chunk, COMMON::physical_pages_t &mempage);
     // 设置一段内存已使用
