@@ -42,8 +42,6 @@ private:
     // TODO: 优化空间
     ff_list_entry_t list[COMMON::PMM_PAGE_MAX_SIZE];
     void set_chunk(ff_list_entry_t &chunk, COMMON::physical_pages_t &mempage);
-    // 设置一段内存已使用
-    void set_used(const void *start, const void *end, size_t ref);
 
 protected:
 public:
