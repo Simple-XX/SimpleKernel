@@ -29,16 +29,15 @@ class FIRSTFIT {
 private:
     static constexpr const uint32_t FF_USED   = 0x00;
     static constexpr const uint32_t FF_UNUSED = 0x01;
-
-    static IO io;
-    // 物理内存页的总数量
-    static uint32_t page_count;
-    // 物理内存页的当前数量
-    static uint32_t page_free_count;
-    // 空闲链表的节点数量
-    static uint32_t node_num;
+    static IO                       io;
     // 内存管理
-    static ff_list_entry_t    list[COMMON::PMM_PAGE_MAX_SIZE];
+    static ff_list_entry_t list[COMMON::PMM_PAGE_MAX_SIZE];
+    // 物理内存页的总数量
+    uint32_t page_count;
+    // 物理内存页的当前数量
+    uint32_t page_free_count;
+    // 空闲链表的节点数量
+    uint32_t                  node_num;
     COMMON::physical_pages_t *phy_pages;
     void set_chunk(ff_list_entry_t &chunk, COMMON::physical_pages_t &mempage);
 
