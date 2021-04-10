@@ -41,7 +41,8 @@ private:
     static size_t   high_pages;
     static FIRSTFIT high;
     // 物理内存总数
-    static size_t pages;
+    static size_t    pages;
+    static FIRSTFIT *zone[COMMON::ZONE_COUNT];
     // 从 GRUB 读取物理内存信息
     void get_ram_info(e820map_t *e820map);
     // 物理内存管理初始化

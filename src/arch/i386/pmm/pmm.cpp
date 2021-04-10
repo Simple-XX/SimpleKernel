@@ -21,7 +21,8 @@ size_t                   PMM::normal_pages = 0;
 FIRSTFIT                 PMM::normal(&phy_pages[DMA_PAGES]);
 size_t                   PMM::high_pages = 0;
 FIRSTFIT                 PMM::high(&phy_pages[DMA_PAGES + NORMAL_PAGES]);
-size_t                   PMM::pages = 0;
+size_t                   PMM::pages                    = 0;
+FIRSTFIT *               PMM::zone[COMMON::ZONE_COUNT] = {&dma, &normal, &high};
 
 PMM::PMM(void) {
     return;
@@ -112,40 +113,18 @@ int32_t PMM::init(void) {
 }
 
 void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
-    if (_zone == COMMON::DMA) {
-        return dma.alloc(_pages);
+    void *addr = zone[_zone]->alloc(_pages);
+    if (addr == nullptr) {
+        io.printf("No enough mem.\n");
     }
-    else if (_zone == COMMON::NORMAL) {
-        return normal.alloc(_pages);
-    }
-    else if (_zone == COMMON::HIGH) {
-        return high.alloc(_pages);
-    }
-    return nullptr;
+    return addr;
 }
 
 void PMM::free_page(void *_addr, uint32_t _pages, COMMON::zone_t _zone) {
-    if (_zone == COMMON::DMA) {
-        return dma.free(_addr, _pages);
-    }
-    else if (_zone == COMMON::NORMAL) {
-        return normal.free(_addr, _pages);
-    }
-    else if (_zone == COMMON::HIGH) {
-        return high.free(_addr, _pages);
-    }
+    zone[_zone]->free(_addr, _pages);
     return;
 }
 
 uint32_t PMM::free_pages_count(COMMON::zone_t _zone) {
-    if (_zone == COMMON::DMA) {
-        return dma.free_pages_count();
-    }
-    else if (_zone == COMMON::NORMAL) {
-        return normal.free_pages_count();
-    }
-    else if (_zone == COMMON::HIGH) {
-        return high.free_pages_count();
-    }
-    return 0;
+    return zone[_zone]->free_pages_count();
 }
