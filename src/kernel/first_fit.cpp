@@ -34,24 +34,7 @@ void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
     return;
 }
 
-void FIRSTFIT::set_used(const void *start, const void *end, size_t ref) {
-    size_t idx = 0;
-    while (1) {
-        if (phy_pages[idx].addr >= start && phy_pages[idx].addr < end) {
-            phy_pages[idx].ref += ref;
-        }
-        if (phy_pages[idx].addr == end) {
-            break;
-        }
-        idx++;
-    }
-    return;
-}
-
 int32_t FIRSTFIT::init(uint32_t _pages) {
-    // TODO: 优化空间
-    // 将内核使用的内存设为已使用
-    set_used(COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, 1);
     // 初始化 list 信息
     // 初始化头节点
     list_init_head(list);
@@ -100,7 +83,6 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
     page_free_count = n;
     node_num        = num;
     io.printf("First fit init.\n");
-
     return 0;
 }
 
