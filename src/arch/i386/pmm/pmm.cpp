@@ -15,14 +15,12 @@ extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 // TODO: 换一种更灵活的方法
 IO                       PMM::io;
 COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
-size_t                   PMM::dma_pages = 0;
-FIRSTFIT                 PMM::dma(phy_pages);
 size_t                   PMM::normal_pages = 0;
-FIRSTFIT                 PMM::normal(&phy_pages[DMA_PAGES]);
+FIRSTFIT                 PMM::normal(phy_pages);
 size_t                   PMM::high_pages = 0;
-FIRSTFIT                 PMM::high(&phy_pages[DMA_PAGES + NORMAL_PAGES]);
+FIRSTFIT                 PMM::high(&phy_pages[NORMAL_PAGES]);
 size_t                   PMM::pages                    = 0;
-FIRSTFIT *               PMM::zone[COMMON::ZONE_COUNT] = {&dma, &normal, &high};
+FIRSTFIT *               PMM::zone[COMMON::ZONE_COUNT] = {&normal, &high};
 
 PMM::PMM(void) {
     return;
@@ -58,7 +56,6 @@ void PMM::get_ram_info(e820map_t *e820map) {
 }
 
 void PMM::mamage_init(void) {
-    dma.init(dma_pages);
     normal.init(normal_pages);
     high.init(high_pages);
     return;
@@ -104,10 +101,8 @@ int32_t PMM::init(void) {
         }
     }
     // 计算各个分区大小
-    dma_pages    = DMA_PAGES;
     normal_pages = NORMAL_PAGES;
-    // high_pages   = HIGH_PAGES;
-    high_pages = pages - DMA_PAGES - NORMAL_PAGES;
+    high_pages   = pages - NORMAL_PAGES;
     mamage_init();
     io.printf("pmm_init\n");
     return 0;
