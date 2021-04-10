@@ -7,14 +7,10 @@
 #include "kernel.h"
 
 KERNEL::KERNEL(void) {
+    asm("hlt");
     return;
 }
 
 KERNEL::~KERNEL() {
     return;
-}
-
-int KERNEL::init(void) {
-    asm("hlt");
-    return 0;
 }
