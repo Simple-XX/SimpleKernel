@@ -35,13 +35,13 @@ void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
     return;
 }
 
-int32_t FIRSTFIT::init(uint32_t pages) {
+int32_t FIRSTFIT::init(uint32_t _pages) {
     // 为每一个页初始化一个记录其信息的 chunk
     // 第一个 chunk 保存在内核结束处
     // TODO: 优化空间
     // 管理所有内存页需要的空间，供管理结构使用
     // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
-    uint32_t pmm_info_size = pages * sizeof(ff_list_entry_t);
+    uint32_t pmm_info_size = _pages * sizeof(ff_list_entry_t);
     bzero(list, pmm_info_size);
     // 将用于保存物理地址信息的内存标记为已使用
     // 计算内核使用内存的 phy_pages
@@ -68,7 +68,7 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     // 迭代所有页，如果下一个的地 != 当前地址+PAGE_SIZE 则新建 chunk
     ff_list_entry_t *chunk = list;
     uint32_t         num   = 1;
-    for (uint32_t i = 0; i < pages; i++) {
+    for (uint32_t i = 0; i < _pages; i++) {
         // 如果连续且 ref 相同
         if ((phy_pages[i].addr ==
              chunk->addr + chunk->npages * COMMON::PAGE_SIZE) &&
@@ -98,13 +98,13 @@ int32_t FIRSTFIT::init(uint32_t pages) {
 #endif
     // 计算未使用的物理内存
     uint32_t n = 0;
-    for (uint32_t i = 0; i < pages; i++) {
+    for (uint32_t i = 0; i < _pages; i++) {
         if (phy_pages[i].ref == 0) {
             n++;
         }
     }
     // 填充管理结构
-    page_count      = pages;
+    page_count      = _pages;
     page_free_count = n;
     node_num        = num;
     io.printf("First fit init.\n");
@@ -112,32 +112,32 @@ int32_t FIRSTFIT::init(uint32_t pages) {
     return 0;
 }
 
-void *FIRSTFIT::alloc(size_t pages) {
+void *FIRSTFIT::alloc(size_t _pages) {
     void *           res_addr = nullptr;
     ff_list_entry_t *entry    = list;
     do {
         // 当前 chunk 空闲
         if (entry->flag == FF_UNUSED) {
             // 判断长度是否足够
-            if (entry->npages >= pages) {
+            if (entry->npages >= _pages) {
                 // 符合条件，对 chunk 进行分割
                 // 如果剩余大小足够
-                if (entry->npages - pages > 1) {
+                if (entry->npages - _pages > 1) {
                     // 添加为新的链表项
                     ff_list_entry_t *tmp =
                         (ff_list_entry_t *)(entry +
                                             node_num * sizeof(ff_list_entry_t));
-                    tmp->addr   = entry->addr + pages * COMMON::PAGE_SIZE;
-                    tmp->npages = entry->npages - pages;
+                    tmp->addr   = entry->addr + _pages * COMMON::PAGE_SIZE;
+                    tmp->npages = entry->npages - _pages;
                     tmp->ref    = 0;
                     tmp->flag   = FF_UNUSED;
                     list_add_after(entry, tmp);
                 }
                 // 不够的话直接分配
-                entry->npages = pages;
+                entry->npages = _pages;
                 entry->ref    = 1;
                 entry->flag   = FF_USED;
-                page_free_count -= pages;
+                page_free_count -= _pages;
                 res_addr = entry->addr;
                 break;
             }
@@ -147,7 +147,7 @@ void *FIRSTFIT::alloc(size_t pages) {
     return res_addr;
 }
 
-void FIRSTFIT::free(void *addr_start, size_t pages) {
+void FIRSTFIT::free(void *addr_start, size_t _pages) {
     ff_list_entry_t *entry = list;
     while (((entry = list_next(entry)) != list) &&
            (entry->addr != addr_start)) {
@@ -172,7 +172,7 @@ void FIRSTFIT::free(void *addr_start, size_t pages) {
         entry->npages = 0;
         list_del(entry);
     }
-    page_free_count += pages;
+    page_free_count += _pages;
     return;
 }
 
