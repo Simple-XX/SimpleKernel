@@ -7,14 +7,15 @@
 #ifndef _E820_H_
 #define _E820_H_
 
+#include "stddef.h"
 #include "stdint.h"
 
-#define E820_MAX 8
-#define E820_RAM 1
-#define E820_RESERVED 2
-#define E820_ACPI 3
-#define E820_NVS 4
-#define E820_UNUSABLE 5
+static constexpr const uint32_t E820_MAX      = 8;
+static constexpr const uint32_t E820_RAM      = 1;
+static constexpr const uint32_t E820_RESERVED = 2;
+static constexpr const uint32_t E820_ACPI     = 3;
+static constexpr const uint32_t E820_NVS      = 4;
+static constexpr const uint32_t E820_UNUSABLE = 5;
 
 typedef struct e820entry {
     // 数据类型由位数决定
