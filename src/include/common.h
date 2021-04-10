@@ -91,11 +91,12 @@ namespace COMMON {
 
     // zone 机制
     enum zone_t {
-        DMA    = 1,
-        NORMAL = 2,
-        HIGH   = 3,
+        DMA    = 0,
+        NORMAL = 1,
+        HIGH   = 2,
     };
 
+    static constexpr const size_t ZONE_COUNT = 3;
 };
 
 #endif /* _COMMON_H_ */
