@@ -66,10 +66,11 @@ namespace COMMON {
     static constexpr const uint32_t PAGE_MASK = 0xFFFFF000;
     // 内核的偏移地址
     static constexpr const uint32_t KERNEL_BASE = 0x0;
-    // 内核占用大小 64MB
+    // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
+    // 64MB
     static constexpr const uint32_t KERNEL_SIZE = 0x4000000;
     // 映射内核需要的页数
-    static constexpr const uint32_t PAGES_KERNEL = KERNEL_SIZE / PAGE_SIZE;
+    static constexpr const uint32_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
 
 // 对齐 向上取整
 #define ALIGN4K(x)                                                             \

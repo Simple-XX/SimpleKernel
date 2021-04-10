@@ -35,15 +35,17 @@ void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
 }
 
 int32_t FIRSTFIT::init(uint32_t _pages) {
+    page_count = _pages;
     // 初始化 list 信息
     // 初始化头节点
     list_init_head(list);
     set_chunk(list[0], phy_pages[0]);
+    // io.printf("phy_pages[0]: 0x%X\n", phy_pages[0]);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
     // 迭代所有页，如果下一个的地 != 当前地址+PAGE_SIZE 则新建 chunk
     ff_list_entry_t *chunk = list;
-    uint32_t         num   = 1;
-    for (uint32_t i = 0; i < _pages; i++) {
+    node_num               = 0;
+    for (uint32_t i = 0; i < page_count; i++) {
         // 如果连续且 ref 相同
         if ((phy_pages[i].addr ==
              chunk->addr + chunk->npages * COMMON::PAGE_SIZE) &&
@@ -57,7 +59,7 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
             // 添加到链表
             list_add_before(list, &list[i]);
             chunk = &list[i];
-            num++;
+            node_num++;
         }
     }
 // #define DEBUG
@@ -69,19 +71,15 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
                   chunk->npages * COMMON::PAGE_SIZE, chunk->ref);
         chunk = list_next(chunk);
     } while (chunk != list);
+    io.printf("node_num: 0x%X\n", node_num);
 #undef DEBUG
 #endif
     // 计算未使用的物理内存
-    uint32_t n = 0;
-    for (uint32_t i = 0; i < _pages; i++) {
+    for (uint32_t i = 0; i < page_count; i++) {
         if (phy_pages[i].ref == 0) {
-            n++;
+            page_free_count++;
         }
     }
-    // 填充管理结构
-    page_count      = _pages;
-    page_free_count = n;
-    node_num        = num;
     io.printf("First fit init.\n");
     return 0;
 }
