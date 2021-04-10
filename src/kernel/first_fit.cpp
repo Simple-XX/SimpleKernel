@@ -13,9 +13,9 @@
 
 IO              FIRSTFIT::io;
 ff_list_entry_t FIRSTFIT::list[COMMON::PMM_PAGE_MAX_SIZE];
-uint32_t        FIRSTFIT::phy_page_count      = 0;
-uint32_t        FIRSTFIT::phy_page_free_count = 0;
-uint32_t        FIRSTFIT::node_num            = 0;
+uint32_t        FIRSTFIT::page_count      = 0;
+uint32_t        FIRSTFIT::page_free_count = 0;
+uint32_t        FIRSTFIT::node_num        = 0;
 
 FIRSTFIT::FIRSTFIT(COMMON::physical_pages_t *_phy_pages)
     : phy_pages(_phy_pages) {
@@ -104,9 +104,9 @@ int32_t FIRSTFIT::init(uint32_t pages) {
         }
     }
     // 填充管理结构
-    phy_page_count      = pages;
-    phy_page_free_count = n;
-    node_num            = num;
+    page_count      = pages;
+    page_free_count = n;
+    node_num        = num;
     io.printf("First fit init.\n");
 
     return 0;
@@ -137,7 +137,7 @@ void *FIRSTFIT::alloc(size_t pages) {
                 entry->npages = pages;
                 entry->ref    = 1;
                 entry->flag   = FF_USED;
-                phy_page_free_count -= pages;
+                page_free_count -= pages;
                 res_addr = entry->addr;
                 break;
             }
@@ -172,10 +172,10 @@ void FIRSTFIT::free(void *addr_start, size_t pages) {
         entry->npages = 0;
         list_del(entry);
     }
-    phy_page_free_count += pages;
+    page_free_count += pages;
     return;
 }
 
 size_t FIRSTFIT::free_pages_count(void) {
-    return phy_page_free_count;
+    return page_free_count;
 }
