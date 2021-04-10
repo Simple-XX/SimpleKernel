@@ -264,6 +264,7 @@ void invalid_TSS(pt_regs_t *regs);
 void segment_not_present(pt_regs_t *regs);
 void stack_segment(pt_regs_t *regs);
 void general_protection(pt_regs_t *regs);
+void page_fault(pt_regs_t *regs);
 
 void enable_irq(uint32_t irq_no);
 void disable_irq(uint32_t irq_no);
