@@ -10,22 +10,6 @@
 #include "port.h"
 
 UART::UART(void) {
-    return;
-}
-
-UART::~UART(void) {
-    return;
-}
-
-// Loop <delay> times in a way that the compiler won't optimize away
-void UART::delay(int32_t count) {
-    asm("__delay_%=: subs %[count], %[count], #1"
-        : "=r"(count)
-        : [count] "0"(count)
-        : "cc");
-}
-
-int32_t UART::init(void) {
     // Disable UART0.
     PORT::outd(UART0_CR, 0x00000000);
     // Setup the GPIO pin 14 && 15.
@@ -63,31 +47,43 @@ int32_t UART::init(void) {
     // Enable UART0, receive & transfer part of UART.
     PORT::outd(UART0_CR, (1 << 0) | (1 << 8) | (1 << 9));
     write_string("uart init\n");
-    return 0;
+    return;
 }
 
-void UART::put_char(const char c) {
+UART::~UART(void) {
+    return;
+}
+
+// Loop <delay> times in a way that the compiler won't optimize away
+void UART::delay(int32_t count) const {
+    asm("__delay_%=: subs %[count], %[count], #1"
+        : "=r"(count)
+        : [count] "0"(count)
+        : "cc");
+}
+
+void UART::put_char(const char _c) const {
     // Wait for UART to become ready to transmit.
     while (PORT::ind(UART0_FR) & (1 << 5)) {
         ;
     }
-    PORT::outd(UART0_DR, c);
+    PORT::outd(UART0_DR, _c);
     return;
 }
 
-void UART::write_string(const char *s) {
-    write(s, strlen(s));
+void UART::write_string(const char *_s) const {
+    write(_s, strlen(_s));
     return;
 }
 
-void UART::write(const char *s, size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        put_char(s[i]);
+void UART::write(const char *_s, size_t _len) const {
+    for (size_t i = 0; i < _len; i++) {
+        put_char(_s[i]);
     }
     return;
 }
 
-uint8_t UART::get_char() {
+uint8_t UART::get_char(void) const {
     // Wait for UART to have received something.
     while (PORT::ind(UART0_FR) & (1 << 4)) {
         ;
@@ -95,10 +91,12 @@ uint8_t UART::get_char() {
     return PORT::ind(UART0_DR);
 }
 
-void UART::set_color(const color_t color __attribute((unused))) {
+// TODO
+void UART::set_color(const COLOR::color_t _color __attribute((unused))) const {
     return;
 }
 
-color_t UART::get_color(void) {
-    return BLACK;
+// TODO
+COLOR::color_t UART::get_color(void) const {
+    return COLOR::BLACK;
 }
