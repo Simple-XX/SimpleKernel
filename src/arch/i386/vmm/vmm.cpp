@@ -125,7 +125,7 @@ void VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
         (page_table_t)((uint32_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
         // TODO: 保证 alloc 的地址已经被映射
-        pt           = (page_table_t)pmm.alloc_page(1);
+        pt           = (page_table_t)pmm.alloc_page(1, COMMON::NORMAL);
         pgd[pgd_idx] = (page_dir_entry_t)(reinterpret_cast<uint32_t>(pt) |
                                           VMM_PAGE_PRESENT | VMM_PAGE_RW);
     }

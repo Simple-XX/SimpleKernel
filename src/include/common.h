@@ -66,6 +66,11 @@ namespace COMMON {
     static constexpr const uint32_t PAGE_MASK = 0xFFFFF000;
     // 内核的偏移地址
     static constexpr const uint32_t KERNEL_BASE = 0x0;
+    // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
+    // 64MB
+    static constexpr const uint32_t KERNEL_SIZE = 0x4000000;
+    // 映射内核需要的页数
+    static constexpr const uint32_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
 
     // 对齐 向上取整
     inline const void *ALIGN4K(const void *x) {
@@ -79,22 +84,24 @@ namespace COMMON {
     static const void *KERNEL_START_4K = ALIGN4K(KERNEL_START_ADDR);
     static const void *KERNEL_END_4K   = ALIGN4K(KERNEL_END_ADDR);
 
-    // 内核占用大小
-    static const uint32_t KERNEL_SIZE =
-        (uint8_t *)KERNEL_END_4K - (uint8_t *)KERNEL_START_4K;
-
-    // 映射内核需要的页数
-    static const uint32_t PAGES_KERNEL = KERNEL_SIZE / PAGE_SIZE;
-
     // 物理页结构体
     class physical_pages_t {
     public:
         // 起始地址
-        uint8_t *addr[PMM_PAGE_MAX_SIZE];
+        uint8_t *addr;
         // 该页被引用次数，-1 表示此页内存被保留，禁止使用
-        int32_t ref[PMM_PAGE_MAX_SIZE];
+        int32_t ref;
     };
 
+    // zone 机制
+    enum zone_t : uint8_t {
+        // 与 KERNEL_SIZE 对应
+        NORMAL = 0,
+        // 高于 KERNEL_SIZE 的地址
+        HIGH,
+    };
+
+    static constexpr const size_t ZONE_COUNT = 2;
 };
 
 #endif /* _COMMON_H_ */

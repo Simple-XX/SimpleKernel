@@ -169,12 +169,12 @@ static constexpr const uint64_t VMM_PAGE_DIRECTORIES_TOTAL =
     ((VMM_VMEM_SIZE % VMM_PAGE_DIRECTORY_SIZE) == 0 ? 0 : 1);
 
 // 映射内核需要的页表数
-static const uint64_t VMM_PAGE_TABLES_KERNEL =
+static constexpr const uint64_t VMM_PAGE_TABLES_KERNEL =
     (COMMON::KERNEL_SIZE / VMM_PAGE_TABLE_SIZE) +
     (COMMON::KERNEL_SIZE % VMM_PAGE_TABLE_SIZE == 0 ? 0 : 1);
 
-// 内核映射的大小 32MB
-static constexpr const uint64_t VMM_KERNEL_SIZE = 0x2000000;
+// 映射内核的大小
+static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE;
 
 // 内核映射的页数
 static constexpr const uint64_t VMM_KERNEL_PAGES =
