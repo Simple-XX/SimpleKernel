@@ -8,7 +8,10 @@
 #define _CLOCK_H_
 
 #include "stdint.h"
+#include "io.h"
 #include "intr.h"
+
+// TODO: APIC
 
 const uint32_t FREQUENCY = 100;
 // 定时中断由 8253/8254 芯片从 IRQ0 提供
@@ -33,6 +36,8 @@ const uint32_t TIMER_16BIT = 0x30;
 
 class CLOCK {
 private:
+    static IO io;
+
 protected:
 public:
     CLOCK(void);
