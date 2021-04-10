@@ -95,12 +95,12 @@ int32_t PMM::init(void) {
     return 0;
 }
 
-void *PMM::alloc_page(uint32_t pages) {
-    return manage.alloc(pages);
+void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
+    return manage.alloc(_pages);
 }
 
-void PMM::free_page(void *addr, uint32_t pages) {
-    manage.free(addr, pages);
+void PMM::free_page(void *_addr, uint32_t _pages) {
+    manage.free(_addr, _pages);
     return;
 }
 

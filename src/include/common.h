@@ -89,6 +89,13 @@ namespace COMMON {
         int32_t ref;
     };
 
+    // zone 机制
+    enum zone_t {
+        DMA    = 1,
+        NORMAL = 2,
+        HIGH   = 3,
+    };
+
 };
 
 #endif /* _COMMON_H_ */
