@@ -32,9 +32,9 @@ private:
 
     static IO io;
     // 物理内存页的总数量
-    static uint32_t phy_page_count;
+    static uint32_t page_count;
     // 物理内存页的当前数量
-    static uint32_t phy_page_free_count;
+    static uint32_t page_free_count;
     // 空闲链表的节点数量
     static uint32_t node_num;
     // 内存管理
