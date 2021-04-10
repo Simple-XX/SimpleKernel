@@ -8,9 +8,11 @@
 #define _FIRTSTFIT_H_
 
 #include "stdint.h"
+#include "io.h"
 
-// 块
-typedef struct chunk_info {
+// TODO: 面向对象重构
+class ff_list_entry_t {
+public:
     // 当前页的地址
     uint8_t *addr;
     // 拥有多少个连续的页
@@ -18,37 +20,32 @@ typedef struct chunk_info {
     // 物理页被引用的次数
     int32_t ref;
     // 当前页状态
-    uint32_t flag;
-} chunk_info_t;
-
-// 一个仅在这里使用的简单循环链表
-typedef struct ff_list_entry {
-    chunk_info_t          chunk_info;
-    struct ff_list_entry *next;
-    struct ff_list_entry *prev;
-} ff_list_entry_t;
-
-static constexpr const uint32_t FF_USED   = 0x00;
-static constexpr const uint32_t FF_UNUSED = 0x01;
+    uint32_t         flag;
+    ff_list_entry_t *next;
+    ff_list_entry_t *prev;
+};
 
 class FIRSTFIT {
 private:
-    // 物理内存起始地址
-    uint8_t *addr_start;
-    // 物理内存结束地址
-    uint8_t *addr_end;
-    // 物理内存页的总数量
-    uint32_t phy_page_count;
-    // 物理内存页的当前数量
-    uint32_t phy_page_free_count;
+    static constexpr const uint32_t FF_USED   = 0x00;
+    static constexpr const uint32_t FF_UNUSED = 0x01;
+    static IO                       io;
+    // 当前管理的页数
+    uint32_t page_count;
+    // 空闲页数
+    uint32_t page_free_count;
     // 空闲链表的节点数量
-    uint32_t node_num;
-    // 空闲链表
-    ff_list_entry_t *free_list;
+    uint32_t                  node_num;
+    COMMON::physical_pages_t *phy_pages;
+    // 管理所有内存页需要的空间，供管理结构使用
+    // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
+    // TODO: 优化空间
+    ff_list_entry_t list[COMMON::PMM_PAGE_MAX_SIZE];
+    void set_chunk(ff_list_entry_t &chunk, COMMON::physical_pages_t &mempage);
 
 protected:
 public:
-    FIRSTFIT(uint8_t *addr_start);
+    FIRSTFIT(COMMON::physical_pages_t *_phy_pages);
     ~FIRSTFIT(void);
     // 初始化
     int32_t init(uint32_t pages);

@@ -16,6 +16,9 @@ find_asm_source_files(intr_asm_src ${arch_SOURCE_DIR}/intr)
 aux_source_directory(${arch_SOURCE_DIR}/intr intr_cpp_src)
 set(intr_src ${intr_asm_src} ${intr_cpp_src})
 
+aux_source_directory(${arch_SOURCE_DIR}/apic apic_cpp_src)
+set(apic_src ${apic_cpp_src})
+
 aux_source_directory(${arch_SOURCE_DIR}/port port_cpp_src)
 set(port_src ${port_cpp_src})
 
@@ -25,7 +28,7 @@ set(debug_src ${debug_cpp_src})
 aux_source_directory(${arch_SOURCE_DIR}/pmm pmm_cpp_src)
 set(pmm_src ${pmm_cpp_src})
 
-set(arch_src ${boot_src} ${gdt_src} ${intr_src} ${port_src} ${debug_src} ${pmm_src})
+set(arch_src ${boot_src} ${gdt_src} ${intr_src} ${apic_src} ${port_src} ${debug_src} ${pmm_src})
 
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
