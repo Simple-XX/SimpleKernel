@@ -17,8 +17,7 @@ uint32_t        FIRSTFIT::phy_page_count      = 0;
 uint32_t        FIRSTFIT::phy_page_free_count = 0;
 uint32_t        FIRSTFIT::node_num            = 0;
 
-FIRSTFIT::FIRSTFIT(
-    COMMON::physical_pages_t (&_phy_pages)[COMMON::PMM_PAGE_MAX_SIZE])
+FIRSTFIT::FIRSTFIT(COMMON::physical_pages_t *_phy_pages)
     : phy_pages(_phy_pages) {
     return;
 }
