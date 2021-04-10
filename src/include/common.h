@@ -91,13 +91,14 @@ namespace COMMON {
     };
 
     // zone 机制
-    enum zone_t {
-        DMA    = 0,
-        NORMAL = 1,
-        HIGH   = 2,
+    enum zone_t : uint8_t {
+        // 与 KERNEL_SIZE 对应
+        NORMAL = 0,
+        // 高于 KERNEL_SIZE 的地址
+        HIGH,
     };
 
-    static constexpr const size_t ZONE_COUNT = 3;
+    static constexpr const size_t ZONE_COUNT = 2;
 };
 
 #endif /* _COMMON_H_ */
