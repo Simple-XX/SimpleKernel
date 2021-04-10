@@ -86,14 +86,7 @@ int32_t PMM::init(void) {
                 continue;
             }
             phy_pages[pages_count].addr = addr;
-            // 内核已占用部分
-            if (addr >= COMMON::KERNEL_START_4K &&
-                addr < COMMON::KERNEL_END_4K) {
-                phy_pages[pages_count].ref = 1;
-            }
-            else {
-                phy_pages[pages_count].ref = 0;
-            }
+            phy_pages[pages_count].ref  = 0;
             pages_count++;
         }
     }
