@@ -40,7 +40,6 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
     // 初始化头节点
     list_init_head(list);
     set_chunk(list[0], phy_pages[0]);
-    // io.printf("phy_pages[0]: 0x%X\n", phy_pages[0]);
     // 遍历所有物理页，如果是连续的则合并入同一个 chunk，否则新建一个 chunk
     // 迭代所有页，如果下一个的地 != 当前地址+PAGE_SIZE 则新建 chunk
     ff_list_entry_t *chunk = list;
