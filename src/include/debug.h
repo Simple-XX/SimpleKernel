@@ -9,19 +9,19 @@
 
 #include "stddef.h"
 #include "stdint.h"
+#include "io.h"
 
 class DEBUG {
 private:
+    static IO io;
+
 protected:
 public:
-    DEBUG(void);
+    DEBUG(uint32_t magic, void *addr);
     ~DEBUG(void);
-    void init(addr_t magic, addr_t addr);
     void print_cur_status(void);
     void panic(const char *msg);
     void print_stack(size_t count);
 };
-
-extern DEBUG debug;
 
 #endif /* _DEBUG_H_ */
