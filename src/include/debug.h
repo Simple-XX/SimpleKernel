@@ -7,19 +7,21 @@
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stddef.h"
+#include "stdint.h"
+#include "io.h"
 
-void debug_init(ptr_t magic, ptr_t addr);
-void print_cur_status(void);
-void panic(const char *msg);
-void print_stack(size_t count);
+class DEBUG {
+private:
+    static IO io;
 
-#ifdef __cplusplus
-}
-#endif
+protected:
+public:
+    DEBUG(uint32_t magic, void *addr);
+    ~DEBUG(void);
+    void print_cur_status(void);
+    void panic(const char *msg);
+    void print_stack(size_t count);
+};
 
 #endif /* _DEBUG_H_ */
