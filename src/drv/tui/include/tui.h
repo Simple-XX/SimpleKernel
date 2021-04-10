@@ -67,7 +67,7 @@ private:
     void put_entry_at(const char c, const col_t color, const size_t x,
                       const size_t y);
     // 转义字符处理
-    void escapeconv(const char c);
+    bool escapeconv(const char c);
     // 滚动显示
     void scroll(void);
     // 生成一个字符
