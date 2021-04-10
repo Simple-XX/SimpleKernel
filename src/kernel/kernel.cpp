@@ -116,12 +116,10 @@ int32_t KERNEL::test_vmm(void) {
     assert(addr == COMMON::KERNEL_BASE + 0x1000);
     addr = (uint32_t) nullptr;
     assert(vmm.get_mmap(vmm.get_pgd(),
-                        (void *)((uint32_t)COMMON::KERNEL_START_4K +
-                                 VMM_KERNEL_SIZE - 1),
+                        (void *)(COMMON::KERNEL_BASE + VMM_KERNEL_SIZE - 1),
                         &addr) == 1);
-    assert(addr == ((COMMON::KERNEL_BASE + (uint32_t)COMMON::KERNEL_START_4K +
-                     VMM_KERNEL_SIZE - 1) &
-                    COMMON::PAGE_MASK));
+    assert(addr ==
+           ((COMMON::KERNEL_BASE + VMM_KERNEL_SIZE - 1) & COMMON::PAGE_MASK));
     addr = (uint32_t) nullptr;
     assert(vmm.get_mmap(
                vmm.get_pgd(),
@@ -162,17 +160,17 @@ void KERNEL::show_info(void) {
     io.printf(COLOR::LIGHT_GREEN,
               "kernel in memory start: 0x%08X, end 0x%08X\n",
               COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
-    io.printf(COLOR::LIGHT_GREEN,
-              "kernel in memory start4k: 0x%08X, end4k 0x%08X, size: 0x%08X\n",
-              COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K,
-              COMMON::KERNEL_SIZE);
+    io.printf(
+        COLOR::LIGHT_GREEN,
+        "kernel in memory start4k: 0x%08X, end4k 0x%08X, KERNEL_SIZE: 0x%08X\n",
+        COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, COMMON::KERNEL_SIZE);
     io.printf(COLOR::LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
               ((uint8_t *)COMMON::KERNEL_END_ADDR -
                (uint8_t *)COMMON::KERNEL_START_ADDR) /
                   1024,
-              ((uint8_t *)COMMON::KERNEL_END_ADDR -
-               (uint8_t *)COMMON::KERNEL_START_ADDR + 4095) /
-                  1024 / 4);
+              ((uint8_t *)COMMON::KERNEL_END_4K -
+               (uint8_t *)COMMON::KERNEL_START_4K) /
+                  COMMON::PAGE_SIZE);
     io.printf(COLOR::LIGHT_GREEN, "Simple Kernel.\n");
     return;
 }
