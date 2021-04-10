@@ -11,8 +11,7 @@
 #include "firstfit.h"
 #include "list.hpp"
 
-IO              FIRSTFIT::io;
-ff_list_entry_t FIRSTFIT::list[COMMON::PMM_PAGE_MAX_SIZE];
+IO FIRSTFIT::io;
 
 FIRSTFIT::FIRSTFIT(COMMON::physical_pages_t *_phy_pages)
     : phy_pages(_phy_pages) {
