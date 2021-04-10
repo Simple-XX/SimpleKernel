@@ -30,9 +30,9 @@ private:
     static constexpr const uint32_t FF_USED   = 0x00;
     static constexpr const uint32_t FF_UNUSED = 0x01;
     static IO                       io;
-    // 物理内存页的总数量
+    // 当前管理的页数
     uint32_t page_count;
-    // 物理内存页的当前数量
+    // 空闲页数
     uint32_t page_free_count;
     // 空闲链表的节点数量
     uint32_t                  node_num;
