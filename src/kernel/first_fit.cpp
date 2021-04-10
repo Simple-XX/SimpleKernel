@@ -13,12 +13,12 @@
 
 IO              FIRSTFIT::io;
 ff_list_entry_t FIRSTFIT::list[COMMON::PMM_PAGE_MAX_SIZE];
-uint32_t        FIRSTFIT::page_count      = 0;
-uint32_t        FIRSTFIT::page_free_count = 0;
-uint32_t        FIRSTFIT::node_num        = 0;
 
 FIRSTFIT::FIRSTFIT(COMMON::physical_pages_t *_phy_pages)
     : phy_pages(_phy_pages) {
+    page_count      = 0;
+    page_free_count = 0;
+    node_num        = 0;
     return;
 }
 
