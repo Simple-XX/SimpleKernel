@@ -96,13 +96,13 @@ void TUI::scroll(void) {
     return;
 }
 
-void TUI::set_color(const col_t _color) {
-    this->color = _color;
+void TUI::set_color(const COLOR::color_t _color) {
+    this->color = col_t(_color, COLOR::BLACK);
     return;
 }
 
-col_t TUI::get_color(void) const {
-    return this->color;
+COLOR::color_t TUI::get_color(void) const {
+    return (COLOR::color_t)(this->color.back | this->color.fore);
 }
 
 void TUI::set_pos(const pos_t _pos) {
