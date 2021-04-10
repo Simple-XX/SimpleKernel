@@ -14,7 +14,9 @@
 #include "common.h"
 #include "firstfit.h"
 
-// DMA 区域大小 1MB-系统使用
+// TODO: 这里的 ZONE 与 Linux 中的划分不同，只是方便控制分配内存的位置，正式的
+// ZONE 要等到内核更完善后 DMA 区域大小 1MB-系统使用
+
 static constexpr const size_t DMA_SIZE = 0x9E000;
 // NORMAL 区域大小
 static constexpr const size_t NORMAL_SIZE = COMMON::KERNEL_SIZE;
