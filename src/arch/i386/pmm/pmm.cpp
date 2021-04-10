@@ -15,8 +15,13 @@ extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 // TODO: 换一种更灵活的方法
 IO                       PMM::io;
 COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
-FIRSTFIT                 PMM::manage(phy_pages);
-const char *             PMM::name = "FirstFit";
+size_t                   PMM::dma_pages = 0;
+FIRSTFIT                 PMM::dma(phy_pages);
+size_t                   PMM::normal_pages = 0;
+FIRSTFIT                 PMM::normal(&phy_pages[DMA_PAGES]);
+size_t                   PMM::high_pages = 0;
+FIRSTFIT                 PMM::high(&phy_pages[DMA_PAGES + NORMAL_PAGES]);
+size_t                   PMM::pages = 0;
 
 PMM::PMM(void) {
     return;
@@ -57,8 +62,10 @@ void PMM::get_ram_info(e820map_t *e820map) {
     return;
 }
 
-void PMM::mamage_init(uint32_t pages) {
-    manage.init(pages);
+void PMM::mamage_init(void) {
+    dma.init(dma_pages);
+    normal.init(normal_pages);
+    high.init(high_pages);
     return;
 }
 
@@ -71,39 +78,74 @@ int32_t PMM::init(void) {
     e820map_t e820map;
     bzero(&e820map, sizeof(e820map_t));
     get_ram_info(&e820map);
-    // 用于记录可用内存总数
-    uint32_t pages_count = 0;
     // 计算可用的内存
     // 这里需要保证 addr 是按照 PMM_PAGE_MASK 对齐的
     for (size_t i = 0; i < e820map.nr_map; i++) {
         for (uint8_t *addr = e820map.map[i].addr;
              addr < (e820map.map[i].addr + e820map.map[i].length);
              addr += COMMON::PAGE_SIZE) {
-            // 初始化可用内存段的物理页数组
-            // 地址对应的物理页数组下标
             // 跳过 0x00 开始的一页，便于判断 nullptr
             if (addr == nullptr) {
                 continue;
             }
-            phy_pages[pages_count].addr = addr;
-            phy_pages[pages_count].ref  = 0;
-            pages_count++;
+            // 初始化可用内存段的物理页数组
+            // 地址对应的物理页数组下标
+            phy_pages[pages].addr = addr;
+            // 内核已使用部分
+            if (addr >= COMMON::KERNEL_START_4K &&
+                addr < COMMON::KERNEL_END_4K) {
+                phy_pages[pages].ref = 1;
+            }
+            else {
+                phy_pages[pages].ref = 0;
+            }
+            pages++;
         }
     }
-    mamage_init(pages_count);
+    // 计算各个分区大小
+    dma_pages    = DMA_PAGES;
+    normal_pages = NORMAL_PAGES;
+    high_pages   = HIGH_PAGES;
+    mamage_init();
     io.printf("pmm_init\n");
     return 0;
 }
 
 void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
-    return manage.alloc(_pages);
+    if (_zone == COMMON::DMA) {
+        return dma.alloc(_pages);
+    }
+    else if (_zone == COMMON::NORMAL) {
+        return normal.alloc(_pages);
+    }
+    else if (_zone == COMMON::HIGH) {
+        return high.alloc(_pages);
+    }
+    return nullptr;
 }
 
-void PMM::free_page(void *_addr, uint32_t _pages) {
-    manage.free(_addr, _pages);
+void PMM::free_page(void *_addr, uint32_t _pages, COMMON::zone_t _zone) {
+    if (_zone == COMMON::DMA) {
+        return dma.free(_addr, _pages);
+    }
+    else if (_zone == COMMON::NORMAL) {
+        return normal.free(_addr, _pages);
+    }
+    else if (_zone == COMMON::HIGH) {
+        return high.free(_addr, _pages);
+    }
     return;
 }
 
-uint32_t PMM::free_pages_count(void) {
-    return manage.free_pages_count();
+uint32_t PMM::free_pages_count(COMMON::zone_t _zone) {
+    if (_zone == COMMON::DMA) {
+        return dma.free_pages_count();
+    }
+    else if (_zone == COMMON::NORMAL) {
+        return normal.free_pages_count();
+    }
+    else if (_zone == COMMON::HIGH) {
+        return high.free_pages_count();
+    }
+    return 0;
 }
