@@ -33,10 +33,10 @@ public:
     ~PMM(void);
     // 初始化内存管理
     int32_t init(void);
-    // 请求指定数量物理页
-    void *alloc_page(uint32_t pages);
+    // 请求指定 zone 的物理页
+    void *alloc_page(uint32_t _pages, COMMON::zone_t _zone);
     // 释放内存页
-    void free_page(void *addr, uint32_t pages);
+    void free_page(void *_addr, uint32_t _pages);
     // 获取空闲内存页数量
     uint32_t free_pages_count(void);
 };
