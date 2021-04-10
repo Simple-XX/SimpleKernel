@@ -33,6 +33,8 @@ KERNEL::KERNEL(uint32_t _magic, void *_addr)
     drv_init();
     // 物理内存管理初始化
     pmm.init();
+    // 测试物理内存
+    test_pmm();
     return;
 }
 
@@ -112,7 +114,6 @@ void KERNEL::show_info(void) {
 }
 
 int32_t KERNEL::test(void) {
-    test_pmm();
     io.printf("test done.\n");
     return 0;
 }
