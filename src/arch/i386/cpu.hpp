@@ -493,29 +493,6 @@ namespace CPU {
         uint32_t low;
         uint32_t high;
     } msr_t;
-
-    static inline msr_t MSR_READ(uint32_t _idx) {
-        msr_t msr;
-        __asm__ volatile("rdmsr" : "=a"(msr.low), "=d"(msr.high) : "c"(_idx));
-        return msr;
-    }
-
-    static inline void MSR_WRITE(uint32_t _idx, msr_t _msr) {
-        __asm__ volatile("wrmsr" : : "c"(_idx), "a"(_msr.low), "d"(_msr.high));
-        return;
-    }
-    static inline void set_apic_base(void *_base) {
-        msr_t msr;
-        msr.low = (reinterpret_cast<uint32_t>(_base) & 0xFFFFF000) |
-                  IA32_APIC_BASE_MSR_ENABLE;
-        msr.high = 0;
-        MSR_WRITE(IA32_APIC_BASE_MSR, msr);
-    }
-    static inline void *get_apic_base(void) {
-        void *addr = nullptr;
-        addr       = reinterpret_cast<void *>(MSR_READ(IA32_APIC_BASE_MSR).low);
-        return addr;
-    }
 };
 
 #endif /* _CPU_HPP_ */

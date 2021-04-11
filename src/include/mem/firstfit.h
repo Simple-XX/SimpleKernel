@@ -27,9 +27,7 @@ public:
 
 class FIRSTFIT {
 private:
-    static constexpr const uint32_t FF_USED   = 0x00;
-    static constexpr const uint32_t FF_UNUSED = 0x01;
-    static IO                       io;
+    static IO io;
     // 当前管理的页数
     uint32_t page_count;
     // 空闲页数

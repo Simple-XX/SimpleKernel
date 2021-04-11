@@ -1,13 +1,7 @@
 
-<<<<<<< HEAD
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
 # setup_x86_64_mac.sh for Simple-XX/SimpleKernel.
-=======
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-#
-# setup_x86_64_mac.sh for Simple-XX/SimpleKernel.
->>>>>>> keyboard_init
 
 #!/bin/bash
 

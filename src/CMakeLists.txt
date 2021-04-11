@@ -53,9 +53,9 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL raspi2)
     add_executable(${KernelName}
         $<TARGET_OBJECTS:arch>
-        $<TARGET_OBJECTS:drv>
         $<TARGET_OBJECTS:libc>
         $<TARGET_OBJECTS:libcxx>
+        $<TARGET_OBJECTS:drv>
         $<TARGET_OBJECTS:kernel>)
 elseif (SimpleKernelArch STREQUAL x86_64)
     add_executable(${KernelName}_boot
