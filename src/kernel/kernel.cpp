@@ -71,13 +71,16 @@ void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.info("kernel in memory start: 0x%08X, end 0x%08X\n",
             COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
+    io.info(
+        "kernel in memory start4k: 0x%08X, end4k 0x%08X, KERNEL_SIZE: 0x%08X\n",
+        COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, COMMON::KERNEL_SIZE);
     io.info("kernel in memory size: %d KB, %d pages\n",
-            (reinterpret_cast<uint32_t>(COMMON::KERNEL_END_ADDR) -
-             reinterpret_cast<uint32_t>(COMMON::KERNEL_START_ADDR)) /
+            ((uint8_t *)COMMON::KERNEL_END_ADDR -
+             (uint8_t *)COMMON::KERNEL_START_ADDR) /
                 1024,
-            (reinterpret_cast<uint32_t>(COMMON::KERNEL_END_4K) -
-             reinterpret_cast<uint32_t>(COMMON::KERNEL_START_4K)) /
-                1024 / 4);
+            ((uint8_t *)COMMON::KERNEL_END_4K -
+             (uint8_t *)COMMON::KERNEL_START_4K) /
+                COMMON::PAGE_SIZE);
     io.info("Simple Kernel.\n");
     return;
 }
