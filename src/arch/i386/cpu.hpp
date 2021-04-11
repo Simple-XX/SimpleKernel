@@ -9,6 +9,7 @@
 
 #include "stdint.h"
 #include "stdbool.h"
+#include "assert.h"
 
 // TODO: CPUID 相关操作，补全寄存器操作，数据地址等
 
@@ -329,7 +330,7 @@ namespace CPU {
         return (eflags & EFLAGS_CF);
     }
 
-    static inline void INVLPG(void *addr) {
+    static inline void INVLPG(const void *addr) {
         __asm__ volatile("invlpg (%0)" : : "r"(addr) : "memory");
         return;
     }
@@ -468,6 +469,30 @@ namespace CPU {
         uint32_t cr0 = read_cr0();
         return (cr0 & CR0_PG);
     }
+
+    // 开启 PG
+    static inline bool CR0_SET_PG(void) {
+        void *cr3 = 0;
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+        assert(cr3 != nullptr);
+        uint32_t cr0 = 0;
+        __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
+        // 最高位 PG 位置 1，分页开启
+        cr0 |= (1u << 31);
+        __asm__ volatile("mov %0, %%cr0" : : "r"(cr0));
+        return true;
+    }
+
+    // 设置 CR3
+    static inline bool CR3_SET_PGD(void *_pgd) {
+        __asm__ volatile("mov %0, %%cr3" : : "r"(_pgd));
+        return true;
+    }
+
+    typedef struct {
+        uint32_t low;
+        uint32_t high;
+    } msr_t;
 };
 
 #endif /* _CPU_HPP_ */
