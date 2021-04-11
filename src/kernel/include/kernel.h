@@ -9,16 +9,18 @@
 
 #include "stdint.h"
 #include "pmm.h"
+#include "vmm.h"
 #include "io.h"
 
 class KERNEL {
 private:
     static IO io;
     PMM       pmm;
+    VMM       vmm;
     uint32_t  magic;
     void *    addr;
     int32_t   test_pmm(void);
-    void      arch_init(void) const;
+    int32_t   test_vmm(void);
 
 protected:
 public:
