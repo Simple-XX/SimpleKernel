@@ -5,11 +5,10 @@
 
 PROJECT(boot ASM)
 
-find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/boot)
-set(boot_src ${boot_asm_src})
+find_asm_source_files(ASM_SOURCE_FILES ${boot_SOURCE_DIR})
 
-set(arch_src ${boot_src})
+set(boot_src ${ASM_SOURCE_FILES})
 
-add_library(${PROJECT_NAME} OBJECT ${arch_src})
+add_library(${PROJECT_NAME} OBJECT ${boot_src})
 
 target_include_kernel_header_files(${PROJECT_NAME})

@@ -8,23 +8,17 @@
 #define _KERNEL_H_
 
 #include "stdint.h"
-#include "gdt.h"
-#include "intr.h"
-#include "apic.h"
-#include "clock.h"
 #include "pmm.h"
 #include "io.h"
 
 class KERNEL {
 private:
-    static IO   io;
-    static APIC apic;
-    PMM         pmm;
-    uint32_t    magic;
-    void *      addr;
-    void        arch_init(void) const;
-    void        drv_init(void) const;
-    int32_t     test_pmm(void);
+    static IO io;
+    PMM       pmm;
+    uint32_t  magic;
+    void *    addr;
+    int32_t   test_pmm(void);
+    void      arch_init(void) const;
 
 protected:
 public:
