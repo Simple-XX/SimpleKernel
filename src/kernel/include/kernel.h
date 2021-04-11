@@ -18,6 +18,7 @@ private:
     uint32_t  magic;
     void *    addr;
     int32_t   test_pmm(void);
+    void      arch_init(void) const;
 
 protected:
 public:
