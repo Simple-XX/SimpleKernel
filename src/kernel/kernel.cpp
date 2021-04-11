@@ -12,6 +12,7 @@
 #include "assert.h"
 #include "multiboot2.h"
 #include "kernel.h"
+#include "keyboard.h"
 
 IO KERNEL::io;
 
@@ -32,6 +33,12 @@ KERNEL::KERNEL(uint32_t _magic, void *_addr)
     heap.init();
     // 测试堆
     test_heap();
+    // 中断初始化
+    INTR::init();
+    // APIC 初始化
+    // BUG: GP
+    // apic.init();
+    keyboard.init();
     return;
 }
 

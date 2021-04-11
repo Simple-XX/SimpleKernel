@@ -14,7 +14,7 @@ extern "C" void kernel_main(uint32_t magic, void *addr);
 void kernel_main(uint32_t magic, void *addr) {
     KERNEL kernel(magic, addr);
     kernel.show_info();
-    CPU::cli();
+    CPU::sti();
     while (1) {
         ;
     }
