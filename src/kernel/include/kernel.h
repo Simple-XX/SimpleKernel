@@ -11,6 +11,8 @@
 #include "pmm.h"
 #include "vmm.h"
 #include "heap.h"
+#include "intr.h"
+#include "apic.h"
 #include "io.h"
 
 class KERNEL {
@@ -19,6 +21,7 @@ private:
     PMM       pmm;
     VMM       vmm;
     HEAP      heap;
+    APIC      apic;
     uint32_t  magic;
     void *    addr;
     int32_t   test_pmm(void);
