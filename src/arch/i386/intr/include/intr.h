@@ -7,9 +7,9 @@
 #ifndef _INTR_H_
 #define _INTR_H_
 
-#pragma once
-
 #include "stdint.h"
+
+// TODO: 升级为 APIC
 
 namespace INTR {
     // 中断表最大值
@@ -49,7 +49,7 @@ namespace INTR {
     // IDE1 传输控制使用
     static constexpr const uint32_t IRQ15 = 47;
 
-    // 中断号定义
+    // External(hardware generated) interrupts.
     static constexpr const uint32_t INT_DIVIDE_ERROR     = 0;
     static constexpr const uint32_t INT_DEBUG            = 1;
     static constexpr const uint32_t INT_NMI              = 2;
@@ -81,7 +81,29 @@ namespace INTR {
     // End-of-interrupt command code
     static constexpr const uint32_t PIC_EOI = 0x20;
 
-    typedef struct pt_regs {
+    class error_code_t {
+    public:
+        uint32_t ext : 1;
+        uint32_t idt : 1;
+        uint32_t ti : 1;
+        uint32_t sec_idx : 28;
+    };
+
+    class page_fault_error_code_t {
+    public:
+        uint32_t p : 1;
+        uint32_t wr : 1;
+        uint32_t us : 1;
+        uint32_t rsvd : 1;
+        uint32_t id : 1;
+        uint32_t pk : 1;
+        uint32_t reserved1 : 9;
+        uint32_t sgx : 1;
+        uint32_t reserved2 : 16;
+    };
+
+    class pt_regs_t {
+    public:
         // segment registers
         // 16 bits
         uint32_t gs;
@@ -115,7 +137,7 @@ namespace INTR {
         uint32_t user_esp;
         // 16 bits
         uint32_t user_ss;
-    } pt_regs_t;
+    };
 
     // 中断描述符
     typedef struct idt_entry {
@@ -156,26 +178,27 @@ namespace INTR {
     void set_idt(uint8_t num, uint32_t base, uint16_t target, uint8_t flags);
     // 中断名数组
     static constexpr const char *const intrnames[] = {
-        "Divide error",
-        "Debug",
-        "Non-Maskable Interrupt",
+        "Divide Error",
+        "Debug Exception",
+        "NMI Interrupt",
         "Breakpoint",
         "Overflow",
         "BOUND Range Exceeded",
-        "Invalid Opcode",
-        "Device Not Available",
+        "Invalid Opcode (Undefined Opcode)",
+        "Device Not Available (No Math Coprocessor)",
         "Double Fault",
-        "Coprocessor Segment Overrun",
+        "Coprocessor Segment Overrun (reserved)",
         "Invalid TSS",
         "Segment Not Present",
-        "Stack Fault",
+        "Stack-Segment Fault",
         "General Protection",
         "Page Fault",
-        "(unknown trap)",
-        "x87 FPU Floating-Point Error",
+        "(Intel reserved. Do not use.)",
+        "x87 FPU Floating-Point Error (Math Fault)",
         "Alignment Check",
-        "Machine-Check",
+        "Machine Check",
         "SIMD Floating-Point Exception",
+        "Virtualization Exception",
     };
     int32_t init(void);
     // 注册一个中断处理函数

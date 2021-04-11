@@ -4,34 +4,36 @@
 //
 // kernel.h for Simple-XX/SimpleKernel.
 
-#ifndef _KERNEL_HPP_
-#define _KERNEL_HPP_
-
-#pragma once
+#ifndef _KERNEL_H_
+#define _KERNEL_H_
 
 #include "stdint.h"
-#include "debug.h"
-#include "gdt.h"
-#include "intr.h"
-#include "clock.h"
 #include "pmm.h"
+#include "vmm.h"
+#include "heap.h"
+#include "intr.h"
+#include "apic.h"
+#include "io.h"
 
 class KERNEL {
 private:
-    addr_t  magic;
-    addr_t  addr;
-    PMM     pmm;
-    void    arch_init(void) const;
-    int32_t test_pmm(void);
+    static IO io;
+    PMM       pmm;
+    VMM       vmm;
+    HEAP      heap;
+    APIC      apic;
+    uint32_t  magic;
+    void *    addr;
+    int32_t   test_pmm(void);
+    int32_t   test_vmm(void);
+    int32_t   test_heap(void);
 
 protected:
 public:
-    KERNEL(void);
-    KERNEL(addr_t magic, addr_t addr);
+    KERNEL(uint32_t _magic, void *_addr);
     ~KERNEL(void);
-    int32_t init(void);
     int32_t test(void);
     void    show_info(void);
 };
 
-#endif /* _KERNEL_HPP_ */
+#endif /* _KERNEL_H_ */

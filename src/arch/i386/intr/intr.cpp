@@ -12,7 +12,7 @@ namespace INTR {
 #ifdef __cplusplus
     extern "C" {
 #endif
-
+    IO io;
     // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
     // ISR:中断服务程序(interrupt service routine)
     // 0 #DE 除 0 异常
@@ -274,55 +274,7 @@ namespace INTR {
     }
 
     static void page_fault(pt_regs_t *regs) {
-#ifdef __x86_64__
-        uint64_t cr2;
-        asm volatile("movq %%cr2,%0" : "=r"(cr2));
-#else
-        uint32_t cr2;
-        asm volatile("mov %%cr2,%0" : "=r"(cr2));
-#endif
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "Page fault at 0x%08X, virtual faulting address 0x%08X\n",
-                  regs->eip, cr2);
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "Error code: 0x%08X\n", regs->err_code);
-
-        // bit 0 为 0 指页面不存在内存里
-        if (!(regs->err_code & 0x1)) {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "Because the page wasn't present.\n");
-        }
-        // bit 1 为 0 表示读错误，为 1 为写错误
-        if (regs->err_code & 0x2) {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "Write error.\n");
-        }
-        else {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "Read error.\n");
-        }
-        // bit 2 为 1 表示在用户模式打断的，为 0 是在内核模式打断的
-        if (regs->err_code & 0x4) {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "In user mode.\n");
-        }
-        else {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "In kernel mode.\n");
-        }
-        // bit 3 为 1 表示错误是由保留位覆盖造成的
-        if (regs->err_code & 0x8) {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "Reserved bits being overwritten.\n");
-        }
-        // bit 4 为 1 表示错误发生在取指令的时候
-        if (regs->err_code & 0x10) {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "The fault occurred during an instruction fetch.\n");
-        }
-        while (1) {
-            ;
-        }
+        die("Page Fault.", regs->old_esp, regs->int_no);
         return;
     }
 
@@ -435,8 +387,7 @@ namespace INTR {
             interrupt_handlers[intr_no](regs);
         }
         else {
-            io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                      "Unhandled interrupt: %d %s\n", intr_no,
+            io.printf("Unhandled interrupt: %d %s\n", intr_no,
                       get_intr_name(intr_no));
             CPU::hlt();
         }
