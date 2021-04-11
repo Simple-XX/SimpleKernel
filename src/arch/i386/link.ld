@@ -13,7 +13,7 @@ SECTIONS
     /* 指定内核从地址 1M 处开始 */
     . = 1M;
 
-	PROVIDE(kernel_start = .);
+    PROVIDE(kernel_start = .);
     PROVIDE(kernel_text_start = .);
 	.text : ALIGN(4K)
 	{

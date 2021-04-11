@@ -58,31 +58,26 @@ void TUI::put_entry_at(const char _c, const col_t _color, const size_t _x,
     return;
 }
 
-void TUI::escapeconv(const char _c) {
+bool TUI::escapeconv(const char _c) {
     switch (_c) {
         case '\n': {
-            pos.col = 0;
             pos.row++;
-            break;
+            pos.col = 0;
+            return true;
         }
         case '\t': {
             // 取整对齐
-            pos.col = (pos.col + 7) & ~7;
-            // 如果到达最后一列则换行
-            if (++pos.col >= WIDTH) {
-                pos.col = 0;
-                pos.row++;
-            }
-            break;
+            pos.col += (pos.col % 4 == 0) ? 4 : 4 - (pos.col % 4);
+            return true;
         }
         case '\b': {
-            if (pos.col) {
-                pos.col -= 2;
+            if (pos.col > 0) {
+                write(pos.row * WIDTH + --pos.col, char_t(' ', color));
             }
-            break;
+            return true;
         }
     }
-    return;
+    return false;
 }
 
 void TUI::scroll(void) {
@@ -101,13 +96,13 @@ void TUI::scroll(void) {
     return;
 }
 
-void TUI::set_color(const col_t _color) {
-    this->color = _color;
+void TUI::set_color(const COLOR::color_t _color) {
+    this->color = col_t(_color, COLOR::BLACK);
     return;
 }
 
-col_t TUI::get_color(void) const {
-    return this->color;
+COLOR::color_t TUI::get_color(void) const {
+    return (COLOR::color_t)(this->color.back | this->color.fore);
 }
 
 void TUI::set_pos(const pos_t _pos) {
@@ -143,7 +138,6 @@ pos_t TUI::get_pos(void) const {
     PORT::outb(TUI_ADDR, TUI_CURSOR_L);
     size_t cursor_pos_l = PORT::inb(TUI_DATA);
     // 返回光标位置
-    // return (cursor_pos_h << 8) | cursor_pos_l;
     return pos_t(cursor_pos_l, cursor_pos_h);
 }
 
@@ -157,14 +151,15 @@ char_t TUI::read(const size_t _idx) const {
 }
 
 void TUI::put_char(const char _c) {
-    put_entry_at(_c, color, pos.col, pos.row);
-    // 如果到达最后一列则换行
-    if (++pos.col >= WIDTH) {
-        pos.col = 0;
-        pos.row++;
-    }
     // 转义字符处理
-    escapeconv(_c);
+    if (escapeconv(_c) == false) {
+        put_entry_at(_c, color, pos.col, pos.row);
+        // 如果到达最后一列则换行
+        if (++pos.col >= WIDTH) {
+            pos.col = 0;
+            pos.row++;
+        }
+    }
     // 屏幕滚动
     scroll();
     set_pos(pos);
