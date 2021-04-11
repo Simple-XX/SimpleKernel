@@ -22,6 +22,7 @@ endfunction()
 
 function(target_include_common_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/include)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/include/mem)
 endfunction()
 
 function(target_include_drv_header_files Target)

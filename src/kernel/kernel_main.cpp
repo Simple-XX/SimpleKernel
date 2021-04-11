@@ -4,15 +4,20 @@
 //
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
+#include "cpu.hpp"
+#include "assert.h"
 #include "kernel.h"
 
-extern "C" void kernel_main(void);
+extern "C" void kernel_main(uint32_t magic, void *addr);
 
-void kernel_main(void) {
-    KERNEL kernel;
+// 内核入口
+void kernel_main(uint32_t magic, void *addr) {
+    KERNEL kernel(magic, addr);
     kernel.show_info();
+    CPU::cli();
     while (1) {
         ;
     }
+    assert(0);
     return;
 }
