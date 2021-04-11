@@ -44,6 +44,12 @@ void list_del(T *list) {
     return;
 }
 
+// 返回前面的元素
+template <class T>
+T *list_prev(T *list) {
+    return list->prev;
+}
+
 // 返回后面的的元素
 template <class T>
 T *list_next(T *list) {
