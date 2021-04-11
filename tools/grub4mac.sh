@@ -1,7 +1,7 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+# This file is a part of SimpleXX/SimpleKernel (https://github.com/SimpleXX/SimpleKernel).
 #
-# grub4mac.sh for Simple-XX/SimpleKernel.
+# grub4mac.sh for SimpleXX/SimpleKernel.
 
 #!/bin/bash
 
