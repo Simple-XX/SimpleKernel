@@ -6,6 +6,7 @@
 
 #include "string.h"
 #include "multiboot2.h"
+#include "gdt.h"
 #include "pmm.h"
 
 extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
@@ -62,6 +63,8 @@ void PMM::mamage_init(void) {
 }
 
 int32_t PMM::init(void) {
+    // 因为 GDT 是 x86 遗毒，所以在这里处理
+    GDT::init();
 // #define DEBUG
 #ifdef DEBUG
     io.printf("KERNEL_START_4K: 0x%X, KERNEL_END_4K: 0x%X\n", KERNEL_START_4K,
