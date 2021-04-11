@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_C_COMPILER_WORKS TRUE)
 set(CMAKE_CXX_COMPILER_WORKS TRUE)
 
-project(SimpleKernel LANGUAGES C CXX ASM)
+project(SimpleKernel LANGUAGES CXX ASM)
 
 if(${SimpleKernel_SOURCE_DIR} STREQUAL ${SimpleKernel_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there.")
