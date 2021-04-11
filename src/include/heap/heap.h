@@ -7,54 +7,39 @@
 #ifndef _HEAP_H_
 #define _HEAP_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "stdint.h"
 #include "stddef.h"
-#include "pmm.h"
+#include "io.h"
+#include "slab.h"
 
-// 堆起始地址，内核栈结束后
-#define HEAP_START (KERNEL_STACK_END & PMM_PAGE_MASK)
-// 堆最大容量 4MB
-#define HEAP_MAX_SIZE (0x400000UL)
-// 堆结束地址
-#define HEAP_END (HEAP_START + HEAP_MAX_SIZE)
-
-// 堆管理结构体
-typedef struct heap_manage {
+// TODO: 添加对 VMM 的处理
+class HEAP {
+private:
+    static IO io;
+    // 堆最大容量 4MB
+    static constexpr const uint32_t HEAP_SIZE = 0x400000;
     // 管理算法的名称
     const char *name;
+    SLAB        manage;
+
+protected:
+public:
+    HEAP(void);
+    ~HEAP(void);
     // 初始化
-    void (*heap_manage_init)(void *addr_start);
-    // 内存申请，单位为 Byte，align 为对齐大小
-    void *(*heap_manage_malloc)(size_t byte);
-    // 释放内存
-    void (*heap_manage_free)(void *addr);
-    // 获取当前管理的内存页数
-    uint32_t (*heap_manage_get_pages)(void);
-    // 获取空闲内存大小
-    uint32_t (*heap_manage_get_free_bytes)(void);
-} heap_manage_t;
-
-// 初始化堆
-void heap_init(void);
-
-// 内存申请，单位为 Byte
-void *kmalloc(size_t byte);
-
-// 内存释放
-void kfree(void *p);
-
-// 获取空闲内存数量 单位为页
-uint32_t heap_get_pages(void);
-
-// 获取空闲内存数量 单位为 byte
-uint32_t heap_get_free_bytes(void);
-
-#ifdef __cplusplus
-}
-#endif
+    int32_t init(void);
+    //
+    int32_t manage_init(void);
+    // 内存申请，单位为 Byte
+    void *malloc(size_t byte);
+    // 内存释放
+    void free(void *p);
+    // 获取管理的内存大小，包括管理信息
+    size_t get_total(void);
+    // 获取块数量
+    size_t get_block(void);
+    // 获取空闲内存数量 单位为 byte
+    size_t get_free(void);
+};
 
 #endif /* _HEAP_H_ */

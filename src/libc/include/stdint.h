@@ -23,12 +23,6 @@ typedef unsigned int       uint32_t;
 // typedef unsigned long uint32_t;
 typedef unsigned long long uint64_t;
 
-#ifdef __x86_64__
-typedef uint64_t addr_t;
-#else
-typedef uint32_t addr_t;
-#endif
-
 #ifdef __cplusplus
 }
 #endif
