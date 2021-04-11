@@ -13,3 +13,4 @@ set(libc_src ${stdio_src} ${stdio_src} ${string_src} ${math_src})
 add_library(${PROJECT_NAME} OBJECT ${libc_src})
 
 target_include_libc_header_files(${PROJECT_NAME})
+target_include_common_header_files(${PROJECT_NAME})
