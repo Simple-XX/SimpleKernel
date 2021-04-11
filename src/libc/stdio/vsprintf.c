@@ -16,6 +16,8 @@ extern "C" {
 #include "stdint.h"
 #include "string.h"
 
+// BUG: See https://github.com/Simple-XX/SimpleKernel/issues/3
+
 // 判断字符是否数字字符
 #define is_digit(c) ((c) >= '0' && (c) <= '9')
 
