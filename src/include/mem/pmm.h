@@ -14,17 +14,6 @@
 #include "common.h"
 #include "firstfit.h"
 
-// NOTE: 这里的 ZONE 与 Linux 中的划分不同，只是方便控制分配内存的位置
-
-// NORMAL 区域大小
-static constexpr const size_t NORMAL_SIZE = COMMON::KERNEL_SIZE;
-// TODO: 这个大小与 get_ram_info() 获得的有冲突
-// HIGH 区域大小 剩余所有
-static constexpr const size_t HIGH_SIZE = COMMON::PMM_MAX_SIZE - NORMAL_SIZE;
-
-static constexpr const size_t NORMAL_PAGES = NORMAL_SIZE / COMMON::PAGE_SIZE;
-static constexpr const size_t HIGH_PAGES   = HIGH_SIZE / COMMON::PAGE_SIZE;
-
 class PMM {
 private:
     static IO io;

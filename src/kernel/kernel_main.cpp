@@ -13,10 +13,8 @@ extern "C" void kernel_main(uint32_t magic, void *addr);
 // 内核入口
 void kernel_main(uint32_t magic, void *addr) {
     KERNEL kernel(magic, addr);
-    kernel.test();
     kernel.show_info();
-
-    CPU::sti();
+    CPU::cli();
     while (1) {
         ;
     }

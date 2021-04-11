@@ -30,7 +30,7 @@ void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
     chunk.addr   = mempage.addr;
     chunk.npages = 1;
     chunk.ref    = mempage.ref;
-    chunk.flag   = mempage.ref == 0 ? FF_UNUSED : FF_USED;
+    chunk.flag   = 0;
     return;
 }
 
@@ -88,7 +88,7 @@ void *FIRSTFIT::alloc(size_t _pages) {
     ff_list_entry_t *entry    = list;
     do {
         // 当前 chunk 空闲
-        if (entry->flag == FF_UNUSED) {
+        if (entry->ref == 0) {
             // 判断长度是否足够
             if (entry->npages >= _pages) {
                 // 符合条件，对 chunk 进行分割
@@ -101,13 +101,13 @@ void *FIRSTFIT::alloc(size_t _pages) {
                     tmp->addr   = entry->addr + _pages * COMMON::PAGE_SIZE;
                     tmp->npages = entry->npages - _pages;
                     tmp->ref    = 0;
-                    tmp->flag   = FF_UNUSED;
+                    tmp->flag   = 0;
                     list_add_after(entry, tmp);
                 }
                 // 不够的话直接分配
                 entry->npages = _pages;
                 entry->ref    = 1;
-                entry->flag   = FF_USED;
+                entry->flag   = 0;
                 page_free_count -= _pages;
                 res_addr = entry->addr;
                 break;
@@ -125,19 +125,19 @@ void FIRSTFIT::free(void *addr_start, size_t _pages) {
         ;
     }
     // 释放所有页
-    if (--entry->ref == 0) {
-        entry->flag = FF_UNUSED;
+    if (entry->ref > 0) {
+        entry->ref--;
     }
     // 如果于相邻链表有空闲的则合并
     // 后面
-    if (entry->next != entry && entry->next->flag == FF_UNUSED) {
+    if (entry->next != entry && entry->next->ref == 0) {
         ff_list_entry_t *next = entry->next;
         entry->npages += next->npages;
         next->npages = 0;
         list_del(next);
     }
     // 前面
-    if (entry->prev != entry && entry->prev->flag == FF_UNUSED) {
+    if (entry->prev != entry && entry->prev->ref == 0) {
         ff_list_entry_t *prev = entry->prev;
         prev->npages += entry->npages;
         entry->npages = 0;

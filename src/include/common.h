@@ -91,6 +91,7 @@ namespace COMMON {
     };
 
     // zone 机制
+    // NOTE: 这里的 ZONE 与 Linux 中的划分不同，只是方便控制分配内存的位置
     enum zone_t : uint8_t {
         // 与 KERNEL_SIZE 对应
         NORMAL = 0,
