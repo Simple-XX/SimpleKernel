@@ -67,7 +67,7 @@ private:
     void put_entry_at(const char c, const col_t color, const size_t x,
                       const size_t y);
     // 转义字符处理
-    void escapeconv(const char c);
+    bool escapeconv(const char c);
     // 滚动显示
     void scroll(void);
     // 生成一个字符
@@ -78,9 +78,10 @@ public:
     TUI(void);
     ~TUI(void);
     // 设置颜色
-    void set_color(const col_t color);
+    // TODO: 支持分别字体与背景色
+    void set_color(const COLOR::color_t color);
     // 获取颜色
-    col_t get_color(void) const;
+    COLOR::color_t get_color(void) const;
     // 设置光标位置
     void set_pos(const pos_t pos);
     void set_pos_row(const size_t row);
