@@ -10,27 +10,16 @@
 #include "common.h"
 #include "color.h"
 #include "assert.h"
-#include "keyboard.h"
 #include "multiboot2.h"
 #include "kernel.h"
 
-#if defined(__i386__) || defined(__x86_64__)
-#include "gdt.h"
-#include "intr.h"
-#include "clock.h"
-#elif defined(__arm__) || defined(__aarch64__)
-#endif
-
-IO   KERNEL::io;
-APIC KERNEL::apic;
+IO KERNEL::io;
 
 KERNEL::KERNEL(uint32_t _magic, void *_addr)
     : pmm(PMM()), vmm(VMM()), magic(_magic), addr(_addr) {
     // 读取 grub2 传递的信息
     MULTIBOOT2::multiboot2_init(magic, addr);
     cpp_init();
-    arch_init();
-    drv_init();
     // 物理内存管理初始化
     pmm.init();
     // 测试物理内存
@@ -43,26 +32,6 @@ KERNEL::KERNEL(uint32_t _magic, void *_addr)
 }
 
 KERNEL::~KERNEL(void) {
-    return;
-}
-
-void KERNEL::arch_init(void) const {
-#if defined(__i386__) || defined(__x86_64__)
-    GDT::init();
-    INTR::init();
-#elif defined(__arm__) || defined(__aarch64__)
-#endif
-    return;
-}
-
-void KERNEL::drv_init(void) const {
-#if defined(__i386__) || defined(__x86_64__)
-    // 时钟初始化
-    clock.init();
-#elif defined(__arm__) || defined(__aarch64__)
-#endif
-    // 键盘输入初始化
-    keyboard.init();
     return;
 }
 
@@ -157,25 +126,18 @@ int32_t KERNEL::test_vmm(void) {
 
 void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
-    io.printf(COLOR::LIGHT_GREEN,
-              "kernel in memory start: 0x%08X, end 0x%08X\n",
-              COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
-    io.printf(
-        COLOR::LIGHT_GREEN,
+    io.info("kernel in memory start: 0x%08X, end 0x%08X\n",
+            COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
+    io.info(
         "kernel in memory start4k: 0x%08X, end4k 0x%08X, KERNEL_SIZE: 0x%08X\n",
         COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, COMMON::KERNEL_SIZE);
-    io.printf(COLOR::LIGHT_GREEN, "kernel in memory size: %d KB, %d pages\n",
-              ((uint8_t *)COMMON::KERNEL_END_ADDR -
-               (uint8_t *)COMMON::KERNEL_START_ADDR) /
-                  1024,
-              ((uint8_t *)COMMON::KERNEL_END_4K -
-               (uint8_t *)COMMON::KERNEL_START_4K) /
-                  COMMON::PAGE_SIZE);
-    io.printf(COLOR::LIGHT_GREEN, "Simple Kernel.\n");
+    io.info("kernel in memory size: %d KB, %d pages\n",
+            ((uint8_t *)COMMON::KERNEL_END_ADDR -
+             (uint8_t *)COMMON::KERNEL_START_ADDR) /
+                1024,
+            ((uint8_t *)COMMON::KERNEL_END_4K -
+             (uint8_t *)COMMON::KERNEL_START_4K) /
+                COMMON::PAGE_SIZE);
+    io.info("Simple Kernel.\n");
     return;
-}
-
-int32_t KERNEL::test(void) {
-    io.printf("test done.\n");
-    return 0;
 }

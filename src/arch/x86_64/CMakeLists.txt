@@ -15,17 +15,3 @@ add_library(${PROJECT_NAME} OBJECT ${arch_src})
 target_include_kernel_header_files(${PROJECT_NAME})
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/boot)
-<<<<<<< HEAD
-<<<<<<< HEAD
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gdt)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/intr)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/debug)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/pmm)
-=======
-
->>>>>>> keyboard_init
-=======
-
-=======
->>>>>>> print_only
->>>>>>> keyboard_init

@@ -29,7 +29,7 @@ gdt_load:
 flush:
     ret
 
-# TSS 刷新   
+# TSS 刷新
 .global tss_load
 tss_load:
     # TSS 在全局描述符表里是第 5 个故而 00101000B 即就是 0x28
