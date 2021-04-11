@@ -7,6 +7,7 @@
 #ifndef _UART_H_
 #define _UART_H_
 
+#include "stddef.h"
 #include "stdint.h"
 #include "stddef.h"
 #include "color.h"
@@ -35,24 +36,23 @@ private:
     static constexpr const uint32_t UART0_ITIP   = UART0_BASE + 0x84;
     static constexpr const uint32_t UART0_ITOP   = UART0_BASE + 0x88;
     static constexpr const uint32_t UART0_TDR    = UART0_BASE + 0x8C;
-    void                            delay(int32_t count);
+    void                            delay(int32_t count) const;
 
 protected:
 public:
     UART(void);
     ~UART(void);
-    int32_t init(void);
-    void    put_char(const char c);
+    void put_char(const char _c) const;
     // 写字符串
-    void write_string(const char *s);
+    void write_string(const char *_s) const;
     // 写字符串
-    void write(const char *s, size_t len);
+    void write(const char *_s, size_t _len) const;
     // 读字符 TODO
-    uint8_t get_char(void);
+    uint8_t get_char(void) const;
     // 设置颜色 TODO
-    void set_color(const color_t color);
+    void set_color(const COLOR::color_t _color) const;
     // 获取颜色 TODO
-    color_t get_color(void);
+    COLOR::color_t get_color(void) const;
 };
 
 #endif /* _UART_H_ */

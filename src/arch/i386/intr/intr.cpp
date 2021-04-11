@@ -12,7 +12,11 @@ namespace INTR {
 #ifdef __cplusplus
     extern "C" {
 #endif
+<<<<<<< HEAD
 
+=======
+    IO io;
+>>>>>>> intr
     // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
     // ISR:中断服务程序(interrupt service routine)
     // 0 #DE 除 0 异常
@@ -274,6 +278,7 @@ namespace INTR {
     }
 
     static void page_fault(pt_regs_t *regs) {
+<<<<<<< HEAD
 #ifdef __x86_64__
         uint64_t cr2;
         asm volatile("movq %%cr2,%0" : "=r"(cr2));
@@ -323,6 +328,9 @@ namespace INTR {
         while (1) {
             ;
         }
+=======
+        die("Page Fault.", regs->old_esp, regs->int_no);
+>>>>>>> intr
         return;
     }
 
@@ -435,8 +443,12 @@ namespace INTR {
             interrupt_handlers[intr_no](regs);
         }
         else {
+<<<<<<< HEAD
             io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
                       "Unhandled interrupt: %d %s\n", intr_no,
+=======
+            io.printf("Unhandled interrupt: %d %s\n", intr_no,
+>>>>>>> intr
                       get_intr_name(intr_no));
             CPU::hlt();
         }

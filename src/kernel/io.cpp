@@ -15,7 +15,7 @@ extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
 char IO::buf[128];
 
 #if defined(__i386__) || defined(__x86_64__)
-VGA IO::io;
+TUI IO::io;
 #elif defined(__arm__) || defined(__aarch64__)
 UART IO::io;
 #endif
@@ -26,12 +26,6 @@ IO::IO(void) {
 
 IO::~IO(void) {
     return;
-}
-
-int32_t IO::init(void) {
-    io.init();
-    write_string("io init\n");
-    return 0;
 }
 
 uint8_t IO::inb(const uint32_t port) {
@@ -61,11 +55,11 @@ void IO::outd(const uint32_t port, const uint32_t data) {
     return;
 }
 
-color_t IO::get_color(void) {
+COLOR::color_t IO::get_color(void) {
     return io.get_color();
 }
 
-void IO::set_color(const color_t color) {
+void IO::set_color(const COLOR::color_t color) {
     io.set_color(color);
     return;
 }
@@ -95,9 +89,9 @@ int32_t IO::printf(const char *fmt, ...) {
     return i;
 }
 
-int32_t IO::printf(color_t color, const char *fmt, ...) {
-    color_t curr_color = get_color();
-    set_color(color);
+int32_t IO::info(const char *fmt, ...) {
+    COLOR::color_t curr_color = get_color();
+    set_color(COLOR::LIGHT_GREEN);
     va_list args;
     int32_t i;
     va_start(args, fmt);
@@ -109,4 +103,30 @@ int32_t IO::printf(color_t color, const char *fmt, ...) {
     return i;
 }
 
-IO io;
+int32_t IO::warn(const char *fmt, ...) {
+    COLOR::color_t curr_color = get_color();
+    set_color(COLOR::LIGHT_MAGENTA);
+    va_list args;
+    int32_t i;
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    write_string(buf);
+    bzero(buf, 128);
+    set_color(curr_color);
+    return i;
+}
+
+int32_t IO::err(const char *fmt, ...) {
+    COLOR::color_t curr_color = get_color();
+    set_color(COLOR::LIGHT_RED);
+    va_list args;
+    int32_t i;
+    va_start(args, fmt);
+    i = vsprintf(buf, fmt, args);
+    va_end(args);
+    write_string(buf);
+    bzero(buf, 128);
+    set_color(curr_color);
+    return i;
+}

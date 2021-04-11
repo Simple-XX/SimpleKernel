@@ -10,10 +10,18 @@
 #pragma once
 
 #include "stdint.h"
+<<<<<<< HEAD
+=======
+#include "io.h"
+>>>>>>> intr
 #include "intr.h"
 
 class KEYBOARD {
 private:
+<<<<<<< HEAD
+=======
+    static IO io;
+>>>>>>> intr
     // 键盘缓冲区大小
     static constexpr const uint32_t KB_BUFSIZE = 128;
 
