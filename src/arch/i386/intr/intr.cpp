@@ -461,18 +461,18 @@ namespace INTR {
         for (uint32_t i = 0; i < 48; ++i) {
             // set_idt(i, (uint32_t)isr_irq_func[i], 0x08, 0x8E);
             set_idt(i, (uint32_t)isr_irq_func[i], GDT::SEG_KERNEL_CODE,
-                    GATE_INTERRUPT_32, GDT::DPL0, GATE_PRESENT);
+                    GATE_INTERRUPT_32, CPU::DPL0, GATE_PRESENT);
         }
 
         set_idt(INT_DEBUG, (uint32_t)isr_irq_func[INT_DEBUG],
-                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, GDT::DPL3, GATE_PRESENT);
+                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, CPU::DPL3, GATE_PRESENT);
         set_idt(INT_OVERFLOW, (uint32_t)isr_irq_func[INT_OVERFLOW],
-                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, GDT::DPL3, GATE_PRESENT);
+                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, CPU::DPL3, GATE_PRESENT);
         set_idt(INT_BOUND, (uint32_t)isr_irq_func[INT_BOUND],
-                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, GDT::DPL3, GATE_PRESENT);
+                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, CPU::DPL3, GATE_PRESENT);
         // 系统调用 0x80(128)
         set_idt(0x80, (uint32_t)isr128, GDT::SEG_KERNEL_CODE, GATE_TRAP_32,
-                GDT::DPL3, GATE_PRESENT);
+                CPU::DPL3, GATE_PRESENT);
 
         idt_load((uint32_t)&idt_ptr);
 

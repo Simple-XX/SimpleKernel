@@ -5,7 +5,6 @@
 // gdt.cpp for Simple-XX/SimpleKernel.
 
 #include "io.h"
-#include "cpu.hpp"
 #include "gdt.h"
 
 namespace GDT {
@@ -46,8 +45,8 @@ namespace GDT {
         uint32_t base  = (uint32_t)&tss_entry;
         uint32_t limit = base + sizeof(tss_entry);
         // 在 GDT 表中增加 TSS 段描述符
-        set_gdt(num, base, limit, TYPE_SYSTEM_32_TSS_AVAILABLE, S_SYSTEM, DPL0,
-                SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
+        set_gdt(num, base, limit, TYPE_SYSTEM_32_TSS_AVAILABLE, S_SYSTEM,
+                CPU::DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
                 DB_EXECUTABLE_CODE_SEGMENT_32, G_4KB);
         // 设置内核栈的地址
         tss_entry.ts_ss0  = ss0;
@@ -70,19 +69,19 @@ namespace GDT {
         set_gdt(GDT_NULL, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0);
         // 内核指令段
         set_gdt(GDT_KERNEL_CODE, BASE, LIMIT, TYPE_CODE_EXECUTE_READ,
-                S_CODE_DATA, DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
-                DB_EXECUTABLE_CODE_SEGMENT_32, G_4KB);
+                S_CODE_DATA, CPU::DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE,
+                L_32BIT, DB_EXECUTABLE_CODE_SEGMENT_32, G_4KB);
         // 内核数据段
         set_gdt(GDT_KERNEL_DATA, BASE, LIMIT, TYPE_DATA_READ_WRITE, S_CODE_DATA,
-                DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
+                CPU::DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
                 DB_EXPAND_DOWN_DATA_SEGMENT_4GB, G_4KB);
         // 用户模式代码段
         set_gdt(GDT_USER_CODE, BASE, LIMIT, TYPE_CODE_EXECUTE_READ, S_CODE_DATA,
-                DPL3, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
+                CPU::DPL3, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
                 DB_EXECUTABLE_CODE_SEGMENT_32, G_4KB);
         // 用户模式数据段
         set_gdt(GDT_USER_DATA, BASE, LIMIT, TYPE_DATA_READ_WRITE, S_CODE_DATA,
-                DPL3, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
+                CPU::DPL3, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
                 DB_EXPAND_DOWN_DATA_SEGMENT_4GB, G_4KB);
 
         set_tss(GDT_TSS, KERNEL_DS, 0);
