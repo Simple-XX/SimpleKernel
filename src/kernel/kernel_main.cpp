@@ -15,6 +15,7 @@ void kernel_main(uint32_t magic, void *addr) {
     KERNEL kernel(magic, addr);
     kernel.show_info();
     CPU::sti();
+    // asm("int $0x04");
     while (1) {
         ;
     }
