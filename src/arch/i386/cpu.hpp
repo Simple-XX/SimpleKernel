@@ -135,6 +135,14 @@ namespace CPU {
     static constexpr const uint32_t CR4_OSXSAVE    = 0x00040000;
     static constexpr const uint32_t CR4_SMEP       = 0x00100000;
 
+    // 段描述符 DPL
+    // 内核级
+    static constexpr const uint32_t DPL0 = 0x00;
+    static constexpr const uint32_t DPL1 = 0x01;
+    static constexpr const uint32_t DPL2 = 0x02;
+    // 用户级
+    static constexpr const uint32_t DPL3 = 0x03;
+
     static constexpr const uint32_t IA32_APIC_BASE_MSR        = 0x1B;
     static constexpr const uint32_t IA32_APIC_BASE_MSR_BSP    = 0x100;
     static constexpr const uint32_t IA32_APIC_BASE_MSR_ENABLE = 0x800;
