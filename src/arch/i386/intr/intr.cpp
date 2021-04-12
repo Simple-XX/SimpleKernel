@@ -4,9 +4,10 @@
 // Based on http://wiki.0xffffff.org/posts/hurlex-kernel.html
 // intr.cpp for Simple-XX/SimpleKernel.
 
-#include "intr.h"
 #include "cpu.hpp"
 #include "io.h"
+#include "gdt.h"
+#include "intr.h"
 
 namespace INTR {
 #ifdef __cplusplus
@@ -71,7 +72,8 @@ namespace INTR {
     extern void isr31();
 
     // 32 ~ 255 用户自定义异常
-    extern void isr128(); // 0x80 用于实现系统调用
+    // 0x80 用于实现系统调用
+    extern void isr128();
 
     // 声明 IRQ 函数
     // IRQ:中断请求(Interrupt Request)
@@ -132,7 +134,7 @@ namespace INTR {
     static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
         __attribute__((aligned(4)));
     // 中断描述符表
-    static idt_entry_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
+    static gate_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
     // IDTR
     static idt_ptr_t idt_ptr;
 
@@ -153,7 +155,6 @@ namespace INTR {
     static void general_protection(pt_regs_t *regs);
     static void page_fault(pt_regs_t *regs);
     void        die(const char *str, uint32_t oesp, uint32_t int_no) {
-        // uint32_t * old_esp = (uint32_t *)oesp;
         pt_regs_t *old_esp = (pt_regs_t *)oesp;
         io.printf("%s\t: %d\n\r", str, int_no);
         io.printf("die_Unuseable.\n");
@@ -278,12 +279,20 @@ namespace INTR {
         return;
     }
 
-    void set_idt(uint8_t num, uint32_t base, uint16_t target, uint8_t flags) {
-        idt_entries[num].base_low  = (base & 0xFFFF);
-        idt_entries[num].base_high = (base >> 16) & 0xFFFF;
-        idt_entries[num].selector  = target;
-        idt_entries[num].zero      = 0;
-        idt_entries[num].flags     = flags;
+    void set_idt(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags,
+                 uint8_t dpl, uint8_t p) {
+        // idt_entries[num].base_low  = (base & 0xFFFF);
+        // idt_entries[num].base_high = (base >> 16) & 0xFFFF;
+        // idt_entries[num].selector  = selector;
+        // idt_entries[num].zero      = 0;
+        // idt_entries[num].flags     = flags;
+        idt_entries[num].offset1  = (base & 0xFFFF);
+        idt_entries[num].selector = selector;
+        idt_entries[num].zero     = 0;
+        idt_entries[num].flags    = flags;
+        idt_entries[num].dpl      = dpl;
+        idt_entries[num].p        = p;
+        idt_entries[num].offset2  = (base >> 16) & 0xFFFF;
         // 0x8E: DPL=0
         // 0xEF: DPL=3
         return;
@@ -449,19 +458,21 @@ namespace INTR {
         idt_ptr.limit = sizeof(idt_entry_t) * INTERRUPT_MAX - 1;
         idt_ptr.base  = (uint32_t)&idt_entries;
 
-        // 0-32:  用于 CPU 的中断处理
-        // GD_KTEXT: 内核代码段
-        // 0x8E: 10001110: DPL=0s
-        // 0x08: 0000 1000
         for (uint32_t i = 0; i < 48; ++i) {
-            set_idt(i, (uint32_t)isr_irq_func[i], 0x08, 0x8E);
+            // set_idt(i, (uint32_t)isr_irq_func[i], 0x08, 0x8E);
+            set_idt(i, (uint32_t)isr_irq_func[i], GDT::SEG_KERNEL_CODE,
+                    GATE_INTERRUPT_32, GDT::DPL0, GATE_PRESENT);
         }
-        // 128 (0x80) 将来用于实现系统调用
-        // 0xEF: 1110 1111, DPL=3
-        set_idt(INT_DEBUG, (uint32_t)isr_irq_func[INT_DEBUG], 0x08, 0xEF);
-        set_idt(INT_OVERFLOW, (uint32_t)isr_irq_func[INT_OVERFLOW], 0x08, 0xEF);
-        set_idt(INT_BOUND, (uint32_t)isr_irq_func[INT_BOUND], 0x08, 0xEF);
-        set_idt(128, (uint32_t)isr128, 0x08, 0xEF);
+
+        set_idt(INT_DEBUG, (uint32_t)isr_irq_func[INT_DEBUG],
+                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, GDT::DPL3, GATE_PRESENT);
+        set_idt(INT_OVERFLOW, (uint32_t)isr_irq_func[INT_OVERFLOW],
+                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, GDT::DPL3, GATE_PRESENT);
+        set_idt(INT_BOUND, (uint32_t)isr_irq_func[INT_BOUND],
+                GDT::SEG_KERNEL_CODE, GATE_TRAP_32, GDT::DPL3, GATE_PRESENT);
+        // 系统调用 0x80(128)
+        set_idt(0x80, (uint32_t)isr128, GDT::SEG_KERNEL_CODE, GATE_TRAP_32,
+                GDT::DPL3, GATE_PRESENT);
 
         idt_load((uint32_t)&idt_ptr);
 
