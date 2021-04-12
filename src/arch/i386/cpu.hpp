@@ -237,6 +237,14 @@ namespace CPU {
     // x2APIC Self IPI Register (W/O)
     static constexpr const uint32_t IA32_X2APIX_SELF_IPI = 0x83F;
 
+    // 段描述符 DPL
+    // 内核级
+    static constexpr const uint32_t DPL0 = 0x00;
+    static constexpr const uint32_t DPL1 = 0x01;
+    static constexpr const uint32_t DPL2 = 0x02;
+    // 用户级
+    static constexpr const uint32_t DPL3 = 0x03;
+
     // 执行CPU空操作
     static inline void hlt(void) {
         __asm__ volatile("hlt");
