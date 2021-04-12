@@ -13,7 +13,13 @@
 
 namespace INTR {
     // 中断表最大值
-    static constexpr const uint32_t INTERRUPT_MAX = 256;
+    static constexpr const uint32_t INTERRUPT_MAX     = 256;
+    static constexpr const uint32_t GATE_TASK         = 0x05;
+    static constexpr const uint32_t GATE_INTERRUPT_16 = 0x06;
+    static constexpr const uint32_t GATE_INTERRUPT_32 = 0x0E;
+    static constexpr const uint32_t GATE_TRAP_16      = 0x07;
+    static constexpr const uint32_t GATE_TRAP_32      = 0x0F;
+    static constexpr const uint32_t GATE_PRESENT      = 0x01;
 
     // 定义IRQ
     // 电脑系统计时器
@@ -152,6 +158,25 @@ namespace INTR {
         // 中断处理函数地址 31～16 位
         uint16_t base_high;
     } __attribute__((packed)) idt_entry_t;
+
+    typedef struct {
+        // Offset to procedure entry point, reserved if task gate
+        uint64_t offset1 : 16;
+        // Segment Selector for destination code segment
+        uint64_t selector : 16;
+        // 置 0 段
+        uint64_t zero : 8;
+        // task gate: 0x05
+        // interrupt gate: 0x6 = 16 bits, 0xE = 32 bits
+        // trap gate: 0x7 = 16 bits, 0xF = 32 bits
+        uint64_t flags : 5;
+        // Descriptor Privilege Level
+        uint64_t dpl : 2;
+        // Segment Present flag
+        uint64_t p : 1;
+        // Offset to procedure entry point, reserved if task gate
+        uint64_t offset2 : 16;
+    } gate_t;
 
     // IDTR
     typedef struct idt_ptr {
