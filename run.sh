@@ -16,7 +16,7 @@ export PATH="${GRUB_PATH}:$PATH"
 mkdir -p ./build/
 rm -rf ./build/*
 cd ./build
-cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DPLATFORM=${SIMULATOR} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=DEBUG ..
+cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=DEBUG ..
 make
 cd ../
 
@@ -31,6 +31,8 @@ elif [ ${ARCH} == "x86_64" ]; then
     fi
 elif [ ${ARCH} == "raspi2" ]; then
     echo Arm-A7.
+elif [ ${ARCH} == "riscv64" ]; then
+    echo RISCV64.
 else
     echo The File is Not Multiboot.
     exit
@@ -75,4 +77,7 @@ elif [ ${ARCH} == "x86_64" ]; then
     ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
 elif [ ${ARCH} == "raspi2" ]; then
     ${SIMULATOR}-system-aarch64 -machine raspi2 -serial stdio -kernel ${kernel} 
+elif [ ${ARCH} == "riscv64" ]; then
+    ${SIMULATOR}-system-riscv64 -machine virt -serial stdio -kernel ${kernel} 
+
 fi
