@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-#define DBL_MAX (0)
+#define DBL_MAX (1e37)
 
 #ifdef __cplusplus
 }
