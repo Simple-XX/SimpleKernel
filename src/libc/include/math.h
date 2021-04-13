@@ -11,13 +11,11 @@
 extern "C" {
 #endif
 
-#if defined(__arm__) || defined(__aarch64__)
-
-unsigned long udivmodsi4(unsigned long num, unsigned long den, int modwanted);
-long          divsi3(long a, long b);
-long          modsi3(long a, long b);
-
-#endif
+long long          divmoddi4(long long num, long long den, long long *rem_p);
+unsigned long long udivmoddi4(unsigned long long num, unsigned long long den,
+                              unsigned long long *rem_p);
+unsigned long long udivdi3(unsigned long long num, unsigned long long den);
+unsigned long long umoddi3(unsigned long long num, unsigned long long den);
 
 #ifdef __cplusplus
 }
