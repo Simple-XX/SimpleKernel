@@ -62,6 +62,20 @@ int32_t do_div(int *n, int base) {
     *n          = divsi3(*n, base);
     return res;
 }
+#elif defined(__riscv)
+// #include "math.h"
+// int32_t do_div(int *n, int base) {
+//     int32_t res = 0;
+//     res         = modsi3(*n, base);
+//     *n          = divsi3(*n, base);
+//     return res;
+// }
+int32_t do_div(int *n, int base) {
+    int32_t res = 0;
+    res         = *n % base;
+    *n          = *n / base;
+    return res;
+}
 #endif
 
 // 将整数转换为指定进制的字符串。输入：num-整数；base-进制；size-字符串长度;precision-数字长度

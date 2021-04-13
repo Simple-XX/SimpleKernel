@@ -7,7 +7,10 @@
 #include "stddef.h"
 #include "stdarg.h"
 #include "string.h"
+#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
+    defined(__aarch64__)
 #include "port.h"
+#endif
 #include "io.h"
 
 extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
@@ -18,6 +21,8 @@ char IO::buf[128];
 TUI IO::io;
 #elif defined(__arm__) || defined(__aarch64__)
 UART IO::io;
+#elif defined(__riscv)
+SBI_CONSOLE IO::io;
 #endif
 
 IO::IO(void) {
@@ -27,7 +32,8 @@ IO::IO(void) {
 IO::~IO(void) {
     return;
 }
-
+#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
+    defined(__aarch64__)
 uint8_t IO::inb(const uint32_t port) {
     return PORT::inb(port);
 }
@@ -54,6 +60,8 @@ void IO::outd(const uint32_t port, const uint32_t data) {
     PORT::outd(port, data);
     return;
 }
+
+#endif
 
 COLOR::color_t IO::get_color(void) {
     return io.get_color();
