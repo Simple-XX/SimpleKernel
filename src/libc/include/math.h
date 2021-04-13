@@ -1,7 +1,7 @@
 
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
-//
+// Based on libgcc
 // math.h for Simple-XX/SimpleKernel.
 
 #ifndef _MATH_H_
