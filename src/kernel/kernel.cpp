@@ -29,7 +29,6 @@ void KERNEL::show_info(void) {
     io.info("kernel in memory size: %d KB, %d pages\n",
             (COMMON::kernel_end - COMMON::kernel_start) / 1024,
             (COMMON::kernel_end - COMMON::kernel_start + 4095) / 1024 / 4);
-    io.info("%d\n", 233);
     io.info("Simple Kernel.\n");
     return;
 }

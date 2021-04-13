@@ -63,13 +63,6 @@ int32_t do_div(int *n, int base) {
     return res;
 }
 #elif defined(__riscv)
-// #include "math.h"
-// int32_t do_div(int *n, int base) {
-//     int32_t res = 0;
-//     res         = modsi3(*n, base);
-//     *n          = divsi3(*n, base);
-//     return res;
-// }
 int32_t do_div(int *n, int base) {
     int32_t res = 0;
     res         = *n % base;
@@ -200,7 +193,7 @@ int32_t vsprintf(char *buf, const char *fmt, va_list args) {
     char *   s;
     int32_t *ip;
     // flags to number()
-    uint32_t flags;
+    ptrdiff_t flags;
     // width of output field
     int32_t field_width;
     // min. # of digits for integers;max number of chars for from
@@ -346,7 +339,7 @@ int32_t vsprintf(char *buf, const char *fmt, va_list args) {
             // 'o',则表示需要将对应的参数转换成八进制数的字符串。调用 number()
             // 函数处理。
             case 'o': {
-                str = number(str, va_arg(args, uint32_t), 8, field_width,
+                str = number(str, va_arg(args, ptrdiff_t), 8, field_width,
                              precision, flags);
                 break;
             }
@@ -358,7 +351,7 @@ int32_t vsprintf(char *buf, const char *fmt, va_list args) {
                     field_width = 8;
                     flags |= ZEROPAD;
                 }
-                str = number(str, (uint32_t)va_arg(args, void *), 16,
+                str = number(str, (ptrdiff_t)va_arg(args, void *), 16,
                              field_width, precision, flags);
                 break;
             }
@@ -370,7 +363,7 @@ int32_t vsprintf(char *buf, const char *fmt, va_list args) {
                 __attribute__((fallthrough));
             }
             case 'X': {
-                str = number(str, va_arg(args, uint32_t), 16, field_width,
+                str = number(str, va_arg(args, ptrdiff_t), 16, field_width,
                              precision, flags);
                 break;
             }
@@ -382,7 +375,7 @@ int32_t vsprintf(char *buf, const char *fmt, va_list args) {
                 __attribute__((fallthrough));
             }
             case 'u': {
-                str = number(str, va_arg(args, uint32_t), 10, field_width,
+                str = number(str, va_arg(args, ptrdiff_t), 10, field_width,
                              precision, flags);
                 break;
             }
