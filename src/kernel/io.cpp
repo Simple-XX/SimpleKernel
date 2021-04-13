@@ -12,8 +12,7 @@
 #include "port.h"
 #endif
 #include "io.h"
-
-extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
+#include "stdio.h"
 
 char IO::buf[128];
 
@@ -86,25 +85,26 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
-int32_t IO::printf(const char *fmt, ...) {
-    va_list args;
-    int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    write_string(buf);
-    bzero(buf, 128);
-    return i;
-}
+// int32_t IO::printf(const char *fmt, ...) {
+// va_list args;
+// int32_t i;
+// va_start(args, fmt);
+// i = vsprintf(buf, fmt, args);
+// va_end(args);
+// write_string(buf);
+// bzero(buf, 128);
+// return i;
+// return 0;
+// }
 
 int32_t IO::info(const char *fmt, ...) {
     COLOR::color_t curr_color = get_color();
     set_color(COLOR::LIGHT_GREEN);
-    va_list args;
+    va_list va;
     int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
+    va_start(va, fmt);
+    i = vsnprintf_(buf, (size_t)-1, fmt, va);
+    va_end(va);
     write_string(buf);
     bzero(buf, 128);
     set_color(curr_color);
@@ -114,11 +114,11 @@ int32_t IO::info(const char *fmt, ...) {
 int32_t IO::warn(const char *fmt, ...) {
     COLOR::color_t curr_color = get_color();
     set_color(COLOR::LIGHT_MAGENTA);
-    va_list args;
+    va_list va;
     int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
+    va_start(va, fmt);
+    i = vsnprintf_(buf, (size_t)-1, fmt, va);
+    va_end(va);
     write_string(buf);
     bzero(buf, 128);
     set_color(curr_color);
@@ -128,11 +128,11 @@ int32_t IO::warn(const char *fmt, ...) {
 int32_t IO::err(const char *fmt, ...) {
     COLOR::color_t curr_color = get_color();
     set_color(COLOR::LIGHT_RED);
-    va_list args;
+    va_list va;
     int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
+    va_start(va, fmt);
+    i = vsnprintf_(buf, (size_t)-1, fmt, va);
+    va_end(va);
     write_string(buf);
     bzero(buf, 128);
     set_color(curr_color);
