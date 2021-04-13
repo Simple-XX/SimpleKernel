@@ -908,7 +908,8 @@ int _vsnprintf(char *buffer, const size_t maxlen, const char *format,
 int sprintf_(char *buffer, const char *format, ...) {
     va_list va;
     va_start(va, format);
-    const int ret = _vsnprintf(buffer, (size_t)-1, format, va);
+    // const int ret = _vsnprintf(buffer, (size_t)-1, format, va);
+    const int ret = _vsnprintf(buffer, (size_t)-1, "TEST:%d\n", va);
     va_end(va);
     return ret;
 }
