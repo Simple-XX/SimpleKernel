@@ -23,6 +23,10 @@ extern "C" {
 #define __SYSCALL_WORDSIZE 64
 #endif
 
+/* Exact integral types.  */
+
+/* Signed.  */
+
 /* There is some amount of overlap with <sys/types.h> as known by inet code */
 #ifndef __int8_t_defined
 #define __int8_t_defined
@@ -119,6 +123,16 @@ typedef unsigned long int uintmax_t;
 #else
 __extension__ typedef long long int          intmax_t;
 __extension__ typedef unsigned long long int uintmax_t;
+#endif
+
+#ifndef __INT64_C
+#if __WORDSIZE == 64
+#define __INT64_C(c) c##L
+#define __UINT64_C(c) c##UL
+#else
+#define __INT64_C(c) c##LL
+#define __UINT64_C(c) c##ULL
+#endif
 #endif
 
 /* Limits of integral types.  */
@@ -243,6 +257,35 @@ __extension__ typedef unsigned long long int uintmax_t;
 /* Limits of `wint_t'.  */
 #define WINT_MIN (0u)
 #define WINT_MAX (4294967295u)
+
+/* Signed.  */
+#define INT8_C(c) c
+#define INT16_C(c) c
+#define INT32_C(c) c
+#if __WORDSIZE == 64
+#define INT64_C(c) c##L
+#else
+#define INT64_C(c) c##LL
+#endif
+
+/* Unsigned.  */
+#define UINT8_C(c) c
+#define UINT16_C(c) c
+#define UINT32_C(c) c##U
+#if __WORDSIZE == 64
+#define UINT64_C(c) c##UL
+#else
+#define UINT64_C(c) c##ULL
+#endif
+
+/* Maximal type.  */
+#if __WORDSIZE == 64
+#define INTMAX_C(c) c##L
+#define UINTMAX_C(c) c##UL
+#else
+#define INTMAX_C(c) c##LL
+#define UINTMAX_C(c) c##ULL
+#endif
 
 #ifdef __cplusplus
 }
