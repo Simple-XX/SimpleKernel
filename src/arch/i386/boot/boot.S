@@ -107,7 +107,7 @@ multiboot_entry:
     popf
 	# multiboot2_info 结构体指针
     push %ebx
-	# 魔数
+    # 魔数
 	push %eax
     call kernel_main
 

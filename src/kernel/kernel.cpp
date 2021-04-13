@@ -10,20 +10,16 @@
 #include "common.h"
 #include "color.h"
 #include "assert.h"
-#include "multiboot2.h"
 #include "kernel.h"
 
 IO KERNEL::io;
 
-KERNEL::KERNEL(uint32_t _magic, void *_addr)
-    : pmm(PMM()), magic(_magic), addr(_addr) {
-    // 读取 grub2 传递的信息
-    MULTIBOOT2::multiboot2_init(magic, addr);
+KERNEL::KERNEL(void) : pmm(PMM()) {
     cpp_init();
     // 物理内存管理初始化
-    pmm.init();
+    // pmm.init();
     // 测试物理内存
-    test_pmm();
+    // test_pmm();
     return;
 }
 
@@ -69,11 +65,11 @@ int32_t KERNEL::test_pmm(void) {
 
 void KERNEL::show_info(void) {
     // BUG: raspi2 下不能正常输出链接脚本中的地址
-    io.info("kernel in memory start: 0x%08X, end 0x%08X\n",
+    io.info("kernel in memory start: 0x%X, end 0x%X\n",
             COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
-    io.info(
-        "kernel in memory start4k: 0x%08X, end4k 0x%08X, KERNEL_SIZE: 0x%08X\n",
-        COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, COMMON::KERNEL_SIZE);
+    io.info("kernel in memory start4k: 0x%X, end4k 0x%X, KERNEL_SIZE:0x%X\n",
+            COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K,
+            COMMON::KERNEL_SIZE);
     io.info("kernel in memory size: %d KB, %d pages\n",
             ((uint8_t *)COMMON::KERNEL_END_ADDR -
              (uint8_t *)COMMON::KERNEL_START_ADDR) /
