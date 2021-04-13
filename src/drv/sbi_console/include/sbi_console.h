@@ -9,6 +9,7 @@
 
 #include "opensbi.h"
 #include "stdint.h"
+#include "color.h"
 
 class SBI_CONSOLE {
 private:
