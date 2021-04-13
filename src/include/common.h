@@ -8,6 +8,7 @@
 #define _COMMON_H_
 
 #include "stdint.h"
+#include "stddef.h"
 
 namespace COMMON {
     // A common problem is getting garbage data when trying to use a value
@@ -72,14 +73,17 @@ namespace COMMON {
     // 映射内核需要的页数
     static constexpr const uint32_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
 
-// 对齐 向上取整
-#define ALIGN4K(x)                                                             \
-    (((x) % PAGE_SIZE == 0) ? (x) : (((x) + PAGE_SIZE - 1) & PAGE_MASK))
+    // 对齐 向上取整
+    inline const void *ALIGN4K(const void *x) {
+        return (reinterpret_cast<ptrdiff_t>(x) % PAGE_SIZE == 0)
+                   ? x
+                   : reinterpret_cast<void *>(
+                         ((reinterpret_cast<ptrdiff_t>(x) + PAGE_SIZE - 1) &
+                          PAGE_MASK));
+    }
 
-    static const void *KERNEL_START_4K = reinterpret_cast<void *>(
-        ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_START_ADDR)));
-    static const void *KERNEL_END_4K = reinterpret_cast<void *>(
-        ALIGN4K(reinterpret_cast<uint32_t>(KERNEL_END_ADDR)));
+    static const void *KERNEL_START_4K = ALIGN4K(KERNEL_START_ADDR);
+    static const void *KERNEL_END_4K   = ALIGN4K(KERNEL_END_ADDR);
 
     // 物理页结构体
     class physical_pages_t {
