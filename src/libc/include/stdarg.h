@@ -11,6 +11,8 @@
 extern "C" {
 #endif
 
+// TODO: stdarg 与 CPU 密切相关，需要进行优化
+
 typedef char *va_list;
 
 // 用来得到 TYPE
