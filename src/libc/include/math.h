@@ -11,6 +11,9 @@
 extern "C" {
 #endif
 
+// TODO: 更多支持
+// TODO: 浮点数
+
 long long          divmoddi4(long long num, long long den, long long *rem_p);
 unsigned long long udivmoddi4(unsigned long long num, unsigned long long den,
                               unsigned long long *rem_p);

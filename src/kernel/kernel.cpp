@@ -64,7 +64,6 @@ int32_t KERNEL::test_pmm(void) {
 }
 
 void KERNEL::show_info(void) {
-    // BUG: raspi2 下不能正常输出链接脚本中的地址
     io.info("kernel in memory start: 0x%X, end 0x%X\n",
             COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
     io.info("kernel in memory start4k: 0x%X, end4k 0x%X, KERNEL_SIZE:0x%X\n",
