@@ -35,7 +35,7 @@ void PMM::mamage_init(void) {
 }
 
 int32_t PMM::init(void) {
-    for (uint8_t *addr = (uint8_t *)MEMLAYOUT::DRAM_START;
+    for (uint8_t *addr = (uint8_t *)COMMON::KERNEL_END_4K;
          addr < (uint8_t *)MEMLAYOUT::DRAM_END; addr += COMMON::PAGE_SIZE) {
         // 跳过 0x00 开始的一页，便于判断 nullptr
         if (addr == nullptr) {
@@ -69,14 +69,21 @@ int32_t PMM::init(void) {
 }
 
 void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
-    void *addr = zone[_zone]->alloc(_pages);
+    void *addr = nullptr;
+    if (_pages > 0) {
+        addr = zone[_zone]->alloc(_pages);
+    }
     if (addr == nullptr) {
-        io.printf("No enough mem.\n");
+        io.printf("No enough mem: 0x%X pages.\n", _pages);
     }
     return addr;
 }
 
 void PMM::free_page(void *_addr, uint32_t _pages, COMMON::zone_t _zone) {
+    if (_addr == nullptr) {
+        io.printf("addr is null.\n");
+        return;
+    }
     zone[_zone]->free(_addr, _pages);
     return;
 }
