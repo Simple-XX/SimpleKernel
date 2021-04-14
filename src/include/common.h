@@ -52,26 +52,27 @@ namespace COMMON {
     static constexpr const uint32_t PAGE_SIZE = 0x1000;
 #elif defined(__riscv)
     // 物理内存大小 128MB
-    static constexpr const uint32_t PMM_MAX_SIZE = 0x8000000;
+    static constexpr const uint64_t PMM_MAX_SIZE = 0x8000000;
     // 内核的偏移地址
-    static constexpr const uint32_t KERNEL_BASE = 0x80020000;
+    static constexpr const uint64_t KERNEL_BASE = 0x80020000;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 8MB
-    static constexpr const uint32_t KERNEL_SIZE = 0x800000;
+    static constexpr const uint64_t KERNEL_SIZE = 0x800000;
     // 页大小 4KB
-    static constexpr const uint32_t PAGE_SIZE = 0x1000;
+    static constexpr const uint64_t PAGE_SIZE = 0x1000;
 #endif
 
     // 页掩码，用于 4KB 对齐
-    static constexpr const uint32_t PAGE_MASK = 0xFFFFFFFF - PAGE_SIZE + 1;
+    static constexpr const uint64_t PAGE_MASK =
+        0xFFFFFFFFFFFFFFFF - PAGE_SIZE + 1;
     // 物理页数量 131072,
     // 0x20000，除去外设映射，实际可用物理页数量为 159 + 130800 =
     // 130959 (这是物理内存为 512MB 的情况)
-    static constexpr const uint32_t PMM_PAGE_MAX_SIZE =
+    static constexpr const uint64_t PMM_PAGE_MAX_SIZE =
         PMM_MAX_SIZE / PAGE_SIZE;
 
     // 映射内核需要的页数
-    static constexpr const uint32_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
+    static constexpr const uint64_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
 
     // 对齐 向上取整
     inline const void *ALIGN4K(const void *x) {

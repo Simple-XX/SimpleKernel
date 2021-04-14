@@ -10,7 +10,6 @@
 #include "stddef.h"
 #include "stdint.h"
 #include "io.h"
-#include "e820.h"
 #include "common.h"
 #include "firstfit.h"
 
@@ -28,8 +27,6 @@ private:
     // 物理内存总数
     static size_t    pages;
     static FIRSTFIT *zone[COMMON::ZONE_COUNT];
-    // 从 GRUB 读取物理内存信息
-    void get_ram_info(e820map_t *e820map);
     // 物理内存管理初始化
     void mamage_init(void);
 
