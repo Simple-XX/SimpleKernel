@@ -87,14 +87,12 @@ int32_t IO::write_string(const char *s) {
 
 int32_t IO::printf(const char *fmt, ...) {
     va_list va;
-    int32_t i;
     va_start(va, fmt);
-    i = vsnprintf_(buf, (size_t)-1, fmt, va);
+    const int ret = _vsnprintf(buf, 127, fmt, va);
     va_end(va);
     write_string(buf);
     bzero(buf, 128);
-    return i;
-    return 0;
+    return ret;
 }
 
 int32_t IO::info(const char *fmt, ...) {
