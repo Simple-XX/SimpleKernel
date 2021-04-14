@@ -7,6 +7,7 @@
 #include "string.h"
 #include "multiboot2.h"
 #include "gdt.h"
+#include "e820.h"
 #include "pmm.h"
 
 extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
@@ -33,7 +34,7 @@ PMM::~PMM(void) {
 
 // TODO: 太难看了也
 // 这里的 addr 与 len 4k 对齐
-void PMM::get_ram_info(e820map_t *e820map) {
+static void get_ram_info(e820map_t *e820map) {
     for (; (uint8_t *)MULTIBOOT2::mmap_entries <
            (uint8_t *)MULTIBOOT2::mmap_tag + MULTIBOOT2::mmap_tag->size;
          MULTIBOOT2::mmap_entries =

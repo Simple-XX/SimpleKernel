@@ -5,6 +5,7 @@
 // pmm.cpp for Simple-XX/SimpleKernel.
 
 #include "string.h"
+#include "memlayout.h"
 #include "pmm.h"
 
 // TODO: 优化空间
@@ -13,10 +14,11 @@ IO                       PMM::io;
 COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
 size_t                   PMM::normal_pages = 0;
 FIRSTFIT                 PMM::normal(phy_pages);
-size_t                   PMM::high_pages = 0;
-FIRSTFIT                 PMM::high(&phy_pages[COMMON::KERNEL_PAGES]);
-size_t                   PMM::pages                    = 0;
-FIRSTFIT *               PMM::zone[COMMON::ZONE_COUNT] = {&normal, &high};
+// FIRSTFIT  PMM::normal((COMMON::physical_pages_t *)0x23);
+size_t    PMM::high_pages = 0;
+FIRSTFIT  PMM::high(&phy_pages[COMMON::KERNEL_PAGES]);
+size_t    PMM::pages                    = 0;
+FIRSTFIT *PMM::zone[COMMON::ZONE_COUNT] = {&normal, &high};
 
 PMM::PMM(void) {
     return;
@@ -26,56 +28,37 @@ PMM::~PMM(void) {
     return;
 }
 
-// TODO: 太难看了也
-// 这里的 addr 与 len 4k 对齐
-void PMM::get_ram_info(e820map_t *e820map) {
-    return;
-}
-
 void PMM::mamage_init(void) {
     normal.init(normal_pages);
-    high.init(high_pages);
+    // high.init(high_pages);
     return;
 }
 
 int32_t PMM::init(void) {
+    for (uint8_t *addr = (uint8_t *)MEMLAYOUT::DRAM_START;
+         addr < (uint8_t *)MEMLAYOUT::DRAM_END; addr += COMMON::PAGE_SIZE) {
+        // 跳过 0x00 开始的一页，便于判断 nullptr
+        if (addr == nullptr) {
+            continue;
+        }
+        // 初始化可用内存段的物理页数组
+        // 地址对应的物理页数组下标
+        phy_pages[pages].addr = addr;
+        // 内核已使用部分
+        if (addr >= COMMON::ALIGN4K(COMMON::KERNEL_START_ADDR) &&
+            addr < COMMON::ALIGN4K(COMMON::KERNEL_END_ADDR)) {
+            phy_pages[pages].ref = 1;
+        }
+        else {
+            phy_pages[pages].ref = 0;
+        }
 // #define DEBUG
 #ifdef DEBUG
-    io.printf("KERNEL_START_4K: 0x%X, KERNEL_END_4K: 0x%X\n", KERNEL_START_4K,
-              KERNEL_END_4K);
-#endif
-    e820map_t e820map;
-    bzero(&e820map, sizeof(e820map_t));
-    get_ram_info(&e820map);
-    // 计算可用的内存
-    // 这里需要保证 addr 是按照 PMM_PAGE_MASK 对齐的
-    for (size_t i = 0; i < e820map.nr_map; i++) {
-// #define DEBUG
-#ifdef DEBUG
-        io.printf("addr: 0x%X, len: 0x%X, type: 0x%X\n", e820map.map[i].addr,
-                  e820map.map[i].length, e820map.map[i].type);
+        io.printf("phy_pages[%d].addr = addr: 0x%X\n", pages,
+                  phy_pages[pages].addr);
 #undef DEBUG
 #endif
-        for (uint8_t *addr = e820map.map[i].addr;
-             addr < (e820map.map[i].addr + e820map.map[i].length);
-             addr += COMMON::PAGE_SIZE) {
-            // 跳过 0x00 开始的一页，便于判断 nullptr
-            if (addr == nullptr) {
-                continue;
-            }
-            // 初始化可用内存段的物理页数组
-            // 地址对应的物理页数组下标
-            phy_pages[pages].addr = addr;
-            // 内核已使用部分
-            if (addr >= COMMON::KERNEL_START_4K &&
-                addr < COMMON::KERNEL_END_4K) {
-                phy_pages[pages].ref = 1;
-            }
-            else {
-                phy_pages[pages].ref = 0;
-            }
-            pages++;
-        }
+        pages++;
     }
     // 计算各个分区大小
     normal_pages = COMMON::KERNEL_PAGES;

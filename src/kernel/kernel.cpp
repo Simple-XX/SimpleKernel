@@ -17,7 +17,7 @@ IO KERNEL::io;
 KERNEL::KERNEL(void) : pmm(PMM()) {
     cpp_init();
     // 物理内存管理初始化
-    // pmm.init();
+    pmm.init();
     // 测试物理内存
     // test_pmm();
     return;
