@@ -30,7 +30,7 @@ PMM::~PMM(void) {
 
 void PMM::mamage_init(void) {
     normal.init(normal_pages);
-    // high.init(high_pages);
+    high.init(high_pages);
     return;
 }
 

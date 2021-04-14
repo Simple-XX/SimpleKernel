@@ -15,7 +15,6 @@ IO FIRSTFIT::io;
 
 FIRSTFIT::FIRSTFIT(COMMON::physical_pages_t *_phy_pages)
     : phy_pages(_phy_pages) {
-    io.printf("phy_pages-----: %X\n", phy_pages);
     page_count      = 0;
     page_free_count = 0;
     node_num        = 0;
