@@ -41,7 +41,8 @@ int sprintf_(char *buffer, const char *format, ...);
 #define vsnprintf vsnprintf_
 int snprintf_(char *buffer, size_t count, const char *format, ...);
 int vsnprintf_(char *buffer, size_t count, const char *format, va_list va);
-
+int _vsnprintf(char *buffer, const size_t maxlen, const char *format,
+               va_list va);
 #ifdef __cplusplus
 }
 #endif
