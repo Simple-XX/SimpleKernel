@@ -116,7 +116,7 @@ void MULTIBOOT2::is_multiboot2_header(uint32_t magic, void *addr) {
         io.printf("Invalid magic number: %X\n", magic);
         assert(0);
     }
-    if (reinterpret_cast<uint32_t>(addr) & 7) {
+    if (reinterpret_cast<ptrdiff_t>(addr) & 7) {
         io.printf("Unaligned addr: 0x%08x\n", addr);
         assert(0);
     }
@@ -131,7 +131,7 @@ void MULTIBOOT2::multiboot2_init(uint32_t magic, void *addr) {
     // addr+0 保存大小，下一字节开始为 tag 信息
     // io.printf("Announced mbi size 0x%X\n", size);
     void *tag_addr =
-        reinterpret_cast<void *>(reinterpret_cast<uint32_t>(addr) + 8);
+        reinterpret_cast<void *>(reinterpret_cast<ptrdiff_t>(addr) + 8);
     multiboot_tag_t *tag = (multiboot_tag_t *)tag_addr;
     // printk("tag type: %X\n", tag->type);
     // printk("tag size: %X\n", tag->size);
