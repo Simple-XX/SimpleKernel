@@ -33,12 +33,9 @@ else ()
 endif ()
 
 # Set common flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fno-builtin -fPIC -O2 -Wall -Wextra")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fPIC -O2 -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fPIC -O2 -Wall -Wextra")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
-# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fPIC -O2 -Wall -Wextra")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fno-exceptions -nostartfiles -fPIC -O2 -Wall -Wextra")
-# set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_FLAGS is ${CMAKE_C_FLAGS}")
