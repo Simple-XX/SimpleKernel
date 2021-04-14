@@ -89,22 +89,11 @@ int32_t IO::printf(const char *fmt, ...) {
     va_list va;
     va_start(va, fmt);
     const int ret = _vsnprintf(buf, 127, fmt, va);
-    // char      a   = 'A';
-    // const int ret = _vsnprintf(buf, 127, "test233:%c\n", &a);
     va_end(va);
     write_string(buf);
     bzero(buf, 128);
     return ret;
 }
-
-// int printf_(const char *format, ...) {
-// va_list va;
-// va_start(va, format);
-// char      buffer[1];
-// const int ret = _vsnprintf(buffer, (size_t)-1, format, va);
-// va_end(va);
-// return ret;
-// }
 
 int32_t IO::info(const char *fmt, ...) {
     COLOR::color_t curr_color = get_color();
