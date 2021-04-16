@@ -18,6 +18,28 @@ typedef page_table_entry_t *page_table_t;
 typedef page_table_t        page_dir_entry_t;
 typedef page_dir_entry_t *  page_dir_t;
 
+// 根据不同情况有区别
+// 一个页下级目录有多少个页表项
+static constexpr const uint32_t PTES_PRE_PLD =
+    sizeof(void *) / COMMON::PAGE_SIZE;
+// 一个页中级目录有多少个页下级目录
+static constexpr const uint32_t PLDS_PRE_PMD = 1;
+// 一个页上级目录有多少个页中级目录
+static constexpr const uint32_t PMDS_PRE_PUD = 1;
+// 一个页全局目录有多少个页上级目录
+static constexpr const uint32_t PUDS_PRE_PGD = 1024;
+
+// 页表项
+using pte_t = void *;
+// 页下级目录
+using pld_t = pte_t[PTES_PRE_PLD];
+// 页中级目录
+using pmd_t = pld_t[PLDS_PRE_PMD];
+// 页上级目录
+using pud_t = pmd_t[PMDS_PRE_PUD];
+// 页全局目录
+using pgd_t = pud_t[PUDS_PRE_PGD];
+
 // 页表项 sizeof(pte_t) 大小 = 4B 2^3
 static constexpr const uint32_t VMM_PTE_SIZE = sizeof(page_table_entry_t);
 
@@ -136,6 +158,7 @@ private:
     static page_dir_t pgd_kernel[VMM_PAGE_TABLES_TOTAL]
         __attribute__((aligned(COMMON::PAGE_SIZE)));
 
+    // static pgd_t pgd_kernel __attribute__((aligned(COMMON::PAGE_SIZE)));
     page_dir_t curr_dir;
 
 protected:
