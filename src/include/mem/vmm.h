@@ -89,6 +89,7 @@ static constexpr const uint64_t VMM_KERNEL_PAGE_DIRECTORIES =
     (VMM_KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) +
     ((VMM_KERNEL_SIZE % VMM_PAGE_DIRECTORY_SIZE) == 0 ? 0 : 1);
 
+#if defined(__i386__) || defined(__x86_64__)
 // 如果为 0  那么页面只能被运行在超级用户特权级 (0,1 或 2)  的程序访问。
 static constexpr const uint32_t VMM_PAGE_KERNEL = 0x00000000;
 // P = 1 表示有效； P = 0 表示无效。
@@ -99,14 +100,24 @@ static constexpr const uint32_t VMM_PAGE_RW = 0x00000002;
 // 如果为 1  那么运行在任何特权级上的程序都可以访问该页面。
 static constexpr const uint32_t VMM_PAGE_USER = 0x00000004;
 
-// 获取一个地址的页目录，高 10 位
-#define VMM_PGD_INDEX(x) (((x) >> 22) & 0x03FF)
-
-// 获取一个地址的页表，中间 10 位
-#define VMM_PTE_INDEX(x) (((x) >> 12) & 0x03FF)
-
-// 获取一个地址的页內偏移，低 12 位
-#define VMM_OFFSET_INDEX(x) ((x)&0x0FFF)
+#elif defined(__riscv)
+/// 有效位
+static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
+/// 可读位
+static constexpr const uint8_t VMM_PAGE_READABLE = 1 << 1;
+/// 可写位
+static constexpr const uint8_t VMM_PAGE_WRITABLE = 1 << 2;
+/// 可执行位
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 1 << 3;
+/// 用户位
+static constexpr const uint8_t VMM_PAGE_USER = 1 << 4;
+/// 全局位，我们不会使用
+static constexpr const uint8_t VMM_PAGE_GLOBAL = 1 << 5;
+/// 已使用位，用于替换算法
+static constexpr const uint8_t VMM_PAGE_ACCESSED = 1 << 6;
+/// 已修改位，用于替换算法
+static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
+#endif
 
 // 逻辑地址到物理地址转换
 #define VMM_LA_PA(la) (la - COMMON::KERNEL_BASE)

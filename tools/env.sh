@@ -8,10 +8,10 @@
 # env.sh path
 TOOLS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 # ARCH: i386, x86_64, raspi2, riscv64
-# ARCH="i386"
+ARCH="i386"
 # ARCH="x86_64" # TODO, cannot use
 # ARCH="raspi2"
-ARCH="riscv64"
+# ARCH="riscv64"
 # 虚拟机: bochs, qemu
 if [ "${ARCH}" == "i386" ]; then
     SIMULATOR="bochs"
