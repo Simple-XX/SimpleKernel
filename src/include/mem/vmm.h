@@ -18,82 +18,20 @@ typedef page_table_entry_t *page_table_t;
 typedef page_table_t        page_dir_entry_t;
 typedef page_dir_entry_t *  page_dir_t;
 
-// 根据不同情况有区别
-// 一个页下级目录有多少个页表项
-static constexpr const uint32_t PTES_PRE_PLD =
-    sizeof(void *) / COMMON::PAGE_SIZE;
-// 一个页中级目录有多少个页下级目录
-static constexpr const uint32_t PLDS_PRE_PMD = 1;
-// 一个页上级目录有多少个页中级目录
-static constexpr const uint32_t PMDS_PRE_PUD = 1;
-// 一个页全局目录有多少个页上级目录
-static constexpr const uint32_t PUDS_PRE_PGD = 1024;
-
-// 页表项
-using pte_t = void *;
-// 页下级目录
-using pld_t = pte_t[PTES_PRE_PLD];
-// 页中级目录
-using pmd_t = pld_t[PLDS_PRE_PMD];
-// 页上级目录
-using pud_t = pmd_t[PMDS_PRE_PUD];
-// 页全局目录
-using pgd_t = pud_t[PUDS_PRE_PGD];
-
-// 页表项 sizeof(pte_t) 大小 = 4B 2^3
-static constexpr const uint32_t VMM_PTE_SIZE = sizeof(page_table_entry_t);
-
-// 每页能映射多少页表项 = 页大小/页表项大小 2^9
-static constexpr const uint32_t VMM_PTE_PRE_PAGE =
-    COMMON::PAGE_SIZE / VMM_PTE_SIZE;
-
-// 页目录项 sizeof(pgd_t) 大小 = 4B 2^3
-static constexpr const uint32_t VMM_PGDE_SIZE = sizeof(page_dir_entry_t);
-
-// 每页能映射多少页目录项 = 页大小/页目录项大小 2^9
-static constexpr const uint32_t VMM_PGDE_PRE_PAGE =
-    COMMON::PAGE_SIZE / VMM_PGDE_SIZE;
-
 // 每个页表能映射多少页 = 页大小/页表项大小: 2^9
 static constexpr const uint32_t VMM_PAGES_PRE_PAGE_TABLE =
-    COMMON::PAGE_SIZE / VMM_PTE_SIZE;
-
-// 每个页目录能映射多少页表 = 页大小/页目录项大小 2^9
-static constexpr const uint32_t VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY =
-    COMMON::PAGE_SIZE / VMM_PGDE_SIZE;
-
-// 每个页目录能映射多少页 = 页表数量*每个页表能映射多少页 2^18
-static constexpr const uint32_t VMM_PAGES_PRE_PAGE_DIRECTORY =
-    VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY * VMM_PAGES_PRE_PAGE_TABLE;
+    COMMON::PAGE_SIZE / sizeof(page_table_entry_t);
 
 // 页表大小，一页表能映射多少 Byte 内存 = 页表项数量*页表项映射大小 2^21
 static constexpr const uint64_t VMM_PAGE_TABLE_SIZE =
     VMM_PAGES_PRE_PAGE_TABLE * COMMON::PAGE_SIZE;
 
-// 页目录大小，一页目录能映射多少 Byte 内存 = 页表数量*页表映射大小 2^32
-static constexpr const uint64_t VMM_PAGE_DIRECTORY_SIZE =
-    VMM_PAGE_TABLES_PRE_PAGE_DIRECTORY * VMM_PAGE_TABLE_SIZE;
-
 // 虚拟内存大小 4GB
 static constexpr const uint64_t VMM_VMEM_SIZE = UINT_MAX + (uint64_t)1;
-
-// 映射全部虚拟内存需要的页数 = 虚拟内存大小/页大小 2^20
-static constexpr const uint64_t VMM_PAGES_TOTAL =
-    VMM_VMEM_SIZE / COMMON::PAGE_SIZE;
 
 // 映射全部虚拟内存需要的页表数 = 虚拟内存大小/页表大小 2^12
 static constexpr const uint64_t VMM_PAGE_TABLES_TOTAL =
     VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE;
-
-// 映射全部虚拟内存需要的页目录数 = 虚拟内存大小/页目录大小 2^0
-static constexpr const uint64_t VMM_PAGE_DIRECTORIES_TOTAL =
-    (VMM_VMEM_SIZE / VMM_PAGE_DIRECTORY_SIZE) +
-    ((VMM_VMEM_SIZE % VMM_PAGE_DIRECTORY_SIZE) == 0 ? 0 : 1);
-
-// 映射内核需要的页表数
-static constexpr const uint64_t VMM_PAGE_TABLES_KERNEL =
-    (COMMON::KERNEL_SIZE / VMM_PAGE_TABLE_SIZE) +
-    (COMMON::KERNEL_SIZE % VMM_PAGE_TABLE_SIZE == 0 ? 0 : 1);
 
 // 映射内核的大小
 static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE;
@@ -105,11 +43,6 @@ static constexpr const uint64_t VMM_KERNEL_PAGES =
 // 内核映射的页表数
 static constexpr const uint64_t VMM_KERNEL_PAGE_TABLES =
     VMM_KERNEL_SIZE / VMM_PAGE_TABLE_SIZE;
-
-// 内核映射的页目录数
-static constexpr const uint64_t VMM_KERNEL_PAGE_DIRECTORIES =
-    (VMM_KERNEL_SIZE / VMM_PAGE_DIRECTORY_SIZE) +
-    ((VMM_KERNEL_SIZE % VMM_PAGE_DIRECTORY_SIZE) == 0 ? 0 : 1);
 
 #if defined(__i386__) || defined(__x86_64__)
 // 如果为 0  那么页面只能被运行在超级用户特权级 (0,1 或 2)  的程序访问。
@@ -158,7 +91,6 @@ private:
     static page_dir_t pgd_kernel[VMM_PAGE_TABLES_TOTAL]
         __attribute__((aligned(COMMON::PAGE_SIZE)));
 
-    // static pgd_t pgd_kernel __attribute__((aligned(COMMON::PAGE_SIZE)));
     page_dir_t curr_dir;
 
 protected:
