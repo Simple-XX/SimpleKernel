@@ -159,7 +159,7 @@ page_dir_t   VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
 page_table_t VMM::pte_kernel[VMM_KERNEL_PAGES];
 
 VMM::VMM(void) {
-    curr_dir = (page_dir_t)CPU::READ_CR3();
+    curr_dir = (page_dir_t)CPU::read_cr3();
     return;
 }
 
