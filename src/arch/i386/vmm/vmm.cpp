@@ -91,6 +91,15 @@ public:
     }
 };
 
+// 获取一个地址的页目录，高 10 位
+#define VMM_PGD_INDEX(x) (((x) >> 22) & 0x03FF)
+
+// 获取一个地址的页表，中间 10 位
+#define VMM_PTE_INDEX(x) (((x) >> 12) & 0x03FF)
+
+// 获取一个地址的页內偏移，低 12 位
+#define VMM_OFFSET_INDEX(x) ((x)&0x0FFF)
+
 IO           VMM::io;
 PMM          VMM::pmm;
 page_dir_t   VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
