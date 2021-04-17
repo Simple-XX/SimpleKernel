@@ -56,21 +56,21 @@ static constexpr const uint32_t VMM_PAGE_RW = 0x00000002;
 static constexpr const uint32_t VMM_PAGE_USER = 0x00000004;
 
 #elif defined(__riscv)
-/// 有效位
+// 有效位
 static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
-/// 可读位
+// 可读位
 static constexpr const uint8_t VMM_PAGE_READABLE = 1 << 1;
-/// 可写位
+// 可写位
 static constexpr const uint8_t VMM_PAGE_WRITABLE = 1 << 2;
-/// 可执行位
+// 可执行位
 static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 1 << 3;
-/// 用户位
+// 用户位
 static constexpr const uint8_t VMM_PAGE_USER = 1 << 4;
-/// 全局位，我们不会使用
+// 全局位，我们不会使用
 static constexpr const uint8_t VMM_PAGE_GLOBAL = 1 << 5;
-/// 已使用位，用于替换算法
+// 已使用位，用于替换算法
 static constexpr const uint8_t VMM_PAGE_ACCESSED = 1 << 6;
-/// 已修改位，用于替换算法
+// 已修改位，用于替换算法
 static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
 #endif
 
@@ -84,13 +84,13 @@ class VMM {
 private:
     static IO  io;
     static PMM pmm;
+    // TODO: 支持最多四级页表，共用同一套代码
     // 页表
     static page_table_t pte_kernel[VMM_KERNEL_PAGES]
         __attribute__((aligned(COMMON::PAGE_SIZE)));
     // 页目录
     static page_dir_t pgd_kernel[VMM_PAGE_TABLES_TOTAL]
         __attribute__((aligned(COMMON::PAGE_SIZE)));
-
     page_dir_t curr_dir;
 
 protected:

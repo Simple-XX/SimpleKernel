@@ -96,11 +96,6 @@ static constexpr const uint32_t PTE_BITS = 12;
 // PTE idx 的偏移
 static constexpr const uint32_t PTE_SHIFT = 0;
 static constexpr const uint32_t PTE_MASK  = 0xFFF;
-// PLD idx 的位数
-static constexpr const uint32_t PLD_BITS = 0;
-// PLD idx 的偏移
-static constexpr const uint32_t PLD_SHIFT = 0;
-static constexpr const uint32_t PLD_MASK  = 0;
 // PMD idx 的位数
 static constexpr const uint32_t PMD_BITS = 0;
 // PMD idx 的偏移
