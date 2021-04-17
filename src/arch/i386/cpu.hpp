@@ -589,6 +589,24 @@ namespace CPU {
         return true;
     }
 
+    // Use of CR3 with 32-Bit Paging
+    class cr3_t {
+    public:
+        // Ignored
+        uint32_t ignore1 : 3;
+        // Page-level write-through; indirectly determines the memory type used
+        // to access the page directory during linear-address translation
+        uint32_t pwt : 1;
+        // Page-level cache disable; indirectly determines the memory type used
+        // to access the page directory during linear-address translation
+        uint32_t pcd : 1;
+        // Ignored
+        uint32_t ignore2 : 7;
+        // Physical address of the 4-KByte aligned page directory used for
+        // linear-address translation
+        uint32_t addr : 20;
+    };
+
     // 设置 CR3
     static inline bool CR3_SET_PGD(void *_pgd) {
         __asm__ volatile("mov %0, %%cr3" : : "r"(_pgd));

@@ -8,6 +8,7 @@
 #define _COMMON_H_
 
 #include "stdint.h"
+#include "stddef.h"
 
 namespace COMMON {
     // A common problem is getting garbage data when trying to use a value
@@ -39,45 +40,46 @@ namespace COMMON {
         kernel_data_end;
     static constexpr const void *KERNEL_END_ADDR = kernel_end;
 
-// PAE 标志的处理
-#ifdef CPU_PAE
-#else
-#endif
-
-// PSE 标志的处理
-#ifdef CPU_PSE
-    // 页大小 4MB
-    static constexpr const uint32_t PAGE_SIZE = 0x400000;
-#else
-    // 页大小 4KB 2^12
-    static constexpr const uint32_t PAGE_SIZE = 0x1000;
-#endif
-
+#if defined(__i386__) || defined(__x86_64__)
     // 物理内存大小 2GB
     static constexpr const uint32_t PMM_MAX_SIZE = 0x80000000;
-
-    // 物理页数量 131072,
-    // 0x20000，除去外设映射，实际可用物理页数量为 159 + 130800 =
-    // 130959 (这是物理内存为 512MB 的情况)
-    static constexpr const uint32_t PMM_PAGE_MAX_SIZE =
-        PMM_MAX_SIZE / PAGE_SIZE;
-
-    // 页掩码，用于 4KB 对齐
-    static constexpr const uint32_t PAGE_MASK = 0xFFFFF000;
     // 内核的偏移地址
     static constexpr const uint32_t KERNEL_BASE = 0x0;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 64MB
     static constexpr const uint32_t KERNEL_SIZE = 0x4000000;
+    // 页大小 4KB
+    static constexpr const uint32_t PAGE_SIZE = 0x1000;
+#elif defined(__riscv)
+    // 物理内存大小 128MB
+    static constexpr const uint64_t PMM_MAX_SIZE = 0x8000000;
+    // 内核的偏移地址
+    static constexpr const uint64_t KERNEL_BASE = 0x80020000;
+    // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
+    // 8MB
+    static constexpr const uint64_t KERNEL_SIZE = 0x800000;
+    // 页大小 4KB
+    static constexpr const uint64_t PAGE_SIZE = 0x1000;
+#endif
+
+    // 页掩码，用于 4KB 对齐
+    static constexpr const uint64_t PAGE_MASK =
+        0xFFFFFFFFFFFFFFFF - PAGE_SIZE + 1;
+    // 物理页数量 131072,
+    // 0x20000，除去外设映射，实际可用物理页数量为 159 + 130800 =
+    // 130959 (这是物理内存为 512MB 的情况)
+    static constexpr const uint64_t PMM_PAGE_MAX_SIZE =
+        PMM_MAX_SIZE / PAGE_SIZE;
+
     // 映射内核需要的页数
-    static constexpr const uint32_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
+    static constexpr const uint64_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
 
     // 对齐 向上取整
     inline const void *ALIGN4K(const void *x) {
-        return (reinterpret_cast<uint32_t>(x) % PAGE_SIZE == 0)
+        return (reinterpret_cast<ptrdiff_t>(x) % PAGE_SIZE == 0)
                    ? x
                    : reinterpret_cast<void *>(
-                         ((reinterpret_cast<uint32_t>(x) + PAGE_SIZE - 1) &
+                         ((reinterpret_cast<ptrdiff_t>(x) + PAGE_SIZE - 1) &
                           PAGE_MASK));
     }
 
