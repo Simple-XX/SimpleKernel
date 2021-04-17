@@ -7,41 +7,67 @@
 #include "stdint.h"
 #include "string.h"
 #include "cpu.hpp"
+#include "memlayout.h"
 #include "vmm.h"
 
-class page_table_entry_t {
-public:
-    uint64_t v : 1;
-    uint64_t r : 1;
-    uint64_t w : 1;
-    uint64_t x : 1;
-    uint64_t u : 1;
-    uint64_t g : 1;
-    uint64_t a : 1;
-    uint64_t d : 1;
-    uint64_t rsw : 2;
-    uint64_t ppn0 : 9;
-    uint64_t ppn1 : 9;
-    uint64_t ppn2 : 26;
-    uint64_t reserved : 10;
-};
+// class page_table_entry_t {
+// public:
+//     uint64_t v : 1;
+//     uint64_t r : 1;
+//     uint64_t w : 1;
+//     uint64_t x : 1;
+//     uint64_t u : 1;
+//     uint64_t g : 1;
+//     uint64_t a : 1;
+//     uint64_t d : 1;
+//     uint64_t rsw : 2;
+//     uint64_t ppn0 : 9;
+//     uint64_t ppn1 : 9;
+//     uint64_t ppn2 : 26;
+//     uint64_t reserved : 10;
+// };
 
 // 获取一个地址的 63−39，9 位
 // 63−39 位的值必须等于第 38
 // 位的值，否则会认为该虚拟地址不合法，在访问时会产生异常。
 #define VMM_VPN_RESERVED(x) (((x) >> 39) & 0x3FFFFFF)
 
-// 获取一个地址的 VPN2，9 位
-#define VMM_VPN2(x) (((x) >> 30) & 0x01FF)
+// PTE idx 的位数
+static constexpr const uint32_t PTE_BITS = 12;
+// PTE idx 的偏移
+static constexpr const uint32_t PTE_SHIFT = 0;
+static constexpr const uint32_t PTE_MASK  = 0xFFF;
+// PMD idx 的位数
+static constexpr const uint32_t PMD_BITS = 9;
+// PMD idx 的偏移
+static constexpr const uint32_t PMD_SHIFT = 12;
+static constexpr const uint32_t PMD_MASK  = 0x1FF;
+// PUD idx 的位数
+static constexpr const uint32_t PUD_BITS = 9;
+// PUD idx 的偏移
+static constexpr const uint32_t PUD_SHIFT = 21;
+static constexpr const uint32_t PUD_MASK  = 0x1FF;
+// PGD idx 的位数
+static constexpr const uint32_t PGD_BITS = 9;
+// PGD idx 的偏移
+static constexpr const uint32_t PGD_SHIFT = 30;
+static constexpr const uint32_t PGD_MASK  = 0x1FF;
 
-// 获取一个地址的 VPN1，9 位
-#define VMM_VPN1(x) (((x) >> 21) & 0x01FF)
+static constexpr uint32_t GET_PTE(uint32_t addr) {
+    return (addr >> PTE_SHIFT) & PTE_MASK;
+}
 
-// 获取一个地址的 VPN0，9
-#define VMM_VPN0(x) (((x) >> 12) & 0x01FF)
+static constexpr uint32_t GET_PMD(uint32_t addr) {
+    return (addr >> PMD_SHIFT) & PMD_MASK;
+}
 
-// 获取一个地址的页內偏移，低 12 位
-#define VMM_OFFSET_INDEX(x) ((x)&0x0FFF)
+static constexpr uint32_t GET_PUD(uint32_t addr) {
+    return (addr >> PUD_SHIFT) & PUD_MASK;
+}
+
+static constexpr uint32_t GET_PGD(uint32_t addr) {
+    return (addr >> PGD_SHIFT) & PGD_MASK;
+}
 
 IO           VMM::io;
 PMM          VMM::pmm;
@@ -58,34 +84,7 @@ VMM::~VMM(void) {
 }
 
 void VMM::init(void) {
-// #define DEBUG
-#ifdef DEBUG
-    io.printf("VMM_PAGES_TOTAL: 0x%08X, ", VMM_PAGES_TOTAL);
-    io.printf("VMM_PAGE_TABLES_TOTAL: 0x%08X\n", VMM_PAGE_TABLES_TOTAL);
-#undef DEBUG
-#endif
-    for (uint64_t i = 0; i < VMM_KERNEL_PAGES; i++) {
-        pte_kernel[i] = (page_table_t)((i << 12) | VMM_PAGE_VALID |
-                                       VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
-    }
-    for (uint64_t i = VMM_VPN2(COMMON::KERNEL_BASE); i < VMM_KERNEL_PAGE_TABLES;
-         i++) {
-        pgd_kernel[i] = reinterpret_cast<page_dir_t>(
-            reinterpret_cast<uint64_t>(
-                &pte_kernel[VMM_PAGES_PRE_PAGE_TABLE * i]) |
-            VMM_PAGE_VALID | VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
-    }
-    // 虚拟地址 0x00 设为 nullptr
-    pte_kernel[0] = nullptr;
-
-// #define DEBUG
-#ifdef DEBUG
-    io.printf("&pte_kernel[0]: 0x%X, pte_kernel[0]: %X\n", &pte_kernel[0],
-              pte_kernel[0]);
-    io.printf("&pgd_kernel[0]: 0x%X, pgd_kernel[0]: 0x%X\n", &pgd_kernel[0],
-              pgd_kernel[0]);
-#undef DEBUG
-#endif
+    // TODO
     set_pgd((page_dir_t)pgd_kernel);
     CPU::SFENCE_VMA();
     io.printf("vmm_init\n");
@@ -104,8 +103,8 @@ void VMM::set_pgd(const page_dir_t pgd) {
 
 void VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
                const uint32_t flag) {
-    uint64_t     pgd_idx = VMM_VPN2(reinterpret_cast<uint64_t>(va));
-    uint64_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint64_t>(va));
+    uint64_t     pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
+    uint64_t     pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
     page_table_t pt =
         (page_table_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
@@ -130,8 +129,8 @@ void VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
 }
 
 void VMM::unmmap(const page_dir_t pgd, const void *va) {
-    uint64_t     pgd_idx = VMM_VPN2(reinterpret_cast<uint64_t>(va));
-    uint64_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint64_t>(va));
+    uint64_t     pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
+    uint64_t     pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
     page_table_t pt =
         (page_table_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
@@ -145,8 +144,8 @@ void VMM::unmmap(const page_dir_t pgd, const void *va) {
 }
 
 uint32_t VMM::get_mmap(const page_dir_t pgd, const void *va, const void *pa) {
-    uint64_t     pgd_idx = VMM_VPN2(reinterpret_cast<uint64_t>(va));
-    uint64_t     pte_idx = VMM_PTE_INDEX(reinterpret_cast<uint64_t>(va));
+    uint64_t     pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
+    uint64_t     pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
     page_table_t pt =
         (page_table_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pt == nullptr) {
