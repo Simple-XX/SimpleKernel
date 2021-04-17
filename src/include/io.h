@@ -14,6 +14,8 @@
 #include "tui.h"
 #elif defined(__arm__) || defined(__aarch64__)
 #include "uart.h"
+#elif defined(__riscv)
+#include "sbi_console.h"
 #endif
 
 class IO {
@@ -25,6 +27,8 @@ private:
     static TUI io;
 #elif defined(__arm__) || defined(__aarch64__)
     static UART io;
+#elif defined(__riscv)
+    static SBI_CONSOLE io;
 #endif
 
 protected:
