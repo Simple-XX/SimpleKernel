@@ -19,15 +19,13 @@ private:
     PMM       pmm;
     VMM       vmm;
     HEAP      heap;
-    uint32_t  magic;
-    void *    addr;
     int32_t   test_pmm(void);
     int32_t   test_vmm(void);
     int32_t   test_heap(void);
 
 protected:
 public:
-    KERNEL(uint32_t _magic, void *_addr);
+    KERNEL(void);
     ~KERNEL(void);
     int32_t test(void);
     void    show_info(void);
