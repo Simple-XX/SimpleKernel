@@ -85,10 +85,7 @@ private:
     static IO  io;
     static PMM pmm;
     // TODO: 支持最多四级页表，共用同一套代码
-    // 页表
-    static page_table_t pte_kernel[VMM_KERNEL_PAGES]
-        __attribute__((aligned(COMMON::PAGE_SIZE)));
-    // 页目录
+    // 页目录，最高级
     static page_dir_t pgd_kernel[VMM_PAGE_TABLES_TOTAL]
         __attribute__((aligned(COMMON::PAGE_SIZE)));
     page_dir_t curr_dir;
