@@ -69,10 +69,9 @@ static constexpr uint32_t GET_PGD(uint32_t addr) {
     return (addr >> PGD_SHIFT) & PGD_MASK;
 }
 
-IO           VMM::io;
-PMM          VMM::pmm;
-page_dir_t   VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
-page_table_t VMM::pte_kernel[VMM_KERNEL_PAGES];
+IO         VMM::io;
+PMM        VMM::pmm;
+page_dir_t VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
 
 VMM::VMM(void) {
     curr_dir = (page_dir_t)CPU::READ_SATP();
@@ -84,9 +83,31 @@ VMM::~VMM(void) {
 }
 
 void VMM::init(void) {
-    // TODO
-    set_pgd((page_dir_t)pgd_kernel);
-    CPU::SFENCE_VMA();
+    // 映射物理地址前 32MB 到虚拟地址前 32MB
+    for (uint64_t addr = 0x80000000; addr < 0x84000000;
+         // for (uint64_t addr = 0x80000000; addr < 0x81000000;
+         addr += COMMON::PAGE_SIZE) {
+        mmap((page_dir_t)pgd_kernel, (void *)addr, (void *)addr,
+             VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    }
+    // mmap((page_dir_t)pgd_kernel, (void *)0x80000000, (void *)0x80000000,
+    //      VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    // mmap((page_dir_t)pgd_kernel, (void *)0x80001000, (void *)0x80001000,
+    //      VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    // mmap((page_dir_t)pgd_kernel, (void *)0x80002000, (void *)0x80002000,
+    //      VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    // mmap((page_dir_t)pgd_kernel, (void *)0x80003000, (void *)0x80003000,
+    //      VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    // mmap((page_dir_t)pgd_kernel, (void *)0x81000000, (void *)0x81000000,
+    //      VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    // mmap((page_dir_t)pgd_kernel, (void *)0x81001000, (void *)0x81001000,
+    //      VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    // mmap((page_dir_t)pgd_kernel, (void *)0x84000000, (void *)0x84000000,
+    //      VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    // 虚拟地址 0x00 设为 nullptr
+    // unmmap((page_dir_t)pgd_kernel, nullptr);
+    // set_pgd((page_dir_t)pgd_kernel);
+    // CPU::SFENCE_VMA();
     io.printf("vmm_init\n");
     return;
 }
@@ -101,22 +122,68 @@ void VMM::set_pgd(const page_dir_t pgd) {
     return;
 }
 
-void VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
+static uint32_t k = 0;
+void            VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
                const uint32_t flag) {
-    uint64_t     pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
-    uint64_t     pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
-    page_table_t pt =
+
+    uint64_t pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
+    uint64_t pud_idx = GET_PUD(reinterpret_cast<uint64_t>(va));
+    uint64_t pmd_idx = GET_PMD(reinterpret_cast<uint64_t>(va));
+    uint64_t pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
+#define DEBUG
+#ifdef DEBUG
+    io.info(
+        "pgd_idx: 0x%X, pud_idx: 0x%X, pmd_idx: 0x%X, pte_idx: 0x%X, k: %d\n",
+        pgd_idx, pud_idx, pmd_idx, pte_idx, k);
+#undef DEBUG
+#endif
+    page_table_t pud =
         (page_table_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
+    if (pud == nullptr) {
+        pud = (page_table_t)pmm.alloc_page(1, COMMON::NORMAL);
+        k++;
+        io.info("pud alloc\n");
+        pgd[pgd_idx] = (page_dir_entry_t)(reinterpret_cast<uint64_t>(pud) |
+                                          VMM_PAGE_VALID);
+    }
+
+    page_table_t pmd =
+        (page_table_t)((uint64_t)pud[pud_idx] & COMMON::PAGE_MASK);
+    if (pmd == nullptr) {
+        pmd = (page_table_t)pmm.alloc_page(1, COMMON::NORMAL);
+        k++;
+        io.info("pmd alloc\n");
+        pud[pud_idx] = (page_dir_entry_t)(reinterpret_cast<uint64_t>(pmd) |
+                                          VMM_PAGE_VALID);
+    }
+    page_table_t pt =
+        (page_table_t)((uint64_t)pmd[pmd_idx] & COMMON::PAGE_MASK);
+#define DEBUG
+#ifdef DEBUG
+    io.info("pt: 0x%X, pmd[%d]: 0x%X, pmd: 0x%X\n", pt, pmd_idx, pmd[pmd_idx],
+            pmd);
+#undef DEBUG
+#endif
     if (pt == nullptr) {
         pt = (page_table_t)pmm.alloc_page(1, COMMON::NORMAL);
-        pgd[pgd_idx] =
-            (page_dir_entry_t)(reinterpret_cast<uint64_t>(pt) | VMM_PAGE_VALID |
-                               VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+        // k++;
+        // io.info("pt alloc\n");
+        pmd[pmd_idx] =
+            (page_dir_entry_t)(reinterpret_cast<uint64_t>(pt) | VMM_PAGE_VALID);
     }
-    pt = (page_table_t)VMM_PA_LA(pt);
+// #define DEBUG
+#ifdef DEBUG
+    io.info("pt: 0x%X, pmd[%d]: 0x%X\n", pt, pmd_idx, pmd[pmd_idx]);
+#undef DEBUG
+#endif
     if (pa == nullptr) {
         pa = pmm.alloc_page(1, COMMON::HIGH);
     }
+// #define DEBUG
+#ifdef DEBUG
+    io.info("pt: 0x%X, pa: 0x%X\n", pt, pa);
+#undef DEBUG
+#endif
     pt[pte_idx] = (page_table_entry_t)(
         (reinterpret_cast<uint64_t>(pa) & COMMON::PAGE_MASK) | flag);
 // #define DEBUG
