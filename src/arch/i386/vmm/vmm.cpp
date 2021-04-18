@@ -127,13 +127,12 @@ static constexpr uint32_t GET_PGD(uint32_t addr) {
     return (addr >> PGD_SHIFT) & PGD_MASK;
 }
 
-IO           VMM::io;
-PMM          VMM::pmm;
-page_dir_t   VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
-page_table_t VMM::pte_kernel[VMM_KERNEL_PAGES];
+IO         VMM::io;
+PMM        VMM::pmm;
+page_dir_t VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
 
 VMM::VMM(void) {
-    curr_dir = (page_dir_t)CPU::read_cr3();
+    curr_dir = (page_dir_t)CPU::READ_CR3();
     return;
 }
 
@@ -142,19 +141,14 @@ VMM::~VMM(void) {
 }
 
 void VMM::init(void) {
-    for (uint32_t i = 0; i < VMM_KERNEL_PAGES; i++) {
-        pte_kernel[i] = (page_table_t)((i << 12) | VMM_PAGE_PRESENT |
-                                       VMM_PAGE_RW | VMM_PAGE_KERNEL);
-    }
-    for (uint32_t i = GET_PGD(COMMON::KERNEL_BASE); i < VMM_KERNEL_PAGE_TABLES;
-         i++) {
-        pgd_kernel[i] = reinterpret_cast<page_dir_t>(
-            reinterpret_cast<uint32_t>(
-                &pte_kernel[VMM_PAGES_PRE_PAGE_TABLE * i]) |
-            VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+    // 映射物理地址前 32MB 到虚拟地址前 32MB
+    for (uint32_t addr = 0; addr < VMM_KERNEL_SIZE; addr += COMMON::PAGE_SIZE) {
+        mmap((page_dir_t)pgd_kernel, (void *)addr, (void *)addr,
+             VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
     }
     // 虚拟地址 0x00 设为 nullptr
-    pte_kernel[0] = nullptr;
+    unmmap((page_dir_t)pgd_kernel, nullptr);
+
 // #define DEBUG
 #ifdef DEBUG
     io.printf("&pte_kernel[0]: 0x%X, pte_kernel[0]: %X\n", &pte_kernel[0],
