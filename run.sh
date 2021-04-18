@@ -78,5 +78,5 @@ elif [ ${ARCH} == "x86_64" ]; then
 elif [ ${ARCH} == "raspi2" ]; then
     ${SIMULATOR}-system-aarch64 -machine raspi2 -serial stdio -kernel ${kernel} 
 elif [ ${ARCH} == "riscv64" ]; then
-    ${SIMULATOR}-system-riscv64 -machine virt -monitor stdio  -bios ${OPENSBI} -kernel ${kernel}
+    ${SIMULATOR}-system-riscv64 -machine virt -serial stdio  -bios ${OPENSBI} -kernel ${kernel}
 fi
