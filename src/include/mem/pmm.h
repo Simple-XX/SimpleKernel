@@ -9,13 +9,11 @@
 
 #include "stddef.h"
 #include "stdint.h"
-#include "io.h"
 #include "common.h"
 #include "firstfit.h"
 
 class PMM {
 private:
-    static IO io;
     // 可用内存的物理页数组
     static COMMON::physical_pages_t phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
     // NORMAL 区域

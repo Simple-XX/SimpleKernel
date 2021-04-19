@@ -8,6 +8,7 @@
 extern "C" {
 #endif
 
+#include "stddef.h"
 #include "string.h"
 
 // 获取字符串长度
@@ -50,7 +51,7 @@ void append(char *src, char dest) {
 
 char *strcat(char *dest, const char *src) {
     uint8_t *add_d = (uint8_t *)dest;
-    if (dest != nullptr && src != nullptr) {
+    if (dest != 0 && src != 0) {
         while (*add_d) {
             add_d++;
         }
