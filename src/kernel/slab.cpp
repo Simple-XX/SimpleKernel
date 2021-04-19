@@ -6,7 +6,7 @@
 
 #include "stdio.h"
 #include "stdint.h"
-#include "string.h"
+#include "cstring.h"
 #include "list.hpp"
 #include "common.h"
 #include "pmm.h"
