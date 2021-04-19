@@ -4,7 +4,7 @@
 //
 // pmm.cpp for Simple-XX/SimpleKernel.
 
-#include "string.h"
+#include "cstring.h"
 #include "multiboot2.h"
 #include "gdt.h"
 #include "e820.h"
