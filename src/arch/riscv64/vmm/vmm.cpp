@@ -6,8 +6,10 @@
 
 #include "stdint.h"
 #include "string.h"
+#include "stdio.h"
 #include "cpu.hpp"
 #include "memlayout.h"
+#include "pmm.h"
 #include "vmm.h"
 
 // class page_table_entry_t {
@@ -69,8 +71,6 @@ static constexpr uint32_t GET_PGD(uint32_t addr) {
     return (addr >> PGD_SHIFT) & PGD_MASK;
 }
 
-IO  VMM::io;
-PMM VMM::pmm;
 // 页目录，最高级
 static pgd_t pgd_kernel[VMM_PAGES_PRE_PAGE_TABLE]
     __attribute__((aligned(COMMON::PAGE_SIZE)));
@@ -96,9 +96,9 @@ void VMM::init(void) {
 
     set_pgd((pgd_t)pgd_kernel);
     void *a = CPU::READ_SATP();
-    io.printf("a: 0x%X, pgd_kernel: 0x%X\n", a, pgd_kernel);
+    printf("a: 0x%X, pgd_kernel: 0x%X\n", a, pgd_kernel);
     CPU::SFENCE_VMA();
-    io.printf("vmm_init\n");
+    printf("vmm_init\n");
     return;
 }
 
@@ -150,12 +150,12 @@ void VMM::unmmap(const pgd_t pgd, const void *va) {
     uint64_t pmd_idx = GET_PMD(reinterpret_cast<uint64_t>(va));
     pud_t    pud     = (pud_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pud == nullptr) {
-        io.printf("pud == nullptr\n");
+        printf("pud == nullptr\n");
         return;
     }
     pmd_t pmd = (pmd_t)((uint64_t)pud[pud_idx] & COMMON::PAGE_MASK);
     if (pmd == nullptr) {
-        io.printf("pmd == nullptr\n");
+        printf("pmd == nullptr\n");
         return;
     }
     pmd[pmd_idx] = 0;

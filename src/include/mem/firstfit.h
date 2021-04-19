@@ -8,7 +8,6 @@
 #define _FIRTSTFIT_H_
 
 #include "stdint.h"
-#include "io.h"
 
 // TODO: 面向对象重构
 class ff_list_entry_t {
@@ -27,7 +26,6 @@ public:
 
 class FIRSTFIT {
 private:
-    static IO io;
     // 当前管理的页数
     uint32_t page_count;
     // 空闲页数
