@@ -9,14 +9,12 @@
 
 #include "stdint.h"
 #include "pmm.h"
-#include "io.h"
 
 class KERNEL {
 private:
-    static IO io;
-    PMM       pmm;
-    int32_t   test_pmm(void);
-    void      arch_init(void) const;
+    PMM     pmm;
+    int32_t test_pmm(void);
+    void    arch_init(void) const;
 
 protected:
 public:
