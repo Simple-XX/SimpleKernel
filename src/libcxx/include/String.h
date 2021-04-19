@@ -14,7 +14,7 @@
 
 #include "stddef.h"
 #include "cstring.h"
-#include "stdio.h"
+#include "iostream"
 // #include "type_traits"
 
 // the class of string
@@ -249,20 +249,14 @@ public:
         return string(begin() + pos, begin() + pos + len);
     }
 
-    int  compare(const string &str) const;
-    int  compare(size_t pos, size_t len, const string &str) const;
-    int  compare(size_t pos, size_t len, const string &str, size_t subpos,
-                 size_t sublen = npos) const;
-    int  compare(const char *s) const;
-    int  compare(size_t pos, size_t len, const char *s) const;
-    int  compare(size_t pos, size_t len, const char *s, size_t n) const;
-    void print(void) {
-        for (const auto ch : *this) {
-            printf("%c", ch);
-        }
-        return;
-    }
-    // friend std::ostream &operator<<(std::ostream &os, const string &str);
+    int compare(const string &str) const;
+    int compare(size_t pos, size_t len, const string &str) const;
+    int compare(size_t pos, size_t len, const string &str, size_t subpos,
+                size_t sublen = npos) const;
+    int compare(const char *s) const;
+    int compare(size_t pos, size_t len, const char *s) const;
+    int compare(size_t pos, size_t len, const char *s, size_t n) const;
+    friend std::ostream &operator<<(std::ostream &os, const string &str);
     // friend std::istream &operator>>(std::istream &is, string &str);
     friend string operator+(const string &lhs, const string &rhs);
     friend string operator+(const string &lhs, const char *rhs);
