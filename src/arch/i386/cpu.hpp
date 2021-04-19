@@ -9,7 +9,7 @@
 
 #include "stdint.h"
 #include "stdbool.h"
-#include "assert.h"
+#include "cassert.h"
 
 // TODO: CPUID 相关操作，补全寄存器操作，数据地址等
 
