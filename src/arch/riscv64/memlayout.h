@@ -32,7 +32,7 @@ namespace MEMLAYOUT {
     // cycles since boot
     static constexpr const uint64_t CLINT_MTIME = (CLINT + 0xBFF8);
 
-    static constexpr const uint64_t PLIC = 0x0c000000L;
+    static constexpr const uint64_t PLIC = 0xC000000L;
 
     static constexpr const uint64_t PLIC_PRIORITY = (PLIC + 0x0);
     static constexpr const uint64_t PLIC_PENDING  = (PLIC + 0x1000);

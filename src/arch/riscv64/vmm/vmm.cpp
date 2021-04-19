@@ -69,13 +69,14 @@ static constexpr uint32_t GET_PGD(uint32_t addr) {
     return (addr >> PGD_SHIFT) & PGD_MASK;
 }
 
-IO           VMM::io;
-PMM          VMM::pmm;
-page_dir_t   VMM::pgd_kernel[VMM_PAGE_TABLES_TOTAL];
-page_table_t VMM::pte_kernel[VMM_KERNEL_PAGES];
+IO  VMM::io;
+PMM VMM::pmm;
+// 页目录，最高级
+static pgd_t pgd_kernel[VMM_PAGES_PRE_PAGE_TABLE]
+    __attribute__((aligned(COMMON::PAGE_SIZE)));
 
 VMM::VMM(void) {
-    curr_dir = (page_dir_t)CPU::READ_SATP();
+    curr_dir = (pgd_t)CPU::READ_SATP();
     return;
 }
 
@@ -84,80 +85,106 @@ VMM::~VMM(void) {
 }
 
 void VMM::init(void) {
-    // TODO
-    set_pgd((page_dir_t)pgd_kernel);
+    // 映射物理地址前 64MB 到虚拟地址前 64MB
+    for (uint64_t addr = 0x80000000; addr < 0x80000000 + COMMON::KERNEL_SIZE;
+         addr += COMMON::PAGE_SIZE) {
+        mmap((pgd_t)pgd_kernel, (void *)addr, (void *)addr,
+             VMM_PAGE_READABLE | VMM_PAGE_EXECUTABLE);
+    }
+    // 虚拟地址 0x00 设为 nullptr
+    unmmap((pgd_t)pgd_kernel, nullptr);
+
+    set_pgd((pgd_t)pgd_kernel);
+    void *a = CPU::READ_SATP();
+    io.printf("a: 0x%X, pgd_kernel: 0x%X\n", a, pgd_kernel);
     CPU::SFENCE_VMA();
     io.printf("vmm_init\n");
     return;
 }
 
-page_dir_t VMM::get_pgd(void) const {
-    return (page_dir_t)CPU::MAKE_SATP(curr_dir);
+pgd_t VMM::get_pgd(void) const {
+    return (pgd_t)CPU::MAKE_SATP(curr_dir);
 }
 
-void VMM::set_pgd(const page_dir_t pgd) {
+void VMM::set_pgd(const pgd_t pgd) {
     curr_dir = pgd;
     CPU::WRITE_SATP(CPU::MAKE_SATP(curr_dir));
     return;
 }
 
-void VMM::mmap(const page_dir_t pgd, const void *va, const void *pa,
+void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
                const uint32_t flag) {
-    uint64_t     pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
-    uint64_t     pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
-    page_table_t pt =
-        (page_table_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
-    if (pt == nullptr) {
-        pt = (page_table_t)pmm.alloc_page(1, COMMON::NORMAL);
-        pgd[pgd_idx] =
-            (page_dir_entry_t)(reinterpret_cast<uint64_t>(pt) | VMM_PAGE_VALID |
-                               VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    uint64_t pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
+    uint64_t pud_idx = GET_PUD(reinterpret_cast<uint64_t>(va));
+    uint64_t pmd_idx = GET_PMD(reinterpret_cast<uint64_t>(va));
+// #define DEBUG
+#ifdef DEBUG
+    io.info("pgd_idx: 0x%X, pud_idx: 0x%X, pmd_idx: 0x%X, k: %d\n", pgd_idx,
+            pud_idx, pmd_idx, k);
+#undef DEBUG
+#endif
+    // 填充 pgd 内容
+    pud_t pud = (pud_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
+    if (pud == nullptr) {
+        pud          = (pud_t)pmm.alloc_page(1, COMMON::NORMAL);
+        pgd[pgd_idx] = (reinterpret_cast<uint64_t>(pud) | VMM_PAGE_VALID);
     }
-    pt = (page_table_t)VMM_PA_LA(pt);
+    // 填充 pud 内容
+    pmd_t pmd = (pmd_t)(pud[pud_idx] & COMMON::PAGE_MASK);
+    if (pmd == nullptr) {
+        pmd          = (pmd_t)pmm.alloc_page(1, COMMON::NORMAL);
+        pud[pud_idx] = (reinterpret_cast<uint64_t>(pmd) | VMM_PAGE_VALID);
+    }
     if (pa == nullptr) {
         pa = pmm.alloc_page(1, COMMON::HIGH);
     }
-    pt[pte_idx] = (page_table_entry_t)(
-        (reinterpret_cast<uint64_t>(pa) & COMMON::PAGE_MASK) | flag);
-// #define DEBUG
-#ifdef DEBUG
-    io.info("pt[pte_idx]: 0x%X, &: 0x%X, pa: 0x%X\n", pt[pte_idx], &pt[pte_idx],
-            pa);
-#undef DEBUG
-#endif
+    // 填充 pmd 内容
+    pmd[pmd_idx] = ((reinterpret_cast<uint64_t>(pa) & COMMON::PAGE_MASK) |
+                    flag | VMM_PAGE_VALID);
     return;
 }
 
-void VMM::unmmap(const page_dir_t pgd, const void *va) {
-    uint64_t     pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
-    uint64_t     pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
-    page_table_t pt =
-        (page_table_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
-    if (pt == nullptr) {
-        io.printf("pt == nullptr\n");
+void VMM::unmmap(const pgd_t pgd, const void *va) {
+    uint64_t pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
+    uint64_t pud_idx = GET_PUD(reinterpret_cast<uint64_t>(va));
+    uint64_t pmd_idx = GET_PMD(reinterpret_cast<uint64_t>(va));
+    pud_t    pud     = (pud_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
+    if (pud == nullptr) {
+        io.printf("pud == nullptr\n");
         return;
     }
-    pt          = (page_table_t)VMM_PA_LA(pt);
-    pt[pte_idx] = nullptr;
+    pmd_t pmd = (pmd_t)((uint64_t)pud[pud_idx] & COMMON::PAGE_MASK);
+    if (pmd == nullptr) {
+        io.printf("pmd == nullptr\n");
+        return;
+    }
+    pmd[pmd_idx] = 0;
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
     return;
 }
 
-uint32_t VMM::get_mmap(const page_dir_t pgd, const void *va, const void *pa) {
-    uint64_t     pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
-    uint64_t     pte_idx = GET_PTE(reinterpret_cast<uint64_t>(va));
-    page_table_t pt =
-        (page_table_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
-    if (pt == nullptr) {
+uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
+    uint64_t pgd_idx = GET_PGD(reinterpret_cast<uint64_t>(va));
+    uint64_t pud_idx = GET_PUD(reinterpret_cast<uint64_t>(va));
+    uint64_t pmd_idx = GET_PMD(reinterpret_cast<uint64_t>(va));
+
+    pud_t pud = (pud_t)((uint64_t)pgd[pgd_idx] & COMMON::PAGE_MASK);
+    if (pud == nullptr) {
         if (pa != nullptr) {
             *(uint64_t *)pa = (uint64_t) nullptr;
         }
         return 0;
     }
-    pt = (page_table_t)(VMM_PA_LA(pt));
-    if (pt[pte_idx] != nullptr) {
+    pmd_t pmd = (pmd_t)((uint64_t)pud[pud_idx] & COMMON::PAGE_MASK);
+    if (pmd == nullptr) {
         if (pa != nullptr) {
-            *(uint64_t *)pa = (uint64_t)pt[pte_idx] & COMMON::PAGE_MASK;
+            *(uint64_t *)pa = (uint64_t) nullptr;
+        }
+        return 0;
+    }
+    if (pmd[pmd_idx] != 0) {
+        if (pa != nullptr) {
+            *(uint64_t *)pa = (uint64_t)pmd[pmd_idx] & COMMON::PAGE_MASK;
         }
         return 1;
     }
