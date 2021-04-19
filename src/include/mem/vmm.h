@@ -9,8 +9,6 @@
 
 #include "limits.h"
 #include "common.h"
-#include "pmm.h"
-#include "io.h"
 
 typedef ptrdiff_t *pte_t;
 typedef ptrdiff_t *pt_t;
@@ -82,8 +80,6 @@ static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
 
 class VMM {
 private:
-    static IO  io;
-    static PMM pmm;
     // TODO: 支持最多四级页表，共用同一套代码
     pgd_t curr_dir;
 
@@ -106,5 +102,7 @@ public:
     // 已映射返回 1，未映射返回 0
     uint32_t get_mmap(const pgd_t pgd, const void *va, const void *pa);
 };
+
+static VMM vmm;
 
 #endif /* _VMM_H */
