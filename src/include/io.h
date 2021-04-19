@@ -20,8 +20,6 @@
 
 class IO {
 private:
-    // io 缓冲
-    static char buf[128];
     // io 对象
 #if defined(__i386__) || defined(__x86_64__)
     static TUI io;
@@ -57,11 +55,6 @@ public:
     char get_char(void);
     // 输出字符串
     int32_t write_string(const char *s);
-    // 格式输出
-    int32_t printf(const char *fmt, ...);
-    int32_t info(const char *fmt, ...);
-    int32_t warn(const char *fmt, ...);
-    int32_t err(const char *fmt, ...);
 };
 
 static IO io;
