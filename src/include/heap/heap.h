@@ -9,13 +9,11 @@
 
 #include "stdint.h"
 #include "stddef.h"
-#include "io.h"
 #include "slab.h"
 
 // TODO: 添加对 VMM 的处理
 class HEAP {
 private:
-    static IO io;
     // 堆最大容量 4MB
     static constexpr const uint32_t HEAP_SIZE = 0x400000;
     // 管理算法的名称
@@ -41,5 +39,7 @@ public:
     // 获取空闲内存数量 单位为 byte
     size_t get_free(void);
 };
+
+static HEAP heap;
 
 #endif /* _HEAP_H_ */
