@@ -8,12 +8,9 @@
 #define _KERNEL_H_
 
 #include "stdint.h"
-#include "io.h"
 
 class KERNEL {
 private:
-    static IO io;
-
 protected:
 public:
     KERNEL(void);
