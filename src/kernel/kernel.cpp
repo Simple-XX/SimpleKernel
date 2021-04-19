@@ -11,6 +11,7 @@
 #include "color.h"
 #include "assert.h"
 #include "stdio.h"
+#include "pmm.h"
 #include "kernel.h"
 
 KERNEL::KERNEL(void) {

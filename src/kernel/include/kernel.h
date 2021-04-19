@@ -8,11 +8,9 @@
 #define _KERNEL_H_
 
 #include "stdint.h"
-#include "pmm.h"
 
 class KERNEL {
 private:
-    PMM     pmm;
     int32_t test_pmm(void);
     void    arch_init(void) const;
 
