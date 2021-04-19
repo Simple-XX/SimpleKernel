@@ -8,6 +8,7 @@
 #include "multiboot2.h"
 #include "gdt.h"
 #include "e820.h"
+#include "stdio.h"
 #include "pmm.h"
 
 extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
@@ -15,7 +16,6 @@ extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
 
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
-IO                       PMM::io;
 COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
 size_t                   PMM::normal_pages = 0;
 FIRSTFIT                 PMM::normal(phy_pages);
@@ -68,8 +68,8 @@ int32_t PMM::init(void) {
     GDT::init();
 // #define DEBUG
 #ifdef DEBUG
-    io.printf("KERNEL_START_4K: 0x%X, KERNEL_END_4K: 0x%X\n", KERNEL_START_4K,
-              KERNEL_END_4K);
+    printf("KERNEL_START_4K: 0x%X, KERNEL_END_4K: 0x%X\n", KERNEL_START_4K,
+           KERNEL_END_4K);
 #endif
     e820map_t e820map;
     bzero(&e820map, sizeof(e820map_t));
@@ -79,8 +79,8 @@ int32_t PMM::init(void) {
     for (size_t i = 0; i < e820map.nr_map; i++) {
 // #define DEBUG
 #ifdef DEBUG
-        io.printf("addr: 0x%X, len: 0x%X, type: 0x%X\n", e820map.map[i].addr,
-                  e820map.map[i].length, e820map.map[i].type);
+        printf("addr: 0x%X, len: 0x%X, type: 0x%X\n", e820map.map[i].addr,
+               e820map.map[i].length, e820map.map[i].type);
 #undef DEBUG
 #endif
         for (uint8_t *addr = e820map.map[i].addr;
@@ -108,14 +108,14 @@ int32_t PMM::init(void) {
     normal_pages = COMMON::KERNEL_PAGES;
     high_pages   = pages - normal_pages;
     mamage_init();
-    io.printf("pmm_init\n");
+    printf("pmm_init\n");
     return 0;
 }
 
 void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
     void *addr = zone[_zone]->alloc(_pages);
     if (addr == nullptr) {
-        io.printf("No enough mem.\n");
+        printf("No enough mem.\n");
     }
     return addr;
 }
