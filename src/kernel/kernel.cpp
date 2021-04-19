@@ -9,9 +9,8 @@
 #include "cxxabi.h"
 #include "common.h"
 #include "color.h"
+#include "io.h"
 #include "kernel.h"
-
-IO KERNEL::io;
 
 KERNEL::KERNEL(void) {
     cpp_init();

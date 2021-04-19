@@ -64,4 +64,6 @@ public:
     int32_t err(const char *fmt, ...);
 };
 
+static IO io;
+
 #endif /* _IO_H_ */
