@@ -10,7 +10,7 @@
 // iostream for MRNIU/MiniCRT.
 
 #include "stddef.h"
-#include "string.h"
+#include "cstring.h"
 #include "stdio.h"
 #include "iostream"
 

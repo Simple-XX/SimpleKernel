@@ -5,7 +5,7 @@
 // kernel.cpp for Simple-XX/SimpleKernel.
 
 #include "stdarg.h"
-#include "string.h"
+#include "cstring.h"
 #include "cxxabi.h"
 #include "common.h"
 #include "color.h"
@@ -15,6 +15,7 @@
 #include "vmm.h"
 #include "heap.h"
 #include "kernel.h"
+#include "String.h"
 
 KERNEL::KERNEL(void) {
     cpp_init();
@@ -30,6 +31,8 @@ KERNEL::KERNEL(void) {
     heap.init();
     // 测试堆
     test_heap();
+    string s("fafa");
+    s.print();
     return;
 }
 
