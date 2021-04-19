@@ -18,7 +18,7 @@ private:
     static constexpr const uint32_t HEAP_SIZE = 0x400000;
     // 管理算法的名称
     const char *name;
-    SLAB        manage;
+    static SLAB manage;
 
 protected:
 public:
