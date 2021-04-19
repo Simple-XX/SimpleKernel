@@ -10,11 +10,13 @@
 #include "common.h"
 #include "color.h"
 #include "assert.h"
+#include "stdio.h"
+#include "pmm.h"
+#include "vmm.h"
+#include "heap.h"
 #include "kernel.h"
 
-IO KERNEL::io;
-
-KERNEL::KERNEL(void) : pmm(PMM()), vmm(VMM()) {
+KERNEL::KERNEL(void) {
     cpp_init();
     // 物理内存管理初始化
     pmm.init();
@@ -75,7 +77,7 @@ int32_t KERNEL::test_pmm(void) {
         pmm.free_page(addr4, 4096, COMMON::NORMAL);
         assert(pmm.free_pages_count(COMMON::NORMAL) == free_count);
     }
-    io.printf("pmm test done.\n");
+    printf("pmm test done.\n");
     return 0;
 }
 
@@ -128,7 +130,7 @@ int32_t KERNEL::test_vmm(void) {
     vmm.unmmap(vmm.get_pgd(), (void *)va);
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, &addr) == 0);
     assert(addr == (ptrdiff_t) nullptr);
-    io.printf("vmm test done.\n");
+    printf("vmm test done.\n");
     return 0;
 }
 
@@ -169,23 +171,22 @@ int32_t KERNEL::test_heap(void) {
     assert(heap.get_free() == free0);
     assert(heap.get_total() == total0);
     assert(heap.get_block() == block0);
-    io.printf("heap test done.\n");
+    printf("heap test done.\n");
     return 0;
 }
 
 void KERNEL::show_info(void) {
-    io.info("kernel in memory start: 0x%X, end 0x%X\n",
-            COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR);
-    io.info("kernel in memory start4k: 0x%X, end4k 0x%X, KERNEL_SIZE:0x%X\n",
-            COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K,
-            COMMON::KERNEL_SIZE);
-    io.info("kernel in memory size: %d KB, %d pages\n",
-            ((uint8_t *)COMMON::KERNEL_END_ADDR -
-             (uint8_t *)COMMON::KERNEL_START_ADDR) /
-                1024,
-            ((uint8_t *)COMMON::KERNEL_END_4K -
-             (uint8_t *)COMMON::KERNEL_START_4K) /
-                COMMON::PAGE_SIZE);
-    io.info("Simple Kernel.\n");
+    info("kernel in memory start: 0x%X, end 0x%X\n", COMMON::KERNEL_START_ADDR,
+         COMMON::KERNEL_END_ADDR);
+    info("kernel in memory start4k: 0x%X, end4k 0x%X, KERNEL_SIZE:0x%X\n",
+         COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, COMMON::KERNEL_SIZE);
+    info("kernel in memory size: %d KB, %d pages\n",
+         ((uint8_t *)COMMON::KERNEL_END_ADDR -
+          (uint8_t *)COMMON::KERNEL_START_ADDR) /
+             1024,
+         ((uint8_t *)COMMON::KERNEL_END_4K -
+          (uint8_t *)COMMON::KERNEL_START_4K) /
+             COMMON::PAGE_SIZE);
+    info("Simple Kernel.\n");
     return;
 }

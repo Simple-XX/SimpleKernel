@@ -4,10 +4,10 @@
 //
 // heap.cpp for Simple-XX/SimpleKernel.
 
+#include "stdio.h"
 #include "cpu.hpp"
+#include "common.h"
 #include "heap.h"
-
-IO HEAP::io;
 
 HEAP::HEAP(void) : name("SLAB"), manage(SLAB()) {
     return;
@@ -19,7 +19,7 @@ HEAP::~HEAP(void) {
 
 int32_t HEAP::init(void) {
     manage_init();
-    io.printf("heap_init\n");
+    printf("heap_init\n");
     return 0;
 }
 
