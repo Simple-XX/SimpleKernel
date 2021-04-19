@@ -6,15 +6,15 @@
 
 #include "stdint.h"
 #include "string.h"
+#include "stdio.h"
 #include "cpu.hpp"
+#include "pmm.h"
 #include "vmm.h"
 
 // TODO: 结合这几个结构给出更直观的写法
 // Format of a 32-Bit Page-Table Entry that Maps a 4-KByte Page
 class page_table32_entry_t {
 private:
-    IO io;
-
 public:
     // Present; must be 1 to map a 4-KByte page
     uint32_t p : 1;
@@ -47,17 +47,11 @@ public:
     uint32_t ignore : 3;
     // Physical address of the 4-KByte page referenced by this entry
     uint32_t addr : 20;
-    void     printf(void) {
-        io.printf("%05X %d %d%d%d%d%d%d %d%d%d", addr, ignore, g, pat, d, a,
-                  pcd, pwt, us, rw, p);
-    }
 };
 
 // Format of a 32-Bit Page-Directory Entry that References a Page Table
 class page_dir32_entry_t {
 private:
-    IO io;
-
 public:
     // Present; must be 1 to reference a page table
     uint32_t p : 1;
@@ -85,10 +79,6 @@ public:
     uint32_t ignore2 : 4;
     // Physical address of 4-KByte aligned page table referenced by this entry
     uint32_t addr : 20;
-    void     printf(void) {
-        io.printf("%05X %d %d %d %d%d%d %d%d%d", addr, ignore2, ps, ignore1, a,
-                  pcd, pwt, us, rw, p);
-    }
 };
 
 // PTE idx 的位数
@@ -127,8 +117,6 @@ static constexpr uint32_t GET_PGD(uint32_t addr) {
     return (addr >> PGD_SHIFT) & PGD_MASK;
 }
 
-IO  VMM::io;
-PMM VMM::pmm;
 // 页目录，最高级
 static pgd_t pgd_kernel[VMM_PAGES_PRE_PAGE_TABLE]
     __attribute__((aligned(COMMON::PAGE_SIZE)));
@@ -152,15 +140,15 @@ void VMM::init(void) {
     unmmap((pgd_t)pgd_kernel, nullptr);
 // #define DEBUG
 #ifdef DEBUG
-    io.printf("&pte_kernel[0]: 0x%X, pte_kernel[0]: %X\n", &pte_kernel[0],
-              pte_kernel[0]);
-    io.printf("&pgd_kernel[0]: 0x%X, pgd_kernel[0]: 0x%X\n", &pgd_kernel[0],
-              pgd_kernel[0]);
+    printf("&pte_kernel[0]: 0x%X, pte_kernel[0]: %X\n", &pte_kernel[0],
+           pte_kernel[0]);
+    printf("&pgd_kernel[0]: 0x%X, pgd_kernel[0]: 0x%X\n", &pgd_kernel[0],
+           pgd_kernel[0]);
 #undef DEBUG
 #endif
     set_pgd((pgd_t)pgd_kernel);
     CPU::CR0_SET_PG();
-    io.printf("vmm_init\n");
+    printf("vmm_init\n");
     return;
 }
 
@@ -192,8 +180,8 @@ void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
         ((reinterpret_cast<uint32_t>(pa) & COMMON::PAGE_MASK) | flag);
 // #define DEBUG
 #ifdef DEBUG
-    io.info("pud[pud_idx]: 0x%X, &: 0x%X, pa: 0x%X\n", pud[pud_idx],
-            &pud[pud_idx], pa);
+    info("pud[pud_idx]: 0x%X, &: 0x%X, pa: 0x%X\n", pud[pud_idx], &pud[pud_idx],
+         pa);
 #undef DEBUG
 #endif
     CPU::INVLPG(va);
@@ -205,7 +193,7 @@ void VMM::unmmap(const pgd_t pgd, const void *va) {
     uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
     pud_t    pud     = (pud_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pud == nullptr) {
-        io.printf("pud == nullptr\n");
+        printf("pud == nullptr\n");
         return;
     }
     pud          = (pud_t)VMM_PA_LA(pud);

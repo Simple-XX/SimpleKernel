@@ -6,11 +6,11 @@
 
 #include "string.h"
 #include "memlayout.h"
+#include "stdio.h"
 #include "pmm.h"
 
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
-IO                       PMM::io;
 COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
 size_t                   PMM::normal_pages = 0;
 FIRSTFIT                 PMM::normal(phy_pages);
@@ -54,8 +54,8 @@ int32_t PMM::init(void) {
         }
 // #define DEBUG
 #ifdef DEBUG
-        io.printf("phy_pages[%d].addr = addr: 0x%X\n", pages,
-                  phy_pages[pages].addr);
+        printf("phy_pages[%d].addr = addr: 0x%X\n", pages,
+               phy_pages[pages].addr);
 #undef DEBUG
 #endif
         pages++;
@@ -64,7 +64,7 @@ int32_t PMM::init(void) {
     normal_pages = COMMON::KERNEL_PAGES;
     high_pages   = pages - normal_pages;
     mamage_init();
-    io.printf("pmm_init\n");
+    printf("pmm_init\n");
     return 0;
 }
 
@@ -74,14 +74,14 @@ void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
         addr = zone[_zone]->alloc(_pages);
     }
     if (addr == nullptr) {
-        io.printf("No enough mem: 0x%X pages.\n", _pages);
+        printf("No enough mem: 0x%X pages.\n", _pages);
     }
     return addr;
 }
 
 void PMM::free_page(void *_addr, uint32_t _pages, COMMON::zone_t _zone) {
     if (_addr == nullptr) {
-        io.printf("addr is null.\n");
+        printf("addr is null.\n");
         return;
     }
     zone[_zone]->free(_addr, _pages);

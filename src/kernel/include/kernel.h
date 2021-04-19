@@ -8,17 +8,11 @@
 #define _KERNEL_H_
 
 #include "stdint.h"
-#include "pmm.h"
-#include "vmm.h"
-#include "io.h"
 
 class KERNEL {
 private:
-    static IO io;
-    PMM       pmm;
-    VMM       vmm;
-    int32_t   test_pmm(void);
-    int32_t   test_vmm(void);
+    int32_t test_pmm(void);
+    int32_t test_vmm(void);
 
 protected:
 public:

@@ -4,11 +4,10 @@
 //
 // gdt.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
+#include "stdio.h"
 #include "gdt.h"
 
 namespace GDT {
-    IO io;
     // 加载 GDTR
     extern "C" void gdt_load(uint32_t);
     // 刷新 TSS
@@ -90,7 +89,7 @@ namespace GDT {
         gdt_load((uint32_t)&gdt_ptr);
         // 加载任务寄存器
         tss_load();
-        io.printf("gdt init.\n");
+        printf("gdt init.\n");
         return 0;
     }
 };
