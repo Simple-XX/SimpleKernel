@@ -1,0 +1,12 @@
+
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/zouxiaohang/TinySTL
+// iostream for Simple-XX/SimpleKernel.
+
+#ifndef _IOSTREAM_
+#define _IOSTREAM_
+
+// TODO
+
+#endif /* _IOSTREAM_ */
