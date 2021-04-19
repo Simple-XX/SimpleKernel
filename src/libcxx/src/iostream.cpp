@@ -1,17 +1,39 @@
 
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/zouxiaohang/TinySTL
+// Based on https://github.com/MRNIU/MiniCRT
 // iostream.cpp for Simple-XX/SimpleKernel.
-
-// This file is a part of MRNIU/MiniCRT
-// (https://github.com/MRNIU/MiniCRT).
-//
-// iostream for MRNIU/MiniCRT.
 
 #include "stddef.h"
 #include "cstring.h"
 #include "stdio.h"
 #include "iostream"
 
-// TODO
+namespace std {
+    ostream::ostream(void) {
+        return;
+    }
+
+    ostream::~ostream(void) {
+        return;
+    }
+
+    ostream &ostream::operator<<(char c) {
+        printf("%c", c);
+        return *this;
+    }
+
+    ostream &ostream::operator<<(int n) {
+        printf("%d", n);
+        return *this;
+    }
+
+    ostream &ostream::operator<<(const char *lhs) {
+        printf("%s", lhs);
+        return *this;
+    }
+
+    ostream &ostream::operator<<(ostream &(*manip)(ostream &)) {
+        return manip(*this);
+    }
+};
