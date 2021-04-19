@@ -12,11 +12,16 @@ extern "C" {
 #endif
 
 #include "stdint.h"
+#include "stddef.h"
 
 int       abs(int);
 int       atoi(const char *);
 long      atol(const char *);
 long long atoll(const char *);
+
+void *malloc(size_t size);
+
+void free(void *ptr);
 
 #ifdef __cplusplus
 }
