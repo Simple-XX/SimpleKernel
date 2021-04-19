@@ -43,6 +43,15 @@ int snprintf_(char *buffer, size_t count, const char *format, ...);
 int vsnprintf_(char *buffer, size_t count, const char *format, va_list va);
 int _vsnprintf(char *buffer, const size_t maxlen, const char *format,
                va_list va);
+
+int32_t printf(const char *fmt, ...);
+
+int32_t info(const char *fmt, ...);
+
+int32_t warn(const char *fmt, ...);
+
+int32_t err(const char *fmt, ...);
+
 #ifdef __cplusplus
 }
 #endif
