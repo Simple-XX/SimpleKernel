@@ -443,12 +443,14 @@ size_t string::find_last_not_of(char c, size_t pos) const {
     }
     return npos;
 }
-// std::ostream &operator<<(std::ostream &os, const string &str) {
-//     for (const auto ch : str) {
-//         os << ch;
-//     }
-//     return os;
-// }
+
+std::ostream &operator<<(std::ostream &os, const string &str) {
+    for (const auto ch : str) {
+        os << ch;
+    }
+    return os;
+}
+
 // std::istream &operator>>(std::istream &is, string &str) {
 //     char              ch;
 //     string::size_type oldSize = str.size(), index = 0;

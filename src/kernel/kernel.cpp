@@ -16,6 +16,7 @@
 #include "heap.h"
 #include "kernel.h"
 #include "String.h"
+#include "iostream"
 
 KERNEL::KERNEL(void) {
     cpp_init();
@@ -32,7 +33,7 @@ KERNEL::KERNEL(void) {
     // 测试堆
     test_heap();
     string s("fafa");
-    s.print();
+    std::cout << s << std::endl;
     return;
 }
 
