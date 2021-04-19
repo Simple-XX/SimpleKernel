@@ -7,7 +7,7 @@
 #ifndef _ALGORITHM_HPP_
 #define _ALGORITHM_HPP_
 
-#include "string.h"
+#include "cstring.h"
 #include "Allocator.hpp"
 #include "Functional.hpp"
 #include "Iterator.hpp"
@@ -416,7 +416,7 @@ count_if(InputIterator first, InputIterator last, UnaryPredicate pred) {
 //********** [mismatch] ******************************
 //********* [Algorithm Complexity: O(N)] ****************
 template <class InputIterator1, class InputIterator2>
-pair<InputIterator1, InputIterator2>
+STL::pair<InputIterator1, InputIterator2>
 mismatch(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2) {
     for (; first1 != last1; ++first1, ++first2) {
         if (*first1 != *first2)
@@ -426,7 +426,7 @@ mismatch(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2) {
 }
 
 template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-pair<InputIterator1, InputIterator2>
+STL::pair<InputIterator1, InputIterator2>
 mismatch(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2,
          BinaryPredicate pred) {
     for (; first1 != last1; ++first1, ++first2) {

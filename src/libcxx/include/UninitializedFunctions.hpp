@@ -33,7 +33,8 @@ ForwardIterator uninitialized_copy(InputIterator first, InputIterator last,
 template <class InputIterator, class ForwardIterator>
 ForwardIterator _uninitialized_copy_aux(InputIterator first, InputIterator last,
                                         ForwardIterator result, _true_type) {
-    memcpy(result, first, (last - first) * sizeof(*first));
+    memcpy(result, (void *)const_cast<char *>(first),
+           (last - first) * sizeof(*first));
     return result + (last - first);
 }
 
