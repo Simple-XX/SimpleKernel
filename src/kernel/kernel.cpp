@@ -19,7 +19,7 @@ KERNEL::KERNEL(void) : pmm(PMM()), vmm(VMM()) {
     // 物理内存管理初始化
     pmm.init();
     // 测试物理内存
-    // test_pmm();
+    test_pmm();
     // 虚拟内存初始化
     vmm.init();
     // 测试虚拟内存

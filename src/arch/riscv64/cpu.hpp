@@ -288,7 +288,7 @@ namespace CPU {
     // flush the TLB.
     static inline void SFENCE_VMA(void) {
         // the zero, zero means flush all TLB entries.
-        __asm__ volatile("sfence.vma");
+        __asm__ volatile("sfence.vma zero,zero");
         return;
     }
 
