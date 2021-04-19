@@ -4,8 +4,7 @@
 // Based on https://github.com/zouxiaohang/TinySTL
 // String.cpp for Simple-XX/SimpleKernel.
 
-// #include "iostream"
-#include "String.h"
+#include "string"
 
 const size_t string::npos;
 
