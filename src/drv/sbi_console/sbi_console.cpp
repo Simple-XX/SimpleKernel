@@ -5,7 +5,7 @@
 // sbi_console.cpp for Simple-XX/SimpleKernel.
 
 #include "stddef.h"
-#include "string.h"
+#include "cstring.h"
 #include "sbi_console.h"
 
 SBI_CONSOLE::SBI_CONSOLE(void) {

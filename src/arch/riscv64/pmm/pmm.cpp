@@ -4,7 +4,7 @@
 //
 // pmm.cpp for Simple-XX/SimpleKernel.
 
-#include "string.h"
+#include "cstring.h"
 #include "memlayout.h"
 #include "stdio.h"
 #include "pmm.h"
