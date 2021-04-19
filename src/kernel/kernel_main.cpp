@@ -8,6 +8,7 @@
 #include "assert.h"
 #include "multiboot2.h"
 #include "kernel.h"
+
 extern "C" void kernel_main(uint32_t size, void *addr);
 
 // 内核入口
