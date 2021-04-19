@@ -48,3 +48,12 @@ size_t HEAP::get_block(void) {
 size_t HEAP::get_free(void) {
     return manage.get_free();
 }
+
+void *malloc(size_t size) {
+    return heap.malloc(size);
+}
+
+void free(void *ptr) {
+    heap.free(ptr);
+    return;
+}
