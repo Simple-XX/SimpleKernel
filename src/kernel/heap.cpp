@@ -9,7 +9,9 @@
 #include "common.h"
 #include "heap.h"
 
-HEAP::HEAP(void) : name("SLAB"), manage(SLAB()) {
+SLAB HEAP::manage;
+
+HEAP::HEAP(void) : name("SLAB") {
     return;
 }
 
@@ -47,4 +49,37 @@ size_t HEAP::get_block(void) {
 
 size_t HEAP::get_free(void) {
     return manage.get_free();
+}
+
+extern "C" void *malloc(size_t size) {
+    return heap.malloc(size);
+}
+
+extern "C" void free(void *ptr) {
+    heap.free(ptr);
+    return;
+}
+
+void *operator new(size_t size) {
+    return malloc(size);
+}
+
+void *operator new[](size_t size) {
+    return malloc(size);
+}
+
+void operator delete(void *p) {
+    free(p);
+}
+
+void operator delete(void *p, size_t size __attribute__((unused))) {
+    free(p);
+}
+
+void operator delete[](void *p) {
+    free(p);
+}
+
+void operator delete[](void *p, size_t size __attribute__((unused))) {
+    free(p);
 }
