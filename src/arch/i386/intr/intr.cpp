@@ -5,7 +5,7 @@
 // intr.cpp for Simple-XX/SimpleKernel.
 
 #include "cpu.hpp"
-#include "io.h"
+#include "stdio.h"
 #include "gdt.h"
 #include "intr.h"
 
@@ -13,7 +13,6 @@ namespace INTR {
 #ifdef __cplusplus
     extern "C" {
 #endif
-    IO io;
     // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
     // ISR:中断服务程序(interrupt service routine)
     // 0 #DE 除 0 异常
@@ -156,12 +155,12 @@ namespace INTR {
     static void page_fault(pt_regs_t *regs);
     void        die(const char *str, uint32_t oesp, uint32_t int_no) {
         pt_regs_t *old_esp = (pt_regs_t *)oesp;
-        io.printf("%s\t: %d\n\r", str, int_no);
-        io.printf("die_Unuseable.\n");
+        printf("%s\t: %d\n\r", str, int_no);
+        printf("die_Unuseable.\n");
         // cs::EIP
         // oss:oesp
         // printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
-        //              old_esp[1], read_eflags(), read_eflags(), old_esp[4],
+        //              old_esp[1], READ_EFLAGS(), READ_EFLAGS(), old_esp[4],
         //              old_esp[3]);
         // printk_color(red, "EIP:\t%08x:%p\nEFLAGS:\t%08x\nESP:\t%08x:%p\n",
         //              &old_esp[1], &old_esp[0], &old_esp[2], &old_esp[4],
@@ -169,18 +168,17 @@ namespace INTR {
         // printk_color(red,
         // "EIP:\t%08x:%08X\nEFLAGS:\t%08x\nESP:\t%08x:%08X\n", old_esp->cs,
         // old_esp->eip, old_esp->eflags, old_esp->ss, old_esp->old_esp);
-        io.printf("gs: %08x\tfs: %08x\tes: %08x\tds: %08x\n", old_esp->gs,
-                  old_esp->fs, old_esp->es, old_esp->ds);
-        io.printf("edi: %08x\tesi: %08x\tebp: %08x\told_esp: %08x\n",
-                  old_esp->edi, old_esp->esi, old_esp->ebp, old_esp->old_esp);
-        io.printf("ebx: %08x\tedx: %08x\tecx: %08x\teax: %08x\n", old_esp->ebx,
-                  old_esp->edx, old_esp->ecx, old_esp->eax);
-        io.printf("int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
-                  old_esp->int_no, old_esp->err_code, old_esp->eip,
-                  old_esp->cs);
-        io.printf("eflags: %08x\tuser_esp: %08x\tss: %08x\n", old_esp->eflags,
-                  old_esp->user_esp, old_esp->user_ss);
-        io.printf("addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
+        printf("gs: %08x\tfs: %08x\tes: %08x\tds: %08x\n", old_esp->gs,
+               old_esp->fs, old_esp->es, old_esp->ds);
+        printf("edi: %08x\tesi: %08x\tebp: %08x\told_esp: %08x\n", old_esp->edi,
+               old_esp->esi, old_esp->ebp, old_esp->old_esp);
+        printf("ebx: %08x\tedx: %08x\tecx: %08x\teax: %08x\n", old_esp->ebx,
+               old_esp->edx, old_esp->ecx, old_esp->eax);
+        printf("int_no: %08X\terr_code: %08X\teip: %08x\tcs: %08x\n",
+               old_esp->int_no, old_esp->err_code, old_esp->eip, old_esp->cs);
+        printf("eflags: %08x\tuser_esp: %08x\tss: %08x\n", old_esp->eflags,
+               old_esp->user_esp, old_esp->user_ss);
+        printf("addr: %08x, %08X\n", &old_esp->gs, &old_esp->user_ss);
 
         CPU::hlt();
         return;
@@ -197,20 +195,20 @@ namespace INTR {
 
         // 取任务寄存器值->tr
         __asm__ volatile("str %%ax" : "=a"(tr) : "0"(0));
-        io.printf("Unuseable.\n");
+        printf("Unuseable.\n");
 
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n", regs->eax,
-                  regs->ebx, regs->ecx, regs->edx);
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "esi 0x%08X\tedi 0x%08X\tebp 0x%08X\tesp 0x%08X\n", regs->esi,
-                  regs->edi, regs->ebp, (uint32_t)regs->user_esp);
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "ds 0x%08X\tes 0x%08X\tfs 0x%08X\tgs 0x%08X\n", regs->ds,
-                  regs->es, regs->fs, regs->gs);
-        io.printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
-                  "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
-                  // old_esp[0], old_esp[1], old_esp[2]);
-                  old_esp[0], CPU::read_eflags(), old_esp[2]);
+        printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n", regs->eax,
+               regs->ebx, regs->ecx, regs->edx);
+        printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+               "esi 0x%08X\tedi 0x%08X\tebp 0x%08X\tesp 0x%08X\n", regs->esi,
+               regs->edi, regs->ebp, (uint32_t)regs->user_esp);
+        printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+               "ds 0x%08X\tes 0x%08X\tfs 0x%08X\tgs 0x%08X\n", regs->ds,
+               regs->es, regs->fs, regs->gs);
+        printf("eax 0x%08X\tebx 0x%08X\tecx 0x%08X\tedx 0x%08X\n",
+               "EIP: 0x%08X\tEFLAGS: 0x%08X\tCS: 0x%08X\n",
+               // old_esp[0], old_esp[1], old_esp[2]);
+               old_esp[0], CPU::READ_EFLAGS(), old_esp[2]);
         return;
     }
 
@@ -396,8 +394,8 @@ namespace INTR {
             interrupt_handlers[intr_no](regs);
         }
         else {
-            io.printf("Unhandled interrupt: %d %s\n", intr_no,
-                      get_intr_name(intr_no));
+            printf("Unhandled interrupt: %d %s\n", intr_no,
+                   get_intr_name(intr_no));
             CPU::hlt();
         }
         return 0;
@@ -491,7 +489,7 @@ namespace INTR {
         register_interrupt_handler(INT_STACK_FAULT, &stack_segment);
         register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
         register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
-        io.printf("intr init\n");
+        printf("intr init\n");
         return 0;
     }
 };

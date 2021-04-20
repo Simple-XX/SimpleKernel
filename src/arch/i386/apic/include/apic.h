@@ -8,12 +8,9 @@
 #define _APIC_H_
 
 #include "stdint.h"
-#include "io.h"
 
 class APIC {
 private:
-    static IO io;
-
 protected:
 public:
     APIC(void);

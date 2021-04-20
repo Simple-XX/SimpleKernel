@@ -7,15 +7,11 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
-#pragma once
-
 #include "stdint.h"
-#include "io.h"
 #include "intr.h"
 
 class KEYBOARD {
 private:
-    static IO io;
     // 键盘缓冲区大小
     static constexpr const uint32_t KB_BUFSIZE = 128;
 
