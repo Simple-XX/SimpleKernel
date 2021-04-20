@@ -1,4 +1,8 @@
 
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/gcc-mirror/gcc
+// type_traits for Simple-XX/SimpleKernel.
 
 #include "stdint.h"
 #include "stddef.h"
