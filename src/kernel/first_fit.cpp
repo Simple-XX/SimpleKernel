@@ -5,13 +5,12 @@
 // first_fit.cpp for Simple-XX/SimpleKernel.
 
 #include "stdint.h"
-#include "string.h"
+#include "cstring.h"
 #include "common.h"
 #include "pmm.h"
+#include "stdio.h"
 #include "firstfit.h"
-#include "list.hpp"
-
-IO FIRSTFIT::io;
+#include "list_tmp.hpp"
 
 FIRSTFIT::FIRSTFIT(COMMON::physical_pages_t *_phy_pages)
     : phy_pages(_phy_pages) {
@@ -66,11 +65,11 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
     // 输出所有内存段
     chunk = list;
     do {
-        io.printf("addr: 0x%X, len: 0x%X, ref: 0x%X\n", chunk->addr,
-                  chunk->npages * COMMON::PAGE_SIZE, chunk->ref);
+        printf("addr: 0x%X, len: 0x%X, ref: 0x%X\n", chunk->addr,
+               chunk->npages * COMMON::PAGE_SIZE, chunk->ref);
         chunk = list_next(chunk);
     } while (chunk != list);
-    io.printf("node_num: 0x%X\n", node_num);
+    printf("node_num: 0x%X\n", node_num);
 #undef DEBUG
 #endif
     // 计算未使用的物理内存
@@ -79,7 +78,7 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
             page_free_count++;
         }
     }
-    io.printf("First fit init.\n");
+    printf("First fit init.\n");
     return 0;
 }
 

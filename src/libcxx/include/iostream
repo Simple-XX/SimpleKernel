@@ -1,0 +1,35 @@
+
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/MRNIU/MiniCRT
+// iostream for Simple-XX/SimpleKernel.
+
+#ifndef _IOSTREAM_
+#define _IOSTREAM_
+
+namespace std {
+    class ostream {
+    private:
+    protected:
+        ostream(const ostream &lhs);
+
+    public:
+        ostream(void);
+        ~ostream(void);
+        ostream &operator<<(char c);
+        ostream &operator<<(int n);
+        ostream &operator<<(unsigned int n);
+        ostream &operator<<(long n);
+        ostream &operator<<(unsigned long n);
+        ostream &operator<<(const char *lhs);
+        ostream &operator<<(ostream &(*)(ostream &));
+    };
+
+    inline ostream &endl(ostream &lhs) {
+        return lhs << '\n';
+    }
+
+    static ostream cout;
+};
+
+#endif /* _IOSTREAM_ */
