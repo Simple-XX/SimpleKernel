@@ -18,6 +18,9 @@ namespace std {
         ~ostream(void);
         ostream &operator<<(char c);
         ostream &operator<<(int n);
+        ostream &operator<<(unsigned int n);
+        ostream &operator<<(long n);
+        ostream &operator<<(unsigned long n);
         ostream &operator<<(const char *lhs);
         ostream &operator<<(ostream &(*)(ostream &));
     };
