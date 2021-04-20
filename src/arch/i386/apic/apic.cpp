@@ -4,15 +4,14 @@
 //
 // apic.cpp for Simple-XX/SimpleKernel.
 
-#include "assert.h"
+#include "stdio.h"
+#include "cassert.h"
 #include "intr.h"
 #include "cpu.hpp"
 #include "apic.h"
 
 // TODO: 完善
 // TODO: 加入内核
-
-IO APIC::io;
 
 APIC::APIC(void) {
     return;
@@ -25,10 +24,10 @@ APIC::~APIC(void) {
 bool APIC::init(void) {
     CPU::CPUID cpuid;
     if (cpuid.xapic() == true) {
-        io.info("support APIC&xAPIC\n");
+        info("support APIC&xAPIC\n");
     }
     if (cpuid.x2apic() == true) {
-        io.info("support x2APIC\n");
+        info("support x2APIC\n");
     }
     uint64_t msr = CPU::READ_MSR(CPU::IA32_APIC_BASE);
     // 开启 xAPIC 与 x2APIC
@@ -55,6 +54,6 @@ bool APIC::init(void) {
     // 关闭 8259A
     io.outb(0x21, 0xff);
     io.outb(0xa1, 0xff);
-    io.info("apic init\n");
+    info("apic init\n");
     return true;
 }

@@ -6,6 +6,8 @@
 
 #include "stddef.h"
 #include "stdbool.h"
+#include "io.h"
+#include "stdio.h"
 #include "keyboard.h"
 
 static void default_keyboard_handle(INTR::pt_regs_t *regs
@@ -13,8 +15,6 @@ static void default_keyboard_handle(INTR::pt_regs_t *regs
     keyboard.read();
     return;
 }
-
-IO KEYBOARD::io;
 
 KEYBOARD::KEYBOARD(void) {
     shift = false;
@@ -33,7 +33,7 @@ uint8_t KEYBOARD::read(void) {
     uint8_t scancode = io.inb(KB_DATA);
     // 判断是否出错
     if (!scancode) {
-        io.printf("scancode error.\n");
+        printf("scancode error.\n");
         return '\0';
     }
     uint8_t letter = 0;
@@ -103,7 +103,7 @@ uint8_t KEYBOARD::read(void) {
 int32_t KEYBOARD::init(void) {
     set_handle(&default_keyboard_handle);
     INTR::enable_irq(INTR::IRQ1);
-    io.printf("keyboard_init\n");
+    printf("keyboard_init\n");
     return 0;
 }
 
