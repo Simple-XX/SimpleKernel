@@ -4,16 +4,13 @@
 //
 // slab.cpp for Simple-XX/SimpleKernel.
 
-#include "io.h"
+#include "stdio.h"
 #include "stdint.h"
-#include "string.h"
-#include "list.hpp"
+#include "cstring.h"
+#include "list_tmp.hpp"
 #include "common.h"
 #include "pmm.h"
 #include "slab.h"
-
-IO  SLAB::io;
-PMM SLAB::pmm;
 
 SLAB::SLAB(void) {
     return;
@@ -137,7 +134,7 @@ int32_t SLAB::init(const void *start, const size_t size) {
     slab_list->len       = COMMON::PAGE_SIZE - sizeof(slab_list_entry_t);
     heap_total           = COMMON::PAGE_SIZE;
     block_count          = 1;
-    io.printf("slab init.\n");
+    printf("slab init.\n");
     return 0;
 }
 
@@ -159,7 +156,7 @@ void *SLAB::alloc(size_t byte) {
         (slab_list_entry_t *)pmm.alloc_page(pages, COMMON::NORMAL);
     heap_total += COMMON::PAGE_SIZE * pages;
     if (new_entry == nullptr) {
-        io.printf("Error at slab.c void *alloc(): no enough physical memory\n");
+        printf("Error at slab.c void *alloc(): no enough physical memory\n");
         return nullptr;
     }
     list_init_head(new_entry);
@@ -178,7 +175,7 @@ void SLAB::free(void *addr) {
     slab_list_entry_t *entry =
         (slab_list_entry_t *)((uint8_t *)addr - sizeof(slab_list_entry_t));
     if (entry->allocated != SLAB_USED) {
-        io.printf("Error at slab.c void free(void *)\n");
+        printf("Error at slab.c void free(void *)\n");
         return;
     }
     entry->allocated = SLAB_UNUSED;

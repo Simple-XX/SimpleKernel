@@ -10,7 +10,6 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "e820.h"
-#include "io.h"
 
 // 启动后，在 32 位内核进入点，机器状态如下：
 //   1. CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
@@ -24,8 +23,6 @@
 //      以下即为这个信息块的结构
 
 namespace MULTIBOOT2 {
-    static IO io;
-
     /*  How many bytes from the start of the file we search for the header. */
     static constexpr const uint32_t MULTIBOOT_SEARCH       = 32768;
     static constexpr const uint32_t MULTIBOOT_HEADER_ALIGN = 8;

@@ -4,12 +4,14 @@
 //
 // heap.cpp for Simple-XX/SimpleKernel.
 
+#include "stdio.h"
 #include "cpu.hpp"
+#include "common.h"
 #include "heap.h"
 
-IO HEAP::io;
+SLAB HEAP::manage;
 
-HEAP::HEAP(void) : name("SLAB"), manage(SLAB()) {
+HEAP::HEAP(void) : name("SLAB") {
     return;
 }
 
@@ -19,7 +21,7 @@ HEAP::~HEAP(void) {
 
 int32_t HEAP::init(void) {
     manage_init();
-    io.printf("heap_init\n");
+    printf("heap_init\n");
     return 0;
 }
 
@@ -47,4 +49,37 @@ size_t HEAP::get_block(void) {
 
 size_t HEAP::get_free(void) {
     return manage.get_free();
+}
+
+extern "C" void *malloc(size_t size) {
+    return heap.malloc(size);
+}
+
+extern "C" void free(void *ptr) {
+    heap.free(ptr);
+    return;
+}
+
+void *operator new(size_t size) {
+    return malloc(size);
+}
+
+void *operator new[](size_t size) {
+    return malloc(size);
+}
+
+void operator delete(void *p) {
+    free(p);
+}
+
+void operator delete(void *p, size_t size __attribute__((unused))) {
+    free(p);
+}
+
+void operator delete[](void *p) {
+    free(p);
+}
+
+void operator delete[](void *p, size_t size __attribute__((unused))) {
+    free(p);
 }
