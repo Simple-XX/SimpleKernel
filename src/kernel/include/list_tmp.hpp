@@ -2,7 +2,7 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// list.hpp for Simple-XX/SimpleKernel.
+// list_tmp.hpp for Simple-XX/SimpleKernel.
 
 // 初始化
 template <class T>
