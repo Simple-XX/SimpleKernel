@@ -7,6 +7,8 @@
 #ifndef _STRING_
 #define _STRING_
 
+// BUG: += 有问题
+
 #include "Allocator.hpp"
 #include "ReverseIterator.hpp"
 #include "UninitializedFunctions.hpp"
@@ -15,6 +17,7 @@
 #include "stddef.h"
 #include "cstring.h"
 #include "iostream"
+#include "stdio.h"
 // #include "type_traits"
 
 // the class of string
@@ -296,14 +299,15 @@ public:
 template <class InputIterator>
 string::iterator string::insert_aux_copy(iterator p, InputIterator first,
                                          InputIterator last) {
-    size_t   lengthOfInsert = last - first;
-    auto     newCapacity    = getNewCapacity(lengthOfInsert);
-    iterator newStart       = dataAllocator::allocate(newCapacity);
-    iterator newFinish      = uninitialized_copy(start_, p, newStart);
-    newFinish               = uninitialized_copy(first, last, newFinish);
-    auto res                = newFinish;
-    newFinish               = uninitialized_copy(p, finish_, newFinish);
-
+    size_t lengthOfInsert = last - first;
+    // auto newCapacity = getNewCapacity(lengthOfInsert);
+    size_type oldCapacity = endOfStorage_ - start_;
+    auto      newCapacity = oldCapacity + max(oldCapacity, lengthOfInsert);
+    iterator  newStart    = dataAllocator::allocate(newCapacity);
+    iterator  newFinish   = uninitialized_copy(start_, p, newStart);
+    newFinish             = uninitialized_copy(first, last, newFinish);
+    auto res              = newFinish;
+    newFinish             = uninitialized_copy(p, finish_, newFinish);
     destroyAndDeallocate();
     start_        = newStart;
     finish_       = newFinish;
@@ -314,6 +318,7 @@ string::iterator string::insert_aux_copy(iterator p, InputIterator first,
 template <class InputIterator>
 string::iterator string::insert(iterator p, InputIterator first,
                                 InputIterator last) {
+
     auto   lengthOfLeft   = capacity() - size();
     size_t lengthOfInsert = distance(first, last);
     if (lengthOfInsert <= lengthOfLeft) {

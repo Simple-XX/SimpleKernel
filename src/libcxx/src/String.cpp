@@ -15,22 +15,28 @@ string::string(size_t n, char c) {
 string::string(const char *s) {
     allocateAndCopy(s, s + strlen(s));
 }
+
 string::string(const char *s, size_t n) {
     allocateAndCopy(s, s + n);
 }
+
 string::string(const string &str) {
     allocateAndCopy(str.start_, str.finish_);
 }
+
 string::string(string &&str) {
     moveData(str);
 }
+
 string::string(const string &str, size_t pos, size_t len) {
     len = changeVarWhenEuqalNPOS(len, str.size(), pos);
     allocateAndCopy(str.start_ + pos, str.start_ + pos + len);
 }
+
 string::~string() {
     destroyAndDeallocate();
 }
+
 string &string::operator=(const string &str) {
     if (this != &str) {
         destroyAndDeallocate();
@@ -38,25 +44,30 @@ string &string::operator=(const string &str) {
     }
     return *this;
 }
+
 string &string::operator=(string &&str) {
     if (this != &str) {
         moveData(str);
     }
     return *this;
 }
+
 string &string::operator=(const char *s) {
     destroyAndDeallocate();
     allocateAndCopy(s, s + strlen(s));
     return *this;
 }
+
 string &string::operator=(char c) {
     destroyAndDeallocate();
     allocateAndFillN(1, c);
     return *this;
 }
+
 void string::resize(size_t n) {
     resize(n, value_type());
 }
+
 void string::resize(size_t n, char c) {
     if (n < size()) {
         dataAllocator::destroy(start_ + n, finish_);
@@ -67,9 +78,12 @@ void string::resize(size_t n, char c) {
         finish_             = uninitialized_fill_n(finish_, lengthOfInsert, c);
     }
     else if (n > capacity()) {
-        auto     lengthOfInsert = n - size();
-        iterator newStart =
-            dataAllocator::allocate(getNewCapacity(lengthOfInsert));
+        auto      lengthOfInsert = n - size();
+        size_type oldCapacity    = endOfStorage_ - start_;
+        auto      newCapacity = oldCapacity + max(oldCapacity, lengthOfInsert);
+        // iterator  newStart =
+        //     dataAllocator::allocate(getNewCapacity(lengthOfInsert));
+        iterator newStart  = dataAllocator::allocate(newCapacity);
         iterator newFinish = uninitialized_copy(begin(), end(), newStart);
         newFinish          = uninitialized_fill_n(newFinish, lengthOfInsert, c);
 
@@ -79,6 +93,7 @@ void string::resize(size_t n, char c) {
         endOfStorage_ = start_ + n;
     }
 }
+
 void string::reserve(size_t n) {
     if (n <= capacity())
         return;
@@ -89,6 +104,7 @@ void string::reserve(size_t n) {
     finish_       = newFinish;
     endOfStorage_ = start_ + n;
 }
+
 string &string::insert(size_t pos, const string &str) {
     insert(start_ + pos, str.begin(), str.end());
     return *this;
@@ -99,21 +115,26 @@ string &string::insert(size_t pos, const string &str, size_t subpos,
     insert(begin() + pos, str.begin() + subpos, str.begin() + subpos + sublen);
     return *this;
 }
+
 string &string::insert(size_t pos, const char *s) {
     insert(begin() + pos, s, s + strlen(s));
     return *this;
 }
+
 string &string::insert(size_t pos, const char *s, size_t n) {
     insert(begin() + pos, s, s + n);
     return *this;
 }
+
 string::iterator string::insert_aux_filln(iterator p, size_t n, value_type c) {
-    auto     newCapacity = getNewCapacity(n);
-    iterator newStart    = dataAllocator::allocate(newCapacity);
-    iterator newFinish   = uninitialized_copy(start_, p, newStart);
-    newFinish            = uninitialized_fill_n(newFinish, n, c);
-    auto res             = newFinish;
-    newFinish            = uninitialized_copy(p, finish_, newFinish);
+    // auto     newCapacity = getNewCapacity(n);
+    size_type oldCapacity = endOfStorage_ - start_;
+    auto      newCapacity = oldCapacity + max(oldCapacity, n);
+    iterator  newStart    = dataAllocator::allocate(newCapacity);
+    iterator  newFinish   = uninitialized_copy(start_, p, newStart);
+    newFinish             = uninitialized_fill_n(newFinish, n, c);
+    auto res              = newFinish;
+    newFinish             = uninitialized_copy(p, finish_, newFinish);
 
     destroyAndDeallocate();
     start_        = newStart;
@@ -125,6 +146,7 @@ string &string::insert(size_t pos, size_t n, char c) {
     insert(begin() + pos, n, c);
     return *this;
 }
+
 string::iterator string::insert(iterator p, size_t n, char c) {
     auto lengthOfLeft = capacity() - size();
     if (n <= lengthOfLeft) {
@@ -139,42 +161,52 @@ string::iterator string::insert(iterator p, size_t n, char c) {
         return insert_aux_filln(p, n, c);
     }
 }
+
 string::iterator string::insert(iterator p, char c) {
     return insert(p, 1, c);
 }
+
 string &string::operator+=(const string &str) {
     insert(size(), str);
     return *this;
 }
+
 string &string::operator+=(const char *s) {
     insert(size(), s);
     return *this;
 }
+
 string &string::operator+=(char c) {
     insert(end(), c);
     return *this;
 }
+
 string &string::append(const string &str) {
     (*this) += str;
     return *this;
 }
+
 string &string::append(const string &str, size_t subpos, size_t sublen) {
     sublen = changeVarWhenEuqalNPOS(sublen, str.size(), subpos);
     insert(size(), str, subpos, sublen);
     return *this;
 }
+
 string &string::append(const char *s) {
     (*this) += s;
     return *this;
 }
+
 string &string::append(const char *s, size_t n) {
     insert(size(), s, n);
     return *this;
 }
+
 string &string::append(size_t n, char c) {
     insert(end(), n, c);
     return *this;
 }
+
 string::iterator string::erase(iterator first, iterator last) {
     size_t lengthOfMove = finish_ - last;
     for (size_t i = 0; i != lengthOfMove; ++i) {
@@ -184,49 +216,61 @@ string::iterator string::erase(iterator first, iterator last) {
     finish_ = first + lengthOfMove;
     return first;
 }
+
 string &string::erase(size_t pos, size_t len) {
     len = changeVarWhenEuqalNPOS(len, size(), pos);
     erase(begin() + pos, begin() + pos + len);
     return *this;
 }
+
 string::iterator string::erase(iterator p) {
     // return erase(p, end());
     // bug fix
     // 2014.12.24
     return erase(p, p + 1);
 }
+
 string &string::replace(size_t pos, size_t len, const string &str) {
     return replace(begin() + pos, begin() + pos + len, str.begin(), str.end());
 }
+
 string &string::replace(iterator i1, iterator i2, const string &str) {
     return replace(i1, i2, str.begin(), str.end());
 }
+
 string &string::replace(size_t pos, size_t len, const string &str,
                         size_t subpos, size_t sublen) {
     sublen = changeVarWhenEuqalNPOS(sublen, str.size(), subpos);
     return replace(begin() + pos, begin() + pos + len, str.begin() + subpos,
                    str.begin() + subpos + sublen);
 }
+
 string &string::replace(size_t pos, size_t len, const char *s) {
     return replace(begin() + pos, begin() + pos + len, s, s + strlen(s));
 }
+
 string &string::replace(iterator i1, iterator i2, const char *s) {
     return replace(i1, i2, s, s + strlen(s));
 }
+
 string &string::replace(iterator i1, iterator i2, size_t n, char c) {
     auto ptr = erase(i1, i2);
     insert(ptr, n, c);
     return *this;
 }
+
 string &string::replace(size_t pos, size_t len, const char *s, size_t n) {
     return replace(begin() + pos, begin() + pos + len, s, s + n);
 }
+
 string &string::replace(iterator i1, iterator i2, const char *s, size_t n) {
     return replace(i1, i2, s, s + n);
 }
+
 string &string::replace(size_t pos, size_t len, size_t n, char c) {
     return replace(begin() + pos, begin() + pos + len, n, c);
 }
+
 size_t string::find_aux(const_iterator cit, size_t pos, size_t lengthOfS,
                         size_t cond) const {
     size_t i, j;
@@ -240,21 +284,25 @@ size_t string::find_aux(const_iterator cit, size_t pos, size_t lengthOfS,
     }
     return npos;
 }
+
 size_t string::find(const char *s, size_t pos, size_t n) const {
     return find_aux(s, pos, n, size());
 }
+
 size_t string::find(const string &str, size_t pos) const {
     size_t lengthOfS = str.size();
     if (size() - pos < lengthOfS)
         return npos;
     return find_aux(str.cbegin(), pos, lengthOfS, size());
 }
+
 size_t string::find(const char *s, size_t pos) const {
     // return find(s, pos, size() - pos);
     // bug fix
     // 2014.12.24
     return find(s, pos, strlen(s));
 }
+
 size_t string::find(char c, size_t pos) const {
     for (auto cit = cbegin() + pos; cit != cend(); ++cit) {
         if (*cit == c)
@@ -262,6 +310,7 @@ size_t string::find(char c, size_t pos) const {
     }
     return npos;
 }
+
 size_t string::rfind(char c, size_t pos) const {
     pos = changeVarWhenEuqalNPOS(pos, size(), 1);
     for (auto cit = cbegin() + pos; cit >= cbegin(); --cit) {
@@ -270,6 +319,7 @@ size_t string::rfind(char c, size_t pos) const {
     }
     return npos;
 }
+
 size_t string::rfind_aux(const_iterator cit, size_t pos, size_t lengthOfS,
                          int cond) const {
     size_t i, j;
@@ -286,6 +336,7 @@ size_t string::rfind_aux(const_iterator cit, size_t pos, size_t lengthOfS,
     }
     return npos;
 }
+
 size_t string::rfind(const string &str, size_t pos) const {
     auto lengthOfS = str.size();
     // if (pos - 0 < lengthOfS)
@@ -293,19 +344,24 @@ size_t string::rfind(const string &str, size_t pos) const {
     pos = changeVarWhenEuqalNPOS(pos, size(), 1);
     return rfind_aux(str.begin(), pos, lengthOfS, 0);
 }
+
 size_t string::rfind(const char *s, size_t pos) const {
     pos = changeVarWhenEuqalNPOS(pos, size(), 1);
     return rfind(s, pos, strlen(s));
 }
+
 size_t string::rfind(const char *s, size_t pos, size_t n) const {
     return rfind_aux(s, pos, n, 0);
 }
+
 int string::compare(const string &str) const {
     return compare(0, size(), str, 0, str.size());
 }
+
 int string::compare(size_t pos, size_t len, const string &str) const {
     return compare(pos, len, str, 0, str.size());
 }
+
 int string::compare_aux(size_t pos, size_t len, const_iterator cit,
                         size_t subpos, size_t sublen) const {
     size_t i, j;
@@ -322,27 +378,34 @@ int string::compare_aux(size_t pos, size_t len, const_iterator cit,
     else
         return 1;
 }
+
 int string::compare(size_t pos, size_t len, const string &str, size_t subpos,
                     size_t sublen) const {
     return compare_aux(pos, len, str.begin(), subpos, sublen);
 }
+
 int string::compare(const char *s) const {
     return compare(0, size(), s, strlen(s));
 }
+
 int string::compare(size_t pos, size_t len, const char *s) const {
     return compare(pos, len, s, strlen(s));
 }
+
 int string::compare(size_t pos, size_t len, const char *s, size_t n) const {
     return compare_aux(pos, len, s, 0, n);
 }
+
 size_t string::find_first_of(const string &str, size_t pos) const {
     // return find_first_of(str.begin(), pos, size() - pos);
     return find_first_of(str.begin(), pos, str.size());
 }
+
 size_t string::find_first_of(const char *s, size_t pos) const {
     // return find_first_of(s, pos, size() - pos);
     return find_first_of(s, pos, strlen(s));
 }
+
 size_t string::find_first_of(const char *s, size_t pos, size_t n) const {
     // for (size_t i = pos; i != pos + n; ++i){
     //	if (isContained((*this)[i], s, s + strlen(s)))
@@ -356,17 +419,21 @@ size_t string::find_first_of(const char *s, size_t pos, size_t n) const {
     }
     return npos;
 }
+
 size_t string::find_first_of(char c, size_t pos) const {
     return find(c, pos);
 }
+
 size_t string::find_first_not_of(const string &str, size_t pos) const {
     // return find_first_not_of(str.begin(), pos, size() - pos);
     return find_first_not_of(str.begin(), pos, str.size());
 }
+
 size_t string::find_first_not_of(const char *s, size_t pos) const {
     // return find_first_not_of(s, pos, size() - pos);
     return find_first_not_of(s, pos, strlen(s));
 }
+
 size_t string::find_first_not_of(const char *s, size_t pos, size_t n) const {
     /*for (size_t i = pos; i != pos + n; ++i){
     if (!isContained((*this)[i], s, s + strlen(s)))
@@ -378,6 +445,7 @@ size_t string::find_first_not_of(const char *s, size_t pos, size_t n) const {
     }
     return npos;
 }
+
 size_t string::find_first_not_of(char c, size_t pos) const {
     for (size_t i = pos; i != size(); ++i) {
         if ((*this)[i] != c)
@@ -622,6 +690,8 @@ void string::moveData(string &str) {
     endOfStorage_ = str.endOfStorage_;
     str.start_ = str.finish_ = str.endOfStorage_ = 0;
 }
+
+// BUG: 调用会出错
 string::size_type string::getNewCapacity(size_type len) const {
     size_type oldCapacity = endOfStorage_ - start_;
     auto      res         = max(oldCapacity, len);
@@ -629,14 +699,17 @@ string::size_type string::getNewCapacity(size_type len) const {
     auto newCapacity = oldCapacity + res;
     return newCapacity;
 }
+
 void string::allocateAndFillN(size_t n, char c) {
     start_        = dataAllocator::allocate(n);
     finish_       = uninitialized_fill_n(start_, n, c);
     endOfStorage_ = finish_;
 }
+
 // void string::string_aux(size_t n, char c, std::true_type) {
 //     allocateAndFillN(n, c);
 // }
+
 void string::destroyAndDeallocate() {
     dataAllocator::destroy(start_, finish_);
     dataAllocator::deallocate(start_, endOfStorage_ - start_);
