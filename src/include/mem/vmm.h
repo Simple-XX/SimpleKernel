@@ -9,18 +9,16 @@
 
 #include "limits.h"
 #include "common.h"
-#include "pmm.h"
-#include "io.h"
 
-typedef void *              page_t;
-typedef page_t              page_table_entry_t;
-typedef page_table_entry_t *page_table_t;
-typedef page_table_t        page_dir_entry_t;
-typedef page_dir_entry_t *  page_dir_t;
+typedef ptrdiff_t *pte_t;
+typedef ptrdiff_t *pt_t;
+typedef ptrdiff_t *pmd_t;
+typedef ptrdiff_t *pud_t;
+typedef ptrdiff_t *pgd_t;
 
 // 每个页表能映射多少页 = 页大小/页表项大小: 2^9
 static constexpr const uint32_t VMM_PAGES_PRE_PAGE_TABLE =
-    COMMON::PAGE_SIZE / sizeof(page_table_entry_t);
+    COMMON::PAGE_SIZE / sizeof(pte_t);
 
 // 页表大小，一页表能映射多少 Byte 内存 = 页表项数量*页表项映射大小 2^21
 static constexpr const uint64_t VMM_PAGE_TABLE_SIZE =
@@ -82,16 +80,8 @@ static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
 
 class VMM {
 private:
-    static IO  io;
-    static PMM pmm;
     // TODO: 支持最多四级页表，共用同一套代码
-    // 页表
-    static page_table_t pte_kernel[VMM_KERNEL_PAGES]
-        __attribute__((aligned(COMMON::PAGE_SIZE)));
-    // 页目录
-    static page_dir_t pgd_kernel[VMM_PAGE_TABLES_TOTAL]
-        __attribute__((aligned(COMMON::PAGE_SIZE)));
-    page_dir_t curr_dir;
+    pgd_t curr_dir;
 
 protected:
 public:
@@ -100,17 +90,19 @@ public:
     // 初始化
     void init(void);
     // 获取当前页目录
-    page_dir_t get_pgd(void) const;
+    pgd_t get_pgd(void) const;
     // 设置当前页目录
-    void set_pgd(const page_dir_t pgd);
+    void set_pgd(const pgd_t pgd);
     // 映射物理地址到虚拟地址
-    void mmap(const page_dir_t pgd, const void *va, const void *pa,
+    void mmap(const pgd_t pgd, const void *va, const void *pa,
               const uint32_t flag);
     // 取消映射
-    void unmmap(const page_dir_t pgd, const void *va);
+    void unmmap(const pgd_t pgd, const void *va);
     // 获取映射的物理地址
     // 已映射返回 1，未映射返回 0
-    uint32_t get_mmap(const page_dir_t pgd, const void *va, const void *pa);
+    uint32_t get_mmap(const pgd_t pgd, const void *va, const void *pa);
 };
+
+static VMM vmm;
 
 #endif /* _VMM_H */

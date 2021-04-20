@@ -6,7 +6,7 @@
 
 #include "stddef.h"
 #include "stdarg.h"
-#include "string.h"
+#include "cstring.h"
 #if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
     defined(__aarch64__)
 #include "port.h"
@@ -14,7 +14,7 @@
 #include "io.h"
 #include "stdio.h"
 
-char IO::buf[128];
+static char buf[128];
 
 #if defined(__i386__) || defined(__x86_64__)
 TUI IO::io;
@@ -85,54 +85,54 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
-int32_t IO::printf(const char *fmt, ...) {
+extern "C" int32_t printf(const char *fmt, ...) {
     va_list va;
     va_start(va, fmt);
     const int ret = _vsnprintf(buf, 127, fmt, va);
     va_end(va);
-    write_string(buf);
+    io.write_string(buf);
     bzero(buf, 128);
     return ret;
 }
 
-int32_t IO::info(const char *fmt, ...) {
-    COLOR::color_t curr_color = get_color();
-    set_color(COLOR::LIGHT_GREEN);
+extern "C" int32_t info(const char *fmt, ...) {
+    COLOR::color_t curr_color = io.get_color();
+    io.set_color(COLOR::LIGHT_GREEN);
     va_list va;
     int32_t i;
     va_start(va, fmt);
     i = vsnprintf_(buf, (size_t)-1, fmt, va);
     va_end(va);
-    write_string(buf);
+    io.write_string(buf);
     bzero(buf, 128);
-    set_color(curr_color);
+    io.set_color(curr_color);
     return i;
 }
 
-int32_t IO::warn(const char *fmt, ...) {
-    COLOR::color_t curr_color = get_color();
-    set_color(COLOR::LIGHT_MAGENTA);
+extern "C" int32_t warn(const char *fmt, ...) {
+    COLOR::color_t curr_color = io.get_color();
+    io.set_color(COLOR::LIGHT_MAGENTA);
     va_list va;
     int32_t i;
     va_start(va, fmt);
     i = vsnprintf_(buf, (size_t)-1, fmt, va);
     va_end(va);
-    write_string(buf);
+    io.write_string(buf);
     bzero(buf, 128);
-    set_color(curr_color);
+    io.set_color(curr_color);
     return i;
 }
 
-int32_t IO::err(const char *fmt, ...) {
-    COLOR::color_t curr_color = get_color();
-    set_color(COLOR::LIGHT_RED);
+extern "C" int32_t err(const char *fmt, ...) {
+    COLOR::color_t curr_color = io.get_color();
+    io.set_color(COLOR::LIGHT_RED);
     va_list va;
     int32_t i;
     va_start(va, fmt);
     i = vsnprintf_(buf, (size_t)-1, fmt, va);
     va_end(va);
-    write_string(buf);
+    io.write_string(buf);
     bzero(buf, 128);
-    set_color(curr_color);
+    io.set_color(curr_color);
     return i;
 }

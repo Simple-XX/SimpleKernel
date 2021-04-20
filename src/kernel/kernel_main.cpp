@@ -5,9 +5,10 @@
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
 #include "cpu.hpp"
-#include "assert.h"
+#include "cassert.h"
 #include "multiboot2.h"
 #include "kernel.h"
+
 extern "C" void kernel_main(uint32_t size, void *addr);
 
 // 内核入口
