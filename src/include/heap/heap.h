@@ -42,4 +42,13 @@ public:
 
 static HEAP heap;
 
+extern "C" void *malloc(size_t);
+
+// TODO
+template <class T>
+void *operator new(size_t size, T *ptr) {
+    void *addr = malloc(size);
+    return addr;
+}
+
 #endif /* _HEAP_H_ */
