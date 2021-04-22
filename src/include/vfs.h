@@ -8,14 +8,11 @@
 #define _VFS_H_
 
 #include "stdint.h"
-#include "io.h"
 
 // 超级块
 // fs 挂载时从存储介质读入
 class SUPERBLOCK {
 private:
-    static IO io;
-
     // block与inode的总量
     uint32_t block_total;
     uint32_t inode_total;
@@ -41,8 +38,6 @@ public:
 // inode 索引节点
 class INODE {
 private:
-    static IO io;
-
     // 该文件的访问模式(read/write/excute)
     uint32_t flag;
     // 该文件的所有者与组(owner/group)
@@ -70,8 +65,7 @@ public:
 // 文件
 class FILE {
 private:
-    static IO io;
-    uint32_t  flag;
+    uint32_t flag;
 
 protected:
 public:
@@ -84,7 +78,6 @@ public:
 
 class VFS {
 private:
-    static IO         io;
     static SUPERBLOCK superblock;
 
 protected:

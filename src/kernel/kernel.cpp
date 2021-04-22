@@ -16,6 +16,7 @@
 #include "heap.h"
 #include "kernel.h"
 #include "keyboard.h"
+#include "vfs.h"
 #include "string"
 #include "iostream"
 

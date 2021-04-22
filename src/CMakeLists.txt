@@ -48,6 +48,7 @@ message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
+add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/fs)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 
@@ -57,6 +58,7 @@ add_executable(${KernelName}
     $<TARGET_OBJECTS:libc>
     $<TARGET_OBJECTS:libcxx>
     $<TARGET_OBJECTS:drv>
+    $<TARGET_OBJECTS:ramfs>
     $<TARGET_OBJECTS:kernel>)
 
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
