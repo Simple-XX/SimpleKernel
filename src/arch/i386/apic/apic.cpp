@@ -43,7 +43,7 @@ bool APIC::init(void) {
     // 屏蔽所有 LVT
     msr = 0;
     msr |= CPU::IA32_X2APIX_LVT_MASK_BIT;
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_CMCI, msr);
+    msr = 0x10000;
     CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_TIMER, msr);
     CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_THERMAL, msr);
     CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_PMI, msr);
