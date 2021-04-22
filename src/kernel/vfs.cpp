@@ -5,12 +5,10 @@
 // vfs.cpp for Simple-XX/SimpleKernel.
 
 #include "stdint.h"
-#include "string.h"
+#include "cstring.h"
 #include "common.h"
 #include "pmm.h"
 #include "vfs.h"
-
-IO VFS::io;
 
 VFS::VFS(void) {
     return;
