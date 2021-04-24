@@ -9,6 +9,7 @@
 
 #include "stdint.h"
 #include "string"
+#include "vector"
 #include "time.h"
 
 // 超级块
@@ -34,7 +35,7 @@ private:
 protected:
 public:
     SUPERBLOCK(void);
-    ~SUPERBLOCK(void);
+    virtual ~SUPERBLOCK(void);
 };
 
 typedef uint32_t device_id_t;
@@ -72,7 +73,7 @@ private:
 protected:
 public:
     INODE(void);
-    ~INODE(void);
+    virtual ~INODE(void);
 } __attribute__((aligned(128)));
 
 // 目录
@@ -107,7 +108,7 @@ public:
 class FS {
 private:
     // 超级块
-    SUPERBLOCK *supers[4];
+    STL::vector<SUPERBLOCK> supers;
 
 protected:
 public:
@@ -132,7 +133,7 @@ public:
 class VFS {
 private:
     // 管理的文件系统
-    FS *fs[4];
+    STL::vector<FS *> fs;
 
 protected:
 public:
