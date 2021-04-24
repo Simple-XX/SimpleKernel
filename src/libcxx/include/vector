@@ -15,6 +15,7 @@
 #include "Iterator.hpp"
 #include "ReverseIterator.hpp"
 #include "UninitializedFunctions.hpp"
+#include "cassert.h"
 
 namespace STL {
     //********* vector *************
