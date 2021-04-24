@@ -6,3 +6,4 @@
 PROJECT(filesystem CXX)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ramfs)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/fat32)

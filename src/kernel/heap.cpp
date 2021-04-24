@@ -87,6 +87,7 @@ void operator delete[](void *p, size_t size __attribute__((unused))) {
 void *operator new(size_t, void *p) throw() {
     return p;
 }
+
 void *operator new[](size_t, void *p) throw() {
     return p;
 }

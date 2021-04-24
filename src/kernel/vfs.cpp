@@ -8,6 +8,7 @@
 #include "cstring.h"
 #include "common.h"
 #include "pmm.h"
+#include "ramfs.h"
 #include "vfs.h"
 
 FS::FS(void) {
@@ -27,9 +28,11 @@ VFS::~VFS(void) {
 }
 
 int32_t VFS::init(void) {
+    fs[0] = (FS *)&ramfs;
     return 0;
 }
 
-int32_t VFS::add(FS &fs) {
+int32_t VFS::mount(FS *_fs) {
+    fs[1] = _fs;
     return 0;
 }

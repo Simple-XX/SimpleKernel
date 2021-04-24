@@ -46,5 +46,6 @@ endfunction()
 
 function(target_include_fs_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/fs/ramfs)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/fs/fat32)
 endfunction()
 

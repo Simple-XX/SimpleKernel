@@ -2,21 +2,15 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// ramfs.h for Simple-XX/SimpleKernel.
+// fat32.h for Simple-XX/SimpleKernel.
 
-#ifndef _RAMFS_H_
-#define _RAMFS_H_
+#ifndef _FAT32_H_
+#define _FAT32_H_
 
 #include "vfs.h"
 
-class RAMFS : FS {
+class FAT32 : FS {
 private:
-    // 开始地址
-    void *start;
-    // 结束地址
-    void *end;
-    // 512MB
-    static constexpr const uint32_t size = 0x20000000;
     // inode 数量
     static constexpr const uint32_t inode_size = 0x20000000;
     // 超级块
@@ -24,8 +18,8 @@ private:
 
 protected:
 public:
-    RAMFS(void);
-    ~RAMFS(void);
+    FAT32(void);
+    ~FAT32(void);
     int get_sb(void);
     int kill_sb(void);
     int read_super(void);
@@ -34,6 +28,6 @@ public:
     int seek();
 };
 
-static RAMFS ramfs;
+static FAT32 fat32;
 
-#endif /* _RAMFS_H_ */
+#endif /* _FAT32_H_ */
