@@ -21,6 +21,7 @@
 #include "vfs.h"
 #include "ramfs.h"
 #include "string"
+#include "vector"
 #include "iostream"
 
 KERNEL::KERNEL(void) {
