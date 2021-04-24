@@ -10,10 +10,26 @@
 #include "pmm.h"
 #include "vfs.h"
 
+FS::FS(void) {
+    return;
+}
+
+FS::~FS(void) {
+    return;
+}
+
 VFS::VFS(void) {
     return;
 }
 
 VFS::~VFS(void) {
     return;
+}
+
+int32_t VFS::init(void) {
+    return 0;
+}
+
+int32_t VFS::add(FS &fs) {
+    return 0;
 }

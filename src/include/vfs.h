@@ -76,14 +76,35 @@ public:
     virtual int seek();
 };
 
+// 实际的文件系统
+class FS {
+private:
+protected:
+public:
+    FS(void);
+    virtual ~FS(void)   = 0;
+    virtual int open()  = 0;
+    virtual int close() = 0;
+    virtual int seek()  = 0;
+};
+
+// 所有文件系统由 vfs 统一管理
+// 文件系统的注册
+// 操作文件时由 vfs 使用实际文件系统进行操作
 class VFS {
 private:
-    static SUPERBLOCK superblock;
+    // 管理的文件系统
+    FS *fs[4];
 
 protected:
 public:
     VFS(void);
     ~VFS(void);
+    int32_t init(void);
+    // 添加一个文件系统
+    int32_t add(FS &fs);
 };
+
+static VFS vfs;
 
 #endif /* _VFS_H_ */

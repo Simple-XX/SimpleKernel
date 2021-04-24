@@ -11,4 +11,5 @@ add_library(${PROJECT_NAME} OBJECT ${ramfs_src})
 
 target_include_libc_header_files(${PROJECT_NAME})
 target_include_libcxx_header_files(${PROJECT_NAME})
+target_include_common_header_files(${PROJECT_NAME})
 target_include_fs_header_files(${PROJECT_NAME})

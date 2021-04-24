@@ -17,6 +17,7 @@
 #include "kernel.h"
 #include "keyboard.h"
 #include "vfs.h"
+#include "ramfs.h"
 #include "string"
 #include "iostream"
 
@@ -40,6 +41,8 @@ KERNEL::KERNEL(void) {
     // BUG: GP
     // apic.init();
     keyboard.init();
+    vfs.init();
+    vfs.add(*(FS *)&ramfs);
     return;
 }
 
