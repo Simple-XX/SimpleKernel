@@ -5,6 +5,7 @@
 // cxxabi.cpp for Simple-XX/SimpleKernel.
 
 #include "cxxabi.h"
+#include "new"
 
 #ifdef __cplusplus
 extern "C" {
