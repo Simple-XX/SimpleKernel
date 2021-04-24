@@ -41,8 +41,36 @@ void *operator new[](size_t, void *p) throw() {
 
 void operator delete(void *, void *) throw() {
     return;
-};
+}
 
 void operator delete[](void *, void *) throw() {
     return;
-};
+}
+
+// TODO
+void *operator new(size_t size, std::align_val_t) {
+    return malloc(size);
+}
+
+void operator delete(void *p, std::align_val_t) {
+    free(p);
+    return;
+}
+
+void *operator new[](size_t size, std::align_val_t) {
+    return malloc(size);
+}
+
+void operator delete[](void *p, std::align_val_t) {
+    free(p);
+    return;
+}
+
+void operator delete(void *p, size_t, std::align_val_t) {
+    free(p);
+    return;
+}
+void operator delete[](void *p, size_t, std::align_val_t) {
+    free(p);
+    return;
+}
