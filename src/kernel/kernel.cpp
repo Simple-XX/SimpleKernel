@@ -44,7 +44,6 @@ KERNEL::KERNEL(void) {
     // apic.init();
     keyboard.init();
     vfs.init();
-    vfs.add(*(FS *)&ramfs);
     return;
 }
 
