@@ -7,6 +7,7 @@
 #ifndef _CONSTRUCT_HPP_
 #define _CONSTRUCT_HPP_
 
+#include "new"
 #include "TypeTraits.h"
 
 template <class T1, class T2>
