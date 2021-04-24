@@ -8,9 +8,9 @@
 #include "stdlib.h"
 
 RAMFS::RAMFS(void) {
-    name  = "ramfs";
-    start = malloc(size);
-    end   = (uint8_t *)start + size;
+    // name = "ramfs";
+    // start = malloc(size);
+    // end   = (uint8_t *)start + size;
     return;
 }
 
