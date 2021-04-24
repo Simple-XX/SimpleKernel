@@ -11,6 +11,22 @@
 #include "ramfs.h"
 #include "vfs.h"
 
+SUPERBLOCK::SUPERBLOCK(void) {
+    return;
+}
+
+SUPERBLOCK::~SUPERBLOCK(void) {
+    return;
+}
+
+INODE::INODE(void) {
+    return;
+}
+
+INODE::~INODE(void) {
+    return;
+}
+
 FS::FS(void) {
     return;
 }
@@ -28,11 +44,11 @@ VFS::~VFS(void) {
 }
 
 int32_t VFS::init(void) {
-    fs[0] = (FS *)&ramfs;
+    fs.push_back((FS *)&ramfs);
     return 0;
 }
 
 int32_t VFS::mount(FS *_fs) {
-    fs[1] = _fs;
+    fs.push_back(_fs);
     return 0;
 }
