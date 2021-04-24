@@ -19,6 +19,7 @@
 #include "kernel.h"
 #include "keyboard.h"
 #include "string"
+#include "vector"
 #include "iostream"
 
 KERNEL::KERNEL(void) {
