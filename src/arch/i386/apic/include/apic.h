@@ -26,4 +26,6 @@ public:
     ~IOAPIC(void);
 };
 
+static APIC apic;
+
 #endif /* _APIC_H_ */

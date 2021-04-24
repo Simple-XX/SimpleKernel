@@ -14,6 +14,8 @@
 #include "pmm.h"
 #include "vmm.h"
 #include "heap.h"
+#include "intr.h"
+#include "apic.h"
 #include "kernel.h"
 #include "keyboard.h"
 #include "vfs.h"
