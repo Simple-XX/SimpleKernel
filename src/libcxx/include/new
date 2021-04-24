@@ -1,0 +1,32 @@
+
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+//
+// new for Simple-XX/SimpleKernel.
+
+#ifndef _NEW_
+#define _NEW_
+
+#include "stddef.h"
+
+void *operator new(size_t size);
+
+void *operator new(size_t, void *p) throw();
+
+void *operator new[](size_t size);
+
+void *operator new[](size_t, void *p) throw();
+
+void operator delete(void *p);
+
+void operator delete(void *p, size_t size);
+
+void operator delete(void *, void *) throw();
+
+void operator delete[](void *p);
+
+void operator delete[](void *p, size_t size);
+
+void operator delete[](void *, void *) throw();
+
+#endif /* _NEW_ */

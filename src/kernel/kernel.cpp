@@ -16,6 +16,7 @@
 #include "heap.h"
 #include "kernel.h"
 #include "string"
+#include "vector"
 #include "iostream"
 
 KERNEL::KERNEL(void) {
