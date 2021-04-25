@@ -8,9 +8,7 @@
 #include "stdlib.h"
 
 RAMFS::RAMFS(void) {
-    // name = "ramfs";
-    // start = malloc(size);
-    // end   = (uint8_t *)start + size;
+    name = "ramfs";
     return;
 }
 
@@ -18,11 +16,11 @@ RAMFS::~RAMFS(void) {
     return;
 }
 
-int RAMFS::get_sb(void) {
+int RAMFS::mount(void) {
     return 0;
 }
 
-int RAMFS::kill_sb(void) {
+int RAMFS::unmount(void) {
     return 0;
 }
 

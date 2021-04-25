@@ -11,12 +11,6 @@
 
 class RAMFS : FS {
 private:
-    // 开始地址
-    void *start;
-    // 结束地址
-    void *end;
-    // 512MB
-    static constexpr const uint32_t size = 0x20000000;
     // inode 数量
     static constexpr const uint32_t inode_size = 0x20000000;
     // 超级块
@@ -26,14 +20,14 @@ protected:
 public:
     RAMFS(void);
     ~RAMFS(void);
-    int get_sb(void);
-    int kill_sb(void);
+    // 挂载
+    int mount(void);
+    // 卸载
+    int unmount(void);
     int read_super(void);
     int open();
     int close();
     int seek();
 };
-
-static RAMFS ramfs;
 
 #endif /* _RAMFS_H_ */
