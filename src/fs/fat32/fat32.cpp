@@ -8,7 +8,7 @@
 #include "stdlib.h"
 
 FAT32::FAT32(void) {
-    // name = "fat32";
+    name = "fat32";
     return;
 }
 

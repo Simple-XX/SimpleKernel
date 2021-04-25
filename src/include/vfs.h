@@ -35,7 +35,7 @@ private:
 protected:
 public:
     SUPERBLOCK(void);
-    virtual ~SUPERBLOCK(void);
+    virtual ~SUPERBLOCK(void) = 0;
 };
 
 typedef uint32_t device_id_t;
@@ -108,7 +108,7 @@ public:
 class FS {
 private:
     // 超级块
-    STL::vector<SUPERBLOCK> supers;
+    STL::vector<SUPERBLOCK *> supers;
 
 protected:
 public:
@@ -116,10 +116,10 @@ public:
     // 文件系统名
     STL::string name;
     virtual ~FS(void) = 0;
-    // 初始化超级块
-    virtual int get_sb(void) = 0;
-    // 删除超级块
-    virtual int kill_sb(void) = 0;
+    // 挂载
+    virtual int mount(void) = 0;
+    // 卸载
+    virtual int unmount(void) = 0;
     // 读取超级块
     virtual int read_super(void) = 0;
     virtual int open(void)       = 0;
@@ -141,77 +141,80 @@ public:
     ~VFS(void);
     // 初始化根安装点
     int32_t init(void);
-    // 添加一个文件系统
     //文件系统相关
-    int32_t mount(FS *_fs);
-    int32_t umount(void);
-    int32_t umount2(void);
-    int32_t sysfs(void);
-    int32_t statfs(void);
-    int32_t fstatfs(void);
-    int32_t fstatfs64(void);
-    int32_t ustat(void);
+    // 添加一个文件系统
+    int32_t register_filesystem(FS *_fs);
+    // 挂载
+    int mount(const char *source, const char *target,
+              const char *filesystemtype, unsigned long mountflags,
+              const void *data);
+    int umount(void);
+    int umount2(void);
+    int sysfs(void);
+    int statfs(void);
+    int fstatfs(void);
+    int fstatfs64(void);
+    int ustat(void);
     // 目录相关
-    int32_t chroot(void);
-    int32_t pivot_root(void);
-    int32_t chdir(void);
-    int32_t fchdir(void);
-    int32_t getcwd(void);
-    int32_t mkdir(void);
-    int32_t rmdir(void);
-    int32_t getdents(void);
-    int32_t getdents64(void);
-    int32_t readdir(void);
-    int32_t link(void);
-    int32_t unlink(void);
-    int32_t rename(void);
-    int32_t lookup_dcookie(void);
+    int chroot(void);
+    int pivot_root(void);
+    int chdir(void);
+    int fchdir(void);
+    int getcwd(void);
+    int mkdir(void);
+    int rmdir(void);
+    int getdents(void);
+    int getdents64(void);
+    int readdir(void);
+    int link(void);
+    int unlink(void);
+    int rename(void);
+    int lookup_dcookie(void);
     // 链接相关
-    int32_t readlink(void);
-    int32_t symlink(void);
+    int readlink(void);
+    int symlink(void);
     // 文件相关
-    int32_t chown(void);
-    int32_t fchown(void);
-    int32_t lchown(void);
-    int32_t chown16(void);
-    int32_t fchown16(void);
-    int32_t lchown16(void);
-    int32_t hmod(void);
-    int32_t fchmod(void);
-    int32_t utime(void);
-    int32_t stat(void);
-    int32_t fstat(void);
-    int32_t lstat(void);
-    int32_t acess(void);
-    int32_t oldstat(void);
-    int32_t oldfstat(void);
-    int32_t oldlstat(void);
-    int32_t stat64(void);
-    int32_t lstat64(void);
-    // int32_t lstat64(void);
-    int32_t open(void);
-    int32_t close(void);
-    int32_t creat(void);
-    int32_t umask(void);
-    int32_t dup(void);
-    int32_t dup2(void);
-    int32_t fcntl(void);
-    int32_t fcntl64(void);
-    int32_t select(void);
-    int32_t poll(void);
-    int32_t truncate(void);
-    int32_t ftruncate(void);
-    int32_t truncate64(void);
-    int32_t ftruncate64(void);
-    int32_t lseek(void);
-    int32_t llseek(void);
-    int32_t read(void);
-    int32_t write(void);
-    int32_t readv(void);
-    int32_t writev(void);
-    int32_t sendfile(void);
-    int32_t sendfile64(void);
-    int32_t readahead(void);
+    int chown(void);
+    int fchown(void);
+    int lchown(void);
+    int chown16(void);
+    int fchown16(void);
+    int lchown16(void);
+    int hmod(void);
+    int fchmod(void);
+    int utime(void);
+    int stat(void);
+    int fstat(void);
+    int lstat(void);
+    int acess(void);
+    int oldstat(void);
+    int oldfstat(void);
+    int oldlstat(void);
+    int stat64(void);
+    int lstat64(void);
+    int open(const char *path, int flags);
+    int close(void);
+    int creat(void);
+    int umask(void);
+    int dup(void);
+    int dup2(void);
+    int fcntl(void);
+    int fcntl64(void);
+    int select(void);
+    int poll(void);
+    int truncate(void);
+    int ftruncate(void);
+    int truncate64(void);
+    int ftruncate64(void);
+    int lseek(void);
+    int llseek(void);
+    int read(void);
+    int write(void);
+    int readv(void);
+    int writev(void);
+    int sendfile(void);
+    int sendfile64(void);
+    int readahead(void);
 };
 
 static VFS vfs;

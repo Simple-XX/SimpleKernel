@@ -28,6 +28,4 @@ public:
     int seek();
 };
 
-static FAT32 fat32;
-
 #endif /* _FAT32_H_ */
