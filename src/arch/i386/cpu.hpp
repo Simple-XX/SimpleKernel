@@ -143,99 +143,102 @@ namespace CPU {
     static constexpr const uint32_t IA32_APIC_BASE_GLOBAL_ENABLE_BIT = 1 << 11;
 
     // x2APIC ID Register (R/O)
-    static constexpr const uint32_t IA32_X2APIX_APICIC = 0x802;
+    static constexpr const uint32_t IA32_X2APIC_APICID = 0x802;
     // x2APIC Version Register (R/O)
-    static constexpr const uint32_t IA32_X2APIX_VERSION = 0x803;
+    static constexpr const uint32_t IA32_X2APIC_VERSION = 0x803;
+    // Support for EOI-broadcast suppression
+    static constexpr const uint32_t IA32_X2APIC_VERSION_EOI_SUPPORT_BIT = 1
+                                                                          << 24;
     // x2APIC Task Priority Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_TPR = 0x808;
+    static constexpr const uint32_t IA32_X2APIC_TPR = 0x808;
     // x2APIC Processor Priority Register (R/O)
-    static constexpr const uint32_t IA32_X2APIX_PPR = 0x80A;
+    static constexpr const uint32_t IA32_X2APIC_PPR = 0x80A;
     // x2APIC EOI Register (W/O)
-    static constexpr const uint32_t IA32_X2APIX_EOI = 0x80B;
+    static constexpr const uint32_t IA32_X2APIC_EOI = 0x80B;
     // x2APIC Logical Destination Register (R/O)
-    static constexpr const uint32_t IA32_X2APIX_LDR = 0x80D;
+    static constexpr const uint32_t IA32_X2APIC_LDR = 0x80D;
     // x2APIC Spurious Interrupt Vector Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_SIVR = 0x80F;
+    static constexpr const uint32_t IA32_X2APIC_SIVR = 0x80F;
     // 伪中断向量号
-    static constexpr const uint32_t IA32_X2APIX_SIVR_NO_BIT = 0x0;
+    static constexpr const uint32_t IA32_X2APIC_SIVR_NO_BIT = 0x0;
     // APIC 软件使能 1:enable
-    static constexpr const uint32_t IA32_X2APIX_SIVR_APIC_ENABLE_BIT = 1 << 8;
+    static constexpr const uint32_t IA32_X2APIC_SIVR_APIC_ENABLE_BIT = 1 << 8;
     // 焦点处理器 0:disable
-    static constexpr const uint32_t IA32_X2APIX_SIVR_FOCUS_ENABLE_BIT = 1 << 9;
+    static constexpr const uint32_t IA32_X2APIC_SIVR_FOCUS_ENABLE_BIT = 1 << 9;
     // 禁止广播 EOI 消息使能 1:enable
-    static constexpr const uint32_t IA32_X2APIX_SIVR_EOI_ENABLE_BIT = 1 << 12;
+    static constexpr const uint32_t IA32_X2APIC_SIVR_EOI_ENABLE_BIT = 1 << 12;
     // x2APIC In-Service Register Bits 31:0 (R/O)
-    static constexpr const uint32_t IA32_X2APIX_ISR0 = 0x810;
-    static constexpr const uint32_t IA32_X2APIX_ISR1 = 0x811;
-    static constexpr const uint32_t IA32_X2APIX_ISR2 = 0x812;
-    static constexpr const uint32_t IA32_X2APIX_ISR3 = 0x813;
-    static constexpr const uint32_t IA32_X2APIX_ISR4 = 0x814;
-    static constexpr const uint32_t IA32_X2APIX_ISR5 = 0x815;
-    static constexpr const uint32_t IA32_X2APIX_ISR6 = 0x816;
+    static constexpr const uint32_t IA32_X2APIC_ISR0 = 0x810;
+    static constexpr const uint32_t IA32_X2APIC_ISR1 = 0x811;
+    static constexpr const uint32_t IA32_X2APIC_ISR2 = 0x812;
+    static constexpr const uint32_t IA32_X2APIC_ISR3 = 0x813;
+    static constexpr const uint32_t IA32_X2APIC_ISR4 = 0x814;
+    static constexpr const uint32_t IA32_X2APIC_ISR5 = 0x815;
+    static constexpr const uint32_t IA32_X2APIC_ISR6 = 0x816;
     // x2APIC In-Service Register Bits 255:224 (R/O)
-    static constexpr const uint32_t IA32_X2APIX_ISR7 = 0x817;
+    static constexpr const uint32_t IA32_X2APIC_ISR7 = 0x817;
     // x2APIC Trigger Mode Register Bits 31:0 (R/O)
-    static constexpr const uint32_t IA32_X2APIX_TMR0 = 0x818;
-    static constexpr const uint32_t IA32_X2APIX_TMR1 = 0x819;
-    static constexpr const uint32_t IA32_X2APIX_TMR2 = 0x81A;
-    static constexpr const uint32_t IA32_X2APIX_TMR3 = 0x81B;
-    static constexpr const uint32_t IA32_X2APIX_TMR4 = 0x81C;
-    static constexpr const uint32_t IA32_X2APIX_TMR5 = 0x81D;
-    static constexpr const uint32_t IA32_X2APIX_TMR6 = 0x81E;
+    static constexpr const uint32_t IA32_X2APIC_TMR0 = 0x818;
+    static constexpr const uint32_t IA32_X2APIC_TMR1 = 0x819;
+    static constexpr const uint32_t IA32_X2APIC_TMR2 = 0x81A;
+    static constexpr const uint32_t IA32_X2APIC_TMR3 = 0x81B;
+    static constexpr const uint32_t IA32_X2APIC_TMR4 = 0x81C;
+    static constexpr const uint32_t IA32_X2APIC_TMR5 = 0x81D;
+    static constexpr const uint32_t IA32_X2APIC_TMR6 = 0x81E;
     // x2APIC Trigger Mode Register Bits 255:224 (R/O)
-    static constexpr const uint32_t IA32_X2APIX_TMR7 = 0x81F;
+    static constexpr const uint32_t IA32_X2APIC_TMR7 = 0x81F;
     // x2APIC Interrupt Request Register Bits 31:0 (R/O)
-    static constexpr const uint32_t IA32_X2APIX_IRR0 = 0x820;
-    static constexpr const uint32_t IA32_X2APIX_IRR1 = 0x821;
-    static constexpr const uint32_t IA32_X2APIX_IRR2 = 0x822;
-    static constexpr const uint32_t IA32_X2APIX_IRR3 = 0x823;
-    static constexpr const uint32_t IA32_X2APIX_IRR4 = 0x824;
-    static constexpr const uint32_t IA32_X2APIX_IRR5 = 0x825;
-    static constexpr const uint32_t IA32_X2APIX_IRR6 = 0x826;
+    static constexpr const uint32_t IA32_X2APIC_IRR0 = 0x820;
+    static constexpr const uint32_t IA32_X2APIC_IRR1 = 0x821;
+    static constexpr const uint32_t IA32_X2APIC_IRR2 = 0x822;
+    static constexpr const uint32_t IA32_X2APIC_IRR3 = 0x823;
+    static constexpr const uint32_t IA32_X2APIC_IRR4 = 0x824;
+    static constexpr const uint32_t IA32_X2APIC_IRR5 = 0x825;
+    static constexpr const uint32_t IA32_X2APIC_IRR6 = 0x826;
     // x2APIC Interrupt Request Register Bits 255:224 (R/O)
-    static constexpr const uint32_t IA32_X2APIX_IRR7 = 0x827;
+    static constexpr const uint32_t IA32_X2APIC_IRR7 = 0x827;
     // x2APIC Error Status Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_ESR = 0x828;
+    static constexpr const uint32_t IA32_X2APIC_ESR = 0x828;
     // x2APIC LVT Corrected Machine Check Interrupt Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_CMCI = 0x82F;
+    static constexpr const uint32_t IA32_X2APIC_CMCI = 0x82F;
     // x2APIC Interrupt Command Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_ICR = 0x830;
+    static constexpr const uint32_t IA32_X2APIC_ICR = 0x830;
     // x2APIC LVT Timer Interrupt Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_LVT_TIMER = 0x832;
+    static constexpr const uint32_t IA32_X2APIC_LVT_TIMER = 0x832;
     // x2APIC LVT Thermal Sensor Interrupt Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_LVT_THERMAL = 0x833;
+    static constexpr const uint32_t IA32_X2APIC_LVT_THERMAL = 0x833;
     // x2APIC LVT Performance Monitor Interrupt Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_LVT_PMI = 0x834;
+    static constexpr const uint32_t IA32_X2APIC_LVT_PMI = 0x834;
     // x2APIC LVT LINT0 Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_LVT_LINT0 = 0x835;
+    static constexpr const uint32_t IA32_X2APIC_LVT_LINT0 = 0x835;
     // x2APIC LVT LINT1 Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_LVT_LINT1 = 0x836;
+    static constexpr const uint32_t IA32_X2APIC_LVT_LINT1 = 0x836;
     // x2APIC LVT Error Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_LVT_ERROR = 0x837;
+    static constexpr const uint32_t IA32_X2APIC_LVT_ERROR = 0x837;
     // Bits 0-7	The vector number
-    static constexpr const uint32_t IA32_X2APIX_LVT_NO_BIT = 0x0;
+    static constexpr const uint32_t IA32_X2APIC_LVT_NO_BIT = 0x0;
     // Bits 8-11 (reserved for timer)	100b if NMI
-    static constexpr const uint32_t IA32_X2APIX_LVT_NMI_BIT = 1 << 8;
+    static constexpr const uint32_t IA32_X2APIC_LVT_NMI_BIT = 1 << 8;
     // Bit 12	Set if interrupt pending.
-    static constexpr const uint32_t IA32_X2APIX_LVT_PENDING_BIT = 1 << 12;
+    static constexpr const uint32_t IA32_X2APIC_LVT_PENDING_BIT = 1 << 12;
     // Bit 13 (reserved for timer)	Polarity, set is low triggered
-    static constexpr const uint32_t IA32_X2APIX_LVT_POLAR_BIT = 1 << 13;
+    static constexpr const uint32_t IA32_X2APIC_LVT_POLAR_BIT = 1 << 13;
     // Bit 14 (reserved for timer)	Remote IRR
-    static constexpr const uint32_t IA32_X2APIX_LVT_REMOTE_IRR_BIT = 1 << 14;
+    static constexpr const uint32_t IA32_X2APIC_LVT_REMOTE_IRR_BIT = 1 << 14;
     // Bit 15 (reserved for timer)	trigger mode, set is level triggered
-    static constexpr const uint32_t IA32_X2APIX_LVT_TRIGGER_BIT = 1 << 15;
+    static constexpr const uint32_t IA32_X2APIC_LVT_TRIGGER_BIT = 1 << 15;
     // Bit 16	Set to mask
-    static constexpr const uint32_t IA32_X2APIX_LVT_MASK_BIT = 1 << 16;
+    static constexpr const uint32_t IA32_X2APIC_LVT_MASK_BIT = 1 << 16;
     // Bits 17-31	Reserved
 
     // x2APIC Initial Count Register(R/W)
-    static constexpr const uint32_t IA32_X2APIX_TIMER_INIT_COUNT = 0x838;
+    static constexpr const uint32_t IA32_X2APIC_TIMER_INIT_COUNT = 0x838;
     // x2APIC Current Count Register (R/O)
-    static constexpr const uint32_t IA32_X2APIX_TIMER_CUR_COUNT = 0x839;
+    static constexpr const uint32_t IA32_X2APIC_TIMER_CUR_COUNT = 0x839;
     // x2APIC Divide Configuration Register (R/W)
-    static constexpr const uint32_t IA32_X2APIX_DIV_CONF = 0x83E;
+    static constexpr const uint32_t IA32_X2APIC_DIV_CONF = 0x83E;
     // x2APIC Self IPI Register (W/O)
-    static constexpr const uint32_t IA32_X2APIX_SELF_IPI = 0x83F;
+    static constexpr const uint32_t IA32_X2APIC_SELF_IPI = 0x83F;
 
     // 段描述符 DPL
     // 内核级
@@ -613,6 +616,20 @@ namespace CPU {
         return true;
     }
 
+    static inline uint64_t READ_MSR(uint32_t _idx) {
+        uint32_t low;
+        uint32_t high;
+        __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(_idx));
+        return ((uint64_t)high << 32) | low;
+    }
+
+    static inline void WRITE_MSR(uint32_t _idx, uint64_t _msr) {
+        uint32_t low  = _msr;
+        uint32_t high = _msr >> 32;
+        __asm__ volatile("wrmsr" : : "a"(low), "d"(high), "c"(_idx));
+        return;
+    }
+
     class CPUID {
     private:
         static constexpr const uint32_t VENDOR_LEN = 16;
@@ -761,21 +778,12 @@ namespace CPU {
             cpuid(GET_FEATURES, 0, &eax, &ebx, &ecx, &edx);
             return ecx & FEAT_ECX_x2APIC;
         }
+        bool eoi(void) {
+            uint64_t version = READ_MSR(IA32_X2APIC_VERSION);
+            return version & IA32_X2APIC_SIVR_EOI_ENABLE_BIT;
+        }
     };
 
-    static inline uint64_t READ_MSR(uint32_t _idx) {
-        uint32_t low;
-        uint32_t high;
-        __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(_idx));
-        return ((uint64_t)high << 32) | low;
-    }
-
-    static inline void WRITE_MSR(uint32_t _idx, uint64_t _msr) {
-        uint32_t low  = _msr;
-        uint32_t high = _msr >> 32;
-        __asm__ volatile("wrmsr" : : "a"(low), "d"(high), "c"(_idx));
-        return;
-    }
 };
 
 #endif /* _CPU_HPP_ */
