@@ -23,11 +23,11 @@ APIC::~APIC(void) {
 
 bool APIC::init(void) {
     CPU::CPUID cpuid;
-    if (cpuid.xapic() == true) {
-        info("support APIC&xAPIC\n");
+    if (cpuid.xapic() == false) {
+        warn("Not support APIC&xAPIC\n");
     }
-    if (cpuid.x2apic() == true) {
-        info("support x2APIC\n");
+    if (cpuid.x2apic() == false) {
+        warn("Not support x2APIC\n");
     }
     uint64_t msr = CPU::READ_MSR(CPU::IA32_APIC_BASE);
     // 开启 xAPIC 与 x2APIC
@@ -35,25 +35,25 @@ bool APIC::init(void) {
             CPU::IA32_APIC_BASE_X2APIC_ENABLE_BIT);
     CPU::WRITE_MSR(CPU::IA32_APIC_BASE, msr);
     // 设置 SIVR
-    msr = CPU::READ_MSR(CPU::IA32_X2APIX_SIVR);
-    msr |= (CPU::IA32_X2APIX_SIVR_APIC_ENABLE_BIT |
-            CPU::IA32_X2APIX_SIVR_EOI_ENABLE_BIT);
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_SIVR, msr);
+    msr = CPU::READ_MSR(CPU::IA32_X2APIC_SIVR);
+    if (cpuid.eoi() == true) {
+        msr |= CPU::IA32_X2APIC_SIVR_EOI_ENABLE_BIT;
+    }
+    msr |= CPU::IA32_X2APIC_SIVR_APIC_ENABLE_BIT;
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_SIVR, msr);
 
     // 屏蔽所有 LVT
     msr = 0;
-    msr |= CPU::IA32_X2APIX_LVT_MASK_BIT;
+    msr |= CPU::IA32_X2APIC_LVT_MASK_BIT;
     msr = 0x10000;
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_TIMER, msr);
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_THERMAL, msr);
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_PMI, msr);
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_LINT0, msr);
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_LINT1, msr);
-    CPU::WRITE_MSR(CPU::IA32_X2APIX_LVT_ERROR, msr);
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_CMCI, msr);
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_TIMER, msr);
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_THERMAL, msr);
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_PMI, msr);
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_LINT0, msr);
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_LINT1, msr);
+    CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_ERROR, msr);
 
-    // 关闭 8259A
-    io.outb(0x21, 0xff);
-    io.outb(0xa1, 0xff);
-    info("apic init\n");
+    printf("apic init\n");
     return true;
 }

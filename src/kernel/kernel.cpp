@@ -39,8 +39,7 @@ KERNEL::KERNEL(void) {
     // 中断初始化
     INTR::init();
     // APIC 初始化
-    // BUG: GP
-    // apic.init();
+    apic.init();
     keyboard.init();
     return;
 }
