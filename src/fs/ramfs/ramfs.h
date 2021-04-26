@@ -7,27 +7,28 @@
 #ifndef _RAMFS_H_
 #define _RAMFS_H_
 
+#include "string"
 #include "vfs.h"
+#include "list.hpp"
+
+class ramfs_superblock_t : superblock_t {
+private:
+protected:
+public:
+    ramfs_superblock_t(void);
+    ~ramfs_superblock_t(void);
+    // 读取
+    int read(void);
+};
 
 class RAMFS : FS {
 private:
-    // inode 数量
-    static constexpr const uint32_t inode_size = 0x20000000;
-    // 超级块
-    // inode 索引
-
 protected:
 public:
-    RAMFS(void);
+    RAMFS(const STL::string _name);
     ~RAMFS(void);
-    // 挂载
-    int mount(void);
-    // 卸载
-    int unmount(void);
-    int read_super(void);
-    int open();
-    int close();
-    int seek();
+    inode_t *alloc_inode(void);
+    int      mkdir(const STL::string _path, const mode_t _mode);
 };
 
 #endif /* _RAMFS_H_ */
