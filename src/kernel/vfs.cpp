@@ -28,6 +28,14 @@ superblock_t::~superblock_t(void) {
     return;
 }
 
+dentry_t::dentry_t(void) {
+    return;
+}
+
+dentry_t::~dentry_t(void) {
+    return;
+}
+
 FS::FS(void) {
     return;
 }
@@ -46,10 +54,10 @@ VFS::~VFS(void) {
 
 int32_t VFS::init(void) {
     // 注册 ramfs 作为 rootfs
-    RAMFS rootfs("rootfs");
-    fs.push_back((FS *)&rootfs);
+    RAMFS *rootfs = new RAMFS("rootfs");
+    fs.push_back((FS *)rootfs);
     // 创建 "/" 目录
-    mkdir("/");
+    mkdir("/", 0);
     std::cout << "vfs init." << std::endl;
     return 0;
 }
@@ -101,6 +109,7 @@ int VFS::mkdir(STL::string _path, mode_t _mode) {
             std::cout << _path << " already exist." << std::endl;
             return -1;
         }
+        path_fs = i;
     }
     // 没有找到则创建
     return path_fs->mkdir(_path, _mode);
