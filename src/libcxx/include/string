@@ -291,11 +291,11 @@ namespace STL {
         // delim); friend std::istream &getline(std::istream &is, string &str);
     };
 
-    // template <class InputIterator>
-    // string::string(InputIterator first, InputIterator last) {
-    //     string_aux(first, last,
-    //                typename std::is_integral<InputIterator>::type());
-    // }
+    template <class InputIterator>
+    string::string(InputIterator first, InputIterator last) {
+        string_aux(first, last,
+                   typename std::is_integral<InputIterator>::type());
+    }
 
     template <class InputIterator>
     string::iterator string::insert_aux_copy(iterator p, InputIterator first,
