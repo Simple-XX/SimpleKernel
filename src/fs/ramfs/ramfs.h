@@ -11,6 +11,14 @@
 #include "vfs.h"
 #include "list.hpp"
 
+class ramfs_inode_t : inode_t {
+private:
+protected:
+public:
+    ramfs_inode_t(void);
+    ~ramfs_inode_t(void);
+};
+
 class ramfs_superblock_t : superblock_t {
 private:
 protected:
@@ -24,13 +32,11 @@ public:
 class RAMFS : FS {
 private:
 protected:
-    inode_t * alloc_inode(void);
-    dentry_t *alloc_denty(void);
-
 public:
-    RAMFS(const STL::string _name);
+    RAMFS(const STL::string &_name, const dentry_t &_dentry);
     ~RAMFS(void);
-    int mkdir(const STL::string _path, const mode_t _mode);
+    inode_t *alloc_inode(void);
+    void     dealloc_inode(inode_t *_inode);
 };
 
 #endif /* _RAMFS_H_ */
