@@ -43,7 +43,12 @@ KERNEL::KERNEL(void) {
     // APIC 初始化
     apic.init();
     keyboard.init();
-    vfs.init();
+    VFS *vfs = new VFS();
+    vfs->init();
+    vfs->mkdir("/233", 0);
+    vfs->mkdir("/233/555", 0);
+    vfs->rmdir("/233/555");
+    vfs->mkdir("/233/555", 0);
     return;
 }
 

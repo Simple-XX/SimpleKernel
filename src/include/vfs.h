@@ -49,6 +49,26 @@ public:
     virtual ~inode_t(void);
 };
 
+// 目录项
+class dentry_t {
+private:
+protected:
+public:
+    uint32_t flag;
+    // 对应的 inode
+    inode_t *inode;
+    // 父目录
+    dentry_t *parent;
+    // 子目录
+    STL::list<dentry_t *> child;
+    // 文件完整路径
+    STL::string path;
+    // 文件名
+    STL::string name;
+    dentry_t(void);
+    virtual ~dentry_t(void);
+};
+
 // 超级块
 // fs 挂载时从存储介质读入
 class superblock_t {
@@ -74,24 +94,6 @@ public:
     virtual int read(void) = 0;
 };
 
-// 目录
-class dentry_t {
-private:
-protected:
-public:
-    uint32_t flag;
-    // 对应的 inode
-    inode_t *inode;
-    // 父目录
-    dentry_t *parent;
-    // 子目录
-    STL::list<dentry_t *> child;
-    // 文件名
-    STL::string name;
-    dentry_t(void);
-    virtual ~dentry_t(void);
-};
-
 // 实际的文件系统
 class FS {
 private:
@@ -100,19 +102,33 @@ protected:
     STL::list<superblock_t *> supers;
     // inode 链表
     STL::list<inode_t *> inodes;
-    // denty 链表
-    STL::list<dentry_t *> dentrys;
-    // 分配 inode
-    virtual inode_t *alloc_inode(void) = 0;
-    // 分配 denty
-    virtual dentry_t *alloc_denty(void) = 0;
 
 public:
     // 文件系统名
     STL::string name;
+    // 挂载点目录项
+    dentry_t root;
     FS(void);
-    virtual ~FS(void)                                              = 0;
-    virtual int mkdir(const STL::string _path, const mode_t _mode) = 0;
+    virtual ~FS(void) = 0;
+    // 分配 inode
+    virtual inode_t *alloc_inode(void)              = 0;
+    virtual void     dealloc_inode(inode_t *_inode) = 0;
+};
+
+// 文件
+class file_t {
+private:
+protected:
+public:
+    uint32_t flag;
+    // 引用计数
+    size_t count;
+    // 偏移量
+    size_t offset;
+    // 对应的 dentry
+    dentry_t *dentry;
+    file_t(void);
+    virtual ~file_t(void);
 };
 
 // 所有文件系统由 vfs 统一管理
@@ -121,8 +137,16 @@ class VFS {
 private:
     // 管理的文件系统
     STL::list<FS *> fs;
-    // 根目录
-    inode_t root;
+    // denty 链表
+    STL::list<dentry_t *> dentrys;
+    // 所有打开的文件
+    STL::list<file_t *> files;
+    // 当前所在目录
+    dentry_t *cwd;
+    // 查找目录项
+    dentry_t *find_dentry(const STL::string &_path);
+    // 根据路径判断文件系统
+    FS *get_fs(const STL::string &_path);
 
 protected:
 public:
@@ -135,10 +159,9 @@ public:
     // 删除一个文件系统
     int32_t unregister_filesystem(FS *_fs);
     //文件系统相关
-    // 挂载
-    int mount(const char *source, const char *target,
-              const char *filesystemtype, unsigned long mountflags,
-              const void *data);
+    // 挂载  设备名，挂载路径，文件系统名
+    int mount(const STL::string &_dev_name, const STL::string &_path,
+              const STL::string &_fs_name, unsigned long flags, void *data);
     int umount(void);
     int umount2(void);
     int sysfs(void);
@@ -152,8 +175,10 @@ public:
     int chdir(void);
     int fchdir(void);
     int getcwd(void);
-    int mkdir(STL::string _path, mode_t _mode);
-    int rmdir(void);
+    // 创建目录
+    int mkdir(const STL::string &_path, const mode_t &_mode);
+    // 删除目录及其内容
+    int rmdir(const STL::string &_path);
     int getdents(void);
     int getdents64(void);
     int readdir(void);
@@ -183,8 +208,9 @@ public:
     int oldlstat(void);
     int stat64(void);
     int lstat64(void);
-    int open(const char *path, int flags);
-    int close(void);
+    // 打开文件
+    int open(const STL::string &_path, int _flags);
+    int close(int _fd);
     int creat(void);
     int umask(void);
     int dup(void);
@@ -207,17 +233,5 @@ public:
     int sendfile64(void);
     int readahead(void);
 };
-
-// 文件
-class file_t {
-private:
-protected:
-public:
-    uint32_t flag;
-    file_t(void);
-    virtual ~file_t(void);
-};
-
-static VFS vfs;
 
 #endif /* _VFS_H_ */
