@@ -100,8 +100,12 @@ protected:
     STL::list<superblock_t *> supers;
     // inode 链表
     STL::list<inode_t *> inodes;
+    // denty 链表
+    STL::list<dentry_t *> dentrys;
     // 分配 inode
     virtual inode_t *alloc_inode(void) = 0;
+    // 分配 denty
+    virtual dentry_t *alloc_denty(void) = 0;
 
 public:
     // 文件系统名

@@ -24,11 +24,13 @@ public:
 class RAMFS : FS {
 private:
 protected:
+    inode_t * alloc_inode(void);
+    dentry_t *alloc_denty(void);
+
 public:
     RAMFS(const STL::string _name);
     ~RAMFS(void);
-    inode_t *alloc_inode(void);
-    int      mkdir(const STL::string _path, const mode_t _mode);
+    int mkdir(const STL::string _path, const mode_t _mode);
 };
 
 #endif /* _RAMFS_H_ */

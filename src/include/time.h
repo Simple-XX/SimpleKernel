@@ -33,6 +33,12 @@ public:
     long tm_gmtoff;
     // timezone abbreviation
     char *tm_zone;
+    time_t(void) {
+        return;
+    }
+    ~time_t(void) {
+        return;
+    }
 };
 
 #endif /* _TIME_H_ */
