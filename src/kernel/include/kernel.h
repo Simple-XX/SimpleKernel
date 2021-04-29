@@ -8,12 +8,15 @@
 #define _KERNEL_H_
 
 #include "stdint.h"
+#include "vfs.h"
 
 class KERNEL {
 private:
+    VFS *   vfs;
     int32_t test_pmm(void);
     int32_t test_vmm(void);
     int32_t test_heap(void);
+    int32_t test_vfs(void);
 
 protected:
 public:

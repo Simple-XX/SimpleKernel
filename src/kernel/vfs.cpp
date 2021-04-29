@@ -216,8 +216,9 @@ int VFS::mkdir(const STL::string &_path, const mode_t &_mode) {
     }
     // 没有找到则创建
     dentry_t *dentry = alloc_dentry(_path, _mode);
-    std::cout << "par: " << dentry->parent->path << ", name: " << dentry->name
-              << ", path: " << dentry->path << std::endl;
+    if (dentry == nullptr) {
+        return -1;
+    }
     return 0;
 }
 
