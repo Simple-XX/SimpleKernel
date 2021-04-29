@@ -8,7 +8,8 @@
 extern "C" {
 #endif
 
-#include "string.h"
+#include "stddef.h"
+#include "cstring.h"
 
 // 获取字符串长度
 size_t strlen(const char *str) {
@@ -50,7 +51,11 @@ void append(char *src, char dest) {
 
 char *strcat(char *dest, const char *src) {
     uint8_t *add_d = (uint8_t *)dest;
+<<<<<<< HEAD:src/libc/string/string.cpp
     if (dest != nullptr && src != nullptr) {
+=======
+    if (dest != 0 && src != 0) {
+>>>>>>> d6302a654b37228586a21aaa787358ef8a5aa405:src/libc/src/string/string.c
         while (*add_d) {
             add_d++;
         }

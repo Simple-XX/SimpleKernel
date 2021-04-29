@@ -5,7 +5,7 @@
 // uart.cpp for Simple-XX/SimpleKernel.
 
 #include "stddef.h"
-#include "string.h"
+#include "cstring.h"
 #include "uart.h"
 #include "port.h"
 
