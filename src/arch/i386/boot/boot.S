@@ -1,7 +1,7 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# boot.s for Simple-XX/SimpleKernel.
+# boot.S for Simple-XX/SimpleKernel.
 
 /*  How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH 32768
@@ -107,7 +107,7 @@ multiboot_entry:
     popf
 	# multiboot2_info 结构体指针
     push %ebx
-	# 魔数
+    # 魔数
 	push %eax
     call kernel_main
 
