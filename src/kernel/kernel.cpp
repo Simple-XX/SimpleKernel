@@ -15,7 +15,6 @@
 #include "vmm.h"
 #include "heap.h"
 #include "kernel.h"
-#include "String.h"
 #include "iostream"
 
 KERNEL::KERNEL(void) {
@@ -32,8 +31,6 @@ KERNEL::KERNEL(void) {
     heap.init();
     // 测试堆
     test_heap();
-    string s("fafa");
-    std::cout << s << std::endl;
     return;
 }
 
