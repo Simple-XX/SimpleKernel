@@ -2,10 +2,10 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// string.h for Simple-XX/SimpleKernel.
+// cstring.h for Simple-XX/SimpleKernel.
 
-#ifndef _STRING_H_
-#define _STRING_H_
+#ifndef _CSTRING_H_
+#define _CSTRING_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,4 +32,4 @@ extern void   append(char *src, char dest);
 }
 #endif
 
-#endif /* _STRING_H_ */
+#endif /* _CSTRING_H_ */
