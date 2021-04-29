@@ -7,7 +7,7 @@
 #include "kernel.h"
 
 KERNEL::KERNEL(void) {
-    asm("hlt");
+    // asm("hlt");
     return;
 }
 
