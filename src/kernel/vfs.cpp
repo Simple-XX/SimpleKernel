@@ -12,14 +12,6 @@
 #include "ramfs.h"
 #include "vfs.h"
 
-inode_t::inode_t(void) {
-    return;
-}
-
-inode_t::~inode_t(void) {
-    return;
-}
-
 superblock_t::superblock_t(void) {
     return;
 }
@@ -28,11 +20,30 @@ superblock_t::~superblock_t(void) {
     return;
 }
 
+inode_t::inode_t(void) {
+    return;
+}
+
+inode_t::~inode_t(void) {
+    return;
+}
+
 dentry_t::dentry_t(void) {
     return;
 }
 
 dentry_t::~dentry_t(void) {
+    return;
+}
+
+file_t::file_t(dentry_t *_dentry, int _flag, fd_t _fd) {
+    dentry = _dentry;
+    flag   = _flag;
+    fd     = _fd;
+    return;
+}
+
+file_t::~file_t(void) {
     return;
 }
 
@@ -63,6 +74,55 @@ dentry_t *VFS::find_dentry(const STL::string &_path) {
     return nullptr;
 }
 
+dentry_t *VFS::alloc_dentry(const STL::string &_path, int _flags) {
+    // 新建目录项
+    dentry_t *dentry = new dentry_t();
+    dentry->flag     = _flags;
+    // 找到父目录
+    for (auto i : dentrys) {
+        // 如果 i 的 ptah 与 _path 的路径部分相同
+        if (_path.find(i->path) == 0) {
+            // 设置父目录
+            dentry->parent = i;
+            // 为父目录添加 child
+            i->child.push_back(dentry);
+        }
+    }
+    dentry->path = _path;
+    // 设置文件名为 _path 的最后一部分
+    dentry->name = _path.substr(_path.find_last_of('/') + 1);
+    // 由路径对应的 fs 分配 inode
+    inode_t *inode = get_fs(_path)->alloc_inode();
+    // 将 dentry 与 inode 建立关联
+    dentry->inode = inode;
+    dentrys.push_back(dentry);
+    return dentry;
+}
+
+int VFS::dealloc_dentry(const STL::string &_path) {
+    dentry_t *dentry = find_dentry(_path);
+    FS *      fs     = get_fs(_path);
+    // 首先判断是否存在，不存在则返回
+    if (dentry == nullptr) {
+        std::cout << "\"" << _path << "\" not exist." << std::endl;
+        return -1;
+    }
+    // 设置父目录
+    dentry->parent->child.remove(dentry);
+    // 删除子目录
+    for (auto i : dentry->child) {
+        fs->dealloc_inode(i->inode);
+        dentrys.remove(i);
+        delete i;
+    }
+    // 删除 inode
+    fs->dealloc_inode(dentry->inode);
+    // 删除 dentry
+    dentrys.remove(dentry);
+    delete dentry;
+    return 0;
+}
+
 FS *VFS::get_fs(const STL::string &_path) {
     for (auto i : fs) {
         // 返回 0 说明路径匹配
@@ -71,6 +131,14 @@ FS *VFS::get_fs(const STL::string &_path) {
         }
     }
     return nullptr;
+}
+
+fd_t VFS::alloc_fd(void) {
+    return 0;
+}
+
+fd_t VFS::dealloc_fd(void) {
+    return 0;
 }
 
 int32_t VFS::init(void) {
@@ -147,61 +215,65 @@ int VFS::mkdir(const STL::string &_path, const mode_t &_mode) {
         return -1;
     }
     // 没有找到则创建
-    // 新建目录项
-    dentry_t *dentry = new dentry_t();
-    dentry->flag     = 0;
-    // 找到父目录
-    for (auto i : dentrys) {
-        // 如果 i 的 ptah 与 _path 的路径部分相同
-        if (_path.find(i->path) == 0) {
-            // 设置父目录
-            dentry->parent = i;
-            // 为父目录添加 child
-            i->child.push_back(dentry);
-        }
-    }
-    dentry->path = _path;
-    // 设置文件名为 _path 的最后一部分
-    dentry->name = _path.substr(_path.find_last_of('/') + 1);
-    // 由路径对应的 fs 分配 inode
-    inode_t *inode = get_fs(_path)->alloc_inode();
-    // 将 dentry 与 inode 建立关联
-    dentry->inode = inode;
-    dentrys.push_back(dentry);
+    dentry_t *dentry = alloc_dentry(_path, _mode);
     std::cout << "par: " << dentry->parent->path << ", name: " << dentry->name
               << ", path: " << dentry->path << std::endl;
     return 0;
 }
 
 int VFS::rmdir(const STL::string &_path) {
-    dentry_t *dentry = find_dentry(_path);
-    FS *      fs     = get_fs(_path);
-    // 首先判断是否存在，不存在则返回
-    if (dentry == nullptr) {
-        std::cout << "\"" << _path << "\" not exist." << std::endl;
-        return -1;
-    }
-    // 设置父目录
-    dentry->parent->child.remove(dentry);
-    // 删除子目录
-    for (auto i : dentry->child) {
-        fs->dealloc_inode(i->inode);
-        dentrys.remove(i);
-        delete i;
-    }
-    // 删除 inode
-    fs->dealloc_inode(dentry->inode);
-    // 删除 dentry
-    dentrys.remove(dentry);
-    delete dentry;
-    return 0;
+    return dealloc_dentry(_path);
 }
 
 int VFS::open(const STL::string &_path, int _flags) {
+    // 首先看是否存在
+    dentry_t *dentry = find_dentry(_path);
+    // 如果不存在
+    if (dentry == nullptr) {
+        // 根据 flag 判断是否创建
+        // 创建
+        if (_flags) {
+            dentry = alloc_dentry(_path, _flags);
+        }
+        // 不创建则返回
+        else {
+            return -1;
+        }
+    }
+    // 打开
+    // 创建 file 对象
+    file_t *file = new file_t(dentry, _flags, alloc_fd());
+    // 添加到链表中
+    files.push_back(file);
+    return file->fd;
+}
 
+int VFS::close(fd_t _fd) {
+    for (auto i : files) {
+        if (i->fd == _fd) {
+            files.remove(i);
+            delete i;
+        }
+    }
     return 0;
 }
 
-int VFS::close(int _fd) {
+int VFS::read(fd_t _fd, void *_buf, size_t _count) {
+    // 寻找对应 file
+    for (auto i : files) {
+        if (i->fd == _fd) {
+            memcpy(_buf, i->dentry->inode->pointer, _count);
+        }
+    }
+    return 0;
+}
+
+int VFS::write(fd_t _fd, void *_buf, size_t _count) {
+    for (auto i : files) {
+        if (i->fd == _fd) {
+            i->dentry->inode->pointer = malloc(_count);
+            memcpy(i->dentry->inode->pointer, _buf, _count);
+        }
+    }
     return 0;
 }

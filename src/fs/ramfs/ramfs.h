@@ -27,6 +27,7 @@ public:
     ~ramfs_superblock_t(void);
     // 读取
     int read(void);
+    int write(void);
 };
 
 class RAMFS : FS {

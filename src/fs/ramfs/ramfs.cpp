@@ -33,6 +33,10 @@ int ramfs_superblock_t::read(void) {
     return 0;
 }
 
+int ramfs_superblock_t::write(void) {
+    return 0;
+}
+
 RAMFS::RAMFS(const STL::string &_name, const dentry_t &_dentry) {
     ramfs_superblock_t *super = new ramfs_superblock_t();
     supers.push_back((superblock_t *)super);
