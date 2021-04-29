@@ -18,8 +18,6 @@
 #include "apic.h"
 #include "kernel.h"
 #include "keyboard.h"
-#include "vfs.h"
-#include "ramfs.h"
 #include "string"
 #include "vector"
 #include "iostream"
@@ -43,18 +41,9 @@ KERNEL::KERNEL(void) {
     // APIC 初始化
     apic.init();
     keyboard.init();
-    VFS *vfs = new VFS();
+    vfs = new VFS();
     vfs->init();
-    vfs->mkdir("/233", 0);
-    vfs->mkdir("/233/555", 0);
-    vfs->rmdir("/233/555");
-    vfs->mkdir("/233/555", 0);
-    fd_t fd  = vfs->open("/233/555/test.c", 1);
-    char a[] = "test233.c";
-    vfs->write(fd, a, 20);
-    char b[10];
-    vfs->read(fd, b, 10);
-    printf("b: %s\n", b);
+    test_vfs();
     return;
 }
 
@@ -197,6 +186,20 @@ int32_t KERNEL::test_heap(void) {
     assert(heap.get_total() == total0);
     assert(heap.get_block() == block0);
     std::cout << "heap test done." << std::endl;
+    return 0;
+}
+
+int32_t KERNEL::test_vfs(void) {
+    vfs->mkdir("/233", 0);
+    vfs->mkdir("/233/555", 0);
+    vfs->rmdir("/233/555");
+    vfs->mkdir("/233/555", 0);
+    fd_t fd  = vfs->open("/233/555/test.c", 1);
+    char a[] = "test233.c";
+    vfs->write(fd, a, 10);
+    char b[10];
+    vfs->read(fd, b, 10);
+    assert(strcmp(a, b) == 0);
     return 0;
 }
 

@@ -69,7 +69,7 @@ inode_t *RAMFS::alloc_inode(void) {
     // inode.mtime      = 0;
     // inode.atime      = 0;
     inode->hard_links = 1;
-    // inode.pointer    = 0;
+    inode->pointer    = nullptr;
     inodes.push_back(inode);
     for (auto i : supers) {
         i->inode_total += 1;
