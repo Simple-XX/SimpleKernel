@@ -9,9 +9,8 @@
 #include "cxxabi.h"
 #include "common.h"
 #include "color.h"
+#include "stdio.h"
 #include "kernel.h"
-
-IO KERNEL::io;
 
 KERNEL::KERNEL(void) {
     cpp_init();
@@ -23,12 +22,12 @@ KERNEL::~KERNEL(void) {
 }
 
 void KERNEL::show_info(void) {
-    // BUG: raspi2 下不能正常输出链接脚本中的地址
-    io.info("kernel in memory start: 0x%08X, end 0x%08X\n",
-            COMMON::kernel_start, COMMON::kernel_end);
-    io.info("kernel in memory size: %d KB, %d pages\n",
-            (COMMON::kernel_end - COMMON::kernel_start) / 1024,
-            (COMMON::kernel_end - COMMON::kernel_start + 4095) / 1024 / 4);
-    io.info("Simple Kernel.\n");
+    info("kernel in memory start: 0x%08X, end 0x%08X\n", COMMON::kernel_start,
+         COMMON::kernel_end);
+    info("kernel in memory size: %d KB, %d pages\n",
+         (COMMON::kernel_end - COMMON::kernel_start) / 1024,
+         (COMMON::kernel_end - COMMON::kernel_start + 4095) / 1024 / 4);
+    printf("kernel in memory start: 0x%d\n", 0xEF);
+    info("Simple Kernel.\n");
     return;
 }
