@@ -59,27 +59,3 @@ extern "C" void free(void *ptr) {
     heap.free(ptr);
     return;
 }
-
-void *operator new(size_t size) {
-    return malloc(size);
-}
-
-void *operator new[](size_t size) {
-    return malloc(size);
-}
-
-void operator delete(void *p) {
-    free(p);
-}
-
-void operator delete(void *p, size_t size __attribute__((unused))) {
-    free(p);
-}
-
-void operator delete[](void *p) {
-    free(p);
-}
-
-void operator delete[](void *p, size_t size __attribute__((unused))) {
-    free(p);
-}

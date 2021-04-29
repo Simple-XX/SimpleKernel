@@ -5,7 +5,7 @@
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
 #include "cpu.hpp"
-#include "assert.h"
+#include "cassert.h"
 #include "multiboot2.h"
 #include "kernel.h"
 
