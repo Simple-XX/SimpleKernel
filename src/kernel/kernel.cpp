@@ -49,6 +49,12 @@ KERNEL::KERNEL(void) {
     vfs->mkdir("/233/555", 0);
     vfs->rmdir("/233/555");
     vfs->mkdir("/233/555", 0);
+    fd_t fd  = vfs->open("/233/555/test.c", 1);
+    char a[] = "test233.c";
+    vfs->write(fd, a, 20);
+    char b[10];
+    vfs->read(fd, b, 10);
+    printf("b: %s\n", b);
     return;
 }
 

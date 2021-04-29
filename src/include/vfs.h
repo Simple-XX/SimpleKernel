@@ -17,14 +17,39 @@ typedef uint32_t user_id_t;
 typedef uint32_t group_id_t;
 typedef uint32_t mode_t;
 typedef uint32_t flag_t;
+typedef uint32_t fd_t;
+
+// 超级块
+// fs 挂载时从存储介质读入
+class superblock_t {
+private:
+protected:
+public:
+    // inode 与 block 的总量
+    uint32_t inode_total;
+    uint32_t block_total;
+    // 未使用的 inode 与 block 数量
+    uint32_t inode_free;
+    uint32_t block_free;
+    // block与inode的大小（block为1K,2K,4K；inode为128byte）
+    uint32_t block_size;
+    uint32_t inode_size;
+    // 文件系统的挂在时间、最近一次写入数据的时间、最近一次检验磁盘的时间等文件系统的相关信息
+    // 文件系统描述--File system Description
+    // 块对应表--block bitmap 记录磁盘中使用与未使用的block号码
+    // inode对应表--inode bitmap 记录使用与未使用的inode号码
+    superblock_t(void);
+    virtual ~superblock_t(void) = 0;
+    // 读写
+    virtual int read(void)  = 0;
+    virtual int write(void) = 0;
+};
 
 // inode 索引节点
 class inode_t {
 private:
 protected:
 public:
-    // 文件大小 以字节为单位表示的
-    size_t size;
     // 设备 ID，标识容纳该文件的设备。
     device_id_t device_id;
     // 文件所有者的 User ID。
@@ -43,8 +68,10 @@ public:
     time_t atime;
     // 1个链接数，表示有多少个硬链接指向此inode。
     uint32_t hard_links;
+    // 文件大小 以字节为单位表示的
+    size_t size;
     // 到文件系统存储位置的指针。通常是1K字节或者2K字节的存储容量为基本单位。
-    uint32_t pointer;
+    void *pointer;
     inode_t(void);
     virtual ~inode_t(void);
 };
@@ -69,29 +96,20 @@ public:
     virtual ~dentry_t(void);
 };
 
-// 超级块
-// fs 挂载时从存储介质读入
-class superblock_t {
+// 文件
+class file_t {
 private:
 protected:
 public:
-    // inode 与 block 的总量
-    uint32_t inode_total;
-    uint32_t block_total;
-    // 未使用的 inode 与 block 数量
-    uint32_t inode_free;
-    uint32_t block_free;
-    // block与inode的大小（block为1K,2K,4K；inode为128byte）
-    uint32_t block_size;
-    uint32_t inode_size;
-    // 文件系统的挂在时间、最近一次写入数据的时间、最近一次检验磁盘的时间等文件系统的相关信息
-    // 文件系统描述--File system Description
-    // 块对应表--block bitmap 记录磁盘中使用与未使用的block号码
-    // inode对应表--inode bitmap 记录使用与未使用的inode号码
-    superblock_t(void);
-    virtual ~superblock_t(void) = 0;
-    // 读取
-    virtual int read(void) = 0;
+    // 文件描述符
+    fd_t     fd;
+    uint32_t flag;
+    // 偏移量
+    size_t offset;
+    // 对应的 dentry
+    dentry_t *dentry;
+    file_t(dentry_t *_dentry, int _flag, fd_t _fd);
+    virtual ~file_t(void);
 };
 
 // 实际的文件系统
@@ -115,22 +133,6 @@ public:
     virtual void     dealloc_inode(inode_t *_inode) = 0;
 };
 
-// 文件
-class file_t {
-private:
-protected:
-public:
-    uint32_t flag;
-    // 引用计数
-    size_t count;
-    // 偏移量
-    size_t offset;
-    // 对应的 dentry
-    dentry_t *dentry;
-    file_t(void);
-    virtual ~file_t(void);
-};
-
 // 所有文件系统由 vfs 统一管理
 // 操作文件时由 vfs 使用实际文件系统进行操作
 class VFS {
@@ -145,8 +147,15 @@ private:
     dentry_t *cwd;
     // 查找目录项
     dentry_t *find_dentry(const STL::string &_path);
+    // 新建目录项
+    dentry_t *alloc_dentry(const STL::string &_path, int _flags);
+    // 删除目录项
+    int dealloc_dentry(const STL::string &_path);
     // 根据路径判断文件系统
     FS *get_fs(const STL::string &_path);
+    // 分配文件描述符
+    fd_t alloc_fd(void);
+    fd_t dealloc_fd(void);
 
 protected:
 public:
@@ -210,7 +219,7 @@ public:
     int lstat64(void);
     // 打开文件
     int open(const STL::string &_path, int _flags);
-    int close(int _fd);
+    int close(fd_t _fd);
     int creat(void);
     int umask(void);
     int dup(void);
@@ -225,8 +234,8 @@ public:
     int ftruncate64(void);
     int lseek(void);
     int llseek(void);
-    int read(void);
-    int write(void);
+    int read(fd_t _fd, void *_buf, size_t _count);
+    int write(fd_t _fd, void *_buf, size_t _count);
     int readv(void);
     int writev(void);
     int sendfile(void);
