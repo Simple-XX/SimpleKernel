@@ -9,12 +9,14 @@
 #include "cxxabi.h"
 #include "common.h"
 #include "color.h"
-#include "assert.h"
+#include "cassert.h"
 #include "stdio.h"
 #include "pmm.h"
 #include "vmm.h"
 #include "heap.h"
 #include "kernel.h"
+#include "string"
+#include "vector"
 #include "iostream"
 
 KERNEL::KERNEL(void) {
@@ -78,7 +80,7 @@ int32_t KERNEL::test_pmm(void) {
         pmm.free_page(addr4, 4096, COMMON::NORMAL);
         assert(pmm.free_pages_count(COMMON::NORMAL) == free_count);
     }
-    printf("pmm test done.\n");
+    std::cout << "pmm test done." << std::endl;
     return 0;
 }
 
@@ -131,7 +133,7 @@ int32_t KERNEL::test_vmm(void) {
     vmm.unmmap(vmm.get_pgd(), (void *)va);
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, &addr) == 0);
     assert(addr == (ptrdiff_t) nullptr);
-    printf("vmm test done.\n");
+    std::cout << "vmm test done." << std::endl;
     return 0;
 }
 
@@ -172,7 +174,7 @@ int32_t KERNEL::test_heap(void) {
     assert(heap.get_free() == free0);
     assert(heap.get_total() == total0);
     assert(heap.get_block() == block0);
-    printf("heap test done.\n");
+    std::cout << "heap test done." << std::endl;
     return 0;
 }
 
