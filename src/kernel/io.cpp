@@ -7,17 +7,21 @@
 #include "stddef.h"
 #include "stdarg.h"
 #include "string.h"
+#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
+    defined(__aarch64__)
 #include "port.h"
+#endif
 #include "io.h"
+#include "stdio.h"
 
-extern "C" int32_t vsprintf(char *buf, const char *fmt, va_list args);
-
-char IO::buf[128];
+static char buf[128];
 
 #if defined(__i386__) || defined(__x86_64__)
 TUI IO::io;
 #elif defined(__arm__) || defined(__aarch64__)
 UART IO::io;
+#elif defined(__riscv)
+SBI_CONSOLE IO::io;
 #endif
 
 IO::IO(void) {
@@ -27,7 +31,8 @@ IO::IO(void) {
 IO::~IO(void) {
     return;
 }
-
+#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
+    defined(__aarch64__)
 uint8_t IO::inb(const uint32_t port) {
     return PORT::inb(port);
 }
@@ -55,6 +60,8 @@ void IO::outd(const uint32_t port, const uint32_t data) {
     return;
 }
 
+#endif
+
 COLOR::color_t IO::get_color(void) {
     return io.get_color();
 }
@@ -78,55 +85,54 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
-int32_t IO::printf(const char *fmt, ...) {
-    va_list args;
-    int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    write_string(buf);
+extern "C" int32_t printf(const char *fmt, ...) {
+    va_list va;
+    va_start(va, fmt);
+    const int ret = _vsnprintf(buf, 127, fmt, va);
+    va_end(va);
+    io.write_string(buf);
     bzero(buf, 128);
+    return ret;
+}
+
+extern "C" int32_t info(const char *fmt, ...) {
+    COLOR::color_t curr_color = io.get_color();
+    io.set_color(COLOR::LIGHT_GREEN);
+    va_list va;
+    int32_t i;
+    va_start(va, fmt);
+    i = vsnprintf_(buf, (size_t)-1, fmt, va);
+    va_end(va);
+    io.write_string(buf);
+    bzero(buf, 128);
+    io.set_color(curr_color);
     return i;
 }
 
-int32_t IO::info(const char *fmt, ...) {
-    COLOR::color_t curr_color = get_color();
-    set_color(COLOR::LIGHT_GREEN);
-    va_list args;
+extern "C" int32_t warn(const char *fmt, ...) {
+    COLOR::color_t curr_color = io.get_color();
+    io.set_color(COLOR::LIGHT_MAGENTA);
+    va_list va;
     int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    write_string(buf);
+    va_start(va, fmt);
+    i = vsnprintf_(buf, (size_t)-1, fmt, va);
+    va_end(va);
+    io.write_string(buf);
     bzero(buf, 128);
-    set_color(curr_color);
+    io.set_color(curr_color);
     return i;
 }
 
-int32_t IO::warn(const char *fmt, ...) {
-    COLOR::color_t curr_color = get_color();
-    set_color(COLOR::LIGHT_MAGENTA);
-    va_list args;
+extern "C" int32_t err(const char *fmt, ...) {
+    COLOR::color_t curr_color = io.get_color();
+    io.set_color(COLOR::LIGHT_RED);
+    va_list va;
     int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    write_string(buf);
+    va_start(va, fmt);
+    i = vsnprintf_(buf, (size_t)-1, fmt, va);
+    va_end(va);
+    io.write_string(buf);
     bzero(buf, 128);
-    set_color(curr_color);
-    return i;
-}
-
-int32_t IO::err(const char *fmt, ...) {
-    COLOR::color_t curr_color = get_color();
-    set_color(COLOR::LIGHT_RED);
-    va_list args;
-    int32_t i;
-    va_start(args, fmt);
-    i = vsprintf(buf, fmt, args);
-    va_end(args);
-    write_string(buf);
-    bzero(buf, 128);
-    set_color(curr_color);
+    io.set_color(curr_color);
     return i;
 }
