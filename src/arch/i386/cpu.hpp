@@ -135,6 +135,14 @@ namespace CPU {
     static constexpr const uint32_t CR4_OSXSAVE    = 0x00040000;
     static constexpr const uint32_t CR4_SMEP       = 0x00100000;
 
+    // 段描述符 DPL
+    // 内核级
+    static constexpr const uint32_t DPL0 = 0x00;
+    static constexpr const uint32_t DPL1 = 0x01;
+    static constexpr const uint32_t DPL2 = 0x02;
+    // 用户级
+    static constexpr const uint32_t DPL3 = 0x03;
+
     static constexpr const uint32_t IA32_APIC_BASE_MSR        = 0x1B;
     static constexpr const uint32_t IA32_APIC_BASE_MSR_BSP    = 0x100;
     static constexpr const uint32_t IA32_APIC_BASE_MSR_ENABLE = 0x800;
@@ -163,7 +171,7 @@ namespace CPU {
     }
 
     // 读取 EFLAGS
-    static inline uint32_t read_eflags(void) {
+    static inline uint32_t READ_EFLAGS(void) {
         uint32_t eflags;
         __asm__ volatile("pushf\n\t"
                          "pop %0\n\t"
@@ -172,21 +180,21 @@ namespace CPU {
     }
 
     // 读取 CR0
-    static inline uint32_t read_cr0(void) {
+    static inline uint32_t READ_CR0(void) {
         uint32_t cr0;
         __asm__ volatile("mov %%cr0, %0" : "=b"(cr0));
         return cr0;
     }
 
     // 读取 CR2
-    static inline uint32_t read_cr2(void) {
+    static inline uint32_t READ_CR2(void) {
         uint32_t cr2;
         __asm__ volatile("mov %%cr2, %0" : "=b"(cr2));
         return cr2;
     }
 
     // 读取 CR3
-    static inline uint32_t read_cr3(void) {
+    static inline uint32_t READ_CR3(void) {
         uint32_t cr3;
         __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
         return cr3;
@@ -200,7 +208,7 @@ namespace CPU {
     }
 
     // 读取 CR4
-    static inline uint32_t read_cr4(void) {
+    static inline uint32_t READ_CR4(void) {
         uint32_t cr4;
         __asm__ volatile("mov %%cr4, %0" : "=b"(cr4));
         return cr4;
@@ -209,7 +217,7 @@ namespace CPU {
     // Identification flag
     //程序能够设置或清除这个标志指示了处理器对 CPUID 指令的支持。
     static inline bool FL_ID_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_ID);
     }
 
@@ -218,7 +226,7 @@ namespace CPU {
     // 与VIF标志结合使用。
 
     static inline bool EFLAGS_VIP_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_VIP);
     }
 
@@ -227,25 +235,25 @@ namespace CPU {
     // 使用这个标志以及VIP标志，并设置CR4控制寄存器中的VME标志就可以允许虚拟模式扩展(virtual
     // mode extensions)
     static inline bool EFLAGS_VIF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_VIF);
     }
 
     // Alignment check flag 地址中的对齐检查
     static inline bool EFLAGS_AC_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_AC);
     }
 
     // 虚拟 8086 ，为 1 时进入
     static inline bool EFLAGS_VM_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_VM);
     }
 
     // Resume flag 控制处理器对调试异常的响应。
     static inline bool EFLAGS_RF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_RF);
     }
 
@@ -253,13 +261,13 @@ namespace CPU {
     // 这个标志控制中断链和被调用任务。若当前任务与前一个执行任务相关则置
     // 1，反之则清零。
     static inline bool EFLAGS_NT_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_NT);
     }
 
     // 权限标志
     static inline uint32_t get_IOPL(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         uint32_t level  = 0;
         if (eflags & EFLAGS_IOPL_0)
             level = 0;
@@ -276,7 +284,7 @@ namespace CPU {
 
     // 溢出标志
     static inline bool EFLAGS_OF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_OF);
     }
 
@@ -285,48 +293,48 @@ namespace CPU {
     // 清除该标志则使得串指令自动递增。
     // STD以及CLD指令分别用于设置以及清除DF标志。
     static inline bool EFLAGS_DF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_DF);
     }
 
     // 中断标志
     static inline bool EFLAGS_IF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_IF);
     }
 
     static inline bool EFLAGS_TF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_TF);
     }
 
     // Sign flag 符号标志
     static inline bool EFLAGS_SF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_SF);
     }
 
     // Zero flag 零标志
     static inline bool EFLAGS_ZF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_ZF);
     }
 
     // Adjust flag调整位
     static inline bool EFLAGS_AF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_AF);
     }
 
     // Parity flag奇偶位
     static inline bool EFLAGS_PF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_PF);
     }
 
     // Carry flag 进位标志
     static inline bool EFLAGS_CF_status(void) {
-        uint32_t eflags = read_eflags();
+        uint32_t eflags = READ_EFLAGS();
         return (eflags & EFLAGS_CF);
     }
 
@@ -336,137 +344,137 @@ namespace CPU {
     }
 
     static inline bool CR4_VME_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_VME);
     }
 
     static inline bool CR4_PVI_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_PVI);
     }
 
     static inline bool CR4_TSD_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_TSD);
     }
 
     static inline bool CR4_DE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_DE);
     }
 
     static inline bool CR4_PSE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_PSE);
     }
 
     static inline bool CR4_PAE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_PAE);
     }
 
     static inline bool CR4_MCE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_MCE);
     }
 
     static inline bool CR4_PGE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_PGE);
     }
 
     static inline bool CR4_PCE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_PCE);
     }
 
     static inline bool CR4_OSFXSR_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_OSFXSR);
     }
 
     static inline bool CR4_OSXMMEXCPT_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_OSXMMEXCPT);
     }
 
     static inline bool CR4_VMXE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_VMXE);
     }
 
     static inline bool CR4_SMXE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_SMXE);
     }
 
     static inline bool CR4_PCIDE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_PCIDE);
     }
 
     static inline bool CR4_OSXSAVE_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_OSXSAVE);
     }
 
     static inline bool CR4_SMEP_status(void) {
-        uint32_t cr4 = read_cr4();
+        uint32_t cr4 = READ_CR4();
         return (cr4 & CR4_SMEP);
     }
 
     static inline bool CR0_PE_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_PE);
     }
 
     static inline bool CR0_MP_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_MP);
     }
 
     static inline bool CR0_EM_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_EM);
     }
 
     static inline bool CR0_TS_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_TS);
     }
 
     static inline bool CR0_ET_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_ET);
     }
 
     static inline bool CR0_NE_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_NE);
     }
 
     static inline bool CR0_WP_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_WP);
     }
 
     static inline bool CR0_AM_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_AM);
     }
 
     static inline bool CR0_NW_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_NW);
     }
 
     static inline bool CR0_CD_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_CD);
     }
 
     static inline bool CR0_PG_status(void) {
-        uint32_t cr0 = read_cr0();
+        uint32_t cr0 = READ_CR0();
         return (cr0 & CR0_PG);
     }
 
@@ -482,6 +490,24 @@ namespace CPU {
         __asm__ volatile("mov %0, %%cr0" : : "r"(cr0));
         return true;
     }
+
+    // Use of CR3 with 32-Bit Paging
+    class cr3_t {
+    public:
+        // Ignored
+        uint32_t ignore1 : 3;
+        // Page-level write-through; indirectly determines the memory type used
+        // to access the page directory during linear-address translation
+        uint32_t pwt : 1;
+        // Page-level cache disable; indirectly determines the memory type used
+        // to access the page directory during linear-address translation
+        uint32_t pcd : 1;
+        // Ignored
+        uint32_t ignore2 : 7;
+        // Physical address of the 4-KByte aligned page directory used for
+        // linear-address translation
+        uint32_t addr : 20;
+    };
 
     // 设置 CR3
     static inline bool CR3_SET_PGD(void *_pgd) {
