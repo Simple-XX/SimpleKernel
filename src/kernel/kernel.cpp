@@ -14,7 +14,10 @@
 #include "pmm.h"
 #include "vmm.h"
 #include "heap.h"
+#include "intr.h"
+#include "apic.h"
 #include "kernel.h"
+#include "keyboard.h"
 #include "string"
 #include "vector"
 #include "iostream"
@@ -33,6 +36,11 @@ KERNEL::KERNEL(void) {
     heap.init();
     // 测试堆
     test_heap();
+    // 中断初始化
+    INTR::init();
+    // APIC 初始化
+    apic.init();
+    keyboard.init();
     return;
 }
 
