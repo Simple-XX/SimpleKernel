@@ -25,8 +25,6 @@ set(CMAKE_MODULE_PATH "${SimpleKernel_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 # Set arch
 include(${SimpleKernel_SOURCE_DIR}/cmake/arch_detector.cmake)
-# Set platform
-include(${SimpleKernel_SOURCE_DIR}/cmake/platform_detector.cmake)
 # Set header files
 include(${SimpleKernel_SOURCE_DIR}/cmake/header_files.cmake)
 # Find asm source files
