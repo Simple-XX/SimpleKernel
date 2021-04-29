@@ -8,6 +8,7 @@
 #define _GDT_H_
 
 #include "stdint.h"
+#include "cpu.hpp"
 
 // See 64-ia-32-architectures-software-developer-vol-3a-manual Chapter3
 
@@ -78,19 +79,11 @@ namespace GDT {
     static constexpr const uint32_t S_SYSTEM    = 0x00;
     static constexpr const uint32_t S_CODE_DATA = 0x01;
 
-    // 段描述符 DPL
-    // 内核级
-    static constexpr const uint32_t DPL0 = 0x00;
-    static constexpr const uint32_t DPL1 = 0x01;
-    static constexpr const uint32_t DPL2 = 0x02;
-    // 用户级
-    static constexpr const uint32_t DPL3 = 0x03;
-
     // 各个段的全局描述符表的选择子
-    static constexpr const uint32_t KERNEL_CS = SEG_KERNEL_CODE | DPL0;
-    static constexpr const uint32_t KERNEL_DS = SEG_KERNEL_DATA | DPL0;
-    static constexpr const uint32_t USER_CS   = SEG_USER_CODE | DPL3;
-    static constexpr const uint32_t USER_DS   = SEG_USER_DATA | DPL3;
+    static constexpr const uint32_t KERNEL_CS = SEG_KERNEL_CODE | CPU::DPL0;
+    static constexpr const uint32_t KERNEL_DS = SEG_KERNEL_DATA | CPU::DPL0;
+    static constexpr const uint32_t USER_CS   = SEG_USER_CODE | CPU::DPL3;
+    static constexpr const uint32_t USER_DS   = SEG_USER_DATA | CPU::DPL3;
 
     // P 位
     static constexpr const uint32_t SEGMENT_NOT_PRESENT = 0x00;
