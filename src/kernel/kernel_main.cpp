@@ -20,7 +20,7 @@ void kernel_main(uint32_t size __attribute__((unused)),
 #endif
     KERNEL kernel;
     kernel.show_info();
-    // CPU::cli();
+    CPU::sti();
     while (1) {
         ;
     }
