@@ -5,7 +5,7 @@
 // vmm.cpp for Simple-XX/SimpleKernel.
 
 #include "stdint.h"
-#include "cstring.h"
+#include "string.h"
 #include "stdio.h"
 #include "cpu.hpp"
 #include "pmm.h"

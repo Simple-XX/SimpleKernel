@@ -5,7 +5,7 @@
 // kernel.cpp for Simple-XX/SimpleKernel.
 
 #include "stdarg.h"
-#include "cstring.h"
+#include "string.h"
 #include "cxxabi.h"
 #include "common.h"
 #include "color.h"
