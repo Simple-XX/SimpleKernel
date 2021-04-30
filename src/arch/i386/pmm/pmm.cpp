@@ -50,6 +50,14 @@ static void get_ram_info(e820map_t *e820map) {
 }
 
 PMM::PMM(void) {
+    return;
+}
+
+PMM::~PMM(void) {
+    return;
+}
+
+int32_t PMM::init(void) {
     // 因为 GDT 是 x86 遗毒，所以在这里处理
     GDT::init();
 // #define DEBUG
@@ -95,11 +103,7 @@ PMM::PMM(void) {
     high_pages   = pages - normal_pages;
     mamage_init();
     printf("pmm_init\n");
-    return;
-}
-
-PMM::~PMM(void) {
-    return;
+    return 0;
 }
 
 void PMM::mamage_init(void) {
