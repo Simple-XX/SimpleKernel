@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 #include "stddef.h"
-#include "cstring.h"
+#include "string.h"
 
 // 获取字符串长度
 size_t strlen(const char *str) {

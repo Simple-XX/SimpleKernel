@@ -6,8 +6,8 @@
 
 #include "stdio.h"
 #include "stdint.h"
-#include "cstring.h"
 #include "list_tmp.hpp"
+#include "string.h"
 #include "common.h"
 #include "pmm.h"
 #include "slab.h"
