@@ -40,6 +40,6 @@ public:
     size_t get_free(void);
 };
 
-static HEAP heap;
+__attribute__((__init_priority__(1300))) static HEAP heap;
 
 #endif /* _HEAP_H_ */
