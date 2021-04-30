@@ -6,14 +6,12 @@
 
 #include "stdarg.h"
 #include "string.h"
-#include "cxxabi.h"
 #include "common.h"
 #include "color.h"
 #include "stdio.h"
 #include "kernel.h"
 
 KERNEL::KERNEL(void) {
-    cpp_init();
     return;
 }
 
