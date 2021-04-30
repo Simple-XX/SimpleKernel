@@ -6,7 +6,6 @@
 
 #include "stdarg.h"
 #include "string.h"
-#include "cxxabi.h"
 #include "common.h"
 #include "color.h"
 #include "assert.h"
@@ -15,7 +14,6 @@
 #include "kernel.h"
 
 KERNEL::KERNEL(void) {
-    cpp_init();
     // 测试物理内存
     test_pmm();
     return;
