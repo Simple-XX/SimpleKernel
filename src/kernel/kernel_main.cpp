@@ -4,6 +4,7 @@
 //
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
+#include "cxxabi.h"
 #include "cpu.hpp"
 #include "cassert.h"
 #include "multiboot2.h"
@@ -18,6 +19,7 @@ void kernel_main(uint32_t size __attribute__((unused)),
     // __x86_64__ 时用于传递 grub 信息
     MULTIBOOT2::multiboot2_init(size, addr);
 #endif
+    cpp_init();
     KERNEL kernel;
     kernel.show_info();
     // CPU::cli();
