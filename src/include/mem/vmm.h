@@ -103,6 +103,6 @@ public:
     uint32_t get_mmap(const pgd_t pgd, const void *va, const void *pa);
 };
 
-static VMM vmm;
+__attribute__((__init_priority__(1200))) static VMM vmm;
 
 #endif /* _VMM_H */
