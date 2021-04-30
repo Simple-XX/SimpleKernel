@@ -10,6 +10,7 @@
 #include "color.h"
 #include "stdio.h"
 #include "kernel.h"
+#include "iostream"
 
 KERNEL::KERNEL(void) {
     return;
