@@ -138,14 +138,6 @@ void VMM::init(void) {
     }
     // nullptr 不映射
     unmmap((pgd_t)pgd_kernel, nullptr);
-// #define DEBUG
-#ifdef DEBUG
-    printf("&pte_kernel[0]: 0x%X, pte_kernel[0]: %X\n", &pte_kernel[0],
-           pte_kernel[0]);
-    printf("&pgd_kernel[0]: 0x%X, pgd_kernel[0]: 0x%X\n", &pgd_kernel[0],
-           pgd_kernel[0]);
-#undef DEBUG
-#endif
     set_pgd((pgd_t)pgd_kernel);
     CPU::CR0_SET_PG();
     printf("vmm_init\n");

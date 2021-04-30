@@ -6,7 +6,6 @@
 
 #include "stdarg.h"
 #include "string.h"
-#include "cxxabi.h"
 #include "common.h"
 #include "color.h"
 #include "assert.h"
@@ -18,8 +17,7 @@
 #include "iostream"
 
 KERNEL::KERNEL(void) {
-    cpp_init();
-    // 物理内存管理初始化
+    // 物理内存初始化
     pmm.init();
     // 测试物理内存
     test_pmm();
