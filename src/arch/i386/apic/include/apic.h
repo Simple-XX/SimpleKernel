@@ -26,6 +26,6 @@ public:
     ~IOAPIC(void);
 };
 
-static APIC apic;
+__attribute__((__init_priority__(1400))) static APIC apic;
 
 #endif /* _APIC_H_ */
