@@ -24,14 +24,6 @@ FIRSTFIT                 PMM::high(&phy_pages[COMMON::KERNEL_PAGES]);
 size_t                   PMM::pages                    = 0;
 FIRSTFIT *               PMM::zone[COMMON::ZONE_COUNT] = {&normal, &high};
 
-PMM::PMM(void) {
-    return;
-}
-
-PMM::~PMM(void) {
-    return;
-}
-
 // TODO: 太难看了也
 // 这里的 addr 与 len 4k 对齐
 static void get_ram_info(e820map_t *e820map) {
@@ -57,9 +49,11 @@ static void get_ram_info(e820map_t *e820map) {
     return;
 }
 
-void PMM::mamage_init(void) {
-    normal.init(normal_pages);
-    high.init(high_pages);
+PMM::PMM(void) {
+    return;
+}
+
+PMM::~PMM(void) {
     return;
 }
 
@@ -110,6 +104,12 @@ int32_t PMM::init(void) {
     mamage_init();
     printf("pmm_init\n");
     return 0;
+}
+
+void PMM::mamage_init(void) {
+    normal.init(normal_pages);
+    high.init(high_pages);
+    return;
 }
 
 void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
