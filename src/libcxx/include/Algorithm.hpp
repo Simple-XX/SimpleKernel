@@ -7,7 +7,7 @@
 #ifndef _ALGORITHM_HPP_
 #define _ALGORITHM_HPP_
 
-#include "cstring.h"
+#include "string.h"
 #include "Allocator.hpp"
 #include "Functional.hpp"
 #include "Iterator.hpp"
