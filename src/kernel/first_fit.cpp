@@ -5,7 +5,7 @@
 // first_fit.cpp for Simple-XX/SimpleKernel.
 
 #include "stdint.h"
-#include "cstring.h"
+#include "string.h"
 #include "common.h"
 #include "pmm.h"
 #include "stdio.h"
