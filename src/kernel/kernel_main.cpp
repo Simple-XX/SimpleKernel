@@ -4,11 +4,13 @@
 //
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
+#include "cxxabi.h"
 #include "kernel.h"
 
 extern "C" void kernel_main(void);
 
 void kernel_main(void) {
+    cpp_init();
     KERNEL kernel;
     kernel.show_info();
     while (1) {
