@@ -57,6 +57,6 @@ public:
     int32_t write_string(const char *s);
 };
 
-__attribute__((__init_priority__(101))) static IO io;
+__attribute__((__init_priority__(1000))) static IO io;
 
 #endif /* _IO_H_ */
