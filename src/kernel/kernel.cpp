@@ -27,7 +27,7 @@ void KERNEL::show_info(void) {
     info("kernel in memory size: %d KB, %d pages\n",
          (COMMON::kernel_end - COMMON::kernel_start) / 1024,
          (COMMON::kernel_end - COMMON::kernel_start + 4095) / 1024 / 4);
-    printf("kernel in memory start: 0x%d\n", 0xEF);
+    info("kernel in memory start: 0x%d\n", 0xEF);
     info("Simple Kernel.\n");
     return;
 }
