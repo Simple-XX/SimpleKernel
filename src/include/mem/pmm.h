@@ -42,6 +42,6 @@ public:
     uint32_t free_pages_count(COMMON::zone_t _zone);
 };
 
-static PMM pmm;
+__attribute__((__init_priority__(1100))) static PMM pmm;
 
 #endif /* _PMM_H_ */
