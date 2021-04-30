@@ -19,6 +19,25 @@ typedef uint32_t mode_t;
 typedef uint32_t flag_t;
 typedef uint32_t fd_t;
 
+// open for reading only
+static constexpr const uint32_t O_RDONLY = 0x0000;
+// open for writing only
+static constexpr const uint32_t O_WRONLY = 0x0001;
+// open for reading and writing
+static constexpr const uint32_t O_RDWR = 0x0002;
+// mask for above modes
+static constexpr const uint32_t O_ACCMODE = 0x0003;
+// no delay
+static constexpr const uint32_t O_NONBLOCK = 0x0004;
+// set append mode
+static constexpr const uint32_t O_APPEND = 0x0008;
+// create if nonexistant
+static constexpr const uint32_t O_CREAT = 0x0200;
+// truncate to zero length
+static constexpr const uint32_t O_TRUNC = 0x0400;
+// error if already exists
+static constexpr const uint32_t O_EXCL = 0x0800;
+
 // 超级块
 // fs 挂载时从存储介质读入
 class superblock_t {
