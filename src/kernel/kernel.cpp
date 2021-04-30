@@ -12,6 +12,7 @@
 #include "stdio.h"
 #include "pmm.h"
 #include "kernel.h"
+#include "iostream"
 
 KERNEL::KERNEL(void) {
     // 物理内存初始化
