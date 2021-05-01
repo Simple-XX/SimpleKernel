@@ -22,14 +22,6 @@ size_t                   PMM::pages                    = 0;
 FIRSTFIT *               PMM::zone[COMMON::ZONE_COUNT] = {&normal, &high};
 
 PMM::PMM(void) {
-    return;
-}
-
-PMM::~PMM(void) {
-    return;
-}
-
-int32_t PMM::init(void) {
     // 因为 GDT 是 x86 遗毒，所以在这里处理
     GDT::init();
 // #define DEBUG
@@ -76,7 +68,11 @@ int32_t PMM::init(void) {
     high_pages   = pages - normal_pages;
     mamage_init();
     printf("pmm_init\n");
-    return 0;
+    return;
+}
+
+PMM::~PMM(void) {
+    return;
 }
 
 void PMM::mamage_init(void) {
