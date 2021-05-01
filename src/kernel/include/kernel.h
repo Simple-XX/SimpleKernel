@@ -7,19 +7,8 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#include "stdint.h"
-
-class KERNEL {
-private:
-    int32_t test_pmm(void);
-    int32_t test_vmm(void);
-
-protected:
-public:
-    KERNEL(void);
-    ~KERNEL(void);
-    int32_t test(void);
-    void    show_info(void);
-};
+int  test_pmm(void);
+int  test_vmm(void);
+void show_info(void);
 
 #endif /* _KERNEL_H_ */
