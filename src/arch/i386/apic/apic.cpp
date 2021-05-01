@@ -5,7 +5,7 @@
 // apic.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
-#include "cassert.h"
+#include "assert.h"
 #include "intr.h"
 #include "cpu.hpp"
 #include "apic.h"
