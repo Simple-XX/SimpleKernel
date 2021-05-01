@@ -233,7 +233,7 @@ int VFS::open(const STL::string &_path, int _flags) {
     if (dentry == nullptr) {
         // 根据 flag 判断是否创建
         // 创建
-        if (_flags) {
+        if ((_flags & O_CREAT) != 0) {
             dentry = alloc_dentry(_path, _flags);
         }
         // 不创建则返回
