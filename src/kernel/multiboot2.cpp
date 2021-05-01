@@ -4,7 +4,7 @@
 // Based on https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
 // multiboot2.cpp for Simple-XX/SimpleKernel.
 
-#include "cassert.h"
+#include "assert.h"
 #include "stdio.h"
 #include "multiboot2.h"
 
