@@ -8,7 +8,7 @@
 #include "string.h"
 #include "common.h"
 #include "color.h"
-#include "cassert.h"
+#include "assert.h"
 #include "stdio.h"
 #include "pmm.h"
 #include "vmm.h"
