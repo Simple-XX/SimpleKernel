@@ -29,6 +29,7 @@ void kernel_main(uint32_t size __attribute__((unused)),
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
+    // TODO: 将vmm的初始化放在构造函数里，这里只做开启分页
     vmm.init();
     // 测试虚拟内存
     test_vmm();
