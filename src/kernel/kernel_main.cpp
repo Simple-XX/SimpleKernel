@@ -6,7 +6,7 @@
 
 #include "cxxabi.h"
 #include "cpu.hpp"
-#include "cassert.h"
+#include "assert.h"
 #include "multiboot2.h"
 #include "kernel.h"
 
