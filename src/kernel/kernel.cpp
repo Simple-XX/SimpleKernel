@@ -16,8 +16,6 @@
 #include "iostream"
 
 KERNEL::KERNEL(void) {
-    // 物理内存初始化
-    pmm.init();
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
