@@ -32,8 +32,6 @@ protected:
 public:
     PMM(void);
     ~PMM(void);
-    // 初始化内存管理
-    int32_t init(void);
     // 请求指定 zone 的物理页
     void *alloc_page(uint32_t _pages, COMMON::zone_t _zone);
     // 释放内存页
