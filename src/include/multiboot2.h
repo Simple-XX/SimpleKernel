@@ -226,13 +226,13 @@ namespace MULTIBOOT2 {
         multiboot_uint32_t part;
     };
 
-    struct multiboot_tag_mmap {
+    typedef struct {
         multiboot_uint32_t          type;
         multiboot_uint32_t          size;
         multiboot_uint32_t          entry_size;
         multiboot_uint32_t          entry_version;
         struct multiboot_mmap_entry entries[0];
-    };
+    } multiboot_tag_mmap_t;
 
     struct multiboot_vbe_info_block {
         multiboot_uint8_t external_specification[512];
@@ -345,10 +345,6 @@ namespace MULTIBOOT2 {
         multiboot_uint32_t load_base_addr;
     };
 
-    extern multiboot_memory_map_entry_t *mmap_entries;
-    extern multiboot_mmap_tag_t *        mmap_tag;
-
-    void is_multiboot2_header(uint32_t magic, void *addr);
     void multiboot2_init(uint32_t magic, void *addr);
     void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag *tag);
@@ -359,6 +355,8 @@ namespace MULTIBOOT2 {
     void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
+    // 获取 e820 信息
+    int get_e820(e820map_t &_e820map);
 };
 
 #endif /* _MULTIBOOT2_H_ */
