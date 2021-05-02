@@ -88,7 +88,7 @@ public:
     VMM(void);
     ~VMM(void);
     // 初始化
-    void init(void);
+    int32_t init(void);
     // 获取当前页目录
     pgd_t get_pgd(void) const;
     // 设置当前页目录
@@ -103,6 +103,6 @@ public:
     uint32_t get_mmap(const pgd_t pgd, const void *va, const void *pa);
 };
 
-__attribute__((__init_priority__(1200))) static VMM vmm;
+static VMM vmm;
 
 #endif /* _VMM_H */
