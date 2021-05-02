@@ -7,8 +7,7 @@
 #include "stddef.h"
 #include "stdarg.h"
 #include "string.h"
-#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
-    defined(__aarch64__)
+#ifndef __riscv
 #include "port.h"
 #endif
 #include "io.h"
@@ -31,8 +30,8 @@ IO::IO(void) {
 IO::~IO(void) {
     return;
 }
-#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
-    defined(__aarch64__)
+
+#ifndef __riscv
 uint8_t IO::inb(const uint32_t port) {
     return PORT::inb(port);
 }
