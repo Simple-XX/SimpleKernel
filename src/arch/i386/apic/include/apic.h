@@ -15,7 +15,7 @@ protected:
 public:
     APIC(void);
     ~APIC(void);
-    bool init(void);
+    int32_t init(void);
 };
 
 class IOAPIC {
@@ -26,6 +26,6 @@ public:
     ~IOAPIC(void);
 };
 
-__attribute__((__init_priority__(1400))) static APIC apic;
+static APIC apic;
 
 #endif /* _APIC_H_ */
