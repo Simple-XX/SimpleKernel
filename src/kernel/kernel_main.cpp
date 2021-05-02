@@ -26,9 +26,9 @@ void kernel_main(uint32_t size __attribute__((unused)),
     // __x86_64__ 时用于传递 grub 信息
     MULTIBOOT2::multiboot2_init(size, addr);
 #endif
-    // 在 cpp_init 中，全局变量会进行初始化构造
-    // 包括 IO, PMM
     cpp_init();
+    // 物理内存初始化
+    pmm.init();
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
