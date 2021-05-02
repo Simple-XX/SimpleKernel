@@ -130,7 +130,7 @@ VMM::~VMM(void) {
     return;
 }
 
-void VMM::init(void) {
+int32_t VMM::init(void) {
     // 映射物理地址前 32MB 到虚拟地址前 32MB
     for (uint32_t addr = 0; addr < VMM_KERNEL_SIZE; addr += COMMON::PAGE_SIZE) {
         mmap((pgd_t)pgd_kernel, (void *)addr, (void *)addr,
@@ -141,7 +141,7 @@ void VMM::init(void) {
     set_pgd((pgd_t)pgd_kernel);
     CPU::CR0_SET_PG();
     printf("vmm_init\n");
-    return;
+    return 0;
 }
 
 pgd_t VMM::get_pgd(void) const {
