@@ -84,7 +84,7 @@ VMM::~VMM(void) {
     return;
 }
 
-void VMM::init(void) {
+int32_t VMM::init(void) {
     // 映射物理地址前 64MB 到虚拟地址前 64MB
     for (uint64_t addr = 0x80000000; addr < 0x80000000 + COMMON::KERNEL_SIZE;
          addr += COMMON::PAGE_SIZE) {
@@ -99,7 +99,7 @@ void VMM::init(void) {
     printf("a: 0x%X, pgd_kernel: 0x%X\n", a, pgd_kernel);
     CPU::SFENCE_VMA();
     printf("vmm_init\n");
-    return;
+    return 0;
 }
 
 pgd_t VMM::get_pgd(void) const {
