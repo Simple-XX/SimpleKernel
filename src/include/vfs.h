@@ -262,4 +262,6 @@ public:
     int readahead(void);
 };
 
+static VFS *vfs __attribute__((unused));
+
 #endif /* _VFS_H_ */

@@ -20,8 +20,6 @@
 #include "vfs.h"
 #include "kernel.h"
 
-VFS *vfs;
-
 // 内核入口
 void kernel_main(uint32_t size __attribute__((unused)),
                  void *   addr __attribute__((unused))) {
