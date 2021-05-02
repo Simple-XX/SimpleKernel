@@ -32,6 +32,7 @@ protected:
 public:
     PMM(void);
     ~PMM(void);
+    int32_t init(void);
     // 请求指定 zone 的物理页
     void *alloc_page(uint32_t _pages, COMMON::zone_t _zone);
     // 释放内存页
@@ -40,6 +41,6 @@ public:
     uint32_t free_pages_count(COMMON::zone_t _zone);
 };
 
-__attribute__((__init_priority__(1100))) static PMM pmm;
+static PMM pmm;
 
 #endif /* _PMM_H_ */
