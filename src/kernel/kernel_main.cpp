@@ -10,10 +10,11 @@
 #include "iostream"
 #include "assert.h"
 #include "pmm.h"
-#include "multiboot2.h"
 #include "kernel.h"
 
-extern "C" void kernel_main(uint32_t size, void *addr);
+#if defined(__i386__) || defined(__x86_64__)
+#include "multiboot2.h"
+#endif
 
 // 内核入口
 void kernel_main(uint32_t size __attribute__((unused)),
