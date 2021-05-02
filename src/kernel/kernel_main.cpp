@@ -126,7 +126,7 @@ int32_t test_vmm(void) {
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, nullptr) == 0);
     // 映射
     vmm.mmap(vmm.get_pgd(), (void *)va, (void *)pa,
-             VMM_PAGE_PRESENT | VMM_PAGE_RW);
+             VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, &addr) == 1);
     assert(addr == pa);
     // 写测试
