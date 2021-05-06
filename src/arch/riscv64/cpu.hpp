@@ -179,7 +179,7 @@ namespace CPU {
     // use riscv's sv39 page table scheme.
     static constexpr const uint64_t SATP_SV39 = (uint64_t)8 << 60;
 
-    static constexpr void *MAKE_SATP(void *pagetable) {
+    static constexpr void *SET_SV39(void *pagetable) {
         return (void *)(SATP_SV39 | (((uint64_t)pagetable) >> 12));
     }
 
@@ -288,7 +288,7 @@ namespace CPU {
     // flush the TLB.
     static inline void SFENCE_VMA(void) {
         // the zero, zero means flush all TLB entries.
-        __asm__ volatile("sfence.vma zero,zero");
+        __asm__ volatile("sfence.vma zero, zero");
         return;
     }
 
