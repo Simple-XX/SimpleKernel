@@ -32,6 +32,7 @@ void kernel_main(uint32_t size __attribute__((unused)),
     // 虚拟内存初始化
     // TODO: 将vmm的初始化放在构造函数里，这里只做开启分页
     vmm.init();
+    printf("1\n");
     // 测试虚拟内存
     test_vmm();
     show_info();
