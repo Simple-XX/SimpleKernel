@@ -16,7 +16,7 @@ namespace MEMLAYOUT {
     static constexpr const uint64_t DRAM_SIZE  = DRAM_END - DRAM_START;
 
     // qemu puts UART registers here in physical memory.
-    static constexpr const uint64_t UART0     = 0x10000000L;
+    static constexpr const uint64_t UART0     = 0x10000000;
     static constexpr const uint64_t UART0_IRQ = 10;
 
     // virtio mmio interface
