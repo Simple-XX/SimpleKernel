@@ -20,27 +20,12 @@ typedef ptrdiff_t *pgd_t;
 static constexpr const uint32_t VMM_PAGES_PRE_PAGE_TABLE =
     COMMON::PAGE_SIZE / sizeof(pte_t);
 
-// 页表大小，一页表能映射多少 Byte 内存 = 页表项数量*页表项映射大小 2^21
-static constexpr const uint64_t VMM_PAGE_TABLE_SIZE =
-    VMM_PAGES_PRE_PAGE_TABLE * COMMON::PAGE_SIZE;
-
-// 虚拟内存大小 4GB
-static constexpr const uint64_t VMM_VMEM_SIZE = UINT_MAX + (uint64_t)1;
-
-// 映射全部虚拟内存需要的页表数 = 虚拟内存大小/页表大小 2^12
-static constexpr const uint64_t VMM_PAGE_TABLES_TOTAL =
-    VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE;
-
 // 映射内核的大小
 static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE;
 
 // 内核映射的页数
 static constexpr const uint64_t VMM_KERNEL_PAGES =
     VMM_KERNEL_SIZE / COMMON::PAGE_SIZE;
-
-// 内核映射的页表数
-static constexpr const uint64_t VMM_KERNEL_PAGE_TABLES =
-    VMM_KERNEL_SIZE / VMM_PAGE_TABLE_SIZE;
 
 #if defined(__i386__) || defined(__x86_64__)
 // P = 1 表示有效； P = 0 表示无效。
