@@ -10,7 +10,7 @@
 #include "limits.h"
 #include "common.h"
 
-typedef ptrdiff_t *pte_t;
+typedef ptrdiff_t  pte_t;
 typedef ptrdiff_t *pt_t;
 typedef ptrdiff_t *pmd_t;
 typedef ptrdiff_t *pud_t;
