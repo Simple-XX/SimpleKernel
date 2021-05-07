@@ -10,7 +10,7 @@
 #include "limits.h"
 #include "common.h"
 
-typedef ptrdiff_t *pte_t;
+typedef ptrdiff_t  pte_t;
 typedef ptrdiff_t *pt_t;
 typedef ptrdiff_t *pmd_t;
 typedef ptrdiff_t *pud_t;
@@ -20,17 +20,6 @@ typedef ptrdiff_t *pgd_t;
 static constexpr const uint32_t VMM_PAGES_PRE_PAGE_TABLE =
     COMMON::PAGE_SIZE / sizeof(pte_t);
 
-// 页表大小，一页表能映射多少 Byte 内存 = 页表项数量*页表项映射大小 2^21
-static constexpr const uint64_t VMM_PAGE_TABLE_SIZE =
-    VMM_PAGES_PRE_PAGE_TABLE * COMMON::PAGE_SIZE;
-
-// 虚拟内存大小 4GB
-static constexpr const uint64_t VMM_VMEM_SIZE = UINT_MAX + (uint64_t)1;
-
-// 映射全部虚拟内存需要的页表数 = 虚拟内存大小/页表大小 2^12
-static constexpr const uint64_t VMM_PAGE_TABLES_TOTAL =
-    VMM_VMEM_SIZE / VMM_PAGE_TABLE_SIZE;
-
 // 映射内核的大小
 static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE;
 
@@ -38,20 +27,16 @@ static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE;
 static constexpr const uint64_t VMM_KERNEL_PAGES =
     VMM_KERNEL_SIZE / COMMON::PAGE_SIZE;
 
-// 内核映射的页表数
-static constexpr const uint64_t VMM_KERNEL_PAGE_TABLES =
-    VMM_KERNEL_SIZE / VMM_PAGE_TABLE_SIZE;
-
 #if defined(__i386__) || defined(__x86_64__)
-// 如果为 0  那么页面只能被运行在超级用户特权级 (0,1 或 2)  的程序访问。
-static constexpr const uint32_t VMM_PAGE_KERNEL = 0x00000000;
 // P = 1 表示有效； P = 0 表示无效。
-static constexpr const uint32_t VMM_PAGE_PRESENT = 0x00000001;
+static constexpr const uint32_t VMM_PAGE_VALID = 1 << 0;
 // 如果为 0  表示页面只读或可执行。
-static constexpr const uint32_t VMM_PAGE_RW = 0x00000002;
+static constexpr const uint32_t VMM_PAGE_READABLE   = 0;
+static constexpr const uint32_t VMM_PAGE_WRITABLE   = 1 << 1;
+static constexpr const uint32_t VMM_PAGE_EXECUTABLE = 0;
 // U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
-// 如果为 1  那么运行在任何特权级上的程序都可以访问该页面。
-static constexpr const uint32_t VMM_PAGE_USER = 0x00000004;
+// 如果为 1 那么运行在任何特权级上的程序都可以访问该页面。
+static constexpr const uint32_t VMM_PAGE_USER = 1 << 2;
 
 #elif defined(__riscv)
 // 有效位
