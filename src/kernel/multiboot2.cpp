@@ -51,7 +51,7 @@ namespace MULTIBOOT2 {
         printf("mmap\n");
         for (; (uint8_t *)mmap < (uint8_t *)tag + tag->size;
              mmap = (multiboot_memory_map_entry_t
-                         *)((uint32_t)mmap +
+                         *)((ptrdiff_t)mmap +
                             ((multiboot_tag_mmap_t *)tag)->entry_size)) {
             printf("base_addr = 0x%X%X, length = 0x%X%X, type = 0x%X\n",
                    (unsigned)(mmap->addr >> 32),        // high
@@ -213,7 +213,7 @@ namespace MULTIBOOT2 {
         for (; (uint8_t *)mmap_entries < (uint8_t *)mmap_tag + mmap_tag->size;
              mmap_entries =
                  (multiboot_memory_map_entry_t
-                      *)((uint32_t)mmap_entries +
+                      *)((ptrdiff_t)mmap_entries +
                          ((multiboot_tag_mmap_t *)mmap_tag)->entry_size)) {
             // 如果是可用内存
             if (mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE) {
