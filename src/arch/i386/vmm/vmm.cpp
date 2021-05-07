@@ -134,7 +134,7 @@ int32_t VMM::init(void) {
     // 映射物理地址前 32MB 到虚拟地址前 32MB
     for (uint32_t addr = 0; addr < VMM_KERNEL_SIZE; addr += COMMON::PAGE_SIZE) {
         mmap((pgd_t)pgd_kernel, (void *)addr, (void *)addr,
-             VMM_PAGE_PRESENT | VMM_PAGE_RW | VMM_PAGE_KERNEL);
+             VMM_PAGE_VALID | VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     // nullptr 不映射
     unmmap((pgd_t)pgd_kernel, nullptr);
@@ -160,16 +160,16 @@ void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
     uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
     pud_t    pud     = (pud_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pud == nullptr) {
-        pud = (pud_t)pmm.alloc_page(1, COMMON::NORMAL);
-        pgd[pgd_idx] =
-            (reinterpret_cast<uint32_t>(pud) | VMM_PAGE_PRESENT | VMM_PAGE_RW);
+        pud          = (pud_t)pmm.alloc_page(1, COMMON::NORMAL);
+        pgd[pgd_idx] = (reinterpret_cast<uint32_t>(pud) | VMM_PAGE_VALID |
+                        VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     pud = (pud_t)VMM_PA_LA(pud);
     if (pa == nullptr) {
         pa = pmm.alloc_page(1, COMMON::HIGH);
     }
-    pud[pud_idx] =
-        ((reinterpret_cast<uint32_t>(pa) & COMMON::PAGE_MASK) | flag);
+    pud[pud_idx] = ((reinterpret_cast<uint32_t>(pa) & COMMON::PAGE_MASK) |
+                    VMM_PAGE_VALID | flag);
 // #define DEBUG
 #ifdef DEBUG
     info("pud[pud_idx]: 0x%X, &: 0x%X, pa: 0x%X\n", pud[pud_idx], &pud[pud_idx],
