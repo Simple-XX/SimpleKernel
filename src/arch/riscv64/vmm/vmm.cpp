@@ -56,6 +56,7 @@ int32_t VMM::init(void) {
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
     set_pgd(pgd_kernel);
+    CPU::ENABLE_PG();
     printf("vmm_init.\n");
     return 0;
 }
@@ -66,7 +67,7 @@ pgd_t VMM::get_pgd(void) const {
 
 void VMM::set_pgd(const pgd_t pgd) {
     curr_dir = pgd;
-    CPU::WRITE_SATP(CPU::SET_SV39(curr_dir));
+    CPU::WRITE_SATP(curr_dir);
     CPU::SFENCE_VMA();
     return;
 }
