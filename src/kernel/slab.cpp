@@ -5,7 +5,6 @@
 // slab.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
-#include "stdint.h"
 #include "string.h"
 #include "list.hpp"
 #include "common.h"
@@ -50,9 +49,9 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
     // 合并后面的
     if (next != list && next->allocated == SLAB_UNUSED) {
         // 是否连续
-        if (reinterpret_cast<uint32_t>(entry) + entry->len +
+        if (reinterpret_cast<ptrdiff_t>(entry) + entry->len +
                 sizeof(slab_list_entry_t) ==
-            reinterpret_cast<uint32_t>(next)) {
+            (unsigned)reinterpret_cast<ptrdiff_t>(next)) {
             entry->len += next->len + sizeof(slab_list_entry_t);
             list_del(next);
             block_count--;
@@ -62,9 +61,9 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
     // 合并前面的
     if (prev != list && prev->allocated == SLAB_UNUSED) {
         // 是否连续
-        if (reinterpret_cast<uint32_t>(prev) + prev->len +
+        if (reinterpret_cast<ptrdiff_t>(prev) + prev->len +
                 sizeof(slab_list_entry_t) ==
-            reinterpret_cast<uint32_t>(entry)) {
+            (unsigned)reinterpret_cast<ptrdiff_t>(entry)) {
             prev->len += (entry->len + sizeof(slab_list_entry_t));
             list_del(entry);
             block_count--;
@@ -80,7 +79,7 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
         pmm.free_page(addr, count, COMMON::NORMAL);
         heap_total -= count * COMMON::PAGE_SIZE;
         // 如果 tmp 从页首开始，则删除 block，tmp 为 slab_list 时除外
-        if ((reinterpret_cast<uint32_t>(tmp) % COMMON::PAGE_SIZE == 0) &&
+        if ((reinterpret_cast<ptrdiff_t>(tmp) % COMMON::PAGE_SIZE == 0) &&
             (tmp != slab_list)) {
             // 删除 block
             list_del(tmp);
@@ -127,7 +126,7 @@ int32_t SLAB::init(const void *start, const size_t size) {
     bzero(slab_list, COMMON::PAGE_SIZE);
     // 填充管理信息
     addr_start = (void *)start;
-    addr_end   = (void *)((uint32_t)start + size);
+    addr_end   = (void *)((ptrdiff_t)start + size);
     list_init_head(slab_list);
     // 设置第一块内存的相关信息
     slab_list->allocated = SLAB_UNUSED;
