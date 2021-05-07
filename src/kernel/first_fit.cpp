@@ -113,7 +113,7 @@ void *FIRSTFIT::alloc(size_t _pages) {
             }
         }
     } while ((entry = list_next(entry)) != list);
-
+    bzero(res_addr, _pages * COMMON::PAGE_SIZE);
     return res_addr;
 }
 
@@ -142,6 +142,7 @@ void FIRSTFIT::free(void *addr_start, size_t _pages) {
         entry->npages = 0;
         list_del(entry);
     }
+    bzero(addr_start, _pages * COMMON::PAGE_SIZE);
     page_free_count += _pages;
     return;
 }

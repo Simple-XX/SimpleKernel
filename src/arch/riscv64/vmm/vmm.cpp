@@ -20,15 +20,22 @@
 pte_t *walk(pt_t pgd, uint64_t va, bool alloc) {
     for (int level = 2; level > 0; level--) {
         pte_t *pte = (pte_t *)&pgd[PX(level, va)];
-        if (*pte & VMM_PAGE_VALID) {
+        // 如果有效，那么 pgd 指向下一级页表
+        if ((*pte & VMM_PAGE_VALID) == 1) {
             pgd = (pt_t)PTE2PA(*pte);
         }
+        // 如果无效
         else {
-            if (!alloc ||
-                (pgd = (pte_t *)pmm.alloc_page(1, COMMON::NORMAL)) == 0) {
-                return 0;
+            if (alloc == true) {
+                pgd = (pt_t)pmm.alloc_page(1, COMMON::NORMAL);
+                if (pgd == nullptr) {
+                    return nullptr;
+                }
             }
-            memset(pgd, 0, COMMON::PAGE_SIZE);
+            else {
+                return nullptr;
+            }
+            bzero(pgd, COMMON::PAGE_SIZE);
             *pte = PA2PTE(pgd) | VMM_PAGE_VALID;
         }
     }
@@ -114,7 +121,7 @@ uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
         return 0;
     }
     if (pa != nullptr) {
-        *(uint64_t *)pa = (uint64_t)(*pte & COMMON::PAGE_MASK);
+        *(uint64_t *)pa = (uint64_t)(PTE2PA(*pte));
     }
     return 1;
 }
