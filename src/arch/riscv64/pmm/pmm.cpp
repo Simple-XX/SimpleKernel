@@ -21,6 +21,14 @@ size_t    PMM::pages                    = 0;
 FIRSTFIT *PMM::zone[COMMON::ZONE_COUNT] = {&normal, &high};
 
 PMM::PMM(void) {
+    return;
+}
+
+PMM::~PMM(void) {
+    return;
+}
+
+int32_t PMM::init(void) {
     for (uint8_t *addr = (uint8_t *)COMMON::KERNEL_END_4K;
          addr < (uint8_t *)MEMLAYOUT::DRAM_END; addr += COMMON::PAGE_SIZE) {
         // 跳过 0x00 开始的一页，便于判断 nullptr
@@ -51,11 +59,7 @@ PMM::PMM(void) {
     high_pages   = pages - normal_pages;
     mamage_init();
     printf("pmm_init\n");
-    return;
-}
-
-PMM::~PMM(void) {
-    return;
+    return 0;
 }
 
 void PMM::mamage_init(void) {

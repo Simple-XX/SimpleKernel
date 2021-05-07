@@ -7,6 +7,9 @@
 #ifndef _SLAB_H_
 #define _SLAB_H_
 
+#include "stdint.h"
+#include "stddef.h"
+
 // TODO: 面向对象重构
 class slab_list_entry_t {
 public:

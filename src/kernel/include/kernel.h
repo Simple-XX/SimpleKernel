@@ -7,6 +7,8 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
+extern "C" void kernel_main(uint32_t size, void *addr);
+
 int  test_pmm(void);
 int  test_vmm(void);
 int  test_heap(void);
