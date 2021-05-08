@@ -168,7 +168,6 @@ IRQ  14,    46
 IRQ  15,    47
 
 .global irq_common_stub
-.global forkret_s
 .extern irq_handler
 irq_common_stub:
     pusha
@@ -190,6 +189,7 @@ irq_common_stub:
     # 清除压入的参数
     add $0x04, %esp
 
+.global forkret_s
 forkret_s:
     pop %gs
     pop %fs
