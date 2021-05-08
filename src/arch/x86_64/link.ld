@@ -16,7 +16,7 @@ SECTIONS
     .text : ALIGN(4K) {
 		PROVIDE(kernel_text_start = .);
 		*(.multiboot_header)
-		*(.text)
+		*(.text*)
 		PROVIDE(kernel_text_end = .);
 	}
 
@@ -30,7 +30,7 @@ SECTIONS
 
 	.rodata : ALIGN(4K) {
 		PROVIDE(kernel_rodata_start = .);
-		*(.rodata)
+		*(.rodata*)
 		PROVIDE(kernel_rodata_end = .);
 	}
 
