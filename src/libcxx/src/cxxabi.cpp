@@ -11,6 +11,7 @@ extern "C" {
 #endif
 
 void cpp_init(void) {
+    // BUG: x86_64
     for (ctor_t *f = &ctors_start; f != &ctors_end; f++) {
         (*f)();
     }

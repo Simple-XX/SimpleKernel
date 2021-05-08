@@ -15,14 +15,7 @@ extern "C" void kernel_main(void);
 void kernel_main(void) {
     // 在 cpp_init 中，全局变量会进行构造
     // 包括 IO
-    // uint16_t *video = ((uint16_t *)0xb8000);
-    // *video++        = 12 << 8 | 'c';
     cpp_init();
-    // *video++ = 12 << 8 | 'd';
-    // *video++ = 12 << 8 | 'e';
-    // *video++ = 12 << 8 | 'f';
-    // *video++ = 12 << 8 | 'g';
-
     show_info();
     while (1) {
         ;
