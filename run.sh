@@ -25,9 +25,7 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
         echo Multiboot2 Confirmed!
     else
         echo NOT Multiboot2!
-        if [ ${ARCH} == "i386" ]; then
-            exit
-        fi
+        exit
     fi
 elif [ ${ARCH} == "raspi2" ]; then
     echo Arm-A7.

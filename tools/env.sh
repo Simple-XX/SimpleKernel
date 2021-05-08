@@ -13,16 +13,13 @@ ARCH="x86_64"
 # ARCH="raspi2"
 # ARCH="riscv64"
 # 虚拟机: bochs, qemu
-if [ "${ARCH}" == "i386" ]; then
-    SIMULATOR="bochs"
-elif [ "${ARCH}" == "x86_64" ]; then
+if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
     SIMULATOR="bochs"
 else
     SIMULATOR="qemu"
 fi
 # 内核映像
 kernel='./build/bin/kernel.elf'
-bootloader='./build/bin/bootloader.bin'
 # 软盘
 disk='./simplekernel.img'
 # 安装目录
@@ -37,9 +34,7 @@ iso_folder='./iso/'
 OS=`uname -s`
 # toolchain
 if [ "${OS}" == "Linux" ]; then
-    if [ "${ARCH}" == "i386" ]; then
-        TOOLS="toolchain_linux_x86_64.cmake"
-    elif [ "${ARCH}" == "x86_64" ]; then
+    if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_linux_x86_64.cmake"
     elif [ "${ARCH}" == "raspi2" ]; then
         TOOLS="toolchain_linux_arm.cmake"
@@ -47,9 +42,7 @@ if [ "${OS}" == "Linux" ]; then
     GRUB_PATH="$(dirname $(which grub-file))"
     bochsrc="./tools/bochsrc_linux.txt"
 elif [ "${OS}" == "Darwin" ]; then
-    if [ "${ARCH}" == "i386" ]; then
-        TOOLS="toolchain_mac_x86_64.cmake"
-    elif [ "${ARCH}" == "x86_64" ]; then
+    if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_mac_x86_64.cmake"
     elif [ "${ARCH}" == "raspi2" ]; then
         TOOLS="toolchain_mac_arm.cmake"
