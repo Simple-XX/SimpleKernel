@@ -11,8 +11,7 @@ extern "C" {
 #endif
 
 void cpp_init(void) {
-    constructor_func *f;
-    for (f = ctors_start; f < ctors_end; f++) {
+    for (ctor_t *f = &ctors_start; f != &ctors_end; f++) {
         (*f)();
     }
 }
