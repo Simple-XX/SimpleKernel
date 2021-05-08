@@ -11,7 +11,10 @@ extern "C" {
 #endif
 
 void cpp_init(void) {
-    return;
+    constructor_func *f;
+    for (f = ctors_start; f < ctors_end; f++) {
+        (*f)();
+    }
 }
 
 atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];
