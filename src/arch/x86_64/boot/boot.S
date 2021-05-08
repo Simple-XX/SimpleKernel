@@ -23,21 +23,20 @@ multiboot_header:
     .long 8
 multiboot_header_end:
 
-
 .section .text
 .global _start
 .extern kernel_main
 .type _start, @function
 _start:
+    cli
     jmp multiboot_entry
     ret
 
 multiboot_entry:
-    cli
 	# 设置栈地址
     mov $STACK_TOP, %rsp
-    # 栈地址按照 16 字节对齐
-    and $0xFFFFFFFFFFFFFFF0, %rsp
+    # 栈地址按照 4096 字节对齐
+    and $0xFFFFFFFFFFFFF000, %rsp
     # 帧指针修改为 0
     mov $0, %rbp
     push $0
