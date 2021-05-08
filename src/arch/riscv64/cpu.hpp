@@ -11,7 +11,6 @@
 #include "stdbool.h"
 
 namespace CPU {
-
     // which hart (core) is this?
     static inline uint64_t READ_MHARTID(void) {
         uint64_t x;
