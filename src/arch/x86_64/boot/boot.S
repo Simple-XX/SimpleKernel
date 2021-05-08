@@ -1,17 +1,17 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# boot32.s for Simple-XX/SimpleKernel.
+# boot.S for Simple-XX/SimpleKernel.
 
 #include "multiboot2.h"
 
-.code32
+.code64
 
-.section .multiboot_header
 # multiboot2 文件头
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
 .SET CHECKSUM, -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH)
 .align MULTIBOOT_HEADER_ALIGN
+.section .multiboot_header
 multiboot_header:
     .long MULTIBOOT2_HEADER_MAGIC
     .long MULTIBOOT_ARCHITECTURE_I386
@@ -23,9 +23,37 @@ multiboot_header:
     .long 8
 multiboot_header_end:
 
-.global _start32
-.type _start32, @function
-.extern init
-_start32:
-    jmp init
+
+.section .text
+.global _start
+.extern kernel_main
+.type _start, @function
+_start:
+    jmp multiboot_entry
     ret
+
+multiboot_entry:
+    cli
+	# 设置栈地址
+    mov $STACK_TOP, %rsp
+    # 栈地址按照 16 字节对齐
+    and $0xFFFFFFFFFFFFFFF0, %rsp
+    # 帧指针修改为 0
+    mov $0, %rbp
+    push $0
+    popf
+	# multiboot2_info 结构体指针
+    push %rbx
+	# 魔数
+	push %rax
+    call kernel_main
+
+1:
+    hlt
+    jmp 1b
+    ret
+
+.section .bss
+STACK:
+    .skip 16384
+STACK_TOP:

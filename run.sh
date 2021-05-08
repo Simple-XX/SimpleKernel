@@ -20,14 +20,14 @@ cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=
 make
 cd ../
 
-
-if [ ${ARCH} == "i386" ]; then
+if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
         echo Multiboot2 Confirmed!
-    fi
-elif [ ${ARCH} == "x86_64" ]; then
-    if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}_boot; then
-        echo Multiboot2 Confirmed!
+    else
+        echo NOT Multiboot2!
+        if [ ${ARCH} == "i386" ]; then
+            exit
+        fi
     fi
 elif [ ${ARCH} == "raspi2" ]; then
     echo Arm-A7.
@@ -47,13 +47,10 @@ else
 fi
 
 cp ${kernel} ${iso_boot}
-if [ ${ARCH} == "x86_64" ]; then
-    cp ${kernel}_boot ${iso_boot}
-fi
 mkdir ${iso_boot_grub}
 touch ${iso_boot_grub}/grub.cfg
 
-if [ ${ARCH} == "i386" ]; then
+if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     echo 'set timeout=15
     set default=0
     menuentry "SimpleKernel" {
@@ -61,18 +58,7 @@ if [ ${ARCH} == "i386" ]; then
    }' >${iso_boot_grub}/grub.cfg
 fi
 
-if [ ${ARCH} == "x86_64" ]; then
-    echo 'set timeout=15
-    set default=0
-    menuentry "SimpleKernel" {
-       multiboot2 /boot/kernel.elf_boot "KERNEL_ELF_boot"
-   }' >${iso_boot_grub}/grub.cfg
-fi
-
-if [ ${ARCH} == "i386" ]; then
-    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
-elif [ ${ARCH} == "x86_64" ]; then
+if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
     ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
 elif [ ${ARCH} == "raspi2" ]; then

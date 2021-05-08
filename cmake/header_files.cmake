@@ -13,7 +13,6 @@ endfunction()
 
 function(target_include_arch_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/)
-    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/boot/include)
 endfunction()
 
 function(target_include_drv_header_files Target)
