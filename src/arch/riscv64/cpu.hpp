@@ -170,8 +170,33 @@ namespace CPU {
     }
 
     // Machine-mode interrupt vector
+    static inline uint64_t READ_MTVEC(void) {
+        uint64_t x;
+        __asm__ volatile("csrr %0, mtvec" : "=r"(x));
+        return x;
+    }
+
     static inline void WRITE_MTVEC(uint64_t x) {
         __asm__ volatile("csrw mtvec, %0" : : "r"(x));
+        return;
+    }
+
+    static constexpr const uint64_t STVEC_DIRECT   = 0xFFFFFFFFFFFFFFFC;
+    static constexpr const uint64_t STVEC_VECTORED = 0xFFFFFFFFFFFFFFFD;
+
+    // direct mode
+    static inline void MTVEC_DIRECT(void) {
+        uint64_t mtvec = READ_MTVEC();
+        mtvec          = mtvec & STVEC_DIRECT;
+        WRITE_MTVEC(mtvec);
+        return;
+    }
+
+    // Vectored mode
+    static inline void MTVEC_VECTORED(void) {
+        uint64_t mtvec = READ_MTVEC();
+        mtvec          = mtvec & STVEC_VECTORED;
+        WRITE_MTVEC(mtvec);
         return;
     }
 
@@ -210,6 +235,18 @@ namespace CPU {
     static inline void WRITE_MSCRATCH(uint64_t x) {
         __asm__ volatile("csrw mscratch, %0" : : "r"(x));
         return;
+    }
+
+    // [31]=1 interrupt, else exception
+    static constexpr const uint64_t MCAUSE_INT_MASK = 0x80000000;
+    // low bits show code
+    static constexpr const uint64_t MCAUSE_CODE_MASK = 0x7FFFFFFF;
+
+    // Supervisor Machine Cause
+    static inline uint64_t READ_MCAUSE(void) {
+        uint64_t x;
+        __asm__ volatile("csrr %0, mcause" : "=r"(x));
+        return x;
     }
 
     // Supervisor Trap Cause
