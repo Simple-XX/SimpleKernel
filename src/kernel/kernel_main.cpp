@@ -46,12 +46,14 @@ void kernel_main(uint32_t size __attribute__((unused)),
     test_heap();
     // 中断初始化
     INTR::init();
+#if defined(__i386__) || defined(__x86_64__)
     // APIC 初始化
     apic.init();
+#endif
     // 键盘初始化
-    keyboard.init();
+    // keyboard.init();
     show_info();
-    CPU::sti();
+    CPU::ENABLE_INTR();
     while (1) {
         ;
     }
