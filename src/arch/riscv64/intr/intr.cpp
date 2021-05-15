@@ -28,9 +28,9 @@ namespace INTR {
 
     int32_t init(void) {
         // 设置 trap vector
-        CPU::WRITE_MTVEC((uint64_t)trap_entry);
+        CPU::WRITE_STVEC((uint64_t)trap_entry);
         // 直接跳转到处理函数
-        // CPU::MTVEC_DIRECT();
+        CPU::STVEC_DIRECT();
         printf("intr init\n");
         return 0;
     }
