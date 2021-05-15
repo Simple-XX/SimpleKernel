@@ -7,6 +7,7 @@
 #ifndef _CPU_HPP_
 #define _CPU_HPP_
 
+#include "stdio.h"
 #include "stdint.h"
 #include "stdbool.h"
 
@@ -181,13 +182,13 @@ namespace CPU {
         return;
     }
 
-    static constexpr const uint64_t STVEC_DIRECT   = 0xFFFFFFFFFFFFFFFC;
-    static constexpr const uint64_t STVEC_VECTORED = 0xFFFFFFFFFFFFFFFD;
+    static constexpr const uint64_t TVEC_DIRECT   = 0xFFFFFFFFFFFFFFFC;
+    static constexpr const uint64_t TVEC_VECTORED = 0xFFFFFFFFFFFFFFFD;
 
     // direct mode
     static inline void MTVEC_DIRECT(void) {
         uint64_t mtvec = READ_MTVEC();
-        mtvec          = mtvec & STVEC_DIRECT;
+        mtvec          = mtvec & TVEC_DIRECT;
         WRITE_MTVEC(mtvec);
         return;
     }
@@ -195,8 +196,23 @@ namespace CPU {
     // Vectored mode
     static inline void MTVEC_VECTORED(void) {
         uint64_t mtvec = READ_MTVEC();
-        mtvec          = mtvec & STVEC_VECTORED;
+        mtvec          = mtvec & TVEC_VECTORED;
         WRITE_MTVEC(mtvec);
+        return;
+    }
+
+    static inline void STVEC_DIRECT(void) {
+        uint64_t stvec = READ_STVEC();
+        stvec          = stvec & TVEC_DIRECT;
+        WRITE_STVEC(stvec);
+        return;
+    }
+
+    // Vectored mode
+    static inline void STVEC_VECTORED(void) {
+        uint64_t stvec = READ_STVEC();
+        stvec          = stvec & TVEC_VECTORED;
+        WRITE_STVEC(stvec);
         return;
     }
 
