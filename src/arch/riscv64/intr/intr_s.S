@@ -3,84 +3,110 @@
 #
 # intr_s.s for Simple-XX/SimpleKernel.
 
-# push all registers, call kerneltrap(), restore, return.
+.equ REGBYTES, 8
+.equ SAVE_REGS, 32
+.equ CONTEXT_SIZE, (SAVE_REGS * REGBYTES)
+
+.macro lx a, b
+ld \a, \b
+.endm
+
+.macro sx a, b
+sd \a, \b
+.endm
+
+.macro lxsp a, b
+ld \a, ((\b)*REGBYTES)(sp)
+.endm
+
+.macro sxsp a, b
+sd \a, ((\b)*REGBYTES)(sp)
+.endm
+
+.section .text
+
+# push all registers, call trap_handler(), restore, return.
 .extern irq_handler
-.globl kernelvec
+.globl trap_entry
+.extern trap_handler
 .align 4
-kernelvec:
+trap_entry:
     # make room to save registers.
-    addi sp, sp, -256
+    addi sp, sp, -CONTEXT_SIZE
 
     # save the registers.
-    sd ra, 0(sp)
-    sd sp, 8(sp)
-    sd gp, 16(sp)
-    sd tp, 24(sp)
-    sd t0, 32(sp)
-    sd t1, 40(sp)
-    sd t2, 48(sp)
-    sd s0, 56(sp)
-    sd s1, 64(sp)
-    sd a0, 72(sp)
-    sd a1, 80(sp)
-    sd a2, 88(sp)
-    sd a3, 96(sp)
-    sd a4, 104(sp)
-    sd a5, 112(sp)
-    sd a6, 120(sp)
-    sd a7, 128(sp)
-    sd s2, 136(sp)
-    sd s3, 144(sp)
-    sd s4, 152(sp)
-    sd s5, 160(sp)
-    sd s6, 168(sp)
-    sd s7, 176(sp)
-    sd s8, 184(sp)
-    sd s9, 192(sp)
-    sd s10, 200(sp)
-    sd s11, 208(sp)
-    sd t3, 216(sp)
-    sd t4, 224(sp)
-    sd t5, 232(sp)
-    sd t6, 240(sp)
+    sxsp x0, 0,
+    sxsp x1, 1,
+    sxsp x2, 2,
+    sxsp x3, 3,
+    sxsp x4, 4,
+    sxsp x5, 5,
+    sxsp x6, 6,
+    sxsp x7, 7,
+    sxsp x8, 8,
+    sxsp x9, 9,
+    sxsp x10, 10
+    sxsp x11, 11
+    sxsp x12, 12
+    sxsp x13, 13
+    sxsp x14, 14
+    sxsp x15, 15
+    sxsp x16, 16
+    sxsp x17, 17
+    sxsp x18, 18
+    sxsp x19, 19
+    sxsp x20, 20
+    sxsp x21, 21
+    sxsp x22, 22
+    sxsp x23, 23
+    sxsp x24, 24
+    sxsp x25, 25
+    sxsp x26, 26
+    sxsp x27, 27
+    sxsp x28, 28
+    sxsp x29, 29
+    sxsp x30, 30
+    sxsp x31, 31
 
-    # call the C trap handler in trap.c
-    call irq_handler
+    # in intr.cpp
+    # 当异常发生时，跳转到 trap_handler 
+    call trap_handler
 
     # restore registers.
-    ld ra, 0(sp)
-    ld sp, 8(sp)
-    ld gp, 16(sp)
-    // not this, in case we moved CPUs: ld tp, 24(sp)
-    ld t0, 32(sp)
-    ld t1, 40(sp)
-    ld t2, 48(sp)
-    ld s0, 56(sp)
-    ld s1, 64(sp)
-    ld a0, 72(sp)
-    ld a1, 80(sp)
-    ld a2, 88(sp)
-    ld a3, 96(sp)
-    ld a4, 104(sp)
-    ld a5, 112(sp)
-    ld a6, 120(sp)
-    ld a7, 128(sp)
-    ld s2, 136(sp)
-    ld s3, 144(sp)
-    ld s4, 152(sp)
-    ld s5, 160(sp)
-    ld s6, 168(sp)
-    ld s7, 176(sp)
-    ld s8, 184(sp)
-    ld s9, 192(sp)
-    ld s10, 200(sp)
-    ld s11, 208(sp)
-    ld t3, 216(sp)
-    ld t4, 224(sp)
-    ld t5, 232(sp)
-    ld t6, 240(sp)
+    lxsp x0, 0
+    lxsp x1, 1
+    lxsp x2, 2
+    lxsp x3, 3
+    lxsp x4, 4
+    lxsp x5, 5
+    lxsp x6, 6
+    lxsp x7, 7
+    lxsp x8, 8
+    lxsp x9, 9
+    lxsp x10, 10
+    lxsp x11, 11
+    lxsp x12, 12
+    lxsp x13, 13
+    lxsp x14, 14
+    lxsp x15, 15
+    lxsp x16, 16
+    lxsp x17, 17
+    lxsp x18, 18
+    lxsp x19, 19
+    lxsp x20, 20
+    lxsp x21, 21
+    lxsp x22, 22
+    lxsp x23, 23
+    lxsp x24, 24
+    lxsp x25, 25
+    lxsp x26, 26
+    lxsp x27, 27
+    lxsp x28, 28
+    lxsp x29, 29
+    lxsp x30, 30
+    lxsp x31, 31
 
-    addi sp, sp, 256
+    addi sp, sp, CONTEXT_SIZE
 
     # return to whatever we were doing in the kernel.
-    sret
+    mret
