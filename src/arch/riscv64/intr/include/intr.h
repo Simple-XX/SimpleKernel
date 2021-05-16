@@ -50,8 +50,7 @@ namespace INTR {
         "Local Interrupt X",
     };
 
-    typedef void (*interrupt_handler_t)(uintptr_t *regs, uintptr_t mcause,
-                                        uintptr_t mepc);
+    typedef void (*interrupt_handler_t)(void);
     extern "C" void trap_entry(void);
     extern "C" void trap_handler(void);
     int32_t         init(void);
