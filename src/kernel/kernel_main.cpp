@@ -14,11 +14,15 @@
 #include "vmm.h"
 #include "heap.h"
 #include "intr.h"
-#include "apic.h"
 #include "keyboard.h"
 #include "cpu.hpp"
 #include "vfs.h"
 #include "kernel.h"
+
+#if defined(__i386__) || defined(__x86_64__)
+#include "apic.h"
+#include "multiboot2.h"
+#endif
 
 // 内核入口
 void kernel_main(uint32_t size __attribute__((unused)),
@@ -43,15 +47,17 @@ void kernel_main(uint32_t size __attribute__((unused)),
     test_heap();
     // 中断初始化
     INTR::init();
+#if defined(__i386__) || defined(__x86_64__)
     // APIC 初始化
     apic.init();
     // 键盘初始化
     keyboard.init();
+#endif
     vfs = new VFS();
     vfs->init();
     test_vfs();
     show_info();
-    CPU::sti();
+    CPU::ENABLE_INTR();
     while (1) {
         ;
     }
@@ -113,7 +119,8 @@ int test_vmm(void) {
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)0xCD, nullptr) == 0);
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)0xFFF, &addr) == 0);
     assert(addr == (ptrdiff_t) nullptr);
-    assert(vmm.get_mmap(vmm.get_pgd(), (void *)0x1000, &addr) == 1);
+    assert(vmm.get_mmap(vmm.get_pgd(), (void *)(COMMON::KERNEL_BASE + 0x1000),
+                        &addr) == 1);
     assert(addr == COMMON::KERNEL_BASE + 0x1000);
     addr = (ptrdiff_t) nullptr;
     assert(vmm.get_mmap(vmm.get_pgd(),
@@ -133,7 +140,6 @@ int test_vmm(void) {
                                  VMM_KERNEL_SIZE + 0x1024),
                         nullptr) == 0);
     // 测试映射与取消映射
-
     addr = (ptrdiff_t) nullptr;
     // 准备映射的虚拟地址 3GB 处
     ptrdiff_t va = 0xC0000000;
@@ -143,7 +149,7 @@ int test_vmm(void) {
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, nullptr) == 0);
     // 映射
     vmm.mmap(vmm.get_pgd(), (void *)va, (void *)pa,
-             VMM_PAGE_PRESENT | VMM_PAGE_RW);
+             VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)va, &addr) == 1);
     assert(addr == pa);
     // 写测试
@@ -201,13 +207,13 @@ int test_vfs(void) {
     vfs->mkdir("/233", 0);
     vfs->mkdir("/233/555", 0);
     vfs->rmdir("/233/555");
-    vfs->mkdir("/233/555", 0);
-    fd_t fd  = vfs->open("/233/555/test.c", O_CREAT);
-    char a[] = "test233.c";
-    vfs->write(fd, a, 10);
-    char b[10];
-    vfs->read(fd, b, 10);
-    assert(strcmp(a, b) == 0);
+    // vfs->mkdir("/233/555", 0);
+    // fd_t fd  = vfs->open("/233/555/test.c", O_CREAT);
+    // char a[] = "test233.c";
+    // vfs->write(fd, a, 10);
+    // char b[10];
+    // vfs->read(fd, b, 10);
+    // assert(strcmp(a, b) == 0);
     return 0;
 }
 
