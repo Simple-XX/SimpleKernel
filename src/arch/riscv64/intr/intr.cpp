@@ -11,13 +11,16 @@
 #include "opensbi.h"
 
 namespace INTR {
-#ifdef __cplusplus
-    extern "C" {
-#endif
-
-#ifdef __cplusplus
-    }
-#endif
+    // 最大中断数
+    static constexpr const uint32_t INTERRUPT_MAX = 16;
+    // 最大异常数
+    static constexpr const uint32_t EXCP_MAX = 16;
+    // 中断处理函数数组
+    static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
+        __attribute__((aligned(4)));
+    // 异常处理函数数组
+    static interrupt_handler_t excp_handlers[EXCP_MAX]
+        __attribute__((aligned(4)));
 
     void enable_irq(uint32_t irq_no) {
         return;
@@ -27,53 +30,47 @@ namespace INTR {
         return;
     }
 
-// timer interrupt interval
-#define INTERVAL (6000000)
+    void register_interrupt_handler(uint8_t n, interrupt_handler_t h) {
+        interrupt_handlers[n] = h;
+        return;
+    }
+
+    void register_excp_handler(uint8_t n, interrupt_handler_t h) {
+        excp_handlers[n] = h;
+        return;
+    }
 
     int32_t init(void) {
         // 设置 trap vector
         CPU::WRITE_STVEC((uint64_t)trap_entry);
         // 直接跳转到处理函数
         CPU::STVEC_DIRECT();
-        // 开启时钟中断
-        // 开启 STIE，允许时钟中断
-        CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
-        // 设置下一次时钟中断
-        OPENSBI opensbi;
-        opensbi.set_timer(CPU::READ_TIME() + INTERVAL);
         printf("intr init\n");
         return 0;
     }
 
     void trap_handler(void) {
-        // CPU::DISABLE_INTR();
-        // CPU::WRITE_SIE(CPU::READ_SIE() & ~CPU::SIE_STIE);
-        OPENSBI opensbi;
-        opensbi.set_timer(CPU::READ_TIME() + INTERVAL);
-        CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
-        // CPU::WRITE_SSTATUS(CPU::READ_SSTATUS() | ~CPU::SSTATUS_SIE);
         // 中断原因
         uint64_t scause = CPU::READ_SCAUSE();
         // 异常返回值
         uint64_t sepc = CPU::READ_SEPC();
         // 中断具体信息
         uint64_t sstatus = CPU::READ_SSTATUS();
-        printf("scause: %p\n", scause);
-        printf("sepc: %p\n", sepc);
-        printf("sstatus: %p\n", sstatus);
-        if (scause & CPU::MCAUSE_INT_MASK) {
+        // printf("scause: %p\n", scause);
+        // printf("sepc: %p\n", sepc);
+        // printf("sstatus: %p\n", sstatus);
+        if (scause & CPU::CAUSE_INTR_MASK) {
             // 中断
-            // Index into 32-bit array containing addresses of functions
-            printf("intr\n");
+            printf("intr: %s\n", intr_names[scause & CPU::CAUSE_CODE_MASK]);
             // 跳转到对应的处理函数
-            // async_handler[(mcause_value & CPU::MCAUSE_CODE_MASK)]();
+            interrupt_handlers[scause & CPU::CAUSE_CODE_MASK]();
         }
         else {
             // 异常
-            // Branch to exception handler
-            printf("excp\n");
             // 跳转到对应的处理函数
-            // sync_handler[(mcause_value & CPU::MCAUSE_CODE_MASK)]();
+            printf("excp: %s\n", excp_names[scause & CPU::CAUSE_CODE_MASK]);
         }
+        return;
     }
+
 };
