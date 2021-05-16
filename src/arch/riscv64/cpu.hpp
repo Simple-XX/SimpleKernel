@@ -254,9 +254,9 @@ namespace CPU {
     }
 
     // [31]=1 interrupt, else exception
-    static constexpr const uint64_t MCAUSE_INT_MASK = 0x80000000;
+    static constexpr const uint64_t MCAUSE_INT_MASK = 0x8000000000000000;
     // low bits show code
-    static constexpr const uint64_t MCAUSE_CODE_MASK = 0x7FFFFFFF;
+    static constexpr const uint64_t MCAUSE_CODE_MASK = 0x7FFFFFFFFFFFFFFF;
 
     // Supervisor Machine Cause
     static inline uint64_t READ_MCAUSE(void) {
@@ -313,7 +313,7 @@ namespace CPU {
     }
 
     // are device interrupts enabled?
-    static inline int SSTATUS_INTR_status(void) {
+    static inline bool SSTATUS_INTR(void) {
         uint64_t x = READ_SSTATUS();
         return (x & SSTATUS_SIE) != 0;
     }

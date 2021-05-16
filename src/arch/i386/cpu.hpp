@@ -255,13 +255,13 @@ namespace CPU {
     }
 
     // 开启中断
-    static inline void sti(void) {
+    static inline void ENABLE_INTR(void) {
         __asm__ volatile("sti" ::: "memory");
         return;
     }
 
     // 关闭中断
-    static inline void cli(void) {
+    static inline void DISABLE_INTR(void) {
         __asm__ volatile("cli" ::: "memory");
         return;
     }

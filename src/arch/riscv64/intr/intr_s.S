@@ -109,4 +109,4 @@ trap_entry:
     addi sp, sp, CONTEXT_SIZE
 
     # return to whatever we were doing in the kernel.
-    mret
+    sret
