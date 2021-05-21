@@ -48,11 +48,9 @@ RAMFS::RAMFS(const STL::string &_name, const dentry_t &_dentry) {
 RAMFS::~RAMFS(void) {
     for (auto i : supers) {
         supers.remove(i);
-        delete i;
     }
     for (auto i : inodes) {
         inodes.remove(i);
-        delete i;
     }
     return;
 }
@@ -79,7 +77,6 @@ inode_t *RAMFS::alloc_inode(void) {
 
 void RAMFS::dealloc_inode(inode_t *_inode) {
     inodes.remove(_inode);
-    delete _inode;
     for (auto i : supers) {
         i->inode_total -= 1;
     }

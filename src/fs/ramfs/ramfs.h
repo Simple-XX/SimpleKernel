@@ -9,7 +9,6 @@
 
 #include "string"
 #include "vfs.h"
-#include "list.hpp"
 
 class ramfs_inode_t : inode_t {
 private:
