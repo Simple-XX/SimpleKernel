@@ -207,13 +207,13 @@ int test_vfs(void) {
     vfs->mkdir("/233", 0);
     vfs->mkdir("/233/555", 0);
     vfs->rmdir("/233/555");
-    // vfs->mkdir("/233/555", 0);
-    // fd_t fd  = vfs->open("/233/555/test.c", O_CREAT);
-    // char a[] = "test233.c";
-    // vfs->write(fd, a, 10);
-    // char b[10];
-    // vfs->read(fd, b, 10);
-    // assert(strcmp(a, b) == 0);
+    vfs->mkdir("/233/555", 0);
+    fd_t fd  = vfs->open("/233/555/test.c", O_CREAT);
+    char a[] = "test233.c";
+    vfs->write(fd, a, 10);
+    char b[10];
+    vfs->read(fd, b, 10);
+    assert(strcmp(a, b) == 0);
     return 0;
 }
 

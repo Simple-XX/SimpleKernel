@@ -101,25 +101,23 @@ dentry_t *VFS::alloc_dentry(const STL::string &_path, int _flags) {
 
 int VFS::dealloc_dentry(const STL::string &_path) {
     dentry_t *dentry = find_dentry(_path);
-    FS *      fs     = get_fs(_path);
     // 首先判断是否存在，不存在则返回
     if (dentry == nullptr) {
         std::cout << "\"" << _path << "\" not exist." << std::endl;
         return -1;
     }
-    // 设置父目录
+    FS *fs = get_fs(_path);
+    // 从父目录的子目录中删除
     dentry->parent->child.remove(dentry);
     // 删除子目录
     for (auto i : dentry->child) {
         fs->dealloc_inode(i->inode);
         dentrys.remove(i);
-        delete i;
     }
     // 删除 inode
     fs->dealloc_inode(dentry->inode);
     // 删除 dentry
     dentrys.remove(dentry);
-    delete dentry;
     return 0;
 }
 
@@ -197,8 +195,6 @@ int32_t VFS::unregister_filesystem(FS *_fs) {
         // 有的话删除
         if (i->name == _fs->name) {
             fs.remove(i);
-            // TODO: 确保 delete 调用了析构函数
-            delete i;
             std::cout << "unregister " << _fs->name << " file system."
                       << std::endl;
             return -1;
@@ -253,7 +249,6 @@ int VFS::close(fd_t _fd) {
     for (auto i : files) {
         if (i->fd == _fd) {
             files.remove(i);
-            delete i;
         }
     }
     return 0;
