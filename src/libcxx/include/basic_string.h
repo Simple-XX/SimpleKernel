@@ -344,9 +344,6 @@ namespace mystl {
         basic_string &operator=(const_pointer str);
         basic_string &operator=(value_type ch);
 
-        // basic_string &operator=(const char *s);
-        // basic_string &operator=(char c);
-
         ~basic_string() {
             destroy_buffer();
         }
