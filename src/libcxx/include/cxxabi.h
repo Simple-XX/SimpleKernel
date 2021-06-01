@@ -26,9 +26,9 @@ struct atexit_func_entry_t {
     void *dso_handle;
 };
 
-typedef void (*constructor_func)();
-extern constructor_func ctors_start[];
-extern constructor_func ctors_end[];
+typedef void (*ctor_t)(void);
+extern ctor_t ctors_start;
+extern ctor_t ctors_end;
 // c++ 初始化
 void cpp_init(void);
 

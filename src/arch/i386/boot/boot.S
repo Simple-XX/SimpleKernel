@@ -70,12 +70,11 @@
 
 .code32
 
-.section .multiboot_header
 # multiboot2 文件头
-
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
 .SET CHECKSUM, -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH)
 .align MULTIBOOT_HEADER_ALIGN
+.section .multiboot_header
 multiboot_header:
     .long MULTIBOOT2_HEADER_MAGIC
     .long MULTIBOOT_ARCHITECTURE_I386
@@ -92,12 +91,9 @@ multiboot_header_end:
 .extern kernel_main
 .type _start, @function
 _start:
-    jmp multiboot_entry
-    ret
-
-multiboot_entry:
+    # 关中断
     cli
-	# 设置栈地址
+    # 设置栈地址
     mov $STACK_TOP, %esp
     # 栈地址按照 16 字节对齐
     and $0xFFFFFFF0, %esp
@@ -110,10 +106,9 @@ multiboot_entry:
     # 魔数
 	push %eax
     call kernel_main
-
-1:
-    hlt
+1:  hlt
     jmp 1b
+    ret
     ret
 
 .section .bss
