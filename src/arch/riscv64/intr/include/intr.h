@@ -10,7 +10,8 @@
 #include "stdint.h"
 
 namespace INTR {
-    static constexpr const char *const excp_names[] = {
+    static constexpr const uint8_t     EXCP_PAGE_FAULT = 13;
+    static constexpr const char *const excp_names[]    = {
         "Instruction Address Misaligned",
         "Instruction Access Fault",
         "Illegal Instruction",
@@ -29,6 +30,8 @@ namespace INTR {
         "Store/AMO Page Fault",
         "Reserved",
     };
+
+    static constexpr const uint8_t INTR_S_TIMER = 5;
 
     static constexpr const char *const intr_names[] = {
         "User Software Interrupt",
@@ -56,8 +59,13 @@ namespace INTR {
     int32_t         init(void);
     // 注册一个中断处理函数
     void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
+    void register_excp_handler(uint8_t n, interrupt_handler_t h);
     void enable_irq(uint32_t irq_no);
     void disable_irq(uint32_t irq_no);
+};
+
+namespace TIMER {
+    void init(void);
 };
 
 #endif /* _INTR_H_ */
