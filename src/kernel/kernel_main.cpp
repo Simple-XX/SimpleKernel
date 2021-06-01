@@ -40,9 +40,6 @@ void kernel_main(uint32_t size __attribute__((unused)),
     // 测试堆
     test_heap();
     show_info();
-    mystl::string a = "233";
-    mystl::string b = a;
-    mystl::string c = a.swap(b);
     while (1) {
         ;
     }
