@@ -139,7 +139,9 @@ int32_t SLAB::init(const void *start, const size_t size) {
 
 void *SLAB::alloc(size_t byte) {
     // 所有申请的内存长度(限制最小大小)加上管理头的长度
-    size_t             len   = (byte > SLAB_MIN) ? byte : SLAB_MIN;
+    size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
+    // len 对齐
+    len = (len + SLAB_MIN - 1) & (0xFFFFFFFFFFFFFFFF - SLAB_MIN + 1);
     slab_list_entry_t *entry = find_entry(len);
     if (entry != nullptr) {
         set_used(entry);

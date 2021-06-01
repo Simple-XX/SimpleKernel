@@ -68,7 +68,7 @@
 #define MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED 1
 #define MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED 2
 
-.code32
+.code64
 
 # multiboot2 文件头
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
@@ -91,20 +91,19 @@ multiboot_header_end:
 .extern kernel_main
 .type _start, @function
 _start:
-    # 关中断
     cli
     # 设置栈地址
-    mov $STACK_TOP, %esp
-    # 栈地址按照 16 字节对齐
-    and $0xFFFFFFF0, %esp
+    mov $STACK_TOP, %rsp
+    # 栈地址按照 4096 字节对齐
+    and $0xFFFFFFFFFFFFF000, %rsp
     # 帧指针修改为 0
-    mov $0, %ebp          
+    mov $0, %rbp
     push $0
     popf
 	# multiboot2_info 结构体指针
-    push %ebx
-    # 魔数
-	push %eax
+    push %rbx
+	# 魔数
+	push %rax
     call kernel_main
 1:  hlt
     jmp 1b
