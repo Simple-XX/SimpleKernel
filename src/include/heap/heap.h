@@ -26,7 +26,7 @@ public:
     ~HEAP(void);
     // 初始化
     int32_t init(void);
-    //
+    // 管理结构初始化
     int32_t manage_init(void);
     // 内存申请，单位为 Byte
     void *malloc(size_t byte);
