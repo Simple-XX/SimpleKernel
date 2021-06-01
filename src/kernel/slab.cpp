@@ -5,8 +5,7 @@
 // slab.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
-#include "stdint.h"
-#include "cstring.h"
+#include "string.h"
 #include "list.hpp"
 #include "common.h"
 #include "pmm.h"
@@ -50,9 +49,9 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
     // 合并后面的
     if (next != list && next->allocated == SLAB_UNUSED) {
         // 是否连续
-        if (reinterpret_cast<uint32_t>(entry) + entry->len +
+        if (reinterpret_cast<ptrdiff_t>(entry) + entry->len +
                 sizeof(slab_list_entry_t) ==
-            reinterpret_cast<uint32_t>(next)) {
+            (unsigned)reinterpret_cast<ptrdiff_t>(next)) {
             entry->len += next->len + sizeof(slab_list_entry_t);
             list_del(next);
             block_count--;
@@ -62,16 +61,17 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
     // 合并前面的
     if (prev != list && prev->allocated == SLAB_UNUSED) {
         // 是否连续
-        if (reinterpret_cast<uint32_t>(prev) + prev->len +
+        if (reinterpret_cast<ptrdiff_t>(prev) + prev->len +
                 sizeof(slab_list_entry_t) ==
-            reinterpret_cast<uint32_t>(entry)) {
+            (unsigned)reinterpret_cast<ptrdiff_t>(entry)) {
             prev->len += (entry->len + sizeof(slab_list_entry_t));
             list_del(entry);
             block_count--;
             tmp = prev;
         }
     }
-    if (tmp->len > sizeof(slab_list_entry_t) + COMMON::PAGE_SIZE * 2) {
+    if ((tmp != nullptr) &&
+        (tmp->len > sizeof(slab_list_entry_t) + COMMON::PAGE_SIZE * 2)) {
         // 要回收页的地址
         void *addr = const_cast<void *>(COMMON::ALIGN4K(tmp));
         // 需要回收几页
@@ -80,7 +80,7 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
         pmm.free_page(addr, count, COMMON::NORMAL);
         heap_total -= count * COMMON::PAGE_SIZE;
         // 如果 tmp 从页首开始，则删除 block，tmp 为 slab_list 时除外
-        if ((reinterpret_cast<uint32_t>(tmp) % COMMON::PAGE_SIZE == 0) &&
+        if ((reinterpret_cast<ptrdiff_t>(tmp) % COMMON::PAGE_SIZE == 0) &&
             (tmp != slab_list)) {
             // 删除 block
             list_del(tmp);
@@ -127,7 +127,7 @@ int32_t SLAB::init(const void *start, const size_t size) {
     bzero(slab_list, COMMON::PAGE_SIZE);
     // 填充管理信息
     addr_start = (void *)start;
-    addr_end   = (void *)((uint32_t)start + size);
+    addr_end   = (void *)((ptrdiff_t)start + size);
     list_init_head(slab_list);
     // 设置第一块内存的相关信息
     slab_list->allocated = SLAB_UNUSED;
@@ -140,7 +140,9 @@ int32_t SLAB::init(const void *start, const size_t size) {
 
 void *SLAB::alloc(size_t byte) {
     // 所有申请的内存长度(限制最小大小)加上管理头的长度
-    size_t             len   = (byte > SLAB_MIN) ? byte : SLAB_MIN;
+    size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
+    // len 对齐
+    len = (len + SLAB_MIN - 1) & (0xFFFFFFFFFFFFFFFF - SLAB_MIN + 1);
     slab_list_entry_t *entry = find_entry(len);
     if (entry != nullptr) {
         set_used(entry);
