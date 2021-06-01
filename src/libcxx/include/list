@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_LIST_H_
-#define MYTINYSTL_LIST_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// list for Simple-XX/SimpleKernel.
+
+#ifndef _LIST_
+#define _LIST_
 
 // 这个头文件包含了一个模板类 list
 // list : 双向链表
@@ -7,7 +13,7 @@
 // notes:
 //
 // 异常保证：
-// mystl::list<T>
+// std::list<T>
 // 满足基本异常保证，部分函数无异常保证，并对以下等函数做强异常安全保证：
 //   * emplace_front
 //   * emplace_back
@@ -16,15 +22,14 @@
 //   * push_back
 //   * insert
 
-#include <initializer_list>
+#include "initializer_list"
+#include "iterator"
+#include "memory"
+#include "functional"
+#include "util"
+#include "exceptdef"
 
-#include "iterator.h"
-#include "memory.h"
-#include "functional.h"
-#include "util.h"
-#include "exceptdef.h"
-
-namespace mystl {
+namespace std {
 
     template <class T>
     struct list_node_base;
@@ -72,7 +77,7 @@ namespace mystl {
         list_node() = default;
         list_node(const T &v) : value(v) {
         }
-        list_node(T &&v) : value(mystl::move(v)) {
+        list_node(T &&v) : value(std::move(v)) {
         }
 
         base_ptr as_base() {
@@ -86,7 +91,7 @@ namespace mystl {
     // list 的迭代器设计
     template <class T>
     struct list_iterator
-        : public mystl::iterator<mystl::bidirectional_iterator_tag, T> {
+        : public std::iterator<std::bidirectional_iterator_tag, T> {
         typedef T                                 value_type;
         typedef T *                               pointer;
         typedef T &                               reference;
@@ -208,10 +213,10 @@ namespace mystl {
     class list {
     public:
         // list 的嵌套型别定义
-        typedef mystl::allocator<T>                 allocator_type;
-        typedef mystl::allocator<T>                 data_allocator;
-        typedef mystl::allocator<list_node_base<T>> base_allocator;
-        typedef mystl::allocator<list_node<T>>      node_allocator;
+        typedef std::allocator<T>                 allocator_type;
+        typedef std::allocator<T>                 data_allocator;
+        typedef std::allocator<list_node_base<T>> base_allocator;
+        typedef std::allocator<list_node<T>>      node_allocator;
 
         typedef typename allocator_type::value_type      value_type;
         typedef typename allocator_type::pointer         pointer;
@@ -221,10 +226,10 @@ namespace mystl {
         typedef typename allocator_type::size_type       size_type;
         typedef typename allocator_type::difference_type difference_type;
 
-        typedef list_iterator<T>                        iterator;
-        typedef list_const_iterator<T>                  const_iterator;
-        typedef mystl::reverse_iterator<iterator>       reverse_iterator;
-        typedef mystl::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef list_iterator<T>                      iterator;
+        typedef list_const_iterator<T>                const_iterator;
+        typedef std::reverse_iterator<iterator>       reverse_iterator;
+        typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
         typedef typename node_traits<T>::base_ptr base_ptr;
         typedef typename node_traits<T>::node_ptr node_ptr;
@@ -252,7 +257,7 @@ namespace mystl {
         }
 
         template <class Iter,
-                  typename std::enable_if<mystl::is_input_iterator<Iter>::value,
+                  typename std::enable_if<std::is_input_iterator<Iter>::value,
                                           int>::type = 0>
         list(Iter first, Iter last) {
             copy_init(first, last);
@@ -383,7 +388,7 @@ namespace mystl {
         }
 
         template <class Iter,
-                  typename std::enable_if<mystl::is_input_iterator<Iter>::value,
+                  typename std::enable_if<std::is_input_iterator<Iter>::value,
                                           int>::type = 0>
         void assign(Iter first, Iter last) {
             copy_assign(first, last);
@@ -399,7 +404,7 @@ namespace mystl {
         void emplace_front(Args &&...args) {
             THROW_LENGTH_ERROR_IF(size_ > max_size() - 1,
                                   "list<T>'s size too big");
-            auto link_node = create_node(mystl::forward<Args>(args)...);
+            auto link_node = create_node(std::forward<Args>(args)...);
             link_nodes_at_front(link_node->as_base(), link_node->as_base());
             ++size_;
         }
@@ -408,7 +413,7 @@ namespace mystl {
         void emplace_back(Args &&...args) {
             THROW_LENGTH_ERROR_IF(size_ > max_size() - 1,
                                   "list<T>'s size too big");
-            auto link_node = create_node(mystl::forward<Args>(args)...);
+            auto link_node = create_node(std::forward<Args>(args)...);
             link_nodes_at_back(link_node->as_base(), link_node->as_base());
             ++size_;
         }
@@ -417,7 +422,7 @@ namespace mystl {
         iterator emplace(const_iterator pos, Args &&...args) {
             THROW_LENGTH_ERROR_IF(size_ > max_size() - 1,
                                   "list<T>'s size too big");
-            auto link_node = create_node(mystl::forward<Args>(args)...);
+            auto link_node = create_node(std::forward<Args>(args)...);
             link_nodes(pos.node_, link_node->as_base(), link_node->as_base());
             ++size_;
             return iterator(link_node);
@@ -436,7 +441,7 @@ namespace mystl {
         iterator insert(const_iterator pos, value_type &&value) {
             THROW_LENGTH_ERROR_IF(size_ > max_size() - 1,
                                   "list<T>'s size too big");
-            auto link_node = create_node(mystl::move(value));
+            auto link_node = create_node(std::move(value));
             ++size_;
             return link_iter_node(pos, link_node->as_base());
         }
@@ -449,10 +454,10 @@ namespace mystl {
         }
 
         template <class Iter,
-                  typename std::enable_if<mystl::is_input_iterator<Iter>::value,
+                  typename std::enable_if<std::is_input_iterator<Iter>::value,
                                           int>::type = 0>
         iterator insert(const_iterator pos, Iter first, Iter last) {
-            size_type n = mystl::distance(first, last);
+            size_type n = std::distance(first, last);
             THROW_LENGTH_ERROR_IF(size_ > max_size() - n,
                                   "list<T>'s size too big");
             return copy_insert(pos, n, first);
@@ -469,7 +474,7 @@ namespace mystl {
         }
 
         void push_front(value_type &&value) {
-            emplace_front(mystl::move(value));
+            emplace_front(std::move(value));
         }
 
         void push_back(const value_type &value) {
@@ -481,7 +486,7 @@ namespace mystl {
         }
 
         void push_back(value_type &&value) {
-            emplace_back(mystl::move(value));
+            emplace_back(std::move(value));
         }
 
         // pop_front / pop_back
@@ -517,8 +522,8 @@ namespace mystl {
         void resize(size_type new_size, const value_type &value);
 
         void swap(list &rhs) noexcept {
-            mystl::swap(node_, rhs.node_);
-            mystl::swap(size_, rhs.size_);
+            std::swap(node_, rhs.node_);
+            std::swap(size_, rhs.size_);
         }
 
         // list 相关操作
@@ -537,19 +542,19 @@ namespace mystl {
         void remove_if(UnaryPredicate pred);
 
         void unique() {
-            unique(mystl::equal_to<T>());
+            unique(std::equal_to<T>());
         }
         template <class BinaryPredicate>
         void unique(BinaryPredicate pred);
 
         void merge(list &x) {
-            merge(x, mystl::less<T>());
+            merge(x, std::less<T>());
         }
         template <class Compare>
         void merge(list &x, Compare comp);
 
         void sort() {
-            list_sort(begin(), end(), size(), mystl::less<T>());
+            list_sort(begin(), end(), size(), std::less<T>());
         }
         template <class Compared>
         void sort(Compared comp) {
@@ -697,7 +702,7 @@ namespace mystl {
     void list<T>::splice(const_iterator pos, list &x, const_iterator first,
                          const_iterator last) {
         if (first != last && this != &x) {
-            size_type n = mystl::distance(first, last);
+            size_type n = std::distance(first, last);
             THROW_LENGTH_ERROR_IF(size_ > max_size() - n,
                                   "list<T>'s size too big");
             auto f = first.node_;
@@ -806,10 +811,10 @@ namespace mystl {
         auto i = begin();
         auto e = end();
         while (i.node_ != e.node_) {
-            mystl::swap(i.node_->prev, i.node_->next);
+            std::swap(i.node_->prev, i.node_->next);
             i.node_ = i.node_->prev;
         }
-        mystl::swap(e.node_->prev, e.node_->next);
+        std::swap(e.node_->prev, e.node_->next);
     }
 
     /*****************************************************************************************/
@@ -821,8 +826,8 @@ namespace mystl {
     typename list<T>::node_ptr list<T>::create_node(Args &&...args) {
         node_ptr p = node_allocator::allocate(1);
         try {
-            data_allocator::construct(mystl::address_of(p->value),
-                                      mystl::forward<Args>(args)...);
+            data_allocator::construct(std::address_of(p->value),
+                                      std::forward<Args>(args)...);
             p->prev = nullptr;
             p->next = nullptr;
         } catch (...) {
@@ -835,7 +840,7 @@ namespace mystl {
     // 销毁结点
     template <class T>
     void list<T>::destroy_node(node_ptr p) {
-        data_allocator::destroy(mystl::address_of(p->value));
+        data_allocator::destroy(std::address_of(p->value));
         node_allocator::deallocate(p);
     }
 
@@ -864,7 +869,7 @@ namespace mystl {
     void list<T>::copy_init(Iter first, Iter last) {
         node_ = base_allocator::allocate(1);
         node_->unlink();
-        size_type n = mystl::distance(first, last);
+        size_type n = std::distance(first, last);
         size_       = n;
         try {
             for (; n > 0; --n, ++first) {
@@ -1053,7 +1058,7 @@ namespace mystl {
 
         auto n2 = n / 2;
         auto l1 = f1;
-        mystl::advance(l1, n2);
+        std::advance(l1, n2);
         auto result = f1 = list_sort(f1, l1, n2, comp); // 前半段的最小位置
         auto f2 = l1 = list_sort(l1, l2, n - n2, comp); // 后半段的最小位置
 
@@ -1116,8 +1121,8 @@ namespace mystl {
 
     template <class T>
     bool operator<(const list<T> &lhs, const list<T> &rhs) {
-        return mystl::lexicographical_compare(lhs.cbegin(), lhs.cend(),
-                                              rhs.cbegin(), rhs.cend());
+        return std::lexicographical_compare(lhs.cbegin(), lhs.cend(),
+                                            rhs.cbegin(), rhs.cend());
     }
 
     template <class T>
@@ -1140,11 +1145,12 @@ namespace mystl {
         return !(lhs < rhs);
     }
 
-    // 重载 mystl 的 swap
+    // 重载 std 的 swap
     template <class T>
     void swap(list<T> &lhs, list<T> &rhs) noexcept {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_LIST_H_
+};
+
+#endif /* _LIST_ */
