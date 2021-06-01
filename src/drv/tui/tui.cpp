@@ -7,7 +7,7 @@
 #include "stddef.h"
 #include "stdint.h"
 #include "stdarg.h"
-#include "cstring.h"
+#include "string.h"
 #include "tui.h"
 #include "port.h"
 

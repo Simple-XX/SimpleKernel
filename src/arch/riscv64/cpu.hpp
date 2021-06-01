@@ -7,11 +7,11 @@
 #ifndef _CPU_HPP_
 #define _CPU_HPP_
 
+#include "stdio.h"
 #include "stdint.h"
 #include "stdbool.h"
 
 namespace CPU {
-
     // which hart (core) is this?
     static inline uint64_t READ_MHARTID(void) {
         uint64_t x;
@@ -171,16 +171,56 @@ namespace CPU {
     }
 
     // Machine-mode interrupt vector
+    static inline uint64_t READ_MTVEC(void) {
+        uint64_t x;
+        __asm__ volatile("csrr %0, mtvec" : "=r"(x));
+        return x;
+    }
+
     static inline void WRITE_MTVEC(uint64_t x) {
         __asm__ volatile("csrw mtvec, %0" : : "r"(x));
+        return;
+    }
+
+    static constexpr const uint64_t TVEC_DIRECT   = 0xFFFFFFFFFFFFFFFC;
+    static constexpr const uint64_t TVEC_VECTORED = 0xFFFFFFFFFFFFFFFD;
+
+    // direct mode
+    static inline void MTVEC_DIRECT(void) {
+        uint64_t mtvec = READ_MTVEC();
+        mtvec          = mtvec & TVEC_DIRECT;
+        WRITE_MTVEC(mtvec);
+        return;
+    }
+
+    // Vectored mode
+    static inline void MTVEC_VECTORED(void) {
+        uint64_t mtvec = READ_MTVEC();
+        mtvec          = mtvec & TVEC_VECTORED;
+        WRITE_MTVEC(mtvec);
+        return;
+    }
+
+    static inline void STVEC_DIRECT(void) {
+        uint64_t stvec = READ_STVEC();
+        stvec          = stvec & TVEC_DIRECT;
+        WRITE_STVEC(stvec);
+        return;
+    }
+
+    // Vectored mode
+    static inline void STVEC_VECTORED(void) {
+        uint64_t stvec = READ_STVEC();
+        stvec          = stvec & TVEC_VECTORED;
+        WRITE_STVEC(stvec);
         return;
     }
 
     // use riscv's sv39 page table scheme.
     static constexpr const uint64_t SATP_SV39 = (uint64_t)8 << 60;
 
-    static constexpr void *MAKE_SATP(void *pagetable) {
-        return (void *)(SATP_SV39 | (((uint64_t)pagetable) >> 12));
+    static constexpr void *SET_SV39(void *pgd) {
+        return (void *)(SATP_SV39 | (((uint64_t)pgd) >> 12));
     }
 
     // supervisor address translation and protection;
@@ -196,6 +236,12 @@ namespace CPU {
         return x;
     }
 
+    static inline void ENABLE_PG(void) {
+        void *x = READ_SATP();
+        WRITE_SATP(SET_SV39(x));
+        return;
+    }
+
     // Supervisor Scratch register, for early trap handler in trampoline.S.
     static inline void WRITE_SSCRATCH(uint64_t x) {
         __asm__ volatile("csrw sscratch, %0" : : "r"(x));
@@ -205,6 +251,18 @@ namespace CPU {
     static inline void WRITE_MSCRATCH(uint64_t x) {
         __asm__ volatile("csrw mscratch, %0" : : "r"(x));
         return;
+    }
+
+    // [31]=1 interrupt, else exception
+    static constexpr const uint64_t CAUSE_INTR_MASK = 0x8000000000000000;
+    // low bits show code
+    static constexpr const uint64_t CAUSE_CODE_MASK = 0x7FFFFFFFFFFFFFFF;
+
+    // Supervisor Machine Cause
+    static inline uint64_t READ_MCAUSE(void) {
+        uint64_t x;
+        __asm__ volatile("csrr %0, mcause" : "=r"(x));
+        return x;
     }
 
     // Supervisor Trap Cause
@@ -255,7 +313,7 @@ namespace CPU {
     }
 
     // are device interrupts enabled?
-    static inline int SSTATUS_INTR_status(void) {
+    static inline bool SSTATUS_INTR(void) {
         uint64_t x = READ_SSTATUS();
         return (x & SSTATUS_SIE) != 0;
     }
@@ -288,7 +346,7 @@ namespace CPU {
     // flush the TLB.
     static inline void SFENCE_VMA(void) {
         // the zero, zero means flush all TLB entries.
-        __asm__ volatile("sfence.vma zero,zero");
+        __asm__ volatile("sfence.vma zero, zero");
         return;
     }
 

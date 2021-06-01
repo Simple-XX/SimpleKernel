@@ -5,7 +5,7 @@
 // apic.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
-#include "cassert.h"
+#include "assert.h"
 #include "intr.h"
 #include "cpu.hpp"
 #include "apic.h"
@@ -21,7 +21,7 @@ APIC::~APIC(void) {
     return;
 }
 
-bool APIC::init(void) {
+int32_t APIC::init(void) {
     CPU::CPUID cpuid;
     if (cpuid.xapic() == false) {
         warn("Not support APIC&xAPIC\n");
@@ -55,5 +55,5 @@ bool APIC::init(void) {
     CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_ERROR, msr);
 
     printf("apic init\n");
-    return true;
+    return 0;
 }
