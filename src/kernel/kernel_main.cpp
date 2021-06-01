@@ -13,7 +13,6 @@
 #include "vmm.h"
 #include "heap.h"
 #include "kernel.h"
-
 #if defined(__i386__) || defined(__x86_64__)
 #include "multiboot2.h"
 #endif

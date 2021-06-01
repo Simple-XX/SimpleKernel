@@ -1,13 +1,18 @@
-﻿#ifndef MYTINYSTL_ITERATOR_H_
-#define MYTINYSTL_ITERATOR_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// iterator for Simple-XX/SimpleKernel.
+
+#ifndef _ITERATOR_
+#define _ITERATOR_
 
 // 这个头文件用于迭代器设计，包含了一些模板结构体与全局函数，
 
 #include "stddef.h"
-
 #include "type_traits.h"
 
-namespace mystl {
+namespace std {
 
     // 五种迭代器类型
     struct input_iterator_tag {};
@@ -346,6 +351,6 @@ namespace mystl {
         return !(lhs < rhs);
     }
 
-} // namespace mystl
+};
 
-#endif // !MYTINYSTL_ITERATOR_H_
+#endif /* _ITERATOR_ */

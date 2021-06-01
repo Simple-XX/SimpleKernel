@@ -1,13 +1,19 @@
-﻿#ifndef MYTINYSTL_ALLOCATOR_H_
-#define MYTINYSTL_ALLOCATOR_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// allocator for Simple-XX/SimpleKernel.
+
+#ifndef _ALLOCATOR_
+#define _ALLOCATOR_
 
 // 这个头文件包含一个模板类
 // allocator，用于管理内存的分配、释放，对象的构造、析构
 
-#include "construct.h"
-#include "util.h"
+#include "construct"
+#include "util"
 
-namespace mystl {
+namespace std {
 
     // 模板类：allocator
     // 模板函数代表数据类型
@@ -68,34 +74,35 @@ namespace mystl {
 
     template <class T>
     void allocator<T>::construct(T *ptr) {
-        mystl::construct(ptr);
+        std::construct(ptr);
     }
 
     template <class T>
     void allocator<T>::construct(T *ptr, const T &value) {
-        mystl::construct(ptr, value);
+        std::construct(ptr, value);
     }
 
     template <class T>
     void allocator<T>::construct(T *ptr, T &&value) {
-        mystl::construct(ptr, mystl::move(value));
+        std::construct(ptr, std::move(value));
     }
 
     template <class T>
     template <class... Args>
     void allocator<T>::construct(T *ptr, Args &&...args) {
-        mystl::construct(ptr, mystl::forward<Args>(args)...);
+        std::construct(ptr, std::forward<Args>(args)...);
     }
 
     template <class T>
     void allocator<T>::destroy(T *ptr) {
-        mystl::destroy(ptr);
+        std::destroy(ptr);
     }
 
     template <class T>
     void allocator<T>::destroy(T *first, T *last) {
-        mystl::destroy(first, last);
+        std::destroy(first, last);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_ALLOCATOR_H_
+};
+
+#endif /* _ALLOCATOR_ */
