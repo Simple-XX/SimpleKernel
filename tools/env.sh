@@ -7,9 +7,9 @@
 
 # ARCH: i386, x86_64, arm, riscv64
 # ARCH="i386"
-ARCH="x86_64"
+# ARCH="x86_64"
 # ARCH="arm"
-# ARCH="riscv64"
+ARCH="riscv64"
 
 # 内核映像
 kernel='./build/bin/kernel.elf'
