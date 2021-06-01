@@ -22,6 +22,26 @@ uarch_t             __atexit_func_count = 0;
 
 extern void *__dso_handle;
 
+void __cxa_rethrow() {
+    return;
+}
+
+void _Unwind_Resume() {
+    return;
+}
+
+void __cxa_begin_catch() {
+    return;
+}
+
+void __cxa_end_catch() {
+    return;
+}
+
+void __gxx_personality_v0() {
+    return;
+}
+
 int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     if (__atexit_func_count >= ATEXIT_MAX_FUNCS) {
         return -1;
