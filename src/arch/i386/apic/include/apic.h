@@ -15,7 +15,7 @@ protected:
 public:
     APIC(void);
     ~APIC(void);
-    bool init(void);
+    int32_t init(void);
 };
 
 class IOAPIC {
