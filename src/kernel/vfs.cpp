@@ -90,7 +90,8 @@ dentry_t *VFS::alloc_dentry(const mystl::string &_path, int _flags) {
     }
     dentry->path = _path;
     // 设置文件名为 _path 的最后一部分
-    dentry->name = _path.substr(_path.find_last_of('/') + 1);
+    mystl::string tmp = _path;
+    dentry->name      = tmp.substr(_path.find_last_of('/') + 1);
     // 由路径对应的 fs 分配 inode
     inode_t *inode = get_fs(_path)->alloc_inode();
     // 将 dentry 与 inode 建立关联
