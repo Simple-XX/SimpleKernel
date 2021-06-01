@@ -16,7 +16,7 @@
 #include "heap_algo"
 #include "functional"
 
-namespace std {
+namespace mystl {
 
     /*****************************************************************************************/
     // all_of
@@ -135,8 +135,8 @@ namespace std {
     template <class ForwardIter1, class ForwardIter2>
     ForwardIter1 search(ForwardIter1 first1, ForwardIter1 last1,
                         ForwardIter2 first2, ForwardIter2 last2) {
-        auto d1 = std::distance(first1, last1);
-        auto d2 = std::distance(first2, last2);
+        auto d1 = mystl::distance(first1, last1);
+        auto d2 = mystl::distance(first2, last2);
         if (d1 < d2)
             return last1;
         auto current1 = first1;
@@ -165,8 +165,8 @@ namespace std {
     ForwardIter1 search(ForwardIter1 first1, ForwardIter1 last1,
                         ForwardIter2 first2, ForwardIter2 last2,
                         Compared comp) {
-        auto d1 = std::distance(first1, last1);
-        auto d2 = std::distance(first2, last2);
+        auto d1 = mystl::distance(first1, last1);
+        auto d2 = mystl::distance(first2, last2);
         if (d1 < d2)
             return last1;
         auto current1 = first1;
@@ -202,7 +202,7 @@ namespace std {
             return first;
         }
         else {
-            first = std::find(first, last, value);
+            first = mystl::find(first, last, value);
             while (first != last) {
                 auto m = n - 1;
                 auto i = first;
@@ -215,7 +215,7 @@ namespace std {
                     return first;
                 }
                 else {
-                    first = std::find(i, last, value);
+                    first = mystl::find(i, last, value);
                 }
             }
             return last;
@@ -276,7 +276,7 @@ namespace std {
             auto result = last1;
             while (true) {
                 // 利用 search 查找某个子序列的首次出现点，找不到则返回 last1
-                auto new_result = std::search(first1, last1, first2, last2);
+                auto new_result = mystl::search(first1, last1, first2, last2);
                 if (new_result == last1) {
                     return result;
                 }
@@ -300,13 +300,13 @@ namespace std {
         reviter1                                     rlast1(first1);
         reviter2                                     rlast2(first2);
         reviter1                                     rresult =
-            std::search(reviter1(last1), rlast1, reviter2(last2), rlast2);
+            mystl::search(reviter1(last1), rlast1, reviter2(last2), rlast2);
         if (rresult == rlast1) {
             return last1;
         }
         else {
             auto result = rresult.base();
-            std::advance(result, -std::distance(first2, last2));
+            mystl::advance(result, -mystl::distance(first2, last2));
             return result;
         }
     }
@@ -318,8 +318,8 @@ namespace std {
             typename iterator_traits<ForwardIter1>::iterator_category Category1;
         typedef
             typename iterator_traits<ForwardIter2>::iterator_category Category2;
-        return std::find_end_dispatch(first1, last1, first2, last2,
-                                         Category1(), Category2());
+        return mystl::find_end_dispatch(first1, last1, first2, last2,
+                                        Category1(), Category2());
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -337,7 +337,7 @@ namespace std {
             while (true) {
                 // 利用 search 查找某个子序列的首次出现点，找不到则返回 last1
                 auto new_result =
-                    std::search(first1, last1, first2, last2, comp);
+                    mystl::search(first1, last1, first2, last2, comp);
                 if (new_result == last1) {
                     return result;
                 }
@@ -362,14 +362,14 @@ namespace std {
         typedef reverse_iterator<BidirectionalIter2> reviter2;
         reviter1                                     rlast1(first1);
         reviter2                                     rlast2(first2);
-        reviter1 rresult = std::search(reviter1(last1), rlast1,
-                                          reviter2(last2), rlast2, comp);
+        reviter1 rresult = mystl::search(reviter1(last1), rlast1,
+                                         reviter2(last2), rlast2, comp);
         if (rresult == rlast1) {
             return last1;
         }
         else {
             auto result = rresult.base();
-            std::advance(result, -std::distance(first2, last2));
+            mystl::advance(result, -mystl::distance(first2, last2));
             return result;
         }
     }
@@ -382,8 +382,8 @@ namespace std {
             typename iterator_traits<ForwardIter1>::iterator_category Category1;
         typedef
             typename iterator_traits<ForwardIter2>::iterator_category Category2;
-        return std::find_end_dispatch(first1, last1, first2, last2,
-                                         Category1(), Category2(), comp);
+        return mystl::find_end_dispatch(first1, last1, first2, last2,
+                                        Category1(), Category2(), comp);
     }
 
     /*****************************************************************************************/
@@ -472,13 +472,13 @@ namespace std {
     template <class ForwardIter, class T>
     ForwardIter lbound_dispatch(ForwardIter first, ForwardIter last,
                                 const T &value, forward_iterator_tag) {
-        auto        len  = std::distance(first, last);
+        auto        len  = mystl::distance(first, last);
         auto        half = len;
         ForwardIter middle;
         while (len > 0) {
             half   = len >> 1;
             middle = first;
-            std::advance(middle, half);
+            mystl::advance(middle, half);
             if (*middle < value) {
                 first = middle;
                 ++first;
@@ -515,8 +515,8 @@ namespace std {
     template <class ForwardIter, class T>
     ForwardIter lower_bound(ForwardIter first, ForwardIter last,
                             const T &value) {
-        return std::lbound_dispatch(first, last, value,
-                                       iterator_category(first));
+        return mystl::lbound_dispatch(first, last, value,
+                                      iterator_category(first));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -525,13 +525,13 @@ namespace std {
     ForwardIter lbound_dispatch(ForwardIter first, ForwardIter last,
                                 const T &value, forward_iterator_tag,
                                 Compared comp) {
-        auto        len  = std::distance(first, last);
+        auto        len  = mystl::distance(first, last);
         auto        half = len;
         ForwardIter middle;
         while (len > 0) {
             half   = len >> 1;
             middle = first;
-            std::advance(middle, half);
+            mystl::advance(middle, half);
             if (comp(*middle, value)) {
                 first = middle;
                 ++first;
@@ -569,8 +569,8 @@ namespace std {
     template <class ForwardIter, class T, class Compared>
     ForwardIter lower_bound(ForwardIter first, ForwardIter last, const T &value,
                             Compared comp) {
-        return std::lbound_dispatch(first, last, value,
-                                       iterator_category(first), comp);
+        return mystl::lbound_dispatch(first, last, value,
+                                      iterator_category(first), comp);
     }
 
     /*****************************************************************************************/
@@ -582,13 +582,13 @@ namespace std {
     template <class ForwardIter, class T>
     ForwardIter ubound_dispatch(ForwardIter first, ForwardIter last,
                                 const T &value, forward_iterator_tag) {
-        auto        len  = std::distance(first, last);
+        auto        len  = mystl::distance(first, last);
         auto        half = len;
         ForwardIter middle;
         while (len > 0) {
             half   = len >> 1;
             middle = first;
-            std::advance(middle, half);
+            mystl::advance(middle, half);
             if (value < *middle) {
                 len = half;
             }
@@ -625,8 +625,8 @@ namespace std {
     template <class ForwardIter, class T>
     ForwardIter upper_bound(ForwardIter first, ForwardIter last,
                             const T &value) {
-        return std::ubound_dispatch(first, last, value,
-                                       iterator_category(first));
+        return mystl::ubound_dispatch(first, last, value,
+                                      iterator_category(first));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -635,13 +635,13 @@ namespace std {
     ForwardIter ubound_dispatch(ForwardIter first, ForwardIter last,
                                 const T &value, forward_iterator_tag,
                                 Compared comp) {
-        auto        len  = std::distance(first, last);
+        auto        len  = mystl::distance(first, last);
         auto        half = len;
         ForwardIter middle;
         while (len > 0) {
             half   = len >> 1;
             middle = first;
-            std::advance(middle, half);
+            mystl::advance(middle, half);
             if (comp(value, *middle)) {
                 len = half;
             }
@@ -679,8 +679,8 @@ namespace std {
     template <class ForwardIter, class T, class Compared>
     ForwardIter upper_bound(ForwardIter first, ForwardIter last, const T &value,
                             Compared comp) {
-        return std::ubound_dispatch(first, last, value,
-                                       iterator_category(first), comp);
+        return mystl::ubound_dispatch(first, last, value,
+                                      iterator_category(first), comp);
     }
 
     /*****************************************************************************************/
@@ -690,7 +690,7 @@ namespace std {
     /*****************************************************************************************/
     template <class ForwardIter, class T>
     bool binary_search(ForwardIter first, ForwardIter last, const T &value) {
-        auto i = std::lower_bound(first, last, value);
+        auto i = mystl::lower_bound(first, last, value);
         return i != last && !(value < *i);
     }
 
@@ -698,7 +698,7 @@ namespace std {
     template <class ForwardIter, class T, class Compared>
     bool binary_search(ForwardIter first, ForwardIter last, const T &value,
                        Compared comp) {
-        auto i = std::lower_bound(first, last, value);
+        auto i = mystl::lower_bound(first, last, value);
         return i != last && !comp(value, *i);
     }
 
@@ -711,16 +711,16 @@ namespace std {
     /*****************************************************************************************/
     // erange_dispatch 的 forward_iterator_tag 版本
     template <class ForwardIter, class T>
-    std::pair<ForwardIter, ForwardIter>
+    mystl::pair<ForwardIter, ForwardIter>
     erange_dispatch(ForwardIter first, ForwardIter last, const T &value,
                     forward_iterator_tag) {
-        auto        len  = std::distance(first, last);
+        auto        len  = mystl::distance(first, last);
         auto        half = len;
         ForwardIter middle, left, right;
         while (len > 0) {
             half   = len >> 1;
             middle = first;
-            std::advance(middle, half);
+            mystl::advance(middle, half);
             if (*middle < value) {
                 first = middle;
                 ++first;
@@ -730,18 +730,18 @@ namespace std {
                 len = half;
             }
             else {
-                left = std::lower_bound(first, last, value);
-                std::advance(first, len);
-                right = std::upper_bound(++middle, first, value);
-                return std::pair<ForwardIter, ForwardIter>(left, right);
+                left = mystl::lower_bound(first, last, value);
+                mystl::advance(first, len);
+                right = mystl::upper_bound(++middle, first, value);
+                return mystl::pair<ForwardIter, ForwardIter>(left, right);
             }
         }
-        return std::pair<ForwardIter, ForwardIter>(last, last);
+        return mystl::pair<ForwardIter, ForwardIter>(last, last);
     }
 
     // erange_dispatch 的 random_access_iterator_tag 版本
     template <class RandomIter, class T>
-    std::pair<RandomIter, RandomIter>
+    mystl::pair<RandomIter, RandomIter>
     erange_dispatch(RandomIter first, RandomIter last, const T &value,
                     random_access_iterator_tag) {
         auto       len  = last - first;
@@ -758,34 +758,34 @@ namespace std {
                 len = half;
             }
             else {
-                left  = std::lower_bound(first, middle, value);
-                right = std::upper_bound(++middle, first + len, value);
-                return std::pair<RandomIter, RandomIter>(left, right);
+                left  = mystl::lower_bound(first, middle, value);
+                right = mystl::upper_bound(++middle, first + len, value);
+                return mystl::pair<RandomIter, RandomIter>(left, right);
             }
         }
-        return std::pair<RandomIter, RandomIter>(last, last);
+        return mystl::pair<RandomIter, RandomIter>(last, last);
     }
 
     template <class ForwardIter, class T>
-    std::pair<ForwardIter, ForwardIter>
+    mystl::pair<ForwardIter, ForwardIter>
     equal_range(ForwardIter first, ForwardIter last, const T &value) {
-        return std::erange_dispatch(first, last, value,
-                                       iterator_category(first));
+        return mystl::erange_dispatch(first, last, value,
+                                      iterator_category(first));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
     // erange_dispatch 的 forward iterator 版本
     template <class ForwardIter, class T, class Compared>
-    std::pair<ForwardIter, ForwardIter>
+    mystl::pair<ForwardIter, ForwardIter>
     erange_dispatch(ForwardIter first, ForwardIter last, const T &value,
                     forward_iterator_tag, Compared comp) {
-        auto        len  = std::distance(first, last);
+        auto        len  = mystl::distance(first, last);
         auto        half = len;
         ForwardIter middle, left, right;
         while (len > 0) {
             half   = len >> 1;
             middle = first;
-            std::advance(middle, half);
+            mystl::advance(middle, half);
             if (comp(*middle, value)) {
                 first = middle;
                 ++first;
@@ -795,18 +795,18 @@ namespace std {
                 len = half;
             }
             else {
-                left = std::lower_bound(first, last, value, comp);
-                std::advance(first, len);
-                right = std::upper_bound(++middle, first, value, comp);
-                return std::pair<ForwardIter, ForwardIter>(left, right);
+                left = mystl::lower_bound(first, last, value, comp);
+                mystl::advance(first, len);
+                right = mystl::upper_bound(++middle, first, value, comp);
+                return mystl::pair<ForwardIter, ForwardIter>(left, right);
             }
         }
-        return std::pair<ForwardIter, ForwardIter>(last, last);
+        return mystl::pair<ForwardIter, ForwardIter>(last, last);
     }
 
     // erange_dispatch 的 random access iterator 版本
     template <class RandomIter, class T, class Compared>
-    std::pair<RandomIter, RandomIter>
+    mystl::pair<RandomIter, RandomIter>
     erange_dispatch(RandomIter first, RandomIter last, const T &value,
                     random_access_iterator_tag, Compared comp) {
         auto       len  = last - first;
@@ -823,20 +823,20 @@ namespace std {
                 len = half;
             }
             else {
-                left  = std::lower_bound(first, middle, value, comp);
-                right = std::upper_bound(++middle, first + len, value, comp);
-                return std::pair<RandomIter, RandomIter>(left, right);
+                left  = mystl::lower_bound(first, middle, value, comp);
+                right = mystl::upper_bound(++middle, first + len, value, comp);
+                return mystl::pair<RandomIter, RandomIter>(left, right);
             }
         }
-        return std::pair<RandomIter, RandomIter>(last, last);
+        return mystl::pair<RandomIter, RandomIter>(last, last);
     }
 
     template <class ForwardIter, class T, class Compared>
-    std::pair<ForwardIter, ForwardIter>
+    mystl::pair<ForwardIter, ForwardIter>
     equal_range(ForwardIter first, ForwardIter last, const T &value,
                 Compared comp) {
-        return std::erange_dispatch(first, last, value,
-                                       iterator_category(first), comp);
+        return mystl::erange_dispatch(first, last, value,
+                                      iterator_category(first), comp);
     }
 
     /*****************************************************************************************/
@@ -906,7 +906,7 @@ namespace std {
     /*****************************************************************************************/
     template <class RandomIter>
     bool is_heap(RandomIter first, RandomIter last) {
-        auto n      = std::distance(first, last);
+        auto n      = mystl::distance(first, last);
         auto parent = 0;
         for (auto child = 1; child < n; ++child) {
             if (first[parent] < first[child])
@@ -920,7 +920,7 @@ namespace std {
     // 重载版本使用函数对象 comp 代替比较操作
     template <class RandomIter, class Compared>
     bool is_heap(RandomIter first, RandomIter last, Compared comp) {
-        auto n      = std::distance(first, last);
+        auto n      = mystl::distance(first, last);
         auto parent = 0;
         for (auto child = 1; child < n; ++child) {
             if (comp(first[parent], first[child]))
@@ -1071,7 +1071,7 @@ namespace std {
     ForwardIter2 swap_ranges(ForwardIter1 first1, ForwardIter1 last1,
                              ForwardIter2 first2) {
         for (; first1 != last1; ++first1, ++first2) {
-            std::iter_swap(first1, first2);
+            mystl::iter_swap(first1, first2);
         }
         return first2;
     }
@@ -1125,10 +1125,10 @@ namespace std {
     template <class ForwardIter, class T>
     ForwardIter remove(ForwardIter first, ForwardIter last, const T &value) {
         first =
-            std::find(first, last, value); // 利用 find 找出第一个匹配的地方
+            mystl::find(first, last, value); // 利用 find 找出第一个匹配的地方
         auto next = first;
         return first == last ? first
-                             : std::remove_copy(++next, last, first, value);
+                             : mystl::remove_copy(++next, last, first, value);
     }
 
     /*****************************************************************************************/
@@ -1155,13 +1155,12 @@ namespace std {
     template <class ForwardIter, class UnaryPredicate>
     ForwardIter remove_if(ForwardIter first, ForwardIter last,
                           UnaryPredicate unary_pred) {
-        first =
-            std::find_if(first, last,
-                            unary_pred); // 利用 find_if 找出第一个匹配的地方
+        first     = mystl::find_if(first, last,
+                               unary_pred); // 利用 find_if 找出第一个匹配的地方
         auto next = first;
         return first == last
                    ? first
-                   : std::remove_copy_if(++next, last, first, unary_pred);
+                   : mystl::remove_copy_if(++next, last, first, unary_pred);
     }
 
     /*****************************************************************************************/
@@ -1230,7 +1229,7 @@ namespace std {
         while (true) {
             if (first == last || first == --last)
                 return;
-            std::iter_swap(first++, last);
+            mystl::iter_swap(first++, last);
         }
     }
 
@@ -1239,12 +1238,12 @@ namespace std {
     void reverse_dispatch(RandomIter first, RandomIter last,
                           random_access_iterator_tag) {
         while (first < last)
-            std::iter_swap(first++, --last);
+            mystl::iter_swap(first++, --last);
     }
 
     template <class BidirectionalIter>
     void reverse(BidirectionalIter first, BidirectionalIter last) {
-        std::reverse_dispatch(first, last, iterator_category(first));
+        mystl::reverse_dispatch(first, last, iterator_category(first));
     }
 
     /*****************************************************************************************/
@@ -1267,15 +1266,15 @@ namespace std {
     // 将[first, last)内的元素次序随机重排
     // 重载版本使用一个产生随机数的函数对象 rand
     /*****************************************************************************************/
-    // template <class RandomIter>
-    // void random_shuffle(RandomIter first, RandomIter last) {
-    //     if (first == last)
-    //         return;
-    //     srand((unsigned)time(0));
-    //     for (auto i = first + 1; i != last; ++i) {
-    //         std::iter_swap(i, first + (rand() % (i - first + 1)));
-    //     }
-    // }
+    template <class RandomIter>
+    void random_shuffle(RandomIter first, RandomIter last) {
+        if (first == last)
+            return;
+        srand((unsigned)time(0));
+        for (auto i = first + 1; i != last; ++i) {
+            mystl::iter_swap(i, first + (rand() % (i - first + 1)));
+        }
+    }
 
     // 重载版本使用一个产生随机数的函数对象 rand
     template <class RandomIter, class RandomNumberGenerator>
@@ -1283,9 +1282,9 @@ namespace std {
                         RandomNumberGenerator &rand) {
         if (first == last)
             return;
-        auto len = std::distance(first, last);
+        auto len = mystl::distance(first, last);
         for (auto i = first + 1; i != last; ++i) {
-            std::iter_swap(i, first + (rand(i - first + 1) % len));
+            mystl::iter_swap(i, first + (rand(i - first + 1) % len));
         }
     }
 
@@ -1300,7 +1299,7 @@ namespace std {
                                 ForwardIter last, forward_iterator_tag) {
         auto first2 = middle;
         do {
-            std::swap(*first++, *first2++);
+            mystl::swap(*first++, *first2++);
             if (first == middle)
                 middle = first2;
         } while (first2 != last); // 后半段移到前面
@@ -1308,7 +1307,7 @@ namespace std {
         auto new_middle = first; // 迭代器返回的位置
         first2          = middle;
         while (first2 != last) { // 调整剩余元素
-            std::swap(*first++, *first2++);
+            mystl::swap(*first++, *first2++);
             if (first == middle) {
                 middle = first2;
             }
@@ -1324,18 +1323,17 @@ namespace std {
     BidirectionalIter
     rotate_dispatch(BidirectionalIter first, BidirectionalIter middle,
                     BidirectionalIter last, bidirectional_iterator_tag) {
-        std::reverse_dispatch(first, middle, bidirectional_iterator_tag());
-        std::reverse_dispatch(middle, last, bidirectional_iterator_tag());
+        mystl::reverse_dispatch(first, middle, bidirectional_iterator_tag());
+        mystl::reverse_dispatch(middle, last, bidirectional_iterator_tag());
         while (first != middle && middle != last)
-            std::swap(*first++, *--last);
+            mystl::swap(*first++, *--last);
         if (first == middle) {
-            std::reverse_dispatch(middle, last,
-                                     bidirectional_iterator_tag());
+            mystl::reverse_dispatch(middle, last, bidirectional_iterator_tag());
             return last;
         }
         else {
-            std::reverse_dispatch(first, middle,
-                                     bidirectional_iterator_tag());
+            mystl::reverse_dispatch(first, middle,
+                                    bidirectional_iterator_tag());
             return first;
         }
     }
@@ -1361,7 +1359,7 @@ namespace std {
         auto r      = n - l;
         auto result = first + (last - middle);
         if (l == r) {
-            std::swap_ranges(first, middle, middle);
+            mystl::swap_ranges(first, middle, middle);
             return result;
         }
         auto cycle_times = rgcd(n, l);
@@ -1401,8 +1399,8 @@ namespace std {
             return last;
         if (middle == last)
             return first;
-        return std::rotate_dispatch(first, middle, last,
-                                       iterator_category(first));
+        return mystl::rotate_dispatch(first, middle, last,
+                                      iterator_category(first));
     }
 
     /*****************************************************************************************/
@@ -1412,7 +1410,7 @@ namespace std {
     template <class ForwardIter, class OutputIter>
     ForwardIter rotate_copy(ForwardIter first, ForwardIter middle,
                             ForwardIter last, OutputIter result) {
-        return std::copy(first, middle, std::copy(middle, last, result));
+        return mystl::copy(first, middle, mystl::copy(middle, last, result));
     }
 
     /*****************************************************************************************/
@@ -1424,8 +1422,8 @@ namespace std {
                             ForwardIter2 first2, ForwardIter2 last2,
                             BinaryPred pred) {
         constexpr bool is_ra_it =
-            std::is_random_access_iterator<ForwardIter1>::value &&
-            std::is_random_access_iterator<ForwardIter2>::value;
+            mystl::is_random_access_iterator<ForwardIter1>::value &&
+            mystl::is_random_access_iterator<ForwardIter2>::value;
         if (is_ra_it) {
             auto len1 = last1 - first1;
             auto len2 = last2 - first2;
@@ -1443,8 +1441,8 @@ namespace std {
                 return true;
         }
         else {
-            auto len1 = std::distance(first1, last1);
-            auto len2 = std::distance(first2, last2);
+            auto len1 = mystl::distance(first1, last1);
+            auto len2 = mystl::distance(first2, last2);
             if (len1 == 0 && len2 == 0)
                 return true;
             if (len1 != len2)
@@ -1498,9 +1496,9 @@ namespace std {
         typedef typename iterator_traits<ForwardIter1>::value_type v1;
         typedef typename iterator_traits<ForwardIter2>::value_type v2;
         static_assert(std::is_same<v1, v2>::value,
-                      "the type should be same in std::is_permutation");
+                      "the type should be same in mystl::is_permutation");
         return is_permutation_aux(first1, last1, first2, last2,
-                                  std::equal_to<v1>());
+                                  mystl::equal_to<v1>());
     }
 
     /*****************************************************************************************/
@@ -1518,12 +1516,12 @@ namespace std {
             if (*--i < *ii) { // 找到第一对小于关系的元素
                 auto j = last;
                 while (!(*i < *--j)) {}
-                std::iter_swap(i, j);   // 交换 i，j 所指元素
-                std::reverse(ii, last); // 将 ii 之后的所有元素反转
+                mystl::iter_swap(i, j);   // 交换 i，j 所指元素
+                mystl::reverse(ii, last); // 将 ii 之后的所有元素反转
                 return true;
             }
             if (i == first) {
-                std::reverse(first, last);
+                mystl::reverse(first, last);
                 return false;
             }
         }
@@ -1541,12 +1539,12 @@ namespace std {
             if (comp(*--i, *ii)) {
                 auto j = last;
                 while (!comp(*i, *--j)) {}
-                std::iter_swap(i, j);   // 交换 i，j 所指元素
-                std::reverse(ii, last); // 将 ii 之后的所有元素反转
+                mystl::iter_swap(i, j);   // 交换 i，j 所指元素
+                mystl::reverse(ii, last); // 将 ii 之后的所有元素反转
                 return true;
             }
             if (i == first) {
-                std::reverse(first, last);
+                mystl::reverse(first, last);
                 return false;
             }
         }
@@ -1567,12 +1565,12 @@ namespace std {
             if (*ii < *--i) { // 找到第一对大于关系的元素
                 auto j = last;
                 while (!(*--j < *i)) {}
-                std::iter_swap(i, j);   // 交换i，j
-                std::reverse(ii, last); // 将 ii 之后的所有元素反转
+                mystl::iter_swap(i, j);   // 交换i，j
+                mystl::reverse(ii, last); // 将 ii 之后的所有元素反转
                 return true;
             }
             if (i == first) {
-                std::reverse(first, last);
+                mystl::reverse(first, last);
                 return false;
             }
         }
@@ -1590,12 +1588,12 @@ namespace std {
             if (comp(*ii, *--i)) {
                 auto j = last;
                 while (!comp(*--j, *i)) {}
-                std::iter_swap(i, j);   // 交换i，j
-                std::reverse(ii, last); // 将 ii 之后的所有元素反转
+                mystl::iter_swap(i, j);   // 交换i，j
+                mystl::reverse(ii, last); // 将 ii 之后的所有元素反转
                 return true;
             }
             if (i == first) {
-                std::reverse(first, last);
+                mystl::reverse(first, last);
                 return false;
             }
         }
@@ -1620,7 +1618,7 @@ namespace std {
             }
             ++result;
         }
-        return std::copy(first2, last2, std::copy(first1, last1, result));
+        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -1639,7 +1637,7 @@ namespace std {
             }
             ++result;
         }
-        return std::copy(first2, last2, std::copy(first1, last1, result));
+        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
     }
 
     /*****************************************************************************************/
@@ -1655,7 +1653,7 @@ namespace std {
             return;
         if (len1 + len2 == 2) {
             if (*middle < *first)
-                std::iter_swap(first, middle);
+                mystl::iter_swap(first, middle);
             return;
         }
         auto     first_cut  = first;
@@ -1664,21 +1662,20 @@ namespace std {
         Distance len22      = 0;
         if (len1 > len2) { // 序列一较长，找到序列一的中点
             len11 = len1 >> 1;
-            std::advance(first_cut, len11);
-            second_cut = std::lower_bound(middle, last, *first_cut);
-            len22      = std::distance(middle, second_cut);
+            mystl::advance(first_cut, len11);
+            second_cut = mystl::lower_bound(middle, last, *first_cut);
+            len22      = mystl::distance(middle, second_cut);
         }
         else { // 序列二较长，找到序列二的中点
             len22 = len2 >> 1;
-            std::advance(second_cut, len22);
-            first_cut = std::upper_bound(first, middle, *second_cut);
-            len11     = std::distance(first, first_cut);
+            mystl::advance(second_cut, len22);
+            first_cut = mystl::upper_bound(first, middle, *second_cut);
+            len11     = mystl::distance(first, first_cut);
         }
-        auto new_middle = std::rotate(first_cut, middle, second_cut);
-        std::merge_without_buffer(first, first_cut, new_middle, len11,
-                                     len22);
-        std::merge_without_buffer(new_middle, second_cut, last, len1 - len11,
-                                     len2 - len22);
+        auto new_middle = mystl::rotate(first_cut, middle, second_cut);
+        mystl::merge_without_buffer(first, first_cut, new_middle, len11, len22);
+        mystl::merge_without_buffer(new_middle, second_cut, last, len1 - len11,
+                                    len2 - len22);
     }
 
     template <class BidirectionalIter1, class BidirectionalIter2>
@@ -1687,22 +1684,22 @@ namespace std {
                    BidirectionalIter2 first2, BidirectionalIter2 last2,
                    BidirectionalIter1 result) {
         if (first1 == last1)
-            return std::copy_backward(first2, last2, result);
+            return mystl::copy_backward(first2, last2, result);
         if (first2 == last2)
-            return std::copy_backward(first1, last1, result);
+            return mystl::copy_backward(first1, last1, result);
         --last1;
         --last2;
         while (true) {
             if (*last2 < *last1) {
                 *--result = *last1;
                 if (first1 == last1)
-                    return std::copy_backward(first2, ++last2, result);
+                    return mystl::copy_backward(first2, ++last2, result);
                 --last1;
             }
             else {
                 *--result = *last2;
                 if (first2 == last2)
-                    return std::copy_backward(first1, ++last1, result);
+                    return mystl::copy_backward(first1, ++last1, result);
                 --last2;
             }
         }
@@ -1716,17 +1713,17 @@ namespace std {
                     BidirectionalIter2 buffer, Distance buffer_size) {
         BidirectionalIter2 buffer_end;
         if (len1 > len2 && len2 <= buffer_size) {
-            buffer_end = std::copy(middle, last, buffer);
-            std::copy_backward(first, middle, last);
-            return std::copy(buffer, buffer_end, first);
+            buffer_end = mystl::copy(middle, last, buffer);
+            mystl::copy_backward(first, middle, last);
+            return mystl::copy(buffer, buffer_end, first);
         }
         else if (len1 <= buffer_size) {
-            buffer_end = std::copy(first, middle, buffer);
-            std::copy(middle, last, first);
-            return std::copy_backward(buffer, buffer_end, last);
+            buffer_end = mystl::copy(first, middle, buffer);
+            mystl::copy(middle, last, first);
+            return mystl::copy_backward(buffer, buffer_end, last);
         }
         else {
-            return std::rotate(first, middle, last);
+            return mystl::rotate(first, middle, last);
         }
     }
 
@@ -1737,12 +1734,12 @@ namespace std {
                         Pointer buffer, Distance buffer_size) {
         // 区间长度足够放进缓冲区
         if (len1 <= len2 && len1 <= buffer_size) {
-            Pointer buffer_end = std::copy(first, middle, buffer);
-            std::merge(buffer, buffer_end, middle, last, first);
+            Pointer buffer_end = mystl::copy(first, middle, buffer);
+            mystl::merge(buffer, buffer_end, middle, last, first);
         }
         else if (len2 <= buffer_size) {
-            Pointer buffer_end = std::copy(middle, last, buffer);
-            std::merge_backward(first, middle, buffer, buffer_end, last);
+            Pointer buffer_end = mystl::copy(middle, last, buffer);
+            mystl::merge_backward(first, middle, buffer, buffer_end, last);
         }
         else { // 区间长度太长，分割递归处理
             auto     first_cut  = first;
@@ -1751,38 +1748,38 @@ namespace std {
             Distance len22      = 0;
             if (len1 > len2) {
                 len11 = len1 >> 1;
-                std::advance(first_cut, len11);
-                second_cut = std::lower_bound(middle, last, *first_cut);
-                len22      = std::distance(middle, second_cut);
+                mystl::advance(first_cut, len11);
+                second_cut = mystl::lower_bound(middle, last, *first_cut);
+                len22      = mystl::distance(middle, second_cut);
             }
             else {
                 len22 = len2 >> 1;
-                std::advance(second_cut, len22);
-                first_cut = std::upper_bound(first, middle, *second_cut);
-                len11     = std::distance(first, first_cut);
+                mystl::advance(second_cut, len22);
+                first_cut = mystl::upper_bound(first, middle, *second_cut);
+                len11     = mystl::distance(first, first_cut);
             }
-            auto new_middle = std::rotate_adaptive(
+            auto new_middle = mystl::rotate_adaptive(
                 first_cut, middle, second_cut, len1 - len11, len22, buffer,
                 buffer_size);
-            std::merge_adaptive(first, first_cut, new_middle, len11, len22,
-                                   buffer, buffer_size);
-            std::merge_adaptive(new_middle, second_cut, last, len1 - len11,
-                                   len2 - len22, buffer, buffer_size);
+            mystl::merge_adaptive(first, first_cut, new_middle, len11, len22,
+                                  buffer, buffer_size);
+            mystl::merge_adaptive(new_middle, second_cut, last, len1 - len11,
+                                  len2 - len22, buffer, buffer_size);
         }
     }
 
     template <class BidirectionalIter, class T>
     void inplace_merge_aux(BidirectionalIter first, BidirectionalIter middle,
                            BidirectionalIter last, T *) {
-        auto len1 = std::distance(first, middle);
-        auto len2 = std::distance(middle, last);
+        auto len1 = mystl::distance(first, middle);
+        auto len2 = mystl::distance(middle, last);
         temporary_buffer<BidirectionalIter, T> buf(first, last);
         if (!buf.begin()) {
-            std::merge_without_buffer(first, middle, last, len1, len2);
+            mystl::merge_without_buffer(first, middle, last, len1, len2);
         }
         else {
-            std::merge_adaptive(first, middle, last, len1, len2, buf.begin(),
-                                   buf.size());
+            mystl::merge_adaptive(first, middle, last, len1, len2, buf.begin(),
+                                  buf.size());
         }
     }
 
@@ -1791,7 +1788,7 @@ namespace std {
                        BidirectionalIter last) {
         if (first == middle || middle == last)
             return;
-        std::inplace_merge_aux(first, middle, last, value_type(first));
+        mystl::inplace_merge_aux(first, middle, last, value_type(first));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -1804,7 +1801,7 @@ namespace std {
             return;
         if (len1 + len2 == 2) {
             if (comp(*middle, *first))
-                std::iter_swap(first, middle);
+                mystl::iter_swap(first, middle);
             return;
         }
         auto     first_cut  = first;
@@ -1813,21 +1810,21 @@ namespace std {
         Distance len22      = 0;
         if (len1 > len2) {
             len11 = len1 >> 1;
-            std::advance(first_cut, len11);
-            second_cut = std::lower_bound(middle, last, *first_cut, comp);
-            len22      = std::distance(middle, second_cut);
+            mystl::advance(first_cut, len11);
+            second_cut = mystl::lower_bound(middle, last, *first_cut, comp);
+            len22      = mystl::distance(middle, second_cut);
         }
         else {
             len22 = len2 >> 1;
-            std::advance(second_cut, len22);
-            first_cut = std::upper_bound(first, middle, *second_cut, comp);
-            len11     = std::distance(first, first_cut);
+            mystl::advance(second_cut, len22);
+            first_cut = mystl::upper_bound(first, middle, *second_cut, comp);
+            len11     = mystl::distance(first, first_cut);
         }
-        auto new_middle = std::rotate(first_cut, middle, second_cut);
-        std::merge_without_buffer(first, first_cut, new_middle, len11, len22,
-                                     comp);
-        std::merge_without_buffer(new_middle, second_cut, last, len1 - len11,
-                                     len2 - len22, comp);
+        auto new_middle = mystl::rotate(first_cut, middle, second_cut);
+        mystl::merge_without_buffer(first, first_cut, new_middle, len11, len22,
+                                    comp);
+        mystl::merge_without_buffer(new_middle, second_cut, last, len1 - len11,
+                                    len2 - len22, comp);
     }
 
     template <class BidirectionalIter1, class BidirectionalIter2,
@@ -1837,22 +1834,22 @@ namespace std {
                    BidirectionalIter2 first2, BidirectionalIter2 last2,
                    BidirectionalIter1 result, Compared comp) {
         if (first1 == last1)
-            return std::copy_backward(first2, last2, result);
+            return mystl::copy_backward(first2, last2, result);
         if (first2 == last2)
-            return std::copy_backward(first1, last1, result);
+            return mystl::copy_backward(first1, last1, result);
         --last1;
         --last2;
         while (true) {
             if (comp(*last2, *last1)) {
                 *--result = *last1;
                 if (first1 == last1)
-                    return std::copy_backward(first2, ++last2, result);
+                    return mystl::copy_backward(first2, ++last2, result);
                 --last1;
             }
             else {
                 *--result = *last2;
                 if (first2 == last2)
-                    return std::copy_backward(first1, ++last1, result);
+                    return mystl::copy_backward(first1, ++last1, result);
                 --last2;
             }
         }
@@ -1866,13 +1863,13 @@ namespace std {
                         Pointer buffer, Distance buffer_size, Compared comp) {
         // 区间长度足够放进缓冲区
         if (len1 <= len2 && len1 <= buffer_size) {
-            Pointer buffer_end = std::copy(first, middle, buffer);
-            std::merge(buffer, buffer_end, middle, last, first, comp);
+            Pointer buffer_end = mystl::copy(first, middle, buffer);
+            mystl::merge(buffer, buffer_end, middle, last, first, comp);
         }
         else if (len2 <= buffer_size) {
-            Pointer buffer_end = std::copy(middle, last, buffer);
-            std::merge_backward(first, middle, buffer, buffer_end, last,
-                                   comp);
+            Pointer buffer_end = mystl::copy(middle, last, buffer);
+            mystl::merge_backward(first, middle, buffer, buffer_end, last,
+                                  comp);
         }
         else { // 区间长度太长，分割递归处理
             auto     first_cut  = first;
@@ -1881,40 +1878,39 @@ namespace std {
             Distance len22      = 0;
             if (len1 > len2) {
                 len11 = len1 >> 1;
-                std::advance(first_cut, len11);
-                second_cut =
-                    std::lower_bound(middle, last, *first_cut, comp);
-                len22 = std::distance(middle, second_cut);
+                mystl::advance(first_cut, len11);
+                second_cut = mystl::lower_bound(middle, last, *first_cut, comp);
+                len22      = mystl::distance(middle, second_cut);
             }
             else {
                 len22 = len2 >> 1;
-                std::advance(second_cut, len22);
+                mystl::advance(second_cut, len22);
                 first_cut =
-                    std::upper_bound(first, middle, *second_cut, comp);
-                len11 = std::distance(first, first_cut);
+                    mystl::upper_bound(first, middle, *second_cut, comp);
+                len11 = mystl::distance(first, first_cut);
             }
-            auto new_middle = std::rotate_adaptive(
+            auto new_middle = mystl::rotate_adaptive(
                 first_cut, middle, second_cut, len1 - len11, len22, buffer,
                 buffer_size);
-            std::merge_adaptive(first, first_cut, new_middle, len11, len22,
-                                   buffer, buffer_size, comp);
-            std::merge_adaptive(new_middle, second_cut, last, len1 - len11,
-                                   len2 - len22, buffer, buffer_size, comp);
+            mystl::merge_adaptive(first, first_cut, new_middle, len11, len22,
+                                  buffer, buffer_size, comp);
+            mystl::merge_adaptive(new_middle, second_cut, last, len1 - len11,
+                                  len2 - len22, buffer, buffer_size, comp);
         }
     }
 
     template <class BidirectionalIter, class T, class Compared>
     void inplace_merge_aux(BidirectionalIter first, BidirectionalIter middle,
                            BidirectionalIter last, T *, Compared comp) {
-        auto len1 = std::distance(first, middle);
-        auto len2 = std::distance(middle, last);
+        auto len1 = mystl::distance(first, middle);
+        auto len2 = mystl::distance(middle, last);
         temporary_buffer<BidirectionalIter, T> buf(first, last);
         if (!buf.begin()) {
-            std::merge_without_buffer(first, middle, last, len1, len2, comp);
+            mystl::merge_without_buffer(first, middle, last, len1, len2, comp);
         }
         else {
-            std::merge_adaptive(first, middle, last, len1, len2, buf.begin(),
-                                   buf.size(), comp);
+            mystl::merge_adaptive(first, middle, last, len1, len2, buf.begin(),
+                                  buf.size(), comp);
         }
     }
 
@@ -1923,7 +1919,7 @@ namespace std {
                        BidirectionalIter last, Compared comp) {
         if (first == middle || middle == last)
             return;
-        std::inplace_merge_aux(first, middle, last, value_type(first), comp);
+        mystl::inplace_merge_aux(first, middle, last, value_type(first), comp);
     }
 
     /*****************************************************************************************/
@@ -1933,28 +1929,27 @@ namespace std {
     /*****************************************************************************************/
     template <class RandomIter>
     void partial_sort(RandomIter first, RandomIter middle, RandomIter last) {
-        std::make_heap(first, middle);
+        mystl::make_heap(first, middle);
         for (auto i = middle; i < last; ++i) {
             if (*i < *first) {
-                std::pop_heap_aux(first, middle, i, *i,
-                                     distance_type(first));
+                mystl::pop_heap_aux(first, middle, i, *i, distance_type(first));
             }
         }
-        std::sort_heap(first, middle);
+        mystl::sort_heap(first, middle);
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
     template <class RandomIter, class Compared>
     void partial_sort(RandomIter first, RandomIter middle, RandomIter last,
                       Compared comp) {
-        std::make_heap(first, middle, comp);
+        mystl::make_heap(first, middle, comp);
         for (auto i = middle; i < last; ++i) {
             if (comp(*i, *first)) {
-                std::pop_heap_aux(first, middle, i, *i, distance_type(first),
-                                     comp);
+                mystl::pop_heap_aux(first, middle, i, *i, distance_type(first),
+                                    comp);
             }
         }
-        std::sort_heap(first, middle, comp);
+        mystl::sort_heap(first, middle, comp);
     }
 
     /*****************************************************************************************/
@@ -1973,15 +1968,15 @@ namespace std {
             ++result_iter;
             ++first;
         }
-        std::make_heap(result_first, result_iter);
+        mystl::make_heap(result_first, result_iter);
         while (first != last) {
             if (*first < *result_first) {
-                std::adjust_heap(result_first, static_cast<Distance>(0),
-                                    result_iter - result_first, *first);
+                mystl::adjust_heap(result_first, static_cast<Distance>(0),
+                                   result_iter - result_first, *first);
             }
             ++first;
         }
-        std::sort_heap(result_first, result_iter);
+        mystl::sort_heap(result_first, result_iter);
         return result_iter;
     }
 
@@ -1989,8 +1984,8 @@ namespace std {
     RandomIter partial_sort_copy(InputIter first, InputIter last,
                                  RandomIter result_first,
                                  RandomIter result_last) {
-        return std::psort_copy_aux(first, last, result_first, result_last,
-                                      distance_type(result_first));
+        return mystl::psort_copy_aux(first, last, result_first, result_last,
+                                     distance_type(result_first));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -2006,15 +2001,15 @@ namespace std {
             ++result_iter;
             ++first;
         }
-        std::make_heap(result_first, result_iter, comp);
+        mystl::make_heap(result_first, result_iter, comp);
         while (first != last) {
             if (comp(*first, *result_first)) {
-                std::adjust_heap(result_first, static_cast<Distance>(0),
-                                    result_iter - result_first, *first, comp);
+                mystl::adjust_heap(result_first, static_cast<Distance>(0),
+                                   result_iter - result_first, *first, comp);
             }
             ++first;
         }
-        std::sort_heap(result_first, result_iter, comp);
+        mystl::sort_heap(result_first, result_iter, comp);
         return result_iter;
     }
 
@@ -2022,8 +2017,8 @@ namespace std {
     RandomIter partial_sort_copy(InputIter first, InputIter last,
                                  RandomIter result_first,
                                  RandomIter result_last, Compared comp) {
-        return std::psort_copy_aux(first, last, result_first, result_last,
-                                      distance_type(result_first), comp);
+        return mystl::psort_copy_aux(first, last, result_first, result_last,
+                                     distance_type(result_first), comp);
     }
     /*****************************************************************************************/
     // partition
@@ -2045,7 +2040,7 @@ namespace std {
             }
             if (first == last)
                 break;
-            std::iter_swap(first, last);
+            mystl::iter_swap(first, last);
             ++first;
         }
         return first;
@@ -2055,11 +2050,11 @@ namespace std {
     // partition_copy
     // 行为与 partition 类似，不同的是，将被一元操作符判定为 true 的放到
     // result_true 的输出区间 其余放到 result_false 的输出区间，并返回一个
-    // std::pair 指向这两个区间的尾部
+    // mystl::pair 指向这两个区间的尾部
     /*****************************************************************************************/
     template <class InputIter, class OutputIter1, class OutputIter2,
               class UnaryPredicate>
-    std::pair<OutputIter1, OutputIter2>
+    mystl::pair<OutputIter1, OutputIter2>
     partition_copy(InputIter first, InputIter last, OutputIter1 result_true,
                    OutputIter2 result_false, UnaryPredicate unary_pred) {
         for (; first != last; ++first) {
@@ -2070,8 +2065,7 @@ namespace std {
                 *result_false++ = *first;
             }
         }
-        return std::pair<OutputIter1, OutputIter2>(result_true,
-                                                      result_false);
+        return mystl::pair<OutputIter1, OutputIter2>(result_true, result_false);
     }
 
     /*****************************************************************************************/
@@ -2102,7 +2096,7 @@ namespace std {
                 --last;
             if (!(first < last))
                 return first;
-            std::iter_swap(first, last);
+            mystl::iter_swap(first, last);
             ++first;
         }
     }
@@ -2112,14 +2106,14 @@ namespace std {
     void intro_sort(RandomIter first, RandomIter last, Size depth_limit) {
         while (static_cast<size_t>(last - first) > kSmallSectionSize) {
             if (depth_limit == 0) { // 到达最大分割深度限制
-                std::partial_sort(first, last, last); // 改用 heap_sort
+                mystl::partial_sort(first, last, last); // 改用 heap_sort
                 return;
             }
             --depth_limit;
-            auto mid = std::median(*(first), *(first + (last - first) / 2),
-                                      *(last - 1));
-            auto cut = std::unchecked_partition(first, last, mid);
-            std::intro_sort(cut, last, depth_limit);
+            auto mid = mystl::median(*(first), *(first + (last - first) / 2),
+                                     *(last - 1));
+            auto cut = mystl::unchecked_partition(first, last, mid);
+            mystl::intro_sort(cut, last, depth_limit);
             last = cut;
         }
     }
@@ -2141,7 +2135,7 @@ namespace std {
     template <class RandomIter>
     void unchecked_insertion_sort(RandomIter first, RandomIter last) {
         for (auto i = first; i != last; ++i) {
-            std::unchecked_linear_insert(i, *i);
+            mystl::unchecked_linear_insert(i, *i);
         }
     }
 
@@ -2153,11 +2147,11 @@ namespace std {
         for (auto i = first + 1; i != last; ++i) {
             auto value = *i;
             if (value < *first) {
-                std::copy_backward(first, i, i + 1);
+                mystl::copy_backward(first, i, i + 1);
                 *first = value;
             }
             else {
-                std::unchecked_linear_insert(i, value);
+                mystl::unchecked_linear_insert(i, value);
             }
         }
     }
@@ -2166,11 +2160,11 @@ namespace std {
     template <class RandomIter>
     void final_insertion_sort(RandomIter first, RandomIter last) {
         if (static_cast<size_t>(last - first) > kSmallSectionSize) {
-            std::insertion_sort(first, first + kSmallSectionSize);
-            std::unchecked_insertion_sort(first + kSmallSectionSize, last);
+            mystl::insertion_sort(first, first + kSmallSectionSize);
+            mystl::unchecked_insertion_sort(first + kSmallSectionSize, last);
         }
         else {
-            std::insertion_sort(first, last);
+            mystl::insertion_sort(first, last);
         }
     }
 
@@ -2178,8 +2172,8 @@ namespace std {
     void sort(RandomIter first, RandomIter last) {
         if (first != last) {
             // 内省式排序，将区间分为一个个小区间，然后对整体进行插入排序
-            std::intro_sort(first, last, slg2(last - first) * 2);
-            std::final_insertion_sort(first, last);
+            mystl::intro_sort(first, last, slg2(last - first) * 2);
+            mystl::final_insertion_sort(first, last);
         }
     }
 
@@ -2196,7 +2190,7 @@ namespace std {
                 --last;
             if (!(first < last))
                 return first;
-            std::iter_swap(first, last);
+            mystl::iter_swap(first, last);
             ++first;
         }
     }
@@ -2207,14 +2201,14 @@ namespace std {
                     Compared comp) {
         while (static_cast<size_t>(last - first) > kSmallSectionSize) {
             if (depth_limit == 0) { // 到达最大分割深度限制
-                std::partial_sort(first, last, last, comp); // 改用 heap_sort
+                mystl::partial_sort(first, last, last, comp); // 改用 heap_sort
                 return;
             }
             --depth_limit;
-            auto mid = std::median(*(first), *(first + (last - first) / 2),
-                                      *(last - 1));
-            auto cut = std::unchecked_partition(first, last, mid, comp);
-            std::intro_sort(cut, last, depth_limit, comp);
+            auto mid = mystl::median(*(first), *(first + (last - first) / 2),
+                                     *(last - 1));
+            auto cut = mystl::unchecked_partition(first, last, mid, comp);
+            mystl::intro_sort(cut, last, depth_limit, comp);
             last = cut;
         }
     }
@@ -2238,7 +2232,7 @@ namespace std {
     void unchecked_insertion_sort(RandomIter first, RandomIter last,
                                   Compared comp) {
         for (auto i = first; i != last; ++i) {
-            std::unchecked_linear_insert(i, *i, comp);
+            mystl::unchecked_linear_insert(i, *i, comp);
         }
     }
 
@@ -2250,11 +2244,11 @@ namespace std {
         for (auto i = first + 1; i != last; ++i) {
             auto value = *i;
             if (comp(value, *first)) {
-                std::copy_backward(first, i, i + 1);
+                mystl::copy_backward(first, i, i + 1);
                 *first = value;
             }
             else {
-                std::unchecked_linear_insert(i, value, comp);
+                mystl::unchecked_linear_insert(i, value, comp);
             }
         }
     }
@@ -2264,12 +2258,12 @@ namespace std {
     void final_insertion_sort(RandomIter first, RandomIter last,
                               Compared comp) {
         if (static_cast<size_t>(last - first) > kSmallSectionSize) {
-            std::insertion_sort(first, first + kSmallSectionSize, comp);
-            std::unchecked_insertion_sort(first + kSmallSectionSize, last,
-                                             comp);
+            mystl::insertion_sort(first, first + kSmallSectionSize, comp);
+            mystl::unchecked_insertion_sort(first + kSmallSectionSize, last,
+                                            comp);
         }
         else {
-            std::insertion_sort(first, last, comp);
+            mystl::insertion_sort(first, last, comp);
         }
     }
 
@@ -2277,8 +2271,8 @@ namespace std {
     void sort(RandomIter first, RandomIter last, Compared comp) {
         if (first != last) {
             // 内省式排序，将区间分为一个个小区间，然后对整体进行插入排序
-            std::intro_sort(first, last, slg2(last - first) * 2, comp);
-            std::final_insertion_sort(first, last, comp);
+            mystl::intro_sort(first, last, slg2(last - first) * 2, comp);
+            mystl::final_insertion_sort(first, last, comp);
         }
     }
 
@@ -2292,16 +2286,16 @@ namespace std {
         if (nth == last)
             return;
         while (last - first > 3) {
-            auto cut = std::unchecked_partition(
+            auto cut = mystl::unchecked_partition(
                 first, last,
-                std::median(*first, *(first + (last - first) / 2),
-                               *(last - 1)));
+                mystl::median(*first, *(first + (last - first) / 2),
+                              *(last - 1)));
             if (cut <= nth)  // 如果 nth 位于右段
                 first = cut; // 对右段进行分割
             else
                 last = cut; // 对左段进行分割
         }
-        std::insertion_sort(first, last);
+        mystl::insertion_sort(first, last);
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -2311,17 +2305,17 @@ namespace std {
         if (nth == last)
             return;
         while (last - first > 3) {
-            auto cut = std::unchecked_partition(
+            auto cut = mystl::unchecked_partition(
                 first, last,
-                std::median(*first, *(first + (last - first) / 2),
-                               *(last - 1)),
+                mystl::median(*first, *(first + (last - first) / 2),
+                              *(last - 1)),
                 comp);
             if (cut <= nth)  // 如果 nth 位于右段
                 first = cut; // 对右段进行分割
             else
                 last = cut; // 对左段进行分割
         }
-        std::insertion_sort(first, last, comp);
+        mystl::insertion_sort(first, last, comp);
     }
 
     /*****************************************************************************************/
@@ -2362,8 +2356,8 @@ namespace std {
     OutputIter unique_copy(InputIter first, InputIter last, OutputIter result) {
         if (first == last)
             return result;
-        return std::unique_copy_dispatch(first, last, result,
-                                            iterator_category(result));
+        return mystl::unique_copy_dispatch(first, last, result,
+                                           iterator_category(result));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -2403,8 +2397,8 @@ namespace std {
                            Compared comp) {
         if (first == last)
             return result;
-        return std::unique_copy_dispatch(first, last, result,
-                                            iterator_category(result), comp);
+        return mystl::unique_copy_dispatch(first, last, result,
+                                           iterator_category(result), comp);
     }
 
     /*****************************************************************************************/
@@ -2414,15 +2408,15 @@ namespace std {
     /*****************************************************************************************/
     template <class ForwardIter>
     ForwardIter unique(ForwardIter first, ForwardIter last) {
-        first = std::adjacent_find(first, last);
-        return std::unique_copy(first, last, first);
+        first = mystl::adjacent_find(first, last);
+        return mystl::unique_copy(first, last, first);
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
     template <class ForwardIter, class Compared>
     ForwardIter unique(ForwardIter first, ForwardIter last, Compared comp) {
-        first = std::adjacent_find(first, last, comp);
-        return std::unique_copy(first, last, first, comp);
+        first = mystl::adjacent_find(first, last, comp);
+        return mystl::unique_copy(first, last, first, comp);
     }
 
 };

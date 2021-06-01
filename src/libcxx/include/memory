@@ -18,7 +18,7 @@
 #include "construct"
 #include "uninitialized"
 
-namespace std {
+namespace mystl {
 
     // 获取对象地址
     template <class Tp>
@@ -72,7 +72,7 @@ namespace std {
         temporary_buffer(ForwardIterator first, ForwardIterator last);
 
         ~temporary_buffer() {
-            std::destroy(buffer, buffer + len);
+            mystl::destroy(buffer, buffer + len);
             free(buffer);
         }
 
@@ -95,7 +95,7 @@ namespace std {
         void initialize_buffer(const T &, std::true_type) {
         }
         void initialize_buffer(const T &value, std::false_type) {
-            std::uninitialized_fill_n(buffer, len, value);
+            mystl::uninitialized_fill_n(buffer, len, value);
         }
 
     private:
@@ -108,7 +108,7 @@ namespace std {
     temporary_buffer<ForwardIterator, T>::temporary_buffer(
         ForwardIterator first, ForwardIterator last) {
         try {
-            len = std::distance(first, last);
+            len = mystl::distance(first, last);
             allocate_buffer();
             if (len > 0) {
                 initialize_buffer(*first,
