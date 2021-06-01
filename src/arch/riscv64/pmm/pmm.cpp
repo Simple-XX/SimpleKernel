@@ -28,12 +28,6 @@ PMM::~PMM(void) {
     return;
 }
 
-void PMM::mamage_init(void) {
-    normal.init(normal_pages);
-    high.init(high_pages);
-    return;
-}
-
 int32_t PMM::init(void) {
     for (uint8_t *addr = (uint8_t *)COMMON::KERNEL_END_4K;
          addr < (uint8_t *)MEMLAYOUT::DRAM_END; addr += COMMON::PAGE_SIZE) {
@@ -66,6 +60,12 @@ int32_t PMM::init(void) {
     mamage_init();
     printf("pmm_init\n");
     return 0;
+}
+
+void PMM::mamage_init(void) {
+    normal.init(normal_pages);
+    high.init(high_pages);
+    return;
 }
 
 void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
