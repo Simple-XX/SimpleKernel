@@ -18,7 +18,6 @@
 #include "cpu.hpp"
 #include "vfs.h"
 #include "kernel.h"
-
 #if defined(__i386__) || defined(__x86_64__)
 #include "apic.h"
 #include "multiboot2.h"
