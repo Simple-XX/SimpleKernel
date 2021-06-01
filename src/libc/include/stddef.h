@@ -19,7 +19,11 @@ typedef long ptrdiff_t;
 #ifndef _SIZE_T
 #define _SIZE_T
 #undef size_t
+#if defined(__i386__)
 typedef unsigned int size_t;
+#elif defined(__riscv) || defined(__x86_64__)
+typedef long unsigned int size_t;
+#endif
 #endif
 
 #ifdef __cplusplus

@@ -6,23 +6,14 @@
 
 #include "stddef.h"
 #include "stdarg.h"
-#include "cstring.h"
-#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
-    defined(__aarch64__)
+#include "string.h"
+#ifndef __riscv
 #include "port.h"
 #endif
 #include "io.h"
 #include "stdio.h"
 
 static char buf[128];
-
-#if defined(__i386__) || defined(__x86_64__)
-TUI IO::io;
-#elif defined(__arm__) || defined(__aarch64__)
-UART IO::io;
-#elif defined(__riscv)
-SBI_CONSOLE IO::io;
-#endif
 
 IO::IO(void) {
     return;
@@ -31,8 +22,8 @@ IO::IO(void) {
 IO::~IO(void) {
     return;
 }
-#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) ||            \
-    defined(__aarch64__)
+
+#ifndef __riscv
 uint8_t IO::inb(const uint32_t port) {
     return PORT::inb(port);
 }
