@@ -23,10 +23,19 @@ namespace INTR {
         __attribute__((aligned(4)));
 
     void enable_irq(uint32_t irq_no) {
+        (void)irq_no;
         return;
     }
 
     void disable_irq(uint32_t irq_no) {
+        (void)irq_no;
+        return;
+    }
+
+    void handler_default(void) {
+        while (1) {
+            ;
+        }
         return;
     }
 
@@ -45,6 +54,15 @@ namespace INTR {
         CPU::WRITE_STVEC((uint64_t)trap_entry);
         // 直接跳转到处理函数
         CPU::STVEC_DIRECT();
+        // 设置处理函数
+        for (auto &i : interrupt_handlers) {
+            i = handler_default;
+        }
+        for (auto &i : excp_handlers) {
+            i = handler_default;
+        }
+        // 开启时钟中断
+        // TIMER::init();
         printf("intr init\n");
         return 0;
     }
@@ -52,13 +70,17 @@ namespace INTR {
     void trap_handler(void) {
         // 中断原因
         uint64_t scause = CPU::READ_SCAUSE();
+// #define DEBUG
+#ifdef DEBUG
         // 异常返回值
         uint64_t sepc = CPU::READ_SEPC();
         // 中断具体信息
         uint64_t sstatus = CPU::READ_SSTATUS();
-        // printf("scause: %p\n", scause);
-        // printf("sepc: %p\n", sepc);
-        // printf("sstatus: %p\n", sstatus);
+        printf("scause: %p\n", scause);
+        printf("sepc: %p\n", sepc);
+        printf("sstatus: %p\n", sstatus);
+#undef DEBUG
+#endif
         if (scause & CPU::CAUSE_INTR_MASK) {
             // 中断
             printf("intr: %s\n", intr_names[scause & CPU::CAUSE_CODE_MASK]);
@@ -69,6 +91,7 @@ namespace INTR {
             // 异常
             // 跳转到对应的处理函数
             printf("excp: %s\n", excp_names[scause & CPU::CAUSE_CODE_MASK]);
+            excp_handlers[scause & CPU::CAUSE_CODE_MASK]();
         }
         return;
     }

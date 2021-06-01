@@ -1,7 +1,7 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# intr_s.s for Simple-XX/SimpleKernel.
+# intr_s.S for Simple-XX/SimpleKernel.
 
 .equ REGBYTES, 8
 .equ SAVE_REGS, 32
