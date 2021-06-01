@@ -12,7 +12,7 @@
 #include "stddef.h"
 #include "type_traits.h"
 
-namespace std {
+namespace mystl {
 
     // move
 
@@ -38,22 +38,22 @@ namespace std {
 
     template <class Tp>
     void swap(Tp &lhs, Tp &rhs) {
-        auto tmp(std::move(lhs));
-        lhs = std::move(rhs);
-        rhs = std::move(tmp);
+        auto tmp(mystl::move(lhs));
+        lhs = mystl::move(rhs);
+        rhs = mystl::move(tmp);
     }
 
     template <class ForwardIter1, class ForwardIter2>
     ForwardIter2 swap_range(ForwardIter1 first1, ForwardIter1 last1,
                             ForwardIter2 first2) {
         for (; first1 != last1; ++first1, (void)++first2)
-            std::swap(*first1, *first2);
+            mystl::swap(*first1, *first2);
         return first2;
     }
 
     template <class Tp, size_t N>
     void swap(Tp (&a)[N], Tp (&b)[N]) {
-        std::swap_range(a, a + N, b);
+        mystl::swap_range(a, a + N, b);
     }
 
     // --------------------------------------------------------------------------------------
@@ -114,7 +114,8 @@ namespace std {
                           std::is_convertible<Other2 &&, Ty2>::value,
                       int>::type = 0>
         constexpr pair(Other1 &&a, Other2 &&b)
-            : first(std::forward<Other1>(a)), second(std::forward<Other2>(b)) {
+            : first(mystl::forward<Other1>(a)),
+              second(mystl::forward<Other2>(b)) {
         }
 
         // explicit constructiable for other type
@@ -126,7 +127,8 @@ namespace std {
                            !std::is_convertible<Other2, Ty2>::value),
                       int>::type = 0>
         explicit constexpr pair(Other1 &&a, Other2 &&b)
-            : first(std::forward<Other1>(a)), second(std::forward<Other2>(b)) {
+            : first(mystl::forward<Other1>(a)),
+              second(mystl::forward<Other2>(b)) {
         }
 
         // implicit constructiable for other pair
@@ -162,8 +164,8 @@ namespace std {
                           std::is_convertible<Other2, Ty2>::value,
                       int>::type = 0>
         constexpr pair(pair<Other1, Other2> &&other)
-            : first(std::forward<Other1>(other.first)),
-              second(std::forward<Other2>(other.second)) {
+            : first(mystl::forward<Other1>(other.first)),
+              second(mystl::forward<Other2>(other.second)) {
         }
 
         // explicit constructiable for other pair
@@ -175,8 +177,8 @@ namespace std {
                            !std::is_convertible<Other2, Ty2>::value),
                       int>::type = 0>
         explicit constexpr pair(pair<Other1, Other2> &&other)
-            : first(std::forward<Other1>(other.first)),
-              second(std::forward<Other2>(other.second)) {
+            : first(mystl::forward<Other1>(other.first)),
+              second(mystl::forward<Other2>(other.second)) {
         }
 
         // copy assign for this pair
@@ -191,8 +193,8 @@ namespace std {
         // move assign for this pair
         pair &operator=(pair &&rhs) {
             if (this != &rhs) {
-                first  = std::move(rhs.first);
-                second = std::move(rhs.second);
+                first  = mystl::move(rhs.first);
+                second = mystl::move(rhs.second);
             }
             return *this;
         }
@@ -208,8 +210,8 @@ namespace std {
         // move assign for other pair
         template <class Other1, class Other2>
         pair &operator=(pair<Other1, Other2> &&other) {
-            first  = std::forward<Other1>(other.first);
-            second = std::forward<Other2>(other.second);
+            first  = mystl::forward<Other1>(other.first);
+            second = mystl::forward<Other2>(other.second);
             return *this;
         }
 
@@ -217,8 +219,8 @@ namespace std {
 
         void swap(pair &other) {
             if (this != &other) {
-                std::swap(first, other.first);
-                std::swap(second, other.second);
+                mystl::swap(first, other.first);
+                mystl::swap(second, other.second);
             }
         }
     };
@@ -255,7 +257,7 @@ namespace std {
         return !(lhs < rhs);
     }
 
-    // 重载 std 的 swap
+    // 重载 mystl 的 swap
     template <class Ty1, class Ty2>
     void swap(pair<Ty1, Ty2> &lhs, pair<Ty1, Ty2> &rhs) {
         lhs.swap(rhs);
@@ -264,9 +266,10 @@ namespace std {
     // 全局函数，让两个数据成为一个 pair
     template <class Ty1, class Ty2>
     pair<Ty1, Ty2> make_pair(Ty1 &&first, Ty2 &&second) {
-        return pair<Ty1, Ty2>(std::forward<Ty1>(first),
-                              std::forward<Ty2>(second));
+        return pair<Ty1, Ty2>(mystl::forward<Ty1>(first),
+                              mystl::forward<Ty2>(second));
     }
+
 };
 
 #endif /* _UTIL_ */

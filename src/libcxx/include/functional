@@ -11,7 +11,7 @@
 
 #include "stddef.h"
 
-namespace std {
+namespace mystl {
 
     // 定义一元函数的参数型别和返回值型别
     template <class Arg, class Result>

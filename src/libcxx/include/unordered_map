@@ -22,18 +22,18 @@
 
 #include "hashtable"
 
-namespace std {
+namespace mystl {
 
     // 模板类 unordered_map，键值不允许重复
     // 参数一代表键值类型，参数二代表实值类型，参数三代表哈希函数，缺省使用
-    // std::hash 参数四代表键值比较方式，缺省使用 std::equal_to
-    template <class Key, class T, class Hash = std::hash<Key>,
-              class KeyEqual = std::equal_to<Key>>
+    // mystl::hash 参数四代表键值比较方式，缺省使用 mystl::equal_to
+    template <class Key, class T, class Hash = mystl::hash<Key>,
+              class KeyEqual = mystl::equal_to<Key>>
     class unordered_map {
     private:
         // 使用 hashtable 作为底层机制
-        typedef hashtable<std::pair<const Key, T>, Hash, KeyEqual> base_type;
-        base_type                                                  ht_;
+        typedef hashtable<mystl::pair<const Key, T>, Hash, KeyEqual> base_type;
+        base_type                                                    ht_;
 
     public:
         // 使用 hashtable 的型别
@@ -78,8 +78,8 @@ namespace std {
                       const size_type bucket_count = 100,
                       const Hash &    hash         = Hash(),
                       const KeyEqual &equal        = KeyEqual())
-            : ht_(std::max(bucket_count,
-                           static_cast<size_type>(std::distance(first, last))),
+            : ht_(mystl::max(bucket_count, static_cast<size_type>(
+                                               mystl::distance(first, last))),
                   hash, equal) {
             for (; first != last; ++first)
                 ht_.insert_unique_noresize(*first);
@@ -89,7 +89,8 @@ namespace std {
                       const size_type                   bucket_count = 100,
                       const Hash &                      hash         = Hash(),
                       const KeyEqual &                  equal = KeyEqual())
-            : ht_(std::max(bucket_count, static_cast<size_type>(ilist.size())),
+            : ht_(mystl::max(bucket_count,
+                             static_cast<size_type>(ilist.size())),
                   hash, equal) {
             for (auto first = ilist.begin(), last = ilist.end(); first != last;
                  ++first)
@@ -98,7 +99,8 @@ namespace std {
 
         unordered_map(const unordered_map &rhs) : ht_(rhs.ht_) {
         }
-        unordered_map(unordered_map &&rhs) noexcept : ht_(std::move(rhs.ht_)) {
+        unordered_map(unordered_map &&rhs) noexcept
+            : ht_(mystl::move(rhs.ht_)) {
         }
 
         unordered_map &operator=(const unordered_map &rhs) {
@@ -106,7 +108,7 @@ namespace std {
             return *this;
         }
         unordered_map &operator=(unordered_map &&rhs) {
-            ht_ = std::move(rhs.ht_);
+            ht_ = mystl::move(rhs.ht_);
             return *this;
         }
 
@@ -161,13 +163,13 @@ namespace std {
 
         template <class... Args>
         pair<iterator, bool> emplace(Args &&...args) {
-            return ht_.emplace_unique(std::forward<Args>(args)...);
+            return ht_.emplace_unique(mystl::forward<Args>(args)...);
         }
 
         template <class... Args>
         iterator emplace_hint(const_iterator hint, Args &&...args) {
             return ht_.emplace_unique_use_hint(hint,
-                                               std::forward<Args>(args)...);
+                                               mystl::forward<Args>(args)...);
         }
 
         // insert
@@ -176,14 +178,14 @@ namespace std {
             return ht_.insert_unique(value);
         }
         pair<iterator, bool> insert(value_type &&value) {
-            return ht_.emplace_unique(std::move(value));
+            return ht_.emplace_unique(mystl::move(value));
         }
 
         iterator insert(const_iterator hint, const value_type &value) {
             return ht_.insert_unique_use_hint(hint, value);
         }
         iterator insert(const_iterator hint, value_type &&value) {
-            return ht_.emplace_unique_use_hint(hint, std::move(value));
+            return ht_.emplace_unique_use_hint(hint, mystl::move(value));
         }
 
         template <class InputIterator>
@@ -238,7 +240,7 @@ namespace std {
         mapped_type &operator[](key_type &&key) {
             iterator it = ht_.find(key);
             if (it.node == nullptr)
-                it = ht_.emplace_unique(std::move(key), T{}).first;
+                it = ht_.emplace_unique(mystl::move(key), T{}).first;
             return it->second;
         }
 
@@ -348,7 +350,7 @@ namespace std {
         return lhs != rhs;
     }
 
-    // 重载 std 的 swap
+    // 重载 mystl 的 swap
     template <class Key, class T, class Hash, class KeyEqual>
     void swap(unordered_map<Key, T, Hash, KeyEqual> &lhs,
               unordered_map<Key, T, Hash, KeyEqual> &rhs) {
@@ -359,9 +361,9 @@ namespace std {
 
     // 模板类 unordered_multimap，键值允许重复
     // 参数一代表键值类型，参数二代表实值类型，参数三代表哈希函数，缺省使用
-    // std::hash 参数四代表键值比较方式，缺省使用 std::equal_to
-    template <class Key, class T, class Hash = std::hash<Key>,
-              class KeyEqual = std::equal_to<Key>>
+    // mystl::hash 参数四代表键值比较方式，缺省使用 mystl::equal_to
+    template <class Key, class T, class Hash = mystl::hash<Key>,
+              class KeyEqual = mystl::equal_to<Key>>
     class unordered_multimap {
     private:
         // 使用 hashtable 作为底层机制
@@ -410,8 +412,8 @@ namespace std {
                            const size_type bucket_count = 100,
                            const Hash &    hash         = Hash(),
                            const KeyEqual &equal        = KeyEqual())
-            : ht_(std::max(bucket_count,
-                           static_cast<size_type>(std::distance(first, last))),
+            : ht_(mystl::max(bucket_count, static_cast<size_type>(
+                                               mystl::distance(first, last))),
                   hash, equal) {
             for (; first != last; ++first)
                 ht_.insert_multi_noresize(*first);
@@ -421,7 +423,8 @@ namespace std {
                            const size_type                   bucket_count = 100,
                            const Hash &                      hash  = Hash(),
                            const KeyEqual &                  equal = KeyEqual())
-            : ht_(std::max(bucket_count, static_cast<size_type>(ilist.size())),
+            : ht_(mystl::max(bucket_count,
+                             static_cast<size_type>(ilist.size())),
                   hash, equal) {
             for (auto first = ilist.begin(), last = ilist.end(); first != last;
                  ++first)
@@ -431,7 +434,7 @@ namespace std {
         unordered_multimap(const unordered_multimap &rhs) : ht_(rhs.ht_) {
         }
         unordered_multimap(unordered_multimap &&rhs) noexcept
-            : ht_(std::move(rhs.ht_)) {
+            : ht_(mystl::move(rhs.ht_)) {
         }
 
         unordered_multimap &operator=(const unordered_multimap &rhs) {
@@ -439,7 +442,7 @@ namespace std {
             return *this;
         }
         unordered_multimap &operator=(unordered_multimap &&rhs) {
-            ht_ = std::move(rhs.ht_);
+            ht_ = mystl::move(rhs.ht_);
             return *this;
         }
 
@@ -494,13 +497,13 @@ namespace std {
 
         template <class... Args>
         iterator emplace(Args &&...args) {
-            return ht_.emplace_multi(std::forward<Args>(args)...);
+            return ht_.emplace_multi(mystl::forward<Args>(args)...);
         }
 
         template <class... Args>
         iterator emplace_hint(const_iterator hint, Args &&...args) {
             return ht_.emplace_multi_use_hint(hint,
-                                              std::forward<Args>(args)...);
+                                              mystl::forward<Args>(args)...);
         }
 
         // insert
@@ -509,14 +512,14 @@ namespace std {
             return ht_.insert_multi(value);
         }
         iterator insert(value_type &&value) {
-            return ht_.emplace_multi(std::move(value));
+            return ht_.emplace_multi(mystl::move(value));
         }
 
         iterator insert(const_iterator hint, const value_type &value) {
             return ht_.insert_multi_use_hint(hint, value);
         }
         iterator insert(const_iterator hint, value_type &&value) {
-            return ht_.emplace_multi_use_hint(hint, std::move(value));
+            return ht_.emplace_multi_use_hint(hint, mystl::move(value));
         }
 
         template <class InputIterator>
@@ -653,7 +656,7 @@ namespace std {
         return lhs != rhs;
     }
 
-    // 重载 std 的 swap
+    // 重载 mystl 的 swap
     template <class Key, class T, class Hash, class KeyEqual>
     void swap(unordered_multimap<Key, T, Hash, KeyEqual> &lhs,
               unordered_multimap<Key, T, Hash, KeyEqual> &rhs) {

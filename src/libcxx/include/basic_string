@@ -15,8 +15,9 @@
 #include "memory"
 #include "functional"
 #include "exceptdef"
+#include "cstring"
 
-namespace std {
+namespace mystl {
 
     // char_traits
 
@@ -78,59 +79,59 @@ namespace std {
         typedef char char_type;
 
         static size_t length(const char_type *str) noexcept {
-            return strlen(str);
+            return std::strlen(str);
         }
 
         static int compare(const char_type *s1, const char_type *s2,
                            size_t n) noexcept {
-            return memcmp(s1, s2, n);
+            return std::memcmp(s1, s2, n);
         }
 
         static char_type *copy(char_type *dst, const char_type *src,
                                size_t n) noexcept {
             MYSTL_DEBUG(src + n <= dst || dst + n <= src);
-            return static_cast<char_type *>(memcpy(dst, src, n));
+            return static_cast<char_type *>(std::memcpy(dst, src, n));
         }
 
         static char_type *move(char_type *dst, const char_type *src,
                                size_t n) noexcept {
-            return static_cast<char_type *>(memmove(dst, src, n));
+            return static_cast<char_type *>(std::memmove(dst, src, n));
         }
 
         static char_type *fill(char_type *dst, char_type ch,
                                size_t count) noexcept {
-            return static_cast<char_type *>(memset(dst, ch, count));
+            return static_cast<char_type *>(std::memset(dst, ch, count));
         }
     };
 
-    // // Partialized. char_traits<wchar_t>
+    // Partialized. char_traits<wchar_t>
     // template <>
     // struct char_traits<wchar_t> {
     //     typedef wchar_t char_type;
 
     //     static size_t length(const char_type *str) noexcept {
-    //         return wcslen(str);
+    //         return std::wcslen(str);
     //     }
 
     //     static int compare(const char_type *s1, const char_type *s2,
     //                        size_t n) noexcept {
-    //         return wmemcmp(s1, s2, n);
+    //         return std::wmemcmp(s1, s2, n);
     //     }
 
     //     static char_type *copy(char_type *dst, const char_type *src,
     //                            size_t n) noexcept {
     //         MYSTL_DEBUG(src + n <= dst || dst + n <= src);
-    //         return static_cast<char_type *>(wmemcpy(dst, src, n));
+    //         return static_cast<char_type *>(std::wmemcpy(dst, src, n));
     //     }
 
     //     static char_type *move(char_type *dst, const char_type *src,
     //                            size_t n) noexcept {
-    //         return static_cast<char_type *>(wmemmove(dst, src, n));
+    //         return static_cast<char_type *>(std::wmemmove(dst, src, n));
     //     }
 
     //     static char_type *fill(char_type *dst, char_type ch,
     //                            size_t count) noexcept {
-    //         return static_cast<char_type *>(wmemset(dst, ch, count));
+    //         return static_cast<char_type *>(std::wmemset(dst, ch, count));
     //     }
     // };
 
@@ -253,15 +254,15 @@ namespace std {
 
     // 模板类 basic_string
     // 参数一代表字符类型，参数二代表萃取字符类型的方式，缺省使用
-    // std::char_traits
-    template <class CharType, class CharTraits = std::char_traits<CharType>>
+    // mystl::char_traits
+    template <class CharType, class CharTraits = mystl::char_traits<CharType>>
     class basic_string {
     public:
         typedef CharTraits traits_type;
         typedef CharTraits char_traits;
 
-        typedef std::allocator<CharType> allocator_type;
-        typedef std::allocator<CharType> data_allocator;
+        typedef mystl::allocator<CharType> allocator_type;
+        typedef mystl::allocator<CharType> data_allocator;
 
         typedef typename allocator_type::value_type      value_type;
         typedef typename allocator_type::pointer         pointer;
@@ -271,16 +272,16 @@ namespace std {
         typedef typename allocator_type::size_type       size_type;
         typedef typename allocator_type::difference_type difference_type;
 
-        typedef value_type *                          iterator;
-        typedef const value_type *                    const_iterator;
-        typedef std::reverse_iterator<iterator>       reverse_iterator;
-        typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef value_type *                            iterator;
+        typedef const value_type *                      const_iterator;
+        typedef mystl::reverse_iterator<iterator>       reverse_iterator;
+        typedef mystl::reverse_iterator<const_iterator> const_reverse_iterator;
 
         allocator_type get_allocator() {
             return allocator_type();
         }
 
-        static_assert(std::is_standard_layout<CharType>::value,
+        static_assert(std::is_trivial<CharType>::value,
                       "Character type of basic_string must be a POD");
         static_assert(
             std::is_same<CharType, typename traits_type::char_type>::value,
@@ -326,7 +327,7 @@ namespace std {
         }
 
         template <class Iter,
-                  typename std::enable_if<std::is_input_iterator<Iter>::value,
+                  typename std::enable_if<mystl::is_input_iterator<Iter>::value,
                                           int>::type = 0>
         basic_string(Iter first, Iter last) {
             copy_init(first, last, iterator_category(first));
@@ -501,7 +502,7 @@ namespace std {
         basic_string &append(const_pointer s, size_type count);
 
         template <class Iter,
-                  typename std::enable_if<std::is_input_iterator<Iter>::value,
+                  typename std::enable_if<mystl::is_input_iterator<Iter>::value,
                                           int>::type = 0>
         basic_string &append(Iter first, Iter last) {
             return append_range(first, last);
@@ -536,7 +537,7 @@ namespace std {
 
         // substr
         basic_string substr(size_type index, size_type count = npos) {
-            count = std::min(count, size_ - index);
+            count = mystl::min(count, size_ - index);
             return basic_string(buffer_ + index, buffer_ + index + count);
         }
 
@@ -609,7 +610,7 @@ namespace std {
         }
 
         template <class Iter,
-                  typename std::enable_if<std::is_input_iterator<Iter>::value,
+                  typename std::enable_if<mystl::is_input_iterator<Iter>::value,
                                           int>::type = 0>
         basic_string &replace(const_iterator first, const_iterator last,
                               Iter first2, Iter last2) {
@@ -723,9 +724,9 @@ namespace std {
         void fill_init(size_type n, value_type ch);
 
         template <class Iter>
-        void copy_init(Iter first, Iter last, std::input_iterator_tag);
+        void copy_init(Iter first, Iter last, mystl::input_iterator_tag);
         template <class Iter>
-        void copy_init(Iter first, Iter last, std::forward_iterator_tag);
+        void copy_init(Iter first, Iter last, mystl::forward_iterator_tag);
 
         void init_from(const_pointer src, size_type pos, size_type n);
 
@@ -819,22 +820,6 @@ namespace std {
         return *this;
     }
 
-    // template <class CharType, class CharTraits>
-    // basic_string<CharType, CharTraits> &&
-    // basic_string<CharType, CharTraits>::operator=(const char *s) {
-    //     destroyAndDeallocate();
-    //     allocateAndCopy(s, s + strlen(s));
-    //     return *this;
-    // }
-
-    // template <class CharType, class CharTraits>
-    // basic_string<CharType, CharTraits> &&
-    // basic_string<CharType, CharTraits>::operator=(char c) {
-    //     destroyAndDeallocate();
-    //     allocateAndFillN(1, c);
-    //     return *this;
-    // }
-
     // 预留储存空间
     template <class CharType, class CharTraits>
     void basic_string<CharType, CharTraits>::reserve(size_type n) {
@@ -901,19 +886,19 @@ namespace std {
     basic_string<CharType, CharTraits>::insert(const_iterator pos, Iter first,
                                                Iter last) {
         iterator        r   = const_cast<iterator>(pos);
-        const size_type len = std::distance(first, last);
+        const size_type len = mystl::distance(first, last);
         if (len == 0)
             return r;
         if (cap_ - size_ < len) {
             return reallocate_and_copy(r, first, last);
         }
         if (pos == end()) {
-            std::uninitialized_copy(first, last, end());
+            mystl::uninitialized_copy(first, last, end());
             size_ += len;
             return r;
         }
         char_traits::move(r + len, r, len);
-        std::uninitialized_copy(first, last, r);
+        mystl::uninitialized_copy(first, last, r);
         size_ += len;
         return r;
     }
@@ -1014,7 +999,7 @@ namespace std {
     template <class CharType, class CharTraits>
     int basic_string<CharType, CharTraits>::compare(
         size_type pos1, size_type count1, const basic_string &other) const {
-        auto n1 = std::min(count1, size_ - pos1);
+        auto n1 = mystl::min(count1, size_ - pos1);
         return compare_cstr(buffer_ + pos1, n1, other.buffer_, other.size_);
     }
 
@@ -1026,8 +1011,8 @@ namespace std {
                                                     const basic_string &other,
                                                     size_type           pos2,
                                                     size_type count2) const {
-        auto n1 = std::min(count1, size_ - pos1);
-        auto n2 = std::min(count2, other.size_ - pos2);
+        auto n1 = mystl::min(count1, size_ - pos1);
+        auto n2 = mystl::min(count2, other.size_ - pos2);
         return compare_cstr(buffer_, n1, other.buffer_, n2);
     }
 
@@ -1043,7 +1028,7 @@ namespace std {
     int basic_string<CharType, CharTraits>::compare(size_type     pos1,
                                                     size_type     count1,
                                                     const_pointer s) const {
-        auto n1 = std::min(count1, size_ - pos1);
+        auto n1 = mystl::min(count1, size_ - pos1);
         auto n2 = char_traits::length(s);
         return compare_cstr(buffer_, n1, s, n2);
     }
@@ -1054,7 +1039,7 @@ namespace std {
                                                     size_type     count1,
                                                     const_pointer s,
                                                     size_type count2) const {
-        auto n1 = std::min(count1, size_ - pos1);
+        auto n1 = mystl::min(count1, size_ - pos1);
         return compare_cstr(buffer_, n1, s, count2);
     }
 
@@ -1062,7 +1047,7 @@ namespace std {
     template <class CharType, class CharTraits>
     void basic_string<CharType, CharTraits>::reverse() noexcept {
         for (auto i = begin(), j = end(); i < j;) {
-            std::iter_swap(i++, --j);
+            mystl::iter_swap(i++, --j);
         }
     }
 
@@ -1070,9 +1055,9 @@ namespace std {
     template <class CharType, class CharTraits>
     void basic_string<CharType, CharTraits>::swap(basic_string &rhs) noexcept {
         if (this != &rhs) {
-            std::swap(buffer_, rhs.buffer_);
-            std::swap(size_, rhs.size_);
-            std::swap(cap_, rhs.cap_);
+            mystl::swap(buffer_, rhs.buffer_);
+            mystl::swap(size_, rhs.size_);
+            mystl::swap(cap_, rhs.cap_);
         }
     }
 
@@ -1533,7 +1518,7 @@ namespace std {
     void basic_string<CharType, CharTraits>::fill_init(size_type  n,
                                                        value_type ch) {
         const auto init_size =
-            std::max(static_cast<size_type>(STRING_INIT_SIZE), n + 1);
+            mystl::max(static_cast<size_type>(STRING_INIT_SIZE), n + 1);
         buffer_ = data_allocator::allocate(init_size);
         char_traits::fill(buffer_, ch, n);
         size_ = n;
@@ -1545,10 +1530,10 @@ namespace std {
     template <class Iter>
     void
     basic_string<CharType, CharTraits>::copy_init(Iter first, Iter last,
-                                                  std::input_iterator_tag) {
-        size_type  n = std::distance(first, last);
+                                                  mystl::input_iterator_tag) {
+        size_type  n = mystl::distance(first, last);
         const auto init_size =
-            std::max(static_cast<size_type>(STRING_INIT_SIZE), n + 1);
+            mystl::max(static_cast<size_type>(STRING_INIT_SIZE), n + 1);
         try {
             buffer_ = data_allocator::allocate(init_size);
             size_   = n;
@@ -1567,15 +1552,15 @@ namespace std {
     template <class Iter>
     void
     basic_string<CharType, CharTraits>::copy_init(Iter first, Iter last,
-                                                  std::forward_iterator_tag) {
-        const size_type n = std::distance(first, last);
+                                                  mystl::forward_iterator_tag) {
+        const size_type n = mystl::distance(first, last);
         const auto      init_size =
-            std::max(static_cast<size_type>(STRING_INIT_SIZE), n + 1);
+            mystl::max(static_cast<size_type>(STRING_INIT_SIZE), n + 1);
         try {
             buffer_ = data_allocator::allocate(init_size);
             size_   = n;
             cap_    = init_size;
-            std::uninitialized_copy(first, last, buffer_);
+            mystl::uninitialized_copy(first, last, buffer_);
         } catch (...) {
             buffer_ = nullptr;
             size_   = 0;
@@ -1590,7 +1575,7 @@ namespace std {
                                                        size_type     pos,
                                                        size_type     count) {
         const auto init_size =
-            std::max(static_cast<size_type>(STRING_INIT_SIZE), count + 1);
+            mystl::max(static_cast<size_type>(STRING_INIT_SIZE), count + 1);
         buffer_ = data_allocator::allocate(init_size);
         char_traits::copy(buffer_, src + pos, count);
         size_ = count;
@@ -1633,13 +1618,13 @@ namespace std {
     template <class Iter>
     basic_string<CharType, CharTraits> &
     basic_string<CharType, CharTraits>::append_range(Iter first, Iter last) {
-        const size_type n = std::distance(first, last);
+        const size_type n = mystl::distance(first, last);
         THROW_LENGTH_ERROR_IF(size_ > max_size() - n,
                               "basic_string<Char, Tratis>'s size too big");
         if (cap_ - size_ < n) {
             reallocate(n);
         }
-        std::uninitialized_copy_n(first, n, buffer_ + size_);
+        mystl::uninitialized_copy_n(first, n, buffer_ + size_);
         size_ += n;
         return *this;
     }
@@ -1649,7 +1634,7 @@ namespace std {
                                                          size_type     n1,
                                                          const_pointer s2,
                                                          size_type n2) const {
-        auto rlen = std::min(n1, n2);
+        auto rlen = mystl::min(n1, n2);
         auto res  = char_traits::compare(s1, s2, rlen);
         if (res != 0)
             return res;
@@ -1759,7 +1744,7 @@ namespace std {
     // reallocate 函数
     template <class CharType, class CharTraits>
     void basic_string<CharType, CharTraits>::reallocate(size_type need) {
-        const auto new_cap    = std::max(cap_ + need, cap_ + (cap_ >> 1));
+        const auto new_cap    = mystl::max(cap_ + need, cap_ + (cap_ >> 1));
         auto       new_buffer = data_allocator::allocate(new_cap);
         char_traits::move(new_buffer, buffer_, size_);
         data_allocator::deallocate(buffer_);
@@ -1773,9 +1758,9 @@ namespace std {
     basic_string<CharType, CharTraits>::reallocate_and_fill(iterator   pos,
                                                             size_type  n,
                                                             value_type ch) {
-        const auto r          = pos - buffer_;
-        const auto old_cap    = cap_;
-        const auto new_cap    = std::max(old_cap + n, old_cap + (old_cap >> 1));
+        const auto r       = pos - buffer_;
+        const auto old_cap = cap_;
+        const auto new_cap = mystl::max(old_cap + n, old_cap + (old_cap >> 1));
         auto       new_buffer = data_allocator::allocate(new_cap);
         auto       e1         = char_traits::move(new_buffer, buffer_, r) + r;
         auto       e2         = char_traits::fill(e1, ch, n) + n;
@@ -1794,11 +1779,11 @@ namespace std {
         iterator pos, const_iterator first, const_iterator last) {
         const auto      r       = pos - buffer_;
         const auto      old_cap = cap_;
-        const size_type n       = std::distance(first, last);
-        const auto new_cap    = std::max(old_cap + n, old_cap + (old_cap >> 1));
+        const size_type n       = mystl::distance(first, last);
+        const auto new_cap = mystl::max(old_cap + n, old_cap + (old_cap >> 1));
         auto       new_buffer = data_allocator::allocate(new_cap);
         auto       e1         = char_traits::move(new_buffer, buffer_, r) + r;
-        auto       e2         = std::uninitialized_copy_n(first, n, e1) + n;
+        auto       e2         = mystl::uninitialized_copy_n(first, n, e1) + n;
         char_traits::move(e2, buffer_ + r, size_ - r);
         data_allocator::deallocate(buffer_, old_cap);
         buffer_ = new_buffer;
@@ -1858,7 +1843,7 @@ namespace std {
     basic_string<CharType, CharTraits>
     operator+(basic_string<CharType, CharTraits> &&     lhs,
               const basic_string<CharType, CharTraits> &rhs) {
-        basic_string<CharType, CharTraits> tmp(std::move(lhs));
+        basic_string<CharType, CharTraits> tmp(mystl::move(lhs));
         tmp.append(rhs);
         return tmp;
     }
@@ -1867,7 +1852,7 @@ namespace std {
     basic_string<CharType, CharTraits>
     operator+(const basic_string<CharType, CharTraits> &lhs,
               basic_string<CharType, CharTraits> &&     rhs) {
-        basic_string<CharType, CharTraits> tmp(std::move(rhs));
+        basic_string<CharType, CharTraits> tmp(mystl::move(rhs));
         tmp.insert(tmp.begin(), lhs.begin(), lhs.end());
         return tmp;
     }
@@ -1876,7 +1861,7 @@ namespace std {
     basic_string<CharType, CharTraits>
     operator+(basic_string<CharType, CharTraits> &&lhs,
               basic_string<CharType, CharTraits> &&rhs) {
-        basic_string<CharType, CharTraits> tmp(std::move(lhs));
+        basic_string<CharType, CharTraits> tmp(mystl::move(lhs));
         tmp.append(rhs);
         return tmp;
     }
@@ -1884,7 +1869,7 @@ namespace std {
     template <class CharType, class CharTraits>
     basic_string<CharType, CharTraits>
     operator+(const CharType *lhs, basic_string<CharType, CharTraits> &&rhs) {
-        basic_string<CharType, CharTraits> tmp(std::move(rhs));
+        basic_string<CharType, CharTraits> tmp(mystl::move(rhs));
         tmp.insert(tmp.begin(), lhs, lhs + char_traits<CharType>::length(lhs));
         return tmp;
     }
@@ -1892,7 +1877,7 @@ namespace std {
     template <class CharType, class CharTraits>
     basic_string<CharType, CharTraits>
     operator+(CharType ch, basic_string<CharType, CharTraits> &&rhs) {
-        basic_string<CharType, CharTraits> tmp(std::move(rhs));
+        basic_string<CharType, CharTraits> tmp(mystl::move(rhs));
         tmp.insert(tmp.begin(), ch);
         return tmp;
     }
@@ -1900,7 +1885,7 @@ namespace std {
     template <class CharType, class CharTraits>
     basic_string<CharType, CharTraits>
     operator+(basic_string<CharType, CharTraits> &&lhs, const CharType *rhs) {
-        basic_string<CharType, CharTraits> tmp(std::move(lhs));
+        basic_string<CharType, CharTraits> tmp(mystl::move(lhs));
         tmp.append(rhs);
         return tmp;
     }
@@ -1908,7 +1893,7 @@ namespace std {
     template <class CharType, class CharTraits>
     basic_string<CharType, CharTraits>
     operator+(basic_string<CharType, CharTraits> &&lhs, CharType ch) {
-        basic_string<CharType, CharTraits> tmp(std::move(lhs));
+        basic_string<CharType, CharTraits> tmp(mystl::move(lhs));
         tmp.append(1, ch);
         return tmp;
     }
@@ -1950,14 +1935,14 @@ namespace std {
         return lhs.compare(rhs) >= 0;
     }
 
-    // 重载 std 的 swap
+    // 重载 mystl 的 swap
     template <class CharType, class CharTraits>
     void swap(basic_string<CharType, CharTraits> &lhs,
               basic_string<CharType, CharTraits> &rhs) noexcept {
         lhs.swap(rhs);
     }
 
-    // 特化 std::hash
+    // 特化 mystl::hash
     template <class CharType, class CharTraits>
     struct hash<basic_string<CharType, CharTraits>> {
         size_t operator()(const basic_string<CharType, CharTraits> &str) {

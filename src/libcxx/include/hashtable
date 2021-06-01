@@ -18,7 +18,7 @@
 #include "util"
 #include "exceptdef"
 
-namespace std {
+namespace mystl {
 
     // hashtable 的节点定义
     template <class T>
@@ -34,7 +34,7 @@ namespace std {
             : next(node.next), value(node.value) {
         }
         hashtable_node(hashtable_node &&node)
-            : next(node.next), value(std::move(node.value)) {
+            : next(node.next), value(mystl::move(node.value)) {
             node.next = nullptr;
         }
     };
@@ -76,7 +76,7 @@ namespace std {
 
     template <class T>
     struct ht_value_traits {
-        static constexpr bool is_map = std::is_pair<T>::value;
+        static constexpr bool is_map = mystl::is_pair<T>::value;
 
         typedef ht_value_traits_imp<T, is_map> value_traits_type;
 
@@ -116,15 +116,15 @@ namespace std {
 
     template <class T, class Hash, class KeyEqual>
     struct ht_iterator_base
-        : public std::iterator<std::forward_iterator_tag, T> {
-        typedef std::hashtable<T, Hash, KeyEqual>         hashtable;
-        typedef ht_iterator_base<T, Hash, KeyEqual>       base;
-        typedef std::ht_iterator<T, Hash, KeyEqual>       iterator;
-        typedef std::ht_const_iterator<T, Hash, KeyEqual> const_iterator;
-        typedef hashtable_node<T> *                       node_ptr;
-        typedef hashtable *                               contain_ptr;
-        typedef const node_ptr                            const_node_ptr;
-        typedef const contain_ptr                         const_contain_ptr;
+        : public mystl::iterator<mystl::forward_iterator_tag, T> {
+        typedef mystl::hashtable<T, Hash, KeyEqual>         hashtable;
+        typedef ht_iterator_base<T, Hash, KeyEqual>         base;
+        typedef mystl::ht_iterator<T, Hash, KeyEqual>       iterator;
+        typedef mystl::ht_const_iterator<T, Hash, KeyEqual> const_iterator;
+        typedef hashtable_node<T> *                         node_ptr;
+        typedef hashtable *                                 contain_ptr;
+        typedef const node_ptr                              const_node_ptr;
+        typedef const contain_ptr                           const_contain_ptr;
 
         typedef size_t    size_type;
         typedef ptrdiff_t difference_type;
@@ -290,7 +290,7 @@ namespace std {
     // local iterator
     template <class T>
     struct ht_local_iterator
-        : public std::iterator<std::forward_iterator_tag, T> {
+        : public mystl::iterator<mystl::forward_iterator_tag, T> {
         typedef T                  value_type;
         typedef value_type *       pointer;
         typedef value_type &       reference;
@@ -339,7 +339,7 @@ namespace std {
 
     template <class T>
     struct ht_const_local_iterator
-        : public std::iterator<std::forward_iterator_tag, T> {
+        : public mystl::iterator<mystl::forward_iterator_tag, T> {
         typedef T                        value_type;
         typedef const value_type *       pointer;
         typedef const value_type &       reference;
@@ -390,7 +390,6 @@ namespace std {
 
     // bucket 使用的大小
 
-// TODO
 #if (_MSC_VER && _WIN64) || ((__GNUC__ || __clang__) && __SIZEOF_POINTER__ == 8)
 #define SYSTEM_64 1
 #else
@@ -531,7 +530,7 @@ namespace std {
     inline size_t ht_next_prime(size_t n) {
         const size_t *first = ht_prime_list;
         const size_t *last  = ht_prime_list + PRIME_NUM;
-        const size_t *pos   = std::lower_bound(first, last, n);
+        const size_t *pos   = mystl::lower_bound(first, last, n);
         return pos == last ? *(last - 1) : *pos;
     }
 
@@ -540,8 +539,8 @@ namespace std {
     template <class T, class Hash, class KeyEqual>
     class hashtable {
 
-        friend struct std::ht_iterator<T, Hash, KeyEqual>;
-        friend struct std::ht_const_iterator<T, Hash, KeyEqual>;
+        friend struct mystl::ht_iterator<T, Hash, KeyEqual>;
+        friend struct mystl::ht_const_iterator<T, Hash, KeyEqual>;
 
     public:
         // hashtable 的型别定义
@@ -552,13 +551,13 @@ namespace std {
         typedef Hash                               hasher;
         typedef KeyEqual                           key_equal;
 
-        typedef hashtable_node<T>     node_type;
-        typedef node_type *           node_ptr;
-        typedef std::vector<node_ptr> bucket_type;
+        typedef hashtable_node<T>       node_type;
+        typedef node_type *             node_ptr;
+        typedef mystl::vector<node_ptr> bucket_type;
 
-        typedef std::allocator<T>         allocator_type;
-        typedef std::allocator<T>         data_allocator;
-        typedef std::allocator<node_type> node_allocator;
+        typedef mystl::allocator<T>         allocator_type;
+        typedef mystl::allocator<T>         data_allocator;
+        typedef mystl::allocator<node_type> node_allocator;
 
         typedef typename allocator_type::pointer         pointer;
         typedef typename allocator_type::const_pointer   const_pointer;
@@ -567,10 +566,10 @@ namespace std {
         typedef typename allocator_type::size_type       size_type;
         typedef typename allocator_type::difference_type difference_type;
 
-        typedef std::ht_iterator<T, Hash, KeyEqual>       iterator;
-        typedef std::ht_const_iterator<T, Hash, KeyEqual> const_iterator;
-        typedef std::ht_local_iterator<T>                 local_iterator;
-        typedef std::ht_const_local_iterator<T>           const_local_iterator;
+        typedef mystl::ht_iterator<T, Hash, KeyEqual>       iterator;
+        typedef mystl::ht_const_iterator<T, Hash, KeyEqual> const_iterator;
+        typedef mystl::ht_local_iterator<T>                 local_iterator;
+        typedef mystl::ht_const_local_iterator<T> const_local_iterator;
 
         allocator_type get_allocator() const {
             return allocator_type();
@@ -623,14 +622,14 @@ namespace std {
         }
 
         template <class Iter,
-                  typename std::enable_if<std::is_input_iterator<Iter>::value,
+                  typename std::enable_if<mystl::is_input_iterator<Iter>::value,
                                           int>::type = 0>
         hashtable(Iter first, Iter last, size_type bucket_count,
                   const Hash &hash = Hash(), const KeyEqual &equal = KeyEqual())
-            : size_(std::distance(first, last)), mlf_(1.0f), hash_(hash),
+            : size_(mystl::distance(first, last)), mlf_(1.0f), hash_(hash),
               equal_(equal) {
-            init(std::max(bucket_count,
-                          static_cast<size_type>(std::distance(first, last))));
+            init(mystl::max(bucket_count, static_cast<size_type>(
+                                              mystl::distance(first, last))));
         }
 
         hashtable(const hashtable &rhs) : hash_(rhs.hash_), equal_(rhs.equal_) {
@@ -639,7 +638,7 @@ namespace std {
         hashtable(hashtable &&rhs) noexcept
             : bucket_size_(rhs.bucket_size_), size_(rhs.size_), mlf_(rhs.mlf_),
               hash_(rhs.hash_), equal_(rhs.equal_) {
-            buckets_         = std::move(rhs.buckets_);
+            buckets_         = mystl::move(rhs.buckets_);
             rhs.bucket_size_ = 0;
             rhs.size_        = 0;
             rhs.mlf_         = 0.0f;
@@ -699,13 +698,13 @@ namespace std {
         template <class... Args>
         iterator emplace_multi_use_hint(const_iterator /*hint*/,
                                         Args &&...args) {
-            return emplace_multi(std::forward<Args>(args)...);
+            return emplace_multi(mystl::forward<Args>(args)...);
         }
 
         template <class... Args>
         iterator emplace_unique_use_hint(const_iterator /*hint*/,
                                          Args &&...args) {
-            return emplace_unique(std::forward<Args>(args)...).first;
+            return emplace_unique(mystl::forward<Args>(args)...).first;
         }
 
         // insert
@@ -718,7 +717,7 @@ namespace std {
             return insert_multi_noresize(value);
         }
         iterator insert_multi(value_type &&value) {
-            return emplace_multi(std::move(value));
+            return emplace_multi(mystl::move(value));
         }
 
         pair<iterator, bool> insert_unique(const value_type &value) {
@@ -726,7 +725,7 @@ namespace std {
             return insert_unique_noresize(value);
         }
         pair<iterator, bool> insert_unique(value_type &&value) {
-            return emplace_unique(std::move(value));
+            return emplace_unique(mystl::move(value));
         }
 
         // [note]: 同 emplace_hint
@@ -736,7 +735,7 @@ namespace std {
         }
         iterator insert_multi_use_hint(const_iterator /*hint*/,
                                        value_type &&value) {
-            return emplace_multi(std::move(value));
+            return emplace_multi(mystl::move(value));
         }
 
         iterator insert_unique_use_hint(const_iterator /*hint*/,
@@ -745,7 +744,7 @@ namespace std {
         }
         iterator insert_unique_use_hint(const_iterator /*hint*/,
                                         value_type &&value) {
-            return emplace_unique(std::move(value));
+            return emplace_unique(mystl::move(value));
         }
 
         template <class InputIter>
@@ -875,16 +874,16 @@ namespace std {
         // insert
         template <class InputIter>
         void copy_insert_multi(InputIter first, InputIter last,
-                               std::input_iterator_tag);
+                               mystl::input_iterator_tag);
         template <class ForwardIter>
         void copy_insert_multi(ForwardIter first, ForwardIter last,
-                               std::forward_iterator_tag);
+                               mystl::forward_iterator_tag);
         template <class InputIter>
         void copy_insert_unique(InputIter first, InputIter last,
-                                std::input_iterator_tag);
+                                mystl::input_iterator_tag);
         template <class ForwardIter>
         void copy_insert_unique(ForwardIter first, ForwardIter last,
-                                std::forward_iterator_tag);
+                                mystl::forward_iterator_tag);
 
         // insert node
         pair<iterator, bool> insert_node_unique(node_ptr np);
@@ -917,7 +916,7 @@ namespace std {
     template <class T, class Hash, class KeyEqual>
     hashtable<T, Hash, KeyEqual> &
     hashtable<T, Hash, KeyEqual>::operator=(hashtable &&rhs) noexcept {
-        hashtable tmp(std::move(rhs));
+        hashtable tmp(mystl::move(rhs));
         swap(tmp);
         return *this;
     }
@@ -928,7 +927,7 @@ namespace std {
     template <class... Args>
     typename hashtable<T, Hash, KeyEqual>::iterator
     hashtable<T, Hash, KeyEqual>::emplace_multi(Args &&...args) {
-        auto np = create_node(std::forward<Args>(args)...);
+        auto np = create_node(mystl::forward<Args>(args)...);
         try {
             if ((float)(size_ + 1) > (float)bucket_size_ * max_load_factor())
                 rehash(size_ + 1);
@@ -945,7 +944,7 @@ namespace std {
     template <class... Args>
     pair<typename hashtable<T, Hash, KeyEqual>::iterator, bool>
     hashtable<T, Hash, KeyEqual>::emplace_unique(Args &&...args) {
-        auto np = create_node(std::forward<Args>(args)...);
+        auto np = create_node(mystl::forward<Args>(args)...);
         try {
             if ((float)(size_ + 1) > (float)bucket_size_ * max_load_factor())
                 rehash(size_ + 1);
@@ -966,14 +965,14 @@ namespace std {
         for (auto cur = first; cur; cur = cur->next) {
             if (is_equal(value_traits::get_key(cur->value),
                          value_traits::get_key(value)))
-                return std::make_pair(iterator(cur, this), false);
+                return mystl::make_pair(iterator(cur, this), false);
         }
         // 让新节点成为链表的第一个节点
         auto tmp    = create_node(value);
         tmp->next   = first;
         buckets_[n] = tmp;
         ++size_;
-        return std::make_pair(iterator(tmp, this), true);
+        return mystl::make_pair(iterator(tmp, this), true);
     }
 
     // 在不需要重建表格的情况下插入新节点，键值允许重复
@@ -1066,7 +1065,7 @@ namespace std {
         auto p = equal_range_multi(key);
         if (p.first.node != nullptr) {
             erase(p.first, p.second);
-            return std::distance(p.first, p.second);
+            return mystl::distance(p.first, p.second);
         }
         return 0;
     }
@@ -1190,19 +1189,19 @@ namespace std {
                 for (node_ptr second = first->next; second;
                      second          = second->next) {
                     if (!is_equal(value_traits::get_key(second->value), key))
-                        return std::make_pair(iterator(first, this),
-                                              iterator(second, this));
+                        return mystl::make_pair(iterator(first, this),
+                                                iterator(second, this));
                 }
                 for (auto m = n + 1; m < bucket_size_;
                      ++m) { // 整个链表都相等，查找下一个链表出现的位置
                     if (buckets_[m])
-                        return std::make_pair(iterator(first, this),
-                                              iterator(buckets_[m], this));
+                        return mystl::make_pair(iterator(first, this),
+                                                iterator(buckets_[m], this));
                 }
-                return std::make_pair(iterator(first, this), end());
+                return mystl::make_pair(iterator(first, this), end());
             }
         }
-        return std::make_pair(end(), end());
+        return mystl::make_pair(end(), end());
     }
 
     template <class T, class Hash, class KeyEqual>
@@ -1215,17 +1214,18 @@ namespace std {
                 for (node_ptr second = first->next; second;
                      second          = second->next) {
                     if (!is_equal(value_traits::get_key(second->value), key))
-                        return std::make_pair(M_cit(first), M_cit(second));
+                        return mystl::make_pair(M_cit(first), M_cit(second));
                 }
                 for (auto m = n + 1; m < bucket_size_;
                      ++m) { // 整个链表都相等，查找下一个链表出现的位置
                     if (buckets_[m])
-                        return std::make_pair(M_cit(first), M_cit(buckets_[m]));
+                        return mystl::make_pair(M_cit(first),
+                                                M_cit(buckets_[m]));
                 }
-                return std::make_pair(M_cit(first), cend());
+                return mystl::make_pair(M_cit(first), cend());
             }
         }
-        return std::make_pair(cend(), cend());
+        return mystl::make_pair(cend(), cend());
     }
 
     template <class T, class Hash, class KeyEqual>
@@ -1236,18 +1236,18 @@ namespace std {
         for (node_ptr first = buckets_[n]; first; first = first->next) {
             if (is_equal(value_traits::get_key(first->value), key)) {
                 if (first->next)
-                    return std::make_pair(iterator(first, this),
-                                          iterator(first->next, this));
+                    return mystl::make_pair(iterator(first, this),
+                                            iterator(first->next, this));
                 for (auto m = n + 1; m < bucket_size_;
                      ++m) { // 整个链表都相等，查找下一个链表出现的位置
                     if (buckets_[m])
-                        return std::make_pair(iterator(first, this),
-                                              iterator(buckets_[m], this));
+                        return mystl::make_pair(iterator(first, this),
+                                                iterator(buckets_[m], this));
                 }
-                return std::make_pair(iterator(first, this), end());
+                return mystl::make_pair(iterator(first, this), end());
             }
         }
-        return std::make_pair(end(), end());
+        return mystl::make_pair(end(), end());
     }
 
     template <class T, class Hash, class KeyEqual>
@@ -1259,16 +1259,17 @@ namespace std {
         for (node_ptr first = buckets_[n]; first; first = first->next) {
             if (is_equal(value_traits::get_key(first->value), key)) {
                 if (first->next)
-                    return std::make_pair(M_cit(first), M_cit(first->next));
+                    return mystl::make_pair(M_cit(first), M_cit(first->next));
                 for (auto m = n + 1; m < bucket_size_;
                      ++m) { // 整个链表都相等，查找下一个链表出现的位置
                     if (buckets_[m])
-                        return std::make_pair(M_cit(first), M_cit(buckets_[m]));
+                        return mystl::make_pair(M_cit(first),
+                                                M_cit(buckets_[m]));
                 }
-                return std::make_pair(M_cit(first), cend());
+                return mystl::make_pair(M_cit(first), cend());
             }
         }
-        return std::make_pair(cend(), cend());
+        return mystl::make_pair(cend(), cend());
     }
 
     // 交换 hashtable
@@ -1276,11 +1277,11 @@ namespace std {
     void hashtable<T, Hash, KeyEqual>::swap(hashtable &rhs) noexcept {
         if (this != &rhs) {
             buckets_.swap(rhs.buckets_);
-            std::swap(bucket_size_, rhs.bucket_size_);
-            std::swap(size_, rhs.size_);
-            std::swap(mlf_, rhs.mlf_);
-            std::swap(hash_, rhs.hash_);
-            std::swap(equal_, rhs.equal_);
+            mystl::swap(bucket_size_, rhs.bucket_size_);
+            mystl::swap(size_, rhs.size_);
+            mystl::swap(mlf_, rhs.mlf_);
+            mystl::swap(hash_, rhs.hash_);
+            mystl::swap(equal_, rhs.equal_);
         }
     }
 
@@ -1335,8 +1336,8 @@ namespace std {
     hashtable<T, Hash, KeyEqual>::create_node(Args &&...args) {
         node_ptr tmp = node_allocator::allocate(1);
         try {
-            data_allocator::construct(std::address_of(tmp->value),
-                                      std::forward<Args>(args)...);
+            data_allocator::construct(mystl::address_of(tmp->value),
+                                      mystl::forward<Args>(args)...);
             tmp->next = nullptr;
         } catch (...) {
             node_allocator::deallocate(tmp);
@@ -1348,7 +1349,7 @@ namespace std {
     // destroy_node 函数
     template <class T, class Hash, class KeyEqual>
     void hashtable<T, Hash, KeyEqual>::destroy_node(node_ptr node) {
-        data_allocator::destroy(std::address_of(node->value));
+        data_allocator::destroy(mystl::address_of(node->value));
         node_allocator::deallocate(node);
         node = nullptr;
     }
@@ -1385,8 +1386,8 @@ namespace std {
     template <class T, class Hash, class KeyEqual>
     template <class InputIter>
     void hashtable<T, Hash, KeyEqual>::copy_insert_multi(
-        InputIter first, InputIter last, std::input_iterator_tag) {
-        rehash_if_need(std::distance(first, last));
+        InputIter first, InputIter last, mystl::input_iterator_tag) {
+        rehash_if_need(mystl::distance(first, last));
         for (; first != last; ++first)
             insert_multi_noresize(*first);
     }
@@ -1394,8 +1395,8 @@ namespace std {
     template <class T, class Hash, class KeyEqual>
     template <class ForwardIter>
     void hashtable<T, Hash, KeyEqual>::copy_insert_multi(
-        ForwardIter first, ForwardIter last, std::forward_iterator_tag) {
-        size_type n = std::distance(first, last);
+        ForwardIter first, ForwardIter last, mystl::forward_iterator_tag) {
+        size_type n = mystl::distance(first, last);
         rehash_if_need(n);
         for (; n > 0; --n, ++first)
             insert_multi_noresize(*first);
@@ -1404,8 +1405,8 @@ namespace std {
     template <class T, class Hash, class KeyEqual>
     template <class InputIter>
     void hashtable<T, Hash, KeyEqual>::copy_insert_unique(
-        InputIter first, InputIter last, std::input_iterator_tag) {
-        rehash_if_need(std::distance(first, last));
+        InputIter first, InputIter last, mystl::input_iterator_tag) {
+        rehash_if_need(mystl::distance(first, last));
         for (; first != last; ++first)
             insert_unique_noresize(*first);
     }
@@ -1413,8 +1414,8 @@ namespace std {
     template <class T, class Hash, class KeyEqual>
     template <class ForwardIter>
     void hashtable<T, Hash, KeyEqual>::copy_insert_unique(
-        ForwardIter first, ForwardIter last, std::forward_iterator_tag) {
-        size_type n = std::distance(first, last);
+        ForwardIter first, ForwardIter last, mystl::forward_iterator_tag) {
+        size_type n = mystl::distance(first, last);
         rehash_if_need(n);
         for (; n > 0; --n, ++first)
             insert_unique_noresize(*first);
@@ -1455,18 +1456,18 @@ namespace std {
         if (cur == nullptr) {
             buckets_[n] = np;
             ++size_;
-            return std::make_pair(iterator(np, this), true);
+            return mystl::make_pair(iterator(np, this), true);
         }
         for (; cur; cur = cur->next) {
             if (is_equal(value_traits::get_key(cur->value),
                          value_traits::get_key(np->value))) {
-                return std::make_pair(iterator(cur, this), false);
+                return mystl::make_pair(iterator(cur, this), false);
             }
         }
         np->next    = buckets_[n];
         buckets_[n] = np;
         ++size_;
-        return std::make_pair(iterator(np, this), true);
+        return mystl::make_pair(iterator(np, this), true);
     }
 
     // replace_bucket 函数
@@ -1545,9 +1546,9 @@ namespace std {
         for (auto f = begin(), l = end(); f != l;) {
             auto p1 = equal_range_multi(value_traits::get_key(*f));
             auto p2 = other.equal_range_multi(value_traits::get_key(*f));
-            if (std::distance(p1.first, p1.last) !=
-                    std::distance(p2.first, p2.last) ||
-                !std::is_permutation(p1.first, p2.last, p2.first, p2.last))
+            if (mystl::distance(p1.first, p1.last) !=
+                    mystl::distance(p2.first, p2.last) ||
+                !mystl::is_permutation(p1.first, p2.last, p2.first, p2.last))
                 return false;
             f = p1.last;
         }
@@ -1566,7 +1567,7 @@ namespace std {
         return true;
     }
 
-    // 重载 std 的 swap
+    // 重载 mystl 的 swap
     template <class T, class Hash, class KeyEqual>
     void swap(hashtable<T, Hash, KeyEqual> &lhs,
               hashtable<T, Hash, KeyEqual> &rhs) noexcept {

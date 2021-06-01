@@ -11,7 +11,7 @@
 
 #include "assert.h"
 
-namespace std {
+namespace mystl {
 
 #define MYSTL_DEBUG(expr) assert(expr)
 
