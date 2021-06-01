@@ -204,8 +204,8 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 ## 捐助者
 
 - [digmouse233](https://github.com/digmouse233)
-
 - l*e
+- fslongjin
 
 ## 支持作者
 

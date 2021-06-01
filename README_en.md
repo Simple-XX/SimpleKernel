@@ -185,8 +185,8 @@ See CONTRIBUTING.md.
 ## Donors
 
 - [digmouse233](https://github.com/digmouse233)
-
 - l*e
+- fslongjin
 
 ## Donate
 
