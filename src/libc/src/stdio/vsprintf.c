@@ -280,9 +280,9 @@ static size_t _ntoa_long_long(out_fct_type out, char *buffer, size_t idx,
     // write if precision != 0 and value is != 0
     if (!(flags & FLAGS_PRECISION) || value) {
         do {
-            uint64_t   no;
-            uint64_t   t     = udivmoddi4(value, base, &no);
-            const char digit = (char)t;
+            unsigned long long no;
+            unsigned long long t     = udivmoddi4(value, base, &no);
+            const char         digit = (char)t;
             buf[len++] =
                 digit < 10 ? '0' + digit
                            : (flags & FLAGS_UPPERCASE ? 'A' : 'a') + digit - 10;
