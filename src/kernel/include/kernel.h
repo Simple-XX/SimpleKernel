@@ -7,15 +7,7 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#include "stdint.h"
-
-class KERNEL {
-private:
-protected:
-public:
-    KERNEL(void);
-    ~KERNEL(void);
-    void show_info(void);
-};
+extern "C" void kernel_main(void);
+void            show_info(void);
 
 #endif /* _KERNEL_H_ */
