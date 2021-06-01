@@ -1,21 +1,21 @@
-﻿#ifndef MYTINYSTL_CONSTRUCT_H_
-#define MYTINYSTL_CONSTRUCT_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// construct for Simple-XX/SimpleKernel.
+
+#ifndef _CONSTRUCT_
+#define _CONSTRUCT_
 
 // 这个头文件包含两个函数 construct，destroy
 // construct : 负责对象的构造
 // destroy   : 负责对象的析构
 
-#include <new>
+#include "new"
+#include "type_traits"
+#include "iterator"
 
-#include "type_traits.h"
-#include "iterator.h"
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4100) // unused parameter
-#endif                          // _MSC_VER
-
-namespace mystl {
+namespace std {
 
     // construct 构造对象
 
@@ -31,7 +31,7 @@ namespace mystl {
 
     template <class Ty, class... Args>
     void construct(Ty *ptr, Args &&...args) {
-        ::new ((void *)ptr) Ty(mystl::forward<Args>(args)...);
+        ::new ((void *)ptr) Ty(std::forward<Args>(args)...);
     }
 
     // destroy 将对象析构
@@ -69,10 +69,6 @@ namespace mystl {
                         typename iterator_traits<ForwardIter>::value_type>{});
     }
 
-} // namespace mystl
+};
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
-
-#endif // !MYTINYSTL_CONSTRUCT_H_
+#endif /* _CONSTRUCT_ */
