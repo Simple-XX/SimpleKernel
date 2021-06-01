@@ -12,7 +12,7 @@
 // use standard header for type_traits
 #include "type_traits"
 
-namespace std {
+namespace mystl {
 
     // helper struct
 
@@ -38,10 +38,10 @@ namespace std {
     // --- forward declaration end
 
     template <class T>
-    struct is_pair : std::m_false_type {};
+    struct is_pair : mystl::m_false_type {};
 
     template <class T1, class T2>
-    struct is_pair<std::pair<T1, T2>> : std::m_true_type {};
+    struct is_pair<mystl::pair<T1, T2>> : mystl::m_true_type {};
 
 };
 
