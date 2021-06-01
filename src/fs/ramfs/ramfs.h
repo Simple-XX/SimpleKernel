@@ -33,7 +33,7 @@ class RAMFS : FS {
 private:
 protected:
 public:
-    RAMFS(const STL::string &_name, const dentry_t &_dentry);
+    RAMFS(const mystl::string &_name, const dentry_t &_dentry);
     ~RAMFS(void);
     inode_t *alloc_inode(void);
     void     dealloc_inode(inode_t *_inode);
