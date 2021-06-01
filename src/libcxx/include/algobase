@@ -9,21 +9,21 @@
 
 // 这个头文件包含了 std 的基本算法
 
-#include "string.h"
+#include "cstring"
 #include "iterator"
 #include "util"
 
-namespace std {
+namespace mystl {
 
 #ifdef max
 #pragma message("#undefing marco max")
 #undef max
-#endif
+#endif // max
 
 #ifdef min
 #pragma message("#undefing marco min")
 #undef min
-#endif
+#endif // min
 
     /*****************************************************************************************/
     // max
@@ -61,7 +61,7 @@ namespace std {
     /*****************************************************************************************/
     template <class FIter1, class FIter2>
     void iter_swap(FIter1 lhs, FIter2 rhs) {
-        std::swap(*lhs, *rhs);
+        mystl::swap(*lhs, *rhs);
     }
 
     /*****************************************************************************************/
@@ -72,7 +72,7 @@ namespace std {
     template <class InputIter, class OutputIter>
     OutputIter unchecked_copy_cat(InputIter first, InputIter last,
                                   OutputIter result,
-                                  std::input_iterator_tag) {
+                                  mystl::input_iterator_tag) {
         for (; first != last; ++first, ++result) {
             *result = *first;
         }
@@ -83,7 +83,7 @@ namespace std {
     template <class RandomIter, class OutputIter>
     OutputIter unchecked_copy_cat(RandomIter first, RandomIter last,
                                   OutputIter result,
-                                  std::random_access_iterator_tag) {
+                                  mystl::random_access_iterator_tag) {
         for (auto n = last - first; n > 0; --n, ++first, ++result) {
             *result = *first;
         }
@@ -106,7 +106,7 @@ namespace std {
     unchecked_copy(Tp *first, Tp *last, Up *result) {
         const auto n = static_cast<size_t>(last - first);
         if (n != 0)
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         return result + n;
     }
 
@@ -123,7 +123,7 @@ namespace std {
     template <class BidirectionalIter1, class BidirectionalIter2>
     BidirectionalIter2 unchecked_copy_backward_cat(
         BidirectionalIter1 first, BidirectionalIter1 last,
-        BidirectionalIter2 result, std::bidirectional_iterator_tag) {
+        BidirectionalIter2 result, mystl::bidirectional_iterator_tag) {
         while (first != last)
             *--result = *--last;
         return result;
@@ -133,7 +133,7 @@ namespace std {
     template <class BidirectionalIter1, class BidirectionalIter2>
     BidirectionalIter2 unchecked_copy_backward_cat(
         BidirectionalIter1 first, BidirectionalIter1 last,
-        BidirectionalIter2 result, std::random_access_iterator_tag) {
+        BidirectionalIter2 result, mystl::random_access_iterator_tag) {
         for (auto n = last - first; n > 0; --n)
             *--result = *--last;
         return result;
@@ -157,7 +157,7 @@ namespace std {
         const auto n = static_cast<size_t>(last - first);
         if (n != 0) {
             result -= n;
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         }
         return result;
     }
@@ -190,27 +190,27 @@ namespace std {
     // 返回一个 pair 分别指向拷贝结束的尾部
     /*****************************************************************************************/
     template <class InputIter, class Size, class OutputIter>
-    std::pair<InputIter, OutputIter>
+    mystl::pair<InputIter, OutputIter>
     unchecked_copy_n(InputIter first, Size n, OutputIter result,
-                     std::input_iterator_tag) {
+                     mystl::input_iterator_tag) {
         for (; n > 0; --n, ++first, ++result) {
             *result = *first;
         }
-        return std::pair<InputIter, OutputIter>(first, result);
+        return mystl::pair<InputIter, OutputIter>(first, result);
     }
 
     template <class RandomIter, class Size, class OutputIter>
-    std::pair<RandomIter, OutputIter>
+    mystl::pair<RandomIter, OutputIter>
     unchecked_copy_n(RandomIter first, Size n, OutputIter result,
-                     std::random_access_iterator_tag) {
+                     mystl::random_access_iterator_tag) {
         auto last = first + n;
-        return std::pair<RandomIter, OutputIter>(
-            last, std::copy(first, last, result));
+        return mystl::pair<RandomIter, OutputIter>(
+            last, mystl::copy(first, last, result));
     }
 
     template <class InputIter, class Size, class OutputIter>
-    std::pair<InputIter, OutputIter> copy_n(InputIter first, Size n,
-                                               OutputIter result) {
+    mystl::pair<InputIter, OutputIter> copy_n(InputIter first, Size n,
+                                              OutputIter result) {
         return unchecked_copy_n(first, n, result, iterator_category(first));
     }
 
@@ -222,9 +222,9 @@ namespace std {
     template <class InputIter, class OutputIter>
     OutputIter unchecked_move_cat(InputIter first, InputIter last,
                                   OutputIter result,
-                                  std::input_iterator_tag) {
+                                  mystl::input_iterator_tag) {
         for (; first != last; ++first, ++result) {
-            *result = std::move(*first);
+            *result = mystl::move(*first);
         }
         return result;
     }
@@ -233,9 +233,9 @@ namespace std {
     template <class RandomIter, class OutputIter>
     OutputIter unchecked_move_cat(RandomIter first, RandomIter last,
                                   OutputIter result,
-                                  std::random_access_iterator_tag) {
+                                  mystl::random_access_iterator_tag) {
         for (auto n = last - first; n > 0; --n, ++first, ++result) {
-            *result = std::move(*first);
+            *result = mystl::move(*first);
         }
         return result;
     }
@@ -256,7 +256,7 @@ namespace std {
     unchecked_move(Tp *first, Tp *last, Up *result) {
         const size_t n = static_cast<size_t>(last - first);
         if (n != 0)
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         return result + n;
     }
 
@@ -273,20 +273,19 @@ namespace std {
     template <class BidirectionalIter1, class BidirectionalIter2>
     BidirectionalIter2 unchecked_move_backward_cat(
         BidirectionalIter1 first, BidirectionalIter1 last,
-        BidirectionalIter2 result, std::bidirectional_iterator_tag) {
+        BidirectionalIter2 result, mystl::bidirectional_iterator_tag) {
         while (first != last)
-            *--result = std::move(*--last);
+            *--result = mystl::move(*--last);
         return result;
     }
 
     // random_access_iterator_tag 版本
     template <class RandomIter1, class RandomIter2>
-    RandomIter2
-    unchecked_move_backward_cat(RandomIter1 first, RandomIter1 last,
-                                RandomIter2 result,
-                                std::random_access_iterator_tag) {
+    RandomIter2 unchecked_move_backward_cat(RandomIter1 first, RandomIter1 last,
+                                            RandomIter2 result,
+                                            mystl::random_access_iterator_tag) {
         for (auto n = last - first; n > 0; --n)
-            *--result = std::move(*--last);
+            *--result = mystl::move(*--last);
         return result;
     }
 
@@ -308,7 +307,7 @@ namespace std {
         const size_t n = static_cast<size_t>(last - first);
         if (n != 0) {
             result -= n;
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         }
         return result;
     }
@@ -364,7 +363,7 @@ namespace std {
                             Tp *>::type
     unchecked_fill_n(Tp *first, Size n, Up value) {
         if (n > 0) {
-            memset(first, (unsigned char)value, (size_t)(n));
+            std::memset(first, (unsigned char)value, (size_t)(n));
         }
         return first + n;
     }
@@ -380,7 +379,7 @@ namespace std {
     /*****************************************************************************************/
     template <class ForwardIter, class T>
     void fill_cat(ForwardIter first, ForwardIter last, const T &value,
-                  std::forward_iterator_tag) {
+                  mystl::forward_iterator_tag) {
         for (; first != last; ++first) {
             *first = value;
         }
@@ -388,7 +387,7 @@ namespace std {
 
     template <class RandomIter, class T>
     void fill_cat(RandomIter first, RandomIter last, const T &value,
-                  std::random_access_iterator_tag) {
+                  mystl::random_access_iterator_tag) {
         fill_n(first, last - first, value);
     }
 
@@ -405,17 +404,17 @@ namespace std {
     // (3)如果到达 last2 而尚未到达 last1 返回 false
     // (4)如果同时到达 last1 和 last2 返回 false
     /*****************************************************************************************/
-    // template <class InputIter1, class InputIter2>
-    // bool lexicographical_compare(InputIter1 first1, InputIter1 last1,
-    //                              InputIter2 first2, InputIter2 last2) {
-    //     for (; first1 != last1 && first2 != last2; ++first1, ++first2) {
-    //         if (*first1 < *first2)
-    //             return true;
-    //         if (*first2 < *first1)
-    //             return false;
-    //     }
-    //     return first1 == last1 && first2 != last2;
-    // }
+    template <class InputIter1, class InputIter2>
+    bool lexicographical_compare(InputIter1 first1, InputIter1 last1,
+                                 InputIter2 first2, InputIter2 last2) {
+        for (; first1 != last1 && first2 != last2; ++first1, ++first2) {
+            if (*first1 < *first2)
+                return true;
+            if (*first2 < *first1)
+                return false;
+        }
+        return first1 == last1 && first2 != last2;
+    }
 
     // 重载版本使用函数对象 comp 代替比较操作
     template <class InputIter1, class InputIter2, class Compred>
@@ -439,7 +438,8 @@ namespace std {
     //     const auto len1 = last1 - first1;
     //     const auto len2 = last2 - first2;
     //     // 先比较相同长度的部分
-    //     const auto result = memcmp(first1, first2, std::min(len1, len2));
+    //     const auto result = std::memcmp(first1, first2, mystl::min(len1,
+    //     len2));
     //     // 若相等，长度较长的比较大
     //     return result != 0 ? result < 0 : len1 < len2;
     // }
@@ -449,25 +449,25 @@ namespace std {
     // 平行比较两个序列，找到第一处失配的元素，返回一对迭代器，分别指向两个序列中失配的元素
     /*****************************************************************************************/
     template <class InputIter1, class InputIter2>
-    std::pair<InputIter1, InputIter2>
+    mystl::pair<InputIter1, InputIter2>
     mismatch(InputIter1 first1, InputIter1 last1, InputIter2 first2) {
         while (first1 != last1 && *first1 == *first2) {
             ++first1;
             ++first2;
         }
-        return std::pair<InputIter1, InputIter2>(first1, first2);
+        return mystl::pair<InputIter1, InputIter2>(first1, first2);
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
     template <class InputIter1, class InputIter2, class Compred>
-    std::pair<InputIter1, InputIter2>
+    mystl::pair<InputIter1, InputIter2>
     mismatch(InputIter1 first1, InputIter1 last1, InputIter2 first2,
              Compred comp) {
         while (first1 != last1 && comp(*first1, *first2)) {
             ++first1;
             ++first2;
         }
-        return std::pair<InputIter1, InputIter2>(first1, first2);
+        return mystl::pair<InputIter1, InputIter2>(first1, first2);
     }
 
 };

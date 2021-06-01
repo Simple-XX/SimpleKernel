@@ -13,7 +13,7 @@
 #include "algobase"
 #include "iterator"
 
-namespace std {
+namespace mystl {
 
     /*****************************************************************************************/
     // set_union
@@ -39,7 +39,7 @@ namespace std {
             ++result;
         }
         // 将剩余元素拷贝到 result
-        return std::copy(first2, last2, std::copy(first1, last1, result));
+        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -64,7 +64,7 @@ namespace std {
             ++result;
         }
         // 将剩余元素拷贝到 result
-        return std::copy(first2, last2, std::copy(first1, last1, result));
+        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
     }
 
     /*****************************************************************************************/
@@ -137,7 +137,7 @@ namespace std {
                 ++first2;
             }
         }
-        return std::copy(first1, last1, result);
+        return mystl::copy(first1, last1, result);
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -160,7 +160,7 @@ namespace std {
                 ++first2;
             }
         }
-        return std::copy(first1, last1, result);
+        return mystl::copy(first1, last1, result);
     }
 
     /*****************************************************************************************/
@@ -188,7 +188,7 @@ namespace std {
                 ++first2;
             }
         }
-        return std::copy(first2, last2, std::copy(first1, last1, result));
+        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -213,7 +213,7 @@ namespace std {
                 ++first2;
             }
         }
-        return std::copy(first2, last2, std::copy(first1, last1, result));
+        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
     }
 
 };

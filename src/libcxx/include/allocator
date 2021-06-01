@@ -12,8 +12,9 @@
 
 #include "construct"
 #include "util"
+#include "stddef.h"
 
-namespace std {
+namespace mystl {
 
     // 模板类：allocator
     // 模板函数代表数据类型
@@ -74,33 +75,33 @@ namespace std {
 
     template <class T>
     void allocator<T>::construct(T *ptr) {
-        std::construct(ptr);
+        mystl::construct(ptr);
     }
 
     template <class T>
     void allocator<T>::construct(T *ptr, const T &value) {
-        std::construct(ptr, value);
+        mystl::construct(ptr, value);
     }
 
     template <class T>
     void allocator<T>::construct(T *ptr, T &&value) {
-        std::construct(ptr, std::move(value));
+        mystl::construct(ptr, mystl::move(value));
     }
 
     template <class T>
     template <class... Args>
     void allocator<T>::construct(T *ptr, Args &&...args) {
-        std::construct(ptr, std::forward<Args>(args)...);
+        mystl::construct(ptr, mystl::forward<Args>(args)...);
     }
 
     template <class T>
     void allocator<T>::destroy(T *ptr) {
-        std::destroy(ptr);
+        mystl::destroy(ptr);
     }
 
     template <class T>
     void allocator<T>::destroy(T *first, T *last) {
-        std::destroy(first, last);
+        mystl::destroy(first, last);
     }
 
 };

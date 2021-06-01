@@ -11,11 +11,13 @@
 
 #include "basic_string"
 
-namespace std {
-    using string    = std::basic_string<char>;
-    using wstring   = std::basic_string<wchar_t>;
-    using u16string = std::basic_string<char16_t>;
-    using u32string = std::basic_string<char32_t>;
+namespace mystl {
+
+    using string    = mystl::basic_string<char>;
+    using wstring   = mystl::basic_string<wchar_t>;
+    using u16string = mystl::basic_string<char16_t>;
+    using u32string = mystl::basic_string<char32_t>;
+
 };
 
 #endif /* _ASTRING_ */
