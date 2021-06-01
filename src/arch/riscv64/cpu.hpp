@@ -179,8 +179,8 @@ namespace CPU {
     // use riscv's sv39 page table scheme.
     static constexpr const uint64_t SATP_SV39 = (uint64_t)8 << 60;
 
-    static constexpr void *MAKE_SATP(void *pagetable) {
-        return (void *)(SATP_SV39 | (((uint64_t)pagetable) >> 12));
+    static constexpr void *SET_SV39(void *pgd) {
+        return (void *)(SATP_SV39 | (((uint64_t)pgd) >> 12));
     }
 
     // supervisor address translation and protection;
@@ -194,6 +194,12 @@ namespace CPU {
         void *x;
         __asm__ volatile("csrr %0, satp" : "=r"(x));
         return x;
+    }
+
+    static inline void ENABLE_PG(void) {
+        void *x = READ_SATP();
+        WRITE_SATP(SET_SV39(x));
+        return;
     }
 
     // Supervisor Scratch register, for early trap handler in trampoline.S.
@@ -288,7 +294,7 @@ namespace CPU {
     // flush the TLB.
     static inline void SFENCE_VMA(void) {
         // the zero, zero means flush all TLB entries.
-        __asm__ volatile("sfence.vma zero,zero");
+        __asm__ volatile("sfence.vma zero, zero");
         return;
     }
 
