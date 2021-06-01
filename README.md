@@ -3,5 +3,5 @@
 
 系统启动
 
-支持：i386，raspi2，riscv64
+支持：i386, x86_64, arm, riscv64
 
