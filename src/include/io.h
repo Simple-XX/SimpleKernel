@@ -22,11 +22,11 @@ class IO {
 private:
     // io 对象
 #if defined(__i386__) || defined(__x86_64__)
-    static TUI io;
+    TUI io;
 #elif defined(__arm__) || defined(__aarch64__)
-    static UART io;
+    UART io;
 #elif defined(__riscv)
-    static SBI_CONSOLE io;
+    SBI_CONSOLE io;
 #endif
 
 protected:
