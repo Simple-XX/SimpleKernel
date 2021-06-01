@@ -63,7 +63,7 @@ VFS::~VFS(void) {
     return;
 }
 
-dentry_t *VFS::find_dentry(const STL::string &_path) {
+dentry_t *VFS::find_dentry(const mystl::string &_path) {
     // 遍历所有目录项
     for (auto i : dentrys) {
         // 如果完整路径相同
@@ -74,7 +74,7 @@ dentry_t *VFS::find_dentry(const STL::string &_path) {
     return nullptr;
 }
 
-dentry_t *VFS::alloc_dentry(const STL::string &_path, int _flags) {
+dentry_t *VFS::alloc_dentry(const mystl::string &_path, int _flags) {
     // 新建目录项
     dentry_t *dentry = new dentry_t();
     dentry->flag     = _flags;
@@ -99,7 +99,7 @@ dentry_t *VFS::alloc_dentry(const STL::string &_path, int _flags) {
     return dentry;
 }
 
-int VFS::dealloc_dentry(const STL::string &_path) {
+int VFS::dealloc_dentry(const mystl::string &_path) {
     dentry_t *dentry = find_dentry(_path);
     // 首先判断是否存在，不存在则返回
     if (dentry == nullptr) {
@@ -121,7 +121,7 @@ int VFS::dealloc_dentry(const STL::string &_path) {
     return 0;
 }
 
-FS *VFS::get_fs(const STL::string &_path) {
+FS *VFS::get_fs(const mystl::string &_path) {
     for (auto i : fs) {
         // 返回 0 说明路径匹配
         if (_path.find(i->root.name) == 0) {
@@ -203,7 +203,7 @@ int32_t VFS::unregister_filesystem(FS *_fs) {
     return 0;
 }
 
-int VFS::mkdir(const STL::string &_path, const mode_t &_mode) {
+int VFS::mkdir(const mystl::string &_path, const mode_t &_mode) {
     // TODO: 对 "/", ".", ".." 等特殊字符的处理
     // 首先判断是否存在，存在则返回
     if (find_dentry(_path) != nullptr) {
@@ -218,11 +218,11 @@ int VFS::mkdir(const STL::string &_path, const mode_t &_mode) {
     return 0;
 }
 
-int VFS::rmdir(const STL::string &_path) {
+int VFS::rmdir(const mystl::string &_path) {
     return dealloc_dentry(_path);
 }
 
-int VFS::open(const STL::string &_path, int _flags) {
+int VFS::open(const mystl::string &_path, int _flags) {
     // 首先看是否存在
     dentry_t *dentry = find_dentry(_path);
     // 如果不存在
