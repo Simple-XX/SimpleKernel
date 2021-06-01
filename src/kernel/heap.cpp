@@ -72,7 +72,7 @@ void operator delete(void *p) {
     free(p);
 }
 
-void operator delete(void *p, size_t size __attribute__((unused))) {
+void operator delete(void *p, size_t) {
     free(p);
 }
 
@@ -80,6 +80,6 @@ void operator delete[](void *p) {
     free(p);
 }
 
-void operator delete[](void *p, size_t size __attribute__((unused))) {
+void operator delete[](void *p, size_t) {
     free(p);
 }
