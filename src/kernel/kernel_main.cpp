@@ -214,6 +214,7 @@ int test_vfs(void) {
     char b[10];
     vfs->read(fd, b, 10);
     assert(strcmp(a, b) == 0);
+    printf("vfs test done.\n");
     return 0;
 }
 
