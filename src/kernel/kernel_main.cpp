@@ -7,7 +7,6 @@
 #include "kernel.h"
 
 void kernel_main(void) {
-    KERNEL kernel;
     while (1) {
         ;
     }
