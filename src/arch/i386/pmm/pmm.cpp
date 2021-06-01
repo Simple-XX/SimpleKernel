@@ -11,9 +11,6 @@
 #include "stdio.h"
 #include "pmm.h"
 
-extern MULTIBOOT2::multiboot_memory_map_entry_t *mmap_entries;
-extern MULTIBOOT2::multiboot_mmap_tag_t *        mmap_tag;
-
 // TODO: 优化空间
 // TODO: 换一种更灵活的方法
 COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
@@ -32,37 +29,6 @@ PMM::~PMM(void) {
     return;
 }
 
-// TODO: 太难看了也
-// 这里的 addr 与 len 4k 对齐
-static void get_ram_info(e820map_t *e820map) {
-    for (; (uint8_t *)MULTIBOOT2::mmap_entries <
-           (uint8_t *)MULTIBOOT2::mmap_tag + MULTIBOOT2::mmap_tag->size;
-         MULTIBOOT2::mmap_entries =
-             (MULTIBOOT2::multiboot_memory_map_entry_t
-                  *)((uint32_t)MULTIBOOT2::mmap_entries +
-                     ((struct MULTIBOOT2::multiboot_tag_mmap *)
-                          MULTIBOOT2::mmap_tag)
-                         ->entry_size)) {
-        // 如果是可用内存
-        if (MULTIBOOT2::mmap_entries->type ==
-            MULTIBOOT2::MULTIBOOT_MEMORY_AVAILABLE) {
-            e820map->map[e820map->nr_map].addr =
-                reinterpret_cast<uint8_t *>(MULTIBOOT2::mmap_entries->addr);
-            e820map->map[e820map->nr_map].length =
-                MULTIBOOT2::mmap_entries->len;
-            e820map->map[e820map->nr_map].type = MULTIBOOT2::mmap_entries->type;
-            e820map->nr_map++;
-        }
-    }
-    return;
-}
-
-void PMM::mamage_init(void) {
-    normal.init(normal_pages);
-    high.init(high_pages);
-    return;
-}
-
 int32_t PMM::init(void) {
     // 因为 GDT 是 x86 遗毒，所以在这里处理
     GDT::init();
@@ -73,7 +39,8 @@ int32_t PMM::init(void) {
 #endif
     e820map_t e820map;
     bzero(&e820map, sizeof(e820map_t));
-    get_ram_info(&e820map);
+    // TODO: 处理不能使用的内存，在虚拟内存映射时需要考虑
+    MULTIBOOT2::get_e820(e820map);
     // 计算可用的内存
     // 这里需要保证 addr 是按照 PMM_PAGE_MASK 对齐的
     for (size_t i = 0; i < e820map.nr_map; i++) {
@@ -110,6 +77,12 @@ int32_t PMM::init(void) {
     mamage_init();
     printf("pmm_init\n");
     return 0;
+}
+
+void PMM::mamage_init(void) {
+    normal.init(normal_pages);
+    high.init(high_pages);
+    return;
 }
 
 void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
