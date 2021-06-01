@@ -7,6 +7,9 @@
 #ifndef _SLAB_H_
 #define _SLAB_H_
 
+#include "stdint.h"
+#include "stddef.h"
+
 // TODO: 面向对象重构
 class slab_list_entry_t {
 public:
@@ -23,7 +26,7 @@ private:
     static constexpr const uint32_t SLAB_UNUSED = 0x00;
     static constexpr const uint32_t SLAB_USED   = 0x01;
     // 最小空间
-    static constexpr const uint32_t SLAB_MIN = 0xFF;
+    static constexpr const uint32_t SLAB_MIN = 0x100;
 
     // 管理的内存起始地址，包括头的位置
     void *addr_start;
