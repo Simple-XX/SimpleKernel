@@ -13,6 +13,7 @@
 #include "vmm.h"
 #include "heap.h"
 #include "kernel.h"
+#include "string"
 #if defined(__i386__) || defined(__x86_64__)
 #include "multiboot2.h"
 #endif
@@ -39,6 +40,9 @@ void kernel_main(uint32_t size __attribute__((unused)),
     // 测试堆
     test_heap();
     show_info();
+    mystl::string a = "233";
+    mystl::string b = a;
+    mystl::string c = a.swap(b);
     while (1) {
         ;
     }

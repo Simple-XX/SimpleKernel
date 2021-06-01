@@ -16,12 +16,12 @@
 #include "functional"
 #include "heap_algo"
 
-namespace std {
+namespace mystl {
 
     // 模板类 queue
-    // 参数一代表数据类型，参数二代表底层容器类型，缺省使用 std::deque
+    // 参数一代表数据类型，参数二代表底层容器类型，缺省使用 mystl::deque
     // 作为底层容器
-    template <class T, class Container = std::deque<T>>
+    template <class T, class Container = mystl::deque<T>>
     class queue {
     public:
         typedef Container container_type;
@@ -58,14 +58,14 @@ namespace std {
         }
         queue(Container &&c) noexcept(
             std::is_nothrow_move_constructible<Container>::value)
-            : c_(std::move(c)) {
+            : c_(mystl::move(c)) {
         }
 
         queue(const queue &rhs) : c_(rhs.c_) {
         }
         queue(queue &&rhs) noexcept(
             std::is_nothrow_move_constructible<Container>::value)
-            : c_(std::move(rhs.c_)) {
+            : c_(mystl::move(rhs.c_)) {
         }
 
         queue &operator=(const queue &rhs) {
@@ -74,7 +74,7 @@ namespace std {
         }
         queue &operator=(queue &&rhs) noexcept(
             std::is_nothrow_move_assignable<Container>::value) {
-            c_ = std::move(rhs.c_);
+            c_ = mystl::move(rhs.c_);
             return *this;
         }
 
@@ -110,14 +110,14 @@ namespace std {
         // 修改容器相关操作
         template <class... Args>
         void emplace(Args &&...args) {
-            c_.emplace_back(std::forward<Args>(args)...);
+            c_.emplace_back(mystl::forward<Args>(args)...);
         }
 
         void push(const value_type &value) {
             c_.push_back(value);
         }
         void push(value_type &&value) {
-            c_.emplace_back(std::move(value));
+            c_.emplace_back(mystl::move(value));
         }
 
         void pop() {
@@ -129,8 +129,8 @@ namespace std {
                 pop();
         }
 
-        void swap(queue &rhs) noexcept(noexcept(std::swap(c_, rhs.c_))) {
-            std::swap(c_, rhs.c_);
+        void swap(queue &rhs) noexcept(noexcept(mystl::swap(c_, rhs.c_))) {
+            mystl::swap(c_, rhs.c_);
         }
 
     public:
@@ -179,7 +179,7 @@ namespace std {
         return !(lhs < rhs);
     }
 
-    // 重载 std 的 swap
+    // 重载 mystl 的 swap
     template <class T, class Container>
     void swap(queue<T, Container> &lhs,
               queue<T, Container> &rhs) noexcept(noexcept(lhs.swap(rhs))) {
@@ -189,10 +189,10 @@ namespace std {
     /*****************************************************************************************/
 
     // 模板类 priority_queue
-    // 参数一代表数据类型，参数二代表容器类型，缺省使用 std::vector
-    // 作为底层容器 参数三代表比较权值的方式，缺省使用 std::less 作为比较方式
-    template <class T, class Container = std::vector<T>,
-              class Compare = std::less<typename Container::value_type>>
+    // 参数一代表数据类型，参数二代表容器类型，缺省使用 mystl::vector
+    // 作为底层容器 参数三代表比较权值的方式，缺省使用 mystl::less 作为比较方式
+    template <class T, class Container = mystl::vector<T>,
+              class Compare = mystl::less<typename Container::value_type>>
     class priority_queue {
     public:
         typedef Container container_type;
@@ -218,53 +218,53 @@ namespace std {
         }
 
         explicit priority_queue(size_type n) : c_(n) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
         priority_queue(size_type n, const value_type &value) : c_(n, value) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
 
         template <class IIter>
         priority_queue(IIter first, IIter last) : c_(first, last) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
 
         priority_queue(std::initializer_list<T> ilist) : c_(ilist) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
 
         priority_queue(const Container &s) : c_(s) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
-        priority_queue(Container &&s) : c_(std::move(s)) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+        priority_queue(Container &&s) : c_(mystl::move(s)) {
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
 
         priority_queue(const priority_queue &rhs)
             : c_(rhs.c_), comp_(rhs.comp_) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
         priority_queue(priority_queue &&rhs)
-            : c_(std::move(rhs.c_)), comp_(rhs.comp_) {
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            : c_(mystl::move(rhs.c_)), comp_(rhs.comp_) {
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
         }
 
         priority_queue &operator=(const priority_queue &rhs) {
             c_    = rhs.c_;
             comp_ = rhs.comp_;
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
             return *this;
         }
         priority_queue &operator=(priority_queue &&rhs) {
-            c_    = std::move(rhs.c_);
+            c_    = mystl::move(rhs.c_);
             comp_ = rhs.comp_;
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
             return *this;
         }
         priority_queue &operator=(std::initializer_list<T> ilist) {
             c_    = ilist;
             comp_ = value_compare();
-            std::make_heap(c_.begin(), c_.end(), comp_);
+            mystl::make_heap(c_.begin(), c_.end(), comp_);
             return *this;
         }
 
@@ -287,21 +287,21 @@ namespace std {
         // 修改容器相关操作
         template <class... Args>
         void emplace(Args &&...args) {
-            c_.emplace_back(std::forward<Args>(args)...);
-            std::push_heap(c_.begin(), c_.end(), comp_);
+            c_.emplace_back(mystl::forward<Args>(args)...);
+            mystl::push_heap(c_.begin(), c_.end(), comp_);
         }
 
         void push(const value_type &value) {
             c_.push_back(value);
-            std::push_heap(c_.begin(), c_.end(), comp_);
+            mystl::push_heap(c_.begin(), c_.end(), comp_);
         }
         void push(value_type &&value) {
-            c_.push_back(std::move(value));
-            std::push_heap(c_.begin(), c_.end(), comp_);
+            c_.push_back(mystl::move(value));
+            mystl::push_heap(c_.begin(), c_.end(), comp_);
         }
 
         void pop() {
-            std::pop_heap(c_.begin(), c_.end(), comp_);
+            mystl::pop_heap(c_.begin(), c_.end(), comp_);
             c_.pop_back();
         }
 
@@ -310,10 +310,10 @@ namespace std {
                 pop();
         }
 
-        void swap(priority_queue &rhs) noexcept(noexcept(std::swap(
-            c_, rhs.c_)) &&noexcept(std::swap(comp_, rhs.comp_))) {
-            std::swap(c_, rhs.c_);
-            std::swap(comp_, rhs.comp_);
+        void swap(priority_queue &rhs) noexcept(noexcept(mystl::swap(
+            c_, rhs.c_)) &&noexcept(mystl::swap(comp_, rhs.comp_))) {
+            mystl::swap(c_, rhs.c_);
+            mystl::swap(comp_, rhs.comp_);
         }
 
     public:
@@ -340,7 +340,7 @@ namespace std {
         return lhs != rhs;
     }
 
-    // 重载 std 的 swap
+    // 重载 mystl 的 swap
     template <class T, class Container, class Compare>
     void swap(priority_queue<T, Container, Compare> &lhs,
               priority_queue<T, Container, Compare>
