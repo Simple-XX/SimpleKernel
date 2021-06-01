@@ -1,17 +1,23 @@
-﻿#ifndef MYTINYSTL_STACK_H_
-#define MYTINYSTL_STACK_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// stack for Simple-XX/SimpleKernel.
+
+#ifndef _STACK_
+#define _STACK_
 
 // 这个头文件包含了一个模板类 stack
 // stack : 栈
 
-#include "deque.h"
+#include "deque"
 
-namespace mystl {
+namespace std {
 
     // 模板类 stack
-    // 参数一代表数据类型，参数二代表底层容器类型，缺省使用 mystl::deque
+    // 参数一代表数据类型，参数二代表底层容器类型，缺省使用 std::deque
     // 作为底层容器
-    template <class T, class Container = mystl::deque<T>>
+    template <class T, class Container = std::deque<T>>
     class stack {
     public:
         typedef Container container_type;
@@ -47,14 +53,14 @@ namespace mystl {
         }
         stack(Container &&c) noexcept(
             std::is_nothrow_move_constructible<Container>::value)
-            : c_(mystl::move(c)) {
+            : c_(std::move(c)) {
         }
 
         stack(const stack &rhs) : c_(rhs.c_) {
         }
         stack(stack &&rhs) noexcept(
             std::is_nothrow_move_constructible<Container>::value)
-            : c_(mystl::move(rhs.c_)) {
+            : c_(std::move(rhs.c_)) {
         }
 
         stack &operator=(const stack &rhs) {
@@ -63,7 +69,7 @@ namespace mystl {
         }
         stack &operator=(stack &&rhs) noexcept(
             std::is_nothrow_move_assignable<Container>::value) {
-            c_ = mystl::move(rhs.c_);
+            c_ = std::move(rhs.c_);
             return *this;
         }
 
@@ -94,14 +100,14 @@ namespace mystl {
 
         template <class... Args>
         void emplace(Args &&...args) {
-            c_.emplace_back(mystl::forward<Args>(args)...);
+            c_.emplace_back(std::forward<Args>(args)...);
         }
 
         void push(const value_type &value) {
             c_.push_back(value);
         }
         void push(value_type &&value) {
-            c_.push_back(mystl::move(value));
+            c_.push_back(std::move(value));
         }
 
         void pop() {
@@ -113,8 +119,8 @@ namespace mystl {
                 pop();
         }
 
-        void swap(stack &rhs) noexcept(noexcept(mystl::swap(c_, rhs.c_))) {
-            mystl::swap(c_, rhs.c_);
+        void swap(stack &rhs) noexcept(noexcept(std::swap(c_, rhs.c_))) {
+            std::swap(c_, rhs.c_);
         }
 
     public:
@@ -163,12 +169,13 @@ namespace mystl {
         return !(lhs < rhs);
     }
 
-    // 重载 mystl 的 swap
+    // 重载 std 的 swap
     template <class T, class Container>
     void swap(stack<T, Container> &lhs,
               stack<T, Container> &rhs) noexcept(noexcept(lhs.swap(rhs))) {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_STACK_H_
+};
+
+#endif /* _STACK_ */
