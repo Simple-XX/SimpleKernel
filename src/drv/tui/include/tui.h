@@ -51,7 +51,7 @@ private:
     // 光标低位
     static constexpr const uint32_t TUI_CURSOR_L = 0xF;
     // TUI 缓存基址
-    const uint16_t *TUI_MEM_BASE = reinterpret_cast<const uint16_t *>(0xB8000);
+    static constexpr const uint32_t TUI_MEM_BASE = 0xB8000;
     // TUI 缓存大小
     static constexpr size_t TUI_MEM_SIZE = 0x8000;
     // 规定显示行数、列数
