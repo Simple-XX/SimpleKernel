@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_MEMORY_H_
-#define MYTINYSTL_MEMORY_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// memory for Simple-XX/SimpleKernel.
+
+#ifndef _MEMORY_
+#define _MEMORY_
 
 // 这个头文件负责更高级的动态内存管理
 // 包含一些基本函数、空间配置器、未初始化的储存空间管理，以及一个模板类 auto_ptr
@@ -7,13 +13,12 @@
 #include "stddef.h"
 #include "stdlib.h"
 #include "limits.h"
+#include "algobase"
+#include "allocator"
+#include "construct"
+#include "uninitialized"
 
-#include "algobase.h"
-#include "allocator.h"
-#include "construct.h"
-#include "uninitialized.h"
-
-namespace mystl {
+namespace std {
 
     // 获取对象地址
     template <class Tp>
@@ -67,7 +72,7 @@ namespace mystl {
         temporary_buffer(ForwardIterator first, ForwardIterator last);
 
         ~temporary_buffer() {
-            mystl::destroy(buffer, buffer + len);
+            std::destroy(buffer, buffer + len);
             free(buffer);
         }
 
@@ -90,7 +95,7 @@ namespace mystl {
         void initialize_buffer(const T &, std::true_type) {
         }
         void initialize_buffer(const T &value, std::false_type) {
-            mystl::uninitialized_fill_n(buffer, len, value);
+            std::uninitialized_fill_n(buffer, len, value);
         }
 
     private:
@@ -103,7 +108,7 @@ namespace mystl {
     temporary_buffer<ForwardIterator, T>::temporary_buffer(
         ForwardIterator first, ForwardIterator last) {
         try {
-            len = mystl::distance(first, last);
+            len = std::distance(first, last);
             allocate_buffer();
             if (len > 0) {
                 initialize_buffer(*first,
@@ -201,5 +206,6 @@ namespace mystl {
         }
     };
 
-} // namespace mystl
-#endif // !MYTINYSTL_MEMORY_H_
+};
+
+#endif /* _MEMORY_ */

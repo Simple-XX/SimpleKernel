@@ -1,13 +1,19 @@
-﻿#ifndef MYTINYSTL_SET_ALGO_H_
-#define MYTINYSTL_SET_ALGO_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// set_algo for Simple-XX/SimpleKernel.
+
+#ifndef _SET_ALGO_
+#define _SET_ALGO_
 
 // 这个头文件包含 set 的四种算法: union, intersection, difference,
 // symmetric_difference 所有函数都要求序列有序
 
-#include "algobase.h"
-#include "iterator.h"
+#include "algobase"
+#include "iterator"
 
-namespace mystl {
+namespace std {
 
     /*****************************************************************************************/
     // set_union
@@ -33,7 +39,7 @@ namespace mystl {
             ++result;
         }
         // 将剩余元素拷贝到 result
-        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
+        return std::copy(first2, last2, std::copy(first1, last1, result));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -58,7 +64,7 @@ namespace mystl {
             ++result;
         }
         // 将剩余元素拷贝到 result
-        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
+        return std::copy(first2, last2, std::copy(first1, last1, result));
     }
 
     /*****************************************************************************************/
@@ -131,7 +137,7 @@ namespace mystl {
                 ++first2;
             }
         }
-        return mystl::copy(first1, last1, result);
+        return std::copy(first1, last1, result);
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -154,7 +160,7 @@ namespace mystl {
                 ++first2;
             }
         }
-        return mystl::copy(first1, last1, result);
+        return std::copy(first1, last1, result);
     }
 
     /*****************************************************************************************/
@@ -182,7 +188,7 @@ namespace mystl {
                 ++first2;
             }
         }
-        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
+        return std::copy(first2, last2, std::copy(first1, last1, result));
     }
 
     // 重载版本使用函数对象 comp 代替比较操作
@@ -207,8 +213,9 @@ namespace mystl {
                 ++first2;
             }
         }
-        return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
+        return std::copy(first2, last2, std::copy(first1, last1, result));
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_SET_ALGO_H_
+};
+
+#endif /* _SET_ALGO_ */

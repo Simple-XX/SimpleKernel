@@ -9,7 +9,7 @@
 
 #include "stdint.h"
 #include "string"
-#include "list.h"
+#include "list"
 #include "time.h"
 
 typedef uint32_t device_id_t;
@@ -106,11 +106,11 @@ public:
     // 父目录
     dentry_t *parent;
     // 子目录
-    mystl::list<dentry_t *> child;
+    std::list<dentry_t *> child;
     // 文件完整路径
-    mystl::string path;
+    std::string path;
     // 文件名
-    mystl::string name;
+    std::string name;
     dentry_t(void);
     virtual ~dentry_t(void);
 };
@@ -136,13 +136,13 @@ class FS {
 private:
 protected:
     // 超级块
-    mystl::list<superblock_t *> supers;
+    std::list<superblock_t *> supers;
     // inode 链表
-    mystl::list<inode_t *> inodes;
+    std::list<inode_t *> inodes;
 
 public:
     // 文件系统名
-    mystl::string name;
+    std::string name;
     // 挂载点目录项
     dentry_t root;
     FS(void);
@@ -157,21 +157,21 @@ public:
 class VFS {
 private:
     // 管理的文件系统
-    mystl::list<FS *> fs;
+    std::list<FS *> fs;
     // denty 链表
-    mystl::list<dentry_t *> dentrys;
+    std::list<dentry_t *> dentrys;
     // 所有打开的文件
-    mystl::list<file_t *> files;
+    std::list<file_t *> files;
     // 当前所在目录
     dentry_t *cwd;
     // 查找目录项
-    dentry_t *find_dentry(const mystl::string &_path);
+    dentry_t *find_dentry(const std::string &_path);
     // 新建目录项
-    dentry_t *alloc_dentry(const mystl::string &_path, int _flags);
+    dentry_t *alloc_dentry(const std::string &_path, int _flags);
     // 删除目录项
-    int dealloc_dentry(const mystl::string &_path);
+    int dealloc_dentry(const std::string &_path);
     // 根据路径判断文件系统
-    FS *get_fs(const mystl::string &_path);
+    FS *get_fs(const std::string &_path);
     // 分配文件描述符
     fd_t alloc_fd(void);
     fd_t dealloc_fd(void);
@@ -188,8 +188,8 @@ public:
     int32_t unregister_filesystem(FS *_fs);
     //文件系统相关
     // 挂载  设备名，挂载路径，文件系统名
-    int mount(const mystl::string &_dev_name, const mystl::string &_path,
-              const mystl::string &_fs_name, unsigned long flags, void *data);
+    int mount(const std::string &_dev_name, const std::string &_path,
+              const std::string &_fs_name, unsigned long flags, void *data);
     int umount(void);
     int umount2(void);
     int sysfs(void);
@@ -204,9 +204,9 @@ public:
     int fchdir(void);
     int getcwd(void);
     // 创建目录
-    int mkdir(const mystl::string &_path, const mode_t &_mode);
+    int mkdir(const std::string &_path, const mode_t &_mode);
     // 删除目录及其内容
-    int rmdir(const mystl::string &_path);
+    int rmdir(const std::string &_path);
     int getdents(void);
     int getdents64(void);
     int readdir(void);
@@ -237,7 +237,7 @@ public:
     int stat64(void);
     int lstat64(void);
     // 打开文件
-    int open(const mystl::string &_path, int _flags);
+    int open(const std::string &_path, int _flags);
     int close(fd_t _fd);
     int creat(void);
     int umask(void);
