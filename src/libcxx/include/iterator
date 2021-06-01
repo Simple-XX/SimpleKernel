@@ -12,7 +12,7 @@
 #include "stddef.h"
 #include "type_traits.h"
 
-namespace std {
+namespace mystl {
 
     // 五种迭代器类型
     struct input_iterator_tag {};
@@ -350,7 +350,6 @@ namespace std {
                     const reverse_iterator<Iterator> &rhs) {
         return !(lhs < rhs);
     }
-
 };
 
 #endif /* _ITERATOR_ */

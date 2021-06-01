@@ -16,6 +16,6 @@
 #include "heap_algo"
 #include "numeric"
 
-namespace std {};
+namespace mystl {};
 
 #endif /* _ALGORITHM_ */
