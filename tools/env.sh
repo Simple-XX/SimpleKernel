@@ -5,7 +5,6 @@
 
 #!/bin/bash
 
-# ARCH: i386, riscv64
 # ARCH="i386"
 # ARCH="x86_64"
 # ARCH="arm"
