@@ -20,22 +20,13 @@ cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=
 make
 cd ../
 
-
-if [ ${ARCH} == "i386" ]; then
+if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
         echo Multiboot2 Confirmed!
+    else
+        echo NOT Multiboot2!
+        exit
     fi
-elif [ ${ARCH} == "x86_64" ]; then
-    if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}_boot; then
-        echo Multiboot2 Confirmed!
-    fi
-elif [ ${ARCH} == "raspi2" ]; then
-    echo Arm-A7.
-elif [ ${ARCH} == "riscv64" ]; then
-    echo RISCV64.
-else
-    echo The File is Not Multiboot.
-    exit
 fi
 
 # 检测路径是否合法，发生过 rm -rf -f /* 的惨剧
@@ -46,14 +37,10 @@ else
     rm -rf -f ${iso_boot}/*
 fi
 
-cp ${kernel} ${iso_boot}
-if [ ${ARCH} == "x86_64" ]; then
-    cp ${kernel}_boot ${iso_boot}
-fi
-mkdir ${iso_boot_grub}
-touch ${iso_boot_grub}/grub.cfg
-
-if [ ${ARCH} == "i386" ]; then
+if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
+    cp ${kernel} ${iso_boot}
+    mkdir ${iso_boot_grub}
+    touch ${iso_boot_grub}/grub.cfg
     echo 'set timeout=15
     set default=0
     menuentry "SimpleKernel" {
@@ -61,22 +48,11 @@ if [ ${ARCH} == "i386" ]; then
    }' >${iso_boot_grub}/grub.cfg
 fi
 
-if [ ${ARCH} == "x86_64" ]; then
-    echo 'set timeout=15
-    set default=0
-    menuentry "SimpleKernel" {
-       multiboot2 /boot/kernel.elf_boot "KERNEL_ELF_boot"
-   }' >${iso_boot_grub}/grub.cfg
-fi
-
-if [ ${ARCH} == "i386" ]; then
+if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
-elif [ ${ARCH} == "x86_64" ]; then
-    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
-elif [ ${ARCH} == "raspi2" ]; then
-    ${SIMULATOR}-system-aarch64 -machine raspi2 -serial stdio -kernel ${kernel} 
+    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
+elif [ ${ARCH} == "arm" ]; then
+    qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
 elif [ ${ARCH} == "riscv64" ]; then
-    ${SIMULATOR}-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel} 
+    qemu-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel}
 fi

@@ -9,12 +9,4 @@
 
 extern "C" void kernel_main(void);
 
-class KERNEL {
-private:
-protected:
-public:
-    KERNEL(void);
-    ~KERNEL();
-};
-
 #endif /* _KERNEL_H_ */

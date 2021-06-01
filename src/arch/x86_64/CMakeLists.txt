@@ -5,13 +5,11 @@
 
 PROJECT(arch ASM)
 
-find_asm_source_files(init_asm_src ${arch_SOURCE_DIR}/init)
-set(init_src ${init_asm_src})
+find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/boot)
+set(boot_src ${boot_asm_src})
 
-set(arch_src ${init_src})
+set(arch_src ${boot_src})
 
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
-target_include_kernel_header_files(${PROJECT_NAME})
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/boot)
+target_include_arch_header_files(${PROJECT_NAME})
