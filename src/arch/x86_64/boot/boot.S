@@ -29,11 +29,7 @@ multiboot_header_end:
 .type _start, @function
 _start:
     cli
-    jmp multiboot_entry
-    ret
-
-multiboot_entry:
-	# 设置栈地址
+    # 设置栈地址
     mov $STACK_TOP, %rsp
     # 栈地址按照 4096 字节对齐
     and $0xFFFFFFFFFFFFF000, %rsp
@@ -46,10 +42,9 @@ multiboot_entry:
 	# 魔数
 	push %rax
     call kernel_main
-
-1:
-    hlt
+1:  hlt
     jmp 1b
+    ret
     ret
 
 .section .bss
