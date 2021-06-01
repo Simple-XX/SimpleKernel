@@ -10,11 +10,8 @@
 #include "iostream"
 #include "kernel.h"
 
-extern "C" void kernel_main(void);
-
 void kernel_main(void) {
     // 在 cpp_init 中，全局变量会进行构造
-    // 包括 IO
     cpp_init();
     show_info();
     while (1) {

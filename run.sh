@@ -27,13 +27,6 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
         echo NOT Multiboot2!
         exit
     fi
-elif [ ${ARCH} == "raspi2" ]; then
-    echo Arm-A7.
-elif [ ${ARCH} == "riscv64" ]; then
-    echo RISCV64.
-else
-    echo The File is Not Multiboot.
-    exit
 fi
 
 # 检测路径是否合法，发生过 rm -rf -f /* 的惨剧
@@ -44,11 +37,10 @@ else
     rm -rf -f ${iso_boot}/*
 fi
 
-cp ${kernel} ${iso_boot}
-mkdir ${iso_boot_grub}
-touch ${iso_boot_grub}/grub.cfg
-
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
+    cp ${kernel} ${iso_boot}
+    mkdir ${iso_boot_grub}
+    touch ${iso_boot_grub}/grub.cfg
     echo 'set timeout=15
     set default=0
     menuentry "SimpleKernel" {
@@ -58,9 +50,9 @@ fi
 
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    ${SIMULATOR} -q -f ${bochsrc} -rc ./tools/bochsinit
-elif [ ${ARCH} == "raspi2" ]; then
-    ${SIMULATOR}-system-aarch64 -machine raspi2 -serial stdio -kernel ${kernel} 
+    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
+elif [ ${ARCH} == "arm" ]; then
+    qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
 elif [ ${ARCH} == "riscv64" ]; then
-    ${SIMULATOR}-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel}
+    qemu-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel}
 fi
