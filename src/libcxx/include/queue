@@ -1,14 +1,20 @@
-﻿#ifndef MYTINYSTL_QUEUE_H_
-#define MYTINYSTL_QUEUE_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// queue for Simple-XX/SimpleKernel.
+
+#ifndef _QUEUE_
+#define _QUEUE_
 
 // 这个头文件包含了两个模板类 queue 和 priority_queue
 // queue          : 队列
 // priority_queue : 优先队列
 
-#include "deque.h"
-#include "vector.h"
-#include "functional.h"
-#include "heap_algo.h"
+#include "deque"
+#include "vector"
+#include "functional"
+#include "heap_algo"
 
 namespace mystl {
 
@@ -342,5 +348,6 @@ namespace mystl {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_QUEUE_H_
+};
+
+#endif /* _QUEUE_ */

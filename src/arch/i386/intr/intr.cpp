@@ -8,6 +8,8 @@
 #include "stdio.h"
 #include "gdt.h"
 #include "intr.h"
+#include "apic.h"
+#include "keyboard.h"
 
 namespace INTR {
 #ifdef __cplusplus
@@ -489,6 +491,10 @@ namespace INTR {
         register_interrupt_handler(INT_STACK_FAULT, &stack_segment);
         register_interrupt_handler(INT_GENERAL_PROTECT, &general_protection);
         register_interrupt_handler(INT_PAGE_FAULT, &page_fault);
+        // APIC 初始化
+        apic.init();
+        // 键盘初始化
+        keyboard.init();
         printf("intr init\n");
         return 0;
     }

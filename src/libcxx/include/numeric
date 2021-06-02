@@ -1,9 +1,15 @@
-﻿#ifndef MYTINYSTL_NUMERIC_H_
-#define MYTINYSTL_NUMERIC_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// numeric for Simple-XX/SimpleKernel.
 
-// 这个头文件包含了 mystl 的数值算法
+#ifndef _NUMERIC_
+#define _NUMERIC_
 
-#include "iterator.h"
+// 这个头文件包含了 std 的数值算法
+
+#include "iterator"
 
 namespace mystl {
 
@@ -138,5 +144,6 @@ namespace mystl {
         return ++result;
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_NUMERIC_H_
+};
+
+#endif /* _NUMERIC_ */

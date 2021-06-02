@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_LIST_H_
-#define MYTINYSTL_LIST_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// list for Simple-XX/SimpleKernel.
+
+#ifndef _LIST_
+#define _LIST_
 
 // 这个头文件包含了一个模板类 list
 // list : 双向链表
@@ -7,7 +13,7 @@
 // notes:
 //
 // 异常保证：
-// mystl::list<T>
+// std::list<T>
 // 满足基本异常保证，部分函数无异常保证，并对以下等函数做强异常安全保证：
 //   * emplace_front
 //   * emplace_back
@@ -16,13 +22,12 @@
 //   * push_back
 //   * insert
 
-#include <initializer_list>
-
-#include "iterator.h"
-#include "memory.h"
-#include "functional.h"
-#include "util.h"
-#include "exceptdef.h"
+#include "initializer_list"
+#include "iterator"
+#include "memory"
+#include "functional"
+#include "util"
+#include "exceptdef"
 
 namespace mystl {
 
@@ -104,8 +109,8 @@ namespace mystl {
         }
         list_iterator(const list_iterator &rhs) : node_(rhs.node_) {
         }
+
         // 重载操作符
-        self &    operator=(const self &l) = default;
         reference operator*() const {
             return node_->as_node()->value;
         }
@@ -715,19 +720,13 @@ namespace mystl {
     template <class T>
     template <class UnaryPredicate>
     void list<T>::remove_if(UnaryPredicate pred) {
-        // auto f = begin();
-        // auto l = end();
-        // for (auto next = f; f != l; f = next) {
-        //     ++next;
-        //     if (pred(*f)) {
-        //         erase(f);
-        //     }
-        // }
-        for (auto it = begin(); it != end();) {
-            if (pred(*it))
-                it = erase(it);
-            else
-                ++it;
+        auto f = begin();
+        auto l = end();
+        for (auto next = f; f != l; f = next) {
+            ++next;
+            if (pred(*f)) {
+                erase(f);
+            }
         }
     }
 
@@ -1146,5 +1145,6 @@ namespace mystl {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_LIST_H_
+};
+
+#endif /* _LIST_ */

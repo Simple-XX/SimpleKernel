@@ -59,3 +59,5 @@ extern "C" void free(void *ptr) {
     heap.free(ptr);
     return;
 }
+
+HEAP heap;

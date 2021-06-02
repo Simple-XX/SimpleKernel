@@ -1,9 +1,15 @@
-﻿#ifndef MYTINYSTL_ASTRING_H_
-#define MYTINYSTL_ASTRING_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// astring for Simple-XX/SimpleKernel.
+
+#ifndef _ASTRING_
+#define _ASTRING_
 
 // 定义了 string, wstring, u16string, u32string 类型
 
-#include "basic_string.h"
+#include "basic_string"
 
 namespace mystl {
 
@@ -12,5 +18,6 @@ namespace mystl {
     using u16string = mystl::basic_string<char16_t>;
     using u32string = mystl::basic_string<char32_t>;
 
-}
-#endif // !MYTINYSTL_ASTRING_H_
+};
+
+#endif /* _ASTRING_ */
