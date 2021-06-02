@@ -1,15 +1,21 @@
-﻿#ifndef MYTINYSTL_BASIC_STRING_H_
-#define MYTINYSTL_BASIC_STRING_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// basic_string for Simple-XX/SimpleKernel.
+
+#ifndef _BASIC_STRING_
+#define _BASIC_STRING_
 
 // 这个头文件包含一个模板类 basic_string
 // 用于表示字符串类型
 
-#include <iostream>
-
-#include "iterator.h"
-#include "memory.h"
-#include "functional.h"
-#include "exceptdef.h"
+#include "iostream"
+#include "iterator"
+#include "memory"
+#include "functional"
+#include "exceptdef"
+#include "cstring"
 
 namespace mystl {
 
@@ -73,59 +79,59 @@ namespace mystl {
         typedef char char_type;
 
         static size_t length(const char_type *str) noexcept {
-            return strlen(str);
+            return std::strlen(str);
         }
 
         static int compare(const char_type *s1, const char_type *s2,
                            size_t n) noexcept {
-            return memcmp(s1, s2, n);
+            return std::memcmp(s1, s2, n);
         }
 
         static char_type *copy(char_type *dst, const char_type *src,
                                size_t n) noexcept {
             MYSTL_DEBUG(src + n <= dst || dst + n <= src);
-            return static_cast<char_type *>(memcpy(dst, src, n));
+            return static_cast<char_type *>(std::memcpy(dst, src, n));
         }
 
         static char_type *move(char_type *dst, const char_type *src,
                                size_t n) noexcept {
-            return static_cast<char_type *>(memmove(dst, src, n));
+            return static_cast<char_type *>(std::memmove(dst, src, n));
         }
 
         static char_type *fill(char_type *dst, char_type ch,
                                size_t count) noexcept {
-            return static_cast<char_type *>(memset(dst, ch, count));
+            return static_cast<char_type *>(std::memset(dst, ch, count));
         }
     };
 
-    // // Partialized. char_traits<wchar_t>
+    // Partialized. char_traits<wchar_t>
     // template <>
     // struct char_traits<wchar_t> {
     //     typedef wchar_t char_type;
 
     //     static size_t length(const char_type *str) noexcept {
-    //         return wcslen(str);
+    //         return std::wcslen(str);
     //     }
 
     //     static int compare(const char_type *s1, const char_type *s2,
     //                        size_t n) noexcept {
-    //         return wmemcmp(s1, s2, n);
+    //         return std::wmemcmp(s1, s2, n);
     //     }
 
     //     static char_type *copy(char_type *dst, const char_type *src,
     //                            size_t n) noexcept {
     //         MYSTL_DEBUG(src + n <= dst || dst + n <= src);
-    //         return static_cast<char_type *>(wmemcpy(dst, src, n));
+    //         return static_cast<char_type *>(std::wmemcpy(dst, src, n));
     //     }
 
     //     static char_type *move(char_type *dst, const char_type *src,
     //                            size_t n) noexcept {
-    //         return static_cast<char_type *>(wmemmove(dst, src, n));
+    //         return static_cast<char_type *>(std::wmemmove(dst, src, n));
     //     }
 
     //     static char_type *fill(char_type *dst, char_type ch,
     //                            size_t count) noexcept {
-    //         return static_cast<char_type *>(wmemset(dst, ch, count));
+    //         return static_cast<char_type *>(std::wmemset(dst, ch, count));
     //     }
     // };
 
@@ -275,7 +281,7 @@ namespace mystl {
             return allocator_type();
         }
 
-        static_assert(std::is_standard_layout<CharType>::value,
+        static_assert(std::is_trivial<CharType>::value,
                       "Character type of basic_string must be a POD");
         static_assert(
             std::is_same<CharType, typename traits_type::char_type>::value,
@@ -813,22 +819,6 @@ namespace mystl {
         size_    = 1;
         return *this;
     }
-
-    // template <class CharType, class CharTraits>
-    // basic_string<CharType, CharTraits> &&
-    // basic_string<CharType, CharTraits>::operator=(const char *s) {
-    //     destroyAndDeallocate();
-    //     allocateAndCopy(s, s + strlen(s));
-    //     return *this;
-    // }
-
-    // template <class CharType, class CharTraits>
-    // basic_string<CharType, CharTraits> &&
-    // basic_string<CharType, CharTraits>::operator=(char c) {
-    //     destroyAndDeallocate();
-    //     allocateAndFillN(1, c);
-    //     return *this;
-    // }
 
     // 预留储存空间
     template <class CharType, class CharTraits>
@@ -1961,5 +1951,6 @@ namespace mystl {
         }
     };
 
-} // namespace mystl
-#endif // !MYTINYSTL_BASIC_STRING_H_
+};
+
+#endif /* _BASIC_STRING_ */

@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_VECTOR_H_
-#define MYTINYSTL_VECTOR_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// vector for Simple-XX/SimpleKernel.
+
+#ifndef _VECTOR_
+#define _VECTOR_
 
 // 这个头文件包含一个模板类 vector
 // vector : 向量
@@ -7,7 +13,7 @@
 // notes:
 //
 // 异常保证：
-// mystl::vecotr<T>
+// std::vecotr<T>
 // 满足基本异常保证，部分函数无异常保证，并对以下函数做强异常安全保证：
 //   * emplace
 //   * emplace_back
@@ -18,12 +24,12 @@
 //   * resize
 //   * insert
 
-#include <initializer_list>
-#include "algo.h"
-#include "iterator.h"
-#include "memory.h"
-#include "util.h"
-#include "exceptdef.h"
+#include "initializer_list"
+#include "algo"
+#include "iterator"
+#include "memory"
+#include "util"
+#include "exceptdef"
 
 namespace mystl {
 
@@ -860,5 +866,6 @@ namespace mystl {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_VECTOR_H_
+};
+
+#endif /* _VECTOR_ */
