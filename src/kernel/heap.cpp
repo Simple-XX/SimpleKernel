@@ -83,3 +83,5 @@ void operator delete[](void *p) {
 void operator delete[](void *p, size_t) {
     free(p);
 }
+
+HEAP heap;
