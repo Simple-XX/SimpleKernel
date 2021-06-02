@@ -88,6 +88,7 @@ multiboot_header_end:
 
 .section .text
 .global _start
+.extern multiboot2_init
 .extern kernel_main
 .type _start, @function
 _start:
@@ -98,17 +99,17 @@ _start:
     # 栈地址按照 16 字节对齐
     and $0xFFFFFFF0, %esp
     # 帧指针修改为 0
-    mov $0, %ebp          
+    mov $0, %ebp
     push $0
     popf
 	# multiboot2_info 结构体指针
     push %ebx
     # 魔数
 	push %eax
+    call multiboot2_init
     call kernel_main
 1:  hlt
     jmp 1b
-    ret
     ret
 
 .section .bss

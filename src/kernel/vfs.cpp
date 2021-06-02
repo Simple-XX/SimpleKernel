@@ -274,3 +274,5 @@ int VFS::write(fd_t _fd, void *_buf, size_t _count) {
     }
     return 0;
 }
+
+VFS *vfs;
