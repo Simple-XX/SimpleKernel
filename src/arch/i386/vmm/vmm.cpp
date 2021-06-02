@@ -218,3 +218,5 @@ uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
         return 0;
     }
 }
+
+VMM vmm;
