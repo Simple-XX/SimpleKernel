@@ -1,9 +1,15 @@
-﻿#ifndef MYTINYSTL_HEAP_ALGO_H_
-#define MYTINYSTL_HEAP_ALGO_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// heap_algo for Simple-XX/SimpleKernel.
+
+#ifndef _HEAP_ALGO_
+#define _HEAP_ALGO_
 
 // 这个头文件包含 heap 的四个算法 : push_heap, pop_heap, sort_heap, make_heap
 
-#include "iterator.h"
+#include "iterator"
 
 namespace mystl {
 
@@ -209,6 +215,6 @@ namespace mystl {
     void make_heap(RandomIter first, RandomIter last, Compared comp) {
         mystl::make_heap_aux(first, last, distance_type(first), comp);
     }
+};
 
-} // namespace mystl
-#endif // !MYTINYSTL_HEAP_ALGO_H_
+#endif /* _HEAP_ALGO_ */

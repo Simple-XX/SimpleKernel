@@ -1,19 +1,19 @@
-﻿#ifndef MYTINYSTL_CONSTRUCT_H_
-#define MYTINYSTL_CONSTRUCT_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// construct for Simple-XX/SimpleKernel.
+
+#ifndef _CONSTRUCT_
+#define _CONSTRUCT_
 
 // 这个头文件包含两个函数 construct，destroy
 // construct : 负责对象的构造
 // destroy   : 负责对象的析构
 
-#include <new>
-
-#include "type_traits.h"
-#include "iterator.h"
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4100) // unused parameter
-#endif                          // _MSC_VER
+#include "new"
+#include "type_traits"
+#include "iterator"
 
 namespace mystl {
 
@@ -68,11 +68,6 @@ namespace mystl {
                     std::is_trivially_destructible<
                         typename iterator_traits<ForwardIter>::value_type>{});
     }
+};
 
-} // namespace mystl
-
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
-
-#endif // !MYTINYSTL_CONSTRUCT_H_
+#endif /* _CONSTRUCT_ */

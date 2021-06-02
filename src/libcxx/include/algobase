@@ -1,12 +1,17 @@
-﻿#ifndef MYTINYSTL_ALGOBASE_H_
-#define MYTINYSTL_ALGOBASE_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// algobase for Simple-XX/SimpleKernel.
 
-// 这个头文件包含了 mystl 的基本算法
+#ifndef _ALGOBASE_
+#define _ALGOBASE_
 
-#include "string.h"
+// 这个头文件包含了 std 的基本算法
 
-#include "iterator.h"
-#include "util.h"
+#include "cstring"
+#include "iterator"
+#include "util"
 
 namespace mystl {
 
@@ -101,7 +106,7 @@ namespace mystl {
     unchecked_copy(Tp *first, Tp *last, Up *result) {
         const auto n = static_cast<size_t>(last - first);
         if (n != 0)
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         return result + n;
     }
 
@@ -152,7 +157,7 @@ namespace mystl {
         const auto n = static_cast<size_t>(last - first);
         if (n != 0) {
             result -= n;
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         }
         return result;
     }
@@ -251,7 +256,7 @@ namespace mystl {
     unchecked_move(Tp *first, Tp *last, Up *result) {
         const size_t n = static_cast<size_t>(last - first);
         if (n != 0)
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         return result + n;
     }
 
@@ -302,7 +307,7 @@ namespace mystl {
         const size_t n = static_cast<size_t>(last - first);
         if (n != 0) {
             result -= n;
-            memmove(result, first, n * sizeof(Up));
+            std::memmove(result, first, n * sizeof(Up));
         }
         return result;
     }
@@ -358,7 +363,7 @@ namespace mystl {
                             Tp *>::type
     unchecked_fill_n(Tp *first, Size n, Up value) {
         if (n > 0) {
-            memset(first, (unsigned char)value, (size_t)(n));
+            std::memset(first, (unsigned char)value, (size_t)(n));
         }
         return first + n;
     }
@@ -399,17 +404,17 @@ namespace mystl {
     // (3)如果到达 last2 而尚未到达 last1 返回 false
     // (4)如果同时到达 last1 和 last2 返回 false
     /*****************************************************************************************/
-    // template <class InputIter1, class InputIter2>
-    // bool lexicographical_compare(InputIter1 first1, InputIter1 last1,
-    //                              InputIter2 first2, InputIter2 last2) {
-    //     for (; first1 != last1 && first2 != last2; ++first1, ++first2) {
-    //         if (*first1 < *first2)
-    //             return true;
-    //         if (*first2 < *first1)
-    //             return false;
-    //     }
-    //     return first1 == last1 && first2 != last2;
-    // }
+    template <class InputIter1, class InputIter2>
+    bool lexicographical_compare(InputIter1 first1, InputIter1 last1,
+                                 InputIter2 first2, InputIter2 last2) {
+        for (; first1 != last1 && first2 != last2; ++first1, ++first2) {
+            if (*first1 < *first2)
+                return true;
+            if (*first2 < *first1)
+                return false;
+        }
+        return first1 == last1 && first2 != last2;
+    }
 
     // 重载版本使用函数对象 comp 代替比较操作
     template <class InputIter1, class InputIter2, class Compred>
@@ -426,17 +431,17 @@ namespace mystl {
     }
 
     // 针对 const unsigned char* 的特化版本
-    // bool lexicographical_compare(const unsigned char *first1,
-    //                              const unsigned char *last1,
-    //                              const unsigned char *first2,
-    //                              const unsigned char *last2) {
-    //     const auto len1 = last1 - first1;
-    //     const auto len2 = last2 - first2;
-    //     // 先比较相同长度的部分
-    //     const auto result = memcmp(first1, first2, mystl::min(len1, len2));
-    //     // 若相等，长度较长的比较大
-    //     return result != 0 ? result < 0 : len1 < len2;
-    // }
+    bool lexicographical_compare(const unsigned char *first1,
+                                 const unsigned char *last1,
+                                 const unsigned char *first2,
+                                 const unsigned char *last2) {
+        const auto len1 = last1 - first1;
+        const auto len2 = last2 - first2;
+        // 先比较相同长度的部分
+        const auto result = std::memcmp(first1, first2, mystl::min(len1, len2));
+        // 若相等，长度较长的比较大
+        return result != 0 ? result < 0 : len1 < len2;
+    }
 
     /*****************************************************************************************/
     // mismatch
@@ -464,5 +469,6 @@ namespace mystl {
         return mystl::pair<InputIter1, InputIter2>(first1, first2);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_ALGOBASE_H_
+};
+
+#endif /* _ALGOBASE_ */

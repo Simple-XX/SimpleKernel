@@ -1,0 +1,29 @@
+
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// exceptdef for Simple-XX/SimpleKernel.
+
+#ifndef _EXCEPTDEF_
+#define _EXCEPTDEF_
+
+// #include <stdexcept>
+
+#include "assert.h"
+
+namespace mystl {
+
+#define MYSTL_DEBUG(expr) assert(expr)
+
+#define THROW_LENGTH_ERROR_IF(expr, what) assert(!(expr))
+    // if ((expr))     throw std::length_error(what)
+
+#define THROW_OUT_OF_RANGE_IF(expr, what) assert(!(expr))
+    // if ((expr))  throw std::out_of_range(what)
+
+#define THROW_RUNTIME_ERROR_IF(expr, what) assert(!(expr))
+    // if ((expr)) throw std::runtime_error(what)
+
+};
+
+#endif /* _EXCEPTDEF_H_ */

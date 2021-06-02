@@ -1,20 +1,20 @@
-﻿#ifndef MYTINYSTL_ALGO_H_
-#define MYTINYSTL_ALGO_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// algo for Simple-XX/SimpleKernel.
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4244)
-#endif
+#ifndef _ALGO_
+#define _ALGO_
 
-// 这个头文件包含了 mystl 的一系列算法
+// 这个头文件包含了 std 的一系列算法
 
 #include "stddef.h"
 #include "time.h"
-
-#include "algobase.h"
-#include "memory.h"
-#include "heap_algo.h"
-#include "functional.h"
+#include "algobase"
+#include "memory"
+#include "heap_algo"
+#include "functional"
 
 namespace mystl {
 
@@ -1266,15 +1266,15 @@ namespace mystl {
     // 将[first, last)内的元素次序随机重排
     // 重载版本使用一个产生随机数的函数对象 rand
     /*****************************************************************************************/
-    // template <class RandomIter>
-    // void random_shuffle(RandomIter first, RandomIter last) {
-    //     if (first == last)
-    //         return;
-    //     srand((unsigned)time(0));
-    //     for (auto i = first + 1; i != last; ++i) {
-    //         mystl::iter_swap(i, first + (rand() % (i - first + 1)));
-    //     }
-    // }
+    template <class RandomIter>
+    void random_shuffle(RandomIter first, RandomIter last) {
+        if (first == last)
+            return;
+        srand((unsigned)time(0));
+        for (auto i = first + 1; i != last; ++i) {
+            mystl::iter_swap(i, first + (rand() % (i - first + 1)));
+        }
+    }
 
     // 重载版本使用一个产生随机数的函数对象 rand
     template <class RandomIter, class RandomNumberGenerator>
@@ -2419,10 +2419,6 @@ namespace mystl {
         return mystl::unique_copy(first, last, first, comp);
     }
 
-} // namespace mystl
+};
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
-
-#endif // !MYTINYSTL_ALGO_H_
+#endif /* _ALGO_ */

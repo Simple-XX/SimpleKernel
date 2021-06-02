@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_DEQUE_H_
-#define MYTINYSTL_DEQUE_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// deque for Simple-XX/SimpleKernel.
+
+#ifndef _DEQUE_
+#define _DEQUE_
 
 // 这个头文件包含了一个模板类 deque
 // deque: 双端队列
@@ -7,7 +13,7 @@
 // notes:
 //
 // 异常保证：
-// mystl::deque<T>
+// std::deque<T>
 // 满足基本异常保证，部分函数无异常保证，并对以下等函数做强异常安全保证：
 //   * emplace_front
 //   * emplace_back
@@ -16,12 +22,11 @@
 //   * push_back
 //   * insert
 
-#include <initializer_list>
-
-#include "iterator.h"
-#include "memory.h"
-#include "util.h"
-#include "exceptdef.h"
+#include "initializer_list"
+#include "iterator"
+#include "memory"
+#include "util"
+#include "exceptdef"
 
 namespace mystl {
 
@@ -1299,5 +1304,6 @@ namespace mystl {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_DEQUE_H_
+};
+
+#endif /* _DEQUE_ */

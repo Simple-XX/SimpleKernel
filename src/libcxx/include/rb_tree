@@ -1,18 +1,22 @@
-﻿#ifndef MYTINYSTL_RB_TREE_H_
-#define MYTINYSTL_RB_TREE_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// rb_tree for Simple-XX/SimpleKernel.
+
+#ifndef _RB_TREE_
+#define _RB_TREE_
 
 // 这个头文件包含一个模板类 rb_tree
 // rb_tree : 红黑树
 
-#include <initializer_list>
-
-#include <cassert>
-
-#include "functional.h"
-#include "iterator.h"
-#include "memory.h"
+#include "initializer_list"
+#include "assert.h"
+#include "functional"
+#include "iterator"
+#include "memory"
 #include "type_traits.h"
-#include "exceptdef.h"
+#include "exceptdef"
 
 namespace mystl {
 
@@ -1632,5 +1636,6 @@ namespace mystl {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_RB_TREE_H_
+};
+
+#endif /* _RB_TREE_ */

@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_TYPE_TRAITS_H_
-#define MYTINYSTL_TYPE_TRAITS_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// type_traits.h for Simple-XX/SimpleKernel.
+
+#ifndef _TYPE_TRAITS_H_
+#define _TYPE_TRAITS_H_
 
 // 这个头文件用于提取类型信息
 
@@ -37,6 +43,6 @@ namespace mystl {
     template <class T1, class T2>
     struct is_pair<mystl::pair<T1, T2>> : mystl::m_true_type {};
 
-} // namespace mystl
+};
 
-#endif // !MYTINYSTL_TYPE_TRAITS_H_
+#endif // !_TYPE_TRAITS_H_

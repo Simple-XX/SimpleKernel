@@ -1,7 +1,13 @@
-﻿#ifndef MYTINYSTL_FUNCTIONAL_H_
-#define MYTINYSTL_FUNCTIONAL_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// functional for Simple-XX/SimpleKernel.
 
-// 这个头文件包含了 mystl 的函数对象与哈希函数
+#ifndef _FUNCTIONAL_
+#define _FUNCTIONAL_
+
+// 这个头文件包含了 std 的函数对象与哈希函数
 
 #include "stddef.h"
 
@@ -296,5 +302,6 @@ namespace mystl {
         }
     };
 
-} // namespace mystl
-#endif // !MYTINYSTL_FUNCTIONAL_H_
+};
+
+#endif /* _FUNCTIONAL_ */
