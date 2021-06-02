@@ -40,6 +40,6 @@ public:
     size_t get_free(void);
 };
 
-static HEAP heap;
+extern HEAP heap;
 
 #endif /* _HEAP_H_ */

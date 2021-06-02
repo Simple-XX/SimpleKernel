@@ -88,6 +88,7 @@ multiboot_header_end:
 
 .section .text
 .global _start
+.extern multiboot2_init
 .extern kernel_main
 .type _start, @function
 _start:
@@ -104,10 +105,10 @@ _start:
     push %rbx
 	# 魔数
 	push %rax
+    call multiboot2_init
     call kernel_main
 1:  hlt
     jmp 1b
-    ret
     ret
 
 .section .bss
