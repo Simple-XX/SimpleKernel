@@ -101,3 +101,5 @@ void PMM::free_page(void *_addr, uint32_t _pages, COMMON::zone_t _zone) {
 uint32_t PMM::free_pages_count(COMMON::zone_t _zone) {
     return zone[_zone]->free_pages_count();
 }
+
+PMM pmm;
