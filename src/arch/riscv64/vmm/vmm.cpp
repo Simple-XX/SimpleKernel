@@ -65,6 +65,7 @@ int32_t VMM::init(void) {
     set_pgd(pgd_kernel);
     CPU::ENABLE_PG();
     printf("vmm_init.\n");
+    printf("%p\n", curr_dir);
     return 0;
 }
 
@@ -125,3 +126,5 @@ uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
     }
     return 1;
 }
+
+VMM vmm;
