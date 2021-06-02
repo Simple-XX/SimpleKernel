@@ -58,8 +58,7 @@ add_executable(${KernelName}
     $<TARGET_OBJECTS:libc>
     $<TARGET_OBJECTS:libcxx>
     $<TARGET_OBJECTS:drv>
-    $<TARGET_OBJECTS:ramfs>
-    $<TARGET_OBJECTS:fat32>
+    $<TARGET_OBJECTS:filesystem>
     $<TARGET_OBJECTS:kernel>)
 
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
