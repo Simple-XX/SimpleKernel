@@ -262,6 +262,7 @@ public:
     int readahead(void);
 };
 
-static VFS *vfs __attribute__((unused));
+// VFS 依赖 C++ 库，不能在 cpp_init 中初始化
+extern VFS *vfs;
 
 #endif /* _VFS_H_ */
