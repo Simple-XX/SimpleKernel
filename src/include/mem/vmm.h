@@ -66,6 +66,7 @@ static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
 class VMM {
 private:
     // TODO: 支持最多四级页表，共用同一套代码
+    // 当前页目录
     pgd_t curr_dir;
 
 protected:
@@ -88,6 +89,6 @@ public:
     uint32_t get_mmap(const pgd_t pgd, const void *va, const void *pa);
 };
 
-static VMM vmm;
+extern VMM vmm;
 
 #endif /* _VMM_H */
