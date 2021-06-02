@@ -2,7 +2,7 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 // Based on https://github.com/gcc-mirror/gcc
-// type_traits for Simple-XX/SimpleKernel.
+// initializer_list for Simple-XX/SimpleKernel.
 
 /** @file initializer_list
  *  This is a Standard C++ Library header.
@@ -73,6 +73,6 @@ namespace std {
     constexpr const _Tp *end(initializer_list<_Tp> __ils) noexcept {
         return __ils.end();
     }
-}
+};
 
-#endif // _INITIALIZER_LIST_
+#endif /* _INITIALIZER_LIST_ */

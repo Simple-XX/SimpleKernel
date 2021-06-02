@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_MAP_H_
-#define MYTINYSTL_MAP_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// map for Simple-XX/SimpleKernel.
+
+#ifndef _MAP_
+#define _MAP_
 
 // 这个头文件包含了两个模板类 map 和 multimap
 // map      : 映射，元素具有键值和实值，会根据键值大小自动排序，键值不允许重复
@@ -8,13 +14,13 @@
 // notes:
 //
 // 异常保证：
-// mystl::map<Key, T> / mystl::multimap<Key, T>
+// std::map<Key, T> / std::multimap<Key, T>
 // 满足基本异常保证，对以下等函数做强异常安全保证：
 //   * emplace
 //   * emplace_hint
 //   * insert
 
-#include "rb_tree.h"
+#include "rb_tree"
 
 namespace mystl {
 
@@ -625,5 +631,6 @@ namespace mystl {
         lhs.swap(rhs);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_MAP_H_
+};
+
+#endif /* _MAP_ */

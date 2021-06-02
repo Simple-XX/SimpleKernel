@@ -1,11 +1,17 @@
-﻿#ifndef MYTINYSTL_ALLOCATOR_H_
-#define MYTINYSTL_ALLOCATOR_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// allocator for Simple-XX/SimpleKernel.
+
+#ifndef _ALLOCATOR_
+#define _ALLOCATOR_
 
 // 这个头文件包含一个模板类
 // allocator，用于管理内存的分配、释放，对象的构造、析构
 
-#include "construct.h"
-#include "util.h"
+#include "construct"
+#include "util"
 
 namespace mystl {
 
@@ -97,5 +103,6 @@ namespace mystl {
         mystl::destroy(first, last);
     }
 
-} // namespace mystl
-#endif // !MYTINYSTL_ALLOCATOR_H_
+};
+
+#endif /* _ALLOCATOR_ */

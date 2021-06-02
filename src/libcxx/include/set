@@ -1,5 +1,11 @@
-﻿#ifndef MYTINYSTL_SET_H_
-#define MYTINYSTL_SET_H_
+﻿
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/Alinshans/MyTinySTL
+// set for Simple-XX/SimpleKernel.
+
+#ifndef _SET_
+#define _SET_
 
 // 这个头文件包含两个模板类 set 和 multiset
 // set      : 集合，键值即实值，集合内元素会自动排序，键值不允许重复
@@ -8,13 +14,13 @@
 // notes:
 //
 // 异常保证：
-// mystl::set<Key> / mystl::multiset<Key>
+// std::set<Key> / std::multiset<Key>
 // 满足基本异常保证，对以下等函数做强异常安全保证：
 //   * emplace
 //   * emplace_hint
 //   * insert
 
-#include "rb_tree.h"
+#include "rb_tree"
 
 namespace mystl {
 
@@ -546,6 +552,6 @@ namespace mystl {
               multiset<Key, Compare> &rhs) noexcept {
         lhs.swap(rhs);
     }
+};
 
-} // namespace mystl
-#endif // !MYTINYSTL_SET_H_
+#endif /* _SET_ */
