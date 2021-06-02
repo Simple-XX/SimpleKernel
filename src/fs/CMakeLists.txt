@@ -5,5 +5,12 @@
 
 PROJECT(filesystem CXX)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ramfs)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/fat32)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ramfs ramfs_src)
+set(filesystem_src ${ramfs_src})
+
+add_library(${PROJECT_NAME} OBJECT ${filesystem_src})
+
+target_include_libc_header_files(${PROJECT_NAME})
+target_include_libcxx_header_files(${PROJECT_NAME})
+target_include_common_header_files(${PROJECT_NAME})
+target_include_fs_header_files(${PROJECT_NAME})
