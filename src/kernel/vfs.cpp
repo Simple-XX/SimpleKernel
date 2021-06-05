@@ -28,6 +28,16 @@ inode_t::~inode_t(void) {
     return;
 }
 
+void inode_t::read(size_t _idx) {
+    (void)_idx;
+    return;
+}
+
+void inode_t::write(size_t _idx) {
+    (void)_idx;
+    return;
+}
+
 dentry_t::dentry_t(void) {
     return;
 }
@@ -151,7 +161,8 @@ int32_t VFS::init(void) {
     dentry->path   = "/";
     dentry->name   = "/";
     // 注册 ramfs 作为 rootfs
-    RAMFS *rootfs = new RAMFS("rootfs", *dentry);
+    RAMFS *rootfs =
+        new RAMFS("rootfs", *dentry, malloc(RAMFS_SIZE), RAMFS_SIZE);
     // 建立第一个 inode
     inode_t *inode = rootfs->alloc_inode();
     // 将 dentry 与 inode 建立关联
