@@ -44,19 +44,6 @@ class superblock_t {
 private:
 protected:
 public:
-    // inode 与 block 的总量
-    uint32_t inode_total;
-    uint32_t block_total;
-    // 未使用的 inode 与 block 数量
-    uint32_t inode_free;
-    uint32_t block_free;
-    // block与inode的大小（block为1K,2K,4K；inode为128byte）
-    uint32_t block_size;
-    uint32_t inode_size;
-    // 文件系统的挂在时间、最近一次写入数据的时间、最近一次检验磁盘的时间等文件系统的相关信息
-    // 文件系统描述--File system Description
-    // 块对应表--block bitmap 记录磁盘中使用与未使用的block号码
-    // inode对应表--inode bitmap 记录使用与未使用的inode号码
     superblock_t(void);
     virtual ~superblock_t(void) = 0;
     // 读写
@@ -69,6 +56,8 @@ class inode_t {
 private:
 protected:
 public:
+    // 文件大小 以字节为单位表示的
+    size_t size;
     // 设备 ID，标识容纳该文件的设备。
     device_id_t device_id;
     // 文件所有者的 User ID。
@@ -87,12 +76,12 @@ public:
     time_t atime;
     // 1个链接数，表示有多少个硬链接指向此inode。
     uint32_t hard_links;
-    // 文件大小 以字节为单位表示的
-    size_t size;
     // 到文件系统存储位置的指针。通常是1K字节或者2K字节的存储容量为基本单位。
     void *pointer;
     inode_t(void);
-    virtual ~inode_t(void);
+    ~inode_t(void);
+    void read(size_t _idx);
+    void write(size_t _idx);
 };
 
 // 目录项

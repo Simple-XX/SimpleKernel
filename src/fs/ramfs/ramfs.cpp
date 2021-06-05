@@ -7,21 +7,7 @@
 #include "ramfs.h"
 #include "stdlib.h"
 
-ramfs_inode_t::ramfs_inode_t(void) {
-    return;
-}
-
-ramfs_inode_t::~ramfs_inode_t(void) {
-    return;
-}
-
 ramfs_superblock_t::ramfs_superblock_t(void) {
-    block_total = 0;
-    inode_total = 0;
-    block_free  = 0;
-    inode_free  = 0;
-    block_size  = 0;
-    inode_size  = 0;
     return;
 }
 
@@ -37,9 +23,27 @@ int ramfs_superblock_t::write(void) {
     return 0;
 }
 
-RAMFS::RAMFS(const mystl::string &_name, const dentry_t &_dentry) {
-    ramfs_superblock_t *super = new ramfs_superblock_t();
+RAMFS::RAMFS(const mystl::string &_name, const dentry_t &_dentry, void *_start,
+             size_t _size) {
+    ramfs_superblock_t *super = (ramfs_superblock_t *)_start;
+    super->start_addr         = _start;
+    super->total              = _size;
+    super->sector_size        = SECTOR_SIZE;
+    super->sectors            = _size / SECTOR_SIZE;
+    super->inode_sector       = INODE_SECTOR;
+    super->inode_count        = INODE_COUNT;
+    super->data_sector        = DATA_SECTOR;
+    super->data_length        = DATA_LENGTH;
     supers.push_back((superblock_t *)super);
+    // 添加 inode 到 inodes
+    // inode 的开始地址为 super 结束
+    // 结束地址为 _start+super大小+inode大小
+    uint8_t *tmp = (uint8_t *)_start + super->sector_size;
+    for (; tmp < (uint8_t *)_start + super->sector_size * SUPER_LENGTH +
+                     super->inode_count * sizeof(inode_t);
+         tmp += sizeof(inode_t)) {
+        inodes.push_back((inode_t *)tmp);
+    }
     name = _name;
     root = _dentry;
     return;
@@ -56,7 +60,7 @@ RAMFS::~RAMFS(void) {
 }
 
 inode_t *RAMFS::alloc_inode(void) {
-    inode_t *inode = (inode_t *)new ramfs_inode_t();
+    inode_t *inode = new inode_t();
     inode->size    = 0;
     // inode.device_id = 0;
     // inode.user_id   = 0;
@@ -69,16 +73,10 @@ inode_t *RAMFS::alloc_inode(void) {
     inode->hard_links = 1;
     inode->pointer    = nullptr;
     inodes.push_back(inode);
-    for (auto i : supers) {
-        i->inode_total += 1;
-    }
     return inode;
 }
 
 void RAMFS::dealloc_inode(inode_t *_inode) {
     inodes.remove(_inode);
-    for (auto i : supers) {
-        i->inode_total -= 1;
-    }
     return;
 }
