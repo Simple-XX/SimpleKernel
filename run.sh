@@ -29,6 +29,19 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     fi
 fi
 
+if [ ${ARCH} == "riscv64" ]; then
+    # OPENSBI 不存在则编译
+    if [ ! -f ${OPENSBI} ]; then
+        git submodule init
+        git submodule update
+        cd ./tools/opensbi
+        mkdir -p build
+        export CROSS_COMPILE=riscv64-unknown-elf-
+        make PLATFORM=generic FW_JUMP_ADDR=0x80200000
+        cd ../..
+    fi
+fi
+
 # 检测路径是否合法，发生过 rm -rf -f /* 的惨剧
 if [ "${iso_boot}" == "" ]; then
     echo iso_boot path error.
