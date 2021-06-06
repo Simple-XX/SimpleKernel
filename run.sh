@@ -30,13 +30,10 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
 fi
 
 if [ ${ARCH} == "riscv64" ]; then
-    # 如果 tools/opensbi 不存在，则 pull
-    if [ ! -d "./tools/opensbi" ]; then
-        git submodule init
-        git submodule update
-    fi
     # OPENSBI 不存在则编译
     if [ ! -f ${OPENSBI} ]; then
+        git submodule init
+        git submodule update
         cd ./tools/opensbi
         mkdir -p build
         export CROSS_COMPILE=riscv64-unknown-elf-
