@@ -32,6 +32,7 @@ fi
 if [ ${ARCH} == "riscv64" ]; then
     # 如果 tools/opensbi 不存在，则 pull
     if [ ! -d "./tools/opensbi" ]; then
+        git submodule init
         git submodule update
     fi
     # OPENSBI 不存在则编译
