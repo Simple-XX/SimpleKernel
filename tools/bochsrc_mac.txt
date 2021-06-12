@@ -3,6 +3,11 @@
 #
 # bochsrc_mac.txt for Simple-XX/SimpleKernel
 
+# 硬盘
+ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
+ata0-master: type=disk, path="./fatfs.dmg"
+
+# 启动磁盘
 ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
 boot: cdrom
 
@@ -19,13 +24,12 @@ megs: 2048
 # "detected memory size" that does not exactly match your expectations.
 
 # 这里需要根据实际路径进行修改
-# Here needs to change as your real path.
+# Modify according to the actual path
 romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
 vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 # mouse: enabled=1
 keyboard: keymap=/usr/local/share/bochs/keymaps/sdl2-pc-us.map
 display_library: sdl2
-
 
 clock: sync=realtime, time0=local
 cpu: model=corei7_haswell_4770

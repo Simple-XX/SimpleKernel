@@ -11,7 +11,6 @@
 #include "pmm.h"
 #include "vmm.h"
 #include "heap.h"
-#include "vfs.h"
 #include "kernel.h"
 
 int test_pmm(void) {
@@ -149,20 +148,5 @@ int test_heap(void) {
     assert(heap.get_total() == total0);
     assert(heap.get_block() == block0);
     printf("heap test done.\n");
-    return 0;
-}
-
-int test_vfs(void) {
-    vfs->mkdir("/233", 0);
-    vfs->mkdir("/233/555", 0);
-    vfs->rmdir("/233/555");
-    vfs->mkdir("/233/555", 0);
-    fd_t fd  = vfs->open("/233/555/test.c", O_CREAT);
-    char a[] = "test233.c";
-    vfs->write(fd, a, 10);
-    char b[10];
-    vfs->read(fd, b, 10);
-    assert(strcmp(a, b) == 0);
-    printf("vfs test done.\n");
     return 0;
 }

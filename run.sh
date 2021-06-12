@@ -50,6 +50,13 @@ else
     rm -rf -f ${iso_boot}/*
 fi
 
+# 制作 fatfs 镜像
+if [ ! -f ./fatfs.dmg ]; then
+    # osx 下需要手动制作
+    echo NO fatfs.dmg!
+    exit
+fi
+
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     cp ${kernel} ${iso_boot}
     mkdir ${iso_boot_grub}
