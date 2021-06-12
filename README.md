@@ -1,4 +1,4 @@
-# vfs
+# fatfs
 
-虚拟文件系统的实现 + ramfs
+fatfs 的相关操作
 

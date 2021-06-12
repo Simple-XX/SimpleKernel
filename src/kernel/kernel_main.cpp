@@ -15,7 +15,6 @@
 #include "heap.h"
 #include "intr.h"
 #include "cpu.hpp"
-#include "vfs.h"
 #include "kernel.h"
 #include "string"
 
@@ -37,9 +36,6 @@ void kernel_main(uint32_t, void *) {
     test_heap();
     // 中断初始化
     INTR::init();
-    vfs = new VFS();
-    vfs->init();
-    test_vfs();
     show_info();
     CPU::ENABLE_INTR();
     while (1) {
