@@ -12,7 +12,6 @@ extern "C" void kernel_main(uint32_t size, void *addr);
 int  test_pmm(void);
 int  test_vmm(void);
 int  test_heap(void);
-int  test_vfs(void);
 void show_info(void);
 
 #endif /* _KERNEL_H_ */

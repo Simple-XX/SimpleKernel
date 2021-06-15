@@ -3,8 +3,10 @@
 #
 # bochsrc_mac.txt for Simple-XX/SimpleKernel
 
+# See https://bochs.sourceforge.io/doc/docbook/user/bochsrc.html for more info
+
 # 硬盘
-ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
+ata0: enabled=1, ioaddr1=0x1F0, ioaddr2=0x3F0, irq=14
 ata0-master: type=disk, path="./fatfs.dmg"
 
 # 启动磁盘
