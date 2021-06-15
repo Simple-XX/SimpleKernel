@@ -1,4 +1,5 @@
-# fatfs
+# device
 
-fatfs 的相关操作
+设备操作
 
+riscv64: qemu 

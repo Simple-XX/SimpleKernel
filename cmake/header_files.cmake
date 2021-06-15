@@ -25,6 +25,7 @@ function(target_include_arch_header_files Target)
     elseif (SimpleKernelArch STREQUAL riscv64)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/opensbi/include)
         target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/intr/include)
+        target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/hw)
     endif()
 endfunction()
 
@@ -41,8 +42,3 @@ function(target_include_drv_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/opensbi/include)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/sbi_console/include)
 endfunction()
-
-function(target_include_fs_header_files Target)
-    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/fs/fatfs/include)
-endfunction()
-
