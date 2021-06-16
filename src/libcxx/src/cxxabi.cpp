@@ -17,6 +17,7 @@ void cpp_init(void) {
     for (f = ctors_start; f < ctors_end; f++) {
         (*f)();
     }
+    return;
 }
 
 void __cxa_pure_virtual(void) {
