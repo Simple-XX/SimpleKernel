@@ -7,8 +7,21 @@
 .globl _start
 .type _start, @function
 .extern kernel_main
+.extern dtb
+.extern cpp_init
 _start:
     la    sp, stack_top
+    # 在调用 cpp_init 之前保存 hart 和 dtb 地址参数
+    addi sp, sp, -16
+    sd a1, (0)(sp)
+    sd a0, (8)(sp)
+    call cpp_init
+    # cpp_init 结束后恢复
+    ld a0, (8)(sp)
+    ld a1, (0)(sp)
+    addi sp, sp, 16
+    # 处理 dtb 信息
+    call dtb
     call kernel_main
 
 .section .bss

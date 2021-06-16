@@ -14,13 +14,13 @@
 #include "vmm.h"
 #include "heap.h"
 #include "intr.h"
+#include "dev.h"
 #include "cpu.hpp"
 #include "kernel.h"
 #include "string"
 
 // 内核入口
 void kernel_main(uint32_t, void *) {
-    cpp_init();
     // 物理内存初始化
     pmm.init();
     // 测试物理内存
@@ -36,6 +36,9 @@ void kernel_main(uint32_t, void *) {
     test_heap();
     // 中断初始化
     INTR::init();
+    // 初始化设备
+    DEV dev = DEV();
+
     show_info();
     CPU::ENABLE_INTR();
     while (1) {
