@@ -106,6 +106,7 @@ namespace COMMON {
     };
 
     static constexpr const size_t ZONE_COUNT = 2;
+
 };
 
 #endif /* _COMMON_H_ */

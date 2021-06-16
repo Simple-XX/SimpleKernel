@@ -21,7 +21,7 @@ _start:
     ld a1, (0)(sp)
     addi sp, sp, 16
     # 处理 dtb 信息
-    call dtb
+    call dtb_init
     call kernel_main
 
 .section .bss
