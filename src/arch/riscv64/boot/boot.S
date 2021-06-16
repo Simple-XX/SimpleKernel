@@ -11,7 +11,7 @@
 .extern cpp_init
 _start:
     la    sp, stack_top
-    # 在调用 cpp_init 之前保存 hart 和 dtb 地址参数
+    # 在调用 cpp_init 之前保存由 opensbi 传递的 hart 和 dtb 地址参数
     addi sp, sp, -16
     sd a1, (0)(sp)
     sd a0, (8)(sp)
