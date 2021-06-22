@@ -17,7 +17,7 @@ extern "C" {
 static union {
     char          c[4];
     unsigned long mylong;
-} endian_test = {{'l', '?', '?', 'b'}};
+} endian_test __attribute__((unused)) = {{'l', '?', '?', 'b'}};
 
 // 'l' 为小端，'b' 为大端
 #define ENDIANNESS ((char)endian_test.mylong)

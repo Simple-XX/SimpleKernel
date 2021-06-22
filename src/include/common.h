@@ -84,6 +84,10 @@ namespace COMMON {
                           PAGE_MASK));
     }
 
+    inline uint64_t ALIGN(uint64_t x, uint64_t _align) {
+        return ((x + _align - 1) & (~(_align - 1)));
+    }
+
     static const void *KERNEL_START_4K = ALIGN4K(KERNEL_START_ADDR);
     static const void *KERNEL_END_4K   = ALIGN4K(KERNEL_END_ADDR);
 
