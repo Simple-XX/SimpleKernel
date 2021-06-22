@@ -28,6 +28,7 @@ extern char *strncpy(char *s1, const char *s2, size_t n);
 extern char *strcat(char *dest, const char *src);
 extern char *strchr(const char *s, int c);
 // length of string
+// 不包括 '\0'
 extern size_t strlen(const char *src);
 extern size_t strnlen(const char *str, size_t maxlen);
 extern void   backspace(char *src);
