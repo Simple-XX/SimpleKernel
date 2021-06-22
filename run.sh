@@ -74,5 +74,7 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
 elif [ ${ARCH} == "arm" ]; then
     qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
 elif [ ${ARCH} == "riscv64" ]; then
-    qemu-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel}
+    qemu-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel} \
+    -drive file=fatfs.dmg,format=raw,id=fatfs \
+	-device virtio-blk-device,drive=fatfs
 fi
