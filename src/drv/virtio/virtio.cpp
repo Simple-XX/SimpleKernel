@@ -9,34 +9,25 @@
 #include "stdio.h"
 #include "assert.h"
 #include "virtio.h"
-#include "memlayout.h"
-
-VIRTIO_DEVICE::VIRTIO_DEVICE(void) {
-    return;
-}
-
-VIRTIO_DEVICE::~VIRTIO_DEVICE(void) {
-    return;
-}
 
 uint32_t VIRTIO::read(uint32_t _off) {
-    return *((uint32_t *)(MEMLAYOUT::VIRTIO0 + _off));
+    return *((uint32_t *)((ptrdiff_t)base_addr + _off));
 }
 
 void VIRTIO::write(uint32_t _off, uint32_t _val) {
-    *((uint32_t *)(MEMLAYOUT::VIRTIO0 + _off)) = _val;
+    *((uint32_t *)((ptrdiff_t)base_addr + _off)) = _val;
     return;
 }
 
-VIRTIO::VIRTIO(void) {
-    printf("magic: 0x%X\n", read(MAGIC_VALUE));
-    printf("ver: 0x%X\n", read(VERSION));
-    printf("device id: 0x%X\n", read(DEVICE_ID));
-    printf("VEN: 0x%X\n", read(VENDOR_ID));
-    assert(read(MAGIC_VALUE) == 0x74726976);
-    assert(read(VERSION) == 0x1);
-    assert(read(VENDOR_ID) == 0x554D4551);
-    printf("virtio init\n");
+VIRTIO::VIRTIO(void *_addr, virt_device_type_t _type) : base_addr(_addr) {
+    // 检查相关值
+    assert(read(MMIO_REG_MAGIC_VALUE) == 0x74726976);
+    assert(read(MMIO_REG_VENDOR_ID) == 0x554D4551);
+    // 判断是否为旧型设备
+    // TODO: 这里不需要 assert，记录一下即可
+    assert(read(MMIO_REG_VERSION) == 0x1);
+    // 检查类型是否符合
+    assert(read(MMIO_REG_DEVICE_ID) == _type);
     return;
 }
 
