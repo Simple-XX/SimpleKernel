@@ -76,5 +76,5 @@ elif [ ${ARCH} == "arm" ]; then
 elif [ ${ARCH} == "riscv64" ]; then
     qemu-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel} \
     -drive file=fatfs.dmg,format=raw,id=fatfs \
-	-device virtio-blk-device,drive=fatfs
+	-device virtio-blk-device,drive=fatfs,bus=virtio-mmio-bus.0
 fi

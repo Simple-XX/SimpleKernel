@@ -11,6 +11,8 @@
 
 DEV::DEV(void) {
     DTB dtb = DTB();
+    // 获取块设备
+    auto blk_dev = dtb.find("virtio_mmio@10001000");
     // 初始化 virtio
     VIRTIO virtio = VIRTIO();
     return;

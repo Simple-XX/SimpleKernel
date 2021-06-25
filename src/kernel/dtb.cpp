@@ -12,15 +12,16 @@
 #include "iostream"
 #include "common.h"
 
-PROP_NODE::PROP_NODE(mystl::string &_name) : name(_name) {
+dtb_prop_node_t::dtb_prop_node_t(mystl::string &_name) : name(_name) {
     return;
 }
 
-PROP_NODE::~PROP_NODE(void) {
+dtb_prop_node_t::~dtb_prop_node_t(void) {
     return;
 }
 
-void PROP_NODE::add_prop(mystl::string _name, uint8_t *_val, uint32_t _len) {
+void dtb_prop_node_t::add_prop(mystl::string _name, uint8_t *_val,
+                               uint32_t _len) {
     (void)_name;
     (void)_val;
     (void)_len;
@@ -29,7 +30,7 @@ void PROP_NODE::add_prop(mystl::string _name, uint8_t *_val, uint32_t _len) {
     return;
 }
 
-void PROP_NODE::add_child(PROP_NODE *_child) {
+void dtb_prop_node_t::add_child(dtb_prop_node_t *_child) {
     children.push_back(_child);
     return;
 }
@@ -71,11 +72,12 @@ DTB::~DTB(void) {
     return;
 }
 
-char *DTB::get_name(uint64_t _off) {
+char *DTB::get_string(uint64_t _off) {
     return (char *)string_addr + _off;
 }
 
-mystl::pair<PROP_NODE *, uint8_t *> DTB::get_node(uint8_t *_pos) {
+// TODO: 子节点处理
+mystl::pair<dtb_prop_node_t *, uint8_t *> DTB::get_node(uint8_t *_pos) {
     uint32_t tag = be32toh(*(uint32_t *)_pos);
     // 新的递归必然从 FDT_BEGIN_NODE 开始
     assert(tag == FDT_BEGIN_NODE);
@@ -94,7 +96,7 @@ mystl::pair<PROP_NODE *, uint8_t *> DTB::get_node(uint8_t *_pos) {
         _pos += COMMON::ALIGN(strlen((char *)node_begin->name) + 1, 4);
     }
     // 新建节点
-    PROP_NODE *node = new PROP_NODE(name);
+    dtb_prop_node_t *node = new dtb_prop_node_t(name);
     // 处理属性
     tag = be32toh(*(uint32_t *)_pos);
     while (tag == FDT_PROP) {
@@ -102,14 +104,14 @@ mystl::pair<PROP_NODE *, uint8_t *> DTB::get_node(uint8_t *_pos) {
 // #define DEBUG
 #ifdef DEBUG
         printf("FDT_PROP, len: 0x%X, name: %s, value: ", be32toh(prop->len),
-               get_name(be32toh(prop->nameoff)));
+               get_string(be32toh(prop->nameoff)));
         for (uint32_t i = 0; i < be32toh(prop->len); i++) {
             printf("0x%X ", prop->data[i]);
         }
         printf("\n");
 #undef DEBUG
 #endif
-        node->add_prop(get_name(be32toh(prop->nameoff)), prop->data,
+        node->add_prop(get_string(be32toh(prop->nameoff)), prop->data,
                        be32toh(prop->len));
         // 移动 pos
         _pos += 4;
@@ -131,10 +133,24 @@ mystl::pair<PROP_NODE *, uint8_t *> DTB::get_node(uint8_t *_pos) {
         tag  = be32toh(*(uint32_t *)_pos);
     }
     _pos += 4;
-    return mystl::pair<PROP_NODE *, uint8_t *>(node, _pos);
+    // 添加到向量中
+    nodes.push_back(node);
+    return mystl::pair<dtb_prop_node_t *, uint8_t *>(node, _pos);
 }
 
-void dtb_init(uint32_t, uint64_t _addr) {
+const mystl::vector<dtb_prop_node_t *> DTB::find(mystl::string _name) {
+    mystl::vector<dtb_prop_node_t *> res;
+    for (auto i : nodes) {
+        // TODO: 这里由于 libcxx 不支持使用 map["key"] 的形式，暂时使用 name
+        // 比较，需要优化掉
+        if (i->name == _name) {
+            res.push_back(i);
+        }
+    }
+    return res;
+}
+
+void dtb_preinit(uint32_t, uint64_t _addr) {
     dtb_addr = _addr;
     return;
 }

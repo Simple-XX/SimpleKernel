@@ -33,22 +33,22 @@ struct fdt_property_t {
     uint8_t data[0];
 };
 
-class PROP_NODE {
+class dtb_prop_node_t {
 private:
+protected:
+public:
+    // 节点名
     mystl::string name;
     // 节点的属性列表
     mystl::unordered_map<mystl::string, mystl::vector<uint8_t>> props;
     // 子节点指针
-    mystl::vector<PROP_NODE *> children;
-
-protected:
-public:
-    PROP_NODE(mystl::string &_name);
-    ~PROP_NODE(void);
+    mystl::vector<dtb_prop_node_t *> children;
+    dtb_prop_node_t(mystl::string &_name);
+    ~dtb_prop_node_t(void);
     // 添加属性
     void add_prop(mystl::string _name, uint8_t *_val, uint32_t _len);
     // 添加子节点
-    void add_child(PROP_NODE *_child);
+    void add_child(dtb_prop_node_t *_child);
 };
 
 // See devicetree-specification-v0.3.pdf for more info
@@ -116,21 +116,24 @@ private:
     // 保留区向量
     mystl::vector<fdt_reserve_entry_t> reserve;
     //节点指针
-    mystl::vector<PROP_NODE *> nodes;
+    mystl::vector<dtb_prop_node_t *> nodes;
     // 获取名称
-    char *get_name(uint64_t _off);
+    char *get_string(uint64_t _off);
     // 递归遍历所有 node
     // 返回新的位置和子节点
-    mystl::pair<PROP_NODE *, uint8_t *> get_node(uint8_t *_pos);
+    mystl::pair<dtb_prop_node_t *, uint8_t *> get_node(uint8_t *_pos);
 
 protected:
 public:
     DTB(void);
     ~DTB(void);
+    // 根据设备名查询设备信息
+    // 返回一个list，因为同类设备可能有多个
+    const mystl::vector<dtb_prop_node_t *> find(mystl::string _name);
 };
 
 // 在启动阶段保存 dtb 地址
 // TODO: 仅传递 dtb 地址参数
-extern "C" void dtb_init(uint32_t, uint64_t _addr);
+extern "C" void dtb_preinit(uint32_t, uint64_t _addr);
 
 #endif /* _DTB_H_ */

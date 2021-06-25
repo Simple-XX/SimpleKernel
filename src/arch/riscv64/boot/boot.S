@@ -7,7 +7,7 @@
 .globl _start
 .type _start, @function
 .extern kernel_main
-.extern dtb
+.extern dtb_preinit
 .extern cpp_init
 _start:
     la    sp, stack_top
@@ -21,7 +21,7 @@ _start:
     ld a1, (0)(sp)
     addi sp, sp, 16
     # 处理 dtb 信息
-    call dtb_init
+    call dtb_preinit
     call kernel_main
 
 .section .bss
