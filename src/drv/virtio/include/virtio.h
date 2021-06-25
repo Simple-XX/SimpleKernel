@@ -14,9 +14,6 @@
 // http://docs.oasis-open.org/virtio/virtio/v1.0/csprd01/virtio-v1.0-csprd01.html#x1-530002
 // for more info
 
-// the address of virtio mmio register r.
-#define R(r) ((volatile uint32_t *)(VIRTIO0 + (r)))
-
 // virtio 设备抽象
 class VIRTIO_DEVICE {
 private:
@@ -46,7 +43,7 @@ private:
     static constexpr const uint64_t VERSION = 0x4;
     // Virtio Subsystem Device ID
     static constexpr const uint64_t DEVICE_ID = 0x8;
-    // 0x554d4551
+    // 0x554D4551
     static constexpr const uint64_t VENDOR_ID           = 0xC;
     static constexpr const uint64_t DEVICE_FEATURES     = 0x10;
     static constexpr const uint64_t DEVICE_FEATURES_SEL = 0x14;
@@ -68,6 +65,8 @@ private:
     static constexpr const uint64_t INTERRUPT_ACK = 0x64;
     // read/write
     static constexpr const uint64_t STATUS = 0x70;
+    uint32_t                        read(uint32_t _off);
+    void                            write(uint32_t _off, uint32_t _val);
 
 protected:
 public:
