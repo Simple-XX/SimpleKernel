@@ -10,6 +10,7 @@
 #include "qemu-virt.h"
 
 // 内存布局
+// TODO: 设备地址应该由 dtb 传递，在系统启动时动态获取
 namespace MEMLAYOUT {
     // 根据具体设备设置相关值
     static constexpr const uint64_t DRAM_START =

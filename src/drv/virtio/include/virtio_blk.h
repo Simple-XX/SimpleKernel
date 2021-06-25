@@ -8,10 +8,13 @@
 #define _VIRTIO_BLK_H_
 
 #include "stdint.h"
+#include "virtio.h"
 
+// virtio 块设备抽象
 // virtio-v1.1#5.2
-namespace VIRTIO_BLK {
-    // 块设备 features
+class VIRTIO_BLK : VIRTIO {
+private:
+    // 块设备 feature bits
     // virtio-v1.1#5.2.3
     // Maximum size of any single segment is in size_max.
     static constexpr const uint64_t BLK_F_SIZE_MAX = 1;
@@ -56,6 +59,11 @@ namespace VIRTIO_BLK {
         uint8_t *                       data;
         uint8_t                         status;
     };
+
+protected:
+public:
+    VIRTIO_BLK(void *_addr);
+    ~VIRTIO_BLK(void);
 };
 
 #endif /* _VIRTIO_BLK_H_ */
