@@ -66,6 +66,8 @@ int32_t VMM::init(void) {
     // virtio mmio 磁盘接口
     mmap(pgd_kernel, (void *)MEMLAYOUT::VIRTIO0, (void *)MEMLAYOUT::VIRTIO0,
          VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    mmap(pgd_kernel, (void *)MEMLAYOUT::VIRTIO1, (void *)MEMLAYOUT::VIRTIO1,
+         VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     set_pgd(pgd_kernel);
     CPU::ENABLE_PG();
     printf("vmm_init.\n");

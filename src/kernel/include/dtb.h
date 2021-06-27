@@ -12,6 +12,11 @@
 #include "vector"
 #include "unordered_map"
 
+// https://e-mailky.github.io/2016-12-06-dts-introduce
+// https://e-mailky.github.io/2019-01-14-dts-1
+// https://e-mailky.github.io/2019-01-14-dts-2
+// https://e-mailky.github.io/2019-01-14-dts-3
+
 // TODO: 删除多余代码
 // TODO: 完善功能
 struct node_begin_t {

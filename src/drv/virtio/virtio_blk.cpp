@@ -6,12 +6,13 @@
 
 #include "stdio.h"
 #include "virtio_blk.h"
+#include "virtio_queue.h"
 
 VIRTIO_BLK::VIRTIO_BLK(void *_addr) : VIRTIO(_addr, BLOCK_DEVICE) {
-    // 初始化流程
-    // 确认可以读到
-    // 取消 VIRTIO_BLK_F_RO 以允许写入
-    printf("blk %X\n", VIRTIO::read(MMIO_REG_DEVICE_FEATURES));
+    // 设置属性
+    // set_features();
+    // TODO: 初始化队列
+
     printf("virtio blk init\n");
     return;
 }

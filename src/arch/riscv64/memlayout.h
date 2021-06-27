@@ -26,7 +26,10 @@ namespace MEMLAYOUT {
 
     // virtio mmio interface
     static constexpr const uint64_t VIRTIO0 =
-        MACHINE::virt_memmap[MACHINE::VIRT_VIRTIO].base;
+        MACHINE::virt_memmap[MACHINE::VIRT_VIRTIO0].base;
+    static constexpr const uint64_t VIRTIO1 =
+        MACHINE::virt_memmap[MACHINE::VIRT_VIRTIO1].base;
+
     static constexpr const uint64_t VIRTIO0_IRQ = MACHINE::VIRTIO_IRQ;
 
     // local interrupt controller, which contains the timer.
