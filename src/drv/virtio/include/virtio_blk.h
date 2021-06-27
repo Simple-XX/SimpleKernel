@@ -8,14 +8,18 @@
 #define _VIRTIO_BLK_H_
 
 #include "stdint.h"
+#include "stdlib.h"
 #include "virtio.h"
+#include "virtio_queue.h"
 
-// virtio 块设备抽象
+// virtio scsi 设备抽象
 // virtio-v1.1#5.2
 class VIRTIO_BLK : VIRTIO {
 private:
     // 块设备 feature bits
     // virtio-v1.1#5.2.3
+    // Device supports request barriers.
+    static constexpr const uint64_t BLK_F_BARRIER = 0;
     // Maximum size of any single segment is in size_max.
     static constexpr const uint64_t BLK_F_SIZE_MAX = 1;
     // Maximum number of segments in a request is in seg_max.
@@ -26,11 +30,13 @@ private:
     static constexpr const uint64_t BLK_F_RO = 5;
     // Block size of disk is in blk_size.
     static constexpr const uint64_t BLK_F_BLK_SIZE = 6;
+    // Device supports scsi packet commands.
+    static constexpr const uint64_t BLK_F_SCSI = 7;
     // Cache flush command support.
     static constexpr const uint64_t BLK_F_FLUSH = 9;
     // Device exports information on optimal I/O alignment.
     static constexpr const uint64_t BLK_F_TOPOLOGY = 10;
-    // Devicecantoggleitscachebetweenwritebackandwritethroughmodes.
+    // Device can toggle its cache between writeback and writethrough modes.
     static constexpr const uint64_t BLK_F_CONFIG_WCE = 11;
     // Device can support discard command, maximum discard sectors size in
     // max_discard_sectors and maximum discard segment number in
@@ -60,10 +66,25 @@ private:
         uint8_t                         status;
     };
 
+    feature_t features[] = {
+        {"VIRTIO_BLK_F_SIZE_MAX", 1, false},
+        {"VIRTIO_BLK_F_SEG_MAX", 2, false},
+        {"VIRTIO_BLK_F_GEOMETRY", 4, false},
+        {"VIRTIO_BLK_F_RO", 5, false},
+        {"VIRTIO_BLK_F_BLK_SIZE", 6, false},
+        {"VIRTIO_BLK_F_FLUSH", 9, false},
+        {"VIRTIO_BLK_F_TOPOLOGY", 10, false},
+        {"VIRTIO_BLK_F_CONFIG_WCE", 11, false},
+    };
+
 protected:
 public:
     VIRTIO_BLK(void *_addr);
     ~VIRTIO_BLK(void);
+    // 设备的读写
+    // TODO: 读写缓冲区
+    size_t read(void);
+    size_t write(void);
 };
 
 #endif /* _VIRTIO_BLK_H_ */

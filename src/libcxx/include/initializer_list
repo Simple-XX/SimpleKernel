@@ -11,6 +11,8 @@
 #ifndef _INITIALIZER_LIST_
 #define _INITIALIZER_LIST_
 
+#include "stddef.h"
+
 namespace std {
     /// initializer_list
     template <class _E>
