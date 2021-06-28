@@ -22,10 +22,13 @@ class IO {
 private:
     // io 对象
 #if defined(__i386__) || defined(__x86_64__)
+    // x86 平台使用 TUI 接口
     TUI io;
 #elif defined(__arm__) || defined(__aarch64__)
+    // arn 平台使用 UART 接口
     UART io;
 #elif defined(__riscv)
+    // riscv 平台使用 opensbi 提供的接口
     SBI_CONSOLE io;
 #endif
 
