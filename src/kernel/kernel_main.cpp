@@ -19,16 +19,19 @@ void kernel_main(void) {
 }
 
 void show_info(void) {
+    auto kernel_size = (uint8_t *)COMMON::KERNEL_END_ADDR -
+                       (uint8_t *)COMMON::KERNEL_START_ADDR;
+    auto kernel_pages =
+        ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
+         (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
+                                  COMMON::PAGE_SIZE)) /
+        COMMON::PAGE_SIZE;
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages\n",
-         COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR,
-         (uint8_t *)COMMON::KERNEL_END_ADDR -
-             (uint8_t *)COMMON::KERNEL_START_ADDR,
-         ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 0x1000) -
-          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 0x1000)) /
-             0x1000);
+         COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
+         kernel_pages);
     info("Kernel start4k: 0x%p, end4k: 0x%p\n",
-         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 0x1000),
-         COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 0x1000));
+         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB),
+         COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB));
     std::cout << "Simple Kernel." << std::endl;
     return;
 }
