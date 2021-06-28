@@ -11,16 +11,7 @@
 #include "stddef.h"
 
 namespace COMMON {
-    // A common problem is getting garbage data when trying to use a value
-    // defined in a linker script. This is usually because they're dereferencing
-    // the symbol. A symbol defined in a linker script (e.g. _ebss = .;) is only
-    // a symbol, not a variable. If you access the symbol using extern uint32_t
-    // _ebss; and then try to use _ebss the code will try to read a 32-bit
-    // integer from the address indicated by _ebss. The solution to this is to
-    // take the address of _ebss either by using it as & _ebss or by defining it
-    // as an unsized array(extern char _ebss[]; ) and casting to an integer.(The
-    // array notation prevents accidental reads from _ebss as arrays must be
-    // explicitly dereferenced) ref:
+    // 引用链接脚本中的变量
     // http://wiki.osdev.org/Using_Linker_Script_Values
     extern "C" void *kernel_start[];
     extern "C" void *kernel_text_start[];
@@ -40,6 +31,7 @@ namespace COMMON {
         kernel_data_end;
     static constexpr const void *KERNEL_END_ADDR = kernel_end;
 
+    // 规定数据大小，方便用
     static constexpr const size_t BYTE = 0x1;
     static constexpr const size_t KB   = 0x400;
     static constexpr const size_t MB   = 0x100000;
