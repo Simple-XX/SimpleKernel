@@ -90,6 +90,7 @@ multiboot_header_end:
 .global _start
 .type _start, @function
 .extern kernel_main
+.extern cpp_init
 _start:
     # 关中断
     cli
@@ -101,6 +102,8 @@ _start:
     mov $0, %ebp          
     push $0
     popf
+    # 初始化 C++
+    call cpp_init
 	# multiboot2_info 结构体指针
     push %ebx
     # 魔数
