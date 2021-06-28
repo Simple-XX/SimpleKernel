@@ -45,6 +45,11 @@ public:
     void outw(const uint32_t port, const uint16_t data);
     // 端口写双字
     void outd(const uint32_t port, const uint32_t data);
+    // MMIO 读写
+    uint32_t read32(void *_addr);
+    void     write32(void *_addr, uint32_t _val);
+    uint64_t read64(void *_addr);
+    void     write64(void *_addr, uint64_t _val);
     // 获取当前颜色
     COLOR::color_t get_color(void);
     // 设置当前颜色
