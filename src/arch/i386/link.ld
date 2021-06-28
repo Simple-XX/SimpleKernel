@@ -16,7 +16,7 @@ SECTIONS {
 	.text : ALIGN(4K) {
 		PROVIDE(kernel_text_start = .);
 		*(.multiboot_header)
-		*(.text)
+		*(.text*)
 		PROVIDE(kernel_text_end = .);
 	}
 
@@ -30,21 +30,28 @@ SECTIONS {
 
 	.rodata : ALIGN(4K) {
 		PROVIDE(kernel_rodata_start = .);
-		*(.rodata)
+		*(.rodata*)
+		*(.gcc_except_table)
 		PROVIDE(kernel_rodata_end = .);
 	}
 
     .data : ALIGN(4K) {
 		PROVIDE(kernel_data_start = .);
-        *(.data)
+        *(.data*)
+		*(.eh_frame)
 		PROVIDE(kernel_data_end = .);
     }
 
 	.bss : ALIGN(4K) {
 		PROVIDE(kernel_bss_start = .);
-		*(COMMON)
 		*(.bss)
 		PROVIDE(kernel_bss_end = .);
+	}
+
+	.debug : ALIGN(4K) {
+		PROVIDE(kernel_debug_start = .);
+		*(.debug*)
+		PROVIDE(kernel_debug_end = .);
 	}
 
     PROVIDE(kernel_end = .);
