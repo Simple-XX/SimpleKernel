@@ -29,7 +29,8 @@ PMM::~PMM(void) {
 }
 
 int32_t PMM::init(void) {
-    for (uint8_t *addr = (uint8_t *)COMMON::KERNEL_END_4K;
+    for (uint8_t *addr = (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR,
+                                                  COMMON::PAGE_SIZE);
          addr < (uint8_t *)MEMLAYOUT::DRAM_END; addr += COMMON::PAGE_SIZE) {
         // 跳过 0x00 开始的一页，便于判断 nullptr
         if (addr == nullptr) {
@@ -39,8 +40,9 @@ int32_t PMM::init(void) {
         // 地址对应的物理页数组下标
         phy_pages[pages].addr = addr;
         // 内核已使用部分
-        if (addr >= COMMON::ALIGN4K(COMMON::KERNEL_START_ADDR) &&
-            addr < COMMON::ALIGN4K(COMMON::KERNEL_END_ADDR)) {
+        if (addr >=
+                COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE) &&
+            addr < COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)) {
             phy_pages[pages].ref = 1;
         }
         else {

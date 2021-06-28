@@ -61,8 +61,10 @@ int32_t PMM::init(void) {
             // 地址对应的物理页数组下标
             phy_pages[pages].addr = addr;
             // 内核已使用部分
-            if (addr >= COMMON::KERNEL_START_4K &&
-                addr < COMMON::KERNEL_END_4K) {
+            if (addr >= COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
+                                      COMMON::PAGE_SIZE) &&
+                addr <
+                    COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)) {
                 phy_pages[pages].ref = 1;
             }
             else {
