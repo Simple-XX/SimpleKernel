@@ -19,12 +19,15 @@ void kernel_main(void) {
 }
 
 void show_info(void) {
-    info("kernel in memory start: 0x%08X, end 0x%08X\n", COMMON::kernel_start,
-         COMMON::kernel_end);
-    info("kernel in memory size: %d KB, %d pages\n",
-         (COMMON::kernel_end - COMMON::kernel_start) / 1024,
-         (COMMON::kernel_end - COMMON::kernel_start + 4095) / 1024 / 4);
-    info("kernel in memory start: 0x%08X\n", COMMON::kernel_start);
+    info("Kernel start: 0x%p, end 0x%p, size: 0x%p bytes, 0x%X pages\n",
+         COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR,
+         (uint8_t *)COMMON::KERNEL_END_ADDR -
+             (uint8_t *)COMMON::KERNEL_START_ADDR,
+         ((uint8_t *)COMMON::KERNEL_END_ADDR -
+          (uint8_t *)COMMON::KERNEL_START_ADDR) /
+             4096);
+    info("Kernel start4k: 0x%p, end4k: 0x%p\n", COMMON::KERNEL_START_4K,
+         COMMON::KERNEL_END_4K);
     std::cout << "Simple Kernel." << std::endl;
     return;
 }
