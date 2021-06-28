@@ -88,9 +88,10 @@ multiboot_header_end:
 
 .section .text
 .global _start
-.extern kernel_main
 .type _start, @function
+.extern kernel_main
 _start:
+    # 关中断
     cli
     # 设置栈地址
     mov $STACK_TOP, %rsp
@@ -106,8 +107,6 @@ _start:
 	push %rax
     call kernel_main
 1:  hlt
-    jmp 1b
-    ret
     ret
 
 .section .bss

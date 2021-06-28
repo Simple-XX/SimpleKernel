@@ -88,8 +88,8 @@ multiboot_header_end:
 
 .section .text
 .global _start
-.extern kernel_main
 .type _start, @function
+.extern kernel_main
 _start:
     # 关中断
     cli
@@ -107,8 +107,6 @@ _start:
 	push %eax
     call kernel_main
 1:  hlt
-    jmp 1b
-    ret
     ret
 
 .section .bss
