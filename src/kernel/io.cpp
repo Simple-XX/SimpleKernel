@@ -76,6 +76,22 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
+uint32_t IO::read32(void *_addr) {
+    return *(uint32_t *)_addr;
+}
+
+void IO::write32(void *_addr, uint32_t _val) {
+    *(uint32_t *)_addr = _val;
+}
+
+uint64_t IO::read64(void *_addr) {
+    return *(uint64_t *)_addr;
+}
+
+void IO::write64(void *_addr, uint64_t _val) {
+    *(uint64_t *)_addr = _val;
+}
+
 extern "C" int32_t printf(const char *fmt, ...) {
     va_list va;
     va_start(va, fmt);

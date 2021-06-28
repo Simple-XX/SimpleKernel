@@ -55,6 +55,12 @@ public:
     char get_char(void);
     // 输出字符串
     int32_t write_string(const char *s);
+
+    // mmio 操作
+    uint32_t read32(void *_addr);
+    void     write32(void *_addr, uint32_t _val);
+    uint64_t read64(void *_addr);
+    void     write64(void *_addr, uint64_t _val);
 };
 
 static IO io;
