@@ -49,6 +49,7 @@ VIRTIO_BLK::VIRTIO_BLK(void *_addr) : VIRTIO(_addr, BLOCK_DEVICE) {
                   VIRTIO::read(&regs->status) | DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
     // 下面需要设置操作函数
+    // 读写/中断等
     printf("virtio blk init\n");
     return;
 }
