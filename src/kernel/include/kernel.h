@@ -7,7 +7,7 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-extern "C" void kernel_main(uint32_t size, void *addr);
+extern "C" void kernel_main(void);
 
 int  test_pmm(void);
 void show_info(void);
