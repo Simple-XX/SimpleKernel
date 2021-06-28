@@ -12,6 +12,7 @@ extern "C" {
 
 void cpp_init(void) {
     // BUG: x86_64
+    // 在 x64 下执行到 f 会挂掉
     for (ctor_t *f = &ctors_start; f != &ctors_end; f++) {
         (*f)();
     }
