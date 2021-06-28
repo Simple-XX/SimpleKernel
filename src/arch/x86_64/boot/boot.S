@@ -105,9 +105,9 @@ _start:
     # 初始化 C++
     call cpp_init
 	# multiboot2_info 结构体指针
-    push %rbx
+    # push %rbx
 	# 魔数
-	push %rax
+	# push %rax
     call kernel_main
 1:  hlt
     ret
