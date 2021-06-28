@@ -42,13 +42,13 @@ namespace COMMON {
     // 对齐 向上取整
     // 针对指针
     template <class T>
-    T ALIGN(const T _addr, const size_t _align) {
+    inline T ALIGN(const T _addr, const size_t _align) {
         uint8_t *tmp = (uint8_t *)_addr;
         return (T)((ptrdiff_t)(tmp + _align - 1) & (~(_align - 1)));
     }
     // 针对整数
     template <>
-    uint64_t ALIGN(const uint64_t _x, const size_t _align) {
+    inline uint64_t ALIGN(const uint64_t _x, const size_t _align) {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
 
