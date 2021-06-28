@@ -112,7 +112,7 @@ namespace COMMON {
     static constexpr const size_t ZONE_COUNT = 2;
 
 // 变量名转换为字符串
-#define NAME2STR(_name) (#_name)
+#define NAME2STR(_name) #_name
 
 };
 
