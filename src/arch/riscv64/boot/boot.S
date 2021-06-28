@@ -8,7 +8,7 @@
 .type _start, @function
 .extern kernel_main
 _start:
-    la    sp, stack_top
+    la sp, stack_top
     call kernel_main
 
 .section .bss
