@@ -102,6 +102,8 @@ _start:
     mov $0, %rbp
     push $0
     popf
+    # 初始化 C++
+    call cpp_init
 	# multiboot2_info 结构体指针
     push %rbx
 	# 魔数
