@@ -28,6 +28,7 @@ PMM::~PMM(void) {
     return;
 }
 
+// TODO: 将各个平台的类似代码进行整合
 int32_t PMM::init(void) {
     for (uint8_t *addr = (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR,
                                                   COMMON::PAGE_SIZE);

@@ -29,6 +29,7 @@ PMM::~PMM(void) {
     return;
 }
 
+// TODO: 将各个平台的类似代码进行整合
 int32_t PMM::init(void) {
     // 因为 GDT 是 x86 遗毒，所以在这里处理
     GDT::init();
