@@ -50,9 +50,6 @@ namespace COMMON {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
 
-    static const void *KERNEL_START_4K = ALIGN(KERNEL_START_ADDR, 0x1000);
-    static const void *KERNEL_END_4K   = ALIGN(KERNEL_END_ADDR, 0x1000);
-
 };
 
 #endif /* _COMMON_H_ */
