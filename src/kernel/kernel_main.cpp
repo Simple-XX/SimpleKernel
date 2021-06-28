@@ -19,8 +19,10 @@ void kernel_main(void) {
 }
 
 void show_info(void) {
+    // 内核实际大小
     auto kernel_size = (uint8_t *)COMMON::KERNEL_END_ADDR -
                        (uint8_t *)COMMON::KERNEL_START_ADDR;
+    // 内核实际占用页数
     auto kernel_pages =
         ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
