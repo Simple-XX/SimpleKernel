@@ -10,7 +10,7 @@
 #include "sbi_console.h"
 
 SBI_CONSOLE::SBI_CONSOLE(void) {
-    write_string("sbi_console init\n");
+    write_string("sbi console init.\n");
     return;
 }
 
