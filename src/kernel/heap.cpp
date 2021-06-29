@@ -26,7 +26,8 @@ int32_t HEAP::init(void) {
 }
 
 int32_t HEAP::manage_init(void) {
-    manage.init(COMMON::KERNEL_END_4K, HEAP_SIZE);
+    manage.init(COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB),
+                HEAP_SIZE);
     return 0;
 }
 
