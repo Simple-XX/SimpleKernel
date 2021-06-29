@@ -92,6 +92,8 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
+IO io;
+
 extern "C" int32_t printf(const char *fmt, ...) {
     va_list va;
     va_start(va, fmt);
