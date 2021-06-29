@@ -65,6 +65,6 @@ public:
     int32_t write_string(const char *s);
 };
 
-static IO io;
+extern IO io;
 
 #endif /* _IO_H_ */
