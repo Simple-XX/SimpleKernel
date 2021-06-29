@@ -7,14 +7,11 @@
 #ifndef _SBI_CONSOLE_H_
 #define _SBI_CONSOLE_H_
 
-#include "opensbi.h"
 #include "stdint.h"
 #include "color.h"
 
 class SBI_CONSOLE {
 private:
-    OPENSBI opensbi;
-
 protected:
 public:
     SBI_CONSOLE(void);
@@ -24,7 +21,7 @@ public:
     void write_string(const char *_s) const;
     // 写字符串
     void write(const char *_s, size_t _len) const;
-    // 读字符 TODO
+    // 读字符
     uint8_t get_char(void) const;
     // 设置颜色 TODO
     void set_color(const COLOR::color_t _color) const;
