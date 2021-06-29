@@ -6,10 +6,11 @@
 
 #include "stddef.h"
 #include "string.h"
+#include "opensbi.h"
 #include "sbi_console.h"
 
 SBI_CONSOLE::SBI_CONSOLE(void) {
-    write_string("sbi_console init\n");
+    write_string("sbi console init.\n");
     return;
 }
 
@@ -18,7 +19,7 @@ SBI_CONSOLE::~SBI_CONSOLE(void) {
 }
 
 void SBI_CONSOLE::put_char(const char _c) const {
-    opensbi.put_char(_c);
+    OPENSBI::put_char(_c);
     return;
 }
 
@@ -35,7 +36,7 @@ void SBI_CONSOLE::write(const char *_s, size_t _len) const {
 }
 
 uint8_t SBI_CONSOLE::get_char(void) const {
-    return opensbi.get_char();
+    return OPENSBI::get_char();
 }
 
 // TODO

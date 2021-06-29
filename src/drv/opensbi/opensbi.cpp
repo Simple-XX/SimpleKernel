@@ -18,7 +18,7 @@ OPENSBI::~OPENSBI(void) {
 }
 
 uint64_t OPENSBI::ecall(uint64_t _num, uint64_t _a0, uint64_t _a1, uint64_t _a2,
-                        uint64_t _a3) const {
+                        uint64_t _a3) {
     register uint64_t a0 __asm__("a0") = (uint64_t)(_a0);
     register uint64_t a1 __asm__("a1") = (uint64_t)(_a1);
     register uint64_t a2 __asm__("a2") = (uint64_t)(_a2);
@@ -31,12 +31,12 @@ uint64_t OPENSBI::ecall(uint64_t _num, uint64_t _a0, uint64_t _a1, uint64_t _a2,
     return a0;
 }
 
-void OPENSBI::put_char(const char _c) const {
+void OPENSBI::put_char(const char _c) {
     ecall(CONSOLE_PUTCHAR, _c, 0, 0, 0);
     return;
 }
 
-uint8_t OPENSBI::get_char(void) const {
+uint8_t OPENSBI::get_char(void) {
     return ecall(CONSOLE_GETCHAR, 0, 0, 0, 0);
 }
 
