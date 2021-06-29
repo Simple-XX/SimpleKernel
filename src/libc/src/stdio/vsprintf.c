@@ -15,13 +15,6 @@ extern "C" {
 #include "math.h"
 #include "stdio.h"
 
-// define this globally (e.g. gcc -DPRINTF_INCLUDE_CONFIG_H ...) to include the
-// printf_config.h header file
-// default: undefined
-#ifdef PRINTF_INCLUDE_CONFIG_H
-#include "printf_config.h"
-#endif
-
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted
 // numeric number including padded zeros (dynamically created on stack)
 // default: 32 byte
@@ -38,6 +31,7 @@ extern "C" {
 
 // support for the floating point type (%f)
 // default: activated
+#define PRINTF_DISABLE_SUPPORT_FLOAT
 #ifndef PRINTF_DISABLE_SUPPORT_FLOAT
 #define PRINTF_SUPPORT_FLOAT
 #endif
