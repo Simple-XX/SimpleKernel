@@ -10,6 +10,16 @@
 #include "stdint.h"
 
 namespace INTR {
+    typedef void (*interrupt_handler_t)(void);
+    int32_t         init(void);
+    void            handler_default(void);
+    extern "C" void trap_handler(void);
+};
+
+// core-local interrupt controller
+// 本地核心中断控制器
+// 用于控制 excp 与 intr
+namespace CLINT {
     static constexpr const uint8_t     EXCP_PAGE_FAULT = 13;
     static constexpr const char *const excp_names[]    = {
         "Instruction Address Misaligned",
@@ -31,7 +41,10 @@ namespace INTR {
         "Reserved",
     };
 
+    // S 态时钟中断
     static constexpr const uint8_t INTR_S_TIMER = 5;
+    // S 态外部中断
+    static constexpr const uint8_t INTR_S_EXTERNEL = 9;
 
     static constexpr const char *const intr_names[] = {
         "User Software Interrupt",
@@ -53,19 +66,28 @@ namespace INTR {
         "Local Interrupt X",
     };
 
-    typedef void (*interrupt_handler_t)(void);
-    extern "C" void trap_entry(void);
-    extern "C" void trap_handler(void);
-    int32_t         init(void);
-    // 注册一个中断处理函数
-    void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
-    void register_excp_handler(uint8_t n, interrupt_handler_t h);
-    void enable_irq(uint32_t irq_no);
-    void disable_irq(uint32_t irq_no);
+    int32_t init(void);
+    void    register_interrupt_handler(uint8_t n, INTR::interrupt_handler_t h);
+    void    register_excp_handler(uint8_t n, INTR::interrupt_handler_t h);
+    void    do_interrupt(uint8_t n);
+    void    do_excp(uint8_t n);
 };
 
 namespace TIMER {
     void init(void);
+};
+
+// platform-level interrupt controller
+// 平台级中断控制器
+// 用于控制外部中断
+namespace PLIC {
+    int32_t init(void);
+    // 向 PLIC 询问中断
+    // 返回发生的外部中断号
+    uint8_t get(void);
+    // 告知PLIC已经处理了当前IRQ
+    void done(uint8_t _irq);
+    void set(uint8_t irq_no, bool _status);
 };
 
 #endif /* _INTR_H_ */
