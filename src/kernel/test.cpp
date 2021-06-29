@@ -76,16 +76,20 @@ int32_t test_vmm(void) {
     assert(addr ==
            ((COMMON::KERNEL_BASE + VMM_KERNEL_SIZE - 1) & COMMON::PAGE_MASK));
     addr = (ptrdiff_t) nullptr;
-    assert(vmm.get_mmap(
-               vmm.get_pgd(),
-               (void *)((ptrdiff_t)COMMON::KERNEL_START_4K + VMM_KERNEL_SIZE),
-               &addr) == 0);
+    assert(
+        vmm.get_mmap(vmm.get_pgd(),
+                     (void *)((ptrdiff_t)COMMON::ALIGN(
+                                  COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
+                              VMM_KERNEL_SIZE),
+                     &addr) == 0);
     assert(addr == (ptrdiff_t) nullptr);
     addr = (ptrdiff_t) nullptr;
-    assert(vmm.get_mmap(vmm.get_pgd(),
-                        (void *)((ptrdiff_t)COMMON::KERNEL_START_4K +
-                                 VMM_KERNEL_SIZE + 0x1024),
-                        nullptr) == 0);
+    assert(
+        vmm.get_mmap(vmm.get_pgd(),
+                     (void *)((ptrdiff_t)COMMON::ALIGN(
+                                  COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
+                              VMM_KERNEL_SIZE + 0x1024),
+                     nullptr) == 0);
     // 测试映射与取消映射
     addr = (ptrdiff_t) nullptr;
     // 准备映射的虚拟地址 3GB 处
