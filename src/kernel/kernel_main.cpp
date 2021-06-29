@@ -13,8 +13,11 @@
 #include "vmm.h"
 #include "kernel.h"
 
+// TODO: 整合 i386 与 x86_64
+// TODO: gdb 调试
+// TODO: clion 环境
 // 内核入口
-void kernel_main(uint32_t, void *) {
+void kernel_main(void) {
     cpp_init();
     // 物理内存初始化
     pmm.init();
@@ -34,17 +37,21 @@ void kernel_main(uint32_t, void *) {
 }
 
 void show_info(void) {
-    info("kernel in memory start: 0x%X, end 0x%X\n", COMMON::KERNEL_START_ADDR,
-         COMMON::KERNEL_END_ADDR);
-    info("kernel in memory start4k: 0x%X, end4k 0x%X, KERNEL_SIZE:0x%X\n",
-         COMMON::KERNEL_START_4K, COMMON::KERNEL_END_4K, COMMON::KERNEL_SIZE);
-    info("kernel in memory size: %d KB, %d pages\n",
-         ((uint8_t *)COMMON::KERNEL_END_ADDR -
-          (uint8_t *)COMMON::KERNEL_START_ADDR) /
-             1024,
-         ((uint8_t *)COMMON::KERNEL_END_4K -
-          (uint8_t *)COMMON::KERNEL_START_4K) /
-             COMMON::PAGE_SIZE);
-    info("Simple Kernel.\n");
+    // 内核实际大小
+    auto kernel_size = (uint8_t *)COMMON::KERNEL_END_ADDR -
+                       (uint8_t *)COMMON::KERNEL_START_ADDR;
+    // 内核实际占用页数
+    auto kernel_pages =
+        ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
+         (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
+                                  COMMON::PAGE_SIZE)) /
+        COMMON::PAGE_SIZE;
+    info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages\n",
+         COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
+         kernel_pages);
+    info("Kernel start4k: 0x%p, end4k: 0x%p\n",
+         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB),
+         COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB));
+    std::cout << "Simple Kernel." << std::endl;
     return;
 }
