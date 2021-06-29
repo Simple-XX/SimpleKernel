@@ -53,6 +53,22 @@ void IO::outd(const uint32_t port, const uint32_t data) {
 
 #endif
 
+uint32_t IO::read32(void *_addr) {
+    return *(uint32_t *)_addr;
+}
+
+void IO::write32(void *_addr, uint32_t _val) {
+    *(uint32_t *)_addr = _val;
+}
+
+uint64_t IO::read64(void *_addr) {
+    return *(uint64_t *)_addr;
+}
+
+void IO::write64(void *_addr, uint64_t _val) {
+    *(uint64_t *)_addr = _val;
+}
+
 COLOR::color_t IO::get_color(void) {
     return io.get_color();
 }
@@ -76,21 +92,7 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
-uint32_t IO::read32(void *_addr) {
-    return *(uint32_t *)_addr;
-}
-
-void IO::write32(void *_addr, uint32_t _val) {
-    *(uint32_t *)_addr = _val;
-}
-
-uint64_t IO::read64(void *_addr) {
-    return *(uint64_t *)_addr;
-}
-
-void IO::write64(void *_addr, uint64_t _val) {
-    *(uint64_t *)_addr = _val;
-}
+IO io;
 
 extern "C" int32_t printf(const char *fmt, ...) {
     va_list va;
