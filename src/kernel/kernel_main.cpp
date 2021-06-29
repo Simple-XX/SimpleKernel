@@ -13,6 +13,8 @@
 #include "kernel.h"
 
 // TODO: 整合 i386 与 x86_64
+// TODO: gdb 调试
+// TODO: clion 环境
 // 内核入口
 void kernel_main(void) {
     cpp_init();
