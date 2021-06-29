@@ -10,6 +10,8 @@
 #include "iostream"
 #include "kernel.h"
 
+// TODO: gdb 调试
+// TODO: clion 环境
 void kernel_main(void) {
     show_info();
     while (1) {
