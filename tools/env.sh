@@ -7,8 +7,6 @@
 
 # ARCH: i386, riscv64
 # ARCH="i386"
-# ARCH="x86_64"
-# ARCH="arm"
 ARCH="riscv64"
 
 # 内核映像
