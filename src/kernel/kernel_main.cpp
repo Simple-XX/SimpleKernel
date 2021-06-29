@@ -5,7 +5,6 @@
 // kernel_main.cpp for Simple-XX/SimpleKernel.
 
 #include "cxxabi.h"
-#include "multiboot2.h"
 #include "common.h"
 #include "stdio.h"
 #include "iostream"
@@ -17,7 +16,6 @@
 #include "cpu.hpp"
 #include "kernel.h"
 #include "string"
-#include "opensbi.h"
 
 // TODO: 整合 i386 与 x86_64
 // TODO: gdb 调试
@@ -43,11 +41,9 @@ void kernel_main(void) {
     show_info();
     CPU::ENABLE_INTR();
     while (1) {
-        auto a = opensbi.get_char();
-        if (a != 0xFF) {
-            printf("%c", a);
-        }
+        ;
     }
+    // 不应该执行到这里
     assert(0);
     return;
 }
