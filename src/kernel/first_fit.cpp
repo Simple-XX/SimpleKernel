@@ -33,7 +33,7 @@ void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
     return;
 }
 
-int32_t FIRSTFIT::init(uint32_t _pages) {
+int32_t FIRSTFIT::init(uint32_t _pages, const char *_name) {
     page_count = _pages;
     // 初始化 list 信息
     // 初始化头节点
@@ -78,7 +78,7 @@ int32_t FIRSTFIT::init(uint32_t _pages) {
             page_free_count++;
         }
     }
-    printf("First fit init.\n");
+    printf("First fit init: %s.\n", _name);
     return 0;
 }
 

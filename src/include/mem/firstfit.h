@@ -44,7 +44,7 @@ public:
     FIRSTFIT(COMMON::physical_pages_t *_phy_pages);
     ~FIRSTFIT(void);
     // 初始化
-    int32_t init(uint32_t pages);
+    int32_t init(uint32_t pages, const char *_name);
     // 按页分配
     void *alloc(size_t pages);
     // 按页释放
