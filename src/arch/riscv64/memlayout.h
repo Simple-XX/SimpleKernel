@@ -36,7 +36,8 @@ namespace MEMLAYOUT {
 
     static constexpr const uint64_t PLIC_PRIORITY = (PLIC + 0x0);
     static constexpr const uint64_t PLIC_PENDING  = (PLIC + 0x1000);
-    static constexpr uint64_t       PLIC_MENABLE(uint64_t hart) {
+
+    static constexpr uint64_t PLIC_MENABLE(uint64_t hart) {
         return PLIC + 0x2000 + hart * 0x100;
     }
 
