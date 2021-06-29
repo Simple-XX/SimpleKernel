@@ -19,7 +19,6 @@
 // TODO: clion 环境
 // 内核入口
 void kernel_main(void) {
-    cpp_init();
     // 物理内存初始化
     pmm.init();
     // 测试物理内存

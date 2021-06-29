@@ -103,12 +103,12 @@ _start:
     mov $0, %ebp
     push $0
     popf
-    # 初始化 C++
-    call cpp_init
-	# multiboot2_info 结构体指针
+    # multiboot2_info 结构体指针
     push %ebx
     # 魔数
 	push %eax
+    # 初始化 C++
+    call cpp_init
     # 初始化 multiboot2
     call multiboot2_init
     call kernel_main

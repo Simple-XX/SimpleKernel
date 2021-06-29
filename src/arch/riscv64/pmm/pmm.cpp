@@ -66,8 +66,8 @@ int32_t PMM::init(void) {
 }
 
 void PMM::mamage_init(void) {
-    normal.init(normal_pages);
-    high.init(high_pages);
+    normal.init(normal_pages, "NORMAL");
+    high.init(high_pages, "HIGH");
     return;
 }
 

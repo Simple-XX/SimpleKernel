@@ -25,18 +25,19 @@ private:
     // _a0: 使用 a0 传递
     // _a1: 使用 a1 传递
     // _a2: 使用 a2 传递
-    uint64_t ecall(uint64_t _num, uint64_t _a0, uint64_t _a1, uint64_t _a2,
-                   uint64_t _a3) const;
+    static uint64_t ecall(uint64_t _num, uint64_t _a0, uint64_t _a1,
+                          uint64_t _a2, uint64_t _a3);
 
 protected:
 public:
     OPENSBI(void);
     ~OPENSBI(void);
-    void    put_char(const char _c) const;
-    uint8_t get_char(void) const;
-    void    set_timer(uint64_t _value);
+    static void put_char(const char _c);
+    // 从 uart 读取一个字符
+    // 不会阻塞
+    // 没有读到数据返回 0xFF
+    static uint8_t get_char(void);
+    static void    set_timer(uint64_t _value);
 };
-
-static OPENSBI opensbi;
 
 #endif /* _OPENSBI_H_ */
