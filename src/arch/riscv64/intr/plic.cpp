@@ -14,8 +14,7 @@
 
 namespace PLIC {
     int32_t init(void) {
-        // 映射 plic 地址
-        vmm.mmap();
+        // TODO: 映射 plic 地址
         // 允许 UART 中断
         *(uint32_t *)(MEMLAYOUT::PLIC + MEMLAYOUT::UART0_IRQ * 4) = 1;
         // set(MEMLAYOUT::UART0_IRQ, true);
