@@ -25,12 +25,12 @@ namespace TIMER {
     }
 
     void init(void) {
-        // enable supervisor-mode timer interrupts.
-        CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
         // 注册中断函数
         CLINT::register_interrupt_handler(CLINT::INTR_S_TIMER, timer_intr);
         // 设置初次中断
         opensbi.set_timer(CPU::READ_TIME());
+        // 开启时钟中断
+        CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
         printf("timer init\n");
     }
 };

@@ -17,6 +17,7 @@
 #include "cpu.hpp"
 #include "kernel.h"
 #include "string"
+#include "opensbi.h"
 
 // TODO: 整合 i386 与 x86_64
 // TODO: gdb 调试
@@ -42,7 +43,10 @@ void kernel_main(void) {
     show_info();
     CPU::ENABLE_INTR();
     while (1) {
-        ;
+        auto a = opensbi.get_char();
+        if (a != 0xFF) {
+            printf("%c", a);
+        }
     }
     assert(0);
     return;

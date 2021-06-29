@@ -62,7 +62,9 @@ namespace CLINT {
         for (auto &i : excp_handlers) {
             i = INTR::handler_default;
         }
-        // 开启时钟中断
+        // 开启内部中断
+        CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SSIE);
+        // 设置时钟中断
         TIMER::init();
         printf("clint init\n");
         return 0;
