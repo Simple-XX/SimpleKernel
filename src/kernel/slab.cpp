@@ -73,7 +73,7 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
     if ((tmp != nullptr) &&
         (tmp->len > sizeof(slab_list_entry_t) + COMMON::PAGE_SIZE * 2)) {
         // 要回收页的地址
-        void *addr = const_cast<void *>(COMMON::ALIGN4K(tmp));
+        void *addr = (void *)COMMON::ALIGN(tmp, 4 * COMMON::KB);
         // 需要回收几页
         size_t count = tmp->len / COMMON::PAGE_SIZE;
         // 回收

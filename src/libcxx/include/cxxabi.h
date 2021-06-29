@@ -7,28 +7,10 @@
 #ifndef _CXXABI_H_
 #define _CXXABI_H_
 
-#define ATEXIT_MAX_FUNCS 128
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef unsigned uarch_t;
-
-struct atexit_func_entry_t {
-    /*
-     * Each member is at least 4 bytes large. Such that each entry is
-     12bytes.
-     * 128 * 12 = 1.5KB exact.
-     **/
-    void (*destructor_func)(void *);
-    void *obj_ptr;
-    void *dso_handle;
-};
-
-typedef void (*ctor_t)(void);
-extern ctor_t ctors_start;
-extern ctor_t ctors_end;
 // c++ 初始化
 void cpp_init(void);
 

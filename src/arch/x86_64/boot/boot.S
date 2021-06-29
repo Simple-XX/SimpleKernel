@@ -88,10 +88,12 @@ multiboot_header_end:
 
 .section .text
 .global _start
-.extern multiboot2_init
-.extern kernel_main
 .type _start, @function
+.extern kernel_main
+.extern cpp_init
+.extern multiboot2_init
 _start:
+    # 关中断
     cli
     # 设置栈地址
     mov $STACK_TOP, %rsp
@@ -101,14 +103,14 @@ _start:
     mov $0, %rbp
     push $0
     popf
+    # 初始化 C++
+    call cpp_init
 	# multiboot2_info 结构体指针
-    push %rbx
+    #push %rbx
 	# 魔数
-	push %rax
-    call multiboot2_init
+	#push %rax
     call kernel_main
 1:  hlt
-    jmp 1b
     ret
 
 .section .bss
