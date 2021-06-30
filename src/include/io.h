@@ -49,6 +49,10 @@ public:
     // 端口写双字
     void outd(const uint32_t port, const uint32_t data);
     // MMIO 读写
+    uint8_t  read8(void *_addr);
+    void     write8(void *_addr, uint8_t _val);
+    uint16_t read16(void *_addr);
+    void     write16(void *_addr, uint16_t _val);
     uint32_t read32(void *_addr);
     void     write32(void *_addr, uint32_t _val);
     uint64_t read64(void *_addr);

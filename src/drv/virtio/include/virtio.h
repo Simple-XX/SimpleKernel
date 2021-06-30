@@ -11,6 +11,7 @@
 #include "common.h"
 #include "vector"
 #include "string"
+#include "virtio_queue.h"
 
 // See
 // http://docs.oasis-open.org/virtio/virtio/v1.0/csprd01/virtio-v1.0-csprd01.html#x1-530002
@@ -136,101 +137,6 @@ protected:
     static constexpr const uint64_t VIRTIO_F_RING_EVENT_IDX     = 0x1D;
     static constexpr const uint64_t VIRTIO_F_VERSION_1          = 0x20;
 
-    struct virtio_queue_t {
-        // Arbitrary descriptor layouts.
-        static constexpr const uint64_t VIRTIO_F_ANY_LAYOUT = 27;
-        // Support for indirect descriptors
-        static constexpr const uint64_t VIRTIO_F_INDIRECT_DESC = 28;
-        // Support for avail_event and used_event fields
-        static constexpr const uint64_t VIRTIO_F_EVENT_IDX = 29;
-
-        // virtio-v1.1#2.6.5
-        struct virtq_desc_t {
-            // This marks a buffer as continuing via the next field.
-            static constexpr const uint64_t VIRTQ_DESC_F_NEXT = 1;
-            // This marks a buffer as write-only (otherwise read-only).
-            static constexpr const uint64_t VIRTQ_DESC_F_WRITE = 2;
-            // This means the buffer contains a list of buffer descriptors.
-            static constexpr const uint64_t VIRTQ_DESC_F_INDIRECT = 4;
-            static constexpr const uint64_t ALIGN                 = 16;
-            // Address(guest - physical).
-            uint64_t addr;
-            // Length.
-            // 当描述符作为节点连接一个描述符表时，
-            // 描述符项的个数为 len/sizeof(virtq_desc_t)
-            uint32_t len;
-            // The flags as indicated above.
-            uint16_t flags;
-            // Next field if flags & NEXT
-            uint16_t next;
-        } __attribute__((packed));
-
-        // virtio-v1.1#2.6.6
-        struct virtq_avail_t {
-            static constexpr const uint64_t VIRTQ_AVAIL_F_NO_INTERRUPT = 1;
-            static constexpr const uint64_t ALIGN                      = 2;
-            uint16_t                        flags;
-            uint16_t                        idx;
-            // queue size
-            uint16_t ring[];
-            // Only if VIRTIO_F_EVENT_IDX
-            // uint16_t used_event;
-        } __attribute__((packed));
-
-        // virtio-v1.1#2.6.8
-        struct virtq_used_elem_t {
-            // Index of start of used descriptor chain.
-            uint32_t id;
-            // Total length of the descriptor chain which was used (written to)
-            uint32_t len;
-        } __attribute__((packed));
-
-        // virtio-v1.1#2.6.8
-        struct virtq_used_t {
-            static constexpr const uint64_t VIRTQ_USED_F_NO_NOTIFY = 1;
-            static constexpr const uint64_t ALIGN                  = 4;
-            uint16_t                        flags;
-            uint16_t                        idx;
-            // queue size
-            virtq_used_elem_t ring[];
-            // Only if VIRTIO_F_EVENT_IDX
-            // uint16_t avail_event;
-        } __attribute__((packed));
-
-        struct virtq_t {
-            // 此结构的物理地址
-            uint32_t phys;
-            // 数组长度
-            uint32_t              len;
-            uint32_t              seen_used;
-            uint32_t              free_desc;
-            struct virtq_desc_t * desc;
-            struct virtq_avail_t *avail;
-            uint16_t *            used_event;
-            struct virtq_used_t * used;
-            uint16_t *            avail_event;
-            // 此结构的虚拟地址
-            void **desc_virt;
-        } __attribute__((packed));
-        // virtq_t 各个结构体的偏移
-        uint64_t off_desc;
-        uint64_t off_avail;
-        uint64_t off_used_event;
-        uint64_t off_used;
-        uint64_t off_avail_event;
-        uint64_t off_desc_virt;
-
-        virtq_t *virtq;
-        virtio_queue_t(size_t _size);
-        ~virtio_queue_t(void);
-        // 分配 desc
-        // 返回: 可用的 desc
-        uint32_t alloc_desc(void *_addr);
-        // 回收 desc
-        // _desc: 要回收的 desc
-        void free_desc(uint32_t _desc);
-    };
-
     // feature 信息
     struct feature_t {
         // feature 名称
@@ -249,14 +155,14 @@ protected:
     };
 
     // virtio mmio 寄存器基地址
-    virtio_regs_t * regs;
-    virtio_queue_t *queue;
-    uint32_t        read(void *_off);
-    uint64_t        read64(void *_off);
-    void            write(void *_off, uint32_t _val);
+    virtio_regs_t *regs;
+    // 队列向量，有些设备使用多个队列
+    mystl::vector<virtio_queue_t *> queues;
+
     // 设置 features
     bool set_features(const mystl::vector<feature_t> &_features);
-    // 设置队列
+    // 将队列设置传递到相应寄存器
+    // _queue_sel: 第几个队列，从 0 开始
     void add_to_device(uint32_t _queue_sel);
 
 public:

@@ -7,6 +7,8 @@
 #include "stdio.h"
 #include "vector"
 #include "intr.h"
+#include "io.h"
+#include "assert.h"
 #include "memlayout.h"
 #include "virtio_blk.h"
 #include "virtio_queue.h"
@@ -24,30 +26,55 @@ VIRTIO_BLK::VIRTIO_BLK(void *_addr) : VIRTIO(_addr, BLOCK_DEVICE) {
     set_features(feat);
     // 属性设置完成
     // 置位 FEATURES_OK
-    VIRTIO::write(&regs->status,
-                  VIRTIO::read(&regs->status) | DEVICE_STATUS_FEATURES_OK);
+    io.write32(&regs->status,
+               io.read32(&regs->status) | DEVICE_STATUS_FEATURES_OK);
     // 再次读取以确认设置成功
-    if ((VIRTIO::read(&regs->status) & DEVICE_STATUS_FEATURES_OK) == false) {
+    if ((io.read32(&regs->status) & DEVICE_STATUS_FEATURES_OK) == false) {
         // 失败则报错
         assert(0);
         return;
     }
-    // TODO: 初始化队列
     // 设置队列
-    queue = new virtio_queue_t(8);
+    queues.push_back(new virtio_queue_t(8));
     add_to_device(0);
     config = (virtio_blk_config *)&regs->config;
+// #define DEBUG
+#ifdef DEBUG
+    // TODO: << 重载
     uint32_t i, j;
     do {
-        i = VIRTIO::read(&regs->config_generation);
-        // printf("config->capacity: 0x%X\n",
-        // VIRTIO::read64(&config->capacity));
-        // printf("config->blk_size: 0x%X\n",
-        // VIRTIO::read64(&config->blk_size));
-        j = VIRTIO::read(&regs->config_generation);
+        i = io.read32(&regs->config_generation);
+        printf("capacity: 0x%X\n", io.read64(&config->capacity));
+        printf("size_max: 0x%X\n", io.read32(&config->size_max));
+        printf("seg_max: 0x%X\n", io.read32(&config->seg_max));
+        printf("cylinders: 0x%X\n", io.read16(&config->geometry.cylinders));
+        printf("heads: 0x%X\n", io.read8(&config->geometry.heads));
+        printf("sectors: 0x%X\n", io.read8(&config->geometry.sectors));
+        printf("blk_size: 0x%X\n", io.read32(&config->blk_size));
+        printf("physical_block_exp: 0x%X\n",
+               io.read8(&config->topology.physical_block_exp));
+        printf("alignment_offset: 0x%X\n",
+               io.read8(&config->topology.alignment_offset));
+        printf("min_io_size: 0x%X\n", io.read16(&config->topology.min_io_size));
+        printf("opt_io_size: 0x%X\n", io.read8(&config->topology.opt_io_size));
+        printf("writeback: 0x%X\n", io.read8(&config->writeback));
+        printf("max_discard_sectors: 0x%X\n",
+               io.read32(&config->max_discard_sectors));
+        printf("max_discard_seg: 0x%X\n", io.read32(&config->max_discard_seg));
+        printf("discard_sector_alignment: 0x%X\n",
+               io.read32(&config->discard_sector_alignment));
+        printf("max_write_zeroes_sectors: 0x%X\n",
+               io.read32(&config->max_write_zeroes_sectors));
+        printf("max_write_zeroes_seg: 0x%X\n",
+               io.read32(&config->max_write_zeroes_seg));
+        printf("write_zeroes_may_unmap: 0x%X\n",
+               io.read8(&config->write_zeroes_may_unmap));
+        j = io.read32(&regs->config_generation);
     } while (i != j);
-    VIRTIO::write(&regs->status,
-                  VIRTIO::read(&regs->status) | DEVICE_STATUS_DRIVER_OK);
+#undef DEBUG
+#endif
+    io.write32(&regs->status,
+               io.read32(&regs->status) | DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
     // 允许中断
     PLIC::set(MEMLAYOUT::VIRTIO0_IRQ, true);
@@ -59,35 +86,36 @@ VIRTIO_BLK::~VIRTIO_BLK(void) {
     return;
 }
 
+// BUG: 无法读写，缓冲区/磁盘文件没有被改变
 size_t VIRTIO_BLK::rw(virtio_blk_req_t &_req, void *_buf) {
     uint32_t d1, d2, d3, datamode = 0;
 
     if (_req.type == virtio_blk_req_t::IN) {
         // mark page writeable
-        datamode = VIRTIO::virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
+        datamode = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
     }
 
-    d1                         = queue->alloc_desc(&_req);
-    queue->virtq->desc[d1].len = sizeof(virtio_blk_req_t);
-    queue->virtq->desc[d1].flags =
-        VIRTIO::virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+    d1                                = queues.at(0)->alloc_desc(&_req);
+    queues.at(0)->virtq->desc[d1].len = sizeof(virtio_blk_req_t);
+    queues.at(0)->virtq->desc[d1].flags =
+        virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
 
-    d2                         = queue->alloc_desc(_buf);
-    queue->virtq->desc[d2].len = 512;
-    queue->virtq->desc[d2].flags =
-        datamode | VIRTIO::virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+    d2                                = queues.at(0)->alloc_desc(_buf);
+    queues.at(0)->virtq->desc[d2].len = 512;
+    queues.at(0)->virtq->desc[d2].flags =
+        datamode | virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
 
-    d3 = queue->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
-    queue->virtq->desc[d3].len = 1;
-    queue->virtq->desc[d3].flags =
-        VIRTIO::virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
+    d3 = queues.at(0)->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
+    queues.at(0)->virtq->desc[d3].len = 1;
+    queues.at(0)->virtq->desc[d3].flags =
+        virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
 
-    queue->virtq->desc[d1].next = d2;
-    queue->virtq->desc[d2].next = d3;
+    queues.at(0)->virtq->desc[d1].next = d2;
+    queues.at(0)->virtq->desc[d2].next = d3;
 
-    queue->virtq->avail->ring[queue->virtq->avail->idx % queue->virtq->len] =
-        d1;
-    queue->virtq->avail->idx += 1;
-    VIRTIO::write(&regs->queue_notify, 0);
+    queues.at(0)->virtq->avail->ring[queues.at(0)->virtq->avail->idx %
+                                     queues.at(0)->virtq->len] = d1;
+    queues.at(0)->virtq->avail->idx += 1;
+    io.write32(&regs->queue_notify, 0);
     return 0;
 }
