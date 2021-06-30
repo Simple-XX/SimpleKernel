@@ -38,11 +38,12 @@ void kernel_main(void) {
     test_heap();
     // 中断初始化
     INTR::init();
+    CPU::ENABLE_INTR();
     // 初始化设备
     DEV dev = DEV();
 
     show_info();
-    CPU::ENABLE_INTR();
+
     while (1) {
         ;
     }
