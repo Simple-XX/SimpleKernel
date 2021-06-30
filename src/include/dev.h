@@ -8,10 +8,19 @@
 #define _DEV_H_
 
 #include "stdint.h"
+#include "vector"
+#include "string"
+#include "blk_dev.h"
+#include "char_dev.h"
 
 // TODO
 class DEV {
 private:
+    // 块设备列表
+    mystl::vector<blk_device_t *> blk_devs;
+    // 字符设备列表
+    mystl::vector<char_device_t *> char_devs;
+
 protected:
 public:
     DEV(void);

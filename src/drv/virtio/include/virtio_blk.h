@@ -45,25 +45,6 @@ private:
     // max_write_- zeroes_seg.
     static constexpr const uint64_t BLK_F_WRITE_ZEROES = 14;
 
-    static constexpr const uint64_t BLK_S_OK     = 0;
-    static constexpr const uint64_t BLK_S_IOERR  = 1;
-    static constexpr const uint64_t BLK_S_UNSUPP = 2;
-
-    // virtio-v1.1#5.2.6
-    struct virtio_blk_req {
-        // virtio_blk_req: type
-        static constexpr const uint64_t IN           = 0;
-        static constexpr const uint64_t OUT          = 1;
-        static constexpr const uint64_t FLUSH        = 4;
-        static constexpr const uint64_t DISCARD      = 11;
-        static constexpr const uint64_t WRITE_ZEROES = 13;
-        uint32_t                        type;
-        uint32_t                        reserved;
-        uint64_t                        sector;
-        uint8_t *                       data;
-        uint8_t                         status;
-    };
-
     // virtio-v1.1#5.2.4
     struct virtio_blk_config {
         uint64_t capacity;
@@ -111,12 +92,29 @@ private:
 
 protected:
 public:
+    // virtio-v1.1#5.2.6
+    struct virtio_blk_req_t {
+        // virtio_blk_req: type
+        static constexpr const uint64_t IN           = 0;
+        static constexpr const uint64_t OUT          = 1;
+        static constexpr const uint64_t FLUSH        = 4;
+        static constexpr const uint64_t DISCARD      = 11;
+        static constexpr const uint64_t WRITE_ZEROES = 13;
+        uint32_t                        type;
+        uint32_t                        reserved;
+        uint64_t                        sector;
+        uint8_t *                       data;
+        // status type
+        static constexpr const uint64_t OK     = 0;
+        static constexpr const uint64_t IOERR  = 1;
+        static constexpr const uint64_t UNSUPP = 2;
+        uint8_t                         status;
+    };
     VIRTIO_BLK(void *_addr);
     ~VIRTIO_BLK(void);
     // 设备的读写
     // TODO: 读写缓冲区
-    size_t read(void);
-    size_t write(void);
+    size_t rw(virtio_blk_req_t &_req, void *_buf);
 };
 
 #endif /* _VIRTIO_BLK_H_ */

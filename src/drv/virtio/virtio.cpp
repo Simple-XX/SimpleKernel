@@ -19,7 +19,6 @@ VIRTIO::virtio_queue_t::virtio_queue_t(size_t _size) {
     // virtio-v1.1#2.6
     // _size 应该为 2 的幂
     assert((_size & (_size - 1)) == 0);
-    uint8_t *page_virt;
     // TODO: 解释
     // 计算偏移
     // desc 偏移为 64
@@ -35,17 +34,15 @@ VIRTIO::virtio_queue_t::virtio_queue_t(size_t _size) {
         (off_used + sizeof(virtq_used_t) + _size * sizeof(virtq_used_elem_t));
     off_desc_virt =
         COMMON::ALIGN(off_avail_event + sizeof(uint16_t), sizeof(void *));
-    uint32_t memsize = off_desc_virt + _size * sizeof(void *);
-
-    if (memsize > COMMON::PAGE_SIZE) {
-        printf("virtq_create: error, too big for a page\n");
+    // 如果需要的内存大于1页则出错
+    if (off_desc_virt + _size * sizeof(void *) > COMMON::PAGE_SIZE) {
+        printf("virtq_create: error, too big for two pagess\n");
         return;
     }
-    page_virt = (uint8_t *)malloc(COMMON::PAGE_SIZE);
-
-    virtq       = (virtq_t *)page_virt;
-    virtq->phys = VMM_LA_PA((ptrdiff_t)page_virt);
-    virtq->len  = _size;
+    uint8_t *page_virt = (uint8_t *)malloc(COMMON::PAGE_SIZE);
+    virtq              = (virtq_t *)page_virt;
+    virtq->phys        = VMM_LA_PA((ptrdiff_t)page_virt);
+    virtq->len         = _size;
 
     virtq->desc        = (virtq_desc_t *)(page_virt + off_desc);
     virtq->avail       = (virtq_avail_t *)(page_virt + off_avail);

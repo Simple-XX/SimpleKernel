@@ -33,7 +33,7 @@ namespace MACHINE {
         UART0_IRQ = 10,
         RTC_IRQ   = 11,
         // 1 to 8
-        VIRTIO_IRQ   = 1,
+        VIRTIO0_IRQ  = 1,
         VIRTIO_COUNT = 8,
         // 32 to 35
         PCIE_IRQ = 0x20,

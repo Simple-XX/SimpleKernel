@@ -19,6 +19,63 @@
 class VIRTIO {
 private:
 protected:
+    // virtio 设备类型
+    // virtio-v1.1#5
+    typedef enum : uint8_t {
+        RESERVED = 0x00,
+        NETWORK_CARD,
+        BLOCK_DEVICE,
+        CONSOLE,
+        ENTROPY_SOURCE,
+        MEMORY_BALLOONING,
+        IOMEMORY,
+        RPMSG,
+        SCSI_HOST,
+        NINEP_TRANSPORT,
+        MAC_80211_WLAN,
+        RPROC_SERIAL,
+        VIRTIO_CAIF,
+        MEMORY_BALLOON,
+        GPU_DEVICE = 0x10,
+        TIMER_CLOCK_DEVICE,
+        INPUT_DEVICE,
+        SOCKET_DEVICE,
+        CRYPTO_DEVICE,
+        SIGNAL_DISTRIBUTION_MODULE,
+        PSTORE_DEVICE,
+        IOMMU_DEVICE,
+        MEMORY_DEVICE,
+    } virt_device_type_t;
+
+    // virtio 设备类型名名称
+    const char *const virtio_device_name[25] = {
+        "reserved (invalid)",
+        "network card",
+        "block device",
+        "console",
+        "entropy source",
+        "memory ballooning(traditional)",
+        "ioMemory",
+        "rpmsg",
+        "SCSI host",
+        "9P transport",
+        "mac80211 wlan",
+        "rproc serial",
+        "virtio CAIF",
+        "memory balloon",
+        "null",
+        "null",
+        "GPU device",
+        "Timer / Clock device",
+        "Input device",
+        "Socket device",
+        "Crypto device",
+        "Signal Distribution Module",
+        "pstore device",
+        "IOMMU device",
+        "Memory device",
+    };
+
     static constexpr const uint64_t MAGIC_VALUE = 0x74726976;
     static constexpr const uint64_t VERSION     = 0x02;
     // virtio mmio 控制寄存器
@@ -203,63 +260,6 @@ protected:
     void add_to_device(uint32_t _queue_sel);
 
 public:
-    // virtio 设备类型
-    // virtio-v1.1#5
-    typedef enum : uint8_t {
-        RESERVED = 0x00,
-        NETWORK_CARD,
-        BLOCK_DEVICE,
-        CONSOLE,
-        ENTROPY_SOURCE,
-        MEMORY_BALLOONING,
-        IOMEMORY,
-        RPMSG,
-        SCSI_HOST,
-        NINEP_TRANSPORT,
-        MAC_80211_WLAN,
-        RPROC_SERIAL,
-        VIRTIO_CAIF,
-        MEMORY_BALLOON,
-        GPU_DEVICE = 0x10,
-        TIMER_CLOCK_DEVICE,
-        INPUT_DEVICE,
-        SOCKET_DEVICE,
-        CRYPTO_DEVICE,
-        SIGNAL_DISTRIBUTION_MODULE,
-        PSTORE_DEVICE,
-        IOMMU_DEVICE,
-        MEMORY_DEVICE,
-    } virt_device_type_t;
-
-    // virtio 设备类型名名称
-    const char *const virtio_device_name[25] = {
-        "reserved (invalid)",
-        "network card",
-        "block device",
-        "console",
-        "entropy source",
-        "memory ballooning(traditional)",
-        "ioMemory",
-        "rpmsg",
-        "SCSI host",
-        "9P transport",
-        "mac80211 wlan",
-        "rproc serial",
-        "virtio CAIF",
-        "memory balloon",
-        "null",
-        "null",
-        "GPU device",
-        "Timer / Clock device",
-        "Input device",
-        "Socket device",
-        "Crypto device",
-        "Signal Distribution Module",
-        "pstore device",
-        "IOMMU device",
-        "Memory device",
-    };
-
     // _addr: 设备地址
     // _type: 设备类型
     VIRTIO(void *_addr, virt_device_type_t _type);
