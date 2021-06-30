@@ -28,9 +28,9 @@ DEV::DEV(void) {
     void *buf                          = malloc(512);
     memset(buf, 1, 512);
     blk->rw(*res, buf);
-    for (int i = 0; i < 512; i++) {
-        printf("buf: %X\n", ((char *)buf)[i]);
-    }
+    // for (int i = 0; i < 512; i++) {
+    //     printf("buf: %X\n", ((char *)buf)[i]);
+    // }
 
     return;
 }

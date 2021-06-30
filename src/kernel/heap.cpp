@@ -5,7 +5,6 @@
 // heap.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
-#include "cpu.hpp"
 #include "common.h"
 #include "heap.h"
 
