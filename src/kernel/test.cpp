@@ -67,15 +67,18 @@ int test_vmm(void) {
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)0xCD, nullptr) == 0);
     assert(vmm.get_mmap(vmm.get_pgd(), (void *)0xFFF, &addr) == 0);
     assert(addr == (ptrdiff_t) nullptr);
-    assert(vmm.get_mmap(vmm.get_pgd(), (void *)(COMMON::KERNEL_BASE + 0x1000),
+    assert(vmm.get_mmap(vmm.get_pgd(),
+                        (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR + 0x1000),
                         &addr) == 1);
-    assert(addr == COMMON::KERNEL_BASE + 0x1000);
+    assert(addr == (ptrdiff_t)COMMON::KERNEL_START_ADDR + 0x1000);
     addr = (ptrdiff_t) nullptr;
     assert(vmm.get_mmap(vmm.get_pgd(),
-                        (void *)(COMMON::KERNEL_BASE + VMM_KERNEL_SIZE - 1),
+                        (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR +
+                                 VMM_KERNEL_SIZE - 1),
                         &addr) == 1);
-    assert(addr ==
-           ((COMMON::KERNEL_BASE + VMM_KERNEL_SIZE - 1) & COMMON::PAGE_MASK));
+    assert(addr == (ptrdiff_t)(((ptrdiff_t)COMMON::KERNEL_START_ADDR +
+                                VMM_KERNEL_SIZE - 1) &
+                               COMMON::PAGE_MASK));
     addr = (ptrdiff_t) nullptr;
     assert(
         vmm.get_mmap(vmm.get_pgd(),

@@ -56,8 +56,8 @@ VMM::~VMM(void) {
 
 int32_t VMM::init(void) {
     pgd_kernel = (pt_t)pmm.alloc_page(1, COMMON::NORMAL);
-    for (uint64_t addr = COMMON::KERNEL_BASE;
-         addr < COMMON::KERNEL_BASE + VMM_KERNEL_SIZE;
+    for (uint64_t addr = (uint64_t)COMMON::KERNEL_START_ADDR;
+         addr < (uint64_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SIZE;
          addr += COMMON::PAGE_SIZE) {
         mmap(pgd_kernel, (void *)addr, (void *)addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
