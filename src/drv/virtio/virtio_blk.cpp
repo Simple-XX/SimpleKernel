@@ -99,19 +99,19 @@ size_t VIRTIO_BLK::rw(virtio_blk_req_t &_req, void *_buf) {
     queues.at(0)->virtq->desc[d1].len = sizeof(virtio_blk_req_t);
     queues.at(0)->virtq->desc[d1].flags =
         virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+    queues.at(0)->virtq->desc[d1].next = d2;
 
     d2                                = queues.at(0)->alloc_desc(_buf);
     queues.at(0)->virtq->desc[d2].len = 512;
     queues.at(0)->virtq->desc[d2].flags =
         datamode | virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+    queues.at(0)->virtq->desc[d2].next = d3;
 
     d3 = queues.at(0)->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
     queues.at(0)->virtq->desc[d3].len = 1;
     queues.at(0)->virtq->desc[d3].flags =
         virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
-
-    queues.at(0)->virtq->desc[d1].next = d2;
-    queues.at(0)->virtq->desc[d2].next = d3;
+    queues.at(0)->virtq->desc[d3].next = 0;
 
     queues.at(0)->virtq->avail->ring[queues.at(0)->virtq->avail->idx %
                                      queues.at(0)->virtq->len] = d1;
