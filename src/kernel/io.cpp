@@ -53,17 +53,20 @@ void IO::outd(const uint32_t port, const uint32_t data) {
 
 #endif
 
-uint8_t read8(void *_addr) {
+uint8_t IO::read8(void *_addr) {
     return *(uint8_t *)_addr;
 }
-void write8(void *_addr, uint8_t _val) {
+
+void IO::write8(void *_addr, uint8_t _val) {
     *(uint8_t *)_addr = _val;
     return;
 }
-uint16_t read16(void *_addr) {
+
+uint16_t IO::read16(void *_addr) {
     return *(uint16_t *)_addr;
 }
-void write16(void *_addr, uint16_t _val) {
+
+void IO::write16(void *_addr, uint16_t _val) {
     *(uint16_t *)_addr = _val;
     return;
 }
