@@ -88,26 +88,27 @@ VIRTIO_BLK::~VIRTIO_BLK(void) {
 
 // BUG: 无法读写，缓冲区/磁盘文件没有被改变
 size_t VIRTIO_BLK::rw(virtio_blk_req_t &_req, void *_buf) {
-    uint32_t d1, d2, d3, datamode = 0;
+    uint32_t datamode = 0;
 
     if (_req.type == virtio_blk_req_t::IN) {
         // mark page writeable
         datamode = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
     }
 
-    d1                                = queues.at(0)->alloc_desc(&_req);
+    uint32_t d1 = queues.at(0)->alloc_desc(&_req);
+    uint32_t d2 = queues.at(0)->alloc_desc(_buf);
+    uint32_t d3 =
+        queues.at(0)->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
     queues.at(0)->virtq->desc[d1].len = sizeof(virtio_blk_req_t);
     queues.at(0)->virtq->desc[d1].flags =
         virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
     queues.at(0)->virtq->desc[d1].next = d2;
 
-    d2                                = queues.at(0)->alloc_desc(_buf);
     queues.at(0)->virtq->desc[d2].len = 512;
-    queues.at(0)->virtq->desc[d2].flags =
+    queues.at(0)->virtq->desc[d2].flags |=
         datamode | virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
     queues.at(0)->virtq->desc[d2].next = d3;
 
-    d3 = queues.at(0)->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
     queues.at(0)->virtq->desc[d3].len = 1;
     queues.at(0)->virtq->desc[d3].flags =
         virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;

@@ -69,21 +69,28 @@ virtio_queue_t::~virtio_queue_t(void) {
 }
 
 uint32_t virtio_queue_t::alloc_desc(void *_addr) {
+    // 获取空闲 desc 索引
     uint32_t desc = virtq->free_desc;
+    // 获取下一个 desc 索引
     uint32_t next = virtq->desc[desc].next;
     if (desc == virtq->len) {
         printf("ERROR: ran out of virtqueue descriptors\n");
     }
+    // 更新 free desc 索引
     virtq->free_desc = next;
-
+    // 设置当前 desc addr 项
     virtq->desc[desc].addr = VMM_LA_PA((ptrdiff_t)_addr);
+    // 设置当前 desc virt_addr 项
     virtq->desc_virt[desc] = _addr;
     return desc;
 }
 
 void virtio_queue_t::free_desc(uint32_t desc) {
+    // 要释放 desc 的下一项指向另一个 free 的 desc
     virtq->desc[desc].next = virtq->free_desc;
-    virtq->free_desc       = desc;
+    // free 索引设为当前索引
+    virtq->free_desc = desc;
+    // virt 地址置 0
     virtq->desc_virt[desc] = nullptr;
     return;
 }
