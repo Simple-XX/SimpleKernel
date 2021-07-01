@@ -9,6 +9,12 @@
 #include "virtio_scsi.h"
 #include "dtb.h"
 #include "string.h"
+#include "intr.h"
+
+void virtio_intr_handler(void) {
+    printf("virtio irq handler.\n");
+    return;
+}
 
 DEV::DEV(void) {
     // 根据 dtb 获取硬件信息
@@ -20,12 +26,14 @@ DEV::DEV(void) {
     // TODO: 逻辑上应该是遍历 dtb，根据设备信息进行注册，
     // 而不是预设有什么设备主动注册
     // TODO: 在设备初始化之前，virtio queue 应该已经初始化了
-    VIRTIO_BLK *                  blk  = new VIRTIO_BLK((void *)0x10001000);
-    VIRTIO_SCSI *                 scsi = new VIRTIO_SCSI((void *)0x10002000);
-    VIRTIO_BLK::virtio_blk_req_t *res  = new VIRTIO_BLK::virtio_blk_req_t;
-    res->type                          = 1;
-    res->sector                        = 0;
-    void *buf                          = malloc(512);
+    VIRTIO_BLK * blk  = new VIRTIO_BLK((void *)0x10001000);
+    VIRTIO_SCSI *scsi = new VIRTIO_SCSI((void *)0x10002000);
+    // 为 virtio 注册中断
+    PLIC::register_externel_handler(PLIC::VIRTIO0_INTR, virtio_intr_handler);
+    VIRTIO_BLK::virtio_blk_req_t *res = new VIRTIO_BLK::virtio_blk_req_t;
+    res->type                         = 1;
+    res->sector                       = 0;
+    void *buf                         = malloc(512);
     memset(buf, 1, 512);
     blk->rw(*res, buf);
     // for (int i = 0; i < 512; i++) {

@@ -13,13 +13,19 @@
 #include "intr.h"
 
 namespace PLIC {
+    // 最大外部中断数
+    static constexpr const uint32_t EXTERNEL_INTERRUPT_MAX = 256;
+    // 中断处理函数数组
+    static INTR::interrupt_handler_t
+        enternel_interrupt_handlers[EXTERNEL_INTERRUPT_MAX];
     // 这个值在启动时由 opensbi 传递，暂时写死
     static constexpr const uint64_t hart = 0;
     void                            externel_intr(void) {
         // 读取中断号
-        auto no = get();
         // 根据中断号判断设备
-        printf("externel_intr: 0x%X\n", no);
+        auto no = get();
+        // 执行中断
+        enternel_interrupt_handlers[no]();
         return;
     }
     int32_t init(void) {
@@ -67,4 +73,9 @@ namespace PLIC {
         io.write32((void *)MEMLAYOUT::PLIC_SCLAIM(hart), _irq);
         return;
     }
+    void register_externel_handler(uint8_t n, INTR::interrupt_handler_t h) {
+        enternel_interrupt_handlers[n] = h;
+        return;
+    }
+
 };
