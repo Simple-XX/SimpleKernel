@@ -40,8 +40,6 @@ namespace COMMON {
     // 物理内存大小 2GB
     // TODO: 由引导程序传递
     static constexpr const uint32_t PMM_MAX_SIZE = 0x80000000;
-    // 内核的偏移地址
-    static constexpr const uint32_t KERNEL_BASE = 0x0;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 这部分内存是内核保留的
     // 64MB
@@ -52,9 +50,7 @@ namespace COMMON {
     // 物理内存大小 128MB
     // TODO: 由引导程序传递
     static constexpr const uint64_t PMM_MAX_SIZE = 0x8000000;
-    // 内核的偏移地址
-    static constexpr const uint64_t KERNEL_BASE = 0x80000000;
-    // static constexpr const uint64_t KERNEL_BASE = 0x00;
+    // static constexpr const uint64_t KERNEL_OFFSET = 0x00;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 64MB
     static constexpr const uint64_t KERNEL_SIZE = 0x4000000;

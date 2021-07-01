@@ -37,6 +37,8 @@ static constexpr const uint32_t VMM_PAGE_EXECUTABLE = 0;
 // U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
 // 如果为 1 那么运行在任何特权级上的程序都可以访问该页面。
 static constexpr const uint32_t VMM_PAGE_USER = 1 << 2;
+// 内核虚拟地址相对物理地址的偏移
+static constexpr const uint32_t KERNEL_OFFSET = 0x0;
 
 #elif defined(__riscv)
 // 有效位
@@ -55,13 +57,15 @@ static constexpr const uint8_t VMM_PAGE_GLOBAL = 1 << 5;
 static constexpr const uint8_t VMM_PAGE_ACCESSED = 1 << 6;
 // 已修改位，用于替换算法
 static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
+// 内核虚拟地址相对物理地址的偏移
+static constexpr const uint64_t KERNEL_OFFSET = 0x0;
 #endif
 
 // 逻辑地址到物理地址转换
-#define VMM_LA_PA(la) (la - COMMON::KERNEL_BASE)
+#define VMM_LA_PA(la) (la - KERNEL_OFFSET)
 
 // 物理地址到逻辑地址转换
-#define VMM_PA_LA(pa) (pa + COMMON::KERNEL_BASE)
+#define VMM_PA_LA(pa) (pa + KERNEL_OFFSET)
 
 class VMM {
 private:
