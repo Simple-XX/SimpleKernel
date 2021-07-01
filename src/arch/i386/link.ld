@@ -8,10 +8,12 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(_start)
 
 SECTIONS {
-    /* VMA 为顺序排列，LMA 按照 AT(addr) 排列 */
+	/* VMA 为顺序排列，LMA 按照 AT(addr) 排列 */
+    . = 0;
+	PROVIDE(kernel_start = .);
     /* 指定内核从地址 1M 处开始 */
+	/* 0~1M 的空间为 BIOS 保留区域 */
     . = 1M;
-    PROVIDE(kernel_start = .);
 
     PROVIDE(kernel_text_start = .);
 	/* 代码段 */
