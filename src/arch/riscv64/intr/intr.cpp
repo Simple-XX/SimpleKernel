@@ -48,7 +48,6 @@ namespace INTR {
 #undef DEBUG
 #endif
             // 跳转到对应的处理函数
-            printf("intr: 0x%X\n", scause & CPU::CAUSE_CODE_MASK);
             CLINT::do_interrupt(scause & CPU::CAUSE_CODE_MASK);
         }
         else {

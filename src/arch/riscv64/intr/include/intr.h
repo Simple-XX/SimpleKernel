@@ -8,6 +8,7 @@
 #define _INTR_H_
 
 #include "stdint.h"
+#include "memlayout.h"
 
 namespace INTR {
     typedef void (*interrupt_handler_t)(void);
@@ -81,13 +82,18 @@ namespace TIMER {
 // 平台级中断控制器
 // 用于控制外部中断
 namespace PLIC {
-    int32_t init(void);
+    // VIRTIO0 中断
+    // TODO: 动态获取
+    static constexpr const uint8_t VIRTIO0_INTR = MEMLAYOUT::VIRTIO0_IRQ;
+    int32_t                        init(void);
     // 向 PLIC 询问中断
     // 返回发生的外部中断号
     uint8_t get(void);
     // 告知PLIC已经处理了当前IRQ
     void done(uint8_t _irq);
     void set(uint8_t irq_no, bool _status);
+    // 注册外部中断处理函数()
+    void register_externel_handler(uint8_t n, INTR::interrupt_handler_t h);
 };
 
 #endif /* _INTR_H_ */
