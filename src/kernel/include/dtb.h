@@ -28,14 +28,14 @@ struct node_begin_t {
 
 struct fdt_property_t {
     uint32_t tag;
-    // 表示 property value 的长度
+    // 表示 property value 的长度，byte 为单位
     uint32_t len;
     // property 的名称存放在 string block 区域，nameoff 表示其在 string
     // block 的偏移
     uint32_t nameoff;
     // property value值，作为额外数据以'\0'结尾的字符串形式存储 structure
     // block, 32 - bits对齐，不够的位用 0x0 补齐
-    uint8_t data[0];
+    uint32_t data[0];
 };
 
 class dtb_prop_node_t {
@@ -45,13 +45,16 @@ public:
     // 节点名
     mystl::string name;
     // 节点的属性列表
-    mystl::unordered_map<mystl::string, mystl::vector<uint8_t>> props;
+    mystl::unordered_map<char *, mystl::vector<uint32_t>> props;
     // 子节点指针
     mystl::vector<dtb_prop_node_t *> children;
     dtb_prop_node_t(mystl::string &_name);
     ~dtb_prop_node_t(void);
     // 添加属性
-    void add_prop(mystl::string _name, uint8_t *_val, uint32_t _len);
+    // _name: 属性名
+    // _addr: 数据地址
+    // _len: 数据长度，单位为 4bytes
+    void add_prop(mystl::string _name, uint32_t *_addr, uint32_t _len);
     // 添加子节点
     void add_child(dtb_prop_node_t *_child);
 };
@@ -105,7 +108,7 @@ private:
     };
 
     // dtb 结构地址
-    uint64_t addr;
+    void *addr;
     // 大小
     uint32_t size;
     // 数据区地址
@@ -133,12 +136,12 @@ public:
     DTB(void);
     ~DTB(void);
     // 根据设备名查询设备信息
-    // 返回一个list，因为同类设备可能有多个
+    // 返回一个 list，因为同类设备可能有多个
     const mystl::vector<dtb_prop_node_t *> find(mystl::string _name);
 };
 
 // 在启动阶段保存 dtb 地址
 // TODO: 仅传递 dtb 地址参数
-extern "C" void dtb_preinit(uint32_t, uint64_t _addr);
+extern "C" void dtb_preinit(uint32_t, void *_addr);
 
 #endif /* _DTB_H_ */
