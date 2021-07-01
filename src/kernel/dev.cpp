@@ -23,7 +23,7 @@ DEV::DEV(void) {
     VIRTIO_BLK *                  blk  = new VIRTIO_BLK((void *)0x10001000);
     VIRTIO_SCSI *                 scsi = new VIRTIO_SCSI((void *)0x10002000);
     VIRTIO_BLK::virtio_blk_req_t *res  = new VIRTIO_BLK::virtio_blk_req_t;
-    res->type                          = 0;
+    res->type                          = 1;
     res->sector                        = 0;
     void *buf                          = malloc(512);
     memset(buf, 1, 512);

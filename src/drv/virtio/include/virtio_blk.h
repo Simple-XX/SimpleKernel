@@ -103,13 +103,14 @@ public:
         uint32_t                        type;
         uint32_t                        reserved;
         uint64_t                        sector;
-        uint8_t *                       data;
+        // uint8_t *                       data;
         // status type
         static constexpr const uint64_t OK     = 0;
         static constexpr const uint64_t IOERR  = 1;
         static constexpr const uint64_t UNSUPP = 2;
-        uint8_t                         status;
-    };
+        // uint8_t                         status;
+    } __attribute__((packed));
+    uint8_t status;
     VIRTIO_BLK(void *_addr);
     ~VIRTIO_BLK(void);
     // 设备的读写
