@@ -19,8 +19,9 @@ void virtio_intr_handler(void) {
 DEV::DEV(void) {
     // 根据 dtb 获取硬件信息
     DTB dtb = DTB();
-    // 获取块设备
-    auto blk_dev = dtb.find("virtio_mmio@10001000");
+    // 获取 virtio 设备信息
+    auto virtio_mmio = dtb.find("virtio,mmio");
+    printf("virtio_mmio size: 0x%X\n", virtio_mmio.size());
     // 初始化 virtio
     // TODO: 这里的参数应该从 blk_dev 获取
     // TODO: 逻辑上应该是遍历 dtb，根据设备信息进行注册，
