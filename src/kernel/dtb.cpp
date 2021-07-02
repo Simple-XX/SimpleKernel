@@ -22,19 +22,65 @@ dtb_prop_node_t::~dtb_prop_node_t(void) {
 
 void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
                                uint32_t _len) {
-    // 临时变量，用于字节序的转换
-    mystl::vector<uint32_t> tmp;
-    for (uint32_t i = 0; i < _len; i++) {
-        tmp.push_back(be32toh(*(_addr + i)));
-    }
-    // 保存的数据可直接使用
-    props[(char *)_name.c_str()] = tmp;
-#define DEBUG
+    // #define DEBUG
+    // TODO: 只处理了标准属性
+    // 根据字段设置
+    if (_name == mystl::string(standard_props_t::COMPATIBLE)) {
+        standard.compatible = mystl::string((char *)_addr);
 #ifdef DEBUG
-    printf("name: %s\n", _name.c_str());
-    for (uint64_t i = 0; i < _len; i++) {
-        printf("0x%X\n", (props[(char *)_name.c_str()].at(i)));
+        printf("standard.compatible: %s\n", standard.compatible.c_str());
+#endif
     }
+    if (_name == mystl::string(standard_props_t::MODEL)) {
+        standard.model = mystl::string((char *)_addr);
+#ifdef DEBUG
+        printf("standard.model: %s\n", standard.model.c_str());
+#endif
+    }
+    if (_name == mystl::string(standard_props_t::PHANDLE)) {
+        standard.phandle = *_addr;
+    }
+    if (_name == mystl::string(standard_props_t::STATUS)) {
+        standard.status = mystl::string((char *)_addr);
+#ifdef DEBUG
+        printf("standard.status: %s\n", standard.status.c_str());
+#endif
+    }
+    if (_name == mystl::string(standard_props_t::ADDR_CELLS)) {
+        standard.addr_cells = *_addr;
+    }
+    if (_name == mystl::string(standard_props_t::SIZE_CELLS)) {
+        standard.size_cells = *_addr;
+    }
+    if (_name == mystl::string(standard_props_t::REG)) {
+#ifdef DEBUG
+        printf("reg: ");
+#endif
+        for (uint32_t i = 0; i < _len; i++) {
+            standard.reg.push_back(be32toh(*(_addr + i)));
+#ifdef DEBUG
+            printf("0x%X ", be32toh(*(_addr + i)));
+#endif
+        }
+#ifdef DEBUG
+        printf("\n");
+#endif
+    }
+    if (_name == mystl::string(standard_props_t::VIRTUAL_REG)) {
+        standard.virt_reg = *_addr;
+    }
+    if (_name == mystl::string(standard_props_t::RANGES)) {
+        for (uint32_t i = 0; i < _len; i++) {
+            standard.ranges.push_back(be32toh(*(_addr + i)));
+        }
+    }
+    if (_name == mystl::string(standard_props_t::DMA_RANGES)) {
+        for (uint32_t i = 0; i < _len; i++) {
+            standard.dma_ranges.push_back(be32toh(*(_addr + i)));
+        }
+    }
+
+#ifdef DEBUG
 #undef DEBUG
 #endif
     return;
@@ -78,6 +124,10 @@ DTB::DTB(void) : addr(dtb_addr) {
     }
     // 遍历数据区
     get_node((uint8_t *)data_addr);
+// #define DEBUG
+#ifdef DEBUG
+#undef DEBUG
+#endif
     printf("dtb init.\n");
     return;
 }
@@ -88,6 +138,11 @@ DTB::~DTB(void) {
 
 char *DTB::get_string(uint64_t _off) {
     return (char *)string_addr + _off;
+}
+
+// 处理节点
+void DTB::tmp(void) {
+    return;
 }
 
 // TODO: 子节点处理
@@ -178,10 +233,10 @@ const mystl::vector<dtb_prop_node_t *> DTB::find(mystl::string _name) {
     // 遍历所有节点
     for (auto i : nodes) {
         // 找到属性中 kv 为 compatible:_name 的节点
-        // if (i->props["compatible"] == _name) {
-        // 添加到返回向量中
-        //     res.push_back(i);
-        // }
+        if (i->standard.compatible == _name) {
+            // 添加到返回向量中
+            res.push_back(i);
+        }
     }
     return res;
 }

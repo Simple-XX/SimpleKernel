@@ -38,6 +38,81 @@ struct fdt_property_t {
     uint32_t data[0];
 };
 
+// 标准属性
+// devicetree-specification-v0.3#2.3.1
+struct standard_props_t {
+    // 属性列表
+    static constexpr const char *const COMPATIBLE  = "compatible";
+    static constexpr const char *const MODEL       = "model";
+    static constexpr const char *const PHANDLE     = "phandle";
+    static constexpr const char *const STATUS      = "status";
+    static constexpr const char *const ADDR_CELLS  = "#address-cells";
+    static constexpr const char *const SIZE_CELLS  = "#size-cells";
+    static constexpr const char *const REG         = "reg";
+    static constexpr const char *const VIRTUAL_REG = "virtual-reg";
+    static constexpr const char *const RANGES      = "ranges";
+    static constexpr const char *const DMA_RANGES  = "dma-ranges";
+    // 各个属性的值
+    // TODO: 这里应该是 string 向量
+    mystl::string           compatible;
+    mystl::string           model;
+    uint32_t                phandle;
+    mystl::string           status;
+    uint32_t                addr_cells;
+    uint32_t                size_cells;
+    mystl::vector<uint32_t> reg;
+    uint32_t                virt_reg;
+    mystl::vector<uint32_t> ranges;
+    mystl::vector<uint32_t> dma_ranges;
+};
+
+// 中断属性
+// devicetree-specification-v0.3#2.4.1
+struct interrupt_device_props_t {
+    // 属性列表
+    static constexpr const char *const INTERRUPTS       = "interrupts";
+    static constexpr const char *const INTERRUPT_PARENT = "interrupt-parent";
+    static constexpr const char *const INTERRUPTS_EXTENDED =
+        "interrupts-extended";
+    // 各个属性的值
+    mystl::vector<uint32_t> interrupts;
+    mystl::vector<uint32_t> interrupt_parent;
+    mystl::vector<uint32_t> interrupts_extended;
+    interrupt_device_props_t(void);
+    ~interrupt_device_props_t(void);
+};
+
+// 中断控制器属性
+// devicetree-specification-v0.3#2.4.2
+struct interrupt_controllers_props_t {
+    // 属性列表
+    static constexpr const char *const INTERRUPT_CELLS = "#interrupt-cells";
+    static constexpr const char *const INTERRUPT_CONTROLLER =
+        "interrupt-controller";
+    // 各个属性的值
+    uint32_t interrupt_cells;
+    bool     interrupt_controller;
+    interrupt_controllers_props_t(void);
+    ~interrupt_controllers_props_t(void);
+};
+
+// 中断控制器属性
+// devicetree-specification-v0.3#2.4.3
+struct interrupt_nexus_props_t {
+    // 属性列表
+    static constexpr const char *const INTERRUPT_MAP = "interrupt-map";
+    static constexpr const char *const INTERRUPT_MAP_MASK =
+        "interrupt-map-mask";
+    static constexpr const char *const INTERRUPT_CELLS = "#interrupt-cells";
+
+    // 各个属性的值
+    mystl::vector<uint32_t> interrupt_map;
+    mystl::vector<uint32_t> interrupt_map_mask;
+    uint32_t                interrupt_cells;
+    interrupt_nexus_props_t(void);
+    ~interrupt_nexus_props_t(void);
+};
+
 class dtb_prop_node_t {
 private:
 protected:
@@ -45,7 +120,7 @@ public:
     // 节点名
     mystl::string name;
     // 节点的属性列表
-    mystl::unordered_map<char *, mystl::vector<uint32_t>> props;
+    standard_props_t standard;
     // 子节点指针
     mystl::vector<dtb_prop_node_t *> children;
     dtb_prop_node_t(mystl::string &_name);
@@ -131,6 +206,8 @@ private:
     // 返回新的位置和子节点
     mystl::pair<dtb_prop_node_t *, uint8_t *> get_node(uint8_t *_pos);
 
+    void tmp(void);
+
 protected:
 public:
     DTB(void);
@@ -143,5 +220,9 @@ public:
 // 在启动阶段保存 dtb 地址
 // TODO: 仅传递 dtb 地址参数
 extern "C" void dtb_preinit(uint32_t, void *_addr);
+
+// dtb
+// 首先获取到 dtb 地址
+// 每个节点的默认属性
 
 #endif /* _DTB_H_ */
