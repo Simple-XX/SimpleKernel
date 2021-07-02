@@ -12,6 +12,28 @@
 #include "common.h"
 #include "assert.h"
 #include "virtio.h"
+#include "vmm.h"
+
+virtio_mmio_dev_t::virtio_mmio_dev_t(void *_addr)
+    : regs((virtio_regs_t *)_addr) {
+    return;
+}
+
+virtio_mmio_dev_t::~virtio_mmio_dev_t(void) {
+    return;
+}
+
+bool virtio_mmio_dev_t::is_valid(void) {
+    return io.read32(&regs->device_id) != 0;
+}
+
+void virtio_mmio_dev_t::read(void) {
+    return;
+}
+
+void virtio_mmio_dev_t::write(void) {
+    return;
+}
 
 bool VIRTIO::set_features(const mystl::vector<feature_t> &_features) {
     // 首先获取硬件信息
@@ -103,7 +125,7 @@ void VIRTIO::add_to_device(uint32_t _queue_sel) {
 }
 
 VIRTIO::VIRTIO(void *_addr, virt_device_type_t _type)
-    : regs((virtio_regs_t *)_addr) {
+    : regs((virtio_mmio_dev_t::virtio_regs_t *)_addr) {
     // 检查相关值
     assert(io.read32(&regs->magic) == MAGIC_VALUE);
     assert(io.read32(&regs->version) == VERSION);
@@ -120,6 +142,44 @@ VIRTIO::VIRTIO(void *_addr, virt_device_type_t _type)
     io.write32(&regs->status, io.read32(&regs->status) | DEVICE_STATUS_DRIVER);
     // 接下来设置设备相关 feature，交给特定设备进行
     // 跳转到 virtio_blk.cpp 的构造函数
+    return;
+}
+
+VIRTIO::VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props) {
+    // 设置 virtio 设备数量
+    size = _props.size();
+    virtio_mmio_t tmp;
+    for (auto i : _props) {
+        // TODO: 根据 addr_cells 与 size_cells 设置地址与长度，需要 dtb 支持
+        // 高 32 位
+        tmp.addr = (uint64_t)i->standard.reg.at(0) << 32;
+        // 低 32 位
+        tmp.addr += i->standard.reg.at(1);
+        tmp.len = (uint64_t)i->standard.reg.at(2) << 32;
+        tmp.len += i->standard.reg.at(3);
+        // 读取中断号
+        tmp.intrno = i->interrupt_device.interrupts;
+#define DEBUG
+#ifdef DEBUG
+        printf("addr: 0x%p, len: 0x%X, intrno: 0x%X\n", tmp.addr, tmp.len,
+               tmp.intrno);
+#undef DEBUG
+#endif
+        // 添加到向量中
+        mmio.push_back(tmp);
+        // 映射内存
+        for (uint64_t addr = tmp.addr; addr < tmp.addr + tmp.len;
+             addr += COMMON::PAGE_SIZE) {
+            vmm.mmap(vmm.get_pgd(), (void *)addr, (void *)addr,
+                     VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+        }
+        // 根据设备类型初始化相应设备
+        // 寻找有效设备，添加到向量中
+        virtio_mmio_dev_t tmp_dev((void *)tmp.addr);
+        if (tmp_dev.is_valid() == true) {
+            devs.push_back(tmp_dev);
+        }
+    }
     return;
 }
 

@@ -12,10 +12,76 @@
 #include "vector"
 #include "string"
 #include "virtio_queue.h"
+#include "dtb.h"
 
 // See
 // http://docs.oasis-open.org/virtio/virtio/v1.0/csprd01/virtio-v1.0-csprd01.html#x1-530002
 // for more info
+
+// virtio mmio 设备抽象
+class virtio_mmio_dev_t {
+private:
+protected:
+public:
+    // virtio mmio 控制寄存器
+    // virtio-v1.1#4.2.2
+    struct virtio_regs_t {
+        // a Little Endian equivalent of the “virt” string: 0x74726976
+        uint32_t magic;
+        // Device version number
+        // 0x2, Legacy devices(see 4.2.4 Legacy interface) used 0x1.
+        uint32_t version;
+        // Virtio Subsystem Device ID
+        uint32_t device_id;
+        uint32_t Vendor_id;
+        uint32_t device_features;
+        uint32_t device_features_sel;
+        uint32_t _reserved0[2];
+        uint32_t driver_features;
+        uint32_t driver_features_sel;
+        uint32_t _reserved1[2];
+        uint32_t queue_sel;
+        uint32_t queue_num_max;
+        uint32_t queue_num;
+        uint32_t _reserved2[2];
+        uint32_t queue_ready;
+        uint32_t _reserved3[2];
+        uint32_t queue_notify;
+        uint32_t _reserved4[3];
+        uint32_t interrupt_status;
+        uint32_t interrupt_ack;
+        uint32_t _reserved5[2];
+        uint32_t status;
+        uint32_t _reserved6[3];
+        uint32_t queue_desc_low;
+        uint32_t queue_desc_high;
+        uint32_t _reserved7[2];
+        uint32_t queue_driver_low;
+        uint32_t queue_driver_high;
+        uint32_t _reserved8[2];
+        uint32_t queue_device_low;
+        uint32_t queue_device_high;
+        uint32_t _reserved9[21];
+        uint32_t config_generation;
+        uint32_t config[0];
+    } __attribute__((packed));
+
+    // virtio mmio 寄存器基地址
+    virtio_regs_t *regs;
+    // virtio queue，有些设备使用多个队列
+    mystl::vector<virtio_queue_t *> queues;
+    // 设备名
+    // 设备类别
+    virtio_mmio_dev_t(void *_addr);
+    virtual ~virtio_mmio_dev_t(void);
+    // 设备是否有效
+    virtual bool is_valid(void);
+    // 设备类型
+    virtual bool type(void);
+    // 读写操作
+    virtual void read(void);
+    virtual void write(void);
+};
 
 class VIRTIO {
 private:
@@ -79,48 +145,6 @@ protected:
 
     static constexpr const uint64_t MAGIC_VALUE = 0x74726976;
     static constexpr const uint64_t VERSION     = 0x02;
-    // virtio mmio 控制寄存器
-    // virtio-v1.1#4.2.2
-    struct virtio_regs_t {
-        // a Little Endian equivalent of the “virt” string: 0x74726976
-        uint32_t magic;
-        // Device version number
-        // 0x2, Legacy devices(see 4.2.4 Legacy interface) used 0x1.
-        uint32_t version;
-        // Virtio Subsystem Device ID
-        uint32_t device_id;
-        uint32_t Vendor_id;
-        uint32_t device_features;
-        uint32_t device_features_sel;
-        uint32_t _reserved0[2];
-        uint32_t driver_features;
-        uint32_t driver_features_sel;
-        uint32_t _reserved1[2];
-        uint32_t queue_sel;
-        uint32_t queue_num_max;
-        uint32_t queue_num;
-        uint32_t _reserved2[2];
-        uint32_t queue_ready;
-        uint32_t _reserved3[2];
-        uint32_t queue_notify;
-        uint32_t _reserved4[3];
-        uint32_t interrupt_status;
-        uint32_t interrupt_ack;
-        uint32_t _reserved5[2];
-        uint32_t status;
-        uint32_t _reserved6[3];
-        uint32_t queue_desc_low;
-        uint32_t queue_desc_high;
-        uint32_t _reserved7[2];
-        uint32_t queue_driver_low;
-        uint32_t queue_driver_high;
-        uint32_t _reserved8[2];
-        uint32_t queue_device_low;
-        uint32_t queue_device_high;
-        uint32_t _reserved9[21];
-        uint32_t config_generation;
-        uint32_t config[0];
-    } __attribute__((packed));
 
     // Device Status Field
     // virtio-v1.1#2.1
@@ -154,8 +178,7 @@ protected:
         {NAME2STR(VIRTIO_F_VERSION_1), VIRTIO_F_VERSION_1, false},
     };
 
-    // virtio mmio 寄存器基地址
-    virtio_regs_t *regs;
+    virtio_mmio_dev_t::virtio_regs_t *regs;
     // 队列向量，有些设备使用多个队列
     mystl::vector<virtio_queue_t *> queues;
 
@@ -166,9 +189,25 @@ protected:
     void add_to_device(uint32_t _queue_sel);
 
 public:
+    // virtio 设备的数量
+    uint32_t size;
+    // virtio 设备 mmio 信息
+    struct virtio_mmio_t {
+        // 设备地址
+        uint64_t addr;
+        // 内存长度
+        uint64_t len;
+        // 中断号
+        uint32_t intrno;
+    };
+    mystl::vector<virtio_mmio_t> mmio;
+    // 有效设备
+    mystl::vector<virtio_mmio_dev_t> devs;
+
     // _addr: 设备地址
     // _type: 设备类型
     VIRTIO(void *_addr, virt_device_type_t _type);
+    VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props);
     ~VIRTIO(void);
 };
 
