@@ -75,11 +75,10 @@ struct interrupt_device_props_t {
     static constexpr const char *const INTERRUPTS_EXTENDED =
         "interrupts-extended";
     // 各个属性的值
-    mystl::vector<uint32_t> interrupts;
+    // TODO: 这里应该是 uint32_t 向量
+    uint32_t                interrupts;
     mystl::vector<uint32_t> interrupt_parent;
     mystl::vector<uint32_t> interrupts_extended;
-    interrupt_device_props_t(void);
-    ~interrupt_device_props_t(void);
 };
 
 // 中断控制器属性
@@ -120,7 +119,10 @@ public:
     // 节点名
     mystl::string name;
     // 节点的属性列表
+    // 标准属性
     standard_props_t standard;
+    // 中断设备属性
+    interrupt_device_props_t interrupt_device;
     // 子节点指针
     mystl::vector<dtb_prop_node_t *> children;
     dtb_prop_node_t(mystl::string &_name);

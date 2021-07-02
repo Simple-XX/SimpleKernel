@@ -38,7 +38,7 @@ void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
 #endif
     }
     if (_name == mystl::string(standard_props_t::PHANDLE)) {
-        standard.phandle = *_addr;
+        standard.phandle = be32toh(*_addr);
     }
     if (_name == mystl::string(standard_props_t::STATUS)) {
         standard.status = mystl::string((char *)_addr);
@@ -47,10 +47,10 @@ void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
 #endif
     }
     if (_name == mystl::string(standard_props_t::ADDR_CELLS)) {
-        standard.addr_cells = *_addr;
+        standard.addr_cells = be32toh(*_addr);
     }
     if (_name == mystl::string(standard_props_t::SIZE_CELLS)) {
-        standard.size_cells = *_addr;
+        standard.size_cells = be32toh(*_addr);
     }
     if (_name == mystl::string(standard_props_t::REG)) {
 #ifdef DEBUG
@@ -77,6 +77,16 @@ void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
     if (_name == mystl::string(standard_props_t::DMA_RANGES)) {
         for (uint32_t i = 0; i < _len; i++) {
             standard.dma_ranges.push_back(be32toh(*(_addr + i)));
+        }
+    }
+    // TODO: 设备中断只处理了一项
+    if (_name == mystl::string(interrupt_device_props_t::INTERRUPTS)) {
+        for (uint32_t i = 0; i < _len; i++) {
+            interrupt_device.interrupts = be32toh(*_addr);
+#ifdef DEBUG
+            printf("interrupt_device.interrupts: 0x%X\n",
+                   interrupt_device.interrupts);
+#endif
         }
     }
 
