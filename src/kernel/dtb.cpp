@@ -20,13 +20,15 @@ dtb_prop_node_t::~dtb_prop_node_t(void) {
     return;
 }
 
+// TODO: 父节点的属性需要拷贝给子节点
 void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
                                uint32_t _len) {
-    // #define DEBUG
+
     // TODO: 只处理了标准属性
     // 根据字段设置
     if (_name == mystl::string(standard_props_t::COMPATIBLE)) {
         standard.compatible = mystl::string((char *)_addr);
+// #define DEBUG
 #ifdef DEBUG
         printf("standard.compatible: %s\n", standard.compatible.c_str());
 #endif
@@ -59,7 +61,7 @@ void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
         for (uint32_t i = 0; i < _len; i++) {
             standard.reg.push_back(be32toh(*(_addr + i)));
 #ifdef DEBUG
-            printf("0x%X ", be32toh(*(_addr + i)));
+            printf("0x%X ", standard.reg.at(i));
 #endif
         }
 #ifdef DEBUG

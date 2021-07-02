@@ -21,7 +21,8 @@ DEV::DEV(void) {
     DTB dtb = DTB();
     // 获取 virtio 设备信息
     auto virtio_mmio = dtb.find("virtio,mmio");
-    printf("virtio_mmio size: 0x%X\n", virtio_mmio.size());
+    // virtio 设备
+    VIRTIO virtio = VIRTIO(virtio_mmio);
     // 初始化 virtio
     // TODO: 这里的参数应该从 blk_dev 获取
     // TODO: 逻辑上应该是遍历 dtb，根据设备信息进行注册，
@@ -49,13 +50,8 @@ DEV::~DEV(void) {
 }
 
 // TODO
-// 设备初始化
-// 首先处理 dtb
-// 按照处理好的 dtb 分别初始化各个设备
-// 以 virtio 为例
-// dtb 获取 virtio 的 n 个地址
-// 打包传递给 virtio 构造函数
 // 构造函数中对地址进行遍历，初始化不同的 io 设备
+// 根据设备类型分别初始化
 // virtio 中断由 virtio 统一管理
 // 地址也由 virtio 统一管理
 // 首先得完善 dtb 的处理
