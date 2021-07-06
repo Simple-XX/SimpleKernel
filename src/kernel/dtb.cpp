@@ -23,7 +23,6 @@ dtb_prop_node_t::~dtb_prop_node_t(void) {
 // TODO: 父节点的属性需要拷贝给子节点
 void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
                                uint32_t _len) {
-    printf("1111111\n");
     // TODO: 只处理了标准属性
     // 根据字段设置
     if (_name == mystl::string(standard_props_t::COMPATIBLE)) {
@@ -49,7 +48,6 @@ void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
 #endif
     }
     if (_name == mystl::string(standard_props_t::ADDR_CELLS)) {
-        printf("2222\n");
         standard.addr_cells = be32toh(*_addr);
 #ifdef DEBUG
         printf("standard.addr_cells: 0x%X\n", standard.addr_cells);
@@ -95,7 +93,6 @@ void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
 #endif
         }
     }
-
 #ifdef DEBUG
 #undef DEBUG
 #endif
@@ -166,9 +163,8 @@ void DTB::data_init(void) {
                 assert(node != nullptr);
                 fdt_property_t *prop = (fdt_property_t *)pos;
                 printf("prop: %s\n", get_string(be32toh(prop->nameoff)));
-                // node->add_prop(get_string(be32toh(prop->nameoff)),
-                // prop->data,
-                //    prop->len / 4);
+                node->add_prop(get_string(be32toh(prop->nameoff)), prop->data,
+                               be32toh(prop->len) / 4);
                 // TODO: 将属性内存传递给处理函数
                 // 跳过 tag
                 pos++;
