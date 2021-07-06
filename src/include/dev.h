@@ -14,30 +14,10 @@
 #include "char_dev.h"
 #include "drv.h"
 #include "bus.h"
-
-// TODO: 纯虚函数支持
+#include "resource.h"
 
 // 声明
 class bus_t;
-
-class resource_t {
-private:
-protected:
-public:
-    // 资源类型
-    uint64_t type;
-    // 资源名称
-    mystl::string name;
-    // 当资源类型为内存时，uinon 保存内存地址
-    // 当资源类型为中断号，uinon 保存中断号
-    union {
-        struct {
-            uint64_t start;
-            uint64_t end;
-        } mem;
-        uint64_t irq_no;
-    };
-};
 
 // 设备抽象
 class dev_t {

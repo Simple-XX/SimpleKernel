@@ -11,6 +11,7 @@
 #include "string"
 #include "vector"
 #include "unordered_map"
+#include "resource.h"
 
 // https://e-mailky.github.io/2016-12-06-dts-introduce
 // https://e-mailky.github.io/2019-01-14-dts-1
@@ -19,6 +20,7 @@
 
 // TODO: 删除多余代码
 // TODO: 完善功能
+// TODO: 优化
 struct node_begin_t {
     // begin 标识
     uint32_t tag;
@@ -125,7 +127,7 @@ public:
     interrupt_device_props_t interrupt_device;
     // 子节点指针
     mystl::vector<dtb_prop_node_t *> children;
-    dtb_prop_node_t(mystl::string &_name);
+    dtb_prop_node_t(const mystl::string &_name);
     ~dtb_prop_node_t(void);
     // 添加属性
     // _name: 属性名
@@ -215,16 +217,15 @@ public:
     DTB(void);
     ~DTB(void);
     // 根据设备名查询设备信息
-    // 返回一个 list，因为同类设备可能有多个
-    const mystl::vector<dtb_prop_node_t *> find(mystl::string _name);
+    // 返回一个设备使用资源的 list，因为一个设备可能使用多个资源
+    // 返回一个二级 list
+    // 第一级为设备向量
+    // 第二级为各个设备使用的资源向量
+    const mystl::vector<mystl::vector<resource_t *>> find(mystl::string _name);
 };
 
 // 在启动阶段保存 dtb 地址
 // TODO: 仅传递 dtb 地址参数
 extern "C" void dtb_preinit(uint32_t, void *_addr);
-
-// dtb
-// 首先获取到 dtb 地址
-// 每个节点的默认属性
 
 #endif /* _DTB_H_ */

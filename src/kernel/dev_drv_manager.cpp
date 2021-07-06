@@ -35,25 +35,14 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 根据 dtb 获取硬件信息
     DTB dtb = DTB();
     // 获取 virtio 设备信息
-    auto virtio_mmio = dtb.find("virtio,mmio");
+    auto virtio_mmio_resources = dtb.find("virtio,mmio");
     // 初始化 virtio 总线
     // 构造 resource
-    // TODO: dtb 信息转为 resource_t
-    // mystl::vector<resource_t *> res;
-    // 存放地址
-    // resource_t *res1 = new resource_t;
-    // 存放中断
-    // resource_t *res2 = new resource_t;
-    // res1->mem.start  = (uint64_t)virtio_mmio.at(7)->standard.reg.at(0) << 32;
-    // res1->mem.start += virtio_mmio.at(7)->standard.reg.at(1);
-    // res1->mem.end = res1->mem.start +
-    //                 ((uint64_t)virtio_mmio.at(7)->standard.reg.at(2) << 32);
-    // res1->mem.end += virtio_mmio.at(7)->standard.reg.at(3);
-    // res1->type   = 0;
-    // res2->irq_no = virtio_mmio.at(7)->interrupt_device.interrupts;
-    // res2->type   = 1;
-    // res.push_back(res1);
-    // res.push_back(res2);
+    for (auto i : virtio_mmio_resources) {
+        for (auto j : i) {
+            printf("resource name : %s\n", j->name);
+        }
+    }
     // 初始化 virtio_bus
     // virtio_bus_t *virtio_bus = new virtio_bus_t(res);
     // 添加到设备链表中
@@ -73,9 +62,9 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // VIRTIO_BLK * blk  = new VIRTIO_BLK((void *)0x10001000);
     // VIRTIO_SCSI *scsi = new VIRTIO_SCSI((void *)0x10002000);
     // 为 virtio 注册中断
-    // PLIC::register_externel_handler(PLIC::VIRTIO0_INTR, virtio_intr_handler);
-    // VIRTIO_BLK::virtio_blk_req_t *res = new VIRTIO_BLK::virtio_blk_req_t;
-    // res->type                         = 1;
+    // PLIC::register_externel_handler(PLIC::VIRTIO0_INTR,
+    // virtio_intr_handler); VIRTIO_BLK::virtio_blk_req_t *res = new
+    // VIRTIO_BLK::virtio_blk_req_t; res->type                         = 1;
     // res->sector                       = 0;
     // void *buf                         = malloc(512);
     // memset(buf, 1, 512);
