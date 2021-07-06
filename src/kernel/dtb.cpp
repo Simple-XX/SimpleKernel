@@ -159,6 +159,7 @@ void DTB::tmp(void) {
 
 // TODO: 子节点处理
 mystl::pair<dtb_prop_node_t *, uint8_t *> DTB::get_node(uint8_t *_pos) {
+    printf("111\n");
     uint32_t tag = be32toh(*(uint32_t *)_pos);
     // 新的递归必然从 FDT_BEGIN_NODE 开始
     assert(tag == FDT_BEGIN_NODE);

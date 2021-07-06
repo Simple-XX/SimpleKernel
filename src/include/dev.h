@@ -15,6 +15,8 @@
 #include "drv.h"
 #include "bus.h"
 
+// TODO: 纯虚函数支持
+
 // 声明
 class bus_t;
 
@@ -33,7 +35,7 @@ public:
             uint64_t start;
             uint64_t end;
         } mem;
-        uint64_t iqr_no;
+        uint64_t irq_no;
     };
 };
 
@@ -58,7 +60,7 @@ public:
 
 // 总线设备抽象
 // 总线设备是用于内核与设备通信的设备
-class bus_t : dev_t {
+struct bus_t : dev_t {
 private:
 protected:
 public:
