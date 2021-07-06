@@ -217,11 +217,8 @@ public:
     DTB(void);
     ~DTB(void);
     // 根据设备名查询设备信息
-    // 返回一个设备使用资源的 list，因为一个设备可能使用多个资源
-    // 返回一个二级 list
-    // 第一级为设备向量
-    // 第二级为各个设备使用的资源向量
-    const mystl::vector<mystl::vector<resource_t *>> find(mystl::string _name);
+    // TODO: 应该返回一个设备使用资源的 list，因为一个设备可能使用多个资源
+    const mystl::vector<resource_t *> find(mystl::string _name);
 };
 
 // 在启动阶段保存 dtb 地址
