@@ -27,6 +27,8 @@ private:
     mystl::vector<dev_t *> devs;
     // 驱动列表
     mystl::vector<drv_t *> drvs;
+    // 匹配驱动
+    bool match(dev_t &_dev, drv_t &_drv);
 
 protected:
 public:

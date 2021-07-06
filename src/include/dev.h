@@ -54,8 +54,6 @@ public:
     mystl::vector<resource_t *> res;
     dev_t(void);
     virtual ~dev_t(void) = 0;
-    // 匹配驱动
-    virtual bool match_drv(drv_t &_drv) = 0;
 };
 
 // 总线设备抽象

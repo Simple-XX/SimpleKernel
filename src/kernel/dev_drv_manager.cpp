@@ -16,6 +16,17 @@ void virtio_intr_handler(void) {
     return;
 }
 
+bool DEV_DRV_MANAGER::match(dev_t &_dev, drv_t &_drv) {
+    if (_dev.drv_name == _drv.name) {
+        // 设置驱动
+        _dev.drv = &_drv;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 根据 dtb 获取硬件信息
     DTB dtb = DTB();
@@ -68,10 +79,8 @@ bool DEV_DRV_MANAGER::add_dev(dev_t &_dev) {
 bool DEV_DRV_MANAGER::init(dev_t &_dev) {
     // 遍历驱动列表
     for (auto i : drvs) {
-        // 如果驱动名匹配
-        if (_dev.match_drv(*i)) {
-            // 设置驱动
-            _dev.drv = i;
+        // 如果驱动匹配
+        if (match(_dev, *i)) {
             // 跳出
             break;
         }

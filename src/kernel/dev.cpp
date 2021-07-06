@@ -18,12 +18,3 @@ dev_t::dev_t(void) {
 dev_t::~dev_t(void) {
     return;
 }
-
-bool dev_t::match_drv(drv_t &_drv) {
-    if (_drv.name == drv_name) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
