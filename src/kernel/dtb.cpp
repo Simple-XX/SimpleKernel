@@ -23,6 +23,7 @@ dtb_prop_node_t::~dtb_prop_node_t(void) {
 // TODO: 父节点的属性需要拷贝给子节点
 void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
                                uint32_t _len) {
+    printf("1111111\n");
     // TODO: 只处理了标准属性
     // 根据字段设置
     if (_name == mystl::string(standard_props_t::COMPATIBLE)) {
@@ -48,7 +49,11 @@ void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
 #endif
     }
     if (_name == mystl::string(standard_props_t::ADDR_CELLS)) {
+        printf("2222\n");
         standard.addr_cells = be32toh(*_addr);
+#ifdef DEBUG
+        printf("standard.addr_cells: 0x%X\n", standard.addr_cells);
+#endif
     }
     if (_name == mystl::string(standard_props_t::SIZE_CELLS)) {
         standard.size_cells = be32toh(*_addr);
@@ -104,17 +109,8 @@ void dtb_prop_node_t::add_child(dtb_prop_node_t *_child) {
 
 void *dtb_addr;
 
-DTB::DTB(void) : addr(dtb_addr) {
-    fdt_header_t header = *((fdt_header_t *)addr);
-    // dtb 为大端，可能需要转换
-    assert(be32toh(header.version) == 0x11);
-    assert(header.magic == be32toh(FDT_MAGIC));
-    size         = be32toh(header.totalsize);
-    data_addr    = (ptrdiff_t)addr + be32toh(header.off_dt_struct);
-    data_size    = be32toh(header.size_dt_struct);
-    string_addr  = (ptrdiff_t)addr + be32toh(header.off_dt_strings);
-    string_size  = be32toh(header.size_dt_strings);
-    reserve_addr = (ptrdiff_t)addr + be32toh(header.off_mem_rsvmap);
+// reserve 区域初始化
+void DTB::reserve_init(void) {
     // 遍历保留区
     // devicetree-specification-v0.3.pdf#5.3.2
     fdt_reserve_entry_t *tmp1 = ((fdt_reserve_entry_t *)reserve_addr);
@@ -133,18 +129,16 @@ DTB::DTB(void) : addr(dtb_addr) {
         // 下一项
         tmp1 += 1;
     }
-
+}
+// data 区域初始化
+void DTB::data_init(void) {
     // 开始处理数据区
     uint32_t *       pos  = (uint32_t *)data_addr;
     uint32_t         tag  = be32toh(*pos);
     dtb_prop_node_t *node = nullptr;
-    while (tag != FDT_END) {
+    while (1) {
+        printf("tag: 0x%X\n", tag);
         switch (tag) {
-            // 直接跳过
-            case FDT_NOP: {
-                pos++;
-                break;
-            }
             // 新建节点
             case FDT_BEGIN_NODE: {
                 // 获取节点名
@@ -152,49 +146,74 @@ DTB::DTB(void) : addr(dtb_addr) {
                 printf("name: %s\n", name.c_str());
                 // 新建节点
                 node = new dtb_prop_node_t(name);
+                assert(node != nullptr);
                 nodes.push_back(node);
-                pos += COMMON::ALIGN(strlen((char *)(pos + 1)) + 1, 4) / 4;
+                // 跳过 tag
+                pos++;
+                // 跳过 name
+                pos += COMMON::ALIGN(strlen((char *)pos) + 1, 4) / 4;
+                break;
             }
             // 节点结束
             case FDT_END_NODE: {
                 node = nullptr;
+                // 跳过 tag
                 pos++;
                 break;
             }
             // 属性节点
             case FDT_PROP: {
-                assert(node == nullptr);
+                assert(node != nullptr);
                 fdt_property_t *prop = (fdt_property_t *)pos;
                 printf("prop: %s\n", get_string(be32toh(prop->nameoff)));
+                // node->add_prop(get_string(be32toh(prop->nameoff)),
+                // prop->data,
+                //    prop->len / 4);
                 // TODO: 将属性内存传递给处理函数
+                // 跳过 tag
                 pos++;
+                // 跳过 len
                 pos++;
+                // 跳过 nameoff
                 pos++;
-                // 加
+                // 跳过属性数据
                 pos += COMMON::ALIGN(be32toh(prop->len), 4) / 4;
                 break;
             }
-            // dtb 结束，不会进入这里
-            case FDT_END: {
-                assert(0);
+            // 直接跳过
+            case FDT_NOP: {
+                pos++;
                 break;
+            }
+            // dtb 结束，直接返回
+            case FDT_END: {
+                return;
             }
             // 不是以上类型则出错
             default: {
                 assert(0);
-                break;
+                return;
             }
         }
         // 更新 tag
         tag = be32toh(*pos);
     }
+    return;
+}
 
-    // 遍历数据区
-    // get_node((uint8_t *)data_addr);
-// #define DEBUG
-#ifdef DEBUG
-#undef DEBUG
-#endif
+DTB::DTB(void) : addr(dtb_addr) {
+    fdt_header_t header = *((fdt_header_t *)addr);
+    // dtb 为大端，可能需要转换
+    assert(be32toh(header.version) == 0x11);
+    assert(header.magic == be32toh(FDT_MAGIC));
+    size         = be32toh(header.totalsize);
+    data_addr    = (ptrdiff_t)addr + be32toh(header.off_dt_struct);
+    data_size    = be32toh(header.size_dt_struct);
+    string_addr  = (ptrdiff_t)addr + be32toh(header.off_dt_strings);
+    string_size  = be32toh(header.size_dt_strings);
+    reserve_addr = (ptrdiff_t)addr + be32toh(header.off_mem_rsvmap);
+    reserve_init();
+    data_init();
     printf("dtb init.\n");
     return;
 }

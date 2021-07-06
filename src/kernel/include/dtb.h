@@ -205,6 +205,11 @@ private:
     // 获取名称
     char *get_string(uint64_t _off);
 
+    // reserve 区域初始化
+    void reserve_init(void);
+    // data 区域初始化
+    void data_init(void);
+
 protected:
 public:
     DTB(void);
