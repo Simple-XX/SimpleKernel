@@ -39,30 +39,30 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 初始化 virtio 总线
     // 构造 resource
     // TODO: dtb 信息转为 resource_t
-    mystl::vector<resource_t *> res;
+    // mystl::vector<resource_t *> res;
     // 存放地址
-    resource_t *res1 = new resource_t;
+    // resource_t *res1 = new resource_t;
     // 存放中断
-    resource_t *res2 = new resource_t;
-    res1->mem.start  = (uint64_t)virtio_mmio.at(7)->standard.reg.at(0) << 32;
-    res1->mem.start += virtio_mmio.at(7)->standard.reg.at(1);
-    res1->mem.end = res1->mem.start +
-                    ((uint64_t)virtio_mmio.at(7)->standard.reg.at(2) << 32);
-    res1->mem.end += virtio_mmio.at(7)->standard.reg.at(3);
-    res1->type   = 0;
-    res2->irq_no = virtio_mmio.at(7)->interrupt_device.interrupts;
-    res2->type   = 1;
-    res.push_back(res1);
-    res.push_back(res2);
+    // resource_t *res2 = new resource_t;
+    // res1->mem.start  = (uint64_t)virtio_mmio.at(7)->standard.reg.at(0) << 32;
+    // res1->mem.start += virtio_mmio.at(7)->standard.reg.at(1);
+    // res1->mem.end = res1->mem.start +
+    //                 ((uint64_t)virtio_mmio.at(7)->standard.reg.at(2) << 32);
+    // res1->mem.end += virtio_mmio.at(7)->standard.reg.at(3);
+    // res1->type   = 0;
+    // res2->irq_no = virtio_mmio.at(7)->interrupt_device.interrupts;
+    // res2->type   = 1;
+    // res.push_back(res1);
+    // res.push_back(res2);
     // 初始化 virtio_bus
-    virtio_bus_t *virtio_bus = new virtio_bus_t(res);
+    // virtio_bus_t *virtio_bus = new virtio_bus_t(res);
     // 添加到设备链表中
-    add_dev(*(dev_t *)virtio_bus);
+    // add_dev(*(dev_t *)virtio_bus);
     // 添加 virtio_bus 驱动
-    virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
-    add_drv(*(virtio_bus_drv_t *)virtio_bus_drv);
+    // virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
+    // add_drv(*(virtio_bus_drv_t *)virtio_bus_drv);
     // 初始化
-    init(*(dev_t *)virtio_bus);
+    // init(*(dev_t *)virtio_bus);
     // virtio 设备
     // VIRTIO virtio = VIRTIO(virtio_mmio);
     // 初始化 virtio
