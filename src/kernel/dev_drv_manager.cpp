@@ -35,23 +35,16 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 根据 dtb 获取硬件信息
     DTB dtb = DTB();
     // 获取 virtio 设备信息
-    auto virtio_mmio_resources = dtb.find("virtio,mmio");
-    // 初始化 virtio 总线
-    // 构造 resource
-    // for (auto i : virtio_mmio_resources) {
-    //     for (auto j : i) {
-    //         printf("resource name : %s\n", j->name);
-    //     }
-    // }
+    auto virtio_mmio_resources = dtb.find("virtio_mmio@10001000");
     // 初始化 virtio_bus
-    // virtio_bus_t *virtio_bus = new virtio_bus_t(res);
+    virtio_bus_t *virtio_bus = new virtio_bus_t(virtio_mmio_resources);
     // 添加到设备链表中
-    // add_dev(*(dev_t *)virtio_bus);
+    add_dev(*(dev_t *)virtio_bus);
     // 添加 virtio_bus 驱动
-    // virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
-    // add_drv(*(virtio_bus_drv_t *)virtio_bus_drv);
+    virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
+    add_drv(*(virtio_bus_drv_t *)virtio_bus_drv);
     // 初始化
-    // init(*(dev_t *)virtio_bus);
+    init(*(dev_t *)virtio_bus);
     // virtio 设备
     // VIRTIO virtio = VIRTIO(virtio_mmio);
     // 初始化 virtio

@@ -134,7 +134,7 @@ void DTB::data_init(void) {
     uint32_t         tag  = be32toh(*pos);
     dtb_prop_node_t *node = nullptr;
     while (1) {
-        printf("tag: 0x%X\n", tag);
+        // printf("tag: 0x%X\n", tag);
         // BUG: 无法获取根节点 name  “/”
         switch (tag) {
             // 新建节点
@@ -220,16 +220,13 @@ char *DTB::get_string(uint64_t _off) {
     return (char *)string_addr + _off;
 }
 
-const mystl::vector<mystl::vector<resource_t *>>
-DTB::find(mystl::string _name) {
-    // BUG: 存在内存泄漏
-    mystl::vector<mystl::vector<resource_t *>> res;
-    resource_t *                               tmp = nullptr;
-    mystl::vector<resource_t *> *tmp2 = new mystl::vector<resource_t *>();
+const mystl::vector<resource_t *> DTB::find(mystl::string _name) {
+    mystl::vector<resource_t *> res;
+    resource_t *                tmp = nullptr;
     // 遍历所有节点
     for (auto i : nodes) {
         // 找到属性中 kv 为 compatible:_name 的节点
-        if (i->standard.compatible == _name) {
+        if (i->name == _name) {
             // TODO: 这里可以优化
             // 根据 prop 分别设置
             // 中断
@@ -242,7 +239,7 @@ DTB::find(mystl::string _name) {
                 tmp->irq_no = i->interrupt_device.interrupts;
                 // 加入向量
                 // BUG: 会造成 data_init 执行出错
-                // tmp2->push_back(tmp);
+                res.push_back(tmp);
             }
             // 内存
             // TODO: 这里简单的根据 reg 长度是否为零进行判断，需要优化
@@ -260,12 +257,9 @@ DTB::find(mystl::string _name) {
                     (void *)(((uint64_t)i->standard.reg.at(2) << 32) +
                              i->standard.reg.at(3));
                 // 加入向量
-                // BUG: 会造成 data_init 执行出错
-                // tmp2->push_back(tmp);
+                res.push_back(tmp);
             }
         }
-        // 添加到返回变量中
-        res.push_back(*tmp2);
     }
     return res;
 }
