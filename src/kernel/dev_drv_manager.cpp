@@ -38,11 +38,11 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     auto virtio_mmio_resources = dtb.find("virtio,mmio");
     // 初始化 virtio 总线
     // 构造 resource
-    for (auto i : virtio_mmio_resources) {
-        for (auto j : i) {
-            printf("resource name : %s\n", j->name);
-        }
-    }
+    // for (auto i : virtio_mmio_resources) {
+    //     for (auto j : i) {
+    //         printf("resource name : %s\n", j->name);
+    //     }
+    // }
     // 初始化 virtio_bus
     // virtio_bus_t *virtio_bus = new virtio_bus_t(res);
     // 添加到设备链表中

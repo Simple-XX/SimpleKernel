@@ -135,14 +135,12 @@ void DTB::data_init(void) {
     dtb_prop_node_t *node = nullptr;
     while (1) {
         printf("tag: 0x%X\n", tag);
-        printf("pos: 0x%X\n", pos);
         // BUG: 无法获取根节点 name  “/”
         switch (tag) {
             // 新建节点
             case FDT_BEGIN_NODE: {
                 // 新建节点
                 mystl::string name((char *)(pos + 1));
-                // BUG: new 正常返回，但是 node 无法获取值
                 node = new dtb_prop_node_t(name);
                 assert(node != nullptr);
                 nodes.push_back(node);
@@ -224,9 +222,10 @@ char *DTB::get_string(uint64_t _off) {
 
 const mystl::vector<mystl::vector<resource_t *>>
 DTB::find(mystl::string _name) {
+    // BUG: 存在内存泄漏
     mystl::vector<mystl::vector<resource_t *>> res;
     resource_t *                               tmp = nullptr;
-    mystl::vector<resource_t *> *tmp2 = new mystl::vector<resource_t *>;
+    mystl::vector<resource_t *> *tmp2 = new mystl::vector<resource_t *>();
     // 遍历所有节点
     for (auto i : nodes) {
         // 找到属性中 kv 为 compatible:_name 的节点
@@ -236,13 +235,14 @@ DTB::find(mystl::string _name) {
             // 中断
             // TODO: 这里简单的根据中断号是否为零来判断，需要优化
             if (i->interrupt_device.interrupts != 0x00) {
-                tmp = new resource_t;
+                tmp = new resource_t();
                 // 填充字段
                 tmp->type   = resource_t::INTR;
                 tmp->name   = "INTR";
                 tmp->irq_no = i->interrupt_device.interrupts;
                 // 加入向量
-                tmp2->push_back(tmp);
+                // BUG: 会造成 data_init 执行出错
+                // tmp2->push_back(tmp);
             }
             // 内存
             // TODO: 这里简单的根据 reg 长度是否为零进行判断，需要优化
@@ -260,7 +260,8 @@ DTB::find(mystl::string _name) {
                     (void *)(((uint64_t)i->standard.reg.at(2) << 32) +
                              i->standard.reg.at(3));
                 // 加入向量
-                tmp2->push_back(tmp);
+                // BUG: 会造成 data_init 执行出错
+                // tmp2->push_back(tmp);
             }
         }
         // 添加到返回变量中
