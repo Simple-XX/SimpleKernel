@@ -13,7 +13,7 @@
 #include "vmm.h"
 #include "heap.h"
 #include "intr.h"
-#include "dev.h"
+#include "dev_drv_manager.h"
 #include "cpu.hpp"
 #include "kernel.h"
 #include "string"
@@ -40,7 +40,7 @@ void kernel_main(void) {
     INTR::init();
     CPU::ENABLE_INTR();
     // 初始化设备
-    DEV dev = DEV();
+    DEV_DRV_MANAGER manage = DEV_DRV_MANAGER();
 
     show_info();
 
