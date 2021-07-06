@@ -76,8 +76,6 @@ public:
     virtual ~virtio_mmio_dev_t(void);
     // 设备是否有效
     virtual bool is_valid(void);
-    // 设备类型
-    virtual bool type(void);
     // 读写操作
     virtual void read(void);
     virtual void write(void);
