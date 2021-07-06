@@ -12,7 +12,7 @@
 #include "iostream"
 #include "common.h"
 
-dtb_prop_node_t::dtb_prop_node_t(mystl::string &_name) : name(_name) {
+dtb_prop_node_t::dtb_prop_node_t(const mystl::string &_name) : name(_name) {
     return;
 }
 
@@ -135,13 +135,14 @@ void DTB::data_init(void) {
     dtb_prop_node_t *node = nullptr;
     while (1) {
         printf("tag: 0x%X\n", tag);
+        printf("pos: 0x%X\n", pos);
+        // BUG: 无法获取根节点 name  “/”
         switch (tag) {
             // 新建节点
             case FDT_BEGIN_NODE: {
-                // 获取节点名
-                mystl::string name = (char *)(pos + 1);
-                printf("name: %s\n", name.c_str());
                 // 新建节点
+                mystl::string name((char *)(pos + 1));
+                // BUG: new 正常返回，但是 node 无法获取值
                 node = new dtb_prop_node_t(name);
                 assert(node != nullptr);
                 nodes.push_back(node);
@@ -162,7 +163,6 @@ void DTB::data_init(void) {
             case FDT_PROP: {
                 assert(node != nullptr);
                 fdt_property_t *prop = (fdt_property_t *)pos;
-                printf("prop: %s\n", get_string(be32toh(prop->nameoff)));
                 node->add_prop(get_string(be32toh(prop->nameoff)), prop->data,
                                be32toh(prop->len) / 4);
                 // TODO: 将属性内存传递给处理函数
@@ -222,15 +222,49 @@ char *DTB::get_string(uint64_t _off) {
     return (char *)string_addr + _off;
 }
 
-const mystl::vector<dtb_prop_node_t *> DTB::find(mystl::string _name) {
-    mystl::vector<dtb_prop_node_t *> res;
+const mystl::vector<mystl::vector<resource_t *>>
+DTB::find(mystl::string _name) {
+    mystl::vector<mystl::vector<resource_t *>> res;
+    resource_t *                               tmp = nullptr;
+    mystl::vector<resource_t *> *tmp2 = new mystl::vector<resource_t *>;
     // 遍历所有节点
     for (auto i : nodes) {
         // 找到属性中 kv 为 compatible:_name 的节点
         if (i->standard.compatible == _name) {
-            // 添加到返回向量中
-            res.push_back(i);
+            // TODO: 这里可以优化
+            // 根据 prop 分别设置
+            // 中断
+            // TODO: 这里简单的根据中断号是否为零来判断，需要优化
+            if (i->interrupt_device.interrupts != 0x00) {
+                tmp = new resource_t;
+                // 填充字段
+                tmp->type   = resource_t::INTR;
+                tmp->name   = "INTR";
+                tmp->irq_no = i->interrupt_device.interrupts;
+                // 加入向量
+                tmp2->push_back(tmp);
+            }
+            // 内存
+            // TODO: 这里简单的根据 reg 长度是否为零进行判断，需要优化
+            if (i->standard.reg.size() != 0) {
+                // 新建 resource_t 对象
+                tmp = new resource_t;
+                // 填充字段
+                tmp->type = resource_t::MEMORY;
+                tmp->name = "MEMORY";
+                // TODO: 这里需要根据 addr_cells 与 size_cells 计算
+                tmp->mem.start =
+                    (void *)(((uint64_t)i->standard.reg.at(0) << 32) +
+                             i->standard.reg.at(1));
+                tmp->mem.end =
+                    (void *)(((uint64_t)i->standard.reg.at(2) << 32) +
+                             i->standard.reg.at(3));
+                // 加入向量
+                tmp2->push_back(tmp);
+            }
         }
+        // 添加到返回变量中
+        res.push_back(*tmp2);
     }
     return res;
 }
