@@ -204,11 +204,6 @@ private:
     mystl::vector<dtb_prop_node_t *> nodes;
     // 获取名称
     char *get_string(uint64_t _off);
-    // 递归遍历所有 node
-    // 返回新的位置和子节点
-    mystl::pair<dtb_prop_node_t *, uint8_t *> get_node(uint8_t *_pos);
-
-    void tmp(void);
 
 protected:
 public:

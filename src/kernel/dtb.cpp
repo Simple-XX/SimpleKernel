@@ -23,7 +23,6 @@ dtb_prop_node_t::~dtb_prop_node_t(void) {
 // TODO: 父节点的属性需要拷贝给子节点
 void dtb_prop_node_t::add_prop(mystl::string _name, uint32_t *_addr,
                                uint32_t _len) {
-
     // TODO: 只处理了标准属性
     // 根据字段设置
     if (_name == mystl::string(standard_props_t::COMPATIBLE)) {
@@ -134,8 +133,64 @@ DTB::DTB(void) : addr(dtb_addr) {
         // 下一项
         tmp1 += 1;
     }
+
+    // 开始处理数据区
+    uint32_t *       pos  = (uint32_t *)data_addr;
+    uint32_t         tag  = be32toh(*pos);
+    dtb_prop_node_t *node = nullptr;
+    while (tag != FDT_END) {
+        switch (tag) {
+            // 直接跳过
+            case FDT_NOP: {
+                pos++;
+                break;
+            }
+            // 新建节点
+            case FDT_BEGIN_NODE: {
+                // 获取节点名
+                mystl::string name = (char *)(pos + 1);
+                printf("name: %s\n", name.c_str());
+                // 新建节点
+                node = new dtb_prop_node_t(name);
+                nodes.push_back(node);
+                pos += COMMON::ALIGN(strlen((char *)(pos + 1)) + 1, 4) / 4;
+            }
+            // 节点结束
+            case FDT_END_NODE: {
+                node = nullptr;
+                pos++;
+                break;
+            }
+            // 属性节点
+            case FDT_PROP: {
+                assert(node == nullptr);
+                fdt_property_t *prop = (fdt_property_t *)pos;
+                printf("prop: %s\n", get_string(be32toh(prop->nameoff)));
+                // TODO: 将属性内存传递给处理函数
+                pos++;
+                pos++;
+                pos++;
+                // 加
+                pos += COMMON::ALIGN(be32toh(prop->len), 4) / 4;
+                break;
+            }
+            // dtb 结束，不会进入这里
+            case FDT_END: {
+                assert(0);
+                break;
+            }
+            // 不是以上类型则出错
+            default: {
+                assert(0);
+                break;
+            }
+        }
+        // 更新 tag
+        tag = be32toh(*pos);
+    }
+
     // 遍历数据区
-    get_node((uint8_t *)data_addr);
+    // get_node((uint8_t *)data_addr);
 // #define DEBUG
 #ifdef DEBUG
 #undef DEBUG
@@ -150,95 +205,6 @@ DTB::~DTB(void) {
 
 char *DTB::get_string(uint64_t _off) {
     return (char *)string_addr + _off;
-}
-
-// 处理节点
-void DTB::tmp(void) {
-    return;
-}
-
-// TODO: 子节点处理
-mystl::pair<dtb_prop_node_t *, uint8_t *> DTB::get_node(uint8_t *_pos) {
-    printf("111\n");
-    uint32_t tag = be32toh(*(uint32_t *)_pos);
-    // 新的递归必然从 FDT_BEGIN_NODE 开始
-    assert(tag == FDT_BEGIN_NODE);
-    // 获取 node name
-    node_begin_t *node_begin = (node_begin_t *)_pos;
-    mystl::string name       = (char *)node_begin->name;
-    // 如果字段为空
-    if (node_begin->name[0] == 0) {
-        // 跳过 tag
-        _pos += 4;
-        // 跳过 name 区域
-        // 因为为空所以跳过 4bytes 即可
-        _pos += 4;
-    }
-    // 不为空的话需要进行计算
-    else {
-        // 跳过 tag
-        _pos += 4;
-        // 跳过 name 区域
-        // 长度为 name 长度 4bytes 对齐
-        _pos += COMMON::ALIGN(strlen((char *)node_begin->name) + 1, 4);
-    }
-    // 新建节点
-    dtb_prop_node_t *node = new dtb_prop_node_t(name);
-    // 处理属性
-    tag = be32toh(*(uint32_t *)_pos);
-    // 当 tag 表示当前为属性时
-    while (tag == FDT_PROP) {
-        // 开始处理
-        fdt_property_t *prop = (fdt_property_t *)_pos;
-// #define DEBUG
-#ifdef DEBUG
-        printf("FDT_PROP, len: 0x%X, name: %s, value: ", be32toh(prop->len),
-               get_string(be32toh(prop->nameoff)));
-        for (uint32_t i = 0; i < be32toh(prop->len); i++) {
-            printf("0x%X ", prop->data[i]);
-        }
-        printf("\n");
-#undef DEBUG
-#endif
-        // 添加节点属性
-        // 以 4bytes 为单位，所以要 /4
-        node->add_prop(get_string(be32toh(prop->nameoff)), prop->data,
-                       be32toh(prop->len) / 4);
-        // 移动 pos
-        // 跳过 fdt_property_t.tag
-        _pos += 4;
-        // 跳过 fdt_property_t.len
-        _pos += 4;
-        // 跳过 fdt_property_t.nameoff
-        _pos += 4;
-        // 跳过 fdt_property_t.data
-        _pos += be32toh(prop->len);
-        // 计算下一个 _pos
-        uint64_t tmp = (uint64_t)_pos;
-        // 对齐
-        tmp  = COMMON::ALIGN(tmp, 4);
-        _pos = (uint8_t *)tmp;
-        // 更新 tag
-        tag = be32toh(*(uint32_t *)_pos);
-    }
-
-    // 所有属性处理完毕后开始处理子节点
-    while (tag == FDT_BEGIN_NODE) {
-        // 进入子节点的递归处理
-        auto c = get_node(_pos);
-        // 将子节点 c.first 添加到当前节点的 children 向量中
-        node->add_child(c.first);
-        // 更新 _pos
-        _pos = c.second;
-        // 更新 tag
-        tag = be32toh(*(uint32_t *)_pos);
-    }
-    // 跳过 ?
-    _pos += 4;
-    // 将当前节点添加到 nodes 向量中
-    nodes.push_back(node);
-    // 返回当前处理的 node 和所在 _pos
-    return mystl::pair<dtb_prop_node_t *, uint8_t *>(node, _pos);
 }
 
 const mystl::vector<dtb_prop_node_t *> DTB::find(mystl::string _name) {
