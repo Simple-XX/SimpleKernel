@@ -10,19 +10,12 @@
 #include "stdint.h"
 #include "vector"
 #include "string"
-#include "blk_dev.h"
-#include "char_dev.h"
 #include "dev.h"
 #include "drv.h"
 
 // 设备与驱动管理
 class DEV_DRV_MANAGER {
 private:
-    // 块设备列表
-    mystl::vector<blk_device_t *> blk_devs;
-    // 字符设备列表
-    mystl::vector<char_device_t *> char_devs;
-
     // 设备列表
     mystl::vector<dev_t *> devs;
     // 驱动列表
