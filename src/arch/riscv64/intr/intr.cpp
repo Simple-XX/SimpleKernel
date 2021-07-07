@@ -41,7 +41,7 @@ namespace INTR {
 #endif
         if (scause & CPU::CAUSE_INTR_MASK) {
 // 中断
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
             printf("intr: %s\n",
                    CLINT::intr_names[scause & CPU::CAUSE_CODE_MASK]);

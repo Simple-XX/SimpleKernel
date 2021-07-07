@@ -74,10 +74,11 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
 elif [ ${ARCH} == "arm" ]; then
     qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
 elif [ ${ARCH} == "riscv64" ]; then
-    qemu-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel} \
+    qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
     -global virtio-mmio.force-legacy=false \
     -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=fatfs \
     -drive file=mydisk,format=raw,id=fatfs \
     -device virtio-scsi-device,bus=virtio-mmio-bus.1,id=scsi \
-    -drive file=fatfs.dmg,format=raw,id=scsi
+    -drive file=fatfs.dmg,format=raw,id=scsi \
+    -monitor telnet::2333,server,nowait -serial stdio -nographic
 fi
