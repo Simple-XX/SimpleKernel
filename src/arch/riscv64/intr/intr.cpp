@@ -26,29 +26,22 @@ namespace INTR {
         return;
     }
 
-    void trap_handler(void) {
-        // 中断原因
-        uint64_t scause = CPU::READ_SCAUSE();
+    void trap_handler(uint64_t _scause, uint64_t _sepc) {
 // #define DEBUG
 #ifdef DEBUG
-        // 异常返回值
-        uint64_t sepc = CPU::READ_SEPC();
-        // 中断具体信息
-        uint64_t sstatus = CPU::READ_SSTATUS();
-        printf("scause: 0x%X, sepc: 0x%X, sstatus: 0x%X\n", scause, sepc,
-               sstatus);
+        printf("scause: 0x%X, sepc: 0x%X\n", _scause, _sepc);
 #undef DEBUG
 #endif
-        if (scause & CPU::CAUSE_INTR_MASK) {
+        if (_scause & CPU::CAUSE_INTR_MASK) {
 // 中断
 // #define DEBUG
 #ifdef DEBUG
             printf("intr: %s\n",
-                   CLINT::intr_names[scause & CPU::CAUSE_CODE_MASK]);
+                   CLINT::intr_names[_scause & CPU::CAUSE_CODE_MASK]);
 #undef DEBUG
 #endif
             // 跳转到对应的处理函数
-            CLINT::do_interrupt(scause & CPU::CAUSE_CODE_MASK);
+            CLINT::do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
         }
         else {
 // 异常
@@ -56,10 +49,10 @@ namespace INTR {
 // #define DEBUG
 #ifdef DEBUG
             printf("excp: %s\n",
-                   CLINT::excp_names[scause & CPU::CAUSE_CODE_MASK]);
+                   CLINT::excp_names[_scause & CPU::CAUSE_CODE_MASK]);
 #undef DEBUG
 #endif
-            CLINT::do_excp(scause & CPU::CAUSE_CODE_MASK);
+            CLINT::do_excp(_scause & CPU::CAUSE_CODE_MASK);
         }
         return;
     }
