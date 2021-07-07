@@ -62,6 +62,7 @@ int32_t VMM::init(void) {
         mmap(pgd_kernel, (void *)addr, (void *)addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
+
     set_pgd(pgd_kernel);
     CPU::ENABLE_PG();
     printf("vmm_init.\n");

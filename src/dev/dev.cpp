@@ -5,13 +5,8 @@
 // dev.cpp for Simple-XX/SimpleKernel.
 
 #include "dev.h"
-#include "virtio_blk.h"
-#include "virtio_scsi.h"
-#include "dtb.h"
-#include "string.h"
-#include "intr.h"
 
-dev_t::dev_t(void) {
+dev_t::dev_t(const mystl::vector<resource_t *> &_res) : res(_res) {
     return;
 }
 

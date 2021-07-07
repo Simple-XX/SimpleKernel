@@ -134,7 +134,7 @@ void DTB::data_init(void) {
     uint32_t         tag  = be32toh(*pos);
     dtb_prop_node_t *node = nullptr;
     while (1) {
-        // printf("tag: 0x%X\n", tag);
+        printf("tag: 0x%X\n", tag);
         // BUG: 无法获取根节点 name  “/”
         switch (tag) {
             // 新建节点
