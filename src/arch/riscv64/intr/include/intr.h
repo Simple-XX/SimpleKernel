@@ -12,9 +12,10 @@
 
 namespace INTR {
     typedef void (*interrupt_handler_t)(void);
-    int32_t         init(void);
-    void            handler_default(void);
-    extern "C" void trap_handler(void);
+    int32_t init(void);
+    void    handler_default(void);
+    // 栈，中断原因，中断返回值
+    extern "C" void trap_handler(uint64_t _scause, uint64_t _spec);
 };
 
 // core-local interrupt controller
