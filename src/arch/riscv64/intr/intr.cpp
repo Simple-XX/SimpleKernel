@@ -41,7 +41,7 @@ namespace INTR {
 #endif
         if (scause & CPU::CAUSE_INTR_MASK) {
 // 中断
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
             printf("intr: %s\n",
                    CLINT::intr_names[scause & CPU::CAUSE_CODE_MASK]);
@@ -53,7 +53,7 @@ namespace INTR {
         else {
 // 异常
 // 跳转到对应的处理函数
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
             printf("excp: %s\n",
                    CLINT::excp_names[scause & CPU::CAUSE_CODE_MASK]);

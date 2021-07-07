@@ -16,6 +16,11 @@
 
 struct virtio_bus_drv_t : drv_t {
 private:
+    // 总线上的设备
+    mystl::vector<virtio_dev_t *> devs;
+    // 设备对应的资源
+    mystl::vector<resource_t *> res;
+
 protected:
 public:
     // TODO: 填充内容

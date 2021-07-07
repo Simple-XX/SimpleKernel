@@ -6,7 +6,7 @@
 
 #include "bus.h"
 
-bus_t::bus_t(void) {
+bus_t::bus_t(const mystl::vector<resource_t *> &_res) : dev_t(_res) {
     return;
 }
 
