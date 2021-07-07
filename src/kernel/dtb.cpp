@@ -141,6 +141,7 @@ void DTB::data_init(void) {
             case FDT_BEGIN_NODE: {
                 // 新建节点
                 mystl::string name((char *)(pos + 1));
+                printf("pos: 0x%X\n", pos);
                 node = new dtb_prop_node_t(name);
                 assert(node != nullptr);
                 nodes.push_back(node);

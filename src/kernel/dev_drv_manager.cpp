@@ -33,7 +33,7 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 根据 dtb 获取硬件信息
     DTB dtb = DTB();
     // 获取 virtio 设备信息
-    // auto virtio_mmio_resources = dtb.find("virtio_mmio@10001000");
+    auto virtio_mmio_resources = dtb.find("virtio_mmio@10001000");
     // 初始化 virtio_bus
     // virtio_bus_t *virtio_bus = new virtio_bus_t(virtio_mmio_resources);
     // 添加到设备链表中
@@ -63,7 +63,7 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // for (int i = 0; i < 512; i++) {
     //     printf("buf: %X\n", ((char *)buf)[i]);
     // }
-
+    printf("device and driver manager init.\n");
     return;
 }
 
