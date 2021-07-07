@@ -49,7 +49,7 @@ namespace COMMON {
 #elif defined(__riscv)
     // 物理内存大小 128MB
     // TODO: 由引导程序传递
-    static constexpr const uint64_t PMM_MAX_SIZE = 0x8000000;
+    static constexpr const uint64_t PMM_SIZE = 0x8000000;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 这部分内存是内核保留的
     // 8MB
@@ -59,8 +59,7 @@ namespace COMMON {
 #endif
 
     // 物理页数量
-    static constexpr const uint64_t PMM_PAGE_MAX_SIZE =
-        PMM_MAX_SIZE / PAGE_SIZE;
+    static constexpr const uint64_t PMM_PAGE_SIZE = PMM_SIZE / PAGE_SIZE;
 
     // 映射内核需要的页数
     static constexpr const uint64_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;

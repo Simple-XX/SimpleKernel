@@ -8,6 +8,7 @@
 #define _FIRTSTFIT_H_
 
 #include "stdint.h"
+#include "allocator.h"
 
 // TODO: 面向对象重构
 class ff_list_entry_t {
@@ -24,33 +25,19 @@ public:
     ff_list_entry_t *prev;
 };
 
-class FIRSTFIT {
+// 使用 first fit 算法的分配器
+class FIRSTFIT : ALLOCATOR {
 private:
-    // 当前管理的页数
-    uint32_t page_count;
-    // 空闲页数
-    uint32_t page_free_count;
-    // 空闲链表的节点数量
-    uint32_t                  node_num;
-    COMMON::physical_pages_t *phy_pages;
-    // 管理所有内存页需要的空间，供管理结构使用
-    // 最坏情况下，每个物理页都是独立的，所以分配与页数量对应的空间
-    // TODO: 优化空间
-    ff_list_entry_t list[COMMON::PMM_PAGE_MAX_SIZE];
-    void set_chunk(ff_list_entry_t &chunk, COMMON::physical_pages_t &mempage);
-
 protected:
 public:
-    FIRSTFIT(COMMON::physical_pages_t *_phy_pages);
+    FIRSTFIT(const void *_addr, size_t _len);
     ~FIRSTFIT(void);
-    // 初始化
-    int32_t init(uint32_t pages, const char *_name);
-    // 按页分配
-    void *alloc(size_t pages);
-    // 按页释放
-    void free(void *addr, size_t pages);
-    // 空闲页数量
-    size_t free_pages_count(void);
+    bool   init(void);
+    void * alloc(void);
+    bool   alloc(void *_addr);
+    void   free(void *_addr);
+    size_t get_used_pages_count(void) const;
+    size_t get_free_pages_count(void) const;
 };
 
 #endif /* _FIRTSTFIT_H_ */
