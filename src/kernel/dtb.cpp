@@ -104,7 +104,7 @@ void dtb_prop_node_t::add_child(dtb_prop_node_t *_child) {
     return;
 }
 
-void *dtb_addr;
+static void *dtb_addr;
 
 // reserve 区域初始化
 void DTB::reserve_init(void) {
@@ -140,9 +140,7 @@ void DTB::data_init(void) {
             // 新建节点
             case FDT_BEGIN_NODE: {
                 // 新建节点
-                mystl::string name((char *)(pos + 1));
-                printf("pos: 0x%X\n", pos);
-                node = new dtb_prop_node_t(name);
+                node = new dtb_prop_node_t((char *)(pos + 1));
                 assert(node != nullptr);
                 nodes.push_back(node);
                 // 跳过 tag
