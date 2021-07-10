@@ -120,6 +120,7 @@ static constexpr uint32_t GET_PGD(uint32_t addr) {
 // 页目录，最高级
 static pgd_t pgd_kernel[VMM_PAGES_PRE_PAGE_TABLE]
     __attribute__((aligned(COMMON::PAGE_SIZE)));
+pgd_t VMM::curr_dir;
 
 VMM::VMM(void) {
     curr_dir = (pgd_t)CPU::READ_CR3();
@@ -130,7 +131,7 @@ VMM::~VMM(void) {
     return;
 }
 
-int32_t VMM::init(void) {
+bool VMM::init(void) {
     // 映射物理地址前 32MB 到虚拟地址前 32MB
     for (uint32_t addr = (uint32_t)COMMON::KERNEL_START_ADDR;
          addr < (uint32_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SIZE;
@@ -146,7 +147,7 @@ int32_t VMM::init(void) {
     return 0;
 }
 
-pgd_t VMM::get_pgd(void) const {
+pgd_t VMM::get_pgd(void) {
     return curr_dir;
 }
 
@@ -196,7 +197,7 @@ void VMM::unmmap(const pgd_t pgd, const void *va) {
     CPU::INVLPG(va);
 }
 
-uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
+bool VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
     uint32_t pgd_idx = GET_PGD(reinterpret_cast<uint32_t>(va));
     uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
     pud_t    pud     = (pud_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
@@ -220,5 +221,3 @@ uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
         return 0;
     }
 }
-
-VMM vmm;
