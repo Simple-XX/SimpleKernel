@@ -9,9 +9,11 @@
 #include "common.h"
 #include "heap.h"
 
-SLAB HEAP::manage;
+ALLOCATOR *HEAP::allocator = nullptr;
 
-HEAP::HEAP(void) : name("SLAB") {
+HEAP::HEAP(void) {
+    static SLAB slab_allocator(start, length);
+    allocator = (ALLOCATOR *)&slab_allocator;
     return;
 }
 
@@ -19,15 +21,8 @@ HEAP::~HEAP(void) {
     return;
 }
 
-int32_t HEAP::init(void) {
-    manage_init();
+bool HEAP::init(void) {
     printf("heap_init\n");
-    return 0;
-}
-
-int32_t HEAP::manage_init(void) {
-    manage.init(COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB),
-                HEAP_SIZE);
     return 0;
 }
 
@@ -59,30 +54,6 @@ extern "C" void *malloc(size_t size) {
 extern "C" void free(void *ptr) {
     heap.free(ptr);
     return;
-}
-
-void *operator new(size_t size) {
-    return malloc(size);
-}
-
-void *operator new[](size_t size) {
-    return malloc(size);
-}
-
-void operator delete(void *p) {
-    free(p);
-}
-
-void operator delete(void *p, size_t) {
-    free(p);
-}
-
-void operator delete[](void *p) {
-    free(p);
-}
-
-void operator delete[](void *p, size_t) {
-    free(p);
 }
 
 HEAP heap;
