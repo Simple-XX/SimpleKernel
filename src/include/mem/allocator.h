@@ -23,9 +23,9 @@ protected:
     // 当前管理的内存区域页数
     size_t pages_count;
     // 当前管理的内存区域空闲页数
-    size_t pages_free_count;
+    size_t free_pages_count;
     // 当前管理的内存区域已使用页数
-    size_t pages_used_count;
+    size_t used_pages_count;
 
 public:
     // _addr: 要管理的内存开始地址
