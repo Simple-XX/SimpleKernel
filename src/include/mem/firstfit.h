@@ -11,12 +11,6 @@
 #include "stddef.h"
 #include "allocator.h"
 
-// 物理内存的分配
-// 对于一段内存，需要以下信息进行管理
-// 1. 开始地址
-// 2. 长度，由于以页为最小单位，所以这个值是内存页数
-// 3. 引用数，即如果这段内存每被分配一次，值 +1
-
 // 使用 first fit 算法的分配器
 class FIRSTFIT : ALLOCATOR {
 private:
