@@ -21,39 +21,13 @@ private:
     // 位图，每一位表示一页内存，1 表示已使用，0 表示未使用
     uint64_t map[((COMMON::PMM_SIZE / COMMON::PAGE_SIZE) / BITS_PER_WORD)];
     // 置位 _idx
-    void set(uint64_t _idx) {
-        map[_idx >> SHIFT] |= (uint64_t)1 << (_idx & MASK);
-        return;
-    }
+    void set(uint64_t _idx);
     // 清零 _idx
-    void clr(uint64_t _idx) {
-        map[_idx >> SHIFT] &= ~((uint64_t)1 << (_idx & MASK));
-        return;
-    }
+    void clr(uint64_t _idx);
     // 测试 _idx
-    bool test(uint64_t _idx) {
-        return map[_idx >> SHIFT] & ((uint64_t)1 << (_idx & MASK));
-    }
-
+    bool test(uint64_t _idx);
     // 连续 _len 个 _val 位，返回开始索引
-    uint64_t find_len(uint64_t _len, bool _val) {
-        uint64_t count = 0;
-        uint64_t idx   = 0;
-        // 遍历位图
-        for (uint64_t i = 0; i < (COMMON::PMM_SIZE / COMMON::PAGE_SIZE); i++) {
-            if (test(i) != _val) {
-                count = 0;
-                idx   = i;
-            }
-            else {
-                count++;
-            }
-            if (count == _len) {
-                return idx;
-            }
-        }
-        return ~(uint64_t)0;
-    }
+    uint64_t find_len(uint64_t _len, bool _val);
 
 protected:
 public:
