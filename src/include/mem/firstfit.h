@@ -43,7 +43,7 @@ public:
     bool   init(void);
     void * alloc(size_t _len);
     bool   alloc(void *_addr, size_t _len);
-    void   free(void *_addr);
+    void   free(void *_addr, size_t _len);
     size_t get_used_pages_count(void) const;
     size_t get_free_pages_count(void) const;
 };
