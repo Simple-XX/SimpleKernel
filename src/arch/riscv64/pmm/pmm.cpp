@@ -7,7 +7,6 @@
 #include "string.h"
 #include "stdio.h"
 #include "common.h"
-#include "firstfit.h"
 #include "pmm.h"
 
 size_t     PMM::total_pages = 0;

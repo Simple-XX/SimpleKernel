@@ -39,7 +39,7 @@ namespace COMMON {
 #if defined(__i386__) || defined(__x86_64__)
     // 物理内存大小 2GB
     // TODO: 由引导程序传递
-    static constexpr const uint32_t PMM_MAX_SIZE = 0x80000000;
+    static constexpr const uint32_t PMM_SIZE = 0x80000000;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 这部分内存是内核保留的
     // 64MB
