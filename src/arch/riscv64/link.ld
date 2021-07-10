@@ -54,13 +54,6 @@ SECTIONS {
     }
     PROVIDE(kernel_bss_end = .);
 
-    /* 预留给物理内存管理信息的内存 8MB，注意如果内存也太多可能不够用，扩大即可 */
-    PROVIDE(pmm_info_start = .);
-    .pmm_info : ALIGN(4K){
-        . += 0x800000;
-    }
-    PROVIDE(pmm_info_end = .);
-
     PROVIDE(kernel_debug_start = .);
 	/* 调试信息 */
     .debug : ALIGN(4K) {
