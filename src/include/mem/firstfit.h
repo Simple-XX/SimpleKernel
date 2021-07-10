@@ -8,33 +8,41 @@
 #define _FIRTSTFIT_H_
 
 #include "stdint.h"
+#include "stddef.h"
 #include "allocator.h"
+#include "list.hpp"
 
-// TODO: 面向对象重构
-class ff_list_entry_t {
-public:
-    // 当前页的地址
-    uint8_t *addr;
-    // 拥有多少个连续的页
-    uint32_t npages;
-    // 物理页被引用的次数
-    int32_t ref;
-    // 当前页状态
-    uint32_t         flag;
-    ff_list_entry_t *next;
-    ff_list_entry_t *prev;
-};
+// 物理内存的分配
+// 对于一段内存，需要以下信息进行管理
+// 1. 开始地址
+// 2. 长度，由于以页为最小单位，所以这个值是内存页数
+// 3. 引用数，即如果这段内存每被分配一次，值 +1
 
 // 使用 first fit 算法的分配器
 class FIRSTFIT : ALLOCATOR {
 private:
+    // TODO: 面向对象重构
+    // 管理结构
+    struct ff_entry_t {
+        // 当前页的地址
+        void *addr;
+        // 拥有多少个连续的页
+        size_t npages;
+        // 物理页被引用的次数
+        ssize_t ref;
+    };
+    // 保存内存信息的链表指针
+    tmp_list_t<ff_entry_t> *list;
+    // 链表节点数
+    size_t list_len;
+
 protected:
 public:
     FIRSTFIT(const void *_addr, size_t _len);
     ~FIRSTFIT(void);
     bool   init(void);
-    void * alloc(void);
-    bool   alloc(void *_addr);
+    void * alloc(size_t _len);
+    bool   alloc(void *_addr, size_t _len);
     void   free(void *_addr);
     size_t get_used_pages_count(void) const;
     size_t get_free_pages_count(void) const;

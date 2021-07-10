@@ -13,6 +13,7 @@
 // 内存分配器抽象
 class ALLOCATOR {
 private:
+protected:
     // 分配器名称
     char *name;
     // 当前管理的内存区域地址
@@ -26,19 +27,16 @@ private:
     // 当前管理的内存区域已使用页数
     size_t pages_used_count;
 
-protected:
 public:
     // _addr: 要管理的内存开始地址
     // _len: 要管理的内存长度，以页为单位
     ALLOCATOR(const void *_addr, size_t _len);
     virtual ~ALLOCATOR(void) = 0;
-    // 初始化
-    virtual bool init(void) = 0;
-    // 分配一页
-    virtual void *alloc(void) = 0;
-    // 在指定地址分配一页
+    // 分配 _len 页
+    virtual void *alloc(size_t _len) = 0;
+    // 在指定地址分配 _len 页
     // 如果此地址已使用，函数返回 true
-    virtual bool alloc(void *_addr) = 0;
+    virtual bool alloc(void *_addr, size_t _len) = 0;
     // 释放一页
     virtual void free(void *_addr) = 0;
     // 已使用页数量

@@ -23,35 +23,3 @@ ALLOCATOR::ALLOCATOR(const void *_addr, size_t _len) {
 ALLOCATOR::~ALLOCATOR(void) {
     return;
 }
-
-bool ALLOCATOR::init(void) {
-    assert(0);
-    return false;
-}
-
-void *ALLOCATOR::alloc(void) {
-    assert(0);
-    return nullptr;
-}
-
-bool ALLOCATOR::alloc(void *_addr) {
-    (void)_addr;
-    assert(0);
-    return false;
-}
-
-void ALLOCATOR::free(void *_addr) {
-    (void)_addr;
-    assert(0);
-    return;
-}
-
-size_t ALLOCATOR::get_used_pages_count(void) const {
-    assert(0);
-    return 0;
-}
-
-size_t ALLOCATOR::get_free_pages_count(void) const {
-    assert(0);
-    return 0;
-}

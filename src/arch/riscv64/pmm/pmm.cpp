@@ -29,23 +29,28 @@ bool PMM::init(void) {
     // 分配器使用 fitst fit 分配器
     static FIRSTFIT first_fit_allocator(start, length);
     allocator = (ALLOCATOR *)&first_fit_allocator;
+    // 将内核已使用部分划分出来
+    // 内核实际占用页数
+    size_t kernel_pages =
+        ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
+         (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
+                                  COMMON::PAGE_SIZE)) /
+        COMMON::PAGE_SIZE;
+    alloc_pages(const_cast<void *>(COMMON::KERNEL_START_ADDR), kernel_pages);
     printf("pmm_init\n");
     return true;
 }
 
 const void *PMM::alloc_page(void) {
-    return 0;
+    return allocator->alloc(1);
 }
 
 const void *PMM::alloc_pages(size_t _len) {
-    (void)_len;
-    return 0;
+    return allocator->alloc(_len);
 }
 
 bool PMM::alloc_pages(void *_addr, size_t _len) {
-    (void)_addr;
-    (void)_len;
-    return true;
+    return allocator->alloc(_addr, _len);
 }
 
 void PMM::free_page(const void *_addr) {
