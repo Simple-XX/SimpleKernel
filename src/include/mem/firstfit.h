@@ -30,18 +30,12 @@ private:
         // 物理页是否被使用
         bool used;
         // 用于 tmp_list_t
-        bool operator==(ff_entry_t &_ff) {
-            if (addr == _ff.addr && npages == _ff.npages && used == _ff.used) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
+        bool operator==(const ff_entry_t &_ff);
     };
 
     // 保存内存信息的链表指针
     tmp_list_t<ff_entry_t> list;
+    ff_entry_t &           merge(ff_entry_t &_data1, ff_entry_t &_data2);
 
 protected:
 public:
