@@ -19,7 +19,7 @@
 // 内核入口
 void kernel_main(void) {
     // 物理内存初始化
-    pmm.init();
+    PMM::init();
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
