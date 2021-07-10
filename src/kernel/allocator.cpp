@@ -15,8 +15,8 @@ ALLOCATOR::ALLOCATOR(const void *_addr, size_t _len) {
     addr             = const_cast<void *>(_addr);
     length           = _len;
     pages_count      = length / COMMON::PAGE_SIZE;
-    pages_free_count = pages_count;
-    pages_used_count = 0;
+    free_pages_count = pages_count;
+    used_pages_count = 0;
     return;
 }
 

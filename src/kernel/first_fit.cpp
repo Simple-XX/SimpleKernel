@@ -57,6 +57,8 @@ void *FIRSTFIT::alloc(size_t _len) {
             // 要返回表项的数据进行更新
             list[i].npages = _len;
             list[i].ref    = 1;
+            free_pages_count -= _len;
+            used_pages_count += _len;
             // 返回
             return res_addr;
         }
@@ -75,11 +77,11 @@ void FIRSTFIT::free(void *_addr, size_t _len) {
 }
 
 size_t FIRSTFIT::get_used_pages_count(void) const {
-    return 0;
+    return used_pages_count;
 }
 
 size_t FIRSTFIT::get_free_pages_count(void) const {
-    return 0;
+    return free_pages_count;
 }
 
 // void FIRSTFIT::set_chunk(ff_list_entry_t &         chunk,
