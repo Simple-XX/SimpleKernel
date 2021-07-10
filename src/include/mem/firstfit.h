@@ -21,18 +21,17 @@
 // 使用 first fit 算法的分配器
 class FIRSTFIT : ALLOCATOR {
 private:
-    // TODO: 面向对象重构
     // 管理结构
     struct ff_entry_t {
         // 当前页的地址
         void *addr;
         // 拥有多少个连续的页
         size_t npages;
-        // 物理页被引用的次数
-        ssize_t ref;
+        // 物理页是否被使用
+        bool used;
         // 用于 tmp_list_t
         bool operator==(ff_entry_t &_ff) {
-            if (addr == _ff.addr && npages == _ff.npages && ref == _ff.ref) {
+            if (addr == _ff.addr && npages == _ff.npages && used == _ff.used) {
                 return true;
             }
             else {
