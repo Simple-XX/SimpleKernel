@@ -39,7 +39,7 @@ bool PMM::init(void) {
     length      = COMMON::PMM_SIZE;
     total_pages = length / COMMON::PAGE_SIZE;
     // 分配器使用 fitst fit 分配器
-    static FIRSTFIT first_fit_allocator(start, length);
+    static FIRSTFIT first_fit_allocator(start, total_pages);
     allocator = (ALLOCATOR *)&first_fit_allocator;
     // 将内核已使用部分划分出来
     // 内核实际占用页数
@@ -81,11 +81,11 @@ void PMM::free_pages(void *_addr, size_t _len) {
 }
 
 uint64_t PMM::get_used_pages_count(void) {
-    return allocator->get_used_pages_count();
+    return allocator->get_used_count();
 }
 
 uint64_t PMM::get_free_pages_count(void) {
-    return allocator->get_free_pages_count();
+    return allocator->get_free_count();
 }
 
 PMM pmm;
