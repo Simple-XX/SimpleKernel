@@ -11,6 +11,39 @@
 #include "stdio.h"
 #include "firstfit.h"
 
+void FIRSTFIT::set(uint64_t _idx) {
+    map[_idx >> SHIFT] |= (uint64_t)1 << (_idx & MASK);
+    return;
+}
+
+void FIRSTFIT::clr(uint64_t _idx) {
+    map[_idx >> SHIFT] &= ~((uint64_t)1 << (_idx & MASK));
+    return;
+}
+
+bool FIRSTFIT::test(uint64_t _idx) {
+    return map[_idx >> SHIFT] & ((uint64_t)1 << (_idx & MASK));
+}
+
+uint64_t FIRSTFIT::find_len(uint64_t _len, bool _val) {
+    uint64_t count = 0;
+    uint64_t idx   = 0;
+    // 遍历位图
+    for (uint64_t i = 0; i < (COMMON::PMM_SIZE / COMMON::PAGE_SIZE); i++) {
+        if (test(i) != _val) {
+            count = 0;
+            idx   = i;
+        }
+        else {
+            count++;
+        }
+        if (count == _len) {
+            return idx;
+        }
+    }
+    return ~(uint64_t)0;
+}
+
 FIRSTFIT::FIRSTFIT(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
     name = (char *)"PMM(First Fit) allocator";
     memset(map, 0, sizeof(map));
@@ -45,6 +78,9 @@ bool FIRSTFIT::alloc(void *_addr, size_t _len) {
         if (test(i) == true) {
             return false;
         }
+    }
+    for (auto i = idx; i < idx + _len; i++) {
+        set(i);
     }
     free_pages_count -= _len;
     used_pages_count += _len;
