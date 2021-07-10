@@ -36,9 +36,14 @@ bool PMM::init(void) {
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
                                   COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
-    alloc_pages(const_cast<void *>(COMMON::KERNEL_START_ADDR), kernel_pages);
-    printf("pmm_init\n");
-    return true;
+    if (alloc_pages(const_cast<void *>(COMMON::KERNEL_START_ADDR),
+                    kernel_pages) == true) {
+        printf("pmm_init\n");
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void *PMM::alloc_page(void) {
