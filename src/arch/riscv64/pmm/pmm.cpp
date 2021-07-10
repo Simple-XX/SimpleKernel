@@ -64,11 +64,11 @@ void PMM::free_pages(void *_addr, size_t _len) {
 }
 
 uint64_t PMM::get_used_pages_count(void) const {
-    return 0;
+    return allocator->get_used_pages_count();
 }
 
 uint64_t PMM::get_free_pages_count(void) const {
-    return 0;
+    return allocator->get_free_pages_count();
 }
 
 PMM pmm;
