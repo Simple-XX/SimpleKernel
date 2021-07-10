@@ -20,12 +20,12 @@
 // 内核入口
 void kernel_main(void) {
     // 物理内存初始化
-    pmm.init();
+    PMM::init();
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
     // TODO: 将vmm的初始化放在构造函数里，这里只做开启分页
-    vmm.init();
+    VMM::init();
     // 测试虚拟内存
     test_vmm();
     // 堆初始化

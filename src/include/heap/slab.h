@@ -9,6 +9,7 @@
 
 #include "stdint.h"
 #include "stddef.h"
+#include "allocator.h"
 
 // TODO: 面向对象重构
 class slab_list_entry_t {
@@ -21,17 +22,12 @@ public:
     slab_list_entry_t *prev;
 };
 
-class SLAB {
+class SLAB : ALLOCATOR {
 private:
     static constexpr const uint32_t SLAB_UNUSED = 0x00;
     static constexpr const uint32_t SLAB_USED   = 0x01;
     // 最小空间
     static constexpr const uint32_t SLAB_MIN = 0x100;
-
-    // 管理的内存起始地址，包括头的位置
-    void *addr_start;
-    // 管理内存结束地址
-    void *addr_end;
     // 堆管理的内存大小 单位为 bytes
     size_t heap_total;
     // 堆中 block 的数量
@@ -51,19 +47,20 @@ private:
 
 protected:
 public:
-    SLAB(void);
+    SLAB(const void *_addr, size_t _len);
     ~SLAB(void);
     int32_t init(const void *start, const size_t size);
-    // 内存申请，单位为 Byte
-    void *alloc(size_t byte);
-    // 内存释放
-    void free(void *p);
     // 获取管理的内存大小，包括管理信息
     size_t get_total(void);
     // 获取空闲内存数量 单位为 byte
     size_t get_free(void);
     // 获取块数量
     size_t get_block(void);
+    void * alloc(size_t _len);
+    bool   alloc(void *_addr, size_t _len);
+    void   free(void *_addr, size_t _len);
+    size_t get_used_pages_count(void) const;
+    size_t get_free_pages_count(void) const;
 };
 
 #endif /* _SLAB_H_ */
