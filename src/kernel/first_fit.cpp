@@ -67,8 +67,8 @@ void *FIRSTFIT::alloc(size_t _len) {
         set(i);
     }
     res_addr = (void *)((uint8_t *)addr + (COMMON::PAGE_SIZE * idx));
-    free_pages_count -= _len;
-    used_pages_count += _len;
+    free_count -= _len;
+    used_count += _len;
     return res_addr;
 }
 
@@ -82,8 +82,8 @@ bool FIRSTFIT::alloc(void *_addr, size_t _len) {
     for (auto i = idx; i < idx + _len; i++) {
         set(i);
     }
-    free_pages_count -= _len;
-    used_pages_count += _len;
+    free_count -= _len;
+    used_count += _len;
     return true;
 }
 
@@ -92,15 +92,15 @@ void FIRSTFIT::free(void *_addr, size_t _len) {
     for (auto i = idx; i < idx + _len; i++) {
         clr(i);
     }
-    free_pages_count += _len;
-    used_pages_count -= _len;
+    free_count += _len;
+    used_count -= _len;
     return;
 }
 
-size_t FIRSTFIT::get_used_pages_count(void) const {
-    return used_pages_count;
+size_t FIRSTFIT::get_used_count(void) const {
+    return used_count;
 }
 
-size_t FIRSTFIT::get_free_pages_count(void) const {
-    return free_pages_count;
+size_t FIRSTFIT::get_free_count(void) const {
+    return free_count;
 }
