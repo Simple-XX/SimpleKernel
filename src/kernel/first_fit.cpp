@@ -12,16 +12,14 @@
 #include "firstfit.h"
 #include "list.hpp"
 
-FIRSTFIT::FIRSTFIT(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
-    name = (char *)"PMM(First Fit) allocator";
-    // 管理结构初始化
-    list              = (tmp_list_t<ff_entry_t> *)COMMON::PMM_INFO_START;
-    list->data.addr   = addr;
-    list->data.npages = _len;
-    list->data.ref    = 0;
-    list->next        = list;
-    list->prev        = list;
-    list_len          = 1;
+FIRSTFIT::FIRSTFIT(const void *_addr, size_t _len)
+    : ALLOCATOR(_addr, _len), list(const_cast<void *>(COMMON::PMM_INFO_START),
+                                   const_cast<void *>(COMMON::PMM_INFO_END)) {
+    name           = (char *)"PMM(First Fit) allocator";
+    list[0].addr   = const_cast<void *>(_addr);
+    list[0].npages = _len;
+    list[0].ref    = 0;
+    list.size      = 1;
     printf("%s init.\n", name);
     return;
 }
@@ -33,44 +31,38 @@ FIRSTFIT::~FIRSTFIT(void) {
 void *FIRSTFIT::alloc(size_t _len) {
     void *res_addr = nullptr;
     // 遍历链表
-    for (size_t i = 0; i < list_len; i++) {
+    for (size_t i = 0; i < list.size; i++) {
 // #define DEBUG
 #ifdef DEBUG
         printf("&list[0x%X]: 0x%p\n", i, &list[i]);
-        printf("list[0x%X].addr: 0x%p\n", i, list[i].data.addr);
-        printf("list[0x%X].npages: 0x%p\n", i, list[i].data.npages);
-        printf("list[0x%X].ref: 0x%p\n", i, list[i].data.ref);
-        printf("list_len: 0x%X\n", list_len);
+        printf("list[0x%X].addr: 0x%p\n", i, list[i].addr);
+        printf("list[0x%X].npages: 0x%p\n", i, list[i].npages);
+        printf("list[0x%X].ref: 0x%p\n", i, list[i].ref);
+        printf("list.size: 0x%X\n", list.size);
 #undef DEBUG
 #endif
         // 寻找长度符合的表项，并且引用数为 0，即未使用
-        if (list[i].data.npages >= _len && list[i].data.ref == 0) {
+        if (list[i].npages >= _len && list[i].ref == 0) {
             // 保存要返回的地址
-            res_addr = list[i].data.addr;
+            res_addr = list[i].addr;
             // 将剩余页新建链表项
-            if (list[i].data.npages > _len) {
-                // 新的表项地址为链表最后一项
-                // 同时将链表长度+1
-                tmp_list_t<ff_entry_t> *tmp = &list[list_len++];
-                // 填充数据
-                tmp->data.addr   = (void *)((uint8_t *)list[i].data.addr +
-                                          COMMON::PAGE_SIZE * _len);
-                tmp->data.npages = list[i].data.npages - _len;
-                tmp->data.ref    = 0;
-                tmp->next        = tmp;
-                tmp->prev        = tmp;
-                // 添加到链表中
-                list[i].add_after(tmp);
+            if (list[i].npages > _len) {
+                ff_entry_t new_data;
+                new_data.addr   = (void *)((uint8_t *)list[i].addr +
+                                         _len * COMMON::PAGE_SIZE);
+                new_data.npages = list[i].npages - _len;
+                new_data.ref    = 0;
+                list.add_after(list[i], new_data);
             }
             // 要返回表项的数据进行更新
-            list[i].data.npages = _len;
-            list[i].data.ref    = 1;
+            list[i].npages = _len;
+            list[i].ref    = 1;
             // 返回
             return res_addr;
         }
     }
-    err("NO ENOUGH MEMOTY.\n");
     // 执行到这里说明没有足够空间了，返回空指针
+    err("NO ENOUGH MEMOTY.\n");
     return nullptr;
 }
 

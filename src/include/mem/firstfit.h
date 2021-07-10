@@ -30,11 +30,19 @@ private:
         size_t npages;
         // 物理页被引用的次数
         ssize_t ref;
+        // 用于 tmp_list_t
+        bool operator==(ff_entry_t &_ff) {
+            if (addr == _ff.addr && npages == _ff.npages && ref == _ff.ref) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     };
+
     // 保存内存信息的链表指针
-    tmp_list_t<ff_entry_t> *list;
-    // 链表节点数
-    size_t list_len;
+    tmp_list_t<ff_entry_t> list;
 
 protected:
 public:
