@@ -18,8 +18,6 @@ namespace COMMON {
     extern "C" void *kernel_text_end[];
     extern "C" void *kernel_data_start[];
     extern "C" void *kernel_data_end[];
-    extern "C" void *pmm_info_start[];
-    extern "C" void *pmm_info_end[];
     extern "C" void *kernel_end[];
 
     static constexpr const void *KERNEL_START_ADDR = kernel_start;
@@ -31,8 +29,6 @@ namespace COMMON {
         __attribute__((unused)) = kernel_data_start;
     static constexpr const void *KERNEL_DATA_END_ADDR __attribute__((unused)) =
         kernel_data_end;
-    static constexpr const void *PMM_INFO_START  = pmm_info_start;
-    static constexpr const void *PMM_INFO_END    = pmm_info_end;
     static constexpr const void *KERNEL_END_ADDR = kernel_end;
 
     // 规定数据大小，方便用
