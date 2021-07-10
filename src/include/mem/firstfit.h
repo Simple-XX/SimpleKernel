@@ -31,13 +31,14 @@ private:
 
 protected:
 public:
+    // _len: 以页为单位
     FIRSTFIT(const void *_addr, size_t _len);
     ~FIRSTFIT(void);
     void * alloc(size_t _len);
     bool   alloc(void *_addr, size_t _len);
     void   free(void *_addr, size_t _len);
-    size_t get_used_pages_count(void) const;
-    size_t get_free_pages_count(void) const;
+    size_t get_used_count(void) const;
+    size_t get_free_count(void) const;
 };
 
 #endif /* _FIRTSTFIT_H_ */
