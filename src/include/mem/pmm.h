@@ -23,9 +23,9 @@
 class PMM {
 private:
     // 物理内存开始地址
-    const void *start;
+    static const void *start;
     // 物理内存长度
-    size_t length;
+    static size_t length;
     // 物理内存页数
     static size_t total_pages;
     // 物理内存分配器
@@ -39,24 +39,22 @@ public:
     ~PMM(void);
     // 初始化
     // TODO: 移动到构造函数去
-    bool init(void);
+    static bool init(void);
     // 分配一页
-    void *alloc_page(void);
+    static void *alloc_page(void);
     // 分配多页
-    void *alloc_pages(size_t _len);
+    static void *alloc_pages(size_t _len);
     // 分配以指定地址开始的 _len 页
     // 如果此地址已使用，函数返回 true
-    bool alloc_pages(void *_addr, size_t _len);
+    static bool alloc_pages(void *_addr, size_t _len);
     // 回收一页
-    void free_page(void *_addr);
+    static void free_page(void *_addr);
     // 回收多页
-    void free_pages(void *_addr, size_t _len);
+    static void free_pages(void *_addr, size_t _len);
     // 获取当前已使用页数
-    uint64_t get_used_pages_count(void) const;
+    static uint64_t get_used_pages_count(void);
     // 获取当前空闲页
-    uint64_t get_free_pages_count(void) const;
+    static uint64_t get_free_pages_count(void);
 };
-
-extern PMM pmm;
 
 #endif /* _PMM_H_ */
