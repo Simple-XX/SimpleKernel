@@ -41,16 +41,16 @@ public:
     // TODO: 移动到构造函数去
     bool init(void);
     // 分配一页
-    const void *alloc_page(void);
+    void *alloc_page(void);
     // 分配多页
-    const void *alloc_pages(size_t _len);
+    void *alloc_pages(size_t _len);
     // 分配以指定地址开始的 _len 页
     // 如果此地址已使用，函数返回 true
     bool alloc_pages(void *_addr, size_t _len);
     // 回收一页
-    void free_page(const void *_addr);
+    void free_page(void *_addr);
     // 回收多页
-    void free_pages(const void *_addr, size_t _len);
+    void free_pages(void *_addr, size_t _len);
     // 获取当前已使用页数
     uint64_t get_used_pages_count(void) const;
     // 获取当前空闲页
