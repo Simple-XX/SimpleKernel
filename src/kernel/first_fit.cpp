@@ -32,7 +32,7 @@ uint64_t FIRSTFIT::find_len(uint64_t _len, bool _val) {
     for (uint64_t i = 0; i < (COMMON::PMM_SIZE / COMMON::PAGE_SIZE); i++) {
         if (test(i) != _val) {
             count = 0;
-            idx   = i;
+            idx   = i + 1;
         }
         else {
             count++;
