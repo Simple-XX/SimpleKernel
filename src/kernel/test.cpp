@@ -21,8 +21,8 @@ int32_t test_pmm(void) {
     printf("addr3: 0x%p\n", addr3);
     auto addr4 = pmm.alloc_pages(100);
     printf("addr4: 0x%p\n", addr4);
-    auto addr5 = pmm.alloc_pages(0x8000000);
-    printf("addr5: 0x%p\n", addr5);
+    auto addr5 = pmm.alloc_pages(0xFFFFFFFF);
+    assert(addr5 == nullptr);
 
     // TODO: 分配的地址应该在相应区域内
     // uint32_t cd    = 0xCD;
