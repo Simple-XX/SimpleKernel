@@ -105,12 +105,22 @@ public:
     //     return;
     // }
 
-    // // 删除元素
-    // void list_del(T *list) {
-    //     list->next->prev = list->prev;
-    //     list->prev->next = list->next;
-    //     return;
-    // }
+    // 删除元素
+    void list_del(const T &_data) {
+        // 根据 _data 找到对应的节点
+        node_t *node = nullptr;
+        for (size_t i = 0; i < size; i++) {
+            if (nodes[i].data == _data) {
+                node = &nodes[i];
+            }
+        }
+        // 设置未使用
+        node->used = false;
+        // 设置指针
+        node->next->prev = node->prev;
+        node->prev->next = node->next;
+        return;
+    }
 
     // 返回后面的的元素
     // tmp_list_t<T> *list_next(void) {
