@@ -13,16 +13,25 @@
 
 int32_t test_pmm(void) {
 
+    size_t free_pages = pmm.get_free_pages_count();
+    assert(free_pages == COMMON::PMM_SIZE / COMMON::PAGE_SIZE);
+    size_t used_pages = pmm.get_used_pages_count();
+    assert(used_pages == 0);
     auto addr1 = pmm.alloc_pages(2);
-    printf("addr1: 0x%p\n", addr1);
+    assert(pmm.get_used_pages_count() == 2);
     auto addr2 = pmm.alloc_pages(3);
-    printf("addr2: 0x%p\n", addr2);
+    assert(pmm.get_used_pages_count() == 5);
     auto addr3 = pmm.alloc_pages(100);
-    printf("addr3: 0x%p\n", addr3);
+    assert(pmm.get_used_pages_count() == 105);
     auto addr4 = pmm.alloc_pages(100);
-    printf("addr4: 0x%p\n", addr4);
+    assert(pmm.get_used_pages_count() == 205);
     auto addr5 = pmm.alloc_pages(0xFFFFFFFF);
     assert(addr5 == nullptr);
+    pmm.free_pages(addr1, 2);
+    pmm.free_pages(addr2, 3);
+    pmm.free_pages(addr3, 100);
+    pmm.free_pages(addr4, 100);
+    assert(pmm.get_free_pages_count() == free_pages);
 
     // TODO: 分配的地址应该在相应区域内
     // uint32_t cd    = 0xCD;
