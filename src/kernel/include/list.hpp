@@ -73,7 +73,7 @@ public:
         nodes->next = nodes;
         nodes->used = true;
         nodes_len   = ((uint8_t *)end - (uint8_t *)start) / sizeof(T);
-        size        = 0;
+        size        = 1;
         return;
     }
 
@@ -99,14 +99,8 @@ public:
         return;
     }
 
-    // // 在 next 前添加项
-    // void list_add_before(T *next, T *new_entry) {
-    //     add_middle(next->prev, next, new_entry);
-    //     return;
-    // }
-
     // 删除元素
-    void list_del(const T &_data) {
+    void del(const T &_data) {
         // 根据 _data 找到对应的节点
         node_t *node = nullptr;
         for (size_t i = 0; i < size; i++) {
@@ -119,69 +113,45 @@ public:
         // 设置指针
         node->next->prev = node->prev;
         node->prev->next = node->next;
+        size -= 1;
         return;
     }
 
-    // 返回后面的的元素
-    // tmp_list_t<T> *list_next(void) {
-    //     return next;
-    // }
+    // 返回前面的 data
+    T &prev(const T &_data) {
+        node_t *node = nullptr;
+        for (size_t i = 0; i < size; i++) {
+            if (nodes[i].data == _data) {
+                node = &nodes[i];
+            }
+        }
+        return node->prev->data;
+    }
+
+    // 返回后面的 data
+    T &next(const T &_data) {
+        node_t *node = nullptr;
+        for (size_t i = 0; i < size; i++) {
+            if (nodes[i].data == _data) {
+                node = &nodes[i];
+            }
+        }
+        return node->next->data;
+    }
 
     T &operator[](size_t _idx) {
-        return nodes[_idx].data;
+        if (nodes[_idx].used == true) {
+            return nodes[_idx].data;
+        }
+        else {
+            return *(T *)nullptr;
+        }
+    }
+
+    // 根据 _data 查找节点
+    find_idx(const T &_data) {
+        return;
     }
 };
 
 #endif /* _LIST_HPP_ */
-
-// // 初始化
-// template <class T>
-// void list_init_head(T *list) {
-//     list->next = list;
-//     list->prev = list;
-//     return;
-// }
-
-// // 在中间添加元素
-// template <class T>
-// void list_add_middle(T *prev, T *next, T *new_entry) {
-//     next->prev      = new_entry;
-//     new_entry->next = next;
-//     new_entry->prev = prev;
-//     prev->next      = new_entry;
-//     return;
-// }
-
-// // 在 prev 后添加项
-// template <class T>
-// void list_add_after(T *prev, T *new_entry) {
-//     list_add_middle(prev, prev->next, new_entry);
-//     return;
-// }
-
-// // 在 next 前添加项
-// template <class T>
-// void list_add_before(T *next, T *new_entry) {
-//     list_add_middle(next->prev, next, new_entry);
-//     return;
-// }
-
-// // 删除元素
-// template <class T>
-// void list_del(T *list) {
-//     list->next->prev = list->prev;
-//     list->prev->next = list->next;
-//     return;
-// }
-
-// // 返回前面的元素
-// template <class T>
-// T *list_prev(T *list) {
-//     return list->prev;
-// }
-
-// // 返回后面的的元素
-// template <class T>
-// T *list_next(T *list) {
-//     return list->next;
-// }

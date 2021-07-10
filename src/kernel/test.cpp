@@ -14,8 +14,10 @@
 int32_t test_pmm(void) {
 
     size_t free_pages = pmm.get_free_pages_count();
+    printf("pmm.get_free_pages_count(): 0x%X\n", pmm.get_free_pages_count());
     assert(free_pages == COMMON::PMM_SIZE / COMMON::PAGE_SIZE);
     size_t used_pages = pmm.get_used_pages_count();
+    printf("pmm.get_used_pages_count(): 0x%X\n", pmm.get_used_pages_count());
     assert(used_pages == 0);
     auto addr1 = pmm.alloc_pages(2);
     assert(pmm.get_used_pages_count() == 2);
