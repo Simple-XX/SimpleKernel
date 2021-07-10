@@ -9,8 +9,10 @@
 #include "common.h"
 #include "pmm.h"
 
-size_t     PMM::total_pages = 0;
-ALLOCATOR *PMM::allocator   = nullptr;
+const void *PMM::start       = nullptr;
+size_t      PMM::length      = 0;
+size_t      PMM::total_pages = 0;
+ALLOCATOR * PMM::allocator   = nullptr;
 
 PMM::PMM(void) {
     return;
@@ -67,12 +69,10 @@ void PMM::free_pages(void *_addr, size_t _len) {
     return;
 }
 
-uint64_t PMM::get_used_pages_count(void) const {
+uint64_t PMM::get_used_pages_count(void) {
     return allocator->get_used_pages_count();
 }
 
-uint64_t PMM::get_free_pages_count(void) const {
+uint64_t PMM::get_free_pages_count(void) {
     return allocator->get_free_pages_count();
 }
-
-PMM pmm;
