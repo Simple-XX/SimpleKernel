@@ -56,7 +56,6 @@ VMM::~VMM(void) {
 
 int32_t VMM::init(void) {
     pgd_kernel = (pt_t)pmm.alloc_page();
-    printf("pgd_kernel: 0x%p\n", pgd_kernel);
     for (uint64_t addr = (uint64_t)COMMON::KERNEL_START_ADDR;
          addr < (uint64_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SIZE;
          addr += COMMON::PAGE_SIZE) {
