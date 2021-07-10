@@ -41,11 +41,11 @@ bool PMM::init(void) {
     return true;
 }
 
-const void *PMM::alloc_page(void) {
+void *PMM::alloc_page(void) {
     return allocator->alloc(1);
 }
 
-const void *PMM::alloc_pages(size_t _len) {
+void *PMM::alloc_pages(size_t _len) {
     return allocator->alloc(_len);
 }
 
@@ -53,14 +53,13 @@ bool PMM::alloc_pages(void *_addr, size_t _len) {
     return allocator->alloc(_addr, _len);
 }
 
-void PMM::free_page(const void *_addr) {
-    (void)_addr;
+void PMM::free_page(void *_addr) {
+    allocator->free(_addr, 1);
     return;
 }
 
-void PMM::free_pages(const void *_addr, size_t _len) {
-    (void)_addr;
-    (void)_len;
+void PMM::free_pages(void *_addr, size_t _len) {
+    allocator->free(_addr, _len);
     return;
 }
 
