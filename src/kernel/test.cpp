@@ -12,14 +12,26 @@
 #include "kernel.h"
 
 int32_t test_pmm(void) {
+
+    auto addr1 = pmm.alloc_pages(2);
+    printf("addr1: 0x%p\n", addr1);
+    auto addr2 = pmm.alloc_pages(3);
+    printf("addr2: 0x%p\n", addr2);
+    auto addr3 = pmm.alloc_pages(100);
+    printf("addr3: 0x%p\n", addr3);
+    auto addr4 = pmm.alloc_pages(100);
+    printf("addr4: 0x%p\n", addr4);
+    auto addr5 = pmm.alloc_pages(0x8000000);
+    printf("addr5: 0x%p\n", addr5);
+
     // TODO: 分配的地址应该在相应区域内
-    // uint32_t cd         = 0xCD;
-    // uint8_t *addr1      = nullptr;
+    // uint32_t cd    = 0xCD;
+    // uint8_t *addr1 = nullptr;
     // uint8_t *addr2      = nullptr;
     // uint8_t *addr3      = nullptr;
     // uint8_t *addr4      = nullptr;
     // uint32_t free_count = pmm.free_pages_count(COMMON::NORMAL);
-    // addr1               = (uint8_t *)pmm.alloc_page(0x9F, COMMON::NORMAL);
+    // addr1 = (uint8_t *)pmm.alloc_page(0x9F, COMMON::NORMAL);
     // if (addr1 != nullptr) {
     //     assert(pmm.free_pages_count(COMMON::NORMAL) == free_count - 0x9F);
     //     *(uint32_t *)addr1 = cd;
