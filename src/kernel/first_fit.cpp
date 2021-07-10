@@ -78,7 +78,7 @@ bool FIRSTFIT::alloc(void *_addr, size_t _len) {
     return 0;
 }
 
-void FIRSTFIT::free(void *_addr) {
+void FIRSTFIT::free(void *_addr, size_t _len) {
     return;
 }
 

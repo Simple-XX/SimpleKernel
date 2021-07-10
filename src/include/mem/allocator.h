@@ -37,8 +37,8 @@ public:
     // 在指定地址分配 _len 页
     // 如果此地址已使用，函数返回 true
     virtual bool alloc(void *_addr, size_t _len) = 0;
-    // 释放一页
-    virtual void free(void *_addr) = 0;
+    // 释放 _len 页
+    virtual void free(void *_addr, size_t _len) = 0;
     // 已使用页数量
     virtual size_t get_used_pages_count(void) const = 0;
     // 空闲页数量
