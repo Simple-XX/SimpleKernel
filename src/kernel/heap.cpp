@@ -26,13 +26,13 @@ bool HEAP::init(const void *_addr, size_t _len) {
     return 0;
 }
 
-void *HEAP::malloc(size_t byte) {
-    return allocator->alloc(byte);
+void *HEAP::malloc(size_t _byte) {
+    return allocator->alloc(_byte);
 }
 
-void HEAP::free(void *addr) {
+void HEAP::free(void *_addr) {
     // 堆不需要 _len 参数
-    allocator->free(addr, 0);
+    allocator->free(_addr, 0);
     return;
 }
 
@@ -48,12 +48,12 @@ size_t HEAP::get_free(void) {
     return allocator->get_free_count();
 }
 
-extern "C" void *malloc(size_t size) {
-    return heap.malloc(size);
+extern "C" void *malloc(size_t _size) {
+    return heap.malloc(_size);
 }
 
-extern "C" void free(void *ptr) {
-    heap.free(ptr);
+extern "C" void free(void *_p) {
+    heap.free(_p);
     return;
 }
 
