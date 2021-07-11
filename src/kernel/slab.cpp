@@ -13,6 +13,15 @@
 
 SLAB::SLAB(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
     name = (char *)"HEAP(SLAB) allocator";
+    // 设置第一块内存的信息
+    // 首先给链表中添加一个大小为 1 页的块
+    slab_list = (slab_list_entry_t *)PMM::alloc_page();
+    bzero(slab_list, COMMON::PAGE_SIZE);
+    list_init_head(slab_list);
+    // 设置第一块内存的相关信息
+    slab_list->allocated = SLAB_UNUSED;
+    slab_list->len       = COMMON::PAGE_SIZE - sizeof(slab_list_entry_t);
+    block_count          = 1;
     printf("%s init.\n", name);
     return;
 }
@@ -80,7 +89,7 @@ void SLAB::slab_merge(slab_list_entry_t *list) {
         size_t count = tmp->len / COMMON::PAGE_SIZE;
         // 回收
         PMM::free_pages(addr, count);
-        heap_total -= count * COMMON::PAGE_SIZE;
+        // heap_total -= count * COMMON::PAGE_SIZE;
         // 如果 tmp 从页首开始，则删除 block，tmp 为 slab_list 时除外
         if ((reinterpret_cast<ptrdiff_t>(tmp) % COMMON::PAGE_SIZE == 0) &&
             (tmp != slab_list)) {
@@ -121,28 +130,9 @@ void SLAB::set_unused(slab_list_entry_t *entry) {
     return;
 }
 
-int32_t SLAB::init(const void *start, const size_t size) {
-    // 设置第一块内存的信息
-    // 首先给链表中添加一个大小为 1 页的块
-    // TODO: ZONE 设置
-    slab_list = (slab_list_entry_t *)PMM::alloc_page();
-    bzero(slab_list, COMMON::PAGE_SIZE);
-    // 填充管理信息
-    addr_start = (void *)start;
-    addr_end   = (void *)((ptrdiff_t)start + size);
-    list_init_head(slab_list);
-    // 设置第一块内存的相关信息
-    slab_list->allocated = SLAB_UNUSED;
-    slab_list->len       = COMMON::PAGE_SIZE - sizeof(slab_list_entry_t);
-    heap_total           = COMMON::PAGE_SIZE;
-    block_count          = 1;
-    printf("slab init.\n");
-    return 0;
-}
-
-void *SLAB::alloc(size_t byte) {
+void *SLAB::alloc(size_t _len) {
     // 所有申请的内存长度(限制最小大小)加上管理头的长度
-    size_t len = (byte > SLAB_MIN) ? byte : SLAB_MIN;
+    size_t len = (_len > SLAB_MIN) ? _len : SLAB_MIN;
     // len 对齐
     len = (len + SLAB_MIN - 1) & (0xFFFFFFFFFFFFFFFF - SLAB_MIN + 1);
     slab_list_entry_t *entry = find_entry(len);
@@ -157,7 +147,6 @@ void *SLAB::alloc(size_t byte) {
                                        ? (len / COMMON::PAGE_SIZE)
                                        : ((len / COMMON::PAGE_SIZE) + 1);
     slab_list_entry_t *new_entry = (slab_list_entry_t *)PMM::alloc_pages(pages);
-    heap_total += COMMON::PAGE_SIZE * pages;
     if (new_entry == nullptr) {
         printf("Error at slab.c void *alloc(): no enough physical memory\n");
         return nullptr;
@@ -173,10 +162,14 @@ void *SLAB::alloc(size_t byte) {
     return (void *)((uint8_t *)new_entry + sizeof(slab_list_entry_t));
 }
 
-void SLAB::free(void *addr) {
+bool SLAB::alloc(void *, size_t) {
+    return true;
+}
+
+void SLAB::free(void *_addr, size_t) {
     // 获取实际开始地址
     slab_list_entry_t *entry =
-        (slab_list_entry_t *)((uint8_t *)addr - sizeof(slab_list_entry_t));
+        (slab_list_entry_t *)((uint8_t *)_addr - sizeof(slab_list_entry_t));
     if (entry->allocated != SLAB_USED) {
         printf("Error at slab.c void free(void *)\n");
         return;
@@ -186,15 +179,15 @@ void SLAB::free(void *addr) {
     return;
 }
 
-size_t SLAB::get_total(void) {
-    return heap_total;
-}
-
 size_t SLAB::get_block(void) {
     return block_count;
 }
 
-size_t SLAB::get_free(void) {
+size_t SLAB::get_used_count(void) const {
+    return 0;
+}
+
+size_t SLAB::get_free_count(void) const {
     size_t             f     = 0;
     slab_list_entry_t *entry = slab_list;
     do {

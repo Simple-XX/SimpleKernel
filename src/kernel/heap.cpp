@@ -9,11 +9,7 @@
 #include "common.h"
 #include "heap.h"
 
-ALLOCATOR *HEAP::allocator = nullptr;
-
 HEAP::HEAP(void) {
-    static SLAB slab_allocator(start, length);
-    allocator = (ALLOCATOR *)&slab_allocator;
     return;
 }
 
@@ -21,30 +17,35 @@ HEAP::~HEAP(void) {
     return;
 }
 
-bool HEAP::init(void) {
+bool HEAP::init(const void *_addr, size_t _len) {
+    start  = _addr;
+    length = _len;
+    static SLAB slab_allocator(start, length);
+    allocator = (ALLOCATOR *)&slab_allocator;
     printf("heap_init\n");
     return 0;
 }
 
 void *HEAP::malloc(size_t byte) {
-    return manage.alloc(byte);
+    return allocator->alloc(byte);
 }
 
 void HEAP::free(void *addr) {
-    manage.free(addr);
+    // 堆不需要 _len 参数
+    allocator->free(addr, 0);
     return;
 }
 
 size_t HEAP::get_total(void) {
-    return manage.get_total();
+    return 0;
 }
 
 size_t HEAP::get_block(void) {
-    return manage.get_block();
+    return 0;
 }
 
 size_t HEAP::get_free(void) {
-    return manage.get_free();
+    return allocator->get_free_count();
 }
 
 extern "C" void *malloc(size_t size) {
