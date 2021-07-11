@@ -11,12 +11,11 @@
 #include "allocator.h"
 
 ALLOCATOR::ALLOCATOR(const void *_addr, size_t _len) {
-    name             = (char *)"ALLOCATOR: no init";
-    addr             = const_cast<void *>(_addr);
-    length           = _len;
-    pages_count      = length / COMMON::PAGE_SIZE;
-    free_pages_count = pages_count;
-    used_pages_count = 0;
+    name       = (char *)"ALLOCATOR: no init";
+    addr       = const_cast<void *>(_addr);
+    length     = _len;
+    free_count = length;
+    used_count = 0;
     return;
 }
 

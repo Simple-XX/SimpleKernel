@@ -28,8 +28,6 @@ private:
     static constexpr const uint32_t SLAB_USED   = 0x01;
     // 最小空间
     static constexpr const uint32_t SLAB_MIN = 0x100;
-    // 堆管理的内存大小 单位为 bytes
-    size_t heap_total;
     // 堆中 block 的数量
     size_t block_count;
     // 堆节点链表
@@ -50,17 +48,14 @@ public:
     SLAB(const void *_addr, size_t _len);
     ~SLAB(void);
     int32_t init(const void *start, const size_t size);
-    // 获取管理的内存大小，包括管理信息
-    size_t get_total(void);
-    // 获取空闲内存数量 单位为 byte
-    size_t get_free(void);
     // 获取块数量
     size_t get_block(void);
+    // _len: 以 byte 为单位
     void * alloc(size_t _len);
     bool   alloc(void *_addr, size_t _len);
     void   free(void *_addr, size_t _len);
-    size_t get_used_pages_count(void) const;
-    size_t get_free_pages_count(void) const;
+    size_t get_used_count(void) const;
+    size_t get_free_count(void) const;
 };
 
 #endif /* _SLAB_H_ */
