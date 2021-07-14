@@ -105,18 +105,22 @@ int test_vmm(void) {
 
 int test_heap(void) {
     void *addr1 = nullptr;
-    // void * addr2  = nullptr;
-    // void * addr3  = nullptr;
+    void *addr2 = nullptr;
+    void *addr3 = nullptr;
     // void * addr4  = nullptr;
     // size_t free0  = heap.get_free();
     // size_t total0 = heap.get_total();
     // size_t block0 = heap.get_block();
     addr1 = heap.malloc(0x1);
+    printf("addr1: 0x%p\n", addr1);
+    addr2 = heap.malloc(0x1);
+    printf("addr2: 0x%p\n", addr2);
+    addr3 = heap.malloc(0x40);
+    printf("addr3: 0x%p\n", addr3);
     // size_t free1  = heap.get_free();
     // size_t total1 = heap.get_total();
     // size_t block1 = heap.get_block();
-    // addr2         = heap.malloc(0x1000);
-    // size_t free2  = heap.get_free();
+    // size_t free2 = heap.get_free();
     // size_t total2 = heap.get_total();
     // size_t block2 = heap.get_block();
     // addr3         = heap.malloc(0x3FF);
