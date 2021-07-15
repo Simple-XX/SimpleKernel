@@ -53,9 +53,9 @@ void SLAB::chunk_t::push_back(chunk_t *_new_node) {
 
 void SLAB::slab_cache_t::move(chunk_t &_list, chunk_t *_node) {
     // 从当前链表中删除
-    if (_node->prev != nullptr) {
-        _node->prev->next = _node->next;
-    }
+    // 只有头节点的 prev 为空，但是我们不用它
+    assert(_node->prev != nullptr);
+    _node->prev->next = _node->next;
     if (_node->next != nullptr) {
         _node->next->prev = _node->prev;
     }
@@ -122,6 +122,16 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     return;
 }
 
+void SLAB::slab_cache_t::merge(void) {
+    // 如果节点少于两个，不需要合并
+    if (part.size() < 2) {
+        return;
+    }
+    // 遍历 part 所有节点，如果有 addr 连续的，则合并
+    // 直观看得 O(N^2)，有啥效率高的？
+    return;
+}
+
 SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
                                         bool _alloc) {
     chunk_t *res = nullptr;
@@ -185,6 +195,14 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(size_t _len) {
     return chunk;
 }
 
+void SLAB::slab_cache_t::remove(chunk_t *_node) {
+    // 将 _node 移动到 part 即可
+    move(part, _node);
+    // merge 会处理节点合并的情况
+    merge();
+    return;
+}
+
 size_t SLAB::get_idx(size_t _len) {
     size_t res = 0;
     // _len 向上取整
@@ -225,16 +243,19 @@ void *SLAB::alloc(size_t _len) {
     void *res = nullptr;
     // 分配时，首先确定需要分配的大小
     auto bytes = _len + CHUNK_SIZE;
-    // 根据大小确定 slab_cache 索引
-    auto idx = get_idx(bytes);
-    // 寻找合适的 slab 节点
-    chunk_t *chunk = slab_cache[idx].find(bytes);
-    // 不为空的话计算地址
-    if (chunk != nullptr) {
-        printf("chunk->addr: 0x%X, chunk->len: 0x%X\n", chunk->addr,
-               chunk->len);
-        // 计算地址
-        res = (uint8_t *)chunk->addr + CHUNK_SIZE;
+    // 大小不能超过 65536B
+    if (bytes <= MIN << LEN65536) {
+        // 根据大小确定 slab_cache 索引
+        auto idx = get_idx(bytes);
+        // 寻找合适的 slab 节点
+        chunk_t *chunk = slab_cache[idx].find(bytes);
+        // 不为空的话计算地址
+        if (chunk != nullptr) {
+            printf("chunk->addr: 0x%X, chunk->len: 0x%X\n", chunk->addr,
+                   chunk->len);
+            // 计算地址
+            res = (uint8_t *)chunk->addr + CHUNK_SIZE;
+        }
     }
     // 返回
     return res;
@@ -244,7 +265,14 @@ bool SLAB::alloc(void *, size_t) {
     return true;
 }
 
-void SLAB::free(void *, size_t) {
+void SLAB::free(void *_addr, size_t) {
+    // 要释放一个 chunk
+    // 1. 计算 chunk 地址
+    chunk_t *chunk = (chunk_t *)(uint8_t *)_addr - CHUNK_SIZE;
+    // 2. 计算所属 slab_cache 索引
+    auto idx = get_idx(chunk->len);
+    // 3. 调用对应的 remove 函数
+    slab_cache[idx].remove(chunk);
     return;
 }
 
