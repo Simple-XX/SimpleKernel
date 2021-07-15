@@ -107,50 +107,26 @@ int test_heap(void) {
     void *addr1 = nullptr;
     void *addr2 = nullptr;
     void *addr3 = nullptr;
-    // void *addr4 = nullptr;
-    // size_t free0  = heap.get_free();
-    // size_t total0 = heap.get_total();
-    // size_t block0 = heap.get_block();
-    printf("----1---\n");
-    addr1 = heap.malloc(0x1);
-    printf("addr1: 0x%p\n", addr1);
-    printf("----1---\n");
-    printf("----2---\n");
+    void *addr4 = nullptr;
+    // 申请超过最大允许的内存 65536B
+    addr1 = heap.malloc(0x10000);
+    // 应该返回 nullptr
+    assert(addr1 == nullptr);
+    // 申请小块内存
     addr2 = heap.malloc(0x1);
-    printf("addr2: 0x%p\n", addr2);
-    printf("----2---\n");
-    printf("----3---\n");
+    assert(addr2 != nullptr);
+    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
+    assert(((ptrdiff_t)((uint8_t *)addr2 - 0x20) & 0xFFF) == 0x0);
+    // 在 LEN512 申请新的内存
     addr3 = heap.malloc(0xFF);
-    heap.malloc(0x80);
-    printf("addr3: 0x%p\n", addr3);
-    printf("----3---\n");
-    // size_t free1  = heap.get_free();
-    // size_t total1 = heap.get_total();
-    // size_t block1 = heap.get_block();
-    // size_t free2 = heap.get_free();
-    // size_t total2 = heap.get_total();
-    // size_t block2 = heap.get_block();
-    // addr3         = heap.malloc(0x3FF);
-    // size_t free3  = heap.get_free();
-    // size_t total3 = heap.get_total();
-    // size_t block3 = heap.get_block();
-    // addr4         = heap.malloc(0xE);
-    // heap.free(addr4);
-    // assert(heap.get_free() == free3);
-    // assert(heap.get_total() == total3);
-    // assert(heap.get_block() == block3);
-    // heap.free(addr3);
-    // assert(heap.get_free() == free2);
-    // assert(heap.get_total() == total2);
-    // assert(heap.get_block() == block2);
-    // heap.free(addr2);
-    // assert(heap.get_free() == free1);
-    // assert(heap.get_total() == total1);
-    // assert(heap.get_block() == block1);
-    // heap.free(addr1);
-    // assert(heap.get_free() == free0);
-    // assert(heap.get_total() == total0);
-    // assert(heap.get_block() == block0);
+    assert(addr3 != nullptr);
+    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
+    assert(((ptrdiff_t)((uint8_t *)addr3 - 0x20) & 0xFFF) == 0x0);
+    // 加上 chunk 大小长度刚好是 LEN256
+    addr4 = heap.malloc(0x80);
+    assert(addr4 != nullptr);
+    // LEN256 区域第二块被申请的内存，地址可以计算出来
+    assert(addr4 == (uint8_t *)addr2 + 0x20 + 0x100);
     printf("heap test done.\n");
     return 0;
 }
