@@ -53,15 +53,11 @@ void SLAB::chunk_t::push_back(chunk_t *_new_node) {
 
 void SLAB::slab_cache_t::move(chunk_t &_list, chunk_t *_node) {
     // 从当前链表中删除
-    // 只有头节点的 prev 为空，但是我们不用它
-    assert(_node->prev != nullptr);
     _node->prev->next = _node->next;
-    if (_node->next != nullptr) {
-        _node->next->prev = _node->prev;
-    }
+    _node->next->prev = _node->prev;
     // 重置指针
-    _node->prev = nullptr;
-    _node->next = nullptr;
+    _node->prev = _node;
+    _node->next = _node;
     // 插入新链表
     _list.push_back(_node);
     return;
@@ -83,8 +79,8 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         // 长度需要减去 chunk_t 的长度
         new_node->len = (pages * COMMON::PAGE_SIZE) - CHUNK_SIZE;
         // 链表指针
-        new_node->prev = nullptr;
-        new_node->next = nullptr;
+        new_node->prev = new_node;
+        new_node->next = new_node;
         // 加入 free 链表
         free.push_back(new_node);
     }
@@ -105,8 +101,8 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk 大小
     new_node->len = _node->len - _len - CHUNK_SIZE;
     // 手动初始化节点
-    new_node->prev = nullptr;
-    new_node->next = nullptr;
+    new_node->prev = new_node;
+    new_node->next = new_node;
     // 判断剩余空间是否可以容纳至少一个节点，即大于等于  len+CHUNK_SIZE
     // 如果大于等于则建立新的节点小于的话不用新建
     // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len 中，
