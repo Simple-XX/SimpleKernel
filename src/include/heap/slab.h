@@ -28,9 +28,10 @@ private:
         void *addr;
         // 长度，不包括自身大小 单位为 byte
         size_t len;
-        // 链表指针
+        // 双向循环链表指针
         chunk_t *prev;
         chunk_t *next;
+        // 构造函数只会在 SLAB 初始化时调用，且只用于构造头节点
         chunk_t(void);
         ~chunk_t(void);
         // 插入新节点
@@ -39,7 +40,6 @@ private:
         size_t size(void);
         bool   operator==(const chunk_t &_node);
         bool   operator!=(const chunk_t &_node);
-        // 构造函数只会在 SLAB 初始化时调用，且只用于构造头节点
     };
 
     // 第一级保存不同长度的内存块
@@ -55,6 +55,8 @@ private:
         // 如果剩余部分符合要求，新建节点并加入 part 链表
         // 同时将 _node->len 设置为 _len
         void split(chunk_t *_node, size_t _len);
+        // 合并 part 中地址连续的链表项，如果有可回收的回调用 free_pmm 进行回收
+        void merge(void);
         // 在 _which 链表中查找长度符合的
         chunk_t *find(chunk_t &_which, size_t _len, bool _alloc);
 
@@ -71,6 +73,8 @@ private:
         chunk_t free;
         // 查找长度符合的
         chunk_t *find(size_t _len);
+        // 释放一个 full 的链表项
+        void remove(chunk_t *_node);
     };
     // chunk 大小
     static constexpr const size_t CHUNK_SIZE = sizeof(chunk_t);
@@ -101,14 +105,13 @@ protected:
 public:
     SLAB(const void *_addr, size_t _len);
     ~SLAB(void);
-    // 获取块数量
-    size_t get_block(void);
     // _len: 以 byte 为单位
     void *alloc(size_t _len);
     // slab 不支持这个函数
     bool alloc(void *_addr, size_t _len);
     // slab 不使用第二个参数
-    void   free(void *_addr, size_t _len);
+    void free(void *_addr, size_t);
+    // 暂时不支持
     size_t get_used_count(void) const;
     size_t get_free_count(void) const;
 };
