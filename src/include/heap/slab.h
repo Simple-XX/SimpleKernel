@@ -31,7 +31,6 @@ private:
         // 链表指针
         chunk_t *prev;
         chunk_t *next;
-        // 在 _addr 处建立新的 chunk
         chunk_t(void);
         ~chunk_t(void);
         // 插入新节点
@@ -40,17 +39,22 @@ private:
         size_t size(void);
         bool   operator==(const chunk_t &_node);
         bool   operator!=(const chunk_t &_node);
+        // 构造函数只会在 SLAB 初始化时调用，且只用于构造头节点
     };
 
     // 第一级保存不同长度的内存块
     class slab_cache_t {
     private:
         // 对节点进行移动
-        void move(chunk_t *_node);
-        // 申请物理内存，加入 free 链表，返回申请到的地址
+        void move(chunk_t &_list, chunk_t *_node);
+        // 申请物理内存，返回申请到的地址起点，已经初始化过，且加入 free 链表
         chunk_t *alloc_pmm(size_t _len);
         // 释放物理内存
         void free_pmm(void);
+        // 分割一个节点
+        // 如果剩余部分符合要求，新建节点并加入 part 链表
+        // 同时将 _node->len 设置为 _len
+        void split(chunk_t *_node, size_t _len);
         // 在 _which 链表中查找长度符合的
         chunk_t *find(chunk_t &_which, size_t _len, bool _alloc);
 
