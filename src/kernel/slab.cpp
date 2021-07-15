@@ -91,6 +91,18 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
 
 void SLAB::slab_cache_t::free_pmm(void) {
     // 遍历 free，符合条件的释放
+    chunk_t *tmp   = free.next;
+    size_t   bytes = 0;
+    size_t   pages = 0;
+    for (size_t i = 0; i < free.size(); i++) {
+        bytes = tmp->len + CHUNK_SIZE;
+        pages = bytes / COMMON::PAGE_SIZE;
+        if (bytes % COMMON::PAGE_SIZE != 0) {
+            pages += 1;
+        }
+        PMM::alloc_pages(tmp->addr, pages);
+        tmp = tmp->next;
+    }
     return;
 }
 
@@ -125,6 +137,42 @@ void SLAB::slab_cache_t::merge(void) {
     }
     // 遍历 part 所有节点，如果有 addr 连续的，则合并
     // 直观看得 O(N^2)，有啥效率高的？
+    chunk_t *tmp1 = this->part.next;
+    chunk_t *tmp2 = nullptr;
+    void *   addr = nullptr;
+    // 前面的节点
+    for (size_t i = 0; i < part.size(); i++) {
+        addr = (uint8_t *)tmp1->addr + CHUNK_SIZE + tmp1->len;
+        // 后面的节点
+        for (size_t j = i + 1; j < part.size(); j++) {
+            // 前面节点的结束地址是后面节点的开始地址
+            if (addr == tmp2->addr) {
+                // chunk 大小
+                tmp1->len += CHUNK_SIZE;
+                // 数据长度
+                tmp1->len += tmp2->len;
+                // 从当前链表中删除
+                tmp2->prev->next = tmp2->next;
+                tmp2->next->prev = tmp2->prev;
+            }
+            tmp2 = tmp1->next;
+        }
+        tmp1 = tmp1->next;
+    }
+
+    // 后面的合并前面的
+
+    // 如果长度符合，移动到 free
+    tmp1 = this->part.next;
+    for (size_t i = 0; i < part.size(); i++) {
+        if (tmp1->len >= len - CHUNK_SIZE) {
+            // 移动到 free
+            move(free, tmp1);
+        }
+        tmp1 = tmp1->next;
+    }
+    // 如果有可以释放的则释放
+    free_pmm();
     return;
 }
 
