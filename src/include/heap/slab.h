@@ -62,7 +62,7 @@ private:
 
     protected:
     public:
-        // 长度，单位为 byte
+        // 当前 cache 的长度，单位为 byte
         size_t len;
         // 这三个作为头节点使用，不会实际使用
         // 全部使用的链表
