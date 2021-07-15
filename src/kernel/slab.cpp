@@ -73,7 +73,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
     if (_len % COMMON::PAGE_SIZE != 0) {
         pages += 1;
     }
-    printf("alloc_pmm: 0x%X, pages: 0x%X\n", _len, pages);
     // 申请
     chunk_t *new_node = (chunk_t *)PMM::alloc_pages(pages);
     // 不为空的话进行初始化
@@ -89,6 +88,8 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         // 加入 free 链表
         free.push_back(new_node);
     }
+    printf("alloc_pmm: 0x%X, pages: 0x%X, new_node: 0x%p\n", _len, pages,
+           new_node);
     return new_node;
 }
 
@@ -99,9 +100,8 @@ void SLAB::slab_cache_t::free_pmm(void) {
 
 void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     // 处理新节点
-    chunk_t *new_node =
-        (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _node->len);
-    new_node->addr = new_node;
+    chunk_t *new_node = (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + len);
+    new_node->addr    = new_node;
     // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk 大小
     new_node->len = _node->len - _len - CHUNK_SIZE;
     // 手动初始化节点
@@ -115,6 +115,8 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
         // 新的节点必然属于 part 链表
         part.push_back(new_node);
     }
+    printf("new_node->addr: 0x%X, new_node->len: 0x%X\n", new_node->addr,
+           new_node->len);
     // 设置旧节点
     _node->len = _len;
     return;
@@ -131,6 +133,8 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
         if (tmp->len >= _len) {
             // 更新 res
             res = tmp;
+            printf("000 res->addr: 0x%X, res->len: 0x%X\n", res->addr,
+                   res->len);
             // 跳出循环
             break;
         }
@@ -139,20 +143,26 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
     }
     // 如果 res 不为空
     if (res != nullptr) {
+        printf("aaaa res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
         // res 从旧节点分离出来后剩余的部分
         split(res, _len);
+        printf("bbbb res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
         // res 指向的移动到 full
         move(full, res);
+        printf("cccc res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
     }
     // 如果 res 为空，说明在 _which 链表中没有找到合适的节点
     // 如果同时 _alloc 成立
     else if (res == nullptr && _alloc == true) {
         // 申请新的空间
         res = alloc_pmm(_len);
+        printf("dddd res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
         // 申请成功
         if (res != nullptr) {
             // 剩余部分
             split(res, _len);
+            printf("eeee res->addr: 0x%X, res->len: 0x%X\n", res->addr,
+                   res->len);
         }
     }
     return res;
