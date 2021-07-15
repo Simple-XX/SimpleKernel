@@ -107,7 +107,7 @@ int test_heap(void) {
     void *addr1 = nullptr;
     void *addr2 = nullptr;
     void *addr3 = nullptr;
-    // void * addr4  = nullptr;
+    // void *addr4 = nullptr;
     // size_t free0  = heap.get_free();
     // size_t total0 = heap.get_total();
     // size_t block0 = heap.get_block();
@@ -120,7 +120,8 @@ int test_heap(void) {
     printf("addr2: 0x%p\n", addr2);
     printf("----2---\n");
     printf("----3---\n");
-    addr3 = heap.malloc(0x1);
+    addr3 = heap.malloc(0xFF);
+    heap.malloc(0x80);
     printf("addr3: 0x%p\n", addr3);
     printf("----3---\n");
     // size_t free1  = heap.get_free();
