@@ -52,7 +52,7 @@ private:
         // 释放物理内存
         void free_pmm(void);
         // 在 _which 链表中查找长度符合的
-        chunk_t *find(chunk_t *_which, size_t _len, bool _alloc);
+        chunk_t *find(chunk_t &_which, size_t _len, bool _alloc);
 
     protected:
     public:
@@ -60,11 +60,11 @@ private:
         size_t len;
         // 这三个作为头节点使用，不会实际使用
         // 全部使用的链表
-        chunk_t *full;
+        chunk_t full;
         // 部分使用的链表
-        chunk_t *part;
+        chunk_t part;
         // 未使用的链表
-        chunk_t *free;
+        chunk_t free;
         // 查找长度符合的
         chunk_t *find(size_t _len);
     };

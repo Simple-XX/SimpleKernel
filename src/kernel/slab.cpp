@@ -23,32 +23,29 @@ SLAB::chunk_t::~chunk_t(void) {
     return;
 }
 
+size_t SLAB::chunk_t::size(void) {
+    size_t   res = 0;
+    chunk_t *tmp = this->next;
+    while (tmp != this) {
+        res++;
+        tmp = tmp->next;
+    }
+    return res;
+}
+
 bool SLAB::chunk_t::operator==(const chunk_t &_node) {
     return addr == _node.addr && len == _node.len && prev == _node.prev &&
-           next == _node.prev;
+           next == _node.next;
 }
 
 bool SLAB::chunk_t::operator!=(const chunk_t &_node) {
     return addr != _node.addr || len != _node.len || prev != _node.prev ||
-           next != _node.prev;
+           next != _node.next;
 }
 
 // 由于是循环队列，相当于在头节点前面插入
 void SLAB::chunk_t::push_back(chunk_t *_new_node) {
-    // 如果 this 指针为空，说明链表头节点为空
-    if (this == nullptr) {
-        // 为 this 赋值
-        // this = _new_node;
-    }
     _new_node->next = this;
-    printf("this: 0x%p\n", this);
-    // printf("prev: 0x%p\n", prev);
-    // printf("next: 0x%p\n", next);
-    printf("_new_node: 0x%p\n", _new_node);
-    printf("_new_node->next: 0x%p\n", _new_node->next);
-    printf("_new_node->prev: 0x%p\n", _new_node->prev);
-    while (1)
-        ;
     _new_node->prev = prev;
     prev->next      = _new_node;
     prev            = _new_node;
@@ -63,19 +60,19 @@ void SLAB::slab_cache_t::move(chunk_t *_node) {
     // 如果节点的 len 等于 alloc_pmm 分配的减去节点大小，说明这一页还没有使用
     if (_node->len == len - CHUNK_SIZE) {
         // 移动到 free
-        free->push_back(_node);
+        free.push_back(_node);
         printf("move to free: 0x%X.\n", _node->addr);
     }
     // 如果节点的 len 大于 len，说明还有多余空间
     else if (_node->len > len) {
         // 移动到 part
-        part->push_back(_node);
+        part.push_back(_node);
         printf("move to part: 0x%X.\n", _node->addr);
     }
     // 如果节点的 len 小于等于 len，说明没有多余空间
     else if (_node->len <= len) {
         // 移动到 full
-        full->push_back(_node);
+        full.push_back(_node);
         printf("move to full: 0x%X.\n", _node->addr);
     }
     return;
@@ -100,7 +97,7 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         new_node->prev = new_node;
         new_node->next = new_node;
         // 插入 free 节点
-        free->push_back(new_node);
+        free.push_back(new_node);
     }
     return new_node;
 }
@@ -110,24 +107,29 @@ void SLAB::slab_cache_t::free_pmm(void) {
     return;
 }
 
-SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t *_which, size_t _len,
+SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
                                         bool _alloc) {
     chunk_t *res = nullptr;
-    //  part/free 都是空
-    if (part == nullptr && free == nullptr && _alloc == true) {
-        // 申请新的内存
+    // 节点数不为 0，直接查找即可
+    if (_which.size() != 0) {
+        // 在 _which 中查找
+        // 遍历节点
+        chunk_t *tmp = _which.next;
+        for (size_t i = 0; i < _which.size(); i++) {
+            if (tmp->len >= _len) {
+                res = tmp;
+                break;
+            }
+            tmp = tmp->next;
+        }
+    }
+    // 节点数为 0 并且允许申请
+    else if (_which.size() == 0 && _alloc == true) {
+        // 申请新的空间，新申请到的地址就是 res 的值
         res = alloc_pmm(_len);
     }
-    // 如果 part 不为空
-    if (part != nullptr) {
-        // 在 part 中查找
-        // res 指向移动到 full
-        // 判断剩余空间是否大于
-        // len+CHUNK_SIZE，如果大于等于则建立新的节点 小于的话不用新建
-    }
-    // 如果 part 为空或在 part 中没有找到
-    if (res == nullptr) {
-        // 在 free 中查找
+    // 如果 res 不为空
+    if (res != nullptr) {
         // res 指向的移动到 full
         // 判断剩余空间是否大于
         // len+CHUNK_SIZE，如果大于等于则建立新的节点 小于的话不用新建
@@ -179,10 +181,7 @@ SLAB::SLAB(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
     name = (char *)"HEAP(SLAB) allocator";
     // 初始化 slab_cache
     for (size_t i = LEN256; i < LEN65536; i++) {
-        slab_cache[i].len  = MIN << i;
-        slab_cache[i].full = nullptr;
-        slab_cache[i].part = nullptr;
-        slab_cache[i].free = nullptr;
+        slab_cache[i].len = MIN << i;
     }
     printf("%s init.\n", name);
     return;
