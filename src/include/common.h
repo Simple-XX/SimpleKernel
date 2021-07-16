@@ -39,7 +39,7 @@ namespace COMMON {
 #if defined(__i386__) || defined(__x86_64__)
     // 物理内存大小 2GB
     // TODO: 由引导程序传递
-    static constexpr const uint32_t PMM_MAX_SIZE = 0x80000000;
+    static constexpr const uint32_t PMM_SIZE = 0x80000000;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 这部分内存是内核保留的
     // 64MB
@@ -49,7 +49,7 @@ namespace COMMON {
 #elif defined(__riscv)
     // 物理内存大小 128MB
     // TODO: 由引导程序传递
-    static constexpr const uint64_t PMM_MAX_SIZE = 0x8000000;
+    static constexpr const uint64_t PMM_SIZE = 0x8000000;
     // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
     // 64MB
     static constexpr const uint64_t KERNEL_SIZE = 0x4000000;
@@ -58,8 +58,7 @@ namespace COMMON {
 #endif
 
     // 物理页数量
-    static constexpr const uint64_t PMM_PAGE_MAX_SIZE =
-        PMM_MAX_SIZE / PAGE_SIZE;
+    static constexpr const uint64_t PMM_PAGE_SIZE = PMM_SIZE / PAGE_SIZE;
 
     // 映射内核需要的页数
     static constexpr const uint64_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
@@ -98,6 +97,10 @@ namespace COMMON {
     // 针对整数
     template <>
     inline uint64_t ALIGN(const uint64_t _x, const size_t _align) {
+        return ((_x + _align - 1) & (~(_align - 1)));
+    }
+    template <>
+    inline uint32_t ALIGN(const uint32_t _x, const size_t _align) {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
 

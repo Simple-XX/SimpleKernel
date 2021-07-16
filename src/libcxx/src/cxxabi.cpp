@@ -228,7 +228,6 @@ namespace std {
     bool type_info::operator!=(const type_info &arg) const {
         return tname != arg.tname;
     }
-
 }
 
 namespace __cxxabiv1 {
