@@ -127,6 +127,13 @@ int test_heap(void) {
     assert(addr4 != nullptr);
     // LEN256 区域第二块被申请的内存，地址可以计算出来
     assert(addr4 == (uint8_t *)addr2 + 0x20 + 0x100);
+    printf("-------free-------\n");
+    heap.free(addr1);
+    printf("-------free addr1 done-------\n");
+    printf("addr2: 0x%X\n", addr2);
+    heap.free(addr2);
+    printf("-------free addr2 done-------\n");
+    printf("-------free-------\n");
     printf("heap test done.\n");
     return 0;
 }
