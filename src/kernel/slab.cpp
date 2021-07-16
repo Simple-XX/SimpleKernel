@@ -42,6 +42,29 @@ bool SLAB::chunk_t::operator!=(const chunk_t &_node) {
            next != _node.next;
 }
 
+SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
+    // 判断越界
+    assert(_idx < size());
+    chunk_t *res  = nullptr;
+    chunk_t *head = this;
+    // 找到头节点
+    for (size_t i = 0; i < size(); i++) {
+        if (head->addr == (void *)HEAD && head->len == HEAD) {
+            // res 指向 head 的下一个，即 [0]
+            res = head->next;
+            break;
+        }
+        head = head->next;
+    }
+    // 返回第 _idx 个节点
+    for (size_t i = 0; i < _idx; i++) {
+        res = res->next;
+    }
+    // res 必不为空
+    assert(res != nullptr);
+    return *res;
+}
+
 // 由于是循环队列，相当于在头节点前面插入
 void SLAB::chunk_t::push_back(chunk_t *_new_node) {
     _new_node->next = this;
@@ -84,8 +107,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         // 加入 free 链表
         free.push_back(new_node);
     }
-    printf("alloc_pmm: 0x%X, pages: 0x%X, new_node: 0x%p\n", _len, pages,
-           new_node);
     return new_node;
 }
 
@@ -123,58 +144,22 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
         // 新的节点必然属于 part 链表
         part.push_back(new_node);
     }
-    printf("new_node->addr: 0x%X, new_node->len: 0x%X\n", new_node->addr,
-           new_node->len);
     // 设置旧节点
     _node->len = _len;
+    // 旧节点移动到 full
+    move(full, _node);
     return;
 }
 
+// TODO
 void SLAB::slab_cache_t::merge(void) {
     // 如果节点少于两个，不需要合并
     if (part.size() < 2) {
         return;
     }
-    // 遍历 part 所有节点，如果有 addr 连续的，则合并
-    // 直观看得 O(N^2)，有啥效率高的？
-    chunk_t *tmp1 = this->part.next;
-    chunk_t *tmp2 = nullptr;
-    void *   addr = nullptr;
-    // 前面的节点
-    for (size_t i = 0; i < part.size(); i++) {
-        addr = (uint8_t *)tmp1->addr + CHUNK_SIZE + tmp1->len;
-        // 后面的节点
-        for (size_t j = i + 1; j < part.size(); j++) {
-            while (1)
-                ;
-            // 前面节点的结束地址是后面节点的开始地址
-            if (addr == tmp2->addr) {
-                // chunk 大小
-                tmp1->len += CHUNK_SIZE;
-                // 数据长度
-                tmp1->len += tmp2->len;
-                // 从当前链表中删除
-                tmp2->prev->next = tmp2->next;
-                tmp2->next->prev = tmp2->prev;
-            }
-            tmp2 = tmp1->next;
-        }
-        tmp1 = tmp1->next;
-    }
+    // 合并的条件
+    // node1->addr+CHUNK_SIZE+node1->len==node2->addr
 
-    // 后面的合并前面的
-
-    // 如果长度符合，移动到 free
-    tmp1 = this->part.next;
-    for (size_t i = 0; i < part.size(); i++) {
-        if (tmp1->len >= len - CHUNK_SIZE) {
-            // 移动到 free
-            move(free, tmp1);
-        }
-        tmp1 = tmp1->next;
-    }
-    // 如果有可以释放的则释放
-    free_pmm();
     return;
 }
 
@@ -189,8 +174,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
         if (tmp->len >= _len) {
             // 更新 res
             res = tmp;
-            printf("000 res->addr: 0x%X, res->len: 0x%X\n", res->addr,
-                   res->len);
             // 跳出循环
             break;
         }
@@ -199,26 +182,20 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
     }
     // 如果 res 不为空
     if (res != nullptr) {
-        printf("aaaa res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
         // res 从旧节点分离出来后剩余的部分
         split(res, _len);
-        printf("bbbb res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
         // res 指向的移动到 full
         move(full, res);
-        printf("cccc res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
     }
     // 如果 res 为空，说明在 _which 链表中没有找到合适的节点
     // 如果同时 _alloc 成立
     else if (res == nullptr && _alloc == true) {
         // 申请新的空间
         res = alloc_pmm(_len);
-        printf("dddd res->addr: 0x%X, res->len: 0x%X\n", res->addr, res->len);
         // 申请成功
         if (res != nullptr) {
             // 剩余部分
             split(res, _len);
-            printf("eeee res->addr: 0x%X, res->len: 0x%X\n", res->addr,
-                   res->len);
         }
     }
     return res;
@@ -230,14 +207,23 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(size_t _len) {
     chunk = find(part, _len, false);
     // 没找到的话在 free 里找
     if (chunk == nullptr) {
-        printf("find(part, _len) done, null.\n");
         // 在 free 中寻找，如果没找到就申请新的物理内存
         chunk = find(free, _len, true);
-        printf("find(free, _len) done, null.\n");
     }
     // 如果到这里 chunk 还为 nullptr 说明空间不够了
     assert(chunk != nullptr);
-    printf("find(size_t) done.\n");
+    for (size_t i = 0; i < full.size(); i++) {
+        printf("full 0x%X addr: 0x%X, len: 0x%X\n", i, full[i].addr,
+               full[i].len);
+    }
+    for (size_t i = 0; i < part.size(); i++) {
+        printf("part 0x%X addr: 0x%X, len: 0x%X\n", i, part[i].addr,
+               part[i].len);
+    }
+    for (size_t i = 0; i < free.size(); i++) {
+        printf("free 0x%X addr: 0x%X, len: 0x%X\n", i, free[i].addr,
+               free[i].len);
+    }
     return chunk;
 }
 
@@ -296,12 +282,11 @@ void *SLAB::alloc(size_t _len) {
         chunk_t *chunk = slab_cache[idx].find(_len);
         // 不为空的话计算地址
         if (chunk != nullptr) {
-            printf("chunk->addr: 0x%X, chunk->len: 0x%X\n", chunk->addr,
-                   chunk->len);
             // 计算地址
             res = (uint8_t *)chunk->addr + CHUNK_SIZE;
         }
     }
+    printf("alloc: 0x%X done.\n", _len);
     // 返回
     return res;
 }
