@@ -10,34 +10,24 @@
 #include "stdint.h"
 #include "stddef.h"
 #include "slab.h"
+#include "allocator.h"
 
 // TODO: 添加对 VMM 的处理
 class HEAP {
 private:
-    // 堆最大容量 4MB
-    static constexpr const uint32_t HEAP_SIZE = 0x400000;
-    // 管理算法的名称
-    const char *name;
-    static SLAB manage;
+    // 堆分配器
+    ALLOCATOR *allocator;
 
 protected:
 public:
     HEAP(void);
     ~HEAP(void);
     // 初始化
-    int32_t init(void);
-    // 管理结构初始化
-    int32_t manage_init(void);
+    bool init(void);
     // 内存申请，单位为 Byte
-    void *malloc(size_t byte);
+    void *malloc(size_t _byte);
     // 内存释放
-    void free(void *p);
-    // 获取管理的内存大小，包括管理信息
-    size_t get_total(void);
-    // 获取块数量
-    size_t get_block(void);
-    // 获取空闲内存数量 单位为 byte
-    size_t get_free(void);
+    void free(void *_p);
 };
 
 extern HEAP heap;
