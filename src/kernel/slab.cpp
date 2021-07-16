@@ -129,7 +129,8 @@ void SLAB::slab_cache_t::free_pmm(void) {
 
 void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     // 处理新节点
-    chunk_t *new_node = (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + len);
+    // 新节点地址为原本地址+chunk大小+要分配出去的长度
+    chunk_t *new_node = (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
     new_node->addr    = new_node;
     // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk 大小
     new_node->len = _node->len - _len - CHUNK_SIZE;
@@ -159,6 +160,34 @@ void SLAB::slab_cache_t::merge(void) {
     }
     // 合并的条件
     // node1->addr+CHUNK_SIZE+node1->len==node2->addr
+    // 这里要注意
+    // node->len 是实际使用的大小
+    // 而 node 地址是按照每个 cache 的 len 计算的
+    // 暴力遍历
+    // 外层循环
+    for (size_t i = 0; i < part.size(); i++) {
+        chunk_t &tmp  = part[i];
+        chunk_t *tmp2 = tmp.next;
+        printf("tmp 0x%p\n", tmp.addr);
+        // 内层循环
+        while (*tmp2 != tmp) {
+            printf("tmp2 0x%p\n", tmp2->addr);
+            // 如果符合条件
+            if ((uint8_t *)tmp.addr + CHUNK_SIZE + tmp.len == tmp2->addr) {
+                // 进行合并
+                // 加上 tmp2 的 chunk 长度
+                tmp.len += CHUNK_SIZE;
+                // 加上 tmp2 的 len 长度
+                tmp.len += tmp2->len;
+                // 删除 tmp2
+                tmp2->prev->next = tmp2->next;
+                tmp2->next->prev = tmp2->prev;
+                printf("merge 0x%p\n", tmp2->addr);
+                break;
+            }
+            tmp2 = tmp2->next;
+        }
+    }
 
     return;
 }
@@ -212,18 +241,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(size_t _len) {
     }
     // 如果到这里 chunk 还为 nullptr 说明空间不够了
     assert(chunk != nullptr);
-    for (size_t i = 0; i < full.size(); i++) {
-        printf("full 0x%X addr: 0x%X, len: 0x%X\n", i, full[i].addr,
-               full[i].len);
-    }
-    for (size_t i = 0; i < part.size(); i++) {
-        printf("part 0x%X addr: 0x%X, len: 0x%X\n", i, part[i].addr,
-               part[i].len);
-    }
-    for (size_t i = 0; i < free.size(); i++) {
-        printf("free 0x%X addr: 0x%X, len: 0x%X\n", i, free[i].addr,
-               free[i].len);
-    }
     return chunk;
 }
 
@@ -285,6 +302,7 @@ void *SLAB::alloc(size_t _len) {
             // 计算地址
             res = (uint8_t *)chunk->addr + CHUNK_SIZE;
         }
+        std::cout << slab_cache[idx];
     }
     printf("alloc: 0x%X done.\n", _len);
     // 返回
@@ -303,13 +321,14 @@ void SLAB::free(void *_addr, size_t) {
     // 要释放一个 chunk
     // 1. 计算 chunk 地址
     chunk_t *chunk = (chunk_t *)((uint8_t *)_addr - CHUNK_SIZE);
-    printf("free chunk: 0x%X\n", chunk);
     // 2. 计算所属 slab_cache 索引
-    printf("free chunk->len: 0x%X\n", chunk->len);
     assert(chunk->len != 0);
     auto idx = get_idx(chunk->len);
     // 3. 调用对应的 remove 函数
+    printf("free chunk: 0x%p, chunk->len: 0x%X\n", chunk, chunk->len);
     slab_cache[idx].remove(chunk);
+    std::cout << slab_cache[idx];
+    printf("free 0x%p done.\n", _addr);
     return;
 }
 
