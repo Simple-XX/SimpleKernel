@@ -44,9 +44,11 @@ uint64_t FIRSTFIT::find_len(uint64_t _len, bool _val) {
 }
 
 FIRSTFIT::FIRSTFIT(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
-    name = (char *)"PMM(First Fit) allocator";
+    // 名字初始化
+    allocator_name = (char *)"PMM(First Fit) allocator";
+    // 所有清零
     memset(map, 0, sizeof(map));
-    printf("%s init.\n", name);
+    printf("%s init.\n", allocator_name);
     return;
 }
 
@@ -58,48 +60,65 @@ void *FIRSTFIT::alloc(size_t _len) {
     void *res_addr = nullptr;
     // 在位图中寻找连续 _len 的位置
     uint64_t idx = find_len(_len, false);
+    // 如果为 ~0 说明未找到
     if (idx == ~(uint64_t)0) {
         // err("NO ENOUGH MEM.\n");
         return nullptr;
     }
+    // 遍历区域
     for (auto i = idx; i < idx + _len; i++) {
+        // 置位，说明已使用
         set(i);
     }
-    res_addr = (void *)((uint8_t *)addr + (COMMON::PAGE_SIZE * idx));
-    free_count -= _len;
-    used_count += _len;
+    // 计算实际地址
+    // 分配器起始地址+页长度*第几页
+    res_addr =
+        (void *)((uint8_t *)allocator_start_addr + (COMMON::PAGE_SIZE * idx));
+    // 更新统计信息
+    allocator_free_count -= _len;
+    allocator_used_count += _len;
     return res_addr;
 }
 
 bool FIRSTFIT::alloc(void *_addr, size_t _len) {
-    uint64_t idx = ((uint8_t *)_addr - (uint8_t *)addr) / COMMON::PAGE_SIZE;
+    // 计算 _addr 在 map 中的索引
+    uint64_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
+                   COMMON::PAGE_SIZE;
+    // 遍历
     for (auto i = idx; i < idx + _len; i++) {
+        // 如果在范围内有已经分配的内存，返回 false
         if (test(i) == true) {
             return false;
         }
     }
+    // 到这里说明范围内没有已使用内存
+    // 再次遍历
     for (auto i = idx; i < idx + _len; i++) {
+        // 置位
         set(i);
     }
-    free_count -= _len;
-    used_count += _len;
+    // 更新统计信息
+    allocator_free_count -= _len;
+    allocator_used_count += _len;
     return true;
 }
 
 void FIRSTFIT::free(void *_addr, size_t _len) {
-    uint64_t idx = ((uint8_t *)_addr - (uint8_t *)addr) / COMMON::PAGE_SIZE;
+    uint64_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
+                   COMMON::PAGE_SIZE;
     for (auto i = idx; i < idx + _len; i++) {
         clr(i);
     }
-    free_count += _len;
-    used_count -= _len;
+    // 更新统计信息
+    allocator_free_count += _len;
+    allocator_used_count -= _len;
     return;
 }
 
 size_t FIRSTFIT::get_used_count(void) const {
-    return used_count;
+    return allocator_used_count;
 }
 
 size_t FIRSTFIT::get_free_count(void) const {
-    return free_count;
+    return allocator_free_count;
 }
