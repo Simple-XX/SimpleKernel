@@ -109,7 +109,7 @@ int test_heap(void) {
     void *addr3 = nullptr;
     void *addr4 = nullptr;
     // 申请超过最大允许的内存 65536B
-    addr1 = heap.malloc(0x10000);
+    addr1 = heap.malloc(0x10001);
     // 应该返回 nullptr
     assert(addr1 == nullptr);
     // 申请小块内存
@@ -118,7 +118,7 @@ int test_heap(void) {
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
     assert(((ptrdiff_t)((uint8_t *)addr2 - 0x20) & 0xFFF) == 0x0);
     // 在 LEN512 申请新的内存
-    addr3 = heap.malloc(0xFF);
+    addr3 = heap.malloc(0x200);
     assert(addr3 != nullptr);
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
     assert(((ptrdiff_t)((uint8_t *)addr3 - 0x20) & 0xFFF) == 0x0);
