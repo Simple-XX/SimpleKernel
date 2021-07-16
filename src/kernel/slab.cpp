@@ -286,13 +286,12 @@ SLAB::~SLAB(void) {
 void *SLAB::alloc(size_t _len) {
     void *res = nullptr;
     // 分配时，首先确定需要分配的大小
-    auto bytes = _len + CHUNK_SIZE;
     // 大小不能超过 65536B
-    if (bytes <= MIN << LEN65536) {
+    if (_len <= MIN << LEN65536) {
         // 根据大小确定 slab_cache 索引
-        auto idx = get_idx(bytes);
+        auto idx = get_idx(_len);
         // 寻找合适的 slab 节点
-        chunk_t *chunk = slab_cache[idx].find(bytes);
+        chunk_t *chunk = slab_cache[idx].find(_len);
         // 不为空的话计算地址
         if (chunk != nullptr) {
             printf("chunk->addr: 0x%X, chunk->len: 0x%X\n", chunk->addr,
@@ -321,7 +320,7 @@ void SLAB::free(void *_addr, size_t) {
     // 2. 计算所属 slab_cache 索引
     printf("free chunk->len: 0x%X\n", chunk->len);
     assert(chunk->len != 0);
-    auto idx = get_idx(chunk->len);
+    // auto idx = get_idx(chunk->len);
     // 3. 调用对应的 remove 函数
     // slab_cache[idx].remove(chunk);
     return;
