@@ -126,13 +126,19 @@ int test_heap(void) {
     addr4 = heap.malloc(0x80);
     assert(addr4 != nullptr);
     // LEN256 区域第二块被申请的内存，地址可以计算出来
-    assert(addr4 == (uint8_t *)addr2 + 0x20 + 0x100);
+    assert(addr4 == (uint8_t *)addr2 + 0x20 + 0x1);
     printf("-------free-------\n");
+    void *addr5 = heap.malloc(0x1);
+    void *addr6 = heap.malloc(0x1);
+    void *addr7 = heap.malloc(0x1);
     heap.free(addr1);
     printf("-------free addr1 done-------\n");
-    printf("addr2: 0x%X\n", addr2);
     heap.free(addr2);
+    heap.free(addr4);
     printf("-------free addr2 done-------\n");
+    heap.free(addr5);
+    heap.free(addr6);
+    heap.free(addr7);
     printf("-------free-------\n");
     printf("heap test done.\n");
     return 0;
