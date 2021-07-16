@@ -67,5 +67,6 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
 elif [ ${ARCH} == "arm" ]; then
     qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
 elif [ ${ARCH} == "riscv64" ]; then
-    qemu-system-riscv64 -machine virt -serial stdio -bios ${OPENSBI} -kernel ${kernel}
+    qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
+    -monitor telnet::2333,server,nowait -serial stdio -nographic
 fi
