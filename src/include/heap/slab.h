@@ -40,6 +40,8 @@ private:
         size_t size(void);
         bool   operator==(const chunk_t &_node);
         bool   operator!=(const chunk_t &_node);
+        // 返回相对头节点的第 _idx 项
+        chunk_t &operator[](size_t _idx);
     };
 
     // 第一级保存不同长度的内存块
