@@ -26,8 +26,8 @@ namespace PLIC {
         // 映射 plic
         for (uint64_t a = MEMLAYOUT::PLIC; a < MEMLAYOUT::PLIC + 0x210000;
              a += 0x1000) {
-            vmm.mmap(vmm.get_pgd(), (void *)a, (void *)a,
-                     VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+            VMM::mmap(VMM::get_pgd(), (void *)a, (void *)a,
+                      VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
         }
         // TODO: 多核情况下设置所有 hart
         // 将当前 hart 的 S 模式优先级阈值设置为 0
