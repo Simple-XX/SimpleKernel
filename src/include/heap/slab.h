@@ -17,6 +17,7 @@
 // 查找方法 首先查 part，再查 free，再没有就申请新的空间，再在 free 中查
 
 // SLAB 分配器
+// 只是用了 ALLOCATOR 的部分变量/函数
 class SLAB : ALLOCATOR {
 private:
     // 两级结构
