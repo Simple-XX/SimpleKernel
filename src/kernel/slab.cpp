@@ -111,19 +111,20 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
 }
 
 void SLAB::slab_cache_t::free_pmm(void) {
-    // 遍历 free，符合条件的释放
-    chunk_t *tmp   = free.next;
-    size_t   bytes = 0;
-    size_t   pages = 0;
+    size_t pages = 0;
+    // 遍历 free 链表
     for (size_t i = 0; i < free.size(); i++) {
-        bytes = tmp->len + CHUNK_SIZE;
-        pages = bytes / COMMON::PAGE_SIZE;
-        if (bytes % COMMON::PAGE_SIZE != 0) {
-            pages += 1;
-        }
-        PMM::alloc_pages(tmp->addr, pages);
-        tmp = tmp->next;
+        chunk_t &tmp = free[i];
+        pages        = (tmp.len + CHUNK_SIZE) / COMMON::PAGE_SIZE;
+        // 必须是整数个页
+        assert(((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
+        PMM::free_pages(tmp.addr, pages);
+        // 删除节点
+        tmp.prev->next = tmp.next;
+        tmp.next->prev = tmp.prev;
     }
+    // 释放完后 free 链表项应该为 0
+    assert(free.size() == 0);
     return;
 }
 
@@ -152,7 +153,7 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     return;
 }
 
-// TODO
+// TODO: 优化算法
 void SLAB::slab_cache_t::merge(void) {
     // 如果节点少于两个，不需要合并
     if (part.size() < 2) {
@@ -160,18 +161,13 @@ void SLAB::slab_cache_t::merge(void) {
     }
     // 合并的条件
     // node1->addr+CHUNK_SIZE+node1->len==node2->addr
-    // 这里要注意
-    // node->len 是实际使用的大小
-    // 而 node 地址是按照每个 cache 的 len 计算的
     // 暴力遍历
     // 外层循环
     for (size_t i = 0; i < part.size(); i++) {
         chunk_t &tmp  = part[i];
         chunk_t *tmp2 = tmp.next;
-        printf("tmp 0x%p\n", tmp.addr);
         // 内层循环
         while (*tmp2 != tmp) {
-            printf("tmp2 0x%p\n", tmp2->addr);
             // 如果符合条件
             if ((uint8_t *)tmp.addr + CHUNK_SIZE + tmp.len == tmp2->addr) {
                 // 进行合并
@@ -182,13 +178,23 @@ void SLAB::slab_cache_t::merge(void) {
                 // 删除 tmp2
                 tmp2->prev->next = tmp2->next;
                 tmp2->next->prev = tmp2->prev;
-                printf("merge 0x%p\n", tmp2->addr);
                 break;
             }
             tmp2 = tmp2->next;
         }
     }
-
+    // 遍历查找可以移动到 free 链表的
+    // 如果 part 长度等于 len-chunnk 大小
+    for (size_t i = 0; i < part.size(); i++) {
+        chunk_t &tmp = part[i];
+        // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
+        if (((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0) {
+            // 移动到 free
+            move(free, &tmp);
+        }
+    }
+    // 寻找可以释放的节点进行释放
+    free_pmm();
     return;
 }
 
@@ -302,9 +308,12 @@ void *SLAB::alloc(size_t _len) {
             // 计算地址
             res = (uint8_t *)chunk->addr + CHUNK_SIZE;
         }
+// #define DEBUG
+#ifdef DEBUG
         std::cout << slab_cache[idx];
+#undef DEBUG
+#endif
     }
-    printf("alloc: 0x%X done.\n", _len);
     // 返回
     return res;
 }
@@ -314,7 +323,6 @@ bool SLAB::alloc(void *, size_t) {
 }
 
 void SLAB::free(void *_addr, size_t) {
-    printf("_addr: 0x%X\n", _addr);
     if (_addr == nullptr) {
         return;
     }
@@ -325,10 +333,12 @@ void SLAB::free(void *_addr, size_t) {
     assert(chunk->len != 0);
     auto idx = get_idx(chunk->len);
     // 3. 调用对应的 remove 函数
-    printf("free chunk: 0x%p, chunk->len: 0x%X\n", chunk, chunk->len);
     slab_cache[idx].remove(chunk);
+// #define DEBUG
+#ifdef DEBUG
     std::cout << slab_cache[idx];
-    printf("free 0x%p done.\n", _addr);
+#undef DEBUG
+#endif
     return;
 }
 
