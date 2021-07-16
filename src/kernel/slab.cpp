@@ -145,6 +145,8 @@ void SLAB::slab_cache_t::merge(void) {
         addr = (uint8_t *)tmp1->addr + CHUNK_SIZE + tmp1->len;
         // 后面的节点
         for (size_t j = i + 1; j < part.size(); j++) {
+            while (1)
+                ;
             // 前面节点的结束地址是后面节点的开始地址
             if (addr == tmp2->addr) {
                 // chunk 大小
@@ -270,12 +272,12 @@ size_t SLAB::get_idx(size_t _len) {
 }
 
 SLAB::SLAB(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
-    name = (char *)"HEAP(SLAB) allocator";
+    allocator_name = (char *)"HEAP(SLAB) allocator";
     // 初始化 slab_cache
     for (size_t i = LEN256; i < LEN65536; i++) {
         slab_cache[i].len = MIN << i;
     }
-    printf("%s init.\n", name);
+    printf("%s init.\n", allocator_name);
     return;
 }
 
@@ -320,9 +322,9 @@ void SLAB::free(void *_addr, size_t) {
     // 2. 计算所属 slab_cache 索引
     printf("free chunk->len: 0x%X\n", chunk->len);
     assert(chunk->len != 0);
-    // auto idx = get_idx(chunk->len);
+    auto idx = get_idx(chunk->len);
     // 3. 调用对应的 remove 函数
-    // slab_cache[idx].remove(chunk);
+    slab_cache[idx].remove(chunk);
     return;
 }
 
