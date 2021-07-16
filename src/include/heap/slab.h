@@ -10,6 +10,7 @@
 #include "stdint.h"
 #include "stddef.h"
 #include "allocator.h"
+#include "iostream"
 
 // 针对常用的 size 分别建立含有三个链表对象(full, part, free)的数组
 // 需要分配时在对应 size 数组中寻找一个合适的 chunk
@@ -27,6 +28,7 @@ private:
         // chunk_t 结构的物理地址
         void *addr;
         // 长度，不包括自身大小 单位为 byte
+        // 记录的是实际使用的长度
         size_t len;
         // 双向循环链表指针
         chunk_t *prev;
@@ -76,8 +78,25 @@ private:
         // 查找长度符合的
         chunk_t *find(size_t _len);
         // 释放一个 full 的链表项
-        void remove(chunk_t *_node);
+        void                 remove(chunk_t *_node);
+        friend std::ostream &operator<<(std::ostream &      _out,
+                                        SLAB::slab_cache_t &_cache) {
+            for (size_t i = 0; i < _cache.full.size(); i++) {
+                printf("full 0x%X addr: 0x%X, len: 0x%X\n", i,
+                       _cache.full[i].addr, _cache.full[i].len);
+            }
+            for (size_t i = 0; i < _cache.part.size(); i++) {
+                printf("part 0x%X addr: 0x%X, len: 0x%X\n", i,
+                       _cache.part[i].addr, _cache.part[i].len);
+            }
+            for (size_t i = 0; i < _cache.free.size(); i++) {
+                printf("free 0x%X addr: 0x%X, len: 0x%X\n", i,
+                       _cache.free[i].addr, _cache.free[i].len);
+            }
+            return _out;
+        }
     };
+
     // chunk 大小
     static constexpr const size_t CHUNK_SIZE = sizeof(chunk_t);
     // 管理不同长度的内存
