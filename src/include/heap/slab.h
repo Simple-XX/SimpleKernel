@@ -15,7 +15,6 @@
 // 针对常用的 size 分别建立含有三个链表对象(full, part, free)的数组
 // 需要分配时在对应 size 数组中寻找一个合适的 chunk
 // 查找方法 首先查 part，再查 free，再没有就申请新的空间，再在 free 中查
-// full/part/free 是相对于 pmm 分配的一个或多个连续的页而言的
 
 // SLAB 分配器
 class SLAB : ALLOCATOR {
@@ -69,11 +68,14 @@ private:
         // 当前 cache 的长度，单位为 byte
         size_t len;
         // 这三个作为头节点使用，不会实际使用
-        // 全部使用的链表
+        // full/part/free 是相对于 pmm
+        // 分配的一个或多个连续的页而言的
+        // 已经分配的 len 长度的内存，当然 len 不一定全部使用，真实使用的长度由
+        // chunk 记录
         chunk_t full;
-        // 部分使用的链表
+        // 申请的内存使用了一部分
         chunk_t part;
-        // 未使用的链表
+        // 一整段申请的内存都没有使用
         chunk_t free;
         // 查找长度符合的
         chunk_t *find(size_t _len);
