@@ -310,13 +310,20 @@ bool SLAB::alloc(void *, size_t) {
 }
 
 void SLAB::free(void *_addr, size_t) {
+    printf("_addr: 0x%X\n", _addr);
+    if (_addr == nullptr) {
+        return;
+    }
     // 要释放一个 chunk
     // 1. 计算 chunk 地址
-    chunk_t *chunk = (chunk_t *)(uint8_t *)_addr - CHUNK_SIZE;
+    chunk_t *chunk = (chunk_t *)((uint8_t *)_addr - CHUNK_SIZE);
+    printf("free chunk: 0x%X\n", chunk);
     // 2. 计算所属 slab_cache 索引
+    printf("free chunk->len: 0x%X\n", chunk->len);
+    assert(chunk->len != 0);
     auto idx = get_idx(chunk->len);
     // 3. 调用对应的 remove 函数
-    slab_cache[idx].remove(chunk);
+    // slab_cache[idx].remove(chunk);
     return;
 }
 
