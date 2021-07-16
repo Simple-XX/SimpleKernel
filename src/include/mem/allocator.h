@@ -15,15 +15,15 @@ class ALLOCATOR {
 private:
 protected:
     // 分配器名称
-    char *name;
+    char *allocator_name;
     // 当前管理的内存区域地址
-    void *addr;
+    void *allocator_start_addr;
     // 当前管理的内存区域长度
-    size_t length;
+    size_t allocator_length;
     // 当前管理的内存区域空闲长度
-    size_t free_count;
+    size_t allocator_free_count;
     // 当前管理的内存区域已使用长度
-    size_t used_count;
+    size_t allocator_used_count;
 
 public:
     // _addr: 要管理的内存开始地址
