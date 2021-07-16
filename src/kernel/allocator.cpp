@@ -11,11 +11,13 @@
 #include "allocator.h"
 
 ALLOCATOR::ALLOCATOR(const void *_addr, size_t _len) {
-    name       = (char *)"ALLOCATOR: no init";
-    addr       = const_cast<void *>(_addr);
-    length     = _len;
-    free_count = length;
-    used_count = 0;
+    // 默认名字
+    allocator_name       = (char *)"ALLOCATOR: no init";
+    allocator_start_addr = const_cast<void *>(_addr);
+    allocator_length     = _len;
+    // 初始状态下所有页都未使用
+    allocator_free_count = allocator_length;
+    allocator_used_count = 0;
     return;
 }
 
