@@ -71,28 +71,26 @@ class VMM {
 private:
     // TODO: 支持最多四级页表，共用同一套代码
     // 当前页目录
-    pgd_t curr_dir;
+    static pgd_t curr_dir;
 
 protected:
 public:
     VMM(void);
     ~VMM(void);
     // 初始化
-    int32_t init(void);
+    static bool init(void);
     // 获取当前页目录
-    pgd_t get_pgd(void) const;
+    static pgd_t get_pgd(void);
     // 设置当前页目录
-    void set_pgd(const pgd_t pgd);
+    static void set_pgd(const pgd_t pgd);
     // 映射物理地址到虚拟地址
-    void mmap(const pgd_t pgd, const void *va, const void *pa,
-              const uint32_t flag);
+    static void mmap(const pgd_t pgd, const void *va, const void *pa,
+                     const uint32_t flag);
     // 取消映射
-    void unmmap(const pgd_t pgd, const void *va);
+    static void unmmap(const pgd_t pgd, const void *va);
     // 获取映射的物理地址
-    // 已映射返回 1，未映射返回 0
-    uint32_t get_mmap(const pgd_t pgd, const void *va, const void *pa);
+    // 已映射返回 true，未映射返回 false
+    static bool get_mmap(const pgd_t pgd, const void *va, const void *pa);
 };
-
-extern VMM vmm;
 
 #endif /* _VMM_H */
