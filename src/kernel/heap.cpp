@@ -17,10 +17,8 @@ HEAP::~HEAP(void) {
     return;
 }
 
-bool HEAP::init(const void *_addr, size_t _len) {
-    start  = _addr;
-    length = _len;
-    static SLAB slab_allocator(start, length);
+bool HEAP::init(void) {
+    static SLAB slab_allocator(0, 0);
     allocator = (ALLOCATOR *)&slab_allocator;
     printf("heap_init\n");
     return 0;
@@ -34,18 +32,6 @@ void HEAP::free(void *_addr) {
     // 堆不需要 _len 参数
     allocator->free(_addr, 0);
     return;
-}
-
-size_t HEAP::get_total(void) {
-    return 0;
-}
-
-size_t HEAP::get_block(void) {
-    return 0;
-}
-
-size_t HEAP::get_free(void) {
-    return allocator->get_free_count();
 }
 
 extern "C" void *malloc(size_t _size) {

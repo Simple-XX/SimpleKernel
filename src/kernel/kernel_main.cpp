@@ -29,7 +29,7 @@ void kernel_main(void) {
     // 测试虚拟内存
     test_vmm();
     // 堆初始化
-    heap.init(0, 0);
+    heap.init();
     // 测试堆
     test_heap();
     show_info();
