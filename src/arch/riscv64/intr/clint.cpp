@@ -48,8 +48,8 @@ namespace CLINT {
         // 映射 clint 地址
         for (uint64_t a = MEMLAYOUT::CLINT; a < MEMLAYOUT::CLINT + 0x10000;
              a += 0x1000) {
-            vmm.mmap(vmm.get_pgd(), (void *)a, (void *)a,
-                     VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+            VMM::mmap(VMM::get_pgd(), (void *)a, (void *)a,
+                      VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
         }
         // 设置 trap vector
         CPU::WRITE_STVEC((uint64_t)trap_entry);

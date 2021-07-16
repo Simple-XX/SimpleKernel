@@ -27,7 +27,7 @@ pte_t *walk(pt_t pgd, uint64_t va, bool alloc) {
         // 如果无效
         else {
             if (alloc == true) {
-                pgd = (pt_t)pmm.alloc_page(1, COMMON::NORMAL);
+                pgd = (pt_t)PMM::alloc_page();
                 if (pgd == nullptr) {
                     return nullptr;
                 }
@@ -44,6 +44,7 @@ pte_t *walk(pt_t pgd, uint64_t va, bool alloc) {
 }
 
 static pt_t pgd_kernel;
+pgd_t       VMM::curr_dir;
 
 VMM::VMM(void) {
     curr_dir = (pgd_t)CPU::READ_SATP();
@@ -54,8 +55,8 @@ VMM::~VMM(void) {
     return;
 }
 
-int32_t VMM::init(void) {
-    pgd_kernel = (pt_t)pmm.alloc_page(1, COMMON::NORMAL);
+bool VMM::init(void) {
+    pgd_kernel = (pt_t)PMM::alloc_page();
     for (uint64_t addr = (uint64_t)COMMON::KERNEL_START_ADDR;
          addr < (uint64_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SIZE;
          addr += COMMON::PAGE_SIZE) {
@@ -69,7 +70,7 @@ int32_t VMM::init(void) {
     return 0;
 }
 
-pgd_t VMM::get_pgd(void) const {
+pgd_t VMM::get_pgd(void) {
     return curr_dir;
 }
 
@@ -87,7 +88,7 @@ void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
         return;
     }
     if (*pte & VMM_PAGE_VALID) {
-        info("remap");
+        info("remap.\n");
     }
     *pte = PA2PTE(pa) | flag | VMM_PAGE_VALID;
     CPU::SFENCE_VMA();
@@ -97,17 +98,17 @@ void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
 void VMM::unmmap(const pgd_t pgd, const void *va) {
     pte_t *pte;
     if ((pte = walk(pgd, (uint64_t)va, false)) == 0) {
-        info("uvmunmap: walk");
+        info("uvmunmap: walk.\n");
     }
     if ((*pte & VMM_PAGE_VALID) == 0) {
-        info("uvmunmap: not mapped");
+        info("uvmunmap: not mapped.\n");
     }
     *pte = 0x00;
     CPU::SFENCE_VMA();
     return;
 }
 
-uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
+bool VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
     pte_t *pte;
     if ((pte = walk(pgd, (uint64_t)va, false)) == 0) {
         if (pa != nullptr) {
@@ -126,5 +127,3 @@ uint32_t VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
     }
     return 1;
 }
-
-VMM vmm;

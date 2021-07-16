@@ -8,9 +8,7 @@
 #include "common.h"
 #include "heap.h"
 
-SLAB HEAP::manage;
-
-HEAP::HEAP(void) : name("SLAB") {
+HEAP::HEAP(void) {
     return;
 }
 
@@ -18,45 +16,29 @@ HEAP::~HEAP(void) {
     return;
 }
 
-int32_t HEAP::init(void) {
-    manage_init();
+bool HEAP::init(void) {
+    static SLAB slab_allocator(0, 0);
+    allocator = (ALLOCATOR *)&slab_allocator;
     printf("heap_init\n");
     return 0;
 }
 
-int32_t HEAP::manage_init(void) {
-    manage.init(COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB),
-                HEAP_SIZE);
-    return 0;
+void *HEAP::malloc(size_t _byte) {
+    return allocator->alloc(_byte);
 }
 
-void *HEAP::malloc(size_t byte) {
-    return manage.alloc(byte);
-}
-
-void HEAP::free(void *addr) {
-    manage.free(addr);
+void HEAP::free(void *_addr) {
+    // 堆不需要 _len 参数
+    allocator->free(_addr, 0);
     return;
 }
 
-size_t HEAP::get_total(void) {
-    return manage.get_total();
+extern "C" void *malloc(size_t _size) {
+    return heap.malloc(_size);
 }
 
-size_t HEAP::get_block(void) {
-    return manage.get_block();
-}
-
-size_t HEAP::get_free(void) {
-    return manage.get_free();
-}
-
-extern "C" void *malloc(size_t size) {
-    return heap.malloc(size);
-}
-
-extern "C" void free(void *ptr) {
-    heap.free(ptr);
+extern "C" void free(void *_p) {
+    heap.free(_p);
     return;
 }
 

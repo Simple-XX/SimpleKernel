@@ -170,8 +170,8 @@ VIRTIO::VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props) {
         // 映射内存
         for (uint64_t addr = tmp.addr; addr < tmp.addr + tmp.len;
              addr += COMMON::PAGE_SIZE) {
-            vmm.mmap(vmm.get_pgd(), (void *)addr, (void *)addr,
-                     VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+            VMM::mmap(VMM::get_pgd(), (void *)addr, (void *)addr,
+                      VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
         }
         // 根据设备类型初始化相应设备
         // 寻找有效设备，添加到向量中
