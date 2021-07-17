@@ -119,7 +119,7 @@ private:
 protected:
 public:
     // 节点名
-    char name[32];
+    mystl::string name;
     // 节点的属性列表
     // 标准属性
     standard_props_t standard;
@@ -130,10 +130,10 @@ public:
     dtb_prop_node_t(void) {
         return;
     }
-    dtb_prop_node_t(char *_str) {
-        memcpy(name, _str, strlen(_str));
-        printf("name: %s\n", name);
-    }
+    // dtb_prop_node_t(char *_str) {
+    //     printf("_str: %s\n", _str);
+    //     name = _str;
+    // }
     dtb_prop_node_t(const mystl::string &_name);
     ~dtb_prop_node_t(void);
     // 添加属性
