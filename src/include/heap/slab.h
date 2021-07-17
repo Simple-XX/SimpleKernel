@@ -29,6 +29,7 @@ private:
         void *addr;
         // 长度，不包括自身大小 单位为 byte
         // 记录的是实际使用的长度
+        // 按照 8byte 对齐
         size_t len;
         // 双向循环链表指针
         chunk_t *prev;
