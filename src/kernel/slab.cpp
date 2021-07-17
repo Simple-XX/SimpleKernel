@@ -297,8 +297,9 @@ SLAB::~SLAB(void) {
 void *SLAB::alloc(size_t _len) {
     void *res = nullptr;
     // 分配时，首先确定需要分配的大小
+    // _len 为零直接返回
     // 大小不能超过 65536B
-    if (_len <= MIN << LEN65536) {
+    if (_len > 0 && _len <= MIN << LEN65536) {
         // _len 按照 8bytes 对齐
         _len = COMMON::ALIGN(_len, 8);
         // 根据大小确定 slab_cache 索引
