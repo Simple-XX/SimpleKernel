@@ -112,15 +112,17 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
 void SLAB::slab_cache_t::free_pmm(void) {
     size_t pages = 0;
     // 遍历 free 链表
-    for (size_t i = 0; i < free.size(); i++) {
-        chunk_t &tmp = free[i];
-        pages        = (tmp.len + CHUNK_SIZE) / COMMON::PAGE_SIZE;
+    chunk_t *tmp = free.next;
+    while (tmp != &free) {
+        pages = (tmp->len + CHUNK_SIZE) / COMMON::PAGE_SIZE;
         // 必须是整数个页
-        assert(((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
-        PMM::free_pages(tmp.addr, pages);
+        assert(((tmp->len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
+        PMM::free_pages(tmp->addr, pages);
         // 删除节点
-        tmp.prev->next = tmp.next;
-        tmp.next->prev = tmp.prev;
+        tmp->prev->next = tmp->next;
+        tmp->next->prev = tmp->prev;
+        // 迭代
+        tmp = tmp->next;
     }
     // 释放完后 free 链表项应该为 0
     assert(free.size() == 0);
@@ -163,35 +165,53 @@ void SLAB::slab_cache_t::merge(void) {
     // 合并的条件
     // node1->addr+CHUNK_SIZE+node1->len==node2->addr
     // 暴力遍历
+    chunk_t *chunk = part.next;
+    chunk_t *tmp   = chunk->next;
     // 外层循环
-    for (size_t i = 0; i < part.size(); i++) {
-        chunk_t &tmp  = part[i];
-        chunk_t *tmp2 = tmp.next;
+    while (chunk != &part) {
         // 内层循环
-        while (*tmp2 != tmp) {
+        while (chunk != tmp) {
             // 如果符合条件
-            if ((uint8_t *)tmp.addr + CHUNK_SIZE + tmp.len == tmp2->addr) {
+            if ((uint8_t *)chunk->addr + CHUNK_SIZE + chunk->len == tmp->addr) {
                 // 进行合并
-                // 加上 tmp2 的 chunk 长度
-                tmp.len += CHUNK_SIZE;
-                // 加上 tmp2 的 len 长度
-                tmp.len += tmp2->len;
-                // 删除 tmp2
-                tmp2->prev->next = tmp2->next;
-                tmp2->next->prev = tmp2->prev;
+                // 加上 tmp 的 chunk 长度
+                chunk->len += CHUNK_SIZE;
+                // 加上 tmp 的 len 长度
+                chunk->len += tmp->len;
+                // 删除 tmp
+                tmp->prev->next = tmp->next;
+                tmp->next->prev = tmp->prev;
                 break;
             }
-            tmp2 = tmp2->next;
+            tmp = tmp->next;
         }
+        chunk = chunk->next;
     }
+
     // 遍历查找可以移动到 free 链表的
     // 如果 part 长度等于 len-chunnk 大小
-    for (size_t i = 0; i < part.size(); i++) {
-        chunk_t &tmp = part[i];
+    // BUG: size()
+    // for (size_t i = 0; i < part.size(); i++) {
+    //     chunk_t &tmp = part[i];
+    //     // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
+    //     if (((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0) {
+    //         // 移动到 free
+    //         move(free, &tmp);
+    //     }
+    // }
+
+    tmp = part.next;
+    while (tmp != &part) {
         // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
-        if (((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0) {
+        if (((tmp->len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0) {
             // 移动到 free
-            move(free, &tmp);
+            move(free, tmp);
+            // 因为 tmp 已经被修改了，所以重新赋值
+            tmp = part.next;
+        }
+        else {
+            // 没有被修改，直接指向 next
+            tmp = tmp->next;
         }
     }
     // 寻找可以释放的节点进行释放
