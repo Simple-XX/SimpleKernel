@@ -119,7 +119,7 @@ private:
 protected:
 public:
     // 节点名
-    mystl::string name;
+    char name[32];
     // 节点的属性列表
     // 标准属性
     standard_props_t standard;
@@ -128,10 +128,11 @@ public:
     // 子节点指针
     mystl::vector<dtb_prop_node_t *> children;
     dtb_prop_node_t(void) {
-        ;
+        return;
     }
     dtb_prop_node_t(char *_str) {
-        name = _str;
+        memcpy(name, _str, strlen(_str));
+        printf("name: %s\n", name);
     }
     dtb_prop_node_t(const mystl::string &_name);
     ~dtb_prop_node_t(void);
@@ -143,6 +144,22 @@ public:
     // 添加子节点
     void add_child(dtb_prop_node_t *_child);
 };
+
+// class node_t {
+//     // 节点地址
+//     void *node_addr;
+//     // 每个 node 的数据
+//     // 节点名
+//     mystyl::string name;
+//     // 属性
+//     // 从 _addr 地址初始化一个节点
+//     node_t(void *_addr) {
+//         return;
+//     }
+//     ~node_t(void) {
+//         return;
+//     }
+// };
 
 // See devicetree-specification-v0.3.pdf for more info
 class DTB {
