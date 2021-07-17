@@ -7,6 +7,7 @@
 #include "cxxabi.h"
 #include "common.h"
 #include "stdio.h"
+#include "stdlib.h"
 #include "iostream"
 #include "assert.h"
 #include "pmm.h"
