@@ -127,7 +127,8 @@ int test_heap(void) {
     addr4 = heap.malloc(0x80);
     assert(addr4 != nullptr);
     // LEN256 区域第二块被申请的内存，地址可以计算出来
-    assert(addr4 == (uint8_t *)addr2 + 0x20 + 0x1);
+    // 前一个块的地址+chunk 长度+数据长度+对齐长度
+    assert(addr4 == (uint8_t *)addr2 + 0x20 + 0x1 + 0x7);
     // 全部释放
     heap.free(addr1);
     heap.free(addr2);
