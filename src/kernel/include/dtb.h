@@ -127,6 +127,12 @@ public:
     interrupt_device_props_t interrupt_device;
     // 子节点指针
     mystl::vector<dtb_prop_node_t *> children;
+    dtb_prop_node_t(void) {
+        ;
+    }
+    dtb_prop_node_t(char *_str) {
+        name = _str;
+    }
     dtb_prop_node_t(const mystl::string &_name);
     ~dtb_prop_node_t(void);
     // 添加属性
@@ -152,9 +158,10 @@ private:
     // 数据区结束标记
     static constexpr const uint32_t FDT_END = 0x9;
 
-    // devicetree-specification-v0.3.pdf#5.1
-    static constexpr const uint32_t FDT_MAGIC = 0xD00DFEED;
     struct fdt_header_t {
+        // devicetree-specification-v0.3.pdf#5.1
+        static constexpr const uint32_t FDT_MAGIC   = 0xD00DFEED;
+        static constexpr const uint32_t FDT_VERSION = 0x11;
         // 魔数，0xD00DFEED
         uint32_t magic;
         // 整个 fdt 结构的大小
@@ -175,6 +182,9 @@ private:
         uint32_t size_dt_strings;
         // 数据区长度
         uint32_t size_dt_struct;
+        // 从地址构造
+        fdt_header_t(const void *_addr);
+        ~fdt_header_t(void);
     };
 
     // 内存保留区信息
@@ -184,33 +194,35 @@ private:
         uint64_t address;
         // 长度
         uint64_t size;
+        fdt_reserve_entry_t(const fdt_reserve_entry_t *_addr);
+        ~fdt_reserve_entry_t(void);
     };
 
-    // dtb 结构地址
-    void *addr;
+    // 以下几个数据是不变的
+    // 节点信息
+    const fdt_header_t header;
     // 大小
-    uint32_t size;
+    const uint32_t size;
     // 数据区地址
-    uint64_t data_addr;
+    const uint32_t *data_addr;
     // 数据区长度
-    uint32_t data_size;
+    const uint32_t data_size;
     // 字符串区地址
-    uint64_t string_addr;
+    const uint8_t *string_addr;
     // 字符串区长度
-    uint32_t string_size;
+    const uint32_t string_size;
     // 保留区地址
-    uint64_t reserve_addr;
-    // 保留区向量
+    const fdt_reserve_entry_t *reserve_addr;
+    // 保留区信息向量
     mystl::vector<fdt_reserve_entry_t> reserve;
     //节点指针
     mystl::vector<dtb_prop_node_t *> nodes;
     // 获取名称
     char *get_string(uint64_t _off);
-
     // reserve 区域初始化
     void reserve_init(void);
-    // data 区域初始化
-    void data_init(void);
+    // 初始化 dtb 中的各个节点
+    void nodes_init(void);
 
 protected:
 public:

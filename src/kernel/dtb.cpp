@@ -104,33 +104,63 @@ void dtb_prop_node_t::add_child(dtb_prop_node_t *_child) {
     return;
 }
 
-static void *dtb_addr;
+DTB::fdt_header_t::fdt_header_t(const void *_addr) {
+    const uint32_t *tmp = (const uint32_t *)_addr;
+    // dtb 为大端，可能需要转换
+    magic             = be32toh(tmp[0]);
+    totalsize         = be32toh(tmp[1]);
+    off_dt_struct     = be32toh(tmp[2]);
+    off_dt_strings    = be32toh(tmp[3]);
+    off_mem_rsvmap    = be32toh(tmp[4]);
+    version           = be32toh(tmp[5]);
+    last_comp_version = be32toh(tmp[6]);
+    boot_cpuid_phys   = be32toh(tmp[7]);
+    size_dt_strings   = be32toh(tmp[8]);
+    size_dt_struct    = be32toh(tmp[9]);
+    // 匹配版本
+    assert(version == FDT_VERSION);
+    // 匹配魔数
+    assert(magic == FDT_MAGIC);
+    return;
+}
+
+DTB::fdt_header_t::~fdt_header_t(void) {
+    return;
+}
+
+DTB::fdt_reserve_entry_t::fdt_reserve_entry_t(const fdt_reserve_entry_t *_addr)
+    : address(be64toh(_addr->address)), size(be64toh(_addr->size)) {
+    return;
+}
+
+DTB::fdt_reserve_entry_t::~fdt_reserve_entry_t(void) {
+    return;
+}
 
 // reserve 区域初始化
+// devicetree-specification-v0.3.pdf#5.3.2
 void DTB::reserve_init(void) {
     // 遍历保留区
-    // devicetree-specification-v0.3.pdf#5.3.2
-    fdt_reserve_entry_t *tmp1 = ((fdt_reserve_entry_t *)reserve_addr);
-    fdt_reserve_entry_t  tmp2;
+    auto tmp1 = reserve_addr;
     while (1) {
         // 设置数据
-        tmp2.address = be32toh(tmp1->address);
-        tmp2.size    = be32toh(tmp1->size);
+        auto tmp2 = fdt_reserve_entry_t(tmp1);
         // 如果为零则结束
         if (tmp2.size == 0 && tmp2.address == 0) {
             break;
         }
-        // 不为零则添加到向量中
-        // 保留区信息
+        // 不为零则添加到保留区信息向量中
         reserve.push_back(tmp2);
         // 下一项
-        tmp1 += 1;
+        tmp1++;
     }
+    return;
 }
+
 // data 区域初始化
-void DTB::data_init(void) {
+void DTB::nodes_init(void) {
     // 开始处理数据区
-    uint32_t *       pos  = (uint32_t *)data_addr;
+    const uint32_t * pos  = data_addr;
     uint32_t         tag  = be32toh(*pos);
     dtb_prop_node_t *node = nullptr;
     while (1) {
@@ -140,6 +170,7 @@ void DTB::data_init(void) {
             // 新建节点
             case FDT_BEGIN_NODE: {
                 // 新建节点
+                // BUG: 执行 new dtb_prop_node_t() 会导致没法遍历完
                 node = new dtb_prop_node_t((char *)(pos + 1));
                 assert(node != nullptr);
                 nodes.push_back(node);
@@ -194,19 +225,21 @@ void DTB::data_init(void) {
     return;
 }
 
-DTB::DTB(void) : addr(dtb_addr) {
-    fdt_header_t header = *((fdt_header_t *)addr);
-    // dtb 为大端，可能需要转换
-    assert(be32toh(header.version) == 0x11);
-    assert(header.magic == be32toh(FDT_MAGIC));
-    size         = be32toh(header.totalsize);
-    data_addr    = (ptrdiff_t)addr + be32toh(header.off_dt_struct);
-    data_size    = be32toh(header.size_dt_struct);
-    string_addr  = (ptrdiff_t)addr + be32toh(header.off_dt_strings);
-    string_size  = be32toh(header.size_dt_strings);
-    reserve_addr = (ptrdiff_t)addr + be32toh(header.off_mem_rsvmap);
+// 这个值需要在 boot.S 中调用 dtb_preinit 设置
+static void *dtb_addr;
+
+DTB::DTB(void)
+    : header(dtb_addr), size(header.totalsize),
+      data_addr((uint32_t *)((uint8_t *)dtb_addr + header.off_dt_struct)),
+      data_size(header.size_dt_struct),
+      string_addr((uint8_t *)((uint8_t *)dtb_addr + header.off_dt_strings)),
+      string_size(header.size_dt_strings),
+      reserve_addr((fdt_reserve_entry_t *)((uint8_t *)dtb_addr +
+                                           header.off_mem_rsvmap)) {
+    // 初始化保留区信息
     reserve_init();
-    data_init();
+    // 初始化各个节点
+    nodes_init();
     printf("dtb init.\n");
     return;
 }
@@ -216,7 +249,7 @@ DTB::~DTB(void) {
 }
 
 char *DTB::get_string(uint64_t _off) {
-    return (char *)string_addr + _off;
+    return (char *)(string_addr + _off);
 }
 
 const mystl::vector<resource_t *> DTB::find(mystl::string _name) {
@@ -237,7 +270,7 @@ const mystl::vector<resource_t *> DTB::find(mystl::string _name) {
                 tmp->name   = "INTR";
                 tmp->irq_no = i->interrupt_device.interrupts;
                 // 加入向量
-                // BUG: 会造成 data_init 执行出错
+                // BUG: 会造成 nodes_init 执行出错
                 res.push_back(tmp);
             }
             // 内存
