@@ -171,7 +171,8 @@ void DTB::nodes_init(void) {
             case FDT_BEGIN_NODE: {
                 // 新建节点
                 printf("-----------\n");
-                printf("(char *)(pos + 1): %s\n", (char *)(pos + 1));
+                // printf("(char *)(pos + 1): %s\n", (char *)(pos + 1));
+                // malloc(32);
                 node = new dtb_prop_node_t((char *)(pos + 1));
                 printf("+++++++++++\n");
                 assert(node != nullptr);
