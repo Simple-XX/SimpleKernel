@@ -62,6 +62,8 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
     }
     // res 必不为空
     assert(res != nullptr);
+    // res 不会是头节点
+    assert(res != head);
     return *res;
 }
 
@@ -313,6 +315,7 @@ void *SLAB::alloc(size_t _len) {
         }
 // #define DEBUG
 #ifdef DEBUG
+        printf("slab alloc\n");
         std::cout << slab_cache[idx];
 #undef DEBUG
 #endif
@@ -339,6 +342,7 @@ void SLAB::free(void *_addr, size_t) {
     slab_cache[idx].remove(chunk);
 // #define DEBUG
 #ifdef DEBUG
+    printf("slab free\n");
     std::cout << slab_cache[idx];
 #undef DEBUG
 #endif
