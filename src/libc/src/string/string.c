@@ -221,7 +221,6 @@ void *memcpy(void *dest, const void *src, size_t len) {
     const char *s = src;
     while (len--)
         *d++ = *s++;
-    printf("memcpy111111\n");
     return dest;
 }
 

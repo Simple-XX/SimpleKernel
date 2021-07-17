@@ -318,7 +318,14 @@ void *SLAB::alloc(size_t _len) {
         }
 #define DEBUG
 #ifdef DEBUG
-        std::cout << slab_cache[idx];
+        if (idx == 0x0) {
+            printf("idx==0\n");
+            printf("slab_cache: 0x%p\n", slab_cache);
+            printf("slab_cache[idx]: 0x%p\n", slab_cache[idx]);
+            printf("&slab_cache[idx]: 0x%p\n", &slab_cache[idx]);
+            std::cout << slab_cache[idx];
+        }
+        printf("alloc find111 cache: 0x%p\n", res);
 #undef DEBUG
 #endif
     }
@@ -338,6 +345,7 @@ void SLAB::free(void *_addr, size_t) {
     // 要释放一个 chunk
     // 1. 计算 chunk 地址
     chunk_t *chunk = (chunk_t *)((uint8_t *)_addr - CHUNK_SIZE);
+    printf("free 0x%p\n", chunk);
     // 2. 计算所属 slab_cache 索引
     assert(chunk->len != 0);
     auto idx = get_idx(chunk->len);
