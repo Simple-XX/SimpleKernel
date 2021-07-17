@@ -11,6 +11,7 @@ extern "C" {
 #include "stddef.h"
 #include "string.h"
 #include "assert.h"
+#include "stdio.h"
 
 #define __glibc_unlikely(cond) __builtin_expect((cond), 0)
 #define __glibc_likely(cond) __builtin_expect((cond), 1)
@@ -220,6 +221,7 @@ void *memcpy(void *dest, const void *src, size_t len) {
     const char *s = src;
     while (len--)
         *d++ = *s++;
+    printf("memcpy111111\n");
     return dest;
 }
 

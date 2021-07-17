@@ -1580,6 +1580,13 @@ namespace mystl {
         char_traits::copy(buffer_, src + pos, count);
         size_ = count;
         cap_  = init_size;
+        printf("buffer_: 0x%p, init_size: 0x%X\n", buffer_, init_size);
+        void * addr111 = (uint8_t *)buffer_ - 0x20;
+        size_t size111 = *((size_t *)((uint8_t *)buffer_ - (0x20 - 8)));
+        printf("addr111: 0x%p, size111: 0x%X\n", addr111, size111);
+        printf("buffer_: 0x%p, init_size: 0x%X\n", buffer_, init_size);
+        printf("src: %s\n", src);
+        printf("buffer_: %s\n", buffer_);
     }
 
     // destroy_buffer 函数

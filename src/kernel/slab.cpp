@@ -296,6 +296,7 @@ SLAB::~SLAB(void) {
 }
 
 void *SLAB::alloc(size_t _len) {
+    printf("alloc _len: 0x%p\n", _len);
     void *res = nullptr;
     // 分配时，首先确定需要分配的大小
     // 大小不能超过 65536B
@@ -304,18 +305,22 @@ void *SLAB::alloc(size_t _len) {
         auto idx = get_idx(_len);
         // 寻找合适的 slab 节点
         chunk_t *chunk = slab_cache[idx].find(_len);
+        printf("alloc find cache: 0x%p\n", chunk);
+        printf("alloc find cache chunk->addr: 0x%p\n", chunk->addr);
         // 不为空的话计算地址
         if (chunk != nullptr) {
             // 计算地址
             res = (uint8_t *)chunk->addr + CHUNK_SIZE;
+            printf("alloc find cache: 0x%p\n", res);
         }
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
         std::cout << slab_cache[idx];
 #undef DEBUG
 #endif
     }
     // 返回
+    printf("alloc return: 0x%p\n", res);
     return res;
 }
 

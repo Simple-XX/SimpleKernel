@@ -12,9 +12,9 @@
 #include "iostream"
 #include "common.h"
 
-// dtb_prop_node_t::dtb_prop_node_t(const mystl::string &_name) : name(_name) {
-//     return;
-// }
+dtb_prop_node_t::dtb_prop_node_t(const mystl::string &_name) : name(_name) {
+    return;
+}
 
 dtb_prop_node_t::~dtb_prop_node_t(void) {
     return;
@@ -170,9 +170,12 @@ void DTB::nodes_init(void) {
             // 新建节点
             case FDT_BEGIN_NODE: {
                 // 新建节点
+                printf("-----------\n");
+                printf("(char *)(pos + 1): %s\n", (char *)(pos + 1));
                 node = new dtb_prop_node_t((char *)(pos + 1));
+                printf("+++++++++++\n");
                 assert(node != nullptr);
-                nodes.push_back(node);
+                // nodes.push_back(node);
                 // 跳过 tag
                 pos++;
                 // 跳过 name
