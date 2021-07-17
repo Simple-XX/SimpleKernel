@@ -45,16 +45,15 @@ bool SLAB::chunk_t::operator!=(const chunk_t &_node) {
 SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
     // 判断越界
     assert(_idx < size());
-    chunk_t *res  = nullptr;
-    chunk_t *head = this;
+    chunk_t *res = nullptr;
     // 找到头节点
-    for (size_t i = 0; i < size(); i++) {
-        if (head->addr == (void *)HEAD && head->len == HEAD) {
-            // res 指向 head 的下一个，即 [0]
-            res = head->next;
+    chunk_t *tmp = this;
+    while (tmp->next != this) {
+        if (tmp->addr == (void *)HEAD && tmp->len == HEAD) {
+            res = tmp;
             break;
         }
-        head = head->next;
+        tmp = tmp->next;
     }
     // 返回第 _idx 个节点
     for (size_t i = 0; i < _idx; i++) {
@@ -62,8 +61,6 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
     }
     // res 必不为空
     assert(res != nullptr);
-    // res 不会是头节点
-    assert(res != head);
     return *res;
 }
 
@@ -131,27 +128,29 @@ void SLAB::slab_cache_t::free_pmm(void) {
 }
 
 void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
+    // 记录原大小
+    size_t old_len = _node->len;
+    // 更新旧节点
+    _node->len = _len;
+    // 旧节点移动到 full
+    move(full, _node);
     // 处理新节点
     // 新节点地址为原本地址+chunk大小+要分配出去的长度
     chunk_t *new_node = (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
     new_node->addr    = new_node;
     // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk 大小
-    new_node->len = _node->len - _len - CHUNK_SIZE;
+    new_node->len = old_len - _len - CHUNK_SIZE;
     // 手动初始化节点
     new_node->prev = new_node;
     new_node->next = new_node;
     // 判断剩余空间是否可以容纳至少一个节点，即大于等于  len+CHUNK_SIZE
-    // 如果大于等于则建立新的节点小于的话不用新建
-    // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len 中，
-    // 前面几行代码已经计算过了
+    // 如果大于等于则建立新的节点，小于的话不用新建
+    // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
+    // 中， 前面几行代码已经计算过了
     if (new_node->len >= len) {
         // 新的节点必然属于 part 链表
         part.push_back(new_node);
     }
-    // 设置旧节点
-    _node->len = _len;
-    // 旧节点移动到 full
-    move(full, _node);
     return;
 }
 
@@ -205,8 +204,7 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
     chunk_t *res = nullptr;
     // 在 _which 中查找，直接遍历即可
     chunk_t *tmp = _which.next;
-    // 遍历节点
-    for (size_t i = 0; i < _which.size(); i++) {
+    while (tmp != &_which) {
         // 如果 tmp 节点的长度大于等于 _len
         if (tmp->len >= _len) {
             // 更新 res
@@ -214,39 +212,26 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
             // 跳出循环
             break;
         }
-        // 不符合要求的话就到下一个节点
         tmp = tmp->next;
-    }
-    // 如果 res 不为空
-    if (res != nullptr) {
-        // res 从旧节点分离出来后剩余的部分
-        split(res, _len);
-        // res 指向的移动到 full
-        move(full, res);
     }
     // 如果 res 为空，说明在 _which 链表中没有找到合适的节点
     // 如果同时 _alloc 成立
-    else if (res == nullptr && _alloc == true) {
+    if (res == nullptr && _alloc == true) {
         // 申请新的空间
         res = alloc_pmm(_len);
-        // 申请成功
-        if (res != nullptr) {
-            // 剩余部分
-            split(res, _len);
-        }
+    }
+    // 如果 res 不为空
+    if (res != nullptr) {
+        // 对 res 进行切割，res 加入 full，剩余部分进入 part
+        split(res, _len);
     }
     return res;
 }
 
 SLAB::chunk_t *SLAB::slab_cache_t::find(size_t _len) {
     chunk_t *chunk = nullptr;
-    // 首先在 part 里找
-    chunk = find(part, _len, false);
-    // 没找到的话在 free 里找
-    if (chunk == nullptr) {
-        // 在 free 中寻找，如果没找到就申请新的物理内存
-        chunk = find(free, _len, true);
-    }
+    // 在 part 里找，如果没有找到允许申请新的空间
+    chunk = find(part, _len, true);
     // 如果到这里 chunk 还为 nullptr 说明空间不够了
     assert(chunk != nullptr);
     return chunk;
