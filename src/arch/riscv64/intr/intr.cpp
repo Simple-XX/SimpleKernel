@@ -27,7 +27,7 @@ namespace INTR {
     }
 
     void trap_handler(uint64_t _scause, uint64_t _sepc) {
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
         printf("scause: 0x%X, sepc: 0x%X\n", _scause, _sepc);
 #undef DEBUG
