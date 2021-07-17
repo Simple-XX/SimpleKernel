@@ -27,9 +27,12 @@ size_t SLAB::chunk_t::size(void) {
     size_t   res = 0;
     chunk_t *tmp = this->next;
     while (tmp != this) {
+        printf("this: 0x%p, tmp: 0x%p, 0x%p, 0x%p\n", this, tmp, tmp->prev,
+               tmp->next);
         res++;
         tmp = tmp->next;
     }
+    printf("end\n");
     return res;
 }
 
@@ -74,6 +77,9 @@ void SLAB::chunk_t::push_back(chunk_t *_new_node) {
     _new_node->prev = prev;
     prev->next      = _new_node;
     prev            = _new_node;
+    printf("push_back done 0x%p, 0x%p, 0x%p\n", _new_node, _new_node->prev,
+           _new_node->next);
+    printf("to 0x%p, 0x%p, 0x%p\n", this, prev, next);
     return;
 }
 
@@ -123,8 +129,8 @@ void SLAB::slab_cache_t::free_pmm(void) {
         assert(((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
         PMM::free_pages(tmp.addr, pages);
         // 删除节点
-        tmp.prev->next = tmp.next;
         tmp.next->prev = tmp.prev;
+        tmp.prev->next = tmp.next;
     }
     // 释放完后 free 链表项应该为 0
     assert(free.size() == 0);
@@ -132,6 +138,14 @@ void SLAB::slab_cache_t::free_pmm(void) {
 }
 
 void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
+    // 旧节点移动到 full
+    printf("split move to full: 0x%p, 0x%p, 0x%p\n", _node, _node->prev,
+           _node->next);
+    printf("full1 0x%p, 0x%p, 0x%p\n", &full, full.prev, full.next);
+    printf("part1 0x%p, 0x%p, 0x%p\n", &part, part.prev, part.next);
+    move(full, _node);
+    printf("full2 0x%p, 0x%p, 0x%p\n", &full, full.prev, full.next);
+    printf("part2 0x%p, 0x%p, 0x%p\n", &part, part.prev, part.next);
     // 处理新节点
     // 新节点地址为原本地址+chunk大小+要分配出去的长度
     chunk_t *new_node = (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
@@ -148,11 +162,12 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     if (new_node->len >= len) {
         // 新的节点必然属于 part 链表
         part.push_back(new_node);
+        printf("split push done 0x%p, 0x%p, 0x%p\n", new_node, new_node->prev,
+               new_node->next);
+        printf("to 0x%p, 0x%p, 0x%p\n", &part, part.prev, part.next);
     }
     // 设置旧节点
     _node->len = _len;
-    // 旧节点移动到 full
-    move(full, _node);
     return;
 }
 
@@ -172,7 +187,8 @@ void SLAB::slab_cache_t::merge(void) {
         // 内层循环
         while (*tmp2 != tmp) {
             // 如果符合条件
-            if ((uint8_t *)tmp.addr + CHUNK_SIZE + tmp.len == tmp2->addr) {
+            if (((uint8_t *)tmp.addr + CHUNK_SIZE + tmp.len == tmp2->addr) &&
+                (tmp2->len != 0xCDCD) && (tmp2->addr != (void *)0xCDCD)) {
                 // 进行合并
                 // 加上 tmp2 的 chunk 长度
                 tmp.len += CHUNK_SIZE;
@@ -193,6 +209,7 @@ void SLAB::slab_cache_t::merge(void) {
         // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
         if (((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0) {
             // 移动到 free
+            printf("merge move to free\n");
             move(free, &tmp);
         }
     }
@@ -220,10 +237,8 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
     }
     // 如果 res 不为空
     if (res != nullptr) {
-        // res 从旧节点分离出来后剩余的部分
+        // 进行分离，res 加入 full
         split(res, _len);
-        // res 指向的移动到 full
-        move(full, res);
     }
     // 如果 res 为空，说明在 _which 链表中没有找到合适的节点
     // 如果同时 _alloc 成立
@@ -257,7 +272,7 @@ void SLAB::slab_cache_t::remove(chunk_t *_node) {
     // 将 _node 移动到 part 即可
     move(part, _node);
     // merge 会处理节点合并的情况
-    merge();
+    // merge();
     return;
 }
 
@@ -308,33 +323,25 @@ void *SLAB::alloc(size_t _len) {
         _len = COMMON::ALIGN(_len, 8);
         // 根据大小确定 slab_cache 索引
         auto idx = get_idx(_len);
+        printf("_cache.full[0x%X].size(): 0x%X\n", idx,
+               slab_cache[idx].full.size());
         // 寻找合适的 slab 节点
         chunk_t *chunk = slab_cache[idx].find(_len);
-        printf("alloc find cache: 0x%p\n", chunk);
-        printf("alloc find cache chunk->addr: 0x%p\n", chunk->addr);
+        printf("full: 0x%p, part: 0x%p, free: 0x%p\n", &slab_cache[idx].full,
+               &slab_cache[idx].part, &slab_cache[idx].free);
         // 不为空的话计算地址
         if (chunk != nullptr) {
             // 计算地址
             res = (uint8_t *)chunk->addr + CHUNK_SIZE;
-            printf("alloc find cache: 0x%p\n", res);
         }
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
         printf("slab alloc\n");
-        if (idx == 0x0) {
-            printf("idx==0\n");
-            printf("slab_cache: 0x%p\n", slab_cache);
-            printf("slab_cache[idx]: 0x%p\n", slab_cache[idx]);
-            printf("&slab_cache[idx]: 0x%p\n", &slab_cache[idx]);
-            std::cout << slab_cache[idx];
-        }
-        printf("alloc find111 cache: 0x%p\n", res);
         std::cout << slab_cache[idx];
 #undef DEBUG
 #endif
     }
     // 返回
-    printf("alloc return: 0x%p\n", res);
     return res;
 }
 
@@ -349,7 +356,6 @@ void SLAB::free(void *_addr, size_t) {
     // 要释放一个 chunk
     // 1. 计算 chunk 地址
     chunk_t *chunk = (chunk_t *)((uint8_t *)_addr - CHUNK_SIZE);
-    printf("free 0x%p\n", chunk);
     // 2. 计算所属 slab_cache 索引
     assert(chunk->len != 0);
     auto idx = get_idx(chunk->len);

@@ -85,7 +85,6 @@ private:
         void                 remove(chunk_t *_node);
         friend std::ostream &operator<<(std::ostream &      _out,
                                         SLAB::slab_cache_t &_cache) {
-            printf("_cache.full.size(): 0x%X\n", _cache.full.size());
             for (size_t i = 0; i < _cache.full.size(); i++) {
                 printf("full 0x%X addr: 0x%X, len: 0x%X\n", i,
                        _cache.full[i].addr, _cache.full[i].len);
