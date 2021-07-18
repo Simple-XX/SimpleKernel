@@ -190,16 +190,6 @@ void SLAB::slab_cache_t::merge(void) {
 
     // 遍历查找可以移动到 free 链表的
     // 如果 part 长度等于 len-chunnk 大小
-    // BUG: size()
-    // for (size_t i = 0; i < part.size(); i++) {
-    //     chunk_t &tmp = part[i];
-    //     // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
-    //     if (((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0) {
-    //         // 移动到 free
-    //         move(free, &tmp);
-    //     }
-    // }
-
     tmp = part.next;
     while (tmp != &part) {
         // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
