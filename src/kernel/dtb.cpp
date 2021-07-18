@@ -170,13 +170,9 @@ void DTB::nodes_init(void) {
             // 新建节点
             case FDT_BEGIN_NODE: {
                 // 新建节点
-                printf("-----------\n");
-                // printf("(char *)(pos + 1): %s\n", (char *)(pos + 1));
-                // malloc(32);
                 node = new dtb_prop_node_t((char *)(pos + 1));
-                printf("+++++++++++\n");
                 assert(node != nullptr);
-                // nodes.push_back(node);
+                nodes.push_back(node);
                 // 跳过 tag
                 pos++;
                 // 跳过 name
@@ -192,11 +188,10 @@ void DTB::nodes_init(void) {
             }
             // 属性节点
             case FDT_PROP: {
-                // assert(node != nullptr);
+                assert(node != nullptr);
                 fdt_property_t *prop = (fdt_property_t *)pos;
-                // node->add_prop(get_string(be32toh(prop->nameoff)),
-                // prop->data,
-                //    be32toh(prop->len) / 4);
+                node->add_prop(get_string(be32toh(prop->nameoff)), prop->data,
+                               be32toh(prop->len) / 4);
                 // TODO: 将属性内存传递给处理函数
                 // 跳过 tag
                 pos++;
