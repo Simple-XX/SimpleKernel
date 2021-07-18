@@ -64,10 +64,6 @@ private:
         void merge(void);
         // 在 _which 链表中查找长度符合的
         chunk_t *find(chunk_t &_which, size_t _len, bool _alloc);
-        void     del(chunk_t *_node) {
-            _node->prev->next = _node->next;
-            _node->next->prev = _node->prev;
-        }
 
     protected:
     public:
@@ -93,12 +89,10 @@ private:
                 printf("full 0x%X addr: 0x%X, len: 0x%X\n", i,
                        _cache.full[i].addr, _cache.full[i].len);
             }
-            printf("_cache.part.size(): 0x%X\n", _cache.part.size());
             for (size_t i = 0; i < _cache.part.size(); i++) {
                 printf("part 0x%X addr: 0x%X, len: 0x%X\n", i,
                        _cache.part[i].addr, _cache.part[i].len);
             }
-            printf("_cache.free.size(): 0x%X\n", _cache.free.size());
             for (size_t i = 0; i < _cache.free.size(); i++) {
                 printf("free 0x%X addr: 0x%X, len: 0x%X\n", i,
                        _cache.free[i].addr, _cache.free[i].len);
