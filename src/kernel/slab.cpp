@@ -136,9 +136,10 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     _node->len = _len;
     // 旧节点移动到 full
     move(full, _node);
-    // 处理新节点
-    // 新节点地址为原本地址+chunk大小+要分配出去的长度
+    // 原长度大于要分配的长度
     if (old_len > _len) {
+        // 处理新节点
+        // 新节点地址为原本地址+chunk大小+要分配出去的长度
         chunk_t *new_node =
             (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
         new_node->addr = new_node;
