@@ -57,11 +57,9 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
         new virtio_bus_dev_t(virtio_mmio_resources);
     // 添加到设备链表中
     add_bus(*(bus_t *)virtio_bus_dev);
-    // show();
     // 添加 virtio_bus_dev 驱动
     virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
     add_drv(*(drv_t *)virtio_bus_drv);
-    // show();
     // 初始化
     // init(*(dev_t *)virtio_bus_dev);
     // virtio 设备
