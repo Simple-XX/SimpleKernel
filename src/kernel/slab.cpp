@@ -57,7 +57,6 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
     }
     // 返回第 _idx 个节点
     for (size_t i = 0; i < _idx; i++) {
-        assert(res == res->addr);
         res = res->next;
     }
     // res 必不为空
@@ -67,7 +66,6 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
 
 // 由于是循环队列，相当于在头节点前面插入
 void SLAB::chunk_t::push_back(chunk_t *_new_node) {
-    assert(_new_node == _new_node->addr);
     _new_node->next = this;
     _new_node->prev = prev;
     prev->next      = _new_node;
@@ -76,7 +74,6 @@ void SLAB::chunk_t::push_back(chunk_t *_new_node) {
 }
 
 void SLAB::slab_cache_t::move(chunk_t &_list, chunk_t *_node) {
-    assert(_node == _node->addr);
     // 从当前链表中删除
     _node->prev->next = _node->next;
     _node->next->prev = _node->prev;
@@ -107,7 +104,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         new_node->prev = new_node;
         new_node->next = new_node;
         // 加入 free 链表
-        assert(new_node == new_node->addr);
         free.push_back(new_node);
     }
     return new_node;
@@ -121,7 +117,6 @@ void SLAB::slab_cache_t::free_pmm(void) {
         pages = (tmp->len + CHUNK_SIZE) / COMMON::PAGE_SIZE;
         // 必须是整数个页
         assert(((tmp->len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
-        assert(tmp == tmp->addr);
         PMM::free_pages(tmp->addr, pages);
         // 删除节点
         tmp->addr       = nullptr;
@@ -137,15 +132,15 @@ void SLAB::slab_cache_t::free_pmm(void) {
 }
 
 void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
-    assert(_node == _node->addr);
     // 记录原大小
     size_t old_len = _node->len;
     // 更新旧节点
     _node->len = _len;
     // 旧节点移动到 full
     move(full, _node);
-    // 原长度大于要分配的长度
-    if (old_len > _len) {
+    // 原长度大于要分配的长度+新 chunk 长度
+    // 不能等于，等于的话相当于新节点的 len 为 0
+    if (old_len > _len + CHUNK_SIZE) {
         // 处理新节点
         // 新节点地址为原本地址+chunk大小+要分配出去的长度
         chunk_t *new_node =
@@ -162,7 +157,6 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
         // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
         // 中， 前面几行代码已经计算过了
         if (new_node->len > len) {
-            assert(new_node == new_node->addr);
             // 新的节点必然属于 part 链表
             part.push_back(new_node);
         }
@@ -246,7 +240,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
     }
     // 如果 res 不为空
     if (res != nullptr) {
-        assert(res == res->addr);
         // 对 res 进行切割，res 加入 full，剩余部分进入 part
         split(res, _len);
     }
@@ -257,7 +250,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(size_t _len) {
     chunk_t *chunk = nullptr;
     // 在 part 里找，如果没有找到允许申请新的空间
     chunk = find(part, _len, true);
-    assert(chunk == chunk->addr);
     // 如果到这里 chunk 还为 nullptr 说明空间不够了
     assert(chunk != nullptr);
     return chunk;
