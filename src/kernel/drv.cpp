@@ -7,6 +7,7 @@
 #include "drv.h"
 
 drv_t::drv_t(void) {
+    name = "drv_t";
     return;
 }
 
