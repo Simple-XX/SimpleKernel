@@ -64,6 +64,10 @@ private:
         void merge(void);
         // 在 _which 链表中查找长度符合的
         chunk_t *find(chunk_t &_which, size_t _len, bool _alloc);
+        void     del(chunk_t *_node) {
+            _node->prev->next = _node->next;
+            _node->next->prev = _node->prev;
+        }
 
     protected:
     public:
