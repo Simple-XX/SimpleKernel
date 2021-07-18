@@ -57,6 +57,7 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
     }
     // 返回第 _idx 个节点
     for (size_t i = 0; i < _idx; i++) {
+        assert(res == res->addr);
         res = res->next;
     }
     // res 必不为空
@@ -106,6 +107,7 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         new_node->prev = new_node;
         new_node->next = new_node;
         // 加入 free 链表
+        assert(new_node == new_node->addr);
         free.push_back(new_node);
     }
     return new_node;
@@ -119,6 +121,7 @@ void SLAB::slab_cache_t::free_pmm(void) {
         pages = (tmp->len + CHUNK_SIZE) / COMMON::PAGE_SIZE;
         // 必须是整数个页
         assert(((tmp->len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
+        assert(tmp == tmp->addr);
         PMM::free_pages(tmp->addr, pages);
         // 删除节点
         tmp->addr       = nullptr;
@@ -159,6 +162,7 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
         // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
         // 中， 前面几行代码已经计算过了
         if (new_node->len > len) {
+            assert(new_node == new_node->addr);
             // 新的节点必然属于 part 链表
             part.push_back(new_node);
         }
@@ -242,6 +246,7 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(chunk_t &_which, size_t _len,
     }
     // 如果 res 不为空
     if (res != nullptr) {
+        assert(res == res->addr);
         // 对 res 进行切割，res 加入 full，剩余部分进入 part
         split(res, _len);
     }
@@ -252,6 +257,7 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(size_t _len) {
     chunk_t *chunk = nullptr;
     // 在 part 里找，如果没有找到允许申请新的空间
     chunk = find(part, _len, true);
+    assert(chunk == chunk->addr);
     // 如果到这里 chunk 还为 nullptr 说明空间不够了
     assert(chunk != nullptr);
     return chunk;
@@ -315,6 +321,7 @@ void *SLAB::alloc(size_t _len) {
         chunk_t *chunk = slab_cache[idx].find(_len);
         // 不为空的话计算地址
         if (chunk != nullptr) {
+            assert(chunk == chunk->addr);
             // 计算地址
             res = (uint8_t *)chunk->addr + CHUNK_SIZE;
         }
@@ -340,6 +347,7 @@ void SLAB::free(void *_addr, size_t) {
     // 要释放一个 chunk
     // 1. 计算 chunk 地址
     chunk_t *chunk = (chunk_t *)((uint8_t *)_addr - CHUNK_SIZE);
+    assert(chunk == chunk->addr);
     // 2. 计算所属 slab_cache 索引
     assert(chunk->len != 0);
     auto idx = get_idx(chunk->len);
