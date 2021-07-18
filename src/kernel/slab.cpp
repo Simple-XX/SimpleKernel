@@ -67,6 +67,7 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
 
 // 由于是循环队列，相当于在头节点前面插入
 void SLAB::chunk_t::push_back(chunk_t *_new_node) {
+    assert(_new_node == _new_node->addr);
     _new_node->next = this;
     _new_node->prev = prev;
     prev->next      = _new_node;
@@ -75,6 +76,7 @@ void SLAB::chunk_t::push_back(chunk_t *_new_node) {
 }
 
 void SLAB::slab_cache_t::move(chunk_t &_list, chunk_t *_node) {
+    assert(_node == _node->addr);
     // 从当前链表中删除
     _node->prev->next = _node->next;
     _node->next->prev = _node->prev;
@@ -120,6 +122,8 @@ void SLAB::slab_cache_t::free_pmm(void) {
         assert(((tmp->len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
         PMM::free_pages(tmp->addr, pages);
         // 删除节点
+        tmp->addr       = nullptr;
+        tmp->len        = 0;
         tmp->prev->next = tmp->next;
         tmp->next->prev = tmp->prev;
         // 迭代
@@ -131,6 +135,7 @@ void SLAB::slab_cache_t::free_pmm(void) {
 }
 
 void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
+    assert(_node == _node->addr);
     // 记录原大小
     size_t old_len = _node->len;
     // 更新旧节点
