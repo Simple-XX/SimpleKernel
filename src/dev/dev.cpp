@@ -11,7 +11,11 @@ dev_t::dev_t(const mystl::vector<resource_t *> &_res) : res(_res) {
     drv_name = "";
     bus_name = "";
     drv      = nullptr;
+// #define DEBUG
+#ifdef DEBUG
     printf("dev_t ctor.\n");
+#undef DEBUG
+#endif
     return;
 }
 

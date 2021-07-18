@@ -18,7 +18,11 @@ virtio_dev_t::virtio_dev_t(const mystl::vector<resource_t *> &_res)
             irq_no = i->irq_no;
         }
     }
+// #define DEBUG
+#ifdef DEBUG
     printf("virtio_dev_t ctor.\n");
+#undef DEBUG
+#endif
     return;
 }
 

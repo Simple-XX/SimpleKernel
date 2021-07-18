@@ -13,6 +13,8 @@
 #include "dev.h"
 #include "drv.h"
 #include "stdio.h"
+#include "virtio_dev.h"
+#include "resource.h"
 
 struct virtio_bus_drv_t : drv_t {
 private:
@@ -24,27 +26,11 @@ private:
 protected:
 public:
     // TODO: 填充内容
-    virtio_bus_drv_t(void) {
-        name = "virtio_mmio drv";
-        return;
-    }
-
-    ~virtio_bus_drv_t(void) {
-        return;
-    }
-
-    bool init(void) {
-        printf("virtio_bus_drv_t init.\n");
-        return true;
-    }
-
-    void read(void) {
-        return;
-    }
-
-    void write(void) {
-        return;
-    }
+    virtio_bus_drv_t(void);
+    ~virtio_bus_drv_t(void);
+    bool init(void);
+    void read(void);
+    void write(void);
 };
 
 #endif /* _VIRTIO_BUS_DRV_H_ */
