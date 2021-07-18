@@ -139,20 +139,24 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     move(full, _node);
     // 处理新节点
     // 新节点地址为原本地址+chunk大小+要分配出去的长度
-    chunk_t *new_node = (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
-    new_node->addr    = new_node;
-    // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk 大小
-    new_node->len = old_len - _len - CHUNK_SIZE;
-    // 手动初始化节点
-    new_node->prev = new_node;
-    new_node->next = new_node;
-    // 判断剩余空间是否可以容纳至少一个节点，即大于等于  len+CHUNK_SIZE
-    // 如果大于等于则建立新的节点，小于的话不用新建
-    // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
-    // 中， 前面几行代码已经计算过了
-    if (new_node->len >= len) {
-        // 新的节点必然属于 part 链表
-        part.push_back(new_node);
+    if (old_len > _len) {
+        chunk_t *new_node =
+            (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
+        new_node->addr = new_node;
+        // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk
+        // 大小
+        new_node->len = old_len - _len - CHUNK_SIZE;
+        // 手动初始化节点
+        new_node->prev = new_node;
+        new_node->next = new_node;
+        // 判断剩余空间是否可以容纳至少一个节点，即大于等于  len+CHUNK_SIZE
+        // 如果大于等于则建立新的节点，小于的话不用新建
+        // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
+        // 中， 前面几行代码已经计算过了
+        if (new_node->len > len) {
+            // 新的节点必然属于 part 链表
+            part.push_back(new_node);
+        }
     }
     return;
 }
@@ -191,16 +195,6 @@ void SLAB::slab_cache_t::merge(void) {
 
     // 遍历查找可以移动到 free 链表的
     // 如果 part 长度等于 len-chunnk 大小
-    // BUG: size()
-    // for (size_t i = 0; i < part.size(); i++) {
-    //     chunk_t &tmp = part[i];
-    //     // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
-    //     if (((tmp.len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0) {
-    //         // 移动到 free
-    //         move(free, &tmp);
-    //     }
-    // }
-
     tmp = part.next;
     while (tmp != &part) {
         // 节点 len + chunk 长度对页大小取余，如果为零说明有整数页没有被使用
