@@ -164,13 +164,17 @@ void DTB::nodes_init(void) {
     uint32_t         tag  = be32toh(*pos);
     dtb_prop_node_t *node = nullptr;
     while (1) {
-        printf("tag: 0x%X\n", tag);
-        // BUG: 无法获取根节点 name  “/”
         switch (tag) {
             // 新建节点
             case FDT_BEGIN_NODE: {
                 // 新建节点
-                node = new dtb_prop_node_t((char *)(pos + 1));
+                // 节点名
+                char *tmp = (char *)(pos + 1);
+                // "/" 节点需要手动设置名称
+                if (pos == data_addr) {
+                    tmp = (char *)"/";
+                }
+                node = new dtb_prop_node_t(tmp);
                 assert(node != nullptr);
                 nodes.push_back(node);
                 // 跳过 tag
@@ -253,45 +257,44 @@ char *DTB::get_string(uint64_t _off) {
 
 const mystl::vector<resource_t *> DTB::find(mystl::string _name) {
     mystl::vector<resource_t *> res;
-    // resource_t *                tmp = nullptr;
-    // // 遍历所有节点
-    // for (auto i : nodes) {
-    //     // 找到属性中 kv 为 compatible:_name 的节点
-    //     if (i->name == _name) {
-    //         // TODO: 这里可以优化
-    //         // 根据 prop 分别设置
-    //         // 中断
-    //         // TODO: 这里简单的根据中断号是否为零来判断，需要优化
-    //         if (i->interrupt_device.interrupts != 0x00) {
-    //             tmp = new resource_t();
-    //             // 填充字段
-    //             tmp->type   = resource_t::INTR;
-    //             tmp->name   = "INTR";
-    //             tmp->irq_no = i->interrupt_device.interrupts;
-    //             // 加入向量
-    //             // BUG: 会造成 nodes_init 执行出错
-    //             res.push_back(tmp);
-    //         }
-    //         // 内存
-    //         // TODO: 这里简单的根据 reg 长度是否为零进行判断，需要优化
-    //         if (i->standard.reg.size() != 0) {
-    //             // 新建 resource_t 对象
-    //             tmp = new resource_t;
-    //             // 填充字段
-    //             tmp->type = resource_t::MEMORY;
-    //             tmp->name = "MEMORY";
-    //             // TODO: 这里需要根据 addr_cells 与 size_cells 计算
-    //             tmp->mem.start =
-    //                 (void *)(((uint64_t)i->standard.reg.at(0) << 32) +
-    //                          i->standard.reg.at(1));
-    //             tmp->mem.end =
-    //                 (void *)(((uint64_t)i->standard.reg.at(2) << 32) +
-    //                          i->standard.reg.at(3));
-    //             // 加入向量
-    //             res.push_back(tmp);
-    //         }
-    //     }
-    // }
+    resource_t *                tmp = nullptr;
+    // 遍历所有节点
+    for (auto i : nodes) {
+        // 找到属性中 kv 为 compatible:_name 的节点
+        if (i->name == _name) {
+            // TODO: 这里可以优化
+            // 根据 prop 分别设置
+            // 中断
+            // TODO: 这里简单的根据中断号是否为零来判断，需要优化
+            if (i->interrupt_device.interrupts != 0x00) {
+                tmp = new resource_t();
+                // 填充字段
+                tmp->type   = resource_t::INTR;
+                tmp->name   = "INTR";
+                tmp->irq_no = i->interrupt_device.interrupts;
+                // 加入向量
+                res.push_back(tmp);
+            }
+            // 内存
+            // TODO: 这里简单的根据 reg 长度是否为零进行判断，需要优化
+            if (i->standard.reg.size() != 0) {
+                // 新建 resource_t 对象
+                tmp = new resource_t;
+                // 填充字段
+                tmp->type = resource_t::MEMORY;
+                tmp->name = "MEMORY";
+                // TODO: 这里需要根据 addr_cells 与 size_cells 计算
+                tmp->mem.start =
+                    (void *)(((uint64_t)i->standard.reg.at(0) << 32) +
+                             i->standard.reg.at(1));
+                tmp->mem.end =
+                    (void *)(((uint64_t)i->standard.reg.at(2) << 32) +
+                             i->standard.reg.at(3));
+                // 加入向量
+                res.push_back(tmp);
+            }
+        }
+    }
     return res;
 }
 
