@@ -4,14 +4,12 @@
 //
 // dev_drv_manager.cpp for Simple-XX/SimpleKernel.
 
-#include "dev_drv_manager.h"
-#include "virtio_blk.h"
-#include "virtio_scsi.h"
+#include "stdio.h"
 #include "dtb.h"
-#include "string.h"
 #include "intr.h"
-#include "dev.h"
-#include "drv.h"
+#include "dev_drv_manager.h"
+#include "virtio_bus_dev.h"
+#include "virtio_bus_drv.h"
 
 void virtio_intr_handler(void) {
     printf("virtio irq handler.\n");
@@ -29,20 +27,38 @@ bool DEV_DRV_MANAGER::match(dev_t &_dev, drv_t &_drv) {
     }
 }
 
+void DEV_DRV_MANAGER::show(void) const {
+    for (auto i : buss) {
+        std::cout << *i << std::endl;
+    }
+    // for (auto i : devs) {
+    //     delete i;
+    // }
+    // for (auto i : drvs) {
+    //     delete i;
+    // }
+    return;
+}
+
+// 设备与驱动管理
+// 首先注册所有驱动
+// 然后初始化 dtb，找到所有硬件
+// 最后遍历硬件，寻找需要的驱动
 DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 根据 dtb 获取硬件信息
     DTB dtb = DTB();
     // 获取 virtio 设备信息
     auto virtio_mmio_resources = dtb.find("virtio_mmio@10001000");
-    // 初始化 virtio_bus
-    // virtio_bus_t *virtio_bus = new virtio_bus_t(virtio_mmio_resources);
+    // 初始化 virtio_bus_dev
+    virtio_bus_dev_t *virtio_bus_dev =
+        new virtio_bus_dev_t(virtio_mmio_resources);
     // 添加到设备链表中
-    // add_dev(*(dev_t *)virtio_bus);
-    // 添加 virtio_bus 驱动
+    // add_bus(*(bus_t *)virtio_bus_dev);
+    // 添加 virtio_bus_dev 驱动
     // virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
-    // add_drv(*(virtio_bus_drv_t *)virtio_bus_drv);
+    // add_drv(*(drv_t *)virtio_bus_drv);
     // 初始化
-    // init(*(dev_t *)virtio_bus);
+    // init(*(dev_t *)virtio_bus_dev);
     // virtio 设备
     // VIRTIO virtio = VIRTIO(virtio_mmio);
     // 初始化 virtio
@@ -68,13 +84,21 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
 }
 
 DEV_DRV_MANAGER::~DEV_DRV_MANAGER(void) {
-    for (dev_t *i : devs) {
+    for (auto i : buss) {
         delete i;
     }
-    for (drv_t *i : drvs) {
+    for (auto i : devs) {
+        delete i;
+    }
+    for (auto i : drvs) {
         delete i;
     }
     return;
+}
+
+bool DEV_DRV_MANAGER::add_bus(bus_t &_bus) {
+    buss.push_back(&_bus);
+    return true;
 }
 
 bool DEV_DRV_MANAGER::add_drv(drv_t &_drv) {
@@ -96,14 +120,11 @@ bool DEV_DRV_MANAGER::init(dev_t &_dev) {
             break;
         }
     }
-    // 执行初始化
-    _dev.drv->init();
-    return true;
+    if (_dev.drv != nullptr) {
+        // 执行初始化
+        // 返回执行结果
+        return _dev.drv->init();
+    }
+    // 执行到这里说明 dev 未找到，初始化失败
+    return false;
 }
-
-// TODO
-// 构造函数中对地址进行遍历，初始化不同的 io 设备
-// 根据设备类型分别初始化
-// virtio 中断由 virtio 统一管理
-// 地址也由 virtio 统一管理
-// 首先得完善 dtb 的处理
