@@ -28,15 +28,18 @@ bool DEV_DRV_MANAGER::match(dev_t &_dev, drv_t &_drv) {
 }
 
 void DEV_DRV_MANAGER::show(void) const {
+    printf("bus count: 0x%X\n", buss.size());
     for (auto i : buss) {
         std::cout << *i << std::endl;
     }
-    // for (auto i : devs) {
-    //     delete i;
-    // }
-    // for (auto i : drvs) {
-    //     delete i;
-    // }
+    printf("dev count: 0x%X\n", devs.size());
+    for (auto i : devs) {
+        std::cout << *i << std::endl;
+    }
+    printf("drv count: 0x%X\n", drvs.size());
+    for (auto i : drvs) {
+        std::cout << *i << std::endl;
+    }
     return;
 }
 
@@ -53,10 +56,12 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     virtio_bus_dev_t *virtio_bus_dev =
         new virtio_bus_dev_t(virtio_mmio_resources);
     // 添加到设备链表中
-    // add_bus(*(bus_t *)virtio_bus_dev);
+    add_bus(*(bus_t *)virtio_bus_dev);
+    // show();
     // 添加 virtio_bus_dev 驱动
-    // virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
-    // add_drv(*(drv_t *)virtio_bus_drv);
+    virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
+    add_drv(*(drv_t *)virtio_bus_drv);
+    // show();
     // 初始化
     // init(*(dev_t *)virtio_bus_dev);
     // virtio 设备

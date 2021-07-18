@@ -8,15 +8,12 @@
 
 virtio_bus_dev_t::virtio_bus_dev_t(const mystl::vector<resource_t *> &_res)
     : bus_t(_res) {
-    printf("dev_name: %s\n", dev_name.c_str());
-    // dev_name = mystl::string("virtio,mmio");
-    dev_name = "virtio,mmio";
-    printf("fine\n");
-    drv_name = "virtio_mmio drv";
-    bus_name = "";
+    dev_name = "\'virtio,mmio\'";
+    drv_name = "\'virtio_mmio drv\'";
+    bus_name = "null";
     drv      = nullptr;
     dev_num  = 0;
-    printf("virtio_bus_dev_t ctor.\n");
+    printf("BUS(virtio,mmio) dev init.\n");
     return;
 }
 
