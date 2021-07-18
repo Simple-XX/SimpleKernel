@@ -7,7 +7,7 @@
 #include "virtio_bus_drv.h"
 
 virtio_bus_drv_t::virtio_bus_drv_t(void) {
-    name = "virtio_mmio drv";
+    name = "virtio,mmio drv";
     return;
 }
 
@@ -16,7 +16,7 @@ virtio_bus_drv_t ::~virtio_bus_drv_t(void) {
 }
 
 bool virtio_bus_drv_t::init(void) {
-    printf("virtio_bus_drv_t init.\n");
+    printf("virtio,mmio driver init successful.\n");
     return true;
 }
 

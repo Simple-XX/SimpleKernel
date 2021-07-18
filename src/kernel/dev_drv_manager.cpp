@@ -61,7 +61,10 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
     add_drv(*(drv_t *)virtio_bus_drv);
     // 初始化
-    // init(*(dev_t *)virtio_bus_dev);
+    if (init(*(dev_t *)virtio_bus_dev) != true) {
+        // 不成功的话输出失败信息
+        err("virtio init failed\n");
+    }
     // virtio 设备
     // VIRTIO virtio = VIRTIO(virtio_mmio);
     // 初始化 virtio
@@ -124,8 +127,7 @@ bool DEV_DRV_MANAGER::init(dev_t &_dev) {
         }
     }
     if (_dev.drv != nullptr) {
-        // 执行初始化
-        // 返回执行结果
+        // 执行初始化，返回执行结果
         return _dev.drv->init();
     }
     // 执行到这里说明 dev 未找到，初始化失败
