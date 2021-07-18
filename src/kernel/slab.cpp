@@ -26,10 +26,7 @@ SLAB::chunk_t::~chunk_t(void) {
 size_t SLAB::chunk_t::size(void) {
     size_t   res = 0;
     chunk_t *tmp = this->next;
-    printf("this 0x%X, 0x%X, 0x%X\n", this, this->prev, this->next);
     while (tmp != this) {
-        printf("this 0x%X, tmp: 0x%X, 0x%X, 0x%X\n", this, tmp, tmp->prev,
-               tmp->next);
         res++;
         tmp = tmp->next;
     }
@@ -137,56 +134,28 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     // 更新旧节点
     _node->len = _len;
     // 旧节点移动到 full
-    printf("be move(full, _node) full: 0x%X, 0x%X, 0x%X\n", &full, full.prev,
-           full.next);
-    printf("be move(full, _node) part: 0x%X, 0x%X, 0x%X\n", &part, part.prev,
-           part.next);
-    printf("be move(full, _node) _node1: 0x%X, 0x%X, 0x%X\n", _node,
-           _node->prev, _node->next);
     move(full, _node);
-    printf("af move(full, _node) full: 0x%X, 0x%X, 0x%X\n", &full, full.prev,
-           full.next);
-    printf("af move(full, _node) part: 0x%X, 0x%X, 0x%X\n", &part, part.prev,
-           part.next);
-    printf("af move(full, _node) _node1: 0x%X, 0x%X, 0x%X\n", _node,
-           _node->prev, _node->next);
-    assert(_node->next == &full);
-    // 处理新节点
-    // 新节点地址为原本地址+chunk大小+要分配出去的长度
-    chunk_t *new_node = (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
-    new_node->addr    = new_node;
-    // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk 大小
-    new_node->len = old_len - _len - CHUNK_SIZE;
-    // 手动初始化节点
-    new_node->prev = new_node;
-    new_node->next = new_node;
-    printf("af new full: 0x%X, 0x%X, 0x%X\n", &full, full.prev, full.next);
-    printf("af new part: 0x%X, 0x%X, 0x%X\n", &part, part.prev, part.next);
-    printf("af new _node1: 0x%X, 0x%X, 0x%X\n", _node, _node->prev,
-           _node->next);
-    // 判断剩余空间是否可以容纳至少一个节点，即大于等于  len+CHUNK_SIZE
-    // 如果大于等于则建立新的节点，小于的话不用新建
-    // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
-    // 中， 前面几行代码已经计算过了
-    if (new_node->len >= len) {
-        printf("be pu new full: 0x%X, 0x%X, 0x%X\n", &full, full.prev,
-               full.next);
-        printf("be pu new part: 0x%X, 0x%X, 0x%X\n", &part, part.prev,
-               part.next);
-        printf("be pu new _node1: 0x%X, 0x%X, 0x%X\n", _node, _node->prev,
-               _node->next);
-        printf("be pu new new_node: 0x%X, 0x%X, 0x%X\n", new_node,
-               new_node->prev, new_node->next);
-        // 新的节点必然属于 part 链表
-        part.push_back(new_node);
-        printf("af pu new full: 0x%X, 0x%X, 0x%X\n", &full, full.prev,
-               full.next);
-        printf("af pu new part: 0x%X, 0x%X, 0x%X\n", &part, part.prev,
-               part.next);
-        printf("af pu new _node1: 0x%X, 0x%X, 0x%X\n", _node, _node->prev,
-               _node->next);
-        printf("af pu new new_node: 0x%X, 0x%X, 0x%X\n", new_node,
-               new_node->prev, new_node->next);
+    // 原长度大于要分配的长度
+    if (old_len > _len) {
+        // 处理新节点
+        // 新节点地址为原本地址+chunk大小+要分配出去的长度
+        chunk_t *new_node =
+            (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
+        new_node->addr = new_node;
+        // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk
+        // 大小
+        new_node->len = old_len - _len - CHUNK_SIZE;
+        // 手动初始化节点
+        new_node->prev = new_node;
+        new_node->next = new_node;
+        // 判断剩余空间是否可以容纳至少一个节点，即大于等于  len+CHUNK_SIZE
+        // 如果大于等于则建立新的节点，小于的话不用新建
+        // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
+        // 中， 前面几行代码已经计算过了
+        if (new_node->len > len) {
+            // 新的节点必然属于 part 链表
+            part.push_back(new_node);
+        }
     }
     return;
 }
@@ -283,9 +252,7 @@ SLAB::chunk_t *SLAB::slab_cache_t::find(size_t _len) {
 
 void SLAB::slab_cache_t::remove(chunk_t *_node) {
     // 将 _node 移动到 part 即可
-    printf("remove 0x%p, 0x%p, 0x%p\n", _node, _node->prev, _node->next);
     move(part, _node);
-    printf("remove done 0x%p, 0x%p, 0x%p\n", _node, _node->prev, _node->next);
     // merge 会处理节点合并的情况
     // merge();
     return;
@@ -337,28 +304,8 @@ void *SLAB::alloc(size_t _len) {
         _len = COMMON::ALIGN(_len, 8);
         // 根据大小确定 slab_cache 索引
         auto idx = get_idx(_len);
-        printf("-------1--------\n");
-        printf("0x%X, full: 0x%p, part: 0x%p, free: 0x%p\n", idx,
-               &slab_cache[idx].full, &slab_cache[idx].part,
-               &slab_cache[idx].free);
-        printf("_cache.full.size(): 0x%X\n", slab_cache[idx].full.size());
-        printf("-------1 end--------\n");
         // 寻找合适的 slab 节点
-        printf("-------2--------\n");
-        printf("full1: 0x%p, 0x%p, 0x%p\n", &slab_cache[idx].full,
-               slab_cache[idx].full.prev, &slab_cache[idx].full.next);
-        printf("part1: 0x%p, 0x%p, 0x%p\n", &slab_cache[idx].part,
-               slab_cache[idx].part.prev, &slab_cache[idx].part.next);
-        printf("free1: 0x%p, 0x%p, 0x%p\n", &slab_cache[idx].free,
-               slab_cache[idx].free.prev, &slab_cache[idx].free.next);
         chunk_t *chunk = slab_cache[idx].find(_len);
-        printf("full2: 0x%p, 0x%p, 0x%p\n", &slab_cache[idx].full,
-               slab_cache[idx].full.prev, &slab_cache[idx].full.next);
-        printf("part2: 0x%p, 0x%p, 0x%p\n", &slab_cache[idx].part,
-               slab_cache[idx].part.prev, &slab_cache[idx].part.next);
-        printf("free2: 0x%p, 0x%p, 0x%p\n", &slab_cache[idx].free,
-               slab_cache[idx].free.prev, &slab_cache[idx].free.next);
-        printf("-------2 end--------\n");
         // 不为空的话计算地址
         if (chunk != nullptr) {
             // 计算地址
@@ -380,7 +327,6 @@ bool SLAB::alloc(void *, size_t) {
 }
 
 void SLAB::free(void *_addr, size_t) {
-    printf("free\n");
     if (_addr == nullptr) {
         return;
     }
