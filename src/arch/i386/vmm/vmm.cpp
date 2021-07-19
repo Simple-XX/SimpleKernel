@@ -117,10 +117,8 @@ static constexpr uint32_t GET_PGD(uint32_t addr) {
     return (addr >> PGD_SHIFT) & PGD_MASK;
 }
 
-// 页目录，最高级
-static pgd_t pgd_kernel[VMM_PAGES_PRE_PAGE_TABLE]
-    __attribute__((aligned(COMMON::PAGE_SIZE)));
-pgd_t VMM::curr_dir;
+static pt_t pgd_kernel;
+pgd_t       VMM::curr_dir;
 
 VMM::VMM(void) {
     curr_dir = (pgd_t)CPU::READ_CR3();
@@ -132,12 +130,15 @@ VMM::~VMM(void) {
 }
 
 bool VMM::init(void) {
-    // 映射物理地址前 32MB 到虚拟地址前 32MB
-    for (uint32_t addr = (uint32_t)COMMON::KERNEL_START_ADDR;
-         addr < (uint32_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SIZE;
+    // 分配一页用于保存页目录
+    pgd_kernel = (pt_t)PMM::alloc_page_kernel();
+    // 映射内核空间
+    for (uint64_t addr = (uint64_t)COMMON::KERNEL_START_ADDR;
+         addr < (uint64_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
          addr += COMMON::PAGE_SIZE) {
-        mmap((pgd_t)pgd_kernel, (void *)addr, (void *)addr,
-             VMM_PAGE_VALID | VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+        // TODO: 区分代码/数据等段分别映射
+        mmap(pgd_kernel, (void *)addr, (void *)addr,
+             VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
     // nullptr 不映射
     unmmap((pgd_t)pgd_kernel, nullptr);
@@ -161,13 +162,13 @@ void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
                const uint32_t flag) {
     uint32_t pgd_idx = GET_PGD(reinterpret_cast<uint32_t>(va));
     uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
-    pud_t    pud     = (pud_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
+    pt_t     pud     = (pt_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pud == nullptr) {
-        pud          = (pud_t)PMM::alloc_page();
+        pud          = (pt_t)PMM::alloc_page();
         pgd[pgd_idx] = (reinterpret_cast<uint32_t>(pud) | VMM_PAGE_VALID |
                         VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
-    pud = (pud_t)VMM_PA_LA(pud);
+    pud = (pt_t)VMM_PA_LA(pud);
     if (pa == nullptr) {
         pa = PMM::alloc_page();
     }
@@ -186,12 +187,12 @@ void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
 void VMM::unmmap(const pgd_t pgd, const void *va) {
     uint32_t pgd_idx = GET_PGD(reinterpret_cast<uint32_t>(va));
     uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
-    pud_t    pud     = (pud_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
+    pt_t     pud     = (pt_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pud == nullptr) {
         printf("pud == nullptr\n");
         return;
     }
-    pud          = (pud_t)VMM_PA_LA(pud);
+    pud          = (pt_t)VMM_PA_LA(pud);
     pud[pud_idx] = 0x00;
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
     CPU::INVLPG(va);
@@ -200,14 +201,14 @@ void VMM::unmmap(const pgd_t pgd, const void *va) {
 bool VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
     uint32_t pgd_idx = GET_PGD(reinterpret_cast<uint32_t>(va));
     uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
-    pud_t    pud     = (pud_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
+    pt_t     pud     = (pt_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pud == nullptr) {
         if (pa != nullptr) {
             *(uint32_t *)pa = (uint32_t) nullptr;
         }
         return 0;
     }
-    pud = (pud_t)(VMM_PA_LA(pud));
+    pud = (pt_t)(VMM_PA_LA(pud));
     if (pud[pud_idx] != 0) {
         if (pa != nullptr) {
             *(uint32_t *)pa = pud[pud_idx] & COMMON::PAGE_MASK;
