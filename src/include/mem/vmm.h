@@ -10,22 +10,26 @@
 #include "limits.h"
 #include "common.h"
 
-typedef ptrdiff_t  pte_t;
+// TODO: 可以优化
+
+// 页表项，最底层
+typedef ptrdiff_t pte_t;
+// 页表，也可以页目录，它们的结构是一样的
 typedef ptrdiff_t *pt_t;
-typedef ptrdiff_t *pmd_t;
-typedef ptrdiff_t *pud_t;
-typedef ptrdiff_t *pgd_t;
+// 页目录，其实就是一种特殊的页表
+typedef pt_t pgd_t;
 
 // 每个页表能映射多少页 = 页大小/页表项大小: 2^9
 static constexpr const uint32_t VMM_PAGES_PRE_PAGE_TABLE =
     COMMON::PAGE_SIZE / sizeof(pte_t);
 
-// 映射内核的大小
-static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE;
+// 映射内核空间的大小
+static constexpr const uint64_t VMM_KERNEL_SPACE_SIZE =
+    COMMON::KERNEL_SPACE_SIZE;
 
 // 内核映射的页数
-static constexpr const uint64_t VMM_KERNEL_PAGES =
-    VMM_KERNEL_SIZE / COMMON::PAGE_SIZE;
+static constexpr const uint64_t VMM_KERNEL_SPACE_PAGES =
+    VMM_KERNEL_SPACE_SIZE / COMMON::PAGE_SIZE;
 
 #if defined(__i386__) || defined(__x86_64__)
 // P = 1 表示有效； P = 0 表示无效。
@@ -82,15 +86,15 @@ public:
     // 获取当前页目录
     static pgd_t get_pgd(void);
     // 设置当前页目录
-    static void set_pgd(const pgd_t pgd);
+    static void set_pgd(const pgd_t _pgd);
     // 映射物理地址到虚拟地址
-    static void mmap(const pgd_t pgd, const void *va, const void *pa,
-                     const uint32_t flag);
+    static void mmap(const pgd_t _pgd, const void *_va, const void *_pa,
+                     const uint32_t _flag);
     // 取消映射
-    static void unmmap(const pgd_t pgd, const void *va);
+    static void unmmap(const pgd_t _pgd, const void *_va);
     // 获取映射的物理地址
     // 已映射返回 true，未映射返回 false
-    static bool get_mmap(const pgd_t pgd, const void *va, const void *pa);
+    static bool get_mmap(const pgd_t _pgd, const void *_va, const void *_pa);
 };
 
 #endif /* _VMM_H */

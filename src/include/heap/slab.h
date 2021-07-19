@@ -131,7 +131,7 @@ private:
 
 protected:
 public:
-    SLAB(const void *_addr, size_t _len);
+    SLAB(const char *_name, const void *_addr, size_t _len);
     ~SLAB(void);
     // _len: 以 byte 为单位
     void *alloc(size_t _len);

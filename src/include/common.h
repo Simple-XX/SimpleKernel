@@ -35,24 +35,24 @@ namespace COMMON {
     static constexpr const size_t BYTE = 0x1;
     static constexpr const size_t KB   = 0x400;
     static constexpr const size_t MB   = 0x100000;
+    static constexpr const size_t GB   = 0x40000000;
 
 #if defined(__i386__) || defined(__x86_64__)
     // 物理内存大小 2GB
     // TODO: 由引导程序传递
-    static constexpr const uint32_t PMM_SIZE = 0x80000000;
-    // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
-    // 这部分内存是内核保留的
+    static constexpr const uint32_t PMM_SIZE = 2 * GB;
+    // 内核空间占用大小，包括内核代码部分与预留的
     // 64MB
-    static constexpr const uint32_t KERNEL_SIZE = 0x4000000;
+    static constexpr const uint32_t KERNEL_SPACE_SIZE = 64 * MB;
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
 #elif defined(__riscv)
     // 物理内存大小 128MB
     // TODO: 由引导程序传递
-    static constexpr const uint64_t PMM_SIZE = 0x8000000;
-    // 内核占用大小，与 KERNEL_START_ADDR，KERNEL_END_ADDR 无关
-    // 64MB
-    static constexpr const uint64_t KERNEL_SIZE = 0x4000000;
+    static constexpr const uint64_t PMM_SIZE = 128 * MB;
+    // 内核空间占用大小，包括内核代码部分与预留的
+    // 8MB
+    static constexpr const uint64_t KERNEL_SPACE_SIZE = 8 * MB;
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
 #endif
@@ -60,33 +60,13 @@ namespace COMMON {
     // 物理页数量
     static constexpr const uint64_t PMM_PAGE_SIZE = PMM_SIZE / PAGE_SIZE;
 
-    // 映射内核需要的页数
-    static constexpr const uint64_t KERNEL_PAGES = KERNEL_SIZE / PAGE_SIZE;
+    // 映射内核空间需要的页数
+    static constexpr const uint64_t KERNEL_SPACE_PAGES =
+        KERNEL_SPACE_SIZE / PAGE_SIZE;
 
+    // 页掩码
     static constexpr const uint64_t PAGE_MASK = 0xFFFFFFFFFFFFF000;
 
-    // 物理页结构体
-    class physical_pages_t {
-    public:
-        // 起始地址
-        uint8_t *addr;
-        // 该页被引用次数，-1 表示此页内存被保留，禁止使用
-        int32_t ref;
-    };
-
-    // zone 索引
-    // NOTE: 这里的 ZONE 与 Linux 中的划分不同，只是方便控制分配内存的位置
-    enum zone_t : uint8_t {
-        // 与 KERNEL_SIZE 对应
-        NORMAL = 0,
-        // 高于 KERNEL_SIZE 的地址
-        HIGH,
-    };
-    // zone 数量
-    static constexpr const size_t ZONE_COUNT = 2;
-
-// 变量名转换为字符串
-#define NAME2STR(_name) #_name
     // 对齐 向上取整
     // 针对指针
     template <class T>
@@ -104,6 +84,8 @@ namespace COMMON {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
 
+// 变量名转换为字符串
+#define NAME2STR(_name) #_name
 };
 
 #endif /* _COMMON_H_ */

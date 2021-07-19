@@ -17,7 +17,7 @@ HEAP::~HEAP(void) {
 }
 
 bool HEAP::init(void) {
-    static SLAB slab_allocator(0, 0);
+    static SLAB slab_allocator("SLAB Allocator", 0, 0);
     allocator = (ALLOCATOR *)&slab_allocator;
     printf("heap_init\n");
     return 0;
