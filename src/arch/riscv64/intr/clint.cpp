@@ -11,6 +11,24 @@
 #include "intr.h"
 #include "cpu.hpp"
 
+// 缺页处理
+static void pg_load_excp(void) {
+    void *addr = (void *)CPU::READ_STVAL();
+    // 映射页
+    VMM::mmap(VMM::get_pgd(), addr, addr, VMM_PAGE_READABLE);
+    info("pg_load_excp done: 0x%p.\n", addr);
+    return;
+}
+
+static void pg_store_excp(void) {
+    void *addr = (void *)CPU::READ_STVAL();
+    // 映射页
+    VMM::mmap(VMM::get_pgd(), addr, addr,
+              VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
+    info("pg_store_excp done: 0x%p.\n", addr);
+    return;
+}
+
 namespace CLINT {
     // 最大中断数
     static constexpr const uint32_t INTERRUPT_MAX = 16;
@@ -46,6 +64,7 @@ namespace CLINT {
     extern "C" void trap_entry(void);
     int32_t         init(void) {
         // 映射 clint 地址
+        // TODO: 动态获取
         for (uint64_t a = MEMLAYOUT::CLINT; a < MEMLAYOUT::CLINT + 0x10000;
              a += 0x1000) {
             VMM::mmap(VMM::get_pgd(), (void *)a, (void *)a,
@@ -62,6 +81,9 @@ namespace CLINT {
         for (auto &i : excp_handlers) {
             i = INTR::handler_default;
         }
+        // 缺页中断
+        register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
+        register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
         // 开启内部中断
         CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SSIE);
         // 设置时钟中断

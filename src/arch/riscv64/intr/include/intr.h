@@ -15,15 +15,19 @@ namespace INTR {
     int32_t init(void);
     void    handler_default(void);
     // 栈，中断原因，中断返回值
-    extern "C" void trap_handler(uint64_t _scause, uint64_t _spec);
+    extern "C" void trap_handler(uint64_t _scause, uint64_t _spec,
+                                 uint64_t _stval);
 };
 
 // core-local interrupt controller
 // 本地核心中断控制器
 // 用于控制 excp 与 intr
 namespace CLINT {
-    static constexpr const uint8_t     EXCP_PAGE_FAULT = 13;
-    static constexpr const char *const excp_names[]    = {
+    // 页读错误
+    static constexpr const uint8_t EXCP_LOAD_PAGE_FAULT = 13;
+    // 页写错误
+    static constexpr const uint8_t     EXCP_STORE_PAGE_FAULT = 15;
+    static constexpr const char *const excp_names[]          = {
         "Instruction Address Misaligned",
         "Instruction Access Fault",
         "Illegal Instruction",
