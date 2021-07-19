@@ -9,6 +9,7 @@
 #include "string.h"
 #include "assert.h"
 #include "pmm.h"
+#include "vmm.h"
 #include "slab.h"
 
 SLAB::chunk_t::chunk_t(void) {
@@ -94,6 +95,20 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
     }
     // 申请
     chunk_t *new_node = (chunk_t *)PMM::alloc_pages(pages);
+    // 如果没有映射则进行映射
+    void *tmp = nullptr;
+    for (size_t i = 0; i < pages; i++) {
+        // 地址=初始地址+页数偏移
+        tmp = (uint8_t *)new_node + i * COMMON::PAGE_SIZE;
+        if (VMM::get_mmap(VMM::get_pgd(), tmp, nullptr) == false) {
+            VMM::mmap(VMM::get_pgd(), (void *)new_node, (void *)new_node,
+                      VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+        }
+        // 已经映射的情况是不应该出现的
+        else {
+            assert(0);
+        }
+    }
     // 不为空的话进行初始化
     if (new_node != nullptr) {
         // 初始化
@@ -120,12 +135,19 @@ void SLAB::slab_cache_t::free_pmm(void) {
         assert(((tmp->len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
         PMM::free_pages(tmp->addr, pages);
         // 删除节点
-        tmp->addr       = nullptr;
-        tmp->len        = 0;
         tmp->prev->next = tmp->next;
         tmp->next->prev = tmp->prev;
+        // 取消映射后无法访问 tmp，所以提前保存
+        auto tmp_next = tmp->next;
+        // 取消映射
+        // 因为每次只能取消映射 1 页，所以需要循环
+        void *tmp_addr = nullptr;
+        for (size_t i = 0; i < pages; i++) {
+            tmp_addr = (uint8_t *)tmp->addr + i * COMMON::PAGE_SIZE;
+            VMM::unmmap(VMM::get_pgd(), tmp_addr);
+        }
         // 迭代
-        tmp = tmp->next;
+        tmp = tmp_next;
     }
     // 释放完后 free 链表项应该为 0
     assert(free.size() == 0);
@@ -286,17 +308,19 @@ size_t SLAB::get_idx(size_t _len) {
     return res;
 }
 
-SLAB::SLAB(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
-    allocator_name = (char *)"HEAP(SLAB) allocator";
+SLAB::SLAB(const char *_name, const void *_addr, size_t _len)
+    : ALLOCATOR(_name, _addr, _len) {
     // 初始化 slab_cache
     for (size_t i = LEN256; i < LEN65536; i++) {
         slab_cache[i].len = MIN << i;
     }
-    printf("%s init.\n", allocator_name);
+    printf("%s: 0x%p(0x%p) init.\n", name, allocator_start_addr,
+           allocator_length);
     return;
 }
 
 SLAB::~SLAB(void) {
+    printf("%s finit.\n", name);
     return;
 }
 
