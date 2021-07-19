@@ -26,10 +26,14 @@ namespace INTR {
         return;
     }
 
-    void trap_handler(uint64_t _scause, uint64_t _sepc) {
+    void trap_handler(uint64_t _scause, uint64_t _sepc, uint64_t _stval) {
+        // 消除 unused 警告
+        (void)_sepc;
+        (void)_stval;
 #define DEBUG
 #ifdef DEBUG
-        printf("scause: 0x%X, sepc: 0x%X\n", _scause, _sepc);
+        printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p\n", _scause, _sepc,
+               _stval);
 #undef DEBUG
 #endif
         if (_scause & CPU::CAUSE_INTR_MASK) {

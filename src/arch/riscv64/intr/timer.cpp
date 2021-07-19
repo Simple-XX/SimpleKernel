@@ -12,7 +12,7 @@
 
 namespace TIMER {
     // timer interrupt interval
-    static constexpr const uint64_t INTERVAL = 390000000 / 200;
+    static constexpr const uint64_t INTERVAL = 390000000 / 20;
 
     void set_next(void) {
         // 调用 opensbi 提供的接口设置时钟

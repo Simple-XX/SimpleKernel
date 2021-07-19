@@ -55,6 +55,7 @@ trap_entry:
     # intr.cpp
     csrr a0, scause
     csrr a1, sepc
+    csrr a2, stval
     jal trap_handler
 
     # Restore registers.
