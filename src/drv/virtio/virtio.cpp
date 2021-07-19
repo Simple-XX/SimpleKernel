@@ -167,6 +167,7 @@ VIRTIO::VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props) {
 #endif
         // 添加到向量中
         mmio.push_back(tmp);
+        // TODO: 现在又缺页中断了，可以优化一下
         // 映射内存
         for (uint64_t addr = tmp.addr; addr < tmp.addr + tmp.len;
              addr += COMMON::PAGE_SIZE) {
