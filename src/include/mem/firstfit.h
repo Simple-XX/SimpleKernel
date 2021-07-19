@@ -35,11 +35,12 @@ private:
 protected:
 public:
     // _len: 以页为单位
-    FIRSTFIT(const void *_addr, size_t _len);
+    FIRSTFIT(const char *_name, const void *_addr, size_t _len);
     ~FIRSTFIT(void);
     // 分配长度为 _len 页的内存
     void *alloc(size_t _len);
     // 在 _addr 处分配长度为 _len 页的内存
+    // 如果此地址已使用，函数返回 false
     bool alloc(void *_addr, size_t _len);
     // 释放 _addr 处 _len 页的内存
     void free(void *_addr, size_t _len);
