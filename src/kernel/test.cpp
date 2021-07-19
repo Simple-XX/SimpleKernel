@@ -72,17 +72,17 @@ int32_t test_vmm(void) {
     addr = (ptrdiff_t) nullptr;
     assert(VMM::get_mmap(VMM::get_pgd(),
                          (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR +
-                                  VMM_KERNEL_SIZE - 1),
+                                  VMM_KERNEL_SPACE_SIZE - 1),
                          &addr) == 1);
     assert(addr == (ptrdiff_t)(((ptrdiff_t)COMMON::KERNEL_START_ADDR +
-                                VMM_KERNEL_SIZE - 1) &
+                                VMM_KERNEL_SPACE_SIZE - 1) &
                                COMMON::PAGE_MASK));
     addr = (ptrdiff_t) nullptr;
     assert(
         VMM::get_mmap(VMM::get_pgd(),
                       (void *)((ptrdiff_t)COMMON::ALIGN(
                                    COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
-                               VMM_KERNEL_SIZE),
+                               VMM_KERNEL_SPACE_SIZE),
                       &addr) == 0);
     assert(addr == (ptrdiff_t) nullptr);
     addr = (ptrdiff_t) nullptr;
@@ -90,7 +90,7 @@ int32_t test_vmm(void) {
         VMM::get_mmap(VMM::get_pgd(),
                       (void *)((ptrdiff_t)COMMON::ALIGN(
                                    COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
-                               VMM_KERNEL_SIZE + 0x1024),
+                               VMM_KERNEL_SPACE_SIZE + 0x1024),
                       nullptr) == 0);
     // 测试映射与取消映射
     addr = (ptrdiff_t) nullptr;
