@@ -27,7 +27,7 @@ pte_t *walk(pt_t pgd, uint64_t va, bool alloc) {
         // 如果无效
         else {
             if (alloc == true) {
-                pgd = (pt_t)PMM::alloc_page();
+                pgd = (pt_t)PMM::alloc_page_kernel();
                 if (pgd == nullptr) {
                     return nullptr;
                 }
@@ -56,7 +56,7 @@ VMM::~VMM(void) {
 }
 
 bool VMM::init(void) {
-    pgd_kernel = (pt_t)PMM::alloc_page();
+    pgd_kernel = (pt_t)PMM::alloc_page_kernel();
     for (uint64_t addr = (uint64_t)COMMON::KERNEL_START_ADDR;
          addr < (uint64_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SIZE;
          addr += COMMON::PAGE_SIZE) {

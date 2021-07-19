@@ -15,7 +15,7 @@ class ALLOCATOR {
 private:
 protected:
     // 分配器名称
-    char *allocator_name;
+    const char *name;
     // 当前管理的内存区域地址
     void *allocator_start_addr;
     // 当前管理的内存区域长度
@@ -26,14 +26,15 @@ protected:
     size_t allocator_used_count;
 
 public:
+    // _name: 分配器名
     // _addr: 要管理的内存开始地址
     // _len: 要管理的内存长度，单位以具体实现为准
-    ALLOCATOR(const void *_addr, size_t _len);
+    ALLOCATOR(const char *_name, const void *_addr, size_t _len);
     virtual ~ALLOCATOR(void) = 0;
     // 分配 _len 页
     virtual void *alloc(size_t _len) = 0;
     // 在指定地址分配 _len 长度
-    // 如果此地址已使用，函数返回 true
+    // 如果此地址已使用，函数返回 false
     virtual bool alloc(void *_addr, size_t _len) = 0;
     // 释放 _len 长度
     virtual void free(void *_addr, size_t _len) = 0;
