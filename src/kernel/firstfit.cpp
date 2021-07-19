@@ -44,16 +44,17 @@ uint64_t FIRSTFIT::find_len(uint64_t _len, bool _val) {
     return ~(uint64_t)0;
 }
 
-FIRSTFIT::FIRSTFIT(const void *_addr, size_t _len) : ALLOCATOR(_addr, _len) {
-    // 名字初始化
-    allocator_name = (char *)"PMM(First Fit) allocator";
+FIRSTFIT::FIRSTFIT(const char *_name, const void *_addr, size_t _len)
+    : ALLOCATOR(_name, _addr, _len) {
     // 所有清零
     memset(map, 0, sizeof(map));
-    printf("%s init.\n", allocator_name);
+    printf("%s: 0x%p(0x%p) init.\n", name, allocator_start_addr,
+           allocator_length);
     return;
 }
 
 FIRSTFIT::~FIRSTFIT(void) {
+    printf("%s finit.\n", name);
     return;
 }
 
