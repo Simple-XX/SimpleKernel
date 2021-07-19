@@ -6,13 +6,19 @@
 
 #include "string.h"
 #include "stdio.h"
+#include "assert.h"
 #include "common.h"
 #include "pmm.h"
 
-const void *PMM::start       = nullptr;
-size_t      PMM::length      = 0;
-size_t      PMM::total_pages = 0;
-ALLOCATOR * PMM::allocator   = nullptr;
+const void *PMM::start                   = nullptr;
+size_t      PMM::length                  = 0;
+size_t      PMM::total_pages             = 0;
+const void *PMM::kernel_space_start      = nullptr;
+size_t      PMM::kernel_space_length     = 0;
+const void *PMM::non_kernel_space_start  = nullptr;
+size_t      PMM::non_kernel_space_length = 0;
+ALLOCATOR * PMM::allocator               = nullptr;
+ALLOCATOR * PMM::kernel_space_allocator  = nullptr;
 
 PMM::PMM(void) {
     return;
@@ -23,12 +29,24 @@ PMM::~PMM(void) {
 }
 
 bool PMM::init(void) {
-    // TODO: 这三个要动态获取
-    start       = COMMON::KERNEL_START_ADDR;
-    length      = COMMON::PMM_SIZE;
-    total_pages = length / COMMON::PAGE_SIZE;
-    // 分配器使用 fitst fit 分配器
-    static FIRSTFIT first_fit_allocator(start, total_pages);
+    start = COMMON::KERNEL_START_ADDR;
+    // TODO: 动态获取
+    length                  = COMMON::PMM_SIZE;
+    total_pages             = length / COMMON::PAGE_SIZE;
+    kernel_space_start      = start;
+    kernel_space_length     = COMMON::KERNEL_SPACE_SIZE;
+    non_kernel_space_start  = (void *)((uint8_t *)COMMON::KERNEL_START_ADDR +
+                                      COMMON::KERNEL_SPACE_SIZE);
+    non_kernel_space_length = length - kernel_space_length;
+    // 内核空间
+    static FIRSTFIT first_fit_allocator_kernel(
+        "First Fit Allocator(kernel space)", kernel_space_start,
+        kernel_space_length / COMMON::PAGE_SIZE);
+    kernel_space_allocator = (ALLOCATOR *)&first_fit_allocator_kernel;
+    // 非内核空间
+    static FIRSTFIT first_fit_allocator(
+        "First Fit Allocator", non_kernel_space_start,
+        non_kernel_space_length / COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&first_fit_allocator;
     // 将内核已使用部分划分出来
     // 内核实际占用页数
@@ -37,8 +55,8 @@ bool PMM::init(void) {
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
                                   COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
-    if (alloc_pages(const_cast<void *>(COMMON::KERNEL_START_ADDR),
-                    kernel_pages) == true) {
+    if (alloc_pages_kernel(const_cast<void *>(COMMON::KERNEL_START_ADDR),
+                           kernel_pages) == true) {
         printf("pmm_init\n");
         return true;
     }
@@ -59,20 +77,60 @@ bool PMM::alloc_pages(void *_addr, size_t _len) {
     return allocator->alloc(_addr, _len);
 }
 
+void *PMM::alloc_page_kernel(void) {
+    return kernel_space_allocator->alloc(1);
+}
+
+void *PMM::alloc_pages_kernel(size_t _len) {
+    return kernel_space_allocator->alloc(_len);
+}
+
+bool PMM::alloc_pages_kernel(void *_addr, size_t _len) {
+    return kernel_space_allocator->alloc(_addr, _len);
+}
+
 void PMM::free_page(void *_addr) {
-    allocator->free(_addr, 1);
+    // 判断应该使用哪个分配器
+    if (_addr >= kernel_space_start &&
+        _addr < (uint8_t *)kernel_space_start + kernel_space_length) {
+        kernel_space_allocator->free(_addr, 1);
+    }
+    else if (_addr >= non_kernel_space_start &&
+             _addr <
+                 (uint8_t *)non_kernel_space_start + non_kernel_space_length) {
+        allocator->free(_addr, 1);
+    }
+    else {
+        // 如果都不是说明有问题
+        assert(0);
+    }
     return;
 }
 
 void PMM::free_pages(void *_addr, size_t _len) {
-    allocator->free(_addr, _len);
+    // 判断应该使用哪个分配器
+    if (_addr >= kernel_space_start &&
+        _addr < (uint8_t *)kernel_space_start + kernel_space_length) {
+        kernel_space_allocator->free(_addr, _len);
+    }
+    else if (_addr >= non_kernel_space_start &&
+             _addr <
+                 (uint8_t *)non_kernel_space_start + non_kernel_space_length) {
+        allocator->free(_addr, _len);
+    }
+    // 如果都不是说明有问题
+    else {
+        assert(0);
+    }
     return;
 }
 
 uint64_t PMM::get_used_pages_count(void) {
-    return allocator->get_used_count();
+    return kernel_space_allocator->get_used_count() +
+           allocator->get_used_count();
 }
 
 uint64_t PMM::get_free_pages_count(void) {
-    return allocator->get_free_count();
+    return kernel_space_allocator->get_free_count() +
+           allocator->get_free_count();
 }
