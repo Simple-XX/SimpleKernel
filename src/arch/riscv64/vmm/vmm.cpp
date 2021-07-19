@@ -127,12 +127,12 @@ void VMM::unmmap(const pgd_t _pgd, const void *_va) {
     // 找到页表项
     // 未找到
     if ((pte = walk(_pgd, (uint64_t)_va, false)) == nullptr) {
-        info("uvmunmap: walk.\n");
+        warn("VMM::unmmap: walk.\n");
         return;
     }
     // 找到了，但是并没有被映射
     if ((*pte & VMM_PAGE_VALID) == 0) {
-        info("uvmunmap: not mapped.\n");
+        warn("VMM::unmmap: not mapped.\n");
     }
     // 置零
     *pte = 0x00;
