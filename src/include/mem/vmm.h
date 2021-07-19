@@ -20,8 +20,8 @@ typedef ptrdiff_t *pgd_t;
 static constexpr const uint32_t VMM_PAGES_PRE_PAGE_TABLE =
     COMMON::PAGE_SIZE / sizeof(pte_t);
 
-// 映射内核的大小
-static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SIZE;
+// 映射内核空间的大小
+static constexpr const uint64_t VMM_KERNEL_SIZE = COMMON::KERNEL_SPACE_SIZE;
 
 // 内核映射的页数
 static constexpr const uint64_t VMM_KERNEL_PAGES =
