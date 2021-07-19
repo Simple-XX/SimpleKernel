@@ -20,15 +20,26 @@
 // 如果由体系结构需要分配内核开始前内存空间的，则尽量避免
 // 4. 最管理单位为页
 
+// TODO:
+// 目前的代码只能在全部内存中分配，如果需要分配到内核空间/用户空间就没办法了
+// 两个分配器，管两个区域即可
 class PMM {
 private:
     // 物理内存开始地址
     static const void *start;
-    // 物理内存长度
+    // 物理内存长度，单位为 bytes
     static size_t length;
     // 物理内存页数
     static size_t total_pages;
-    // 物理内存分配器
+    // 内核与非内核空间的地址与长度，单位为 bytes
+    static const void *kernel_space_start;
+    static size_t      kernel_space_length;
+    static const void *non_kernel_space_start;
+    static size_t      non_kernel_space_length;
+    // 内核空间不会位于内存中间，导致出现非内核空间被切割为两部分的情况
+    // 物理内存分配器，分配内核空间
+    static ALLOCATOR *kernel_space_allocator;
+    // 物理内存分配器，分配非内核空间
     static ALLOCATOR *allocator;
 
 protected:
@@ -47,6 +58,10 @@ public:
     // 分配以指定地址开始的 _len 页
     // 如果此地址已使用，函数返回 true
     static bool alloc_pages(void *_addr, size_t _len);
+    // 申请内核空间
+    static void *alloc_page_kernel(void);
+    static void *alloc_pages_kernel(size_t _len);
+    static bool  alloc_pages_kernel(void *_addr, size_t _len);
     // 回收一页
     static void free_page(void *_addr);
     // 回收多页
