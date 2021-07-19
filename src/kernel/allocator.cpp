@@ -10,9 +10,9 @@
 #include "common.h"
 #include "allocator.h"
 
-ALLOCATOR::ALLOCATOR(const void *_addr, size_t _len) {
+ALLOCATOR::ALLOCATOR(const char *_name, const void *_addr, size_t _len) {
     // 默认名字
-    allocator_name       = (char *)"ALLOCATOR: no init";
+    name                 = _name;
     allocator_start_addr = const_cast<void *>(_addr);
     allocator_length     = _len;
     // 初始状态下所有页都未使用
