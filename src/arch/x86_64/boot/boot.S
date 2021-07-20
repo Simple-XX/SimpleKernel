@@ -68,7 +68,18 @@
 #define MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED 1
 #define MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED 2
 
-.code64
+
+/* 直接用 -m64 编译出来的是 64 位代码，
+    但是启动后的机器是 32 位的，相当于在 32 位机器上跑 64 位程序。
+	得加一层跳转到 64 位的 -m32 代码，开启 long 模式后再跳转到以 -m64 编译的代码中
+    对于 x86_64，需要在启动阶段进入长模式(IA32E)，这意味着需要一个临时页表
+    See https://wiki.osdev.org/Creating_a_64-bit_kernel: 
+	With a 32-bit bootstrap in your kernel
+*/
+
+# 这部分是从保护模式启动 long 模式的代码
+# 工作在 32bit
+.code32
 
 # multiboot2 文件头
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
@@ -86,13 +97,95 @@ multiboot_header:
     .long 8
 multiboot_header_end:
 
+# 临时页表
+.section .data
+.align 0x1000
+pml4:
+    .skip 0x1000
+pdpt:
+    .skip 0x1000
+pd:
+    .skip 0x1000
+pt:
+    .skip 0x1000
+
+
 .section .text
 .global _start
 .type _start, @function
-.extern kernel_main
 _start:
     # 关中断
     cli
+    # 从保护模式跳转到长模式
+    # 1. 允许 PAE
+    mov %cr4, %eax
+    or $(1<<5), %eax
+    mov %eax, %cr4
+    # 2. 设置临时页表
+    // TODO: 页表的设置有问题
+    mov $pml4, %eax
+    mov $pdpt, %ebx
+    or $3, %ebx
+    mov %ebx, 0(%eax)
+
+    mov $pdpt, %eax
+    mov $pd, %ebx
+    or $3, %ebx
+    mov %ebx, 0(%eax)
+
+    mov $pd, %eax
+    mov $pt, %ebx
+    or $3, %ebx
+    mov %ebx, 0(%eax)
+
+    mov $pt, %eax
+    mov $0x0003, %ebx
+    mov %ebx, 0(%eax)
+    mov $0x1003, %ebx
+    mov %ebx, 1(%eax)
+    mov $0x2003, %ebx
+    mov %ebx, 2(%eax)
+    mov $0x3003, %ebx
+    mov %ebx, 3(%eax)
+    mov $0x4003, %ebx
+    mov %ebx, 4(%eax)
+    mov $0x5003, %ebx
+    mov %ebx, 5(%eax)
+    mov $0x6003, %ebx
+    mov %ebx, 6(%eax)
+    mov $0x7003, %ebx
+    mov %ebx, 7(%eax)
+    mov $0x8003, %ebx
+    mov %ebx, 8(%eax)
+
+
+    # 填写 CR3
+    mov $pml4, %eax
+    mov %eax, %cr3
+
+    # 3. 切换到 long 模式
+    mov $0xC0000080, %ecx
+    rdmsr
+    or $(1<<8), %eax
+    wrmsr
+    # 4. 开启分页
+    mov %cr0, %eax
+    or $(1<<31), %eax
+    mov %eax, %cr0
+    hlt
+    # 5. 重新设置 GDT
+    # 6. 跳转到 64 位代码执行
+    jmp _start64
+    hlt
+    ret
+
+.code64
+
+.section .text
+.global _start64
+.type _start64, @function
+.extern kernel_main
+_start64:
     # 设置栈地址
     mov $STACK_TOP, %rsp
     # 栈地址按照 4096 字节对齐
@@ -106,7 +199,7 @@ _start:
 	# 魔数
 	push %rax
     call kernel_main
-1:  hlt
+    hlt
     ret
 
 .section .bss
