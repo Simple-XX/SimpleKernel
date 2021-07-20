@@ -91,7 +91,8 @@ multiboot_header_end:
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
-.extern multiboot2_init
+.extern ctors_start
+.extern ctors_end
 _start:
     # 关中断
     cli
@@ -103,13 +104,16 @@ _start:
     mov $0, %rbp
     push $0
     popf
-    # 初始化 C++
+    // BUG: See cxxabi.cpp
+    # 初始化 C++ 
+    # mov $ctors_start, %rax
+    # mov $ctors_end, %rbx
     call cpp_init
 	# multiboot2_info 结构体指针
     #push %rbx
 	# 魔数
 	#push %rax
-    call kernel_main
+    #call kernel_main
 1:  hlt
     ret
 
