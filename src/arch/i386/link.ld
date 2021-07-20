@@ -13,6 +13,7 @@ SECTIONS {
 	PROVIDE(kernel_start = .);
     /* 指定内核从地址 1M 处开始 */
 	/* 0~1M 的空间为 BIOS 保留区域 */
+    /* TODO: 这里似乎可以修改为任意地址 */
     . = 1M;
 
     PROVIDE(kernel_text_start = .);
