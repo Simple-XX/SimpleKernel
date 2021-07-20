@@ -17,7 +17,6 @@
 #include "dev_drv_manager.h"
 #include "cpu.hpp"
 #include "kernel.h"
-#include "string"
 
 // TODO: 整合 i386 与 x86_64
 // TODO: gdb 调试
