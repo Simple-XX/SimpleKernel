@@ -9,7 +9,7 @@ OUTPUT_ARCH(i386:x86-64)
 ENTRY(_start)
 
 SECTIONS {
-    . = 4M;
+    . = 0;
     PROVIDE(kernel_start = .);
 
     PROVIDE(kernel_text_start = .);
@@ -23,14 +23,6 @@ SECTIONS {
     PROVIDE(kernel_rodata_start = .);
 	/* 只读数据段 */
     .rodata : ALIGN(4K) {
-        *(.rodata*)
-        *(.gcc_except_table)
-    }
-    PROVIDE(kernel_rodata_end = .);
-
-    PROVIDE(kernel_data_start = .);
-	/* 数据段 */
-    .data : ALIGN(4K) {
         PROVIDE(ctors_start = .);
         *(SORT_BY_INIT_PRIORITY (.init_array.*))
         *(SORT_BY_INIT_PRIORITY (.ctors.*))
@@ -39,6 +31,14 @@ SECTIONS {
         PROVIDE(dtors_start = .);
         *(.dtor*)
         PROVIDE(dtors_end = .);
+        *(.rodata*)
+        *(.gcc_except_table)
+    }
+    PROVIDE(kernel_rodata_end = .);
+
+    PROVIDE(kernel_data_start = .);
+	/* 数据段 */
+    .data : ALIGN(4K) {
         *(.data*)
         *(.eh_frame)
         *(.got*)
@@ -48,7 +48,7 @@ SECTIONS {
     PROVIDE(kernel_bss_start = .);
 	/* 未初始化数据段 */
     .bss : ALIGN(4K) {
-        *(.bss)
+        *(.bss);
     }
     PROVIDE(kernel_bss_end = .);
 
