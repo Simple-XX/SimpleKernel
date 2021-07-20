@@ -13,6 +13,7 @@ SECTIONS {
 	PROVIDE(kernel_start = .);
     /* 指定内核从地址 1M 处开始 */
 	/* 0~1M 的空间为 BIOS 保留区域 */
+    /* TODO: 这里似乎可以修改为任意地址 */
     . = 1M;
 
     PROVIDE(kernel_text_start = .);
@@ -26,14 +27,6 @@ SECTIONS {
     PROVIDE(kernel_rodata_start = .);
 	/* 只读数据段 */
     .rodata : ALIGN(4K) {
-        *(.rodata*)
-        *(.gcc_except_table)
-    }
-    PROVIDE(kernel_rodata_end = .);
-
-    PROVIDE(kernel_data_start = .);
-	/* 数据段 */
-    .data : ALIGN(4K) {
         PROVIDE(ctors_start = .);
         *(SORT_BY_INIT_PRIORITY (.init_array.*))
         *(SORT_BY_INIT_PRIORITY (.ctors.*))
@@ -42,6 +35,14 @@ SECTIONS {
         PROVIDE(dtors_start = .);
         *(.dtor*)
         PROVIDE(dtors_end = .);
+        *(.rodata*)
+        *(.gcc_except_table)
+    }
+    PROVIDE(kernel_rodata_end = .);
+
+    PROVIDE(kernel_data_start = .);
+	/* 数据段 */
+    .data : ALIGN(4K) {
         *(.data*)
         *(.eh_frame)
         *(.got*)
