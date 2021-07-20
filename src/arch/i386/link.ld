@@ -4,6 +4,7 @@
  * link.ld for Simple-XX/SimpleKernel. */
 
 OUTPUT_FORMAT(elf32-i386)
+OUTPUT_ARCH(i386)
 
 ENTRY(_start)
 
