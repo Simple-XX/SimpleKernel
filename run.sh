@@ -63,7 +63,8 @@ fi
 
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
+    qemu-system-x86_64 -cdrom ${iso} \
+    -monitor telnet::2333,server,nowait -serial stdio -nographic
 elif [ ${ARCH} == "arm" ]; then
     qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
 elif [ ${ARCH} == "riscv64" ]; then
