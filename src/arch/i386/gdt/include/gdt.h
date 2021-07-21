@@ -14,14 +14,13 @@
 
 namespace GDT {
     // 全局描述符表长度
-    static constexpr const uint32_t GDT_LENGTH = 6;
+    static constexpr const uint32_t GDT_LENGTH = 5;
     // 各个内存段所在全局描述符表下标
     static constexpr const uint32_t GDT_NULL        = 0;
     static constexpr const uint32_t GDT_KERNEL_CODE = 1;
     static constexpr const uint32_t GDT_KERNEL_DATA = 2;
     static constexpr const uint32_t GDT_USER_CODE   = 3;
     static constexpr const uint32_t GDT_USER_DATA   = 4;
-    static constexpr const uint32_t GDT_TSS         = 5;
     // 内核代码段 0x08
     static constexpr const uint32_t SEG_KERNEL_CODE = GDT_KERNEL_CODE << 3;
     // 内核数据段
@@ -30,8 +29,6 @@ namespace GDT {
     static constexpr const uint32_t SEG_USER_CODE = GDT_USER_CODE << 3;
     // 用户数据段
     static constexpr const uint32_t SEG_USER_DATA = GDT_USER_DATA << 3;
-    // 任务段
-    static constexpr const uint32_t SEG_TSS = GDT_TSS << 3;
 
     // type 类型
     // Code- and Data-Segment Types, S=1
@@ -115,7 +112,7 @@ namespace GDT {
     static constexpr const uint32_t LIMIT = 0xFFFFFFFF;
 
     // 全局描述符类型
-    typedef struct gdt_entry {
+    struct gdt_entry_t {
         // 段界限 15:00
         uint64_t limit1 : 16;
         // 基址 15:00
@@ -146,34 +143,18 @@ namespace GDT {
         uint64_t g : 1;
         // 基址 31:24
         uint64_t base_addr3 : 8;
-    } __attribute__((packed)) gdt_entry_t;
+    } __attribute__((packed));
 
     // GDTR
-    typedef struct gdt_ptr {
+    struct gdt_ptr_t {
         // 全局描述符表限长
         uint16_t limit;
         // 全局描述符表 32位 基地址
         uint32_t base;
-    } __attribute__((packed)) gdt_ptr_t;
+    } __attribute__((packed));
 
-    // TSS 状态段由两部分组成：
-    // 1. 动态部分(处理器在每次任务切换时会设置这些字段值)
-    //    通用寄存器(EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI)
-    //    段寄存器(ES，CS，SS，DS，FS，GS)
-    //    状态寄存器(EFLAGS)
-    //    指令指针(EIP)
-    //    前一个执行的任务的TSS段的选择子(只有当要返回时才更新)
-    // 2. 静态字段(处理器读取，但从不更改)
-    //    任务的LDT选择子
-    //    页目录基址寄存器(PDBR)(当启用分页时，只读)
-    //    内层堆栈指针，特权级 0-2
-    //    T-位，指示了处理器在任务切换时是否引发一个调试异常
-    //    I/O 位图基址
-
-    // TSS(任务状态段) 描述符
-    // TSS的使用是为了解决调用门中特权级变换时堆栈发生的变化.
-    // 资料：intel 手册 3ACh7
     // 64-ia-32-architectures-software-developer-vol-3a-manual#7.2.1
+    // 目前没有使用
     struct tss32_t {
         uint16_t prev_task_link;
         uint16_t reserved0;
@@ -220,7 +201,6 @@ namespace GDT {
     // num-数组下标、base-基地址、limit-限长、access-访问标志，gran-粒度
     void set_gdt(int32_t num, uint32_t base, uint32_t limit, uint8_t access,
                  uint8_t gran);
-    void set_tss(int32_t num, uint16_t ss0, uint32_t esp0);
     // 初始化
     int32_t init(void);
 };
