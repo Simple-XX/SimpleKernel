@@ -15,23 +15,29 @@
 class FIRSTFIT : ALLOCATOR {
 private:
     // 字长
-    static constexpr const uint64_t BITS_PER_WORD = sizeof(intptr_t);
+    static constexpr const uint64_t BITS_PER_WORD = sizeof(uintptr_t);
+#if __WORDSIZE == 64
     // 字长为 64 时的 掩码
     static constexpr const uint64_t MASK = 0x3F;
     // 2^6==64
     static constexpr const uint64_t SHIFT = 6;
-
+#elif __WORDSIZE == 32
+    // 字长为 32 时的 掩码
+    static constexpr const uint64_t MASK = 0x1F;
+    // 2^5==32
+    static constexpr const uint64_t SHIFT = 5;
+#endif
     // BUG: 32 位下不能正常工作，目测是字长问题
     // 位图，每一位表示一页内存，1 表示已使用，0 表示未使用
-    uint64_t map[((COMMON::PMM_SIZE / COMMON::PAGE_SIZE) / BITS_PER_WORD)];
+    uintptr_t map[((COMMON::PMM_SIZE / COMMON::PAGE_SIZE) / BITS_PER_WORD)];
     // 置位 _idx
-    void set(uint64_t _idx);
+    void set(uintptr_t _idx);
     // 清零 _idx
-    void clr(uint64_t _idx);
+    void clr(uintptr_t _idx);
     // 测试 _idx
-    bool test(uint64_t _idx);
+    bool test(uintptr_t _idx);
     // 连续 _len 个 _val 位，返回开始索引
-    uint64_t find_len(uint64_t _len, bool _val);
+    uintptr_t find_len(size_t _len, bool _val);
 
 protected:
 public:
