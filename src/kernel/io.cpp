@@ -117,7 +117,7 @@ IO io;
 extern "C" int32_t printf(const char *fmt, ...) {
     va_list va;
     va_start(va, fmt);
-    const int ret = _vsnprintf(buf, 127, fmt, va);
+    const int ret = _vsnprintf(buf, 128, fmt, va);
     va_end(va);
     io.write_string(buf);
     bzero(buf, 128);

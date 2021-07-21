@@ -37,7 +37,7 @@ namespace COMMON {
     static constexpr const size_t MB   = 0x100000;
     static constexpr const size_t GB   = 0x40000000;
 
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__i386__)
     // 物理内存大小 2GB
     // TODO: 由引导程序传递
     static constexpr const uint32_t PMM_SIZE = 2 * GB;
@@ -46,6 +46,15 @@ namespace COMMON {
     static constexpr const uint32_t KERNEL_SPACE_SIZE = 64 * MB;
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
+#elif defined(__x86_64__)
+    // 物理内存大小 2GB
+    // TODO: 由引导程序传递
+    static constexpr const uint32_t PMM_SIZE = 2 * GB;
+    // 内核空间占用大小，包括内核代码部分与预留的
+    // 64MB
+    static constexpr const uint32_t KERNEL_SPACE_SIZE = 64 * MB;
+    // 页大小 2MB
+    static constexpr const size_t PAGE_SIZE = 2 * MB;
 #elif defined(__riscv)
     // 物理内存大小 128MB
     // TODO: 由引导程序传递
