@@ -97,7 +97,7 @@ multiboot_header:
     .long 8
 multiboot_header_end:
 
-# 临时页表
+# 临时页表 2MB/页
 .section .data
 .align 0x1000
 pml4:
@@ -105,8 +105,6 @@ pml4:
 pdpt:
     .skip 0x1000
 pd:
-    .skip 0x1000
-pt:
     .skip 0x1000
 
 # 临时 GDT
@@ -178,42 +176,20 @@ _start:
     # 最高级
     mov $pml4, %eax
     mov $pdpt, %ebx
-    or $3, %ebx
+    or $0x3, %ebx
     mov %ebx, 0(%eax)
     # 次级
     mov $pdpt, %eax
     mov $pd, %ebx
-    or $3, %ebx
-    mov %ebx, 0(%eax)
-    # 次低级
-    mov $pd, %eax
-    mov $pt, %ebx
-    or $3, %ebx
+    or $0x3, %ebx
     mov %ebx, 0(%eax)
     # 最低级
-    mov $pt, %eax
-    mov $0x0003, %ebx
+    mov $pd, %eax
+    mov $0x000083, %ebx
     mov %ebx, 0(%eax)
-    mov $0x1003, %ebx
-    mov %ebx, 8(%eax)
-    mov $0x2003, %ebx
-    mov %ebx, 16(%eax)
-    mov $0x3003, %ebx
-    mov %ebx, 24(%eax)
-    mov $0x4003, %ebx
-    mov %ebx, 32(%eax)
-    mov $0x5003, %ebx
-    mov %ebx, 40(%eax)
-    mov $0x6003, %ebx
-    mov %ebx, 48(%eax)
-    mov $0x7003, %ebx
-    mov %ebx, 56(%eax)
-    mov $0x8003, %ebx
-    mov %ebx, 64(%eax)
     # 填写 CR3
     mov $pml4, %eax
     mov %eax, %cr3
-
     # 3. 切换到 long 模式
     mov $0xC0000080, %ecx
     rdmsr
@@ -238,30 +214,25 @@ _start:
 .type _start64, @function
 .extern kernel_main
 _start64:
+    # 从这里开始就是 long 模式了
+    # 加载 64 位 gdt
     mov $gdt64_pointer64, %rax
     lgdt 0(%rax)
-    mov $0x10, %ax
-    mov %ds, %ax
-    mov %es, %ax
-    mov %fs, %ax
-    mov %gs, %ax
-    mov %ss, %ax
-
+    # 更新
+    mov $0x10, %rax
+    mov %ds, %rax
+    mov %es, %rax
+    mov %fs, %rax
+    mov %gs, %rax
+    mov %ss, %rax
     # 设置栈地址
     mov $STACK_TOP, %rsp
     # 栈地址按照 4096 字节对齐
     and $0xFFFFFFFFFFFFF000, %rsp
     # 帧指针修改为 0
     mov $0, %rbp
-    #hlt
-    # TODO: 执行到这里会出错
-    push $0
-    popf
-	# multiboot2_info 结构体指针
-    push %rbx
-	# 魔数
-	push %rax
-    call kernel_main
+    mov $kernel_main, %rax
+    jmp *%rax
     hlt
     ret
 
