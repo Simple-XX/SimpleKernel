@@ -15,7 +15,7 @@
 class FIRSTFIT : ALLOCATOR {
 private:
     // 字长
-    static constexpr const uint64_t BITS_PER_WORD = sizeof(uint64_t);
+    static constexpr const uint64_t BITS_PER_WORD = sizeof(intptr_t);
     // 字长为 64 时的 掩码
     static constexpr const uint64_t MASK = 0x3F;
     // 2^6==64
