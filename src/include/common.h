@@ -78,7 +78,7 @@ namespace COMMON {
     template <class T>
     inline T ALIGN(const T _addr, const size_t _align) {
         uint8_t *tmp = (uint8_t *)_addr;
-        return (T)((ptrdiff_t)(tmp + _align - 1) & (~(_align - 1)));
+        return (T)((uintptr_t)(tmp + _align - 1) & (~(_align - 1)));
     }
     // 针对整数
     template <>

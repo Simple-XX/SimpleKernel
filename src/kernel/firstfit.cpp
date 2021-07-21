@@ -47,8 +47,9 @@ uint64_t FIRSTFIT::find_len(uint64_t _len, bool _val) {
 FIRSTFIT::FIRSTFIT(const char *_name, const void *_addr, size_t _len)
     : ALLOCATOR(_name, _addr, _len) {
     // 所有清零
+    printf("__WORDSIZE: %d, %d\n", __WORDSIZE, BITS_PER_WORD);
     memset(map, 0, sizeof(map));
-    printf("%s: 0x%p(0x%p) init.\n", name, allocator_start_addr,
+    printf("%s: 0x%p(0x%X pages) init.\n", name, allocator_start_addr,
            allocator_length);
     return;
 }
