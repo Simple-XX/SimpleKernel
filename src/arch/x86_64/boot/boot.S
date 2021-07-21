@@ -231,8 +231,7 @@ _start64:
     and $0xFFFFFFFFFFFFF000, %rsp
     # 帧指针修改为 0
     mov $0, %rbp
-    mov $kernel_main, %rax
-    jmp *%rax
+    call kernel_main
     hlt
     ret
 
