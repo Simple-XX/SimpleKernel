@@ -4,7 +4,7 @@
  * link.ld for Simple-XX/SimpleKernel. */
 
 OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv", "elf64-littleriscv")
-OUTPUT_ARCH("riscv")
+OUTPUT_ARCH(riscv)
 
 ENTRY(_start)
 
