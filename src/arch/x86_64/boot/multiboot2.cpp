@@ -205,7 +205,7 @@ namespace MULTIBOOT2 {
         }
         // tag = (multiboot_tag_t *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
         // printf ("Total mbi size 0x%X\n", (unsigned) tag - addr);
-        printf("multiboot2_init\n");
+        printf("multiboot2 init.\n");
         return;
     }
 
