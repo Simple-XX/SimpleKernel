@@ -51,7 +51,7 @@ namespace MULTIBOOT2 {
         printf("mmap\n");
         for (; (uint8_t *)mmap < (uint8_t *)tag + tag->size;
              mmap = (multiboot_memory_map_entry_t
-                         *)((ptrdiff_t)mmap +
+                         *)((uintptr_t)mmap +
                             ((multiboot_tag_mmap_t *)tag)->entry_size)) {
             printf("base_addr = 0x%X%X, length = 0x%X%X, type = 0x%X\n",
                    (unsigned)(mmap->addr >> 32),        // high
@@ -112,12 +112,12 @@ namespace MULTIBOOT2 {
     void multiboot2_init(uint32_t magic, void *addr) {
         // Am I booted by a Multiboot-compliant boot loader?
         assert(magic == MULTIBOOT2_BOOTLOADER_MAGIC);
-        assert((reinterpret_cast<ptrdiff_t>(addr) & 7) == 0);
+        assert((reinterpret_cast<uintptr_t>(addr) & 7) == 0);
         // uint32_t size = *(uint32_t *)addr;
         // addr+0 保存大小，下一字节开始为 tag 信息
         // printf("Announced mbi size 0x%X\n", size);
         void *tag_addr =
-            reinterpret_cast<void *>(reinterpret_cast<ptrdiff_t>(addr) + 8);
+            reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(addr) + 8);
         multiboot_tag_t *tag = (multiboot_tag_t *)tag_addr;
         // printk("tag type: %X\n", tag->type);
         // printk("tag size: %X\n", tag->size);
@@ -213,7 +213,7 @@ namespace MULTIBOOT2 {
         for (; (uint8_t *)mmap_entries < (uint8_t *)mmap_tag + mmap_tag->size;
              mmap_entries =
                  (multiboot_memory_map_entry_t
-                      *)((ptrdiff_t)mmap_entries +
+                      *)((uintptr_t)mmap_entries +
                          ((multiboot_tag_mmap_t *)mmap_tag)->entry_size)) {
             // 如果是可用内存
             if (mmap_entries->type == MULTIBOOT_MEMORY_AVAILABLE) {
