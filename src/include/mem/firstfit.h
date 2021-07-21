@@ -27,7 +27,6 @@ private:
     // 2^5==32
     static constexpr const uint64_t SHIFT = 5;
 #endif
-    // BUG: 32 位下不能正常工作，目测是字长问题
     // 位图，每一位表示一页内存，1 表示已使用，0 表示未使用
     uintptr_t map[((COMMON::PMM_SIZE / COMMON::PAGE_SIZE) / BITS_PER_WORD)];
     // 置位 _idx
