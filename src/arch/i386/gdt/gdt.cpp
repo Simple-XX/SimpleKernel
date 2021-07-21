@@ -17,7 +17,7 @@ namespace GDT {
     // 全局描述符表定义
     static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
     // TSS 段定义
-    tss_struct_t tss_entry __attribute__((aligned(8)));
+    tss32_t tss32 __attribute__((aligned(8)));
 
     void set_gdt(const uint8_t idx, const uint32_t base, const uint32_t limit,
                  const uint8_t type, const uint8_t s, const uint8_t dpl,
@@ -41,21 +41,21 @@ namespace GDT {
 
     void set_tss(int32_t num, uint16_t ss0, uint32_t esp0) {
         // 获取 TSS 描述符的位置和长度
-        uint32_t base  = (uint32_t)&tss_entry;
-        uint32_t limit = base + sizeof(tss_entry);
+        uint32_t base  = (uint32_t)&tss32;
+        uint32_t limit = base + sizeof(tss32);
         // 在 GDT 表中增加 TSS 段描述符
         set_gdt(num, base, limit, TYPE_SYSTEM_32_TSS_AVAILABLE, S_SYSTEM,
                 CPU::DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
                 DB_EXECUTABLE_CODE_SEGMENT_32, G_4KB);
         // 设置内核栈的地址
-        tss_entry.ts_ss0  = ss0;
-        tss_entry.ts_esp0 = esp0;
-        tss_entry.ts_cs   = USER_CS;
-        tss_entry.ts_ss   = USER_DS;
-        tss_entry.ts_ds   = USER_DS;
-        tss_entry.ts_es   = USER_DS;
-        tss_entry.ts_fs   = USER_DS;
-        tss_entry.ts_gs   = USER_DS;
+        tss32.ss0  = ss0;
+        tss32.esp0 = esp0;
+        tss32.cs   = USER_CS;
+        tss32.ss   = USER_DS;
+        tss32.ds   = USER_DS;
+        tss32.es   = USER_DS;
+        tss32.fs   = USER_DS;
+        tss32.gs   = USER_DS;
         return;
     }
 
