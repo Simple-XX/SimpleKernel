@@ -221,11 +221,11 @@ _start64:
     lgdt 0(%rax)
     # 更新
     mov $0x10, %rax
-    mov %ds, %rax
-    mov %es, %rax
-    mov %fs, %rax
-    mov %gs, %rax
-    mov %ss, %rax
+    mov %rax, %ds
+    mov %rax, %es
+    mov %rax, %fs
+    mov %rax, %gs
+    mov %rax, %ss
     # 设置栈地址
     mov $STACK_TOP, %rsp
     # 栈地址按照 4096 字节对齐
