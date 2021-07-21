@@ -101,8 +101,6 @@ _start:
     and $0xFFFFFFF0, %esp
     # 帧指针修改为 0
     mov $0, %ebp
-    push $0
-    popf
     # multiboot2_info 结构体指针
     push %ebx
     # 魔数
@@ -112,7 +110,7 @@ _start:
     # 初始化 multiboot2
     call multiboot2_init
     call kernel_main
-1:  hlt
+    hlt
     ret
 
 .section .bss
