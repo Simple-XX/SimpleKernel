@@ -145,15 +145,6 @@ user_data_desc:
     .byte 0xF2
     .byte 0
     .byte 0
-tss_desc:
-    .short 108
-    .short 0
-    .byte 0
-    .byte 0x89
-    .byte 0
-    .byte 0
-    .short 0
-    .short 0
 gdt64_pointer:
     .short gdt64_pointer-gdt64-1
     .quad gdt64
