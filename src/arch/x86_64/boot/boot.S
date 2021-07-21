@@ -109,6 +109,59 @@ pd:
 pt:
     .skip 0x1000
 
+# 临时 GDT
+.align 16
+gdt64:
+null_desc:
+    .short 0xFFFF
+    .short 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+code_desc:
+    .short 0
+    .short 0
+    .byte 0
+    .byte 0x9A
+    .byte 0x20
+    .byte 0
+data_desc:
+    .short 0
+    .short 0
+    .byte 0
+    .byte 0x92
+    .byte 0
+    .byte 0
+user_code_desc:
+    .short 0
+    .short 0
+    .byte 0
+    .byte 0xFA
+    .byte 0x20
+    .byte 0
+user_data_desc:
+    .short 0
+    .short 0
+    .byte 0
+    .byte 0xF2
+    .byte 0
+    .byte 0
+tss_desc:
+    .short 108
+    .short 0
+    .byte 0
+    .byte 0x89
+    .byte 0
+    .byte 0
+    .short 0
+    .short 0
+gdt64_pointer:
+    .short gdt64_pointer-gdt64-1
+    .quad gdt64
+gdt64_pointer64:
+    .short gdt64_pointer-gdt64-1
+    .quad gdt64
 
 .section .text
 .global _start
@@ -122,43 +175,41 @@ _start:
     or $(1<<5), %eax
     mov %eax, %cr4
     # 2. 设置临时页表
-    // TODO: 页表的设置有问题
+    # 最高级
     mov $pml4, %eax
     mov $pdpt, %ebx
     or $3, %ebx
     mov %ebx, 0(%eax)
-
+    # 次级
     mov $pdpt, %eax
     mov $pd, %ebx
     or $3, %ebx
     mov %ebx, 0(%eax)
-
+    # 次低级
     mov $pd, %eax
     mov $pt, %ebx
     or $3, %ebx
     mov %ebx, 0(%eax)
-
+    # 最低级
     mov $pt, %eax
     mov $0x0003, %ebx
     mov %ebx, 0(%eax)
     mov $0x1003, %ebx
-    mov %ebx, 1(%eax)
-    mov $0x2003, %ebx
-    mov %ebx, 2(%eax)
-    mov $0x3003, %ebx
-    mov %ebx, 3(%eax)
-    mov $0x4003, %ebx
-    mov %ebx, 4(%eax)
-    mov $0x5003, %ebx
-    mov %ebx, 5(%eax)
-    mov $0x6003, %ebx
-    mov %ebx, 6(%eax)
-    mov $0x7003, %ebx
-    mov %ebx, 7(%eax)
-    mov $0x8003, %ebx
     mov %ebx, 8(%eax)
-
-
+    mov $0x2003, %ebx
+    mov %ebx, 16(%eax)
+    mov $0x3003, %ebx
+    mov %ebx, 24(%eax)
+    mov $0x4003, %ebx
+    mov %ebx, 32(%eax)
+    mov $0x5003, %ebx
+    mov %ebx, 40(%eax)
+    mov $0x6003, %ebx
+    mov %ebx, 48(%eax)
+    mov $0x7003, %ebx
+    mov %ebx, 56(%eax)
+    mov $0x8003, %ebx
+    mov %ebx, 64(%eax)
     # 填写 CR3
     mov $pml4, %eax
     mov %eax, %cr3
@@ -172,10 +223,11 @@ _start:
     mov %cr0, %eax
     or $(1<<31), %eax
     mov %eax, %cr0
-    hlt
     # 5. 重新设置 GDT
+    mov $gdt64_pointer, %eax
+    lgdt 0(%eax)
     # 6. 跳转到 64 位代码执行
-    jmp _start64
+    jmp $0x8, $_start64
     hlt
     ret
 
@@ -186,12 +238,23 @@ _start:
 .type _start64, @function
 .extern kernel_main
 _start64:
+    mov $gdt64_pointer64, %rax
+    lgdt 0(%rax)
+    mov $0x10, %ax
+    mov %ds, %ax
+    mov %es, %ax
+    mov %fs, %ax
+    mov %gs, %ax
+    mov %ss, %ax
+
     # 设置栈地址
     mov $STACK_TOP, %rsp
     # 栈地址按照 4096 字节对齐
     and $0xFFFFFFFFFFFFF000, %rsp
     # 帧指针修改为 0
     mov $0, %rbp
+    #hlt
+    # TODO: 执行到这里会出错
     push $0
     popf
 	# multiboot2_info 结构体指针
