@@ -30,7 +30,6 @@ void show_info(void) {
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
                                   COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
-    // BUG: x86_64 下显示不正确
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);
