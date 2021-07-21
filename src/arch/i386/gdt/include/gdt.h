@@ -173,44 +173,48 @@ namespace GDT {
     // TSS(任务状态段) 描述符
     // TSS的使用是为了解决调用门中特权级变换时堆栈发生的变化.
     // 资料：intel 手册 3ACh7
-    typedef struct tss_struct {
-        // old ts selector
-        uint32_t ts_link;
-        // stack pointers and segment selectors
-        uint32_t ts_esp0;
-        // after an increase in privilege level
-        uint32_t ts_ss0;
-        uint32_t ts_esp1;
-        uint32_t ts_ss1;
-        uint32_t ts_esp2;
-        uint32_t ts_ss2;
-        // page directory base
-        uint32_t ts_cr3;
-        // saved state from last task switch
-        uint32_t ts_eip;
-        uint32_t ts_eflags;
-        // more saved state (registers)
-        uint32_t ts_eax;
-        uint32_t ts_ecx;
-        uint32_t ts_edx;
-        uint32_t ts_ebx;
-        uint32_t ts_esp;
-        uint32_t ts_ebp;
-        uint32_t ts_esi;
-        uint32_t ts_edi;
-        // even more saved state (segment selectors)
-        uint32_t ts_es;
-        uint32_t ts_cs;
-        uint32_t ts_ss;
-        uint32_t ts_ds;
-        uint32_t ts_fs;
-        uint32_t ts_gs;
-        uint32_t ts_ldt;
-        // trap on task switch
-        uint32_t ts_t;
-        // i/o map base address
-        uint32_t ts_iomb;
-    } __attribute__((packed)) tss_struct_t;
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#7.2.1
+    struct tss32_t {
+        uint16_t prev_task_link;
+        uint16_t reserved0;
+        uint32_t esp0;
+        uint16_t ss0;
+        uint32_t reserved1;
+        uint32_t esp1;
+        uint16_t ss1;
+        uint32_t reserved2;
+        uint32_t esp2;
+        uint16_t ss2;
+        uint32_t reserved3;
+        uint32_t cr3;
+        uint32_t eip;
+        uint32_t eflags;
+        uint32_t eax;
+        uint32_t ecx;
+        uint32_t edx;
+        uint32_t ebx;
+        uint32_t esp;
+        uint32_t ebp;
+        uint32_t esi;
+        uint32_t edi;
+        uint16_t es;
+        uint16_t reserved4;
+        uint16_t cs;
+        uint16_t reserved5;
+        uint16_t ss;
+        uint16_t reserved6;
+        uint16_t ds;
+        uint16_t reserved7;
+        uint16_t fs;
+        uint16_t reserved8;
+        uint16_t gs;
+        uint16_t reserved9;
+        uint16_t ldt_segment_selector;
+        uint16_t reserved10;
+        uint32_t t : 1;
+        uint32_t reserved11 : 15;
+        uint32_t io_map_base_addr : 16;
+    } __attribute__((packed));
     // 全局描述符表构造函数，根据下标构造
     // 参数:
     // num-数组下标、base-基地址、limit-限长、access-访问标志，gran-粒度
