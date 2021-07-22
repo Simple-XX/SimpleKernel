@@ -14,17 +14,25 @@
 #include "vmm.h"
 
 // 物理地址转换到页表项
-#define PA2PTE(_pa) ((((uint64_t)_pa) >> 12) << 10)
+static constexpr uint64_t PA2PTE(const void *_pa) {
+    return (((uint64_t)_pa) >> 12) << 10;
+}
 // 页表项转换到物理地址
-#define PTE2PA(pte) (((pte) >> 10) << 12)
+static constexpr uint64_t PTE2PA(const pte_t _pte) {
+    return (((uint64_t)_pte) >> 10) << 12;
+}
 // 计算 X 级页表的偏移
-#define PXSHIFT(level) (12 + (9 * (level)))
+static constexpr uint64_t PXSHIFT(const size_t _level) {
+    return 12 + (9 * (_level));
+}
 // 获取 X 级页表索引
-#define PX(level, _va) ((((uint64_t)(_va)) >> PXSHIFT(level)) & 0x1FF)
+static constexpr uint64_t PX(const size_t _level, const void *_va) {
+    return (((uint64_t)(_va)) >> PXSHIFT(_level)) & 0x1FF;
+}
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
-pte_t *walk(pt_t _pgd, uint64_t _va, bool _alloc) {
+pte_t *find(pt_t _pgd, const void *_va, bool _alloc) {
     // sv39 共有三级页表，一级一级查找
     for (size_t level = 2; level > 0; level--) {
         pte_t *pte = (pte_t *)&_pgd[PX(level, _va)];
@@ -86,7 +94,7 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    printf("vmm_init.\n");
+    printf("vmm init.\n");
     return 0;
 }
 
@@ -98,6 +106,7 @@ void VMM::set_pgd(const pgd_t _pgd) {
     // 更新当前页表
     curr_dir = _pgd;
     // 设置页目录
+    // BUG: 这里需要 SV39
     CPU::WRITE_SATP(curr_dir);
     // 刷新缓存
     CPU::SFENCE_VMA();
@@ -108,7 +117,7 @@ void VMM::mmap(const pgd_t _pgd, const void *_va, const void *_pa,
                const uint32_t _flag) {
     pte_t *pte = nullptr;
     // 如果未找到对应页，直接返回
-    if ((pte = walk(_pgd, (uint64_t)_va, true)) == nullptr) {
+    if ((pte = find(_pgd, _va, true)) == nullptr) {
         return;
     }
     // 已经映射过了
@@ -126,8 +135,8 @@ void VMM::unmmap(const pgd_t _pgd, const void *_va) {
     pte_t *pte = nullptr;
     // 找到页表项
     // 未找到
-    if ((pte = walk(_pgd, (uint64_t)_va, false)) == nullptr) {
-        warn("VMM::unmmap: walk.\n");
+    if ((pte = find(_pgd, _va, false)) == nullptr) {
+        warn("VMM::unmmap: find.\n");
         return;
     }
     // 找到了，但是并没有被映射
@@ -145,7 +154,7 @@ void VMM::unmmap(const pgd_t _pgd, const void *_va) {
 bool VMM::get_mmap(const pgd_t _pgd, const void *_va, const void *_pa) {
     pte_t *pte = nullptr;
     // 如果没有找到对应的页表项
-    if ((pte = walk(_pgd, (uint64_t)_va, false)) == nullptr) {
+    if ((pte = find(_pgd, _va, false)) == nullptr) {
         // 如果 _pa 不为空
         if (_pa != nullptr) {
             // 设置 _pa

@@ -140,11 +140,9 @@ bool VMM::init(void) {
         mmap(pgd_kernel, (void *)addr, (void *)addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
-    // nullptr 不映射
-    unmmap((pgd_t)pgd_kernel, nullptr);
     set_pgd((pgd_t)pgd_kernel);
-    CPU::CR0_SET_PG();
-    printf("vmm_init\n");
+    CPU::ENABLE_PG();
+    printf("vmm init.\n");
     return 0;
 }
 
@@ -164,13 +162,13 @@ void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
     uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
     pt_t     pud     = (pt_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
     if (pud == nullptr) {
-        pud          = (pt_t)PMM::alloc_page();
+        pud          = (pt_t)PMM::alloc_page_kernel();
         pgd[pgd_idx] = (reinterpret_cast<uint32_t>(pud) | VMM_PAGE_VALID |
                         VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     pud = (pt_t)VMM_PA_LA(pud);
     if (pa == nullptr) {
-        pa = PMM::alloc_page();
+        pa = PMM::alloc_page_kernel();
     }
     pud[pud_idx] = ((reinterpret_cast<uint32_t>(pa) & COMMON::PAGE_MASK) |
                     VMM_PAGE_VALID | flag);
