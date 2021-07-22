@@ -33,6 +33,7 @@ long long divmoddi4(long long num, long long den, long long *rem_p) {
     return v;
 }
 
+// BUG: 在 x86_64 下观察到了精度损失
 unsigned long long udivmoddi4(unsigned long long num, unsigned long long den,
                               unsigned long long *rem_p) {
     unsigned long long quot = 0, qbit = 1;
@@ -60,7 +61,6 @@ unsigned long long udivmoddi4(unsigned long long num, unsigned long long den,
 
     if (rem_p)
         *rem_p = num;
-
     return quot;
 }
 
@@ -76,5 +76,4 @@ unsigned long long umoddi3(unsigned long long num, unsigned long long den) {
 
 #ifdef __cplusplus
 }
-
 #endif

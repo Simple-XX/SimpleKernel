@@ -10,25 +10,25 @@
 #include "stdio.h"
 #include "firstfit.h"
 
-void FIRSTFIT::set(uint64_t _idx) {
-    map[_idx >> SHIFT] |= (uint64_t)1 << (_idx & MASK);
+void FIRSTFIT::set(uintptr_t _idx) {
+    map[_idx >> SHIFT] |= (uintptr_t)1 << (_idx & MASK);
     return;
 }
 
-void FIRSTFIT::clr(uint64_t _idx) {
-    map[_idx >> SHIFT] &= ~((uint64_t)1 << (_idx & MASK));
+void FIRSTFIT::clr(uintptr_t _idx) {
+    map[_idx >> SHIFT] &= ~((uintptr_t)1 << (_idx & MASK));
     return;
 }
 
-bool FIRSTFIT::test(uint64_t _idx) {
-    return map[_idx >> SHIFT] & ((uint64_t)1 << (_idx & MASK));
+bool FIRSTFIT::test(uintptr_t _idx) {
+    return map[_idx >> SHIFT] & ((uintptr_t)1 << (_idx & MASK));
 }
 
-uint64_t FIRSTFIT::find_len(uint64_t _len, bool _val) {
-    uint64_t count = 0;
-    uint64_t idx   = 0;
+uintptr_t FIRSTFIT::find_len(size_t _len, bool _val) {
+    uintptr_t count = 0;
+    uintptr_t idx   = 0;
     // 遍历位图
-    for (uint64_t i = 0; i < (COMMON::PMM_SIZE / COMMON::PAGE_SIZE); i++) {
+    for (uintptr_t i = 0; i < (COMMON::PMM_SIZE / COMMON::PAGE_SIZE); i++) {
         if (test(i) != _val) {
             count = 0;
             idx   = i + 1;
@@ -40,14 +40,14 @@ uint64_t FIRSTFIT::find_len(uint64_t _len, bool _val) {
             return idx;
         }
     }
-    return ~(uint64_t)0;
+    return ~(uintptr_t)0;
 }
 
 FIRSTFIT::FIRSTFIT(const char *_name, const void *_addr, size_t _len)
     : ALLOCATOR(_name, _addr, _len) {
     // 所有清零
     memset(map, 0, sizeof(map));
-    printf("%s: 0x%p(0x%p) init.\n", name, allocator_start_addr,
+    printf("%s: 0x%p(0x%X pages) init.\n", name, allocator_start_addr,
            allocator_length);
     return;
 }
@@ -60,9 +60,9 @@ FIRSTFIT::~FIRSTFIT(void) {
 void *FIRSTFIT::alloc(size_t _len) {
     void *res_addr = nullptr;
     // 在位图中寻找连续 _len 的位置
-    uint64_t idx = find_len(_len, false);
+    uintptr_t idx = find_len(_len, false);
     // 如果为 ~0 说明未找到
-    if (idx == ~(uint64_t)0) {
+    if (idx == ~(uintptr_t)0) {
         // err("NO ENOUGH MEM.\n");
         return nullptr;
     }
@@ -83,8 +83,8 @@ void *FIRSTFIT::alloc(size_t _len) {
 
 bool FIRSTFIT::alloc(void *_addr, size_t _len) {
     // 计算 _addr 在 map 中的索引
-    uint64_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
-                   COMMON::PAGE_SIZE;
+    uintptr_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
+                    COMMON::PAGE_SIZE;
     // 遍历
     for (auto i = idx; i < idx + _len; i++) {
         // 如果在范围内有已经分配的内存，返回 false
@@ -105,8 +105,8 @@ bool FIRSTFIT::alloc(void *_addr, size_t _len) {
 }
 
 void FIRSTFIT::free(void *_addr, size_t _len) {
-    uint64_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
-                   COMMON::PAGE_SIZE;
+    uintptr_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
+                    COMMON::PAGE_SIZE;
     for (auto i = idx; i < idx + _len; i++) {
         clr(i);
     }
