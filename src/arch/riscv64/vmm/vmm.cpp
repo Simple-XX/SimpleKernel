@@ -14,20 +14,20 @@
 #include "vmm.h"
 
 // 物理地址转换到页表项
-static constexpr uint64_t PA2PTE(const void *_pa) {
-    return (((uint64_t)_pa) >> 12) << 10;
+static constexpr uintptr_t PA2PTE(const void *_pa) {
+    return (((uintptr_t)_pa) >> 12) << 10;
 }
 // 页表项转换到物理地址
-static constexpr uint64_t PTE2PA(const pte_t _pte) {
-    return (((uint64_t)_pte) >> 10) << 12;
+static constexpr uintptr_t PTE2PA(const pte_t _pte) {
+    return (((uintptr_t)_pte) >> 10) << 12;
 }
 // 计算 X 级页表的偏移
-static constexpr uint64_t PXSHIFT(const size_t _level) {
+static constexpr uintptr_t PXSHIFT(const size_t _level) {
     return 12 + (9 * (_level));
 }
 // 获取 X 级页表索引
-static constexpr uint64_t PX(const size_t _level, const void *_va) {
-    return (((uint64_t)(_va)) >> PXSHIFT(_level)) & 0x1FF;
+static constexpr uintptr_t PX(size_t _level, const void *_va) {
+    return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & 0x1FF;
 }
 
 // 在 _pgd 中查找 _va 对应的页表项
