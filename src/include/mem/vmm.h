@@ -65,11 +65,15 @@ static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
 static constexpr const uint64_t KERNEL_OFFSET = 0x0;
 #endif
 
-// 逻辑地址到物理地址转换
-#define VMM_LA_PA(la) (la - KERNEL_OFFSET)
+// 虚拟地址到物理地址转换
+static constexpr uintptr_t VMM_VA2PA(const void *_va) {
+    return ((uintptr_t)_va) - KERNEL_OFFSET;
+}
 
-// 物理地址到逻辑地址转换
-#define VMM_PA_LA(pa) (pa + KERNEL_OFFSET)
+// 物理地址到虚拟地址转换
+static constexpr uintptr_t VMM_PA2VA(const void *_pa) {
+    return ((uintptr_t)_pa) + KERNEL_OFFSET;
+}
 
 class VMM {
 private:
