@@ -55,43 +55,43 @@ int32_t test_pmm(void) {
 }
 
 int32_t test_vmm(void) {
-    ptrdiff_t addr = (ptrdiff_t) nullptr;
+    uintptr_t addr = (uintptr_t) nullptr;
     // 首先确认内核空间被映射了
     assert(VMM::get_pgd() != nullptr);
     assert(
         VMM::get_mmap(VMM::get_pgd(),
-                      (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR + 0x1000),
+                      (void *)((uintptr_t)COMMON::KERNEL_START_ADDR + 0x1000),
                       &addr) == 1);
-    assert(addr == (ptrdiff_t)COMMON::KERNEL_START_ADDR + 0x1000);
-    addr = (ptrdiff_t) nullptr;
+    assert(addr == (uintptr_t)COMMON::KERNEL_START_ADDR + 0x1000);
+    addr = (uintptr_t) nullptr;
     assert(VMM::get_mmap(VMM::get_pgd(),
-                         (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR +
+                         (void *)((uintptr_t)COMMON::KERNEL_START_ADDR +
                                   VMM_KERNEL_SPACE_SIZE - 1),
                          &addr) == 1);
-    assert(addr == (ptrdiff_t)(((ptrdiff_t)COMMON::KERNEL_START_ADDR +
+    assert(addr == (uintptr_t)(((uintptr_t)COMMON::KERNEL_START_ADDR +
                                 VMM_KERNEL_SPACE_SIZE - 1) &
                                COMMON::PAGE_MASK));
-    addr = (ptrdiff_t) nullptr;
+    addr = (uintptr_t) nullptr;
     assert(
         VMM::get_mmap(VMM::get_pgd(),
-                      (void *)((ptrdiff_t)COMMON::ALIGN(
+                      (void *)((uintptr_t)COMMON::ALIGN(
                                    COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
                                VMM_KERNEL_SPACE_SIZE),
                       &addr) == 0);
-    assert(addr == (ptrdiff_t) nullptr);
-    addr = (ptrdiff_t) nullptr;
+    assert(addr == (uintptr_t) nullptr);
+    addr = (uintptr_t) nullptr;
     assert(
         VMM::get_mmap(VMM::get_pgd(),
-                      (void *)((ptrdiff_t)COMMON::ALIGN(
+                      (void *)((uintptr_t)COMMON::ALIGN(
                                    COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
                                VMM_KERNEL_SPACE_SIZE + 0x1024),
                       nullptr) == 0);
     // 测试映射与取消映射
-    addr = (ptrdiff_t) nullptr;
+    addr = (uintptr_t) nullptr;
     // 准备映射的虚拟地址 3GB 处
-    ptrdiff_t va = 0xC0000000;
+    uintptr_t va = 0xC0000000;
     // 准备映射的物理地址 0.75GB 处
-    ptrdiff_t pa = 0x30000000;
+    uintptr_t pa = 0x30000000;
     // 确定一块未映射的内存
     assert(VMM::get_mmap(VMM::get_pgd(), (void *)va, nullptr) == 0);
     // 映射
@@ -100,11 +100,11 @@ int32_t test_vmm(void) {
     assert(VMM::get_mmap(VMM::get_pgd(), (void *)va, &addr) == 1);
     assert(addr == pa);
     // 写测试
-    *(ptrdiff_t *)va = 0xCD;
+    *(uintptr_t *)va = 0xCD;
     //取消映射
     VMM::unmmap(VMM::get_pgd(), (void *)va);
     assert(VMM::get_mmap(VMM::get_pgd(), (void *)va, &addr) == 0);
-    assert(addr == (ptrdiff_t) nullptr);
+    assert(addr == (uintptr_t) nullptr);
     printf("vmm test done.\n");
     return 0;
 }
