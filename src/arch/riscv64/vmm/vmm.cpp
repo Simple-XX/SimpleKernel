@@ -9,7 +9,6 @@
 #include "stdio.h"
 #include "assert.h"
 #include "cpu.hpp"
-#include "memlayout.h"
 #include "pmm.h"
 #include "vmm.h"
 
@@ -20,14 +19,10 @@
 // 0~9: pte 属性
 // 10~54: 页表的物理页地址
 static constexpr uintptr_t PA2PTE(const void *_pa) {
-    // >>12 丢弃物理地址偏移
-    // <<10 pte 属性
     return (((uintptr_t)_pa) >> 12) << 10;
 }
 // 页表项转换到物理地址
 static constexpr uintptr_t PTE2PA(const pte_t _pte) {
-    // >>10 丢弃 pte 属性
-    // <<12 物理地址偏移
     return (((uintptr_t)_pte) >> 10) << 12;
 }
 // 计算 X 级页表的偏移
@@ -131,7 +126,6 @@ void VMM::set_pgd(const pt_t _pgd) {
     // 更新当前页表
     curr_dir = _pgd;
     // 设置页目录
-    // BUG: 这里需要 SV39
     CPU::WRITE_SATP(curr_dir);
     // 刷新缓存
     CPU::SFENCE_VMA();
@@ -174,6 +168,7 @@ void VMM::unmmap(const pt_t _pgd, const void *_va) {
     *pte = 0x00;
     // 刷新缓存
     CPU::SFENCE_VMA();
+    // TODO: 如果一页表都被 unmap，释放占用的物理内存
     return;
 }
 
