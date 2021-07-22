@@ -7,6 +7,7 @@
 #include "stdint.h"
 #include "string.h"
 #include "stdio.h"
+#include "assert.h"
 #include "cpu.hpp"
 #include "pmm.h"
 #include "vmm.h"
@@ -89,6 +90,7 @@ static pt_t pgd_kernel;
 pt_t        VMM::curr_dir;
 
 VMM::VMM(void) {
+    // 读取当前页目录
     curr_dir = (pt_t)CPU::READ_CR3();
     return;
 }
@@ -97,7 +99,6 @@ VMM::~VMM(void) {
     return;
 }
 
-// BUG: alloc_page_kernel 会分配 2m 内存
 bool VMM::init(void) {
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
@@ -109,7 +110,9 @@ bool VMM::init(void) {
         mmap(pgd_kernel, (void *)addr, (void *)addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
+    // 设置页目录
     set_pgd(pgd_kernel);
+    // 开启分页
     CPU::ENABLE_PG();
     printf("vmm init.\n");
     return 0;
@@ -120,8 +123,12 @@ pt_t VMM::get_pgd(void) {
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
+    // 更新当前页表
     curr_dir = _pgd;
+    // 设置页目录
     CPU::CR3_SET_PGD((void *)curr_dir);
+    // 刷新缓存
+    // TODO
     return;
 }
 
