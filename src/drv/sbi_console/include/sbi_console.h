@@ -7,14 +7,11 @@
 #ifndef _SBI_CONSOLE_H_
 #define _SBI_CONSOLE_H_
 
-#include "opensbi.h"
 #include "stdint.h"
 #include "color.h"
 
 class SBI_CONSOLE {
 private:
-    OPENSBI opensbi;
-
 protected:
 public:
     SBI_CONSOLE(void);

@@ -10,11 +10,35 @@
 extern "C" {
 #endif
 
+#define ATEXIT_MAX_FUNCS 128
+
+typedef void (*ctor_t)(void);
+extern ctor_t ctors_start[];
+extern ctor_t ctors_end[];
+
+typedef unsigned uarch_t;
+
+struct atexit_func_entry_t {
+    /*
+     * Each member is at least 4 bytes large. Such that each entry is
+     12bytes.
+     * 128 * 12 = 1.5KB exact.
+     **/
+    void (*destructor_func)(void *);
+    void *obj_ptr;
+    void *dso_handle;
+};
+
 void cpp_init(void) {
-    // BUG: x86_64
-    for (ctor_t *f = &ctors_start; f != &ctors_end; f++) {
+    ctor_t *f;
+    for (f = ctors_start; f < ctors_end; f++) {
         (*f)();
     }
+    return;
+}
+
+void __cxa_pure_virtual(void) {
+    return;
 }
 
 atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];
@@ -50,7 +74,6 @@ int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     __atexit_funcs[__atexit_func_count].obj_ptr         = objptr;
     __atexit_funcs[__atexit_func_count].dso_handle      = dso;
     __atexit_func_count++;
-    // I would prefer if functions returned 1 on success, but the ABI says...
     return 0;
 };
 
@@ -62,7 +85,6 @@ int __aeabi_atexit(void (*f)(void *), void *objptr, void *dso) {
     __atexit_funcs[__atexit_func_count].obj_ptr         = objptr;
     __atexit_funcs[__atexit_func_count].dso_handle      = dso;
     __atexit_func_count++;
-    // I would prefer if functions returned 1 on success, but the ABI says...
     return 0;
 };
 
@@ -153,6 +175,7 @@ void __cxa_finalize(void *f) {
 };
 
 namespace __cxxabiv1 {
+
     /* guard variables */
 
     /* The ABI requires a 64-bit type.  */
@@ -177,3 +200,54 @@ namespace __cxxabiv1 {
 #ifdef __cplusplus
 };
 #endif
+
+namespace std {
+    type_info::type_info(const type_info &arg) : tname(arg.tname) {
+        return;
+    }
+
+    type_info::type_info(const char *pname) : tname(pname) {
+        return;
+    }
+
+    type_info::~type_info(void) {
+        return;
+    }
+
+    const char *type_info::name(void) const {
+        return tname;
+    }
+
+    bool type_info::operator==(const type_info &arg) const {
+        return tname == arg.tname;
+    }
+
+    bool type_info::operator!=(const type_info &arg) const {
+        return tname != arg.tname;
+    }
+}
+
+namespace __cxxabiv1 {
+
+#define ADD_CXX_TYPEINFO_SOURCE(t)                                             \
+    t::t(const char *n) : std::type_info(n) {                                  \
+        return;                                                                \
+    }                                                                          \
+    t::~t(void) {                                                              \
+        return;                                                                \
+    }
+
+    ADD_CXX_TYPEINFO_SOURCE(__fundamental_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__array_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__function_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__enum_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__pbase_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__pointer_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__pointer_to_member_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__class_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__si_class_type_info)
+    ADD_CXX_TYPEINFO_SOURCE(__vmi_class_type_info)
+
+#undef ADD_CXX_TYPEINFO_SOURCE
+
+}
