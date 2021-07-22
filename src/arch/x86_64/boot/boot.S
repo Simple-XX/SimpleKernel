@@ -97,7 +97,7 @@ multiboot_header:
     .long 8
 multiboot_header_end:
 
-# 临时页表 2MB/页
+# 临时页表 4KB/页
 .section .data
 .align 0x1000
 pml4:
@@ -105,6 +105,8 @@ pml4:
 pdpt:
     .skip 0x1000
 pd:
+    .skip 0x1000
+pt:
     .skip 0x1000
 
 # 临时 GDT
@@ -174,10 +176,22 @@ _start:
     mov $pd, %ebx
     or $0x3, %ebx
     mov %ebx, 0(%eax)
-    # 最低级
+    # 次低级
     mov $pd, %eax
-    mov $0x000083, %ebx
+    mov $pt, %ebx
+    or $0x3, %ebx
     mov %ebx, 0(%eax)
+    # 最低级
+    # 循环 512 次，填满一页
+    mov $512, %ecx
+    mov $pt, %eax
+    mov $0x3, %ebx
+.fill_pt:
+    mov %ebx, 0(%eax)
+    add $0x1000, %ebx
+    add $8, %eax
+    loop .fill_pt
+
     # 填写 CR3
     mov $pml4, %eax
     mov %eax, %cr3
