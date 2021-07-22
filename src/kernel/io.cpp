@@ -53,6 +53,42 @@ void IO::outd(const uint32_t port, const uint32_t data) {
 
 #endif
 
+uint8_t IO::read8(void *_addr) {
+    return *(uint8_t *)_addr;
+}
+
+void IO::write8(void *_addr, uint8_t _val) {
+    *(uint8_t *)_addr = _val;
+    return;
+}
+
+uint16_t IO::read16(void *_addr) {
+    return *(uint16_t *)_addr;
+}
+
+void IO::write16(void *_addr, uint16_t _val) {
+    *(uint16_t *)_addr = _val;
+    return;
+}
+
+uint32_t IO::read32(void *_addr) {
+    return *(uint32_t *)_addr;
+}
+
+void IO::write32(void *_addr, uint32_t _val) {
+    *(uint32_t *)_addr = _val;
+    return;
+}
+
+uint64_t IO::read64(void *_addr) {
+    return *(uint64_t *)_addr;
+}
+
+void IO::write64(void *_addr, uint64_t _val) {
+    *(uint64_t *)_addr = _val;
+    return;
+}
+
 COLOR::color_t IO::get_color(void) {
     return io.get_color();
 }
@@ -76,10 +112,12 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
+IO io;
+
 extern "C" int32_t printf(const char *fmt, ...) {
     va_list va;
     va_start(va, fmt);
-    const int ret = _vsnprintf(buf, 127, fmt, va);
+    const int ret = _vsnprintf(buf, 128, fmt, va);
     va_end(va);
     io.write_string(buf);
     bzero(buf, 128);
