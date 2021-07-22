@@ -97,7 +97,7 @@ multiboot_header:
     .long 8
 multiboot_header_end:
 
-# 临时页表 2MB/页
+# 临时页表 4KB/页
 .section .data
 .align 0x1000
 pml4:
@@ -105,6 +105,8 @@ pml4:
 pdpt:
     .skip 0x1000
 pd:
+    .skip 0x1000
+pt:
     .skip 0x1000
 
 # 临时 GDT
@@ -174,10 +176,36 @@ _start:
     mov $pd, %ebx
     or $0x3, %ebx
     mov %ebx, 0(%eax)
-    # 最低级
+    # 次低级
     mov $pd, %eax
-    mov $0x000083, %ebx
+    mov $pt, %ebx
+    or $0x3, %ebx
     mov %ebx, 0(%eax)
+    # 最低级
+    mov $pt, %eax
+    mov $0x0003, %ebx
+    mov %ebx, 0(%eax)
+    mov $0x1003, %ebx
+    mov %ebx, 8(%eax)
+    mov $0x2003, %ebx
+    mov %ebx, 16(%eax)
+    mov $0x3003, %ebx
+    mov %ebx, 24(%eax)
+    mov $0x4003, %ebx
+    mov %ebx, 32(%eax)
+    mov $0x5003, %ebx
+    mov %ebx, 40(%eax)
+    mov $0x6003, %ebx
+    mov %ebx, 48(%eax)
+    mov $0x7003, %ebx
+    mov %ebx, 56(%eax)
+    mov $0x8003, %ebx
+    mov %ebx, 64(%eax)
+    mov $0x9003, %ebx
+    mov %ebx, 72(%eax)
+    mov $0xA003, %ebx
+    mov %ebx, 80(%eax)
+
     # 填写 CR3
     mov $pml4, %eax
     mov %eax, %cr3
