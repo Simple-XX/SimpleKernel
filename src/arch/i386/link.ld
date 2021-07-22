@@ -4,48 +4,65 @@
  * link.ld for Simple-XX/SimpleKernel. */
 
 OUTPUT_FORMAT(elf32-i386)
+OUTPUT_ARCH(i386)
 
 ENTRY(_start)
 
 SECTIONS {
-    /* VMA 为顺序排列，LMA 按照 AT(addr) 排列 */
+	/* VMA 为顺序排列，LMA 按照 AT(addr) 排列 */
+    . = 0;
+	PROVIDE(kernel_start = .);
     /* 指定内核从地址 1M 处开始 */
+	/* 0~1M 的空间为 BIOS 保留区域 */
+    /* TODO: 这里似乎可以修改为任意地址 */
     . = 1M;
-    PROVIDE(kernel_start = .);
 
-	.text : ALIGN(4K) {
-		PROVIDE(kernel_text_start = .);
-		*(.multiboot_header)
-		*(.text)
-		PROVIDE(kernel_text_end = .);
-	}
+    PROVIDE(kernel_text_start = .);
+	/* 代码段 */
+    .text : ALIGN(4K) {
+        *(.multiboot_header)
+        *(.text*)
+    }
+    PROVIDE(kernel_text_end = .);
 
-	.ctors : ALIGN(4K) {
-		PROVIDE (ctors_start = .);
+    PROVIDE(kernel_rodata_start = .);
+	/* 只读数据段 */
+    .rodata : ALIGN(4K) {
+        PROVIDE(ctors_start = .);
         *(SORT_BY_INIT_PRIORITY (.init_array.*))
-		*(SORT_BY_INIT_PRIORITY (.ctors.*))
+        *(SORT_BY_INIT_PRIORITY (.ctors.*))
         *(.init_array .ctors)
-		PROVIDE (ctors_end = .);
+        PROVIDE(ctors_end = .);
+        PROVIDE(dtors_start = .);
+        *(.dtor*)
+        PROVIDE(dtors_end = .);
+        *(.rodata*)
+        *(.gcc_except_table)
     }
+    PROVIDE(kernel_rodata_end = .);
 
-	.rodata : ALIGN(4K) {
-		PROVIDE(kernel_rodata_start = .);
-		*(.rodata)
-		PROVIDE(kernel_rodata_end = .);
-	}
-
+    PROVIDE(kernel_data_start = .);
+	/* 数据段 */
     .data : ALIGN(4K) {
-		PROVIDE(kernel_data_start = .);
-        *(.data)
-		PROVIDE(kernel_data_end = .);
+        *(.data*)
+        *(.eh_frame)
+        *(.got*)
     }
+    PROVIDE(kernel_data_end = .);
 
-	.bss : ALIGN(4K) {
-		PROVIDE(kernel_bss_start = .);
-		*(COMMON)
-		*(.bss)
-		PROVIDE(kernel_bss_end = .);
-	}
+    PROVIDE(kernel_bss_start = .);
+	/* 未初始化数据段 */
+    .bss : ALIGN(4K) {
+        *(.bss)
+    }
+    PROVIDE(kernel_bss_end = .);
+
+    PROVIDE(kernel_debug_start = .);
+	/* 调试信息 */
+    .debug : ALIGN(4K) {
+        *(.debug*)
+    }
+    PROVIDE(kernel_debug_end = .);
 
     PROVIDE(kernel_end = .);
 }
