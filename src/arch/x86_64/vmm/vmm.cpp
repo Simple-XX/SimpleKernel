@@ -48,28 +48,20 @@ pte_t *find(const pt_t _pgd, const void *_va, bool _alloc) {
     // sv39 共有三级页表，一级一级查找
     // -1 是因为最后一级是具体的某一页，在函数最后直接返回
     for (size_t level = PT_LEVEL - 1; level > 0; level--) {
-        printf("PX(0x%X, 0x%p): 0x%X\n", level, _va, PX(level, _va));
         // 每次循环会找到 _va 的第 level 级页表 pgd
         // 相当于 pgd_level[VPN_level]，这样相当于得到了第 level 级页表的地址
         pte_t *pte = (pte_t *)&pgd[PX(level, _va)];
-        printf("pgd: 0x%X\n", pgd);
-        printf("&pgd: 0x%X\n", &pgd);
-        printf("pte: 0x%X\n", pte);
-        printf("*pte: 0x%X\n", *pte);
         // 解引用 pte，如果有效，获取 level+1 级页表，
         if ((*pte & VMM_PAGE_VALID) == 1) {
             // pgd 指向下一级页表
             // *pte 保存的是页表项，需要转换为对应的物理地址
-            printf("PTE2PA.\n");
             pgd = (pt_t)PTE2PA(*pte);
-            printf("PTE2PA done.\n");
         }
         // 如果无效
         else {
             // 判断是否需要分配
             // 如果需要
             if (_alloc == true) {
-                printf("alloc.\n");
                 // 申请新的物理页
                 pgd = (pt_t)PMM::alloc_page_kernel();
                 // 申请失败则返回
@@ -109,11 +101,6 @@ VMM::~VMM(void) {
 bool VMM::init(void) {
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
-    printf("find start: 0x%p.\n", pgd_kernel);
-    find(pgd_kernel, (void *)0x00, true);
-    printf("find out.\n");
-    while (1)
-        ;
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
          addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
