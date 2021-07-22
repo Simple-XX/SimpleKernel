@@ -13,9 +13,6 @@
 #include "e820.h"
 #include "pmm.h"
 
-// TODO: x86 下的数据长度问题
-// 将 uint64_t 改为 size_t 后可解决
-
 const void *PMM::start                   = nullptr;
 size_t      PMM::length                  = 0;
 size_t      PMM::total_pages             = 0;
