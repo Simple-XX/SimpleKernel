@@ -182,29 +182,15 @@ _start:
     or $0x3, %ebx
     mov %ebx, 0(%eax)
     # 最低级
+    # 循环 512 次，填满一页
+    mov $512, %ecx
     mov $pt, %eax
-    mov $0x0003, %ebx
+    mov $0x3, %ebx
+.fill_pt:
     mov %ebx, 0(%eax)
-    mov $0x1003, %ebx
-    mov %ebx, 8(%eax)
-    mov $0x2003, %ebx
-    mov %ebx, 16(%eax)
-    mov $0x3003, %ebx
-    mov %ebx, 24(%eax)
-    mov $0x4003, %ebx
-    mov %ebx, 32(%eax)
-    mov $0x5003, %ebx
-    mov %ebx, 40(%eax)
-    mov $0x6003, %ebx
-    mov %ebx, 48(%eax)
-    mov $0x7003, %ebx
-    mov %ebx, 56(%eax)
-    mov $0x8003, %ebx
-    mov %ebx, 64(%eax)
-    mov $0x9003, %ebx
-    mov %ebx, 72(%eax)
-    mov $0xA003, %ebx
-    mov %ebx, 80(%eax)
+    add $0x1000, %ebx
+    add $8, %eax
+    loop .fill_pt
 
     # 填写 CR3
     mov $pml4, %eax
