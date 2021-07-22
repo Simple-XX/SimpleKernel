@@ -345,8 +345,8 @@ namespace MULTIBOOT2 {
         multiboot_uint32_t load_base_addr;
     };
 
-    void multiboot2_init(uint32_t magic, void *addr);
-    void print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
+    extern "C" void multiboot2_init(uint32_t magic, void *addr);
+    void            print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_MODULE(struct multiboot_tag *tag);
     void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(struct multiboot_tag *tag);

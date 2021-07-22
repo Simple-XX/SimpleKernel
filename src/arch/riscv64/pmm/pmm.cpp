@@ -5,20 +5,20 @@
 // pmm.cpp for Simple-XX/SimpleKernel.
 
 #include "string.h"
-#include "memlayout.h"
 #include "stdio.h"
+#include "assert.h"
+#include "common.h"
 #include "pmm.h"
 
-// TODO: 优化空间
-// TODO: 换一种更灵活的方法
-COMMON::physical_pages_t PMM::phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
-size_t                   PMM::normal_pages = 0;
-FIRSTFIT                 PMM::normal(phy_pages);
-// FIRSTFIT  PMM::normal((COMMON::physical_pages_t *)0x23);
-size_t    PMM::high_pages = 0;
-FIRSTFIT  PMM::high(&phy_pages[COMMON::KERNEL_PAGES]);
-size_t    PMM::pages                    = 0;
-FIRSTFIT *PMM::zone[COMMON::ZONE_COUNT] = {&normal, &high};
+const void *PMM::start                   = nullptr;
+size_t      PMM::length                  = 0;
+size_t      PMM::total_pages             = 0;
+const void *PMM::kernel_space_start      = nullptr;
+size_t      PMM::kernel_space_length     = 0;
+const void *PMM::non_kernel_space_start  = nullptr;
+size_t      PMM::non_kernel_space_length = 0;
+ALLOCATOR * PMM::allocator               = nullptr;
+ALLOCATOR * PMM::kernel_space_allocator  = nullptr;
 
 PMM::PMM(void) {
     return;
@@ -28,66 +28,109 @@ PMM::~PMM(void) {
     return;
 }
 
-int32_t PMM::init(void) {
-    for (uint8_t *addr = (uint8_t *)COMMON::KERNEL_END_4K;
-         addr < (uint8_t *)MEMLAYOUT::DRAM_END; addr += COMMON::PAGE_SIZE) {
-        // 跳过 0x00 开始的一页，便于判断 nullptr
-        if (addr == nullptr) {
-            continue;
-        }
-        // 初始化可用内存段的物理页数组
-        // 地址对应的物理页数组下标
-        phy_pages[pages].addr = addr;
-        // 内核已使用部分
-        if (addr >= COMMON::ALIGN4K(COMMON::KERNEL_START_ADDR) &&
-            addr < COMMON::ALIGN4K(COMMON::KERNEL_END_ADDR)) {
-            phy_pages[pages].ref = 1;
-        }
-        else {
-            phy_pages[pages].ref = 0;
-        }
-// #define DEBUG
-#ifdef DEBUG
-        printf("phy_pages[%d].addr = addr: 0x%X\n", pages,
-               phy_pages[pages].addr);
-#undef DEBUG
-#endif
-        pages++;
+bool PMM::init(void) {
+    start = COMMON::KERNEL_START_ADDR;
+    // TODO: 动态获取
+    length                  = COMMON::PMM_SIZE;
+    total_pages             = length / COMMON::PAGE_SIZE;
+    kernel_space_start      = start;
+    kernel_space_length     = COMMON::KERNEL_SPACE_SIZE;
+    non_kernel_space_start  = (void *)((uint8_t *)COMMON::KERNEL_START_ADDR +
+                                      COMMON::KERNEL_SPACE_SIZE);
+    non_kernel_space_length = length - kernel_space_length;
+    // 内核空间
+    static FIRSTFIT first_fit_allocator_kernel(
+        "First Fit Allocator(kernel space)", kernel_space_start,
+        kernel_space_length / COMMON::PAGE_SIZE);
+    kernel_space_allocator = (ALLOCATOR *)&first_fit_allocator_kernel;
+    // 非内核空间
+    static FIRSTFIT first_fit_allocator(
+        "First Fit Allocator", non_kernel_space_start,
+        non_kernel_space_length / COMMON::PAGE_SIZE);
+    allocator = (ALLOCATOR *)&first_fit_allocator;
+    // 将内核已使用部分划分出来
+    // 内核实际占用页数
+    size_t kernel_pages =
+        ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
+         (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
+                                  COMMON::PAGE_SIZE)) /
+        COMMON::PAGE_SIZE;
+    if (alloc_pages_kernel(const_cast<void *>(COMMON::KERNEL_START_ADDR),
+                           kernel_pages) == true) {
+        printf("pmm init.\n");
+        return true;
     }
-    // 计算各个分区大小
-    normal_pages = COMMON::KERNEL_PAGES;
-    high_pages   = pages - normal_pages;
-    mamage_init();
-    printf("pmm_init\n");
-    return 0;
+    else {
+        return false;
+    }
 }
 
-void PMM::mamage_init(void) {
-    normal.init(normal_pages);
-    high.init(high_pages);
+void *PMM::alloc_page(void) {
+    return allocator->alloc(1);
+}
+
+void *PMM::alloc_pages(size_t _len) {
+    return allocator->alloc(_len);
+}
+
+bool PMM::alloc_pages(void *_addr, size_t _len) {
+    return allocator->alloc(_addr, _len);
+}
+
+void *PMM::alloc_page_kernel(void) {
+    return kernel_space_allocator->alloc(1);
+}
+
+void *PMM::alloc_pages_kernel(size_t _len) {
+    return kernel_space_allocator->alloc(_len);
+}
+
+bool PMM::alloc_pages_kernel(void *_addr, size_t _len) {
+    return kernel_space_allocator->alloc(_addr, _len);
+}
+
+void PMM::free_page(void *_addr) {
+    // 判断应该使用哪个分配器
+    if (_addr >= kernel_space_start &&
+        _addr < (uint8_t *)kernel_space_start + kernel_space_length) {
+        kernel_space_allocator->free(_addr, 1);
+    }
+    else if (_addr >= non_kernel_space_start &&
+             _addr <
+                 (uint8_t *)non_kernel_space_start + non_kernel_space_length) {
+        allocator->free(_addr, 1);
+    }
+    else {
+        // 如果都不是说明有问题
+        assert(0);
+    }
     return;
 }
 
-void *PMM::alloc_page(uint32_t _pages, COMMON::zone_t _zone) {
-    void *addr = nullptr;
-    if (_pages > 0) {
-        addr = zone[_zone]->alloc(_pages);
+void PMM::free_pages(void *_addr, size_t _len) {
+    // 判断应该使用哪个分配器
+    if (_addr >= kernel_space_start &&
+        _addr < (uint8_t *)kernel_space_start + kernel_space_length) {
+        kernel_space_allocator->free(_addr, _len);
     }
-    if (addr == nullptr) {
-        printf("No enough mem: 0x%X pages.\n", _pages);
+    else if (_addr >= non_kernel_space_start &&
+             _addr <
+                 (uint8_t *)non_kernel_space_start + non_kernel_space_length) {
+        allocator->free(_addr, _len);
     }
-    return addr;
-}
-
-void PMM::free_page(void *_addr, uint32_t _pages, COMMON::zone_t _zone) {
-    if (_addr == nullptr) {
-        printf("addr is null.\n");
-        return;
+    // 如果都不是说明有问题
+    else {
+        assert(0);
     }
-    zone[_zone]->free(_addr, _pages);
     return;
 }
 
-uint32_t PMM::free_pages_count(COMMON::zone_t _zone) {
-    return zone[_zone]->free_pages_count();
+uint64_t PMM::get_used_pages_count(void) {
+    return kernel_space_allocator->get_used_count() +
+           allocator->get_used_count();
+}
+
+uint64_t PMM::get_free_pages_count(void) {
+    return kernel_space_allocator->get_free_count() +
+           allocator->get_free_count();
 }
