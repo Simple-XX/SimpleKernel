@@ -14,7 +14,7 @@
 
 // 页表项，最底层
 typedef uintptr_t pte_t;
-// 页表，也可以页目录，它们的结构是一样的
+// 页表，也可以是页目录，它们的结构是一样的
 typedef uintptr_t *pt_t;
 // 页目录，其实就是一种特殊的页表
 typedef pt_t pgd_t;
