@@ -44,6 +44,7 @@ static constexpr uintptr_t PX(size_t _level, const void *_va) {
     return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & 0x1FF;
 }
 
+// riscv64 使用了三级页表
 static constexpr const size_t PT_LEVEL = 3;
 
 // 在 _pgd 中查找 _va 对应的页表项

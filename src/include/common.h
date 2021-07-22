@@ -74,7 +74,7 @@ namespace COMMON {
         KERNEL_SPACE_SIZE / PAGE_SIZE;
 
     // 页掩码
-    static constexpr const size_t PAGE_MASK = 0xFFFFFFFFFFFFF000;
+    static constexpr const uintptr_t PAGE_MASK = ~(PAGE_SIZE - 1);
 
     // 对齐 向上取整
     // 针对指针
