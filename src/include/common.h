@@ -35,17 +35,8 @@ namespace COMMON {
     static constexpr const size_t BYTE = 0x1;
     static constexpr const size_t KB   = 0x400;
     static constexpr const size_t MB   = 0x100000;
-
-#if defined(__i386__)
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
-#elif defined(__x86_64__)
-    // 页大小 2MB
-    static constexpr const size_t PAGE_SIZE = 2 * MB;
-#elif defined(__riscv)
-    // 页大小 4KB
-    static constexpr const size_t PAGE_SIZE = 4 * KB;
-#endif
 
     // 对齐 向上取整
     // 针对指针
