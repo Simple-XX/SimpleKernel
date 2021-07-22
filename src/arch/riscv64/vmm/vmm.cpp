@@ -138,7 +138,7 @@ void VMM::set_pgd(const pt_t _pgd) {
 }
 
 void VMM::mmap(const pt_t _pgd, const void *_va, const void *_pa,
-               const uint32_t _flag) {
+               uint32_t _flag) {
     pte_t *pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
     assert(pte != nullptr);
