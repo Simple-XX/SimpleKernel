@@ -37,34 +37,13 @@ namespace COMMON {
     static constexpr const size_t MB   = 0x100000;
     static constexpr const size_t GB   = 0x40000000;
 
-#if defined(__i386__)
-    // 物理内存大小 2GB
     // TODO: 由引导程序传递
-    static constexpr const uint32_t PMM_SIZE = 2 * GB;
-    // 内核空间占用大小，包括内核代码部分与预留的
-    // 64MB
-    static constexpr const uint32_t KERNEL_SPACE_SIZE = 64 * MB;
-    // 页大小 4KB
-    static constexpr const size_t PAGE_SIZE = 4 * KB;
-#elif defined(__x86_64__)
-    // 物理内存大小 2GB
-    // TODO: 由引导程序传递
-    static constexpr const uint32_t PMM_SIZE = 2 * GB;
-    // 内核空间占用大小，包括内核代码部分与预留的
-    // 64MB
-    static constexpr const uint32_t KERNEL_SPACE_SIZE = 64 * MB;
-    // 页大小 2MB
-    static constexpr const size_t PAGE_SIZE = 2 * MB;
-#elif defined(__riscv)
     // 物理内存大小 128MB
-    // TODO: 由引导程序传递
-    static constexpr const uint64_t PMM_SIZE = 128 * MB;
-    // 内核空间占用大小，包括内核代码部分与预留的
-    // 8MB
-    static constexpr const uint64_t KERNEL_SPACE_SIZE = 8 * MB;
+    static constexpr const uint32_t PMM_SIZE = 128 * MB;
+    // 内核空间占用大小，包括内核代码部分与预留的，8MB
+    static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
-#endif
 
     // 物理页数量
     static constexpr const uint64_t PMM_PAGE_SIZE = PMM_SIZE / PAGE_SIZE;
@@ -85,7 +64,6 @@ namespace COMMON {
     inline uint64_t ALIGN(const uint64_t _x, const size_t _align) {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
-
 };
 
 #endif /* _COMMON_H_ */
