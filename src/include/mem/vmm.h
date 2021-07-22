@@ -16,8 +16,6 @@
 typedef uintptr_t pte_t;
 // 页表，也可以是页目录，它们的结构是一样的
 typedef uintptr_t *pt_t;
-// 页目录，其实就是一种特殊的页表
-typedef pt_t pgd_t;
 
 // 每个页表能映射多少页 = 页大小/页表项大小: 2^9
 static constexpr const size_t VMM_PAGES_PRE_PAGE_TABLE =
@@ -78,7 +76,7 @@ class VMM {
 private:
     // TODO: 支持最多四级页表，共用同一套代码
     // 当前页目录
-    static pgd_t curr_dir;
+    static pt_t curr_dir;
 
 protected:
 public:
@@ -87,17 +85,17 @@ public:
     // 初始化
     static bool init(void);
     // 获取当前页目录
-    static pgd_t get_pgd(void);
+    static pt_t get_pgd(void);
     // 设置当前页目录
-    static void set_pgd(const pgd_t _pgd);
+    static void set_pgd(const pt_t _pgd);
     // 映射物理地址到虚拟地址
-    static void mmap(const pgd_t _pgd, const void *_va, const void *_pa,
-                     const uint32_t _flag);
+    static void mmap(const pt_t _pgd, const void *_va, const void *_pa,
+                     uint32_t _flag);
     // 取消映射
-    static void unmmap(const pgd_t _pgd, const void *_va);
+    static void unmmap(const pt_t _pgd, const void *_va);
     // 获取映射的物理地址
     // 已映射返回 true，未映射返回 false
-    static bool get_mmap(const pgd_t _pgd, const void *_va, const void *_pa);
+    static bool get_mmap(const pt_t _pgd, const void *_va, const void *_pa);
 };
 
 #endif /* _VMM_H */

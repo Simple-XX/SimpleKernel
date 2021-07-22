@@ -11,117 +11,85 @@
 #include "pmm.h"
 #include "vmm.h"
 
-// TODO: 结合这几个结构给出更直观的写法
-// Format of a 32-Bit Page-Table Entry that Maps a 4-KByte Page
-class page_table32_entry_t {
-private:
-public:
-    // Present; must be 1 to map a 4-KByte page
-    uint32_t p : 1;
-    // Read/write; if 0, writes may not be allowed to the 4-KByte page
-    // referenced by this entry
-    uint32_t rw : 1;
-    // User/supervisor; if 0, user-mode accesses are not allowed to the 4-KByte
-    // page referenced by this entry
-    uint32_t us : 1;
-    // Page-level write-through; indirectly determines the memory type used to
-    // access the 4-KByte page referenced by this entry
-    uint32_t pwt : 1;
-    // Page-level cache disable; indirectly determines the memory type used to
-    // access the 4-KByte page referenced by this entry
-    uint32_t pcd : 1;
-    // Accessed; indicates whether software has accessed the 4-KByte page
-    // referenced by this entry
-    uint32_t a : 1;
-    // Dirty; indicates whether software has written to the 4-KByte page
-    // referenced by this entry
-    uint32_t d : 1;
-    // If the PAT is supported, indirectly determines the memory type used to
-    // access the 4-KByte page referenced by this entry;
-    // otherwise, reserved (must be 0)
-    uint32_t pat : 1;
-    // Global; if CR4.PGE = 1, determines whether the translation is global (see
-    // Section 4.10); ignored otherwise
-    uint32_t g : 1;
-    // Ignored
-    uint32_t ignore : 3;
-    // Physical address of the 4-KByte page referenced by this entry
-    uint32_t addr : 20;
-};
+// 64-ia-32-architectures-software-developer-vol-3a-manual#4.3
 
-// Format of a 32-Bit Page-Directory Entry that References a Page Table
-class page_dir32_entry_t {
-private:
-public:
-    // Present; must be 1 to reference a page table
-    uint32_t p : 1;
-    // Read/write; if 0, writes may not be allowed to the 4-MByte region
-    // controlled by this entry
-    uint32_t rw : 1;
-    // User/supervisor; if 0, user-mode accesses are not allowed to the 4-MByte
-    // region controlled by this entry
-    uint32_t us : 1;
-    // Page-level write-through; indirectly determines the memory type used to
-    // access the page table referenced by this entry
-    uint32_t pwt : 1;
-    // Page-level cache disable; indirectly determines the memory type used to
-    // access the page table referenced by this entry
-    uint32_t pcd : 1;
-    // Accessed; indicates whether this entry has been used for linear-address
-    // translation
-    uint32_t a : 1;
-    //  Ignored
-    uint32_t ignore1 : 1;
-    // If CR4.PSE = 1, must be 0 (otherwise, this entry maps a 4-MByte page)
-    // otherwise, ignored
-    uint32_t ps : 1;
-    // Ignored
-    uint32_t ignore2 : 4;
-    // Physical address of 4-KByte aligned page table referenced by this entry
-    uint32_t addr : 20;
-};
-
-// PTE idx 的位数
-static constexpr const uint32_t PTE_BITS = 12;
-// PTE idx 的偏移
-static constexpr const uint32_t PTE_SHIFT = 0;
-static constexpr const uint32_t PTE_MASK  = 0xFFF;
-// PMD idx 的位数
-static constexpr const uint32_t PMD_BITS = 0;
-// PMD idx 的偏移
-static constexpr const uint32_t PMD_SHIFT = 0;
-static constexpr const uint32_t PMD_MASK  = 0;
-// PUD idx 的位数
-static constexpr const uint32_t PUD_BITS = 10;
-// PUD idx 的偏移
-static constexpr const uint32_t PUD_SHIFT = 12;
-static constexpr const uint32_t PUD_MASK  = 0x3FF;
-// PGD idx 的位数
-static constexpr const uint32_t PGD_BITS = 10;
-// PGD idx 的偏移
-static constexpr const uint32_t PGD_SHIFT = 22;
-static constexpr const uint32_t PGD_MASK  = 0x3FF;
-
-static constexpr uint32_t GET_PTE(uint32_t addr) {
-    return (addr >> PTE_SHIFT) & PTE_MASK;
+// 物理地址转换到页表项
+// 页表项结构：
+// 0~11: pte 属性
+// 12~31: 页表的物理页地址
+static constexpr uintptr_t PA2PTE(const void *_pa) {
+    return ((uintptr_t)_pa) & (~0x3FF);
+}
+// 页表项转换到物理地址
+static constexpr uintptr_t PTE2PA(const pte_t _pte) {
+    return ((uintptr_t)_pte) & (~0x3FF);
+}
+// 计算 X 级页表的偏移
+// 10: 虚拟地址 VPN 的长度，均为 10 位
+// 12: 页内偏移，12 位
+static constexpr uintptr_t PXSHIFT(const size_t _level) {
+    return 12 + (10 * _level);
+}
+// 获取 _va 的第 _level 级 VPN
+// 虚拟地址右移 12+(10 * _level) 位，
+// 得到的就是第 _level 级页表的 VPN
+// 0x3FF: 10 位
+static constexpr uintptr_t PX(size_t _level, const void *_va) {
+    return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & 0x3FF;
 }
 
-static constexpr uint32_t GET_PMD(uint32_t addr) {
-    return (addr >> PMD_SHIFT) & PMD_MASK;
-}
-static constexpr uint32_t GET_PUD(uint32_t addr) {
-    return (addr >> PUD_SHIFT) & PUD_MASK;
-}
+// i386 使用了两级页表
+static constexpr const size_t PT_LEVEL = 2;
 
-static constexpr uint32_t GET_PGD(uint32_t addr) {
-    return (addr >> PGD_SHIFT) & PGD_MASK;
+// 在 _pgd 中查找 _va 对应的页表项
+// 如果未找到，_alloc 为真时会进行分配
+pte_t *find(const pt_t _pgd, const void *_va, bool _alloc) {
+    pt_t pgd = _pgd;
+    // sv39 共有三级页表，一级一级查找
+    // -1 是因为最后一级是具体的某一页，在函数最后直接返回
+    for (size_t level = PT_LEVEL - 1; level > 0; level--) {
+        // 每次循环会找到 _va 的第 level 级页表 pgd
+        // 相当于 pgd_level[VPN_level]，这样相当于得到了第 level 级页表的地址
+        pte_t *pte = (pte_t *)&pgd[PX(level, _va)];
+        // 解引用 pte，如果有效，获取 level+1 级页表，
+        if ((*pte & VMM_PAGE_VALID) == 1) {
+            // pgd 指向下一级页表
+            // *pte 保存的是页表项，需要转换为对应的物理地址
+            pgd = (pt_t)PTE2PA(*pte);
+        }
+        // 如果无效
+        else {
+            // 判断是否需要分配
+            // 如果需要
+            if (_alloc == true) {
+                // 申请新的物理页
+                pgd = (pt_t)PMM::alloc_page_kernel();
+                // 申请失败则返回
+                if (pgd == nullptr) {
+                    // 如果出现这种情况，说明物理内存不够，一般不会出现
+                    assert(0);
+                    return nullptr;
+                }
+                // 清零
+                bzero(pgd, COMMON::PAGE_SIZE);
+                // 填充页表项
+                *pte = PA2PTE(pgd) | VMM_PAGE_VALID;
+            }
+            // 不分配的话直接返回
+            else {
+                return nullptr;
+            }
+        }
+    }
+    // 0 最低级 pt
+    return &pgd[PX(0, _va)];
 }
 
 static pt_t pgd_kernel;
-pgd_t       VMM::curr_dir;
+pt_t        VMM::curr_dir;
 
 VMM::VMM(void) {
-    curr_dir = (pgd_t)CPU::READ_CR3();
+    curr_dir = (pt_t)CPU::READ_CR3();
     return;
 }
 
@@ -133,90 +101,90 @@ bool VMM::init(void) {
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
     // 映射内核空间
-    for (uint64_t addr = (uint64_t)COMMON::KERNEL_START_ADDR;
-         addr < (uint64_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
+    for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
+         addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
          addr += COMMON::PAGE_SIZE) {
         // TODO: 区分代码/数据等段分别映射
         mmap(pgd_kernel, (void *)addr, (void *)addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
-    set_pgd((pgd_t)pgd_kernel);
+    set_pgd(pgd_kernel);
     CPU::ENABLE_PG();
     printf("vmm init.\n");
     return 0;
 }
 
-pgd_t VMM::get_pgd(void) {
+pt_t VMM::get_pgd(void) {
     return curr_dir;
 }
 
-void VMM::set_pgd(const pgd_t pgd) {
-    curr_dir = pgd;
+void VMM::set_pgd(const pt_t _pgd) {
+    curr_dir = _pgd;
     CPU::CR3_SET_PGD((void *)curr_dir);
     return;
 }
 
-void VMM::mmap(const pgd_t pgd, const void *va, const void *pa,
-               const uint32_t flag) {
-    uint32_t pgd_idx = GET_PGD(reinterpret_cast<uint32_t>(va));
-    uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
-    pt_t     pud     = (pt_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
-    if (pud == nullptr) {
-        pud          = (pt_t)PMM::alloc_page_kernel();
-        pgd[pgd_idx] = (reinterpret_cast<uint32_t>(pud) | VMM_PAGE_VALID |
-                        VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+void VMM::mmap(const pt_t _pgd, const void *_va, const void *_pa,
+               uint32_t _flag) {
+    pte_t *pte = find(_pgd, _va, true);
+    // 一般情况下不应该为空
+    assert(pte != nullptr);
+    // 已经映射过了
+    if (*pte & VMM_PAGE_VALID) {
+        warn("remap.\n");
     }
-    pud = (pt_t)VMM_PA_LA(pud);
-    if (pa == nullptr) {
-        pa = PMM::alloc_page_kernel();
+    // 没有映射，这是正常情况
+    else {
+        // 那么设置 *pte
+        // pte 解引用后的值是页表项
+        *pte = PA2PTE(_pa) | _flag | VMM_PAGE_VALID;
+        // 刷新缓存
+        CPU::INVLPG(_va);
     }
-    pud[pud_idx] = ((reinterpret_cast<uint32_t>(pa) & COMMON::PAGE_MASK) |
-                    VMM_PAGE_VALID | flag);
-// #define DEBUG
-#ifdef DEBUG
-    info("pud[pud_idx]: 0x%X, &: 0x%X, pa: 0x%X\n", pud[pud_idx], &pud[pud_idx],
-         pa);
-#undef DEBUG
-#endif
-    CPU::INVLPG(va);
     return;
 }
 
-void VMM::unmmap(const pgd_t pgd, const void *va) {
-    uint32_t pgd_idx = GET_PGD(reinterpret_cast<uint32_t>(va));
-    uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
-    pt_t     pud     = (pt_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
-    if (pud == nullptr) {
-        printf("pud == nullptr\n");
+void VMM::unmmap(const pt_t _pgd, const void *_va) {
+    pte_t *pte = find(_pgd, _va, false);
+    // 找到页表项
+    // 未找到
+    if (pte == nullptr) {
+        warn("VMM::unmmap: find.\n");
         return;
     }
-    pud          = (pt_t)VMM_PA_LA(pud);
-    pud[pud_idx] = 0x00;
+    // 找到了，但是并没有被映射
+    if ((*pte & VMM_PAGE_VALID) == 0) {
+        warn("VMM::unmmap: not mapped.\n");
+    }
+    // 置零
+    *pte = 0x00;
+    // 刷新缓存
+    CPU::INVLPG(_va);
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
-    CPU::INVLPG(va);
+    return;
 }
 
-bool VMM::get_mmap(const pgd_t pgd, const void *va, const void *pa) {
-    uint32_t pgd_idx = GET_PGD(reinterpret_cast<uint32_t>(va));
-    uint32_t pud_idx = GET_PUD(reinterpret_cast<uint32_t>(va));
-    pt_t     pud     = (pt_t)(pgd[pgd_idx] & COMMON::PAGE_MASK);
-    if (pud == nullptr) {
-        if (pa != nullptr) {
-            *(uint32_t *)pa = (uint32_t) nullptr;
+bool VMM::get_mmap(const pt_t _pgd, const void *_va, const void *_pa) {
+    pte_t *pte = find(_pgd, _va, false);
+    bool   res = false;
+    // pte 不为空且有效，说明映射了
+    if ((pte != nullptr) && ((*pte & VMM_PAGE_VALID) == 1)) {
+        // 如果 _pa 不为空
+        if (_pa != nullptr) {
+            // 设置 _pa
+            // 将页表项转换为物理地址
+            *(uintptr_t *)_pa = PTE2PA(*pte);
         }
-        return 0;
+        // 返回 true
+        res = true;
     }
-    pud = (pt_t)(VMM_PA_LA(pud));
-    if (pud[pud_idx] != 0) {
-        if (pa != nullptr) {
-            *(uint32_t *)pa = pud[pud_idx] & COMMON::PAGE_MASK;
-        }
-        return 1;
-    }
+    // 否则说明没有映射
     else {
-        if (pa != nullptr) {
-            *(uint32_t *)pa = (uint32_t) nullptr;
+        // 如果 _pa 不为空
+        if (_pa != nullptr) {
+            // 设置 _pa
+            *(uintptr_t *)_pa = (uintptr_t) nullptr;
         }
-        return 0;
     }
+    return res;
 }
