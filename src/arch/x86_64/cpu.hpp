@@ -12,6 +12,7 @@
 #include "assert.h"
 
 // TODO: CPUID 相关操作，补全寄存器操作，数据地址等
+// TODO: x64 相关
 
 namespace CPU {
     // Carry Flag
@@ -194,8 +195,8 @@ namespace CPU {
     }
 
     // 读取 CR3
-    static inline uint32_t READ_CR3(void) {
-        uint32_t cr3;
+    static inline uintptr_t READ_CR3(void) {
+        uintptr_t cr3;
         __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
         return cr3;
     }
@@ -480,7 +481,7 @@ namespace CPU {
 
     // 开启 PG
     static inline bool ENABLE_PG(void) {
-        uint32_t cr0 = 0;
+        uintptr_t cr0 = 0;
         __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
         // 最高位 PG 位置 1，分页开启
         cr0 |= (1u << 31);
