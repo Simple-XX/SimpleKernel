@@ -58,12 +58,6 @@ int32_t test_vmm(void) {
     ptrdiff_t addr = (ptrdiff_t) nullptr;
     // 首先确认内核空间被映射了
     assert(VMM::get_pgd() != nullptr);
-    // 0x00 留空
-    assert(VMM::get_mmap(VMM::get_pgd(), 0x00, nullptr) == 0);
-    assert(VMM::get_mmap(VMM::get_pgd(), (void *)0x03, nullptr) == 0);
-    assert(VMM::get_mmap(VMM::get_pgd(), (void *)0xCD, nullptr) == 0);
-    assert(VMM::get_mmap(VMM::get_pgd(), (void *)0xFFF, &addr) == 0);
-    assert(addr == (ptrdiff_t) nullptr);
     assert(
         VMM::get_mmap(VMM::get_pgd(),
                       (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR + 0x1000),
