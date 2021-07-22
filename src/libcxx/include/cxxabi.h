@@ -7,28 +7,10 @@
 #ifndef _CXXABI_H_
 #define _CXXABI_H_
 
-#define ATEXIT_MAX_FUNCS 128
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef unsigned uarch_t;
-
-struct atexit_func_entry_t {
-    /*
-     * Each member is at least 4 bytes large. Such that each entry is
-     12bytes.
-     * 128 * 12 = 1.5KB exact.
-     **/
-    void (*destructor_func)(void *);
-    void *obj_ptr;
-    void *dso_handle;
-};
-
-typedef void (*ctor_t)(void);
-extern ctor_t ctors_start;
-extern ctor_t ctors_end;
 // c++ 初始化
 void cpp_init(void);
 
@@ -41,5 +23,51 @@ void __cxa_finalize(void *f);
 #ifdef __cplusplus
 };
 #endif
+
+namespace std {
+    class type_info {
+
+    private:
+        const char *tname;
+
+    public:
+        virtual ~type_info(void);
+
+        type_info(const type_info &);
+
+        explicit type_info(const char *);
+
+        const char *name(void) const;
+
+        bool operator==(const type_info &) const;
+
+        bool operator!=(const type_info &) const;
+    };
+}
+
+namespace __cxxabiv1 {
+
+#define ADD_CXX_TYPEINFO_HEADER(t)                                             \
+    class t : public std::type_info {                                          \
+    private:                                                                   \
+    protected:                                                                 \
+    public:                                                                    \
+        explicit t(const char *);                                              \
+        virtual ~t(void);                                                      \
+    }
+
+    ADD_CXX_TYPEINFO_HEADER(__fundamental_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__array_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__function_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__enum_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__pbase_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__pointer_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__pointer_to_member_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__class_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__si_class_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
+
+#undef ADD_CXX_TYPEINFO_HEADER
+}
 
 #endif /* _CXXABI_H_ */

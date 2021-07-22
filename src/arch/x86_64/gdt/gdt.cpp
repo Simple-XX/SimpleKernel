@@ -11,14 +11,13 @@ namespace GDT {
     // 加载 GDTR
     extern "C" void gdt_load(uint32_t);
     // 全局 gdt 指针
-    static gdt_ptr_t gdt_ptr;
+    static gdt_ptr64_t gdt_ptr64;
     // 全局描述符表定义
     static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
 
-    void set_gdt(const uint8_t idx, const uint32_t base, const uint32_t limit,
-                 const uint8_t type, const uint8_t s, const uint8_t dpl,
-                 const uint8_t p, const uint8_t avl, const uint8_t l,
-                 const uint8_t db, const uint8_t g) {
+    void set_gdt(uint8_t idx, uint32_t base, uint32_t limit, uint8_t type,
+                 uint8_t s, uint8_t dpl, uint8_t p, uint8_t avl, uint8_t l,
+                 uint8_t db, uint8_t g) {
         gdt_entries[idx].limit1     = (limit & 0xFFFF);
         gdt_entries[idx].base_addr1 = (base & 0xFFFF);
         gdt_entries[idx].base_addr2 = (base >> 16) & 0xFF;
@@ -37,29 +36,25 @@ namespace GDT {
 
     int32_t init(void) {
         // 全局描述符表界限  从 0 开始，所以总长要 - 1
-        gdt_ptr.limit = sizeof(gdt_entry_t) * GDT_LENGTH - 1;
-        gdt_ptr.base  = (uint32_t)&gdt_entries;
+        gdt_ptr64.limit = sizeof(gdt_entry_t) * GDT_LENGTH - 1;
+        gdt_ptr64.base  = (uint64_t)&gdt_entries;
         // 采用 Intel 平坦模型
         // Intel 文档要求首个描述符全 0
         set_gdt(GDT_NULL, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0);
         // 内核指令段
-        set_gdt(GDT_KERNEL_CODE, BASE, LIMIT, TYPE_CODE_EXECUTE_READ,
-                S_CODE_DATA, CPU::DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE,
-                L_32BIT, DB_EXECUTABLE_CODE_SEGMENT_32, G_4KB);
+        set_gdt(GDT_KERNEL_CODE, 0x0, 0x0, TYPE_CODE_EXECUTE_READ, S_CODE_DATA,
+                CPU::DPL0, SEGMENT_PRESENT, 0x0, L_64BIT, 0x0, 0x0);
         // 内核数据段
-        set_gdt(GDT_KERNEL_DATA, BASE, LIMIT, TYPE_DATA_READ_WRITE, S_CODE_DATA,
-                CPU::DPL0, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
-                DB_EXPAND_DOWN_DATA_SEGMENT_4GB, G_4KB);
+        set_gdt(GDT_KERNEL_DATA, 0x0, 0x0, TYPE_DATA_READ_WRITE, S_CODE_DATA,
+                CPU::DPL0, SEGMENT_PRESENT, 0x0, L_64BIT, 0x0, 0x0);
         // 用户模式代码段
-        set_gdt(GDT_USER_CODE, BASE, LIMIT, TYPE_CODE_EXECUTE_READ, S_CODE_DATA,
-                CPU::DPL3, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
-                DB_EXECUTABLE_CODE_SEGMENT_32, G_4KB);
+        set_gdt(GDT_USER_CODE, 0x0, 0x0, TYPE_CODE_EXECUTE_READ, S_CODE_DATA,
+                CPU::DPL3, SEGMENT_PRESENT, 0x0, L_64BIT, 0x0, 0x0);
         // 用户模式数据段
-        set_gdt(GDT_USER_DATA, BASE, LIMIT, TYPE_DATA_READ_WRITE, S_CODE_DATA,
-                CPU::DPL3, SEGMENT_PRESENT, AVL_NOT_AVAILABLE, L_32BIT,
-                DB_EXPAND_DOWN_DATA_SEGMENT_4GB, G_4KB);
+        set_gdt(GDT_USER_DATA, 0x0, 0x0, TYPE_DATA_READ_WRITE, S_CODE_DATA,
+                CPU::DPL3, SEGMENT_PRESENT, 0x0, L_64BIT, 0x0, 0x0);
         // 加载全局描述符表地址到 GDTR 寄存器
-        gdt_load((uint32_t)&gdt_ptr);
+        gdt_load((uint64_t)&gdt_ptr64);
         printf("gdt init.\n");
         return 0;
     }
