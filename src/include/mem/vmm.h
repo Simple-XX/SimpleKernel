@@ -13,36 +13,35 @@
 // TODO: 可以优化
 
 // 页表项，最底层
-typedef ptrdiff_t pte_t;
+typedef uintptr_t pte_t;
 // 页表，也可以页目录，它们的结构是一样的
-typedef ptrdiff_t *pt_t;
+typedef uintptr_t *pt_t;
 // 页目录，其实就是一种特殊的页表
 typedef pt_t pgd_t;
 
 // 每个页表能映射多少页 = 页大小/页表项大小: 2^9
-static constexpr const uint32_t VMM_PAGES_PRE_PAGE_TABLE =
+static constexpr const size_t VMM_PAGES_PRE_PAGE_TABLE =
     COMMON::PAGE_SIZE / sizeof(pte_t);
 
 // 映射内核空间的大小
-static constexpr const uint64_t VMM_KERNEL_SPACE_SIZE =
-    COMMON::KERNEL_SPACE_SIZE;
+static constexpr const size_t VMM_KERNEL_SPACE_SIZE = COMMON::KERNEL_SPACE_SIZE;
 
 // 内核映射的页数
-static constexpr const uint64_t VMM_KERNEL_SPACE_PAGES =
+static constexpr const size_t VMM_KERNEL_SPACE_PAGES =
     VMM_KERNEL_SPACE_SIZE / COMMON::PAGE_SIZE;
 
 #if defined(__i386__) || defined(__x86_64__)
 // P = 1 表示有效； P = 0 表示无效。
-static constexpr const uint32_t VMM_PAGE_VALID = 1 << 0;
+static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
 // 如果为 0  表示页面只读或可执行。
-static constexpr const uint32_t VMM_PAGE_READABLE   = 0;
-static constexpr const uint32_t VMM_PAGE_WRITABLE   = 1 << 1;
-static constexpr const uint32_t VMM_PAGE_EXECUTABLE = 0;
+static constexpr const uint8_t VMM_PAGE_READABLE   = 0;
+static constexpr const uint8_t VMM_PAGE_WRITABLE   = 1 << 1;
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 0;
 // U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
 // 如果为 1 那么运行在任何特权级上的程序都可以访问该页面。
-static constexpr const uint32_t VMM_PAGE_USER = 1 << 2;
+static constexpr const uint8_t VMM_PAGE_USER = 1 << 2;
 // 内核虚拟地址相对物理地址的偏移
-static constexpr const uint32_t KERNEL_OFFSET = 0x0;
+static constexpr const size_t KERNEL_OFFSET = 0x0;
 
 #elif defined(__riscv)
 // 有效位
@@ -62,7 +61,7 @@ static constexpr const uint8_t VMM_PAGE_ACCESSED = 1 << 6;
 // 已修改位，用于替换算法
 static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
 // 内核虚拟地址相对物理地址的偏移
-static constexpr const uint64_t KERNEL_OFFSET = 0x0;
+static constexpr const size_t KERNEL_OFFSET = 0x0;
 #endif
 
 // 虚拟地址到物理地址转换
