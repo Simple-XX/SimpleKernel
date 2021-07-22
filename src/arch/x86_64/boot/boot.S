@@ -191,7 +191,6 @@ _start:
     add $0x1000, %ebx
     add $8, %eax
     loop .fill_pt
-
     # 填写 CR3
     mov $pml4, %eax
     mov %eax, %cr3
