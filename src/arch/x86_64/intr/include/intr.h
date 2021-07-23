@@ -125,7 +125,7 @@ private:
 
     // IDTR
     // 64-ia-32-architectures-software-developer-vol-3a-manual#6.10
-    struct idt_ptr64_t {
+    struct idt_ptr_t {
         // 限长
         uint16_t limit;
         // 基址
@@ -138,7 +138,7 @@ private:
     static idt_entry64_t idt_entry64[INTERRUPT_MAX]
         __attribute__((aligned(16)));
     // IDTR
-    static idt_ptr64_t idt_ptr64;
+    static idt_ptr_t idt_ptr;
 
     // 设置中断描述符
     static void set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
