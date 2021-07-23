@@ -15,7 +15,7 @@ boot: cdrom
 
 # log: ./debug_info/bochsout.txt
 
-megs: 2048
+megs: 128
 # Memory Detection in Emulators
 # When you tell an emulator how much memory you want emulated, the concept is a little 
 # "fuzzy" because of the emulated missing bits of RAM below 1M. If you tell an emulator to 

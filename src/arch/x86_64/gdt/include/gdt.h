@@ -31,7 +31,8 @@ namespace GDT {
     static constexpr const uint32_t SEG_USER_DATA = GDT_USER_DATA << 3;
 
     // type 类型
-    // Code- and Data-Segment Types, S=1
+    // Code-and Data-Segment Types, S=1
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#3.4.5.1
     static constexpr const uint32_t TYPE_DATA_READ_ONLY             = 0x00;
     static constexpr const uint32_t TYPE_DATA_READ_ONLY_ACCESSED    = 0x01;
     static constexpr const uint32_t TYPE_DATA_READ_WRITE            = 0x02;
@@ -55,22 +56,13 @@ namespace GDT {
         0x0F;
 
     // System-Segment and Gate-Descriptor Types, 32bit, when S=0
-    static constexpr const uint32_t TYPE_SYSTEM_16_RESERVESD1     = 0x00;
-    static constexpr const uint32_t TYPE_SYSTEM_16_TSS_AVAILABLE  = 0x01;
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#3.5
     static constexpr const uint32_t TYPE_SYSTEM_LDT               = 0x02;
-    static constexpr const uint32_t TYPE_SYSTEM_16_TSS_BUSY       = 0x03;
-    static constexpr const uint32_t TYPE_SYSTEM_16_CALL_GATE      = 0x04;
-    static constexpr const uint32_t TYPE_SYSTEM_TASK_GATE         = 0x05;
-    static constexpr const uint32_t TYPE_SYSTEM_16_INTERRUPT_GATE = 0x06;
-    static constexpr const uint32_t TYPE_SYSTEM_16_TRAP_GATE      = 0x07;
-    static constexpr const uint32_t TYPE_SYSTEM_32_RESERVESD2     = 0x08;
-    static constexpr const uint32_t TYPE_SYSTEM_32_TSS_AVAILABLE  = 0x09;
-    static constexpr const uint32_t TYPE_SYSTEM_32_RESERVESD3     = 0x0A;
-    static constexpr const uint32_t TYPE_SYSTEM_32_TSS_BUSY       = 0x0B;
-    static constexpr const uint32_t TYPE_SYSTEM_32_CALL_GATE      = 0x0C;
-    static constexpr const uint32_t TYPE_SYSTEM_RESERVESD4        = 0x0D;
-    static constexpr const uint32_t TYPE_SYSTEM_32_INTERRUPT_GATE = 0x0E;
-    static constexpr const uint32_t TYPE_SYSTEM_32_TRAP_GATE      = 0x0F;
+    static constexpr const uint32_t TYPE_SYSTEM_64_TSS_AVAILABLE  = 0x09;
+    static constexpr const uint32_t TYPE_SYSTEM_64_TSS_BUSY       = 0x0B;
+    static constexpr const uint32_t TYPE_SYSTEM_64_CALL_GATE      = 0x0C;
+    static constexpr const uint32_t TYPE_SYSTEM_64_INTERRUPT_GATE = 0x0E;
+    static constexpr const uint32_t TYPE_SYSTEM_64_TRAP_GATE      = 0x0F;
 
     // S 位
     static constexpr const uint32_t S_SYSTEM    = 0x00;
@@ -113,11 +105,11 @@ namespace GDT {
 
     // 全局描述符类型
     struct gdt_entry_t {
-        // 段界限 15:00
+        // 段界限 15:00，long 模式下忽略
         uint64_t limit1 : 16;
-        // 基址 15:00
+        // 基址 15:00，long 模式下忽略
         uint64_t base_addr1 : 16;
-        // 基址 23:16
+        // 基址 23:16，long 模式下忽略
         uint64_t base_addr2 : 8;
         // 类型
         uint64_t type : 4;
@@ -128,73 +120,66 @@ namespace GDT {
         // Indicates whether the segment is present in memory (set) or not
         // present (clear).
         uint64_t p : 1;
-        // 段界限 19:16
+        // 段界限 19:16，long 模式下忽略
         uint64_t limit2 : 4;
         // Available for use by system software
         uint64_t avl : 1;
-        // 64-bit code segment (IA-32e mode only)
+        // 64-bit code segment (IA-32e mode only)
         uint64_t l : 1;
         // Default operation size(0 = 16 - bit segment; 1 = 32 - bit segment)
+        // long 模式下忽略
         uint64_t db : 1;
         // Determines the scaling of the segment limit field. When the
         // granularity flag is clear, the segment limit is interpreted in
         // byte units; when flag is set, the segment limit is interpreted in
         // 4-KByte units.
+        // long 模式下忽略
         uint64_t g : 1;
-        // 基址 31:24
+        // 基址 31:24，long 模式下忽略
         uint64_t base_addr3 : 8;
     } __attribute__((packed));
 
-    // GDTR
-    struct gdt_ptr_t {
+    // GDT
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#3.5.1
+    struct gdt_ptr64_t {
         // 全局描述符表限长
         uint16_t limit;
-        // 全局描述符表 32位 基地址
-        uint32_t base;
+        // 全局描述符表 64位 基地址
+        uint64_t base;
     } __attribute__((packed));
 
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#7.2.1
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#7.7
+    // reserved set to 0
     // 目前没有使用
-    struct tss32_t {
-        uint16_t prev_task_link;
-        uint16_t reserved0;
-        uint32_t esp0;
-        uint16_t ss0;
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#7.2.3
+    struct tss64_t {
+        uint32_t reserved0;
+        uint32_t rsp0_lower32;
+        uint32_t rsp0_upper32;
+        uint32_t rsp1_lower32;
+        uint32_t rsp1_upper32;
+        uint32_t rsp2_lower32;
+        uint32_t rsp2_upper32;
         uint32_t reserved1;
-        uint32_t esp1;
-        uint16_t ss1;
         uint32_t reserved2;
-        uint32_t esp2;
-        uint16_t ss2;
+        uint32_t ist1_lower32;
+        uint32_t ist1_upper32;
+        uint32_t ist2_lower32;
+        uint32_t ist2_upper32;
+        uint32_t ist3_lower32;
+        uint32_t ist3_upper32;
+        uint32_t ist4_lower32;
+        uint32_t ist4_upper32;
+        uint32_t ist5_lower32;
+        uint32_t ist5_upper32;
+        uint32_t ist6_lower32;
+        uint32_t ist6_upper32;
+        uint32_t ist7_lower32;
+        uint32_t ist7_upper32;
         uint32_t reserved3;
-        uint32_t cr3;
-        uint32_t eip;
-        uint32_t eflags;
-        uint32_t eax;
-        uint32_t ecx;
-        uint32_t edx;
-        uint32_t ebx;
-        uint32_t esp;
-        uint32_t ebp;
-        uint32_t esi;
-        uint32_t edi;
-        uint16_t es;
-        uint16_t reserved4;
-        uint16_t cs;
+        uint32_t reserved4;
         uint16_t reserved5;
-        uint16_t ss;
-        uint16_t reserved6;
-        uint16_t ds;
-        uint16_t reserved7;
-        uint16_t fs;
-        uint16_t reserved8;
-        uint16_t gs;
-        uint16_t reserved9;
-        uint16_t ldt_segment_selector;
-        uint16_t reserved10;
-        uint32_t t : 1;
-        uint32_t reserved11 : 15;
-        uint32_t io_map_base_addr : 16;
+        uint16_t io_map_base_addr;
     } __attribute__((packed));
     // 全局描述符表构造函数，根据下标构造
     // 参数:

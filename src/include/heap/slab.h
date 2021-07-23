@@ -105,6 +105,8 @@ private:
     };
 
     // chunk 大小
+    // 32bit: 0x10
+    // 64bit: 0x20
     static constexpr const size_t CHUNK_SIZE = sizeof(chunk_t);
     // 管理不同长度的内存
     // 根据下标计算

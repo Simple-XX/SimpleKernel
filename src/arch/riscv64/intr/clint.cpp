@@ -88,7 +88,7 @@ namespace CLINT {
         CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SSIE);
         // 设置时钟中断
         TIMER::init();
-        printf("clint init\n");
+        printf("clint init.\n");
         return 0;
     }
 };

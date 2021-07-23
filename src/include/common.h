@@ -37,46 +37,34 @@ namespace COMMON {
     static constexpr const size_t MB   = 0x100000;
     static constexpr const size_t GB   = 0x40000000;
 
-#if defined(__i386__) || defined(__x86_64__)
-    // 物理内存大小 2GB
     // TODO: 由引导程序传递
-    static constexpr const uint32_t PMM_SIZE = 2 * GB;
-    // 内核空间占用大小，包括内核代码部分与预留的
-    // 64MB
-    static constexpr const uint32_t KERNEL_SPACE_SIZE = 64 * MB;
-    // 页大小 4KB
-    static constexpr const size_t PAGE_SIZE = 4 * KB;
-#elif defined(__riscv)
     // 物理内存大小 128MB
-    // TODO: 由引导程序传递
-    static constexpr const uint64_t PMM_SIZE = 128 * MB;
-    // 内核空间占用大小，包括内核代码部分与预留的
-    // 8MB
-    static constexpr const uint64_t KERNEL_SPACE_SIZE = 8 * MB;
+    static constexpr const uint32_t PMM_SIZE = 128 * MB;
+    // 内核空间占用大小，包括内核代码部分与预留的，8MB
+    static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
-#endif
 
     // 物理页数量
-    static constexpr const uint64_t PMM_PAGE_SIZE = PMM_SIZE / PAGE_SIZE;
+    static constexpr const size_t PMM_PAGE_SIZE = PMM_SIZE / PAGE_SIZE;
 
     // 映射内核空间需要的页数
-    static constexpr const uint64_t KERNEL_SPACE_PAGES =
+    static constexpr const size_t KERNEL_SPACE_PAGES =
         KERNEL_SPACE_SIZE / PAGE_SIZE;
 
     // 页掩码
-    static constexpr const uint64_t PAGE_MASK = 0xFFFFFFFFFFFFF000;
+    static constexpr const uintptr_t PAGE_MASK = ~(PAGE_SIZE - 1);
 
     // 对齐 向上取整
     // 针对指针
     template <class T>
-    inline T ALIGN(const T _addr, const size_t _align) {
+    inline T ALIGN(const T _addr, size_t _align) {
         uint8_t *tmp = (uint8_t *)_addr;
-        return (T)((ptrdiff_t)(tmp + _align - 1) & (~(_align - 1)));
+        return (T)((uintptr_t)(tmp + _align - 1) & (~(_align - 1)));
     }
     // 针对整数
     template <>
-    inline uint64_t ALIGN(const uint64_t _x, const size_t _align) {
+    inline uint64_t ALIGN(uint64_t _x, size_t _align) {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
     template <>

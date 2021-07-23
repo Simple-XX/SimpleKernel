@@ -57,7 +57,7 @@ bool PMM::init(void) {
         COMMON::PAGE_SIZE;
     if (alloc_pages_kernel(const_cast<void *>(COMMON::KERNEL_START_ADDR),
                            kernel_pages) == true) {
-        printf("pmm_init\n");
+        printf("pmm init.\n");
         return true;
     }
     else {

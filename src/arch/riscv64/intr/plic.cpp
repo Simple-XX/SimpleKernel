@@ -43,7 +43,7 @@ namespace PLIC {
                                           externel_intr);
         // 开启外部中断
         CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
-        printf("plic init\n");
+        printf("plic init.\n");
         return 0;
     }
 
