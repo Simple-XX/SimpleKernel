@@ -16,14 +16,17 @@ idt_load:
     ret
 
 # 64-ia-32-architectures-software-developer-vol-3a-manual#6.12.1
-
-# 中断上下文的保存和恢复
+# TODO: 特权级切换时候的情况
 # 这里用的是 att 的汇编宏
 # 格式为
 # .macro 宏名称 参数1, 参数2
 # 内容
 # .endm
-.macro pushaq
+
+# pusha 的 64 位版本
+# 通用寄存器的保存和恢复
+# ss~rip 由 CPU 压入
+.macro pusha_64
     push %rax
     push %rbx
     push %rcx
@@ -41,7 +44,9 @@ idt_load:
     push %r15
 .endm
 
-.macro popaq
+# popa 的 64 位版本
+# ss~rip 由 CPU 弹出
+.macro popa_64
     pop %r15
     pop %r14
     pop %r13
@@ -59,17 +64,18 @@ idt_load:
     pop %rax
 .endm
 
+# 声明 C 中的函数
 .extern isr_handler
-
 .macro ISR_NO_ERROR_CODE no
 .global isr\no
 isr\no:
     # 关中断
     cli
     # 保存现场
-    pushaq
-    # 传递参数
+    pusha_64
+    # 传递中断号
     mov $\no, %rdi
+    # 传递 
     mov %rsp, %rsi
     # 清零
     xor %rdx, %rdx
@@ -77,7 +83,7 @@ isr\no:
     # 调用处理函数
     call isr_handler
     # 恢复现场
-    popaq
+    popa_64
     # 中断返回
     iretq
 .endm
@@ -87,7 +93,10 @@ isr\no:
 isr\no:
     # 关中断
     cli
-    # 相关信息压栈
+    # 压栈 intr_context_t 的最后几个成员
+    # 40(%rsp) 是因为每次压栈都会使 rsp+8，执行完后 rsp 刚好移动到下一个数据
+    # 无特权级切换时 CPU 不会压入 rsp 和 ss，换言之，
+    # 此时访问 ss 与 rsp 的地址不会出问题，只是值是无效的，不用就好了
     # SS
     push 40(%rsp)
     # RSP
@@ -98,17 +107,20 @@ isr\no:
     push 40(%rsp)
     # RIP
     push 40(%rsp)
-    pushaq
-    # 传递参数
+    pusha_64
+    # 传递中断号
     mov $\no, %rdi
+    # 传递栈地址
     mov %rsp, %rsi
+    # 传递错误码
+    # 160==sizeof(intr_context_t)
+    # 相当于函数开始时的 0(%rsp)
     mov  160(%rsp), %rdx
     xor %rbp, %rbp
     call isr_handler
-    popaq
+    popa_64
     iretq
 .endm
-
 
 # 定义中断处理函数
 # 64-ia-32-architectures-software-developer-vol-3a-manual#Table 6-1
@@ -158,18 +170,23 @@ ISR_NO_ERROR_CODE 20
 # 128=0x80 用于系统调用
 ISR_NO_ERROR_CODE 128
 
+# 声明 C 中的函数
+.extern irq_handler
 .macro IRQ name, no
 .global irq\name
 irq\name:
     # 关中断
     cli
-    pushaq
+    # 保存 intr_context_t
+    pusha_64
+    # 传递中断号
     mov $\no, %rdi
+    # 传递栈地址
     mov %rsp, %rsi
     xor %rdx, %rdx
     xor %rbp, %rbp
     call irq_handler
-    popaq
+    popa_64
     iretq
 .endm
 

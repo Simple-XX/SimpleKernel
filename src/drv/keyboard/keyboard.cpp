@@ -10,8 +10,7 @@
 #include "stdio.h"
 #include "keyboard.h"
 
-static void default_keyboard_handle(INTR::pt_regs_t *regs
-                                    __attribute__((unused))) {
+static void default_keyboard_handle(INTR::intr_context_t *) {
     keyboard.read();
     return;
 }

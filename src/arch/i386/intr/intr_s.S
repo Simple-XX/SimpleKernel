@@ -17,7 +17,7 @@ idt_load:
 # 定义两个构造中断处理函数的宏(有的中断有错误代码，有的没有)
 # 用于没有错误代码的中断
 
-.macro ISR_NOERRCODE no
+.macro ISR_NO_ERROR_CODE no
 .global isr\no
 isr\no:
     # 首先关闭中断
@@ -30,7 +30,7 @@ isr\no:
 .endm
 
 # 用于有错误代码的中断
-.macro ISR_ERRCODE no
+.macro ISR_ERROR_CODE no
 .global isr\no
 isr\no:
     # 关闭中断
@@ -43,50 +43,50 @@ isr\no:
 # 定义中断处理函数
 # 64-ia-32-architectures-software-developer-vol-3a-manual#Table 6-1
 # 0 #DE 除 0 异常
-ISR_NOERRCODE  0
+ISR_NO_ERROR_CODE  0
 # 1 #DB 调试异常
-ISR_NOERRCODE  1
+ISR_NO_ERROR_CODE  1
 # 2 NMI
-ISR_NOERRCODE  2
+ISR_NO_ERROR_CODE  2
 # 3 BP 断点异常
-ISR_NOERRCODE  3
+ISR_NO_ERROR_CODE  3
 # 4 #OF 溢出
-ISR_NOERRCODE  4
+ISR_NO_ERROR_CODE  4
 # 5 #BR 对数组的引用超出边界
-ISR_NOERRCODE  5
+ISR_NO_ERROR_CODE  5
 # 6 #UD 无效或未定义的操作码
-ISR_NOERRCODE  6
+ISR_NO_ERROR_CODE  6
 # 7 #NM 设备不可用(无数学协处理器)
-ISR_NOERRCODE  7
+ISR_NO_ERROR_CODE  7
 # 8 #DF 双重故障(有错误代码)
-ISR_ERRCODE    8
+ISR_ERROR_CODE    8
 # 9 协处理器跨段操作
-ISR_NOERRCODE  9
+ISR_NO_ERROR_CODE  9
 # 10 #TS 无效TSS(有错误代码)
-ISR_ERRCODE   10
+ISR_ERROR_CODE   10
 # 11 #NP 段不存在(有错误代码)
-ISR_ERRCODE   11
+ISR_ERROR_CODE   11
 # 12 #SS 栈错误(有错误代码)
-ISR_ERRCODE   12
+ISR_ERROR_CODE   12
 # 13 #GP 常规保护(有错误代码)
-ISR_ERRCODE   13
+ISR_ERROR_CODE   13
 # 14 #PF 页故障(有错误代码)
-ISR_ERRCODE   14
+ISR_ERROR_CODE   14
 # 15 没有使用
 # 16 #MF 浮点处理单元错误
-ISR_NOERRCODE 16
+ISR_NO_ERROR_CODE 16
 # 17 #AC 对齐检查
-ISR_ERRCODE   17
+ISR_ERROR_CODE   17
 # 18 #MC 机器检查
-ISR_NOERRCODE 18
+ISR_NO_ERROR_CODE 18
 # 19 #XM SIMD(单指令多数据)浮点异常
-ISR_NOERRCODE 19
+ISR_NO_ERROR_CODE 19
 # 20 #VE 虚拟化异常
-ISR_NOERRCODE 20
+ISR_NO_ERROR_CODE 20
 # 21 ~ 31 保留
 # 32 ～ 255 用户自定义
 # 128=0x80 用于系统调用
-ISR_NOERRCODE 128
+ISR_NO_ERROR_CODE 128
 
 # 中断服务程序
 .global isr_common_stub
