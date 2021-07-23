@@ -236,10 +236,11 @@ namespace CPU {
         return x;
     }
 
-    static inline void ENABLE_PG(void) {
+    static inline bool ENABLE_PG(void) {
         void *x = READ_SATP();
         WRITE_SATP(SET_SV39(x));
-        return;
+        info("paging enabled.\n");
+        return true;
     }
 
     // Supervisor Scratch register, for early trap handler in trampoline.S.

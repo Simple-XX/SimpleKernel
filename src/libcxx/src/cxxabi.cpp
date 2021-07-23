@@ -31,8 +31,6 @@ struct atexit_func_entry_t {
 };
 
 void cpp_init(void) {
-    // BUG: x86_64
-    // 在 x64 下执行到 f 会挂掉
     ctor_t *f;
     for (f = ctors_start; f < ctors_end; f++) {
         (*f)();

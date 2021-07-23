@@ -57,10 +57,10 @@ void show_info(void) {
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
                                   COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
-    info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages\n",
+    info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);
-    info("Kernel start4k: 0x%p, end4k: 0x%p\n",
+    info("Kernel start4k: 0x%p, end4k: 0x%p.\n",
          COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB),
          COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB));
     std::cout << "Simple Kernel." << std::endl;

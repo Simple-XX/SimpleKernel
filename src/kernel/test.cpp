@@ -55,50 +55,44 @@ int32_t test_pmm(void) {
     return 0;
 }
 
-int test_vmm(void) {
-    ptrdiff_t addr = (ptrdiff_t) nullptr;
+int32_t test_vmm(void) {
+    uintptr_t addr = (uintptr_t) nullptr;
     // 首先确认内核空间被映射了
     assert(VMM::get_pgd() != nullptr);
-    // 0x00 留空
-    assert(VMM::get_mmap(VMM::get_pgd(), 0x00, nullptr) == 0);
-    assert(VMM::get_mmap(VMM::get_pgd(), (void *)0x03, nullptr) == 0);
-    assert(VMM::get_mmap(VMM::get_pgd(), (void *)0xCD, nullptr) == 0);
-    assert(VMM::get_mmap(VMM::get_pgd(), (void *)0xFFF, &addr) == 0);
-    assert(addr == (ptrdiff_t) nullptr);
     assert(
         VMM::get_mmap(VMM::get_pgd(),
-                      (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR + 0x1000),
+                      (void *)((uintptr_t)COMMON::KERNEL_START_ADDR + 0x1000),
                       &addr) == 1);
-    assert(addr == (ptrdiff_t)COMMON::KERNEL_START_ADDR + 0x1000);
-    addr = (ptrdiff_t) nullptr;
+    assert(addr == (uintptr_t)COMMON::KERNEL_START_ADDR + 0x1000);
+    addr = (uintptr_t) nullptr;
     assert(VMM::get_mmap(VMM::get_pgd(),
-                         (void *)((ptrdiff_t)COMMON::KERNEL_START_ADDR +
+                         (void *)((uintptr_t)COMMON::KERNEL_START_ADDR +
                                   VMM_KERNEL_SPACE_SIZE - 1),
                          &addr) == 1);
-    assert(addr == (ptrdiff_t)(((ptrdiff_t)COMMON::KERNEL_START_ADDR +
+    assert(addr == (uintptr_t)(((uintptr_t)COMMON::KERNEL_START_ADDR +
                                 VMM_KERNEL_SPACE_SIZE - 1) &
                                COMMON::PAGE_MASK));
-    addr = (ptrdiff_t) nullptr;
+    addr = (uintptr_t) nullptr;
     assert(
         VMM::get_mmap(VMM::get_pgd(),
-                      (void *)((ptrdiff_t)COMMON::ALIGN(
+                      (void *)((uintptr_t)COMMON::ALIGN(
                                    COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
                                VMM_KERNEL_SPACE_SIZE),
                       &addr) == 0);
-    assert(addr == (ptrdiff_t) nullptr);
-    addr = (ptrdiff_t) nullptr;
+    assert(addr == (uintptr_t) nullptr);
+    addr = (uintptr_t) nullptr;
     assert(
         VMM::get_mmap(VMM::get_pgd(),
-                      (void *)((ptrdiff_t)COMMON::ALIGN(
+                      (void *)((uintptr_t)COMMON::ALIGN(
                                    COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
                                VMM_KERNEL_SPACE_SIZE + 0x1024),
                       nullptr) == 0);
     // 测试映射与取消映射
-    addr = (ptrdiff_t) nullptr;
+    addr = (uintptr_t) nullptr;
     // 准备映射的虚拟地址 3GB 处
-    ptrdiff_t va = 0xC0000000;
+    uintptr_t va = 0xC0000000;
     // 准备映射的物理地址 0.75GB 处
-    ptrdiff_t pa = 0x30000000;
+    uintptr_t pa = 0x30000000;
     // 确定一块未映射的内存
     assert(VMM::get_mmap(VMM::get_pgd(), (void *)va, nullptr) == 0);
     // 映射
@@ -107,17 +101,25 @@ int test_vmm(void) {
     assert(VMM::get_mmap(VMM::get_pgd(), (void *)va, &addr) == 1);
     assert(addr == pa);
     // 写测试
-    *(ptrdiff_t *)va = 0xCD;
+    *(uintptr_t *)va = 0xCD;
     //取消映射
     VMM::unmmap(VMM::get_pgd(), (void *)va);
     assert(VMM::get_mmap(VMM::get_pgd(), (void *)va, &addr) == 0);
-    assert(addr == (ptrdiff_t) nullptr);
+    assert(addr == (uintptr_t) nullptr);
     printf("vmm test done.\n");
     return 0;
 }
 
 // TODO: 更多测试
 int test_heap(void) {
+    // 根据字长不同 CHUNK_SIZE 是不一样的
+    size_t chunk_size = 0;
+    if (sizeof(void *) == 4) {
+        chunk_size = 0x10;
+    }
+    else if (sizeof(void *) == 8) {
+        chunk_size = 0x20;
+    }
     void *addr1 = nullptr;
     void *addr2 = nullptr;
     void *addr3 = nullptr;
@@ -130,18 +132,18 @@ int test_heap(void) {
     addr2 = heap.malloc(0x1);
     assert(addr2 != nullptr);
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
-    assert(((ptrdiff_t)((uint8_t *)addr2 - 0x20) & 0xFFF) == 0x0);
+    assert(((uintptr_t)((uint8_t *)addr2 - chunk_size) & 0xFFF) == 0x0);
     // 在 LEN512 申请新的内存
     addr3 = heap.malloc(0x200);
     assert(addr3 != nullptr);
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
-    assert(((ptrdiff_t)((uint8_t *)addr3 - 0x20) & 0xFFF) == 0x0);
+    assert(((uintptr_t)((uint8_t *)addr3 - chunk_size) & 0xFFF) == 0x0);
     // 加上 chunk 大小长度刚好是 LEN256
     addr4 = heap.malloc(0x80);
     assert(addr4 != nullptr);
     // LEN256 区域第二块被申请的内存，地址可以计算出来
     // 前一个块的地址+chunk 长度+数据长度+对齐长度
-    assert(addr4 == (uint8_t *)addr2 + 0x20 + 0x1 + 0x7);
+    assert(addr4 == (uint8_t *)addr2 + chunk_size + 0x1 + 0x7);
     // 全部释放
     heap.free(addr1);
     heap.free(addr2);

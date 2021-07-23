@@ -12,7 +12,6 @@
 
 // TODO: 完善
 // TODO: 加入内核
-
 APIC::APIC(void) {
     return;
 }
@@ -22,6 +21,7 @@ APIC::~APIC(void) {
 }
 
 int32_t APIC::init(void) {
+    // 先判断 cpu 是否支持
     CPU::CPUID cpuid;
     if (cpuid.xapic() == false) {
         warn("Not support APIC&xAPIC.\n");
