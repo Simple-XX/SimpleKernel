@@ -9,8 +9,7 @@ OUTPUT_ARCH(i386:x86-64)
 ENTRY(_start)
 
 SECTIONS {
-	/* TODO: 这里似乎可以修改为任意地址 */
-    . = 4M;
+    . = 0;
 
     PROVIDE(kernel_start = .);
 

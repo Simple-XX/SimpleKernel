@@ -26,21 +26,21 @@ static constexpr uintptr_t PTE2PA(const pte_t _pte) {
     return ((uintptr_t)_pte) & (~0x3FF);
 }
 // 计算 X 级页表的偏移
-// 10: 虚拟地址 VPN 的长度，均为 10 位
+// 9: 虚拟地址 VPN 的长度，均为 9 位
 // 12: 页内偏移，12 位
 static constexpr uintptr_t PXSHIFT(const size_t _level) {
-    return 12 + (10 * _level);
+    return 12 + (9 * _level);
 }
 // 获取 _va 的第 _level 级 VPN
 // 虚拟地址右移 12+(10 * _level) 位，
 // 得到的就是第 _level 级页表的 VPN
-// 0x3FF: 10 位
+// 0x1FF: 9 位
 static constexpr uintptr_t PX(size_t _level, const void *_va) {
-    return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & 0x3FF;
+    return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & 0x1FF;
 }
 
-// i386 使用了两级页表
-static constexpr const size_t PT_LEVEL = 2;
+// x86_64 使用了四级页表
+static constexpr const size_t PT_LEVEL = 4;
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配

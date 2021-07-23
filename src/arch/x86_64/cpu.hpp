@@ -272,8 +272,8 @@ namespace CPU {
     }
 
     // 读取 EFLAGS
-    static inline uint32_t READ_EFLAGS(void) {
-        uint32_t eflags;
+    static inline uint64_t READ_EFLAGS(void) {
+        uint64_t eflags;
         __asm__ volatile("pushf\n\t"
                          "pop %0\n\t"
                          : "=r"(eflags));
@@ -295,8 +295,8 @@ namespace CPU {
     }
 
     // 读取 CR3
-    static inline uint32_t READ_CR3(void) {
-        uint32_t cr3;
+    static inline uint64_t READ_CR3(void) {
+        uint64_t cr3;
         __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
         return cr3;
     }
@@ -581,7 +581,7 @@ namespace CPU {
 
     // 开启 PG
     static inline bool ENABLE_PG(void) {
-        uint32_t cr0 = 0;
+        uint64_t cr0 = 0;
         __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
         // 最高位 PG 位置 1，分页开启
         cr0 |= (1u << 31);
@@ -628,6 +628,7 @@ namespace CPU {
         return;
     }
 
+    // TODO: 改为 static
     class CPUID {
     private:
         static constexpr const uint32_t VENDOR_LEN = 16;

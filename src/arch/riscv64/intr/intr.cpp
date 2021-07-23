@@ -15,7 +15,7 @@ namespace INTR {
         CLINT::init();
         // 外部中断初始化
         PLIC::init();
-        printf("intr init\n");
+        printf("intr init.\n");
         return 0;
     }
 
@@ -32,7 +32,7 @@ namespace INTR {
         (void)_stval;
 #define DEBUG
 #ifdef DEBUG
-        printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p\n", _scause, _sepc,
+        printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc,
                _stval);
 #undef DEBUG
 #endif
@@ -40,7 +40,7 @@ namespace INTR {
 // 中断
 // #define DEBUG
 #ifdef DEBUG
-            printf("intr: %s\n",
+            printf("intr: %s.\n",
                    CLINT::intr_names[_scause & CPU::CAUSE_CODE_MASK]);
 #undef DEBUG
 #endif
@@ -52,7 +52,7 @@ namespace INTR {
 // 跳转到对应的处理函数
 // #define DEBUG
 #ifdef DEBUG
-            printf("excp: %s\n",
+            printf("excp: %s.\n",
                    CLINT::excp_names[_scause & CPU::CAUSE_CODE_MASK]);
 #undef DEBUG
 #endif
