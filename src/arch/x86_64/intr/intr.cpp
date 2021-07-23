@@ -135,7 +135,7 @@ namespace INTR {
     static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
         __attribute__((aligned(4)));
     // 中断描述符表
-    static gate_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
+    static idt_gate_t idt_entries[INTERRUPT_MAX] __attribute__((aligned(16)));
     // IDTR
     static idt_ptr_t idt_ptr;
 
@@ -155,7 +155,7 @@ namespace INTR {
     static void stack_segment(pt_regs_t *regs);
     static void general_protection(pt_regs_t *regs);
     static void page_fault(pt_regs_t *regs);
-    void        die(const char *str, uint32_t oesp, uint32_t int_no) {
+    void        die(const char *str, uintptr_t oesp, uint32_t int_no) {
         pt_regs_t *old_esp = (pt_regs_t *)oesp;
         printf("%s\t: %d\n\r", str, int_no);
         printf("die_Unuseable.\n");
@@ -192,8 +192,8 @@ namespace INTR {
     }
 
     static void debug(pt_regs_t *regs) {
-        uint32_t  tr;
-        uint32_t *old_esp = (uint32_t *)regs->old_esp;
+        uint32_t   tr;
+        uintptr_t *old_esp = (uintptr_t *)regs->old_esp;
 
         // 取任务寄存器值->tr
         __asm__ volatile("str %%ax" : "=a"(tr) : "0"(0));
@@ -456,25 +456,25 @@ namespace INTR {
         // idt 初始化
         init_interrupt_chip();
         idt_ptr.limit = sizeof(idt_entry_t) * INTERRUPT_MAX - 1;
-        idt_ptr.base  = (uint32_t)&idt_entries;
+        idt_ptr.base  = (uintptr_t)&idt_entries;
 
-        for (uint32_t i = 0; i < 48; ++i) {
-            // set_idt(i, (uint32_t)isr_irq_func[i], 0x08, 0x8E);
-            set_idt(i, (uint32_t)isr_irq_func[i], GDT::SEG_KERNEL_CODE,
+        for (size_t i = 0; i < 48; ++i) {
+            // set_idt(i, (uintptr_t)isr_irq_func[i], 0x08, 0x8E);
+            set_idt(i, (uintptr_t)isr_irq_func[i], GDT::SEG_KERNEL_CODE,
                     GATE_INTERRUPT_32, CPU::DPL0, GATE_PRESENT);
         }
 
-        set_idt(INT_DEBUG, (uint32_t)isr_irq_func[INT_DEBUG],
+        set_idt(INT_DEBUG, (uintptr_t)isr_irq_func[INT_DEBUG],
                 GDT::SEG_KERNEL_CODE, GATE_TRAP_32, CPU::DPL3, GATE_PRESENT);
-        set_idt(INT_OVERFLOW, (uint32_t)isr_irq_func[INT_OVERFLOW],
+        set_idt(INT_OVERFLOW, (uintptr_t)isr_irq_func[INT_OVERFLOW],
                 GDT::SEG_KERNEL_CODE, GATE_TRAP_32, CPU::DPL3, GATE_PRESENT);
-        set_idt(INT_BOUND, (uint32_t)isr_irq_func[INT_BOUND],
+        set_idt(INT_BOUND, (uintptr_t)isr_irq_func[INT_BOUND],
                 GDT::SEG_KERNEL_CODE, GATE_TRAP_32, CPU::DPL3, GATE_PRESENT);
         // 系统调用 0x80(128)
-        set_idt(0x80, (uint32_t)isr128, GDT::SEG_KERNEL_CODE, GATE_TRAP_32,
+        set_idt(0x80, (uintptr_t)isr128, GDT::SEG_KERNEL_CODE, GATE_TRAP_32,
                 CPU::DPL3, GATE_PRESENT);
 
-        idt_load((uint32_t)&idt_ptr);
+        idt_load((uintptr_t)&idt_ptr);
 
         register_interrupt_handler(INT_DIVIDE_ERROR, &divide_error);
         register_interrupt_handler(INT_DEBUG, &debug);
