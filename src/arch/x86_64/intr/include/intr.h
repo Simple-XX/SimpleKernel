@@ -31,51 +31,27 @@ public:
         uint32_t reserved2 : 16;
     };
 
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.12.1
     struct intr_context_t {
-        // segment registers
-        // 16 bits
-        uint32_t ss;
-        // 16 bits
-        uint32_t gs;
-        // 16 bits
-        uint32_t fs;
-        // 16 bits
-        uint32_t es;
-        // 16 bits
-        uint32_t ds;
-
-        // pusha，popa 跟这个相反
-        // Temporary = ESP;
-        // push(EAX);
-        // push(ECX);
-        // push(EDX);
-        // push(EBX);
-        // push(Temporary);
-        // push(EBP);
-        // push(ESI);
-        // push(EDI);
-        // 这几个寄存器由 pusha 压入
-        uint32_t edi;
-        uint32_t esi;
-        uint32_t ebp;
-        uint32_t esp;
-        uint32_t ebx;
-        uint32_t edx;
-        uint32_t ecx;
-        uint32_t eax;
-
-        // 错误代码，如果有，由 cpu 压入
-        uint32_t err_code;
-        // 以下指令由cpu压入，参见x86/x64 532页
-        // 指向产生异常的指令
-        uint32_t eip;
-        // 16 bits
-        uint32_t cs;
-        uint32_t eflags;
-        // 如果发生了特权级切换，CPU 会压入以下两个参数
-        uint32_t old_esp;
-        uint32_t old_ss;
+        uint64_t r15;
+        uint64_t r14;
+        uint64_t r13;
+        uint64_t r12;
+        uint64_t r11;
+        uint64_t r10;
+        uint64_t r9;
+        uint64_t r8;
+        uint64_t rbp;
+        uint64_t rdi;
+        uint64_t rsi;
+        uint64_t rdx;
+        uint64_t rcx;
+        uint64_t rbx;
+        uint64_t rax;
+        uint64_t rip;
+        uint64_t cs;
+        uint64_t rflags;
+        uint64_t rsp;
+        uint64_t ss;
     };
 
     // 定义中断处理函数指针
@@ -120,24 +96,31 @@ private:
     };
 
     // 中断描述符
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.11
-    struct idt_entry32_t {
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.1
+    struct idt_entry64_t {
         // 低位地址
         uint64_t offset0 : 16;
         // 选择子
         uint64_t selector : 16;
-        // 保留
-        uint64_t reserved : 4;
+        // 中断栈表
+        // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.5
+        uint64_t ist : 3;
         // 填充 0
-        uint64_t zero : 4;
+        uint64_t zero0 : 5;
         // 类型
-        uint64_t type : 5;
+        uint64_t type : 4;
+        // 填充 0
+        uint64_t zero1 : 1;
         // 权限
         uint64_t dpl : 2;
         // 存在位
         uint64_t p : 1;
         // 中段地址
         uint64_t offset1 : 16;
+        // 高位地址
+        uint64_t offset2 : 32;
+        // 保留
+        uint64_t reserved : 32;
     } __attribute__((packed));
 
     // IDTR
@@ -148,19 +131,18 @@ private:
         // 基址
         uint32_t base;
     } __attribute__((packed));
-
     // 中断处理函数指针数组
     static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
         __attribute__((aligned(4)));
     // 中断描述符表
-    static idt_entry32_t idt_entry32[INTERRUPT_MAX]
+    static idt_entry64_t idt_entry64[INTERRUPT_MAX]
         __attribute__((aligned(16)));
     // IDTR
     static idt_ptr_t idt_ptr;
 
     // 设置中断描述符
-    static void set_idt(uint8_t _num, uint32_t _base, uint16_t _selector,
-                        uint8_t _type, uint8_t _dpl, uint8_t _p);
+    static void set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
+                        uint8_t _ist, uint8_t _type, uint8_t _dpl, uint8_t _p);
     // 设置 8259A 芯片
     static void init_interrupt_chip(void);
     // 重设 8259A 芯片
