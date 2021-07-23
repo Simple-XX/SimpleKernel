@@ -41,6 +41,7 @@ isr\no:
 .endm
 
 # 定义中断处理函数
+# 64-ia-32-architectures-software-developer-vol-3a-manual#Table 6-1
 # 0 #DE 除 0 异常
 ISR_NOERRCODE  0
 # 1 #DB 调试异常
@@ -71,8 +72,7 @@ ISR_ERRCODE   12
 ISR_ERRCODE   13
 # 14 #PF 页故障(有错误代码)
 ISR_ERRCODE   14
-# 15 CPU 保留
-ISR_NOERRCODE 15
+# 15 没有使用
 # 16 #MF 浮点处理单元错误
 ISR_NOERRCODE 16
 # 17 #AC 对齐检查
@@ -81,24 +81,12 @@ ISR_ERRCODE   17
 ISR_NOERRCODE 18
 # 19 #XM SIMD(单指令多数据)浮点异常
 ISR_NOERRCODE 19
-
-# 20 ~ 31 Intel 保留
+# 20 #VE 虚拟化异常
 ISR_NOERRCODE 20
-ISR_NOERRCODE 21
-ISR_NOERRCODE 22
-ISR_NOERRCODE 23
-ISR_NOERRCODE 24
-ISR_NOERRCODE 25
-ISR_NOERRCODE 26
-ISR_NOERRCODE 27
-ISR_NOERRCODE 28
-ISR_NOERRCODE 29
-ISR_NOERRCODE 30
-ISR_NOERRCODE 31
+# 21 ~ 31 保留
 # 32 ～ 255 用户自定义
 # 128=0x80 用于系统调用
 ISR_NOERRCODE 128
-
 
 # 中断服务程序
 .global isr_common_stub

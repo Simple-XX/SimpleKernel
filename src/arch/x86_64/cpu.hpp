@@ -272,8 +272,8 @@ namespace CPU {
     }
 
     // 读取 EFLAGS
-    static inline uint32_t READ_EFLAGS(void) {
-        uint32_t eflags;
+    static inline uint64_t READ_EFLAGS(void) {
+        uint64_t eflags;
         __asm__ volatile("pushf\n\t"
                          "pop %0\n\t"
                          : "=r"(eflags));
