@@ -5,8 +5,6 @@
 // heap.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
-#include "cpu.hpp"
-#include "common.h"
 #include "heap.h"
 
 HEAP::HEAP(void) {
@@ -20,7 +18,7 @@ HEAP::~HEAP(void) {
 bool HEAP::init(void) {
     static SLAB slab_allocator("SLAB Allocator", 0, 0);
     allocator = (ALLOCATOR *)&slab_allocator;
-    printf("heap_init\n");
+    printf("heap init.\n");
     return 0;
 }
 
