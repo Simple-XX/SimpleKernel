@@ -15,7 +15,7 @@ idt_load:
     lidt 0(%eax)
     ret
 
-# 64-ia-32-architectures-software-developer-vol-3a-manual#6.12.1
+# 64-ia-32-architectures-software-developer-vol-3a-manual#6.14
 # TODO: 特权级切换时候的情况
 # 这里用的是 att 的汇编宏
 # 格式为
@@ -95,8 +95,8 @@ isr\no:
     cli
     # 压栈 intr_context_t 的最后几个成员
     # 40(%rsp) 是因为每次压栈都会使 rsp+8，执行完后 rsp 刚好移动到下一个数据
-    # 无特权级切换时 CPU 不会压入 rsp 和 ss，换言之，
-    # 此时访问 ss 与 rsp 的地址不会出问题，只是值是无效的，不用就好了
+    # 在 64 位模式下，不论特权级是否改变，都会压入 ss，rsp
+    # 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.2
     # SS
     push 40(%rsp)
     # RSP
