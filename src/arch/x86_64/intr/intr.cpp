@@ -203,7 +203,7 @@ namespace INTR {
         io.outb(IO_PIC1C, IRQ0);
         // 设置主片 IR2 引脚连接从片
         io.outb(IO_PIC1C, 0x04);
-        // 设置主片按照 8086 的方式工作
+        // 设置主片按照 EOI 的方式工作
         io.outb(IO_PIC1C, 0x01);
 
         io.outb(IO_PIC2, 0x11);
@@ -211,7 +211,7 @@ namespace INTR {
         io.outb(IO_PIC2C, IRQ8);
         // 告诉从片输出引脚和主片 IR2 号相连
         io.outb(IO_PIC2C, 0x02);
-        // 设置从片按照 8086 的方式工作
+        // 设置从片按照 EOI 的方式工作
         io.outb(IO_PIC2C, 0x01);
 
         // 默认关闭所有中断
