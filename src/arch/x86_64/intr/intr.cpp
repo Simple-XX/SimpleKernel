@@ -10,7 +10,6 @@
 #include "intr.h"
 #include "apic.h"
 #include "keyboard.h"
-#include "vmm.h"
 
 // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
 // ISR:中断服务程序(interrupt service routine)
@@ -120,21 +119,24 @@ static void handler_default(INTR::intr_context_t *) {
 // 中断处理函数指针数组
 INTR::interrupt_handler_t INTR::interrupt_handlers[INTERRUPT_MAX];
 // 中断描述符表
-INTR::idt_entry32_t INTR::idt_entry32[INTERRUPT_MAX];
+INTR::idt_entry64_t INTR::idt_entry64[INTERRUPT_MAX];
 // IDTR
 INTR::idt_ptr_t INTR::idt_ptr;
 
-// 64-ia-32-architectures-software-developer-vol-3a-manual#6.11
-void INTR::set_idt(uint8_t _num, uint32_t _base, uint16_t _selector,
-                   uint8_t _type, uint8_t _dpl, uint8_t _p) {
-    idt_entry32[_num].offset0  = _base & 0xFFFF;
-    idt_entry32[_num].selector = _selector;
-    idt_entry32[_num].reserved = 0;
-    idt_entry32[_num].zero     = 0;
-    idt_entry32[_num].type     = _type;
-    idt_entry32[_num].dpl      = _dpl;
-    idt_entry32[_num].p        = _p;
-    idt_entry32[_num].offset1  = (_base >> 16) & 0xFFFF;
+// 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.1
+void INTR::set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
+                   uint8_t _ist, uint8_t _type, uint8_t _dpl, uint8_t _p) {
+    idt_entry64[_num].offset0  = _base & 0xFFFF;
+    idt_entry64[_num].selector = _selector;
+    idt_entry64[_num].ist      = _ist;
+    idt_entry64[_num].zero0    = 0;
+    idt_entry64[_num].type     = _type;
+    idt_entry64[_num].zero1    = 0;
+    idt_entry64[_num].dpl      = _dpl;
+    idt_entry64[_num].p        = _p;
+    idt_entry64[_num].offset1  = (_base >> 16) & 0xFFFF;
+    idt_entry64[_num].offset2  = _base >> 32;
+    idt_entry64[_num].reserved = 0;
     return;
 }
 
@@ -193,130 +195,130 @@ void INTR::disable_interrupt_chip(void) {
 
 int32_t INTR::init(void) {
     // 填充中断描述符
-    idt_ptr.limit = sizeof(idt_entry32_t) * INTERRUPT_MAX - 1;
-    idt_ptr.base  = (uintptr_t)&idt_entry32;
+    idt_ptr.limit = sizeof(idt_entry64_t) * INTERRUPT_MAX - 1;
+    idt_ptr.base  = (uintptr_t)&idt_entry64;
 
     // 先全部填充
     for (uint32_t i = 0; i < INTERRUPT_MAX; i++) {
-        set_idt(i, 0x0, GDT::SEG_KERNEL_CODE,
-                GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+        set_idt(i, 0x0, GDT::SEG_KERNEL_CODE, 0x0,
+                GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
                 GDT::SEGMENT_PRESENT);
     }
 
     // 设置软中断
-    set_idt(INT_DIVIDE_ERROR, (uintptr_t)isr0, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_DIVIDE_ERROR, (uintptr_t)isr0, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_DEBUG, (uintptr_t)isr1, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_DEBUG, (uintptr_t)isr1, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_NMI, (uintptr_t)isr2, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_NMI, (uintptr_t)isr2, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_BREAKPOINT, (uintptr_t)isr3, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_BREAKPOINT, (uintptr_t)isr3, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_OVERFLOW, (uintptr_t)isr4, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_OVERFLOW, (uintptr_t)isr4, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_BOUND, (uintptr_t)isr5, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_BOUND, (uintptr_t)isr5, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_INVALID_OPCODE, (uintptr_t)isr6, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_INVALID_OPCODE, (uintptr_t)isr6, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_DEVICE_NOT_AVAIL, (uintptr_t)isr7, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_DEVICE_NOT_AVAIL, (uintptr_t)isr7, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_DOUBLE_FAULT, (uintptr_t)isr8, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_DOUBLE_FAULT, (uintptr_t)isr8, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_COPROCESSOR, (uintptr_t)isr9, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_COPROCESSOR, (uintptr_t)isr9, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_INVALID_TSS, (uintptr_t)isr10, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_INVALID_TSS, (uintptr_t)isr10, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_SEGMENT, (uintptr_t)isr11, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_SEGMENT, (uintptr_t)isr11, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_STACK_FAULT, (uintptr_t)isr12, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_STACK_FAULT, (uintptr_t)isr12, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_GENERAL_PROTECT, (uintptr_t)isr13, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_GENERAL_PROTECT, (uintptr_t)isr13, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_PAGE_FAULT, (uintptr_t)isr14, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_PAGE_FAULT, (uintptr_t)isr14, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_X87_FPU, (uintptr_t)isr16, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_X87_FPU, (uintptr_t)isr16, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_ALIGNMENT, (uintptr_t)isr17, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_ALIGNMENT, (uintptr_t)isr17, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_MACHINE_CHECK, (uintptr_t)isr18, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_MACHINE_CHECK, (uintptr_t)isr18, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_SIMD_FLOAT, (uintptr_t)isr19, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_SIMD_FLOAT, (uintptr_t)isr19, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(INT_VIRTUAL_EXCE, (uintptr_t)isr20, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(INT_VIRTUAL_EXCE, (uintptr_t)isr20, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
 
     // 设置外部中断
-    set_idt(IRQ0, (uintptr_t)irq0, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ0, (uintptr_t)irq0, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ1, (uintptr_t)irq1, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ1, (uintptr_t)irq1, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ2, (uintptr_t)irq2, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ2, (uintptr_t)irq2, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ3, (uintptr_t)irq3, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ3, (uintptr_t)irq3, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ4, (uintptr_t)irq4, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ4, (uintptr_t)irq4, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ5, (uintptr_t)irq5, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ5, (uintptr_t)irq5, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ6, (uintptr_t)irq6, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ6, (uintptr_t)irq6, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ7, (uintptr_t)irq7, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ7, (uintptr_t)irq7, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ8, (uintptr_t)irq8, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ8, (uintptr_t)irq8, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ9, (uintptr_t)irq9, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ9, (uintptr_t)irq9, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ10, (uintptr_t)irq10, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ10, (uintptr_t)irq10, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ11, (uintptr_t)irq11, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ11, (uintptr_t)irq11, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ12, (uintptr_t)irq12, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ12, (uintptr_t)irq12, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ13, (uintptr_t)irq13, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ13, (uintptr_t)irq13, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ14, (uintptr_t)irq14, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ14, (uintptr_t)irq14, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
-    set_idt(IRQ15, (uintptr_t)irq15, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL0,
+    set_idt(IRQ15, (uintptr_t)irq15, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL0,
             GDT::SEGMENT_PRESENT);
     // 填充系统调用中断
-    set_idt(IRQ128, (uintptr_t)isr128, GDT::SEG_KERNEL_CODE,
-            GDT::TYPE_SYSTEM_32_INTERRUPT_GATE, CPU::DPL3,
+    set_idt(IRQ128, (uintptr_t)isr128, GDT::SEG_KERNEL_CODE, 0x0,
+            GDT::TYPE_SYSTEM_64_INTERRUPT_GATE, CPU::DPL3,
             GDT::SEGMENT_PRESENT);
     // 所有中断设为默认
     for (uint32_t i = 0; i < INTERRUPT_MAX; i++) {
