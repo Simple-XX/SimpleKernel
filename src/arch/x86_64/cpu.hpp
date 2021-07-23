@@ -7,12 +7,13 @@
 #ifndef _CPU_HPP_
 #define _CPU_HPP_
 
+#include "io.h"
 #include "stdint.h"
 #include "stdbool.h"
 #include "assert.h"
+#include "string.h"
 
 // TODO: CPUID 相关操作，补全寄存器操作，数据地址等
-// TODO: x64 相关
 
 namespace CPU {
     // Carry Flag
@@ -43,7 +44,7 @@ namespace CPU {
     static constexpr const uint32_t EFLAGS_IOPL_2 = 0x00002000;
     // IOPL == 3
     static constexpr const uint32_t EFLAGS_IOPL_3 = 0x00003000;
-    // Nested Task
+    // Nested INTEL_EXTENDED
     static constexpr const uint32_t EFLAGS_NT = 0x00004000;
     // Resume Flag
     static constexpr const uint32_t EFLAGS_RF = 0x00010000;
@@ -136,6 +137,109 @@ namespace CPU {
     static constexpr const uint32_t CR4_OSXSAVE    = 0x00040000;
     static constexpr const uint32_t CR4_SMEP       = 0x00100000;
 
+    static constexpr const uint32_t IA32_APIC_BASE                   = 0x1B;
+    static constexpr const uint32_t IA32_APIC_BASE_BSP_BIT           = 1 << 8;
+    static constexpr const uint32_t IA32_APIC_BASE_X2APIC_ENABLE_BIT = 1 << 10;
+    static constexpr const uint32_t IA32_APIC_BASE_GLOBAL_ENABLE_BIT = 1 << 11;
+
+    // x2APIC ID Register (R/O)
+    static constexpr const uint32_t IA32_X2APIC_APICID = 0x802;
+    // x2APIC Version Register (R/O)
+    static constexpr const uint32_t IA32_X2APIC_VERSION = 0x803;
+    // Support for EOI-broadcast suppression
+    static constexpr const uint32_t IA32_X2APIC_VERSION_EOI_SUPPORT_BIT = 1
+                                                                          << 24;
+    // x2APIC Task Priority Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_TPR = 0x808;
+    // x2APIC Processor Priority Register (R/O)
+    static constexpr const uint32_t IA32_X2APIC_PPR = 0x80A;
+    // x2APIC EOI Register (W/O)
+    static constexpr const uint32_t IA32_X2APIC_EOI = 0x80B;
+    // x2APIC Logical Destination Register (R/O)
+    static constexpr const uint32_t IA32_X2APIC_LDR = 0x80D;
+    // x2APIC Spurious Interrupt Vector Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_SIVR = 0x80F;
+    // 伪中断向量号
+    static constexpr const uint32_t IA32_X2APIC_SIVR_NO_BIT = 0x0;
+    // APIC 软件使能 1:enable
+    static constexpr const uint32_t IA32_X2APIC_SIVR_APIC_ENABLE_BIT = 1 << 8;
+    // 焦点处理器 0:disable
+    static constexpr const uint32_t IA32_X2APIC_SIVR_FOCUS_ENABLE_BIT = 1 << 9;
+    // 禁止广播 EOI 消息使能 1:enable
+    static constexpr const uint32_t IA32_X2APIC_SIVR_EOI_ENABLE_BIT = 1 << 12;
+    // x2APIC In-Service Register Bits 31:0 (R/O)
+    static constexpr const uint32_t IA32_X2APIC_ISR0 = 0x810;
+    static constexpr const uint32_t IA32_X2APIC_ISR1 = 0x811;
+    static constexpr const uint32_t IA32_X2APIC_ISR2 = 0x812;
+    static constexpr const uint32_t IA32_X2APIC_ISR3 = 0x813;
+    static constexpr const uint32_t IA32_X2APIC_ISR4 = 0x814;
+    static constexpr const uint32_t IA32_X2APIC_ISR5 = 0x815;
+    static constexpr const uint32_t IA32_X2APIC_ISR6 = 0x816;
+    // x2APIC In-Service Register Bits 255:224 (R/O)
+    static constexpr const uint32_t IA32_X2APIC_ISR7 = 0x817;
+    // x2APIC Trigger Mode Register Bits 31:0 (R/O)
+    static constexpr const uint32_t IA32_X2APIC_TMR0 = 0x818;
+    static constexpr const uint32_t IA32_X2APIC_TMR1 = 0x819;
+    static constexpr const uint32_t IA32_X2APIC_TMR2 = 0x81A;
+    static constexpr const uint32_t IA32_X2APIC_TMR3 = 0x81B;
+    static constexpr const uint32_t IA32_X2APIC_TMR4 = 0x81C;
+    static constexpr const uint32_t IA32_X2APIC_TMR5 = 0x81D;
+    static constexpr const uint32_t IA32_X2APIC_TMR6 = 0x81E;
+    // x2APIC Trigger Mode Register Bits 255:224 (R/O)
+    static constexpr const uint32_t IA32_X2APIC_TMR7 = 0x81F;
+    // x2APIC Interrupt Request Register Bits 31:0 (R/O)
+    static constexpr const uint32_t IA32_X2APIC_IRR0 = 0x820;
+    static constexpr const uint32_t IA32_X2APIC_IRR1 = 0x821;
+    static constexpr const uint32_t IA32_X2APIC_IRR2 = 0x822;
+    static constexpr const uint32_t IA32_X2APIC_IRR3 = 0x823;
+    static constexpr const uint32_t IA32_X2APIC_IRR4 = 0x824;
+    static constexpr const uint32_t IA32_X2APIC_IRR5 = 0x825;
+    static constexpr const uint32_t IA32_X2APIC_IRR6 = 0x826;
+    // x2APIC Interrupt Request Register Bits 255:224 (R/O)
+    static constexpr const uint32_t IA32_X2APIC_IRR7 = 0x827;
+    // x2APIC Error Status Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_ESR = 0x828;
+    // x2APIC LVT Corrected Machine Check Interrupt Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_CMCI = 0x82F;
+    // x2APIC Interrupt Command Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_ICR = 0x830;
+    // x2APIC LVT Timer Interrupt Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_LVT_TIMER = 0x832;
+    // x2APIC LVT Thermal Sensor Interrupt Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_LVT_THERMAL = 0x833;
+    // x2APIC LVT Performance Monitor Interrupt Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_LVT_PMI = 0x834;
+    // x2APIC LVT LINT0 Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_LVT_LINT0 = 0x835;
+    // x2APIC LVT LINT1 Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_LVT_LINT1 = 0x836;
+    // x2APIC LVT Error Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_LVT_ERROR = 0x837;
+    // Bits 0-7	The vector number
+    static constexpr const uint32_t IA32_X2APIC_LVT_NO_BIT = 0x0;
+    // Bits 8-11 (reserved for timer)	100b if NMI
+    static constexpr const uint32_t IA32_X2APIC_LVT_NMI_BIT = 1 << 8;
+    // Bit 12	Set if interrupt pending.
+    static constexpr const uint32_t IA32_X2APIC_LVT_PENDING_BIT = 1 << 12;
+    // Bit 13 (reserved for timer)	Polarity, set is low triggered
+    static constexpr const uint32_t IA32_X2APIC_LVT_POLAR_BIT = 1 << 13;
+    // Bit 14 (reserved for timer)	Remote IRR
+    static constexpr const uint32_t IA32_X2APIC_LVT_REMOTE_IRR_BIT = 1 << 14;
+    // Bit 15 (reserved for timer)	trigger mode, set is level triggered
+    static constexpr const uint32_t IA32_X2APIC_LVT_TRIGGER_BIT = 1 << 15;
+    // Bit 16	Set to mask
+    static constexpr const uint32_t IA32_X2APIC_LVT_MASK_BIT = 1 << 16;
+    // Bits 17-31	Reserved
+
+    // x2APIC Initial Count Register(R/W)
+    static constexpr const uint32_t IA32_X2APIC_TIMER_INIT_COUNT = 0x838;
+    // x2APIC Current Count Register (R/O)
+    static constexpr const uint32_t IA32_X2APIC_TIMER_CUR_COUNT = 0x839;
+    // x2APIC Divide Configuration Register (R/W)
+    static constexpr const uint32_t IA32_X2APIC_DIV_CONF = 0x83E;
+    // x2APIC Self IPI Register (W/O)
+    static constexpr const uint32_t IA32_X2APIC_SELF_IPI = 0x83F;
+
     // 段描述符 DPL
     // 内核级
     static constexpr const uint32_t DPL0 = 0x00;
@@ -144,10 +248,6 @@ namespace CPU {
     // 用户级
     static constexpr const uint32_t DPL3 = 0x03;
 
-    static constexpr const uint32_t IA32_APIC_BASE_MSR        = 0x1B;
-    static constexpr const uint32_t IA32_APIC_BASE_MSR_BSP    = 0x100;
-    static constexpr const uint32_t IA32_APIC_BASE_MSR_ENABLE = 0x800;
-
     // 执行CPU空操作
     static inline void hlt(void) {
         __asm__ volatile("hlt");
@@ -155,13 +255,13 @@ namespace CPU {
     }
 
     // 开启中断
-    static inline void sti(void) {
+    static inline void ENABLE_INTR(void) {
         __asm__ volatile("sti" ::: "memory");
         return;
     }
 
     // 关闭中断
-    static inline void cli(void) {
+    static inline void DISABLE_INTR(void) {
         __asm__ volatile("cli" ::: "memory");
         return;
     }
@@ -195,8 +295,8 @@ namespace CPU {
     }
 
     // 读取 CR3
-    static inline uintptr_t READ_CR3(void) {
-        uintptr_t cr3;
+    static inline uint64_t READ_CR3(void) {
+        uint64_t cr3;
         __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
         return cr3;
     }
@@ -481,7 +581,7 @@ namespace CPU {
 
     // 开启 PG
     static inline bool ENABLE_PG(void) {
-        uintptr_t cr0 = 0;
+        uint64_t cr0 = 0;
         __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
         // 最高位 PG 位置 1，分页开启
         cr0 |= (1u << 31);
@@ -514,10 +614,174 @@ namespace CPU {
         return true;
     }
 
-    typedef struct {
+    static inline uint64_t READ_MSR(uint32_t _idx) {
         uint32_t low;
         uint32_t high;
-    } msr_t;
+        __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(_idx));
+        return ((uint64_t)high << 32) | low;
+    }
+
+    static inline void WRITE_MSR(uint32_t _idx, uint64_t _msr) {
+        uint32_t low  = _msr;
+        uint32_t high = _msr >> 32;
+        __asm__ volatile("wrmsr" : : "a"(low), "d"(high), "c"(_idx));
+        return;
+    }
+
+    class CPUID {
+    private:
+        static constexpr const uint32_t VENDOR_LEN = 16;
+        static constexpr const uint32_t BRAND_LEN  = 50;
+        static constexpr const uint32_t FAMILY_LEN = 50;
+        static constexpr const uint32_t MODEL_LEN  = 50;
+        // Vendor-strings.
+        static constexpr const char *VENDOR_OLDAMD = "AMDisbetter!";
+        // early engineering samples of AMD K5 processor
+        static constexpr const char *VENDOR_AMD          = "AuthenticAMD";
+        static constexpr const char *VENDOR_INTEL        = "GenuineIntel";
+        static constexpr const char *VENDOR_Centaur      = "CentaurHauls";
+        static constexpr const char *VENDOR_OLDTRANSMETA = "TransmetaCPU";
+        static constexpr const char *VENDOR_TRANSMETA    = "GenuineTMx86";
+        static constexpr const char *VENDOR_CYRIX        = "CyrixInstead";
+        static constexpr const char *VENDOR_CENTAUR      = "CentaurHauls";
+        static constexpr const char *VENDOR_NEXGEN       = "NexGenDriven";
+        static constexpr const char *VENDOR_UMC          = "UMC UMC UMC ";
+        static constexpr const char *VENDOR_SIS          = "SiS SiS SiS ";
+        static constexpr const char *VENDOR_NSC          = "Geode by NSC";
+        static constexpr const char *VENDOR_RISE         = "RiseRiseRise";
+        static constexpr const char *VENDOR_VORTEX       = "Vortex86 SoC";
+        static constexpr const char *VENDOR_VIA          = "VIA VIA VIA ";
+        // Vendor-strings from Virtual Machines.
+        static constexpr const char *VENDOR_VMWARE       = "VMwareVMware";
+        static constexpr const char *VENDOR_XENHVM       = "XenVMMXenVMM";
+        static constexpr const char *VENDOR_MICROSOFT_HV = "Microsoft Hv";
+        static constexpr const char *VENDOR_PARALLELS    = " lrpepyh vr";
+
+        static constexpr const uint32_t FEAT_ECX_SSE3    = 1 << 0;
+        static constexpr const uint32_t FEAT_ECX_PCLMUL  = 1 << 1;
+        static constexpr const uint32_t FEAT_ECX_DTES64  = 1 << 2;
+        static constexpr const uint32_t FEAT_ECX_MONITOR = 1 << 3;
+        static constexpr const uint32_t FEAT_ECX_DS_CPL  = 1 << 4;
+        static constexpr const uint32_t FEAT_ECX_VMX     = 1 << 5;
+        static constexpr const uint32_t FEAT_ECX_SMX     = 1 << 6;
+        static constexpr const uint32_t FEAT_ECX_EST     = 1 << 7;
+        static constexpr const uint32_t FEAT_ECX_TM2     = 1 << 8;
+        static constexpr const uint32_t FEAT_ECX_SSSE3   = 1 << 9;
+        static constexpr const uint32_t FEAT_ECX_CID     = 1 << 10;
+        static constexpr const uint32_t FEAT_ECX_FMA     = 1 << 12;
+        static constexpr const uint32_t FEAT_ECX_CX16    = 1 << 13;
+        static constexpr const uint32_t FEAT_ECX_ETPRD   = 1 << 14;
+        static constexpr const uint32_t FEAT_ECX_PDCM    = 1 << 15;
+        static constexpr const uint32_t FEAT_ECX_PCIDE   = 1 << 17;
+        static constexpr const uint32_t FEAT_ECX_DCA     = 1 << 18;
+        static constexpr const uint32_t FEAT_ECX_SSE4_1  = 1 << 19;
+        static constexpr const uint32_t FEAT_ECX_SSE4_2  = 1 << 20;
+        static constexpr const uint32_t FEAT_ECX_x2APIC  = 1 << 21;
+        static constexpr const uint32_t FEAT_ECX_MOVBE   = 1 << 22;
+        static constexpr const uint32_t FEAT_ECX_POPCNT  = 1 << 23;
+        static constexpr const uint32_t FEAT_ECX_AES     = 1 << 25;
+        static constexpr const uint32_t FEAT_ECX_XSAVE   = 1 << 26;
+        static constexpr const uint32_t FEAT_ECX_OSXSAVE = 1 << 27;
+        static constexpr const uint32_t FEAT_ECX_AVX     = 1 << 28;
+        static constexpr const uint32_t FEAT_EDX_FPU     = 1 << 0;
+        static constexpr const uint32_t FEAT_EDX_VME     = 1 << 1;
+        static constexpr const uint32_t FEAT_EDX_DE      = 1 << 2;
+        static constexpr const uint32_t FEAT_EDX_PSE     = 1 << 3;
+        static constexpr const uint32_t FEAT_EDX_TSC     = 1 << 4;
+        static constexpr const uint32_t FEAT_EDX_MSR     = 1 << 5;
+        static constexpr const uint32_t FEAT_EDX_PAE     = 1 << 6;
+        static constexpr const uint32_t FEAT_EDX_MCE     = 1 << 7;
+        static constexpr const uint32_t FEAT_EDX_CX8     = 1 << 8;
+        static constexpr const uint32_t FEAT_EDX_APIC    = 1 << 9;
+        static constexpr const uint32_t FEAT_EDX_SEP     = 1 << 11;
+        static constexpr const uint32_t FEAT_EDX_MTRR    = 1 << 12;
+        static constexpr const uint32_t FEAT_EDX_PGE     = 1 << 13;
+        static constexpr const uint32_t FEAT_EDX_MCA     = 1 << 14;
+        static constexpr const uint32_t FEAT_EDX_CMOV    = 1 << 15;
+        static constexpr const uint32_t FEAT_EDX_PAT     = 1 << 16;
+        static constexpr const uint32_t FEAT_EDX_PSE36   = 1 << 17;
+        static constexpr const uint32_t FEAT_EDX_PSN     = 1 << 18;
+        static constexpr const uint32_t FEAT_EDX_CLF     = 1 << 19;
+        static constexpr const uint32_t FEAT_EDX_DTES    = 1 << 21;
+        static constexpr const uint32_t FEAT_EDX_ACPI    = 1 << 22;
+        static constexpr const uint32_t FEAT_EDX_MMX     = 1 << 23;
+        static constexpr const uint32_t FEAT_EDX_FXSR    = 1 << 24;
+        static constexpr const uint32_t FEAT_EDX_SSE     = 1 << 25;
+        static constexpr const uint32_t FEAT_EDX_SSE2    = 1 << 26;
+        static constexpr const uint32_t FEAT_EDX_SS      = 1 << 27;
+        static constexpr const uint32_t FEAT_EDX_HTT     = 1 << 28;
+        static constexpr const uint32_t FEAT_EDX_TM1     = 1 << 29;
+        static constexpr const uint32_t FEAT_EDX_IA64    = 1 << 30;
+        static constexpr const uint32_t FEAT_EDX_PBE     = 1 << 31;
+        enum : uint32_t {
+            GET_VENDOR = 0x00,
+            GET_FEATURES,
+            GET_TLB,
+            GET_SERIAL,
+            INTEL_EXTENDED = 0x80000000,
+            INTEL_FEATURES,
+            INTEL_BRANDSTRING,
+            INTEL_BRANDSTRINGMORE,
+            INTEL_BRANDSTRINGEND,
+        };
+        // TODO: 获取字符串信息
+        char vendor[VENDOR_LEN];
+        char brand[BRAND_LEN];
+        char family_name[FAMILY_LEN];
+        char model_name[MODEL_LEN];
+        //系列
+        uint32_t family;
+        //型号
+        uint32_t model;
+        //类型
+        uint32_t type;
+        //频率
+        uint32_t stepping;
+        // cpu 基本信息
+        uint32_t max_cpuid;
+        // cpu 拓展信息
+        uint32_t max_cpuidex;
+        void     cpuid(uint32_t Mop, uint32_t Sop, uint32_t *eax, uint32_t *ebx,
+                       uint32_t *ecx, uint32_t *edx) {
+            __asm__ volatile("cpuid"
+                             : "=a"(*eax), "=b"(*ebx), "=c"(*ecx), "=d"(*edx)
+                             : "0"(Mop), "2"(Sop));
+        }
+
+    public:
+        CPUID(void) {
+            uint32_t eax, ebx, ecx, edx;
+            // 获取 vendor ID 与基本信息
+            cpuid(GET_VENDOR, 0, &eax, &ebx, &ecx, &edx);
+            max_cpuid = eax;
+            memcpy(vendor, &ebx, 4);
+            memcpy(vendor + 4, &edx, 4);
+            memcpy(vendor + 8, &ecx, 4);
+            vendor[12] = '\0';
+            // 获取拓展信息
+            cpuid(INTEL_EXTENDED, 0, &eax, &ebx, &ecx, &edx);
+            max_cpuidex = eax;
+            return;
+        }
+        ~CPUID(void) {
+            return;
+        }
+        bool xapic(void) {
+            uint32_t eax, ebx, ecx, edx;
+            cpuid(GET_FEATURES, 0, &eax, &ebx, &ecx, &edx);
+            return edx & FEAT_EDX_APIC;
+        }
+        bool x2apic(void) {
+            uint32_t eax, ebx, ecx, edx;
+            cpuid(GET_FEATURES, 0, &eax, &ebx, &ecx, &edx);
+            return ecx & FEAT_ECX_x2APIC;
+        }
+        bool eoi(void) {
+            uint64_t version = READ_MSR(IA32_X2APIC_VERSION);
+            return version & IA32_X2APIC_SIVR_EOI_ENABLE_BIT;
+        }
+    };
+
 };
 
 #endif /* _CPU_HPP_ */
