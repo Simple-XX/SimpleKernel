@@ -628,6 +628,7 @@ namespace CPU {
         return;
     }
 
+    // TODO: 改为 static
     class CPUID {
     private:
         static constexpr const uint32_t VENDOR_LEN = 16;
