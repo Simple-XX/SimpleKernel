@@ -13,13 +13,32 @@
 
 namespace INTR {
     // 中断表最大值
-    static constexpr const uint32_t INTERRUPT_MAX     = 256;
-    static constexpr const uint32_t GATE_TASK         = 0x05;
-    static constexpr const uint32_t GATE_INTERRUPT_16 = 0x06;
-    static constexpr const uint32_t GATE_INTERRUPT_32 = 0x0E;
-    static constexpr const uint32_t GATE_TRAP_16      = 0x07;
-    static constexpr const uint32_t GATE_TRAP_32      = 0x0F;
-    static constexpr const uint32_t GATE_PRESENT      = 0x01;
+    static constexpr const uint32_t INTERRUPT_MAX = 256;
+
+    // External(hardware generated) interrupts.
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.3.1
+    static constexpr const uint32_t INT_DIVIDE_ERROR     = 0;
+    static constexpr const uint32_t INT_DEBUG            = 1;
+    static constexpr const uint32_t INT_NMI              = 2;
+    static constexpr const uint32_t INT_BREAKPOINT       = 3;
+    static constexpr const uint32_t INT_OVERFLOW         = 4;
+    static constexpr const uint32_t INT_BOUND            = 5;
+    static constexpr const uint32_t INT_INVALID_OPCODE   = 6;
+    static constexpr const uint32_t INT_DEVICE_NOT_AVAIL = 7;
+    static constexpr const uint32_t INT_DOUBLE_FAULT     = 8;
+    static constexpr const uint32_t INT_COPROCESSOR      = 9;
+    static constexpr const uint32_t INT_INVALID_TSS      = 10;
+    static constexpr const uint32_t INT_SEGMENT          = 11;
+    static constexpr const uint32_t INT_STACK_FAULT      = 12;
+    static constexpr const uint32_t INT_GENERAL_PROTECT  = 13;
+    static constexpr const uint32_t INT_PAGE_FAULT       = 14;
+    // 15 没有使用
+    static constexpr const uint32_t INT_X87_FPU       = 16;
+    static constexpr const uint32_t INT_ALIGNMENT     = 17;
+    static constexpr const uint32_t INT_MACHINE_CHECK = 18;
+    static constexpr const uint32_t INT_SIMD_FLOAT    = 19;
+    static constexpr const uint32_t INT_VIRTUAL_EXCE  = 20;
+    // 21~31 保留
 
     // 定义IRQ
     // 电脑系统计时器
@@ -50,32 +69,13 @@ namespace INTR {
     static constexpr const uint32_t IRQ12 = 44;
     // 协处理器使用
     static constexpr const uint32_t IRQ13 = 45;
-    // IDE0 传输控制使用
+    // SATA 主硬盘
     static constexpr const uint32_t IRQ14 = 46;
-    // IDE1 传输控制使用
+    // SATA 从硬盘
     static constexpr const uint32_t IRQ15 = 47;
 
-    // External(hardware generated) interrupts.
-    static constexpr const uint32_t INT_DIVIDE_ERROR     = 0;
-    static constexpr const uint32_t INT_DEBUG            = 1;
-    static constexpr const uint32_t INT_NMI              = 2;
-    static constexpr const uint32_t INT_BREAKPOINT       = 3;
-    static constexpr const uint32_t INT_OVERFLOW         = 4;
-    static constexpr const uint32_t INT_BOUND            = 5;
-    static constexpr const uint32_t INT_INVALID_OPCODE   = 6;
-    static constexpr const uint32_t INT_DEVICE_NOT_AVAIL = 7;
-    static constexpr const uint32_t INT_DOUBLE_FAULT     = 8;
-    static constexpr const uint32_t INT_COPROCESSOR      = 9;
-    static constexpr const uint32_t INT_INVALID_TSS      = 10;
-    static constexpr const uint32_t INT_SEGMENT          = 11;
-    static constexpr const uint32_t INT_STACK_FAULT      = 12;
-    static constexpr const uint32_t INT_GENERAL_PROTECT  = 13;
-    static constexpr const uint32_t INT_PAGE_FAULT       = 14;
-    static constexpr const uint32_t INT_X87_FPU          = 16;
-    static constexpr const uint32_t INT_ALIGNMENT        = 17;
-    static constexpr const uint32_t INT_MACHINE_CHECK    = 18;
-    static constexpr const uint32_t INT_SIMD_FLOAT       = 19;
-    static constexpr const uint32_t INT_VIRTUAL_EXCE     = 20;
+    // 系统调用
+    static constexpr const uint32_t IRQ128 = 128;
 
     // 8259A 相关定义
     // Master (IRQs 0-7)
@@ -146,44 +146,40 @@ namespace INTR {
     };
 
     // 中断描述符
-    struct idt_entry_t {
-        // 中断处理函数地址 15～0 位
-        uint16_t base_low;
-        // 目标代码段描述符选择子
-        uint16_t selector;
-        // 置 0 段
-        uint8_t zero;
-        // 一些标志，文档有解释
-        uint8_t flags;
-        // 中断处理函数地址 31～16 位
-        uint16_t base_high;
-    } __attribute__((packed));
-
-    struct idt_gate_t {
-        // Offset to procedure entry point, reserved if task gate
-        uint64_t offset1 : 16;
-        // Segment Selector for destination code segment
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.1
+    struct idt_entry64_t {
+        // 低位地址
+        uint64_t offset0 : 16;
+        // 选择子
         uint64_t selector : 16;
-        // 置 0 段
-        uint64_t zero : 8;
-        // task gate: 0x05
-        // interrupt gate: 0x6 = 16 bits, 0xE = 32 bits
-        // trap gate: 0x7 = 16 bits, 0xF = 32 bits
-        uint64_t flags : 5;
-        // Descriptor Privilege Level
+        // 中断栈表
+        // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.5
+        uint64_t ist : 3;
+        // 填充 0
+        uint64_t zero0 : 5;
+        // 类型
+        uint64_t type : 4;
+        // 填充 0
+        uint64_t zero1 : 1;
+        // 权限
         uint64_t dpl : 2;
-        // Segment Present flag
+        // 存在位
         uint64_t p : 1;
-        // Offset to procedure entry point, reserved if task gate
-        uint64_t offset2 : 16;
+        // 中段地址
+        uint64_t offset1 : 16;
+        // 高位地址
+        uint64_t offset2 : 32;
+        // 保留
+        uint64_t reserved : 32;
     } __attribute__((packed));
 
     // IDTR
-    typedef struct idt_ptr64_t {
+    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.10
+    struct idt_ptr64_t {
         // 限长
         uint16_t limit;
         // 基址
-        uint64_t base;
+        uint32_t base;
     } __attribute__((packed));
 
     // 定义中断处理函数指针
@@ -192,7 +188,7 @@ namespace INTR {
     // 中断处理函数指针类型
     typedef void (*isr_irq_func_t)();
 
-    void die(const char *str, uint32_t oesp, uint32_t int_no);
+    void die(const char *str, uintptr_t oesp, uint32_t int_no);
 
     // 设置 8259A 芯片
     void init_interrupt_chip(void);
@@ -200,7 +196,8 @@ namespace INTR {
     void clear_interrupt_chip(uint32_t intr_no);
 
     // 设置中断描述符
-    void set_idt(uint8_t num, uint32_t base, uint16_t target, uint8_t flags);
+    void set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
+                 uint8_t _ist, uint8_t _type, uint8_t _dpl, uint8_t _p);
     // 中断名数组
     static constexpr const char *const intrnames[] = {
         "Divide Error",
@@ -228,14 +225,13 @@ namespace INTR {
     int32_t init(void);
     // 注册一个中断处理函数
     void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
-    void enable_irq(uint32_t irq_no);
-    void disable_irq(uint32_t irq_no);
+    void enable_irq(uint8_t irq_no);
+    void disable_irq(uint8_t irq_no);
     // 返回中断名
-    const char *get_intr_name(uint32_t intr_no);
+    const char *get_intr_name(uint8_t intr_no);
     // 执行中断
-    int32_t call_irq(uint32_t intr_no, pt_regs_t *regs);
-    int32_t call_isr(uint32_t intr_no, pt_regs_t *regs);
-
+    int32_t call_irq(uint8_t intr_no, pt_regs_t *regs);
+    int32_t call_isr(uint8_t intr_no, pt_regs_t *regs);
 };
 
 #endif /* _INTR_H_ */
