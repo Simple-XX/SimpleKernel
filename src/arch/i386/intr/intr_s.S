@@ -11,33 +11,106 @@
 idt_load:
     # 参数保存在 eax
     mov 4(%esp), %eax
-    lidt (%eax)
+    lidt 0(%eax)
     ret
 
 # 定义两个构造中断处理函数的宏(有的中断有错误代码，有的没有)
 # 用于没有错误代码的中断
-
 .macro ISR_NO_ERROR_CODE no
 .global isr\no
 isr\no:
-    # 首先关闭中断
+    # 关中断
     cli
-    # push 无效的中断错误代码,占位用
+    # 这时候栈的情况
+    # EIP
+    # CS
+    # EFLAGS
+    # old_esp(特权级切换时 cpu 压入)
+    # old_ss(特权级切换时 cpu 压入)
+    # 压入错误代码，但这里没有传递，所以用 0 占位
     push $0
-    # push 中断号
+    # 压入寄存器信息
+    pusha
+    # 压入段寄存器
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    push %ss
+    # 传递参数 2：错误代码，但这里没有传递，所以用 0 占位
+    push $0
+    # 传递参数 1：intr_context_t
+    push %esp
+    # 传递参数 0：中断号
     push $\no
-    jmp isr_common_stub
+    # 调用处理函数
+    call isr_handler
+    # 恢复现场
+    # 弹出中断号
+    add $4, %esp
+    # 弹出 intr_context_t
+    add $4, %esp
+    # 弹出占位的 0
+    add $4, %esp
+    # 弹出寄存器
+    pop %ss
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popa
+    # 弹出占位的 0
+    add $4, %esp
+    iret
 .endm
 
 # 用于有错误代码的中断
 .macro ISR_ERROR_CODE no
 .global isr\no
 isr\no:
-    # 关闭中断
+    # 关中断
     cli
-    # push 中断号
+    # 这时候栈的情况
+    # err_code
+    # EIP
+    # CS
+    # EFLAGS
+    # old_esp(特权级切换时 cpu 压入)
+    # old_ss(特权级切换时 cpu 压入)
+    # 压入寄存器信息
+    pusha
+    # 压入段寄存器
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    push %ss
+    # 传递参数 2：错误代码，位于栈地址+52
+    push 52(%esp)
+    # 传递参数 1：intr_context_t
+    push %esp
+    # 传递参数 0：中断号
     push $\no
-    jmp isr_common_stub
+    # 调用处理函数
+    call isr_handler
+    # 恢复现场
+    # 弹出参数 0：中断号
+    add $4, %esp
+    # 弹出参数 1： intr_context_t
+    add $4, %esp
+    # 弹出参数 2：错误代码
+    add $4, %esp
+    # 弹出寄存器
+    pop %ss
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popa
+    # TODO: 不知道这个是为啥，没有的话就会挂
+    # 怀疑是错误代码，iret 没有将它弹出
+    add $4, %esp
+    iret
 .endm
 
 # 定义中断处理函数
@@ -88,38 +161,49 @@ ISR_NO_ERROR_CODE 20
 # 128=0x80 用于系统调用
 ISR_NO_ERROR_CODE 128
 
-# 中断服务程序
-.global isr_common_stub
-.extern isr_handler
-isr_common_stub:
-    pusha
-    push %ds
-    push %es
-    push %fs
-    push %gs
-
-    # 加载内核数据段描述符表, 0x10:内核数据段标识符
-    mov $0x10, %ax
-    mov %ax, %ds
-    mov %ax, %es
-    mov %ax, %fs
-    mov %ax, %gs
-    mov %ax, %ss
-
-    push %esp
-    call isr_handler
-    # 清除压入的参数
-    add $4, %esp
-    call forkret_s
-
 # 构造中断请求的宏
 .macro IRQ name, no
 .global irq\name
 irq\name:
+    # 关中断
     cli
+    # 这时候栈的情况
+    # EIP
+    # CS
+    # EFLAGS
+    # old_esp(特权级切换时 cpu 压入)
+    # old_ss(特权级切换时 cpu 压入)
+    # 压入错误代码，但这里没有传递，所以用 0 占位
     push $0
+    # 压入寄存器信息
+    pusha
+    # 压入段寄存器
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    push %ss
+    # 传递参数 1：intr_context_t
+    push %esp
+    # 传递参数 0：中断号
     push $\no
-    jmp irq_common_stub
+    # 调用处理函数
+    call irq_handler
+    # 恢复现场
+    # 弹出中断号
+    add $4, %esp
+    # 弹出 intr_context_t
+    add $4, %esp
+    # 弹出寄存器
+    pop %ss
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popa
+    # 弹出占位的 0
+    add $4, %esp
+    iret
 .endm
 
 # 电脑系统计时器
@@ -154,38 +238,3 @@ IRQ  13,    45
 IRQ  14,    46
 # IDE1 传输控制使用
 IRQ  15,    47
-
-.global irq_common_stub
-.extern irq_handler
-irq_common_stub:
-    pusha
-    push %ds
-    push %es
-    push %fs
-    push %gs
-
-    # 加载内核数据段描述符表, 0x10:内核数据段标识符
-    mov $0x10, %ax
-    mov %ax, %ds
-    mov %ax, %es
-    mov %ax, %fs
-    mov %ax, %gs
-    mov %ax, %ss
-
-    push %esp
-    call irq_handler
-    # 清除压入的参数
-    add $0x04, %esp
-
-.global forkret_s
-forkret_s:
-    pop %gs
-    pop %fs
-    pop %es
-    pop %ds
-    # Pops edi,esi,ebp...
-    popa
-    # 清理压栈的 错误代码 和 ISR 编号
-    add $0x08, %esp
-    # 出栈 CS, EIP, EFLAGS, SS, ESP
-    iret
