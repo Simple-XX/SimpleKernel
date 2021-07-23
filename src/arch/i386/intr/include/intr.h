@@ -10,7 +10,6 @@
 #include "stdint.h"
 
 // TODO: 升级为 APIC
-
 namespace INTR {
     // 中断表最大值
     static constexpr const uint32_t INTERRUPT_MAX = 256;
@@ -108,7 +107,7 @@ namespace INTR {
         uint32_t reserved2 : 16;
     };
 
-    class pt_regs_t {
+    class intr_context_t {
     public:
         // segment registers
         // 16 bits
@@ -176,17 +175,15 @@ namespace INTR {
     } __attribute__((packed));
 
     // 定义中断处理函数指针
-    typedef void (*interrupt_handler_t)(pt_regs_t *);
+    typedef void (*interrupt_handler_t)(intr_context_t *);
 
     // 中断处理函数指针类型
     typedef void (*isr_irq_func_t)();
 
-    void die(const char *str, uintptr_t oesp, uint32_t int_no);
-
     // 设置 8259A 芯片
     void init_interrupt_chip(void);
     // 重设 8259A 芯片
-    void clear_interrupt_chip(uint32_t intr_no);
+    void clear_interrupt_chip(uint8_t _no);
 
     // 设置中断描述符
     void set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
@@ -218,13 +215,13 @@ namespace INTR {
     int32_t init(void);
     // 注册一个中断处理函数
     void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
-    void enable_irq(uint8_t irq_no);
-    void disable_irq(uint8_t irq_no);
+    void enable_irq(uint8_t _no);
+    void disable_irq(uint8_t _no);
     // 返回中断名
-    const char *get_intr_name(uint8_t intr_no);
+    const char *get_intr_name(uint8_t _no);
     // 执行中断
-    int32_t call_irq(uint8_t intr_no, pt_regs_t *regs);
-    int32_t call_isr(uint8_t intr_no, pt_regs_t *regs);
+    int32_t call_irq(uint8_t _no, intr_context_t *_regs);
+    int32_t call_isr(uint8_t _no, intr_context_t *_regs);
 };
 
 #endif /* _INTR_H_ */

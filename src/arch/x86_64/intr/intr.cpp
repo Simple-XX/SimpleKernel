@@ -100,14 +100,16 @@ namespace INTR {
     extern void idt_load(uint32_t);
 
     // IRQ 处理函数
-    void irq_handler(pt_regs_t *regs) {
-        call_irq(regs->int_no, regs);
+    void irq_handler(uint8_t _no, intr_context_t *_intr_context) {
+        call_irq(_no, _intr_context);
         return;
     }
 
     // ISR 处理函数
-    void isr_handler(pt_regs_t *regs) {
-        call_isr(regs->int_no, regs);
+    void isr_handler(uint8_t _no, intr_context_t *_intr_context,
+                     error_code_t *_err_code) {
+        (void)_err_code;
+        call_isr(_no, _intr_context);
         return;
     }
 
@@ -124,7 +126,7 @@ namespace INTR {
     // IDTR
     static idt_ptr64_t idt_ptr64;
     // 默认处理函数
-    void handler_default(pt_regs_t *) {
+    void handler_default(intr_context_t *) {
         while (1) {
             ;
         }
@@ -148,41 +150,41 @@ namespace INTR {
         return;
     }
 
-    const char *get_intr_name(uint8_t intrno) {
-        if (intrno < sizeof(intrnames) / sizeof(const char *const)) {
-            return intrnames[intrno];
+    const char *get_intr_name(uint8_t _no) {
+        if (_no < sizeof(intrnames) / sizeof(const char *const)) {
+            return intrnames[_no];
         }
         return "(unknown trap)";
     }
 
-    void register_interrupt_handler(uint8_t n, interrupt_handler_t h) {
-        interrupt_handlers[n] = h;
+    void register_interrupt_handler(uint8_t _no, interrupt_handler_t _handler) {
+        interrupt_handlers[_no] = _handler;
         return;
     }
 
-    void enable_irq(uint8_t irq_no) {
+    void enable_irq(uint8_t _no) {
         uint8_t mask = 0;
         // printk_color(green, "enable_irq mask: %X", mask);
-        if (irq_no >= IRQ8) {
-            mask = ((io.inb(IO_PIC2C)) & (~(1 << (irq_no % 8))));
+        if (_no >= IRQ8) {
+            mask = ((io.inb(IO_PIC2C)) & (~(1 << (_no % 8))));
             io.outb(IO_PIC2C, mask);
         }
         else {
-            mask = ((io.inb(IO_PIC1C)) & (~(1 << (irq_no % 8))));
+            mask = ((io.inb(IO_PIC1C)) & (~(1 << (_no % 8))));
             io.outb(IO_PIC1C, mask);
         }
         return;
     }
 
-    void disable_irq(uint8_t irq_no) {
+    void disable_irq(uint8_t _no) {
         uint8_t mask = 0;
         // printk_color(green, "disable_irq mask: %X", mask);
-        if (irq_no >= IRQ8) {
-            mask = ((io.inb(IO_PIC2C)) | (1 << (irq_no % 8)));
+        if (_no >= IRQ8) {
+            mask = ((io.inb(IO_PIC2C)) | (1 << (_no % 8)));
             io.outb(IO_PIC2C, mask);
         }
         else {
-            mask = ((io.inb(IO_PIC1C)) | (1 << (irq_no % 8)));
+            mask = ((io.inb(IO_PIC1C)) | (1 << (_no % 8)));
             io.outb(IO_PIC1C, mask);
         }
         return;
@@ -218,12 +220,12 @@ namespace INTR {
         return;
     }
 
-    void clear_interrupt_chip(uint8_t intr_no) {
+    void clear_interrupt_chip(uint8_t _no) {
         // 发送中断结束信号给 PICs
         // 按照我们的设置，从 32 号中断起为用户自定义中断
         // 因为单片的 Intel 8259A 芯片只能处理 8 级中断
         // 故大于等于 40 的中断号是由从片处理的
-        if (intr_no >= IRQ8) {
+        if (_no >= IRQ8) {
             // 发送重设信号给从片
             io.outb(IO_PIC2, PIC_EOI);
         }
@@ -232,22 +234,21 @@ namespace INTR {
         return;
     }
 
-    int32_t call_irq(uint8_t intr_no, pt_regs_t *regs) {
+    int32_t call_irq(uint8_t _no, intr_context_t *_intr_context) {
         // 重设PIC芯片
-        clear_interrupt_chip(intr_no);
-        if (interrupt_handlers[intr_no] != nullptr) {
-            interrupt_handlers[intr_no](regs);
+        clear_interrupt_chip(_no);
+        if (interrupt_handlers[_no] != nullptr) {
+            interrupt_handlers[_no](_intr_context);
         }
         return 0;
     }
 
-    int32_t call_isr(uint8_t intr_no, pt_regs_t *regs) {
-        if (interrupt_handlers[intr_no] != nullptr) {
-            interrupt_handlers[intr_no](regs);
+    int32_t call_isr(uint8_t _no, intr_context_t *_intr_context) {
+        if (interrupt_handlers[_no] != nullptr) {
+            interrupt_handlers[_no](_intr_context);
         }
         else {
-            printf("Unhandled interrupt: %d %s\n", intr_no,
-                   get_intr_name(intr_no));
+            printf("Unhandled interrupt: %d %s\n", _no, get_intr_name(_no));
             CPU::hlt();
         }
         return 0;
