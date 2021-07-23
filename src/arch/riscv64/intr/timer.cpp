@@ -31,6 +31,6 @@ namespace TIMER {
         OPENSBI::set_timer(CPU::READ_TIME());
         // 开启时钟中断
         CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
-        printf("timer init\n");
+        printf("timer init.\n");
     }
 };
