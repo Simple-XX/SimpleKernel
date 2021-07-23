@@ -7,7 +7,6 @@
 
 # 加载 idt
 .section .text
-.extern idt_ptr64
 .global idt_load
 idt_load:
     # 参数保存在 edi
@@ -177,7 +176,7 @@ ISR_NO_ERROR_CODE 128
 irq\name:
     # 关中断
     cli
-    # 保存 intr_context_t
+    # 保存寄存器
     pusha_64
     # 传递中断号
     mov $\no, %rdi

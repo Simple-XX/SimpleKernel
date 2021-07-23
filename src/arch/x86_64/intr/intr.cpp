@@ -121,7 +121,7 @@ INTR::interrupt_handler_t INTR::interrupt_handlers[INTERRUPT_MAX];
 // 中断描述符表
 INTR::idt_entry64_t INTR::idt_entry64[INTERRUPT_MAX];
 // IDTR
-INTR::idt_ptr64_t INTR::idt_ptr64;
+INTR::idt_ptr_t INTR::idt_ptr;
 
 // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.1
 void INTR::set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
@@ -195,8 +195,8 @@ void INTR::disable_interrupt_chip(void) {
 
 int32_t INTR::init(void) {
     // 填充中断描述符
-    idt_ptr64.limit = sizeof(idt_entry64_t) * INTERRUPT_MAX - 1;
-    idt_ptr64.base  = (uintptr_t)&idt_entry64;
+    idt_ptr.limit = sizeof(idt_entry64_t) * INTERRUPT_MAX - 1;
+    idt_ptr.base  = (uintptr_t)&idt_entry64;
 
     // 先全部填充
     for (uint32_t i = 0; i < INTERRUPT_MAX; i++) {
@@ -327,7 +327,7 @@ int32_t INTR::init(void) {
     // idt 初始化
     init_interrupt_chip();
     // 加载 idt
-    idt_load((uintptr_t)&idt_ptr64);
+    idt_load((uintptr_t)&idt_ptr);
     // APIC 初始化
     apic.init();
     // 键盘初始化
