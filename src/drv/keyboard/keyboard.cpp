@@ -33,7 +33,7 @@ uint8_t KEYBOARD::read(void) {
     uint8_t scancode = io.inb(KB_DATA);
     // 判断是否出错
     if (!scancode) {
-        printf("scancode error.\n");
+        warn("scancode error.\n");
         return '\0';
     }
     uint8_t letter = 0;
@@ -103,7 +103,7 @@ uint8_t KEYBOARD::read(void) {
 int32_t KEYBOARD::init(void) {
     set_handle(&default_keyboard_handle);
     INTR::enable_irq(INTR::IRQ1);
-    printf("keyboard_init\n");
+    printf("keyboard init.\n");
     return 0;
 }
 

@@ -19,7 +19,7 @@ namespace PLIC {
         // 读取中断号
         auto no = get();
         // 根据中断号判断设备
-        printf("externel_intr: 0x%X\n", no);
+        printf("externel_intr: 0x%X.\n", no);
         return;
     }
     int32_t init(void) {
@@ -37,7 +37,7 @@ namespace PLIC {
                                           externel_intr);
         // 开启外部中断
         CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
-        printf("plic init\n");
+        printf("plic init.\n");
         return 0;
     }
 
