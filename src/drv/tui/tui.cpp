@@ -43,7 +43,7 @@ col_t TUI::color(COLOR::LIGHT_GREY, COLOR::BLACK);
 
 TUI::TUI(void) {
     clear();
-    this->write_string("TUI init\n");
+    this->write_string("TUI init.\n");
     return;
 }
 
