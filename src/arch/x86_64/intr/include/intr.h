@@ -10,7 +10,6 @@
 #include "stdint.h"
 
 // TODO: 升级为 APIC
-
 namespace INTR {
     // 中断表最大值
     static constexpr const uint32_t INTERRUPT_MAX = 256;
@@ -87,16 +86,14 @@ namespace INTR {
     // End-of-interrupt command code
     static constexpr const uint32_t PIC_EOI = 0x20;
 
-    class error_code_t {
-    public:
+    struct error_code_t {
         uint32_t ext : 1;
         uint32_t idt : 1;
         uint32_t ti : 1;
         uint32_t sec_idx : 28;
     };
 
-    class page_fault_error_code_t {
-    public:
+    struct page_fault_error_code_t {
         uint32_t p : 1;
         uint32_t wr : 1;
         uint32_t us : 1;
@@ -108,41 +105,27 @@ namespace INTR {
         uint32_t reserved2 : 16;
     };
 
-    class pt_regs_t {
-    public:
-        // segment registers
-        // 16 bits
-        uint32_t gs;
-        // 16 bits
-        uint32_t fs;
-        // 16 bits
-        uint32_t es;
-        // 16 bits
-        uint32_t ds;
-
-        // registers save by pusha
-        uint32_t edi;
-        uint32_t esi;
-        uint32_t ebp;
-        uint32_t old_esp;
-        uint32_t ebx;
-        uint32_t edx;
-        uint32_t ecx;
-        uint32_t eax;
-
-        uint32_t int_no;
-        // save by `int` instruction
-        uint32_t err_code;
-        // 以下指令由cpu压入，参见x86/x64 532页
-        // 指向产生异常的指令
-        uint32_t eip;
-        // 16 bits
-        uint32_t cs;
-        uint32_t eflags;
-        // 如果发生了特权级切换，CPU 会压入以下两个参数
-        uint32_t user_esp;
-        // 16 bits
-        uint32_t user_ss;
+    struct intr_context_t {
+        uint64_t r15;
+        uint64_t r14;
+        uint64_t r13;
+        uint64_t r12;
+        uint64_t r11;
+        uint64_t r10;
+        uint64_t r9;
+        uint64_t r8;
+        uint64_t rbp;
+        uint64_t rdi;
+        uint64_t rsi;
+        uint64_t rdx;
+        uint64_t rcx;
+        uint64_t rbx;
+        uint64_t rax;
+        uint64_t rip;
+        uint64_t cs;
+        uint64_t rflags;
+        uint64_t rsp;
+        uint64_t ss;
     };
 
     // 中断描述符
@@ -183,17 +166,15 @@ namespace INTR {
     } __attribute__((packed));
 
     // 定义中断处理函数指针
-    typedef void (*interrupt_handler_t)(pt_regs_t *);
+    typedef void (*interrupt_handler_t)(intr_context_t *);
 
     // 中断处理函数指针类型
     typedef void (*isr_irq_func_t)();
 
-    void die(const char *str, uintptr_t oesp, uint32_t int_no);
-
     // 设置 8259A 芯片
     void init_interrupt_chip(void);
     // 重设 8259A 芯片
-    void clear_interrupt_chip(uint32_t intr_no);
+    void clear_interrupt_chip(uint32_t _no);
 
     // 设置中断描述符
     void set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
@@ -224,14 +205,14 @@ namespace INTR {
     };
     int32_t init(void);
     // 注册一个中断处理函数
-    void register_interrupt_handler(uint8_t n, interrupt_handler_t h);
-    void enable_irq(uint8_t irq_no);
-    void disable_irq(uint8_t irq_no);
+    void register_interrupt_handler(uint8_t _no, interrupt_handler_t _handler);
+    void enable_irq(uint8_t _no);
+    void disable_irq(uint8_t _no);
     // 返回中断名
-    const char *get_intr_name(uint8_t intr_no);
+    const char *get_intr_name(uint8_t _no);
     // 执行中断
-    int32_t call_irq(uint8_t intr_no, pt_regs_t *regs);
-    int32_t call_isr(uint8_t intr_no, pt_regs_t *regs);
+    int32_t call_irq(uint8_t _no, intr_context_t *_regs);
+    int32_t call_isr(uint8_t _no, intr_context_t *_regs);
 };
 
 #endif /* _INTR_H_ */
