@@ -11,11 +11,15 @@
 
 // TODO
 
-IOAPIC::IOAPIC(void) {
+IO_APIC::IO_APIC(void) {
 
     return;
 }
 
-IOAPIC::~IOAPIC(void) {
+IO_APIC::~IO_APIC(void) {
     return;
+}
+
+int32_t IO_APIC::init(void) {
+    return 0;
 }

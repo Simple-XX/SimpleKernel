@@ -18,12 +18,22 @@ public:
     static int32_t init(void);
 };
 
-class IOAPIC {
+class LOCAL_APIC {
 private:
 protected:
 public:
-    IOAPIC(void);
-    ~IOAPIC(void);
+    LOCAL_APIC(void);
+    ~LOCAL_APIC(void);
+    static int32_t init(void);
+};
+
+class IO_APIC {
+private:
+protected:
+public:
+    IO_APIC(void);
+    ~IO_APIC(void);
+    static int32_t init(void);
 };
 
 static APIC apic;
