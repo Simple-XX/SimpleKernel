@@ -20,9 +20,8 @@ namespace COMMON {
     extern "C" void *kernel_data_end[];
     extern "C" void *kernel_end[];
 
-    static constexpr const void *KERNEL_START_ADDR = kernel_start;
-    static constexpr const void *KERNEL_TEXT_START_ADDR
-        __attribute__((unused)) = kernel_text_start;
+    static constexpr const void *KERNEL_START_ADDR      = kernel_start;
+    static constexpr const void *KERNEL_TEXT_START_ADDR = kernel_text_start;
     static constexpr const void *KERNEL_TEXT_END_ADDR __attribute__((unused)) =
         kernel_text_end;
     static constexpr const void *KERNEL_DATA_START_ADDR
@@ -60,6 +59,10 @@ namespace COMMON {
         return (T)((uintptr_t)(tmp + _align - 1) & (~(_align - 1)));
     }
     // 针对整数
+    template <>
+    inline uint32_t ALIGN(const uint32_t _x, const size_t _align) {
+        return ((_x + _align - 1) & (~(_align - 1)));
+    }
     template <>
     inline uint64_t ALIGN(const uint64_t _x, const size_t _align) {
         return ((_x + _align - 1) & (~(_align - 1)));

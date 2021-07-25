@@ -13,6 +13,38 @@
 #include "e820.h"
 #include "pmm.h"
 
+// 用于保存物理内存信息
+static e820map_t e820map;
+
+// 读取 grub2 传递的物理内存信息，保存到 e820map_t 结构体中
+// 一般而言是这样的
+// 地址(长度) 类型
+// 0x00(0x9F000) 0x1
+// 0x9F000(0x1000) 0x2
+// 0xE8000(0x18000) 0x2
+// 0x100000(0x7EF0000) 0x1
+// 0x7FF0000(0x10000) 0x3
+// 0xFFFC0000(0x40000) 0x2
+static bool get_e820(MULTIBOOT2::multiboot_tag_t *_tag, void *_data) {
+    if (_tag->type != MULTIBOOT2::MULTIBOOT_TAG_TYPE_MMAP) {
+        return false;
+    }
+    e820map_t *                         e820map = (e820map_t *)_data;
+    MULTIBOOT2::multiboot_mmap_entry_t *mmap =
+        ((MULTIBOOT2::multiboot_tag_mmap_t *)_tag)->entries;
+    for (; (uint8_t *)mmap < (uint8_t *)_tag + _tag->size;
+         mmap =
+             (MULTIBOOT2::multiboot_mmap_entry_t
+                  *)((uint8_t *)mmap +
+                     ((MULTIBOOT2::multiboot_tag_mmap_t *)_tag)->entry_size)) {
+        e820map->map[e820map->nr_map].addr   = (uintptr_t)mmap->addr;
+        e820map->map[e820map->nr_map].length = (uintptr_t)mmap->len;
+        e820map->map[e820map->nr_map].type   = mmap->type;
+        e820map->nr_map++;
+    }
+    return true;
+}
+
 const void *PMM::start                   = nullptr;
 size_t      PMM::length                  = 0;
 size_t      PMM::total_pages             = 0;
@@ -34,36 +66,45 @@ PMM::~PMM(void) {
 bool PMM::init(void) {
     // 因为 GDT 是 x86 遗毒，所以在这里处理
     GDT::init();
-    e820map_t e820map;
-    bzero(&e820map, sizeof(e820map_t));
     // TODO: 处理不能使用的内存，在虚拟内存映射时需要考虑
-    MULTIBOOT2::get_e820(e820map);
-    start = COMMON::KERNEL_START_ADDR;
+    MULTIBOOT2::multiboot2_iter(get_e820, (void *)&e820map);
+    // 物理地址开始 从 0 开始
+    start = 0x0;
     // TODO: 动态获取
-    length                  = COMMON::PMM_SIZE;
-    total_pages             = length / COMMON::PAGE_SIZE;
-    kernel_space_start      = start;
-    kernel_space_length     = COMMON::KERNEL_SPACE_SIZE;
-    non_kernel_space_start  = (void *)((uint8_t *)COMMON::KERNEL_START_ADDR +
+    // 遍历 e820map
+    for (size_t i = 0; i < e820map.nr_map; i++) {
+        // 更新物理内存长度
+        length += e820map.map[i].length;
+    }
+    // 计算页数
+    total_pages = length / COMMON::PAGE_SIZE;
+    // 内核空间地址开始
+    kernel_space_start = COMMON::KERNEL_START_ADDR;
+    // 长度手动指定
+    kernel_space_length = COMMON::KERNEL_SPACE_SIZE;
+    // 非内核空间在内核空间结束后
+    non_kernel_space_start = (void *)((uint8_t *)COMMON::KERNEL_START_ADDR +
                                       COMMON::KERNEL_SPACE_SIZE);
+    // 长度为总长度减去内核长度
     non_kernel_space_length = length - kernel_space_length;
     // 内核空间
     static FIRSTFIT first_fit_allocator_kernel(
         "First Fit Allocator(kernel space)", kernel_space_start,
         kernel_space_length / COMMON::PAGE_SIZE);
     kernel_space_allocator = (ALLOCATOR *)&first_fit_allocator_kernel;
+
     // 非内核空间
     static FIRSTFIT first_fit_allocator(
         "First Fit Allocator", non_kernel_space_start,
         non_kernel_space_length / COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&first_fit_allocator;
-    // 将内核已使用部分划分出来
-    // 内核实际占用页数
+    // 内核实际占用页数 这里也算了 0～1M 的 reserved 内存
     size_t kernel_pages =
         ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
                                   COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
+    // 将内核已使用部分划分出来
     if (alloc_pages_kernel(const_cast<void *>(COMMON::KERNEL_START_ADDR),
                            kernel_pages) == true) {
         printf("pmm init.\n");
@@ -72,6 +113,10 @@ bool PMM::init(void) {
     else {
         return false;
     }
+}
+
+size_t PMM::get_pmm_length(void) {
+    return length;
 }
 
 void *PMM::alloc_page(void) {
