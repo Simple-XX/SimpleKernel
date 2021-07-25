@@ -83,6 +83,12 @@ void *FIRSTFIT::alloc(size_t _len) {
 }
 
 bool FIRSTFIT::alloc(void *_addr, size_t _len) {
+    // _addr 不在管理范围内
+    if (((uint8_t *)_addr < (uint8_t *)allocator_start_addr) ||
+        ((uint8_t *)_addr >= (uint8_t *)allocator_start_addr +
+                                 allocator_length * COMMON::PAGE_SIZE)) {
+        return false;
+    }
     // 计算 _addr 在 map 中的索引
     uintptr_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
                     COMMON::PAGE_SIZE;
