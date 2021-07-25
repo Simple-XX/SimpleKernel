@@ -41,6 +41,8 @@ private:
     static ALLOCATOR *kernel_space_allocator;
     // 物理内存分配器，分配非内核空间
     static ALLOCATOR *allocator;
+    // 辅助函数，平台相关的初始化
+    static void helper(void);
 
 protected:
 public:

@@ -27,16 +27,20 @@ private:
     // 2^5==32
     static constexpr const uint64_t SHIFT = 5;
 #endif
+    // 位图数组长度
+    // 设置为占用一个页，4kb，32768 个位，每个 bit 代表一页，最大表示 128MB
+    static constexpr const size_t BITS_ARR_SIZE =
+        COMMON::PAGE_SIZE / BITS_PER_WORD;
     // 位图，每一位表示一页内存，1 表示已使用，0 表示未使用
-    uintptr_t map[((COMMON::PMM_SIZE / COMMON::PAGE_SIZE) / BITS_PER_WORD)];
+    uintptr_t map[BITS_ARR_SIZE];
     // 置位 _idx
-    void set(uintptr_t _idx);
+    void set(size_t _idx);
     // 清零 _idx
-    void clr(uintptr_t _idx);
+    void clr(size_t _idx);
     // 测试 _idx
-    bool test(uintptr_t _idx);
+    bool test(size_t _idx);
     // 连续 _len 个 _val 位，返回开始索引
-    uintptr_t find_len(size_t _len, bool _val);
+    size_t find_len(size_t _len, bool _val);
 
 protected:
 public:
