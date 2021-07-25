@@ -8,9 +8,15 @@
 #include "string.h"
 #include "assert.h"
 #include "common.h"
+#include "dtb.h"
 #include "pmm.h"
 
+static bool tmp(DTB::dtb_iter_t *, void *) {
+    return true;
+}
+
 void PMM::helper(void) {
+    DTB::dtb_iter(tmp, nullptr);
     // 物理地址开始 从 0 开始
     start  = 0x0;
     length = 0;
