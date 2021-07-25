@@ -17,16 +17,21 @@ static constexpr const uint32_t E820_ACPI     = 3;
 static constexpr const uint32_t E820_NVS      = 4;
 static constexpr const uint32_t E820_UNUSABLE = 5;
 
-class e820entry_t {
-public:
+struct e820entry_t {
     // 数据类型由位数决定
-    uint8_t *addr;
-    size_t   length;
-    uint32_t type;
+    uintptr_t addr;
+    size_t    length;
+    uint32_t  type;
 };
 
-class e820map_t {
-public:
+struct e820map_t {
+    e820map_t(void) {
+        nr_map = 0;
+        return;
+    }
+    ~e820map_t(void) {
+        return;
+    }
     uint32_t    nr_map;
     e820entry_t map[E820_MAX];
 };
