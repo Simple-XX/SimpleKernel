@@ -93,88 +93,63 @@ namespace MULTIBOOT2 {
     static constexpr const uint32_t MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED =
         2;
 
-    typedef uint8_t  multiboot_uint8_t;
-    typedef uint16_t multiboot_uint16_t;
-    typedef uint32_t multiboot_uint32_t;
-    typedef uint64_t multiboot_uint64_t;
-
-    struct multiboot_header {
+    struct multiboot_header_t {
         // Must be MULTIBOOT_MAGIC - see above.
-        multiboot_uint32_t magic;
+        uint32_t magic;
         // ISA
-        multiboot_uint32_t architecture;
+        uint32_t architecture;
         // Total header length.
-        multiboot_uint32_t header_length;
+        uint32_t header_length;
         // The above fields plus this one must equal 0 mod 2^32.
-        multiboot_uint32_t checksum;
+        uint32_t checksum;
     };
 
-    struct multiboot_header_tag {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
+    struct multiboot_header_tag_t {
+        uint16_t type;
+        uint16_t flags;
+        uint32_t size;
     };
 
-    struct multiboot_header_tag_information_request {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
-        multiboot_uint32_t requests[0];
+    struct multiboot_header_tag_information_request_t : multiboot_header_tag_t {
+        uint32_t requests[0];
     };
 
-    struct multiboot_header_tag_address {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
-        multiboot_uint32_t header_addr;
-        multiboot_uint32_t load_addr;
-        multiboot_uint32_t load_end_addr;
-        multiboot_uint32_t bss_end_addr;
+    struct multiboot_header_tag_address_t : multiboot_header_tag_t {
+        uint32_t header_addr;
+        uint32_t load_addr;
+        uint32_t load_end_addr;
+        uint32_t bss_end_addr;
     };
 
-    struct multiboot_header_tag_entry_address {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
-        multiboot_uint32_t entry_addr;
+    struct multiboot_header_tag_entry_address_t : multiboot_header_tag_t {
+        uint32_t entry_addr;
     };
 
-    struct multiboot_header_tag_console_flags {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
-        multiboot_uint32_t console_flags;
+    struct multiboot_header_tag_console_flags_t : multiboot_header_tag_t {
+        uint32_t console_flags;
     };
 
-    struct multiboot_header_tag_framebuffer {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
-        multiboot_uint32_t width;
-        multiboot_uint32_t height;
-        multiboot_uint32_t depth;
+    struct multiboot_header_tag_framebuffer_t : multiboot_header_tag_t {
+        uint32_t width;
+        uint32_t height;
+        uint32_t depth;
     };
 
-    struct multiboot_header_tag_module_align {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
+    struct multiboot_header_tag_module_align_t : multiboot_header_tag_t {
+        ;
     };
 
-    struct multiboot_header_tag_relocatable {
-        multiboot_uint16_t type;
-        multiboot_uint16_t flags;
-        multiboot_uint32_t size;
-        multiboot_uint32_t min_addr;
-        multiboot_uint32_t max_addr;
-        multiboot_uint32_t align;
-        multiboot_uint32_t preference;
+    struct multiboot_header_tag_relocatable_t : multiboot_header_tag_t {
+        uint32_t min_addr;
+        uint32_t max_addr;
+        uint32_t align;
+        uint32_t preference;
     };
 
-    struct multiboot_color {
-        multiboot_uint8_t red;
-        multiboot_uint8_t green;
-        multiboot_uint8_t blue;
+    struct multiboot_color_t {
+        uint8_t red;
+        uint8_t green;
+        uint8_t blue;
     };
 
     static constexpr const uint32_t MULTIBOOT_MEMORY_AVAILABLE        = 1;
@@ -182,181 +157,141 @@ namespace MULTIBOOT2 {
     static constexpr const uint32_t MULTIBOOT_MEMORY_ACPI_RECLAIMABLE = 3;
     static constexpr const uint32_t MULTIBOOT_MEMORY_NVS              = 4;
     static constexpr const uint32_t MULTIBOOT_MEMORY_BADRAM           = 5;
-    struct multiboot_mmap_entry {
-        multiboot_uint64_t addr;
-        multiboot_uint64_t len;
-        multiboot_uint32_t type;
-        multiboot_uint32_t zero;
-    };
-    typedef struct multiboot_mmap_entry multiboot_memory_map_entry_t;
-
-    struct multiboot_tag {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-    };
-    typedef struct multiboot_tag multiboot_tag_t;
-    typedef struct multiboot_tag multiboot_mmap_tag_t;
-
-    struct multiboot_tag_string {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        char               string[0];
+    struct multiboot_mmap_entry_t {
+        uint64_t addr;
+        uint64_t len;
+        uint32_t type;
+        uint32_t zero;
     };
 
-    struct multiboot_tag_module {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t mod_start;
-        multiboot_uint32_t mod_end;
-        char               cmdline[0];
+    struct multiboot_tag_t {
+        uint32_t type;
+        uint32_t size;
     };
 
-    struct multiboot_tag_basic_meminfo {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t mem_lower;
-        multiboot_uint32_t mem_upper;
+    struct multiboot_tag_string_t : multiboot_tag_t {
+        char string[0];
     };
 
-    struct multiboot_tag_bootdev {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t biosdev;
-        multiboot_uint32_t slice;
-        multiboot_uint32_t part;
+    struct multiboot_tag_module_t : multiboot_tag_t {
+        uint32_t mod_start;
+        uint32_t mod_end;
+        char     cmdline[0];
     };
 
-    typedef struct {
-        multiboot_uint32_t          type;
-        multiboot_uint32_t          size;
-        multiboot_uint32_t          entry_size;
-        multiboot_uint32_t          entry_version;
-        struct multiboot_mmap_entry entries[0];
-    } multiboot_tag_mmap_t;
-
-    struct multiboot_vbe_info_block {
-        multiboot_uint8_t external_specification[512];
+    struct multiboot_tag_basic_meminfo_t : multiboot_tag_t {
+        uint32_t mem_lower;
+        uint32_t mem_upper;
     };
 
-    struct multiboot_vbe_mode_info_block {
-        multiboot_uint8_t external_specification[256];
+    struct multiboot_tag_bootdev_t : multiboot_tag_t {
+        uint32_t biosdev;
+        uint32_t slice;
+        uint32_t part;
     };
 
-    struct multiboot_tag_vbe {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-
-        multiboot_uint16_t vbe_mode;
-        multiboot_uint16_t vbe_interface_seg;
-        multiboot_uint16_t vbe_interface_off;
-        multiboot_uint16_t vbe_interface_len;
-
-        struct multiboot_vbe_info_block      vbe_control_info;
-        struct multiboot_vbe_mode_info_block vbe_mode_info;
+    struct multiboot_tag_mmap_t : multiboot_tag_t {
+        uint32_t               entry_size;
+        uint32_t               entry_version;
+        multiboot_mmap_entry_t entries[0];
     };
 
-    struct multiboot_tag_elf_sections {
-        // 0x09
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t num;
-        multiboot_uint32_t entsize;
+    struct multiboot_vbe_info_block_t {
+        uint8_t external_specification[512];
+    };
+
+    struct multiboot_vbe_mode_info_block_t {
+        uint8_t external_specification[256];
+    };
+
+    struct multiboot_tag_vbe_t : multiboot_tag_t {
+        uint16_t vbe_mode;
+        uint16_t vbe_interface_seg;
+        uint16_t vbe_interface_off;
+        uint16_t vbe_interface_len;
+
+        multiboot_vbe_info_block_t      vbe_control_info;
+        multiboot_vbe_mode_info_block_t vbe_mode_info;
+    };
+
+    struct multiboot_tag_elf_sections_t : multiboot_tag_t {
+        uint32_t num;
+        uint32_t entsize;
         // 段字符串表索引
-        multiboot_uint32_t shndx;
-        char               sections[0];
+        uint32_t shndx;
+        char     sections[0];
     };
 
-    struct multiboot_tag_apm {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint16_t version;
-        multiboot_uint16_t cseg;
-        multiboot_uint32_t offset;
-        multiboot_uint16_t cseg_16;
-        multiboot_uint16_t dseg;
-        multiboot_uint16_t flags;
-        multiboot_uint16_t cseg_len;
-        multiboot_uint16_t cseg_16_len;
-        multiboot_uint16_t dseg_len;
+    struct multiboot_tag_apm_t : multiboot_tag_t {
+        uint16_t version;
+        uint16_t cseg;
+        uint32_t offset;
+        uint16_t cseg_16;
+        uint16_t dseg;
+        uint16_t flags;
+        uint16_t cseg_len;
+        uint16_t cseg_16_len;
+        uint16_t dseg_len;
     };
 
-    struct multiboot_tag_efi32 {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t pointer;
+    struct multiboot_tag_efi32_t : multiboot_tag_t {
+        uint32_t pointer;
     };
 
-    struct multiboot_tag_efi64 {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint64_t pointer;
+    struct multiboot_tag_efi64_t : multiboot_tag_t {
+        uint64_t pointer;
     };
 
-    struct multiboot_tag_smbios {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint8_t  major;
-        multiboot_uint8_t  minor;
-        multiboot_uint8_t  reserved[6];
-        multiboot_uint8_t  tables[0];
+    struct multiboot_tag_smbios_t : multiboot_tag_t {
+        uint8_t major;
+        uint8_t minor;
+        uint8_t reserved[6];
+        uint8_t tables[0];
     };
 
-    struct multiboot_tag_old_acpi {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint8_t  rsdp[0];
+    struct multiboot_tag_old_acpi_t : multiboot_tag_t {
+        uint8_t rsdp[0];
     };
 
-    struct multiboot_tag_new_acpi {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint8_t  rsdp[0];
+    struct multiboot_tag_new_acpi_t : multiboot_tag_t {
+        uint8_t rsdp[0];
     };
 
-    struct multiboot_tag_network {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint8_t  dhcpack[0];
+    struct multiboot_tag_network_t : multiboot_tag_t {
+        uint8_t dhcpack[0];
     };
 
-    struct multiboot_tag_efi_mmap {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t descr_size;
-        multiboot_uint32_t descr_vers;
-        multiboot_uint8_t  efi_mmap[0];
+    struct multiboot_tag_efi_mmap_t : multiboot_tag_t {
+        uint32_t descr_size;
+        uint32_t descr_vers;
+        uint8_t  efi_mmap[0];
     };
 
-    struct multiboot_tag_efi32_ih {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t pointer;
+    struct multiboot_tag_efi32_ih_t : multiboot_tag_t {
+        uint32_t pointer;
     };
 
-    struct multiboot_tag_efi64_ih {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint64_t pointer;
+    struct multiboot_tag_efi64_ih_t : multiboot_tag_t {
+        uint64_t pointer;
     };
 
-    struct multiboot_tag_load_base_addr {
-        multiboot_uint32_t type;
-        multiboot_uint32_t size;
-        multiboot_uint32_t load_base_addr;
+    struct multiboot_tag_load_base_addr_t : multiboot_tag_t {
+        uint32_t load_base_addr;
     };
 
-    extern "C" void multiboot2_init(uint32_t magic, void *addr);
-    void            print_MULTIBOOT_TAG_TYPE_CMDLINE(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_MODULE(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_BASIC_MEMINFO(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_BOOTDEV(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_MMAP(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_ELF_SECTIONS(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_APM(struct multiboot_tag *tag);
-    void print_MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR(struct multiboot_tag *tag);
+    // 地址
+    extern "C" void *multiboot2_addr;
+    // 魔数
+    extern "C" uint32_t multiboot2_magic;
+    // 长度
+    extern uint32_t multiboot2_size;
+    // 迭代函数
+    typedef bool (*multiboot2_iter_fun_t)(multiboot_tag_t *_tag, void *_data);
+
     // 获取 e820 信息
-    int get_e820(e820map_t &_e820map);
+    bool get_e820(multiboot_tag_t *_tag, void *_data);
+    // 迭代器
+    void multiboot2_iter(multiboot2_iter_fun_t _fun, void *_data);
 };
 
 #endif /* _MULTIBOOT2_H_ */

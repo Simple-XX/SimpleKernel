@@ -13,6 +13,32 @@
 #include "e820.h"
 #include "pmm.h"
 
+static e820map_t e820map;
+
+static bool get_e820(MULTIBOOT2::multiboot_tag_t *_tag, void *_data) {
+    if (_tag->type != MULTIBOOT2::MULTIBOOT_TAG_TYPE_MMAP) {
+        return false;
+    }
+    e820map_t *                         e820map = (e820map_t *)_data;
+    MULTIBOOT2::multiboot_mmap_entry_t *mmap =
+        ((MULTIBOOT2::multiboot_tag_mmap_t *)_tag)->entries;
+    for (; (uint8_t *)mmap < (uint8_t *)_tag + _tag->size;
+         mmap =
+             (MULTIBOOT2::multiboot_mmap_entry_t
+                  *)((uint8_t *)mmap +
+                     ((MULTIBOOT2::multiboot_tag_mmap_t *)_tag)->entry_size)) {
+        e820map->map[e820map->nr_map].addr   = (uintptr_t)mmap->addr;
+        e820map->map[e820map->nr_map].length = (uintptr_t)mmap->len;
+        e820map->map[e820map->nr_map].type   = mmap->type;
+        printf("base_addr = 0x%p, length = 0x%p, type = 0x%X\n",
+               e820map->map[e820map->nr_map].addr,
+               e820map->map[e820map->nr_map].length,
+               e820map->map[e820map->nr_map].type);
+        e820map->nr_map++;
+    }
+    return true;
+}
+
 const void *PMM::start                   = nullptr;
 size_t      PMM::length                  = 0;
 size_t      PMM::total_pages             = 0;
@@ -34,12 +60,27 @@ PMM::~PMM(void) {
 bool PMM::init(void) {
     // 因为 GDT 是 x86 遗毒，所以在这里处理
     GDT::init();
-    e820map_t e820map;
-    bzero(&e820map, sizeof(e820map_t));
     // TODO: 处理不能使用的内存，在虚拟内存映射时需要考虑
-    MULTIBOOT2::get_e820(e820map);
+    MULTIBOOT2::multiboot2_iter(get_e820, (void *)&e820map);
+    // 计算物理地址
+    // 内核空间 内核开始地址+KERNEL_SPACE_SIZE
+    // 非内核空间
     start = COMMON::KERNEL_START_ADDR;
     // TODO: 动态获取
+    for (size_t i = 0; i < e820map.nr_map; i++) {
+        if (e820map.map[i].type == E820_RAM) {
+            ;
+        }
+        else if (e820map.map[i].type == E820_RESERVED) {
+            ;
+        }
+        else if (e820map.map[i].type == E820_ACPI) {
+            // TODO
+        }
+        else if (e820map.map[i].type == E820_NVS) {
+            // TODO
+        }
+    }
     length                  = COMMON::PMM_SIZE;
     total_pages             = length / COMMON::PAGE_SIZE;
     kernel_space_start      = start;
