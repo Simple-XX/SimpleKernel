@@ -11,25 +11,25 @@
 #include "stdio.h"
 #include "firstfit.h"
 
-void FIRSTFIT::set(uintptr_t _idx) {
+void FIRSTFIT::set(size_t _idx) {
     map[_idx >> SHIFT] |= (uintptr_t)1 << (_idx & MASK);
     return;
 }
 
-void FIRSTFIT::clr(uintptr_t _idx) {
+void FIRSTFIT::clr(size_t _idx) {
     map[_idx >> SHIFT] &= ~((uintptr_t)1 << (_idx & MASK));
     return;
 }
 
-bool FIRSTFIT::test(uintptr_t _idx) {
+bool FIRSTFIT::test(size_t _idx) {
     return map[_idx >> SHIFT] & ((uintptr_t)1 << (_idx & MASK));
 }
 
-uintptr_t FIRSTFIT::find_len(size_t _len, bool _val) {
-    uintptr_t count = 0;
-    uintptr_t idx   = 0;
+size_t FIRSTFIT::find_len(size_t _len, bool _val) {
+    size_t count = 0;
+    size_t idx   = 0;
     // 遍历位图
-    for (uintptr_t i = 0; i < (COMMON::PMM_SIZE / COMMON::PAGE_SIZE); i++) {
+    for (uintptr_t i = 0; i < allocator_length; i++) {
         if (test(i) != _val) {
             count = 0;
             idx   = i + 1;
@@ -41,7 +41,7 @@ uintptr_t FIRSTFIT::find_len(size_t _len, bool _val) {
             return idx;
         }
     }
-    return ~(uintptr_t)0;
+    return ~(size_t)0;
 }
 
 FIRSTFIT::FIRSTFIT(const char *_name, const void *_addr, size_t _len)
@@ -61,9 +61,9 @@ FIRSTFIT::~FIRSTFIT(void) {
 void *FIRSTFIT::alloc(size_t _len) {
     void *res_addr = nullptr;
     // 在位图中寻找连续 _len 的位置
-    uintptr_t idx = find_len(_len, false);
+    size_t idx = find_len(_len, false);
     // 如果为 ~0 说明未找到
-    if (idx == ~(uintptr_t)0) {
+    if (idx == ~(size_t)0) {
         // err("NO ENOUGH MEM.\n");
         return nullptr;
     }
@@ -90,8 +90,8 @@ bool FIRSTFIT::alloc(void *_addr, size_t _len) {
         return false;
     }
     // 计算 _addr 在 map 中的索引
-    uintptr_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
-                    COMMON::PAGE_SIZE;
+    size_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
+                 COMMON::PAGE_SIZE;
     // 遍历
     for (auto i = idx; i < idx + _len; i++) {
         // 如果在范围内有已经分配的内存，返回 false
@@ -112,8 +112,15 @@ bool FIRSTFIT::alloc(void *_addr, size_t _len) {
 }
 
 void FIRSTFIT::free(void *_addr, size_t _len) {
-    uintptr_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
-                    COMMON::PAGE_SIZE;
+    // _addr 不在管理范围内
+    if (((uint8_t *)_addr < (uint8_t *)allocator_start_addr) ||
+        ((uint8_t *)_addr >= (uint8_t *)allocator_start_addr +
+                                 allocator_length * COMMON::PAGE_SIZE)) {
+        return;
+    }
+    // 计算 _addr 在 map 中的索引
+    size_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
+                 COMMON::PAGE_SIZE;
     for (auto i = idx; i < idx + _len; i++) {
         clr(i);
     }
