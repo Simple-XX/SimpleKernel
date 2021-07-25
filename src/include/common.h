@@ -22,13 +22,10 @@ namespace COMMON {
 
     static constexpr const void *KERNEL_START_ADDR      = kernel_start;
     static constexpr const void *KERNEL_TEXT_START_ADDR = kernel_text_start;
-    static constexpr const void *KERNEL_TEXT_END_ADDR __attribute__((unused)) =
-        kernel_text_end;
-    static constexpr const void *KERNEL_DATA_START_ADDR
-        __attribute__((unused)) = kernel_data_start;
-    static constexpr const void *KERNEL_DATA_END_ADDR __attribute__((unused)) =
-        kernel_data_end;
-    static constexpr const void *KERNEL_END_ADDR = kernel_end;
+    static constexpr const void *KERNEL_TEXT_END_ADDR   = kernel_text_end;
+    static constexpr const void *KERNEL_DATA_START_ADDR = kernel_data_start;
+    static constexpr const void *KERNEL_DATA_END_ADDR   = kernel_data_end;
+    static constexpr const void *KERNEL_END_ADDR        = kernel_end;
 
     // 规定数据大小，方便用
     static constexpr const size_t BYTE = 0x1;
@@ -36,17 +33,10 @@ namespace COMMON {
     static constexpr const size_t MB   = 0x100000;
     static constexpr const size_t GB   = 0x40000000;
 
-    // TODO: 由引导程序传递
-    // 物理内存大小 128MB
-    static constexpr const uint32_t PMM_SIZE = 128 * MB;
     // 内核空间占用大小，包括内核代码部分与预留的，8MB
     static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
-
-    // 物理页数量
-    static constexpr const uint64_t PMM_PAGE_SIZE = PMM_SIZE / PAGE_SIZE;
-
     // 映射内核需要的页数
     static constexpr const uint64_t KERNEL_SPACE_PAGES =
         KERNEL_SPACE_SIZE / PAGE_SIZE;
