@@ -1,7 +1,7 @@
 
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
+//
 // multiboot2.cpp for Simple-XX/SimpleKernel.
 
 #include "assert.h"
@@ -10,12 +10,11 @@
 #include "common.h"
 
 namespace MULTIBOOT2 {
-
     // 地址
     void *multiboot2_addr = nullptr;
     // 魔数
     uint32_t multiboot2_magic = 0;
-    size_t   multiboot2_size  = 0;
+    uint32_t multiboot2_size  = 0;
 
     void multiboot2_iter(multiboot2_iter_fun_t _fun, void *_data) {
         // 判断魔数是否正确

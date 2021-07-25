@@ -51,6 +51,8 @@ public:
     // 初始化
     // TODO: 移动到构造函数去
     static bool init(void);
+    // 获取物理内存长度
+    static size_t get_pmm_length(void);
     // 分配一页
     static void *alloc_page(void);
     // 分配多页
