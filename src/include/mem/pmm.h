@@ -41,8 +41,8 @@ private:
     static ALLOCATOR *kernel_space_allocator;
     // 物理内存分配器，分配非内核空间
     static ALLOCATOR *allocator;
-    // 辅助函数，平台相关的初始化
-    static void helper(void);
+    // 从 multiboo2/dtb 获取物理内存信息
+    static void get_pmm_info(void);
     // 将 multiboot2/dtb 信息移动到内核空间
     static void move_boot_info(void);
 

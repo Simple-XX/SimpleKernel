@@ -10,10 +10,7 @@ set(boot_src ${boot_asm_src})
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi openabi_src)
 
-aux_source_directory(${arch_SOURCE_DIR}/pmm pmm_cpp_src)
-set(pmm_src ${pmm_cpp_src})
-
-set(arch_src ${boot_src} ${openabi_src} ${pmm_src})
+set(arch_src ${boot_src} ${openabi_src})
 
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
