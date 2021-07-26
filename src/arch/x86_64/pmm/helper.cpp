@@ -64,6 +64,20 @@ void PMM::helper(void) {
                                       COMMON::KERNEL_SPACE_SIZE);
     // 长度为总长度减去内核长度
     non_kernel_space_length = length - kernel_space_length;
+    return;
+}
 
+void PMM::move_boot_info(void) {
+    // 计算 multiboot2 信息需要多少页
+    size_t pages = MULTIBOOT2::multiboot2_size / COMMON::PAGE_SIZE;
+    if (MULTIBOOT2::multiboot2_size % COMMON::PAGE_SIZE != 0) {
+        pages++;
+    }
+    // 申请空间
+    void *new_addr = alloc_pages_kernel(pages);
+    // 复制过来，完成后以前的内存就可以使用了
+    memcpy(new_addr, MULTIBOOT2::multiboot2_addr, pages * COMMON::PAGE_SIZE);
+    // 设置地址
+    MULTIBOOT2::multiboot2_addr = new_addr;
     return;
 }
