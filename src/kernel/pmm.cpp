@@ -8,9 +8,6 @@
 #include "string.h"
 #include "assert.h"
 #include "common.h"
-#include "multiboot2.h"
-#include "gdt.h"
-#include "e820.h"
 #include "pmm.h"
 
 const void *PMM::start                   = nullptr;
@@ -32,46 +29,42 @@ PMM::~PMM(void) {
 }
 
 bool PMM::init(void) {
-    // 因为 GDT 是 x86 遗毒，所以在这里处理
-    GDT::init();
-    e820map_t e820map;
-    bzero(&e820map, sizeof(e820map_t));
-    // TODO: 处理不能使用的内存，在虚拟内存映射时需要考虑
-    MULTIBOOT2::get_e820(e820map);
-    start = COMMON::KERNEL_START_ADDR;
-    // TODO: 动态获取
-    length                  = COMMON::PMM_SIZE;
-    total_pages             = length / COMMON::PAGE_SIZE;
-    kernel_space_start      = start;
-    kernel_space_length     = COMMON::KERNEL_SPACE_SIZE;
-    non_kernel_space_start  = (void *)((uint8_t *)COMMON::KERNEL_START_ADDR +
-                                      COMMON::KERNEL_SPACE_SIZE);
-    non_kernel_space_length = length - kernel_space_length;
+    // 针对不同平台获取物理内存信息，设置内存使用方式
+    helper();
+    // 创建分配器
     // 内核空间
     static FIRSTFIT first_fit_allocator_kernel(
         "First Fit Allocator(kernel space)", kernel_space_start,
         kernel_space_length / COMMON::PAGE_SIZE);
     kernel_space_allocator = (ALLOCATOR *)&first_fit_allocator_kernel;
+
     // 非内核空间
     static FIRSTFIT first_fit_allocator(
         "First Fit Allocator", non_kernel_space_start,
         non_kernel_space_length / COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&first_fit_allocator;
-    // 将内核已使用部分划分出来
-    // 内核实际占用页数
+
+    // 内核实际占用页数 这里也算了 0～1M 的 reserved 内存
     size_t kernel_pages =
         ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
                                   COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
+    // 将内核已使用部分划分出来
     if (alloc_pages_kernel(const_cast<void *>(COMMON::KERNEL_START_ADDR),
                            kernel_pages) == true) {
+        // 将 multiboot2 / dtb 信息移动到内核空间
+        move_boot_info();
         printf("pmm init.\n");
         return true;
     }
     else {
         return false;
     }
+}
+
+size_t PMM::get_pmm_length(void) {
+    return length;
 }
 
 void *PMM::alloc_page(void) {

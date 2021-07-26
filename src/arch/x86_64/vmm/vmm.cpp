@@ -9,6 +9,7 @@
 #include "stdio.h"
 #include "assert.h"
 #include "cpu.hpp"
+#include "gdt.h"
 #include "pmm.h"
 #include "vmm.h"
 
@@ -100,6 +101,7 @@ VMM::~VMM(void) {
 }
 
 bool VMM::init(void) {
+    GDT::init();
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
     // 映射内核空间
