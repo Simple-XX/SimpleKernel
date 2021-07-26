@@ -2,7 +2,7 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// pmm.cpp for Simple-XX/SimpleKernel.
+// pmm_helper.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
 #include "string.h"
@@ -22,20 +22,20 @@ static phy_mem_t phy_mem;
 
 // TODO: 完善
 static bool get_phy_mem(DTB::dtb_iter_t *_iter, void *_data) {
-    if (_iter->tag != DTB::FDT_PROP) {
-        return false;
-    }
+    // 找到 memory 属性节点
     if (strncmp((char *)_iter->node_name, "memory", sizeof("memory") - 1) ==
         0) {
+        // 找到地址信息
         if (strcmp((char *)_iter->prop_name, "reg") == 0) {
             phy_mem_t *mem = (phy_mem_t *)_data;
-            mem->addr      = (void *)((uintptr_t)be32toh(_iter->prop_addr[0]) +
+            // 保存
+            mem->addr = (void *)((uintptr_t)be32toh(_iter->prop_addr[0]) +
                                  (uintptr_t)be32toh(_iter->prop_addr[1]));
             mem->len =
                 be32toh(_iter->prop_addr[2]) + be32toh(_iter->prop_addr[3]);
+            return true;
         }
     }
-
     return false;
 }
 
