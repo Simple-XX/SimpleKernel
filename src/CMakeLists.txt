@@ -5,11 +5,11 @@
 
 # Set C flags for arch
 if (SimpleKernelArch STREQUAL ia32/i386)
-    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m32 -D${SimpleKernelArch}")
-    set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m32 -D${SimpleKernelArch}")
+    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m32 -Di386")
+    set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m32 -Di386")
 elseif (SimpleKernelArch STREQUAL ia32/x86_64)
-    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -D${SimpleKernelArch}")
-    set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -D${SimpleKernelArch}")
+    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -Dx86_64")
+    set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -Dx86_64")
 elseif (SimpleKernelArch STREQUAL arm)
     set(CMAKE_C_FLAGS "-march=armv7-a -mtune=cortex-a7 -marm -D${SimpleKernelArch}")
 elseif (SimpleKernelArch STREQUAL riscv64)
