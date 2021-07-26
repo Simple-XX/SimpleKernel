@@ -43,6 +43,8 @@ private:
     static ALLOCATOR *allocator;
     // 辅助函数，平台相关的初始化
     static void helper(void);
+    // 将 multiboot2/dtb 信息移动到内核空间
+    static void move_boot_info(void);
 
 protected:
 public:
