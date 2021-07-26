@@ -3,4 +3,18 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../${SimpleKernelArch})
+PROJECT(arch CXX ASM)
+
+if (${SimpleKernelArch} STREQUAL "ia32/i386")
+    find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/i386/boot)
+    set(boot_src ${boot_asm_src})
+elseif (${SimpleKernelArch} STREQUAL "ia32/x86_64")
+    find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/x86_64/boot)
+    set(boot_src ${boot_asm_src})
+endif ()
+
+set(arch_src ${boot_src})
+
+add_library(${PROJECT_NAME} OBJECT ${arch_src})
+
+target_include_arch_header_files(${PROJECT_NAME})
