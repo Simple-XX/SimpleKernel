@@ -91,24 +91,23 @@ multiboot_header_end:
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
-.extern multiboot2_init
+.extern multiboot2_addr
+.extern multiboot2_magic
 _start:
     # 关中断
     cli
+    # multiboot2_info 结构体指针
+    mov %ebx, multiboot2_addr
+    # 魔数
+    mov %eax, multiboot2_magic
     # 设置栈地址
     mov $STACK_TOP, %esp
     # 栈地址按照 16 字节对齐
     and $0xFFFFFFF0, %esp
     # 帧指针修改为 0
     mov $0, %ebp
-    # multiboot2_info 结构体指针
-    push %ebx
-    # 魔数
-	push %eax
     # 初始化 C++
     call cpp_init
-    # 初始化 multiboot2
-    call multiboot2_init
     call kernel_main
     hlt
     ret
