@@ -6,8 +6,7 @@
 PROJECT(arch CXX ASM)
 
 find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/boot)
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/boot boot_cpp_src)
-set(boot_src ${boot_asm_src} ${boot_cpp_src})
+set(boot_src ${boot_asm_src})
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/port port_cpp_src)
 set(port_src ${port_cpp_src})
