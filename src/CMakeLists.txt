@@ -4,10 +4,10 @@
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
 # Set C flags for arch
-if (SimpleKernelArch STREQUAL i386)
+if (SimpleKernelArch STREQUAL "ia32/i386")
     set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m32 -D${SimpleKernelArch}")
     set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m32 -D${SimpleKernelArch}")
-elseif (SimpleKernelArch STREQUAL x86_64)
+elseif (SimpleKernelArch STREQUAL "ia32/x86_64")
     set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -D${SimpleKernelArch}")
     set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -D${SimpleKernelArch}")
 elseif (SimpleKernelArch STREQUAL arm)
@@ -61,9 +61,9 @@ add_executable(${KernelName}
 
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
 
-if (SimpleKernelArch STREQUAL i386)
+if (SimpleKernelArch STREQUAL "ia32/i386")
     target_link_options(${KernelName} PRIVATE -Wl,-melf_i386)
-elseif (SimpleKernelArch STREQUAL x86_64)
+elseif (SimpleKernelArch STREQUAL "ia32/x86_64")
     target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64 -Wl,-z,max-page-size=0x1000)
 elseif (SimpleKernelArch STREQUAL arm)
     target_link_options(${KernelName} PRIVATE -Wl,-marmelf)
