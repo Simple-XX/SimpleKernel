@@ -2,7 +2,7 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// pmm.cpp for Simple-XX/SimpleKernel.
+// pmm_helper.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
 #include "string.h"
