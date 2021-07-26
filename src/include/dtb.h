@@ -72,6 +72,8 @@ namespace DTB {
     struct dtb_iter_t {
         // 节点标记
         uint32_t tag;
+        // 节点名
+        char *node_name;
         // 当前节点在 dtb 中的偏移
         uint32_t offset;
         // 如果 tag 为 FDT_PROP，保存属性名，否则为 nullptr
