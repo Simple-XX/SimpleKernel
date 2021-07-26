@@ -16,6 +16,7 @@ namespace MULTIBOOT2 {
     uint32_t multiboot2_magic = 0;
     uint32_t multiboot2_size  = 0;
 
+    // TODO: 优化
     void multiboot2_iter(multiboot2_iter_fun_t _fun, void *_data) {
         // 判断魔数是否正确
         assert(multiboot2_magic == MULTIBOOT2_BOOTLOADER_MAGIC);
