@@ -279,12 +279,6 @@ namespace MULTIBOOT2 {
         uint32_t load_base_addr;
     };
 
-    // 地址
-    extern "C" void *multiboot2_addr;
-    // 魔数
-    extern "C" uint32_t multiboot2_magic;
-    // 长度
-    extern uint32_t multiboot2_size;
     // 迭代函数
     typedef bool (*multiboot2_iter_fun_t)(multiboot_tag_t *_tag, void *_data);
 
@@ -293,5 +287,12 @@ namespace MULTIBOOT2 {
     // 迭代器
     void multiboot2_iter(multiboot2_iter_fun_t _fun, void *_data);
 };
+
+// 地址
+extern "C" void *boot_info_addr;
+// 魔数
+extern "C" uint32_t multiboot2_magic;
+// 长度
+extern uint32_t boot_info_size;
 
 #endif /* _MULTIBOOT2_H_ */
