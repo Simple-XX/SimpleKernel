@@ -58,7 +58,7 @@ namespace DTB {
                     str = (char *)(pos + 1);
                     printf("str: %s\n", str);
                     if (_fun(&iter, _data) == true) {
-                        return
+                        return;
                     }
                     // 跳过 tag
                     pos++;
@@ -82,12 +82,12 @@ namespace DTB {
                     // 属性地址
                     // +3 分别是 tag，len，nameoff
                     iter.prop_addr = (uint32_t *)(pos + 3);
+                    printf("iter.prop_addr: %s\n", iter.prop_addr);
                     // 属性长度
                     iter.prop_len = be32toh(pos[1]);
                     if (_fun(&iter, _data) == true) {
-                        return
+                        return;
                     }
-                    // TODO: 将属性内存传递给处理函数
                     // 跳过 tag
                     pos++;
                     // 跳过 len
