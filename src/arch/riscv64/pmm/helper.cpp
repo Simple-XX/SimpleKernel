@@ -11,12 +11,27 @@
 #include "dtb.h"
 #include "pmm.h"
 
-static bool tmp(DTB::dtb_iter_t *, void *) {
-    return true;
+// 保存物理地址信息
+struct phy_mem_t {
+    uintptr_t addr;
+    size_t    len;
+};
+
+static bool get_phy_mem(DTB::dtb_iter_t *_iter, void *_data) {
+    if (_iter->tag != DTB::FDT_PROP) {
+        return false;
+    }
+    if (strcmp((char *)_iter->prop_addr, "memory") == 0) {
+        phy_mem_t *mem = (phy_mem_t *)_data;
+        printf("11111\n");
+        // mem->addr      = ;
+        // mem->len       = ;
+    }
+    return false;
 }
 
 void PMM::helper(void) {
-    DTB::dtb_iter(tmp, nullptr);
+    DTB::dtb_iter(get_phy_mem, nullptr);
     // 物理地址开始 从 0 开始
     start  = 0x0;
     length = 0;
