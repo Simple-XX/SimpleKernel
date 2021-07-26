@@ -12,24 +12,21 @@
 #include "dtb.h"
 
 namespace DTB {
-    uint32_t *dtb_addr      = nullptr;
-    uint32_t  dtb_init_hart = 0;
-    uint32_t  dtb_size      = 0;
-
     // TODO: 完善
     // 现在没有考虑父节点等问题
     void dtb_iter(dtb_iter_fun_t _fun, void *_data) {
         // 匹配魔数
-        assert(be32toh(dtb_addr[0]) == FDT_MAGIC);
+        assert(be32toh(boot_info_addr[0]) == FDT_MAGIC);
         // 匹配版本
-        assert(be32toh(dtb_addr[5]) == FDT_VERSION);
+        assert(be32toh(boot_info_addr[5]) == FDT_VERSION);
         // 设置 dtb 总大小
-        dtb_size = be32toh(dtb_addr[1]);
+        boot_info_size = be32toh(boot_info_addr[1]);
         dtb_iter_t iter;
         // 指向数据区
-        iter.offset = be32toh(dtb_addr[2]);
+        iter.offset = be32toh(boot_info_addr[2]);
         // 循环指针
-        const uint32_t *pos = (uint32_t *)(((uint8_t *)dtb_addr) + iter.offset);
+        const uint32_t *pos =
+            (uint32_t *)(((uint8_t *)boot_info_addr) + iter.offset);
         // 节点 tag
         iter.tag = be32toh(*pos);
         while (1) {
@@ -53,8 +50,8 @@ namespace DTB {
                 case FDT_PROP: {
                     // 属性名
                     iter.prop_name =
-                        (char *)(((uint8_t *)dtb_addr) + be32toh(dtb_addr[3]) +
-                                 be32toh(pos[2]));
+                        (char *)(((uint8_t *)boot_info_addr) +
+                                 be32toh(boot_info_addr[3]) + be32toh(pos[2]));
                     // 属性地址
                     // +3 分别是 tag，len，nameoff
                     iter.prop_addr = (uint32_t *)(pos + 3);
@@ -91,8 +88,12 @@ namespace DTB {
             // 更新 tag
             iter.tag = be32toh(*pos);
             // 更新 offset
-            iter.offset = pos - dtb_addr;
+            iter.offset = pos - boot_info_addr;
         }
         return;
     }
 };
+
+uint32_t *boot_info_addr = nullptr;
+uint32_t  dtb_init_hart  = 0;
+uint32_t  boot_info_size = 0;
