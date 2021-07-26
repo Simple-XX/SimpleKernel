@@ -57,21 +57,6 @@ void PMM::get_pmm_info(void) {
     return;
 }
 
-void PMM::move_boot_info(void) {
-    // 计算 multiboot2 信息需要多少页
-    size_t pages = MULTIBOOT2::multiboot2_size / COMMON::PAGE_SIZE;
-    if (MULTIBOOT2::multiboot2_size % COMMON::PAGE_SIZE != 0) {
-        pages++;
-    }
-    // 申请空间
-    void *new_addr = alloc_pages_kernel(pages);
-    // 复制过来，完成后以前的内存就可以使用了
-    memcpy(new_addr, MULTIBOOT2::multiboot2_addr, pages * COMMON::PAGE_SIZE);
-    // 设置地址
-    MULTIBOOT2::multiboot2_addr = new_addr;
-    return;
-}
-
 #elif defined(__riscv)
 #include "dtb.h"
 #include "endian.h"
@@ -121,20 +106,6 @@ void PMM::get_pmm_info(void) {
     return;
 }
 
-void PMM::move_boot_info(void) {
-    // 计算 multiboot2 信息需要多少页
-    size_t pages = DTB::dtb_size / COMMON::PAGE_SIZE;
-    if (DTB::dtb_size % COMMON::PAGE_SIZE != 0) {
-        pages++;
-    }
-    // 申请空间
-    void *new_addr = alloc_pages_kernel(pages);
-    // 复制过来，完成后以前的内存就可以使用了
-    memcpy(new_addr, DTB::dtb_addr, pages * COMMON::PAGE_SIZE);
-    // 设置地址
-    DTB::dtb_addr = (uint32_t *)new_addr;
-    return;
-}
 #endif
 
 const void *PMM::start                   = nullptr;
@@ -146,6 +117,21 @@ const void *PMM::non_kernel_space_start  = nullptr;
 size_t      PMM::non_kernel_space_length = 0;
 ALLOCATOR * PMM::allocator               = nullptr;
 ALLOCATOR * PMM::kernel_space_allocator  = nullptr;
+
+void PMM::move_boot_info(void) {
+    // 计算 multiboot2 信息需要多少页
+    size_t pages = boot_info_size / COMMON::PAGE_SIZE;
+    if (boot_info_size % COMMON::PAGE_SIZE != 0) {
+        pages++;
+    }
+    // 申请空间
+    void *new_addr = alloc_pages_kernel(pages);
+    // 复制过来，完成后以前的内存就可以使用了
+    memcpy(new_addr, boot_info_addr, pages * COMMON::PAGE_SIZE);
+    // 设置地址
+    boot_info_addr = (uint32_t *)new_addr;
+    return;
+}
 
 PMM::PMM(void) {
     return;

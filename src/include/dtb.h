@@ -11,14 +11,6 @@
 #include "stdbool.h"
 
 namespace DTB {
-    // 地址
-    extern "C" uint32_t *dtb_addr;
-    // 启动 CPU id
-    // TODO: 这个数据不应该在这里
-    extern "C" uint32_t dtb_init_hart;
-    // dtb 总大小
-    extern uint32_t dtb_size;
-
     // devicetree-specification-v0.3.pdf#5.1
     static constexpr const uint32_t FDT_MAGIC   = 0xD00DFEED;
     static constexpr const uint32_t FDT_VERSION = 0x11;
@@ -90,5 +82,13 @@ namespace DTB {
     // 迭代器
     void dtb_iter(dtb_iter_fun_t _fun, void *_data);
 };
+
+// 地址
+extern "C" uint32_t *boot_info_addr;
+// 启动 CPU id
+// TODO: 这个数据不应该在这里
+extern "C" uint32_t dtb_init_hart;
+// dtb 总大小
+extern uint32_t boot_info_size;
 
 #endif /* _DTB_H_ */
