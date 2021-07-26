@@ -157,13 +157,13 @@ gdt64_pointer64:
 .section .text
 .global _start
 .type _start, @function
-.extern multiboot2_addr
+.extern boot_info_addr
 .extern multiboot2_magic
 _start:
     # 关中断
     cli
     # multiboot2_info 结构体指针
-    mov %ebx, multiboot2_addr
+    mov %ebx, boot_info_addr
     # 魔数
     mov %eax, multiboot2_magic
     # 从保护模式跳转到长模式
