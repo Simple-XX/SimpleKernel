@@ -16,10 +16,7 @@ find_asm_source_files(gdt_asm_src ${arch_SOURCE_DIR}/gdt)
 aux_source_directory(${arch_SOURCE_DIR}/gdt gdt_cpp_src)
 set(gdt_src ${gdt_asm_src} ${gdt_cpp_src})
 
-aux_source_directory(${arch_SOURCE_DIR}/pmm pmm_cpp_src)
-set(pmm_src ${pmm_cpp_src})
-
-set(arch_src ${boot_src} ${port_src} ${gdt_src} ${pmm_src})
+set(arch_src ${boot_src} ${port_src} ${gdt_src})
 
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
