@@ -193,9 +193,10 @@ namespace CPU {
         return cr2;
     }
 
-    // 读取 CR3
-    static inline uint32_t READ_CR3(void) {
-        uint32_t cr3;
+    // 获取页目录
+    static inline uintptr_t GET_PGD(void) {
+        // 读取 CR3
+        uintptr_t cr3;
         __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
         return cr3;
     }
@@ -338,8 +339,8 @@ namespace CPU {
         return (eflags & EFLAGS_CF);
     }
 
-    static inline void INVLPG(const void *addr) {
-        __asm__ volatile("invlpg (%0)" : : "r"(addr) : "memory");
+    static inline void VMM_FLUSH(uintptr_t _addr) {
+        __asm__ volatile("invlpg (%0)" : : "r"(_addr) : "memory");
         return;
     }
 
@@ -508,7 +509,7 @@ namespace CPU {
     };
 
     // 设置 CR3
-    static inline bool CR3_SET_PGD(void *_pgd) {
+    static inline bool SET_PGD(uintptr_t _pgd) {
         __asm__ volatile("mov %0, %%cr3" : : "r"(_pgd));
         return true;
     }

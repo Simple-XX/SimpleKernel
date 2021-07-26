@@ -92,7 +92,7 @@ pt_t        VMM::curr_dir;
 
 VMM::VMM(void) {
     // 读取当前页目录
-    curr_dir = (pt_t)CPU::READ_CR3();
+    curr_dir = (pt_t)CPU::GET_PGD();
     return;
 }
 
@@ -128,9 +128,9 @@ void VMM::set_pgd(const pt_t _pgd) {
     // 更新当前页表
     curr_dir = _pgd;
     // 设置页目录
-    CPU::CR3_SET_PGD((void *)curr_dir);
+    CPU::SET_PGD((uintptr_t)curr_dir);
     // 刷新缓存
-    // TODO
+    CPU::VMM_FLUSH(0);
     return;
 }
 
@@ -149,7 +149,7 @@ void VMM::mmap(const pt_t _pgd, const void *_va, const void *_pa,
         // pte 解引用后的值是页表项
         *pte = PA2PTE(_pa) | _flag | VMM_PAGE_VALID;
         // 刷新缓存
-        CPU::INVLPG(_va);
+        CPU::VMM_FLUSH((uintptr_t)_va);
     }
     return;
 }
@@ -169,7 +169,7 @@ void VMM::unmmap(const pt_t _pgd, const void *_va) {
     // 置零
     *pte = 0x00;
     // 刷新缓存
-    CPU::INVLPG(_va);
+    CPU::VMM_FLUSH((uintptr_t)_va);
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
     return;
 }
