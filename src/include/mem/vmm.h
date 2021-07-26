@@ -28,7 +28,7 @@ static constexpr const size_t VMM_KERNEL_SPACE_SIZE = COMMON::KERNEL_SPACE_SIZE;
 static constexpr const size_t VMM_KERNEL_SPACE_PAGES =
     VMM_KERNEL_SPACE_SIZE / COMMON::PAGE_SIZE;
 
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__i386__)
 // P = 1 表示有效； P = 0 表示无效。
 static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
 // 如果为 0  表示页面只读或可执行。
@@ -40,6 +40,39 @@ static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 0;
 static constexpr const uint8_t VMM_PAGE_USER = 1 << 2;
 // 内核虚拟地址相对物理地址的偏移
 static constexpr const size_t KERNEL_OFFSET = 0x0;
+// PTE 属性位数
+static constexpr const size_t VMM_PTE_PROP_BITS = 12;
+// PTE 页内偏移位数
+static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+// VPN 位数
+static constexpr const size_t VMM_VPN_BITS = 10;
+// VPN 位数掩码，10 位 VPN
+static constexpr const size_t VMM_VPN_BITS_MASK = 0x3FF;
+// i386 使用了两级页表
+static constexpr const size_t VMM_PT_LEVEL = 2;
+
+#elif defined(__x86_64__)
+// P = 1 表示有效； P = 0 表示无效。
+static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
+// 如果为 0  表示页面只读或可执行。
+static constexpr const uint8_t VMM_PAGE_READABLE   = 0;
+static constexpr const uint8_t VMM_PAGE_WRITABLE   = 1 << 1;
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 0;
+// U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
+// 如果为 1 那么运行在任何特权级上的程序都可以访问该页面。
+static constexpr const uint8_t VMM_PAGE_USER = 1 << 2;
+// 内核虚拟地址相对物理地址的偏移
+static constexpr const size_t KERNEL_OFFSET = 0x0;
+// PTE 属性位数
+static constexpr const size_t VMM_PTE_PROP_BITS = 12;
+// PTE 页内偏移位数
+static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+// VPN 位数
+static constexpr const size_t VMM_VPN_BITS = 9;
+// VPN 位数掩码，9 位 VPN
+static constexpr const size_t VMM_VPN_BITS_MASK = 0x1FF;
+// x86_64 使用了四级页表
+static constexpr const size_t VMM_PT_LEVEL = 4;
 
 #elif defined(__riscv)
 // 有效位
@@ -60,6 +93,16 @@ static constexpr const uint8_t VMM_PAGE_ACCESSED = 1 << 6;
 static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << 7;
 // 内核虚拟地址相对物理地址的偏移
 static constexpr const size_t KERNEL_OFFSET = 0x0;
+// PTE 属性位数
+static constexpr const size_t VMM_PTE_PROP_BITS = 10;
+// PTE 页内偏移位数
+static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+// VPN 位数
+static constexpr const size_t VMM_VPN_BITS = 9;
+// VPN 位数掩码，9 位 VPN
+static constexpr const size_t VMM_VPN_BITS_MASK = 0x1FF;
+// riscv64 使用了三级页表
+static constexpr const size_t VMM_PT_LEVEL = 3;
 #endif
 
 // 虚拟地址到物理地址转换
@@ -77,6 +120,35 @@ private:
     // TODO: 支持最多四级页表，共用同一套代码
     // 当前页目录
     static pt_t curr_dir;
+
+    // 物理地址转换到页表项
+    // 页表项结构：
+    // 0~11: pte 属性
+    // 12~31: 页表的物理页地址
+    static constexpr uintptr_t PA2PTE(const void *_pa) {
+        return (((uintptr_t)_pa) >> VMM_PAGE_OFF_BITS) << VMM_PTE_PROP_BITS;
+    }
+
+    // 页表项转换到物理地址
+    static constexpr uintptr_t PTE2PA(const pte_t _pte) {
+        return (((uintptr_t)_pte) >> VMM_PTE_PROP_BITS) << VMM_PAGE_OFF_BITS;
+    }
+
+    // 计算 X 级页表的位置
+    static constexpr uintptr_t PXSHIFT(const size_t _level) {
+        return VMM_PAGE_OFF_BITS + (VMM_VPN_BITS * _level);
+    }
+
+    // 获取 _va 的第 _level 级 VPN
+    // 例如虚拟地址右移 12+(10 * _level) 位，
+    // 得到的就是第 _level 级页表的 VPN
+    static constexpr uintptr_t PX(size_t _level, const void *_va) {
+        return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & VMM_VPN_BITS_MASK;
+    }
+
+    // 在 _pgd 中查找 _va 对应的页表项
+    // 如果未找到，_alloc 为真时会进行分配
+    static pte_t *find(const pt_t _pgd, const void *_va, bool _alloc);
 
 protected:
 public:
