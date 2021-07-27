@@ -9,46 +9,22 @@
 #include "stdio.h"
 #include "assert.h"
 #include "cpu.hpp"
+#if defined(__i386__) || defined(__x86_64__)
+#include "gdt.h"
+#endif
 #include "pmm.h"
 #include "vmm.h"
 
-// 64-ia-32-architectures-software-developer-vol-3a-manual#4.3
-
-// 物理地址转换到页表项
-// 页表项结构：
-// 0~11: pte 属性
-// 12~31: 页表的物理页地址
-static constexpr uintptr_t PA2PTE(const void *_pa) {
-    return ((uintptr_t)_pa) & (~0x3FF);
-}
-// 页表项转换到物理地址
-static constexpr uintptr_t PTE2PA(const pte_t _pte) {
-    return ((uintptr_t)_pte) & (~0x3FF);
-}
-// 计算 X 级页表的偏移
-// 10: 虚拟地址 VPN 的长度，均为 10 位
-// 12: 页内偏移，12 位
-static constexpr uintptr_t PXSHIFT(const size_t _level) {
-    return 12 + (10 * _level);
-}
-// 获取 _va 的第 _level 级 VPN
-// 虚拟地址右移 12+(10 * _level) 位，
-// 得到的就是第 _level 级页表的 VPN
-// 0x3FF: 10 位
-static constexpr uintptr_t PX(size_t _level, const void *_va) {
-    return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & 0x3FF;
-}
-
-// i386 使用了两级页表
-static constexpr const size_t PT_LEVEL = 2;
+static pt_t pgd_kernel;
+pt_t        VMM::curr_dir;
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
-pte_t *find(const pt_t _pgd, const void *_va, bool _alloc) {
+pte_t *VMM::find(const pt_t _pgd, const void *_va, bool _alloc) {
     pt_t pgd = _pgd;
     // sv39 共有三级页表，一级一级查找
     // -1 是因为最后一级是具体的某一页，在函数最后直接返回
-    for (size_t level = PT_LEVEL - 1; level > 0; level--) {
+    for (size_t level = VMM_PT_LEVEL - 1; level > 0; level--) {
         // 每次循环会找到 _va 的第 level 级页表 pgd
         // 相当于 pgd_level[VPN_level]，这样相当于得到了第 level 级页表的地址
         pte_t *pte = (pte_t *)&pgd[PX(level, _va)];
@@ -86,12 +62,9 @@ pte_t *find(const pt_t _pgd, const void *_va, bool _alloc) {
     return &pgd[PX(0, _va)];
 }
 
-static pt_t pgd_kernel;
-pt_t        VMM::curr_dir;
-
 VMM::VMM(void) {
     // 读取当前页目录
-    curr_dir = (pt_t)CPU::READ_CR3();
+    curr_dir = (pt_t)CPU::GET_PGD();
     return;
 }
 
@@ -100,6 +73,9 @@ VMM::~VMM(void) {
 }
 
 bool VMM::init(void) {
+#if defined(__i386__) || defined(__x86_64__)
+    GDT::init();
+#endif
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
     // 映射内核空间
@@ -126,9 +102,9 @@ void VMM::set_pgd(const pt_t _pgd) {
     // 更新当前页表
     curr_dir = _pgd;
     // 设置页目录
-    CPU::CR3_SET_PGD((void *)curr_dir);
+    CPU::SET_PGD((uintptr_t)curr_dir);
     // 刷新缓存
-    // TODO
+    CPU::VMM_FLUSH(0);
     return;
 }
 
@@ -147,7 +123,7 @@ void VMM::mmap(const pt_t _pgd, const void *_va, const void *_pa,
         // pte 解引用后的值是页表项
         *pte = PA2PTE(_pa) | _flag | VMM_PAGE_VALID;
         // 刷新缓存
-        CPU::INVLPG(_va);
+        CPU::VMM_FLUSH((uintptr_t)_va);
     }
     return;
 }
@@ -167,7 +143,7 @@ void VMM::unmmap(const pt_t _pgd, const void *_va) {
     // 置零
     *pte = 0x00;
     // 刷新缓存
-    CPU::INVLPG(_va);
+    CPU::VMM_FLUSH((uintptr_t)_va);
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
     return;
 }
