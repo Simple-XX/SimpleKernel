@@ -91,6 +91,7 @@ multiboot_header_end:
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
+# 在 multiboot2.cpp 中定义
 .extern boot_info_addr
 .extern multiboot2_magic
 _start:
@@ -114,5 +115,5 @@ _start:
 
 .section .bss
 STACK:
-    .skip 16384
+    .skip 4096 * 4
 STACK_TOP:
