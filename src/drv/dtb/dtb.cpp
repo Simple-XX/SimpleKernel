@@ -102,4 +102,23 @@ namespace DTB {
         }
         return;
     }
+
+    // TODO: 完善
+    bool printf_memory(dtb_iter_data_t *_iter_data, void *) {
+        // 找到 memory 属性节点
+        if (strncmp((char *)_iter_data->node_name, "memory",
+                    sizeof("memory") - 1) == 0) {
+            // 找到地址信息
+            if (strcmp((char *)_iter_data->prop_name, "reg") == 0) {
+                printf("addr: 0x%p, len: 0x%p\n",
+                       ((uintptr_t)be32toh(_iter_data->prop_addr[0]) +
+                        (uintptr_t)be32toh(_iter_data->prop_addr[1])),
+                       be32toh(_iter_data->prop_addr[2]) +
+                           be32toh(_iter_data->prop_addr[3]));
+                return true;
+            }
+        }
+        return false;
+    }
+
 };
