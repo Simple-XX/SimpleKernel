@@ -8,14 +8,14 @@
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
-.extern dtb_addr
+.extern boot_info_addr
 .extern dtb_init_hart
 _start:
     # 保存 sbi 传递的参数
     # 将 a0 的值传递给 dtb_init_hart
     sw a0, dtb_init_hart, t0
-    # 将 a1 的值传递给 dtb_addr
-    sw a1, dtb_addr, t0
+    # 将 a1 的值传递给 boot_info_addr
+    sw a1, boot_info_addr, t0
     # 设置栈
     la sp, stack_top
     # 初始化 C++

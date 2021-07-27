@@ -33,12 +33,12 @@ namespace COMMON {
     static constexpr const size_t MB   = 0x100000;
     static constexpr const size_t GB   = 0x40000000;
 
-    // 内核空间占用大小，包括内核代码部分与预留的，8MB
-    static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
     // 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
+    // 内核空间占用大小，包括内核代码部分与预留的，8MB
+    static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
     // 映射内核空间需要的页数
-    static constexpr const size_t KERNEL_SPACE_PAGES =
+    static constexpr const uint64_t KERNEL_SPACE_PAGES =
         KERNEL_SPACE_SIZE / PAGE_SIZE;
 
     // 页掩码
@@ -53,11 +53,11 @@ namespace COMMON {
     }
     // 针对整数
     template <>
-    inline uint32_t ALIGN(const uint32_t _x, const size_t _align) {
+    inline uint32_t ALIGN(uint32_t _x, size_t _align) {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
     template <>
-    inline uint64_t ALIGN(const uint64_t _x, const size_t _align) {
+    inline uint64_t ALIGN(uint64_t _x, size_t _align) {
         return ((_x + _align - 1) & (~(_align - 1)));
     }
 };
