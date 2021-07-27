@@ -157,9 +157,16 @@ gdt64_pointer64:
 .section .text
 .global _start
 .type _start, @function
+# 在 multiboot2.cpp 中定义
+.extern boot_info_addr
+.extern multiboot2_magic
 _start:
     # 关中断
     cli
+    # multiboot2_info 结构体指针
+    mov %ebx, boot_info_addr
+    # 魔数
+    mov %eax, multiboot2_magic
     # 从保护模式跳转到长模式
     # 1. 允许 PAE
     mov %cr4, %eax
@@ -244,5 +251,5 @@ _start64:
 
 .section .bss
 STACK:
-    .skip 16384
+    .skip 4096 * 4
 STACK_TOP:
