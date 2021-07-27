@@ -40,11 +40,6 @@ private:
     static size_t length;
     // 物理内存页数
     static size_t total_pages;
-    // 内核与非内核空间的地址与长度，单位为 bytes
-    static const void *kernel_space_start;
-    static size_t      kernel_space_length;
-    static const void *non_kernel_space_start;
-    static size_t      non_kernel_space_length;
     // 内核空间不会位于内存中间，导致出现非内核空间被切割为两部分的情况
     // 物理内存分配器，分配内核空间
     static ALLOCATOR *kernel_space_allocator;
@@ -55,6 +50,11 @@ private:
 
 protected:
 public:
+    // 内核与非内核空间的地址与长度，单位为 bytes
+    static const void *kernel_space_start;
+    static size_t      kernel_space_length;
+    static const void *non_kernel_space_start;
+    static size_t      non_kernel_space_length;
     // 构造函数，目前为空
     // TODO: 从 bootloader 接受内存参数进行初始化
     PMM(void);
