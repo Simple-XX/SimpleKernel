@@ -157,6 +157,7 @@ gdt64_pointer64:
 .section .text
 .global _start
 .type _start, @function
+# 在 multiboot2.cpp 中定义
 .extern boot_info_addr
 .extern multiboot2_magic
 _start:
@@ -250,5 +251,5 @@ _start64:
 
 .section .bss
 STACK:
-    .skip 16384
+    .skip 4096 * 4
 STACK_TOP:

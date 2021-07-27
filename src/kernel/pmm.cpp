@@ -8,11 +8,7 @@
 #include "string.h"
 #include "assert.h"
 #include "common.h"
-#if defined(__i386__) || defined(__x86_64__)
-#include "multiboot2.h"
-#elif defined(__riscv)
-#include "dtb.h"
-#endif
+#include "boot_info.hpp"
 #include "pmm.h"
 
 PMM::phy_mem_t PMM::phy_mem;
@@ -28,16 +24,16 @@ ALLOCATOR *    PMM::kernel_space_allocator  = nullptr;
 
 void PMM::move_boot_info(void) {
     // 计算 multiboot2 信息需要多少页
-    size_t pages = boot_info_size / COMMON::PAGE_SIZE;
-    if (boot_info_size % COMMON::PAGE_SIZE != 0) {
+    size_t pages = BOOT_INFO::boot_info_size / COMMON::PAGE_SIZE;
+    if (BOOT_INFO::boot_info_size % COMMON::PAGE_SIZE != 0) {
         pages++;
     }
     // 申请空间
     void *new_addr = alloc_pages_kernel(pages);
     // 复制过来，完成后以前的内存就可以使用了
-    memcpy(new_addr, boot_info_addr, pages * COMMON::PAGE_SIZE);
+    memcpy(new_addr, BOOT_INFO::boot_info_addr, pages * COMMON::PAGE_SIZE);
     // 设置地址
-    boot_info_addr = (uint32_t *)new_addr;
+    BOOT_INFO::boot_info_addr = (uint32_t *)new_addr;
     return;
 }
 
@@ -50,12 +46,8 @@ PMM::~PMM(void) {
 }
 
 bool PMM::init(void) {
-    // 针对不同平台获取物理内存信息
-#if defined(__i386__) || defined(__x86_64__)
-    MULTIBOOT2::multiboot2_iter(MULTIBOOT2::get_memory, &phy_mem);
-#elif defined(__riscv)
-    DTB::dtb_iter(DTB::get_memory, &phy_mem);
-#endif
+    // 获取物理内存信息
+    BOOT_INFO::get_memory(&phy_mem);
     // 设置物理地址的起点与长度
     start  = phy_mem.addr;
     length = phy_mem.len;

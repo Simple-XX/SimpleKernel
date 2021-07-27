@@ -25,10 +25,7 @@ endif ()
 aux_source_directory(${arch_SOURCE_DIR}/port port_cpp_src)
 set(port_src ${port_cpp_src})
 
-aux_source_directory(${arch_SOURCE_DIR}/multiboot2 multiboot2_cpp_src)
-set(multiboot2_src ${multiboot2_cpp_src})
-
-set(arch_src ${boot_src} ${port_src} ${multiboot2_src} ${gdt_src})
+set(arch_src ${boot_src} ${port_src} ${gdt_src})
 
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 

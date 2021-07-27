@@ -11,7 +11,10 @@
 #include "stdbool.h"
 
 namespace DTB {
+    // 保存 sbi 传递的启动核
+    extern "C" size_t dtb_init_hart;
     // devicetree-specification-v0.3.pdf#5.1
+    // 这个结构与 dtb.cpp 中的 addr[] 的使用相关
     static constexpr const uint32_t FDT_MAGIC   = 0xD00DFEED;
     static constexpr const uint32_t FDT_VERSION = 0x11;
     struct fdt_header_t {
@@ -61,7 +64,7 @@ namespace DTB {
     static constexpr const uint32_t FDT_END = 0x9;
 
     // 迭代变量
-    struct dtb_iter_t {
+    struct dtb_iter_data_t {
         // 节点标记
         uint32_t tag;
         // 节点名
@@ -77,19 +80,13 @@ namespace DTB {
     };
 
     // 迭代函数
-    typedef bool (*dtb_iter_fun_t)(dtb_iter_t *_tag, void *_data);
+    typedef bool (*dtb_iter_fun_t)(dtb_iter_data_t *_iter_data, void *_data);
     // 迭代器
     void dtb_iter(dtb_iter_fun_t _fun, void *_data);
+    // 输出内存信息
+    bool printf_memory(dtb_iter_data_t *_iter_data, void *_data);
     // 获取内存信息
-    bool get_memory(dtb_iter_t *_iter, void *_data);
+    bool get_memory(dtb_iter_data_t *_iter, void *_data);
 };
-
-// 地址
-extern "C" uint32_t *boot_info_addr;
-// 启动 CPU id
-// TODO: 这个数据不应该在这里
-extern "C" uint32_t dtb_init_hart;
-// dtb 总大小
-extern uint32_t boot_info_size;
 
 #endif /* _DTB_H_ */
