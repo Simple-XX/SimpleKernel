@@ -8,12 +8,15 @@
 #include "common.h"
 #include "stdio.h"
 #include "iostream"
+#include "boot_info.hpp"
 #include "kernel.h"
 
 // TODO: gdb 调试
 // TODO: clion 环境
 void kernel_main(void) {
     show_info();
+    // 输出物理地址信息
+    BOOT_INFO::printf_memory();
     while (1) {
         ;
     }

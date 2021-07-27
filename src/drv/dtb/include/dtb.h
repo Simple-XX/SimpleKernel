@@ -69,6 +69,8 @@ namespace DTB {
     typedef bool (*dtb_iter_fun_t)(dtb_iter_data_t *_iter_data, void *_data);
     // 迭代器
     void dtb_iter(dtb_iter_fun_t _fun, void *_data);
+    // 获取内存信息
+    bool printf_memory(dtb_iter_data_t *_iter_data, void *_data);
     // 保存 sbi 传递的启动核
     extern "C" size_t dtb_init_hart;
 };

@@ -284,6 +284,8 @@ namespace MULTIBOOT2 {
                                           void *                  _data);
     // 迭代器
     void multiboot2_iter(multiboot2_iter_fun_t _fun, void *_data);
+    // 获取内存信息
+    bool printf_memory(multiboot2_iter_data_t *_iter_data, void *_data);
     // 魔数
     extern "C" uint32_t multiboot2_magic;
 
