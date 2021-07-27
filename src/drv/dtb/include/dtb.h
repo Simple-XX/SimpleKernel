@@ -78,9 +78,10 @@ namespace DTB {
 
     // 迭代函数
     typedef bool (*dtb_iter_fun_t)(dtb_iter_t *_tag, void *_data);
-
     // 迭代器
     void dtb_iter(dtb_iter_fun_t _fun, void *_data);
+    // 获取内存信息
+    bool get_memory(dtb_iter_t *_iter, void *_data);
 };
 
 // 地址
