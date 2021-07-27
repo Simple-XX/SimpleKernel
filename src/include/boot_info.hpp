@@ -31,6 +31,11 @@ namespace BOOT_INFO {
         MULTIBOOT2::multiboot2_iter(_fun, _data);
         return;
     }
+    // 输出物理内存信息
+    inline void printf_memory(void) {
+        iter(MULTIBOOT2::printf_memory, nullptr);
+        return;
+    }
 #elif defined(__riscv)
     // 别名，统一接口
     using iter_data_t = DTB::dtb_iter_data_t;
@@ -38,6 +43,11 @@ namespace BOOT_INFO {
     // 迭代器
     inline void iter(iter_fun_t _fun, void *_data) {
         DTB::dtb_iter(_fun, _data);
+        return;
+    }
+    // 输出物理内存信息
+    inline void printf_memory(void) {
+        iter(DTB::printf_memory, nullptr);
         return;
     }
 #endif
