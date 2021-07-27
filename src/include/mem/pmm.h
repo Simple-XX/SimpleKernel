@@ -24,7 +24,16 @@
 // 目前的代码只能在全部内存中分配，如果需要分配到内核空间/用户空间就没办法了
 // 两个分配器，管两个区域即可
 class PMM {
+public:
+    // 保存物理地址信息
+    struct phy_mem_t {
+        void * addr;
+        size_t len;
+    };
+
 private:
+    static phy_mem_t phy_mem;
+
     // 物理内存开始地址
     static const void *start;
     // 物理内存长度，单位为 bytes
@@ -41,6 +50,8 @@ private:
     static ALLOCATOR *kernel_space_allocator;
     // 物理内存分配器，分配非内核空间
     static ALLOCATOR *allocator;
+    // 将 multiboot2/dtb 信息移动到内核空间
+    static void move_boot_info(void);
 
 protected:
 public:
@@ -51,6 +62,8 @@ public:
     // 初始化
     // TODO: 移动到构造函数去
     static bool init(void);
+    // 获取物理内存长度
+    static size_t get_pmm_length(void);
     // 分配一页
     static void *alloc_page(void);
     // 分配多页
