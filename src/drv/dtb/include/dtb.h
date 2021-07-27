@@ -12,6 +12,7 @@
 
 namespace DTB {
     // devicetree-specification-v0.3.pdf#5.1
+    // 这个结构与 dtb.cpp 中的 addr[] 的使用相关
     static constexpr const uint32_t FDT_MAGIC   = 0xD00DFEED;
     static constexpr const uint32_t FDT_VERSION = 0x11;
     struct fdt_header_t {
@@ -35,18 +36,6 @@ namespace DTB {
         uint32_t size_dt_strings;
         // 数据区长度
         uint32_t size_dt_struct;
-    };
-
-    struct fdt_property_t {
-        uint32_t tag;
-        // 表示 property value 的长度，byte 为单位
-        uint32_t len;
-        // property 的名称存放在 string block 区域，nameoff 表示其在 string
-        // block 的偏移
-        uint32_t nameoff;
-        // property value 值，作为额外数据以'\0'结尾的字符串形式存储 structure
-        // block, 32 - bits对齐，不够的位用 0x0 补齐
-        uint32_t data[0];
     };
 
     // devicetree-specification-v0.3.pdf#5.4
