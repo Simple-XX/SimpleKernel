@@ -3,4 +3,8 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/${SimpleKernelArch})
+if (SimpleKernelArch STREQUAL "ia32/i386" OR SimpleKernelArch STREQUAL "ia32/x86_64")
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ia32)
+else ()
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/${SimpleKernelArch})
+endif ()
