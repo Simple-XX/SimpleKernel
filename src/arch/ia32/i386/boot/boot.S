@@ -91,13 +91,14 @@ multiboot_header_end:
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
-.extern multiboot2_addr
+# 在 multiboot2.cpp 中定义
+.extern boot_info_addr
 .extern multiboot2_magic
 _start:
     # 关中断
     cli
     # multiboot2_info 结构体指针
-    mov %ebx, multiboot2_addr
+    mov %ebx, boot_info_addr
     # 魔数
     mov %eax, multiboot2_magic
     # 设置栈地址
@@ -114,5 +115,5 @@ _start:
 
 .section .bss
 STACK:
-    .skip 16384
+    .skip 4096 * 4
 STACK_TOP:

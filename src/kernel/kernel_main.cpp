@@ -9,11 +9,11 @@
 #include "stdio.h"
 #include "iostream"
 #include "assert.h"
+#include "boot_info.hpp"
 #include "pmm.h"
 #include "vmm.h"
 #include "kernel.h"
 
-// TODO: 整合 i386 与 x86_64
 // TODO: gdb 调试
 // TODO: clion 环境
 // 内核入口
