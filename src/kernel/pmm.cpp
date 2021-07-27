@@ -8,17 +8,34 @@
 #include "string.h"
 #include "assert.h"
 #include "common.h"
+#include "boot_info.hpp"
 #include "pmm.h"
 
-const void *PMM::start                   = nullptr;
-size_t      PMM::length                  = 0;
-size_t      PMM::total_pages             = 0;
-const void *PMM::kernel_space_start      = nullptr;
-size_t      PMM::kernel_space_length     = 0;
-const void *PMM::non_kernel_space_start  = nullptr;
-size_t      PMM::non_kernel_space_length = 0;
-ALLOCATOR * PMM::allocator               = nullptr;
-ALLOCATOR * PMM::kernel_space_allocator  = nullptr;
+PMM::phy_mem_t PMM::phy_mem;
+const void *   PMM::start                   = nullptr;
+size_t         PMM::length                  = 0;
+size_t         PMM::total_pages             = 0;
+const void *   PMM::kernel_space_start      = nullptr;
+size_t         PMM::kernel_space_length     = 0;
+const void *   PMM::non_kernel_space_start  = nullptr;
+size_t         PMM::non_kernel_space_length = 0;
+ALLOCATOR *    PMM::allocator               = nullptr;
+ALLOCATOR *    PMM::kernel_space_allocator  = nullptr;
+
+void PMM::move_boot_info(void) {
+    // 计算 multiboot2 信息需要多少页
+    size_t pages = BOOT_INFO::boot_info_size / COMMON::PAGE_SIZE;
+    if (BOOT_INFO::boot_info_size % COMMON::PAGE_SIZE != 0) {
+        pages++;
+    }
+    // 申请空间
+    void *new_addr = alloc_pages_kernel(pages);
+    // 复制过来，完成后以前的内存就可以使用了
+    memcpy(new_addr, BOOT_INFO::boot_info_addr, pages * COMMON::PAGE_SIZE);
+    // 设置地址
+    BOOT_INFO::boot_info_addr = (uint32_t *)new_addr;
+    return;
+}
 
 PMM::PMM(void) {
     return;
@@ -29,8 +46,23 @@ PMM::~PMM(void) {
 }
 
 bool PMM::init(void) {
-    // 针对不同平台获取物理内存信息，设置内存使用方式
-    helper();
+    // 获取物理内存信息
+    BOOT_INFO::get_memory(&phy_mem);
+    // 设置物理地址的起点与长度
+    start  = phy_mem.addr;
+    length = phy_mem.len;
+    // 计算页数
+    total_pages = length / COMMON::PAGE_SIZE;
+    // 内核空间地址开始
+    kernel_space_start = COMMON::KERNEL_START_ADDR;
+    // 长度手动指定
+    kernel_space_length = COMMON::KERNEL_SPACE_SIZE;
+    // 非内核空间在内核空间结束后
+    non_kernel_space_start = (void *)((uint8_t *)COMMON::KERNEL_START_ADDR +
+                                      COMMON::KERNEL_SPACE_SIZE);
+    // 长度为总长度减去内核长度
+    non_kernel_space_length = length - kernel_space_length;
+
     // 创建分配器
     // 内核空间
     static FIRSTFIT first_fit_allocator_kernel(
@@ -53,7 +85,7 @@ bool PMM::init(void) {
     // 将内核已使用部分划分出来
     if (alloc_pages_kernel(const_cast<void *>(COMMON::KERNEL_START_ADDR),
                            kernel_pages) == true) {
-        // 将 multiboot2 / dtb 信息移动到内核空间
+        // 将 multiboot2/dtb 信息移动到内核空间
         move_boot_info();
         printf("pmm init.\n");
         return true;
