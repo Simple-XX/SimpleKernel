@@ -9,6 +9,7 @@
 #include "endian.h"
 #include "assert.h"
 #include "common.h"
+#include "pmm.h"
 #include "dtb.h"
 
 namespace DTB {
@@ -92,6 +93,26 @@ namespace DTB {
         }
         return;
     }
+
+    // TODO: 完善
+    bool get_memory(dtb_iter_t *_iter, void *_data) {
+        // 找到 memory 属性节点
+        if (strncmp((char *)_iter->node_name, "memory", sizeof("memory") - 1) ==
+            0) {
+            // 找到地址信息
+            if (strcmp((char *)_iter->prop_name, "reg") == 0) {
+                PMM::phy_mem_t *mem = (PMM::phy_mem_t *)_data;
+                // 保存
+                mem->addr = (void *)((uintptr_t)be32toh(_iter->prop_addr[0]) +
+                                     (uintptr_t)be32toh(_iter->prop_addr[1]));
+                mem->len =
+                    be32toh(_iter->prop_addr[2]) + be32toh(_iter->prop_addr[3]);
+                return true;
+            }
+        }
+        return false;
+    }
+
 };
 
 uint32_t *boot_info_addr = nullptr;
