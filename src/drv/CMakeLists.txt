@@ -5,7 +5,7 @@
 
 PROJECT(drv CXX)
 
-if (SimpleKernelArch STREQUAL i386 OR SimpleKernelArch STREQUAL x86_64)
+if (SimpleKernelArch STREQUAL ia32/i386 OR SimpleKernelArch STREQUAL ia32/x86_64)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/tui tui_src)
     set(drv_src ${tui_src})
 elseif (SimpleKernelArch STREQUAL arm)
