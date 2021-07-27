@@ -283,7 +283,7 @@ namespace MULTIBOOT2 {
     typedef bool (*multiboot2_iter_fun_t)(multiboot_tag_t *_tag, void *_data);
 
     // 获取 e820 信息
-    bool get_e820(multiboot_tag_t *_tag, void *_data);
+    bool get_memory(multiboot_tag_t *_tag, void *_data);
     // 迭代器
     void multiboot2_iter(multiboot2_iter_fun_t _fun, void *_data);
 };
