@@ -22,21 +22,6 @@ size_t         PMM::non_kernel_space_length = 0;
 ALLOCATOR *    PMM::allocator               = nullptr;
 ALLOCATOR *    PMM::kernel_space_allocator  = nullptr;
 
-void PMM::move_boot_info(void) {
-    // 计算 multiboot2 信息需要多少页
-    size_t pages = BOOT_INFO::boot_info_size / COMMON::PAGE_SIZE;
-    if (BOOT_INFO::boot_info_size % COMMON::PAGE_SIZE != 0) {
-        pages++;
-    }
-    // 申请空间
-    void *new_addr = alloc_pages_kernel(pages);
-    // 复制过来，完成后以前的内存就可以使用了
-    memcpy(new_addr, BOOT_INFO::boot_info_addr, pages * COMMON::PAGE_SIZE);
-    // 设置地址
-    BOOT_INFO::boot_info_addr = (uint32_t *)new_addr;
-    return;
-}
-
 PMM::PMM(void) {
     return;
 }
@@ -85,8 +70,6 @@ bool PMM::init(void) {
     // 将内核已使用部分划分出来
     if (alloc_pages_kernel(const_cast<void *>(COMMON::KERNEL_START_ADDR),
                            kernel_pages) == true) {
-        // 将 multiboot2/dtb 信息移动到内核空间
-        move_boot_info();
         printf("pmm init.\n");
         return true;
     }
