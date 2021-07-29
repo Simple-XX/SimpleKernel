@@ -60,6 +60,16 @@ namespace BOOT_INFO {
         iter(DTB::get_memory, _data);
         return;
     }
+    // 获取 CLINT 信息
+    inline void get_clint(void *_data) {
+        iter(DTB::get_clint, _data);
+        return;
+    }
+    // // 获取 PLIC 信息
+    inline void get_plic(void *_data) {
+        iter(DTB::get_plic, _data);
+        return;
+    }
 #endif
 };
 
