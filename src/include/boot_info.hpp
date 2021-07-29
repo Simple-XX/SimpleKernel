@@ -18,7 +18,7 @@
 namespace BOOT_INFO {
     // 声明，定义在具体的实现中
     // 地址
-    extern "C" void *boot_info_addr;
+    extern "C" const void *boot_info_addr;
     // 长度
     extern size_t boot_info_size;
 
