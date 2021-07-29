@@ -9,19 +9,21 @@
 
 #include "stdint.h"
 
-namespace INTR {
+void handler_default(void);
+
+class INTR {
+public:
     typedef void (*interrupt_handler_t)(void);
-    int32_t init(void);
-    void    handler_default(void);
-    // 栈，中断原因，中断返回值
-    extern "C" void trap_handler(uint64_t _scause, uint64_t _spec,
-                                 uint64_t _stval);
+    INTR(void);
+    ~INTR(void);
+    static int32_t init(void);
 };
 
 // core-local interrupt controller
 // 本地核心中断控制器
 // 用于控制 excp 与 intr
-namespace CLINT {
+class CLINT {
+public:
     // 页读错误
     static constexpr const uint8_t EXCP_LOAD_PAGE_FAULT = 13;
     // 页写错误
@@ -71,28 +73,51 @@ namespace CLINT {
         "Local Interrupt X",
     };
 
-    int32_t init(void);
-    void    register_interrupt_handler(uint8_t n, INTR::interrupt_handler_t h);
-    void    register_excp_handler(uint8_t n, INTR::interrupt_handler_t h);
-    void    do_interrupt(uint8_t n);
-    void    do_excp(uint8_t n);
-};
+    // 最大中断数
+    static constexpr const uint32_t INTERRUPT_MAX = 16;
+    // 最大异常数
+    static constexpr const uint32_t EXCP_MAX = 16;
+    // 中断处理函数数组
+    static INTR::interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
+        __attribute__((aligned(4)));
+    // 异常处理函数数组
+    static INTR::interrupt_handler_t excp_handlers[EXCP_MAX]
+        __attribute__((aligned(4)));
 
-namespace TIMER {
-    void init(void);
+    CLINT(void);
+    ~CLINT(void);
+    static int32_t init(void);
+    static void
+    register_interrupt_handler(uint8_t                   _no,
+                               INTR::interrupt_handler_t _interrupt_handler);
+    static void
+                register_excp_handler(uint8_t                   _no,
+                                      INTR::interrupt_handler_t _interrupt_handler);
+    static void do_interrupt(uint8_t _no);
+    static void do_excp(uint8_t _no);
 };
 
 // platform-level interrupt controller
 // 平台级中断控制器
 // 用于控制外部中断
-namespace PLIC {
-    int32_t init(void);
+class PLIC {
+public:
+    PLIC(void);
+    ~PLIC(void);
+    static int32_t init(void);
     // 向 PLIC 询问中断
     // 返回发生的外部中断号
-    uint8_t get(void);
-    // 告知PLIC已经处理了当前IRQ
-    void done(uint8_t _irq);
-    void set(uint8_t irq_no, bool _status);
+    static uint8_t get(void);
+    // 告知 PLIC 已经处理了当前 IRQ
+    static void done(uint8_t _no);
+    static void set(uint8_t _no, bool _status);
+};
+
+class TIMER {
+public:
+    TIMER(void);
+    ~TIMER(void);
+    static void init(void);
 };
 
 #endif /* _INTR_H_ */

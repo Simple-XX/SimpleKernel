@@ -5,6 +5,8 @@
 // heap.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
+#include "common.h"
+#include "pmm.h"
 #include "heap.h"
 
 HEAP::HEAP(void) {
@@ -16,7 +18,9 @@ HEAP::~HEAP(void) {
 }
 
 bool HEAP::init(void) {
-    static SLAB slab_allocator("SLAB Allocator", 0, 0);
+    static SLAB slab_allocator("SLAB Allocator", PMM::non_kernel_space_start,
+                               PMM::non_kernel_space_length *
+                                   COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&slab_allocator;
     printf("heap init.\n");
     return 0;
