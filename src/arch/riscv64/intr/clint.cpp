@@ -6,8 +6,9 @@
 
 #include "cpu.hpp"
 #include "stdio.h"
+#include "pmm.h"
 #include "vmm.h"
-#include "memlayout.h"
+#include "boot_info.hpp"
 #include "intr.h"
 #include "cpu.hpp"
 
@@ -58,16 +59,18 @@ void CLINT::do_excp(uint8_t _no) {
     return;
 }
 
+static PMM::phy_mem_t clint_phy_mem;
+
 int32_t CLINT::init(void) {
     // 映射 clint 地址
-    // TODO: 动态获取
-    for (uint64_t a = MEMLAYOUT::CLINT; a < MEMLAYOUT::CLINT + 0x10000;
-         a += 0x1000) {
+    BOOT_INFO::get_clint(&clint_phy_mem);
+    for (uintptr_t a = (uintptr_t)clint_phy_mem.addr;
+         a < ((uintptr_t)clint_phy_mem.addr) + clint_phy_mem.len; a += 0x1000) {
         VMM::mmap(VMM::get_pgd(), (void *)a, (void *)a,
                   VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     // 设置 trap vector
-    CPU::WRITE_STVEC((uint64_t)trap_entry);
+    CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
     CPU::STVEC_DIRECT();
     // 设置处理函数
