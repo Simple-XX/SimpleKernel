@@ -5,7 +5,6 @@
 // slab.cpp for Simple-XX/SimpleKernel.
 
 #include "stdio.h"
-#include "list_tmp.hpp"
 #include "string.h"
 #include "assert.h"
 #include "pmm.h"
