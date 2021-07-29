@@ -349,6 +349,8 @@ void *SLAB::alloc(size_t _len) {
 #undef DEBUG
 #endif
     }
+    // 更新统计数据
+    allocator_used_count += _len;
     // 返回
     return res;
 }
@@ -376,11 +378,13 @@ void SLAB::free(void *_addr, size_t) {
     std::cout << slab_cache[idx];
 #undef DEBUG
 #endif
+    // 更新统计数据
+    allocator_used_count -= _len;
     return;
 }
 
 size_t SLAB::get_used_count(void) const {
-    return 0;
+    return allocator_used_count;
 }
 
 size_t SLAB::get_free_count(void) const {
