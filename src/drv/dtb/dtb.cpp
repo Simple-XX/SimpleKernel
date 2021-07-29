@@ -141,4 +141,44 @@ namespace DTB {
         return false;
     }
 
+    // TODO: 完善
+    bool get_clint(dtb_iter_data_t *_iter_data, void *_data) {
+        // 找到 memory 属性节点
+        if (strncmp((char *)_iter_data->node_name, "clint",
+                    sizeof("clint") - 1) == 0) {
+            // 找到地址信息
+            if (strcmp((char *)_iter_data->prop_name, "reg") == 0) {
+                PMM::phy_mem_t *mem = (PMM::phy_mem_t *)_data;
+                // 保存
+                mem->addr =
+                    (void *)((uintptr_t)be32toh(_iter_data->prop_addr[0]) +
+                             (uintptr_t)be32toh(_iter_data->prop_addr[1]));
+                mem->len = be32toh(_iter_data->prop_addr[2]) +
+                           be32toh(_iter_data->prop_addr[3]);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // TODO: 完善
+    bool get_plic(dtb_iter_data_t *_iter_data, void *_data) {
+        // 找到 memory 属性节点
+        if (strncmp((char *)_iter_data->node_name, "plic",
+                    sizeof("plic") - 1) == 0) {
+            // 找到地址信息
+            if (strcmp((char *)_iter_data->prop_name, "reg") == 0) {
+                PMM::phy_mem_t *mem = (PMM::phy_mem_t *)_data;
+                // 保存
+                mem->addr =
+                    (void *)((uintptr_t)be32toh(_iter_data->prop_addr[0]) +
+                             (uintptr_t)be32toh(_iter_data->prop_addr[1]));
+                mem->len = be32toh(_iter_data->prop_addr[2]) +
+                           be32toh(_iter_data->prop_addr[3]);
+                return true;
+            }
+        }
+        return false;
+    }
+
 };
