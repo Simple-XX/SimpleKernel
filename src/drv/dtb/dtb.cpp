@@ -17,7 +17,7 @@
 // 定义
 namespace BOOT_INFO {
     // 地址
-    void *boot_info_addr;
+    const void *boot_info_addr;
     // 长度
     size_t boot_info_size;
 }
