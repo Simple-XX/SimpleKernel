@@ -87,6 +87,10 @@ namespace DTB {
     bool printf_memory(dtb_iter_data_t *_iter_data, void *_data);
     // 获取内存信息
     bool get_memory(dtb_iter_data_t *_iter, void *_data);
+    // 获取 CLINT
+    bool get_clint(dtb_iter_data_t *_iter, void *_data);
+    // 获取 PLIC
+    bool get_plic(dtb_iter_data_t *_iter, void *_data);
 };
 
 #endif /* _DTB_H_ */
