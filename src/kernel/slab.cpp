@@ -315,7 +315,7 @@ SLAB::SLAB(const char *_name, const void *_addr, size_t _len)
     for (size_t i = LEN256; i < LEN65536; i++) {
         slab_cache[i].len = MIN << i;
     }
-    printf("%s: 0x%p(0x%X bytes) init.\n", name, allocator_start_addr,
+    printf("%s: 0x%p(0x%p bytes) init.\n", name, allocator_start_addr,
            allocator_length);
     return;
 }
