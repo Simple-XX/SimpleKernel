@@ -350,7 +350,9 @@ void *SLAB::alloc(size_t _len) {
 #endif
     }
     // 更新统计数据
-    allocator_used_count += _len;
+    if (res != nullptr) {
+        allocator_used_count += _len;
+    }
     // 返回
     return res;
 }
@@ -368,6 +370,7 @@ void SLAB::free(void *_addr, size_t) {
     chunk_t *chunk = (chunk_t *)((uint8_t *)_addr - CHUNK_SIZE);
     assert(chunk == chunk->addr);
     // 2. 计算所属 slab_cache 索引
+    auto a = chunk->len;
     assert(chunk->len != 0);
     auto idx = get_idx(chunk->len);
     // 3. 调用对应的 remove 函数
@@ -379,7 +382,7 @@ void SLAB::free(void *_addr, size_t) {
 #undef DEBUG
 #endif
     // 更新统计数据
-    allocator_used_count -= _len;
+    allocator_used_count -= a;
     return;
 }
 
