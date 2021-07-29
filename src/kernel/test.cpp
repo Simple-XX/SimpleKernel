@@ -22,8 +22,16 @@ int32_t test_pmm(void) {
          (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
                                   COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
+    // 再加上启动信息使用的页，一般为一页
+    kernel_pages++;
+    // TODO: 替换宏
+    // riscv 的 dtb 占用空间比较大，两页
+#ifdef __riscv
+    kernel_pages++;
+#endif
     // 空闲页数应该等于物理内存大小-内核使用
-    assert(free_pages == (COMMON::PMM_SIZE / COMMON::PAGE_SIZE) - kernel_pages);
+    assert(free_pages ==
+           (PMM::get_pmm_length() / COMMON::PAGE_SIZE) - kernel_pages);
     // 获取已使用页数
     size_t used_pages = PMM::get_used_pages_count();
     // 已使用页数应该等于内核使用页数
