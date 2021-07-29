@@ -8,18 +8,18 @@
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
+.extern boot_info_addr
+.extern dtb_init_hart
 _start:
-    la    sp, stack_top
-    # 在调用 cpp_init 之前保存由 opensbi 传递的 hart 和 dtb 地址参数
-    addi sp, sp, -16
-    sd a1, (0)(sp)
-    sd a0, (8)(sp)
+    # 保存 sbi 传递的参数
+    # 将 a0 的值传递给 dtb_init_hart
+    sw a0, dtb_init_hart, t0
+    # 将 a1 的值传递给 boot_info_addr
+    sw a1, boot_info_addr, t0
+    # 设置栈
+    la sp, stack_top
     # 初始化 C++
     call cpp_init
-    # cpp_init 结束后恢复
-    ld a0, (8)(sp)
-    ld a1, (0)(sp)
-    addi sp, sp, 16
     call kernel_main
 
 .section .bss
