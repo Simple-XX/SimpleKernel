@@ -249,8 +249,14 @@ public:
     const mystl::vector<resource_t *> find(mystl::string _name);
     // 迭代器
     static void dtb_iter(dtb_iter_fun_t _fun, void *_data);
+    // 输出内存信息
     static bool printf_memory(dtb_iter_data_t *_iter_data, void *);
+    // 获取内存信息
     static bool get_memory(dtb_iter_data_t *_iter_data, void *_data);
+    // 获取 CLINT
+    static bool get_clint(dtb_iter_data_t *_iter, void *_data);
+    // 获取 PLIC
+    static bool get_plic(dtb_iter_data_t *_iter, void *_data);
 };
 
 extern "C" size_t dtb_init_hart;

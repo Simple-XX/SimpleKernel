@@ -9,7 +9,6 @@
 #include "intr.h"
 #include "io.h"
 #include "assert.h"
-#include "memlayout.h"
 #include "virtio_blk.h"
 #include "virtio_queue.h"
 
@@ -77,7 +76,8 @@ VIRTIO_BLK::VIRTIO_BLK(void *_addr) : VIRTIO(_addr, BLOCK_DEVICE) {
                io.read32(&regs->status) | DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
     // 允许中断
-    PLIC::set(MEMLAYOUT::VIRTIO0_IRQ, true);
+    // TODO: 这里应该通过 dtb 获取中断号
+    // PLIC::set(MEMLAYOUT::VIRTIO0_IRQ, true);
     printf("virtio blk init\n");
     return;
 }

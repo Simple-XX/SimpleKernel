@@ -8,7 +8,6 @@
 #define _INTR_H_
 
 #include "stdint.h"
-#include "memlayout.h"
 
 void handler_default(void);
 
