@@ -219,26 +219,27 @@ namespace CPU {
     // use riscv's sv39 page table scheme.
     static constexpr const uint64_t SATP_SV39 = (uint64_t)8 << 60;
 
-    static constexpr void *SET_SV39(void *pgd) {
-        return (void *)(SATP_SV39 | (((uint64_t)pgd) >> 12));
+    static constexpr uintptr_t SET_SV39(uintptr_t _pgd) {
+        return (SATP_SV39 | (_pgd >> 12));
     }
 
     // supervisor address translation and protection;
     // holds the address of the page table.
-    static inline void WRITE_SATP(void *x) {
-        __asm__ volatile("csrw satp, %0" : : "r"(x));
+    static inline void SET_PGD(uintptr_t _x) {
+        __asm__ volatile("csrw satp, %0" : : "r"(_x));
         return;
     }
 
-    static inline void *READ_SATP(void) {
-        void *x;
+    // 获取页目录
+    static inline uintptr_t GET_PGD(void) {
+        uintptr_t x;
         __asm__ volatile("csrr %0, satp" : "=r"(x));
         return x;
     }
 
     static inline bool ENABLE_PG(void) {
-        void *x = READ_SATP();
-        WRITE_SATP(SET_SV39(x));
+        uintptr_t x = GET_PGD();
+        SET_PGD(SET_SV39(x));
         info("paging enabled.\n");
         return true;
     }
@@ -345,7 +346,7 @@ namespace CPU {
     }
 
     // flush the TLB.
-    static inline void SFENCE_VMA(void) {
+    static inline void VMM_FLUSH(uintptr_t) {
         // the zero, zero means flush all TLB entries.
         __asm__ volatile("sfence.vma zero, zero");
         return;
