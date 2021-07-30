@@ -10,7 +10,11 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-namespace DTB {
+// 保存 sbi 传递的启动核
+extern "C" size_t dtb_init_hart;
+
+class DTB {
+private:
     // devicetree-specification-v0.3.pdf#5.1
     // 这个结构与 dtb.cpp 中的 addr[] 的使用相关
     static constexpr const uint32_t FDT_MAGIC   = 0xD00DFEED;
@@ -49,30 +53,12 @@ namespace DTB {
     // 数据区结束标记
     static constexpr const uint32_t FDT_END = 0x9;
 
-    // 迭代变量
-    struct dtb_iter_data_t {
-        // 节点标记
-        uint32_t tag;
-        // 节点名
-        char *node_name;
-        // 当前节点在 dtb 中的偏移
-        uint32_t offset;
-        // 如果 tag 为 FDT_PROP，保存属性名，否则为 nullptr
-        char *prop_name;
-        // 如果 tag 为 FDT_PROP，保存属性地址，否则为 nullptr
-        uint32_t *prop_addr;
-        // 如果 tag 为 FDT_PROP，保存属性长度，否则为 0
-        uint32_t prop_len;
-    };
-
-    // 迭代函数
-    typedef bool (*dtb_iter_fun_t)(dtb_iter_data_t *_iter_data, void *_data);
+protected:
+public:
     // 迭代器
-    void dtb_iter(dtb_iter_fun_t _fun, void *_data);
+    static void dtb_iter(BOOT_INFO::iter_fun_t _fun, void *_data);
     // 获取内存信息
-    bool printf_memory(dtb_iter_data_t *_iter_data, void *_data);
-    // 保存 sbi 传递的启动核
-    extern "C" size_t dtb_init_hart;
+    static bool printf_memory(BOOT_INFO::iter_data_t *_iter_data, void *_data);
 };
 
 #endif /* _DTB_H_ */
