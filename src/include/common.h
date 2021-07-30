@@ -20,16 +20,18 @@ namespace COMMON {
     extern "C" void *kernel_data_end[];
     extern "C" void *kernel_end[];
 
-    static constexpr const void *KERNEL_START_ADDR = kernel_start;
-    static constexpr const void *KERNEL_TEXT_START_ADDR
-        __attribute__((unused)) = kernel_text_start;
-    static constexpr const void *KERNEL_TEXT_END_ADDR __attribute__((unused)) =
-        kernel_text_end;
-    static constexpr const void *KERNEL_DATA_START_ADDR
-        __attribute__((unused)) = kernel_data_start;
-    static constexpr const void *KERNEL_DATA_END_ADDR __attribute__((unused)) =
-        kernel_data_end;
-    static constexpr const void *KERNEL_END_ADDR = kernel_end;
+    static const uintptr_t KERNEL_START_ADDR =
+        reinterpret_cast<uintptr_t>(kernel_start);
+    static const uintptr_t KERNEL_TEXT_START_ADDR __attribute__((unused)) =
+        reinterpret_cast<uintptr_t>(kernel_text_start);
+    static const uintptr_t KERNEL_TEXT_END_ADDR __attribute__((unused)) =
+        reinterpret_cast<uintptr_t>(kernel_text_end);
+    static const uintptr_t KERNEL_DATA_START_ADDR __attribute__((unused)) =
+        reinterpret_cast<uintptr_t>(kernel_data_start);
+    static const uintptr_t KERNEL_DATA_END_ADDR __attribute__((unused)) =
+        reinterpret_cast<uintptr_t>(kernel_data_end);
+    static const uintptr_t KERNEL_END_ADDR =
+        reinterpret_cast<uintptr_t>(kernel_end);
 
     // 规定数据大小，方便用
     static constexpr const size_t BYTE = 0x1;
