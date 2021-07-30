@@ -43,10 +43,10 @@ size_t FIRSTFIT::find_len(size_t _len, bool _val) {
     return ~(size_t)0;
 }
 
-FIRSTFIT::FIRSTFIT(const char *_name, const void *_addr, size_t _len)
+FIRSTFIT::FIRSTFIT(const char *_name, uintptr_t _addr, size_t _len)
     : ALLOCATOR(_name, _addr, _len) {
     // 所有清零
-    memset(map, 0, sizeof(map));
+    bzero(map, sizeof(map));
     printf("%s: 0x%p(0x%X pages) init.\n", name, allocator_start_addr,
            allocator_length);
     return;
@@ -57,14 +57,14 @@ FIRSTFIT::~FIRSTFIT(void) {
     return;
 }
 
-void *FIRSTFIT::alloc(size_t _len) {
-    void *res_addr = nullptr;
+uintptr_t FIRSTFIT::alloc(size_t _len) {
+    uintptr_t res_addr = 0;
     // 在位图中寻找连续 _len 的位置
     size_t idx = find_len(_len, false);
     // 如果为 ~0 说明未找到
     if (idx == ~(size_t)0) {
         // err("NO ENOUGH MEM.\n");
-        return nullptr;
+        return res_addr;
     }
     // 遍历区域
     for (auto i = idx; i < idx + _len; i++) {
@@ -73,24 +73,22 @@ void *FIRSTFIT::alloc(size_t _len) {
     }
     // 计算实际地址
     // 分配器起始地址+页长度*第几页
-    res_addr =
-        (void *)((uint8_t *)allocator_start_addr + (COMMON::PAGE_SIZE * idx));
+    res_addr = allocator_start_addr + (COMMON::PAGE_SIZE * idx);
     // 更新统计信息
     allocator_free_count -= _len;
     allocator_used_count += _len;
     return res_addr;
 }
 
-bool FIRSTFIT::alloc(void *_addr, size_t _len) {
+bool FIRSTFIT::alloc(uintptr_t _addr, size_t _len) {
     // _addr 不在管理范围内
-    if (((uint8_t *)_addr < (uint8_t *)allocator_start_addr) ||
-        ((uint8_t *)_addr >= (uint8_t *)allocator_start_addr +
-                                 allocator_length * COMMON::PAGE_SIZE)) {
+    if ((_addr < allocator_start_addr) ||
+        (_addr >=
+         allocator_start_addr + allocator_length * COMMON::PAGE_SIZE)) {
         return false;
     }
     // 计算 _addr 在 map 中的索引
-    size_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
-                 COMMON::PAGE_SIZE;
+    size_t idx = (_addr - allocator_start_addr) / COMMON::PAGE_SIZE;
     // 遍历
     for (auto i = idx; i < idx + _len; i++) {
         // 如果在范围内有已经分配的内存，返回 false
@@ -110,16 +108,15 @@ bool FIRSTFIT::alloc(void *_addr, size_t _len) {
     return true;
 }
 
-void FIRSTFIT::free(void *_addr, size_t _len) {
+void FIRSTFIT::free(uintptr_t _addr, size_t _len) {
     // _addr 不在管理范围内
-    if (((uint8_t *)_addr < (uint8_t *)allocator_start_addr) ||
-        ((uint8_t *)_addr >= (uint8_t *)allocator_start_addr +
-                                 allocator_length * COMMON::PAGE_SIZE)) {
+    if ((_addr < allocator_start_addr) ||
+        (_addr >=
+         allocator_start_addr + allocator_length * COMMON::PAGE_SIZE)) {
         return;
     }
     // 计算 _addr 在 map 中的索引
-    size_t idx = ((uint8_t *)_addr - (uint8_t *)allocator_start_addr) /
-                 COMMON::PAGE_SIZE;
+    size_t idx = (_addr - allocator_start_addr) / COMMON::PAGE_SIZE;
     for (auto i = idx; i < idx + _len; i++) {
         clr(i);
     }

@@ -18,6 +18,9 @@ int       abs(int);
 int       atoi(const char *);
 long      atol(const char *);
 long long atoll(const char *);
+int       itoa(int num, char *str, int len, int base);
+long      strtol(const char *nptr, char **endptr, int base);
+long long strtoll(const char *nptr, char **endptr, int base);
 
 void *malloc(size_t size);
 
