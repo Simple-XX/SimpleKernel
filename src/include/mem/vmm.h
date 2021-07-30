@@ -106,13 +106,13 @@ static constexpr const size_t VMM_PT_LEVEL = 3;
 #endif
 
 // 虚拟地址到物理地址转换
-static constexpr uintptr_t VMM_VA2PA(const void *_va) {
-    return ((uintptr_t)_va) - KERNEL_OFFSET;
+static constexpr uintptr_t VMM_VA2PA(uintptr_t _va) {
+    return _va - KERNEL_OFFSET;
 }
 
 // 物理地址到虚拟地址转换
-static constexpr uintptr_t VMM_PA2VA(const void *_pa) {
-    return ((uintptr_t)_pa) + KERNEL_OFFSET;
+static constexpr uintptr_t VMM_PA2VA(uintptr_t _pa) {
+    return _pa + KERNEL_OFFSET;
 }
 
 class VMM {
@@ -125,8 +125,8 @@ private:
     // 页表项结构：
     // 0~11: pte 属性
     // 12~31: 页表的物理页地址
-    static constexpr uintptr_t PA2PTE(const void *_pa) {
-        return (((uintptr_t)_pa) >> VMM_PAGE_OFF_BITS) << VMM_PTE_PROP_BITS;
+    static constexpr uintptr_t PA2PTE(uintptr_t _pa) {
+        return (_pa >> VMM_PAGE_OFF_BITS) << VMM_PTE_PROP_BITS;
     }
 
     // 页表项转换到物理地址
@@ -142,13 +142,13 @@ private:
     // 获取 _va 的第 _level 级 VPN
     // 例如虚拟地址右移 12+(10 * _level) 位，
     // 得到的就是第 _level 级页表的 VPN
-    static constexpr uintptr_t PX(size_t _level, const void *_va) {
-        return (((uintptr_t)(_va)) >> PXSHIFT(_level)) & VMM_VPN_BITS_MASK;
+    static constexpr uintptr_t PX(size_t _level, uintptr_t _va) {
+        return (_va >> PXSHIFT(_level)) & VMM_VPN_BITS_MASK;
     }
 
     // 在 _pgd 中查找 _va 对应的页表项
     // 如果未找到，_alloc 为真时会进行分配
-    static pte_t *find(const pt_t _pgd, const void *_va, bool _alloc);
+    static pte_t *find(const pt_t _pgd, uintptr_t _va, bool _alloc);
 
 protected:
 public:
@@ -161,13 +161,13 @@ public:
     // 设置当前页目录
     static void set_pgd(const pt_t _pgd);
     // 映射物理地址到虚拟地址
-    static void mmap(const pt_t _pgd, const void *_va, const void *_pa,
+    static void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
                      uint32_t _flag);
     // 取消映射
-    static void unmmap(const pt_t _pgd, const void *_va);
+    static void unmmap(const pt_t _pgd, uintptr_t _va);
     // 获取映射的物理地址
     // 已映射返回 true，未映射返回 false
-    static bool get_mmap(const pt_t _pgd, const void *_va, const void *_pa);
+    static bool get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa);
 };
 
 #endif /* _VMM_H */
