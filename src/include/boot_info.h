@@ -2,12 +2,13 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// boot_info.hpp for Simple-XX/SimpleKernel.
+// boot_info.h for Simple-XX/SimpleKernel.
 
-#ifndef _BOOT_INFO_HPP_
-#define _BOOT_INFO_HPP_
+#ifndef _BOOT_INFO_H_
+#define _BOOT_INFO_H_
 
 #include "stdint.h"
+#include "resource.h"
 
 // 声明，定义在具体的实现中
 // 地址
@@ -30,10 +31,8 @@ public:
     typedef bool (*iter_fun_t)(iter_data_t *_iter_data, void *_data);
     // 迭代器
     static void iter(iter_fun_t _fun, void *_data);
-    // 输出物理内存信息
-    static void printf_memory(void);
-    // 按名称查找
-    static bool find(char *_name);
+    // 获取物理内存信息
+    static resource_t get_memory(void);
 };
 
-#endif /* _BOOT_INFO_HPP_ */
+#endif /* _BOOT_INFO_H_ */

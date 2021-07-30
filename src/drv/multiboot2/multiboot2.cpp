@@ -8,6 +8,7 @@
 #include "stdio.h"
 #include "boot_info.h"
 #include "multiboot2.h"
+#include "resource.h"
 #include "common.h"
 
 // 地址
@@ -55,10 +56,15 @@ void MULTIBOOT2::multiboot2_iter(BOOT_INFO::iter_fun_t _fun, void *_data) {
 // 0x100000(0x7EF0000) 0x1
 // 0x7FF0000(0x10000) 0x3
 // 0xFFFC0000(0x40000) 0x2
-bool MULTIBOOT2::printf_memory(BOOT_INFO::iter_data_t *_iter_data, void *) {
+bool MULTIBOOT2::get_memory(BOOT_INFO::iter_data_t *_iter_data, void *_data) {
     if (_iter_data->type != MULTIBOOT2::MULTIBOOT_TAG_TYPE_MMAP) {
         return false;
     }
+    resource_t *resource = (resource_t *)_data;
+    resource->type       = resource_t::MEM;
+    resource->name       = (char *)"available phy memory";
+    resource->mem.addr   = 0x0;
+    resource->mem.len    = 0;
     MULTIBOOT2::multiboot_mmap_entry_t *mmap =
         ((MULTIBOOT2::multiboot_tag_mmap_t *)_iter_data)->entries;
     for (; (uint8_t *)mmap < (uint8_t *)_iter_data + _iter_data->size;
@@ -66,13 +72,19 @@ bool MULTIBOOT2::printf_memory(BOOT_INFO::iter_data_t *_iter_data, void *) {
                      *)((uint8_t *)mmap +
                         ((MULTIBOOT2::multiboot_tag_mmap_t *)_iter_data)
                             ->entry_size)) {
-        printf("addr: 0x%p, len: 0x%p, type: 0x%X\n", (uintptr_t)mmap->addr,
-               (uintptr_t)mmap->len, mmap->type);
+        // 如果是可用内存或地址小于 1M
+        // 这里将 0~1M 的空间全部算为可用，在 c++ 库可用后进行优化
+        if (mmap->type == MULTIBOOT_MEMORY_AVAILABLE ||
+            mmap->addr < 1 * COMMON::MB) {
+            // 长度+
+            resource->mem.len += mmap->len;
+        }
     }
     return true;
 }
 
-void BOOT_INFO::printf_memory(void) {
-    MULTIBOOT2::multiboot2_iter(MULTIBOOT2::printf_memory, nullptr);
-    return;
+resource_t BOOT_INFO::get_memory(void) {
+    resource_t resource;
+    MULTIBOOT2::multiboot2_iter(MULTIBOOT2::get_memory, &resource);
+    return resource;
 }
