@@ -237,6 +237,18 @@ void *memmove(void *dest, const void *src, size_t len) {
     return dest;
 }
 
+void strrev(char *str) {
+    int           i;
+    int           j;
+    unsigned char a;
+    unsigned      len = strlen((const char *)str);
+    for (i = 0, j = len - 1; i < j; i++, j--) {
+        a      = str[i];
+        str[i] = str[j];
+        str[j] = a;
+    }
+}
+
 #ifdef __cplusplus
 }
 #endif
