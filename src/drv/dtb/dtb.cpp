@@ -10,6 +10,7 @@
 #include "assert.h"
 #include "common.h"
 #include "boot_info.h"
+#include "resource.h"
 #include "dtb.h"
 
 // 地址
@@ -119,24 +120,27 @@ void DTB::dtb_iter(BOOT_INFO::iter_fun_t _fun, void *_data) {
 }
 
 // TODO: 完善
-bool DTB::printf_memory(BOOT_INFO::iter_data_t *_iter_data, void *) {
+bool DTB::get_memory(BOOT_INFO::iter_data_t *_iter_data, void *_data) {
     // 找到 memory 属性节点
-    if (strncmp((char *)_iter_data->node_name, "memory",
-                sizeof("memory") - 1) == 0) {
+    if (strncmp((char *)_iter_data->node_name, "memory", strlen("memory")) ==
+        0) {
         // 找到地址信息
         if (strcmp((char *)_iter_data->prop_name, "reg") == 0) {
-            printf("addr: 0x%p, len: 0x%p\n",
-                   ((uintptr_t)be32toh(_iter_data->prop_addr[0]) +
-                    (uintptr_t)be32toh(_iter_data->prop_addr[1])),
-                   be32toh(_iter_data->prop_addr[2]) +
-                       be32toh(_iter_data->prop_addr[3]));
+            resource_t *resource = (resource_t *)_data;
+            resource->type       = resource_t::MEM;
+            resource->name       = (char *)"phy memory";
+            resource->mem.addr = ((uintptr_t)be32toh(_iter_data->prop_addr[0]) +
+                                  (uintptr_t)be32toh(_iter_data->prop_addr[1]));
+            resource->mem.len  = be32toh(_iter_data->prop_addr[2]) +
+                                be32toh(_iter_data->prop_addr[3]);
             return true;
         }
     }
     return false;
 }
 
-void BOOT_INFO::printf_memory(void) {
-    DTB::dtb_iter(DTB::printf_memory, nullptr);
-    return;
+resource_t BOOT_INFO::get_memory(void) {
+    resource_t resource;
+    DTB::dtb_iter(DTB::get_memory, &resource);
+    return resource;
 }
