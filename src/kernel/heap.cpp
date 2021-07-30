@@ -27,17 +27,17 @@ bool HEAP::init(void) {
 }
 
 void *HEAP::malloc(size_t _byte) {
-    return allocator->alloc(_byte);
+    return (void *)allocator->alloc(_byte);
 }
 
 void HEAP::free(void *_addr) {
     // 堆不需要 _len 参数
-    allocator->free(_addr, 0);
+    allocator->free((uintptr_t)_addr, 0);
     return;
 }
 
 extern "C" void *malloc(size_t _size) {
-    return heap.malloc(_size);
+    return (void *)heap.malloc(_size);
 }
 
 extern "C" void free(void *_p) {
