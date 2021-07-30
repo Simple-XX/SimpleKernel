@@ -286,7 +286,7 @@ public:
     // 迭代器
     static void multiboot2_iter(BOOT_INFO::iter_fun_t _fun, void *_data);
     // 获取内存信息
-    static bool printf_memory(BOOT_INFO::iter_data_t *_iter_data, void *_data);
+    static bool get_memory(BOOT_INFO::iter_data_t *_iter_data, void *_data);
 };
 
 #endif /* _MULTIBOOT2_H_ */
