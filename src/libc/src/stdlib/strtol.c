@@ -7,6 +7,7 @@
 #include "stdlib.h"
 #include "ctype.h"
 #include "limits.h"
+#include "math.h"
 
 /*
  * Convert a string to a long integer.
@@ -142,8 +143,13 @@ long long strtoll(const char *nptr, char **endptr, int base) {
      */
     cutoff = neg ? (unsigned long long)-(LLONG_MIN + LLONG_MAX) + LLONG_MAX
                  : LLONG_MAX;
+
+#if defined(__i386__)
+    cutoff = udivmoddi4(cutoff, base, (unsigned long long *)&cutlim);
+#else
     cutlim = cutoff % (long long)base;
     cutoff /= (long long)base;
+#endif
     for (acc = 0, any = 0;; c = *s++) {
         if (isdigit(c))
             c -= '0';
