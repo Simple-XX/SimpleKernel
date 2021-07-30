@@ -12,7 +12,7 @@
 #include "slab.h"
 
 SLAB::chunk_t::chunk_t(void) {
-    addr = (void *)HEAD;
+    addr = HEAD;
     len  = HEAD;
     prev = this;
     next = this;
@@ -50,7 +50,7 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
     // 找到头节点
     chunk_t *tmp = this;
     while (tmp->next != this) {
-        if (tmp->addr == (void *)HEAD && tmp->len == HEAD) {
+        if (tmp->addr == HEAD && tmp->len == HEAD) {
             res = tmp;
             break;
         }
@@ -95,12 +95,12 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
     // 申请
     chunk_t *new_node = (chunk_t *)PMM::alloc_pages(pages);
     // 如果没有映射则进行映射
-    void *tmp = nullptr;
+    uintptr_t tmp = 0;
     for (size_t i = 0; i < pages; i++) {
         // 地址=初始地址+页数偏移
-        tmp = (uint8_t *)new_node + i * COMMON::PAGE_SIZE;
-        if (VMM::get_mmap(VMM::get_pgd(), tmp, nullptr) == false) {
-            VMM::mmap(VMM::get_pgd(), (void *)new_node, (void *)new_node,
+        tmp = (uintptr_t)((uint8_t *)new_node + i * COMMON::PAGE_SIZE);
+        if (VMM::get_mmap(VMM::get_pgd(), tmp, 0) == false) {
+            VMM::mmap(VMM::get_pgd(), (uintptr_t)new_node, (uintptr_t)new_node,
                       VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
         }
         // 已经映射的情况是不应该出现的
@@ -112,7 +112,7 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
     if (new_node != nullptr) {
         // 初始化
         // 自身的地址
-        new_node->addr = (void *)new_node;
+        new_node->addr = (uintptr_t)new_node;
         // 长度需要减去 chunk_t 的长度
         new_node->len = (pages * COMMON::PAGE_SIZE) - CHUNK_SIZE;
         // 链表指针
@@ -140,9 +140,9 @@ void SLAB::slab_cache_t::free_pmm(void) {
         auto tmp_next = tmp->next;
         // 取消映射
         // 因为每次只能取消映射 1 页，所以需要循环
-        void *tmp_addr = nullptr;
+        uintptr_t tmp_addr = 0;
         for (size_t i = 0; i < pages; i++) {
-            tmp_addr = (uint8_t *)tmp->addr + i * COMMON::PAGE_SIZE;
+            tmp_addr = tmp->addr + i * COMMON::PAGE_SIZE;
             VMM::unmmap(VMM::get_pgd(), tmp_addr);
         }
         // 迭代
@@ -165,9 +165,8 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
     if (old_len > _len + CHUNK_SIZE) {
         // 处理新节点
         // 新节点地址为原本地址+chunk大小+要分配出去的长度
-        chunk_t *new_node =
-            (chunk_t *)((uint8_t *)_node->addr + CHUNK_SIZE + _len);
-        new_node->addr = new_node;
+        chunk_t *new_node = (chunk_t *)(_node->addr + CHUNK_SIZE + _len);
+        new_node->addr    = (uintptr_t)new_node;
         // 剩余长度为原本的长度减去要分配给 _node 的长度，减去新节点的 chunk
         // 大小
         new_node->len = old_len - _len - CHUNK_SIZE;
@@ -202,7 +201,7 @@ void SLAB::slab_cache_t::merge(void) {
         // 内层循环
         while (chunk != tmp) {
             // 如果符合条件
-            if ((uint8_t *)chunk->addr + CHUNK_SIZE + chunk->len == tmp->addr) {
+            if (chunk->addr + CHUNK_SIZE + chunk->len == tmp->addr) {
                 // 进行合并
                 // 加上 tmp 的 chunk 长度
                 chunk->len += CHUNK_SIZE;
@@ -308,7 +307,7 @@ size_t SLAB::get_idx(size_t _len) {
     return res;
 }
 
-SLAB::SLAB(const char *_name, const void *_addr, size_t _len)
+SLAB::SLAB(const char *_name, uintptr_t _addr, size_t _len)
     : ALLOCATOR(_name, _addr, _len) {
     // 初始化 slab_cache
     for (size_t i = LEN256; i < LEN65536; i++) {
@@ -324,8 +323,8 @@ SLAB::~SLAB(void) {
     return;
 }
 
-void *SLAB::alloc(size_t _len) {
-    void *res = nullptr;
+uintptr_t SLAB::alloc(size_t _len) {
+    uintptr_t res = 0;
     // 分配时，首先确定需要分配的大小
     // _len 为零直接返回
     // 大小不能超过 65536B
@@ -338,9 +337,9 @@ void *SLAB::alloc(size_t _len) {
         chunk_t *chunk = slab_cache[idx].find(_len);
         // 不为空的话计算地址
         if (chunk != nullptr) {
-            assert(chunk == chunk->addr);
+            assert((uintptr_t)chunk == chunk->addr);
             // 计算地址
-            res = (uint8_t *)chunk->addr + CHUNK_SIZE;
+            res = chunk->addr + CHUNK_SIZE;
         }
 // #define DEBUG
 #ifdef DEBUG
@@ -350,25 +349,25 @@ void *SLAB::alloc(size_t _len) {
 #endif
     }
     // 更新统计数据
-    if (res != nullptr) {
+    if (res != 0) {
         allocator_used_count += _len;
     }
     // 返回
     return res;
 }
 
-bool SLAB::alloc(void *, size_t) {
+bool SLAB::alloc(uintptr_t, size_t) {
     return true;
 }
 
-void SLAB::free(void *_addr, size_t) {
-    if (_addr == nullptr) {
+void SLAB::free(uintptr_t _addr, size_t) {
+    if (_addr == 0) {
         return;
     }
     // 要释放一个 chunk
     // 1. 计算 chunk 地址
-    chunk_t *chunk = (chunk_t *)((uint8_t *)_addr - CHUNK_SIZE);
-    assert(chunk == chunk->addr);
+    chunk_t *chunk = (chunk_t *)(_addr - CHUNK_SIZE);
+    assert((uintptr_t)chunk == chunk->addr);
     // 2. 计算所属 slab_cache 索引
     auto a = chunk->len;
     assert(chunk->len != 0);
