@@ -8,7 +8,7 @@
 #include "common.h"
 #include "stdio.h"
 #include "iostream"
-#include "boot_info.hpp"
+#include "boot_info.h"
 #include "kernel.h"
 
 // TODO: gdb 调试
