@@ -16,9 +16,8 @@ int32_t test_pmm(void) {
     size_t free_pages = PMM::get_free_pages_count();
     // 计算内核实际占用页数
     auto kernel_pages =
-        ((uint8_t *)COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
-         (uint8_t *)COMMON::ALIGN(COMMON::KERNEL_START_ADDR,
-                                  COMMON::PAGE_SIZE)) /
+        (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
+         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
     // 再加上启动信息使用的页，一般为一页
     kernel_pages++;
@@ -49,7 +48,7 @@ int32_t test_pmm(void) {
     assert(PMM::get_used_pages_count() == 205 + kernel_pages);
     // 分配超过限度的内存，应该返回 nullptr
     auto addr5 = PMM::alloc_pages(0xFFFFFFFF);
-    assert(addr5 == nullptr);
+    assert(addr5 == 0);
     // 全部释放
     PMM::free_pages(addr1, 2);
     PMM::free_pages(addr2, 3);
