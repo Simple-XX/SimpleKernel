@@ -9,7 +9,7 @@
 #include "cpu.hpp"
 #include "pmm.h"
 #include "vmm.h"
-#include "boot_info.hpp"
+#include "boot_info.h"
 #include "io.h"
 #include "intr.h"
 
@@ -31,30 +31,29 @@ PLIC::~PLIC(void) {
     return;
 }
 
-static PMM::phy_mem_t plic_phy_mem;
+static resource_t resource;
 
-static const uint64_t PLIC_PRIORITY = ((uintptr_t)plic_phy_mem.addr + 0x0);
-static const uint64_t PLIC_PENDING  = ((uintptr_t)plic_phy_mem.addr + 0x1000);
+static const uint64_t PLIC_PRIORITY = resource.mem.addr + 0x0;
+static const uint64_t PLIC_PENDING  = resource.mem.addr + 0x1000;
 
 static uint64_t PLIC_SENABLE(uint64_t hart) {
-    return (uintptr_t)plic_phy_mem.addr + 0x2080 + hart * 0x100;
+    return resource.mem.addr + 0x2080 + hart * 0x100;
 }
 
 static uint64_t PLIC_SPRIORITY(uint64_t hart) {
-    return (uintptr_t)plic_phy_mem.addr + 0x201000 + hart * 0x2000;
+    return resource.mem.addr + 0x201000 + hart * 0x2000;
 }
 
 static uint64_t PLIC_SCLAIM(uint64_t hart) {
-    return (uintptr_t)plic_phy_mem.addr + 0x201004 + hart * 0x2000;
+    return resource.mem.addr + 0x201004 + hart * 0x2000;
 }
 
 int32_t PLIC::init(void) {
     // 映射 plic
-    BOOT_INFO::get_plic(&plic_phy_mem);
-    for (uintptr_t a = (uintptr_t)plic_phy_mem.addr;
-         a < ((uintptr_t)plic_phy_mem.addr) + plic_phy_mem.len; a += 0x1000) {
-        VMM::mmap(VMM::get_pgd(), (void *)a, (void *)a,
-                  VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    resource = BOOT_INFO::get_plic();
+    for (uintptr_t a = resource.mem.addr;
+         a < resource.mem.addr + resource.mem.len; a += 0x1000) {
+        VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     // TODO: 多核情况下设置所有 hart
     // 将当前 hart 的 S 模式优先级阈值设置为 0
@@ -69,7 +68,7 @@ int32_t PLIC::init(void) {
 
 void PLIC::set(uint8_t _no, bool _status) {
     // 设置 IRQ 的属性为非零，即启用 plic
-    io.write32((void *)((uintptr_t)plic_phy_mem.addr + _no * 4), _status);
+    io.write32((void *)(resource.mem.addr + _no * 4), _status);
     // TODO: 多核情况下设置所有 hart
     // 为当前 hart 的 S 模式设置 uart 的 enable
     if (_status) {
