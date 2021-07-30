@@ -43,7 +43,7 @@ void DTB::dtb_iter(BOOT_INFO::iter_fun_t _fun, void *_data) {
     // 匹配版本
     assert(be32toh(addr[5]) == FDT_VERSION);
     // 设置 dtb 总大小
-    boot_info_size = be32toh(addr[1]);
+    BOOT_INFO::boot_info_size = be32toh(addr[1]);
     BOOT_INFO::iter_data_t iter;
     // 指向数据区
     iter.offset = be32toh(addr[2]);
@@ -56,6 +56,10 @@ void DTB::dtb_iter(BOOT_INFO::iter_fun_t _fun, void *_data) {
             // 新建节点
             case FDT_BEGIN_NODE: {
                 iter.node_name = (char *)(pos + 1);
+                // 如果是第一个节点，节点名 “/” 会被省略，手动加上
+                if (pos == (uint32_t *)(((uint8_t *)addr) + iter.offset)) {
+                    iter.node_name = (char *)"/";
+                }
                 // 跳过 tag
                 pos++;
                 // 跳过 name
