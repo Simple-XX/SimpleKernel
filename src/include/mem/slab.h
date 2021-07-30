@@ -24,9 +24,9 @@ private:
     // 第二级保存相同大小的内存块的使用情况
     struct chunk_t {
         // 头节点标识
-        static constexpr const uint64_t HEAD = 0xCDCD;
+        static constexpr const uintptr_t HEAD = 0xCDCD;
         // chunk_t 结构的物理地址
-        void *addr;
+        uintptr_t addr;
         // 长度，不包括自身大小 单位为 byte
         // 记录的是实际使用的长度
         // 按照 8byte 对齐
@@ -133,14 +133,14 @@ private:
 
 protected:
 public:
-    SLAB(const char *_name, const void *_addr, size_t _len);
+    SLAB(const char *_name, uintptr_t _addr, size_t _len);
     ~SLAB(void);
     // _len: 以 byte 为单位
-    void *alloc(size_t _len);
+    uintptr_t alloc(size_t _len);
     // slab 不支持这个函数
-    bool alloc(void *_addr, size_t _len);
+    bool alloc(uintptr_t _addr, size_t _len);
     // slab 不使用第二个参数
-    void free(void *_addr, size_t);
+    void free(uintptr_t _addr, size_t);
     // 暂时不支持
     size_t get_used_count(void) const;
     size_t get_free_count(void) const;
