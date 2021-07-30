@@ -12,6 +12,9 @@
 
 class SBI_CONSOLE {
 private:
+    // 当前命令行颜色
+    static COLOR::color_t color;
+
 protected:
 public:
     SBI_CONSOLE(void);
