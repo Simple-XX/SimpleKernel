@@ -8,13 +8,14 @@
 #include "stdio.h"
 #include "pmm.h"
 #include "vmm.h"
-#include "boot_info.hpp"
+#include "boot_info.h"
+#include "resource.h"
 #include "intr.h"
 #include "cpu.hpp"
 
 // 缺页处理
 static void pg_load_excp(void) {
-    void *addr = (void *)CPU::READ_STVAL();
+    uintptr_t addr = CPU::READ_STVAL();
     // 映射页
     VMM::mmap(VMM::get_pgd(), addr, addr, VMM_PAGE_READABLE);
     info("pg_load_excp done: 0x%p.\n", addr);
@@ -22,7 +23,7 @@ static void pg_load_excp(void) {
 }
 
 static void pg_store_excp(void) {
-    void *addr = (void *)CPU::READ_STVAL();
+    uintptr_t addr = CPU::READ_STVAL();
     // 映射页
     VMM::mmap(VMM::get_pgd(), addr, addr,
               VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
@@ -59,15 +60,14 @@ void CLINT::do_excp(uint8_t _no) {
     return;
 }
 
-static PMM::phy_mem_t clint_phy_mem;
+static resource_t resource;
 
 int32_t CLINT::init(void) {
     // 映射 clint 地址
-    BOOT_INFO::get_clint(&clint_phy_mem);
-    for (uintptr_t a = (uintptr_t)clint_phy_mem.addr;
-         a < ((uintptr_t)clint_phy_mem.addr) + clint_phy_mem.len; a += 0x1000) {
-        VMM::mmap(VMM::get_pgd(), (void *)a, (void *)a,
-                  VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    resource = BOOT_INFO::get_clint();
+    for (uintptr_t a = resource.mem.addr;
+         a < resource.mem.addr + resource.mem.len; a += 0x1000) {
+        VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
