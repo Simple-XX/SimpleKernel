@@ -126,7 +126,7 @@ extern "C" int32_t printf(const char *fmt, ...) {
 
 extern "C" int32_t info(const char *fmt, ...) {
     COLOR::color_t curr_color = io.get_color();
-    io.set_color(COLOR::LIGHT_GREEN);
+    io.set_color(COLOR::CYAN);
     va_list va;
     int32_t i;
     va_start(va, fmt);
@@ -140,7 +140,7 @@ extern "C" int32_t info(const char *fmt, ...) {
 
 extern "C" int32_t warn(const char *fmt, ...) {
     COLOR::color_t curr_color = io.get_color();
-    io.set_color(COLOR::LIGHT_MAGENTA);
+    io.set_color(COLOR::YELLOW);
     va_list va;
     int32_t i;
     va_start(va, fmt);
