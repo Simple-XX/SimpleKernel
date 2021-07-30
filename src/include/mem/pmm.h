@@ -24,18 +24,9 @@
 // 目前的代码只能在全部内存中分配，如果需要分配到内核空间/用户空间就没办法了
 // 两个分配器，管两个区域即可
 class PMM {
-public:
-    // 保存物理地址信息
-    struct phy_mem_t {
-        void * addr;
-        size_t len;
-    };
-
 private:
-    static phy_mem_t phy_mem;
-
     // 物理内存开始地址
-    static const void *start;
+    static uintptr_t start;
     // 物理内存长度，单位为 bytes
     static size_t length;
     // 物理内存页数
@@ -51,10 +42,10 @@ private:
 protected:
 public:
     // 内核与非内核空间的地址与长度，单位为 bytes
-    static const void *kernel_space_start;
-    static size_t      kernel_space_length;
-    static const void *non_kernel_space_start;
-    static size_t      non_kernel_space_length;
+    static uintptr_t kernel_space_start;
+    static size_t    kernel_space_length;
+    static uintptr_t non_kernel_space_start;
+    static size_t    non_kernel_space_length;
     // 构造函数，目前为空
     // TODO: 从 bootloader 接受内存参数进行初始化
     PMM(void);
@@ -65,24 +56,24 @@ public:
     // 获取物理内存长度
     static size_t get_pmm_length(void);
     // 分配一页
-    static void *alloc_page(void);
+    static uintptr_t alloc_page(void);
     // 分配多页
-    static void *alloc_pages(size_t _len);
+    static uintptr_t alloc_pages(size_t _len);
     // 分配以指定地址开始的 _len 页
     // 如果此地址已使用，函数返回 true
-    static bool alloc_pages(void *_addr, size_t _len);
+    static bool alloc_pages(uintptr_t _addr, size_t _len);
     // 申请内核空间
-    static void *alloc_page_kernel(void);
-    static void *alloc_pages_kernel(size_t _len);
-    static bool  alloc_pages_kernel(void *_addr, size_t _len);
+    static uintptr_t alloc_page_kernel(void);
+    static uintptr_t alloc_pages_kernel(size_t _len);
+    static bool      alloc_pages_kernel(uintptr_t _addr, size_t _len);
     // 回收一页
-    static void free_page(void *_addr);
+    static void free_page(uintptr_t _addr);
     // 回收多页
-    static void free_pages(void *_addr, size_t _len);
+    static void free_pages(uintptr_t _addr, size_t _len);
     // 获取当前已使用页数
-    static uint64_t get_used_pages_count(void);
+    static size_t get_used_pages_count(void);
     // 获取当前空闲页
-    static uint64_t get_free_pages_count(void);
+    static size_t get_free_pages_count(void);
 };
 
 #endif /* _PMM_H_ */
