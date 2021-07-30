@@ -14,9 +14,9 @@
 // TODO: gdb 调试
 // TODO: clion 环境
 void kernel_main(void) {
-    show_info();
     // 输出物理地址信息
-    BOOT_INFO::printf_memory();
+    std::cout << BOOT_INFO::get_memory() << std::endl;
+    show_info();
     while (1) {
         ;
     }
