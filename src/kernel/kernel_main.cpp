@@ -14,9 +14,10 @@
 // TODO: gdb 调试
 // TODO: clion 环境
 void kernel_main(void) {
+    // 初始化
+    BOOT_INFO::init();
     // 输出物理地址信息
-    // std::cout << BOOT_INFO::get_memory() << std::endl;
-    DTB::dtb_init();
+    std::cout << BOOT_INFO::get_memory() << std::endl;
     show_info();
     while (1) {
         ;
