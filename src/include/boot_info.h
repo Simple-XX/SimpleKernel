@@ -29,6 +29,8 @@ public:
     struct iter_data_t;
     // 迭代函数
     typedef bool (*iter_fun_t)(iter_data_t *_iter_data, void *_data);
+    // 初始化
+    static bool init(void);
     // 迭代器
     static void iter(iter_fun_t _fun, void *_data);
     // 获取物理内存信息

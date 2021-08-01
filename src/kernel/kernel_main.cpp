@@ -10,12 +10,13 @@
 #include "iostream"
 #include "boot_info.h"
 #include "kernel.h"
-
+#include "dtb.h"
 // TODO: gdb 调试
 // TODO: clion 环境
 void kernel_main(void) {
     // 输出物理地址信息
-    std::cout << BOOT_INFO::get_memory() << std::endl;
+    // std::cout << BOOT_INFO::get_memory() << std::endl;
+    DTB::dtb_init();
     show_info();
     while (1) {
         ;
