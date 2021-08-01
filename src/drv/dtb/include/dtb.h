@@ -1,7 +1,7 @@
 
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
-//
+// Based on https://github.com/brenns10/sos
 // dtb.h for Simple-XX/SimpleKernel.
 
 #ifndef _DTB_H_
@@ -9,12 +9,16 @@
 
 #include "stdint.h"
 #include "stdbool.h"
+#include "boot_info.h"
 #include "resource.h"
 #include "endian.h"
 #include "iostream"
 
-// 保存 sbi 传递的启动核
-extern "C" size_t dtb_init_hart;
+// See devicetree-specification-v0.3.pdf
+// https://e-mailky.github.io/2016-12-06-dts-introduce
+// https://e-mailky.github.io/2019-01-14-dts-1
+// https://e-mailky.github.io/2019-01-14-dts-2
+// https://e-mailky.github.io/2019-01-14-dts-3
 
 class DTB {
 private:
@@ -65,6 +69,20 @@ private:
         uint32_t size_be;
         uint32_t size_le;
     };
+    // 属性节点格式，没有使用，仅用于参考
+    struct fdt_property_t {
+        // 第一个字节表示 type
+        uint32_t tag;
+        // 表示 property value 的长度，byte 为单位
+        uint32_t len;
+        // property 的名称存放在 string block 区域，nameoff 表示其在 string
+        // block 的偏移
+        uint32_t nameoff;
+        // property value值，作为额外数据以'\0'结尾的字符串形式存储 structure
+        // block, 32 - bits对齐，不够的位用 0x0 补齐
+        uint32_t data[0];
+    };
+
     // 路径最大深度
     static constexpr const size_t MAX_DEPTH = 16;
     // 最大节点数
@@ -84,8 +102,8 @@ private:
     struct node_t {
         // 节点名
         char *name;
-        //
-        uint32_t *tok;
+        // 节点地址
+        uint32_t *addr;
         // 父节点
         node_t *parent;
         // 中断父节点
@@ -131,6 +149,18 @@ private:
             }
             return _os;
         }
+
+        bool operator==(const path_t *_path) {
+            if (len != _path->len) {
+                return false;
+            }
+            for (size_t i = 0; i < len; i++) {
+                if (strcmp(path[i], _path->path[i]) != 0) {
+                    { return false; }
+                }
+            }
+            return true;
+        }
     };
 
     // 迭代变量
@@ -151,39 +181,35 @@ private:
         uint8_t nodes_idx;
     };
 
-    struct dt_propenc_field_t {
-        size_t cells;
-        bool   phandle;
-    };
-
-    // 输出属性
-    static void print_attr_propenc(const iter_data_t *_iter,
-                                   dt_propenc_field_t fields[], size_t fcnt);
-
     // 部分属性及格式
     // devicetree-specification-v0.3#2.3
     // devicetree-specification-v0.3#2.4.1
     // 格式
     enum dt_fmt_t {
+        // 未知
         FMT_UNKNOWN = 0,
+        // 空
         FMT_EMPTY,
         FMT_U32,
         FMT_U64,
+        // 字符串
         FMT_STRING,
         FMT_PHANDLE,
+        // 字符串列表
         FMT_STRINGLIST,
         FMT_REG,
         FMT_RANGES,
-        FMT_INTERRUPTS,
     };
 
+    // 用于 get_fmt
     struct dt_prop_fmt_t {
         // 属性名
         char *prop_name;
         // 格式
         enum dt_fmt_t fmt;
     };
-
+    // 用于 get_fmt
+    // 格式信息请查看 devicetree-specification-v0.3#2.3,#2.4 等部分
     static constexpr const dt_prop_fmt_t props[] = {
         {.prop_name = (char *)"", .fmt = FMT_EMPTY},
         {.prop_name = (char *)"compatible", .fmt = FMT_STRINGLIST},
@@ -199,13 +225,12 @@ private:
         {.prop_name = (char *)"dma-ranges", .fmt = FMT_RANGES},
         {.prop_name = (char *)"name", .fmt = FMT_STRING},
         {.prop_name = (char *)"device_type", .fmt = FMT_STRING},
-        {.prop_name = (char *)"interrupts", .fmt = FMT_INTERRUPTS},
+        {.prop_name = (char *)"interrupts", .fmt = FMT_U32},
         {.prop_name = (char *)"interrupt-parent", .fmt = FMT_PHANDLE},
         {.prop_name = (char *)"interrupt-controller", .fmt = FMT_EMPTY},
         {.prop_name = (char *)"value", .fmt = FMT_U32},
         {.prop_name = (char *)"offset", .fmt = FMT_U32},
         {.prop_name = (char *)"regmap", .fmt = FMT_U32},
-
     };
     // 查找 _prop_name 在 dt_fmt_t 的索引
     static dt_fmt_t get_fmt(const char *_prop_name);
@@ -227,6 +252,9 @@ private:
     static bool dtb_init_cb(const iter_data_t *_iter, void *_data);
     // 初始化中断信息
     static bool dtb_init_interrupt_cb(const iter_data_t *_iter, void *_data);
+    // 输出不定长度的数据
+    static void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
+                                   size_t _len);
 
 protected:
 public:
@@ -234,10 +262,21 @@ public:
     static constexpr const uint8_t DT_ITER_BEGIN_NODE = 0x01;
     static constexpr const uint8_t DT_ITER_END_NODE   = 0x02;
     static constexpr const uint8_t DT_ITER_PROP       = 0x04;
-    static void                    dtb_init(void);
-    static bool                    ttt(const iter_data_t *_iter, void *_data);
-    friend std::ostream &          operator<<(std::ostream &     _os,
+    // 初始化
+    static bool dtb_init(void);
+    // 输出
+    friend std::ostream &operator<<(std::ostream &     _os,
                                     const iter_data_t &_iter);
+    // DEBUG 使用的输出函数
+    static bool debug_printf(const iter_data_t *_iter, void *) {
+        std::cout << *_iter << std::endl;
+        return false;
+    }
+};
+
+namespace BOOT_INFO {
+    // 保存 sbi 传递的启动核
+    extern "C" size_t dtb_init_hart;
 };
 
 #endif /* _DTB_H_ */
