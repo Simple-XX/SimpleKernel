@@ -56,6 +56,6 @@ int32_t test_pmm(void) {
     PMM::free_pages(addr4, 100);
     // 现在内存使用情况应该与此函数开始时相同
     assert(PMM::get_free_pages_count() == free_pages);
-    printf("pmm test done.\n");
+    info("pmm test done.\n");
     return 0;
 }
