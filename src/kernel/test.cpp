@@ -105,6 +105,6 @@ int32_t test_vmm(void) {
     VMM::unmmap(VMM::get_pgd(), va);
     assert(VMM::get_mmap(VMM::get_pgd(), va, &addr) == 0);
     assert(addr == 0);
-    printf("vmm test done.\n");
+    info("vmm test done.\n");
     return 0;
 }
