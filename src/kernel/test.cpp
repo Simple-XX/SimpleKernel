@@ -149,6 +149,6 @@ int test_heap(void) {
     heap.free(addr2);
     heap.free(addr3);
     heap.free(addr4);
-    printf("heap test done.\n");
+    info("heap test done.\n");
     return 0;
 }
