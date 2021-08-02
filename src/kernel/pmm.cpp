@@ -87,7 +87,7 @@ bool PMM::init(void) {
     if (alloc_pages_kernel(COMMON::KERNEL_START_ADDR, kernel_pages) == true) {
         // 将 multiboot2/dtb 信息移动到内核空间
         move_boot_info();
-        printf("pmm init.\n");
+        info("pmm init.\n");
         return true;
     }
     else {
