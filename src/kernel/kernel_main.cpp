@@ -13,11 +13,13 @@
 #include "pmm.h"
 #include "vmm.h"
 #include "kernel.h"
-
+#include "dtb.h"
 // TODO: gdb 调试
 // TODO: clion 环境
 // 内核入口
 void kernel_main(void) {
+    // 初始化
+    BOOT_INFO::init();
     // 物理内存初始化
     PMM::init();
     // 测试物理内存

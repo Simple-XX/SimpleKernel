@@ -14,40 +14,29 @@
 #include "common.h"
 #include "pmm.h"
 
-// 地址
-uintptr_t boot_info_addr;
-// 长度
-size_t BOOT_INFO::boot_info_size;
-// 魔数
-uint32_t multiboot2_magic;
-
-struct BOOT_INFO::iter_data_t {
-    // 与 multiboot_tag_t 相同
-    uint32_t type;
-    uint32_t size;
-};
-
 // TODO: 优化
-void MULTIBOOT2::multiboot2_iter(BOOT_INFO::iter_fun_t _fun, void *_data) {
-    void *addr = (void *)boot_info_addr;
-    // 判断魔数是否正确
-    assert(multiboot2_magic == MULTIBOOT2_BOOTLOADER_MAGIC);
-    assert((reinterpret_cast<uintptr_t>(addr) & 7) == 0);
-    // addr+0 保存大小
-    BOOT_INFO::boot_info_size = *(uint32_t *)addr;
+void MULTIBOOT2::multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
+                                 void *_data) {
+    uintptr_t addr = BOOT_INFO::boot_info_addr;
     // 下一字节开始为 tag 信息
-    void *tag_addr =
-        reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(addr) + 8);
-    BOOT_INFO::iter_data_t *tag = (BOOT_INFO::iter_data_t *)tag_addr;
-    for (tag = (BOOT_INFO::iter_data_t *)tag_addr;
-         tag->type != MULTIBOOT_TAG_TYPE_END;
-         tag = (BOOT_INFO::iter_data_t *)((uint8_t *)tag +
-                                          COMMON::ALIGN(tag->size, 8))) {
+    iter_data_t *tag = (iter_data_t *)(addr + 8);
+    for (; tag->type != MULTIBOOT_TAG_TYPE_END;
+         tag = (iter_data_t *)((uint8_t *)tag + COMMON::ALIGN(tag->size, 8))) {
         if (_fun(tag, _data) == true) {
             return;
         }
     }
     return;
+}
+
+bool MULTIBOOT2::multiboot2_init(void) {
+    uintptr_t addr = BOOT_INFO::boot_info_addr;
+    // 判断魔数是否正确
+    assert(BOOT_INFO::multiboot2_magic == MULTIBOOT2_BOOTLOADER_MAGIC);
+    assert((reinterpret_cast<uintptr_t>(addr) & 7) == 0);
+    // addr+0 保存大小
+    BOOT_INFO::boot_info_size = *(uint32_t *)addr;
+    return true;
 }
 
 // 读取 grub2 传递的物理内存信息，保存到 e820map_t 结构体中
@@ -59,7 +48,7 @@ void MULTIBOOT2::multiboot2_iter(BOOT_INFO::iter_fun_t _fun, void *_data) {
 // 0x100000(0x7EF0000) 0x1
 // 0x7FF0000(0x10000) 0x3
 // 0xFFFC0000(0x40000) 0x2
-bool MULTIBOOT2::get_memory(BOOT_INFO::iter_data_t *_iter_data, void *_data) {
+bool MULTIBOOT2::get_memory(const iter_data_t *_iter_data, void *_data) {
     if (_iter_data->type != MULTIBOOT2::MULTIBOOT_TAG_TYPE_MMAP) {
         return false;
     }
@@ -86,8 +75,23 @@ bool MULTIBOOT2::get_memory(BOOT_INFO::iter_data_t *_iter_data, void *_data) {
     return true;
 }
 
-resource_t BOOT_INFO::get_memory(void) {
-    resource_t resource;
-    MULTIBOOT2::multiboot2_iter(MULTIBOOT2::get_memory, &resource);
-    return resource;
-}
+namespace BOOT_INFO {
+    // 地址
+    uintptr_t boot_info_addr;
+    // 长度
+    size_t boot_info_size;
+    // 魔数
+    uint32_t multiboot2_magic;
+
+    bool init(void) {
+        auto res = MULTIBOOT2::multiboot2_init();
+        info("BOOT_INFO init.\n");
+        return res;
+    }
+
+    resource_t get_memory(void) {
+        resource_t resource;
+        MULTIBOOT2::multiboot2_iter(MULTIBOOT2::get_memory, &resource);
+        return resource;
+    }
+};
