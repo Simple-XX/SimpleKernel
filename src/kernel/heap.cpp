@@ -22,7 +22,7 @@ bool HEAP::init(void) {
                                PMM::non_kernel_space_length *
                                    COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&slab_allocator;
-    printf("heap init.\n");
+    info("heap init.\n");
     return 0;
 }
 
