@@ -48,13 +48,13 @@ FIRSTFIT::FIRSTFIT(const char *_name, uintptr_t _addr, size_t _len)
     : ALLOCATOR(_name, _addr, _len) {
     // 所有清零
     bzero(map, sizeof(map));
-    printf("%s: 0x%p(0x%X pages) init.\n", name, allocator_start_addr,
-           allocator_length);
+    info("%s: 0x%p(0x%X pages) init.\n", name, allocator_start_addr,
+         allocator_length);
     return;
 }
 
 FIRSTFIT::~FIRSTFIT(void) {
-    printf("%s finit.\n", name);
+    info("%s finit.\n", name);
     return;
 }
 
