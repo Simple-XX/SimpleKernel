@@ -120,6 +120,7 @@ private:
         uint8_t depth;
         // 节点数
         static size_t count;
+        // TODO: 查找节点中的某一属性
     };
 
     // phandles 与 node 的映射关系
@@ -255,6 +256,8 @@ private:
     // 输出不定长度的数据
     static void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
                                    size_t _len);
+    // 获取内存信息的迭代函数
+    static bool get_memory_iter(const iter_data_t *_iter, void *_data);
 
 protected:
 public:
@@ -263,7 +266,8 @@ public:
     static constexpr const uint8_t DT_ITER_END_NODE   = 0x02;
     static constexpr const uint8_t DT_ITER_PROP       = 0x04;
     // 初始化
-    static bool dtb_init(void);
+    static bool       dtb_init(void);
+    static resource_t get_memory(void);
     // 输出
     friend std::ostream &operator<<(std::ostream &     _os,
                                     const iter_data_t &_iter);

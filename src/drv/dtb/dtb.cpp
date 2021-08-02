@@ -254,9 +254,9 @@ bool DTB::dtb_init_cb(const iter_data_t *_iter, void *) {
 }
 
 bool DTB::dtb_init_interrupt_cb(const iter_data_t *_iter, void *) {
-    unsigned short idx = _iter->nodes_idx;
-    uint32_t       phandle;
-    node_t *       parent;
+    uint8_t  idx = _iter->nodes_idx;
+    uint32_t phandle;
+    node_t * parent;
     // 设置中断父节点
     if (strcmp(_iter->prop_name, "interrupt-parent") == 0) {
         phandle = be32toh(_iter->addr[3]);
@@ -397,6 +397,34 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
     return _os;
 }
 
+// TODO: 临时使用，在 device 分支进行优化
+bool DTB::get_memory_iter(const iter_data_t *_iter, void *_data) {
+    // 找到 memory 属性节点
+    if (strncmp(_iter->path.path[_iter->path.len - 1], "memory",
+                sizeof("memory") - 1) == 0) {
+        // 找到地址信息
+        if (strcmp((char *)_iter->prop_name, "reg") == 0) {
+            resource_t *resource = (resource_t *)_data;
+            resource->name       = (char *)"memory";
+            resource->type       = resource_t::MEM;
+            // 保存
+            resource->mem.addr =
+                be32toh(_iter->prop_addr[0]) + be32toh(_iter->prop_addr[1]);
+            resource->mem.len =
+                be32toh(_iter->prop_addr[2]) + be32toh(_iter->prop_addr[3]);
+            return true;
+        }
+    }
+    return false;
+}
+
+// TODO: 临时使用，在 device 分支进行优化
+resource_t DTB::get_memory(void) {
+    resource_t resource;
+    dtb_iter(DT_ITER_PROP, get_memory_iter, &resource);
+    return resource;
+}
+
 namespace BOOT_INFO {
     // 地址
     uintptr_t boot_info_addr;
@@ -412,11 +440,6 @@ namespace BOOT_INFO {
     }
     // TODO: 自动化
     resource_t get_memory(void) {
-        resource_t resource;
-        resource.name     = (char *)"memory@80000000";
-        resource.type     = resource_t::MEM;
-        resource.mem.addr = 0x80000000;
-        resource.mem.len  = 0x8000000;
-        return resource;
+        return DTB::get_memory();
     }
 };
