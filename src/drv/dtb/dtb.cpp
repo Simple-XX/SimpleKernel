@@ -276,6 +276,8 @@ bool DTB::dtb_init(void) {
     assert(be32toh(info.header->magic) == FDT_MAGIC);
     // 版本
     assert(be32toh(info.header->version) == FDT_VERSION);
+    // 设置大小
+    BOOT_INFO::boot_info_size = be32toh(info.header->totalsize);
     // 内存保留区
     info.reserved =
         (fdt_reserve_entry_t *)(BOOT_INFO::boot_info_addr +
