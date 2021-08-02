@@ -90,7 +90,7 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    printf("vmm init.\n");
+    info("vmm init.\n");
     return 0;
 }
 
