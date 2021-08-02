@@ -32,9 +32,10 @@ void PMM::move_boot_info(void) {
     // 申请空间
     uintptr_t new_addr = alloc_pages_kernel(pages);
     // 复制过来，完成后以前的内存就可以使用了
-    memcpy((void *)new_addr, (void *)boot_info_addr, pages * COMMON::PAGE_SIZE);
+    memcpy((void *)new_addr, (void *)BOOT_INFO::boot_info_addr,
+           pages * COMMON::PAGE_SIZE);
     // 设置地址
-    boot_info_addr = (uintptr_t)new_addr;
+    BOOT_INFO::boot_info_addr = (uintptr_t)new_addr;
     return;
 }
 
