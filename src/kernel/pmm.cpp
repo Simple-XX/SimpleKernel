@@ -36,6 +36,8 @@ void PMM::move_boot_info(void) {
            pages * COMMON::PAGE_SIZE);
     // 设置地址
     BOOT_INFO::boot_info_addr = (uintptr_t)new_addr;
+    // 重新初始化
+    BOOT_INFO::init();
     return;
 }
 
