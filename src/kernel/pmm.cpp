@@ -32,9 +32,12 @@ void PMM::move_boot_info(void) {
     // 申请空间
     uintptr_t new_addr = alloc_pages_kernel(pages);
     // 复制过来，完成后以前的内存就可以使用了
-    memcpy((void *)new_addr, (void *)boot_info_addr, pages * COMMON::PAGE_SIZE);
+    memcpy((void *)new_addr, (void *)BOOT_INFO::boot_info_addr,
+           pages * COMMON::PAGE_SIZE);
     // 设置地址
-    boot_info_addr = (uintptr_t)new_addr;
+    BOOT_INFO::boot_info_addr = (uintptr_t)new_addr;
+    // 重新初始化
+    BOOT_INFO::init();
     return;
 }
 
@@ -86,7 +89,7 @@ bool PMM::init(void) {
     if (alloc_pages_kernel(COMMON::KERNEL_START_ADDR, kernel_pages) == true) {
         // 将 multiboot2/dtb 信息移动到内核空间
         move_boot_info();
-        printf("pmm init.\n");
+        info("pmm init.\n");
         return true;
     }
     else {

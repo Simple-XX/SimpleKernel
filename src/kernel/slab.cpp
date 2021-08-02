@@ -313,13 +313,13 @@ SLAB::SLAB(const char *_name, uintptr_t _addr, size_t _len)
     for (size_t i = LEN256; i < LEN65536; i++) {
         slab_cache[i].len = MIN << i;
     }
-    printf("%s: 0x%p(0x%p bytes) init.\n", name, allocator_start_addr,
-           allocator_length);
+    info("%s: 0x%p(0x%p bytes) init.\n", name, allocator_start_addr,
+         allocator_length);
     return;
 }
 
 SLAB::~SLAB(void) {
-    printf("%s finit.\n", name);
+    info("%s finit.\n", name);
     return;
 }
 
@@ -343,7 +343,7 @@ uintptr_t SLAB::alloc(size_t _len) {
         }
 // #define DEBUG
 #ifdef DEBUG
-        printf("slab alloc\n");
+        info("slab alloc\n");
         std::cout << slab_cache[idx];
 #undef DEBUG
 #endif
@@ -376,7 +376,7 @@ void SLAB::free(uintptr_t _addr, size_t) {
     slab_cache[idx].remove(chunk);
 // #define DEBUG
 #ifdef DEBUG
-    printf("slab free\n");
+    info("slab free\n");
     std::cout << slab_cache[idx];
 #undef DEBUG
 #endif
