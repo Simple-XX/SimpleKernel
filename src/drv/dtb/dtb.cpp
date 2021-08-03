@@ -14,6 +14,7 @@
 #include "dtb.h"
 #include "pmm.h"
 
+bool DTB::inited = false;
 // 所有节点
 DTB::node_t DTB::nodes[MAX_NODES];
 // 节点数
@@ -149,7 +150,7 @@ DTB::node_t *DTB::find_node(const char *_prop_name, const char *_val) {
 }
 
 void DTB::dtb_mem_reserved(void) {
-    fdt_reserve_entry_t *entry = info.reserved;
+    fdt_reserve_entry_t *entry = dtb_info.reserved;
     if (entry->addr_le || entry->size_le) {
         // 目前没有考虑这种情况，先报错
         assert(0);
@@ -164,7 +165,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
     // 路径深度
     iter.path.len = 0;
     // 数据地址
-    iter.addr = (uint32_t *)info.data;
+    iter.addr = (uint32_t *)dtb_info.data;
     // 节点索引
     iter.nodes_idx = 0;
     // 开始 flag
@@ -212,7 +213,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
             }
             case FDT_PROP: {
                 iter.prop_len  = be32toh(iter.addr[1]);
-                iter.prop_name = (char *)(info.str + be32toh(iter.addr[2]));
+                iter.prop_name = (char *)(dtb_info.str + be32toh(iter.addr[2]));
                 iter.prop_addr = iter.addr + 3;
                 if (_cb_flags & DT_ITER_PROP) {
                     if (_cb(&iter, _data)) {
@@ -244,7 +245,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
     return;
 }
 
-DTB::dtb_info_t DTB::info;
+DTB::dtb_info_t DTB::dtb_info;
 
 /*
  * This callback constructs tracking information about each node.
@@ -338,21 +339,23 @@ bool DTB::dtb_init_interrupt_cb(const iter_data_t *_iter, void *) {
 
 bool DTB::dtb_init(void) {
     // 头信息
-    info.header = (fdt_header_t *)BOOT_INFO::boot_info_addr;
+    dtb_info.header = (fdt_header_t *)BOOT_INFO::boot_info_addr;
     // 魔数
-    assert(be32toh(info.header->magic) == FDT_MAGIC);
+    assert(be32toh(dtb_info.header->magic) == FDT_MAGIC);
     // 版本
-    assert(be32toh(info.header->version) == FDT_VERSION);
+    assert(be32toh(dtb_info.header->version) == FDT_VERSION);
     // 设置大小
-    BOOT_INFO::boot_info_size = be32toh(info.header->totalsize);
+    BOOT_INFO::boot_info_size = be32toh(dtb_info.header->totalsize);
     // 内存保留区
-    info.reserved =
+    dtb_info.reserved =
         (fdt_reserve_entry_t *)(BOOT_INFO::boot_info_addr +
-                                be32toh(info.header->off_mem_rsvmap));
+                                be32toh(dtb_info.header->off_mem_rsvmap));
     // 数据区
-    info.data = BOOT_INFO::boot_info_addr + be32toh(info.header->off_dt_struct);
+    dtb_info.data =
+        BOOT_INFO::boot_info_addr + be32toh(dtb_info.header->off_dt_struct);
     // 字符区
-    info.str = BOOT_INFO::boot_info_addr + be32toh(info.header->off_dt_strings);
+    dtb_info.str =
+        BOOT_INFO::boot_info_addr + be32toh(dtb_info.header->off_dt_strings);
     // 检查保留内存
     dtb_mem_reserved();
     // 初始化 map
@@ -379,6 +382,13 @@ bool DTB::dtb_init(void) {
     }
 #undef DEBUG
 #endif
+    if (inited == false) {
+        info("dtb init.\n");
+        inited = true;
+    }
+    else {
+        info("dtb reinit.\n");
+    }
     return true;
 }
 
@@ -523,7 +533,6 @@ namespace BOOT_INFO {
 
     bool init(void) {
         auto res = DTB::dtb_init();
-        info("BOOT_INFO init.\n");
         return res;
     }
     resource_t get_memory(void) {
