@@ -6,7 +6,7 @@
 
 #include "virtio_bus_dev.h"
 
-virtio_bus_dev_t::virtio_bus_dev_t(const mystl::vector<resource_t *> &_res)
+virtio_bus_dev_t::virtio_bus_dev_t(const mystl::vector<resource_t> &_res)
     : bus_t(_res) {
     dev_name = "virtio,mmio";
     drv_name = "virtio,mmio drv";

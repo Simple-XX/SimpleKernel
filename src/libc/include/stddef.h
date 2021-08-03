@@ -36,6 +36,16 @@ typedef long int          ssize_t;
 #endif
 #endif
 
+#ifndef _SSIZE_T
+#define _SSIZE_T
+#undef ssize_t
+typedef int ssize_t;
+#endif
+
+#ifndef NULL
+#define NULL ((void *)0)
+#endif
+
 #ifdef __cplusplus
 }
 #endif

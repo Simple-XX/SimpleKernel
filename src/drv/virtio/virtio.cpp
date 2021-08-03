@@ -145,44 +145,44 @@ VIRTIO::VIRTIO(void *_addr, virt_device_type_t _type)
     return;
 }
 
-VIRTIO::VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props) {
-    // 设置 virtio 设备数量
-    size = _props.size();
-    virtio_mmio_t tmp;
-    for (auto i : _props) {
-        // TODO: 根据 addr_cells 与 size_cells 设置地址与长度，需要 dtb 支持
-        // 高 32 位
-        tmp.addr = (uint64_t)i->standard.reg.at(0) << 32;
-        // 低 32 位
-        tmp.addr += i->standard.reg.at(1);
-        tmp.len = (uint64_t)i->standard.reg.at(2) << 32;
-        tmp.len += i->standard.reg.at(3);
-        // 读取中断号
-        tmp.intrno = i->interrupt_device.interrupts;
-#define DEBUG
-#ifdef DEBUG
-        printf("addr: 0x%p, len: 0x%X, intrno: 0x%X\n", tmp.addr, tmp.len,
-               tmp.intrno);
-#undef DEBUG
-#endif
-        // 添加到向量中
-        mmio.push_back(tmp);
-        // TODO: 现在又缺页中断了，可以优化一下
-        // 映射内存
-        for (uint64_t addr = tmp.addr; addr < tmp.addr + tmp.len;
-             addr += COMMON::PAGE_SIZE) {
-            VMM::mmap(VMM::get_pgd(), (void *)addr, (void *)addr,
-                      VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
-        }
-        // 根据设备类型初始化相应设备
-        // 寻找有效设备，添加到向量中
-        virtio_mmio_dev_t tmp_dev((void *)tmp.addr);
-        if (tmp_dev.is_valid() == true) {
-            devs.push_back(tmp_dev);
-        }
-    }
-    return;
-}
+// VIRTIO::VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props) {
+//     // 设置 virtio 设备数量
+//     size = _props.size();
+//     virtio_mmio_t tmp;
+//     for (auto i : _props) {
+//         // TODO: 根据 addr_cells 与 size_cells 设置地址与长度，需要 dtb 支持
+//         // 高 32 位
+//         tmp.addr = (uint64_t)i->standard.reg.at(0) << 32;
+//         // 低 32 位
+//         tmp.addr += i->standard.reg.at(1);
+//         tmp.len = (uint64_t)i->standard.reg.at(2) << 32;
+//         tmp.len += i->standard.reg.at(3);
+//         // 读取中断号
+//         tmp.intrno = i->interrupt_device.interrupts;
+// #define DEBUG
+// #ifdef DEBUG
+//         printf("addr: 0x%p, len: 0x%X, intrno: 0x%X\n", tmp.addr, tmp.len,
+//                tmp.intrno);
+// #undef DEBUG
+// #endif
+//         // 添加到向量中
+//         mmio.push_back(tmp);
+//         // TODO: 现在又缺页中断了，可以优化一下
+//         // 映射内存
+//         for (uint64_t addr = tmp.addr; addr < tmp.addr + tmp.len;
+//              addr += COMMON::PAGE_SIZE) {
+//             VMM::mmap(VMM::get_pgd(), (void *)addr, (void *)addr,
+//                       VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+//         }
+//         // 根据设备类型初始化相应设备
+//         // 寻找有效设备，添加到向量中
+//         virtio_mmio_dev_t tmp_dev((void *)tmp.addr);
+//         if (tmp_dev.is_valid() == true) {
+//             devs.push_back(tmp_dev);
+//         }
+//     }
+//     return;
+// }
 
 VIRTIO::~VIRTIO(void) {
     for (auto &i : queues) {

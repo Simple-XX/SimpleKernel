@@ -27,8 +27,8 @@ public:
     // 设备使用的驱动
     drv_t *drv;
     // 设备所需资源，可能不止一个
-    mystl::vector<resource_t *> res;
-    dev_t(const mystl::vector<resource_t *> &_res);
+    const mystl::vector<resource_t> &res;
+    dev_t(const mystl::vector<resource_t> &_res);
     virtual ~dev_t(void) = 0;
     friend std::ostream &operator<<(std::ostream &_out, dev_t &_dev) {
         printf("dev_name: %s, drv_name: %s, bus_name: %s, drv: 0x%p",

@@ -20,7 +20,7 @@ pt_t        VMM::curr_dir;
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
-pte_t *VMM::find(const pt_t _pgd, const void *_va, bool _alloc) {
+pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
     pt_t pgd = _pgd;
     // sv39 共有三级页表，一级一级查找
     // -1 是因为最后一级是具体的某一页，在函数最后直接返回
@@ -50,7 +50,7 @@ pte_t *VMM::find(const pt_t _pgd, const void *_va, bool _alloc) {
                 // 清零
                 bzero(pgd, COMMON::PAGE_SIZE);
                 // 填充页表项
-                *pte = PA2PTE(pgd) | VMM_PAGE_VALID;
+                *pte = PA2PTE((uintptr_t)pgd) | VMM_PAGE_VALID;
             }
             // 不分配的话直接返回
             else {
@@ -83,14 +83,14 @@ bool VMM::init(void) {
          addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
          addr += COMMON::PAGE_SIZE) {
         // TODO: 区分代码/数据等段分别映射
-        mmap(pgd_kernel, (void *)addr, (void *)addr,
+        mmap(pgd_kernel, addr, addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
     // 设置页目录
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    printf("vmm init.\n");
+    info("vmm init.\n");
     return 0;
 }
 
@@ -108,8 +108,7 @@ void VMM::set_pgd(const pt_t _pgd) {
     return;
 }
 
-void VMM::mmap(const pt_t _pgd, const void *_va, const void *_pa,
-               uint32_t _flag) {
+void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
     pte_t *pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
     assert(pte != nullptr);
@@ -128,7 +127,7 @@ void VMM::mmap(const pt_t _pgd, const void *_va, const void *_pa,
     return;
 }
 
-void VMM::unmmap(const pt_t _pgd, const void *_va) {
+void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
     pte_t *pte = find(_pgd, _va, false);
     // 找到页表项
     // 未找到
@@ -148,7 +147,7 @@ void VMM::unmmap(const pt_t _pgd, const void *_va) {
     return;
 }
 
-bool VMM::get_mmap(const pt_t _pgd, const void *_va, const void *_pa) {
+bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
     pte_t *pte = find(_pgd, _va, false);
     bool   res = false;
     // pte 不为空且有效，说明映射了

@@ -24,7 +24,7 @@ private:
 
 protected:
 public:
-    virtio_bus_dev_t(const mystl::vector<resource_t *> &_res);
+    virtio_bus_dev_t(const mystl::vector<resource_t> &_res);
     ~virtio_bus_dev_t(void);
 };
 

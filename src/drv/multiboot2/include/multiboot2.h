@@ -9,7 +9,9 @@
 
 #include "stdint.h"
 #include "stdbool.h"
+#include "boot_info.h"
 
+// See Multiboot2 Specification version 2.0.pdf
 // 启动后，在 32 位内核进入点，机器状态如下：
 //   1. CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
 //   2. DS，SS，ES，FS 和 GS 指向基地址为0x00000000，限长为4G –
@@ -21,9 +23,8 @@
 //   7. 系统信息和启动信息块的线性地址保存在 EBX中（相当于一个指针）。
 //      以下即为这个信息块的结构
 
-namespace MULTIBOOT2 {
-    // 魔数
-    extern "C" uint32_t multiboot2_magic;
+class MULTIBOOT2 {
+private:
     /*  How many bytes from the start of the file we search for the header. */
     static constexpr const uint32_t MULTIBOOT_SEARCH       = 32768;
     static constexpr const uint32_t MULTIBOOT_HEADER_ALIGN = 8;
@@ -280,16 +281,26 @@ namespace MULTIBOOT2 {
         uint32_t load_base_addr;
     };
 
-    typedef multiboot_tag_t multiboot2_iter_data_t;
-    // 迭代函数
-    typedef bool (*multiboot2_iter_fun_t)(multiboot2_iter_data_t *_iter_data,
-                                          void *                  _data);
+    // 迭代变量
+    // 与 multiboot_tag_t 相同
+    struct iter_data_t {
+        uint32_t type;
+        uint32_t size;
+    };
+
+public:
+    // 初始化
+    static bool multiboot2_init(void);
     // 迭代器
-    void multiboot2_iter(multiboot2_iter_fun_t _fun, void *_data);
-    // 输出内存信息
-    bool printf_memory(multiboot2_iter_data_t *_iter_data, void *_data);
-    // 获取 e820 信息
-    bool get_memory(multiboot_tag_t *_tag, void *_data);
+    static void multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
+                                void *_data);
+    // 获取内存信息
+    static bool get_memory(const iter_data_t *_iter_data, void *_data);
+};
+
+namespace BOOT_INFO {
+    // 魔数
+    extern "C" uint32_t multiboot2_magic;
 };
 
 #endif /* _MULTIBOOT2_H_ */

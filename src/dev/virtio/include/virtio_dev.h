@@ -13,6 +13,7 @@
 class virtio_dev_t : public dev_t {
 private:
     // 寄存器地址
+    // TODO
     void *addr_start;
     void *addr_end;
     // 中断号
@@ -20,7 +21,7 @@ private:
 
 protected:
 public:
-    virtio_dev_t(const mystl::vector<resource_t *> &_res);
+    virtio_dev_t(const mystl::vector<resource_t> &_res);
     virtual ~virtio_dev_t(void) = 0;
 };
 
