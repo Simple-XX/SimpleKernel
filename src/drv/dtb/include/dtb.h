@@ -229,7 +229,7 @@ private:
     };
 
     // dtb 信息
-    static dtb_info_t info;
+    static dtb_info_t dtb_info;
     // 节点数组
     static node_t nodes[MAX_NODES];
     // phandle 数组
@@ -256,6 +256,8 @@ private:
                               const prop_t *_prop);
     // 在所有节点中寻找 _prop_name/_val 对符合的节点
     static node_t *find_node(const char *_prop_name, const char *_val);
+    // 用于标记是否第一次 init
+    static bool inited;
 
 protected:
 public:
