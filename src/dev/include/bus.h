@@ -19,7 +19,7 @@ struct bus_t : dev_t {
 private:
 protected:
 public:
-    bus_t(const mystl::vector<resource_t *> &_res);
+    bus_t(const mystl::vector<resource_t> &_res);
     virtual ~bus_t(void) = 0;
 };
 

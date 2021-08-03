@@ -206,7 +206,7 @@ public:
     // _addr: 设备地址
     // _type: 设备类型
     VIRTIO(void *_addr, virt_device_type_t _type);
-    VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props);
+    // VIRTIO(const mystl::vector<dtb_prop_node_t *> &_props);
     ~VIRTIO(void);
 };
 

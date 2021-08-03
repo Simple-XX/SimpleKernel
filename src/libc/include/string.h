@@ -33,6 +33,7 @@ extern size_t strlen(const char *src);
 extern size_t strnlen(const char *str, size_t maxlen);
 extern void   backspace(char *src);
 extern void   append(char *src, char dest);
+extern void   strrev(char *str);
 
 #ifdef __cplusplus
 }

@@ -41,7 +41,7 @@ virtio_queue_t::virtio_queue_t(size_t _size) {
     }
     virtq              = (virtq_t *)malloc(COMMON::PAGE_SIZE);
     uint8_t *page_virt = (uint8_t *)virtq;
-    virtq->phys        = VMM_VA2PA((void *)virtq);
+    virtq->phys        = VMM_VA2PA((uintptr_t)virtq);
     virtq->len         = _size;
 
     virtq->desc        = (virtq_desc_t *)(page_virt + off_desc);
@@ -79,7 +79,7 @@ uint32_t virtio_queue_t::alloc_desc(void *_addr) {
     // 更新 free desc 索引
     virtq->free_desc = next;
     // 设置当前 desc addr 项
-    virtq->desc[desc].addr = VMM_VA2PA((void *)_addr);
+    virtq->desc[desc].addr = VMM_VA2PA((uintptr_t)_addr);
     // 设置当前 desc virt_addr 项
     virtq->desc_virt[desc] = _addr;
     return desc;

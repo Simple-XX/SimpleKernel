@@ -19,6 +19,7 @@ pos_t::~pos_t(void) {
     return;
 }
 
+// See https://wiki.osdev.org/Text_UI
 col_t::col_t(const COLOR::color_t _fore, const COLOR::color_t _back)
     : fore(_fore), back(_back) {
     return;
@@ -39,7 +40,7 @@ char_t::~char_t(void) {
 // 当前位置
 pos_t TUI::pos(0, 0);
 // 当前命令行颜色
-col_t TUI::color(COLOR::LIGHT_GREY, COLOR::BLACK);
+col_t TUI::color(COLOR::WHITE, COLOR::BLACK);
 
 TUI::TUI(void) {
     clear();

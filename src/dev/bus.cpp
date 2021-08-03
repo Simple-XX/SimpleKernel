@@ -6,7 +6,7 @@
 
 #include "bus.h"
 
-bus_t::bus_t(const mystl::vector<resource_t *> &_res) : dev_t(_res) {
+bus_t::bus_t(const mystl::vector<resource_t> &_res) : dev_t(_res) {
 // #define DEBUG
 #ifdef DEBUG
     printf("bus_t ctor.\n");
