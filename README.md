@@ -1,4 +1,6 @@
-# printf
+# parse_boot_info
 
-简单的输出，用于内核初期的调试
+对硬件信息的初步解析
+对于 ia32，处理 multiboot2 的信息
+对于 riscv，处理 dtb 信息
 
