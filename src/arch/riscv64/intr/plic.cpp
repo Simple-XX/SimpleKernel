@@ -15,12 +15,29 @@
 
 // 这个值在启动时由 opensbi 传递，暂时写死
 static constexpr const uint64_t hart = 0;
-static void                     externel_intr(void) {
+
+const uint64_t PLIC::PLIC_PRIORITY = PLIC::base_addr + 0x0;
+const uint64_t PLIC::PLIC_PENDING  = PLIC::base_addr + 0x1000;
+uintptr_t      PLIC::base_addr;
+
+static void externel_intr(void) {
     // 读取中断号
     auto no = PLIC::get();
     // 根据中断号判断设备
     printf("externel_intr: 0x%X.\n", no);
     return;
+}
+
+uint64_t PLIC::PLIC_SENABLE(uint64_t hart) {
+    return base_addr + 0x2080 + hart * 0x100;
+}
+
+uint64_t PLIC::PLIC_SPRIORITY(uint64_t hart) {
+    return base_addr + 0x201000 + hart * 0x2000;
+}
+
+uint64_t PLIC::PLIC_SCLAIM(uint64_t hart) {
+    return base_addr + 0x201004 + hart * 0x2000;
 }
 
 PLIC::PLIC(void) {
@@ -31,26 +48,11 @@ PLIC::~PLIC(void) {
     return;
 }
 
-static resource_t resource;
-
-static const uint64_t PLIC_PRIORITY = resource.mem.addr + 0x0;
-static const uint64_t PLIC_PENDING  = resource.mem.addr + 0x1000;
-
-static uint64_t PLIC_SENABLE(uint64_t hart) {
-    return resource.mem.addr + 0x2080 + hart * 0x100;
-}
-
-static uint64_t PLIC_SPRIORITY(uint64_t hart) {
-    return resource.mem.addr + 0x201000 + hart * 0x2000;
-}
-
-static uint64_t PLIC_SCLAIM(uint64_t hart) {
-    return resource.mem.addr + 0x201004 + hart * 0x2000;
-}
-
 int32_t PLIC::init(void) {
     // 映射 plic
-    resource = BOOT_INFO::get_plic();
+    resource_t resource = BOOT_INFO::get_plic();
+    std::cout << resource << std::endl;
+    base_addr = resource.mem.addr;
     for (uintptr_t a = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += 0x1000) {
         VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
@@ -62,13 +64,13 @@ int32_t PLIC::init(void) {
     CLINT::register_interrupt_handler(CLINT::INTR_S_EXTERNEL, externel_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
-    printf("plic init.\n");
+    info("plic init.\n");
     return 0;
 }
 
 void PLIC::set(uint8_t _no, bool _status) {
     // 设置 IRQ 的属性为非零，即启用 plic
-    io.write32((void *)(resource.mem.addr + _no * 4), _status);
+    io.write32((void *)(base_addr + _no * 4), _status);
     // TODO: 多核情况下设置所有 hart
     // 为当前 hart 的 S 模式设置 uart 的 enable
     if (_status) {
