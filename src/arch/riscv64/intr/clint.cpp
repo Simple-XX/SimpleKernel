@@ -86,8 +86,6 @@ int32_t CLINT::init(void) {
     register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
     // 开启内部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SSIE);
-    // 设置时钟中断
-    TIMER::init();
     info("clint init.\n");
     return 0;
 }
