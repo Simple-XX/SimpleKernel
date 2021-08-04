@@ -11,6 +11,7 @@
 #include "intr.h"
 
 // timer interrupt interval
+// TODO: 从 dts 读取
 static constexpr const uint64_t INTERVAL = 390000000 / 20;
 
 void set_next(void) {
