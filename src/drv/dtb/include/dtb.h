@@ -87,6 +87,8 @@ private:
     static constexpr const size_t MAX_DEPTH = 16;
     // 最大节点数
     static constexpr const size_t MAX_NODES = 128;
+    // 最大属性数
+    static constexpr const size_t PROP_MAX = 16;
     // dtb 信息
     struct dtb_info_t {
         // dtb 头
@@ -98,10 +100,28 @@ private:
         // 字符区
         uintptr_t str;
     };
+    // 属性信息
+    struct prop_t {
+        // 属性名
+        char *name;
+        // 属性地址
+        uintptr_t addr;
+        // 属性长度
+        size_t len;
+    };
+    // 路径
+    struct path_t {
+        // 当前路径
+        char *path[MAX_DEPTH];
+        // 长度
+        size_t len;
+        // 全部匹配
+        bool operator==(const path_t *_path);
+    };
     // 节点数据
     struct node_t {
-        // 节点名
-        char *name;
+        // 节点路径
+        path_t path;
         // 节点地址
         uint32_t *addr;
         // 父节点
@@ -118,50 +138,14 @@ private:
         uint32_t phandle;
         // 路径深度
         uint8_t depth;
+        // 属性
+        prop_t props[PROP_MAX];
+        // 属性数
+        size_t prop_count;
         // 节点数
         static size_t count;
-        // TODO: 查找节点中的某一属性
-    };
-
-    // phandles 与 node 的映射关系
-    struct phandle_map_t {
-        uint32_t phandle;
-        node_t * node;
-        // phandle 数量
-        static size_t count;
-    };
-
-    // 路径
-    struct path_t {
-        // 当前路径
-        char *path[MAX_DEPTH];
-        // 长度
-        size_t               len;
-        friend std::ostream &operator<<(std::ostream &_os,
-                                        const path_t &_path) {
-            if (_path.len == 1) {
-                _os << "/";
-            }
-            else {
-                for (size_t i = 1; i < _path.len; i++) {
-                    _os << "/";
-                    _os << _path.path[i];
-                }
-            }
-            return _os;
-        }
-
-        bool operator==(const path_t *_path) {
-            if (len != _path->len) {
-                return false;
-            }
-            for (size_t i = 0; i < len; i++) {
-                if (strcmp(path[i], _path->path[i]) != 0) {
-                    { return false; }
-                }
-            }
-            return true;
-        }
+        // 查找节点中的键值对
+        bool find(const char *_prop_name, const char *_val);
     };
 
     // 迭代变量
@@ -236,8 +220,16 @@ private:
     // 查找 _prop_name 在 dt_fmt_t 的索引
     static dt_fmt_t get_fmt(const char *_prop_name);
 
+    // phandles 与 node 的映射关系
+    struct phandle_map_t {
+        uint32_t phandle;
+        node_t * node;
+        // phandle 数量
+        static size_t count;
+    };
+
     // dtb 信息
-    static dtb_info_t info;
+    static dtb_info_t dtb_info;
     // 节点数组
     static node_t nodes[MAX_NODES];
     // phandle 数组
@@ -256,12 +248,16 @@ private:
     // 输出不定长度的数据
     static void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
                                    size_t _len);
-    // 获取内存信息的迭代函数
-    static bool get_memory_iter(const iter_data_t *_iter, void *_data);
-    // 获取 CLINT
-    static bool get_clint_iter(const iter_data_t *_iter, void *_data);
-    // 获取 PLIC
-    static bool get_plic_iter(const iter_data_t *_iter, void *_data);
+    // 填充 resource
+    // _resource: 被填充的
+    // _node: src 节点，要使用 cells 等信息
+    // _prop: 填充的数据
+    static void fill_resource(resource_t *_resource, const node_t *_node,
+                              const prop_t *_prop);
+    // 在所有节点中寻找 _prop_name/_val 对符合的节点
+    static node_t *find_node(const char *_prop_name, const char *_val);
+    // 用于标记是否第一次 init
+    static bool inited;
 
 protected:
 public:
@@ -270,18 +266,15 @@ public:
     static constexpr const uint8_t DT_ITER_END_NODE   = 0x02;
     static constexpr const uint8_t DT_ITER_PROP       = 0x04;
     // 初始化
-    static bool       dtb_init(void);
-    static resource_t get_memory(void);
-    static resource_t get_clint(void);
-    static resource_t get_plic(void);
-    // 输出
+    static bool dtb_init(void);
+    // 寻找属性-值向匹配的节点，返回其使用的资源
+    // TODO: 只能返回一个资源，没法处理一个节点使用复数资源的情况
+    static resource_t find(const char *_prop_name, const char *_val);
+    // iter 输出
     friend std::ostream &operator<<(std::ostream &     _os,
                                     const iter_data_t &_iter);
-    // DEBUG 使用的输出函数
-    static bool debug_printf(const iter_data_t *_iter, void *) {
-        std::cout << *_iter << std::endl;
-        return false;
-    }
+    // 路径输出
+    friend std::ostream &operator<<(std::ostream &_os, const path_t &_path);
 };
 
 namespace BOOT_INFO {
