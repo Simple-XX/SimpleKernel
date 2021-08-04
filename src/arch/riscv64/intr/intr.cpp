@@ -67,6 +67,6 @@ int32_t INTR::init(void) {
     CLINT::init();
     // 外部中断初始化
     PLIC::init();
-    printf("intr init.\n");
+    info("intr init.\n");
     return 0;
 }
