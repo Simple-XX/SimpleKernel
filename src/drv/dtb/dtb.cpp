@@ -14,6 +14,7 @@
 #include "dtb.h"
 #include "pmm.h"
 
+bool DTB::inited = false;
 // 所有节点
 DTB::node_t DTB::nodes[MAX_NODES];
 // 节点数
@@ -22,6 +23,31 @@ size_t DTB::node_t::count = 0;
 DTB::phandle_map_t DTB::phandle_map[MAX_NODES];
 // phandle 数
 size_t DTB::phandle_map_t::count = 0;
+
+bool DTB::path_t::operator==(const DTB::path_t *_path) {
+    if (len != _path->len) {
+        return false;
+    }
+    for (size_t i = 0; i < len; i++) {
+        if (strcmp(path[i], _path->path[i]) != 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool DTB::node_t::find(const char *_prop_name, const char *_val) {
+    for (size_t i = 0; i < prop_count; i++) {
+        // 匹配属性
+        if (strcmp(props[i].name, _prop_name) == 0) {
+            // 匹配值
+            if (strcmp((char *)props[i].addr, _val) == 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 DTB::node_t *DTB::get_phandle(uint32_t _phandle) {
     // 在 phandle_map 中寻找对应的节点
@@ -88,12 +114,49 @@ void DTB::print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
     return;
 }
 
+void DTB::fill_resource(resource_t *_resource, const node_t *_node,
+                        const prop_t *_prop) {
+    // 内存类型
+    if (_resource->type == resource_t::MEM) {
+        // 根据 address_cells 与 size_cells 填充
+        // resource 一般来说两者是相等的
+        if (_node->parent->address_cells == 1) {
+            assert(_node->parent->size_cells == 1);
+            _resource->mem.addr = be32toh(((uint32_t *)_prop->addr)[0]);
+            _resource->mem.len  = be32toh(((uint32_t *)_prop->addr)[1]);
+        }
+        else if (_node->parent->address_cells == 2) {
+            assert(_node->parent->size_cells == 2);
+            _resource->mem.addr = be32toh(((uint32_t *)_prop->addr)[0]) +
+                                  be32toh(((uint32_t *)_prop->addr)[1]);
+            _resource->mem.len = be32toh(((uint32_t *)_prop->addr)[2]) +
+                                 be32toh(((uint32_t *)_prop->addr)[3]);
+        }
+        else {
+            assert(0);
+        }
+    }
+    return;
+}
+
+DTB::node_t *DTB::find_node(const char *_prop_name, const char *_val) {
+    node_t *res = nullptr;
+    // 遍历 nodes
+    for (size_t i = 0; i < nodes[0].count; i++) {
+        // 如果 nodes[i] 中有属性/值对符合要求
+        if (nodes[i].find(_prop_name, _val) == true) {
+            // 设置返回值
+            res = &nodes[i];
+        }
+    }
+    return res;
+}
+
 void DTB::dtb_mem_reserved(void) {
-    fdt_reserve_entry_t *entry;
-    printf("+ reserved memory regions at 0x%X\n", info.reserved);
-    for (entry = info.reserved; entry->addr_le || entry->size_le; entry++) {
-        printf("  addr=0x%X, size=0x%X\n", be32toh(entry->addr_le),
-               be32toh(entry->size_le));
+    fdt_reserve_entry_t *entry = dtb_info.reserved;
+    if (entry->addr_le || entry->size_le) {
+        // 目前没有考虑这种情况，先报错
+        assert(0);
     }
     return;
 }
@@ -105,7 +168,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
     // 路径深度
     iter.path.len = 0;
     // 数据地址
-    iter.addr = (uint32_t *)info.data;
+    iter.addr = (uint32_t *)dtb_info.data;
     // 节点索引
     iter.nodes_idx = 0;
     // 开始 flag
@@ -153,7 +216,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
             }
             case FDT_PROP: {
                 iter.prop_len  = be32toh(iter.addr[1]);
-                iter.prop_name = (char *)(info.str + be32toh(iter.addr[2]));
+                iter.prop_name = (char *)(dtb_info.str + be32toh(iter.addr[2]));
                 iter.prop_addr = iter.addr + 3;
                 if (_cb_flags & DT_ITER_PROP) {
                     if (_cb(&iter, _data)) {
@@ -185,7 +248,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
     return;
 }
 
-DTB::dtb_info_t DTB::info;
+DTB::dtb_info_t DTB::dtb_info;
 
 /*
  * This callback constructs tracking information about each node.
@@ -198,7 +261,7 @@ bool DTB::dtb_init_cb(const iter_data_t *_iter, void *) {
         // 开始
         case FDT_BEGIN_NODE: {
             // 设置节点基本信息
-            nodes[idx].name  = _iter->path.path[_iter->path.len - 1];
+            nodes[idx].path  = _iter->path;
             nodes[idx].addr  = _iter->addr;
             nodes[idx].depth = _iter->path.len;
             // 设置默认值
@@ -242,6 +305,13 @@ bool DTB::dtb_init_cb(const iter_data_t *_iter, void *) {
                 phandle_map[phandle_map[0].count].node    = &nodes[idx];
                 phandle_map[0].count++;
             }
+            // 添加属性
+            nodes[idx].props[nodes[idx].prop_count].name = _iter->prop_name;
+            nodes[idx].props[nodes[idx].prop_count].addr =
+                (uintptr_t)(_iter->addr + 3);
+            nodes[idx].props[nodes[idx].prop_count].len =
+                be32toh(_iter->addr[1]);
+            nodes[idx].prop_count++;
             break;
         }
         case FDT_END_NODE: {
@@ -272,21 +342,25 @@ bool DTB::dtb_init_interrupt_cb(const iter_data_t *_iter, void *) {
 
 bool DTB::dtb_init(void) {
     // 头信息
-    info.header = (fdt_header_t *)BOOT_INFO::boot_info_addr;
+    dtb_info.header = (fdt_header_t *)BOOT_INFO::boot_info_addr;
     // 魔数
-    assert(be32toh(info.header->magic) == FDT_MAGIC);
+    assert(be32toh(dtb_info.header->magic) == FDT_MAGIC);
     // 版本
-    assert(be32toh(info.header->version) == FDT_VERSION);
+    assert(be32toh(dtb_info.header->version) == FDT_VERSION);
     // 设置大小
-    BOOT_INFO::boot_info_size = be32toh(info.header->totalsize);
+    BOOT_INFO::boot_info_size = be32toh(dtb_info.header->totalsize);
     // 内存保留区
-    info.reserved =
+    dtb_info.reserved =
         (fdt_reserve_entry_t *)(BOOT_INFO::boot_info_addr +
-                                be32toh(info.header->off_mem_rsvmap));
+                                be32toh(dtb_info.header->off_mem_rsvmap));
     // 数据区
-    info.data = BOOT_INFO::boot_info_addr + be32toh(info.header->off_dt_struct);
+    dtb_info.data =
+        BOOT_INFO::boot_info_addr + be32toh(dtb_info.header->off_dt_struct);
     // 字符区
-    info.str = BOOT_INFO::boot_info_addr + be32toh(info.header->off_dt_strings);
+    dtb_info.str =
+        BOOT_INFO::boot_info_addr + be32toh(dtb_info.header->off_dt_strings);
+    // 检查保留内存
+    dtb_mem_reserved();
     // 初始化 map
     bzero(nodes, sizeof(nodes));
     bzero(phandle_map, sizeof(phandle_map));
@@ -297,10 +371,59 @@ bool DTB::dtb_init(void) {
     dtb_iter(DT_ITER_PROP, dtb_init_interrupt_cb, nullptr);
 // #define DEBUG
 #ifdef DEBUG
-    dtb_iter(DT_ITER_PROP, debug_printf, nullptr);
+    // 输出所有信息
+    for (size_t i = 0; i < nodes[0].count; i++) {
+        std::cout << nodes[i].path << ": " << std::endl;
+        for (size_t j = 0; j < nodes[i].prop_count; j++) {
+            printf("%s: ", nodes[i].props[j].name);
+            for (size_t k = 0; k < nodes[i].props[j].len / 4; k++) {
+                printf("0x%X ",
+                       be32toh(((uint32_t *)nodes[i].props[j].addr)[k]));
+            }
+            printf("\n");
+        }
+    }
 #undef DEBUG
 #endif
+    if (inited == false) {
+        info("dtb init.\n");
+        inited = true;
+    }
+    else {
+        info("dtb reinit.\n");
+    }
     return true;
+}
+
+resource_t DTB::find(const char *_prop_name, const char *_val) {
+    resource_t resource;
+    // 找到节点
+    auto node = find_node(_prop_name, _val);
+    // 根据类型不同进行相应设置
+    if (strcmp(_val, "memory") == 0) {
+        // 设置 resource 基本信息
+        resource.name = (char *)"memory";
+        resource.type = resource_t::MEM;
+    }
+    else if (strcmp(_val, "riscv,plic0") == 0) {
+        // 设置 resource 基本信息
+        resource.name = (char *)"plic0 memory";
+        resource.type = resource_t::MEM;
+    }
+    else if (strcmp(_val, "riscv,clint0") == 0) {
+        // 设置 resource 基本信息
+        resource.name = (char *)"clint0 memory";
+        resource.type = resource_t::MEM;
+    }
+    // 找到 reg
+    for (size_t i = 0; i < node->prop_count; i++) {
+        if (strcmp(node->props[i].name, "reg") == 0) {
+            // 填充数据
+            fill_resource(&resource, node, &node->props[i]);
+            break;
+        }
+    }
+    return resource;
 }
 
 std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
@@ -341,7 +464,7 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
             uint32_t     phandle = be32toh(_iter.addr[3]);
             DTB::node_t *ref     = DTB::get_phandle(phandle);
             if (ref != nullptr) {
-                printf("%s: <phandle &%s>", _iter.prop_name, ref->name);
+                printf("%s: <phandle &%s>", _iter.prop_name, ref->path.path[0]);
             }
             else {
                 printf("%s: <phandle 0x%X>", _iter.prop_name, phandle);
@@ -400,86 +523,17 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
     return _os;
 }
 
-// TODO: 临时使用，在 device 分支进行优化
-bool DTB::get_memory_iter(const iter_data_t *_iter, void *_data) {
-    // 找到 memory 属性节点
-    if (strncmp(_iter->path.path[_iter->path.len - 1], "memory",
-                sizeof("memory") - 1) == 0) {
-        // 找到地址信息
-        if (strcmp((char *)_iter->prop_name, "reg") == 0) {
-            resource_t *resource = (resource_t *)_data;
-            resource->name       = (char *)"memory";
-            resource->type       = resource_t::MEM;
-            // 保存
-            resource->mem.addr =
-                be32toh(_iter->prop_addr[0]) + be32toh(_iter->prop_addr[1]);
-            resource->mem.len =
-                be32toh(_iter->prop_addr[2]) + be32toh(_iter->prop_addr[3]);
-            return true;
+std::ostream &operator<<(std::ostream &_os, const DTB::path_t &_path) {
+    if (_path.len == 1) {
+        _os << "/";
+    }
+    else {
+        for (size_t i = 1; i < _path.len; i++) {
+            _os << "/";
+            _os << _path.path[i];
         }
     }
-    return false;
-}
-
-// TODO: 完善
-bool DTB::get_clint_iter(const iter_data_t *_iter, void *_data) {
-    // 找到 memory 属性节点
-    if (strncmp((char *)_iter->path.path[_iter->path.len - 1], "clint",
-                sizeof("clint") - 1) == 0) {
-        // 找到地址信息
-        if (strcmp((char *)_iter->prop_name, "reg") == 0) {
-            resource_t *resource = (resource_t *)_data;
-            resource->type       = resource_t::MEM;
-            resource->name       = (char *)"clint memory";
-            resource->mem.addr   = ((uintptr_t)be32toh(_iter->prop_addr[0]) +
-                                  (uintptr_t)be32toh(_iter->prop_addr[1]));
-            resource->mem.len =
-                be32toh(_iter->prop_addr[2]) + be32toh(_iter->prop_addr[3]);
-            return true;
-        }
-    }
-    return false;
-}
-
-// TODO: 完善
-bool DTB::get_plic_iter(const iter_data_t *_iter, void *_data) {
-    // 找到 memory 属性节点
-    if (strncmp((char *)_iter->path.path[_iter->path.len - 1], "plic",
-                sizeof("plic") - 1) == 0) {
-        // 找到地址信息
-        if (strcmp((char *)_iter->prop_name, "reg") == 0) {
-            resource_t *resource = (resource_t *)_data;
-            resource->type       = resource_t::MEM;
-            resource->name       = (char *)"plic memory";
-            resource->mem.addr   = ((uintptr_t)be32toh(_iter->prop_addr[0]) +
-                                  (uintptr_t)be32toh(_iter->prop_addr[1]));
-            resource->mem.len =
-                be32toh(_iter->prop_addr[2]) + be32toh(_iter->prop_addr[3]);
-            return true;
-        }
-    }
-    return false;
-}
-
-// TODO: 临时使用，在 device 分支进行优化
-resource_t DTB::get_memory(void) {
-    resource_t resource;
-    dtb_iter(DT_ITER_PROP, get_memory_iter, &resource);
-    return resource;
-}
-
-// TODO: 临时使用，在 device 分支进行优化
-resource_t DTB::get_clint(void) {
-    resource_t resource;
-    dtb_iter(DT_ITER_PROP, get_clint_iter, &resource);
-    return resource;
-}
-
-// TODO: 临时使用，在 device 分支进行优化
-resource_t DTB::get_plic(void) {
-    resource_t resource;
-    dtb_iter(DT_ITER_PROP, get_plic_iter, &resource);
-    return resource;
+    return _os;
 }
 
 namespace BOOT_INFO {
@@ -492,16 +546,15 @@ namespace BOOT_INFO {
 
     bool init(void) {
         auto res = DTB::dtb_init();
-        info("BOOT_INFO init.\n");
         return res;
     }
     resource_t get_memory(void) {
-        return DTB::get_memory();
+        return DTB::find("device_type", "memory");
     }
     resource_t get_clint(void) {
-        return DTB::get_clint();
+        return DTB::find("compatible", "riscv,clint0");
     }
     resource_t get_plic(void) {
-        return DTB::get_plic();
+        return DTB::find("compatible", "riscv,plic0");
     }
 };
