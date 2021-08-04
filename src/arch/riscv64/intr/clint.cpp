@@ -60,11 +60,12 @@ void CLINT::do_excp(uint8_t _no) {
     return;
 }
 
-static resource_t resource;
+// static resource_t resource;
 
 int32_t CLINT::init(void) {
     // 映射 clint 地址
-    resource = BOOT_INFO::get_clint();
+    resource_t resource = BOOT_INFO::get_clint();
+    std::cout << resource << std::endl;
     for (uintptr_t a = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += 0x1000) {
         VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
@@ -85,8 +86,6 @@ int32_t CLINT::init(void) {
     register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
     // 开启内部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SSIE);
-    // 设置时钟中断
-    TIMER::init();
-    printf("clint init.\n");
+    info("clint init.\n");
     return 0;
 }
