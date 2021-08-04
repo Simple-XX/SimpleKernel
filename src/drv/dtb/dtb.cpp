@@ -119,17 +119,20 @@ void DTB::fill_resource(resource_t *_resource, const node_t *_node,
     if (_resource->type == resource_t::MEM) {
         // 根据 address_cells 与 size_cells 填充
         // resource 一般来说两者是相等的
-        if (_node->address_cells == 1) {
-            assert(_node->size_cells == 1);
+        if (_node->parent->address_cells == 1) {
+            assert(_node->parent->size_cells == 1);
             _resource->mem.addr = be32toh(((uint32_t *)_prop->addr)[0]);
             _resource->mem.len  = be32toh(((uint32_t *)_prop->addr)[1]);
         }
-        else if (_node->address_cells == 2) {
-            assert(_node->size_cells == 2);
+        else if (_node->parent->address_cells == 2) {
+            assert(_node->parent->size_cells == 2);
             _resource->mem.addr = be32toh(((uint32_t *)_prop->addr)[0]) +
                                   be32toh(((uint32_t *)_prop->addr)[1]);
             _resource->mem.len = be32toh(((uint32_t *)_prop->addr)[2]) +
                                  be32toh(((uint32_t *)_prop->addr)[3]);
+        }
+        else {
+            assert(0);
         }
     }
     return;
