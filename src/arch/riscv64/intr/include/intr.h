@@ -101,6 +101,15 @@ public:
 // 平台级中断控制器
 // 用于控制外部中断
 class PLIC {
+private:
+    static uintptr_t      base_addr;
+    static const uint64_t PLIC_PRIORITY;
+    static const uint64_t PLIC_PENDING;
+    static uint64_t       PLIC_SENABLE(uint64_t hart);
+    static uint64_t       PLIC_SPRIORITY(uint64_t hart);
+    static uint64_t       PLIC_SCLAIM(uint64_t hart);
+
+protected:
 public:
     PLIC(void);
     ~PLIC(void);
