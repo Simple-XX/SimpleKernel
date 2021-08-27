@@ -51,7 +51,7 @@ PLIC::~PLIC(void) {
 int32_t PLIC::init(void) {
     // 映射 plic
     resource_t resource = BOOT_INFO::get_plic();
-    std::cout << resource << std::endl;
+    // std::cout << resource << std::endl;
     base_addr = resource.mem.addr;
     for (uintptr_t a = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += 0x1000) {
