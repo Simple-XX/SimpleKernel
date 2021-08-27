@@ -267,8 +267,10 @@ public:
     // 初始化
     static bool dtb_init(void);
     // 根据路径查找节点，返回使用的资源
-    // TODO: 根据节点 @ 前的名称查找，可能返回多个 resource
     static bool find_via_path(const char *_path, resource_t *_resource);
+    // 根据节点名进行前缀查找
+    // 根据节点 @ 前的名称查找，可能返回多个 resource
+    static size_t find_via_prefix(const char *_prefix, resource_t *_resource);
     // iter 输出
     friend std::ostream &operator<<(std::ostream &     _os,
                                     const iter_data_t &_iter);
