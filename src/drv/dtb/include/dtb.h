@@ -117,6 +117,7 @@ private:
         size_t len;
         // 全部匹配
         bool operator==(const path_t *_path);
+        bool operator==(const char *_path);
     };
     // 节点数据
     struct node_t {
@@ -144,8 +145,6 @@ private:
         size_t prop_count;
         // 节点数
         static size_t count;
-        // 查找节点中的键值对
-        bool find(const char *_prop_name, const char *_val);
     };
 
     // 迭代变量
@@ -254,8 +253,8 @@ private:
     // _prop: 填充的数据
     static void fill_resource(resource_t *_resource, const node_t *_node,
                               const prop_t *_prop);
-    // 在所有节点中寻找 _prop_name/_val 对符合的节点
-    static node_t *find_node(const char *_prop_name, const char *_val);
+    // 通过路径寻找节点
+    static node_t *find_node_via_path(const char *_path);
     // 用于标记是否第一次 init
     static bool inited;
 
@@ -267,9 +266,9 @@ public:
     static constexpr const uint8_t DT_ITER_PROP       = 0x04;
     // 初始化
     static bool dtb_init(void);
-    // 寻找属性-值向匹配的节点，返回其使用的资源
-    // TODO: 只能返回一个资源，没法处理一个节点使用复数资源的情况
-    static resource_t find(const char *_prop_name, const char *_val);
+    // 根据路径查找节点，返回使用的资源
+    // TODO: 根据节点 @ 前的名称查找，可能返回多个 resource
+    static bool find_via_path(const char *_path, resource_t *_resource);
     // iter 输出
     friend std::ostream &operator<<(std::ostream &     _os,
                                     const iter_data_t &_iter);
