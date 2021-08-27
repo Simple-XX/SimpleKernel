@@ -40,9 +40,9 @@ struct resource_t {
     }
 
     friend std::ostream &operator<<(std::ostream &_os, const resource_t &_res) {
+        printf("%s: ", _res.name);
         if (_res.type & MEM) {
-            printf("%s(MEM), 0x%p, 0x%p", _res.name, _res.mem.addr,
-                   _res.mem.len);
+            printf("MEM(0x%p, 0x%p)", _res.mem.addr, _res.mem.len);
         }
         if (_res.type & INTR_NO) {
             printf("%s(INTR_NO), 0x%p", _res.name, _res.intr.intr_no);
