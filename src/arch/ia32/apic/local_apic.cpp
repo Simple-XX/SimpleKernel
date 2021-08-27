@@ -58,6 +58,6 @@ int32_t LOCAL_APIC::init(void) {
     CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_LINT1, msr);
     CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_ERROR, msr);
 
-    printf("local apic init.\n");
+    info("local apic init.\n");
     return 0;
 }

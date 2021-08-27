@@ -65,7 +65,7 @@ void CLINT::do_excp(uint8_t _no) {
 int32_t CLINT::init(void) {
     // 映射 clint 地址
     resource_t resource = BOOT_INFO::get_clint();
-    std::cout << resource << std::endl;
+    // std::cout << resource << std::endl;
     for (uintptr_t a = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += 0x1000) {
         VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);

@@ -102,7 +102,7 @@ uint8_t KEYBOARD::read(void) {
 int32_t KEYBOARD::init(void) {
     set_handle(&default_keyboard_handle);
     INTR::enable_irq(INTR::IRQ1);
-    printf("keyboard init.\n");
+    info("keyboard init.\n");
     return 0;
 }
 
