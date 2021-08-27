@@ -333,7 +333,7 @@ int32_t INTR::init(void) {
     apic.init();
     // 键盘初始化
     keyboard.init();
-    printf("intr init.\n");
+    info("intr init.\n");
     return 0;
 }
 
@@ -351,7 +351,7 @@ int32_t INTR::call_isr(uint8_t _no, intr_context_t *_intr_context) {
         interrupt_handlers[_no](_intr_context);
     }
     else {
-        printf("Unhandled interrupt: %d %s\n", _no, get_intr_name(_no));
+        warn("Unhandled interrupt: %d %s\n", _no, get_intr_name(_no));
         CPU::hlt();
     }
     return 0;

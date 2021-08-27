@@ -21,6 +21,6 @@ IO_APIC::~IO_APIC(void) {
 }
 
 int32_t IO_APIC::init(void) {
-    printf("io apic init.\n");
+    info("io apic init.\n");
     return 0;
 }

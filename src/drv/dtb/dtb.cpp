@@ -39,17 +39,20 @@ bool DTB::path_t::operator==(const DTB::path_t *_path) {
     return true;
 }
 
-bool DTB::node_t::find(const char *_prop_name, const char *_val) {
-    for (size_t i = 0; i < prop_count; i++) {
-        // 匹配属性
-        if (strcmp(props[i].name, _prop_name) == 0) {
-            // 匹配值
-            if (strcmp((char *)props[i].addr, _val) == 0) {
-                return true;
-            }
-        }
+bool DTB::path_t::operator==(const char *_path) {
+    // 路径必须以 ‘/’ 开始
+    if (_path[0] != '/') {
+        return false;
     }
-    return false;
+    // 记录当前 _path 处理到的下标
+    size_t tmp = 0;
+    for (size_t i = 0; i < len; i++) {
+        if (strncmp(path[i], &_path[tmp + i], strlen(path[i])) != 0) {
+            return false;
+        }
+        tmp += strlen(path[i]);
+    }
+    return true;
 }
 
 DTB::node_t *DTB::get_phandle(uint32_t _phandle) {
@@ -142,12 +145,12 @@ void DTB::fill_resource(resource_t *_resource, const node_t *_node,
     return;
 }
 
-DTB::node_t *DTB::find_node(const char *_prop_name, const char *_val) {
+DTB::node_t *DTB::find_node_via_path(const char *_path) {
     node_t *res = nullptr;
     // 遍历 nodes
     for (size_t i = 0; i < nodes[0].count; i++) {
         // 如果 nodes[i] 中有属性/值对符合要求
-        if (nodes[i].find(_prop_name, _val) == true) {
+        if (nodes[i].path == _path) {
             // 设置返回值
             res = &nodes[i];
         }
@@ -189,6 +192,9 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
             case FDT_BEGIN_NODE: {
                 // 第 len 深底的名称
                 iter.path.path[iter.path.len] = (char *)(iter.addr + 1);
+                // if (strlen(iter.path.path[iter.path.len]) == 0) {
+                //     iter.path.path[iter.path.len] = (char *)"/";
+                // }
                 // 深度+1
                 iter.path.len++;
                 iter.nodes_idx = begin ? 0 : (iter.nodes_idx + 1);
@@ -398,35 +404,20 @@ bool DTB::dtb_init(void) {
     return true;
 }
 
-resource_t DTB::find(const char *_prop_name, const char *_val) {
-    resource_t resource;
+bool DTB::find_via_path(const char *_path, resource_t *_resource) {
     // 找到节点
-    auto node = find_node(_prop_name, _val);
-    // 根据类型不同进行相应设置
-    if (strcmp(_val, "memory") == 0) {
-        // 设置 resource 基本信息
-        resource.name = (char *)"memory";
-        resource.type = resource_t::MEM;
-    }
-    else if (strcmp(_val, "riscv,plic0") == 0) {
-        // 设置 resource 基本信息
-        resource.name = (char *)"plic0 memory";
-        resource.type = resource_t::MEM;
-    }
-    else if (strcmp(_val, "riscv,clint0") == 0) {
-        // 设置 resource 基本信息
-        resource.name = (char *)"clint0 memory";
-        resource.type = resource_t::MEM;
-    }
+    auto node = find_node_via_path(_path);
+    // std::cout << node->path << std::endl;
     // 找到 reg
     for (size_t i = 0; i < node->prop_count; i++) {
+        // printf("node->props[i].name: %s\n", node->props[i].name);
         if (strcmp(node->props[i].name, "reg") == 0) {
             // 填充数据
-            fill_resource(&resource, node, &node->props[i]);
+            fill_resource(_resource, node, &node->props[i]);
             break;
         }
     }
-    return resource;
+    return true;
 }
 
 std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
@@ -530,11 +521,9 @@ std::ostream &operator<<(std::ostream &_os, const DTB::path_t &_path) {
     if (_path.len == 1) {
         _os << "/";
     }
-    else {
-        for (size_t i = 1; i < _path.len; i++) {
-            _os << "/";
-            _os << _path.path[i];
-        }
+    for (size_t i = 1; i < _path.len; i++) {
+        _os << "/";
+        _os << _path.path[i];
     }
     return _os;
 }
@@ -553,12 +542,27 @@ namespace BOOT_INFO {
     }
 
     resource_t get_memory(void) {
-        return DTB::find("device_type", "memory");
+        resource_t resource;
+        // 设置 resource 基本信息
+        resource.name = (char *)"memory";
+        resource.type = resource_t::MEM;
+        assert(DTB::find_via_path("/memory@80000000", &resource) == true);
+        return resource;
     }
     resource_t get_clint(void) {
-        return DTB::find("compatible", "riscv,clint0");
+        resource_t resource;
+        // 设置 resource 基本信息
+        resource.name = (char *)"clint0 memory";
+        resource.type = resource_t::MEM;
+        assert(DTB::find_via_path("/soc/clint@2000000", &resource) == true);
+        return resource;
     }
     resource_t get_plic(void) {
-        return DTB::find("compatible", "riscv,plic0");
+        resource_t resource;
+        // 设置 resource 基本信息
+        resource.name = (char *)"plic0 memory";
+        resource.type = resource_t::MEM;
+        assert(DTB::find_via_path("/soc/plic@c000000", &resource) == true);
+        return resource;
     }
 };
