@@ -16,8 +16,6 @@ struct resource_t {
     enum : uint8_t {
         // 内存
         MEM = 1 << 0,
-        // 中断号
-        INTR_NO = 1 << 1,
     };
     uint8_t type;
     // 资源名称
@@ -28,14 +26,9 @@ struct resource_t {
         uintptr_t addr;
         size_t    len;
     } mem;
-    struct {
-        uint8_t intr_no;
-    } intr;
-
     resource_t(void) : type(0), name(nullptr) {
-        mem.addr     = 0;
-        mem.len      = 0;
-        intr.intr_no = 0;
+        mem.addr = 0;
+        mem.len  = 0;
         return;
     }
 
@@ -43,9 +36,6 @@ struct resource_t {
         printf("%s: ", _res.name);
         if (_res.type & MEM) {
             printf("MEM(0x%p, 0x%p)", _res.mem.addr, _res.mem.len);
-        }
-        if (_res.type & INTR_NO) {
-            printf("%s(INTR_NO), 0x%p", _res.name, _res.intr.intr_no);
         }
         return _os;
     }
