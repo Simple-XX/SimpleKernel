@@ -36,8 +36,7 @@ namespace BOOT_INFO {
     // 返回一个二级数组，第一级是所有设备，第二级是使用的资源
     // 因为使用了 stl，只能在 lib 分支及其之后使用
     // TODO: 目前只实现了 riscv，ia32 还没有考虑
-    extern const mystl::vector<mystl::vector<resource_t>>
-    find_compatible(mystl::string _compatible);
+    extern const resource_t find_via_path(const char *_path);
 };
 
 #endif /* _BOOT_INFO_H_ */
