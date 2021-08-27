@@ -60,7 +60,7 @@ namespace GDT {
                 DB_EXPAND_DOWN_DATA_SEGMENT_4GB, G_4KB);
         // 加载全局描述符表地址到 GDTR 寄存器
         gdt_load((uint32_t)&gdt_ptr);
-        printf("gdt init.\n");
+        info("gdt init.\n");
         return 0;
     }
 };
