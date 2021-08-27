@@ -49,7 +49,8 @@ void DEV_DRV_MANAGER::show(void) const {
 // 最后遍历硬件，寻找需要的驱动
 DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 获取 virtio 设备信息
-    auto virtio_mmio_resources = BOOT_INFO::find_compatible("virtio,mmio");
+    auto virtio_mmio_resources =
+        BOOT_INFO::find_via_path("/soc/virtio_mmio@10001000");
     // 初始化 virtio_bus_dev
     virtio_bus_dev_t *virtio_bus_dev =
         new virtio_bus_dev_t(virtio_mmio_resources.at(0));
