@@ -27,6 +27,6 @@ APIC::~APIC(void) {
 int32_t APIC::init(void) {
     LOCAL_APIC::init();
     IO_APIC::init();
-    printf("apic init.\n");
+    info("apic init.\n");
     return 0;
 }
