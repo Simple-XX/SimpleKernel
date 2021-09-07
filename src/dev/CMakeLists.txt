@@ -5,9 +5,10 @@
 
 PROJECT(dev CXX)
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ devs_src)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ dev_cxx_src)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/platform_bus platform_bus_src)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/virtio virtio_src)
-set(dev_src ${devs_src} ${virtio_src})
+set(dev_src ${dev_cxx_src} ${platform_bus_src} ${virtio_src})
 
 add_library(${PROJECT_NAME} OBJECT ${dev_src})
 

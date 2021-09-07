@@ -17,10 +17,21 @@
 // 总线设备是用于内核与设备通信的设备
 struct bus_t : dev_t {
 private:
+    // 设备向量
+    mystl::vector<const dev_t *> devs;
+
 protected:
 public:
-    bus_t(const mystl::vector<resource_t> &_res);
+    // 用于创建虚拟总线
+    bus_t(void);
+    bus_t(const resource_t &_resource);
     virtual ~bus_t(void) = 0;
+    friend std::ostream &operator<<(std::ostream &_out, bus_t &_bus) {
+        info("dev_name: %s, drv_name: %s, bus_name: %s, drv: 0x%p",
+             _bus.dev_name.c_str(), _bus.drv_name.c_str(),
+             _bus.bus_name.c_str(), _bus.drv);
+        return _out;
+    }
 };
 
 #endif /* _BUS_H_ */

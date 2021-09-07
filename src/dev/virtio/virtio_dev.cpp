@@ -6,19 +6,17 @@
 
 #include "virtio_dev.h"
 
-virtio_dev_t::virtio_dev_t(const mystl::vector<resource_t> &_res)
-    : dev_t(_res) {
+virtio_dev_t::virtio_dev_t(const resource_t &_resource) : dev_t(_resource) {
     // 解析 dev_t 数据
-    for (auto i : res) {
-        // TODO
-        if (i.type & resource_t::MEM) {
-            addr_start = (void *)i.mem.addr;
-            addr_end   = (void *)(i.mem.addr + i.mem.len);
-        }
-        else if (i.type & resource_t::INTR_NO) {
-            irq_no = i.intr.intr_no;
-        }
+    // TODO
+    if (resource.type & resource_t::MEM) {
+        addr_start = (void *)resource.mem.addr;
+        addr_end   = (void *)(resource.mem.addr + resource.mem.len);
     }
+    if (resource.type & resource_t::INTR_NO) {
+        irq_no = resource.intr.intr_no;
+    }
+
 // #define DEBUG
 #ifdef DEBUG
     printf("virtio_dev_t ctor.\n");

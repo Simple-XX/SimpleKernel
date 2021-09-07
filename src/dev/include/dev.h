@@ -26,14 +26,15 @@ public:
     mystl::string bus_name;
     // 设备使用的驱动
     drv_t *drv;
-    // 设备所需资源，可能不止一个
-    const mystl::vector<resource_t> &res;
-    dev_t(const mystl::vector<resource_t> &_res);
-    virtual ~dev_t(void) = 0;
+    // 设备所需资源
+    const resource_t resource;
+    dev_t(void);
+    dev_t(const resource_t &_resource);
+    virtual ~dev_t(void);
     friend std::ostream &operator<<(std::ostream &_out, dev_t &_dev) {
-        printf("dev_name: %s, drv_name: %s, bus_name: %s, drv: 0x%p",
-               _dev.dev_name.c_str(), _dev.drv_name.c_str(),
-               _dev.bus_name.c_str(), _dev.drv);
+        info("dev_name: %s, drv_name: %s, bus_name: %s, drv: 0x%p",
+             _dev.dev_name.c_str(), _dev.drv_name.c_str(),
+             _dev.bus_name.c_str(), _dev.drv);
         return _out;
     }
 };
