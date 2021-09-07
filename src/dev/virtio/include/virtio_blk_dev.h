@@ -14,7 +14,7 @@ class virtio_blk_dev_t : virtio_dev_t {
 private:
 protected:
 public:
-    virtio_blk_dev_t(const mystl::vector<resource_t> &_res);
+    virtio_blk_dev_t(const resource_t &_resource);
     ~virtio_blk_dev_t(void);
 };
 

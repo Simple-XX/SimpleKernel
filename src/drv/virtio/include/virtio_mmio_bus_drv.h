@@ -2,10 +2,10 @@
 // This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
-// virtio_drv.h for Simple-XX/SimpleKernel.
+// virtio_mmio_bus_drv.h for Simple-XX/SimpleKernel.
 
-#ifndef _VIRTIO_DRV_H_
-#define _VIRTIO_DRV_H_
+#ifndef _VIRTIO_MMIO_BUS_DRV_H_
+#define _VIRTIO_MMIO_BUS_DRV_H_
 
 #include "stdint.h"
 #include "common.h"
@@ -16,7 +16,7 @@
 #include "drv.h"
 
 // virtio 设备类型
-class virtio_drv_t : drv_t {
+class virtio_mmio_bus_drv_t : drv_t {
 private:
     // virtio 设备类型
     // virtio-v1.1#5
@@ -165,8 +165,13 @@ private:
 
 protected:
 public:
-    virtio_drv_t(const void *_addr);
-    virtual ~virtio_drv_t(void) = 0;
+    virtio_mmio_bus_drv_t(void);
+    virtio_mmio_bus_drv_t(const void *_addr);
+    virtual ~virtio_mmio_bus_drv_t(void);
+    // 驱动操作
+    bool init(void);
+    void read(void);
+    void write(void);
 };
 
-#endif /* _VIRTIO_DRV_H_ */
+#endif /* _VIRTIO_MMIO_BUS_DRV_H_ */

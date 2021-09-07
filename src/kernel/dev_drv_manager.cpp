@@ -8,11 +8,12 @@
 #include "boot_info.h"
 #include "intr.h"
 #include "dev_drv_manager.h"
-#include "virtio_bus_dev.h"
-#include "virtio_bus_drv.h"
+#include "platform_bus_dev.h"
+#include "platform_bus_drv.h"
+#include "virtio_mmio_bus_drv.h"
 
 void virtio_intr_handler(void) {
-    printf("virtio irq handler.\n");
+    warn("virtio irq handler.\n");
     return;
 }
 
@@ -28,15 +29,15 @@ bool DEV_DRV_MANAGER::match(dev_t &_dev, drv_t &_drv) {
 }
 
 void DEV_DRV_MANAGER::show(void) const {
-    printf("bus count: 0x%X\n", buss.size());
+    info("bus count: 0x%X\n", buss.size());
     for (auto i : buss) {
         std::cout << *i << std::endl;
     }
-    printf("dev count: 0x%X\n", devs.size());
+    info("dev count: 0x%X\n", devs.size());
     for (auto i : devs) {
         std::cout << *i << std::endl;
     }
-    printf("drv count: 0x%X\n", drvs.size());
+    info("drv count: 0x%X\n", drvs.size());
     for (auto i : drvs) {
         std::cout << *i << std::endl;
     }
@@ -48,47 +49,45 @@ void DEV_DRV_MANAGER::show(void) const {
 // 然后初始化 dtb，找到所有硬件
 // 最后遍历硬件，寻找需要的驱动
 DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
+
     // 获取 virtio 设备信息
-    resource_t virtio_mmio_resources[8];
-    auto       virtio_mmio_resources_count =
-        BOOT_INFO::find_via_prefix("virtio_mmio@", virtio_mmio_resources);
-    mystl::vector<resource_t> virtio_mmio_resources_vector(
-        virtio_mmio_resources, virtio_mmio_resources + 8);
-    // 初始化 virtio_bus_dev
-    virtio_bus_dev_t *virtio_bus_dev =
-        new virtio_bus_dev_t(virtio_mmio_resources_vector);
-    // 添加到设备链表中
-    add_bus(*(bus_t *)virtio_bus_dev);
+    resource_t virtio_mmio_bus_resources[8];
+    // 获取信息
+    auto virtio_mmio_bus_resources_count =
+        BOOT_INFO::find_via_prefix("virtio_mmio@", virtio_mmio_bus_resources);
+    // 转换为向量
+    auto virtio_mmio_bus_resources_vector = new mystl::vector<resource_t>(
+        virtio_mmio_bus_resources,
+        virtio_mmio_bus_resources + virtio_mmio_bus_resources_count);
+    // 每个 resource 对应一个总线设备
+    for (auto i : *virtio_mmio_bus_resources_vector) {
+        // 设置每个设备的名称与驱动名
+        platform_bus_dev_t *virtio_bus = new platform_bus_dev_t(i);
+        // 设备名
+        virtio_bus->dev_name = i.name;
+        // 需要的驱动名
+        // TODO: 这里需要 compatible 字段
+        virtio_bus->drv_name = "virtio,mmio";
+        // 所属总线名，因为这里本身就是总线，所以设为 NULL
+        virtio_bus->bus_name = "NULL";
+        // 添加到总线向量
+        add_bus(*virtio_bus);
+    }
+
+    // TODO: 添加 virtio,mmio 驱动
+    virtio_mmio_bus_drv_t *virtio_mmio_bus_drv = new virtio_mmio_bus_drv_t();
+    // 到这里 virtio,mmio 总线初始化完成，下面为各个 virtio,mmio 设备进行初始化
+    // 添加块设备驱动
+    add_drv(*(drv_t *)virtio_mmio_bus_drv);
+    // 初始化所有设备
+    for (auto i : devs) {
+        if (init(*i) != true) {
+            // 不成功的话输出失败信息
+            warn("%s init failed\n", i->dev_name.c_str());
+        }
+    }
     show();
-    // 添加 virtio_bus_dev 驱动
-    // virtio_bus_drv_t *virtio_bus_drv = new virtio_bus_drv_t();
-    // add_drv(*(drv_t *)virtio_bus_drv);
-    // 初始化
-    // if (init(*(dev_t *)virtio_bus_dev) != true) {
-    // 不成功的话输出失败信息
-    // err("virtio init failed\n");
-    // }
-    // virtio 设备
-    // VIRTIO virtio = VIRTIO(virtio_mmio);
-    // 初始化 virtio
-    // TODO: 这里的参数应该从 blk_dev 获取
-    // TODO: 逻辑上应该是遍历 dtb，根据设备信息进行注册，
-    // 而不是预设有什么设备主动注册
-    // TODO: 在设备初始化之前，virtio queue 应该已经初始化了
-    // VIRTIO_BLK * blk  = new VIRTIO_BLK((void *)0x10001000);
-    // VIRTIO_SCSI *scsi = new VIRTIO_SCSI((void *)0x10002000);
-    // 为 virtio 注册中断
-    // PLIC::register_externel_handler(PLIC::VIRTIO0_INTR,
-    // virtio_intr_handler); VIRTIO_BLK::virtio_blk_req_t *res = new
-    // VIRTIO_BLK::virtio_blk_req_t; res->type                         = 1;
-    // res->sector                       = 0;
-    // void *buf                         = malloc(512);
-    // memset(buf, 1, 512);
-    // blk->rw(*res, buf);
-    // for (int i = 0; i < 512; i++) {
-    //     printf("buf: %X\n", ((char *)buf)[i]);
-    // }
-    printf("device and driver manager init.\n");
+    info("device and driver manager init.\n");
     return;
 }
 
@@ -107,6 +106,8 @@ DEV_DRV_MANAGER::~DEV_DRV_MANAGER(void) {
 
 bool DEV_DRV_MANAGER::add_bus(bus_t &_bus) {
     buss.push_back(&_bus);
+    // bus 也是一种设备，所以需要同时添加到设备向量中
+    devs.push_back(&_bus);
     return true;
 }
 

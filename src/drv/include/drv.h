@@ -26,7 +26,7 @@ public:
     virtual void         read(void)  = 0;
     virtual void         write(void) = 0;
     friend std::ostream &operator<<(std::ostream &_out, drv_t &_drv) {
-        printf("drv name: %s", _drv.name.c_str());
+        info("drv name: %s", _drv.name.c_str());
         return _out;
     }
 };

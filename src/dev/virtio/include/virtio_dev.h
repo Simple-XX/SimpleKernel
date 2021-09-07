@@ -21,7 +21,7 @@ private:
 
 protected:
 public:
-    virtio_dev_t(const mystl::vector<resource_t> &_res);
+    virtio_dev_t(const resource_t &_resource);
     virtual ~virtio_dev_t(void) = 0;
 };
 
