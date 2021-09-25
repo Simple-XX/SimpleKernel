@@ -1,5 +1,6 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel
+# (https://github.com/Simple-XX/SimpleKernel).
 #
 # gdt_s.S for Simple-XX/SimpleKernel.
 
