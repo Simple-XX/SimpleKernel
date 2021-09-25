@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// apic.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file loacl_apic.cpp
+ * @brief loacl APIC 抽象
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdio.h"
 #include "assert.h"
@@ -10,10 +20,9 @@
 #include "cpu.hpp"
 #include "apic.h"
 
-// 64-ia-32-architectures-software-developer-vol-3a-manual#10
+/// @see 64-ia-32-architectures-software-developer-vol-3a-manual#10
 
-// TODO: 完善
-// TODO: 加入内核
+/// @todo 完善，加入内核
 LOCAL_APIC::LOCAL_APIC(void) {
     return;
 }
@@ -22,7 +31,7 @@ LOCAL_APIC::~LOCAL_APIC(void) {
     return;
 }
 
-// 64-ia-32-architectures-software-developer-vol-3a-manual#10.4.3
+/// @see  64-ia-32-architectures-software-developer-vol-3a-manual#10.4.3
 
 int32_t LOCAL_APIC::init(void) {
     // 先判断 cpu 是否支持
@@ -58,6 +67,6 @@ int32_t LOCAL_APIC::init(void) {
     CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_LINT1, msr);
     CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_ERROR, msr);
 
-    info("local apic init.\n");
+    printf("local apic init.\n");
     return 0;
 }
