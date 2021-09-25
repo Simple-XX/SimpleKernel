@@ -1,17 +1,30 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// intr.h for Simple-XX/SimpleKernel.
+/**
+ * @file intr.h
+ * @brief 中断抽象头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _INTR_H_
 #define _INTR_H_
 
 #include "stdint.h"
 
-// TODO: 升级为 APIC
+/// @todo 升级为 APIC
 class INTR {
 public:
+    /**
+     * @brief 错误码结构
+     */
     struct error_code_t {
         uint32_t ext : 1;
         uint32_t idt : 1;
@@ -19,6 +32,9 @@ public:
         uint32_t sec_idx : 28;
     };
 
+    /**
+     * @brief 缺页错误码结构
+     */
     struct page_fault_error_code_t {
         uint32_t p : 1;
         uint32_t wr : 1;
@@ -31,7 +47,10 @@ public:
         uint32_t reserved2 : 16;
     };
 
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.12.1
+    /**
+     * @brief 中断上下文结构
+     * @see 64-ia-32-architectures-software-developer-vol-3a-manual#6.12.1
+     */
     struct intr_context_t {
         // segment registers
         // 16 bits
@@ -82,19 +101,19 @@ public:
     typedef void (*interrupt_handler_t)(intr_context_t *);
 
 private:
-    // 中断表最大值
+    /// 中断表最大值
     static constexpr const uint32_t INTERRUPT_MAX = 256;
-    // 8259A 相关定义
-    // Master (IRQs 0-7)
+    /// 8259A 相关定义
+    /// Master (IRQs 0-7)
     static constexpr const uint32_t IO_PIC1 = 0x20;
-    // Slave  (IRQs 8-15)
+    /// Slave  (IRQs 8-15)
     static constexpr const uint32_t IO_PIC2  = 0xA0;
     static constexpr const uint32_t IO_PIC1C = IO_PIC1 + 1;
     static constexpr const uint32_t IO_PIC2C = IO_PIC2 + 1;
-    // End-of-interrupt command code
+    /// End-of-interrupt command code
     static constexpr const uint32_t PIC_EOI = 0x20;
 
-    // 中断名数组
+    /// 中断名数组
     static constexpr const char *const intrnames[] = {
         "Divide Error",
         "Debug Exception",
@@ -119,8 +138,10 @@ private:
         "Virtualization Exception",
     };
 
-    // 中断描述符
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.11
+    /**
+     * @brief 中断描述符结构
+     * @see 64-ia-32-architectures-software-developer-vol-3a-manual#6.11
+     */
     struct idt_entry32_t {
         // 低位地址
         uint64_t offset0 : 16;
@@ -140,8 +161,10 @@ private:
         uint64_t offset1 : 16;
     } __attribute__((packed));
 
-    // IDTR
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.10
+    /**
+     * @brief 中断向量寄存器结构
+     * @see 64-ia-32-architectures-software-developer-vol-3a-manual#6.10
+     */
     struct idt_ptr_t {
         // 限长
         uint16_t limit;
@@ -149,28 +172,43 @@ private:
         uint32_t base;
     } __attribute__((packed));
 
-    // 中断处理函数指针数组
+    /// 中断处理函数指针数组
     static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
         __attribute__((aligned(4)));
-    // 中断描述符表
+    /// 中断描述符表
     static idt_entry32_t idt_entry32[INTERRUPT_MAX]
         __attribute__((aligned(16)));
-    // IDTR
+    /// IDTR
     static idt_ptr_t idt_ptr;
 
-    // 设置中断描述符
+    /**
+     * @brief 设置中断描述符
+     * @param  _num            中断号
+     * @param  _base           基址
+     * @param  _selector       ？
+     * @param  _type           ？
+     * @param  _dpl            ？
+     * @param  _p              ？
+     */
     static void set_idt(uint8_t _num, uint32_t _base, uint16_t _selector,
                         uint8_t _type, uint8_t _dpl, uint8_t _p);
-    // 设置 8259A 芯片
+    /**
+     * @brief 8259A 芯片初始化
+     */
     static void init_interrupt_chip(void);
-    // 重设 8259A 芯片
+    /**
+     * @brief 重设 8259A 芯片
+     * @param  _no             要重设的中断号
+     */
     static void clear_interrupt_chip(uint8_t _no);
-    // 关闭 8259A 芯片的所有中断，为启动 APIC 作准备
+    /**
+     * @brief 关闭 8259A 芯片的所有中断，为启动 APIC 作准备
+     */
     static void disable_interrupt_chip(void);
 
 public:
     // External(hardware generated) interrupts.
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.3.1
+    /// @see 64-ia-32-architectures-software-developer-vol-3a-manual#6.3.1
     static constexpr const uint32_t INT_DIVIDE_ERROR     = 0;
     static constexpr const uint32_t INT_DEBUG            = 1;
     static constexpr const uint32_t INT_NMI              = 2;
@@ -230,16 +268,41 @@ public:
     // 系统调用
     static constexpr const uint32_t IRQ128 = 128;
 
+    /**
+     * @brief 中断初始化
+     * @return int32_t         desc
+     */
     static int32_t init(void);
-    // 执行中断
+    /**
+     * @brief 执行中断
+     * @param  _no             中断号
+     * @param  _intr_context   上下文
+     * @return int32_t         保存中断处理后的返回值
+     */
     static int32_t call_irq(uint8_t _no, intr_context_t *_intr_context);
     static int32_t call_isr(uint8_t _no, intr_context_t *_intr_context);
-    // 注册一个中断处理函数
+    /**
+     * @brief 注册一个中断处理函数
+     * @param  _no             中断号
+     * @param  _handler        中断处理函数
+     */
     static void register_interrupt_handler(uint8_t             _no,
                                            interrupt_handler_t _handler);
+    /**
+     * @brief 打开指定中断
+     * @param  _no             要允许的中断号
+     */
     static void enable_irq(uint8_t _no);
+    /**
+     * @brief 关闭指定中断
+     * @param  _no             要允许的中断号
+     */
     static void disable_irq(uint8_t _no);
-    // 返回中断名
+    /**
+     * @brief 返回中断名
+     * @param  _no             中断号
+     * @return const char*     对应的中断名
+     */
     static const char *get_intr_name(uint8_t _no);
 };
 

@@ -1,15 +1,30 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on http://wiki.0xffffff.org/posts/hurlex-kernel.html
-// intr.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file intr.cpp
+ * @brief 中断抽象
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "cpu.hpp"
 #include "stdio.h"
 #include "intr.h"
 #include "cpu.hpp"
 
-// 栈，中断原因，中断返回值
+/**
+ * @brief 中断处理函数
+ * @param  _scause         原因
+ * @param  _sepc           值
+ * @param  _stval          值
+ */
 extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
                              uint64_t _stval) {
 
@@ -46,19 +61,13 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
     return;
 }
 
-// 默认使用的中断处理函数
+/**
+ * @brief 默认使用的中断处理函数
+ */
 void handler_default(void) {
     while (1) {
         ;
     }
-    return;
-}
-
-INTR::INTR(void) {
-    return;
-}
-
-INTR::~INTR(void) {
     return;
 }
 
