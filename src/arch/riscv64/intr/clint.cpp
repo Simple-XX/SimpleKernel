@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on http://wiki.0xffffff.org/posts/hurlex-kernel.html
-// clint.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file clint.cpp
+ * @brief clint 抽象
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on http://wiki.0xffffff.org/posts/hurlex-kernel.html
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "cpu.hpp"
 #include "stdio.h"
@@ -13,7 +24,9 @@
 #include "intr.h"
 #include "cpu.hpp"
 
-// 缺页处理
+/**
+ * @brief 缺页处理
+ */
 static void pg_load_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
     // 映射页
@@ -22,6 +35,9 @@ static void pg_load_excp(void) {
     return;
 }
 
+/**
+ * @brief 缺页处理
+ */
 static void pg_store_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
     // 映射页
@@ -60,12 +76,10 @@ void CLINT::do_excp(uint8_t _no) {
     return;
 }
 
-// static resource_t resource;
-
 int32_t CLINT::init(void) {
     // 映射 clint 地址
     resource_t resource = BOOT_INFO::get_clint();
-    // std::cout << resource << std::endl;
+    std::cout << resource << std::endl;
     for (uintptr_t a = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += 0x1000) {
         VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
