@@ -74,17 +74,18 @@ struct virtio_queue_t {
         // 此结构的物理地址
         uint64_t phys;
         // 数组长度
-        uint32_t              len;
-        uint32_t              seen_used;
-        uint32_t              free_desc;
-        struct virtq_desc_t * desc;
-        struct virtq_avail_t *avail;
-        uint16_t *            used_event;
-        struct virtq_used_t * used;
-        uint16_t *            avail_event;
+        uint32_t                len;
+        uint32_t                seen_used;
+        uint32_t                free_desc;
+        volatile virtq_desc_t  *desc;
+        volatile virtq_avail_t *avail;
+        volatile uint16_t      *used_event;
+        volatile virtq_used_t  *used;
+        volatile uint16_t      *avail_event;
         // 此结构的虚拟地址
         void **desc_virt;
     } __attribute__((packed));
+
     // virtq_t 各个结构体的偏移
     uint64_t off_desc;
     uint64_t off_driver;

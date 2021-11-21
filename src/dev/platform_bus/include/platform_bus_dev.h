@@ -10,13 +10,13 @@
 #include "vector"
 #include "string"
 #include "dev.h"
-#include "bus.h"
+#include "bus_dev.h"
 #include "resource.h"
 #include "virtio_dev.h"
 
 // virtio bus 设备
 // 这是一个虚拟总线
-class platform_bus_dev_t : public bus_t {
+class platform_bus_dev_t : public bus_dev_t {
 private:
 protected:
 public:

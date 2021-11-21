@@ -12,7 +12,7 @@
 #include "string"
 #include "dev.h"
 #include "drv.h"
-#include "bus.h"
+#include "bus_dev.h"
 
 // 总线 设备与内核的通信方式
 // 设备 挂载在总线上的硬件，总线是挂载在 null 上的一种设备
@@ -20,29 +20,20 @@
 // 设备与驱动管理
 class DEV_DRV_MANAGER {
 private:
+    /// @todo 总线驱动管理
     // 总线列表
-    mystl::vector<bus_t *> buss;
-    // 设备列表
-    mystl::vector<dev_t *> devs;
-    // 驱动列表
-    mystl::vector<drv_t *> drvs;
-    // 匹配驱动
-    bool match(dev_t &_dev, drv_t &_drv);
+    mystl::vector<bus_dev_t *> buss;
     // 输出设备列表
     void show(void) const;
+    // 初始化所有总线
+    bool buss_init(void);
 
 protected:
 public:
     DEV_DRV_MANAGER(void);
     ~DEV_DRV_MANAGER(void);
     // 添加总线
-    bool add_bus(bus_t &_bus);
-    // 添加驱动
-    bool add_drv(drv_t &_drv);
-    // 添加设备
-    bool add_dev(dev_t &_dev);
-    // 初始化指定设备
-    bool init(dev_t &_dev);
+    bool add_bus(bus_dev_t &_bus);
 };
 
 #endif /* _DEV_DRV_MANAGER_H_ */

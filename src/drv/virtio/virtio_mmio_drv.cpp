@@ -39,7 +39,6 @@ virtio_mmio_drv_t::~virtio_mmio_drv_t(void) {
     return;
 }
 
-// 驱动操作
 bool virtio_mmio_drv_t::init(void) {
     return true;
 }
@@ -51,3 +50,27 @@ void virtio_mmio_drv_t::read(void) {
 void virtio_mmio_drv_t::write(void) {
     return;
 }
+
+// 问题
+// 所有设备都指向同一个驱动的地址
+// 那么各个设备的私有数据怎么保存？
+// 比如 regs queues 这些
+// 结论
+// 保存在设备上
+// struct virtio_blk {
+//     virtio_regs              *regs;
+//     struct virtio_blk_config *config;
+//     struct virtqueue         *virtq;
+//     uint32_t                  intid;
+//     struct list_head          list;
+//     struct blkdev             blkdev;
+// };
+// 新的问题
+// 驱动如何访问到设备上的数据
+
+// 设备
+// virtio 设备
+// 驱动
+// virtiommio blk
+// virtiommio net
+// 通过
