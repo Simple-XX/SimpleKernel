@@ -84,3 +84,10 @@ elif [ ${ARCH} == "riscv64" ]; then
     -drive file=fatfs.dmg,format=raw,id=scsi \
     -monitor telnet::2333,server,nowait -serial stdio -nographic
 fi
+
+
+# qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
+# -global virtio-mmio.force-legacy=false \
+# -drive file=mydisk,if=none,format=raw,id=hd \
+# -device virtio-blk-device,drive=hd \
+# -monitor telnet::2333,server,nowait -serial stdio -nographic

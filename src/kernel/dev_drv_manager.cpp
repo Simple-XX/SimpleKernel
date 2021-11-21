@@ -27,7 +27,7 @@ void DEV_DRV_MANAGER::show(void) const {
 
 bool DEV_DRV_MANAGER::buss_init(void) {
     bool res = true;
-    // 便利所有总线
+    // 遍历所有总线
     for (auto i : buss) {
         // 如果初始化成功，接着初始化总线上的设备
         if (i->drv->init() == true) {
@@ -35,14 +35,16 @@ bool DEV_DRV_MANAGER::buss_init(void) {
             for (auto j : i->devs) {
                 for (auto k : i->drvs) {
                     // 如果匹配
+                    /// @todo 这里暂时写死为为每个设备分配一个驱动实例，需要改进
                     if (i->match(*j, *k)) {
                         // 执行初始化
-                        if (j->drv->init() == true) {
-                            info("%s init successful.\n", j->dev_name.c_str());
-                        }
-                        else {
-                            warn("%s init failed.\n", i->dev_name.c_str());
-                        }
+                        // if (j->drv->init() == true) {
+                        //     info("%s init successful drv addr 0x8%p.\n",
+                        //          j->dev_name.c_str(), j->drv);
+                        // }
+                        // else {
+                        //     warn("%s init failed.\n", i->dev_name.c_str());
+                        // }
                     }
                 }
             }
@@ -65,6 +67,15 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // TODO 设备管理应该更加抽象，这里只是个勉强能用的
     // 获取 virtio 设备信息
     resource_t virtio_mmio_dev_resources[8];
+    virtio_mmio_dev_resources[0].type = 1;
+    virtio_mmio_dev_resources[1].type = 1;
+    virtio_mmio_dev_resources[2].type = 1;
+    virtio_mmio_dev_resources[3].type = 1;
+    virtio_mmio_dev_resources[4].type = 1;
+    virtio_mmio_dev_resources[5].type = 1;
+    virtio_mmio_dev_resources[6].type = 1;
+    virtio_mmio_dev_resources[7].type = 1;
+
     // 获取信息
     auto virtio_mmio_dev_resources_count =
         BOOT_INFO::find_via_prefix("virtio_mmio@", virtio_mmio_dev_resources);

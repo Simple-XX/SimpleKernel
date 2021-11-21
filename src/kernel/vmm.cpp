@@ -113,6 +113,8 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
     // 一般情况下不应该为空
     assert(pte != nullptr);
     // 已经映射过了
+    /// @bug 修改标志位会直接返回
+    // 如 W 改为 RW
     if (*pte & VMM_PAGE_VALID) {
         warn("remap.\n");
     }

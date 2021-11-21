@@ -153,6 +153,80 @@ private:
         {NAME2STR(VIRTIO_F_VERSION_1), VIRTIO_F_VERSION_1, false},
     };
 
+      // 块设备 feature bits
+    // virtio-v1.1#5.2.3
+    // Device supports request barriers.
+    static constexpr const uint64_t BLK_F_BARRIER = 0;
+    // Maximum size of any single segment is in size_max.
+    static constexpr const uint64_t BLK_F_SIZE_MAX = 1;
+    // Maximum number of segments in a request is in seg_max.
+    static constexpr const uint64_t BLK_F_SEG_MAX = 2;
+    // Disk-style geometry specified in geometry.
+    static constexpr const uint64_t BLK_F_GEOMETRY = 4;
+    // Device is read-only.
+    static constexpr const uint64_t BLK_F_RO = 5;
+    // Block size of disk is in blk_size.
+    static constexpr const uint64_t BLK_F_BLK_SIZE = 6;
+    // Cache flush command support.
+    static constexpr const uint64_t BLK_F_FLUSH = 9;
+    // Device exports information on optimal I/O alignment.
+    static constexpr const uint64_t BLK_F_TOPOLOGY = 10;
+    // Device can toggle its cache between writeback and writethrough modes.
+    static constexpr const uint64_t BLK_F_CONFIG_WCE = 11;
+    // Device can support discard command, maximum discard sectors size in
+    // max_discard_sectors and maximum discard segment number in
+    // max_discard_seg.
+    static constexpr const uint64_t BLK_F_DISCARD = 13;
+    // Devicecansupportwritezeroescommand,maximumwritezeroes sectors size in
+    // max_write_zeroes_sectors and maximum write zeroes segment number in
+    // max_write_- zeroes_seg.
+    static constexpr const uint64_t BLK_F_WRITE_ZEROES = 14;
+
+    // virtio-v1.1#5.2.4
+    struct virtio_blk_config {
+        uint64_t capacity;
+        uint32_t size_max;
+        uint32_t seg_max;
+        struct {
+            uint16_t cylinders;
+            uint8_t  heads;
+            uint8_t  sectors;
+        } geometry;
+        uint32_t blk_size;
+        struct {
+            // # of logical blocks per physical block (log2)
+            uint8_t physical_block_exp;
+            // offset of first aligned logical block
+            uint8_t alignment_offset;
+            // suggested minimum  I/O size in blocks
+            uint16_t min_io_size;
+            // optimal (suggested maximum) I/O size in blocks
+            uint32_t opt_io_size;
+        } topology;
+        uint8_t  writeback;
+        uint8_t  unused0[3];
+        uint32_t max_discard_sectors;
+        uint32_t max_discard_seg;
+        uint32_t discard_sector_alignment;
+        uint32_t max_write_zeroes_sectors;
+        uint32_t max_write_zeroes_seg;
+        uint8_t  write_zeroes_may_unmap;
+        uint8_t  unused1[3];
+    } __attribute__((packed));
+
+    virtio_blk_config *config;
+
+    feature_t blk_features[8] = {
+        {NAME2STR(BLK_F_SIZE_MAX), BLK_F_SIZE_MAX, false},
+        {NAME2STR(BLK_F_SEG_MAX), BLK_F_SEG_MAX, false},
+        {NAME2STR(BLK_F_GEOMETRY), BLK_F_GEOMETRY, false},
+        {NAME2STR(BLK_F_RO), BLK_F_RO, false},
+        {NAME2STR(BLK_F_BLK_SIZE), BLK_F_BLK_SIZE, false},
+        {NAME2STR(BLK_F_FLUSH), BLK_F_FLUSH, false},
+        {NAME2STR(BLK_F_TOPOLOGY), BLK_F_TOPOLOGY, false},
+        {NAME2STR(BLK_F_CONFIG_WCE), BLK_F_CONFIG_WCE, false},
+    };
+
     // virtio mmio 寄存器基地址
     virtio_regs_t *regs;
     // virtio queue，有些设备使用多个队列
@@ -167,11 +241,10 @@ protected:
 public:
     virtio_mmio_drv_t(void);
     virtio_mmio_drv_t(const void *_addr);
-    virtual ~virtio_mmio_drv_t(void);
+    virtio_mmio_drv_t(const resource_t &_resource);
+    ~virtio_mmio_drv_t(void);
     // 驱动操作
-    bool init(void);
-    void read(void);
-    void write(void);
+    bool init(void) override final;
 };
 
 #endif /* _VIRTIO_MMIO_DRV_H_ */

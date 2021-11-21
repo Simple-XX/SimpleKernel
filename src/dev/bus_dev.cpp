@@ -5,6 +5,7 @@
 // bus_dev.cpp for Simple-XX/SimpleKernel.
 
 #include "bus_dev.h"
+#include "virtio_mmio_drv.h"
 
 bus_dev_t::bus_dev_t(void) {
     return;
@@ -37,7 +38,8 @@ bool bus_dev_t::match(dev_t &_dev, drv_t &_drv) {
     if (_dev.drv_name == _drv.name) {
         // 设置驱动
         /// @todo 这里应该新建一个驱动对象
-        _dev.drv = &_drv;
+        // _dev.drv = &_drv;
+        _dev.drv = new virtio_mmio_drv_t(_dev.resource);
         return true;
     }
     else {
