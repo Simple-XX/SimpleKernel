@@ -17,7 +17,8 @@
 static void pg_load_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
     // 映射页
-    VMM::mmap(VMM::get_pgd(), addr, addr, VMM_PAGE_READABLE);
+    VMM::mmap(VMM::get_pgd(), addr, addr,
+              VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
     info("pg_load_excp done: 0x%p.\n", addr);
     return;
 }

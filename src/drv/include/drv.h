@@ -23,7 +23,7 @@ public:
     virtual ~drv_t(void) = 0;
     // 驱动操作
     // 初始化
-    virtual bool         init(void)  = 0;
+    virtual bool         init(void) = 0;
     friend std::ostream &operator<<(std::ostream &_out, drv_t &_drv) {
         info("drv name: %s", _drv.name.c_str());
         return _out;
