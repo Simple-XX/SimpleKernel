@@ -16,7 +16,7 @@
 #include "drv.h"
 
 // virtio 设备类型
-class virtio_mmio_drv_t : drv_t {
+class virtio_mmio_drv_t : public drv_t {
 private:
     // virtio 设备类型
     // virtio-v1.1#5

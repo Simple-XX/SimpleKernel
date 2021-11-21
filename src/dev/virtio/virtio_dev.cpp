@@ -6,20 +6,14 @@
 
 #include "virtio_dev.h"
 
-virtio_dev_t::virtio_dev_t(const resource_t &_resource) : dev_t(_resource) {
-    // 解析 dev_t 数据
-    // TODO
-    if (resource.type & resource_t::MEM) {
-        addr_start = (void *)resource.mem.addr;
-        addr_end   = (void *)(resource.mem.addr + resource.mem.len);
-    }
-    if (resource.type & resource_t::INTR_NO) {
-        irq_no = resource.intr.intr_no;
-    }
+virtio_dev_t::virtio_dev_t(void) {
+    return;
+}
 
+virtio_dev_t::virtio_dev_t(const resource_t &_resource) : dev_t(_resource) {
 // #define DEBUG
 #ifdef DEBUG
-    printf("virtio_dev_t ctor.\n");
+    std::cout<<"virtio_dev_t ctor."<<std::endl;
 #undef DEBUG
 #endif
     return;

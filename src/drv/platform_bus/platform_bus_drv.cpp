@@ -15,16 +15,8 @@ platform_bus_drv_t::~platform_bus_drv_t(void) {
     return;
 }
 
+// platform 总线不需要初始化
 bool platform_bus_drv_t::init(void) {
-    // 遍历资源列表，为每个 resource_t 进行初始化
     info("platform_bus driver init successful.\n");
     return true;
-}
-
-void platform_bus_drv_t::read(void) {
-    return;
-}
-
-void platform_bus_drv_t::write(void) {
-    return;
 }
