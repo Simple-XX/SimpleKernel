@@ -13,16 +13,8 @@
 _start:
     // 设置栈地址
     la sp, stack_top
-    # 在调用 cpp_init 之前保存由 opensbi 传递的 hart 和 dtb 地址参数
-    addi sp, sp, -16
-    sd a1, (0)(sp)
-    sd a0, (8)(sp)
     // 初始化 C++
     call cpp_init
-    // cpp_init 结束后恢复
-    ld a0, (8)(sp)
-    ld a1, (0)(sp)
-    addi sp, sp, 16
     // 跳转到 CPP 代码执行
     call kernel_main
 
