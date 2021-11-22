@@ -67,9 +67,9 @@ add_executable(${KernelName}
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
 
 # 其它链接选项
-if (SimpleKernelArch STREQUAL "ia32/i386")
+if (SimpleKernelArch STREQUAL ia32/i386)
     target_link_options(${KernelName} PRIVATE -Wl,-melf_i386)
-elseif (SimpleKernelArch STREQUAL "ia32/x86_64")
+elseif (SimpleKernelArch STREQUAL ia32/x86_64)
     target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64 -Wl,-z,max-page-size=0x1000)
 elseif (SimpleKernelArch STREQUAL arm)
     target_link_options(${KernelName} PRIVATE -Wl,-marmelf)

@@ -24,10 +24,12 @@
 extern "C" void kernel_main(void);
 
 /**
- * @brief 物理内存测试函数
- * @return int             0 成功
+ * @brief 测试物理内存
+ * @return int 成功返回 0
  */
+
 int test_pmm(void);
+
 /**
  * @brief 虚拟内存测试函数
  * @return int             0 成功

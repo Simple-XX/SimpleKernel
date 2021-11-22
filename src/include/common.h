@@ -66,9 +66,9 @@ namespace COMMON {
     static constexpr const size_t GB = 0x40000000;
     /// 页大小 4KB
     static constexpr const size_t PAGE_SIZE = 4 * KB;
-    // 内核空间占用大小，包括内核代码部分与预留的，8MB
+    /// 内核空间占用大小，包括内核代码部分与预留的，8MB
     static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
-    // 映射内核空间需要的页数
+    /// 映射内核空间需要的页数
     static constexpr const uint64_t KERNEL_SPACE_PAGES =
         KERNEL_SPACE_SIZE / PAGE_SIZE;
 

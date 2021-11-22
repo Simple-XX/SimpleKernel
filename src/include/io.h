@@ -148,6 +148,12 @@ public:
      */
     void put_char(const char _c);
     /**
+     * @brief 输入字符
+     * @return char            读到的字符
+     * @todo
+     */
+    char get_char(void);
+    /**
      * @brief 输出字符串
      * @param  _s              要输出的字符串
      * @return int32_t         输出的长度
