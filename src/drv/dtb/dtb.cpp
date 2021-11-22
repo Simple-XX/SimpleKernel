@@ -416,16 +416,6 @@ resource_t DTB::find(const char *_prop_name, const char *_val) {
         resource.name = (char *)"memory";
         resource.type = resource_t::MEM;
     }
-    else if (strcmp(_val, "riscv,plic0") == 0) {
-        // 设置 resource 基本信息
-        resource.name = (char *)"plic0 memory";
-        resource.type = resource_t::MEM;
-    }
-    else if (strcmp(_val, "riscv,clint0") == 0) {
-        // 设置 resource 基本信息
-        resource.name = (char *)"clint0 memory";
-        resource.type = resource_t::MEM;
-    }
     // 找到 reg
     for (size_t i = 0; i < node->prop_count; i++) {
         if (strcmp(node->props[i].name, "reg") == 0) {
@@ -561,11 +551,5 @@ namespace BOOT_INFO {
     }
     resource_t get_memory(void) {
         return DTB::find("device_type", "memory");
-    }
-    resource_t get_clint(void) {
-        return DTB::find("compatible", "riscv,clint0");
-    }
-    resource_t get_plic(void) {
-        return DTB::find("compatible", "riscv,plic0");
     }
 };
