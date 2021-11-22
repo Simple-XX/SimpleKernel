@@ -65,7 +65,7 @@ namespace GDT {
                 CPU::DPL3, SEGMENT_PRESENT, 0x0, L_64BIT, 0x0, 0x0);
         // 加载全局描述符表地址到 GDTR 寄存器
         gdt_load((uint64_t)&gdt_ptr64);
-        printf("gdt init.\n");
+        info("gdt init.\n");
         return 0;
     }
 };
