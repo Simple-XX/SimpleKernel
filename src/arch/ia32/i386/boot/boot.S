@@ -108,7 +108,7 @@ multiboot_header_end:
 // 声明外部定义
 .extern kernel_main
 .extern cpp_init
-# 在 multiboot2.cpp 中定义
+// 在 multiboot2.cpp 中定义
 .extern boot_info_addr
 .extern multiboot2_magic
 _start:
