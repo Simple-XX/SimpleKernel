@@ -29,6 +29,15 @@ set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
 set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
 set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
 
+# xorriso
+find_program(Xorriso xorriso)
+if (NOT Xorriso)
+    message(FATAL_ERROR "xorriso not found.\n"
+            "run `brew install xorriso` to install the toolchain")
+else ()
+    message(STATUS "Found xorriso ${Xorriso}")
+endif ()
+
 # GRUB
 find_program(GRUB grub-file)
 if (NOT GRUB)
@@ -45,4 +54,13 @@ if (NOT BOCHS)
             "run `brew install bochs` to install the toolchain")
 else ()
     message(STATUS "Found bochs ${BOCHS}")
+endif ()
+
+# xorriso
+find_program(XORRISO xorriso)
+if (NOT XORRISO)
+    message(FATAL_ERROR "xorriso not found.\n"
+            "run `brew install xorriso` to install the toolchain")
+else ()
+    message(STATUS "Found xorriso ${XORRISO}")
 endif ()
