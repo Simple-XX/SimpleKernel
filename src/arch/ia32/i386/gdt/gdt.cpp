@@ -1,18 +1,28 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// gdt.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file gdt.cpp
+ * @brief 描述符抽象实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdio.h"
 #include "gdt.h"
 
 namespace GDT {
-    // 加载 GDTR
+    /// 加载 GDTR
     extern "C" void gdt_load(uint32_t);
-    // 全局 gdt 指针
+    /// 全局 gdt 指针
     static gdt_ptr_t gdt_ptr;
-    // 全局描述符表定义
+    /// 全局描述符表定义
     static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
 
     void set_gdt(const uint8_t idx, const uint32_t base, const uint32_t limit,
@@ -60,7 +70,7 @@ namespace GDT {
                 DB_EXPAND_DOWN_DATA_SEGMENT_4GB, G_4KB);
         // 加载全局描述符表地址到 GDTR 寄存器
         gdt_load((uint32_t)&gdt_ptr);
-        info("gdt init.\n");
+        printf("gdt init.\n");
         return 0;
     }
 };
