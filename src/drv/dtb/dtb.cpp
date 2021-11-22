@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/brenns10/sos
-// dtb.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file dtb.cpp
+ * @brief dtb 解析实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/brenns10/sos
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdint.h"
 #include "stdio.h"
@@ -36,20 +47,17 @@ bool DTB::path_t::operator==(const DTB::path_t *_path) {
     return true;
 }
 
-bool DTB::path_t::operator==(const char *_path) {
-    // 路径必须以 ‘/’ 开始
-    if (_path[0] != '/') {
-        return false;
-    }
-    // 记录当前 _path 处理到的下标
-    size_t tmp = 0;
-    for (size_t i = 0; i < len; i++) {
-        if (strncmp(path[i], &_path[tmp + i], strlen(path[i])) != 0) {
-            return false;
+bool DTB::node_t::find(const char *_prop_name, const char *_val) {
+    for (size_t i = 0; i < prop_count; i++) {
+        // 匹配属性
+        if (strcmp(props[i].name, _prop_name) == 0) {
+            // 匹配值
+            if (strcmp((char *)props[i].addr, _val) == 0) {
+                return true;
+            }
         }
-        tmp += strlen(path[i]);
     }
-    return true;
+    return false;
 }
 
 DTB::node_t *DTB::get_phandle(uint32_t _phandle) {
@@ -119,12 +127,8 @@ void DTB::print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
 
 void DTB::fill_resource(resource_t *_resource, const node_t *_node,
                         const prop_t *_prop) {
-    // 如果 _resource 名称为空则使用 _node 路径填充
-    if (_resource->name == nullptr) {
-        _resource->name = _node->path.path[_node->path.len - 1];
-    }
     // 内存类型
-    if ((_resource->type & resource_t::MEM) && (_resource->mem.len == 0)) {
+    if (_resource->type == resource_t::MEM) {
         // 根据 address_cells 与 size_cells 填充
         // resource 一般来说两者是相等的
         if (_node->parent->address_cells == 1) {
@@ -146,12 +150,12 @@ void DTB::fill_resource(resource_t *_resource, const node_t *_node,
     return;
 }
 
-DTB::node_t *DTB::find_node_via_path(const char *_path) {
+DTB::node_t *DTB::find_node(const char *_prop_name, const char *_val) {
     node_t *res = nullptr;
     // 遍历 nodes
     for (size_t i = 0; i < nodes[0].count; i++) {
         // 如果 nodes[i] 中有属性/值对符合要求
-        if (nodes[i].path == _path) {
+        if (nodes[i].find(_prop_name, _val) == true) {
             // 设置返回值
             res = &nodes[i];
         }
@@ -402,41 +406,35 @@ bool DTB::dtb_init(void) {
     return true;
 }
 
-bool DTB::find_via_path(const char *_path, resource_t *_resource) {
+resource_t DTB::find(const char *_prop_name, const char *_val) {
+    resource_t resource;
     // 找到节点
-    auto node = find_node_via_path(_path);
-    // std::cout << node->path << std::endl;
+    auto node = find_node(_prop_name, _val);
+    // 根据类型不同进行相应设置
+    if (strcmp(_val, "memory") == 0) {
+        // 设置 resource 基本信息
+        resource.name = (char *)"memory";
+        resource.type = resource_t::MEM;
+    }
+    else if (strcmp(_val, "riscv,plic0") == 0) {
+        // 设置 resource 基本信息
+        resource.name = (char *)"plic0 memory";
+        resource.type = resource_t::MEM;
+    }
+    else if (strcmp(_val, "riscv,clint0") == 0) {
+        // 设置 resource 基本信息
+        resource.name = (char *)"clint0 memory";
+        resource.type = resource_t::MEM;
+    }
     // 找到 reg
     for (size_t i = 0; i < node->prop_count; i++) {
-        // printf("node->props[i].name: %s\n", node->props[i].name);
         if (strcmp(node->props[i].name, "reg") == 0) {
             // 填充数据
-            fill_resource(_resource, node, &node->props[i]);
+            fill_resource(&resource, node, &node->props[i]);
             break;
         }
     }
-    return true;
-}
-
-size_t DTB::find_via_prefix(const char *_prefix, resource_t *_resource) {
-    size_t res = 0;
-    // 遍历所有节点，查找
-    // 由于 @ 均为最底层节点，所以直接比较最后一级即可
-    for (size_t i = 0; i < nodes[0].count; i++) {
-        if (strncmp(nodes[i].path.path[nodes[i].path.len - 1], _prefix,
-                    strlen(_prefix)) == 0) {
-            // 找到 reg
-            for (size_t j = 0; j < nodes[i].prop_count; j++) {
-                if (strcmp(nodes[i].props[j].name, "reg") == 0) {
-                    // 填充数据
-                    fill_resource(&_resource[res], &nodes[i],
-                                  &nodes[i].props[j]);
-                }
-            }
-            res++;
-        }
-    }
-    return res;
+    return resource;
 }
 
 std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
@@ -540,9 +538,11 @@ std::ostream &operator<<(std::ostream &_os, const DTB::path_t &_path) {
     if (_path.len == 1) {
         _os << "/";
     }
-    for (size_t i = 1; i < _path.len; i++) {
-        _os << "/";
-        _os << _path.path[i];
+    else {
+        for (size_t i = 1; i < _path.len; i++) {
+            _os << "/";
+            _os << _path.path[i];
+        }
     }
     return _os;
 }
@@ -560,24 +560,12 @@ namespace BOOT_INFO {
         return res;
     }
     resource_t get_memory(void) {
-        resource_t resource;
-        // 设置 resource 基本信息
-        resource.type = resource_t::MEM;
-        assert(DTB::find_via_prefix("memory@", &resource) == 1);
-        return resource;
+        return DTB::find("device_type", "memory");
     }
     resource_t get_clint(void) {
-        resource_t resource;
-        // 设置 resource 基本信息
-        resource.type = resource_t::MEM;
-        assert(DTB::find_via_prefix("clint@", &resource) == 1);
-        return resource;
+        return DTB::find("compatible", "riscv,clint0");
     }
     resource_t get_plic(void) {
-        resource_t resource;
-        // 设置 resource 基本信息
-        resource.type = resource_t::MEM;
-        assert(DTB::find_via_prefix("plic@", &resource) == 1);
-        return resource;
+        return DTB::find("compatible", "riscv,plic0");
     }
 };
