@@ -52,15 +52,7 @@ void SBI_CONSOLE::write(const char *_s, size_t _len) const {
 }
 
 uint8_t SBI_CONSOLE::get_char(void) const {
-    uint8_t res = 0xFF;
-    // TODO: 设置超时
-    while (1) {
-        res = OPENSBI::get_char();
-        if (res != 0xFF) {
-            break;
-        }
-    }
-    return res;
+    return 0;
 }
 
 void SBI_CONSOLE::set_color(const COLOR::color_t _color) const {
