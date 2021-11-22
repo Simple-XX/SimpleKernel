@@ -101,10 +101,6 @@ void IO::put_char(char c) {
     return;
 }
 
-char IO::get_char(void) {
-    return io.get_char();
-}
-
 int32_t IO::write_string(const char *s) {
     io.write_string(s);
     return 0;
