@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// multiboot2.h for Simple-XX/SimpleKernel.
+/**
+ * @file multiboot2.h
+ * @brief multiboot2 解析
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _MULTIBOOT2_H_
 #define _MULTIBOOT2_H_
@@ -10,7 +20,7 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-// See Multiboot2 Specification version 2.0.pdf
+/// @see Multiboot2 Specification version 2.0.pdf
 // 启动后，在 32 位内核进入点，机器状态如下：
 //   1. CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
 //   2. DS，SS，ES，FS 和 GS 指向基地址为0x00000000，限长为4G –
@@ -22,6 +32,9 @@
 //   7. 系统信息和启动信息块的线性地址保存在 EBX中（相当于一个指针）。
 //      以下即为这个信息块的结构
 
+/**
+ * @brief MULTIBOOT2 接口抽象
+ */
 class MULTIBOOT2 {
 private:
     /*  How many bytes from the start of the file we search for the header. */
@@ -288,17 +301,31 @@ private:
     };
 
 public:
-    // 初始化
+    /**
+     * @brief 初始化
+     * @return true            成功
+     * @return false           失败
+     */
     static bool multiboot2_init(void);
-    // 迭代器
+    /**
+     * @brief 迭代器
+     * @param  _fun            迭代操作
+     * @param  _data           数据
+     */
     static void multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
                                 void *_data);
-    // 获取内存信息
+    /**
+     * @brief 获取内存信息
+     * @param  _iter_data      迭代变量
+     * @param  _data           数据
+     * @return true            成功
+     * @return false           失败
+     */
     static bool get_memory(const iter_data_t *_iter_data, void *_data);
 };
 
 namespace BOOT_INFO {
-    // 魔数
+    /// 魔数
     extern "C" uint32_t multiboot2_magic;
 };
 
