@@ -1,8 +1,21 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// kernel_main.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file kernel_main.cpp
+ * @brief 内核主要逻辑
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
+
+/// @todo gdb 调试
+/// @todo clion 环境
 
 #include "cxxabi.h"
 #include "common.h"
@@ -10,16 +23,23 @@
 #include "iostream"
 #include "kernel.h"
 
-// TODO: gdb 调试
-// TODO: clion 环境
+/**
+ * @brief 内核主要逻辑
+ * @note 这个函数不会返回
+ */
 void kernel_main(void) {
+    // 显示基本信息
     show_info();
+    // 进入死循环
     while (1) {
         ;
     }
     return;
 }
 
+/**
+ * @brief 输出系统信息
+ */
 void show_info(void) {
     // 内核实际大小
     auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
