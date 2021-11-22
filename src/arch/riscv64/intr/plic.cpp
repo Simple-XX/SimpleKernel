@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// plic.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file plic.cpp
+ * @brief plic 抽象
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdint.h"
 #include "stdio.h"
@@ -13,13 +23,16 @@
 #include "io.h"
 #include "intr.h"
 
-// 这个值在启动时由 opensbi 传递，暂时写死
+/// 这个值在启动时由 opensbi 传递，暂时写死
 static constexpr const uint64_t hart = 0;
 
 const uint64_t PLIC::PLIC_PRIORITY = PLIC::base_addr + 0x0;
 const uint64_t PLIC::PLIC_PENDING  = PLIC::base_addr + 0x1000;
 uintptr_t      PLIC::base_addr;
 
+/**
+ * @brief 外部中断处理
+ */
 static void externel_intr(void) {
     // 读取中断号
     auto no = PLIC::get();
@@ -40,18 +53,10 @@ uint64_t PLIC::PLIC_SCLAIM(uint64_t hart) {
     return base_addr + 0x201004 + hart * 0x2000;
 }
 
-PLIC::PLIC(void) {
-    return;
-}
-
-PLIC::~PLIC(void) {
-    return;
-}
-
 int32_t PLIC::init(void) {
     // 映射 plic
     resource_t resource = BOOT_INFO::get_plic();
-    // std::cout << resource << std::endl;
+    std::cout << resource << std::endl;
     base_addr = resource.mem.addr;
     for (uintptr_t a = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += 0x1000) {

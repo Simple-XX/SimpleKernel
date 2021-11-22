@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// e820.h for Simple-XX/SimpleKernel.
+/**
+ * @file e820.h
+ * @brief e820 相关定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _E820_H_
 #define _E820_H_
@@ -10,13 +20,22 @@
 #include "stddef.h"
 #include "stdint.h"
 
-static constexpr const uint32_t E820_MAX      = 8;
-static constexpr const uint32_t E820_RAM      = 1;
+/// 最大数量
+static constexpr const uint32_t E820_MAX = 8;
+/// RAM 标记
+static constexpr const uint32_t E820_RAM = 1;
+/// 保留 标记
 static constexpr const uint32_t E820_RESERVED = 2;
-static constexpr const uint32_t E820_ACPI     = 3;
-static constexpr const uint32_t E820_NVS      = 4;
+/// ACPI 标记
+static constexpr const uint32_t E820_ACPI = 3;
+/// NVS 标记
+static constexpr const uint32_t E820_NVS = 4;
+/// 不可用 标记
 static constexpr const uint32_t E820_UNUSABLE = 5;
 
+/**
+ * @brief e820 项
+ */
 struct e820entry_t {
     // 数据类型由位数决定
     uintptr_t addr;
@@ -24,6 +43,9 @@ struct e820entry_t {
     uint32_t  type;
 };
 
+/**
+ * @brief e820 表
+ */
 struct e820map_t {
     e820map_t(void) {
         nr_map = 0;
