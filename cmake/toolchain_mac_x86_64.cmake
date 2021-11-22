@@ -46,3 +46,12 @@ if (NOT BOCHS)
 else ()
     message(STATUS "Found bochs ${BOCHS}")
 endif ()
+
+# xorriso
+find_program(XORRISO xorriso)
+if (NOT XORRISO)
+    message(FATAL_ERROR "xorriso not found.\n"
+            "run `brew install xorriso` to install the toolchain")
+else ()
+    message(STATUS "Found xorriso ${XORRISO}")
+endif ()
