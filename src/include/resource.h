@@ -29,6 +29,8 @@ struct resource_t {
     typedef enum : uint8_t {
         /// 内存
         MEM,
+        // 中断号
+        INTR_NO,
     } type_t;
     type_t type;
     /// 资源名称
@@ -40,6 +42,7 @@ struct resource_t {
             uintptr_t addr;
             size_t    len;
         } mem;
+        uint8_t irq_no;
     };
     /**
      * @brief resource_t 输出
@@ -50,8 +53,12 @@ struct resource_t {
     friend std::ostream &operator<<(std::ostream &_os, const resource_t &_res) {
         switch (_res.type) {
             case MEM: {
-                printf("%s(MEM), 0x%p, 0x%p", _res.name, _res.mem.addr,
+                printf("%s(MEM): 0x%p, 0x%p", _res.name, _res.mem.addr,
                        _res.mem.len);
+                break;
+            }
+            case INTR_NO: {
+                printf("%s(INTR): 0x%p, 0x%p\n", _res.name, _res.irq_no);
                 break;
             }
             default: {
