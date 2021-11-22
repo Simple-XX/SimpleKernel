@@ -9,6 +9,7 @@
 
 # ARCH: i386, x86_64, riscv64
 # ARCH="i386"
+# 错误
 # ARCH="x86_64"
 ARCH="riscv64"
 
