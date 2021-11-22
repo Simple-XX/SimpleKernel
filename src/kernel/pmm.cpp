@@ -67,7 +67,7 @@ bool PMM::init(void) {
     length = mem_info.mem.len;
     // 计算页数
     total_pages = length / COMMON::PAGE_SIZE;
-    // 内核空间地址开始
+    // 内核空间地址开始
     kernel_space_start = COMMON::KERNEL_START_ADDR;
     // 长度手动指定
     kernel_space_length = COMMON::KERNEL_SPACE_SIZE;
