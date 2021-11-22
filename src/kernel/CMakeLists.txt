@@ -11,7 +11,7 @@ PROJECT(kernel CXX)
 # 寻找 CXX 文件
 aux_source_directory(${kernel_SOURCE_DIR}/. kernel_src)
 
-# 添加子模块
+# 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${kernel_src})
 
 # 添加头文件搜索路径

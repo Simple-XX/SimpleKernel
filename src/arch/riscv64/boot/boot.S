@@ -18,7 +18,7 @@ _start:
     sw a0, dtb_init_hart, t0
     // 将 a1 的值传递给 boot_info_addr
     sw a1, boot_info_addr, t0
-    // 设置栈
+    // 设置栈地址
     la sp, stack_top
     // 初始化 C++
     call cpp_init

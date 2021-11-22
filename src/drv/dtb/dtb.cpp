@@ -208,7 +208,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
                 }
                 // 跳过 type
                 iter.addr++;
-                // 跳过 name
+                // 跳过 name
                 iter.addr +=
                     COMMON::ALIGN(strlen((char *)iter.addr) + 1, 4) / 4;
                 break;
