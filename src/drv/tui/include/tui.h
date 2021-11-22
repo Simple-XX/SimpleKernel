@@ -52,9 +52,9 @@ public:
     col_t(const COLOR::color_t _fore, const COLOR::color_t _back);
     ~col_t(void);
     // 前景色
-    uint8_t _fore : 4;
+    uint8_t fore : 4;
     // 背景色
-    uint8_t _back : 4;
+    uint8_t back : 4;
 };
 
 /**
@@ -195,6 +195,12 @@ public:
      * @brief 清屏，清空 TUI 缓存
      */
     void clear(void);
+    /**
+     * @brief 读一个字符
+     * @return uint8_t         读取到的字符
+     * @note TUI 不支持，这里仅仅是保持接口一致
+     */
+    uint8_t get_char(void) const;
 };
 
 #endif /* _TUI_H_ */

@@ -215,3 +215,7 @@ void TUI::clear(void) {
     set_pos(pos_t(0, 0));
     return;
 }
+
+uint8_t TUI::get_char(void) const {
+    return 0;
+}
