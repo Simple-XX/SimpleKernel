@@ -22,7 +22,6 @@
  * @note 这个函数不会返回
  */
 extern "C" void kernel_main(void);
-
 /**
  * @brief 物理内存测试函数
  * @return int             0 成功
@@ -33,6 +32,11 @@ int test_pmm(void);
  * @return int             0 成功
  */
 int test_vmm(void);
+/**
+ * @brief 堆测试函数
+ * @return int             desc
+ */
+int test_heap(void);
 /**
  * @brief 输出系统信息
  */

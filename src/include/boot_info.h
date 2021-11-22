@@ -46,6 +46,10 @@ namespace BOOT_INFO {
      * @return resource_t      物理内存资源信息
      */
     extern resource_t get_memory(void);
+    // 获取 clint
+    extern resource_t get_clint(void);
+    // 获取 plic
+    extern resource_t get_plic(void);
 };
 
 #endif /* _BOOT_INFO_H_ */
