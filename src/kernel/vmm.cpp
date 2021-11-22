@@ -51,6 +51,7 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
             if (_alloc == true) {
                 // 申请新的物理页
                 pgd = (pt_t)PMM::alloc_page_kernel();
+                bzero(pgd, COMMON::PAGE_SIZE);
                 // 申请失败则返回
                 if (pgd == nullptr) {
                     // 如果出现这种情况，说明物理内存不够，一般不会出现
@@ -80,6 +81,7 @@ bool VMM::init(void) {
     curr_dir = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
+    bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
          addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
