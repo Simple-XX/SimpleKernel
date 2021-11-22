@@ -10,9 +10,12 @@
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-09-18<td>Zone.N (Zone.Niuzh@hotmail.com)<td>迁移到 doxygen
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
  * </table>
  */
+
+/// @todo gdb 调试
+/// @todo clion 环境
 
 #include "cxxabi.h"
 #include "common.h"
@@ -28,6 +31,7 @@
  * @note 这个函数不会返回
  */
 void kernel_main(void) {
+    // 显示基本信息
     show_info();
     // 进入死循环
     while (1) {
@@ -36,6 +40,9 @@ void kernel_main(void) {
     return;
 }
 
+/**
+ * @brief 输出系统信息
+ */
 void show_info(void) {
     // 内核实际大小
     auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;

@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// sbi_console.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file sbi_console.cpp
+ * @brief opensbi console 接口实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stddef.h"
 #include "string.h"
@@ -10,9 +20,11 @@
 #include "opensbi.h"
 #include "sbi_console.h"
 
+// 默认颜色为白色
 COLOR::color_t SBI_CONSOLE::color = COLOR::WHITE;
 
 SBI_CONSOLE::SBI_CONSOLE(void) {
+    // 输出初始化信息
     write_string("sbi console init.\n");
     return;
 }
@@ -22,6 +34,7 @@ SBI_CONSOLE::~SBI_CONSOLE(void) {
 }
 
 void SBI_CONSOLE::put_char(const char _c) const {
+    // 调用 opensbi 提供的接口
     OPENSBI::put_char(_c);
     return;
 }
@@ -43,6 +56,7 @@ uint8_t SBI_CONSOLE::get_char(void) const {
 }
 
 void SBI_CONSOLE::set_color(const COLOR::color_t _color) const {
+    // 根据 _color 构造字符串
     char *tmp = nullptr;
     switch (_color) {
         case COLOR::BLACK: {
@@ -110,6 +124,7 @@ void SBI_CONSOLE::set_color(const COLOR::color_t _color) const {
             break;
         }
     }
+    // 写入
     write_string(tmp);
     color = _color;
     return;

@@ -13,6 +13,7 @@ find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/boot)
 # 添加到 boot_src
 set(boot_src ${boot_asm_src})
 
+# 寻找 CXX 文件
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi openabi_src)
 
 # 设置子模块所有的源码
