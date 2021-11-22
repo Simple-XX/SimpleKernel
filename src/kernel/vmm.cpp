@@ -59,7 +59,7 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
                 }
                 // 清零
                 bzero(pgd, COMMON::PAGE_SIZE);
-                // 填充页表项
+                // 填充页表项
                 *pte = PA2PTE((uintptr_t)pgd) | VMM_PAGE_VALID;
             }
             // 不分配的话直接返回
