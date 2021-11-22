@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// multiboot2.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file multiboot2.cpp
+ * @brief multiboot2 解析实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "assert.h"
 #include "stdio.h"
@@ -14,7 +24,7 @@
 #include "common.h"
 #include "pmm.h"
 
-// TODO: 优化
+/// @todo 优化
 void MULTIBOOT2::multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
                                  void *_data) {
     uintptr_t addr = BOOT_INFO::boot_info_addr;
