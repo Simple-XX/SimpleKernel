@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// vmm.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file vmm.cpp
+ * @brief 虚拟内存头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdint.h"
 #include "string.h"
@@ -62,20 +72,12 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
     return &pgd[PX(0, _va)];
 }
 
-VMM::VMM(void) {
-    // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
-    return;
-}
-
-VMM::~VMM(void) {
-    return;
-}
-
 bool VMM::init(void) {
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
 #endif
+    // 读取当前页目录
+    curr_dir = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
     // 映射内核空间

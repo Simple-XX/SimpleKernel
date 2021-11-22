@@ -1,25 +1,28 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-#
-# boot.S for Simple-XX/SimpleKernel.
+// This file is a part of Simple-XX/SimpleKernel 
+// (https://github.com/Simple-XX/SimpleKernel).
+//
+// boot.S for Simple-XX/SimpleKernel.
+// 启动代码，进行一些设置后跳转到 kernel_main
 
-/*  How many bytes from the start of the file we search for the header. */
+// 以下是来自 multiboot2 规范的定义
+//  How many bytes from the start of the file we search for the header.
 #define MULTIBOOT_SEARCH 32768
 #define MULTIBOOT_HEADER_ALIGN 8
 
-/*  The magic field should contain this. */
+//  The magic field should contain this.
 #define MULTIBOOT2_HEADER_MAGIC 0xe85250d6
 
-/*  This should be in %eax. */
+//  This should be in %eax.
 #define MULTIBOOT2_BOOTLOADER_MAGIC 0x36d76289
 
-/*  Alignment of multiboot modules. */
+//  Alignment of multiboot modules.
 #define MULTIBOOT_MOD_ALIGN 0x00001000
 
-/*  Alignment of the multiboot info structure. */
+//  Alignment of the multiboot info structure.
 #define MULTIBOOT_INFO_ALIGN 0x00000008
 
-/*  Flags set in the 'flags' member of the multiboot header. */
+//  Flags set in the 'flags' member of the multiboot header.
 
 #define MULTIBOOT_TAG_ALIGN 8
 #define MULTIBOOT_TAG_TYPE_END 0
@@ -69,35 +72,44 @@
 #define MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED 2
 
 
-/* 直接用 -m64 编译出来的是 64 位代码，
-    但是启动后的机器是 32 位的，相当于在 32 位机器上跑 64 位程序。
-	得加一层跳转到 64 位的 -m32 代码，开启 long 模式后再跳转到以 -m64 编译的代码中
-    对于 x86_64，需要在启动阶段进入长模式(IA32E)，这意味着需要一个临时页表
-    See https://wiki.osdev.org/Creating_a_64-bit_kernel: 
-	With a 32-bit bootstrap in your kernel
-*/
+// 直接用 -m64 编译出来的是 64 位代码，
+// 但是启动后的机器是 32 位的，相当于在 32 位机器上跑 64 位程序。
+// 得加一层跳转到 64 位的 -m32 代码，开启 long 模式后再跳转到以 -m64 编译的代码中
+// 对于 x86_64，需要在启动阶段进入长模式(IA32E)，这意味着需要一个临时页表
+// See https://wiki.osdev.org/Creating_a_64-bit_kernel: 
+// With a 32-bit bootstrap in your kernel
 
-# 这部分是从保护模式启动 long 模式的代码
-# 工作在 32bit
+// 这部分是从保护模式启动 long 模式的代码
+// 工作在 32bit
+// 声明这一段代码以 32 位模式编译
 .code32
 
-# multiboot2 文件头
+// multiboot2 文件头
+// 计算头长度
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
+// 计算校验和
 .SET CHECKSUM, -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH)
+// 8 字节对齐
 .align MULTIBOOT_HEADER_ALIGN
+// 声明所属段
 .section .multiboot_header
 multiboot_header:
+    // 魔数
     .long MULTIBOOT2_HEADER_MAGIC
+    // 架构
     .long MULTIBOOT_ARCHITECTURE_I386
+    // 头长度
     .long HEADER_LENGTH
+    // 校验和
     .long CHECKSUM
-    # 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
+    // 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
 	.short MULTIBOOT_HEADER_TAG_END
+    // 结束标记
     .short 0
     .long 8
 multiboot_header_end:
 
-# 临时页表 4KB/页
+// 临时页表 4KB/页
 .section .data
 .align 0x1000
 pml4:
@@ -109,7 +121,7 @@ pd:
 pt:
     .skip 0x1000
 
-# 临时 GDT
+// 临时 GDT
 .align 16
 gdt64:
 null_desc:
@@ -161,35 +173,35 @@ gdt64_pointer64:
 .extern boot_info_addr
 .extern multiboot2_magic
 _start:
-    # 关中断
+    // 关中断
     cli
-    # multiboot2_info 结构体指针
+    // multiboot2_info 结构体指针
     mov %ebx, boot_info_addr
-    # 魔数
+    // 魔数
     mov %eax, multiboot2_magic
-    # 从保护模式跳转到长模式
-    # 1. 允许 PAE
+    // 从保护模式跳转到长模式
+    // 1. 允许 PAE
     mov %cr4, %eax
     or $(1<<5), %eax
     mov %eax, %cr4
-    # 2. 设置临时页表
-    # 最高级
+    // 2. 设置临时页表
+    // 最高级
     mov $pml4, %eax
     mov $pdpt, %ebx
     or $0x3, %ebx
     mov %ebx, 0(%eax)
-    # 次级
+    // 次级
     mov $pdpt, %eax
     mov $pd, %ebx
     or $0x3, %ebx
     mov %ebx, 0(%eax)
-    # 次低级
+    // 次低级
     mov $pd, %eax
     mov $pt, %ebx
     or $0x3, %ebx
     mov %ebx, 0(%eax)
-    # 最低级
-    # 循环 512 次，填满一页
+    // 最低级
+    // 循环 512 次，填满一页
     mov $512, %ecx
     mov $pt, %eax
     mov $0x3, %ebx
@@ -198,22 +210,22 @@ _start:
     add $0x1000, %ebx
     add $8, %eax
     loop .fill_pt
-    # 填写 CR3
+    // 填写 CR3
     mov $pml4, %eax
     mov %eax, %cr3
-    # 3. 切换到 long 模式
+    // 3. 切换到 long 模式
     mov $0xC0000080, %ecx
     rdmsr
     or $(1<<8), %eax
     wrmsr
-    # 4. 开启分页
+    // 4. 开启分页
     mov %cr0, %eax
     or $(1<<31), %eax
     mov %eax, %cr0
-    # 5. 重新设置 GDT
+    // 5. 重新设置 GDT
     mov $gdt64_pointer, %eax
     lgdt 0(%eax)
-    # 6. 跳转到 64 位代码执行
+    // 6. 跳转到 64 位代码执行
     jmp $0x8, $_start64
     hlt
     ret
@@ -226,24 +238,24 @@ _start:
 .extern kernel_main
 .extern cpp_init
 _start64:
-    # 从这里开始就是 long 模式了
-    # 加载 64 位 gdt
+    // 从这里开始就是 long 模式了
+    // 加载 64 位 gdt
     mov $gdt64_pointer64, %rax
     lgdt 0(%rax)
-    # 更新
+    // 更新
     mov $0x10, %rax
     mov %rax, %ds
     mov %rax, %es
     mov %rax, %fs
     mov %rax, %gs
     mov %rax, %ss
-    # 设置栈地址
+    // 设置栈地址
     mov $STACK_TOP, %rsp
-    # 栈地址按照 4096 字节对齐
+    // 栈地址按照 4096 字节对齐
     and $0xFFFFFFFFFFFFF000, %rsp
-    # 帧指针修改为 0
+    // 帧指针修改为 0
     mov $0, %rbp
-    # 初始化 C++
+    // 初始化 C++
     call cpp_init
     call kernel_main
     hlt
