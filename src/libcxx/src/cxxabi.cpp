@@ -16,7 +16,6 @@
  */
 
 #include "cxxabi.h"
-#include "new"
 
 #ifdef __cplusplus
 extern "C" {

@@ -39,21 +39,6 @@ namespace std {
         return *this;
     }
 
-    ostream &ostream::operator<<(unsigned int n) {
-        printf("%u", n);
-        return *this;
-    }
-
-    ostream &ostream::operator<<(long n) {
-        printf("%d", n);
-        return *this;
-    }
-
-    ostream &ostream::operator<<(unsigned long n) {
-        printf("%u", n);
-        return *this;
-    }
-
     ostream &ostream::operator<<(const char *lhs) {
         printf("%s", lhs);
         return *this;
