@@ -24,7 +24,9 @@ elseif (${SimpleKernelArch} STREQUAL "ia32/x86_64")
 endif ()
 
 aux_source_directory(${arch_SOURCE_DIR}/port port_cpp_src)
+# 添加到 port_src
 set(port_src ${port_cpp_src})
+
 # 设置子模块所有的源码
 set(arch_src ${boot_src} ${port_src})
 
