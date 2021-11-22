@@ -1,0 +1,126 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "ranges": "cpp",
+        "random": "c",
+        "*.tcc": "cpp",
+        "streambuf": "cpp",
+        "cstdio": "cpp",
+        "exception": "cpp",
+        "memory_resource": "cpp",
+        "iosfwd": "cpp",
+        "new": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "cstdlib": "cpp",
+        "deque": "cpp",
+        "vector": "cpp",
+        "initializer_list": "cpp",
+        "type_traits": "cpp",
+        "atomic": "cpp",
+        "complex": "cpp",
+        "unordered_map": "cpp",
+        "iterator": "cpp",
+        "optional": "cpp",
+        "utility": "cpp",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "iostream": "cpp",
+        "bit": "cpp",
+        "cctype": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "cstdarg": "cpp",
+        "cstddef": "cpp",
+        "cstdint": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "memory": "cpp",
+        "numeric": "cpp",
+        "system_error": "cpp",
+        "tuple": "cpp",
+        "iomanip": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "stdexcept": "cpp",
+        "cinttypes": "cpp",
+        "typeinfo": "cpp",
+        "list": "cpp",
+        "climits": "cpp",
+        "basic_string": "cpp",
+        "construct": "cpp",
+        "exceptdef": "cpp",
+        "hashtable": "cpp",
+        "heap_algo": "cpp",
+        "set_algo": "cpp",
+        "uninitialized": "cpp",
+        "unordered_set": "cpp",
+        "util": "cpp",
+        "queue": "cpp",
+        "rb_tree": "cpp",
+        "algo": "cpp",
+        "algobase": "cpp",
+        "allocator": "cpp",
+        "astring": "cpp",
+        "numbers": "cpp"
+    },
+    "cmake.configureOnOpen": true,
+    // --------Doxygen--------
+    // 文件注释的组成及其排序
+    "doxdocgen.file.fileOrder": [
+        // @file
+        "file",
+        // @brief 简介
+        "brief",
+        // 作者
+        "author",
+        // 版本
+        "version",
+        // 日期
+        "date",
+        // 版权
+        "copyright",
+        // 自定义
+        "custom"
+    ],
+    // 下面时设置上面标签tag的具体信息
+    // 文件注释：版权信息模板
+    "doxdocgen.file.copyrightTag": [
+        "@copyright MIT LICENSE",
+        "https://github.com/Simple-XX/SimpleKernel"
+    ],
+    // 文件注释：自定义模块，这里我添加一个修改日志
+    "doxdocgen.file.customTag": [
+        "@par change log:",
+        "<table>",
+        "<tr><th>Date<th>Author<th>Description",
+        "<tr><td>{date}<td>作者<td>内容",
+        "</table>",
+    ],
+    "doxdocgen.file.fileTemplate": "@file {name}",
+    "doxdocgen.generic.authorEmail": "XXX@XXX.com",
+    "doxdocgen.generic.authorName": "XXX",
+    "doxdocgen.generic.authorTag": "@author {author} ({email})",
+    // 日期格式与模板
+    "doxdocgen.generic.dateFormat": "YYYY-MM-DD",
+    "doxdocgen.generic.dateTemplate": "@date {date}",
+    // 根据自动生成的注释模板（目前主要体现在函数注释上）
+    "doxdocgen.generic.order": [
+        "brief",
+        "tparam",
+        "param",
+        "return"
+    ],
+    "doxdocgen.generic.paramTemplate": "@param{indent:8}{param}{indent:25}My Param doc",
+    "doxdocgen.generic.returnTemplate": "@return {type} ",
+    "doxdocgen.generic.splitCasingSmartText": true,
+    // --------Doxygen END--------
+}

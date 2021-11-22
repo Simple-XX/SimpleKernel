@@ -35,11 +35,10 @@ endif ()
 aux_source_directory(${arch_SOURCE_DIR}/port port_cpp_src)
 # 添加到 port_src
 set(port_src ${port_cpp_src})
-
 # 设置子模块所有的源码
 set(arch_src ${boot_src} ${port_src} ${gdt_src})
 
-# 添加子模块
+# 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
 # 添加头文件搜索路径

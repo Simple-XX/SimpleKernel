@@ -25,7 +25,7 @@ elseif (SimpleKernelArch STREQUAL riscv64)
     set(drv_src ${opensbi_src} ${sbi_console_src} ${dtb_src})
 endif ()
 
-# 添加子模块
+# 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${drv_src})
 
 # 添加头文件搜索路径
