@@ -9,7 +9,7 @@
 
 # 如果 ARCH 为 i386 或 x86_64，统一添加 ia32 前缀
 if (ARCH STREQUAL i386)
-    set(SimpleKernelArch "ia32/i386")
+    set(SimpleKernelArch ia32/i386)
 elseif (ARCH STREQUAL x86_64)
     set(SimpleKernelArch ia32/x86_64)
 # 其它情况不变
