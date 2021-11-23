@@ -189,6 +189,10 @@ void TUI::put_char(const char _c) {
     return;
 }
 
+uint8_t TUI::get_char(void) const {
+    return 0;
+}
+
 void TUI::write_string(const char *_s) {
     write(_s, strlen(_s));
     return;
@@ -214,8 +218,4 @@ void TUI::clear(void) {
     // 将光标位置设为屏幕左上角
     set_pos(pos_t(0, 0));
     return;
-}
-
-uint8_t TUI::get_char(void) const {
-    return 0;
 }
