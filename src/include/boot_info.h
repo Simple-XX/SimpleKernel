@@ -35,12 +35,14 @@ namespace BOOT_INFO {
     extern "C" uintptr_t boot_info_addr;
     /// 长度
     extern size_t boot_info_size;
+
     /**
      * @brief 初始化，定义在具体实现中
      * @return true            成功
      * @return false           成功
      */
     extern bool init(void);
+
     /**
      * @brief 获取物理内存信息
      * @return resource_t      物理内存资源信息

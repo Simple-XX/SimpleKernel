@@ -35,8 +35,7 @@ struct resource_t {
     uint8_t type;
     /// 资源名称
     char *name;
-    /// 当资源类型为内存时，uinon 保存内存地址
-    /// 当资源类型为中断号，uinon 保存中断号
+    /// 当资源类型为 MEM 时，uinon 保存内存地址
     union {
         struct {
             uintptr_t addr;
