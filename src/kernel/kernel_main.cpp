@@ -27,6 +27,8 @@
 #include "pmm.h"
 #include "vmm.h"
 #include "heap.h"
+#include "intr.h"
+#include "cpu.hpp"
 #include "kernel.h"
 #include "dtb.h"
 
@@ -50,12 +52,17 @@ void kernel_main(void) {
     heap.init();
     // 测试堆
     test_heap();
+    // 中断初始化
+    INTR::init();
+    // 允许中断
+    // CPU::ENABLE_INTR();
     // 显示基本信息
     show_info();
     // 进入死循环
     while (1) {
         ;
     }
+    // 不应该执行到这里
     assert(0);
     return;
 }

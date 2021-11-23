@@ -17,6 +17,7 @@
 #ifndef _CPU_HPP_
 #define _CPU_HPP_
 
+#include "stdio.h"
 #include "stdint.h"
 #include "stdbool.h"
 
@@ -25,7 +26,6 @@
  * @todo
  */
 namespace CPU {
-
     // which hart (core) is this?
     static inline uint64_t READ_MHARTID(void) {
         uint64_t x;
@@ -185,8 +185,48 @@ namespace CPU {
     }
 
     // Machine-mode interrupt vector
+    static inline uint64_t READ_MTVEC(void) {
+        uint64_t x;
+        __asm__ volatile("csrr %0, mtvec" : "=r"(x));
+        return x;
+    }
+
     static inline void WRITE_MTVEC(uint64_t x) {
         __asm__ volatile("csrw mtvec, %0" : : "r"(x));
+        return;
+    }
+
+    static constexpr const uint64_t TVEC_DIRECT   = 0xFFFFFFFFFFFFFFFC;
+    static constexpr const uint64_t TVEC_VECTORED = 0xFFFFFFFFFFFFFFFD;
+
+    // direct mode
+    static inline void MTVEC_DIRECT(void) {
+        uint64_t mtvec = READ_MTVEC();
+        mtvec          = mtvec & TVEC_DIRECT;
+        WRITE_MTVEC(mtvec);
+        return;
+    }
+
+    // Vectored mode
+    static inline void MTVEC_VECTORED(void) {
+        uint64_t mtvec = READ_MTVEC();
+        mtvec          = mtvec & TVEC_VECTORED;
+        WRITE_MTVEC(mtvec);
+        return;
+    }
+
+    static inline void STVEC_DIRECT(void) {
+        uint64_t stvec = READ_STVEC();
+        stvec          = stvec & TVEC_DIRECT;
+        WRITE_STVEC(stvec);
+        return;
+    }
+
+    // Vectored mode
+    static inline void STVEC_VECTORED(void) {
+        uint64_t stvec = READ_STVEC();
+        stvec          = stvec & TVEC_VECTORED;
+        WRITE_STVEC(stvec);
         return;
     }
 
@@ -227,6 +267,18 @@ namespace CPU {
     static inline void WRITE_MSCRATCH(uint64_t x) {
         __asm__ volatile("csrw mscratch, %0" : : "r"(x));
         return;
+    }
+
+    // [31]=1 interrupt, else exception
+    static constexpr const uint64_t CAUSE_INTR_MASK = 0x8000000000000000;
+    // low bits show code
+    static constexpr const uint64_t CAUSE_CODE_MASK = 0x7FFFFFFFFFFFFFFF;
+
+    // Supervisor Machine Cause
+    static inline uint64_t READ_MCAUSE(void) {
+        uint64_t x;
+        __asm__ volatile("csrr %0, mcause" : "=r"(x));
+        return x;
     }
 
     // Supervisor Trap Cause
@@ -277,7 +329,7 @@ namespace CPU {
     }
 
     // are device interrupts enabled?
-    static inline int SSTATUS_INTR_status(void) {
+    static inline bool SSTATUS_INTR(void) {
         uint64_t x = READ_SSTATUS();
         return (x & SSTATUS_SIE) != 0;
     }
