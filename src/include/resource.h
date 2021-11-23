@@ -26,21 +26,27 @@
  */
 struct resource_t {
     /// 资源类型
-    typedef enum : uint8_t {
+    enum : uint8_t {
         /// 内存
-        MEM,
-    } type_t;
-    type_t type;
+        MEM = 1 << 0,
+    };
+    uint8_t type;
     /// 资源名称
     char *name;
-    /// 当资源类型为内存时，uinon 保存内存地址
-    /// 当资源类型为中断号，uinon 保存中断号
+    /// 当资源类型为 MEM 时，uinon 保存内存地址
     union {
         struct {
             uintptr_t addr;
             size_t    len;
         } mem;
     };
+
+    resource_t(void) : type(0), name(nullptr) {
+        mem.addr     = 0;
+        mem.len      = 0;
+        return;
+    }
+
     /**
      * @brief resource_t 输出
      * @param  _os             输出流
@@ -48,16 +54,9 @@ struct resource_t {
      * @return std::ostream&   输出流
      */
     friend std::ostream &operator<<(std::ostream &_os, const resource_t &_res) {
-        switch (_res.type) {
-            case MEM: {
-                printf("%s(MEM), 0x%p, 0x%p", _res.name, _res.mem.addr,
-                       _res.mem.len);
-                break;
-            }
-            default: {
-                assert(0);
-                break;
-            }
+        printf("%s: ", _res.name);
+        if (_res.type & MEM) {
+            printf("MEM(0x%p, 0x%p)", _res.mem.addr, _res.mem.len);
         }
         return _os;
     }
