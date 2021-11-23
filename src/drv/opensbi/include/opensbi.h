@@ -42,6 +42,7 @@ private:
     static constexpr const uint32_t REMOTE_SFENCE_VMA_ASID = 0x7;
     /// 关机
     static constexpr const uint32_t SHUTDOWN = 0x8;
+
     /**
      * @brief ecall 接口
      * @param  _num            系统调用号 使用 a7 传递
@@ -61,12 +62,14 @@ public:
      * @param  _c              要输出的字符
      */
     static void put_char(const char _c);
+
     /**
      * @brief 从 uart 读取一个字符
      * @return uint8_t         读取到的字符，没有读到数据返回 0xFF
      * @note 不会阻塞
      */
     static uint8_t get_char(void);
+
     /**
      * @brief 设置时钟
      * @param  _value          要设置的时间
