@@ -54,22 +54,21 @@ uint64_t PLIC::PLIC_SCLAIM(uint64_t hart) {
 }
 
 int32_t PLIC::init(void) {
-    // // 映射 plic
-    // resource_t resource = BOOT_INFO::get_plic();
-    // std::cout << resource << std::endl;
-    // base_addr = resource.mem.addr;
-    // for (uintptr_t a = resource.mem.addr;
-    //      a < resource.mem.addr + resource.mem.len; a += 0x1000) {
-    //     VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
-    // }
-    // // TODO: 多核情况下设置所有 hart
-    // // 将当前 hart 的 S 模式优先级阈值设置为 0
-    // io.write32((void *)PLIC_SPRIORITY(hart), 0);
-    // // 注册外部中断处理函数
-    // CLINT::register_interrupt_handler(CLINT::INTR_S_EXTERNEL, externel_intr);
-    // // 开启外部中断
-    // CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
-    // info("plic init.\n");
+    // 映射 plic
+    resource_t resource = BOOT_INFO::get_plic();
+    base_addr = resource.mem.addr;
+    for (uintptr_t a = resource.mem.addr;
+         a < resource.mem.addr + resource.mem.len; a += 0x1000) {
+        VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    }
+    // TODO: 多核情况下设置所有 hart
+    // 将当前 hart 的 S 模式优先级阈值设置为 0
+    io.write32((void *)PLIC_SPRIORITY(hart), 0);
+    // 注册外部中断处理函数
+    CLINT::register_interrupt_handler(CLINT::INTR_S_EXTERNEL, externel_intr);
+    // 开启外部中断
+    CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
+    info("plic init.\n");
     return 0;
 }
 

@@ -75,9 +75,9 @@ int32_t INTR::init(void) {
     // 内部中断初始化
     CLINT::init();
     // 外部中断初始化
-    // PLIC::init();
+    PLIC::init();
     // 设置时钟中断
-    // TIMER::init();
+    TIMER::init();
     info("intr init.\n");
     return 0;
 }
