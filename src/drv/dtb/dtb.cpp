@@ -46,17 +46,20 @@ bool DTB::path_t::operator==(const DTB::path_t *_path) {
     return true;
 }
 
-bool DTB::node_t::find(const char *_prop_name, const char *_val) {
-    for (size_t i = 0; i < prop_count; i++) {
-        // 匹配属性
-        if (strcmp(props[i].name, _prop_name) == 0) {
-            // 匹配值
-            if (strcmp((char *)props[i].addr, _val) == 0) {
-                return true;
-            }
-        }
+bool DTB::path_t::operator==(const char *_path) {
+    // 路径必须以 ‘/’ 开始
+    if (_path[0] != '/') {
+        return false;
     }
-    return false;
+    // 记录当前 _path 处理到的下标
+    size_t tmp = 0;
+    for (size_t i = 0; i < len; i++) {
+        if (strncmp(path[i], &_path[tmp + i], strlen(path[i])) != 0) {
+            return false;
+        }
+        tmp += strlen(path[i]);
+    }
+    return true;
 }
 
 DTB::node_t *DTB::get_phandle(uint32_t _phandle) {
@@ -126,8 +129,12 @@ void DTB::print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
 
 void DTB::fill_resource(resource_t *_resource, const node_t *_node,
                         const prop_t *_prop) {
+    // 如果 _resource 名称为空则使用 _node 路径填充
+    if (_resource->name == nullptr) {
+        _resource->name = _node->path.path[_node->path.len - 1];
+    }
     // 内存类型
-    if (_resource->type == resource_t::MEM) {
+    if ((_resource->type & resource_t::MEM) && (_resource->mem.len == 0)) {
         // 根据 address_cells 与 size_cells 填充
         // resource 一般来说两者是相等的
         if (_node->parent->address_cells == 1) {
@@ -149,12 +156,12 @@ void DTB::fill_resource(resource_t *_resource, const node_t *_node,
     return;
 }
 
-DTB::node_t *DTB::find_node(const char *_prop_name, const char *_val) {
+DTB::node_t *DTB::find_node_via_path(const char *_path) {
     node_t *res = nullptr;
     // 遍历 nodes
     for (size_t i = 0; i < nodes[0].count; i++) {
         // 如果 nodes[i] 中有属性/值对符合要求
-        if (nodes[i].find(_prop_name, _val) == true) {
+        if (nodes[i].path == _path) {
             // 设置返回值
             res = &nodes[i];
         }
@@ -172,13 +179,13 @@ void DTB::dtb_mem_reserved(void) {
 }
 
 void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
-                   void *  _data) {
+                   void *_data, uintptr_t _addr) {
     // 迭代变量
     iter_data_t iter;
     // 路径深度
     iter.path.len = 0;
     // 数据地址
-    iter.addr = (uint32_t *)dtb_info.data;
+    iter.addr = (uint32_t *)_addr;
     // 节点索引
     iter.nodes_idx = 0;
     // 开始 flag
@@ -207,7 +214,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
                 }
                 // 跳过 type
                 iter.addr++;
-                // 跳过 name
+                // 跳过 name
                 iter.addr +=
                     COMMON::ALIGN(strlen((char *)iter.addr) + 1, 4) / 4;
                 break;
@@ -405,25 +412,41 @@ bool DTB::dtb_init(void) {
     return true;
 }
 
-resource_t DTB::find(const char *_prop_name, const char *_val) {
-    resource_t resource;
+bool DTB::find_via_path(const char *_path, resource_t *_resource) {
     // 找到节点
-    auto node = find_node(_prop_name, _val);
-    // 根据类型不同进行相应设置
-    if (strcmp(_val, "memory") == 0) {
-        // 设置 resource 基本信息
-        resource.name = (char *)"memory";
-        resource.type = resource_t::MEM;
-    }
+    auto node = find_node_via_path(_path);
+    // std::cout << node->path << std::endl;
     // 找到 reg
     for (size_t i = 0; i < node->prop_count; i++) {
+        // printf("node->props[i].name: %s\n", node->props[i].name);
         if (strcmp(node->props[i].name, "reg") == 0) {
             // 填充数据
-            fill_resource(&resource, node, &node->props[i]);
+            fill_resource(_resource, node, &node->props[i]);
             break;
         }
     }
-    return resource;
+    return true;
+}
+
+size_t DTB::find_via_prefix(const char *_prefix, resource_t *_resource) {
+    size_t res = 0;
+    // 遍历所有节点，查找
+    // 由于 @ 均为最底层节点，所以直接比较最后一级即可
+    for (size_t i = 0; i < nodes[0].count; i++) {
+        if (strncmp(nodes[i].path.path[nodes[i].path.len - 1], _prefix,
+                    strlen(_prefix)) == 0) {
+            // 找到 reg
+            for (size_t j = 0; j < nodes[i].prop_count; j++) {
+                if (strcmp(nodes[i].props[j].name, "reg") == 0) {
+                    // 填充数据
+                    fill_resource(&_resource[res], &nodes[i],
+                                  &nodes[i].props[j]);
+                }
+            }
+            res++;
+        }
+    }
+    return res;
 }
 
 std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
@@ -527,11 +550,9 @@ std::ostream &operator<<(std::ostream &_os, const DTB::path_t &_path) {
     if (_path.len == 1) {
         _os << "/";
     }
-    else {
-        for (size_t i = 1; i < _path.len; i++) {
-            _os << "/";
-            _os << _path.path[i];
-        }
+    for (size_t i = 1; i < _path.len; i++) {
+        _os << "/";
+        _os << _path.path[i];
     }
     return _os;
 }
@@ -548,7 +569,16 @@ namespace BOOT_INFO {
         auto res = DTB::dtb_init();
         return res;
     }
+
     resource_t get_memory(void) {
-        return DTB::find("device_type", "memory");
+        resource_t resource;
+        // 设置 resource 基本信息
+        resource.type = resource_t::MEM;
+        assert(DTB::find_via_prefix("memory@", &resource) == 1);
+        return resource;
+    }
+
+    size_t find_via_prefix(const char *_prefix, resource_t *_resource) {
+        return DTB::find_via_prefix(_prefix, _resource);
     }
 };
