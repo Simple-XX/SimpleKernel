@@ -1,19 +1,8 @@
 
-/**
- * @file iostream
- * @brief C++ 输入输出
- * @author Zone.N (Zone.Niuzh@hotmail.com)
- * @version 1.0
- * @date 2021-09-18
- * @copyright MIT LICENSE
- * https://github.com/Simple-XX/SimpleKernel
- * Based on https://github.com/MRNIU/MiniCRT
- * @par change log:
- * <table>
- * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
- * </table>
- */
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/MRNIU/MiniCRT
+// iostream.cpp for Simple-XX/SimpleKernel.
 
 #include "stddef.h"
 #include "string.h"
@@ -36,6 +25,21 @@ namespace std {
 
     ostream &ostream::operator<<(int n) {
         printf("%d", n);
+        return *this;
+    }
+
+    ostream &ostream::operator<<(unsigned int n) {
+        printf("%u", n);
+        return *this;
+    }
+
+    ostream &ostream::operator<<(long n) {
+        printf("%d", n);
+        return *this;
+    }
+
+    ostream &ostream::operator<<(unsigned long n) {
+        printf("%u", n);
         return *this;
     }
 
