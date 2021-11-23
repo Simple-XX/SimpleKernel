@@ -177,15 +177,18 @@ private:
      */
     static void set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
                         uint8_t _ist, uint8_t _type, uint8_t _dpl, uint8_t _p);
+
     /**
      * @brief 8259A 芯片初始化
      */
     static void init_interrupt_chip(void);
+
     /**
      * @brief 重设 8259A 芯片
      * @param  _no             要重设的中断号
      */
     static void clear_interrupt_chip(uint8_t _no);
+
     /**
      * @brief 关闭 8259A 芯片的所有中断，为启动 APIC 作准备
      */
@@ -258,6 +261,7 @@ public:
      * @return int32_t         desc
      */
     static int32_t init(void);
+
     /**
      * @brief 执行中断
      * @param  _no             中断号
@@ -265,7 +269,9 @@ public:
      * @return int32_t         保存中断处理后的返回值
      */
     static int32_t call_irq(uint8_t _no, intr_context_t *_intr_context);
+
     static int32_t call_isr(uint8_t _no, intr_context_t *_intr_context);
+
     /**
      * @brief 注册一个中断处理函数
      * @param  _no             中断号
@@ -273,16 +279,19 @@ public:
      */
     static void register_interrupt_handler(uint8_t             _no,
                                            interrupt_handler_t _handler);
+
     /**
      * @brief 打开指定中断
      * @param  _no             要允许的中断号
      */
     static void enable_irq(uint8_t _no);
+
     /**
      * @brief 关闭指定中断
      * @param  _no             要允许的中断号
      */
     static void disable_irq(uint8_t _no);
+
     /**
      * @brief 返回中断名
      * @param  _no             中断号
