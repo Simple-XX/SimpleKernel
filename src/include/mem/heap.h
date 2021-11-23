@@ -38,12 +38,14 @@ public:
      * @return false           失败
      */
     bool init(void);
+
     /**
      * @brief 内存申请
      * @param  _byte           要申请的 bytes
      * @return void*           申请到的地址
      */
     void *malloc(size_t _byte);
+
     /**
      * @brief 内存释放
      * @param  _p              要释放的内存地址
