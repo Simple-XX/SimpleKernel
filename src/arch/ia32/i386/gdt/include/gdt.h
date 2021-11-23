@@ -21,7 +21,7 @@
 #include "cpu.hpp"
 
 /**
- * @brief GDT 接口
+ * @brief GDT 接口
  * @see 64-ia-32-architectures-software-developer-vol-3a-manual Chapter3
  */
 namespace GDT {
@@ -276,6 +276,7 @@ namespace GDT {
         uint32_t reserved11 : 15;
         uint32_t io_map_base_addr : 16;
     } __attribute__((packed));
+
     /**
      * @brief 全局描述符表构造函数
      * @param  _num             描述符索引
@@ -286,6 +287,7 @@ namespace GDT {
      */
     void set_gdt(int32_t _num, uint32_t _base, uint32_t _limit, uint8_t _access,
                  uint8_t _gran);
+
     /**
      * @brief 初始化
      * @return int32_t         成功返回 0

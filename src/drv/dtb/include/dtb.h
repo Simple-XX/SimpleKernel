@@ -53,6 +53,7 @@ private:
     static constexpr const uint32_t FDT_MAGIC = 0xD00DFEED;
     /// 版本 17
     static constexpr const uint32_t FDT_VERSION = 0x11;
+
     /**
      * @brief fdt 格式头
      */
@@ -91,6 +92,7 @@ private:
         uint32_t size_be;
         uint32_t size_le;
     };
+
     /**
      * @brief 属性节点格式，没有使用，仅用于参考
      */
@@ -113,6 +115,7 @@ private:
     static constexpr const size_t MAX_NODES = 128;
     /// 最大属性数
     static constexpr const size_t PROP_MAX = 16;
+
     /**
      * @brief dtb 信息
      */
@@ -126,6 +129,7 @@ private:
         /// 字符区
         uintptr_t str;
     };
+
     /**
      * @brief 属性信息
      */
@@ -137,6 +141,7 @@ private:
         /// 属性长度
         size_t len;
     };
+
     /**
      * @brief 路径
      */
@@ -152,7 +157,9 @@ private:
          * @return false           不同
          */
         bool operator==(const path_t *_path);
+        bool operator==(const char *_path);
     };
+
     /**
      * @brief 节点数据
      */
@@ -268,6 +275,7 @@ private:
         {.prop_name = (char *)"offset", .fmt = FMT_U32},
         {.prop_name = (char *)"regmap", .fmt = FMT_U32},
     };
+
     /**
      * @brief 查找 _prop_name 在 dt_fmt_t 的索引
      * @param  _prop_name      要查找的属性
@@ -280,7 +288,7 @@ private:
      */
     struct phandle_map_t {
         uint32_t phandle;
-        node_t * node;
+        node_t  *node;
         /// phandle 数量
         static size_t count;
     };
@@ -291,24 +299,30 @@ private:
     static node_t nodes[MAX_NODES];
     /// phandle 数组
     static phandle_map_t phandle_map[MAX_NODES];
+
     /**
      * @brief 输出 reserved 内存
      */
     static void dtb_mem_reserved(void);
+
     /**
      * @brief 迭代函数
      * @param  _cb_flags       要迭代的标签
      * @param  _cb             迭代操作
      * @param  _data           要传递的数据
+     * @param _addr            dtb 数据地址
      */
     static void dtb_iter(uint8_t _cb_flags,
-                         bool (*_cb)(const iter_data_t *, void *), void *_data);
+                         bool (*_cb)(const iter_data_t *, void *), void *_data,
+                         uintptr_t _addr = dtb_info.data);
+
     /**
      * @brief 查找 phandle 映射
      * @param  _phandle        要查找的 phandle
      * @return node_t*         _phandle 指向的节点
      */
     static node_t *get_phandle(uint32_t _phandle);
+
     /**
      * @brief 初始化节点
      * @param  _iter           迭代变量
@@ -317,6 +331,7 @@ private:
      * @return false           失败
      */
     static bool dtb_init_cb(const iter_data_t *_iter, void *_data);
+
     /**
      * @brief 初始化中断信息
      * @param  _iter           迭代变量
@@ -325,6 +340,7 @@ private:
      * @return false           失败
      */
     static bool dtb_init_interrupt_cb(const iter_data_t *_iter, void *_data);
+
     /**
      * @brief 输出不定长度的数据
      * @param  _iter           要输出的迭代对象
@@ -334,6 +350,7 @@ private:
      */
     static void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
                                    size_t _len);
+
     /**
      * @brief 填充 resource_t
      * @param  _resource       被填充的
@@ -342,13 +359,14 @@ private:
      */
     static void fill_resource(resource_t *_resource, const node_t *_node,
                               const prop_t *_prop);
+
     /**
-     * @brief 在所有节点中寻找 _prop_name/_val 对符合的节点
-     * @param  _prop_name      属性
-     * @param  _val            值
-     * @return node_t*         找到的节点，未找到为 nullptr
+     * @brief 通过路径寻找节点
+     * @param  _path            路径
+     * @return node_t*          找到的节点
      */
-    static node_t *find_node(const char *_prop_name, const char *_val);
+    static node_t *find_node_via_path(const char *_path);
+
     /// 用于标记是否第一次 init
     static bool inited;
 
@@ -361,28 +379,39 @@ public:
     static constexpr const uint8_t DT_ITER_END_NODE = 0x02;
     /// 处理节点属性
     static constexpr const uint8_t DT_ITER_PROP = 0x04;
+
     /**
      * @brief 初始化
      * @return true            成功
      * @return false           失败
      */
     static bool dtb_init(void);
+
     /**
-     * @brief 寻找属性-值向匹配的节点，返回其使用的资源
-     * @param  _prop_name      属性
-     * @param  _val            值
-     * @return resource_t      使用的资源
-     * @todo 只能返回一个资源，没法处理一个节点使用复数资源的情况
-     * @todo 没有出错处理
+     * @brief 根据路径查找节点，返回使用的资源
+     * @param  _path            节点路径
+     * @param  _resource        资源
+     * @return true             成功
+     * @return false            失败
      */
-    static resource_t find(const char *_prop_name, const char *_val);
+    static bool find_via_path(const char *_path, resource_t *_resource);
+
+    /**
+     * @brief 根据节点名进行前缀查找
+     * @param  _prefix          要查找节点的前缀
+     * @param  _resource        结果数组
+     * @return size_t           _resource 长度
+     * @note 根据节点 @ 前的名称查找，可能返回多个 resource
+     */
+    static size_t find_via_prefix(const char *_prefix, resource_t *_resource);
+
     /**
      * @brief iter 输出
      * @param  _os             输出流
      * @param  _iter           要输出的 iter
      * @return std::ostream&   输出流
      */
-    friend std::ostream &operator<<(std::ostream &     _os,
+    friend std::ostream &operator<<(std::ostream      &_os,
                                     const iter_data_t &_iter);
     /**
      * @brief 路径输出
