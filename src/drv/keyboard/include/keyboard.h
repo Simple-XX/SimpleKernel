@@ -615,16 +615,19 @@ protected:
 public:
     KEYBOARD(void);
     ~KEYBOARD(void);
+
     /**
      * @brief 初始化
      * @return int32_t         成功返回 0
      */
     int32_t init(void);
+
     /**
      * @brief 从键盘读
      * @return uint8_t         读到的数据
      */
     uint8_t read(void);
+
     /**
      * @brief 设置键盘中断处理函数
      * @param  _h               处理函数
