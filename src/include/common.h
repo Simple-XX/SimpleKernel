@@ -89,6 +89,7 @@ namespace COMMON {
         uint8_t *tmp = (uint8_t *)_addr;
         return (T)((uintptr_t)(tmp + _align - 1) & (~(_align - 1)));
     }
+
     /**
      * @brief 对齐
      * @tparam T
