@@ -221,13 +221,6 @@ public:
      * @brief 清屏，清空 TUI 缓存
      */
     void clear(void);
-
-    /**
-     * @brief 读一个字符
-     * @return uint8_t         读取到的字符
-     * @note TUI 不支持，这里仅仅是保持接口一致
-     */
-    uint8_t get_char(void) const;
 };
 
 #endif /* _TUI_H_ */
