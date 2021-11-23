@@ -10,6 +10,7 @@
 #include "assert.h"
 #include "pmm.h"
 #include "vmm.h"
+#include "heap.h"
 #include "kernel.h"
 
 int32_t test_pmm(void) {
@@ -106,5 +107,48 @@ int32_t test_vmm(void) {
     assert(VMM::get_mmap(VMM::get_pgd(), va, &addr) == 0);
     assert(addr == 0);
     info("vmm test done.\n");
+    return 0;
+}
+
+// TODO: 更多测试
+int test_heap(void) {
+    // 根据字长不同 CHUNK_SIZE 是不一样的
+    size_t chunk_size = 0;
+    if (sizeof(void *) == 4) {
+        chunk_size = 0x10;
+    }
+    else if (sizeof(void *) == 8) {
+        chunk_size = 0x20;
+    }
+    void *addr1 = nullptr;
+    void *addr2 = nullptr;
+    void *addr3 = nullptr;
+    void *addr4 = nullptr;
+    // 申请超过最大允许的内存 65536B
+    addr1 = heap.malloc(0x10001);
+    // 应该返回 nullptr
+    assert(addr1 == nullptr);
+    // 申请小块内存
+    addr2 = heap.malloc(0x1);
+    assert(addr2 != nullptr);
+    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
+    assert(((uintptr_t)((uint8_t *)addr2 - chunk_size) & 0xFFF) == 0x0);
+    // 在 LEN512 申请新的内存
+    addr3 = heap.malloc(0x200);
+    assert(addr3 != nullptr);
+    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
+    assert(((uintptr_t)((uint8_t *)addr3 - chunk_size) & 0xFFF) == 0x0);
+    // 加上 chunk 大小长度刚好是 LEN256
+    addr4 = heap.malloc(0x80);
+    assert(addr4 != nullptr);
+    // LEN256 区域第二块被申请的内存，地址可以计算出来
+    // 前一个块的地址+chunk 长度+数据长度+对齐长度
+    assert(addr4 == (uint8_t *)addr2 + chunk_size + 0x1 + 0x7);
+    // 全部释放
+    heap.free(addr1);
+    heap.free(addr2);
+    heap.free(addr3);
+    heap.free(addr4);
+    info("heap test done.\n");
     return 0;
 }
