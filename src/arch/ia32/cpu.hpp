@@ -242,7 +242,7 @@ namespace CPU {
     }
 
     /**
-     * @brief 出发 debug 中断
+     * @brief 触发 debug 中断
      */
     static inline void debug_intr(void) {
         __asm__ volatile("int $0x01");
@@ -331,9 +331,9 @@ namespace CPU {
         return true;
     }
 
-    // Use of CR3 with 32-Bit Paging
     /**
      * @brief 页表结构 32 位分页
+     * @note Use of CR3 with 32-Bit Paging
      */
     class cr3_t {
     public:

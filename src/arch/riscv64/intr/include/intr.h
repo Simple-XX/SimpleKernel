@@ -24,6 +24,7 @@ void handler_default(void);
 class INTR {
 public:
     typedef void (*interrupt_handler_t)(void);
+
     /**
      * @brief 中断初始化
      * @return int32_t         成功返回 0
@@ -104,6 +105,7 @@ public:
      * @return int32_t         成功返回 0
      */
     static int32_t init(void);
+
     /**
      * @brief 注册中断处理函数
      * @param  _no             中断号
@@ -112,6 +114,7 @@ public:
     static void
     register_interrupt_handler(uint8_t                   _no,
                                INTR::interrupt_handler_t _interrupt_handler);
+
     /**
      * @brief 注册异常处理函数
      * @param  _no             异常号
@@ -120,11 +123,13 @@ public:
     static void
     register_excp_handler(uint8_t                   _no,
                           INTR::interrupt_handler_t _interrupt_handler);
+
     /**
      * @brief 执行中断处理
      * @param  _no             中断号
      */
     static void do_interrupt(uint8_t _no);
+
     /**
      * @brief 执行异常处理
      * @param  _no             异常号
@@ -159,17 +164,20 @@ public:
      * @return int32_t         成功返回 0
      */
     static int32_t init(void);
+
     /**
      * @brief 向 PLIC 询问中断
      * 返回发生的外部中断号
      * @return uint8_t         中断号
      */
     static uint8_t get(void);
+
     /**
      * @brief 告知 PLIC 已经处理了当前 IRQ
      * @param  _no             中断号
      */
     static void done(uint8_t _no);
+
     /**
      * @brief 设置中断状态
      * @param  _no             中断号

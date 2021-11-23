@@ -142,10 +142,6 @@ private:
     /// 当前页目录
     static pt_t curr_dir;
 
-    //
-    // 页表项结构：
-    //
-
     /**
      * @brief 物理地址转换到页表项
      * @param  _pa             物理地址
@@ -202,16 +198,19 @@ public:
      * @return false           失败
      */
     static bool init(void);
+
     /**
      * @brief 获取当前页目录
      * @return pt_t            当前页目录
      */
     static pt_t get_pgd(void);
+
     /**
      * @brief 设置当前页目录
      * @param  _pgd            要设置的页目录
      */
     static void set_pgd(const pt_t _pgd);
+
     /**
      * @brief 映射物理地址到虚拟地址
      * @param  _pgd            要使用的页目录
@@ -221,12 +220,14 @@ public:
      */
     static void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
                      uint32_t _flag);
+
     /**
      * @brief 取消映射
      * @param  _pgd            要操作的页目录
      * @param  _va             要取消映射的虚拟地址
      */
     static void unmmap(const pt_t _pgd, uintptr_t _va);
+
     /**
      * @brief 获取映射的物理地址
      * @param  _pgd            页目录
