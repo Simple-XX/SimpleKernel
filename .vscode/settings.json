@@ -120,7 +120,7 @@
         "return"
     ],
     "doxdocgen.generic.paramTemplate": "@param{indent:8}{param}{indent:25}My Param doc",
-    "doxdocgen.generic.returnTemplate": "@return {type} ",
+    "doxdocgen.generic.returnTemplate": "@return {type}{indent:25}",
     "doxdocgen.generic.splitCasingSmartText": true,
     // --------Doxygen END--------
 }
