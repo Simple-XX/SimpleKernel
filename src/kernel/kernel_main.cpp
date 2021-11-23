@@ -14,9 +14,6 @@
  * </table>
  */
 
-/// @todo gdb 调试
-/// @todo clion 环境
-
 #include "cxxabi.h"
 #include "common.h"
 #include "stdio.h"

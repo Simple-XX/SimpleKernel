@@ -30,6 +30,7 @@ namespace PORT {
      * @warning 不处理执行失败的问题
      */
     uint8_t inb(const uint32_t _port);
+
     /**
      * @brief  读一个字
      * @param  _port           要读的端口
@@ -37,6 +38,7 @@ namespace PORT {
      * @warning 不处理执行失败的问题
      */
     uint16_t inw(const uint32_t _port);
+
     /**
      * @brief  读一个双字
      * @param  _port           要读的端口
@@ -44,6 +46,7 @@ namespace PORT {
      * @warning 不处理执行失败的问题
      */
     uint32_t ind(const uint32_t _port);
+
     /**
      * @brief  写一个字节
      * @param  _port           要写的端口
@@ -51,6 +54,7 @@ namespace PORT {
      * @warning 不处理执行失败的问题
      */
     void outb(const uint32_t _port, const uint8_t _data);
+
     /**
      * @brief  写一个字
      * @param  _port           要写的端口
@@ -58,6 +62,7 @@ namespace PORT {
      * @warning 不处理执行失败的问题
      */
     void outw(const uint32_t _port, const uint16_t _data);
+
     /**
      * @brief  写一个双字
      * @param  _port           要写的端口
