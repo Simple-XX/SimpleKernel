@@ -26,21 +26,37 @@ jobs:
       run: |
         brew install x86_64-elf-binutils
         brew install x86_64-elf-gcc
+        brew tap riscv/riscv
+        brew install riscv-tools
 
     - name: make build dir
       shell: bash
       run: |
         mkdir ${{github.workspace}}/build
 
-    - name: cmake
+    - name: osx-i386
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+      run: |
+        cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        make
+        rm -rf ./*
 
-    - name: make
+    - name: osx-x86_64
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: make
+      run: |
+        cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        make
+        rm -rf ./*
+
+    - name: osx-riscv64
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake -DTOOLCHAIN_PREFIX=riscv64-unknown-elf- -DCMAKE_C_COMPILER=riscv64-unknown-elf-gcc -DCMAKE_CXX_COMPILER=riscv64-unknown-elf-g++ -DCMAKE_OBJCOPY=riscv64-unknown-elf-objcpy -DPLATFORM=qemu -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        make
+        rm -rf ./*
     
 #   build_ubuntu:
 #     runs-on: ubuntu-latest
