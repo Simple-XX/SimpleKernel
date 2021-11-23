@@ -152,6 +152,7 @@ private:
          * @return false           不同
          */
         bool operator==(const path_t *_path);
+        bool operator==(const char *_path);
     };
     /**
      * @brief 节点数据
@@ -300,9 +301,11 @@ private:
      * @param  _cb_flags       要迭代的标签
      * @param  _cb             迭代操作
      * @param  _data           要传递的数据
+     * @param _addr            dtb 数据地址
      */
     static void dtb_iter(uint8_t _cb_flags,
-                         bool (*_cb)(const iter_data_t *, void *), void *_data);
+                         bool (*_cb)(const iter_data_t *, void *), void *_data,
+                         uintptr_t _addr = dtb_info.data);
     /**
      * @brief 查找 phandle 映射
      * @param  _phandle        要查找的 phandle
@@ -342,13 +345,13 @@ private:
      */
     static void fill_resource(resource_t *_resource, const node_t *_node,
                               const prop_t *_prop);
+
     /**
-     * @brief 在所有节点中寻找 _prop_name/_val 对符合的节点
-     * @param  _prop_name      属性
-     * @param  _val            值
-     * @return node_t*         找到的节点，未找到为 nullptr
+     * @brief 通过路径寻找节点
+     * @param  _path            路径
+     * @return node_t*          找到的节点
      */
-    static node_t *find_node(const char *_prop_name, const char *_val);
+    static node_t *find_node_via_path(const char *_path);
     /// 用于标记是否第一次 init
     static bool inited;
 
@@ -367,15 +370,25 @@ public:
      * @return false           失败
      */
     static bool dtb_init(void);
+
     /**
-     * @brief 寻找属性-值向匹配的节点，返回其使用的资源
-     * @param  _prop_name      属性
-     * @param  _val            值
-     * @return resource_t      使用的资源
-     * @todo 只能返回一个资源，没法处理一个节点使用复数资源的情况
-     * @todo 没有出错处理
+     * @brief 根据路径查找节点，返回使用的资源
+     * @param  _path            节点路径
+     * @param  _resource        资源
+     * @return true             成功
+     * @return false            失败
      */
-    static resource_t find(const char *_prop_name, const char *_val);
+    static bool find_via_path(const char *_path, resource_t *_resource);
+
+    /**
+     * @brief 根据节点名进行前缀查找
+     * @param  _prefix          要查找节点的前缀
+     * @param  _resource        结果数组
+     * @return size_t           _resource 长度
+     * @note 根据节点 @ 前的名称查找，可能返回多个 resource
+     */
+    static size_t find_via_prefix(const char *_prefix, resource_t *_resource);
+
     /**
      * @brief iter 输出
      * @param  _os             输出流
