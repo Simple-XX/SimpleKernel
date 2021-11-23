@@ -20,19 +20,15 @@
 #include "cxxabi.h"
 #include "common.h"
 #include "stdio.h"
+#include "stdlib.h"
 #include "iostream"
 #include "assert.h"
 #include "boot_info.h"
 #include "pmm.h"
 #include "vmm.h"
+#include "heap.h"
 #include "kernel.h"
 #include "dtb.h"
-
-/// @todo gdb 调试
-/// @todo clion 环境
-
-/// @todo gdb 调试
-/// @todo clion 环境
 
 /**
  * @brief 内核主要逻辑
@@ -46,10 +42,14 @@ void kernel_main(void) {
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
-    // TODO: 将vmm的初始化放在构造函数里，这里只做开启分页
+    /// @todo 将vmm的初始化放在构造函数里，这里只做开启分页
     VMM::init();
     // 测试虚拟内存
     test_vmm();
+    // 堆初始化
+    heap.init();
+    // 测试堆
+    test_heap();
     // 显示基本信息
     show_info();
     // 进入死循环
