@@ -21,7 +21,7 @@
 #include "cpu.hpp"
 
 /**
- * @brief GDT 接口
+ * @brief GDT 接口
  * @see 64-ia-32-architectures-software-developer-vol-3a-manual Chapter3
  */
 namespace GDT {
@@ -190,7 +190,7 @@ namespace GDT {
         uint64_t limit2 : 4;
         /// Available for use by system software
         uint64_t avl : 1;
-        /// 64-bit code segment (IA-32e mode only)
+        /// 64-bit code segment (IA-32e mode only)
         uint64_t l : 1;
         /// Default operation size(0 = 16 - bit segment; 1 = 32 - bit segment)
         /// long 模式下忽略
@@ -251,6 +251,7 @@ namespace GDT {
         uint16_t reserved5;
         uint16_t io_map_base_addr;
     } __attribute__((packed));
+
     /**
      * @brief 全局描述符表构造函数
      * @param  _idx            描述符索引
@@ -268,6 +269,7 @@ namespace GDT {
     void set_gdt(uint8_t _idx, uint32_t _base, uint32_t _limit, uint8_t _type,
                  uint8_t _s, uint8_t _dpl, uint8_t _p, uint8_t _avl, uint8_t _l,
                  uint8_t _db, uint8_t _g);
+
     /**
      * @brief 初始化
      * @return int32_t         成功返回 0

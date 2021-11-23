@@ -308,6 +308,7 @@ public:
      * @return false           失败
      */
     static bool multiboot2_init(void);
+
     /**
      * @brief 迭代器
      * @param  _fun            迭代操作
@@ -315,6 +316,7 @@ public:
      */
     static void multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
                                 void *_data);
+
     /**
      * @brief 获取内存信息
      * @param  _iter_data      迭代变量
