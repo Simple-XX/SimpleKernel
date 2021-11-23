@@ -189,6 +189,10 @@ void TUI::put_char(const char _c) {
     return;
 }
 
+uint8_t TUI::get_char(void) const {
+    return 0;
+}
+
 void TUI::write_string(const char *_s) {
     write(_s, strlen(_s));
     return;
