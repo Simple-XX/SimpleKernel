@@ -55,7 +55,7 @@ void kernel_main(void) {
     // 中断初始化
     INTR::init();
     // 允许中断
-    // CPU::ENABLE_INTR();
+    CPU::ENABLE_INTR();
     // 显示基本信息
     show_info();
     // 进入死循环
