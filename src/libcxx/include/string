@@ -1,0 +1,12 @@
+
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
+// Based on https://github.com/zouxiaohang/TinySTL
+// string for Simple-XX/SimpleKernel.
+
+#ifndef _STRING_
+#define _STRING_
+
+#include "astring"
+
+#endif /* _STRING_ */
