@@ -13,6 +13,7 @@ cmake-build-debug
 cmake-build-debug_simplekernel
 grub-2.04.tar.xz
 grub-2.04
+tools/opensbi
 iso
 *.img
 *.iso

@@ -188,8 +188,8 @@ Free to PR!
 ## 捐助者
 
 - [digmouse233](https://github.com/digmouse233)
-
 - l*e
+- fslongjin
 
 ## 版权信息
 
