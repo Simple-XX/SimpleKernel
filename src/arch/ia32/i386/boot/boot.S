@@ -1,25 +1,28 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-#
-# boot.S for Simple-XX/SimpleKernel.
+// This file is a part of Simple-XX/SimpleKernel 
+// (https://github.com/Simple-XX/SimpleKernel).
+//
+// boot.S for Simple-XX/SimpleKernel.
+// 启动代码，进行一些设置后跳转到 kernel_main
 
-/*  How many bytes from the start of the file we search for the header. */
+// 以下是来自 multiboot2 规范的定义
+//  How many bytes from the start of the file we search for the header.
 #define MULTIBOOT_SEARCH 32768
 #define MULTIBOOT_HEADER_ALIGN 8
 
-/*  The magic field should contain this. */
+//  The magic field should contain this.
 #define MULTIBOOT2_HEADER_MAGIC 0xe85250d6
 
-/*  This should be in %eax. */
+//  This should be in %eax.
 #define MULTIBOOT2_BOOTLOADER_MAGIC 0x36d76289
 
-/*  Alignment of multiboot modules. */
+//  Alignment of multiboot modules.
 #define MULTIBOOT_MOD_ALIGN 0x00001000
 
-/*  Alignment of the multiboot info structure. */
+//  Alignment of the multiboot info structure.
 #define MULTIBOOT_INFO_ALIGN 0x00000008
 
-/*  Flags set in the 'flags' member of the multiboot header. */
+//  Flags set in the 'flags' member of the multiboot header.
 
 #define MULTIBOOT_TAG_ALIGN 8
 #define MULTIBOOT_TAG_TYPE_END 0
@@ -68,42 +71,59 @@
 #define MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED 1
 #define MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED 2
 
+// 声明这一段代码以 32 位模式编译
 .code32
 
-# multiboot2 文件头
+// multiboot2 文件头
+// 计算头长度
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
+// 计算校验和
 .SET CHECKSUM, -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH)
+// 8 字节对齐
 .align MULTIBOOT_HEADER_ALIGN
+// 声明所属段
 .section .multiboot_header
 multiboot_header:
+    // 魔数
     .long MULTIBOOT2_HEADER_MAGIC
+    // 架构
     .long MULTIBOOT_ARCHITECTURE_I386
+    // 头长度
     .long HEADER_LENGTH
+    // 校验和
     .long CHECKSUM
-    # 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
+    // 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
 	.short MULTIBOOT_HEADER_TAG_END
+    // 结束标记
     .short 0
     .long 8
 multiboot_header_end:
 
+// 声明所属段
 .section .text
+// 全局可见
 .global _start
+// 声明类型
 .type _start, @function
+// 声明外部定义
 .extern kernel_main
 _start:
-    # 关中断
+    // 关中断
     cli
-    # 设置栈地址
+    // 设置栈地址
     mov $STACK_TOP, %esp
-    # 栈地址按照 16 字节对齐
+    // 栈地址按照 16 字节对齐
     and $0xFFFFFFF0, %esp
-    # 帧指针修改为 0
+    // 帧指针修改为 0
     mov $0, %ebp          
     call kernel_main
     hlt
     ret
 
+// 声明所属段
 .section .bss
+// 栈
 STACK:
+    // 跳过 16KB
     .skip 16384
 STACK_TOP:
