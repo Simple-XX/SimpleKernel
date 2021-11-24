@@ -59,7 +59,7 @@ jobs:
 
   build_ubuntu:
     runs-on: ubuntu-latest
-    
+    needs: [build_osx]
     steps:
     - name: get code
       uses: actions/checkout@v2
@@ -77,29 +77,29 @@ jobs:
       run: |
         mkdir ${{github.workspace}}/build
 
-      - name: ubuntu-i386
-        shell: bash
-        working-directory: ${{github.workspace}}/build
-        run: |
-          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
-          make
-          rm -rf ./*
+    - name: ubuntu-i386
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        make
+        rm -rf ./*
 
-      - name: ubuntu-x86_64
-        shell: bash
-        working-directory: ${{github.workspace}}/build
-        run: |
-          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
-          make
-          rm -rf ./*
+    - name: ubuntu-x86_64
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        make
+        rm -rf ./*
 
-      - name: ubuntu-riscv64
-        shell: bash
-        working-directory: ${{github.workspace}}/build
-        run: |
-          cmake -DTOOLCHAIN_PREFIX=riscv64-unknown-elf- -DCMAKE_C_COMPILER=riscv64-unknown-elf-gcc -DCMAKE_CXX_COMPILER=riscv64-unknown-elf-g++ -DCMAKE_OBJCOPY=riscv64-unknown-elf-objcpy -DPLATFORM=qemu -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
-          make
-          rm -rf ./*
+    - name: ubuntu-riscv64
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake -DTOOLCHAIN_PREFIX=riscv64-unknown-elf- -DCMAKE_C_COMPILER=riscv64-unknown-elf-gcc -DCMAKE_CXX_COMPILER=riscv64-unknown-elf-g++ -DCMAKE_OBJCOPY=riscv64-unknown-elf-objcpy -DPLATFORM=qemu -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        make
+        rm -rf ./*
 
   # build_win:
     # runs-on: windows-latest
