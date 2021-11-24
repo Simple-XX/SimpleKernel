@@ -35,6 +35,7 @@ int test_pmm(void);
  * @return int             0 成功
  */
 int test_vmm(void);
+
 /**
  * @brief 输出系统信息
  */
