@@ -59,7 +59,7 @@ jobs:
       #       rm -rf ./*
 
   auto_pr:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: [build_osx]
 
     steps:
