@@ -7,6 +7,6 @@
 #ifndef _STRING_
 #define _STRING_
 
-#include "astring.h"
+#include "astring"
 
 #endif /* _STRING_ */

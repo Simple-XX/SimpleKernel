@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-#if defined __x86_64__ && !defined __ILP32__
+#if defined(__x86_64__) || defined(__riscv)
 #define __WORDSIZE 64
 #else
 #define __WORDSIZE 32
