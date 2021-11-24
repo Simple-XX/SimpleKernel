@@ -141,7 +141,7 @@ bash ./run.sh
 
 ## 贡献
 
-大胆地提 PR 吧！
+Free to PR!
 
 ## 感谢
 
