@@ -18,8 +18,8 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # - name: get code
-      #     uses: actions/checkout@v2
+      - name: get code
+        uses: actions/checkout@v2
         
       # - name: setup brew
       #     shell: bash
@@ -29,10 +29,10 @@ jobs:
       #       brew tap riscv/riscv
       #       brew install riscv-tools
 
-      # - name: make build dir
-      #     shell: bash
-      #     run: |
-      #       mkdir ${{github.workspace}}/build
+      - name: make build dir
+        shell: bash
+        run: |
+          mkdir ${{github.workspace}}/build
 
       # - name: osx-i386
       #     shell: bash
