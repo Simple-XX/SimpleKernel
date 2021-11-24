@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// timer.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file timer.h
+ * @brief 中断抽象头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdint.h"
 #include "stdio.h"
@@ -10,28 +20,35 @@
 #include "opensbi.h"
 #include "intr.h"
 
-namespace TIMER {
-    static uint64_t tick = 0;
-    // timer interrupt interval
-    static constexpr const uint64_t INTERVAL = 390000000 / 200;
+/// timer interrupt interval
+/// @todo 从 dts 读取
+static constexpr const uint64_t INTERVAL = 390000000 / 20;
 
-    void set_next(void) {
-        opensbi.set_timer(CPU::READ_TIME() + INTERVAL);
-    }
+/**
+ * @brief 设置下一次时钟
+ */
+void set_next(void) {
+    // 调用 opensbi 提供的接口设置时钟
+    OPENSBI::set_timer(CPU::READ_TIME() + INTERVAL);
+    return;
+}
 
-    void timer_intr(void) {
-        set_next();
-        tick++;
-        if ((tick % 10) == 0) {
-            printf("timer tick: %d\n", tick);
-        }
-    }
+/**
+ * @brief 时钟中断
+ */
+void timer_intr(void) {
+    // 每次执行中断时设置下一次中断的时间
+    set_next();
+    return;
+}
 
-    void init(void) {
-        // enable supervisor-mode timer interrupts.
-        CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
-        INTR::register_interrupt_handler(INTR::INTR_S_TIMER, timer_intr);
-        opensbi.set_timer(CPU::READ_TIME());
-        printf("timerinit\n");
-    }
-};
+void TIMER::init(void) {
+    // 注册中断函数
+    CLINT::register_interrupt_handler(CLINT::INTR_S_TIMER, timer_intr);
+    // 设置初次中断
+    OPENSBI::set_timer(CPU::READ_TIME());
+    // 开启时钟中断
+    CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
+    info("timer init.\n");
+    return;
+}

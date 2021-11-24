@@ -1,51 +1,74 @@
 
-/* This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+/* This file is a part of Simple-XX/SimpleKernel
+ * (https://github.com/Simple-XX/SimpleKernel).
  *
- * link.ld for Simple-XX/SimpleKernel. */
+ * link.ld for Simple-XX/SimpleKernel. 
+ * 链接脚本，指定生成的二进制文件的布局 */
 
+/* 指定输出格式 */
 OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv", "elf64-littleriscv")
-OUTPUT_ARCH("riscv")
-
+/* 执行输出架构 */
+OUTPUT_ARCH(riscv)
+/* 设置入口点 */
 ENTRY(_start)
-
+/* 设置各个 section */
 SECTIONS {
-	. = 0x80200000;
-
+    . = 0x80000000;
     PROVIDE(kernel_start = .);
+	/* 设置起始地址 */
+    . = 0x80200000;
+
     PROVIDE(kernel_text_start = .);
-	.text : ALIGN(4K) {
-		*(.init)
-		*(.text)
-	}
+	/* 代码段 */
+    .text : ALIGN(4K) {
+        *(.init)
+        *(.text*)
+    }
     PROVIDE(kernel_text_end = .);
 
     PROVIDE(kernel_rodata_start = .);
-	.rodata : ALIGN(4K) {
-		*(.rodata)
-	}
-	PROVIDE(kernel_rodata_end = .);
+	/* 只读数据段 */
+    .rodata : ALIGN(4K) {
+        /* 构造函数起点 */
+        PROVIDE(ctors_start = .);
+        *(SORT_BY_INIT_PRIORITY (.init_array.*))
+        *(SORT_BY_INIT_PRIORITY (.ctors.*))
+        *(.init_array .ctors)
+        /* 构造函数终点 */
+        PROVIDE(ctors_end = .);
+        /* 析构函数起点 */
+        PROVIDE(dtors_start = .);
+        *(.dtor*)
+        /* 析构函数终点 */
+        PROVIDE(dtors_end = .);
+        *(.rodata*)
+        *(.gcc_except_table)
+        *(.riscv.attributes)
+    }
+    PROVIDE(kernel_rodata_end = .);
 
     PROVIDE(kernel_data_start = .);
+	/* 数据段 */
     .data : ALIGN(4K) {
-		PROVIDE(ctors_start = .);
-		*(.init_array)
-	    PROVIDE(ctors_end = .);
-	    PROVIDE(dtors_start = .);
-	    *(.fini_array)
-	    PROVIDE(dtors_end = .);
-        *(.data)
+        *(.data*)
+        *(.eh_frame)
+        *(.got*)
     }
     PROVIDE(kernel_data_end = .);
 
-	PROVIDE(kernel_bss_start = .);
-	.bss : ALIGN(4K) {
-		*(.bss);
-		. += 4096;
-		PROVIDE(sqtack_top = .);
-		. += 4096;
-		PROVIDE(global_pointer = .);
-	}
-	PROVIDE(kernel_bss_end = .);
+    PROVIDE(kernel_bss_start = .);
+	/* 未初始化数据段 */
+    .bss : ALIGN(4K) {
+        *(.bss);
+    }
+    PROVIDE(kernel_bss_end = .);
+
+    PROVIDE(kernel_debug_start = .);
+	/* 调试信息 */
+    .debug : ALIGN(4K) {
+        *(.debug*)
+    }
+    PROVIDE(kernel_debug_end = .);
 
     PROVIDE(kernel_end = .);
 }

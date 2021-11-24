@@ -26,6 +26,26 @@ typedef long unsigned int size_t;
 #endif
 #endif
 
+#ifndef _SSIZE_T
+#define _SSIZE_T
+#undef ssize_t
+#if defined(__i386__)
+typedef int ssize_t;
+#elif defined(__riscv) || defined(__x86_64__)
+typedef long int          ssize_t;
+#endif
+#endif
+
+#ifndef _SSIZE_T
+#define _SSIZE_T
+#undef ssize_t
+typedef int ssize_t;
+#endif
+
+#ifndef NULL
+#define NULL ((void *)0)
+#endif
+
 #ifdef __cplusplus
 }
 #endif

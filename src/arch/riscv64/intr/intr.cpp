@@ -1,99 +1,83 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on http://wiki.0xffffff.org/posts/hurlex-kernel.html
-// intr.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file intr.cpp
+ * @brief 中断抽象
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "cpu.hpp"
 #include "stdio.h"
 #include "intr.h"
 #include "cpu.hpp"
-#include "opensbi.h"
 
-namespace INTR {
-    // 最大中断数
-    static constexpr const uint32_t INTERRUPT_MAX = 16;
-    // 最大异常数
-    static constexpr const uint32_t EXCP_MAX = 16;
-    // 中断处理函数数组
-    static interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
-        __attribute__((aligned(4)));
-    // 异常处理函数数组
-    static interrupt_handler_t excp_handlers[EXCP_MAX]
-        __attribute__((aligned(4)));
+/**
+ * @brief 中断处理函数
+ * @param  _scause         原因
+ * @param  _sepc           值
+ * @param  _stval          值
+ */
+extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
+                             uint64_t _stval) {
 
-    void enable_irq(uint32_t irq_no) {
-        (void)irq_no;
-        return;
-    }
-
-    void disable_irq(uint32_t irq_no) {
-        (void)irq_no;
-        return;
-    }
-
-    void handler_default(void) {
-        while (1) {
-            ;
-        }
-        return;
-    }
-
-    void register_interrupt_handler(uint8_t n, interrupt_handler_t h) {
-        interrupt_handlers[n] = h;
-        return;
-    }
-
-    void register_excp_handler(uint8_t n, interrupt_handler_t h) {
-        excp_handlers[n] = h;
-        return;
-    }
-
-    int32_t init(void) {
-        // 设置 trap vector
-        CPU::WRITE_STVEC((uint64_t)trap_entry);
-        // 直接跳转到处理函数
-        CPU::STVEC_DIRECT();
-        // 设置处理函数
-        for (auto &i : interrupt_handlers) {
-            i = handler_default;
-        }
-        for (auto &i : excp_handlers) {
-            i = handler_default;
-        }
-        // 开启时钟中断
-        // TIMER::init();
-        printf("intr init\n");
-        return 0;
-    }
-
-    void trap_handler(void) {
-        // 中断原因
-        uint64_t scause = CPU::READ_SCAUSE();
-// #define DEBUG
+    // 消除 unused 警告
+    (void)_sepc;
+    (void)_stval;
+#define DEBUG
 #ifdef DEBUG
-        // 异常返回值
-        uint64_t sepc = CPU::READ_SEPC();
-        // 中断具体信息
-        uint64_t sstatus = CPU::READ_SSTATUS();
-        printf("scause: %p\n", scause);
-        printf("sepc: %p\n", sepc);
-        printf("sstatus: %p\n", sstatus);
+    printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc, _stval);
 #undef DEBUG
 #endif
-        if (scause & CPU::CAUSE_INTR_MASK) {
-            // 中断
-            printf("intr: %s\n", intr_names[scause & CPU::CAUSE_CODE_MASK]);
-            // 跳转到对应的处理函数
-            interrupt_handlers[scause & CPU::CAUSE_CODE_MASK]();
-        }
-        else {
-            // 异常
-            // 跳转到对应的处理函数
-            printf("excp: %s\n", excp_names[scause & CPU::CAUSE_CODE_MASK]);
-            excp_handlers[scause & CPU::CAUSE_CODE_MASK]();
-        }
-        return;
+    if (_scause & CPU::CAUSE_INTR_MASK) {
+// 中断
+// #define DEBUG
+#ifdef DEBUG
+        printf("intr: %s.\n",
+               CLINT::intr_names[_scause & CPU::CAUSE_CODE_MASK]);
+#undef DEBUG
+#endif
+        // 跳转到对应的处理函数
+        CLINT::do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
     }
+    else {
+// 异常
+// 跳转到对应的处理函数
+// #define DEBUG
+#ifdef DEBUG
+        printf("excp: %s.\n",
+               CLINT::excp_names[_scause & CPU::CAUSE_CODE_MASK]);
+#undef DEBUG
+#endif
+        CLINT::do_excp(_scause & CPU::CAUSE_CODE_MASK);
+    }
+    return;
+}
 
-};
+/**
+ * @brief 默认使用的中断处理函数
+ */
+void handler_default(void) {
+    while (1) {
+        ;
+    }
+    return;
+}
+
+int32_t INTR::init(void) {
+    // 内部中断初始化
+    CLINT::init();
+    // 外部中断初始化
+    PLIC::init();
+    // 设置时钟中断
+    TIMER::init();
+    info("intr init.\n");
+    return 0;
+}
