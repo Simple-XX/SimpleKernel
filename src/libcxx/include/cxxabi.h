@@ -7,50 +7,15 @@
 #ifndef _CXXABI_H_
 #define _CXXABI_H_
 
-// See https://gcc.gnu.org/onlinedocs/gccint/Initialization.html for more info
-
-#define ATEXIT_MAX_FUNCS 128
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef unsigned uarch_t;
-
-struct atexit_func_entry_t {
-    /*
-     * Each member is at least 4 bytes large. Such that each entry is
-     12bytes.
-     * 128 * 12 = 1.5KB exact.
-     **/
-    void (*destructor_func)(void *);
-    void *obj_ptr;
-    void *dso_handle;
-};
-
-typedef void (*constructor_func)();
-extern constructor_func ctors_start[];
-extern constructor_func ctors_end[];
 // c++ 初始化
 void cpp_init(void);
 
 int  __cxa_atexit(void (*f)(void *), void *objptr, void *dso);
 void __cxa_finalize(void *f);
-void __cxa_pure_virtual();
-void __stack_chk_guard_setup();
-void __attribute__((noreturn)) __stack_chk_fail();
-void _Unwind_Resume();
-
-namespace __cxxabiv1 {
-    /* guard variables */
-
-    /* The ABI requires a 64-bit type.  */
-    __extension__ typedef int __guard __attribute__((mode(__DI__)));
-
-    extern "C" int  __cxa_guard_acquire(__guard *);
-    extern "C" void __cxa_guard_release(__guard *);
-    extern "C" void __cxa_guard_abort(__guard *);
-}
 
 int  __aeabi_atexit(void (*f)(void *), void *objptr, void *dso);
 void __cxa_finalize(void *f);
@@ -58,5 +23,51 @@ void __cxa_finalize(void *f);
 #ifdef __cplusplus
 };
 #endif
+
+namespace std {
+    class type_info {
+
+    private:
+        const char *tname;
+
+    public:
+        virtual ~type_info(void);
+
+        type_info(const type_info &);
+
+        explicit type_info(const char *);
+
+        const char *name(void) const;
+
+        bool operator==(const type_info &) const;
+
+        bool operator!=(const type_info &) const;
+    };
+}
+
+namespace __cxxabiv1 {
+
+#define ADD_CXX_TYPEINFO_HEADER(t)                                             \
+    class t : public std::type_info {                                          \
+    private:                                                                   \
+    protected:                                                                 \
+    public:                                                                    \
+        explicit t(const char *);                                              \
+        virtual ~t(void);                                                      \
+    }
+
+    ADD_CXX_TYPEINFO_HEADER(__fundamental_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__array_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__function_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__enum_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__pbase_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__pointer_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__pointer_to_member_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__class_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__si_class_type_info);
+    ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
+
+#undef ADD_CXX_TYPEINFO_HEADER
+}
 
 #endif /* _CXXABI_H_ */

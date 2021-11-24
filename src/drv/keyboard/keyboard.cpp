@@ -1,20 +1,33 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on Orange's 一个操作系统的实现
-// keyboard.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file keyboard.cpp
+ * @brief 中断抽象头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on Orange's 一个操作系统的实现
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stddef.h"
 #include "stdbool.h"
+#include "io.h"
+#include "stdio.h"
 #include "keyboard.h"
 
-static void default_keyboard_handle(INTR::pt_regs_t *regs
-                                    __attribute__((unused))) {
+/**
+ * @brief 默认处理函数
+ */
+static void default_keyboard_handle(INTR::intr_context_t *) {
     keyboard.read();
     return;
 }
-
-IO KEYBOARD::io;
 
 KEYBOARD::KEYBOARD(void) {
     shift = false;
@@ -33,7 +46,7 @@ uint8_t KEYBOARD::read(void) {
     uint8_t scancode = io.inb(KB_DATA);
     // 判断是否出错
     if (!scancode) {
-        io.printf("scancode error.\n");
+        warn("scancode error.\n");
         return '\0';
     }
     uint8_t letter = 0;
@@ -103,7 +116,7 @@ uint8_t KEYBOARD::read(void) {
 int32_t KEYBOARD::init(void) {
     set_handle(&default_keyboard_handle);
     INTR::enable_irq(INTR::IRQ1);
-    io.printf("keyboard_init\n");
+    info("keyboard init.\n");
     return 0;
 }
 

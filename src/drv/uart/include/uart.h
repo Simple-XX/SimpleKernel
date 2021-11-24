@@ -9,7 +9,6 @@
 
 #include "stddef.h"
 #include "stdint.h"
-#include "stddef.h"
 #include "color.h"
 #include "hardware.h"
 
