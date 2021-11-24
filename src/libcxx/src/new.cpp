@@ -7,36 +7,36 @@
 #include "new"
 #include "stdlib.h"
 
-void *operator new(size_t size) {
-    return malloc(size);
+void *operator new(size_t _size) {
+    return malloc(_size);
 }
 
-void *operator new[](size_t size) {
-    return malloc(size);
+void *operator new[](size_t _size) {
+    return malloc(_size);
 }
 
-void operator delete(void *p) {
-    free(p);
+void operator delete(void *_p) {
+    free(_p);
 }
 
-void operator delete(void *p, size_t) {
-    free(p);
+void operator delete(void *_p, size_t) {
+    free(_p);
 }
 
-void operator delete[](void *p) {
-    free(p);
+void operator delete[](void *_p) {
+    free(_p);
 }
 
-void operator delete[](void *p, size_t) {
-    free(p);
+void operator delete[](void *_p, size_t) {
+    free(_p);
 }
 
-void *operator new(size_t, void *p) throw() {
-    return p;
+void *operator new(size_t, void *_p) throw() {
+    return _p;
 }
 
-void *operator new[](size_t, void *p) throw() {
-    return p;
+void *operator new[](size_t, void *_p) throw() {
+    return _p;
 }
 
 void operator delete(void *, void *) throw() {
@@ -48,29 +48,29 @@ void operator delete[](void *, void *) throw() {
 }
 
 // TODO
-void *operator new(size_t size, std::align_val_t) {
-    return malloc(size);
+void *operator new(size_t _size, std::align_val_t) {
+    return malloc(_size);
 }
 
-void operator delete(void *p, std::align_val_t) {
-    free(p);
+void operator delete(void *_p, std::align_val_t) {
+    free(_p);
     return;
 }
 
-void *operator new[](size_t size, std::align_val_t) {
-    return malloc(size);
+void *operator new[](size_t _size, std::align_val_t) {
+    return malloc(_size);
 }
 
-void operator delete[](void *p, std::align_val_t) {
-    free(p);
+void operator delete[](void *_p, std::align_val_t) {
+    free(_p);
     return;
 }
 
-void operator delete(void *p, size_t, std::align_val_t) {
-    free(p);
+void operator delete(void *_p, size_t, std::align_val_t) {
+    free(_p);
     return;
 }
-void operator delete[](void *p, size_t, std::align_val_t) {
-    free(p);
+void operator delete[](void *_p, size_t, std::align_val_t) {
+    free(_p);
     return;
 }
