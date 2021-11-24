@@ -1,21 +1,16 @@
-![github ci](https://github.com/Simple-XX/SimpleKernel/workflows/CMake/badge.svg)
-![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
-![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
-![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+![github ci](https://github.com/Simple-XX/SimpleKernel/workflows/CMake/badge.svg) ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg) ![languages](https://img.shields.io/github/languages/count/badges/shields.svg) ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg) [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE) [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
-[English](https://github.com/Simple-XX/SimpleKernel/blob/TODO/README_en.md) | [中文](https://github.com/Simple-XX/SimpleKernel/blob/TODO/README.md)
+[English](./README_en.md) | [中文](./README.md)
 
 # SimpleKernel
 
 ## Key Words
 
-- Kernel
-- C/C++/AT&T ASM/cmake/shell
-
-- Linux-like
-- Multiboot2
+- kernel
+- x86, x86_64, riscv64
+- C, C++, AT&T ASM
+- cmake
+- multiboot2, opensbi
 
 ## Abstract
 
@@ -23,50 +18,55 @@ SimpleKernel, a simple kernel for learning. Contains the basic functionality of 
 
 Kernels with different levels of completion are available, and you can start from where you like.
 
+Each branch:
+
+1. boot: system startup, from the bootloader to the kernel entry
+2. printf: basic character output for debud
+3. parse_boot_info: reliminary parsing of the information passed by the bootloader
+4. pmm: physical memory management
+5. vmm: virtual memory management
+6. heap: heap management
+7. lib: part of c++ std/stl
+8. intr: interrupt management
+9. task: TODO
+10. filesystem: TODO
+11. device management: TODO
+12. syscall: TODO
+13. user mode: TODO
+
 ## Environment
 
-- Ubuntu Linux
+- Common tools
 
-    - brew
-    - x86_64-elf-binutils
-    - x86_64-elf-gcc
-    - xorriso
-    - grub
-    - bochs
-    - bochs-x
+    Cross compiler `x86_64-elf-gcc`, `riscv64-unknown-elf-gcc`, `arm-none-eabi-gcc`
+
+    Debug `x86_64-elf-gdb`, `riscv64-unknown-elf-gdb`, `arm-none-eabi-gdb`
+
+    Build `cmake`
+
+    Simulator `bochs`, `qemu`
+
+- For x86
+
+    Bootloader `grub`
     
-    Tested on Ubuntu 20.04
-
-
-- Arch Linux
-
-    - brew
-    - x86_64-elf-binutils
-    - x86_64-elf-gcc
-    - mtools
-    - xorriso
-    - grub
-    - bochs
-
-    Tested on Manjaro 5.6.15-1
-
-- Mac
-
-    - brew
-
-    - x86_64-elf-binutils
-    - x86_64-elf-gcc
-    - xorriso
-    - grub
-    - bochs
+    ISO `xorriso`
     
-    Tested on  macOS 10.15.7
+- For riscv64
+
+    Bootloader `opensbi`
+    
+- For arm
+
+    TODO
 
 ## RUN
 
-    git clone https://github.com/Simple-XX/SimpleKernel.git
-    cd SimpleKernel/
-    bash ./run.sh
+```shell
+git clone https://github.com/Simple-XX/SimpleKernel.git
+cd SimpleKernel/
+bash ./run.sh
+```
 
 Screenshot
 
@@ -110,17 +110,11 @@ Each push will be tested using Github Action.
 
 - git commit：
 
-    https://zhuanlan.zhihu.com/p/182553920
+    [tools/Git Commit 规范.pdf](./tools/Git Commit 规范.pdf)
 
 - code style
 
-    Specified by tools/clang-format
-
-## Image Files
-
-simplekernel.iso: multiboot2 boot
-
-fs.img: file system, unuse
+    Specified by .clang-format
 
 ## TODO
 
@@ -138,9 +132,13 @@ fs.img: file system, unuse
 
 [xiaoerlaigeid](https://github.com/xiaoerlaigeid)
 
+[digmouse233](https://github.com/digmouse233)
+
+[KehRoche](https://github.com/KehRoche)
+
 ## CONTRIBUTING
 
-See CONTRIBUTING.md.
+Free to PR!
 
 ## Thanks
 
@@ -187,16 +185,6 @@ See CONTRIBUTING.md.
 - [digmouse233](https://github.com/digmouse233)
 - l*e
 - fslongjin
-
-## Donate
-
-Thank you!
-(Please specify the GitHub id for joining the sponsor list
-
-<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjfoboa4j30go0p0411.jpg" width="30%" height="50%">
-
-<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjg7p0auj30u014qn7q.jpg" width="30%" height="50%">
-
 
 ## CopyRight
 

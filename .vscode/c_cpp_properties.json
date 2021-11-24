@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "SimpleKernel_vscode_cpp",
+            "includePath": [
+                "${workspaceFolder}/src/**"
+            ],
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17"
+        }
+    ],
+    "version": 4
+}

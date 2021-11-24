@@ -11,8 +11,6 @@ bochsout.txt
 build
 cmake-build-debug
 cmake-build-debug_simplekernel
-objconv-2.50.zip
-objconv-2.50
 grub-2.04.tar.xz
 grub-2.04
 tools/opensbi
@@ -20,3 +18,5 @@ iso
 *.img
 *.iso
 *.bin
+null.d
+tools/opensbi/

@@ -1,78 +1,62 @@
-![github ci](https://github.com/Simple-XX/SimpleKernel/workflows/CMake/badge.svg)
-![last-commit](https://img.shields.io/github/last-commit/google/skia.svg)
-![languages](https://img.shields.io/github/languages/count/badges/shields.svg)
-![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+![github ci](https://github.com/Simple-XX/SimpleKernel/workflows/CMake/badge.svg) ![last-commit](https://img.shields.io/github/last-commit/google/skia.svg) ![languages](https://img.shields.io/github/languages/count/badges/shields.svg) ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg) [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE) [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
-[English](https://github.com/Simple-XX/SimpleKernel/blob/master/README_en.md) | [中文](https://github.com/Simple-XX/SimpleKernel/blob/master/README.md)
+[English](./README_en.md) | [中文](./README.md)
 
 # SimpleKernel
 
 ## 关键词
 
-- Kernel
-- C/C++/AT&T ASM/cmake/shell
-
-- Linux-like
-- Multiboot2
+- kernel
+- x86, x86_64, riscv64
+- C, C++, AT&T ASM
+- cmake
+- multiboot2, opensbi
 
 ## 简介
 
 提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 
-构建顺序：
+各分支内容：
 
-1. boot: 由 grub2 引导
-2. printf: 字符输出，方便调试
-3. pmm: 物理内存初始化
-4. vmm: 虚拟内存初始化
-5. heap: 堆管理
-6. lib: C++ 标准库与标准模版库
-7. intr: 中断管理
-8. 文件系统: TODO
-9. 系统调用: TODO
-10. 进程: TODO
+1. boot: 系统的启动，从引导程序到内核入口
+2. printf: 基本的字符输出，便于调试
+3. parse_boot_info: 对引导程序传递信息的初步解析
+4. pmm: 物理内存初始化
+5. vmm: 虚拟内存初始化
+6. heap: 堆管理
+7. lib: C++ std/stl 的部分支持
+8. intr: 中断管理
+9. 进程: TODO
+10. 文件系统: TODO
+11. 设备管理: TODO
+12. 系统调用: TODO
+13. 用户模式: TODO
 
 ## 开发环境
 
-- Ubuntu Linux
+- 基本工具
 
-    - brew
-    - x86_64-elf-binutils
-    - x86_64-elf-gcc
-    - xorriso
-    - grub
-    - bochs
-    - bochs-x
+    交叉编译器 `x86_64-elf-gcc`, `riscv64-unknown-elf-gcc`, `arm-none-eabi-gcc`
+
+    调试工具 `x86_64-elf-gdb`, `riscv64-unknown-elf-gdb`, `arm-none-eabi-gdb`
+
+    构建工具 `cmake`
+
+    模拟器 `bochs`, `qemu`
+
+- For x86
+
+    引导程序 `grub`
     
-    Ubuntu 20.04 测试通过
+    制作内核镜像 `xorriso`
+    
+- For riscv64
 
+    引导程序 `opensbi`
+    
+- For arm
 
-- Arch Linux
-
-    - brew
-    - x86_64-elf-binutils
-    - x86_64-elf-gcc
-    - mtools
-    - xorriso
-    - grub
-    - bochs
-
-    Manjaro 5.6.15-1 测试通过
-
-- Mac
-
-    - brew
-
-    - x86_64-elf-binutils
-- x86_64-elf-gcc
-  
-    - xorriso
-- grub
-    - bochs
-
-    macOS 10.15.7 测试通过
+    TODO
 
 ## 如何运行
 
@@ -129,15 +113,11 @@ bash ./run.sh
 
 - git commit 规范：
 
-    https://zhuanlan.zhihu.com/p/182553920
+    [tools/Git Commit 规范.pdf](./tools/Git Commit 规范.pdf)
 
 - 代码样式
 
-    由 tools/clang-format 指定
-
-## 镜像文件
-
-simplekernel.img 是 1.44 软盘，我们的内核就在这里。
+    由 .clang-format 指定
 
 ## TODO
 
@@ -155,13 +135,17 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 
 [xiaoerlaigeid](https://github.com/xiaoerlaigeid)
 
+[digmouse233](https://github.com/digmouse233)
+
+[KehRoche](https://github.com/KehRoche)
+
 ## 贡献
 
-请阅读 CONTRIBUTING.md。
+Free to PR!
 
 ## 感谢
 
-此项目参考了很多优秀的项目和资料
+此项目参考了很多优秀的项目和资料。
 
 [osdev](https://wiki.osdev.org)
 
@@ -207,16 +191,6 @@ simplekernel.img 是 1.44 软盘，我们的内核就在这里。
 - l*e
 - fslongjin
 
-## 支持作者
-
-请我喝杯咖啡吧！
-(ps: 请注明 GitHub id 以便加入捐献者名单
-
-<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjfoboa4j30go0p0411.jpg" width="30%" height="50%">
-
-<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9yjg7p0auj30u014qn7q.jpg" width="30%" height="50%">
-
 ## 版权信息
 
 此项目使用 MIT 许可证
-

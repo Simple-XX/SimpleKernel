@@ -1,50 +1,59 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// heap.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file heap.cpp
+ * @brief 堆抽象头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
-#include "cpu.hpp"
+#include "stdio.h"
+#include "common.h"
+#include "pmm.h"
 #include "heap.h"
 
-IO HEAP::io;
-
-HEAP::HEAP(void) : name("SLAB"), manage(SLAB()) {
-    return;
-}
-
-HEAP::~HEAP(void) {
-    return;
-}
-
-int32_t HEAP::init(void) {
-    manage_init();
-    io.printf("heap_init\n");
+bool HEAP::init(void) {
+    static SLAB slab_allocator("SLAB Allocator", PMM::non_kernel_space_start,
+                               PMM::non_kernel_space_length *
+                                   COMMON::PAGE_SIZE);
+    allocator = (ALLOCATOR *)&slab_allocator;
+    info("heap init.\n");
     return 0;
 }
 
-int32_t HEAP::manage_init(void) {
-    manage.init(COMMON::KERNEL_END_4K, HEAP_SIZE);
-    return 0;
+void *HEAP::malloc(size_t _byte) {
+    return (void *)allocator->alloc(_byte);
 }
 
-void *HEAP::malloc(size_t byte) {
-    return manage.alloc(byte);
-}
-
-void HEAP::free(void *addr) {
-    manage.free(addr);
+void HEAP::free(void *_addr) {
+    // 堆不需要 _len 参数
+    allocator->free((uintptr_t)_addr, 0);
     return;
 }
 
-size_t HEAP::get_total(void) {
-    return manage.get_total();
+/**
+ * @brief malloc 定义
+ * @param  _size           要申请的 bytes
+ * @return void*           申请到的地址
+ */
+extern "C" void *malloc(size_t _size) {
+    return (void *)heap.malloc(_size);
 }
 
-size_t HEAP::get_block(void) {
-    return manage.get_block();
+/**
+ * @brief free 定义
+ * @param  _p              要释放的内存地址
+ */
+extern "C" void free(void *_p) {
+    heap.free(_p);
+    return;
 }
 
-size_t HEAP::get_free(void) {
-    return manage.get_free();
-}
+HEAP heap;
