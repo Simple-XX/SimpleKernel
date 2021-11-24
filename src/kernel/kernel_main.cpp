@@ -18,7 +18,9 @@
 #include "common.h"
 #include "stdio.h"
 #include "iostream"
+#include "boot_info.h"
 #include "kernel.h"
+#include "dtb.h"
 
 /// @todo gdb 调试
 /// @todo clion 环境
@@ -28,6 +30,10 @@
  * @note 这个函数不会返回
  */
 void kernel_main(void) {
+    // 初始化
+    BOOT_INFO::init();
+    // 输出物理地址信息
+    std::cout << BOOT_INFO::get_memory() << std::endl;
     // 显示基本信息
     show_info();
     // 进入死循环
