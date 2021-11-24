@@ -64,13 +64,13 @@ jobs:
 
     steps:
       - name: get code
-          uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.PAT }}
-          commit-message: [Auto PR]
+          commit-message: "[Auto PR]"
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: true
@@ -83,8 +83,6 @@ jobs:
             Auto PR
           assignees: MRNIU
           reviewers: MRNIU
-          team-reviewers:
-          milestone:
           draft: false
 
 #   build_ubuntu:
