@@ -15,13 +15,6 @@ extern "C" {
 #include "math.h"
 #include "stdio.h"
 
-// define this globally (e.g. gcc -DPRINTF_INCLUDE_CONFIG_H ...) to include the
-// printf_config.h header file
-// default: undefined
-#ifdef PRINTF_INCLUDE_CONFIG_H
-#include "printf_config.h"
-#endif
-
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted
 // numeric number including padded zeros (dynamically created on stack)
 // default: 32 byte
@@ -38,6 +31,7 @@ extern "C" {
 
 // support for the floating point type (%f)
 // default: activated
+#define PRINTF_DISABLE_SUPPORT_FLOAT
 #ifndef PRINTF_DISABLE_SUPPORT_FLOAT
 #define PRINTF_SUPPORT_FLOAT
 #endif
@@ -277,6 +271,7 @@ static size_t _ntoa_long_long(out_fct_type out, char *buffer, size_t idx,
         flags &= ~FLAGS_HASH;
     }
 
+#if defined(__i386__)
     // write if precision != 0 and value is != 0
     if (!(flags & FLAGS_PRECISION) || value) {
         do {
@@ -289,7 +284,18 @@ static size_t _ntoa_long_long(out_fct_type out, char *buffer, size_t idx,
             value = udivdi3(value, base);
         } while (value && (len < PRINTF_NTOA_BUFFER_SIZE));
     }
-
+#else
+    // write if precision != 0 and value is != 0
+    if (!(flags & FLAGS_PRECISION) || value) {
+        do {
+            const char digit = (char)(value % base);
+            buf[len++] =
+                digit < 10 ? '0' + digit
+                           : (flags & FLAGS_UPPERCASE ? 'A' : 'a') + digit - 10;
+            value /= base;
+        } while (value && (len < PRINTF_NTOA_BUFFER_SIZE));
+    }
+#endif
     return _ntoa_format(out, buffer, idx, maxlen, buf, len, negative,
                         (unsigned int)base, prec, width, flags);
 }
