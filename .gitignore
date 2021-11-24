@@ -17,3 +17,5 @@ iso
 *.img
 *.iso
 *.bin
+null.d
+tools/opensbi/
