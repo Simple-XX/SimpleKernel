@@ -11,12 +11,31 @@
 extern "C" {
 #endif
 
+#define ATEXIT_MAX_FUNCS 128
+
+typedef void (*ctor_t)(void);
+extern ctor_t ctors_start[];
+extern ctor_t ctors_end[];
+
+typedef unsigned uarch_t;
+
+struct atexit_func_entry_t {
+    /*
+     * Each member is at least 4 bytes large. Such that each entry is
+     12bytes.
+     * 128 * 12 = 1.5KB exact.
+     **/
+    void (*destructor_func)(void *);
+    void *obj_ptr;
+    void *dso_handle;
+};
+
 void cpp_init(void) {
-    // BUG: x86_64
-    constructor_func *f;
+    ctor_t *f;
     for (f = ctors_start; f < ctors_end; f++) {
         (*f)();
     }
+    return;
 }
 
 void __cxa_pure_virtual(void) {
@@ -207,7 +226,6 @@ namespace std {
     bool type_info::operator!=(const type_info &arg) const {
         return tname != arg.tname;
     }
-
 }
 
 namespace __cxxabiv1 {

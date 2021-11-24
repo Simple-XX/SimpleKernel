@@ -1,46 +1,157 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// pmm.h for Simple-XX/SimpleKernel.
+/**
+ * @file pmm.h
+ * @brief 物理内存管理头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _PMM_H_
 #define _PMM_H_
 
 #include "stddef.h"
 #include "stdint.h"
-#include "common.h"
 #include "firstfit.h"
+#include "allocator.h"
 
+/**
+ * @brief 物理内存管理接口
+ * 对物理内存的管理来说
+ * 1. 管理所有的物理内存，不论是否被机器保留/无法访问
+ * 2. 内存开始地址与长度由 bootloader 给出: x86 下为 grub, riscv 下为 opensbi
+ * 3.
+ *    不关心内存是否被使用，但是默认的物理内存分配空间从内核结束后开始
+ *    如果由体系结构需要分配内核开始前内存空间的，则尽量避免
+ * 4. 最管理单位为页
+ */
 class PMM {
 private:
-    // 可用内存的物理页数组
-    static COMMON::physical_pages_t phy_pages[COMMON::PMM_PAGE_MAX_SIZE];
-    // NORMAL 区域
-    static size_t   normal_pages;
-    static FIRSTFIT normal;
-    // HIGH 区域
-    static size_t   high_pages;
-    static FIRSTFIT high;
-    // 物理内存总数
-    static size_t    pages;
-    static FIRSTFIT *zone[COMMON::ZONE_COUNT];
-    // 物理内存管理初始化
-    void mamage_init(void);
+    /// 物理内存开始地址
+    static uintptr_t start;
+    /// 物理内存长度，单位为 bytes
+    static size_t length;
+    /// 物理内存页数
+    static size_t total_pages;
+    /// 内核空间不会位于内存中间，导致出现非内核空间被切割为两部分的情况
+    /// 物理内存分配器，分配内核空间
+    static ALLOCATOR *kernel_space_allocator;
+    /// 物理内存分配器，分配非内核空间
+    static ALLOCATOR *allocator;
+
+    /**
+     * @brief 将 multiboot2/dtb 信息移动到内核空间
+     */
+    static void move_boot_info(void);
 
 protected:
 public:
-    PMM(void);
-    ~PMM(void);
-    int32_t init(void);
-    // 请求指定 zone 的物理页
-    void *alloc_page(uint32_t _pages, COMMON::zone_t _zone);
-    // 释放内存页
-    void free_page(void *_addr, uint32_t _pages, COMMON::zone_t _zone);
-    // 获取空闲内存页数量
-    uint32_t free_pages_count(COMMON::zone_t _zone);
-};
+    /// 内核空间起始地址
+    static uintptr_t kernel_space_start;
+    /// 内核空间大小，单位为 bytes
+    static size_t kernel_space_length;
+    /// 非内核空间起始地址
+    static uintptr_t non_kernel_space_start;
+    /// 非内核空间大小，单位为 bytes
+    static size_t non_kernel_space_length;
 
-static PMM pmm;
+    /**
+     * @brief 构造函数，目前为空
+     * @todo 从 bootloader 接受内存参数进行初始化
+     */
+    PMM(void);
+
+    ~PMM(void);
+
+    /**
+     * @brief 初始化
+     * @return true            成功
+     * @return false           失败
+     * @todo 移动到构造函数去
+     */
+    static bool init(void);
+
+    /**
+     * @brief 获取物理内存长度
+     * @return size_t          物理内存长度
+     */
+    static size_t get_pmm_length(void);
+
+    /**
+     * @brief 分配一页
+     * @return uintptr_t       分配的内存起始地址
+     */
+    static uintptr_t alloc_page(void);
+
+    /**
+     * @brief 分配多页
+     * @param  _len            页数
+     * @return uintptr_t       分配的内存起始地址
+     */
+    static uintptr_t alloc_pages(size_t _len);
+
+    /**
+     * @brief 分配以指定地址开始的 _len 页
+     * @param  _addr           指定的地址
+     * @param  _len            页数
+     * @return true            成功
+     * @return false           失败
+     */
+    static bool alloc_pages(uintptr_t _addr, size_t _len);
+
+    /**
+     * @brief 在内核空间申请一页
+     * @return uintptr_t       分配的内存起始地址
+     */
+    static uintptr_t alloc_page_kernel(void);
+
+    /**
+     * @brief 在内核空间分配 _len 页
+     * @param  _len            页数
+     * @return uintptr_t       分配到的内存起始地址
+     */
+    static uintptr_t alloc_pages_kernel(size_t _len);
+
+    /**
+     * @brief 在内核空间分配以指定地址开始的 _len 页
+     * @param  _addr           指定的地址
+     * @param  _len            页数
+     * @return true            成功
+     * @return false           失败
+     */
+    static bool alloc_pages_kernel(uintptr_t _addr, size_t _len);
+
+    /**
+     * @brief 回收一页
+     * @param  _addr           要回收的地址
+     */
+    static void free_page(uintptr_t _addr);
+
+    /**
+     * @brief 回收多页
+     * @param  _addr           要回收的地址
+     * @param  _len            页数
+     */
+    static void free_pages(uintptr_t _addr, size_t _len);
+
+    /**
+     * @brief 获取当前已使用页数
+     * @return size_t          已使用页数
+     */
+    static size_t get_used_pages_count(void);
+
+    /**
+     * @brief 获取当前空闲页
+     * @return size_t          空闲页数
+     */
+    static size_t get_free_pages_count(void);
+};
 
 #endif /* _PMM_H_ */
