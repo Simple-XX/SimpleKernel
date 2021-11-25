@@ -7,27 +7,14 @@ set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_VERSION 1)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)
 
-# linuxbrew
-find_program(BREW brew)
-if (NOT BREW)
-    message(FATAL_ERROR "brew not found.\n"
-            "Run `/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)\"` to install linuxbrew")
-else ()
-    message(STATUS "Found brew ${BREW}")
-endif ()
-
 # GCC
-find_program(GCC x86_64-elf-gcc)
-if (NOT GCC)
-    message(FATAL_ERROR "x86_64-elf-gcc not found.\n"
-            "Run `brew install x86_64-elf-gcc` to install the toolchain")
+find_program(G++ g++)
+if (NOT G++)
+    message(FATAL_ERROR "g++ not found.\n"
+            "Run `sudo apt-get install -y gcc g++` to install the toolchain")
 else ()
-    message(STATUS "Found x86_64-elf-gcc ${GCC}")
+    message(STATUS "Found g++ ${G++}")
 endif ()
-
-set(TOOLCHAIN_PREFIX x86_64-elf-)
-set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
-set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
 
 # xorriso
 find_program(XORRISO xorriso)
