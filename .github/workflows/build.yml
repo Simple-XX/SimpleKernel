@@ -68,7 +68,6 @@ jobs:
       shell: bash
       run: |
         sudo apt-get install -y gcc-riscv64-linux-gnu
-        # sudo apt-get install -y gcc-11-x86-64-linux-gnu
 
     - name: make build dir
       shell: bash
@@ -91,13 +90,13 @@ jobs:
         make
         rm -rf ./*
 
-#     - name: ubuntu-riscv64
-#       shell: bash
-#       working-directory: ${{github.workspace}}/build
-#       run: |
-#         cmake -DTOOLCHAIN_PREFIX=riscv64-linux-gnu- -DCMAKE_C_COMPILER=riscv64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=riscv64-linux-gnu-g++ -DCMAKE_OBJCOPY=riscv64-linux-gnu-objcpy -DPLATFORM=qemu -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
-#         make
-#         rm -rf ./*
+    - name: ubuntu-riscv64
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake -DTOOLCHAIN_PREFIX=riscv64-linux-gnu- -DCMAKE_C_COMPILER=riscv64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=riscv64-linux-gnu-g++ -DCMAKE_OBJCOPY=riscv64-linux-gnu-objcpy -DPLATFORM=qemu -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        make
+        rm -rf ./*
 
   # build_win:
     # runs-on: windows-latest
