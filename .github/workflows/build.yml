@@ -67,29 +67,29 @@ jobs:
     - name: setup brew
       shell: bash
       run: |
-        # sudo apt-get install -y gcc-11-riscv64-linux-gnu
-        sudo apt-get install -y gcc-11-x86-64-linux-gnu
+        sudo apt-get install -y gcc-11-riscv64-linux-gnu
+        # sudo apt-get install -y gcc-11-x86-64-linux-gnu
 
     - name: make build dir
       shell: bash
       run: |
         mkdir ${{github.workspace}}/build
 
-    - name: ubuntu-i386
-      shell: bash
-      working-directory: ${{github.workspace}}/build
-      run: |
-        cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
-        make
-        rm -rf ./*
+#     - name: ubuntu-i386
+#       shell: bash
+#       working-directory: ${{github.workspace}}/build
+#       run: |
+#         cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+#         make
+#         rm -rf ./*
 
-    - name: ubuntu-x86_64
-      shell: bash
-      working-directory: ${{github.workspace}}/build
-      run: |
-        cmake -DTOOLCHAIN_PREFIX=x86-64-linux-gnu- -DCMAKE_C_COMPILER=x86-64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=x86-64-linux-gnu-g++ -DCMAKE_OBJCOPY=x86-64-linux-gnu-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
-        make
-        rm -rf ./*
+#     - name: ubuntu-x86_64
+#       shell: bash
+#       working-directory: ${{github.workspace}}/build
+#       run: |
+#         cmake -DTOOLCHAIN_PREFIX=x86-64-linux-gnu- -DCMAKE_C_COMPILER=x86-64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=x86-64-linux-gnu-g++ -DCMAKE_OBJCOPY=x86-64-linux-gnu-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+#         make
+#         rm -rf ./*
 
     - name: ubuntu-riscv64
       shell: bash
