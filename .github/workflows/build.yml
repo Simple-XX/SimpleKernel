@@ -21,7 +21,7 @@ jobs:
       - name: get code
         uses: actions/checkout@v2
         
-      - name: setup brew
+      - name: setup toolchain
         shell: bash
         run: |
           brew install x86_64-elf-gcc
@@ -64,10 +64,10 @@ jobs:
     - name: get code
       uses: actions/checkout@v2
       
-    - name: setup brew
+    - name: setup toolchain
       shell: bash
       run: |
-        sudo apt-get install -y gcc-riscv64-linux-gnu
+        sudo apt-get install -y gcc-riscv64-linux-gnu g++-riscv64-linux-gnu
 
     - name: make build dir
       shell: bash
