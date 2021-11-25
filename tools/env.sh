@@ -14,7 +14,7 @@
 ARCH="riscv64"
 
 # Use qeme for i386/x86_64, bochs for default
-IA32_USE_QEMU=1
+IA32_USE_QEMU=0
 
 # Use for riscv64, compile opensbi
 # for linux, use riscv64-linux-gnu-
