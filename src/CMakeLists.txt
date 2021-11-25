@@ -38,7 +38,7 @@ endif ()
 # 通用选项
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC -O2 -Wall -Wextra -MMD")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC -O2 -Wall -Wextra -MMD")
-set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
+set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS} -fPIE")
 
 # 输出相关信息
 message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
