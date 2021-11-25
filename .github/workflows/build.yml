@@ -37,7 +37,7 @@ jobs:
         shell: bash
         working-directory: ${{github.workspace}}/build
         run: |
-          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
           make
           rm -rf ./*
 
@@ -45,7 +45,7 @@ jobs:
         shell: bash
         working-directory: ${{github.workspace}}/build
         run: |
-          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DCMAKE_OBJCOPY=x86_64-elf-objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
           make
           rm -rf ./*
 
@@ -53,7 +53,7 @@ jobs:
         shell: bash
         working-directory: ${{github.workspace}}/build
         run: |
-          cmake -DTOOLCHAIN_PREFIX=riscv64-unknown-elf- -DCMAKE_C_COMPILER=riscv64-unknown-elf-gcc -DCMAKE_CXX_COMPILER=riscv64-unknown-elf-g++ -DCMAKE_OBJCOPY=riscv64-unknown-elf-objcpy -DPLATFORM=qemu -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+          cmake -DTOOLCHAIN_PREFIX=riscv64-unknown-elf- -DCMAKE_C_COMPILER=riscv64-unknown-elf-gcc -DCMAKE_CXX_COMPILER=riscv64-unknown-elf-g++ -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
           make
           rm -rf ./*
 
@@ -78,7 +78,7 @@ jobs:
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
-        cmake -DTOOLCHAIN_PREFIX= -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_OBJCOPY=objcpy -DPLATFORM=bochs -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        cmake -DTOOLCHAIN_PREFIX= -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
         make
         rm -rf ./*
 
@@ -86,7 +86,7 @@ jobs:
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
-        cmake -DTOOLCHAIN_PREFIX= -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_OBJCOPY=objcpy -DPLATFORM=bochs -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        cmake -DTOOLCHAIN_PREFIX= -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
         make
         rm -rf ./*
 
@@ -94,7 +94,7 @@ jobs:
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
-        cmake -DTOOLCHAIN_PREFIX=riscv64-linux-gnu- -DCMAKE_C_COMPILER=riscv64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=riscv64-linux-gnu-g++ -DCMAKE_OBJCOPY=riscv64-linux-gnu-objcpy -DPLATFORM=qemu -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+        cmake -DTOOLCHAIN_PREFIX=riscv64-linux-gnu- -DCMAKE_C_COMPILER=riscv64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=riscv64-linux-gnu-g++ -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
         make
         rm -rf ./*
 
