@@ -42,3 +42,12 @@ if (NOT BOCHS)
 else ()
     message(STATUS "Found bochs ${BOCHS}")
 endif ()
+
+# qemu
+find_program(QEMU qemu-system-x86_64)
+if (NOT QEMU)
+    message(FATAL_ERROR "qemu not found.\n"
+            "Please install qemu first.")
+else ()
+    message(STATUS "Found qemu ${QEMU}")
+endif ()
