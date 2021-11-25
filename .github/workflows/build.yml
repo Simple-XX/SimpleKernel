@@ -67,8 +67,8 @@ jobs:
     - name: setup brew
       shell: bash
       run: |
-        sudo apt-get install -y gcc-riscv64-linux-gnu
-        sudo apt-get install -y gcc-x86-64-linux-gnu
+        # sudo apt-get install -y gcc-11-riscv64-linux-gnu
+        sudo apt-get install -y gcc-11-x86-64-linux-gnu
 
     - name: make build dir
       shell: bash
