@@ -13,6 +13,13 @@
 # ARCH="arm"
 ARCH="riscv64"
 
+# Use qeme for i386/x86_64, bochs for default
+IA32_USE_QEMU=1
+
+# Use for riscv64, compile opensbi
+# for linux, use riscv64-linux-gnu-
+TOOLCHAIN_PREFIX=riscv64-unknown-elf-
+
 # 内核映像
 kernel='./build/bin/kernel.elf'
 iso_boot_grub='./iso/boot/grub'
@@ -27,6 +34,8 @@ if [ "${OS}" == "Linux" ]; then
         TOOLS="toolchain_linux_x86_64.cmake"
     elif [ "${ARCH}" == "arm" ]; then
         TOOLS="toolchain_linux_arm.cmake"
+    elif [ "${ARCH}" == "riscv64" ]; then
+        TOOLS="toolchain_linux_riscv.cmake"
     fi
     GRUB_PATH="$(dirname $(which grub-file))"
     bochsrc="./tools/bochsrc_linux.txt"

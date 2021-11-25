@@ -40,7 +40,7 @@ if [ ${ARCH} == "riscv64" ]; then
         git submodule update
         cd ./tools/opensbi
         mkdir -p build
-        export CROSS_COMPILE=riscv64-unknown-elf-
+        export CROSS_COMPILE=${TOOLCHAIN_PREFIX}
         make PLATFORM=generic FW_JUMP_ADDR=0x80200000
         cd ../..
     fi
@@ -68,10 +68,13 @@ fi
 
 # 运行虚拟机
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
-    # qemu-system-x86_64 -cdrom ${iso} -m 128M \
-    # -monitor telnet::2333,server,nowait -serial stdio
+    if [ ${IA32_USE_QEMU} == 0 ]; then
+        ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+        bochs -q -f ${bochsrc} -rc ./tools/bochsinit
+    else
+        qemu-system-x86_64 -cdrom ${iso} -m 128M \
+        -monitor telnet::2333,server,nowait -serial stdio
+    fi
 elif [ ${ARCH} == "arm" ]; then
     qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
 elif [ ${ARCH} == "riscv64" ]; then
