@@ -3,7 +3,7 @@
  *
  * link.ld for Simple-XX/SimpleKernel. */
 
-OUTPUT_FORMAT(elf32-littlearm)
+OUTPUT_FORMAT(elf64-littleaarch64)
 
 ENTRY(_start)
 
