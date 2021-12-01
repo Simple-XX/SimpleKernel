@@ -50,7 +50,7 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
             // 如果需要
             if (_alloc == true) {
                 // 申请新的物理页
-                pgd = (pt_t)PMM::alloc_page_kernel();
+                pgd = (pt_t)PMM::get_instance().alloc_page_kernel();
                 bzero(pgd, COMMON::PAGE_SIZE);
                 // 申请失败则返回
                 if (pgd == nullptr) {
@@ -73,6 +73,12 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
     return &pgd[PX(0, _va)];
 }
 
+VMM &VMM::get_instance(void) {
+    /// 定义全局 VMM 对象
+    static VMM vmm;
+    return vmm;
+}
+
 bool VMM::init(void) {
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
@@ -80,7 +86,7 @@ bool VMM::init(void) {
     // 读取当前页目录
     curr_dir = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
-    pgd_kernel = (pt_t)PMM::alloc_page_kernel();
+    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
     bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
