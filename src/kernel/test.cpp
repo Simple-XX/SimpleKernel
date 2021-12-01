@@ -28,7 +28,8 @@ int32_t test_pmm(void) {
 #endif
     // 空闲页数应该等于物理内存大小-内核使用
     assert(free_pages ==
-           (PMM::get_instance().get_pmm_length() / COMMON::PAGE_SIZE) - kernel_pages);
+           (PMM::get_instance().get_pmm_length() / COMMON::PAGE_SIZE) -
+               kernel_pages);
     // 获取已使用页数
     size_t used_pages = PMM::get_instance().get_used_pages_count();
     // 已使用页数应该等于内核使用页数

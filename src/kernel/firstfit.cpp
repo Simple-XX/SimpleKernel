@@ -31,11 +31,11 @@ void FIRSTFIT::clr(size_t _idx) {
     return;
 }
 
-bool FIRSTFIT::test(size_t _idx) {
+bool FIRSTFIT::test(size_t _idx) const {
     return map[_idx >> SHIFT] & ((uintptr_t)1 << (_idx & MASK));
 }
 
-size_t FIRSTFIT::find_len(size_t _len, bool _val) {
+size_t FIRSTFIT::find_len(size_t _len, bool _val) const {
     size_t count = 0;
     size_t idx   = 0;
     // 遍历位图
