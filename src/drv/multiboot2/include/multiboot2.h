@@ -302,19 +302,25 @@ private:
 
 public:
     /**
+     * @brief 获取单例
+     * @return MULTIBOOT2&      静态对象
+     */
+    static MULTIBOOT2 &get_instance(void);
+
+    /**
      * @brief 初始化
      * @return true            成功
      * @return false           失败
      */
-    static bool multiboot2_init(void);
+    bool multiboot2_init(void);
 
     /**
      * @brief 迭代器
      * @param  _fun            迭代操作
      * @param  _data           数据
      */
-    static void multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
-                                void *_data);
+    void multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
+                         void *_data);
 
     /**
      * @brief 获取内存信息
@@ -327,8 +333,8 @@ public:
 };
 
 namespace BOOT_INFO {
-    /// 魔数
-    extern "C" uint32_t multiboot2_magic;
-};
+/// 魔数
+extern "C" uint32_t multiboot2_magic;
+}; // namespace BOOT_INFO
 
 #endif /* _MULTIBOOT2_H_ */
