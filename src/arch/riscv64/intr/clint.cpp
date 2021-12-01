@@ -30,7 +30,7 @@
 static void pg_load_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
     // 映射页
-    VMM::mmap(VMM::get_pgd(), addr, addr, VMM_PAGE_READABLE);
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr, VMM_PAGE_READABLE);
     info("pg_load_excp done: 0x%p.\n", addr);
     return;
 }
@@ -41,7 +41,7 @@ static void pg_load_excp(void) {
 static void pg_store_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
     // 映射页
-    VMM::mmap(VMM::get_pgd(), addr, addr,
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
               VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
     info("pg_store_excp done: 0x%p.\n", addr);
     return;
@@ -76,12 +76,18 @@ void CLINT::do_excp(uint8_t _no) {
     return;
 }
 
+CLINT &CLINT::get_instance(void) {
+    /// 定义全局 CLINT 对象
+    static CLINT clint;
+    return clint;
+}
+
 int32_t CLINT::init(void) {
     // 映射 clint 地址
     resource_t resource = BOOT_INFO::get_clint();
     for (uintptr_t a = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += 0x1000) {
-        VMM::mmap(VMM::get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), a, a, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);

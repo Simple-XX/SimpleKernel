@@ -66,17 +66,17 @@ private:
          * @brief 获取链表长度
          * @return size_t          desc
          */
-        size_t size(void);
+        size_t size(void) const;
 
-        bool operator==(const chunk_t &_node);
-        bool operator!=(const chunk_t &_node);
+        bool operator==(const chunk_t &_node) const;
+        bool operator!=(const chunk_t &_node) const;
 
         /**
          * @brief 返回相对头节点的第 _idx 项
          * @param  _idx            第几项
          * @return chunk_t&        chunk 对象
          */
-        chunk_t &operator[](size_t _idx);
+        chunk_t &operator[](size_t _idx) const;
     };
 
     /**
@@ -99,7 +99,7 @@ private:
          * @return chunk_t*        申请到的 chunk
          */
         chunk_t *alloc_pmm(size_t _len);
-        
+
         /**
          * @brief 释放内存
          */
@@ -143,7 +143,7 @@ private:
         chunk_t part;
         // 一整段申请的内存都没有使用
         chunk_t free;
-        
+
         // 查找长度符合的
         chunk_t *find(size_t _len);
 
@@ -151,7 +151,7 @@ private:
          * @brief 释放一个 full 的链表项
          * @param  _node           要释放的节点
          */
-        void                 remove(chunk_t *_node);
+        void remove(chunk_t *_node);
 
         friend std::ostream &operator<<(std::ostream       &_out,
                                         SLAB::slab_cache_t &_cache) {
@@ -206,7 +206,7 @@ private:
      * @param  _len            长度
      * @return size_t          对应的下标
      */
-    size_t get_idx(size_t _len);
+    size_t get_idx(size_t _len) const;
 
 protected:
 public:
@@ -225,21 +225,21 @@ public:
      * @param  _len            长度，以 byte 为单位
      * @return uintptr_t       分配到的内存地址
      */
-    uintptr_t alloc(size_t _len);
+    uintptr_t alloc(size_t _len) override;
 
     // slab 不支持这个函数
-    bool alloc(uintptr_t _addr, size_t _len);
+    bool alloc(uintptr_t _addr, size_t _len) override;
 
     /**
      * @brief 释放内存
      * @param  _addr           要释放的地址
      * @note slab 不使用第二个参数
      */
-    void free(uintptr_t _addr, size_t);
-    
+    void free(uintptr_t _addr, size_t) override;
+
     // 暂时不支持
-    size_t get_used_count(void) const;
-    size_t get_free_count(void) const;
+    size_t get_used_count(void) const override;
+    size_t get_free_count(void) const override;
 };
 
 #endif /* _SLAB_H_ */

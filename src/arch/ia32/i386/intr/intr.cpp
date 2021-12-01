@@ -111,7 +111,7 @@ extern "C" void idt_load(uint32_t);
  * @brief IRQ 处理函数
  */
 extern "C" void irq_handler(uint8_t _no, INTR::intr_context_t *_intr_context) {
-    INTR::call_irq(_no, _intr_context);
+    INTR::get_instance().call_irq(_no, _intr_context);
     return;
 }
 
@@ -121,7 +121,7 @@ extern "C" void irq_handler(uint8_t _no, INTR::intr_context_t *_intr_context) {
 extern "C" void isr_handler(uint8_t _no, INTR::intr_context_t *_intr_context,
                             INTR::error_code_t *_err_code) {
     (void)_err_code;
-    INTR::call_isr(_no, _intr_context);
+    INTR::get_instance().call_isr(_no, _intr_context);
     return;
 }
 
@@ -162,27 +162,27 @@ void INTR::init_interrupt_chip(void) {
 
     // 初始化主片、从片
     // 0001 0001
-    io.outb(IO_PIC1, 0x11);
+    IO::get_instance().outb(IO_PIC1, 0x11);
     // 设置主片 IRQ 从 0x20(32) 号中断开始
-    io.outb(IO_PIC1C, IRQ0);
+    IO::get_instance().outb(IO_PIC1C, IRQ0);
     // 设置主片 IR2 引脚连接从片
-    io.outb(IO_PIC1C, 0x04);
+    IO::get_instance().outb(IO_PIC1C, 0x04);
     // 设置主片按照 EOI 的方式工作
     // 在这种模式下，中断处理完后需要通知 8259A 重置 ISR 寄存器
     // 即调用 clear_interrupt_chip()
-    io.outb(IO_PIC1C, 0x01);
+    IO::get_instance().outb(IO_PIC1C, 0x01);
 
-    io.outb(IO_PIC2, 0x11);
+    IO::get_instance().outb(IO_PIC2, 0x11);
     // 设置从片 IRQ 从 0x28(40) 号中断开始
-    io.outb(IO_PIC2C, IRQ8);
+    IO::get_instance().outb(IO_PIC2C, IRQ8);
     // 告诉从片输出引脚和主片 IR2 号相连
-    io.outb(IO_PIC2C, 0x02);
+    IO::get_instance().outb(IO_PIC2C, 0x02);
     // 设置从片按照 EOI 的方式工作
-    io.outb(IO_PIC2C, 0x01);
+    IO::get_instance().outb(IO_PIC2C, 0x01);
 
     // 默认关闭所有中断
-    io.outb(IO_PIC1C, 0xFF);
-    io.outb(IO_PIC2C, 0xFF);
+    IO::get_instance().outb(IO_PIC1C, 0xFF);
+    IO::get_instance().outb(IO_PIC2C, 0xFF);
     return;
 }
 
@@ -193,18 +193,24 @@ void INTR::clear_interrupt_chip(uint8_t _no) {
     // 故大于等于 40 的中断号是由从片处理的
     if (_no >= IRQ8) {
         // 发送重设信号给从片
-        io.outb(IO_PIC2, PIC_EOI);
+        IO::get_instance().outb(IO_PIC2, PIC_EOI);
     }
     // 发送重设信号给主片
-    io.outb(IO_PIC1, PIC_EOI);
+    IO::get_instance().outb(IO_PIC1, PIC_EOI);
     return;
 }
 
 void INTR::disable_interrupt_chip(void) {
     // 屏蔽所有中断
-    io.outb(IO_PIC1C, 0xFF);
-    io.outb(IO_PIC2C, 0xFF);
+    IO::get_instance().outb(IO_PIC1C, 0xFF);
+    IO::get_instance().outb(IO_PIC2C, 0xFF);
     return;
+}
+
+INTR &INTR::get_instance(void) {
+    /// 定义全局 INTR 对象
+    static INTR intr;
+    return intr;
 }
 
 int32_t INTR::init(void) {
@@ -345,7 +351,7 @@ int32_t INTR::init(void) {
     // APIC 初始化
     apic.init();
     // 键盘初始化
-    keyboard.init();
+    KEYBOARD::get_instance().init();
     info("intr init.\n");
     return 0;
 }
@@ -380,12 +386,12 @@ void INTR::enable_irq(uint8_t _no) {
     uint8_t mask = 0;
     // printk_color(green, "enable_irq mask: %X", mask);
     if (_no >= IRQ8) {
-        mask = ((io.inb(IO_PIC2C)) & (~(1 << (_no % 8))));
-        io.outb(IO_PIC2C, mask);
+        mask = ((IO::get_instance().inb(IO_PIC2C)) & (~(1 << (_no % 8))));
+        IO::get_instance().outb(IO_PIC2C, mask);
     }
     else {
-        mask = ((io.inb(IO_PIC1C)) & (~(1 << (_no % 8))));
-        io.outb(IO_PIC1C, mask);
+        mask = ((IO::get_instance().inb(IO_PIC1C)) & (~(1 << (_no % 8))));
+        IO::get_instance().outb(IO_PIC1C, mask);
     }
     return;
 }
@@ -394,12 +400,12 @@ void INTR::disable_irq(uint8_t _no) {
     uint8_t mask = 0;
     // printk_color(green, "disable_irq mask: %X", mask);
     if (_no >= IRQ8) {
-        mask = ((io.inb(IO_PIC2C)) | (1 << (_no % 8)));
-        io.outb(IO_PIC2C, mask);
+        mask = ((IO::get_instance().inb(IO_PIC2C)) | (1 << (_no % 8)));
+        IO::get_instance().outb(IO_PIC2C, mask);
     }
     else {
-        mask = ((io.inb(IO_PIC1C)) | (1 << (_no % 8)));
-        io.outb(IO_PIC1C, mask);
+        mask = ((IO::get_instance().inb(IO_PIC1C)) | (1 << (_no % 8)));
+        IO::get_instance().outb(IO_PIC1C, mask);
     }
     return;
 }
