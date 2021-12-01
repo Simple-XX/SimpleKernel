@@ -17,6 +17,12 @@
 /// 输出缓冲区
 static char buf[128];
 
+IO &IO::get_instance(void) {
+    /// 定义全局 IO 对象
+    static IO io;
+    return io;
+}
+
 // riscv 没有端口 IO
 #ifndef __riscv
 uint8_t IO::inb(const uint32_t port) {
@@ -110,9 +116,6 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
-/// 定义全局 IO 对象
-IO io;
-
 /**
  * @brief printf 定义
  * @param  _fmt           格式化字符串
@@ -126,7 +129,7 @@ extern "C" int32_t printf(const char *_fmt, ...) {
     const int ret = _vsnprintf(buf, 128, _fmt, va);
     va_end(va);
     // 输出 buf
-    io.write_string(buf);
+    IO::get_instance().write_string(buf);
     // 清空数据
     bzero(buf, 128);
     return ret;
@@ -136,16 +139,16 @@ extern "C" int32_t printf(const char *_fmt, ...) {
  * @brief 与 printf 类似，只是颜色不同
  */
 extern "C" int32_t info(const char *_fmt, ...) {
-    COLOR::color_t curr_color = io.get_color();
-    io.set_color(COLOR::CYAN);
+    COLOR::color_t curr_color = IO::get_instance().get_color();
+    IO::get_instance().set_color(COLOR::CYAN);
     va_list va;
     int32_t i;
     va_start(va, _fmt);
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
-    io.write_string(buf);
+    IO::get_instance().write_string(buf);
     bzero(buf, 128);
-    io.set_color(curr_color);
+    IO::get_instance().set_color(curr_color);
     return i;
 }
 
@@ -153,16 +156,16 @@ extern "C" int32_t info(const char *_fmt, ...) {
  * @brief 与 printf 类似，只是颜色不同
  */
 extern "C" int32_t warn(const char *_fmt, ...) {
-    COLOR::color_t curr_color = io.get_color();
-    io.set_color(COLOR::YELLOW);
+    COLOR::color_t curr_color = IO::get_instance().get_color();
+    IO::get_instance().set_color(COLOR::YELLOW);
     va_list va;
     int32_t i;
     va_start(va, _fmt);
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
-    io.write_string(buf);
+    IO::get_instance().write_string(buf);
     bzero(buf, 128);
-    io.set_color(curr_color);
+    IO::get_instance().set_color(curr_color);
     return i;
 }
 
@@ -170,15 +173,15 @@ extern "C" int32_t warn(const char *_fmt, ...) {
  * @brief 与 printf 类似，只是颜色不同
  */
 extern "C" int32_t err(const char *_fmt, ...) {
-    COLOR::color_t curr_color = io.get_color();
-    io.set_color(COLOR::LIGHT_RED);
+    COLOR::color_t curr_color = IO::get_instance().get_color();
+    IO::get_instance().set_color(COLOR::LIGHT_RED);
     va_list va;
     int32_t i;
     va_start(va, _fmt);
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
-    io.write_string(buf);
+    IO::get_instance().write_string(buf);
     bzero(buf, 128);
-    io.set_color(curr_color);
+    IO::get_instance().set_color(curr_color);
     return i;
 }
