@@ -367,9 +367,6 @@ private:
      */
     node_t *find_node_via_path(const char *_path);
 
-    /// 用于标记是否第一次 init
-    static bool inited;
-
 protected:
 public:
     // 用于控制处理哪些属性
