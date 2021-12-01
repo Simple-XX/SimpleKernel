@@ -8,9 +8,9 @@
 #!/bin/bash
 
 # ARCH: i386, x86_64, riscv64
-ARCH="i386"
+# ARCH="i386"
 # ARCH="x86_64"
-# ARCH="riscv64"
+ARCH="riscv64"
 
 # Use qeme for i386/x86_64, bochs for default
 IA32_USE_QEMU=0
