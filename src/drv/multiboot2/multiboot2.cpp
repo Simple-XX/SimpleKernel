@@ -19,10 +19,7 @@
 #include "common.h"
 #include "multiboot2.h"
 #include "boot_info.h"
-#include "multiboot2.h"
 #include "resource.h"
-#include "common.h"
-#include "pmm.h"
 
 MULTIBOOT2 &MULTIBOOT2::get_instance(void) {
     /// 定义全局 MULTIBOOT2 对象
