@@ -75,8 +75,9 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
         qemu-system-x86_64 -cdrom ${iso} -m 128M \
         -monitor telnet::2333,server,nowait -serial stdio
     fi
-elif [ ${ARCH} == "arm" ]; then
-    qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
+elif [ ${ARCH} == "aarch64" ]; then
+    qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ${kernel} \
+    -monitor telnet::2333,server,nowait -serial stdio -nographic
 elif [ ${ARCH} == "riscv64" ]; then
     qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
     -monitor telnet::2333,server,nowait -serial stdio -nographic
