@@ -25,10 +25,12 @@ VIRTIO_BLK::VIRTIO_BLK(void *_addr) : VIRTIO(_addr, BLOCK_DEVICE) {
     set_features(feat);
     // 属性设置完成
     // 置位 FEATURES_OK
-    io.write32(&regs->status,
-               io.read32(&regs->status) | DEVICE_STATUS_FEATURES_OK);
+    IO::get_instance().write32(&regs->status,
+                               IO::get_instance().read32(&regs->status) |
+                                   DEVICE_STATUS_FEATURES_OK);
     // 再次读取以确认设置成功
-    if ((io.read32(&regs->status) & DEVICE_STATUS_FEATURES_OK) == false) {
+    if ((IO::get_instance().read32(&regs->status) &
+         DEVICE_STATUS_FEATURES_OK) == false) {
         // 失败则报错
         assert(0);
         return;
@@ -42,38 +44,49 @@ VIRTIO_BLK::VIRTIO_BLK(void *_addr) : VIRTIO(_addr, BLOCK_DEVICE) {
     // TODO: << 重载
     uint32_t i, j;
     do {
-        i = io.read32(&regs->config_generation);
-        printf("capacity: 0x%X\n", io.read64(&config->capacity));
-        printf("size_max: 0x%X\n", io.read32(&config->size_max));
-        printf("seg_max: 0x%X\n", io.read32(&config->seg_max));
-        printf("cylinders: 0x%X\n", io.read16(&config->geometry.cylinders));
-        printf("heads: 0x%X\n", io.read8(&config->geometry.heads));
-        printf("sectors: 0x%X\n", io.read8(&config->geometry.sectors));
-        printf("blk_size: 0x%X\n", io.read32(&config->blk_size));
+        i = IO::get_instance().read32(&regs->config_generation);
+        printf("capacity: 0x%X\n",
+               IO::get_instance().read64(&config->capacity));
+        printf("size_max: 0x%X\n",
+               IO::get_instance().read32(&config->size_max));
+        printf("seg_max: 0x%X\n", IO::get_instance().read32(&config->seg_max));
+        printf("cylinders: 0x%X\n",
+               IO::get_instance().read16(&config->geometry.cylinders));
+        printf("heads: 0x%X\n",
+               IO::get_instance().read8(&config->geometry.heads));
+        printf("sectors: 0x%X\n",
+               IO::get_instance().read8(&config->geometry.sectors));
+        printf("blk_size: 0x%X\n",
+               IO::get_instance().read32(&config->blk_size));
         printf("physical_block_exp: 0x%X\n",
-               io.read8(&config->topology.physical_block_exp));
+               IO::get_instance().read8(&config->topology.physical_block_exp));
         printf("alignment_offset: 0x%X\n",
-               io.read8(&config->topology.alignment_offset));
-        printf("min_io_size: 0x%X\n", io.read16(&config->topology.min_io_size));
-        printf("opt_io_size: 0x%X\n", io.read8(&config->topology.opt_io_size));
-        printf("writeback: 0x%X\n", io.read8(&config->writeback));
+               IO::get_instance().read8(&config->topology.alignment_offset));
+        printf("min_io_size: 0x%X\n",
+               IO::get_instance().read16(&config->topology.min_io_size));
+        printf("opt_io_size: 0x%X\n",
+               IO::get_instance().read8(&config->topology.opt_io_size));
+        printf("writeback: 0x%X\n",
+               IO::get_instance().read8(&config->writeback));
         printf("max_discard_sectors: 0x%X\n",
-               io.read32(&config->max_discard_sectors));
-        printf("max_discard_seg: 0x%X\n", io.read32(&config->max_discard_seg));
+               IO::get_instance().read32(&config->max_discard_sectors));
+        printf("max_discard_seg: 0x%X\n",
+               IO::get_instance().read32(&config->max_discard_seg));
         printf("discard_sector_alignment: 0x%X\n",
-               io.read32(&config->discard_sector_alignment));
+               IO::get_instance().read32(&config->discard_sector_alignment));
         printf("max_write_zeroes_sectors: 0x%X\n",
-               io.read32(&config->max_write_zeroes_sectors));
+               IO::get_instance().read32(&config->max_write_zeroes_sectors));
         printf("max_write_zeroes_seg: 0x%X\n",
-               io.read32(&config->max_write_zeroes_seg));
+               IO::get_instance().read32(&config->max_write_zeroes_seg));
         printf("write_zeroes_may_unmap: 0x%X\n",
-               io.read8(&config->write_zeroes_may_unmap));
-        j = io.read32(&regs->config_generation);
+               IO::get_instance().read8(&config->write_zeroes_may_unmap));
+        j = IO::get_instance().read32(&regs->config_generation);
     } while (i != j);
 #undef DEBUG
 #endif
-    io.write32(&regs->status,
-               io.read32(&regs->status) | DEVICE_STATUS_DRIVER_OK);
+    IO::get_instance().write32(&regs->status,
+                               IO::get_instance().read32(&regs->status) |
+                                   DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
     // 允许中断
     // TODO: 这里应该通过 dtb 获取中断号
@@ -117,6 +130,6 @@ size_t VIRTIO_BLK::rw(virtio_blk_req_t &_req, void *_buf) {
     queues.at(0)->virtq->avail->ring[queues.at(0)->virtq->avail->idx %
                                      queues.at(0)->virtq->len] = d1;
     queues.at(0)->virtq->avail->idx += 1;
-    io.write32(&regs->queue_notify, 0);
+    IO::get_instance().write32(&regs->queue_notify, 0);
     return 0;
 }

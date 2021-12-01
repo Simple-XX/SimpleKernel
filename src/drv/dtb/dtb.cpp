@@ -28,7 +28,6 @@
 #include "vector"
 #include "string"
 
-bool DTB::inited = false;
 // 所有节点
 DTB::node_t DTB::nodes[MAX_NODES];
 // 节点数
@@ -218,7 +217,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
                 }
                 // 跳过 type
                 iter.addr++;
-                // 跳过 name
+                // 跳过 name
                 iter.addr +=
                     COMMON::ALIGN(strlen((char *)iter.addr) + 1, 4) / 4;
                 break;
@@ -352,13 +351,19 @@ bool DTB::dtb_init_interrupt_cb(const iter_data_t *_iter, void *) {
     // 设置中断父节点
     if (strcmp(_iter->prop_name, "interrupt-parent") == 0) {
         phandle = be32toh(_iter->addr[3]);
-        parent  = get_phandle(phandle);
+        parent  = get_instance().get_phandle(phandle);
         // 没有找到则报错
         assert(parent != nullptr);
         nodes[idx].interrupt_parent = parent;
     }
     // 返回 false 表示需要迭代全部节点
     return false;
+}
+
+DTB &DTB::get_instance(void) {
+    /// 定义全局 DTB 对象
+    static DTB dtb;
+    return dtb;
 }
 
 bool DTB::dtb_init(void) {
@@ -406,13 +411,6 @@ bool DTB::dtb_init(void) {
     }
 #undef DEBUG
 #endif
-    if (inited == false) {
-        info("dtb init.\n");
-        inited = true;
-    }
-    else {
-        info("dtb reinit.\n");
-    }
     return true;
 }
 
@@ -457,7 +455,7 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
     // 输出路径
     _os << _iter.path << ": ";
     // 根据属性类型输出
-    switch (DTB::get_fmt(_iter.prop_name)) {
+    switch (DTB::get_instance().get_fmt(_iter.prop_name)) {
         // 未知
         case DTB::FMT_UNKNOWN: {
             warn("%s: (unknown format, len=0x%X)", _iter.prop_name,
@@ -489,7 +487,7 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
         // phandle
         case DTB::FMT_PHANDLE: {
             uint32_t     phandle = be32toh(_iter.addr[3]);
-            DTB::node_t *ref     = DTB::get_phandle(phandle);
+            DTB::node_t *ref     = DTB::get_instance().get_phandle(phandle);
             if (ref != nullptr) {
                 printf("%s: <phandle &%s>", _iter.prop_name, ref->path.path[0]);
             }
@@ -523,8 +521,8 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
                 DTB::nodes[idx].parent->size_cells,
             };
             // 调用辅助函数进行输出
-            DTB::print_attr_propenc(&_iter, cells,
-                                    sizeof(cells) / sizeof(size_t));
+            DTB::get_instance().print_attr_propenc(
+                &_iter, cells, sizeof(cells) / sizeof(size_t));
             break;
         }
         case DTB::FMT_RANGES: {
@@ -538,8 +536,8 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
                 DTB::nodes[idx].size_cells,
             };
             // 调用辅助函数进行输出
-            DTB::print_attr_propenc(&_iter, cells,
-                                    sizeof(cells) / sizeof(size_t));
+            DTB::get_instance().print_attr_propenc(
+                &_iter, cells, sizeof(cells) / sizeof(size_t));
             break;
         }
         default: {
@@ -562,43 +560,52 @@ std::ostream &operator<<(std::ostream &_os, const DTB::path_t &_path) {
 }
 
 namespace BOOT_INFO {
-    // 地址
-    uintptr_t boot_info_addr;
-    // 长度
-    size_t boot_info_size;
-    // 启动核
-    size_t dtb_init_hart;
+// 地址
+uintptr_t boot_info_addr;
+// 长度
+size_t boot_info_size;
+// 启动核
+size_t dtb_init_hart;
 
-    bool init(void) {
-        auto res = DTB::dtb_init();
-        return res;
-    }
+bool inited = false;
 
-    resource_t get_memory(void) {
-        resource_t resource;
-        // 设置 resource 基本信息
-        resource.type = resource_t::MEM;
-        assert(DTB::find_via_prefix("memory@", &resource) == 1);
-        return resource;
+bool init(void) {
+    auto res = DTB::get_instance().dtb_init();
+    if (inited == false) {
+        inited = true;
+        info("BOOT_INFO init.\n");
     }
+    else {
+        info("BOOT_INFO reinit.\n");
+    }
+    return res;
+}
 
-    resource_t get_clint(void) {
-        resource_t resource;
-        // 设置 resource 基本信息
-        resource.type = resource_t::MEM;
-        assert(DTB::find_via_prefix("clint@", &resource) == 1);
-        return resource;
-    }
+resource_t get_memory(void) {
+    resource_t resource;
+    // 设置 resource 基本信息
+    resource.type = resource_t::MEM;
+    assert(DTB::get_instance().find_via_prefix("memory@", &resource) == 1);
+    return resource;
+}
 
-    resource_t get_plic(void) {
-        resource_t resource;
-        // 设置 resource 基本信息
-        resource.type = resource_t::MEM;
-        assert(DTB::find_via_prefix("plic@", &resource) == 1);
-        return resource;
-    }
+size_t find_via_prefix(const char *_prefix, resource_t *_resource) {
+    return DTB::get_instance().find_via_prefix(_prefix, _resource);
+}
 
-    size_t find_via_prefix(const char *_prefix, resource_t *_resource) {
-        return DTB::find_via_prefix(_prefix, _resource);
-    }
-};
+resource_t get_clint(void) {
+    resource_t resource;
+    // 设置 resource 基本信息
+    resource.type = resource_t::MEM;
+    assert(DTB::get_instance().find_via_prefix("clint@", &resource) == 1);
+    return resource;
+}
+
+resource_t get_plic(void) {
+    resource_t resource;
+    // 设置 resource 基本信息
+    resource.type = resource_t::MEM;
+    assert(DTB::get_instance().find_via_prefix("plic@", &resource) == 1);
+    return resource;
+}
+}; // namespace BOOT_INFO

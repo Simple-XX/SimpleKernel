@@ -41,11 +41,11 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 // #define DEBUG
 #ifdef DEBUG
         printf("intr: %s.\n",
-               CLINT::intr_names[_scause & CPU::CAUSE_CODE_MASK]);
+               CLINT::get_instance().intr_names[_scause & CPU::CAUSE_CODE_MASK]);
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
-        CLINT::do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
+        CLINT::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
     }
     else {
 // 异常
@@ -53,10 +53,10 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 #define DEBUG
 #ifdef DEBUG
         printf("excp: %s.\n",
-               CLINT::excp_names[_scause & CPU::CAUSE_CODE_MASK]);
+               CLINT::get_instance().excp_names[_scause & CPU::CAUSE_CODE_MASK]);
 #undef DEBUG
 #endif
-        CLINT::do_excp(_scause & CPU::CAUSE_CODE_MASK);
+        CLINT::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
     return;
 }
@@ -71,13 +71,19 @@ void handler_default(void) {
     return;
 }
 
+INTR &INTR::get_instance(void) {
+    /// 定义全局 INTR 对象
+    static INTR intr;
+    return intr;
+}
+
 int32_t INTR::init(void) {
     // 内部中断初始化
-    CLINT::init();
+    CLINT::get_instance().init();
     // 外部中断初始化
-    PLIC::init();
+    PLIC::get_instance().init();
     // 设置时钟中断
-    TIMER::init();
+    TIMER::get_instance().init();
     info("intr init.\n");
     return 0;
 }
