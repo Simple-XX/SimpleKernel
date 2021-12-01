@@ -1,7 +1,9 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel 
+# (https://github.com/Simple-XX/SimpleKernel).
 #
-# setup.sh for Simple-XX/SimpleKernel.
+# run.sh for Simple-XX/SimpleKernel.
+# 在虚拟机中运行内核
 
 #!/bin/bash
 # shell 执行出错时终止运行
@@ -20,6 +22,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=
 make
 cd ../
 
+# 如果是 i386/x86_64，需要判断是否符合 multiboot2 标准
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
         echo Multiboot2 Confirmed!
@@ -29,6 +32,7 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     fi
 fi
 
+# 如果是 riscv 64，需要使用 opensbi
 if [ ${ARCH} == "riscv64" ]; then
     # OPENSBI 不存在则编译
     if [ ! -f ${OPENSBI} ]; then
@@ -36,7 +40,7 @@ if [ ${ARCH} == "riscv64" ]; then
         git submodule update
         cd ./tools/opensbi
         mkdir -p build
-        export CROSS_COMPILE=riscv64-unknown-elf-
+        export CROSS_COMPILE=${TOOLCHAIN_PREFIX}
         make PLATFORM=generic FW_JUMP_ADDR=0x80200000
         cd ../..
     fi
@@ -57,6 +61,7 @@ if [ ! -f ./fatfs.dmg ]; then
     exit
 fi
 
+# 设置 grub 相关数据
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     cp ${kernel} ${iso_boot}
     mkdir ${iso_boot_grub}
@@ -68,13 +73,18 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
    }' >${iso_boot_grub}/grub.cfg
 fi
 
+# 运行虚拟机
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
-    # qemu-system-x86_64 -cdrom ${iso} -m 128M \
-    # -monitor telnet::2333,server,nowait -serial stdio
-elif [ ${ARCH} == "arm" ]; then
-    qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
+    if [ ${IA32_USE_QEMU} == 0 ]; then
+        ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+        bochs -q -f ${bochsrc} -rc ./tools/bochsinit
+    else
+        qemu-system-x86_64 -cdrom ${iso} -m 128M \
+        -monitor telnet::2333,server,nowait -serial stdio
+    fi
+elif [ ${ARCH} == "aarch64" ]; then
+    qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ${kernel} \
+    -monitor telnet::2333,server,nowait -serial stdio -nographic
 elif [ ${ARCH} == "riscv64" ]; then
     qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
     -global virtio-mmio.force-legacy=false \
@@ -84,7 +94,6 @@ elif [ ${ARCH} == "riscv64" ]; then
     -drive file=fatfs.dmg,format=raw,id=scsi \
     -monitor telnet::2333,server,nowait -serial stdio -nographic
 fi
-
 
 # qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
 # -global virtio-mmio.force-legacy=false \

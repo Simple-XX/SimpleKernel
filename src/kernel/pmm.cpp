@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// pmm.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file pmm.cpp
+ * @brief 物理内存管理实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdio.h"
 #include "string.h"
@@ -57,7 +67,7 @@ bool PMM::init(void) {
     length = mem_info.mem.len;
     // 计算页数
     total_pages = length / COMMON::PAGE_SIZE;
-    // 内核空间地址开始
+    // 内核空间地址开始
     kernel_space_start = COMMON::KERNEL_START_ADDR;
     // 长度手动指定
     kernel_space_length = COMMON::KERNEL_SPACE_SIZE;

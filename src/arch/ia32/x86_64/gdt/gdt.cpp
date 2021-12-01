@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// gdt.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file gdt.cpp
+ * @brief 描述符抽象实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdio.h"
 #include "gdt.h"
@@ -15,22 +25,22 @@ namespace GDT {
     // 全局描述符表定义
     static gdt_entry_t gdt_entries[GDT_LENGTH] __attribute__((aligned(8)));
 
-    void set_gdt(uint8_t idx, uint32_t base, uint32_t limit, uint8_t type,
-                 uint8_t s, uint8_t dpl, uint8_t p, uint8_t avl, uint8_t l,
-                 uint8_t db, uint8_t g) {
-        gdt_entries[idx].limit1     = (limit & 0xFFFF);
-        gdt_entries[idx].base_addr1 = (base & 0xFFFF);
-        gdt_entries[idx].base_addr2 = (base >> 16) & 0xFF;
-        gdt_entries[idx].type       = type;
-        gdt_entries[idx].s          = s;
-        gdt_entries[idx].dpl        = dpl;
-        gdt_entries[idx].p          = p;
-        gdt_entries[idx].limit2     = (limit >> 16) & 0x0F;
-        gdt_entries[idx].avl        = avl;
-        gdt_entries[idx].l          = l;
-        gdt_entries[idx].db         = db;
-        gdt_entries[idx].g          = g;
-        gdt_entries[idx].base_addr3 = (base >> 24) & 0xFF;
+    void set_gdt(uint8_t _idx, uint32_t _base, uint32_t _limit, uint8_t _type,
+                 uint8_t _s, uint8_t _dpl, uint8_t _p, uint8_t _avl, uint8_t _l,
+                 uint8_t _db, uint8_t _g) {
+        gdt_entries[_idx].limit1     = (_limit & 0xFFFF);
+        gdt_entries[_idx].base_addr1 = (_base & 0xFFFF);
+        gdt_entries[_idx].base_addr2 = (_base >> 16) & 0xFF;
+        gdt_entries[_idx].type       = _type;
+        gdt_entries[_idx].s          = _s;
+        gdt_entries[_idx].dpl        = _dpl;
+        gdt_entries[_idx].p          = _p;
+        gdt_entries[_idx].limit2     = (_limit >> 16) & 0x0F;
+        gdt_entries[_idx].avl        = _avl;
+        gdt_entries[_idx].l          = _l;
+        gdt_entries[_idx].db         = _db;
+        gdt_entries[_idx].g          = _g;
+        gdt_entries[_idx].base_addr3 = (_base >> 24) & 0xFF;
         return;
     }
 

@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/brenns10/sos
-// dtb.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file dtb.cpp
+ * @brief dtb 解析实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/brenns10/sos
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "string.h"
 #include "stdio.h"
@@ -337,7 +348,7 @@ bool DTB::dtb_init_cb(const iter_data_t *_iter, void *) {
 bool DTB::dtb_init_interrupt_cb(const iter_data_t *_iter, void *) {
     uint8_t  idx = _iter->nodes_idx;
     uint32_t phandle;
-    node_t * parent;
+    node_t  *parent;
     // 设置中断父节点
     if (strcmp(_iter->prop_name, "interrupt-parent") == 0) {
         phandle = be32toh(_iter->addr[3]);
@@ -490,7 +501,7 @@ std::ostream &operator<<(std::ostream &_os, const DTB::iter_data_t &_iter) {
         // 字符串列表
         case DTB::FMT_STRINGLIST: {
             size_t len = 0;
-            char * str = (char *)_iter.prop_addr;
+            char  *str = (char *)_iter.prop_addr;
             _os << _iter.prop_name << ": [";
             while (len < _iter.prop_len) {
                 // 用 "" 分隔
@@ -570,6 +581,7 @@ namespace BOOT_INFO {
         assert(DTB::find_via_prefix("memory@", &resource) == 1);
         return resource;
     }
+
     resource_t get_clint(void) {
         resource_t resource;
         // 设置 resource 基本信息
@@ -577,6 +589,7 @@ namespace BOOT_INFO {
         assert(DTB::find_via_prefix("clint@", &resource) == 1);
         return resource;
     }
+
     resource_t get_plic(void) {
         resource_t resource;
         // 设置 resource 基本信息
@@ -584,6 +597,7 @@ namespace BOOT_INFO {
         assert(DTB::find_via_prefix("plic@", &resource) == 1);
         return resource;
     }
+
     size_t find_via_prefix(const char *_prefix, resource_t *_resource) {
         return DTB::find_via_prefix(_prefix, _resource);
     }

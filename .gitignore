@@ -18,3 +18,5 @@ iso
 *.iso
 *.bin
 null.d
+tools/opensbi/
+tools/aarch64-unknown-linux-gnu*
