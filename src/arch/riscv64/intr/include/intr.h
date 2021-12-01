@@ -26,10 +26,16 @@ public:
     typedef void (*interrupt_handler_t)(void);
 
     /**
+     * @brief 获取单例
+     * @return INTR&            静态对象
+     */
+    static INTR &get_instance(void);
+
+    /**
      * @brief 中断初始化
      * @return int32_t         成功返回 0
      */
-    static int32_t init(void);
+    int32_t init(void);
 };
 
 /**
@@ -101,17 +107,23 @@ public:
         __attribute__((aligned(4)));
 
     /**
+     * @brief 获取单例
+     * @return CLINT&           静态对象
+     */
+    static CLINT &get_instance(void);
+
+    /**
      * @brief 初始化
      * @return int32_t         成功返回 0
      */
-    static int32_t init(void);
+    int32_t init(void);
 
     /**
      * @brief 注册中断处理函数
      * @param  _no             中断号
      * @param  _interrupt_handler 中断处理函数
      */
-    static void
+    void
     register_interrupt_handler(uint8_t                   _no,
                                INTR::interrupt_handler_t _interrupt_handler);
 
@@ -120,21 +132,20 @@ public:
      * @param  _no             异常号
      * @param  _interrupt_handler 异常处理函数
      */
-    static void
-    register_excp_handler(uint8_t                   _no,
-                          INTR::interrupt_handler_t _interrupt_handler);
+    void register_excp_handler(uint8_t                   _no,
+                               INTR::interrupt_handler_t _interrupt_handler);
 
     /**
      * @brief 执行中断处理
      * @param  _no             中断号
      */
-    static void do_interrupt(uint8_t _no);
+    void do_interrupt(uint8_t _no);
 
     /**
      * @brief 执行异常处理
      * @param  _no             异常号
      */
-    static void do_excp(uint8_t _no);
+    void do_excp(uint8_t _no);
 };
 
 /**
@@ -160,23 +171,29 @@ private:
 protected:
 public:
     /**
+     * @brief 获取单例
+     * @return PLIC&            静态对象
+     */
+    static PLIC &get_instance(void);
+
+    /**
      * @brief 初始化
      * @return int32_t         成功返回 0
      */
-    static int32_t init(void);
+    int32_t init(void);
 
     /**
      * @brief 向 PLIC 询问中断
      * 返回发生的外部中断号
      * @return uint8_t         中断号
      */
-    static uint8_t get(void);
+    uint8_t get(void);
 
     /**
      * @brief 告知 PLIC 已经处理了当前 IRQ
      * @param  _no             中断号
      */
-    static void done(uint8_t _no);
+    void done(uint8_t _no);
 
     /**
      * @brief 设置中断状态
@@ -184,7 +201,7 @@ public:
      * @param  _status         状态
      * @todo 不确定
      */
-    static void set(uint8_t _no, bool _status);
+    void set(uint8_t _no, bool _status);
 };
 
 /**
@@ -193,9 +210,15 @@ public:
 class TIMER {
 public:
     /**
+     * @brief 获取单例
+     * @return TIMER&           静态对象
+     */
+    static TIMER &get_instance(void);
+
+    /**
      * @brief 初始化
      */
-    static void init(void);
+    void init(void);
 };
 
 #endif /* _INTR_H_ */
