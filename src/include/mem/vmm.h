@@ -188,28 +188,34 @@ private:
      * @param  _alloc          是否分配
      * @return pte_t*          未找到返回 nullptr
      */
-    static pte_t *find(const pt_t _pgd, uintptr_t _va, bool _alloc);
+    pte_t *find(const pt_t _pgd, uintptr_t _va, bool _alloc);
 
 protected:
 public:
+    /**
+     * @brief 获取单例
+     * @return VMM&             静态对象
+     */
+    static VMM &get_instance(void);
+
     /**
      * @brief 初始化
      * @return true            成功
      * @return false           失败
      */
-    static bool init(void);
+    bool init(void);
 
     /**
      * @brief 获取当前页目录
      * @return pt_t            当前页目录
      */
-    static pt_t get_pgd(void);
+    pt_t get_pgd(void);
 
     /**
      * @brief 设置当前页目录
      * @param  _pgd            要设置的页目录
      */
-    static void set_pgd(const pt_t _pgd);
+    void set_pgd(const pt_t _pgd);
 
     /**
      * @brief 映射物理地址到虚拟地址
@@ -218,7 +224,7 @@ public:
      * @param  _pa             物理地址
      * @param  _flag           属性
      */
-    static void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
+    void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
                      uint32_t _flag);
 
     /**
@@ -226,7 +232,7 @@ public:
      * @param  _pgd            要操作的页目录
      * @param  _va             要取消映射的虚拟地址
      */
-    static void unmmap(const pt_t _pgd, uintptr_t _va);
+    void unmmap(const pt_t _pgd, uintptr_t _va);
 
     /**
      * @brief 获取映射的物理地址
@@ -236,7 +242,7 @@ public:
      * @return true            已映射
      * @return false           未映射
      */
-    static bool get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa);
+    bool get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa);
 };
 
 #endif /* _VMM_H */
