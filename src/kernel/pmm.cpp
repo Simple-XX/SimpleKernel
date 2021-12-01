@@ -40,7 +40,7 @@ void PMM::move_boot_info(void) {
         pages++;
     }
     // 申请空间
-    uintptr_t new_addr = alloc_pages_kernel(pages);
+    uintptr_t new_addr = get_instance().alloc_pages_kernel(pages);
     // 复制过来，完成后以前的内存就可以使用了
     memcpy((void *)new_addr, (void *)BOOT_INFO::boot_info_addr,
            pages * COMMON::PAGE_SIZE);
@@ -57,6 +57,12 @@ PMM::PMM(void) {
 
 PMM::~PMM(void) {
     return;
+}
+
+PMM &PMM::get_instance(void) {
+    /// 定义全局 PMM 对象
+    static PMM pmm;
+    return pmm;
 }
 
 bool PMM::init(void) {
@@ -98,7 +104,7 @@ bool PMM::init(void) {
     // 将内核已使用部分划分出来
     if (alloc_pages_kernel(COMMON::KERNEL_START_ADDR, kernel_pages) == true) {
         // 将 multiboot2/dtb 信息移动到内核空间
-        move_boot_info();
+        get_instance().move_boot_info();
         info("pmm init.\n");
         return true;
     }
