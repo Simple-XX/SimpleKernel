@@ -281,7 +281,7 @@ private:
      * @param  _prop_name      要查找的属性
      * @return dt_fmt_t        在 dt_fmt_t 中的索引
      */
-    static dt_fmt_t get_fmt(const char *_prop_name);
+    dt_fmt_t get_fmt(const char *_prop_name);
 
     /**
      * @brief phandles 与 node 的映射关系
@@ -303,7 +303,7 @@ private:
     /**
      * @brief 输出 reserved 内存
      */
-    static void dtb_mem_reserved(void);
+    void dtb_mem_reserved(void);
 
     /**
      * @brief 迭代函数
@@ -312,7 +312,7 @@ private:
      * @param  _data           要传递的数据
      * @param _addr            dtb 数据地址
      */
-    static void dtb_iter(uint8_t _cb_flags,
+    void dtb_iter(uint8_t _cb_flags,
                          bool (*_cb)(const iter_data_t *, void *), void *_data,
                          uintptr_t _addr = dtb_info.data);
 
@@ -321,7 +321,7 @@ private:
      * @param  _phandle        要查找的 phandle
      * @return node_t*         _phandle 指向的节点
      */
-    static node_t *get_phandle(uint32_t _phandle);
+    node_t *get_phandle(uint32_t _phandle);
 
     /**
      * @brief 初始化节点
@@ -348,7 +348,7 @@ private:
      * @param  _len            长度
      * @todo 补充说明
      */
-    static void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
+    void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
                                    size_t _len);
 
     /**
@@ -357,7 +357,7 @@ private:
      * @param  _node           源节点
      * @param  _prop           填充的数据
      */
-    static void fill_resource(resource_t *_resource, const node_t *_node,
+    void fill_resource(resource_t *_resource, const node_t *_node,
                               const prop_t *_prop);
 
     /**
@@ -365,10 +365,7 @@ private:
      * @param  _path            路径
      * @return node_t*          找到的节点
      */
-    static node_t *find_node_via_path(const char *_path);
-
-    /// 用于标记是否第一次 init
-    static bool inited;
+    node_t *find_node_via_path(const char *_path);
 
 protected:
 public:
@@ -381,11 +378,17 @@ public:
     static constexpr const uint8_t DT_ITER_PROP = 0x04;
 
     /**
+     * @brief 获取单例
+     * @return DTB&             静态对象
+     */
+    static DTB &get_instance(void);
+
+    /**
      * @brief 初始化
      * @return true            成功
      * @return false           失败
      */
-    static bool dtb_init(void);
+    bool dtb_init(void);
 
     /**
      * @brief 根据路径查找节点，返回使用的资源
@@ -394,7 +397,7 @@ public:
      * @return true             成功
      * @return false            失败
      */
-    static bool find_via_path(const char *_path, resource_t *_resource);
+    bool find_via_path(const char *_path, resource_t *_resource);
 
     /**
      * @brief 根据节点名进行前缀查找
@@ -403,7 +406,7 @@ public:
      * @return size_t           _resource 长度
      * @note 根据节点 @ 前的名称查找，可能返回多个 resource
      */
-    static size_t find_via_prefix(const char *_prefix, resource_t *_resource);
+    size_t find_via_prefix(const char *_prefix, resource_t *_resource);
 
     /**
      * @brief iter 输出
@@ -423,8 +426,8 @@ public:
 };
 
 namespace BOOT_INFO {
-    /// 保存 sbi 传递的启动核
-    extern "C" size_t dtb_init_hart;
-};
+/// 保存 sbi 传递的启动核
+extern "C" size_t dtb_init_hart;
+}; // namespace BOOT_INFO
 
 #endif /* _DTB_H_ */
