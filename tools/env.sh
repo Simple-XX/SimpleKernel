@@ -7,7 +7,7 @@
 
 #!/bin/bash
 
-# ARCH: i386, riscv64
+# ARCH: i386, x86_64, riscv64
 # ARCH="i386"
 # ARCH="x86_64"
 ARCH="riscv64"
@@ -31,8 +31,8 @@ OS=`uname -s`
 if [ "${OS}" == "Linux" ]; then
     if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_linux_x86_64.cmake"
-    elif [ "${ARCH}" == "arm" ]; then
-        TOOLS="toolchain_linux_arm.cmake"
+    elif [ "${ARCH}" == "aarch64" ]; then
+        TOOLS="toolchain_linux_aarch64.cmake"
     elif [ "${ARCH}" == "riscv64" ]; then
         TOOLS="toolchain_linux_riscv.cmake"
     fi
@@ -41,8 +41,8 @@ if [ "${OS}" == "Linux" ]; then
 elif [ "${OS}" == "Darwin" ]; then
     if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_mac_x86_64.cmake"
-    elif [ "${ARCH}" == "arm" ]; then
-        TOOLS="toolchain_mac_arm.cmake"
+    elif [ "${ARCH}" == "aarch64" ]; then
+        TOOLS="toolchain_mac_aarch64.cmake"
     elif [ "${ARCH}" == "riscv64" ]; then
         TOOLS="toolchain_mac_riscv.cmake"
     fi
