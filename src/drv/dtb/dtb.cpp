@@ -25,7 +25,6 @@
 #include "dtb.h"
 #include "pmm.h"
 
-bool DTB::inited = false;
 // 所有节点
 DTB::node_t DTB::nodes[MAX_NODES];
 // 节点数
@@ -215,7 +214,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
                 }
                 // 跳过 type
                 iter.addr++;
-                // 跳过 name
+                // 跳过 name
                 iter.addr +=
                     COMMON::ALIGN(strlen((char *)iter.addr) + 1, 4) / 4;
                 break;
@@ -409,13 +408,6 @@ bool DTB::dtb_init(void) {
     }
 #undef DEBUG
 #endif
-    if (inited == false) {
-        info("dtb init.\n");
-        inited = true;
-    }
-    else {
-        info("dtb reinit.\n");
-    }
     return true;
 }
 
@@ -572,8 +564,17 @@ size_t boot_info_size;
 // 启动核
 size_t dtb_init_hart;
 
+bool inited = false;
+
 bool init(void) {
     auto res = DTB::get_instance().dtb_init();
+    if (inited == false) {
+        inited = true;
+        info("BOOT_INFO init.\n");
+    }
+    else {
+        info("BOOT_INFO reinit.\n");
+    }
     return res;
 }
 
