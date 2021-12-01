@@ -113,7 +113,7 @@ bool PMM::init(void) {
     }
 }
 
-size_t PMM::get_pmm_length(void) {
+size_t PMM::get_pmm_length(void) const {
     return length;
 }
 
@@ -175,12 +175,12 @@ void PMM::free_pages(uintptr_t _addr, size_t _len) {
     return;
 }
 
-size_t PMM::get_used_pages_count(void) {
+size_t PMM::get_used_pages_count(void) const {
     return kernel_space_allocator->get_used_count() +
            allocator->get_used_count();
 }
 
-size_t PMM::get_free_pages_count(void) {
+size_t PMM::get_free_pages_count(void) const {
     return kernel_space_allocator->get_free_count() +
            allocator->get_free_count();
 }
