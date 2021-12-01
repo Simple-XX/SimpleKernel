@@ -617,6 +617,12 @@ public:
     ~KEYBOARD(void);
 
     /**
+     * @brief 获取单例
+     * @return KEYBOARD&        静态对象
+     */
+    static KEYBOARD &get_instance(void);
+
+    /**
      * @brief 初始化
      * @return int32_t         成功返回 0
      */
@@ -635,7 +641,5 @@ public:
      */
     int32_t set_handle(INTR::interrupt_handler_t _h);
 };
-
-extern KEYBOARD keyboard;
 
 #endif /* _KEYBOARD_H_ */

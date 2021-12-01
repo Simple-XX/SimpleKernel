@@ -25,7 +25,7 @@
  * @brief 默认处理函数
  */
 static void default_keyboard_handle(INTR::intr_context_t *) {
-    keyboard.read();
+    KEYBOARD::get_instance().read();
     return;
 }
 
@@ -43,7 +43,7 @@ KEYBOARD::~KEYBOARD(void) {
 }
 
 uint8_t KEYBOARD::read(void) {
-    uint8_t scancode = io.inb(KB_DATA);
+    uint8_t scancode = IO::get_instance().inb(KB_DATA);
     // 判断是否出错
     if (!scancode) {
         warn("scancode error.\n");
@@ -86,15 +86,15 @@ uint8_t KEYBOARD::read(void) {
             num = ((!num) & 0x01);
             break;
         case KB_BACKSPACE:
-            io.put_char('\b');
+            IO::get_instance().put_char('\b');
             letter = '\b';
             break;
         case KB_ENTER:
-            io.put_char('\n');
+            IO::get_instance().put_char('\n');
             letter = '\n';
             break;
         case KB_TAB:
-            io.put_char('\t');
+            IO::get_instance().put_char('\t');
             letter = '\t';
             break;
         // 一般字符输出
@@ -103,7 +103,7 @@ uint8_t KEYBOARD::read(void) {
             if (!(scancode & RELEASED_MASK)) {
                 // 计算在 keymap 中的位置
                 letter = keymap[(uint8_t)(scancode * 3) + (uint8_t)shift];
-                io.put_char(letter);
+                IO::get_instance().put_char(letter);
                 break;
             }
             else {
@@ -113,16 +113,20 @@ uint8_t KEYBOARD::read(void) {
     return letter;
 }
 
+KEYBOARD &KEYBOARD::get_instance(void) {
+    /// 定义全局 KEYBOARD 对象
+    static KEYBOARD keyboard;
+    return keyboard;
+}
+
 int32_t KEYBOARD::init(void) {
     set_handle(&default_keyboard_handle);
-    INTR::enable_irq(INTR::IRQ1);
+    INTR::get_instance().enable_irq(INTR::IRQ1);
     info("keyboard init.\n");
     return 0;
 }
 
-int32_t KEYBOARD::set_handle(INTR::interrupt_handler_t h) {
-    INTR::register_interrupt_handler(INTR::IRQ1, h);
+int32_t KEYBOARD::set_handle(INTR::interrupt_handler_t _h) {
+    INTR::get_instance().register_interrupt_handler(INTR::IRQ1, _h);
     return 0;
 }
-
-KEYBOARD keyboard;

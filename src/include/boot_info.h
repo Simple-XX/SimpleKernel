@@ -30,36 +30,38 @@
  * 实现在 dtb.cpp 或 multiboot2.cpp
  */
 namespace BOOT_INFO {
-    /// 声明，定义在具体的实现中
-    /// 地址
-    extern "C" uintptr_t boot_info_addr;
-    /// 长度
-    extern size_t boot_info_size;
+/// 声明，定义在具体的实现中
+/// 是否已经初始化过
+extern bool inited;
+/// 地址
+extern "C" uintptr_t boot_info_addr;
+/// 长度
+extern size_t boot_info_size;
 
-    /**
-     * @brief 初始化，定义在具体实现中
-     * @return true            成功
-     * @return false           成功
-     */
-    extern bool init(void);
+/**
+ * @brief 初始化，定义在具体实现中
+ * @return true            成功
+ * @return false           成功
+ */
+extern bool init(void);
 
-    /**
-     * @brief 获取物理内存信息
-     * @return resource_t      物理内存资源信息
-     */
-    extern resource_t get_memory(void);
+/**
+ * @brief 获取物理内存信息
+ * @return resource_t      物理内存资源信息
+ */
+extern resource_t get_memory(void);
 
-    /**
-     * @brief 获取 clint 信息
-     * @return resource_t       clint 资源信息
-     */
-    extern resource_t get_clint(void);
-    
-    /**
-     * @brief 获取 plic 信息
-     * @return resource_t       plic 资源信息
-     */
-    extern resource_t get_plic(void);
-};
+/**
+ * @brief 获取 clint 信息
+ * @return resource_t       clint 资源信息
+ */
+extern resource_t get_clint(void);
+
+/**
+ * @brief 获取 plic 信息
+ * @return resource_t       plic 资源信息
+ */
+extern resource_t get_plic(void);
+}; // namespace BOOT_INFO
 
 #endif /* _BOOT_INFO_H_ */
