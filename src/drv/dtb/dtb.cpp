@@ -23,7 +23,6 @@
 #include "boot_info.h"
 #include "resource.h"
 #include "dtb.h"
-#include "pmm.h"
 
 // 所有节点
 DTB::node_t DTB::nodes[MAX_NODES];
