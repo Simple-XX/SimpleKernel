@@ -36,7 +36,7 @@ void kernel_main(void) {
     // 初始化
     BOOT_INFO::init();
     // 物理内存初始化
-    PMM::init();
+    PMM::get_instance().init();
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
