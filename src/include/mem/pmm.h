@@ -88,7 +88,7 @@ public:
      * @brief 获取物理内存长度
      * @return size_t          物理内存长度
      */
-    size_t get_pmm_length(void);
+    size_t get_pmm_length(void) const;
 
     /**
      * @brief 分配一页
@@ -151,13 +151,13 @@ public:
      * @brief 获取当前已使用页数
      * @return size_t          已使用页数
      */
-    size_t get_used_pages_count(void);
+    size_t get_used_pages_count(void) const;
 
     /**
      * @brief 获取当前空闲页
      * @return size_t          空闲页数
      */
-    size_t get_free_pages_count(void);
+    size_t get_free_pages_count(void) const;
 };
 
 #endif /* _PMM_H_ */
