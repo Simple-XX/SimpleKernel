@@ -40,20 +40,20 @@ void kernel_main(void) {
     // 初始化
     BOOT_INFO::init();
     // 物理内存初始化
-    PMM::init();
+    PMM::get_instance().init();
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
     /// @todo 将vmm的初始化放在构造函数里，这里只做开启分页
-    VMM::init();
+    VMM::get_instance().init();
     // 测试虚拟内存
     test_vmm();
     // 堆初始化
-    heap.init();
+    HEAP::get_instance().init();
     // 测试堆
     test_heap();
     // 中断初始化
-    INTR::init();
+    INTR::get_instance().init();
     // 允许中断
     CPU::ENABLE_INTR();
     // 显示基本信息

@@ -19,6 +19,12 @@
 #include "pmm.h"
 #include "heap.h"
 
+HEAP &HEAP::get_instance(void) {
+    /// 定义全局 HEAP 对象
+    static HEAP heap;
+    return heap;
+}
+
 bool HEAP::init(void) {
     static SLAB slab_allocator("SLAB Allocator", PMM::non_kernel_space_start,
                                PMM::non_kernel_space_length *
@@ -44,7 +50,7 @@ void HEAP::free(void *_addr) {
  * @return void*           申请到的地址
  */
 extern "C" void *malloc(size_t _size) {
-    return (void *)heap.malloc(_size);
+    return (void *)HEAP::get_instance().malloc(_size);
 }
 
 /**
@@ -52,8 +58,6 @@ extern "C" void *malloc(size_t _size) {
  * @param  _p              要释放的内存地址
  */
 extern "C" void free(void *_p) {
-    heap.free(_p);
+    HEAP::get_instance().free(_p);
     return;
 }
-
-HEAP heap;
