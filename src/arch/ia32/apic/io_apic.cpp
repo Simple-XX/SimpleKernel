@@ -1,18 +1,27 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// ioapic.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file io_apic.cpp
+ * @brief IOAPIC 抽象
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "intr.h"
 #include "cpu.hpp"
 #include "io.h"
 #include "apic.h"
 
-// TODO
+/// @todo
 
 IO_APIC::IO_APIC(void) {
-
     return;
 }
 

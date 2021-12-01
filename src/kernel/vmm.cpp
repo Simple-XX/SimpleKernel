@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// vmm.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file vmm.cpp
+ * @brief 虚拟内存头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdint.h"
 #include "string.h"
@@ -41,6 +51,7 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
             if (_alloc == true) {
                 // 申请新的物理页
                 pgd = (pt_t)PMM::alloc_page_kernel();
+                bzero(pgd, COMMON::PAGE_SIZE);
                 // 申请失败则返回
                 if (pgd == nullptr) {
                     // 如果出现这种情况，说明物理内存不够，一般不会出现
@@ -49,7 +60,7 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
                 }
                 // 清零
                 bzero(pgd, COMMON::PAGE_SIZE);
-                // 填充页表项
+                // 填充页表项
                 *pte = PA2PTE((uintptr_t)pgd) | VMM_PAGE_VALID;
             }
             // 不分配的话直接返回
@@ -62,22 +73,15 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
     return &pgd[PX(0, _va)];
 }
 
-VMM::VMM(void) {
-    // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
-    return;
-}
-
-VMM::~VMM(void) {
-    return;
-}
-
 bool VMM::init(void) {
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
 #endif
+    // 读取当前页目录
+    curr_dir = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::alloc_page_kernel();
+    bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
          addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;

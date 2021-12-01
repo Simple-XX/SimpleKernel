@@ -27,7 +27,15 @@ endif ()
 set(TOOLCHAIN_PREFIX x86_64-elf-)
 set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
 set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
-set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
+
+# xorriso
+find_program(Xorriso xorriso)
+if (NOT Xorriso)
+    message(FATAL_ERROR "xorriso not found.\n"
+            "run `brew install xorriso` to install the toolchain")
+else ()
+    message(STATUS "Found xorriso ${Xorriso}")
+endif ()
 
 # GRUB
 find_program(GRUB grub-file)
@@ -45,4 +53,13 @@ if (NOT BOCHS)
             "run `brew install bochs` to install the toolchain")
 else ()
     message(STATUS "Found bochs ${BOCHS}")
+endif ()
+
+# qemu
+find_program(QEMU qemu-system-x86_64)
+if (NOT QEMU)
+    message(FATAL_ERROR "qemu not found.\n"
+            "Please install qemu first.")
+else ()
+    message(STATUS "Found qemu ${QEMU}")
 endif ()
