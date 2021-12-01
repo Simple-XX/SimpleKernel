@@ -29,7 +29,8 @@ int32_t test_pmm(void) {
 #endif
     // 空闲页数应该等于物理内存大小-内核使用
     assert(free_pages ==
-           (PMM::get_instance().get_pmm_length() / COMMON::PAGE_SIZE) - kernel_pages);
+           (PMM::get_instance().get_pmm_length() / COMMON::PAGE_SIZE) -
+               kernel_pages);
     // 获取已使用页数
     size_t used_pages = PMM::get_instance().get_used_pages_count();
     // 已使用页数应该等于内核使用页数
@@ -64,26 +65,28 @@ int32_t test_pmm(void) {
 int32_t test_vmm(void) {
     uintptr_t addr = 0;
     // 首先确认内核空间被映射了
-    assert(VMM::get_pgd() != nullptr);
-    assert(VMM::get_mmap(VMM::get_pgd(), (COMMON::KERNEL_START_ADDR + 0x1000),
-                         &addr) == 1);
+    assert(VMM::get_instance().get_pgd() != nullptr);
+    assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(),
+                                        (COMMON::KERNEL_START_ADDR + 0x1000),
+                                        &addr) == 1);
     assert(addr == COMMON::KERNEL_START_ADDR + 0x1000);
     addr = 0;
-    assert(VMM::get_mmap(VMM::get_pgd(),
-                         COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE - 1,
-                         &addr) == 1);
+    assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(),
+                                        COMMON::KERNEL_START_ADDR +
+                                            VMM_KERNEL_SPACE_SIZE - 1,
+                                        &addr) == 1);
     assert(addr == ((COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE - 1) &
                     COMMON::PAGE_MASK));
     addr = 0;
-    assert(VMM::get_mmap(
-               VMM::get_pgd(),
+    assert(VMM::get_instance().get_mmap(
+               VMM::get_instance().get_pgd(),
                (COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
                 VMM_KERNEL_SPACE_SIZE),
                &addr) == 0);
     assert(addr == 0);
     addr = 0;
-    assert(VMM::get_mmap(
-               VMM::get_pgd(),
+    assert(VMM::get_instance().get_mmap(
+               VMM::get_instance().get_pgd(),
                (COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
                 VMM_KERNEL_SPACE_SIZE + 0x1024),
                0) == 0);
@@ -94,16 +97,20 @@ int32_t test_vmm(void) {
     // 准备映射的物理地址 0.75GB 处
     uintptr_t pa = 0x30000000;
     // 确定一块未映射的内存
-    assert(VMM::get_mmap(VMM::get_pgd(), va, nullptr) == 0);
+    assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
+                                        nullptr) == 0);
     // 映射
-    VMM::mmap(VMM::get_pgd(), va, pa, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
-    assert(VMM::get_mmap(VMM::get_pgd(), va, &addr) == 1);
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), va, pa,
+                             VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
+                                        &addr) == 1);
     assert(addr == pa);
     // 写测试
     *(uintptr_t *)va = 0xCD;
     //取消映射
-    VMM::unmmap(VMM::get_pgd(), va);
-    assert(VMM::get_mmap(VMM::get_pgd(), va, &addr) == 0);
+    VMM::get_instance().unmmap(VMM::get_instance().get_pgd(), va);
+    assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
+                                        &addr) == 0);
     assert(addr == 0);
     info("vmm test done.\n");
     return 0;
