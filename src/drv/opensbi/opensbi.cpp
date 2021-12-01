@@ -32,6 +32,13 @@ uint64_t OPENSBI::ecall(uint64_t _num, uint64_t _a0, uint64_t _a1, uint64_t _a2,
     return a0;
 }
 
+OPENSBI &OPENSBI::get_instance(void) {
+    /// 定义全局 OPENSBI 对象
+    static OPENSBI opensbi;
+    return opensbi;
+}
+
+
 void OPENSBI::put_char(const char _c) {
     ecall(CONSOLE_PUTCHAR, _c, 0, 0, 0);
     return;
