@@ -16,10 +16,13 @@
 
 #include "assert.h"
 #include "stdio.h"
+#include "common.h"
+#include "multiboot2.h"
 #include "boot_info.h"
 #include "multiboot2.h"
 #include "resource.h"
 #include "common.h"
+#include "pmm.h"
 
 MULTIBOOT2 &MULTIBOOT2::get_instance(void) {
     /// 定义全局 MULTIBOOT2 对象
@@ -96,15 +99,24 @@ size_t boot_info_size;
 // 魔数
 uint32_t multiboot2_magic;
 
+bool inited = false;
+
 bool init(void) {
     auto res = MULTIBOOT2::get_instance().multiboot2_init();
-    info("BOOT_INFO init.\n");
+    if (inited == false) {
+        inited = true;
+        info("BOOT_INFO init.\n");
+    }
+    else {
+        info("BOOT_INFO reinit.\n");
+    }
     return res;
 }
 
 resource_t get_memory(void) {
     resource_t resource;
-    MULTIBOOT2::get_instance().multiboot2_iter(MULTIBOOT2::get_memory, &resource);
+    MULTIBOOT2::get_instance().multiboot2_iter(MULTIBOOT2::get_memory,
+                                               &resource);
     return resource;
 }
 }; // namespace BOOT_INFO
