@@ -64,7 +64,7 @@ private:
      * @return true            已使用
      * @return false           未使用
      */
-    bool test(size_t _idx);
+    bool test(size_t _idx) const;
 
     /**
      * @brief 寻找连续 _len 个 _val 位，返回开始索引
@@ -72,7 +72,7 @@ private:
      * @param  _val            值
      * @return size_t          开始索引
      */
-    size_t find_len(size_t _len, bool _val);
+    size_t find_len(size_t _len, bool _val) const;
 
 protected:
 public:
@@ -91,7 +91,7 @@ public:
      * @param  _len            页数
      * @return uintptr_t       分配的内存起点地址
      */
-    uintptr_t alloc(size_t _len);
+    uintptr_t alloc(size_t _len) override;
 
     /**
      * @brief 在 _addr 处分配长度为 _len 页的内存
@@ -100,26 +100,26 @@ public:
      * @return true            成功
      * @return false           失败
      */
-    bool alloc(uintptr_t _addr, size_t _len);
+    bool alloc(uintptr_t _addr, size_t _len) override;
 
     /**
      * @brief 释放 _addr 处 _len 页的内存
      * @param  _addr           要释放内存起点地址
      * @param  _len            页数
      */
-    void free(uintptr_t _addr, size_t _len);
+    void free(uintptr_t _addr, size_t _len) override;
 
     /**
      * @brief 获取已使用页数
      * @return size_t          已经使用的页数
      */
-    size_t get_used_count(void) const;
+    size_t get_used_count(void) const override;
 
     /**
      * @brief 获取未使用页数
      * @return size_t          未使用的页数
      */
-    size_t get_free_count(void) const;
+    size_t get_free_count(void) const override;
 };
 
 #endif /* _FIRTSTFIT_H_ */
