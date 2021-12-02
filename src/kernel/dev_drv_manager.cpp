@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// dev_drv_manager.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file dev_drv_manager.cpp
+ * @brief 设备&驱动管理实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdio.h"
 #include "boot_info.h"
@@ -59,23 +69,28 @@ bool DEV_DRV_MANAGER::buss_init(void) {
     return res;
 }
 
-// 设备与驱动管理
-// 首先注册所有驱动
-// 然后初始化 dtb，找到所有硬件
-// 最后遍历硬件，寻找需要的驱动
 DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
-    // TODO 设备管理应该更加抽象，这里只是个勉强能用的
+    return;
+}
+
+DEV_DRV_MANAGER::~DEV_DRV_MANAGER(void) {
+    for (auto i : buss) {
+        delete i;
+    }
+    return;
+}
+
+DEV_DRV_MANAGER &DEV_DRV_MANAGER::get_instance(void) {
+    /// 定义全局 DEV_DRV_MANAGER 对象
+    static DEV_DRV_MANAGER dev_drv_manager;
+    return dev_drv_manager;
+}
+
+/// @todo 设备管理应该更加抽象，这里只是个勉强能用的
+bool DEV_DRV_MANAGER::init(void) {
+#if defined(__riscv)
     // 获取 virtio 设备信息
     resource_t virtio_mmio_dev_resources[8];
-    virtio_mmio_dev_resources[0].type = 1;
-    virtio_mmio_dev_resources[1].type = 1;
-    virtio_mmio_dev_resources[2].type = 1;
-    virtio_mmio_dev_resources[3].type = 1;
-    virtio_mmio_dev_resources[4].type = 1;
-    virtio_mmio_dev_resources[5].type = 1;
-    virtio_mmio_dev_resources[6].type = 1;
-    virtio_mmio_dev_resources[7].type = 1;
-
     // 获取信息
     auto virtio_mmio_dev_resources_count =
         BOOT_INFO::find_via_prefix("virtio_mmio@", virtio_mmio_dev_resources);
@@ -96,7 +111,7 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
         // 设备名
         virtio_dev->dev_name = i.name;
         // 需要的驱动名
-        // TODO: 这里需要 compatible 字段
+        /// @todo 这里需要 compatible 字段
         virtio_dev->drv_name = "virtio,mmio";
         // 所属总线名
         virtio_dev->bus_name = "vortio";
@@ -111,15 +126,9 @@ DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     // 初始化所有总线
     buss_init();
     show();
+#endif
     info("device and driver manager init.\n");
-    return;
-}
-
-DEV_DRV_MANAGER::~DEV_DRV_MANAGER(void) {
-    for (auto i : buss) {
-        delete i;
-    }
-    return;
+    return true;
 }
 
 bool DEV_DRV_MANAGER::add_bus(bus_dev_t &_bus) {
