@@ -56,7 +56,7 @@ void kernel_main(void) {
     // 中断初始化
     INTR::get_instance().init();
     // 初始化设备
-    DEV_DRV_MANAGER manage = DEV_DRV_MANAGER();
+    DEV_DRV_MANAGER::get_instance().init();
     // 允许中断
     CPU::ENABLE_INTR();
     // 显示基本信息

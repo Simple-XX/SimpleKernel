@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// platform_bus_dev.h for Simple-XX/SimpleKernel.
+/**
+ * @file platform_bus_dev.h
+ * @brief 平台总线基类头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _PLATFORM_BUS_DEV_H_
 #define _PLATFORM_BUS_DEV_H_

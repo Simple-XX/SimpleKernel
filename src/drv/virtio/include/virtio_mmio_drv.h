@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// virtio_mmio_drv.h for Simple-XX/SimpleKernel.
+/**
+ * @file virtio_mmio_drv.h
+ * @brief virtio mmio 驱动头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _VIRTIO_MMIO_DRV_H_
 #define _VIRTIO_MMIO_DRV_H_

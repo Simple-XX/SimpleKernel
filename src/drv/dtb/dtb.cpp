@@ -440,6 +440,8 @@ size_t DTB::find_via_prefix(const char *_prefix, resource_t *_resource) {
             // 找到 reg
             for (size_t j = 0; j < nodes[i].prop_count; j++) {
                 if (strcmp(nodes[i].props[j].name, "reg") == 0) {
+                    /// @todo 这里需要判断资源类型
+                    _resource[res].type = resource_t::MEM;
                     // 填充数据
                     fill_resource(&_resource[res], &nodes[i],
                                   &nodes[i].props[j]);
