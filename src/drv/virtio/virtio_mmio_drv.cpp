@@ -164,4 +164,4 @@ bool virtio_mmio_drv_t::init(void) {
     return true;
 }
 
-define_call_back(virtio_mmio_drv_t);
+define_call_back(virtio_mmio_drv_t)

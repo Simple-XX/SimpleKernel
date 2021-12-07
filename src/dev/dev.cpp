@@ -17,10 +17,10 @@
 #include "dev.h"
 
 dev_t::dev_t(void) {
-    dev_name = "dev_t";
-    drv_name = "";
-    bus_name = "";
-    drv      = nullptr;
+    dev_name        = "dev_t";
+    compatible_name = "";
+    bus_name        = "";
+    drv             = nullptr;
 // #define DEBUG
 #ifdef DEBUG
     printf("dev_t ctor.\n");
@@ -30,10 +30,10 @@ dev_t::dev_t(void) {
 }
 
 dev_t::dev_t(const resource_t &_resource) : resource(_resource) {
-    dev_name = resource.name;
-    drv_name = "";
-    bus_name = "";
-    drv      = nullptr;
+    dev_name        = resource.name;
+    compatible_name = "";
+    bus_name        = "";
+    drv             = nullptr;
 // #define DEBUG
 #ifdef DEBUG
     printf("dev_t ctor.\n");

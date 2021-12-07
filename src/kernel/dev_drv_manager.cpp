@@ -112,7 +112,7 @@ bool DEV_DRV_MANAGER::init(void) {
         virtio_dev->dev_name = i.name;
         // 需要的驱动名
         /// @todo 这里需要 compatible 字段
-        virtio_dev->drv_name = "virtio,mmio";
+        virtio_dev->compatible_name = "virtio,mmio";
         // 所属总线名
         virtio_dev->bus_name = "vortio";
         // 添加到总线的设备向量
