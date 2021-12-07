@@ -10,10 +10,12 @@ PROJECT(drv CXX)
 # 根据 SimpleKernelArch 判断添加哪些文件
 # i386 与 x86_64 使用同一套驱动
 if (SimpleKernelArch STREQUAL ia32/i386 OR SimpleKernelArch STREQUAL ia32/x86_64)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ drv_cxx_src)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/platform_bus platform_bus_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/tui tui_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/multiboot2 multiboot2_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/keyboard keyboard_src)
-    set(drv_src ${tui_src} ${multiboot2_src} ${keyboard_src})
+    set(drv_src ${drv_cxx_src} ${platform_bus_src} ${tui_src} ${multiboot2_src} ${keyboard_src})
 # arm 驱动
 elseif (SimpleKernelArch STREQUAL arm)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uart uart_src)
@@ -29,7 +31,7 @@ elseif (SimpleKernelArch STREQUAL riscv64)
     set(drv_src ${drv_cxx_src} ${opensbi_src} ${sbi_console_src} ${dtb_src} ${virtio_src} ${platform_bus_src})
 endif ()
 
-# 添加子模块
+# 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${drv_src})
 
 # 添加头文件搜索路径
