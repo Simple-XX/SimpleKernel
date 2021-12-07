@@ -80,14 +80,3 @@ public:
 };
 
 #endif /* _DEV_DRV_MANAGER_H_ */
-
-// 维护一个类型向量，遍历此向量，如果找到需要的则创建对应类型的对象
-// class base_t {};
-// class derived_a_t : base_t {};
-// class derived_b_t : base_t {};
-// class derived_c_t : base_t {};
-// std::vector<T>tmp;
-// tmp.push_back(derived_a_t);
-// tmp.push_back(derived_b_t);
-// tmp.push_back(derived_c_t);
-// auto res = new tmp.at(0);

@@ -163,7 +163,7 @@ private:
         {NAME2STR(VIRTIO_F_VERSION_1), VIRTIO_F_VERSION_1, false},
     };
 
-      // 块设备 feature bits
+    // 块设备 feature bits
     // virtio-v1.1#5.2.3
     // Device supports request barriers.
     static constexpr const uint64_t BLK_F_BARRIER = 0;
@@ -256,5 +256,7 @@ public:
     // 驱动操作
     bool init(void) override final;
 };
+
+declare_call_back(virtio_mmio_drv_t);
 
 #endif /* _VIRTIO_MMIO_DRV_H_ */

@@ -37,19 +37,20 @@ void virtio_mmio_drv_t::add_to_device(uint32_t _queue_sel) {
     return;
 }
 
-virtio_mmio_drv_t::virtio_mmio_drv_t(void) {
-    name = "virtio,mmio";
+virtio_mmio_drv_t::virtio_mmio_drv_t(void)
+    : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
     return;
 }
 
-virtio_mmio_drv_t::virtio_mmio_drv_t(const void *_addr) {
+virtio_mmio_drv_t::virtio_mmio_drv_t(const void *_addr)
+    : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
     (void)_addr;
     return;
 }
 
-virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource) {
+virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
+    : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
     regs = (virtio_regs_t *)_resource.mem.addr;
-    printf("0x%p\n", regs);
     // 检查相关值
     assert(IO::get_instance().read32(&regs->magic) == MAGIC_VALUE);
     assert(IO::get_instance().read32(&regs->version) == VERSION);
@@ -162,3 +163,5 @@ virtio_mmio_drv_t::~virtio_mmio_drv_t(void) {
 bool virtio_mmio_drv_t::init(void) {
     return true;
 }
+
+define_call_back(virtio_mmio_drv_t);
