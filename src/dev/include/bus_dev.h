@@ -39,8 +39,8 @@ public:
                                mystl::pair<mystl::string, mystl::string> &_name_pair);
     void                 show(void) const;
     friend std::ostream &operator<<(std::ostream &_out, bus_dev_t &_bus) {
-        info("dev_name: %s, drv_name: %s, bus_name: %s, drv: 0x%p",
-             _bus.dev_name.c_str(), _bus.drv_name.c_str(),
+        info("dev_name: %s, compatible_name: %s, bus_name: %s, drv: 0x%p",
+             _bus.dev_name.c_str(), _bus.compatible_name.c_str(),
              _bus.bus_name.c_str(), _bus.drv);
         return _out;
     }

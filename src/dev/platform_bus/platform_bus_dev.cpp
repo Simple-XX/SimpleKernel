@@ -18,15 +18,15 @@
 #include "platform_bus_drv.h"
 
 platform_bus_dev_t::platform_bus_dev_t(void) {
-    drv_name = "platform_bus driver";
+    compatible_name = "platform_bus driver";
     return;
 }
 
 platform_bus_dev_t::platform_bus_dev_t(const resource_t &_resource)
     : bus_dev_t(_resource) {
     // platform 总线不需要驱动
-    drv_name = "platform_bus driver";
-    drv      = new platform_bus_drv_t();
+    compatible_name = "platform_bus driver";
+    drv             = new platform_bus_drv_t();
     return;
 }
 

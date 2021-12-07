@@ -108,9 +108,9 @@ public:
  */
 #define register_call_back(_class_name)                                        \
     do {                                                                       \
-        drv_factory_t::get_instance().register_class(                              \
+        drv_factory_t::get_instance().register_class(                          \
             #_class_name,                                                      \
-            (drv_factory_t::constructor_fun_t)&call_back_##_class_name);           \
+            (drv_factory_t::constructor_fun_t)&call_back_##_class_name);       \
     } while (0);
 
 #endif /* _DRV_H_ */

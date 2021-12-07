@@ -31,7 +31,7 @@ public:
     // 设备名
     mystl::string dev_name;
     // 设备所需驱动名
-    mystl::string drv_name;
+    mystl::string compatible_name;
     // 设备所属总线名
     mystl::string bus_name;
     // 设备使用的驱动
@@ -42,8 +42,8 @@ public:
     dev_t(const resource_t &_resource);
     virtual ~dev_t(void);
     friend std::ostream &operator<<(std::ostream &_out, dev_t &_dev) {
-        info("dev_name: %s, drv_name: %s, bus_name: %s, drv: 0x%p",
-             _dev.dev_name.c_str(), _dev.drv_name.c_str(),
+        info("dev_name: %s, compatible_name: %s, bus_name: %s, drv: 0x%p",
+             _dev.dev_name.c_str(), _dev.compatible_name.c_str(),
              _dev.bus_name.c_str(), _dev.drv);
         return _out;
     }

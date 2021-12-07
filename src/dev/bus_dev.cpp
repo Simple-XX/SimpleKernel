@@ -49,13 +49,13 @@ bool bus_dev_t::add_dev(dev_t *_dev) {
 
 bool bus_dev_t::match(dev_t                                     &_dev,
                       mystl::pair<mystl::string, mystl::string> &_name_pair) {
-    if (_dev.drv_name == _name_pair.first) {
+    if (_dev.compatible_name == _name_pair.first) {
         // 设置驱动
         /// @todo 这里应该新建一个驱动对象
         _dev.drv = drv_factory_t::get_instance().get_class(_name_pair.second,
                                                            _dev.resource);
         if (_dev.drv == nullptr) {
-            warn("%s has not register\n", _dev.drv_name.c_str());
+            warn("%s has not register\n", _dev.compatible_name.c_str());
             return false;
         }
         else {
