@@ -43,18 +43,18 @@ bool DEV_DRV_MANAGER::buss_init(void) {
         if (i->drv->init() == true) {
             // 遍历总线上的设备与驱动列表
             for (auto j : i->devs) {
-                for (auto k : i->drvs) {
+                for (auto k : i->drvs_name) {
                     // 如果匹配
                     /// @todo 这里暂时写死为为每个设备分配一个驱动实例，需要改进
-                    if (i->match(*j, *k)) {
+                    if (i->match(*j, k)) {
                         // 执行初始化
-                        // if (j->drv->init() == true) {
-                        //     info("%s init successful drv addr 0x8%p.\n",
-                        //          j->dev_name.c_str(), j->drv);
-                        // }
-                        // else {
-                        //     warn("%s init failed.\n", i->dev_name.c_str());
-                        // }
+                        if (j->drv->init() == true) {
+                            info("%s init successful drv addr 0x8%p.\n",
+                                 j->dev_name.c_str(), j->drv);
+                        }
+                        else {
+                            warn("%s init failed.\n", i->dev_name.c_str());
+                        }
                     }
                 }
             }
@@ -118,11 +118,11 @@ bool DEV_DRV_MANAGER::init(void) {
         // 添加到总线的设备向量
         bus->add_dev(virtio_dev);
     }
-
-    auto virtio_mmio_drv = new virtio_mmio_drv_t();
-    // 到这里 virtio,mmio 总线初始化完成，下面为各个 virtio,mmio 设备进行初始化
+    // 到这里 virtio,mmio 总线初始化完成，下面为各个 virtio,mmio
+    // 注册用于创建驱动实例的回调函数
+    register_call_back(virtio_mmio_drv_t);
     // 添加到总线的驱动向量
-    bus->add_drv(virtio_mmio_drv);
+    bus->add_drv("virtio,mmio", "virtio_mmio_drv_t");
     // 初始化所有总线
     buss_init();
     show();

@@ -16,6 +16,7 @@
 
 #include "bus_dev.h"
 #include "virtio_mmio_drv.h"
+#include "cxxabi.h"
 
 bus_dev_t::bus_dev_t(void) {
     return;
@@ -34,8 +35,10 @@ bus_dev_t::~bus_dev_t(void) {
     return;
 }
 
-bool bus_dev_t::add_drv(drv_t *_drv) {
-    drvs.push_back(_drv);
+bool bus_dev_t::add_drv(const mystl::string &_drv_name,
+                        const mystl::string &_type_name) {
+    drvs_name.push_back(
+        mystl::pair<mystl::string, mystl::string>(_drv_name, _type_name));
     return true;
 }
 
@@ -44,17 +47,25 @@ bool bus_dev_t::add_dev(dev_t *_dev) {
     return true;
 }
 
-bool bus_dev_t::match(dev_t &_dev, drv_t &_drv) {
-    if (_dev.drv_name == _drv.name) {
+bool bus_dev_t::match(dev_t                                     &_dev,
+                      mystl::pair<mystl::string, mystl::string> &_name_pair) {
+    if (_dev.drv_name == _name_pair.first) {
         // 设置驱动
         /// @todo 这里应该新建一个驱动对象
-        // _dev.drv = &_drv;
-        _dev.drv = new virtio_mmio_drv_t(_dev.resource);
-        return true;
+        _dev.drv = drv_factory_t::get_instance().get_class(_name_pair.second,
+                                                           _dev.resource);
+        if (_dev.drv == nullptr) {
+            warn("%s has not register\n", _dev.drv_name.c_str());
+            return false;
+        }
+        else {
+            return true;
+        }
     }
     else {
         return false;
     }
+    return true;
 }
 
 void bus_dev_t::show(void) const {
