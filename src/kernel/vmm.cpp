@@ -122,11 +122,12 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
     pte_t *pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
     assert(pte != nullptr);
-    // 已经映射过了，且 flag 没有变化
-    if ((*pte & VMM_PAGE_VALID) && (*pte & _flag) == _flag) {
+    // 已经映射过了 且 flag 没有变化
+    if (((*pte & VMM_PAGE_VALID) == VMM_PAGE_VALID) &&
+        ((*pte & _flag) == _flag)) {
         warn("remap.\n");
     }
-    // 没有映射，这是正常情况
+    // 没有映射，或更改了 flag
     else {
         // 那么设置 *pte
         // pte 解引用后的值是页表项
