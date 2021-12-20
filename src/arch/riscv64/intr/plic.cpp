@@ -72,7 +72,7 @@ int32_t PLIC::init(void) {
     // 将当前 hart 的 S 模式优先级阈值设置为 0
     IO::get_instance().write32((void *)PLIC_SPRIORITY(hart), 0);
     // 注册外部中断处理函数
-    CLINT::get_instance().register_interrupt_handler(CLINT::INTR_S_EXTERNEL,
+    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_EXTERNEL,
                                                      externel_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
