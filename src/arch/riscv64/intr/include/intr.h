@@ -23,28 +23,9 @@ void handler_default(void);
 
 class INTR {
 public:
+    /// 中断处理函数指针
     typedef void (*interrupt_handler_t)(void);
 
-    /**
-     * @brief 获取单例
-     * @return INTR&            静态对象
-     */
-    static INTR &get_instance(void);
-
-    /**
-     * @brief 中断初始化
-     * @return int32_t         成功返回 0
-     */
-    int32_t init(void);
-};
-
-/**
- * @brief core-local interrupt controller
- * 本地核心中断控制器
- * 用于控制 excp 与 intr
- */
-class CLINT {
-public:
     /// 页读错误
     static constexpr const uint8_t EXCP_LOAD_PAGE_FAULT = 13;
     /// 页写错误
@@ -108,12 +89,12 @@ public:
 
     /**
      * @brief 获取单例
-     * @return CLINT&           静态对象
+     * @return INTR&            静态对象
      */
-    static CLINT &get_instance(void);
+    static INTR &get_instance(void);
 
     /**
-     * @brief 初始化
+     * @brief 中断初始化
      * @return int32_t         成功返回 0
      */
     int32_t init(void);
@@ -146,6 +127,26 @@ public:
      * @param  _no             异常号
      */
     void do_excp(uint8_t _no);
+};
+
+/**
+ * @brief core-local interrupt controller
+ * 本地核心中断控制器
+ * 用于控制 excp 与 intr
+ */
+class CLINT {
+public:
+    /**
+     * @brief 获取单例
+     * @return CLINT&           静态对象
+     */
+    static CLINT &get_instance(void);
+
+    /**
+     * @brief 初始化
+     * @return int32_t         成功返回 0
+     */
+    int32_t init(void);
 };
 
 /**
