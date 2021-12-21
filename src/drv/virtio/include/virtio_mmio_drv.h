@@ -193,7 +193,7 @@ private:
     static constexpr const uint64_t BLK_F_WRITE_ZEROES = 14;
 
     // virtio-v1.1#5.2.4
-    struct virtio_blk_config {
+    struct virtio_blk_config_t {
         uint64_t capacity;
         uint32_t size_max;
         uint32_t seg_max;
@@ -224,7 +224,7 @@ private:
         uint8_t  unused1[3];
     } __attribute__((packed));
 
-    virtio_blk_config *config;
+    virtio_blk_config_t *config;
 
     feature_t blk_features[8] = {
         {NAME2STR(BLK_F_SIZE_MAX), BLK_F_SIZE_MAX, false},
@@ -255,6 +255,25 @@ public:
     ~virtio_mmio_drv_t(void);
     // 驱动操作
     bool init(void) override final;
+    // virtio-v1.1#5.2.6
+    struct virtio_blk_req_t {
+        // virtio_blk_req: type
+        static constexpr const uint64_t IN           = 0;
+        static constexpr const uint64_t OUT          = 1;
+        static constexpr const uint64_t FLUSH        = 4;
+        static constexpr const uint64_t DISCARD      = 11;
+        static constexpr const uint64_t WRITE_ZEROES = 13;
+        uint32_t                        type;
+        uint32_t                        reserved;
+        uint64_t                        sector;
+        // uint8_t *                       data;
+        // status type
+        static constexpr const uint64_t OK     = 0;
+        static constexpr const uint64_t IOERR  = 1;
+        static constexpr const uint64_t UNSUPP = 2;
+        // uint8_t                         status;
+    } __attribute__((packed));
+    size_t rw(virtio_blk_req_t &_req, void *_buf);
 };
 
 declare_call_back(virtio_mmio_drv_t);

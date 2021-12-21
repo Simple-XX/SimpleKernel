@@ -57,6 +57,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     // 检查类型是否符合
     /// @todo 暂时只初始化 BLOCK_DEVICE 设备
     if (IO::get_instance().read32(&regs->device_id) != BLOCK_DEVICE) {
+        err("BLOCK_DEVICE\n");
         return;
     }
     // assert(IO::get_instance().read32(&regs->device_id) == _type);
@@ -99,11 +100,12 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     // 设置队列
     queues.push_back(new virtio_queue_t(8));
     add_to_device(0);
-    config = (virtio_blk_config *)&regs->config;
+    config = (virtio_blk_config_t *)&regs->config;
 #define DEBUG
 #ifdef DEBUG
     // TODO: << 重载
-    uint32_t i, j;
+    uint32_t i = 0;
+    uint32_t j = 0;
     do {
         i = IO::get_instance().read32(&regs->config_generation);
         printf("capacity: 0x%X\n",
@@ -162,6 +164,40 @@ virtio_mmio_drv_t::~virtio_mmio_drv_t(void) {
 
 bool virtio_mmio_drv_t::init(void) {
     return true;
+}
+
+size_t virtio_mmio_drv_t::rw(virtio_blk_req_t &_req, void *_buf) {
+    uint32_t datamode = 0;
+
+    if (_req.type == virtio_blk_req_t::IN) {
+        // mark page writeable
+        datamode = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
+    }
+
+    uint32_t d1 = queues.at(0)->alloc_desc(&_req);
+    uint32_t d2 = queues.at(0)->alloc_desc(_buf);
+    uint32_t d3 =
+        queues.at(0)->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
+    queues.at(0)->virtq->desc[d1].len = sizeof(virtio_blk_req_t);
+    queues.at(0)->virtq->desc[d1].flags =
+        virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+    queues.at(0)->virtq->desc[d1].next = d2;
+
+    queues.at(0)->virtq->desc[d2].len = 512;
+    queues.at(0)->virtq->desc[d2].flags |=
+        datamode | virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+    queues.at(0)->virtq->desc[d2].next = d3;
+
+    queues.at(0)->virtq->desc[d3].len = 1;
+    queues.at(0)->virtq->desc[d3].flags =
+        virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
+    queues.at(0)->virtq->desc[d3].next = 0;
+
+    queues.at(0)->virtq->avail->ring[queues.at(0)->virtq->avail->idx %
+                                     queues.at(0)->virtq->len] = d1;
+    queues.at(0)->virtq->avail->idx += 1;
+    IO::get_instance().write32(&regs->queue_notify, 0);
+    return 0;
 }
 
 define_call_back(virtio_mmio_drv_t)
