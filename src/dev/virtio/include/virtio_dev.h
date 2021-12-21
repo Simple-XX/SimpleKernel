@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// virtio_dev.h for Simple-XX/SimpleKernel.
+/**
+ * @file virtio_dev.h
+ * @brief virtio 设备头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-12-21
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _VIRTIO_DEV_H_
 #define _VIRTIO_DEV_H_
@@ -14,14 +24,11 @@
 // 所有 virtio 设备的公有属性，标准文档的 #4 之外的部分
 class virtio_dev_t : public dev_t {
 private:
-    // virtio queue，有些设备使用多个队列
-    mystl::vector<virtio_queue_t *> queues;
-
 protected:
 public:
     // virtio 设备类型
     // virtio-v1.1#5
-    typedef enum : uint8_t {
+    enum : uint8_t {
         RESERVED = 0x00,
         NETWORK_CARD,
         BLOCK_DEVICE,
@@ -45,7 +52,8 @@ public:
         PSTORE_DEVICE,
         IOMMU_DEVICE,
         MEMORY_DEVICE,
-    } virt_device_type_t;
+    };
+
     // virtio 设备类型名名称
     // virtio-v1.1#5
     static constexpr const char *const virtio_device_name[25] = {

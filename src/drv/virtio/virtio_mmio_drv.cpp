@@ -26,14 +26,101 @@
 // 设置 features
 bool virtio_mmio_drv_t::set_features(
     const mystl::vector<feature_t> &_features) {
-    (void)_features;
+    // 首先获取硬件信息
+    // 0~31 位
+    IO::get_instance().write32(&regs->device_features_sel, 0);
+    uint32_t device_feature_low =
+        IO::get_instance().read32(&regs->device_features);
+    // 32~63 位
+    IO::get_instance().write32(&regs->device_features_sel, 1);
+    uint32_t device_feature_high =
+        IO::get_instance().read32(&regs->device_features);
+
+    // TODO: 如果有设备不支持的 feature，需要有错误反馈
+    for (auto i : _features) {
+        // 如果 i.bit 大于 31，那么意味着需要 DeviceFeatures 的 32~63 位，
+        // 将 DeviceFeaturesSel 置位即可
+        if (i.bit > 31) {
+            // 如果设备支持且需要此属性
+            if ((i.status == true)) {
+                if ((device_feature_high & (1 << (i.bit - 32))) == true) {
+                    // 选择写高位
+                    IO::get_instance().write32(&regs->device_features_sel, 1);
+                    // 写入
+                    IO::get_instance().write32(
+                        &regs->driver_features,
+                        IO::get_instance().read32(&regs->driver_features) |
+                            (1 << (i.bit - 32)));
+                }
+                else {
+                    err("Not support: %s\n", i.name.c_str());
+                }
+            }
+        }
+        else {
+            // 如果设备支持且需要此属性
+            if ((i.status == true)) {
+                if (((device_feature_low & (1 << i.bit)) != false)) {
+                    // 选择写低位
+                    IO::get_instance().write32(&regs->driver_features_sel, 0);
+                    // 写入
+                    IO::get_instance().write32(
+                        &regs->driver_features,
+                        IO::get_instance().read32(&regs->driver_features) |
+                            (1 << i.bit));
+                }
+                else {
+                    err("Not support: %s\n", i.name.c_str());
+                }
+            }
+        }
+    }
     return true;
 }
 
 // 将队列设置传递到相应寄存器
 // _queue_sel: 第几个队列，从 0 开始
 void virtio_mmio_drv_t::add_to_device(uint32_t _queue_sel) {
-    (void)_queue_sel;
+    // 选择队列号
+    IO::get_instance().write32(&regs->queue_sel, _queue_sel);
+    // 如果该队列已设置
+    if (IO::get_instance().read32(&regs->queue_ready) == 1) {
+        err("already used!\n");
+        // 直接返回
+        return;
+    }
+    // max 为零则表示不支持
+    assert(IO::get_instance().read32(&regs->queue_num_max) != 0);
+    // 如果长度大于允许的最大值
+    if (queues.at(_queue_sel)->virtq->len >
+        IO::get_instance().read32(&regs->queue_num_max)) {
+        err("queue 0x%X too long!\n", _queue_sel);
+        return;
+    }
+    // 设置长度
+    IO::get_instance().write32(&regs->queue_num,
+                               queues.at(_queue_sel)->virtq->len);
+    // 将 queue 的物理地址写入相应寄存器
+    // 写 desc 低位
+    IO::get_instance().write32(&regs->queue_desc_low,
+                               queues.at(_queue_sel)->virtq->phys +
+                                   queues.at(_queue_sel)->off_desc);
+    // 写 desc 高位
+    IO::get_instance().write32(&regs->queue_desc_high, 0);
+    // 写 driver 低位
+    IO::get_instance().write32(&regs->queue_driver_low,
+                               queues.at(_queue_sel)->virtq->phys +
+                                   queues.at(_queue_sel)->off_driver);
+    // 写 driver 高位
+    IO::get_instance().write32(&regs->queue_driver_high, 0);
+    // 写 device 低位
+    IO::get_instance().write32(&regs->queue_device_low,
+                               queues.at(_queue_sel)->virtq->phys +
+                                   queues.at(_queue_sel)->off_device);
+    // 写 device 高位
+    IO::get_instance().write32(&regs->queue_device_high, 0);
+    // ready 置位
+    IO::get_instance().write32(&regs->queue_ready, 1);
     return;
 }
 
@@ -56,8 +143,9 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     assert(IO::get_instance().read32(&regs->version) == VERSION);
     // 检查类型是否符合
     /// @todo 暂时只初始化 BLOCK_DEVICE 设备
-    if (IO::get_instance().read32(&regs->device_id) != BLOCK_DEVICE) {
-        err("BLOCK_DEVICE\n");
+    if (IO::get_instance().read32(&regs->device_id) !=
+        virtio_dev_t::BLOCK_DEVICE) {
+        err("JUST BLOCK_DEVICE, return\n");
         return;
     }
     // assert(IO::get_instance().read32(&regs->device_id) == _type);
@@ -68,11 +156,11 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     // 置位 ACKNOWLEDGE
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status) |
-                                   DEVICE_STATUS_ACKNOWLEDGE);
+                                   virtio_dev_t::DEVICE_STATUS_ACKNOWLEDGE);
     // 置位 DRIVER
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status) |
-                                   DEVICE_STATUS_DRIVER);
+                                   virtio_dev_t::DEVICE_STATUS_DRIVER);
     // 接下来设置设备相关 feature，交给特定设备进行
     // 跳转到 virtio_blk.cpp 的构造函数
     // virtio-v1.1#3.1.1
@@ -89,10 +177,10 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     // 置位 FEATURES_OK
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status) |
-                                   DEVICE_STATUS_FEATURES_OK);
+                                   virtio_dev_t::DEVICE_STATUS_FEATURES_OK);
     // 再次读取以确认设置成功
     if ((IO::get_instance().read32(&regs->status) &
-         DEVICE_STATUS_FEATURES_OK) == false) {
+         virtio_dev_t::DEVICE_STATUS_FEATURES_OK) == false) {
         // 失败则报错
         assert(0);
         return;
@@ -149,12 +237,19 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
 #endif
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status) |
-                                   DEVICE_STATUS_DRIVER_OK);
+                                   virtio_dev_t::DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
     // 允许中断
     // TODO: 这里应该通过 dtb 获取中断号
     PLIC::get_instance().set(1, true);
     printf("virtio blk init\n");
+    virtio_mmio_drv_t::virtio_blk_req_t *req =
+        new virtio_mmio_drv_t::virtio_blk_req_t;
+    req->type   = 1;
+    req->sector = 0;
+    void *buf   = malloc(512);
+    memset(buf, 1, 512);
+    rw(*req, buf);
     return;
 }
 

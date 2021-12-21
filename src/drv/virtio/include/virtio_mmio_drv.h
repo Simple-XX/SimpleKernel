@@ -22,86 +22,15 @@
 #include "vector"
 #include "string"
 #include "virtio_queue.h"
+#include "virtio_dev.h"
 #include "resource.h"
 #include "drv.h"
 
 // virtio 设备类型
 class virtio_mmio_drv_t : public drv_t {
 private:
-    // virtio 设备类型
-    // virtio-v1.1#5
-    typedef enum : uint8_t {
-        RESERVED = 0x00,
-        NETWORK_CARD,
-        BLOCK_DEVICE,
-        CONSOLE,
-        ENTROPY_SOURCE,
-        MEMORY_BALLOONING,
-        IOMEMORY,
-        RPMSG,
-        SCSI_HOST,
-        NINEP_TRANSPORT,
-        MAC_80211_WLAN,
-        RPROC_SERIAL,
-        VIRTIO_CAIF,
-        MEMORY_BALLOON,
-        GPU_DEVICE = 0x10,
-        TIMER_CLOCK_DEVICE,
-        INPUT_DEVICE,
-        SOCKET_DEVICE,
-        CRYPTO_DEVICE,
-        SIGNAL_DISTRIBUTION_MODULE,
-        PSTORE_DEVICE,
-        IOMMU_DEVICE,
-        MEMORY_DEVICE,
-    } virt_device_type_t;
-
-    // virtio 设备类型名名称
-    const char *const virtio_device_name[25] = {
-        "reserved (invalid)",
-        "network card",
-        "block device",
-        "console",
-        "entropy source",
-        "memory ballooning(traditional)",
-        "ioMemory",
-        "rpmsg",
-        "SCSI host",
-        "9P transport",
-        "mac80211 wlan",
-        "rproc serial",
-        "virtio CAIF",
-        "memory balloon",
-        "null",
-        "null",
-        "GPU device",
-        "Timer / Clock device",
-        "Input device",
-        "Socket device",
-        "Crypto device",
-        "Signal Distribution Module",
-        "pstore device",
-        "IOMMU device",
-        "Memory device",
-    };
-
     static constexpr const uint64_t MAGIC_VALUE = 0x74726976;
     static constexpr const uint64_t VERSION     = 0x02;
-
-    // Device Status Field
-    // virtio-v1.1#2.1
-    static constexpr const uint64_t DEVICE_STATUS_ACKNOWLEDGE        = 0x1;
-    static constexpr const uint64_t DEVICE_STATUS_DRIVER             = 0x2;
-    static constexpr const uint64_t DEVICE_STATUS_DRIVER_OK          = 0x4;
-    static constexpr const uint64_t DEVICE_STATUS_FEATURES_OK        = 0x8;
-    static constexpr const uint64_t DEVICE_STATUS_DEVICE_NEEDS_RESET = 0x40;
-    static constexpr const uint64_t DEVICE_STATUS_FAILED             = 0x80;
-
-    // Device Status Field
-    // virtio-v1.1#6
-    static constexpr const uint64_t VIRTIO_F_RING_INDIRECT_DESC = 0x1C;
-    static constexpr const uint64_t VIRTIO_F_RING_EVENT_IDX     = 0x1D;
-    static constexpr const uint64_t VIRTIO_F_VERSION_1          = 0x20;
 
     // virtio mmio 控制寄存器
     // virtio-v1.1#4.2.2
@@ -157,10 +86,11 @@ private:
     };
 
     feature_t base_features[3] = {
-        {NAME2STR(VIRTIO_F_RING_INDIRECT_DESC), VIRTIO_F_RING_INDIRECT_DESC,
-         false},
-        {NAME2STR(VIRTIO_F_RING_EVENT_IDX), VIRTIO_F_RING_EVENT_IDX, false},
-        {NAME2STR(VIRTIO_F_VERSION_1), VIRTIO_F_VERSION_1, false},
+        {NAME2STR(VIRTIO_F_RING_INDIRECT_DESC),
+         virtio_dev_t::VIRTIO_F_RING_INDIRECT_DESC, false},
+        {NAME2STR(VIRTIO_F_RING_EVENT_IDX),
+         virtio_dev_t::VIRTIO_F_RING_EVENT_IDX, false},
+        {NAME2STR(VIRTIO_F_VERSION_1), virtio_dev_t::VIRTIO_F_VERSION_1, false},
     };
 
     // 块设备 feature bits

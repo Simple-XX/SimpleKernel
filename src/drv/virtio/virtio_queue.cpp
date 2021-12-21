@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// virtio_queue.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file virtio_queue.cpp
+ * @brief virtio queue 实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-12-21
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdint.h"
 #include "string.h"
