@@ -29,7 +29,9 @@
 #include "cpu.hpp"
 #include "kernel.h"
 #include "dtb.h"
-
+#include "virtio_blk.h"
+#include "resource.h"
+#include "virtio_mmio_drv.h"
 /// @todo gdb 调试
 /// @todo clion 环境
 
@@ -56,9 +58,31 @@ void kernel_main(void) {
     // 中断初始化
     INTR::get_instance().init();
     // 初始化设备
-    DEV_DRV_MANAGER::get_instance().init();
+    // DEV_DRV_MANAGER::get_instance().init();
     // 允许中断
     CPU::ENABLE_INTR();
+
+    VIRTIO_BLK                   *blk = new VIRTIO_BLK((void *)0x10001000);
+    VIRTIO_BLK::virtio_blk_req_t *req = new VIRTIO_BLK::virtio_blk_req_t;
+    req->type                         = 1;
+    req->sector                       = 0;
+    void *buf                         = malloc(512);
+    memset(buf, 1, 512);
+    blk->rw(*req, buf);
+
+    // resource_t res;
+    // res.type                                 = resource_t::MEM;
+    // res.mem.addr                             = 0x10001000;
+    // res.mem.len                              = 0x1000;
+    // virtio_mmio_drv_t                   *drv = new virtio_mmio_drv_t(res);
+    // virtio_mmio_drv_t::virtio_blk_req_t *req =
+    //     new virtio_mmio_drv_t::virtio_blk_req_t;
+    // req->type   = 1;
+    // req->sector = 0;
+    // void *buf   = malloc(512);
+    // memset(buf, 1, 512);
+    // drv->rw(*req, buf);
+
     // 显示基本信息
     show_info();
     // 进入死循环
