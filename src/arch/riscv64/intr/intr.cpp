@@ -45,6 +45,19 @@ static void pg_store_excp(void) {
 }
 
 /**
+ * @brief 外部中断处理 0x9 Supervisor External Interrupt.
+ */
+static void externel_intr(void) {
+    auto isr = PLIC::get_instance().get();
+    info("externel_intr: 0x%X\n", isr);
+    PLIC::externel_interrupt_handlers[isr]();
+    // 根据中断号进行处理
+    PLIC::get_instance().done(isr);
+    info("externel_intr done: 0x%X.\n", isr);
+    return;
+}
+
+/**
  * @brief 中断处理函数
  * @param  _scause         原因
  * @param  _sepc           值
@@ -105,6 +118,11 @@ INTR &INTR::get_instance(void) {
     return intr;
 }
 
+// 中断处理函数数组
+INTR::interrupt_handler_t INTR::interrupt_handlers[INTR::INTERRUPT_MAX];
+// 异常处理函数数组
+INTR::interrupt_handler_t INTR::excp_handlers[INTR::EXCP_MAX];
+
 int32_t INTR::init(void) {
     // 内部中断初始化
     CLINT::get_instance().init();
@@ -124,16 +142,13 @@ int32_t INTR::init(void) {
     // 缺页中断
     register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
     register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
+    // S 态外部中断
+    register_interrupt_handler(INTR_S_EXTERNEL, externel_intr);
     // 设置时钟中断
     TIMER::get_instance().init();
     info("intr init.\n");
     return 0;
 }
-
-// 中断处理函数数组
-INTR::interrupt_handler_t INTR::interrupt_handlers[INTR::INTERRUPT_MAX];
-// 异常处理函数数组
-INTR::interrupt_handler_t INTR::excp_handlers[INTR::EXCP_MAX];
 
 void INTR::register_interrupt_handler(
     uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
