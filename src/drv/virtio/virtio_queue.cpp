@@ -25,8 +25,6 @@
 #include "virtio_queue.h"
 
 virtio_queue_t::virtio_queue_t(size_t _size) {
-    // virtio-v1.1#2.5
-    // virtio-v1.1#2.6
     // _size 应该为 2 的幂
     assert((_size & (_size - 1)) == 0);
     // TODO: 解释

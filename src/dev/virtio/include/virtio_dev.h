@@ -20,14 +20,17 @@
 #include "dev.h"
 #include "virtio_queue.h"
 
-// virtio 设备类型
-// 所有 virtio 设备的公有属性，标准文档的 #4 之外的部分
+/**
+ * @brief 所有 virtio 设备的公有属性，标准文档的 #4 之外的部分
+ */
 class virtio_dev_t : public dev_t {
 private:
 protected:
 public:
-    // virtio 设备类型
-    // virtio-v1.1#5
+    /**
+     * @brief virtio 设备类型
+     * @see virtio-v1.1#5
+     */
     enum : uint8_t {
         RESERVED = 0x00,
         NETWORK_CARD,
@@ -54,8 +57,10 @@ public:
         MEMORY_DEVICE,
     };
 
-    // virtio 设备类型名名称
-    // virtio-v1.1#5
+    /**
+     * @brief virtio 设备类型名名称
+     * @see virtio-v1.1#5
+     */
     static constexpr const char *const virtio_device_name[25] = {
         "reserved (invalid)",
         "network card",
@@ -84,36 +89,22 @@ public:
         "Memory device",
     };
 
-    // Device Status Field
-    // virtio-v1.1#2.1
-    static constexpr const uint64_t DEVICE_STATUS_ACKNOWLEDGE        = 0x1;
-    static constexpr const uint64_t DEVICE_STATUS_DRIVER             = 0x2;
-    static constexpr const uint64_t DEVICE_STATUS_DRIVER_OK          = 0x4;
-    static constexpr const uint64_t DEVICE_STATUS_FEATURES_OK        = 0x8;
-    static constexpr const uint64_t DEVICE_STATUS_DEVICE_NEEDS_RESET = 0x40;
-    static constexpr const uint64_t DEVICE_STATUS_FAILED             = 0x80;
-
-    // Device Status Field
-    // virtio-v1.1#6
-    static constexpr const uint64_t VIRTIO_F_RING_INDIRECT_DESC = 0x1C;
-    static constexpr const uint64_t VIRTIO_F_RING_EVENT_IDX     = 0x1D;
-    static constexpr const uint64_t VIRTIO_F_VERSION_1          = 0x20;
-
-    // feature 信息
-    struct feature_t {
-        // feature 名称
-        mystl::string name;
-        // 第几位
-        uint32_t bit;
-        // 状态
-        bool status;
-    };
-
-    feature_t base_features[3] = {
-        {"VIRTIO_F_RING_INDIRECT_DESC", VIRTIO_F_RING_INDIRECT_DESC, false},
-        {"VIRTIO_F_RING_EVENT_IDX", VIRTIO_F_RING_EVENT_IDX, false},
-        {"VIRTIO_F_VERSION_1", VIRTIO_F_VERSION_1, false},
-    };
+    /**
+     * @brief 设备状态标志 Device Status Field
+     * @see virtio-v1.1#2.1
+     */
+    /// OS 已识别设备
+    static constexpr const uint32_t DEVICE_STATUS_ACKNOWLEDGE = 0x1;
+    /// OS 已匹配驱动
+    static constexpr const uint32_t DEVICE_STATUS_DRIVER = 0x2;
+    /// 驱动准备就绪
+    static constexpr const uint32_t DEVICE_STATUS_DRIVER_OK = 0x4;
+    /// 设备特性设置就绪
+    static constexpr const uint32_t DEVICE_STATUS_FEATURES_OK = 0x8;
+    /// 设备设置错误
+    static constexpr const uint32_t DEVICE_STATUS_DEVICE_NEEDS_RESET = 0x40;
+    /// 设备出错
+    static constexpr const uint32_t DEVICE_STATUS_FAILED = 0x80;
 
     virtio_dev_t(void);
     virtio_dev_t(const resource_t &_resource);

@@ -24,7 +24,7 @@
 #include "intr.h"
 
 // 设置 features
-bool virtio_mmio_drv_t::set_features(
+void virtio_mmio_drv_t::set_features(
     const mystl::vector<feature_t> &_features) {
     // 首先获取硬件信息
     // 0~31 位
@@ -75,7 +75,7 @@ bool virtio_mmio_drv_t::set_features(
             }
         }
     }
-    return true;
+    return;
 }
 
 // 将队列设置传递到相应寄存器
@@ -254,6 +254,9 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
 }
 
 virtio_mmio_drv_t::~virtio_mmio_drv_t(void) {
+    for (auto i : queues) {
+        delete i;
+    }
     return;
 }
 
@@ -262,28 +265,33 @@ bool virtio_mmio_drv_t::init(void) {
 }
 
 size_t virtio_mmio_drv_t::rw(virtio_blk_req_t &_req, void *_buf) {
-    uint32_t datamode = 0;
+    /// @todo 错误处理
+    /// @see virtio-v1.1#5.2.6
+    uint32_t mode = 0;
+    uint32_t d1   = 0;
+    uint32_t d2   = 0;
+    uint32_t d3   = 0;
 
     if (_req.type == virtio_blk_req_t::IN) {
         // mark page writeable
-        datamode = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
+        mode = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
     }
 
-    uint32_t d1 = queues.at(0)->alloc_desc(&_req);
-    uint32_t d2 = queues.at(0)->alloc_desc(_buf);
-    uint32_t d3 =
-        queues.at(0)->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
-    queues.at(0)->virtq->desc[d1].len = sizeof(virtio_blk_req_t);
+    d1 = queues.at(0)->alloc_desc(&_req);
+    d2 = queues.at(0)->alloc_desc(_buf);
+    d3 = queues.at(0)->alloc_desc((void *)(&_req + sizeof(virtio_blk_req_t)));
+
+    queues.at(0)->virtq->desc[d1].len = VIRTIO_BLK_REQ_HEADER_SIZE;
     queues.at(0)->virtq->desc[d1].flags =
         virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
     queues.at(0)->virtq->desc[d1].next = d2;
 
-    queues.at(0)->virtq->desc[d2].len = 512;
+    queues.at(0)->virtq->desc[d2].len = VIRTIO_BLK_SECTOR_SIZE;
     queues.at(0)->virtq->desc[d2].flags |=
-        datamode | virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+        mode | virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
     queues.at(0)->virtq->desc[d2].next = d3;
 
-    queues.at(0)->virtq->desc[d3].len = 1;
+    queues.at(0)->virtq->desc[d3].len = VIRTIO_BLK_REQ_FOOTER_SIZE;
     queues.at(0)->virtq->desc[d3].flags =
         virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
     queues.at(0)->virtq->desc[d3].next = 0;
