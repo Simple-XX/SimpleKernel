@@ -135,6 +135,10 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const void *_addr)
     return;
 }
 
+static void tmp_isr(void) {
+    return;
+}
+
 virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
     regs = (virtio_regs_t *)_resource.mem.addr;
@@ -242,6 +246,8 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     // 允许中断
     // TODO: 这里应该通过 dtb 获取中断号
     PLIC::get_instance().set(1, true);
+    // 注册外部中断处理函数
+    PLIC::get_instance().register_externel_handler(1, tmp_isr);
     printf("virtio blk init\n");
     virtio_mmio_drv_t::virtio_blk_req_t *req =
         new virtio_mmio_drv_t::virtio_blk_req_t;

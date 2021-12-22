@@ -171,6 +171,10 @@ private:
 
 protected:
 public:
+    /// 外部中断处理函数数组
+    static INTR::interrupt_handler_t
+        externel_interrupt_handlers[INTR::INTERRUPT_MAX];
+
     /**
      * @brief 获取单例
      * @return PLIC&            静态对象
@@ -203,6 +207,15 @@ public:
      * @todo 不确定
      */
     void set(uint8_t _no, bool _status);
+
+    /**
+     * @brief 注册外部中断处理函数
+     * @param  _no             外部中断号
+     * @param  _interrupt_handler 外部中断处理函数
+     */
+    void
+    register_externel_handler(uint8_t                   _no,
+                              INTR::interrupt_handler_t _interrupt_handler);
 };
 
 /**

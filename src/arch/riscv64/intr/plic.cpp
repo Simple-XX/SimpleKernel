@@ -29,6 +29,8 @@ static constexpr const uint64_t hart = 0;
 const uint64_t PLIC::PLIC_PRIORITY = PLIC::base_addr + 0x0;
 const uint64_t PLIC::PLIC_PENDING  = PLIC::base_addr + 0x1000;
 uintptr_t      PLIC::base_addr;
+INTR::interrupt_handler_t
+    PLIC::externel_interrupt_handlers[INTR::INTERRUPT_MAX];
 
 /**
  * @brief 外部中断处理
@@ -73,7 +75,7 @@ int32_t PLIC::init(void) {
     IO::get_instance().write32((void *)PLIC_SPRIORITY(hart), 0);
     // 注册外部中断处理函数
     INTR::get_instance().register_interrupt_handler(INTR::INTR_S_EXTERNEL,
-                                                     externel_intr);
+                                                    externel_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
     info("plic init.\n");
@@ -105,5 +107,11 @@ uint8_t PLIC::get(void) {
 
 void PLIC::done(uint8_t _no) {
     IO::get_instance().write32((void *)PLIC_SCLAIM(hart), _no);
+    return;
+}
+
+void PLIC::register_externel_handler(
+    uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
+    externel_interrupt_handlers[_no] = _interrupt_handler;
     return;
 }
