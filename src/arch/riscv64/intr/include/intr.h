@@ -156,6 +156,10 @@ public:
  */
 class PLIC {
 private:
+    /// 外部中断处理函数指针
+    typedef void (*externel_interrupt_handler_t)(uint8_t _no);
+    /// 最大外部中断数量
+    static constexpr const size_t EXTERNEL_INTERRUPR_MAX = 16;
     /// 基地址，由 dtb 传递
     static uintptr_t base_addr;
     /// @todo ？
@@ -172,8 +176,8 @@ private:
 protected:
 public:
     /// 外部中断处理函数数组
-    static INTR::interrupt_handler_t
-        externel_interrupt_handlers[INTR::INTERRUPT_MAX];
+    static externel_interrupt_handler_t
+        externel_interrupt_handlers[EXTERNEL_INTERRUPR_MAX];
 
     /**
      * @brief 获取单例
@@ -214,8 +218,8 @@ public:
      * @param  _interrupt_handler 外部中断处理函数
      */
     void
-    register_externel_handler(uint8_t                   _no,
-                              INTR::interrupt_handler_t _interrupt_handler);
+    register_externel_handler(uint8_t                      _no,
+                              externel_interrupt_handler_t _interrupt_handler);
 };
 
 /**

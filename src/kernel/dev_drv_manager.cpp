@@ -135,3 +135,14 @@ bool DEV_DRV_MANAGER::add_bus(bus_dev_t &_bus) {
     buss.push_back(&_bus);
     return true;
 }
+
+dev_t *DEV_DRV_MANAGER::get_dev_via_intr_no(uint8_t _no) {
+    dev_t *res = nullptr;
+    for (auto i : buss) {
+        res = i->get_dev_via_intr_no(_no);
+        if (res != nullptr) {
+            break;
+        }
+    }
+    return res;
+}
