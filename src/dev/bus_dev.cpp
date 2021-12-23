@@ -35,10 +35,10 @@ bus_dev_t::~bus_dev_t(void) {
     return;
 }
 
-bool bus_dev_t::add_drv(const mystl::string &_drv_name,
-                        const mystl::string &_type_name) {
+bool bus_dev_t::add_drv(const mystl::string &_compatible_name,
+                        const mystl::string &_drv_name) {
     drvs_name.push_back(
-        mystl::pair<mystl::string, mystl::string>(_drv_name, _type_name));
+        mystl::pair<mystl::string, mystl::string>(_compatible_name, _drv_name));
     return true;
 }
 
@@ -78,4 +78,15 @@ void bus_dev_t::show(void) const {
         std::cout << *i << std::endl;
     }
     return;
+}
+
+dev_t *bus_dev_t::get_dev_via_intr_no(uint8_t _no) {
+    // 遍历设备向量
+    for (auto i : devs) {
+        // 寻找对应的设备
+        if (i->resource.intr.intr_no == _no) {
+            return i;
+        }
+    }
+    return nullptr;
 }

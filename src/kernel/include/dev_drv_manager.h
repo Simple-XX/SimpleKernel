@@ -77,6 +77,13 @@ public:
      * @return false            失败
      */
     bool add_bus(bus_dev_t &_bus);
+
+    /**
+     * @brief 通过外部中断号寻找设备
+     * @param  _no              外部中断号
+     * @return dev_t*           使用该中断号的设备
+     */
+    dev_t *get_dev_via_intr_no(uint8_t _no);
 };
 
 #endif /* _DEV_DRV_MANAGER_H_ */

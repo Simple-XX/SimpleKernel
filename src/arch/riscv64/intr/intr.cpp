@@ -50,7 +50,7 @@ static void pg_store_excp(void) {
 static void externel_intr(void) {
     auto isr = PLIC::get_instance().get();
     info("externel_intr: 0x%X\n", isr);
-    PLIC::externel_interrupt_handlers[isr]();
+    PLIC::externel_interrupt_handlers[isr](isr);
     // 根据中断号进行处理
     PLIC::get_instance().done(isr);
     info("externel_intr done: 0x%X.\n", isr);
