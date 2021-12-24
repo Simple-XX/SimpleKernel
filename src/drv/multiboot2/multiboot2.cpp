@@ -66,10 +66,10 @@ bool MULTIBOOT2::get_memory(const iter_data_t *_iter_data, void *_data) {
         return false;
     }
     resource_t *resource = (resource_t *)_data;
-    resource->type       = resource_t::MEM;
-    resource->name       = (char *)"available phy memory";
-    resource->mem.addr   = 0x0;
-    resource->mem.len    = 0;
+    resource->type |= resource_t::MEM;
+    resource->name     = (char *)"available phy memory";
+    resource->mem.addr = 0x0;
+    resource->mem.len  = 0;
     MULTIBOOT2::multiboot_mmap_entry_t *mmap =
         ((MULTIBOOT2::multiboot_tag_mmap_t *)_iter_data)->entries;
     for (; (uint8_t *)mmap < (uint8_t *)_iter_data + _iter_data->size;
