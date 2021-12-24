@@ -242,8 +242,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
                                    virtio_dev_t::DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
     // 允许中断
-    // TODO: 这里应该通过 dtb 获取中断号
-    PLIC::get_instance().set(1, true);
+    PLIC::get_instance().set(_resource.intr_no, true);
     // 注册外部中断处理函数
     PLIC::get_instance().register_externel_handler(1, virtio_mmio_intr);
     printf("virtio blk init\n");
