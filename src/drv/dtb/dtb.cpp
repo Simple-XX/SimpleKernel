@@ -156,6 +156,9 @@ void DTB::fill_resource(resource_t *_resource, const node_t *_node,
             assert(0);
         }
     }
+    else if (_resource->type & resource_t::INTR_NO) {
+        _resource->intr_no = be32toh(((uint32_t *)_prop->addr)[0]);
+    }
     return;
 }
 
@@ -424,8 +427,13 @@ bool DTB::find_via_path(const char *_path, resource_t *_resource) {
         // printf("node->props[i].name: %s\n", node->props[i].name);
         if (strcmp(node->props[i].name, "reg") == 0) {
             // 填充数据
+            _resource->type |= resource_t::MEM;
             fill_resource(_resource, node, &node->props[i]);
-            break;
+        }
+        else if (strcmp(node->props[i].name, "interrupts") == 0) {
+            // 填充数据
+            _resource->type |= resource_t::INTR_NO;
+            fill_resource(_resource, node, &node->props[i]);
         }
     }
     return true;
@@ -443,6 +451,12 @@ size_t DTB::find_via_prefix(const char *_prefix, resource_t *_resource) {
             for (size_t j = 0; j < nodes[i].prop_count; j++) {
                 if (strcmp(nodes[i].props[j].name, "reg") == 0) {
                     _resource[res].type |= resource_t::MEM;
+                    // 填充数据
+                    fill_resource(&_resource[res], &nodes[i],
+                                  &nodes[i].props[j]);
+                }
+                else if (strcmp(nodes[i].props[j].name, "interrupts") == 0) {
+                    _resource[res].type |= resource_t::INTR_NO;
                     // 填充数据
                     fill_resource(&_resource[res], &nodes[i],
                                   &nodes[i].props[j]);
