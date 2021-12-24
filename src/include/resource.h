@@ -35,21 +35,18 @@ struct resource_t {
     uint8_t type;
     /// 资源名称
     char *name;
-    /// 当资源类型为 MEM 时，uinon 保存内存地址
-    union {
-        struct {
-            uintptr_t addr;
-            size_t    len;
-        } mem;
-        struct {
-            uint8_t intr_no;
-        } intr;
-    };
+    /// 内存信息
+    struct {
+        uintptr_t addr;
+        size_t    len;
+    } mem;
+    /// 中断号
+    uint8_t intr_no;
 
     resource_t(void) : type(0), name(nullptr) {
-        mem.addr     = 0;
-        mem.len      = 0;
-        intr.intr_no = 0;
+        mem.addr = 0;
+        mem.len  = 0;
+        intr_no  = 0;
         return;
     }
 
@@ -65,7 +62,7 @@ struct resource_t {
             printf("MEM(0x%p, 0x%p)", _res.mem.addr, _res.mem.len);
         }
         if (_res.type & INTR_NO) {
-            printf(", INTR_NO(0x%p)", _res.intr.intr_no);
+            printf(", INTR_NO(0x%p)", _res.intr_no);
         }
         return _os;
     }
