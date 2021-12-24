@@ -306,4 +306,15 @@ size_t virtio_mmio_drv_t::rw(virtio_blk_req_t &_req, void *_buf) {
     return 0;
 }
 
+void virtio_mmio_drv_t::set_intr_ack(void) {
+    IO::get_instance().write32(
+        &regs->interrupt_ack,
+        IO::get_instance().read32(&regs->interrupt_status));
+    return;
+}
+
+size_t virtio_mmio_drv_t::get_queue_len(void) {
+    return queues.at(0)->virtq->len;
+}
+
 define_call_back(virtio_mmio_drv_t)
