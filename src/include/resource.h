@@ -33,17 +33,15 @@ struct resource_t {
     uint8_t type;
     /// 资源名称
     char *name;
-    /// 当资源类型为 MEM 时，uinon 保存内存地址
-    union {
-        struct {
-            uintptr_t addr;
-            size_t    len;
-        } mem;
-    };
+    /// 内存信息
+    struct {
+        uintptr_t addr;
+        size_t    len;
+    } mem;
 
     resource_t(void) : type(0), name(nullptr) {
-        mem.addr     = 0;
-        mem.len      = 0;
+        mem.addr = 0;
+        mem.len  = 0;
         return;
     }
 
