@@ -30,6 +30,9 @@
 void virtio_mmio_intr(uint8_t _no) {
     // 遍历设备列表，寻找驱动号对应的设备
     dev_t *dev = DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(_no);
+    printf("------------\n");
+    std::cout<<*dev<<std::endl;
+    printf("++++++++++++\n");
     dev->drv->init();
     return;
 }
