@@ -410,6 +410,7 @@ bool DTB::dtb_init(void) {
     return true;
 }
 
+/// @todo 这里看起来似乎可以优化
 bool DTB::find_via_path(const char *_path, resource_t *_resource) {
     // 找到节点
     auto node = find_node_via_path(_path);
@@ -426,6 +427,7 @@ bool DTB::find_via_path(const char *_path, resource_t *_resource) {
     return true;
 }
 
+/// @todo 这里看起来似乎可以优化
 size_t DTB::find_via_prefix(const char *_prefix, resource_t *_resource) {
     size_t res = 0;
     // 遍历所有节点，查找
@@ -436,6 +438,7 @@ size_t DTB::find_via_prefix(const char *_prefix, resource_t *_resource) {
             // 找到 reg
             for (size_t j = 0; j < nodes[i].prop_count; j++) {
                 if (strcmp(nodes[i].props[j].name, "reg") == 0) {
+                    _resource[res].type |= resource_t::MEM;
                     // 填充数据
                     fill_resource(&_resource[res], &nodes[i],
                                   &nodes[i].props[j]);
@@ -579,8 +582,7 @@ bool init(void) {
 
 resource_t get_memory(void) {
     resource_t resource;
-    // 设置 resource 基本信息
-    resource.type = resource_t::MEM;
+    // 获取资源信息
     assert(DTB::get_instance().find_via_prefix("memory@", &resource) == 1);
     return resource;
 }
