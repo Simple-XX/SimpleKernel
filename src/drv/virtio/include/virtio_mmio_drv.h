@@ -259,7 +259,7 @@ public:
         uint32_t                        type;
         uint32_t                        reserved;
         uint64_t                        sector;
-        uint8_t *                       data;
+        uint8_t                        *data;
         /// 设备返回状态 成功
         static constexpr const uint32_t OK = 0;
         /// 设备返回状态 设备或驱动出错
@@ -274,6 +274,8 @@ public:
     static constexpr const size_t VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
 
     size_t rw(virtio_blk_req_t &_req, void *_buf);
+    void   set_intr_ack(void);
+    size_t get_queue_len(void);
 };
 
 declare_call_back(virtio_mmio_drv_t);
