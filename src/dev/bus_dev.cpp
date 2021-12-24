@@ -84,7 +84,7 @@ dev_t *bus_dev_t::get_dev_via_intr_no(uint8_t _no) {
     // 遍历设备向量
     for (auto i : devs) {
         // 寻找对应的设备
-        if (i->resource.intr.intr_no == _no) {
+        if (i->resource.intr_no == _no) {
             return i;
         }
     }
