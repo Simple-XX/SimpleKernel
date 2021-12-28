@@ -248,7 +248,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     printf("virtio blk init\n");
     virtio_mmio_drv_t::virtio_blk_req_t *req =
         new virtio_mmio_drv_t::virtio_blk_req_t;
-    req->type   = 1;
+    req->type   = virtio_blk_req_t::IN;
     req->sector = 0;
     void *buf   = malloc(512);
     memset(buf, 1, 512);

@@ -211,11 +211,6 @@ private:
         {NAME2STR(BLK_F_CONFIG_WCE), BLK_F_CONFIG_WCE, false},
     };
 
-    /// virtio mmio 寄存器基地址
-    virtio_regs_t *regs;
-    /// virtio queue，有些设备使用多个队列
-    mystl::vector<virtio_queue_t *> queues;
-
     /**
      * @brief 设置设备 features
      * @param  _features        要设置的 feature 向量
@@ -230,6 +225,11 @@ private:
 
 protected:
 public:
+    /// virtio mmio 寄存器基地址
+    virtio_regs_t *regs;
+    /// virtio queue，有些设备使用多个队列
+    mystl::vector<virtio_queue_t *> queues;
+
     virtio_mmio_drv_t(void);
     virtio_mmio_drv_t(const void *_addr);
     virtio_mmio_drv_t(const resource_t &_resource);
