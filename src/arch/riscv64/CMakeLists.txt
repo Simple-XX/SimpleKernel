@@ -17,9 +17,13 @@ find_asm_source_files(intr_asm_src ${arch_SOURCE_DIR}/intr)
 aux_source_directory(${arch_SOURCE_DIR}/intr intr_cpp_src)
 set(intr_src ${intr_asm_src} ${intr_cpp_src})
 
-set(arch_src ${boot_src} ${intr_src})
+find_asm_source_files(task_asm_src ${arch_SOURCE_DIR}/task)
+aux_source_directory(${arch_SOURCE_DIR}/task task_cpp_src)
+set(task_src ${task_asm_src} ${task_cpp_src})
 
-# 添加子模块
+set(arch_src ${boot_src} ${intr_src} ${task_src})
+
+# 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
 # 添加头文件搜索路径

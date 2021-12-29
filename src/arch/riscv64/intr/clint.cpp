@@ -42,3 +42,10 @@ int32_t CLINT::init(void) {
     info("clint init.\n");
     return 0;
 }
+
+int32_t CLINT::init_other_core(void) {
+    // 开启内部中断
+    CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SSIE);
+    info("clint other init.\n");
+    return 0;
+}

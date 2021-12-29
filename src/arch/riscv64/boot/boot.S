@@ -12,6 +12,7 @@
 .extern cpp_init
 .extern boot_info_addr
 .extern dtb_init_hart
+/*
 _start:
     // 保存 sbi 传递的参数
     // 将 a0 的值传递给 dtb_init_hart
@@ -24,6 +25,18 @@ _start:
     call cpp_init
     // 跳转到 C 代码执行
     call kernel_main
+*/
+
+_start:
+    # 为每个 core 计算栈地址
+    add t0, a0, 1
+    slli t0, t0, 12
+    # 设置栈
+    la sp, stack_top
+    add sp, sp, t0
+    call kernel_main
+loop:
+    j loop
 
 // 声明所属段
 .section .bss

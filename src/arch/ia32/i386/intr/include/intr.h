@@ -319,4 +319,10 @@ public:
     const char *get_intr_name(uint8_t _no);
 };
 
+class TIMER {
+public:
+    static TIMER &get_instance(void);
+    void init(void);
+};
+
 #endif /* _INTR_H_ */

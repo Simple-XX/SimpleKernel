@@ -51,3 +51,12 @@ uint8_t OPENSBI::get_char(void) {
 void OPENSBI::set_timer(uint64_t _value) {
     ecall(SET_TIMER, _value, 0, 0, 0);
 }
+
+void OPENSBI::send_ipi(const unsigned long _hart_mask) {
+    ecall(SEND_IPI, (uintptr_t)&_hart_mask, 0, 0, 0);
+}
+
+void OPENSBI::hart_start(unsigned long _hartid, unsigned long _start_addr,
+                         unsigned long _priv) {
+    ecall(EID_HSM, _hartid, _start_addr, _priv, FID_HSM_START);
+}

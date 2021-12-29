@@ -23,9 +23,6 @@
 #include "io.h"
 #include "intr.h"
 
-/// 这个值在启动时由 opensbi 传递，暂时写死
-static constexpr const uint64_t hart = 0;
-
 const uint64_t PLIC::PLIC_PRIORITY = PLIC::base_addr + 0x0;
 const uint64_t PLIC::PLIC_PENDING  = PLIC::base_addr + 0x1000;
 uintptr_t      PLIC::base_addr;
@@ -70,13 +67,24 @@ int32_t PLIC::init(void) {
     }
     // TODO: 多核情况下设置所有 hart
     // 将当前 hart 的 S 模式优先级阈值设置为 0
-    IO::get_instance().write32((void *)PLIC_SPRIORITY(hart), 0);
+    IO::get_instance().write32((void *)PLIC_SPRIORITY(CPU::get_curr_core_id()),
+                               0);
     // 注册外部中断处理函数
     INTR::get_instance().register_interrupt_handler(INTR::INTR_S_EXTERNEL,
-                                                     externel_intr);
+                                                    externel_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
     info("plic init.\n");
+    return 0;
+}
+
+int32_t PLIC::init_other_core(void) {
+    // 将当前 hart 的 S 模式优先级阈值设置为 0
+    IO::get_instance().write32((void *)PLIC_SPRIORITY(CPU::get_curr_core_id()),
+                               0);
+    // 开启外部中断
+    CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
+    info("plic other init.\n");
     return 0;
 }
 
@@ -87,23 +95,28 @@ void PLIC::set(uint8_t _no, bool _status) {
     // 为当前 hart 的 S 模式设置 uart 的 enable
     if (_status) {
         IO::get_instance().write32(
-            (void *)PLIC_SENABLE(hart),
-            IO::get_instance().read32((void *)PLIC_SENABLE(hart)) | (1 << _no));
+            (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart),
+            IO::get_instance().read32(
+                (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart)) |
+                (1 << _no));
     }
     else {
         IO::get_instance().write32(
-            (void *)PLIC_SENABLE(hart),
-            IO::get_instance().read32((void *)PLIC_SENABLE(hart)) &
+            (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart),
+            IO::get_instance().read32(
+                (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart)) &
                 ~(1 << _no));
     }
     return;
 }
 
 uint8_t PLIC::get(void) {
-    return IO::get_instance().read32((void *)PLIC_SCLAIM(hart));
+    return IO::get_instance().read32(
+        (void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart));
 }
 
 void PLIC::done(uint8_t _no) {
-    IO::get_instance().write32((void *)PLIC_SCLAIM(hart), _no);
+    IO::get_instance().write32((void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart),
+                               _no);
     return;
 }

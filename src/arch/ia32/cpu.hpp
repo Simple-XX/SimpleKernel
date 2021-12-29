@@ -21,6 +21,7 @@
 #include "stdbool.h"
 #include "assert.h"
 #include "string.h"
+#include "iostream"
 
 /**
  * @brief cpu 相关
@@ -543,6 +544,43 @@ namespace CPU {
             return version & IA32_X2APIC_SIVR_EOI_ENABLE_BIT;
         }
     };
+
+    // 上下文，用于中断/任务切换
+    struct context_t {
+        uintptr_t            r15;
+        uintptr_t            r14;
+        uintptr_t            r13;
+        uintptr_t            r12;
+        uintptr_t            r11;
+        uintptr_t            r10;
+        uintptr_t            r9;
+        uintptr_t            r8;
+        uintptr_t            rbp;
+        uintptr_t            rdi;
+        uintptr_t            rsi;
+        uintptr_t            rdx;
+        uintptr_t            rcx;
+        uintptr_t            rbx;
+        uintptr_t            rax;
+        uintptr_t            rip;
+        uintptr_t            cs;
+        uintptr_t            rflags;
+        uintptr_t            rsp;
+        uintptr_t            ss;
+        friend std::ostream &operator<<(std::ostream &   _os,
+                                        const context_t &_context) {
+            printf("rip: 0x%p, ", _context.rip);
+            printf("rsp: 0x%p, ", _context.rsp);
+            printf("rbp: 0x%p, ", _context.rbp);
+            printf("rbx: 0x%p, ", _context.rbx);
+            printf("rcx: 0x%p, ", _context.rcx);
+            printf("rdx: 0x%p, ", _context.rdx);
+            printf("rsi: 0x%p, ", _context.rsi);
+            printf("rdi: 0x%p\n", _context.rdi);
+            return _os;
+        }
+    };
+
 };
 
 #endif /* _CPU_HPP_ */
