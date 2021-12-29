@@ -1,8 +1,34 @@
 
 // This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-#
+//
 // intr_s.S for Simple-XX/SimpleKernel.
 
+#include "context_switch.S"
+
+// 保存所有寄存器
+.globl trap_entry
+.extern trap_handler
+.align 4
+trap_entry:
+    csrr t0, sscratch
+    context_save t0
+    
+    // 调用 intr.cpp: trap_handler
+    // 传递参数
+    csrr a0, sepc
+    csrr a1, stval
+    csrr a2, scause
+    mv   a3, sp
+    csrr a4, sstatus
+    csrr a5, sscratch
+    jal trap_handler
+
+    csrr t0, sscratch
+    context_load t0
+    // 跳转到 sepc 处执行
+    sret
+
+/*
 .equ REGBYTES, 8
 .equ SAVE_REGS, 16
 .equ CONTEXT_SIZE, (SAVE_REGS * REGBYTES)
@@ -80,3 +106,4 @@ trap_entry:
 
     // return to whatever we were doing in the kernel.
     sret
+*/

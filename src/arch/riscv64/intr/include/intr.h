@@ -98,6 +98,7 @@ public:
      * @return int32_t         成功返回 0
      */
     int32_t init(void);
+    int32_t init_other_core(void);
 
     /**
      * @brief 注册中断处理函数
@@ -147,6 +148,7 @@ public:
      * @return int32_t         成功返回 0
      */
     int32_t init(void);
+    int32_t init_other_core(void);
 };
 
 /**
@@ -182,6 +184,7 @@ public:
      * @return int32_t         成功返回 0
      */
     int32_t init(void);
+    int32_t init_other_core(void);
 
     /**
      * @brief 向 PLIC 询问中断
@@ -220,6 +223,7 @@ public:
      * @brief 初始化
      */
     void init(void);
+    void init_other_core(void);
 };
 
 #endif /* _INTR_H_ */

@@ -19,6 +19,9 @@
 #include "intr.h"
 #include "cpu.hpp"
 #include "vmm.h"
+#include "scheduler.h"
+#include "task.h"
+#include "spinlock.h"
 
 /**
  * @brief 缺页处理
@@ -44,6 +47,8 @@ static void pg_store_excp(void) {
     return;
 }
 
+static spinlock_t intr_spinlock("intr");
+
 /**
  * @brief 中断处理函数
  * @param  _scause         原因
@@ -52,7 +57,7 @@ static void pg_store_excp(void) {
  */
 extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
                              uint64_t _stval) {
-
+    intr_spinlock.acquire();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -83,6 +88,7 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
+    intr_spinlock.release();
     return;
 }
 
@@ -127,6 +133,19 @@ int32_t INTR::init(void) {
     // 设置时钟中断
     TIMER::get_instance().init();
     info("intr init.\n");
+    return 0;
+}
+
+int32_t INTR::init_other_core(void) {
+    // 设置 trap vector
+    CPU::WRITE_STVEC((uintptr_t)trap_entry);
+    // 直接跳转到处理函数
+    CPU::STVEC_DIRECT();
+    // 内部中断初始化
+    CLINT::get_instance().init_other_core();
+    // 外部中断初始化
+    PLIC::get_instance().init_other_core();
+    info("intr other 0x%X init.\n", CPU::get_curr_core_id());
     return 0;
 }
 

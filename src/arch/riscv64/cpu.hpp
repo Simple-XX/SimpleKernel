@@ -20,6 +20,7 @@
 #include "stdio.h"
 #include "stdint.h"
 #include "stdbool.h"
+#include "iostream"
 
 /**
  * @brief cpu 相关
@@ -332,6 +333,228 @@ namespace CPU {
         // the zero, zero means flush all TLB entries.
         __asm__ volatile("sfence.vma zero, zero");
         return;
+    }
+
+    // 通用寄存器
+    struct xregs_t {
+        uintptr_t zero;
+        uintptr_t ra;
+        uintptr_t sp;
+        uintptr_t gp;
+        uintptr_t tp;
+        uintptr_t t0;
+        uintptr_t t1;
+        uintptr_t t2;
+        uintptr_t s0;
+        uintptr_t s1;
+        uintptr_t a0;
+        uintptr_t a1;
+        uintptr_t a2;
+        uintptr_t a3;
+        uintptr_t a4;
+        uintptr_t a5;
+        uintptr_t a6;
+        uintptr_t a7;
+        uintptr_t s2;
+        uintptr_t s3;
+        uintptr_t s4;
+        uintptr_t s5;
+        uintptr_t s6;
+        uintptr_t s7;
+        uintptr_t s8;
+        uintptr_t s9;
+        uintptr_t s10;
+        uintptr_t s11;
+        uintptr_t t3;
+        uintptr_t t4;
+        uintptr_t t5;
+        uintptr_t t6;
+    };
+
+    // 浮点寄存器
+    struct fregs_t {
+        uintptr_t ft0;
+        uintptr_t ft1;
+        uintptr_t ft2;
+        uintptr_t ft3;
+        uintptr_t ft4;
+        uintptr_t ft5;
+        uintptr_t ft6;
+        uintptr_t ft7;
+        uintptr_t fs0;
+        uintptr_t fs1;
+        uintptr_t fa0;
+        uintptr_t fa1;
+        uintptr_t fa2;
+        uintptr_t fa3;
+        uintptr_t fa4;
+        uintptr_t fa5;
+        uintptr_t fa6;
+        uintptr_t fa7;
+        uintptr_t fs2;
+        uintptr_t fs3;
+        uintptr_t fs4;
+        uintptr_t fs5;
+        uintptr_t fs6;
+        uintptr_t fs7;
+        uintptr_t fs8;
+        uintptr_t fs9;
+        uintptr_t fs10;
+        uintptr_t fs11;
+        uintptr_t ft8;
+        uintptr_t ft9;
+        uintptr_t ft10;
+        uintptr_t ft11;
+    };
+
+    struct caller_regs_t {
+        uintptr_t ra;
+        uintptr_t t0;
+        uintptr_t t2;
+        uintptr_t a0;
+        uintptr_t a1;
+        uintptr_t a2;
+        uintptr_t a3;
+        uintptr_t a4;
+        uintptr_t a5;
+        uintptr_t a6;
+        uintptr_t a7;
+        uintptr_t t3;
+        uintptr_t t4;
+        uintptr_t t5;
+        uintptr_t t6;
+        uintptr_t ft0;
+        uintptr_t ft1;
+        uintptr_t ft2;
+        uintptr_t ft3;
+        uintptr_t ft4;
+        uintptr_t ft5;
+        uintptr_t ft6;
+        uintptr_t ft7;
+        uintptr_t fa0;
+        uintptr_t fa1;
+        uintptr_t fa2;
+        uintptr_t fa3;
+        uintptr_t fa4;
+        uintptr_t fa5;
+        uintptr_t fa6;
+        uintptr_t fa7;
+        uintptr_t ft8;
+        uintptr_t ft9;
+        uintptr_t ft10;
+        uintptr_t ft11;
+    };
+
+    struct callee_regs_t {
+        uintptr_t            sp;
+        uintptr_t            s0;
+        uintptr_t            s1;
+        uintptr_t            s2;
+        uintptr_t            s3;
+        uintptr_t            s4;
+        uintptr_t            s5;
+        uintptr_t            s6;
+        uintptr_t            s7;
+        uintptr_t            s8;
+        uintptr_t            s9;
+        uintptr_t            s10;
+        uintptr_t            s11;
+        uintptr_t            fs0;
+        uintptr_t            fs1;
+        uintptr_t            fs2;
+        uintptr_t            fs3;
+        uintptr_t            fs4;
+        uintptr_t            fs5;
+        uintptr_t            fs6;
+        uintptr_t            fs7;
+        uintptr_t            fs8;
+        uintptr_t            fs9;
+        uintptr_t            fs10;
+        uintptr_t            fs11;
+        friend std::ostream &operator<<(std::ostream &       _os,
+                                        const callee_regs_t &_callee_regs) {
+            printf("sp: 0x%p, ", _callee_regs.sp);
+            printf("s0: 0x%p, ", _callee_regs.s0);
+            printf("s1: 0x%p, ", _callee_regs.s1);
+            printf("s2: 0x%p\n", _callee_regs.s2);
+            printf("s3: 0x%p, ", _callee_regs.s3);
+            printf("s4: 0x%p, ", _callee_regs.s4);
+            printf("s5: 0x%p, ", _callee_regs.s5);
+            printf("s6: 0x%p\n", _callee_regs.s6);
+            printf("s7: 0x%p, ", _callee_regs.s7);
+            printf("s8: 0x%p, ", _callee_regs.s8);
+            printf("s9: 0x%p, ", _callee_regs.s9);
+            printf("s10: 0x%p\n", _callee_regs.s10);
+            printf("s11: 0x%p, ", _callee_regs.s11);
+            printf("fs0: 0x%p, ", _callee_regs.fs0);
+            printf("fs1: 0x%p, ", _callee_regs.fs1);
+            printf("fs2: 0x%p\n", _callee_regs.fs2);
+            printf("fs3: 0x%p, ", _callee_regs.fs3);
+            printf("fs4: 0x%p, ", _callee_regs.fs4);
+            printf("fs5: 0x%p, ", _callee_regs.fs5);
+            printf("fs6: 0x%p\n", _callee_regs.fs6);
+            printf("fs7: 0x%p, ", _callee_regs.fs7);
+            printf("fs8: 0x%p, ", _callee_regs.fs8);
+            printf("fs9: 0x%p, ", _callee_regs.fs9);
+            printf("fs10: 0x%p\n", _callee_regs.fs10);
+            printf("fs11: 0x%p", _callee_regs.fs11);
+            return _os;
+        }
+    };
+
+    // 上下文，用于中断/任务切换
+    struct context_t {
+        uintptr_t            ra;
+        CPU::callee_regs_t   callee_regs;
+        uintptr_t            satp;
+        uintptr_t            sepc;
+        uintptr_t            sscratch;
+        friend std::ostream &operator<<(std::ostream &   _os,
+                                        const context_t &_context) {
+            printf("ra: 0x%p\n", _context.ra);
+            std::cout << _context.callee_regs << std::endl;
+            printf("satp: 0x%p, ", _context.satp);
+            printf("sepc: 0x%p, ", _context.sepc);
+            printf("sscratch: 0x%p", _context.sscratch);
+            return _os;
+        }
+    };
+
+    extern "C" uintptr_t stack_top;
+    // 栈大小
+    static constexpr const uintptr_t STACK_SIZE = 4096;
+    static constexpr const uintptr_t CPUS       = 2;
+    // 根据 sp 的值计算当前 core id
+    static inline size_t get_curr_core_id(void) {
+        uint64_t stack_bottom = (uint64_t)&stack_top + STACK_SIZE * 2;
+        uint64_t sp           = READ_SP();
+        // 各个 core 的栈是可以计算的，根据相对 stack_top
+        // 的值可以确定当前是哪个 core
+        uintptr_t tmp = stack_bottom - sp;
+        if (tmp <= 0) {
+            err("get_curr_core_id tmp <=0.\n");
+        }
+        if (tmp > STACK_SIZE) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+    static inline size_t get_curr_core_id(const uint64_t _sp) {
+        uint64_t stack_bottom = (uint64_t)&stack_top + STACK_SIZE * 2;
+        // 各个 core 的栈是可以计算的，根据相对 stack_top
+        // 的值可以确定当前是哪个 core
+        uintptr_t tmp = stack_bottom - _sp;
+        if (tmp <= 0) {
+            err("get_curr_core_id tmp <=0.\n");
+        }
+        if (tmp > STACK_SIZE) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 
 };

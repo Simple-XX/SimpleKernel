@@ -24,6 +24,9 @@ if (${SimpleKernelArch} STREQUAL "ia32/i386")
     aux_source_directory(${arch_SOURCE_DIR}/i386/intr intr_cpp_src)
     set(intr_src ${intr_asm_src}  ${intr_cpp_src})
 
+    find_asm_source_files(task_asm_src ${arch_SOURCE_DIR}/i386/task)
+    aux_source_directory(${arch_SOURCE_DIR}/i386/task task_cpp_src)
+    set(task_src ${task_asm_src}  ${task_cpp_src})
 
 # 64 位
 elseif (${SimpleKernelArch} STREQUAL "ia32/x86_64")
@@ -39,6 +42,11 @@ elseif (${SimpleKernelArch} STREQUAL "ia32/x86_64")
     find_asm_source_files(intr_asm_src ${arch_SOURCE_DIR}/x86_64/intr)
     aux_source_directory(${arch_SOURCE_DIR}/x86_64/intr intr_cpp_src)
     set(intr_src ${intr_asm_src}  ${intr_cpp_src})
+
+    find_asm_source_files(task_asm_src ${arch_SOURCE_DIR}/x86_64/task)
+    aux_source_directory(${arch_SOURCE_DIR}/x86_64/task task_cpp_src)
+    set(task_src ${task_asm_src}  ${task_cpp_src})
+
 endif ()
 
 # 寻找 CXX 文件
@@ -50,13 +58,14 @@ aux_source_directory(${arch_SOURCE_DIR}/apic apic_cpp_src)
 set(apic_src ${apic_cpp_src})
 
 # 设置子模块所有的源码
-set(arch_src ${boot_src} ${port_src} ${gdt_src} ${intr_src} ${apic_src})
+set(arch_src ${boot_src} ${port_src} ${gdt_src} ${intr_src} ${apic_src} ${task_src}) 
 
-# 添加子模块
+# 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
 # 添加头文件搜索路径
 target_include_arch_header_files(${PROJECT_NAME})
 target_include_libc_header_files(${PROJECT_NAME})
+target_include_libcxx_header_files(${PROJECT_NAME})
 target_include_common_header_files(${PROJECT_NAME})
 target_include_drv_header_files(${PROJECT_NAME})

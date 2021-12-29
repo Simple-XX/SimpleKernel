@@ -43,6 +43,19 @@ private:
     /// 关机
     static constexpr const uint32_t SHUTDOWN = 0x8;
 
+    static constexpr const uint32_t EID_HSM        = 0x48534D;
+    static constexpr const uint32_t FID_HSM_START  = 0;
+    static constexpr const uint32_t FID_HSM_STOP   = 1;
+    static constexpr const uint32_t FID_HSM_STATUS = 2;
+    static constexpr const uint32_t EID_TIME       = 0x54494D45;
+    static constexpr const uint32_t FID_TIME_SET   = 0;
+
+    // TODO
+    struct sbi_ret_t {
+        long error;
+        long value;
+    };
+
     /**
      * @brief ecall 接口
      * @param  _num            系统调用号 使用 a7 传递
@@ -81,6 +94,11 @@ public:
      * @param  _value          要设置的时间
      */
     void set_timer(uint64_t _value);
+
+    void send_ipi(const unsigned long _hart_mask);
+    // privilege mode to set to (1 = supervisor, 0 = user)
+    void hart_start(unsigned long _hartid, unsigned long _start_addr,
+                           unsigned long _priv);
 };
 
 #endif /* _OPENSBI_H_ */

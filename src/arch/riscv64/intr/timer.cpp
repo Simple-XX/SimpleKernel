@@ -19,6 +19,8 @@
 #include "cpu.hpp"
 #include "opensbi.h"
 #include "intr.h"
+#include "task.h"
+#include "scheduler.h"
 
 /// timer interrupt interval
 /// @todo 从 dts 读取
@@ -39,6 +41,9 @@ void set_next(void) {
 void timer_intr(void) {
     // 每次执行中断时设置下一次中断的时间
     set_next();
+    // TODO: 每次时钟中断更新当前任务的执行时间
+    TASK::curr_task[CPU::get_curr_core_id()]->slice += INTERVAL;
+    TASK::curr_task[CPU::get_curr_core_id()]->slice_total += INTERVAL;
     return;
 }
 
@@ -50,11 +55,21 @@ TIMER &TIMER::get_instance(void) {
 
 void TIMER::init(void) {
     // 注册中断函数
-    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_TIMER, timer_intr);
+    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_TIMER,
+                                                    timer_intr);
     // 设置初次中断
     OPENSBI::get_instance().set_timer(CPU::READ_TIME());
     // 开启时钟中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
     info("timer init.\n");
+    return;
+}
+
+void TIMER::init_other_core(void) {
+    // 设置初次中断
+    OPENSBI::get_instance().set_timer(CPU::READ_TIME());
+    // 开启时钟中断
+    CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
+    info("timer other init.\n");
     return;
 }
