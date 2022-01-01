@@ -60,7 +60,8 @@ OPENSBI::sbiret_t OPENSBI::set_timer(uint64_t _value) {
 }
 
 OPENSBI::sbiret_t OPENSBI::send_ipi(const unsigned long *_hart_mask) {
-    return ecall((uintptr_t)_hart_mask, 0, 0, 0, 0, 0, FID_SEND_IPI, EID_SEND_IPI);
+    return ecall((uintptr_t)_hart_mask, 0, 0, 0, 0, 0, FID_SEND_IPI,
+                 EID_SEND_IPI);
 }
 
 OPENSBI::sbiret_t OPENSBI::hart_start(unsigned long _hartid,
