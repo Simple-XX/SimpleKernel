@@ -1,7 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
-#
-// intr_s.S for Simple-XX/SimpleKernel.
+/**
+ * @file intr_s.S
+ * @brief 中断处理入口
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-01-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 .equ REGBYTES, 8
 .equ SAVE_REGS, 16
