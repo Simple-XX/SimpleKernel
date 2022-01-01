@@ -6,7 +6,7 @@
 
 #include "spinlock.h"
 #include "cpu.hpp"
-#include "task.h"
+#include "scheduler.h"
 #include "core.hpp"
 #include "cpu.hpp"
 
@@ -62,11 +62,11 @@ void spinlock_t::push_off(void) {
     uint64_t x   = CPU::READ_SSTATUS();
     int      old = (x & CPU::SSTATUS_SIE) != 0;
     CPU::DISABLE_INTR();
-    if (TASK::curr_task[CPU::get_curr_core_id()] != nullptr) {
-        if (TASK::curr_task[CPU::get_curr_core_id()]->noff == 0) {
-            TASK::curr_task[CPU::get_curr_core_id()]->is_intr_enable = old;
+    if (SCHEDULER::curr_task[CPU::get_curr_core_id()] != nullptr) {
+        if (SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff == 0) {
+            SCHEDULER::curr_task[CPU::get_curr_core_id()]->is_intr_enable = old;
         }
-        TASK::curr_task[CPU::get_curr_core_id()]->noff += 1;
+        SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff += 1;
     }
     return;
 }
@@ -78,13 +78,13 @@ void spinlock_t::pop_off(void) {
     if (old) {
         err("pop_off - interruptible\n");
     }
-    if (TASK::curr_task[CPU::get_curr_core_id()] != nullptr) {
-        if (TASK::curr_task[CPU::get_curr_core_id()]->noff < 1) {
+    if (SCHEDULER::curr_task[CPU::get_curr_core_id()] != nullptr) {
+        if (SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff < 1) {
             err("pop_off\n");
         }
-        TASK::curr_task[CPU::get_curr_core_id()]->noff -= 1;
-        if (TASK::curr_task[CPU::get_curr_core_id()]->noff == 0 &&
-            TASK::curr_task[CPU::get_curr_core_id()]->is_intr_enable) {
+        SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff -= 1;
+        if (SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff == 0 &&
+            SCHEDULER::curr_task[CPU::get_curr_core_id()]->is_intr_enable) {
             CPU::ENABLE_INTR();
         }
     }

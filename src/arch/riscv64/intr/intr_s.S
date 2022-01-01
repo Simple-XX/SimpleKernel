@@ -3,6 +3,7 @@
 //
 // intr_s.S for Simple-XX/SimpleKernel.
 
+///*
 #include "context_switch.S"
 
 // 保存所有寄存器
@@ -22,11 +23,13 @@ trap_entry:
     csrr a4, sstatus
     csrr a5, sscratch
     jal trap_handler
+    csrw sepc, a0
 
     csrr t0, sscratch
     context_load t0
     // 跳转到 sepc 处执行
     sret
+//*/
 
 /*
 .equ REGBYTES, 8

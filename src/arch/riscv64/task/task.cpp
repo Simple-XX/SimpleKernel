@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// task.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file task.cpp
+ * @brief 任务抽象实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2022-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2022-01-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdlib.h"
 #include "stdint.h"
@@ -14,16 +24,9 @@
 #include "scheduler.h"
 #include "boot_info.h"
 
-extern "C" void switch_context_init(CPU::context_t *_context);
 
-// 当前任务
-TASK::task_t *TASK::curr_task[CPU::CPUS];
-// 任务向量
-mystl::queue<TASK::task_t *> *TASK::task_queue;
-TASK::task_t *                TASK::task_os;
-
-TASK::task_t::task_t(mystl::string _name, void (*_task)(void)) : name(_name) {
-    pid      = alloc_pid();
+task_t::task_t(mystl::string _name,pid_t _pid, void (*_task)(void)) : name(_name) {
+    pid      = _pid;
     state    = RUNNING;
     parent   = nullptr;
     page_dir = VMM::get_instance().get_pgd();
@@ -34,14 +37,10 @@ TASK::task_t::task_t(mystl::string _name, void (*_task)(void)) : name(_name) {
     context.sscratch       = (uintptr_t)malloc(sizeof(CPU::context_t));
     slice                  = 0;
     slice_total            = 0;
-    // 将新进程添加到链表
-    task_queue->push(this);
     return;
 }
 
-TASK::task_t::~task_t(void) {
-    // 回收 pid
-    free_pid(pid);
+task_t::~task_t(void) {
     // 停止子进程
     // 回收页目录
     // 回收栈
@@ -53,56 +52,15 @@ TASK::task_t::~task_t(void) {
     return;
 }
 
-void TASK::exit(uint32_t _exit_code) {
-    // 从队列中删除
-    TASK::curr_task[CPU::get_curr_core_id()]->state = ZOMBIE;
-    // 切换到调度器
-    SCHEDULER::sched();
-    // 不会执行到这里
-    assert(0);
+void task_t::exit(uint32_t _exit_code) {
+    // 设置状态
+    state = ZOMBIE;
     return;
 }
 
-std::ostream &operator<<(std::ostream &_os, const TASK::task_t &_task) {
+std::ostream &operator<<(std::ostream &_os, const task_t &_task) {
     _os << _task.name << ": ";
     printf("pid 0x%X, state 0x%X\n", _task.pid, _task.state);
     std::cout << _task.context;
     return _os;
-}
-
-bool TASK::init(void) {
-    // 初始化进程链表
-    task_queue = new mystl::queue<task_t *>;
-    // 当前进程
-    curr_task[CPU::get_curr_core_id()]         = new task_t("init", nullptr);
-    curr_task[CPU::get_curr_core_id()]->hartid = CPU::get_curr_core_id();
-    // 原地跳转，填充启动进程的 task_t 信息
-    switch_context_init(&curr_task[CPU::get_curr_core_id()]->context);
-    task_os = curr_task[CPU::get_curr_core_id()];
-    task_queue->pop();
-    info("task init.\n");
-    return true;
-}
-
-bool TASK::init_other_core(void) {
-    // 当前进程
-    curr_task[CPU::get_curr_core_id()]         = new task_t("init", nullptr);
-    curr_task[CPU::get_curr_core_id()]->hartid = CPU::get_curr_core_id();
-    // 原地跳转，填充启动进程的 task_t 信息
-    switch_context_init(&curr_task[CPU::get_curr_core_id()]->context);
-    task_os = curr_task[CPU::get_curr_core_id()];
-    info("task other init.\n");
-    return true;
-}
-
-pid_t TASK::g_pid = 0;
-
-pid_t TASK::alloc_pid(void) {
-    pid_t res = g_pid++;
-    return res;
-}
-
-void TASK::free_pid(pid_t _pid) {
-    _pid = _pid;
-    return;
 }

@@ -25,7 +25,7 @@ struct core_t {
     // 当前 core id
     size_t core_id;
     // 此 core 上运行的进程
-    TASK::task_t *curr_task;
+    task_t *curr_task;
 };
 
 // static core_t cores[core_t::CORE_MAX_COUNT];

@@ -47,7 +47,14 @@ static void pg_store_excp(void) {
     return;
 }
 
-static spinlock_t intr_spinlock("intr");
+// static spinlock_t intr_spinlock("intr");
+
+static void tmp(void) {
+    // struct context *ctx = ctx_now;
+    // ctx_now             = &ctx_os;
+    // sys_switch(ctx, &ctx_os);
+    return;
+}
 
 /**
  * @brief 中断处理函数
@@ -55,9 +62,12 @@ static spinlock_t intr_spinlock("intr");
  * @param  _sepc           值
  * @param  _stval          值
  */
-extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
-                             uint64_t _stval) {
-    intr_spinlock.acquire();
+extern "C" uintptr_t trap_handler(uintptr_t _sepc, uintptr_t _stval,
+                                  uintptr_t _scause, uintptr_t _sp,
+                                  uintptr_t       _sstatus,
+                                  CPU::context_t *_context) {
+    // intr_spinlock.acquire();
+    uintptr_t ret = _sepc;
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -68,7 +78,7 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
 // 中断
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
         printf("intr: %s.\n",
                INTR::get_instance().intr_names[_scause & CPU::CAUSE_CODE_MASK]);
@@ -76,11 +86,14 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 #endif
         // 跳转到对应的处理函数
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
+        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
+            ret = (uintptr_t)&tmp;
+        }
     }
     else {
 // 异常
 // 跳转到对应的处理函数
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
         printf("excp: %s.\n",
                INTR::get_instance().excp_names[_scause & CPU::CAUSE_CODE_MASK]);
@@ -88,8 +101,8 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
-    intr_spinlock.release();
-    return;
+    // intr_spinlock.release();
+    return ret;
 }
 
 /// 中断处理入口 intr_s.S
@@ -130,8 +143,6 @@ int32_t INTR::init(void) {
     // 缺页中断
     register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
     register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
-    // 设置时钟中断
-    TIMER::get_instance().init();
     info("intr init.\n");
     return 0;
 }

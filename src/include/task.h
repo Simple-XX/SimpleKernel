@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// task.h for Simple-XX/SimpleKernel.
+/**
+ * @file task.h
+ * @brief 任务抽象头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2022-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2022-01-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _TASK_H_
 #define _TASK_H_
@@ -18,73 +28,54 @@
 #include "vmm.h"
 #include "cpu.hpp"
 
-// 任务状态
+/**
+ * @brief 任务状态
+ */
 enum task_status_t : uint8_t {
-    // 未使用
+    /// 未使用
     UNUSED,
-    // 睡眠
+    /// 睡眠
     SLEEPING,
-    // 可运行
+    /// 可运行
     RUNNABLE,
-    // 运行中
+    /// 运行中
     RUNNING,
-    // 僵尸进程
+    /// 僵尸进程
     ZOMBIE,
 };
 
-// 任务管理抽象
-class TASK {
-public:
-    // 任务抽象
-    struct task_t {
-        // 线程名
-        mystl::string name;
-        // 线程 id
-        pid_t pid;
-        // 进程状态
-        enum task_status_t state;
-        // 父进程
-        task_t *parent;
-        // 上下文
-        CPU::context_t context;
-        // 线程栈
-        uintptr_t stack;
-        // 进程页目录
-        pt_t page_dir;
-        // 本次运行时间片
-        size_t slice;
-        // 已运行时间片
-        size_t slice_total;
-        task_t(mystl::string _name = "", void (*_task)(void) = nullptr);
-        size_t hartid;
-        // Depth of push_off() nesting.
-        int noff = 0;
-        // Were interrupts enabled before push_off()?
-        bool is_intr_enable;
-        ~task_t(void);
-    };
-
-    // 当前任务
-    static task_t *curr_task[CPU::CPUS];
-    // 任务向量
-    static mystl::queue<task_t *> *task_queue;
-    // 全局 pid
-    static pid_t   g_pid;
-    static task_t *task_os;
-    // 分配 pid
-    static pid_t alloc_pid(void);
-    // 回收 pid
-    static void free_pid(pid_t _pid);
-
-protected:
-public:
-    // 初始化
-    static bool init(void);
-    static bool init_other_core(void);
-    // 获取当前任务
-    static task_t *get_curr_task(void);
+/**
+ * @brief 任务抽象
+ */
+struct task_t {
+    /// 任务名
+    mystl::string name;
+    // 任务 id
+    pid_t pid;
+    // 进程状态
+    enum task_status_t state;
+    // 父进程
+    task_t *parent;
+    // 上下文
+    CPU::context_t context;
+    // 线程栈
+    uintptr_t stack;
+    // 进程页目录
+    pt_t page_dir;
+    // 本次运行时间片
+    size_t slice;
+    // 已运行时间片
+    size_t slice_total;
+    size_t hartid;
+    // Depth of push_off() nesting.
+    int noff = 0;
+    // Were interrupts enabled before push_off()?
+    bool is_intr_enable;
+    task_t(void);
+    task_t(mystl::string _name, pid_t _pid, void (*_task)(void));
+    ~task_t(void);
     // 退出
-    static void exit(uint32_t _exit_code);
+    void exit(uint32_t _exit_code);
     // task_t 输出
     friend std::ostream &operator<<(std::ostream &_os, const task_t &_task);
 };
