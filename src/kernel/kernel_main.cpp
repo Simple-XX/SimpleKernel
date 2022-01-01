@@ -120,6 +120,7 @@ void kernel_main_smp(void) {
 void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     // 如果当前 core 不是 core0
     if (is_first_core == true) {
+        printf("0----\n");
         is_first_core = false;
         // 初始化 C++
         cpp_init();
@@ -131,11 +132,12 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         printf("1----\n");
         // 唤醒 core0
         OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,
-                                           1);
+                                           0);
         // 执行其它 core 的初始化
         kernel_main_smp();
     }
     else {
+        printf("2----\n");
         // 物理内存初始化
         PMM::get_instance().init();
         // 测试物理内存
@@ -154,9 +156,8 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         // 设置时钟中断
         TIMER::get_instance().init();
         SCHEDULER::init();
-        // OPENSBI::get_instance().hart_start(1,
-        // COMMON::KERNEL_TEXT_START_ADDR,
-        //                                    1);
+        OPENSBI::get_instance().hart_start(1, COMMON::KERNEL_TEXT_START_ADDR,
+                                           1);
         // 允许中断
         // CPU::ENABLE_INTR();
         // 显示基本信息

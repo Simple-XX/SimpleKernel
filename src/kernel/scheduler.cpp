@@ -105,7 +105,7 @@ bool SCHEDULER::init_other_core(void) {
     // 原地跳转，填充启动进程的 task_t 信息
     switch_context_init(&curr_task[CPU::get_curr_core_id()]->context);
     task_os = curr_task[CPU::get_curr_core_id()];
-    info("task other init.\n");
+    info("task other init: 0x%X.\n",CPU::get_curr_core_id());
     return true;
 }
 
