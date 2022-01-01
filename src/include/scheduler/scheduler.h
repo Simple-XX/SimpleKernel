@@ -57,6 +57,7 @@ public:
     // 删除任务
     static void rm_task(task_t *_task);
     static void task_go(int i);
+    static void switch_to_kernel(void);
 };
 
 extern void idle(void);

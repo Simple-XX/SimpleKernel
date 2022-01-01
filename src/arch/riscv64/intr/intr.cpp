@@ -49,15 +49,6 @@ static void pg_store_excp(void) {
 
 // static spinlock_t intr_spinlock("intr");
 
-extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
-static void     tmp(void) {
-    printf("tmp\n");
-    switch_context(&SCHEDULER::curr_task[CPU::get_curr_core_id()]->context,
-                       &SCHEDULER::task_os->context);
-
-    return;
-}
-
 /**
  * @brief 中断处理函数
  * @param  _scause         原因
@@ -65,14 +56,13 @@ static void     tmp(void) {
  * @param  _stval          值
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
-                                  uintptr_t _scause, uintptr_t _sp,
-                                  uintptr_t       _sstatus,
-                                  CPU::context_t *_context) {
+                             uintptr_t _scause, uintptr_t _sp,
+                             uintptr_t _sstatus, CPU::context_t *_context) {
     // intr_spinlock.acquire();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
     printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc, _stval);
 #undef DEBUG
@@ -89,8 +79,8 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
         // 如果是时钟中断
         if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
-        // 设置 sepc
-            _context->sepc=(uintptr_t)&tmp;
+            // 设置 sepc，切换到内核线程
+            _context->sepc = (uintptr_t)&SCHEDULER::switch_to_kernel;
         }
     }
     else {

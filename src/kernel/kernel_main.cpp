@@ -164,11 +164,11 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         started = true;
     }
 
-    auto task1_p = new task_t("task1", 0, &task1);
-    auto task2_p = new task_t("task2", 0, &task2);
-    auto task3_p = new task_t("task3", 0, &task3);
-    auto task4_p = new task_t("task4", 0, &task4);
-    auto task5_p = new task_t("task5", 0, &task5);
+    auto task1_p = new task_t("task1", 1, &task1);
+    auto task2_p = new task_t("task2", 2, &task2);
+    auto task3_p = new task_t("task3", 3, &task3);
+    auto task4_p = new task_t("task4", 4, &task4);
+    auto task5_p = new task_t("task5", 5, &task5);
     SCHEDULER::add_task(task1_p);
     SCHEDULER::add_task(task2_p);
     SCHEDULER::add_task(task3_p);
@@ -177,13 +177,8 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
 
     CPU::ENABLE_INTR();
 
-    int current_task = 0;
     while (1) {
-        printf("OS: Activate next task\n");
-        SCHEDULER::task_go(current_task);
-        printf("OS: Back to OS\n");
-        current_task = (current_task + 1) % 5;
-        printf("\n");
+        SCHEDULER::sched();
     }
 
     // 进入死循环

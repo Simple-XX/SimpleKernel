@@ -31,7 +31,6 @@ task_t *SCHEDULER::curr_task[CPU::CPUS];
 // 任务向量
 mystl::queue<task_t *>  *SCHEDULER::task_queue;
 task_t                  *SCHEDULER::task_os;
-mystl::vector<task_t *> *SCHEDULER::task_vector;
 
 // 获取下一个要执行的任务
 task_t *SCHEDULER::get_next_task(void) {
@@ -39,8 +38,11 @@ task_t *SCHEDULER::get_next_task(void) {
     // TODO: 如果当前任务的本次运行时间超过 1，进行切换
     // 如果任务未结束
     if (curr_task[CPU::get_curr_core_id()]->state == RUNNING) {
-        // 重新加入队列
-        task_queue->push(curr_task[CPU::get_curr_core_id()]);
+        // 如果不是 os 线程
+        if (curr_task[CPU::get_curr_core_id()]->pid != 0) {
+            // 重新加入队列
+            task_queue->push(curr_task[CPU::get_curr_core_id()]);
+        }
     }
     // 否则删除
     else {
@@ -59,7 +61,9 @@ void SCHEDULER::switch_task(void) {
     // 获取下一个线程并替换为当前线程下一个线程
     curr_task[CPU::get_curr_core_id()] = get_next_task();
     // 切换
-    switch_context(&prev->context,
+    // switch_context(&prev->context,
+    //                &curr_task[CPU::get_curr_core_id()]->context);
+    switch_context(&task_os->context,
                    &curr_task[CPU::get_curr_core_id()]->context);
     return;
 }
@@ -82,9 +86,8 @@ void idle(void) {
 }
 
 bool SCHEDULER::init(void) {
-    // 初始化进程链表
+    // 初始化进程队列
     task_queue  = new mystl::queue<task_t *>;
-    task_vector = new mystl::vector<task_t *>;
     // 当前进程
     curr_task[CPU::get_curr_core_id()]         = new task_t("init", 0, nullptr);
     curr_task[CPU::get_curr_core_id()]->hartid = CPU::get_curr_core_id();
@@ -121,7 +124,6 @@ void SCHEDULER::free_pid(pid_t _pid) {
 void SCHEDULER::add_task(task_t *_task) {
     // 将新进程添加到链表
     task_queue->push(_task);
-    task_vector->push_back(_task);
     return;
 }
 
@@ -131,11 +133,10 @@ void SCHEDULER::rm_task(task_t *_task) {
     return;
 }
 
-void SCHEDULER::task_go(int i) {
-    // 获取下一个线程并替换为当前线程下一个线程
-    curr_task[CPU::get_curr_core_id()] = task_vector->at(i);
-    // 切换
-    switch_context(&task_os->context,
-                   &curr_task[CPU::get_curr_core_id()]->context);
+void SCHEDULER::switch_to_kernel(void) {
+    printf("switch_to_kernel\n");
+    switch_context(&curr_task[CPU::get_curr_core_id()]->context,
+                   &task_os->context);
+
     return;
 }
