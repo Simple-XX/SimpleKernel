@@ -49,10 +49,12 @@ static void pg_store_excp(void) {
 
 // static spinlock_t intr_spinlock("intr");
 
-static void tmp(void) {
-    // struct context *ctx = ctx_now;
-    // ctx_now             = &ctx_os;
-    // sys_switch(ctx, &ctx_os);
+extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
+static void     tmp(void) {
+    printf("tmp\n");
+    switch_context(&SCHEDULER::curr_task[CPU::get_curr_core_id()]->context,
+                       &SCHEDULER::task_os->context);
+
     return;
 }
 
@@ -62,12 +64,11 @@ static void tmp(void) {
  * @param  _sepc           值
  * @param  _stval          值
  */
-extern "C" uintptr_t trap_handler(uintptr_t _sepc, uintptr_t _stval,
+extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                                   uintptr_t _scause, uintptr_t _sp,
                                   uintptr_t       _sstatus,
                                   CPU::context_t *_context) {
     // intr_spinlock.acquire();
-    uintptr_t ret = _sepc;
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -86,14 +87,16 @@ extern "C" uintptr_t trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
         // 跳转到对应的处理函数
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
+        // 如果是时钟中断
         if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
-            ret = (uintptr_t)&tmp;
+        // 设置 sepc
+            _context->sepc=(uintptr_t)&tmp;
         }
     }
     else {
 // 异常
 // 跳转到对应的处理函数
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
         printf("excp: %s.\n",
                INTR::get_instance().excp_names[_scause & CPU::CAUSE_CODE_MASK]);
@@ -102,7 +105,7 @@ extern "C" uintptr_t trap_handler(uintptr_t _sepc, uintptr_t _stval,
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
     // intr_spinlock.release();
-    return ret;
+    return;
 }
 
 /// 中断处理入口 intr_s.S

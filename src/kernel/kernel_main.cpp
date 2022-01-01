@@ -44,7 +44,6 @@ void task1(void) {
         size_t count = 500000000;
         while (count--)
             ;
-        // SCHEDULER::sched();
     }
 }
 
@@ -55,7 +54,6 @@ void task2(void) {
         size_t count = 500000000;
         while (count--)
             ;
-        // TASK::exit(0);
     }
 }
 
@@ -66,7 +64,6 @@ void task3(void) {
         size_t count = 500000000;
         while (count--)
             ;
-        // SCHEDULER::sched();
     }
 }
 
@@ -77,7 +74,6 @@ void task4(void) {
         size_t count = 500000000;
         while (count--)
             ;
-        // TASK::exit(0);
     }
 }
 
@@ -88,7 +84,6 @@ void task5(void) {
         size_t count = 500000000;
         while (count--)
             ;
-        // SCHEDULER::sched();
     }
 }
 
@@ -108,13 +103,6 @@ void kernel_main_smp(void) {
     SCHEDULER::init_other_core();
     show_info();
     CPU::ENABLE_INTR();
-    while (1) {
-        info("init: other Running...\n");
-        size_t count = 50000000;
-        while (count--)
-            ;
-        SCHEDULER::sched();
-    }
 
     while (1) {
         ;
@@ -194,17 +182,9 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         printf("OS: Activate next task\n");
         SCHEDULER::task_go(current_task);
         printf("OS: Back to OS\n");
-        current_task = (current_task + 1) % 5; // Round Robin Scheduling
+        current_task = (current_task + 1) % 5;
         printf("\n");
     }
-
-    // while (1) {
-    //     info("init: Running...\n");
-    //     size_t count = 50000000;
-    //     while (count--)
-    //         ;
-    //     SCHEDULER::sched();
-    // }
 
     // 进入死循环
     while (1) {

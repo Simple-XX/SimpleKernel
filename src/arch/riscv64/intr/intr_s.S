@@ -23,7 +23,6 @@ trap_entry:
     csrr a4, sstatus
     csrr a5, sscratch
     jal trap_handler
-    csrw sepc, a0
 
     csrr t0, sscratch
     context_load t0
