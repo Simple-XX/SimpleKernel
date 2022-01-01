@@ -87,8 +87,7 @@ void task5(void) {
     }
 }
 
-volatile static bool started       = false;
-volatile static bool is_first_core = true;
+volatile static bool started = false;
 // static spinlock_t    main_spinlock("main");
 
 void kernel_main_smp(void) {
@@ -101,8 +100,7 @@ void kernel_main_smp(void) {
     INTR::get_instance().init_other_core();
     TIMER::get_instance().init_other_core();
     SCHEDULER::init_other_core();
-    show_info();
-    CPU::ENABLE_INTR();
+    // CPU::ENABLE_INTR();
 
     while (1) {
         ;
@@ -118,26 +116,12 @@ void kernel_main_smp(void) {
  * @note 这个函数不会返回
  */
 void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
-    // 如果当前 core 不是 core0
-    if (is_first_core == true) {
-        printf("0----\n");
-        is_first_core = false;
+    if (CPU::get_curr_core_id() == 0) {
+        printf("---0---\n");
         // 初始化 C++
         cpp_init();
-        BOOT_INFO::boot_info_addr = _dtb_addr;
-        // 初始化
+        // 初始化基本信息
         BOOT_INFO::init();
-    }
-    if (CPU::get_curr_core_id() != 0) {
-        printf("1----\n");
-        // 唤醒 core0
-        OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,
-                                           0);
-        // 执行其它 core 的初始化
-        kernel_main_smp();
-    }
-    else {
-        printf("2----\n");
         // 物理内存初始化
         PMM::get_instance().init();
         // 测试物理内存
@@ -155,14 +139,20 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         INTR::get_instance().init();
         // 设置时钟中断
         TIMER::get_instance().init();
+        // 初始化任务调度
+        /// @note 在 SCHEDULER::init() 执行完后才能正常处理中断
         SCHEDULER::init();
         OPENSBI::get_instance().hart_start(1, COMMON::KERNEL_TEXT_START_ADDR,
-                                           0);
-        // 允许中断
-        // CPU::ENABLE_INTR();
-        // 显示基本信息
-        show_info();
+                                           0x233);
         started = true;
+    }
+    else {
+        printf("---!0---\n");
+        // 唤醒 core0
+        OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,
+                                           _dtb_addr);
+        // 执行其它 core 的初始化
+        kernel_main_smp();
     }
 
     auto task1_p = new task_t("task1", 1, &task1);
@@ -176,16 +166,16 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     SCHEDULER::add_task(task4_p);
     SCHEDULER::add_task(task5_p);
 
+    // 允许中断
     CPU::ENABLE_INTR();
+    // 显示基本信息
+    show_info();
 
+    // 开始调度
     while (1) {
         SCHEDULER::sched();
     }
 
-    // 进入死循环
-    while (1) {
-        ;
-    }
     // 不应该执行到这里
     assert(0);
     return;

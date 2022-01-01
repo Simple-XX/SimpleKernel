@@ -1,9 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel 
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// boot.S for Simple-XX/SimpleKernel.
-// 启动代码，进行一些设置后跳转到 kernel_main
+/**
+ * @file boot.S
+ * @brief 启动代码，进行一些设置后跳转到 kernel_main
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-01-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 .section .init
 .globl _start
@@ -12,28 +21,25 @@
 .extern cpp_init
 .extern boot_info_addr
 .extern dtb_init_hart
-/*
 _start:
     // 保存 sbi 传递的参数
     // 将 a0 的值传递给 dtb_init_hart
     sw a0, dtb_init_hart, t0
     // 将 a1 的值传递给 boot_info_addr
     sw a1, boot_info_addr, t0
-    // 设置栈地址
-    la sp, stack_top
-    // 初始化 C++
-    call cpp_init
-    // 跳转到 C 代码执行
-    call kernel_main
-*/
-
-_start:
-    # 为每个 core 计算栈地址
+    // 为每个 core 计算栈地址
     add t0, a0, 1
     slli t0, t0, 12
-    # 设置栈
+    // 设置栈
     la sp, stack_top
     add sp, sp, t0
+    // 如果 hartid 为 0，初始化 C++
+    # mv a0,s2
+    # mv a1,s3
+    # beqz a0, cpp_init
+    # mv s2,a0
+    # mv s3,a1
+    // 跳转到 kernel_main
     call kernel_main
 loop:
     j loop

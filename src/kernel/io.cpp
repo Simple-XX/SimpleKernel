@@ -15,6 +15,7 @@
 #include "stdio.h"
 
 /// 输出缓冲区
+/// @todo 用常量替换 128
 static char buf[128];
 
 IO &IO::get_instance(void) {

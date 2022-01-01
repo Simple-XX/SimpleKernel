@@ -6,6 +6,7 @@
 
 #include "cxxabi.h"
 #include "new"
+#include "stdio.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,6 +36,7 @@ void cpp_init(void) {
     for (f = ctors_start; f < ctors_end; f++) {
         (*f)();
     }
+    info("cpp init.\n");
     return;
 }
 

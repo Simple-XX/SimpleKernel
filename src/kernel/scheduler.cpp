@@ -29,8 +29,8 @@ extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
 // 当前任务
 task_t *SCHEDULER::curr_task[CPU::CPUS];
 // 任务向量
-mystl::queue<task_t *>  *SCHEDULER::task_queue;
-task_t                  *SCHEDULER::task_os;
+mystl::queue<task_t *> *SCHEDULER::task_queue;
+task_t                 *SCHEDULER::task_os[CPU::CPUS];
 
 // 获取下一个要执行的任务
 task_t *SCHEDULER::get_next_task(void) {
@@ -63,13 +63,13 @@ void SCHEDULER::switch_task(void) {
     // 切换
     // switch_context(&prev->context,
     //                &curr_task[CPU::get_curr_core_id()]->context);
-    switch_context(&task_os->context,
+    switch_context(&task_os[CPU::get_curr_core_id()]->context,
                    &curr_task[CPU::get_curr_core_id()]->context);
     return;
 }
 
 void SCHEDULER::sched(void) {
-    printf("sched: Running...\n");
+    printf("sched: Running... 0x%X\n", CPU::get_curr_core_id());
     size_t count = 500000000;
     while (count--)
         ;
@@ -87,13 +87,13 @@ void idle(void) {
 
 bool SCHEDULER::init(void) {
     // 初始化进程队列
-    task_queue  = new mystl::queue<task_t *>;
+    task_queue = new mystl::queue<task_t *>;
     // 当前进程
     curr_task[CPU::get_curr_core_id()]         = new task_t("init", 0, nullptr);
     curr_task[CPU::get_curr_core_id()]->hartid = CPU::get_curr_core_id();
     // 原地跳转，填充启动进程的 task_t 信息
     switch_context_init(&curr_task[CPU::get_curr_core_id()]->context);
-    task_os = curr_task[CPU::get_curr_core_id()];
+    task_os[CPU::get_curr_core_id()] = curr_task[CPU::get_curr_core_id()];
     info("task init.\n");
     return true;
 }
@@ -104,8 +104,8 @@ bool SCHEDULER::init_other_core(void) {
     curr_task[CPU::get_curr_core_id()]->hartid = CPU::get_curr_core_id();
     // 原地跳转，填充启动进程的 task_t 信息
     switch_context_init(&curr_task[CPU::get_curr_core_id()]->context);
-    task_os = curr_task[CPU::get_curr_core_id()];
-    info("task other init: 0x%X.\n",CPU::get_curr_core_id());
+    task_os[CPU::get_curr_core_id()] = curr_task[CPU::get_curr_core_id()];
+    info("task other init: 0x%X.\n", CPU::get_curr_core_id());
     return true;
 }
 
@@ -134,9 +134,9 @@ void SCHEDULER::rm_task(task_t *_task) {
 }
 
 void SCHEDULER::switch_to_kernel(void) {
-    printf("switch_to_kernel\n");
+    printf("switch_to_kernel 0x%X\n", CPU::get_curr_core_id());
     switch_context(&curr_task[CPU::get_curr_core_id()]->context,
-                   &task_os->context);
+                   &task_os[CPU::get_curr_core_id()]->context);
 
     return;
 }

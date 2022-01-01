@@ -39,10 +39,9 @@ public:
     static task_t *curr_task[CPU::CPUS];
     // 任务向量
     static mystl::queue<task_t *>  *task_queue;
-    static mystl::vector<task_t *> *task_vector;
     // 全局 pid
     static pid_t   g_pid;
-    static task_t *task_os;
+    static task_t *task_os[CPU::CPUS];
     // 分配 pid
     static pid_t alloc_pid(void);
     // 回收 pid
@@ -56,7 +55,6 @@ public:
     static void add_task(task_t *_task);
     // 删除任务
     static void rm_task(task_t *_task);
-    static void task_go(int i);
     static void switch_to_kernel(void);
 };
 

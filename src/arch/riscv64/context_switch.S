@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// context_switch.S for Simple-XX/SimpleKernel.
+/**
+ * @file context_switch.S
+ * @brief 上下文切换
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-01-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 // 寄存器长度，8 字节
 .equ REG_BYTES, 8
