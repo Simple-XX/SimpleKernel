@@ -157,7 +157,7 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         TIMER::get_instance().init();
         SCHEDULER::init();
         OPENSBI::get_instance().hart_start(1, COMMON::KERNEL_TEXT_START_ADDR,
-                                           1);
+                                           0);
         // 允许中断
         // CPU::ENABLE_INTR();
         // 显示基本信息

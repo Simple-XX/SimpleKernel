@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// spinlock.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file spinlock.cpp
+ * @brief 自旋锁实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2022-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2022-01-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "spinlock.h"
 #include "cpu.hpp"
@@ -31,7 +41,7 @@ void spinlock_t::acquire(void) {
         err("acquire\n");
     }
 
-    while (__sync_lock_test_and_set(&locked, true) != false) {
+    while (__atomic_test_and_set(&locked, true) != false) {
         ;
     }
 

@@ -1,16 +1,28 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// spinlock.h for Simple-XX/SimpleKernel.
+/**
+ * @file spinlock.h
+ * @brief 自旋锁定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2022-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2022-01-01<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifndef _SPINLOCK_H_
 #define _SPINLOCK_H_
 
 #include "stddef.h"
 
-// 自旋锁
-// TODO
+/**
+ * @brief 自旋锁
+ * @note 只能用于多核
+ */
 struct spinlock_t {
 private:
     bool is_holding(void);
