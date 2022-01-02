@@ -74,7 +74,7 @@ isr\no:
     pusha_64
     // 传递中断号
     mov $\no, %rdi
-    // 传递 
+    // 传递栈地址
     mov %rsp, %rsi
     // 清零
     xor %rdx, %rdx
@@ -176,16 +176,20 @@ ISR_NO_ERROR_CODE 128
 irq\name:
     // 关中断
     cli
-    // 保存寄存器
+    // 保存现场
     pusha_64
     // 传递中断号
     mov $\no, %rdi
     // 传递栈地址
     mov %rsp, %rsi
+    // 清零
     xor %rdx, %rdx
     xor %rbp, %rbp
+    // 调用处理函数
     call irq_handler
+    // 恢复现场
     popa_64
+    // 中断返回
     iretq
 .endm
 

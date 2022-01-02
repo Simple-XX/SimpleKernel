@@ -315,7 +315,6 @@ static inline void switch_stack(uintptr_t _stack_top) {
     asm("mov %0, %%rsp" : : "r"(_stack_top));
     asm("xor %%rbp, %%rbp" : :);
 #endif
-
     return;
 }
 
@@ -578,6 +577,8 @@ public:
 
 // 上下文，用于中断/任务切换
 struct context_t {
+#if defined(__i386__)
+#elif defined(__x86_64__)
     uintptr_t            r15;
     uintptr_t            r14;
     uintptr_t            r13;
@@ -610,6 +611,7 @@ struct context_t {
         printf("rdi: 0x%p\n", _context.rdi);
         return _os;
     }
+#endif
 };
 
 }; // namespace CPU
