@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// 
-// switch.S for Simple-XX/SimpleKernel.
+/**
+ * @file switch.S
+ * @brief 上下文切换
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2022-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2022-01-02<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "context_switch.S"
 
