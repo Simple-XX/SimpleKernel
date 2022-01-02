@@ -28,7 +28,7 @@
 /// 内核页目录
 static pt_t pgd_kernel[COMMON::CORES_COUNT];
 pt_t        VMM::curr_dir[COMMON::CORES_COUNT];
-spinlock_t VMM::spinlock;
+spinlock_t  VMM::spinlock;
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
@@ -130,7 +130,7 @@ bool VMM::init_other_core(void) {
     set_pgd(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())]);
     // 开启分页
     CPU::ENABLE_PG();
-    info("vmm other init: 0x%X.\n",COMMON::get_curr_core_id(CPU::READ_SP()));
+    info("vmm other init: 0x%X.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return 0;
 }
 
