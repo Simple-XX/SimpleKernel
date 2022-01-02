@@ -26,7 +26,7 @@ bool spinlock_t::is_holding(void) {
 }
 
 void spinlock_t::push_off(void) {
-    bool old = CPU::SSTATUS_INTR_status();
+    bool old = CPU::STATUS_INTR();
 
     CPU::DISABLE_INTR();
 
@@ -39,7 +39,7 @@ void spinlock_t::push_off(void) {
 }
 
 void spinlock_t::pop_off(void) {
-    if (CPU::SSTATUS_INTR_status() == true) {
+    if (CPU::STATUS_INTR() == true) {
         err("pop_off - interruptible\n");
     }
 

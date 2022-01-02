@@ -287,7 +287,7 @@ static inline void DISABLE_INTR(void) {
  * @return true             允许
  * @return false            禁止
  */
-static inline bool SSTATUS_INTR_status(void) {
+static inline bool STATUS_INTR(void) {
     uint64_t x = READ_SSTATUS();
     return (x & SSTATUS_SIE) != 0;
 }
