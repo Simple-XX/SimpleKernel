@@ -32,6 +32,7 @@ spinlock_t::spinlock_t(void) {
 spinlock_t::spinlock_t(const char *_name) : name(_name) {
     locked = false;
     hartid = -1;
+    info("spinlock: %s init.\n", name);
     return;
 }
 
@@ -48,7 +49,6 @@ void spinlock_t::lock(void) {
     __sync_synchronize();
 
     hartid = COMMON::get_curr_core_id(CPU::READ_SP());
-
     return;
 }
 

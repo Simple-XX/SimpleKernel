@@ -22,15 +22,16 @@
 #include "resource.h"
 #include "pmm.h"
 
-uintptr_t  PMM::start                   = 0;
-size_t     PMM::length                  = 0;
-size_t     PMM::total_pages             = 0;
-uintptr_t  PMM::kernel_space_start      = 0;
-size_t     PMM::kernel_space_length     = 0;
-uintptr_t  PMM::non_kernel_space_start  = 0;
-size_t     PMM::non_kernel_space_length = 0;
-ALLOCATOR *PMM::allocator               = nullptr;
-ALLOCATOR *PMM::kernel_space_allocator  = nullptr;
+uintptr_t   PMM::start                   = 0;
+size_t      PMM::length                  = 0;
+spinlock_t *PMM::spinlock                = nullptr;
+size_t      PMM::total_pages             = 0;
+uintptr_t   PMM::kernel_space_start      = 0;
+size_t      PMM::kernel_space_length     = 0;
+uintptr_t   PMM::non_kernel_space_start  = 0;
+size_t      PMM::non_kernel_space_length = 0;
+ALLOCATOR  *PMM::allocator               = nullptr;
+ALLOCATOR  *PMM::kernel_space_allocator  = nullptr;
 
 // 将启动信息移动到内核空间
 void PMM::move_boot_info(void) {
@@ -101,6 +102,9 @@ bool PMM::init(void) {
         (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
          COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE)) /
         COMMON::PAGE_SIZE;
+    // 初始化自旋锁
+    static spinlock_t spinlock_tmp("PMM");
+    spinlock = &spinlock_tmp;
     // 将内核已使用部分划分出来
     if (alloc_pages_kernel(COMMON::KERNEL_START_ADDR, kernel_pages) == true) {
         // 将 multiboot2/dtb 信息移动到内核空间
@@ -118,30 +122,49 @@ size_t PMM::get_pmm_length(void) const {
 }
 
 uintptr_t PMM::alloc_page(void) {
-    return allocator->alloc(1);
+    spinlock->lock();
+    uintptr_t ret = allocator->alloc(1);
+    spinlock->unlock();
+    return ret;
 }
 
 uintptr_t PMM::alloc_pages(size_t _len) {
-    return allocator->alloc(_len);
+    spinlock->lock();
+    uintptr_t ret = allocator->alloc(_len);
+    spinlock->unlock();
+    return ret;
 }
 
 bool PMM::alloc_pages(uintptr_t _addr, size_t _len) {
-    return allocator->alloc(_addr, _len);
+    spinlock->lock();
+    bool ret = allocator->alloc(_addr, _len);
+    spinlock->unlock();
+    return ret;
 }
 
 uintptr_t PMM::alloc_page_kernel(void) {
-    return kernel_space_allocator->alloc(1);
+    spinlock->lock();
+    uintptr_t ret = kernel_space_allocator->alloc(1);
+    spinlock->unlock();
+    return ret;
 }
 
 uintptr_t PMM::alloc_pages_kernel(size_t _len) {
-    return kernel_space_allocator->alloc(_len);
+    spinlock->lock();
+    uintptr_t ret = kernel_space_allocator->alloc(_len);
+    spinlock->unlock();
+    return ret;
 }
 
 bool PMM::alloc_pages_kernel(uintptr_t _addr, size_t _len) {
-    return kernel_space_allocator->alloc(_addr, _len);
+    spinlock->lock();
+    bool ret = kernel_space_allocator->alloc(_addr, _len);
+    spinlock->unlock();
+    return ret;
 }
 
 void PMM::free_page(uintptr_t _addr) {
+    spinlock->lock();
     // 判断应该使用哪个分配器
     if (_addr >= kernel_space_start &&
         _addr < kernel_space_start + kernel_space_length) {
@@ -155,10 +178,12 @@ void PMM::free_page(uintptr_t _addr) {
         // 如果都不是说明有问题
         assert(0);
     }
+    spinlock->unlock();
     return;
 }
 
 void PMM::free_pages(uintptr_t _addr, size_t _len) {
+    spinlock->lock();
     // 判断应该使用哪个分配器
     if (_addr >= kernel_space_start &&
         _addr < kernel_space_start + kernel_space_length) {
@@ -172,15 +197,22 @@ void PMM::free_pages(uintptr_t _addr, size_t _len) {
     else {
         assert(0);
     }
+    spinlock->unlock();
     return;
 }
 
 size_t PMM::get_used_pages_count(void) const {
-    return kernel_space_allocator->get_used_count() +
-           allocator->get_used_count();
+    spinlock->lock();
+    size_t ret =
+        kernel_space_allocator->get_used_count() + allocator->get_used_count();
+    spinlock->unlock();
+    return ret;
 }
 
 size_t PMM::get_free_pages_count(void) const {
-    return kernel_space_allocator->get_free_count() +
-           allocator->get_free_count();
+    spinlock->lock();
+    size_t ret =
+        kernel_space_allocator->get_free_count() + allocator->get_free_count();
+    spinlock->unlock();
+    return ret;
 }
