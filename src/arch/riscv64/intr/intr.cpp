@@ -31,7 +31,8 @@ static void pg_load_excp(void) {
     // 映射页
     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
                              VMM_PAGE_READABLE);
-    info("pg_load_excp done: 0x%p.\n", addr);
+    info("pg_load_excp done: 0x%p, hartid: 0x%X.\n", addr,
+         COMMON::get_curr_core_id(CPU::READ_SP()));
     return;
 }
 
@@ -43,7 +44,8 @@ static void pg_store_excp(void) {
     // 映射页
     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
                              VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
-    info("pg_store_excp done: 0x%p.\n", addr);
+    info("pg_store_excp done: 0x%p, hartid: 0x%X.\n", addr,
+         COMMON::get_curr_core_id(CPU::READ_SP()));
     return;
 }
 
@@ -56,18 +58,23 @@ static void pg_store_excp(void) {
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, uintptr_t _sp,
                              uintptr_t _sstatus, CPU::context_t *_context) {
-    // INTR::spinlock.lock();
+    INTR::spinlock.lock();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
-// #define DEBUG
+    (void)_scause;
+    (void)_sp;
+    (void)_sstatus;
+    (void)_context;
+#define DEBUG
 #ifdef DEBUG
-    printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc, _stval);
+    printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p, hartid: 0x%X.\n", _scause,
+           _sepc, _stval, COMMON::get_curr_core_id(CPU::READ_SP()));
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
 // 中断
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
         printf("intr: %s.\n",
                INTR::get_instance().intr_names[_scause & CPU::CAUSE_CODE_MASK]);
@@ -92,7 +99,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
-    // INTR::spinlock.unlock();
+    INTR::spinlock.unlock();
     return;
 }
 

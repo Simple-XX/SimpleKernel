@@ -100,7 +100,8 @@ void kernel_main_smp(void) {
     INTR::get_instance().init_other_core();
     TIMER::get_instance().init_other_core();
     SCHEDULER::init_other_core();
-    // CPU::ENABLE_INTR();
+    // 允许中断
+    CPU::ENABLE_INTR();
 
     while (1) {
         ;
@@ -165,11 +166,6 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     SCHEDULER::add_task(task3_p);
     SCHEDULER::add_task(task4_p);
     SCHEDULER::add_task(task5_p);
-
-    printf("1----------\n");
-    int *a = (int *)0x30000000;
-    *a=233;
-    printf("2----------\n");
 
     // 允许中断
     CPU::ENABLE_INTR();
