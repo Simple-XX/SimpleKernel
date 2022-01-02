@@ -18,6 +18,7 @@
 /// @todo 用常量替换 128
 static char buf[128];
 /// IO 自旋锁
+/// @todo 这里需要看一下这么构造有没有问题
 static spinlock_t spinlock("IO");
 
 IO &IO::get_instance(void) {
@@ -160,6 +161,7 @@ int32_t IO::write_string(const char *s) {
 }
 
 /// 格式化输出自旋锁
+/// @todo 这里需要看一下这么构造有没有问题
 static spinlock_t spinlock_printf("printf");
 
 /**

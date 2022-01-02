@@ -82,6 +82,8 @@ VMM &VMM::get_instance(void) {
 }
 
 bool VMM::init(void) {
+    // 初始化自旋锁
+    spinlock.init("VMM");
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
 #endif
@@ -102,8 +104,6 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    // 初始化自旋锁
-    spinlock.init("VMM");
     info("vmm init.\n");
     return 0;
 }

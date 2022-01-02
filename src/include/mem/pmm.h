@@ -47,7 +47,7 @@ private:
     /// 物理内存分配器，分配非内核空间
     static ALLOCATOR *allocator;
     /// 自旋锁
-    static spinlock_t *spinlock;
+    static spinlock_t spinlock;
 
     /**
      * @brief 将 multiboot2/dtb 信息移动到内核空间
