@@ -19,6 +19,7 @@
 #include "scheduler.h"
 #include "core.hpp"
 #include "cpu.hpp"
+#include "string"
 
 bool spinlock_t::is_holding(void) {
     bool r = (locked && (hartid == COMMON::get_curr_core_id(CPU::READ_SP())));
@@ -64,6 +65,13 @@ spinlock_t::spinlock_t(void) {
 }
 
 spinlock_t::spinlock_t(const char *_name) : name(_name) {
+    locked = false;
+    hartid = COMMON::get_curr_core_id(CPU::READ_SP());
+    info("spinlock: %s init.\n", name);
+    return;
+}
+
+spinlock_t::spinlock_t(const mystl::string &_name) : name(_name.c_str()) {
     locked = false;
     hartid = COMMON::get_curr_core_id(CPU::READ_SP());
     info("spinlock: %s init.\n", name);

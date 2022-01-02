@@ -45,8 +45,10 @@ void timer_intr(void) {
     // 每次执行中断时设置下一次中断的时间
     set_next();
     // TODO: 每次时钟中断更新当前任务的执行时间
-    // SCHEDULER::curr_task[CPU::get_curr_core_id()]->slice += INTERVAL;
-    // SCHEDULER::curr_task[CPU::get_curr_core_id()]->slice_total += INTERVAL;
+    SCHEDULER::curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->slice +=
+        INTERVAL;
+    SCHEDULER::curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]
+        ->slice_total += INTERVAL;
     TIMER::spinlock.unlock();
     return;
 }

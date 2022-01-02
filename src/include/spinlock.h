@@ -18,6 +18,7 @@
 #define _SPINLOCK_H_
 
 #include "stddef.h"
+#include "string"
 
 /**
  * @brief 自旋锁
@@ -58,6 +59,13 @@ public:
      * @note 需要堆初始化后可用
      */
     spinlock_t(const char *_name);
+
+    /**
+     * @brief 构造函数
+     * @param  _name            锁名
+     * @note 需要 libcxx 始化后可用
+     */
+    spinlock_t(const mystl::string &_name);
 
     /**
      * @brief 初始化，用于堆完成之前的初始化

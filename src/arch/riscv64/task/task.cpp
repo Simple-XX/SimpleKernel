@@ -24,19 +24,21 @@
 #include "scheduler.h"
 #include "boot_info.h"
 
-
-task_t::task_t(mystl::string _name,pid_t _pid, void (*_task)(void)) : name(_name) {
-    pid      = _pid;
-    state    = RUNNING;
-    parent   = nullptr;
-    page_dir = VMM::get_instance().get_pgd();
-    // 栈空间分配在内核空间
-    stack                  = PMM::get_instance().alloc_pages_kernel(4);
+task_t::task_t(mystl::string _name, void (*_task)(void))
+    : name(_name), spinlock(_name) {
+    pid                    = -1;
+    state                  = SLEEPING;
+    parent                 = nullptr;
     context.ra             = (uintptr_t)_task;
     context.callee_regs.sp = stack + COMMON::PAGE_SIZE * 4;
     context.sscratch       = (uintptr_t)malloc(sizeof(CPU::context_t));
-    slice                  = 0;
-    slice_total            = 0;
+    // 栈空间分配在内核空间
+    stack       = PMM::get_instance().alloc_pages_kernel(4);
+    page_dir    = VMM::get_instance().get_pgd();
+    slice       = 0;
+    slice_total = 0;
+    hartid      = COMMON::get_curr_core_id(CPU::READ_SP());
+    exit_code   = -1;
     return;
 }
 
@@ -49,12 +51,6 @@ task_t::~task_t(void) {
     free((void *)context.sscratch);
     // 回收其它
     std::cout << "del task: " << name << std::endl;
-    return;
-}
-
-void task_t::exit(uint32_t) {
-    // 设置状态
-    state = ZOMBIE;
     return;
 }
 

@@ -50,32 +50,32 @@ enum task_status_t : uint8_t {
 struct task_t {
     /// 任务名
     mystl::string name;
-    // 任务 id
+    /// 任务 pid
     pid_t pid;
-    // 进程状态
+    /// 进程状态
     enum task_status_t state;
-    // 父进程
+    /// 父进程
     task_t *parent;
-    // 上下文
+    /// 上下文
     CPU::context_t context;
-    // 线程栈
+    /// 线程栈
     uintptr_t stack;
-    // 进程页目录
+    /// 进程页目录
     pt_t page_dir;
-    // 本次运行时间片
+    /// 本次运行时间片
     size_t slice;
-    // 已运行时间片
+    /// 已运行时间片
     size_t slice_total;
+    /// 所属 core id
     size_t hartid;
-    // Depth of push_off() nesting.
-    int noff = 0;
-    // Were interrupts enabled before push_off()?
-    bool is_intr_enable;
+    /// 进程锁
+    spinlock_t spinlock;
+    /// 退出状态
+    uint64_t exit_code;
+
     task_t(void);
-    task_t(mystl::string _name, pid_t _pid, void (*_task)(void));
+    task_t(mystl::string _name, void (*_task)(void));
     ~task_t(void);
-    // 退出
-    void exit(uint32_t _exit_code);
     // task_t 输出
     friend std::ostream &operator<<(std::ostream &_os, const task_t &_task);
 };
