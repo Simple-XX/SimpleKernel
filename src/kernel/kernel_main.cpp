@@ -116,7 +116,7 @@ void kernel_main_smp(void) {
  * @note 这个函数不会返回
  */
 void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
-    if (CPU::get_curr_core_id() == 0) {
+    if (COMMON::get_curr_core_id(CPU::READ_SP()) == 0) {
         printf("---0---\n");
         // 初始化 C++
         cpp_init();

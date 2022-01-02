@@ -13,6 +13,7 @@
 #endif
 #include "io.h"
 #include "stdio.h"
+#include "spinlock.h"
 
 /// 输出缓冲区
 /// @todo 用常量替换 128

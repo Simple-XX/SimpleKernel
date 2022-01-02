@@ -25,20 +25,43 @@
  */
 struct spinlock_t {
 private:
+    /// 自旋锁名称
+    const char *name;
+    /// 是否 lock
+    volatile bool locked;
+    /// 获得此锁的 hartid
+    volatile size_t hartid;
+
+    /**
+     * @brief 检查当前 hart 是否获得此锁
+     * @return true             是
+     * @return false            否
+     */
     bool is_holding(void);
+
+    /**
+     * @brief 中断嵌套+1
+     */
     void push_off(void);
+
+    /**
+     * @brief 中断嵌套-1
+     */
     void pop_off(void);
 
 public:
-    // 自旋锁名称
-    const char *name;
-    // 是否 lock
-    volatile bool   locked;
-    volatile size_t hartid;
     spinlock_t(void);
     spinlock_t(const char *_name);
-    void acquire(void);
-    void release(void);
+
+    /**
+     * @brief 获得锁
+     */
+    void lock(void);
+
+    /**
+     * @brief 释放锁
+     */
+    void unlock(void);
 };
 
 #endif /* _SPINLOCK_H_ */

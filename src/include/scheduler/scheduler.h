@@ -36,12 +36,12 @@ protected:
 public:
     static void sched(void);
     // 当前任务
-    static task_t *curr_task[CPU::CPUS];
+    static task_t *curr_task[COMMON::CORES_COUNT];
     // 任务向量
-    static mystl::queue<task_t *>  *task_queue;
+    static mystl::queue<task_t *> *task_queue;
     // 全局 pid
     static pid_t   g_pid;
-    static task_t *task_os[CPU::CPUS];
+    static task_t *task_os[COMMON::CORES_COUNT];
     // 分配 pid
     static pid_t alloc_pid(void);
     // 回收 pid

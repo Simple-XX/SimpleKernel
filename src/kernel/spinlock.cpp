@@ -35,26 +35,27 @@ spinlock_t::spinlock_t(const char *_name) : name(_name) {
     return;
 }
 
-void spinlock_t::acquire(void) {
+void spinlock_t::lock(void) {
     push_off();
     if (is_holding() == true) {
-        err("acquire\n");
+        err("lock\n");
     }
 
-    while (__atomic_test_and_set(&locked, true) != false) {
+    while (__atomic_test_and_set(&locked, 1) != 0) {
         ;
     }
 
     __sync_synchronize();
 
-    hartid = CPU::get_curr_core_id();
+    hartid = COMMON::get_curr_core_id(CPU::READ_SP());
+
     return;
 }
 
 // Release the lock.
-void spinlock_t::release(void) {
+void spinlock_t::unlock(void) {
     if (is_holding() == false) {
-        err("release\n");
+        err("unlock\n");
     }
     hartid = -1;
     __sync_synchronize();
@@ -64,39 +65,38 @@ void spinlock_t::release(void) {
 }
 
 bool spinlock_t::is_holding(void) {
-    bool r = (locked && hartid == CPU::get_curr_core_id());
+    bool r = (locked && (hartid == COMMON::get_curr_core_id(CPU::READ_SP())));
     return r;
 }
 
 void spinlock_t::push_off(void) {
-    uint64_t x   = CPU::READ_SSTATUS();
-    int      old = (x & CPU::SSTATUS_SIE) != 0;
+    bool old = CPU::SSTATUS_INTR_status();
+
     CPU::DISABLE_INTR();
-    if (SCHEDULER::curr_task[CPU::get_curr_core_id()] != nullptr) {
-        if (SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff == 0) {
-            SCHEDULER::curr_task[CPU::get_curr_core_id()]->is_intr_enable = old;
-        }
-        SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff += 1;
+
+    if (cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff == 0) {
+        cores[COMMON::get_curr_core_id(CPU::READ_SP())].intr_enable = old;
     }
+    cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff += 1;
+
     return;
 }
 
 void spinlock_t::pop_off(void) {
     // struct cpu *c = mycpu();
-    uint64_t x   = CPU::READ_SSTATUS();
-    int      old = (x & CPU::SSTATUS_SIE) != 0;
-    if (old) {
+    if (CPU::SSTATUS_INTR_status() == true) {
         err("pop_off - interruptible\n");
     }
-    if (SCHEDULER::curr_task[CPU::get_curr_core_id()] != nullptr) {
-        if (SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff < 1) {
-            err("pop_off\n");
-        }
-        SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff -= 1;
-        if (SCHEDULER::curr_task[CPU::get_curr_core_id()]->noff == 0 &&
-            SCHEDULER::curr_task[CPU::get_curr_core_id()]->is_intr_enable) {
-            CPU::ENABLE_INTR();
-        }
+
+    if (cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff < 1) {
+        err("pop_off\n");
     }
+    cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff -= 1;
+
+    if ((cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff == 0) &&
+        (cores[COMMON::get_curr_core_id(CPU::READ_SP())].intr_enable == true)) {
+        CPU::ENABLE_INTR();
+    }
+
     return;
 }

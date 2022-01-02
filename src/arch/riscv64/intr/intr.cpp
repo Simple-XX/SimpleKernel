@@ -149,7 +149,7 @@ int32_t INTR::init_other_core(void) {
     CLINT::get_instance().init_other_core();
     // 外部中断初始化
     PLIC::get_instance().init_other_core();
-    info("intr other 0x%X init.\n", CPU::get_curr_core_id());
+    info("intr other 0x%X init.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return 0;
 }
 
