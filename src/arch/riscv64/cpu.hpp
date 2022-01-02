@@ -233,14 +233,6 @@ static inline uint64_t READ_SCAUSE(void) {
     __asm__ volatile("csrr %0, scause" : "=r"(x));
     return x;
 }
-/**
- * @brief 写 sscratch 寄存器
- * @param  _x                要写的值
- */
-static inline void WRITE_SSCRATCH(uint64_t _x) {
-    __asm__ volatile("csrw sscratch, %0" : : "r"(_x));
-    return;
-}
 
 /**
  * @brief 读 stval 寄存器 Supervisor Trap Value
