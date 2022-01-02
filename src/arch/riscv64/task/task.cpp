@@ -52,7 +52,7 @@ task_t::~task_t(void) {
     return;
 }
 
-void task_t::exit(uint32_t _exit_code) {
+void task_t::exit(uint32_t) {
     // 设置状态
     state = ZOMBIE;
     return;
