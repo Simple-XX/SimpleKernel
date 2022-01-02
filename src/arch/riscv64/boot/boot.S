@@ -50,5 +50,5 @@ loop:
 .align 16
 .global stack_top
 stack_top:
-    // 跳过 16KB
-    .space 4096 * 4
+    // 跳过 8KB
+    .space 4096 * 2
