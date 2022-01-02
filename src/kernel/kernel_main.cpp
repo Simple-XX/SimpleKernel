@@ -59,12 +59,11 @@ void task2(void) {
 
 void task3(void) {
     info("Task3: Created!\n");
-    while (1) {
-        info("Task3: Running...\n");
-        size_t count = 500000000;
-        while (count--)
-            ;
-    }
+    info("Task3: Running...\n");
+    size_t count = 500000000;
+    while (count--)
+        ;
+    SCHEDULER::exit(0x233);
 }
 
 void task4(void) {
@@ -118,7 +117,7 @@ void kernel_main_smp(void) {
     TIMER::get_instance().init_other_core();
     SCHEDULER::init_other_core();
     // 允许中断
-    CPU::ENABLE_INTR();
+    // CPU::ENABLE_INTR();
 
     while (1) {
         ;
@@ -160,7 +159,7 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         /// @note 在 SCHEDULER::init() 执行完后才能正常处理中断
         SCHEDULER::init();
         // 唤醒其余 core
-        start_all_core(_dtb_addr);
+        // start_all_core(_dtb_addr);
         started = true;
     }
     else {
@@ -170,16 +169,16 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         kernel_main_smp();
     }
 
-    auto task1_p = new task_t("task1", 1, &task1);
-    auto task2_p = new task_t("task2", 2, &task2);
-    auto task3_p = new task_t("task3", 3, &task3);
-    auto task4_p = new task_t("task4", 4, &task4);
-    auto task5_p = new task_t("task5", 5, &task5);
+    auto task1_p = new task_t("task1", &task1);
+    // auto task2_p = new task_t("task2", &task2);
+    // auto task3_p = new task_t("task3", &task3);
+    // auto task4_p = new task_t("task4", &task4);
+    // auto task5_p = new task_t("task5", &task5);
     SCHEDULER::add_task(task1_p);
-    SCHEDULER::add_task(task2_p);
-    SCHEDULER::add_task(task3_p);
-    SCHEDULER::add_task(task4_p);
-    SCHEDULER::add_task(task5_p);
+    // SCHEDULER::add_task(task2_p);
+    // SCHEDULER::add_task(task3_p);
+    // SCHEDULER::add_task(task4_p);
+    // SCHEDULER::add_task(task5_p);
 
     // 允许中断
     CPU::ENABLE_INTR();

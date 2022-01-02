@@ -48,7 +48,7 @@ task_t *SCHEDULER::get_next_task(void) {
     }
     // 否则删除
     else {
-        delete curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
+        rm_task(curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]);
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())] = nullptr;
     }
     task = task_queue->front();
@@ -63,6 +63,7 @@ void SCHEDULER::switch_task(void) {
     // 设置 core 当前线程信息
     cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
+    printf("------------%s\n",curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->name.c_str());
     // 切换
     switch_context(
         &task_os[COMMON::get_curr_core_id(CPU::READ_SP())]->context,
@@ -73,9 +74,6 @@ void SCHEDULER::switch_task(void) {
 void SCHEDULER::sched(void) {
     printf("sched: Running... 0x%X\n",
            COMMON::get_curr_core_id(CPU::READ_SP()));
-    size_t count = 500000000;
-    while (count--)
-        ;
     // TODO: 根据当前任务的属性进行调度
     switch_task();
     return;
@@ -86,9 +84,9 @@ bool SCHEDULER::init(void) {
     task_queue = new mystl::queue<task_t *>;
     // 当前进程
     curr_task[COMMON::get_curr_core_id(CPU::READ_SP())] =
-        new task_t("init", 0, nullptr);
-    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->hartid =
-        COMMON::get_curr_core_id(CPU::READ_SP());
+        new task_t("init", nullptr);
+    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->pid   = 0;
+    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->state = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
     switch_context_init(
         &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context);
@@ -108,9 +106,9 @@ bool SCHEDULER::init(void) {
 bool SCHEDULER::init_other_core(void) {
     // 当前进程
     curr_task[COMMON::get_curr_core_id(CPU::READ_SP())] =
-        new task_t("init", 0, nullptr);
-    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->hartid =
-        COMMON::get_curr_core_id(CPU::READ_SP());
+        new task_t("init other", nullptr);
+    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->pid   = 0;
+    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->state = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
     switch_context_init(
         &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context);
@@ -127,7 +125,7 @@ bool SCHEDULER::init_other_core(void) {
     return true;
 }
 
-pid_t SCHEDULER::g_pid = 0;
+pid_t SCHEDULER::g_pid = 1;
 
 pid_t SCHEDULER::alloc_pid(void) {
     pid_t res = g_pid++;
@@ -140,6 +138,8 @@ void SCHEDULER::free_pid(pid_t _pid) {
 }
 
 void SCHEDULER::add_task(task_t *_task) {
+    _task->pid   = alloc_pid();
+    _task->state = RUNNING;
     // 将新进程添加到链表
     task_queue->push(_task);
     return;
@@ -160,5 +160,15 @@ void SCHEDULER::switch_to_kernel(void) {
         &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context,
         &task_os[COMMON::get_curr_core_id(CPU::READ_SP())]->context);
 
+    return;
+}
+
+void SCHEDULER::exit(uint32_t _exit_code) {
+    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->exit_code = _exit_code;
+    curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->state     = ZOMBIE;
+    printf("%s exit: 0x%X\n",
+           curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->name.c_str(),
+           curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->exit_code);
+    switch_to_kernel();
     return;
 }
