@@ -25,8 +25,8 @@
 #include "pmm.h"
 #include "vmm.h"
 
-/// 内核页目录
-static pt_t pgd_kernel[COMMON::CORES_COUNT];
+/// 内核页目录，所有 core 共享
+static pt_t pgd_kernel;
 pt_t        VMM::curr_dir[COMMON::CORES_COUNT];
 spinlock_t  VMM::spinlock;
 
@@ -87,54 +87,41 @@ bool VMM::init(void) {
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
 #endif
-    // 读取当前页目录
-    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
-    pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())] =
-        (pt_t)PMM::get_instance().alloc_page_kernel();
-    bzero(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())],
-          COMMON::PAGE_SIZE);
+    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
+    bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
          addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
          addr += COMMON::PAGE_SIZE) {
         // TODO: 区分代码/数据等段分别映射
-        mmap(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())], addr, addr,
+        mmap(pgd_kernel, addr, addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
     // 设置页目录
-    set_pgd(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())]);
+    set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
+    // 读取当前页目录
+    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
     info("vmm init.\n");
     return 0;
 }
 
 bool VMM::init_other_core(void) {
-    // 读取当前页目录
-    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
-    // 分配一页用于保存页目录
-    pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())] =
-        (pt_t)PMM::get_instance().alloc_page_kernel();
-    bzero(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())],
-          COMMON::PAGE_SIZE);
-    // 映射内核空间
-    for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
-         addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
-         addr += COMMON::PAGE_SIZE) {
-        // TODO: 区分代码/数据等段分别映射
-        mmap(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())], addr, addr,
-             VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
-    }
     // 设置页目录
-    set_pgd(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())]);
+    set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
+    // 读取当前页目录
+    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
     info("vmm other init: 0x%X.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return 0;
 }
 
 pt_t VMM::get_pgd(void) {
+    assert(curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] ==
+           (pt_t)CPU::GET_PGD());
     return curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())];
 }
 

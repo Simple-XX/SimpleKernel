@@ -200,6 +200,11 @@ static inline void SET_PGD(uintptr_t _x) {
 static inline uintptr_t GET_PGD(void) {
     uintptr_t x;
     __asm__ volatile("csrr %0, satp" : "=r"(x));
+    // 如果开启了虚拟内存，恢复为原始格式
+    if ((x & SATP_SV39) == SATP_SV39) {
+        x = (x & 0x7FFFFFFFFF);
+        x = (x << 12);
+    }
     return x;
 }
 

@@ -94,8 +94,7 @@ void kernel_main_smp(void) {
         ;
     }
     info("smp Running...\n");
-    // VMM::get_instance().init_other_core();
-    VMM::get_instance().set_pgd(VMM::get_instance().get_pgd());
+    VMM::get_instance().init_other_core();
     // 中断初始化
     INTR::get_instance().init_other_core();
     TIMER::get_instance().init_other_core();
@@ -143,7 +142,7 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         /// @note 在 SCHEDULER::init() 执行完后才能正常处理中断
         SCHEDULER::init();
         OPENSBI::get_instance().hart_start(1, COMMON::KERNEL_TEXT_START_ADDR,
-                                           0x233);
+                                           0);
         started = true;
     }
     else {

@@ -33,12 +33,6 @@ _start:
     // 设置栈
     la sp, stack_top
     add sp, sp, t0
-    // 如果 hartid 为 0，初始化 C++
-    # mv a0,s2
-    # mv a1,s3
-    # beqz a0, cpp_init
-    # mv s2,a0
-    # mv s3,a1
     // 跳转到 kernel_main
     call kernel_main
 loop:
