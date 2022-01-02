@@ -1,9 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel 
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// boot.S for Simple-XX/SimpleKernel.
-// 启动代码，进行一些设置后跳转到 kernel_main
+/**
+ * @file boot.S
+ * @brief 启动代码，进行一些设置后跳转到 kernel_main
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-01-02<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 // 以下是来自 multiboot2 规范的定义
 //  How many bytes from the start of the file we search for the header.
@@ -119,7 +128,7 @@ _start:
     // 魔数
     mov %eax, multiboot2_magic
     // 设置栈地址
-    mov $STACK_TOP, %esp
+    mov $stack_top, %esp
     // 栈地址按照 16 字节对齐
     and $0xFFFFFFF0, %esp
     // 帧指针修改为 0
@@ -132,8 +141,11 @@ _start:
 
 // 声明所属段
 .section .bss
+// 16 字节对齐
+.align 16
+.global stack_top
 // 栈
-STACK:
+stack_top:
     // 跳过 16KB
-    .skip 4096 * 4
-STACK_TOP:
+    .space 4096 * 4
+

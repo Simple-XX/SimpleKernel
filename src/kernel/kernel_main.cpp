@@ -141,14 +141,14 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         // 初始化任务调度
         /// @note 在 SCHEDULER::init() 执行完后才能正常处理中断
         SCHEDULER::init();
-        OPENSBI::get_instance().hart_start(1, COMMON::KERNEL_TEXT_START_ADDR,
-                                           0);
+        // OPENSBI::get_instance().hart_start(1, COMMON::KERNEL_TEXT_START_ADDR,
+        //    0);
         started = true;
     }
     else {
         // 唤醒 core0
-        OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,
-                                           _dtb_addr);
+        // OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,
+        //    _dtb_addr);
         // 执行其它 core 的初始化
         kernel_main_smp();
     }
@@ -171,7 +171,7 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
 
     // 开始调度
     while (1) {
-        SCHEDULER::sched();
+        // SCHEDULER::sched();
     }
 
     // 不应该执行到这里

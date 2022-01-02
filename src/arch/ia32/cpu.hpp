@@ -307,9 +307,15 @@ static inline uintptr_t GET_PGD(void) {
  * @brief 切换内核栈
  * @param  _stack_top       要切换的栈顶地址
  */
-static inline void switch_stack(void *_stack_top) {
+static inline void switch_stack(uintptr_t _stack_top) {
+#if defined(__i386__)
     asm("mov %0, %%esp" : : "r"(_stack_top));
     asm("xor %%ebp, %%ebp" : :);
+#elif defined(__x86_64__)
+    asm("mov %0, %%rsp" : : "r"(_stack_top));
+    asm("xor %%rbp, %%rbp" : :);
+#endif
+
     return;
 }
 
@@ -319,7 +325,11 @@ static inline void switch_stack(void *_stack_top) {
  */
 static inline intptr_t READ_SP(void) {
     intptr_t sp;
+#if defined(__i386__)
+    __asm__ volatile("mov %%esp, %0" : "=b"(sp));
+#elif defined(__x86_64__)
     __asm__ volatile("mov %%rsp, %0" : "=b"(sp));
+#endif
     return sp;
 }
 
