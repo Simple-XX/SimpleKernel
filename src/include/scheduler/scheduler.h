@@ -58,6 +58,4 @@ public:
     static void switch_to_kernel(void);
 };
 
-extern void idle(void);
-
 #endif /* _SCHEDULER_H_ */

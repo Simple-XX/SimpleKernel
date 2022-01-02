@@ -81,13 +81,6 @@ void SCHEDULER::sched(void) {
     return;
 }
 
-void idle(void) {
-    while (1) {
-        __asm__ volatile("wfi");
-    }
-    return;
-}
-
 bool SCHEDULER::init(void) {
     // 初始化进程队列
     task_queue = new mystl::queue<task_t *>;
