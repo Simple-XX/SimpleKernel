@@ -166,6 +166,11 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     SCHEDULER::add_task(task4_p);
     SCHEDULER::add_task(task5_p);
 
+    printf("1----------\n");
+    int *a = (int *)0x30000000;
+    *a=233;
+    printf("2----------\n");
+
     // 允许中断
     CPU::ENABLE_INTR();
     // 显示基本信息

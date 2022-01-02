@@ -18,6 +18,7 @@
 #define _INTR_H_
 
 #include "stdint.h"
+#include "spinlock.h"
 
 void handler_default(void);
 
@@ -86,6 +87,8 @@ public:
     /// 异常处理函数数组
     static INTR::interrupt_handler_t excp_handlers[EXCP_MAX]
         __attribute__((aligned(4)));
+    /// 自旋锁
+    static spinlock_t spinlock;
 
     /**
      * @brief 获取单例
@@ -136,6 +139,10 @@ public:
  * 用于控制 excp 与 intr
  */
 class CLINT {
+private:
+    /// 自旋锁
+    static spinlock_t spinlock;
+
 public:
     /**
      * @brief 获取单例
@@ -213,6 +220,9 @@ public:
  */
 class TIMER {
 public:
+    /// 自旋锁
+    static spinlock_t spinlock;
+
     /**
      * @brief 获取单例
      * @return TIMER&           静态对象

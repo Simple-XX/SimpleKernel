@@ -47,8 +47,6 @@ static void pg_store_excp(void) {
     return;
 }
 
-// static spinlock_t intr_spinlock("intr");
-
 /**
  * @brief 中断处理函数
  * @param  _scause         原因
@@ -58,7 +56,7 @@ static void pg_store_excp(void) {
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, uintptr_t _sp,
                              uintptr_t _sstatus, CPU::context_t *_context) {
-    // intr_spinlock.acquire();
+    // INTR::spinlock.lock();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -94,7 +92,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
-    // intr_spinlock.release();
+    // INTR::spinlock.unlock();
     return;
 }
 
@@ -111,6 +109,8 @@ void handler_default(void) {
     return;
 }
 
+spinlock_t INTR::spinlock;
+
 INTR &INTR::get_instance(void) {
     /// 定义全局 INTR 对象
     static INTR intr;
@@ -118,6 +118,8 @@ INTR &INTR::get_instance(void) {
 }
 
 int32_t INTR::init(void) {
+    // 初始化锁
+    spinlock.init("INTR");
     // 内部中断初始化
     CLINT::get_instance().init();
     // 外部中断初始化
