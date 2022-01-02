@@ -19,6 +19,8 @@
 #include "pmm.h"
 #include "heap.h"
 
+spinlock_t HEAP::spinlock;
+
 HEAP &HEAP::get_instance(void) {
     /// 定义全局 HEAP 对象
     static HEAP heap;
@@ -30,17 +32,24 @@ bool HEAP::init(void) {
                                PMM::non_kernel_space_length *
                                    COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&slab_allocator;
+    // 初始化自旋锁
+    spinlock.init("HEAP");
     info("heap init.\n");
     return 0;
 }
 
 void *HEAP::malloc(size_t _byte) {
-    return (void *)allocator->alloc(_byte);
+    spinlock.lock();
+    void *ret = (void *)allocator->alloc(_byte);
+    spinlock.unlock();
+    return ret;
 }
 
 void HEAP::free(void *_addr) {
+    spinlock.lock();
     // 堆不需要 _len 参数
     allocator->free((uintptr_t)_addr, 0);
+    spinlock.unlock();
     return;
 }
 

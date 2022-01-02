@@ -21,6 +21,7 @@
 #include "stddef.h"
 #include "slab.h"
 #include "allocator.h"
+#include "spinlock.h"
 
 /**
  * @brief 堆抽象
@@ -29,6 +30,8 @@ class HEAP {
 private:
     // 堆分配器
     ALLOCATOR *allocator;
+    /// 自旋锁
+    static spinlock_t spinlock;
 
 protected:
 public:
