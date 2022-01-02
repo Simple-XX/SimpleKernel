@@ -80,6 +80,13 @@ int32_t PLIC::init(void) {
 }
 
 int32_t PLIC::init_other_core(void) {
+    // // 映射 plic
+    // resource_t resource = BOOT_INFO::get_plic();
+    // for (uintptr_t a = resource.mem.addr;
+    //      a < resource.mem.addr + resource.mem.len; a += 0x1000) {
+    //     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), a, a,
+    //                              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    // }
     // 将当前 hart 的 S 模式优先级阈值设置为 0
     IO::get_instance().write32(
         (void *)PLIC_SPRIORITY(COMMON::get_curr_core_id(CPU::READ_SP())), 0);

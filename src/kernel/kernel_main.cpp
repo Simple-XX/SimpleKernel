@@ -88,13 +88,13 @@ void task5(void) {
 }
 
 volatile static bool started = false;
-// static spinlock_t    main_spinlock("main");
 
 void kernel_main_smp(void) {
     while (started == false) {
         ;
     }
     info("smp Running...\n");
+    // VMM::get_instance().init_other_core();
     VMM::get_instance().set_pgd(VMM::get_instance().get_pgd());
     // 中断初始化
     INTR::get_instance().init_other_core();
@@ -118,7 +118,6 @@ void kernel_main_smp(void) {
  */
 void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     if (COMMON::get_curr_core_id(CPU::READ_SP()) == 0) {
-        printf("---0---\n");
         // 初始化 C++
         cpp_init();
         // 初始化基本信息
@@ -148,7 +147,6 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         started = true;
     }
     else {
-        printf("---!0---\n");
         // 唤醒 core0
         OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,
                                            _dtb_addr);

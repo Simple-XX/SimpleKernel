@@ -140,7 +140,8 @@ static constexpr uintptr_t VMM_PA2VA(uintptr_t _pa) {
 class VMM {
 private:
     /// @todo 支持最多四级页表，共用同一套代码
-    /// 当前页目录
+    /// 当前页目录，每个 core 一个
+    // static pt_t curr_dir[COMMON::CORES_COUNT];
     static pt_t curr_dir;
     /// 自旋锁
     static spinlock_t spinlock;
@@ -207,6 +208,7 @@ public:
      * @return false           失败
      */
     bool init(void);
+    bool init_other_core(void);
 
     /**
      * @brief 获取当前页目录

@@ -26,6 +26,8 @@
 #include "vmm.h"
 
 /// 内核页目录
+// static pt_t pgd_kernel[COMMON::CORES_COUNT];
+// pt_t        VMM::curr_dir[COMMON::CORES_COUNT];
 static pt_t pgd_kernel;
 pt_t        VMM::curr_dir;
 spinlock_t  VMM::spinlock;
@@ -105,6 +107,28 @@ bool VMM::init(void) {
     // 开启分页
     CPU::ENABLE_PG();
     info("vmm init.\n");
+    return 0;
+}
+
+bool VMM::init_other_core(void) {
+    // 读取当前页目录
+    curr_dir = (pt_t)CPU::GET_PGD();
+    // 分配一页用于保存页目录
+    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
+    bzero(pgd_kernel, COMMON::PAGE_SIZE);
+    // 映射内核空间
+    for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
+         addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
+         addr += COMMON::PAGE_SIZE) {
+        // TODO: 区分代码/数据等段分别映射
+        mmap(pgd_kernel, addr, addr,
+             VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
+    }
+    // 设置页目录
+    set_pgd(pgd_kernel);
+    // 开启分页
+    CPU::ENABLE_PG();
+    info("vmm other init.\n");
     return 0;
 }
 
