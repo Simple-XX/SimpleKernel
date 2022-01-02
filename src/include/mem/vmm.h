@@ -141,8 +141,7 @@ class VMM {
 private:
     /// @todo 支持最多四级页表，共用同一套代码
     /// 当前页目录，每个 core 一个
-    // static pt_t curr_dir[COMMON::CORES_COUNT];
-    static pt_t curr_dir;
+    static pt_t curr_dir[COMMON::CORES_COUNT];
     /// 自旋锁
     static spinlock_t spinlock;
 

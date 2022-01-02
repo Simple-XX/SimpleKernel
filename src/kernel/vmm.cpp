@@ -26,11 +26,9 @@
 #include "vmm.h"
 
 /// 内核页目录
-// static pt_t pgd_kernel[COMMON::CORES_COUNT];
-// pt_t        VMM::curr_dir[COMMON::CORES_COUNT];
-static pt_t pgd_kernel;
-pt_t        VMM::curr_dir;
-spinlock_t  VMM::spinlock;
+static pt_t pgd_kernel[COMMON::CORES_COUNT];
+pt_t        VMM::curr_dir[COMMON::CORES_COUNT];
+spinlock_t VMM::spinlock;
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
@@ -90,20 +88,22 @@ bool VMM::init(void) {
     GDT::init();
 #endif
     // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
+    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
-    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
-    bzero(pgd_kernel, COMMON::PAGE_SIZE);
+    pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())] =
+        (pt_t)PMM::get_instance().alloc_page_kernel();
+    bzero(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())],
+          COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
          addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
          addr += COMMON::PAGE_SIZE) {
         // TODO: 区分代码/数据等段分别映射
-        mmap(pgd_kernel, addr, addr,
+        mmap(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())], addr, addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
     // 设置页目录
-    set_pgd(pgd_kernel);
+    set_pgd(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())]);
     // 开启分页
     CPU::ENABLE_PG();
     info("vmm init.\n");
@@ -112,36 +112,38 @@ bool VMM::init(void) {
 
 bool VMM::init_other_core(void) {
     // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
+    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
-    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
-    bzero(pgd_kernel, COMMON::PAGE_SIZE);
+    pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())] =
+        (pt_t)PMM::get_instance().alloc_page_kernel();
+    bzero(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())],
+          COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
          addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
          addr += COMMON::PAGE_SIZE) {
         // TODO: 区分代码/数据等段分别映射
-        mmap(pgd_kernel, addr, addr,
+        mmap(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())], addr, addr,
              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
     }
     // 设置页目录
-    set_pgd(pgd_kernel);
+    set_pgd(pgd_kernel[COMMON::get_curr_core_id(CPU::READ_SP())]);
     // 开启分页
     CPU::ENABLE_PG();
-    info("vmm other init.\n");
+    info("vmm other init: 0x%X.\n",COMMON::get_curr_core_id(CPU::READ_SP()));
     return 0;
 }
 
 pt_t VMM::get_pgd(void) {
-    return curr_dir;
+    return curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())];
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
     spinlock.lock();
     // 更新当前页表
-    curr_dir = _pgd;
+    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = _pgd;
     // 设置页目录
-    CPU::SET_PGD((uintptr_t)curr_dir);
+    CPU::SET_PGD((uintptr_t)curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())]);
     // 刷新缓存
     CPU::VMM_FLUSH(0);
     spinlock.unlock();
