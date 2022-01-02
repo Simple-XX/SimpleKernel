@@ -28,12 +28,12 @@ HEAP &HEAP::get_instance(void) {
 }
 
 bool HEAP::init(void) {
+    // 初始化自旋锁
+    spinlock.init("HEAP");
     static SLAB slab_allocator("SLAB Allocator", PMM::non_kernel_space_start,
                                PMM::non_kernel_space_length *
                                    COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&slab_allocator;
-    // 初始化自旋锁
-    spinlock.init("HEAP");
     info("heap init.\n");
     return 0;
 }
