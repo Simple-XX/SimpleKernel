@@ -83,8 +83,6 @@ bool VMM::init(void) {
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
 #endif
-    // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
     pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
     bzero(pgd_kernel, COMMON::PAGE_SIZE);
@@ -100,6 +98,8 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
+    // 读取当前页目录
+    curr_dir = (pt_t)CPU::GET_PGD();
     info("vmm init.\n");
     return 0;
 }
