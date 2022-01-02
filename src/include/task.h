@@ -56,10 +56,10 @@ struct task_t {
     enum task_status_t state;
     /// 父进程
     task_t *parent;
+    /// 线程栈，栈空间分配在内核空间
+    uintptr_t stack;
     /// 上下文
     CPU::context_t context;
-    /// 线程栈
-    uintptr_t stack;
     /// 进程页目录
     pt_t page_dir;
     /// 本次运行时间片

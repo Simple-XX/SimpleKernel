@@ -29,16 +29,15 @@ task_t::task_t(mystl::string _name, void (*_task)(void))
     pid                    = -1;
     state                  = SLEEPING;
     parent                 = nullptr;
+    stack                  = PMM::get_instance().alloc_pages_kernel(4);
     context.ra             = (uintptr_t)_task;
     context.callee_regs.sp = stack + COMMON::PAGE_SIZE * 4;
     context.sscratch       = (uintptr_t)malloc(sizeof(CPU::context_t));
-    // 栈空间分配在内核空间
-    stack       = PMM::get_instance().alloc_pages_kernel(4);
-    page_dir    = VMM::get_instance().get_pgd();
-    slice       = 0;
-    slice_total = 0;
-    hartid      = COMMON::get_curr_core_id(CPU::READ_SP());
-    exit_code   = -1;
+    page_dir               = VMM::get_instance().get_pgd();
+    slice                  = 0;
+    slice_total            = 0;
+    hartid                 = COMMON::get_curr_core_id(CPU::READ_SP());
+    exit_code              = -1;
     return;
 }
 

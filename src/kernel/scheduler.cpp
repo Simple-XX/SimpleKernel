@@ -63,7 +63,6 @@ void SCHEDULER::switch_task(void) {
     // 设置 core 当前线程信息
     cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
-    printf("------------%s\n",curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->name.c_str());
     // 切换
     switch_context(
         &task_os[COMMON::get_curr_core_id(CPU::READ_SP())]->context,
