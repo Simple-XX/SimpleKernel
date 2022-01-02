@@ -19,6 +19,7 @@
 
 #include "limits.h"
 #include "common.h"
+#include "spinlock.h"
 
 // TODO: 可以优化
 
@@ -141,6 +142,8 @@ private:
     /// @todo 支持最多四级页表，共用同一套代码
     /// 当前页目录
     static pt_t curr_dir;
+    /// 自旋锁
+    static spinlock_t spinlock;
 
     /**
      * @brief 物理地址转换到页表项

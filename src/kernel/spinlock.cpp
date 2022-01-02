@@ -70,6 +70,14 @@ spinlock_t::spinlock_t(const char *_name) : name(_name) {
     return;
 }
 
+bool spinlock_t::init(const char *_name) {
+    name   = _name;
+    locked = false;
+    hartid = COMMON::get_curr_core_id(CPU::READ_SP());
+    info("spinlock: %s init.\n", name);
+    return true;
+}
+
 void spinlock_t::lock(void) {
     push_off();
     assert(is_holding() != true);

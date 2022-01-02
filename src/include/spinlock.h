@@ -51,7 +51,21 @@ private:
 
 public:
     spinlock_t(void);
+
+    /**
+     * @brief 构造函数
+     * @param  _name            锁名
+     * @note 需要堆初始化后可用
+     */
     spinlock_t(const char *_name);
+
+    /**
+     * @brief 初始化，用于堆完成之前的初始化
+     * @param  _name            锁名称
+     * @return true             成功
+     * @return false            失败
+     */
+    bool init(const char *_name);
 
     /**
      * @brief 获得锁

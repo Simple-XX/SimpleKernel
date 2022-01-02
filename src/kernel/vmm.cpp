@@ -25,8 +25,10 @@
 #include "pmm.h"
 #include "vmm.h"
 
+/// 内核页目录
 static pt_t pgd_kernel;
 pt_t        VMM::curr_dir;
+spinlock_t  VMM::spinlock;
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
@@ -100,6 +102,8 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
+    // 初始化自旋锁
+    spinlock.init("VMM");
     info("vmm init.\n");
     return 0;
 }
@@ -109,16 +113,19 @@ pt_t VMM::get_pgd(void) {
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
+    spinlock.lock();
     // 更新当前页表
     curr_dir = _pgd;
     // 设置页目录
     CPU::SET_PGD((uintptr_t)curr_dir);
     // 刷新缓存
     CPU::VMM_FLUSH(0);
+    spinlock.unlock();
     return;
 }
 
 void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
+    spinlock.lock();
     pte_t *pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
     assert(pte != nullptr);
@@ -135,10 +142,12 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
         // 刷新缓存
         CPU::VMM_FLUSH((uintptr_t)_va);
     }
+    spinlock.unlock();
     return;
 }
 
 void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
+    spinlock.lock();
     pte_t *pte = find(_pgd, _va, false);
     // 找到页表项
     // 未找到
@@ -155,10 +164,12 @@ void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
     // 刷新缓存
     CPU::VMM_FLUSH((uintptr_t)_va);
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
+    spinlock.unlock();
     return;
 }
 
 bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
+    spinlock.lock();
     pte_t *pte = find(_pgd, _va, false);
     bool   res = false;
     // pte 不为空且有效，说明映射了
@@ -180,5 +191,6 @@ bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
             *(uintptr_t *)_pa = (uintptr_t) nullptr;
         }
     }
+    spinlock.unlock();
     return res;
 }
