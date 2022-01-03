@@ -26,12 +26,13 @@
 
 task_t::task_t(mystl::string _name, void (*_task)(void))
     : name(_name), spinlock(_name) {
-    pid                    = -1;
-    state                  = SLEEPING;
-    parent                 = nullptr;
-    stack                  = PMM::get_instance().alloc_pages_kernel(4);
-    context.ra             = (uintptr_t)_task;
-    context.callee_regs.sp = stack + COMMON::PAGE_SIZE * 4;
+    pid        = -1;
+    state      = SLEEPING;
+    parent     = nullptr;
+    stack      = PMM::get_instance().alloc_pages_kernel(COMMON::STACK_SIZE /
+                                                        COMMON::PAGE_SIZE);
+    context.ra = (uintptr_t)_task;
+    context.callee_regs.sp = stack + COMMON::STACK_SIZE;
     context.sscratch       = (uintptr_t)malloc(sizeof(CPU::context_t));
     page_dir               = VMM::get_instance().get_pgd();
     slice                  = 0;

@@ -133,7 +133,7 @@ void kernel_main_smp(void) {
  * @note 这个函数不会返回
  */
 void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
-    if (COMMON::get_curr_core_id(CPU::READ_SP()) == 0) {
+    if (COMMON::get_curr_core_id(CPU::READ_SP()) == COMMON::BOOT_HART_ID) {
         // 初始化 C++
         cpp_init();
         // 初始化基本信息
@@ -180,10 +180,11 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     SCHEDULER::add_task(task4_p);
     SCHEDULER::add_task(task5_p);
 
-    // 允许中断
-    CPU::ENABLE_INTR();
     // 显示基本信息
     show_info();
+
+    // 允许中断
+    CPU::ENABLE_INTR();
 
     // 开始调度
     while (1) {

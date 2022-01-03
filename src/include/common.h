@@ -57,10 +57,6 @@ static const uintptr_t KERNEL_DATA_END_ADDR __attribute__((unused)) =
 /// 内核结束
 static const uintptr_t KERNEL_END_ADDR =
     reinterpret_cast<uintptr_t>(kernel_end);
-/// core 数量
-static constexpr const uintptr_t CORES_COUNT = 2;
-/// 栈大小
-static constexpr const uintptr_t STACK_SIZE = 4096;
 
 // 规定数据大小，方便用
 /// 一个字节，8 bits
@@ -78,9 +74,16 @@ static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
 /// 映射内核空间需要的页数
 static constexpr const uint64_t KERNEL_SPACE_PAGES =
     KERNEL_SPACE_SIZE / PAGE_SIZE;
+/// core 数量
+static constexpr const uintptr_t CORES_COUNT = 2;
+/// 栈大小
+static constexpr const uintptr_t STACK_SIZE = 4 * KB;
 
-// 页掩码
+/// 页掩码
 static constexpr const uintptr_t PAGE_MASK = ~(PAGE_SIZE - 1);
+
+/// 启动 hart id
+static constexpr const size_t BOOT_HART_ID = 0;
 
 /**
  * @brief 对齐
