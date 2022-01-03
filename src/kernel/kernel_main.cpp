@@ -63,7 +63,7 @@ void task3(void) {
     size_t count = 500000000;
     while (count--)
         ;
-    SCHEDULER::exit(0x233);
+    exit(0x233);
 }
 
 void task4(void) {

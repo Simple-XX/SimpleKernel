@@ -171,3 +171,7 @@ void SCHEDULER::exit(uint32_t _exit_code) {
     switch_to_kernel();
     return;
 }
+
+extern "C" void exit(int _status) {
+    SCHEDULER::exit(_status);
+}
