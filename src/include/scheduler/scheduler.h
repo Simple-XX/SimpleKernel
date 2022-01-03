@@ -43,6 +43,21 @@ private:
     /// 内核任务
     static task_t *task_os[COMMON::CORES_COUNT];
 
+    /// 自旋锁锁
+    spinlock_t spinlock;
+
+    /**
+     * @brief 分配 pid
+     * @return pid_t            分配出的 pid
+     */
+    pid_t alloc_pid(void);
+
+    /**
+     * @brief 回收 pid
+     * @param  _pid             要回收的 pid
+     */
+    void free_pid(pid_t _pid);
+
     /**
      * @brief 获取下一个要运行的任务
      * @return task_t*          下一个要运行的任务
@@ -69,18 +84,6 @@ public:
     void sched(void);
 
     /**
-     * @brief 分配 pid
-     * @return pid_t            分配出的 pid
-     */
-    pid_t alloc_pid(void);
-
-    /**
-     * @brief 回收 pid
-     * @param  _pid             要回收的 pid
-     */
-    void free_pid(pid_t _pid);
-
-    /**
      * @brief 初始化
      * @return true             成功
      * @return false            失败
@@ -100,7 +103,6 @@ public:
      */
     void add_task(task_t *_task);
 
-    // 删除任务
     /**
      * @brief 删除任务
      * @param  _task            要删除的任务
