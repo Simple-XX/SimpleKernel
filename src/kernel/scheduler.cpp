@@ -27,11 +27,20 @@
 extern "C" void switch_context_init(CPU::context_t *_context);
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
 
-// 当前任务
-task_t *SCHEDULER::curr_task[COMMON::CORES_COUNT];
-// 任务向量
+task_t                 *SCHEDULER::curr_task[COMMON::CORES_COUNT];
 mystl::queue<task_t *> *SCHEDULER::task_queue;
+pid_t                   SCHEDULER::g_pid = 1;
 task_t                 *SCHEDULER::task_os[COMMON::CORES_COUNT];
+
+pid_t SCHEDULER::alloc_pid(void) {
+    pid_t res = g_pid++;
+    return res;
+}
+
+void SCHEDULER::free_pid(pid_t _pid) {
+    _pid = _pid;
+    return;
+}
 
 // 获取下一个要执行的任务
 task_t *SCHEDULER::get_next_task(void) {
@@ -84,6 +93,8 @@ SCHEDULER &SCHEDULER::get_instance(void) {
 }
 
 bool SCHEDULER::init(void) {
+    // 初始化自旋锁
+    spinlock.init("SCHEDULER");
     // 初始化进程队列
     task_queue = new mystl::queue<task_t *>;
     // 当前进程
@@ -130,44 +141,39 @@ bool SCHEDULER::init_other_core(void) {
 }
 
 task_t *SCHEDULER::get_curr_task(void) {
-    return curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
-}
-
-pid_t SCHEDULER::g_pid = 1;
-
-pid_t SCHEDULER::alloc_pid(void) {
-    pid_t res = g_pid++;
-    return res;
-}
-
-void SCHEDULER::free_pid(pid_t _pid) {
-    _pid = _pid;
-    return;
+    spinlock.lock();
+    task_t *ret = curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
+    spinlock.unlock();
+    return ret;
 }
 
 void SCHEDULER::add_task(task_t *_task) {
+    spinlock.lock();
     _task->pid   = alloc_pid();
     _task->state = RUNNING;
     // 将新进程添加到链表
     task_queue->push(_task);
+    spinlock.unlock();
     return;
 }
 
 void SCHEDULER::rm_task(task_t *_task) {
+    spinlock.lock();
     // 回收 pid
     free_pid(_task->pid);
+    spinlock.unlock();
     return;
 }
 
-void SCHEDULER::switch_to_kernel(void) {
+void              SCHEDULER::switch_to_kernel(void) {
     printf("switch_to_kernel 0x%X\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     // 设置 core 当前线程信息
     cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         task_os[COMMON::get_curr_core_id(CPU::READ_SP())];
     switch_context(
-        &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context,
-        &task_os[COMMON::get_curr_core_id(CPU::READ_SP())]->context);
-
+                     &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context,
+                     &task_os[COMMON::get_curr_core_id(CPU::READ_SP())]->context);
+    err("switch_to_kernel 0x%X end\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return;
 }
 
@@ -178,6 +184,7 @@ void SCHEDULER::exit(uint32_t _exit_code) {
            curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->name.c_str(),
            curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->exit_code);
     switch_to_kernel();
+    assert(0);
     return;
 }
 

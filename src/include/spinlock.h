@@ -84,6 +84,13 @@ public:
      * @brief 释放锁
      */
     void unlock(void);
+
+    friend std::ostream &operator<<(std::ostream     &_os,
+                                    const spinlock_t &_spinlock) {
+        printf("spinlock(%s) hart 0x%X %s\n", _spinlock.name, _spinlock.hartid,
+               (_spinlock.locked ? "locked" : "unlock"));
+        return _os;
+    }
 };
 
 #endif /* _SPINLOCK_H_ */
