@@ -31,7 +31,7 @@ private:
     // 堆分配器
     ALLOCATOR *allocator;
     /// 自旋锁
-    static spinlock_t spinlock;
+    spinlock_t spinlock;
 
 protected:
 public:

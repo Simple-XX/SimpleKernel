@@ -19,8 +19,6 @@
 #include "pmm.h"
 #include "heap.h"
 
-spinlock_t HEAP::spinlock;
-
 HEAP &HEAP::get_instance(void) {
     /// 定义全局 HEAP 对象
     static HEAP heap;
