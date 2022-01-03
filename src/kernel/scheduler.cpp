@@ -78,6 +78,11 @@ void SCHEDULER::sched(void) {
     return;
 }
 
+SCHEDULER &SCHEDULER::get_instance(void) {
+    static SCHEDULER scheduler;
+    return scheduler;
+}
+
 bool SCHEDULER::init(void) {
     // 初始化进程队列
     task_queue = new mystl::queue<task_t *>;
@@ -122,6 +127,10 @@ bool SCHEDULER::init_other_core(void) {
         task_os[COMMON::get_curr_core_id(CPU::READ_SP())];
     info("task other init: 0x%X.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return true;
+}
+
+task_t *SCHEDULER::get_curr_task(void) {
+    return curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
 }
 
 pid_t SCHEDULER::g_pid = 1;
@@ -173,5 +182,5 @@ void SCHEDULER::exit(uint32_t _exit_code) {
 }
 
 extern "C" void exit(int _status) {
-    SCHEDULER::exit(_status);
+    SCHEDULER::get_instance().exit(_status);
 }

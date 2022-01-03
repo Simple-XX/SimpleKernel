@@ -115,7 +115,7 @@ void kernel_main_smp(void) {
     // 中断初始化
     INTR::get_instance().init_other_core();
     TIMER::get_instance().init_other_core();
-    SCHEDULER::init_other_core();
+    SCHEDULER::get_instance().init_other_core();
     // 允许中断
     CPU::ENABLE_INTR();
 
@@ -157,7 +157,7 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         TIMER::get_instance().init();
         // 初始化任务调度
         /// @note 在 SCHEDULER::init() 执行完后才能正常处理中断
-        SCHEDULER::init();
+        SCHEDULER::get_instance().init();
         // 唤醒其余 core
         start_all_core(_dtb_addr);
         started = true;
@@ -174,11 +174,11 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     auto task3_p = new task_t("task3", &task3);
     auto task4_p = new task_t("task4", &task4);
     auto task5_p = new task_t("task5", &task5);
-    SCHEDULER::add_task(task1_p);
-    SCHEDULER::add_task(task2_p);
-    SCHEDULER::add_task(task3_p);
-    SCHEDULER::add_task(task4_p);
-    SCHEDULER::add_task(task5_p);
+    SCHEDULER::get_instance().add_task(task1_p);
+    SCHEDULER::get_instance().add_task(task2_p);
+    SCHEDULER::get_instance().add_task(task3_p);
+    SCHEDULER::get_instance().add_task(task4_p);
+    SCHEDULER::get_instance().add_task(task5_p);
 
     // 显示基本信息
     show_info();
@@ -188,7 +188,7 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
 
     // 开始调度
     while (1) {
-        SCHEDULER::sched();
+        SCHEDULER::get_instance().sched();
     }
 
     // 不应该执行到这里
