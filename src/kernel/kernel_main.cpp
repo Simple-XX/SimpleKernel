@@ -93,8 +93,10 @@ static void start_all_core(uintptr_t _dtb_addr) {
     (void)_dtb_addr;
 #if defined(__riscv)
     if (COMMON::get_curr_core_id(CPU::READ_SP()) == 0) {
-        OPENSBI::get_instance().hart_start(1, COMMON::KERNEL_TEXT_START_ADDR,
-                                           0);
+        for (size_t i = 1; i < COMMON::CORES_COUNT; i++) {
+            OPENSBI::get_instance().hart_start(
+                i, COMMON::KERNEL_TEXT_START_ADDR, 0);
+        }
     }
     else {
         OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,

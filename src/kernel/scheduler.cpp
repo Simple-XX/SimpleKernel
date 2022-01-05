@@ -79,14 +79,6 @@ void SCHEDULER::switch_task(void) {
     return;
 }
 
-void SCHEDULER::sched(void) {
-    printf("sched: Running... 0x%X\n",
-           COMMON::get_curr_core_id(CPU::READ_SP()));
-    // TODO: 根据当前任务的属性进行调度
-    switch_task();
-    return;
-}
-
 SCHEDULER &SCHEDULER::get_instance(void) {
     static SCHEDULER scheduler;
     return scheduler;
@@ -140,6 +132,14 @@ bool SCHEDULER::init_other_core(void) {
     return true;
 }
 
+void SCHEDULER::sched(void) {
+    printf("sched: Running... 0x%X\n",
+           COMMON::get_curr_core_id(CPU::READ_SP()));
+    // TODO: 根据当前任务的属性进行调度
+    switch_task();
+    return;
+}
+
 task_t *SCHEDULER::get_curr_task(void) {
     spinlock.lock();
     task_t *ret = curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
@@ -165,15 +165,16 @@ void SCHEDULER::rm_task(task_t *_task) {
     return;
 }
 
-void              SCHEDULER::switch_to_kernel(void) {
+void SCHEDULER::switch_to_kernel(void) {
     printf("switch_to_kernel 0x%X\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     // 设置 core 当前线程信息
     cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         task_os[COMMON::get_curr_core_id(CPU::READ_SP())];
     switch_context(
-                     &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context,
-                     &task_os[COMMON::get_curr_core_id(CPU::READ_SP())]->context);
-    err("switch_to_kernel 0x%X end\n", COMMON::get_curr_core_id(CPU::READ_SP()));
+        &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context,
+        &task_os[COMMON::get_curr_core_id(CPU::READ_SP())]->context);
+    err("switch_to_kernel 0x%X end\n",
+        COMMON::get_curr_core_id(CPU::READ_SP()));
     return;
 }
 

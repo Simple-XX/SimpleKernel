@@ -45,4 +45,4 @@ loop:
 .global stack_top
 stack_top:
     // 跳过 8KB
-    .space 4096 * 2
+    .space 4096 * 4

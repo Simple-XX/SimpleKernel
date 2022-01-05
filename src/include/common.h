@@ -75,7 +75,7 @@ static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
 static constexpr const uint64_t KERNEL_SPACE_PAGES =
     KERNEL_SPACE_SIZE / PAGE_SIZE;
 /// core 数量
-static constexpr const uintptr_t CORES_COUNT = 2;
+static constexpr const uintptr_t CORES_COUNT = 4;
 /// 栈大小
 static constexpr const uintptr_t STACK_SIZE = 4 * KB;
 
@@ -131,12 +131,14 @@ static inline size_t get_curr_core_id(const uint64_t _sp) {
     // 的值可以确定当前是哪个 core
     uintptr_t tmp = stack_bottom - _sp;
     assert(tmp > 0);
-    if (tmp > STACK_SIZE) {
-        return 0;
+    size_t ret = 0;
+    for (ssize_t i = CORES_COUNT - 1; i >= 0; i--) {
+        if (tmp >= STACK_SIZE * i) {
+            ret = CORES_COUNT - i - 1;
+            break;
+        }
     }
-    else {
-        return 1;
-    }
+    return ret;
 }
 
 }; // namespace COMMON

@@ -78,18 +78,18 @@ public:
     static SCHEDULER &get_instance(void);
 
     /**
-     * @brief 调度
-     * @note 从内核调度线程切换到其它线程
-     */
-    void sched(void);
-
-    /**
      * @brief 初始化
      * @return true             成功
      * @return false            失败
      */
     bool init(void);
     bool init_other_core(void);
+
+    /**
+     * @brief 调度
+     * @note 从内核调度线程切换到其它线程
+     */
+    void sched(void);
 
     /**
      * @brief 获取当前 core 正在执行的任务
