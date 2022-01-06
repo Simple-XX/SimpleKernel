@@ -41,8 +41,8 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 // 中断
 // #define DEBUG
 #ifdef DEBUG
-        printf("intr: %s.\n",
-               INTR::get_instance().intr_names[_scause & CPU::CAUSE_CODE_MASK]);
+        printf("intr: %s.\n", INTR::get_instance().get_intr_name(
+                                  _scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
@@ -54,7 +54,7 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 // #define DEBUG
 #ifdef DEBUG
         printf("excp: %s.\n",
-               INTR::get_instance().excp_names[_scause & CPU::CAUSE_CODE_MASK]);
+               INTR::get_instance().excp_name(_scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
@@ -134,4 +134,12 @@ void INTR::do_interrupt(uint8_t _no) {
 void INTR::do_excp(uint8_t _no) {
     excp_handlers[_no]();
     return;
+}
+
+const char *INTR::get_intr_name(uint8_t _no) const {
+    return intr_names[_no];
+}
+
+const char *INTR::get_excp_name(uint8_t _no) const {
+    return excp_names[_no];
 }
