@@ -138,10 +138,6 @@ static constexpr uintptr_t VMM_PA2VA(uintptr_t _pa) {
  */
 class VMM {
 private:
-    /// @todo 支持最多四级页表，共用同一套代码
-    /// 当前页目录
-    static pt_t curr_dir;
-
     /**
      * @brief 物理地址转换到页表项
      * @param  _pa             物理地址
