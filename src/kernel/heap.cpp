@@ -35,7 +35,9 @@ bool HEAP::init(void) {
 }
 
 void *HEAP::malloc(size_t _byte) {
-    return (void *)allocator->alloc(_byte);
+    void *ret = nullptr;
+    ret       = (void *)allocator->alloc(_byte);
+    return ret;
 }
 
 void HEAP::free(void *_addr) {
