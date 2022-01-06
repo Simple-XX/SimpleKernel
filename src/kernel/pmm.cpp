@@ -182,3 +182,15 @@ size_t PMM::get_free_pages_count(void) const {
         kernel_space_allocator->get_free_count() + allocator->get_free_count();
     return ret;
 }
+
+uintptr_t PMM::get_non_kernel_space_start(void) const {
+    uintptr_t ret = 0;
+    ret           = non_kernel_space_start;
+    return ret;
+}
+
+size_t PMM::get_non_kernel_space_length(void) const {
+    size_t ret = 0;
+    ret        = non_kernel_space_length;
+    return ret;
+}

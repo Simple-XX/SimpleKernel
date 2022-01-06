@@ -26,9 +26,9 @@ HEAP &HEAP::get_instance(void) {
 }
 
 bool HEAP::init(void) {
-    static SLAB slab_allocator("SLAB Allocator", PMM::non_kernel_space_start,
-                               PMM::non_kernel_space_length *
-                                   COMMON::PAGE_SIZE);
+    static SLAB slab_allocator(
+        "SLAB Allocator", PMM::get_instance().get_non_kernel_space_start(),
+        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&slab_allocator;
     info("heap init.\n");
     return 0;
