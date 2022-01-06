@@ -26,10 +26,7 @@ public:
     /// 中断处理函数指针
     typedef void (*interrupt_handler_t)(void);
 
-    /// 页读错误
-    static constexpr const uint8_t EXCP_LOAD_PAGE_FAULT = 13;
-    /// 页写错误
-    static constexpr const uint8_t EXCP_STORE_PAGE_FAULT = 15;
+private:
     /// 异常名
     static constexpr const char *const excp_names[] = {
         "Instruction Address Misaligned",
@@ -51,10 +48,6 @@ public:
         "Reserved",
     };
 
-    /// S 态时钟中断
-    static constexpr const uint8_t INTR_S_TIMER = 5;
-    /// S 态外部中断
-    static constexpr const uint8_t INTR_S_EXTERNEL = 9;
     /// 中断名
     static constexpr const char *const intr_names[] = {
         "User Software Interrupt",
@@ -80,12 +73,23 @@ public:
     static constexpr const uint32_t INTERRUPT_MAX = 16;
     /// 最大异常数
     static constexpr const uint32_t EXCP_MAX = 16;
+
     /// 中断处理函数数组
     static INTR::interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
         __attribute__((aligned(4)));
     /// 异常处理函数数组
     static INTR::interrupt_handler_t excp_handlers[EXCP_MAX]
         __attribute__((aligned(4)));
+
+public:
+    /// 页读错误
+    static constexpr const uint8_t EXCP_LOAD_PAGE_FAULT = 13;
+    /// 页写错误
+    static constexpr const uint8_t EXCP_STORE_PAGE_FAULT = 15;
+    /// S 态时钟中断
+    static constexpr const uint8_t INTR_S_TIMER = 5;
+    /// S 态外部中断
+    static constexpr const uint8_t INTR_S_EXTERNEL = 9;
 
     /**
      * @brief 获取单例
@@ -127,6 +131,20 @@ public:
      * @param  _no             异常号
      */
     void do_excp(uint8_t _no);
+
+    /**
+     * @brief 获取中断名
+     * @param  _no              中断号
+     * @return const char*      中断名
+     */
+    const char *get_intr_name(uint8_t _no) const;
+
+    /**
+     * @brief 获取异常名
+     * @param  _no              异常号
+     * @return const char*      异常名
+     */
+    const char *get_excp_name(uint8_t _no) const;
 };
 
 /**
