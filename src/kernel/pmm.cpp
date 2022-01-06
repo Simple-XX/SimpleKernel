@@ -22,16 +22,6 @@
 #include "resource.h"
 #include "pmm.h"
 
-uintptr_t  PMM::start                   = 0;
-size_t     PMM::length                  = 0;
-size_t     PMM::total_pages             = 0;
-uintptr_t  PMM::kernel_space_start      = 0;
-size_t     PMM::kernel_space_length     = 0;
-uintptr_t  PMM::non_kernel_space_start  = 0;
-size_t     PMM::non_kernel_space_length = 0;
-ALLOCATOR *PMM::allocator               = nullptr;
-ALLOCATOR *PMM::kernel_space_allocator  = nullptr;
-
 // 将启动信息移动到内核空间
 void PMM::move_boot_info(void) {
     // 计算 multiboot2 信息需要多少页
@@ -48,14 +38,6 @@ void PMM::move_boot_info(void) {
     BOOT_INFO::boot_info_addr = (uintptr_t)new_addr;
     // 重新初始化
     BOOT_INFO::init();
-    return;
-}
-
-PMM::PMM(void) {
-    return;
-}
-
-PMM::~PMM(void) {
     return;
 }
 
