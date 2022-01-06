@@ -138,9 +138,6 @@ static constexpr uintptr_t VMM_PA2VA(uintptr_t _pa) {
  */
 class VMM {
 private:
-    /// 当前页目录
-    pt_t curr_dir;
-
     /**
      * @brief 物理地址转换到页表项
      * @param  _pa             物理地址
@@ -223,8 +220,7 @@ public:
      * @param  _pa             物理地址
      * @param  _flag           属性
      */
-    void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
-                     uint32_t _flag);
+    void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag);
 
     /**
      * @brief 取消映射

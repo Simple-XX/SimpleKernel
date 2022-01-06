@@ -95,21 +95,17 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
     info("vmm init.\n");
     return 0;
 }
 
 pt_t VMM::get_pgd(void) {
-    return curr_dir;
+    return (pt_t)CPU::GET_PGD();
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
-    // 更新当前页表
-    curr_dir = _pgd;
     // 设置页目录
-    CPU::SET_PGD((uintptr_t)curr_dir);
+    CPU::SET_PGD((uintptr_t)_pgd);
     // 刷新缓存
     CPU::VMM_FLUSH(0);
     return;
