@@ -83,6 +83,18 @@ public:
     size_t get_pmm_length(void) const;
 
     /**
+     * @brief 获取当前已使用页数
+     * @return size_t          已使用页数
+     */
+    size_t get_used_pages_count(void) const;
+
+    /**
+     * @brief 获取当前空闲页
+     * @return size_t          空闲页数
+     */
+    size_t get_free_pages_count(void) const;
+
+    /**
      * @brief 分配一页
      * @return uintptr_t       分配的内存起始地址
      */
@@ -138,18 +150,6 @@ public:
      * @param  _len            页数
      */
     void free_pages(uintptr_t _addr, size_t _len);
-
-    /**
-     * @brief 获取当前已使用页数
-     * @return size_t          已使用页数
-     */
-    size_t get_used_pages_count(void) const;
-
-    /**
-     * @brief 获取当前空闲页
-     * @return size_t          空闲页数
-     */
-    size_t get_free_pages_count(void) const;
 };
 
 #endif /* _PMM_H_ */
