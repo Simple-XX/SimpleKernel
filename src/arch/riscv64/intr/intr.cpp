@@ -64,10 +64,30 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 
 /// 中断处理入口 intr_s.S
 extern "C" void trap_entry(void);
-/// 缺页中断处理函数 vmm.cpp
-extern void pg_load_excp(void);
-/// 缺页中断处理函数 vmm.cpp
-extern void pg_store_excp(void);
+
+/**
+ * @brief 缺页处理
+ */
+void pg_load_excp(void) {
+    uintptr_t addr = CPU::READ_STVAL();
+    // 映射页
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
+                             VMM_PAGE_READABLE);
+    info("pg_load_excp done: 0x%p.\n", addr);
+    return;
+}
+
+/**
+ * @brief 缺页处理
+ */
+void pg_store_excp(void) {
+    uintptr_t addr = CPU::READ_STVAL();
+    // 映射页
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
+                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
+    info("pg_store_excp done: 0x%p.\n", addr);
+    return;
+}
 
 /**
  * @brief 默认使用的中断处理函数
