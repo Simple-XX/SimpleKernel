@@ -175,27 +175,3 @@ bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
     }
     return res;
 }
-
-/**
- * @brief 缺页处理
- */
-void pg_load_excp(void) {
-    uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_READABLE);
-    info("pg_load_excp done: 0x%p.\n", addr);
-    return;
-}
-
-/**
- * @brief 缺页处理
- */
-void pg_store_excp(void) {
-    uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
-    info("pg_store_excp done: 0x%p.\n", addr);
-    return;
-}
