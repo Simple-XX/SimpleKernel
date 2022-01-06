@@ -54,6 +54,8 @@ void kernel_main(void) {
     test_heap();
     // 中断初始化
     INTR::get_instance().init();
+    // 时钟中断初始化
+    TIMER::get_instance().init();
     // 允许中断
     CPU::ENABLE_INTR();
     // 显示基本信息
