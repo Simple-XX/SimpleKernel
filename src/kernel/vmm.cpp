@@ -25,9 +25,6 @@
 #include "pmm.h"
 #include "vmm.h"
 
-static pt_t pgd_kernel;
-pt_t        VMM::curr_dir;
-
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
 pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
@@ -84,7 +81,7 @@ bool VMM::init(void) {
     GDT::init();
 #endif
     // 分配一页用于保存页目录
-    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
+    pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
     bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
