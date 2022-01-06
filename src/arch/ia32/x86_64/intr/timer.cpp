@@ -24,7 +24,7 @@
  * @brief 时钟中断
  */
 void timer_intr(INTR::intr_context_t *) {
-    /// @todo todo
+    printf("timer.\n");
     return;
 }
 
@@ -37,7 +37,8 @@ TIMER &TIMER::get_instance(void) {
 void TIMER::init(void) {
     // 注册中断函数
     INTR::get_instance().register_interrupt_handler(INTR::IRQ0, timer_intr);
-    /// @todo todo
+    // 开启时钟中断
+    INTR::get_instance().enable_irq(INTR::IRQ0);
     info("timer init.\n");
     return;
 }
