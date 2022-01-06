@@ -150,6 +150,18 @@ public:
      * @return size_t          空闲页数
      */
     size_t get_free_pages_count(void) const;
+
+    /**
+     * @brief 获取非内核空间起始地址
+     * @return uintptr_t        非内核空间起始地址
+     */
+    uintptr_t get_non_kernel_space_start(void) const;
+
+    /**
+     * @brief 获取非内核空间大小，单位为 byte
+     * @return size_t           非内核空间大小
+     */
+    size_t get_non_kernel_space_length(void) const;
 };
 
 #endif /* _PMM_H_ */
