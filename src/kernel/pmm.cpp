@@ -100,27 +100,39 @@ size_t PMM::get_pmm_length(void) const {
 }
 
 uintptr_t PMM::alloc_page(void) {
-    return allocator->alloc(1);
+    uintptr_t ret = 0;
+    ret           = allocator->alloc(1);
+    return ret;
 }
 
 uintptr_t PMM::alloc_pages(size_t _len) {
-    return allocator->alloc(_len);
+    uintptr_t ret = 0;
+    ret           = allocator->alloc(_len);
+    return ret;
 }
 
 bool PMM::alloc_pages(uintptr_t _addr, size_t _len) {
-    return allocator->alloc(_addr, _len);
+    bool ret = false;
+    ret      = allocator->alloc(_addr, _len);
+    return ret;
 }
 
 uintptr_t PMM::alloc_page_kernel(void) {
-    return kernel_space_allocator->alloc(1);
+    uintptr_t ret = 0;
+    ret           = kernel_space_allocator->alloc(1);
+    return ret;
 }
 
 uintptr_t PMM::alloc_pages_kernel(size_t _len) {
-    return kernel_space_allocator->alloc(_len);
+    uintptr_t ret = 0;
+    ret           = kernel_space_allocator->alloc(_len);
+    return ret;
 }
 
 bool PMM::alloc_pages_kernel(uintptr_t _addr, size_t _len) {
-    return kernel_space_allocator->alloc(_addr, _len);
+    bool ret = false;
+    ret      = kernel_space_allocator->alloc(_addr, _len);
+    return ret;
 }
 
 void PMM::free_page(uintptr_t _addr) {
@@ -158,11 +170,15 @@ void PMM::free_pages(uintptr_t _addr, size_t _len) {
 }
 
 size_t PMM::get_used_pages_count(void) const {
-    return kernel_space_allocator->get_used_count() +
-           allocator->get_used_count();
+    size_t ret = 0;
+    ret =
+        kernel_space_allocator->get_used_count() + allocator->get_used_count();
+    return ret;
 }
 
 size_t PMM::get_free_pages_count(void) const {
-    return kernel_space_allocator->get_free_count() +
-           allocator->get_free_count();
+    size_t ret = 0;
+    ret =
+        kernel_space_allocator->get_free_count() + allocator->get_free_count();
+    return ret;
 }
