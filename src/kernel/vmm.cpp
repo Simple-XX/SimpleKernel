@@ -76,7 +76,7 @@ VMM &VMM::get_instance(void) {
     return vmm;
 }
 
-pt_t pgd_kernel;
+pt_t pgd_core0;
 
 bool VMM::init(void) {
     // 初始化自旋锁
@@ -85,7 +85,7 @@ bool VMM::init(void) {
     GDT::init();
 #endif
     // 分配一页用于保存页目录
-    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
+    pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
     bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
@@ -97,6 +97,7 @@ bool VMM::init(void) {
     }
     // 设置页目录
     set_pgd(pgd_kernel);
+    pgd_core0 = pgd_kernel;
     // 开启分页
     CPU::ENABLE_PG();
     info("vmm init.\n");
@@ -104,6 +105,9 @@ bool VMM::init(void) {
 }
 
 bool VMM::init_other_core(void) {
+    pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
+    bzero(pgd_kernel, COMMON::PAGE_SIZE);
+    memcpy(pgd_kernel, pgd_core0, COMMON::PAGE_SIZE);
     // 设置页目录
     set_pgd(pgd_kernel);
     // 开启分页
