@@ -109,11 +109,6 @@ int32_t INTR::init(void) {
     return 0;
 }
 
-// 中断处理函数数组
-INTR::interrupt_handler_t INTR::interrupt_handlers[INTR::INTERRUPT_MAX];
-// 异常处理函数数组
-INTR::interrupt_handler_t INTR::excp_handlers[INTR::EXCP_MAX];
-
 void INTR::register_interrupt_handler(
     uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
     interrupt_handlers[_no] = _interrupt_handler;
