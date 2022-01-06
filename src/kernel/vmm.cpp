@@ -25,9 +25,6 @@
 #include "pmm.h"
 #include "vmm.h"
 
-static pt_t pgd_kernel;
-pt_t        VMM::curr_dir;
-
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
 pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
@@ -84,7 +81,7 @@ bool VMM::init(void) {
     GDT::init();
 #endif
     // 分配一页用于保存页目录
-    pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
+    pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
     bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
@@ -98,21 +95,17 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
     info("vmm init.\n");
     return 0;
 }
 
 pt_t VMM::get_pgd(void) {
-    return curr_dir;
+    return (pt_t)CPU::GET_PGD();
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
-    // 更新当前页表
-    curr_dir = _pgd;
     // 设置页目录
-    CPU::SET_PGD((uintptr_t)curr_dir);
+    CPU::SET_PGD((uintptr_t)_pgd);
     // 刷新缓存
     CPU::VMM_FLUSH(0);
     return;
@@ -181,4 +174,28 @@ bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
         }
     }
     return res;
+}
+
+/**
+ * @brief 缺页处理
+ */
+void pg_load_excp(void) {
+    uintptr_t addr = CPU::READ_STVAL();
+    // 映射页
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
+                             VMM_PAGE_READABLE);
+    info("pg_load_excp done: 0x%p.\n", addr);
+    return;
+}
+
+/**
+ * @brief 缺页处理
+ */
+void pg_store_excp(void) {
+    uintptr_t addr = CPU::READ_STVAL();
+    // 映射页
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
+                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
+    info("pg_store_excp done: 0x%p.\n", addr);
+    return;
 }
