@@ -36,18 +36,28 @@
 class PMM {
 private:
     /// 物理内存开始地址
-    static uintptr_t start;
+    uintptr_t start;
     /// 物理内存长度，单位为 bytes
-    static size_t length;
+    size_t length;
     /// 物理内存页数
-    static size_t total_pages;
+    size_t total_pages;
+    /// 内核空间起始地址
+    uintptr_t kernel_space_start;
+    /// 内核空间大小，单位为 bytes
+    size_t kernel_space_length;
+    /// 非内核空间起始地址
+    uintptr_t non_kernel_space_start;
+    /// 非内核空间大小，单位为 bytes
+    size_t non_kernel_space_length;
+
     /// 内核空间不会位于内存中间，导致出现非内核空间被切割为两部分的情况
     /// 物理内存分配器，分配内核空间
-    static ALLOCATOR *kernel_space_allocator;
+    ALLOCATOR *kernel_space_allocator;
     /// 物理内存分配器，分配非内核空间
-    static ALLOCATOR *allocator;
+    ALLOCATOR *allocator;
+
     /// 自旋锁
-    static spinlock_t spinlock;
+    spinlock_t spinlock;
 
     /**
      * @brief 将 multiboot2/dtb 信息移动到内核空间
@@ -56,23 +66,6 @@ private:
 
 protected:
 public:
-    /// 内核空间起始地址
-    static uintptr_t kernel_space_start;
-    /// 内核空间大小，单位为 bytes
-    static size_t kernel_space_length;
-    /// 非内核空间起始地址
-    static uintptr_t non_kernel_space_start;
-    /// 非内核空间大小，单位为 bytes
-    static size_t non_kernel_space_length;
-
-    /**
-     * @brief 构造函数，目前为空
-     * @todo 从 bootloader 接受内存参数进行初始化
-     */
-    PMM(void);
-
-    ~PMM(void);
-
     /**
      * @brief 获取单例
      * @return PMM&             静态对象
@@ -161,6 +154,18 @@ public:
      * @return size_t          空闲页数
      */
     size_t get_free_pages_count(void) const;
+
+    /**
+     * @brief 获取非内核空间起始地址
+     * @return uintptr_t        非内核空间起始地址
+     */
+    uintptr_t get_non_kernel_space_start(void) const;
+
+    /**
+     * @brief 获取非内核空间大小，单位为 byte
+     * @return size_t           非内核空间大小
+     */
+    size_t get_non_kernel_space_length(void) const;
 };
 
 #endif /* _PMM_H_ */

@@ -24,32 +24,6 @@
 #include "spinlock.h"
 
 /**
- * @brief 缺页处理
- */
-static void pg_load_excp(void) {
-    uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_READABLE);
-    info("pg_load_excp done: 0x%p, hartid: 0x%X.\n", addr,
-         COMMON::get_curr_core_id(CPU::READ_SP()));
-    return;
-}
-
-/**
- * @brief 缺页处理
- */
-static void pg_store_excp(void) {
-    uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
-    info("pg_store_excp done: 0x%p, hartid: 0x%X.\n", addr,
-         COMMON::get_curr_core_id(CPU::READ_SP()));
-    return;
-}
-
-/**
  * @brief 中断处理函数
  * @param  _scause         原因
  * @param  _sepc           值
@@ -75,8 +49,8 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 // 中断
 // #define DEBUG
 #ifdef DEBUG
-        printf("intr: %s.\n",
-               INTR::get_instance().intr_names[_scause & CPU::CAUSE_CODE_MASK]);
+        printf("intr: %s.\n", INTR::get_instance().get_intr_name(
+                                  _scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
@@ -93,7 +67,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #define DEBUG
 #ifdef DEBUG
         printf("excp: %s.\n",
-               INTR::get_instance().excp_names[_scause & CPU::CAUSE_CODE_MASK]);
+               INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
@@ -105,6 +79,30 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 extern "C" void trap_entry(void);
 
 /**
+ * @brief 缺页处理
+ */
+void pg_load_excp(void) {
+    uintptr_t addr = CPU::READ_STVAL();
+    // 映射页
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
+                             VMM_PAGE_READABLE);
+    info("pg_load_excp done: 0x%p.\n", addr);
+    return;
+}
+
+/**
+ * @brief 缺页处理
+ */
+void pg_store_excp(void) {
+    uintptr_t addr = CPU::READ_STVAL();
+    // 映射页
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
+                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
+    info("pg_store_excp done: 0x%p.\n", addr);
+    return;
+}
+
+/**
  * @brief 默认使用的中断处理函数
  */
 void handler_default(void) {
@@ -113,8 +111,6 @@ void handler_default(void) {
     }
     return;
 }
-
-spinlock_t INTR::spinlock;
 
 INTR &INTR::get_instance(void) {
     /// 定义全局 INTR 对象
@@ -125,14 +121,14 @@ INTR &INTR::get_instance(void) {
 int32_t INTR::init(void) {
     // 初始化锁
     spinlock.init("INTR");
-    // 内部中断初始化
-    CLINT::get_instance().init();
-    // 外部中断初始化
-    PLIC::get_instance().init();
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
     CPU::STVEC_DIRECT();
+    // 内部中断初始化
+    CLINT::get_instance().init();
+    // 外部中断初始化
+    PLIC::get_instance().init();
     // 设置处理函数
     for (auto &i : interrupt_handlers) {
         i = handler_default;
@@ -140,8 +136,9 @@ int32_t INTR::init(void) {
     for (auto &i : excp_handlers) {
         i = handler_default;
     }
-    // 缺页中断
+    // 注册缺页中断
     register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
+    // 注册缺页中断
     register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
     info("intr init.\n");
     return 0;
@@ -159,11 +156,6 @@ int32_t INTR::init_other_core(void) {
     info("intr other 0x%X init.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return 0;
 }
-
-// 中断处理函数数组
-INTR::interrupt_handler_t INTR::interrupt_handlers[INTR::INTERRUPT_MAX];
-// 异常处理函数数组
-INTR::interrupt_handler_t INTR::excp_handlers[INTR::EXCP_MAX];
 
 void INTR::register_interrupt_handler(
     uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
@@ -185,4 +177,12 @@ void INTR::do_interrupt(uint8_t _no) {
 void INTR::do_excp(uint8_t _no) {
     excp_handlers[_no]();
     return;
+}
+
+const char *INTR::get_intr_name(uint8_t _no) const {
+    return intr_names[_no];
+}
+
+const char *INTR::get_excp_name(uint8_t _no) const {
+    return excp_names[_no];
 }

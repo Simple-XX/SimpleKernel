@@ -49,6 +49,9 @@ private:
 
 protected:
 public:
+    /// 缓冲区大小
+    static constexpr const size_t BUF_SIZE = 128;
+
     /**
      * @brief 获取单例
      * @return IO&              静态对象

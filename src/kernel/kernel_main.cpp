@@ -117,6 +117,7 @@ void kernel_main_smp(void) {
     // 中断初始化
     INTR::get_instance().init_other_core();
     TIMER::get_instance().init_other_core();
+    // 时钟中断初始化
     SCHEDULER::get_instance().init_other_core();
     // 允许中断
     CPU::ENABLE_INTR();

@@ -14,9 +14,6 @@
 #include "io.h"
 #include "stdio.h"
 
-/// 输出缓冲区
-/// @todo 用常量替换 128
-static char buf[128];
 /// IO 自旋锁
 /// @todo 这里需要看一下这么构造有没有问题
 static spinlock_t spinlock("IO");
@@ -160,6 +157,9 @@ int32_t IO::write_string(const char *s) {
     return 0;
 }
 
+/// 输出缓冲区
+char buf[IO::BUF_SIZE];
+
 /// 格式化输出自旋锁
 /// @todo 这里需要看一下这么构造有没有问题
 static spinlock_t spinlock_printf("printf");
@@ -175,12 +175,12 @@ extern "C" int32_t printf(const char *_fmt, ...) {
     va_start(va, _fmt);
     // 交给 src/libc/src/stdio/vsprintf.c 中的 _vsnprintf
     // 处理格式，并将处理好的字符串保存到 buf 中
-    const int ret = _vsnprintf(buf, 128, _fmt, va);
+    const int ret = _vsnprintf(buf, IO::BUF_SIZE, _fmt, va);
     va_end(va);
     // 输出 buf
     IO::get_instance().write_string(buf);
     // 清空数据
-    bzero(buf, 128);
+    bzero(buf, IO::BUF_SIZE);
     spinlock_printf.unlock();
     return ret;
 }
@@ -198,7 +198,7 @@ extern "C" int32_t info(const char *_fmt, ...) {
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
     IO::get_instance().write_string(buf);
-    bzero(buf, 128);
+    bzero(buf, IO::BUF_SIZE);
     IO::get_instance().set_color(curr_color);
     spinlock_printf.unlock();
     return i;
@@ -217,7 +217,7 @@ extern "C" int32_t warn(const char *_fmt, ...) {
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
     IO::get_instance().write_string(buf);
-    bzero(buf, 128);
+    bzero(buf, IO::BUF_SIZE);
     IO::get_instance().set_color(curr_color);
     spinlock_printf.unlock();
     return i;
@@ -236,7 +236,7 @@ extern "C" int32_t err(const char *_fmt, ...) {
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
     IO::get_instance().write_string(buf);
-    bzero(buf, 128);
+    bzero(buf, IO::BUF_SIZE);
     IO::get_instance().set_color(curr_color);
     spinlock_printf.unlock();
     return i;

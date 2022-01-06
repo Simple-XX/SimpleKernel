@@ -26,19 +26,18 @@ HEAP &HEAP::get_instance(void) {
 }
 
 bool HEAP::init(void) {
-    // 初始化自旋锁
-    spinlock.init("HEAP");
-    static SLAB slab_allocator("SLAB Allocator", PMM::non_kernel_space_start,
-                               PMM::non_kernel_space_length *
-                                   COMMON::PAGE_SIZE);
+    static SLAB slab_allocator(
+        "SLAB Allocator", PMM::get_instance().get_non_kernel_space_start(),
+        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE);
     allocator = (ALLOCATOR *)&slab_allocator;
     info("heap init.\n");
     return 0;
 }
 
 void *HEAP::malloc(size_t _byte) {
+    void *ret = nullptr;
     spinlock.lock();
-    void *ret = (void *)allocator->alloc(_byte);
+    ret = (void *)allocator->alloc(_byte);
     spinlock.unlock();
     return ret;
 }

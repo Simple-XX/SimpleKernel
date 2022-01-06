@@ -25,11 +25,6 @@
 #include "pmm.h"
 #include "vmm.h"
 
-/// 内核页目录，所有 core 共享
-static pt_t pgd_kernel;
-pt_t        VMM::curr_dir[COMMON::CORES_COUNT];
-spinlock_t  VMM::spinlock;
-
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
 pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
@@ -81,6 +76,8 @@ VMM &VMM::get_instance(void) {
     return vmm;
 }
 
+pt_t pgd_kernel;
+
 bool VMM::init(void) {
     // 初始化自旋锁
     spinlock.init("VMM");
@@ -102,8 +99,6 @@ bool VMM::init(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    // 读取当前页目录
-    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
     info("vmm init.\n");
     return 0;
 }
@@ -113,24 +108,18 @@ bool VMM::init_other_core(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    // 读取当前页目录
-    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = (pt_t)CPU::GET_PGD();
     info("vmm other init: 0x%X.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return 0;
 }
 
 pt_t VMM::get_pgd(void) {
-    assert(curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] ==
-           (pt_t)CPU::GET_PGD());
-    return curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())];
+    return (pt_t)CPU::GET_PGD();
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
     spinlock.lock();
-    // 更新当前页表
-    curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())] = _pgd;
     // 设置页目录
-    CPU::SET_PGD((uintptr_t)curr_dir[COMMON::get_curr_core_id(CPU::READ_SP())]);
+    CPU::SET_PGD((uintptr_t)_pgd);
     // 刷新缓存
     CPU::VMM_FLUSH(0);
     spinlock.unlock();

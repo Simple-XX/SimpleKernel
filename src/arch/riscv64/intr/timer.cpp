@@ -1,7 +1,7 @@
 
 /**
- * @file timer.h
- * @brief 中断抽象头文件
+ * @file timer.cpp
+ * @brief 时钟中断实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2021-09-18

@@ -189,6 +189,14 @@ static constexpr uintptr_t SET_SV39(uintptr_t _pgd) {
  * the page table.
  */
 static inline void SET_PGD(uintptr_t _x) {
+    uintptr_t old;
+    // 读取现在的 pgd
+    __asm__ volatile("csrr %0, satp" : "=r"(old));
+    // 如果开启了 sv39
+    if ((old & SATP_SV39) == SATP_SV39) {
+        // 将新的页目录也设为开启
+        _x = SET_SV39(_x);
+    }
     __asm__ volatile("csrw satp, %0" : : "r"(_x));
     return;
 }
