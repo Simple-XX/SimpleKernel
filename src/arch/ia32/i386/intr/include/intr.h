@@ -319,4 +319,21 @@ public:
     const char *get_intr_name(uint8_t _no);
 };
 
+/**
+ * @brief 时钟抽象
+ */
+class TIMER {
+public:
+    /**
+     * @brief 获取单例
+     * @return TIMER&           静态对象
+     */
+    static TIMER &get_instance(void);
+
+    /**
+     * @brief 初始化
+     */
+    void init(void);
+};
+
 #endif /* _INTR_H_ */
