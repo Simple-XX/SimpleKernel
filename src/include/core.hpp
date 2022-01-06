@@ -45,6 +45,7 @@ struct core_t {
         intr_enable = false;
         return;
     }
+
     core_t(size_t _core_id) {
         core_id     = _core_id;
         curr_task   = nullptr;

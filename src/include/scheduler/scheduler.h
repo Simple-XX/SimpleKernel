@@ -27,98 +27,66 @@
 #include "spinlock.h"
 
 /**
- * @brief 调度器
+ * @brief 调度器抽象类
  */
 class SCHEDULER {
 private:
-    /// 当前任务
-    static task_t *curr_task[COMMON::CORES_COUNT];
+protected:
+    /// 调度器名
+    const char *name;
 
     /// 任务向量
-    static mystl::queue<task_t *> *task_queue;
+    mystl::queue<task_t *> *task_queue;
 
     /// 全局 pid
-    static pid_t g_pid;
+    pid_t g_pid;
 
-    /// 内核任务
-    static task_t *task_os[COMMON::CORES_COUNT];
-
-    /// 自旋锁锁
+    /// 自旋锁
     spinlock_t spinlock;
 
     /**
      * @brief 分配 pid
      * @return pid_t            分配出的 pid
      */
-    pid_t alloc_pid(void);
+    virtual pid_t alloc_pid(void) = 0;
 
     /**
      * @brief 回收 pid
      * @param  _pid             要回收的 pid
      */
-    void free_pid(pid_t _pid);
+    virtual void free_pid(pid_t _pid) = 0;
 
     /**
      * @brief 获取下一个要运行的任务
      * @return task_t*          下一个要运行的任务
      */
-    task_t *get_next_task(void);
+    virtual task_t *get_next_task(void) = 0;
 
     /**
      * @brief 切换任务
      */
-    void switch_task(void);
+    virtual void switch_task(void)=0;
 
-protected:
 public:
     /**
-     * @brief 获取单例
-     * @return SCHEDULER&       静态对象
+     * @brief 调度器构造
+     * @param  _name            调度器名
      */
-    static SCHEDULER &get_instance(void);
+    SCHEDULER(const char *_name);
 
-    /**
-     * @brief 初始化
-     * @return true             成功
-     * @return false            失败
-     */
-    bool init(void);
-    bool init_other_core(void);
-
-    /**
-     * @brief 调度
-     * @note 从内核调度线程切换到其它线程
-     */
-    void sched(void);
-
-    /**
-     * @brief 获取当前 core 正在执行的任务
-     * @return task_t*
-     */
-    task_t *get_curr_task(void);
+    virtual ~SCHEDULER(void) = 0;
 
     /**
      * @brief 添加一个任务
      * @param  _task            要添加的任务
      */
-    void add_task(task_t *_task);
+    virtual void add_task(task_t *_task) = 0;
 
     /**
      * @brief 删除任务
      * @param  _task            要删除的任务
      */
-    void rm_task(task_t *_task);
-
-    /**
-     * @brief 切换到内核调度线程
-     */
-    static void switch_to_kernel(void);
-
-    /**
-     * @brief 线程退出
-     * @param  _exit_code       退出代码
-     */
-    void exit(uint32_t _exit_code);
+    virtual void remove_task(task_t *_task) = 0;
 };
 
 #endif /* _SCHEDULER_H_ */

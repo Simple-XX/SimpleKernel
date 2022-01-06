@@ -19,7 +19,7 @@
 #include "intr.h"
 #include "cpu.hpp"
 #include "vmm.h"
-#include "scheduler.h"
+#include "tmp_scheduler.h"
 #include "task.h"
 #include "spinlock.h"
 
@@ -58,7 +58,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 如果是时钟中断
         if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
             // 设置 sepc，切换到内核线程
-            _context->sepc = (uintptr_t)&SCHEDULER::switch_to_kernel;
+            _context->sepc = (uintptr_t)&tmp_SCHEDULER::switch_to_kernel;
         }
     }
     else {

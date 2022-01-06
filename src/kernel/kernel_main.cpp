@@ -29,7 +29,7 @@
 #include "kernel.h"
 #include "dtb.h"
 #include "task.h"
-#include "scheduler.h"
+#include "tmp_scheduler.h"
 #include "opensbi.h"
 #include "core.hpp"
 #include "spinlock.h"
@@ -118,7 +118,7 @@ void kernel_main_smp(void) {
     INTR::get_instance().init_other_core();
     TIMER::get_instance().init_other_core();
     // 时钟中断初始化
-    SCHEDULER::get_instance().init_other_core();
+    tmp_SCHEDULER::get_instance().init_other_core();
     // 允许中断
     CPU::ENABLE_INTR();
 
@@ -159,8 +159,8 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         // 设置时钟中断
         TIMER::get_instance().init();
         // 初始化任务调度
-        /// @note 在 SCHEDULER::init() 执行完后才能正常处理中断
-        SCHEDULER::get_instance().init();
+        /// @note 在 tmp_SCHEDULER::init() 执行完后才能正常处理中断
+        tmp_SCHEDULER::get_instance().init();
         // 唤醒其余 core
         start_all_core(_dtb_addr);
         started = true;
@@ -177,11 +177,11 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
     auto task3_p = new task_t("task3", &task3);
     auto task4_p = new task_t("task4", &task4);
     auto task5_p = new task_t("task5", &task5);
-    SCHEDULER::get_instance().add_task(task1_p);
-    SCHEDULER::get_instance().add_task(task2_p);
-    SCHEDULER::get_instance().add_task(task3_p);
-    SCHEDULER::get_instance().add_task(task4_p);
-    SCHEDULER::get_instance().add_task(task5_p);
+    tmp_SCHEDULER::get_instance().add_task(task1_p);
+    tmp_SCHEDULER::get_instance().add_task(task2_p);
+    tmp_SCHEDULER::get_instance().add_task(task3_p);
+    tmp_SCHEDULER::get_instance().add_task(task4_p);
+    tmp_SCHEDULER::get_instance().add_task(task5_p);
 
     // 显示基本信息
     show_info();
@@ -191,7 +191,7 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
 
     // 开始调度
     while (1) {
-        SCHEDULER::get_instance().sched();
+        tmp_SCHEDULER::get_instance().sched();
     }
 
     // 不应该执行到这里

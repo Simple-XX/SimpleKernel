@@ -20,7 +20,7 @@
 #include "opensbi.h"
 #include "intr.h"
 #include "task.h"
-#include "scheduler.h"
+#include "tmp_scheduler.h"
 
 spinlock_t TIMER::spinlock;
 
@@ -45,8 +45,8 @@ void timer_intr(void) {
     // 每次执行中断时设置下一次中断的时间
     set_next();
     // TODO: 每次时钟中断更新当前任务的执行时间
-    SCHEDULER::get_instance().get_curr_task()->slice += INTERVAL;
-    SCHEDULER::get_instance().get_curr_task()->slice_total += INTERVAL;
+    tmp_SCHEDULER::get_instance().get_curr_task()->slice += INTERVAL;
+    tmp_SCHEDULER::get_instance().get_curr_task()->slice_total += INTERVAL;
     TIMER::spinlock.unlock();
     return;
 }
