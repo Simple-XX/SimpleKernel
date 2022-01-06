@@ -75,11 +75,10 @@ private:
     static constexpr const uint32_t EXCP_MAX = 16;
 
     /// 中断处理函数数组
-    static INTR::interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
+    interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
         __attribute__((aligned(4)));
     /// 异常处理函数数组
-    static INTR::interrupt_handler_t excp_handlers[EXCP_MAX]
-        __attribute__((aligned(4)));
+    interrupt_handler_t excp_handlers[EXCP_MAX] __attribute__((aligned(4)));
 
 public:
     /// 页读错误
