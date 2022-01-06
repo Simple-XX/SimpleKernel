@@ -58,7 +58,6 @@ static void pg_store_excp(void) {
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, uintptr_t _sp,
                              uintptr_t _sstatus, CPU::context_t *_context) {
-    INTR::spinlock.lock();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -99,7 +98,6 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
-    INTR::spinlock.unlock();
     return;
 }
 
