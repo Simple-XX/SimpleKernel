@@ -21,13 +21,14 @@
 #include "stddef.h"
 #include "common.h"
 #include "task.h"
+#include "iostream"
 
 /**
  * @brief core 抽象
  */
 struct core_t {
     /// 当前 core id
-    ssize_t core_id;
+    size_t core_id;
     /// 当前此 core 上运行的进程
     task_t *curr_task;
     /// 中断嵌套深度
@@ -52,6 +53,8 @@ struct core_t {
      * @return task_t*          当前 core 正在运行的线程
      */
     static task_t *get_curr_task(void);
+
+    friend std::ostream &operator<<(std::ostream &_os, const core_t &_core);
 };
 
 #endif /* _CORE_H_ */

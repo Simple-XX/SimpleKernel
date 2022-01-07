@@ -21,7 +21,7 @@ task_t *core_t::sched_task = nullptr;
 core_t  core_t::cores[COMMON::CORES_COUNT];
 
 core_t::core_t(void) {
-    core_id     = COMMON::get_curr_core_id();
+    core_id     = SIZE_MAX;
     curr_task   = nullptr;
     sched_task  = nullptr;
     noff        = 0;
@@ -36,4 +36,16 @@ void core_t::set_curr_task(task_t *_task) {
 
 task_t *core_t::get_curr_task(void) {
     return cores[COMMON::get_curr_core_id()].curr_task;
+}
+
+std::ostream &operator<<(std::ostream &_os, const core_t &_core) {
+    printf("core id: 0x%X, curr task: %s, sched task: %s, noff: 0x%X, intr "
+           "enable: %s.",
+           _core.core_id,
+           (_core.curr_task == nullptr ? ("null")
+                                       : (_core.curr_task->name.c_str())),
+           (_core.sched_task == nullptr ? ("null")
+                                        : (_core.sched_task->name.c_str())),
+           _core.noff, (_core.intr_enable == true ? ("true") : ("false")));
+    return _os;
 }
