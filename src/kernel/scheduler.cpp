@@ -17,7 +17,7 @@
 #include "scheduler.h"
 
 SCHEDULER::SCHEDULER(const char *_name) : name(_name) {
-    g_pid = -1;
+    g_pid = 1;
     return;
 }
 

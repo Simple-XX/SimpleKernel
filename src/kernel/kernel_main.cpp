@@ -31,7 +31,7 @@
 #include "task.h"
 #include "tmp_scheduler.h"
 #include "opensbi.h"
-#include "core.hpp"
+#include "core.h"
 #include "spinlock.h"
 
 /// @todo gdb 调试

@@ -22,7 +22,7 @@
 #include "tmp_scheduler.h"
 #include "vmm.h"
 #include "cpu.hpp"
-#include "core.hpp"
+#include "core.h"
 
 extern "C" void switch_context_init(CPU::context_t *_context);
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
@@ -68,7 +68,7 @@ void tmp_SCHEDULER::switch_task(void) {
     // 获取下一个线程并替换为当前线程下一个线程
     curr_task[COMMON::get_curr_core_id(CPU::READ_SP())] = get_next_task();
     // 设置 core 当前线程信息
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
     // 切换
     switch_context(
@@ -106,11 +106,11 @@ bool tmp_SCHEDULER::init(void) {
     task_os[COMMON::get_curr_core_id(CPU::READ_SP())] =
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
     // 初始化 core 信息
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].core_id =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].core_id =
         COMMON::get_curr_core_id(CPU::READ_SP());
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].sched_task =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].sched_task =
         task_os[COMMON::get_curr_core_id(CPU::READ_SP())];
     info("task init.\n");
     return true;
@@ -128,11 +128,11 @@ bool tmp_SCHEDULER::init_other_core(void) {
     task_os[COMMON::get_curr_core_id(CPU::READ_SP())] =
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
     // 初始化 core 信息
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].core_id =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].core_id =
         COMMON::get_curr_core_id(CPU::READ_SP());
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         curr_task[COMMON::get_curr_core_id(CPU::READ_SP())];
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].sched_task =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].sched_task =
         task_os[COMMON::get_curr_core_id(CPU::READ_SP())];
     info("task other init: 0x%X.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     return true;
@@ -174,7 +174,7 @@ void tmp_SCHEDULER::remove_task(task_t *_task) {
 void tmp_SCHEDULER::switch_to_kernel(void) {
     printf("switch_to_kernel 0x%X\n", COMMON::get_curr_core_id(CPU::READ_SP()));
     // 设置 core 当前线程信息
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].curr_task =
         task_os[COMMON::get_curr_core_id(CPU::READ_SP())];
     switch_context(
         &curr_task[COMMON::get_curr_core_id(CPU::READ_SP())]->context,

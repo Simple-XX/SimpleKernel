@@ -17,7 +17,7 @@
 #include "spinlock.h"
 #include "cpu.hpp"
 #include "scheduler.h"
-#include "core.hpp"
+#include "core.h"
 #include "cpu.hpp"
 #include "string"
 
@@ -31,10 +31,10 @@ void spinlock_t::push_off(void) {
 
     CPU::DISABLE_INTR();
 
-    if (cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff == 0) {
-        cores[COMMON::get_curr_core_id(CPU::READ_SP())].intr_enable = old;
+    if (core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff == 0) {
+        core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].intr_enable = old;
     }
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff += 1;
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff += 1;
 
     return;
 }
@@ -44,13 +44,13 @@ void spinlock_t::pop_off(void) {
         err("pop_off - interruptible\n");
     }
 
-    if (cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff < 1) {
+    if (core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff < 1) {
         err("pop_off\n");
     }
-    cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff -= 1;
+    core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff -= 1;
 
-    if ((cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff == 0) &&
-        (cores[COMMON::get_curr_core_id(CPU::READ_SP())].intr_enable == true)) {
+    if ((core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].noff == 0) &&
+        (core_t::cores[COMMON::get_curr_core_id(CPU::READ_SP())].intr_enable == true)) {
         CPU::ENABLE_INTR();
     }
 

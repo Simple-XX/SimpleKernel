@@ -1,6 +1,6 @@
 
 /**
- * @file core.hpp
+ * @file core.h
  * @brief core 抽象
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _CORE_HPP_
-#define _CORE_HPP_
+#ifndef _CORE_H_
+#define _CORE_H_
 
 #include "stdint.h"
 #include "stddef.h"
@@ -30,31 +30,29 @@ struct core_t {
     ssize_t core_id;
     /// 当前此 core 上运行的进程
     task_t *curr_task;
-    /// 调度线程
-    task_t *sched_task;
     /// 中断嵌套深度
     ssize_t noff;
     /// 在进入调度线程前是否允许中断
     bool intr_enable;
+    /// 调度线程，全局调度器
+    static task_t *sched_task;
+    /// 所有 core 数组
+    static core_t cores[COMMON::CORES_COUNT];
 
-    core_t(void) {
-        core_id     = -1;
-        curr_task   = nullptr;
-        sched_task  = nullptr;
-        noff        = 0;
-        intr_enable = false;
-        return;
-    }
+    core_t(void);
+    core_t(size_t _core_id);
 
-    core_t(size_t _core_id) {
-        core_id     = _core_id;
-        curr_task   = nullptr;
-        sched_task  = nullptr;
-        noff        = 0;
-        intr_enable = false;
-    }
+    /**
+     * @brief 设置当前 core 正在运行的线程
+     * @param  _task            My Param doc
+     */
+    static void set_curr_task(task_t *_task);
+
+    /**
+     * @brief 获取当前 core 正在运行的线程
+     * @return task_t*          当前 core 正在运行的线程
+     */
+    static task_t *get_curr_task(void);
 };
 
-static core_t cores[COMMON::CORES_COUNT];
-
-#endif /* _CORE_HPP_ */
+#endif /* _CORE_H_ */
