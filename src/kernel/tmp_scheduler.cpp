@@ -174,11 +174,10 @@ void tmp_SCHEDULER::switch_to_kernel(void) {
 }
 
 void tmp_SCHEDULER::exit(uint32_t _exit_code) {
-    curr_task[COMMON::get_curr_core_id()]->exit_code = _exit_code;
-    curr_task[COMMON::get_curr_core_id()]->state     = ZOMBIE;
-    printf("%s exit: 0x%X\n",
-           curr_task[COMMON::get_curr_core_id()]->name.c_str(),
-           curr_task[COMMON::get_curr_core_id()]->exit_code);
+    core_t::get_curr_task()->exit_code = _exit_code;
+    core_t::get_curr_task()->state     = ZOMBIE;
+    printf("%s exit: 0x%X\n", core_t::get_curr_task()->name.c_str(),
+           core_t::get_curr_task()->exit_code);
     switch_to_kernel();
     assert(0);
     return;
