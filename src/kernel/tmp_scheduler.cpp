@@ -92,36 +92,34 @@ bool tmp_SCHEDULER::init(void) {
     // 初始化进程队列
     task_queue = new mystl::queue<task_t *>;
     // 当前进程
-    curr_task[COMMON::get_curr_core_id()]        = new task_t("init", nullptr);
-    curr_task[COMMON::get_curr_core_id()]->pid   = 0;
-    curr_task[COMMON::get_curr_core_id()]->state = RUNNING;
+    task_t *task                          = new task_t("init", nullptr);
+    task->pid                             = 0;
+    task->state                           = RUNNING;
+    curr_task[COMMON::get_curr_core_id()] = task;
     // 原地跳转，填充启动进程的 task_t 信息
-    switch_context_init(&curr_task[COMMON::get_curr_core_id()]->context);
+    switch_context_init(&task->context);
     // 初始化 core 信息
     core_t::cores[COMMON::get_curr_core_id()].core_id =
         COMMON::get_curr_core_id();
-    core_t::cores[COMMON::get_curr_core_id()].curr_task =
-        curr_task[COMMON::get_curr_core_id()];
-    core_t::cores[COMMON::get_curr_core_id()].sched_task =
-        curr_task[COMMON::get_curr_core_id()];
+    core_t::cores[COMMON::get_curr_core_id()].curr_task  = task;
+    core_t::cores[COMMON::get_curr_core_id()].sched_task = task;
     info("task init.\n");
     return true;
 }
 
 bool tmp_SCHEDULER::init_other_core(void) {
     // 当前进程
-    curr_task[COMMON::get_curr_core_id()] = new task_t("init other", nullptr);
-    curr_task[COMMON::get_curr_core_id()]->pid   = 0;
-    curr_task[COMMON::get_curr_core_id()]->state = RUNNING;
+    task_t *task                          = new task_t("init other", nullptr);
+    task->pid                             = 0;
+    task->state                           = RUNNING;
+    curr_task[COMMON::get_curr_core_id()] = task;
     // 原地跳转，填充启动进程的 task_t 信息
-    switch_context_init(&curr_task[COMMON::get_curr_core_id()]->context);
+    switch_context_init(&task->context);
     // 初始化 core 信息
     core_t::cores[COMMON::get_curr_core_id()].core_id =
         COMMON::get_curr_core_id();
-    core_t::cores[COMMON::get_curr_core_id()].curr_task =
-        curr_task[COMMON::get_curr_core_id()];
-    core_t::cores[COMMON::get_curr_core_id()].sched_task =
-        curr_task[COMMON::get_curr_core_id()];
+    core_t::cores[COMMON::get_curr_core_id()].curr_task  = task;
+    core_t::cores[COMMON::get_curr_core_id()].sched_task = task;
     info("task other init: 0x%X.\n", COMMON::get_curr_core_id());
     return true;
 }
