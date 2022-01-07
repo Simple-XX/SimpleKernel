@@ -32,9 +32,6 @@
  */
 class tmp_SCHEDULER : SCHEDULER {
 private:
-    /// 当前任务
-    static task_t *curr_task[COMMON::CORES_COUNT];
-
     /**
      * @brief 分配 pid
      * @return pid_t            分配出的 pid
