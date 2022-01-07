@@ -31,12 +31,12 @@ struct core_t {
     size_t core_id;
     /// 当前此 core 上运行的进程
     task_t *curr_task;
+    /// 调度线程
+    task_t *sched_task;
     /// 中断嵌套深度
     ssize_t noff;
     /// 在进入调度线程前是否允许中断
     bool intr_enable;
-    /// 调度线程，全局调度器
-    task_t *sched_task;
     /// 所有 core 数组
     static core_t cores[COMMON::CORES_COUNT];
 

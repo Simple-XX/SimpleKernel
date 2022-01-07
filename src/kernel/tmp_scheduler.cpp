@@ -54,8 +54,6 @@ task_t *tmp_SCHEDULER::get_next_task(void) {
     // 否则删除
     else {
         remove_task(curr_task[COMMON::get_curr_core_id()]);
-        curr_task[COMMON::get_curr_core_id()]               = nullptr;
-        core_t::cores[COMMON::get_curr_core_id()].curr_task = nullptr;
     }
     task = task_queue->front();
     task_queue->pop();
@@ -67,12 +65,11 @@ void tmp_SCHEDULER::switch_task(void) {
     // 获取下一个线程并替换为当前线程下一个线程
     curr_task[COMMON::get_curr_core_id()] = get_next_task();
     // 设置 core 当前线程信息
-    core_t::cores[COMMON::get_curr_core_id()].curr_task =
-        curr_task[COMMON::get_curr_core_id()];
+    core_t::set_curr_task(curr_task[COMMON::get_curr_core_id()]);
     // 切换
     switch_context(
         &core_t::cores[COMMON::get_curr_core_id()].sched_task->context,
-        &curr_task[COMMON::get_curr_core_id()]->context);
+        &core_t::get_curr_task()->context);
     return;
 }
 
