@@ -92,7 +92,7 @@ void task5(void) {
 static void start_all_core(uintptr_t _dtb_addr) {
     (void)_dtb_addr;
 #if defined(__riscv)
-    if (COMMON::get_curr_core_id(CPU::READ_SP()) == 0) {
+    if (COMMON::get_curr_core_id() == 0) {
         for (size_t i = 1; i < COMMON::CORES_COUNT; i++) {
             OPENSBI::get_instance().hart_start(
                 i, COMMON::KERNEL_TEXT_START_ADDR, 0);
@@ -136,7 +136,7 @@ void kernel_main_smp(void) {
  * @note 这个函数不会返回
  */
 void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
-    if (COMMON::get_curr_core_id(CPU::READ_SP()) == COMMON::BOOT_HART_ID) {
+    if (COMMON::get_curr_core_id() == COMMON::BOOT_HART_ID) {
         // 初始化 C++
         cpp_init();
         // 初始化基本信息

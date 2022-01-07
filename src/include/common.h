@@ -20,6 +20,7 @@
 #include "stdint.h"
 #include "stddef.h"
 #include "assert.h"
+#include "cpu.hpp"
 
 namespace COMMON {
 // 引用链接脚本中的变量
@@ -130,6 +131,28 @@ static inline size_t get_curr_core_id(const uint64_t _sp) {
     // 各个 core 的栈是可以计算的，根据相对 stack_top
     // 的值可以确定当前是哪个 core
     uintptr_t tmp = stack_bottom - _sp;
+    assert(tmp > 0);
+    size_t ret = 0;
+    for (ssize_t i = CORES_COUNT - 1; i >= 0; i--) {
+        if (tmp >= STACK_SIZE * i) {
+            ret = CORES_COUNT - i - 1;
+            break;
+        }
+    }
+    return ret;
+}
+
+/**
+ * @brief 根据 sp 的值计算当前 core id
+ * @return size_t           hartid
+ * @note hartid 和 core id 是一回事
+ */
+static inline size_t get_curr_core_id(void) {
+    uint64_t stack_bottom =
+        (uint64_t)&COMMON::stack_top + STACK_SIZE * CORES_COUNT;
+    // 各个 core 的栈是可以计算的，根据相对 stack_top
+    // 的值可以确定当前是哪个 core
+    uintptr_t tmp = stack_bottom - CPU::READ_SP();
     assert(tmp > 0);
     size_t ret = 0;
     for (ssize_t i = CORES_COUNT - 1; i >= 0; i--) {
