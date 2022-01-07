@@ -42,7 +42,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 // #define DEBUG
 #ifdef DEBUG
     printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p, hartid: 0x%X.\n", _scause,
-           _sepc, _stval, COMMON::get_curr_core_id(CPU::READ_SP()));
+           _sepc, _stval, COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
@@ -66,8 +66,8 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 // 跳转到对应的处理函数
 #define DEBUG
 #ifdef DEBUG
-        printf("excp: %s.\n",
-               INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK));
+        printf("excp: %s.\n", INTR::get_instance().get_excp_name(
+                                  _scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
@@ -153,7 +153,7 @@ int32_t INTR::init_other_core(void) {
     CLINT::get_instance().init_other_core();
     // 外部中断初始化
     PLIC::get_instance().init_other_core();
-    info("intr other 0x%X init.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
+    info("intr other 0x%X init.\n", COMMON::get_curr_core_id());
     return 0;
 }
 

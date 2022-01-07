@@ -112,7 +112,7 @@ bool VMM::init_other_core(void) {
     set_pgd(pgd_kernel);
     // 开启分页
     CPU::ENABLE_PG();
-    info("vmm other init: 0x%X.\n", COMMON::get_curr_core_id(CPU::READ_SP()));
+    info("vmm other init: 0x%X.\n", COMMON::get_curr_core_id());
     return 0;
 }
 
