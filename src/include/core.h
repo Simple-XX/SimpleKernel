@@ -36,7 +36,7 @@ struct core_t {
     /// 在进入调度线程前是否允许中断
     bool intr_enable;
     /// 调度线程，全局调度器
-    static task_t *sched_task;
+    task_t *sched_task;
     /// 所有 core 数组
     static core_t cores[COMMON::CORES_COUNT];
 

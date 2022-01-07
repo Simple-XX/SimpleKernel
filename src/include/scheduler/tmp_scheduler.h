@@ -35,9 +35,6 @@ private:
     /// 当前任务
     static task_t *curr_task[COMMON::CORES_COUNT];
 
-    /// 内核任务
-    static task_t *task_os[COMMON::CORES_COUNT];
-
     /**
      * @brief 分配 pid
      * @return pid_t            分配出的 pid

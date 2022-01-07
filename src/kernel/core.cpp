@@ -17,7 +17,6 @@
 #include "core.h"
 #include "common.h"
 
-task_t *core_t::sched_task = nullptr;
 core_t  core_t::cores[COMMON::CORES_COUNT];
 
 core_t::core_t(void) {

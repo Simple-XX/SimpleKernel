@@ -28,7 +28,6 @@ extern "C" void switch_context_init(CPU::context_t *_context);
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
 
 task_t *tmp_SCHEDULER::curr_task[COMMON::CORES_COUNT];
-task_t *tmp_SCHEDULER::task_os[COMMON::CORES_COUNT];
 
 pid_t tmp_SCHEDULER::alloc_pid(void) {
     pid_t res = g_pid++;
@@ -55,7 +54,8 @@ task_t *tmp_SCHEDULER::get_next_task(void) {
     // 否则删除
     else {
         remove_task(curr_task[COMMON::get_curr_core_id()]);
-        curr_task[COMMON::get_curr_core_id()] = nullptr;
+        curr_task[COMMON::get_curr_core_id()]               = nullptr;
+        core_t::cores[COMMON::get_curr_core_id()].curr_task = nullptr;
     }
     task = task_queue->front();
     task_queue->pop();
@@ -70,8 +70,9 @@ void tmp_SCHEDULER::switch_task(void) {
     core_t::cores[COMMON::get_curr_core_id()].curr_task =
         curr_task[COMMON::get_curr_core_id()];
     // 切换
-    switch_context(&task_os[COMMON::get_curr_core_id()]->context,
-                   &curr_task[COMMON::get_curr_core_id()]->context);
+    switch_context(
+        &core_t::cores[COMMON::get_curr_core_id()].sched_task->context,
+        &curr_task[COMMON::get_curr_core_id()]->context);
     return;
 }
 
@@ -99,14 +100,13 @@ bool tmp_SCHEDULER::init(void) {
     curr_task[COMMON::get_curr_core_id()]->state = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
     switch_context_init(&curr_task[COMMON::get_curr_core_id()]->context);
-    task_os[COMMON::get_curr_core_id()] = curr_task[COMMON::get_curr_core_id()];
     // 初始化 core 信息
     core_t::cores[COMMON::get_curr_core_id()].core_id =
         COMMON::get_curr_core_id();
     core_t::cores[COMMON::get_curr_core_id()].curr_task =
         curr_task[COMMON::get_curr_core_id()];
     core_t::cores[COMMON::get_curr_core_id()].sched_task =
-        task_os[COMMON::get_curr_core_id()];
+        curr_task[COMMON::get_curr_core_id()];
     info("task init.\n");
     return true;
 }
@@ -118,14 +118,13 @@ bool tmp_SCHEDULER::init_other_core(void) {
     curr_task[COMMON::get_curr_core_id()]->state = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
     switch_context_init(&curr_task[COMMON::get_curr_core_id()]->context);
-    task_os[COMMON::get_curr_core_id()] = curr_task[COMMON::get_curr_core_id()];
     // 初始化 core 信息
     core_t::cores[COMMON::get_curr_core_id()].core_id =
         COMMON::get_curr_core_id();
     core_t::cores[COMMON::get_curr_core_id()].curr_task =
         curr_task[COMMON::get_curr_core_id()];
     core_t::cores[COMMON::get_curr_core_id()].sched_task =
-        task_os[COMMON::get_curr_core_id()];
+        curr_task[COMMON::get_curr_core_id()];
     info("task other init: 0x%X.\n", COMMON::get_curr_core_id());
     return true;
 }
@@ -166,9 +165,10 @@ void tmp_SCHEDULER::switch_to_kernel(void) {
     printf("switch_to_kernel 0x%X\n", COMMON::get_curr_core_id());
     // 设置 core 当前线程信息
     core_t::cores[COMMON::get_curr_core_id()].curr_task =
-        task_os[COMMON::get_curr_core_id()];
-    switch_context(&curr_task[COMMON::get_curr_core_id()]->context,
-                   &task_os[COMMON::get_curr_core_id()]->context);
+        core_t::cores[COMMON::get_curr_core_id()].sched_task;
+    switch_context(
+        &curr_task[COMMON::get_curr_core_id()]->context,
+        &core_t::cores[COMMON::get_curr_core_id()].sched_task->context);
     err("switch_to_kernel 0x%X end\n", COMMON::get_curr_core_id());
     return;
 }
