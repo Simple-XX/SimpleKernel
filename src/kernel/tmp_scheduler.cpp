@@ -153,10 +153,11 @@ void tmp_SCHEDULER::remove_task(task_t *_task) {
 
 void tmp_SCHEDULER::switch_to_kernel(void) {
     printf("switch_to_kernel 0x%X\n", COMMON::get_curr_core_id());
+    task_t *old = core_t::get_curr_task();
     // 设置 core 当前线程信息
     core_t::set_curr_task(core_t::cores[COMMON::get_curr_core_id()].sched_task);
     switch_context(
-        &curr_task[COMMON::get_curr_core_id()]->context,
+        &old->context,
         &core_t::cores[COMMON::get_curr_core_id()].sched_task->context);
     err("switch_to_kernel 0x%X end\n", COMMON::get_curr_core_id());
     return;
