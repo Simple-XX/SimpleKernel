@@ -24,8 +24,9 @@
 #include "cpu.hpp"
 #include "core.h"
 
-extern "C" void switch_context_init(CPU::context_t *_context);
+extern "C" void context_init(CPU::context_t *_context);
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
+extern "C" void switch_os(CPU::context_t *_os);
 
 pid_t tmp_SCHEDULER::alloc_pid(void) {
     pid_t res = g_pid++;
@@ -93,7 +94,7 @@ bool tmp_SCHEDULER::init(void) {
     task->pid    = 0;
     task->state  = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
-    switch_context_init(&task->context);
+    context_init(&task->context);
     // 初始化 core 信息
     core_t::cores[COMMON::get_curr_core_id()].core_id =
         COMMON::get_curr_core_id();
@@ -109,7 +110,7 @@ bool tmp_SCHEDULER::init_other_core(void) {
     task->pid    = 0;
     task->state  = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
-    switch_context_init(&task->context);
+    context_init(&task->context);
     // 初始化 core 信息
     core_t::cores[COMMON::get_curr_core_id()].core_id =
         COMMON::get_curr_core_id();
@@ -144,25 +145,12 @@ void tmp_SCHEDULER::remove_task(task_t *_task) {
     return;
 }
 
-void tmp_SCHEDULER::switch_to_kernel(void) {
-    printf("switch_to_kernel 0x%X\n", COMMON::get_curr_core_id());
-    task_t *old = core_t::get_curr_task();
-    // 设置 core 当前线程信息
-    // 这里如果设置了，在 get_next_task 中获取到的就是 0 线程
-    // core_t::set_curr_task(core_t::cores[COMMON::get_curr_core_id()].sched_task);
-    switch_context(
-        &old->context,
-        &core_t::cores[COMMON::get_curr_core_id()].sched_task->context);
-    err("switch_to_kernel 0x%X end\n", COMMON::get_curr_core_id());
-    return;
-}
-
 void tmp_SCHEDULER::exit(uint32_t _exit_code) {
     core_t::get_curr_task()->exit_code = _exit_code;
     core_t::get_curr_task()->state     = ZOMBIE;
     printf("%s exit: 0x%X\n", core_t::get_curr_task()->name.c_str(),
            core_t::get_curr_task()->exit_code);
-    switch_to_kernel();
+    switch_os(&core_t::cores[COMMON::get_curr_core_id()].sched_task->context);
     assert(0);
     return;
 }

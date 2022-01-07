@@ -16,10 +16,14 @@
 
 #include "context_switch.S"
 
-// void switch_context_init(context_t *_context);
-.globl switch_context_init
+/**
+ * @brief 初始化第一个进程的上下文
+ * @param  _context         第一个进程
+ */
+// void context_init(context_t *_context);
+.globl context_init
 .align 4
-switch_context_init:
+context_init:
     sd_base ra, 0, a0
     addi a0, a0, 8
     callee_regs_save a0
@@ -34,7 +38,11 @@ switch_context_init:
     csrw sscratch, t6
     ret
 
-// 进程上下文的切换
+/**
+ * @brief 上下文切换
+ * @param  _old             当前进程
+ * @param  _new             下一个进程
+ */
 // void switch_context(context_t *_old, context_t *_new);
 .globl switch_context
 .align 4
@@ -43,5 +51,18 @@ switch_context:
     context_save a0
     // 恢复 _new
     context_load a1
+    // 跳转到 _new->ra 执行
+    ret
+
+/**
+ * @brief 切换到调度线程，不保存旧的上下文
+ * @param  _os              调度线程
+ */
+// void switch_os(context_t *_os);
+.globl switch_os
+.align 4
+switch_os:
+    // 恢复 _new
+    context_load a0
     // 跳转到 _new->ra 执行
     ret

@@ -93,11 +93,6 @@ public:
     void remove_task(task_t *_task) override;
 
     /**
-     * @brief 切换到内核调度线程
-     */
-    static void switch_to_kernel(void);
-
-    /**
      * @brief 线程退出
      * @param  _exit_code       退出代码
      */

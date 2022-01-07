@@ -22,6 +22,23 @@
 #include "tmp_scheduler.h"
 #include "task.h"
 #include "spinlock.h"
+#include "core.h"
+
+extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
+
+/**
+ * @brief 保存当前上下文并跳转到调度线程
+ */
+static void switch_sched(void) {
+    printf("switch_sched 0x%X\n", COMMON::get_curr_core_id());
+    task_t *old = core_t::get_curr_task();
+    // 设置 core 当前线程信息
+    switch_context(
+        &old->context,
+        &core_t::cores[COMMON::get_curr_core_id()].sched_task->context);
+    err("switch_sched 0x%X end\n", COMMON::get_curr_core_id());
+    return;
+}
 
 /**
  * @brief 中断处理函数
@@ -58,7 +75,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 如果是时钟中断
         if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
             // 设置 sepc，切换到内核线程
-            _context->sepc = (uintptr_t)&tmp_SCHEDULER::switch_to_kernel;
+            _context->sepc = (uintptr_t)&switch_sched;
         }
     }
     else {
