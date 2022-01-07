@@ -84,12 +84,6 @@ public:
     void sched(void);
 
     /**
-     * @brief 获取当前 core 正在执行的任务
-     * @return task_t*
-     */
-    task_t *get_curr_task(void);
-
-    /**
      * @brief 添加一个任务
      * @param  _task            要添加的任务
      */

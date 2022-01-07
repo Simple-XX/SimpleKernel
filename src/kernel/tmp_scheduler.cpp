@@ -136,13 +136,6 @@ void tmp_SCHEDULER::sched(void) {
     return;
 }
 
-task_t *tmp_SCHEDULER::get_curr_task(void) {
-    spinlock.lock();
-    task_t *ret = curr_task[COMMON::get_curr_core_id()];
-    spinlock.unlock();
-    return ret;
-}
-
 void tmp_SCHEDULER::add_task(task_t *_task) {
     spinlock.lock();
     _task->pid   = alloc_pid();
@@ -164,8 +157,7 @@ void tmp_SCHEDULER::remove_task(task_t *_task) {
 void tmp_SCHEDULER::switch_to_kernel(void) {
     printf("switch_to_kernel 0x%X\n", COMMON::get_curr_core_id());
     // 设置 core 当前线程信息
-    core_t::cores[COMMON::get_curr_core_id()].curr_task =
-        core_t::cores[COMMON::get_curr_core_id()].sched_task;
+    core_t::set_curr_task(core_t::cores[COMMON::get_curr_core_id()].sched_task);
     switch_context(
         &curr_task[COMMON::get_curr_core_id()]->context,
         &core_t::cores[COMMON::get_curr_core_id()].sched_task->context);

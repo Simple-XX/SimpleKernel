@@ -21,6 +21,7 @@
 #include "intr.h"
 #include "task.h"
 #include "tmp_scheduler.h"
+#include "core.h"
 
 spinlock_t TIMER::spinlock;
 
@@ -45,8 +46,8 @@ void timer_intr(void) {
     // 每次执行中断时设置下一次中断的时间
     set_next();
     // TODO: 每次时钟中断更新当前任务的执行时间
-    tmp_SCHEDULER::get_instance().get_curr_task()->slice += INTERVAL;
-    tmp_SCHEDULER::get_instance().get_curr_task()->slice_total += INTERVAL;
+    core_t::get_curr_task()->slice += INTERVAL;
+    core_t::get_curr_task()->slice_total += INTERVAL;
     TIMER::spinlock.unlock();
     return;
 }
