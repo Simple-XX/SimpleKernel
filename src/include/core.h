@@ -40,7 +40,6 @@ struct core_t {
     static core_t cores[COMMON::CORES_COUNT];
 
     core_t(void);
-    core_t(size_t _core_id);
 
     /**
      * @brief 设置当前 core 正在运行的线程

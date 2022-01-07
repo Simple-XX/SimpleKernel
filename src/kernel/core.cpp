@@ -15,25 +15,18 @@
  */
 
 #include "core.h"
+#include "common.h"
 
 task_t *core_t::sched_task = nullptr;
 core_t  core_t::cores[COMMON::CORES_COUNT];
 
 core_t::core_t(void) {
-    core_id     = -1;
+    core_id     = COMMON::get_curr_core_id(CPU::READ_SP());
     curr_task   = nullptr;
     sched_task  = nullptr;
     noff        = 0;
     intr_enable = false;
     return;
-}
-
-core_t::core_t(size_t _core_id) {
-    core_id     = _core_id;
-    curr_task   = nullptr;
-    sched_task  = nullptr;
-    noff        = 0;
-    intr_enable = false;
 }
 
 void core_t::set_curr_task(task_t *_task) {
