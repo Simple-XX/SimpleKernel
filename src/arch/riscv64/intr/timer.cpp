@@ -23,8 +23,6 @@
 #include "tmp_scheduler.h"
 #include "core.h"
 
-spinlock_t TIMER::spinlock;
-
 /// timer interrupt interval
 /// @todo 从 dts 读取
 static constexpr const uint64_t INTERVAL = 390000000 / 20;
@@ -42,13 +40,11 @@ void set_next(void) {
  * @brief 时钟中断
  */
 void timer_intr(void) {
-    TIMER::spinlock.lock();
     // 每次执行中断时设置下一次中断的时间
     set_next();
     // TODO: 每次时钟中断更新当前任务的执行时间
     core_t::get_curr_task()->slice += INTERVAL;
     core_t::get_curr_task()->slice_total += INTERVAL;
-    TIMER::spinlock.unlock();
     return;
 }
 
@@ -59,8 +55,6 @@ TIMER &TIMER::get_instance(void) {
 }
 
 void TIMER::init(void) {
-    // 初始化锁
-    spinlock.init("TIMER");
     // 注册中断函数
     INTR::get_instance().register_interrupt_handler(INTR::INTR_S_TIMER,
                                                     timer_intr);

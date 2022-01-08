@@ -159,7 +159,7 @@ public:
 class CLINT {
 private:
     /// 自旋锁
-    static spinlock_t spinlock;
+    spinlock_t spinlock;
 
 public:
     /**
@@ -238,9 +238,6 @@ public:
  */
 class TIMER {
 public:
-    /// 自旋锁
-    static spinlock_t spinlock;
-
     /**
      * @brief 获取单例
      * @return TIMER&           静态对象

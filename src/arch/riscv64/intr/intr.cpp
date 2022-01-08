@@ -176,13 +176,17 @@ int32_t INTR::init_other_core(void) {
 
 void INTR::register_interrupt_handler(
     uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
+    spinlock.lock();
     interrupt_handlers[_no] = _interrupt_handler;
+    spinlock.unlock();
     return;
 }
 
 void INTR::register_excp_handler(uint8_t                   _no,
                                  INTR::interrupt_handler_t _interrupt_handler) {
+    spinlock.lock();
     excp_handlers[_no] = _interrupt_handler;
+    spinlock.unlock();
     return;
 }
 
