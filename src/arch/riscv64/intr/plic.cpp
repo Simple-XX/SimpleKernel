@@ -54,6 +54,8 @@ PLIC &PLIC::get_instance(void) {
 }
 
 int32_t PLIC::init(void) {
+    // 初始化锁
+    spinlock.init("PLIC");
     // 映射 plic
     resource_t resource = BOOT_INFO::get_plic();
     base_addr           = resource.mem.addr;
@@ -88,6 +90,7 @@ int32_t PLIC::init_other_core(void) {
 }
 
 void PLIC::set(uint8_t _no, bool _status) {
+    spinlock.lock();
     // 设置 IRQ 的属性为非零，即启用 plic
     IO::get_instance().write32((void *)(base_addr + _no * 4), _status);
     // TODO: 多核情况下设置所有 hart
@@ -106,16 +109,22 @@ void PLIC::set(uint8_t _no, bool _status) {
                 (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart)) &
                 ~(1 << _no));
     }
+    spinlock.unlock();
     return;
 }
 
 uint8_t PLIC::get(void) {
-    return IO::get_instance().read32(
+    spinlock.lock();
+    uint8_t ret = IO::get_instance().read32(
         (void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart));
+    spinlock.unlock();
+    return ret;
 }
 
 void PLIC::done(uint8_t _no) {
+    spinlock.lock();
     IO::get_instance().write32((void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart),
                                _no);
+    spinlock.unlock();
     return;
 }

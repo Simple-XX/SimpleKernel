@@ -183,6 +183,8 @@ public:
  */
 class PLIC {
 private:
+    /// 自旋锁
+    spinlock_t spinlock;
     /// 基地址，由 dtb 传递
     uintptr_t base_addr;
     /// @todo ？

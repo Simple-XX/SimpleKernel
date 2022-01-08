@@ -30,6 +30,8 @@ CLINT &CLINT::get_instance(void) {
 }
 
 int32_t CLINT::init(void) {
+    // 初始化锁
+    spinlock.init("CLINT");
     // 映射 clint 地址
     resource_t resource = BOOT_INFO::get_clint();
     for (uintptr_t a = resource.mem.addr;
