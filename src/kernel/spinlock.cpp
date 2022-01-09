@@ -86,15 +86,21 @@ bool spinlock_t::init(const char *_name) {
     return true;
 }
 
+/// @see https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
 void spinlock_t::lock(void) {
     push_off();
     assert(is_holding() != true);
-
-    while (__atomic_test_and_set(&locked, 1) != 0) {
+    size_t i = 0;
+    while ((__atomic_test_and_set(&locked, __ATOMIC_ACQUIRE) != 0) &&
+           (i++ < 0xFFFFFFFF)) {
         ;
     }
+    if (i > 0xFFFFFFFF) {
+        assert(!"Deadlock!");
+    }
 
-    __sync_synchronize();
+    __atomic_thread_fence(__ATOMIC_ACQUIRE);
+    __atomic_signal_fence(__ATOMIC_ACQUIRE);
 
     hartid = COMMON::get_curr_core_id();
     return;
@@ -104,8 +110,11 @@ void spinlock_t::lock(void) {
 void spinlock_t::unlock(void) {
     assert(is_holding() != false);
     hartid = -1;
-    __sync_synchronize();
-    __sync_lock_release(&locked);
+
+    __atomic_thread_fence(__ATOMIC_RELEASE);
+    __atomic_signal_fence(__ATOMIC_RELEASE);
+    __atomic_clear(&locked, __ATOMIC_RELEASE);
+
     pop_off();
     return;
 }
