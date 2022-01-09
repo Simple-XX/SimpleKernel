@@ -16,7 +16,8 @@ elseif (SimpleKernelArch STREQUAL ia32/x86_64)
 elseif (SimpleKernelArch STREQUAL aarch64)
     set(CMAKE_C_FLAGS "-march=armv8-a -mtune=cortex-a72 -D${SimpleKernelArch}")
 elseif (SimpleKernelArch STREQUAL riscv64)
-    set(CMAKE_C_FLAGS "-D${SimpleKernelArch}")
+    set(CMAKE_C_FLAGS "-march=rv64imafdc -D${SimpleKernelArch}")
+    set(CMAKE_CXX_FLAGS "-march=rv64imafdc -D${SimpleKernelArch}")
 else ()
     message(FATAL_ERROR "unexpected ARCH: ${SimpleKernelArch}")
 endif ()
@@ -65,6 +66,8 @@ add_executable(${KernelName}
 
 # 指定链接脚本
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
+# 生成 map 文件
+target_link_options(${KernelName} PRIVATE -Wl,-Map,${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName}.map)
 
 # 其它链接选项
 if (SimpleKernelArch STREQUAL ia32/i386)
@@ -76,3 +79,24 @@ elseif (SimpleKernelArch STREQUAL aarch64)
 elseif (SimpleKernelArch STREQUAL riscv64)
     target_link_options(${KernelName} PRIVATE -Wl,-melf64lriscv)
 endif ()
+
+# readelf -a
+add_custom_command(TARGET ${KernelName}
+    POST_BUILD
+    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_READELF} -a ${KernelName} >> ${KernelName}.readelf_a || (exit 0)
+    COMMENT "readelf -a")
+
+# objdump -D
+add_custom_command(TARGET ${KernelName}
+    POST_BUILD
+    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} >> ${KernelName}.disassembly
+    COMMENT "Disassembling...")
+
+# objdump -t
+add_custom_command(TARGET ${KernelName}
+    POST_BUILD
+    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_OBJDUMP} -t ${KernelName} >> ${KernelName}.symtlb
+    COMMENT "Generating symbol table...")
