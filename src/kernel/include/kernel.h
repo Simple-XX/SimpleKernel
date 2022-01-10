@@ -40,9 +40,15 @@ int test_vmm(void);
 
 /**
  * @brief 堆测试函数
- * @return int             desc
+ * @return int             0 成功
  */
 int test_heap(void);
+
+/**
+ * @brief 测试进程调度
+ * @return int              0 成功
+ */
+int test_sched(void);
 
 /**
  * @brief 输出系统信息
