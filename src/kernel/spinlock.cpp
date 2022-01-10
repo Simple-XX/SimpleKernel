@@ -60,7 +60,7 @@ void spinlock_t::pop_off(void) {
 spinlock_t::spinlock_t(void) {
     name   = "";
     locked = false;
-    hartid = -1;
+    hartid = SIZE_MAX;
     return;
 }
 
@@ -89,7 +89,9 @@ bool spinlock_t::init(const char *_name) {
 /// @see https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
 void spinlock_t::lock(void) {
     push_off();
-    assert(is_holding() != true);
+    if (is_holding() == true) {
+        err("spinlock %s is_holding == true.\n", name);
+    }
     size_t i = 0;
     while ((__atomic_test_and_set(&locked, __ATOMIC_ACQUIRE) != 0) &&
            (i++ < 0xFFFFFFFF)) {
@@ -108,8 +110,10 @@ void spinlock_t::lock(void) {
 
 // Release the lock.
 void spinlock_t::unlock(void) {
-    assert(is_holding() != false);
-    hartid = -1;
+    if (is_holding() == false) {
+        err("spinlock %s is_holding == false.\n", name);
+    }
+    hartid = SIZE_MAX;
 
     __atomic_thread_fence(__ATOMIC_RELEASE);
     __atomic_signal_fence(__ATOMIC_RELEASE);
