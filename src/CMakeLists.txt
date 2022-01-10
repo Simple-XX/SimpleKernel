@@ -100,3 +100,12 @@ add_custom_command(TARGET ${KernelName}
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_OBJDUMP} -t ${KernelName} >> ${KernelName}.symtab
     COMMENT "Generating symbol table...")
+
+set(loop_var 2332;feff)
+
+# gdbinit
+# add_custom_command(TARGET ${KernelName}
+#     POST_BUILD
+#     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+#     COMMAND echo ${GDBINIT} > .gdbinit
+#     COMMENT "Generating .gdbinit...")
