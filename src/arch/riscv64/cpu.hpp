@@ -340,6 +340,16 @@ static inline uint64_t READ_RA(void) {
 }
 
 /**
+ * @brief 读 fp(s0) 寄存器
+ * @return uint64_t         读到的值
+ */
+static inline uint64_t READ_FP(void) {
+    uint64_t fp;
+    asm volatile("mv %0, s0" : "=r"(fp));
+    return fp;
+}
+
+/**
  * @brief 刷新 tlb
  */
 static inline void VMM_FLUSH(uintptr_t) {
