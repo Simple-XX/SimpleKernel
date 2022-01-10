@@ -11,6 +11,8 @@
 #include "pmm.h"
 #include "vmm.h"
 #include "stdlib.h"
+#include "task.h"
+#include "tmp_scheduler.h"
 #include "kernel.h"
 
 int32_t test_pmm(void) {
@@ -157,5 +159,84 @@ int test_heap(void) {
     free(addr3);
     free(addr4);
     info("heap test done.\n");
+    return 0;
+}
+
+#define taskxx(a, b)                                                           \
+    static int tmp##a##b = 0;                                                  \
+    void       task##a##b(void) {                                              \
+        info("Task" #a "" #b ": Created!\n");                            \
+        while (1) {                                                      \
+            tmp##a##b += 1;                                              \
+            info("Task" #a "" #b ": Running... 0x%X\n", tmp##a##b);      \
+            size_t count = 500000000;                                    \
+            while (count--)                                              \
+                ;                                                        \
+        }                                                                \
+    }
+
+#define taskxx_(a)                                                             \
+    taskxx(a, 0);                                                              \
+    taskxx(a, 1);                                                              \
+    taskxx(a, 2);                                                              \
+    taskxx(a, 3);                                                              \
+    taskxx(a, 4);
+
+taskxx_(0);
+taskxx_(1);
+taskxx_(2);
+taskxx_(3);
+taskxx_(4);
+
+#define add_taskxx(a, b)                                                       \
+    task_t *tmp_task##a##b = new task_t("task" #a "" #b "", &task##a##b);      \
+    tmp_SCHEDULER::get_instance().add_task(tmp_task##a##b);
+
+#define taskxx_cond(a, b) (tmp##a##b == 5)
+#define taskxx_cond_(a)                                                        \
+    taskxx_cond(a, 0) && taskxx_cond(a, 1) && taskxx_cond(a, 2) &&             \
+        taskxx_cond(a, 3) && taskxx_cond(a, 4)
+#define taskxx_cond_all                                                        \
+    (taskxx_cond_(0) && taskxx_cond_(1) && taskxx_cond_(2) && taskxx_cond_(3))
+
+int test_sched(void) {
+    auto a = COMMON::get_curr_core_id();
+    if (a == 0) {
+        add_taskxx(0, 0);
+        add_taskxx(0, 1);
+        add_taskxx(0, 2);
+        add_taskxx(0, 3);
+        add_taskxx(0, 4);
+    }
+    // else if (a == 1) {
+    //     add_taskxx(1, 0);
+    //     add_taskxx(1, 1);
+    //     add_taskxx(1, 2);
+    //     add_taskxx(1, 3);
+    //     add_taskxx(1, 4);
+    // }
+    // else if (a == 2) {
+    //     add_taskxx(2, 0);
+    //     add_taskxx(2, 1);
+    //     add_taskxx(2, 2);
+    //     add_taskxx(2, 3);
+    //     add_taskxx(2, 4);
+    // }
+    // else if (a == 3) {
+    //     add_taskxx(3, 0);
+    //     add_taskxx(3, 1);
+    //     add_taskxx(3, 2);
+    //     add_taskxx(3, 3);
+    //     add_taskxx(3, 4);
+    // }
+
+    while (1) {
+        if (taskxx_cond_(0)) {
+            break;
+        }
+        tmp_SCHEDULER::get_instance().sched();
+    }
+
+    info("sched test done.\n");
     return 0;
 }
