@@ -98,5 +98,5 @@ add_custom_command(TARGET ${KernelName}
 add_custom_command(TARGET ${KernelName}
     POST_BUILD
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_OBJDUMP} -t ${KernelName} >> ${KernelName}.symtlb
+    COMMAND ${CMAKE_OBJDUMP} -t ${KernelName} >> ${KernelName}.symtab
     COMMENT "Generating symbol table...")
