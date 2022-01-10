@@ -64,10 +64,12 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
 // 中断
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
-        printf("intr: %s.\n", INTR::get_instance().get_intr_name(
-                                  _scause & CPU::CAUSE_CODE_MASK));
+        printf(
+            "intr: %s, hartid: 0x%X.\n",
+            INTR::get_instance().get_intr_name(_scause & CPU::CAUSE_CODE_MASK),
+            COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
@@ -83,8 +85,10 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 // 跳转到对应的处理函数
 #define DEBUG
 #ifdef DEBUG
-        printf("excp: %s.\n", INTR::get_instance().get_excp_name(
-                                  _scause & CPU::CAUSE_CODE_MASK));
+        printf(
+            "excp: %s, hartid: 0x%X.\n",
+            INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK),
+            COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
