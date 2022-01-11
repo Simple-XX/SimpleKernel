@@ -76,7 +76,7 @@ VMM &VMM::get_instance(void) {
     return vmm;
 }
 
-pt_t pgd_core0;
+pt_t pgd_init;
 
 bool VMM::init(void) {
     // 初始化自旋锁
@@ -97,7 +97,7 @@ bool VMM::init(void) {
     }
     // 设置页目录
     set_pgd(pgd_kernel);
-    pgd_core0 = pgd_kernel;
+    pgd_init = pgd_kernel;
     // 开启分页
     CPU::ENABLE_PG();
     info("vmm init.\n");
@@ -107,7 +107,7 @@ bool VMM::init(void) {
 bool VMM::init_other_core(void) {
     pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
     bzero(pgd_kernel, COMMON::PAGE_SIZE);
-    memcpy(pgd_kernel, pgd_core0, COMMON::PAGE_SIZE);
+    memcpy(pgd_kernel, pgd_init, COMMON::PAGE_SIZE);
     // 设置页目录
     set_pgd(pgd_kernel);
     // 开启分页
