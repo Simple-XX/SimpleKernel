@@ -80,4 +80,22 @@ struct task_t {
     friend std::ostream &operator<<(std::ostream &_os, const task_t &_task);
 };
 
+static inline task_t *get_curr_core_task(void) {
+    task_t         *ret     = nullptr;
+    CPU::context_t *context = (CPU::context_t *)CPU::READ_SSCRATCH();
+    if (context != nullptr) {
+        ret = (task_t *)(context->task);
+    }
+    return ret;
+}
+
+static inline size_t get_curr_hart_id(void) {
+    size_t ret  = 0;
+    auto   task = get_curr_core_task();
+    if (task != nullptr) {
+        ret = task->hartid;
+    }
+    return ret;
+}
+
 #endif /* _TASK_H_ */

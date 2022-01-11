@@ -229,6 +229,16 @@ static inline bool ENABLE_PG(void) {
 }
 
 /**
+ * @brief 读 sscratch 寄存器
+ * @param  _x                要写的值
+ */
+static inline uint64_t READ_SSCRATCH(void) {
+    uint64_t x;
+    __asm__ volatile("csrr %0, sscratch" : "=r"(x));
+    return x;
+}
+
+/**
  * @brief 写 sscratch 寄存器
  * @param  _x                要写的值
  */
@@ -539,11 +549,13 @@ struct callee_regs_t {
  * @brief 上下文，用于中断/任务切换
  */
 struct context_t {
-    uintptr_t            ra;
-    CPU::callee_regs_t   callee_regs;
-    uintptr_t            satp;
-    uintptr_t            sepc;
-    uintptr_t            sscratch;
+    uintptr_t          ra;
+    CPU::callee_regs_t callee_regs;
+    uintptr_t          satp;
+    uintptr_t          sepc;
+    uintptr_t          sscratch;
+    /// 保存当前任务指针
+    uintptr_t           *task;
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const context_t &_context) {
         printf("ra: 0x%p\n", _context.ra);
@@ -551,6 +563,7 @@ struct context_t {
         printf("satp: 0x%p, ", _context.satp);
         printf("sepc: 0x%p, ", _context.sepc);
         printf("sscratch: 0x%p", _context.sscratch);
+        printf("task: 0x%p", _context.task);
         return _os;
     }
 };

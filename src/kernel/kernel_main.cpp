@@ -42,7 +42,8 @@ void          task_test(void) {
     info("task_test: Created!\n");
     while (1) {
         tmp_test += 1;
-        info("task_test: Running... 0x%X\n", tmp_test);
+        info("task_test: Running... 0x%X, 0x%X\n", tmp_test,
+                      get_curr_hart_id());
         size_t count = 500000000;
         while (count--)
             ;
@@ -54,7 +55,8 @@ void          task_test_other(void) {
     info("task_test: Created!\n");
     while (1) {
         tmp_test += 1;
-        info("task_test_other: Running... 0x%X\n", tmp_test);
+        info("task_test_other: Running... 0x%X, 0x%X\n", tmp_test,
+                      get_curr_hart_id());
         size_t count = 500000000;
         while (count--)
             ;
@@ -93,11 +95,11 @@ void kernel_main_smp(void) {
     // 允许中断
     CPU::ENABLE_INTR();
     // test_sched();
-    // task_t *tmp_task = new task_t("task_test_other", &task_test_other);
-    // tmp_SCHEDULER::get_instance().add_task(tmp_task);
+    task_t *tmp_task = new task_t("task_test_other", &task_test_other);
+    tmp_SCHEDULER::get_instance().add_task(tmp_task);
 
     while (1) {
-        // tmp_SCHEDULER::get_instance().sched();
+        tmp_SCHEDULER::get_instance().sched();
     }
 
     // 不应该执行到这里
@@ -109,8 +111,8 @@ void kernel_main_smp(void) {
  * @brief 内核主要逻辑
  * @note 这个函数不会返回
  */
-void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
-    if (COMMON::get_curr_core_id() == COMMON::BOOT_HART_ID) {
+void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
+    if (_hartid == COMMON::BOOT_HART_ID) {
         // 初始化 C++
         cpp_init();
         // 初始化基本信息
@@ -151,6 +153,11 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
 
     // 允许中断
     CPU::ENABLE_INTR();
+
+    // CPU::context_t *context = (CPU::context_t *)CPU::READ_SSCRATCH();
+    // printf("sizeof(CPU::context_t): 0x%X\n", sizeof(CPU::context_t));
+    // printf("context: 0x%X\n", context);
+    // printf("context->task: 0x%X\n", context->task);
 
     task_t *tmp_task = new task_t("task_test", &task_test);
     tmp_SCHEDULER::get_instance().add_task(tmp_task);

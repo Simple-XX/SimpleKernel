@@ -24,6 +24,7 @@
 .globl context_init
 .align 4
 context_init:
+    // a0 = 0000000080802058
     sd_base ra, 0, a0
     addi a0, a0, 8
     callee_regs_save a0
@@ -36,6 +37,12 @@ context_init:
     addi a0, a0, 8
     ld_base t6, 0, a0
     csrw sscratch, t6
+    // 下面读 a0，保存到当前偏移
+    // addi a0, a0, 8
+    // a0 2140
+    // mv t6, a0
+    // wfi
+    // mv 0(a0), a0
     ret
 
 /**

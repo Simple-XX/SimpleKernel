@@ -67,11 +67,17 @@ void tmp_SCHEDULER::switch_task(void) {
     spinlock.unlock();
     // 获取下一个线程并替换为当前线程下一个线程
     // 切换
+    // info("switch_task id 0x%X\n", COMMON::get_curr_core_id());
+    // info("core_t::get_curr_task() id 0x%X\n",
+    // core_t::get_curr_task()->hartid);
+    std::cout << *core_t::cores[COMMON::get_curr_core_id()].sched_task
+              << std::endl;
+    std::cout << *core_t::get_curr_task() << std::endl;
     switch_context(
         &core_t::cores[COMMON::get_curr_core_id()].sched_task->context,
         &core_t::get_curr_task()->context);
     return;
-} 
+}
 
 tmp_SCHEDULER::tmp_SCHEDULER(void) : SCHEDULER("tmp scheduler") {
     return;
@@ -93,6 +99,7 @@ bool tmp_SCHEDULER::init(void) {
     task_queue = new mystl::queue<task_t *>;
     // 当前进程
     task_t *task = new task_t("init", nullptr);
+    task->hartid = COMMON::get_curr_core_id();
     task->pid    = 0;
     task->state  = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
@@ -102,6 +109,10 @@ bool tmp_SCHEDULER::init(void) {
         COMMON::get_curr_core_id();
     core_t::cores[COMMON::get_curr_core_id()].curr_task  = task;
     core_t::cores[COMMON::get_curr_core_id()].sched_task = task;
+    CPU::context_t *context = (CPU::context_t *)CPU::READ_SSCRATCH();
+    printf("task: 0x%X\n", task);
+    printf("context000: 0x%X, task->context.task: 0x%X\n", context,
+           task->context.task);
     info("task init.\n");
     return true;
 }
@@ -109,6 +120,7 @@ bool tmp_SCHEDULER::init(void) {
 bool tmp_SCHEDULER::init_other_core(void) {
     // 当前进程
     task_t *task = new task_t("init other", nullptr);
+    task->hartid = COMMON::get_curr_core_id();
     task->pid    = 0;
     task->state  = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
