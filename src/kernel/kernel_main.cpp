@@ -85,9 +85,11 @@ void kernel_main_smp(void) {
     VMM::get_instance().init_other_core();
     // 中断初始化
     INTR::get_instance().init_other_core();
-    TIMER::get_instance().init_other_core();
-    // 时钟中断初始化
+    // 初始化任务调度
+    /// @note 在 tmp_SCHEDULER::init() 执行完后才能正常处理中断
     tmp_SCHEDULER::get_instance().init_other_core();
+    // 时钟中断初始化
+    TIMER::get_instance().init_other_core();
     // 允许中断
     CPU::ENABLE_INTR();
     // test_sched();
@@ -128,11 +130,11 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         test_heap();
         // 中断初始化
         INTR::get_instance().init();
-        // 设置时钟中断
-        TIMER::get_instance().init();
         // 初始化任务调度
         /// @note 在 tmp_SCHEDULER::init() 执行完后才能正常处理中断
         tmp_SCHEDULER::get_instance().init();
+        // 设置时钟中断
+        TIMER::get_instance().init();
         // 唤醒其余 core
         start_all_core(_dtb_addr);
         started = true;
