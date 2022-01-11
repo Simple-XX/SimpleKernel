@@ -56,7 +56,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sp;
     (void)_sstatus;
     (void)_context;
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
     printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p, hartid: 0x%X.\n", _scause,
            _sepc, _stval, COMMON::get_curr_core_id());

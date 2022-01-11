@@ -61,15 +61,17 @@ task_t *tmp_SCHEDULER::get_next_task(void) {
 
 // 切换到下一个任务
 void tmp_SCHEDULER::switch_task(void) {
+    spinlock.lock();
     // 设置 core 当前线程信息
     core_t::set_curr_task(get_next_task());
+    spinlock.unlock();
     // 获取下一个线程并替换为当前线程下一个线程
     // 切换
     switch_context(
         &core_t::cores[COMMON::get_curr_core_id()].sched_task->context,
         &core_t::get_curr_task()->context);
     return;
-}
+} 
 
 tmp_SCHEDULER::tmp_SCHEDULER(void) : SCHEDULER("tmp scheduler") {
     return;

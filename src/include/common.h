@@ -84,6 +84,7 @@ static constexpr const uintptr_t STACK_SIZE = 4 * KB;
 static constexpr const uintptr_t PAGE_MASK = ~(PAGE_SIZE - 1);
 
 /// 启动 hart id
+/// @bug BOOT_HART_ID 不为 0 时会出错
 static constexpr const size_t BOOT_HART_ID = 0;
 
 /**

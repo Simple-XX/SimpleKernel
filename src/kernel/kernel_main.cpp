@@ -37,49 +37,24 @@
 /// @todo gdb 调试
 /// @todo clion 环境
 
-void task1(void) {
-    info("Task1: Created!\n");
+static size_t tmp_test = 0;
+void          task_test(void) {
+    info("task_test: Created!\n");
     while (1) {
-        info("Task1: Running...\n");
+        tmp_test += 1;
+        info("task_test: Running... 0x%X\n", tmp_test);
         size_t count = 500000000;
         while (count--)
             ;
     }
 }
 
-void task2(void) {
-    info("Task2: Created!\n");
+static size_t tmp_test_other = 0;
+void          task_test_other(void) {
+    info("task_test: Created!\n");
     while (1) {
-        info("Task2: Running...\n");
-        size_t count = 500000000;
-        while (count--)
-            ;
-    }
-}
-
-void task3(void) {
-    info("Task3: Created!\n");
-    info("Task3: Running...\n");
-    size_t count = 500000000;
-    while (count--)
-        ;
-    exit(0x233);
-}
-
-void task4(void) {
-    info("Task4: Created!\n");
-    while (1) {
-        info("Task4: Running...\n");
-        size_t count = 500000000;
-        while (count--)
-            ;
-    }
-}
-
-void task5(void) {
-    info("Task5: Created!\n");
-    while (1) {
-        info("Task5: Running...\n");
+        tmp_test += 1;
+        info("task_test_other: Running... 0x%X\n", tmp_test);
         size_t count = 500000000;
         while (count--)
             ;
@@ -92,14 +67,8 @@ void task5(void) {
 static void start_all_core(uintptr_t _dtb_addr) {
     (void)_dtb_addr;
 #if defined(__riscv)
-    if (COMMON::get_curr_core_id() == 0) {
-        for (size_t i = 1; i < COMMON::CORES_COUNT; i++) {
-            OPENSBI::get_instance().hart_start(
-                i, COMMON::KERNEL_TEXT_START_ADDR, 0);
-        }
-    }
-    else {
-        OPENSBI::get_instance().hart_start(0, COMMON::KERNEL_TEXT_START_ADDR,
+    for (size_t i = 0; i < COMMON::CORES_COUNT; i++) {
+        OPENSBI::get_instance().hart_start(i, COMMON::KERNEL_TEXT_START_ADDR,
                                            _dtb_addr);
     }
 #endif
@@ -121,9 +90,12 @@ void kernel_main_smp(void) {
     tmp_SCHEDULER::get_instance().init_other_core();
     // 允许中断
     CPU::ENABLE_INTR();
+    // test_sched();
+    // task_t *tmp_task = new task_t("task_test_other", &task_test_other);
+    // tmp_SCHEDULER::get_instance().add_task(tmp_task);
 
     while (1) {
-        ;
+        // tmp_SCHEDULER::get_instance().sched();
     }
 
     // 不应该执行到这里
@@ -172,22 +144,16 @@ void kernel_main(uintptr_t, uintptr_t _dtb_addr) {
         kernel_main_smp();
     }
 
-    auto task1_p = new task_t("task1", &task1);
-    auto task2_p = new task_t("task2", &task2);
-    auto task3_p = new task_t("task3", &task3);
-    auto task4_p = new task_t("task4", &task4);
-    auto task5_p = new task_t("task5", &task5);
-    tmp_SCHEDULER::get_instance().add_task(task1_p);
-    tmp_SCHEDULER::get_instance().add_task(task2_p);
-    tmp_SCHEDULER::get_instance().add_task(task3_p);
-    tmp_SCHEDULER::get_instance().add_task(task4_p);
-    tmp_SCHEDULER::get_instance().add_task(task5_p);
-
     // 显示基本信息
     show_info();
 
     // 允许中断
     CPU::ENABLE_INTR();
+
+    task_t *tmp_task = new task_t("task_test", &task_test);
+    tmp_SCHEDULER::get_instance().add_task(tmp_task);
+
+    // test_sched();
 
     // 开始调度
     while (1) {
