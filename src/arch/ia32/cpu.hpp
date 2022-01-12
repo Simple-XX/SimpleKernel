@@ -420,6 +420,24 @@ static inline void WRITE_MSR(uint32_t _idx, uint64_t _msr) {
     return;
 }
 
+/**
+ * @brief 设置当前 core id
+ * @param  _hartid          要设置的值
+ * @todo TODO
+ */
+static inline void set_curr_core_id(size_t) {
+    return;
+}
+
+/**
+ * @brief 获取当前 core id
+ * @return size_t           hartid
+ * @todo TODO
+ */
+static inline size_t get_curr_core_id(void) {
+    return 0;
+}
+
 /// @todo 改为 static
 class CPUID {
 private:
