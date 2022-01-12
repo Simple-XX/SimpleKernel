@@ -165,10 +165,8 @@ int test_heap(void) {
 #define taskxx(a, b)                                                           \
     static int tmp##a##b = 0;                                                  \
     void       task##a##b(void) {                                              \
-        info("Task" #a "" #b ": Created!\n");                            \
         while (1) {                                                      \
             tmp##a##b += 1;                                              \
-            info("Task" #a "" #b ": Running... 0x%X\n", tmp##a##b);      \
             if (tmp##a##b == 5) {                                        \
                 exit(0);                                                 \
             }                                                            \
@@ -203,6 +201,7 @@ taskxx_(4);
     (taskxx_cond_(0) && taskxx_cond_(1) && taskxx_cond_(2) && taskxx_cond_(3))
 
 int test_sched(void) {
+    info("sched testing...\n");
     auto a = CPU::get_curr_core_id();
     if (a == 0) {
         add_taskxx(0, 0);
