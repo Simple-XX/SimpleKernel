@@ -119,16 +119,6 @@ inline uint64_t ALIGN(uint64_t _x, size_t _align) {
     return ((_x + _align - 1) & (~(_align - 1)));
 }
 
-/**
- * @brief 获取当前 core id
- * @return size_t           hartid
- * @note hartid 和 core id 是一回事
- * @todo 不使用 tp
- */
-static inline size_t get_curr_core_id(void) {
-    return CPU::READ_TP();
-}
-
 }; // namespace COMMON
 
 #endif /* _COMMON_H_ */

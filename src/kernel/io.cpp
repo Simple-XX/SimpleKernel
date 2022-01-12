@@ -200,7 +200,7 @@ extern "C" int32_t info(const char *_fmt, ...) {
     va_end(va);
     // 输出 cpuid
     char tmp[5] = {0};
-    itoa(COMMON::get_curr_core_id(), &tmp[1], 1, 10);
+    itoa(CPU::get_curr_core_id(), &tmp[1], 1, 10);
     tmp[0] = '[';
     tmp[2] = ']';
     tmp[3] = ' ';
@@ -227,7 +227,7 @@ extern "C" int32_t warn(const char *_fmt, ...) {
     va_end(va);
     // 输出 cpuid
     char tmp[5] = {0};
-    itoa(COMMON::get_curr_core_id(), &tmp[1], 1, 10);
+    itoa(CPU::get_curr_core_id(), &tmp[1], 1, 10);
     tmp[0] = '[';
     tmp[2] = ']';
     tmp[3] = ' ';
@@ -254,7 +254,7 @@ extern "C" int32_t err(const char *_fmt, ...) {
     va_end(va);
     // 输出 cpuid
     char tmp[5] = {0};
-    itoa(COMMON::get_curr_core_id(), &tmp[1], 1, 10);
+    itoa(CPU::get_curr_core_id(), &tmp[1], 1, 10);
     tmp[0] = '[';
     tmp[2] = ']';
     tmp[3] = ' ';

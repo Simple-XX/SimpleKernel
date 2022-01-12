@@ -203,7 +203,7 @@ taskxx_(4);
     (taskxx_cond_(0) && taskxx_cond_(1) && taskxx_cond_(2) && taskxx_cond_(3))
 
 int test_sched(void) {
-    auto a = COMMON::get_curr_core_id();
+    auto a = CPU::get_curr_core_id();
     if (a == 0) {
         add_taskxx(0, 0);
         add_taskxx(0, 1);

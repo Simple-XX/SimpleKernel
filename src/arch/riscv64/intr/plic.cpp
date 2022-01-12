@@ -69,7 +69,7 @@ int32_t PLIC::init(void) {
     // TODO: 多核情况下设置所有 hart
     // 将当前 hart 的 S 模式优先级阈值设置为 0
     IO::get_instance().write32(
-        (void *)PLIC_SPRIORITY(COMMON::get_curr_core_id()), 0);
+        (void *)PLIC_SPRIORITY(CPU::get_curr_core_id()), 0);
     // 注册外部中断处理函数
     INTR::get_instance().register_interrupt_handler(INTR::INTR_S_EXTERNEL,
                                                     externel_intr);
@@ -82,7 +82,7 @@ int32_t PLIC::init(void) {
 int32_t PLIC::init_other_core(void) {
     // 将当前 hart 的 S 模式优先级阈值设置为 0
     IO::get_instance().write32(
-        (void *)PLIC_SPRIORITY(COMMON::get_curr_core_id()), 0);
+        (void *)PLIC_SPRIORITY(CPU::get_curr_core_id()), 0);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
     info("plic other init.\n");

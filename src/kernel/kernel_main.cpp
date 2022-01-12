@@ -43,7 +43,7 @@ void          task_test(void) {
     while (1) {
         tmp_test += 1;
         info("task_test: Running... 0x%X, 0x%X\n", tmp_test,
-                      COMMON::get_curr_core_id());
+                      CPU::get_curr_core_id());
         size_t count = 500000000;
         while (count--)
             ;
@@ -56,7 +56,7 @@ void          task_test_other(void) {
     while (1) {
         tmp_test_other += 1;
         info("task_test_other: Running... 0x%X, 0x%X\n", tmp_test_other,
-                      COMMON::get_curr_core_id());
+                      CPU::get_curr_core_id());
         size_t count = 500000000;
         while (count--)
             ;
@@ -101,7 +101,7 @@ void kernel_main_smp(void) {
  * @note 这个函数不会返回
  */
 void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
-    CPU::WRITE_TP(_hartid);
+    CPU::set_curr_core_id(_hartid);
     if (_hartid == COMMON::BOOT_HART_ID) {
         // 初始化 C++
         cpp_init();

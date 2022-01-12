@@ -37,7 +37,7 @@ task_t::task_t(mystl::string _name, void (*_task)(void))
     page_dir               = VMM::get_instance().get_pgd();
     slice                  = 0;
     slice_total            = 0;
-    hartid                 = COMMON::get_curr_core_id();
+    hartid                 = CPU::get_curr_core_id();
     exit_code              = -1;
     return;
 }

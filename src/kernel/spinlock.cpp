@@ -22,7 +22,7 @@
 #include "string"
 
 bool spinlock_t::is_holding(void) {
-    bool r = (locked && (hartid == COMMON::get_curr_core_id()));
+    bool r = (locked && (hartid == CPU::get_curr_core_id()));
     return r;
 }
 
@@ -31,10 +31,10 @@ void spinlock_t::push_off(void) {
 
     CPU::DISABLE_INTR();
 
-    if (core_t::cores[COMMON::get_curr_core_id()].noff == 0) {
-        core_t::cores[COMMON::get_curr_core_id()].intr_enable = old;
+    if (core_t::cores[CPU::get_curr_core_id()].noff == 0) {
+        core_t::cores[CPU::get_curr_core_id()].intr_enable = old;
     }
-    core_t::cores[COMMON::get_curr_core_id()].noff += 1;
+    core_t::cores[CPU::get_curr_core_id()].noff += 1;
 
     return;
 }
@@ -44,13 +44,13 @@ void spinlock_t::pop_off(void) {
         err("pop_off - interruptible\n");
     }
 
-    if (core_t::cores[COMMON::get_curr_core_id()].noff < 1) {
+    if (core_t::cores[CPU::get_curr_core_id()].noff < 1) {
         err("pop_off\n");
     }
-    core_t::cores[COMMON::get_curr_core_id()].noff -= 1;
+    core_t::cores[CPU::get_curr_core_id()].noff -= 1;
 
-    if ((core_t::cores[COMMON::get_curr_core_id()].noff == 0) &&
-        (core_t::cores[COMMON::get_curr_core_id()].intr_enable == true)) {
+    if ((core_t::cores[CPU::get_curr_core_id()].noff == 0) &&
+        (core_t::cores[CPU::get_curr_core_id()].intr_enable == true)) {
         CPU::ENABLE_INTR();
     }
 
@@ -66,14 +66,14 @@ spinlock_t::spinlock_t(void) {
 
 spinlock_t::spinlock_t(const char *_name) : name(_name) {
     locked = false;
-    hartid = COMMON::get_curr_core_id();
+    hartid = CPU::get_curr_core_id();
     info("spinlock: %s init.\n", name);
     return;
 }
 
 spinlock_t::spinlock_t(const mystl::string &_name) : name(_name.c_str()) {
     locked = false;
-    hartid = COMMON::get_curr_core_id();
+    hartid = CPU::get_curr_core_id();
     info("spinlock: %s init.\n", name);
     return;
 }
@@ -81,7 +81,7 @@ spinlock_t::spinlock_t(const mystl::string &_name) : name(_name.c_str()) {
 bool spinlock_t::init(const char *_name) {
     name   = _name;
     locked = false;
-    hartid = COMMON::get_curr_core_id();
+    hartid = CPU::get_curr_core_id();
     info("spinlock: %s init.\n", name);
     return true;
 }
@@ -104,7 +104,7 @@ void spinlock_t::lock(void) {
     __atomic_thread_fence(__ATOMIC_ACQUIRE);
     __atomic_signal_fence(__ATOMIC_ACQUIRE);
 
-    hartid = COMMON::get_curr_core_id();
+    hartid = CPU::get_curr_core_id();
     return;
 }
 

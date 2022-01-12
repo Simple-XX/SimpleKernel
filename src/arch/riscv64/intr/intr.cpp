@@ -30,13 +30,12 @@ extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
  * @brief 保存当前上下文并跳转到调度线程
  */
 static void switch_sched(void) {
-    printf("switch_sched 0x%X\n", COMMON::get_curr_core_id());
+    printf("switch_sched 0x%X\n", CPU::get_curr_core_id());
     task_t *old = core_t::get_curr_task();
     // 设置 core 当前线程信息
-    switch_context(
-        &old->context,
-        &core_t::cores[COMMON::get_curr_core_id()].sched_task->context);
-    err("switch_sched 0x%X end\n", COMMON::get_curr_core_id());
+    switch_context(&old->context,
+                   &core_t::cores[CPU::get_curr_core_id()].sched_task->context);
+    err("switch_sched 0x%X end\n", CPU::get_curr_core_id());
     return;
 }
 
@@ -56,19 +55,19 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sp;
     (void)_sstatus;
     (void)_context;
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
     info("scause: 0x%p, sepc: 0x%p, stval: 0x%p, hartid: 0x%X.\n", _scause,
-         _sepc, _stval, COMMON::get_curr_core_id());
+         _sepc, _stval, CPU::get_curr_core_id());
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
 // 中断
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
         info("intr: %s, hartid: 0x%X.\n",
              INTR::get_instance().get_intr_name(_scause & CPU::CAUSE_CODE_MASK),
-             COMMON::get_curr_core_id());
+             CPU::get_curr_core_id());
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
@@ -82,11 +81,11 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     else {
 // 异常
 // 跳转到对应的处理函数
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
         warn("excp: %s, hartid: 0x%X.\n",
              INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK),
-             COMMON::get_curr_core_id());
+             CPU::get_curr_core_id());
 #undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
@@ -172,7 +171,7 @@ int32_t INTR::init_other_core(void) {
     CLINT::get_instance().init_other_core();
     // 外部中断初始化
     PLIC::get_instance().init_other_core();
-    info("intr other 0x%X init.\n", COMMON::get_curr_core_id());
+    info("intr other 0x%X init.\n", CPU::get_curr_core_id());
     return 0;
 }
 

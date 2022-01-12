@@ -29,12 +29,12 @@ core_t::core_t(void) {
 }
 
 void core_t::set_curr_task(task_t *_task) {
-    cores[COMMON::get_curr_core_id()].curr_task = _task;
+    cores[CPU::get_curr_core_id()].curr_task = _task;
     return;
 }
 
 task_t *core_t::get_curr_task(void) {
-    return cores[COMMON::get_curr_core_id()].curr_task;
+    return cores[CPU::get_curr_core_id()].curr_task;
 }
 
 std::ostream &operator<<(std::ostream &_os, const core_t &_core) {
