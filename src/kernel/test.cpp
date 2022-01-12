@@ -170,9 +170,6 @@ int test_heap(void) {
             if (tmp##a##b == 5) {                                        \
                 exit(0);                                                 \
             }                                                            \
-            size_t count = 500000000;                                    \
-            while (count--)                                              \
-                ;                                                        \
         }                                                                \
     }
 

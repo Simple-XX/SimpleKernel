@@ -15,7 +15,6 @@
  */
 
 #include "core.h"
-#include "common.h"
 
 core_t core_t::cores[COMMON::CORES_COUNT];
 
