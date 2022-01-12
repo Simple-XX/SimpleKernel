@@ -57,8 +57,16 @@ task_t *tmp_SCHEDULER::get_next_task(void) {
         remove_task(core_t::get_curr_task());
     }
     spinlock.lock();
-    task = task_queue->front();
-    task_queue->pop();
+    // 如果队列为空
+    if (task_queue->empty() == true) {
+        task = core_t::get_curr_task();
+    }
+    else {
+        // 不为空的话弹出一个任务
+        task = task_queue->front();
+        task_queue->pop();
+    }
+
     spinlock.unlock();
     return task;
 }
@@ -69,9 +77,8 @@ void tmp_SCHEDULER::switch_task(void) {
     core_t::set_curr_task(get_next_task());
     // 获取下一个线程并替换为当前线程下一个线程
     // 切换
-    switch_context(
-        &core_t::cores[CPU::get_curr_core_id()].sched_task->context,
-        &core_t::get_curr_task()->context);
+    switch_context(&core_t::cores[CPU::get_curr_core_id()].sched_task->context,
+                   &core_t::get_curr_task()->context);
     return;
 }
 
@@ -101,8 +108,7 @@ bool tmp_SCHEDULER::init(void) {
     // 原地跳转，填充启动进程的 task_t 信息
     context_init(&task->context);
     // 初始化 core 信息
-    core_t::cores[CPU::get_curr_core_id()].core_id =
-        CPU::get_curr_core_id();
+    core_t::cores[CPU::get_curr_core_id()].core_id    = CPU::get_curr_core_id();
     core_t::cores[CPU::get_curr_core_id()].curr_task  = task;
     core_t::cores[CPU::get_curr_core_id()].sched_task = task;
     info("task init.\n");
@@ -118,16 +124,15 @@ bool tmp_SCHEDULER::init_other_core(void) {
     // 原地跳转，填充启动进程的 task_t 信息
     context_init(&task->context);
     // 初始化 core 信息
-    core_t::cores[CPU::get_curr_core_id()].core_id =
-        CPU::get_curr_core_id();
+    core_t::cores[CPU::get_curr_core_id()].core_id    = CPU::get_curr_core_id();
     core_t::cores[CPU::get_curr_core_id()].curr_task  = task;
     core_t::cores[CPU::get_curr_core_id()].sched_task = task;
-    info("task other init: 0x%X.\n", CPU::get_curr_core_id());
+    info("task other init.\n");
     return true;
 }
 
 void tmp_SCHEDULER::sched(void) {
-    printf("sched: Running... 0x%X\n", CPU::get_curr_core_id());
+    info("sched: Running...\n");
     // TODO: 根据当前任务的属性进行调度
     switch_task();
     return;
@@ -154,8 +159,6 @@ void tmp_SCHEDULER::remove_task(task_t *_task) {
 void tmp_SCHEDULER::exit(uint32_t _exit_code) {
     core_t::get_curr_task()->exit_code = _exit_code;
     core_t::get_curr_task()->state     = ZOMBIE;
-    printf("%s exit: 0x%X\n", core_t::get_curr_task()->name.c_str(),
-           core_t::get_curr_task()->exit_code);
     switch_os(&core_t::cores[CPU::get_curr_core_id()].sched_task->context);
     assert(0);
     return;

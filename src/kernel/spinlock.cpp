@@ -58,7 +58,7 @@ void spinlock_t::pop_off(void) {
 }
 
 spinlock_t::spinlock_t(void) {
-    name   = "";
+    name   = "unnamed";
     locked = false;
     hartid = SIZE_MAX;
     return;
@@ -67,14 +67,12 @@ spinlock_t::spinlock_t(void) {
 spinlock_t::spinlock_t(const char *_name) : name(_name) {
     locked = false;
     hartid = CPU::get_curr_core_id();
-    info("spinlock: %s init.\n", name);
     return;
 }
 
 spinlock_t::spinlock_t(const mystl::string &_name) : name(_name.c_str()) {
     locked = false;
     hartid = CPU::get_curr_core_id();
-    info("spinlock: %s init.\n", name);
     return;
 }
 
@@ -82,7 +80,6 @@ bool spinlock_t::init(const char *_name) {
     name   = _name;
     locked = false;
     hartid = CPU::get_curr_core_id();
-    info("spinlock: %s init.\n", name);
     return true;
 }
 

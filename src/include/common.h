@@ -76,7 +76,7 @@ static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
 static constexpr const uint64_t KERNEL_SPACE_PAGES =
     KERNEL_SPACE_SIZE / PAGE_SIZE;
 /// core 数量
-static constexpr const uintptr_t CORES_COUNT = 2;
+static constexpr const uintptr_t CORES_COUNT = 4;
 /// 栈大小
 static constexpr const uintptr_t STACK_SIZE = 4 * KB;
 

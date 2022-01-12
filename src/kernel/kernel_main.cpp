@@ -37,32 +37,6 @@
 /// @todo gdb 调试
 /// @todo clion 环境
 
-static size_t tmp_test = 0;
-void          task_test(void) {
-    info("task_test: Created!\n");
-    while (1) {
-        tmp_test += 1;
-        info("task_test: Running... 0x%X, 0x%X\n", tmp_test,
-                      CPU::get_curr_core_id());
-        size_t count = 500000000;
-        while (count--)
-            ;
-    }
-}
-
-static size_t tmp_test_other = 0;
-void          task_test_other(void) {
-    info("task_test: Created!\n");
-    while (1) {
-        tmp_test_other += 1;
-        info("task_test_other: Running... 0x%X, 0x%X\n", tmp_test_other,
-                      CPU::get_curr_core_id());
-        size_t count = 500000000;
-        while (count--)
-            ;
-    }
-}
-
 /**
  * @brief 启动所有 core
  */
@@ -92,7 +66,6 @@ void kernel_main_smp(void) {
     tmp_SCHEDULER::get_instance().init_other_core();
     // 时钟中断初始化
     TIMER::get_instance().init_other_core();
-
     return;
 }
 
@@ -142,9 +115,6 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
 
     // 允许中断
     CPU::ENABLE_INTR();
-
-    task_t *tmp_task = new task_t("task_test", &task_test);
-    tmp_SCHEDULER::get_instance().add_task(tmp_task);
 
     test_sched();
     // 开始调度
