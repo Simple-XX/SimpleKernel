@@ -18,9 +18,7 @@
 .equ REG_BYTES, 8
 // 保存所有寄存器
 .equ CALLEE_SAVE_REGS, 25
-.equ SAVE_REGS, 32
 // 需要的大小
-.equ CONTEXT_SIZE, (SAVE_REGS * REG_BYTES)
 .equ CALLEE_SIZE, (CALLEE_SAVE_REGS * REG_BYTES)
 
 // 一些宏
@@ -102,14 +100,18 @@ fld \a, ((\b)*REG_BYTES)(\c)
 // 保存 context_t
 .macro context_save base
     sd_base ra, 0, \base
+
     addi \base, \base, 8
     callee_regs_save \base
+
     addi \base, \base, CALLEE_SIZE
     csrr t6, satp
     sd_base t6, 0, \base
+
     addi \base, \base, 8
     csrr t6, sepc
     sd_base t6, 0, \base
+
     addi \base, \base, 8
     csrr t6, sscratch
     sd_base t6, 0, \base
@@ -118,14 +120,18 @@ fld \a, ((\b)*REG_BYTES)(\c)
 // 恢复 context_t
 .macro context_load base
     ld_base ra, 0, \base
+
     addi \base, \base, 8
     callee_regs_load \base
+
     addi \base, \base, CALLEE_SIZE
     ld_base t6, 0, \base
     csrw satp, t6
+
     addi \base, \base, 8
     ld_base t6, 0, \base
     csrw sepc, t6
+
     addi \base, \base, 8
     ld_base t6, 0, \base
     csrw sscratch, t6
