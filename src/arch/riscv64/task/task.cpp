@@ -35,6 +35,7 @@ task_t::task_t(mystl::string _name, void (*_task)(void))
     context.callee_regs.sp = stack + COMMON::STACK_SIZE;
     context.sscratch       = (uintptr_t)malloc(sizeof(CPU::context_t));
     ((CPU::context_t *)context.sscratch)->task = (uintptr_t *)this;
+    context.task                               = (uintptr_t *)this;
     page_dir                                   = VMM::get_instance().get_pgd();
     slice                                      = 0;
     slice_total                                = 0;
