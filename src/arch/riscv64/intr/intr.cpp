@@ -56,20 +56,19 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sp;
     (void)_sstatus;
     (void)_context;
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
-    printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p, hartid: 0x%X.\n", _scause,
-           _sepc, _stval, COMMON::get_curr_core_id());
+    info("scause: 0x%p, sepc: 0x%p, stval: 0x%p, hartid: 0x%X.\n", _scause,
+         _sepc, _stval, COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
 // 中断
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
-        printf(
-            "intr: %s, hartid: 0x%X.\n",
-            INTR::get_instance().get_intr_name(_scause & CPU::CAUSE_CODE_MASK),
-            COMMON::get_curr_core_id());
+        info("intr: %s, hartid: 0x%X.\n",
+             INTR::get_instance().get_intr_name(_scause & CPU::CAUSE_CODE_MASK),
+             COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
@@ -83,7 +82,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     else {
 // 异常
 // 跳转到对应的处理函数
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
         warn("excp: %s, hartid: 0x%X.\n",
              INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK),
