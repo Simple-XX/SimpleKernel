@@ -43,7 +43,7 @@ void          task_test(void) {
     while (1) {
         tmp_test += 1;
         info("task_test: Running... 0x%X, 0x%X\n", tmp_test,
-                      get_curr_hart_id());
+                      COMMON::get_curr_core_id());
         size_t count = 500000000;
         while (count--)
             ;
@@ -54,9 +54,9 @@ static size_t tmp_test_other = 0;
 void          task_test_other(void) {
     info("task_test: Created!\n");
     while (1) {
-        tmp_test += 1;
-        info("task_test_other: Running... 0x%X, 0x%X\n", tmp_test,
-                      get_curr_hart_id());
+        tmp_test_other += 1;
+        info("task_test_other: Running... 0x%X, 0x%X\n", tmp_test_other,
+                      COMMON::get_curr_core_id());
         size_t count = 500000000;
         while (count--)
             ;
@@ -92,18 +92,7 @@ void kernel_main_smp(void) {
     tmp_SCHEDULER::get_instance().init_other_core();
     // 时钟中断初始化
     TIMER::get_instance().init_other_core();
-    // 允许中断
-    CPU::ENABLE_INTR();
-    // test_sched();
-    task_t *tmp_task = new task_t("task_test_other", &task_test_other);
-    tmp_SCHEDULER::get_instance().add_task(tmp_task);
 
-    while (1) {
-        tmp_SCHEDULER::get_instance().sched();
-    }
-
-    // 不应该执行到这里
-    assert(0);
     return;
 }
 
@@ -112,6 +101,7 @@ void kernel_main_smp(void) {
  * @note 这个函数不会返回
  */
 void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
+    CPU::WRITE_TP(_hartid);
     if (_hartid == COMMON::BOOT_HART_ID) {
         // 初始化 C++
         cpp_init();
@@ -137,6 +127,8 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
         tmp_SCHEDULER::get_instance().init();
         // 设置时钟中断
         TIMER::get_instance().init();
+        // 显示基本信息
+        show_info();
         // 唤醒其余 core
         start_all_core(_dtb_addr);
         started = true;
@@ -148,22 +140,13 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
         kernel_main_smp();
     }
 
-    // 显示基本信息
-    show_info();
-
     // 允许中断
     CPU::ENABLE_INTR();
-
-    // CPU::context_t *context = (CPU::context_t *)CPU::READ_SSCRATCH();
-    // printf("sizeof(CPU::context_t): 0x%X\n", sizeof(CPU::context_t));
-    // printf("context: 0x%X\n", context);
-    // printf("context->task: 0x%X\n", context->task);
 
     task_t *tmp_task = new task_t("task_test", &task_test);
     tmp_SCHEDULER::get_instance().add_task(tmp_task);
 
-    // test_sched();
-
+    test_sched();
     // 开始调度
     while (1) {
         tmp_SCHEDULER::get_instance().sched();

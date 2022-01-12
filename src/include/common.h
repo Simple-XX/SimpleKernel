@@ -84,7 +84,6 @@ static constexpr const uintptr_t STACK_SIZE = 4 * KB;
 static constexpr const uintptr_t PAGE_MASK = ~(PAGE_SIZE - 1);
 
 /// 启动 hart id
-/// @bug BOOT_HART_ID 不为 0 时会出错
 static constexpr const size_t BOOT_HART_ID = 0;
 
 /**
@@ -121,27 +120,13 @@ inline uint64_t ALIGN(uint64_t _x, size_t _align) {
 }
 
 /**
- * @brief 根据 sp 的值计算当前 core id
+ * @brief 获取当前 core id
  * @return size_t           hartid
  * @note hartid 和 core id 是一回事
- * @note 当运行的程序没有使用初始内核栈时不能用此函数
+ * @todo 不使用 tp
  */
 static inline size_t get_curr_core_id(void) {
-    uint64_t stack_bottom =
-        (uint64_t)&COMMON::stack_top + STACK_SIZE * CORES_COUNT;
-    // 各个 core 的栈是可以计算的，根据相对 stack_top
-    // 的值可以确定当前是哪个 core
-    uintptr_t tmp = 0xFFFFFFFF;
-    tmp           = stack_bottom - CPU::READ_SP();
-    assert(tmp > 0);
-    size_t ret = 0;
-    for (ssize_t i = CORES_COUNT - 1; i >= 0; i--) {
-        if (tmp >= STACK_SIZE * i) {
-            ret = CORES_COUNT - i - 1;
-            break;
-        }
-    }
-    return ret;
+    return CPU::READ_TP();
 }
 
 }; // namespace COMMON

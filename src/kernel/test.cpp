@@ -169,6 +169,9 @@ int test_heap(void) {
         while (1) {                                                      \
             tmp##a##b += 1;                                              \
             info("Task" #a "" #b ": Running... 0x%X\n", tmp##a##b);      \
+            if (tmp##a##b == 5) {                                        \
+                exit(0);                                                 \
+            }                                                            \
             size_t count = 500000000;                                    \
             while (count--)                                              \
                 ;                                                        \
@@ -208,27 +211,27 @@ int test_sched(void) {
         add_taskxx(0, 3);
         add_taskxx(0, 4);
     }
-    // else if (a == 1) {
-    //     add_taskxx(1, 0);
-    //     add_taskxx(1, 1);
-    //     add_taskxx(1, 2);
-    //     add_taskxx(1, 3);
-    //     add_taskxx(1, 4);
-    // }
-    // else if (a == 2) {
-    //     add_taskxx(2, 0);
-    //     add_taskxx(2, 1);
-    //     add_taskxx(2, 2);
-    //     add_taskxx(2, 3);
-    //     add_taskxx(2, 4);
-    // }
-    // else if (a == 3) {
-    //     add_taskxx(3, 0);
-    //     add_taskxx(3, 1);
-    //     add_taskxx(3, 2);
-    //     add_taskxx(3, 3);
-    //     add_taskxx(3, 4);
-    // }
+    else if (a == 1) {
+        add_taskxx(1, 0);
+        add_taskxx(1, 1);
+        add_taskxx(1, 2);
+        add_taskxx(1, 3);
+        add_taskxx(1, 4);
+    }
+    else if (a == 2) {
+        add_taskxx(2, 0);
+        add_taskxx(2, 1);
+        add_taskxx(2, 2);
+        add_taskxx(2, 3);
+        add_taskxx(2, 4);
+    }
+    else if (a == 3) {
+        add_taskxx(3, 0);
+        add_taskxx(3, 1);
+        add_taskxx(3, 2);
+        add_taskxx(3, 3);
+        add_taskxx(3, 4);
+    }
 
     while (1) {
         if (taskxx_cond_(0)) {

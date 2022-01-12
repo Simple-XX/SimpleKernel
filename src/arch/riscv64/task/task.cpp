@@ -34,13 +34,11 @@ task_t::task_t(mystl::string _name, void (*_task)(void))
     context.ra = (uintptr_t)_task;
     context.callee_regs.sp = stack + COMMON::STACK_SIZE;
     context.sscratch       = (uintptr_t)malloc(sizeof(CPU::context_t));
-    ((CPU::context_t *)context.sscratch)->task = (uintptr_t *)this;
-    context.task                               = (uintptr_t *)this;
-    page_dir                                   = VMM::get_instance().get_pgd();
-    slice                                      = 0;
-    slice_total                                = 0;
-    hartid                                     = get_curr_hart_id();
-    exit_code                                  = -1;
+    page_dir               = VMM::get_instance().get_pgd();
+    slice                  = 0;
+    slice_total            = 0;
+    hartid                 = COMMON::get_curr_core_id();
+    exit_code              = -1;
     return;
 }
 

@@ -30,12 +30,13 @@ extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
  * @brief 保存当前上下文并跳转到调度线程
  */
 static void switch_sched(void) {
-    printf("switch_sched 0x%X\n", get_curr_hart_id());
+    printf("switch_sched 0x%X\n", COMMON::get_curr_core_id());
     task_t *old = core_t::get_curr_task();
     // 设置 core 当前线程信息
-    switch_context(&old->context,
-                   &core_t::cores[get_curr_hart_id()].sched_task->context);
-    err("switch_sched 0x%X end\n", get_curr_hart_id());
+    switch_context(
+        &old->context,
+        &core_t::cores[COMMON::get_curr_core_id()].sched_task->context);
+    err("switch_sched 0x%X end\n", COMMON::get_curr_core_id());
     return;
 }
 
@@ -58,7 +59,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #define DEBUG
 #ifdef DEBUG
     printf("scause: 0x%p, sepc: 0x%p, stval: 0x%p, hartid: 0x%X.\n", _scause,
-           _sepc, _stval, get_curr_hart_id());
+           _sepc, _stval, COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
@@ -68,7 +69,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         printf(
             "intr: %s, hartid: 0x%X.\n",
             INTR::get_instance().get_intr_name(_scause & CPU::CAUSE_CODE_MASK),
-            get_curr_hart_id());
+            COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
@@ -84,10 +85,9 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 // 跳转到对应的处理函数
 #define DEBUG
 #ifdef DEBUG
-        printf(
-            "excp: %s, hartid: 0x%X.\n",
-            INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK),
-            get_curr_hart_id());
+        warn("excp: %s, hartid: 0x%X.\n",
+             INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK),
+             COMMON::get_curr_core_id());
 #undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);

@@ -13,6 +13,7 @@
 #endif
 #include "io.h"
 #include "stdio.h"
+#include "common.h"
 
 /// IO 自旋锁
 /// @todo 这里需要看一下这么构造有没有问题
@@ -197,6 +198,14 @@ extern "C" int32_t info(const char *_fmt, ...) {
     va_start(va, _fmt);
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
+    // 输出 cpuid
+    char tmp[5] = {0};
+    itoa(COMMON::get_curr_core_id(), &tmp[1], 1, 10);
+    tmp[0] = '[';
+    tmp[2] = ']';
+    tmp[3] = ' ';
+    tmp[4] = '\0';
+    IO::get_instance().write_string(tmp);
     IO::get_instance().write_string(buf);
     bzero(buf, IO::BUF_SIZE);
     IO::get_instance().set_color(curr_color);
@@ -216,6 +225,14 @@ extern "C" int32_t warn(const char *_fmt, ...) {
     va_start(va, _fmt);
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
+    // 输出 cpuid
+    char tmp[5] = {0};
+    itoa(COMMON::get_curr_core_id(), &tmp[1], 1, 10);
+    tmp[0] = '[';
+    tmp[2] = ']';
+    tmp[3] = ' ';
+    tmp[4] = '\0';
+    IO::get_instance().write_string(tmp);
     IO::get_instance().write_string(buf);
     bzero(buf, IO::BUF_SIZE);
     IO::get_instance().set_color(curr_color);
@@ -235,6 +252,14 @@ extern "C" int32_t err(const char *_fmt, ...) {
     va_start(va, _fmt);
     i = vsnprintf_(buf, (size_t)-1, _fmt, va);
     va_end(va);
+    // 输出 cpuid
+    char tmp[5] = {0};
+    itoa(COMMON::get_curr_core_id(), &tmp[1], 1, 10);
+    tmp[0] = '[';
+    tmp[2] = ']';
+    tmp[3] = ' ';
+    tmp[4] = '\0';
+    IO::get_instance().write_string(tmp);
     IO::get_instance().write_string(buf);
     bzero(buf, IO::BUF_SIZE);
     IO::get_instance().set_color(curr_color);
