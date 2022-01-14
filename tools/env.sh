@@ -33,6 +33,7 @@ if [ "${OS}" == "Linux" ]; then
         TOOLS="toolchain_linux_riscv.cmake"
         TOOLCHAIN_PREFIX=riscv64-linux-gnu-
     fi
+    OPENSBI="$(pwd)/tools/opensbi/build/platform/generic/firmware/fw_jump.elf"
     GRUB_PATH="$(dirname $(which grub-file))"
     bochsrc="./tools/bochsrc_linux.txt"
 elif [ "${OS}" == "Darwin" ]; then
