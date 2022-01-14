@@ -20,7 +20,7 @@ endif ()
 find_program(XORRISO xorriso)
 if (NOT XORRISO)
     message(FATAL_ERROR "xorriso not found.\n"
-            "Run `brew install xorriso` to install the toolchain")
+            "Run `sudo apt-get install -y xorriso` to install the toolchain")
 else ()
     message(STATUS "Found xorriso ${XORRISO}")
 endif ()
