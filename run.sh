@@ -40,7 +40,7 @@ if [ ${ARCH} == "riscv64" ]; then
         git submodule update
         cd ./tools/opensbi
         mkdir -p build
-        export CROSS_COMPILE=${OPENSBI_TOOLCHAIN_PREFIX}
+        export CROSS_COMPILE=${TOOLCHAIN_PREFIX}
         make PLATFORM=generic FW_JUMP_ADDR=0x80200000
         cd ../..
     fi
