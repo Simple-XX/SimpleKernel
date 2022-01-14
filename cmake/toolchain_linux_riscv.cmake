@@ -30,7 +30,7 @@ set(CMAKE_RANLIB       ${TOOLCHAIN_PREFIX}ranlib)
 find_program(QEMU qemu-system-riscv64)
 if (NOT QEMU)
     message(FATAL_ERROR "qemu not found.\n"
-            "Please install qemu first.")
+            "Please install qemu-system-riscv64 first.")
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
