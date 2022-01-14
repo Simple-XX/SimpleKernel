@@ -1,7 +1,7 @@
 
 # This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
 #
-# bochsrc_mac.txt for Simple-XX/SimpleKernel
+# bochsrc_linux.txt for Simple-XX/SimpleKernel
 
 ata1-master: type=cdrom, path="simplekernel.iso", status=inserted
 boot: cdrom
