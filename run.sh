@@ -36,6 +36,7 @@ fi
 if [ ${ARCH} == "riscv64" ]; then
     # OPENSBI 不存在则编译
     if [ ! -f ${OPENSBI} ]; then
+        echo build opensbi.
         git submodule init
         git submodule update
         cd ./tools/opensbi
@@ -43,6 +44,7 @@ if [ ${ARCH} == "riscv64" ]; then
         export CROSS_COMPILE=${TOOLCHAIN_PREFIX}
         make PLATFORM=generic FW_JUMP_ADDR=0x80200000
         cd ../..
+        echo build opensbi done.
     fi
 fi
 

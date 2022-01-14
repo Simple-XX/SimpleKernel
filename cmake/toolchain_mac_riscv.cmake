@@ -61,11 +61,3 @@ endif ()
 # "set print object on"
 # "set print array-indexes on"
 # "set riscv use-compressed-breakpoints yes")
-
-# opensbi
-# cd tools
-# git clone https://github.com/riscv/opensbi.git
-# cd opensbi
-# export CROSS_COMPILE=riscv64-unknown-elf-
-# make PLATFORM=generic clean
-# make PLATFORM=generic FW_JUMP_ADDR=0x80200000
