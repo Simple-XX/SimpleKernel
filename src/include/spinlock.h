@@ -29,9 +29,9 @@ private:
     /// 自旋锁名称
     const char *name;
     /// 是否 lock
-    volatile bool locked;
+    bool locked;
     /// 获得此锁的 hartid
-    volatile size_t hartid;
+    size_t hartid;
 
     /**
      * @brief 检查当前 hart 是否获得此锁

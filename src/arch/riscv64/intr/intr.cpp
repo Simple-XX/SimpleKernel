@@ -53,9 +53,10 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sp;
     (void)_sstatus;
     (void)_context;
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
-    info("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc, _stval);
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
+         _sepc, _stval, _scause, _sp, _sstatus);
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {

@@ -105,7 +105,6 @@ void spinlock_t::lock(void) {
     return;
 }
 
-// Release the lock.
 void spinlock_t::unlock(void) {
     if (is_holding() == false) {
         err("spinlock %s is_holding == false.\n", name);
