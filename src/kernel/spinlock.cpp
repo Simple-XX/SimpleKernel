@@ -16,13 +16,13 @@
 
 #include "spinlock.h"
 #include "cpu.hpp"
-#include "scheduler.h"
 #include "core.h"
 #include "cpu.hpp"
 #include "string"
+#include "atomic"
 
 bool spinlock_t::is_holding(void) {
-    bool r = (locked && (hartid == CPU::get_curr_core_id()));
+    bool r = (locked._M_i && (hartid == CPU::get_curr_core_id()));
     return r;
 }
 
@@ -58,27 +58,27 @@ void spinlock_t::pop_off(void) {
 }
 
 spinlock_t::spinlock_t(void) {
-    name   = "unnamed";
-    locked = false;
+    name = "unnamed";
+    locked.clear();
     hartid = SIZE_MAX;
     return;
 }
 
 spinlock_t::spinlock_t(const char *_name) : name(_name) {
-    locked = false;
+    locked.clear();
     hartid = CPU::get_curr_core_id();
     return;
 }
 
 spinlock_t::spinlock_t(const mystl::string &_name) : name(_name.c_str()) {
-    locked = false;
+    locked.clear();
     hartid = CPU::get_curr_core_id();
     return;
 }
 
 bool spinlock_t::init(const char *_name) {
-    name   = _name;
-    locked = false;
+    name = _name;
+    locked.clear();
     hartid = CPU::get_curr_core_id();
     return true;
 }
@@ -90,7 +90,7 @@ void spinlock_t::lock(void) {
         err("spinlock %s is_holding == true.\n", name);
     }
     size_t i = 0;
-    while ((__atomic_test_and_set(&locked, __ATOMIC_ACQUIRE) != 0) &&
+    while ((locked.test_and_set(std::memory_order_acquire)) &&
            (i++ < 0xFFFFFFFF)) {
         ;
     }
@@ -98,8 +98,8 @@ void spinlock_t::lock(void) {
         assert(!"Deadlock!");
     }
 
-    __atomic_thread_fence(__ATOMIC_ACQUIRE);
-    __atomic_signal_fence(__ATOMIC_ACQUIRE);
+    std::atomic_signal_fence(std::memory_order_acquire);
+    std::atomic_thread_fence(std::memory_order_acquire);
 
     hartid = CPU::get_curr_core_id();
     return;
@@ -111,9 +111,10 @@ void spinlock_t::unlock(void) {
     }
     hartid = SIZE_MAX;
 
-    __atomic_thread_fence(__ATOMIC_RELEASE);
-    __atomic_signal_fence(__ATOMIC_RELEASE);
-    __atomic_clear(&locked, __ATOMIC_RELEASE);
+    std::atomic_signal_fence(std::memory_order_release);
+    std::atomic_thread_fence(std::memory_order_release);
+
+    locked.clear(std::memory_order_release);
 
     pop_off();
     return;
