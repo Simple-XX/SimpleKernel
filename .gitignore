@@ -17,3 +17,4 @@ iso
 *.bin
 null.d
 tools/aarch64-unknown-linux-gnu*
+.gdbinit
