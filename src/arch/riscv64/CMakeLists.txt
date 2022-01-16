@@ -16,7 +16,7 @@ set(boot_src ${boot_asm_src})
 # 设置子模块所有的源码
 set(arch_src ${boot_src})
 
-# 添加子模块
+# 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${arch_src})
 
 # 添加头文件搜索路径

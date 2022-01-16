@@ -8,9 +8,7 @@ bochsout.txt
 *.gch
 *.tags*
 .DS_Store
-build
-cmake-build-debug
-cmake-build-debug_simplekernel
+build*
 grub-2.04.tar.xz
 grub-2.04
 iso

@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="bochs_i386_osx_debug" type="CLion_Remote" singleton="false" version="1" remoteCommand=":1234" symbolFile="$PROJECT_DIR$/build_i386/bin/kernel.elf" sysroot="">
+    <debugger kind="GDB" isBundled="true" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="kernel.elf" run_configuration_type="CMakeRunConfiguration" run_configuration_target="CMakeBuildProfile:x86_64_osx" />
+      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_SimpleKernel Tools_bcohs-osx-i386/x86_64" />
+    </method>
+  </configuration>
+</component>
