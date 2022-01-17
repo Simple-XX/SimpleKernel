@@ -48,6 +48,15 @@ private:
 
 protected:
 public:
+    /// 缓冲区大小
+    static constexpr const size_t BUF_SIZE = 128;
+
+    /**
+     * @brief 获取单例
+     * @return IO&              静态对象
+     */
+    static IO &get_instance(void);
+
     /**
      * @brief 端口读字节
      * @param  _port           要读的端口
@@ -179,8 +188,5 @@ public:
      */
     int32_t write_string(const char *_s);
 };
-
-/// 声明全局 IO 对象
-extern IO io;
 
 #endif /* _IO_H_ */

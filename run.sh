@@ -36,13 +36,15 @@ fi
 if [ ${ARCH} == "riscv64" ]; then
     # OPENSBI 不存在则编译
     if [ ! -f ${OPENSBI} ]; then
+        echo build opensbi.
         git submodule init
         git submodule update
         cd ./tools/opensbi
         mkdir -p build
-        export CROSS_COMPILE=riscv64-unknown-elf-
+        export CROSS_COMPILE=${TOOLCHAIN_PREFIX}
         make PLATFORM=generic FW_JUMP_ADDR=0x80200000
         cd ../..
+        echo build opensbi done.
     fi
 fi
 
@@ -68,12 +70,16 @@ fi
 
 # 运行虚拟机
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-    bochs -q -f ${bochsrc} -rc ./tools/bochsinit
-    # qemu-system-x86_64 -cdrom ${iso} -m 128M \
-    # -monitor telnet::2333,server,nowait -serial stdio
-elif [ ${ARCH} == "arm" ]; then
-    qemu-system-aarch64 -machine virt -serial stdio -kernel ${kernel}
+    if [ ${IA32_USE_QEMU} == 0 ]; then
+        ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
+        bochs -q -f ${bochsrc} -rc ./tools/bochsinit
+    else
+        qemu-system-x86_64 -cdrom ${iso} -m 128M \
+        -monitor telnet::2333,server,nowait -serial stdio
+    fi
+elif [ ${ARCH} == "aarch64" ]; then
+    qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ${kernel} \
+    -monitor telnet::2333,server,nowait -serial stdio -nographic
 elif [ ${ARCH} == "riscv64" ]; then
     qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
     -monitor telnet::2333,server,nowait -serial stdio -nographic
