@@ -58,14 +58,9 @@ fi
 
 # 设置 grub 相关数据
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
+    mkdir -p ${iso_boot_grub}
     cp ${kernel} ${iso_boot}
-    mkdir ${iso_boot_grub}
-    touch ${iso_boot_grub}/grub.cfg
-    echo 'set timeout=15
-    set default=0
-    menuentry "SimpleKernel" {
-       multiboot2 /boot/kernel.elf "KERNEL_ELF"
-   }' >${iso_boot_grub}/grub.cfg
+    cp ./tools/grub.cfg ${iso_boot_grub}/
 fi
 
 # 运行虚拟机
