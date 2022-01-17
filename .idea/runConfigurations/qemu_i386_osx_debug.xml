@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="qemu_i386_osx_debug" type="CLion_Remote" singleton="false" version="1" remoteCommand=":1234" symbolFile="$PROJECT_DIR$/build_i386/bin/kernel.elf" sysroot="">
+    <debugger kind="GDB" isBundled="true" />
+    <method v="2" />
+  </configuration>
+</component>
