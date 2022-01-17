@@ -25,9 +25,6 @@
 #include "pmm.h"
 #include "vmm.h"
 
-static pt_t pgd_kernel;
-pt_t        VMM::curr_dir;
-
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
 pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
@@ -50,7 +47,7 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
             // 如果需要
             if (_alloc == true) {
                 // 申请新的物理页
-                pgd = (pt_t)PMM::alloc_page_kernel();
+                pgd = (pt_t)PMM::get_instance().alloc_page_kernel();
                 bzero(pgd, COMMON::PAGE_SIZE);
                 // 申请失败则返回
                 if (pgd == nullptr) {
@@ -73,14 +70,18 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
     return &pgd[PX(0, _va)];
 }
 
+VMM &VMM::get_instance(void) {
+    /// 定义全局 VMM 对象
+    static VMM vmm;
+    return vmm;
+}
+
 bool VMM::init(void) {
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
 #endif
-    // 读取当前页目录
-    curr_dir = (pt_t)CPU::GET_PGD();
     // 分配一页用于保存页目录
-    pgd_kernel = (pt_t)PMM::alloc_page_kernel();
+    pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
     bzero(pgd_kernel, COMMON::PAGE_SIZE);
     // 映射内核空间
     for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
@@ -99,14 +100,12 @@ bool VMM::init(void) {
 }
 
 pt_t VMM::get_pgd(void) {
-    return curr_dir;
+    return (pt_t)CPU::GET_PGD();
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
-    // 更新当前页表
-    curr_dir = _pgd;
     // 设置页目录
-    CPU::SET_PGD((uintptr_t)curr_dir);
+    CPU::SET_PGD((uintptr_t)_pgd);
     // 刷新缓存
     CPU::VMM_FLUSH(0);
     return;
@@ -116,11 +115,12 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
     pte_t *pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
     assert(pte != nullptr);
-    // 已经映射过了
-    if (*pte & VMM_PAGE_VALID) {
+    // 已经映射过了 且 flag 没有变化
+    if (((*pte & VMM_PAGE_VALID) == VMM_PAGE_VALID) &&
+        ((*pte & _flag) == _flag)) {
         warn("remap.\n");
     }
-    // 没有映射，这是正常情况
+    // 没有映射，或更改了 flag
     else {
         // 那么设置 *pte
         // pte 解引用后的值是页表项

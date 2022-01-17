@@ -32,6 +32,12 @@ private:
 
 protected:
 public:
+    /**
+     * @brief 获取单例
+     * @return HEAP&            静态对象
+     */
+    static HEAP &get_instance(void);
+
     /** 初始化
      * @brief 堆初始化
      * @return true            成功
@@ -52,7 +58,5 @@ public:
      */
     void free(void *_p);
 };
-
-extern HEAP heap;
 
 #endif /* _HEAP_H_ */
