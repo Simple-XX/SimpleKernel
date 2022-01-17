@@ -24,10 +24,15 @@ else ()
     message(STATUS "Found riscv64-unknown-elf-gcc ${RISCV}.")
 endif ()
 
-set(TOOLCHAIN_PREFIX riscv64-unknown-elf-)
-set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
+set(TOOLCHAIN_PREFIX   riscv64-unknown-elf-)
+set(CMAKE_C_COMPILER   ${TOOLCHAIN_PREFIX}gcc)
 set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
-set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
+set(CMAKE_READELF      ${TOOLCHAIN_PREFIX}readelf)
+set(CMAKE_AR           ${TOOLCHAIN_PREFIX}ar)
+set(CMAKE_LINKER       ${TOOLCHAIN_PREFIX}ld)
+set(CMAKE_NM           ${TOOLCHAIN_PREFIX}nm)
+set(CMAKE_OBJDUMP      ${TOOLCHAIN_PREFIX}objdump)
+set(CMAKE_RANLIB       ${TOOLCHAIN_PREFIX}ranlib)
 
 # qemu
 find_program(QEMU qemu-system-riscv64)
@@ -37,11 +42,3 @@ if (NOT QEMU)
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
-
-# opensbi
-# cd tools
-# git clone https://github.com/riscv/opensbi.git
-# cd opensbi
-# export CROSS_COMPILE=riscv64-unknown-elf-
-# make PLATFORM=generic clean
-# make PLATFORM=generic FW_JUMP_ADDR=0x80200000
