@@ -13,16 +13,16 @@ OUTPUT_ARCH(i386)
 ENTRY(_start)
 /* 设置各个 section */
 SECTIONS {
-	/* VMA 为顺序排列，LMA 按照 AT(addr) 排列 */
+    /* VMA 为顺序排列，LMA 按照 AT(addr) 排列 */
     . = 0;
-	PROVIDE(kernel_start = .);
+    PROVIDE(kernel_start = .);
     /* 指定内核从地址 1M 处开始 */
-	/* 0~1M 的空间为 BIOS 保留区域 */
+    /* 0~1M 的空间为 BIOS 保留区域 */
     /* TODO: 这里似乎可以修改为任意地址 */
     . = 1M;
 
     PROVIDE(kernel_text_start = .);
-	/* 代码段 */
+    /* 代码段 */
     .text : ALIGN(4K) {
         *(.multiboot_header)
         *(.text*)
@@ -30,7 +30,7 @@ SECTIONS {
     PROVIDE(kernel_text_end = .);
 
     PROVIDE(kernel_rodata_start = .);
-	/* 只读数据段 */
+    /* 只读数据段 */
     .rodata : ALIGN(4K) {
         /* 构造函数起点 */
         PROVIDE(ctors_start = .);
@@ -50,7 +50,7 @@ SECTIONS {
     PROVIDE(kernel_rodata_end = .);
 
     PROVIDE(kernel_data_start = .);
-	/* 数据段 */
+    /* 数据段 */
     .data : ALIGN(4K) {
         *(.data*)
         *(.eh_frame)
@@ -59,14 +59,14 @@ SECTIONS {
     PROVIDE(kernel_data_end = .);
 
     PROVIDE(kernel_bss_start = .);
-	/* 未初始化数据段 */
+    /* 未初始化数据段 */
     .bss : ALIGN(4K) {
         *(.bss)
     }
     PROVIDE(kernel_bss_end = .);
 
     PROVIDE(kernel_debug_start = .);
-	/* 调试信息 */
+    /* 调试信息 */
     .debug : ALIGN(4K) {
         *(.debug*)
     }
