@@ -33,7 +33,7 @@ SLAB::chunk_t::~chunk_t(void) {
     return;
 }
 
-size_t SLAB::chunk_t::size(void) {
+size_t SLAB::chunk_t::size(void) const {
     size_t   res = 0;
     chunk_t *tmp = this->next;
     while (tmp != this) {
@@ -43,22 +43,22 @@ size_t SLAB::chunk_t::size(void) {
     return res;
 }
 
-bool SLAB::chunk_t::operator==(const chunk_t &_node) {
+bool SLAB::chunk_t::operator==(const chunk_t &_node) const {
     return addr == _node.addr && len == _node.len && prev == _node.prev &&
            next == _node.next;
 }
 
-bool SLAB::chunk_t::operator!=(const chunk_t &_node) {
+bool SLAB::chunk_t::operator!=(const chunk_t &_node) const {
     return addr != _node.addr || len != _node.len || prev != _node.prev ||
            next != _node.next;
 }
 
-SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
+SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) const {
     // 判断越界
     assert(_idx < size());
-    chunk_t *res = nullptr;
+    const chunk_t *res = nullptr;
     // 找到头节点
-    chunk_t *tmp = this;
+    const chunk_t *tmp = this;
     while (tmp->next != this) {
         if (tmp->addr == HEAD && tmp->len == HEAD) {
             res = tmp;
@@ -72,7 +72,7 @@ SLAB::chunk_t &SLAB::chunk_t::operator[](size_t _idx) {
     }
     // res 必不为空
     assert(res != nullptr);
-    return *res;
+    return *(const_cast<chunk_t *>(res));
 }
 
 // 由于是循环队列，相当于在头节点前面插入
@@ -103,15 +103,17 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         pages += 1;
     }
     // 申请
-    chunk_t *new_node = (chunk_t *)PMM::alloc_pages(pages);
+    chunk_t *new_node = (chunk_t *)PMM::get_instance().alloc_pages(pages);
     // 如果没有映射则进行映射
     uintptr_t tmp = 0;
     for (size_t i = 0; i < pages; i++) {
         // 地址=初始地址+页数偏移
         tmp = (uintptr_t)((uint8_t *)new_node + i * COMMON::PAGE_SIZE);
-        if (VMM::get_mmap(VMM::get_pgd(), tmp, 0) == false) {
-            VMM::mmap(VMM::get_pgd(), (uintptr_t)new_node, (uintptr_t)new_node,
-                      VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+        if (VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), tmp,
+                                         0) == false) {
+            VMM::get_instance().mmap(VMM::get_instance().get_pgd(),
+                                     (uintptr_t)new_node, (uintptr_t)new_node,
+                                     VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
         }
         // 已经映射的情况是不应该出现的
         else {
@@ -142,7 +144,7 @@ void SLAB::slab_cache_t::free_pmm(void) {
         pages = (tmp->len + CHUNK_SIZE) / COMMON::PAGE_SIZE;
         // 必须是整数个页
         assert(((tmp->len + CHUNK_SIZE) % COMMON::PAGE_SIZE) == 0);
-        PMM::free_pages(tmp->addr, pages);
+        PMM::get_instance().free_pages(tmp->addr, pages);
         // 删除节点
         tmp->prev->next = tmp->next;
         tmp->next->prev = tmp->prev;
@@ -153,7 +155,7 @@ void SLAB::slab_cache_t::free_pmm(void) {
         uintptr_t tmp_addr = 0;
         for (size_t i = 0; i < pages; i++) {
             tmp_addr = tmp->addr + i * COMMON::PAGE_SIZE;
-            VMM::unmmap(VMM::get_pgd(), tmp_addr);
+            VMM::get_instance().unmmap(VMM::get_instance().get_pgd(), tmp_addr);
         }
         // 迭代
         tmp = tmp_next;
@@ -185,7 +187,7 @@ void SLAB::slab_cache_t::split(chunk_t *_node, size_t _len) {
         new_node->next = new_node;
         // 判断剩余空间是否可以容纳至少一个节点，即大于等于  len+CHUNK_SIZE
         // 如果大于等于则建立新的节点，小于的话不用新建
-        // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
+        // 这里只有 len 是因为 chunk 的大小并不包括在 chunk->len
         // 中， 前面几行代码已经计算过了
         if (new_node->len > len) {
             // 新的节点必然属于 part 链表
@@ -294,7 +296,7 @@ void SLAB::slab_cache_t::remove(chunk_t *_node) {
     return;
 }
 
-size_t SLAB::get_idx(size_t _len) {
+size_t SLAB::get_idx(size_t _len) const {
     size_t res = 0;
     // _len 向上取整
     _len += _len - 1;

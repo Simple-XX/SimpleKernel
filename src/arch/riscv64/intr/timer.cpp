@@ -1,7 +1,7 @@
 
 /**
- * @file timer.h
- * @brief 中断抽象头文件
+ * @file timer.cpp
+ * @brief 时钟中断实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2021-09-18
@@ -29,7 +29,7 @@ static constexpr const uint64_t INTERVAL = 390000000 / 20;
  */
 void set_next(void) {
     // 调用 opensbi 提供的接口设置时钟
-    OPENSBI::set_timer(CPU::READ_TIME() + INTERVAL);
+    OPENSBI::get_instance().set_timer(CPU::READ_TIME() + INTERVAL);
     return;
 }
 
@@ -42,11 +42,17 @@ void timer_intr(void) {
     return;
 }
 
+TIMER &TIMER::get_instance(void) {
+    /// 定义全局 TIMER 对象
+    static TIMER timer;
+    return timer;
+}
+
 void TIMER::init(void) {
     // 注册中断函数
-    CLINT::register_interrupt_handler(CLINT::INTR_S_TIMER, timer_intr);
+    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_TIMER, timer_intr);
     // 设置初次中断
-    OPENSBI::set_timer(CPU::READ_TIME());
+    OPENSBI::get_instance().set_timer(CPU::READ_TIME());
     // 开启时钟中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_STIE);
     info("timer init.\n");
