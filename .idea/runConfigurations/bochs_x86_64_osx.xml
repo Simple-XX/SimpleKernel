@@ -4,7 +4,6 @@
       <option name="CMake.Explicit.Target" explicitTargetName="clean" />
       <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="setup x86_64 iso" run_configuration_type="ShConfigurationType" />
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_SimpleKernel Tools_Generate iso" />
       <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_SimpleKernel Tools_bochs-osx-i386/x86_64" />
     </method>
   </configuration>
