@@ -1,9 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="qemu_x86_64_osx_debug" type="CLion_Remote" singleton="false" version="1" remoteCommand=":1234" symbolFile="$PROJECT_DIR$/build_x86_64/bin/kernel.elf" sysroot="">
     <debugger kind="GDB" isBundled="true" />
-    <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="setup x86_64 iso" run_configuration_type="ShConfigurationType" />
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_SimpleKernel Tools_qemu-osx-i386/x86_64" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>
