@@ -24,10 +24,15 @@ else ()
     message(STATUS "Found x86_64-elf-gcc ${GCC}.")
 endif ()
 
-set(TOOLCHAIN_PREFIX x86_64-elf-)
-set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
+set(TOOLCHAIN_PREFIX   x86_64-elf-)
+set(CMAKE_C_COMPILER   ${TOOLCHAIN_PREFIX}gcc)
 set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
-set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
+set(CMAKE_READELF      ${TOOLCHAIN_PREFIX}readelf)
+set(CMAKE_AR           ${TOOLCHAIN_PREFIX}ar)
+set(CMAKE_LINKER       ${TOOLCHAIN_PREFIX}ld)
+set(CMAKE_NM           ${TOOLCHAIN_PREFIX}nm)
+set(CMAKE_OBJDUMP      ${TOOLCHAIN_PREFIX}objdump)
+set(CMAKE_RANLIB       ${TOOLCHAIN_PREFIX}ranlib)
 
 # xorriso
 find_program(Xorriso xorriso)
@@ -56,11 +61,11 @@ else ()
     message(STATUS "Found bochs ${BOCHS}")
 endif ()
 
-# xorriso
-find_program(XORRISO xorriso)
-if (NOT XORRISO)
-    message(FATAL_ERROR "xorriso not found.\n"
-            "run `brew install xorriso` to install the toolchain")
+# qemu
+find_program(QEMU qemu-system-x86_64)
+if (NOT QEMU)
+    message(FATAL_ERROR "qemu not found.\n"
+            "Please install qemu first.")
 else ()
-    message(STATUS "Found xorriso ${XORRISO}")
+    message(STATUS "Found qemu ${QEMU}")
 endif ()

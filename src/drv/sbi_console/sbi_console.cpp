@@ -35,7 +35,7 @@ SBI_CONSOLE::~SBI_CONSOLE(void) {
 
 void SBI_CONSOLE::put_char(const char _c) const {
     // 调用 opensbi 提供的接口
-    OPENSBI::put_char(_c);
+    OPENSBI::get_instance().put_char(_c);
     return;
 }
 

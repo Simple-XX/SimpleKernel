@@ -35,40 +35,38 @@
 class PMM {
 private:
     /// 物理内存开始地址
-    static uintptr_t start;
+    uintptr_t start;
     /// 物理内存长度，单位为 bytes
-    static size_t length;
+    size_t length;
     /// 物理内存页数
-    static size_t total_pages;
+    size_t total_pages;
+    /// 内核空间起始地址
+    uintptr_t kernel_space_start;
+    /// 内核空间大小，单位为 bytes
+    size_t kernel_space_length;
+    /// 非内核空间起始地址
+    uintptr_t non_kernel_space_start;
+    /// 非内核空间大小，单位为 bytes
+    size_t non_kernel_space_length;
+
     /// 内核空间不会位于内存中间，导致出现非内核空间被切割为两部分的情况
     /// 物理内存分配器，分配内核空间
-    static ALLOCATOR *kernel_space_allocator;
+    ALLOCATOR *kernel_space_allocator;
     /// 物理内存分配器，分配非内核空间
-    static ALLOCATOR *allocator;
+    ALLOCATOR *allocator;
 
     /**
      * @brief 将 multiboot2/dtb 信息移动到内核空间
      */
-    static void move_boot_info(void);
+    void move_boot_info(void);
 
 protected:
 public:
-    /// 内核空间起始地址
-    static uintptr_t kernel_space_start;
-    /// 内核空间大小，单位为 bytes
-    static size_t kernel_space_length;
-    /// 非内核空间起始地址
-    static uintptr_t non_kernel_space_start;
-    /// 非内核空间大小，单位为 bytes
-    static size_t non_kernel_space_length;
-
     /**
-     * @brief 构造函数，目前为空
-     * @todo 从 bootloader 接受内存参数进行初始化
+     * @brief 获取单例
+     * @return PMM&             静态对象
      */
-    PMM(void);
-
-    ~PMM(void);
+    static PMM &get_instance(void);
 
     /**
      * @brief 初始化
@@ -76,26 +74,38 @@ public:
      * @return false           失败
      * @todo 移动到构造函数去
      */
-    static bool init(void);
+    bool init(void);
 
     /**
      * @brief 获取物理内存长度
      * @return size_t          物理内存长度
      */
-    static size_t get_pmm_length(void);
+    size_t get_pmm_length(void) const;
+
+    /**
+     * @brief 获取当前已使用页数
+     * @return size_t          已使用页数
+     */
+    size_t get_used_pages_count(void) const;
+
+    /**
+     * @brief 获取当前空闲页
+     * @return size_t          空闲页数
+     */
+    size_t get_free_pages_count(void) const;
 
     /**
      * @brief 分配一页
      * @return uintptr_t       分配的内存起始地址
      */
-    static uintptr_t alloc_page(void);
+    uintptr_t alloc_page(void);
 
     /**
      * @brief 分配多页
      * @param  _len            页数
      * @return uintptr_t       分配的内存起始地址
      */
-    static uintptr_t alloc_pages(size_t _len);
+    uintptr_t alloc_pages(size_t _len);
 
     /**
      * @brief 分配以指定地址开始的 _len 页
@@ -104,20 +114,20 @@ public:
      * @return true            成功
      * @return false           失败
      */
-    static bool alloc_pages(uintptr_t _addr, size_t _len);
+    bool alloc_pages(uintptr_t _addr, size_t _len);
 
     /**
      * @brief 在内核空间申请一页
      * @return uintptr_t       分配的内存起始地址
      */
-    static uintptr_t alloc_page_kernel(void);
+    uintptr_t alloc_page_kernel(void);
 
     /**
      * @brief 在内核空间分配 _len 页
      * @param  _len            页数
      * @return uintptr_t       分配到的内存起始地址
      */
-    static uintptr_t alloc_pages_kernel(size_t _len);
+    uintptr_t alloc_pages_kernel(size_t _len);
 
     /**
      * @brief 在内核空间分配以指定地址开始的 _len 页
@@ -126,32 +136,20 @@ public:
      * @return true            成功
      * @return false           失败
      */
-    static bool alloc_pages_kernel(uintptr_t _addr, size_t _len);
+    bool alloc_pages_kernel(uintptr_t _addr, size_t _len);
 
     /**
      * @brief 回收一页
      * @param  _addr           要回收的地址
      */
-    static void free_page(uintptr_t _addr);
+    void free_page(uintptr_t _addr);
 
     /**
      * @brief 回收多页
      * @param  _addr           要回收的地址
      * @param  _len            页数
      */
-    static void free_pages(uintptr_t _addr, size_t _len);
-
-    /**
-     * @brief 获取当前已使用页数
-     * @return size_t          已使用页数
-     */
-    static size_t get_used_pages_count(void);
-
-    /**
-     * @brief 获取当前空闲页
-     * @return size_t          空闲页数
-     */
-    static size_t get_free_pages_count(void);
+    void free_pages(uintptr_t _addr, size_t _len);
 };
 
 #endif /* _PMM_H_ */

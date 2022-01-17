@@ -36,12 +36,12 @@ void kernel_main(void) {
     // 初始化
     BOOT_INFO::init();
     // 物理内存初始化
-    PMM::init();
+    PMM::get_instance().init();
     // 测试物理内存
     test_pmm();
     // 虚拟内存初始化
     // TODO: 将vmm的初始化放在构造函数里，这里只做开启分页
-    VMM::init();
+    VMM::get_instance().init();
     // 测试虚拟内存
     test_vmm();
     // 显示基本信息
