@@ -19,7 +19,6 @@
 #include "iostream"
 #include "boot_info.h"
 #include "kernel.h"
-#include "dtb.h"
 
 /// @todo gdb 调试
 /// @todo clion 环境
