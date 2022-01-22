@@ -19,10 +19,13 @@
 
 #include "string"
 #include "scheduler.h"
-#include "stack"
+#include "queue"
 
 class rr_scheduler_t : scheduler_t {
 private:
+    /// 任务向量
+    mystl::queue<task_t *> task_queue;
+
 protected:
 public:
     rr_scheduler_t(void);

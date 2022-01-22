@@ -5,7 +5,6 @@
 // cxxabi.cpp for Simple-XX/SimpleKernel.
 
 #include "cxxabi.h"
-#include "new"
 #include "stdio.h"
 
 #ifdef __cplusplus

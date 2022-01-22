@@ -15,14 +15,13 @@
  */
 
 #include "rr_scheduler.h"
+#include "core.h"
 
 rr_scheduler_t::rr_scheduler_t(void) : scheduler_t("unnamed rr_scheduler_t") {
-    spinlock.init("unnamed rr_scheduler_t");
     return;
 }
 
 rr_scheduler_t::rr_scheduler_t(const mystl::string _name) : scheduler_t(_name) {
-    spinlock.init(_name.c_str());
     return;
 }
 
@@ -31,25 +30,33 @@ rr_scheduler_t::~rr_scheduler_t(void) {
 }
 
 void rr_scheduler_t::add_task(task_t *_task) {
-    spinlock.lock();
-    (void)_task;
-    info("TODO\n");
-    spinlock.unlock();
+    // 更新任务状态
+    _task->state = RUNNING;
+    // 将新进程添加到队列
+    task_queue.push(_task);
     return;
 }
 
 void rr_scheduler_t::remove_task(task_t *_task) {
-    spinlock.lock();
     (void)_task;
     info("TODO\n");
-    spinlock.unlock();
     return;
 }
 
 task_t *rr_scheduler_t::get_next_task(void) {
-    spinlock.lock();
-    info("TODO\n");
     task_t *ret = nullptr;
-    spinlock.unlock();
+    // 如果任务未结束
+    if (core_t::get_curr_task()->state == RUNNING) {
+        // 如果不是 os 线程
+        if (core_t::get_curr_task()->pid != 0) {
+            // 重新加入队列
+            task_queue.push(core_t::get_curr_task());
+        }
+    }
+    // 任务队列不为空的话弹出一个任务
+    if (task_queue.empty() == false) {
+        ret = task_queue.front();
+        task_queue.pop();
+    }
     return ret;
 }

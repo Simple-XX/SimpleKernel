@@ -11,7 +11,7 @@
 #include "vmm.h"
 #include "stdlib.h"
 #include "task.h"
-#include "tmp_scheduler.h"
+#include "smp_task.h"
 #include "kernel.h"
 
 int32_t test_pmm(void) {
@@ -187,7 +187,7 @@ taskxx_(4);
 
 #define add_taskxx(a, b)                                                       \
     task_t *tmp_task##a##b = new task_t("task" #a "" #b "", &task##a##b);      \
-    liner_scheduler::get_instance().add_task(tmp_task##a##b);
+    SMP_TASK::get_instance().add_task(*tmp_task##a##b, SMP_TASK::SCHEDULER_RR);
 
 #define taskxx_cond(a, b) (tmp##a##b == 5)
 #define taskxx_cond_(a)                                                        \
@@ -232,7 +232,7 @@ int test_sched(void) {
         if (taskxx_cond_all) {
             break;
         }
-        liner_scheduler::get_instance().sched();
+        SMP_TASK::get_instance().sched();
     }
 
     info("sched test done.\n");

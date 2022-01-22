@@ -89,9 +89,6 @@ protected:
     /// 调度器名
     mystl::string name;
 
-    /// 自旋锁
-    spinlock_t spinlock;
-
 public:
     /**
      * @brief 调度器构造

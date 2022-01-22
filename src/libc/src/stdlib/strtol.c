@@ -7,7 +7,6 @@
 #include "stdlib.h"
 #include "ctype.h"
 #include "limits.h"
-#include "math.h"
 
 /*
  * Convert a string to a long integer.

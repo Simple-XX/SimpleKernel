@@ -18,13 +18,11 @@
 
 cfs_scheduler_t::cfs_scheduler_t(void)
     : scheduler_t("unnamed cfs_scheduler_t") {
-    spinlock.init("unnamed cfs_scheduler_t");
     return;
 }
 
 cfs_scheduler_t::cfs_scheduler_t(const mystl::string _name)
     : scheduler_t(_name) {
-    spinlock.init(_name.c_str());
     return;
 }
 
@@ -33,25 +31,19 @@ cfs_scheduler_t::~cfs_scheduler_t(void) {
 }
 
 void cfs_scheduler_t::add_task(task_t *_task) {
-    spinlock.lock();
     (void)_task;
     info("TODO\n");
-    spinlock.unlock();
     return;
 }
 
 void cfs_scheduler_t::remove_task(task_t *_task) {
-    spinlock.lock();
     (void)_task;
     info("TODO\n");
-    spinlock.unlock();
     return;
 }
 
 task_t *cfs_scheduler_t::get_next_task(void) {
-    spinlock.lock();
     info("TODO\n");
     task_t *ret = nullptr;
-    spinlock.unlock();
     return ret;
 }
