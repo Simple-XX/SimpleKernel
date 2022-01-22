@@ -41,18 +41,18 @@ void idle(void) {
     return;
 }
 
-pid_t tmp_SCHEDULER::alloc_pid(void) {
+pid_t liner_scheduler::alloc_pid(void) {
     pid_t res = g_pid++;
     return res;
 }
 
-void tmp_SCHEDULER::free_pid(pid_t _pid) {
+void liner_scheduler::free_pid(pid_t _pid) {
     _pid = _pid;
     return;
 }
 
 // 获取下一个要执行的任务
-task_t *tmp_SCHEDULER::get_next_task(void) {
+task_t *liner_scheduler::get_next_task(void) {
     task_t *task = nullptr;
     // TODO: 如果当前任务的本次运行时间超过 1，进行切换
     // 如果任务未结束
@@ -85,7 +85,7 @@ task_t *tmp_SCHEDULER::get_next_task(void) {
 }
 
 // 切换到下一个任务
-void tmp_SCHEDULER::switch_task(void) {
+void liner_scheduler::switch_task(void) {
     // 获取下一个线程并替换为当前线程下一个线程
     auto tmp = get_next_task();
     // 设置 core 当前线程信息
@@ -96,22 +96,27 @@ void tmp_SCHEDULER::switch_task(void) {
     return;
 }
 
-tmp_SCHEDULER::tmp_SCHEDULER(void) : SCHEDULER("tmp scheduler") {
+
+liner_scheduler::liner_scheduler(void) : SCHEDULER("tmp scheduler") {
     return;
 }
 
-tmp_SCHEDULER::~tmp_SCHEDULER(void) {
+liner_scheduler::liner_scheduler(const mystl::string &_name):SCHEDULER(_name.c_str()){
     return;
 }
 
-tmp_SCHEDULER &tmp_SCHEDULER::get_instance(void) {
-    static tmp_SCHEDULER scheduler;
+liner_scheduler::~liner_scheduler(void) {
+    return;
+}
+
+liner_scheduler &liner_scheduler::get_instance(void) {
+    static liner_scheduler scheduler;
     return scheduler;
 }
 
-bool tmp_SCHEDULER::init(void) {
+bool liner_scheduler::init(void) {
     // 初始化自旋锁
-    spinlock.init("tmp_SCHEDULER");
+    spinlock.init("liner_scheduler");
     // 初始化进程队列
     task_queue = new mystl::queue<task_t *>;
     // 当前进程
@@ -132,7 +137,7 @@ bool tmp_SCHEDULER::init(void) {
     return true;
 }
 
-bool tmp_SCHEDULER::init_other_core(void) {
+bool liner_scheduler::init_other_core(void) {
     // 当前进程
     task_t *task = new task_t("init other", nullptr);
     task->hartid = CPU::get_curr_core_id();
@@ -150,13 +155,13 @@ bool tmp_SCHEDULER::init_other_core(void) {
     return true;
 }
 
-void tmp_SCHEDULER::sched(void) {
+void liner_scheduler::sched(void) {
     // TODO: 根据当前任务的属性进行调度
     switch_task();
     return;
 }
 
-void tmp_SCHEDULER::add_task(task_t *_task) {
+void liner_scheduler::add_task(task_t *_task) {
     spinlock.lock();
     _task->pid   = alloc_pid();
     _task->state = RUNNING;
@@ -166,7 +171,7 @@ void tmp_SCHEDULER::add_task(task_t *_task) {
     return;
 }
 
-void tmp_SCHEDULER::remove_task(task_t *_task) {
+void liner_scheduler::remove_task(task_t *_task) {
     spinlock.lock();
     // 回收 pid
     free_pid(_task->pid);
@@ -174,7 +179,7 @@ void tmp_SCHEDULER::remove_task(task_t *_task) {
     return;
 }
 
-void tmp_SCHEDULER::exit(uint32_t _exit_code) {
+void liner_scheduler::exit(uint32_t _exit_code) {
     core_t::get_curr_task()->exit_code = _exit_code;
     core_t::get_curr_task()->state     = ZOMBIE;
     switch_os(&core_t::cores[CPU::get_curr_core_id()].sched_task->context);
@@ -183,5 +188,5 @@ void tmp_SCHEDULER::exit(uint32_t _exit_code) {
 }
 
 extern "C" void exit(int _status) {
-    tmp_SCHEDULER::get_instance().exit(_status);
+    liner_scheduler::get_instance().exit(_status);
 }

@@ -187,7 +187,7 @@ taskxx_(4);
 
 #define add_taskxx(a, b)                                                       \
     task_t *tmp_task##a##b = new task_t("task" #a "" #b "", &task##a##b);      \
-    tmp_SCHEDULER::get_instance().add_task(tmp_task##a##b);
+    liner_scheduler::get_instance().add_task(tmp_task##a##b);
 
 #define taskxx_cond(a, b) (tmp##a##b == 5)
 #define taskxx_cond_(a)                                                        \
@@ -232,7 +232,7 @@ int test_sched(void) {
         if (taskxx_cond_all) {
             break;
         }
-        tmp_SCHEDULER::get_instance().sched();
+        liner_scheduler::get_instance().sched();
     }
 
     info("sched test done.\n");

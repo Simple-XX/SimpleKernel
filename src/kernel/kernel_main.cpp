@@ -32,6 +32,7 @@
 #include "opensbi.h"
 #include "core.h"
 #include "spinlock.h"
+#include "smp_task.h"
 
 /**
  * @brief 启动所有 core
@@ -58,8 +59,8 @@ void kernel_main_smp(void) {
     // 中断初始化
     INTR::get_instance().init_other_core();
     // 初始化任务调度
-    /// @note 在 tmp_SCHEDULER::init() 执行完后才能正常处理中断
-    tmp_SCHEDULER::get_instance().init_other_core();
+    /// @note 在 liner_scheduler::init() 执行完后才能正常处理中断
+    liner_scheduler::get_instance().init_other_core();
     // 时钟中断初始化
     TIMER::get_instance().init_other_core();
     return;
@@ -92,8 +93,8 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
         // 中断初始化
         INTR::get_instance().init();
         // 初始化任务调度
-        /// @note 在 tmp_SCHEDULER::init() 执行完后才能正常处理中断
-        tmp_SCHEDULER::get_instance().init();
+        /// @note 在 liner_scheduler::init() 执行完后才能正常处理中断
+        liner_scheduler::get_instance().init();
         // 设置时钟中断
         TIMER::get_instance().init();
         // 显示基本信息
@@ -115,7 +116,7 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
      test_sched();
     // 开始调度
     while (1) {
-        tmp_SCHEDULER::get_instance().sched();
+        liner_scheduler::get_instance().sched();
     }
 
     // 不应该执行到这里

@@ -33,13 +33,7 @@ class SCHEDULER {
 private:
 protected:
     /// 调度器名
-    const char *name;
-
-    /// 任务向量
-    mystl::queue<task_t *> *task_queue;
-
-    /// 全局 pid
-    pid_t g_pid;
+    mystl::string name;
 
     /// 自旋锁
     spinlock_t spinlock;
@@ -65,14 +59,14 @@ protected:
     /**
      * @brief 切换任务
      */
-    virtual void switch_task(void)=0;
+    virtual void switch_task(void) = 0;
 
 public:
     /**
      * @brief 调度器构造
      * @param  _name            调度器名
      */
-    SCHEDULER(const char *_name);
+    SCHEDULER(const mystl::string &_name);
 
     virtual ~SCHEDULER(void) = 0;
 
@@ -87,6 +81,43 @@ public:
      * @param  _task            要删除的任务
      */
     virtual void remove_task(task_t *_task) = 0;
+};
+
+class scheduler_t {
+private:
+protected:
+    /// 调度器名
+    mystl::string name;
+
+    /// 自旋锁
+    spinlock_t spinlock;
+
+public:
+    /**
+     * @brief 调度器构造
+     * @param  _name            调度器名
+     */
+    scheduler_t(const mystl::string &_name);
+
+    virtual ~scheduler_t(void) = 0;
+
+    /**
+     * @brief 添加一个任务
+     * @param  _task            要添加的任务
+     */
+    virtual void add_task(task_t *_task) = 0;
+
+    /**
+     * @brief 删除任务
+     * @param  _task            要删除的任务
+     */
+    virtual void remove_task(task_t *_task) = 0;
+
+    /**
+     * @brief 获取下一个要运行的任务
+     * @return task_t*          下一个要运行的任务
+     */
+    virtual task_t *get_next_task(void) = 0;
 };
 
 #endif /* _SCHEDULER_H_ */

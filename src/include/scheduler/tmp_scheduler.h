@@ -30,8 +30,14 @@
 /**
  * @brief 调度器
  */
-class tmp_SCHEDULER : SCHEDULER {
+class liner_scheduler : SCHEDULER {
 private:
+    /// 任务向量
+    mystl::queue<task_t *> *task_queue;
+
+    /// 全局 pid
+    pid_t g_pid;
+
     /**
      * @brief 分配 pid
      * @return pid_t            分配出的 pid
@@ -57,14 +63,15 @@ private:
 
 protected:
 public:
-    tmp_SCHEDULER(void);
-    ~tmp_SCHEDULER(void);
+    liner_scheduler(void);
+    liner_scheduler(const mystl::string &_name);
+    ~liner_scheduler(void);
 
     /**
      * @brief 获取单例
-     * @return tmp_SCHEDULER&       静态对象
+     * @return liner_scheduler&       静态对象
      */
-    static tmp_SCHEDULER &get_instance(void);
+    static liner_scheduler &get_instance(void);
 
     /**
      * @brief 初始化

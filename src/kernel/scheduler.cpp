@@ -16,11 +16,18 @@
 
 #include "scheduler.h"
 
-SCHEDULER::SCHEDULER(const char *_name) : name(_name) {
-    g_pid = 1;
+SCHEDULER::SCHEDULER(const mystl::string &_name) : name(_name) {
     return;
 }
 
 SCHEDULER::~SCHEDULER(void) {
+    return;
+}
+
+scheduler_t::scheduler_t(const mystl::string &_name) : name(_name) {
+    return;
+}
+
+scheduler_t::~scheduler_t(void) {
     return;
 }
