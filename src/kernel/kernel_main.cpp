@@ -14,13 +14,12 @@
  * </table>
  */
 
-#include "cxxabi.h"
 #include "common.h"
 #include "stdio.h"
-#include "stdlib.h"
 #include "iostream"
 #include "assert.h"
 #include "boot_info.h"
+#include "cxxabi.h"
 #include "pmm.h"
 #include "vmm.h"
 #include "heap.h"

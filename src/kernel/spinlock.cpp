@@ -17,7 +17,6 @@
 #include "spinlock.h"
 #include "cpu.hpp"
 #include "core.h"
-#include "cpu.hpp"
 #include "string"
 #include "atomic"
 

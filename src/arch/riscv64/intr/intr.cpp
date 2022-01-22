@@ -17,11 +17,8 @@
 #include "cpu.hpp"
 #include "stdio.h"
 #include "intr.h"
-#include "cpu.hpp"
 #include "vmm.h"
-#include "tmp_scheduler.h"
 #include "task.h"
-#include "spinlock.h"
 #include "core.h"
 
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);

@@ -21,8 +21,6 @@
 #include "cpu.hpp"
 #include "common.h"
 #include "pmm.h"
-#include "scheduler.h"
-#include "boot_info.h"
 
 task_t::task_t(mystl::string _name, void (*_task)(void))
     : name(_name), spinlock(_name) {

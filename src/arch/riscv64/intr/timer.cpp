@@ -19,8 +19,6 @@
 #include "cpu.hpp"
 #include "opensbi.h"
 #include "intr.h"
-#include "task.h"
-#include "tmp_scheduler.h"
 #include "core.h"
 
 /// timer interrupt interval

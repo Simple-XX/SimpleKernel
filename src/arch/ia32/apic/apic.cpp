@@ -15,9 +15,7 @@
  */
 
 #include "stdio.h"
-#include "assert.h"
 #include "intr.h"
-#include "cpu.hpp"
 #include "apic.h"
 
 // 64-ia-32-architectures-software-developer-vol-3a-manual#10

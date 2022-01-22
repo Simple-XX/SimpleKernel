@@ -14,14 +14,12 @@
  * </table>
  */
 
-#include "stdlib.h"
 #include "stdint.h"
 #include "iostream"
 #include "task.h"
 #include "cpu.hpp"
 #include "common.h"
 #include "pmm.h"
-#include "scheduler.h"
 #include "boot_info.h"
 
 task_t::task_t(mystl::string _name, void (*_task)(void))
