@@ -17,7 +17,6 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "cpu.hpp"
-#include "pmm.h"
 #include "vmm.h"
 #include "boot_info.h"
 #include "io.h"

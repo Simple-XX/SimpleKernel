@@ -14,11 +14,8 @@
  * </table>
  */
 
-#include "stdint.h"
 #include "stdio.h"
-#include "cpu.hpp"
 #include "intr.h"
-#include "io.h"
 
 /**
  * @brief 时钟中断
