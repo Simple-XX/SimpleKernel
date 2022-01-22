@@ -1,9 +1,0 @@
-<application>
-  <component name="CPPToolchains" version="7">
-    <toolchains detectedVersion="5">
-      <toolchain name="Default" toolSetKind="SYSTEM_UNIX_TOOLSET" debuggerKind="BUNDLED_LLDB" />
-      <toolchain name="riscv64" toolSetKind="SYSTEM_UNIX_TOOLSET" customCCompilerPath="/usr/local/Cellar/riscv-gnu-toolchain/master/bin/riscv64-unknown-elf-gcc" customCXXCompilerPath="/usr/local/Cellar/riscv-gnu-toolchain/master/bin/riscv64-unknown-elf-g++" debuggerKind="CUSTOM_GDB" customGDBPath="/usr/local/bin/gdb" />
-      <toolchain name="ia32" toolSetKind="SYSTEM_UNIX_TOOLSET" customCCompilerPath="/usr/local/bin/x86_64-elf-gcc" customCXXCompilerPath="/usr/local/bin/x86_64-elf-g++" debuggerKind="CUSTOM_GDB" customGDBPath="/usr/local/bin/gdb" />
-    </toolchains>
-  </component>
-</application>
