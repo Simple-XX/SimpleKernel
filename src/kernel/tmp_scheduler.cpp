@@ -28,15 +28,13 @@ extern "C" void context_init(CPU::context_t *_context);
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
 extern "C" void switch_os(CPU::context_t *_os);
 /// idle 任务指针
-task_t *idle_task = nullptr;
+task_t *idle_task[COMMON::CORES_COUNT] = {0};
 /**
  * @brief idle 任务
  */
-static void idle(void) {
+void idle(void) {
     while (1) {
-        CPU::ENABLE_INTR();
         asm("wfi");
-        // info("idle\n");
     }
     // 不会执行到这里
     assert(0);
@@ -75,7 +73,7 @@ task_t *tmp_SCHEDULER::get_next_task(void) {
     // 如果队列为空
     if (task_queue->empty() == true) {
         // 运行 idle 线程
-        task = idle_task;
+        task = idle_task[CPU::get_curr_core_id()];
     }
     else {
         // 不为空的话弹出一个任务
@@ -128,7 +126,8 @@ bool tmp_SCHEDULER::init(void) {
     core_t::cores[CPU::get_curr_core_id()].curr_task  = task;
     core_t::cores[CPU::get_curr_core_id()].sched_task = task;
     // 创建 idle 任务
-    idle_task = new task_t("idle", &idle);
+    idle_task[CPU::get_curr_core_id()]        = new task_t("idle", idle);
+    idle_task[CPU::get_curr_core_id()]->state = RUNNING;
     info("task init.\n");
     return true;
 }
@@ -145,6 +144,8 @@ bool tmp_SCHEDULER::init_other_core(void) {
     core_t::cores[CPU::get_curr_core_id()].core_id    = CPU::get_curr_core_id();
     core_t::cores[CPU::get_curr_core_id()].curr_task  = task;
     core_t::cores[CPU::get_curr_core_id()].sched_task = task;
+    idle_task[CPU::get_curr_core_id()]        = new task_t("idle", idle);
+    idle_task[CPU::get_curr_core_id()]->state = RUNNING;
     info("task other init.\n");
     return true;
 }
