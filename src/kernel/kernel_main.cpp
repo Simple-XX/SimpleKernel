@@ -14,10 +14,8 @@
  * </table>
  */
 
-#include "cxxabi.h"
 #include "common.h"
 #include "stdio.h"
-#include "stdlib.h"
 #include "iostream"
 #include "assert.h"
 #include "boot_info.h"
@@ -27,7 +25,6 @@
 #include "intr.h"
 #include "cpu.hpp"
 #include "kernel.h"
-#include "dtb.h"
 
 /// @todo gdb 调试
 /// @todo clion 环境
