@@ -17,7 +17,6 @@
 #include "stdint.h"
 #include "string.h"
 #include "common.h"
-#include "pmm.h"
 #include "stdio.h"
 #include "firstfit.h"
 
