@@ -16,8 +16,6 @@
 
 #include "stddef.h"
 #include "stdint.h"
-#include "assert.h"
-#include "common.h"
 #include "allocator.h"
 
 ALLOCATOR::ALLOCATOR(const char *_name, uintptr_t _addr, size_t _len) {
