@@ -63,14 +63,20 @@ if [ ! -f ./fatfs.dmg ]; then
     exit
 fi
 
-# 初始化 .gdbinit
-if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    echo TODO
-elif [ ${ARCH} == "aarch64" ]; then
-    echo TODO
-elif [ ${ARCH} == "riscv64" ]; then
-    cp ./tools/gdb_init_riscv64 ./.gdbinit
+# 初始化 gdb
+if [ ${DEBUG} == 1 ]; then
+    if [ ${ARCH} == "i386" ]; then
+        cp ./tools/gdbinit_i386 ./.gdbinit
+    elif [ ${ARCH} == "x86_64" ]; then
+        cp ./tools/gdbinit_x86_64 ./.gdbinit
+    elif [ ${ARCH} == "aarch64" ]; then
+        cp ./tools/gdbinit_aarch64 ./.gdbinit
+    elif [ ${ARCH} == "riscv64" ]; then
+        cp ./tools/gdbinit_riscv64 ./.gdbinit
+    fi
     echo "target remote localhost:1234" >> ./.gdbinit
+    GDB_OPT='-S -gdb tcp::1234'
+    echo "Run GDB in another shell"
 fi
 
 # 设置 grub 相关数据
@@ -87,11 +93,13 @@ if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
         bochs -q -f ${bochsrc} -rc ./tools/bochsinit
     else
         qemu-system-x86_64 -cdrom ${iso} -m 128M \
-        -monitor telnet::2333,server,nowait -serial stdio
+        -monitor telnet::2333,server,nowait -serial stdio \
+        ${GDB_OPT}
     fi
 elif [ ${ARCH} == "aarch64" ]; then
     qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ${kernel} \
-    -monitor telnet::2333,server,nowait -serial stdio -nographic
+    -monitor telnet::2333,server,nowait -serial stdio -nographic \
+    ${GDB_OPT}
 elif [ ${ARCH} == "riscv64" ]; then
     qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
     -global virtio-mmio.force-legacy=false \
@@ -100,7 +108,7 @@ elif [ ${ARCH} == "riscv64" ]; then
     -device virtio-scsi-device,bus=virtio-mmio-bus.1,id=scsi \
     -drive file=fatfs.dmg,format=raw,id=scsi \
     -monitor telnet::2333,server,nowait -serial stdio -nographic \
-    # -S -gdb tcp::1234
+    ${GDB_OPT}
 fi
 
 # qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
