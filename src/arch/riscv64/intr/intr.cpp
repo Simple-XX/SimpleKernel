@@ -54,7 +54,7 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 #define DEBUG
 #ifdef DEBUG
         warn("excp: %s.\n",
-             INTR::get_instance().excp_name(_scause & CPU::CAUSE_CODE_MASK));
+             INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
