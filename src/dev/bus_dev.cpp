@@ -15,8 +15,6 @@
  */
 
 #include "bus_dev.h"
-#include "virtio_mmio_drv.h"
-#include "cxxabi.h"
 
 bus_dev_t::bus_dev_t(void) {
     return;

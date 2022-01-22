@@ -15,7 +15,6 @@
  */
 
 #include "stdio.h"
-#include "assert.h"
 #include "intr.h"
 #include "cpu.hpp"
 #include "apic.h"

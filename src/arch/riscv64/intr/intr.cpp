@@ -17,7 +17,6 @@
 #include "cpu.hpp"
 #include "stdio.h"
 #include "intr.h"
-#include "cpu.hpp"
 #include "vmm.h"
 
 /**

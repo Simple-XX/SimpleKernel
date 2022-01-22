@@ -23,10 +23,6 @@
 #include "resource.h"
 #include "dtb.h"
 #include "iostream"
-#include "common.h"
-#include "pmm.h"
-#include "vector"
-#include "string"
 
 // 所有节点
 DTB::node_t DTB::nodes[MAX_NODES];

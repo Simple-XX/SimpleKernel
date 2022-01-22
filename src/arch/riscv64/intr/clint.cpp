@@ -21,7 +21,6 @@
 #include "boot_info.h"
 #include "resource.h"
 #include "intr.h"
-#include "cpu.hpp"
 
 CLINT &CLINT::get_instance(void) {
     /// 定义全局 CLINT 对象

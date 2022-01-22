@@ -15,13 +15,9 @@
  */
 
 #include "stdint.h"
-#include "vector"
 #include "string"
 #include "virtio_queue.h"
 #include "virtio_mmio_drv.h"
-#include "drv.h"
-#include "io.h"
-#include "intr.h"
 #include "dev_drv_manager.h"
 
 static void virtio_blk_handle_used(dev_t *_dev, uint32_t _usedidx) {
