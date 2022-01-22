@@ -15,8 +15,6 @@
  * </table>
  */
 
-#include "stddef.h"
-#include "stdbool.h"
 #include "io.h"
 #include "stdio.h"
 #include "keyboard.h"
