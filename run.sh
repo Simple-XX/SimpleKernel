@@ -63,6 +63,16 @@ if [ ! -f ./fatfs.dmg ]; then
     exit
 fi
 
+# 初始化 .gdbinit
+if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
+    echo TODO
+elif [ ${ARCH} == "aarch64" ]; then
+    echo TODO
+elif [ ${ARCH} == "riscv64" ]; then
+    cp ./tools/gdb_init_riscv64 ./.gdbinit
+    echo "target remote localhost:1234" >> ./.gdbinit
+fi
+
 # 设置 grub 相关数据
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
     mkdir -p ${iso_boot_grub}
@@ -89,7 +99,8 @@ elif [ ${ARCH} == "riscv64" ]; then
     -drive file=mydisk,format=raw,id=fatfs \
     -device virtio-scsi-device,bus=virtio-mmio-bus.1,id=scsi \
     -drive file=fatfs.dmg,format=raw,id=scsi \
-    -monitor telnet::2333,server,nowait -serial stdio -nographic
+    -monitor telnet::2333,server,nowait -serial stdio -nographic \
+    # -S -gdb tcp::1234
 fi
 
 # qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
