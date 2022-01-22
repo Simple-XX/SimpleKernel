@@ -6,7 +6,6 @@
 
 #include "common.h"
 #include "stdio.h"
-#include "iostream"
 #include "assert.h"
 #include "pmm.h"
 #include "kernel.h"

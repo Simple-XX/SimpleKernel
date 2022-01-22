@@ -5,7 +5,6 @@
 // new.cpp for Simple-XX/SimpleKernel.
 
 #include "new"
-#include "stdlib.h"
 
 // TODO
 void *operator new(size_t) {
