@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="src" pattern="file[SimpleKernel]:src//*&amp;&amp;!file:src/arch/riscv64/boot/boot.S&amp;&amp;!file:src/arch/aarch64/boot/boot.S&amp;&amp;!file:src/arch/ia32/i386/boot/boot.S&amp;&amp;!file:src/arch/ia32/x86_64/boot/boot.S" />
+  <scope name="src" pattern="file[SimpleKernel]:src//*" />
 </component>
