@@ -15,8 +15,6 @@
  * </table>
  */
 
-#include "stddef.h"
-#include "string.h"
 #include "stdio.h"
 #include "iostream"
 
