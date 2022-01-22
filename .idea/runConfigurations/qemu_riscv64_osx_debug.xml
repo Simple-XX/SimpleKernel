@@ -1,9 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="qemu_riscv64_osx_debug" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$ProjectFileDir$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SimpleKernel" TARGET_NAME="kernel.elf" CONFIG_NAME="riscv64_osx" RUN_TARGET_PROJECT_NAME="SimpleKernel" RUN_TARGET_NAME="kernel.elf">
+  <configuration default="false" name="qemu_riscv64_osx_debug" type="CLion_Remote" singleton="false" version="1" remoteCommand="tcp::1234" symbolFile="$PROJECT_DIR$/build_riscv64/bin/kernel.elf" sysroot="$PROJECT_DIR$">
+    <debugger toolchainName="riscv64" />
     <method v="2">
-      <option name="CMake.Explicit.Target" explicitTargetName="clean" />
-      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_SimpleKernel Tools_qemu-osx-riscv64-debug" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="setup riscv64 gdbinit" run_configuration_type="ShConfigurationType" />
     </method>
   </configuration>
 </component>
