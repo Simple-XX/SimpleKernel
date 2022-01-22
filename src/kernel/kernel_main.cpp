@@ -16,7 +16,6 @@
 
 #include "common.h"
 #include "stdio.h"
-#include "stdlib.h"
 #include "iostream"
 #include "assert.h"
 #include "boot_info.h"
