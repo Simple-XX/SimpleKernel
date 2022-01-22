@@ -77,5 +77,6 @@ elif [ ${ARCH} == "aarch64" ]; then
     -monitor telnet::2333,server,nowait -serial stdio -nographic
 elif [ ${ARCH} == "riscv64" ]; then
     qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
-    -monitor telnet::2333,server,nowait -serial stdio -nographic
+    -monitor telnet::2333,server,nowait -serial stdio -nographic \
+    # -S -gdb tcp::1234
 fi
