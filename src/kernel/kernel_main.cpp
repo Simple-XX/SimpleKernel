@@ -64,17 +64,7 @@ void kernel_main_smp(void) {
     /// @note 在 tmp_SCHEDULER::init() 执行完后才能正常处理中断
     tmp_SCHEDULER::get_instance().init_other_core();
     // 时钟中断初始化
-    // while (1)
-    // ;
     TIMER::get_instance().init_other_core();
-    return;
-}
-
-static void tttt(void) {
-    while (1) {
-        ;
-    }
-    assert(0);
     return;
 }
 
@@ -122,12 +112,10 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
         kernel_main_smp();
     }
 
-    // task_t *ttt_task=new task_t("ttt ",tttt);
-    // tmp_SCHEDULER::get_instance().add_task(ttt_task);
     // 允许中断
     CPU::ENABLE_INTR();
 
-    // test_sched();
+     test_sched();
     // 开始调度
     while (1) {
         tmp_SCHEDULER::get_instance().sched();

@@ -229,7 +229,7 @@ int test_sched(void) {
     }
 
     while (1) {
-        if (taskxx_cond_(0)) {
+        if (taskxx_cond_all) {
             break;
         }
         tmp_SCHEDULER::get_instance().sched();
