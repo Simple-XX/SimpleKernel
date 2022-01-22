@@ -5,7 +5,6 @@
 // new.cpp for Simple-XX/SimpleKernel.
 
 #include "new"
-#include "stdlib.h"
 
 void *operator new(size_t _size) {
     return malloc(_size);
