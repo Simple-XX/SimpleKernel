@@ -33,9 +33,6 @@
 #include "core.h"
 #include "spinlock.h"
 
-/// @todo gdb 调试
-/// @todo clion 环境
-
 /**
  * @brief 启动所有 core
  */
