@@ -22,7 +22,6 @@
 #include "intr.h"
 #include "apic.h"
 #include "keyboard.h"
-#include "vmm.h"
 
 // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
 // ISR:中断服务程序(interrupt service routine)
