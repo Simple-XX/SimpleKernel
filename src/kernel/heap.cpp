@@ -26,23 +26,39 @@ HEAP &HEAP::get_instance(void) {
 }
 
 bool HEAP::init(void) {
-    static SLAB slab_allocator(
+    static SLAB slab_allocator_kernel(
+        "SLAB Allocator Kernel", PMM::get_instance().get_kernel_space_start(),
+        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE);
+    allocator_kernel = (ALLOCATOR *)&slab_allocator_kernel;
+    static SLAB slab_allocator_non_kernel(
         "SLAB Allocator", PMM::get_instance().get_non_kernel_space_start(),
         PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE);
-    allocator = (ALLOCATOR *)&slab_allocator;
+    allocator_non_kernel = (ALLOCATOR *)&slab_allocator_non_kernel;
     info("heap init.\n");
     return 0;
 }
 
+void *HEAP::kmalloc(size_t _byte) {
+    void *ret = nullptr;
+    ret       = (void *)allocator_kernel->alloc(_byte);
+    return ret;
+}
+
+void HEAP::kfree(void *_addr) {
+    // 堆不需要 _len 参数
+    allocator_kernel->free((uintptr_t)_addr, 0);
+    return;
+}
+
 void *HEAP::malloc(size_t _byte) {
     void *ret = nullptr;
-    ret       = (void *)allocator->alloc(_byte);
+    ret       = (void *)allocator_non_kernel->alloc(_byte);
     return ret;
 }
 
 void HEAP::free(void *_addr) {
     // 堆不需要 _len 参数
-    allocator->free((uintptr_t)_addr, 0);
+    allocator_non_kernel->free((uintptr_t)_addr, 0);
     return;
 }
 
