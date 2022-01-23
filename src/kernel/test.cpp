@@ -87,6 +87,10 @@ int32_t test_pmm(void) {
     return 0;
 }
 
+/// @note riscv 内核模式下无法测试 VMM_PAGE_USER，默认状态下 S/U
+/// 模式的页无法互相访问
+/// @see
+/// https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation
 int32_t test_vmm(void) {
     uintptr_t addr = 0;
     // 首先确认内核空间被映射了
