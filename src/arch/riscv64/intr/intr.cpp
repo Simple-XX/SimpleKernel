@@ -28,7 +28,7 @@
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, uintptr_t _sp,
-                             uintptr_t _sstatus, uintptr_t *_context) {
+                             uintptr_t _sstatus, CPU::context_t *_context) {
 
     // 消除 unused 警告
     (void)_sepc;
