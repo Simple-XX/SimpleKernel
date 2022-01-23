@@ -23,7 +23,7 @@
 .extern trap_handler
 .align 4
 trap_entry:
-    addi sp, sp, -CALLEE_SIZE
+    addi sp, sp, -CALLER_SIZE
     context_save sp
 
     // 调用 intr.cpp: trap_handler
@@ -37,7 +37,7 @@ trap_entry:
     jal trap_handler
 
     context_load sp
-    addi sp, sp, CALLEE_SIZE
+    addi sp, sp, CALLER_SIZE
 
     // 跳转到 sepc 处执行
     sret
