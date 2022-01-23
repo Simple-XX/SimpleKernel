@@ -29,7 +29,7 @@ bool HEAP::init(void) {
     // 内核空间
     static SLAB slab_allocator_kernel(
         "SLAB Allocator Kernel", PMM::get_instance().get_kernel_space_start(),
-        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE,
+        PMM::get_instance().get_kernel_space_length() * COMMON::PAGE_SIZE,
         true);
     allocator_kernel = (ALLOCATOR *)&slab_allocator_kernel;
     // 非内核空间
