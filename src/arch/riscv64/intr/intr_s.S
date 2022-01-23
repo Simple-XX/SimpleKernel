@@ -23,6 +23,7 @@
 .extern trap_handler
 .align 4
 trap_entry:
+    // 保存到栈上的特殊处理，预留空间
     addi sp, sp, -CALLER_SIZE
     context_save sp
 
@@ -36,6 +37,7 @@ trap_entry:
     csrr a5, sscratch
     jal trap_handler
 
+    // 保存到栈上的特殊处理，回收空间
     context_load sp
     addi sp, sp, CALLER_SIZE
 
