@@ -103,7 +103,13 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         pages += 1;
     }
     // 申请
-    chunk_t *new_node = (chunk_t *)PMM::get_instance().alloc_pages(pages);
+    chunk_t *new_node = nullptr;
+    if (is_kernel_space == true) {
+        new_node = (chunk_t *)PMM::get_instance().alloc_pages_kernel(pages);
+    }
+    else {
+        new_node = (chunk_t *)PMM::get_instance().alloc_pages(pages);
+    }
     // 如果没有映射则进行映射
     uintptr_t tmp = 0;
     for (size_t i = 0; i < pages; i++) {
@@ -319,11 +325,12 @@ size_t SLAB::get_idx(size_t _len) const {
     return res;
 }
 
-SLAB::SLAB(const char *_name, uintptr_t _addr, size_t _len)
-    : ALLOCATOR(_name, _addr, _len) {
+SLAB::SLAB(const char *_name, uintptr_t _addr, size_t _len, bool _is_kernel)
+    : ALLOCATOR(_name, _addr, _len), is_kernel_space(_is_kernel) {
     // 初始化 slab_cache
     for (size_t i = LEN256; i < LEN65536; i++) {
-        slab_cache[i].len = MIN << i;
+        slab_cache[i].len             = MIN << i;
+        slab_cache[i].is_kernel_space = _is_kernel;
     }
     info("%s: 0x%p(0x%p bytes) init.\n", name, allocator_start_addr,
          allocator_length);
