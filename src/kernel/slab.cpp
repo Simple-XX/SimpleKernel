@@ -117,9 +117,17 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
         tmp = (uintptr_t)((uint8_t *)new_node + i * COMMON::PAGE_SIZE);
         if (VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), tmp,
                                          0) == false) {
-            VMM::get_instance().mmap(VMM::get_instance().get_pgd(),
-                                     (uintptr_t)new_node, (uintptr_t)new_node,
-                                     VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+            if (is_kernel_space == true) {
+                VMM::get_instance().mmap(
+                    VMM::get_instance().get_pgd(), (uintptr_t)new_node,
+                    (uintptr_t)new_node, VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+            }
+            else {
+                VMM::get_instance().mmap(
+                    VMM::get_instance().get_pgd(), (uintptr_t)new_node,
+                    (uintptr_t)new_node,
+                    VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_USER);
+            }
         }
         // 已经映射的情况是不应该出现的
         else {
