@@ -165,30 +165,27 @@ int test_heap(void) {
     addr1 = kmalloc(0x10001);
     // 应该返回 nullptr
     assert(addr1 == nullptr);
-    info("addr1: 0x%X\n", addr1);
     // 申请小块内存
     addr2 = kmalloc(0x1);
-    info("addr2: 0x%X\n", addr2);
-    info("addr2============-\n");
-    //    assert(addr2 != nullptr);
-    //    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
-    //    assert(((uintptr_t)((uint8_t *)addr2 - chunk_size) & 0xFFF) == 0x0);
-    //    // 在 LEN512 申请新的内存
-    //    addr3 = malloc(0x200);
-    //    assert(addr3 != nullptr);
-    //    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
-    //    assert(((uintptr_t)((uint8_t *)addr3 - chunk_size) & 0xFFF) == 0x0);
-    //    // 加上 chunk 大小长度刚好是 LEN256
-    //    addr4 = malloc(0x80);
-    //    assert(addr4 != nullptr);
-    //    // LEN256 区域第二块被申请的内存，地址可以计算出来
-    //    // 前一个块的地址+chunk 长度+数据长度+对齐长度
-    //    assert(addr4 == (uint8_t *)addr2 + chunk_size + 0x1 + 0x7);
-    //    // 全部释放
-    //    free(addr1);
-    //    free(addr2);
-    //    free(addr3);
-    //    free(addr4);
+    assert(addr2 != nullptr);
+    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
+    assert(((uintptr_t)((uint8_t *)addr2 - chunk_size) & 0xFFF) == 0x0);
+    // 在 LEN512 申请新的内存
+    addr3 = kmalloc(0x200);
+    assert(addr3 != nullptr);
+    // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
+    assert(((uintptr_t)((uint8_t *)addr3 - chunk_size) & 0xFFF) == 0x0);
+    // 加上 chunk 大小长度刚好是 LEN256
+    addr4 = kmalloc(0x80);
+    assert(addr4 != nullptr);
+    // LEN256 区域第二块被申请的内存，地址可以计算出来
+    // 前一个块的地址+chunk 长度+数据长度+对齐长度
+    assert(addr4 == (uint8_t *)addr2 + chunk_size + 0x1 + 0x7);
+    // 全部释放
+    kfree(addr1);
+    kfree(addr2);
+    kfree(addr3);
+    kfree(addr4);
     info("heap test done.\n");
     return 0;
 }
