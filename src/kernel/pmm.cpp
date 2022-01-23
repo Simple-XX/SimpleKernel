@@ -99,6 +99,14 @@ size_t PMM::get_pmm_length(void) const {
     return length;
 }
 
+uintptr_t PMM::get_kernel_space_start(void) const {
+    return kernel_space_start;
+}
+
+size_t PMM::get_kernel_space_length(void) const {
+    return kernel_space_length;
+}
+
 uintptr_t PMM::get_non_kernel_space_start(void) const {
     return non_kernel_space_start;
 }
