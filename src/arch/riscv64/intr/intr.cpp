@@ -113,7 +113,7 @@ INTR &INTR::get_instance(void) {
 
 int32_t INTR::init(void) {
     // 初始化中断上下文，主要是为 sscratch 中保存的上下文分配空间
-    uintptr_t sscratch_addr = (uintptr_t)malloc(sizeof(CPU::context_t));
+    uintptr_t sscratch_addr = (uintptr_t)kmalloc(sizeof(CPU::context_t));
     CPU::WRITE_SSCRATCH(sscratch_addr);
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
