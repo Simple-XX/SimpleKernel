@@ -25,15 +25,21 @@
  * @param  _sepc           值
  * @param  _stval          值
  */
-extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
-                             uint64_t _stval) {
+extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
+                             uintptr_t _scause, uintptr_t _sp,
+                             uintptr_t _sstatus, uintptr_t *_context) {
 
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
+    (void)_scause;
+    (void)_sp;
+    (void)_sstatus;
+    (void)_context;
 #define DEBUG
 #ifdef DEBUG
-    info("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc, _stval);
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
+         _sepc, _stval, _scause, _sp, _sstatus);
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {

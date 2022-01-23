@@ -64,9 +64,12 @@ trap_entry:
 
     // Invoke the handler.
     // intr.cpp
-    csrr a0, scause
-    csrr a1, sepc
-    csrr a2, stval
+    csrr a0, sepc
+    csrr a1, stval
+    csrr a2, scause
+    mv   a3, sp
+    csrr a4, sstatus
+    csrr a5, sscratch
     jal trap_handler
 
     // Restore registers.
