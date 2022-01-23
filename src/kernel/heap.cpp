@@ -28,11 +28,13 @@ HEAP &HEAP::get_instance(void) {
 bool HEAP::init(void) {
     static SLAB slab_allocator_kernel(
         "SLAB Allocator Kernel", PMM::get_instance().get_kernel_space_start(),
-        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE);
-    allocator_kernel = (ALLOCATOR *)&slab_allocator_kernel;
+        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE,
+        true);
     static SLAB slab_allocator_non_kernel(
         "SLAB Allocator", PMM::get_instance().get_non_kernel_space_start(),
-        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE);
+        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE,
+        false);
+    allocator_kernel     = (ALLOCATOR *)&slab_allocator_kernel;
     allocator_non_kernel = (ALLOCATOR *)&slab_allocator_non_kernel;
     info("heap init.\n");
     return 0;
