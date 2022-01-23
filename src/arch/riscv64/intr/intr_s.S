@@ -16,6 +16,7 @@
 
 #include "context_switch.S"
 
+.section .text
 // 保存所有寄存器
 .globl trap_entry
 .extern trap_handler
@@ -23,7 +24,7 @@
 trap_entry:
     csrr t0, sscratch
     context_save t0
-    
+
     // 调用 intr.cpp: trap_handler
     // 传递参数
     csrr a0, sepc

@@ -369,26 +369,6 @@ static inline void VMM_FLUSH(uintptr_t) {
 }
 
 /**
- * @brief 设置当前 core id
- * @param  _hartid          要设置的值
- * @todo 不使用 tp
- */
-static inline void set_curr_core_id(size_t _hartid) {
-    CPU::WRITE_TP(_hartid);
-    return;
-}
-
-/**
- * @brief 获取当前 core id
- * @return size_t           hartid
- * @note hartid 和 core id 是一回事
- * @todo 不使用 tp
- */
-static inline size_t get_curr_core_id(void) {
-    return CPU::READ_TP();
-}
-
-/**
  * @brief 通用寄存器
  */
 struct xregs_t {
@@ -584,6 +564,27 @@ struct context_t {
         return _os;
     }
 };
+
+/**
+ * @brief 设置当前 core id
+ * @param  _hartid          要设置的值
+ * @todo 不使用 tp
+ */
+static inline void set_curr_core_id(size_t _hartid) {
+    CPU::WRITE_TP(_hartid);
+    return;
+}
+
+/**
+ * @brief 获取当前 core id
+ * @return size_t           hartid
+ * @note hartid 和 core id 是一回事
+ * @todo 不使用 tp
+ */
+static inline size_t get_curr_core_id(void) {
+    return CPU::READ_TP();
+}
+
 }; // namespace CPU
 
 #endif /* _CPU_HPP_ */

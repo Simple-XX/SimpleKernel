@@ -20,6 +20,7 @@
 #include "vmm.h"
 #include "task.h"
 #include "core.h"
+#include "memory"
 
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
 
@@ -132,6 +133,9 @@ INTR &INTR::get_instance(void) {
 int32_t INTR::init(void) {
     // 初始化锁
     spinlock.init("INTR");
+    // 初始化中断上下文，主要是为 sscratch 中保存的上下文分配空间
+    uintptr_t sscratch_addr = (uintptr_t)malloc(sizeof(CPU::context_t));
+    CPU::WRITE_SSCRATCH(sscratch_addr);
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
@@ -156,6 +160,9 @@ int32_t INTR::init(void) {
 }
 
 int32_t INTR::init_other_core(void) {
+    // 初始化中断上下文，主要是为 sscratch 中保存的上下文分配空间
+    uintptr_t sscratch_addr = (uintptr_t)malloc(sizeof(CPU::context_t));
+    CPU::WRITE_SSCRATCH(sscratch_addr);
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
