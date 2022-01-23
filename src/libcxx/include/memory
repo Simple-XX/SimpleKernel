@@ -54,7 +54,7 @@ namespace mystl {
 
     template <class T>
     void release_temporary_buffer(T *ptr) {
-        free(ptr);
+        kfree(ptr);
     }
 
     // --------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace mystl {
 
         ~temporary_buffer() {
             mystl::destroy(buffer, buffer + len);
-            free(buffer);
+            kfree(buffer);
         }
 
     public:
@@ -115,7 +115,7 @@ namespace mystl {
                                   std::is_trivially_default_constructible<T>());
             }
         } catch (...) {
-            free(buffer);
+            kfree(buffer);
             buffer = nullptr;
             len    = 0;
         }
