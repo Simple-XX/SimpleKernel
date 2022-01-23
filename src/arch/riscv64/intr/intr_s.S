@@ -23,8 +23,8 @@
 .extern trap_handler
 .align 4
 trap_entry:
-    csrr t0, sscratch
-    context_save t0
+    addi sp, sp, -CALLEE_SIZE
+    context_save sp
 
     // 调用 intr.cpp: trap_handler
     // 传递参数
@@ -36,7 +36,8 @@ trap_entry:
     csrr a5, sscratch
     jal trap_handler
 
-    csrr t0, sscratch
-    context_load t0
+    context_load sp
+    addi sp, sp, CALLEE_SIZE
+
     // 跳转到 sepc 处执行
     sret
