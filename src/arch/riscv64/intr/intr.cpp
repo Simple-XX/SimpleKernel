@@ -18,6 +18,7 @@
 #include "stdio.h"
 #include "intr.h"
 #include "vmm.h"
+#include "memory"
 
 /**
  * @brief 中断处理函数
@@ -111,6 +112,9 @@ INTR &INTR::get_instance(void) {
 }
 
 int32_t INTR::init(void) {
+    // 初始化中断上下文，主要是为 sscratch 中保存的上下文分配空间
+    uintptr_t sscratch_addr = (uintptr_t)malloc(sizeof(CPU::context_t));
+    CPU::WRITE_SSCRATCH(sscratch_addr);
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
