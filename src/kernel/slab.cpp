@@ -115,7 +115,6 @@ SLAB::chunk_t *SLAB::slab_cache_t::alloc_pmm(size_t _len) {
     for (size_t i = 0; i < pages; i++) {
         // 地址=初始地址+页数偏移
         tmp = (uintptr_t)((uint8_t *)new_node + i * COMMON::PAGE_SIZE);
-        info("tmp: 0x%X\n", tmp);
         if ((VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), tmp,
                                           0) == false) ||
             (is_kernel_space)) {
