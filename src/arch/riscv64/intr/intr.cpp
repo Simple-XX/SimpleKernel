@@ -18,7 +18,6 @@
 #include "stdio.h"
 #include "intr.h"
 #include "vmm.h"
-#include "memory"
 
 /**
  * @brief 中断处理函数
@@ -28,15 +27,15 @@
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, uintptr_t _sp,
-                             uintptr_t _sstatus, CPU::context_t *_context) {
-
+                             uintptr_t _sstatus, uintptr_t *_sscratch) {
+    CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
     (void)_scause;
     (void)_sp;
     (void)_sstatus;
-    (void)_context;
+    (void)_sscratch;
 #define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
@@ -112,9 +111,6 @@ INTR &INTR::get_instance(void) {
 }
 
 int32_t INTR::init(void) {
-    // 初始化中断上下文，主要是为 sscratch 中保存的上下文分配空间
-    uintptr_t sscratch_addr = (uintptr_t)kmalloc(sizeof(CPU::context_t));
-    CPU::WRITE_SSCRATCH(sscratch_addr);
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
