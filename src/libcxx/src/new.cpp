@@ -18,27 +18,27 @@
 #include "stdlib.h"
 
 void *operator new(size_t _size) {
-    return malloc(_size);
+    return kmalloc(_size);
 }
 
 void *operator new[](size_t _size) {
-    return malloc(_size);
+    return kmalloc(_size);
 }
 
 void operator delete(void *_p) {
-    free(_p);
+    kfree(_p);
 }
 
 void operator delete(void *_p, size_t) {
-    free(_p);
+    kfree(_p);
 }
 
 void operator delete[](void *_p) {
-    free(_p);
+    kfree(_p);
 }
 
 void operator delete[](void *_p, size_t) {
-    free(_p);
+    kfree(_p);
 }
 
 void *operator new(size_t, void *_p) throw() {
@@ -59,28 +59,28 @@ void operator delete[](void *, void *) throw() {
 
 // TODO
 void *operator new(size_t _size, std::align_val_t) {
-    return malloc(_size);
+    return kmalloc(_size);
 }
 
 void operator delete(void *_p, std::align_val_t) {
-    free(_p);
+    kfree(_p);
     return;
 }
 
 void *operator new[](size_t _size, std::align_val_t) {
-    return malloc(_size);
+    return kmalloc(_size);
 }
 
 void operator delete[](void *_p, std::align_val_t) {
-    free(_p);
+    kfree(_p);
     return;
 }
 
 void operator delete(void *_p, size_t, std::align_val_t) {
-    free(_p);
+    kfree(_p);
     return;
 }
 void operator delete[](void *_p, size_t, std::align_val_t) {
-    free(_p);
+    kfree(_p);
     return;
 }
