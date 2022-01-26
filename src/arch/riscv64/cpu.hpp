@@ -579,13 +579,13 @@ struct callee_regs_t {
  */
 struct context_t {
     uintptr_t            ra;
+    uintptr_t            tp;
     CPU::caller_regs_t   caller_regs;
     uintptr_t            satp;
     uintptr_t            sepc;
     uintptr_t            sstatus;
     uintptr_t            sie;
     uintptr_t            sip;
-    uintptr_t            tp;
     uintptr_t            sscratch;
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const context_t &_context) {
