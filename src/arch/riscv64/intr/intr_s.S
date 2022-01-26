@@ -23,9 +23,8 @@
 .extern trap_handler
 .align 4
 trap_entry:
-    // 保存到栈上的特殊处理，预留空间
-    addi sp, sp, -CALLER_SIZE
-    context_save sp
+    csrr t6, sscratch
+    context_save t6
 
     // 调用 intr.cpp: trap_handler
     // 传递参数
@@ -37,9 +36,9 @@ trap_entry:
     csrr a5, sscratch
     jal trap_handler
 
-    // 保存到栈上的特殊处理，回收空间
-    context_load sp
-    addi sp, sp, CALLER_SIZE
+    // 读取 sscratch 到 t6 中
+    csrr t6, sscratch
+    context_load t6
 
     // 跳转到 sepc 处执行
     sret
