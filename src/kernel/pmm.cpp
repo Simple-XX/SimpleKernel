@@ -73,7 +73,6 @@ bool PMM::init(void) {
         "First Fit Allocator(kernel space)", kernel_space_start,
         kernel_space_length / COMMON::PAGE_SIZE);
     kernel_space_allocator = (ALLOCATOR *)&first_fit_allocator_kernel;
-
     // 非内核空间
     static FIRSTFIT first_fit_allocator(
         "First Fit Allocator", non_kernel_space_start,
@@ -88,17 +87,26 @@ bool PMM::init(void) {
     // 将内核已使用部分划分出来
     if (alloc_pages_kernel(COMMON::KERNEL_START_ADDR, kernel_pages) == true) {
         // 将 multiboot2/dtb 信息移动到内核空间
-        get_instance().move_boot_info();
+        move_boot_info();
         info("pmm init.\n");
         return true;
     }
     else {
+        assert(0);
         return false;
     }
 }
 
 size_t PMM::get_pmm_length(void) const {
     return length;
+}
+
+uintptr_t PMM::get_kernel_space_start(void) const {
+    return kernel_space_start;
+}
+
+size_t PMM::get_kernel_space_length(void) const {
+    return kernel_space_length;
 }
 
 uintptr_t PMM::get_non_kernel_space_start(void) const {

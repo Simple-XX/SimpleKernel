@@ -28,10 +28,11 @@
  */
 class HEAP {
 private:
-    // 堆分配器
-    ALLOCATOR *allocator;
     /// 自旋锁
     spinlock_t spinlock;
+    // 堆分配器
+    ALLOCATOR *allocator_kernel;
+    ALLOCATOR *allocator_non_kernel;
 
 protected:
 public:
@@ -47,6 +48,19 @@ public:
      * @return false           失败
      */
     bool init(void);
+
+    /**
+     * @brief 内核地址内存申请
+     * @param  _byte           要申请的 bytes
+     * @return void*           申请到的地址
+     */
+    void *kmalloc(size_t _byte);
+
+    /**
+     * @brief 内核地址内存释放
+     * @param  _p              要释放的内存地址
+     */
+    void kfree(void *_p);
 
     /**
      * @brief 内存申请

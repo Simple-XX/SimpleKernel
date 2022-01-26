@@ -13,6 +13,7 @@
 #include "task.h"
 #include "smp_task.h"
 #include "kernel.h"
+#include "stdlib.h"
 
 int32_t test_pmm(void) {
     // 保存现有 pmm 空闲页数量
@@ -60,10 +61,40 @@ int32_t test_pmm(void) {
     PMM::get_instance().free_pages(addr4, 100);
     // 现在内存使用情况应该与此函数开始时相同
     assert(PMM::get_instance().get_free_pages_count() == free_pages);
+    // 下面测试内核空间物理内存分配
+    // 已使用页数应该等于内核使用页数
+    assert(used_pages == kernel_pages);
+    // 分配
+    addr1 = PMM::get_instance().alloc_pages_kernel(2);
+    // 已使用应该会更新
+    assert(PMM::get_instance().get_used_pages_count() == 2 + kernel_pages);
+    // 同上
+    addr2 = PMM::get_instance().alloc_pages_kernel(3);
+    assert(PMM::get_instance().get_used_pages_count() == 5 + kernel_pages);
+    // 同上
+    addr3 = PMM::get_instance().alloc_pages_kernel(100);
+    assert(PMM::get_instance().get_used_pages_count() == 105 + kernel_pages);
+    // 同上
+    addr4 = PMM::get_instance().alloc_pages_kernel(100);
+    assert(PMM::get_instance().get_used_pages_count() == 205 + kernel_pages);
+    // 分配超过限度的内存，应该返回 nullptr
+    addr5 = PMM::get_instance().alloc_pages_kernel(0xFFFFFFFF);
+    assert(addr5 == 0);
+    // 全部释放
+    PMM::get_instance().free_pages(addr1, 2);
+    PMM::get_instance().free_pages(addr2, 3);
+    PMM::get_instance().free_pages(addr3, 100);
+    PMM::get_instance().free_pages(addr4, 100);
+    // 现在内存使用情况应该与此函数开始时相同
+    assert(PMM::get_instance().get_free_pages_count() == free_pages);
     info("pmm test done.\n");
     return 0;
 }
 
+/// @note riscv 内核模式下无法测试 VMM_PAGE_USER，默认状态下 S/U
+/// 模式的页无法互相访问
+/// @see
+/// https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation
 int32_t test_vmm(void) {
     uintptr_t addr = 0;
     // 首先确认内核空间被映射了
@@ -133,30 +164,31 @@ int test_heap(void) {
     void *addr3 = nullptr;
     void *addr4 = nullptr;
     // 申请超过最大允许的内存 65536B
-    addr1 = malloc(0x10001);
+    addr1 = kmalloc(0x10001);
     // 应该返回 nullptr
     assert(addr1 == nullptr);
     // 申请小块内存
-    addr2 = malloc(0x1);
+    addr2 = kmalloc(0x1);
     assert(addr2 != nullptr);
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
     assert(((uintptr_t)((uint8_t *)addr2 - chunk_size) & 0xFFF) == 0x0);
     // 在 LEN512 申请新的内存
-    addr3 = malloc(0x200);
+    addr3 = kmalloc(0x200);
     assert(addr3 != nullptr);
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
     assert(((uintptr_t)((uint8_t *)addr3 - chunk_size) & 0xFFF) == 0x0);
     // 加上 chunk 大小长度刚好是 LEN256
-    addr4 = malloc(0x80);
+    addr4 = kmalloc(0x80);
     assert(addr4 != nullptr);
     // LEN256 区域第二块被申请的内存，地址可以计算出来
     // 前一个块的地址+chunk 长度+数据长度+对齐长度
     assert(addr4 == (uint8_t *)addr2 + chunk_size + 0x1 + 0x7);
+    /// @bug 这里释放会同时 unmmap，导致后面的分支出现 pg
     // 全部释放
-    free(addr1);
-    free(addr2);
-    free(addr3);
-    free(addr4);
+    //    kfree(addr1);
+    //    kfree(addr2);
+    //    kfree(addr3);
+    //    kfree(addr4);
     info("heap test done.\n");
     return 0;
 }
