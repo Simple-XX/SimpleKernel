@@ -18,6 +18,7 @@
 #include "stdio.h"
 #include "intr.h"
 #include "vmm.h"
+#include "memory"
 
 /**
  * @brief 中断处理函数
@@ -111,6 +112,11 @@ INTR &INTR::get_instance(void) {
 }
 
 int32_t INTR::init(void) {
+    // 创建用于保存上下文的空间
+    CPU::caller_regs_t *caller_regs =
+        (CPU::caller_regs_t *)kmalloc(sizeof(CPU::caller_regs_t));
+    // 将地址保存在 sscratch 寄存器中
+    CPU::WRITE_SSCRATCH(reinterpret_cast<uint64_t>(caller_regs));
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
