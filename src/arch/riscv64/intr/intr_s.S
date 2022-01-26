@@ -18,13 +18,13 @@
 
 .section .text
 // 保存所有寄存器
-.extern irq_handler
 .globl trap_entry
 .extern trap_handler
 .align 4
 trap_entry:
-    csrr t6, sscratch
-    context_save t6
+    // 读取 sscratch 到 t0 中
+    csrr t0, sscratch
+    context_save t0
 
     // 调用 intr.cpp: trap_handler
     // 传递参数
@@ -36,9 +36,9 @@ trap_entry:
     csrr a5, sscratch
     jal trap_handler
 
-    // 读取 sscratch 到 t6 中
-    csrr t6, sscratch
-    context_load t6
+    // 读取 sscratch 到 t0 中
+    csrr t0, sscratch
+    context_load t0
 
     // 跳转到 sepc 处执行
     sret
