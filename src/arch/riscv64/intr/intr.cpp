@@ -44,6 +44,7 @@ static void switch_sched(void) {
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, uintptr_t _sp,
                              uintptr_t _sstatus, CPU::context_t *_context) {
+    //    CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -76,7 +77,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     else {
 // 异常
 // 跳转到对应的处理函数
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
         warn("excp: %s.\n", INTR::get_instance().get_excp_name(
                                 _scause & CPU::CAUSE_CODE_MASK));
@@ -131,8 +132,11 @@ INTR &INTR::get_instance(void) {
 }
 
 int32_t INTR::init(void) {
-    // 初始化锁
-    spinlock.init("INTR");
+    //    // 创建用于保存上下文的空间
+    //    CPU::context_t *context = (CPU::context_t
+    //    *)kmalloc(sizeof(CPU::context_t));
+    //    // 将地址保存在 sscratch 寄存器中
+    //    CPU::WRITE_SSCRATCH(reinterpret_cast<uint64_t>(context));
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数

@@ -75,13 +75,14 @@ static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
 /// 映射内核空间需要的页数
 static constexpr const uint64_t KERNEL_SPACE_PAGES =
     KERNEL_SPACE_SIZE / PAGE_SIZE;
-/// core 数量
-static constexpr const uintptr_t CORES_COUNT = 4;
 /// 栈大小
 static constexpr const uintptr_t STACK_SIZE = 4 * KB;
 
 /// 页掩码
 static constexpr const uintptr_t PAGE_MASK = ~(PAGE_SIZE - 1);
+
+/// core 数量
+static constexpr const uintptr_t CORES_COUNT = 4;
 
 /// 启动 hart id
 static constexpr const size_t BOOT_HART_ID = 0;

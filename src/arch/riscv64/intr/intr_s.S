@@ -22,6 +22,7 @@
 .extern trap_handler
 .align 4
 trap_entry:
+    // 读取 sscratch 到 t0 中
     csrr t0, sscratch
     context_save t0
 
@@ -35,7 +36,9 @@ trap_entry:
     csrr a5, sscratch
     jal trap_handler
 
+    // 读取 sscratch 到 t0 中
     csrr t0, sscratch
     context_load t0
+
     // 跳转到 sepc 处执行
     sret

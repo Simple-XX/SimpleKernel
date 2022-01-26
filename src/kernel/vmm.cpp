@@ -146,7 +146,7 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
         // pte 解引用后的值是页表项
         *pte = PA2PTE(_pa) | _flag | VMM_PAGE_VALID;
         // 刷新缓存
-        CPU::VMM_FLUSH((uintptr_t)_va);
+        CPU::VMM_FLUSH(0);
     }
     spinlock.unlock();
     return;
@@ -168,7 +168,7 @@ void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
     // 置零
     *pte = 0x00;
     // 刷新缓存
-    CPU::VMM_FLUSH((uintptr_t)_va);
+    CPU::VMM_FLUSH(0);
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
     spinlock.unlock();
     return;

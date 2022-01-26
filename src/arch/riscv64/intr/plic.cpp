@@ -60,7 +60,7 @@ int32_t PLIC::init(void) {
     PLIC_PRIORITY       = base_addr + 0x0;
     PLIC_PENDING        = base_addr + 0x1000;
     for (uintptr_t a = resource.mem.addr;
-         a < resource.mem.addr + resource.mem.len; a += 0x1000) {
+         a < resource.mem.addr + resource.mem.len; a += COMMON::PAGE_SIZE) {
         VMM::get_instance().mmap(VMM::get_instance().get_pgd(), a, a,
                                  VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }

@@ -34,7 +34,7 @@ int32_t CLINT::init(void) {
     // 映射 clint 地址
     resource_t resource = BOOT_INFO::get_clint();
     for (uintptr_t a = resource.mem.addr;
-         a < resource.mem.addr + resource.mem.len; a += 0x1000) {
+         a < resource.mem.addr + resource.mem.len; a += COMMON::PAGE_SIZE) {
         VMM::get_instance().mmap(VMM::get_instance().get_pgd(), a, a,
                                  VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
