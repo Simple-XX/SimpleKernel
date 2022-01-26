@@ -182,10 +182,40 @@ fld \a, ((\b) * REG_BYTES)(\c)
 
 // 保存 context_t
 .macro context_save base
+    sd_base ra, 0, \base
+
+    addi \base, \base, REG_BYTES
     caller_regs_save \base
+
+    addi \base, \base, CALLER_SIZE
+    csrr t6, satp
+    sd_base t6, 0, \base
+
+    addi \base, \base, REG_BYTES
+    csrr t6, sepc
+    sd_base t6, 0, \base
+
+    addi \base, \base, REG_BYTES
+    csrr t6, sscratch
+    sd_base t6, 0, \base
 .endm
 
 // 恢复 context_t
 .macro context_load base
+    ld_base ra, 0, \base
+
+    addi \base, \base, REG_BYTES
     caller_regs_load \base
+
+    addi \base, \base, CALLER_SIZE
+    ld_base t6, 0, \base
+    csrw satp, t6
+
+    addi \base, \base, REG_BYTES
+    ld_base t6, 0, \base
+    csrw sepc, t6
+
+    addi \base, \base, REG_BYTES
+    ld_base t6, 0, \base
+    csrw sscratch, t6
 .endm
