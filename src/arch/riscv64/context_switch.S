@@ -185,6 +185,9 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base ra, 0, \base
 
     addi \base, \base, REG_BYTES
+    sd_base tp, 0, \base
+
+    addi \base, \base, REG_BYTES
     caller_regs_save \base
 
     addi \base, \base, CALLER_SIZE
@@ -208,9 +211,6 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base t6, 0, \base
 
     addi \base, \base, REG_BYTES
-    sd_base tp, 0, \base
-
-    addi \base, \base, REG_BYTES
     csrr t6, sscratch
     sd_base t6, 0, \base
 .endm
@@ -218,6 +218,9 @@ fld \a, ((\b) * REG_BYTES)(\c)
 // 恢复 context_t
 .macro context_load base
     ld_base ra, 0, \base
+
+    addi \base, \base, REG_BYTES
+    ld_base tp, 0, \base
 
     addi \base, \base, REG_BYTES
     caller_regs_load \base
@@ -241,9 +244,6 @@ fld \a, ((\b) * REG_BYTES)(\c)
     addi \base, \base, REG_BYTES
     ld_base t6, 0, \base
     csrw sip, t6
-
-    addi \base, \base, REG_BYTES
-    ld_base tp, 0, \base
 
     addi \base, \base, REG_BYTES
     ld_base t6, 0, \base
