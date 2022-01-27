@@ -185,9 +185,6 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base ra, 0, \base
 
     addi \base, \base, REG_BYTES
-    sd_base tp, 0, \base
-
-    addi \base, \base, REG_BYTES
     caller_regs_save \base
 
     addi \base, \base, CALLER_SIZE
@@ -218,9 +215,6 @@ fld \a, ((\b) * REG_BYTES)(\c)
 // 恢复 context_t
 .macro context_load base
     ld_base ra, 0, \base
-
-    addi \base, \base, REG_BYTES
-    ld_base tp, 0, \base
 
     addi \base, \base, REG_BYTES
     caller_regs_load \base
