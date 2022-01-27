@@ -579,7 +579,6 @@ struct callee_regs_t {
  */
 struct context_t {
     uintptr_t            ra;
-    uintptr_t            tp;
     CPU::caller_regs_t   caller_regs;
     uintptr_t            satp;
     uintptr_t            sepc;
@@ -596,7 +595,6 @@ struct context_t {
         printf("sstatus: 0x%p, ", _context.sstatus);
         printf("sie: 0x%p, ", _context.sie);
         printf("sip: 0x%p, ", _context.sip);
-        printf("tp: 0x%p, ", _context.tp);
         printf("sscratch: 0x%p", _context.sscratch);
         return _os;
     }
