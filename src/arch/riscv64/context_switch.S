@@ -196,6 +196,18 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base t6, 0, \base
 
     addi \base, \base, REG_BYTES
+    csrr t6, sstatus
+    sd_base t6, 0, \base
+
+    addi \base, \base, REG_BYTES
+    csrr t6, sie
+    sd_base t6, 0, \base
+
+    addi \base, \base, REG_BYTES
+    csrr t6, sip
+    sd_base t6, 0, \base
+
+    addi \base, \base, REG_BYTES
     csrr t6, sscratch
     sd_base t6, 0, \base
 .endm
@@ -214,6 +226,18 @@ fld \a, ((\b) * REG_BYTES)(\c)
     addi \base, \base, REG_BYTES
     ld_base t6, 0, \base
     csrw sepc, t6
+
+    addi \base, \base, REG_BYTES
+    ld_base t6, 0, \base
+    csrw sstatus, t6
+
+    addi \base, \base, REG_BYTES
+    ld_base t6, 0, \base
+    csrw sie, t6
+
+    addi \base, \base, REG_BYTES
+    ld_base t6, 0, \base
+    csrw sip, t6
 
     addi \base, \base, REG_BYTES
     ld_base t6, 0, \base

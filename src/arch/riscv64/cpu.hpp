@@ -591,24 +591,24 @@ struct context_t {
     uintptr_t ra;
     //    uintptr_t            tp;
     //    CPU::caller_regs_t   caller_regs;
-    CPU::callee_regs_t callee_regs;
-    uintptr_t          satp;
-    uintptr_t          sepc;
-    //    uintptr_t            sstatus;
-    //    uintptr_t            sie;
-    //    uintptr_t            sip;
+    CPU::callee_regs_t   callee_regs;
+    uintptr_t            satp;
+    uintptr_t            sepc;
+    uintptr_t            sstatus;
+    uintptr_t            sie;
+    uintptr_t            sip;
     uintptr_t            sscratch;
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const context_t &_context) {
         printf("ra: 0x%p\n", _context.ra);
         //        std::cout << _context.caller_regs << std::endl;
-        //        printf("satp: 0x%p, ", _context.satp);
-        //        printf("sepc: 0x%p, ", _context.sepc);
-        //        printf("sstatus: 0x%p, ", _context.sstatus);
-        //        printf("sie: 0x%p, ", _context.sie);
-        //        printf("sip: 0x%p, ", _context.sip);
+        printf("satp: 0x%p, ", _context.satp);
+        printf("sepc: 0x%p, ", _context.sepc);
+        printf("sstatus: 0x%p, ", _context.sstatus);
+        printf("sie: 0x%p, ", _context.sie);
+        printf("sip: 0x%p, ", _context.sip);
         //        printf("tp: 0x%p, ", _context.tp);
-        //        printf("sscratch: 0x%p", _context.sscratch);
+        printf("sscratch: 0x%p", _context.sscratch);
         return _os;
     }
 };
