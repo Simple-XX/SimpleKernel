@@ -24,10 +24,9 @@
 .globl context_init
 .align 4
 context_init:
-    sd_base ra, 0, a0
-
+    // 跳过保存 coreid 的 8bytes
     addi a0, a0, REG_BYTES
-    //sd_base tp, 0, a0
+    sd_base ra, 0, a0
 
     addi a0, a0, REG_BYTES
     callee_regs_save a0

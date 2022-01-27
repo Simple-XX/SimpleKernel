@@ -57,7 +57,7 @@ task_t *rr_scheduler_t::get_next_task(void) {
     if (task_queue.empty() == false) {
         ret = task_queue.front();
         // 任务上下文保存的 coreid 与调度的 cpu 一致
-        if (ret->context.tp == CPU::get_curr_core_id()) {
+        if (ret->context.coreid == CPU::get_curr_core_id()) {
             task_queue.pop();
         }
         else {

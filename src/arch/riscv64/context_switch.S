@@ -182,10 +182,9 @@ fld \a, ((\b) * REG_BYTES)(\c)
 
 // 保存 context_t
 .macro context_save base
-    sd_base ra, 0, \base
-
+    // 跳过保存 coreid 的 8bytes
     addi \base, \base, REG_BYTES
-    sd_base tp, 0, \base
+    sd_base ra, 0, \base
 
     addi \base, \base, REG_BYTES
     callee_regs_save \base
@@ -217,10 +216,9 @@ fld \a, ((\b) * REG_BYTES)(\c)
 
 // 恢复 context_t
 .macro context_load base
-    ld_base ra, 0, \base
-
+    // 跳过保存 coreid 的 8bytes
     addi \base, \base, REG_BYTES
-    //ld_base tp, 0, \base
+    ld_base ra, 0, \base
 
     addi \base, \base, REG_BYTES
     callee_regs_load \base

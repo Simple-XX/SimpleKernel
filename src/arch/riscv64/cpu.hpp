@@ -588,8 +588,9 @@ struct callee_regs_t {
  * @brief 上下文，用于中断/任务切换
  */
 struct context_t {
+    /// 运行此任务的 core id
+    uintptr_t coreid;
     uintptr_t ra;
-    uintptr_t tp;
     //    CPU::caller_regs_t   caller_regs;
     CPU::callee_regs_t   callee_regs;
     uintptr_t            satp;
@@ -600,6 +601,7 @@ struct context_t {
     uintptr_t            sscratch;
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const context_t &_context) {
+        printf("coreid: 0x%X, ", _context.coreid);
         printf("ra: 0x%p\n", _context.ra);
         //        std::cout << _context.caller_regs << std::endl;
         printf("satp: 0x%p, ", _context.satp);
@@ -607,7 +609,6 @@ struct context_t {
         printf("sstatus: 0x%p, ", _context.sstatus);
         printf("sie: 0x%p, ", _context.sie);
         printf("sip: 0x%p, ", _context.sip);
-        printf("tp: 0x%p, ", _context.tp);
         printf("sscratch: 0x%p", _context.sscratch);
         return _os;
     }
