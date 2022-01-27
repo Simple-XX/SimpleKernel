@@ -197,6 +197,8 @@ int test_heap(void) {
     static int tmp##a##b = 0;                                                  \
     void       task##a##b(void) {                                              \
         while (1) {                                                      \
+            assert(CPU::get_curr_core_id() ==                            \
+                         core_t::get_curr_task()->context.tp);                 \
             tmp##a##b += 1;                                              \
             if (tmp##a##b == 5) {                                        \
                 exit(0);                                                 \
@@ -221,7 +223,7 @@ taskxx_(4);
     task_t *tmp_task##a##b = new task_t("task" #a "" #b "", &task##a##b);      \
     SMP_TASK::get_instance().add_task(*tmp_task##a##b, SMP_TASK::SCHEDULER_RR);
 
-#define taskxx_cond(a, b) (tmp##a##b == 5)
+#define taskxx_cond(a, b) (tmp##a##b == 8)
 #define taskxx_cond_(a)                                                        \
     taskxx_cond(a, 0) && taskxx_cond(a, 1) && taskxx_cond(a, 2) &&             \
         taskxx_cond(a, 3) && taskxx_cond(a, 4)

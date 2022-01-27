@@ -56,7 +56,13 @@ task_t *rr_scheduler_t::get_next_task(void) {
     // 任务队列不为空的话弹出一个任务
     if (task_queue.empty() == false) {
         ret = task_queue.front();
-        task_queue.pop();
+        // 任务上下文保存的 coreid 与调度的 cpu 一致
+        if (ret->context.tp == CPU::get_curr_core_id()) {
+            task_queue.pop();
+        }
+        else {
+            ret = nullptr;
+        }
     }
     return ret;
 }

@@ -27,6 +27,9 @@ context_init:
     sd_base ra, 0, a0
 
     addi a0, a0, REG_BYTES
+    //sd_base tp, 0, a0
+
+    addi a0, a0, REG_BYTES
     callee_regs_save a0
 
     addi a0, a0, CALLEE_SIZE
