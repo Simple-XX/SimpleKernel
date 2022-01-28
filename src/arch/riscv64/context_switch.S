@@ -185,9 +185,9 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base ra, 0, \base
 
     addi \base, \base, REG_BYTES
-    caller_regs_save \base
+    callee_regs_save \base
 
-    addi \base, \base, CALLER_SIZE
+    addi \base, \base, CALLEE_SIZE
     csrr t6, satp
     sd_base t6, 0, \base
 
@@ -217,9 +217,9 @@ fld \a, ((\b) * REG_BYTES)(\c)
     ld_base ra, 0, \base
 
     addi \base, \base, REG_BYTES
-    caller_regs_load \base
+    callee_regs_load \base
 
-    addi \base, \base, CALLER_SIZE
+    addi \base, \base, CALLEE_SIZE
     ld_base t6, 0, \base
     csrw satp, t6
 
@@ -243,3 +243,16 @@ fld \a, ((\b) * REG_BYTES)(\c)
     ld_base t6, 0, \base
     csrw sscratch, t6
 .endm
+
+/**
+ * @brief 切换到调度线程，不保存旧的上下文
+ * @param  _os              调度线程
+ */
+// void switch_os(context_t *_os);
+.globl switch_os
+.align 4
+switch_os:
+    // 恢复 _new
+    context_load a0
+    // 跳转到 _new->ra 执行
+    ret

@@ -59,7 +59,7 @@ void kernel_main(void) {
     while (1) {
         info("tetete\n");
         int a = 0;
-        while (a < 9999999) {
+        while (a < 99999999) {
             a++;
         }
     }
