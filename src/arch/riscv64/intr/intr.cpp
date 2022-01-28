@@ -20,6 +20,20 @@
 #include "vmm.h"
 #include "memory"
 
+extern "C" void switch_os(CPU::context_t *_os);
+
+/// 保存内核进程的上下文
+CPU::context_t *context_os = nullptr;
+
+/**
+ * @brief 保存当前上下文并跳转到调度线程
+ */
+static void switch_sched(void) {
+    // 设置 core 当前线程信息
+    switch_os(context_os);
+    return;
+}
+
 /**
  * @brief 中断处理函数
  * @param  _scause         原因
@@ -37,6 +51,8 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sp;
     (void)_sstatus;
     (void)_context;
+    // 允许中断
+    CPU::ENABLE_INTR(_context->sstatus);
 #define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
@@ -65,6 +81,12 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
+    // 如果是时钟中断
+//    if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
+        // 设置 sepc，切换到内核线程
+        _context->sepc = (uintptr_t)&switch_sched;
+//    }
+    info("intr return\n");
     return;
 }
 
@@ -113,9 +135,9 @@ INTR &INTR::get_instance(void) {
 
 int32_t INTR::init(void) {
     // 创建用于保存上下文的空间
-    CPU::context_t *context = (CPU::context_t *)kmalloc(sizeof(CPU::context_t));
+    context_os = (CPU::context_t *)kmalloc(sizeof(CPU::context_t));
     // 将地址保存在 sscratch 寄存器中
-    CPU::WRITE_SSCRATCH(reinterpret_cast<uint64_t>(context));
+    CPU::WRITE_SSCRATCH(reinterpret_cast<uint64_t>(context_os));
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数

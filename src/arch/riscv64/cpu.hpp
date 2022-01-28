@@ -293,10 +293,28 @@ static inline void ENABLE_INTR(void) {
 }
 
 /**
+ * @brief 允许中断
+ * @param  _sstatus         要设置的 sstatus
+ */
+static inline void ENABLE_INTR(uint64_t &_sstatus) {
+    _sstatus |= SSTATUS_SIE;
+    return;
+}
+
+/**
  * @brief 禁止中断
  */
 static inline void DISABLE_INTR(void) {
     WRITE_SSTATUS(READ_SSTATUS() & ~SSTATUS_SIE);
+    return;
+}
+
+/**
+ * @brief 禁止中断
+ * @param  _sstatus         要设置的原 sstatus 值
+ */
+static inline void DISABLE_INTR(uint64_t &_sstatus) {
+    _sstatus &= ~SSTATUS_SIE;
     return;
 }
 
@@ -579,7 +597,7 @@ struct callee_regs_t {
  */
 struct context_t {
     uintptr_t            ra;
-    CPU::caller_regs_t   caller_regs;
+    CPU::callee_regs_t   callee_regs;
     uintptr_t            satp;
     uintptr_t            sepc;
     uintptr_t            sstatus;
@@ -589,7 +607,7 @@ struct context_t {
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const context_t &_context) {
         printf("ra: 0x%p\n", _context.ra);
-        std::cout << _context.caller_regs << std::endl;
+        std::cout << _context.callee_regs << std::endl;
         printf("satp: 0x%p, ", _context.satp);
         printf("sepc: 0x%p, ", _context.sepc);
         printf("sstatus: 0x%p, ", _context.sstatus);
