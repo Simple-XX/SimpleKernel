@@ -65,7 +65,6 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
-    info("intr return\n");
     return;
 }
 
@@ -73,27 +72,50 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 extern "C" void trap_entry(void);
 
 /**
- * @brief 缺页处理
+ * @brief 缺页读处理
  */
 void pg_load_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr,
-                             PMM::get_instance().alloc_page_kernel(),
-                             VMM_PAGE_READABLE);
+    uintptr_t pa   = 0x0;
+    auto      is_mmap =
+        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
+    // 如果 is_mmap 为 true，说明已经应映射过了
+    if (is_mmap == true) {
+        // 直接映射
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE);
+    }
+    else {
+        // 分配一页物理内存进行映射
+        pa = PMM::get_instance().alloc_page_kernel();
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE);
+    }
     info("pg_load_excp done: 0x%p.\n", addr);
     return;
 }
 
 /**
- * @brief 缺页处理
+ * @brief 缺页写处理
+ * @todo 需要读权限吗？测试发现没有读权限不行，原因未知
  */
 void pg_store_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr,
-                             PMM::get_instance().alloc_page_kernel(),
-                             VMM_PAGE_WRITABLE);
+    uintptr_t pa   = 0x0;
+    auto      is_mmap =
+        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
+    // 如果 is_mmap 为 true，说明已经应映射过了
+    if (is_mmap == true) {
+        // 直接映射
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    }
+    else {
+        // 分配一页物理内存进行映射
+        pa = PMM::get_instance().alloc_page_kernel();
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    }
     info("pg_store_excp done: 0x%p.\n", addr);
     return;
 }

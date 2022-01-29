@@ -111,7 +111,6 @@ void VMM::set_pgd(const pt_t _pgd) {
     return;
 }
 
-/// @bug 这里映射只能指定新的 flag，无法获取上次的
 void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
     pte_t *pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
