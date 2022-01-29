@@ -143,6 +143,8 @@ private:
         chunk_t part;
         // 一整段申请的内存都没有使用
         chunk_t free;
+        /// 管理的是否为内核地址
+        bool is_kernel_space;
 
         // 查找长度符合的
         chunk_t *find(size_t _len);
@@ -201,6 +203,9 @@ private:
     static constexpr const size_t CACHAE_LEN = 9;
     slab_cache_t                  slab_cache[CACHAE_LEN];
 
+    /// 管理的是否为内核地址
+    bool is_kernel_space;
+
     /**
      * @brief 根据 _len 获取对应的 slab_cache 下标
      * @param  _len            长度
@@ -215,8 +220,9 @@ public:
      * @param  _name           分配器名称
      * @param  _addr           管理地址起始
      * @param  _len            要管理的长度
+     * @param  _is_kernel      管理的是否为内核地址
      */
-    SLAB(const char *_name, uintptr_t _addr, size_t _len);
+    SLAB(const char *_name, uintptr_t _addr, size_t _len, bool _is_kernel);
 
     ~SLAB(void);
 

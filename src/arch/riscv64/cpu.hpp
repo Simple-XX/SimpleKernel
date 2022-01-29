@@ -20,6 +20,7 @@
 #include "stdio.h"
 #include "stdint.h"
 #include "stdbool.h"
+#include "iostream"
 
 /**
  * @brief cpu 相关
@@ -227,6 +228,25 @@ static inline bool ENABLE_PG(void) {
     return true;
 }
 
+/**
+ * @brief 读 sscratch 寄存器
+ * @param  _x                要写的值
+ */
+static inline uint64_t READ_SSCRATCH(void) {
+    uint64_t x;
+    __asm__ volatile("csrr %0, sscratch" : "=r"(x));
+    return x;
+}
+
+/**
+ * @brief 写 sscratch 寄存器
+ * @param  _x                要写的值
+ */
+static inline void WRITE_SSCRATCH(uint64_t _x) {
+    __asm__ volatile("csrw sscratch, %0" : : "r"(_x));
+    return;
+}
+
 /// [31]=1 interrupt, else exception
 static constexpr const uint64_t CAUSE_INTR_MASK = 0x8000000000000000;
 /// low bits show code
@@ -273,10 +293,28 @@ static inline void ENABLE_INTR(void) {
 }
 
 /**
+ * @brief 允许中断
+ * @param  _sstatus         要设置的 sstatus
+ */
+static inline void ENABLE_INTR(uint64_t &_sstatus) {
+    _sstatus |= SSTATUS_SIE;
+    return;
+}
+
+/**
  * @brief 禁止中断
  */
 static inline void DISABLE_INTR(void) {
     WRITE_SSTATUS(READ_SSTATUS() & ~SSTATUS_SIE);
+    return;
+}
+
+/**
+ * @brief 禁止中断
+ * @param  _sstatus         要设置的原 sstatus 值
+ */
+static inline void DISABLE_INTR(uint64_t &_sstatus) {
+    _sstatus &= ~SSTATUS_SIE;
     return;
 }
 
@@ -338,6 +376,81 @@ static inline void VMM_FLUSH(uintptr_t) {
     return;
 }
 
+/**
+ * @brief 通用寄存器
+ */
+struct xregs_t {
+    uintptr_t zero;
+    uintptr_t ra;
+    uintptr_t sp;
+    uintptr_t gp;
+    uintptr_t tp;
+    uintptr_t t0;
+    uintptr_t t1;
+    uintptr_t t2;
+    uintptr_t s0;
+    uintptr_t s1;
+    uintptr_t a0;
+    uintptr_t a1;
+    uintptr_t a2;
+    uintptr_t a3;
+    uintptr_t a4;
+    uintptr_t a5;
+    uintptr_t a6;
+    uintptr_t a7;
+    uintptr_t s2;
+    uintptr_t s3;
+    uintptr_t s4;
+    uintptr_t s5;
+    uintptr_t s6;
+    uintptr_t s7;
+    uintptr_t s8;
+    uintptr_t s9;
+    uintptr_t s10;
+    uintptr_t s11;
+    uintptr_t t3;
+    uintptr_t t4;
+    uintptr_t t5;
+    uintptr_t t6;
+};
+
+/**
+ * @brief 浮点寄存器
+ */
+struct fregs_t {
+    uintptr_t ft0;
+    uintptr_t ft1;
+    uintptr_t ft2;
+    uintptr_t ft3;
+    uintptr_t ft4;
+    uintptr_t ft5;
+    uintptr_t ft6;
+    uintptr_t ft7;
+    uintptr_t fs0;
+    uintptr_t fs1;
+    uintptr_t fa0;
+    uintptr_t fa1;
+    uintptr_t fa2;
+    uintptr_t fa3;
+    uintptr_t fa4;
+    uintptr_t fa5;
+    uintptr_t fa6;
+    uintptr_t fa7;
+    uintptr_t fs2;
+    uintptr_t fs3;
+    uintptr_t fs4;
+    uintptr_t fs5;
+    uintptr_t fs6;
+    uintptr_t fs7;
+    uintptr_t fs8;
+    uintptr_t fs9;
+    uintptr_t fs10;
+    uintptr_t fs11;
+    uintptr_t ft8;
+    uintptr_t ft9;
+    uintptr_t ft10;
+    uintptr_t ft11;
+};
 }; // namespace CPU
 
 #endif /* _CPU_HPP_ */

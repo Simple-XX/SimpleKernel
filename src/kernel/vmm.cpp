@@ -117,16 +117,17 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
     assert(pte != nullptr);
     // 已经映射过了 且 flag 没有变化
     if (((*pte & VMM_PAGE_VALID) == VMM_PAGE_VALID) &&
-        ((*pte & _flag) == _flag)) {
+        ((*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) == _flag)) {
         warn("remap.\n");
     }
     // 没有映射，或更改了 flag
     else {
         // 那么设置 *pte
         // pte 解引用后的值是页表项
-        *pte = PA2PTE(_pa) | _flag | VMM_PAGE_VALID;
+        *pte = PA2PTE(_pa) | _flag | (*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) |
+               VMM_PAGE_VALID;
         // 刷新缓存
-        CPU::VMM_FLUSH((uintptr_t)_va);
+        CPU::VMM_FLUSH(0);
     }
     return;
 }
@@ -146,7 +147,7 @@ void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
     // 置零
     *pte = 0x00;
     // 刷新缓存
-    CPU::VMM_FLUSH((uintptr_t)_va);
+    CPU::VMM_FLUSH(0);
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
     return;
 }

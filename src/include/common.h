@@ -71,6 +71,8 @@ namespace COMMON {
     /// 映射内核空间需要的页数
     static constexpr const uint64_t KERNEL_SPACE_PAGES =
         KERNEL_SPACE_SIZE / PAGE_SIZE;
+    /// 栈大小
+    static constexpr const uintptr_t STACK_SIZE = 4 * KB;
 
     // 页掩码
     static constexpr const uintptr_t PAGE_MASK = ~(PAGE_SIZE - 1);
