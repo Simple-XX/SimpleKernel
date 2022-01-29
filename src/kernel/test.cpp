@@ -193,6 +193,20 @@ int test_heap(void) {
     return 0;
 }
 
+// TODO: 更多测试
+int test_intr(void) {
+    // 触发 pg 中断
+    uintptr_t *addr = (uintptr_t *)0xC0000000;
+    int        tmp  = 0x666;
+    tmp             = *addr;
+    assert(tmp == 0);
+    *addr = 0x233;
+    tmp   = *addr;
+    assert(tmp == 0x233);
+    info("intr test done.\n");
+    return 0;
+}
+
 #define taskxx(a, b)                                                           \
     static int tmp##a##b = 0;                                                  \
     void       task##a##b(void) {                                              \

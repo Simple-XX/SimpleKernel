@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "context_switch.S"
+#include "context.S"
 
 .section .text
 // 保存所有寄存器
@@ -22,9 +22,9 @@
 .extern trap_handler
 .align 4
 trap_entry:
-    // 读取 sscratch 到 t0 中
-    csrr t0, sscratch
-    context_save t0
+    // 保存寄存器的空间
+    addi sp, sp, -ALL_SIZE
+    all_regs_save sp
 
     // 调用 intr.cpp: trap_handler
     // 传递参数
@@ -36,9 +36,9 @@ trap_entry:
     csrr a5, sscratch
     jal trap_handler
 
-    // 读取 sscratch 到 t0 中
-    csrr t0, sscratch
-    context_load t0
+    all_regs_load sp
+    // 释放保存寄存器的空间
+    addi sp, sp, ALL_SIZE
 
     // 跳转到 sepc 处执行
     sret

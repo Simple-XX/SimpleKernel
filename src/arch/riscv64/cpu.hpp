@@ -293,10 +293,28 @@ static inline void ENABLE_INTR(void) {
 }
 
 /**
+ * @brief 允许中断
+ * @param  _sstatus         要设置的 sstatus
+ */
+static inline void ENABLE_INTR(uint64_t &_sstatus) {
+    _sstatus |= SSTATUS_SIE;
+    return;
+}
+
+/**
  * @brief 禁止中断
  */
 static inline void DISABLE_INTR(void) {
     WRITE_SSTATUS(READ_SSTATUS() & ~SSTATUS_SIE);
+    return;
+}
+
+/**
+ * @brief 禁止中断
+ * @param  _sstatus         要设置的原 sstatus 值
+ */
+static inline void DISABLE_INTR(uint64_t &_sstatus) {
+    _sstatus &= ~SSTATUS_SIE;
     return;
 }
 

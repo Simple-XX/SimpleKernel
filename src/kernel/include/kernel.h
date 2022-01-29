@@ -45,6 +45,12 @@ int test_vmm(void);
 int test_heap(void);
 
 /**
+ * @brief 中断测试函数
+ * @return int             0 成功
+ */
+int test_intr(void);
+
+/**
  * @brief 测试进程调度
  * @return int              0 成功
  */
