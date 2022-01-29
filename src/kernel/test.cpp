@@ -190,3 +190,15 @@ int test_heap(void) {
     info("heap test done.\n");
     return 0;
 }
+
+// TODO: 更多测试
+int test_intr(void) {
+    // 触发 pg 中断
+    uintptr_t *addr = (uintptr_t *)0xC0000000;
+    info("addr: 0x%X, *addr: 0x%X\n", addr, *addr);
+    //    *addr           = 0x233;
+    //    info("addr: 0x%X, *addr: 0x%X\n", addr, *addr);
+
+    info("intr test done.\n");
+    return 0;
+}

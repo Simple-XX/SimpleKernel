@@ -37,9 +37,15 @@ int test_vmm(void);
 
 /**
  * @brief 堆测试函数
- * @return int             desc
+ * @return int             0 成功
  */
 int test_heap(void);
+
+/**
+ * @brief 中断测试函数
+ * @return int             0 成功
+ */
+int test_intr(void);
 
 /**
  * @brief 输出系统信息
