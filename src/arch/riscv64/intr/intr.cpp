@@ -1,7 +1,7 @@
 
 /**
  * @file intr.cpp
- * @brief 中断抽象
+ * @brief 中断实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2021-09-18
@@ -18,21 +18,7 @@
 #include "stdio.h"
 #include "intr.h"
 #include "vmm.h"
-#include "memory"
-
-extern "C" void switch_os(CPU::context_t *_os);
-
-/// 保存内核进程的上下文
-CPU::context_t *context_os = nullptr;
-
-/**
- * @brief 保存当前上下文并跳转到调度线程
- */
-static void switch_sched(void) {
-    // 设置 core 当前线程信息
-    switch_os(context_os);
-    return;
-}
+#include "pmm.h"
 
 /**
  * @brief 中断处理函数
@@ -42,7 +28,7 @@ static void switch_sched(void) {
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, uintptr_t _sp,
-                             uintptr_t _sstatus, CPU::context_t *_context) {
+                             uintptr_t _sstatus, uintptr_t sscratch) {
     CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
@@ -50,9 +36,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_scause;
     (void)_sp;
     (void)_sstatus;
-    (void)_context;
-    // 允许中断
-    CPU::ENABLE_INTR(_context->sstatus);
+    (void)sscratch;
 #define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
@@ -81,11 +65,6 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
     }
-    // 如果是时钟中断
-//    if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
-        // 设置 sepc，切换到内核线程
-        _context->sepc = (uintptr_t)&switch_sched;
-//    }
     info("intr return\n");
     return;
 }
@@ -99,7 +78,8 @@ extern "C" void trap_entry(void);
 void pg_load_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
     // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr,
+                             PMM::get_instance().alloc_page_kernel(),
                              VMM_PAGE_READABLE);
     info("pg_load_excp done: 0x%p.\n", addr);
     return;
@@ -111,8 +91,9 @@ void pg_load_excp(void) {
 void pg_store_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
     // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr,
+                             PMM::get_instance().alloc_page_kernel(),
+                             VMM_PAGE_WRITABLE);
     info("pg_store_excp done: 0x%p.\n", addr);
     return;
 }
@@ -134,10 +115,6 @@ INTR &INTR::get_instance(void) {
 }
 
 int32_t INTR::init(void) {
-    // 创建用于保存上下文的空间
-    context_os = (CPU::context_t *)kmalloc(sizeof(CPU::context_t));
-    // 将地址保存在 sscratch 寄存器中
-    CPU::WRITE_SSCRATCH(reinterpret_cast<uint64_t>(context_os));
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
