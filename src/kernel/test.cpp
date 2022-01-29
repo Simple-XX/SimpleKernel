@@ -202,7 +202,6 @@ int test_intr(void) {
     tmp   = *addr;
     assert(tmp == 0x233);
     *addr = 0x0;
-
     info("intr test done.\n");
     return 0;
 }
