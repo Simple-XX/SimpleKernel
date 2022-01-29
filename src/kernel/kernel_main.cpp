@@ -58,11 +58,7 @@ void kernel_main(void) {
     show_info();
     // 进入死循环
     while (1) {
-        info("tetete\n");
-        int a = 0;
-        while (a < 99999999) {
-            a++;
-        }
+        ;
     }
     // 不应该执行到这里
     assert(0);
