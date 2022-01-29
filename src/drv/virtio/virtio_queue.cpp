@@ -46,7 +46,7 @@ virtio_queue_t::virtio_queue_t(size_t _size) {
         printf("virtq_create: error, too big for two pagess\n");
         return;
     }
-    virtq              = (virtq_t *)malloc(COMMON::PAGE_SIZE);
+    virtq              = (virtq_t *)kmalloc(COMMON::PAGE_SIZE);
     uint8_t *page_virt = (uint8_t *)virtq;
     virtq->phys        = VMM_VA2PA((uintptr_t)virtq);
     virtq->len         = _size;

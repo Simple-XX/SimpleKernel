@@ -22,6 +22,7 @@
 #include "drv.h"
 #include "io.h"
 #include "intr.h"
+#include "vmm.h"
 
 // 设置 features
 void virtio_mmio_drv_t::set_features(
@@ -140,6 +141,10 @@ extern void virtio_mmio_intr(uint8_t _no);
 virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
     : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
     regs = (virtio_regs_t *)_resource.mem.addr;
+    // 映射内存
+    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), _resource.mem.addr,
+                             _resource.mem.addr,
+                             VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     // 检查相关值
     assert(IO::get_instance().read32(&regs->magic) == MAGIC_VALUE);
     assert(IO::get_instance().read32(&regs->version) == VERSION);
@@ -250,7 +255,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t &_resource)
         new virtio_mmio_drv_t::virtio_blk_req_t;
     req->type   = virtio_blk_req_t::IN;
     req->sector = 0;
-    void *buf   = malloc(512);
+    void *buf   = kmalloc(512);
     memset(buf, 1, 512);
     rw(*req, buf);
     return;
