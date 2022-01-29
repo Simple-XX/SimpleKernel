@@ -111,7 +111,6 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
      test_sched();
     // 开始调度
     while (1) {
-        info("ttt\n");
         SMP_TASK::get_instance().sched();
     }
 
