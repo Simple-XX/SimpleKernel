@@ -54,7 +54,6 @@ void kernel_main_smp(void) {
     // 中断初始化
     INTR::get_instance().init_other_core();
     // 初始化任务调度
-    /// @note 在 SMP_TASK 初始化后才能正常处理中断
     SMP_TASK::get_instance().init_other_core();
     // 时钟中断初始化
     TIMER::get_instance().init_other_core();
@@ -90,7 +89,6 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
         // 测试中断
         test_intr();
         // 初始化任务调度
-        /// @note 在 SMP_TASK 初始化后才能正常处理中断
         SMP_TASK::get_instance().init();
         // 设置时钟中断
         TIMER::get_instance().init();

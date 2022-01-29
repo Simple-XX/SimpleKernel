@@ -607,9 +607,8 @@ struct callee_regs_t {
  */
 struct context_t {
     /// 运行此任务的 core id
-    uintptr_t coreid;
-    uintptr_t ra;
-    //    CPU::caller_regs_t   caller_regs;
+    uintptr_t            coreid;
+    uintptr_t            ra;
     CPU::callee_regs_t   callee_regs;
     uintptr_t            satp;
     uintptr_t            sepc;
@@ -621,7 +620,7 @@ struct context_t {
                                     const context_t &_context) {
         printf("coreid: 0x%X, ", _context.coreid);
         printf("ra: 0x%p\n", _context.ra);
-        //        std::cout << _context.caller_regs << std::endl;
+        std::cout << _context.callee_regs << std::endl;
         printf("satp: 0x%p, ", _context.satp);
         printf("sepc: 0x%p, ", _context.sepc);
         printf("sstatus: 0x%p, ", _context.sstatus);

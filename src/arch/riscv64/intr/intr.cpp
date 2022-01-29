@@ -19,22 +19,21 @@
 #include "intr.h"
 #include "vmm.h"
 #include "pmm.h"
-//#include "task.h"
-//#include "core.h"
-//#include "memory"
+#include "task.h"
+#include "core.h"
 
-//extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
-//
-///**
-// * @brief 保存当前上下文并跳转到调度线程
-// */
-//static void switch_sched(void) {
-//    task_t *old = core_t::get_curr_task();
-//    // 设置 core 当前线程信息
-//    switch_context(&old->context,
-//                   &core_t::cores[CPU::get_curr_core_id()].sched_task->context);
-//    return;
-//}
+extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
+
+/**
+ * @brief 保存当前上下文并跳转到调度线程
+ */
+static void switch_sched(void) {
+    task_t *old = core_t::get_curr_task();
+    // 设置 core 当前线程信息
+    switch_context(&old->context,
+                   &core_t::cores[CPU::get_curr_core_id()].sched_task->context);
+    return;
+}
 
 /**
  * @brief 中断处理函数
@@ -70,10 +69,10 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 跳转到对应的处理函数
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
         // 如果是时钟中断
-//        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
-//            // 设置 sepc，切换到内核线程
-//            _context->sepc = (uintptr_t)&switch_sched;
-//        }
+        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
+            // 设置 sepc，切换到内核线程
+            CPU::WRITE_SEPC(reinterpret_cast<uintptr_t>(&switch_sched));
+        }
     }
     else {
 // 异常
