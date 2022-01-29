@@ -124,7 +124,8 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
     else {
         // 那么设置 *pte
         // pte 解引用后的值是页表项
-        *pte = PA2PTE(_pa) | _flag | VMM_PAGE_VALID;
+        *pte = PA2PTE(_pa) | _flag | (*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) |
+               VMM_PAGE_VALID;
         // 刷新缓存
         CPU::VMM_FLUSH((uintptr_t)_va);
     }
