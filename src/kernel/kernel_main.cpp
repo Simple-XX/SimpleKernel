@@ -26,6 +26,7 @@
 #include "dev_drv_manager.h"
 #include "cpu.hpp"
 #include "kernel.h"
+#include "stdlib.h"
 
 /**
  * @brief 内核主要逻辑
@@ -49,6 +50,7 @@ void kernel_main(void) {
     test_heap();
     // 中断初始化
     INTR::get_instance().init();
+    test_intr();
     // 时钟中断初始化
     TIMER::get_instance().init();
     // 初始化设备

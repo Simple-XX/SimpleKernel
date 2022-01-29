@@ -1,7 +1,7 @@
 
 /**
  * @file intr.cpp
- * @brief 中断抽象
+ * @brief 中断实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2021-09-18
@@ -18,6 +18,7 @@
 #include "stdio.h"
 #include "intr.h"
 #include "vmm.h"
+#include "pmm.h"
 
 /**
  * @brief 中断处理函数
@@ -25,15 +26,21 @@
  * @param  _sepc           值
  * @param  _stval          值
  */
-extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
-                             uint64_t _stval) {
-
+extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
+                             uintptr_t _scause, uintptr_t _sp,
+                             uintptr_t _sstatus, uintptr_t sscratch) {
+    CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
+    (void)_scause;
+    (void)_sp;
+    (void)_sstatus;
+    (void)sscratch;
 #define DEBUG
 #ifdef DEBUG
-    info("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc, _stval);
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
+         _sepc, _stval, _scause, _sp, _sstatus);
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
@@ -65,25 +72,50 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 extern "C" void trap_entry(void);
 
 /**
- * @brief 缺页处理
+ * @brief 缺页读处理
  */
 void pg_load_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_READABLE);
+    uintptr_t pa   = 0x0;
+    auto      is_mmap =
+        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
+    // 如果 is_mmap 为 true，说明已经应映射过了
+    if (is_mmap == true) {
+        // 直接映射
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE);
+    }
+    else {
+        // 分配一页物理内存进行映射
+        pa = PMM::get_instance().alloc_page_kernel();
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE);
+    }
     info("pg_load_excp done: 0x%p.\n", addr);
     return;
 }
 
 /**
- * @brief 缺页处理
+ * @brief 缺页写处理
+ * @todo 需要读权限吗？测试发现没有读权限不行，原因未知
  */
 void pg_store_excp(void) {
     uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
+    uintptr_t pa   = 0x0;
+    auto      is_mmap =
+        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
+    // 如果 is_mmap 为 true，说明已经应映射过了
+    if (is_mmap == true) {
+        // 直接映射
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    }
+    else {
+        // 分配一页物理内存进行映射
+        pa = PMM::get_instance().alloc_page_kernel();
+        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
+                                 VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    }
     info("pg_store_excp done: 0x%p.\n", addr);
     return;
 }
