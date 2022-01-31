@@ -380,77 +380,162 @@ static inline void VMM_FLUSH(uintptr_t) {
  * @brief 通用寄存器
  */
 struct xregs_t {
-    uintptr_t zero;
-    uintptr_t ra;
-    uintptr_t sp;
-    uintptr_t gp;
-    uintptr_t tp;
-    uintptr_t t0;
-    uintptr_t t1;
-    uintptr_t t2;
-    uintptr_t s0;
-    uintptr_t s1;
-    uintptr_t a0;
-    uintptr_t a1;
-    uintptr_t a2;
-    uintptr_t a3;
-    uintptr_t a4;
-    uintptr_t a5;
-    uintptr_t a6;
-    uintptr_t a7;
-    uintptr_t s2;
-    uintptr_t s3;
-    uintptr_t s4;
-    uintptr_t s5;
-    uintptr_t s6;
-    uintptr_t s7;
-    uintptr_t s8;
-    uintptr_t s9;
-    uintptr_t s10;
-    uintptr_t s11;
-    uintptr_t t3;
-    uintptr_t t4;
-    uintptr_t t5;
-    uintptr_t t6;
+    uintptr_t            zero;
+    uintptr_t            ra;
+    uintptr_t            sp;
+    uintptr_t            gp;
+    uintptr_t            tp;
+    uintptr_t            t0;
+    uintptr_t            t1;
+    uintptr_t            t2;
+    uintptr_t            s0;
+    uintptr_t            s1;
+    uintptr_t            a0;
+    uintptr_t            a1;
+    uintptr_t            a2;
+    uintptr_t            a3;
+    uintptr_t            a4;
+    uintptr_t            a5;
+    uintptr_t            a6;
+    uintptr_t            a7;
+    uintptr_t            s2;
+    uintptr_t            s3;
+    uintptr_t            s4;
+    uintptr_t            s5;
+    uintptr_t            s6;
+    uintptr_t            s7;
+    uintptr_t            s8;
+    uintptr_t            s9;
+    uintptr_t            s10;
+    uintptr_t            s11;
+    uintptr_t            t3;
+    uintptr_t            t4;
+    uintptr_t            t5;
+    uintptr_t            t6;
+    friend std::ostream &operator<<(std::ostream &_os, const xregs_t &_xregs) {
+        printf("zero: 0x%p, ", _xregs.zero);
+        printf("ra: 0x%p, ", _xregs.ra);
+        printf("sp: 0x%p, ", _xregs.sp);
+        printf("gp: 0x%p\n", _xregs.gp);
+        printf("tp: 0x%p, ", _xregs.tp);
+        printf("t0: 0x%p, ", _xregs.t0);
+        printf("t1: 0x%p, ", _xregs.t1);
+        printf("t2: 0x%p\n", _xregs.t2);
+        printf("s0: 0x%p, ", _xregs.s0);
+        printf("s1: 0x%p, ", _xregs.s1);
+        printf("a0: 0x%p, ", _xregs.a0);
+        printf("a1: 0x%p\n", _xregs.a1);
+        printf("a2: 0x%p, ", _xregs.a2);
+        printf("a3: 0x%p, ", _xregs.a3);
+        printf("a4: 0x%p, ", _xregs.a4);
+        printf("a5: 0x%p\n", _xregs.a5);
+        printf("a6: 0x%p, ", _xregs.a6);
+        printf("a7: 0x%p, ", _xregs.a7);
+        printf("s2: 0x%p, ", _xregs.s2);
+        printf("s3: 0x%p\n", _xregs.s3);
+        printf("s4: 0x%p, ", _xregs.s4);
+        printf("s5: 0x%p, ", _xregs.s5);
+        printf("s6: 0x%p, ", _xregs.s6);
+        printf("s7: 0x%p\n", _xregs.s7);
+        printf("s8: 0x%p, ", _xregs.s8);
+        printf("s9: 0x%p, ", _xregs.s9);
+        printf("s10: 0x%p, ", _xregs.s10);
+        printf("s11: 0x%p\n", _xregs.s11);
+        printf("t3: 0x%p, ", _xregs.t3);
+        printf("t4: 0x%p, ", _xregs.t4);
+        printf("t5: 0x%p, ", _xregs.t5);
+        printf("t6: 0x%p", _xregs.t6);
+        return _os;
+    }
 };
 
 /**
  * @brief 浮点寄存器
  */
 struct fregs_t {
-    uintptr_t ft0;
-    uintptr_t ft1;
-    uintptr_t ft2;
-    uintptr_t ft3;
-    uintptr_t ft4;
-    uintptr_t ft5;
-    uintptr_t ft6;
-    uintptr_t ft7;
-    uintptr_t fs0;
-    uintptr_t fs1;
-    uintptr_t fa0;
-    uintptr_t fa1;
-    uintptr_t fa2;
-    uintptr_t fa3;
-    uintptr_t fa4;
-    uintptr_t fa5;
-    uintptr_t fa6;
-    uintptr_t fa7;
-    uintptr_t fs2;
-    uintptr_t fs3;
-    uintptr_t fs4;
-    uintptr_t fs5;
-    uintptr_t fs6;
-    uintptr_t fs7;
-    uintptr_t fs8;
-    uintptr_t fs9;
-    uintptr_t fs10;
-    uintptr_t fs11;
-    uintptr_t ft8;
-    uintptr_t ft9;
-    uintptr_t ft10;
-    uintptr_t ft11;
+    uintptr_t            ft0;
+    uintptr_t            ft1;
+    uintptr_t            ft2;
+    uintptr_t            ft3;
+    uintptr_t            ft4;
+    uintptr_t            ft5;
+    uintptr_t            ft6;
+    uintptr_t            ft7;
+    uintptr_t            fs0;
+    uintptr_t            fs1;
+    uintptr_t            fa0;
+    uintptr_t            fa1;
+    uintptr_t            fa2;
+    uintptr_t            fa3;
+    uintptr_t            fa4;
+    uintptr_t            fa5;
+    uintptr_t            fa6;
+    uintptr_t            fa7;
+    uintptr_t            fs2;
+    uintptr_t            fs3;
+    uintptr_t            fs4;
+    uintptr_t            fs5;
+    uintptr_t            fs6;
+    uintptr_t            fs7;
+    uintptr_t            fs8;
+    uintptr_t            fs9;
+    uintptr_t            fs10;
+    uintptr_t            fs11;
+    uintptr_t            ft8;
+    uintptr_t            ft9;
+    uintptr_t            ft10;
+    uintptr_t            ft11;
+    friend std::ostream &operator<<(std::ostream &_os, const fregs_t &_fregs) {
+        printf("ft0: 0x%p, ", _fregs.ft0);
+        printf("ft1: 0x%p, ", _fregs.ft1);
+        printf("ft2: 0x%p, ", _fregs.ft2);
+        printf("ft3: 0x%p\n", _fregs.ft3);
+        printf("ft4: 0x%p, ", _fregs.ft4);
+        printf("ft5: 0x%p, ", _fregs.ft5);
+        printf("ft6: 0x%p, ", _fregs.ft6);
+        printf("ft7: 0x%p\n", _fregs.ft7);
+        printf("fs0: 0x%p, ", _fregs.fs0);
+        printf("fs1: 0x%p, ", _fregs.fs1);
+        printf("fa0: 0x%p, ", _fregs.fa0);
+        printf("fa1: 0x%p\n", _fregs.fa1);
+        printf("fa2: 0x%p, ", _fregs.fa2);
+        printf("fa3: 0x%p, ", _fregs.fa3);
+        printf("fa4: 0x%p, ", _fregs.fa4);
+        printf("fa5: 0x%p\n", _fregs.fa5);
+        printf("fa6: 0x%p, ", _fregs.fa6);
+        printf("fa7: 0x%p, ", _fregs.fa7);
+        printf("fs2: 0x%p, ", _fregs.fs2);
+        printf("fs3: 0x%p\n", _fregs.fs3);
+        printf("fs4: 0x%p, ", _fregs.fs4);
+        printf("fs5: 0x%p, ", _fregs.fs5);
+        printf("fs6: 0x%p, ", _fregs.fs6);
+        printf("fs7: 0x%p\n", _fregs.fs7);
+        printf("fs8: 0x%p, ", _fregs.fs8);
+        printf("fs9: 0x%p, ", _fregs.fs9);
+        printf("fs10: 0x%p, ", _fregs.fs10);
+        printf("fs11: 0x%p\n", _fregs.fs11);
+        printf("ft8: 0x%p, ", _fregs.ft8);
+        printf("ft9: 0x%p, ", _fregs.ft9);
+        printf("ft10: 0x%p, ", _fregs.ft10);
+        printf("ft11: 0x%p", _fregs.ft11);
+        return _os;
+    }
 };
+
+/**
+ * @brief 所有寄存器，在中断时使用
+ */
+struct all_regs_t {
+    xregs_t              xregs;
+    fregs_t              fregs;
+    friend std::ostream &operator<<(std::ostream     &_os,
+                                    const all_regs_t &_all_regs) {
+        (void)_all_regs.fregs;
+        _os << _all_regs.xregs;
+        return _os;
+    }
+};
+
 }; // namespace CPU
 
 #endif /* _CPU_HPP_ */
