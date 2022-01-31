@@ -149,10 +149,6 @@ int32_t INTR::init(void) {
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
     CPU::STVEC_DIRECT();
-    // 内部中断初始化
-    CLINT::get_instance().init();
-    // 外部中断初始化
-    PLIC::get_instance().init();
     // 设置处理函数
     for (auto &i : interrupt_handlers) {
         i = handler_default;
@@ -160,6 +156,10 @@ int32_t INTR::init(void) {
     for (auto &i : excp_handlers) {
         i = handler_default;
     }
+    // 内部中断初始化
+    CLINT::get_instance().init();
+    // 外部中断初始化
+    PLIC::get_instance().init();
     // 注册缺页中断
     register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
     // 注册缺页中断
