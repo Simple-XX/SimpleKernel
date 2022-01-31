@@ -25,12 +25,12 @@
 /**
  * @brief 外部中断处理
  */
-static void externel_intr(void) {
+static int32_t externel_intr(int, char **) {
     // 读取中断号
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
     printf("externel_intr: 0x%X.\n", no);
-    return;
+    return 0;
 }
 
 uint64_t PLIC::PLIC_SENABLE(uint64_t _hart) {
