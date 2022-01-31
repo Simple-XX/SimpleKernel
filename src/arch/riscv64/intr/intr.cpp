@@ -58,18 +58,20 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
-        INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
+        INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK, 0,
+                                          nullptr);
     }
     else {
 // 异常
 // 跳转到对应的处理函数
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
-        warn("excp: %s.\n",
-             INTR::get_instance().get_excp_name(_scause & CPU::CAUSE_CODE_MASK));
+        warn("excp: %s.\n", INTR::get_instance().get_excp_name(
+                                _scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
-        INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
+        INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK, 0,
+                                     nullptr);
     }
     return;
 }
@@ -80,7 +82,7 @@ extern "C" void trap_entry(void);
 /**
  * @brief 缺页读处理
  */
-void pg_load_excp(void) {
+int32_t pg_load_excp(int, char **) {
     uintptr_t addr = CPU::READ_STVAL();
     uintptr_t pa   = 0x0;
     auto      is_mmap =
@@ -98,14 +100,14 @@ void pg_load_excp(void) {
                                  VMM_PAGE_READABLE);
     }
     info("pg_load_excp done: 0x%p.\n", addr);
-    return;
+    return 0;
 }
 
 /**
  * @brief 缺页写处理
  * @todo 需要读权限吗？测试发现没有读权限不行，原因未知
  */
-void pg_store_excp(void) {
+int32_t pg_store_excp(int, char **) {
     uintptr_t addr = CPU::READ_STVAL();
     uintptr_t pa   = 0x0;
     auto      is_mmap =
@@ -123,17 +125,17 @@ void pg_store_excp(void) {
                                  VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }
     info("pg_store_excp done: 0x%p.\n", addr);
-    return;
+    return 0;
 }
 
 /**
  * @brief 默认使用的中断处理函数
  */
-void handler_default(void) {
+int32_t handler_default(int, char **) {
     while (1) {
         ;
     }
-    return;
+    return 0;
 }
 
 INTR &INTR::get_instance(void) {
@@ -178,14 +180,12 @@ void INTR::register_excp_handler(uint8_t                   _no,
     return;
 }
 
-void INTR::do_interrupt(uint8_t _no) {
-    interrupt_handlers[_no]();
-    return;
+int32_t INTR::do_interrupt(uint8_t _no, int32_t _argc, char **_argv) {
+    return interrupt_handlers[_no](_argc, _argv);
 }
 
-void INTR::do_excp(uint8_t _no) {
-    excp_handlers[_no]();
-    return;
+int32_t INTR::do_excp(uint8_t _no, int32_t _argc, char **_argv) {
+    return excp_handlers[_no](_argc, _argv);
 }
 
 const char *INTR::get_intr_name(uint8_t _no) const {
