@@ -707,7 +707,8 @@ struct callee_regs_t {
 };
 
 /**
- * @brief 上下文，用于中断/任务切换
+ * @brief 上下文，用于任务切换
+ * @note caller_regs 由编译器保存/恢复
  */
 struct context_t {
     /// 运行此任务的 core id
