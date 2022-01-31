@@ -36,10 +36,10 @@ void set_next(void) {
 /**
  * @brief 时钟中断
  */
-void timer_intr(void) {
+int32_t timer_intr(int, char **) {
     // 每次执行中断时设置下一次中断的时间
     set_next();
-    return;
+    return 0;
 }
 
 TIMER &TIMER::get_instance(void) {
