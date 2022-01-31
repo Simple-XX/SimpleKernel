@@ -25,22 +25,28 @@
  * @param  _scause         原因
  * @param  _sepc           值
  * @param  _stval          值
+ * @param  _scause         值
+ * @param  _all_regs       保存在栈上的所有寄存器，实际上是 sp
+ * @param  _sstatus        值
+ * @param  _sstatus        值
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
-                             uintptr_t _scause, uintptr_t _sp,
-                             uintptr_t _sstatus, uintptr_t sscratch) {
+                             uintptr_t _scause, CPU::all_regs_t *_all_regs,
+                             uintptr_t _sstatus, uintptr_t _sscratch) {
     CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
     (void)_scause;
-    (void)_sp;
+    (void)_all_regs;
     (void)_sstatus;
-    (void)sscratch;
+    (void)_sscratch;
 #define DEBUG
 #ifdef DEBUG
-    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
-         _sepc, _stval, _scause, _sp, _sstatus);
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs: 0x%p, sstatus: "
+         "0x%p.\n",
+         _sepc, _stval, _scause, _all_regs, _sstatus);
+    std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
