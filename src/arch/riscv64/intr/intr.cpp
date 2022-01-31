@@ -40,22 +40,28 @@ static void switch_sched(void) {
  * @param  _scause         原因
  * @param  _sepc           值
  * @param  _stval          值
+ * @param  _scause         值
+ * @param  _all_regs       保存在栈上的所有寄存器，实际上是 sp
+ * @param  _sstatus        值
+ * @param  _sstatus        值
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
-                             uintptr_t _scause, uintptr_t _sp,
-                             uintptr_t _sstatus, CPU::context_t *_context) {
+                             uintptr_t _scause, CPU::all_regs_t *_all_regs,
+                             uintptr_t _sstatus, uintptr_t _sscratch) {
     CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
     (void)_scause;
-    (void)_sp;
+    (void)_all_regs;
     (void)_sstatus;
-    (void)_context;
+    (void)_sscratch;
 #define DEBUG
 #ifdef DEBUG
-    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sp: 0x%p, sstatus: 0x%p.\n",
-         _sepc, _stval, _scause, _sp, _sstatus);
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sstatus: "
+         "0x%p.\n",
+         _sepc, _stval, _scause, _all_regs, _sstatus);
+// std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
@@ -157,11 +163,6 @@ INTR &INTR::get_instance(void) {
 }
 
 int32_t INTR::init(void) {
-    //    // 创建用于保存上下文的空间
-    //    CPU::context_t *context = (CPU::context_t
-    //    *)kmalloc(sizeof(CPU::context_t));
-    //    // 将地址保存在 sscratch 寄存器中
-    //    CPU::WRITE_SSCRATCH(reinterpret_cast<uint64_t>(context));
     // 设置 trap vector
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
