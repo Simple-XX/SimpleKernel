@@ -43,10 +43,10 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sscratch;
 #define DEBUG
 #ifdef DEBUG
-    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs: 0x%p, sstatus: "
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sstatus: "
          "0x%p.\n",
          _sepc, _stval, _scause, _all_regs, _sstatus);
-    std::cout << *_all_regs << std::endl;
+// std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
