@@ -43,9 +43,14 @@ fld \a, ((\b) * REG_BYTES)(\c)
 
 // 保存所有寄存器
 .macro all_regs_save base
+    // 在栈上留出保存寄存器的空间
+    addi sp, sp, -ALL_SIZE
     sd_base  zero, 0,  \base
     sd_base  ra,   1,  \base
-    sd_base  sp,   2,  \base
+    // 计算 sp 的原值
+    addi ra, sp, ALL_SIZE
+    // 保存 sp 的原值
+    sd_base  ra,   2,  \base
     sd_base  gp,   3,  \base
     sd_base  tp,   4,  \base
     sd_base  t0,   5,  \base
@@ -114,7 +119,7 @@ fld \a, ((\b) * REG_BYTES)(\c)
 .macro all_regs_load base
     ld_base  zero, 0,  \base
     ld_base  ra,   1,  \base
-    ld_base  sp,   2,  \base
+    // sp 在最后恢复
     ld_base  gp,   3,  \base
     ld_base  tp,   4,  \base
     ld_base  t0,   5,  \base
@@ -177,4 +182,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
     fld_base ft9,  61, \base
     fld_base ft10, 62, \base
     fld_base ft11, 63, \base
+    // 恢复 sp
+    // 由于保存的是实际的 sp 值，
+    // 所以不需要手动释放栈上用于保存寄存器的空间
+    ld_base  sp,   2,  \base
 .endm
