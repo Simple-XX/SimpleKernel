@@ -17,9 +17,9 @@
 // 寄存器长度，8 字节
 .equ REG_BYTES, 8
 // 所有寄存器数量
-.equ ALL_REGS, 64
+.equ ALL_REGS,  69
 // 保存所有寄存器需要的大小
-.equ ALL_SIZE,    (ALL_REGS * REG_BYTES)
+.equ ALL_SIZE,  (ALL_REGS * REG_BYTES)
 
 // 将寄存器 a 保存在 c 偏移 b 的位置
 .macro sd_base a, b, c
@@ -113,10 +113,32 @@ fld \a, ((\b) * REG_BYTES)(\c)
     fsd_base ft9,  61, \base
     fsd_base ft10, 62, \base
     fsd_base ft11, 63, \base
+
+    csrr     t0,   sepc
+    sd_base  t0,   64, \base
+    csrr     t0,   stval
+    sd_base  t0,   65, \base
+    csrr     t0,   scause
+    sd_base  t0,   66, \base
+    csrr     t0,   sstatus
+    sd_base  t0,   67, \base
+    csrr     t0,   sscratch
+    sd_base  t0,   68, \base
 .endm
 
 // 恢复所有寄存器
 .macro all_regs_load base
+    ld_base  t0,   64, \base
+    csrw     sepc,     t0
+    ld_base  t0,   65, \base
+    csrw     stval,    t0
+    ld_base  t0,   66, \base
+    csrw     scause,   t0
+    ld_base  t0,   67, \base
+    csrw     sstatus,  t0
+    ld_base  t0,   68, \base
+    csrw     sscratch, t0
+
     ld_base  zero, 0,  \base
     ld_base  ra,   1,  \base
     // sp 在最后恢复
@@ -182,6 +204,7 @@ fld \a, ((\b) * REG_BYTES)(\c)
     fld_base ft9,  61, \base
     fld_base ft10, 62, \base
     fld_base ft11, 63, \base
+
     // 恢复 sp
     // 由于保存的是实际的 sp 值，
     // 所以不需要手动释放栈上用于保存寄存器的空间
