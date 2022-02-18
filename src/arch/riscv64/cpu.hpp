@@ -533,15 +533,24 @@ struct fregs_t {
 };
 
 /**
- * @brief 所有寄存器，在中断时使用
+ * @brief 所有寄存器，在中断时使用，共 32+32+5=69 个
  */
 struct all_regs_t {
     xregs_t              xregs;
     fregs_t              fregs;
+    uintptr_t            sepc;
+    uintptr_t            stval;
+    uintptr_t            scause;
+    uintptr_t            sstatus;
+    uintptr_t            sscratch;
     friend std::ostream &operator<<(std::ostream     &_os,
                                     const all_regs_t &_all_regs) {
         (void)_all_regs.fregs;
-        _os << _all_regs.xregs;
+        _os << _all_regs.xregs << std::endl;
+        printf("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sstatus: 0x%p, "
+               "sscratch: 0x%p",
+               _all_regs.sepc, _all_regs.stval, _all_regs.scause,
+               _all_regs.sstatus, _all_regs.sscratch);
         return _os;
     }
 };

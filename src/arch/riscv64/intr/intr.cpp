@@ -78,7 +78,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 如果是时钟中断
         if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
             // 设置 sepc，切换到内核线程
-            CPU::WRITE_SEPC(reinterpret_cast<uintptr_t>(&switch_sched));
+            _all_regs->sepc = reinterpret_cast<uintptr_t>(&switch_sched);
         }
     }
     else {
