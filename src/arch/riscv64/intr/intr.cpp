@@ -29,7 +29,16 @@ extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
  */
 static void switch_sched(void) {
     task_t *old = core_t::get_curr_task();
-    // 设置 core 当前线程信息
+#define DEBUG
+#ifdef DEBUG
+    info("switch_sched\n");
+    std::cout << "old->context: \n" << old->context << std::endl;
+    std::cout
+        << "core_t::cores[CPU::get_curr_core_id()].sched_task->context: \n"
+        << core_t::cores[CPU::get_curr_core_id()].sched_task->context
+        << std::endl;
+#undef DEBUG
+#endif
     switch_context(&old->context,
                    &core_t::cores[CPU::get_curr_core_id()].sched_task->context);
     return;
@@ -61,12 +70,12 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sstatus: "
          "0x%p.\n",
          _sepc, _stval, _scause, _all_regs, _sstatus);
-// std::cout << *_all_regs << std::endl;
+    std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
-// 中断
-// #define DEBUG
+        // 中断
+#define DEBUG
 #ifdef DEBUG
         info("intr: %s.\n", INTR::get_instance().get_intr_name(
                                 _scause & CPU::CAUSE_CODE_MASK));
@@ -82,9 +91,9 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         }
     }
     else {
-// 异常
-// 跳转到对应的处理函数
-// #define DEBUG
+        // 异常
+        // 跳转到对应的处理函数
+#define DEBUG
 #ifdef DEBUG
         warn("excp: %s.\n", INTR::get_instance().get_excp_name(
                                 _scause & CPU::CAUSE_CODE_MASK));
