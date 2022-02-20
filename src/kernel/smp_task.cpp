@@ -77,6 +77,11 @@ void SMP_TASK::free_pid(pid_t _pid) {
 }
 
 void SMP_TASK::switch_task(void) {
+//#define DEBUG
+#ifdef DEBUG
+    info("switch_task\n");
+#undef DEBUG
+#endif
     // 获取下一个线程并替换为当前线程下一个线程
     auto tmp = get_next_task();
     // 设置 core 当前线程信息
@@ -179,6 +184,11 @@ void SMP_TASK::remove_task(task_t &_task) {
 
 void SMP_TASK::sched(void) {
     // TODO: 根据当前任务的属性进行调度
+//#define DEBUG
+#ifdef DEBUG
+    info("sched\n");
+#undef DEBUG
+#endif
     switch_task();
     return;
 }
