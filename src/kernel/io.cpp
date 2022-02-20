@@ -198,7 +198,7 @@ extern "C" int32_t info(const char *_fmt, ...) {
     va_list va;
     int32_t i;
     va_start(va, _fmt);
-    i = vsnprintf_(buf_test, (size_t)-1, _fmt, va);
+    i = vsnprintf_(buf, IO::BUF_SIZE, _fmt, va);
     va_end(va);
     // 输出 cpuid
     char tmp[5] = {0};
@@ -225,7 +225,7 @@ extern "C" int32_t warn(const char *_fmt, ...) {
     va_list va;
     int32_t i;
     va_start(va, _fmt);
-    i = vsnprintf_(buf, (size_t)-1, _fmt, va);
+    i = vsnprintf_(buf, IO::BUF_SIZE, _fmt, va);
     va_end(va);
     // 输出 cpuid
     char tmp[5] = {0};
@@ -252,7 +252,7 @@ extern "C" int32_t err(const char *_fmt, ...) {
     va_list va;
     int32_t i;
     va_start(va, _fmt);
-    i = vsnprintf_(buf, (size_t)-1, _fmt, va);
+    i = vsnprintf_(buf, IO::BUF_SIZE, _fmt, va);
     va_end(va);
     // 输出 cpuid
     char tmp[5] = {0};

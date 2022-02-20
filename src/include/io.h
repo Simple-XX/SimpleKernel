@@ -50,7 +50,7 @@ private:
 protected:
 public:
     /// 缓冲区大小
-    static constexpr const size_t BUF_SIZE = 128;
+    static constexpr const size_t BUF_SIZE = 512;
 
     /**
      * @brief 获取单例
