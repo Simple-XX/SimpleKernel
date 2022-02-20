@@ -140,7 +140,7 @@ extern "C" int32_t info(const char *_fmt, ...) {
     va_list va;
     int32_t i;
     va_start(va, _fmt);
-    i = vsnprintf_(buf, (size_t)-1, _fmt, va);
+    i = vsnprintf_(buf, IO::BUF_SIZE, _fmt, va);
     va_end(va);
     IO::get_instance().write_string(buf);
     bzero(buf, IO::BUF_SIZE);
@@ -157,7 +157,7 @@ extern "C" int32_t warn(const char *_fmt, ...) {
     va_list va;
     int32_t i;
     va_start(va, _fmt);
-    i = vsnprintf_(buf, (size_t)-1, _fmt, va);
+    i = vsnprintf_(buf, IO::BUF_SIZE, _fmt, va);
     va_end(va);
     IO::get_instance().write_string(buf);
     bzero(buf, IO::BUF_SIZE);
@@ -174,7 +174,7 @@ extern "C" int32_t err(const char *_fmt, ...) {
     va_list va;
     int32_t i;
     va_start(va, _fmt);
-    i = vsnprintf_(buf, (size_t)-1, _fmt, va);
+    i = vsnprintf_(buf, IO::BUF_SIZE, _fmt, va);
     va_end(va);
     IO::get_instance().write_string(buf);
     bzero(buf, IO::BUF_SIZE);
