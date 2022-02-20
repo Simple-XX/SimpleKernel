@@ -216,205 +216,196 @@ fld \a, ((\b) * REG_BYTES)(\c)
 .endm
 
 // 保存调用者保存寄存器
-.macro caller_regs_save base
-    sd_base  ra,   0,  \base
-    sd_base  t0,   1,  \base
-    sd_base  t2,   2,  \base
-    sd_base  a0,   3,  \base
-    sd_base  a1,   4,  \base
-    sd_base  a2,   5,  \base
-    sd_base  a3,   6,  \base
-    sd_base  a4,   7,  \base
-    sd_base  a5,   8,  \base
-    sd_base  a6,   9,  \base
-    sd_base  a7,   10, \base
-    sd_base  t3,   11, \base
-    sd_base  t4,   12, \base
-    sd_base  t5,   13, \base
-    sd_base  t6,   14, \base
-    fsd_base ft0,  15, \base
-    fsd_base ft1,  16, \base
-    fsd_base ft2,  17, \base
-    fsd_base ft3,  18, \base
-    fsd_base ft4,  19, \base
-    fsd_base ft5,  20, \base
-    fsd_base ft6,  21, \base
-    fsd_base ft7,  22, \base
-    fsd_base fa0,  23, \base
-    fsd_base fa1,  24, \base
-    fsd_base fa2,  25, \base
-    fsd_base fa3,  26, \base
-    fsd_base fa4,  27, \base
-    fsd_base fa5,  28, \base
-    fsd_base fa6,  29, \base
-    fsd_base fa7,  30, \base
-    fsd_base ft8,  31, \base
-    fsd_base ft9,  32, \base
-    fsd_base ft10, 33, \base
-    fsd_base ft11, 34, \base
+// base: 要保存到的基地址
+// off: 基地址的偏移
+.macro caller_regs_save base, off
+    sd_base  ra,   0  + \off, \base
+    sd_base  t0,   1  + \off, \base
+    sd_base  t2,   2  + \off, \base
+    sd_base  a0,   3  + \off, \base
+    sd_base  a1,   4  + \off, \base
+    sd_base  a2,   5  + \off, \base
+    sd_base  a3,   6  + \off, \base
+    sd_base  a4,   7  + \off, \base
+    sd_base  a5,   8  + \off, \base
+    sd_base  a6,   9  + \off, \base
+    sd_base  a7,   10 + \off, \base
+    sd_base  t3,   11 + \off, \base
+    sd_base  t4,   12 + \off, \base
+    sd_base  t5,   13 + \off, \base
+    sd_base  t6,   14 + \off, \base
+    fsd_base ft0,  15 + \off, \base
+    fsd_base ft1,  16 + \off, \base
+    fsd_base ft2,  17 + \off, \base
+    fsd_base ft3,  18 + \off, \base
+    fsd_base ft4,  19 + \off, \base
+    fsd_base ft5,  20 + \off, \base
+    fsd_base ft6,  21 + \off, \base
+    fsd_base ft7,  22 + \off, \base
+    fsd_base fa0,  23 + \off, \base
+    fsd_base fa1,  24 + \off, \base
+    fsd_base fa2,  25 + \off, \base
+    fsd_base fa3,  26 + \off, \base
+    fsd_base fa4,  27 + \off, \base
+    fsd_base fa5,  28 + \off, \base
+    fsd_base fa6,  29 + \off, \base
+    fsd_base fa7,  30 + \off, \base
+    fsd_base ft8,  31 + \off, \base
+    fsd_base ft9,  32 + \off, \base
+    fsd_base ft10, 33 + \off, \base
+    fsd_base ft11, 34 + \off, \base
 .endm
 
 // 恢复调用者保存寄存器
-.macro caller_regs_load base
-    ld_base  ra,   0,  \base
-    ld_base  t0,   1,  \base
-    ld_base  t2,   2,  \base
-    ld_base  a0,   3,  \base
-    ld_base  a1,   4,  \base
-    ld_base  a2,   5,  \base
-    ld_base  a3,   6,  \base
-    ld_base  a4,   7,  \base
-    ld_base  a5,   8,  \base
-    ld_base  a6,   9,  \base
-    ld_base  a7,   10, \base
-    ld_base  t3,   11, \base
-    ld_base  t4,   12, \base
-    ld_base  t5,   13, \base
-    ld_base  t6,   14, \base
-    fld_base ft0,  15, \base
-    fld_base ft1,  16, \base
-    fld_base ft2,  17, \base
-    fld_base ft3,  18, \base
-    fld_base ft4,  19, \base
-    fld_base ft5,  20, \base
-    fld_base ft6,  21, \base
-    fld_base ft7,  22, \base
-    fld_base fa0,  23, \base
-    fld_base fa1,  24, \base
-    fld_base fa2,  25, \base
-    fld_base fa3,  26, \base
-    fld_base fa4,  27, \base
-    fld_base fa5,  28, \base
-    fld_base fa6,  29, \base
-    fld_base fa7,  30, \base
-    fld_base ft8,  31, \base
-    fld_base ft9,  32, \base
-    fld_base ft10, 33, \base
-    fld_base ft11, 34, \base
+// base: 要恢复的基地址
+// off: 基地址的偏移
+.macro caller_regs_load base, off
+    ld_base  ra,   0  + \off, \base
+    ld_base  t0,   1  + \off, \base
+    ld_base  t2,   2  + \off, \base
+    ld_base  a0,   3  + \off, \base
+    ld_base  a1,   4  + \off, \base
+    ld_base  a2,   5  + \off, \base
+    ld_base  a3,   6  + \off, \base
+    ld_base  a4,   7  + \off, \base
+    ld_base  a5,   8  + \off, \base
+    ld_base  a6,   9  + \off, \base
+    ld_base  a7,   10 + \off, \base
+    ld_base  t3,   11 + \off, \base
+    ld_base  t4,   12 + \off, \base
+    ld_base  t5,   13 + \off, \base
+    ld_base  t6,   14 + \off, \base
+    fld_base ft0,  15 + \off, \base
+    fld_base ft1,  16 + \off, \base
+    fld_base ft2,  17 + \off, \base
+    fld_base ft3,  18 + \off, \base
+    fld_base ft4,  19 + \off, \base
+    fld_base ft5,  20 + \off, \base
+    fld_base ft6,  21 + \off, \base
+    fld_base ft7,  22 + \off, \base
+    fld_base fa0,  23 + \off, \base
+    fld_base fa1,  24 + \off, \base
+    fld_base fa2,  25 + \off, \base
+    fld_base fa3,  26 + \off, \base
+    fld_base fa4,  27 + \off, \base
+    fld_base fa5,  28 + \off, \base
+    fld_base fa6,  29 + \off, \base
+    fld_base fa7,  30 + \off, \base
+    fld_base ft8,  31 + \off, \base
+    fld_base ft9,  32 + \off, \base
+    fld_base ft10, 33 + \off, \base
+    fld_base ft11, 34 + \off, \base
 .endm
 
 // 保存被调用者保存寄存器
-.macro callee_regs_save base
-    sd_base  sp,   0,  \base
-    sd_base  s0,   1,  \base
-    sd_base  s1,   2,  \base
-    sd_base  s2,   3,  \base
-    sd_base  s3,   4,  \base
-    sd_base  s4,   5,  \base
-    sd_base  s5,   6,  \base
-    sd_base  s6,   7,  \base
-    sd_base  s7,   8,  \base
-    sd_base  s8,   9,  \base
-    sd_base  s9,   10, \base
-    sd_base  s10,  11, \base
-    sd_base  s11,  12, \base
-    fsd_base fs0,  13, \base
-    fsd_base fs1,  14, \base
-    fsd_base fs2,  15, \base
-    fsd_base fs3,  16, \base
-    fsd_base fs4,  17, \base
-    fsd_base fs5,  18, \base
-    fsd_base fs6,  19, \base
-    fsd_base fs7,  20, \base
-    fsd_base fs8,  21, \base
-    fsd_base fs9,  22, \base
-    fsd_base fs10, 23, \base
-    fsd_base fs11, 24, \base
+// base: 要保存的基地址
+// off: 基地址的偏移
+.macro callee_regs_save base, off
+    sd_base  sp,   0  + \off, \base
+    sd_base  s0,   1  + \off, \base
+    sd_base  s1,   2  + \off, \base
+    sd_base  s2,   3  + \off, \base
+    sd_base  s3,   4  + \off, \base
+    sd_base  s4,   5  + \off, \base
+    sd_base  s5,   6  + \off, \base
+    sd_base  s6,   7  + \off, \base
+    sd_base  s7,   8  + \off, \base
+    sd_base  s8,   9  + \off, \base
+    sd_base  s9,   10 + \off, \base
+    sd_base  s10,  11 + \off, \base
+    sd_base  s11,  12 + \off, \base
+    fsd_base fs0,  13 + \off, \base
+    fsd_base fs1,  14 + \off, \base
+    fsd_base fs2,  15 + \off, \base
+    fsd_base fs3,  16 + \off, \base
+    fsd_base fs4,  17 + \off, \base
+    fsd_base fs5,  18 + \off, \base
+    fsd_base fs6,  19 + \off, \base
+    fsd_base fs7,  20 + \off, \base
+    fsd_base fs8,  21 + \off, \base
+    fsd_base fs9,  22 + \off, \base
+    fsd_base fs10, 23 + \off, \base
+    fsd_base fs11, 24 + \off, \base
 .endm
 
 // 恢复被调用者保存寄存器
-.macro callee_regs_load base
-    ld_base  sp,   0,  \base
-    ld_base  s0,   1,  \base
-    ld_base  s1,   2,  \base
-    ld_base  s2,   3,  \base
-    ld_base  s3,   4,  \base
-    ld_base  s4,   5,  \base
-    ld_base  s5,   6,  \base
-    ld_base  s6,   7,  \base
-    ld_base  s7,   8,  \base
-    ld_base  s8,   9,  \base
-    ld_base  s9,   10, \base
-    ld_base  s10,  11, \base
-    ld_base  s11,  12, \base
-    fld_base fs0,  13, \base
-    fld_base fs1,  14, \base
-    fld_base fs2,  15, \base
-    fld_base fs3,  16, \base
-    fld_base fs4,  17, \base
-    fld_base fs5,  18, \base
-    fld_base fs6,  19, \base
-    fld_base fs7,  20, \base
-    fld_base fs8,  21, \base
-    fld_base fs9,  22, \base
-    fld_base fs10, 23, \base
-    fld_base fs11, 24, \base
+// base: 要恢复的基地址
+// off: 基地址的偏移
+.macro callee_regs_load base, off
+    ld_base  sp,   0  + \off, \base
+    ld_base  s0,   1  + \off, \base
+    ld_base  s1,   2  + \off, \base
+    ld_base  s2,   3  + \off, \base
+    ld_base  s3,   4  + \off, \base
+    ld_base  s4,   5  + \off, \base
+    ld_base  s5,   6  + \off, \base
+    ld_base  s6,   7  + \off, \base
+    ld_base  s7,   8  + \off, \base
+    ld_base  s8,   9  + \off, \base
+    ld_base  s9,   10 + \off, \base
+    ld_base  s10,  11 + \off, \base
+    ld_base  s11,  12 + \off, \base
+    fld_base fs0,  13 + \off, \base
+    fld_base fs1,  14 + \off, \base
+    fld_base fs2,  15 + \off, \base
+    fld_base fs3,  16 + \off, \base
+    fld_base fs4,  17 + \off, \base
+    fld_base fs5,  18 + \off, \base
+    fld_base fs6,  19 + \off, \base
+    fld_base fs7,  20 + \off, \base
+    fld_base fs8,  21 + \off, \base
+    fld_base fs9,  22 + \off, \base
+    fld_base fs10, 23 + \off, \base
+    fld_base fs11, 24 + \off, \base
 .endm
 
 // 保存 context_t
 .macro context_save base
-    // 跳过保存 coreid 的 8bytes
-    addi \base, \base, REG_BYTES
-    sd_base ra, 0, \base
+    // @todo 临时设置为 ra
+    sd_base          ra,      0,                    \base
+    sd_base          ra,      1,                    \base
+    callee_regs_save \base,   2
 
-    addi \base, \base, REG_BYTES
-    callee_regs_save \base
+    csrr             t6,       satp
+    sd_base          t6,       2 + CALLEE_SAVE_REGS, \base
 
-    addi \base, \base, CALLEE_SIZE
-    csrr t6, satp
-    sd_base t6, 0, \base
+    csrr             t6,       sepc
+    sd_base          t6,       3 + CALLEE_SAVE_REGS, \base
 
-    addi \base, \base, REG_BYTES
-    csrr t6, sepc
-    sd_base t6, 0, \base
+    csrr             t6,       sstatus
+    sd_base          t6,       4 + CALLEE_SAVE_REGS, \base
 
-    addi \base, \base, REG_BYTES
-    csrr t6, sstatus
-    sd_base t6, 0, \base
+    csrr             t6,       sie
+    sd_base          t6,       5 + CALLEE_SAVE_REGS, \base
 
-    addi \base, \base, REG_BYTES
-    csrr t6, sie
-    sd_base t6, 0, \base
+    csrr             t6,       sip
+    sd_base          t6,       6 + CALLEE_SAVE_REGS, \base
 
-    addi \base, \base, REG_BYTES
-    csrr t6, sip
-    sd_base t6, 0, \base
-
-    addi \base, \base, REG_BYTES
-    csrr t6, sscratch
-    sd_base t6, 0, \base
+    csrr             t6,       sscratch
+    sd_base          t6,       7 + CALLEE_SAVE_REGS, \base
 .endm
 
 // 恢复 context_t
 .macro context_load base
-    // 跳过保存 coreid 的 8bytes
-    addi \base, \base, REG_BYTES
-    ld_base ra, 0, \base
+    ld_base          ra,       0,                    \base
+    ld_base          ra,       1,                    \base
+    callee_regs_load \base,    2
 
-    addi \base, \base, REG_BYTES
-    callee_regs_load \base
+    ld_base          t6,       2 + CALLEE_SAVE_REGS, \base
+    csrw             satp,     t6
 
-    addi \base, \base, CALLEE_SIZE
-    ld_base t6, 0, \base
-    csrw satp, t6
+    ld_base          t6,       3 + CALLEE_SAVE_REGS, \base
+    csrw             sepc,     t6
 
-    addi \base, \base, REG_BYTES
-    ld_base t6, 0, \base
-    csrw sepc, t6
+    ld_base          t6,       4 + CALLEE_SAVE_REGS, \base
+    csrw             sstatus,  t6
 
-    addi \base, \base, REG_BYTES
-    ld_base t6, 0, \base
-    csrw sstatus, t6
+    ld_base          t6,       5 + CALLEE_SAVE_REGS, \base
+    csrw             sie,      t6
 
-    addi \base, \base, REG_BYTES
-    ld_base t6, 0, \base
-    csrw sie, t6
+    ld_base          t6,       6 + CALLEE_SAVE_REGS, \base
+    csrw             sip,      t6
 
-    addi \base, \base, REG_BYTES
-    ld_base t6, 0, \base
-    csrw sip, t6
-
-    addi \base, \base, REG_BYTES
-    ld_base t6, 0, \base
-    csrw sscratch, t6
+    ld_base          t6,       7 + CALLEE_SAVE_REGS, \base
+    csrw             sscratch, t6
 .endm

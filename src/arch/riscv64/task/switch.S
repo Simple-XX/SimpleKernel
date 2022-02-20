@@ -24,36 +24,29 @@
 .globl context_init
 .align 4
 context_init:
-    // 跳过保存 coreid 的 8bytes
-    addi a0, a0, REG_BYTES
-    sd_base ra, 0, a0
+    // @todo 临时设置为 ra
+    sd_base          ra,       0,                    a0
+    sd_base          ra,       1,                    a0
 
-    addi a0, a0, REG_BYTES
-    callee_regs_save a0
+    callee_regs_save a0,                             2
 
-    addi a0, a0, CALLEE_SIZE
-    csrr t6, satp
-    sd_base t6, 0, a0
+    csrr             t6,       satp
+    sd_base          t6,       2 + CALLEE_SAVE_REGS, a0
 
-    addi a0, a0, REG_BYTES
-    csrr t6, sepc
-    sd_base t6, 0, a0
+    csrr             t6,       sepc
+    sd_base          t6,       3 + CALLEE_SAVE_REGS, a0
 
-    addi a0, a0, REG_BYTES
-    csrr t6, sstatus
-    sd_base t6, 0, a0
+    csrr             t6,       sstatus
+    sd_base          t6,       4 + CALLEE_SAVE_REGS, a0
 
-    addi a0, a0, REG_BYTES
-    csrr t6, sie
-    sd_base t6, 0, a0
+    csrr             t6,       sie
+    sd_base          t6,       5 + CALLEE_SAVE_REGS, a0
 
-    addi a0, a0, REG_BYTES
-    csrr t6, sip
-    sd_base t6, 0, a0
+    csrr             t6,       sip
+    sd_base          t6,       6 + CALLEE_SAVE_REGS, a0
 
-    addi a0, a0, REG_BYTES
-    ld_base t6, 0, a0
-    csrw sscratch, t6
+    ld_base          t6,       7 + CALLEE_SAVE_REGS, a0
+    csrw             sscratch, t6
 
     ret
 
