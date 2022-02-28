@@ -28,7 +28,7 @@ context_init:
     sd_base          ra,       0,                    a0
     sd_base          ra,       1,                    a0
 
-    callee_regs_save a0,                             2
+    callee_regs_save a0,       2
 
     csrr             t6,       satp
     sd_base          t6,       2 + CALLEE_SAVE_REGS, a0
