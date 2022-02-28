@@ -379,8 +379,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
  */
 .macro context_save _base
     // @todo 临时设置为 ra
-    sd_base          ra,      0,                    \_base
-    sd_base          ra,      1,                    \_base
+    sd_base          ra,       0,                    \_base
+    sd_base          ra,       1,                    \_base
     callee_regs_save \_base,   2
 
     csrr             t6,       satp
@@ -409,7 +409,7 @@ fld \a, ((\b) * REG_BYTES)(\c)
 .macro context_load _base
     ld_base          ra,       0,                    \_base
     ld_base          ra,       1,                    \_base
-    callee_regs_load \_base,    2
+    callee_regs_load \_base,   2
 
     ld_base          t6,       2 + CALLEE_SAVE_REGS, \_base
     csrw             satp,     t6
