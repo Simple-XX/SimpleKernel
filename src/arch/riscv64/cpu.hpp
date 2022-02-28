@@ -556,6 +556,86 @@ struct all_regs_t {
 };
 
 /**
+ * @brief 读取所有寄存器
+ * @param  _all_regs        要保存读取到的的值
+ */
+static inline void read_all_reg(all_regs_t &_all_regs) {
+    asm("mv %0, zero" : "=r"(_all_regs.xregs.zero));
+    asm("mv %0, ra" : "=r"(_all_regs.xregs.ra));
+    asm("mv %0, sp" : "=r"(_all_regs.xregs.sp));
+    asm("mv %0, gp" : "=r"(_all_regs.xregs.gp));
+    asm("mv %0, tp" : "=r"(_all_regs.xregs.tp));
+    asm("mv %0, t0" : "=r"(_all_regs.xregs.t0));
+    asm("mv %0, t1" : "=r"(_all_regs.xregs.t1));
+    asm("mv %0, t2" : "=r"(_all_regs.xregs.t2));
+    asm("mv %0, s0" : "=r"(_all_regs.xregs.s0));
+    asm("mv %0, s1" : "=r"(_all_regs.xregs.s1));
+    asm("mv %0, a0" : "=r"(_all_regs.xregs.a0));
+    asm("mv %0, a1" : "=r"(_all_regs.xregs.a1));
+    asm("mv %0, a2" : "=r"(_all_regs.xregs.a2));
+    asm("mv %0, a3" : "=r"(_all_regs.xregs.a3));
+    asm("mv %0, a4" : "=r"(_all_regs.xregs.a4));
+    asm("mv %0, a5" : "=r"(_all_regs.xregs.a5));
+    asm("mv %0, a6" : "=r"(_all_regs.xregs.a6));
+    asm("mv %0, a7" : "=r"(_all_regs.xregs.a7));
+    asm("mv %0, s2" : "=r"(_all_regs.xregs.s2));
+    asm("mv %0, s3" : "=r"(_all_regs.xregs.s3));
+    asm("mv %0, s4" : "=r"(_all_regs.xregs.s4));
+    asm("mv %0, s5" : "=r"(_all_regs.xregs.s5));
+    asm("mv %0, s6" : "=r"(_all_regs.xregs.s6));
+    asm("mv %0, s7" : "=r"(_all_regs.xregs.s7));
+    asm("mv %0, s8" : "=r"(_all_regs.xregs.s8));
+    asm("mv %0, s9" : "=r"(_all_regs.xregs.s9));
+    asm("mv %0, s10" : "=r"(_all_regs.xregs.s10));
+    asm("mv %0, s11" : "=r"(_all_regs.xregs.s11));
+    asm("mv %0, t3" : "=r"(_all_regs.xregs.t3));
+    asm("mv %0, t4" : "=r"(_all_regs.xregs.t4));
+    asm("mv %0, t5" : "=r"(_all_regs.xregs.t5));
+    asm("mv %0, t6" : "=r"(_all_regs.xregs.t6));
+
+    asm("mv %0, ft0" : "=r"(_all_regs.fregs.ft0));
+    asm("mv %0, ft1" : "=r"(_all_regs.fregs.ft1));
+    asm("mv %0, ft2" : "=r"(_all_regs.fregs.ft2));
+    asm("mv %0, ft3" : "=r"(_all_regs.fregs.ft3));
+    asm("mv %0, ft4" : "=r"(_all_regs.fregs.ft4));
+    asm("mv %0, ft5" : "=r"(_all_regs.fregs.ft5));
+    asm("mv %0, ft6" : "=r"(_all_regs.fregs.ft6));
+    asm("mv %0, ft7" : "=r"(_all_regs.fregs.ft7));
+    asm("mv %0, fs0" : "=r"(_all_regs.fregs.fs0));
+    asm("mv %0, fs1" : "=r"(_all_regs.fregs.fs1));
+    asm("mv %0, fa0" : "=r"(_all_regs.fregs.fa0));
+    asm("mv %0, fa1" : "=r"(_all_regs.fregs.fa1));
+    asm("mv %0, fa2" : "=r"(_all_regs.fregs.fa2));
+    asm("mv %0, fa3" : "=r"(_all_regs.fregs.fa3));
+    asm("mv %0, fa4" : "=r"(_all_regs.fregs.fa4));
+    asm("mv %0, fa5" : "=r"(_all_regs.fregs.fa5));
+    asm("mv %0, fa6" : "=r"(_all_regs.fregs.fa6));
+    asm("mv %0, fa7" : "=r"(_all_regs.fregs.fa7));
+    asm("mv %0, fs2" : "=r"(_all_regs.fregs.fs2));
+    asm("mv %0, fs3" : "=r"(_all_regs.fregs.fs3));
+    asm("mv %0, fs4" : "=r"(_all_regs.fregs.fs4));
+    asm("mv %0, fs5" : "=r"(_all_regs.fregs.fs5));
+    asm("mv %0, fs6" : "=r"(_all_regs.fregs.fs6));
+    asm("mv %0, fs7" : "=r"(_all_regs.fregs.fs7));
+    asm("mv %0, fs8" : "=r"(_all_regs.fregs.fs8));
+    asm("mv %0, fs9" : "=r"(_all_regs.fregs.fs9));
+    asm("mv %0, fs10" : "=r"(_all_regs.fregs.fs10));
+    asm("mv %0, fs11" : "=r"(_all_regs.fregs.fs11));
+    asm("mv %0, ft8" : "=r"(_all_regs.fregs.ft8));
+    asm("mv %0, ft9" : "=r"(_all_regs.fregs.ft9));
+    asm("mv %0, ft10" : "=r"(_all_regs.fregs.ft10));
+    asm("mv %0, ft11" : "=r"(_all_regs.fregs.ft11));
+
+    asm volatile("csrr %0, sepc" : "=r"(_all_regs.sepc));
+    asm volatile("csrr %0, stval" : "=r"(_all_regs.stval));
+    asm volatile("csrr %0, scause" : "=r"(_all_regs.scause));
+    asm volatile("csrr %0, sstatus" : "=r"(_all_regs.sstatus));
+    asm volatile("csrr %0, sscratch" : "=r"(_all_regs.sscratch));
+
+    return;
+}
+
+/**
  * @brief 设置当前 core id
  * @param  _hartid          要设置的值
  * @todo 不使用 tp
