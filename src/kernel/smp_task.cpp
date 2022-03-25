@@ -77,15 +77,19 @@ void SMP_TASK::free_pid(pid_t _pid) {
 }
 
 void SMP_TASK::switch_task(void) {
-//#define DEBUG
-#ifdef DEBUG
-    info("switch_task\n");
-#undef DEBUG
-#endif
     // 获取下一个线程并替换为当前线程下一个线程
     auto tmp = get_next_task();
     // 设置 core 当前线程信息
     core_t::set_curr_task(tmp);
+#define DEBUG
+#ifdef DEBUG
+    info("switch_task core_t::cores[CPU::get_curr_core_id()].sched_task: \n");
+    std::cout << *core_t::cores[CPU::get_curr_core_id()].sched_task
+              << std::endl;
+    info("switch_task core_t::get_curr_task(): \n");
+    std::cout << *core_t::get_curr_task() << std::endl;
+#undef DEBUG
+#endif
     // 切换
     switch_context(&core_t::cores[CPU::get_curr_core_id()].sched_task->context,
                    &core_t::get_curr_task()->context);

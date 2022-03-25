@@ -101,6 +101,8 @@ void kernel_main(uintptr_t _hartid, uintptr_t _dtb_addr) {
     else {
         // 唤醒 core0
         start_all_core(_dtb_addr);
+        while (1)
+            ;
         // 执行其它 core 的初始化
         kernel_main_smp();
     }
