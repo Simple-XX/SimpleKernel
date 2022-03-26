@@ -40,6 +40,99 @@ static constexpr const uint64_t SSTATUS_SPIE = 1 << 5;
 static constexpr const uint64_t SSTATUS_SPP = 1 << 8;
 
 /**
+ * @brief mstatus 寄存器定义
+ */
+struct mstatus_t {
+    union {
+        struct {
+            // interrupt enable
+            uint64_t ie : 4;
+            // previous interrupt enable
+            uint64_t pie : 4;
+            // previous mode (supervisor)
+            uint64_t spp : 1;
+            uint64_t unused1 : 2;
+            // previous mode (machine)
+            uint64_t mpp : 2;
+            // FPU status
+            uint64_t fs : 2;
+            // extensions status
+            uint64_t xs : 2;
+            // modify privilege
+            uint64_t mprv : 1;
+            // permit supervisor user memory access
+            uint64_t sum : 1;
+            // make executable readable
+            uint64_t mxr : 1;
+            // trap virtual memory
+            uint64_t tvm : 1;
+            // timeout wait (trap WFI)
+            uint64_t tw : 1;
+            // trap SRET
+            uint64_t tsr : 1;
+            uint64_t unused2 : 9;
+            // U-mode XLEN
+            uint64_t uxl : 2;
+            // S-mode XLEN
+            uint64_t sxl : 2;
+            uint64_t unused3 : 27;
+            // status dirty
+            uint64_t sd : 1;
+        };
+        uint64_t val;
+    };
+
+    mstatus_t(void) {
+        return;
+    }
+    mstatus_t(uint64_t _val) : val(_val) {
+        return;
+    }
+};
+
+/**
+ * @brief sstatus 寄存器定义
+ */
+struct sstatus_t {
+    union {
+        struct {
+            // interrupt enable
+            uint64_t ie : 2;
+            uint64_t unused1 : 2;
+            // previous interrupt enable
+            uint64_t pie : 2;
+            uint64_t unused2 : 2;
+            // previous mode (supervisor)
+            uint64_t spp : 1;
+            uint64_t unused3 : 4;
+            // FPU status
+            uint64_t fs : 2;
+            // extensions status
+            uint64_t xs : 2;
+            uint64_t unused4 : 1;
+            // permit supervisor user memory access
+            uint64_t sum : 1;
+            // make executable readable
+            uint64_t mxr : 1;
+            uint64_t unused5 : 12;
+            // U-mode XLEN
+            uint64_t uxl : 2;
+            uint64_t unused6 : 29;
+            // status dirty
+            uint64_t sd : 1;
+        };
+        uint64_t val;
+    };
+
+    sstatus_t(void) {
+        return;
+    }
+    sstatus_t(uint64_t _val) : val(_val) {
+        return;
+    }
+};
+
+/**
  * @brief 读取 sstatus 寄存器
  * @return uint64_t         读取到的值
  */
