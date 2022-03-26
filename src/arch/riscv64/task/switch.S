@@ -63,6 +63,7 @@ switch_context:
     context_save a0
     // 恢复 _new
     context_load a1
+    sfence.vma
     // 跳转到 _new->ra 执行
     ret
 
@@ -76,5 +77,6 @@ switch_context:
 switch_os:
     // 恢复 _new
     context_load a0
+    sfence.vma
     // 跳转到 _new->ra 执行
     ret
