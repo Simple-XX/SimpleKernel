@@ -133,23 +133,24 @@ bool SMP_TASK::init(void) {
     // 原地跳转，填充启动进程的 task_t 信息
     context_init(&task->context);
     // 初始化 core 信息
-    core_t::cores[CPU::get_curr_core_id()].core_id    = CPU::get_curr_core_id();
-    core_t::cores[CPU::get_curr_core_id()].curr_task  = task;
-    core_t::cores[CPU::get_curr_core_id()].sched_task = task;
+    core_t::cores[COMMON::BOOT_HART_ID].core_id    = COMMON::BOOT_HART_ID;
+    core_t::cores[COMMON::BOOT_HART_ID].curr_task  = task;
+    core_t::cores[COMMON::BOOT_HART_ID].sched_task = task;
 
     // 创建 idle 任务
-    idle_task[CPU::get_curr_core_id()]        = new task_t("idle", idle);
-    idle_task[CPU::get_curr_core_id()]->state = RUNNING;
-    idle_task[CPU::get_curr_core_id()]->context.sstatus =
+    idle_task[COMMON::BOOT_HART_ID]        = new task_t("idle", idle);
+    idle_task[COMMON::BOOT_HART_ID]->state = RUNNING;
+    idle_task[COMMON::BOOT_HART_ID]->context.sstatus =
         task->context.sstatus | CPU::SSTATUS_SIE;
-    idle_task[CPU::get_curr_core_id()]->context.sie =
+    idle_task[COMMON::BOOT_HART_ID]->context.sie =
         task->context.sie | CPU::SIE_STIE;
-    idle_task[CPU::get_curr_core_id()]->context.sip = task->context.sip;
+    idle_task[COMMON::BOOT_HART_ID]->context.sip = task->context.sip;
     info("smp_task init.\n");
     return true;
 }
 
 bool SMP_TASK::init_other_core(void) {
+    assert(CPU::get_curr_core_id() != COMMON::BOOT_HART_ID);
     // 当前进程
     task_t *task = new task_t("init other", nullptr);
     task->hartid = CPU::get_curr_core_id();
