@@ -143,16 +143,46 @@ static inline void WRITE_STVEC(uint64_t _x) {
     return;
 }
 
-// use riscv's sv39 page table scheme.
-static constexpr const uint64_t SATP_SV39 = (uint64_t)8 << 60;
+/**
+ * @brief satp 结构
+ */
+struct satp_t {
+    enum {
+        NONE = 0,
+        SV39 = 8,
+        SV48 = 9,
+        SV57 = 10,
+        SV64 = 11,
+    };
+
+    union {
+        struct {
+            uint64_t ppn : 44;
+            uint64_t asid : 16;
+            uint64_t mode : 4;
+        };
+        uint64_t val;
+    };
+
+    satp_t(void) {
+        return;
+    }
+    satp_t(uint64_t _val) : val(_val) {
+        return;
+    }
+};
 
 /**
  * @brief 设置 sv39 虚拟内存模式
  * @param  _pgd             要设置的页目录
  * @return constexpr uintptr_t 设置好的页目录
  */
-static constexpr uintptr_t SET_SV39(uintptr_t _pgd) {
-    return (SATP_SV39 | (_pgd >> 12));
+static uintptr_t SET_SV39(uintptr_t _pgd) {
+    satp_t satp;
+    satp.val  = _pgd >> 12;
+    satp.asid = 0;
+    satp.mode = satp_t::SV39;
+    return satp.val;
 }
 
 /**
@@ -160,17 +190,21 @@ static constexpr uintptr_t SET_SV39(uintptr_t _pgd) {
  * @param  _x               要设置的页目录
  * @note supervisor address translation and protection; holds the address of
  * the page table.
+ * @todo 需要判断 _x 是否已经处理过
  */
 static inline void SET_PGD(uintptr_t _x) {
-    uintptr_t old;
+    satp_t satp_old;
+    satp_t satp_new;
+    satp_new.val  = _x;
+    satp_new.asid = 0;
     // 读取现在的 pgd
-    __asm__ volatile("csrr %0, satp" : "=r"(old));
+    __asm__ volatile("csrr %0, satp" : "=r"(satp_old));
     // 如果开启了 sv39
-    if ((old & SATP_SV39) == SATP_SV39) {
+    if (satp_old.mode == satp_t::SV39) {
         // 将新的页目录也设为开启
-        _x = SET_SV39(_x);
+        satp_new.mode = satp_t::SV39;
     }
-    __asm__ volatile("csrw satp, %0" : : "r"(_x));
+    __asm__ volatile("csrw satp, %0" : : "r"(satp_new));
     return;
 }
 
@@ -179,14 +213,13 @@ static inline void SET_PGD(uintptr_t _x) {
  * @return uintptr_t        页目录
  */
 static inline uintptr_t GET_PGD(void) {
-    uintptr_t x;
-    __asm__ volatile("csrr %0, satp" : "=r"(x));
+    satp_t satp;
+    __asm__ volatile("csrr %0, satp" : "=r"(satp));
     // 如果开启了虚拟内存，恢复为原始格式
-    if ((x & SATP_SV39) == SATP_SV39) {
-        x = (x & 0x7FFFFFFFFF);
-        x = (x << 12);
+    if (satp.mode == satp_t::SV39) {
+        return satp.ppn << 12;
     }
-    return x;
+    return satp.val;
 }
 
 /**
