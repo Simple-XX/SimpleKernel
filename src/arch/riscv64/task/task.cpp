@@ -54,7 +54,8 @@ task_t::~task_t(void) {
 }
 
 std::ostream &operator<<(std::ostream &_os, const task_t &_task) {
-    printf("%s: hartid: 0x%X, pid 0x%X, state 0x%X", _task.name.c_str(),
-           _task.hartid, _task.pid, _task.state);
+    printf("%s: hartid: 0x%X, pid 0x%X, state 0x%X, parent: 0x%X, stack: 0x%X",
+           _task.name.c_str(), _task.hartid, _task.pid, _task.state,
+           _task.parent, _task.stack);
     return _os;
 }
