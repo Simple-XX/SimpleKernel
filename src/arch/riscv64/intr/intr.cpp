@@ -29,13 +29,13 @@ extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
  */
 static void switch_sched(void) {
     task_t *old = core_t::get_curr_task();
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
     info("switch_sched\n");
-    std::cout << "old->context: \n" << old->context << std::endl;
+    std::cout << "old: \n" << *old << std::endl;
     std::cout << "core_t::cores[" << CPU::get_curr_core_id()
-              << "].sched_task->context: \n"
-              << core_t::cores[CPU::get_curr_core_id()].sched_task->context
+              << "].sched_task: \n"
+              << *core_t::cores[CPU::get_curr_core_id()].sched_task
               << std::endl;
 #undef DEBUG
 #endif
@@ -65,13 +65,6 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_all_regs;
     (void)_sstatus;
     (void)_sscratch;
-    _sepc   = CPU::READ_SEPC();
-    _stval  = CPU::READ_STVAL();
-    _scause = CPU::READ_SCAUSE();
-    //    _all_regs=CPU::READ_all_reg();
-    _sstatus  = CPU::READ_SSTATUS();
-    _sscratch = CPU::READ_SSCRATCH();
-
 #define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sstatus: "
@@ -94,10 +87,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 如果是时钟中断
         if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
             // 设置 sepc，切换到内核线程
-            //            _all_regs->sepc =
-            //            reinterpret_cast<uintptr_t>(&switch_sched);
-            switch_sched();
-            //            CPU::WRITE_SEPC(reinterpret_cast<uintptr_t>(&switch_sched));
+            _all_regs->sepc = reinterpret_cast<uintptr_t>(&switch_sched);
         }
     }
     else {
