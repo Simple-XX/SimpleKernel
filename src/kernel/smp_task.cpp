@@ -36,6 +36,11 @@ task_t *idle_task[COMMON::CORES_COUNT] = {0};
  */
 void idle(void) {
     while (1) {
+#define DEBUG
+#ifdef DEBUG
+        info("idle running\n");
+#undef DEBUG
+#endif
 #if defined(__riscv)
         asm("wfi");
 #elif defined(__i386__) || defined(__x86_64__)
