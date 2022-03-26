@@ -29,10 +29,10 @@ OPENSBI::sbiret_t OPENSBI::ecall(unsigned long _arg0, unsigned long _arg1,
     register uintptr_t a5 asm("a5") = (uintptr_t)(_arg5);
     register uintptr_t a6 asm("a6") = (uintptr_t)(_fid);
     register uintptr_t a7 asm("a7") = (uintptr_t)(_eid);
-    asm volatile("ecall"
-                 : "+r"(a0), "+r"(a1)
-                 : "r"(a2), "r"(a3), "r"(a4), "r"(a5), "r"(a6), "r"(a7)
-                 : "memory");
+    asm("ecall"
+        : "+r"(a0), "+r"(a1)
+        : "r"(a2), "r"(a3), "r"(a4), "r"(a5), "r"(a6), "r"(a7)
+        : "memory");
     ret.error = a0;
     ret.value = a1;
     return ret;
