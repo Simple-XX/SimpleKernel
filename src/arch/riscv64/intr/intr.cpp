@@ -109,55 +109,6 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 extern "C" void trap_entry(void);
 
 /**
- * @brief 缺页读处理
- */
-int32_t pg_load_excp(int, char **) {
-    uintptr_t addr = CPU::READ_STVAL();
-    uintptr_t pa   = 0x0;
-    auto      is_mmap =
-        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
-    // 如果 is_mmap 为 true，说明已经应映射过了
-    if (is_mmap == true) {
-        // 直接映射
-        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
-                                 VMM_PAGE_READABLE);
-    }
-    else {
-        // 分配一页物理内存进行映射
-        pa = PMM::get_instance().alloc_page_kernel();
-        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
-                                 VMM_PAGE_READABLE);
-    }
-    info("pg_load_excp done: 0x%p.\n", addr);
-    return 0;
-}
-
-/**
- * @brief 缺页写处理
- * @todo 需要读权限吗？测试发现没有读权限不行，原因未知
- */
-int32_t pg_store_excp(int, char **) {
-    uintptr_t addr = CPU::READ_STVAL();
-    uintptr_t pa   = 0x0;
-    auto      is_mmap =
-        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
-    // 如果 is_mmap 为 true，说明已经应映射过了
-    if (is_mmap == true) {
-        // 直接映射
-        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
-                                 VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
-    }
-    else {
-        // 分配一页物理内存进行映射
-        pa = PMM::get_instance().alloc_page_kernel();
-        VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, pa,
-                                 VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
-    }
-    info("pg_store_excp done: 0x%p.\n", addr);
-    return 0;
-}
-
-/**
  * @brief 默认使用的中断处理函数
  */
 int32_t handler_default(int, char **) {

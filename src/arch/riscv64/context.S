@@ -54,9 +54,6 @@ fld \a, ((\b) * REG_BYTES)(\c)
  * @param  _base           要保存到的基地址
  */
 .macro all_regs_save _base
-    // 在栈上留出保存寄存器的空间
-    addi sp, sp, -ALL_SIZE
-
     sd_base  zero, 0,  \_base
     sd_base  ra,   1,  \_base
     sd_base  sp,   2,  \_base
@@ -216,9 +213,6 @@ fld \a, ((\b) * REG_BYTES)(\c)
     fld_base ft9,  61, \_base
     fld_base ft10, 62, \_base
     fld_base ft11, 63, \_base
-
-    // 手动释放栈上用于保存寄存器的空间
-    addi     sp,   sp, ALL_SIZE
 .endm
 
 /**
