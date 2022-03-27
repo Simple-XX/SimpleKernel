@@ -40,7 +40,7 @@ trap_entry:
     // 从栈上恢复所有寄存器
     all_regs_load sp
     // 释放栈上用于保存寄存器的空间
-    addi sp,   sp, ALL_SIZE
+    addi sp, sp, ALL_SIZE
 
     // 跳转到 sepc 处执行
     sret
