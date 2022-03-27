@@ -250,4 +250,15 @@ public:
     void init(void);
 };
 
+/**
+ * @brief 缺页读处理
+ */
+int32_t pg_load_excp(int, char **);
+
+/**
+ * @brief 缺页写处理
+ * @todo 需要读权限吗？测试发现没有读权限不行，原因未知
+ */
+int32_t pg_store_excp(int, char **);
+
 #endif /* _INTR_H_ */
