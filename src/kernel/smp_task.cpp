@@ -140,11 +140,13 @@ bool SMP_TASK::init(void) {
     // 创建 idle 任务
     idle_task[COMMON::BOOT_HART_ID]        = new task_t("idle", idle);
     idle_task[COMMON::BOOT_HART_ID]->state = RUNNING;
+#if defined(__riscv)
     idle_task[COMMON::BOOT_HART_ID]->context.sstatus =
         task->context.sstatus | CPU::SSTATUS_SIE;
     idle_task[COMMON::BOOT_HART_ID]->context.sie =
         task->context.sie | CPU::SIE_STIE;
     idle_task[COMMON::BOOT_HART_ID]->context.sip = task->context.sip;
+#endif
     info("smp_task init.\n");
     return true;
 }
@@ -164,13 +166,14 @@ bool SMP_TASK::init_other_core(void) {
     core_t::cores[CPU::get_curr_core_id()].sched_task = task;
     // 创建 idle 任务
     idle_task[CPU::get_curr_core_id()]        = new task_t("idle", idle);
+#if defined(__riscv)
     idle_task[CPU::get_curr_core_id()]->state = RUNNING;
     idle_task[CPU::get_curr_core_id()]->context.sstatus =
         task->context.sstatus | CPU::SSTATUS_SIE;
     idle_task[CPU::get_curr_core_id()]->context.sie =
         task->context.sie | CPU::SIE_STIE;
     idle_task[CPU::get_curr_core_id()]->context.sip = task->context.sip;
-
+#endif
     info("smp_task other init.\n");
     return true;
 }

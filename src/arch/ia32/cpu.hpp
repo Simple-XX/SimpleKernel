@@ -616,6 +616,7 @@ struct context_t {
     uintptr_t            rflags;
     uintptr_t            rsp;
     uintptr_t            ss;
+    uintptr_t            coreid;
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const context_t &_context) {
         printf("rip: 0x%p, ", _context.rip);
@@ -649,6 +650,7 @@ struct context_t {
     uintptr_t            rflags;
     uintptr_t            rsp;
     uintptr_t            ss;
+    uintptr_t            coreid;
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const context_t &_context) {
         printf("rip: 0x%p, ", _context.rip);
