@@ -33,8 +33,9 @@ trap_entry:
     csrr a1, stval
     csrr a2, scause
     mv   a3, sp
-    csrr a4, sstatus
-    csrr a5, sscratch
+    csrr a4, sie
+    csrr a5, sstatus
+    csrr a6, sscratch
     jal trap_handler
 
     // 从栈上恢复所有寄存器
