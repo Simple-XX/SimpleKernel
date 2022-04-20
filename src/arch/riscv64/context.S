@@ -17,7 +17,7 @@
 // 寄存器长度，8 字节
 .equ REG_BYTES, 8
 // 所有寄存器数量
-.equ ALL_REGS, 69
+.equ ALL_REGS, 70
 // 被调用者保存寄存器数量
 .equ CALLEE_SAVE_REGS, 25
 // 调用者保存寄存器数量
@@ -126,10 +126,12 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base  t0,   65, \_base
     csrr     t0,   scause
     sd_base  t0,   66, \_base
-    csrr     t0,   sstatus
+    csrr     t0,   sie
     sd_base  t0,   67, \_base
-    csrr     t0,   sscratch
+    csrr     t0,   sstatus
     sd_base  t0,   68, \_base
+    csrr     t0,   sscratch
+    sd_base  t0,   69, \_base
 .endm
 
 /**
@@ -144,8 +146,10 @@ fld \a, ((\b) * REG_BYTES)(\c)
     ld_base  t0,   66, \_base
     csrw     scause,   t0
     ld_base  t0,   67, \_base
-    csrw     sstatus,  t0
+    csrw     sie,  t0
     ld_base  t0,   68, \_base
+    csrw     sstatus,  t0
+    ld_base  t0,   69, \_base
     csrw     sscratch, t0
 
     ld_base  zero, 0,  \_base

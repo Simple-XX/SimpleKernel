@@ -56,20 +56,22 @@ static void switch_sched(void) {
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, CPU::all_regs_t *_all_regs,
-                             uintptr_t _sstatus, uintptr_t _sscratch) {
+                             uintptr_t _sie, uintptr_t _sstatus,
+                             uintptr_t _sscratch) {
     CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
     (void)_scause;
     (void)_all_regs;
+    (void)_sie;
     (void)_sstatus;
     (void)_sscratch;
 #define DEBUG
 #ifdef DEBUG
-    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sstatus: "
-         "0x%p.\n",
-         _sepc, _stval, _scause, _all_regs, _sstatus);
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
+         "0x%p, sstatus: 0x%p.\n",
+         _sepc, _stval, _scause, _all_regs, _sie, _sstatus);
 //    std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
@@ -84,11 +86,14 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 跳转到对应的处理函数
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK, 0,
                                           nullptr);
+        _all_regs->sstatus |= CPU::SSTATUS_SIE;
+        _all_regs->sie |= CPU::SIE_STIE;
         // 如果是时钟中断
-        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
-            // 设置 sepc，切换到内核线程
-            _all_regs->sepc = reinterpret_cast<uintptr_t>(&switch_sched);
-        }
+        //        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
+        //            // 设置 sepc，切换到内核线程
+        ////            _all_regs->sepc =
+        /// reinterpret_cast<uintptr_t>(&switch_sched);
+        //        }
     }
     else {
         // 异常
