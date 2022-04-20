@@ -659,7 +659,7 @@ struct fregs_t {
 };
 
 /**
- * @brief 所有寄存器，在中断时使用，共 32+32+5=69 个
+ * @brief 所有寄存器，在中断时使用，共 32+32+6=70 个
  */
 struct all_regs_t {
     xregs_t              xregs;
