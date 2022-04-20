@@ -19,7 +19,7 @@ endif ()
 find_program(RISCV riscv64-unknown-elf-gcc)
 if (NOT RISCV)
     message(FATAL_ERROR "riscv64-unknown-elf-gcc not found.\n"
-            "Run `brew tap riscv/riscv` and `brew install riscv-tools` to install the toolchain. Then add the bin path to you PATH.")
+            "Run `brew tap riscv-software-src/riscv` and `brew install riscv-tools` to install the toolchain. Then add the bin path to you PATH.")
 else ()
     message(STATUS "Found riscv64-unknown-elf-gcc ${RISCV}.")
 endif ()
