@@ -25,34 +25,15 @@
 extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
 
 /**
- * @brief 保存当前上下文并跳转到调度线程
- */
-static void switch_sched(void) {
-    task_t *old = core_t::get_curr_task();
-#define DEBUG
-#ifdef DEBUG
-    info("switch_sched\n");
-    std::cout << "old: \n" << *old << std::endl;
-    std::cout << "core_t::cores[" << CPU::get_curr_core_id()
-              << "].sched_task: \n"
-              << *core_t::cores[CPU::get_curr_core_id()].sched_task
-              << std::endl;
-#undef DEBUG
-#endif
-    switch_context(&old->context,
-                   &core_t::cores[CPU::get_curr_core_id()].sched_task->context);
-    return;
-}
-
-/**
  * @brief 中断处理函数
  * @param  _scause         原因
  * @param  _sepc           值
  * @param  _stval          值
  * @param  _scause         值
  * @param  _all_regs       保存在栈上的所有寄存器，实际上是 sp
+ * @param  _sie            值
  * @param  _sstatus        值
- * @param  _sstatus        值
+ * @param  _sscratch       值
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, CPU::all_regs_t *_all_regs,
