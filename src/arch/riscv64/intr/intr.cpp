@@ -67,7 +67,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sie;
     (void)_sstatus;
     (void)_sscratch;
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
          "0x%p, sstatus: 0x%p.\n",
@@ -86,14 +86,13 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 跳转到对应的处理函数
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK, 0,
                                           nullptr);
-        _all_regs->sstatus |= CPU::SSTATUS_SIE;
-        _all_regs->sie |= CPU::SIE_STIE;
         // 如果是时钟中断
-        //        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
-        //            // 设置 sepc，切换到内核线程
-        ////            _all_regs->sepc =
-        /// reinterpret_cast<uintptr_t>(&switch_sched);
-        //        }
+        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
+            // 切换到内核线程
+            switch_context(
+                &core_t::get_curr_task()->context,
+                &core_t::cores[CPU::get_curr_core_id()].sched_task->context);
+        }
     }
     else {
         // 异常
