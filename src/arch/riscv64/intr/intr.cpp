@@ -27,9 +27,9 @@
  * @param  _stval          值
  * @param  _scause         值
  * @param  _all_regs       保存在栈上的所有寄存器，实际上是 sp
+ * @param  _sie            值
  * @param  _sstatus        值
- * @param  _sstatus        值
- * @param  _sstatus        值
+ * @param  _sscratch       值
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, CPU::all_regs_t *_all_regs,
