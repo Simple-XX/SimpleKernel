@@ -17,7 +17,6 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "cpu.hpp"
-#include "pmm.h"
 #include "vmm.h"
 #include "boot_info.h"
 #include "io.h"
@@ -29,12 +28,12 @@ static constexpr const uint64_t hart = 0;
 /**
  * @brief 外部中断处理
  */
-static void externel_intr(void) {
+static int32_t externel_intr(int, char **) {
     // 读取中断号
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
     printf("externel_intr: 0x%X.\n", no);
-    return;
+    return 0;
 }
 
 uint64_t PLIC::PLIC_SENABLE(uint64_t _hart) {
@@ -62,7 +61,7 @@ int32_t PLIC::init(void) {
     PLIC_PRIORITY       = base_addr + 0x0;
     PLIC_PENDING        = base_addr + 0x1000;
     for (uintptr_t a = resource.mem.addr;
-         a < resource.mem.addr + resource.mem.len; a += 0x1000) {
+         a < resource.mem.addr + resource.mem.len; a += COMMON::PAGE_SIZE) {
         VMM::get_instance().mmap(VMM::get_instance().get_pgd(), a, a,
                                  VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     }

@@ -16,7 +16,6 @@
 
 #include "intr.h"
 #include "cpu.hpp"
-#include "io.h"
 #include "apic.h"
 
 /// @todo

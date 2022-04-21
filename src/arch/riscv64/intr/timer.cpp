@@ -36,10 +36,10 @@ void set_next(void) {
 /**
  * @brief 时钟中断
  */
-void timer_intr(void) {
+int32_t timer_intr(int, char **) {
     // 每次执行中断时设置下一次中断的时间
     set_next();
-    return;
+    return 0;
 }
 
 TIMER &TIMER::get_instance(void) {
@@ -50,7 +50,8 @@ TIMER &TIMER::get_instance(void) {
 
 void TIMER::init(void) {
     // 注册中断函数
-    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_TIMER, timer_intr);
+    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_TIMER,
+                                                    timer_intr);
     // 设置初次中断
     OPENSBI::get_instance().set_timer(CPU::READ_TIME());
     // 开启时钟中断

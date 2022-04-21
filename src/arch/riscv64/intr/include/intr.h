@@ -23,8 +23,13 @@ void handler_default(void);
 
 class INTR {
 public:
-    /// 中断处理函数指针
-    typedef void (*interrupt_handler_t)(void);
+    /**
+     * @brief 中断处理函数指针
+     * @param  _argc           参数个数
+     * @param  _argv           参数列表
+     * @return int32_t         返回值，0 成功
+     */
+    typedef int32_t (*interrupt_handler_t)(int _argc, char **_argv);
 
 private:
     /// 异常名
@@ -122,14 +127,20 @@ public:
     /**
      * @brief 执行中断处理
      * @param  _no             中断号
+     * @param  _argc           参数个数
+     * @param  _argv           参数列表
+     * @return int32_t         返回值，0 成功
      */
-    void do_interrupt(uint8_t _no);
+    int32_t do_interrupt(uint8_t _no, int32_t _argc, char **_argv);
 
     /**
      * @brief 执行异常处理
      * @param  _no             异常号
+     * @param  _argc           参数个数
+     * @param  _argv           参数列表
+     * @return int32_t         返回值，0 成功
      */
-    void do_excp(uint8_t _no);
+    int32_t do_excp(uint8_t _no, int32_t _argc, char **_argv);
 
     /**
      * @brief 获取中断名
@@ -238,5 +249,16 @@ public:
      */
     void init(void);
 };
+
+/**
+ * @brief 缺页读处理
+ */
+int32_t pg_load_excp(int, char **);
+
+/**
+ * @brief 缺页写处理
+ * @todo 需要读权限吗？测试发现没有读权限不行，原因未知
+ */
+int32_t pg_store_excp(int, char **);
 
 #endif /* _INTR_H_ */

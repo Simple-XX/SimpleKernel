@@ -1,7 +1,7 @@
 
 /**
  * @file intr.cpp
- * @brief 中断抽象
+ * @brief 中断实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2021-09-18
@@ -17,24 +17,39 @@
 #include "cpu.hpp"
 #include "stdio.h"
 #include "intr.h"
-#include "cpu.hpp"
 #include "vmm.h"
+#include "pmm.h"
 
 /**
  * @brief 中断处理函数
  * @param  _scause         原因
  * @param  _sepc           值
  * @param  _stval          值
+ * @param  _scause         值
+ * @param  _all_regs       保存在栈上的所有寄存器，实际上是 sp
+ * @param  _sie            值
+ * @param  _sstatus        值
+ * @param  _sscratch       值
  */
-extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
-                             uint64_t _stval) {
-
+extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
+                             uintptr_t _scause, CPU::all_regs_t *_all_regs,
+                             uintptr_t _sie, uintptr_t _sstatus,
+                             uintptr_t _sscratch) {
+    CPU::DISABLE_INTR();
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
+    (void)_scause;
+    (void)_all_regs;
+    (void)_sie;
+    (void)_sstatus;
+    (void)_sscratch;
 #define DEBUG
 #ifdef DEBUG
-    info("scause: 0x%p, sepc: 0x%p, stval: 0x%p.\n", _scause, _sepc, _stval);
+    info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
+         "0x%p, sstatus: 0x%p.\n",
+         _sepc, _stval, _scause, _all_regs, _sie, _sstatus);
+// std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
@@ -46,18 +61,20 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 #undef DEBUG
 #endif
         // 跳转到对应的处理函数
-        INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK);
+        INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK, 0,
+                                          nullptr);
     }
     else {
 // 异常
 // 跳转到对应的处理函数
 // #define DEBUG
 #ifdef DEBUG
-        warn("excp: %s.\n",
-             INTR::get_instance().excp_name(_scause & CPU::CAUSE_CODE_MASK));
+        warn("excp: %s.\n", INTR::get_instance().get_excp_name(
+                                _scause & CPU::CAUSE_CODE_MASK));
 #undef DEBUG
 #endif
-        INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK);
+        INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK, 0,
+                                     nullptr);
     }
     return;
 }
@@ -66,37 +83,13 @@ extern "C" void trap_handler(uint64_t _scause, uint64_t _sepc,
 extern "C" void trap_entry(void);
 
 /**
- * @brief 缺页处理
- */
-void pg_load_excp(void) {
-    uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_READABLE);
-    info("pg_load_excp done: 0x%p.\n", addr);
-    return;
-}
-
-/**
- * @brief 缺页处理
- */
-void pg_store_excp(void) {
-    uintptr_t addr = CPU::READ_STVAL();
-    // 映射页
-    VMM::get_instance().mmap(VMM::get_instance().get_pgd(), addr, addr,
-                             VMM_PAGE_WRITABLE | VMM_PAGE_READABLE);
-    info("pg_store_excp done: 0x%p.\n", addr);
-    return;
-}
-
-/**
  * @brief 默认使用的中断处理函数
  */
-void handler_default(void) {
+int32_t handler_default(int, char **) {
     while (1) {
         ;
     }
-    return;
+    return 0;
 }
 
 INTR &INTR::get_instance(void) {
@@ -110,10 +103,6 @@ int32_t INTR::init(void) {
     CPU::WRITE_STVEC((uintptr_t)trap_entry);
     // 直接跳转到处理函数
     CPU::STVEC_DIRECT();
-    // 内部中断初始化
-    CLINT::get_instance().init();
-    // 外部中断初始化
-    PLIC::get_instance().init();
     // 设置处理函数
     for (auto &i : interrupt_handlers) {
         i = handler_default;
@@ -121,6 +110,10 @@ int32_t INTR::init(void) {
     for (auto &i : excp_handlers) {
         i = handler_default;
     }
+    // 内部中断初始化
+    CLINT::get_instance().init();
+    // 外部中断初始化
+    PLIC::get_instance().init();
     // 注册缺页中断
     register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
     // 注册缺页中断
@@ -141,14 +134,12 @@ void INTR::register_excp_handler(uint8_t                   _no,
     return;
 }
 
-void INTR::do_interrupt(uint8_t _no) {
-    interrupt_handlers[_no]();
-    return;
+int32_t INTR::do_interrupt(uint8_t _no, int32_t _argc, char **_argv) {
+    return interrupt_handlers[_no](_argc, _argv);
 }
 
-void INTR::do_excp(uint8_t _no) {
-    excp_handlers[_no]();
-    return;
+int32_t INTR::do_excp(uint8_t _no, int32_t _argc, char **_argv) {
+    return excp_handlers[_no](_argc, _argv);
 }
 
 const char *INTR::get_intr_name(uint8_t _no) const {

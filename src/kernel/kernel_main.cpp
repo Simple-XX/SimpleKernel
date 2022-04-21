@@ -14,10 +14,8 @@
  * </table>
  */
 
-#include "cxxabi.h"
 #include "common.h"
 #include "stdio.h"
-#include "stdlib.h"
 #include "iostream"
 #include "assert.h"
 #include "boot_info.h"
@@ -27,10 +25,7 @@
 #include "intr.h"
 #include "cpu.hpp"
 #include "kernel.h"
-#include "dtb.h"
-
-/// @todo gdb 调试
-/// @todo clion 环境
+#include "stdlib.h"
 
 /**
  * @brief 内核主要逻辑
@@ -54,6 +49,8 @@ void kernel_main(void) {
     test_heap();
     // 中断初始化
     INTR::get_instance().init();
+    // 测试中断
+    test_intr();
     // 时钟中断初始化
     TIMER::get_instance().init();
     // 允许中断

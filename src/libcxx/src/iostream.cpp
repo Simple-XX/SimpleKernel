@@ -4,8 +4,6 @@
 // Based on https://github.com/MRNIU/MiniCRT
 // iostream.cpp for Simple-XX/SimpleKernel.
 
-#include "stddef.h"
-#include "string.h"
 #include "stdio.h"
 #include "iostream"
 
