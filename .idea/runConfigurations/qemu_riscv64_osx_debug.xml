@@ -1,7 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="qemu_riscv64_osx_debug" type="CLion_Remote" singleton="false" version="1" remoteCommand=":1234" symbolFile="$PROJECT_DIR$/build_riscv64/bin/kernel.debug" sysroot="">
+  <configuration default="false" name="qemu_riscv64_osx_debug" type="CLion_Remote" singleton="false" version="1" remoteCommand="tcp::1234" symbolFile="$PROJECT_DIR$/build_riscv64/bin/kernel.elf" sysroot="$PROJECT_DIR$">
     <debugger toolchainName="riscv64" />
-    <pathMapping remote=":" local="" />
     <method v="2">
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="setup riscv64 gdbinit" run_configuration_type="ShConfigurationType" />
     </method>

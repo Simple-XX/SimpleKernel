@@ -36,9 +36,14 @@ else ()
     set(CMAKE_BUILD_TYPE DEBUG)
 endif ()
 
+# 代码优化级别
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
+
 # 通用选项
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC  -no-pie -O2 -Wall -Wextra -MMD")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC  -no-pie -O2 -Wall -Wextra -MMD")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC  -no-pie -Wall -Wextra -MMD")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC  -no-pie -Wall -Wextra -MMD")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 # 输出相关信息
@@ -78,19 +83,19 @@ endif ()
 add_custom_command(TARGET ${KernelName}
     POST_BUILD
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_READELF} -a ${KernelName} >> ${KernelName}.readelf_a || (exit 0)
+    COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf_a || (exit 0)
     COMMENT "readelf -a")
 
 # objdump -D
 add_custom_command(TARGET ${KernelName}
     POST_BUILD
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} >> ${KernelName}.disassembly
+    COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
     COMMENT "Disassembling...")
 
 # objdump -t
 add_custom_command(TARGET ${KernelName}
     POST_BUILD
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_OBJDUMP} -t ${KernelName} >> ${KernelName}.symtlb
+    COMMAND ${CMAKE_OBJDUMP} -t ${KernelName} > ${KernelName}.symtlb
     COMMENT "Generating symbol table...")
