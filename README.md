@@ -1,4 +1,6 @@
 
-# intr
+# smp_task
 
-中断实现
+多核&任务支持
+
+TODO: IA32

@@ -30,6 +30,8 @@ void *kmalloc(size_t size);
 
 void kfree(void *ptr);
 
+void exit(int status);
+
 #ifdef __cplusplus
 }
 #endif

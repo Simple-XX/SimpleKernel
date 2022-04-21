@@ -39,3 +39,10 @@ void TIMER::init(void) {
     info("timer init.\n");
     return;
 }
+
+void TIMER::init_other_core(void) {
+    // 开启时钟中断
+    INTR::get_instance().enable_irq(INTR::IRQ0);
+    info("timer other init.\n");
+    return;
+}

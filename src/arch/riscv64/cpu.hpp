@@ -494,6 +494,16 @@ static inline uint64_t READ_RA(void) {
 }
 
 /**
+ * @brief 读 fp(s0) 寄存器
+ * @return uint64_t         读到的值
+ */
+static inline uint64_t READ_FP(void) {
+    uint64_t fp;
+    asm volatile("mv %0, s0" : "=r"(fp));
+    return fp;
+}
+
+/**
  * @brief 刷新 tlb
  */
 static inline void VMM_FLUSH(uintptr_t) {
@@ -669,6 +679,276 @@ struct all_regs_t {
             "sscratch: 0x%p",
             _all_regs.sepc, _all_regs.stval, _all_regs.scause, _all_regs.sie,
             _all_regs.sstatus, _all_regs.sscratch);
+        return _os;
+    }
+};
+
+/**
+ * @brief 读取所有寄存器
+ * @param  _all_regs        要保存读取到的的值
+ */
+static inline void read_all_reg(all_regs_t &_all_regs) {
+    asm("mv %0, zero" : "=r"(_all_regs.xregs.zero));
+    asm("mv %0, ra" : "=r"(_all_regs.xregs.ra));
+    asm("mv %0, sp" : "=r"(_all_regs.xregs.sp));
+    asm("mv %0, gp" : "=r"(_all_regs.xregs.gp));
+    asm("mv %0, tp" : "=r"(_all_regs.xregs.tp));
+    asm("mv %0, t0" : "=r"(_all_regs.xregs.t0));
+    asm("mv %0, t1" : "=r"(_all_regs.xregs.t1));
+    asm("mv %0, t2" : "=r"(_all_regs.xregs.t2));
+    asm("mv %0, s0" : "=r"(_all_regs.xregs.s0));
+    asm("mv %0, s1" : "=r"(_all_regs.xregs.s1));
+    asm("mv %0, a0" : "=r"(_all_regs.xregs.a0));
+    asm("mv %0, a1" : "=r"(_all_regs.xregs.a1));
+    asm("mv %0, a2" : "=r"(_all_regs.xregs.a2));
+    asm("mv %0, a3" : "=r"(_all_regs.xregs.a3));
+    asm("mv %0, a4" : "=r"(_all_regs.xregs.a4));
+    asm("mv %0, a5" : "=r"(_all_regs.xregs.a5));
+    asm("mv %0, a6" : "=r"(_all_regs.xregs.a6));
+    asm("mv %0, a7" : "=r"(_all_regs.xregs.a7));
+    asm("mv %0, s2" : "=r"(_all_regs.xregs.s2));
+    asm("mv %0, s3" : "=r"(_all_regs.xregs.s3));
+    asm("mv %0, s4" : "=r"(_all_regs.xregs.s4));
+    asm("mv %0, s5" : "=r"(_all_regs.xregs.s5));
+    asm("mv %0, s6" : "=r"(_all_regs.xregs.s6));
+    asm("mv %0, s7" : "=r"(_all_regs.xregs.s7));
+    asm("mv %0, s8" : "=r"(_all_regs.xregs.s8));
+    asm("mv %0, s9" : "=r"(_all_regs.xregs.s9));
+    asm("mv %0, s10" : "=r"(_all_regs.xregs.s10));
+    asm("mv %0, s11" : "=r"(_all_regs.xregs.s11));
+    asm("mv %0, t3" : "=r"(_all_regs.xregs.t3));
+    asm("mv %0, t4" : "=r"(_all_regs.xregs.t4));
+    asm("mv %0, t5" : "=r"(_all_regs.xregs.t5));
+    asm("mv %0, t6" : "=r"(_all_regs.xregs.t6));
+
+    //    asm("mv %0, ft0" : "=r"(_all_regs.fregs.ft0));
+    //    asm("mv %0, ft1" : "=r"(_all_regs.fregs.ft1));
+    //    asm("mv %0, ft2" : "=r"(_all_regs.fregs.ft2));
+    //    asm("mv %0, ft3" : "=r"(_all_regs.fregs.ft3));
+    //    asm("mv %0, ft4" : "=r"(_all_regs.fregs.ft4));
+    //    asm("mv %0, ft5" : "=r"(_all_regs.fregs.ft5));
+    //    asm("mv %0, ft6" : "=r"(_all_regs.fregs.ft6));
+    //    asm("mv %0, ft7" : "=r"(_all_regs.fregs.ft7));
+    //    asm("mv %0, fs0" : "=r"(_all_regs.fregs.fs0));
+    //    asm("mv %0, fs1" : "=r"(_all_regs.fregs.fs1));
+    //    asm("mv %0, fa0" : "=r"(_all_regs.fregs.fa0));
+    //    asm("mv %0, fa1" : "=r"(_all_regs.fregs.fa1));
+    //    asm("mv %0, fa2" : "=r"(_all_regs.fregs.fa2));
+    //    asm("mv %0, fa3" : "=r"(_all_regs.fregs.fa3));
+    //    asm("mv %0, fa4" : "=r"(_all_regs.fregs.fa4));
+    //    asm("mv %0, fa5" : "=r"(_all_regs.fregs.fa5));
+    //    asm("mv %0, fa6" : "=r"(_all_regs.fregs.fa6));
+    //    asm("mv %0, fa7" : "=r"(_all_regs.fregs.fa7));
+    //    asm("mv %0, fs2" : "=r"(_all_regs.fregs.fs2));
+    //    asm("mv %0, fs3" : "=r"(_all_regs.fregs.fs3));
+    //    asm("mv %0, fs4" : "=r"(_all_regs.fregs.fs4));
+    //    asm("mv %0, fs5" : "=r"(_all_regs.fregs.fs5));
+    //    asm("mv %0, fs6" : "=r"(_all_regs.fregs.fs6));
+    //    asm("mv %0, fs7" : "=r"(_all_regs.fregs.fs7));
+    //    asm("mv %0, fs8" : "=r"(_all_regs.fregs.fs8));
+    //    asm("mv %0, fs9" : "=r"(_all_regs.fregs.fs9));
+    //    asm("mv %0, fs10" : "=r"(_all_regs.fregs.fs10));
+    //    asm("mv %0, fs11" : "=r"(_all_regs.fregs.fs11));
+    //    asm("mv %0, ft8" : "=r"(_all_regs.fregs.ft8));
+    //    asm("mv %0, ft9" : "=r"(_all_regs.fregs.ft9));
+    //    asm("mv %0, ft10" : "=r"(_all_regs.fregs.ft10));
+    //    asm("mv %0, ft11" : "=r"(_all_regs.fregs.ft11));
+
+    asm volatile("csrr %0, sepc" : "=r"(_all_regs.sepc));
+    asm volatile("csrr %0, stval" : "=r"(_all_regs.stval));
+    asm volatile("csrr %0, scause" : "=r"(_all_regs.scause));
+    asm volatile("csrr %0, sstatus" : "=r"(_all_regs.sstatus));
+    asm volatile("csrr %0, sscratch" : "=r"(_all_regs.sscratch));
+
+    return;
+}
+
+/**
+ * @brief 设置当前 core id
+ * @param  _hartid          要设置的值
+ * @todo 不使用 tp
+ */
+static inline void set_curr_core_id(size_t _hartid) {
+    CPU::WRITE_TP(_hartid);
+    return;
+}
+
+/**
+ * @brief 获取当前 core id
+ * @return size_t           hartid
+ * @note hartid 和 core id 是一回事
+ * @todo 不使用 tp
+ */
+static inline size_t get_curr_core_id(void) {
+    return CPU::READ_TP();
+}
+
+/**
+ * @brief 调用者保存寄存器
+ */
+struct caller_regs_t {
+    uintptr_t            ra;
+    uintptr_t            t0;
+    uintptr_t            t2;
+    uintptr_t            a0;
+    uintptr_t            a1;
+    uintptr_t            a2;
+    uintptr_t            a3;
+    uintptr_t            a4;
+    uintptr_t            a5;
+    uintptr_t            a6;
+    uintptr_t            a7;
+    uintptr_t            t3;
+    uintptr_t            t4;
+    uintptr_t            t5;
+    uintptr_t            t6;
+    uintptr_t            ft0;
+    uintptr_t            ft1;
+    uintptr_t            ft2;
+    uintptr_t            ft3;
+    uintptr_t            ft4;
+    uintptr_t            ft5;
+    uintptr_t            ft6;
+    uintptr_t            ft7;
+    uintptr_t            fa0;
+    uintptr_t            fa1;
+    uintptr_t            fa2;
+    uintptr_t            fa3;
+    uintptr_t            fa4;
+    uintptr_t            fa5;
+    uintptr_t            fa6;
+    uintptr_t            fa7;
+    uintptr_t            ft8;
+    uintptr_t            ft9;
+    uintptr_t            ft10;
+    uintptr_t            ft11;
+    friend std::ostream &operator<<(std::ostream        &_os,
+                                    const caller_regs_t &_caller_regs) {
+        printf("ra: 0x%p, ", _caller_regs.ra);
+        printf("t0: 0x%p, ", _caller_regs.t0);
+        printf("t2: 0x%p, ", _caller_regs.t2);
+        printf("a0: 0x%p\n", _caller_regs.a0);
+        printf("a1: 0x%p, ", _caller_regs.a1);
+        printf("a2: 0x%p, ", _caller_regs.a2);
+        printf("a3: 0x%p, ", _caller_regs.a3);
+        printf("a4: 0x%p\n", _caller_regs.a4);
+        printf("a5: 0x%p, ", _caller_regs.a5);
+        printf("a6: 0x%p, ", _caller_regs.a6);
+        printf("a7: 0x%p, ", _caller_regs.a7);
+        printf("t3: 0x%p\n", _caller_regs.t3);
+        printf("t4: 0x%p, ", _caller_regs.t4);
+        printf("t5: 0x%p, ", _caller_regs.t5);
+        printf("t6: 0x%p, ", _caller_regs.t6);
+        printf("ft0: 0x%p\n", _caller_regs.ft0);
+        printf("ft1: 0x%p, ", _caller_regs.ft1);
+        printf("ft2: 0x%p, ", _caller_regs.ft2);
+        printf("ft3: 0x%p, ", _caller_regs.ft3);
+        printf("ft4: 0x%p\n", _caller_regs.ft4);
+        printf("ft5: 0x%p, ", _caller_regs.ft5);
+        printf("ft6: 0x%p, ", _caller_regs.ft6);
+        printf("ft7: 0x%p, ", _caller_regs.ft7);
+        printf("fa0: 0x%p\n", _caller_regs.fa0);
+        printf("fa1: 0x%p", _caller_regs.fa1);
+        printf("fa2: 0x%p", _caller_regs.fa2);
+        printf("fa3: 0x%p", _caller_regs.fa3);
+        printf("fa4: 0x%p", _caller_regs.fa4);
+        printf("fa5: 0x%p", _caller_regs.fa5);
+        printf("fa6: 0x%p", _caller_regs.fa6);
+        printf("fa7: 0x%p", _caller_regs.fa7);
+        printf("ft8: 0x%p", _caller_regs.ft8);
+        printf("ft9: 0x%p", _caller_regs.ft9);
+        printf("ft10: 0x%p", _caller_regs.ft10);
+        printf("ft11: 0x%p", _caller_regs.ft11);
+        return _os;
+    }
+};
+
+/**
+ * @brief 被调用者保存寄存器
+ */
+struct callee_regs_t {
+    uintptr_t            sp;
+    uintptr_t            s0;
+    uintptr_t            s1;
+    uintptr_t            s2;
+    uintptr_t            s3;
+    uintptr_t            s4;
+    uintptr_t            s5;
+    uintptr_t            s6;
+    uintptr_t            s7;
+    uintptr_t            s8;
+    uintptr_t            s9;
+    uintptr_t            s10;
+    uintptr_t            s11;
+    uintptr_t            fs0;
+    uintptr_t            fs1;
+    uintptr_t            fs2;
+    uintptr_t            fs3;
+    uintptr_t            fs4;
+    uintptr_t            fs5;
+    uintptr_t            fs6;
+    uintptr_t            fs7;
+    uintptr_t            fs8;
+    uintptr_t            fs9;
+    uintptr_t            fs10;
+    uintptr_t            fs11;
+    friend std::ostream &operator<<(std::ostream        &_os,
+                                    const callee_regs_t &_callee_regs) {
+        printf("sp: 0x%p, ", _callee_regs.sp);
+        printf("s0: 0x%p, ", _callee_regs.s0);
+        printf("s1: 0x%p, ", _callee_regs.s1);
+        printf("s2: 0x%p\n", _callee_regs.s2);
+        printf("s3: 0x%p, ", _callee_regs.s3);
+        printf("s4: 0x%p, ", _callee_regs.s4);
+        printf("s5: 0x%p, ", _callee_regs.s5);
+        printf("s6: 0x%p\n", _callee_regs.s6);
+        printf("s7: 0x%p, ", _callee_regs.s7);
+        printf("s8: 0x%p, ", _callee_regs.s8);
+        printf("s9: 0x%p, ", _callee_regs.s9);
+        printf("s10: 0x%p\n", _callee_regs.s10);
+        printf("s11: 0x%p, ", _callee_regs.s11);
+        printf("fs0: 0x%p, ", _callee_regs.fs0);
+        printf("fs1: 0x%p, ", _callee_regs.fs1);
+        printf("fs2: 0x%p\n", _callee_regs.fs2);
+        printf("fs3: 0x%p, ", _callee_regs.fs3);
+        printf("fs4: 0x%p, ", _callee_regs.fs4);
+        printf("fs5: 0x%p, ", _callee_regs.fs5);
+        printf("fs6: 0x%p\n", _callee_regs.fs6);
+        printf("fs7: 0x%p, ", _callee_regs.fs7);
+        printf("fs8: 0x%p, ", _callee_regs.fs8);
+        printf("fs9: 0x%p, ", _callee_regs.fs9);
+        printf("fs10: 0x%p\n", _callee_regs.fs10);
+        printf("fs11: 0x%p", _callee_regs.fs11);
+        return _os;
+    }
+};
+
+/**
+ * @brief 上下文，用于任务切换
+ * @note caller_regs 由编译器保存/恢复
+ */
+struct context_t {
+    /// 运行此任务的 core id
+    uintptr_t            coreid;
+    uintptr_t            ra;
+    CPU::callee_regs_t   callee_regs;
+    uintptr_t            satp;
+    uintptr_t            sepc;
+    uintptr_t            sstatus;
+    uintptr_t            sie;
+    uintptr_t            sip;
+    uintptr_t            sscratch;
+    friend std::ostream &operator<<(std::ostream    &_os,
+                                    const context_t &_context) {
+        printf("coreid: 0x%X, ", _context.coreid);
+        printf("ra: 0x%p\n", _context.ra);
+        std::cout << _context.callee_regs << std::endl;
+        printf("satp: 0x%p, ", _context.satp);
+        printf("sepc: 0x%p, ", _context.sepc);
+        printf("sstatus: 0x%p, ", _context.sstatus);
+        printf("sie: 0x%p, ", _context.sie);
+        printf("sip: 0x%p, ", _context.sip);
+        printf("sscratch: 0x%p", _context.sscratch);
         return _os;
     }
 };

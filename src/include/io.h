@@ -19,6 +19,7 @@
 
 #include "stdint.h"
 #include "color.h"
+#include "spinlock.h"
 
 // 根据不同架构选择不同的输出方式
 #if defined(__i386__) || defined(__x86_64__)

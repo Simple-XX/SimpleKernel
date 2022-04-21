@@ -42,3 +42,22 @@ if (NOT QEMU)
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
+
+# 退出时不显示提示信息
+# set confirm off
+# 按照派生类型打印对象
+# set print object on
+# 打印数组的索引下标
+# set print array-indexes on
+# 每行打印一个结构体成员
+# set print pretty on
+
+# set(GDBINIT "set confirm off"
+# "set architecture riscv:rv64"
+# "target remote 127.0.0.1:1234"
+# "symbol-file kernel.elf"
+# "set disassemble-next-line auto"
+# "set print pretty on"
+# "set print object on"
+# "set print array-indexes on"
+# "set riscv use-compressed-breakpoints yes")

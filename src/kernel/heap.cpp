@@ -26,6 +26,7 @@ HEAP &HEAP::get_instance(void) {
 }
 
 bool HEAP::init(void) {
+    spinlock.init("HEAP");
     // 内核空间
     static SLAB slab_allocator_kernel(
         "SLAB Allocator Kernel", PMM::get_instance().get_kernel_space_start(),
@@ -44,25 +45,33 @@ bool HEAP::init(void) {
 
 void *HEAP::kmalloc(size_t _byte) {
     void *ret = nullptr;
-    ret       = (void *)allocator_kernel->alloc(_byte);
+    spinlock.lock();
+    ret = (void *)allocator_kernel->alloc(_byte);
+    spinlock.unlock();
     return ret;
 }
 
 void HEAP::kfree(void *_addr) {
+    spinlock.lock();
     // 堆不需要 _len 参数
     allocator_kernel->free((uintptr_t)_addr, 0);
+    spinlock.unlock();
     return;
 }
 
 void *HEAP::malloc(size_t _byte) {
     void *ret = nullptr;
-    ret       = (void *)allocator_non_kernel->alloc(_byte);
+    spinlock.lock();
+    ret = (void *)allocator_non_kernel->alloc(_byte);
+    spinlock.unlock();
     return ret;
 }
 
 void HEAP::free(void *_addr) {
+    spinlock.lock();
     // 堆不需要 _len 参数
     allocator_non_kernel->free((uintptr_t)_addr, 0);
+    spinlock.unlock();
     return;
 }
 

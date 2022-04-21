@@ -21,6 +21,7 @@
 #include "stdint.h"
 #include "firstfit.h"
 #include "allocator.h"
+#include "spinlock.h"
 
 /**
  * @brief 物理内存管理接口
@@ -54,6 +55,9 @@ private:
     ALLOCATOR *kernel_space_allocator;
     /// 物理内存分配器，分配非内核空间
     ALLOCATOR *allocator;
+
+    /// 自旋锁
+    spinlock_t spinlock;
 
     /**
      * @brief 将 multiboot2/dtb 信息移动到内核空间

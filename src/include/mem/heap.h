@@ -21,12 +21,15 @@
 #include "stddef.h"
 #include "slab.h"
 #include "allocator.h"
+#include "spinlock.h"
 
 /**
  * @brief 堆抽象
  */
 class HEAP {
 private:
+    /// 自旋锁
+    spinlock_t spinlock;
     // 堆分配器
     ALLOCATOR *allocator_kernel;
     ALLOCATOR *allocator_non_kernel;

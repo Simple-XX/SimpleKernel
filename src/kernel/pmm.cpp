@@ -48,6 +48,8 @@ PMM &PMM::get_instance(void) {
 }
 
 bool PMM::init(void) {
+    // 初始化自旋锁
+    spinlock.init("PMM");
     // 获取物理内存信息
     resource_t mem_info = BOOT_INFO::get_memory();
     // 设置物理地址的起点与长度
@@ -128,36 +130,49 @@ size_t PMM::get_free_pages_count(void) const {
 }
 
 uintptr_t PMM::alloc_page(void) {
+    spinlock.lock();
     uintptr_t ret = allocator->alloc(1);
+    spinlock.unlock();
     return ret;
 }
 
 uintptr_t PMM::alloc_pages(size_t _len) {
+    spinlock.lock();
     uintptr_t ret = allocator->alloc(_len);
+    spinlock.unlock();
     return ret;
 }
 
 bool PMM::alloc_pages(uintptr_t _addr, size_t _len) {
+    spinlock.lock();
     bool ret = allocator->alloc(_addr, _len);
+    spinlock.unlock();
     return ret;
 }
 
 uintptr_t PMM::alloc_page_kernel(void) {
+    spinlock.lock();
     uintptr_t ret = kernel_space_allocator->alloc(1);
+    spinlock.unlock();
     return ret;
 }
 
 uintptr_t PMM::alloc_pages_kernel(size_t _len) {
+    spinlock.lock();
     uintptr_t ret = kernel_space_allocator->alloc(_len);
+    spinlock.unlock();
     return ret;
 }
 
 bool PMM::alloc_pages_kernel(uintptr_t _addr, size_t _len) {
+    spinlock.lock();
     bool ret = kernel_space_allocator->alloc(_addr, _len);
+    spinlock.unlock();
     return ret;
 }
 
 void PMM::free_page(uintptr_t _addr) {
+    spinlock.lock();
     // 判断应该使用哪个分配器
     if (_addr >= kernel_space_start &&
         _addr < kernel_space_start + kernel_space_length) {
@@ -171,10 +186,12 @@ void PMM::free_page(uintptr_t _addr) {
         // 如果都不是说明有问题
         assert(0);
     }
+    spinlock.unlock();
     return;
 }
 
 void PMM::free_pages(uintptr_t _addr, size_t _len) {
+    spinlock.lock();
     // 判断应该使用哪个分配器
     if (_addr >= kernel_space_start &&
         _addr < kernel_space_start + kernel_space_length) {
@@ -188,5 +205,6 @@ void PMM::free_pages(uintptr_t _addr, size_t _len) {
     else {
         assert(0);
     }
+    spinlock.unlock();
     return;
 }

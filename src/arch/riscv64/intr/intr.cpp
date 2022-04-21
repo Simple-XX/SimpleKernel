@@ -19,6 +19,10 @@
 #include "intr.h"
 #include "vmm.h"
 #include "pmm.h"
+#include "task.h"
+#include "core.h"
+
+extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
 
 /**
  * @brief 中断处理函数
@@ -44,17 +48,17 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_sie;
     (void)_sstatus;
     (void)_sscratch;
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
          "0x%p, sstatus: 0x%p.\n",
          _sepc, _stval, _scause, _all_regs, _sie, _sstatus);
-// std::cout << *_all_regs << std::endl;
+//    std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
-// 中断
-// #define DEBUG
+        // 中断
+#define DEBUG
 #ifdef DEBUG
         info("intr: %s.\n", INTR::get_instance().get_intr_name(
                                 _scause & CPU::CAUSE_CODE_MASK));
@@ -63,11 +67,18 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         // 跳转到对应的处理函数
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK, 0,
                                           nullptr);
+        // 如果是时钟中断
+        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
+            // 切换到内核线程
+            switch_context(
+                &core_t::get_curr_task()->context,
+                &core_t::cores[CPU::get_curr_core_id()].sched_task->context);
+        }
     }
     else {
-// 异常
-// 跳转到对应的处理函数
-// #define DEBUG
+        // 异常
+        // 跳转到对应的处理函数
+#define DEBUG
 #ifdef DEBUG
         warn("excp: %s.\n", INTR::get_instance().get_excp_name(
                                 _scause & CPU::CAUSE_CODE_MASK));
@@ -122,15 +133,32 @@ int32_t INTR::init(void) {
     return 0;
 }
 
+int32_t INTR::init_other_core(void) {
+    // 设置 trap vector
+    CPU::WRITE_STVEC((uintptr_t)trap_entry);
+    // 直接跳转到处理函数
+    CPU::STVEC_DIRECT();
+    // 内部中断初始化
+    CLINT::get_instance().init_other_core();
+    // 外部中断初始化
+    PLIC::get_instance().init_other_core();
+    info("intr other 0x%X init.\n", CPU::get_curr_core_id());
+    return 0;
+}
+
 void INTR::register_interrupt_handler(
     uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
+    spinlock.lock();
     interrupt_handlers[_no] = _interrupt_handler;
+    spinlock.unlock();
     return;
 }
 
 void INTR::register_excp_handler(uint8_t                   _no,
                                  INTR::interrupt_handler_t _interrupt_handler) {
+    spinlock.lock();
     excp_handlers[_no] = _interrupt_handler;
+    spinlock.unlock();
     return;
 }
 

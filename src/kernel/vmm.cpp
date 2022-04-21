@@ -76,7 +76,11 @@ VMM &VMM::get_instance(void) {
     return vmm;
 }
 
+pt_t pgd_init;
+
 bool VMM::init(void) {
+    // 初始化自旋锁
+    spinlock.init("VMM");
 #if defined(__i386__) || defined(__x86_64__)
     GDT::init();
 #endif
@@ -93,9 +97,22 @@ bool VMM::init(void) {
     }
     // 设置页目录
     set_pgd(pgd_kernel);
+    pgd_init = pgd_kernel;
     // 开启分页
     CPU::ENABLE_PG();
     info("vmm init.\n");
+    return 0;
+}
+
+bool VMM::init_other_core(void) {
+    pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
+    bzero(pgd_kernel, COMMON::PAGE_SIZE);
+    memcpy(pgd_kernel, pgd_init, COMMON::PAGE_SIZE);
+    // 设置页目录
+    set_pgd(pgd_kernel);
+    // 开启分页
+    CPU::ENABLE_PG();
+    info("vmm other init: 0x%X.\n", CPU::get_curr_core_id());
     return 0;
 }
 
@@ -104,14 +121,17 @@ pt_t VMM::get_pgd(void) {
 }
 
 void VMM::set_pgd(const pt_t _pgd) {
+    spinlock.lock();
     // 设置页目录
     CPU::SET_PGD((uintptr_t)_pgd);
     // 刷新缓存
     CPU::VMM_FLUSH(0);
+    spinlock.unlock();
     return;
 }
 
 void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
+    spinlock.lock();
     pte_t *pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
     assert(pte != nullptr);
@@ -129,10 +149,12 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
         // 刷新缓存
         CPU::VMM_FLUSH(0);
     }
+    spinlock.unlock();
     return;
 }
 
 void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
+    spinlock.lock();
     pte_t *pte = find(_pgd, _va, false);
     // 找到页表项
     // 未找到
@@ -149,10 +171,12 @@ void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
     // 刷新缓存
     CPU::VMM_FLUSH(0);
     // TODO: 如果一页表都被 unmap，释放占用的物理内存
+    spinlock.unlock();
     return;
 }
 
 bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
+    spinlock.lock();
     pte_t *pte = find(_pgd, _va, false);
     bool   res = false;
     // pte 不为空且有效，说明映射了
@@ -174,5 +198,6 @@ bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
             *(uintptr_t *)_pa = (uintptr_t) nullptr;
         }
     }
+    spinlock.unlock();
     return res;
 }

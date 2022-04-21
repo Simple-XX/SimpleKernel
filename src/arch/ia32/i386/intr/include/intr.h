@@ -282,6 +282,7 @@ public:
      * @return int32_t         desc
      */
     int32_t init(void);
+    int32_t init_other_core(void);
 
     /**
      * @brief 执行中断
@@ -334,6 +335,7 @@ public:
      * @brief 初始化
      */
     void init(void);
+    void init_other_core(void);
 };
 
 #endif /* _INTR_H_ */

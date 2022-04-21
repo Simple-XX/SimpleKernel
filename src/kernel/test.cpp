@@ -9,7 +9,9 @@
 #include "assert.h"
 #include "pmm.h"
 #include "vmm.h"
-#include "heap.h"
+#include "stdlib.h"
+#include "task.h"
+#include "smp_task.h"
 #include "kernel.h"
 #include "stdlib.h"
 
@@ -203,5 +205,85 @@ int test_intr(void) {
     assert(tmp == 0x233);
     *addr = 0x0;
     info("intr test done.\n");
+    return 0;
+}
+
+#define taskxx(a, b)                                                           \
+    static int tmp##a##b = 0;                                                  \
+    void       task##a##b(void) {                                              \
+        while (1) {                                                      \
+            assert(CPU::get_curr_core_id() ==                            \
+                         core_t::get_curr_task()->context.coreid);             \
+            tmp##a##b += 1;                                              \
+            if (tmp##a##b == 16) {                                       \
+                exit(0);                                                 \
+            }                                                            \
+        }                                                                \
+    }
+
+#define taskxx_(a)                                                             \
+    taskxx(a, 0);                                                              \
+    taskxx(a, 1);                                                              \
+    taskxx(a, 2);                                                              \
+    taskxx(a, 3);                                                              \
+    taskxx(a, 4);
+
+taskxx_(0);
+taskxx_(1);
+taskxx_(2);
+taskxx_(3);
+taskxx_(4);
+
+#define add_taskxx(a, b)                                                       \
+    task_t *tmp_task##a##b = new task_t("task" #a "" #b "", &task##a##b);      \
+    SMP_TASK::get_instance().add_task(*tmp_task##a##b, SMP_TASK::SCHEDULER_RR);
+
+#define taskxx_cond(a, b) (tmp##a##b == 16)
+#define taskxx_cond_(a)                                                        \
+    taskxx_cond(a, 0) && taskxx_cond(a, 1) && taskxx_cond(a, 2) &&             \
+        taskxx_cond(a, 3) && taskxx_cond(a, 4)
+#define taskxx_cond_all                                                        \
+    (taskxx_cond_(0) && taskxx_cond_(1) && taskxx_cond_(2) && taskxx_cond_(3))
+
+int test_sched(void) {
+    info("sched testing...\n");
+    auto a = CPU::get_curr_core_id();
+    if (a == 0) {
+        add_taskxx(0, 0);
+        add_taskxx(0, 1);
+        add_taskxx(0, 2);
+        add_taskxx(0, 3);
+        add_taskxx(0, 4);
+    }
+    else if (a == 1) {
+        add_taskxx(1, 0);
+        add_taskxx(1, 1);
+        add_taskxx(1, 2);
+        add_taskxx(1, 3);
+        add_taskxx(1, 4);
+    }
+    else if (a == 2) {
+        add_taskxx(2, 0);
+        add_taskxx(2, 1);
+        add_taskxx(2, 2);
+        add_taskxx(2, 3);
+        add_taskxx(2, 4);
+    }
+    else if (a == 3) {
+        add_taskxx(3, 0);
+        add_taskxx(3, 1);
+        add_taskxx(3, 2);
+        add_taskxx(3, 3);
+        add_taskxx(3, 4);
+    }
+
+    while (1) {
+        if (taskxx_cond_all) {
+            break;
+        }
+        SMP_TASK::get_instance().sched();
+    }
+
+    info("sched test done.\n");
     return 0;
 }

@@ -358,6 +358,11 @@ int32_t INTR::init(void) {
     return 0;
 }
 
+int32_t INTR::init_other_core(void) {
+    info("intr other 0x%X init.\n", 1);
+    return 0;
+}
+
 int32_t INTR::call_irq(uint8_t _no, intr_context_t *_intr_context) {
     // 重设PIC芯片
     clear_interrupt_chip(_no);

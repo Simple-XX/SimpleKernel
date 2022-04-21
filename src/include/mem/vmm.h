@@ -19,6 +19,7 @@
 
 #include "limits.h"
 #include "common.h"
+#include "spinlock.h"
 
 // TODO: 可以优化
 
@@ -152,6 +153,9 @@ static constexpr uintptr_t VMM_PA2VA(uintptr_t _pa) {
  */
 class VMM {
 private:
+    /// 自旋锁
+    spinlock_t spinlock;
+
     /**
      * @brief 物理地址转换到页表项
      * @param  _pa             物理地址
@@ -214,6 +218,7 @@ public:
      * @return false           失败
      */
     bool init(void);
+    bool init_other_core(void);
 
     /**
      * @brief 获取当前页目录

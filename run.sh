@@ -94,7 +94,7 @@ elif [ ${ARCH} == "aarch64" ]; then
     -monitor telnet::2333,server,nowait -serial stdio -nographic \
     ${GDB_OPT}
 elif [ ${ARCH} == "riscv64" ]; then
-    qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
+    qemu-system-riscv64 -machine virt -smp 4 -bios ${OPENSBI} -kernel ${kernel} \
     -monitor telnet::2333,server,nowait -serial stdio -nographic \
     ${GDB_OPT}
 fi
