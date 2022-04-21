@@ -6,7 +6,6 @@
 
 #include "common.h"
 #include "stdio.h"
-#include "iostream"
 #include "assert.h"
 #include "pmm.h"
 #include "kernel.h"
@@ -49,6 +48,32 @@ int32_t test_pmm(void) {
     assert(PMM::get_instance().get_used_pages_count() == 205 + kernel_pages);
     // 分配超过限度的内存，应该返回 nullptr
     auto addr5 = PMM::get_instance().alloc_pages(0xFFFFFFFF);
+    assert(addr5 == 0);
+    // 全部释放
+    PMM::get_instance().free_pages(addr1, 2);
+    PMM::get_instance().free_pages(addr2, 3);
+    PMM::get_instance().free_pages(addr3, 100);
+    PMM::get_instance().free_pages(addr4, 100);
+    // 现在内存使用情况应该与此函数开始时相同
+    assert(PMM::get_instance().get_free_pages_count() == free_pages);
+    // 下面测试内核空间物理内存分配
+    // 已使用页数应该等于内核使用页数
+    assert(used_pages == kernel_pages);
+    // 分配
+    addr1 = PMM::get_instance().alloc_pages_kernel(2);
+    // 已使用应该会更新
+    assert(PMM::get_instance().get_used_pages_count() == 2 + kernel_pages);
+    // 同上
+    addr2 = PMM::get_instance().alloc_pages_kernel(3);
+    assert(PMM::get_instance().get_used_pages_count() == 5 + kernel_pages);
+    // 同上
+    addr3 = PMM::get_instance().alloc_pages_kernel(100);
+    assert(PMM::get_instance().get_used_pages_count() == 105 + kernel_pages);
+    // 同上
+    addr4 = PMM::get_instance().alloc_pages_kernel(100);
+    assert(PMM::get_instance().get_used_pages_count() == 205 + kernel_pages);
+    // 分配超过限度的内存，应该返回 nullptr
+    addr5 = PMM::get_instance().alloc_pages_kernel(0xFFFFFFFF);
     assert(addr5 == 0);
     // 全部释放
     PMM::get_instance().free_pages(addr1, 2);

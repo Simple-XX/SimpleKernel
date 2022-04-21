@@ -14,17 +14,12 @@
  * </table>
  */
 
-#include "cxxabi.h"
 #include "common.h"
 #include "stdio.h"
 #include "iostream"
 #include "boot_info.h"
 #include "pmm.h"
 #include "kernel.h"
-#include "dtb.h"
-
-/// @todo gdb 调试
-/// @todo clion 环境
 
 /**
  * @brief 内核主要逻辑
