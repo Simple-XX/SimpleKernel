@@ -77,7 +77,7 @@ pid_t SMP_TASK::alloc_pid(void) {
 }
 
 void SMP_TASK::free_pid(pid_t _pid) {
-    _pid = _pid;
+    (void)_pid;
     return;
 }
 
@@ -128,7 +128,9 @@ bool SMP_TASK::init(void) {
     // 当前进程
     task_t *task = new task_t("init", nullptr);
     task->hartid = CPU::get_curr_core_id();
-    task->pid    = 0;
+    spinlock.lock();
+    task->pid    = alloc_pid();
+    spinlock.unlock();
     task->state  = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
     context_init(&task->context);
@@ -139,6 +141,7 @@ bool SMP_TASK::init(void) {
 
     // 创建 idle 任务
     idle_task[COMMON::BOOT_HART_ID]        = new task_t("idle", idle);
+    idle_task[COMMON::BOOT_HART_ID]->pid = alloc_pid();
     idle_task[COMMON::BOOT_HART_ID]->state = RUNNING;
 #if defined(__riscv)
     idle_task[COMMON::BOOT_HART_ID]->context.sstatus =
@@ -156,7 +159,7 @@ bool SMP_TASK::init_other_core(void) {
     // 当前进程
     task_t *task = new task_t("init other", nullptr);
     task->hartid = CPU::get_curr_core_id();
-    task->pid    = 0;
+    task->pid    = alloc_pid();
     task->state  = RUNNING;
     // 原地跳转，填充启动进程的 task_t 信息
     context_init(&task->context);
@@ -166,8 +169,11 @@ bool SMP_TASK::init_other_core(void) {
     core_t::cores[CPU::get_curr_core_id()].sched_task = task;
     // 创建 idle 任务
     idle_task[CPU::get_curr_core_id()]        = new task_t("idle", idle);
-#if defined(__riscv)
     idle_task[CPU::get_curr_core_id()]->state = RUNNING;
+    spinlock.lock();
+    idle_task[COMMON::BOOT_HART_ID]->pid = alloc_pid();
+    spinlock.unlock();
+#if defined(__riscv)
     idle_task[CPU::get_curr_core_id()]->context.sstatus =
         task->context.sstatus | CPU::SSTATUS_SIE;
     idle_task[CPU::get_curr_core_id()]->context.sie =
