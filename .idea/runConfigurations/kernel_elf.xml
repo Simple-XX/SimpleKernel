@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="kernel.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SimpleKernel" TARGET_NAME="kernel.elf" CONFIG_NAME="riscv64_osx" RUN_TARGET_PROJECT_NAME="SimpleKernel" RUN_TARGET_NAME="kernel.elf">
-    <method v="2">
-      <option name="CMake.Explicit.Target" explicitTargetName="clean" />
-      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-    </method>
-  </configuration>
-</component>
