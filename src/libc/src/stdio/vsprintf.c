@@ -12,6 +12,7 @@ extern "C" {
 #include "stdint.h"
 #include "stdarg.h"
 #include "stddef.h"
+#include "math.h"
 #include "stdio.h"
 
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted
