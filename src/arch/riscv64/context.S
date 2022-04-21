@@ -376,8 +376,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
  * @param  _base           要保存到的基地址
  */
 .macro context_save _base
-    // @todo 临时设置为 ra
-    sd_base          ra,       0,                    \_base
+    // @todo 临时设置为 tp
+    sd_base          tp,       0,                    \_base
     sd_base          ra,       1,                    \_base
     callee_regs_save \_base,   2
 
@@ -405,7 +405,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
  * @param  _base           要恢复数据的基地址
  */
 .macro context_load _base
-    ld_base          ra,       0,                    \_base
+    // @todo 临时设置为 tp
+    ld_base          tp,       0,                    \_base
     ld_base          ra,       1,                    \_base
     callee_regs_load \_base,   2
 
