@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// new.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file new.cpp
+ * @brief 基础内存分配
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2022-01-23
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-01-23<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "new"
 #include "stdlib.h"
