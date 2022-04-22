@@ -50,7 +50,7 @@ TIMER &TIMER::get_instance(void) {
 
 void TIMER::init(void) {
     // 注册中断函数
-    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_TIMER,
+    INTR::get_instance().register_interrupt_handler(CPU::INTR_TIMER_S,
                                                     timer_intr);
     // 设置初次中断
     OPENSBI::get_instance().set_timer(CPU::READ_TIME());
