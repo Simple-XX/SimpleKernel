@@ -19,6 +19,7 @@
 
 #include "limits.h"
 #include "common.h"
+#include "cpu.hpp"
 
 // TODO: 可以优化
 
@@ -85,36 +86,22 @@ static constexpr const size_t VMM_VPN_BITS_MASK = 0x1FF;
 static constexpr const size_t VMM_PT_LEVEL = 4;
 
 #elif defined(__riscv)
-enum {
-    VMM_PAGE_VALID_OFFSET      = 0,
-    VMM_PAGE_READABLE_OFFSET   = 1,
-    VMM_PAGE_WRITABLE_OFFSET   = 2,
-    VMM_PAGE_EXECUTABLE_OFFSET = 3,
-    VMM_PAGE_USER_OFFSET       = 4,
-    VMM_PAGE_GLOBAL_OFFSET     = 5,
-    VMM_PAGE_ACCESSED_OFFSET   = 6,
-    VMM_PAGE_DIRTY_OFFSET      = 7,
-};
 /// 有效位
-static constexpr const uint8_t VMM_PAGE_VALID = 1 << VMM_PAGE_VALID_OFFSET;
+static constexpr const uint8_t VMM_PAGE_VALID = CPU::pte_t::VALID;
 /// 可读位
-static constexpr const uint8_t VMM_PAGE_READABLE = 1
-                                                   << VMM_PAGE_READABLE_OFFSET;
-/// 可写位
-static constexpr const uint8_t VMM_PAGE_WRITABLE = 1
-                                                   << VMM_PAGE_WRITABLE_OFFSET;
+static constexpr const uint8_t VMM_PAGE_READABLE = CPU::pte_t::READ;
+/// 可写位s
+static constexpr const uint8_t VMM_PAGE_WRITABLE = CPU::pte_t::WRITE;
 /// 可执行位
-static constexpr const uint8_t VMM_PAGE_EXECUTABLE =
-    1 << VMM_PAGE_EXECUTABLE_OFFSET;
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = CPU::pte_t::EXEC;
 /// 用户位
-static constexpr const uint8_t VMM_PAGE_USER = 1 << VMM_PAGE_USER_OFFSET;
+static constexpr const uint8_t VMM_PAGE_USER = CPU::pte_t::USER;
 /// 全局位，我们不会使用
-static constexpr const uint8_t VMM_PAGE_GLOBAL = 1 << VMM_PAGE_GLOBAL_OFFSET;
+static constexpr const uint8_t VMM_PAGE_GLOBAL = CPU::pte_t::GLOBAL;
 /// 已使用位，用于替换算法
-static constexpr const uint8_t VMM_PAGE_ACCESSED = 1
-                                                   << VMM_PAGE_ACCESSED_OFFSET;
+static constexpr const uint8_t VMM_PAGE_ACCESSED = CPU::pte_t::ACCESSED;
 /// 已修改位，用于替换算法
-static constexpr const uint8_t VMM_PAGE_DIRTY = 1 << VMM_PAGE_DIRTY_OFFSET;
+static constexpr const uint8_t VMM_PAGE_DIRTY = CPU::pte_t::DIRTY;
 /// 内核虚拟地址相对物理地址的偏移
 static constexpr const size_t KERNEL_OFFSET = 0x0;
 /// PTE 属性位数
