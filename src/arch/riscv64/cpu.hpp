@@ -123,6 +123,55 @@ struct satp_t {
     }
 };
 
+/// 机器模式定义
+enum {
+    U_MODE = 0,
+    S_MODE = 1,
+    M_MODE = 3,
+};
+
+enum {
+    INTR_SOFT = 0,
+    /// U 态软中断
+    INTR_SOFT_U = INTR_SOFT + U_MODE,
+    /// S 态软中断
+    INTR_SOFT_S = INTR_SOFT + S_MODE,
+    /// M 态软中断
+    INTR_SOFT_M = INTR_SOFT + M_MODE,
+    INTR_TIMER  = 4,
+    /// U 态时钟中断
+    INTR_TIMER_U = INTR_TIMER + U_MODE,
+    /// S 态时钟中断
+    INTR_TIMER_S = INTR_TIMER + S_MODE,
+    /// M 态时钟中断
+    INTR_TIMER_M = INTR_TIMER + M_MODE,
+    INTR_EXTERN  = 8,
+    /// U 态外部中断
+    INTR_EXTERN_U = INTR_EXTERN + U_MODE,
+    /// S 态外部中断
+    INTR_EXTERN_S = INTR_EXTERN + S_MODE,
+    /// M 态外部中断
+    INTR_EXTERN_M = INTR_EXTERN + M_MODE,
+};
+
+enum {
+    EXCP_INSTRUCTION_ADDRESS_MISALIGNED = 0,
+    EXCP_INSTRUCTION_ACCESS_FAULT       = 1,
+    EXCP_ILLEGAL_INSTRUCTION            = 2,
+    EXCP_BREAKPOINT                     = 3,
+    EXCP_LOAD_ADDRESS_MISALIGNED        = 4,
+    EXCP_LOAD_ACCESS_FAULT              = 5,
+    EXCP_STORE_AMO_ADDRESS_MISALIGNED   = 6,
+    EXCP_STORE_AMO_ACCESS_FAULT         = 7,
+    EXCP_ECALL                          = 8,
+    EXCP_ECALL_U                        = EXCP_ECALL + U_MODE,
+    EXCP_ECALL_S                        = EXCP_ECALL + S_MODE,
+    EXCP_ECALL_M                        = EXCP_ECALL + M_MODE,
+    EXCP_INSTRUCTION_PAGE_FAULT         = 12,
+    EXCP_LOAD_PAGE_FAULT                = 13,
+    EXCP_STORE_AMO_PAGE_FAULT           = 15,
+};
+
 // Supervisor Status Register, sstatus
 // User Interrupt Enable
 static constexpr const uint64_t SSTATUS_UIE = 1 << 0;
@@ -453,10 +502,10 @@ static inline void WRITE_SSCRATCH(uint64_t _x) {
     return;
 }
 
-/// [31]=1 interrupt, else exception
-static constexpr const uint64_t CAUSE_INTR_MASK = 0x8000000000000000;
+/// [63]==1 interrupt, else exception
+static constexpr const uint64_t CAUSE_INTR_MASK = 1ULL << 63;
 /// low bits show code
-static constexpr const uint64_t CAUSE_CODE_MASK = 0x7FFFFFFFFFFFFFFF;
+static constexpr const uint64_t CAUSE_CODE_MASK = ~CAUSE_INTR_MASK;
 
 /**
  * @brief 读 scause 寄存器 Supervisor Trap Cause
