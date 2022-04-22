@@ -17,8 +17,6 @@
 #include "cpu.hpp"
 #include "stdio.h"
 #include "intr.h"
-#include "vmm.h"
-#include "pmm.h"
 
 /**
  * @brief 中断处理函数
@@ -115,9 +113,9 @@ int32_t INTR::init(void) {
     // 外部中断初始化
     PLIC::get_instance().init();
     // 注册缺页中断
-    register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
+    register_excp_handler(CPU::EXCP_LOAD_PAGE_FAULT, pg_load_excp);
     // 注册缺页中断
-    register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
+    register_excp_handler(CPU::EXCP_STORE_AMO_PAGE_FAULT, pg_store_excp);
     info("intr init.\n");
     return 0;
 }
