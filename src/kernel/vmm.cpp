@@ -18,7 +18,6 @@
 #include "string.h"
 #include "stdio.h"
 #include "assert.h"
-#include "cpu.hpp"
 #if defined(__i386__) || defined(__x86_64__)
 #include "gdt.h"
 #endif
