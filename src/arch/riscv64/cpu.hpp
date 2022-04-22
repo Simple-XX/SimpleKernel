@@ -27,6 +27,102 @@
  * @todo
  */
 namespace CPU {
+/**
+ * @brief pte 结构
+ * @todo 使用 pte 结构重写 vmm
+ */
+struct pte_t {
+    enum {
+        VALID_OFFSET    = 0,
+        READ_OFFSET     = 1,
+        WRITE_OFFSET    = 2,
+        EXEC_OFFSET     = 3,
+        USER_OFFSET     = 4,
+        GLOBAL_OFFSET   = 5,
+        ACCESSED_OFFSET = 6,
+        DIRTY_OFFSET    = 7,
+        VALID           = 1 << VALID_OFFSET,
+        READ            = 1 << READ_OFFSET,
+        WRITE           = 1 << WRITE_OFFSET,
+        EXEC            = 1 << EXEC_OFFSET,
+        USER            = 1 << USER_OFFSET,
+        GLOBAL          = 1 << GLOBAL_OFFSET,
+        ACCESSED        = 1 << ACCESSED_OFFSET,
+        DIRTY           = 1 << DIRTY_OFFSET,
+    };
+    union {
+        struct {
+            uint64_t flags : 8;
+            uint64_t rsw : 2;
+            uint64_t ppn : 44;
+            uint64_t reserved : 10;
+        };
+        uint64_t val;
+    };
+
+    pte_t(void) {
+        val = 0;
+        return;
+    }
+    pte_t(uint64_t _val) : val(_val) {
+        return;
+    }
+    friend std::ostream &operator<<(std::ostream &_os, const pte_t &_pte) {
+        printf("val: 0x%p, valid: %s, read: %s, write: %s, exec: %s, user: %s, "
+               "global: %s, accessed: %s, dirty: %s, rsw: 0x%p, ppn: 0x%p",
+               _pte.val, (_pte.flags & VALID) == VALID ? "true" : "false",
+               (_pte.flags & READ) == READ ? "true" : "false",
+               (_pte.flags & WRITE) == WRITE ? "true" : "false",
+               (_pte.flags & EXEC) == EXEC ? "true" : "false",
+               (_pte.flags & USER) == USER ? "true" : "false",
+               (_pte.flags & GLOBAL) == GLOBAL ? "true" : "false",
+               (_pte.flags & ACCESSED) == ACCESSED ? "true" : "false",
+               (_pte.flags & DIRTY) == DIRTY ? "true" : "false", _pte.rsw,
+               _pte.ppn);
+        return _os;
+    }
+};
+
+/**
+ * @brief satp 结构
+ */
+struct satp_t {
+    enum {
+        NONE = 0,
+        SV39 = 8,
+        SV48 = 9,
+        SV57 = 10,
+        SV64 = 11,
+    };
+    static constexpr const char *MODE_NAME[] = {
+        [NONE] = "NONE", "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
+        "UNKNOWN",       "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
+        [SV39] = "SV39", [SV48] = "SV48", [SV57] = "SV57", [SV64] = "SV64",
+    };
+
+    union {
+        struct {
+            uint64_t ppn : 44;
+            uint64_t asid : 16;
+            uint64_t mode : 4;
+        };
+        uint64_t val;
+    };
+
+    satp_t(void) {
+        val = 0;
+        return;
+    }
+    satp_t(uint64_t _val) : val(_val) {
+        return;
+    }
+    friend std::ostream &operator<<(std::ostream &_os, const satp_t &_satp) {
+        printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", _satp.val,
+               _satp.ppn, _satp.asid, MODE_NAME[_satp.mode]);
+        return _os;
+    }
+};
+
 // Supervisor Status Register, sstatus
 // User Interrupt Enable
 static constexpr const uint64_t SSTATUS_UIE = 1 << 0;
@@ -83,6 +179,7 @@ struct mstatus_t {
     };
 
     mstatus_t(void) {
+        val = 0;
         return;
     }
     mstatus_t(uint64_t _val) : val(_val) {
@@ -128,6 +225,7 @@ struct sstatus_t {
     };
 
     sstatus_t(void) {
+        val = 0;
         return;
     }
     sstatus_t(uint64_t _val) : val(_val) {
@@ -136,9 +234,9 @@ struct sstatus_t {
     friend std::ostream &operator<<(std::ostream    &_os,
                                     const sstatus_t &_sstatus) {
         printf("val: 0x%p, sie: %s, spie: %s, spp: %s", _sstatus.val,
-               (_sstatus.sie == 1 ? "enable" : "disable"),
-               (_sstatus.spie == 1 ? "enable" : "disable"),
-               (_sstatus.spp == 1 ? "S mode" : "U mode"));
+               (_sstatus.sie == true ? "enable" : "disable"),
+               (_sstatus.spie == true ? "enable" : "disable"),
+               (_sstatus.spp == true ? "S mode" : "U mode"));
         return _os;
     }
 };
@@ -249,35 +347,6 @@ static inline void WRITE_STVEC(uint64_t _x) {
     return;
 }
 
-/**
- * @brief satp 结构
- */
-struct satp_t {
-    enum {
-        NONE = 0,
-        SV39 = 8,
-        SV48 = 9,
-        SV57 = 10,
-        SV64 = 11,
-    };
-
-    union {
-        struct {
-            uint64_t ppn : 44;
-            uint64_t asid : 16;
-            uint64_t mode : 4;
-        };
-        uint64_t val;
-    };
-
-    satp_t(void) {
-        return;
-    }
-    satp_t(uint64_t _val) : val(_val) {
-        return;
-    }
-};
-
 /// 中断模式 直接
 static constexpr const uint64_t TVEC_DIRECT = 0xFFFFFFFFFFFFFFFC;
 /// 中断模式 向量
@@ -330,10 +399,10 @@ static inline void SET_PGD(uintptr_t _x) {
     satp_new.asid = 0;
     // 读取现在的 pgd
     asm("csrr %0, satp" : "=r"(satp_old));
-    // 如果开启了 sv39
-    if (satp_old.mode == satp_t::SV39) {
-        // 将新的页目录也设为开启
-        satp_new.mode = satp_t::SV39;
+    // 如果开启了分页
+    if (satp_old.mode != satp_t::NONE) {
+        // 将新的页目录设为与已有的模式相同
+        satp_new.mode = satp_old.mode;
     }
     asm("csrw satp, %0" : : "r"(satp_new));
     return;
