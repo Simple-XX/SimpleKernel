@@ -26,9 +26,9 @@
 static constexpr const uint64_t hart = 0;
 
 /**
- * @brief 外部中断处理 0x9 Supervisor External Interrupt.
+ * @brief 外部中断处理
  */
-int32_t externel_intr(int, char **) {
+static int32_t externel_intr(int, char **) {
     // 读取中断号
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
@@ -70,8 +70,8 @@ int32_t PLIC::init(void) {
     // TODO: 多核情况下设置所有 hart
     // 将当前 hart 的 S 模式优先级阈值设置为 0
     IO::get_instance().write32((void *)PLIC_SPRIORITY(hart), 0);
-    // 注册外部中断处理函数 S 态外部中断
-    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_EXTERNEL,
+    // 注册外部中断处理函数
+    INTR::get_instance().register_interrupt_handler(CPU::INTR_EXTERN_S,
                                                     externel_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
