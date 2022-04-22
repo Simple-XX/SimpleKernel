@@ -52,7 +52,8 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
          "0x%p\nsstatus: ",
          _sepc, _stval, _scause, _all_regs, _sie);
-    std::cout << _sstatus << std::endl;
+    std::cout << _sstatus << ", ";
+    info("sscratch: 0x%p\n", _sscratch);
 // std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
