@@ -69,7 +69,7 @@ int32_t PLIC::init(void) {
     IO::get_instance().write32(
         (void *)PLIC_SPRIORITY(CPU::get_curr_core_id()), 0);
     // 注册外部中断处理函数
-    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_EXTERNEL,
+    INTR::get_instance().register_interrupt_handler(CPU::INTR_EXTERN_S,
                                                     externel_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);

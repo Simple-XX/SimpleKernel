@@ -35,39 +35,41 @@ public:
 private:
     /// 异常名
     static constexpr const char *const excp_names[] = {
-        "Instruction Address Misaligned",
-        "Instruction Access Fault",
-        "Illegal Instruction",
-        "Breakpoint",
-        "Load Address Misaligned",
-        "Load Access Fault",
-        "Store/AMO Address Misaligned",
-        "Store/AMO Access Fault",
-        "Environment Call from U-mode",
-        "Environment Call from S-mode",
+        [CPU::EXCP_INSTRUCTION_ADDRESS_MISALIGNED] =
+            "Instruction Address Misaligned",
+        [CPU::EXCP_INSTRUCTION_ACCESS_FAULT] = "Instruction Access Fault",
+        [CPU::EXCP_ILLEGAL_INSTRUCTION]      = "Illegal Instruction",
+        [CPU::EXCP_BREAKPOINT]               = "Breakpoint",
+        [CPU::EXCP_LOAD_ADDRESS_MISALIGNED]  = "Load Address Misaligned",
+        [CPU::EXCP_LOAD_ACCESS_FAULT]        = "Load Access Fault",
+        [CPU::EXCP_STORE_AMO_ADDRESS_MISALIGNED] =
+            "Store/AMO Address Misaligned",
+        [CPU::EXCP_STORE_AMO_ACCESS_FAULT] = "Store/AMO Access Fault",
+        [CPU::EXCP_ECALL_U]                = "Environment Call from U-mode",
+        [CPU::EXCP_ECALL_S]                = "Environment Call from S-mode",
         "Reserved",
-        "Environment Call from M-mode",
-        "Instruction Page Fault",
-        "Load Page Fault",
+        [CPU::EXCP_ECALL_M]                = "Environment Call from M-mode",
+        [CPU::EXCP_INSTRUCTION_PAGE_FAULT] = "Instruction Page Fault",
+        [CPU::EXCP_LOAD_PAGE_FAULT]        = "Load Page Fault",
         "Reserved",
-        "Store/AMO Page Fault",
+        [CPU::EXCP_STORE_AMO_PAGE_FAULT] = "Store/AMO Page Fault",
         "Reserved",
     };
 
     /// 中断名
     static constexpr const char *const intr_names[] = {
-        "User Software Interrupt",
-        "Supervisor Software Interrupt",
+        [CPU::INTR_SOFT_U] = "User Software Interrupt",
+        [CPU::INTR_SOFT_S] = "Supervisor Software Interrupt",
         "Reserved",
-        "Machine Software Interrupt",
-        "User Timer Interrupt",
-        "Supervisor Timer Interrupt",
+        [CPU::INTR_SOFT_M]  = "Machine Software Interrupt",
+        [CPU::INTR_TIMER_U] = "User Timer Interrupt",
+        [CPU::INTR_TIMER_S] = "Supervisor Timer Interrupt",
         "Reserved",
-        "Machine Timer Interrupt",
-        "User External Interrupt",
-        "Supervisor External Interrupt",
+        [CPU::INTR_TIMER_M]  = "Machine Timer Interrupt",
+        [CPU::INTR_EXTERN_U] = "User External Interrupt",
+        [CPU::INTR_EXTERN_S] = "Supervisor External Interrupt",
         "Reserved",
-        "Machine External Interrupt",
+        [CPU::INTR_EXTERN_M] = "Machine External Interrupt",
         "Reserved",
         "Reserved",
         "Reserved",
@@ -90,15 +92,6 @@ private:
     spinlock_t spinlock;
 
 public:
-    /// 页读错误
-    static constexpr const uint8_t EXCP_LOAD_PAGE_FAULT = 13;
-    /// 页写错误
-    static constexpr const uint8_t EXCP_STORE_PAGE_FAULT = 15;
-    /// S 态时钟中断
-    static constexpr const uint8_t INTR_S_TIMER = 5;
-    /// S 态外部中断
-    static constexpr const uint8_t INTR_S_EXTERNEL = 9;
-
     /**
      * @brief 获取单例
      * @return INTR&            静态对象
