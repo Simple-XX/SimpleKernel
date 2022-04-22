@@ -28,6 +28,7 @@
 namespace CPU {
 /**
  * @brief pte 结构
+ * @todo 使用 pte 结构重写 vmm
  */
 struct pte_t {
     enum {
@@ -148,10 +149,10 @@ static inline void SET_PGD(uintptr_t _x) {
     satp_new.asid = 0;
     // 读取现在的 pgd
     asm("csrr %0, satp" : "=r"(satp_old));
-    // 如果开启了 sv39
-    if (satp_old.mode == satp_t::SV39) {
-        // 将新的页目录也设为开启
-        satp_new.mode = satp_t::SV39;
+    // 如果开启了分页
+    if (satp_old.mode != satp_t::NONE) {
+        // 将新的页目录设为与已有的模式相同
+        satp_new.mode = satp_old.mode;
     }
     asm("csrw satp, %0" : : "r"(satp_new));
     return;
