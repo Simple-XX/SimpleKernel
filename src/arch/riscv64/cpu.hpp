@@ -96,28 +96,31 @@ struct mstatus_t {
 struct sstatus_t {
     union {
         struct {
+            // Reserved Writes Preserve Values, Reads Ignore Values (WPRI)
+            uint64_t wpri1 : 1;
             // interrupt enable
-            uint64_t ie : 2;
-            uint64_t unused1 : 2;
+            uint64_t sie : 1;
+            uint64_t wpri12 : 3;
             // previous interrupt enable
-            uint64_t pie : 2;
-            uint64_t unused2 : 2;
+            uint64_t spie : 1;
+            uint64_t ube : 1;
+            uint64_t wpri3 : 1;
             // previous mode (supervisor)
             uint64_t spp : 1;
-            uint64_t unused3 : 4;
+            uint64_t wpri4 : 4;
             // FPU status
             uint64_t fs : 2;
             // extensions status
             uint64_t xs : 2;
-            uint64_t unused4 : 1;
+            uint64_t wpri5 : 1;
             // permit supervisor user memory access
             uint64_t sum : 1;
             // make executable readable
             uint64_t mxr : 1;
-            uint64_t unused5 : 12;
+            uint64_t wpri6 : 12;
             // U-mode XLEN
             uint64_t uxl : 2;
-            uint64_t unused6 : 29;
+            uint64_t wpri7 : 29;
             // status dirty
             uint64_t sd : 1;
         };
@@ -130,14 +133,22 @@ struct sstatus_t {
     sstatus_t(uint64_t _val) : val(_val) {
         return;
     }
+    friend std::ostream &operator<<(std::ostream    &_os,
+                                    const sstatus_t &_sstatus) {
+        printf("val: 0x%p, sie: %s, spie: %s, spp: %s", _sstatus.val,
+               (_sstatus.sie == 1 ? "enable" : "disable"),
+               (_sstatus.spie == 1 ? "enable" : "disable"),
+               (_sstatus.spp == 1 ? "S mode" : "U mode"));
+        return _os;
+    }
 };
 
 /**
  * @brief 读取 sstatus 寄存器
  * @return uint64_t         读取到的值
  */
-static inline uint64_t READ_SSTATUS(void) {
-    uint64_t x;
+static inline sstatus_t READ_SSTATUS(void) {
+    sstatus_t x;
     asm("csrr %0, sstatus" : "=r"(x));
     return x;
 }
@@ -146,7 +157,7 @@ static inline uint64_t READ_SSTATUS(void) {
  * @brief 写 sstatus 寄存器
  * @param  _x                要写的值
  */
-static inline void WRITE_SSTATUS(uint64_t _x) {
+static inline void WRITE_SSTATUS(sstatus_t _x) {
     asm("csrw sstatus, %0" : : "r"(_x));
 }
 
@@ -414,7 +425,7 @@ static inline uint64_t READ_TIME(void) {
  * @brief 允许中断
  */
 static inline void ENABLE_INTR(void) {
-    WRITE_SSTATUS(READ_SSTATUS() | SSTATUS_SIE);
+    WRITE_SSTATUS(READ_SSTATUS().val | SSTATUS_SIE);
     return;
 }
 
@@ -422,8 +433,8 @@ static inline void ENABLE_INTR(void) {
  * @brief 允许中断
  * @param  _sstatus         要设置的 sstatus
  */
-static inline void ENABLE_INTR(uint64_t &_sstatus) {
-    _sstatus |= SSTATUS_SIE;
+static inline void ENABLE_INTR(sstatus_t &_sstatus) {
+    _sstatus.sie = true;
     return;
 }
 
@@ -431,7 +442,7 @@ static inline void ENABLE_INTR(uint64_t &_sstatus) {
  * @brief 禁止中断
  */
 static inline void DISABLE_INTR(void) {
-    WRITE_SSTATUS(READ_SSTATUS() & ~SSTATUS_SIE);
+    WRITE_SSTATUS(READ_SSTATUS().val & ~SSTATUS_SIE);
     return;
 }
 
@@ -439,8 +450,8 @@ static inline void DISABLE_INTR(void) {
  * @brief 禁止中断
  * @param  _sstatus         要设置的原 sstatus 值
  */
-static inline void DISABLE_INTR(uint64_t &_sstatus) {
-    _sstatus &= ~SSTATUS_SIE;
+static inline void DISABLE_INTR(sstatus_t &_sstatus) {
+    _sstatus.sie = false;
     return;
 }
 
@@ -450,8 +461,8 @@ static inline void DISABLE_INTR(uint64_t &_sstatus) {
  * @return false            禁止
  */
 static inline bool STATUS_INTR(void) {
-    uint64_t x = READ_SSTATUS();
-    return (x & SSTATUS_SIE) != 0;
+    sstatus_t x = READ_SSTATUS();
+    return x.sie;
 }
 
 /**
@@ -658,7 +669,7 @@ struct all_regs_t {
     uintptr_t            stval;
     uintptr_t            scause;
     uintptr_t            sie;
-    uintptr_t            sstatus;
+    sstatus_t            sstatus;
     uintptr_t            sscratch;
     friend std::ostream &operator<<(std::ostream     &_os,
                                     const all_regs_t &_all_regs) {
@@ -668,7 +679,7 @@ struct all_regs_t {
             "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: 0x%p, "
             "sscratch: 0x%p",
             _all_regs.sepc, _all_regs.stval, _all_regs.scause, _all_regs.sie,
-            _all_regs.sstatus, _all_regs.sscratch);
+            _all_regs.sstatus.val, _all_regs.sscratch);
         return _os;
     }
 };
