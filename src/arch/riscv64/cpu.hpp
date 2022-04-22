@@ -1063,7 +1063,7 @@ struct context_t {
     CPU::callee_regs_t   callee_regs;
     uintptr_t            satp;
     uintptr_t            sepc;
-    uintptr_t            sstatus;
+    CPU::sstatus_t       sstatus;
     uintptr_t            sie;
     uintptr_t            sip;
     uintptr_t            sscratch;
@@ -1074,7 +1074,7 @@ struct context_t {
         std::cout << _context.callee_regs << std::endl;
         printf("satp: 0x%p, ", _context.satp);
         printf("sepc: 0x%p, ", _context.sepc);
-        printf("sstatus: 0x%p, ", _context.sstatus);
+        printf("sstatus: 0x%p, ", _context.sstatus.val);
         printf("sie: 0x%p, ", _context.sie);
         printf("sip: 0x%p, ", _context.sip);
         printf("sscratch: 0x%p", _context.sscratch);
