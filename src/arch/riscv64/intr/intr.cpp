@@ -32,7 +32,7 @@
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, CPU::all_regs_t *_all_regs,
                              uintptr_t _sie, CPU::sstatus_t _sstatus,
-                             uintptr_t _sscratch) {
+                             CPU::satp_t _satp, uintptr_t _sscratch) {
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -40,13 +40,14 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_all_regs;
     (void)_sie;
     (void)_sstatus;
+    (void)_satp;
     (void)_sscratch;
 #define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
          "0x%p\nsstatus: ",
          _sepc, _stval, _scause, _all_regs, _sie);
-    std::cout << _sstatus << ", ";
+    std::cout << _sstatus << ", \nsatp: " << _satp << ", \n";
     info("sscratch: 0x%p\n", _sscratch);
 // std::cout << *_all_regs << std::endl;
 #undef DEBUG
