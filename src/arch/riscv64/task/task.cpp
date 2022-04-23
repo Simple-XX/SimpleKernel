@@ -34,12 +34,12 @@ task_t::task_t(mystl::string _name, void (*_task)(void))
     context.callee_regs.sp = stack + COMMON::STACK_SIZE;
     context.sscratch       = (uintptr_t)kmalloc(sizeof(CPU::context_t));
     context.sie |= CPU::SIE_STIE;
-    context.sstatus |= CPU::SSTATUS_SIE;
-    page_dir    = VMM::get_instance().get_pgd();
-    slice       = 0;
-    slice_total = 0;
-    hartid      = CPU::get_curr_core_id();
-    exit_code   = -1;
+    context.sstatus.sie = true;
+    page_dir            = VMM::get_instance().get_pgd();
+    slice               = 0;
+    slice_total         = 0;
+    hartid              = CPU::get_curr_core_id();
+    exit_code           = -1;
     return;
 }
 
