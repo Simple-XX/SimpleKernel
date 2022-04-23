@@ -788,7 +788,7 @@ struct fregs_t {
 };
 
 /**
- * @brief 所有寄存器，在中断时使用，共 32+32+6=70 个
+ * @brief 所有寄存器，在中断时使用，共 32+32+7=71 个
  */
 struct all_regs_t {
     xregs_t              xregs;
@@ -798,16 +798,16 @@ struct all_regs_t {
     uintptr_t            scause;
     uintptr_t            sie;
     sstatus_t            sstatus;
+    satp_t               satp;
     uintptr_t            sscratch;
     friend std::ostream &operator<<(std::ostream     &_os,
                                     const all_regs_t &_all_regs) {
         (void)_all_regs.fregs;
         _os << _all_regs.xregs << std::endl;
-        printf(
-            "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: 0x%p, "
-            "sscratch: 0x%p",
-            _all_regs.sepc, _all_regs.stval, _all_regs.scause, _all_regs.sie,
-            _all_regs.sstatus.val, _all_regs.sscratch);
+        printf("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: "
+               "0x%p, satp: 0x%p, sscratch: 0x%p",
+               _all_regs.sepc, _all_regs.stval, _all_regs.scause, _all_regs.sie,
+               _all_regs.sstatus.val, _all_regs.satp.val, _all_regs.sscratch);
         return _os;
     }
 };
@@ -1061,7 +1061,7 @@ struct context_t {
     uintptr_t            coreid;
     uintptr_t            ra;
     CPU::callee_regs_t   callee_regs;
-    uintptr_t            satp;
+    CPU::satp_t          satp;
     uintptr_t            sepc;
     CPU::sstatus_t       sstatus;
     uintptr_t            sie;
@@ -1072,7 +1072,7 @@ struct context_t {
         printf("coreid: 0x%X, ", _context.coreid);
         printf("ra: 0x%p\n", _context.ra);
         std::cout << _context.callee_regs << std::endl;
-        printf("satp: 0x%p, ", _context.satp);
+        printf("satp: 0x%p, ", _context.satp.val);
         printf("sepc: 0x%p, ", _context.sepc);
         printf("sstatus: 0x%p, ", _context.sstatus.val);
         printf("sie: 0x%p, ", _context.sie);
