@@ -778,7 +778,7 @@ struct fregs_t {
 };
 
 /**
- * @brief 所有寄存器，在中断时使用，共 32+32+6=70 个
+ * @brief 所有寄存器，在中断时使用，共 32+32+7=71 个
  */
 struct all_regs_t {
     xregs_t              xregs;
@@ -788,16 +788,16 @@ struct all_regs_t {
     uintptr_t            scause;
     uintptr_t            sie;
     sstatus_t            sstatus;
+    satp_t               satp;
     uintptr_t            sscratch;
     friend std::ostream &operator<<(std::ostream     &_os,
                                     const all_regs_t &_all_regs) {
         (void)_all_regs.fregs;
         _os << _all_regs.xregs << std::endl;
-        printf(
-            "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: 0x%p, "
-            "sscratch: 0x%p",
-            _all_regs.sepc, _all_regs.stval, _all_regs.scause, _all_regs.sie,
-            _all_regs.sstatus.val, _all_regs.sscratch);
+        printf("sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: "
+               "0x%p, satp: 0x%p, sscratch: 0x%p",
+               _all_regs.sepc, _all_regs.stval, _all_regs.scause, _all_regs.sie,
+               _all_regs.sstatus.val, _all_regs.satp.val, _all_regs.sscratch);
         return _os;
     }
 };
