@@ -32,9 +32,10 @@ task_t::task_t(mystl::string _name, void (*_task)(void))
     context.ra     = (uintptr_t)_task;
     context.coreid = CPU::get_curr_core_id();
     context.callee_regs.sp = stack + COMMON::STACK_SIZE;
-    context.satp           = CPU::satp_t(CPU::SET_SV39(
-                  reinterpret_cast<uint64_t>(VMM::get_instance().get_pgd())));
-    context.sscratch       = (uintptr_t)kmalloc(sizeof(CPU::context_t));
+    context.satp.ppn =
+        (uint64_t)(VMM::get_instance().get_pgd()) >> CPU::satp_t::PPN_OFFSET;
+    context.satp.mode = CPU::satp_t::SV39;
+    context.sscratch  = (uintptr_t)kmalloc(sizeof(CPU::context_t));
     context.sie |= CPU::SIE_STIE;
     context.sstatus.sie = true;
     page_dir            = VMM::get_instance().get_pgd();
