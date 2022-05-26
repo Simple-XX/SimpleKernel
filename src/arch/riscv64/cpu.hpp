@@ -108,6 +108,8 @@ struct satp_t {
         uint64_t val;
     };
 
+    static constexpr const uint64_t PPN_OFFSET = 12;
+
     satp_t(void) {
         val = 0;
         return;
@@ -123,53 +125,32 @@ struct satp_t {
 };
 
 /**
- * @brief 设置 sv39 虚拟内存模式
- * @param  _pgd             要设置的页目录
- * @return constexpr uintptr_t 设置好的页目录
- */
-static uintptr_t SET_SV39(uintptr_t _pgd) {
-    satp_t satp;
-    satp.val  = _pgd >> 12;
-    satp.asid = 0;
-    satp.mode = satp_t::SV39;
-    return satp.val;
-}
-
-/**
- * @brief 设置页目录
+ * @brief 设置页目录，仅更改 ppn
  * @param  _x               要设置的页目录
  * @note supervisor address translation and protection; holds the address of
  * the page table.
  * @todo 需要判断 _x 是否已经处理过
  */
 static inline void SET_PGD(uintptr_t _x) {
-    satp_t satp_old;
-    satp_t satp_new;
-    satp_new.val  = _x;
-    satp_new.asid = 0;
+    satp_t satp;
     // 读取现在的 pgd
-    asm("csrr %0, satp" : "=r"(satp_old));
-    // 如果开启了分页
-    if (satp_old.mode != satp_t::NONE) {
-        // 将新的页目录设为与已有的模式相同
-        satp_new.mode = satp_old.mode;
-    }
-    asm("csrw satp, %0" : : "r"(satp_new));
+    asm("csrr %0, satp" : "=r"(satp));
+    // 更改 ppn
+    // satp.ppn = _x & satp_t::PPN_MASK;
+    satp.ppn = _x >> satp_t::PPN_OFFSET;
+    // 写回
+    asm("csrw satp, %0" : : "r"(satp));
     return;
 }
 
 /**
- * @brief 获取页目录
+ * @brief 获取页目录，仅获取 ppn
  * @return uintptr_t        页目录
  */
 static inline uintptr_t GET_PGD(void) {
     satp_t satp;
     asm("csrr %0, satp" : "=r"(satp));
-    // 如果开启了虚拟内存，恢复为原始格式
-    if (satp.mode == satp_t::SV39) {
-        return satp.ppn << 12;
-    }
-    return satp.val;
+    return satp.ppn << satp_t::PPN_OFFSET;
 }
 
 /**
@@ -179,7 +160,11 @@ static inline uintptr_t GET_PGD(void) {
  */
 static inline bool ENABLE_PG(void) {
     uintptr_t x = GET_PGD();
-    SET_PGD(SET_SV39(x));
+    satp_t    satp;
+    satp.ppn  = x >> satp_t::PPN_OFFSET;
+    satp.asid = 0;
+    satp.mode = satp_t::SV39;
+    asm("csrw satp, %0" : : "r"(satp));
     info("paging enabled.\n");
     return true;
 }
