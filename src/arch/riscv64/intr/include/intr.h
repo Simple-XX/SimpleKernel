@@ -178,17 +178,21 @@ public:
 class PLIC {
 private:
     /// 基地址，由 dtb 传递
-    uintptr_t base_addr;
+    static uintptr_t base_addr;
     /// @todo ？
-    uint64_t PLIC_PRIORITY;
+    static uint64_t PLIC_PRIORITY;
     /// @todo ？
-    uint64_t PLIC_PENDING;
+    static uint64_t PLIC_PENDING;
     /// @todo ？
-    uint64_t PLIC_SENABLE(uint64_t hart);
+    static inline uint64_t PLIC_SENABLE(uint64_t _hart);
+
+    static inline uint64_t PLIC_MENABLE(uint64_t _hart);
     /// @todo ？
-    uint64_t PLIC_SPRIORITY(uint64_t hart);
+    static inline uint64_t PLIC_SPRIORITY(uint64_t _hart);
+    static inline uint64_t PLIC_MPRIORITY(uint64_t _hart);
     /// @todo ？
-    uint64_t PLIC_SCLAIM(uint64_t hart);
+    static inline uint64_t PLIC_SCLAIM(uint64_t _hart);
+    static inline uint64_t PLIC_MCLAIM(uint64_t _hart);
 
 protected:
 public:

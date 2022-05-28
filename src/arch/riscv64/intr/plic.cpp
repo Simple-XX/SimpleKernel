@@ -25,6 +25,10 @@
 /// 这个值在启动时由 opensbi 传递，暂时写死
 static constexpr const uint64_t hart = 0;
 
+uintptr_t PLIC::base_addr;
+uint64_t  PLIC::PLIC_PRIORITY;
+uint64_t  PLIC::PLIC_PENDING;
+
 /**
  * @brief 外部中断处理
  */
@@ -40,12 +44,24 @@ uint64_t PLIC::PLIC_SENABLE(uint64_t _hart) {
     return base_addr + 0x2080 + _hart * 0x100;
 }
 
+uint64_t PLIC::PLIC_MENABLE(uint64_t _hart) {
+    return base_addr + 0x2000 + _hart * 0x100;
+}
+
 uint64_t PLIC::PLIC_SPRIORITY(uint64_t _hart) {
     return base_addr + 0x201000 + _hart * 0x2000;
 }
 
+uint64_t PLIC::PLIC_MPRIORITY(uint64_t _hart) {
+    return base_addr + 0x200000 + _hart * 0x2000;
+}
+
 uint64_t PLIC::PLIC_SCLAIM(uint64_t _hart) {
     return base_addr + 0x201004 + _hart * 0x2000;
+}
+
+uint64_t PLIC::PLIC_MCLAIM(uint64_t _hart) {
+    return base_addr + 0x200004 + _hart * 0x2000;
 }
 
 PLIC &PLIC::get_instance(void) {
