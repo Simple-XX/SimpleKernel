@@ -424,9 +424,4 @@ public:
     friend std::ostream &operator<<(std::ostream &_os, const path_t &_path);
 };
 
-namespace BOOT_INFO {
-/// 保存 sbi 传递的启动核
-extern "C" size_t dtb_init_hart;
-}; // namespace BOOT_INFO
-
 #endif /* _DTB_H_ */
