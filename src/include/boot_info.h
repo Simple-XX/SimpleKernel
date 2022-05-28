@@ -37,6 +37,8 @@ extern bool inited;
 extern "C" uintptr_t boot_info_addr;
 /// 长度
 extern size_t boot_info_size;
+/// 保存 sbi 传递的启动核
+extern "C" size_t dtb_init_hart;
 
 /**
  * @brief 初始化，定义在具体实现中
