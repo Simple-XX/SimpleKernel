@@ -22,12 +22,9 @@
 #include "io.h"
 #include "intr.h"
 
-/// 这个值在启动时由 opensbi 传递，暂时写死
-static constexpr const uint64_t hart = 0;
-
-uintptr_t PLIC::base_addr;
-uint64_t  PLIC::PLIC_PRIORITY;
-uint64_t  PLIC::PLIC_PENDING;
+uint64_t PLIC::base_addr;
+uint64_t PLIC::PLIC_PRIORITY;
+uint64_t PLIC::PLIC_PENDING;
 
 /**
  * @brief 外部中断处理
@@ -85,8 +82,8 @@ int32_t PLIC::init(void) {
     }
     // TODO: 多核情况下设置所有 hart
     // 将当前 hart 的 S 模式优先级阈值设置为 0
-    IO::get_instance().write32(
-        (void *)PLIC_SPRIORITY(CPU::get_curr_core_id()), 0);
+    IO::get_instance().write32((void *)PLIC_SPRIORITY(CPU::get_curr_core_id()),
+                               0);
     // 注册外部中断处理函数
     INTR::get_instance().register_interrupt_handler(CPU::INTR_EXTERN_S,
                                                     externel_intr);
@@ -98,8 +95,8 @@ int32_t PLIC::init(void) {
 
 int32_t PLIC::init_other_core(void) {
     // 将当前 hart 的 S 模式优先级阈值设置为 0
-    IO::get_instance().write32(
-        (void *)PLIC_SPRIORITY(CPU::get_curr_core_id()), 0);
+    IO::get_instance().write32((void *)PLIC_SPRIORITY(CPU::get_curr_core_id()),
+                               0);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
     info("plic other init.\n");
@@ -114,16 +111,16 @@ void PLIC::set(uint8_t _no, bool _status) {
     // 为当前 hart 的 S 模式设置 uart 的 enable
     if (_status) {
         IO::get_instance().write32(
-            (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart),
+            (void *)PLIC_SENABLE(CPU::get_curr_core_id()),
             IO::get_instance().read32(
-                (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart)) |
+                (void *)PLIC_SENABLE(CPU::get_curr_core_id())) |
                 (1 << _no));
     }
     else {
         IO::get_instance().write32(
-            (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart),
+            (void *)PLIC_SENABLE(CPU::get_curr_core_id()),
             IO::get_instance().read32(
-                (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart)) &
+                (void *)PLIC_SENABLE(CPU::get_curr_core_id())) &
                 ~(1 << _no));
     }
     spinlock.unlock();
@@ -132,15 +129,15 @@ void PLIC::set(uint8_t _no, bool _status) {
 
 uint8_t PLIC::get(void) {
     spinlock.lock();
-    uint8_t ret = IO::get_instance().read32(
-        (void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart));
+    uint8_t ret =
+        IO::get_instance().read32((void *)PLIC_SCLAIM(CPU::get_curr_core_id()));
     spinlock.unlock();
     return ret;
 }
 
 void PLIC::done(uint8_t _no) {
     spinlock.lock();
-    IO::get_instance().write32((void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart),
+    IO::get_instance().write32((void *)PLIC_SCLAIM(CPU::get_curr_core_id()),
                                _no);
     spinlock.unlock();
     return;
