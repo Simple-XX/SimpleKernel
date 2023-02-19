@@ -8,9 +8,8 @@
 #!/bin/bash
 
 # ARCH: i386, x86_64, riscv64
-# ARCH="i386"
-# ARCH="x86_64"
-ARCH="riscv64"
+# 获取CPU架构
+ARCH=`uname -m`
 
 # Use qeme for i386/x86_64, bochs for default
 IA32_USE_QEMU=0

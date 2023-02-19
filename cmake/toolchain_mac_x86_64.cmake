@@ -47,7 +47,7 @@ endif ()
 find_program(GRUB grub-file)
 if (NOT GRUB)
     message(FATAL_ERROR "grub-file not found.\n"
-            "Use grub4mac.sh to install grub.")
+            "Use tools/grub4mac.sh to install grub.")
 else ()
     message(STATUS "Found grub-file ${GRUB}")
 endif ()
