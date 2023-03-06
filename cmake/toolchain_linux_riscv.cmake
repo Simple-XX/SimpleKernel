@@ -11,7 +11,7 @@ set(CMAKE_SYSTEM_PROCESSOR RISCV)
 find_program(RISCV riscv64-linux-gnu-g++)
 if (NOT RISCV)
     message(FATAL_ERROR "riscv64-linux-gnu-gcc not found.\n"
-            "Run `sudo apt-get install -y gcc-riscv64-linux-gnu g++-riscv64-linux-gnu` to install the toolchain. Then add the bin path to you PATH.")
+            "Run `sudo apt-get install -y gcc-riscv64-linux-gnu g++-riscv64-linux-gnu` to install the toolchain.")
 else ()
     message(STATUS "Found riscv64-linux-gnu-gcc ${RISCV}.")
 endif ()
