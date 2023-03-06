@@ -1,11 +1,11 @@
+#!/bin/bash
 
-# This file is a part of Simple-XX/SimpleKernel 
+# This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 #
 # run.sh for Simple-XX/SimpleKernel.
 # 在虚拟机中运行内核
 
-#!/bin/bash
 # shell 执行出错时终止运行
 set -e
 # 输出实际执行内容
