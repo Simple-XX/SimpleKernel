@@ -47,7 +47,7 @@ endif ()
 find_program(QEMU qemu-system-x86_64)
 if (NOT QEMU)
     message(FATAL_ERROR "qemu not found.\n"
-            "Please install qemu first.")
+            "Run `sudo apt install -y qemu-system` to install qemu.")
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
