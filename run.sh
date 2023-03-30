@@ -9,7 +9,7 @@
 # shell 执行出错时终止运行
 set -e
 # 输出实际执行内容
-# set -x
+#set -x
 
 source ./tools/env.sh
 export PATH="${GRUB_PATH}:$PATH"
@@ -37,12 +37,14 @@ if [ ${ARCH} == "riscv64" ]; then
     # OPENSBI 不存在则编译
     if [ ! -f ${OPENSBI} ]; then
         echo build opensbi.
-        git submodule init
-        git submodule update
         cd ./tools/opensbi
         mkdir -p build
         export CROSS_COMPILE=${TOOLCHAIN_PREFIX}
-        make PLATFORM=generic FW_JUMP_ADDR=0x80200000
+        export FW_JUMP=y
+        export FW_JUMP_ADDR=0x80200000
+        export PLATFORM_RISCV_XLEN=64
+        export PLATFORM=generic
+        make
         cd ../..
         echo build opensbi done.
     fi
