@@ -28,5 +28,4 @@ extern "C" void kernel_main(void);
  */
 void show_info(void);
 
-#endif /* _KERNEL_H_ */
 #endif /* SIMPLEKERNEL_KERNEL_H */
