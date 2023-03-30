@@ -13,10 +13,9 @@ OUTPUT_ARCH(riscv)
 ENTRY(_start)
 /* 设置各个 section */
 SECTIONS {
-    . = 0x80000000;
-    PROVIDE(kernel_start = .);
     /* 设置起始地址 */
     . = 0x80200000;
+    PROVIDE(kernel_start = .);
 
     PROVIDE(kernel_text_start = .);
     /* 代码段 */
