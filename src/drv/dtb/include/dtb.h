@@ -312,9 +312,8 @@ private:
      * @param  _data           要传递的数据
      * @param _addr            dtb 数据地址
      */
-    void dtb_iter(uint8_t _cb_flags,
-                         bool (*_cb)(const iter_data_t *, void *), void *_data,
-                         uintptr_t _addr = dtb_info.data);
+    void dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
+                  void *_data, uintptr_t _addr = dtb_info.data);
 
     /**
      * @brief 查找 phandle 映射
@@ -349,7 +348,7 @@ private:
      * @todo 补充说明
      */
     void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
-                                   size_t _len);
+                            size_t _len);
 
     /**
      * @brief 填充 resource_t
@@ -358,7 +357,7 @@ private:
      * @param  _prop           填充的数据
      */
     void fill_resource(resource_t *_resource, const node_t *_node,
-                              const prop_t *_prop);
+                       const prop_t *_prop);
 
     /**
      * @brief 通过路径寻找节点
