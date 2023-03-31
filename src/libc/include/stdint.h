@@ -3,11 +3,11 @@
  * @file stdint.h
  * @brief stdint 定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
- * Based on GNU C Lib
  * @version 1.0
  * @date 2023-03-31
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
+ * Based on GNU C Lib
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
