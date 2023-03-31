@@ -1,11 +1,21 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// port.h for Simple-XX/SimpleKernel.
+/**
+ * @file port.h
+ * @brief arm 端口驱动
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _PORT_H_
-#define _PORT_H_
+#ifndef SIMPLEKERNEL_PORT_H
+#define SIMPLEKERNEL_PORT_H
 
 #include "stdint.h"
 
@@ -24,4 +34,4 @@ namespace PORT {
     void outd(const uint32_t port, const uint32_t data);
 };
 
-#endif /* _PORT_H_ */
+#endif /* SIMPLEKERNEL_PORT_H */
