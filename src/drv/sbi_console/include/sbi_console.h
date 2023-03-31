@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _SBI_CONSOLE_H_
-#define _SBI_CONSOLE_H_
+#ifndef SIMPLEKERNEL_SBI_CONSOLE_H
+#define SIMPLEKERNEL_SBI_CONSOLE_H
 
 #include "stdint.h"
 #include "color.h"
@@ -71,4 +71,4 @@ public:
     COLOR::color_t get_color(void) const;
 };
 
-#endif /* _SBI_CONSOLE_H_ */
+#endif /* SIMPLEKERNEL_SBI_CONSOLE_H */

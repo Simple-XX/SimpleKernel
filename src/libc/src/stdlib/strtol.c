@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on libgcc
-// strtol.c for Simple-XX/SimpleKernel.
+/**
+ * @file strtol.c
+ * @brief strtol 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on libgcc
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdlib.h"
 #include "ctype.h"
@@ -16,7 +27,7 @@
  * alphabets and digits are each contiguous.
  */
 long strtol(const char *nptr, char **endptr, int base) {
-    const char *  s = nptr;
+    const char   *s = nptr;
     unsigned long acc;
     int           c;
     unsigned long cutoff;

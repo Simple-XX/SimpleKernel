@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _ALLOCATOR_H_
-#define _ALLOCATOR_H_
+#ifndef SIMPLEKERNEL_ALLOCATOR_H
+#define SIMPLEKERNEL_ALLOCATOR_H
 
 #include "stddef.h"
 #include "stdint.h"
@@ -84,4 +84,4 @@ public:
     virtual size_t get_free_count(void) const = 0;
 };
 
-#endif /* _ALLOCATOR_H_ */
+#endif /* SIMPLEKERNEL_ALLOCATOR_H */

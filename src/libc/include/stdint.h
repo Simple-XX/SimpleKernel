@@ -1,11 +1,22 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on GNU C Lib
-// stdint.h for Simple-XX/SimpleKernel.
+/**
+ * @file stdint.h
+ * @brief stdint 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on GNU C Lib
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _STDINT_H_
-#define _STDINT_H_
+#ifndef SIMPLEKERNEL_STDINT_H
+#define SIMPLEKERNEL_STDINT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -291,4 +302,4 @@ __extension__ typedef unsigned long long int uintmax_t;
 }
 #endif
 
-#endif /* _STDINT_H_ */
+#endif /* SIMPLEKERNEL_STDINT_H */
