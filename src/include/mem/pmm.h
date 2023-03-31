@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _PMM_H_
-#define _PMM_H_
+#ifndef SIMPLEKERNEL_PMM_H
+#define SIMPLEKERNEL_PMM_H
 
 #include "stddef.h"
 #include "stdint.h"
@@ -152,4 +152,4 @@ public:
     void free_pages(uintptr_t _addr, size_t _len);
 };
 
-#endif /* _PMM_H_ */
+#endif /* SIMPLEKERNEL_PMM_H */
