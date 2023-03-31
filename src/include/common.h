@@ -55,22 +55,22 @@ static const uintptr_t KERNEL_DATA_END_ADDR __attribute__((unused)) =
 static const uintptr_t KERNEL_END_ADDR =
     reinterpret_cast<uintptr_t>(kernel_end);
 
-    // 规定数据大小，方便用
-    /// 一个字节，8 bits
-    static constexpr const size_t BYTE = 0x1;
-    /// 1KB
-    static constexpr const size_t KB = 0x400;
-    /// 1MB
-    static constexpr const size_t MB = 0x100000;
-    /// 1GB
-    static constexpr const size_t GB = 0x40000000;
-    /// 页大小 4KB
-    static constexpr const size_t PAGE_SIZE = 4 * KB;
-    /// 内核空间占用大小，包括内核代码部分与预留的，8MB
-    static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
-    /// 映射内核空间需要的页数
-    static constexpr const uint64_t KERNEL_SPACE_PAGES =
-        KERNEL_SPACE_SIZE / PAGE_SIZE;
+// 规定数据大小，方便用
+/// 一个字节，8 bits
+static constexpr const size_t BYTE = 0x1;
+/// 1KB
+static constexpr const size_t KB = 0x400;
+/// 1MB
+static constexpr const size_t MB = 0x100000;
+/// 1GB
+static constexpr const size_t GB = 0x40000000;
+/// 页大小 4KB
+static constexpr const size_t PAGE_SIZE = 4 * KB;
+/// 内核空间占用大小，包括内核代码部分与预留的，8MB
+static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
+/// 映射内核空间需要的页数
+static constexpr const uint64_t KERNEL_SPACE_PAGES =
+    KERNEL_SPACE_SIZE / PAGE_SIZE;
 
 /**
  * @brief 对齐
@@ -83,7 +83,7 @@ static const uintptr_t KERNEL_END_ADDR =
  */
 template <class T>
 inline T ALIGN(const T _addr, const size_t _align) {
-    uint8_t *tmp = (uint8_t *)_addr;
+    uint8_t *tmp = reinterpret_cast<uint8_t *>(_addr);
     return (T)((ptrdiff_t)(tmp + _align - 1) & (~(_align - 1)));
 }
 
