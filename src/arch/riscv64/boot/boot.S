@@ -6,7 +6,7 @@
 // 启动代码，进行一些设置后跳转到 kernel_main
 
 .section .init
-.globl _start
+.global _start
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
