@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/mpaland/printf
-// vsprintf.c for Simple-XX/SimpleKernel.
+/**
+ * @file vsprintf.c
+ * @brief vsprintf 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/mpaland/printf
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -375,8 +386,7 @@ static size_t _ftoa(out_fct_type out, char *buffer, size_t idx, size_t maxlen,
             ++whole;
         }
     }
-    else if (diff < 0.5) {
-    }
+    else if (diff < 0.5) {}
     else if ((frac == 0U) || (frac & 1U)) {
         // if halfway, round up if odd OR if last digit is 0
         ++frac;
@@ -842,7 +852,7 @@ int _vsnprintf(char *buffer, const size_t maxlen, const char *format,
             }
 
             case 's': {
-                const char * p = va_arg(va, char *);
+                const char  *p = va_arg(va, char *);
                 unsigned int l =
                     _strnlen_s(p, precision ? precision : (size_t)-1);
                 // pre padding

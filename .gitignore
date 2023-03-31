@@ -18,3 +18,4 @@ iso
 null.d
 tools/aarch64-unknown-linux-gnu*
 .gdbinit
+tools/opensbi/build
