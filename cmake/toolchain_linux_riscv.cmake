@@ -1,5 +1,6 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel
+# (https://github.com/Simple-XX/SimpleKernel).
 # 
 # toolchain_linux_riscv.cmake for Simple-XX/SimpleKernel.
 
@@ -11,7 +12,7 @@ set(CMAKE_SYSTEM_PROCESSOR RISCV)
 find_program(RISCV riscv64-linux-gnu-g++)
 if (NOT RISCV)
     message(FATAL_ERROR "riscv64-linux-gnu-gcc not found.\n"
-            "Run `sudo apt-get install -y gcc-riscv64-linux-gnu g++-riscv64-linux-gnu` to install the toolchain. Then add the bin path to you PATH.")
+            "Run `sudo apt-get install -y gcc-riscv64-linux-gnu g++-riscv64-linux-gnu` to install.")
 else ()
     message(STATUS "Found riscv64-linux-gnu-gcc ${RISCV}.")
 endif ()
@@ -30,7 +31,7 @@ set(CMAKE_RANLIB       ${TOOLCHAIN_PREFIX}ranlib)
 find_program(QEMU qemu-system-riscv64)
 if (NOT QEMU)
     message(FATAL_ERROR "qemu not found.\n"
-            "Please install qemu-system-riscv64 first.")
+            "Run `sudo apt-get install -y qemu-system` to install.")
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
