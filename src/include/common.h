@@ -76,7 +76,7 @@ static constexpr const size_t PAGE_SIZE = 4 * KB;
  */
 template <class T>
 inline T ALIGN(const T _addr, const size_t _align) {
-    uint8_t *tmp = (uint8_t *)_addr;
+    uint8_t *tmp = reinterpret_cast<uint8_t *>(_addr);
     return (T)((ptrdiff_t)(tmp + _align - 1) & (~(_align - 1)));
 }
 
