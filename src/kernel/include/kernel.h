@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _KERNEL_H_
-#define _KERNEL_H_
+#ifndef SIMPLEKERNEL_KERNEL_H
+#define SIMPLEKERNEL_KERNEL_H
 
 /**
  * @brief 声明 kernel_main 用 C 方法编译
@@ -41,4 +41,4 @@ int test_vmm(void);
  */
 void show_info(void);
 
-#endif /* _KERNEL_H_ */
+#endif /* SIMPLEKERNEL_KERNEL_H */
