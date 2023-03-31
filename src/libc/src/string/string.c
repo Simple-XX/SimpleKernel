@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// string.c for Simple-XX/SimpleKernel.
+/**
+ * @file string.c
+ * @brief string 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,7 +35,7 @@ size_t strlen(const char *str) {
 }
 
 size_t strnlen(const char *str, size_t maxlen) {
-    const char *             char_ptr, *end_ptr = str + maxlen;
+    const char              *char_ptr, *end_ptr = str + maxlen;
     const unsigned long int *longword_ptr;
     unsigned long int        longword, himagic, lomagic;
 
@@ -193,7 +203,7 @@ char *strchr(register const char *s, int c) {
 }
 
 void *memcpy(void *dest, const void *src, size_t len) {
-    char *      d = dest;
+    char       *d = dest;
     const char *s = src;
     while (len--)
         *d++ = *s++;
@@ -223,14 +233,14 @@ int memcmp(const void *str1, const void *str2, size_t count) {
 }
 
 void *memmove(void *dest, const void *src, size_t len) {
-    char *      d = dest;
+    char       *d = dest;
     const char *s = src;
     if (d < s)
         while (len--)
             *d++ = *s++;
     else {
         const char *lasts = s + (len - 1);
-        char *      lastd = d + (len - 1);
+        char       *lastd = d + (len - 1);
         while (len--)
             *lastd-- = *lasts--;
     }

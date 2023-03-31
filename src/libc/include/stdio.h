@@ -1,11 +1,22 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/mpaland/printf
-// stdio.h for Simple-XX/SimpleKernel.
+/**
+ * @file stdio.h
+ * @brief stdio 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/mpaland/printf
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _STDIO_H_
-#define _STDIO_H_
+#ifndef SIMPLEKERNEL_STDIO_H
+#define SIMPLEKERNEL_STDIO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,4 +68,4 @@ int err(const char *fmt, ...);
 }
 #endif
 
-#endif /* _STDIO_H_ */
+#endif /* SIMPLEKERNEL_STDIO_H */
