@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#ifndef SIMPLEKERNEL_COMMON_H
+#define SIMPLEKERNEL_COMMON_H
 
 #include "stdint.h"
 #include "stddef.h"
@@ -96,4 +96,4 @@ namespace COMMON {
 
 };
 
-#endif /* _COMMON_H_ */
+#endif /* SIMPLEKERNEL_COMMON_H */
