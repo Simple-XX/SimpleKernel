@@ -1,11 +1,26 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// assert.h for Simple-XX/SimpleKernel.
+/**
+ * @file assert.h
+ * @brief assert 实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _ASSERT_H_
-#define _ASSERT_H_
+#ifndef SIMPLEKERNEL_ASSERT_H
+#define SIMPLEKERNEL_ASSERT_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "stdio.h"
 
@@ -13,4 +28,8 @@
 #define __assert(e, file, line)                                                \
     ((void)err("%s:%d: failed assertion `%s'\n", file, line, e))
 
-#endif /* _ASSERT_H_ */
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* SIMPLEKERNEL_ASSERT_H */
