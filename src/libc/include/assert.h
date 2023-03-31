@@ -1,11 +1,22 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// assert.h for Simple-XX/SimpleKernel.
-
-#ifndef _ASSERT_H_
-#define _ASSERT_H_
+/**
+ * @file assert.h
+ * @brief assert 实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
+ 
+#ifndef SIMPLEKERNEL_ASSERT_H
+#define SIMPLEKERNEL_ASSERT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,4 +32,4 @@ extern "C" {
 }
 #endif
 
-#endif /* _ASSERT_H_ */
+#endif /* SIMPLEKERNEL_ASSERT_H */

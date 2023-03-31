@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _PORT_H_
-#define _PORT_H_
+#ifndef SIMPLEKERNEL_PORT_H
+#define SIMPLEKERNEL_PORT_H
 
 #include "stdint.h"
 
@@ -72,4 +72,4 @@ namespace PORT {
     void outd(const uint32_t _port, const uint32_t _data);
 };
 
-#endif /* _PORT_H_ */
+#endif /* SIMPLEKERNEL_PORT_H */

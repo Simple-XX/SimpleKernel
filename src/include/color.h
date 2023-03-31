@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _COLOR_H_
-#define _COLOR_H_
+#ifndef SIMPLEKERNEL_COLOR_H
+#define SIMPLEKERNEL_COLOR_H
 
 #include "stdint.h"
 
@@ -81,4 +81,4 @@ namespace COLOR {
     } color_t;
 };
 
-#endif /* _COLOR_H_ */
+#endif /* SIMPLEKERNEL_COLOR_H */
