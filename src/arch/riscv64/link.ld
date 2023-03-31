@@ -3,7 +3,8 @@
  * (https://github.com/Simple-XX/SimpleKernel).
  *
  * link.ld for Simple-XX/SimpleKernel. 
- * 链接脚本，指定生成的二进制文件的布局 */
+ * 链接脚本，指定生成的二进制文件的布局
+ */
 
 /* 指定输出格式 */
 OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv", "elf64-littleriscv")
