@@ -1,11 +1,10 @@
+#!/bin/bash
 
-# This file is a part of Simple-XX/SimpleKernel 
+# This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 #
 # setup.sh for Simple-XX/SimpleKernel.
 # 指定要运行的 ARCH，并设置相关数据
-
-#!/bin/bash
 
 # ARCH: i386, x86_64, riscv64
 # ARCH="i386"
@@ -13,7 +12,7 @@
 ARCH="riscv64"
 
 DEBUG=0
-# Use qeme for i386/x86_64, bochs for default
+# Use qemu for i386/x86_64, bochs for default
 IA32_USE_QEMU=0
 
 # 内核映像
