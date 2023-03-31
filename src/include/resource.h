@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _RESOURCE_H_
-#define _RESOURCE_H_
+#ifndef SIMPLEKERNEL_RESOURCE_H
+#define SIMPLEKERNEL_RESOURCE_H
 
 #include "stdint.h"
 #include "iostream"
@@ -60,4 +60,4 @@ struct resource_t {
     }
 };
 
-#endif /* _RESOURCE_H_ */
+#endif /* SIMPLEKERNEL_RESOURCE_H */

@@ -3,11 +3,11 @@
  * @file uart.cpp
  * @brief uart 驱动实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
- * Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
  * @version 1.0
  * @date 2023-03-31
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description

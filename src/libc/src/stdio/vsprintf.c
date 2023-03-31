@@ -3,11 +3,11 @@
  * @file vsprintf.c
  * @brief vsprintf 定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
- * Based on https://github.com/mpaland/printf
  * @version 1.0
  * @date 2023-03-31
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/mpaland/printf
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
