@@ -27,7 +27,7 @@
  * alphabets and digits are each contiguous.
  */
 long strtol(const char *nptr, char **endptr, int base) {
-    const char *  s = nptr;
+    const char   *s = nptr;
     unsigned long acc;
     int           c;
     unsigned long cutoff;

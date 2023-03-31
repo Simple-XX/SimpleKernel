@@ -14,7 +14,7 @@
  * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
  * </table>
  */
- 
+
 #ifndef SIMPLEKERNEL_ASSERT_H
 #define SIMPLEKERNEL_ASSERT_H
 
