@@ -1,16 +1,16 @@
 
 /**
  * @file new.cpp
- * @brief 基础内存分配
+ * @brief 内存分配实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
- * @date 2022-01-23
+ * @date 2023-03-31
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-01-23<td>MRNIU<td>迁移到 doxygen
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
  * </table>
  */
 
