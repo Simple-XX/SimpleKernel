@@ -36,7 +36,7 @@ extern "C" {
  * null character
  */
 #define sprintf sprintf_
-int sprintf_(char *buffer, const char *format, ...);
+int sprintf_(char *_buffer, const char *_format, ...);
 
 /**
  * Tiny snprintf/vsnprintf implementation
@@ -51,18 +51,18 @@ int sprintf_(char *buffer, const char *format, ...);
  */
 #define snprintf snprintf_
 #define vsnprintf vsnprintf_
-int snprintf_(char *buffer, size_t count, const char *format, ...);
-int vsnprintf_(char *buffer, size_t count, const char *format, va_list va);
-int _vsnprintf(char *buffer, const size_t maxlen, const char *format,
-               va_list va);
+int snprintf_(char *_buffer, size_t _count, const char *_format, ...);
+int vsnprintf_(char *_buffer, size_t _count, const char *_format, va_list _va);
+int _vsnprintf(char *_buffer, const size_t _maxlen, const char *_format,
+               va_list _va);
 
-int printf(const char *fmt, ...);
+int printf(const char *_fmt, ...);
 
-int info(const char *fmt, ...);
+int info(const char *_fmt, ...);
 
-int warn(const char *fmt, ...);
+int warn(const char *_fmt, ...);
 
-int err(const char *fmt, ...);
+int err(const char *_fmt, ...);
 
 #ifdef __cplusplus
 }
