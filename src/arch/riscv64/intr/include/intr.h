@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _INTR_H_
-#define _INTR_H_
+#ifndef SIMPLEKERNEL_INTR_H
+#define SIMPLEKERNEL_INTR_H
 
 #include "stdint.h"
 
@@ -258,4 +258,4 @@ int32_t pg_load_excp(int, char **);
  */
 int32_t pg_store_excp(int, char **);
 
-#endif /* _INTR_H_ */
+#endif /* SIMPLEKERNEL_INTR_H */
