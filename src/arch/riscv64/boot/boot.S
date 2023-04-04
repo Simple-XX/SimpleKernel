@@ -5,7 +5,7 @@
 // boot.S for Simple-XX/SimpleKernel.
 // 启动代码，进行一些设置后跳转到 kernel_main
 
-.section .init
+.section .text
 .global _start
 .type _start, @function
 .extern kernel_main
