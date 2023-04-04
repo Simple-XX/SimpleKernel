@@ -148,7 +148,7 @@ int32_t test_vmm(void) {
     assert(addr == pa);
     // 写测试
     *(uintptr_t *)va = 0xCD;
-    //取消映射
+    // 取消映射
     VMM::get_instance().unmmap(VMM::get_instance().get_pgd(), va);
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
                                         &addr) == 0);
