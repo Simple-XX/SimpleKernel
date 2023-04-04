@@ -17,27 +17,27 @@
 #include "stdlib.h"
 #include "string.h"
 
-int itoa(int num, char *str, int len, int base) {
-    int sum = num;
+int itoa(int _num, char *_str, int _len, int _base) {
+    int sum = _num;
     int i   = 0;
     int digit;
-    if (len == 0) {
+    if (_len == 0) {
         return -1;
     }
     do {
-        digit = sum % base;
+        digit = sum % _base;
         if (digit < 0xA) {
-            str[i++] = '0' + digit;
+            _str[i++] = '0' + digit;
         }
         else {
-            str[i++] = 'A' + digit - 0xA;
+            _str[i++] = 'A' + digit - 0xA;
         }
-        sum /= base;
-    } while (sum && (i < (len - 1)));
-    if (i == (len - 1) && sum) {
+        sum /= _base;
+    } while (sum && (i < (_len - 1)));
+    if (i == (_len - 1) && sum) {
         return -1;
     }
-    str[i] = '\0';
-    strrev(str);
+    _str[i] = '\0';
+    strrev(_str);
     return 0;
 }
