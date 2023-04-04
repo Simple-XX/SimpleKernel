@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://wiki.osdev.org/C%2B%2B
-// cxxabi.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file cxxabi.cpp
+ * @brief C++ abi 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://wiki.osdev.org/C%2B%2B
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "cxxabi.h"
 #include "stdio.h"
@@ -14,8 +25,9 @@ extern "C" {
 #define ATEXIT_MAX_FUNCS 128
 
 typedef void (*ctor_t)(void);
-extern ctor_t ctors_start[];
-extern ctor_t ctors_end[];
+// 在 link.ld 中定义
+extern ctor_t __init_array_start[];
+extern ctor_t __init_array_end[];
 
 typedef unsigned uarch_t;
 
@@ -32,7 +44,7 @@ struct atexit_func_entry_t {
 
 void cpp_init(void) {
     ctor_t *f;
-    for (f = ctors_start; f < ctors_end; f++) {
+    for (f = __init_array_start; f < __init_array_end; f++) {
         (*f)();
     }
     info("cpp init.\n");
@@ -107,7 +119,7 @@ void __cxa_finalize(void *f) {
          *be used to tell when a shared object is no longer in use. It is
          *one of many methods, however.
          **/
-        // You may insert a prinf() here to tell you whether or not the
+        // You may insert a printf() here to tell you whether or not the
         // function gets called. Testing is CRITICAL!
         while (i--) {
             if (__atexit_funcs[i].destructor_func) {
@@ -177,7 +189,6 @@ void __cxa_finalize(void *f) {
 };
 
 namespace __cxxabiv1 {
-
 /* guard variables */
 
 /* The ABI requires a 64-bit type.  */
@@ -196,7 +207,6 @@ void __cxa_guard_release(__guard *g) {
 }
 
 void __cxa_guard_abort(__guard *) {
-    return;
 }
 } // namespace __cxxabiv1
 
@@ -227,7 +237,7 @@ bool type_info::operator==(const type_info &arg) const {
 
 bool type_info::operator!=(const type_info &arg) const {
     return tname != arg.tname;
-}
+    }
 } // namespace std
 
 namespace __cxxabiv1 {

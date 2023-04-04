@@ -1,16 +1,26 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// new for Simple-XX/SimpleKernel.
+/**
+ * @file new
+ * @brief 内存分配
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _NEW_
-#define _NEW_
+#ifndef SIMPLEKERNEL_NEW
+#define SIMPLEKERNEL_NEW
 
 #include "stddef.h"
 
 namespace std {
-    enum class align_val_t : size_t {};
+enum class align_val_t : size_t {};
 };
 
 void *operator new(size_t size);
@@ -40,4 +50,4 @@ void  operator delete[](void *, std::align_val_t);
 void  operator delete(void *, size_t, std::align_val_t);
 void  operator delete[](void *, size_t, std::align_val_t);
 
-#endif /* _NEW_ */
+#endif /* SIMPLEKERNEL_NEW */

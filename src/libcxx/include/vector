@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// vector for Simple-XX/SimpleKernel.
+/**
+ * @file vector
+ * @brief stl vector 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _VECTOR_
-#define _VECTOR_
+#ifndef SIMPLEKERNEL_VECTOR
+#define SIMPLEKERNEL_VECTOR
 
 // 这个头文件包含一个模板类 vector
 // vector : 向量
@@ -13,7 +24,7 @@
 // notes:
 //
 // 异常保证：
-// std::vecotr<T>
+// std::vector<T>
 // 满足基本异常保证，部分函数无异常保证，并对以下函数做强异常安全保证：
 //   * emplace
 //   * emplace_back
@@ -868,4 +879,4 @@ namespace mystl {
 
 };
 
-#endif /* _VECTOR_ */
+#endif /* SIMPLEKERNEL_VECTOR */

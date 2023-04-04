@@ -29,11 +29,11 @@ uint64_t PLIC::PLIC_PENDING;
 /**
  * @brief 外部中断处理
  */
-static int32_t externel_intr(int, char **) {
+static int32_t external_intr(int, char **) {
     // 读取中断号
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
-    printf("externel_intr: 0x%X.\n", no);
+    printf("external_intr: 0x%X.\n", no);
     return 0;
 }
 
@@ -86,7 +86,7 @@ int32_t PLIC::init(void) {
                                0);
     // 注册外部中断处理函数
     INTR::get_instance().register_interrupt_handler(CPU::INTR_EXTERN_S,
-                                                    externel_intr);
+                                                    external_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
     info("plic init.\n");

@@ -15,7 +15,7 @@
  */
 
 .section .init
-.globl _start
+.global _start
 .type _start, @function
 .extern kernel_main
 .extern cpp_init

@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _BOOT_INFO_H_
-#define _BOOT_INFO_H_
+#ifndef SIMPLEKERNEL_BOOT_INFO_H
+#define SIMPLEKERNEL_BOOT_INFO_H
 
 #include "stdint.h"
 #include "resource.h"
@@ -66,4 +66,4 @@ extern resource_t get_clint(void);
 extern resource_t get_plic(void);
 }; // namespace BOOT_INFO
 
-#endif /* _BOOT_INFO_H_ */
+#endif /* SIMPLEKERNEL_BOOT_INFO_H */

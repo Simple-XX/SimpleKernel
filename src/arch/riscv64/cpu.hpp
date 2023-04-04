@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _CPU_HPP_
-#define _CPU_HPP_
+#ifndef SIMPLEKERNEL_CPU_HPP
+#define SIMPLEKERNEL_CPU_HPP
 
 #include "stdio.h"
 #include "stdint.h"
@@ -1069,4 +1069,4 @@ struct context_t {
 
 }; // namespace CPU
 
-#endif /* _CPU_HPP_ */
+#endif /* SIMPLEKERNEL_CPU_HPP */

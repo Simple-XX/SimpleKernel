@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _IO_H_
-#define _IO_H_
+#ifndef SIMPLEKERNEL_IO_H
+#define SIMPLEKERNEL_IO_H
 
 #include "stdint.h"
 #include "color.h"
@@ -190,4 +190,4 @@ public:
     int32_t write_string(const char *_s);
 };
 
-#endif /* _IO_H_ */
+#endif /* SIMPLEKERNEL_IO_H */

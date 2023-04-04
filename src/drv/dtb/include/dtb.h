@@ -15,8 +15,8 @@
  * </table>
  */
 
-#ifndef _DTB_H_
-#define _DTB_H_
+#ifndef SIMPLEKERNEL_DTB_H
+#define SIMPLEKERNEL_DTB_H
 
 #include "stdint.h"
 #include "stdbool.h"
@@ -424,4 +424,4 @@ public:
     friend std::ostream &operator<<(std::ostream &_os, const path_t &_path);
 };
 
-#endif /* _DTB_H_ */
+#endif /* SIMPLEKERNEL_DTB_H */
