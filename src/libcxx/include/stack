@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// stack for Simple-XX/SimpleKernel.
+/**
+ * @file stack
+ * @brief stl stack 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _STACK_
-#define _STACK_
+#ifndef SIMPLEKERNEL_STACK
+#define SIMPLEKERNEL_STACK
 
 // 这个头文件包含了一个模板类 stack
 // stack : 栈
@@ -176,4 +187,4 @@ void swap(stack<T, Container>& lhs, stack<T, Container>& rhs) noexcept(noexcept(
 
 };
 
-#endif /* _STACK_ */
+#endif /* SIMPLEKERNEL_STACK */

@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// hashtable for Simple-XX/SimpleKernel.
+/**
+ * @file hashtable
+ * @brief stl hashtable 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _HASHTABLE_
-#define _HASHTABLE_
+#ifndef SIMPLEKERNEL_HASHTABLE
+#define SIMPLEKERNEL_HASHTABLE
 
 // 这个头文件包含了一个模板类 hashtable
 // hashtable : 哈希表，使用开链法处理冲突
@@ -1576,4 +1587,4 @@ namespace mystl {
 
 };
 
-#endif /* _HASHTABLE_ */
+#endif /* SIMPLEKERNEL_HASHTABLE */
