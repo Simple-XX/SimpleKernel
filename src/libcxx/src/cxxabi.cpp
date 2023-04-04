@@ -24,8 +24,9 @@ extern "C" {
 #define ATEXIT_MAX_FUNCS 128
 
 typedef void (*ctor_t)(void);
-extern ctor_t ctors_start[];
-extern ctor_t ctors_end[];
+// 在 link.ld 中定义
+extern ctor_t __init_array_start[];
+extern ctor_t __init_array_end[];
 
 typedef unsigned uarch_t;
 
@@ -42,7 +43,7 @@ struct atexit_func_entry_t {
 
 void cpp_init(void) {
     ctor_t *f;
-    for (f = ctors_start; f < ctors_end; f++) {
+    for (f = __init_array_start; f < __init_array_end; f++) {
         (*f)();
     }
     return;
