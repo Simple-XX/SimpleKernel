@@ -270,32 +270,32 @@ __extension__ typedef unsigned long long int uintmax_t;
 #define WINT_MAX (4294967295u)
 
 /* Signed.  */
-#define INT8_C(c) c
-#define INT16_C(c) c
-#define INT32_C(c) c
+#define INT8_C(_c) _c
+#define INT16_C(_c) _c
+#define INT32_C(_c) _c
 #if __WORDSIZE == 64
-#define INT64_C(c) c##L
+#define INT64_C(_c) _c##L
 #else
-#define INT64_C(c) c##LL
+#define INT64_C(_c) _c##LL
 #endif
 
 /* Unsigned.  */
-#define UINT8_C(c) c
-#define UINT16_C(c) c
-#define UINT32_C(c) c##U
+#define UINT8_C(_c) _c
+#define UINT16_C(_c) _c
+#define UINT32_C(_c) _c##U
 #if __WORDSIZE == 64
-#define UINT64_C(c) c##UL
+#define UINT64_C(_c) _c##UL
 #else
-#define UINT64_C(c) c##ULL
+#define UINT64_C(_c) _c##ULL
 #endif
 
 /* Maximal type.  */
 #if __WORDSIZE == 64
-#define INTMAX_C(c) c##L
-#define UINTMAX_C(c) c##UL
+#define INTMAX_C(_c) _c##L
+#define UINTMAX_C(_c) _c##UL
 #else
-#define INTMAX_C(c) c##LL
-#define UINTMAX_C(c) c##ULL
+#define INTMAX_C(_c) _c##LL
+#define UINTMAX_C(_c) _c##ULL
 #endif
 
 #ifdef __cplusplus
