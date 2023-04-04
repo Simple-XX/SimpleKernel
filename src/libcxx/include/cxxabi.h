@@ -4,8 +4,8 @@
 // Based on https://wiki.osdev.org/C%2B%2B
 // cxxabi.h for Simple-XX/SimpleKernel.
 
-#ifndef _CXXABI_H_
-#define _CXXABI_H_
+#ifndef SIMPLEKERNEL_CXXABI_H
+#define SIMPLEKERNEL_CXXABI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,4 +70,4 @@ ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
 #undef ADD_CXX_TYPEINFO_HEADER
 } // namespace __cxxabiv1
 
-#endif /* _CXXABI_H_ */
+#endif /* SIMPLEKERNEL_CXXABI_H */

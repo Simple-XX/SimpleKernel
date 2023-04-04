@@ -1,11 +1,21 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// uart.h for Simple-XX/SimpleKernel.
+/**
+ * @file uart.h
+ * @brief uart 驱动
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _UART_H_
-#define _UART_H_
+#ifndef SIMPLEKERNEL_UART_H
+#define SIMPLEKERNEL_UART_H
 
 #include "stddef.h"
 #include "stdint.h"
@@ -54,4 +64,4 @@ public:
     COLOR::color_t get_color(void) const;
 };
 
-#endif /* _UART_H_ */
+#endif /* SIMPLEKERNEL_UART_H */

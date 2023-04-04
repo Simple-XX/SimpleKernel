@@ -1,7 +1,10 @@
 
-/* This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+/* This file is a part of Simple-XX/SimpleKernel
+ * (https://github.com/Simple-XX/SimpleKernel).
  *
- * link.ld for Simple-XX/SimpleKernel. */
+ * link.ld for Simple-XX/SimpleKernel.
+ * 链接脚本，指定生成的二进制文件的布局
+ */
 
 OUTPUT_FORMAT(elf64-littleaarch64)
 
