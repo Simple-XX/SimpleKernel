@@ -25,11 +25,11 @@ extern "C" {
 // TODO: 更多支持
 // TODO: 浮点数
 
-long long          divmoddi4(long long num, long long den, long long *rem_p);
-unsigned long long udivmoddi4(unsigned long long num, unsigned long long den,
-                              unsigned long long *rem_p);
-unsigned long long udivdi3(unsigned long long num, unsigned long long den);
-unsigned long long umoddi3(unsigned long long num, unsigned long long den);
+long long          divmoddi4(long long _num, long long _den, long long *_rem_p);
+unsigned long long udivmoddi4(unsigned long long _num, unsigned long long _den,
+                              unsigned long long *_rem_p);
+unsigned long long udivdi3(unsigned long long _num, unsigned long long _den);
+unsigned long long umoddi3(unsigned long long _num, unsigned long long _den);
 
 #ifdef __cplusplus
 }
