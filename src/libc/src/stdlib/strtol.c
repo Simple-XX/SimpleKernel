@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on libgcc
-// strtol.c for Simple-XX/SimpleKernel.
+/**
+ * @file strtol.c
+ * @brief strtol 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on libgcc
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stdlib.h"
 #include "ctype.h"
@@ -15,8 +26,8 @@
  * Ignores `locale' stuff.  Assumes that the upper and lower case
  * alphabets and digits are each contiguous.
  */
-long strtol(const char *nptr, char **endptr, int base) {
-    const char *  s = nptr;
+long strtol(const char *_nptr, char **_endptr, int _base) {
+    const char   *s = _nptr;
     unsigned long acc;
     int           c;
     unsigned long cutoff;
@@ -34,15 +45,17 @@ long strtol(const char *nptr, char **endptr, int base) {
         neg = 1;
         c   = *s++;
     }
-    else if (c == '+')
+    else if (c == '+') {
         c = *s++;
-    if ((base == 0 || base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
+    }
+    if ((_base == 0 || _base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
         c = s[1];
         s += 2;
-        base = 16;
+        _base = 16;
     }
-    if (base == 0)
-        base = c == '0' ? 8 : 10;
+    if (_base == 0) {
+        _base = c == '0' ? 8 : 10;
+    }
 
     /*
      * Compute the cutoff value between legal numbers and illegal
@@ -62,32 +75,39 @@ long strtol(const char *nptr, char **endptr, int base) {
      * overflow.
      */
     cutoff = neg ? -(unsigned long)LONG_MIN : LONG_MAX;
-    cutlim = cutoff % (unsigned long)base;
-    cutoff /= (unsigned long)base;
+    cutlim = cutoff % (unsigned long)_base;
+    cutoff /= (unsigned long)_base;
     for (acc = 0, any = 0;; c = *s++) {
-        if (isdigit(c))
+        if (isdigit(c)) {
             c -= '0';
-        else if (isalpha(c))
+        }
+        else if (isalpha(c)) {
             c -= isupper(c) ? 'A' - 10 : 'a' - 10;
-        else
+        }
+        else {
             break;
-        if (c >= base)
+        }
+        if (c >= _base) {
             break;
-        if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
+        }
+        if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim)) {
             any = -1;
+        }
         else {
             any = 1;
-            acc *= base;
+            acc *= _base;
             acc += c;
         }
     }
     if (any < 0) {
         acc = neg ? LONG_MIN : LONG_MAX;
     }
-    else if (neg)
+    else if (neg) {
         acc = -acc;
-    if (endptr != 0)
-        *endptr = (char *)(any ? s - 1 : nptr);
+    }
+    if (_endptr != 0) {
+        *_endptr = (char *)(any ? s - 1 : _nptr);
+    }
     return (acc);
 }
 
@@ -97,8 +117,8 @@ long strtol(const char *nptr, char **endptr, int base) {
  * Ignores `locale' stuff.  Assumes that the upper and lower case
  * alphabets and digits are each contiguous.
  */
-long long strtoll(const char *nptr, char **endptr, int base) {
-    const char *s = nptr;
+long long strtoll(const char *_nptr, char **_endptr, int _base) {
+    const char *s = _nptr;
     long long   acc;
     int         c;
     long long   cutoff;
@@ -115,15 +135,17 @@ long long strtoll(const char *nptr, char **endptr, int base) {
         neg = 1;
         c   = *s++;
     }
-    else if (c == '+')
+    else if (c == '+') {
         c = *s++;
-    if ((base == 0 || base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
+    }
+    if ((_base == 0 || _base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
         c = s[1];
         s += 2;
-        base = 16;
+        _base = 16;
     }
-    if (base == 0)
-        base = c == '0' ? 8 : 10;
+    if (_base == 0) {
+        _base = c == '0' ? 8 : 10;
+    }
     /*
      * Compute the cutoff value between legal numbers and illegal
      * numbers.  That is the largest legal value, divided by the
@@ -147,32 +169,39 @@ long long strtoll(const char *nptr, char **endptr, int base) {
 #if defined(__i386__)
     cutoff = udivmoddi4(cutoff, base, (unsigned long long *)&cutlim);
 #else
-    cutlim = cutoff % (long long)base;
-    cutoff /= (long long)base;
+    cutlim = cutoff % (long long)_base;
+    cutoff /= (long long)_base;
 #endif
     for (acc = 0, any = 0;; c = *s++) {
-        if (isdigit(c))
+        if (isdigit(c)) {
             c -= '0';
-        else if (isalpha(c))
+        }
+        else if (isalpha(c)) {
             c -= isupper(c) ? 'A' - 10 : 'a' - 10;
-        else
+        }
+        else {
             break;
-        if (c >= base)
+        }
+        if (c >= _base) {
             break;
-        if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
+        }
+        if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim)) {
             any = -1;
+        }
         else {
             any = 1;
-            acc *= base;
+            acc *= _base;
             acc += c;
         }
     }
     if (any < 0) {
         acc = neg ? LLONG_MIN : LLONG_MAX;
     }
-    else if (neg)
+    else if (neg) {
         acc = -acc;
-    if (endptr != 0)
-        *endptr = (char *)(any ? s - 1 : nptr);
+    }
+    if (_endptr != 0) {
+        *_endptr = (char *)(any ? s - 1 : _nptr);
+    }
     return (acc);
 }

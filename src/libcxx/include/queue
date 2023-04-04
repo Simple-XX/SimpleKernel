@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// queue for Simple-XX/SimpleKernel.
+/**
+ * @file queue
+ * @brief stl queue 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _QUEUE_
-#define _QUEUE_
+#ifndef SIMPLEKERNEL_QUEUE
+#define SIMPLEKERNEL_QUEUE
 
 // 这个头文件包含了两个模板类 queue 和 priority_queue
 // queue          : 队列
@@ -350,4 +361,4 @@ namespace mystl {
 
 };
 
-#endif /* _QUEUE_ */
+#endif /* SIMPLEKERNEL_QUEUE */
