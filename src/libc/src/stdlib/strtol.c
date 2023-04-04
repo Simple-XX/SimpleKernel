@@ -167,7 +167,7 @@ long long strtoll(const char *_nptr, char **_endptr, int _base) {
                  : LLONG_MAX;
 
 #if defined(__i386__)
-    cutoff = udivmoddi4(cutoff, base, (unsigned long long *)&cutlim);
+    cutoff = udivmoddi4(cutoff, _base, (unsigned long long *)&cutlim);
 #else
     cutlim = cutoff % (long long)_base;
     cutoff /= (long long)_base;
