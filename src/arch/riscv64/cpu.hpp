@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _CPU_HPP_
-#define _CPU_HPP_
+#ifndef SIMPLEKERNEL_CPU_HPP
+#define SIMPLEKERNEL_CPU_HPP
 
 #include "stdint.h"
 #include "stdbool.h"
@@ -180,4 +180,4 @@ static inline void VMM_FLUSH(uintptr_t) {
 
 }; // namespace CPU
 
-#endif /* _CPU_HPP_ */
+#endif /* SIMPLEKERNEL_CPU_HPP */
