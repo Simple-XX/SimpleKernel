@@ -27,16 +27,8 @@ SECTIONS {
     PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x80200000));
     /* 设置起始地址 */
     . = SEGMENT_START("text-segment", 0x80200000);
-    /* 代码段 */
-    .text           : {
-        *(.text.unlikely .text.*_unlikely .text.unlikely.*)
-        *(.text.exit .text.exit.*)
-        *(.text.startup .text.startup.*)
-        *(.text.hot .text.hot.*)
-        *(SORT(.text.sorted.*))
-        *(.text .stub .text.* .gnu.linkonce.t.*)
-        /* .gnu.warning sections are handled specially by elf.em.  */
-        *(.gnu.warning)
+    .init           : {
+        KEEP (*(SORT_NONE(.init)))
     }
     .interp         : { *(.interp) }
     .note.gnu.build-id  : { *(.note.gnu.build-id) }
@@ -71,10 +63,18 @@ SECTIONS {
         *(.rela.iplt)
         PROVIDE_HIDDEN (__rela_iplt_end = .);
     }
-    .init           : {
-        KEEP (*(SORT_NONE(.init)))
-    }
     .plt            : { *(.plt) *(.iplt) }
+    /* 代码段 */
+    .text           : {
+        *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+        *(.text.exit .text.exit.*)
+        *(.text.startup .text.startup.*)
+        *(.text.hot .text.hot.*)
+        *(SORT(.text.sorted.*))
+        *(.text .stub .text.* .gnu.linkonce.t.*)
+        /* .gnu.warning sections are handled specially by elf.em.  */
+        *(.gnu.warning)
+    }
     .fini           : {
         KEEP (*(SORT_NONE(.fini)))
     }
