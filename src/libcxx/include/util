@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// util for Simple-XX/SimpleKernel.
+/**
+ * @file util
+ * @brief stl util 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _UTIL_
-#define _UTIL_
+#ifndef SIMPLEKERNEL_UTIL
+#define SIMPLEKERNEL_UTIL
 
 // 这个文件包含一些通用工具，包括 move, forward, swap 等函数，以及 pair 等
 
@@ -272,4 +283,4 @@ namespace mystl {
 
 };
 
-#endif /* _UTIL_ */
+#endif /* SIMPLEKERNEL_UTIL */

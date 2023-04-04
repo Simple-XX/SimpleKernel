@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// map for Simple-XX/SimpleKernel.
+/**
+ * @file map
+ * @brief stl map 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _MAP_
-#define _MAP_
+#ifndef SIMPLEKERNEL_MAP
+#define SIMPLEKERNEL_MAP
 
 // 这个头文件包含了两个模板类 map 和 multimap
 // map      : 映射，元素具有键值和实值，会根据键值大小自动排序，键值不允许重复
@@ -633,4 +644,4 @@ namespace mystl {
 
 };
 
-#endif /* _MAP_ */
+#endif /* SIMPLEKERNEL_MAP */
