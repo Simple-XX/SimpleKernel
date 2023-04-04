@@ -24,36 +24,15 @@ namespace COMMON {
 // 引用链接脚本中的变量
 /// @see http://wiki.osdev.org/Using_Linker_Script_Values
 /// 内核开始
-extern "C" void *kernel_start[];
-/// 内核代码段开始
-extern "C" void *kernel_text_start[];
-/// 内核代码段结束
-extern "C" void *kernel_text_end[];
-/// 内核数据段开始
-extern "C" void *kernel_data_start[];
-/// 内核数据段结束
-extern "C" void *kernel_data_end[];
+extern "C" void *__executable_start[];
 /// 内核结束
-extern "C" void *kernel_end[];
+extern "C" void *end[];
 
 /// 内核开始
 static const uintptr_t KERNEL_START_ADDR =
-    reinterpret_cast<uintptr_t>(kernel_start);
-/// 内核代码段开始
-static const uintptr_t KERNEL_TEXT_START_ADDR __attribute__((unused)) =
-    reinterpret_cast<uintptr_t>(kernel_text_start);
-/// 内核代码段结束
-static const uintptr_t KERNEL_TEXT_END_ADDR __attribute__((unused)) =
-    reinterpret_cast<uintptr_t>(kernel_text_end);
-/// 内核数据段开始
-static const uintptr_t KERNEL_DATA_START_ADDR __attribute__((unused)) =
-    reinterpret_cast<uintptr_t>(kernel_data_start);
-/// 内核数据段结束
-static const uintptr_t KERNEL_DATA_END_ADDR __attribute__((unused)) =
-    reinterpret_cast<uintptr_t>(kernel_data_end);
+    reinterpret_cast<uintptr_t>(__executable_start);
 /// 内核结束
-static const uintptr_t KERNEL_END_ADDR =
-    reinterpret_cast<uintptr_t>(kernel_end);
+static const uintptr_t KERNEL_END_ADDR = reinterpret_cast<uintptr_t>(end);
 
 // 规定数据大小，方便用
 /// 一个字节，8 bits
