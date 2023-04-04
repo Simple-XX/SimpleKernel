@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// uninitialized for Simple-XX/SimpleKernel.
+/**
+ * @file uninitialized
+ * @brief stl uninitialized 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _UNINITIALIZED_
-#define _UNINITIALIZED_
+#ifndef SIMPLEKERNEL_UNINITIALIZED
+#define SIMPLEKERNEL_UNINITIALIZED
 
 // 这个头文件用于对未初始化空间构造元素
 
@@ -223,4 +234,4 @@ namespace mystl {
 
 };
 
-#endif /* _UNINITIALIZED_ */
+#endif /* SIMPLEKERNEL_UNINITIALIZED */
