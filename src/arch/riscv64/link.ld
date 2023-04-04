@@ -16,7 +16,7 @@ OUTPUT_FORMAT(
     "elf64-littleriscv",
     "elf64-littleriscv",
 	"elf64-littleriscv"
-	)
+)
 /* 指定输出架构 */
 OUTPUT_ARCH(riscv)
 /* 设置入口点 */
