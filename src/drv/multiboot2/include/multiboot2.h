@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _MULTIBOOT2_H_
-#define _MULTIBOOT2_H_
+#ifndef SIMPLEKERNEL_MULTIBOOT2_H
+#define SIMPLEKERNEL_MULTIBOOT2_H
 
 #include "stdint.h"
 #include "stdbool.h"
@@ -338,4 +338,4 @@ namespace BOOT_INFO {
 extern "C" uint32_t multiboot2_magic;
 }; // namespace BOOT_INFO
 
-#endif /* _MULTIBOOT2_H_ */
+#endif /* SIMPLEKERNEL_MULTIBOOT2_H */
