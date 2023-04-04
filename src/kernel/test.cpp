@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// test.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file test.cpp
+ * @brief 测试
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "common.h"
 #include "stdio.h"
@@ -138,7 +148,7 @@ int32_t test_vmm(void) {
     assert(addr == pa);
     // 写测试
     *(uintptr_t *)va = 0xCD;
-    //取消映射
+    // 取消映射
     VMM::get_instance().unmmap(VMM::get_instance().get_pgd(), va);
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
                                         &addr) == 0);
