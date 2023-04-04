@@ -1,11 +1,21 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// endian.h for Simple-XX/SimpleKernel.
+/**
+ * @file endian.h
+ * @brief endian 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _ENDIAN_H_
-#define _ENDIAN_H_
+#ifndef SIMPLEKERNEL_ENDIAN_H
+#define SIMPLEKERNEL_ENDIAN_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -100,4 +110,4 @@ static inline uint64_t __bswap64(uint64_t __x) {
 }
 #endif
 
-#endif /* _ENDIAN_H_ */
+#endif /* SIMPLEKERNEL_ENDIAN_H */
