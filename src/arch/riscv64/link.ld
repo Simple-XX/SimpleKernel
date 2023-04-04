@@ -23,7 +23,6 @@ OUTPUT_ARCH(riscv)
 ENTRY(_start)
 /* 设置各个 section */
 SECTIONS {
-    PROVIDE(kernel_start = 0x80000000);
     /* Read-only sections, merged into text segment: */
     PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x80200000));
     /* 设置起始地址 */
