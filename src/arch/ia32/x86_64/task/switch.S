@@ -21,7 +21,7 @@
  * @param  _context         第一个进程
  */
 // void context_init(context_t *_context);
-.globl context_init
+.global context_init
 .align 4
 context_init:
     ret
@@ -33,7 +33,7 @@ context_init:
  */
 // void switch_context(context_t *_old, context_t *_new);
 /* void x86_64_context_switch(uint64_t *oldsp, uint64_t newsp) */
-.globl switch_context
+.global switch_context
 .align 4
 switch_context:
     /* save the old context and restore the new */
@@ -63,7 +63,7 @@ switch_context:
  * @param  _os              调度线程
  */
 // void switch_os(context_t *_os);
-.globl switch_os
+.global switch_os
 .align 4
 switch_os:
     ret

@@ -21,7 +21,7 @@
  * @param  _context         第一个进程
  */
 // void context_init(context_t *_context);
-.globl context_init
+.global context_init
 .align 4
 context_init:
     // @todo 临时设置为 ra
@@ -56,7 +56,7 @@ context_init:
  * @param  _new             下一个进程
  */
 // void switch_context(context_t *_old, context_t *_new);
-.globl switch_context
+.global switch_context
 .align 4
 switch_context:
     // 保存 _old
@@ -72,7 +72,7 @@ switch_context:
  * @param  _os              调度线程
  */
 // void switch_os(context_t *_os);
-.globl switch_os
+.global switch_os
 .align 4
 switch_os:
     // 恢复 _new

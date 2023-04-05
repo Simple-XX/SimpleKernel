@@ -18,7 +18,7 @@
 
 .section .text
 // 保存所有寄存器
-.globl trap_entry
+.global trap_entry
 .extern trap_handler
 .align 4
 trap_entry:
