@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _FIRTSTFIT_H_
-#define _FIRTSTFIT_H_
+#ifndef SIMPLEKERNEL_FIRTSTFIT_H
+#define SIMPLEKERNEL_FIRTSTFIT_H
 
 #include "stdint.h"
 #include "stddef.h"
@@ -123,4 +123,4 @@ public:
     size_t get_free_count(void) const override;
 };
 
-#endif /* _FIRTSTFIT_H_ */
+#endif /* SIMPLEKERNEL_FIRTSTFIT_H */

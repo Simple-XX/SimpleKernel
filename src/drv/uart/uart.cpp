@@ -1,8 +1,19 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
-// uart.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file uart.cpp
+ * @brief uart 驱动实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stddef.h"
 #include "string.h"
