@@ -82,7 +82,6 @@
 
 // 声明这一段代码以 32 位模式编译
 .code32
-
 // multiboot2 文件头
 // 计算头长度
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
