@@ -1,9 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel 
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// boot.S for Simple-XX/SimpleKernel.
-// 启动代码，进行一些设置后跳转到 kernel_main
+/**
+ * @file boot.S
+ * @brief 启动代码，进行一些设置后跳转到 kernel_main
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-01-02<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 // 以下是来自 multiboot2 规范的定义
 //  How many bytes from the start of the file we search for the header.
@@ -83,7 +92,6 @@
 // 工作在 32bit
 // 声明这一段代码以 32 位模式编译
 .code32
-
 // multiboot2 文件头
 // 计算头长度
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
@@ -224,7 +232,6 @@ _start:
     ret
 
 .code64
-
 .section .text.boot
 .global _start64
 .type _start64, @function
@@ -243,7 +250,7 @@ _start64:
     mov %rax, %gs
     mov %rax, %ss
     // 设置栈地址
-    mov $STACK_TOP, %rsp
+    mov $stack_top, %rsp
     // 栈地址按照 4096 字节对齐
     and $0xFFFFFFFFFFFFF000, %rsp
     // 帧指针修改为 0
@@ -254,7 +261,12 @@ _start64:
     hlt
     ret
 
+// 声明所属段
 .section .bss.boot
-STACK:
-    .skip 16384
-STACK_TOP:
+// 16 字节对齐
+.align 16
+.global stack_top
+// 栈
+stack_top:
+    // 跳过 16KB
+    .space 4096 * 4
