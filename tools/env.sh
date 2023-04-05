@@ -11,7 +11,7 @@
 # ARCH="x86_64"
 ARCH="riscv64"
 
-DEBUG=1
+DEBUG=0
 # Use qemu for i386/x86_64, bochs for default
 IA32_USE_QEMU=1
 
