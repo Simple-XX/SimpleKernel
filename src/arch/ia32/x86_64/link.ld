@@ -25,7 +25,7 @@ ENTRY(_start)
 SECTIONS {
     PROVIDE (__executable_start = SEGMENT_START("text-segment", 1M));
     . = SEGMENT_START("text-segment", 1M);
-    .multiboot_header   : { *(.multiboot_header) }
+    .boot           : { *(.text.boot) *(.data.boot) *(.bss.boot) }
     .interp         : { *(.interp) }
     .note.gnu.build-id  : { *(.note.gnu.build-id) }
     .hash           : { *(.hash) }
