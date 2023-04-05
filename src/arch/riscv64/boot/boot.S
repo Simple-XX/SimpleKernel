@@ -18,9 +18,6 @@
 .global _start
 .type _start, @function
 .extern kernel_main
-.extern cpp_init
-.extern boot_info_addr
-.extern dtb_init_hart
 _start:
     // 设置栈地址
     la sp, stack_top
