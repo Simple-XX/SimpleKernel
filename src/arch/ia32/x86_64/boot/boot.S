@@ -92,7 +92,6 @@
 // 工作在 32bit
 // 声明这一段代码以 32 位模式编译
 .code32
-
 // multiboot2 文件头
 // 计算头长度
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
@@ -178,7 +177,7 @@ gdt64_pointer64:
 .section .text.boot
 .global _start
 .type _start, @function
-# 在 multiboot2.cpp 中定义
+// 在 multiboot2.cpp 中定义
 .extern boot_info_addr
 .extern multiboot2_magic
 _start:
@@ -240,7 +239,6 @@ _start:
     ret
 
 .code64
-
 .section .text.boot
 .global _start64
 .type _start64, @function
