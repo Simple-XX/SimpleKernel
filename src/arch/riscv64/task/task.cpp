@@ -22,25 +22,43 @@
 #include "common.h"
 #include "pmm.h"
 
+    // 设置进程基本信息
 task_t::task_t(mystl::string _name, void (*_task)(void))
     : name(_name), spinlock(_name) {
     pid            = -1;
+    // 睡眠状态，等待唤醒
     state          = SLEEPING;
+    // @todo 父进程暂时置空
     parent         = nullptr;
+    // 从内核地址中分配线程栈
     stack          = PMM::get_instance().alloc_pages_kernel(COMMON::STACK_SIZE /
                                                             COMMON::PAGE_SIZE);
+    // ra 地址设为要执行的任务地址，这样在 ret 后会跳转到任务执行
     context.ra     = (uintptr_t)_task;
+    // 读取当前 core
     context.coreid = CPU::get_curr_core_id();
+    // 设置栈地址
     context.callee_regs.sp = stack + COMMON::STACK_SIZE;
+    // 开启分页
+    // @todo 设为与当前状态一致
     context.satp.ppn =
         (uint64_t)(VMM::get_instance().get_pgd()) >> CPU::satp_t::PPN_OFFSET;
     context.satp.mode = CPU::satp_t::SV39;
+    // 分配用于保存上下文的空间
     context.sscratch  = (uintptr_t)kmalloc(sizeof(CPU::context_t));
+    // 打开时钟中断
     context.sie |= CPU::SIE_STIE;
-    context.sstatus.sie = true;
+    // 打开 S 态中断
+//    context.sstatus.sie = true;
+    context.sstatus.val=0x8000000200006022;
+    std::cout<<context.sstatus<<std::endl;
+    // 设置线程页目录
+    // @todo 每个线程独立
     page_dir            = VMM::get_instance().get_pgd();
+    // 运行时间设为 0
     slice               = 0;
     slice_total         = 0;
+    // 设置当前 core
     hartid              = CPU::get_curr_core_id();
     exit_code           = -1;
     return;
