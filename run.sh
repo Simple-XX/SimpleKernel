@@ -63,6 +63,9 @@ if [ ${DEBUG} == 1 ]; then
     cp ./tools/gdbinit ./.gdbinit
     echo "" >> ./.gdbinit
     echo "file "${kernel} >> ./.gdbinit
+    if [ ${ARCH} == "riscv64" ]; then
+        echo "add-symbol-file "${OPENSBI} >> ./.gdbinit
+    fi
     echo "target remote localhost:1234" >> ./.gdbinit
     GDB_OPT='-S -gdb tcp::1234'
     echo "Run gdb-multiarch in another shell"
