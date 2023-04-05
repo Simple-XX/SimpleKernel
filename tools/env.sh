@@ -13,7 +13,7 @@ ARCH="riscv64"
 
 DEBUG=0
 # Use qemu for i386/x86_64, bochs for default
-IA32_USE_QEMU=0
+IA32_USE_QEMU=1
 
 # 内核映像
 kernel='./build/bin/kernel.elf'
