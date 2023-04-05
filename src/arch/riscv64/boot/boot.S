@@ -1,11 +1,11 @@
 
-// This file is a part of Simple-XX/SimpleKernel 
+// This file is a part of Simple-XX/SimpleKernel
 // (https://github.com/Simple-XX/SimpleKernel).
 //
 // boot.S for Simple-XX/SimpleKernel.
 // 启动代码，进行一些设置后跳转到 kernel_main
 
-.section .init
+.section .text.boot
 .global _start
 .type _start, @function
 .extern kernel_main
@@ -19,7 +19,7 @@ _start:
     call kernel_main
 
 // 声明所属段
-.section .bss
+.section .bss.boot
 // 16 字节对齐
 .align 16
 .global stack_top
