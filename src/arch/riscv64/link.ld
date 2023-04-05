@@ -27,9 +27,7 @@ SECTIONS {
     PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x80200000));
     /* 设置起始地址 */
     . = SEGMENT_START("text-segment", 0x80200000);
-    .init           : {
-        KEEP (*(SORT_NONE(.init)))
-    }
+    .boot           : { *(.text.boot) *(.data.boot) *(.bss.boot) }
     .interp         : { *(.interp) }
     .note.gnu.build-id  : { *(.note.gnu.build-id) }
     .hash           : { *(.hash) }
@@ -62,6 +60,9 @@ SECTIONS {
         PROVIDE_HIDDEN (__rela_iplt_start = .);
         *(.rela.iplt)
         PROVIDE_HIDDEN (__rela_iplt_end = .);
+    }
+    .init           : {
+        KEEP (*(SORT_NONE(.init)))
     }
     .plt            : { *(.plt) *(.iplt) }
     /* 代码段 */
