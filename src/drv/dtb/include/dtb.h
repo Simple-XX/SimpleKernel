@@ -15,8 +15,8 @@
  * </table>
  */
 
-#ifndef _DTB_H_
-#define _DTB_H_
+#ifndef SIMPLEKERNEL_DTB_H
+#define SIMPLEKERNEL_DTB_H
 
 #include "stdint.h"
 #include "stdbool.h"
@@ -436,4 +436,5 @@ extern "C" size_t dtb_init_hart;
 
 extern "C" size_t dtb_init_hart;
 
-#endif /* _DTB_H_ */
+#endif /* SIMPLEKERNEL_DTB_H */
+

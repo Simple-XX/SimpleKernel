@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// string.c for Simple-XX/SimpleKernel.
+/**
+ * @file string.c
+ * @brief string 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,35 +27,39 @@ extern "C" {
 #define __glibc_likely(cond) __builtin_expect((cond), 1)
 
 // 获取字符串长度
-size_t strlen(const char *str) {
+size_t strlen(const char *_str) {
     size_t len = 0;
-    while (str[len]) {
+    while (_str[len]) {
         len++;
     }
     return len;
 }
 
-size_t strnlen(const char *str, size_t maxlen) {
-    const char *             char_ptr, *end_ptr = str + maxlen;
+size_t strnlen(const char *_str, size_t _maxlen) {
+    const char              *char_ptr, *end_ptr = _str + _maxlen;
     const unsigned long int *longword_ptr;
     unsigned long int        longword, himagic, lomagic;
 
-    if (maxlen == 0)
+    if (_maxlen == 0) {
         return 0;
+    }
 
-    if (__glibc_unlikely(end_ptr < str))
+    if (__glibc_unlikely(end_ptr < _str)) {
         end_ptr = (const char *)~0UL;
+    }
 
     /* Handle the first few characters by reading one character at a time.
        Do this until CHAR_PTR is aligned on a longword boundary.  */
-    for (char_ptr = str;
+    for (char_ptr = _str;
          ((unsigned long int)char_ptr & (sizeof(longword) - 1)) != 0;
-         ++char_ptr)
+         ++char_ptr) {
         if (*char_ptr == '\0') {
-            if (char_ptr > end_ptr)
+            if (char_ptr > end_ptr) {
                 char_ptr = end_ptr;
-            return char_ptr - str;
+            }
+            return char_ptr - _str;
         }
+    }
 
     /* All these elucidatory comments refer to 4-byte longwords,
        but the theory applies equally well to 8-byte longwords.  */
@@ -87,167 +101,187 @@ size_t strnlen(const char *str, size_t maxlen) {
             const char *cp = (const char *)(longword_ptr - 1);
 
             char_ptr = cp;
-            if (cp[0] == 0)
+            if (cp[0] == 0) {
                 break;
+            }
             char_ptr = cp + 1;
-            if (cp[1] == 0)
+            if (cp[1] == 0) {
                 break;
+            }
             char_ptr = cp + 2;
-            if (cp[2] == 0)
+            if (cp[2] == 0) {
                 break;
+            }
             char_ptr = cp + 3;
-            if (cp[3] == 0)
+            if (cp[3] == 0) {
                 break;
+            }
             if (sizeof(longword) > 4) {
                 char_ptr = cp + 4;
-                if (cp[4] == 0)
+                if (cp[4] == 0) {
                     break;
+                }
                 char_ptr = cp + 5;
-                if (cp[5] == 0)
+                if (cp[5] == 0) {
                     break;
+                }
                 char_ptr = cp + 6;
-                if (cp[6] == 0)
+                if (cp[6] == 0) {
                     break;
+                }
                 char_ptr = cp + 7;
-                if (cp[7] == 0)
+                if (cp[7] == 0) {
                     break;
+                }
             }
         }
         char_ptr = end_ptr;
     }
 
-    if (char_ptr > end_ptr)
+    if (char_ptr > end_ptr) {
         char_ptr = end_ptr;
-    return char_ptr - str;
+    }
+    return char_ptr - _str;
 }
 
 // 如果 src > dest, 则返回值大于 0，如果 src = dest, 则返回值等于 0，
 // 如果 srd  < dest ,则返回值小于 0。
-int strcmp(const char *src, const char *dest) {
-    while (*src && *dest && (*src == *dest)) {
-        src++;
-        dest++;
+int strcmp(const char *_src, const char *_dest) {
+    while (*_src && *_dest && (*_src == *_dest)) {
+        _src++;
+        _dest++;
     }
-    return *src - *dest;
+    return *_src - *_dest;
 }
 
-int strncmp(const char *s1, const char *s2, size_t n) {
+int strncmp(const char *_s1, const char *_s2, size_t _n) {
 
-    if (n == 0)
+    if (_n == 0) {
         return 0;
+    }
     do {
-        if (*s1 != *s2++)
-            return (*(const unsigned char *)s1 -
-                    *(const unsigned char *)(s2 - 1));
-        if (*s1++ == '\0')
+        if (*_s1 != *_s2++) {
+            return (*(const unsigned char *)_s1 -
+                    *(const unsigned char *)(_s2 - 1));
+        }
+        if (*_s1++ == '\0') {
             break;
-    } while (--n != 0);
+        }
+    } while (--_n != 0);
     return 0;
 }
 
-char *strcpy(char *dest, const char *src) {
-    char *address = dest;
-    while ((*dest++ = *src++) != '\0') {
+char *strcpy(char *_dest, const char *_src) {
+    char *address = _dest;
+    while ((*_dest++ = *_src++) != '\0') {
         ;
     }
     return address;
 }
 
-char *strncpy(char *s1, const char *s2, size_t n) {
-    size_t size = strnlen(s2, n);
-    if (size != n)
-        memset(s1 + size, '\0', n - size);
-    return memcpy(s1, s2, size);
+char *strncpy(char *_s1, const char *_s2, size_t _n) {
+    size_t size = strnlen(_s2, _n);
+    if (size != _n) {
+        memset(_s1 + size, '\0', _n - size);
+    }
+    return memcpy(_s1, _s2, size);
 }
 
-void backspace(char *src) {
-    size_t len   = strlen(src);
-    src[len - 1] = '\0';
+void backspace(char *_src) {
+    size_t len    = strlen(_src);
+    _src[len - 1] = '\0';
 }
 
-void append(char *src, char dest) {
-    size_t len   = strlen(src);
-    src[len]     = dest;
-    src[len + 1] = '\0';
+void append(char *_src, char _dest) {
+    size_t len    = strlen(_src);
+    _src[len]     = _dest;
+    _src[len + 1] = '\0';
 }
 
-char *strcat(char *dest, const char *src) {
-    uint8_t *add_d = (uint8_t *)dest;
-    if (dest != 0 && src != 0) {
+char *strcat(char *_dest, const char *_src) {
+    uint8_t *add_d = (uint8_t *)_dest;
+    if (_dest != 0 && _src != 0) {
         while (*add_d) {
             add_d++;
         }
-        while (*src) {
-            *add_d++ = *src++;
+        while (*_src) {
+            *add_d++ = *_src++;
         }
     }
-    return dest;
+    return _dest;
 }
 
-char *strchr(register const char *s, int c) {
+char *strchr(register const char *_s, int _c) {
     do {
-        if (*s == c) {
-            return (char *)s;
+        if (*_s == _c) {
+            return (char *)_s;
         }
-    } while (*s++);
-    return (0);
+    } while (*_s++);
+    return NULL;
 }
 
-void *memcpy(void *dest, const void *src, size_t len) {
-    char *      d = dest;
-    const char *s = src;
-    while (len--)
+void *memcpy(void *_dest, const void *_src, size_t _len) {
+    char       *d = _dest;
+    const char *s = _src;
+    while (_len--) {
         *d++ = *s++;
-    return dest;
+    }
+    return _dest;
 }
 
-void *memset(void *dest, int val, size_t len) {
-    unsigned char *ptr = dest;
-    while (len-- > 0)
-        *ptr++ = val;
-    return dest;
+void *memset(void *_dest, int _val, size_t _len) {
+    unsigned char *ptr = _dest;
+    while (_len-- > 0) {
+        *ptr++ = _val;
+    }
+    return _dest;
 }
 
-void bzero(void *dest, uint32_t len) {
-    memset(dest, 0, len);
+void bzero(void *_dest, uint32_t _len) {
+    memset(_dest, 0, _len);
 }
 
-int memcmp(const void *str1, const void *str2, size_t count) {
-    register const unsigned char *s1 = (const unsigned char *)str1;
-    register const unsigned char *s2 = (const unsigned char *)str2;
+int memcmp(const void *_str1, const void *_str2, size_t _count) {
+    register const unsigned char *s1 = (const unsigned char *)_str1;
+    register const unsigned char *s2 = (const unsigned char *)_str2;
 
-    while (count-- > 0) {
-        if (*s1++ != *s2++)
+    while (_count-- > 0) {
+        if (*s1++ != *s2++) {
             return s1[-1] < s2[-1] ? -1 : 1;
+        }
     }
     return 0;
 }
 
-void *memmove(void *dest, const void *src, size_t len) {
-    char *      d = dest;
-    const char *s = src;
-    if (d < s)
-        while (len--)
+void *memmove(void *_dest, const void *_src, size_t _len) {
+    char       *d = _dest;
+    const char *s = _src;
+    if (d < s) {
+        while (_len--) {
             *d++ = *s++;
-    else {
-        const char *lasts = s + (len - 1);
-        char *      lastd = d + (len - 1);
-        while (len--)
-            *lastd-- = *lasts--;
+        }
     }
-    return dest;
+    else {
+        const char *lasts = s + (_len - 1);
+        char       *lastd = d + (_len - 1);
+        while (_len--) {
+            *lastd-- = *lasts--;
+        }
+    }
+    return _dest;
 }
 
-void strrev(char *str) {
+void strrev(char *_str) {
     int           i;
     int           j;
     unsigned char a;
-    unsigned      len = strlen((const char *)str);
+    unsigned      len = strlen((const char *)_str);
     for (i = 0, j = len - 1; i < j; i++, j--) {
-        a      = str[i];
-        str[i] = str[j];
-        str[j] = a;
+        a       = _str[i];
+        _str[i] = _str[j];
+        _str[j] = a;
     }
+    return;
 }
 
 #ifdef __cplusplus
