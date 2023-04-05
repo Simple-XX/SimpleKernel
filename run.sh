@@ -15,9 +15,9 @@ source ./tools/env.sh
 export PATH="${GRUB_PATH}:$PATH"
 
 # 重新编译
-mkdir -p ./build/
-rm -rf ./build/*
-cd ./build
+mkdir -p ./build_${ARCH}/
+rm -rf ./build_${ARCH}/*
+cd ./build_${ARCH}
 cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=DEBUG ..
 make
 cd ../
@@ -60,18 +60,12 @@ fi
 
 # 初始化 gdb
 if [ ${DEBUG} == 1 ]; then
-    if [ ${ARCH} == "i386" ]; then
-        cp ./tools/gdbinit_i386 ./.gdbinit
-    elif [ ${ARCH} == "x86_64" ]; then
-        cp ./tools/gdbinit_x86_64 ./.gdbinit
-    elif [ ${ARCH} == "aarch64" ]; then
-        cp ./tools/gdbinit_aarch64 ./.gdbinit
-    elif [ ${ARCH} == "riscv64" ]; then
-        cp ./tools/gdbinit_riscv64 ./.gdbinit
-    fi
+    cp ./tools/gdbinit ./.gdbinit
+    echo "" >> ./.gdbinit
+    echo "file "${kernel} >> ./.gdbinit
     echo "target remote localhost:1234" >> ./.gdbinit
     GDB_OPT='-S -gdb tcp::1234'
-    echo "Run GDB in another shell"
+    echo "Run gdb-multiarch in another shell"
 fi
 
 # 设置 grub 相关数据
