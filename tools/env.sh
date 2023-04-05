@@ -16,7 +16,7 @@ DEBUG=0
 IA32_USE_QEMU=1
 
 # 内核映像
-kernel='./build/bin/kernel.elf'
+kernel='./build_'${ARCH}'/bin/kernel.elf'
 iso_boot_grub='./iso/boot/grub'
 iso_boot='./iso/boot/'
 iso='./simplekernel.iso'
