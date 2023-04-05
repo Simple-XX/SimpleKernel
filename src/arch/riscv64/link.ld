@@ -27,7 +27,7 @@ SECTIONS {
     PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x80200000));
     /* 设置起始地址 */
     . = SEGMENT_START("text-segment", 0x80200000);
-    .boot           : { *(.text.boot) *(.bss.boot) }
+    .boot           : { *(.text.boot) *(.data.boot) *(.bss.boot) }
     .interp         : { *(.interp) }
     .note.gnu.build-id  : { *(.note.gnu.build-id) }
     .hash           : { *(.hash) }

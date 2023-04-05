@@ -82,7 +82,7 @@
 // 8 字节对齐
 .align MULTIBOOT_HEADER_ALIGN
 // 声明所属段
-.section .multiboot_header
+.section .text.boot
 multiboot_header:
     // 魔数
     .long MULTIBOOT2_HEADER_MAGIC
@@ -100,7 +100,7 @@ multiboot_header:
 multiboot_header_end:
 
 // 声明所属段
-.section .text
+.section .text.boot
 // 全局可见
 .global _start
 // 声明类型
@@ -121,7 +121,7 @@ _start:
     ret
 
 // 声明所属段
-.section .bss
+.section .bss.boot
 // 栈
 STACK:
     // 跳过 16KB
