@@ -1,9 +1,0 @@
-set mi-asyn
-set confirm off
-symbol-file ./build_riscv64/bin/kernel.elf
-set disassemble-next-line auto
-set print pretty on
-set print object on
-set print array-indexes on
-set riscv use-compressed-breakpoints yes
-set architecture riscv:rv64
