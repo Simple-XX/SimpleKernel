@@ -83,7 +83,7 @@ endif ()
 add_custom_command(TARGET ${KernelName}
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJCOPY} --only-keep-debug ${KernelName} > ${KernelName}.debug
+        COMMAND ${CMAKE_OBJCOPY} --only-keep-debug ${KernelName} ${KernelName}.debug
         COMMENT "Generating kernel debug...")
 
 # objcopy --strip-debug foo 创建一个去掉调试信息的( strip 的)可执行文件
