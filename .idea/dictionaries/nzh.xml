@@ -2,6 +2,9 @@
   <dictionary name="nzh">
     <words>
       <w>bochsrc</w>
+      <w>corei</w>
+      <w>imafdc</w>
+      <w>lriscv</w>
       <w>opensbi</w>
       <w>readelf</w>
       <w>simplekernel</w>
