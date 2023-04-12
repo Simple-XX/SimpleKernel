@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+config PLATFORM_GENERIC
+	bool
+	select FDT
+	select FDT_DOMAIN
+	select FDT_PMU
+	default y
+
+if PLATFORM_GENERIC
+
+config PLATFORM_GENERIC_NAME
+	string "Platform default name"
+	default "Generic"
+
+config PLATFORM_GENERIC_MAJOR_VER
+	int "Platform major version"
+	range 0 65535
+	default 0
+
+config PLATFORM_GENERIC_MINOR_VER
+	int "Platform minor version"
+	range 0 65535
+	default 1
+
+config PLATFORM_ALLWINNER_D1
+	bool "Allwinner D1 support"
+	depends on FDT_IRQCHIP_PLIC
+	default n
+
+config PLATFORM_ANDES_AE350
+	bool "Andes AE350 support"
+	default n
+
+config PLATFORM_RENESAS_RZFIVE
+	bool "Renesas RZ/Five support"
+	default n
+
+config PLATFORM_SIFIVE_FU540
+	bool "SiFive FU540 support"
+	default n
+
+config PLATFORM_SIFIVE_FU740
+	bool "SiFive FU740 support"
+	depends on FDT_RESET && FDT_I2C
+	default n
+
+endif
