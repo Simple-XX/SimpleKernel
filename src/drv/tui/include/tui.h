@@ -1,6 +1,6 @@
 
 /**
- * @file tui.cpp
+ * @file tui.h
  * @brief TUI 接口头文件
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _TUI_H_
-#define _TUI_H_
+#ifndef SIMPLEKERNEL_TUI_H
+#define SIMPLEKERNEL_TUI_H
 
 #include "stdint.h"
 #include "stddef.h"
@@ -223,4 +223,4 @@ public:
     void clear(void);
 };
 
-#endif /* _TUI_H_ */
+#endif /* SIMPLEKERNEL_TUI_H */
