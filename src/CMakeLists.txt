@@ -99,7 +99,8 @@ add_custom_command(TARGET ${KernelName}
 add_custom_command(TARGET ${KernelName}
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName} > ${KernelName}.nm
+        COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName}
+            > ${KernelName}.nm
         COMMENT "nm...")
 
 # readelf -a
