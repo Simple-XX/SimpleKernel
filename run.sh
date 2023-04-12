@@ -80,14 +80,9 @@ fi
 
 # 运行虚拟机
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    if [ ${IA32_USE_QEMU} == 0 ]; then
-        ${GRUB_PATH}/grub-mkrescue -o ${iso} ${iso_folder}
-        bochs -q -f ${bochsrc} -rc ./tools/bochsinit
-    else
-        qemu-system-x86_64 -cdrom ${iso} -m 128M \
-        -monitor telnet::2333,server,nowait -serial stdio \
-        ${GDB_OPT}
-    fi
+    qemu-system-x86_64 -cdrom ${iso} -m 128M \
+    -monitor telnet::2333,server,nowait -serial stdio \
+    ${GDB_OPT}
 elif [ ${ARCH} == "aarch64" ]; then
     qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ${kernel} \
     -monitor telnet::2333,server,nowait -serial stdio -nographic \
