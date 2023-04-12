@@ -15,36 +15,36 @@
  * </table>
  */
 
-#ifndef _IOSTREAM_
-#define _IOSTREAM_
+#ifndef SIMPLEKERNEL_IOSTREAM
+#define SIMPLEKERNEL_IOSTREAM
 
 namespace std {
-    class ostream {
-    private:
-    protected:
-        ostream(const ostream &lhs);
+class ostream {
+private:
+protected:
+    ostream(const ostream &lhs);
 
-    public:
-        enum openmode : uint8_t {
-            in     = 1,
-            out    = 2,
-            binary = 4,
-            trunc  = 8,
-        };
-
-        ostream(void);
-        ~ostream(void);
-        ostream &operator<<(char c);
-        ostream &operator<<(int n);
-        ostream &operator<<(const char *lhs);
-        ostream &operator<<(ostream &(*)(ostream &));
+public:
+    enum openmode : uint8_t {
+        in     = 1,
+        out    = 2,
+        binary = 4,
+        trunc  = 8,
     };
 
-    inline ostream &endl(ostream &lhs) {
-        return lhs << '\n';
-    }
-
-    static ostream cout;
+    ostream(void);
+    ~ostream(void);
+    ostream &operator<<(char c);
+    ostream &operator<<(int n);
+    ostream &operator<<(const char *lhs);
+    ostream &operator<<(ostream &(*)(ostream &));
 };
 
-#endif /* _IOSTREAM_ */
+inline ostream &endl(ostream &lhs) {
+    return lhs << '\n';
+}
+
+static ostream cout;
+}; // namespace std
+
+#endif /* SIMPLEKERNEL_IOSTREAM */

@@ -15,8 +15,8 @@
  * </table>
  */
 
-#ifndef _CXXABI_H_
-#define _CXXABI_H_
+#ifndef SIMPLEKERNEL_CXXABI_H
+#define SIMPLEKERNEL_CXXABI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,25 +38,25 @@ void __cxa_finalize(void *f);
 #endif
 
 namespace std {
-    class type_info {
+class type_info {
 
-    private:
-        const char *tname;
+private:
+    const char *tname;
 
-    public:
-        virtual ~type_info(void);
+public:
+    virtual ~type_info(void);
 
-        type_info(const type_info &);
+    type_info(const type_info &);
 
-        explicit type_info(const char *);
+    explicit type_info(const char *);
 
-        const char *name(void) const;
+    const char *name(void) const;
 
-        bool operator==(const type_info &) const;
+    bool operator==(const type_info &) const;
 
-        bool operator!=(const type_info &) const;
-    };
-}
+    bool operator!=(const type_info &) const;
+};
+} // namespace std
 
 namespace __cxxabiv1 {
 
@@ -69,18 +69,18 @@ namespace __cxxabiv1 {
         virtual ~t(void);                                                      \
     }
 
-    ADD_CXX_TYPEINFO_HEADER(__fundamental_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__array_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__function_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__enum_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__pbase_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__pointer_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__pointer_to_member_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__class_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__si_class_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
+ADD_CXX_TYPEINFO_HEADER(__fundamental_type_info);
+ADD_CXX_TYPEINFO_HEADER(__array_type_info);
+ADD_CXX_TYPEINFO_HEADER(__function_type_info);
+ADD_CXX_TYPEINFO_HEADER(__enum_type_info);
+ADD_CXX_TYPEINFO_HEADER(__pbase_type_info);
+ADD_CXX_TYPEINFO_HEADER(__pointer_type_info);
+ADD_CXX_TYPEINFO_HEADER(__pointer_to_member_type_info);
+ADD_CXX_TYPEINFO_HEADER(__class_type_info);
+ADD_CXX_TYPEINFO_HEADER(__si_class_type_info);
+ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
 
 #undef ADD_CXX_TYPEINFO_HEADER
-}
+} // namespace __cxxabiv1
 
-#endif /* _CXXABI_H_ */
+#endif /* SIMPLEKERNEL_CXXABI_H */

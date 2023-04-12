@@ -24,8 +24,9 @@ extern "C" {
 #define ATEXIT_MAX_FUNCS 128
 
 typedef void (*ctor_t)(void);
-extern ctor_t ctors_start[];
-extern ctor_t ctors_end[];
+// 在 link.ld 中定义
+extern ctor_t __init_array_start[];
+extern ctor_t __init_array_end[];
 
 typedef unsigned uarch_t;
 
@@ -42,7 +43,7 @@ struct atexit_func_entry_t {
 
 void cpp_init(void) {
     ctor_t *f;
-    for (f = ctors_start; f < ctors_end; f++) {
+    for (f = __init_array_start; f < __init_array_end; f++) {
         (*f)();
     }
     return;
@@ -116,7 +117,7 @@ void __cxa_finalize(void *f) {
          *be used to tell when a shared object is no longer in use. It is
          *one of many methods, however.
          **/
-        // You may insert a prinf() here to tell you whether or not the
+        // You may insert a printf() here to tell you whether or not the
         // function gets called. Testing is CRITICAL!
         while (i--) {
             if (__atexit_funcs[i].destructor_func) {
@@ -186,57 +187,56 @@ void __cxa_finalize(void *f) {
 };
 
 namespace __cxxabiv1 {
+/* guard variables */
 
-    /* guard variables */
+/* The ABI requires a 64-bit type.  */
+__extension__ typedef int __guard __attribute__((mode(__DI__)));
 
-    /* The ABI requires a 64-bit type.  */
-    __extension__ typedef int __guard __attribute__((mode(__DI__)));
+int  __cxa_guard_acquire(__guard *);
+void __cxa_guard_release(__guard *);
+void __cxa_guard_abort(__guard *);
 
-    extern "C" int  __cxa_guard_acquire(__guard *);
-    extern "C" void __cxa_guard_release(__guard *);
-    extern "C" void __cxa_guard_abort(__guard *);
-
-    extern "C" int __cxa_guard_acquire(__guard *g) {
-        return !*(char *)(g);
-    }
-
-    extern "C" void __cxa_guard_release(__guard *g) {
-        *(char *)g = 1;
-    }
-
-    extern "C" void __cxa_guard_abort(__guard *) {
-    }
+int __cxa_guard_acquire(__guard *g) {
+    return !*(char *)(g);
 }
+
+void __cxa_guard_release(__guard *g) {
+    *(char *)g = 1;
+}
+
+void __cxa_guard_abort(__guard *) {
+}
+} // namespace __cxxabiv1
 
 #ifdef __cplusplus
 };
 #endif
 
 namespace std {
-    type_info::type_info(const type_info &arg) : tname(arg.tname) {
-        return;
-    }
-
-    type_info::type_info(const char *pname) : tname(pname) {
-        return;
-    }
-
-    type_info::~type_info(void) {
-        return;
-    }
-
-    const char *type_info::name(void) const {
-        return tname;
-    }
-
-    bool type_info::operator==(const type_info &arg) const {
-        return tname == arg.tname;
-    }
-
-    bool type_info::operator!=(const type_info &arg) const {
-        return tname != arg.tname;
-    }
+type_info::type_info(const type_info &arg) : tname(arg.tname) {
+    return;
 }
+
+type_info::type_info(const char *pname) : tname(pname) {
+    return;
+}
+
+type_info::~type_info(void) {
+    return;
+}
+
+const char *type_info::name(void) const {
+    return tname;
+}
+
+bool type_info::operator==(const type_info &arg) const {
+    return tname == arg.tname;
+}
+
+bool type_info::operator!=(const type_info &arg) const {
+    return tname != arg.tname;
+}
+} // namespace std
 
 namespace __cxxabiv1 {
 
@@ -248,17 +248,17 @@ namespace __cxxabiv1 {
         return;                                                                \
     }
 
-    ADD_CXX_TYPEINFO_SOURCE(__fundamental_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__array_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__function_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__enum_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__pbase_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__pointer_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__pointer_to_member_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__class_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__si_class_type_info)
-    ADD_CXX_TYPEINFO_SOURCE(__vmi_class_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__fundamental_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__array_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__function_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__enum_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__pbase_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__pointer_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__pointer_to_member_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__class_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__si_class_type_info)
+ADD_CXX_TYPEINFO_SOURCE(__vmi_class_type_info)
 
 #undef ADD_CXX_TYPEINFO_SOURCE
 
-}
+} // namespace __cxxabiv1
