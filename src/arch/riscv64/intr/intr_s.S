@@ -18,7 +18,7 @@
 
 .section .text
 // 保存所有寄存器
-.globl trap_entry
+.global trap_entry
 .extern trap_handler
 .align 4
 trap_entry:
@@ -35,7 +35,8 @@ trap_entry:
     mv   a3, sp
     csrr a4, sie
     csrr a5, sstatus
-    csrr a6, sscratch
+    csrr a6, satp
+    csrr a7, sscratch
     jal trap_handler
 
     // 从栈上恢复所有寄存器

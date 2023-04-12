@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// set for Simple-XX/SimpleKernel.
+/**
+ * @file set
+ * @brief stl set 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _SET_
-#define _SET_
+#ifndef SIMPLEKERNEL_SET
+#define SIMPLEKERNEL_SET
 
 // 这个头文件包含两个模板类 set 和 multiset
 // set      : 集合，键值即实值，集合内元素会自动排序，键值不允许重复
@@ -554,4 +565,4 @@ namespace mystl {
     }
 };
 
-#endif /* _SET_ */
+#endif /* SIMPLEKERNEL_SET */

@@ -48,7 +48,9 @@ task_t *rr_scheduler_t::get_next_task(void) {
     // 如果任务未结束
     if (core_t::get_curr_task()->state == RUNNING) {
         // 如果不是 os 线程
-        if (core_t::get_curr_task()->pid != 0) {
+        if ((core_t::get_curr_task()->name != mystl::string("idle")) &&
+            (core_t::get_curr_task()->name != mystl::string("init")) &&
+            (core_t::get_curr_task()->name != mystl::string("init other"))) {
             // 重新加入队列
             task_queue.push(core_t::get_curr_task());
         }

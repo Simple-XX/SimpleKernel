@@ -13,7 +13,7 @@
 // r1 -> 0x00000C42 - machine id
 // r2 -> 0x00000100 - start of ATAGS
 // preserve these registers as argument for kernel_main
-.globl _start
+.global _start
 // 规定起始地址
 .org 0x8000
 _start:

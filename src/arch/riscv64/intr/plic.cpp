@@ -22,14 +22,18 @@
 #include "io.h"
 #include "intr.h"
 
+uint64_t PLIC::base_addr;
+uint64_t PLIC::PLIC_PRIORITY;
+uint64_t PLIC::PLIC_PENDING;
+
 /**
  * @brief 外部中断处理
  */
-static int32_t externel_intr(int, char **) {
+static int32_t external_intr(int, char **) {
     // 读取中断号
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
-    printf("externel_intr: 0x%X.\n", no);
+    printf("external_intr: 0x%X.\n", no);
     return 0;
 }
 
@@ -37,12 +41,24 @@ uint64_t PLIC::PLIC_SENABLE(uint64_t _hart) {
     return base_addr + 0x2080 + _hart * 0x100;
 }
 
+uint64_t PLIC::PLIC_MENABLE(uint64_t _hart) {
+    return base_addr + 0x2000 + _hart * 0x100;
+}
+
 uint64_t PLIC::PLIC_SPRIORITY(uint64_t _hart) {
     return base_addr + 0x201000 + _hart * 0x2000;
 }
 
+uint64_t PLIC::PLIC_MPRIORITY(uint64_t _hart) {
+    return base_addr + 0x200000 + _hart * 0x2000;
+}
+
 uint64_t PLIC::PLIC_SCLAIM(uint64_t _hart) {
     return base_addr + 0x201004 + _hart * 0x2000;
+}
+
+uint64_t PLIC::PLIC_MCLAIM(uint64_t _hart) {
+    return base_addr + 0x200004 + _hart * 0x2000;
 }
 
 PLIC &PLIC::get_instance(void) {
@@ -66,11 +82,11 @@ int32_t PLIC::init(void) {
     }
     // TODO: 多核情况下设置所有 hart
     // 将当前 hart 的 S 模式优先级阈值设置为 0
-    IO::get_instance().write32(
-        (void *)PLIC_SPRIORITY(CPU::get_curr_core_id()), 0);
+    IO::get_instance().write32((void *)PLIC_SPRIORITY(CPU::get_curr_core_id()),
+                               0);
     // 注册外部中断处理函数
-    INTR::get_instance().register_interrupt_handler(INTR::INTR_S_EXTERNEL,
-                                                    externel_intr);
+    INTR::get_instance().register_interrupt_handler(CPU::INTR_EXTERN_S,
+                                                    external_intr);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
     info("plic init.\n");
@@ -79,8 +95,8 @@ int32_t PLIC::init(void) {
 
 int32_t PLIC::init_other_core(void) {
     // 将当前 hart 的 S 模式优先级阈值设置为 0
-    IO::get_instance().write32(
-        (void *)PLIC_SPRIORITY(CPU::get_curr_core_id()), 0);
+    IO::get_instance().write32((void *)PLIC_SPRIORITY(CPU::get_curr_core_id()),
+                               0);
     // 开启外部中断
     CPU::WRITE_SIE(CPU::READ_SIE() | CPU::SIE_SEIE);
     info("plic other init.\n");
@@ -95,16 +111,16 @@ void PLIC::set(uint8_t _no, bool _status) {
     // 为当前 hart 的 S 模式设置 uart 的 enable
     if (_status) {
         IO::get_instance().write32(
-            (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart),
+            (void *)PLIC_SENABLE(CPU::get_curr_core_id()),
             IO::get_instance().read32(
-                (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart)) |
+                (void *)PLIC_SENABLE(CPU::get_curr_core_id())) |
                 (1 << _no));
     }
     else {
         IO::get_instance().write32(
-            (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart),
+            (void *)PLIC_SENABLE(CPU::get_curr_core_id()),
             IO::get_instance().read32(
-                (void *)PLIC_SENABLE(BOOT_INFO::dtb_init_hart)) &
+                (void *)PLIC_SENABLE(CPU::get_curr_core_id())) &
                 ~(1 << _no));
     }
     spinlock.unlock();
@@ -113,15 +129,15 @@ void PLIC::set(uint8_t _no, bool _status) {
 
 uint8_t PLIC::get(void) {
     spinlock.lock();
-    uint8_t ret = IO::get_instance().read32(
-        (void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart));
+    uint8_t ret =
+        IO::get_instance().read32((void *)PLIC_SCLAIM(CPU::get_curr_core_id()));
     spinlock.unlock();
     return ret;
 }
 
 void PLIC::done(uint8_t _no) {
     spinlock.lock();
-    IO::get_instance().write32((void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart),
+    IO::get_instance().write32((void *)PLIC_SCLAIM(CPU::get_curr_core_id()),
                                _no);
     spinlock.unlock();
     return;

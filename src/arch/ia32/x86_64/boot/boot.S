@@ -92,7 +92,6 @@
 // 工作在 32bit
 // 声明这一段代码以 32 位模式编译
 .code32
-
 // multiboot2 文件头
 // 计算头长度
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
@@ -101,7 +100,7 @@
 // 8 字节对齐
 .align MULTIBOOT_HEADER_ALIGN
 // 声明所属段
-.section .multiboot_header
+.section .text.boot
 multiboot_header:
     // 魔数
     .long MULTIBOOT2_HEADER_MAGIC
@@ -119,7 +118,7 @@ multiboot_header:
 multiboot_header_end:
 
 // 临时页表 4KB/页
-.section .data
+.section .data.boot
 .align 0x1000
 pml4:
     .skip 0x1000
@@ -175,10 +174,10 @@ gdt64_pointer64:
     .short gdt64_pointer-gdt64-1
     .quad gdt64
 
-.section .text
+.section .text.boot
 .global _start
 .type _start, @function
-# 在 multiboot2.cpp 中定义
+// 在 multiboot2.cpp 中定义
 .extern boot_info_addr
 .extern multiboot2_magic
 _start:
@@ -240,8 +239,7 @@ _start:
     ret
 
 .code64
-
-.section .text
+.section .text.boot
 .global _start64
 .type _start64, @function
 .extern kernel_main
@@ -271,7 +269,7 @@ _start64:
     ret
 
 // 声明所属段
-.section .bss
+.section .bss.boot
 // 16 字节对齐
 .align 16
 .global stack_top

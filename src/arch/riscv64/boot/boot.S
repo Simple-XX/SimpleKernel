@@ -14,8 +14,8 @@
  * </table>
  */
 
-.section .init
-.globl _start
+.section .text.boot
+.global _start
 .type _start, @function
 .extern kernel_main
 .extern cpp_init
@@ -39,10 +39,10 @@ loop:
     j loop
 
 // 声明所属段
-.section .bss
+.section .bss.boot
 // 16 字节对齐
 .align 16
 .global stack_top
 stack_top:
-    // 跳过 8KB
+    // 跳过 16KB
     .space 4096 * 4

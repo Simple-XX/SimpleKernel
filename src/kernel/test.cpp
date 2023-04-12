@@ -1,8 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// test.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file test.cpp
+ * @brief 测试
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "common.h"
 #include "stdio.h"
@@ -127,8 +137,8 @@ int32_t test_vmm(void) {
     addr = 0;
     // 准备映射的虚拟地址 3GB 处
     uintptr_t va = 0xC0000000;
-    // 准备映射的物理地址 0.75GB 处
-    uintptr_t pa = 0x30000000;
+    // 分配要映射的物理地址
+    uintptr_t pa = PMM::get_instance().alloc_page_kernel();
     // 确定一块未映射的内存
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
                                         nullptr) == 0);
@@ -140,11 +150,13 @@ int32_t test_vmm(void) {
     assert(addr == pa);
     // 写测试
     *(uintptr_t *)va = 0xCD;
-    //取消映射
+    // 取消映射
     VMM::get_instance().unmmap(VMM::get_instance().get_pgd(), va);
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
                                         &addr) == 0);
     assert(addr == 0);
+    // 回收物理地址
+    PMM::get_instance().free_page(pa);
     info("vmm test done.\n");
     return 0;
 }

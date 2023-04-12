@@ -17,7 +17,7 @@
 // 寄存器长度，8 字节
 .equ REG_BYTES, 8
 // 所有寄存器数量
-.equ ALL_REGS, 70
+.equ ALL_REGS, 71
 // 被调用者保存寄存器数量
 .equ CALLEE_SAVE_REGS, 25
 // 调用者保存寄存器数量
@@ -130,8 +130,10 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base  t0,   67, \_base
     csrr     t0,   sstatus
     sd_base  t0,   68, \_base
-    csrr     t0,   sscratch
+    csrr     t0,   satp
     sd_base  t0,   69, \_base
+    csrr     t0,   sscratch
+    sd_base  t0,   70, \_base
 .endm
 
 /**
@@ -150,6 +152,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
     ld_base  t0,   68, \_base
     csrw     sstatus,  t0
     ld_base  t0,   69, \_base
+    csrw     satp,     t0
+    ld_base  t0,   70, \_base
     csrw     sscratch, t0
 
     ld_base  zero, 0,  \_base
@@ -376,8 +380,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
  * @param  _base           要保存到的基地址
  */
 .macro context_save _base
-    // @todo 临时设置为 ra
-    sd_base          ra,       0,                    \_base
+    // @todo 临时设置为 tp
+    sd_base          tp,       0,                    \_base
     sd_base          ra,       1,                    \_base
     callee_regs_save \_base,   2
 
@@ -405,7 +409,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
  * @param  _base           要恢复数据的基地址
  */
 .macro context_load _base
-    ld_base          ra,       0,                    \_base
+    // @todo 临时设置为 tp
+    ld_base          tp,       0,                    \_base
     ld_base          ra,       1,                    \_base
     callee_regs_load \_base,   2
 

@@ -37,9 +37,8 @@ extern "C" void switch_context(CPU::context_t *_old, CPU::context_t *_new);
  */
 extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
                              uintptr_t _scause, CPU::all_regs_t *_all_regs,
-                             uintptr_t _sie, uintptr_t _sstatus,
-                             uintptr_t _sscratch) {
-    CPU::DISABLE_INTR();
+                             uintptr_t _sie, CPU::sstatus_t _sstatus,
+                             CPU::satp_t _satp, uintptr_t _sscratch) {
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -47,13 +46,16 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     (void)_all_regs;
     (void)_sie;
     (void)_sstatus;
+    (void)_satp;
     (void)_sscratch;
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
-         "0x%p, sstatus: 0x%p.\n",
-         _sepc, _stval, _scause, _all_regs, _sie, _sstatus);
-//    std::cout << *_all_regs << std::endl;
+         "0x%p\nsstatus: ",
+         _sepc, _stval, _scause, _all_regs, _sie);
+    std::cout << _sstatus << ", \nsatp: " << _satp << ", \n";
+    info("sscratch: 0x%p\n", _sscratch);
+// std::cout << *_all_regs << std::endl;
 #undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
@@ -68,7 +70,7 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK, 0,
                                           nullptr);
         // 如果是时钟中断
-        if ((_scause & CPU::CAUSE_CODE_MASK) == INTR::INTR_S_TIMER) {
+        if ((_scause & CPU::CAUSE_CODE_MASK) == CPU::INTR_TIMER_S) {
             // 切换到内核线程
             switch_context(
                 &core_t::get_curr_task()->context,
@@ -126,9 +128,9 @@ int32_t INTR::init(void) {
     // 外部中断初始化
     PLIC::get_instance().init();
     // 注册缺页中断
-    register_excp_handler(EXCP_LOAD_PAGE_FAULT, pg_load_excp);
+    register_excp_handler(CPU::EXCP_LOAD_PAGE_FAULT, pg_load_excp);
     // 注册缺页中断
-    register_excp_handler(EXCP_STORE_PAGE_FAULT, pg_store_excp);
+    register_excp_handler(CPU::EXCP_STORE_AMO_PAGE_FAULT, pg_store_excp);
     info("intr init.\n");
     return 0;
 }

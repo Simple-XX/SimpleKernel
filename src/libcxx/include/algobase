@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// algobase for Simple-XX/SimpleKernel.
+/**
+ * @file algobase
+ * @brief stl algobase 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _ALGOBASE_
-#define _ALGOBASE_
+#ifndef SIMPLEKERNEL_ALGOBASE
+#define SIMPLEKERNEL_ALGOBASE
 
 // 这个头文件包含了 std 的基本算法
 
@@ -475,4 +486,4 @@ namespace mystl {
 
 };
 
-#endif /* _ALGOBASE_ */
+#endif /* SIMPLEKERNEL_ALGOBASE */
