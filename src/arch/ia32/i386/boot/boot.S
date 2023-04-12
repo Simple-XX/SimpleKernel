@@ -1,9 +1,18 @@
 
-// This file is a part of Simple-XX/SimpleKernel 
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// boot.S for Simple-XX/SimpleKernel.
-// 启动代码，进行一些设置后跳转到 kernel_main
+/**
+ * @file boot.S
+ * @brief 启动代码，进行一些设置后跳转到 kernel_main
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-01-01
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-01-02<td>MRNIU<td>迁移到 doxygen
+ * </table>
+ */
 
 // 以下是来自 multiboot2 规范的定义
 //  How many bytes from the start of the file we search for the header.
@@ -73,7 +82,6 @@
 
 // 声明这一段代码以 32 位模式编译
 .code32
-
 // multiboot2 文件头
 // 计算头长度
 .SET HEADER_LENGTH, multiboot_header_end - multiboot_header
@@ -82,7 +90,7 @@
 // 8 字节对齐
 .align MULTIBOOT_HEADER_ALIGN
 // 声明所属段
-.section .multiboot_header
+.section .text.boot
 multiboot_header:
     // 魔数
     .long MULTIBOOT2_HEADER_MAGIC
@@ -100,7 +108,7 @@ multiboot_header:
 multiboot_header_end:
 
 // 声明所属段
-.section .text
+.section .text.boot
 // 全局可见
 .global _start
 // 声明类型
@@ -111,19 +119,21 @@ _start:
     // 关中断
     cli
     // 设置栈地址
-    mov $STACK_TOP, %esp
+    mov $stack_top, %esp
     // 栈地址按照 16 字节对齐
     and $0xFFFFFFF0, %esp
     // 帧指针修改为 0
-    mov $0, %ebp          
+    mov $0, %ebp
     call kernel_main
     hlt
     ret
 
 // 声明所属段
-.section .bss
+.section .bss.boot
+// 16 字节对齐
+.align 16
+.global stack_top
 // 栈
-STACK:
+stack_top:
     // 跳过 16KB
-    .skip 16384
-STACK_TOP:
+    .space 4096 * 4
