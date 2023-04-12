@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+menu "Interrupt Controller Support"
+
+config FDT_IRQCHIP
+	bool "FDT based interrupt controller drivers"
+	depends on FDT
+	default n
+
+if FDT_IRQCHIP
+
+config FDT_IRQCHIP_APLIC
+	bool "Advanced Platform Level Interrupt Controller (APLIC) FDT driver"
+	select IRQCHIP_APLIC
+	default n
+
+config FDT_IRQCHIP_IMSIC
+	bool "Incoming Message Signalled Interrupt Controller (IMSIC) FDT driver"
+	select IRQCHIP_IMSIC
+	default n
+
+config FDT_IRQCHIP_PLIC
+	bool "Platform Level Interrupt Controller (PLIC) FDT driver"
+	select IRQCHIP_PLIC
+	default n
+
+endif
+
+config IRQCHIP_APLIC
+	bool "Advanced Platform Level Interrupt Controller (APLIC) support"
+	default n
+
+config IRQCHIP_IMSIC
+	bool "Incoming Message Signalled Interrupt Controller (IMSIC) support"
+	default n
+
+config IRQCHIP_PLIC
+	bool "Platform Level Interrupt Controller (PLIC) support"
+	default n
+
+endmenu
