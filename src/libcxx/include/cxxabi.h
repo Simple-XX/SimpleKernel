@@ -15,8 +15,8 @@
  * </table>
  */
 
-#ifndef _CXXABI_H_
-#define _CXXABI_H_
+#ifndef SIMPLEKERNEL_CXXABI_H
+#define SIMPLEKERNEL_CXXABI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,4 +83,4 @@ namespace __cxxabiv1 {
 #undef ADD_CXX_TYPEINFO_HEADER
 }
 
-#endif /* _CXXABI_H_ */
+#endif /* SIMPLEKERNEL_CXXABI_H */
