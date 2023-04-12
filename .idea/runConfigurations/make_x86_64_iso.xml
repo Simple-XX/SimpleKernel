@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="setup i386 iso" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="mkdir -p ./iso/boot/grub &amp;&amp; cp ./build_i386/bin/kernel.elf ./iso/boot/ &amp;&amp; cp ./tools/grub.cfg ./iso/boot/grub/ &amp;&amp; ./tools/grub-2.04/build/grub/bin/grub-mkrescue -o ./simplekernel.iso ./iso/" />
+  <configuration default="false" name="make_x86_64_iso" type="ShConfigurationType" singleton="false">
+    <option name="SCRIPT_TEXT" value="mkdir -p ./iso/boot/grub &amp;&amp; cp ./build_x86_64/bin/kernel.elf ./iso/boot/ &amp;&amp; cp ./tools/grub.cfg ./iso/boot/grub/ &amp;&amp; ./tools/grub-2.04/build/grub/bin/grub-mkrescue -o ./simplekernel.iso ./iso/" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="" />
     <option name="SCRIPT_OPTIONS" value="" />
