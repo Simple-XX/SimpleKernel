@@ -1,0 +1,95 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+menu "Serial Device Support"
+
+config FDT_SERIAL
+	bool "FDT based serial drivers"
+	depends on FDT
+	default n
+
+if FDT_SERIAL
+
+config FDT_SERIAL_CADENCE
+	bool "Cadence UART FDT driver"
+	select SERIAL_CADENCE
+	default n
+
+config FDT_SERIAL_GAISLER
+	bool "Gaisler UART FDT driver"
+	select SERIAL_GAISLER
+	default n
+
+config FDT_SERIAL_HTIF
+	bool "Host transfer interface (HTIF) UART FDT driver"
+	select SYS_HTIF
+	default n
+
+config FDT_SERIAL_RENESAS_SCIF
+	bool "Renesas SCIF FDT driver"
+	select SERIAL_RENESAS_SCIF
+	default n
+
+config FDT_SERIAL_SHAKTI
+	bool "Shakti UART FDT driver"
+	select SERIAL_SHAKTI
+	default n
+
+config FDT_SERIAL_SIFIVE
+	bool "SiFive UART FDT driver"
+	select SERIAL_SIFIVE
+	default n
+
+config FDT_SERIAL_LITEX
+	bool "LiteX UART FDT driver"
+	select SERIAL_LITEX
+	default n
+
+config FDT_SERIAL_UART8250
+	bool "8250 UART FDT driver"
+	select SERIAL_UART8250
+	default n
+
+config FDT_SERIAL_XILINX_UARTLITE
+	bool "Xilinx UART Lite FDT driver"
+	select SERIAL_XILINX_UARTLITE
+	default n
+
+endif
+
+config SERIAL_CADENCE
+	bool "Cadence UART support"
+	default n
+
+config SERIAL_GAISLER
+	bool "Gaisler UART support"
+	default n
+
+config SERIAL_RENESAS_SCIF
+	bool "Renesas SCIF support"
+	default n
+
+config SERIAL_SHAKTI
+	bool "Shakti UART support"
+	default n
+
+config SERIAL_SIFIVE
+	bool "SiFive UART support"
+	default n
+
+config SERIAL_LITEX
+	bool "LiteX UART support"
+	default n
+
+config SERIAL_UART8250
+	bool "8250 UART support"
+	default n
+
+config SERIAL_XILINX_UARTLITE
+	bool "Xilinx UART Lite support"
+	default n
+
+config SERIAL_SEMIHOSTING
+	bool "Semihosting support"
+	default n
+
+endmenu
