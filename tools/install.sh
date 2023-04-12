@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 #
 # run.sh for Simple-XX/SimpleKernel.
@@ -16,7 +17,7 @@ help() {
     echo "run.sh [-t target arch] [-s simulator]"
     echo "Description:"
     echo "-t, 'riscv64', 'i386', 'x86_64', 'arm', 'aarch64'. riscv64 as default"
-    echo "-s, 'qemu', 'bochs'(i386/x86_64 only). qemu as default"
+    echo "-s, 'qemu'"
     exit 1
 }
 
@@ -69,16 +70,9 @@ fi
 # 模拟器
 simulators=(
 qemu
-bochs
 )
 if [[ ! "${simulators[*]}"  =~ $SIMULATOR ]]; then
     echo "$SIMULATOR not exists"
-    help
-    exit 1
-fi
-# bochs 仅用于 i386/x86_64
-if [ "$SIMULATOR" == "bochs" ] && [ "$TARGET" != "i386" ] && [ "$TARGET" != "x86_64" ]; then
-    echo "bochs is i386/x86_64 only."
     help
     exit 1
 fi
@@ -107,10 +101,7 @@ if [ "${HOST_ARCH}" == "x86_64" ]; then
             echo 1
         # target 为 i386/x86_64
         elif [ "${TARGET}" == "i386" ] || [ "${TARGET}" == "x86_64" ]; then
-            # 模拟器为 bochs
-            if [ "${SIMULATOR}" == "bochs" ]; then
-                echo 1
-            fi
+            echo 1
         fi
     # 宿主机器为 macos
     elif [ "${HOST_SYSTEM}" == "Darwin" ]; then
@@ -122,10 +113,7 @@ if [ "${HOST_ARCH}" == "x86_64" ]; then
             echo 1
         # target 为 i386/x86_64
         elif [ "${TARGET}" == "i386" ] || [ "${TARGET}" == "x86_64" ]; then
-            # 模拟器为 bochs
-            if [ "${SIMULATOR}" == "bochs" ]; then
-                echo 1
-            fi
+            echo 1
         fi
     fi
 # 宿主机器为 arm64
@@ -140,10 +128,7 @@ elif [ "${HOST_ARCH}" == "arm64" ]; then
             echo 1
         # target 为 i386/x86_64
         elif [ "${TARGET}" == "i386" ] || [ "${TARGET}" == "x86_64" ]; then
-            # 模拟器为 bochs
-            if [ "${SIMULATOR}" == "bochs" ]; then
-                echo 1
-            fi
+            echo 1
         fi
     # 宿主机器为 macos
     elif [ "${HOST_SYSTEM}" == "Darwin" ]; then
@@ -195,17 +180,6 @@ elif [ "${HOST_ARCH}" == "arm64" ]; then
                 # 安装 x86_64-elf-gcc
                 brew install x86_64-elf-gcc
                 echo "x86_64-elf-gcc installed."
-            fi
-            # 模拟器为 bochs
-            if [ "${SIMULATOR}" == "bochs" ]; then
-                # bochs
-                if  ! command -v bochs &> /dev/null; then
-                    echo "bochs could not found."
-                    echo "Installing bochs..."
-                    # 安装 bochs
-                    brew install bochs
-                    echo "bochs installed."
-                fi
             fi
         fi
     fi
