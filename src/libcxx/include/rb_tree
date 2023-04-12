@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// rb_tree for Simple-XX/SimpleKernel.
+/**
+ * @file rb_tree
+ * @brief stl rb_tree 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _RB_TREE_
-#define _RB_TREE_
+#ifndef SIMPLEKERNEL_RB_TREE
+#define SIMPLEKERNEL_RB_TREE
 
 // 这个头文件包含一个模板类 rb_tree
 // rb_tree : 红黑树
@@ -1638,4 +1649,4 @@ namespace mystl {
 
 };
 
-#endif /* _RB_TREE_ */
+#endif /* SIMPLEKERNEL_RB_TREE */

@@ -1,11 +1,22 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// exceptdef for Simple-XX/SimpleKernel.
+/**
+ * @file exceptdef
+ * @brief stl exceptdef 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _EXCEPTDEF_
-#define _EXCEPTDEF_
+#ifndef SIMPLEKERNEL_EXCEPTDEF
+#define SIMPLEKERNEL_EXCEPTDEF
 
 // #include <stdexcept>
 
@@ -26,4 +37,4 @@ namespace mystl {
 
 };
 
-#endif /* _EXCEPTDEF_H_ */
+#endif /* SIMPLEKERNEL_EXCEPTDEF */

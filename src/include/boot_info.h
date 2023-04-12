@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _BOOT_INFO_H_
-#define _BOOT_INFO_H_
+#ifndef SIMPLEKERNEL_BOOT_INFO_H
+#define SIMPLEKERNEL_BOOT_INFO_H
 
 #include "stdint.h"
 #include "resource.h"
@@ -37,6 +37,8 @@ extern bool inited;
 extern "C" uintptr_t boot_info_addr;
 /// 长度
 extern size_t boot_info_size;
+/// 保存 sbi 传递的启动核
+extern "C" size_t dtb_init_hart;
 
 /**
  * @brief 初始化，定义在具体实现中
@@ -64,4 +66,4 @@ extern resource_t get_clint(void);
 extern resource_t get_plic(void);
 }; // namespace BOOT_INFO
 
-#endif /* _BOOT_INFO_H_ */
+#endif /* SIMPLEKERNEL_BOOT_INFO_H */

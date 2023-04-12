@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _OPENSBI_H_
-#define _OPENSBI_H_
+#ifndef SIMPLEKERNEL_OPENSBI_H
+#define SIMPLEKERNEL_OPENSBI_H
 
 #include "stdint.h"
 
@@ -150,4 +150,4 @@ public:
                         unsigned long _opaque);
 };
 
-#endif /* _OPENSBI_H_ */
+#endif /* SIMPLEKERNEL_OPENSBI_H */

@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// unordered_set for Simple-XX/SimpleKernel.
+/**
+ * @file unordered_set
+ * @brief stl unordered_set 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _UNORDERED_SET_
-#define _UNORDERED_SET_
+#ifndef SIMPLEKERNEL_UNORDERED_SET
+#define SIMPLEKERNEL_UNORDERED_SET
 
 // 这个头文件包含两个模板类 unordered_set 和 unordered_multiset
 // 功能与用法与 set 和 multiset 类似，不同的是使用 hashtable
@@ -634,4 +645,4 @@ namespace mystl {
 
 };
 
-#endif /* _UNORDERED_SET_ */
+#endif /* SIMPLEKERNEL_UNORDERED_SET */

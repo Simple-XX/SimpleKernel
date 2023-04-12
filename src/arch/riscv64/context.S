@@ -17,7 +17,7 @@
 // 寄存器长度，8 字节
 .equ REG_BYTES, 8
 // 所有寄存器数量
-.equ ALL_REGS,  70
+.equ ALL_REGS,  71
 // 保存所有寄存器需要的大小
 .equ ALL_SIZE,  (ALL_REGS * REG_BYTES)
 
@@ -122,8 +122,10 @@ fld \a, ((\b) * REG_BYTES)(\c)
     sd_base  t0,   67, \_base
     csrr     t0,   sstatus
     sd_base  t0,   68, \_base
-    csrr     t0,   sscratch
+    csrr     t0,   satp
     sd_base  t0,   69, \_base
+    csrr     t0,   sscratch
+    sd_base  t0,   70, \_base
 .endm
 
 /**
@@ -142,6 +144,8 @@ fld \a, ((\b) * REG_BYTES)(\c)
     ld_base  t0,   68, \_base
     csrw     sstatus,  t0
     ld_base  t0,   69, \_base
+    csrw     satp,     t0
+    ld_base  t0,   70, \_base
     csrw     sscratch, t0
 
     ld_base  zero, 0,  \_base
