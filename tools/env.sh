@@ -6,7 +6,8 @@
 # setup.sh for Simple-XX/SimpleKernel.
 # 指定要运行的 ARCH，并设置相关数据
 
-# ARCH: i386, x86_64, riscv64
+
+# 指定要编译的目标架构 ARCH: i386, x86_64, riscv64
 # ARCH="i386"
 # ARCH="x86_64"
 ARCH="riscv64"
