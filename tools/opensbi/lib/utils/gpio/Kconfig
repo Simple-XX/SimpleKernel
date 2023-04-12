@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+menu "GPIO Support"
+
+config FDT_GPIO
+	bool "FDT based GPIO drivers"
+	depends on FDT
+	select GPIO
+	default n
+
+if FDT_GPIO
+
+config FDT_GPIO_SIFIVE
+	bool "SiFive GPIO FDT driver"
+	default n
+
+endif
+
+config GPIO
+	bool "GPIO support"
+	default n
+
+endmenu
