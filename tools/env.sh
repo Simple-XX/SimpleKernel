@@ -12,8 +12,6 @@
 ARCH="riscv64"
 
 DEBUG=0
-# Use qemu for i386/x86_64, bochs for default
-IA32_USE_QEMU=1
 
 # 内核映像
 kernel='./build_'${ARCH}'/bin/kernel.elf'
@@ -35,7 +33,6 @@ if [ "${OS}" == "Linux" ]; then
     fi
     OPENSBI="$(pwd)/tools/opensbi/build/platform/generic/firmware/fw_jump.elf"
     GRUB_PATH="$(dirname $(which grub-file))"
-    bochsrc="./tools/bochsrc_linux.txt"
 elif [ "${OS}" == "Darwin" ]; then
     if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_mac_x86_64.cmake"
@@ -47,5 +44,4 @@ elif [ "${OS}" == "Darwin" ]; then
     fi
     OPENSBI="$(pwd)/tools/opensbi/build/platform/generic/firmware/fw_jump.elf"
     GRUB_PATH="$(pwd)/tools/grub-2.04/build/grub/bin"
-    bochsrc="./tools/bochsrc_mac.txt"
 fi
