@@ -1,11 +1,22 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/mpaland/printf
-// stdio.h for Simple-XX/SimpleKernel.
+/**
+ * @file stdio.h
+ * @brief stdio 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/mpaland/printf
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _STDIO_H_
-#define _STDIO_H_
+#ifndef SIMPLEKERNEL_STDIO_H
+#define SIMPLEKERNEL_STDIO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,7 +36,7 @@ extern "C" {
  * null character
  */
 #define sprintf sprintf_
-int sprintf_(char *buffer, const char *format, ...);
+int sprintf_(char *_buffer, const char *_format, ...);
 
 /**
  * Tiny snprintf/vsnprintf implementation
@@ -40,21 +51,21 @@ int sprintf_(char *buffer, const char *format, ...);
  */
 #define snprintf snprintf_
 #define vsnprintf vsnprintf_
-int snprintf_(char *buffer, size_t count, const char *format, ...);
-int vsnprintf_(char *buffer, size_t count, const char *format, va_list va);
-int _vsnprintf(char *buffer, const size_t maxlen, const char *format,
-               va_list va);
+int snprintf_(char *_buffer, size_t _count, const char *_format, ...);
+int vsnprintf_(char *_buffer, size_t _count, const char *_format, va_list _va);
+int _vsnprintf(char *_buffer, const size_t _maxlen, const char *_format,
+               va_list _va);
 
-int32_t printf(const char *fmt, ...);
+int32_t printf(const char *_fmt, ...);
 
-int32_t info(const char *fmt, ...);
+int32_t info(const char *_fmt, ...);
 
-int32_t warn(const char *fmt, ...);
+int32_t warn(const char *_fmt, ...);
 
-int32_t err(const char *fmt, ...);
+int32_t err(const char *_fmt, ...);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _STDIO_H_ */
+#endif /* SIMPLEKERNEL_STDIO_H */
