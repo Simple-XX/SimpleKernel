@@ -14,134 +14,73 @@
  * </table>
  */
 
-#ifndef _CPU_HPP_
-#define _CPU_HPP_
+#ifndef SIMPLEKERNEL_CPU_HPP
+#define SIMPLEKERNEL_CPU_HPP
 
 #include "stdint.h"
 #include "stdbool.h"
+#include "iostream"
 
 /**
  * @brief cpu 相关
  * @todo
  */
 namespace CPU {
-// Supervisor Status Register, sstatus
-// User Interrupt Enable
-static constexpr const uint64_t SSTATUS_UIE = 1 << 0;
-// Supervisor Interrupt Enable
-static constexpr const uint64_t SSTATUS_SIE = 1 << 1;
-// User Previous Interrupt Enable
-static constexpr const uint64_t SSTATUS_UPIE = 1 << 4;
-// Supervisor Previous Interrupt Enable
-static constexpr const uint64_t SSTATUS_SPIE = 1 << 5;
-// Previous mode, 1=Supervisor, 0=User
-static constexpr const uint64_t SSTATUS_SPP = 1 << 8;
-
 /**
- * @brief 读取 sstatus 寄存器
- * @return uint64_t         读取到的值
+ * @brief pte 结构
+ * @todo 使用 pte 结构重写 vmm
  */
-static inline uint64_t READ_SSTATUS(void) {
-    uint64_t x;
-    asm("csrr %0, sstatus" : "=r"(x));
-    return x;
-}
+struct pte_t {
+    enum {
+        VALID_OFFSET    = 0,
+        READ_OFFSET     = 1,
+        WRITE_OFFSET    = 2,
+        EXEC_OFFSET     = 3,
+        USER_OFFSET     = 4,
+        GLOBAL_OFFSET   = 5,
+        ACCESSED_OFFSET = 6,
+        DIRTY_OFFSET    = 7,
+        VALID           = 1 << VALID_OFFSET,
+        READ            = 1 << READ_OFFSET,
+        WRITE           = 1 << WRITE_OFFSET,
+        EXEC            = 1 << EXEC_OFFSET,
+        USER            = 1 << USER_OFFSET,
+        GLOBAL          = 1 << GLOBAL_OFFSET,
+        ACCESSED        = 1 << ACCESSED_OFFSET,
+        DIRTY           = 1 << DIRTY_OFFSET,
+    };
+    union {
+        struct {
+            uint64_t flags : 8;
+            uint64_t rsw : 2;
+            uint64_t ppn : 44;
+            uint64_t reserved : 10;
+        };
+        uint64_t val;
+    };
 
-/**
- * @brief 写 sstatus 寄存器
- * @param  _x                要写的值
- */
-static inline void WRITE_SSTATUS(uint64_t _x) {
-    asm("csrw sstatus, %0" : : "r"(_x));
-}
-
-/**
- * @brief 读 sip
- * @return uint64_t         读取到的值
- * @note Supervisor Interrupt Pending
- */
-static inline uint64_t READ_SIP(void) {
-    uint64_t x;
-    asm("csrr %0, sip" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 写 sip
- * @param  _x               要写的值
- */
-static inline void WRITE_SIP(uint64_t _x) {
-    asm("csrw sip, %0" : : "r"(_x));
-    return;
-}
-
-// Supervisor Interrupt Enable
-// software
-static constexpr const uint64_t SIE_SSIE = 1 << 1;
-// timer
-static constexpr const uint64_t SIE_STIE = 1 << 5;
-// external
-static constexpr const uint64_t SIE_SEIE = 1 << 9;
-
-/**
- * @brief 读 sie
- * @return uint64_t         读到的值
- */
-static inline uint64_t READ_SIE(void) {
-    uint64_t x;
-    asm("csrr %0, sie" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 写 sie
- * @param  _x                要写的值
- */
-static inline void WRITE_SIE(uint64_t _x) {
-    asm("csrw sie, %0" : : "r"(_x));
-    return;
-}
-
-/**
- * @brief 读 sepc
- * @return uint64_t         读到的值
- * @note machine exception program counter, holds the instruction address to
- * which a return from exception will go.
- */
-static inline uint64_t READ_SEPC(void) {
-    uint64_t x;
-    asm("csrr %0, sepc" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 写 sepc
- * @param  _x               要写的值
- */
-static inline void WRITE_SEPC(uint64_t _x) {
-    asm("csrw sepc, %0" : : "r"(_x));
-    return;
-}
-
-/**
- * @brief 读 stvec
- * @return uint64_t         读到的值
- * @note Supervisor Trap-Vector Base Address low two bits are mode.
- */
-static inline uint64_t READ_STVEC(void) {
-    uint64_t x;
-    asm("csrr %0, stvec" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 写 stvec
- * @param  _x               要写的值
- */
-static inline void WRITE_STVEC(uint64_t _x) {
-    asm("csrw stvec, %0" : : "r"(_x));
-    return;
-}
+    pte_t(void) {
+        val = 0;
+        return;
+    }
+    pte_t(uint64_t _val) : val(_val) {
+        return;
+    }
+    friend std::ostream &operator<<(std::ostream &_os, const pte_t &_pte) {
+        printf("val: 0x%p, valid: %s, read: %s, write: %s, exec: %s, user: %s, "
+               "global: %s, accessed: %s, dirty: %s, rsw: 0x%p, ppn: 0x%p",
+               _pte.val, (_pte.flags & VALID) == VALID ? "true" : "false",
+               (_pte.flags & READ) == READ ? "true" : "false",
+               (_pte.flags & WRITE) == WRITE ? "true" : "false",
+               (_pte.flags & EXEC) == EXEC ? "true" : "false",
+               (_pte.flags & USER) == USER ? "true" : "false",
+               (_pte.flags & GLOBAL) == GLOBAL ? "true" : "false",
+               (_pte.flags & ACCESSED) == ACCESSED ? "true" : "false",
+               (_pte.flags & DIRTY) == DIRTY ? "true" : "false", _pte.rsw,
+               _pte.ppn);
+        return _os;
+    }
+};
 
 /**
  * @brief satp 结构
@@ -154,6 +93,11 @@ struct satp_t {
         SV57 = 10,
         SV64 = 11,
     };
+    static constexpr const char *MODE_NAME[] = {
+        [NONE] = "NONE", "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
+        "UNKNOWN",       "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
+        [SV39] = "SV39", [SV48] = "SV48", [SV57] = "SV57", [SV64] = "SV64",
+    };
 
     union {
         struct {
@@ -164,62 +108,49 @@ struct satp_t {
         uint64_t val;
     };
 
+    static constexpr const uint64_t PPN_OFFSET = 12;
+
     satp_t(void) {
+        val = 0;
         return;
     }
     satp_t(uint64_t _val) : val(_val) {
         return;
     }
+    friend std::ostream &operator<<(std::ostream &_os, const satp_t &_satp) {
+        printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", _satp.val,
+               _satp.ppn, _satp.asid, MODE_NAME[_satp.mode]);
+        return _os;
+    }
 };
 
 /**
- * @brief 设置 sv39 虚拟内存模式
- * @param  _pgd             要设置的页目录
- * @return constexpr uintptr_t 设置好的页目录
- */
-static uintptr_t SET_SV39(uintptr_t _pgd) {
-    satp_t satp;
-    satp.val  = _pgd >> 12;
-    satp.asid = 0;
-    satp.mode = satp_t::SV39;
-    return satp.val;
-}
-
-/**
- * @brief 设置页目录
+ * @brief 设置页目录，仅更改 ppn
  * @param  _x               要设置的页目录
  * @note supervisor address translation and protection; holds the address of
  * the page table.
  * @todo 需要判断 _x 是否已经处理过
  */
 static inline void SET_PGD(uintptr_t _x) {
-    satp_t satp_old;
-    satp_t satp_new;
-    satp_new.val  = _x;
-    satp_new.asid = 0;
+    satp_t satp;
     // 读取现在的 pgd
-    asm("csrr %0, satp" : "=r"(satp_old));
-    // 如果开启了 sv39
-    if (satp_old.mode == satp_t::SV39) {
-        // 将新的页目录也设为开启
-        satp_new.mode = satp_t::SV39;
-    }
-    asm("csrw satp, %0" : : "r"(satp_new));
+    asm("csrr %0, satp" : "=r"(satp));
+    // 更改 ppn
+    // satp.ppn = _x & satp_t::PPN_MASK;
+    satp.ppn = _x >> satp_t::PPN_OFFSET;
+    // 写回
+    asm("csrw satp, %0" : : "r"(satp));
     return;
 }
 
 /**
- * @brief 获取页目录
+ * @brief 获取页目录，仅获取 ppn
  * @return uintptr_t        页目录
  */
 static inline uintptr_t GET_PGD(void) {
     satp_t satp;
     asm("csrr %0, satp" : "=r"(satp));
-    // 如果开启了虚拟内存，恢复为原始格式
-    if (satp.mode == satp_t::SV39) {
-        return satp.ppn << 12;
-    }
-    return satp.val;
+    return satp.ppn << satp_t::PPN_OFFSET;
 }
 
 /**
@@ -229,115 +160,13 @@ static inline uintptr_t GET_PGD(void) {
  */
 static inline bool ENABLE_PG(void) {
     uintptr_t x = GET_PGD();
-    SET_PGD(SET_SV39(x));
+    satp_t    satp;
+    satp.ppn  = x >> satp_t::PPN_OFFSET;
+    satp.asid = 0;
+    satp.mode = satp_t::SV39;
+    asm("csrw satp, %0" : : "r"(satp));
     info("paging enabled.\n");
     return true;
-}
-
-/**
- * @brief 写 sscratch 寄存器
- * @param  _x                要写的值
- */
-static inline void WRITE_SSCRATCH(uint64_t _x) {
-    asm("csrw sscratch, %0" : : "r"(_x));
-    return;
-}
-
-/**
- * @brief 读 scause 寄存器 Supervisor Trap Cause
- * @return uint64_t         读到的值
- */
-static inline uint64_t READ_SCAUSE(void) {
-    uint64_t x;
-    asm("csrr %0, scause" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 读 stval 寄存器 Supervisor Trap Value
- * @return uint64_t         读到的值
- */
-static inline uint64_t READ_STVAL(void) {
-    uint64_t x;
-    asm("csrr %0, stval" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 读 time 寄存器 supervisor-mode cycle counter
- * @return uint64_t         读到的值
- */
-static inline uint64_t READ_TIME(void) {
-    uint64_t x;
-    // asm ("csrr %0, time" : "=r" (x) );
-    // this instruction will trap in SBI
-    asm("rdtime %0" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 允许中断
- */
-static inline void ENABLE_INTR(void) {
-    WRITE_SSTATUS(READ_SSTATUS() | SSTATUS_SIE);
-    return;
-}
-
-/**
- * @brief 禁止中断
- */
-static inline void DISABLE_INTR(void) {
-    WRITE_SSTATUS(READ_SSTATUS() & ~SSTATUS_SIE);
-    return;
-}
-
-/**
- * @brief 读取中断状态
- * @return true             允许
- * @return false            禁止
- */
-static inline bool STATUS_INTR(void) {
-    uint64_t x = READ_SSTATUS();
-    return (x & SSTATUS_SIE) != 0;
-}
-
-/**
- * @brief 读 sp 寄存器
- * @return uint64_t         读到的值
- */
-static inline uint64_t READ_SP(void) {
-    uint64_t x;
-    asm("mv %0, sp" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 读 tp 寄存器
- * @return uint64_t         读到的值
- */
-static inline uint64_t READ_TP(void) {
-    uint64_t x;
-    asm("mv %0, tp" : "=r"(x));
-    return x;
-}
-
-/**
- * @brief 写 tp 寄存器
- * @param  _x                要写的值
- */
-static inline void WRITE_TP(uint64_t _x) {
-    asm("mv tp, %0" : : "r"(_x));
-    return;
-}
-
-/**
- * @brief 读 ra 寄存器
- * @return uint64_t         读到的值
- */
-static inline uint64_t READ_RA(void) {
-    uint64_t x;
-    asm("mv %0, ra" : "=r"(x));
-    return x;
 }
 
 /**
@@ -351,4 +180,4 @@ static inline void VMM_FLUSH(uintptr_t) {
 
 }; // namespace CPU
 
-#endif /* _CPU_HPP_ */
+#endif /* SIMPLEKERNEL_CPU_HPP */

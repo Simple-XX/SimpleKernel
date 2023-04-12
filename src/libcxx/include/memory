@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// memory for Simple-XX/SimpleKernel.
+/**
+ * @file memory
+ * @brief stl memory 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _MEMORY_
-#define _MEMORY_
+#ifndef SIMPLEKERNEL_MEMORY
+#define SIMPLEKERNEL_MEMORY
 
 // 这个头文件负责更高级的动态内存管理
 // 包含一些基本函数、空间配置器、未初始化的储存空间管理，以及一个模板类 auto_ptr
@@ -208,4 +219,4 @@ namespace mystl {
 
 };
 
-#endif /* _MEMORY_ */
+#endif /* SIMPLEKERNEL_MEMORY */
