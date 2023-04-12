@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+menuconfig FDT
+	bool "Flattened Device Tree (FDT) support"
+	select LIBFDT
+	default n
+
+if FDT
+
+config FDT_DOMAIN
+	bool "FDT domain support"
+	default n
+
+config FDT_PMU
+	bool "FDT performance monitoring unit (PMU) support"
+	default n
+
+endif
