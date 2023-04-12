@@ -1,7 +1,7 @@
 
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
-# Based on https://github.com/SynestiaOS/SynestiaOS
+#
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 # 设置编译规则
 
