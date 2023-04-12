@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+menu "I2C Support"
+
+config FDT_I2C
+	bool "FDT based I2C drivers"
+	depends on FDT
+	select I2C
+	default n
+
+if FDT_I2C
+
+config FDT_I2C_SIFIVE
+	bool "SiFive I2C FDT driver"
+	default n
+
+endif
+
+config I2C
+	bool "I2C support"
+	default n
+
+endmenu
