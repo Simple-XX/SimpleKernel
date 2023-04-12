@@ -35,15 +35,6 @@ else ()
     message(STATUS "Found grub-file ${GRUB}")
 endif ()
 
-# bochs
-find_program(BOCHS bochs)
-if (NOT BOCHS)
-    message(FATAL_ERROR "bochs not found.\n"
-            "Run `sudo apt-get install -y bochs bochs-x` to install.")
-else ()
-    message(STATUS "Found bochs ${BOCHS}")
-endif ()
-
 # qemu
 find_program(QEMU qemu-system-x86_64)
 if (NOT QEMU)
