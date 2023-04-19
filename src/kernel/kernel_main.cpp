@@ -15,9 +15,42 @@
  */
 
 #include "common.h"
-#include "stdio.h"
 #include "iostream"
 #include "kernel.h"
+#include "stdio.h"
+
+// #include "efi.h"
+
+#include "efibind.h"
+#include "efidef.h"
+
+#include "eficon.h"
+#include "efidevp.h"
+#include "efiprot.h"
+
+#include "efiapi.h"
+#include "efierr.h"
+
+static CHAR16* exampleText = L"Example EFI Application. Press any key!";
+
+/**
+ * efi_main - The entry point for the EFI application
+ * @image: firmware-allocated handle that identifies the image
+ * @SystemTable: EFI system table
+ */
+extern "C" EFI_STATUS
+efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
+    UINTN                         index;
+    EFI_EVENT                     event  = systemTable->ConIn->WaitForKey;
+
+    //	SIMPLE_INPUT_INTERFACE *conIn = systemTable->ConIn;
+    SIMPLE_TEXT_OUTPUT_INTERFACE* conOut = systemTable->ConOut;
+    // conOut->OutputString(conOut, exampleText);
+
+    systemTable->BootServices->WaitForEvent(1, &event, &index);
+
+    return EFI_SUCCESS;
+}
 
 /**
  * @brief 内核主要逻辑
@@ -40,10 +73,10 @@ void show_info(void) {
     // 内核实际大小
     auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
     // 内核实际占用页数
-    auto kernel_pages =
-        (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
-         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE)) /
-        COMMON::PAGE_SIZE;
+    auto kernel_pages
+      = (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
+         - COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
+      / COMMON::PAGE_SIZE;
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);

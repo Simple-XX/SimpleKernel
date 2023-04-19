@@ -22,6 +22,9 @@ else ()
     message(FATAL_ERROR "unexpected ARCH: ${SimpleKernelArch}")
 endif ()
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpermissive -DGNU_EFI_USE_MS_ABI -fshort-wchar -Wl,-Bsymbolic -Wl,-shared -Wl,-nostdlib -Wl,-fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -DGNU_EFI_USE_MS_ABI -fshort-wchar -Wl,-Bsymbolic -Wl,-shared -Wl,-nostdlib -Wl,-fPIC")
+
 # 调试相关选项
 if (CMAKE_BUILD_TYPE STREQUAL DEBUG)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb")
@@ -73,12 +76,13 @@ add_executable(${KernelName}
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
 # 生成 map 文件
 target_link_options(${KernelName} PRIVATE -Wl,-Map,${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName}.map)
+target_link_options(${KernelName} PRIVATE -Wl,-Bsymbolic -Wl,-shared -Wl,-nostdlib -Wl,-fPIC)
 
 # 其它链接选项
 if (SimpleKernelArch STREQUAL ia32/i386)
     target_link_options(${KernelName} PRIVATE -Wl,-melf_i386)
 elseif (SimpleKernelArch STREQUAL ia32/x86_64)
-    target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64 -Wl,-z,max-page-size=0x1000)
+    target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64 -Wl,-z,max-page-size=0x1000 -Wl,-Bsymbolic -Wl,-shared -Wl,-nostdlib -Wl,-fPIC)
 elseif (SimpleKernelArch STREQUAL aarch64)
     target_link_options(${KernelName} PRIVATE -Wl,-maarch64elf)
 elseif (SimpleKernelArch STREQUAL riscv64)

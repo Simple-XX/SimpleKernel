@@ -23,6 +23,7 @@ OUTPUT_ARCH(i386:x86-64)
 ENTRY(_start)
 /* 设置各个 section */
 SECTIONS {
+    ImageBase = 0;
     PROVIDE (__executable_start = SEGMENT_START("text-segment", 1M));
     . = SEGMENT_START("text-segment", 1M);
     .boot           : { *(.text.boot) *(.data.boot) *(.bss.boot) }

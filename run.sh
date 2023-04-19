@@ -22,16 +22,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE=./cmake/${TOOLS} -DARCH=${ARCH} -DCMAKE_BUILD_TYPE=
 make
 cd ../
 
-# 如果是 i386/x86_64，需要判断是否符合 multiboot2 标准
-if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    if ${GRUB_PATH}/grub-file --is-x86-multiboot2 ${kernel}; then
-        echo Multiboot2 Confirmed!
-    else
-        echo NOT Multiboot2!
-        exit
-    fi
-fi
-
 # 如果是 riscv 64，需要使用 opensbi
 if [ ${ARCH} == "riscv64" ]; then
     # OPENSBI 不存在则编译
@@ -50,14 +40,6 @@ if [ ${ARCH} == "riscv64" ]; then
     fi
 fi
 
-# 检测路径是否合法，发生过 rm -rf -f /* 的惨剧
-if [ "${iso_boot}" == "" ]; then
-    echo iso_boot path error.
-else
-    mkdir -p ${iso_boot}
-    rm -rf -f ${iso_boot}/*
-fi
-
 # 初始化 gdb
 if [ ${DEBUG} == 1 ]; then
     cp ./tools/gdbinit ./.gdbinit
@@ -71,17 +53,17 @@ if [ ${DEBUG} == 1 ]; then
     echo "Run gdb-multiarch in another shell"
 fi
 
-# 设置 grub 相关数据
-if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    mkdir -p ${iso_boot_grub}
-    cp ${kernel} ${iso_boot}
-    cp ./tools/grub.cfg ${iso_boot_grub}/
-fi
-
 # 运行虚拟机
 if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    qemu-system-x86_64 -cdrom ${iso} -m 128M \
+    objcopy --target=efi-app-x86-64 ${kernel} kernel.efi \
+    -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id \
+    -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn \
+    -S -R .eh_frame -R .gcc_except_table
+	  mkdir -p image
+	  cp *.efi image/
+    qemu-system-x86_64 -bios ./OVMF_X64.fd -m 128M \
     -monitor telnet::2333,server,nowait -serial stdio \
+    -hda fat:rw:image -net none \
     ${GDB_OPT}
 elif [ ${ARCH} == "aarch64" ]; then
     qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ${kernel} \

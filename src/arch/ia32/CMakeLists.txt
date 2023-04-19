@@ -6,7 +6,7 @@
 # 架构相关子模块的编译规则
 
 # 设置子模块名与使用的语言
-PROJECT(arch CXX ASM)
+PROJECT(arch ASM C CXX)
 
 # 根据 SimpleKernelArch 判断添加哪些文件
 # 32 位
@@ -17,10 +17,11 @@ if (${SimpleKernelArch} STREQUAL "ia32/i386")
     set(boot_src ${boot_asm_src})
 # 64 位
 elseif (${SimpleKernelArch} STREQUAL "ia32/x86_64")
+    aux_source_directory(${arch_SOURCE_DIR}/x86_64 x64_c_cxx_src)
     # 寻找汇编文件
     find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/x86_64/boot)
     # 添加到 boot_src
-    set(boot_src ${boot_asm_src})
+    set(boot_src ${x64_c_cxx_src} ${boot_asm_src})
 endif ()
 
 # 寻找 CXX 文件
@@ -37,3 +38,4 @@ add_library(${PROJECT_NAME} OBJECT ${arch_src})
 # 添加头文件搜索路径
 target_include_arch_header_files(${PROJECT_NAME})
 target_include_libc_header_files(${PROJECT_NAME})
+target_include_efi_header_files(${PROJECT_NAME})

@@ -25,7 +25,6 @@ function(target_include_arch_header_files Target)
     endif()
 endfunction()
 
-
 function(target_include_common_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/include)
 endfunction()
@@ -35,4 +34,10 @@ function(target_include_drv_header_files Target)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/uart/include)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/opensbi/include)
     target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/drv/sbi_console/include)
+endfunction()
+
+function(target_include_efi_header_files Target)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/inc)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/inc/x86_64)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/inc/protocol)
 endfunction()
