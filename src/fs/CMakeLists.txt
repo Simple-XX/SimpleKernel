@@ -1,12 +1,13 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel
+# (https://github.com/Simple-XX/SimpleKernel).
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(filesystem CXX)
+PROJECT(filesystem C CXX)
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ramfs ramfs_src)
-set(filesystem_src ${ramfs_src})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/fatfs fatfs_src)
+set(filesystem_src ${fatfs_src})
 
 add_library(${PROJECT_NAME} OBJECT ${filesystem_src})
 

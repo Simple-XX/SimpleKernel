@@ -17,8 +17,8 @@
 #ifndef SIMPLEKERNEL_VFS_H
 #define SIMPLEKERNEL_VFS_H
 
-#include "list"
 #include "cstdint"
+#include "list"
 #include "string"
 #include "time.h"
 
@@ -63,7 +63,10 @@ public:
     virtual int write(void)     = 0;
 };
 
-// inode 索引节点
+/**
+ * @brief inode 索引节点 index node
+ * 保存在磁盘上
+ */
 class inode_t {
 private:
 
@@ -98,7 +101,10 @@ public:
     void write(size_t _idx);
 };
 
-// 目录项
+/**
+ * @brief 目录项 directory entry
+ * 保存在内存中，由内核维护
+ */
 class dentry_t {
 private:
 
@@ -139,7 +145,7 @@ public:
 };
 
 // 实际的文件系统
-class FS {
+class fs_t {
 private:
 
 protected:
@@ -153,34 +159,37 @@ public:
     mystl::string name;
     // 挂载点目录项
     dentry_t      root;
-    FS(void);
-    virtual ~FS(void)                               = 0;
+    fs_t(void);
+    virtual ~fs_t(void)                             = 0;
     // 分配 inode
     virtual inode_t* alloc_inode(void)              = 0;
     virtual void     dealloc_inode(inode_t* _inode) = 0;
 };
 
-// 所有文件系统由 vfs 统一管理
-// 操作文件时由 vfs 使用实际文件系统进行操作
+/**
+ * @brief 虚拟文件系统
+ * 所有文件系统由 vfs 统一管理
+ * 操作文件时由 vfs 使用实际文件系统进行操作
+ */
 class VFS {
 private:
-    // 管理的文件系统
-    mystl::list<FS*>       fs;
-    // denty 链表
-    mystl::list<dentry_t*> dentrys;
-    // 所有打开的文件
+    /// 管理的文件系统
+    mystl::list<fs_t*>     fs;
+    /// dentry_t 缓存
+    mystl::list<dentry_t*> dentries;
+    /// inode_t 缓存
     mystl::list<file_t*>   files;
-    // 当前所在目录
-    dentry_t*              cwd;
-    // 查找目录项
+    /// 当前所在目录
+    mystl::string          pwd;
+    /// 查找目录项
     dentry_t*              find_dentry(const mystl::string& _path);
-    // 新建目录项
+    /// 新建目录项
     dentry_t*              alloc_dentry(const mystl::string& _path, int _flags);
-    // 删除目录项
+    /// 删除目录项
     int                    dealloc_dentry(const mystl::string& _path);
-    // 根据路径判断文件系统
-    FS*                    get_fs(const mystl::string& _path);
-    // 分配文件描述符
+    /// 根据路径判断文件系统
+    fs_t*                  get_fs(const mystl::string& _path);
+    /// 分配文件描述符
     fd_t                   alloc_fd(void);
     fd_t                   dealloc_fd(void);
 
@@ -204,83 +213,84 @@ public:
     bool        init(void);
 
     // 添加一个文件系统
-    int32_t     register_filesystem(FS* _fs);
+    int32_t     register_filesystem(fs_t* _fs);
     // 删除一个文件系统
-    int32_t     unregister_filesystem(FS* _fs);
+    int32_t     unregister_filesystem(fs_t* _fs);
     // 文件系统相关
     //  挂载  设备名，挂载路径，文件系统名
-    int mount(const mystl::string& _dev_name, const mystl::string& _path,
-              const mystl::string& _fs_name, unsigned long flags, void* data);
-    int umount(void);
-    int umount2(void);
-    int sysfs(void);
-    int statfs(void);
-    int fstatfs(void);
-    int fstatfs64(void);
-    int ustat(void);
+    int32_t
+            mount(const mystl::string& _dev_name, const mystl::string& _path,
+                  const mystl::string& _fs_name, unsigned long flags, void* data);
+    int32_t umount(void);
+    int32_t umount2(void);
+    int32_t sysfs(void);
+    int32_t statfs(void);
+    int32_t fstatfs(void);
+    int32_t fstatfs64(void);
+    int32_t ustat(void);
     // 目录相关
-    int chroot(void);
-    int pivot_root(void);
-    int chdir(void);
-    int fchdir(void);
-    int getcwd(void);
+    int32_t chroot(void);
+    int32_t pivot_root(void);
+    int32_t chdir(void);
+    int32_t fchdir(void);
+    int32_t getcwd(void);
     // 创建目录
-    int mkdir(const mystl::string& _path, const mode_t& _mode);
+    int32_t mkdir(const mystl::string& _path, const mode_t& _mode);
     // 删除目录及其内容
-    int rmdir(const mystl::string& _path);
-    int getdents(void);
-    int getdents64(void);
-    int readdir(void);
-    int link(void);
-    int unlink(void);
-    int rename(void);
-    int lookup_dcookie(void);
+    int32_t rmdir(const mystl::string& _path);
+    int32_t getdents(void);
+    int32_t getdents64(void);
+    int32_t readdir(void);
+    int32_t link(void);
+    int32_t unlink(void);
+    int32_t rename(void);
+    int32_t lookup_dcookie(void);
     // 链接相关
-    int readlink(void);
-    int symlink(void);
+    int32_t readlink(void);
+    int32_t symlink(void);
     // 文件相关
-    int chown(void);
-    int fchown(void);
-    int lchown(void);
-    int chown16(void);
-    int fchown16(void);
-    int lchown16(void);
-    int hmod(void);
-    int fchmod(void);
-    int utime(void);
-    int stat(void);
-    int fstat(void);
-    int lstat(void);
-    int acess(void);
-    int oldstat(void);
-    int oldfstat(void);
-    int oldlstat(void);
-    int stat64(void);
-    int lstat64(void);
+    int32_t chown(void);
+    int32_t fchown(void);
+    int32_t lchown(void);
+    int32_t chown16(void);
+    int32_t fchown16(void);
+    int32_t lchown16(void);
+    int32_t hmod(void);
+    int32_t fchmod(void);
+    int32_t utime(void);
+    int32_t stat(void);
+    int32_t fstat(void);
+    int32_t lstat(void);
+    int32_t acess(void);
+    int32_t oldstat(void);
+    int32_t oldfstat(void);
+    int32_t oldlstat(void);
+    int32_t stat64(void);
+    int32_t lstat64(void);
     // 打开文件
-    int open(const mystl::string& _path, int _flags);
-    int close(fd_t _fd);
-    int creat(void);
-    int umask(void);
-    int dup(void);
-    int dup2(void);
-    int fcntl(void);
-    int fcntl64(void);
-    int select(void);
-    int poll(void);
-    int truncate(void);
-    int ftruncate(void);
-    int truncate64(void);
-    int ftruncate64(void);
-    int lseek(void);
-    int llseek(void);
-    int read(fd_t _fd, void* _buf, size_t _count);
-    int write(fd_t _fd, void* _buf, size_t _count);
-    int readv(void);
-    int writev(void);
-    int sendfile(void);
-    int sendfile64(void);
-    int readahead(void);
+    int32_t open(const mystl::string& _path, int _flags);
+    int32_t close(fd_t _fd);
+    int32_t creat(void);
+    int32_t umask(void);
+    int32_t dup(void);
+    int32_t dup2(void);
+    int32_t fcntl(void);
+    int32_t fcntl64(void);
+    int32_t select(void);
+    int32_t poll(void);
+    int32_t truncate(void);
+    int32_t ftruncate(void);
+    int32_t truncate64(void);
+    int32_t ftruncate64(void);
+    int32_t lseek(void);
+    int32_t llseek(void);
+    int32_t read(fd_t _fd, void* _buf, size_t _count);
+    int32_t write(fd_t _fd, void* _buf, size_t _count);
+    int32_t readv(void);
+    int32_t writev(void);
+    int32_t sendfile(void);
+    int32_t sendfile64(void);
+    int32_t readahead(void);
 };
 
 // VFS 依赖 C++ 库，不能在 cpp_init 中初始化

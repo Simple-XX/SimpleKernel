@@ -1,5 +1,6 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel
+# (https://github.com/Simple-XX/SimpleKernel).
 # Based on https://github.com/SynestiaOS/SynestiaOS
 # header_files.cmake for Simple-XX/SimpleKernel.
 
@@ -46,6 +47,5 @@ function(target_include_drv_header_files Target)
 endfunction()
 
 function(target_include_fs_header_files Target)
-    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/fs/ramfs/include)
+    target_include_directories(${Target} PRIVATE ${SimpleKernel_SOURCE_CODE_DIR}/fs/fatfs/include)
 endfunction()
-

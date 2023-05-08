@@ -16,8 +16,8 @@
 
 #include "vfs.h"
 #include "iostream"
-#include "ramfs.h"
-#include "string.h"
+#include "fatfs.h"
+#include "string"
 
 superblock_t::superblock_t(void) {
     return;
@@ -64,11 +64,11 @@ file_t::~file_t(void) {
     return;
 }
 
-FS::FS(void) {
+fs_t::fs_t(void) {
     return;
 }
 
-FS::~FS(void) {
+fs_t::~fs_t(void) {
     return;
 }
 
@@ -88,7 +88,7 @@ VFS& VFS::get_instance(void) {
 
 dentry_t* VFS::find_dentry(const mystl::string& _path) {
     // 遍历所有目录项
-    for (auto i : dentrys) {
+    for (auto i : dentries) {
         // 如果完整路径相同
         if (i->path == _path) {
             return i;
@@ -102,7 +102,7 @@ dentry_t* VFS::alloc_dentry(const mystl::string& _path, int _flags) {
     dentry_t* dentry = new dentry_t();
     dentry->flag     = _flags;
     // 找到父目录
-    for (auto i : dentrys) {
+    for (auto i : dentries) {
         // 如果 i 的 ptah 与 _path 的路径部分相同
         if (_path.find(i->path) == 0) {
             // 设置父目录
@@ -119,7 +119,7 @@ dentry_t* VFS::alloc_dentry(const mystl::string& _path, int _flags) {
     inode_t* inode    = get_fs(_path)->alloc_inode();
     // 将 dentry 与 inode 建立关联
     dentry->inode     = inode;
-    dentrys.push_back(dentry);
+    dentries.push_back(dentry);
     return dentry;
 }
 
@@ -130,22 +130,22 @@ int VFS::dealloc_dentry(const mystl::string& _path) {
         std::cout << "\"" << _path << "\" not exist." << std::endl;
         return -1;
     }
-    FS* fs = get_fs(_path);
+    fs_t* fs = get_fs(_path);
     // 从父目录的子目录中删除
     dentry->parent->child.remove(dentry);
     // 删除子目录
     for (auto i : dentry->child) {
         fs->dealloc_inode(i->inode);
-        dentrys.remove(i);
+        dentries.remove(i);
     }
     // 删除 inode
     fs->dealloc_inode(dentry->inode);
     // 删除 dentry
-    dentrys.remove(dentry);
+    dentries.remove(dentry);
     return 0;
 }
 
-FS* VFS::get_fs(const mystl::string& _path) {
+fs_t* VFS::get_fs(const mystl::string& _path) {
     for (auto i : fs) {
         // 返回 0 说明路径匹配
         if (_path.find(i->root.name) == 0) {
@@ -164,30 +164,12 @@ fd_t VFS::dealloc_fd(void) {
 }
 
 bool VFS::init(void) {
-    // 注意内存泄漏
-    // 创建 "/" 目录
-    // 建立第一个目录项
-    dentry_t* dentry = new dentry_t();
-    dentry->flag     = 0;
-    // 根目录的父目录是自己
-    dentry->parent   = dentry;
-    dentry->path     = "/";
-    dentry->name     = "/";
-    // 注册 ramfs 作为 rootfs
-    RAMFS* rootfs
-      = new RAMFS("rootfs", *dentry, malloc(RAMFS_SIZE), RAMFS_SIZE);
-    // 建立第一个 inode
-    inode_t* inode = rootfs->alloc_inode();
-    // 将 dentry 与 inode 建立关联
-    dentry->inode  = inode;
-    fs.push_back((FS*)rootfs);
-    dentrys.push_back(dentry);
-    cwd = dentry;
+    // 注册 fatfs 作为 rootfs
     info("vfs init.\n");
     return true;
 }
 
-int32_t VFS::register_filesystem(FS* _fs) {
+int32_t VFS::register_filesystem(fs_t* _fs) {
     // 遍历文件系统
     for (auto i : fs) {
         // 有的话返回
@@ -207,12 +189,12 @@ int32_t VFS::register_filesystem(FS* _fs) {
     return 0;
 }
 
-int32_t VFS::unregister_filesystem(FS* _fs) {
+int32_t VFS::unregister_filesystem(fs_t* _fs) {
     // 删除下属的 dentry
     // 如果 i 的 name 与 _fs 的安装路径匹配
-    for (auto i : dentrys) {
+    for (auto i : dentries) {
         if (i->name.find(_fs->root.path) == 0) {
-            dentrys.remove(i);
+            dentries.remove(i);
         }
     }
     // 遍历文件系统
@@ -228,7 +210,7 @@ int32_t VFS::unregister_filesystem(FS* _fs) {
     return 0;
 }
 
-int VFS::mkdir(const mystl::string& _path, const mode_t& _mode) {
+int32_t VFS::mkdir(const mystl::string& _path, const mode_t& _mode) {
     // TODO: 对 "/", ".", ".." 等特殊字符的处理
     // 首先判断是否存在，存在则返回
     if (find_dentry(_path) != nullptr) {
@@ -243,11 +225,11 @@ int VFS::mkdir(const mystl::string& _path, const mode_t& _mode) {
     return 0;
 }
 
-int VFS::rmdir(const mystl::string& _path) {
+int32_t VFS::rmdir(const mystl::string& _path) {
     return dealloc_dentry(_path);
 }
 
-int VFS::open(const mystl::string& _path, int _flags) {
+int32_t VFS::open(const mystl::string& _path, int _flags) {
     // 首先看是否存在
     dentry_t* dentry = find_dentry(_path);
     // 如果不存在
@@ -270,7 +252,7 @@ int VFS::open(const mystl::string& _path, int _flags) {
     return file->fd;
 }
 
-int VFS::close(fd_t _fd) {
+int32_t VFS::close(fd_t _fd) {
     for (auto i : files) {
         if (i->fd == _fd) {
             files.remove(i);
@@ -279,7 +261,7 @@ int VFS::close(fd_t _fd) {
     return 0;
 }
 
-int VFS::read(fd_t _fd, void* _buf, size_t _count) {
+int32_t VFS::read(fd_t _fd, void* _buf, size_t _count) {
     // 寻找对应 file
     for (auto i : files) {
         if (i->fd == _fd) {
@@ -289,7 +271,7 @@ int VFS::read(fd_t _fd, void* _buf, size_t _count) {
     return 0;
 }
 
-int VFS::write(fd_t _fd, void* _buf, size_t _count) {
+int32_t VFS::write(fd_t _fd, void* _buf, size_t _count) {
     for (auto i : files) {
         if (i->fd == _fd) {
             i->dentry->inode->pointer = malloc(_count);
@@ -298,5 +280,3 @@ int VFS::write(fd_t _fd, void* _buf, size_t _count) {
     }
     return 0;
 }
-
-VFS* vfs;
