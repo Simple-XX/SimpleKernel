@@ -31,6 +31,12 @@ void __cxa_finalize(void *f);
 int  __aeabi_atexit(void (*f)(void *), void *objptr, void *dso);
 void __cxa_finalize(void *f);
 
+#if UINT32_MAX == UINTPTR_MAX
+#define STACK_CHK_GUARD 0xe2dee396
+#else
+#define STACK_CHK_GUARD 0x595e9fbd94fda766
+#endif
+
 #ifdef __cplusplus
 };
 #endif
