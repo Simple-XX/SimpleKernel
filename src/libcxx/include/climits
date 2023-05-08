@@ -1,0 +1,30 @@
+
+/**
+ * @file climits
+ * @brief limits 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-05-08
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-05-08<td>Zone.N<td>创建文件
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_CLIMITS
+#define SIMPLEKERNEL_CLIMITS
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "limits.h"
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* SIMPLEKERNEL_CLIMITS */
