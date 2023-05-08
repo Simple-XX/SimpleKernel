@@ -15,17 +15,9 @@
  */
 
 #include "vfs.h"
-#include "iostream"
 #include "fatfs.h"
+#include "iostream"
 #include "string"
-
-superblock_t::superblock_t(void) {
-    return;
-}
-
-superblock_t::~superblock_t(void) {
-    return;
-}
 
 inode_t::inode_t(void) {
     return;
@@ -50,17 +42,6 @@ dentry_t::dentry_t(void) {
 }
 
 dentry_t::~dentry_t(void) {
-    return;
-}
-
-file_t::file_t(dentry_t* _dentry, int _flag, fd_t _fd) {
-    dentry = _dentry;
-    flag   = _flag;
-    fd     = _fd;
-    return;
-}
-
-file_t::~file_t(void) {
     return;
 }
 
@@ -230,53 +211,53 @@ int32_t VFS::rmdir(const mystl::string& _path) {
 }
 
 int32_t VFS::open(const mystl::string& _path, int _flags) {
-    // 首先看是否存在
-    dentry_t* dentry = find_dentry(_path);
-    // 如果不存在
-    if (dentry == nullptr) {
-        // 根据 flag 判断是否创建
-        // 创建
-        if ((_flags & O_CREAT) != 0) {
-            dentry = alloc_dentry(_path, _flags);
-        }
-        // 不创建则返回
-        else {
-            return -1;
-        }
-    }
-    // 打开
-    // 创建 file 对象
-    file_t* file = new file_t(dentry, _flags, alloc_fd());
-    // 添加到链表中
-    files.push_back(file);
-    return file->fd;
+    // // 首先看是否存在
+    // dentry_t* dentry = find_dentry(_path);
+    // // 如果不存在
+    // if (dentry == nullptr) {
+    //     // 根据 flag 判断是否创建
+    //     // 创建
+    //     if ((_flags & O_CREAT) != 0) {
+    //         dentry = alloc_dentry(_path, _flags);
+    //     }
+    //     // 不创建则返回
+    //     else {
+    //         return -1;
+    //     }
+    // }
+    // // 打开
+    // // 创建 file 对象
+    // file_t* file = new file_t(dentry, _flags, alloc_fd());
+    // // 添加到链表中
+    // files.push_back(file);
+    // return file->fd;
 }
 
 int32_t VFS::close(fd_t _fd) {
-    for (auto i : files) {
-        if (i->fd == _fd) {
-            files.remove(i);
-        }
-    }
-    return 0;
+    // for (auto i : files) {
+    //     if (i->fd == _fd) {
+    //         files.remove(i);
+    //     }
+    // }
+    // return 0;
 }
 
 int32_t VFS::read(fd_t _fd, void* _buf, size_t _count) {
-    // 寻找对应 file
-    for (auto i : files) {
-        if (i->fd == _fd) {
-            memcpy(_buf, i->dentry->inode->pointer, _count);
-        }
-    }
-    return 0;
+    // // 寻找对应 file
+    // for (auto i : files) {
+    //     if (i->fd == _fd) {
+    //         memcpy(_buf, i->dentry->inode->pointer, _count);
+    //     }
+    // }
+    // return 0;
 }
 
 int32_t VFS::write(fd_t _fd, void* _buf, size_t _count) {
-    for (auto i : files) {
-        if (i->fd == _fd) {
-            i->dentry->inode->pointer = malloc(_count);
-            memcpy(i->dentry->inode->pointer, _buf, _count);
-        }
-    }
-    return 0;
+    // for (auto i : files) {
+    //     if (i->fd == _fd) {
+    //         i->dentry->inode->pointer = malloc(_count);
+    //         memcpy(i->dentry->inode->pointer, _buf, _count);
+    //     }
+    // }
+    // return 0;
 }

@@ -19,4 +19,12 @@
 
 #include "ff.h"
 
+class fatfs_t {
+private:
+
+public:
+    fatfs_t(void);
+    ~fatfs_t(void);
+};
+
 #endif /* SIMPLEKERNEL_FATFS_H */

@@ -48,21 +48,6 @@ static constexpr const uint32_t O_TRUNC    = 0x0400;
 // error if already exists
 static constexpr const uint32_t O_EXCL     = 0x0800;
 
-// 超级块
-// fs 挂载时从存储介质读入
-class superblock_t {
-private:
-
-protected:
-
-public:
-    superblock_t(void);
-    virtual ~superblock_t(void) = 0;
-    // 读写
-    virtual int read(void)      = 0;
-    virtual int write(void)     = 0;
-};
-
 /**
  * @brief inode 索引节点 index node
  * 保存在磁盘上
@@ -126,33 +111,11 @@ public:
     virtual ~dentry_t(void);
 };
 
-// 文件
-class file_t {
-private:
-
-protected:
-
-public:
-    // 文件描述符
-    fd_t      fd;
-    uint32_t  flag;
-    // 偏移量
-    size_t    offset;
-    // 对应的 dentry
-    dentry_t* dentry;
-    file_t(dentry_t* _dentry, int _flag, fd_t _fd);
-    virtual ~file_t(void);
-};
-
 // 实际的文件系统
 class fs_t {
 private:
 
 protected:
-    // 超级块
-    mystl::list<superblock_t*> supers;
-    // inode 链表
-    mystl::list<inode_t*>      inodes;
 
 public:
     // 文件系统名
@@ -178,7 +141,7 @@ private:
     /// dentry_t 缓存
     mystl::list<dentry_t*> dentries;
     /// inode_t 缓存
-    mystl::list<file_t*>   files;
+    mystl::list<inode_t*>   inodes;
     /// 当前所在目录
     mystl::string          pwd;
     /// 查找目录项
@@ -292,8 +255,5 @@ public:
     int32_t sendfile64(void);
     int32_t readahead(void);
 };
-
-// VFS 依赖 C++ 库，不能在 cpp_init 中初始化
-extern VFS* vfs;
 
 #endif /* SIMPLEKERNEL_VFS_H */
