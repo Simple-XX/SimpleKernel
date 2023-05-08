@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// memory for Simple-XX/SimpleKernel.
+/**
+ * @file memory
+ * @brief stl memory 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _MEMORY_
-#define _MEMORY_
+#ifndef SIMPLEKERNEL_MEMORY
+#define SIMPLEKERNEL_MEMORY
 
 // 这个头文件负责更高级的动态内存管理
 // 包含一些基本函数、空间配置器、未初始化的储存空间管理，以及一个模板类 auto_ptr
@@ -34,7 +45,7 @@ namespace mystl {
             len = INT_MAX / sizeof(T);
         while (len > 0) {
             T *tmp =
-                static_cast<T *>(malloc(static_cast<size_t>(len) * sizeof(T)));
+                static_cast<T *>(kmalloc(static_cast<size_t>(len) * sizeof(T)));
             if (tmp)
                 return pair<T *, ptrdiff_t>(tmp, len);
             len /= 2; // 申请失败时减少 len 的大小
@@ -54,7 +65,7 @@ namespace mystl {
 
     template <class T>
     void release_temporary_buffer(T *ptr) {
-        free(ptr);
+        kfree(ptr);
     }
 
     // --------------------------------------------------------------------------------------
@@ -73,7 +84,7 @@ namespace mystl {
 
         ~temporary_buffer() {
             mystl::destroy(buffer, buffer + len);
-            free(buffer);
+            kfree(buffer);
         }
 
     public:
@@ -115,7 +126,7 @@ namespace mystl {
                                   std::is_trivially_default_constructible<T>());
             }
         } catch (...) {
-            free(buffer);
+            kfree(buffer);
             buffer = nullptr;
             len    = 0;
         }
@@ -128,7 +139,7 @@ namespace mystl {
         if (len > static_cast<ptrdiff_t>(INT_MAX / sizeof(T)))
             len = INT_MAX / sizeof(T);
         while (len > 0) {
-            buffer = static_cast<T *>(malloc(len * sizeof(T)));
+            buffer = static_cast<T *>(kmalloc(len * sizeof(T)));
             if (buffer)
                 break;
             len /= 2; // 申请失败时减少申请空间大小
@@ -208,4 +219,4 @@ namespace mystl {
 
 };
 
-#endif /* _MEMORY_ */
+#endif /* SIMPLEKERNEL_MEMORY */

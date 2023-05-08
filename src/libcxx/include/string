@@ -1,12 +1,23 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/zouxiaohang/TinySTL
-// string for Simple-XX/SimpleKernel.
+/**
+ * @file string
+ * @brief stl string 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _STRING_
-#define _STRING_
+#ifndef SIMPLEKERNEL_STRING
+#define SIMPLEKERNEL_STRING
 
 #include "astring"
 
-#endif /* _STRING_ */
+#endif /* SIMPLEKERNEL_STRING */

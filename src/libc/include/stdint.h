@@ -1,17 +1,28 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on GNU C Lib
-// stdint.h for Simple-XX/SimpleKernel.
+/**
+ * @file stdint.h
+ * @brief stdint 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on GNU C Lib
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _STDINT_H_
-#define _STDINT_H_
+#ifndef SIMPLEKERNEL_STDINT_H
+#define SIMPLEKERNEL_STDINT_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined __x86_64__ && !defined __ILP32__
+#if defined(__x86_64__) || defined(__riscv)
 #define __WORDSIZE 64
 #else
 #define __WORDSIZE 32
@@ -259,36 +270,36 @@ __extension__ typedef unsigned long long int uintmax_t;
 #define WINT_MAX (4294967295u)
 
 /* Signed.  */
-#define INT8_C(c) c
-#define INT16_C(c) c
-#define INT32_C(c) c
+#define INT8_C(_c) _c
+#define INT16_C(_c) _c
+#define INT32_C(_c) _c
 #if __WORDSIZE == 64
-#define INT64_C(c) c##L
+#define INT64_C(_c) _c##L
 #else
-#define INT64_C(c) c##LL
+#define INT64_C(_c) _c##LL
 #endif
 
 /* Unsigned.  */
-#define UINT8_C(c) c
-#define UINT16_C(c) c
-#define UINT32_C(c) c##U
+#define UINT8_C(_c) _c
+#define UINT16_C(_c) _c
+#define UINT32_C(_c) _c##U
 #if __WORDSIZE == 64
-#define UINT64_C(c) c##UL
+#define UINT64_C(_c) _c##UL
 #else
-#define UINT64_C(c) c##ULL
+#define UINT64_C(_c) _c##ULL
 #endif
 
 /* Maximal type.  */
 #if __WORDSIZE == 64
-#define INTMAX_C(c) c##L
-#define UINTMAX_C(c) c##UL
+#define INTMAX_C(_c) _c##L
+#define UINTMAX_C(_c) _c##UL
 #else
-#define INTMAX_C(c) c##LL
-#define UINTMAX_C(c) c##ULL
+#define INTMAX_C(_c) _c##LL
+#define UINTMAX_C(_c) _c##ULL
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _STDINT_H_ */
+#endif /* SIMPLEKERNEL_STDINT_H */

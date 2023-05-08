@@ -1,34 +1,27 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://wiki.osdev.org/C%2B%2B
-// cxxabi.h for Simple-XX/SimpleKernel.
+/**
+ * @file cxxabi.h
+ * @brief C++ abi 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://wiki.osdev.org/C%2B%2B
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _CXXABI_H_
-#define _CXXABI_H_
-
-#define ATEXIT_MAX_FUNCS 128
+#ifndef SIMPLEKERNEL_CXXABI_H
+#define SIMPLEKERNEL_CXXABI_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef unsigned uarch_t;
-
-struct atexit_func_entry_t {
-    /*
-     * Each member is at least 4 bytes large. Such that each entry is
-     12bytes.
-     * 128 * 12 = 1.5KB exact.
-     **/
-    void (*destructor_func)(void *);
-    void *obj_ptr;
-    void *dso_handle;
-};
-
-typedef void (*constructor_func)();
-extern constructor_func ctors_start[];
-extern constructor_func ctors_end[];
 // c++ 初始化
 void cpp_init(void);
 
@@ -43,25 +36,25 @@ void __cxa_finalize(void *f);
 #endif
 
 namespace std {
-    class type_info {
+class type_info {
 
-    private:
-        const char *tname;
+private:
+    const char *tname;
 
-    public:
-        virtual ~type_info(void);
+public:
+    virtual ~type_info(void);
 
-        type_info(const type_info &);
+    type_info(const type_info &);
 
-        explicit type_info(const char *);
+    explicit type_info(const char *);
 
-        const char *name(void) const;
+    const char *name(void) const;
 
-        bool operator==(const type_info &) const;
+    bool operator==(const type_info &) const;
 
-        bool operator!=(const type_info &) const;
-    };
-}
+    bool operator!=(const type_info &) const;
+};
+} // namespace std
 
 namespace __cxxabiv1 {
 
@@ -74,18 +67,18 @@ namespace __cxxabiv1 {
         virtual ~t(void);                                                      \
     }
 
-    ADD_CXX_TYPEINFO_HEADER(__fundamental_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__array_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__function_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__enum_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__pbase_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__pointer_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__pointer_to_member_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__class_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__si_class_type_info);
-    ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
+ADD_CXX_TYPEINFO_HEADER(__fundamental_type_info);
+ADD_CXX_TYPEINFO_HEADER(__array_type_info);
+ADD_CXX_TYPEINFO_HEADER(__function_type_info);
+ADD_CXX_TYPEINFO_HEADER(__enum_type_info);
+ADD_CXX_TYPEINFO_HEADER(__pbase_type_info);
+ADD_CXX_TYPEINFO_HEADER(__pointer_type_info);
+ADD_CXX_TYPEINFO_HEADER(__pointer_to_member_type_info);
+ADD_CXX_TYPEINFO_HEADER(__class_type_info);
+ADD_CXX_TYPEINFO_HEADER(__si_class_type_info);
+ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
 
 #undef ADD_CXX_TYPEINFO_HEADER
-}
+} // namespace __cxxabiv1
 
-#endif /* _CXXABI_H_ */
+#endif /* SIMPLEKERNEL_CXXABI_H */
