@@ -10,7 +10,7 @@
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-09-18<td>Zone.N<td>迁移到 doxygen
+ * <tr><td>2023-05-08<td>Zone.N<td>迁移到 doxygen
  * </table>
  */
 
@@ -18,7 +18,7 @@
 #define SIMPLEKERNEL_VFS_H
 
 #include "list"
-#include "stdint.h"
+#include "cstdint"
 #include "string"
 #include "time.h"
 
