@@ -18,6 +18,8 @@
 #ifndef SIMPLEKERNEL_IOSTREAM
 #define SIMPLEKERNEL_IOSTREAM
 
+#include "stdint.h"
+
 namespace std {
 class ostream {
 private:
