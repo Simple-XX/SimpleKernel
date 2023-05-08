@@ -15,8 +15,8 @@
  * </table>
  */
 
-#include "stdint.h"
-#include "stdio.h"
+#include "cstdint"
+#include "cstdio"
 
 #if UINT32_MAX == UINTPTR_MAX
 #    define STACK_CHK_GUARD 0xe2dee396
