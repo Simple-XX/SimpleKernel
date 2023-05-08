@@ -22,6 +22,8 @@
 #ifndef SIMPLEKERNEL_INITIALIZER_LIST
 #define SIMPLEKERNEL_INITIALIZER_LIST
 
+#include "cstddef"
+
 namespace std {
     /// initializer_list
     template <class _E>
