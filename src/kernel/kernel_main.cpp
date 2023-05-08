@@ -14,19 +14,19 @@
  * </table>
  */
 
-#include "common.h"
-#include "stdio.h"
-#include "iostream"
 #include "assert.h"
 #include "boot_info.h"
-#include "pmm.h"
-#include "vmm.h"
+#include "common.h"
+#include "cpu.hpp"
 #include "heap.h"
 #include "intr.h"
-#include "cpu.hpp"
+#include "iostream"
 #include "kernel.h"
+#include "pmm.h"
+#include "stdio.h"
 #include "stdlib.h"
 #include "vfs.h"
+#include "vmm.h"
 
 /**
  * @brief 内核主要逻辑
@@ -57,15 +57,14 @@ void kernel_main(void) {
     // 允许中断
     CPU::ENABLE_INTR();
 
-
-    vfs = new VFS();
-    vfs->init();
+    VFS::get_instance().init();
     test_vfs();
 
     // 显示基本信息
     show_info();
     // 进入死循环
-    while (1) { ;
+    while (1) {
+        ;
     }
     // 不应该执行到这里
     assert(0);
@@ -79,10 +78,10 @@ void show_info(void) {
     // 内核实际大小
     auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
     // 内核实际占用页数
-    auto kernel_pages =
-            (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
-             COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE)) /
-            COMMON::PAGE_SIZE;
+    auto kernel_pages
+      = (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
+         - COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
+      / COMMON::PAGE_SIZE;
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);
