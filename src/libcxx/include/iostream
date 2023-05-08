@@ -18,7 +18,7 @@
 #ifndef SIMPLEKERNEL_IOSTREAM
 #define SIMPLEKERNEL_IOSTREAM
 
-#include "stdint.h"
+#include "cstdint"
 
 namespace std {
 class ostream {

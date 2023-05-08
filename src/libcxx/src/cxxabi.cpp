@@ -15,18 +15,18 @@
  * </table>
  */
 
-#include "cxxabi.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "cxxabi.h"
 
 #define ATEXIT_MAX_FUNCS 128
 
 typedef void (*ctor_t)(void);
 // 在 link.ld 中定义
-extern ctor_t __init_array_start[];
-extern ctor_t __init_array_end[];
+extern ctor_t    __init_array_start[];
+extern ctor_t    __init_array_end[];
 
 typedef unsigned uarch_t;
 
@@ -36,13 +36,13 @@ struct atexit_func_entry_t {
      12bytes.
      * 128 * 12 = 1.5KB exact.
      **/
-    void (*destructor_func)(void *);
-    void *obj_ptr;
-    void *dso_handle;
+    void (*destructor_func)(void*);
+    void* obj_ptr;
+    void* dso_handle;
 };
 
 void cpp_init(void) {
-    ctor_t *f;
+    ctor_t* f;
     for (f = __init_array_start; f < __init_array_end; f++) {
         (*f)();
     }
@@ -52,9 +52,9 @@ void cpp_init(void) {
 atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];
 uarch_t             __atexit_func_count = 0;
 
-extern void *__dso_handle;
+extern void*        __dso_handle;
 
-void __cxa_rethrow() {
+void                __cxa_rethrow() {
     return;
 }
 
@@ -74,7 +74,7 @@ void __gxx_personality_v0() {
     return;
 }
 
-int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
+int __cxa_atexit(void (*f)(void*), void* objptr, void* dso) {
     if (__atexit_func_count >= ATEXIT_MAX_FUNCS) {
         return -1;
     };
@@ -86,7 +86,7 @@ int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     return 0;
 };
 
-int __aeabi_atexit(void (*f)(void *), void *objptr, void *dso) {
+int __aeabi_atexit(void (*f)(void*), void* objptr, void* dso) {
     if (__atexit_func_count >= ATEXIT_MAX_FUNCS) {
         return -1;
     };
@@ -98,7 +98,7 @@ int __aeabi_atexit(void (*f)(void *), void *objptr, void *dso) {
     return 0;
 };
 
-void __cxa_finalize(void *f) {
+void __cxa_finalize(void* f) {
     uarch_t i = __atexit_func_count;
     if (!f) {
         /*
@@ -190,21 +190,21 @@ namespace __cxxabiv1 {
 /* The ABI requires a 64-bit type.  */
 __extension__ typedef int __guard __attribute__((mode(__DI__)));
 
-int  __cxa_guard_acquire(__guard *);
-void __cxa_guard_release(__guard *);
-void __cxa_guard_abort(__guard *);
+int                       __cxa_guard_acquire(__guard*);
+void                      __cxa_guard_release(__guard*);
+void                      __cxa_guard_abort(__guard*);
 
-int __cxa_guard_acquire(__guard *g) {
-    return !*(char *)(g);
+int                       __cxa_guard_acquire(__guard* g) {
+    return !*(char*)(g);
 }
 
-void __cxa_guard_release(__guard *g) {
-    *(char *)g = 1;
+void __cxa_guard_release(__guard* g) {
+    *(char*)g = 1;
 }
 
-void __cxa_guard_abort(__guard *) {
+void __cxa_guard_abort(__guard*) {
 }
-} // namespace __cxxabiv1
+}    // namespace __cxxabiv1
 
 #ifdef __cplusplus
 };
