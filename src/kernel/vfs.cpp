@@ -80,6 +80,12 @@ VFS::~VFS(void) {
     return;
 }
 
+VFS& VFS::get_instance(void) {
+    /// 定义全局 PMM 对象
+    static VFS vfs;
+    return vfs;
+}
+
 dentry_t* VFS::find_dentry(const mystl::string& _path) {
     // 遍历所有目录项
     for (auto i : dentrys) {

@@ -189,86 +189,98 @@ protected:
 public:
     VFS(void);
     ~VFS(void);
-    // 初始化根安装点
-    int32_t init(void);
+    /**
+     * @brief 获取单例
+     * @return VFS&             静态对象
+     */
+    static VFS& get_instance(void);
+
+    /**
+     * @brief 初始化
+     * @return true            成功
+     * @return false           失败
+     * @todo 移动到构造函数去
+     */
+    bool        init(void);
+
     // 添加一个文件系统
-    int32_t register_filesystem(FS* _fs);
+    int32_t     register_filesystem(FS* _fs);
     // 删除一个文件系统
-    int32_t unregister_filesystem(FS* _fs);
+    int32_t     unregister_filesystem(FS* _fs);
     // 文件系统相关
     //  挂载  设备名，挂载路径，文件系统名
-    int     mount(const mystl::string& _dev_name, const mystl::string& _path,
-                  const mystl::string& _fs_name, unsigned long flags, void* data);
-    int     umount(void);
-    int     umount2(void);
-    int     sysfs(void);
-    int     statfs(void);
-    int     fstatfs(void);
-    int     fstatfs64(void);
-    int     ustat(void);
+    int mount(const mystl::string& _dev_name, const mystl::string& _path,
+              const mystl::string& _fs_name, unsigned long flags, void* data);
+    int umount(void);
+    int umount2(void);
+    int sysfs(void);
+    int statfs(void);
+    int fstatfs(void);
+    int fstatfs64(void);
+    int ustat(void);
     // 目录相关
-    int     chroot(void);
-    int     pivot_root(void);
-    int     chdir(void);
-    int     fchdir(void);
-    int     getcwd(void);
+    int chroot(void);
+    int pivot_root(void);
+    int chdir(void);
+    int fchdir(void);
+    int getcwd(void);
     // 创建目录
-    int     mkdir(const mystl::string& _path, const mode_t& _mode);
+    int mkdir(const mystl::string& _path, const mode_t& _mode);
     // 删除目录及其内容
-    int     rmdir(const mystl::string& _path);
-    int     getdents(void);
-    int     getdents64(void);
-    int     readdir(void);
-    int     link(void);
-    int     unlink(void);
-    int     rename(void);
-    int     lookup_dcookie(void);
+    int rmdir(const mystl::string& _path);
+    int getdents(void);
+    int getdents64(void);
+    int readdir(void);
+    int link(void);
+    int unlink(void);
+    int rename(void);
+    int lookup_dcookie(void);
     // 链接相关
-    int     readlink(void);
-    int     symlink(void);
+    int readlink(void);
+    int symlink(void);
     // 文件相关
-    int     chown(void);
-    int     fchown(void);
-    int     lchown(void);
-    int     chown16(void);
-    int     fchown16(void);
-    int     lchown16(void);
-    int     hmod(void);
-    int     fchmod(void);
-    int     utime(void);
-    int     stat(void);
-    int     fstat(void);
-    int     lstat(void);
-    int     acess(void);
-    int     oldstat(void);
-    int     oldfstat(void);
-    int     oldlstat(void);
-    int     stat64(void);
-    int     lstat64(void);
+    int chown(void);
+    int fchown(void);
+    int lchown(void);
+    int chown16(void);
+    int fchown16(void);
+    int lchown16(void);
+    int hmod(void);
+    int fchmod(void);
+    int utime(void);
+    int stat(void);
+    int fstat(void);
+    int lstat(void);
+    int acess(void);
+    int oldstat(void);
+    int oldfstat(void);
+    int oldlstat(void);
+    int stat64(void);
+    int lstat64(void);
     // 打开文件
-    int     open(const mystl::string& _path, int _flags);
-    int     close(fd_t _fd);
-    int     creat(void);
-    int     umask(void);
-    int     dup(void);
-    int     dup2(void);
-    int     fcntl(void);
-    int     fcntl64(void);
-    int     select(void);
-    int     poll(void);
-    int     truncate(void);
-    int     ftruncate(void);
-    int     truncate64(void);
-    int     ftruncate64(void);
-    int     lseek(void);
-    int     llseek(void);
-    int     read(fd_t _fd, void* _buf, size_t _count);
-    int     write(fd_t _fd, void* _buf, size_t _count);
-    int     readv(void);
-    int     writev(void);
-    int     sendfile(void);
-    int     sendfile64(void);
-    int     readahead(void);
+    int open(const mystl::string& _path, int _flags);
+    int close(fd_t _fd);
+    int creat(void);
+    int umask(void);
+    int dup(void);
+    int dup2(void);
+    int fcntl(void);
+    int fcntl64(void);
+    int select(void);
+    int poll(void);
+    int truncate(void);
+    int ftruncate(void);
+    int truncate64(void);
+    int ftruncate64(void);
+    int lseek(void);
+    int llseek(void);
+    int read(fd_t _fd, void* _buf, size_t _count);
+    int write(fd_t _fd, void* _buf, size_t _count);
+    int readv(void);
+    int writev(void);
+    int sendfile(void);
+    int sendfile64(void);
+    int readahead(void);
 };
 
 // VFS 依赖 C++ 库，不能在 cpp_init 中初始化
