@@ -1,42 +1,52 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// new.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file new.cpp
+ * @brief 内存分配实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "new"
 #include "stdlib.h"
 
-void *operator new(size_t size) {
-    return malloc(size);
+void *operator new(size_t _size) {
+    return kmalloc(_size);
 }
 
-void *operator new[](size_t size) {
-    return malloc(size);
+void *operator new[](size_t _size) {
+    return kmalloc(_size);
 }
 
-void operator delete(void *p) {
-    free(p);
+void operator delete(void *_p) {
+    kfree(_p);
 }
 
-void operator delete(void *p, size_t) {
-    free(p);
+void operator delete(void *_p, size_t) {
+    kfree(_p);
 }
 
-void operator delete[](void *p) {
-    free(p);
+void operator delete[](void *_p) {
+    kfree(_p);
 }
 
-void operator delete[](void *p, size_t) {
-    free(p);
+void operator delete[](void *_p, size_t) {
+    kfree(_p);
 }
 
-void *operator new(size_t, void *p) throw() {
-    return p;
+void *operator new(size_t, void *_p) throw() {
+    return _p;
 }
 
-void *operator new[](size_t, void *p) throw() {
-    return p;
+void *operator new[](size_t, void *_p) throw() {
+    return _p;
 }
 
 void operator delete(void *, void *) throw() {
@@ -48,29 +58,29 @@ void operator delete[](void *, void *) throw() {
 }
 
 // TODO
-void *operator new(size_t size, std::align_val_t) {
-    return malloc(size);
+void *operator new(size_t _size, std::align_val_t) {
+    return kmalloc(_size);
 }
 
-void operator delete(void *p, std::align_val_t) {
-    free(p);
+void operator delete(void *_p, std::align_val_t) {
+    kfree(_p);
     return;
 }
 
-void *operator new[](size_t size, std::align_val_t) {
-    return malloc(size);
+void *operator new[](size_t _size, std::align_val_t) {
+    return kmalloc(_size);
 }
 
-void operator delete[](void *p, std::align_val_t) {
-    free(p);
+void operator delete[](void *_p, std::align_val_t) {
+    kfree(_p);
     return;
 }
 
-void operator delete(void *p, size_t, std::align_val_t) {
-    free(p);
+void operator delete(void *_p, size_t, std::align_val_t) {
+    kfree(_p);
     return;
 }
-void operator delete[](void *p, size_t, std::align_val_t) {
-    free(p);
+void operator delete[](void *_p, size_t, std::align_val_t) {
+    kfree(_p);
     return;
 }

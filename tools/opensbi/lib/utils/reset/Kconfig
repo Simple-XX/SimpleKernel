@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+menu "System Reset Support"
+
+config FDT_RESET
+	bool "FDT based reset drivers"
+	depends on FDT
+	default n
+
+if FDT_RESET
+
+config FDT_RESET_ATCWDT200
+	bool "Andes WDT FDT reset driver"
+	default n
+
+config FDT_RESET_GPIO
+	bool "GPIO FDT reset driver"
+	depends on FDT_GPIO
+	default n
+
+config FDT_RESET_HTIF
+	bool "Host transfer interface (HTIF) FDT reset driver"
+	select SYS_HTIF
+	default n
+
+config FDT_RESET_SIFIVE_TEST
+	bool "SiFive Test FDT reset driver"
+	select SYS_SIFIVE_TEST
+	default n
+
+config FDT_RESET_SUNXI_WDT
+	bool "Sunxi WDT FDT reset driver"
+	default n
+
+config FDT_RESET_THEAD
+	bool "T-HEAD FDT reset driver"
+	default n
+
+endif
+
+endmenu

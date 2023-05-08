@@ -1,11 +1,22 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// construct for Simple-XX/SimpleKernel.
+/**
+ * @file construct
+ * @brief stl construct 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _CONSTRUCT_
-#define _CONSTRUCT_
+#ifndef SIMPLEKERNEL_CONSTRUCT
+#define SIMPLEKERNEL_CONSTRUCT
 
 // 这个头文件包含两个函数 construct，destroy
 // construct : 负责对象的构造
@@ -51,15 +62,15 @@ namespace mystl {
     void destroy_cat(ForwardIter, ForwardIter, std::true_type) {
     }
 
+    template <class Ty>
+    void destroy(Ty *pointer) {
+        destroy_one(pointer, std::is_trivially_destructible<Ty>{});
+    }
+
     template <class ForwardIter>
     void destroy_cat(ForwardIter first, ForwardIter last, std::false_type) {
         for (; first != last; ++first)
             destroy(&*first);
-    }
-
-    template <class Ty>
-    void destroy(Ty *pointer) {
-        destroy_one(pointer, std::is_trivially_destructible<Ty>{});
     }
 
     template <class ForwardIter>
@@ -70,4 +81,4 @@ namespace mystl {
     }
 };
 
-#endif /* _CONSTRUCT_ */
+#endif /* SIMPLEKERNEL_CONSTRUCT */

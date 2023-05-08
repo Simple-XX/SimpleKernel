@@ -1,18 +1,29 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on Orange's 一个操作系统的实现
-// keyboard.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file keyboard.cpp
+ * @brief 中断抽象头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on Orange's 一个操作系统的实现
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
-#include "stddef.h"
-#include "stdbool.h"
 #include "io.h"
 #include "stdio.h"
 #include "keyboard.h"
 
-static void default_keyboard_handle(INTR::pt_regs_t *regs
-                                    __attribute__((unused))) {
-    keyboard.read();
+/**
+ * @brief 默认处理函数
+ */
+static void default_keyboard_handle(INTR::intr_context_t *) {
+    KEYBOARD::get_instance().read();
     return;
 }
 
@@ -30,10 +41,10 @@ KEYBOARD::~KEYBOARD(void) {
 }
 
 uint8_t KEYBOARD::read(void) {
-    uint8_t scancode = io.inb(KB_DATA);
+    uint8_t scancode = IO::get_instance().inb(KB_DATA);
     // 判断是否出错
     if (!scancode) {
-        printf("scancode error.\n");
+        warn("scancode error.\n");
         return '\0';
     }
     uint8_t letter = 0;
@@ -73,15 +84,15 @@ uint8_t KEYBOARD::read(void) {
             num = ((!num) & 0x01);
             break;
         case KB_BACKSPACE:
-            io.put_char('\b');
+            IO::get_instance().put_char('\b');
             letter = '\b';
             break;
         case KB_ENTER:
-            io.put_char('\n');
+            IO::get_instance().put_char('\n');
             letter = '\n';
             break;
         case KB_TAB:
-            io.put_char('\t');
+            IO::get_instance().put_char('\t');
             letter = '\t';
             break;
         // 一般字符输出
@@ -90,7 +101,7 @@ uint8_t KEYBOARD::read(void) {
             if (!(scancode & RELEASED_MASK)) {
                 // 计算在 keymap 中的位置
                 letter = keymap[(uint8_t)(scancode * 3) + (uint8_t)shift];
-                io.put_char(letter);
+                IO::get_instance().put_char(letter);
                 break;
             }
             else {
@@ -100,16 +111,20 @@ uint8_t KEYBOARD::read(void) {
     return letter;
 }
 
+KEYBOARD &KEYBOARD::get_instance(void) {
+    /// 定义全局 KEYBOARD 对象
+    static KEYBOARD keyboard;
+    return keyboard;
+}
+
 int32_t KEYBOARD::init(void) {
     set_handle(&default_keyboard_handle);
-    INTR::enable_irq(INTR::IRQ1);
-    printf("keyboard_init\n");
+    INTR::get_instance().enable_irq(INTR::IRQ1);
+    info("keyboard init.\n");
     return 0;
 }
 
-int32_t KEYBOARD::set_handle(INTR::interrupt_handler_t h) {
-    INTR::register_interrupt_handler(INTR::IRQ1, h);
+int32_t KEYBOARD::set_handle(INTR::interrupt_handler_t _h) {
+    INTR::get_instance().register_interrupt_handler(INTR::IRQ1, _h);
     return 0;
 }
-
-KEYBOARD keyboard;

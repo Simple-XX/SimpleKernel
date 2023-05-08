@@ -1,19 +1,21 @@
 
-# This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+# This file is a part of Simple-XX/SimpleKernel
+# (https://github.com/Simple-XX/SimpleKernel).
 #
 # .gitinnore for Simple-XX/SimpleKernel.
 
-bochsout.txt
 *.o
 *.gch
 *.tags*
 .DS_Store
-build
-cmake-build-debug
-cmake-build-debug_simplekernel
+build*
 grub-2.04.tar.xz
 grub-2.04
 iso
 *.img
 *.iso
 *.bin
+null.d
+tools/aarch64-unknown-linux-gnu*
+.gdbinit
+tools/opensbi/build

@@ -1,12 +1,21 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// TUI.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file tui.cpp
+ * @brief TUI 接口实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
 #include "stddef.h"
 #include "stdint.h"
-#include "stdarg.h"
 #include "string.h"
 #include "tui.h"
 #include "port.h"
@@ -19,6 +28,7 @@ pos_t::~pos_t(void) {
     return;
 }
 
+// See https://wiki.osdev.org/Text_UI
 col_t::col_t(const COLOR::color_t _fore, const COLOR::color_t _back)
     : fore(_fore), back(_back) {
     return;
@@ -39,11 +49,11 @@ char_t::~char_t(void) {
 // 当前位置
 pos_t TUI::pos(0, 0);
 // 当前命令行颜色
-col_t TUI::color(COLOR::LIGHT_GREY, COLOR::BLACK);
+col_t TUI::color(COLOR::WHITE, COLOR::BLACK);
 
 TUI::TUI(void) {
     clear();
-    this->write_string("TUI init\n");
+    this->write_string("TUI init.\n");
     return;
 }
 
@@ -53,6 +63,7 @@ TUI::~TUI(void) {
 
 void TUI::put_entry_at(const char _c, const col_t _color, const size_t _x,
                        const size_t _y) {
+    // 计算索引
     const size_t index = _y * WIDTH + _x;
     write(index, char_t(_c, _color));
     return;
@@ -60,18 +71,24 @@ void TUI::put_entry_at(const char _c, const col_t _color, const size_t _x,
 
 bool TUI::escapeconv(const char _c) {
     switch (_c) {
+        // 如果是 \n
         case '\n': {
+            // 行+1
             pos.row++;
+            // 列归零
             pos.col = 0;
             return true;
         }
+        // 如果是 \t
         case '\t': {
             // 取整对齐
             pos.col += (pos.col % 4 == 0) ? 4 : 4 - (pos.col % 4);
             return true;
         }
+        // 如果是 \b
         case '\b': {
             if (pos.col > 0) {
+                // 删除一个字符
                 write(pos.row * WIDTH + --pos.col, char_t(' ', color));
             }
             return true;
@@ -133,6 +150,7 @@ void TUI::set_pos_col(const size_t _col) {
 }
 
 pos_t TUI::get_pos(void) const {
+    // 通过读写相应寄存器获取光标位置
     PORT::outb(TUI_ADDR, TUI_CURSOR_H);
     size_t cursor_pos_h = PORT::inb(TUI_DATA);
     PORT::outb(TUI_ADDR, TUI_CURSOR_L);
@@ -142,17 +160,20 @@ pos_t TUI::get_pos(void) const {
 }
 
 void TUI::write(const size_t _idx, const char_t _data) {
+    // 向缓冲区写数据
     this->buffer[_idx] = _data;
     return;
 }
 
 char_t TUI::read(const size_t _idx) const {
+    // 从缓冲区读数据
     return this->buffer[_idx];
 }
 
 void TUI::put_char(const char _c) {
     // 转义字符处理
     if (escapeconv(_c) == false) {
+        // 在指定位置输出指定字符
         put_entry_at(_c, color, pos.col, pos.row);
         // 如果到达最后一列则换行
         if (++pos.col >= WIDTH) {
@@ -162,12 +183,13 @@ void TUI::put_char(const char _c) {
     }
     // 屏幕滚动
     scroll();
+    // 更新光标位置
     set_pos(pos);
     return;
 }
 
-char TUI::get_char(void) const {
-    return '\0';
+uint8_t TUI::get_char(void) const {
+    return 0;
 }
 
 void TUI::write_string(const char *_s) {
@@ -192,6 +214,7 @@ void TUI::clear(void) {
             write(index, char_t(' ', color));
         }
     }
+    // 将光标位置设为屏幕左上角
     set_pos(pos_t(0, 0));
     return;
 }
