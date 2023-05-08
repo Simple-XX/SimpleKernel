@@ -10,7 +10,7 @@
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-09-18<td>Zone.N<td>迁移到 doxygen
+ * <tr><td>2023-05-08<td>Zone.N<td>迁移到 doxygen
  * </table>
  */
 
@@ -163,7 +163,7 @@ fd_t VFS::dealloc_fd(void) {
     return 0;
 }
 
-int32_t VFS::init(void) {
+bool VFS::init(void) {
     // 注意内存泄漏
     // 创建 "/" 目录
     // 建立第一个目录项
@@ -183,8 +183,8 @@ int32_t VFS::init(void) {
     fs.push_back((FS*)rootfs);
     dentrys.push_back(dentry);
     cwd = dentry;
-    std::cout << "vfs init." << std::endl;
-    return 0;
+    info("vfs init.\n");
+    return true;
 }
 
 int32_t VFS::register_filesystem(FS* _fs) {
