@@ -1,6 +1,6 @@
 
 /**
- * @file drv.h
+ * @file driver_base.h
  * @brief 设备驱动基类头文件
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_DRV_H
-#define SIMPLEKERNEL_DRV_H
+#ifndef SIMPLEKERNEL_DRIVER_BASE_H
+#define SIMPLEKERNEL_DRIVER_BASE_H
 
 #include "cstdint"
 #include "map"
@@ -24,7 +24,7 @@
 #include "vector"
 
 // 设备驱动抽象，是所有驱动的基类
-class drv_t {
+class driver_base_t {
 private:
 
 protected:
@@ -34,19 +34,35 @@ public:
     const mystl::string name;
     const mystl::string type_name;
 
-    drv_t(void);
-    drv_t(const resource_t&);
-    drv_t(const mystl::string& _name, const mystl::string& _type_name);
-    virtual ~drv_t(void)            = 0;
+    driver_base_t(void);
+    driver_base_t(const resource_t&);
+    driver_base_t(const mystl::string& _name, const mystl::string& _type_name);
+    virtual ~driver_base_t(void)                         = 0;
     // 驱动操作
     // 初始化
-    virtual bool         init(void) = 0;
+    virtual bool         init(void)                      = 0;
 
-    friend std::ostream& operator<<(std::ostream& _out, drv_t& _drv) {
+    // 设备基本操作
+    // 从设备读
+    virtual int          read(void* _where, void* _buf)  = 0;
+    // 向设备写
+    virtual int          write(void* _where, void* _buf) = 0;
+    // ioctl 控制
+    virtual int          ioctl(uint8_t _cmd, void* _buf) = 0;
+    // 获取设备状态
+    virtual int          status(uint8_t _cmd)            = 0;
+
+    friend std::ostream& operator<<(std::ostream& _out, driver_base_t& _drv) {
         info("drv name: %s, drv type_name: %s", _drv.name.c_str(),
              _drv.type_name.c_str());
         return _out;
     }
+};
+
+template <class _T>
+struct drv {
+    char* compatible_name;
+    _T    drv;
 };
 
 /**
@@ -57,7 +73,7 @@ public:
     /**
      * @brief 用于创建驱动实例的回调函数函数指针
      */
-    typedef drv_t* (*constructor_fun_t)(const resource_t& _resource);
+    typedef driver_base_t* (*constructor_fun_t)(const resource_t& _resource);
 
 private:
     /**
@@ -88,7 +104,7 @@ public:
      * @param  _resource        需要的硬件信息
      * @return drv_t*           创建好的驱动实例指针
      */
-    drv_t*                get_class(const mystl::string& _class_name,
+    driver_base_t*        get_class(const mystl::string& _class_name,
                                     const resource_t&    _resource) const;
 };
 
@@ -116,4 +132,4 @@ public:
           (drv_factory_t::constructor_fun_t)&call_back_##_class_name); \
     } while (0);
 
-#endif /* SIMPLEKERNEL_DRV_H */
+#endif /* SIMPLEKERNEL_DRIVER_BASE_H */

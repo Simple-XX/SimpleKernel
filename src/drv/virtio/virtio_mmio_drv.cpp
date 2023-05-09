@@ -15,7 +15,7 @@
  */
 
 #include "virtio_mmio_drv.h"
-#include "drv.h"
+#include "driver_base.h"
 #include "intr.h"
 #include "io.h"
 #include "string"
@@ -125,12 +125,12 @@ void virtio_mmio_drv_t::add_to_device(uint32_t _queue_sel) {
 }
 
 virtio_mmio_drv_t::virtio_mmio_drv_t(void)
-    : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
+    : driver_base_t("virtio,mmio", "virtio_mmio_drv_t") {
     return;
 }
 
 virtio_mmio_drv_t::virtio_mmio_drv_t(const void* _addr)
-    : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
+    : driver_base_t("virtio,mmio", "virtio_mmio_drv_t") {
     (void)_addr;
     return;
 }
@@ -138,7 +138,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const void* _addr)
 extern void virtio_mmio_intr(uint8_t _no);
 
 virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
-    : drv_t("virtio,mmio", "virtio_mmio_drv_t") {
+    : driver_base_t("virtio,mmio", "virtio_mmio_drv_t") {
     regs = (virtio_regs_t*)_resource.mem.addr;
     // 映射内存
     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), _resource.mem.addr,
@@ -320,6 +320,22 @@ void virtio_mmio_drv_t::set_intr_ack(void) {
 
 size_t virtio_mmio_drv_t::get_queue_len(void) {
     return queues.at(0)->virtq->len;
+}
+
+int virtio_mmio_drv_t::read(void* _where, void* _buf) {
+    return 0;
+}
+
+int virtio_mmio_drv_t::write(void* _where, void* _buf) {
+    return 0;
+}
+
+int virtio_mmio_drv_t::ioctl(uint8_t _cmd, void* _buf) {
+    return 0;
+}
+
+int virtio_mmio_drv_t::status(uint8_t _cmd) {
+    return 0;
 }
 
 define_call_back(virtio_mmio_drv_t)

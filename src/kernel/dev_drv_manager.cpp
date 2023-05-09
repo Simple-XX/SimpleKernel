@@ -16,10 +16,9 @@
 
 #include "dev_drv_manager.h"
 #include "boot_info.h"
-#include "intr.h"
-#include "platform_bus_dev.h"
-#include "platform_bus_drv.h"
+#include "bus_device.h"
 #include "cstdio"
+#include "intr.h"
 #include "virtio_mmio_drv.h"
 
 void virtio_intr_handler(void) {
@@ -39,32 +38,24 @@ bool DEV_DRV_MANAGER::buss_init(void) {
     bool res = true;
     // 遍历所有总线
     for (auto i : buss) {
-        // 如果初始化成功，接着初始化总线上的设备
-        if (i->drv->init() == true) {
-            // 遍历总线上的设备与驱动列表
-            for (auto j : i->devs) {
-                for (auto k : i->drvs_name) {
-                    // 如果匹配
-                    /// @todo 这里暂时写死为为每个设备分配一个驱动实例，需要改进
-                    if (i->match(*j, k)) {
-                        // 执行初始化
-                        if (j->drv->init() == true) {
-                            info("%s init successful drv addr 0x8%p.\n",
-                                 j->dev_name.c_str(), j->drv);
-                        }
-                        else {
-                            warn("%s init failed.\n", i->dev_name.c_str());
-                        }
+        // 遍历总线上的设备与驱动列表
+        for (auto j : i->devices) {
+            for (auto k : i->drvs_name) {
+                // 如果匹配
+                /// @todo 这里暂时写死为为每个设备分配一个驱动实例，需要改进
+                if (i->match(*j, k)) {
+                    // 执行初始化
+                    if (j->drv->init() == true) {
+                        info("%s init successful drv addr 0x8%p.\n",
+                             j->dev_name.c_str(), j->drv);
+                    }
+                    else {
+                        warn("%s init failed.\n", j->dev_name.c_str());
                     }
                 }
             }
-            info("%s init successful.\n", i->dev_name.c_str());
         }
-        // 不成功的话输出失败信息
-        else {
-            warn("%s init failed\n", i->dev_name.c_str());
-            res = false;
-        }
+        info("%s init successful.\n", i->bus_name.c_str());
     }
     return res;
 }
@@ -88,8 +79,8 @@ DEV_DRV_MANAGER& DEV_DRV_MANAGER::get_instance(void) {
 
 /// @todo 设备管理应该更加抽象，这里只是个勉强能用的
 bool DEV_DRV_MANAGER::init(void) {
-#if defined(__riscv)
-    // 获取 virtio 设备信息
+    // #if defined(__riscv)
+    //  获取 virtio 设备信息
     resource_t virtio_mmio_dev_resources[8];
     // 获取信息
     auto       virtio_mmio_dev_resources_count
@@ -101,44 +92,41 @@ bool DEV_DRV_MANAGER::init(void) {
                                         + virtio_mmio_dev_resources_count);
     // 添加 virtio 总线
     /// @todo 需要改进
-    resource_t tmp;
-    tmp.name = (char*)"virtio_tmp bus";
-    auto bus = new platform_bus_dev_t(tmp);
+    auto bus = new bus_device_t();
     add_bus(*bus);
     // 每个 resource 对应一个总线设备
     for (auto i : *virtio_mmio_dev_resources_vector) {
         // 设置每个设备的名称与驱动名
-        auto virtio_dev             = new virtio_dev_t(i);
+        auto virtio_dev      = new virtio_dev_t(i);
         // 设备名
-        virtio_dev->dev_name        = i.name;
-        // 需要的驱动名
-        /// @todo 这里需要 compatible 字段
-        virtio_dev->compatible_name = "virtio,mmio";
-        // 所属总线名
-        virtio_dev->bus_name        = "virtio";
+        /// @todo 这里需要 compatible 字段 "virtio,mmio"
+        virtio_dev->dev_name = i.name;
         // 添加到总线的设备向量
-        bus->add_dev(virtio_dev);
+        bus->add_device(virtio_dev);
     }
     // 到这里 virtio,mmio 总线初始化完成，下面为各个 virtio,mmio
     // 注册用于创建驱动实例的回调函数
     register_call_back(virtio_mmio_drv_t);
     // 添加到总线的驱动向量
-    bus->add_drv("virtio,mmio", "virtio_mmio_drv_t");
+    bus->add_driver("virtio,mmio", "virtio_mmio_drv_t");
+
+    bus->add_driver("virtio,mmio", "virtio_mmio_drv_t");
+
     // 初始化所有总线
     buss_init();
     show();
-#endif
+    // #endif
     info("device and driver manager init.\n");
     return true;
 }
 
-bool DEV_DRV_MANAGER::add_bus(bus_dev_t& _bus) {
+bool DEV_DRV_MANAGER::add_bus(bus_device_t& _bus) {
     buss.push_back(&_bus);
     return true;
 }
 
-dev_t* DEV_DRV_MANAGER::get_dev_via_intr_no(uint8_t _no) {
-    dev_t* res = nullptr;
+device_base_t* DEV_DRV_MANAGER::get_dev_via_intr_no(uint8_t _no) {
+    device_base_t* res = nullptr;
     for (auto i : buss) {
         res = i->get_dev_via_intr_no(_no);
         if (res != nullptr) {

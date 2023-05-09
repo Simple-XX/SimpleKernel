@@ -18,9 +18,9 @@
 #define SIMPLEKERNEL_VIRTIO_MMIO_DRV_H
 
 #include "common.h"
-#include "drv.h"
-#include "resource.h"
 #include "cstdint"
+#include "driver_base.h"
+#include "resource.h"
 #include "string"
 #include "vector"
 #include "virtio_dev.h"
@@ -29,7 +29,7 @@
 /**
  * @brief virtio,mmio 驱动
  */
-class virtio_mmio_drv_t : public drv_t {
+class virtio_mmio_drv_t : public driver_base_t {
 private:
     /// 魔数
     /// virtio-v1.1#4.2.2
@@ -278,9 +278,19 @@ public:
     static constexpr const size_t VIRTIO_BLK_SECTOR_SIZE     = 512;
     static constexpr const size_t VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
 
-    size_t                        rw(virtio_blk_req_t& _req, void* _buf);
-    void                          set_intr_ack(void);
-    size_t                        get_queue_len(void);
+    // 设备基本操作
+    // 从设备读
+    int                           read(void* _where, void* _buf) override final;
+    // 向设备写
+    int    write(void* _where, void* _buf) override final;
+    // ioctl 控制
+    int    ioctl(uint8_t _cmd, void* _buf) override final;
+    // 获取设备状态
+    int    status(uint8_t _cmd) override final;
+
+    size_t rw(virtio_blk_req_t& _req, void* _buf);
+    void   set_intr_ack(void);
+    size_t get_queue_len(void);
 };
 
 declare_call_back(virtio_mmio_drv_t);
