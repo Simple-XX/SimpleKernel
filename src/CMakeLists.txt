@@ -1,7 +1,7 @@
 
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
-# Based on https://github.com/SynestiaOS/SynestiaOS
+#
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 # 设置编译规则
 
@@ -87,12 +87,36 @@ elseif (SimpleKernelArch STREQUAL riscv64)
     target_link_options(${KernelName} PRIVATE -Wl,-melf64lriscv)
 endif ()
 
+# objcopy --only-keep-debug foo foo.dbg 创建一个包含调试信息的文件
+add_custom_command(TARGET ${KernelName}
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_OBJCOPY} --only-keep-debug ${KernelName} ${KernelName}.debug
+        COMMENT "Generating kernel debug...")
+
+# objcopy --strip-debug foo 创建一个去掉调试信息的( strip 的)可执行文件
+# objcopy --add-gnu-debuglink=foo.dbg foo 为 strip 的文件添加调试信息链接
+add_custom_command(TARGET ${KernelName}
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_OBJCOPY} --strip-debug ${KernelName}
+        COMMAND ${CMAKE_OBJCOPY} --add-gnu-debuglink=${KernelName}.debug ${KernelName}
+        COMMENT "Generating raw kernel...")
+
+# nm
+add_custom_command(TARGET ${KernelName}
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName}
+            > ${KernelName}.nm
+        COMMENT "nm...")
+
 # readelf -a
 add_custom_command(TARGET ${KernelName}
     POST_BUILD
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf_a || (exit 0)
-    COMMENT "readelf -a")
+    COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf || (exit 0)
+    COMMENT "readelf...")
 
 # objdump -D
 add_custom_command(TARGET ${KernelName}
@@ -100,10 +124,3 @@ add_custom_command(TARGET ${KernelName}
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
     COMMENT "Disassembling...")
-
-# objdump -t
-add_custom_command(TARGET ${KernelName}
-    POST_BUILD
-    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_OBJDUMP} -t ${KernelName} > ${KernelName}.symtlb
-    COMMENT "Generating symbol table...")

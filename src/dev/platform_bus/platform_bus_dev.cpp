@@ -22,7 +22,7 @@ platform_bus_dev_t::platform_bus_dev_t(void) {
     return;
 }
 
-platform_bus_dev_t::platform_bus_dev_t(const resource_t &_resource)
+platform_bus_dev_t::platform_bus_dev_t(const resource_t& _resource)
     : bus_dev_t(_resource) {
     // platform 总线不需要驱动
     compatible_name = "platform_bus driver";

@@ -10,21 +10,21 @@
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * <tr><td>2021-12-01<td>Zone.N<td>迁移到 doxygen
  * </table>
  */
 
-#ifndef _VIRTIO_MMIO_DRV_H_
-#define _VIRTIO_MMIO_DRV_H_
+#ifndef SIMPLEKERNEL_VIRTIO_MMIO_DRV_H
+#define SIMPLEKERNEL_VIRTIO_MMIO_DRV_H
 
-#include "stdint.h"
 #include "common.h"
-#include "vector"
-#include "string"
-#include "virtio_queue.h"
-#include "virtio_dev.h"
-#include "resource.h"
 #include "drv.h"
+#include "resource.h"
+#include "cstdint"
+#include "string"
+#include "vector"
+#include "virtio_dev.h"
+#include "virtio_queue.h"
 
 /**
  * @brief virtio,mmio 驱动
@@ -36,7 +36,7 @@ private:
     static constexpr const uint32_t MAGIC_VALUE = 0x74726976;
     /// 版本
     /// virtio-v1.1#4.2.2
-    static constexpr const uint32_t VERSION = 0x02;
+    static constexpr const uint32_t VERSION     = 0x02;
 
     /**
      * @brief virtio mmio 控制寄存器
@@ -107,31 +107,31 @@ private:
      * @see virtio-v1.1#5.2.3
      */
     /// Device supports request barriers.
-    static constexpr const uint32_t BLK_F_BARRIER = 0;
+    static constexpr const uint32_t BLK_F_BARRIER               = 0;
     /// Maximum size of any single segment is in size_max.
-    static constexpr const uint32_t BLK_F_SIZE_MAX = 1;
+    static constexpr const uint32_t BLK_F_SIZE_MAX              = 1;
     /// Maximum number of segments in a request is in seg_max.
-    static constexpr const uint32_t BLK_F_SEG_MAX = 2;
+    static constexpr const uint32_t BLK_F_SEG_MAX               = 2;
     /// Disk-style geometry specified in geometry.
-    static constexpr const uint32_t BLK_F_GEOMETRY = 4;
+    static constexpr const uint32_t BLK_F_GEOMETRY              = 4;
     /// Device is read-only.
-    static constexpr const uint32_t BLK_F_RO = 5;
+    static constexpr const uint32_t BLK_F_RO                    = 5;
     /// Block size of disk is in blk_size.
-    static constexpr const uint32_t BLK_F_BLK_SIZE = 6;
+    static constexpr const uint32_t BLK_F_BLK_SIZE              = 6;
     /// Cache flush command support.
-    static constexpr const uint32_t BLK_F_FLUSH = 9;
+    static constexpr const uint32_t BLK_F_FLUSH                 = 9;
     /// Device exports information on optimal I/O alignment.
-    static constexpr const uint32_t BLK_F_TOPOLOGY = 10;
+    static constexpr const uint32_t BLK_F_TOPOLOGY              = 10;
     /// Device can toggle its cache between writeback and writethrough modes.
-    static constexpr const uint32_t BLK_F_CONFIG_WCE = 11;
+    static constexpr const uint32_t BLK_F_CONFIG_WCE            = 11;
     /// Device can support discard command, maximum discard sectors size in
     /// max_discard_sectors and maximum discard segment number in
     /// max_discard_seg.
-    static constexpr const uint32_t BLK_F_DISCARD = 13;
+    static constexpr const uint32_t BLK_F_DISCARD               = 13;
     /// Devicecansupportwritezeroescommand,maximumwritezeroes sectors size in
     /// max_write_zeroes_sectors and maximum write zeroes segment number in
     /// max_write_- zeroes_seg.
-    static constexpr const uint32_t BLK_F_WRITE_ZEROES = 14;
+    static constexpr const uint32_t BLK_F_WRITE_ZEROES          = 14;
 
     /**
      * @brief Reserved Feature Bits
@@ -148,9 +148,9 @@ private:
         /// feature 名称
         mystl::string name;
         /// 第几位
-        uint32_t bit;
+        uint32_t      bit;
         /// 状态
-        bool status;
+        bool          status;
     };
 
     /**
@@ -158,8 +158,8 @@ private:
      */
     const feature_t base_features[3] = {
         {"VIRTIO_F_RING_INDIRECT_DESC", VIRTIO_F_RING_INDIRECT_DESC, false},
-        {"VIRTIO_F_RING_EVENT_IDX", VIRTIO_F_RING_EVENT_IDX, false},
-        {"VIRTIO_F_VERSION_1", VIRTIO_F_VERSION_1, false},
+        {    "VIRTIO_F_RING_EVENT_IDX",     VIRTIO_F_RING_EVENT_IDX, false},
+        {         "VIRTIO_F_VERSION_1",          VIRTIO_F_VERSION_1, false},
     };
 
     /**
@@ -170,22 +170,26 @@ private:
         uint64_t capacity;
         uint32_t size_max;
         uint32_t seg_max;
+
         struct {
             uint16_t cylinders;
             uint8_t  heads;
             uint8_t  sectors;
         } geometry;
+
         uint32_t blk_size;
+
         struct {
             // # of logical blocks per physical block (log2)
-            uint8_t physical_block_exp;
+            uint8_t  physical_block_exp;
             // offset of first aligned logical block
-            uint8_t alignment_offset;
+            uint8_t  alignment_offset;
             // suggested minimum  I/O size in blocks
             uint16_t min_io_size;
             // optimal (suggested maximum) I/O size in blocks
             uint32_t opt_io_size;
         } topology;
+
         uint8_t  writeback;
         uint8_t  unused0[3];
         uint32_t max_discard_sectors;
@@ -198,16 +202,16 @@ private:
     } __attribute__((packed));
 
     /// 块设备配置信息指针
-    virtio_blk_config_t *config;
+    virtio_blk_config_t* config;
 
-    feature_t blk_features[8] = {
-        {NAME2STR(BLK_F_SIZE_MAX), BLK_F_SIZE_MAX, false},
-        {NAME2STR(BLK_F_SEG_MAX), BLK_F_SEG_MAX, false},
-        {NAME2STR(BLK_F_GEOMETRY), BLK_F_GEOMETRY, false},
-        {NAME2STR(BLK_F_RO), BLK_F_RO, false},
-        {NAME2STR(BLK_F_BLK_SIZE), BLK_F_BLK_SIZE, false},
-        {NAME2STR(BLK_F_FLUSH), BLK_F_FLUSH, false},
-        {NAME2STR(BLK_F_TOPOLOGY), BLK_F_TOPOLOGY, false},
+    feature_t            blk_features[8] = {
+        {  NAME2STR(BLK_F_SIZE_MAX),   BLK_F_SIZE_MAX, false},
+        {   NAME2STR(BLK_F_SEG_MAX),    BLK_F_SEG_MAX, false},
+        {  NAME2STR(BLK_F_GEOMETRY),   BLK_F_GEOMETRY, false},
+        {        NAME2STR(BLK_F_RO),         BLK_F_RO, false},
+        {  NAME2STR(BLK_F_BLK_SIZE),   BLK_F_BLK_SIZE, false},
+        {     NAME2STR(BLK_F_FLUSH),      BLK_F_FLUSH, false},
+        {  NAME2STR(BLK_F_TOPOLOGY),   BLK_F_TOPOLOGY, false},
         {NAME2STR(BLK_F_CONFIG_WCE), BLK_F_CONFIG_WCE, false},
     };
 
@@ -215,7 +219,7 @@ private:
      * @brief 设置设备 features
      * @param  _features        要设置的 feature 向量
      */
-    void set_features(const mystl::vector<feature_t> &_features);
+    void set_features(const mystl::vector<feature_t>& _features);
 
     /**
      * @brief 将队列设置传递到相应寄存器
@@ -224,15 +228,16 @@ private:
     void add_to_device(uint32_t _queue_sel);
 
 protected:
+
 public:
     /// virtio mmio 寄存器基地址
-    virtio_regs_t *regs;
+    virtio_regs_t*                 regs;
     /// virtio queue，有些设备使用多个队列
-    mystl::vector<virtio_queue_t *> queues;
+    mystl::vector<virtio_queue_t*> queues;
 
     virtio_mmio_drv_t(void);
-    virtio_mmio_drv_t(const void *_addr);
-    virtio_mmio_drv_t(const resource_t &_resource);
+    virtio_mmio_drv_t(const void* _addr);
+    virtio_mmio_drv_t(const resource_t& _resource);
     ~virtio_mmio_drv_t(void);
 
     /**
@@ -249,9 +254,9 @@ public:
     struct virtio_blk_req_t {
         /// 请求类型
         /// 读取
-        static constexpr const uint32_t IN = 0;
+        static constexpr const uint32_t IN           = 0;
         /// 写入
-        static constexpr const uint32_t OUT = 1;
+        static constexpr const uint32_t OUT          = 1;
         /// 刷新
         static constexpr const uint32_t FLUSH        = 4;
         static constexpr const uint32_t DISCARD      = 11;
@@ -259,11 +264,11 @@ public:
         uint32_t                        type;
         uint32_t                        reserved;
         uint64_t                        sector;
-        uint8_t                        *data;
+        uint8_t*                        data;
         /// 设备返回状态 成功
-        static constexpr const uint32_t OK = 0;
+        static constexpr const uint32_t OK     = 0;
         /// 设备返回状态 设备或驱动出错
-        static constexpr const uint32_t IOERR = 1;
+        static constexpr const uint32_t IOERR  = 1;
         /// 设备返回状态 不支持的请求
         static constexpr const uint32_t UNSUPP = 2;
         uint8_t                         status;
@@ -273,11 +278,11 @@ public:
     static constexpr const size_t VIRTIO_BLK_SECTOR_SIZE     = 512;
     static constexpr const size_t VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
 
-    size_t rw(virtio_blk_req_t &_req, void *_buf);
-    void   set_intr_ack(void);
-    size_t get_queue_len(void);
+    size_t                        rw(virtio_blk_req_t& _req, void* _buf);
+    void                          set_intr_ack(void);
+    size_t                        get_queue_len(void);
 };
 
 declare_call_back(virtio_mmio_drv_t);
 
-#endif /* _VIRTIO_MMIO_DRV_H_ */
+#endif /* SIMPLEKERNEL_VIRTIO_MMIO_DRV_H */

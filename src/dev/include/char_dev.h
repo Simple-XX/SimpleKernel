@@ -1,15 +1,25 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-//
-// char_dev.h for Simple-XX/SimpleKernel.
+/**
+ * @file char_dev.h
+ * @brief char 设备头文件
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-05-09
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-05-09<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _CHAR_DEV_H_
-#define _CHAR_DEV_H_
+#ifndef SIMPLEKERNEL_CHAR_DEV_H
+#define SIMPLEKERNEL_CHAR_DEV_H
 
-#include "stdint.h"
-#include "vector"
+#include "cstdint"
 #include "string"
+#include "vector"
 
 // 设备抽象
 class char_device_t {
@@ -18,6 +28,7 @@ private:
     mystl::string name;
 
 protected:
+
 public:
     char_device_t(void);
     virtual ~char_device_t(void);
@@ -27,4 +38,4 @@ public:
     virtual uint32_t write();
 };
 
-#endif /* _CHAR_DEV_H_ */
+#endif /* SIMPLEKERNEL_CHAR_DEV_H */
