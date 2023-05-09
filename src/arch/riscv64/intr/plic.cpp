@@ -33,7 +33,9 @@ static int32_t external_intr(int, char **) {
     // 读取中断号
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
-    printf("external_intr: 0x%X.\n", no);
+    info("external_intr: 0x%X\n", no);
+    PLIC::get_instance().do_externel_interrupt(no);
+    info("external_intr done: 0x%X.\n", no);
     return 0;
 }
 
@@ -121,5 +123,16 @@ uint8_t PLIC::get(void) {
 void PLIC::done(uint8_t _no) {
     IO::get_instance().write32((void *)PLIC_SCLAIM(BOOT_INFO::dtb_init_hart),
                                _no);
+    return;
+}
+
+void PLIC::register_externel_handler(
+    uint8_t _no, externel_interrupt_handler_t _interrupt_handler) {
+    externel_interrupt_handlers[_no] = _interrupt_handler;
+    return;
+}
+
+void PLIC::do_externel_interrupt(uint8_t _no) {
+    externel_interrupt_handlers[_no](_no);
     return;
 }

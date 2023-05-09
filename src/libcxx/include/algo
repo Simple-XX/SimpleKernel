@@ -1281,10 +1281,10 @@ namespace mystl {
     void random_shuffle(RandomIter first, RandomIter last) {
         if (first == last)
             return;
-        srand((unsigned)time(0));
-        for (auto i = first + 1; i != last; ++i) {
-            mystl::iter_swap(i, first + (rand() % (i - first + 1)));
-        }
+        // srand((unsigned)time(0));
+        // for (auto i = first + 1; i != last; ++i) {
+        //     mystl::iter_swap(i, first + (rand() % (i - first + 1)));
+        // }
     }
 
     // 重载版本使用一个产生随机数的函数对象 rand
