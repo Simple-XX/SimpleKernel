@@ -48,11 +48,11 @@ typedef enum {
 /*---------------------------------------*/
 /* Prototypes for disk control functions */
 
-DSTATUS disk_initialize(BYTE pdrv);
-DSTATUS disk_status(BYTE pdrv);
-DRESULT disk_read(BYTE pdrv, BYTE* buff, LBA_t sector, UINT count);
-DRESULT disk_write(BYTE pdrv, const BYTE* buff, LBA_t sector, UINT count);
-DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void* buff);
+DSTATUS disk_initialize(BYTE _pdrv);
+DSTATUS disk_status(BYTE _pdrv);
+DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count);
+DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count);
+DRESULT disk_ioctl(BYTE _pdrv, BYTE _cmd, void* _buff);
 
 /* Disk Status Bits (DSTATUS) */
 
