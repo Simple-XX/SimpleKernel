@@ -1,22 +1,19 @@
 
 /**
  * @file ffsystem.c
- * @brief fat 文件系统系统相关函数
+ * @brief A Sample Code of User Provided OS Dependent Functions for FatFs
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-05-08
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
+ * Based on http://elm-chan.org/fsw/ff/00index_e.html
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
  * <tr><td>2023-05-08<td>Zone.N<td>创建文件
  * </table>
  */
-
-/*------------------------------------------------------------------------*/
-/* A Sample Code of User Provided OS Dependent Functions for FatFs        */
-/*------------------------------------------------------------------------*/
 
 #include "ff.h"
 
@@ -26,21 +23,10 @@
 /// with POSIX API
 #    include <stdlib.h>
 
-/**
- * @brief Allocate a Memory Block
- * @param  _msize           Number of bytes to allocate
- * @return void*            Returns pointer to the allocated memory block (null
- * if not enough core)
- */
 void* ff_memalloc(UINT _msize) {
     return malloc((size_t)_msize);
 }
 
-/**
- * @brief Free a Memory Block
- * @param  _mblock          Pointer to the memory block to free (no effect if
- * null)
- */
 void ff_memfree(void* _mblock) {
     free(_mblock);
 }
@@ -88,16 +74,6 @@ static osMutexId Mutex[FF_VOLUMES + 1];
 
 #    endif
 
-/**
- * @brief Create a Mutex
- * This function is called in f_mount function to create a new mutex or
- * semaphore for the volume. When a 0 is returned, the f_mount function fails
- * with FR_INT_ERR.
- * @param  _vol             Mutex ID: Volume mutex (0 to FF_VOLUMES - 1) or
- * system mutex (FF_VOLUMES)
- * @return int              Returns 1:Function succeeded or 0:Could not create
- * the mutex
- */
 int ff_mutex_create(int _vol) {
     // Win32
 #    if OS_TYPE == 0
@@ -133,13 +109,6 @@ int ff_mutex_create(int _vol) {
 #    endif
 }
 
-/**
- * @brief Delete a Mutex
- * This function is called in f_mount function to delete a mutex or semaphore of
- * the volume created with ff_mutex_create function.
- * @param  _vol             Mutex ID: Volume mutex (0 to FF_VOLUMES - 1) or
- * system mutex (FF_VOLUMES)
- */
 void ff_mutex_delete(int _vol) {
     // Win32
 #    if OS_TYPE == 0
@@ -166,14 +135,6 @@ void ff_mutex_delete(int _vol) {
 #    endif
 }
 
-/**
- * @brief Request a Grant to Access the Volume
- * This function is called on enter file functions to lock the volume.
- * When a 0 is returned, the file function fails with FR_TIMEOUT.
- * @param  _vol             Mutex ID: Volume mutex (0 to FF_VOLUMES - 1) or
- * system mutex (FF_VOLUMES)
- * @return int              Returns 1:Succeeded or 0:Timeout
- */
 int ff_mutex_take(int _vol) {
     // Win32
 #    if OS_TYPE == 0
@@ -202,12 +163,6 @@ int ff_mutex_take(int _vol) {
 #    endif
 }
 
-/**
- * @brief Release a Grant to Access the Volume
- * This function is called on leave file functions to unlock the volume.
- * @param  _vol             Mutex ID: Volume mutex (0 to FF_VOLUMES - 1) or
- * system mutex (FF_VOLUMES)
- */
 void ff_mutex_give(int _vol) {
     // Win32
 #    if OS_TYPE == 0
