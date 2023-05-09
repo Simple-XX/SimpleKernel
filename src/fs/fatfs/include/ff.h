@@ -60,8 +60,8 @@ extern "C" {
 #        include <windows.h>
 typedef unsigned __int64 QWORD;
 #        include <float.h>
-#        define isnan(v) _isnan(v)
-#        define isinf(v) (!_finite(v))
+#        define isnan(_v) _isnan(_v)
+#        define isinf(_v) (!_finite(_v))
 
 #    elif (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) \
       || defined(__cplusplus) /* C99 or later */
@@ -120,25 +120,25 @@ typedef DWORD         LBA_t;
 /* Unicode in UTF-16 encoding */
 #    if FF_USE_LFN && FF_LFN_UNICODE == 1
 typedef WCHAR TCHAR;
-#        define _T(x)    L##x
-#        define _TEXT(x) L##x
+#        define _T(_x)    L##_x
+#        define _TEXT(_x) L##_x
 /* Unicode in UTF-8 encoding */
 #    elif FF_USE_LFN && FF_LFN_UNICODE == 2
 typedef char          TCHAR;
-#        define _T(x)    u8##x
-#        define _TEXT(x) u8##x
+#        define _T(_x)    u8##_x
+#        define _TEXT(_x) u8##_x
 /* Unicode in UTF-32 encoding */
 #    elif FF_USE_LFN && FF_LFN_UNICODE == 3
 typedef DWORD          TCHAR;
-#        define _T(x)    U##x
-#        define _TEXT(x) U##x
+#        define _T(_x)    U##_x
+#        define _TEXT(_x) U##_x
 #    elif FF_USE_LFN && (FF_LFN_UNICODE < 0 || FF_LFN_UNICODE > 3)
 #        error Wrong FF_LFN_UNICODE setting
 /* ANSI/OEM code in SBCS/DBCS */
 #    else
 typedef char TCHAR;
-#        define _T(x)    x
-#        define _TEXT(x) x
+#        define _T(_x)    _x
+#        define _TEXT(_x) _x
 #    endif
 
 /* Definitions of volume management */
@@ -410,85 +410,87 @@ typedef enum {
 /*--------------------------------------------------------------*/
 
 /* Open or create a file */
-FRESULT f_open(FIL* fp, const TCHAR* path, BYTE mode);
+FRESULT f_open(FIL* _fp, const TCHAR* _path, BYTE _mode);
 /* Close an open file object */
-FRESULT f_close(FIL* fp);
+FRESULT f_close(FIL* _fp);
 /* Read data from the file */
-FRESULT f_read(FIL* fp, void* buff, UINT btr, UINT* br);
+FRESULT f_read(FIL* _fp, void* _buff, UINT _btr, UINT* _br);
 /* Write data to the file */
-FRESULT f_write(FIL* fp, const void* buff, UINT btw, UINT* bw);
+FRESULT f_write(FIL* _fp, const void* _buff, UINT _btw, UINT* _bw);
 /* Move file pointer of the file object */
-FRESULT f_lseek(FIL* fp, FSIZE_t ofs);
+FRESULT f_lseek(FIL* _fp, FSIZE_t _ofs);
 /* Truncate the file */
-FRESULT f_truncate(FIL* fp);
+FRESULT f_truncate(FIL* _fp);
 /* Flush cached data of the writing file */
-FRESULT f_sync(FIL* fp);
+FRESULT f_sync(FIL* _fp);
 /* Open a directory */
-FRESULT f_opendir(DIR* dp, const TCHAR* path);
+FRESULT f_opendir(DIR* _dp, const TCHAR* _path);
 /* Close an open directory */
-FRESULT f_closedir(DIR* dp);
+FRESULT f_closedir(DIR* _dp);
 /* Read a directory item */
-FRESULT f_readdir(DIR* dp, FILINFO* fno);
+FRESULT f_readdir(DIR* _dp, FILINFO* _fno);
 /* Find first file */
 FRESULT
-f_findfirst(DIR* dp, FILINFO* fno, const TCHAR* path, const TCHAR* pattern);
+f_findfirst(DIR* _dp, FILINFO* _fno, const TCHAR* _path, const TCHAR* _pattern);
 /* Find next file */
-FRESULT f_findnext(DIR* dp, FILINFO* fno);
+FRESULT f_findnext(DIR* _dp, FILINFO* _fno);
 /* Create a sub directory */
-FRESULT f_mkdir(const TCHAR* path);
+FRESULT f_mkdir(const TCHAR* _path);
 /* Delete an existing file or directory */
-FRESULT f_unlink(const TCHAR* path);
+FRESULT f_unlink(const TCHAR* _path);
 /* Rename/Move a file or directory */
-FRESULT f_rename(const TCHAR* path_old, const TCHAR* path_new);
+FRESULT f_rename(const TCHAR* _path_old, const TCHAR* _path_new);
 /* Get file status */
-FRESULT f_stat(const TCHAR* path, FILINFO* fno);
+FRESULT f_stat(const TCHAR* _path, FILINFO* _fno);
 /* Change attribute of a file/dir */
-FRESULT f_chmod(const TCHAR* path, BYTE attr, BYTE mask);
+FRESULT f_chmod(const TCHAR* _path, BYTE _attr, BYTE _mask);
 /* Change timestamp of a file/dir */
-FRESULT f_utime(const TCHAR* path, const FILINFO* fno);
+FRESULT f_utime(const TCHAR* _path, const FILINFO* _fno);
 /* Change current directory */
-FRESULT f_chdir(const TCHAR* path);
+FRESULT f_chdir(const TCHAR* _path);
 /* Change current drive */
-FRESULT f_chdrive(const TCHAR* path);
+FRESULT f_chdrive(const TCHAR* _path);
 /* Get current directory */
-FRESULT f_getcwd(TCHAR* buff, UINT len);
+FRESULT f_getcwd(TCHAR* _buff, UINT _len);
 /* Get number of free clusters on the drive */
-FRESULT f_getfree(const TCHAR* path, DWORD* nclst, FATFS** fatfs);
+FRESULT f_getfree(const TCHAR* _path, DWORD* _nclst, FATFS** _fatfs);
 /* Get volume label */
-FRESULT f_getlabel(const TCHAR* path, TCHAR* label, DWORD* vsn);
+FRESULT f_getlabel(const TCHAR* _path, TCHAR* _label, DWORD* _vsn);
 /* Set volume label */
-FRESULT f_setlabel(const TCHAR* label);
+FRESULT f_setlabel(const TCHAR* _label);
 /* Forward data to the stream */
-FRESULT f_forward(FIL* fp, UINT (*func)(const BYTE*, UINT), UINT btf, UINT* bf);
+FRESULT
+f_forward(FIL* _fp, UINT (*_func)(const BYTE*, UINT), UINT _btf, UINT* _bf);
 /* Allocate a contiguous block to the file */
-FRESULT f_expand(FIL* fp, FSIZE_t fsz, BYTE opt);
+FRESULT f_expand(FIL* _fp, FSIZE_t _fsz, BYTE _opt);
 /* Mount/Unmount a logical drive */
-FRESULT f_mount(FATFS* fs, const TCHAR* path, BYTE opt);
+FRESULT f_mount(FATFS* _fs, const TCHAR* _path, BYTE _opt);
 /* Create a FAT volume */
-FRESULT f_mkfs(const TCHAR* path, const MKFS_PARM* opt, void* work, UINT len);
+FRESULT
+f_mkfs(const TCHAR* _path, const MKFS_PARM* _opt, void* _work, UINT _len);
 /* Divide a physical drive into some partitions */
-FRESULT f_fdisk(BYTE pdrv, const LBA_t ptbl[], void* work);
+FRESULT f_fdisk(BYTE _pdrv, const LBA_t _ptbl[], void* _work);
 /* Set current code page */
-FRESULT f_setcp(WORD cp);
+FRESULT f_setcp(WORD _cp);
 /* Put a character to the file */
-int     f_putc(TCHAR c, FIL* fp);
+int     f_putc(TCHAR _c, FIL* _fp);
 /* Put a string to the file */
-int     f_puts(const TCHAR* str, FIL* cp);
+int     f_puts(const TCHAR* _str, FIL* _cp);
 /* Put a formatted string to the file */
-int     f_printf(FIL* fp, const TCHAR* str, ...);
+int     f_printf(FIL* _fp, const TCHAR* _str, ...);
 /* Get a string from the file */
-TCHAR*  f_gets(TCHAR* buff, int len, FIL* fp);
+TCHAR*  f_gets(TCHAR* _buff, int _len, FIL* _fp);
 
 /* Some API fucntions are implemented as macro */
 
-#    define f_eof(fp)       ((int)((fp)->fptr == (fp)->obj.objsize))
-#    define f_error(fp)     ((fp)->err)
-#    define f_tell(fp)      ((fp)->fptr)
-#    define f_size(fp)      ((fp)->obj.objsize)
-#    define f_rewind(fp)    f_lseek((fp), 0)
-#    define f_rewinddir(dp) f_readdir((dp), 0)
-#    define f_rmdir(path)   f_unlink(path)
-#    define f_unmount(path) f_mount(0, path, 0)
+#    define f_eof(_fp)       ((int)((_fp)->fptr == (_fp)->obj.objsize))
+#    define f_error(_fp)     ((_fp)->err)
+#    define f_tell(_fp)      ((_fp)->fptr)
+#    define f_size(_fp)      ((_fp)->obj.objsize)
+#    define f_rewind(_fp)    f_lseek((_fp), 0)
+#    define f_rewinddir(_dp) f_readdir((_dp), 0)
+#    define f_rmdir(_path)   f_unlink(_path)
+#    define f_unmount(_path) f_mount(0, _path, 0)
 
 /*--------------------------------------------------------------*/
 /* Additional Functions                                         */
@@ -504,11 +506,11 @@ DWORD get_fattime(void);
 
 #    if FF_USE_LFN >= 1
 /* OEM code to Unicode conversion */
-WCHAR ff_oem2uni(WCHAR oem, WORD cp);
+WCHAR ff_oem2uni(WCHAR _oem, WORD _cp);
 /* Unicode to OEM code conversion */
-WCHAR ff_uni2oem(DWORD uni, WORD cp);
+WCHAR ff_uni2oem(DWORD _uni, WORD _cp);
 /* Unicode upper-case conversion */
-DWORD ff_wtoupper(DWORD uni);
+DWORD ff_wtoupper(DWORD _uni);
 #    endif
 
 /* O/S dependent functions (samples available in ffsystem.c) */
@@ -516,20 +518,20 @@ DWORD ff_wtoupper(DWORD uni);
 /* Dynamic memory allocation */
 #    if FF_USE_LFN == 3
 /* Allocate memory block */
-void* ff_memalloc(UINT msize);
+void* ff_memalloc(UINT _msize);
 /* Free memory block */
-void  ff_memfree(void* mblock);
+void  ff_memfree(void* _mblock);
 #    endif
 /* Sync functions */
 #    if FF_FS_REENTRANT
 /* Create a sync object */
-int  ff_mutex_create(int vol);
+int  ff_mutex_create(int _vol);
 /* Delete a sync object */
-void ff_mutex_delete(int vol);
+void ff_mutex_delete(int _vol);
 /* Lock sync object */
-int  ff_mutex_take(int vol);
+int  ff_mutex_take(int _vol);
 /* Unlock sync object */
-void ff_mutex_give(int vol);
+void ff_mutex_give(int _vol);
 #    endif
 
 /*--------------------------------------------------------------*/
