@@ -4,7 +4,7 @@
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 
-PROJECT(filesystem C CXX)
+PROJECT(filesystem CXX)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/fatfs fatfs_src)
 set(filesystem_src ${fatfs_src})

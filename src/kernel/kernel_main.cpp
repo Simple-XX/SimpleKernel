@@ -28,6 +28,51 @@
 #include "vfs.h"
 #include "vmm.h"
 
+#include "ff.h"
+
+#include "diskio.h"
+
+#include "virtio_mmio_drv.h"
+
+DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
+    DRESULT    res;
+    int        result;
+info("read\n");
+    bus_dev_t* dev
+      = (bus_dev_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+    virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
+    virtio_mmio_drv_t::virtio_blk_req_t* req
+      = new virtio_mmio_drv_t::virtio_blk_req_t;
+    req->type   = virtio_mmio_drv_t::virtio_blk_req_t::IN;
+    req->sector = _sector;
+    drv->rw(*req, _buff);
+
+    return RES_OK;
+}
+
+DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
+    DRESULT res;
+    int     result;
+    info("write\n");
+
+    bus_dev_t* dev
+      = (bus_dev_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+    virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
+
+    virtio_mmio_drv_t::virtio_blk_req_t* req
+      = new virtio_mmio_drv_t::virtio_blk_req_t;
+    req->type   = virtio_mmio_drv_t::virtio_blk_req_t::OUT;
+    req->sector = _sector;
+    void* aaa=const_cast<uint8_t*>( _buff);
+
+
+    auto size = drv->rw(*req, aaa);
+
+    warn("write done %d\n",size);
+
+    return RES_OK;
+}
+
 /**
  * @brief 内核主要逻辑
  * @note 这个函数不会返回
@@ -66,6 +111,35 @@ void kernel_main(void) {
     CPU::ENABLE_INTR();
     // 显示基本信息
     show_info();
+
+    // FatFs work area needed for each volume
+    FATFS   FatFs;
+    // File object needed for each open file
+    FIL     Fil;
+
+    UINT    bw;
+    FRESULT fr;
+
+    info("1sssssss\n");
+
+    // Give a work area to the default drive
+    auto aaa = f_mount(&FatFs, "", 0);
+    info("2sssssss %d\n",aaa);
+
+    // Create a file
+    fr = f_open(&Fil, "newfile.txt",
+                FA_WRITE | FA_CREATE_ALWAYS);
+
+    info("fr： %d\n",fr);
+
+    if (fr == FR_OK) {
+        // Write data to the file
+        f_write(&Fil, "It works!\r\n", 11, &bw);
+        // Close the file
+        fr = f_close(&Fil);
+                                                 info("sssssss\n");
+    }
+
     // 进入死循环
     while (1) {
         ;

@@ -27,6 +27,8 @@
 // Declarations of disk functions
 #include "diskio.h"
 
+//#include "dev.h"
+
 // Definitions of physical drive number for each drive
 /// Example: Map Ramdisk to physical drive 0
 #define DEV_RAM 0
@@ -35,9 +37,14 @@
 /// Example: Map USB MSD to physical drive 2
 #define DEV_USB 2
 
+DWORD get_fattime(void){
+    return 0;
+}
+
 DSTATUS disk_status(BYTE _pdrv) {
     DSTATUS stat;
     int     result;
+
 
     switch (_pdrv) {
         case DEV_RAM:
@@ -92,82 +99,82 @@ DSTATUS disk_initialize(BYTE _pdrv) {
     }
     return STA_NOINIT;
 }
+//
+//DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
+//    DRESULT res;
+//    int     result;
+//
+//    switch (_pdrv) {
+//        case DEV_RAM:
+//            // translate the arguments here
+//
+//            // result = RAM_disk_read(_buff, _sector, _count);
+//
+//            // translate the result code here
+//
+//            return res;
+//
+//        case DEV_MMC:
+//            // translate the arguments here
+//
+//            // result = MMC_disk_read(_buff, _sector, _count);
+//
+//            // translate the result code here
+//
+//            return res;
+//
+//        case DEV_USB:
+//            // translate the arguments here
+//
+//            // result = USB_disk_read(_buff, _sector, _count);
+//
+//            // translate the result code here
+//
+//            return res;
+//    }
+//
+//    return RES_PARERR;
+//}
+//
+//#if FF_FS_READONLY == 0
+//
+//DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
+//    DRESULT res;
+//    int     result;
+//
+//    switch (_pdrv) {
+//        case DEV_RAM:
+//            // translate the arguments here
+//
+//            // result = RAM_disk_write(_buff, _sector, _count);
+//
+//            // translate the result code here
+//
+//            return res;
+//
+//        case DEV_MMC:
+//            // translate the arguments here
+//
+//            // result = MMC_disk_write(_buff, _sector, _count);
+//
+//            // translate the result code here
+//
+//            return res;
+//
+//        case DEV_USB:
+//            // translate the arguments here
+//
+//            // result = USB_disk_write(_buff, _sector, _count);
+//
+//            // translate the result code here
+//
+//            return res;
+//    }
+//
+//    return RES_PARERR;
+//}
 
-DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
-    DRESULT res;
-    int     result;
-
-    switch (_pdrv) {
-        case DEV_RAM:
-            // translate the arguments here
-
-            // result = RAM_disk_read(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-
-        case DEV_MMC:
-            // translate the arguments here
-
-            // result = MMC_disk_read(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-
-        case DEV_USB:
-            // translate the arguments here
-
-            // result = USB_disk_read(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-    }
-
-    return RES_PARERR;
-}
-
-#if FF_FS_READONLY == 0
-
-DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
-    DRESULT res;
-    int     result;
-
-    switch (_pdrv) {
-        case DEV_RAM:
-            // translate the arguments here
-
-            // result = RAM_disk_write(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-
-        case DEV_MMC:
-            // translate the arguments here
-
-            // result = MMC_disk_write(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-
-        case DEV_USB:
-            // translate the arguments here
-
-            // result = USB_disk_write(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-    }
-
-    return RES_PARERR;
-}
-
-#endif
+//#endif
 
 DRESULT disk_ioctl(BYTE _pdrv, BYTE _cmd, void* _buff) {
     DRESULT res;
