@@ -23,26 +23,25 @@
 /* storage control modules to the FatFs module with a defined API.       */
 /*-----------------------------------------------------------------------*/
 
-/* Obtains integer types */
+// Obtains integer types
 #include "ff.h"
-/* Declarations of disk functions */
+// Declarations of disk functions
 #include "diskio.h"
 
-/* Definitions of physical drive number for each drive */
-/* Example: Map Ramdisk to physical drive 0 */
+// Definitions of physical drive number for each drive
+/// Example: Map Ramdisk to physical drive 0
 #define DEV_RAM 0
-/* Example: Map MMC/SD card to physical drive 1 */
+/// Example: Map MMC/SD card to physical drive 1
 #define DEV_MMC 1
-/* Example: Map USB MSD to physical drive 2 */
+/// Example: Map USB MSD to physical drive 2
 #define DEV_USB 2
 
-/*-----------------------------------------------------------------------*/
-/* Get Drive Status                                                      */
-/*-----------------------------------------------------------------------*/
-
-DSTATUS disk_status(
-  /* Physical drive number to identify the drive */
-  BYTE _pdrv) {
+/**
+ * @brief Get Drive Status
+ * @param  _pdrv            Physical drive number to identify the drive
+ * @return DSTATUS          Drive Status
+ */
+DSTATUS disk_status(BYTE _pdrv) {
     DSTATUS stat;
     int     result;
 
@@ -71,13 +70,12 @@ DSTATUS disk_status(
     return STA_NOINIT;
 }
 
-/*-----------------------------------------------------------------------*/
-/* Inidialize a Drive                                                    */
-/*-----------------------------------------------------------------------*/
-
-DSTATUS disk_initialize(
-  /* Physical drive number to identify the drive */
-  BYTE _pdrv) {
+/**
+ * @brief Inidialize a Drive
+ * @param  _pdrv            Physical drive number to identify the drive
+ * @return DSTATUS          result
+ */
+DSTATUS disk_initialize(BYTE _pdrv) {
     DSTATUS stat;
     int     result;
 
@@ -106,19 +104,15 @@ DSTATUS disk_initialize(
     return STA_NOINIT;
 }
 
-/*-----------------------------------------------------------------------*/
-/* Read Sector(s)                                                        */
-/*-----------------------------------------------------------------------*/
-
-DRESULT disk_read(
-  /* Physical drive number to identify the drive */
-  BYTE  _pdrv,
-  /* Data buffer to store read data */
-  BYTE* _buff,
-  /* Start sector in LBA */
-  LBA_t _sector,
-  /* Number of sectors to read */
-  UINT  _count) {
+/**
+ * @brief Read Sector(s)
+ * @param  _pdrv            Physical drive number to identify the drive
+ * @param  _buff            Data buffer to store read data
+ * @param  _sector          Start sector in LBA
+ * @param  _count           Number of sectors to read
+ * @return DRESULT          result
+ */
+DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
     DRESULT res;
     int     result;
 
@@ -154,21 +148,17 @@ DRESULT disk_read(
     return RES_PARERR;
 }
 
-/*-----------------------------------------------------------------------*/
-/* Write Sector(s)                                                       */
-/*-----------------------------------------------------------------------*/
-
 #if FF_FS_READONLY == 0
 
-DRESULT disk_write(
-  /* Physical drive number to identify the drive */
-  BYTE        _pdrv,
-  /* Data to be written */
-  const BYTE* _buff,
-  /* Start sector in LBA */
-  LBA_t       _sector,
-  /* Number of sectors to write */
-  UINT        _count) {
+/**
+ * @brief Write Sector(s)
+ * @param  _pdrv            Physical drive number to identify the drive
+ * @param  _buff            Data to be written
+ * @param  _sector          Start sector in LBA
+ * @param  _count           Number of sectors to write
+ * @return DRESULT          result
+ */
+DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
     DRESULT res;
     int     result;
 
@@ -206,17 +196,14 @@ DRESULT disk_write(
 
 #endif
 
-/*-----------------------------------------------------------------------*/
-/* Miscellaneous Functions                                               */
-/*-----------------------------------------------------------------------*/
-
-DRESULT disk_ioctl(
-  /* Physical drive number (0..) */
-  BYTE  _pdrv,
-  /* Control code */
-  BYTE  _cmd,
-  /* Buffer to send/receive control data */
-  void* _buff) {
+/**
+ * @brief Miscellaneous Functions
+ * @param  _pdrv            Physical drive number (0..)
+ * @param  _cmd             Control code
+ * @param  _buff            Buffer to send/receive control data
+ * @return DRESULT          result
+ */
+DRESULT disk_ioctl(BYTE _pdrv, BYTE _cmd, void* _buff) {
     DRESULT res;
     int     result;
 
