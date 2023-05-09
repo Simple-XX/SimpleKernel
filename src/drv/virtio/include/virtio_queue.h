@@ -10,14 +10,15 @@
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * <tr><td>2021-12-01<td>Zone.N<td>迁移到 doxygen
  * </table>
  */
 
-#ifndef _VIRTIO_QUEUE_H_
-#define _VIRTIO_QUEUE_H_
+#ifndef SIMPLEKERNEL_VIRTIO_QUEUE_H
+#define SIMPLEKERNEL_VIRTIO_QUEUE_H
 
-#include "stdint.h"
+#include "cstddef"
+#include "cstdint"
 
 /**
  * @brief virtio 队列
@@ -25,32 +26,32 @@
  */
 struct virtio_queue_t {
     // Arbitrary descriptor layouts.
-    static constexpr const uint32_t VIRTIO_F_ANY_LAYOUT = 27;
+    static constexpr const uint32_t VIRTIO_F_ANY_LAYOUT    = 27;
     // Support for indirect descriptors
     static constexpr const uint32_t VIRTIO_F_INDIRECT_DESC = 28;
     // Support for avail_event and used_event fields
-    static constexpr const uint32_t VIRTIO_F_EVENT_IDX = 29;
+    static constexpr const uint32_t VIRTIO_F_EVENT_IDX     = 29;
 
     // virtio-v1.1#2.6.5
     struct virtq_desc_t {
         /// This marks a buffer as continuing via the next field.
-        static constexpr const uint32_t VIRTQ_DESC_F_NEXT = 1;
+        static constexpr const uint32_t VIRTQ_DESC_F_NEXT     = 1;
         /// This marks a buffer as write-only (otherwise read-only).
-        static constexpr const uint32_t VIRTQ_DESC_F_WRITE = 2;
+        static constexpr const uint32_t VIRTQ_DESC_F_WRITE    = 2;
         /// This means the buffer contains a list of buffer descriptors.
         static constexpr const uint32_t VIRTQ_DESC_F_INDIRECT = 4;
         /// 对齐大小
-        static constexpr const size_t ALIGN = 16;
+        static constexpr const size_t   ALIGN                 = 16;
         /// Address(guest - physical).
-        uint64_t addr;
+        uint64_t                        addr;
         /// Length.
         // 当描述符作为节点连接一个描述符表时，描述符项的个数为
         // len/sizeof(virtq_desc_t)
-        uint32_t len;
+        uint32_t                        len;
         /// The flags as indicated above.
-        uint16_t flags;
+        uint16_t                        flags;
         /// Next field if flags & NEXT
-        uint16_t next;
+        uint16_t                        next;
     } __attribute__((packed));
 
     /**
@@ -60,11 +61,11 @@ struct virtio_queue_t {
     struct virtq_avail_t {
         static constexpr const uint32_t VIRTQ_AVAIL_F_NO_INTERRUPT = 1;
         /// 对齐大小
-        static constexpr const size_t ALIGN = 2;
-        uint16_t                      flags;
-        uint16_t                      idx;
+        static constexpr const size_t   ALIGN                      = 2;
+        uint16_t                        flags;
+        uint16_t                        idx;
         // queue size
-        uint16_t ring[];
+        uint16_t                        ring[];
         // Only if VIRTIO_F_EVENT_IDX
         // uint16_t used_event;
     } __attribute__((packed));
@@ -87,11 +88,11 @@ struct virtio_queue_t {
     struct virtq_used_t {
         static constexpr const uint32_t VIRTQ_USED_F_NO_NOTIFY = 1;
         /// 对齐大小
-        static constexpr const size_t ALIGN = 4;
-        uint16_t                      flags;
-        uint16_t                      idx;
+        static constexpr const size_t   ALIGN                  = 4;
+        uint16_t                        flags;
+        uint16_t                        idx;
         // queue size
-        virtq_used_elem_t ring[];
+        virtq_used_elem_t               ring[];
         // Only if VIRTIO_F_EVENT_IDX
         // uint16_t avail_event;
     } __attribute__((packed));
@@ -101,18 +102,18 @@ struct virtio_queue_t {
      */
     struct virtq_t {
         // 此结构的物理地址
-        uint64_t phys;
+        uint64_t                phys;
         // 数组长度
         uint32_t                len;
         uint32_t                seen_used;
         uint32_t                free_desc;
-        volatile virtq_desc_t  *desc;
-        volatile virtq_avail_t *avail;
-        volatile uint16_t      *used_event;
-        volatile virtq_used_t  *used;
-        volatile uint16_t      *avail_event;
+        virtq_desc_t volatile*  desc;
+        virtq_avail_t volatile* avail;
+        uint16_t volatile*      used_event;
+        virtq_used_t volatile*  used;
+        uint16_t volatile*      avail_event;
         // 此结构的虚拟地址
-        void **desc_virt;
+        void**                  desc_virt;
     } __attribute__((packed));
 
     // virtq_t 各个结构体的偏移
@@ -124,7 +125,7 @@ struct virtio_queue_t {
     uint64_t off_desc_virt;
 
     /// 队列指针
-    virtq_t *virtq;
+    virtq_t* virtq;
 
     /**
      * @brief 构造函数
@@ -139,13 +140,13 @@ struct virtio_queue_t {
      * @param  _addr            队列地址
      * @return uint32_t         可用的 desc 地址
      */
-    uint32_t alloc_desc(void *_addr);
+    uint32_t alloc_desc(void* _addr);
 
     /**
      * @brief 回收 desc
      * @param  _desc            要回收的 desc
      */
-    void free_desc(uint32_t _desc);
+    void     free_desc(uint32_t _desc);
 };
 
-#endif /* _VIRTIO_QUEUE_H_ */
+#endif /* SIMPLEKERNEL_VIRTIO_QUEUE_H */

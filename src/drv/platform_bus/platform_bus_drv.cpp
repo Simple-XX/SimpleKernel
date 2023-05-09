@@ -21,7 +21,7 @@ platform_bus_drv_t::platform_bus_drv_t(void)
     return;
 }
 
-platform_bus_drv_t::platform_bus_drv_t(const resource_t &)
+platform_bus_drv_t::platform_bus_drv_t(const resource_t&)
     : drv_t("platform_bus driver", "platform_bus_drv_t") {
     return;
 }

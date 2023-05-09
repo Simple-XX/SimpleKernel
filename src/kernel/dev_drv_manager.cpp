@@ -14,12 +14,12 @@
  * </table>
  */
 
-#include "stdio.h"
+#include "dev_drv_manager.h"
 #include "boot_info.h"
 #include "intr.h"
-#include "dev_drv_manager.h"
 #include "platform_bus_dev.h"
 #include "platform_bus_drv.h"
+#include "cstdio"
 #include "virtio_mmio_drv.h"
 
 void virtio_intr_handler(void) {
@@ -80,7 +80,7 @@ DEV_DRV_MANAGER::~DEV_DRV_MANAGER(void) {
     return;
 }
 
-DEV_DRV_MANAGER &DEV_DRV_MANAGER::get_instance(void) {
+DEV_DRV_MANAGER& DEV_DRV_MANAGER::get_instance(void) {
     /// 定义全局 DEV_DRV_MANAGER 对象
     static DEV_DRV_MANAGER dev_drv_manager;
     return dev_drv_manager;
@@ -92,29 +92,30 @@ bool DEV_DRV_MANAGER::init(void) {
     // 获取 virtio 设备信息
     resource_t virtio_mmio_dev_resources[8];
     // 获取信息
-    auto virtio_mmio_dev_resources_count =
-        BOOT_INFO::find_via_prefix("virtio_mmio@", virtio_mmio_dev_resources);
+    auto       virtio_mmio_dev_resources_count
+      = BOOT_INFO::find_via_prefix("virtio_mmio@", virtio_mmio_dev_resources);
     // 转换为向量
-    auto virtio_mmio_dev_resources_vector = new mystl::vector<resource_t>(
-        virtio_mmio_dev_resources,
-        virtio_mmio_dev_resources + virtio_mmio_dev_resources_count);
+    auto virtio_mmio_dev_resources_vector
+      = new mystl::vector<resource_t>(virtio_mmio_dev_resources,
+                                      virtio_mmio_dev_resources
+                                        + virtio_mmio_dev_resources_count);
     // 添加 virtio 总线
     /// @todo 需要改进
     resource_t tmp;
-    tmp.name = (char *)"virtio_tmp bus";
+    tmp.name = (char*)"virtio_tmp bus";
     auto bus = new platform_bus_dev_t(tmp);
     add_bus(*bus);
     // 每个 resource 对应一个总线设备
     for (auto i : *virtio_mmio_dev_resources_vector) {
         // 设置每个设备的名称与驱动名
-        auto virtio_dev = new virtio_dev_t(i);
+        auto virtio_dev             = new virtio_dev_t(i);
         // 设备名
-        virtio_dev->dev_name = i.name;
+        virtio_dev->dev_name        = i.name;
         // 需要的驱动名
         /// @todo 这里需要 compatible 字段
         virtio_dev->compatible_name = "virtio,mmio";
         // 所属总线名
-        virtio_dev->bus_name = "vortio";
+        virtio_dev->bus_name        = "virtio";
         // 添加到总线的设备向量
         bus->add_dev(virtio_dev);
     }
@@ -131,13 +132,13 @@ bool DEV_DRV_MANAGER::init(void) {
     return true;
 }
 
-bool DEV_DRV_MANAGER::add_bus(bus_dev_t &_bus) {
+bool DEV_DRV_MANAGER::add_bus(bus_dev_t& _bus) {
     buss.push_back(&_bus);
     return true;
 }
 
-dev_t *DEV_DRV_MANAGER::get_dev_via_intr_no(uint8_t _no) {
-    dev_t *res = nullptr;
+dev_t* DEV_DRV_MANAGER::get_dev_via_intr_no(uint8_t _no) {
+    dev_t* res = nullptr;
     for (auto i : buss) {
         res = i->get_dev_via_intr_no(_no);
         if (res != nullptr) {

@@ -10,7 +10,7 @@
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-12-01<td>MRNIU<td>迁移到 doxygen
+ * <tr><td>2021-12-01<td>Zone.N<td>迁移到 doxygen
  * </table>
  */
 

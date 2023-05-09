@@ -14,22 +14,24 @@
  * </table>
  */
 
-#ifndef _PLATFORM_BUS_DRV_H_
-#define _PLATFORM_BUS_DRV_H_
+#ifndef SIMPLEKERNEL_PLATFORM_BUS_DRV_H
+#define SIMPLEKERNEL_PLATFORM_BUS_DRV_H
 
 #include "drv.h"
 
 // 平台总线
 struct platform_bus_drv_t : drv_t {
 private:
+
 protected:
+
 public:
     platform_bus_drv_t(void);
-    platform_bus_drv_t(const resource_t &_resource);
+    platform_bus_drv_t(const resource_t& _resource);
     ~platform_bus_drv_t(void);
     bool init(void) override final;
 };
 
 declare_call_back(platform_bus_drv_t);
 
-#endif /* _PLATFORM_BUS_DRV_H_ */
+#endif /* SIMPLEKERNEL_PLATFORM_BUS_DRV_H */
