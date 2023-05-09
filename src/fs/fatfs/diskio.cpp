@@ -41,21 +41,21 @@ DSTATUS disk_status(BYTE _pdrv) {
 
     switch (_pdrv) {
         case DEV_RAM:
-            result = RAM_disk_status();
+            // result = RAM_disk_status();
 
             // translate the result code here
 
             return stat;
 
         case DEV_MMC:
-            result = MMC_disk_status();
+            // result = MMC_disk_status();
 
             // translate the result code here
 
             return stat;
 
         case DEV_USB:
-            result = USB_disk_status();
+            // result = USB_disk_status();
 
             // translate the result code here
 
@@ -70,21 +70,21 @@ DSTATUS disk_initialize(BYTE _pdrv) {
 
     switch (_pdrv) {
         case DEV_RAM:
-            result = RAM_disk_initialize();
+            // result = RAM_disk_initialize();
 
             // translate the result code here
 
             return stat;
 
         case DEV_MMC:
-            result = MMC_disk_initialize();
+            // result = MMC_disk_initialize();
 
             // translate the result code here
 
             return stat;
 
         case DEV_USB:
-            result = USB_disk_initialize();
+            // result = USB_disk_initialize();
 
             // translate the result code here
 
@@ -101,7 +101,7 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
         case DEV_RAM:
             // translate the arguments here
 
-            result = RAM_disk_read(_buff, _sector, _count);
+            // result = RAM_disk_read(_buff, _sector, _count);
 
             // translate the result code here
 
@@ -110,7 +110,7 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
         case DEV_MMC:
             // translate the arguments here
 
-            result = MMC_disk_read(_buff, _sector, _count);
+            // result = MMC_disk_read(_buff, _sector, _count);
 
             // translate the result code here
 
@@ -119,7 +119,7 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
         case DEV_USB:
             // translate the arguments here
 
-            result = USB_disk_read(_buff, _sector, _count);
+            // result = USB_disk_read(_buff, _sector, _count);
 
             // translate the result code here
 
@@ -139,7 +139,7 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
         case DEV_RAM:
             // translate the arguments here
 
-            result = RAM_disk_write(_buff, _sector, _count);
+            // result = RAM_disk_write(_buff, _sector, _count);
 
             // translate the result code here
 
@@ -148,7 +148,7 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
         case DEV_MMC:
             // translate the arguments here
 
-            result = MMC_disk_write(_buff, _sector, _count);
+            // result = MMC_disk_write(_buff, _sector, _count);
 
             // translate the result code here
 
@@ -157,7 +157,7 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
         case DEV_USB:
             // translate the arguments here
 
-            result = USB_disk_write(_buff, _sector, _count);
+            // result = USB_disk_write(_buff, _sector, _count);
 
             // translate the result code here
 
