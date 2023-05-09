@@ -70,7 +70,14 @@
         "algobase": "cpp",
         "allocator": "cpp",
         "astring": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "rope": "cpp",
+        "regex": "cpp",
+        "*.def": "cpp",
+        "forward_list": "cpp",
+        "slist": "cpp",
+        "valarray": "cpp",
+        "span": "cpp"
     },
     "cmake.configureOnOpen": true,
     // --------Doxygen--------

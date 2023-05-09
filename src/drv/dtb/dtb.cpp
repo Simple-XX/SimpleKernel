@@ -15,14 +15,14 @@
  * </table>
  */
 
-#include "stdint.h"
+#include "string.h"
 #include "stdio.h"
-#include "endian.h"
 #include "assert.h"
 #include "common.h"
 #include "boot_info.h"
 #include "resource.h"
 #include "dtb.h"
+#include "iostream"
 
 // 所有节点
 DTB::node_t DTB::nodes[MAX_NODES];

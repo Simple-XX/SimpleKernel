@@ -234,10 +234,10 @@ int test_vfs(void) {
     VFS::get_instance().mkdir("/233/555", 0);
     fd_t fd  = VFS::get_instance().open("/233/555/test.c", O_CREAT);
     char a[] = "test233.c";
-    // VFS::get_instance().write(fd, a, 10);
-    // char b[10];
-    // VFS::get_instance().read(fd, b, 10);
-    // assert(strcmp(a, b) == 0);
-    // printf("vfs test done.\n");
+    VFS::get_instance().write(fd, a, 10);
+    char b[10];
+    VFS::get_instance().read(fd, b, 10);
+    assert(strcmp(a, b) == 0);
+    printf("vfs test done.\n");
     return 0;
 }
