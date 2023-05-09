@@ -34,18 +34,41 @@
 
 #include "virtio_mmio_drv.h"
 
+
+#define BSIZE 1024  // block size
+struct buf {
+    int valid;   // has data been read from disk?
+    int disk;    // does disk "own" buf?
+    uint32_t dev;
+    uint32_t blockno;
+    //    struct sleeplock lock;
+    uint32_t refcnt;
+    struct buf *prev; // LRU cache list
+    struct buf *next;
+    uint8_t data[BSIZE];
+};
+extern void virtio_disk_rw(struct buf *b, int write);
+
+
 DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
     DRESULT    res;
     int        result;
-info("read\n");
-    bus_dev_t* dev
-      = (bus_dev_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
-    virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
-    virtio_mmio_drv_t::virtio_blk_req_t* req
-      = new virtio_mmio_drv_t::virtio_blk_req_t;
-    req->type   = virtio_mmio_drv_t::virtio_blk_req_t::IN;
-    req->sector = _sector;
-    drv->rw(*req, _buff);
+info("read _sector: 0x%X, _count: 0x%X\n",_sector,_count);
+//    bus_dev_t* dev
+//      = (bus_dev_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+//    virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
+//    virtio_mmio_drv_t::virtio_blk_req_t* req
+//      = new virtio_mmio_drv_t::virtio_blk_req_t;
+//    req->type   = virtio_mmio_drv_t::virtio_blk_req_t::IN;
+//    req->sector = _sector;
+//    drv->rw(*req, _buff);
+for(int i = 0; i < _count; i++){
+    struct buf a;
+//    a.data = _buff;
+    a.blockno = _sector /2;
+    virtio_disk_rw(&a, 0);
+}
+
 
     return RES_OK;
 }
@@ -53,7 +76,7 @@ info("read\n");
 DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
     DRESULT res;
     int     result;
-    info("write\n");
+    info("write _sector: 0x%X, _count: 0x%X\n",_sector,_count);
 
     bus_dev_t* dev
       = (bus_dev_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);

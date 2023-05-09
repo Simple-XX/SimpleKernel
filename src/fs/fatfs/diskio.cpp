@@ -70,11 +70,11 @@ DSTATUS disk_status(BYTE _pdrv) {
     }
     return STA_NOINIT;
 }
-
+extern void virtio_disk_init();
 DSTATUS disk_initialize(BYTE _pdrv) {
     DSTATUS stat;
     int     result;
-
+    virtio_disk_init();
     switch (_pdrv) {
         case DEV_RAM:
             // result = RAM_disk_initialize();
