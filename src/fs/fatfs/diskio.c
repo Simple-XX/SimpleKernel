@@ -7,6 +7,7 @@
  * @date 2023-05-08
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
+ * Based on http://elm-chan.org/fsw/ff/00index_e.html
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
@@ -36,11 +37,6 @@
 /// Example: Map USB MSD to physical drive 2
 #define DEV_USB 2
 
-/**
- * @brief Get Drive Status
- * @param  _pdrv            Physical drive number to identify the drive
- * @return DSTATUS          Drive Status
- */
 DSTATUS disk_status(BYTE _pdrv) {
     DSTATUS stat;
     int     result;
@@ -70,11 +66,6 @@ DSTATUS disk_status(BYTE _pdrv) {
     return STA_NOINIT;
 }
 
-/**
- * @brief Inidialize a Drive
- * @param  _pdrv            Physical drive number to identify the drive
- * @return DSTATUS          result
- */
 DSTATUS disk_initialize(BYTE _pdrv) {
     DSTATUS stat;
     int     result;
@@ -104,14 +95,6 @@ DSTATUS disk_initialize(BYTE _pdrv) {
     return STA_NOINIT;
 }
 
-/**
- * @brief Read Sector(s)
- * @param  _pdrv            Physical drive number to identify the drive
- * @param  _buff            Data buffer to store read data
- * @param  _sector          Start sector in LBA
- * @param  _count           Number of sectors to read
- * @return DRESULT          result
- */
 DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
     DRESULT res;
     int     result;
@@ -150,14 +133,6 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
 
 #if FF_FS_READONLY == 0
 
-/**
- * @brief Write Sector(s)
- * @param  _pdrv            Physical drive number to identify the drive
- * @param  _buff            Data to be written
- * @param  _sector          Start sector in LBA
- * @param  _count           Number of sectors to write
- * @return DRESULT          result
- */
 DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
     DRESULT res;
     int     result;
@@ -196,13 +171,6 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
 
 #endif
 
-/**
- * @brief Miscellaneous Functions
- * @param  _pdrv            Physical drive number (0..)
- * @param  _cmd             Control code
- * @param  _buff            Buffer to send/receive control data
- * @return DRESULT          result
- */
 DRESULT disk_ioctl(BYTE _pdrv, BYTE _cmd, void* _buff) {
     DRESULT res;
     int     result;
