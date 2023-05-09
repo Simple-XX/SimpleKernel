@@ -59,6 +59,7 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/dev)
+add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/fs)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 
@@ -69,6 +70,7 @@ add_executable(${KernelName}
     $<TARGET_OBJECTS:libcxx>
     $<TARGET_OBJECTS:drv>
     $<TARGET_OBJECTS:dev>
+    $<TARGET_OBJECTS:filesystem>
     $<TARGET_OBJECTS:kernel>)
 
 # 指定链接脚本

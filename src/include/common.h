@@ -36,7 +36,7 @@ static const uintptr_t KERNEL_END_ADDR = reinterpret_cast<uintptr_t>(end);
 
     // 规定数据大小，方便用
     /// 一个字节，8 bits
-    static constexpr const size_t BYTE = 0x1;
+//    static constexpr const size_t BYTE = 0x1;
     /// 1KB
     static constexpr const size_t KB = 0x400;
     /// 1MB
