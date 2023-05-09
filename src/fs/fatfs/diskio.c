@@ -1,7 +1,7 @@
 
 /**
  * @file diskio.c
- * @brief fat 文件系统底层 io 实现
+ * @brief Low level disk I/O module SKELETON for FatFs
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-05-08
@@ -15,8 +15,6 @@
  * </table>
  */
 
-/*-----------------------------------------------------------------------*/
-/* Low level disk I/O module SKELETON for FatFs     (C)ChaN, 2019        */
 /*-----------------------------------------------------------------------*/
 /* If a working storage control module is available, it should be        */
 /* attached to the FatFs via a glue function rather than modifying it.   */

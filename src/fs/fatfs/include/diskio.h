@@ -1,7 +1,7 @@
 
 /**
  * @file diskio.h
- * @brief fat 文件系统底层 io
+ * @brief Low level disk interface module include file
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-05-08
@@ -17,10 +17,6 @@
 
 #ifndef SIMPLEKERNEL_DISKIO_H
 #define SIMPLEKERNEL_DISKIO_H
-
-/*-----------------------------------------------------------------------/
-/  Low level disk interface module include file   (C)ChaN, 2019          /
-/-----------------------------------------------------------------------*/
 
 #ifndef _DISKIO_DEFINED
 #    define _DISKIO_DEFINED
