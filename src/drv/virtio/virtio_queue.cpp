@@ -41,7 +41,7 @@ virtio_queue_t::virtio_queue_t(size_t _size) {
       = COMMON::ALIGN(off_driver_event + sizeof(uint16_t), sizeof(void*));
     // 如果需要的内存大于1页则出错
     if (off_desc_virt + _size * sizeof(void*) > COMMON::PAGE_SIZE) {
-        printf("virtq_create: error, too big for two pagess\n");
+        printf("virtq_create: error, too big for two pages\n");
         return;
     }
     virtq              = (virtq_t*)kmalloc(COMMON::PAGE_SIZE);
