@@ -19,7 +19,7 @@
 #include "virtio_mmio_drv.h"
 #include "virtio_queue.h"
 
-static void virtio_blk_handle_used(dev_t* _dev, uint32_t _usedidx) {
+static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
     printf("virtio_blk_handle_used: 0x%X\n", _usedidx);
     assert(_dev != nullptr);
     virtio_mmio_drv_t*                   drv = (virtio_mmio_drv_t*)_dev->drv;
@@ -84,7 +84,7 @@ static void virtio_blk_handle_used(dev_t* _dev, uint32_t _usedidx) {
 void virtio_mmio_intr(uint8_t _no) {
     printf("virtio_mmio_intr: 0x%X\n", _no);
     // 遍历设备列表，寻找驱动号对应的设备
-    dev_t* dev = DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(_no);
+    device_base_t* dev = DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(_no);
     assert(dev != nullptr);
     virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
     drv->set_intr_ack();

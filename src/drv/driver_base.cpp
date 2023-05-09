@@ -1,6 +1,6 @@
 
 /**
- * @file drv.cpp
+ * @file driver_base.cpp
  * @brief 设备驱动基类实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,22 +14,22 @@
  * </table>
  */
 
-#include "drv.h"
+#include "driver_base.h"
 
-drv_t::drv_t(void) : name("drv_t"), type_name("drv_t typename") {
+driver_base_t::driver_base_t(void) : name("drv_t"), type_name("drv_t typename") {
     return;
 }
 
-drv_t::drv_t(const resource_t&) {
+driver_base_t::driver_base_t(const resource_t&) {
     return;
 }
 
-drv_t::drv_t(const mystl::string& _name, const mystl::string& _type_name)
+driver_base_t::driver_base_t(const mystl::string& _name, const mystl::string& _type_name)
     : name(_name), type_name(_type_name) {
     return;
 }
 
-drv_t::~drv_t(void) {
+driver_base_t::~driver_base_t(void) {
     return;
 }
 
@@ -54,14 +54,14 @@ void drv_factory_t::register_class(const mystl::string&     _class_name,
     return;
 }
 
-drv_t* drv_factory_t::get_class(const mystl::string& _class_name,
+driver_base_t* drv_factory_t::get_class(const mystl::string& _class_name,
                                 const resource_t&    _resource) const {
     auto iter = type_name_ctor_map.find(_class_name);
     if (iter == type_name_ctor_map.end()) {
-        return (drv_t*)nullptr;
+        return (driver_base_t*)nullptr;
     }
     else {
-        return (drv_t*)((iter->second)(_resource));
+        return (driver_base_t*)((iter->second)(_resource));
     }
-    return (drv_t*)nullptr;
+    return (driver_base_t*)nullptr;
 }

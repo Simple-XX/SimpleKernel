@@ -14,18 +14,20 @@
  * </table>
  */
 
-#ifndef _VIRTIO_DEV_H_
-#define _VIRTIO_DEV_H_
+#ifndef SIMPLEKERNEL_VIRTIO_DEV_H
+#define SIMPLEKERNEL_VIRTIO_DEV_H
 
-#include "dev.h"
+#include "device_base.h"
 #include "virtio_queue.h"
 
 /**
  * @brief 所有 virtio 设备的公有属性，标准文档的 #4 之外的部分
  */
-class virtio_dev_t : public dev_t {
+class virtio_dev_t : public device_base_t {
 private:
+
 protected:
+
 public:
     /**
      * @brief virtio 设备类型
@@ -61,7 +63,7 @@ public:
      * @brief virtio 设备类型名名称
      * @see virtio-v1.1#5
      */
-    static constexpr const char *const virtio_device_name[25] = {
+    static constexpr const char* const virtio_device_name[25] = {
         "reserved (invalid)",
         "network card",
         "block device",
@@ -94,21 +96,31 @@ public:
      * @see virtio-v1.1#2.1
      */
     /// OS 已识别设备
-    static constexpr const uint32_t DEVICE_STATUS_ACKNOWLEDGE = 0x1;
+    static constexpr const uint32_t DEVICE_STATUS_ACKNOWLEDGE        = 0x1;
     /// OS 已匹配驱动
-    static constexpr const uint32_t DEVICE_STATUS_DRIVER = 0x2;
+    static constexpr const uint32_t DEVICE_STATUS_DRIVER             = 0x2;
     /// 驱动准备就绪
-    static constexpr const uint32_t DEVICE_STATUS_DRIVER_OK = 0x4;
+    static constexpr const uint32_t DEVICE_STATUS_DRIVER_OK          = 0x4;
     /// 设备特性设置就绪
-    static constexpr const uint32_t DEVICE_STATUS_FEATURES_OK = 0x8;
+    static constexpr const uint32_t DEVICE_STATUS_FEATURES_OK        = 0x8;
     /// 设备设置错误
     static constexpr const uint32_t DEVICE_STATUS_DEVICE_NEEDS_RESET = 0x40;
     /// 设备出错
-    static constexpr const uint32_t DEVICE_STATUS_FAILED = 0x80;
+    static constexpr const uint32_t DEVICE_STATUS_FAILED             = 0x80;
 
     virtio_dev_t(void);
-    virtio_dev_t(const resource_t &_resource);
+    virtio_dev_t(const resource_t& _resource);
     virtual ~virtio_dev_t(void);
+
+    // 设备基本操作
+    // 从设备读
+    int read(void* _where, void* _buf) override final;
+    // 向设备写
+    int write(void* _where, void* _buf) override final;
+    // ioctl 控制
+    int ioctl(uint8_t _cmd, void* _buf) override final;
+    // 获取设备状态
+    int status(uint8_t _cmd) override final;
 };
 
-#endif /* _VIRTIO_DEV_H_ */
+#endif /* SIMPLEKERNEL_VIRTIO_DEV_H */

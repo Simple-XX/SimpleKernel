@@ -17,10 +17,10 @@
 #ifndef SIMPLEKERNEL_DEV_DRV_MANAGER_H
 #define SIMPLEKERNEL_DEV_DRV_MANAGER_H
 
-#include "bus_dev.h"
+#include "bus_device.h"
 #include "cstdint"
-#include "dev.h"
-#include "drv.h"
+#include "device_base.h"
+#include "driver_base.h"
 #include "string"
 #include "vector"
 
@@ -38,7 +38,7 @@ private:
     /**
      * @brief 总线向量
      */
-    mystl::vector<bus_dev_t*> buss;
+    mystl::vector<bus_device_t*> buss;
 
     /**
      * @brief 输出总线列表
@@ -77,14 +77,14 @@ public:
      * @return true             成功
      * @return false            失败
      */
-    bool                    add_bus(bus_dev_t& _bus);
+    bool                    add_bus(bus_device_t& _bus);
 
     /**
      * @brief 通过外部中断号寻找设备
      * @param  _no              外部中断号
      * @return dev_t*           使用该中断号的设备
      */
-    dev_t*                  get_dev_via_intr_no(uint8_t _no);
+    device_base_t*                  get_dev_via_intr_no(uint8_t _no);
 };
 
 #endif /* SIMPLEKERNEL_DEV_DRV_MANAGER_H */
