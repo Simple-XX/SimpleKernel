@@ -52,18 +52,7 @@ extern "C" {
 #    endif
 
 /// Integer types used for FatFs API
-
-/// Windows VC++ (for development only)
-#    if defined(_WIN32)
-#        define FF_INTDEF 2
-#        include <windows.h>
-typedef unsigned __int64 QWORD;
-#        include <float.h>
-#        define isnan(_v) _isnan(_v)
-#        define isinf(_v) (!_finite(_v))
-
-// C99 or later
-#    elif (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) \
+#    if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) \
       || defined(__cplusplus)
 #        define FF_INTDEF 2
 #        include <stdint.h>
@@ -79,24 +68,9 @@ typedef uint32_t      DWORD;
 typedef uint64_t      QWORD;
 /// UTF-16 character type
 typedef WORD          WCHAR;
-
-/// Earlier than C99
-#    else
-#        define FF_INTDEF 1
-/// int must be 16-bit or 32-bit
-typedef unsigned int   UINT;
-/// char must be 8-bit
-typedef unsigned char  BYTE;
-/// 16-bit unsigned integer
-typedef unsigned short WORD;
-/// 32-bit unsigned integer
-typedef unsigned long  DWORD;
-/// UTF-16 character type
-typedef WORD           WCHAR;
 #    endif
 
 /// Type of file size and LBA variables
-
 #    if FF_FS_EXFAT
 #        if FF_INTDEF != 2
 #            error exFAT feature wants C99 or later
@@ -111,12 +85,11 @@ typedef DWORD LBA_t;
 #        if FF_LBA64
 #            error exFAT needs to be enabled when enable 64-bit LBA
 #        endif
-typedef DWORD         FSIZE_t;
-typedef DWORD         LBA_t;
+typedef DWORD FSIZE_t;
+typedef DWORD LBA_t;
 #    endif
 
 /// Type of path name strings on FatFs API (TCHAR)
-
 /// Unicode in UTF-16 encoding
 #    if FF_USE_LFN && FF_LFN_UNICODE == 1
 typedef WCHAR TCHAR;
@@ -124,12 +97,12 @@ typedef WCHAR TCHAR;
 #        define _TEXT(_x) L##_x
 /// Unicode in UTF-8 encoding
 #    elif FF_USE_LFN && FF_LFN_UNICODE == 2
-typedef char          TCHAR;
+typedef char  TCHAR;
 #        define _T(_x)    u8##_x
 #        define _TEXT(_x) u8##_x
 /// Unicode in UTF-32 encoding
 #    elif FF_USE_LFN && FF_LFN_UNICODE == 3
-typedef DWORD          TCHAR;
+typedef DWORD TCHAR;
 #        define _T(_x)    U##_x
 #        define _TEXT(_x) U##_x
 #    elif FF_USE_LFN && (FF_LFN_UNICODE < 0 || FF_LFN_UNICODE > 3)
@@ -145,12 +118,12 @@ typedef char TCHAR;
 
 /// Multiple partition configuration
 #    if FF_MULTI_PARTITION
-typedef struct {
+struct PARTITION {
     /// Physical drive number
     BYTE pd;
     /// Partition: 0:Auto detect, 1-4:Forced partition)
     BYTE pt;
-} PARTITION;
+};
 
 /// Volume - Partition mapping table
 extern PARTITION VolToPart[];
@@ -164,7 +137,7 @@ extern const char* VolumeStr[FF_VOLUMES];
 #    endif
 
 /// Filesystem object structure (FATFS)
-typedef struct {
+struct FATFS {
     /// Filesystem type (0:not mounted)
     BYTE fs_type;
     /// Volume hosting physical drive
@@ -233,10 +206,10 @@ typedef struct {
     LBA_t winsect;
     /// Disk access window for Directory, FAT (and file data at tiny cfg)
     BYTE  win[FF_MAX_SS];
-} FATFS;
+};
 
 /// Object ID and allocation information (FFOBJID)
-typedef struct {
+struct FFOBJID {
     /// Pointer to the hosting volume of this object
     FATFS*  fs;
     /// Hosting volume's mount ID
@@ -268,10 +241,10 @@ typedef struct {
     /// File lock ID origin from 1 (index of file semaphore table Files[])
     UINT lockid;
 #    endif
-} FFOBJID;
+};
 
 /// File object structure (FIL)
-typedef struct {
+struct FIL {
     /// Object identifier (must be the 1st member to detect invalid object
     /// pointer)
     FFOBJID obj;
@@ -300,10 +273,10 @@ typedef struct {
     /// File private data read/write window
     BYTE buf[FF_MAX_SS];
 #    endif
-} FIL;
+};
 
 /// Directory object structure (DIR)
-typedef struct {
+struct DIR {
     /// Object identifier
     FFOBJID obj;
     /// Current read/write offset
@@ -324,10 +297,10 @@ typedef struct {
     /// Pointer to the name matching pattern
     const TCHAR* pat;
 #    endif
-} DIR;
+};
 
 /// File information structure (FILINFO)
-typedef struct {
+struct FILINFO {
     /// File size
     FSIZE_t fsize;
     /// Modified date
@@ -345,10 +318,10 @@ typedef struct {
     /// File name
     TCHAR fname[12 + 1];
 #    endif
-} FILINFO;
+};
 
 /// Format parameter structure (MKFS_PARM)
-typedef struct {
+struct MKFS_PARM {
     /// Format option (FM_FAT, FM_FAT32, FM_EXFAT and FM_SFD)
     BYTE  fmt;
     /// Number of FATs
@@ -359,12 +332,12 @@ typedef struct {
     UINT  n_root;
     /// Cluster size (byte)
     DWORD au_size;
-} MKFS_PARM;
+};
 
 /**
  * @brief File function return code (FRESULT)
  */
-typedef enum {
+enum FRESULT {
     /// (0) Succeeded
     FR_OK = 0,
     /// (1) A hard error occurred in the low level disk I/O layer
@@ -405,7 +378,7 @@ typedef enum {
     FR_TOO_MANY_OPEN_FILES,
     /// (19) Given parameter is invalid
     FR_INVALID_PARAMETER
-} FRESULT;
+};
 
 // FatFs Module Application Interface
 
@@ -817,41 +790,41 @@ void ff_mutex_give(int _vol);
 /// Flags and Offset Address
 
 /// File access mode and open method flags (3rd argument of f_open)
-#    define FA_READ          0x01
-#    define FA_WRITE         0x02
-#    define FA_OPEN_EXISTING 0x00
-#    define FA_CREATE_NEW    0x04
-#    define FA_CREATE_ALWAYS 0x08
-#    define FA_OPEN_ALWAYS   0x10
-#    define FA_OPEN_APPEND   0x30
+static constexpr const uint32_t FA_READ          = 0x01;
+static constexpr const uint32_t FA_WRITE         = 0x02;
+static constexpr const uint32_t FA_OPEN_EXISTING = 0x00;
+static constexpr const uint32_t FA_CREATE_NEW    = 0x04;
+static constexpr const uint32_t FA_CREATE_ALWAYS = 0x08;
+static constexpr const uint32_t FA_OPEN_ALWAYS   = 0x10;
+static constexpr const uint32_t FA_OPEN_APPEND   = 0x30;
 
 /// Fast seek controls (2nd argument of f_lseek)
-#    define CREATE_LINKMAP   ((FSIZE_t)0 - 1)
+static constexpr const uint32_t CREATE_LINKMAP   = ((FSIZE_t)0 - 1);
 
 /// Format options (2nd argument of f_mkfs)
-#    define FM_FAT           0x01
-#    define FM_FAT32         0x02
-#    define FM_EXFAT         0x04
-#    define FM_ANY           0x07
-#    define FM_SFD           0x08
+static constexpr const uint32_t FM_FAT           = 0x01;
+static constexpr const uint32_t FM_FAT32         = 0x02;
+static constexpr const uint32_t FM_EXFAT         = 0x04;
+static constexpr const uint32_t FM_ANY           = 0x07;
+static constexpr const uint32_t FM_SFD           = 0x08;
 
 /// Filesystem type (FATFS.fs_type)
-#    define FS_FAT12         1
-#    define FS_FAT16         2
-#    define FS_FAT32         3
-#    define FS_EXFAT         4
+static constexpr const uint32_t FS_FAT12         = 1;
+static constexpr const uint32_t FS_FAT16         = 2;
+static constexpr const uint32_t FS_FAT32         = 3;
+static constexpr const uint32_t FS_EXFAT         = 4;
 
 /// File attribute bits for directory entry (FILINFO.fattrib)
 /// Read only
-#    define AM_RDO           0x01
+static constexpr const uint32_t AM_RDO           = 0x01;
 /// Hidden
-#    define AM_HID           0x02
+static constexpr const uint32_t AM_HID           = 0x02;
 /// System
-#    define AM_SYS           0x04
+static constexpr const uint32_t AM_SYS           = 0x04;
 /// Directory
-#    define AM_DIR           0x10
+static constexpr const uint32_t AM_DIR           = 0x10;
 /// Archive
-#    define AM_ARC           0x20
+static constexpr const uint32_t AM_ARC           = 0x20;
 
 #    ifdef __cplusplus
 }
