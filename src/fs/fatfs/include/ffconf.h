@@ -1,12 +1,13 @@
 
 /**
  * @file ffconf.h
- * @brief fat 文件系统配置文件
+ * @brief Configurations of FatFs Module
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-05-08
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
+ * Based on http://elm-chan.org/fsw/ff/00index_e.html
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
@@ -16,10 +17,6 @@
 
 #ifndef SIMPLEKERNEL_FFCONF_H
 #define SIMPLEKERNEL_FFCONF_H
-
-/*---------------------------------------------------------------------------/
-/  Configurations of FatFs Module
-/---------------------------------------------------------------------------*/
 
 /* Revision ID */
 #define FFCONF_DEF         80286
