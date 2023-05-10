@@ -17,6 +17,7 @@
 #ifndef SIMPLEKERNEL_DRIVER_BASE_H
 #define SIMPLEKERNEL_DRIVER_BASE_H
 
+#include "buf.h"
 #include "cstdint"
 #include "map"
 #include "resource.h"
@@ -39,29 +40,26 @@ public:
 
     /**
      * @brief 从设备读
-     * @param  _resource        设备使用的资源
-     * @param  _drv             设备使用的驱动
+     * @param  _buf             缓冲区
      */
-    virtual int          read(void* _where, void* _buf)  = 0;
+    virtual int          read(buf_t& _buf)               = 0;
 
     /**
      * @brief 向设备写
-     * @param  _resource        设备使用的资源
-     * @param  _drv             设备使用的驱动
+     * @param  _buf             缓冲区
      */
-    virtual int          write(void* _where, void* _buf) = 0;
+    virtual int          write(buf_t& _buf)              = 0;
 
     /**
      * @brief ioctl 控制
      * @param  _resource        设备使用的资源
-     * @param  _drv             设备使用的驱动
+     * @param  _buf             缓冲区
      */
     virtual int          ioctl(uint8_t _cmd, void* _buf) = 0;
 
     /**
      * @brief 获取设备状态
-     * @param  _resource        设备使用的资源
-     * @param  _drv             设备使用的驱动
+     *@param  _cmd             指令
      */
     virtual int          status(uint8_t _cmd)            = 0;
 

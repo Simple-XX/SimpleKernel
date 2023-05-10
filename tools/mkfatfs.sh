@@ -10,11 +10,11 @@
 # dst = /mnt  space aside "=" is wrong!!!
 dst=/mnt
 # echo $dst
-dd if=/dev/zero of=fs.img bs=512k count=512
+dd if=/dev/zero of=fatfs.img bs=512k count=512
 # echo $dst
-mkfs.vfat -F 32 -s 4 fs.img
+mkfs.vfat -F 32 -s 4 fatfs.img
 # echo $dst
-sudo mount fs.img $dst
+sudo mount fatfs.img $dst
 # echo $dst
 # echo hi
 cd $dst

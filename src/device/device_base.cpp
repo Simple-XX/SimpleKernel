@@ -33,12 +33,12 @@ device_base_t::~device_base_t(void) {
     return;
 }
 
-int device_base_t::read(void* _where, void* _buf) {
-    return drv->read(_where, _buf);
+int device_base_t::read(buf_t& _buf) {
+    return drv->read(_buf);
 }
 
-int device_base_t::write(void* _where, void* _buf) {
-    return drv->write(_where, _buf);
+int device_base_t::write(buf_t& _buf) {
+    return drv->write(_buf);
 }
 
 int device_base_t::ioctl(uint8_t _cmd, void* _buf) {
