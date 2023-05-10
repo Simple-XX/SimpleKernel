@@ -128,9 +128,16 @@ void DTB::print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
 
 void DTB::fill_resource(resource_t *_resource, const node_t *_node,
                         const prop_t *_prop) {
-    // 如果 _resource 名称为空则使用 _node 路径填充
+    // 如果 _resource 名称为空则使用 compatible，如果没有找到则使用 _node 路径
     if (_resource->name == nullptr) {
-        _resource->name = _node->path.path[_node->path.len - 1];
+        for (auto i = 0; i < _node->prop_count; i++) {
+            if (strcmp(_node->props[i].name, "compatible") == 0) {
+                _resource->name = (char*)_node->props[i].addr;
+            }
+            if (_resource->name == nullptr) {
+                _resource->name = _node->path.path[_node->path.len - 1];
+            }
+        }
     }
     // 内存类型
     if ((_resource->type & resource_t::MEM) && (_resource->mem.len == 0)) {
