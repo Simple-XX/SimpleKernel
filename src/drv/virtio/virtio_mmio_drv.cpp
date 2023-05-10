@@ -234,28 +234,11 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     // 注册外部中断处理函数
     PLIC::get_instance().register_externel_handler(1, virtio_mmio_intr);
     printf("virtio blk init\n");
-
-    virtio_mmio_drv_t::virtio_blk_req_t* req
-      = new virtio_mmio_drv_t::virtio_blk_req_t;
-    req->type   = virtio_blk_req_t::IN;
-    req->sector = 0;
-    void* buf   = kmalloc(512);
-    memset(buf, 0xCD, 512);
-    auto ret = rw(*req, buf);
-    info("ret = %d\n", ret);
-
     return;
 }
 
 virtio_mmio_drv_t::~virtio_mmio_drv_t(void) {
-    // for (auto i : queues) {
-    //     delete i;
-    // }
     return;
-}
-
-bool virtio_mmio_drv_t::init(void) {
-    return true;
 }
 
 size_t virtio_mmio_drv_t::rw(virtio_blk_req_t& _req, void* _buf) {

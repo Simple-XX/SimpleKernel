@@ -363,13 +363,6 @@ public:
     virtio_mmio_drv_t(const resource_t& _resource, driver_base_t* _drv);
     ~virtio_mmio_drv_t(void);
 
-    /**
-     * @brief 驱动程序的初始化
-     * @return true             成功
-     * @return false            失败
-     */
-    bool   init(void);
-
     size_t rw(virtio_blk_req_t& _req, void* _buf);
     void   set_intr_ack(void);
     size_t get_queue_len(void);
