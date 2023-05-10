@@ -29,11 +29,16 @@
  */
 class virtio_mmio_drv_t : public driver_base_t {
 private:
-    /// 魔数
-    /// virtio-v1.1#4.2.2
+    /**
+     * @brief 魔数
+     * @see virtio-v1.1#4.2.2
+     */
     static constexpr const uint32_t MAGIC_VALUE = 0x74726976;
-    /// 版本
-    /// virtio-v1.1#4.2.2
+
+    /**
+     * @brief 版本
+     * @see virtio-v1.1#4.2.2
+     */
     static constexpr const uint32_t VERSION     = 0x02;
 
     /**
@@ -207,12 +212,14 @@ private:
 
     /**
      * @brief 公共基础特性
+     * @note QEMU emulator version 7.0.0 (Debian 1:7.0+dfsg-7ubuntu2.3) 不支持
+     * VIRTIO_F_RING_PACKED 属性，改为 false
      */
     const feature_t base_features[4] = {
         {"VIRTIO_F_RING_INDIRECT_DESC", VIRTIO_F_RING_INDIRECT_DESC, false},
         {    "VIRTIO_F_RING_EVENT_IDX",     VIRTIO_F_RING_EVENT_IDX, false},
         {         "VIRTIO_F_VERSION_1",          VIRTIO_F_VERSION_1, false},
-        {       "VIRTIO_F_RING_PACKED",        VIRTIO_F_RING_PACKED,  true},
+        {       "VIRTIO_F_RING_PACKED",        VIRTIO_F_RING_PACKED, false},
     };
 
     /**
@@ -343,14 +350,14 @@ public:
         uint8_t                         status;
     } __attribute__((packed));
 
-    static constexpr const size_t      VIRTIO_BLK_REQ_HEADER_SIZE = 16;
-    static constexpr const size_t      VIRTIO_BLK_SECTOR_SIZE     = 512;
-    static constexpr const size_t      VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
+    static constexpr const size_t     VIRTIO_BLK_REQ_HEADER_SIZE = 16;
+    static constexpr const size_t     VIRTIO_BLK_SECTOR_SIZE     = 512;
+    static constexpr const size_t     VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
 
     /// virtio mmio 寄存器基地址
-    virtio_regs_t*                     regs;
+    virtio_regs_t*                    regs;
     /// virtio queue，有些设备使用多个队列
-    mystl::vector<packed_virtqueue_t*> queues;
+    mystl::vector<split_virtqueue_t*> queues;
 
     virtio_mmio_drv_t(const resource_t& _resource);
     virtio_mmio_drv_t(const resource_t& _resource, driver_base_t* _drv);

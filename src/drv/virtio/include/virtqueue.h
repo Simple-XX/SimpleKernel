@@ -113,7 +113,6 @@ static constexpr const uint32_t VIRTQ_USED_F_NO_NOTIFY     = 1;
 /**
  * @brief virtio 队列，使用 Split Virtqueues
  * @see virtio-v1.1#2.6
- * @todo
  */
 struct split_virtqueue_t {
     // 默认队列大小
@@ -238,6 +237,7 @@ struct split_virtqueue_t {
 /**
  * @brief virtio 队列，使用 Packed Virtqueues
  * @see virtio-v1.1#2.7
+ * @todo
  */
 struct packed_virtqueue_t {
     /**
