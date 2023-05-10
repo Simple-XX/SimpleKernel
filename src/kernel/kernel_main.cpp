@@ -57,6 +57,7 @@ void kernel_main(void) {
     TIMER::get_instance().init();
     // 初始化设备
     DEV_DRV_MANAGER::get_instance().init();
+    test_fs();
     // 测试设备
     // test_dev();
     // 初始化文件系统
@@ -67,30 +68,6 @@ void kernel_main(void) {
     CPU::ENABLE_INTR();
     // 显示基本信息
     show_info();
-
-    // FatFs work area needed for each volume
-    FATFS   FatFs;
-    // File object needed for each open file
-    FIL     Fil;
-
-    UINT    bw;
-    FRESULT fr;
-
-    // Give a work area to the default drive
-    auto    aaa = f_mount(&FatFs, "", 0);
-
-    // Create a file
-    fr          = f_open(&Fil, "newfile.txt", FA_WRITE | FA_CREATE_ALWAYS);
-
-    info("fr： %d\n", fr);
-
-    if (fr == FR_OK) {
-        // Write data to the file
-        f_write(&Fil, "It works!\r\n", 11, &bw);
-        // Close the file
-        fr = f_close(&Fil);
-        info("sssssss\n");
-    }
 
     // 进入死循环
     while (1) {

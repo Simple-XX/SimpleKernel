@@ -106,7 +106,8 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
     DRESULT res;
     int     result;
 
-    info("read _sector: 0x%X, _count: 0x%X\n", _sector, _count);
+    info("disk_read [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
+         _count);
 
     device_base_t* dev
       = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
@@ -116,12 +117,16 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
 
     dev->read(buf);
 
-    asm("wfi");
+    memcpy(_buff, buf.data, COMMON::BUFFFER_SIZE);
 
-    for (int i = 0; i < COMMON::BUFFFER_SIZE; i++) {
+// #define DEBUG
+#ifdef DEBUG
+    for (size_t i = 0; i < COMMON::BUFFFER_SIZE; i++) {
         printf("0x%X ", buf.data[i]);
     }
 
+#    undef DEBUG
+#endif
     switch (_pdrv) {
         case DEV_RAM:
             // translate the arguments here
@@ -157,8 +162,10 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
 #if FF_FS_READONLY == 0
 
 DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
-    DRESULT        res;
-    int            result;
+    DRESULT res;
+    int     result;
+    info("disk_write [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
+         _count);
 
     device_base_t* dev
       = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);

@@ -24,11 +24,11 @@
 #    include <stdlib.h>
 
 void* ff_memalloc(UINT _msize) {
-    return malloc((size_t)_msize);
+    return kmalloc((size_t)_msize);
 }
 
 void ff_memfree(void* _mblock) {
-    free(_mblock);
+    kfree(_mblock);
 }
 
 #endif

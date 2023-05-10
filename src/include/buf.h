@@ -19,6 +19,7 @@
 
 #include "common.h"
 #include "cstdint"
+#include "cstring"
 
 /**
  * @brief 用于设备与内存数据交换
@@ -36,7 +37,11 @@ public:
     /// 数据缓冲
     uint8_t  data[COMMON::BUFFFER_SIZE];
 
-    buf_t(void)  = default;
+    buf_t(void) {
+        memset(data, 0, COMMON::BUFFFER_SIZE);
+        return;
+    }
+
     ~buf_t(void) = default;
 };
 
