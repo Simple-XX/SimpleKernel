@@ -12,7 +12,7 @@ dst=/mnt
 # echo $dst
 dd if=/dev/zero of=fatfs.img bs=512k count=512
 # echo $dst
-mkfs.vfat -F 32 -s 4 fatfs.img
+mkfs.vfat -F 32 fatfs.img
 # echo $dst
 sudo mount fatfs.img $dst
 # echo $dst

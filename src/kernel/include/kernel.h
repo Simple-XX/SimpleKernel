@@ -51,6 +51,8 @@ int test_intr(void);
  * @brief 虚拟文件系统测试函数
  * @return int             0 成功
  */
+int  test_fs(void);
+
 int  test_vfs(void);
 
 /**

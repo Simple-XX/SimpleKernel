@@ -47,7 +47,7 @@
  * @brief This option switches filtered directory read functions, f_findfirst()
  * and f_findnext(). (0:Disable, 1:Enable 2:Enable with matching altname[] too)
  */
-#define FF_USE_FIND        0
+#define FF_USE_FIND        1
 
 /**
  * @brief This option switches f_mkfs() function. (0:Disable or 1:Enable)
@@ -134,15 +134,15 @@
  * 1: Enable LFN with static  working buffer on the BSS. Always NOT thread-safe.
  * 2: Enable LFN with dynamic working buffer on the STACK.
  * 3: Enable LFN with dynamic working buffer on the HEAP.
- * To enable the LFN, ffunicode.c needs to be added to the project. The LFN
- * function requires certain internal working buffer occupies (FF_MAX_LFN + 1) *
- * 2 bytes and additional (FF_MAX_LFN + 44) / 15 * 32 bytes when exFAT is
- * enabled. The FF_MAX_LFN defines size of the working buffer in UTF-16 code
- * unit and it can be in range of 12 to 255. It is recommended to be set it 255
- * to fully support LFN specification. When use stack for the working buffer,
- * take care on stack overflow. When use heap memory for the working buffer,
- * memory management functions, ff_memalloc() and ff_memfree() exemplified in
- * ffsystem.c, need to be added to the project.
+ * To enable the LFN, ffunicode.c needs to be added to the project.
+ * The LFN function requires certain internal working buffer occupies
+ * (FF_MAX_LFN + 1) * 2 bytes and additional (FF_MAX_LFN + 44) / 15 * 32 bytes
+ * when exFAT is enabled. The FF_MAX_LFN defines size of the working buffer in
+ * UTF-16 code unit and it can be in range of 12 to 255. It is recommended to be
+ * set it 255 to fully support LFN specification. When use stack for the working
+ * buffer, take care on stack overflow. When use heap memory for the working
+ * buffer, memory management functions, ff_memalloc() and ff_memfree()
+ * exemplified in ffsystem.c, need to be added to the project.
  */
 #define FF_USE_LFN         0
 #define FF_MAX_LFN         255
@@ -154,7 +154,7 @@
  * DWORD) Also behavior of string I/O functions will be affected by this option.
  * When LFN is not enabled, this option has no effect.
  */
-#define FF_LFN_UNICODE     0
+#define FF_LFN_UNICODE     2
 
 /**
  * @brief This set of options defines size of file name members in the FILINFO

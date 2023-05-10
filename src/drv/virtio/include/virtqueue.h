@@ -116,7 +116,7 @@ static constexpr const uint32_t VIRTQ_USED_F_NO_NOTIFY     = 1;
  */
 struct split_virtqueue_t {
     // 默认队列大小
-    static constexpr const size_t DEFAULT_SIZE = 8;
+    static constexpr const size_t DEFAULT_SIZE = 16;
 
     // virtio-v1.1#2.6.5
     struct virtq_desc_t {

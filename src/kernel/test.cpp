@@ -16,6 +16,7 @@
 
 #include "assert.h"
 #include "common.h"
+#include "ff.h"
 #include "heap.h"
 #include "kernel.h"
 #include "pmm.h"
@@ -224,6 +225,58 @@ int test_intr(void) {
     assert(tmp == 0x233);
     *addr = 0x0;
     info("intr test done.\n");
+    return 0;
+}
+
+int test_fs(void) {
+    // // FatFs work area needed for each volume
+    // FATFS    FatFs;
+    // // File object needed for each open file
+    // FIL      Fil;
+    //
+    // uint32_t bw;
+    // FRESULT  fr;
+    //
+    // // Give a work area to the default drive
+    // fr = f_mount(&FatFs, "0:", 1);
+    // info("f_mount：%d\n", fr);
+    //
+    // // Create a file
+    // fr = f_open(&Fil, "newfile.txt", FA_WRITE | FA_CREATE_ALWAYS);
+    // info("f_open：%d\n", fr);
+    //
+    // if (fr == FR_OK) {
+    //     // Write data to the file
+    //     f_write(&Fil, "It works!\r\n", 11, &bw);
+    //     // Close the file
+    //     fr = f_close(&Fil);
+    //     info("f_close %d\n", fr);
+    // }
+
+    static FATFS sdcard_fs;
+    FRESULT      status;
+    DIR          dj;
+    FILINFO      fno;
+
+    printf("/********************fs test*******************/\n");
+    status = f_mount(&sdcard_fs, "/", 1);
+    printf("mount sdcard: %d\n", status);
+    if (status != FR_OK) {
+        return status;
+    }
+
+    status = f_findfirst(&dj, &fno, "/", "*");
+    printf("printf filename %d\n", status);
+    while (status == FR_OK && fno.fname[0]) {
+        if (fno.fattrib & AM_DIR) {
+            printf("dir: %s\n", fno.fname);
+        }
+        else {
+            printf("file: %s\n", fno.fname);
+        }
+        status = f_findnext(&dj, &fno);
+    }
+    f_closedir(&dj);
     return 0;
 }
 

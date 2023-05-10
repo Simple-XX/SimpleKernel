@@ -54,7 +54,7 @@ static constexpr const uint64_t KERNEL_SPACE_PAGES
 static constexpr const uintptr_t STACK_SIZE   = 4 * KB;
 
 /// 缓冲区大小，512 字节
-static constexpr const uintptr_t BUFFFER_SIZE = 512 * BYTE;
+static constexpr const size_t    BUFFFER_SIZE = 512 * BYTE;
 
 /// 页掩码
 static constexpr const uintptr_t PAGE_MASK    = ~(PAGE_SIZE - 1);
