@@ -14,11 +14,10 @@
  * </table>
  */
 
+#include "assert.h"
 #include "boot_info.h"
-#include "cassert"
 #include "common.h"
 #include "cpu.hpp"
-#include "cstdio"
 #include "dev_drv_manager.h"
 #include "heap.h"
 #include "intr.h"
@@ -29,72 +28,6 @@
 #include "vmm.h"
 
 #include "ff.h"
-
-#include "diskio.h"
-
-#include "virtio_mmio_drv.h"
-
-
-#define BSIZE 1024  // block size
-struct buf {
-    int valid;   // has data been read from disk?
-    int disk;    // does disk "own" buf?
-    uint32_t dev;
-    uint32_t blockno;
-    //    struct sleeplock lock;
-    uint32_t refcnt;
-    struct buf *prev; // LRU cache list
-    struct buf *next;
-    uint8_t data[BSIZE];
-};
-extern void virtio_disk_rw(struct buf *b, int write);
-
-
-DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
-    DRESULT    res;
-    int        result;
-info("read _sector: 0x%X, _count: 0x%X\n",_sector,_count);
-//    bus_dev_t* dev
-//      = (bus_dev_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
-//    virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
-//    virtio_mmio_drv_t::virtio_blk_req_t* req
-//      = new virtio_mmio_drv_t::virtio_blk_req_t;
-//    req->type   = virtio_mmio_drv_t::virtio_blk_req_t::IN;
-//    req->sector = _sector;
-//    drv->rw(*req, _buff);
-for(int i = 0; i < _count; i++){
-    struct buf a;
-//    a.data = _buff;
-    a.blockno = _sector /2;
-    virtio_disk_rw(&a, 0);
-}
-
-
-    return RES_OK;
-}
-
-DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
-    DRESULT res;
-    int     result;
-    info("write _sector: 0x%X, _count: 0x%X\n",_sector,_count);
-
-    bus_dev_t* dev
-      = (bus_dev_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
-    virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
-
-    virtio_mmio_drv_t::virtio_blk_req_t* req
-      = new virtio_mmio_drv_t::virtio_blk_req_t;
-    req->type   = virtio_mmio_drv_t::virtio_blk_req_t::OUT;
-    req->sector = _sector;
-    void* aaa=const_cast<uint8_t*>( _buff);
-
-
-    auto size = drv->rw(*req, aaa);
-
-    warn("write done %d\n",size);
-
-    return RES_OK;
-}
 
 /**
  * @brief 内核主要逻辑
@@ -143,24 +76,20 @@ void kernel_main(void) {
     UINT    bw;
     FRESULT fr;
 
-    info("1sssssss\n");
-
     // Give a work area to the default drive
-    auto aaa = f_mount(&FatFs, "", 0);
-    info("2sssssss %d\n",aaa);
+    auto    aaa = f_mount(&FatFs, "", 0);
 
     // Create a file
-    fr = f_open(&Fil, "newfile.txt",
-                FA_WRITE | FA_CREATE_ALWAYS);
+    fr          = f_open(&Fil, "newfile.txt", FA_WRITE | FA_CREATE_ALWAYS);
 
-    info("fr： %d\n",fr);
+    info("fr： %d\n", fr);
 
     if (fr == FR_OK) {
         // Write data to the file
         f_write(&Fil, "It works!\r\n", 11, &bw);
         // Close the file
         fr = f_close(&Fil);
-                                                 info("sssssss\n");
+        info("sssssss\n");
     }
 
     // 进入死循环

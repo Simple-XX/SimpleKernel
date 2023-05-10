@@ -17,45 +17,39 @@
 #ifndef SIMPLEKERNEL_DEV_DRV_MANAGER_H
 #define SIMPLEKERNEL_DEV_DRV_MANAGER_H
 
-#include "bus_dev.h"
+#include "bus_device.h"
 #include "cstdint"
-#include "dev.h"
-#include "drv.h"
+#include "device_base.h"
+#include "driver_base.h"
 #include "string"
 #include "vector"
-
-// 总线 设备与内核的通信方式
-// 设备 挂载在总线上的硬件，总线是挂载在 null 上的一种设备
-// 驱动 驱动总线/设备的代码
-// 设备与驱动管理
 
 /**
  * @brief 设备&驱动管理
  */
 class DEV_DRV_MANAGER {
 private:
-    /// @todo 总线驱动管理
     /**
      * @brief 总线向量
      */
-    mystl::vector<bus_dev_t*> buss;
+    mystl::vector<bus_device_t*> buss;
 
     /**
      * @brief 输出总线列表
      */
-    void                      show(void) const;
-
-    /**
-     * @brief 初始化所有总线
-     * @return true             成功
-     * @return false            失败
-     */
-    bool                      buss_init(void);
+    void                         show(void) const;
 
 protected:
 
 public:
+    /**
+     * @brief 构造函数
+     */
     DEV_DRV_MANAGER(void);
+
+    /**
+     * @brief 析构函数
+     */
     ~DEV_DRV_MANAGER(void);
 
     /**
@@ -77,14 +71,14 @@ public:
      * @return true             成功
      * @return false            失败
      */
-    bool                    add_bus(bus_dev_t& _bus);
+    bool                    add_bus(bus_device_t& _bus);
 
     /**
      * @brief 通过外部中断号寻找设备
      * @param  _no              外部中断号
-     * @return dev_t*           使用该中断号的设备
+     * @return device_base_t*   使用该中断号的设备
      */
-    dev_t*                  get_dev_via_intr_no(uint8_t _no);
+    device_base_t*          get_dev_via_intr_no(uint8_t _no);
 };
 
 #endif /* SIMPLEKERNEL_DEV_DRV_MANAGER_H */
