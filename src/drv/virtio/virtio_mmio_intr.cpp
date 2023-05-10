@@ -20,111 +20,71 @@
 #include "virtqueue.h"
 
 static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
-    printf("virtio_blk_handle_used: 0x%X\n", _usedidx);
-    virtio_mmio_drv_t*                   drv   = (virtio_mmio_drv_t*)_dev->drv;
-
-    auto                                 virtq = drv->queue.virtq;
-    uint32_t                             desc1, desc2, desc3;
+    assert(_dev != nullptr);
+    virtio_mmio_drv_t*                   drv = (virtio_mmio_drv_t*)_dev->drv;
+    uint32_t                             desc1;
+    uint32_t                             desc2;
+    uint32_t                             desc3;
     virtio_mmio_drv_t::virtio_blk_req_t* req;
-    uint8_t*                             data;
 
-    desc1 = virtq->used->ring[_usedidx].id;
-    if (!(virtq->desc[desc1].flags & VIRTQ_DESC_F_NEXT)) {
-        goto bad_desc;
+    desc1 = drv->queue.virtq->used->ring[_usedidx].id;
+    if (!(drv->queue.virtq->desc[desc1].flags & VIRTQ_DESC_F_NEXT)) {
+        err("virtio-blk received malformed descriptors\n");
+        return;
     }
-    desc2 = virtq->desc[desc1].next;
-    if (!(virtq->desc[desc2].flags & VIRTQ_DESC_F_NEXT)) {
-        goto bad_desc;
+
+    desc2 = drv->queue.virtq->desc[desc1].next;
+    if (!(drv->queue.virtq->desc[desc2].flags & VIRTQ_DESC_F_NEXT)) {
+        err("virtio-blk received malformed descriptors\n");
+        return;
     }
-    desc3 = virtq->desc[desc2].next;
-    if (virtq->desc[desc1].len != virtio_mmio_drv_t::VIRTIO_BLK_REQ_HEADER_SIZE
-        || virtq->desc[desc2].len != virtio_mmio_drv_t::VIRTIO_BLK_SECTOR_SIZE
-        || virtq->desc[desc3].len
+
+    desc3 = drv->queue.virtq->desc[desc2].next;
+    if (drv->queue.virtq->desc[desc1].len
+          != virtio_mmio_drv_t::VIRTIO_BLK_REQ_HEADER_SIZE
+        || drv->queue.virtq->desc[desc2].len
+             != virtio_mmio_drv_t::VIRTIO_BLK_SECTOR_SIZE
+        || drv->queue.virtq->desc[desc3].len
              != virtio_mmio_drv_t::VIRTIO_BLK_REQ_FOOTER_SIZE) {
-        goto bad_desc;
+        err("virtio-blk received malformed descriptors\n");
+        return;
     }
-
-    req  = (virtio_mmio_drv_t::virtio_blk_req_t*)virtq->desc_virt[desc1];
-    data = (uint8_t*)virtq->desc_virt[desc2];
-    if (req->status != virtio_mmio_drv_t::virtio_blk_req_t::OK) {
-        goto bad_status;
-    }
-
+// #define DEBUG
+#ifdef DEBUG
+    req = (virtio_mmio_drv_t::virtio_blk_req_t*)
+            drv->queue.virtq->desc_virt[desc1];
+    auto data = (uint8_t*)drv->queue.virtq->desc_virt[desc2];
     if (req->type == virtio_mmio_drv_t::virtio_blk_req_t::IN) {
         printf("virtio-blk: result: \"%s\"\n", data);
         for (size_t i = 0; i < 512; i++) {
             printf("0x%X ", data[i]);
         }
     }
+#    undef DEBUG
+#endif
+
+    switch (req->status) {
+        case virtio_mmio_drv_t::virtio_blk_req_t::OK: {
+            info("status [%d] in virtio_blk irq\n", req->status);
+
+            // req->blkreq.status = BLKREQ_OK;
+            break;
+        }
+        case virtio_mmio_drv_t::virtio_blk_req_t::IOERR: {
+            info("status [%d] in virtio_blk irq\n", req->status);
+
+            // req->blkreq.status = BLKREQ_ERR;
+            break;
+        }
+        default: {
+            err("Unhandled status [%d] in virtio_blk irq\n", req->status);
+            return;
+        }
+    }
 
     drv->queue.free_desc(desc1);
     drv->queue.free_desc(desc2);
     drv->queue.free_desc(desc3);
-
-    return;
-bad_desc:
-    err("virtio-blk received malformed descriptors\n");
-    return;
-
-bad_status:
-    err("virtio-blk: error in command response\n");
-    return;
-
-    // assert(_dev != nullptr);
-    // virtio_mmio_drv_t*                   drv = (virtio_mmio_drv_t*)_dev->drv;
-    // uint32_t                             desc1;
-    // uint32_t                             desc2;
-    // uint32_t                             desc3;
-    // virtio_mmio_drv_t::virtio_blk_req_t* req;
-    //
-    // desc1 = drv->queue.virtq->used->ring[_usedidx].id;
-    // if (!(drv->queue.virtq->desc[desc1].flags & VIRTQ_DESC_F_NEXT)) {
-    //     err("virtio-blk received malformed descriptors\n");
-    //     return;
-    // }
-    //
-    // desc2 = drv->queue.virtq->desc[desc1].next;
-    // if (!(drv->queue.virtq->desc[desc2].flags & VIRTQ_DESC_F_NEXT)) {
-    //     err("virtio-blk received malformed descriptors\n");
-    //     return;
-    // }
-    //
-    // desc3 = drv->queue.virtq->desc[desc2].next;
-    // if (drv->queue.virtq->desc[desc1].len
-    //       != virtio_mmio_drv_t::VIRTIO_BLK_REQ_HEADER_SIZE
-    //     || drv->queue.virtq->desc[desc2].len
-    //          != virtio_mmio_drv_t::VIRTIO_BLK_SECTOR_SIZE
-    //     || drv->queue.virtq->desc[desc3].len
-    //          != virtio_mmio_drv_t::VIRTIO_BLK_REQ_FOOTER_SIZE) {
-    //     err("virtio-blk received malformed descriptors\n");
-    //     return;
-    // }
-    //
-    // req = (virtio_mmio_drv_t::virtio_blk_req_t*)
-    //         drv->queue.virtq->desc_virt[desc1];
-    //
-    // drv->queue.free_desc(desc1);
-    // drv->queue.free_desc(desc2);
-    // drv->queue.free_desc(desc3);
-    //
-    // switch (req->status) {
-    //     case virtio_mmio_drv_t::virtio_blk_req_t::OK: {
-    //         info("status [%d] in virtio_blk irq\n", req->status);
-    //
-    //         // req->blkreq.status = BLKREQ_OK;
-    //         break;
-    //     }
-    //     case virtio_mmio_drv_t::virtio_blk_req_t::IOERR: {
-    //         info("status [%d] in virtio_blk irq\n", req->status);
-    //
-    //         // req->blkreq.status = BLKREQ_ERR;
-    //         break;
-    //     }
-    //     default: {
-    //         err("Unhandled status [%d] in virtio_blk irq\n", req->status);
-    //         return;
-    //     }
-    // }
 
     return;
 }
