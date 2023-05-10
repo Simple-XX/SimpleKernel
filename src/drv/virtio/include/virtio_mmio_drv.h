@@ -230,13 +230,13 @@ private:
 protected:
 
 public:
+    static constexpr const char*   NAME = "virtio,mmio";
+
     /// virtio mmio 寄存器基地址
     virtio_regs_t*                 regs;
     /// virtio queue，有些设备使用多个队列
     mystl::vector<virtio_queue_t*> queues;
 
-    virtio_mmio_drv_t(void);
-    virtio_mmio_drv_t(const void* _addr);
     virtio_mmio_drv_t(const resource_t& _resource);
     ~virtio_mmio_drv_t(void);
 

@@ -34,13 +34,12 @@ public:
     const mystl::string name;
 
     driver_base_t(void);
-    driver_base_t(const resource_t&);
-    driver_base_t(const mystl::string& _name);
+    driver_base_t(const mystl::string& _name, const resource_t& _resource);
     virtual ~driver_base_t(void)                         = 0;
+
     // 驱动操作
     // 初始化
     virtual bool         init(void)                      = 0;
-
     // 设备基本操作
     // 从设备读
     virtual int          read(void* _where, void* _buf)  = 0;
@@ -66,7 +65,7 @@ struct drv {
 /**
  * @brief 创建驱动实例工厂类
  */
-class drv_factory_t {
+class driver_factory_t {
 public:
     /**
      * @brief 用于创建驱动实例的回调函数函数指针
@@ -78,23 +77,31 @@ private:
      * @brief 类型名(非 compatible)-用于创建驱动实例的回调函数映射表
      */
     mystl::map<mystl::string, constructor_fun_t> type_name_ctor_map;
-    drv_factory_t(void);
-    ~drv_factory_t(void);
+
+    /**
+     * @brief 使用默认构造
+     */
+    driver_factory_t(void)  = default;
+
+    /**
+     * @brief 使用默认析构
+     */
+    ~driver_factory_t(void) = default;
 
 public:
     /**
      * @brief 获取单例
      * @return drv_factory_t&       静态对象
      */
-    static drv_factory_t& get_instance(void);
+    static driver_factory_t& get_instance(void);
 
     /**
      * @brief 注册回调函数
      * @param  _compatible_name 驱动类型名
      * @param  _ctor_fun        回调函数指针
      */
-    void                  register_class(const mystl::string&     _compatible_name,
-                                         const constructor_fun_t& _ctor_fun);
+    void           register_class(const mystl::string&     _compatible_name,
+                                  const constructor_fun_t& _ctor_fun);
 
     /**
      * @brief 创建驱动实例
@@ -102,8 +109,8 @@ public:
      * @param  _resource        需要的硬件信息
      * @return drv_t*           创建好的驱动实例指针
      */
-    driver_base_t*        get_class(const mystl::string& _compatible_name,
-                                    const resource_t&    _resource) const;
+    driver_base_t* get_class(const mystl::string& _compatible_name,
+                             const resource_t&    _resource) const;
 };
 
 // 这里的逻辑是，在填充设备的 drv 字段时，new 一个驱动对象
@@ -117,12 +124,14 @@ public:
 
 /**
  * @brief 声明用于创建驱动实例的回调函数
+ * @param  _class_name      驱动类型名
  */
 #define declare_call_back(_class_name) \
-    _class_name* call_back_##_class_name(const resource_t& _resource);
+    _class_name* call_back_##_class_name(const resource_t& _resource)
 
 /**
  * @brief 定义用于创建驱动实例的回调函数
+ * @param  _class_name      驱动类型名
  */
 #define define_call_back(_class_name)                                   \
     _class_name* call_back_##_class_name(const resource_t& _resource) { \
@@ -131,13 +140,16 @@ public:
 
 /**
  * @brief 注册用于创建驱动实例的回调函数
+ * @param  _bus             要注册的总线
+ * @param  _compatible_name 要注册的驱动名
+ * @param  _class_name      驱动类型名
  */
-#define register_call_back(_bus, _compatible_name, _class_name)        \
-    do {                                                               \
-        drv_factory_t::get_instance().register_class(                  \
-          _compatible_name,                                            \
-          (drv_factory_t::constructor_fun_t)&call_back_##_class_name); \
-        _bus->add_driver(_compatible_name, "#_class_name");            \
-    } while (0);
+#define register_call_back(_bus, _compatible_name, _class_name)           \
+    do {                                                                  \
+        driver_factory_t::get_instance().register_class(                  \
+          _compatible_name,                                               \
+          (driver_factory_t::constructor_fun_t)&call_back_##_class_name); \
+        _bus->add_driver(_compatible_name);                               \
+    } while (0)
 
 #endif /* SIMPLEKERNEL_DRIVER_BASE_H */

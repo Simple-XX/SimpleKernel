@@ -16,51 +16,58 @@
 
 #include "bus_device.h"
 
-bus_device_t::bus_device_t(void) {
-    is_ready = true;
-    return;
+bool bus_device_t::match(device_base_t& _dev, const mystl::string& _drv_name) {
+    // 名称不匹配直接返回
+    if (_dev.dev_name != _drv_name) {
+        return false;
+    }
+    // 已有驱动直接返回
+    if (_dev.drv != nullptr) {
+        warn("%s already has driver\n", _dev.dev_name.c_str());
+        return false;
+    }
+    // 设置驱动 通过 driver_factory_t new 了一个驱动对象
+    _dev.drv
+      = driver_factory_t::get_instance().get_class(_drv_name, _dev.resource);
+    // 设置失败
+    if (_dev.drv == nullptr) {
+        warn("%s has not register\n", _dev.dev_name.c_str());
+        return false;
+    }
+    return true;
+}
+
+bool bus_device_t::match(void) {
+    auto ret = false;
+    // 遍历找到没有驱动的设备
+    for (auto i : devices) {
+        if (i->drv == nullptr) {
+            // 遍历所有驱动，尝试进行匹配
+            for (auto j : drivers) {
+                ret = match(*i, j);
+                if (ret == true) {
+                    info("%s device init successful.\n", i->dev_name.c_str());
+                }
+            }
+        }
+    }
+    return ret;
 }
 
 bus_device_t::bus_device_t(const mystl::string& _bus_name)
     : bus_name(_bus_name) {
-    is_ready = true;
     return;
 }
 
-bus_device_t::~bus_device_t(void) {
-    return;
-}
-
-bool bus_device_t::add_driver(const mystl::string& _compatible_name,
-                              const mystl::string& _drv_name) {
-    drvs_name.push_back(
-      mystl::pair<mystl::string, mystl::string>(_compatible_name, _drv_name));
+bool bus_device_t::add_driver(const mystl::string& _compatible_name) {
+    drivers.push_back(_compatible_name);
+    match();
     return true;
 }
 
 bool bus_device_t::add_device(device_base_t* _dev) {
     devices.push_back(_dev);
-    return true;
-}
-
-bool bus_device_t::match(
-  device_base_t& _dev, mystl::pair<mystl::string, mystl::string>& _name_pair) {
-    if (_dev.dev_name == _name_pair.first) {
-        // 设置驱动
-        /// @todo 这里应该新建一个驱动对象
-        _dev.drv = drv_factory_t::get_instance().get_class(_name_pair.first,
-                                                           _dev.resource);
-        if (_dev.drv == nullptr) {
-            warn("%s has not register\n", _dev.dev_name.c_str());
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-    else {
-        return false;
-    }
+    match();
     return true;
 }
 
@@ -69,9 +76,9 @@ void bus_device_t::show(void) const {
     for (auto i : devices) {
         std::cout << *i << std::endl;
     }
-    info("drv count: 0x%X\n", drvs_name.size());
-    for (auto i : drvs_name) {
-        std::cout << i.first << std::endl;
+    info("drv count: 0x%X\n", drivers.size());
+    for (auto i : drivers) {
+        std::cout << i << std::endl;
     }
     return;
 }

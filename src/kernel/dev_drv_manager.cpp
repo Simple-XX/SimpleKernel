@@ -35,32 +35,6 @@ void DEV_DRV_MANAGER::show(void) const {
     return;
 }
 
-bool DEV_DRV_MANAGER::buss_init(void) {
-    bool res = true;
-    // 遍历所有总线
-    for (auto i : buss) {
-        // 遍历总线上的设备与驱动列表
-        for (auto j : i->devices) {
-            for (auto k : i->drvs_name) {
-                // 如果匹配
-                /// @todo 这里暂时写死为为每个设备分配一个驱动实例，需要改进
-                if (i->match(*j, k)) {
-                    // 执行初始化
-                    if (j->drv->init() == true) {
-                        info("%s init successful drv addr 0x8%p.\n",
-                             j->dev_name.c_str(), j->drv);
-                    }
-                    else {
-                        warn("%s init failed.\n", j->dev_name.c_str());
-                    }
-                }
-            }
-        }
-        info("%s init successful.\n", i->bus_name.c_str());
-    }
-    return res;
-}
-
 DEV_DRV_MANAGER::DEV_DRV_MANAGER(void) {
     return;
 }
@@ -92,25 +66,17 @@ bool DEV_DRV_MANAGER::init(void) {
                                       virtio_mmio_dev_resources
                                         + virtio_mmio_dev_resources_count);
     // 添加 virtio 总线
-    /// @todo 需要改进
     auto bus = new bus_device_t("virtio_mmio_bus");
     add_bus(*bus);
-    // 到这里 virtio,mmio 总线初始化完成，下面为各个 virtio,mmio
-    // 注册用于创建驱动实例的回调函数
-    register_call_back(bus, "virtio,mmio", virtio_mmio_drv_t);
+    // 将驱动注册到 bus
+    register_call_back(bus, virtio_mmio_drv_t::NAME, virtio_mmio_drv_t);
     // 每个 resource 对应一个总线设备
     for (auto i : *virtio_mmio_dev_resources_vector) {
         // 设置每个设备的名称与驱动名
-        auto virtio_dev      = new virtio_dev_t(i);
-        // 设备名
-        /// @todo 这里需要 compatible 字段 "virtio,mmio"
-        virtio_dev->dev_name = "virtio,mmio";
+        auto virtio_dev = new virtio_dev_t(i);
         // 添加到总线的设备向量
         bus->add_device(virtio_dev);
     }
-
-    // 初始化所有总线
-    buss_init();
     show();
     // #endif
     info("device and driver manager init.\n");

@@ -124,21 +124,10 @@ void virtio_mmio_drv_t::add_to_device(uint32_t _queue_sel) {
     return;
 }
 
-virtio_mmio_drv_t::virtio_mmio_drv_t(void)
-    : driver_base_t("virtio,mmio") {
-    return;
-}
-
-virtio_mmio_drv_t::virtio_mmio_drv_t(const void* _addr)
-    : driver_base_t("virtio,mmio") {
-    (void)_addr;
-    return;
-}
-
 extern void virtio_mmio_intr(uint8_t _no);
 
 virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
-    : driver_base_t("virtio,mmio") {
+    : driver_base_t(NAME, _resource) {
     regs = (virtio_regs_t*)_resource.mem.addr;
     // 映射内存
     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), _resource.mem.addr,
@@ -338,4 +327,4 @@ int virtio_mmio_drv_t::status(uint8_t _cmd) {
     return 0;
 }
 
-define_call_back(virtio_mmio_drv_t)
+define_call_back(virtio_mmio_drv_t);
