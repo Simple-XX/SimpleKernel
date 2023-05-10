@@ -38,13 +38,12 @@ public:
     mystl::string                                            bus_name;
     /// 已注册设备列表
     mystl::vector<device_base_t*>                            devices;
-    /// 已注册驱动列表
-    mystl::vector<driver_base_t*>                                    drivers;
-    /// compatible-驱动名向量
+    /// 已注册驱动列表 compatible-驱动名向量
     mystl::vector<mystl::pair<mystl::string, mystl::string>> drvs_name;
 
     /// 用于创建虚拟总线
     bus_device_t(void);
+    bus_device_t(const mystl::string& _bus_name);
     virtual ~bus_device_t(void);
 
     /**
@@ -57,8 +56,6 @@ public:
     bool                 add_driver(const mystl::string& _compatible_name,
                                     const mystl::string& _drv_name);
 
-    bool                 add_driver(const mystl::string& _compatible_name,
-                                    const driver_base_t* _drv);
     /**
      * @brief 添加设备
      * @param  _dev             要添加的设备指针
@@ -92,7 +89,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& _out, bus_device_t& _bus) {
         info("bus_name: %s, devices: %d, drivers: %d", _bus.bus_name.c_str(),
-             _bus.devices.size(), _bus.drivers.size());
+             _bus.devices.size(), _bus.drvs_name.size());
         return _out;
     }
 };

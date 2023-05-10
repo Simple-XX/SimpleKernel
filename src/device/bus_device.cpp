@@ -21,12 +21,18 @@ bus_device_t::bus_device_t(void) {
     return;
 }
 
+bus_device_t::bus_device_t(const mystl::string& _bus_name)
+    : bus_name(_bus_name) {
+    is_ready = true;
+    return;
+}
+
 bus_device_t::~bus_device_t(void) {
     return;
 }
 
 bool bus_device_t::add_driver(const mystl::string& _compatible_name,
-                        const mystl::string& _drv_name) {
+                              const mystl::string& _drv_name) {
     drvs_name.push_back(
       mystl::pair<mystl::string, mystl::string>(_compatible_name, _drv_name));
     return true;
@@ -37,12 +43,12 @@ bool bus_device_t::add_device(device_base_t* _dev) {
     return true;
 }
 
-bool bus_device_t::match(device_base_t&                             _dev,
-                      mystl::pair<mystl::string, mystl::string>& _name_pair) {
+bool bus_device_t::match(
+  device_base_t& _dev, mystl::pair<mystl::string, mystl::string>& _name_pair) {
     if (_dev.dev_name == _name_pair.first) {
         // 设置驱动
         /// @todo 这里应该新建一个驱动对象
-        _dev.drv = drv_factory_t::get_instance().get_class(_name_pair.second,
+        _dev.drv = drv_factory_t::get_instance().get_class(_name_pair.first,
                                                            _dev.resource);
         if (_dev.drv == nullptr) {
             warn("%s has not register\n", _dev.dev_name.c_str());
@@ -63,9 +69,9 @@ void bus_device_t::show(void) const {
     for (auto i : devices) {
         std::cout << *i << std::endl;
     }
-    info("drv count: 0x%X\n", drivers.size());
-    for (auto i : drivers) {
-        std::cout << *i << std::endl;
+    info("drv count: 0x%X\n", drvs_name.size());
+    for (auto i : drvs_name) {
+        std::cout << i.first << std::endl;
     }
     return;
 }
