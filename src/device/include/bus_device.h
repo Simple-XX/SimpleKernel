@@ -28,33 +28,39 @@
  */
 struct bus_device_t {
 private:
-    /// 总线上的所有设备是否都初始化完成
-    bool is_ready;
+    /**
+     * @brief 匹配设备与驱动
+     * @param  _dev             设备
+     * @param  _drv_name        compatible-驱动名
+     * @return true             成功
+     * @return false            失败
+     */
+    virtual bool match(device_base_t& _dev, const mystl::string& _drv_name);
+
+    bool         match(void);
 
 protected:
 
 public:
     /// 总线名
-    mystl::string                                            bus_name;
+    mystl::string                 bus_name;
     /// 已注册设备列表
-    mystl::vector<device_base_t*>                            devices;
+    mystl::vector<device_base_t*> devices;
     /// 已注册驱动列表 compatible-驱动名向量
-    mystl::vector<mystl::pair<mystl::string, mystl::string>> drvs_name;
+    mystl::vector<mystl::string>  drivers;
 
     /// 用于创建虚拟总线
-    bus_device_t(void);
+    bus_device_t(void) = default;
     bus_device_t(const mystl::string& _bus_name);
-    virtual ~bus_device_t(void);
+    virtual ~bus_device_t(void) = default;
 
     /**
      * @brief 添加驱动
-     * @param  _drv_name        compatible 名
-     * @param  _type_name       驱动名
+     * @param  _compatible_name compatible 名
      * @return                  true 成功
      * @return                  false 失败
      */
-    bool                 add_driver(const mystl::string& _compatible_name,
-                                    const mystl::string& _drv_name);
+    bool                 add_driver(const mystl::string& _compatible_name);
 
     /**
      * @brief 添加设备
@@ -63,17 +69,6 @@ public:
      * @return false            失败
      */
     bool                 add_device(device_base_t* _dev);
-
-    // 匹配设备与驱动
-    /**
-     * @brief 匹配设备与驱动
-     * @param  _dev             设备
-     * @param  _name_pair       compatible-驱动名
-     * @return true             成功
-     * @return false            失败
-     */
-    virtual bool         match(device_base_t&                             _dev,
-                               mystl::pair<mystl::string, mystl::string>& _name_pair);
 
     /**
      * @brief 显示所有设备信息
@@ -89,7 +84,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& _out, bus_device_t& _bus) {
         info("bus_name: %s, devices: %d, drivers: %d", _bus.bus_name.c_str(),
-             _bus.devices.size(), _bus.drvs_name.size());
+             _bus.devices.size(), _bus.drivers.size());
         return _out;
     }
 };
