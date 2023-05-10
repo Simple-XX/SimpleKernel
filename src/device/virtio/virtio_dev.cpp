@@ -16,19 +16,8 @@
 
 #include "virtio_dev.h"
 
-virtio_dev_t::virtio_dev_t(void) {
-    return;
-}
-
-virtio_dev_t::virtio_dev_t(const resource_t &_resource) : dev_t(_resource) {
-// #define DEBUG
-#ifdef DEBUG
-    std::cout<<"virtio_dev_t ctor."<<std::endl;
-#undef DEBUG
-#endif
-    return;
-}
-
-virtio_dev_t::~virtio_dev_t(void) {
+virtio_device_t::virtio_device_t(const resource_t&  _resource,
+                                 virtio_mmio_drv_t* _drv)
+    : device_base_t(_resource, _drv) {
     return;
 }

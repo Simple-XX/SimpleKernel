@@ -5,10 +5,14 @@
       <w>corei</w>
       <w>imafdc</w>
       <w>lriscv</w>
+      <w>mmio</w>
+      <w>mrniu</w>
+      <w>niuzh</w>
       <w>opensbi</w>
       <w>readelf</w>
       <w>simplekernel</w>
       <w>syms</w>
+      <w>virtio</w>
       <w>xlen</w>
       <w>xorriso</w>
     </words>

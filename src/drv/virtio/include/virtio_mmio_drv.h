@@ -17,26 +17,108 @@
 #ifndef SIMPLEKERNEL_VIRTIO_MMIO_DRV_H
 #define SIMPLEKERNEL_VIRTIO_MMIO_DRV_H
 
-#include "common.h"
-#include "drv.h"
-#include "resource.h"
 #include "cstdint"
+#include "driver_base.h"
+#include "resource.h"
 #include "string"
 #include "vector"
-#include "virtio_dev.h"
-#include "virtio_queue.h"
+#include "virtqueue.h"
 
 /**
  * @brief virtio,mmio 驱动
  */
-class virtio_mmio_drv_t : public drv_t {
+class virtio_mmio_drv_t : public driver_base_t {
 private:
-    /// 魔数
-    /// virtio-v1.1#4.2.2
+    /**
+     * @brief 魔数
+     * @see virtio-v1.1#4.2.2
+     */
     static constexpr const uint32_t MAGIC_VALUE = 0x74726976;
-    /// 版本
-    /// virtio-v1.1#4.2.2
+
+    /**
+     * @brief 版本
+     * @see virtio-v1.1#4.2.2
+     */
     static constexpr const uint32_t VERSION     = 0x02;
+
+    /**
+     * @brief virtio 设备类型
+     * @see virtio-v1.1#5
+     */
+    enum : uint8_t {
+        RESERVED = 0x00,
+        NETWORK_CARD,
+        BLOCK_DEVICE,
+        CONSOLE,
+        ENTROPY_SOURCE,
+        MEMORY_BALLOONING,
+        IOMEMORY,
+        RPMSG,
+        SCSI_HOST,
+        NINEP_TRANSPORT,
+        MAC_80211_WLAN,
+        RPROC_SERIAL,
+        VIRTIO_CAIF,
+        MEMORY_BALLOON,
+        GPU_DEVICE = 0x10,
+        TIMER_CLOCK_DEVICE,
+        INPUT_DEVICE,
+        SOCKET_DEVICE,
+        CRYPTO_DEVICE,
+        SIGNAL_DISTRIBUTION_MODULE,
+        PSTORE_DEVICE,
+        IOMMU_DEVICE,
+        MEMORY_DEVICE,
+    };
+
+    /**
+     * @brief virtio 设备类型名名称
+     * @see virtio-v1.1#5
+     */
+    static constexpr const char* const virtio_device_name[25] = {
+        "reserved (invalid)",
+        "network card",
+        "block device",
+        "console",
+        "entropy source",
+        "memory ballooning(traditional)",
+        "ioMemory",
+        "rpmsg",
+        "SCSI host",
+        "9P transport",
+        "mac80211 wlan",
+        "rproc serial",
+        "virtio CAIF",
+        "memory balloon",
+        "null",
+        "null",
+        "GPU device",
+        "Timer / Clock device",
+        "Input device",
+        "Socket device",
+        "Crypto device",
+        "Signal Distribution Module",
+        "pstore device",
+        "IOMMU device",
+        "Memory device",
+    };
+
+    /**
+     * @brief 设备状态标志 Device Status Field
+     * @see virtio-v1.1#2.1
+     */
+    /// OS 已识别设备
+    static constexpr const uint32_t DEVICE_STATUS_ACKNOWLEDGE        = 0x1;
+    /// OS 已匹配驱动
+    static constexpr const uint32_t DEVICE_STATUS_DRIVER             = 0x2;
+    /// 驱动准备就绪
+    static constexpr const uint32_t DEVICE_STATUS_DRIVER_OK          = 0x4;
+    /// 设备特性设置就绪
+    static constexpr const uint32_t DEVICE_STATUS_FEATURES_OK        = 0x8;
+    /// 设备设置错误
+    static constexpr const uint32_t DEVICE_STATUS_DEVICE_NEEDS_RESET = 0x40;
+    /// 设备出错
+    static constexpr const uint32_t DEVICE_STATUS_FAILED             = 0x80;
 
     /**
      * @brief virtio mmio 控制寄存器
@@ -103,43 +185,18 @@ private:
     } __attribute__((packed));
 
     /**
-     * @brief 块设备 feature bits
-     * @see virtio-v1.1#5.2.3
-     */
-    /// Device supports request barriers.
-    static constexpr const uint32_t BLK_F_BARRIER               = 0;
-    /// Maximum size of any single segment is in size_max.
-    static constexpr const uint32_t BLK_F_SIZE_MAX              = 1;
-    /// Maximum number of segments in a request is in seg_max.
-    static constexpr const uint32_t BLK_F_SEG_MAX               = 2;
-    /// Disk-style geometry specified in geometry.
-    static constexpr const uint32_t BLK_F_GEOMETRY              = 4;
-    /// Device is read-only.
-    static constexpr const uint32_t BLK_F_RO                    = 5;
-    /// Block size of disk is in blk_size.
-    static constexpr const uint32_t BLK_F_BLK_SIZE              = 6;
-    /// Cache flush command support.
-    static constexpr const uint32_t BLK_F_FLUSH                 = 9;
-    /// Device exports information on optimal I/O alignment.
-    static constexpr const uint32_t BLK_F_TOPOLOGY              = 10;
-    /// Device can toggle its cache between writeback and writethrough modes.
-    static constexpr const uint32_t BLK_F_CONFIG_WCE            = 11;
-    /// Device can support discard command, maximum discard sectors size in
-    /// max_discard_sectors and maximum discard segment number in
-    /// max_discard_seg.
-    static constexpr const uint32_t BLK_F_DISCARD               = 13;
-    /// Devicecansupportwritezeroescommand,maximumwritezeroes sectors size in
-    /// max_write_zeroes_sectors and maximum write zeroes segment number in
-    /// max_write_- zeroes_seg.
-    static constexpr const uint32_t BLK_F_WRITE_ZEROES          = 14;
-
-    /**
      * @brief Reserved Feature Bits
      * @see virtio-v1.1#6
      */
     static constexpr const uint32_t VIRTIO_F_RING_INDIRECT_DESC = 0x1C;
     static constexpr const uint32_t VIRTIO_F_RING_EVENT_IDX     = 0x1D;
     static constexpr const uint32_t VIRTIO_F_VERSION_1          = 0x20;
+    static constexpr const uint32_t VIRTIO_F_ACCESS_PLATFORM    = 0x21;
+    static constexpr const uint32_t VIRTIO_F_RING_PACKED        = 0x22;
+    static constexpr const uint32_t VIRTIO_F_IN_ORDER           = 0x23;
+    static constexpr const uint32_t VIRTIO_F_ORDER_PLATFORM     = 0x24;
+    static constexpr const uint32_t VIRTIO_F_SR_IOV             = 0x25;
+    static constexpr const uint32_t VIRTIO_F_NOTIFICATION_DATA  = 0x26;
 
     /**
      * @brief feature 信息
@@ -155,11 +212,56 @@ private:
 
     /**
      * @brief 公共基础特性
+     * @note QEMU emulator version 7.0.0 (Debian 1:7.0+dfsg-7ubuntu2.3) 不支持
+     * VIRTIO_F_RING_PACKED 属性，改为 false
      */
-    const feature_t base_features[3] = {
+    const feature_t base_features[4] = {
         {"VIRTIO_F_RING_INDIRECT_DESC", VIRTIO_F_RING_INDIRECT_DESC, false},
         {    "VIRTIO_F_RING_EVENT_IDX",     VIRTIO_F_RING_EVENT_IDX, false},
         {         "VIRTIO_F_VERSION_1",          VIRTIO_F_VERSION_1, false},
+        {       "VIRTIO_F_RING_PACKED",        VIRTIO_F_RING_PACKED, false},
+    };
+
+    /**
+     * @brief 块设备 feature bits
+     * @see virtio-v1.1#5.2.3
+     */
+    /// Device supports request barriers.
+    static constexpr const uint32_t BLK_F_BARRIER      = 0;
+    /// Maximum size of any single segment is in size_max.
+    static constexpr const uint32_t BLK_F_SIZE_MAX     = 1;
+    /// Maximum number of segments in a request is in seg_max.
+    static constexpr const uint32_t BLK_F_SEG_MAX      = 2;
+    /// Disk-style geometry specified in geometry.
+    static constexpr const uint32_t BLK_F_GEOMETRY     = 4;
+    /// Device is read-only.
+    static constexpr const uint32_t BLK_F_RO           = 5;
+    /// Block size of disk is in blk_size.
+    static constexpr const uint32_t BLK_F_BLK_SIZE     = 6;
+    /// Cache flush command support.
+    static constexpr const uint32_t BLK_F_FLUSH        = 9;
+    /// Device exports information on optimal I/O alignment.
+    static constexpr const uint32_t BLK_F_TOPOLOGY     = 10;
+    /// Device can toggle its cache between writeback and writethrough modes.
+    static constexpr const uint32_t BLK_F_CONFIG_WCE   = 11;
+    /// Device can support discard command, maximum discard sectors size in
+    /// max_discard_sectors and maximum discard segment number in
+    /// max_discard_seg.
+    static constexpr const uint32_t BLK_F_DISCARD      = 13;
+    /// Devicecansupportwritezeroescommand,maximumwritezeroes sectors size in
+    /// max_write_zeroes_sectors and maximum write zeroes segment number in
+    /// max_write_- zeroes_seg.
+    static constexpr const uint32_t BLK_F_WRITE_ZEROES = 14;
+
+    feature_t                       blk_features[8]    = {
+        {  "BLK_F_SIZE_MAX",   BLK_F_SIZE_MAX, false},
+        {   "BLK_F_SEG_MAX",    BLK_F_SEG_MAX, false},
+        {  "BLK_F_GEOMETRY",   BLK_F_GEOMETRY, false},
+        {        "BLK_F_RO",         BLK_F_RO, false},
+        {  "BLK_F_BLK_SIZE",   BLK_F_BLK_SIZE, false},
+        {     "BLK_F_FLUSH",      BLK_F_FLUSH, false},
+        {  "BLK_F_TOPOLOGY",   BLK_F_TOPOLOGY, false},
+        {"BLK_F_CONFIG_WCE", BLK_F_CONFIG_WCE, false},
     };
 
     /**
@@ -204,17 +306,6 @@ private:
     /// 块设备配置信息指针
     virtio_blk_config_t* config;
 
-    feature_t            blk_features[8] = {
-        {  NAME2STR(BLK_F_SIZE_MAX),   BLK_F_SIZE_MAX, false},
-        {   NAME2STR(BLK_F_SEG_MAX),    BLK_F_SEG_MAX, false},
-        {  NAME2STR(BLK_F_GEOMETRY),   BLK_F_GEOMETRY, false},
-        {        NAME2STR(BLK_F_RO),         BLK_F_RO, false},
-        {  NAME2STR(BLK_F_BLK_SIZE),   BLK_F_BLK_SIZE, false},
-        {     NAME2STR(BLK_F_FLUSH),      BLK_F_FLUSH, false},
-        {  NAME2STR(BLK_F_TOPOLOGY),   BLK_F_TOPOLOGY, false},
-        {NAME2STR(BLK_F_CONFIG_WCE), BLK_F_CONFIG_WCE, false},
-    };
-
     /**
      * @brief 设置设备 features
      * @param  _features        要设置的 feature 向量
@@ -230,22 +321,7 @@ private:
 protected:
 
 public:
-    /// virtio mmio 寄存器基地址
-    virtio_regs_t*                 regs;
-    /// virtio queue，有些设备使用多个队列
-    mystl::vector<virtio_queue_t*> queues;
-
-    virtio_mmio_drv_t(void);
-    virtio_mmio_drv_t(const void* _addr);
-    virtio_mmio_drv_t(const resource_t& _resource);
-    ~virtio_mmio_drv_t(void);
-
-    /**
-     * @brief 驱动程序的初始化
-     * @return true             成功
-     * @return false            失败
-     */
-    bool init(void) override final;
+    static constexpr const char* NAME = "virtio,mmio";
 
     /**
      * @brief 块设备请求结构
@@ -278,9 +354,50 @@ public:
     static constexpr const size_t VIRTIO_BLK_SECTOR_SIZE     = 512;
     static constexpr const size_t VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
 
-    size_t                        rw(virtio_blk_req_t& _req, void* _buf);
-    void                          set_intr_ack(void);
-    size_t                        get_queue_len(void);
+    /// virtio mmio 寄存器基地址
+    virtio_regs_t*                regs;
+    /// virtio queue，有些设备使用多个队列
+    split_virtqueue_t             queue;
+
+    virtio_mmio_drv_t(const resource_t& _resource);
+    virtio_mmio_drv_t(const resource_t& _resource, driver_base_t* _drv);
+    ~virtio_mmio_drv_t(void);
+
+    /**
+     * @brief 驱动程序的初始化
+     * @return true             成功
+     * @return false            失败
+     */
+    bool   init(void);
+
+    size_t rw(virtio_blk_req_t& _req, void* _buf);
+    void   set_intr_ack(void);
+    size_t get_queue_len(void);
+
+    /**
+     * @brief 从设备读
+     * @param  _buf             缓冲区
+     */
+    int    read(buf_t& _buf) override final;
+
+    /**
+     * @brief 向设备写
+     * @param  _buf             缓冲区
+     */
+    int    write(buf_t& _buf) override final;
+
+    /**
+     * @brief ioctl 控制
+     * @param  _resource        设备使用的资源
+     * @param  _buf             缓冲区，512 字节
+     */
+    int    ioctl(uint8_t _cmd, void* _buf) override final;
+
+    /**
+     * @brief 获取设备状态
+     * @param  _cmd             指令
+     */
+    int    status(uint8_t _cmd) override final;
 };
 
 declare_call_back(virtio_mmio_drv_t);
