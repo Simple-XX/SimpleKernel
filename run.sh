@@ -58,13 +58,6 @@ else
     rm -rf -f ${iso_boot}/*
 fi
 
-# 制作 fatfs 镜像
-if [ ! -f ./fatfs.dmg ]; then
-    # osx 下需要手动制作
-    echo NO fatfs.dmg!
-    exit
-fi
-
 # 初始化 gdb
 if [ ${DEBUG} == 1 ]; then
     cp ./tools/gdbinit ./.gdbinit
@@ -98,9 +91,9 @@ elif [ ${ARCH} == "riscv64" ]; then
     qemu-system-riscv64 -machine virt -bios ${OPENSBI} -kernel ${kernel} \
     -global virtio-mmio.force-legacy=false \
     -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=fatfs \
-    -drive file=mydisk,format=raw,id=fatfs \
+    -drive file=fatfs.img,format=raw,id=fatfs \
     -device virtio-scsi-device,bus=virtio-mmio-bus.1,id=scsi \
-    -drive file=fatfs.dmg,format=raw,id=scsi \
+    -drive file=fatfs.img,format=raw,id=scsi \
     -monitor telnet::2333,server,nowait -serial stdio -nographic \
     ${GDB_OPT}
 fi

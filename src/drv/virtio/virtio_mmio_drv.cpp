@@ -20,7 +20,7 @@
 #include "io.h"
 #include "string"
 #include "vector"
-#include "virtio_queue.h"
+#include "virtqueue.h"
 #include "vmm.h"
 
 // 设置 features
@@ -81,46 +81,46 @@ void virtio_mmio_drv_t::set_features(
 // 将队列设置传递到相应寄存器
 // _queue_sel: 第几个队列，从 0 开始
 void virtio_mmio_drv_t::add_to_device(uint32_t _queue_sel) {
-    // 选择队列号
-    IO::get_instance().write32(&regs->queue_sel, _queue_sel);
-    // 如果该队列已设置
-    if (IO::get_instance().read32(&regs->queue_ready) == 1) {
-        err("already used!\n");
-        // 直接返回
-        return;
-    }
-    // max 为零则表示不支持
-    assert(IO::get_instance().read32(&regs->queue_num_max) != 0);
-    // 如果长度大于允许的最大值
-    if (queues.at(_queue_sel)->virtq->len
-        > IO::get_instance().read32(&regs->queue_num_max)) {
-        err("queue 0x%X too long!\n", _queue_sel);
-        return;
-    }
-    // 设置长度
-    IO::get_instance().write32(&regs->queue_num,
-                               queues.at(_queue_sel)->virtq->len);
-    // 将 queue 的物理地址写入相应寄存器
-    // 写 desc 低位
-    IO::get_instance().write32(&regs->queue_desc_low,
-                               queues.at(_queue_sel)->virtq->phys
-                                 + queues.at(_queue_sel)->off_desc);
-    // 写 desc 高位
-    IO::get_instance().write32(&regs->queue_desc_high, 0);
-    // 写 driver 低位
-    IO::get_instance().write32(&regs->queue_driver_low,
-                               queues.at(_queue_sel)->virtq->phys
-                                 + queues.at(_queue_sel)->off_driver);
-    // 写 driver 高位
-    IO::get_instance().write32(&regs->queue_driver_high, 0);
-    // 写 device 低位
-    IO::get_instance().write32(&regs->queue_device_low,
-                               queues.at(_queue_sel)->virtq->phys
-                                 + queues.at(_queue_sel)->off_device);
-    // 写 device 高位
-    IO::get_instance().write32(&regs->queue_device_high, 0);
-    // ready 置位
-    IO::get_instance().write32(&regs->queue_ready, 1);
+//    // 选择队列号
+//    IO::get_instance().write32(&regs->queue_sel, _queue_sel);
+//    // 如果该队列已设置
+//    if (IO::get_instance().read32(&regs->queue_ready) == 1) {
+//        err("already used!\n");
+//        // 直接返回
+//        return;
+//    }
+//    // max 为零则表示不支持
+//    assert(IO::get_instance().read32(&regs->queue_num_max) != 0);
+//    // 如果长度大于允许的最大值
+//    if (queues.at(_queue_sel)->virtq->len
+//        > IO::get_instance().read32(&regs->queue_num_max)) {
+//        err("queue 0x%X too long!\n", _queue_sel);
+//        return;
+//    }
+//    // 设置长度
+//    IO::get_instance().write32(&regs->queue_num,
+//                               queues.at(_queue_sel)->virtq->len);
+//    // 将 queue 的物理地址写入相应寄存器
+//    // 写 desc 低位
+//    IO::get_instance().write32(&regs->queue_desc_low,
+//                               queues.at(_queue_sel)->virtq->phys
+//                                 + queues.at(_queue_sel)->off_desc);
+//    // 写 desc 高位
+//    IO::get_instance().write32(&regs->queue_desc_high, 0);
+//    // 写 driver 低位
+//    IO::get_instance().write32(&regs->queue_driver_low,
+//                               queues.at(_queue_sel)->virtq->phys
+//                                 + queues.at(_queue_sel)->off_driver);
+//    // 写 driver 高位
+//    IO::get_instance().write32(&regs->queue_driver_high, 0);
+//    // 写 device 低位
+//    IO::get_instance().write32(&regs->queue_device_low,
+//                               queues.at(_queue_sel)->virtq->phys
+//                                 + queues.at(_queue_sel)->off_device);
+//    // 写 device 高位
+//    IO::get_instance().write32(&regs->queue_device_high, 0);
+//    // ready 置位
+//    IO::get_instance().write32(&regs->queue_ready, 1);
     return;
 }
 
@@ -180,7 +180,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
         return;
     }
     // 设置队列
-    queues.push_back(new virtio_queue_t(8));
+    queues.push_back(new packed_virtqueue_t(8));
     add_to_device(0);
     config = (virtio_blk_config_t*)&regs->config;
 #define DEBUG
@@ -240,11 +240,12 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     printf("virtio blk init\n");
     virtio_mmio_drv_t::virtio_blk_req_t* req
       = new virtio_mmio_drv_t::virtio_blk_req_t;
-    req->type   = virtio_blk_req_t::IN;
-    req->sector = 0;
+    req->type   = virtio_blk_req_t::OUT;
+    req->sector = 100;
     void* buf   = kmalloc(512);
     memset(buf, 1, 512);
-    rw(*req, buf);
+    auto ret = rw(*req, buf);
+    info("ret = %d\n", ret);
     return;
 }
 
@@ -260,42 +261,42 @@ bool virtio_mmio_drv_t::init(void) {
 }
 
 size_t virtio_mmio_drv_t::rw(virtio_blk_req_t& _req, void* _buf) {
-    /// @todo 错误处理
-    /// @see virtio-v1.1#5.2.6
-    uint32_t mode = 0;
-    uint32_t d1   = 0;
-    uint32_t d2   = 0;
-    uint32_t d3   = 0;
-
-    if (_req.type == virtio_blk_req_t::IN) {
-        // mark page writeable
-        mode = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
-    }
-
-    d1 = queues.at(0)->alloc_desc(&_req);
-    d2 = queues.at(0)->alloc_desc(_buf);
-    d3 = queues.at(0)->alloc_desc((void*)(&_req + sizeof(virtio_blk_req_t)));
-
-    queues.at(0)->virtq->desc[d1].len = VIRTIO_BLK_REQ_HEADER_SIZE;
-    queues.at(0)->virtq->desc[d1].flags
-      = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
-    queues.at(0)->virtq->desc[d1].next = d2;
-
-    queues.at(0)->virtq->desc[d2].len  = VIRTIO_BLK_SECTOR_SIZE;
-    queues.at(0)->virtq->desc[d2].flags
-      |= mode | virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
-    queues.at(0)->virtq->desc[d2].next = d3;
-
-    queues.at(0)->virtq->desc[d3].len  = VIRTIO_BLK_REQ_FOOTER_SIZE;
-    queues.at(0)->virtq->desc[d3].flags
-      = virtio_queue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
-    queues.at(0)->virtq->desc[d3].next = 0;
-
-    queues.at(0)->virtq->avail->ring[queues.at(0)->virtq->avail->idx
-                                     % queues.at(0)->virtq->len]
-      = d1;
-    queues.at(0)->virtq->avail->idx += 1;
-    IO::get_instance().write32(&regs->queue_notify, 0);
+//    /// @todo 错误处理
+//    /// @see virtio-v1.1#5.2.6
+//    uint32_t mode = 0;
+//    uint32_t d1   = 0;
+//    uint32_t d2   = 0;
+//    uint32_t d3   = 0;
+//
+//    if (_req.type == virtio_blk_req_t::IN) {
+//        // mark page writeable
+//        mode = packed_virtqueue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
+//    }
+//
+//    d1 = queues.at(0)->alloc_desc(&_req);
+//    d2 = queues.at(0)->alloc_desc(_buf);
+//    d3 = queues.at(0)->alloc_desc((void*)(&_req + sizeof(virtio_blk_req_t)));
+//
+//    queues.at(0)->virtq->desc[d1].len = VIRTIO_BLK_REQ_HEADER_SIZE;
+//    queues.at(0)->virtq->desc[d1].flags
+//      = packed_virtqueue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+//    queues.at(0)->virtq->desc[d1].next = d2;
+//
+//    queues.at(0)->virtq->desc[d2].len  = VIRTIO_BLK_SECTOR_SIZE;
+//    queues.at(0)->virtq->desc[d2].flags
+//      |= mode | packed_virtqueue_t::virtq_desc_t::VIRTQ_DESC_F_NEXT;
+//    queues.at(0)->virtq->desc[d2].next = d3;
+//
+//    queues.at(0)->virtq->desc[d3].len  = VIRTIO_BLK_REQ_FOOTER_SIZE;
+//    queues.at(0)->virtq->desc[d3].flags
+//      = packed_virtqueue_t::virtq_desc_t::VIRTQ_DESC_F_WRITE;
+//    queues.at(0)->virtq->desc[d3].next = 0;
+//
+//    queues.at(0)->virtq->avail->ring[queues.at(0)->virtq->avail->idx
+//                                     % queues.at(0)->virtq->len]
+//      = d1;
+//    queues.at(0)->virtq->avail->idx += 1;
+//    IO::get_instance().write32(&regs->queue_notify, 0);
     return 0;
 }
 
@@ -306,7 +307,8 @@ void virtio_mmio_drv_t::set_intr_ack(void) {
 }
 
 size_t virtio_mmio_drv_t::get_queue_len(void) {
-    return queues.at(0)->virtq->len;
+//    return queues.at(0)->virtq->len;
+    return 0;
 }
 
 int virtio_mmio_drv_t::read(void* _where, void* _buf) {
