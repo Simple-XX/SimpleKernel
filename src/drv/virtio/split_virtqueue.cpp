@@ -1,7 +1,7 @@
 
 /**
- * @file virtio_queue.cpp
- * @brief virtio queue 实现
+ * @file split_virtqueue.cpp
+ * @brief split virtqueue 实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2021-12-21
@@ -14,14 +14,14 @@
  * </table>
  */
 
-#include "virtio_queue.h"
 #include "cassert"
 #include "common.h"
 #include "cstdio"
 #include "cstdlib"
+#include "virtqueue.h"
 #include "vmm.h"
 
-virtio_queue_t::virtio_queue_t(size_t _size) {
+split_virtqueue_t::split_virtqueue_t(size_t _size) {
     // _size 应该为 2 的幂
     assert((_size & (_size - 1)) == 0);
     // TODO: 解释
@@ -33,19 +33,26 @@ virtio_queue_t::virtio_queue_t(size_t _size) {
                                virtq_avail_t::ALIGN);
     off_device_event
       = (off_driver + sizeof(virtq_avail_t) + _size * sizeof(uint16_t));
+
     off_device
       = COMMON::ALIGN(off_device_event + sizeof(uint16_t), virtq_used_t::ALIGN);
+
     off_driver_event
       = (off_device + sizeof(virtq_used_t) + _size * sizeof(virtq_used_elem_t));
+
     off_desc_virt
       = COMMON::ALIGN(off_driver_event + sizeof(uint16_t), sizeof(void*));
+
     // 如果需要的内存大于1页则出错
     if (off_desc_virt + _size * sizeof(void*) > COMMON::PAGE_SIZE) {
         printf("virtq_create: error, too big for two pagess\n");
         return;
     }
+
     virtq              = (virtq_t*)kmalloc(COMMON::PAGE_SIZE);
+
     uint8_t* page_virt = (uint8_t*)virtq;
+
     virtq->phys        = VMM_VA2PA((uintptr_t)virtq);
     virtq->len         = _size;
 
@@ -68,12 +75,12 @@ virtio_queue_t::virtio_queue_t(size_t _size) {
     return;
 }
 
-virtio_queue_t::~virtio_queue_t(void) {
+split_virtqueue_t::~split_virtqueue_t(void) {
     free(virtq);
     return;
 }
 
-uint32_t virtio_queue_t::alloc_desc(void* _addr) {
+uint32_t split_virtqueue_t::alloc_desc(void* _addr) {
     // 获取空闲 desc 索引
     uint32_t desc = virtq->free_desc;
     // 获取下一个 desc 索引
@@ -90,7 +97,7 @@ uint32_t virtio_queue_t::alloc_desc(void* _addr) {
     return desc;
 }
 
-void virtio_queue_t::free_desc(uint32_t desc) {
+void split_virtqueue_t::free_desc(uint32_t desc) {
     // 要释放 desc 的下一项指向另一个 free 的 desc
     virtq->desc[desc].next = virtq->free_desc;
     // free 索引设为当前索引
