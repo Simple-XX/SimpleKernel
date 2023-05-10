@@ -58,6 +58,14 @@ else
     rm -rf -f ${iso_boot}/*
 fi
 
+# 制作 fatfs 镜像
+if [ ! -f ./fatfs.img ]; then
+    # osx 下需要手动制作
+    echo NO fatfs.img!
+    bash ./tools/mkfatfs.sh
+    exit
+fi
+
 # 初始化 gdb
 if [ ${DEBUG} == 1 ]; then
     cp ./tools/gdbinit ./.gdbinit
