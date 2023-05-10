@@ -71,12 +71,6 @@ public:
     }
 };
 
-template <class _T>
-struct drv {
-    char* compatible_name;
-    _T    drv;
-};
-
 /**
  * @brief 创建驱动实例工厂类
  */

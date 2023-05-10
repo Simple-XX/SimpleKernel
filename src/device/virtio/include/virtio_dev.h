@@ -19,7 +19,6 @@
 
 #include "device_base.h"
 #include "virtio_mmio_drv.h"
-#include "virtio_queue.h"
 
 /**
  * @brief 所有 virtio 设备的公有属性，标准文档的 #4 之外的部分

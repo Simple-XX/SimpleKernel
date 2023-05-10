@@ -35,9 +35,14 @@ private:
      * @return true             成功
      * @return false            失败
      */
-    virtual bool match(device_base_t& _dev, const mystl::string& _drv_name);
+    bool match(device_base_t& _dev, const mystl::string& _drv_name);
 
-    bool         match(void);
+    /**
+     * @brief 匹配设备与驱动
+     * @return true             成功
+     * @return false            失败
+     */
+    bool match(void);
 
 protected:
 
@@ -49,10 +54,21 @@ public:
     /// 已注册驱动列表 compatible-驱动名向量
     mystl::vector<mystl::string>  drivers;
 
-    /// 用于创建虚拟总线
+    /**
+     * @brief 使用默认构造函数
+     */
     bus_device_t(void) = default;
+
+    /**
+     * @brief 构造函数
+     * @param  _bus_name        总线名称
+     */
     bus_device_t(const mystl::string& _bus_name);
-    virtual ~bus_device_t(void) = default;
+
+    /**
+     * @brief 使用默认析构函数
+     */
+    ~bus_device_t(void) = default;
 
     /**
      * @brief 添加驱动
