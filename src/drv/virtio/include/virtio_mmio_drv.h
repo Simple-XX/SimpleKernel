@@ -350,14 +350,14 @@ public:
         uint8_t                         status;
     } __attribute__((packed));
 
-    static constexpr const size_t     VIRTIO_BLK_REQ_HEADER_SIZE = 16;
-    static constexpr const size_t     VIRTIO_BLK_SECTOR_SIZE     = 512;
-    static constexpr const size_t     VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
+    static constexpr const size_t VIRTIO_BLK_REQ_HEADER_SIZE = 16;
+    static constexpr const size_t VIRTIO_BLK_SECTOR_SIZE     = 512;
+    static constexpr const size_t VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
 
     /// virtio mmio 寄存器基地址
-    virtio_regs_t*                    regs;
+    virtio_regs_t*                regs;
     /// virtio queue，有些设备使用多个队列
-    mystl::vector<split_virtqueue_t*> queues;
+    split_virtqueue_t             queue;
 
     virtio_mmio_drv_t(const resource_t& _resource);
     virtio_mmio_drv_t(const resource_t& _resource, driver_base_t* _drv);
