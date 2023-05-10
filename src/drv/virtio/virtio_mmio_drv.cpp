@@ -127,7 +127,7 @@ void virtio_mmio_drv_t::add_to_device(uint32_t _queue_sel) {
 extern void virtio_mmio_intr(uint8_t _no);
 
 virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
-    : driver_base_t(NAME, _resource) {
+    : driver_base_t(NAME) {
     regs = (virtio_regs_t*)_resource.mem.addr;
     // 映射内存
     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), _resource.mem.addr,
@@ -138,9 +138,8 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     assert(IO::get_instance().read32(&regs->version) == VERSION);
     // 检查类型是否符合
     /// @todo 暂时只初始化 BLOCK_DEVICE 设备
-    if (IO::get_instance().read32(&regs->device_id)
-        != virtio_dev_t::BLOCK_DEVICE) {
-        err("JUST BLOCK_DEVICE, return\n");
+    if (IO::get_instance().read32(&regs->device_id) != BLOCK_DEVICE) {
+        warn("JUST BLOCK_DEVICE, return\n");
         return;
     }
     // assert(IO::get_instance().read32(&regs->device_id) == _type);
@@ -151,11 +150,11 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     // 置位 ACKNOWLEDGE
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status)
-                                 | virtio_dev_t::DEVICE_STATUS_ACKNOWLEDGE);
+                                 | DEVICE_STATUS_ACKNOWLEDGE);
     // 置位 DRIVER
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status)
-                                 | virtio_dev_t::DEVICE_STATUS_DRIVER);
+                                 | DEVICE_STATUS_DRIVER);
     // 接下来设置设备相关 feature，交给特定设备进行
     // 跳转到 virtio_blk.cpp 的构造函数
     // virtio-v1.1#3.1.1
@@ -172,10 +171,9 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     // 置位 FEATURES_OK
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status)
-                                 | virtio_dev_t::DEVICE_STATUS_FEATURES_OK);
+                                 | DEVICE_STATUS_FEATURES_OK);
     // 再次读取以确认设置成功
-    if ((IO::get_instance().read32(&regs->status)
-         & virtio_dev_t::DEVICE_STATUS_FEATURES_OK)
+    if ((IO::get_instance().read32(&regs->status) & DEVICE_STATUS_FEATURES_OK)
         == false) {
         // 失败则报错
         assert(0);
@@ -233,7 +231,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
 #endif
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status)
-                                 | virtio_dev_t::DEVICE_STATUS_DRIVER_OK);
+                                 | DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
     // 允许中断
     PLIC::get_instance().set(_resource.intr_no, true);
@@ -312,18 +310,25 @@ size_t virtio_mmio_drv_t::get_queue_len(void) {
 }
 
 int virtio_mmio_drv_t::read(void* _where, void* _buf) {
+    (void)_where;
+    (void)_buf;
     return 0;
 }
 
 int virtio_mmio_drv_t::write(void* _where, void* _buf) {
+    (void)_where;
+    (void)_buf;
     return 0;
 }
 
 int virtio_mmio_drv_t::ioctl(uint8_t _cmd, void* _buf) {
+    (void)_cmd;
+    (void)_buf;
     return 0;
 }
 
 int virtio_mmio_drv_t::status(uint8_t _cmd) {
+    (void)_cmd;
     return 0;
 }
 
