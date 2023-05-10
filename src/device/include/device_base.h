@@ -48,20 +48,14 @@ public:
     /**
      * @brief 构造函数
      * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动，默认为 nullptr
      */
-    device_base_t(const resource_t& _resource);
-
-    /**
-     * @brief 构造函数
-     * @param  _resource        设备使用的资源
-     * @param  _drv             设备使用的驱动
-     */
-    device_base_t(const resource_t& _resource, driver_base_t* _drv);
+    device_base_t(const resource_t& _resource, driver_base_t* _drv = nullptr);
 
     /**
      * @brief 析构函数
      */
-    virtual ~device_base_t(void) = 0;
+    virtual ~device_base_t(void);
 
     /**
      * @brief 从设备读

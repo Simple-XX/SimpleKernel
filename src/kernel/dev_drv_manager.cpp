@@ -67,15 +67,15 @@ bool DEV_DRV_MANAGER::init(void) {
     // 添加 virtio 总线
     auto bus = new bus_device_t("virtio_mmio_bus");
     add_bus(*bus);
-    // 将驱动注册到 bus
-    register_call_back(bus, virtio_mmio_drv_t::NAME, virtio_mmio_drv_t);
-    // 每个 resource 对应一个总线设备
+    // 每个 resource 对应一个设备
     for (auto i : *virtio_mmio_dev_resources_vector) {
         // 设置每个设备的名称与驱动名
-        auto virtio_dev = new virtio_dev_t(i);
+        auto virtio_dev = new virtio_device_t(i);
         // 添加到总线的设备向量
         bus->add_device(virtio_dev);
     }
+    // 将驱动注册到 bus
+    register_call_back(bus, virtio_mmio_drv_t::NAME, virtio_mmio_drv_t);
     show();
     // #endif
     info("device and driver manager init.\n");
