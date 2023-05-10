@@ -34,20 +34,35 @@ public:
     const mystl::string name;
 
     driver_base_t(void);
-    driver_base_t(const mystl::string& _name, const resource_t& _resource);
+    driver_base_t(const mystl::string& _name);
     virtual ~driver_base_t(void)                         = 0;
 
-    // 驱动操作
-    // 初始化
-    virtual bool         init(void)                      = 0;
-    // 设备基本操作
-    // 从设备读
+    /**
+     * @brief 从设备读
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          read(void* _where, void* _buf)  = 0;
-    // 向设备写
+
+    /**
+     * @brief 向设备写
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          write(void* _where, void* _buf) = 0;
-    // ioctl 控制
+
+    /**
+     * @brief ioctl 控制
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          ioctl(uint8_t _cmd, void* _buf) = 0;
-    // 获取设备状态
+
+    /**
+     * @brief 获取设备状态
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          status(uint8_t _cmd)            = 0;
 
     friend std::ostream& operator<<(std::ostream& _out, driver_base_t& _drv) {

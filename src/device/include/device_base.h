@@ -33,32 +33,66 @@ public:
     /// 设备名
     mystl::string    dev_name;
     /// 设备使用的驱动
-    driver_base_t*           drv;
+    driver_base_t*   drv;
     /// 设备所需资源
     const resource_t resource;
     /// 设备是否可用
     bool             is_ready;
     // 设备初始化
+
+    /**
+     * @brief 构造函数
+     */
     device_base_t(void);
-    device_base_t(const mystl::string& _dev_name,
-                  const mystl::string& _compatible_name, driver_base_t* drv,
-                  const resource_t& _resource);
+
+    /**
+     * @brief 构造函数
+     * @param  _resource        设备使用的资源
+     */
     device_base_t(const resource_t& _resource);
+
+    /**
+     * @brief 构造函数
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
+    device_base_t(const resource_t& _resource, driver_base_t* _drv);
+
+    /**
+     * @brief 析构函数
+     */
     virtual ~device_base_t(void) = 0;
 
-    // 设备基本操作
-    // 从设备读
+    /**
+     * @brief 从设备读
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          read(void* _where, void* _buf);
-    // 向设备写
+
+    /**
+     * @brief 向设备写
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          write(void* _where, void* _buf);
-    // ioctl 控制
+
+    /**
+     * @brief ioctl 控制
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          ioctl(uint8_t _cmd, void* _buf);
-    // 获取设备状态
+
+    /**
+     * @brief 获取设备状态
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动
+     */
     virtual int          status(uint8_t _cmd);
 
     friend std::ostream& operator<<(std::ostream& _out, device_base_t& _dev) {
-        info("dev_name: %s, drv: 0x%p",
-             _dev.dev_name.c_str(), _dev.drv);
+        info("dev_name: %s, drv: 0x%p", _dev.dev_name.c_str(), _dev.drv);
         return _out;
     }
 };

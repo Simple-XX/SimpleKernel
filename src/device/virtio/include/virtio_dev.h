@@ -18,6 +18,7 @@
 #define SIMPLEKERNEL_VIRTIO_DEV_H
 
 #include "device_base.h"
+#include "virtio_mmio_drv.h"
 #include "virtio_queue.h"
 
 /**
@@ -29,98 +30,10 @@ private:
 protected:
 
 public:
-    /**
-     * @brief virtio 设备类型
-     * @see virtio-v1.1#5
-     */
-    enum : uint8_t {
-        RESERVED = 0x00,
-        NETWORK_CARD,
-        BLOCK_DEVICE,
-        CONSOLE,
-        ENTROPY_SOURCE,
-        MEMORY_BALLOONING,
-        IOMEMORY,
-        RPMSG,
-        SCSI_HOST,
-        NINEP_TRANSPORT,
-        MAC_80211_WLAN,
-        RPROC_SERIAL,
-        VIRTIO_CAIF,
-        MEMORY_BALLOON,
-        GPU_DEVICE = 0x10,
-        TIMER_CLOCK_DEVICE,
-        INPUT_DEVICE,
-        SOCKET_DEVICE,
-        CRYPTO_DEVICE,
-        SIGNAL_DISTRIBUTION_MODULE,
-        PSTORE_DEVICE,
-        IOMMU_DEVICE,
-        MEMORY_DEVICE,
-    };
-
-    /**
-     * @brief virtio 设备类型名名称
-     * @see virtio-v1.1#5
-     */
-    static constexpr const char* const virtio_device_name[25] = {
-        "reserved (invalid)",
-        "network card",
-        "block device",
-        "console",
-        "entropy source",
-        "memory ballooning(traditional)",
-        "ioMemory",
-        "rpmsg",
-        "SCSI host",
-        "9P transport",
-        "mac80211 wlan",
-        "rproc serial",
-        "virtio CAIF",
-        "memory balloon",
-        "null",
-        "null",
-        "GPU device",
-        "Timer / Clock device",
-        "Input device",
-        "Socket device",
-        "Crypto device",
-        "Signal Distribution Module",
-        "pstore device",
-        "IOMMU device",
-        "Memory device",
-    };
-
-    /**
-     * @brief 设备状态标志 Device Status Field
-     * @see virtio-v1.1#2.1
-     */
-    /// OS 已识别设备
-    static constexpr const uint32_t DEVICE_STATUS_ACKNOWLEDGE        = 0x1;
-    /// OS 已匹配驱动
-    static constexpr const uint32_t DEVICE_STATUS_DRIVER             = 0x2;
-    /// 驱动准备就绪
-    static constexpr const uint32_t DEVICE_STATUS_DRIVER_OK          = 0x4;
-    /// 设备特性设置就绪
-    static constexpr const uint32_t DEVICE_STATUS_FEATURES_OK        = 0x8;
-    /// 设备设置错误
-    static constexpr const uint32_t DEVICE_STATUS_DEVICE_NEEDS_RESET = 0x40;
-    /// 设备出错
-    static constexpr const uint32_t DEVICE_STATUS_FAILED             = 0x80;
-
     virtio_dev_t(void);
+    virtio_dev_t(const resource_t& _resource, virtio_mmio_drv_t* _drv);
     virtio_dev_t(const resource_t& _resource);
     virtual ~virtio_dev_t(void);
-
-    // 设备基本操作
-    // 从设备读
-    int read(void* _where, void* _buf) override final;
-    // 向设备写
-    int write(void* _where, void* _buf) override final;
-    // ioctl 控制
-    int ioctl(uint8_t _cmd, void* _buf) override final;
-    // 获取设备状态
-    int status(uint8_t _cmd) override final;
 };
 
 #endif /* SIMPLEKERNEL_VIRTIO_DEV_H */

@@ -16,26 +16,17 @@
 
 #include "device_base.h"
 
-device_base_t::device_base_t(void) {
-    dev_name        = "device_base_t";
-    drv             = nullptr;
-// #define DEBUG
-#ifdef DEBUG
-    printf("dev_t ctor.\n");
-#    undef DEBUG
-#endif
+device_base_t::device_base_t(void) : dev_name("device_base_t"), drv(nullptr) {
     return;
 }
 
 device_base_t::device_base_t(const resource_t& _resource)
-    : resource(_resource) {
-    dev_name        = resource.name;
-    drv             = nullptr;
-// #define DEBUG
-#ifdef DEBUG
-    printf("dev_t ctor.\n");
-#    undef DEBUG
-#endif
+    : dev_name(_resource.name), drv(nullptr), resource(_resource) {
+    return;
+}
+
+device_base_t::device_base_t(const resource_t& _resource, driver_base_t* _drv)
+    : dev_name(_resource.name), drv(_drv), resource(_resource) {
     return;
 }
 

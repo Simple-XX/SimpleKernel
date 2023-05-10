@@ -18,8 +18,7 @@
 #include "boot_info.h"
 #include "bus_device.h"
 #include "cstdio"
-#include "cxxabi.h"
-#include "intr.h"
+#include "virtio_dev.h"
 #include "virtio_mmio_drv.h"
 
 void virtio_intr_handler(void) {

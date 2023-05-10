@@ -20,8 +20,7 @@ driver_base_t::driver_base_t(void) : name("drv_t") {
     return;
 }
 
-driver_base_t::driver_base_t(const mystl::string& _name,
-                             const resource_t&    _resource)
+driver_base_t::driver_base_t(const mystl::string& _name)
     : name(_name) {
     return;
 }
