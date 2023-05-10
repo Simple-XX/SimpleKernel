@@ -97,12 +97,12 @@ uint32_t split_virtqueue_t::alloc_desc(void* _addr) {
     return desc;
 }
 
-void split_virtqueue_t::free_desc(uint32_t desc) {
+void split_virtqueue_t::free_desc(uint32_t _desc) {
     // 要释放 desc 的下一项指向另一个 free 的 desc
-    virtq->desc[desc].next = virtq->free_desc;
+    virtq->desc[_desc].next = virtq->free_desc;
     // free 索引设为当前索引
-    virtq->free_desc       = desc;
+    virtq->free_desc       = _desc;
     // virt 地址置 0
-    virtq->desc_virt[desc] = nullptr;
+    virtq->desc_virt[_desc] = nullptr;
     return;
 }
