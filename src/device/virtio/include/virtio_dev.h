@@ -24,16 +24,29 @@
 /**
  * @brief 所有 virtio 设备的公有属性，标准文档的 #4 之外的部分
  */
-class virtio_dev_t : public device_base_t {
+class virtio_device_t : public device_base_t {
 private:
 
 protected:
 
 public:
-    virtio_dev_t(void);
-    virtio_dev_t(const resource_t& _resource, virtio_mmio_drv_t* _drv);
-    virtio_dev_t(const resource_t& _resource);
-    virtual ~virtio_dev_t(void);
+    /**
+     * @brief 不使用空构造函数
+     */
+    virtio_device_t(void) = delete;
+
+    /**
+     * @brief 构造函数
+     * @param  _resource        设备使用的资源
+     * @param  _drv             设备使用的驱动，默认为 nullptr
+     */
+    virtio_device_t(const resource_t&  _resource,
+                    virtio_mmio_drv_t* _drv = nullptr);
+
+    /**
+     * @brief 使用默认析构函数
+     */
+    ~virtio_device_t(void) = default;
 };
 
 #endif /* SIMPLEKERNEL_VIRTIO_DEV_H */
