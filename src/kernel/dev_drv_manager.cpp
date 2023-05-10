@@ -18,6 +18,7 @@
 #include "boot_info.h"
 #include "bus_device.h"
 #include "cstdio"
+#include "cxxabi.h"
 #include "intr.h"
 #include "virtio_mmio_drv.h"
 
@@ -92,25 +93,21 @@ bool DEV_DRV_MANAGER::init(void) {
                                         + virtio_mmio_dev_resources_count);
     // 添加 virtio 总线
     /// @todo 需要改进
-    auto bus = new bus_device_t();
+    auto bus = new bus_device_t("virtio_mmio_bus");
     add_bus(*bus);
+    // 到这里 virtio,mmio 总线初始化完成，下面为各个 virtio,mmio
+    // 注册用于创建驱动实例的回调函数
+    register_call_back(bus, "virtio,mmio", virtio_mmio_drv_t);
     // 每个 resource 对应一个总线设备
     for (auto i : *virtio_mmio_dev_resources_vector) {
         // 设置每个设备的名称与驱动名
         auto virtio_dev      = new virtio_dev_t(i);
         // 设备名
         /// @todo 这里需要 compatible 字段 "virtio,mmio"
-        virtio_dev->dev_name = i.name;
+        virtio_dev->dev_name = "virtio,mmio";
         // 添加到总线的设备向量
         bus->add_device(virtio_dev);
     }
-    // 到这里 virtio,mmio 总线初始化完成，下面为各个 virtio,mmio
-    // 注册用于创建驱动实例的回调函数
-    register_call_back(virtio_mmio_drv_t);
-    // 添加到总线的驱动向量
-    bus->add_driver("virtio,mmio", "virtio_mmio_drv_t");
-
-    bus->add_driver("virtio,mmio", "virtio_mmio_drv_t");
 
     // 初始化所有总线
     buss_init();

@@ -32,11 +32,10 @@ protected:
 public:
     // 驱动名
     const mystl::string name;
-    const mystl::string type_name;
 
     driver_base_t(void);
     driver_base_t(const resource_t&);
-    driver_base_t(const mystl::string& _name, const mystl::string& _type_name);
+    driver_base_t(const mystl::string& _name);
     virtual ~driver_base_t(void)                         = 0;
     // 驱动操作
     // 初始化
@@ -53,8 +52,7 @@ public:
     virtual int          status(uint8_t _cmd)            = 0;
 
     friend std::ostream& operator<<(std::ostream& _out, driver_base_t& _drv) {
-        info("drv name: %s, drv type_name: %s", _drv.name.c_str(),
-             _drv.type_name.c_str());
+        info("drv name: %s", _drv.name.c_str());
         return _out;
     }
 };
@@ -92,21 +90,30 @@ public:
 
     /**
      * @brief 注册回调函数
-     * @param  _class_name      驱动类型名
+     * @param  _compatible_name 驱动类型名
      * @param  _ctor_fun        回调函数指针
      */
-    void                  register_class(const mystl::string&     _class_name,
+    void                  register_class(const mystl::string&     _compatible_name,
                                          const constructor_fun_t& _ctor_fun);
 
     /**
      * @brief 创建驱动实例
-     * @param  _class_name      驱动类型名
+     * @param  _compatible_name 驱动类型名
      * @param  _resource        需要的硬件信息
      * @return drv_t*           创建好的驱动实例指针
      */
-    driver_base_t*        get_class(const mystl::string& _class_name,
+    driver_base_t*        get_class(const mystl::string& _compatible_name,
                                     const resource_t&    _resource) const;
 };
+
+// 这里的逻辑是，在填充设备的 drv 字段时，new 一个驱动对象
+// 以下三个宏都是为了这一目的
+// 使用时，首先在 xx_drv.h 的最后创建声明
+// define_call_back(xx_drv_t)
+// 在 xx_drv.cpp 的最后进行定义
+// define_call_back(xx_drv_t)
+// 使用 register_call_back(xx_drv_t) 将驱动注册到 drv_factory_t 中
+// 最后，在 match 函数中通过 drv_factory_t 创建新对象并赋值给设备的 drv
 
 /**
  * @brief 声明用于创建驱动实例的回调函数
@@ -125,11 +132,12 @@ public:
 /**
  * @brief 注册用于创建驱动实例的回调函数
  */
-#define register_call_back(_class_name)                                \
+#define register_call_back(_bus, _compatible_name, _class_name)        \
     do {                                                               \
         drv_factory_t::get_instance().register_class(                  \
-          #_class_name,                                                \
+          _compatible_name,                                            \
           (drv_factory_t::constructor_fun_t)&call_back_##_class_name); \
+        _bus->add_driver(_compatible_name, "#_class_name");            \
     } while (0);
 
 #endif /* SIMPLEKERNEL_DRIVER_BASE_H */

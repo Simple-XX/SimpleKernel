@@ -16,7 +16,7 @@
 
 #include "driver_base.h"
 
-driver_base_t::driver_base_t(void) : name("drv_t"), type_name("drv_t typename") {
+driver_base_t::driver_base_t(void) : name("drv_t") {
     return;
 }
 
@@ -24,8 +24,7 @@ driver_base_t::driver_base_t(const resource_t&) {
     return;
 }
 
-driver_base_t::driver_base_t(const mystl::string& _name, const mystl::string& _type_name)
-    : name(_name), type_name(_type_name) {
+driver_base_t::driver_base_t(const mystl::string& _name) : name(_name) {
     return;
 }
 
@@ -46,17 +45,17 @@ drv_factory_t& drv_factory_t::get_instance(void) {
     return factory;
 }
 
-void drv_factory_t::register_class(const mystl::string&     _class_name,
+void drv_factory_t::register_class(const mystl::string&     _compatible_name,
                                    const constructor_fun_t& _ctor_fun) {
     // 插入到 map
-    type_name_ctor_map.insert(
-      mystl::pair<mystl::string, constructor_fun_t>(_class_name, _ctor_fun));
+    type_name_ctor_map.insert(mystl::pair<mystl::string, constructor_fun_t>(
+      _compatible_name, _ctor_fun));
     return;
 }
 
-driver_base_t* drv_factory_t::get_class(const mystl::string& _class_name,
-                                const resource_t&    _resource) const {
-    auto iter = type_name_ctor_map.find(_class_name);
+driver_base_t* drv_factory_t::get_class(const mystl::string& _compatible_name,
+                                        const resource_t&    _resource) const {
+    auto iter = type_name_ctor_map.find(_compatible_name);
     if (iter == type_name_ctor_map.end()) {
         return (driver_base_t*)nullptr;
     }
