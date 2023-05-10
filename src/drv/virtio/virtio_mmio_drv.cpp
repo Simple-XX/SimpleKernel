@@ -238,9 +238,9 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     virtio_mmio_drv_t::virtio_blk_req_t* req
       = new virtio_mmio_drv_t::virtio_blk_req_t;
     req->type   = virtio_blk_req_t::IN;
-    req->sector = 0xAC0;
+    req->sector = 0;
     void* buf   = kmalloc(512);
-    memset(buf, 1, 512);
+    memset(buf, 0xCD, 512);
     auto ret = rw(*req, buf);
     info("ret = %d\n", ret);
 
@@ -259,35 +259,6 @@ bool virtio_mmio_drv_t::init(void) {
 }
 
 size_t virtio_mmio_drv_t::rw(virtio_blk_req_t& _req, void* _buf) {
-    // virtio_blk_req_t* hdr = (virtio_blk_req_t*)kmalloc(0x1000);
-    // uint32_t          d1, d2, d3, datamode = 0;
-    //
-    // hdr->type                   = _req.type;
-    // hdr->sector                 = _req.sector;
-    //
-    // d1                          = queue.alloc_desc(hdr);
-    // queue.virtq->desc[d1].len   = VIRTIO_BLK_REQ_HEADER_SIZE;
-    // queue.virtq->desc[d1].flags = VIRTQ_DESC_F_NEXT;
-    //
-    // if (_req.type == virtio_blk_req_t::IN) {
-    //     datamode = VIRTQ_DESC_F_WRITE;
-    // }
-    //
-    // d2                          = queue.alloc_desc(_buf);
-    // queue.virtq->desc[d2].len   = VIRTIO_BLK_SECTOR_SIZE;
-    // queue.virtq->desc[d2].flags = datamode | VIRTQ_DESC_F_NEXT;
-    //
-    // d3 = queue.alloc_desc((void*)hdr + VIRTIO_BLK_REQ_HEADER_SIZE);
-    // queue.virtq->desc[d3].len   = VIRTIO_BLK_REQ_FOOTER_SIZE;
-    // queue.virtq->desc[d3].flags = VIRTQ_DESC_F_WRITE;
-    //
-    // queue.virtq->desc[d1].next  = d2;
-    // queue.virtq->desc[d2].next  = d3;
-    //
-    // queue.virtq->avail->ring[queue.virtq->avail->idx]  = d1;
-    // queue.virtq->avail->idx                           += 1;
-    // IO::get_instance().write32(&regs->queue_notify, 0);
-
     /// @todo 错误处理
     /// @see virtio-v1.1#5.2.6
     uint32_t mode = 0;
@@ -306,7 +277,7 @@ size_t virtio_mmio_drv_t::rw(virtio_blk_req_t& _req, void* _buf) {
 
     d1                    = queue.alloc_desc(hdr);
     d2                    = queue.alloc_desc(_buf);
-    d3 = queue.alloc_desc((void*)((void*)hdr + sizeof(virtio_blk_req_t)));
+    d3 = queue.alloc_desc((void*)((ptrdiff_t)hdr + sizeof(virtio_blk_req_t)));
 
     queue.virtq->desc[d1].len    = VIRTIO_BLK_REQ_HEADER_SIZE;
     queue.virtq->desc[d1].flags  = VIRTQ_DESC_F_NEXT;
@@ -337,16 +308,18 @@ size_t virtio_mmio_drv_t::get_queue_len(void) {
     return 0;
 }
 
-int virtio_mmio_drv_t::read(void* _where, void* _buf) {
-    (void)_where;
-    (void)_buf;
-    return 0;
+int virtio_mmio_drv_t::read(buf_t& _buf) {
+    virtio_blk_req_t req;
+    req.type   = virtio_blk_req_t::IN;
+    req.sector = _buf.sector;
+    return rw(req, _buf.data);
 }
 
-int virtio_mmio_drv_t::write(void* _where, void* _buf) {
-    (void)_where;
-    (void)_buf;
-    return 0;
+int virtio_mmio_drv_t::write(buf_t& _buf) {
+    virtio_blk_req_t req;
+    req.type   = virtio_blk_req_t::OUT;
+    req.sector = _buf.sector;
+    return rw(req, _buf.data);
 }
 
 int virtio_mmio_drv_t::ioctl(uint8_t _cmd, void* _buf) {

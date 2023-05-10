@@ -24,7 +24,6 @@
 split_virtqueue_t::split_virtqueue_t(size_t _size) {
     // _size 应该为 2 的幂
     assert((_size & (_size - 1)) == 0);
-    // TODO: 解释
     // 计算偏移
     // desc 偏移为 64
     off_desc   = COMMON::ALIGN(sizeof(virtq_t), virtq_desc_t::ALIGN);
@@ -76,7 +75,9 @@ split_virtqueue_t::split_virtqueue_t(size_t _size) {
 }
 
 split_virtqueue_t::~split_virtqueue_t(void) {
-    free(virtq);
+    if (virtq != nullptr) {
+        free(virtq);
+    }
     return;
 }
 
@@ -101,7 +102,7 @@ void split_virtqueue_t::free_desc(uint32_t _desc) {
     // 要释放 desc 的下一项指向另一个 free 的 desc
     virtq->desc[_desc].next = virtq->free_desc;
     // free 索引设为当前索引
-    virtq->free_desc       = _desc;
+    virtq->free_desc        = _desc;
     // virt 地址置 0
     virtq->desc_virt[_desc] = nullptr;
     return;

@@ -17,6 +17,7 @@
 #include "virtqueue.h"
 
 packed_virtqueue_t::packed_virtqueue_t(size_t _size) {
+    (void)_size;
     return;
 }
 
