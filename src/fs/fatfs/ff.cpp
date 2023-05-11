@@ -6932,12 +6932,8 @@ FRESULT f_readdir(DIR* dp, FILINFO* fno) {
 }
 
 #        if FF_USE_FIND
-//-----------------------------------------------------------------------
 
 // Find Next File
-
-//-----------------------------------------------------------------------
-
 FRESULT f_findnext(DIR* dp, FILINFO* fno) {
     FRESULT res;
 
@@ -6962,12 +6958,8 @@ FRESULT f_findnext(DIR* dp, FILINFO* fno) {
     return res;
 }
 
-//-----------------------------------------------------------------------
 
 // Find First File
-
-//-----------------------------------------------------------------------
-
 FRESULT
 f_findfirst(DIR* dp, FILINFO* fno, const TCHAR* path, const TCHAR* pattern) {
     FRESULT res;

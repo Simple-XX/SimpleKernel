@@ -88,7 +88,7 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count);
 DRESULT disk_ioctl(BYTE _pdrv, BYTE _cmd, void* _buff);
 
 /// Disk Status Bits (DSTATUS)
-
+#    define STA_OK       0x00
 /// Drive not initialized
 #    define STA_NOINIT       0x01
 /// No medium in the drive
