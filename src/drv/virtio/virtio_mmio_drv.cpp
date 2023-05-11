@@ -23,7 +23,6 @@
 #include "virtqueue.h"
 #include "vmm.h"
 
-// 设置 features
 void virtio_mmio_drv_t::set_features(
   const mystl::vector<feature_t>& _features) {
     // 首先获取硬件信息
@@ -78,8 +77,6 @@ void virtio_mmio_drv_t::set_features(
     return;
 }
 
-// 将队列设置传递到相应寄存器
-// _queue_sel: 第几个队列，从 0 开始
 void virtio_mmio_drv_t::add_to_device(uint32_t _queue_sel) {
     // 选择队列号
     IO::get_instance().write32(&regs->queue_sel, _queue_sel);
@@ -177,11 +174,11 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     // 更新设备信息指针
     config = (virtio_blk_config_t*)&regs->config;
     // 设置队列
-    // queues.push_back(new split_virtqueue_t(8));
+    /// @todo 多队列支持
     add_to_device(0);
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
-    // TODO: << 重载
+    /// @todo: << 重载
     uint32_t i = 0;
     uint32_t j = 0;
     do {
@@ -232,12 +229,9 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     // 允许中断
     PLIC::get_instance().set(_resource.intr_no, true);
     // 注册外部中断处理函数
-    PLIC::get_instance().register_externel_handler(1, virtio_mmio_intr);
-    printf("virtio blk init\n");
-    return;
-}
-
-virtio_mmio_drv_t::~virtio_mmio_drv_t(void) {
+    PLIC::get_instance().register_externel_handler(_resource.intr_no,
+                                                   virtio_mmio_intr);
+    printf("virtio mmio drv init\n");
     return;
 }
 
