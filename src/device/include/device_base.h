@@ -23,7 +23,9 @@
 #include "string"
 #include "vector"
 
-// 设备抽象
+/**
+ * @brief 设备抽象
+ */
 class device_base_t {
 private:
 
@@ -38,7 +40,6 @@ public:
     const resource_t resource;
     /// 设备是否可用
     bool             is_ready;
-    // 设备初始化
 
     /**
      * @brief 构造函数
@@ -83,7 +84,7 @@ public:
     virtual int          status(uint8_t _cmd);
 
     friend std::ostream& operator<<(std::ostream& _out, device_base_t& _dev) {
-        info("dev_name: %s, drv: 0x%p", _dev.dev_name.c_str(), _dev.drv);
+        printf("dev_name: %s, drv: 0x%p", _dev.dev_name.c_str(), _dev.drv);
         return _out;
     }
 };
