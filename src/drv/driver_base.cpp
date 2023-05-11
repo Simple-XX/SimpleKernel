@@ -16,15 +16,7 @@
 
 #include "driver_base.h"
 
-driver_base_t::driver_base_t(void) : name("drv_t") {
-    return;
-}
-
 driver_base_t::driver_base_t(const mystl::string& _name) : name(_name) {
-    return;
-}
-
-driver_base_t::~driver_base_t(void) {
     return;
 }
 
