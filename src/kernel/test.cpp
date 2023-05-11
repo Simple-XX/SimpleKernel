@@ -14,23 +14,25 @@
  * </table>
  */
 
-#include "common.h"
-#include "stdio.h"
 #include "assert.h"
-#include "pmm.h"
-#include "vmm.h"
+#include "common.h"
+#include "dev_drv_manager.h"
+#include "device_base.h"
 #include "heap.h"
 #include "kernel.h"
+#include "pmm.h"
+#include "stdio.h"
 #include "stdlib.h"
+#include "vmm.h"
 
 int32_t test_pmm(void) {
     // 保存现有 pmm 空闲页数量
     size_t free_pages = PMM::get_instance().get_free_pages_count();
     // 计算内核实际占用页数
-    auto kernel_pages =
-        (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
-         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE)) /
-        COMMON::PAGE_SIZE;
+    auto   kernel_pages
+      = (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
+         - COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
+      / COMMON::PAGE_SIZE;
     // 再加上启动信息使用的页，一般为一页
     kernel_pages++;
     // TODO: 替换宏
@@ -39,9 +41,9 @@ int32_t test_pmm(void) {
     kernel_pages++;
 #endif
     // 空闲页数应该等于物理内存大小-内核使用
-    assert(free_pages ==
-           (PMM::get_instance().get_pmm_length() / COMMON::PAGE_SIZE) -
-               kernel_pages);
+    assert(free_pages
+           == (PMM::get_instance().get_pmm_length() / COMMON::PAGE_SIZE)
+                - kernel_pages);
     // 获取已使用页数
     size_t used_pages = PMM::get_instance().get_used_pages_count();
     // 已使用页数应该等于内核使用页数
@@ -109,49 +111,57 @@ int32_t test_vmm(void) {
     assert(VMM::get_instance().get_pgd() != nullptr);
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(),
                                         (COMMON::KERNEL_START_ADDR + 0x1000),
-                                        &addr) == 1);
+                                        &addr)
+           == 1);
     assert(addr == COMMON::KERNEL_START_ADDR + 0x1000);
     addr = 0;
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(),
-                                        COMMON::KERNEL_START_ADDR +
-                                            VMM_KERNEL_SPACE_SIZE - 1,
-                                        &addr) == 1);
-    assert(addr == ((COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE - 1) &
-                    COMMON::PAGE_MASK));
+                                        COMMON::KERNEL_START_ADDR
+                                          + VMM_KERNEL_SPACE_SIZE - 1,
+                                        &addr)
+           == 1);
+    assert(addr
+           == ((COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE - 1)
+               & COMMON::PAGE_MASK));
     addr = 0;
     assert(VMM::get_instance().get_mmap(
-               VMM::get_instance().get_pgd(),
-               (COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
-                VMM_KERNEL_SPACE_SIZE),
-               &addr) == 0);
+             VMM::get_instance().get_pgd(),
+             (COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB)
+              + VMM_KERNEL_SPACE_SIZE),
+             &addr)
+           == 0);
     assert(addr == 0);
     addr = 0;
     assert(VMM::get_instance().get_mmap(
-               VMM::get_instance().get_pgd(),
-               (COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB) +
-                VMM_KERNEL_SPACE_SIZE + 0x1024),
-               0) == 0);
+             VMM::get_instance().get_pgd(),
+             (COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB)
+              + VMM_KERNEL_SPACE_SIZE + 0x1024),
+             0)
+           == 0);
     // 测试映射与取消映射
-    addr = 0;
+    addr         = 0;
     // 准备映射的虚拟地址 3GB 处
     uintptr_t va = 0xC0000000;
     // 分配要映射的物理地址
     uintptr_t pa = PMM::get_instance().alloc_page_kernel();
     // 确定一块未映射的内存
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
-                                        nullptr) == 0);
+                                        nullptr)
+           == 0);
     // 映射
     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), va, pa,
                              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
-                                        &addr) == 1);
+                                        &addr)
+           == 1);
     assert(addr == pa);
     // 写测试
-    *(uintptr_t *)va = 0xCD;
+    *(uintptr_t*)va = 0xCD;
     // 取消映射
     VMM::get_instance().unmmap(VMM::get_instance().get_pgd(), va);
     assert(VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), va,
-                                        &addr) == 0);
+                                        &addr)
+           == 0);
     assert(addr == 0);
     // 回收物理地址
     PMM::get_instance().free_page(pa);
@@ -163,36 +173,36 @@ int32_t test_vmm(void) {
 int test_heap(void) {
     // 根据字长不同 CHUNK_SIZE 是不一样的
     size_t chunk_size = 0;
-    if (sizeof(void *) == 4) {
+    if (sizeof(void*) == 4) {
         chunk_size = 0x10;
     }
-    else if (sizeof(void *) == 8) {
+    else if (sizeof(void*) == 8) {
         chunk_size = 0x20;
     }
-    void *addr1 = nullptr;
-    void *addr2 = nullptr;
-    void *addr3 = nullptr;
-    void *addr4 = nullptr;
+    void* addr1 = nullptr;
+    void* addr2 = nullptr;
+    void* addr3 = nullptr;
+    void* addr4 = nullptr;
     // 申请超过最大允许的内存 65536B
-    addr1 = kmalloc(0x10001);
+    addr1       = kmalloc(0x10001);
     // 应该返回 nullptr
     assert(addr1 == nullptr);
     // 申请小块内存
     addr2 = kmalloc(0x1);
     assert(addr2 != nullptr);
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
-    assert(((uintptr_t)((uint8_t *)addr2 - chunk_size) & 0xFFF) == 0x0);
+    assert(((uintptr_t)((uint8_t*)addr2 - chunk_size) & 0xFFF) == 0x0);
     // 在 LEN512 申请新的内存
     addr3 = kmalloc(0x200);
     assert(addr3 != nullptr);
     // 第一块被申请的内存，减去 chunk 大小后应该是 4k 对齐的
-    assert(((uintptr_t)((uint8_t *)addr3 - chunk_size) & 0xFFF) == 0x0);
+    assert(((uintptr_t)((uint8_t*)addr3 - chunk_size) & 0xFFF) == 0x0);
     // 加上 chunk 大小长度刚好是 LEN256
     addr4 = kmalloc(0x80);
     assert(addr4 != nullptr);
     // LEN256 区域第二块被申请的内存，地址可以计算出来
     // 前一个块的地址+chunk 长度+数据长度+对齐长度
-    assert(addr4 == (uint8_t *)addr2 + chunk_size + 0x1 + 0x7);
+    assert(addr4 == (uint8_t*)addr2 + chunk_size + 0x1 + 0x7);
     /// @bug 这里释放会同时 unmmap，导致后面的分支出现 pg
     // 全部释放
     //    kfree(addr1);
@@ -206,7 +216,7 @@ int test_heap(void) {
 // TODO: 更多测试
 int test_intr(void) {
     // 触发 pg 中断
-    uintptr_t *addr = (uintptr_t *)0xC0000000;
+    uintptr_t* addr = (uintptr_t*)0xC0000000;
     int        tmp  = 0x666;
     tmp             = *addr;
     assert(tmp == 0);
@@ -215,5 +225,25 @@ int test_intr(void) {
     assert(tmp == 0x233);
     *addr = 0x0;
     info("intr test done.\n");
+    return 0;
+}
+
+int test_device(void) {
+    // 获取设备
+    /// @todo 获取设备的方式需要改进，比如通过 resource
+    device_base_t* dev
+      = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+
+    // 声明缓冲区
+    buf_t buf;
+    buf.sector = 0;
+
+    dev->read(buf);
+
+    // fat 第一个扇区的最后两字节
+    assert(buf.data[COMMON::BUFFFER_SIZE - 1] == 0xAA);
+    assert(buf.data[COMMON::BUFFFER_SIZE - 2] == 0x55);
+
+    info("device test done.\n");
     return 0;
 }
