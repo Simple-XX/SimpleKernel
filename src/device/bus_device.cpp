@@ -72,11 +72,11 @@ bool bus_device_t::add_device(device_base_t* _dev) {
 }
 
 void bus_device_t::show(void) const {
-    info("dev count: 0x%X\n", devices.size());
+    printf("device count: 0x%X\n", devices.size());
     for (auto i : devices) {
         std::cout << *i << std::endl;
     }
-    info("drv count: 0x%X\n", drivers.size());
+    printf("driver count: 0x%X\n", drivers.size());
     for (auto i : drivers) {
         std::cout << i << std::endl;
     }

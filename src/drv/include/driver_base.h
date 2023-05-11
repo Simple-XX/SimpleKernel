@@ -24,19 +24,33 @@
 #include "string"
 #include "vector"
 
-// 设备驱动抽象，是所有驱动的基类
+/**
+ * @brief 设备驱动抽象，是所有驱动的基类
+ */
 class driver_base_t {
 private:
 
 protected:
 
 public:
-    // 驱动名
+    /// 驱动名
     const mystl::string name;
 
-    driver_base_t(void);
-    driver_base_t(const mystl::string& _name);
-    virtual ~driver_base_t(void)                         = 0;
+    /**
+     * @brief 不使用空构造函数
+     */
+    driver_base_t(void) = delete;
+
+    /**
+     * @brief 构造函数
+     * @param  _name            驱动名，用于与设备配对
+     */
+    driver_base_t(const mystl::string& _name = "drv_t");
+
+    /**
+     * @brief 默认析构函数
+     */
+    virtual ~driver_base_t(void)                         = default;
 
     /**
      * @brief 从设备读
@@ -64,7 +78,7 @@ public:
     virtual int          status(uint8_t _cmd)            = 0;
 
     friend std::ostream& operator<<(std::ostream& _out, driver_base_t& _drv) {
-        info("drv name: %s", _drv.name.c_str());
+        printf("driver name: [%s]", _drv.name.c_str());
         return _out;
     }
 };
