@@ -57,18 +57,18 @@ void kernel_main(void) {
     TIMER::get_instance().init();
     // 初始化设备
     DEV_DRV_MANAGER::get_instance().init();
-    // 测试设备
-    // test_dev();
     // 初始化文件系统
     VFS::get_instance().init();
-    // 测试文件系统
-    // test_vfs();
     // 允许中断
     CPU::ENABLE_INTR();
-    test_fs();
+    // 测试设备
+    test_device();
+    // 测试文件系统
+    test_fatfs();
+    // test_vfs();
+
     // 显示基本信息
     show_info();
-
     // 进入死循环
     while (1) {
         ;

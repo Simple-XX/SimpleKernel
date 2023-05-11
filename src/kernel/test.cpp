@@ -16,6 +16,8 @@
 
 #include "assert.h"
 #include "common.h"
+#include "dev_drv_manager.h"
+#include "device_base.h"
 #include "ff.h"
 #include "heap.h"
 #include "kernel.h"
@@ -228,7 +230,27 @@ int test_intr(void) {
     return 0;
 }
 
-int test_fs(void) {
+int test_device(void) {
+    // 获取设备
+    /// @todo 获取设备的方式需要改进，比如通过 resource
+    device_base_t* dev
+      = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+
+    // 声明缓冲区
+    buf_t buf;
+    buf.sector = 0;
+
+    dev->read(buf);
+
+    // fat 第一个扇区的最后两字节
+    assert(buf.data[COMMON::BUFFFER_SIZE - 1] == 0xAA);
+    assert(buf.data[COMMON::BUFFFER_SIZE - 2] == 0x55);
+
+    info("device test done.\n");
+    return 0;
+}
+
+int test_fatfs(void) {
     // // FatFs work area needed for each volume
     // FATFS    FatFs;
     // // File object needed for each open file
