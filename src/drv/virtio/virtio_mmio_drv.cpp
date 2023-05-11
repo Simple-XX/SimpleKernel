@@ -254,6 +254,7 @@ size_t virtio_mmio_drv_t::rw(virtio_blk_req_t& _req, void* _buf) {
         mode = VIRTQ_DESC_F_WRITE;
     }
 
+    /// @bug 内存泄漏
     virtio_blk_req_t* hdr = (virtio_blk_req_t*)kmalloc(0x1000);
     hdr->type             = _req.type;
     hdr->sector           = _req.sector;

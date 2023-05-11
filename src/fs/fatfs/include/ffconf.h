@@ -103,7 +103,8 @@
 
 /**
  * @brief This option specifies the OEM code page to be used on the target
- * system. Incorrect code page setting can cause a file open failure. 437 - U.S.
+ * system. Incorrect code page setting can cause a file open failure.
+ * 437 - U.S.
  * 720 - Arabic
  * 737 - Greek
  * 771 - KBL
@@ -126,7 +127,7 @@
  * 950 - Traditional Chinese (DBCS)
  * 0   - Include all code pages above and configured by f_setcp()
  */
-#define FF_CODE_PAGE       936
+#define FF_CODE_PAGE       437
 
 /**
  * @brief The FF_USE_LFN switches the support for LFN (long file name).

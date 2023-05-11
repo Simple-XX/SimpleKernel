@@ -33,208 +33,167 @@
 
 // Definitions of physical drive number for each drive
 /// Example: Map Ramdisk to physical drive 0
-#define DEV_RAM 0
+#define DEV_MMIO 0
 /// Example: Map MMC/SD card to physical drive 1
-#define DEV_MMC 1
+#define DEV_MMC  1
 /// Example: Map USB MSD to physical drive 2
-#define DEV_USB 2
+#define DEV_USB  2
 
 DWORD get_fattime(void) {
     return 0;
 }
 
 DSTATUS disk_status(BYTE _pdrv) {
-    DSTATUS stat;
-    int     result;
-
+    DSTATUS status = STA_OK;
     switch (_pdrv) {
-        case DEV_RAM:
-            // result = RAM_disk_status();
-
-            // translate the result code here
-
-            return stat;
-
-        case DEV_MMC:
-            // result = MMC_disk_status();
-
-            // translate the result code here
-
-            return stat;
-
-        case DEV_USB:
-            // result = USB_disk_status();
-
-            // translate the result code here
-
-            return stat;
+        case DEV_MMIO: {
+            break;
+        }
+        case DEV_MMC: {
+            break;
+        }
+        case DEV_USB: {
+            break;
+        }
+        default: {
+            warn("disk_status unhandled device.\n");
+            break;
+        }
     }
-    return STA_NOINIT;
+    return status;
 }
 
-extern void virtio_disk_init();
-
-DSTATUS     disk_initialize(BYTE _pdrv) {
-    DSTATUS stat;
-    int     result;
+DSTATUS disk_initialize(BYTE _pdrv) {
+    DSTATUS status = STA_OK;
     switch (_pdrv) {
-        case DEV_RAM:
-            // result = RAM_disk_initialize();
-
-            // translate the result code here
-
-            return stat;
-
-        case DEV_MMC:
-            // result = MMC_disk_initialize();
-
-            // translate the result code here
-
-            return stat;
-
-        case DEV_USB:
-            // result = USB_disk_initialize();
-
-            // translate the result code here
-
-            return stat;
+        case DEV_MMIO: {
+            break;
+        }
+        case DEV_MMC: {
+            break;
+        }
+        case DEV_USB: {
+            break;
+        }
+        default: {
+            warn("disk_initialize unhandled device.\n");
+            break;
+        }
     }
-    return STA_NOINIT;
+    return status;
 }
 
 DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
-    DRESULT res;
-    int     result;
-
-    info("disk_read [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
+    assert(_count == 1);
+    DRESULT result = RES_OK;
+    info("disk_write [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
          _count);
 
-    device_base_t* dev
-      = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+    switch (_pdrv) {
+        case DEV_MMIO: {
+            device_base_t* dev = (device_base_t*)DEV_DRV_MANAGER::get_instance()
+                                   .get_dev_via_intr_no(1);
 
-    buf_t buf;
-    buf.sector = _sector;
+            buf_t buf;
+            buf.sector = _sector;
 
-    dev->read(buf);
+            dev->read(buf);
 
-    memcpy(_buff, buf.data, COMMON::BUFFFER_SIZE);
+            /// @todo 等待中断
+            asm("wfi");
+            asm("wfi");
+            asm("wfi");
+
+            memcpy(_buff, buf.data, COMMON::BUFFFER_SIZE);
 
 // #define DEBUG
 #ifdef DEBUG
-    for (size_t i = 0; i < COMMON::BUFFFER_SIZE; i++) {
-        printf("0x%X ", buf.data[i]);
-    }
+            for (size_t i = 0; i < COMMON::BUFFFER_SIZE; i++) {
+                printf("0x%X ", buf.data[i]);
+            }
 
 #    undef DEBUG
 #endif
-    switch (_pdrv) {
-        case DEV_RAM:
-            // translate the arguments here
-
-            // result = RAM_disk_read(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-
-        case DEV_MMC:
-            // translate the arguments here
-
-            // result = MMC_disk_read(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-
-        case DEV_USB:
-            // translate the arguments here
-
-            // result = USB_disk_read(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
+            break;
+        }
+        case DEV_MMC: {
+            break;
+        }
+        case DEV_USB: {
+            break;
+        }
+        default: {
+            warn("disk_read unhandled device.\n");
+            break;
+        }
     }
 
-    return RES_PARERR;
+    warn("write done\n");
+    return result;
 }
 
 #if FF_FS_READONLY == 0
 
 DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
-    DRESULT res;
-    int     result;
-    info("disk_write [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
+    assert(_count == 1);
+    DRESULT result = RES_OK;
+    info("disk_read [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
          _count);
 
-    device_base_t* dev
-      = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
-
-    buf_t buf;
-    buf.sector = _sector;
-    memcpy(buf.data, _buff, COMMON::BUFFFER_SIZE);
-
-    dev->write(buf);
-
-    warn("write done %d\n", 0);
-
     switch (_pdrv) {
-        case DEV_RAM:
-            // translate the arguments here
+        case DEV_MMIO: {
+            device_base_t* dev = (device_base_t*)DEV_DRV_MANAGER::get_instance()
+                                   .get_dev_via_intr_no(1);
 
-            // result = RAM_disk_write(_buff, _sector, _count);
+            buf_t buf;
+            buf.sector = _sector;
+            memcpy(buf.data, _buff, COMMON::BUFFFER_SIZE);
 
-            // translate the result code here
-
-            return res;
-
-        case DEV_MMC:
-            // translate the arguments here
-
-            // result = MMC_disk_write(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
-
-        case DEV_USB:
-            // translate the arguments here
-
-            // result = USB_disk_write(_buff, _sector, _count);
-
-            // translate the result code here
-
-            return res;
+            dev->write(buf);
+            
+            /// @todo 等待中断
+            asm("wfi");
+            asm("wfi");
+            asm("wfi");
+            break;
+        }
+        case DEV_MMC: {
+            break;
+        }
+        case DEV_USB: {
+            break;
+        }
+        default: {
+            warn("disk_write unhandled device.\n");
+            break;
+        }
     }
 
-    return RES_PARERR;
+    warn("read done\n");
+    return result;
 }
 
-#endif
+#endif /* FF_FS_READONLY == 0 */
 
 DRESULT disk_ioctl(BYTE _pdrv, BYTE _cmd, void* _buff) {
-    DRESULT res;
-    int     result;
-
+    (void)_cmd;
+    (void)_buff;
+    DRESULT result = RES_OK;
     switch (_pdrv) {
-        case DEV_RAM:
-
-            // Process of the command for the RAM drive
-
-            return res;
-
-        case DEV_MMC:
-
-            // Process of the command for the MMC/SD card
-
-            return res;
-
-        case DEV_USB:
-
-            // Process of the command the USB drive
-
-            return res;
+        case DEV_MMIO: {
+            break;
+        }
+        case DEV_MMC: {
+            break;
+        }
+        case DEV_USB: {
+            break;
+        }
+        default: {
+            warn("disk_ioctl unhandled device.\n");
+            break;
+        }
     }
 
-    return RES_PARERR;
+    return result;
 }

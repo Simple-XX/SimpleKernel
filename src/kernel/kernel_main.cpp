@@ -57,7 +57,6 @@ void kernel_main(void) {
     TIMER::get_instance().init();
     // 初始化设备
     DEV_DRV_MANAGER::get_instance().init();
-    test_fs();
     // 测试设备
     // test_dev();
     // 初始化文件系统
@@ -66,6 +65,7 @@ void kernel_main(void) {
     // test_vfs();
     // 允许中断
     CPU::ENABLE_INTR();
+    test_fs();
     // 显示基本信息
     show_info();
 

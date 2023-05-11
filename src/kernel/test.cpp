@@ -238,7 +238,7 @@ int test_fs(void) {
     // FRESULT  fr;
     //
     // // Give a work area to the default drive
-    // fr = f_mount(&FatFs, "0:", 1);
+    // fr = f_mount(&FatFs, "/", 1);
     // info("f_mount：%d\n", fr);
     //
     // // Create a file
@@ -253,20 +253,22 @@ int test_fs(void) {
     //     info("f_close %d\n", fr);
     // }
 
-    static FATFS sdcard_fs;
-    FRESULT      status;
-    DIR          dj;
-    FILINFO      fno;
+    FATFS   sdcard_fs;
+    FRESULT status;
+    DIR     dj;
+    FILINFO fno;
 
     printf("/********************fs test*******************/\n");
-    status = f_mount(&sdcard_fs, "/", 1);
+    status = f_mount(&sdcard_fs, "", 0);
     printf("mount sdcard: %d\n", status);
     if (status != FR_OK) {
         return status;
     }
 
-    status = f_findfirst(&dj, &fno, "/", "*");
-    printf("printf filename %d\n", status);
+    /// @bug 找不到文件
+    status = f_findfirst(&dj, &fno, "", "*");
+
+    printf("printf filename %d [%s]\n", status, "fno.fname[0]");
     while (status == FR_OK && fno.fname[0]) {
         if (fno.fattrib & AM_DIR) {
             printf("dir: %s\n", fno.fname);
@@ -275,6 +277,7 @@ int test_fs(void) {
             printf("file: %s\n", fno.fname);
         }
         status = f_findnext(&dj, &fno);
+        printf("f_findnext %d [%s]\n", status, "fno.fname[0]");
     }
     f_closedir(&dj);
     return 0;
