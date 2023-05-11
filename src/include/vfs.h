@@ -130,6 +130,51 @@ public:
 };
 
 /**
+ * @brief 文件抽象
+ */
+class file_t {
+    /// 文件路径
+    mystl::string path;
+    /// 是否为目录
+    bool          directory;
+    /// 大小
+    uint64_t      size;
+    /// 锁
+    // spinlock_t    spinlock_tlock;
+    /// 引用计数
+    int           ref;    // reference count
+    /// 是否可读
+    bool          readable;
+    /// 是否可写
+    bool          writable;
+
+    /// 文件类型
+    enum {
+        FD_NONE,
+        FD_PIPE,
+        FD_ENTRY,
+        FD_DEVICE,
+        FD_INODE
+    } type;
+
+    size_t  offset;
+    uint8_t mode;
+
+    file_t(void)  = default;
+    ~file_t(void) = default;
+
+    /**
+     * @brief 递增 ref
+     */
+    int dup(void);
+
+    /**
+     * @brief 递减 ref，当为0时删除它
+     */
+    int free(void);
+};
+
+/**
  * @brief 虚拟文件系统
  * 所有文件系统由 vfs 统一管理
  * 操作文件时由 vfs 使用实际文件系统进行操作
@@ -141,7 +186,7 @@ private:
     /// dentry_t 缓存
     mystl::list<dentry_t*> dentries;
     /// inode_t 缓存
-    mystl::list<inode_t*>   inodes;
+    mystl::list<inode_t*>  inodes;
     /// 当前所在目录
     mystl::string          pwd;
     /// 查找目录项
