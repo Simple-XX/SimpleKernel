@@ -20,6 +20,8 @@
 #include "cpu.hpp"
 #include "stdint.h"
 
+/// @todo 多核
+
 void handler_default(void);
 
 class INTR {

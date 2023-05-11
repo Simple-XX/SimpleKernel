@@ -26,6 +26,7 @@ device_base_t::device_base_t(const resource_t& _resource, driver_base_t* _drv)
 }
 
 device_base_t::~device_base_t(void) {
+    // drv 在 register_call_back 中创建
     if (drv != nullptr) {
         delete drv;
         drv = nullptr;

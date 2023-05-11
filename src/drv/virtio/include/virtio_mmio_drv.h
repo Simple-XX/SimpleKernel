@@ -375,9 +375,9 @@ public:
     virtio_mmio_drv_t(const resource_t& _resource, driver_base_t* _drv);
 
     /**
-     * @brief 析构函数
+     * @brief 使用默认析构函数
      */
-    ~virtio_mmio_drv_t(void);
+    ~virtio_mmio_drv_t(void) = default;
 
     /**
      * @brief mmio 读写
