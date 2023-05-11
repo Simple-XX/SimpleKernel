@@ -99,8 +99,8 @@ public:
     device_base_t*       get_dev_via_intr_no(uint8_t _no);
 
     friend std::ostream& operator<<(std::ostream& _out, bus_device_t& _bus) {
-        info("bus_name: %s, devices: %d, drivers: %d", _bus.bus_name.c_str(),
-             _bus.devices.size(), _bus.drivers.size());
+        printf("bus_name: %s, devices: %d, drivers: %d", _bus.bus_name.c_str(),
+               _bus.devices.size(), _bus.drivers.size());
         return _out;
     }
 };

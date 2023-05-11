@@ -41,11 +41,11 @@ static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
 
     desc3 = drv->queue.virtq->desc[desc2].next;
     if (drv->queue.virtq->desc[desc1].len
-          != virtio_mmio_drv_t::VIRTIO_BLK_REQ_HEADER_SIZE
+          != virtio_mmio_drv_t::virtio_blk_req_t::HEADER_SIZE
         || drv->queue.virtq->desc[desc2].len
-             != virtio_mmio_drv_t::VIRTIO_BLK_SECTOR_SIZE
+             != virtio_mmio_drv_t::virtio_blk_req_t::SECTOR_SIZE
         || drv->queue.virtq->desc[desc3].len
-             != virtio_mmio_drv_t::VIRTIO_BLK_REQ_FOOTER_SIZE) {
+             != virtio_mmio_drv_t::virtio_blk_req_t::FOOTER_SIZE) {
         err("virtio_blk_handle_used received malformed descriptors\n");
         return;
     }
@@ -78,7 +78,7 @@ static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
         }
     }
 
-    kfree(req);
+    delete req;
 
     drv->queue.free_desc(desc1);
     drv->queue.free_desc(desc2);
@@ -87,9 +87,6 @@ static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
     return;
 }
 
-/**
- * @brief mmio 中断处理
- */
 void virtio_mmio_intr(uint8_t _no) {
     printf("virtio_mmio_intr: 0x%X\n", _no);
     // 遍历设备列表，寻找驱动号对应的设备

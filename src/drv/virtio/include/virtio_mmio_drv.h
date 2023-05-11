@@ -348,23 +348,55 @@ public:
         /// 设备返回状态 不支持的请求
         static constexpr const uint32_t UNSUPP = 2;
         uint8_t                         status;
+        /// type + reserved + sector 的大小
+        static constexpr const size_t   HEADER_SIZE = 16;
+        /// 扇区大小
+        static constexpr const size_t   SECTOR_SIZE = 512;
+        /// status 大小
+        static constexpr const size_t   FOOTER_SIZE = 1;
     } __attribute__((packed));
 
-    static constexpr const size_t VIRTIO_BLK_REQ_HEADER_SIZE = 16;
-    static constexpr const size_t VIRTIO_BLK_SECTOR_SIZE     = 512;
-    static constexpr const size_t VIRTIO_BLK_REQ_FOOTER_SIZE = 1;
-
     /// virtio mmio 寄存器基地址
-    virtio_regs_t*                regs;
+    virtio_regs_t*    regs;
     /// virtio queue，有些设备使用多个队列
-    split_virtqueue_t             queue;
+    split_virtqueue_t queue;
 
+    /**
+     * @brief 构造函数
+     * @param  _resource        设备使用的资源
+     */
     virtio_mmio_drv_t(const resource_t& _resource);
+
+    /**
+     * @brief 构造函数
+     * @param  _resource        设备使用的资源
+     * @param  _drv             总线名称
+     */
     virtio_mmio_drv_t(const resource_t& _resource, driver_base_t* _drv);
+
+    /**
+     * @brief 析构函数
+     */
     ~virtio_mmio_drv_t(void);
 
-    size_t rw(virtio_blk_req_t& _req, void* _buf);
+    /**
+     * @brief mmio 读写
+     * @param  _req             请求结构.
+     * @return size_t           返回 0
+     */
+    size_t rw(virtio_blk_req_t& _req);
+
+    /**
+     * @brief mmio 中断处理
+     * @param  _buf             缓冲区
+     * @param  _buf             缓冲区
+     */
     void   set_intr_ack(void);
+
+    /**
+     * @brief 获取队列长度
+     * @return size_t           队列长度
+     */
     size_t get_queue_len(void);
 
     /**
