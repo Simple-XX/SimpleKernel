@@ -39,21 +39,31 @@ int test_vmm(void);
  * @brief 堆测试函数
  * @return int             0 成功
  */
-int test_heap(void);
+int             test_heap(void);
 
 /**
  * @brief 中断测试函数
  * @return int             0 成功
  */
-int test_intr(void);
+int             test_intr(void);
+
+/**
+ * @brief 设备测试函数
+ * @return int             0 成功
+ */
+int             test_device(void);
+
+/**
+ * @brief fatfs 测试函数
+ * @return int             0 成功
+ */
+int             test_fatfs(void);
 
 /**
  * @brief 虚拟文件系统测试函数
  * @return int             0 成功
  */
-int  test_fs(void);
-
-int  test_vfs(void);
+int             test_vfs(void);
 
 /**
  * @brief 输出系统信息

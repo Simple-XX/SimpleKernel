@@ -21,21 +21,21 @@
 
 static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
     assert(_dev != nullptr);
-    virtio_mmio_drv_t*                   drv = (virtio_mmio_drv_t*)_dev->drv;
-    uint32_t                             desc1;
-    uint32_t                             desc2;
-    uint32_t                             desc3;
+    virtio_mmio_drv_t*                   drv   = (virtio_mmio_drv_t*)_dev->drv;
+    uint32_t                             desc1 = 0;
+    uint32_t                             desc2 = 0;
+    uint32_t                             desc3 = 0;
     virtio_mmio_drv_t::virtio_blk_req_t* req;
 
     desc1 = drv->queue.virtq->used->ring[_usedidx].id;
     if (!(drv->queue.virtq->desc[desc1].flags & VIRTQ_DESC_F_NEXT)) {
-        err("virtio-blk received malformed descriptors\n");
+        err("virtio_blk_handle_used received malformed descriptors\n");
         return;
     }
 
     desc2 = drv->queue.virtq->desc[desc1].next;
     if (!(drv->queue.virtq->desc[desc2].flags & VIRTQ_DESC_F_NEXT)) {
-        err("virtio-blk received malformed descriptors\n");
+        err("virtio_blk_handle_used received malformed descriptors\n");
         return;
     }
 
@@ -46,16 +46,16 @@ static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
              != virtio_mmio_drv_t::VIRTIO_BLK_SECTOR_SIZE
         || drv->queue.virtq->desc[desc3].len
              != virtio_mmio_drv_t::VIRTIO_BLK_REQ_FOOTER_SIZE) {
-        err("virtio-blk received malformed descriptors\n");
+        err("virtio_blk_handle_used received malformed descriptors\n");
         return;
     }
-// #define DEBUG
-#ifdef DEBUG
     req = (virtio_mmio_drv_t::virtio_blk_req_t*)
             drv->queue.virtq->desc_virt[desc1];
+// #define DEBUG
+#ifdef DEBUG
     auto data = (uint8_t*)drv->queue.virtq->desc_virt[desc2];
     if (req->type == virtio_mmio_drv_t::virtio_blk_req_t::IN) {
-        printf("virtio-blk: result: \"%s\"\n", data);
+        printf("virtio_blk_handle_used: result: \"%s\"\n", data);
         for (size_t i = 0; i < 512; i++) {
             printf("0x%X ", data[i]);
         }
@@ -66,21 +66,19 @@ static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
     switch (req->status) {
         case virtio_mmio_drv_t::virtio_blk_req_t::OK: {
             info("status [%d] in virtio_blk irq\n", req->status);
-
-            // req->blkreq.status = BLKREQ_OK;
             break;
         }
         case virtio_mmio_drv_t::virtio_blk_req_t::IOERR: {
             info("status [%d] in virtio_blk irq\n", req->status);
-
-            // req->blkreq.status = BLKREQ_ERR;
             break;
         }
         default: {
             err("Unhandled status [%d] in virtio_blk irq\n", req->status);
-            return;
+            break;
         }
     }
+
+    kfree(req);
 
     drv->queue.free_desc(desc1);
     drv->queue.free_desc(desc2);
@@ -88,8 +86,6 @@ static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
 
     return;
 }
-
-#define wrap(x, len) ((x) & ~(len))
 
 /**
  * @brief mmio 中断处理
@@ -102,9 +98,10 @@ void virtio_mmio_intr(uint8_t _no) {
     assert(dev != nullptr);
     virtio_mmio_drv_t* drv = (virtio_mmio_drv_t*)dev->drv;
     drv->set_intr_ack();
-    size_t len = drv->get_queue_len();
+    size_t len     = drv->get_queue_len();
+    size_t rev_len = ~len;
     for (size_t i = drv->queue.virtq->seen_used;
-         i != (drv->queue.virtq->used->idx % len); i = wrap(i + 1, len)) {
+         i != (drv->queue.virtq->used->idx % len); i = ((i + 1) & rev_len)) {
         virtio_blk_handle_used(dev, i);
     }
 

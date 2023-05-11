@@ -17,8 +17,8 @@
 #ifndef SIMPLEKERNEL_INTR_H
 #define SIMPLEKERNEL_INTR_H
 
-#include "stdint.h"
 #include "cpu.hpp"
+#include "stdint.h"
 
 void handler_default(void);
 
@@ -30,20 +30,20 @@ public:
      * @param  _argv           参数列表
      * @return int32_t         返回值，0 成功
      */
-    typedef int32_t (*interrupt_handler_t)(int _argc, char **_argv);
+    typedef int32_t (*interrupt_handler_t)(int _argc, char** _argv);
 
 private:
     /// 异常名
-    static constexpr const char *const excp_names[] = {
-        [CPU::EXCP_INSTRUCTION_ADDRESS_MISALIGNED] =
-            "Instruction Address Misaligned",
+    static constexpr const char* const excp_names[] = {
+        [CPU::EXCP_INSTRUCTION_ADDRESS_MISALIGNED]
+        = "Instruction Address Misaligned",
         [CPU::EXCP_INSTRUCTION_ACCESS_FAULT] = "Instruction Access Fault",
         [CPU::EXCP_ILLEGAL_INSTRUCTION]      = "Illegal Instruction",
         [CPU::EXCP_BREAKPOINT]               = "Breakpoint",
         [CPU::EXCP_LOAD_ADDRESS_MISALIGNED]  = "Load Address Misaligned",
         [CPU::EXCP_LOAD_ACCESS_FAULT]        = "Load Access Fault",
-        [CPU::EXCP_STORE_AMO_ADDRESS_MISALIGNED] =
-            "Store/AMO Address Misaligned",
+        [CPU::EXCP_STORE_AMO_ADDRESS_MISALIGNED]
+        = "Store/AMO Address Misaligned",
         [CPU::EXCP_STORE_AMO_ACCESS_FAULT] = "Store/AMO Access Fault",
         [CPU::EXCP_ECALL_U]                = "Environment Call from U-mode",
         [CPU::EXCP_ECALL_S]                = "Environment Call from S-mode",
@@ -57,7 +57,7 @@ private:
     };
 
     /// 中断名
-    static constexpr const char *const intr_names[] = {
+    static constexpr const char* const intr_names[] = {
         [CPU::INTR_SOFT_U] = "User Software Interrupt",
         [CPU::INTR_SOFT_S] = "Supervisor Software Interrupt",
         "Reserved",
@@ -80,11 +80,11 @@ private:
     /// 最大中断数
     static constexpr const uint32_t INTERRUPT_MAX = 16;
     /// 最大异常数
-    static constexpr const uint32_t EXCP_MAX = 16;
+    static constexpr const uint32_t EXCP_MAX      = 16;
 
     /// 中断处理函数数组
-    interrupt_handler_t interrupt_handlers[INTERRUPT_MAX]
-        __attribute__((aligned(4)));
+    interrupt_handler_t             interrupt_handlers[INTERRUPT_MAX]
+      __attribute__((aligned(4)));
     /// 异常处理函数数组
     interrupt_handler_t excp_handlers[EXCP_MAX] __attribute__((aligned(4)));
 
@@ -93,13 +93,13 @@ public:
      * @brief 获取单例
      * @return INTR&            静态对象
      */
-    static INTR &get_instance(void);
+    static INTR& get_instance(void);
 
     /**
      * @brief 中断初始化
      * @return int32_t         成功返回 0
      */
-    int32_t init(void);
+    int32_t      init(void);
 
     /**
      * @brief 注册中断处理函数
@@ -107,16 +107,16 @@ public:
      * @param  _interrupt_handler 中断处理函数
      */
     void
-    register_interrupt_handler(uint8_t                   _no,
-                               INTR::interrupt_handler_t _interrupt_handler);
+                register_interrupt_handler(uint8_t                   _no,
+                                           INTR::interrupt_handler_t _interrupt_handler);
 
     /**
      * @brief 注册异常处理函数
      * @param  _no             异常号
      * @param  _interrupt_handler 异常处理函数
      */
-    void register_excp_handler(uint8_t                   _no,
-                               INTR::interrupt_handler_t _interrupt_handler);
+    void        register_excp_handler(uint8_t                   _no,
+                                      INTR::interrupt_handler_t _interrupt_handler);
 
     /**
      * @brief 执行中断处理
@@ -125,7 +125,7 @@ public:
      * @param  _argv           参数列表
      * @return int32_t         返回值，0 成功
      */
-    int32_t do_interrupt(uint8_t _no, int32_t _argc, char **_argv);
+    int32_t     do_interrupt(uint8_t _no, int32_t _argc, char** _argv);
 
     /**
      * @brief 执行异常处理
@@ -134,21 +134,21 @@ public:
      * @param  _argv           参数列表
      * @return int32_t         返回值，0 成功
      */
-    int32_t do_excp(uint8_t _no, int32_t _argc, char **_argv);
+    int32_t     do_excp(uint8_t _no, int32_t _argc, char** _argv);
 
     /**
      * @brief 获取中断名
      * @param  _no              中断号
      * @return const char*      中断名
      */
-    const char *get_intr_name(uint8_t _no) const;
+    const char* get_intr_name(uint8_t _no) const;
 
     /**
      * @brief 获取异常名
      * @param  _no              异常号
      * @return const char*      异常名
      */
-    const char *get_excp_name(uint8_t _no) const;
+    const char* get_excp_name(uint8_t _no) const;
 };
 
 /**
@@ -162,13 +162,13 @@ public:
      * @brief 获取单例
      * @return CLINT&           静态对象
      */
-    static CLINT &get_instance(void);
+    static CLINT& get_instance(void);
 
     /**
      * @brief 初始化
      * @return int32_t         成功返回 0
      */
-    int32_t init(void);
+    int32_t       init(void);
 };
 
 /**
@@ -184,50 +184,51 @@ private:
     static constexpr const size_t EXTERNEL_INTERRUPR_MAX = 16;
     /// 外部中断处理函数数组
     externel_interrupt_handler_t
-        externel_interrupt_handlers[EXTERNEL_INTERRUPR_MAX];
+                           externel_interrupt_handlers[EXTERNEL_INTERRUPR_MAX];
     /// 基地址，由 dtb 传递
-    static uintptr_t base_addr;
+    static uintptr_t       base_addr;
     /// @todo ？
-    static uint64_t PLIC_PRIORITY;
+    static uint64_t        PLIC_PRIORITY;
     /// @todo ？
-    static uint64_t PLIC_PENDING;
+    static uint64_t        PLIC_PENDING;
     /// @todo ？
-    static inline uint64_t PLIC_SENABLE(uint64_t _hart);
+    inline static uint64_t PLIC_SENABLE(uint64_t _hart);
 
-    static inline uint64_t PLIC_MENABLE(uint64_t _hart);
+    inline static uint64_t PLIC_MENABLE(uint64_t _hart);
     /// @todo ？
-    static inline uint64_t PLIC_SPRIORITY(uint64_t _hart);
-    static inline uint64_t PLIC_MPRIORITY(uint64_t _hart);
+    inline static uint64_t PLIC_SPRIORITY(uint64_t _hart);
+    inline static uint64_t PLIC_MPRIORITY(uint64_t _hart);
     /// @todo ？
-    static inline uint64_t PLIC_SCLAIM(uint64_t _hart);
-    static inline uint64_t PLIC_MCLAIM(uint64_t _hart);
+    inline static uint64_t PLIC_SCLAIM(uint64_t _hart);
+    inline static uint64_t PLIC_MCLAIM(uint64_t _hart);
 
 protected:
+
 public:
     /**
      * @brief 获取单例
      * @return PLIC&            静态对象
      */
-    static PLIC &get_instance(void);
+    static PLIC& get_instance(void);
 
     /**
      * @brief 初始化
      * @return int32_t         成功返回 0
      */
-    int32_t init(void);
+    int32_t      init(void);
 
     /**
      * @brief 向 PLIC 询问中断
      * 返回发生的外部中断号
      * @return uint8_t         中断号
      */
-    uint8_t get(void);
+    uint8_t      get(void);
 
     /**
      * @brief 告知 PLIC 已经处理了当前 IRQ
      * @param  _no             中断号
      */
-    void done(uint8_t _no);
+    void         done(uint8_t _no);
 
     /**
      * @brief 设置中断状态
@@ -235,7 +236,7 @@ public:
      * @param  _status         状态
      * @todo 不确定
      */
-    void set(uint8_t _no, bool _status);
+    void         set(uint8_t _no, bool _status);
 
     /**
      * @brief 注册外部中断处理函数
@@ -243,8 +244,8 @@ public:
      * @param  _interrupt_handler 外部中断处理函数
      */
     void
-    register_externel_handler(uint8_t                      _no,
-                              externel_interrupt_handler_t _interrupt_handler);
+         register_externel_handler(uint8_t                      _no,
+                                   externel_interrupt_handler_t _interrupt_handler);
 
     /**
      * @brief 执行外部中断处理
@@ -262,23 +263,23 @@ public:
      * @brief 获取单例
      * @return TIMER&           静态对象
      */
-    static TIMER &get_instance(void);
+    static TIMER& get_instance(void);
 
     /**
      * @brief 初始化
      */
-    void init(void);
+    void          init(void);
 };
 
 /**
  * @brief 缺页读处理
  */
-int32_t pg_load_excp(int, char **);
+int32_t pg_load_excp(int, char**);
 
 /**
  * @brief 缺页写处理
  * @todo 需要读权限吗？测试发现没有读权限不行，原因未知
  */
-int32_t pg_store_excp(int, char **);
+int32_t pg_store_excp(int, char**);
 
 #endif /* SIMPLEKERNEL_INTR_H */
