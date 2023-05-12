@@ -19,6 +19,7 @@
 
 #include "cstdbool"
 #include "cstdint"
+#include "cstdio"
 
 /**
  * @brief cpu 相关
@@ -112,7 +113,7 @@ inline static void cli(void) {
 }
 
 /**
- * @brief 触发 debug 中断
+ * @brief 出发 debug 中断
  */
 inline static void debug_intr(void) {
     __asm__ volatile("int $0x01");
@@ -123,7 +124,7 @@ inline static void debug_intr(void) {
  * @brief 读取 EFLAGS
  * @return uint32_t        eflags 值
  */
-inline static uint32_t READ_EFLAGS(void) {
+inline static uint32_t read_eflags(void) {
     uint32_t eflags;
     __asm__ volatile("pushf\n\t"
                      "pop %0\n\t"
@@ -135,7 +136,7 @@ inline static uint32_t READ_EFLAGS(void) {
  * @brief 读取 CR0
  * @return uint32_t        CR0 值
  */
-inline static uint32_t READ_CR0(void) {
+inline static uint32_t read_cr0(void) {
     uint32_t cr0;
     __asm__ volatile("mov %%cr0, %0" : "=b"(cr0));
     return cr0;
@@ -145,18 +146,18 @@ inline static uint32_t READ_CR0(void) {
  * @brief 读取 CR2
  * @return uint32_t        CR2 值
  */
-inline static uint32_t READ_CR2(void) {
+inline static uint32_t read_cr2(void) {
     uint32_t cr2;
     __asm__ volatile("mov %%cr2, %0" : "=b"(cr2));
     return cr2;
 }
 
 /**
- * @brief 获取页目录 CR3
- * @return uintptr_t        CR3 值
+ * @brief 读取 CR3
+ * @return uint32_t        CR3 值
  */
-inline static uintptr_t GET_PGD(void) {
-    uintptr_t cr3;
+inline static uint32_t read_cr3(void) {
+    uint32_t cr3;
     __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
     return cr3;
 }
@@ -175,7 +176,7 @@ inline static void switch_stack(void* _stack_top) {
  * @brief 读取 CR4
  * @return uint32_t        CR4 值
  */
-inline static uint32_t READ_CR4(void) {
+inline static uint32_t read_cr4(void) {
     uint32_t cr4;
     __asm__ volatile("mov %%cr4, %0" : "=b"(cr4));
     return cr4;
@@ -185,7 +186,7 @@ inline static uint32_t READ_CR4(void) {
  * @brief 刷新页表缓存
  * @param  _addr            要刷新的地址
  */
-inline static void VMM_FLUSH(uintptr_t _addr) {
+inline static void INVLPG(void* _addr) {
     __asm__ volatile("invlpg (%0)" : : "r"(_addr) : "memory");
     return;
 }
@@ -231,6 +232,25 @@ public:
 inline static bool SET_PGD(uintptr_t _pgd) {
     __asm__ volatile("mov %0, %%cr3" : : "r"(_pgd));
     return true;
+}
+
+/**
+ * @brief 获取页目录 CR3
+ * @return uintptr_t        CR3 值
+ */
+inline static uintptr_t GET_PGD(void) {
+    uintptr_t cr3;
+    __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
+    return cr3;
+}
+
+/**
+ * @brief 刷新页表缓存
+ * @param  _addr            要刷新的地址
+ */
+inline static void VMM_FLUSH(uintptr_t _addr) {
+    __asm__ volatile("invlpg (%0)" : : "r"(_addr) : "memory");
+    return;
 }
 
 };     // namespace CPU
