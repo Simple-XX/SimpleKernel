@@ -63,6 +63,7 @@ void kernel_main(void) {
     VFS::get_instance().init();
     // 允许中断
     CPU::ENABLE_INTR();
+
     // 测试设备
     // test_device();
     // 测试文件系统
