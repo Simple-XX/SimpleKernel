@@ -80,67 +80,65 @@
 #define MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED   1
 #define MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED 2
 
+// clang-format off
+
 // 声明这一段代码以 32 位模式编译
 .code32
-  // multiboot2 文件头
-  // 计算头长度
-  .SET HEADER_LENGTH,
-  multiboot_header_end
-    - multiboot_header
-        // 计算校验和
-        .SET CHECKSUM,
-  -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH)
-     // 8 字节对齐
-     .align MULTIBOOT_HEADER_ALIGN
-     // 声明所属段
-     .section.text
-     .boot multiboot_header :
-     // 魔数
-     .long MULTIBOOT2_HEADER_MAGIC
-     // 架构
-     .long MULTIBOOT_ARCHITECTURE_I386
-     // 头长度
-     .long HEADER_LENGTH
-     // 校验和
-     .long CHECKSUM
-     // 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
-     .short MULTIBOOT_HEADER_TAG_END
-     // 结束标记
-     .short 0
-     .long 8 multiboot_header_end :
+// multiboot2 文件头
+// 计算头长度
+.SET HEADER_LENGTH, multiboot_header_end - multiboot_header
+// 计算校验和
+.SET CHECKSUM, -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH)
+// 8 字节对齐
+.align MULTIBOOT_HEADER_ALIGN
+// 声明所属段
+.section .text.boot
+multiboot_header:
+    // 魔数
+    .long MULTIBOOT2_HEADER_MAGIC
+    // 架构
+    .long MULTIBOOT_ARCHITECTURE_I386
+    // 头长度
+    .long HEADER_LENGTH
+    // 校验和
+    .long CHECKSUM
+    // 添加其它内容在此，详细信息见 Multiboot2 Specification version 2.0.pdf
+	.short MULTIBOOT_HEADER_TAG_END
+    // 结束标记
+    .short 0
+    .long 8
+multiboot_header_end:
 
-     // 声明所属段
-     .section.text
-     .boot
-     // 全局可见
-     .global _start
-     // 声明类型
-     .type _start,
-  @function
-    // 声明外部定义
-    .extern kernel_main.extern cpp_init _start :
+// 声明所属段
+.section .text.boot
+// 全局可见
+.global _start
+// 声明类型
+.type _start, @function
+// 声明外部定义
+.extern kernel_main
+.extern cpp_init
+_start:
     // 关中断
     cli
     // 设置栈地址
-    mov $stack_top,
-  % esp
-      // 栈地址按照 16 字节对齐
-      and $0xFFFFFFF0,
-  % esp
+    mov $stack_top, %esp
+    // 栈地址按照 16 字节对齐
+    and $0xFFFFFFF0, %esp
     // 帧指针修改为 0
-    mov $0,
-  % ebp
+    mov $0, %ebp
     // 初始化 C++
-    call cpp_init call kernel_main hlt ret
+    call cpp_init
+    call kernel_main
+    hlt
+    ret
 
-      // 声明所属段
-      .section.bss
-      .boot
-      // 16 字节对齐
-      .align
-    16.global stack_top
-    // 栈
-    stack_top :
-      // 跳过 16KB
-      .space 4096
-    * 4
+// 声明所属段
+.section .bss.boot
+// 16 字节对齐
+.align 16
+.global stack_top
+// 栈
+stack_top:
+    // 跳过 16KB
+    .space 4096 * 4
