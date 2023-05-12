@@ -4,6 +4,8 @@
 //
 // gdt_s.S for Simple-XX/SimpleKernel.
 
+// clang-format off
+
 .code32
 
 .section .text

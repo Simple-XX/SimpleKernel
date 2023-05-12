@@ -18,12 +18,12 @@
 #ifndef SIMPLEKERNEL_DTB_H
 #define SIMPLEKERNEL_DTB_H
 
-#include "stdint.h"
-#include "stdbool.h"
 #include "boot_info.h"
-#include "resource.h"
+#include "cstdbool"
+#include "cstdint"
 #include "endian.h"
 #include "iostream"
+#include "resource.h"
 
 /// @see devicetree-specification-v0.3.pdf
 /// @see https://e-mailky.github.io/2016-12-06-dts-introduce
@@ -40,19 +40,19 @@ private:
     /// node 开始标记
     static constexpr const uint32_t FDT_BEGIN_NODE = 0x1;
     /// node 结束标记
-    static constexpr const uint32_t FDT_END_NODE = 0x2;
+    static constexpr const uint32_t FDT_END_NODE   = 0x2;
     /// 属性开始标记
-    static constexpr const uint32_t FDT_PROP = 0x3;
+    static constexpr const uint32_t FDT_PROP       = 0x3;
     /// 无效标记
-    static constexpr const uint32_t FDT_NOP = 0x4;
+    static constexpr const uint32_t FDT_NOP        = 0x4;
     /// 数据区结束标记
-    static constexpr const uint32_t FDT_END = 0x9;
+    static constexpr const uint32_t FDT_END        = 0x9;
 
     /// @see devicetree-specification-v0.3.pdf#5.1
     /// 魔数
-    static constexpr const uint32_t FDT_MAGIC = 0xD00DFEED;
+    static constexpr const uint32_t FDT_MAGIC      = 0xD00DFEED;
     /// 版本 17
-    static constexpr const uint32_t FDT_VERSION = 0x11;
+    static constexpr const uint32_t FDT_VERSION    = 0x11;
 
     /**
      * @brief fdt 格式头
@@ -79,7 +79,7 @@ private:
         /// 数据区长度
         uint32_t size_dt_struct;
         // 从地址构造
-        fdt_header_t(const void *_addr);
+        fdt_header_t(const void* _addr);
         ~fdt_header_t(void);
     };
 
@@ -117,20 +117,20 @@ private:
     /// 最大节点数
     static constexpr const size_t MAX_NODES = 128;
     /// 最大属性数
-    static constexpr const size_t PROP_MAX = 16;
+    static constexpr const size_t PROP_MAX  = 16;
 
     /**
      * @brief dtb 信息
      */
     struct dtb_info_t {
         /// dtb 头
-        fdt_header_t *header;
+        fdt_header_t*        header;
         /// 保留区
-        fdt_reserve_entry_t *reserved;
+        fdt_reserve_entry_t* reserved;
         /// 数据区
-        uintptr_t data;
+        uintptr_t            data;
         /// 字符区
-        uintptr_t str;
+        uintptr_t            str;
     };
 
     /**
@@ -138,11 +138,11 @@ private:
      */
     struct prop_t {
         /// 属性名
-        char *name;
+        char*     name;
         /// 属性地址
         uintptr_t addr;
         /// 属性长度
-        size_t len;
+        size_t    len;
     };
 
     /**
@@ -150,7 +150,7 @@ private:
      */
     struct path_t {
         /// 当前路径
-        char *path[MAX_DEPTH];
+        char*  path[MAX_DEPTH];
         /// 长度
         size_t len;
         /**
@@ -159,8 +159,8 @@ private:
          * @return true            相同
          * @return false           不同
          */
-        bool operator==(const path_t *_path);
-        bool operator==(const char *_path);
+        bool   operator==(const path_t* _path);
+        bool   operator==(const char* _path);
     };
 
     /**
@@ -168,53 +168,54 @@ private:
      */
     struct node_t {
         /// 节点路径
-        path_t path;
+        path_t        path;
         /// 节点地址
-        uint32_t *addr;
+        uint32_t*     addr;
         /// 父节点
-        node_t *parent;
+        node_t*       parent;
         /// 中断父节点
-        node_t *interrupt_parent;
+        node_t*       interrupt_parent;
         /// 1 cell == 4 bytes
         /// 地址长度 单位为 bytes
-        uint32_t address_cells;
+        uint32_t      address_cells;
         /// 长度长度 单位为 bytes
-        uint32_t size_cells;
+        uint32_t      size_cells;
         /// 中断长度 单位为 bytes
-        uint32_t interrupt_cells;
-        uint32_t phandle;
+        uint32_t      interrupt_cells;
+        uint32_t      phandle;
         /// 路径深度
-        uint8_t depth;
+        uint8_t       depth;
         /// 属性
-        prop_t props[PROP_MAX];
+        prop_t        props[PROP_MAX];
         /// 属性数
-        size_t prop_count;
+        size_t        prop_count;
         /// 节点数
         static size_t count;
         /// 查找节点中的键值对
-        bool find(const char *_prop_name, const char *_val);
+        bool          find(const char* _prop_name, const char* _val);
     };
 
 protected:
+
 public:
     /**
      * @brief 迭代变量
      */
     struct iter_data_t {
         /// 路径，不包括节点名
-        path_t path;
+        path_t    path;
         /// 节点地址
-        uint32_t *addr;
+        uint32_t* addr;
         /// 节点类型
-        uint32_t type;
+        uint32_t  type;
         /// 如果节点类型为 PROP， 保存节点属性名
-        char *prop_name;
+        char*     prop_name;
         /// 如果节点类型为 PROP， 保存属性长度 单位为 byte
-        uint32_t prop_len;
+        uint32_t  prop_len;
         /// 如果节点类型为 PROP， 保存属性地址
-        uint32_t *prop_addr;
+        uint32_t* prop_addr;
         /// 在 nodes 数组的下标
-        uint8_t nodes_idx;
+        uint8_t   nodes_idx;
     };
 
     // 部分属性及格式
@@ -249,7 +250,7 @@ public:
      */
     struct dt_prop_fmt_t {
         /// 属性名
-        char *prop_name;
+        char*         prop_name;
         /// 格式
         enum dt_fmt_t fmt;
     };
@@ -259,26 +260,26 @@ public:
      * @see 格式信息请查看 devicetree-specification-v0.3#2.3,#2.4 等部分
      */
     static constexpr const dt_prop_fmt_t props[] = {
-        {.prop_name = (char *)"", .fmt = FMT_EMPTY},
-        {.prop_name = (char *)"compatible", .fmt = FMT_STRINGLIST},
-        {.prop_name = (char *)"model", .fmt = FMT_STRING},
-        {.prop_name = (char *)"phandle", .fmt = FMT_U32},
-        {.prop_name = (char *)"status", .fmt = FMT_STRING},
-        {.prop_name = (char *)"#address-cells", .fmt = FMT_U32},
-        {.prop_name = (char *)"#size-cells", .fmt = FMT_U32},
-        {.prop_name = (char *)"#interrupt-cells", .fmt = FMT_U32},
-        {.prop_name = (char *)"reg", .fmt = FMT_REG},
-        {.prop_name = (char *)"virtual-reg", .fmt = FMT_U32},
-        {.prop_name = (char *)"ranges", .fmt = FMT_RANGES},
-        {.prop_name = (char *)"dma-ranges", .fmt = FMT_RANGES},
-        {.prop_name = (char *)"name", .fmt = FMT_STRING},
-        {.prop_name = (char *)"device_type", .fmt = FMT_STRING},
-        {.prop_name = (char *)"interrupts", .fmt = FMT_U32},
-        {.prop_name = (char *)"interrupt-parent", .fmt = FMT_PHANDLE},
-        {.prop_name = (char *)"interrupt-controller", .fmt = FMT_EMPTY},
-        {.prop_name = (char *)"value", .fmt = FMT_U32},
-        {.prop_name = (char *)"offset", .fmt = FMT_U32},
-        {.prop_name = (char *)"regmap", .fmt = FMT_U32},
+        {                    .prop_name = (char*)"",      .fmt = FMT_EMPTY},
+        {          .prop_name = (char*)"compatible", .fmt = FMT_STRINGLIST},
+        {               .prop_name = (char*)"model",     .fmt = FMT_STRING},
+        {             .prop_name = (char*)"phandle",        .fmt = FMT_U32},
+        {              .prop_name = (char*)"status",     .fmt = FMT_STRING},
+        {      .prop_name = (char*)"#address-cells",        .fmt = FMT_U32},
+        {         .prop_name = (char*)"#size-cells",        .fmt = FMT_U32},
+        {    .prop_name = (char*)"#interrupt-cells",        .fmt = FMT_U32},
+        {                 .prop_name = (char*)"reg",        .fmt = FMT_REG},
+        {         .prop_name = (char*)"virtual-reg",        .fmt = FMT_U32},
+        {              .prop_name = (char*)"ranges",     .fmt = FMT_RANGES},
+        {          .prop_name = (char*)"dma-ranges",     .fmt = FMT_RANGES},
+        {                .prop_name = (char*)"name",     .fmt = FMT_STRING},
+        {         .prop_name = (char*)"device_type",     .fmt = FMT_STRING},
+        {          .prop_name = (char*)"interrupts",        .fmt = FMT_U32},
+        {    .prop_name = (char*)"interrupt-parent",    .fmt = FMT_PHANDLE},
+        {.prop_name = (char*)"interrupt-controller",      .fmt = FMT_EMPTY},
+        {               .prop_name = (char*)"value",        .fmt = FMT_U32},
+        {              .prop_name = (char*)"offset",        .fmt = FMT_U32},
+        {              .prop_name = (char*)"regmap",        .fmt = FMT_U32},
     };
 
     /**
@@ -286,29 +287,29 @@ public:
      * @param  _prop_name      要查找的属性
      * @return dt_fmt_t        在 dt_fmt_t 中的索引
      */
-    dt_fmt_t get_fmt(const char *_prop_name);
+    dt_fmt_t get_fmt(const char* _prop_name);
 
     /**
      * @brief phandles 与 node 的映射关系
      */
     struct phandle_map_t {
-        uint32_t phandle;
-        node_t  *node;
+        uint32_t      phandle;
+        node_t*       node;
         /// phandle 数量
         static size_t count;
     };
 
     /// dtb 信息
-    static dtb_info_t dtb_info;
+    static dtb_info_t    dtb_info;
     /// 节点数组
-    static node_t nodes[MAX_NODES];
+    static node_t        nodes[MAX_NODES];
     /// phandle 数组
     static phandle_map_t phandle_map[MAX_NODES];
 
     /**
      * @brief 输出 reserved 内存
      */
-    void dtb_mem_reserved(void);
+    void                 dtb_mem_reserved(void);
 
     /**
      * @brief 迭代函数
@@ -317,15 +318,15 @@ public:
      * @param  _data           要传递的数据
      * @param _addr            dtb 数据地址
      */
-    void dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
-                  void *_data, uintptr_t _addr = dtb_info.data);
+    void    dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t*, void*),
+                     void* _data, uintptr_t _addr = dtb_info.data);
 
     /**
      * @brief 查找 phandle 映射
      * @param  _phandle        要查找的 phandle
      * @return node_t*         _phandle 指向的节点
      */
-    node_t *get_phandle(uint32_t _phandle);
+    node_t* get_phandle(uint32_t _phandle);
 
     /**
      * @brief 初始化节点
@@ -334,7 +335,7 @@ public:
      * @return true            成功
      * @return false           失败
      */
-    static bool dtb_init_cb(const iter_data_t *_iter, void *_data);
+    static bool dtb_init_cb(const iter_data_t* _iter, void* _data);
 
     /**
      * @brief 初始化中断信息
@@ -343,7 +344,7 @@ public:
      * @return true            成功
      * @return false           失败
      */
-    static bool dtb_init_interrupt_cb(const iter_data_t *_iter, void *_data);
+    static bool dtb_init_interrupt_cb(const iter_data_t* _iter, void* _data);
 
     /**
      * @brief 输出不定长度的数据
@@ -352,8 +353,8 @@ public:
      * @param  _len            长度
      * @todo 补充说明
      */
-    void print_attr_propenc(const iter_data_t *_iter, size_t *_cells,
-                            size_t _len);
+    void
+    print_attr_propenc(const iter_data_t* _iter, size_t* _cells, size_t _len);
 
     /**
      * @brief 填充 resource_t
@@ -361,38 +362,39 @@ public:
      * @param  _node           源节点
      * @param  _prop           填充的数据
      */
-    void fill_resource(resource_t *_resource, const node_t *_node,
-                       const prop_t *_prop);
+    void    fill_resource(resource_t* _resource, const node_t* _node,
+                          const prop_t* _prop);
 
     /**
      * @brief 通过路径寻找节点
      * @param  _path            路径
      * @return node_t*          找到的节点
      */
-    node_t *find_node_via_path(const char *_path);
+    node_t* find_node_via_path(const char* _path);
 
 protected:
+
 public:
     // 用于控制处理哪些属性
     /// 处理节点开始
     static constexpr const uint8_t DT_ITER_BEGIN_NODE = 0x01;
     /// 处理节点结束
-    static constexpr const uint8_t DT_ITER_END_NODE = 0x02;
+    static constexpr const uint8_t DT_ITER_END_NODE   = 0x02;
     /// 处理节点属性
-    static constexpr const uint8_t DT_ITER_PROP = 0x04;
+    static constexpr const uint8_t DT_ITER_PROP       = 0x04;
 
     /**
      * @brief 获取单例
      * @return DTB&             静态对象
      */
-    static DTB &get_instance(void);
+    static DTB&                    get_instance(void);
 
     /**
      * @brief 初始化
      * @return true            成功
      * @return false           失败
      */
-    bool dtb_init(void);
+    bool                           dtb_init(void);
 
     /**
      * @brief 根据路径查找节点，返回使用的资源
@@ -401,7 +403,7 @@ public:
      * @return true             成功
      * @return false            失败
      */
-    bool find_via_path(const char *_path, resource_t *_resource);
+    bool   find_via_path(const char* _path, resource_t* _resource);
 
     /**
      * @brief 根据节点名进行前缀查找
@@ -410,7 +412,7 @@ public:
      * @return size_t           _resource 长度
      * @note 根据节点 @ 前的名称查找，可能返回多个 resource
      */
-    size_t find_via_prefix(const char *_prefix, resource_t *_resource);
+    size_t find_via_prefix(const char* _prefix, resource_t* _resource);
 
     /**
      * @brief iter 输出
@@ -418,23 +420,22 @@ public:
      * @param  _iter           要输出的 iter
      * @return std::ostream&   输出流
      */
-    friend std::ostream &operator<<(std::ostream      &_os,
-                                    const iter_data_t &_iter);
+    friend std::ostream&
+    operator<<(std::ostream& _os, const iter_data_t& _iter);
     /**
      * @brief 路径输出
      * @param  _os             输出流
      * @param  _path           要输出的 path
      * @return std::ostream&   输出流
      */
-    friend std::ostream &operator<<(std::ostream &_os, const path_t &_path);
+    friend std::ostream& operator<<(std::ostream& _os, const path_t& _path);
 };
 
 namespace BOOT_INFO {
 /// 保存 sbi 传递的启动核
 extern "C" size_t dtb_init_hart;
-}; // namespace BOOT_INFO
+};    // namespace BOOT_INFO
 
 extern "C" size_t dtb_init_hart;
 
 #endif /* SIMPLEKERNEL_DTB_H */
-

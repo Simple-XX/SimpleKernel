@@ -28,14 +28,16 @@ public:
     // days since January 1 [0-365]
     uint32_t tm_yday;
     // Daylight Saving Time flag
-    int tm_isdst;
+    int      tm_isdst;
     // offset from UTC in seconds
-    long tm_gmtoff;
+    long     tm_gmtoff;
     // timezone abbreviation
-    char *tm_zone;
+    char*    tm_zone;
+
     time_t(void) {
         return;
     }
+
     ~time_t(void) {
         return;
     }

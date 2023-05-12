@@ -14,12 +14,12 @@
  * </table>
  */
 
-#include "stdio.h"
-#include "common.h"
-#include "pmm.h"
 #include "heap.h"
+#include "common.h"
+#include "cstdio"
+#include "pmm.h"
 
-HEAP &HEAP::get_instance(void) {
+HEAP& HEAP::get_instance(void) {
     /// 定义全局 HEAP 对象
     static HEAP heap;
     return heap;
@@ -28,39 +28,38 @@ HEAP &HEAP::get_instance(void) {
 bool HEAP::init(void) {
     // 内核空间
     static SLAB slab_allocator_kernel(
-        "SLAB Allocator Kernel", PMM::get_instance().get_kernel_space_start(),
-        PMM::get_instance().get_kernel_space_length() * COMMON::PAGE_SIZE,
-        true);
-    allocator_kernel = (ALLOCATOR *)&slab_allocator_kernel;
+      "SLAB Allocator Kernel", PMM::get_instance().get_kernel_space_start(),
+      PMM::get_instance().get_kernel_space_length() * COMMON::PAGE_SIZE, true);
+    allocator_kernel = (ALLOCATOR*)&slab_allocator_kernel;
     // 非内核空间
     static SLAB slab_allocator_non_kernel(
-        "SLAB Allocator", PMM::get_instance().get_non_kernel_space_start(),
-        PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE,
-        false);
-    allocator_non_kernel = (ALLOCATOR *)&slab_allocator_non_kernel;
+      "SLAB Allocator", PMM::get_instance().get_non_kernel_space_start(),
+      PMM::get_instance().get_non_kernel_space_length() * COMMON::PAGE_SIZE,
+      false);
+    allocator_non_kernel = (ALLOCATOR*)&slab_allocator_non_kernel;
     info("heap init.\n");
     return 0;
 }
 
-void *HEAP::kmalloc(size_t _byte) {
-    void *ret = nullptr;
-    ret       = (void *)allocator_kernel->alloc(_byte);
+void* HEAP::kmalloc(size_t _byte) {
+    void* ret = nullptr;
+    ret       = (void*)allocator_kernel->alloc(_byte);
     return ret;
 }
 
-void HEAP::kfree(void *_addr) {
+void HEAP::kfree(void* _addr) {
     // 堆不需要 _len 参数
     allocator_kernel->free((uintptr_t)_addr, 0);
     return;
 }
 
-void *HEAP::malloc(size_t _byte) {
-    void *ret = nullptr;
-    ret       = (void *)allocator_non_kernel->alloc(_byte);
+void* HEAP::malloc(size_t _byte) {
+    void* ret = nullptr;
+    ret       = (void*)allocator_non_kernel->alloc(_byte);
     return ret;
 }
 
-void HEAP::free(void *_addr) {
+void HEAP::free(void* _addr) {
     // 堆不需要 _len 参数
     allocator_non_kernel->free((uintptr_t)_addr, 0);
     return;
@@ -71,15 +70,15 @@ void HEAP::free(void *_addr) {
  * @param  _size           要申请的 bytes
  * @return void*           申请到的地址
  */
-extern "C" void *kmalloc(size_t _size) {
-    return (void *)HEAP::get_instance().kmalloc(_size);
+extern "C" void* kmalloc(size_t _size) {
+    return (void*)HEAP::get_instance().kmalloc(_size);
 }
 
 /**
  * @brief 释放内核空间内存
  * @param  _p              要释放的内存地址
  */
-extern "C" void kfree(void *_p) {
+extern "C" void kfree(void* _p) {
     HEAP::get_instance().kfree(_p);
     return;
 }
@@ -89,15 +88,15 @@ extern "C" void kfree(void *_p) {
  * @param  _size           要申请的 bytes
  * @return void*           申请到的地址
  */
-extern "C" void *malloc(size_t _size) {
-    return (void *)HEAP::get_instance().malloc(_size);
+extern "C" void* malloc(size_t _size) {
+    return (void*)HEAP::get_instance().malloc(_size);
 }
 
 /**
  * @brief free 定义
  * @param  _p              要释放的内存地址
  */
-extern "C" void free(void *_p) {
+extern "C" void free(void* _p) {
     HEAP::get_instance().free(_p);
     return;
 }

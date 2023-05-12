@@ -15,14 +15,14 @@
  * </table>
  */
 
-#include "cpu.hpp"
-#include "stdio.h"
-#include "vmm.h"
 #include "boot_info.h"
-#include "resource.h"
+#include "cpu.hpp"
+#include "cstdio"
 #include "intr.h"
+#include "resource.h"
+#include "vmm.h"
 
-CLINT &CLINT::get_instance(void) {
+CLINT& CLINT::get_instance(void) {
     /// 定义全局 CLINT 对象
     static CLINT clint;
     return clint;
@@ -31,7 +31,7 @@ CLINT &CLINT::get_instance(void) {
 int32_t CLINT::init(void) {
     // 映射 clint 地址
     resource_t resource = BOOT_INFO::get_clint();
-    for (uintptr_t a = resource.mem.addr;
+    for (uintptr_t a                                  = resource.mem.addr;
          a < resource.mem.addr + resource.mem.len; a += COMMON::PAGE_SIZE) {
         VMM::get_instance().mmap(VMM::get_instance().get_pgd(), a, a,
                                  VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);

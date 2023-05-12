@@ -16,12 +16,14 @@
  */
 
 #include "dtb.h"
-#include "assert.h"
 #include "boot_info.h"
+#include "cassert"
 #include "common.h"
+#include "cstdint"
+#include "cstdio"
+#include "endian.h"
 #include "iostream"
 #include "resource.h"
-#include "stdio.h"
 #include "string.h"
 
 // 所有节点
@@ -629,4 +631,5 @@ resource_t get_plic(void) {
     assert(DTB::get_instance().find_via_prefix("plic@", &resource) == 1);
     return resource;
 }
+
 };    // namespace BOOT_INFO

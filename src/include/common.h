@@ -17,8 +17,8 @@
 #ifndef SIMPLEKERNEL_COMMON_H
 #define SIMPLEKERNEL_COMMON_H
 
-#include "stddef.h"
-#include "stdint.h"
+#include "cstddef"
+#include "cstdint"
 
 namespace COMMON {
 // 引用链接脚本中的变量
@@ -92,7 +92,6 @@ template <>
 inline uint64_t ALIGN(uint64_t _x, size_t _align) {
     return ((_x + _align - 1) & (~(_align - 1)));
 }
-
 };     // namespace COMMON
 
 #endif /* SIMPLEKERNEL_COMMON_H */
