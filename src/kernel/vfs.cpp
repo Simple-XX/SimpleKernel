@@ -105,24 +105,25 @@ dentry_t* VFS::alloc_dentry(const mystl::string& _path, int _flags) {
 }
 
 int VFS::dealloc_dentry(const mystl::string& _path) {
-    dentry_t* dentry = find_dentry(_path);
-    // 首先判断是否存在，不存在则返回
-    if (dentry == nullptr) {
-        std::cout << "\"" << _path << "\" not exist." << std::endl;
-        return -1;
-    }
-    fs_t* fs = get_fs(_path);
-    // 从父目录的子目录中删除
-    dentry->parent->child.remove(dentry);
-    // 删除子目录
-    for (auto i : dentry->child) {
-        fs->dealloc_inode(i->inode);
-        dentries.remove(i);
-    }
-    // 删除 inode
-    fs->dealloc_inode(dentry->inode);
-    // 删除 dentry
-    dentries.remove(dentry);
+    (void)_path;
+    // dentry_t* dentry = find_dentry(_path);
+    // // 首先判断是否存在，不存在则返回
+    // if (dentry == nullptr) {
+    //     std::cout << "\"" << _path << "\" not exist." << std::endl;
+    //     return -1;
+    // }
+    // fs_t* fs = get_fs(_path);
+    // // 从父目录的子目录中删除
+    // dentry->parent->child.remove(dentry);
+    // // 删除子目录
+    // for (auto i : dentry->child) {
+    //     fs->dealloc_inode(i->inode);
+    //     dentries.remove(i);
+    // }
+    // // 删除 inode
+    // fs->dealloc_inode(dentry->inode);
+    // // 删除 dentry
+    // dentries.remove(dentry);
     return 0;
 }
 
@@ -137,7 +138,7 @@ fs_t* VFS::get_fs(const mystl::string& _path) {
 }
 
 fd_t VFS::alloc_fd(void) {
-    return 0;
+    return 1;
 }
 
 fd_t VFS::dealloc_fd(void) {
@@ -171,23 +172,24 @@ int32_t VFS::register_filesystem(fs_t* _fs) {
 }
 
 int32_t VFS::unregister_filesystem(fs_t* _fs) {
-    // 删除下属的 dentry
-    // 如果 i 的 name 与 _fs 的安装路径匹配
-    for (auto i : dentries) {
-        if (i->name.find(_fs->root.path) == 0) {
-            dentries.remove(i);
-        }
-    }
-    // 遍历文件系统
-    for (auto i : fs) {
-        // 有的话删除
-        if (i->name == _fs->name) {
-            fs.remove(i);
-            std::cout << "unregister " << _fs->name << " file system."
-                      << std::endl;
-            return -1;
-        }
-    }
+    (void)_fs;
+    // // 删除下属的 dentry
+    // // 如果 i 的 name 与 _fs 的安装路径匹配
+    // for (auto i : dentries) {
+    //     if (i->name.find(_fs->root.path) == 0) {
+    //         dentries.remove(i);
+    //     }
+    // }
+    // // 遍历文件系统
+    // for (auto i : fs) {
+    //     // 有的话删除
+    //     if (i->name == _fs->name) {
+    //         fs.remove(i);
+    //         std::cout << "unregister " << _fs->name << " file system."
+    //                   << std::endl;
+    //         return -1;
+    //     }
+    // }
     return 0;
 }
 
@@ -211,6 +213,8 @@ int32_t VFS::rmdir(const mystl::string& _path) {
 }
 
 int32_t VFS::open(const mystl::string& _path, int _flags) {
+    (void)_path;
+    (void)_flags;
     // // 首先看是否存在
     // dentry_t* dentry = find_dentry(_path);
     // // 如果不存在
@@ -231,18 +235,24 @@ int32_t VFS::open(const mystl::string& _path, int _flags) {
     // // 添加到链表中
     // files.push_back(file);
     // return file->fd;
+    return 0;
 }
 
 int32_t VFS::close(fd_t _fd) {
+    (void)_fd;
     // for (auto i : files) {
     //     if (i->fd == _fd) {
     //         files.remove(i);
     //     }
     // }
     // return 0;
+    return 0;
 }
 
 int32_t VFS::read(fd_t _fd, void* _buf, size_t _count) {
+    (void)_fd;
+    (void)_buf;
+    (void)_count;
     // // 寻找对应 file
     // for (auto i : files) {
     //     if (i->fd == _fd) {
@@ -250,9 +260,13 @@ int32_t VFS::read(fd_t _fd, void* _buf, size_t _count) {
     //     }
     // }
     // return 0;
+    return 0;
 }
 
 int32_t VFS::write(fd_t _fd, void* _buf, size_t _count) {
+    (void)_fd;
+    (void)_buf;
+    (void)_count;
     // for (auto i : files) {
     //     if (i->fd == _fd) {
     //         i->dentry->inode->pointer = malloc(_count);
@@ -260,4 +274,5 @@ int32_t VFS::write(fd_t _fd, void* _buf, size_t _count) {
     //     }
     // }
     // return 0;
+    return 0;
 }

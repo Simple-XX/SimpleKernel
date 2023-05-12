@@ -150,7 +150,7 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
             memcpy(buf.data, _buff, COMMON::BUFFFER_SIZE);
 
             dev->write(buf);
-            
+
             /// @todo 等待中断
             asm("wfi");
             asm("wfi");

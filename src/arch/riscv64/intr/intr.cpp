@@ -14,9 +14,9 @@
  * </table>
  */
 
-#include "cpu.hpp"
-#include "stdio.h"
 #include "intr.h"
+#include "cpu.hpp"
+#include "cstdio"
 
 /**
  * @brief 中断处理函数
@@ -29,10 +29,10 @@
  * @param  _sstatus        值
  * @param  _sscratch       值
  */
-extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
-                             uintptr_t _scause, CPU::all_regs_t *_all_regs,
-                             uintptr_t _sie, CPU::sstatus_t _sstatus,
-                             CPU::satp_t _satp, uintptr_t _sscratch) {
+extern "C" void
+trap_handler(uintptr_t _sepc, uintptr_t _stval, uintptr_t _scause,
+             CPU::all_regs_t* _all_regs, uintptr_t _sie,
+             CPU::sstatus_t _sstatus, CPU::satp_t _satp, uintptr_t _sscratch) {
     // 消除 unused 警告
     (void)_sepc;
     (void)_stval;
@@ -50,15 +50,16 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
     std::cout << _sstatus << ", \nsatp: " << _satp << ", \n";
     info("sscratch: 0x%p\n", _sscratch);
 // std::cout << *_all_regs << std::endl;
-#undef DEBUG
+#    undef DEBUG
 #endif
     if (_scause & CPU::CAUSE_INTR_MASK) {
 // 中断
 // #define DEBUG
 #ifdef DEBUG
-        info("intr: %s.\n", INTR::get_instance().get_intr_name(
-                                _scause & CPU::CAUSE_CODE_MASK));
-#undef DEBUG
+        info("intr: %s.\n",
+             INTR::get_instance().get_intr_name(_scause
+                                                & CPU::CAUSE_CODE_MASK));
+#    undef DEBUG
 #endif
         // 跳转到对应的处理函数
         INTR::get_instance().do_interrupt(_scause & CPU::CAUSE_CODE_MASK, 0,
@@ -69,9 +70,10 @@ extern "C" void trap_handler(uintptr_t _sepc, uintptr_t _stval,
 // 跳转到对应的处理函数
 // #define DEBUG
 #ifdef DEBUG
-        warn("excp: %s.\n", INTR::get_instance().get_excp_name(
-                                _scause & CPU::CAUSE_CODE_MASK));
-#undef DEBUG
+        warn("excp: %s.\n",
+             INTR::get_instance().get_excp_name(_scause
+                                                & CPU::CAUSE_CODE_MASK));
+#    undef DEBUG
 #endif
         INTR::get_instance().do_excp(_scause & CPU::CAUSE_CODE_MASK, 0,
                                      nullptr);
@@ -85,14 +87,14 @@ extern "C" void trap_entry(void);
 /**
  * @brief 默认使用的中断处理函数
  */
-int32_t handler_default(int, char **) {
+int32_t         handler_default(int, char**) {
     while (1) {
         ;
     }
     return 0;
 }
 
-INTR &INTR::get_instance(void) {
+INTR& INTR::get_instance(void) {
     /// 定义全局 INTR 对象
     static INTR intr;
     return intr;
@@ -104,10 +106,10 @@ int32_t INTR::init(void) {
     // 直接跳转到处理函数
     CPU::STVEC_DIRECT();
     // 设置处理函数
-    for (auto &i : interrupt_handlers) {
+    for (auto& i : interrupt_handlers) {
         i = handler_default;
     }
-    for (auto &i : excp_handlers) {
+    for (auto& i : excp_handlers) {
         i = handler_default;
     }
     // 内部中断初始化
@@ -123,7 +125,7 @@ int32_t INTR::init(void) {
 }
 
 void INTR::register_interrupt_handler(
-    uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
+  uint8_t _no, INTR::interrupt_handler_t _interrupt_handler) {
     interrupt_handlers[_no] = _interrupt_handler;
     return;
 }
@@ -134,18 +136,18 @@ void INTR::register_excp_handler(uint8_t                   _no,
     return;
 }
 
-int32_t INTR::do_interrupt(uint8_t _no, int32_t _argc, char **_argv) {
+int32_t INTR::do_interrupt(uint8_t _no, int32_t _argc, char** _argv) {
     return interrupt_handlers[_no](_argc, _argv);
 }
 
-int32_t INTR::do_excp(uint8_t _no, int32_t _argc, char **_argv) {
+int32_t INTR::do_excp(uint8_t _no, int32_t _argc, char** _argv) {
     return excp_handlers[_no](_argc, _argv);
 }
 
-const char *INTR::get_intr_name(uint8_t _no) const {
+const char* INTR::get_intr_name(uint8_t _no) const {
     return intr_names[_no];
 }
 
-const char *INTR::get_excp_name(uint8_t _no) const {
+const char* INTR::get_excp_name(uint8_t _no) const {
     return excp_names[_no];
 }

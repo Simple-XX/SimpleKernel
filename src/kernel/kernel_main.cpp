@@ -14,10 +14,12 @@
  * </table>
  */
 
-#include "assert.h"
 #include "boot_info.h"
+#include "cassert"
 #include "common.h"
 #include "cpu.hpp"
+#include "cstdio"
+#include "cstdlib"
 #include "dev_drv_manager.h"
 #include "heap.h"
 #include "intr.h"
@@ -62,7 +64,7 @@ void kernel_main(void) {
     // 允许中断
     CPU::ENABLE_INTR();
     // 测试设备
-    test_device();
+    // test_device();
     // 测试文件系统
     test_fatfs();
     // test_vfs();

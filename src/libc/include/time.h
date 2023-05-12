@@ -4,7 +4,7 @@
 //
 // time.h for Simple-XX/SimpleKernel.
 
-//#ifndef _TIME_H_
-//#define _TIME_H_
+// #ifndef _TIME_H_
+// #define _TIME_H_
 //
-//#endif /* _TIME_H_ */
+// #endif /* _TIME_H_ */

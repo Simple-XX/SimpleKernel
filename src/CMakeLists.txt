@@ -65,13 +65,13 @@ add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
 
 # 将各个子对象链接为内核文件
 add_executable(${KernelName}
-    $<TARGET_OBJECTS:arch>
-    $<TARGET_OBJECTS:libc>
-    $<TARGET_OBJECTS:libcxx>
-    $<TARGET_OBJECTS:drv>
-    $<TARGET_OBJECTS:dev>
-    $<TARGET_OBJECTS:filesystem>
-    $<TARGET_OBJECTS:kernel>)
+        $<TARGET_OBJECTS:arch>
+        $<TARGET_OBJECTS:libc>
+        $<TARGET_OBJECTS:libcxx>
+        $<TARGET_OBJECTS:drv>
+        $<TARGET_OBJECTS:dev>
+        $<TARGET_OBJECTS:filesystem>
+        $<TARGET_OBJECTS:kernel>)
 
 # 指定链接脚本
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
@@ -110,19 +110,19 @@ add_custom_command(TARGET ${KernelName}
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName}
-            > ${KernelName}.nm
+        > ${KernelName}.nm
         COMMENT "nm...")
 
 # readelf -a
 add_custom_command(TARGET ${KernelName}
-    POST_BUILD
-    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf || (exit 0)
-    COMMENT "readelf...")
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf || (exit 0)
+        COMMENT "readelf...")
 
 # objdump -D
 add_custom_command(TARGET ${KernelName}
-    POST_BUILD
-    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
-    COMMENT "Disassembling...")
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
+        COMMENT "Disassembling...")

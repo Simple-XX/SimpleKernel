@@ -16,6 +16,8 @@
 
 #include "context.S"
 
+// clang-format off
+
 .section .text
 // 保存所有寄存器
 .globl trap_entry

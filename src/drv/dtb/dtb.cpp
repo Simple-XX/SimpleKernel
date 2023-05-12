@@ -16,12 +16,14 @@
  */
 
 #include "dtb.h"
-#include "assert.h"
 #include "boot_info.h"
+#include "cassert"
 #include "common.h"
+#include "cstdint"
+#include "cstdio"
+#include "endian.h"
 #include "iostream"
 #include "resource.h"
-#include "stdio.h"
 #include "string.h"
 
 // 所有节点
@@ -327,7 +329,7 @@ bool            DTB::dtb_init_cb(const iter_data_t* _iter, void*) {
                 nodes[idx].phandle = be32toh(_iter->addr[3]);
                 // 更新 phandle_map
                 phandle_map[phandle_map[0].count].phandle = nodes[idx].phandle;
-                phandle_map[phandle_map[0].count].node    = &nodes[idx];
+                phandle_map[phandle_map[0].count].node = &nodes[idx];
                 phandle_map[0].count++;
             }
             // 添加属性
@@ -629,4 +631,5 @@ resource_t get_plic(void) {
     assert(DTB::get_instance().find_via_prefix("plic@", &resource) == 1);
     return resource;
 }
+
 };    // namespace BOOT_INFO

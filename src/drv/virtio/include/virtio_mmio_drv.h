@@ -19,6 +19,7 @@
 
 #include "cstdint"
 #include "driver_base.h"
+#include "io.h"
 #include "resource.h"
 #include "string"
 #include "vector"
@@ -26,8 +27,74 @@
 
 /**
  * @brief virtio,mmio 驱动
+ * @todo 暂时只初始化 BLOCK_DEVICE 设备
  */
 class virtio_mmio_drv_t : public driver_base_t {
+public:
+    /**
+     * @brief 块设备请求结构
+     * @see virtio-v1.1#5.2.6
+     */
+    struct virtio_blk_req_t {
+        /// 请求类型
+        /// 读取
+        static constexpr const uint32_t IN           = 0;
+        /// 写入
+        static constexpr const uint32_t OUT          = 1;
+        /// 刷新
+        static constexpr const uint32_t FLUSH        = 4;
+        static constexpr const uint32_t DISCARD      = 11;
+        static constexpr const uint32_t WRITE_ZEROES = 13;
+        uint32_t                        type;
+        uint32_t                        reserved;
+        uint64_t                        sector;
+        uint8_t*                        data;
+        /// 设备返回状态 成功
+        static constexpr const uint32_t OK     = 0;
+        /// 设备返回状态 设备或驱动出错
+        static constexpr const uint32_t IOERR  = 1;
+        /// 设备返回状态 不支持的请求
+        static constexpr const uint32_t UNSUPP = 2;
+        uint8_t                         status;
+        /// type + reserved + sector 的大小
+        static constexpr const size_t   HEADER_SIZE = 16;
+        /// 扇区大小
+        static constexpr const size_t   SECTOR_SIZE = 512;
+        /// status 大小
+        static constexpr const size_t   FOOTER_SIZE = 1;
+
+        friend std::ostream&
+        operator<<(std::ostream& _os, const virtio_blk_req_t& _virtio_blk_req) {
+            printf("type: %s, sector: 0x%X",
+                   _virtio_blk_req.type == IN ? "IN" : "OUT",
+                   _virtio_blk_req.sector);
+// #define DEBUG
+#ifdef DEBUG
+            printf(", data[");
+            for (size_t i = 0; i < SECTOR_SIZE; i++) {
+                printf("0x%X ", _virtio_blk_req.data[i]);
+            }
+            printf("]");
+#    undef DEBUG
+#endif
+            printf(", ");
+            if (_virtio_blk_req.status == OK) {
+                printf("status: OK");
+            }
+            else if (_virtio_blk_req.status == IOERR) {
+                printf("status: IOERR");
+            }
+            else if (_virtio_blk_req.status == UNSUPP) {
+                printf("status: UNSUPP");
+            }
+            else {
+                printf("status: UNKNOWN [0x%X]", _virtio_blk_req.status);
+            }
+
+            return _os;
+        }
+    } __attribute__((packed));
+
 private:
     /**
      * @brief 魔数
@@ -45,7 +112,7 @@ private:
      * @brief virtio 设备类型
      * @see virtio-v1.1#5
      */
-    enum : uint8_t {
+    enum device_type_t : uint32_t {
         RESERVED = 0x00,
         NETWORK_CARD,
         BLOCK_DEVICE,
@@ -70,6 +137,9 @@ private:
         IOMMU_DEVICE,
         MEMORY_DEVICE,
     };
+
+    /// 设备类型
+    device_type_t                      device_type;
 
     /**
      * @brief virtio 设备类型名名称
@@ -125,63 +195,147 @@ private:
      * @see virtio-v1.1#4.2.2
      */
     struct virtio_regs_t {
+        static constexpr const size_t MAGIC_OFFSET               = 0;
+        static constexpr const size_t VERSION_OFFSET             = 4;
+        static constexpr const size_t DEVICE_ID_OFFSET           = 8;
+        static constexpr const size_t VENDOR_ID_OFFSET           = 12;
+        static constexpr const size_t DEVICE_FEATURES_OFFSET     = 16;
+        static constexpr const size_t DEVICE_FEATURES_SEL_OFFSET = 20;
+        static constexpr const size_t _RESERVED0_OFFSET          = 24;
+        static constexpr const size_t DRIVER_FEATURES_OFFSET     = 32;
+        static constexpr const size_t DRIVER_FEATURES_SEL_OFFSET = 36;
+        static constexpr const size_t _RESERVED1_OFFSET          = 40;
+        static constexpr const size_t QUEUE_SEL_OFFSET           = 48;
+        static constexpr const size_t QUEUE_NUM_MAX_OFFSET       = 52;
+        static constexpr const size_t QUEUE_NUM_OFFSET           = 56;
+        static constexpr const size_t _RESERVED2_OFFSET          = 60;
+        static constexpr const size_t QUEUE_READY_OFFSET         = 68;
+        static constexpr const size_t _RESERVED3_OFFSET          = 72;
+        static constexpr const size_t QUEUE_NOTIFY_OFFSET        = 80;
+        static constexpr const size_t _RESERVED4_OFFSET          = 84;
+        static constexpr const size_t INTERRUPT_STATUS_OFFSET    = 96;
+        static constexpr const size_t INTERRUPT_ACK_OFFSET       = 100;
+        static constexpr const size_t _RESERVED5_OFFSET          = 104;
+        static constexpr const size_t STATUS_OFFSET              = 112;
+        static constexpr const size_t _RESERVED6_OFFSET          = 116;
+        static constexpr const size_t QUEUE_DESC_LOW_OFFSET      = 128;
+        static constexpr const size_t QUEUE_DESC_HIGH_OFFSET     = 132;
+        static constexpr const size_t _RESERVED7_OFFSET          = 136;
+        static constexpr const size_t QUEUE_DRIVER_LOW_OFFSET    = 144;
+        static constexpr const size_t QUEUE_DRIVER_HIGH_OFFSET   = 148;
+        static constexpr const size_t _RESERVED8_OFFSET          = 152;
+        static constexpr const size_t QUEUE_DEVICE_LOW_OFFSET    = 160;
+        static constexpr const size_t QUEUE_DEVICE_HIGH_OFFSET   = 164;
+        static constexpr const size_t _RESERVED9_OFFSET          = 168;
+        static constexpr const size_t CONFIG_GENERATION_OFFSET   = 252;
+        static constexpr const size_t CONFIG_OFFSET              = 256;
+
         /// a Little Endian equivalent of the “virt” string: 0x74726976
-        uint32_t magic;
+        uint32_t*                     magic;
         /// Device version number
         // 0x2, Legacy devices(see 4.2.4 Legacy interface) used 0x1.
-        uint32_t version;
+        uint32_t*                     version;
         /// Virtio Subsystem Device ID
-        uint32_t device_id;
+        uint32_t*                     device_id;
         /// Virtio Subsystem Vendor ID
-        uint32_t Vendor_id;
+        uint32_t*                     Vendor_id;
         /// Flags representing features the device supports
-        uint32_t device_features;
+        uint32_t*                     device_features;
         /// Device (host) features word selection.
-        uint32_t device_features_sel;
-        uint32_t _reserved0[2];
+        uint32_t*                     device_features_sel;
+        uint32_t*                     _reserved0;
         /// Flags representing device features understood and activated by
-        /// thedriver
-        uint32_t driver_features;
+        /// the driver
+        uint32_t*                     driver_features;
         /// Activated (guest) features word selection
-        uint32_t driver_features_sel;
-        uint32_t _reserved1[2];
+        uint32_t*                     driver_features_sel;
+        uint32_t*                     _reserved1;
         /// Virtual queue index
-        uint32_t queue_sel;
+        uint32_t*                     queue_sel;
         /// Maximum virtual queue size
-        uint32_t queue_num_max;
+        uint32_t*                     queue_num_max;
         /// Virtual queue size
-        uint32_t queue_num;
-        uint32_t _reserved2[2];
+        uint32_t*                     queue_num;
+        uint32_t*                     _reserved2;
         /// Virtual queue ready bit
-        uint32_t queue_ready;
-        uint32_t _reserved3[2];
+        uint32_t*                     queue_ready;
+        uint32_t*                     _reserved3;
         /// Queue notifier
-        uint32_t queue_notify;
-        uint32_t _reserved4[3];
+        uint32_t*                     queue_notify;
+        uint32_t*                     _reserved4;
         /// Interrupt status
-        uint32_t interrupt_status;
+        uint32_t*                     interrupt_status;
         /// Interrupt acknowledge
-        uint32_t interrupt_ack;
-        uint32_t _reserved5[2];
+        uint32_t*                     interrupt_ack;
+        uint32_t*                     _reserved5;
         /// Device status
-        uint32_t status;
-        uint32_t _reserved6[3];
+        uint32_t*                     status;
+        uint32_t*                     _reserved6;
         /// Virtual queue’s Descriptor Area 64 bit long physical address
-        uint32_t queue_desc_low;
-        uint32_t queue_desc_high;
-        uint32_t _reserved7[2];
+        uint32_t*                     queue_desc_low;
+        uint32_t*                     queue_desc_high;
+        uint32_t*                     _reserved7;
         /// Virtual queue’s Driver Area 64 bit long physical address
-        uint32_t queue_driver_low;
-        uint32_t queue_driver_high;
-        uint32_t _reserved8[2];
+        uint32_t*                     queue_driver_low;
+        uint32_t*                     queue_driver_high;
+        uint32_t*                     _reserved8;
         /// Virtual queue’s Device Area 64 bit long physical address
-        uint32_t queue_device_low;
-        uint32_t queue_device_high;
-        uint32_t _reserved9[21];
+        uint32_t*                     queue_device_low;
+        uint32_t*                     queue_device_high;
+        uint32_t*                     _reserved9;
         /// Configuration atomicity value
-        uint32_t config_generation;
+        uint32_t*                     config_generation;
         /// Configuration space
-        uint32_t config[0];
+        uint32_t*                     config;
+
+        virtio_regs_t(void) = default;
+
+        virtio_regs_t(uintptr_t _base_addr) {
+            magic           = (uint32_t*)(_base_addr + MAGIC_OFFSET);
+            version         = (uint32_t*)(_base_addr + VERSION_OFFSET);
+            device_id       = (uint32_t*)(_base_addr + DEVICE_ID_OFFSET);
+            Vendor_id       = (uint32_t*)(_base_addr + VENDOR_ID_OFFSET);
+            device_features = (uint32_t*)(_base_addr + DEVICE_FEATURES_OFFSET);
+            device_features_sel
+              = (uint32_t*)(_base_addr + DEVICE_FEATURES_SEL_OFFSET);
+            _reserved0      = (uint32_t*)(_base_addr + _RESERVED0_OFFSET);
+            driver_features = (uint32_t*)(_base_addr + DRIVER_FEATURES_OFFSET);
+            driver_features_sel
+              = (uint32_t*)(_base_addr + DRIVER_FEATURES_SEL_OFFSET);
+            _reserved1    = (uint32_t*)(_base_addr + _RESERVED1_OFFSET);
+            queue_sel     = (uint32_t*)(_base_addr + QUEUE_SEL_OFFSET);
+            queue_num_max = (uint32_t*)(_base_addr + QUEUE_NUM_MAX_OFFSET);
+            queue_num     = (uint32_t*)(_base_addr + QUEUE_NUM_OFFSET);
+            _reserved2    = (uint32_t*)(_base_addr + _RESERVED2_OFFSET);
+            queue_ready   = (uint32_t*)(_base_addr + QUEUE_READY_OFFSET);
+            _reserved3    = (uint32_t*)(_base_addr + _RESERVED3_OFFSET);
+            queue_notify  = (uint32_t*)(_base_addr + QUEUE_NOTIFY_OFFSET);
+            _reserved4    = (uint32_t*)(_base_addr + _RESERVED4_OFFSET);
+            interrupt_status
+              = (uint32_t*)(_base_addr + INTERRUPT_STATUS_OFFSET);
+            interrupt_ack   = (uint32_t*)(_base_addr + INTERRUPT_ACK_OFFSET);
+            _reserved5      = (uint32_t*)(_base_addr + _RESERVED5_OFFSET);
+            status          = (uint32_t*)(_base_addr + STATUS_OFFSET);
+            _reserved6      = (uint32_t*)(_base_addr + _RESERVED6_OFFSET);
+            queue_desc_low  = (uint32_t*)(_base_addr + QUEUE_DESC_LOW_OFFSET);
+            queue_desc_high = (uint32_t*)(_base_addr + QUEUE_DESC_HIGH_OFFSET);
+            _reserved7      = (uint32_t*)(_base_addr + _RESERVED7_OFFSET);
+            queue_driver_low
+              = (uint32_t*)(_base_addr + QUEUE_DRIVER_LOW_OFFSET);
+            queue_driver_high
+              = (uint32_t*)(_base_addr + QUEUE_DRIVER_HIGH_OFFSET);
+            _reserved8 = (uint32_t*)(_base_addr + _RESERVED8_OFFSET);
+            queue_device_low
+              = (uint32_t*)(_base_addr + QUEUE_DEVICE_LOW_OFFSET);
+            queue_device_high
+              = (uint32_t*)(_base_addr + QUEUE_DEVICE_HIGH_OFFSET);
+            _reserved9 = (uint32_t*)(_base_addr + _RESERVED9_OFFSET);
+            config_generation
+              = (uint32_t*)(_base_addr + CONFIG_GENERATION_OFFSET);
+            config = (uint32_t*)(_base_addr + CONFIG_OFFSET);
+        }
+
+        ~virtio_regs_t(void) = default;
     } __attribute__((packed));
 
     /**
@@ -222,6 +376,9 @@ private:
         {       "VIRTIO_F_RING_PACKED",        VIRTIO_F_RING_PACKED, false},
     };
 
+    /// 设备属性
+    mystl::vector<feature_t>        features;
+
     /**
      * @brief 块设备 feature bits
      * @see virtio-v1.1#5.2.3
@@ -248,9 +405,9 @@ private:
     /// max_discard_sectors and maximum discard segment number in
     /// max_discard_seg.
     static constexpr const uint32_t BLK_F_DISCARD      = 13;
-    /// Devicecansupportwritezeroescommand,maximumwritezeroes sectors size in
-    /// max_write_zeroes_sectors and maximum write zeroes segment number in
-    /// max_write_- zeroes_seg.
+    /// Device can support write zeroes command,maximum write zeroes sectors
+    /// size in max_write_zeroes_sectors and maximum write zeroes segment number
+    /// in max_write_- zeroes_seg.
     static constexpr const uint32_t BLK_F_WRITE_ZEROES = 14;
 
     feature_t                       blk_features[8]    = {
@@ -301,10 +458,69 @@ private:
         uint32_t max_write_zeroes_seg;
         uint8_t  write_zeroes_may_unmap;
         uint8_t  unused1[3];
+
+        friend std::ostream&
+        operator<<(std::ostream& _os, virtio_blk_config_t* _virtio_blk_config) {
+            printf("capacity: 0x%X\n",
+                   IO::get_instance().read64(&_virtio_blk_config->capacity));
+            printf("size_max: 0x%X\n",
+                   IO::get_instance().read32(&_virtio_blk_config->size_max));
+            printf("seg_max: 0x%X\n",
+                   IO::get_instance().read32(&_virtio_blk_config->seg_max));
+            printf("cylinders: 0x%X\n",
+                   IO::get_instance().read16(
+                     &_virtio_blk_config->geometry.cylinders));
+            printf("heads: 0x%X\n", IO::get_instance().read8(
+                                      &_virtio_blk_config->geometry.heads));
+            printf("sectors: 0x%X\n", IO::get_instance().read8(
+                                        &_virtio_blk_config->geometry.sectors));
+            printf("blk_size: 0x%X\n",
+                   IO::get_instance().read32(&_virtio_blk_config->blk_size));
+            printf("physical_block_exp: 0x%X\n",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->topology.physical_block_exp));
+            printf("alignment_offset: 0x%X\n",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->topology.alignment_offset));
+            printf("min_io_size: 0x%X\n",
+                   IO::get_instance().read16(
+                     &_virtio_blk_config->topology.min_io_size));
+            printf("opt_io_size: 0x%X\n",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->topology.opt_io_size));
+            printf("writeback: 0x%X\n",
+                   IO::get_instance().read8(&_virtio_blk_config->writeback));
+            printf("max_discard_sectors: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->max_discard_sectors));
+            printf(
+              "max_discard_seg: 0x%X\n",
+              IO::get_instance().read32(&_virtio_blk_config->max_discard_seg));
+            printf("discard_sector_alignment: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->discard_sector_alignment));
+            printf("max_write_zeroes_sectors: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->max_write_zeroes_sectors));
+            printf("max_write_zeroes_seg: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->max_write_zeroes_seg));
+            printf("write_zeroes_may_unmap: 0x%X",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->write_zeroes_may_unmap));
+            return _os;
+        }
     } __attribute__((packed));
 
     /// 块设备配置信息指针
-    virtio_blk_config_t* config;
+    virtio_blk_config_t* blk_config;
+
+    /**
+     * @brief blk mmio 读写
+     * @param  _req             请求结构.
+     * @return size_t           返回 0
+     */
+    size_t               blk_rw(virtio_blk_req_t& _req);
 
     /**
      * @brief 设置设备 features
@@ -323,43 +539,11 @@ protected:
 public:
     static constexpr const char* NAME = "virtio,mmio";
 
-    /**
-     * @brief 块设备请求结构
-     * @see virtio-v1.1#5.2.6
-     */
-    struct virtio_blk_req_t {
-        /// 请求类型
-        /// 读取
-        static constexpr const uint32_t IN           = 0;
-        /// 写入
-        static constexpr const uint32_t OUT          = 1;
-        /// 刷新
-        static constexpr const uint32_t FLUSH        = 4;
-        static constexpr const uint32_t DISCARD      = 11;
-        static constexpr const uint32_t WRITE_ZEROES = 13;
-        uint32_t                        type;
-        uint32_t                        reserved;
-        uint64_t                        sector;
-        uint8_t*                        data;
-        /// 设备返回状态 成功
-        static constexpr const uint32_t OK     = 0;
-        /// 设备返回状态 设备或驱动出错
-        static constexpr const uint32_t IOERR  = 1;
-        /// 设备返回状态 不支持的请求
-        static constexpr const uint32_t UNSUPP = 2;
-        uint8_t                         status;
-        /// type + reserved + sector 的大小
-        static constexpr const size_t   HEADER_SIZE = 16;
-        /// 扇区大小
-        static constexpr const size_t   SECTOR_SIZE = 512;
-        /// status 大小
-        static constexpr const size_t   FOOTER_SIZE = 1;
-    } __attribute__((packed));
-
     /// virtio mmio 寄存器基地址
-    virtio_regs_t*    regs;
-    /// virtio queue，有些设备使用多个队列
-    split_virtqueue_t queue;
+    virtio_regs_t                regs;
+    /// virtio queue
+    /// @todo 有些设备使用多个队列
+    split_virtqueue_t            queue;
 
     /**
      * @brief 构造函数
@@ -378,13 +562,6 @@ public:
      * @brief 使用默认析构函数
      */
     ~virtio_mmio_drv_t(void) = default;
-
-    /**
-     * @brief mmio 读写
-     * @param  _req             请求结构.
-     * @return size_t           返回 0
-     */
-    size_t rw(virtio_blk_req_t& _req);
 
     /**
      * @brief mmio 中断处理
