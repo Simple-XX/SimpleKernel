@@ -17,11 +17,11 @@ if (SimpleKernelArch STREQUAL ia32/i386 OR SimpleKernelArch STREQUAL ia32/x86_64
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/multiboot2 multiboot2_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/keyboard keyboard_src)
     set(drv_src ${drv_cxx_src} ${platform_bus_src} ${tui_src} ${multiboot2_src} ${keyboard_src})
-# arm 驱动
+    # arm 驱动
 elseif (SimpleKernelArch STREQUAL arm)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uart uart_src)
     set(drv_src ${uart_src})
-# riscv64 驱动
+    # riscv64 驱动
 elseif (SimpleKernelArch STREQUAL riscv64)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ drv_cxx_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi opensbi_src)

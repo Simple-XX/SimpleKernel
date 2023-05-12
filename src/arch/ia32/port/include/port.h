@@ -17,7 +17,7 @@
 #ifndef SIMPLEKERNEL_PORT_H
 #define SIMPLEKERNEL_PORT_H
 
-#include "stdint.h"
+#include "cstdint"
 
 /**
  * @brief 端口读写封装
@@ -29,7 +29,7 @@ namespace PORT {
  * @return uint8_t         读取到的数据
  * @warning 不处理执行失败的问题
  */
-uint8_t inb(const uint32_t _port);
+uint8_t  inb(const uint32_t _port);
 
 /**
  * @brief  读一个字
@@ -53,7 +53,7 @@ uint32_t ind(const uint32_t _port);
  * @param  _data           要写的数据
  * @warning 不处理执行失败的问题
  */
-void outb(const uint32_t _port, const uint8_t _data);
+void     outb(const uint32_t _port, const uint8_t _data);
 
 /**
  * @brief  写一个字
@@ -61,7 +61,7 @@ void outb(const uint32_t _port, const uint8_t _data);
  * @param  _data           要写的数据
  * @warning 不处理执行失败的问题
  */
-void outw(const uint32_t _port, const uint16_t _data);
+void     outw(const uint32_t _port, const uint16_t _data);
 
 /**
  * @brief  写一个双字
@@ -69,7 +69,7 @@ void outw(const uint32_t _port, const uint16_t _data);
  * @param  _data           要写的数据
  * @warning 不处理执行失败的问题
  */
-void outd(const uint32_t _port, const uint32_t _data);
-}; // namespace PORT
+void     outd(const uint32_t _port, const uint32_t _data);
+};     // namespace PORT
 
 #endif /* SIMPLEKERNEL_PORT_H */

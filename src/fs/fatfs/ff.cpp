@@ -6958,7 +6958,6 @@ FRESULT f_findnext(DIR* dp, FILINFO* fno) {
     return res;
 }
 
-
 // Find First File
 FRESULT
 f_findfirst(DIR* dp, FILINFO* fno, const TCHAR* path, const TCHAR* pattern) {
