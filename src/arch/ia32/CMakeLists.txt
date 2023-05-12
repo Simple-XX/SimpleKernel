@@ -37,3 +37,4 @@ add_library(${PROJECT_NAME} OBJECT ${arch_src})
 # 添加头文件搜索路径
 target_include_arch_header_files(${PROJECT_NAME})
 target_include_libc_header_files(${PROJECT_NAME})
+target_include_libcxx_header_files(${PROJECT_NAME})

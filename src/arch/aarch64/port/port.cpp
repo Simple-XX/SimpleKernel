@@ -25,7 +25,7 @@ uint16_t PORT::inw(const uint32_t port __attribute((unused))) {
 }
 
 uint32_t PORT::ind(const uint32_t port) {
-    return *(uint32_t volatile*)port;
+    return *(volatile uint32_t*)port;
 }
 
 void PORT::outw(const uint32_t port __attribute((unused)),
@@ -39,6 +39,6 @@ void PORT::outb(const uint32_t port __attribute((unused)),
 }
 
 void PORT::outd(const uint32_t port, const uint32_t data) {
-    *(uint32_t volatile*)port = data;
+    *(volatile uint32_t*)port = data;
     return;
 }
