@@ -16,9 +16,9 @@
 
 #include "cassert"
 #include "common.h"
+#include "cstdio"
 #include "kernel.h"
 #include "pmm.h"
-#include "cstdio"
 
 int32_t test_pmm(void) {
     // 保存现有 pmm 空闲页数量

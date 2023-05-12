@@ -17,8 +17,8 @@
 #ifndef _CPU_HPP_
 #define _CPU_HPP_
 
-#include "stdbool.h"
 #include "cstdint"
+#include "stdbool.h"
 
 /**
  * @brief cpu 相关

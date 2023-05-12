@@ -288,7 +288,7 @@ PointerAlignment: Left
 # 修饰符对齐，由 QualifierOrder 指定
 QualifierAlignment: Custom
 # 修饰符顺序
-QualifierOrder: [ 'inline', 'static', 'const', 'type',  'volatile' ]
+QualifierOrder: [ 'inline', 'static', 'const',  'volatile','type' ]
 # 将字符串格式化，与 ProtocolBuffers 配合使用，未使用
 RawStringFormats:
   - Language: Cpp
