@@ -14,9 +14,9 @@
  * </table>
  */
 
-#include "intr.h"
-#include "cpu.hpp"
 #include "apic.h"
+#include "cpu.hpp"
+#include "intr.h"
 
 /// @todo
 
