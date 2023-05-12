@@ -234,6 +234,25 @@ inline static bool SET_PGD(uintptr_t _pgd) {
     return true;
 }
 
+/**
+ * @brief 获取页目录 CR3
+ * @return uintptr_t        CR3 值
+ */
+inline static uintptr_t GET_PGD(void) {
+    uintptr_t cr3;
+    __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
+    return cr3;
+}
+
+/**
+ * @brief 刷新页表缓存
+ * @param  _addr            要刷新的地址
+ */
+inline static void VMM_FLUSH(uintptr_t _addr) {
+    __asm__ volatile("invlpg (%0)" : : "r"(_addr) : "memory");
+    return;
+}
+
 };     // namespace CPU
 
 #endif /* SIMPLEKERNEL_CPU_HPP */
