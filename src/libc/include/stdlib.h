@@ -24,12 +24,12 @@ extern "C" {
 #include "stdint.h"
 
 int       abs(int);
-int       atoi(const char *);
-long      atol(const char *);
-long long atoll(const char *);
-int       itoa(int _num, char *_str, int _len, int _base);
-long      strtol(const char *_nptr, char **_endptr, int _base);
-long long strtoll(const char *_nptr, char **_endptr, int _base);
+int       atoi(const char*);
+long      atol(const char*);
+long long atoll(const char*);
+int       itoa(int _num, char* _str, int _len, int _base);
+long      strtol(const char* _nptr, char** _endptr, int _base);
+long long strtoll(const char* _nptr, char** _endptr, int _base);
 
 #ifdef __cplusplus
 }
