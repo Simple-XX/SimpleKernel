@@ -19,6 +19,7 @@
 
 #include "cstdint"
 #include "driver_base.h"
+#include "io.h"
 #include "resource.h"
 #include "string"
 #include "vector"
@@ -26,6 +27,7 @@
 
 /**
  * @brief virtio,mmio 驱动
+ * @todo 暂时只初始化 BLOCK_DEVICE 设备
  */
 class virtio_mmio_drv_t : public driver_base_t {
 public:
@@ -60,6 +62,37 @@ public:
         static constexpr const size_t   SECTOR_SIZE = 512;
         /// status 大小
         static constexpr const size_t   FOOTER_SIZE = 1;
+
+        friend std::ostream&
+        operator<<(std::ostream& _os, const virtio_blk_req_t& _virtio_blk_req) {
+            printf("type: %s, sector: 0x%X",
+                   _virtio_blk_req.type == IN ? "IN" : "OUT",
+                   _virtio_blk_req.sector);
+// #define DEBUG
+#ifdef DEBUG
+            printf(", data[");
+            for (size_t i = 0; i < SECTOR_SIZE; i++) {
+                printf("0x%X ", _virtio_blk_req.data[i]);
+            }
+            printf("]");
+#    undef DEBUG
+#endif
+            printf(", ");
+            if (_virtio_blk_req.status == OK) {
+                printf("status: OK");
+            }
+            else if (_virtio_blk_req.status == IOERR) {
+                printf("status: IOERR");
+            }
+            else if (_virtio_blk_req.status == UNSUPP) {
+                printf("status: UNSUPP");
+            }
+            else {
+                printf("status: UNKNOWN [0x%X]", _virtio_blk_req.status);
+            }
+
+            return _os;
+        }
     } __attribute__((packed));
 
 private:
@@ -79,7 +112,7 @@ private:
      * @brief virtio 设备类型
      * @see virtio-v1.1#5
      */
-    enum : uint8_t {
+    enum device_type_t : uint32_t {
         RESERVED = 0x00,
         NETWORK_CARD,
         BLOCK_DEVICE,
@@ -104,6 +137,9 @@ private:
         IOMMU_DEVICE,
         MEMORY_DEVICE,
     };
+
+    /// 设备类型
+    device_type_t                      device_type;
 
     /**
      * @brief virtio 设备类型名名称
@@ -174,7 +210,7 @@ private:
         uint32_t device_features_sel;
         uint32_t _reserved0[2];
         /// Flags representing device features understood and activated by
-        /// thedriver
+        /// the driver
         uint32_t driver_features;
         /// Activated (guest) features word selection
         uint32_t driver_features_sel;
@@ -338,6 +374,58 @@ private:
         uint32_t max_write_zeroes_seg;
         uint8_t  write_zeroes_may_unmap;
         uint8_t  unused1[3];
+
+        friend std::ostream&
+        operator<<(std::ostream& _os, virtio_blk_config_t* _virtio_blk_config) {
+            printf("capacity: 0x%X\n",
+                   IO::get_instance().read64(&_virtio_blk_config->capacity));
+            printf("size_max: 0x%X\n",
+                   IO::get_instance().read32(&_virtio_blk_config->size_max));
+            printf("seg_max: 0x%X\n",
+                   IO::get_instance().read32(&_virtio_blk_config->seg_max));
+            printf("cylinders: 0x%X\n",
+                   IO::get_instance().read16(
+                     &_virtio_blk_config->geometry.cylinders));
+            printf("heads: 0x%X\n", IO::get_instance().read8(
+                                      &_virtio_blk_config->geometry.heads));
+            printf("sectors: 0x%X\n", IO::get_instance().read8(
+                                        &_virtio_blk_config->geometry.sectors));
+            printf("blk_size: 0x%X\n",
+                   IO::get_instance().read32(&_virtio_blk_config->blk_size));
+            printf("physical_block_exp: 0x%X\n",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->topology.physical_block_exp));
+            printf("alignment_offset: 0x%X\n",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->topology.alignment_offset));
+            printf("min_io_size: 0x%X\n",
+                   IO::get_instance().read16(
+                     &_virtio_blk_config->topology.min_io_size));
+            printf("opt_io_size: 0x%X\n",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->topology.opt_io_size));
+            printf("writeback: 0x%X\n",
+                   IO::get_instance().read8(&_virtio_blk_config->writeback));
+            printf("max_discard_sectors: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->max_discard_sectors));
+            printf(
+              "max_discard_seg: 0x%X\n",
+              IO::get_instance().read32(&_virtio_blk_config->max_discard_seg));
+            printf("discard_sector_alignment: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->discard_sector_alignment));
+            printf("max_write_zeroes_sectors: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->max_write_zeroes_sectors));
+            printf("max_write_zeroes_seg: 0x%X\n",
+                   IO::get_instance().read32(
+                     &_virtio_blk_config->max_write_zeroes_seg));
+            printf("write_zeroes_may_unmap: 0x%X",
+                   IO::get_instance().read8(
+                     &_virtio_blk_config->write_zeroes_may_unmap));
+            return _os;
+        }
     } __attribute__((packed));
 
     /// 块设备配置信息指针
@@ -348,21 +436,19 @@ private:
      * @param  _req             请求结构.
      * @return size_t           返回 0
      */
-    size_t               rw(virtio_blk_req_t& _req);
+    size_t               blk_rw(virtio_blk_req_t& _req);
 
     /**
      * @brief 设置设备 features
      * @param  _features        要设置的 feature 向量
      */
-    void    set_features(const mystl::vector<feature_t>& _features);
+    void set_features(const mystl::vector<feature_t>& _features);
 
     /**
      * @brief 将队列设置传递到相应寄存器
      * @param  _queue_sel       第几个队列，从 0 开始
      */
-    void    add_to_device(uint32_t _queue_sel);
-
-    int32_t block_device_init(void);
+    void add_to_device(uint32_t _queue_sel);
 
 protected:
 
@@ -371,7 +457,8 @@ public:
 
     /// virtio mmio 寄存器基地址
     virtio_regs_t*               regs;
-    /// virtio queue，有些设备使用多个队列
+    /// virtio queue
+    /// @todo 有些设备使用多个队列
     split_virtqueue_t            queue;
 
     /**
