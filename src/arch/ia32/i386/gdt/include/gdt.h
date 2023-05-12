@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _GDT_H_
-#define _GDT_H_
+#ifndef SIMPLEKERNEL_GDT_H
+#define SIMPLEKERNEL_GDT_H
 
 #include "cpu.hpp"
 #include "cstdint"
@@ -294,4 +294,4 @@ void    set_gdt(int32_t _num, uint32_t _base, uint32_t _limit, uint8_t _access,
 int32_t init(void);
 };     // namespace GDT
 
-#endif /* _GDT_H_ */
+#endif /* SIMPLEKERNEL_GDT_H */
