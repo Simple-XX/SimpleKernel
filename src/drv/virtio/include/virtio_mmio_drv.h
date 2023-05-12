@@ -28,6 +28,40 @@
  * @brief virtio,mmio 驱动
  */
 class virtio_mmio_drv_t : public driver_base_t {
+public:
+    /**
+     * @brief 块设备请求结构
+     * @see virtio-v1.1#5.2.6
+     */
+    struct virtio_blk_req_t {
+        /// 请求类型
+        /// 读取
+        static constexpr const uint32_t IN           = 0;
+        /// 写入
+        static constexpr const uint32_t OUT          = 1;
+        /// 刷新
+        static constexpr const uint32_t FLUSH        = 4;
+        static constexpr const uint32_t DISCARD      = 11;
+        static constexpr const uint32_t WRITE_ZEROES = 13;
+        uint32_t                        type;
+        uint32_t                        reserved;
+        uint64_t                        sector;
+        uint8_t*                        data;
+        /// 设备返回状态 成功
+        static constexpr const uint32_t OK     = 0;
+        /// 设备返回状态 设备或驱动出错
+        static constexpr const uint32_t IOERR  = 1;
+        /// 设备返回状态 不支持的请求
+        static constexpr const uint32_t UNSUPP = 2;
+        uint8_t                         status;
+        /// type + reserved + sector 的大小
+        static constexpr const size_t   HEADER_SIZE = 16;
+        /// 扇区大小
+        static constexpr const size_t   SECTOR_SIZE = 512;
+        /// status 大小
+        static constexpr const size_t   FOOTER_SIZE = 1;
+    } __attribute__((packed));
+
 private:
     /**
      * @brief 魔数
@@ -222,6 +256,9 @@ private:
         {       "VIRTIO_F_RING_PACKED",        VIRTIO_F_RING_PACKED, false},
     };
 
+    /// 设备属性
+    mystl::vector<feature_t>        features;
+
     /**
      * @brief 块设备 feature bits
      * @see virtio-v1.1#5.2.3
@@ -248,9 +285,9 @@ private:
     /// max_discard_sectors and maximum discard segment number in
     /// max_discard_seg.
     static constexpr const uint32_t BLK_F_DISCARD      = 13;
-    /// Devicecansupportwritezeroescommand,maximumwritezeroes sectors size in
-    /// max_write_zeroes_sectors and maximum write zeroes segment number in
-    /// max_write_- zeroes_seg.
+    /// Device can support write zeroes command,maximum write zeroes sectors
+    /// size in max_write_zeroes_sectors and maximum write zeroes segment number
+    /// in max_write_- zeroes_seg.
     static constexpr const uint32_t BLK_F_WRITE_ZEROES = 14;
 
     feature_t                       blk_features[8]    = {
@@ -304,62 +341,38 @@ private:
     } __attribute__((packed));
 
     /// 块设备配置信息指针
-    virtio_blk_config_t* config;
+    virtio_blk_config_t* blk_config;
+
+    /**
+     * @brief blk mmio 读写
+     * @param  _req             请求结构.
+     * @return size_t           返回 0
+     */
+    size_t               rw(virtio_blk_req_t& _req);
 
     /**
      * @brief 设置设备 features
      * @param  _features        要设置的 feature 向量
      */
-    void set_features(const mystl::vector<feature_t>& _features);
+    void    set_features(const mystl::vector<feature_t>& _features);
 
     /**
      * @brief 将队列设置传递到相应寄存器
      * @param  _queue_sel       第几个队列，从 0 开始
      */
-    void add_to_device(uint32_t _queue_sel);
+    void    add_to_device(uint32_t _queue_sel);
+
+    int32_t block_device_init(void);
 
 protected:
 
 public:
     static constexpr const char* NAME = "virtio,mmio";
 
-    /**
-     * @brief 块设备请求结构
-     * @see virtio-v1.1#5.2.6
-     */
-    struct virtio_blk_req_t {
-        /// 请求类型
-        /// 读取
-        static constexpr const uint32_t IN           = 0;
-        /// 写入
-        static constexpr const uint32_t OUT          = 1;
-        /// 刷新
-        static constexpr const uint32_t FLUSH        = 4;
-        static constexpr const uint32_t DISCARD      = 11;
-        static constexpr const uint32_t WRITE_ZEROES = 13;
-        uint32_t                        type;
-        uint32_t                        reserved;
-        uint64_t                        sector;
-        uint8_t*                        data;
-        /// 设备返回状态 成功
-        static constexpr const uint32_t OK     = 0;
-        /// 设备返回状态 设备或驱动出错
-        static constexpr const uint32_t IOERR  = 1;
-        /// 设备返回状态 不支持的请求
-        static constexpr const uint32_t UNSUPP = 2;
-        uint8_t                         status;
-        /// type + reserved + sector 的大小
-        static constexpr const size_t   HEADER_SIZE = 16;
-        /// 扇区大小
-        static constexpr const size_t   SECTOR_SIZE = 512;
-        /// status 大小
-        static constexpr const size_t   FOOTER_SIZE = 1;
-    } __attribute__((packed));
-
     /// virtio mmio 寄存器基地址
-    virtio_regs_t*    regs;
+    virtio_regs_t*               regs;
     /// virtio queue，有些设备使用多个队列
-    split_virtqueue_t queue;
+    split_virtqueue_t            queue;
 
     /**
      * @brief 构造函数
@@ -378,13 +391,6 @@ public:
      * @brief 使用默认析构函数
      */
     ~virtio_mmio_drv_t(void) = default;
-
-    /**
-     * @brief mmio 读写
-     * @param  _req             请求结构.
-     * @return size_t           返回 0
-     */
-    size_t rw(virtio_blk_req_t& _req);
 
     /**
      * @brief mmio 中断处理

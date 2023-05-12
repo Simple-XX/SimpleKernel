@@ -151,14 +151,13 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     // 跳转到 virtio_blk.cpp 的构造函数
     // virtio-v1.1#3.1.1
     // 设置属性
-    mystl::vector<feature_t> feat;
     for (auto i : base_features) {
-        feat.push_back(i);
+        features.push_back(i);
     }
     for (auto i : blk_features) {
-        feat.push_back(i);
+        features.push_back(i);
     }
-    set_features(feat);
+    set_features(features);
     // 属性设置完成
     // 置位 FEATURES_OK
     IO::get_instance().write32(&regs->status,
@@ -172,7 +171,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
         return;
     }
     // 更新设备信息指针
-    config = (virtio_blk_config_t*)&regs->config;
+    blk_config = (virtio_blk_config_t*)&regs->config;
     // 设置队列
     /// @todo 多队列支持
     add_to_device(0);
@@ -184,40 +183,45 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     do {
         i = IO::get_instance().read32(&regs->config_generation);
         printf("capacity: 0x%X\n",
-               IO::get_instance().read64(&config->capacity));
+               IO::get_instance().read64(&blk_config->capacity));
         printf("size_max: 0x%X\n",
-               IO::get_instance().read32(&config->size_max));
-        printf("seg_max: 0x%X\n", IO::get_instance().read32(&config->seg_max));
+               IO::get_instance().read32(&blk_config->size_max));
+        printf("seg_max: 0x%X\n",
+               IO::get_instance().read32(&blk_config->seg_max));
         printf("cylinders: 0x%X\n",
-               IO::get_instance().read16(&config->geometry.cylinders));
+               IO::get_instance().read16(&blk_config->geometry.cylinders));
         printf("heads: 0x%X\n",
-               IO::get_instance().read8(&config->geometry.heads));
+               IO::get_instance().read8(&blk_config->geometry.heads));
         printf("sectors: 0x%X\n",
-               IO::get_instance().read8(&config->geometry.sectors));
+               IO::get_instance().read8(&blk_config->geometry.sectors));
         printf("blk_size: 0x%X\n",
-               IO::get_instance().read32(&config->blk_size));
-        printf("physical_block_exp: 0x%X\n",
-               IO::get_instance().read8(&config->topology.physical_block_exp));
-        printf("alignment_offset: 0x%X\n",
-               IO::get_instance().read8(&config->topology.alignment_offset));
+               IO::get_instance().read32(&blk_config->blk_size));
+        printf(
+          "physical_block_exp: 0x%X\n",
+          IO::get_instance().read8(&blk_config->topology.physical_block_exp));
+        printf(
+          "alignment_offset: 0x%X\n",
+          IO::get_instance().read8(&blk_config->topology.alignment_offset));
         printf("min_io_size: 0x%X\n",
-               IO::get_instance().read16(&config->topology.min_io_size));
+               IO::get_instance().read16(&blk_config->topology.min_io_size));
         printf("opt_io_size: 0x%X\n",
-               IO::get_instance().read8(&config->topology.opt_io_size));
+               IO::get_instance().read8(&blk_config->topology.opt_io_size));
         printf("writeback: 0x%X\n",
-               IO::get_instance().read8(&config->writeback));
+               IO::get_instance().read8(&blk_config->writeback));
         printf("max_discard_sectors: 0x%X\n",
-               IO::get_instance().read32(&config->max_discard_sectors));
+               IO::get_instance().read32(&blk_config->max_discard_sectors));
         printf("max_discard_seg: 0x%X\n",
-               IO::get_instance().read32(&config->max_discard_seg));
-        printf("discard_sector_alignment: 0x%X\n",
-               IO::get_instance().read32(&config->discard_sector_alignment));
-        printf("max_write_zeroes_sectors: 0x%X\n",
-               IO::get_instance().read32(&config->max_write_zeroes_sectors));
+               IO::get_instance().read32(&blk_config->max_discard_seg));
+        printf(
+          "discard_sector_alignment: 0x%X\n",
+          IO::get_instance().read32(&blk_config->discard_sector_alignment));
+        printf(
+          "max_write_zeroes_sectors: 0x%X\n",
+          IO::get_instance().read32(&blk_config->max_write_zeroes_sectors));
         printf("max_write_zeroes_seg: 0x%X\n",
-               IO::get_instance().read32(&config->max_write_zeroes_seg));
+               IO::get_instance().read32(&blk_config->max_write_zeroes_seg));
         printf("write_zeroes_may_unmap: 0x%X\n",
-               IO::get_instance().read8(&config->write_zeroes_may_unmap));
+               IO::get_instance().read8(&blk_config->write_zeroes_may_unmap));
         j = IO::get_instance().read32(&regs->config_generation);
     } while (i != j);
 #    undef DEBUG
