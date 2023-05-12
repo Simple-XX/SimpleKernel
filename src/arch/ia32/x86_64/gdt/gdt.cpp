@@ -14,12 +14,13 @@
  * </table>
  */
 
-#include "stdio.h"
 #include "gdt.h"
+#include "cstdint"
+#include "cstdio"
 
 namespace GDT {
 // 加载 GDTR
-extern "C" void gdt_load(uint32_t);
+extern "C" void    gdt_load(uint32_t);
 // 全局 gdt 指针
 static gdt_ptr64_t gdt_ptr64;
 // 全局描述符表定义
@@ -68,4 +69,4 @@ int32_t init(void) {
     info("gdt init.\n");
     return 0;
 }
-}; // namespace GDT
+};    // namespace GDT
