@@ -17,8 +17,8 @@
 #ifndef SIMPLEKERNEL_SBI_CONSOLE_H
 #define SIMPLEKERNEL_SBI_CONSOLE_H
 
-#include "stdint.h"
 #include "color.h"
+#include "stdint.h"
 
 class SBI_CONSOLE {
 private:
@@ -26,6 +26,7 @@ private:
     static COLOR::color_t color;
 
 protected:
+
 public:
     SBI_CONSOLE(void);
     ~SBI_CONSOLE(void);
@@ -34,34 +35,34 @@ public:
      * @brief 写字符
      * @param  _c              要写的字符
      */
-    void put_char(const char _c) const;
+    void           put_char(const char _c) const;
 
     /**
      * @brief 写字符串
      * @param  _s              要写的字符串
      */
-    void write_string(const char *_s) const;
+    void           write_string(const char* _s) const;
 
     /**
      * @brief 写指定长度的字符串
      * @param  _s              要写的字符串
      * @param  _len            要写的长度
      */
-    void write(const char *_s, size_t _len) const;
+    void           write(const char* _s, size_t _len) const;
 
     /**
      * @brief 读一个字符
      * @return uint8_t         读取到的字符
      * @todo
      */
-    uint8_t get_char(void) const;
+    uint8_t        get_char(void) const;
 
     /**
      * @brief 设置颜色
      * @param  _color          要设置的颜色
      * @todo
      */
-    void set_color(const COLOR::color_t _color) const;
+    void           set_color(const COLOR::color_t _color) const;
 
     /**
      * @brief 获取正在使用的颜色

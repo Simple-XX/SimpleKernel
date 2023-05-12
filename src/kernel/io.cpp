@@ -14,16 +14,16 @@
  * </table>
  */
 
-#include "stddef.h"
 #include "stdarg.h"
+#include "stddef.h"
 #include "string.h"
 #ifndef __riscv
-#include "port.h"
+#    include "port.h"
 #endif
 #include "io.h"
 #include "stdio.h"
 
-IO &IO::get_instance(void) {
+IO& IO::get_instance(void) {
     /// 定义全局 IO 对象
     static IO io;
     return io;
@@ -60,39 +60,39 @@ void IO::outd(const uint32_t port, const uint32_t data) {
 #endif
 
 // MMIO 实现
-uint8_t IO::read8(void *_addr) {
-    return *(uint8_t *)_addr;
+uint8_t IO::read8(void* _addr) {
+    return *(uint8_t*)_addr;
 }
 
-void IO::write8(void *_addr, uint8_t _val) {
-    *(uint8_t *)_addr = _val;
+void IO::write8(void* _addr, uint8_t _val) {
+    *(uint8_t*)_addr = _val;
     return;
 }
 
-uint16_t IO::read16(void *_addr) {
-    return *(uint16_t *)_addr;
+uint16_t IO::read16(void* _addr) {
+    return *(uint16_t*)_addr;
 }
 
-void IO::write16(void *_addr, uint16_t _val) {
-    *(uint16_t *)_addr = _val;
+void IO::write16(void* _addr, uint16_t _val) {
+    *(uint16_t*)_addr = _val;
     return;
 }
 
-uint32_t IO::read32(void *_addr) {
-    return *(uint32_t *)_addr;
+uint32_t IO::read32(void* _addr) {
+    return *(uint32_t*)_addr;
 }
 
-void IO::write32(void *_addr, uint32_t _val) {
-    *(uint32_t *)_addr = _val;
+void IO::write32(void* _addr, uint32_t _val) {
+    *(uint32_t*)_addr = _val;
     return;
 }
 
-uint64_t IO::read64(void *_addr) {
-    return *(uint64_t *)_addr;
+uint64_t IO::read64(void* _addr) {
+    return *(uint64_t*)_addr;
 }
 
-void IO::write64(void *_addr, uint64_t _val) {
-    *(uint64_t *)_addr = _val;
+void IO::write64(void* _addr, uint64_t _val) {
+    *(uint64_t*)_addr = _val;
     return;
 }
 
@@ -117,20 +117,20 @@ char IO::get_char(void) {
     return io.get_char();
 }
 
-int32_t IO::write_string(const char *s) {
+int32_t IO::write_string(const char* s) {
     io.write_string(s);
     return 0;
 }
 
 /// 输出缓冲区
-char buf[IO::BUF_SIZE];
+char               buf[IO::BUF_SIZE];
 
 /**
  * @brief printf 定义
  * @param  _fmt           格式化字符串
  * @return int32_t        输出的长度
  */
-extern "C" int32_t printf(const char *_fmt, ...) {
+extern "C" int32_t printf(const char* _fmt, ...) {
     va_list va;
     va_start(va, _fmt);
     // 交给 src/libc/src/stdio/vsprintf.c 中的 _vsnprintf
@@ -147,7 +147,7 @@ extern "C" int32_t printf(const char *_fmt, ...) {
 /**
  * @brief 与 printf 类似，只是颜色不同
  */
-extern "C" int32_t info(const char *_fmt, ...) {
+extern "C" int32_t info(const char* _fmt, ...) {
     COLOR::color_t curr_color = IO::get_instance().get_color();
     IO::get_instance().set_color(COLOR::CYAN);
     va_list va;
@@ -164,7 +164,7 @@ extern "C" int32_t info(const char *_fmt, ...) {
 /**
  * @brief 与 printf 类似，只是颜色不同
  */
-extern "C" int32_t warn(const char *_fmt, ...) {
+extern "C" int32_t warn(const char* _fmt, ...) {
     COLOR::color_t curr_color = IO::get_instance().get_color();
     IO::get_instance().set_color(COLOR::YELLOW);
     va_list va;
@@ -181,7 +181,7 @@ extern "C" int32_t warn(const char *_fmt, ...) {
 /**
  * @brief 与 printf 类似，只是颜色不同
  */
-extern "C" int32_t err(const char *_fmt, ...) {
+extern "C" int32_t err(const char* _fmt, ...) {
     COLOR::color_t curr_color = IO::get_instance().get_color();
     IO::get_instance().set_color(COLOR::LIGHT_RED);
     va_list va;

@@ -17,10 +17,10 @@
 #ifndef SIMPLEKERNEL_UART_H
 #define SIMPLEKERNEL_UART_H
 
-#include "stddef.h"
-#include "stdint.h"
 #include "color.h"
 #include "hardware.h"
+#include "stddef.h"
+#include "stdint.h"
 
 class UART {
 private:
@@ -48,18 +48,19 @@ private:
     void                            delay(int32_t count) const;
 
 protected:
+
 public:
     UART(void);
     ~UART(void);
-    void put_char(const char _c) const;
+    void           put_char(const char _c) const;
     // 写字符串
-    void write_string(const char *_s) const;
+    void           write_string(const char* _s) const;
     // 写字符串
-    void write(const char *_s, size_t _len) const;
+    void           write(const char* _s, size_t _len) const;
     // 读字符 TODO
-    uint8_t get_char(void) const;
+    uint8_t        get_char(void) const;
     // 设置颜色 TODO
-    void set_color(const COLOR::color_t _color) const;
+    void           set_color(const COLOR::color_t _color) const;
     // 获取颜色 TODO
     COLOR::color_t get_color(void) const;
 };
