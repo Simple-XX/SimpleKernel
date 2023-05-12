@@ -21,7 +21,7 @@ extern "C" {
 
 #include "math.h"
 
-long long divmoddi4(long long _num, long long _den, long long *_rem_p) {
+long long divmoddi4(long long _num, long long _den, long long* _rem_p) {
     int       minus = 0;
     long long v;
 
@@ -30,11 +30,11 @@ long long divmoddi4(long long _num, long long _den, long long *_rem_p) {
         minus = 1;
     }
     if (_den < 0) {
-        _den = -_den;
+        _den   = -_den;
         minus ^= 1;
     }
 
-    v = udivmoddi4(_num, _den, (unsigned long long *)_rem_p);
+    v = udivmoddi4(_num, _den, (unsigned long long*)_rem_p);
     if (minus) {
         v = -v;
         if (_rem_p) {
@@ -47,7 +47,7 @@ long long divmoddi4(long long _num, long long _den, long long *_rem_p) {
 
 // BUG: 在 x86_64 下观察到了精度损失
 unsigned long long udivmoddi4(unsigned long long _num, unsigned long long _den,
-                              unsigned long long *_rem_p) {
+                              unsigned long long* _rem_p) {
     unsigned long long quot = 0, qbit = 1;
 
     if (_den == 0) {
