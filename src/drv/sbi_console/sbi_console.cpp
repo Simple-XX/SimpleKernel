@@ -14,11 +14,9 @@
  * </table>
  */
 
-#include "stddef.h"
-#include "string.h"
-#include "stdlib.h"
-#include "opensbi.h"
 #include "sbi_console.h"
+#include "cstring"
+#include "opensbi.h"
 
 // 默认颜色为白色
 COLOR::color_t SBI_CONSOLE::color = COLOR::WHITE;
@@ -39,12 +37,12 @@ void SBI_CONSOLE::put_char(const char _c) const {
     return;
 }
 
-void SBI_CONSOLE::write_string(const char *_s) const {
+void SBI_CONSOLE::write_string(const char* _s) const {
     write(_s, strlen(_s));
     return;
 }
 
-void SBI_CONSOLE::write(const char *_s, size_t _len) const {
+void SBI_CONSOLE::write(const char* _s, size_t _len) const {
     for (size_t i = 0; i < _len; i++) {
         put_char(_s[i]);
     }
@@ -57,70 +55,70 @@ uint8_t SBI_CONSOLE::get_char(void) const {
 
 void SBI_CONSOLE::set_color(const COLOR::color_t _color) const {
     // 根据 _color 构造字符串
-    char *tmp = nullptr;
+    char* tmp = nullptr;
     switch (_color) {
         case COLOR::BLACK: {
-            tmp = (char *)"\033[30m";
+            tmp = (char*)"\033[30m";
             break;
         }
         case COLOR::RED: {
-            tmp = (char *)"\033[31m";
+            tmp = (char*)"\033[31m";
             break;
         }
         case COLOR::GREEN: {
-            tmp = (char *)"\033[32m";
+            tmp = (char*)"\033[32m";
             break;
         }
         case COLOR::YELLOW: {
-            tmp = (char *)"\033[33m";
+            tmp = (char*)"\033[33m";
             break;
         }
         case COLOR::BLUE: {
-            tmp = (char *)"\033[34m";
+            tmp = (char*)"\033[34m";
             break;
         }
         case COLOR::PURPLE: {
-            tmp = (char *)"\033[35m";
+            tmp = (char*)"\033[35m";
             break;
         }
         case COLOR::CYAN: {
-            tmp = (char *)"\033[36m";
+            tmp = (char*)"\033[36m";
             break;
         }
         case COLOR::WHITE: {
-            tmp = (char *)"\033[37m";
+            tmp = (char*)"\033[37m";
             break;
         }
         case COLOR::GREY: {
-            tmp = (char *)"\033[90m";
+            tmp = (char*)"\033[90m";
             break;
         }
         case COLOR::LIGHT_RED: {
-            tmp = (char *)"\033[91m";
+            tmp = (char*)"\033[91m";
             break;
         }
         case COLOR::LIGHT_GREEN: {
-            tmp = (char *)"\033[92m";
+            tmp = (char*)"\033[92m";
             break;
         }
         case COLOR::LIGHT_YELLOW: {
-            tmp = (char *)"\033[93m";
+            tmp = (char*)"\033[93m";
             break;
         }
         case COLOR::LIGHT_BLUE: {
-            tmp = (char *)"\033[94m";
+            tmp = (char*)"\033[94m";
             break;
         }
         case COLOR::LIGHT_PURPLE: {
-            tmp = (char *)"\033[95m";
+            tmp = (char*)"\033[95m";
             break;
         }
         case COLOR::LIGHT_CYAN: {
-            tmp = (char *)"\033[96m";
+            tmp = (char*)"\033[96m";
             break;
         }
         case COLOR::LIGHT_WHITE: {
-            tmp = (char *)"\033[97m";
+            tmp = (char*)"\033[97m";
             break;
         }
     }
