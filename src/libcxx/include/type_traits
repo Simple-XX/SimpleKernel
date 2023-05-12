@@ -559,7 +559,7 @@ template <typename>
 struct is_volatile : public false_type { };
 
 template <typename _Tp>
-struct is_volatile<_Tp volatile> : public true_type { };
+struct is_volatile<volatile _Tp> : public true_type { };
 
 /// is_trivial
 template <typename _Tp>
@@ -1317,7 +1317,7 @@ struct remove_volatile {
 };
 
 template <typename _Tp>
-struct remove_volatile<_Tp volatile> {
+struct remove_volatile<volatile _Tp> {
     typedef _Tp type;
 };
 
@@ -1333,12 +1333,12 @@ struct remove_cv<const _Tp> {
 };
 
 template <typename _Tp>
-struct remove_cv<_Tp volatile> {
+struct remove_cv<volatile _Tp> {
     using type = _Tp;
 };
 
 template <typename _Tp>
-struct remove_cv<const _Tp volatile> {
+struct remove_cv<const volatile _Tp> {
     using type = _Tp;
 };
 
@@ -1351,7 +1351,7 @@ struct add_const {
 /// add_volatile
 template <typename _Tp>
 struct add_volatile {
-    typedef _Tp volatile type;
+    typedef volatile _Tp type;
 };
 
 /// add_cv
