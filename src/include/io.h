@@ -18,7 +18,7 @@
 #define SIMPLEKERNEL_IO_H
 
 #include "color.h"
-#include "stdint.h"
+#include "cstdint"
 
 // 根据不同架构选择不同的输出方式
 #if defined(__i386__) || defined(__x86_64__)

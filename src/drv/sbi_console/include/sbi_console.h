@@ -18,7 +18,8 @@
 #define SIMPLEKERNEL_SBI_CONSOLE_H
 
 #include "color.h"
-#include "stdint.h"
+#include "cstddef"
+#include "cstdint"
 
 class SBI_CONSOLE {
 private:

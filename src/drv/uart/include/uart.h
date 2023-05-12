@@ -18,9 +18,9 @@
 #define SIMPLEKERNEL_UART_H
 
 #include "color.h"
+#include "cstddef"
+#include "cstdint"
 #include "hardware.h"
-#include "stddef.h"
-#include "stdint.h"
 
 class UART {
 private:
