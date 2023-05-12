@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _INTR_H_
-#define _INTR_H_
+#ifndef SIMPLEKERNEL_INTR_H
+#define SIMPLEKERNEL_INTR_H
 
 #include "cstdint"
 
@@ -336,4 +336,4 @@ public:
     void          init(void);
 };
 
-#endif /* _INTR_H_ */
+#endif /* SIMPLEKERNEL_INTR_H */
