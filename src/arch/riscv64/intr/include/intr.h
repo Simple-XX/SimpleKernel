@@ -18,7 +18,7 @@
 #define SIMPLEKERNEL_INTR_H
 
 #include "cpu.hpp"
-#include "stdint.h"
+#include "cstdint"
 
 /// @todo 多核
 

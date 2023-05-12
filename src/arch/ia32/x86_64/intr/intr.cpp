@@ -15,12 +15,12 @@
  * </table>
  */
 
-#include "io.h"
-#include "cpu.hpp"
-#include "stdio.h"
-#include "gdt.h"
 #include "intr.h"
 #include "apic.h"
+#include "cpu.hpp"
+#include "cstdio"
+#include "gdt.h"
+#include "io.h"
 #include "keyboard.h"
 
 // 声明中断处理函数 0 ~ 19 属于 CPU 的异常中断
@@ -109,7 +109,7 @@ extern "C" void idt_load(uint32_t);
 /**
  * @brief IRQ 处理函数
  */
-extern "C" void irq_handler(uint8_t _no, INTR::intr_context_t *_intr_context) {
+extern "C" void irq_handler(uint8_t _no, INTR::intr_context_t* _intr_context) {
     INTR::get_instance().call_irq(_no, _intr_context);
     return;
 }
@@ -117,15 +117,15 @@ extern "C" void irq_handler(uint8_t _no, INTR::intr_context_t *_intr_context) {
 /**
  * @brief ISR 处理函数
  */
-extern "C" void isr_handler(uint8_t _no, INTR::intr_context_t *_intr_context,
-                            INTR::error_code_t *_err_code) {
+extern "C" void isr_handler(uint8_t _no, INTR::intr_context_t* _intr_context,
+                            INTR::error_code_t* _err_code) {
     (void)_err_code;
     INTR::get_instance().call_isr(_no, _intr_context);
     return;
 }
 
 // 默认处理函数
-static void handler_default(INTR::intr_context_t *) {
+static void handler_default(INTR::intr_context_t*) {
     while (1) {
         ;
     }
@@ -135,9 +135,9 @@ static void handler_default(INTR::intr_context_t *) {
 // 中断处理函数指针数组
 INTR::interrupt_handler_t INTR::interrupt_handlers[INTERRUPT_MAX];
 // 中断描述符表
-INTR::idt_entry64_t INTR::idt_entry64[INTERRUPT_MAX];
+INTR::idt_entry64_t       INTR::idt_entry64[INTERRUPT_MAX];
 // IDTR
-INTR::idt_ptr_t INTR::idt_ptr;
+INTR::idt_ptr_t           INTR::idt_ptr;
 
 // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.1
 void INTR::set_idt(uint8_t _num, uintptr_t _base, uint16_t _selector,
@@ -209,7 +209,7 @@ void INTR::disable_interrupt_chip(void) {
     return;
 }
 
-INTR &INTR::get_instance(void) {
+INTR& INTR::get_instance(void) {
     /// 定义全局 INTR 对象
     static INTR intr;
     return intr;
@@ -358,7 +358,7 @@ int32_t INTR::init(void) {
     return 0;
 }
 
-int32_t INTR::call_irq(uint8_t _no, intr_context_t *_intr_context) {
+int32_t INTR::call_irq(uint8_t _no, intr_context_t* _intr_context) {
     // 重设PIC芯片
     clear_interrupt_chip(_no);
     if (interrupt_handlers[_no] != nullptr) {
@@ -367,7 +367,7 @@ int32_t INTR::call_irq(uint8_t _no, intr_context_t *_intr_context) {
     return 0;
 }
 
-int32_t INTR::call_isr(uint8_t _no, intr_context_t *_intr_context) {
+int32_t INTR::call_isr(uint8_t _no, intr_context_t* _intr_context) {
     if (interrupt_handlers[_no] != nullptr) {
         interrupt_handlers[_no](_intr_context);
     }
@@ -412,8 +412,8 @@ void INTR::disable_irq(uint8_t _no) {
     return;
 }
 
-const char *INTR::get_intr_name(uint8_t _no) {
-    if (_no < sizeof(intrnames) / sizeof(const char *const)) {
+const char* INTR::get_intr_name(uint8_t _no) {
+    if (_no < sizeof(intrnames) / sizeof(const char* const)) {
         return intrnames[_no];
     }
     return "(unknown trap)";

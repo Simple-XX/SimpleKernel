@@ -9,6 +9,6 @@
 if (SimpleKernelArch STREQUAL "ia32/i386" OR SimpleKernelArch STREQUAL "ia32/x86_64")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ia32)
 else ()
-# 其它情况跳转到与 SimpleKernelArch 同名目录即可
+    # 其它情况跳转到与 SimpleKernelArch 同名目录即可
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/${SimpleKernelArch})
 endif ()

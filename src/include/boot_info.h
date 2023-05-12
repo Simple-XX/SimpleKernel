@@ -17,10 +17,10 @@
 #ifndef SIMPLEKERNEL_BOOT_INFO_H
 #define SIMPLEKERNEL_BOOT_INFO_H
 
-#include "stdint.h"
+#include "cstdint"
 #include "resource.h"
-#include "vector"
 #include "string"
+#include "vector"
 
 /**
  * @brief 启动信息接口
@@ -34,44 +34,44 @@
 namespace BOOT_INFO {
 /// 声明，定义在具体的实现中
 /// 是否已经初始化过
-extern bool inited;
+extern bool          inited;
 /// 地址
 extern "C" uintptr_t boot_info_addr;
 /// 长度
-extern size_t boot_info_size;
+extern size_t        boot_info_size;
 /// 保存 sbi 传递的启动核
-extern "C" size_t dtb_init_hart;
+extern "C" size_t    dtb_init_hart;
 
 /**
  * @brief 初始化，定义在具体实现中
  * @return true            成功
  * @return false           成功
  */
-extern bool init(void);
+extern bool          init(void);
 
 /**
  * @brief 获取物理内存信息
  * @return resource_t      物理内存资源信息
  */
-extern resource_t get_memory(void);
+extern resource_t    get_memory(void);
 
 /**
  * @brief 获取 clint 信息
  * @return resource_t       clint 资源信息
  */
-extern resource_t get_clint(void);
+extern resource_t    get_clint(void);
 
 /**
  * @brief 获取 plic 信息
  * @return resource_t       plic 资源信息
  */
-extern resource_t get_plic(void);
+extern resource_t    get_plic(void);
 
 // 根据 compatible 寻找节点
 // 返回一个二级数组，第一级是所有设备，第二级是使用的资源
 // 因为使用了 stl，只能在 lib 分支及其之后使用
 // TODO: 目前只实现了 riscv，ia32 还没有考虑
-extern size_t find_via_prefix(const char *_prefix, resource_t *_resource);
-}; // namespace BOOT_INFO
+extern size_t find_via_prefix(const char* _prefix, resource_t* _resource);
+};     // namespace BOOT_INFO
 
 #endif /* SIMPLEKERNEL_BOOT_INFO_H */

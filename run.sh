@@ -63,7 +63,6 @@ if [ ! -f ./fatfs.img ]; then
     # osx 下需要手动制作
     echo NO fatfs.img!
     bash ./tools/mkfatfs.sh
-    exit
 fi
 
 # 初始化 gdb
