@@ -10,7 +10,7 @@
 # 指定要编译的目标架构 ARCH: i386, x86_64, riscv64
 # ARCH="i386"
 # ARCH="x86_64"
-ARCH="riscv64"
+#ARCH="riscv64"
 
 DEBUG=0
 
