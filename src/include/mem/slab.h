@@ -14,12 +14,13 @@
  * </table>
  */
 
-#ifndef _SLAB_H_
-#define _SLAB_H_
+#ifndef SIMPLEKERNEL_SLAB_H
+#define SIMPLEKERNEL_SLAB_H
 
-#include "stdint.h"
-#include "stddef.h"
 #include "allocator.h"
+#include "cstddef"
+#include "cstdint"
+#include "cstdio"
 #include "iostream"
 
 /**
@@ -40,14 +41,14 @@ private:
         /// 头节点标识
         static constexpr const uintptr_t HEAD = 0xCDCD;
         // chunk_t 结构的物理地址
-        uintptr_t addr;
+        uintptr_t                        addr;
         // 长度，不包括自身大小 单位为 byte
         // 记录的是实际使用的长度
         // 按照 8byte 对齐
-        size_t len;
+        size_t                           len;
         /// 双向循环链表指针
-        chunk_t *prev;
-        chunk_t *next;
+        chunk_t*                         prev;
+        chunk_t*                         next;
 
         /**
          * @brief 构造函数只会在 SLAB 初始化时调用，且只用于构造头节点
@@ -60,23 +61,23 @@ private:
          * @brief 插入新节点
          * @param  _new_node       要插入的节点
          */
-        void push_back(chunk_t *_new_node);
+        void     push_back(chunk_t* _new_node);
 
         /**
          * @brief 获取链表长度
          * @return size_t          desc
          */
-        size_t size(void) const;
+        size_t   size(void) const;
 
-        bool operator==(const chunk_t &_node) const;
-        bool operator!=(const chunk_t &_node) const;
+        bool     operator==(const chunk_t& _node) const;
+        bool     operator!=(const chunk_t& _node) const;
 
         /**
          * @brief 返回相对头节点的第 _idx 项
          * @param  _idx            第几项
          * @return chunk_t&        chunk 对象
          */
-        chunk_t &operator[](size_t _idx) const;
+        chunk_t& operator[](size_t _idx) const;
     };
 
     /**
@@ -90,7 +91,7 @@ private:
          * @param  _list           目标链表
          * @param  _node           要移动的节点
          */
-        void move(chunk_t &_list, chunk_t *_node);
+        void     move(chunk_t& _list, chunk_t* _node);
 
         /**
          * @brief 申请物理内存，返回申请到的地址起点，已经初始化过，且加入 free
@@ -98,12 +99,12 @@ private:
          * @param  _len            要申请的长度
          * @return chunk_t*        申请到的 chunk
          */
-        chunk_t *alloc_pmm(size_t _len);
+        chunk_t* alloc_pmm(size_t _len);
 
         /**
          * @brief 释放内存
          */
-        void free_pmm(void);
+        void     free_pmm(void);
 
         /**
          * @brief 分割一个节点
@@ -112,13 +113,13 @@ private:
          * @note 如果剩余部分符合要求，新建节点并加入 part 链表
          * 同时将 _node->len 设置为 _len
          */
-        void split(chunk_t *_node, size_t _len);
+        void     split(chunk_t* _node, size_t _len);
 
         /**
          * @brief 合并 part 中地址连续的链表项，如果有可回收的回调用 free_pmm
          * 进行回收
          */
-        void merge(void);
+        void     merge(void);
 
         /**
          * @brief 在 _which 链表中查找长度符合的
@@ -127,36 +128,37 @@ private:
          * @param  _alloc          如果未找到是否分配
          * @return chunk_t*        未找到返回 nullptr
          */
-        chunk_t *find(chunk_t &_which, size_t _len, bool _alloc);
+        chunk_t* find(chunk_t& _which, size_t _len, bool _alloc);
 
     protected:
+
     public:
         // 当前 cache 的长度，单位为 byte
-        size_t len;
+        size_t   len;
         // 这三个作为头节点使用，不会实际使用
         // full/part/free 是相对于 pmm
         // 分配的一个或多个连续的页而言的
         // 已经分配的 len 长度的内存，当然 len 不一定全部使用，真实使用的长度由
         // chunk 记录
-        chunk_t full;
+        chunk_t  full;
         // 申请的内存使用了一部分
-        chunk_t part;
+        chunk_t  part;
         // 一整段申请的内存都没有使用
-        chunk_t free;
+        chunk_t  free;
         /// 管理的是否为内核地址
-        bool is_kernel_space;
+        bool     is_kernel_space;
 
         // 查找长度符合的
-        chunk_t *find(size_t _len);
+        chunk_t* find(size_t _len);
 
         /**
          * @brief 释放一个 full 的链表项
          * @param  _node           要释放的节点
          */
-        void remove(chunk_t *_node);
+        void     remove(chunk_t* _node);
 
-        friend std::ostream &operator<<(std::ostream       &_out,
-                                        SLAB::slab_cache_t &_cache) {
+        friend std::ostream&
+        operator<<(std::ostream& _out, SLAB::slab_cache_t& _cache) {
             printf("_cache.full.size(): 0x%X\n", _cache.full.size());
             for (size_t i = 0; i < _cache.full.size(); i++) {
                 printf("full 0x%X addr: 0x%X, len: 0x%X\n", i,
@@ -196,24 +198,25 @@ private:
     };
 
     /// 最小为 256 bytes
-    static constexpr const size_t MIN   = 256;
-    static constexpr const size_t SHIFT = 8;
+    static constexpr const size_t MIN        = 256;
+    static constexpr const size_t SHIFT      = 8;
     /// 支持 256(256<<(CACHAE_LEN-1)) bytes
     /// slab_cache[0] 即为内存为 256 字节的 chunk_t 结构链表
     static constexpr const size_t CACHAE_LEN = 9;
     slab_cache_t                  slab_cache[CACHAE_LEN];
 
     /// 管理的是否为内核地址
-    bool is_kernel_space;
+    bool                          is_kernel_space;
 
     /**
      * @brief 根据 _len 获取对应的 slab_cache 下标
      * @param  _len            长度
      * @return size_t          对应的下标
      */
-    size_t get_idx(size_t _len) const;
+    size_t                        get_idx(size_t _len) const;
 
 protected:
+
 public:
     /**
      * @brief 构造函数
@@ -222,7 +225,7 @@ public:
      * @param  _len            要管理的长度
      * @param  _is_kernel      管理的是否为内核地址
      */
-    SLAB(const char *_name, uintptr_t _addr, size_t _len, bool _is_kernel);
+    SLAB(const char* _name, uintptr_t _addr, size_t _len, bool _is_kernel);
 
     ~SLAB(void);
 
@@ -234,18 +237,18 @@ public:
     uintptr_t alloc(size_t _len) override;
 
     // slab 不支持这个函数
-    bool alloc(uintptr_t _addr, size_t _len) override;
+    bool      alloc(uintptr_t _addr, size_t _len) override;
 
     /**
      * @brief 释放内存
      * @param  _addr           要释放的地址
      * @note slab 不使用第二个参数
      */
-    void free(uintptr_t _addr, size_t) override;
+    void      free(uintptr_t _addr, size_t) override;
 
     // 暂时不支持
-    size_t get_used_count(void) const override;
-    size_t get_free_count(void) const override;
+    size_t    get_used_count(void) const override;
+    size_t    get_free_count(void) const override;
 };
 
-#endif /* _SLAB_H_ */
+#endif /* SIMPLEKERNEL_SLAB_H */
