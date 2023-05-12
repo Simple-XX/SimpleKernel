@@ -236,4 +236,4 @@ inline static bool SET_PGD(uintptr_t _pgd) {
 
 };     // namespace CPU
 
-#endif /* _CPU_HPP_ */
+#endif /* SIMPLEKERNEL_CPU_HPP */
