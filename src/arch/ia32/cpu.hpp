@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _CPU_HPP_
-#define _CPU_HPP_
+#ifndef SIMPLEKERNEL_CPU_HPP
+#define SIMPLEKERNEL_CPU_HPP
 
 #include "cstdint"
 #include "stdbool.h"
@@ -195,4 +195,4 @@ inline static void INVLPG(void* _addr) {
 }
 };     // namespace CPU
 
-#endif /* _CPU_HPP_ */
+#endif /* SIMPLEKERNEL_CPU_HPP */
