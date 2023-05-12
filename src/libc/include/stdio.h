@@ -22,9 +22,9 @@
 extern "C" {
 #endif
 
-#include "stdint.h"
-#include "stddef.h"
 #include "stdarg.h"
+#include "stddef.h"
+#include "stdint.h"
 
 /**
  * Tiny sprintf implementation
@@ -36,7 +36,7 @@ extern "C" {
  * null character
  */
 #define sprintf sprintf_
-int sprintf_(char *_buffer, const char *_format, ...);
+int sprintf_(char* _buffer, const char* _format, ...);
 
 /**
  * Tiny snprintf/vsnprintf implementation
@@ -49,20 +49,20 @@ int sprintf_(char *_buffer, const char *_format, ...);
  * than count indicates truncation. Only when the returned value is non-negative
  * and less than count, the string has been completely written.
  */
-#define snprintf snprintf_
+#define snprintf  snprintf_
 #define vsnprintf vsnprintf_
-int snprintf_(char *_buffer, size_t _count, const char *_format, ...);
-int vsnprintf_(char *_buffer, size_t _count, const char *_format, va_list _va);
-int _vsnprintf(char *_buffer, const size_t _maxlen, const char *_format,
+int snprintf_(char* _buffer, size_t _count, const char* _format, ...);
+int vsnprintf_(char* _buffer, size_t _count, const char* _format, va_list _va);
+int _vsnprintf(char* _buffer, const size_t _maxlen, const char* _format,
                va_list _va);
 
-int printf(const char *_fmt, ...);
+int32_t printf(const char* _fmt, ...);
 
-int info(const char *_fmt, ...);
+int32_t info(const char* _fmt, ...);
 
-int warn(const char *_fmt, ...);
+int32_t warn(const char* _fmt, ...);
 
-int err(const char *_fmt, ...);
+int32_t err(const char* _fmt, ...);
 
 #ifdef __cplusplus
 }
