@@ -17,61 +17,62 @@
 #include "new"
 
 // TODO
-void *operator new(size_t) {
-    return (void *)1;
+void* operator new(size_t) {
+    return (void*)1;
 }
 
-void *operator new[](size_t) {
-    return (void *)1;
+void* operator new[](size_t) {
+    return (void*)1;
 }
 
-void operator delete(void *) {
+void operator delete(void*) {
 }
 
-void operator delete(void *, size_t) {
+void operator delete(void*, size_t) {
 }
 
-void operator delete[](void *) {
+void operator delete[](void*) {
 }
 
-void operator delete[](void *, size_t) {
+void operator delete[](void*, size_t) {
 }
 
-void *operator new(size_t, void *) throw() {
+void* operator new(size_t, void*) throw() {
     return nullptr;
 }
 
-void *operator new[](size_t, void *) throw() {
+void* operator new[](size_t, void*) throw() {
     return nullptr;
 }
 
-void operator delete(void *, void *) throw() {
+void operator delete(void*, void*) throw() {
     return;
 }
 
-void operator delete[](void *, void *) throw() {
+void operator delete[](void*, void*) throw() {
     return;
 }
 
-void *operator new(size_t, std::align_val_t) {
-    return (void *)1;
+void* operator new(size_t, std::align_val_t) {
+    return (void*)1;
 }
 
-void operator delete(void *, std::align_val_t) {
+void operator delete(void*, std::align_val_t) {
     return;
 }
 
-void *operator new[](size_t, std::align_val_t) {
-    return (void *)1;
+void* operator new[](size_t, std::align_val_t) {
+    return (void*)1;
 }
 
-void operator delete[](void *, std::align_val_t) {
+void operator delete[](void*, std::align_val_t) {
     return;
 }
 
-void operator delete(void *, size_t, std::align_val_t) {
+void operator delete(void*, size_t, std::align_val_t) {
     return;
 }
-void operator delete[](void *, size_t, std::align_val_t) {
+
+void operator delete[](void*, size_t, std::align_val_t) {
     return;
 }

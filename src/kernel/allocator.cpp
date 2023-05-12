@@ -14,11 +14,11 @@
  * </table>
  */
 
-#include "stddef.h"
-#include "stdint.h"
 #include "allocator.h"
+#include "cstddef"
+#include "cstdint"
 
-ALLOCATOR::ALLOCATOR(const char *_name, uintptr_t _addr, size_t _len) {
+ALLOCATOR::ALLOCATOR(const char* _name, uintptr_t _addr, size_t _len) {
     // 默认名字
     name                 = _name;
     allocator_start_addr = _addr;
