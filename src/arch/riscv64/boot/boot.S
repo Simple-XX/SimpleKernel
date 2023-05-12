@@ -14,6 +14,8 @@
  * </table>
  */
 
+// clang-format off
+
 .section .text.boot
 .global _start
 .type _start, @function
