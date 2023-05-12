@@ -15,12 +15,12 @@
  */
 
 #include "pmm.h"
-#include "cassert"
 #include "boot_info.h"
+#include "cassert"
 #include "common.h"
-#include "resource.h"
 #include "cstdio"
 #include "cstring"
+#include "resource.h"
 
 // 将启动信息移动到内核空间
 void PMM::move_boot_info(void) {
