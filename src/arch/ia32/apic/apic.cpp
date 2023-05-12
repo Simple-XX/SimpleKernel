@@ -14,9 +14,9 @@
  * </table>
  */
 
-#include "stdio.h"
-#include "intr.h"
 #include "apic.h"
+#include "cstdio"
+#include "intr.h"
 
 // 64-ia-32-architectures-software-developer-vol-3a-manual#10
 

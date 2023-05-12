@@ -1,7 +1,10 @@
 
-// This file is a part of Simple-XX/SimpleKernel (https://github.com/Simple-XX/SimpleKernel).
+// This file is a part of Simple-XX/SimpleKernel
+// (https://github.com/Simple-XX/SimpleKernel).
 #
 // intr_s.s for Simple-XX/SimpleKernel.
+
+// clang-format off
 
 .code32
 

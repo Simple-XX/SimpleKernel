@@ -16,13 +16,13 @@
  */
 
 #include "dtb.h"
-#include "assert.h"
 #include "boot_info.h"
+#include "cassert"
 #include "common.h"
+#include "cstdint"
+#include "cstdio"
 #include "endian.h"
 #include "resource.h"
-#include "stdint.h"
-#include "stdio.h"
 
 // 所有节点
 DTB::node_t        DTB::nodes[MAX_NODES];
