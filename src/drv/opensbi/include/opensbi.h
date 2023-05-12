@@ -17,7 +17,7 @@
 #ifndef SIMPLEKERNEL_OPENSBI_H
 #define SIMPLEKERNEL_OPENSBI_H
 
-#include "stdint.h"
+#include "cstdint"
 
 /**
  * @brief opensbi 接口抽象

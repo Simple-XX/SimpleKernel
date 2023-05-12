@@ -15,7 +15,7 @@ if (${SimpleKernelArch} STREQUAL "ia32/i386")
     find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/i386/boot)
     # 添加到 boot_src
     set(boot_src ${boot_asm_src})
-# 64 位
+    # 64 位
 elseif (${SimpleKernelArch} STREQUAL "ia32/x86_64")
     # 寻找汇编文件
     find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/x86_64/boot)
