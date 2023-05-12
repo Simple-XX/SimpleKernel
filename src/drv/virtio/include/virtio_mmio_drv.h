@@ -195,63 +195,147 @@ private:
      * @see virtio-v1.1#4.2.2
      */
     struct virtio_regs_t {
+        static constexpr const size_t MAGIC_OFFSET               = 0;
+        static constexpr const size_t VERSION_OFFSET             = 4;
+        static constexpr const size_t DEVICE_ID_OFFSET           = 8;
+        static constexpr const size_t VENDOR_ID_OFFSET           = 12;
+        static constexpr const size_t DEVICE_FEATURES_OFFSET     = 16;
+        static constexpr const size_t DEVICE_FEATURES_SEL_OFFSET = 20;
+        static constexpr const size_t _RESERVED0_OFFSET          = 24;
+        static constexpr const size_t DRIVER_FEATURES_OFFSET     = 32;
+        static constexpr const size_t DRIVER_FEATURES_SEL_OFFSET = 36;
+        static constexpr const size_t _RESERVED1_OFFSET          = 40;
+        static constexpr const size_t QUEUE_SEL_OFFSET           = 48;
+        static constexpr const size_t QUEUE_NUM_MAX_OFFSET       = 52;
+        static constexpr const size_t QUEUE_NUM_OFFSET           = 56;
+        static constexpr const size_t _RESERVED2_OFFSET          = 60;
+        static constexpr const size_t QUEUE_READY_OFFSET         = 68;
+        static constexpr const size_t _RESERVED3_OFFSET          = 72;
+        static constexpr const size_t QUEUE_NOTIFY_OFFSET        = 80;
+        static constexpr const size_t _RESERVED4_OFFSET          = 84;
+        static constexpr const size_t INTERRUPT_STATUS_OFFSET    = 96;
+        static constexpr const size_t INTERRUPT_ACK_OFFSET       = 100;
+        static constexpr const size_t _RESERVED5_OFFSET          = 104;
+        static constexpr const size_t STATUS_OFFSET              = 112;
+        static constexpr const size_t _RESERVED6_OFFSET          = 116;
+        static constexpr const size_t QUEUE_DESC_LOW_OFFSET      = 128;
+        static constexpr const size_t QUEUE_DESC_HIGH_OFFSET     = 132;
+        static constexpr const size_t _RESERVED7_OFFSET          = 136;
+        static constexpr const size_t QUEUE_DRIVER_LOW_OFFSET    = 144;
+        static constexpr const size_t QUEUE_DRIVER_HIGH_OFFSET   = 148;
+        static constexpr const size_t _RESERVED8_OFFSET          = 152;
+        static constexpr const size_t QUEUE_DEVICE_LOW_OFFSET    = 160;
+        static constexpr const size_t QUEUE_DEVICE_HIGH_OFFSET   = 164;
+        static constexpr const size_t _RESERVED9_OFFSET          = 168;
+        static constexpr const size_t CONFIG_GENERATION_OFFSET   = 252;
+        static constexpr const size_t CONFIG_OFFSET              = 256;
+
         /// a Little Endian equivalent of the “virt” string: 0x74726976
-        uint32_t magic;
+        uint32_t*                     magic;
         /// Device version number
         // 0x2, Legacy devices(see 4.2.4 Legacy interface) used 0x1.
-        uint32_t version;
+        uint32_t*                     version;
         /// Virtio Subsystem Device ID
-        uint32_t device_id;
+        uint32_t*                     device_id;
         /// Virtio Subsystem Vendor ID
-        uint32_t Vendor_id;
+        uint32_t*                     Vendor_id;
         /// Flags representing features the device supports
-        uint32_t device_features;
+        uint32_t*                     device_features;
         /// Device (host) features word selection.
-        uint32_t device_features_sel;
-        uint32_t _reserved0[2];
+        uint32_t*                     device_features_sel;
+        uint32_t*                     _reserved0;
         /// Flags representing device features understood and activated by
         /// the driver
-        uint32_t driver_features;
+        uint32_t*                     driver_features;
         /// Activated (guest) features word selection
-        uint32_t driver_features_sel;
-        uint32_t _reserved1[2];
+        uint32_t*                     driver_features_sel;
+        uint32_t*                     _reserved1;
         /// Virtual queue index
-        uint32_t queue_sel;
+        uint32_t*                     queue_sel;
         /// Maximum virtual queue size
-        uint32_t queue_num_max;
+        uint32_t*                     queue_num_max;
         /// Virtual queue size
-        uint32_t queue_num;
-        uint32_t _reserved2[2];
+        uint32_t*                     queue_num;
+        uint32_t*                     _reserved2;
         /// Virtual queue ready bit
-        uint32_t queue_ready;
-        uint32_t _reserved3[2];
+        uint32_t*                     queue_ready;
+        uint32_t*                     _reserved3;
         /// Queue notifier
-        uint32_t queue_notify;
-        uint32_t _reserved4[3];
+        uint32_t*                     queue_notify;
+        uint32_t*                     _reserved4;
         /// Interrupt status
-        uint32_t interrupt_status;
+        uint32_t*                     interrupt_status;
         /// Interrupt acknowledge
-        uint32_t interrupt_ack;
-        uint32_t _reserved5[2];
+        uint32_t*                     interrupt_ack;
+        uint32_t*                     _reserved5;
         /// Device status
-        uint32_t status;
-        uint32_t _reserved6[3];
+        uint32_t*                     status;
+        uint32_t*                     _reserved6;
         /// Virtual queue’s Descriptor Area 64 bit long physical address
-        uint32_t queue_desc_low;
-        uint32_t queue_desc_high;
-        uint32_t _reserved7[2];
+        uint32_t*                     queue_desc_low;
+        uint32_t*                     queue_desc_high;
+        uint32_t*                     _reserved7;
         /// Virtual queue’s Driver Area 64 bit long physical address
-        uint32_t queue_driver_low;
-        uint32_t queue_driver_high;
-        uint32_t _reserved8[2];
+        uint32_t*                     queue_driver_low;
+        uint32_t*                     queue_driver_high;
+        uint32_t*                     _reserved8;
         /// Virtual queue’s Device Area 64 bit long physical address
-        uint32_t queue_device_low;
-        uint32_t queue_device_high;
-        uint32_t _reserved9[21];
+        uint32_t*                     queue_device_low;
+        uint32_t*                     queue_device_high;
+        uint32_t*                     _reserved9;
         /// Configuration atomicity value
-        uint32_t config_generation;
+        uint32_t*                     config_generation;
         /// Configuration space
-        uint32_t config[0];
+        uint32_t*                     config;
+
+        virtio_regs_t(void) = default;
+
+        virtio_regs_t(uintptr_t _base_addr) {
+            magic           = (uint32_t*)(_base_addr + MAGIC_OFFSET);
+            version         = (uint32_t*)(_base_addr + VERSION_OFFSET);
+            device_id       = (uint32_t*)(_base_addr + DEVICE_ID_OFFSET);
+            Vendor_id       = (uint32_t*)(_base_addr + VENDOR_ID_OFFSET);
+            device_features = (uint32_t*)(_base_addr + DEVICE_FEATURES_OFFSET);
+            device_features_sel
+              = (uint32_t*)(_base_addr + DEVICE_FEATURES_SEL_OFFSET);
+            _reserved0      = (uint32_t*)(_base_addr + _RESERVED0_OFFSET);
+            driver_features = (uint32_t*)(_base_addr + DRIVER_FEATURES_OFFSET);
+            driver_features_sel
+              = (uint32_t*)(_base_addr + DRIVER_FEATURES_SEL_OFFSET);
+            _reserved1    = (uint32_t*)(_base_addr + _RESERVED1_OFFSET);
+            queue_sel     = (uint32_t*)(_base_addr + QUEUE_SEL_OFFSET);
+            queue_num_max = (uint32_t*)(_base_addr + QUEUE_NUM_MAX_OFFSET);
+            queue_num     = (uint32_t*)(_base_addr + QUEUE_NUM_OFFSET);
+            _reserved2    = (uint32_t*)(_base_addr + _RESERVED2_OFFSET);
+            queue_ready   = (uint32_t*)(_base_addr + QUEUE_READY_OFFSET);
+            _reserved3    = (uint32_t*)(_base_addr + _RESERVED3_OFFSET);
+            queue_notify  = (uint32_t*)(_base_addr + QUEUE_NOTIFY_OFFSET);
+            _reserved4    = (uint32_t*)(_base_addr + _RESERVED4_OFFSET);
+            interrupt_status
+              = (uint32_t*)(_base_addr + INTERRUPT_STATUS_OFFSET);
+            interrupt_ack   = (uint32_t*)(_base_addr + INTERRUPT_ACK_OFFSET);
+            _reserved5      = (uint32_t*)(_base_addr + _RESERVED5_OFFSET);
+            status          = (uint32_t*)(_base_addr + STATUS_OFFSET);
+            _reserved6      = (uint32_t*)(_base_addr + _RESERVED6_OFFSET);
+            queue_desc_low  = (uint32_t*)(_base_addr + QUEUE_DESC_LOW_OFFSET);
+            queue_desc_high = (uint32_t*)(_base_addr + QUEUE_DESC_HIGH_OFFSET);
+            _reserved7      = (uint32_t*)(_base_addr + _RESERVED7_OFFSET);
+            queue_driver_low
+              = (uint32_t*)(_base_addr + QUEUE_DRIVER_LOW_OFFSET);
+            queue_driver_high
+              = (uint32_t*)(_base_addr + QUEUE_DRIVER_HIGH_OFFSET);
+            _reserved8 = (uint32_t*)(_base_addr + _RESERVED8_OFFSET);
+            queue_device_low
+              = (uint32_t*)(_base_addr + QUEUE_DEVICE_LOW_OFFSET);
+            queue_device_high
+              = (uint32_t*)(_base_addr + QUEUE_DEVICE_HIGH_OFFSET);
+            _reserved9 = (uint32_t*)(_base_addr + _RESERVED9_OFFSET);
+            config_generation
+              = (uint32_t*)(_base_addr + CONFIG_GENERATION_OFFSET);
+            config = (uint32_t*)(_base_addr + CONFIG_OFFSET);
+        }
+
+        ~virtio_regs_t(void) = default;
     } __attribute__((packed));
 
     /**
@@ -456,7 +540,7 @@ public:
     static constexpr const char* NAME = "virtio,mmio";
 
     /// virtio mmio 寄存器基地址
-    virtio_regs_t*               regs;
+    virtio_regs_t                regs;
     /// virtio queue
     /// @todo 有些设备使用多个队列
     split_virtqueue_t            queue;
