@@ -4,6 +4,8 @@
 // Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
 // boot.S for Simple-XX/SimpleKernel.
 
+// clang-format off
+
 .section .init
  
 // Entry point for the kernel.
@@ -12,7 +14,7 @@
 // r1 -> 0x00000C42 - machine id
 // r2 -> 0x00000100 - start of ATAGS
 // preserve these registers as argument for kernel_main
-.globl _start
+.global _start
 .type _start, @function
 .extern kernel_main
 // 规定起始地址

@@ -18,7 +18,7 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
-#include "stdint.h"
+#include "cstdint"
 #include "intr.h"
 
 /**
@@ -27,27 +27,27 @@
 class KEYBOARD {
 private:
     /// 键盘缓冲区大小
-    static constexpr const uint32_t KB_BUFSIZE = 128;
+    static constexpr const uint32_t KB_BUFSIZE    = 128;
 
-    static constexpr const uint32_t KB_DATA   = 0x60;
-    static constexpr const uint32_t KB_WRITE  = 0x60;
-    static constexpr const uint32_t KB_STATUS = 0x64;
-    static constexpr const uint32_t KB_CMD    = 0x64;
+    static constexpr const uint32_t KB_DATA       = 0x60;
+    static constexpr const uint32_t KB_WRITE      = 0x60;
+    static constexpr const uint32_t KB_STATUS     = 0x64;
+    static constexpr const uint32_t KB_CMD        = 0x64;
 
     /// 特殊键的扫描码
-    static constexpr const uint32_t KB_BACKSPACE = 0x0E;
-    static constexpr const uint32_t KB_ENTER     = 0x1C;
-    static constexpr const uint32_t KB_TAB       = 0x0F;
-    static constexpr const uint32_t KB_ESC       = 0x01;
-    static constexpr const uint32_t KB_SHIFT_L   = 0x2A;
-    static constexpr const uint32_t KB_SHIFT_R   = 0x36;
-    static constexpr const uint32_t KB_ALT_L     = 0x38;
-    static constexpr const uint32_t KB_CAPS_LOCK = 0x3A;
-    static constexpr const uint32_t KB_CTRL_L    = 0x1D;
-    static constexpr const uint32_t KB_NUM_LOCK  = 0x45;
+    static constexpr const uint32_t KB_BACKSPACE  = 0x0E;
+    static constexpr const uint32_t KB_ENTER      = 0x1C;
+    static constexpr const uint32_t KB_TAB        = 0x0F;
+    static constexpr const uint32_t KB_ESC        = 0x01;
+    static constexpr const uint32_t KB_SHIFT_L    = 0x2A;
+    static constexpr const uint32_t KB_SHIFT_R    = 0x36;
+    static constexpr const uint32_t KB_ALT_L      = 0x38;
+    static constexpr const uint32_t KB_CAPS_LOCK  = 0x3A;
+    static constexpr const uint32_t KB_CTRL_L     = 0x1D;
+    static constexpr const uint32_t KB_NUM_LOCK   = 0x45;
 
     /// Number of columns in keyma
-    static constexpr const uint32_t MAP_COLS = 3;
+    static constexpr const uint32_t MAP_COLS      = 3;
     /// Number of scan codes (rows in keymap)
     static constexpr const uint32_t NR_SCAN_CODES = 0x80;
     static constexpr const uint32_t SC_MAX        = NR_SCAN_CODES * MAP_COLS;
@@ -58,164 +58,164 @@ private:
     static constexpr const uint32_t RELEASED_MASK = 0x80;
 
     /// Normal function keys
-    static constexpr const uint32_t FLAG_EXT = 0x00;
+    static constexpr const uint32_t FLAG_EXT      = 0x00;
 
     /// Special keys
     /// Esc
-    static constexpr const uint32_t ESC = (0x01 & FLAG_EXT);
+    static constexpr const uint32_t ESC           = (0x01 & FLAG_EXT);
     /// Tab
-    static constexpr const uint32_t TAB = (0x02 & FLAG_EXT);
+    static constexpr const uint32_t TAB           = (0x02 & FLAG_EXT);
     /// Enter
-    static constexpr const uint32_t ENTER = (0x03 & FLAG_EXT);
+    static constexpr const uint32_t ENTER         = (0x03 & FLAG_EXT);
     /// BackSpace
-    static constexpr const uint32_t BACKSPACE = (0x04 & FLAG_EXT);
+    static constexpr const uint32_t BACKSPACE     = (0x04 & FLAG_EXT);
 
     /// L GUI
-    static constexpr const uint32_t GUI_L = (0x05 & FLAG_EXT);
+    static constexpr const uint32_t GUI_L         = (0x05 & FLAG_EXT);
     /// R GUI
-    static constexpr const uint32_t GUI_R = (0x06 & FLAG_EXT);
+    static constexpr const uint32_t GUI_R         = (0x06 & FLAG_EXT);
     /// APPS
-    static constexpr const uint32_t APPS = (0x07 & FLAG_EXT);
+    static constexpr const uint32_t APPS          = (0x07 & FLAG_EXT);
 
     /// Shift, Ctrl, Alt
     /// L Shift
-    static constexpr const uint32_t SHIFT_L = (0x08 & FLAG_EXT);
+    static constexpr const uint32_t SHIFT_L       = (0x08 & FLAG_EXT);
     /// R Shift
-    static constexpr const uint32_t SHIFT_R = (0x09 & FLAG_EXT);
+    static constexpr const uint32_t SHIFT_R       = (0x09 & FLAG_EXT);
     /// L Ctrl
-    static constexpr const uint32_t CTRL_L = (0x0A & FLAG_EXT);
+    static constexpr const uint32_t CTRL_L        = (0x0A & FLAG_EXT);
     /// R Ctrl
-    static constexpr const uint32_t CTRL_R = (0x0B & FLAG_EXT);
+    static constexpr const uint32_t CTRL_R        = (0x0B & FLAG_EXT);
     /// L Alt
-    static constexpr const uint32_t ALT_L = (0x0C & FLAG_EXT);
+    static constexpr const uint32_t ALT_L         = (0x0C & FLAG_EXT);
     /// R Alt
-    static constexpr const uint32_t ALT_R = (0x0D & FLAG_EXT);
+    static constexpr const uint32_t ALT_R         = (0x0D & FLAG_EXT);
 
     /// Lock keys
     /// Caps Lock
-    static constexpr const uint32_t CAPS_LOCK = (0x0E & FLAG_EXT);
+    static constexpr const uint32_t CAPS_LOCK     = (0x0E & FLAG_EXT);
     /// Number Lock
-    static constexpr const uint32_t NUM_LOCK = (0x0F & FLAG_EXT);
+    static constexpr const uint32_t NUM_LOCK      = (0x0F & FLAG_EXT);
     /// Scroll Lock
-    static constexpr const uint32_t SCROLL_LOCK = (0x10 & FLAG_EXT);
+    static constexpr const uint32_t SCROLL_LOCK   = (0x10 & FLAG_EXT);
 
     /// Function keys
     /// F1
-    static constexpr const uint32_t F1 = (0x11 & FLAG_EXT);
+    static constexpr const uint32_t F1            = (0x11 & FLAG_EXT);
     /// F2
-    static constexpr const uint32_t F2 = (0x12 & FLAG_EXT);
+    static constexpr const uint32_t F2            = (0x12 & FLAG_EXT);
     /// F3
-    static constexpr const uint32_t F3 = (0x13 & FLAG_EXT);
+    static constexpr const uint32_t F3            = (0x13 & FLAG_EXT);
     /// F4
-    static constexpr const uint32_t F4 = (0x14 & FLAG_EXT);
+    static constexpr const uint32_t F4            = (0x14 & FLAG_EXT);
     /// F5
-    static constexpr const uint32_t F5 = (0x15 & FLAG_EXT);
+    static constexpr const uint32_t F5            = (0x15 & FLAG_EXT);
     /// F6
-    static constexpr const uint32_t F6 = (0x16 & FLAG_EXT);
+    static constexpr const uint32_t F6            = (0x16 & FLAG_EXT);
     /// F7
-    static constexpr const uint32_t F7 = (0x17 & FLAG_EXT);
+    static constexpr const uint32_t F7            = (0x17 & FLAG_EXT);
     /// F8
-    static constexpr const uint32_t F8 = (0x18 & FLAG_EXT);
+    static constexpr const uint32_t F8            = (0x18 & FLAG_EXT);
     /// F9
-    static constexpr const uint32_t F9 = (0x19 & FLAG_EXT);
+    static constexpr const uint32_t F9            = (0x19 & FLAG_EXT);
     /// F10
-    static constexpr const uint32_t F10 = (0x1A & FLAG_EXT);
+    static constexpr const uint32_t F10           = (0x1A & FLAG_EXT);
     /// F11
-    static constexpr const uint32_t F11 = (0x1B & FLAG_EXT);
+    static constexpr const uint32_t F11           = (0x1B & FLAG_EXT);
     /// F12
-    static constexpr const uint32_t F12 = (0x1C & FLAG_EXT);
+    static constexpr const uint32_t F12           = (0x1C & FLAG_EXT);
 
     /// Control Pad
     /// Print Screen
-    static constexpr const uint32_t PRINTSCREEN = (0x1D & FLAG_EXT);
+    static constexpr const uint32_t PRINTSCREEN   = (0x1D & FLAG_EXT);
     /// Pause/Break
-    static constexpr const uint32_t PAUSEBREAK = (0x1E & FLAG_EXT);
+    static constexpr const uint32_t PAUSEBREAK    = (0x1E & FLAG_EXT);
     /// Insert
-    static constexpr const uint32_t INSERT = (0x1F & FLAG_EXT);
+    static constexpr const uint32_t INSERT        = (0x1F & FLAG_EXT);
     /// Delete
-    static constexpr const uint32_t DELETE = (0x20 & FLAG_EXT);
+    static constexpr const uint32_t DELETE        = (0x20 & FLAG_EXT);
     /// Home
-    static constexpr const uint32_t HOME = (0x21 & FLAG_EXT);
+    static constexpr const uint32_t HOME          = (0x21 & FLAG_EXT);
     /// End
-    static constexpr const uint32_t END = (0x22 & FLAG_EXT);
+    static constexpr const uint32_t END           = (0x22 & FLAG_EXT);
     /// Page Up
-    static constexpr const uint32_t PAGEUP = (0x23 & FLAG_EXT);
+    static constexpr const uint32_t PAGEUP        = (0x23 & FLAG_EXT);
     /// Page Down
-    static constexpr const uint32_t PAGEDOWN = (0x24 & FLAG_EXT);
+    static constexpr const uint32_t PAGEDOWN      = (0x24 & FLAG_EXT);
     /// Up
-    static constexpr const uint32_t UP = (0x25 & FLAG_EXT);
+    static constexpr const uint32_t UP            = (0x25 & FLAG_EXT);
     /// Down
-    static constexpr const uint32_t DOWN = (0x26 & FLAG_EXT);
+    static constexpr const uint32_t DOWN          = (0x26 & FLAG_EXT);
     /// Left
-    static constexpr const uint32_t LEFT = (0x27 & FLAG_EXT);
+    static constexpr const uint32_t LEFT          = (0x27 & FLAG_EXT);
     /// Right
-    static constexpr const uint32_t RIGHT = (0x28 & FLAG_EXT);
+    static constexpr const uint32_t RIGHT         = (0x28 & FLAG_EXT);
 
     /// ACPI keys
     /// Power
-    static constexpr const uint32_t POWER = (0x29 & FLAG_EXT);
+    static constexpr const uint32_t POWER         = (0x29 & FLAG_EXT);
     /// Sleep
-    static constexpr const uint32_t SLEEP = (0x2A & FLAG_EXT);
+    static constexpr const uint32_t SLEEP         = (0x2A & FLAG_EXT);
     /// Wake Up
-    static constexpr const uint32_t WAKE = (0x2B & FLAG_EXT);
+    static constexpr const uint32_t WAKE          = (0x2B & FLAG_EXT);
 
     /// Num Pad
     /// /
-    static constexpr const uint32_t PAD_SLASH = (0x2C & FLAG_EXT);
+    static constexpr const uint32_t PAD_SLASH     = (0x2C & FLAG_EXT);
     /// *
-    static constexpr const uint32_t PAD_STAR = (0x2D & FLAG_EXT);
+    static constexpr const uint32_t PAD_STAR      = (0x2D & FLAG_EXT);
     /// -
-    static constexpr const uint32_t PAD_MINUS = (0x2E & FLAG_EXT);
+    static constexpr const uint32_t PAD_MINUS     = (0x2E & FLAG_EXT);
     /// &
-    static constexpr const uint32_t PAD_PLUS = (0x2F & FLAG_EXT);
+    static constexpr const uint32_t PAD_PLUS      = (0x2F & FLAG_EXT);
     /// Enter
-    static constexpr const uint32_t PAD_ENTER = (0x30 & FLAG_EXT);
+    static constexpr const uint32_t PAD_ENTER     = (0x30 & FLAG_EXT);
     /// .
-    static constexpr const uint32_t PAD_DOT = (0x31 & FLAG_EXT);
+    static constexpr const uint32_t PAD_DOT       = (0x31 & FLAG_EXT);
     /// 0
-    static constexpr const uint32_t PAD_0 = (0x32 & FLAG_EXT);
+    static constexpr const uint32_t PAD_0         = (0x32 & FLAG_EXT);
     /// 1
-    static constexpr const uint32_t PAD_1 = (0x33 & FLAG_EXT);
+    static constexpr const uint32_t PAD_1         = (0x33 & FLAG_EXT);
     /// 2
-    static constexpr const uint32_t PAD_2 = (0x34 & FLAG_EXT);
+    static constexpr const uint32_t PAD_2         = (0x34 & FLAG_EXT);
     /// 3
-    static constexpr const uint32_t PAD_3 = (0x35 & FLAG_EXT);
+    static constexpr const uint32_t PAD_3         = (0x35 & FLAG_EXT);
     /// 4
-    static constexpr const uint32_t PAD_4 = (0x36 & FLAG_EXT);
+    static constexpr const uint32_t PAD_4         = (0x36 & FLAG_EXT);
     /// 5
-    static constexpr const uint32_t PAD_5 = (0x37 & FLAG_EXT);
+    static constexpr const uint32_t PAD_5         = (0x37 & FLAG_EXT);
     /// 6
-    static constexpr const uint32_t PAD_6 = (0x38 & FLAG_EXT);
+    static constexpr const uint32_t PAD_6         = (0x38 & FLAG_EXT);
     /// 7
-    static constexpr const uint32_t PAD_7 = (0x39 & FLAG_EXT);
+    static constexpr const uint32_t PAD_7         = (0x39 & FLAG_EXT);
     /// 8
-    static constexpr const uint32_t PAD_8 = (0x3A & FLAG_EXT);
+    static constexpr const uint32_t PAD_8         = (0x3A & FLAG_EXT);
     /// 9
-    static constexpr const uint32_t PAD_9 = (0x3B & FLAG_EXT);
+    static constexpr const uint32_t PAD_9         = (0x3B & FLAG_EXT);
     /// Up
-    static constexpr const uint32_t PAD_UP = PAD_8;
+    static constexpr const uint32_t PAD_UP        = PAD_8;
     /// Down
-    static constexpr const uint32_t PAD_DOWN = PAD_2;
+    static constexpr const uint32_t PAD_DOWN      = PAD_2;
     /// Left
-    static constexpr const uint32_t PAD_LEFT = PAD_4;
+    static constexpr const uint32_t PAD_LEFT      = PAD_4;
     /// Right
-    static constexpr const uint32_t PAD_RIGHT = PAD_6;
+    static constexpr const uint32_t PAD_RIGHT     = PAD_6;
     /// Home
-    static constexpr const uint32_t PAD_HOME = PAD_7;
+    static constexpr const uint32_t PAD_HOME      = PAD_7;
     /// End
-    static constexpr const uint32_t PAD_END = PAD_1;
+    static constexpr const uint32_t PAD_END       = PAD_1;
     /// Page Up
-    static constexpr const uint32_t PAD_PAGEUP = PAD_9;
+    static constexpr const uint32_t PAD_PAGEUP    = PAD_9;
     /// Page Down
-    static constexpr const uint32_t PAD_PAGEDOWN = PAD_3;
+    static constexpr const uint32_t PAD_PAGEDOWN  = PAD_3;
     /// Ins
-    static constexpr const uint32_t PAD_INS = PAD_0;
+    static constexpr const uint32_t PAD_INS       = PAD_0;
     /// Middle key
-    static constexpr const uint32_t PAD_MID = PAD_5;
+    static constexpr const uint32_t PAD_MID       = PAD_5;
     /// Del
-    static constexpr const uint32_t PAD_DEL = PAD_DOT;
+    static constexpr const uint32_t PAD_DEL       = PAD_DOT;
     /// 键盘映射
-    static constexpr const uint8_t keymap[NR_SCAN_CODES * MAP_COLS] = {
+    static constexpr const uint8_t  keymap[NR_SCAN_CODES * MAP_COLS] = {
         /* scan-code			!Shift		Shift		E0 XX
          */
         /* ====================================================================
@@ -612,6 +612,7 @@ private:
     bool alt;
 
 protected:
+
 public:
     KEYBOARD(void);
     ~KEYBOARD(void);
@@ -620,26 +621,26 @@ public:
      * @brief 获取单例
      * @return KEYBOARD&        静态对象
      */
-    static KEYBOARD &get_instance(void);
+    static KEYBOARD& get_instance(void);
 
     /**
      * @brief 初始化
      * @return int32_t         成功返回 0
      */
-    int32_t init(void);
+    int32_t          init(void);
 
     /**
      * @brief 从键盘读
      * @return uint8_t         读到的数据
      */
-    uint8_t read(void);
+    uint8_t          read(void);
 
     /**
      * @brief 设置键盘中断处理函数
      * @param  _h               处理函数
      * @return int32_t          设置成功返回 0
      */
-    int32_t set_handle(INTR::interrupt_handler_t _h);
+    int32_t          set_handle(INTR::interrupt_handler_t _h);
 };
 
 #endif /* _KEYBOARD_H_ */

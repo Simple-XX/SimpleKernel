@@ -15,16 +15,14 @@
  * </table>
  */
 
-#include "stddef.h"
-#include "stdbool.h"
-#include "io.h"
-#include "stdio.h"
 #include "keyboard.h"
+#include "cstdio"
+#include "io.h"
 
 /**
  * @brief 默认处理函数
  */
-static void default_keyboard_handle(INTR::intr_context_t *) {
+static void default_keyboard_handle(INTR::intr_context_t*) {
     KEYBOARD::get_instance().read();
     return;
 }
@@ -113,7 +111,7 @@ uint8_t KEYBOARD::read(void) {
     return letter;
 }
 
-KEYBOARD &KEYBOARD::get_instance(void) {
+KEYBOARD& KEYBOARD::get_instance(void) {
     /// 定义全局 KEYBOARD 对象
     static KEYBOARD keyboard;
     return keyboard;

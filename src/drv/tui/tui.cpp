@@ -14,11 +14,10 @@
  * </table>
  */
 
-#include "stddef.h"
-#include "stdint.h"
-#include "stdarg.h"
-#include "string.h"
 #include "tui.h"
+#include "cstddef"
+#include "cstdint"
+#include "cstring"
 #include "port.h"
 
 pos_t::pos_t(const uint8_t _col, const uint8_t _row) : col(_col), row(_row) {
@@ -193,12 +192,12 @@ uint8_t TUI::get_char(void) const {
     return 0;
 }
 
-void TUI::write_string(const char *_s) {
+void TUI::write_string(const char* _s) {
     write(_s, strlen(_s));
     return;
 }
 
-void TUI::write(const char *_s, const size_t _len) {
+void TUI::write(const char* _s, const size_t _len) {
     for (size_t i = 0; i < _len; i++) {
         put_char(_s[i]);
     }
