@@ -15,10 +15,10 @@
  * </table>
  */
 
-#include "stdlib.h"
 #include "ctype.h"
 #include "limits.h"
 #include "math.h"
+#include "stdlib.h"
 
 /*
  * Convert a string to a long integer.
@@ -26,8 +26,8 @@
  * Ignores `locale' stuff.  Assumes that the upper and lower case
  * alphabets and digits are each contiguous.
  */
-long strtol(const char *_nptr, char **_endptr, int _base) {
-    const char   *s = _nptr;
+long strtol(const char* _nptr, char** _endptr, int _base) {
+    const char*   s = _nptr;
     unsigned long acc;
     int           c;
     unsigned long cutoff;
@@ -49,9 +49,9 @@ long strtol(const char *_nptr, char **_endptr, int _base) {
         c = *s++;
     }
     if ((_base == 0 || _base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
-        c = s[1];
-        s += 2;
-        _base = 16;
+        c      = s[1];
+        s     += 2;
+        _base  = 16;
     }
     if (_base == 0) {
         _base = c == '0' ? 8 : 10;
@@ -74,8 +74,8 @@ long strtol(const char *_nptr, char **_endptr, int _base) {
      * Set any if any `digits' consumed; make it negative to indicate
      * overflow.
      */
-    cutoff = neg ? -(unsigned long)LONG_MIN : LONG_MAX;
-    cutlim = cutoff % (unsigned long)_base;
+    cutoff  = neg ? -(unsigned long)LONG_MIN : LONG_MAX;
+    cutlim  = cutoff % (unsigned long)_base;
     cutoff /= (unsigned long)_base;
     for (acc = 0, any = 0;; c = *s++) {
         if (isdigit(c)) {
@@ -94,7 +94,7 @@ long strtol(const char *_nptr, char **_endptr, int _base) {
             any = -1;
         }
         else {
-            any = 1;
+            any  = 1;
             acc *= _base;
             acc += c;
         }
@@ -106,7 +106,7 @@ long strtol(const char *_nptr, char **_endptr, int _base) {
         acc = -acc;
     }
     if (_endptr != 0) {
-        *_endptr = (char *)(any ? s - 1 : _nptr);
+        *_endptr = (char*)(any ? s - 1 : _nptr);
     }
     return (acc);
 }
@@ -117,8 +117,8 @@ long strtol(const char *_nptr, char **_endptr, int _base) {
  * Ignores `locale' stuff.  Assumes that the upper and lower case
  * alphabets and digits are each contiguous.
  */
-long long strtoll(const char *_nptr, char **_endptr, int _base) {
-    const char *s = _nptr;
+long long strtoll(const char* _nptr, char** _endptr, int _base) {
+    const char* s = _nptr;
     long long   acc;
     int         c;
     long long   cutoff;
@@ -139,9 +139,9 @@ long long strtoll(const char *_nptr, char **_endptr, int _base) {
         c = *s++;
     }
     if ((_base == 0 || _base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
-        c = s[1];
-        s += 2;
-        _base = 16;
+        c      = s[1];
+        s     += 2;
+        _base  = 16;
     }
     if (_base == 0) {
         _base = c == '0' ? 8 : 10;
@@ -167,9 +167,9 @@ long long strtoll(const char *_nptr, char **_endptr, int _base) {
                  : LLONG_MAX;
 
 #if defined(__i386__)
-    cutoff = udivmoddi4(cutoff, _base, (unsigned long long *)&cutlim);
+    cutoff = udivmoddi4(cutoff, _base, (unsigned long long*)&cutlim);
 #else
-    cutlim = cutoff % (long long)_base;
+    cutlim  = cutoff % (long long)_base;
     cutoff /= (long long)_base;
 #endif
     for (acc = 0, any = 0;; c = *s++) {
@@ -189,7 +189,7 @@ long long strtoll(const char *_nptr, char **_endptr, int _base) {
             any = -1;
         }
         else {
-            any = 1;
+            any  = 1;
             acc *= _base;
             acc += c;
         }
@@ -201,7 +201,7 @@ long long strtoll(const char *_nptr, char **_endptr, int _base) {
         acc = -acc;
     }
     if (_endptr != 0) {
-        *_endptr = (char *)(any ? s - 1 : _nptr);
+        *_endptr = (char*)(any ? s - 1 : _nptr);
     }
     return (acc);
 }

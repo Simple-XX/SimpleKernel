@@ -28,37 +28,37 @@ namespace COLOR {
 typedef enum : uint8_t {
 #if defined(__i386__) || defined(__x86_64__)
     /// RGB: 0 0 0
-    BLACK = 0,
+    BLACK        = 0,
     /// RGB: 0 0 170
-    BLUE = 1,
+    BLUE         = 1,
     /// RGB: 0 170 0
-    GREEN = 2,
+    GREEN        = 2,
     /// RGB: 0 170 170
-    CYAN = 3,
+    CYAN         = 3,
     /// RGB: 170 0 0
-    RED = 4,
+    RED          = 4,
     /// RGB: 170 0 170
-    PURPLE = 5,
+    PURPLE       = 5,
     /// RGB: 170 85 0
-    BROWN = 6,
+    BROWN        = 6,
     /// RGB: 170 170 170
-    GREY = 7,
+    GREY         = 7,
     /// RGB: 85 85 85
-    DARK_GREY = 8,
+    DARK_GREY    = 8,
     /// RGB: 85 85 255
-    LIGHT_BLUE = 9,
+    LIGHT_BLUE   = 9,
     /// RGB: 85 255 85
-    LIGHT_GREEN = 10,
+    LIGHT_GREEN  = 10,
     /// RGB: 85 255 255
-    LIGHT_CYAN = 11,
+    LIGHT_CYAN   = 11,
     /// RGB: 255 85 85
-    LIGHT_RED = 12,
+    LIGHT_RED    = 12,
     /// RGB: 255 85 255
     LIGHT_PURPLE = 13,
     /// RGB: 255 255 85
-    YELLOW = 14,
+    YELLOW       = 14,
     /// RGB: 255 255 255
-    WHITE = 15,
+    WHITE        = 15,
 #elif defined(__riscv)
     /// @see https://en.wikipedia.org/wiki/ANSI_escape_code
     BLACK        = 30,
@@ -79,6 +79,6 @@ typedef enum : uint8_t {
     LIGHT_WHITE  = 97,
 #endif
 } color_t;
-}; // namespace COLOR
+};     // namespace COLOR
 
 #endif /* SIMPLEKERNEL_COLOR_H */
