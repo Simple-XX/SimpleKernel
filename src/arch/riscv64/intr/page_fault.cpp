@@ -14,17 +14,17 @@
  * </table>
  */
 
-#include "stdint.h"
-#include "stdio.h"
 #include "cpu.hpp"
-#include "vmm.h"
+#include "cstdint"
+#include "cstdio"
 #include "pmm.h"
+#include "vmm.h"
 
-int32_t pg_load_excp(int, char **) {
+int32_t pg_load_excp(int, char**) {
     uintptr_t addr = CPU::READ_STVAL();
     uintptr_t pa   = 0x0;
-    auto      is_mmap =
-        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
+    auto      is_mmap
+      = VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
     // 如果 is_mmap 为 true，说明已经应映射过了
     if (is_mmap == true) {
         // 直接映射
@@ -41,11 +41,11 @@ int32_t pg_load_excp(int, char **) {
     return 0;
 }
 
-int32_t pg_store_excp(int, char **) {
+int32_t pg_store_excp(int, char**) {
     uintptr_t addr = CPU::READ_STVAL();
     uintptr_t pa   = 0x0;
-    auto      is_mmap =
-        VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
+    auto      is_mmap
+      = VMM::get_instance().get_mmap(VMM::get_instance().get_pgd(), addr, &pa);
     // 如果 is_mmap 为 true，说明已经应映射过了
     if (is_mmap == true) {
         // 直接映射
