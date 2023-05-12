@@ -24,8 +24,9 @@ extern "C" {
 
 #include "stdio.h"
 
-#define assert(_e) ((void)((_e) ? ((void)0) : __assert(#_e, __FILE__, __LINE__)))
-#define __assert(_e, _file, _line)                                                \
+#define assert(_e) \
+    ((void)((_e) ? ((void)0) : __assert(#_e, __FILE__, __LINE__)))
+#define __assert(_e, _file, _line) \
     ((void)err("%s:%d: failed assertion `%s'\n", _file, _line, _e))
 
 #ifdef __cplusplus

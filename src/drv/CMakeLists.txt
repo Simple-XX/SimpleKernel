@@ -13,11 +13,11 @@ PROJECT(drv CXX)
 if (SimpleKernelArch STREQUAL ia32/i386 OR SimpleKernelArch STREQUAL ia32/x86_64)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/tui tui_src)
     set(drv_src ${tui_src})
-# arm 驱动
+    # arm 驱动
 elseif (SimpleKernelArch STREQUAL arm)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uart uart_src)
     set(drv_src ${uart_src})
-# riscv64 驱动
+    # riscv64 驱动
 elseif (SimpleKernelArch STREQUAL riscv64)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi opensbi_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/sbi_console sbi_console_src)
