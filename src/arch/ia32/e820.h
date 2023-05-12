@@ -17,19 +17,19 @@
 #ifndef _E820_H_
 #define _E820_H_
 
-#include "stddef.h"
-#include "stdint.h"
+#include "cstddef"
+#include "cstdint"
 
 /// 最大数量
-static constexpr const uint32_t E820_MAX = 8;
+static constexpr const uint32_t E820_MAX      = 8;
 /// RAM 标记
-static constexpr const uint32_t E820_RAM = 1;
+static constexpr const uint32_t E820_RAM      = 1;
 /// 保留 标记
 static constexpr const uint32_t E820_RESERVED = 2;
 /// ACPI 标记
-static constexpr const uint32_t E820_ACPI = 3;
+static constexpr const uint32_t E820_ACPI     = 3;
 /// NVS 标记
-static constexpr const uint32_t E820_NVS = 4;
+static constexpr const uint32_t E820_NVS      = 4;
 /// 不可用 标记
 static constexpr const uint32_t E820_UNUSABLE = 5;
 
@@ -51,9 +51,11 @@ struct e820map_t {
         nr_map = 0;
         return;
     }
+
     ~e820map_t(void) {
         return;
     }
+
     uint32_t    nr_map;
     e820entry_t map[E820_MAX];
 };
