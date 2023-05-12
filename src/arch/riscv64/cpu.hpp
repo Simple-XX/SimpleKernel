@@ -17,8 +17,8 @@
 #ifndef SIMPLEKERNEL_CPU_HPP
 #define SIMPLEKERNEL_CPU_HPP
 
-#include "stdint.h"
-#include "stdbool.h"
+#include "cstdbool"
+#include "cstdint"
 #include "iostream"
 
 /**
@@ -49,13 +49,15 @@ struct pte_t {
         ACCESSED        = 1 << ACCESSED_OFFSET,
         DIRTY           = 1 << DIRTY_OFFSET,
     };
+
     union {
         struct {
-            uint64_t flags : 8;
-            uint64_t rsw : 2;
-            uint64_t ppn : 44;
+            uint64_t flags    : 8;
+            uint64_t rsw      : 2;
+            uint64_t ppn      : 44;
             uint64_t reserved : 10;
         };
+
         uint64_t val;
     };
 
@@ -63,10 +65,12 @@ struct pte_t {
         val = 0;
         return;
     }
+
     pte_t(uint64_t _val) : val(_val) {
         return;
     }
-    friend std::ostream &operator<<(std::ostream &_os, const pte_t &_pte) {
+
+    friend std::ostream& operator<<(std::ostream& _os, const pte_t& _pte) {
         printf("val: 0x%p, valid: %s, read: %s, write: %s, exec: %s, user: %s, "
                "global: %s, accessed: %s, dirty: %s, rsw: 0x%p, ppn: 0x%p",
                _pte.val, (_pte.flags & VALID) == VALID ? "true" : "false",
@@ -93,7 +97,8 @@ struct satp_t {
         SV57 = 10,
         SV64 = 11,
     };
-    static constexpr const char *MODE_NAME[] = {
+
+    static constexpr const char* MODE_NAME[] = {
         [NONE] = "NONE", "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
         "UNKNOWN",       "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
         [SV39] = "SV39", [SV48] = "SV48", [SV57] = "SV57", [SV64] = "SV64",
@@ -101,10 +106,11 @@ struct satp_t {
 
     union {
         struct {
-            uint64_t ppn : 44;
+            uint64_t ppn  : 44;
             uint64_t asid : 16;
             uint64_t mode : 4;
         };
+
         uint64_t val;
     };
 
@@ -114,10 +120,12 @@ struct satp_t {
         val = 0;
         return;
     }
+
     satp_t(uint64_t _val) : val(_val) {
         return;
     }
-    friend std::ostream &operator<<(std::ostream &_os, const satp_t &_satp) {
+
+    friend std::ostream& operator<<(std::ostream& _os, const satp_t& _satp) {
         printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", _satp.val,
                _satp.ppn, _satp.asid, MODE_NAME[_satp.mode]);
         return _os;
@@ -131,7 +139,7 @@ struct satp_t {
  * the page table.
  * @todo 需要判断 _x 是否已经处理过
  */
-static inline void SET_PGD(uintptr_t _x) {
+inline static void SET_PGD(uintptr_t _x) {
     satp_t satp;
     // 读取现在的 pgd
     asm("csrr %0, satp" : "=r"(satp));
@@ -147,7 +155,7 @@ static inline void SET_PGD(uintptr_t _x) {
  * @brief 获取页目录，仅获取 ppn
  * @return uintptr_t        页目录
  */
-static inline uintptr_t GET_PGD(void) {
+inline static uintptr_t GET_PGD(void) {
     satp_t satp;
     asm("csrr %0, satp" : "=r"(satp));
     return satp.ppn << satp_t::PPN_OFFSET;
@@ -158,7 +166,7 @@ static inline uintptr_t GET_PGD(void) {
  * @return true             成功
  * @return false            失败
  */
-static inline bool ENABLE_PG(void) {
+inline static bool ENABLE_PG(void) {
     uintptr_t x = GET_PGD();
     satp_t    satp;
     satp.ppn  = x >> satp_t::PPN_OFFSET;
@@ -172,12 +180,12 @@ static inline bool ENABLE_PG(void) {
 /**
  * @brief 刷新 tlb
  */
-static inline void VMM_FLUSH(uintptr_t) {
+inline static void VMM_FLUSH(uintptr_t) {
     // the zero, zero means flush all TLB entries.
     asm("sfence.vma zero, zero");
     return;
 }
 
-}; // namespace CPU
+};     // namespace CPU
 
 #endif /* SIMPLEKERNEL_CPU_HPP */
