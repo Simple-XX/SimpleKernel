@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef _E820_H_
-#define _E820_H_
+#ifndef SIMPLEKERNEL_E820_H
+#define SIMPLEKERNEL_E820_H
 
 #include "cstddef"
 #include "cstdint"
@@ -60,4 +60,4 @@ struct e820map_t {
     e820entry_t map[E820_MAX];
 };
 
-#endif /* _E820_H_ */
+#endif /* SIMPLEKERNEL_E820_H */
