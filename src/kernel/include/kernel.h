@@ -27,11 +27,11 @@ extern "C" void kernel_main(void);
  * @brief 测试物理内存
  * @return int 成功返回 0
  */
-int  test_pmm(void);
+int             test_pmm(void);
 
 /**
  * @brief 输出系统信息
  */
-void show_info(void);
+void            show_info(void);
 
 #endif /* SIMPLEKERNEL_KERNEL_H */
