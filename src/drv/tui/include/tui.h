@@ -18,8 +18,8 @@
 #define SIMPLEKERNEL_TUI_H
 
 #include "color.h"
-#include "stddef.h"
-#include "stdint.h"
+#include "cstddef"
+#include "cstdint"
 
 /**
  * @brief 位置信息

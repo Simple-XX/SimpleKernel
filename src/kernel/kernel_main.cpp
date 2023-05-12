@@ -15,9 +15,9 @@
  */
 
 #include "common.h"
+#include "cstdio"
 #include "iostream"
 #include "kernel.h"
-#include "stdio.h"
 
 /**
  * @brief 内核主要逻辑

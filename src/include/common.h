@@ -17,8 +17,8 @@
 #ifndef SIMPLEKERNEL_COMMON_H
 #define SIMPLEKERNEL_COMMON_H
 
-#include "stddef.h"
-#include "stdint.h"
+#include "cstddef"
+#include "cstdint"
 
 namespace COMMON {
 // 引用链接脚本中的变量

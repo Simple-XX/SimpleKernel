@@ -15,10 +15,10 @@
  */
 
 #include "tui.h"
+#include "cstddef"
+#include "cstdint"
+#include "cstring"
 #include "port.h"
-#include "stddef.h"
-#include "stdint.h"
-#include "string.h"
 
 pos_t::pos_t(const uint8_t _col, const uint8_t _row) : col(_col), row(_row) {
     return;

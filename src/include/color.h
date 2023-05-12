@@ -17,7 +17,7 @@
 #ifndef SIMPLEKERNEL_COLOR_H
 #define SIMPLEKERNEL_COLOR_H
 
-#include "stdint.h"
+#include "cstdint"
 
 /**
  * @brief 颜色定义
