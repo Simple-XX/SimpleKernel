@@ -15,10 +15,8 @@
  */
 
 #include "sbi_console.h"
+#include "cstring"
 #include "opensbi.h"
-#include "stddef.h"
-#include "stdlib.h"
-#include "string.h"
 
 // 默认颜色为白色
 COLOR::color_t SBI_CONSOLE::color = COLOR::WHITE;

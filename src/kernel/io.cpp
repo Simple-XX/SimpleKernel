@@ -14,14 +14,13 @@
  * </table>
  */
 
-#include "stdarg.h"
-#include "stddef.h"
-#include "string.h"
+#include "cstdarg"
+#include "cstring"
 #ifndef __riscv
 #    include "port.h"
 #endif
+#include "cstdio"
 #include "io.h"
-#include "stdio.h"
 
 IO& IO::get_instance(void) {
     /// 定义全局 IO 对象

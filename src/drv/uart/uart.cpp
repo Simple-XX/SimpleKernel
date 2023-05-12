@@ -16,9 +16,9 @@
  */
 
 #include "uart.h"
+#include "cstddef"
+#include "cstring"
 #include "port.h"
-#include "stddef.h"
-#include "string.h"
 
 UART::UART(void) {
     // Disable UART0.
