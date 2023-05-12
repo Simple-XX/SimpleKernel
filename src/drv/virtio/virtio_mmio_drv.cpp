@@ -130,26 +130,8 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     assert(IO::get_instance().read32(regs.magic) == MAGIC_VALUE);
     assert(IO::get_instance().read32(regs.version) == VERSION);
 
-    // printf("regs.magic 0x%p\n", regs.magic);
-    // printf("regs.version 0x%p\n", regs.version);
-    // printf("regs.device_features 0x%p\n", regs.device_features);
-    // printf("regs._reserved1 0x%p\n", regs._reserved1);
-    // printf("regs._reserved3 0x%p\n", regs._reserved3);
-    // printf("regs.interrupt_status 0x%p\n", regs.interrupt_status);
-    // printf("regs.queue_desc_high 0x%p\n", regs.queue_desc_high);
-    //
-    // printf("regs._reserved7 0x%p\n", regs._reserved7);
-    // printf("regs.queue_driver_low 0x%p\n", regs.queue_driver_low);
-    // printf("regs._reserved8 0x%p\n", regs._reserved8);
-    // printf("regs.queue_device_high 0x%p\n", regs.queue_device_high);
-    //
-    // printf("regs._reserved9 0x%p\n", regs._reserved9);
-    // printf("regs.config_generation 0x%p\n", regs.config_generation);
-    // printf("regs.config 0x%p\n", regs.config);
-
     // 检查类型是否符合
     device_type = (device_type_t)IO::get_instance().read32(regs.device_id);
-    // assert(IO::get_instance().read32(regs.device_id) == _type);
     // 初始化
     // virtio-v1.1#3.1.1
     // 重置设备
