@@ -14,12 +14,11 @@
  * </table>
  */
 
-#ifndef _CPU_HPP_
-#define _CPU_HPP_
+#ifndef SIMPLEKERNEL_CPU_HPP
+#define SIMPLEKERNEL_CPU_HPP
 
-#include "stdint.h"
-#include "stdbool.h"
-#include "assert.h"
+#include "cstdbool"
+#include "cstdint"
 
 /**
  * @brief cpu 相关
@@ -82,16 +81,16 @@ static constexpr const uint32_t CR0_PG = 0x80000000;
 
 // 段描述符 DPL
 /// 内核级
-static constexpr const uint32_t DPL0 = 0x00;
-static constexpr const uint32_t DPL1 = 0x01;
-static constexpr const uint32_t DPL2 = 0x02;
+static constexpr const uint32_t DPL0   = 0x00;
+static constexpr const uint32_t DPL1   = 0x01;
+static constexpr const uint32_t DPL2   = 0x02;
 /// 用户级
-static constexpr const uint32_t DPL3 = 0x03;
+static constexpr const uint32_t DPL3   = 0x03;
 
 /**
  * @brief 执行CPU空操作
  */
-static inline void hlt(void) {
+inline static void              hlt(void) {
     __asm__ volatile("hlt");
     return;
 }
@@ -99,7 +98,7 @@ static inline void hlt(void) {
 /**
  * @brief 开启中断
  */
-static inline void sti(void) {
+inline static void sti(void) {
     __asm__ volatile("sti" ::: "memory");
     return;
 }
@@ -107,7 +106,7 @@ static inline void sti(void) {
 /**
  * @brief 关闭中断
  */
-static inline void cli(void) {
+inline static void cli(void) {
     __asm__ volatile("cli" ::: "memory");
     return;
 }
@@ -115,7 +114,7 @@ static inline void cli(void) {
 /**
  * @brief 触发 debug 中断
  */
-static inline void debug_intr(void) {
+inline static void debug_intr(void) {
     __asm__ volatile("int $0x01");
     return;
 }
@@ -124,7 +123,7 @@ static inline void debug_intr(void) {
  * @brief 读取 EFLAGS
  * @return uint32_t        eflags 值
  */
-static inline uint32_t READ_EFLAGS(void) {
+inline static uint32_t READ_EFLAGS(void) {
     uint32_t eflags;
     __asm__ volatile("pushf\n\t"
                      "pop %0\n\t"
@@ -136,7 +135,7 @@ static inline uint32_t READ_EFLAGS(void) {
  * @brief 读取 CR0
  * @return uint32_t        CR0 值
  */
-static inline uint32_t READ_CR0(void) {
+inline static uint32_t READ_CR0(void) {
     uint32_t cr0;
     __asm__ volatile("mov %%cr0, %0" : "=b"(cr0));
     return cr0;
@@ -146,7 +145,7 @@ static inline uint32_t READ_CR0(void) {
  * @brief 读取 CR2
  * @return uint32_t        CR2 值
  */
-static inline uint32_t READ_CR2(void) {
+inline static uint32_t READ_CR2(void) {
     uint32_t cr2;
     __asm__ volatile("mov %%cr2, %0" : "=b"(cr2));
     return cr2;
@@ -156,7 +155,7 @@ static inline uint32_t READ_CR2(void) {
  * @brief 获取页目录 CR3
  * @return uintptr_t        CR3 值
  */
-static inline uintptr_t GET_PGD(void) {
+inline static uintptr_t GET_PGD(void) {
     uintptr_t cr3;
     __asm__ volatile("mov %%cr3, %0" : "=b"(cr3));
     return cr3;
@@ -166,7 +165,7 @@ static inline uintptr_t GET_PGD(void) {
  * @brief 切换内核栈
  * @param  _stack_top       要切换的栈顶地址
  */
-static inline void switch_stack(void *_stack_top) {
+inline static void switch_stack(void* _stack_top) {
     asm("mov %0, %%esp" : : "r"(_stack_top));
     asm("xor %%ebp, %%ebp" : :);
     return;
@@ -176,7 +175,7 @@ static inline void switch_stack(void *_stack_top) {
  * @brief 读取 CR4
  * @return uint32_t        CR4 值
  */
-static inline uint32_t READ_CR4(void) {
+inline static uint32_t READ_CR4(void) {
     uint32_t cr4;
     __asm__ volatile("mov %%cr4, %0" : "=b"(cr4));
     return cr4;
@@ -186,13 +185,13 @@ static inline uint32_t READ_CR4(void) {
  * @brief 刷新页表缓存
  * @param  _addr            要刷新的地址
  */
-static inline void VMM_FLUSH(uintptr_t _addr) {
+inline static void VMM_FLUSH(uintptr_t _addr) {
     __asm__ volatile("invlpg (%0)" : : "r"(_addr) : "memory");
     return;
 }
 
 // 开启 PG
-static inline bool ENABLE_PG(void) {
+inline static bool ENABLE_PG(void) {
     uintptr_t cr0 = 0;
     __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
     // 最高位 PG 位置 1，分页开启
@@ -212,15 +211,15 @@ public:
     uint32_t ignore1 : 3;
     // Page-level write-through; indirectly determines the memory type used
     // to access the page directory during linear-address translation
-    uint32_t pwt : 1;
+    uint32_t pwt     : 1;
     // Page-level cache disable; indirectly determines the memory type used
     // to access the page directory during linear-address translation
-    uint32_t pcd : 1;
+    uint32_t pcd     : 1;
     // Ignored
     uint32_t ignore2 : 7;
     // Physical address of the 4-KByte aligned page directory used for
     // linear-address translation
-    uint32_t addr : 20;
+    uint32_t addr    : 20;
 };
 
 /**
@@ -229,11 +228,11 @@ public:
  * @return true            成功
  * @return false           失败
  */
-static inline bool SET_PGD(uintptr_t _pgd) {
+inline static bool SET_PGD(uintptr_t _pgd) {
     __asm__ volatile("mov %0, %%cr3" : : "r"(_pgd));
     return true;
 }
 
-}; // namespace CPU
+};     // namespace CPU
 
-#endif /* _CPU_HPP_ */
+#endif /* SIMPLEKERNEL_CPU_HPP */
