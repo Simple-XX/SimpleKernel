@@ -17,9 +17,9 @@
 #ifndef SIMPLEKERNEL_TUI_H
 #define SIMPLEKERNEL_TUI_H
 
-#include "stdint.h"
-#include "stddef.h"
 #include "color.h"
+#include "cstddef"
+#include "cstdint"
 
 /**
  * @brief 位置信息
@@ -77,7 +77,7 @@ public:
     // 字符
     uint8_t c;
     // 颜色
-    col_t color;
+    col_t   color;
 };
 
 /**
@@ -86,9 +86,9 @@ public:
 class TUI {
 private:
     /// CRT 控制寄存器-地址
-    static constexpr const uint32_t TUI_ADDR = 0x3D4;
+    static constexpr const uint32_t TUI_ADDR     = 0x3D4;
     /// CRT 控制寄存器-数据
-    static constexpr const uint32_t TUI_DATA = 0x3D5;
+    static constexpr const uint32_t TUI_DATA     = 0x3D5;
     /// 光标高位
     static constexpr const uint32_t TUI_CURSOR_H = 0xE;
     /// 光标低位
@@ -98,19 +98,19 @@ private:
     static constexpr const uint32_t TUI_MEM_BASE = 0xB8000;
     /// TUI 缓存大小
     /// @todo 从 grub 获取
-    static constexpr size_t TUI_MEM_SIZE = 0x8000;
+    static constexpr size_t         TUI_MEM_SIZE = 0x8000;
     /// 规定显示行数
     /// @todo 从 grub 获取
-    static constexpr const size_t WIDTH = 80;
+    static constexpr const size_t   WIDTH        = 80;
     /// 规定显示列数
     /// @todo 从 grub 获取
-    static constexpr const size_t HEIGHT = 25;
+    static constexpr const size_t   HEIGHT       = 25;
     // TUI 缓存
-    char_t *const buffer = (char_t *)TUI_MEM_BASE;
+    char_t* const                   buffer       = (char_t*)TUI_MEM_BASE;
     /// 记录当前位置
-    static pos_t pos;
+    static pos_t                    pos;
     /// 记录当前命令行颜色
-    static col_t color;
+    static col_t                    color;
 
     /**
      * @brief 在指定位置输出
@@ -136,6 +136,7 @@ private:
     void scroll(void);
 
 protected:
+
 public:
     TUI(void);
     ~TUI(void);
@@ -145,7 +146,7 @@ public:
      * @param  _color           要设置的颜色
      * @todo 支持分别字体与背景色
      */
-    void set_color(const COLOR::color_t _color);
+    void           set_color(const COLOR::color_t _color);
 
     /**
      * @brief 获取颜色
@@ -157,70 +158,70 @@ public:
      * @brief 设置光标位置
      * @param  _pos            要设置的位置
      */
-    void set_pos(const pos_t _pos);
+    void           set_pos(const pos_t _pos);
 
     /**
      * @brief 设置行
      * @param  _row            要设置的行
      */
-    void set_pos_row(const size_t _row);
+    void           set_pos_row(const size_t _row);
 
     /**
      * @brief 设置列
      * @param  _col            要设置的列
      */
-    void set_pos_col(const size_t _col);
+    void           set_pos_col(const size_t _col);
 
     /**
      * @brief 获取光标位置
      * @return pos_t           光标的位置
      */
-    pos_t get_pos(void) const;
+    pos_t          get_pos(void) const;
 
     /**
      * @brief 写 TUI 缓存
      * @param  _idx            要写的位置
      * @param  _data           要写的数据
      */
-    void write(const size_t _idx, const char_t _data);
+    void           write(const size_t _idx, const char_t _data);
 
     /**
      * @brief 读 TUI 缓存
      * @param  _idx            要读的位置
      * @return char_t          该位置处的 char_t 对象
      */
-    char_t read(const size_t _idx) const;
+    char_t         read(const size_t _idx) const;
 
     /**
      * @brief 写字符
      * @param  _c              要写的字符
      */
-    void put_char(const char _c);
+    void           put_char(const char _c);
 
     /**
      * @brief 读字符
      * @return uint8_t         读到的字符
      * @note tui 没有读字符的操作，这里只是保持接口一致
      */
-    uint8_t get_char(void) const;
+    uint8_t        get_char(void) const;
 
     /**
      * @brief 写字符串
      * @param  _s              要写的字符串
      */
-    void write_string(const char *_s);
+    void           write_string(const char* _s);
 
     /**
      * @brief 写指定长度的字符串
      * @param  _s              要写的字符串
      * @param  _len            要写的长度
      */
-    void write(const char *_s, const size_t _len);
+    void           write(const char* _s, const size_t _len);
 
     /**
      * @brief 清屏，清空 TUI 缓存
      */
-    void clear(void);
+    void           clear(void);
 };
 
 #endif /* SIMPLEKERNEL_TUI_H */

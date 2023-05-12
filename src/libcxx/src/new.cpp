@@ -15,7 +15,7 @@
  */
 
 #include "new"
-#include "stdlib.h"
+#include "cstdlib"
 
 void *operator new(size_t _size) {
     return kmalloc(_size);
