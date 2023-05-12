@@ -15,6 +15,7 @@
  */
 
 #include "cassert"
+#include "cpu.hpp"
 #include "cstdint"
 #include "cstdio"
 #include "cstring"

@@ -19,6 +19,8 @@
 
 #include "cstdbool"
 #include "cstdint"
+#include "cstdio"
+#include "cstring"
 
 /**
  * @brief cpu 相关
@@ -279,6 +281,17 @@ inline static uint32_t READ_CR2(void) {
 }
 
 /**
+ * @brief 设置 页目录
+ * @param  _pgd            要设置的页表
+ * @return true            成功
+ * @return false           失败
+ */
+inline static bool SET_PGD(uintptr_t _pgd) {
+    __asm__ volatile("mov %0, %%cr3" : : "r"(_pgd));
+    return true;
+}
+
+/**
  * @brief 获取页目录 CR3
  * @return uintptr_t        CR3 值
  */
@@ -350,17 +363,6 @@ public:
     // linear-address translation
     uint32_t addr    : 20;
 };
-
-/**
- * @brief 设置 页目录
- * @param  _pgd            要设置的页表
- * @return true            成功
- * @return false           失败
- */
-inline static bool SET_PGD(uintptr_t _pgd) {
-    __asm__ volatile("mov %0, %%cr3" : : "r"(_pgd));
-    return true;
-}
 
 /**
  * @brief 读 MSR

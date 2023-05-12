@@ -12,6 +12,7 @@ build*
 grub-2.04.tar.xz
 grub-2.04
 iso
+*.img
 *.iso
 *.bin
 null.d
