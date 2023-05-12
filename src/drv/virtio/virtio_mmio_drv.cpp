@@ -129,11 +129,7 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     assert(IO::get_instance().read32(&regs->magic) == MAGIC_VALUE);
     assert(IO::get_instance().read32(&regs->version) == VERSION);
     // 检查类型是否符合
-    /// @todo 暂时只初始化 BLOCK_DEVICE 设备
-    if (IO::get_instance().read32(&regs->device_id) != BLOCK_DEVICE) {
-        warn("JUST BLOCK_DEVICE, return\n");
-        return;
-    }
+    device_type = (device_type_t)IO::get_instance().read32(&regs->device_id);
     // assert(IO::get_instance().read32(&regs->device_id) == _type);
     // 初始化
     // virtio-v1.1#3.1.1
@@ -154,9 +150,21 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     for (auto i : base_features) {
         features.push_back(i);
     }
-    for (auto i : blk_features) {
-        features.push_back(i);
+
+    switch (device_type) {
+        case BLOCK_DEVICE: {
+            for (auto i : blk_features) {
+                features.push_back(i);
+            }
+            break;
+        }
+        default: {
+            warn("NOT SUPPORT device type : [%s]\n",
+                 virtio_device_name[device_type]);
+            return;
+        }
     }
+
     set_features(features);
     // 属性设置完成
     // 置位 FEATURES_OK
@@ -170,76 +178,49 @@ virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
         assert(0);
         return;
     }
-    // 更新设备信息指针
-    blk_config = (virtio_blk_config_t*)&regs->config;
-    // 设置队列
-    /// @todo 多队列支持
-    add_to_device(0);
+
+    switch (device_type) {
+        case BLOCK_DEVICE: {
+            // 更新设备信息指针
+            blk_config = (virtio_blk_config_t*)&regs->config;
+            // 设置队列
+            /// @todo 多队列支持
+            add_to_device(0);
 // #define DEBUG
 #ifdef DEBUG
-    /// @todo: << 重载
-    uint32_t i = 0;
-    uint32_t j = 0;
-    do {
-        i = IO::get_instance().read32(&regs->config_generation);
-        printf("capacity: 0x%X\n",
-               IO::get_instance().read64(&blk_config->capacity));
-        printf("size_max: 0x%X\n",
-               IO::get_instance().read32(&blk_config->size_max));
-        printf("seg_max: 0x%X\n",
-               IO::get_instance().read32(&blk_config->seg_max));
-        printf("cylinders: 0x%X\n",
-               IO::get_instance().read16(&blk_config->geometry.cylinders));
-        printf("heads: 0x%X\n",
-               IO::get_instance().read8(&blk_config->geometry.heads));
-        printf("sectors: 0x%X\n",
-               IO::get_instance().read8(&blk_config->geometry.sectors));
-        printf("blk_size: 0x%X\n",
-               IO::get_instance().read32(&blk_config->blk_size));
-        printf(
-          "physical_block_exp: 0x%X\n",
-          IO::get_instance().read8(&blk_config->topology.physical_block_exp));
-        printf(
-          "alignment_offset: 0x%X\n",
-          IO::get_instance().read8(&blk_config->topology.alignment_offset));
-        printf("min_io_size: 0x%X\n",
-               IO::get_instance().read16(&blk_config->topology.min_io_size));
-        printf("opt_io_size: 0x%X\n",
-               IO::get_instance().read8(&blk_config->topology.opt_io_size));
-        printf("writeback: 0x%X\n",
-               IO::get_instance().read8(&blk_config->writeback));
-        printf("max_discard_sectors: 0x%X\n",
-               IO::get_instance().read32(&blk_config->max_discard_sectors));
-        printf("max_discard_seg: 0x%X\n",
-               IO::get_instance().read32(&blk_config->max_discard_seg));
-        printf(
-          "discard_sector_alignment: 0x%X\n",
-          IO::get_instance().read32(&blk_config->discard_sector_alignment));
-        printf(
-          "max_write_zeroes_sectors: 0x%X\n",
-          IO::get_instance().read32(&blk_config->max_write_zeroes_sectors));
-        printf("max_write_zeroes_seg: 0x%X\n",
-               IO::get_instance().read32(&blk_config->max_write_zeroes_seg));
-        printf("write_zeroes_may_unmap: 0x%X\n",
-               IO::get_instance().read8(&blk_config->write_zeroes_may_unmap));
-        j = IO::get_instance().read32(&regs->config_generation);
-    } while (i != j);
+            uint32_t i = 0;
+            uint32_t j = 0;
+            do {
+                i = IO::get_instance().read32(&regs->config_generation);
+                std::cout << blk_config << std::endl;
+                j = IO::get_instance().read32(&regs->config_generation);
+            } while (i != j);
 #    undef DEBUG
 #endif
+            break;
+        }
+        default: {
+            warn("NOT SUPPORT device type : [%s]\n",
+                 virtio_device_name[device_type]);
+            return;
+        }
+    }
+
     IO::get_instance().write32(&regs->status,
                                IO::get_instance().read32(&regs->status)
                                  | DEVICE_STATUS_DRIVER_OK);
     // 至此 virtio-blk 设备的设置就完成了
-    // 允许中断
-    PLIC::get_instance().set(_resource.intr_no, true);
     // 注册外部中断处理函数
     PLIC::get_instance().register_externel_handler(_resource.intr_no,
                                                    virtio_mmio_intr);
+    // 允许中断
+    PLIC::get_instance().set(_resource.intr_no, true);
+
     printf("virtio mmio drv init\n");
     return;
 }
 
-size_t virtio_mmio_drv_t::rw(virtio_blk_req_t& _req) {
+size_t virtio_mmio_drv_t::blk_rw(virtio_blk_req_t& _req) {
     /// @todo 错误处理
     /// @see virtio-v1.1#5.2.6
     uint32_t mode  = 0;
@@ -294,7 +275,7 @@ int virtio_mmio_drv_t::read(buf_t& _buf) {
     req->type             = virtio_blk_req_t::IN;
     req->sector           = _buf.sector;
     req->data             = _buf.data;
-    auto ret              = rw(*req);
+    auto ret              = blk_rw(*req);
     _buf.valid            = true;
     return ret;
 }
@@ -305,7 +286,7 @@ int virtio_mmio_drv_t::write(buf_t& _buf) {
     req->type             = virtio_blk_req_t::OUT;
     req->sector           = _buf.sector;
     req->data             = _buf.data;
-    auto ret              = rw(*req);
+    auto ret              = blk_rw(*req);
     _buf.valid            = true;
     return ret;
 }
