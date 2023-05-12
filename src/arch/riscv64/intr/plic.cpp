@@ -16,6 +16,7 @@
 
 #include "boot_info.h"
 #include "cpu.hpp"
+#include "cstdint"
 #include "cstdio"
 #include "intr.h"
 #include "io.h"
@@ -32,9 +33,7 @@ static int32_t external_intr(int, char**) {
     // 读取中断号
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
-    info("external_intr: 0x%X\n", no);
-    PLIC::get_instance().do_externel_interrupt(no);
-    info("external_intr done: 0x%X.\n", no);
+    printf("external_intr: 0x%X.\n", no);
     return 0;
 }
 

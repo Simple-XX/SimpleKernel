@@ -14,17 +14,18 @@
  * </table>
  */
 
-#include "assert.h"
 #include "boot_info.h"
+#include "cassert"
 #include "common.h"
 #include "cpu.hpp"
+#include "cstdio"
+#include "cstdlib"
 #include "dev_drv_manager.h"
 #include "heap.h"
 #include "intr.h"
 #include "iostream"
 #include "kernel.h"
 #include "pmm.h"
-#include "stdio.h"
 #include "vmm.h"
 
 /**

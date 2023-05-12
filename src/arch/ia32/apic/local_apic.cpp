@@ -14,10 +14,10 @@
  * </table>
  */
 
-#include "stdio.h"
-#include "intr.h"
-#include "cpu.hpp"
 #include "apic.h"
+#include "cpu.hpp"
+#include "cstdio"
+#include "intr.h"
 
 /// @see 64-ia-32-architectures-software-developer-vol-3a-manual#10
 
@@ -41,10 +41,10 @@ int32_t LOCAL_APIC::init(void) {
     if (cpuid.x2apic() == false) {
         warn("Not support x2APIC.\n");
     }
-    uint64_t msr = CPU::READ_MSR(CPU::IA32_APIC_BASE);
+    uint64_t msr  = CPU::READ_MSR(CPU::IA32_APIC_BASE);
     // 开启 xAPIC 与 x2APIC
-    msr |= (CPU::IA32_APIC_BASE_GLOBAL_ENABLE_BIT |
-            CPU::IA32_APIC_BASE_X2APIC_ENABLE_BIT);
+    msr          |= (CPU::IA32_APIC_BASE_GLOBAL_ENABLE_BIT
+            | CPU::IA32_APIC_BASE_X2APIC_ENABLE_BIT);
     CPU::WRITE_MSR(CPU::IA32_APIC_BASE, msr);
     // 设置 SIVR
     msr = CPU::READ_MSR(CPU::IA32_X2APIC_SIVR);
@@ -55,9 +55,9 @@ int32_t LOCAL_APIC::init(void) {
     CPU::WRITE_MSR(CPU::IA32_X2APIC_SIVR, msr);
 
     // 屏蔽所有 LVT
-    msr = 0;
+    msr  = 0;
     msr |= CPU::IA32_X2APIC_LVT_MASK_BIT;
-    msr = 0x10000;
+    msr  = 0x10000;
     CPU::WRITE_MSR(CPU::IA32_X2APIC_CMCI, msr);
     CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_TIMER, msr);
     CPU::WRITE_MSR(CPU::IA32_X2APIC_LVT_THERMAL, msr);

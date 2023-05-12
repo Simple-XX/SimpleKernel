@@ -1,17 +1,17 @@
 
 /**
  * @file cstring
- * @brief stl cstring 支持
+ * @brief string 定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
- * @date 2023-04-05
+ * @date 2023-05-08
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
  * Based on https://github.com/Alinshans/MyTinySTL
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * <tr><td>2023-05-08<td>Zone.N<td>创建文件
  * </table>
  */
 
@@ -82,44 +82,44 @@
 #undef strtok
 #undef strxfrm
 
-inline void *memchr(void *__s, int __c, size_t __n) {
+inline void* memchr(void* __s, int __c, size_t __n) {
     return __builtin_memchr(__s, __c, __n);
 }
 
-inline char *strchr(char *__s, int __n) {
+inline char* strchr(char* __s, int __n) {
     return __builtin_strchr(__s, __n);
 }
 
-inline char *strpbrk(char *__s1, const char *__s2) {
+inline char* strpbrk(char* __s1, const char* __s2) {
     return __builtin_strpbrk(__s1, __s2);
 }
 
-inline char *strrchr(char *__s, int __n) {
+inline char* strrchr(char* __s, int __n) {
     return __builtin_strrchr(__s, __n);
 }
 
-inline char *strstr(char *__s1, const char *__s2) {
+inline char* strstr(char* __s1, const char* __s2) {
     return __builtin_strstr(__s1, __s2);
 }
 
 namespace std {
 
-    using ::memchr;
-    using ::memcmp;
-    using ::memcpy;
-    using ::memmove;
-    using ::memset;
-    using ::strcat;
-    using ::strchr;
-    using ::strcmp;
-    using ::strcpy;
-    using ::strlen;
-    using ::strncmp;
-    using ::strncpy;
-    using ::strpbrk;
-    using ::strrchr;
-    using ::strstr;
+using ::memchr;
+using ::memcmp;
+using ::memcpy;
+using ::memmove;
+using ::memset;
+using ::strcat;
+using ::strchr;
+using ::strcmp;
+using ::strcpy;
+using ::strlen;
+using ::strncmp;
+using ::strncpy;
+using ::strpbrk;
+using ::strrchr;
+using ::strstr;
 
-};
+};     // namespace std
 
 #endif /* SIMPLEKERNEL_CSTRING */

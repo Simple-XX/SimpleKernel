@@ -17,14 +17,16 @@
 #ifndef _APIC_H_
 #define _APIC_H_
 
-#include "stdint.h"
+#include "cstdint"
 
 /**
  * @brief APIC 抽象
  */
 class APIC {
 private:
+
 protected:
+
 public:
     APIC(void);
     ~APIC(void);
@@ -36,7 +38,9 @@ public:
  */
 class LOCAL_APIC {
 private:
+
 protected:
+
 public:
     LOCAL_APIC(void);
     ~LOCAL_APIC(void);
@@ -48,7 +52,9 @@ public:
  */
 class IO_APIC {
 private:
+
 protected:
+
 public:
     IO_APIC(void);
     ~IO_APIC(void);

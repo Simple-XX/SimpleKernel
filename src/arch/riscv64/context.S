@@ -14,6 +14,8 @@
  * </table>
  */
 
+// clang-format off
+
 // 寄存器长度，8 字节
 .equ REG_BYTES, 8
 // 所有寄存器数量
