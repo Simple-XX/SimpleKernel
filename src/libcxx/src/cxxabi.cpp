@@ -235,7 +235,7 @@ bool type_info::operator==(const type_info &arg) const {
 
 bool type_info::operator!=(const type_info &arg) const {
     return tname != arg.tname;
-    }
+}
 } // namespace std
 
 namespace __cxxabiv1 {

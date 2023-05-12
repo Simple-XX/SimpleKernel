@@ -17,9 +17,9 @@
 #ifndef SIMPLEKERNEL_MULTIBOOT2_H
 #define SIMPLEKERNEL_MULTIBOOT2_H
 
-#include "stdint.h"
-#include "stdbool.h"
 #include "boot_info.h"
+#include "cstdbool"
+#include "cstdint"
 
 /// @see Multiboot2 Specification version 2.0.pdf
 // 启动后，在 32 位内核进入点，机器状态如下：
@@ -39,26 +39,26 @@
 class MULTIBOOT2 {
 private:
     /*  How many bytes from the start of the file we search for the header. */
-    static constexpr const uint32_t MULTIBOOT_SEARCH       = 32768;
-    static constexpr const uint32_t MULTIBOOT_HEADER_ALIGN = 8;
+    static constexpr const uint32_t MULTIBOOT_SEARCH            = 32768;
+    static constexpr const uint32_t MULTIBOOT_HEADER_ALIGN      = 8;
 
     /*  The magic field should contain this. */
-    static constexpr const uint32_t MULTIBOOT2_HEADER_MAGIC = 0xe85250d6;
+    static constexpr const uint32_t MULTIBOOT2_HEADER_MAGIC     = 0xe85250d6;
 
     /*  This should be in %eax. */
     static constexpr const uint32_t MULTIBOOT2_BOOTLOADER_MAGIC = 0x36d76289;
 
     /*  Alignment of multiboot modules. */
-    static constexpr const uint32_t MULTIBOOT_MOD_ALIGN = 0x00001000;
+    static constexpr const uint32_t MULTIBOOT_MOD_ALIGN         = 0x00001000;
 
     /*  Alignment of the multiboot info structure. */
-    static constexpr const uint32_t MULTIBOOT_INFO_ALIGN = 0x00000008;
+    static constexpr const uint32_t MULTIBOOT_INFO_ALIGN        = 0x00000008;
 
     /*  Flags set in the 'flags' member of the multiboot header. */
 
-    static constexpr const uint32_t MULTIBOOT_TAG_ALIGN                 = 8;
-    static constexpr const uint32_t MULTIBOOT_TAG_TYPE_END              = 0;
-    static constexpr const uint32_t MULTIBOOT_TAG_TYPE_CMDLINE          = 1;
+    static constexpr const uint32_t MULTIBOOT_TAG_ALIGN         = 8;
+    static constexpr const uint32_t MULTIBOOT_TAG_TYPE_END      = 0;
+    static constexpr const uint32_t MULTIBOOT_TAG_TYPE_CMDLINE  = 1;
     static constexpr const uint32_t MULTIBOOT_TAG_TYPE_BOOT_LOADER_NAME = 2;
     static constexpr const uint32_t MULTIBOOT_TAG_TYPE_MODULE           = 3;
     static constexpr const uint32_t MULTIBOOT_TAG_TYPE_BASIC_MEMINFO    = 4;
@@ -80,33 +80,33 @@ private:
     static constexpr const uint32_t MULTIBOOT_TAG_TYPE_EFI64_IH         = 20;
     static constexpr const uint32_t MULTIBOOT_TAG_TYPE_LOAD_BASE_ADDR   = 21;
 
-    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_END = 0;
-    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_INFORMATION_REQUEST =
-        1;
+    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_END            = 0;
+    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_INFORMATION_REQUEST
+      = 1;
     static constexpr const uint32_t MULTIBOOT_HEADER_TAG_ADDRESS       = 2;
     static constexpr const uint32_t MULTIBOOT_HEADER_TAG_ENTRY_ADDRESS = 3;
     static constexpr const uint32_t MULTIBOOT_HEADER_TAG_CONSOLE_FLAGS = 4;
     static constexpr const uint32_t MULTIBOOT_HEADER_TAG_FRAMEBUFFER   = 5;
     static constexpr const uint32_t MULTIBOOT_HEADER_TAG_MODULE_ALIGN  = 6;
     static constexpr const uint32_t MULTIBOOT_HEADER_TAG_EFI_BS        = 7;
-    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_ENTRY_ADDRESS_EFI32 =
-        8;
-    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_ENTRY_ADDRESS_EFI64 =
-        9;
+    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_ENTRY_ADDRESS_EFI32
+      = 8;
+    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_ENTRY_ADDRESS_EFI64
+      = 9;
     static constexpr const uint32_t MULTIBOOT_HEADER_TAG_RELOCATABLE = 10;
 
-    static constexpr const uint32_t MULTIBOOT_ARCHITECTURE_I386   = 0;
-    static constexpr const uint32_t MULTIBOOT_ARCHITECTURE_MIPS32 = 4;
-    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_OPTIONAL = 1;
+    static constexpr const uint32_t MULTIBOOT_ARCHITECTURE_I386      = 0;
+    static constexpr const uint32_t MULTIBOOT_ARCHITECTURE_MIPS32    = 4;
+    static constexpr const uint32_t MULTIBOOT_HEADER_TAG_OPTIONAL    = 1;
 
-    static constexpr const uint32_t MULTIBOOT_LOAD_PREFERENCE_NONE = 0;
-    static constexpr const uint32_t MULTIBOOT_LOAD_PREFERENCE_LOW  = 1;
-    static constexpr const uint32_t MULTIBOOT_LOAD_PREFERENCE_HIGH = 2;
+    static constexpr const uint32_t MULTIBOOT_LOAD_PREFERENCE_NONE   = 0;
+    static constexpr const uint32_t MULTIBOOT_LOAD_PREFERENCE_LOW    = 1;
+    static constexpr const uint32_t MULTIBOOT_LOAD_PREFERENCE_HIGH   = 2;
 
-    static constexpr const uint32_t MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED =
-        1;
-    static constexpr const uint32_t MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED =
-        2;
+    static constexpr const uint32_t MULTIBOOT_CONSOLE_FLAGS_CONSOLE_REQUIRED
+      = 1;
+    static constexpr const uint32_t MULTIBOOT_CONSOLE_FLAGS_EGA_TEXT_SUPPORTED
+      = 2;
 
     struct multiboot_header_t {
         // Must be MULTIBOOT_MAGIC - see above.
@@ -172,6 +172,7 @@ private:
     static constexpr const uint32_t MULTIBOOT_MEMORY_ACPI_RECLAIMABLE = 3;
     static constexpr const uint32_t MULTIBOOT_MEMORY_NVS              = 4;
     static constexpr const uint32_t MULTIBOOT_MEMORY_BADRAM           = 5;
+
     struct multiboot_mmap_entry_t {
         uint64_t addr;
         uint64_t len;
@@ -220,10 +221,10 @@ private:
     };
 
     struct multiboot_tag_vbe_t : multiboot_tag_t {
-        uint16_t vbe_mode;
-        uint16_t vbe_interface_seg;
-        uint16_t vbe_interface_off;
-        uint16_t vbe_interface_len;
+        uint16_t                        vbe_mode;
+        uint16_t                        vbe_interface_seg;
+        uint16_t                        vbe_interface_off;
+        uint16_t                        vbe_interface_len;
 
         multiboot_vbe_info_block_t      vbe_control_info;
         multiboot_vbe_mode_info_block_t vbe_mode_info;
@@ -306,22 +307,21 @@ public:
      * @brief 获取单例
      * @return MULTIBOOT2&      静态对象
      */
-    static MULTIBOOT2 &get_instance(void);
+    static MULTIBOOT2& get_instance(void);
 
     /**
      * @brief 初始化
      * @return true            成功
      * @return false           失败
      */
-    bool multiboot2_init(void);
+    bool               multiboot2_init(void);
 
     /**
      * @brief 迭代器
      * @param  _fun            迭代操作
      * @param  _data           数据
      */
-    void multiboot2_iter(bool (*_fun)(const iter_data_t *, void *),
-                         void *_data);
+    void multiboot2_iter(bool (*_fun)(const iter_data_t*, void*), void* _data);
 
     /**
      * @brief 获取内存信息
@@ -330,12 +330,12 @@ public:
      * @return true            成功
      * @return false           失败
      */
-    static bool get_memory(const iter_data_t *_iter_data, void *_data);
+    static bool get_memory(const iter_data_t* _iter_data, void* _data);
 };
 
 namespace BOOT_INFO {
 /// 魔数
 extern "C" uint32_t multiboot2_magic;
-}; // namespace BOOT_INFO
+};     // namespace BOOT_INFO
 
 #endif /* SIMPLEKERNEL_MULTIBOOT2_H */

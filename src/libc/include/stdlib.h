@@ -21,24 +21,24 @@
 extern "C" {
 #endif
 
-#include "stdint.h"
 #include "stddef.h"
+#include "stdint.h"
 
 int       abs(int);
-int       atoi(const char *);
-long      atol(const char *);
-long long atoll(const char *);
-int       itoa(int _num, char *_str, int _len, int _base);
-long      strtol(const char *_nptr, char **_endptr, int _base);
-long long strtoll(const char *_nptr, char **_endptr, int _base);
+int       atoi(const char*);
+long      atol(const char*);
+long long atoll(const char*);
+int       itoa(int _num, char* _str, int _len, int _base);
+long      strtol(const char* _nptr, char** _endptr, int _base);
+long long strtoll(const char* _nptr, char** _endptr, int _base);
 
-void *malloc(size_t size);
+void*     malloc(size_t size);
 
-void free(void *ptr);
+void      free(void* ptr);
 
-void *kmalloc(size_t size);
+void*     kmalloc(size_t size);
 
-void kfree(void *ptr);
+void      kfree(void* ptr);
 
 #ifdef __cplusplus
 }
