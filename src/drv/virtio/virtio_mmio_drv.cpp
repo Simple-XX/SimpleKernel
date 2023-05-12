@@ -120,11 +120,11 @@ extern void virtio_mmio_intr(uint8_t _no);
 
 virtio_mmio_drv_t::virtio_mmio_drv_t(const resource_t& _resource)
     : driver_base_t(NAME) {
-    regs = (virtio_regs_t*)_resource.mem.addr;
     // 映射内存
     VMM::get_instance().mmap(VMM::get_instance().get_pgd(), _resource.mem.addr,
                              _resource.mem.addr,
                              VMM_PAGE_READABLE | VMM_PAGE_WRITABLE);
+    regs = (virtio_regs_t*)_resource.mem.addr;
     // 检查相关值
     assert(IO::get_instance().read32(&regs->magic) == MAGIC_VALUE);
     assert(IO::get_instance().read32(&regs->version) == VERSION);
