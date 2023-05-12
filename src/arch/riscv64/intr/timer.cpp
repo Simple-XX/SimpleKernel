@@ -14,11 +14,11 @@
  * </table>
  */
 
-#include "stdint.h"
-#include "stdio.h"
 #include "cpu.hpp"
-#include "opensbi.h"
+#include "cstdint"
+#include "cstdio"
 #include "intr.h"
+#include "opensbi.h"
 
 /// timer interrupt interval
 /// @todo 从 dts 读取
@@ -27,7 +27,7 @@ static constexpr const uint64_t INTERVAL = 390000000 / 20;
 /**
  * @brief 设置下一次时钟
  */
-void set_next(void) {
+void                            set_next(void) {
     // 调用 opensbi 提供的接口设置时钟
     OPENSBI::get_instance().set_timer(CPU::READ_TIME() + INTERVAL);
     return;
@@ -36,13 +36,13 @@ void set_next(void) {
 /**
  * @brief 时钟中断
  */
-int32_t timer_intr(int, char **) {
+int32_t timer_intr(int, char**) {
     // 每次执行中断时设置下一次中断的时间
     set_next();
     return 0;
 }
 
-TIMER &TIMER::get_instance(void) {
+TIMER& TIMER::get_instance(void) {
     /// 定义全局 TIMER 对象
     static TIMER timer;
     return timer;
