@@ -14,11 +14,11 @@
  * </table>
  */
 
-#include "stdint.h"
-#include "string.h"
-#include "common.h"
-#include "stdio.h"
 #include "firstfit.h"
+#include "common.h"
+#include "cstdint"
+#include "cstdio"
+#include "cstring"
 
 void FIRSTFIT::set(size_t _idx) {
     map[_idx >> SHIFT] |= (uintptr_t)1 << (_idx & MASK);
@@ -53,7 +53,7 @@ size_t FIRSTFIT::find_len(size_t _len, bool _val) const {
     return ~(size_t)0;
 }
 
-FIRSTFIT::FIRSTFIT(const char *_name, uintptr_t _addr, size_t _len)
+FIRSTFIT::FIRSTFIT(const char* _name, uintptr_t _addr, size_t _len)
     : ALLOCATOR(_name, _addr, _len) {
     // 所有清零
     bzero(map, sizeof(map));
@@ -70,7 +70,7 @@ FIRSTFIT::~FIRSTFIT(void) {
 uintptr_t FIRSTFIT::alloc(size_t _len) {
     uintptr_t res_addr = 0;
     // 在位图中寻找连续 _len 的位置
-    size_t idx = find_len(_len, false);
+    size_t    idx      = find_len(_len, false);
     // 如果为 ~0 说明未找到
     if (idx == ~(size_t)0) {
         // err("NO ENOUGH MEM.\n");
@@ -83,7 +83,7 @@ uintptr_t FIRSTFIT::alloc(size_t _len) {
     }
     // 计算实际地址
     // 分配器起始地址+页长度*第几页
-    res_addr = allocator_start_addr + (COMMON::PAGE_SIZE * idx);
+    res_addr              = allocator_start_addr + (COMMON::PAGE_SIZE * idx);
     // 更新统计信息
     allocator_free_count -= _len;
     allocator_used_count += _len;
@@ -92,9 +92,9 @@ uintptr_t FIRSTFIT::alloc(size_t _len) {
 
 bool FIRSTFIT::alloc(uintptr_t _addr, size_t _len) {
     // _addr 不在管理范围内
-    if ((_addr < allocator_start_addr) ||
-        (_addr >=
-         allocator_start_addr + allocator_length * COMMON::PAGE_SIZE)) {
+    if ((_addr < allocator_start_addr)
+        || (_addr
+            >= allocator_start_addr + allocator_length * COMMON::PAGE_SIZE)) {
         return false;
     }
     // 计算 _addr 在 map 中的索引
@@ -120,9 +120,9 @@ bool FIRSTFIT::alloc(uintptr_t _addr, size_t _len) {
 
 void FIRSTFIT::free(uintptr_t _addr, size_t _len) {
     // _addr 不在管理范围内
-    if ((_addr < allocator_start_addr) ||
-        (_addr >=
-         allocator_start_addr + allocator_length * COMMON::PAGE_SIZE)) {
+    if ((_addr < allocator_start_addr)
+        || (_addr
+            >= allocator_start_addr + allocator_length * COMMON::PAGE_SIZE)) {
         return;
     }
     // 计算 _addr 在 map 中的索引
