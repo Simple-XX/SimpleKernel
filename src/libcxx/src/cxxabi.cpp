@@ -15,18 +15,18 @@
  * </table>
  */
 
-#include "cxxabi.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "cxxabi.h"
 
 #define ATEXIT_MAX_FUNCS 128
 
 typedef void (*ctor_t)(void);
 // 在 link.ld 中定义
-extern ctor_t __init_array_start[];
-extern ctor_t __init_array_end[];
+extern ctor_t    __init_array_start[];
+extern ctor_t    __init_array_end[];
 
 typedef unsigned uarch_t;
 
@@ -36,13 +36,13 @@ struct atexit_func_entry_t {
      12bytes.
      * 128 * 12 = 1.5KB exact.
      **/
-    void (*destructor_func)(void *);
-    void *obj_ptr;
-    void *dso_handle;
+    void (*destructor_func)(void*);
+    void* obj_ptr;
+    void* dso_handle;
 };
 
 void cpp_init(void) {
-    ctor_t *f;
+    ctor_t* f;
     for (f = __init_array_start; f < __init_array_end; f++) {
         (*f)();
     }
@@ -56,9 +56,9 @@ void __cxa_pure_virtual(void) {
 atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];
 uarch_t             __atexit_func_count = 0;
 
-extern void *__dso_handle;
+extern void*        __dso_handle;
 
-void __cxa_rethrow() {
+void                __cxa_rethrow() {
     return;
 }
 
@@ -78,7 +78,7 @@ void __gxx_personality_v0() {
     return;
 }
 
-int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
+int __cxa_atexit(void (*f)(void*), void* objptr, void* dso) {
     if (__atexit_func_count >= ATEXIT_MAX_FUNCS) {
         return -1;
     };
@@ -89,7 +89,7 @@ int __cxa_atexit(void (*f)(void *), void *objptr, void *dso) {
     return 0;
 };
 
-int __aeabi_atexit(void (*f)(void *), void *objptr, void *dso) {
+int __aeabi_atexit(void (*f)(void*), void* objptr, void* dso) {
     if (__atexit_func_count >= ATEXIT_MAX_FUNCS) {
         return -1;
     };
@@ -100,7 +100,7 @@ int __aeabi_atexit(void (*f)(void *), void *objptr, void *dso) {
     return 0;
 };
 
-void __cxa_finalize(void *f) {
+void __cxa_finalize(void* f) {
     uarch_t i = __atexit_func_count;
     if (!f) {
         /*
@@ -192,32 +192,32 @@ namespace __cxxabiv1 {
 /* The ABI requires a 64-bit type.  */
 __extension__ typedef int __guard __attribute__((mode(__DI__)));
 
-int  __cxa_guard_acquire(__guard *);
-void __cxa_guard_release(__guard *);
-void __cxa_guard_abort(__guard *);
+int                       __cxa_guard_acquire(__guard*);
+void                      __cxa_guard_release(__guard*);
+void                      __cxa_guard_abort(__guard*);
 
-int __cxa_guard_acquire(__guard *g) {
-    return !*(char *)(g);
+int                       __cxa_guard_acquire(__guard* g) {
+    return !*(char*)(g);
 }
 
-void __cxa_guard_release(__guard *g) {
-    *(char *)g = 1;
+void __cxa_guard_release(__guard* g) {
+    *(char*)g = 1;
 }
 
-void __cxa_guard_abort(__guard *) {
+void __cxa_guard_abort(__guard*) {
 }
-} // namespace __cxxabiv1
+}    // namespace __cxxabiv1
 
 #ifdef __cplusplus
 };
 #endif
 
 namespace std {
-type_info::type_info(const type_info &arg) : tname(arg.tname) {
+type_info::type_info(const type_info& arg) : tname(arg.tname) {
     return;
 }
 
-type_info::type_info(const char *pname) : tname(pname) {
+type_info::type_info(const char* pname) : tname(pname) {
     return;
 }
 
@@ -225,27 +225,27 @@ type_info::~type_info(void) {
     return;
 }
 
-const char *type_info::name(void) const {
+const char* type_info::name(void) const {
     return tname;
 }
 
-bool type_info::operator==(const type_info &arg) const {
+bool type_info::operator==(const type_info& arg) const {
     return tname == arg.tname;
 }
 
-bool type_info::operator!=(const type_info &arg) const {
+bool type_info::operator!=(const type_info& arg) const {
     return tname != arg.tname;
 }
-} // namespace std
+}    // namespace std
 
 namespace __cxxabiv1 {
 
-#define ADD_CXX_TYPEINFO_SOURCE(t)                                             \
-    t::t(const char *n) : std::type_info(n) {                                  \
-        return;                                                                \
-    }                                                                          \
-    t::~t(void) {                                                              \
-        return;                                                                \
+#define ADD_CXX_TYPEINFO_SOURCE(t)            \
+    t::t(const char* n) : std::type_info(n) { \
+        return;                               \
+    }                                         \
+    t::~t(void) {                             \
+        return;                               \
     }
 
 ADD_CXX_TYPEINFO_SOURCE(__fundamental_type_info)
@@ -261,4 +261,4 @@ ADD_CXX_TYPEINFO_SOURCE(__vmi_class_type_info)
 
 #undef ADD_CXX_TYPEINFO_SOURCE
 
-} // namespace __cxxabiv1
+}    // namespace __cxxabiv1

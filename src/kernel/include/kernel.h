@@ -27,23 +27,23 @@ extern "C" void kernel_main(void);
  * @brief 物理内存测试函数
  * @return int             0 成功
  */
-int test_pmm(void);
+int             test_pmm(void);
 
 /**
  * @brief 虚拟内存测试函数
  * @return int             0 成功
  */
-int test_vmm(void);
+int             test_vmm(void);
 
 /**
  * @brief 堆测试函数
  * @return int             desc
  */
-int test_heap(void);
+int             test_heap(void);
 
 /**
  * @brief 输出系统信息
  */
-void show_info(void);
+void            show_info(void);
 
 #endif /* SIMPLEKERNEL_KERNEL_H */

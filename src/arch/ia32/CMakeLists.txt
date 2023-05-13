@@ -19,7 +19,7 @@ if (${SimpleKernelArch} STREQUAL "ia32/i386")
     find_asm_source_files(gdt_asm_src ${arch_SOURCE_DIR}/i386/gdt)
     aux_source_directory(${arch_SOURCE_DIR}/i386/gdt gdt_cpp_src)
     set(gdt_src ${gdt_asm_src} ${gdt_cpp_src})
-# 64 位
+    # 64 位
 elseif (${SimpleKernelArch} STREQUAL "ia32/x86_64")
     # 寻找汇编文件
     find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/x86_64/boot)
@@ -44,4 +44,5 @@ add_library(${PROJECT_NAME} OBJECT ${arch_src})
 # 添加头文件搜索路径
 target_include_arch_header_files(${PROJECT_NAME})
 target_include_libc_header_files(${PROJECT_NAME})
+target_include_libcxx_header_files(${PROJECT_NAME})
 target_include_common_header_files(${PROJECT_NAME})
