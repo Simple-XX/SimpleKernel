@@ -26,6 +26,6 @@ extern "C" void kernel_main(void);
 /**
  * @brief 输出系统信息
  */
-void show_info(void);
+void            show_info(void);
 
 #endif /* SIMPLEKERNEL_KERNEL_H */
