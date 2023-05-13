@@ -1,12 +1,23 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
-// uart.cpp for Simple-XX/SimpleKernel.
+/**
+ * @file uart.cpp
+ * @brief uart 驱动实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-03-31
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-03-31<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#include "stddef.h"
-#include "string.h"
 #include "uart.h"
+#include "cstddef"
+#include "cstring"
 #include "port.h"
 
 UART::UART(void) {
@@ -41,8 +52,8 @@ UART::UART(void) {
     PORT::outd(UART0_LCRH, (1 << 4) | (1 << 5) | (1 << 6));
 
     // Mask all interrupts.
-    PORT::outd(UART0_IMSC, (1 << 1) | (1 << 4) | (1 << 5) | (1 << 6) |
-                               (1 << 7) | (1 << 8) | (1 << 9) | (1 << 10));
+    PORT::outd(UART0_IMSC, (1 << 1) | (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7)
+                             | (1 << 8) | (1 << 9) | (1 << 10));
 
     // Enable UART0, receive & transfer part of UART.
     PORT::outd(UART0_CR, (1 << 0) | (1 << 8) | (1 << 9));
@@ -71,12 +82,12 @@ void UART::put_char(const char _c) const {
     return;
 }
 
-void UART::write_string(const char *_s) const {
+void UART::write_string(const char* _s) const {
     write(_s, strlen(_s));
     return;
 }
 
-void UART::write(const char *_s, size_t _len) const {
+void UART::write(const char* _s, size_t _len) const {
     for (size_t i = 0; i < _len; i++) {
         put_char(_s[i]);
     }

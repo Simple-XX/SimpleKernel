@@ -14,23 +14,18 @@
  * </table>
  */
 
-#include "cxxabi.h"
-#include "common.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "iostream"
-#include "assert.h"
 #include "boot_info.h"
-#include "pmm.h"
-#include "vmm.h"
+#include "cassert"
+#include "common.h"
+#include "cpu.hpp"
+#include "cstdio"
+#include "cstdlib"
 #include "heap.h"
 #include "intr.h"
-#include "cpu.hpp"
+#include "iostream"
 #include "kernel.h"
-#include "dtb.h"
-
-/// @todo gdb 调试
-/// @todo clion 环境
+#include "pmm.h"
+#include "vmm.h"
 
 /**
  * @brief 内核主要逻辑
@@ -54,6 +49,8 @@ void kernel_main(void) {
     test_heap();
     // 中断初始化
     INTR::get_instance().init();
+    // 测试中断
+    test_intr();
     // 时钟中断初始化
     TIMER::get_instance().init();
     // 允许中断
@@ -76,10 +73,10 @@ void show_info(void) {
     // 内核实际大小
     auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
     // 内核实际占用页数
-    auto kernel_pages =
-        (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
-         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE)) /
-        COMMON::PAGE_SIZE;
+    auto kernel_pages
+      = (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
+         - COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
+      / COMMON::PAGE_SIZE;
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);

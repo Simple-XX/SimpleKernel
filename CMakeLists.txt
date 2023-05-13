@@ -1,12 +1,12 @@
 
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
-# Based on https://github.com/SynestiaOS/SynestiaOS
+#
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 # CMake 入口
 
 # 设置最小 cmake 版本
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 
 # 跳过编译器检查
 set(CMAKE_C_COMPILER_WORKS TRUE)

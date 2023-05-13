@@ -1,21 +1,32 @@
 ﻿
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://github.com/Alinshans/MyTinySTL
-// algorithm for Simple-XX/SimpleKernel.
+/**
+ * @file algorithm
+ * @brief stl algorithm 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-04-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/Alinshans/MyTinySTL
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-04-05<td>Zone.N<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _ALGORITHM_
-#define _ALGORITHM_
+#ifndef SIMPLEKERNEL_ALGORITHM
+#define SIMPLEKERNEL_ALGORITHM
 
 // 这个头文件包含了 std 的所有算法，包括基本算法，数值算法，heap 算法，set
 // 算法和其他算法
 
-#include "algobase"
 #include "algo"
-#include "set_algo"
+#include "algobase"
 #include "heap_algo"
 #include "numeric"
+#include "set_algo"
 
-namespace mystl {};
+namespace mystl { };
 
-#endif /* _ALGORITHM_ */
+#endif /* SIMPLEKERNEL_ALGORITHM */

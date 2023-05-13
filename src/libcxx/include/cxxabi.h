@@ -1,11 +1,22 @@
 
-// This file is a part of Simple-XX/SimpleKernel
-// (https://github.com/Simple-XX/SimpleKernel).
-// Based on https://wiki.osdev.org/C%2B%2B
-// cxxabi.h for Simple-XX/SimpleKernel.
+/**
+ * @file cxxabi.h
+ * @brief C++ abi 支持
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://wiki.osdev.org/C%2B%2B
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
 
-#ifndef _CXXABI_H_
-#define _CXXABI_H_
+#ifndef SIMPLEKERNEL_CXXABI_H
+#define SIMPLEKERNEL_CXXABI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,11 +25,17 @@ extern "C" {
 // c++ 初始化
 void cpp_init(void);
 
-int  __cxa_atexit(void (*f)(void *), void *objptr, void *dso);
-void __cxa_finalize(void *f);
+int  __cxa_atexit(void (*f)(void*), void* objptr, void* dso);
+void __cxa_finalize(void* f);
 
-int  __aeabi_atexit(void (*f)(void *), void *objptr, void *dso);
-void __cxa_finalize(void *f);
+int  __aeabi_atexit(void (*f)(void*), void* objptr, void* dso);
+void __cxa_finalize(void* f);
+
+#if UINT32_MAX == UINTPTR_MAX
+#    define STACK_CHK_GUARD 0xe2dee396
+#else
+#    define STACK_CHK_GUARD 0x595e9fbd94fda766
+#endif
 
 #ifdef __cplusplus
 };
@@ -26,34 +43,35 @@ void __cxa_finalize(void *f);
 
 namespace std {
 class type_info {
-
 private:
-    const char *tname;
+    const char* tname;
 
 public:
     virtual ~type_info(void);
 
-    type_info(const type_info &);
+    type_info(const type_info&);
 
-    explicit type_info(const char *);
+    explicit type_info(const char*);
 
-    const char *name(void) const;
+    const char* name(void) const;
 
-    bool operator==(const type_info &) const;
+    bool        operator==(const type_info&) const;
 
-    bool operator!=(const type_info &) const;
+    bool        operator!=(const type_info&) const;
 };
-} // namespace std
+}    // namespace std
 
 namespace __cxxabiv1 {
 
-#define ADD_CXX_TYPEINFO_HEADER(t)                                             \
-    class t : public std::type_info {                                          \
-    private:                                                                   \
-    protected:                                                                 \
-    public:                                                                    \
-        explicit t(const char *);                                              \
-        virtual ~t(void);                                                      \
+#define ADD_CXX_TYPEINFO_HEADER(t)    \
+    class t : public std::type_info { \
+    private:                          \
+                                      \
+    protected:                        \
+                                      \
+    public:                           \
+        explicit t(const char*);      \
+        virtual ~t(void);             \
     }
 
 ADD_CXX_TYPEINFO_HEADER(__fundamental_type_info);
@@ -68,6 +86,6 @@ ADD_CXX_TYPEINFO_HEADER(__si_class_type_info);
 ADD_CXX_TYPEINFO_HEADER(__vmi_class_type_info);
 
 #undef ADD_CXX_TYPEINFO_HEADER
-} // namespace __cxxabiv1
+}    // namespace __cxxabiv1
 
-#endif /* _CXXABI_H_ */
+#endif /* SIMPLEKERNEL_CXXABI_H */

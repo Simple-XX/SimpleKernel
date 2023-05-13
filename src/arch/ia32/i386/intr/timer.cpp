@@ -14,21 +14,18 @@
  * </table>
  */
 
-#include "stdint.h"
-#include "stdio.h"
-#include "cpu.hpp"
+#include "cstdio"
 #include "intr.h"
-#include "io.h"
 
 /**
  * @brief 时钟中断
  */
-void timer_intr(INTR::intr_context_t *) {
+void timer_intr(INTR::intr_context_t*) {
     printf("timer.\n");
     return;
 }
 
-TIMER &TIMER::get_instance(void) {
+TIMER& TIMER::get_instance(void) {
     /// 定义全局 TIMER 对象
     static TIMER timer;
     return timer;
