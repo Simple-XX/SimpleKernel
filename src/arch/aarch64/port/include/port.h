@@ -17,21 +17,21 @@
 #ifndef SIMPLEKERNEL_PORT_H
 #define SIMPLEKERNEL_PORT_H
 
-#include "stdint.h"
+#include "cstdint"
 
 namespace PORT {
 // 端口读一个字节
-uint8_t inb(const uint32_t port);
+uint8_t  inb(const uint32_t port);
 // 端口读一个字
 uint16_t inw(const uint32_t port);
 // 端口读一个双字
 uint32_t ind(const uint32_t port);
 // 端口写一个字节
-void outb(const uint32_t port, const uint8_t data);
+void     outb(const uint32_t port, const uint8_t data);
 // 端口写一个字
-void outw(const uint32_t port, const uint16_t data);
+void     outw(const uint32_t port, const uint16_t data);
 // 端口写一个双字
-void outd(const uint32_t port, const uint32_t data);
-}; // namespace PORT
+void     outd(const uint32_t port, const uint32_t data);
+};     // namespace PORT
 
 #endif /* SIMPLEKERNEL_PORT_H */
