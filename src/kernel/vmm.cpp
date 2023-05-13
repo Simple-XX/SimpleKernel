@@ -14,26 +14,27 @@
  * </table>
  */
 
-#include "stdint.h"
-#include "string.h"
-#include "stdio.h"
-#include "assert.h"
+#include "cassert"
+#include "cpu.hpp"
+#include "cstdint"
+#include "cstdio"
+#include "cstring"
 #if defined(__i386__) || defined(__x86_64__)
-#include "gdt.h"
+#    include "gdt.h"
 #endif
 #include "pmm.h"
 #include "vmm.h"
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
-pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
+pte_t* VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
     pt_t pgd = _pgd;
     // sv39 共有三级页表，一级一级查找
     // -1 是因为最后一级是具体的某一页，在函数最后直接返回
     for (size_t level = VMM_PT_LEVEL - 1; level > 0; level--) {
         // 每次循环会找到 _va 的第 level 级页表 pgd
         // 相当于 pgd_level[VPN_level]，这样相当于得到了第 level 级页表的地址
-        pte_t *pte = (pte_t *)&pgd[PX(level, _va)];
+        pte_t* pte = (pte_t*)&pgd[PX(level, _va)];
         // 解引用 pte，如果有效，获取 level+1 级页表，
         if ((*pte & VMM_PAGE_VALID) == 1) {
             // pgd 指向下一级页表
@@ -69,7 +70,7 @@ pte_t *VMM::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
     return &pgd[PX(0, _va)];
 }
 
-VMM &VMM::get_instance(void) {
+VMM& VMM::get_instance(void) {
     /// 定义全局 VMM 对象
     static VMM vmm;
     return vmm;
@@ -111,20 +112,20 @@ void VMM::set_pgd(const pt_t _pgd) {
 }
 
 void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
-    pte_t *pte = find(_pgd, _va, true);
+    pte_t* pte = find(_pgd, _va, true);
     // 一般情况下不应该为空
     assert(pte != nullptr);
     // 已经映射过了 且 flag 没有变化
-    if (((*pte & VMM_PAGE_VALID) == VMM_PAGE_VALID) &&
-        ((*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) == _flag)) {
+    if (((*pte & VMM_PAGE_VALID) == VMM_PAGE_VALID)
+        && ((*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) == _flag)) {
         warn("remap.\n");
     }
     // 没有映射，或更改了 flag
     else {
         // 那么设置 *pte
         // pte 解引用后的值是页表项
-        *pte = PA2PTE(_pa) | _flag | (*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) |
-               VMM_PAGE_VALID;
+        *pte = PA2PTE(_pa) | _flag | (*pte & ((1 << VMM_PTE_PROP_BITS) - 1))
+             | VMM_PAGE_VALID;
         // 刷新缓存
         CPU::VMM_FLUSH(0);
     }
@@ -132,7 +133,7 @@ void VMM::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag) {
 }
 
 void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
-    pte_t *pte = find(_pgd, _va, false);
+    pte_t* pte = find(_pgd, _va, false);
     // 找到页表项
     // 未找到
     if (pte == nullptr) {
@@ -151,8 +152,8 @@ void VMM::unmmap(const pt_t _pgd, uintptr_t _va) {
     return;
 }
 
-bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
-    pte_t *pte = find(_pgd, _va, false);
+bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void* _pa) {
+    pte_t* pte = find(_pgd, _va, false);
     bool   res = false;
     // pte 不为空且有效，说明映射了
     if ((pte != nullptr) && ((*pte & VMM_PAGE_VALID) == 1)) {
@@ -160,7 +161,7 @@ bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
         if (_pa != nullptr) {
             // 设置 _pa
             // 将页表项转换为物理地址
-            *(uintptr_t *)_pa = PTE2PA(*pte);
+            *(uintptr_t*)_pa = PTE2PA(*pte);
         }
         // 返回 true
         res = true;
@@ -170,7 +171,7 @@ bool VMM::get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa) {
         // 如果 _pa 不为空
         if (_pa != nullptr) {
             // 设置 _pa
-            *(uintptr_t *)_pa = (uintptr_t) nullptr;
+            *(uintptr_t*)_pa = (uintptr_t) nullptr;
         }
     }
     return res;
