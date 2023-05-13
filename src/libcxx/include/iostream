@@ -18,11 +18,14 @@
 #ifndef SIMPLEKERNEL_IOSTREAM
 #define SIMPLEKERNEL_IOSTREAM
 
+#include "cstdint"
+
 namespace std {
 class ostream {
 private:
+
 protected:
-    ostream(const ostream &lhs);
+    ostream(const ostream& lhs);
 
 public:
     enum openmode : uint8_t {
@@ -34,17 +37,17 @@ public:
 
     ostream(void);
     ~ostream(void);
-    ostream &operator<<(char c);
-    ostream &operator<<(int n);
-    ostream &operator<<(const char *lhs);
-    ostream &operator<<(ostream &(*)(ostream &));
+    ostream& operator<<(char c);
+    ostream& operator<<(int n);
+    ostream& operator<<(const char* lhs);
+    ostream& operator<<(ostream& (*)(ostream&));
 };
 
-inline ostream &endl(ostream &lhs) {
+inline ostream& endl(ostream& lhs) {
     return lhs << '\n';
 }
 
 static ostream cout;
-}; // namespace std
+};     // namespace std
 
 #endif /* SIMPLEKERNEL_IOSTREAM */

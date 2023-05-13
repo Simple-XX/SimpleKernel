@@ -4,6 +4,8 @@
 // Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
 // boot.S for Simple-XX/SimpleKernel.
 
+// clang-format off
+
 .section .init
  
 // Entry point for the kernel.

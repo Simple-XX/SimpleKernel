@@ -15,7 +15,7 @@
  */
 
 #include "common.h"
-#include "stdio.h"
+#include "cstdio"
 #include "iostream"
 #include "kernel.h"
 
@@ -40,10 +40,10 @@ void show_info(void) {
     // 内核实际大小
     auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
     // 内核实际占用页数
-    auto kernel_pages =
-        (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE) -
-         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE)) /
-        COMMON::PAGE_SIZE;
+    auto kernel_pages
+      = (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
+         - COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
+      / COMMON::PAGE_SIZE;
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);
