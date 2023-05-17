@@ -9,17 +9,13 @@
 
 # 指定要编译的目标架构 ARCH: i386, x86_64, riscv64
 # ARCH="i386"
-# ARCH="x86_64"
-ARCH="riscv64"
+ ARCH="x86_64"
+#ARCH="riscv64"
 
 DEBUG=0
 
 # 内核映像
 kernel='./build_'${ARCH}'/bin/kernel.elf'
-iso_boot_grub='./iso/boot/grub'
-iso_boot='./iso/boot/'
-iso='./simplekernel.iso'
-iso_folder='./iso/'
 # 判断操作系统类型
 OS=`uname -s`
 # toolchain
@@ -33,7 +29,6 @@ if [ "${OS}" == "Linux" ]; then
         TOOLCHAIN_PREFIX=riscv64-linux-gnu-
     fi
     OPENSBI="$(pwd)/tools/opensbi/build/platform/generic/firmware/fw_jump.elf"
-    GRUB_PATH="$(dirname $(which grub-file))"
 elif [ "${OS}" == "Darwin" ]; then
     if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
         TOOLS="toolchain_mac_x86_64.cmake"
@@ -44,5 +39,4 @@ elif [ "${OS}" == "Darwin" ]; then
         TOOLCHAIN_PREFIX=riscv64-unknown-elf-
     fi
     OPENSBI="$(pwd)/tools/opensbi/build/platform/generic/firmware/fw_jump.elf"
-    GRUB_PATH="$(pwd)/tools/grub-2.04/build/grub/bin"
 fi
