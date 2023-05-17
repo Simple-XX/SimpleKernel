@@ -58,10 +58,10 @@ endif ()
 target_link_options(${KernelName} PRIVATE -T ${CMAKE_SOURCE_DIR}/arch/${ARCH}/link.ld)
 
 # 其它链接选项
-if (ARCH STREQUAL riscv64)
+if (ARCH STREQUAL "riscv64")
     target_link_options(${KernelName} PRIVATE -Wl,-melf64lriscv)
-elseif (ARCH STREQUAL x86_64)
+elseif (ARCH STREQUAL "x86_64")
     target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64)
-elseif (ARCH STREQUAL aarch64)
+elseif (ARCH STREQUAL "aarch64")
     target_link_options(${KernelName} PRIVATE -Wl,-maarch64elf)
 endif ()
