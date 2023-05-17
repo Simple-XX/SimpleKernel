@@ -27,7 +27,7 @@
 void kernel_main(void) {
     // 显示基本信息
     show_info();
-    int32_t aaa=0;
+    bool aaa=false;
     // 进入死循环
     while (1) {
         ;
