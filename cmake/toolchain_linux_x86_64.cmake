@@ -17,24 +17,6 @@ else ()
     message(STATUS "Found g++ ${G++}")
 endif ()
 
-# xorriso
-find_program(XORRISO xorriso)
-if (NOT XORRISO)
-    message(FATAL_ERROR "xorriso not found.\n"
-            "Run `sudo apt-get install -y xorriso` to install.")
-else ()
-    message(STATUS "Found xorriso ${XORRISO}")
-endif ()
-
-# GRUB
-find_program(GRUB grub-file)
-if (NOT GRUB)
-    message(FATAL_ERROR "grub-file not found.\n"
-            "Run `sudo apt-get install -y grub2` to install.")
-else ()
-    message(STATUS "Found grub-file ${GRUB}")
-endif ()
-
 # qemu
 find_program(QEMU qemu-system-x86_64)
 if (NOT QEMU)
