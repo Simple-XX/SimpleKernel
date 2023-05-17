@@ -18,6 +18,7 @@
 #include "cstdio"
 #include "iostream"
 #include "kernel.h"
+#include "cstdint"
 
 /**
  * @brief 内核主要逻辑
@@ -26,6 +27,7 @@
 void kernel_main(void) {
     // 显示基本信息
     show_info();
+    int32_t aaa=0;
     // 进入死循环
     while (1) {
         ;
