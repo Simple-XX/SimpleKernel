@@ -53,9 +53,16 @@ if [ ${DEBUG} == 1 ]; then
 fi
 
 # 运行虚拟机
-if [ ${ARCH} == "i386" ] || [ ${ARCH} == "x86_64" ]; then
-    qemu-system-x86_64 -cdrom ${iso} -m 128M \
+if [ ${ARCH} == "x86_64" ]; then
+    objcopy --target=efi-app-x86-64 ${kernel} kernel.efi \
+    -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id \
+    -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn \
+    -S -R .eh_frame -R .gcc_except_table
+	  mkdir -p image
+	  cp *.efi image/
+    qemu-system-x86_64 -bios ./3rd/ovmf/OVMF_x86_64.fd -m 128M \
     -monitor telnet::2333,server,nowait -serial stdio \
+    -hda fat:rw:image -net none \
     ${GDB_OPT}
 elif [ ${ARCH} == "aarch64" ]; then
     qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ${kernel} \
