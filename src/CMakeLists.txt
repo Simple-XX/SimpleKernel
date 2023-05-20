@@ -58,7 +58,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/src/kernel)
 # 将各个子对象链接为内核文件
 add_executable(${KernelName}
         ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/bin/${ARCH}/gnuefi/reloc_${ARCH}.o
-        #        ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/crt0_${ARCH}.o
+        #        ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/bin/crt0_${ARCH}.o
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>
         )
@@ -66,7 +66,7 @@ add_executable(${KernelName}
 link_libraries(${KernelName} PRIVATE
         ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/bin/${ARCH}/lib/libefi.a
         ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/bin/${ARCH}/gnuefi/libgnuefi.a
-        #        ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/libuefi_${ARCH}.a
+        #        ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/bin/libuefi_${ARCH}.a
         )
 
 # 指定链接脚本

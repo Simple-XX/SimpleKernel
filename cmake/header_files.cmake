@@ -18,5 +18,5 @@ function(target_include_gnu_efi_header_files Target)
 endfunction()
 
 function(target_include_posix_uefi_header_files Target)
-    target_include_directories(${Target} PRIVATE ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build)
+    target_include_directories(${Target} PRIVATE ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/uefi)
 endfunction()
