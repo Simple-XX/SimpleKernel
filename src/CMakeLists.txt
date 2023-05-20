@@ -50,22 +50,27 @@ message(STATUS "CMAKE_CXX_FLAGS is ${CMAKE_CXX_FLAGS}")
 message(STATUS "CMAKE_ASM_FLAGS is ${CMAKE_ASM_FLAGS}")
 message(STATUS "TOOLCHAIN_PREFIX is ${TOOLCHAIN_PREFIX}")
 message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
+message(STATUS "${CMAKE_SOURCE_DIR}/3rd/gnu-efi/${ARCH}/gnuefi/reloc_${ARCH}.o is ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/${ARCH}/gnuefi/reloc_${ARCH}.o")
+
 
 # 处理子目录下的 CMakeLists
-add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/arch)
-add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/kernel)
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/arch)
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/kernel)
 
 # 将各个子对象链接为内核文件
 add_executable(${KernelName}
-        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
-        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/${ARCH}/lib/libefi.a
-        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/${ARCH}/gnuefi/libgnuefi.a
+        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/${ARCH}/gnuefi/reloc_${ARCH}.o
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>
         )
 
+link_libraries(${KernelName} PRIVATE
+        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/${ARCH}/lib/libefi.a
+        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/${ARCH}/gnuefi/libgnuefi.a
+        )
+
 # 指定链接脚本
-target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_DIR}/src/arch/${ARCH}/link.ld)
+target_link_options(${KernelName} PRIVATE -T ${CMAKE_SOURCE_DIR}/src/arch/${ARCH}/link.ld)
 # 生成 map 文件
 target_link_options(${KernelName} PRIVATE -Wl,-Map,${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName}.map)
 
