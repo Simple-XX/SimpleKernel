@@ -7,9 +7,9 @@
 # 指定要运行的 ARCH，并设置相关数据
 
 
-# 指定要编译的目标架构 ARCH: i386, x86_64, riscv64
-# ARCH="i386"
- ARCH="x86_64"
+# 指定要编译的目标架构 ARCH: riscv64, x86_64, aarch64
+ARCH="aarch64"
+#ARCH="x86_64"
 #ARCH="riscv64"
 
 DEBUG=0
@@ -23,7 +23,7 @@ if [ "${OS}" == "Linux" ]; then
     if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
         TOOLS="x86_64-x86_64.cmake"
     elif [ "${ARCH}" == "aarch64" ]; then
-        TOOLS="toolchain_linux_aarch64.cmake"
+        TOOLS="aarch64-x86_64.cmake"
     elif [ "${ARCH}" == "riscv64" ]; then
         TOOLS="toolchain_linux_riscv.cmake"
         TOOLCHAIN_PREFIX=riscv64-linux-gnu-

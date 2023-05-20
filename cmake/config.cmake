@@ -28,7 +28,7 @@ if (NOT MACHINE IN_LIST VALID_MACHINE)
 endif()
 
 # 架构
-set(VALID_ARCH riscv64 aarch64 i386 x86_64)
+set(VALID_ARCH riscv64 x86_64 aarch64)
 # 默认构建 riscv64
 if (NOT DEFINED ARCH)
     set(ARCH riscv64)
