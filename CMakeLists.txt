@@ -52,6 +52,49 @@ ExternalProject_Add(
         INSTALL_COMMAND ""
 )
 
+# objcopy --only-keep-debug foo foo.dbg 创建一个包含调试信息的文件
+add_custom_target(kernel_debug DEPENDS kernel)
+add_custom_command(TARGET kernel_debug
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_OBJCOPY} --only-keep-debug ${KernelName} ${KernelName}.debug
+        COMMENT "Generating kernel debug...")
+
+# objcopy --strip-debug foo 创建一个去掉调试信息的( strip 的)可执行文件
+# objcopy --add-gnu-debuglink=foo.dbg foo 为 strip 的文件添加调试信息链接
+add_custom_target(kernel_raw DEPENDS kernel)
+add_custom_command(TARGET kernel_raw
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_OBJCOPY} --strip-debug ${KernelName}
+        COMMAND ${CMAKE_OBJCOPY} --add-gnu-debuglink=${KernelName}.debug ${KernelName}
+        COMMENT "Generating raw kernel...")
+
+# nm
+add_custom_target(kernel_nm DEPENDS kernel)
+add_custom_command(TARGET kernel_nm
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName}
+        > ${KernelName}.nm
+        COMMENT "nm...")
+
+# readelf -a
+add_custom_target(kernel_readelf DEPENDS kernel)
+add_custom_command(TARGET kernel_readelf
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf || (exit 0)
+        COMMENT "readelf...")
+
+# objdump -D
+add_custom_target(kernel_disassembling DEPENDS kernel)
+add_custom_command(TARGET kernel_disassembling
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
+        COMMENT "Disassembling...")
+
 # 制作内核
 # 将内核调整为 efi
 add_custom_target(kernel_efi DEPENDS kernel)
