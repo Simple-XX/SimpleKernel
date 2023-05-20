@@ -8,8 +8,8 @@
 
 # 指定要编译的目标架构 ARCH: riscv64, x86_64, aarch64
 #ARCH="aarch64"
-ARCH="x86_64"
-#ARCH="riscv64"
+#ARCH="x86_64"
+ARCH="riscv64"
 
 DEBUG=0
 
@@ -27,7 +27,7 @@ if [ "${OS}" == "Linux" ]; then
     TOOLS="toolchain_linux_riscv.cmake"
     TOOLCHAIN_PREFIX=riscv64-linux-gnu-
   fi
-  OPENSBI="$(pwd)/tools/opensbi/build/platform/generic/firmware/fw_jump.elf"
+  OPENSBI="$(pwd)/3rd/opensbi/build/platform/generic/firmware/fw_jump.elf"
 elif [ "${OS}" == "Darwin" ]; then
   if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
     TOOLS="toolchain_mac_x86_64.cmake"
@@ -37,5 +37,5 @@ elif [ "${OS}" == "Darwin" ]; then
     TOOLS="toolchain_mac_riscv.cmake"
     TOOLCHAIN_PREFIX=riscv64-unknown-elf-
   fi
-  OPENSBI="$(pwd)/tools/opensbi/build/platform/generic/firmware/fw_jump.elf"
+  OPENSBI="$(pwd)/3rd/opensbi/build/platform/generic/firmware/fw_jump.elf"
 fi

@@ -4,7 +4,7 @@
 # 
 # x86_64-x86_64.cmake for Simple-XX/SimpleKernel.
 
-set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_NAME generic)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)
 
 # todo mac 支持

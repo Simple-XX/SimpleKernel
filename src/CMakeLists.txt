@@ -57,12 +57,22 @@ add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/kernel)
 
 # 将各个子对象链接为内核文件
 add_executable(${KernelName}
-        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/gnuefi/reloc_x86_64.o
-        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/x86_64/lib/libefi.a
-        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/x86_64/gnuefi/libgnuefi.a
         $<TARGET_OBJECTS:arch>
         $<TARGET_OBJECTS:kernel>
-)
+        )
+
+if (ARCH STREQUAL x86_64)
+    target_link_libraries(${KernelName} PRIVATE
+            ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/gnuefi/reloc_x86_64.o
+            ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/x86_64/lib/libefi.a
+            ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/x86_64/gnuefi/libgnuefi.a
+            )
+elseif (ARCH STREQUAL aarch64)
+
+elseif (ARCH STREQUAL riscv64)
+
+endif ()
+
 
 # 指定链接脚本
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_DIR}/src/arch/${ARCH}/link.ld)

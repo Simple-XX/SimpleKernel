@@ -26,7 +26,7 @@ if [ ${ARCH} == "riscv64" ]; then
   # OPENSBI 不存在则编译
   if [ ! -f ${OPENSBI} ]; then
     echo build opensbi.
-    cd ./tools/opensbi
+    cd ./3rd/opensbi
     mkdir -p build
     export CROSS_COMPILE=${TOOLCHAIN_PREFIX}
     export FW_JUMP=y
