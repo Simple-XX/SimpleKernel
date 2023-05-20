@@ -15,6 +15,9 @@
  */
 
 #include "efi.h"
+#include "efilib.h"
+
+#include "kernel.h"
 
 static CHAR16* exampleText = L"Example EFI Application. Press any key!";
 
@@ -25,15 +28,12 @@ static CHAR16* exampleText = L"Example EFI Application. Press any key!";
  */
 extern "C" EFI_STATUS
 efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
-    UINTN                         index;
-    EFI_EVENT                     event  = systemTable->ConIn->WaitForKey;
+    uefi_call_wrapper(InitializeLib, 2, image, systemTable);
+    EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen, 1,
+                                          systemTable->ConOut);
 
-    SIMPLE_INPUT_INTERFACE*       conIn  = systemTable->ConIn;
-    SIMPLE_TEXT_OUTPUT_INTERFACE* conOut = systemTable->ConOut;
-    conOut->OutputString(conOut, exampleText);
-    conOut->OutputString(L"%a", L"fetetet\n");
-
-    systemTable->BootServices->WaitForEvent(1, &event, &index);
-
+    status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+                                          systemTable->ConOut, L"Hello UEFI!\n");
+    kernel_main();
     return EFI_SUCCESS;
 }
