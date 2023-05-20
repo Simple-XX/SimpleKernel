@@ -19,8 +19,10 @@ kernel='./build_'${ARCH}'/bin/kernel.elf'
 OS=$(uname -s)
 # toolchain
 if [ "${OS}" == "Linux" ]; then
-  if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
+  if [ "${ARCH}" == "x86_64" ]; then
     TOOLS="x86_64-x86_64.cmake"
+    POSIX_UEFI=$(pwd)/3rd/posix-uefi/build/libuefi_${ARCH}.a
+    GNU_EFI=$(pwd)/3rd/gnu-efi/bin/${ARCH}/lib/libefi.a
   elif [ "${ARCH}" == "aarch64" ]; then
     TOOLS="aarch64-x86_64.cmake"
   elif [ "${ARCH}" == "riscv64" ]; then
