@@ -4,7 +4,7 @@
 # 
 # x86_64-x86_64.cmake for Simple-XX/SimpleKernel.
 
-set(CMAKE_SYSTEM_NAME generic)
+set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)
 
 # todo mac 支持
@@ -26,3 +26,8 @@ if (NOT QEMU)
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
+
+set(CMAKE_C_FLAGS
+        "${CMAKE_C_FLAGS} -march=corei7 -mtune=corei7 -m64 -mno-red-zone")
+set(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS} -march=corei7 -mtune=corei7 -m64 -mno-red-zone")

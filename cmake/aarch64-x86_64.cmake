@@ -4,8 +4,10 @@
 # 
 # toolchain_linux_aarch64.cmake for Simple-XX/SimpleKernel.
 
-set(CMAKE_SYSTEM_NAME generic)
+set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
+
+set(CMAKE_C_FLAGS "-march=armv8-a -mtune=cortex-a72")
 
 # TODO
 # GCC

@@ -4,7 +4,7 @@
 # 
 # toolchain_linux_riscv.cmake for Simple-XX/SimpleKernel.
 
-set(CMAKE_SYSTEM_NAME generic)
+set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR riscv64)
 
 # GCC
@@ -34,3 +34,6 @@ if (NOT QEMU)
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
+
+set(CMAKE_C_FLAGS "-march=rv64imafdc")
+set(CMAKE_CXX_FLAGS "-march=rv64imafdc")

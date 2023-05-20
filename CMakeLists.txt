@@ -21,45 +21,40 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 # 导入配置
 include(config)
-# 引入添加头文件函数
-include(header_files)
-# 引入添加汇编文件函数
-include(find_asm_files)
+include(ExternalProject)
 
-# 设置工具链
-#include(ExternalProject)
-# uefi 引导
-#ExternalProject_Add(
-#        uefi_boot
-#        BUILD_ALWAYS 1
-#        PREFIX ${CMAKE_BINARY_DIR}/uefi_boot
-#        SOURCE_DIR ${CMAKE_SOURCE_DIR}/src/uefi_boot
-#        BINARY_DIR ${CMAKE_BINARY_DIR}/uefi_boot
-#        CMAKE_ARGS
-#            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-#            -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/cmake/${ARCH}-${CMAKE_HOST_SYSTEM_PROCESSOR}.cmake
-#            -DMACHINE=${MACHINE}
-#            -B ${CMAKE_BINARY_DIR}/src/boot
-#        BUILD_COMMAND ${GENERATOR_COMMAND}
-#)
-## 内核本体
-#ExternalProject_Add(
-#        kernel_elf
-#        BUILD_ALWAYS 1
-#        PREFIX ${CMAKE_BINARY_DIR}/kernel
-#        SOURCE_DIR ${CMAKE_SOURCE_DIR}/src/kernel
-#        BINARY_DIR ${CMAKE_BINARY_DIR}/kernel
-#        CMAKE_ARGS
-#            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-#            -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/cmake/${ARCH}-${CMAKE_HOST_SYSTEM_PROCESSOR}.cmake
-#            -DMACHINE=${MACHINE}
-#            -B ${CMAKE_BINARY_DIR}/kernel
-#        BUILD_COMMAND ${GENERATOR_COMMAND}
-#)
+# 内核本体
+ExternalProject_Add(
+        kernel
+        BUILD_ALWAYS 1
+        PREFIX ${CMAKE_BINARY_DIR}/src
+        SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
+        BINARY_DIR ${CMAKE_BINARY_DIR}/src
+        CMAKE_ARGS
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/cmake/${ARCH}-${CMAKE_HOST_SYSTEM_PROCESSOR}.cmake
+            -DMACHINE=${MACHINE}
+            -DARCH=${ARCH}
+            -DCMAKE_C_COMPILER_WORKS=${CMAKE_C_COMPILER_WORKS}
+            -DCMAKE_CXX_COMPILER_WORKS=${CMAKE_CXX_COMPILER_WORKS}
+            -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
+            -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+            -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+            -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+            -DCMAKE_ASM_FLAGS=${CMAKE_ASM_FLAGS}
+            -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+            -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+            -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+            -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
+            -DKernelName=${KernelName}
+            -B ${CMAKE_BINARY_DIR}/src
+        BUILD_COMMAND ${GENERATOR_COMMAND}
+        INSTALL_COMMAND ""
+)
 
 # 制作内核
 # 将内核调整为 efi
-add_custom_target(kernel_efi DEPENDS kernel_elf)
+add_custom_target(kernel_efi DEPENDS kernel)
 add_custom_command(TARGET kernel_efi
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         COMMENT "Gen kernel.efi"
@@ -69,14 +64,11 @@ add_custom_command(TARGET kernel_efi
             -S -R .eh_frame -R .gcc_except_table
         )
 
-add_custom_target(image_uefi DEPENDS uefi_boot kernel_efi)
+add_custom_target(image_uefi DEPENDS kernel_efi)
 add_custom_command(TARGET image_uefi
         COMMENT "Copying bootloader and kernel"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/boot/src/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/rainbow
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/boot/src/*.efi ${CMAKE_BINARY_DIR}/image/efi/rainbow/
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/kernel/src/kernel ${CMAKE_BINARY_DIR}/image/efi/rainbow/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
 )
 # 制作镜像
 add_custom_target(image DEPENDS image_uefi)
@@ -132,6 +124,3 @@ add_custom_command(
         COMMENT "Run SimpleKernel in qemu."
         COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} #-d int,cpu_reset -monitor telnet:127.0.0.1:55555,server,nowait
 )
-
-# 跳转到 SimpleKernel_SOURCE_CODE_DIR 下的 CMakeLists
-add_subdirectory(${SimpleKernel_SOURCE_DIR}/src)

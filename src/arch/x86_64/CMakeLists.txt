@@ -28,5 +28,3 @@ add_library(${PROJECT_NAME} OBJECT ${arch_src})
 target_include_kernel_header_files(${PROJECT_NAME})
 target_include_gnu_efi_header_files(${PROJECT_NAME})
 target_include_posix_uefi_header_files(${PROJECT_NAME})
-
-
