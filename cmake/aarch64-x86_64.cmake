@@ -4,13 +4,12 @@
 # 
 # toolchain_linux_aarch64.cmake for Simple-XX/SimpleKernel.
 
-set(CMAKE_SYSTEM_NAME Linux)
-set(CMAKE_SYSTEM_VERSION 1)
-set(CMAKE_SYSTEM_PROCESSOR AARCH64)
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
 
 # TODO
 # GCC
-find_program(GCC aarch64-none-eabi-gcc)
+find_program(GCC aarch64-linux-gnu-gcc)
 if (NOT GCC)
     message(FATAL_ERROR "gcc-aarch64-linux-gnu not found.\n"
             "Run `sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu` to install.")
