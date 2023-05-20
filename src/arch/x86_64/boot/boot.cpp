@@ -19,8 +19,6 @@
 
 #include "kernel.h"
 
-static CHAR16* exampleText = L"Example EFI Application. Press any key!";
-
 /**
  * efi_main - The entry point for the EFI application
  * @image: firmware-allocated handle that identifies the image
