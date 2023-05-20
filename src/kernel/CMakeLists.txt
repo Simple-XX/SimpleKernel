@@ -9,7 +9,7 @@
 PROJECT(kernel C CXX)
 
 # 寻找 CXX 文件
-aux_source_directory(${kernel_SOURCE_DIR}/. kernel_src)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} kernel_src)
 
 # 添加子模块
 add_library(${PROJECT_NAME} OBJECT ${kernel_src})
@@ -21,4 +21,4 @@ target_include_libc_header_files(${PROJECT_NAME})
 target_include_libcxx_header_files(${PROJECT_NAME})
 target_include_common_header_files(${PROJECT_NAME})
 target_include_drv_header_files(${PROJECT_NAME})
-target_include_efi_header_files(${PROJECT_NAME})
+target_include_gnu_efi_header_files(${PROJECT_NAME})

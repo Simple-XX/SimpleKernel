@@ -8,39 +8,119 @@
 # 设置最小 cmake 版本
 cmake_minimum_required(VERSION 3.13)
 
-# 跳过编译器检查
-set(CMAKE_C_COMPILER_WORKS TRUE)
-set(CMAKE_CXX_COMPILER_WORKS TRUE)
-
-# 设置项目名与使用的语言
-project(SimpleKernel LANGUAGES CXX ASM)
+# 设置项目名与版本
+project(SimpleKernel VERSION 0.0.1)
 
 # 禁止原地编译
-if(${SimpleKernel_SOURCE_DIR} STREQUAL ${SimpleKernel_BINARY_DIR})
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there.")
-endif()
-
-# 设置使用的 C/C++ 版本
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+endif ()
 
 # 设置辅助 cmake 脚本路径
-set(CMAKE_MODULE_PATH "${SimpleKernel_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
-# 设置 arch
-include(${SimpleKernel_SOURCE_DIR}/cmake/arch_detector.cmake)
-# 引入添加头文件函数
-include(${SimpleKernel_SOURCE_DIR}/cmake/header_files.cmake)
-# 引入添加汇编文件函数
-include(${SimpleKernel_SOURCE_DIR}/cmake/find_asm_files.cmake)
+# 导入配置
+include(config)
+include(ExternalProject)
 
-# 设置输出路径
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# 内核本体
+ExternalProject_Add(
+        kernel
+        BUILD_ALWAYS 1
+        PREFIX ${CMAKE_BINARY_DIR}/src
+        SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
+        BINARY_DIR ${CMAKE_BINARY_DIR}/src
+        CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/cmake/${ARCH}-${CMAKE_HOST_SYSTEM_PROCESSOR}.cmake
+        -DMACHINE=${MACHINE}
+        -DARCH=${ARCH}
+        -DCMAKE_C_COMPILER_WORKS=${CMAKE_C_COMPILER_WORKS}
+        -DCMAKE_CXX_COMPILER_WORKS=${CMAKE_CXX_COMPILER_WORKS}
+        -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
+        -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+        -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+        -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+        -DCMAKE_ASM_FLAGS=${CMAKE_ASM_FLAGS}
+        -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+        -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
+        -DKernelName=${KernelName}
+        -B ${CMAKE_BINARY_DIR}/src
+        BUILD_COMMAND ${GENERATOR_COMMAND}
+        INSTALL_COMMAND ""
+)
 
-# 设置内核名称
-set(KernelName kernel.elf)
+# 制作内核
+# 将内核调整为 efi
+add_custom_target(kernel_efi DEPENDS kernel)
+add_custom_command(TARGET kernel_efi
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMENT "Gen kernel.efi"
+        COMMAND ${CMAKE_OBJCOPY} --target=efi-app-x86-64 ${KernelName} kernel.efi
+        -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id
+        -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn
+        -S -R .eh_frame -R .gcc_except_table
+        )
 
-# 跳转到 SimpleKernel_SOURCE_CODE_DIR 下的 CMakeLists
-add_subdirectory(${SimpleKernel_SOURCE_DIR}/src)
+add_custom_target(image_uefi DEPENDS kernel_efi)
+add_custom_command(TARGET image_uefi
+        COMMENT "Copying bootloader and kernel"
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
+        )
+# 制作镜像
+add_custom_target(image DEPENDS image_uefi)
+add_custom_command(TARGET image
+        POST_BUILD
+        COMMENT "Building UEFI disk image"
+#        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img bs=1M count=33
+#        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img -F32
+#        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img ${CMAKE_BINARY_DIR}/image/* ::
+        )
+
+# 固件
+if (ARCH STREQUAL "riscv64")
+elseif (ARCH STREQUAL "x86_64")
+    set(FIRMWARE OVMF_${ARCH}.fd)
+    file(
+            COPY ${CMAKE_SOURCE_DIR}/3rd/ovmf/${FIRMWARE}
+            DESTINATION ${CMAKE_BINARY_DIR}/firmware
+    )
+    set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
+elseif (ARCH STREQUAL "aarch64")
+    # The aarch64 emulation firmware needs to be padded to 64m (don't know why, might have to do with using "-machine virt")
+    # We also need a separate file for NVRAM.
+    set(FIRMWARE ovmf-aarch64.fd)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/emulation/)
+    execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/${FIRMWARE})
+    execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/nvram.img)
+    execute_process(COMMAND dd if=${CMAKE_SOURCE_DIR}/third_party/firmware/tianocore/${FIRMWARE} of=${CMAKE_BINARY_DIR}/emulation/${FIRMWARE} conv=notrunc)
+    set(QEMU_FIRMWARE -drive if=pflash,format=raw,file=${CMAKE_BINARY_DIR}/emulation/${FIRMWARE},readonly -drive if=pflash,format=raw,file=$(CMAKE_BINARY_DIR)/emulation/nvram.img)
+endif ()
+
+# 运行 QEMU
+# qemu 配置
+set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
+# 内核镜像
+set(QEMU_IMAGE )
+
+if (ARCH STREQUAL "riscv64")
+    set(QEMU_MACHINE -machine virt -m 8G -cpu cortex-a53)
+    set(QEMU_DEVICES -device virtio-gpu-pci)
+elseif (ARCH STREQUAL "x86_64")
+    set(QEMU_MACHINE -m 128M)
+    set(QEMU_DEVICES -net none -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
+    list(APPEND QEMU_FLAGS)
+elseif (ARCH STREQUAL "aarch64")
+    set(QEMU_MACHINE -machine virt -m 8G -cpu cortex-a53)
+    set(QEMU_DEVICES -device virtio-gpu-pci)
+endif ()
+
+add_custom_target(run DEPENDS image_uefi)
+add_custom_command(
+        TARGET run
+        COMMENT "Run SimpleKernel in qemu."
+        COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE}
+)

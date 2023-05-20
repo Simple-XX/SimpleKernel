@@ -24,34 +24,16 @@
 #include "efi.h"
 
 #include "efilib.h"
-EFI_SYSTEM_TABLE* systemTable111;
-
-/**
- * efi_main - The entry point for the EFI application
- * @image: firmware-allocated handle that identifies the image
- * @SystemTable: EFI system table
- */
-extern "C" EFI_STATUS
-efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
-    systemTable111 = systemTable;
-    uefi_call_wrapper(InitializeLib, 2, image, systemTable);
-    EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen, 1,
-                                          systemTable->ConOut);
-
-    status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
-                                          systemTable->ConOut, L"Hello UEFI!\n");
-    kernel_main();
-    return EFI_SUCCESS;
-}
 
 /**
  * @brief 内核主要逻辑
  * @note 这个函数不会返回
  */
-void kernel_main(void) {
-    EFI_STATUS status
-      = uefi_call_wrapper(systemTable111->ConOut->OutputString, 2,
-                          systemTable111->ConOut, L"Hello UEFI111!\n");
+void kernel_main(void* _p) {
+    EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_p;
+    EFI_STATUS        status
+      = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+                          systemTable->ConOut, L"Hello UEFI111!\n");
 
     // 显示基本信息
     show_info();
