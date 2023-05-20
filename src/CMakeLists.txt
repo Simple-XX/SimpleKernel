@@ -5,21 +5,18 @@
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 # 设置编译规则
 
-# 根据 SimpleKernelArch 设置编译选项
+# 根据 ARCH 设置编译选项
 # 架构相关选项
-if (SimpleKernelArch STREQUAL ia32/i386)
-    set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m32 -Di386")
-    set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m32 -Di386")
-elseif (SimpleKernelArch STREQUAL ia32/x86_64)
+if (ARCH STREQUAL x86_64)
     set(CMAKE_C_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -Dx86_64")
     set(CMAKE_CXX_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -Dx86_64")
-elseif (SimpleKernelArch STREQUAL aarch64)
-    set(CMAKE_C_FLAGS "-march=armv8-a -mtune=cortex-a72 -D${SimpleKernelArch}")
-elseif (SimpleKernelArch STREQUAL riscv64)
-    set(CMAKE_C_FLAGS "-march=rv64imafdc -D${SimpleKernelArch}")
-    set(CMAKE_CXX_FLAGS "-march=rv64imafdc -D${SimpleKernelArch}")
+elseif (ARCH STREQUAL aarch64)
+    set(CMAKE_C_FLAGS "-march=armv8-a -mtune=cortex-a72 -D${ARCH}")
+elseif (ARCH STREQUAL riscv64)
+    set(CMAKE_C_FLAGS "-march=rv64imafdc -D${ARCH}")
+    set(CMAKE_CXX_FLAGS "-march=rv64imafdc -D${ARCH}")
 else ()
-    message(FATAL_ERROR "unexpected ARCH: ${SimpleKernelArch}")
+    message(FATAL_ERROR "unexpected ARCH: ${ARCH}")
 endif ()
 
 # 调试相关选项
@@ -42,8 +39,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 # 通用选项
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC  -no-pie -Wall -Wextra -MMD")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -nostdinc -fexceptions -nostartfiles -fPIC  -no-pie -Wall -Wextra -MMD")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -fexceptions -fPIC -DGNU_EFI_USE_MS_ABI -fshort-wchar -Wl,-Bsymbolic -Wl,-shared -Wall -Wextra -MMD")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -ffreestanding -nostdlib -fexceptions -fPIC -DGNU_EFI_USE_MS_ABI -fshort-wchar -Wl,-Bsymbolic -Wl,-shared -Wall -Wextra -MMD")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 # 输出相关信息
@@ -55,27 +52,29 @@ message(STATUS "TOOLCHAIN_PREFIX is ${TOOLCHAIN_PREFIX}")
 message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 
 # 处理子目录下的 CMakeLists
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/arch)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/kernel)
 
 # 将各个子对象链接为内核文件
 add_executable(${KernelName}
+        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/gnuefi/reloc_x86_64.o
+        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/x86_64/lib/libefi.a
+        ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/x86_64/gnuefi/libgnuefi.a
         $<TARGET_OBJECTS:arch>
-        $<TARGET_OBJECTS:kernel>)
+        $<TARGET_OBJECTS:kernel>
+)
 
 # 指定链接脚本
-target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
+target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_DIR}/src/arch/${ARCH}/link.ld)
 # 生成 map 文件
 target_link_options(${KernelName} PRIVATE -Wl,-Map,${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName}.map)
 
 # 其它链接选项
-if (SimpleKernelArch STREQUAL ia32/i386)
-    target_link_options(${KernelName} PRIVATE -Wl,-melf_i386)
-elseif (SimpleKernelArch STREQUAL ia32/x86_64)
+if (ARCH STREQUAL x86_64)
     target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64 -Wl,-z,max-page-size=0x1000)
-elseif (SimpleKernelArch STREQUAL aarch64)
+elseif (ARCH STREQUAL aarch64)
     target_link_options(${KernelName} PRIVATE -Wl,-maarch64elf)
-elseif (SimpleKernelArch STREQUAL riscv64)
+elseif (ARCH STREQUAL riscv64)
     target_link_options(${KernelName} PRIVATE -Wl,-melf64lriscv)
 endif ()
 
