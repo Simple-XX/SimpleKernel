@@ -39,6 +39,37 @@ if [ ${ARCH} == "riscv64" ]; then
   fi
 fi
 
+# gnu-efi
+if [ ${ARCH} == "x86_64" ]; then
+  # gnu-efi 不存在则编译
+  if [ ! -f ${GNU_EFI} ]; then
+    echo build gnu-efi.
+    cd ./3rd/gnu-efi
+    mkdir -p build
+    export ARCH=${ARCH}
+    export prefix=${ARCH}-linux-gnu-
+    make
+    mv -r ${ARCH} build
+    cd ../..
+    echo build gnu-efi done.
+  fi
+fi
+
+# posix-uefi
+if [ ${ARCH} == "x86_64" ]; then
+  # posix-uefi 不存在则编译
+  if [ ! -f ${POSIX_UEFI} ]; then
+    echo build posix-uefi.
+    cd ./3rd/posix-uefi
+    mkdir -p build
+    export ARCH=${ARCH}
+    export USE_GCC=1
+    make
+    cd ../..
+    echo build posix-uefi done.
+  fi
+fi
+
 # 初始化 gdb
 if [ ${DEBUG} == 1 ]; then
   cp ./tools/gdbinit ./.gdbinit

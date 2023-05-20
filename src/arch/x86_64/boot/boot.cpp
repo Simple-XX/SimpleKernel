@@ -17,6 +17,8 @@
 #include "efi.h"
 #include "efilib.h"
 
+//#include "uefi.h"
+
 #include "kernel.h"
 
 /**
@@ -35,3 +37,8 @@ efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
     kernel_main();
     return EFI_SUCCESS;
 }
+
+//int main(int, char**){
+//    printf("1111\n");
+//    return 0;
+//}
