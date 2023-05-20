@@ -4,9 +4,8 @@
 # 
 # toolchain_linux_riscv.cmake for Simple-XX/SimpleKernel.
 
-set(CMAKE_SYSTEM_NAME Linux)
-set(CMAKE_SYSTEM_VERSION 1)
-set(CMAKE_SYSTEM_PROCESSOR RISCV)
+set(CMAKE_SYSTEM_NAME generic)
+set(CMAKE_SYSTEM_PROCESSOR riscv64)
 
 # GCC
 find_program(RISCV riscv64-linux-gnu-g++)
