@@ -42,7 +42,5 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # 设置内核名称
 set(KernelName kernel.elf)
 
-# 设置 src 路径
-set(SimpleKernel_SOURCE_CODE_DIR ${SimpleKernel_SOURCE_DIR}/src)
 # 跳转到 SimpleKernel_SOURCE_CODE_DIR 下的 CMakeLists
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR})
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src)

@@ -59,11 +59,11 @@ message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 
 
 # 处理子目录下的 CMakeLists
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/drv)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libc)
-add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/libcxx)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/arch)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/kernel)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/drv)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/libc)
+add_subdirectory(${SimpleKernel_SOURCE_DIR}/src/libcxx)
 
 # 将各个子对象链接为内核文件
 add_executable(${KernelName}
@@ -72,15 +72,15 @@ add_executable(${KernelName}
     $<TARGET_OBJECTS:libcxx>
     $<TARGET_OBJECTS:drv>
     $<TARGET_OBJECTS:kernel>
-        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/gnuefi/crt0-efi-x86_64.o
-        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/gnuefi/reloc_x86_64.o)
+        ${SimpleKernel_SOURCE_DIR}/src/gnu-efi/x86_64/gnuefi/crt0-efi-x86_64.o
+        ${SimpleKernel_SOURCE_DIR}/src/gnu-efi/x86_64/gnuefi/reloc_x86_64.o)
 
 target_link_libraries(${KernelName}
-        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/gnuefi/libgnuefi.a
-        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/lib/libefi.a )
+        ${SimpleKernel_SOURCE_DIR}/src/gnu-efi/x86_64/gnuefi/libgnuefi.a
+        ${SimpleKernel_SOURCE_DIR}/src/gnu-efi/x86_64/lib/libefi.a )
 
 # 指定链接脚本
-target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
+target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_DIR}/src/arch/${SimpleKernelArch}/link.ld)
 # 生成 map 文件
 target_link_options(${KernelName} PRIVATE -Wl,-Map,${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName}.map)
 target_link_options(${KernelName} PRIVATE -Wl,-Bsymbolic -Wl,-shared -Wl,-nostdlib -Wl,-fPIC)
