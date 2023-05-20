@@ -31,23 +31,23 @@ ExternalProject_Add(
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
         BINARY_DIR ${CMAKE_BINARY_DIR}/src
         CMAKE_ARGS
-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/cmake/${ARCH}-${CMAKE_HOST_SYSTEM_PROCESSOR}.cmake
-            -DMACHINE=${MACHINE}
-            -DARCH=${ARCH}
-            -DCMAKE_C_COMPILER_WORKS=${CMAKE_C_COMPILER_WORKS}
-            -DCMAKE_CXX_COMPILER_WORKS=${CMAKE_CXX_COMPILER_WORKS}
-            -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
-            -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
-            -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-            -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-            -DCMAKE_ASM_FLAGS=${CMAKE_ASM_FLAGS}
-            -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
-            -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-            -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-            -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
-            -DKernelName=${KernelName}
-            -B ${CMAKE_BINARY_DIR}/src
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/cmake/${ARCH}-${CMAKE_HOST_SYSTEM_PROCESSOR}.cmake
+        -DMACHINE=${MACHINE}
+        -DARCH=${ARCH}
+        -DCMAKE_C_COMPILER_WORKS=${CMAKE_C_COMPILER_WORKS}
+        -DCMAKE_CXX_COMPILER_WORKS=${CMAKE_CXX_COMPILER_WORKS}
+        -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
+        -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+        -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+        -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+        -DCMAKE_ASM_FLAGS=${CMAKE_ASM_FLAGS}
+        -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+        -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
+        -DKernelName=${KernelName}
+        -B ${CMAKE_BINARY_DIR}/src
         BUILD_COMMAND ${GENERATOR_COMMAND}
         INSTALL_COMMAND ""
 )
@@ -59,9 +59,9 @@ add_custom_command(TARGET kernel_efi
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         COMMENT "Gen kernel.efi"
         COMMAND ${CMAKE_OBJCOPY} --target=efi-app-x86-64 ${KernelName} kernel.efi
-            -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id
-            -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn
-            -S -R .eh_frame -R .gcc_except_table
+        -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id
+        -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn
+        -S -R .eh_frame -R .gcc_except_table
         )
 
 add_custom_target(image_uefi DEPENDS kernel_efi)
@@ -69,16 +69,16 @@ add_custom_command(TARGET image_uefi
         COMMENT "Copying bootloader and kernel"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
-)
+        )
 # 制作镜像
 add_custom_target(image DEPENDS image_uefi)
 add_custom_command(TARGET image
         POST_BUILD
         COMMENT "Building UEFI disk image"
-        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img bs=1M count=33
-        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img -F32
-        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img ${CMAKE_BINARY_DIR}/image/* ::
-)
+#        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img bs=1M count=33
+#        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img -F32
+#        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img ${CMAKE_BINARY_DIR}/image/* ::
+        )
 
 # 固件
 if (ARCH STREQUAL "riscv64")
@@ -86,9 +86,9 @@ elseif (ARCH STREQUAL "x86_64")
     set(FIRMWARE OVMF_${ARCH}.fd)
     file(
             COPY ${CMAKE_SOURCE_DIR}/3rd/ovmf/${FIRMWARE}
-            DESTINATION ${CMAKE_BINARY_DIR}/emulation/
+            DESTINATION ${CMAKE_BINARY_DIR}/firmware
     )
-    set(QEMU_FIRMWARE -drive if=pflash,format=raw,file=${CMAKE_BINARY_DIR}/emulation/${FIRMWARE})
+    set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
 elseif (ARCH STREQUAL "aarch64")
     # The aarch64 emulation firmware needs to be padded to 64m (don't know why, might have to do with using "-machine virt")
     # We also need a separate file for NVRAM.
@@ -104,23 +104,23 @@ endif ()
 # qemu 配置
 set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
 # 内核镜像
-set(QEMU_IMAGE)
+set(QEMU_IMAGE )
 
 if (ARCH STREQUAL "riscv64")
     set(QEMU_MACHINE -machine virt -m 8G -cpu cortex-a53)
     set(QEMU_DEVICES -device virtio-gpu-pci)
 elseif (ARCH STREQUAL "x86_64")
-    set(QEMU_MACHINE -machine virt)
-    set(QEMU_DEVICES -device virtio-gpu-pci)
-    list(APPEND QEMU_FLAGS -accel kvm -boot order=d)
+    set(QEMU_MACHINE -m 128M)
+    set(QEMU_DEVICES -net none -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
+    list(APPEND QEMU_FLAGS)
 elseif (ARCH STREQUAL "aarch64")
     set(QEMU_MACHINE -machine virt -m 8G -cpu cortex-a53)
     set(QEMU_DEVICES -device virtio-gpu-pci)
 endif ()
 
-add_custom_target(run DEPENDS image)
+add_custom_target(run DEPENDS image_uefi)
 add_custom_command(
         TARGET run
         COMMENT "Run SimpleKernel in qemu."
-        COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} #-d int,cpu_reset -monitor telnet:127.0.0.1:55555,server,nowait
+        COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE}
 )
