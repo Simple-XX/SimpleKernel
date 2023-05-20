@@ -21,11 +21,25 @@
 extern "C" {
 #endif
 
+#ifndef va_list
 #define va_list __builtin_va_list
+#endif
+
+#ifndef va_start
 #define va_start(_v, _l) __builtin_va_start(_v, _l)
+#endif
+
+#ifndef va_arg
 #define va_arg(_v, _l) __builtin_va_arg(_v, _l)
+#endif
+
+#ifndef va_end
 #define va_end(_v) __builtin_va_end(_v)
+#endif
+
+#ifndef va_copy
 #define va_copy(_d, _s) __builtin_va_copy(_d, _s)
+#endif
 
 #ifdef __cplusplus
 }

@@ -57,6 +57,7 @@ message(STATUS "CMAKE_ASM_FLAGS is ${CMAKE_ASM_FLAGS}")
 message(STATUS "TOOLCHAIN_PREFIX is ${TOOLCHAIN_PREFIX}")
 message(STATUS "CMAKE_OBJCOPY is ${CMAKE_OBJCOPY}")
 
+
 # 处理子目录下的 CMakeLists
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/arch)
 add_subdirectory(${SimpleKernel_SOURCE_CODE_DIR}/kernel)
@@ -70,7 +71,13 @@ add_executable(${KernelName}
     $<TARGET_OBJECTS:libc>
     $<TARGET_OBJECTS:libcxx>
     $<TARGET_OBJECTS:drv>
-    $<TARGET_OBJECTS:kernel>)
+    $<TARGET_OBJECTS:kernel>
+        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/gnuefi/crt0-efi-x86_64.o
+        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/gnuefi/reloc_x86_64.o)
+
+target_link_libraries(${KernelName}
+        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/gnuefi/libgnuefi.a
+        ${SimpleKernel_SOURCE_CODE_DIR}/gnu-efi/x86_64/lib/libefi.a )
 
 # 指定链接脚本
 target_link_options(${KernelName} PRIVATE -T ${SimpleKernel_SOURCE_CODE_DIR}/arch/${SimpleKernelArch}/link.ld)
