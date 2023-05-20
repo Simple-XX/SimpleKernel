@@ -8,8 +8,8 @@
 
 # 指定要编译的目标架构 ARCH: riscv64, x86_64, aarch64
 #ARCH="aarch64"
-#ARCH="x86_64"
-ARCH="riscv64"
+ARCH="x86_64"
+#ARCH="riscv64"
 
 DEBUG=0
 
