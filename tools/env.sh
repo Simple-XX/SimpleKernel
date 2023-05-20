@@ -21,7 +21,7 @@ OS=`uname -s`
 # toolchain
 if [ "${OS}" == "Linux" ]; then
     if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ]; then
-        TOOLS="toolchain_linux_x86_64.cmake"
+        TOOLS="x86_64-x86_64.cmake"
     elif [ "${ARCH}" == "aarch64" ]; then
         TOOLS="toolchain_linux_aarch64.cmake"
     elif [ "${ARCH}" == "riscv64" ]; then
