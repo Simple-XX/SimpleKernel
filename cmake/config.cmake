@@ -59,14 +59,15 @@ if (NOT ARCH IN_LIST VALID_ARCH)
     message(FATAL_ERROR "ARCH must be one of ${VALID_ARCH}")
 endif ()
 
-# 是否 debug，默认为发布版
-if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb")
-else ()
-    set(CMAKE_BUILD_TYPE Release)
+# 是否 debug，默认为 Debug
+if (CMAKE_BUILD_TYPE STREQUAL Release)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
+    set(CMAKE_VERBOSE_MAKEFILE OFF)
+else ()
+    set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb")
+    set(CMAKE_VERBOSE_MAKEFILE ON)
 endif ()
-message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 
 # 代码优化级别
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")

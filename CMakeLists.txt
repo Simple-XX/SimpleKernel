@@ -27,11 +27,12 @@ include(ExternalProject)
 ExternalProject_Add(
         kernel
         BUILD_ALWAYS 1
-        PREFIX ${CMAKE_BINARY_DIR}/src
+        PREFIX ${CMAKE_BINARY_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
         BINARY_DIR ${CMAKE_BINARY_DIR}/src
         CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_VERBOSE_MAKEFILE=${CMAKE_VERBOSE_MAKEFILE}
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/cmake/${ARCH}-${CMAKE_HOST_SYSTEM_PROCESSOR}.cmake
         -DMACHINE=${MACHINE}
         -DARCH=${ARCH}
@@ -52,7 +53,6 @@ ExternalProject_Add(
         -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
         -DKernelName=${KernelName}
-        -B ${CMAKE_BINARY_DIR}/src
         BUILD_COMMAND ${GENERATOR_COMMAND}
         INSTALL_COMMAND ""
 )
@@ -123,9 +123,9 @@ add_custom_target(image DEPENDS image_uefi)
 add_custom_command(TARGET image
         POST_BUILD
         COMMENT "Building UEFI disk image"
-        #        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img bs=1M count=33
-        #        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img -F32
-        #        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img ${CMAKE_BINARY_DIR}/image/* ::
+        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/kernel.img bs=1M count=33
+        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/kernel.img -F32
+        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/kernel.img ${CMAKE_BINARY_DIR}/image/* ::
         )
 
 # 固件
@@ -137,16 +137,15 @@ if (ARCH STREQUAL "riscv64")
     )
     set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
 elseif (ARCH STREQUAL "x86_64")
-    set(FIRMWARE OVMF_${ARCH}.fd)
+    # set(FIRMWARE OVMF_${ARCH}.fd)
+    set(FIRMWARE ovmf-x86_64-pure-efi.fd)
     file(
             COPY ${CMAKE_SOURCE_DIR}/3rd/ovmf/${FIRMWARE}
             DESTINATION ${CMAKE_BINARY_DIR}/firmware
     )
     set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
 elseif (ARCH STREQUAL "aarch64")
-    # The aarch64 emulation firmware needs to be padded to 64m (don't know why, might have to do with using "-machine virt")
-    # We also need a separate file for NVRAM.
-    set(FIRMWARE OVMF_${ARCH}.fd)
+    set(FIRMWARE ovmf-aarch64.fd)
     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/emulation/)
     execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/${FIRMWARE})
     execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/nvram.img)
@@ -168,8 +167,10 @@ elseif (ARCH STREQUAL "x86_64")
     set(QEMU_IMAGE -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
     list(APPEND QEMU_FLAGS)
 elseif (ARCH STREQUAL "aarch64")
-    set(QEMU_MACHINE -machine virt -m 8G -cpu cortex-a53)
-    set(QEMU_DEVICES -device virtio-gpu-pci)
+    set(QEMU_MACHINE -machine virt -cpu cortex-a72)
+    set(QEMU_DEVICES -net none)
+    #    set(QEMU_IMAGE -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
+    set(QEMU_IMAGE -drive format=raw,file=${CMAKE_BINARY_DIR}/kernel.img)
 endif ()
 
 add_custom_target(run DEPENDS image_uefi)
