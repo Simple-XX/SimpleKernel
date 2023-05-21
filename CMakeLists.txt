@@ -156,6 +156,9 @@ endif ()
 # 运行 QEMU
 # qemu 配置
 set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+    set(QEMU_DEBUG -S -gdb tcp::1234)
+endif ()
 
 if (ARCH STREQUAL "riscv64")
     set(QEMU_MACHINE -machine virt)
@@ -177,5 +180,5 @@ add_custom_target(run DEPENDS image_uefi)
 add_custom_command(
         TARGET run
         COMMENT "Run SimpleKernel in qemu."
-        COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE}
+        COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
 )
