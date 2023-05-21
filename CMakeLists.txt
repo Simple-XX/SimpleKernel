@@ -137,8 +137,7 @@ if (ARCH STREQUAL "riscv64")
     )
     set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
 elseif (ARCH STREQUAL "x86_64")
-    # set(FIRMWARE OVMF_${ARCH}.fd)
-    set(FIRMWARE ovmf-x86_64-pure-efi.fd)
+    set(FIRMWARE OVMF_${ARCH}.fd)
     file(
             COPY ${CMAKE_SOURCE_DIR}/3rd/ovmf/${FIRMWARE}
             DESTINATION ${CMAKE_BINARY_DIR}/firmware
@@ -157,7 +156,7 @@ endif ()
 # qemu 配置
 set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    set(QEMU_DEBUG -S -gdb tcp::1234)
+    #    set(QEMU_DEBUG -S -gdb tcp::1234)
 endif ()
 
 if (ARCH STREQUAL "riscv64")
