@@ -29,8 +29,8 @@
  * @brief 内核主要逻辑
  * @note 这个函数不会返回
  */
-void kernel_main(void* _p) {
-    EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_p;
+void kernel_main(void* _systemtable) {
+    EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_systemtable;
     EFI_STATUS        status
       = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
                           systemTable->ConOut, L"Hello UEFI111!\n");

@@ -14,6 +14,7 @@
  * </table>
  */
 
+#include "cassert"
 #include "efi.h"
 #include "efilib.h"
 
@@ -34,7 +35,10 @@ efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
 
     status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
                                           systemTable->ConOut, L"Hello UEFI!\n");
+    assert(status != EFI_SUCCESS);
+
     kernel_main((void*)systemTable);
+
     return EFI_SUCCESS;
 }
 
