@@ -37,11 +37,16 @@ ExternalProject_Add(
         -DARCH=${ARCH}
         -DCMAKE_C_COMPILER_WORKS=${CMAKE_C_COMPILER_WORKS}
         -DCMAKE_CXX_COMPILER_WORKS=${CMAKE_CXX_COMPILER_WORKS}
+        -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=${CMAKE_FIND_ROOT_PATH_MODE_PROGRAM}
+        -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}
+        -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=${CMAKE_FIND_ROOT_PATH_MODE_INCLUDE}
+        -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}
         -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
         -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
         -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
         -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         -DCMAKE_ASM_FLAGS=${CMAKE_ASM_FLAGS}
+        -DCMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}
         -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
         -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
         -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
@@ -71,8 +76,8 @@ add_custom_command(TARGET kernel_raw
         COMMENT "Generating raw kernel...")
 
 # nm
-add_custom_target(kernel_nm DEPENDS kernel)
-add_custom_command(TARGET kernel_nm
+add_custom_target(nm DEPENDS kernel)
+add_custom_command(TARGET nm
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName}
@@ -80,16 +85,16 @@ add_custom_command(TARGET kernel_nm
         COMMENT "nm...")
 
 # readelf -a
-add_custom_target(kernel_readelf DEPENDS kernel)
-add_custom_command(TARGET kernel_readelf
+add_custom_target(readelf DEPENDS kernel)
+add_custom_command(TARGET readelf
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf || (exit 0)
         COMMENT "readelf...")
 
 # objdump -D
-add_custom_target(kernel_disassembling DEPENDS kernel)
-add_custom_command(TARGET kernel_disassembling
+add_custom_target(objdump DEPENDS kernel)
+add_custom_command(TARGET objdump
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
@@ -118,13 +123,19 @@ add_custom_target(image DEPENDS image_uefi)
 add_custom_command(TARGET image
         POST_BUILD
         COMMENT "Building UEFI disk image"
-#        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img bs=1M count=33
-#        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img -F32
-#        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img ${CMAKE_BINARY_DIR}/image/* ::
+        #        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img bs=1M count=33
+        #        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img -F32
+        #        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/rainbow-efi-${ARCH}.img ${CMAKE_BINARY_DIR}/image/* ::
         )
 
 # 固件
 if (ARCH STREQUAL "riscv64")
+    set(FIRMWARE fw_jump.elf)
+    file(
+            COPY ${CMAKE_SOURCE_DIR}/3rd/opensbi/build/platform/generic/firmware/${FIRMWARE}
+            DESTINATION ${CMAKE_BINARY_DIR}/firmware
+    )
+    set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
 elseif (ARCH STREQUAL "x86_64")
     set(FIRMWARE OVMF_${ARCH}.fd)
     file(
@@ -135,7 +146,7 @@ elseif (ARCH STREQUAL "x86_64")
 elseif (ARCH STREQUAL "aarch64")
     # The aarch64 emulation firmware needs to be padded to 64m (don't know why, might have to do with using "-machine virt")
     # We also need a separate file for NVRAM.
-    set(FIRMWARE ovmf-aarch64.fd)
+    set(FIRMWARE OVMF_${ARCH}.fd)
     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/emulation/)
     execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/${FIRMWARE})
     execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/nvram.img)
@@ -146,15 +157,15 @@ endif ()
 # 运行 QEMU
 # qemu 配置
 set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
-# 内核镜像
-set(QEMU_IMAGE )
 
 if (ARCH STREQUAL "riscv64")
-    set(QEMU_MACHINE -machine virt -m 8G -cpu cortex-a53)
-    set(QEMU_DEVICES -device virtio-gpu-pci)
+    set(QEMU_MACHINE -machine virt)
+    set(QEMU_DEVICES)
+    set(QEMU_IMAGE -kernel ${KernelName})
 elseif (ARCH STREQUAL "x86_64")
     set(QEMU_MACHINE -m 128M)
-    set(QEMU_DEVICES -net none -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
+    set(QEMU_DEVICES -net none)
+    set(QEMU_IMAGE -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
     list(APPEND QEMU_FLAGS)
 elseif (ARCH STREQUAL "aarch64")
     set(QEMU_MACHINE -machine virt -m 8G -cpu cortex-a53)

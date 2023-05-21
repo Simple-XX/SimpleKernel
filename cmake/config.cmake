@@ -9,9 +9,28 @@
 set(CMAKE_C_COMPILER_WORKS TRUE)
 set(CMAKE_CXX_COMPILER_WORKS TRUE)
 
+# 设置 cmake 搜索路径
+# 仅在 target 搜索 include lib pkg
+# 在 host 搜索 program
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # 设置使用的 C/C++ 版本
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
+# 设置构建使用的工具，默认为 make
+if (CMAKE_GENERATOR MATCHES "Ninja")
+    set(GENERATOR_COMMAND ninja)
+else ()
+    set(GENERATOR_COMMAND make)
+endif ()
 
 # 要运行的平台
 set(VALID_MACHINE qemu)
@@ -41,45 +60,47 @@ if (NOT ARCH IN_LIST VALID_ARCH)
 endif ()
 
 # 是否 debug，默认为发布版
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ggdb")
-    set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 else ()
     set(CMAKE_BUILD_TYPE Release)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
-    set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 endif ()
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 
-# 设置构建使用的工具，默认为 make
-if (CMAKE_GENERATOR MATCHES "Ninja")
-    set(GENERATOR_COMMAND ninja)
-else ()
-    set(GENERATOR_COMMAND make)
-endif ()
-
 # 代码优化级别
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
-set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 # 通用编译选项
 set(CMAKE_C_FLAGS
-        "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -fexceptions \
--fPIC -DGNU_EFI_USE_MS_ABI -fshort-wchar -Wl,-Bsymbolic \
--Wl,-shared -Wall -Wextra -MMD")
-set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -fpermissive -ffreestanding -nostdlib \
--fexceptions -fPIC -DGNU_EFI_USE_MS_ABI -fshort-wchar -Wl,-Bsymbolic \
--Wl,-shared -Wall -Wextra -MMD")
+        "${CMAKE_C_FLAGS} \
+-Wall -Wextra \
+-fPIC -ffreestanding -fexceptions -fshort-wchar \
+-DGNU_EFI_USE_MS_ABI")
+
+# 架构相关编译选项
+if (ARCH STREQUAL "riscv64")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=rv64imafdc")
+elseif (ARCH STREQUAL "x86_64")
+    set(CMAKE_C_FLAGS
+            "${CMAKE_C_FLAGS} -march=corei7 -mtune=corei7 -m64 -mno-red-zone")
+elseif (ARCH STREQUAL "aarch64")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=armv8-a -mtune=cortex-a72")
+endif ()
+
+# 将编译选项同步到汇编
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# 将编译选项同步到 c++
+set(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS} -fpermissive")
+
+# 链接选项
+# 生成 map 文件
+# 指定链接脚本
+set(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} \
+-z max-page-size=0x1000 -nostdlib -shared -Wl,-Bsymbolic")
 
 # 设置内核名称
 set(KernelName kernel.elf)
