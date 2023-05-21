@@ -26,8 +26,3 @@ if (NOT QEMU)
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
-
-set(CMAKE_C_FLAGS
-        "${CMAKE_C_FLAGS} -march=corei7 -mtune=corei7 -m64 -mno-red-zone")
-set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -march=corei7 -mtune=corei7 -m64 -mno-red-zone")

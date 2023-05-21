@@ -34,6 +34,3 @@ if (NOT QEMU)
 else ()
     message(STATUS "Found qemu ${QEMU}")
 endif ()
-
-set(CMAKE_C_FLAGS "-march=rv64imafdc")
-set(CMAKE_CXX_FLAGS "-march=rv64imafdc")
