@@ -17,7 +17,8 @@ include(header_files)
 include(find_asm_files)
 
 # 输出相关信息
-message("CMAKE_BUILD_TYPE:${CMAKE_BUILD_TYPE}")
+message("CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
 message("CMAKE_C_FLAGS:${CMAKE_C_FLAGS}")
 message("CMAKE_CXX_FLAGS:${CMAKE_CXX_FLAGS}")
 message("CMAKE_ASM_FLAGS:${CMAKE_ASM_FLAGS}")
@@ -65,10 +66,10 @@ endif ()
 target_link_options(${KernelName} PRIVATE -T ${CMAKE_SOURCE_DIR}/arch/${ARCH}/link.ld)
 
 # 其它链接选项
-if (ARCH STREQUAL x86_64)
+if (ARCH STREQUAL riscv64)
+    target_link_options(${KernelName} PRIVATE -Wl,-melf64lriscv)
+elseif (ARCH STREQUAL x86_64)
     target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64)
 elseif (ARCH STREQUAL aarch64)
     target_link_options(${KernelName} PRIVATE -Wl,-maarch64elf)
-elseif (ARCH STREQUAL riscv64)
-    target_link_options(${KernelName} PRIVATE -Wl,-melf64lriscv)
 endif ()
