@@ -36,6 +36,9 @@ if (ARCH STREQUAL "riscv64")
     add_executable(${KernelName}
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
+            $<TARGET_OBJECTS:libc>
+            $<TARGET_OBJECTS:libcxx>
+            $<TARGET_OBJECTS:drv>
             )
 elseif (ARCH STREQUAL "x86_64")
     # 将各个子对象链接为内核文件
@@ -44,6 +47,9 @@ elseif (ARCH STREQUAL "x86_64")
             #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/crt0_${ARCH}.o
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
+            $<TARGET_OBJECTS:libc>
+            $<TARGET_OBJECTS:libcxx>
+            $<TARGET_OBJECTS:drv>
             )
     link_libraries(${KernelName} PRIVATE
             ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/lib/libefi.a
@@ -57,6 +63,9 @@ elseif (ARCH STREQUAL "aarch64")
             #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/crt0_${ARCH}.o
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
+            $<TARGET_OBJECTS:libc>
+            $<TARGET_OBJECTS:libcxx>
+            $<TARGET_OBJECTS:drv>
             )
     link_libraries(${KernelName} PRIVATE
             ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/lib/libefi.a

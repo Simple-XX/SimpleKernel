@@ -161,7 +161,7 @@ endif ()
 
 if (ARCH STREQUAL "riscv64")
     set(QEMU_MACHINE -machine virt)
-    set(QEMU_DEVICES)
+    set(QEMU_DEVICES -nographic)
     set(QEMU_IMAGE -kernel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName})
 elseif (ARCH STREQUAL "x86_64")
     set(QEMU_MACHINE -m 128M)
