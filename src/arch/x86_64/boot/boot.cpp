@@ -14,10 +14,11 @@
  * </table>
  */
 
+#include "cassert"
 #include "efi.h"
 #include "efilib.h"
 
-//#include "uefi.h"
+// #include "uefi.h"
 
 #include "kernel.h"
 
@@ -34,11 +35,14 @@ efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
 
     status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
                                           systemTable->ConOut, L"Hello UEFI!\n");
+    assert(status != EFI_SUCCESS);
+
     kernel_main();
+
     return EFI_SUCCESS;
 }
 
-//int main(int, char**){
-//    printf("1111\n");
-//    return 0;
-//}
+// int main(int, char**){
+//     printf("1111\n");
+//     return 0;
+// }
