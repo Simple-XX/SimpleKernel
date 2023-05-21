@@ -62,11 +62,11 @@ endif ()
 # 是否 debug，默认为 Debug
 if (CMAKE_BUILD_TYPE STREQUAL Release)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-    set(CMAKE_VERBOSE_MAKEFILE OFF)
+    #    set(CMAKE_VERBOSE_MAKEFILE OFF)
 else ()
     set(CMAKE_BUILD_TYPE Debug)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb")
-    set(CMAKE_VERBOSE_MAKEFILE ON)
+    #    set(CMAKE_VERBOSE_MAKEFILE ON)
 endif ()
 
 # 代码优化级别
