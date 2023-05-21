@@ -2,21 +2,18 @@
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 # 
-# toolchain_linux_aarch64.cmake for Simple-XX/SimpleKernel.
+# aarch64-x86_64.cmake for Simple-XX/SimpleKernel.
 
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
 
-set(CMAKE_C_FLAGS "-march=armv8-a -mtune=cortex-a72")
-
-# TODO
 # GCC
-find_program(GCC aarch64-linux-gnu-gcc)
-if (NOT GCC)
+find_program(AARCH64 aarch64-linux-gnu-g++)
+if (NOT AARCH64)
     message(FATAL_ERROR "gcc-aarch64-linux-gnu not found.\n"
             "Run `sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu` to install.")
 else ()
-    message(STATUS "Found gcc-aarch64-linux-gnu ${GCC}")
+    message(STATUS "Found gcc-aarch64-linux-gnu ${AARCH64}")
 endif ()
 
 set(TOOLCHAIN_PREFIX   aarch64-linux-gnu-)
