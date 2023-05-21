@@ -27,6 +27,9 @@ message("CMAKE_EXE_LINKER_FLAGS:${CMAKE_EXE_LINKER_FLAGS}")
 # 处理子目录下的 CMakeLists
 add_subdirectory(${CMAKE_SOURCE_DIR}/arch)
 add_subdirectory(${CMAKE_SOURCE_DIR}/kernel)
+add_subdirectory(${CMAKE_SOURCE_DIR}/drv)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libc)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libcxx)
 
 if (ARCH STREQUAL "riscv64")
     # 将各个子对象链接为内核文件
