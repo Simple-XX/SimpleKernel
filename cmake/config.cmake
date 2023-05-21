@@ -48,8 +48,8 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 else ()
     set(CMAKE_BUILD_TYPE Release)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
     set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 endif ()
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
@@ -74,7 +74,7 @@ set(CMAKE_C_FLAGS
 set(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -fpermissive -ffreestanding -nostdlib \
 -fexceptions -fPIC -DGNU_EFI_USE_MS_ABI -fshort-wchar -Wl,-Bsymbolic \
--Wl,-shared -Wall -Wextra -MMD")
+-Wl,-shared -Wall -Wextra -MMD -fpermissive")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
