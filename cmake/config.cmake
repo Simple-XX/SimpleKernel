@@ -101,7 +101,8 @@ set(CMAKE_CXX_FLAGS
 # 指定链接脚本
 set(CMAKE_EXE_LINKER_FLAGS
         "${CMAKE_EXE_LINKER_FLAGS} \
--z max-page-size=0x1000 -nostdlib -shared -Wl,-Bsymbolic")
+-no-pie -z max-page-size=0x1000 -nostdlib -Wl,-Bsymbolic")
+#-z max-page-size=0x1000 -nostdlib -shared -Wl,-Bsymbolic")
 
 # 设置内核名称
 set(KernelName kernel.elf)

@@ -156,7 +156,7 @@ endif ()
 # qemu 配置
 set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    #    set(QEMU_DEBUG -S -gdb tcp::1234)
+#        set(QEMU_DEBUG -S -gdb tcp::1234)
 endif ()
 
 if (ARCH STREQUAL "riscv64")
