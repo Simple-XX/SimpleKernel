@@ -17,13 +17,12 @@ include(header_files)
 include(find_asm_files)
 
 # 输出相关信息
+message("ARCH: ${ARCH}")
 message("CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
 message("CMAKE_C_FLAGS:${CMAKE_C_FLAGS}")
 message("CMAKE_CXX_FLAGS:${CMAKE_CXX_FLAGS}")
 message("CMAKE_ASM_FLAGS:${CMAKE_ASM_FLAGS}")
-message("CMAKE_EXE_LINKER_FLAGS:${CMAKE_EXE_LINKER_FLAGS}")
-message("ARCH: ${ARCH}")
 
 # 处理子目录下的 CMakeLists
 add_subdirectory(${CMAKE_SOURCE_DIR}/arch)
