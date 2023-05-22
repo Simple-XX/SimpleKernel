@@ -76,6 +76,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
 set(CMAKE_C_FLAGS
         "${CMAKE_C_FLAGS} \
 -Wall -Wextra \
+-no-pie -nostdlib \
 -fPIC -ffreestanding -fexceptions -fshort-wchar \
 -DGNU_EFI_USE_MS_ABI")
 
@@ -84,7 +85,10 @@ if (ARCH STREQUAL "riscv64")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=rv64imafdc")
 elseif (ARCH STREQUAL "x86_64")
     set(CMAKE_C_FLAGS
-            "${CMAKE_C_FLAGS} -march=corei7 -mtune=corei7 -m64 -mno-red-zone")
+            "${CMAKE_C_FLAGS} \
+-march=corei7 -mtune=corei7 -m64 -mno-red-zone \
+-z max-page-size=0x1000 \
+-Wl,-shared -Wl,-Bsymbolic")
 elseif (ARCH STREQUAL "aarch64")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=armv8-a -mtune=cortex-a72")
 endif ()
@@ -95,13 +99,6 @@ set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 # 将编译选项同步到 c++
 set(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS} -fpermissive")
-
-# 链接选项
-# 生成 map 文件
-# 指定链接脚本
-set(CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} \
--z max-page-size=0x1000 -nostdlib -shared -Wl,-Bsymbolic")
 
 # 设置内核名称
 set(KernelName kernel.elf)
