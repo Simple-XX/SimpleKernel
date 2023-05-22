@@ -19,10 +19,7 @@
 #include "kernel.h"
 #include "stdio.h"
 
-#include "assert.h"
-
 #include "efi.h"
-
 #include "efilib.h"
 
 /**
@@ -30,11 +27,12 @@
  * @note 这个函数不会返回
  */
 void kernel_main(void* _systemtable) {
-//    EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_systemtable;
-//    EFI_STATUS        status
-//      = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
-//                          systemTable->ConOut, L"Hello UEFI111!\n");
-
+#if defined(__x86_64__)
+    EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_systemtable;
+    EFI_STATUS        status
+      = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+                          systemTable->ConOut, L"Hello UEFI111!\n");
+#endif
     // 显示基本信息
     show_info();
     // 进入死循环
@@ -48,19 +46,14 @@ void kernel_main(void* _systemtable) {
  * @brief 输出系统信息
  */
 void show_info(void) {
-     // 内核实际大小
-     auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
-     // 内核实际占用页数
-     auto kernel_pages
-       = ((COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
-          - (COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
-       / COMMON::PAGE_SIZE;
-     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
-          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
-          kernel_pages);
-     info("Kernel start4k: 0x%p, end4k: 0x%p.\n",
-          (COMMON::KERNEL_START_ADDR, 4 * COMMON::KB),
-          (COMMON::KERNEL_END_ADDR, 4 * COMMON::KB));
-     std::cout << "Simple Kernel." << std::endl;
+    // 内核实际大小
+    auto kernel_size  = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
+    // 内核实际占用页数
+    auto kernel_pages = (COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR)
+                      / COMMON::PAGE_SIZE;
+    info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
+         COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
+         kernel_pages);
+    std::cout << "Simple Kernel." << std::endl;
     return;
 }
