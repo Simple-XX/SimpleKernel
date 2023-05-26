@@ -60,7 +60,7 @@ void kernel_main(void) {
     // 初始化设备
     DEV_DRV_MANAGER::get_instance().init();
     // 测试设备
-    test_device();
+    // test_device();
     // 初始化文件系统
     VFS::get_instance().init();
 

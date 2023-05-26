@@ -300,6 +300,8 @@ int test_fatfs(void) {
         printf("f_findnext %d [%s]\n", status, "fno.fname[0]");
     }
     f_closedir(&dj);
+
+    info("fatfs test done.\n");
     return 0;
 }
 
