@@ -35,11 +35,23 @@ device_base_t::~device_base_t(void) {
 }
 
 int device_base_t::read(void) {
-    return drv->read(buf);
+    auto res = drv->read(buf);
+    // 等待中断完成
+    while (buf.valid == false) {
+        ;
+    }
+    buf.valid = false;
+    return res;
 }
 
 int device_base_t::write(void) {
-    return drv->write(buf);
+    auto res = drv->write(buf);
+    // 等待中断完成
+    while (buf.valid == false) {
+        ;
+    }
+    buf.valid = false;
+    return res;
 }
 
 int device_base_t::ioctl(uint8_t _cmd, void* _buf) {

@@ -17,6 +17,7 @@
 #ifndef SIMPLEKERNEL_BUF_H
 #define SIMPLEKERNEL_BUF_H
 
+#include "atomic"
 #include "common.h"
 #include "cstdint"
 
@@ -30,9 +31,9 @@ protected:
 
 public:
     /// 是否已经取回数据
-    bool     valid;
+    std::atomic_bool valid;
     /// 硬盘扇区号
-    uint64_t sector;
+    uint64_t         sector;
     /// 数据缓冲
     uint8_t  data[COMMON::BUFFFER_SIZE];
 
