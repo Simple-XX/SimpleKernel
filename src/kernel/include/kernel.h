@@ -21,11 +21,11 @@
  * @brief 声明 kernel_main 用 C 方法编译
  * @note 这个函数不会返回
  */
-extern "C" void kernel_main(void);
+extern "C" void kernel_main(void* _systemtable);
 
 /**
  * @brief 输出系统信息
  */
-void show_info(void);
+void            show_info(void);
 
 #endif /* SIMPLEKERNEL_KERNEL_H */

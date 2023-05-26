@@ -54,8 +54,8 @@ static constexpr const size_t PAGE_SIZE = 4 * KB;
  * @note 针对指针
  */
 template <class T>
-inline T ALIGN(const T _addr, const size_t _align) {
-    uint8_t *tmp = reinterpret_cast<uint8_t *>(_addr);
+inline T K_ALIGN(const T _addr, const size_t _align) {
+    uint8_t* tmp = reinterpret_cast<uint8_t*>(_addr);
     return (T)((ptrdiff_t)(tmp + _align - 1) & (~(_align - 1)));
 }
 
@@ -69,9 +69,15 @@ inline T ALIGN(const T _addr, const size_t _align) {
  * @note 针对整数
  */
 template <>
-inline uint64_t ALIGN(const uint64_t _x, const size_t _align) {
+inline uint32_t K_ALIGN(uint32_t _x, size_t _align) {
     return ((_x + _align - 1) & (~(_align - 1)));
 }
+
+template <>
+inline uint64_t K_ALIGN(uint64_t _x, size_t _align) {
+    return ((_x + _align - 1) & (~(_align - 1)));
+}
+
 
 }; // namespace COMMON
 

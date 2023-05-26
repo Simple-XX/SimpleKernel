@@ -215,7 +215,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
                 iter.addr++;
                 // 跳过 name
                 iter.addr +=
-                    COMMON::ALIGN(strlen((char *)iter.addr) + 1, 4) / 4;
+                    COMMON::K_ALIGN(strlen((char *)iter.addr) + 1, 4) / 4;
                 break;
             }
             case FDT_END_NODE: {
@@ -248,7 +248,7 @@ void DTB::dtb_iter(uint8_t _cb_flags, bool (*_cb)(const iter_data_t *, void *),
                 // 跳过 nameoff
                 iter.addr++;
                 // 跳过 data，并进行对齐
-                iter.addr += COMMON::ALIGN(iter.prop_len, 4) / 4;
+                iter.addr += COMMON::K_ALIGN(iter.prop_len, 4) / 4;
                 iter.prop_len = 0;
                 break;
             }
