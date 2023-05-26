@@ -56,11 +56,11 @@ void kernel_main(void) {
     TIMER::get_instance().init();
     // 初始化设备
     DEV_DRV_MANAGER::get_instance().init();
-    // 允许中断
-    CPU::ENABLE_INTR();
-
     // 测试设备
     test_device();
+
+    // 允许中断
+    CPU::ENABLE_INTR();
 
     // 显示基本信息
     show_info();
