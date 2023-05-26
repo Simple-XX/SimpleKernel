@@ -34,12 +34,12 @@ device_base_t::~device_base_t(void) {
     return;
 }
 
-int device_base_t::read(buf_t& _buf) {
-    return drv->read(_buf);
+int device_base_t::read(void) {
+    return drv->read(buf);
 }
 
-int device_base_t::write(buf_t& _buf) {
-    return drv->write(_buf);
+int device_base_t::write(void) {
+    return drv->write(buf);
 }
 
 int device_base_t::ioctl(uint8_t _cmd, void* _buf) {
