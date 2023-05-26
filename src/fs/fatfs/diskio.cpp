@@ -94,17 +94,16 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
             device_base_t* dev = (device_base_t*)DEV_DRV_MANAGER::get_instance()
                                    .get_dev_via_intr_no(1);
 
-            buf_t buf;
-            buf.sector = _sector;
+            dev->buf.sector = _sector;
 
-            dev->read(buf);
+            dev->read();
 
-            /// @todo 等待中断
-            asm("wfi");
-            asm("wfi");
-            asm("wfi");
+            // 等待中断完成
+            while (dev->buf.valid == false) {
+                ;
+            }
 
-            memcpy(_buff, buf.data, COMMON::BUFFFER_SIZE);
+            memcpy(_buff, dev->buf.data, COMMON::BUFFFER_SIZE);
 
 // #define DEBUG
 #ifdef DEBUG
@@ -145,16 +144,16 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
             device_base_t* dev = (device_base_t*)DEV_DRV_MANAGER::get_instance()
                                    .get_dev_via_intr_no(1);
 
-            buf_t buf;
-            buf.sector = _sector;
-            memcpy(buf.data, _buff, COMMON::BUFFFER_SIZE);
+            dev->buf.sector = _sector;
+            memcpy(dev->buf.data, _buff, COMMON::BUFFFER_SIZE);
 
-            dev->write(buf);
+            dev->write();
 
-            /// @todo 等待中断
-            asm("wfi");
-            asm("wfi");
-            asm("wfi");
+            // 等待中断完成
+            while (dev->buf.valid == false) {
+                ;
+            }
+
             break;
         }
         case DEV_MMC: {
