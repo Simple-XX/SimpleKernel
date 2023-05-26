@@ -17,6 +17,7 @@
 #ifndef SIMPLEKERNEL_DEVICE_BASE_H
 #define SIMPLEKERNEL_DEVICE_BASE_H
 
+#include "buf.h"
 #include "driver_base.h"
 #include "iostream"
 #include "resource.h"
@@ -40,6 +41,8 @@ public:
     const resource_t resource;
     /// 设备是否可用
     bool             is_ready;
+    /// 设备缓冲区
+    buf_t            buf;
 
     /**
      * @brief 构造函数
@@ -60,15 +63,13 @@ public:
 
     /**
      * @brief 从设备读
-     * @param  _buf             缓冲区
      */
-    virtual int          read(buf_t& _buf);
+    virtual int          read(void);
 
     /**
      * @brief 向设备写
-     * @param  _buf             缓冲区
      */
-    virtual int          write(buf_t& _buf);
+    virtual int          write(void);
 
     /**
      * @brief ioctl 控制
