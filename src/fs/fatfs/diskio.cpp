@@ -98,11 +98,6 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
 
             dev->read();
 
-            // 等待中断完成
-            while (dev->buf.valid == false) {
-                ;
-            }
-
             memcpy(_buff, dev->buf.data, COMMON::BUFFFER_SIZE);
 
 // #define DEBUG
@@ -148,11 +143,6 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
             memcpy(dev->buf.data, _buff, COMMON::BUFFFER_SIZE);
 
             dev->write();
-
-            // 等待中断完成
-            while (dev->buf.valid == false) {
-                ;
-            }
 
             break;
         }
