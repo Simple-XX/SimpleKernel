@@ -237,12 +237,14 @@ int test_device(void) {
     device_base_t* dev
       = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
 
-    dev->buf.sector = 0;
-    dev->read();
+    buf_t buf;
+    buf.sector = 0;
+
+    dev->read(buf);
 
     // fat 第一个扇区的最后两字节
-    assert(dev->buf.data[COMMON::BUFFFER_SIZE - 1] == 0xAA);
-    assert(dev->buf.data[COMMON::BUFFFER_SIZE - 2] == 0x55);
+    assert(buf.data[COMMON::BUFFFER_SIZE - 1] == 0xAA);
+    assert(buf.data[COMMON::BUFFFER_SIZE - 2] == 0x55);
 
     info("device test done.\n");
     return 0;
