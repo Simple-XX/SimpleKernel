@@ -34,6 +34,8 @@ static int32_t external_intr(int, char**) {
     auto no = PLIC::get_instance().get();
     // 根据中断号判断设备
     printf("external_intr: 0x%X.\n", no);
+    PLIC::get_instance().do_externel_interrupt(no);
+    info("external_intr done: 0x%X.\n", no);
     return 0;
 }
 
