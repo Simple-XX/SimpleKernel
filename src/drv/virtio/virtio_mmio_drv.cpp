@@ -277,7 +277,6 @@ int virtio_mmio_drv_t::read(buf_t& _buf) {
     req->sector           = _buf.sector;
     req->data             = _buf.data;
     auto ret              = blk_rw(*req);
-    _buf.valid            = true;
     return ret;
 }
 
@@ -288,7 +287,6 @@ int virtio_mmio_drv_t::write(buf_t& _buf) {
     req->sector           = _buf.sector;
     req->data             = _buf.data;
     auto ret              = blk_rw(*req);
-    _buf.valid            = true;
     return ret;
 }
 

@@ -63,13 +63,15 @@ public:
 
     /**
      * @brief 从设备读
+     * @param  _buf             缓冲区
      */
-    virtual int          read(void);
+    virtual int          read(buf_t& _buf);
 
     /**
      * @brief 向设备写
+     * @param  _buf             缓冲区
      */
-    virtual int          write(void);
+    virtual int          write(buf_t& _buf);
 
     /**
      * @brief ioctl 控制

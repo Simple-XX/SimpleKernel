@@ -21,11 +21,6 @@
 #include "virtio_dev.h"
 #include "virtio_mmio_drv.h"
 
-void virtio_intr_handler(void) {
-    warn("virtio irq handler.\n");
-    return;
-}
-
 void DEV_DRV_MANAGER::show(void) const {
     info("bus count: 0x%X\n", buss.size());
     for (auto i : buss) {

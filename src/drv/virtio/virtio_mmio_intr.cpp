@@ -80,8 +80,6 @@ static void virtio_blk_handle_used(device_base_t* _dev, uint32_t _usedidx) {
 
     delete req;
 
-    _dev->buf.valid = true;
-
     drv->queue.free_desc(desc1);
     drv->queue.free_desc(desc2);
     drv->queue.free_desc(desc3);
@@ -105,6 +103,8 @@ void virtio_mmio_intr(uint8_t _no) {
     }
 
     drv->queue.virtq->seen_used = drv->queue.virtq->used->idx % len;
+
+    dev->buf.valid              = true;
 
     return;
 }
