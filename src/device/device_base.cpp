@@ -34,23 +34,34 @@ device_base_t::~device_base_t(void) {
     return;
 }
 
-int device_base_t::read(void) {
-    auto res = drv->read(buf);
+int device_base_t::read(buf_t& _buf) {
+    buf.sector = _buf.sector;
+    auto res   = drv->read(buf);
+
     // 等待中断完成
     while (buf.valid == false) {
         ;
     }
+
+    memcpy(_buf.data, buf.data, COMMON::BUFFFER_SIZE);
+
     buf.valid = false;
+
     return res;
 }
 
-int device_base_t::write(void) {
+int device_base_t::write(buf_t& _buf) {
     auto res = drv->write(buf);
+
     // 等待中断完成
     while (buf.valid == false) {
         ;
     }
+
+    memcpy(buf.data, _buf.data, COMMON::BUFFFER_SIZE);
+
     buf.valid = false;
+
     return res;
 }
 

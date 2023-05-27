@@ -86,7 +86,7 @@ DSTATUS disk_initialize(BYTE _pdrv) {
 DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
     assert(_count == 1);
     DRESULT result = RES_OK;
-    info("disk_write [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
+    info("disk_read [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
          _count);
 
     switch (_pdrv) {
@@ -94,11 +94,12 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
             device_base_t* dev = (device_base_t*)DEV_DRV_MANAGER::get_instance()
                                    .get_dev_via_intr_no(1);
 
-            dev->buf.sector = _sector;
+            buf_t buf;
+            buf.sector = _sector;
 
-            dev->read();
+            dev->read(buf);
 
-            memcpy(_buff, dev->buf.data, COMMON::BUFFFER_SIZE);
+            memcpy(_buff, buf.data, COMMON::BUFFFER_SIZE);
 
 // #define DEBUG
 #ifdef DEBUG
@@ -122,7 +123,7 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
         }
     }
 
-    warn("write done\n");
+    warn("read done\n");
     return result;
 }
 
@@ -131,18 +132,19 @@ DRESULT disk_read(BYTE _pdrv, BYTE* _buff, LBA_t _sector, UINT _count) {
 DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
     assert(_count == 1);
     DRESULT result = RES_OK;
-    info("disk_read [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
+    info("disk_write [%d] _sector: 0x%X, _count: 0x%X\n", _pdrv, _sector,
          _count);
 
     switch (_pdrv) {
         case DEV_MMIO: {
             device_base_t* dev = (device_base_t*)DEV_DRV_MANAGER::get_instance()
                                    .get_dev_via_intr_no(1);
+            buf_t buf;
+            buf.sector = _sector;
 
-            dev->buf.sector = _sector;
-            memcpy(dev->buf.data, _buff, COMMON::BUFFFER_SIZE);
+            memcpy(buf.data, _buff, COMMON::BUFFFER_SIZE);
 
-            dev->write();
+            dev->write(buf);
 
             break;
         }
@@ -158,7 +160,7 @@ DRESULT disk_write(BYTE _pdrv, const BYTE* _buff, LBA_t _sector, UINT _count) {
         }
     }
 
-    warn("read done\n");
+    warn("write done\n");
     return result;
 }
 
