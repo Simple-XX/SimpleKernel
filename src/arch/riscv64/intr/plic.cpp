@@ -134,5 +134,6 @@ void PLIC::register_externel_handler(
 
 void PLIC::do_externel_interrupt(uint8_t _no) {
     externel_interrupt_handlers[_no](_no);
+    done(_no);
     return;
 }
