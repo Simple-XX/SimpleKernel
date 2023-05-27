@@ -35,7 +35,9 @@ device_base_t::~device_base_t(void) {
 }
 
 int device_base_t::read(buf_t& _buf) {
+    // 设置要读的位置
     buf.sector = _buf.sector;
+    // 读
     auto res   = drv->read(buf);
 
     // 等待中断完成
@@ -43,24 +45,30 @@ int device_base_t::read(buf_t& _buf) {
         ;
     }
 
+    // 将设备缓冲区中的数据复制到 _buf
     memcpy(_buf.data, buf.data, COMMON::BUFFFER_SIZE);
 
+    // 将设备缓冲区设置为无效
     buf.valid = false;
 
     return res;
 }
 
 int device_base_t::write(buf_t& _buf) {
-    auto res = drv->write(buf);
+    // 将设备缓冲区设置为无效
+    buf.valid = false;
+    // 将要写的数据复制到设备缓冲区
+    memcpy(buf.data, _buf.data, COMMON::BUFFFER_SIZE);
+    // 设置要写的位置
+    buf.sector = _buf.sector;
+
+    // 写
+    auto res   = drv->write(buf);
 
     // 等待中断完成
     while (buf.valid == false) {
         ;
     }
-
-    memcpy(buf.data, _buf.data, COMMON::BUFFFER_SIZE);
-
-    buf.valid = false;
 
     return res;
 }
