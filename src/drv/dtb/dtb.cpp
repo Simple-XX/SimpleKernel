@@ -22,7 +22,9 @@
 #include "cstdint"
 #include "cstdio"
 #include "endian.h"
+#include "iostream"
 #include "resource.h"
+#include "string.h"
 
 // 所有节点
 DTB::node_t        DTB::nodes[MAX_NODES];

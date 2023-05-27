@@ -19,6 +19,8 @@
 
 #include "cstdint"
 #include "resource.h"
+#include "string"
+#include "vector"
 
 /**
  * @brief 启动信息接口
@@ -64,6 +66,12 @@ extern resource_t    get_clint(void);
  * @return resource_t       plic 资源信息
  */
 extern resource_t    get_plic(void);
+
+// 根据 compatible 寻找节点
+// 返回一个二级数组，第一级是所有设备，第二级是使用的资源
+// 因为使用了 stl，只能在 lib 分支及其之后使用
+// TODO: 目前只实现了 riscv，ia32 还没有考虑
+extern size_t find_via_prefix(const char* _prefix, resource_t* _resource);
 };     // namespace BOOT_INFO
 
 #endif /* SIMPLEKERNEL_BOOT_INFO_H */

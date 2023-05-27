@@ -20,6 +20,8 @@
 #include "cpu.hpp"
 #include "cstdint"
 
+/// @todo 多核
+
 void handler_default(void);
 
 class INTR {
@@ -178,6 +180,13 @@ public:
  */
 class PLIC {
 private:
+    /// 外部中断处理函数指针
+    typedef void (*externel_interrupt_handler_t)(uint8_t _no);
+    /// 最大外部中断数量
+    static constexpr const size_t EXTERNEL_INTERRUPR_MAX = 16;
+    /// 外部中断处理函数数组
+    externel_interrupt_handler_t
+                           externel_interrupt_handlers[EXTERNEL_INTERRUPR_MAX];
     /// 基地址，由 dtb 传递
     static uintptr_t       base_addr;
     /// @todo ？
@@ -230,6 +239,21 @@ public:
      * @todo 不确定
      */
     void         set(uint8_t _no, bool _status);
+
+    /**
+     * @brief 注册外部中断处理函数
+     * @param  _no             外部中断号
+     * @param  _interrupt_handler 外部中断处理函数
+     */
+    void
+         register_externel_handler(uint8_t                      _no,
+                                   externel_interrupt_handler_t _interrupt_handler);
+
+    /**
+     * @brief 执行外部中断处理
+     * @param  _no              外部中断号
+     */
+    void do_externel_interrupt(uint8_t _no);
 };
 
 /**

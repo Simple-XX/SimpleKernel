@@ -18,9 +18,12 @@
 #include "common.h"
 #include "cstdio"
 #include "cstdlib"
+#include "dev_drv_manager.h"
+#include "device_base.h"
 #include "heap.h"
 #include "kernel.h"
 #include "pmm.h"
+#include "stdlib.h"
 #include "vmm.h"
 
 int32_t test_pmm(void) {
@@ -223,5 +226,24 @@ int test_intr(void) {
     assert(tmp == 0x233);
     *addr = 0x0;
     info("intr test done.\n");
+    return 0;
+}
+
+int test_device(void) {
+    // 获取设备
+    /// @todo 获取设备的方式需要改进，比如通过 resource
+    device_base_t* dev
+      = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+
+    buf_t buf;
+    buf.sector = 0;
+
+    dev->read(buf);
+
+    // fat 第一个扇区的最后两字节
+    assert(buf.data[COMMON::BUFFFER_SIZE - 1] == 0xAA);
+    assert(buf.data[COMMON::BUFFFER_SIZE - 2] == 0x55);
+
+    info("device test done.\n");
     return 0;
 }

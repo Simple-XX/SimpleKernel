@@ -48,6 +48,12 @@ int             test_heap(void);
 int             test_intr(void);
 
 /**
+ * @brief 设备测试函数
+ * @return int             0 成功
+ */
+int             test_device(void);
+
+/**
  * @brief 输出系统信息
  */
 void            show_info(void);

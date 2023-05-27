@@ -21,6 +21,7 @@ extern "C" {
 #include "string.h"
 #include "assert.h"
 #include "stddef.h"
+#include "stdio.h"
 
 #define __glibc_unlikely(cond) __builtin_expect((cond), 0)
 #define __glibc_likely(cond)   __builtin_expect((cond), 1)

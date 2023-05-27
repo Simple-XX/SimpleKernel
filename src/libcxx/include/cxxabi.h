@@ -21,6 +21,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+// TODO: 纯虚函数支持
 
 // c++ 初始化
 void cpp_init(void);
