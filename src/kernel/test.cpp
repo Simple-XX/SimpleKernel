@@ -251,57 +251,67 @@ int test_device(void) {
 }
 
 int test_fatfs(void) {
-    // // FatFs work area needed for each volume
-    // FATFS    FatFs;
-    // // File object needed for each open file
-    // FIL      Fil;
-    //
-    // uint32_t bw;
-    // FRESULT  fr;
-    //
-    // // Give a work area to the default drive
-    // fr = f_mount(&FatFs, "/", 1);
-    // info("f_mount：%d\n", fr);
-    //
-    // // Create a file
-    // fr = f_open(&Fil, "newfile.txt", FA_WRITE | FA_CREATE_ALWAYS);
-    // info("f_open：%d\n", fr);
-    //
-    // if (fr == FR_OK) {
-    //     // Write data to the file
-    //     f_write(&Fil, "It works!\r\n", 11, &bw);
-    //     // Close the file
-    //     fr = f_close(&Fil);
-    //     info("f_close %d\n", fr);
-    // }
+    FATFS    fatfs;
+    FRESULT  status;
+    DIR      dir;
+    FILINFO  flinfo;
+    FIL      fil;
+    uint8_t  buf[COMMON::BUFFFER_SIZE];
+    uint32_t size;
 
-    FATFS   sdcard_fs;
-    FRESULT status;
-    DIR     dj;
-    FILINFO fno;
+    status = f_mount(&fatfs, "", 0);
+    assert(status == FR_OK);
 
-    printf("/********************fs test*******************/\n");
-    status = f_mount(&sdcard_fs, "", 0);
-    printf("mount sdcard: %d\n", status);
-    if (status != FR_OK) {
-        return status;
-    }
+    status = f_findfirst(&dir, &flinfo, "", "*");
+    assert(status == FR_OK);
 
-    /// @bug 找不到文件
-    status = f_findfirst(&dj, &fno, "", "*");
-
-    printf("printf filename %d [%s]\n", status, "fno.fname[0]");
-    while (status == FR_OK && fno.fname[0]) {
-        if (fno.fattrib & AM_DIR) {
-            printf("dir: %s\n", fno.fname);
+    while (status == FR_OK && flinfo.fname[0]) {
+        if (flinfo.fattrib & AM_DIR) {
+            printf("dir: %s\n", flinfo.fname);
         }
         else {
-            printf("file: %s\n", fno.fname);
+            printf("file: %s\n", flinfo.fname);
         }
-        status = f_findnext(&dj, &fno);
-        printf("f_findnext %d [%s]\n", status, "fno.fname[0]");
+        status = f_findnext(&dir, &flinfo);
     }
-    f_closedir(&dj);
+    f_closedir(&dir);
+
+    status = f_open(&fil, "file1", FA_READ | FA_OPEN_EXISTING);
+    assert(status == FR_OK);
+
+    bzero(buf, COMMON::BUFFFER_SIZE);
+
+    status = f_read(&fil, buf, 15, &size);
+    assert(status == FR_OK);
+    f_close(&fil);
+
+    printf("buf: [%s]\n", buf);
+
+    status = f_open(&fil, "file1", FA_WRITE | FA_OPEN_APPEND);
+    assert(status == FR_OK);
+
+    auto str = "Hello, World!\n";
+    status   = f_write(&fil, str, sizeof(str), &size);
+    assert(status == FR_OK);
+    f_close(&fil);
+
+    assert(size == sizeof(str));
+    printf("f_write: %d\n", size);
+
+    status = f_open(&fil, "file1", FA_READ | FA_OPEN_EXISTING);
+    assert(status == FR_OK);
+
+    bzero(buf, COMMON::BUFFFER_SIZE);
+
+    status = f_read(&fil, buf, 15, &size);
+    assert(status == FR_OK);
+    f_close(&fil);
+
+    printf("buf: %d [0x%X]\n", size, buf);
+    for (int i = 0; i < 15; i++) {
+        printf("[%c]", buf[i]);
+    }
+    printf("\n");
 
     info("fatfs test done.\n");
     return 0;
