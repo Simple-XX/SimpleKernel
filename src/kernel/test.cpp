@@ -18,9 +18,14 @@
 #include "common.h"
 #include "cstdio"
 #include "cstdlib"
+#include "dev_drv_manager.h"
+#include "device_base.h"
+#include "ff.h"
 #include "heap.h"
 #include "kernel.h"
 #include "pmm.h"
+#include "stdlib.h"
+#include "vfs.h"
 #include "vmm.h"
 
 int32_t test_pmm(void) {
@@ -223,5 +228,106 @@ int test_intr(void) {
     assert(tmp == 0x233);
     *addr = 0x0;
     info("intr test done.\n");
+    return 0;
+}
+
+int test_device(void) {
+    // 获取设备
+    /// @todo 获取设备的方式需要改进，比如通过 resource
+    device_base_t* dev
+      = (device_base_t*)DEV_DRV_MANAGER::get_instance().get_dev_via_intr_no(1);
+
+    buf_t buf;
+    buf.sector = 0;
+
+    dev->read(buf);
+
+    // fat 第一个扇区的最后两字节
+    assert(buf.data[COMMON::BUFFFER_SIZE - 1] == 0xAA);
+    assert(buf.data[COMMON::BUFFFER_SIZE - 2] == 0x55);
+
+    info("device test done.\n");
+    return 0;
+}
+
+int test_fatfs(void) {
+    FATFS    fatfs;
+    FRESULT  status;
+    DIR      dir;
+    FILINFO  flinfo;
+    FIL      fil;
+    uint8_t  buf[COMMON::BUFFFER_SIZE];
+    uint32_t size;
+
+    status = f_mount(&fatfs, "", 0);
+    assert(status == FR_OK);
+
+    status = f_findfirst(&dir, &flinfo, "", "*");
+    assert(status == FR_OK);
+
+    while (status == FR_OK && flinfo.fname[0]) {
+        if (flinfo.fattrib & AM_DIR) {
+            printf("dir: %s\n", flinfo.fname);
+        }
+        else {
+            printf("file: %s\n", flinfo.fname);
+        }
+        status = f_findnext(&dir, &flinfo);
+    }
+    f_closedir(&dir);
+
+    status = f_open(&fil, "file1", FA_READ | FA_OPEN_EXISTING);
+    assert(status == FR_OK);
+
+    bzero(buf, COMMON::BUFFFER_SIZE);
+
+    status = f_read(&fil, buf, 15, &size);
+    assert(status == FR_OK);
+    f_close(&fil);
+
+    printf("buf: [%s]\n", buf);
+
+    status = f_open(&fil, "file1", FA_WRITE | FA_OPEN_APPEND);
+    assert(status == FR_OK);
+
+    auto str = "Hello, World!\n";
+    status   = f_write(&fil, str, sizeof(str), &size);
+    assert(status == FR_OK);
+    f_close(&fil);
+
+    assert(size == sizeof(str));
+    printf("f_write: %d\n", size);
+
+    status = f_open(&fil, "file1", FA_READ | FA_OPEN_EXISTING);
+    assert(status == FR_OK);
+
+    bzero(buf, COMMON::BUFFFER_SIZE);
+
+    status = f_read(&fil, buf, 15, &size);
+    assert(status == FR_OK);
+    f_close(&fil);
+
+    printf("buf: %d [0x%X]\n", size, buf);
+    for (int i = 0; i < 15; i++) {
+        printf("[%c]", buf[i]);
+    }
+    printf("\n");
+
+    info("fatfs test done.\n");
+    return 0;
+}
+
+int test_vfs(void) {
+    VFS::get_instance().mkdir("/233", 0);
+    VFS::get_instance().mkdir("/233/555", 0);
+    VFS::get_instance().rmdir("/233/555");
+    VFS::get_instance().mkdir("/233/555", 0);
+    fd_t fd  = VFS::get_instance().open("/233/555/test.c", O_CREAT);
+    char a[] = "test233.c";
+    VFS::get_instance().write(fd, a, 10);
+    char b[10];
+    VFS::get_instance().read(fd, b, 10);
+    assert(strcmp(a, b) == 0);
+    printf("vfs test done.\n");
     return 0;
 }

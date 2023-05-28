@@ -15,7 +15,7 @@
  */
 
 #include "slab.h"
-#include "assert.h"
+#include "cassert"
 #include "cstdio"
 #include "pmm.h"
 #include "string.h"

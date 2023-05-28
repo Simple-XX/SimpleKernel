@@ -349,11 +349,13 @@ class cr3_t {
 public:
     // Ignored
     uint32_t ignore1 : 3;
-    // Page-level write-through; indirectly determines the memory type used
-    // to access the page directory during linear-address translation
+    // Page-level write-through; indirectly determines the memory type
+    // used to access the page directory during linear-address
+    // translation
     uint32_t pwt     : 1;
-    // Page-level cache disable; indirectly determines the memory type used
-    // to access the page directory during linear-address translation
+    // Page-level cache disable; indirectly determines the memory type
+    // used to access the page directory during linear-address
+    // translation
     uint32_t pcd     : 1;
     // Ignored
     uint32_t ignore2 : 7;

@@ -78,6 +78,9 @@ private:
         uint32_t size_dt_strings;
         /// 数据区长度
         uint32_t size_dt_struct;
+        // 从地址构造
+        fdt_header_t(const void* _addr);
+        ~fdt_header_t(void);
     };
 
     /**
@@ -192,6 +195,9 @@ private:
         bool          find(const char* _prop_name, const char* _val);
     };
 
+protected:
+
+public:
     /**
      * @brief 迭代变量
      */
@@ -424,5 +430,12 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& _os, const path_t& _path);
 };
+
+namespace BOOT_INFO {
+/// 保存 sbi 传递的启动核
+extern "C" size_t dtb_init_hart;
+};    // namespace BOOT_INFO
+
+extern "C" size_t dtb_init_hart;
 
 #endif /* SIMPLEKERNEL_DTB_H */

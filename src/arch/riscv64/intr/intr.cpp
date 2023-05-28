@@ -42,7 +42,7 @@ trap_handler(uintptr_t _sepc, uintptr_t _stval, uintptr_t _scause,
     (void)_sstatus;
     (void)_satp;
     (void)_sscratch;
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
     info("sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
          "0x%p\nsstatus: ",

@@ -20,12 +20,16 @@
 #include "cpu.hpp"
 #include "cstdio"
 #include "cstdlib"
+#include "dev_drv_manager.h"
 #include "heap.h"
 #include "intr.h"
 #include "iostream"
 #include "kernel.h"
 #include "pmm.h"
+#include "vfs.h"
 #include "vmm.h"
+
+#include "ff.h"
 
 /**
  * @brief 内核主要逻辑
@@ -53,8 +57,20 @@ void kernel_main(void) {
     test_intr();
     // 时钟中断初始化
     TIMER::get_instance().init();
+    // 初始化设备
+    DEV_DRV_MANAGER::get_instance().init();
+    // 初始化文件系统
+    VFS::get_instance().init();
+
     // 允许中断
     CPU::ENABLE_INTR();
+
+    // 测试设备
+    test_device();
+    // 测试文件系统
+    test_fatfs();
+    // test_vfs();
+
     // 显示基本信息
     show_info();
     // 进入死循环

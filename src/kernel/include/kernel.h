@@ -48,6 +48,24 @@ int             test_heap(void);
 int             test_intr(void);
 
 /**
+ * @brief 设备测试函数
+ * @return int             0 成功
+ */
+int             test_device(void);
+
+/**
+ * @brief fatfs 测试函数
+ * @return int             0 成功
+ */
+int             test_fatfs(void);
+
+/**
+ * @brief 虚拟文件系统测试函数
+ * @return int             0 成功
+ */
+int             test_vfs(void);
+
+/**
  * @brief 输出系统信息
  */
 void            show_info(void);

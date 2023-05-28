@@ -51,10 +51,13 @@ static constexpr const uint32_t KERNEL_SPACE_SIZE = 8 * MB;
 static constexpr const uint64_t KERNEL_SPACE_PAGES
   = KERNEL_SPACE_SIZE / PAGE_SIZE;
 /// 栈大小
-static constexpr const uintptr_t STACK_SIZE = 4 * KB;
+static constexpr const uintptr_t STACK_SIZE   = 4 * KB;
 
-// 页掩码
-static constexpr const uintptr_t PAGE_MASK  = ~(PAGE_SIZE - 1);
+/// 缓冲区大小，512 字节，一个扇区
+static constexpr const uintptr_t BUFFFER_SIZE = 512 * BYTE;
+
+/// 页掩码
+static constexpr const uintptr_t PAGE_MASK    = ~(PAGE_SIZE - 1);
 
 /**
  * @brief 对齐

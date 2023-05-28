@@ -22,6 +22,7 @@
 // allocator，用于管理内存的分配、释放，对象的构造、析构
 
 #include "construct"
+#include "stddef.h"
 #include "util"
 
 namespace mystl {
