@@ -17,7 +17,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-int itoa(int _num, char *_str, int _len, int _base) {
+int itoa(int _num, char* _str, int _len, int _base) {
     int sum = _num;
     int i   = 0;
     int digit;

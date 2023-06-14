@@ -12,7 +12,7 @@ set -e
 #set -x
 
 ARCH=riscv64
-#ARCH=x86_64
+# ARCH=x86_64
 #ARCH=aarch64
 
 # 重新编译

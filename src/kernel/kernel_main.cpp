@@ -16,6 +16,7 @@
 
 #include "boot_info.h"
 #include "common.h"
+#include "cstdio"
 #include "iostream"
 #include "kernel.h"
 #include "stdio.h"

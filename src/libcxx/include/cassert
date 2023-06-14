@@ -1,0 +1,31 @@
+
+/**
+ * @file cassert
+ * @brief assert 实现
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * Based on https://wiki.osdev.org/Raspberry_Pi_Bare_Bones
+ * @version 1.0
+ * @date 2023-05-08
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-05-08<td>Zone.N<td>创建文件
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_CASSERT
+#define SIMPLEKERNEL_CASSERT
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "assert.h"
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* SIMPLEKERNEL_CASSERT */
