@@ -36,6 +36,9 @@ add_custom_command(TARGET opensbi
         PLATFORM_RISCV_XLEN=64
         PLATFORM=generic
         O=${CMAKE_BINARY_DIR}/3rd/opensbi
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_BINARY_DIR}/3rd/opensbi/platform/generic/firmware/fw_jump.elf
+        ${CMAKE_BINARY_DIR}/firmware/fw_jump.elf
         COMMENT "build opensbi..."
         )
 
@@ -52,10 +55,32 @@ add_custom_command(TARGET gnuefi
         COMMENT "build gnu-efi..."
         )
 
+add_custom_target(kernel_pre)
+if (ARCH STREQUAL "riscv64")
+    add_custom_command(TARGET kernel_pre
+            DEPENDS opensbi
+            COMMAND make opensbi
+            )
+
+elseif (ARCH STREQUAL "x86_64")
+    add_custom_command(TARGET kernel_pre
+            DEPENDS gnuefi
+            COMMAND make gnuefi
+            )
+
+elseif (ARCH STREQUAL "aarch64")
+    add_custom_command(TARGET kernel_pre
+            DEPENDS gnuefi
+            COMMAND make gnuefi
+            )
+
+endif ()
+
+
 # 内核本体
 ExternalProject_Add(
         kernel
-        DEPENDS opensbi gnuefi
+        DEPENDS kernel_pre
         BUILD_ALWAYS 1
         PREFIX ${CMAKE_BINARY_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
@@ -160,10 +185,6 @@ add_custom_command(TARGET image
 # 固件
 if (ARCH STREQUAL "riscv64")
     set(FIRMWARE fw_jump.elf)
-    file(
-            COPY ${CMAKE_BINARY_DIR}/3rd/opensbi/platform/generic/firmware/${FIRMWARE}
-            DESTINATION ${CMAKE_BINARY_DIR}/firmware
-    )
     set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
 elseif (ARCH STREQUAL "x86_64")
     set(FIRMWARE OVMF_${ARCH}.fd)
@@ -192,21 +213,35 @@ if (ARCH STREQUAL "riscv64")
     set(QEMU_MACHINE -machine virt)
     set(QEMU_DEVICES)
     set(QEMU_IMAGE -kernel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName})
+    add_custom_target(run DEPENDS kernel)
+    add_custom_command(
+            TARGET run
+            COMMENT "Run SimpleKernel in qemu."
+            COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
+    )
+
 elseif (ARCH STREQUAL "x86_64")
     set(QEMU_MACHINE -m 128M)
     set(QEMU_DEVICES -net none)
     set(QEMU_IMAGE -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
     list(APPEND QEMU_FLAGS)
+    add_custom_target(run DEPENDS image_uefi)
+    add_custom_command(
+            TARGET run
+            COMMENT "Run SimpleKernel in qemu."
+            COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
+    )
+
 elseif (ARCH STREQUAL "aarch64")
     set(QEMU_MACHINE -machine virt -cpu cortex-a72)
     set(QEMU_DEVICES -net none)
     #    set(QEMU_IMAGE -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
     set(QEMU_IMAGE -drive format=raw,file=${CMAKE_BINARY_DIR}/kernel.img)
-endif ()
+    add_custom_target(run DEPENDS image_uefi)
+    add_custom_command(
+            TARGET run
+            COMMENT "Run SimpleKernel in qemu."
+            COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
+    )
 
-add_custom_target(run DEPENDS image_uefi)
-add_custom_command(
-        TARGET run
-        COMMENT "Run SimpleKernel in qemu."
-        COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
-)
+endif ()
