@@ -1,0 +1,6 @@
+*.efi
+*.efi.debug
+*.o
+*.a
+*.tar.*
+*.tar
