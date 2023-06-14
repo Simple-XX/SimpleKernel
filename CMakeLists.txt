@@ -71,7 +71,7 @@ elseif (ARCH STREQUAL "x86_64")
 elseif (ARCH STREQUAL "aarch64")
     add_custom_command(TARGET kernel_pre
             DEPENDS gnuefi
-            COMMAND make gnuefi
+            COMMAND make ARCH=${ARCH} gnuefi
             )
 
 endif ()

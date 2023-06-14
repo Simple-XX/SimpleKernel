@@ -11,8 +11,8 @@ set -e
 # 输出实际执行内容
 #set -x
 
-#ARCH=riscv64
-ARCH=x86_64
+ARCH=riscv64
+#ARCH=x86_64
 #ARCH=aarch64
 
 # 重新编译
