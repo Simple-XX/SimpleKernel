@@ -23,9 +23,39 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 include(config)
 include(ExternalProject)
 
+# opensbi
+add_custom_target(opensbi)
+add_custom_command(TARGET opensbi
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/opensbi
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/3rd/opensbi
+        COMMAND
+        make
+        CROSS_COMPILE=riscv64-linux-gnu-
+        FW_JUMP=y FW_JUMP_ADDR=0x80200000
+        PLATFORM_RISCV_XLEN=64
+        PLATFORM=generic
+        O=${CMAKE_BINARY_DIR}/3rd/opensbi
+        COMMENT "build opensbi..."
+        )
+
+# gnu-efi
+add_custom_target(gnuefi)
+add_custom_command(TARGET gnuefi
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/gnu-efi
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/3rd/gnu-efi
+        COMMAND
+        make
+        ARCH=${ARCH}
+        OBJDIR=${CMAKE_BINARY_DIR}/3rd/gnu-efi
+        COMMENT "build gnu-efi..."
+        )
+
 # 内核本体
 ExternalProject_Add(
         kernel
+        DEPENDS opensbi gnuefi
         BUILD_ALWAYS 1
         PREFIX ${CMAKE_BINARY_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
@@ -131,7 +161,7 @@ add_custom_command(TARGET image
 if (ARCH STREQUAL "riscv64")
     set(FIRMWARE fw_jump.elf)
     file(
-            COPY ${CMAKE_SOURCE_DIR}/3rd/opensbi/build/platform/generic/firmware/${FIRMWARE}
+            COPY ${CMAKE_BINARY_DIR}/3rd/opensbi/platform/generic/firmware/${FIRMWARE}
             DESTINATION ${CMAKE_BINARY_DIR}/firmware
     )
     set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})

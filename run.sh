@@ -17,7 +17,6 @@ ARCH=x86_64
 
 # 重新编译
 mkdir -p ./build_${ARCH}/
-rm -rf ./build_${ARCH}/*
 cd ./build_${ARCH}
 cmake -DARCH=${ARCH} ..
 make run
