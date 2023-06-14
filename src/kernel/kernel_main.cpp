@@ -15,10 +15,10 @@
  */
 
 #include "common.h"
+#include "cstdint"
 #include "cstdio"
 #include "iostream"
 #include "kernel.h"
-#include "cstdint"
 
 /**
  * @brief 内核主要逻辑
@@ -27,7 +27,6 @@
 void kernel_main(void) {
     // 显示基本信息
     show_info();
-    bool aaa=false;
     // 进入死循环
     while (1) {
         ;
@@ -40,18 +39,13 @@ void kernel_main(void) {
  */
 void show_info(void) {
     // 内核实际大小
-    auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
+    auto kernel_size  = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
     // 内核实际占用页数
-    auto kernel_pages
-      = (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
-         - COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
-      / COMMON::PAGE_SIZE;
+    auto kernel_pages = (COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR)
+                      / COMMON::PAGE_SIZE;
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);
-    info("Kernel start4k: 0x%p, end4k: 0x%p.\n",
-         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB),
-         COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB));
     std::cout << "Simple Kernel." << std::endl;
     return;
 }
