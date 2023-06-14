@@ -1,8 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="qemu_riscv64_debug" type="CLion_Remote" singleton="false" version="1" remoteCommand=":1234" symbolFile="$PROJECT_DIR$/build_riscv64/bin/kernel.elf" sysroot="$PROJECT_DIR$">
     <debugger toolchainName="WSL_riscv64" />
-    <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="kernel" run_configuration_type="CMakeRunConfiguration" run_configuration_target="CMakeBuildProfile:riscv64_linux" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>
