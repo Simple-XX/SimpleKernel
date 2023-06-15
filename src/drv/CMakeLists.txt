@@ -10,15 +10,15 @@ PROJECT(drv CXX)
 
 # 根据 ARCH 判断添加哪些文件
 # i386 与 x86_64 使用同一套驱动
-if (ARCH STREQUAL x86_64)
+if (ARCH STREQUAL "x86_64")
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/tui tui_src)
     set(drv_src ${tui_src})
-# arm 驱动
-elseif (ARCH STREQUAL arm)
+    # arm 驱动
+elseif (ARCH STREQUAL "aarch64")
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uart uart_src)
     set(drv_src ${uart_src})
-# riscv64 驱动
-elseif (ARCH STREQUAL riscv64)
+    # riscv64 驱动
+elseif (ARCH STREQUAL "riscv64")
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi opensbi_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/sbi_console sbi_console_src)
     set(drv_src ${opensbi_src} ${sbi_console_src})

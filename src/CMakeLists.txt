@@ -27,9 +27,9 @@ message("CMAKE_ASM_FLAGS:${CMAKE_ASM_FLAGS}")
 # 处理子目录下的 CMakeLists
 add_subdirectory(${CMAKE_SOURCE_DIR}/arch)
 add_subdirectory(${CMAKE_SOURCE_DIR}/kernel)
-add_subdirectory(${CMAKE_SOURCE_DIR}/drv)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libc)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libcxx)
+add_subdirectory(${CMAKE_SOURCE_DIR}/drv)
 
 if (ARCH STREQUAL "riscv64")
     # 将各个子对象链接为内核文件
@@ -43,7 +43,7 @@ if (ARCH STREQUAL "riscv64")
 elseif (ARCH STREQUAL "x86_64")
     # 将各个子对象链接为内核文件
     add_executable(${KernelName}
-            ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/gnuefi/reloc_${ARCH}.o
+            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
             #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/crt0_${ARCH}.o
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
@@ -52,14 +52,14 @@ elseif (ARCH STREQUAL "x86_64")
             $<TARGET_OBJECTS:drv>
             )
     link_libraries(${KernelName} PRIVATE
-            ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/lib/libefi.a
-            ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/gnuefi/libgnuefi.a
+            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/lib/libefi.a
+            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/libgnuefi.a
             #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/libuefi_${ARCH}.a
             )
 elseif (ARCH STREQUAL "aarch64")
     # 将各个子对象链接为内核文件
     add_executable(${KernelName}
-            ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/gnuefi/reloc_${ARCH}.o
+            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
             #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/crt0_${ARCH}.o
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
@@ -68,8 +68,8 @@ elseif (ARCH STREQUAL "aarch64")
             $<TARGET_OBJECTS:drv>
             )
     link_libraries(${KernelName} PRIVATE
-            ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/lib/libefi.a
-            ${CMAKE_SOURCE_DIR}/../3rd/gnu-efi/bin/${ARCH}/gnuefi/libgnuefi.a
+            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/lib/libefi.a
+            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/libgnuefi.a
             #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/libuefi_${ARCH}.a
             )
 endif ()

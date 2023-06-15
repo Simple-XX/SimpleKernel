@@ -2,16 +2,16 @@
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 # Based on https://github.com/SynestiaOS/SynestiaOS
-# CMakeLists.txt for Simple-XX/SimpleKernel.
+# header_files.cmake for Simple-XX/SimpleKernel.
 # 将头文件路径添加到 Target 的搜索路径中
 
 function(target_include_arch_header_files Target)
     target_include_directories(${Target} PRIVATE ${CMAKE_SOURCE_DIR}/arch/${ARCH})
-    if (ARCH STREQUAL x86_64)
+    if (ARCH STREQUAL "x86_64")
         target_include_directories(${Target} PRIVATE ${CMAKE_SOURCE_DIR}/arch/${ARCH}/port/include)
-    elseif (ARCH STREQUAL riscv64)
+    elseif (ARCH STREQUAL "riscv64")
         target_include_directories(${Target} PRIVATE ${CMAKE_SOURCE_DIR}/arch/${ARCH}/opensbi/include)
-    elseif (ARCH STREQUAL aarch64)
+    elseif (ARCH STREQUAL "aarch64")
         target_include_directories(${Target} PRIVATE ${CMAKE_SOURCE_DIR}/arch/${ARCH}/port/include)
     endif ()
 endfunction()
@@ -48,5 +48,3 @@ endfunction()
 function(target_include_libcxx_header_files Target)
     target_include_directories(${Target} PRIVATE ${CMAKE_SOURCE_DIR}/libcxx/include)
 endfunction()
-
-

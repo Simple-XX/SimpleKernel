@@ -15,6 +15,7 @@
  */
 
 #include "common.h"
+#include "cstdint"
 #include "cstdio"
 #include "iostream"
 #include "kernel.h"
