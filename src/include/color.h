@@ -58,8 +58,8 @@ typedef enum : uint8_t {
     /// RGB: 255 255 85
     YELLOW       = 14,
     /// RGB: 255 255 255
-    WHITE        = 15,
-#elif defined(__riscv)
+    WHITE = 15,
+#elif defined(__riscv)|| defined(__aarch64__)
     /// @see https://en.wikipedia.org/wiki/ANSI_escape_code
     BLACK        = 30,
     RED          = 31,

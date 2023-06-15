@@ -6,51 +6,67 @@
  * 链接脚本，指定生成的二进制文件的布局
  */
 
-OUTPUT_FORMAT(elf64-littleaarch64)
 
+OUTPUT_FORMAT("elf64-littleaarch64", "elf64-littleaarch64", "elf64-littleaarch64")
+OUTPUT_ARCH(aarch64)
 ENTRY(_start)
-
 SECTIONS
 {
-    /* 加载地址 */
-    . = 0x8000;
-	
-	kernel_start = .;
-    kernel_text_start = .;
-    .text : ALIGN(4K)
-    {
-        *.(.text.init)
-        *(.text)
-    }
-    kernel_text_end = .;
+  .text 0x0 : {
+    _text = .;
+    *(.text.head)
+    *(.text)
+    *(.text.*)
+    *(.gnu.linkonce.t.*)
+    *(.srodata)
+    *(.rodata*)
+    . = ALIGN(16);
+  }
+  _etext = .;
+  _text_size = . - _text;
+  .dynamic  : { *(.dynamic) }
+  .data : ALIGN(4096)
+  {
+   _data = .;
+   *(.sdata)
+   *(.data)
+   *(.data1)
+   *(.data.*)
+   *(.got.plt)
+   *(.got)
 
-    kernel_rodata_start = .;
-	.rodata : ALIGN(4K)
-	{
-		*(.rodata)
-	}
-	kernel_rodata_end = .;
+   /* the EFI loader doesn't seem to like a .bss section, so we stick
+      it all into .data: */
+   . = ALIGN(16);
+   _bss = .;
+   *(.sbss)
+   *(.scommon)
+   *(.dynbss)
+   *(.bss)
+   *(COMMON)
+   . = ALIGN(16);
+   _bss_end = .;
+  }
 
-    kernel_data_start = .;
-    .data : ALIGN(4K)
-    {
-        ctors_start = .;
-	    *(.ctor*)
-	    ctors_end = .;
-	    dtors_start = .;
-	    *(.dtor*)
-	    dtors_end = .;
-        *(.data)
-    }
-    kernel_data_end = .;
+  .rela.dyn : { *(.rela.dyn) }
+  .rela.plt : { *(.rela.plt) }
+  .rela.got : { *(.rela.got) }
+  .rela.data : { *(.rela.data) *(.rela.data*) }
+  . = ALIGN(512);
+  _edata = .;
+  _data_size = . - _data;
 
-    kernel_bss_start = .;
-	.bss : ALIGN(4K)
-	{
-		*(COMMON)
-		*(.bss)
-	}
-	kernel_bss_end = .;
-
-	kernel_end = .;
+  . = ALIGN(4096);
+  .dynsym   : { *(.dynsym) }
+  . = ALIGN(4096);
+  .dynstr   : { *(.dynstr) }
+  . = ALIGN(4096);
+  .note.gnu.build-id : { *(.note.gnu.build-id) }
+  /DISCARD/ :
+  {
+    *(.rel.reloc)
+    *(.eh_frame)
+    *(.note.GNU-stack)
+  }
+  .comment 0 : { *(.comment) }
 }
