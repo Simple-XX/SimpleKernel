@@ -44,6 +44,6 @@ static constexpr const size_t MB        = 0x100000;
 /// 页大小 4KB
 static constexpr const size_t PAGE_SIZE = 4 * KB;
 
-}; // namespace COMMON
+};     // namespace COMMON
 
 #endif /* SIMPLEKERNEL_COMMON_H */
