@@ -44,7 +44,7 @@ void MULTIBOOT2::multiboot2_iter(bool (*_fun)(const iter_data_t*, void*),
     // 下一字节开始为 tag 信息
     iter_data_t* tag  = (iter_data_t*)(addr + 8);
     for (; tag->type != MULTIBOOT_TAG_TYPE_END;
-         tag = (iter_data_t*)((uint8_t*)tag + COMMON::ALIGN(tag->size, 8))) {
+         tag = (iter_data_t *)((uint8_t *)tag + COMMON::K_ALIGN(tag->size, 8))) {
         if (_fun(tag, _data) == true) {
             return;
         }

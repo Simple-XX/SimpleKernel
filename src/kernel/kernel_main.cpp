@@ -19,12 +19,64 @@
 #include "cstdio"
 #include "iostream"
 #include "kernel.h"
+#include "stdio.h"
+
+#include "efi.h"
+#include "efilib.h"
 
 /**
  * @brief 内核主要逻辑
  * @note 这个函数不会返回
  */
-void kernel_main(void) {
+void kernel_main(void* _systemtable) {
+#if defined(__x86_64__)
+    EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_systemtable;
+    EFI_STATUS        status
+      = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+                          systemTable->ConOut, L"Hello UEFI111!\n");
+
+    EFI_STATUS             Status;
+    EFI_MEMORY_DESCRIPTOR* EfiMemoryMap;
+    ptrdiff_t              EfiMemoryMapSize;
+    ptrdiff_t              EfiMapKey;
+    ptrdiff_t              EfiDescriptorSize;
+    UINT32                 EfiDescriptorVersion;
+
+    //
+    // Get the EFI memory map.
+    //
+    EfiMemoryMapSize = 0;
+    EfiMemoryMap     = NULL;
+    Status = uefi_call_wrapper(systemTable->BootServices->GetMemoryMap, 5,
+                               &EfiMemoryMapSize, EfiMemoryMap, &EfiMapKey,
+                               &EfiDescriptorSize, &EfiDescriptorVersion);
+    ASSERT(Status == EFI_BUFFER_TOO_SMALL);
+
+    //
+    // Use size returned for the AllocatePool.
+    //
+    EfiMemoryMap
+      = (EFI_MEMORY_DESCRIPTOR*)AllocatePool(EfiMemoryMapSize
+                                             + 2 * EfiDescriptorSize);
+    ASSERT(EfiMemoryMap != NULL);
+    Status = uefi_call_wrapper(systemTable->BootServices->GetMemoryMap, 5,
+                               &EfiMemoryMapSize, EfiMemoryMap, &EfiMapKey,
+                               &EfiDescriptorSize, &EfiDescriptorVersion);
+    if (EFI_ERROR(Status)) {
+        FreePool(EfiMemoryMap);
+    }
+
+    //
+    // Get descriptors
+    //
+    EFI_MEMORY_DESCRIPTOR* EfiEntry = EfiMemoryMap;
+    do {
+        // ... do something with EfiEntry ...
+        EfiEntry = NextMemoryDescriptor(EfiEntry, EfiDescriptorSize);
+
+    } while ((UINT8*)EfiEntry < (UINT8*)EfiMemoryMap + EfiMemoryMapSize);
+
+#endif
     // 初始化
     BOOT_INFO::init();
     // 输出物理地址信息
@@ -43,18 +95,13 @@ void kernel_main(void) {
  */
 void show_info(void) {
     // 内核实际大小
-    auto kernel_size = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
+    auto kernel_size  = COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR;
     // 内核实际占用页数
-    auto kernel_pages
-      = (COMMON::ALIGN(COMMON::KERNEL_END_ADDR, COMMON::PAGE_SIZE)
-         - COMMON::ALIGN(COMMON::KERNEL_START_ADDR, COMMON::PAGE_SIZE))
-      / COMMON::PAGE_SIZE;
+    auto kernel_pages = (COMMON::KERNEL_END_ADDR - COMMON::KERNEL_START_ADDR)
+                      / COMMON::PAGE_SIZE;
     info("Kernel start: 0x%p, end 0x%p, size: 0x%X bytes, 0x%X pages.\n",
          COMMON::KERNEL_START_ADDR, COMMON::KERNEL_END_ADDR, kernel_size,
          kernel_pages);
-    info("Kernel start4k: 0x%p, end4k: 0x%p.\n",
-         COMMON::ALIGN(COMMON::KERNEL_START_ADDR, 4 * COMMON::KB),
-         COMMON::ALIGN(COMMON::KERNEL_END_ADDR, 4 * COMMON::KB));
     std::cout << "Simple Kernel." << std::endl;
     return;
 }
