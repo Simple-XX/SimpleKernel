@@ -78,7 +78,6 @@ inline uint64_t K_ALIGN(uint64_t _x, size_t _align) {
     return ((_x + _align - 1) & (~(_align - 1)));
 }
 
-
 }; // namespace COMMON
 
 #endif /* SIMPLEKERNEL_COMMON_H */
