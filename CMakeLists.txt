@@ -206,12 +206,12 @@ endif ()
 # qemu 配置
 set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    #    set(QEMU_DEBUG -S -gdb tcp::1234)
+#        set(QEMU_DEBUG -S -gdb tcp::1234)
 endif ()
 
 if (ARCH STREQUAL "riscv64")
     set(QEMU_MACHINE -machine virt)
-    set(QEMU_DEVICES)
+    set(QEMU_DEVICES -nographic)
     set(QEMU_IMAGE -kernel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName})
     add_custom_target(run DEPENDS kernel)
     add_custom_command(

@@ -19,12 +19,22 @@
 #include "cstdio"
 #include "iostream"
 #include "kernel.h"
+#include "stdio.h"
+
+#include "efi.h"
+#include "efilib.h"
 
 /**
  * @brief 内核主要逻辑
  * @note 这个函数不会返回
  */
-void kernel_main(void) {
+void kernel_main(void* _systemtable) {
+#if defined(__x86_64__)
+    EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_systemtable;
+    EFI_STATUS        status
+      = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+                          systemTable->ConOut, L"Hello UEFI111!\n");
+#endif
     // 显示基本信息
     show_info();
     // 进入死循环

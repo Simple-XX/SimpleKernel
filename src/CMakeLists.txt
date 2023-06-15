@@ -15,17 +15,9 @@ set(ignoreMe "${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}${CMAKE_FIND_ROOT_PATH_MODE_PA
 include(header_files)
 # 引入添加汇编文件函数
 include(find_asm_files)
-# 代码优化级别
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
-set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
-
-# 通用选项
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -fexceptions -nostartfiles -fPIC  -no-pie -Wall -Wextra -MMD")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffreestanding -nostdlib -fexceptions -nostartfiles -fPIC  -no-pie -Wall -Wextra -MMD")
-set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
 
 # 输出相关信息
+message("ARCH: ${ARCH}")
 message("CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
 message("CMAKE_C_FLAGS:${CMAKE_C_FLAGS}")

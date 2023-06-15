@@ -37,7 +37,7 @@ efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
                                           systemTable->ConOut, L"Hello UEFI!\n");
     assert(status != EFI_SUCCESS);
 
-    kernel_main();
+    kernel_main((void*)systemTable);
 
     return EFI_SUCCESS;
 }
