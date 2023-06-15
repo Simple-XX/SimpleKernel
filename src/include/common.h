@@ -44,6 +44,41 @@ static constexpr const size_t MB        = 0x100000;
 /// 页大小 4KB
 static constexpr const size_t PAGE_SIZE = 4 * KB;
 
+/**
+ * @brief 对齐
+ * @tparam T
+ * @param  _addr           要对齐的地址
+ * @param  _align          要对齐的目标
+ * @return T               对齐过的地址
+ * @note 向上取整
+ * @note 针对指针
+ */
+template <class T>
+inline T K_ALIGN(const T _addr, const size_t _align) {
+    uint8_t* tmp = reinterpret_cast<uint8_t*>(_addr);
+    return (T)((ptrdiff_t)(tmp + _align - 1) & (~(_align - 1)));
+}
+
+/**
+ * @brief 对齐
+ * @tparam T
+ * @param  _addr           要对齐的整数
+ * @param  _align          要对齐的目标
+ * @return T               对齐过的整数
+ * @note 向上取整
+ * @note 针对整数
+ */
+template <>
+inline uint32_t K_ALIGN(uint32_t _x, size_t _align) {
+    return ((_x + _align - 1) & (~(_align - 1)));
+}
+
+template <>
+inline uint64_t K_ALIGN(uint64_t _x, size_t _align) {
+    return ((_x + _align - 1) & (~(_align - 1)));
+}
+
+
 }; // namespace COMMON
 
 #endif /* SIMPLEKERNEL_COMMON_H */
