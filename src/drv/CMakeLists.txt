@@ -14,11 +14,11 @@ if (ARCH STREQUAL "x86_64")
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/tui tui_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/multiboot2 multiboot2_src)
     set(drv_src ${tui_src} ${multiboot2_src})
-# arm 驱动
+    # arm 驱动
 elseif (ARCH STREQUAL "aarch64")
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uart uart_src)
     set(drv_src ${uart_src})
-# riscv64 驱动
+    # riscv64 驱动
 elseif (ARCH STREQUAL "riscv64")
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi opensbi_src)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/sbi_console sbi_console_src)

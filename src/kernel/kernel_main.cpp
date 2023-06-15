@@ -48,8 +48,8 @@ void kernel_main(void* _systemtable) {
     EfiMemoryMapSize = 0;
     EfiMemoryMap     = NULL;
     Status = uefi_call_wrapper(systemTable->BootServices->GetMemoryMap, 5,
-                                         &EfiMemoryMapSize, EfiMemoryMap, &EfiMapKey,
-                                         &EfiDescriptorSize, &EfiDescriptorVersion);
+                               &EfiMemoryMapSize, EfiMemoryMap, &EfiMapKey,
+                               &EfiDescriptorSize, &EfiDescriptorVersion);
     ASSERT(Status == EFI_BUFFER_TOO_SMALL);
 
     //
