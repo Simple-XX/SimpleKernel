@@ -21,9 +21,9 @@
 #include "cstdint"
 
 // 根据不同架构选择不同的输出方式
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__x86_64__)
 #    include "tui.h"
-#elif defined(__arm__) || defined(__aarch64__)
+#elif defined(__aarch64__)
 #    include "uart.h"
 #elif defined(__riscv)
 #    include "sbi_console.h"
@@ -35,10 +35,10 @@
 class IO {
 private:
     // io 对象
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__x86_64__)
     // x86 平台使用 TUI 接口
     TUI io;
-#elif defined(__arm__) || defined(__aarch64__)
+#elif defined(__aarch64__)
     // arn 平台使用 UART 接口
     UART io;
 #elif defined(__riscv)
