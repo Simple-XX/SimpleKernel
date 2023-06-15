@@ -16,10 +16,10 @@
 
 #include "boot_info.h"
 #include "common.h"
+#include "cstdint"
 #include "cstdio"
 #include "iostream"
 #include "kernel.h"
-#include "stdio.h"
 
 #include "efi.h"
 #include "efilib.h"

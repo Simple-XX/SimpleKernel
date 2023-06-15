@@ -12,12 +12,11 @@ set -e
 #set -x
 
 ARCH=riscv64
-# ARCH=x86_64
+#ARCH=x86_64
 #ARCH=aarch64
 
 # 重新编译
 mkdir -p ./build_${ARCH}/
-rm -rf ./build_${ARCH}/*
 cd ./build_${ARCH}
 cmake -DARCH=${ARCH} ..
 make run
