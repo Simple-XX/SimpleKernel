@@ -69,6 +69,7 @@ set(COMMON_FLAGS "-Wall -Wextra \
 -DGNU_EFI_USE_MS_ABI")
 
 # 架构相关编译选项
+# @todo clang 交叉编译参数
 if (ARCH STREQUAL "riscv64")
     set(ARCH_FLAGS "-march=rv64imafdc")
 elseif (ARCH STREQUAL "x86_64")
