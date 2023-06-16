@@ -11,12 +11,29 @@ set -e
 # 输出实际执行内容
 #set -x
 
+MACHINE=qemu
+
 ARCH=riscv64
 #ARCH=x86_64
 #ARCH=aarch64
 
+CMAKE_BUILD_TYPE=Debug
+#CMAKE_BUILD_TYPE=Release
+
+GENERATOR=make
+#GENERATOR=ninja
+
+COMPILER=gcc
+#COMPILER=clang
+
 # 重新编译
 mkdir -p ./build_${ARCH}/
 cd ./build_${ARCH}
-cmake -DARCH=${ARCH} ..
+cmake \
+  -DMACHINE=${MACHINE} \
+  -DARCH=${ARCH} \
+  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+  -DCOMPILER=${COMPILER} \
+  -DGENERATOR=${GENERATOR} \
+  ..
 make run
