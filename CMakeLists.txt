@@ -170,6 +170,7 @@ add_custom_command(TARGET image_uefi
         COMMENT "Copying bootloader and kernel"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/tools/startup.nsh ${CMAKE_BINARY_DIR}/image/startup.nsh
         )
 # 制作镜像
 add_custom_target(image DEPENDS image_uefi)
