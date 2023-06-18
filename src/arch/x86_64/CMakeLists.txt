@@ -8,13 +8,9 @@
 # 设置子模块名
 PROJECT(arch)
 
-enable_language(ASM)
 enable_language(CXX)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/boot boot_src)
-
-# 添加到 boot_src
-set(boot_src ${boot_src})
 
 # 设置子模块所有的源码
 set(arch_src ${boot_src})
