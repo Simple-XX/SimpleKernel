@@ -17,6 +17,9 @@ MACHINE=qemu
 ARCH=x86_64
 #ARCH=aarch64
 
+# 指定要使用的 efi
+USE_GNU_UEFI=1
+
 CMAKE_BUILD_TYPE=Debug
 #CMAKE_BUILD_TYPE=Release
 
@@ -32,6 +35,7 @@ cd ./build_${ARCH}
 cmake \
   -DMACHINE=${MACHINE} \
   -DARCH=${ARCH} \
+  -DUSE_GNU_UEFI=${USE_GNU_UEFI} \
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
   -DCOMPILER=${COMPILER} \
   -DGENERATOR=${GENERATOR} \

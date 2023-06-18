@@ -15,32 +15,38 @@
  */
 
 #include "cassert"
-//#include "efi.h"
-//#include "efilib.h"
-
-#include "uefi.h"
-
 #include "kernel.h"
 
-///**
-// * efi_main - The entry point for the EFI application
-// * @image: firmware-allocated handle that identifies the image
-// * @SystemTable: EFI system table
-// */
-//extern "C" EFI_STATUS
-//efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
-//    uefi_call_wrapper(InitializeLib, 2, image, systemTable);
-//    EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen, 1,
-//                                          systemTable->ConOut);
-//
-//    status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
-//                                          systemTable->ConOut, L"Hello UEFI!\n");
-//    assert(status != EFI_SUCCESS);
-//
-//    kernel_main();
-//
-//    return EFI_SUCCESS;
-//}
+#if USE_GNU_UEFI == 1
+#    include "efi.h"
+#    include "efilib.h"
+#else
+#    include "uefi.h"
+#endif
+
+#if USE_GNU_UEFI == 1
+
+/**
+ * efi_main - The entry point for the EFI application
+ * @image: firmware-allocated handle that identifies the image
+ * @SystemTable: EFI system table
+ */
+extern "C" EFI_STATUS
+efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
+    uefi_call_wrapper(InitializeLib, 2, image, systemTable);
+    EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen, 1,
+                                          systemTable->ConOut);
+
+    status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+                                          systemTable->ConOut, L"Hello UEFI!\n");
+    assert(status != EFI_SUCCESS);
+
+    kernel_main();
+
+    return EFI_SUCCESS;
+}
+
+#else
 
 /**
  * Dump memory at given address, should accept 0x prefixes from the command line
@@ -56,3 +62,5 @@ extern "C" int main(int argc, char** argv) {
 
     return EFI_SUCCESS;
 }
+
+#endif
