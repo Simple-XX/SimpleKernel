@@ -55,6 +55,19 @@ add_custom_command(TARGET gnuefi
         COMMENT "build gnu-efi..."
         )
 
+## posix-uefi
+#add_custom_target(posixuefi)
+#add_custom_command(TARGET posixuefi
+#        POST_BUILD
+#        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/posix-uefi
+#        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/3rd/posix-uefi
+#        COMMAND
+#        make
+#        ARCH=${ARCH}
+#        OBJDIR=${CMAKE_BINARY_DIR}/3rd/gnu-efi
+#        COMMENT "build gnu-efi..."
+#        )
+
 add_custom_target(kernel_pre)
 if (ARCH STREQUAL "riscv64")
     add_custom_command(TARGET kernel_pre

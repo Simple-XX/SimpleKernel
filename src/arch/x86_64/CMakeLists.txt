@@ -11,12 +11,10 @@ PROJECT(arch)
 enable_language(ASM)
 enable_language(CXX)
 
-# 寻找汇编文件
-find_asm_source_files(boot_asm_src ${arch_SOURCE_DIR}/boot)
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/boot c_cxx_src)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/boot boot_src)
 
 # 添加到 boot_src
-set(boot_src ${boot_asm_src} ${c_cxx_src})
+set(boot_src ${boot_src})
 
 # 设置子模块所有的源码
 set(arch_src ${boot_src})
