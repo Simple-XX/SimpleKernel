@@ -29,30 +29,30 @@ if (ARCH STREQUAL "riscv64")
 elseif (ARCH STREQUAL "x86_64")
     # 将各个子对象链接为内核文件
     add_executable(${KernelName}
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/crt0-efi-${ARCH}.o
-            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/crt0_${ARCH}.o
+#            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
+#            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/crt0-efi-${ARCH}.o
+            ${CMAKE_BINARY_DIR}/../3rd/posix-uefi/crt0.o
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
             )
     target_link_libraries(${KernelName} PRIVATE
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/lib/libefi.a
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/libgnuefi.a
-            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/libuefi_${ARCH}.a
+#            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/lib/libefi.a
+#            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/libgnuefi.a
+             ${CMAKE_BINARY_DIR}/../3rd/posix-uefi/libuefi.a
             )
 elseif (ARCH STREQUAL "aarch64")
     # 将各个子对象链接为内核文件
     add_executable(${KernelName}
             ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
             ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/crt0-efi-${ARCH}.o
-            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/crt0_${ARCH}.o
+            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/crt0.o
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
             )
     target_link_libraries(${KernelName} PRIVATE
             ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/lib/libefi.a
             ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/libgnuefi.a
-            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/bin/libuefi_${ARCH}.a
+            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/libuefi.a
             )
 endif ()
 
