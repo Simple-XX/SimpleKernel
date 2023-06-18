@@ -55,18 +55,25 @@ add_custom_command(TARGET gnuefi
         COMMENT "build gnu-efi..."
         )
 
-## posix-uefi
-#add_custom_target(posixuefi)
-#add_custom_command(TARGET posixuefi
-#        POST_BUILD
-#        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/posix-uefi
-#        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/3rd/posix-uefi
-#        COMMAND
-#        make
-#        ARCH=${ARCH}
-#        OBJDIR=${CMAKE_BINARY_DIR}/3rd/gnu-efi
-#        COMMENT "build gnu-efi..."
-#        )
+# posix-uefi
+add_custom_target(posixuefi)
+add_custom_command(TARGET posixuefi
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/uefi
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/3rd/posix-uefi
+        COMMAND
+        USE_GCC=1
+        ARCH=${ARCH}
+        make
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/uefi/crt0.o ${CMAKE_BINARY_DIR}/3rd/posix-uefi
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/uefi/libuefi.a ${CMAKE_BINARY_DIR}/3rd/posix-uefi
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/uefi/uefi.h ${CMAKE_BINARY_DIR}/3rd/posix-uefi
+        COMMAND
+        make clean
+        COMMAND
+        rm -rf ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build
+        COMMENT "build gnu-efi..."
+        )
 
 add_custom_target(kernel_pre)
 if (ARCH STREQUAL "riscv64")
@@ -77,8 +84,9 @@ if (ARCH STREQUAL "riscv64")
 
 elseif (ARCH STREQUAL "x86_64")
     add_custom_command(TARGET kernel_pre
-            DEPENDS gnuefi
+            DEPENDS gnuefi posixuefi
             COMMAND make gnuefi
+            COMMAND make posixuefi
             )
 
 elseif (ARCH STREQUAL "aarch64")
