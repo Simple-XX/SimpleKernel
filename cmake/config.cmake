@@ -48,6 +48,9 @@ if (NOT ARCH IN_LIST VALID_ARCH)
     message(FATAL_ERROR "ARCH must be one of ${VALID_ARCH}")
 endif ()
 
+# 指定要使用的 efi
+message("USE_GNU_UEFI is: ${USE_GNU_UEFI}")
+
 # 是否 debug，默认为 Debug
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     set(DEBUG_FLAGS "-Werror")
@@ -66,7 +69,7 @@ set(OPTIMIZE_FLAGS "-O0")
 set(COMMON_FLAGS "-Wall -Wextra \
 -no-pie -nostdlib \
 -fPIC -ffreestanding -fexceptions -fshort-wchar \
--DGNU_EFI_USE_MS_ABI")
+-DUSE_GNU_UEFI=${USE_GNU_UEFI}")
 
 # 架构相关编译选项
 # @todo clang 交叉编译参数
