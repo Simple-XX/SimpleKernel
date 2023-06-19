@@ -114,5 +114,8 @@ elseif (COMPILER STREQUAL "clang")
 endif ()
 message("CMAKE_TOOLCHAIN_FILE is: ${CMAKE_TOOLCHAIN_FILE}")
 
-# 设置内核名称
-set(KernelName kernel.elf)
+# 设置二进制文件名称
+set(BOOT_ELF_OUTPUT_NAME boot.elf)
+set(BOOT_EFI_OUTPUT_NAME boot.efi)
+set(KERNEL_ELF_OUTPUT_NAME kernel.elf)
+set(KERNEL_EFI_OUTPUT_NAME kernel.efi)
