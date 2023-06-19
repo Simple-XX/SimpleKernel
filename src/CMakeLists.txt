@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.13)
 project(kernel)
 
 # 暂时没有用到的变量，消除警告
-set(ignoreMe "${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}${MACHINE}")
+set(ignoreMe "${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}${MACHINE}${USE_GNU_UEFI}")
 
 # 引入添加头文件函数
 include(header_files)

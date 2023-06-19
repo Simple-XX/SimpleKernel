@@ -65,14 +65,12 @@ add_custom_command(TARGET posixuefi
         USE_GCC=1
         ARCH=${ARCH}
         make
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/uefi/crt0.o ${CMAKE_BINARY_DIR}/3rd/posix-uefi
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/uefi/libuefi.a ${CMAKE_BINARY_DIR}/3rd/posix-uefi
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/uefi/uefi.h ${CMAKE_BINARY_DIR}/3rd/posix-uefi
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build/uefi/* ${CMAKE_BINARY_DIR}/3rd/posix-uefi
         COMMAND
         make clean
         COMMAND
         rm -rf ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build
-        COMMENT "build gnu-efi..."
+        COMMENT "Build posix-uefi done."
         )
 
 add_custom_target(kernel_pre)
