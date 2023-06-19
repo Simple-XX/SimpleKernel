@@ -49,6 +49,11 @@ if (NOT ARCH IN_LIST VALID_ARCH)
 endif ()
 
 # 指定要使用的 efi
+if (USE_GNU_UEFI STREQUAL "1")
+    set(UEFI_FLAGS "-DUSE_GNU_UEFI=${USE_GNU_UEFI} -DHAVE_USE_MS_ABI")
+else ()
+    set(UEFI_FLAGS "-DUSE_GNU_UEFI=${USE_GNU_UEFI} -DHAVE_USE_MS_ABI")
+endif ()
 message("USE_GNU_UEFI is: ${USE_GNU_UEFI}")
 
 # 是否 debug，默认为 Debug
@@ -68,8 +73,7 @@ set(OPTIMIZE_FLAGS "-O0")
 # 通用编译选项
 set(COMMON_FLAGS "-Wall -Wextra \
 -no-pie -nostdlib \
--fPIC -ffreestanding -fexceptions -fshort-wchar \
--DUSE_GNU_UEFI=${USE_GNU_UEFI}")
+-fPIC -ffreestanding -fexceptions -fshort-wchar")
 
 # 架构相关编译选项
 # @todo clang 交叉编译参数
@@ -83,17 +87,17 @@ elseif (ARCH STREQUAL "aarch64")
     set(ARCH_FLAGS "-march=armv8-a -mtune=cortex-a72")
 endif ()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPTIMIZE_FLAGS} ${COMMON_FLAGS} ${ARCH_FLAGS} ${DEBUG_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPTIMIZE_FLAGS} ${COMMON_FLAGS} ${ARCH_FLAGS} ${DEBUG_FLAGS} ${UEFI_FLAGS}")
 message("CMAKE_C_FLAGS:${CMAKE_C_FLAGS}")
 
 # 将编译选项同步到汇编
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
-message("CMAKE_ASM_FLAGS:${CMAKE_ASM_FLAGS}")
+message("CMAKE_ASM_FLAGS: ${CMAKE_ASM_FLAGS}")
 
 # 将编译选项同步到 c++
 set(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS} -fpermissive")
-message("CMAKE_CXX_FLAGS:${CMAKE_CXX_FLAGS}")
+message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
 
 # 设置构建使用的工具，默认为 make
 if (GENERATOR STREQUAL "ninja")
