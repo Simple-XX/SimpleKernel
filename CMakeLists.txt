@@ -242,6 +242,7 @@ add_custom_command(TARGET image_uefi
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${BOOT_EFI_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/efi/boot/
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${KERNEL_EFI_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/efi/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${KERNEL_ELF_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/tools/startup.nsh ${CMAKE_BINARY_DIR}/image/startup.nsh
         )
 # 制作镜像
