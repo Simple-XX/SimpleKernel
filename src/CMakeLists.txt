@@ -5,8 +5,8 @@
 # CMakeLists.txt for Simple-XX/SimpleKernel.
 # 设置编译规则
 
-project(kernel)
 cmake_minimum_required(VERSION 3.13)
+project(kernel)
 
 # 暂时没有用到的变量，消除警告
 set(ignoreMe "${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}${MACHINE}")
@@ -29,22 +29,8 @@ if (ARCH STREQUAL "riscv64")
 elseif (ARCH STREQUAL "x86_64")
     # 将各个子对象链接为内核文件
     add_executable(${KernelName}
-            $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
             )
-    if (USE_GNU_UEFI STREQUAL "1")
-        target_link_libraries(${KernelName} PRIVATE
-                ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/crt0-efi-${ARCH}.o
-                ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
-                ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/libgnuefi.a
-                ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/lib/libefi.a
-                )
-    else ()
-        target_link_libraries(${KernelName} PRIVATE
-                ${CMAKE_BINARY_DIR}/../3rd/posix-uefi/crt0.o
-                ${CMAKE_BINARY_DIR}/../3rd/posix-uefi/libuefi.a
-                )
-    endif ()
 
 elseif (ARCH STREQUAL "aarch64")
     # 将各个子对象链接为内核文件

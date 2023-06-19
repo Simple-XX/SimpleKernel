@@ -85,7 +85,7 @@ if (ARCH STREQUAL "riscv64")
 elseif (ARCH STREQUAL "x86_64")
     add_custom_command(TARGET kernel_pre
             DEPENDS gnuefi posixuefi
-            COMMAND make gnuefi
+        #     COMMAND make gnuefi
             COMMAND make posixuefi
             )
 
@@ -96,6 +96,40 @@ elseif (ARCH STREQUAL "aarch64")
             )
 
 endif ()
+
+# 引导
+ExternalProject_Add(
+        boot
+        BUILD_ALWAYS 1
+        PREFIX ${CMAKE_BINARY_DIR}
+        SOURCE_DIR ${CMAKE_SOURCE_DIR}/src/boot
+        BINARY_DIR ${CMAKE_BINARY_DIR}/src/boot
+        CMAKE_ARGS
+        -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
+        -DCMAKE_C_COMPILER_WORKS=${CMAKE_C_COMPILER_WORKS}
+        -DCMAKE_CXX_COMPILER_WORKS=${CMAKE_CXX_COMPILER_WORKS}
+        -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=${CMAKE_FIND_ROOT_PATH_MODE_PROGRAM}
+        -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}
+        -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=${CMAKE_FIND_ROOT_PATH_MODE_INCLUDE}
+        -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}
+        -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+        -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
+        -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+        -DMACHINE=${MACHINE}
+        -DARCH=${ARCH}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_VERBOSE_MAKEFILE=${CMAKE_VERBOSE_MAKEFILE}
+        -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+        -DCMAKE_ASM_FLAGS=${CMAKE_ASM_FLAGS}
+        -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+        -DUSE_GNU_UEFI=${USE_GNU_UEFI}
+        -DOUTPUT_NAME=boot.elf
+        BUILD_COMMAND ${GENERATOR_COMMAND}
+        INSTALL_COMMAND ""
+)
 
 # 内核本体
 ExternalProject_Add(
@@ -175,6 +209,18 @@ add_custom_command(TARGET objdump
         COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
         COMMENT "Disassembling...")
 
+# 制作 boot.efi
+# 将引导调整为 efi
+add_custom_target(boot_efi DEPENDS boot)
+add_custom_command(TARGET boot_efi
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        COMMENT "Gen boot.efi"
+        COMMAND ${CMAKE_OBJCOPY} boot.elf boot.efi
+        -j .text -j .sdata -j .data -j .dynamic -j .dynsym
+        -j .rel -j .rela -j .rel.* -j .rela.* -j .reloc
+        --target=efi-app-x86-64 --subsystem=10
+        )
+
 # 制作内核
 # 将内核调整为 efi
 add_custom_target(kernel_efi DEPENDS kernel)
@@ -187,12 +233,12 @@ add_custom_command(TARGET kernel_efi
         -S -R .eh_frame -R .gcc_except_table
         )
 
-add_custom_target(image_uefi DEPENDS kernel_efi)
+add_custom_target(image_uefi DEPENDS boot_efi kernel_efi)
 add_custom_command(TARGET image_uefi
         COMMENT "Copying bootloader and kernel"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/tools/startup.nsh ${CMAKE_BINARY_DIR}/image/startup.nsh
+        # COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/tools/startup.nsh ${CMAKE_BINARY_DIR}/image/startup.nsh
         )
 # 制作镜像
 add_custom_target(image DEPENDS image_uefi)
