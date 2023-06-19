@@ -18,7 +18,7 @@ ARCH=x86_64
 #ARCH=aarch64
 
 # 指定要使用的 efi
-USE_GNU_UEFI=1
+USE_GNU_UEFI=0
 
 CMAKE_BUILD_TYPE=Debug
 #CMAKE_BUILD_TYPE=Release
