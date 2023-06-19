@@ -39,7 +39,7 @@ add_custom_command(TARGET opensbi
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_BINARY_DIR}/3rd/opensbi/platform/generic/firmware/fw_jump.elf
         ${CMAKE_BINARY_DIR}/firmware/fw_jump.elf
-        COMMENT "build opensbi..."
+        COMMENT "Build 3rd/opensbi done."
         )
 
 # gnu-efi
@@ -52,7 +52,7 @@ add_custom_command(TARGET gnuefi
         make
         ARCH=${ARCH}
         OBJDIR=${CMAKE_BINARY_DIR}/3rd/gnu-efi
-        COMMENT "build gnu-efi..."
+        COMMENT "Build 3rd/gnu-efi done."
         )
 
 # posix-uefi
@@ -70,7 +70,7 @@ add_custom_command(TARGET posixuefi
         make clean
         COMMAND
         rm -rf ${CMAKE_SOURCE_DIR}/3rd/posix-uefi/build
-        COMMENT "Build posix-uefi done."
+        COMMENT "Build 3rd/posix-uefi done."
         )
 
 add_custom_target(kernel_pre)
@@ -81,23 +81,28 @@ if (ARCH STREQUAL "riscv64")
             )
 
 elseif (ARCH STREQUAL "x86_64")
-    add_custom_command(TARGET kernel_pre
-            DEPENDS gnuefi posixuefi
-        #     COMMAND make gnuefi
-            COMMAND make posixuefi
-            )
+    if (USE_GNU_UEFI STREQUAL "1")
+        add_custom_command(TARGET kernel_pre
+                DEPENDS gnuefi
+                COMMAND make gnuefi
+                )
+    else ()
+        add_custom_command(TARGET kernel_pre
+                DEPENDS posixuefi
+                COMMAND make posixuefi
+                )
+    endif ()
 
 elseif (ARCH STREQUAL "aarch64")
     add_custom_command(TARGET kernel_pre
             DEPENDS gnuefi
             COMMAND make ARCH=${ARCH} gnuefi
             )
-
 endif ()
 
 # 引导
 ExternalProject_Add(
-        boot
+        boot_elf
         BUILD_ALWAYS 1
         PREFIX ${CMAKE_BINARY_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/src/boot
@@ -124,7 +129,7 @@ ExternalProject_Add(
         -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         -DUSE_GNU_UEFI=${USE_GNU_UEFI}
-        -DOUTPUT_NAME=boot.elf
+        -DOUTPUT_NAME=${BOOT_ELF_OUTPUT_NAME}
         BUILD_COMMAND ${GENERATOR_COMMAND}
         INSTALL_COMMAND ""
 )
@@ -159,7 +164,7 @@ ExternalProject_Add(
         -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         -DUSE_GNU_UEFI=${USE_GNU_UEFI}
-        -DKernelName=${KernelName}
+        -DOUTPUT_NAME=${KERNEL_ELF_OUTPUT_NAME}
         BUILD_COMMAND ${GENERATOR_COMMAND}
         INSTALL_COMMAND ""
 )
@@ -169,7 +174,7 @@ add_custom_target(kernel_debug DEPENDS kernel)
 add_custom_command(TARGET kernel_debug
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJCOPY} --only-keep-debug ${KernelName} ${KernelName}.debug
+        COMMAND ${CMAKE_OBJCOPY} --only-keep-debug ${KERNEL_ELF_OUTPUT_NAME} ${KERNEL_ELF_OUTPUT_NAME}.debug
         COMMENT "Generating kernel debug...")
 
 # objcopy --strip-debug foo 创建一个去掉调试信息的( strip 的)可执行文件
@@ -178,8 +183,8 @@ add_custom_target(kernel_raw DEPENDS kernel)
 add_custom_command(TARGET kernel_raw
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJCOPY} --strip-debug ${KernelName}
-        COMMAND ${CMAKE_OBJCOPY} --add-gnu-debuglink=${KernelName}.debug ${KernelName}
+        COMMAND ${CMAKE_OBJCOPY} --strip-debug ${KERNEL_ELF_OUTPUT_NAME}
+        COMMAND ${CMAKE_OBJCOPY} --add-gnu-debuglink=${KERNEL_ELF_OUTPUT_NAME}.debug ${KERNEL_ELF_OUTPUT_NAME}
         COMMENT "Generating raw kernel...")
 
 # nm
@@ -187,8 +192,8 @@ add_custom_target(nm DEPENDS kernel)
 add_custom_command(TARGET nm
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName}
-        > ${KernelName}.nm
+        COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KERNEL_ELF_OUTPUT_NAME}
+        > ${KERNEL_ELF_OUTPUT_NAME}.nm
         COMMENT "nm...")
 
 # readelf -a
@@ -196,7 +201,7 @@ add_custom_target(readelf DEPENDS kernel)
 add_custom_command(TARGET readelf
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf || (exit 0)
+        COMMAND ${CMAKE_READELF} -a ${KERNEL_ELF_OUTPUT_NAME} > ${KERNEL_ELF_OUTPUT_NAME}.readelf || (exit 0)
         COMMENT "readelf...")
 
 # objdump -D
@@ -204,19 +209,19 @@ add_custom_target(objdump DEPENDS kernel)
 add_custom_command(TARGET objdump
         POST_BUILD
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
-        COMMENT "Disassembling...")
+        COMMAND ${CMAKE_OBJDUMP} -D ${KERNEL_ELF_OUTPUT_NAME} > ${KERNEL_ELF_OUTPUT_NAME}.disassembly
+        COMMENT "objdump done.")
 
 # 制作 boot.efi
 # 将引导调整为 efi
-add_custom_target(boot_efi DEPENDS boot)
+add_custom_target(boot_efi DEPENDS boot_elf)
 add_custom_command(TARGET boot_efi
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMENT "Gen boot.efi"
-        COMMAND ${CMAKE_OBJCOPY} boot.elf boot.efi
+        COMMAND ${CMAKE_OBJCOPY} ${BOOT_ELF_OUTPUT_NAME} ${BOOT_EFI_OUTPUT_NAME}
         -j .text -j .sdata -j .data -j .dynamic -j .dynsym
         -j .rel -j .rela -j .rel.* -j .rela.* -j .reloc
-        --target=efi-app-x86-64 --subsystem=10
+        --target=efi-app-${ARCH} --subsystem=10
+        COMMENT "Build ${BOOT_EFI_OUTPUT_NAME} done."
         )
 
 # 制作内核
@@ -224,19 +229,20 @@ add_custom_command(TARGET boot_efi
 add_custom_target(kernel_efi DEPENDS kernel)
 add_custom_command(TARGET kernel_efi
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMENT "Gen kernel.efi"
-        COMMAND ${CMAKE_OBJCOPY} --target=efi-app-x86-64 ${KernelName} kernel.efi
+        COMMAND ${CMAKE_OBJCOPY} --target=efi-app-x86-64 ${KERNEL_ELF_OUTPUT_NAME} kernel.efi
         -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id
         -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn
         -S -R .eh_frame -R .gcc_except_table
+        COMMENT "Build kernel.efi done."
         )
 
 add_custom_target(image_uefi DEPENDS boot_efi kernel_efi)
 add_custom_command(TARGET image_uefi
         COMMENT "Copying bootloader and kernel"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
-        # COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/tools/startup.nsh ${CMAKE_BINARY_DIR}/image/startup.nsh
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${BOOT_EFI_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/efi/boot/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${KERNEL_EFI_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/efi/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/tools/startup.nsh ${CMAKE_BINARY_DIR}/image/startup.nsh
         )
 # 制作镜像
 add_custom_target(image DEPENDS image_uefi)
@@ -278,7 +284,7 @@ endif ()
 if (ARCH STREQUAL "riscv64")
     set(QEMU_MACHINE -machine virt)
     set(QEMU_DEVICES)
-    set(QEMU_IMAGE -kernel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName})
+    set(QEMU_IMAGE -kernel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KERNEL_ELF_OUTPUT_NAME})
     add_custom_target(run DEPENDS kernel)
     add_custom_command(
             TARGET run

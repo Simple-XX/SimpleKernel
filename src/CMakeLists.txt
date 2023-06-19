@@ -22,40 +22,33 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/kernel)
 
 if (ARCH STREQUAL "riscv64")
     # 将各个子对象链接为内核文件
-    add_executable(${KernelName}
+    add_executable(core
             $<TARGET_OBJECTS:arch>
             $<TARGET_OBJECTS:kernel>
             )
 elseif (ARCH STREQUAL "x86_64")
     # 将各个子对象链接为内核文件
-    add_executable(${KernelName}
+    add_executable(core
             $<TARGET_OBJECTS:kernel>
             )
 
 elseif (ARCH STREQUAL "aarch64")
     # 将各个子对象链接为内核文件
-    add_executable(${KernelName}
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/crt0-efi-${ARCH}.o
-            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/crt0.o
-            $<TARGET_OBJECTS:arch>
+    add_executable(core
             $<TARGET_OBJECTS:kernel>
-            )
-    target_link_libraries(${KernelName} PRIVATE
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/lib/libefi.a
-            ${CMAKE_BINARY_DIR}/../3rd/gnu-efi/gnuefi/libgnuefi.a
-            #        ${CMAKE_SOURCE_DIR}/../3rd/posix-uefi/libuefi.a
             )
 endif ()
 
 # 指定链接脚本
-target_link_options(${KernelName} PRIVATE -T ${CMAKE_SOURCE_DIR}/arch/${ARCH}/link.ld)
+target_link_options(core PRIVATE -T ${CMAKE_SOURCE_DIR}/arch/${ARCH}/link.ld)
 
 # 其它链接选项
 if (ARCH STREQUAL "riscv64")
-    target_link_options(${KernelName} PRIVATE -Wl,-melf64lriscv)
+    target_link_options(core PRIVATE -Wl,-melf64lriscv)
 elseif (ARCH STREQUAL "x86_64")
-    target_link_options(${KernelName} PRIVATE -Wl,-melf_x86_64)
+    target_link_options(core PRIVATE -Wl,-melf_x86_64)
 elseif (ARCH STREQUAL "aarch64")
-    target_link_options(${KernelName} PRIVATE -Wl,-maarch64elf)
+    target_link_options(core PRIVATE -Wl,-maarch64elf)
 endif ()
+
+set_target_properties(core PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
