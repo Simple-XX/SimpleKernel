@@ -16,6 +16,10 @@ enable_language(CXX)
 # 引入添加头文件函数
 include(header_files)
 
+message("CMAKE_ASM_FLAGS: ${CMAKE_ASM_FLAGS}")
+message("CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
+message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+
 add_executable(boot
         ${CMAKE_SOURCE_DIR}/${ARCH}/boot.cpp
         )
