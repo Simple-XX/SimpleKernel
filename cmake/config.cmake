@@ -71,33 +71,39 @@ message("CMAKE_BUILD_TYPE is: ${CMAKE_BUILD_TYPE}")
 set(OPTIMIZE_FLAGS "-O0")
 
 # 通用编译选项
-set(COMMON_FLAGS "-Wall -Wextra \
--no-pie -nostdlib \
--fPIC -ffreestanding -fexceptions -fshort-wchar")
+set(COMMON_FLAGS
+        "-Wall -Wextra -nostdlib -ffreestanding -fexceptions -fshort-wchar"
+        )
 
 # 架构相关编译选项
 # @todo clang 交叉编译参数
 if (ARCH STREQUAL "riscv64")
     set(ARCH_FLAGS "-march=rv64imafdc")
 elseif (ARCH STREQUAL "x86_64")
-    set(ARCH_FLAGS "-march=corei7 -mtune=corei7 -m64 -mno-red-zone \
--z max-page-size=0x1000 \
--Wl,-shared -Wl,-Bsymbolic")
+    set(ARCH_FLAGS
+            "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -z max-page-size=0x1000"
+            )
 elseif (ARCH STREQUAL "aarch64")
     set(ARCH_FLAGS "-march=armv8-a -mtune=cortex-a72")
 endif ()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPTIMIZE_FLAGS} ${COMMON_FLAGS} ${ARCH_FLAGS} ${DEBUG_FLAGS} ${UEFI_FLAGS}")
-message("CMAKE_C_FLAGS:${CMAKE_C_FLAGS}")
+set(CMAKE_C_FLAGS_KERNEL
+        "${OPTIMIZE_FLAGS} ${COMMON_FLAGS} ${ARCH_FLAGS} ${DEBUG_FLAGS} ${UEFI_FLAGS}"
+        )
+
+set(CMAKE_C_FLAGS_BOOT
+        "${CMAKE_C_FLAGS_KERNEL} -no-pie -fPIC -Wl,-shared -Wl,-Bsymbolic"
+        )
 
 # 将编译选项同步到汇编
-set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}")
-message("CMAKE_ASM_FLAGS: ${CMAKE_ASM_FLAGS}")
+set(CMAKE_ASM_FLAGS_KERNEL "${CMAKE_C_FLAGS_KERNEL}")
+set(CMAKE_ASM_FLAGS_BOOT "${CMAKE_C_FLAGS_BOOT}")
 
 # 将编译选项同步到 c++
-set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS} -fpermissive")
-message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_KERNEL
+        "${CMAKE_C_FLAGS_KERNEL} -fpermissive")
+set(CMAKE_CXX_FLAGS_BOOT
+        "${CMAKE_C_FLAGS_BOOT} -fpermissive")
 
 # 设置构建使用的工具，默认为 make
 if (GENERATOR STREQUAL "ninja")

@@ -16,6 +16,10 @@ include(header_files)
 # 引入添加汇编文件函数
 include(find_asm_files)
 
+message("CMAKE_ASM_FLAGS: ${CMAKE_ASM_FLAGS}")
+message("CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
+message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+
 # 处理子目录下的 CMakeLists
 add_subdirectory(${CMAKE_SOURCE_DIR}/arch)
 add_subdirectory(${CMAKE_SOURCE_DIR}/kernel)
