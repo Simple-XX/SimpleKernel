@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: GPL-2.0+ OR BSD-2-Clause */
+
 #ifndef GNU_EFI_RISCV64_SETJMP_H
 #define GNU_EFI_RISCV64_SETJMP_H
 

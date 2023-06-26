@@ -52,6 +52,8 @@ Revision History
 #include "mips64el/efibind.h"
 #elif defined (__riscv) && __riscv_xlen == 64
 #include "riscv64/efibind.h"
+#elif defined (__loongarch64)
+#include "loongarch64/efibind.h"
 #else
 #error Usupported architecture
 #endif

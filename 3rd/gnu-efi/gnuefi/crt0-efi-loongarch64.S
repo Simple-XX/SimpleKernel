@@ -1,7 +1,8 @@
-/* SPDX-License-Identifier: GPL-2.0+ OR BSD-2-Clause */
 /*
- * Copright (C) 2014 Linaro Ltd. <ard.biesheuvel@linaro.org>
- * Copright (C) 2018 Alexander Graf <agraf@suse.de>
+ * crt0-efi-loongarch64.S - PE/COFF header for LoongArch64 EFI applications
+ *
+ * Copyright (C) 2021 Loongson Technology Corporation Limited. <zhoumingtao@loongson.cn>
+ * Copyright (C) 2014 Linaro Ltd. <ard.biesheuvel@linaro.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -17,9 +18,8 @@
  */
 
 #ifndef EFI_SUBSYSTEM
-#define EFI_SUBSYSTEM 10
+#define EFI_SUBSYSTEM 0xa
 #endif
-
 	.section	.text.head
 
 	/*
@@ -34,11 +34,11 @@ pe_header:
 	.ascii	"PE"
 	.short 	0
 coff_header:
-	.short	0x5064				// riscv64
+	.short	0x6264				// loongarch64 little endian
 	.short	2				// nr_sections
 	.long	0 				// TimeDateStamp
 	.long	0				// PointerToSymbolTable
-	.long	0				// NumberOfSymbols
+	.long	1				// NumberOfSymbols
 	.short	section_table - optional_header	// SizeOfOptionalHeader
 	.short	0x206				// Characteristics.
 						// IMAGE_FILE_DEBUG_STRIPPED |
@@ -48,16 +48,16 @@ optional_header:
 	.short	0x20b				// PE32+ format
 	.byte	0x02				// MajorLinkerVersion
 	.byte	0x14				// MinorLinkerVersion
-	.long	_data - _start			// SizeOfCode
-	.long	_data_size			// SizeOfInitializedData
+	.long	_edata - _start			// SizeOfCode
+	.long	0				// SizeOfInitializedData
 	.long	0				// SizeOfUninitializedData
 	.long	_start - ImageBase		// AddressOfEntryPoint
 	.long	_start - ImageBase		// BaseOfCode
 
 extra_header_fields:
 	.quad	0				// ImageBase
-	.long	0x1000				// SectionAlignment
-	.long	0x200				// FileAlignment
+	.long	0x20				// SectionAlignment
+	.long	0x8				// FileAlignment
 	.short	0				// MajorOperatingSystemVersion
 	.short	0				// MinorOperatingSystemVersion
 	.short	0				// MajorImageVersion
@@ -89,52 +89,63 @@ extra_header_fields:
 
 	// Section table
 section_table:
+
 	/*
 	 * The EFI application loader requires a relocation section
 	 * because EFI applications must be relocatable.  This is a
 	 * dummy section as far as we are concerned.
 	 */
-	.ascii	".reloc\0\0"
+	.ascii	".reloc"
+	.byte	0
+	.byte	0			// end of 0 padding of section name
 	.long	0
 	.long	0
-	.long	0				// SizeOfRawData
-	.long	0				// PointerToRawData
-	.long	0				// PointerToRelocations
-	.long	0				// PointerToLineNumbers
-	.short	0				// NumberOfRelocations
-	.short	0				// NumberOfLineNumbers
-	.long	0x42100040			// Characteristics (section flags)
+	.long	0			// SizeOfRawData
+	.long	0			// PointerToRawData
+	.long	0			// PointerToRelocations
+	.long	0			// PointerToLineNumbers
+	.short	0			// NumberOfRelocations
+	.short	0			// NumberOfLineNumbers
+	.long	0x42100040		// Characteristics (section flags)
 
-	.ascii	".text\0\0\0"
-	.long	_edata - _start			// VirtualSize
-	.long	_start - ImageBase		// VirtualAddress
-	.long	_edata - _start			// SizeOfRawData
-	.long	_start - ImageBase		// PointerToRawData
 
-	.long	0				// PointerToRelocations (0 for executables)
-	.long	0				// PointerToLineNumbers (0 for executables)
-	.short	0				// NumberOfRelocations  (0 for executables)
-	.short	0				// NumberOfLineNumbers  (0 for executables)
-	.long	0xe0500020			// Characteristics (section flags)
+	.ascii	".text"
+	.byte	0
+	.byte	0
+	.byte	0        		// end of 0 padding of section name
+	.long	_edata - _start		// VirtualSize
+	.long	_start - ImageBase	// VirtualAddress
+	.long	_edata - _start		// SizeOfRawData
+	.long	_start - ImageBase	// PointerToRawData
 
-	.align	12
-	.globl _start
+	.long	0			// PointerToRelocations (0 for executables)
+	.long	0			// PointerToLineNumbers (0 for executables)
+	.short	0			// NumberOfRelocations  (0 for executables)
+	.short	0			// NumberOfLineNumbers  (0 for executables)
+	.long	0xe0500020		// Characteristics (section flags)
+
+	.align  4
+
+	.globl	_start
+	.type	_start, @function
 _start:
-	addi		sp, sp, -24
-	sd		a0, 0(sp)
-	sd		a1, 8(sp)
-	sd		ra, 16(sp)
-	lla		a0, ImageBase
-	lla		a1, _DYNAMIC
-	call		_relocate
-	bne		a0, zero, 0f
-	ld		a1, 8(sp)
-	ld		a0, 0(sp)
-	call		efi_main
-	ld		ra, 16(sp)
-0:	addi		sp, sp, 24
-	ret
+	addi.d	  $sp, $sp, -24
+	st.d	  $ra, $sp, 0
+	st.d	  $a0, $sp, 8
+	st.d 	  $a1, $sp, 16
 
-#if defined(__ELF__) && defined(__linux__)
-	.section .note.GNU-stack,"",%progbits
-#endif
+	move	  $a2, $a0		// a2: ImageHandle
+	move	  $a3, $a1 		// a3: SystemTable
+	la.local  $a0, ImageBase	// a0: ImageBase
+	la.local  $a1, _DYNAMIC		// a1: DynamicSection
+	bl        _relocate
+	bnez	  $a0, 0f
+
+	ld.d	  $a0, $sp, 8
+	ld.d	  $a1, $sp, 16
+	bl        efi_main
+
+0:	ld.d	  $ra, $sp, 0
+	addi.d	  $sp, $sp, 24
+	jr	      $ra
+	.end	  _start

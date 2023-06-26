@@ -56,13 +56,13 @@ _start:
 	call _relocate
 	popl %ebx
 	popl %ebx
- 	testl %eax,%eax
- 	jne .exit
+	testl %eax,%eax
+	jne .exit
   
-  	call efi_main			# call app with "image" and "systab" argument
+	call _entry			# call app with "image" and "systab" argument
 
 .exit:	leave
-  	ret
+	ret
  
  	// hand-craft a dummy .reloc section so EFI knows it's a relocatable executable:
  

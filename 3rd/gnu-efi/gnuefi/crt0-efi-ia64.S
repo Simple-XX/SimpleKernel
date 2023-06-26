@@ -56,7 +56,7 @@ _start:
 
 	mov out0=in0			// image handle
 	mov out1=in1			// systab
-	br.call.sptk.few rp=efi_main
+	br.call.sptk.few rp=_entry
 .Lret2:
 .exit:
 	mov ar.pfs=loc0
