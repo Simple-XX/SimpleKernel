@@ -18,12 +18,11 @@
 
 /**
  * @brief 内核主要逻辑
- * @note 这个函数不会返回
  */
-void kernel_main(void) {
+int kernel_main(int, char**) {
     // 进入死循环
     while (1) {
         ;
     }
-    return;
+    return 0;
 }
