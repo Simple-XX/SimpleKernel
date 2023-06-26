@@ -25,9 +25,10 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/arch)
 add_subdirectory(${CMAKE_SOURCE_DIR}/kernel)
 
 if (ARCH STREQUAL "riscv64")
+    enable_language(ASM)
     # 将各个子对象链接为内核文件
     add_executable(core
-            $<TARGET_OBJECTS:arch>
+            ${CMAKE_SOURCE_DIR}/boot/${ARCH}/boot.S
             $<TARGET_OBJECTS:kernel>
             )
 elseif (ARCH STREQUAL "x86_64")
