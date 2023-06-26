@@ -52,6 +52,7 @@ add_custom_command(TARGET gnuefi
         make
         ARCH=${ARCH}
         OBJDIR=${CMAKE_BINARY_DIR}/3rd/gnu-efi
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/3rd/gnu-efi/gnuefi/elf_${ARCH}_efi.lds ${CMAKE_BINARY_DIR}/3rd/gnu-efi/link.ld
         COMMENT "Build 3rd/gnu-efi done."
         )
 

@@ -31,14 +31,15 @@ if (USE_GNU_UEFI STREQUAL "1")
             ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/gnuefi/libgnuefi.a
             ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/lib/libefi.a
             )
+    target_link_options(boot PRIVATE -T ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/link.ld)
+
 else ()
     target_link_libraries(boot PRIVATE
             ${CMAKE_BINARY_DIR}/../../3rd/posix-uefi/crt0.o
             ${CMAKE_BINARY_DIR}/../../3rd/posix-uefi/libuefi.a
             )
+    target_link_options(boot PRIVATE -T ${CMAKE_BINARY_DIR}/../../3rd/posix-uefi/link.ld)
 endif ()
-
-target_link_options(boot PRIVATE -T ${CMAKE_SOURCE_DIR}/${ARCH}/link.ld)
 
 set_target_properties(boot PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
