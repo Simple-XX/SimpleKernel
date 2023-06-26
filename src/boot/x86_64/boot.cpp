@@ -89,7 +89,7 @@ typedef struct {
 } Elf64_Phdr;
 
 /**
- * Dump memory at given address, should accept 0x prefixes from the command line
+ * Load an ELF executable
  */
 extern "C" int main(int argc, char** argv) {
     (void)argc;
