@@ -14,8 +14,6 @@
  * </table>
  */
 
-#include "cstdint"
-
 #if USE_GNU_UEFI == 1
 #    include "efi.h"
 #    include "efilib.h"
@@ -33,11 +31,14 @@
 extern "C" EFI_STATUS
 efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
     // uefi_call_wrapper(InitializeLib, 2, image, systemTable);
-    // EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen, 1,
+    // EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen,
+    // 1,
     //                                       systemTable->ConOut);
 
-    // status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
-    //                                       systemTable->ConOut, L"Hello UEFI!\n");
+    // status            = uefi_call_wrapper(systemTable->ConOut->OutputString,
+    // 2,
+    //                                       systemTable->ConOut, L"Hello
+    //                                       UEFI!\n");
 
     return EFI_SUCCESS;
 }
@@ -153,8 +154,8 @@ extern "C" int main(int argc, char** argv) {
     /* execute the "kernel" */
     printf("ELF entry point %p\n", entry);
 
-    int (*entry_fp)(void) = (int(*)())entry;
-    i = entry_fp();
+    int (*entry_fp)(int, char**) = (int (*)(int, char**))entry;
+    i                            = entry_fp(0, nullptr);
 
     printf("ELF returned %d\n", i);
 

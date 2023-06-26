@@ -20,6 +20,6 @@
 /**
  * @brief 声明 kernel_main 用 C 方法编译
  */
-extern "C" void kernel_main(void);
+extern "C" int kernel_main(int, char**);
 
 #endif /* SIMPLEKERNEL_KERNEL_H */
