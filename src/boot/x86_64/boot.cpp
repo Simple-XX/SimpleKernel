@@ -32,12 +32,12 @@
  */
 extern "C" EFI_STATUS
 efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
-    uefi_call_wrapper(InitializeLib, 2, image, systemTable);
-    EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen, 1,
-                                          systemTable->ConOut);
+    // uefi_call_wrapper(InitializeLib, 2, image, systemTable);
+    // EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen, 1,
+    //                                       systemTable->ConOut);
 
-    status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
-                                          systemTable->ConOut, L"Hello UEFI!\n");
+    // status            = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+    //                                       systemTable->ConOut, L"Hello UEFI!\n");
 
     return EFI_SUCCESS;
 }
