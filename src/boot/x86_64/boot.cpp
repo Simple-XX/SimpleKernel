@@ -107,7 +107,7 @@ extern "C" int main(int argc, char** argv) {
         fseek(f, 0, SEEK_END);
         size = ftell(f);
         fseek(f, 0, SEEK_SET);
-        buff = malloc(size + 1);
+        buff = (char*)malloc(size + 1);
         if (!buff) {
             fprintf(stderr, "unable to allocate memory\n");
             return 1;
@@ -154,8 +154,8 @@ extern "C" int main(int argc, char** argv) {
     printf("ELF entry point %p\n", entry);
     // i = (*((int (*__attribute__((sysv_abi)))(void))(entry)))();
 
-    void (*fp)(void) = entry;
-    fp();
+    int (*entry_fp)(void) = (int(*)())entry;
+    i = entry_fp();
 
     printf("ELF returned %d\n", i);
 
