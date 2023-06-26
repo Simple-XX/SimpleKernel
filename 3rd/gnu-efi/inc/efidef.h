@@ -20,19 +20,39 @@ Revision History
 
 --*/
 
-typedef UINT16          CHAR16;
-typedef UINT8           CHAR8;
-typedef UINT8           BOOLEAN;
+#if !defined(__cplusplus)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+typedef _Bool BOOLEAN;
+#else
+typedef unsigned char BOOLEAN;
+#endif
+#else
+typedef bool BOOLEAN;
+#endif
+
 #ifndef CONST
    #define CONST const
 #endif
 #ifndef TRUE
+#if defined(__cplusplus) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
+    #define TRUE    true
+    #define FALSE   false
+#else
     #define TRUE    ((BOOLEAN) 1)
     #define FALSE   ((BOOLEAN) 0)
 #endif
+#endif
 
 #ifndef NULL
+#if (defined(__cplusplus) && __cplusplus >= 201103L) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
+    #define NULL    nullptr
+#else
+#if !defined(__cplusplus)
     #define NULL    ((VOID *) 0)
+#else
+    #define NULL    0
+#endif
+#endif
 #endif
 
 typedef UINTN           EFI_STATUS;
@@ -194,7 +214,7 @@ typedef struct {
 // International Language
 //
 
-typedef UINT8   ISO_639_2;
+typedef CHAR8 ISO_639_2;
 #define ISO_639_2_ENTRY_SIZE    3
 
 //

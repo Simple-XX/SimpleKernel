@@ -18,6 +18,7 @@ typedef struct {
 	UINT64	FP;
 	UINT64	LR;
 	UINT64	IP0;
+	UINT64	_pad1;
 
 	/* FP regs */
 	UINT64	D8;

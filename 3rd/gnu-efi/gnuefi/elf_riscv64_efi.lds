@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: GPL-2.0+ */
+/* SPDX-License-Identifier: GPL-2.0+ OR BSD-2-Clause */
 
 OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv", "elf64-littleriscv")
 OUTPUT_ARCH(riscv)
@@ -17,6 +17,7 @@ SECTIONS {
 	}
 	_etext = .;
 	_text_size = . - _text;
+. = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE));
 .dynamic  :
 	{ *(.dynamic) }
 .data :
@@ -37,22 +38,23 @@ SECTIONS {
 		*(.sbss)
 		*(.scommon)
 		*(.dynbss)
-		*(.bss)
+		*(.bss*)
 		*(COMMON)
 		. = ALIGN(16);
 		_bss_end = .;
 	}
 
-.rela.text :
-	{ *(.rela.text) *(.rela.text*) }
-.rela.dyn :
-	{ *(.rela.dyn) }
-.rela.plt :
-	{ *(.rela.plt) }
-.rela.got :
-	{ *(.rela.got) }
-.rela.data :
-	{ *(.rela.data) *(.rela.data*) }
+. = ALIGN(4096);
+.rela :
+  {
+    *(.rela.text*)
+    *(.rela.data*)
+    *(.rela.got)
+    *(.rela.dyn)
+    *(.rela.stab)
+  }
+. = ALIGN(4096);
+.rela.plt : { *(.rela.plt) }
 	. = ALIGN(512);
 	_edata = .;
 	_data_size = . - _data;
@@ -66,6 +68,7 @@ SECTIONS {
 	. = ALIGN(4096);
 .note.gnu.build-id :
 	{ *(.note.gnu.build-id) }
+. = DATA_SEGMENT_END (.);
 /DISCARD/ :
 	{
 		*(.rel.reloc)

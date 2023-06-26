@@ -136,7 +136,7 @@ _start:
 	bne		0f
 
 	ldmfd		sp, {r0-r1}
-	bl		efi_main
+	bl		_entry
 
 0:	add		sp, sp, #12
 	ldr		pc, [sp], #4

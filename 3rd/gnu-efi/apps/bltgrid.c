@@ -64,7 +64,8 @@ draw_boxes(EFI_GRAPHICS_OUTPUT_PROTOCOL *gop)
 		if (CompareMem(info, gop->Mode->Info, sizeof (*info)))
 			continue;
 
-		NumPixels = info->VerticalResolution * info->HorizontalResolution;
+		NumPixels = (UINTN)info->VerticalResolution
+                            * (UINTN)info->HorizontalResolution;
 		BufferSize = NumPixels * sizeof(UINT32);
 
 		PixelBuffer = AllocatePool(BufferSize);

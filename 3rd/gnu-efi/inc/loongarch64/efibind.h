@@ -1,7 +1,10 @@
-/* SPDX-License-Identifier: GPL-2.0+ OR BSD-2-Clause */
 /*
  * Copright (C) 2014 - 2015 Linaro Ltd.
  * Author: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+ * Copright (C) 2017 Lemote Co.
+ * Author: Heiher <r@hev.cc>
+ * Copright (C) 2021 Loongson Technology Corporation Limited.
+ * Author: zhoumingtao <zhoumingtao@loongson.cn>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,55 +19,77 @@
  * either version 2 of the License, or (at your option) any later version.
  */
 
+#if !defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199901L ) && !defined(__cplusplus)
+
+// ANSI C 1999/2000 stdint.h integer width declarations
+
+typedef unsigned long       uint64_t;
+typedef long                int64_t;
+typedef unsigned int        uint32_t;
+typedef int                 int32_t;
+typedef unsigned short      uint16_t;
+typedef short               int16_t;
+typedef unsigned char       uint8_t;
+typedef signed char         int8_t;
+typedef uint64_t            uintptr_t;
+typedef int64_t             intptr_t;
+
+#else
 #include <stdint.h>
+#endif
 
 //
 // Basic EFI types of various widths
 //
 
-#include <stddef.h>
-
-typedef uint64_t                UINT64;
-typedef int64_t                 INT64;
-typedef uint32_t                UINT32;
-typedef int32_t                 INT32;
-typedef uint16_t                UINT16;
-typedef int16_t                 INT16;
-typedef uint8_t                 UINT8;
-typedef int8_t                  INT8;
-typedef wchar_t                 CHAR16;
-#define WCHAR                   CHAR16
-#ifndef BOOLEAN
-typedef uint8_t                 BOOLEAN;
+#ifndef __WCHAR_TYPE__
+# define __WCHAR_TYPE__ short
 #endif
+
+typedef uint64_t   UINT64;
+typedef int64_t    INT64;
+
+typedef uint32_t   UINT32;
+typedef int32_t    INT32;
+
+typedef uint16_t   UINT16;
+typedef int16_t    INT16;
+typedef uint8_t    UINT8;
+typedef int8_t     INT8;
+typedef __WCHAR_TYPE__ WCHAR;
+
 #undef VOID
-typedef void                    VOID;
-typedef int64_t                 INTN;
-typedef uint64_t                UINTN;
+#define VOID    void
 
-#define EFI_ERROR_MASK          0x8000000000000000
-#define EFIERR(a)               (EFI_ERROR_MASK | a)
-#define EFIERR_OEM(a)           (0xc000000000000000 | a)
+typedef int64_t    INTN;
+typedef uint64_t   UINTN;
 
-#define BAD_POINTER             0xFBFBFBFBFBFBFBFB
-#define MAX_ADDRESS             0xFFFFFFFFFFFFFFFF
+#define EFIERR(a)           (0x8000000000000000 | a)
+#define EFI_ERROR_MASK      0x8000000000000000
+#define EFIERR_OEM(a)       (0xc000000000000000 | a)
 
-#define BREAKPOINT()            while(1);
+#define BAD_POINTER         0xFBFBFBFBFBFBFBFB
+#define MAX_ADDRESS         0xFFFFFFFFFFFFFFFF
+
+#define BREAKPOINT()        while (TRUE);    // Make it hang on Bios[Dbg]32
 
 //
 // Pointers must be aligned to these address to function
 //
-#define MIN_ALIGNMENT_SIZE      8
 
-#define ALIGN_VARIABLE(Value, Adjustment) \
-   (UINTN)Adjustment = 0; \
-   if((UINTN)Value % MIN_ALIGNMENT_SIZE) \
-       (UINTN)Adjustment = MIN_ALIGNMENT_SIZE - ((UINTN)Value % MIN_ALIGNMENT_SIZE); \
-   Value = (UINTN)Value + (UINTN)Adjustment
+#define MIN_ALIGNMENT_SIZE  8
+
+#define ALIGN_VARIABLE(Value ,Adjustment) \
+            (UINTN)Adjustment = 0; \
+            if((UINTN)Value % MIN_ALIGNMENT_SIZE) \
+                (UINTN)Adjustment = MIN_ALIGNMENT_SIZE - ((UINTN)Value % MIN_ALIGNMENT_SIZE); \
+            Value = (UINTN)Value + (UINTN)Adjustment
+
 
 //
 // Define macros to build data structure signatures from characters.
 //
+
 #define EFI_SIGNATURE_16(A,B)             ((A) | (B<<8))
 #define EFI_SIGNATURE_32(A,B,C,D)         (EFI_SIGNATURE_16(A,B)     | (EFI_SIGNATURE_16(C,D)     << 16))
 #define EFI_SIGNATURE_64(A,B,C,D,E,F,G,H) (EFI_SIGNATURE_32(A,B,C,D) | ((UINT64)(EFI_SIGNATURE_32(E,F,G,H)) << 32))
@@ -76,28 +101,29 @@ typedef uint64_t                UINTN;
 // RUNTIMEFUNCTION - prototype for implementation of a runtime function that is not a service
 // RUNTIME_CODE - pragma macro for declaring runtime code
 //
-#ifndef EFIAPI                  // Forces EFI calling conventions reguardless of compiler options
-#define EFIAPI                  // Substitute expresion to force C calling convention
+
+#ifndef EFIAPI          // Forces EFI calling conventions reguardless of compiler options
+#define EFIAPI          // Substitute expresion to force C calling convention
 #endif
+
 #define BOOTSERVICE
 #define RUNTIMESERVICE
 #define RUNTIMEFUNCTION
+
+
 #define RUNTIME_CODE(a)         alloc_text("rtcode", a)
 #define BEGIN_RUNTIME_DATA()    data_seg("rtdata")
 #define END_RUNTIME_DATA()      data_seg("")
 
 #define VOLATILE                volatile
+
 #define MEMORY_FENCE            __sync_synchronize
 
 //
 // When build similiar to FW, then link everything together as
-// one big module. For the MSVC toolchain, we simply tell the
-// linker what our driver init function is using /ENTRY.
+// one big module.
 //
-#if defined(_MSC_EXTENSIONS)
-#define EFI_DRIVER_ENTRY_POINT(InitFunction) \
-    __pragma(comment(linker, "/ENTRY:" # InitFunction))
-#else
+
 #define EFI_DRIVER_ENTRY_POINT(InitFunction)    \
     UINTN                                       \
     InitializeDriver (                          \
@@ -114,17 +140,18 @@ typedef uint64_t                UINTN;
         EFI_SYSTEM_TABLE *systab                \
         ) __attribute__((weak,                  \
                 alias ("InitializeDriver")));
-#endif
 
-#define LOAD_INTERNAL_DRIVER(_if, type, name, entry) \
-   (_if)->LoadInternal(type, name, entry)
+#define LOAD_INTERNAL_DRIVER(_if, type, name, entry)    \
+        (_if)->LoadInternal(type, name, entry)
+
 
 //
 // Some compilers don't support the forward reference construct:
 //  typedef struct XXXXX
 //
 // The following macro provide a workaround for such cases.
-#define INTERFACE_DECL(x)       struct x
+
+#define INTERFACE_DECL(x) struct x
 
 #define uefi_call_wrapper(func, va_num, ...) func(__VA_ARGS__)
 #define EFI_FUNCTION

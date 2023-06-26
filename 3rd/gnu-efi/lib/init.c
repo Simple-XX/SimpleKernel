@@ -46,56 +46,51 @@ Returns:
     EFI_STATUS              Status;
     CHAR8                   *LangCode;
 
-    if (!LibInitialized) {
-        LibInitialized = TRUE;
-        LibFwInstance = FALSE;
-        LibImageHandle = ImageHandle;
+    if (LibInitialized)
+	return;
 
+    LibInitialized = TRUE;
+    LibFwInstance = FALSE;
+    LibImageHandle = ImageHandle;
 
-        //
-        // Set up global pointer to the system table, boot services table,
-        // and runtime services table
-        //
+    //
+    // Set up global pointer to the system table, boot services table,
+    // and runtime services table
+    //
 
-        ST = SystemTable;
-        BS = SystemTable->BootServices;
-        RT = SystemTable->RuntimeServices;
-//        ASSERT (CheckCrc(0, &ST->Hdr));
-//        ASSERT (CheckCrc(0, &BS->Hdr));
-//        ASSERT (CheckCrc(0, &RT->Hdr));
+    ST = SystemTable;
+    BS = SystemTable->BootServices;
+    RT = SystemTable->RuntimeServices;
+    // ASSERT (CheckCrc(0, &ST->Hdr));
+    // ASSERT (CheckCrc(0, &BS->Hdr));
+    // ASSERT (CheckCrc(0, &RT->Hdr));
 
+    //
+    // Initialize pool allocation type
+    //
 
-        //
-        // Initialize pool allocation type
-        //
+    if (ImageHandle) {
+	Status = uefi_call_wrapper(
+	    BS->HandleProtocol,
+	    3,
+	    ImageHandle,
+	    &LoadedImageProtocol,
+	    (VOID*)&LoadedImage
+	);
 
-        if (ImageHandle) {
-            Status = uefi_call_wrapper(
-                BS->HandleProtocol,
-                3,
-                ImageHandle, 
-                &LoadedImageProtocol,
-                (VOID*)&LoadedImage
-            );
-
-            if (!EFI_ERROR(Status)) {
-                PoolAllocationType = LoadedImage->ImageDataType;
-            }
-            EFIDebugVariable ();
-        }
-
-        //
-        // Initialize Guid table
-        //
-
-        InitializeGuid();
-
-        InitializeLibPlatform(ImageHandle,SystemTable);
+	if (!EFI_ERROR(Status)) {
+	    PoolAllocationType = LoadedImage->ImageDataType;
+	}
+	EFIDebugVariable ();
     }
 
     //
-    // 
+    // Initialize Guid table
     //
+
+    InitializeGuid();
+
+    InitializeLibPlatform(ImageHandle,SystemTable);
 
     if (ImageHandle && UnicodeInterface == &LibStubUnicodeInterface) {
         LangCode = LibGetVariable (VarLanguage, &EfiGlobalVariable);

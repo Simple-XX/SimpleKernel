@@ -45,10 +45,24 @@ TOPDIR := $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
 # Where to install the package. GNU-EFI will create and access
 # lib and include under the root
 #
-INSTALLROOT  := /
+DESTDIR ?= /
+ifeq ($(origin INSTALLROOT),undefined)
+INSTALLROOT = $(DESTDIR)
+endif
+
+empty :=
+space := $(empty) $(empty)
+stripped = $(subst $(space),/,$(strip $(subst /,$(space),$(1))))
+unstripped = $(subst $(space),/,$(subst /,$(space),$(1)))
+is_absolute = $(subst $(call stripped,$(1)),$(empty),$(call unstripped,$(1)))
+
+override INSTALLROOT:=$(if $(call is_absolute,$(INSTALLROOT)),,$(TOPDIR)/)$(INSTALLROOT)
+
 PREFIX       := /usr/local
-LIBDIR 	     := $(PREFIX)/lib
-INSTALL	     := install
+EXEC_PREFIX  := $(PREFIX)
+LIBDIR 	 := $(EXEC_PREFIX)/lib
+INCLUDEDIR   := $(PREFIX)/include
+INSTALL	 := install
 
 # Compilation tools
 HOSTCC       := $(prefix)gcc
@@ -139,41 +153,42 @@ endif
 # Set HAVE_EFI_OBJCOPY if objcopy understands --target efi-[app|bsdrv|rtdrv],
 # otherwise we need to compose the PE/COFF header using the assembler
 #
-ifneq ($(ARCH),aarch64)
 ifneq ($(ARCH),arm)
 ifneq ($(ARCH),mips64el)
 ifneq ($(ARCH),riscv64)
+ifneq ($(ARCH),loongarch64)
 export HAVE_EFI_OBJCOPY=y
 endif
 endif
 endif
 endif
 
-ifneq ($(ARCH),arm)
-export LIBGCC=$(shell $(CC) $(ARCH3264) -print-libgcc-file-name)
-endif
-
 ifeq ($(ARCH),arm)
 CFLAGS += -marm
+endif
+
+ifeq ($(ARCH),aarch64)
+LDFLAGS += -z common-page-size=4096
+LDFLAGS += -z max-page-size=4096
 endif
 
 # Generic compilation flags
 INCDIR  += -I$(SRCDIR) -I$(TOPDIR)/inc -I$(TOPDIR)/inc/$(ARCH) \
            -I$(TOPDIR)/inc/protocol
 
-# Only enable -fpic for non MinGW compilers (unneeded on MinGW)
+# Only enable -fPIE for non MinGW compilers (unneeded on MinGW)
 GCCMACHINE := $(shell $(CC) -dumpmachine)
 ifneq (mingw32,$(findstring mingw32, $(GCCMACHINE)))
-  CFLAGS += -fpic
+  CFLAGS += -fPIE
 endif
 
 ifeq (FreeBSD, $(findstring FreeBSD, $(OS)))
 CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
-           -fshort-wchar -fno-strict-aliasing \
+           -funsigned-char -fshort-wchar -fno-strict-aliasing \
            -ffreestanding -fno-stack-protector
 else
-CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
-           -fshort-wchar -fno-strict-aliasing \
+CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Wno-pointer-sign -Werror \
+           -funsigned-char -fshort-wchar -fno-strict-aliasing \
 	   -ffreestanding -fno-stack-protector -fno-stack-check \
            -fno-stack-check \
            $(if $(findstring gcc,$(CC)),-fno-merge-all-constants,)
@@ -183,3 +198,7 @@ ARFLAGS := rDv
 ASFLAGS += $(ARCH3264)
 LDFLAGS	+= -nostdlib --warn-common --no-undefined --fatal-warnings \
 	   --build-id=sha1
+
+ifneq ($(ARCH),arm)
+export LIBGCC=$(shell $(CC) $(CFLAGS) $(ARCH3264) -print-libgcc-file-name)
+endif

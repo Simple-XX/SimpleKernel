@@ -56,7 +56,7 @@ _start:
 	popq %rdi
 	popq %rsi
 
-	call efi_main
+	call _entry
 	addq $8, %rsp
 
 .exit:	

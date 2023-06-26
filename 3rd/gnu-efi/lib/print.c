@@ -1125,24 +1125,24 @@ Returns:
                 Item.Item.pw = Item.Scratch;
                 break;
 
-            case '0':
-                Item.Pad = '0';
+            case ',':
+                Item.Comma = TRUE;
                 break;
 
             case '-':
                 Item.PadBefore = FALSE;
                 break;
 
-            case ',':
-                Item.Comma = TRUE;
+            case '*':
+                *Item.WidthParse = va_arg(ps->args, UINTN);
                 break;
 
             case '.':
                 Item.WidthParse = &Item.FieldWidth;
                 break;
 
-            case '*':
-                *Item.WidthParse = va_arg(ps->args, UINTN);
+            case '0':
+                Item.Pad = '0';
                 break;
 
             case '1':
@@ -1170,59 +1170,9 @@ Returns:
                 }
                 break;
 
-            case 's':
-                Item.Item.pw = va_arg(ps->args, CHAR16 *);
-                if (!Item.Item.pw) {
-                    Item.Item.pw = L"(null)";
-                }
-                break;
-
             case 'c':
                 Item.Scratch[0] = (CHAR16) va_arg(ps->args, UINTN);
                 Item.Scratch[1] = 0;
-                Item.Item.pw = Item.Scratch;
-                break;
-
-            case 'l':
-                Item.Long = TRUE;
-                break;
-
-            case 'X':
-                Item.Width = Item.Long ? 16 : 8;
-                Item.Pad = '0';
-#if __GNUC__ >= 7
-		__attribute__ ((fallthrough));
-#endif
-            case 'x':
-                ValueToHex (
-                    Item.Scratch,
-                    Item.Long ? va_arg(ps->args, UINT64) : va_arg(ps->args, UINT32)
-                    );
-                Item.Item.pw = Item.Scratch;
-
-                break;
-
-
-            case 'g':
-                GuidToString (Item.Scratch, va_arg(ps->args, EFI_GUID *));
-                Item.Item.pw = Item.Scratch;
-                break;
-
-            case 'u':
-                ValueToString (
-                    Item.Scratch,
-                    Item.Comma,
-                    Item.Long ? va_arg(ps->args, UINT64) : va_arg(ps->args, UINT32)
-                    );
-                Item.Item.pw = Item.Scratch;
-                break;
-
-            case 'd':
-                ValueToString (
-                    Item.Scratch,
-                    Item.Comma,
-                    Item.Long ? va_arg(ps->args, INT64) : va_arg(ps->args, INT32)
-                    );
                 Item.Item.pw = Item.Scratch;
                 break;
 
@@ -1238,6 +1188,23 @@ Returns:
                 break;
             }
 
+            case 'd':
+                ValueToString (
+                    Item.Scratch,
+                    Item.Comma,
+                    Item.Long ? va_arg(ps->args, INT64) : va_arg(ps->args, INT32)
+                    );
+                Item.Item.pw = Item.Scratch;
+                break;
+
+            case 'E':
+                Attr = ps->AttrError;
+                break;
+
+            case 'e':
+                PSETATTR(ps, ps->AttrError);
+                break;
+
             case 'f':
                 FloatToString (
                     Item.Scratch,
@@ -1247,8 +1214,42 @@ Returns:
                 Item.Item.pw = Item.Scratch;
                 break;
 
-            case 't':
-                TimeToString (Item.Scratch, va_arg(ps->args, EFI_TIME *));
+            case 'g':
+                GuidToString (Item.Scratch, va_arg(ps->args, EFI_GUID *));
+                Item.Item.pw = Item.Scratch;
+                break;
+
+            case 'H':
+                Attr = ps->AttrHighlight;
+                break;
+
+            case 'h':
+                PSETATTR(ps, ps->AttrHighlight);
+                break;
+
+            case 'l':
+                Item.Long = TRUE;
+                break;
+
+            case 'N':
+                Attr = ps->AttrNorm;
+                break;
+
+            case 'n':
+                PSETATTR(ps, ps->AttrNorm);
+                break;
+
+            case 'p':
+                Item.Width = sizeof(void *) == (8 ? 16 : 8) + 2;
+                Item.Pad = '0';
+                Item.Scratch[0] = ' ';
+                Item.Scratch[1] = ' ';
+                ValueToHex (
+                    Item.Scratch+2,
+                    Item.Long ? va_arg(ps->args, UINT64) : va_arg(ps->args, UINT32)
+                    );
+                Item.Scratch[0] = '0';
+                Item.Scratch[1] = 'x';
                 Item.Item.pw = Item.Scratch;
                 break;
 
@@ -1257,28 +1258,39 @@ Returns:
                 Item.Item.pw = Item.Scratch;
                 break;
 
-            case 'n':
-                PSETATTR(ps, ps->AttrNorm);
+            case 's':
+                Item.Item.pw = va_arg(ps->args, CHAR16 *);
+                if (!Item.Item.pw) {
+                    Item.Item.pw = L"(null)";
+                }
                 break;
 
-            case 'h':
-                PSETATTR(ps, ps->AttrHighlight);
+            case 't':
+                TimeToString (Item.Scratch, va_arg(ps->args, EFI_TIME *));
+                Item.Item.pw = Item.Scratch;
                 break;
 
-            case 'e':
-                PSETATTR(ps, ps->AttrError);
+            case 'u':
+                ValueToString (
+                    Item.Scratch,
+                    Item.Comma,
+                    Item.Long ? va_arg(ps->args, UINT64) : va_arg(ps->args, UINT32)
+                    );
+                Item.Item.pw = Item.Scratch;
                 break;
 
-            case 'N':
-                Attr = ps->AttrNorm;
-                break;
-
-            case 'H':
-                Attr = ps->AttrHighlight;
-                break;
-
-            case 'E':
-                Attr = ps->AttrError;
+            case 'X':
+                Item.Width = Item.Long ? 16 : 8;
+                Item.Pad = '0';
+#if __GNUC__ >= 7
+		__attribute__ ((fallthrough));
+#endif
+            case 'x':
+                ValueToHex (
+                    Item.Scratch,
+                    Item.Long ? va_arg(ps->args, UINT64) : va_arg(ps->args, UINT32)
+                    );
+                Item.Item.pw = Item.Scratch;
                 break;
 
             default:

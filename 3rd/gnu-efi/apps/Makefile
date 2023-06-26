@@ -44,6 +44,7 @@ TOPDIR = $(SRCDIR)/..
 
 CDIR=$(TOPDIR)/..
 LINUX_HEADERS	= /usr/src/sys/build
+APPSDIR		= $(LIBDIR)/gnuefi/apps
 CPPFLAGS	+= -D__KERNEL__ -I$(LINUX_HEADERS)/include
 CRTOBJS		= ../gnuefi/crt0-efi-$(ARCH).o
 
@@ -62,7 +63,8 @@ TARGET_APPS = t.efi t2.efi t3.efi t4.efi t5.efi t6.efi \
 	      printenv.efi t7.efi t8.efi tcc.efi modelist.efi \
 	      route80h.efi drv0_use.efi AllocPages.efi exit.efi \
 	      FreePages.efi setjmp.efi debughook.efi debughook.efi.debug \
-	      bltgrid.efi lfbgrid.efi setdbg.efi unsetdbg.efi
+	      bltgrid.efi lfbgrid.efi setdbg.efi unsetdbg.efi \
+	      ctors_test.efi
 TARGET_BSDRIVERS = drv0.efi
 TARGET_RTDRIVERS =
 
@@ -87,8 +89,14 @@ TARGETS = $(TARGET_APPS) $(TARGET_BSDRIVERS) $(TARGET_RTDRIVERS)
 
 all:	$(TARGETS)
 
+ctors_test.so : ctors_fns.o ctors_test.o
+
 clean:
 	rm -f $(TARGETS) *~ *.o *.so
+
+install:
+	mkdir -p $(INSTALLROOT)$(APPSDIR)
+	$(INSTALL) -m 644 $(TARGETS) $(INSTALLROOT)$(APPSDIR)
 
 .PHONY: install
 

@@ -172,8 +172,8 @@ _pc:
 
 	// a0: ImageHandle
 	ld		$a0, 16($sp)
-	// call efi_main
-	dla		$t9, efi_main
+	// call _start
+	dla		$t9, _entry
 	jalr		$t9
 	// a1: SystemTable
 	ld		$a1, 24($sp)

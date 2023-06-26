@@ -354,6 +354,14 @@ EFI_STATUS
 #define EFI_IMAGE_MACHINE_RISCV128  0x5128
 #endif
 
+#if !defined(EFI_IMAGE_MACHINE_LOONGARCH32)
+#define EFI_IMAGE_MACHINE_LOONGARCH32   0x6232
+#endif
+
+#if !defined(EFI_IMAGE_MACHINE_LOONGARCH64)
+#define EFI_IMAGE_MACHINE_LOONGARCH64   0x6264
+#endif
+
 // Image Entry prototype
 
 typedef 

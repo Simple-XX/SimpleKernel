@@ -1,0 +1,10 @@
+prefix=@PREFIX@
+exec_prefix=@EXEC_PREFIX@
+includedir=@INCLUDEDIR@
+libdir=@LIBDIR@
+
+Name: gnu-efi
+Description: EFI development toolkit
+Version: @VERSION@
+Cflags: -I${includedir}/efi
+Libs: -lefi

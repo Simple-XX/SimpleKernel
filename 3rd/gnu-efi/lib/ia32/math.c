@@ -158,7 +158,7 @@ DivU64x32 (
     Rem = 0;
     for (bit=0; bit < 64; bit++) {
 #if defined(__GNUC__) || defined(__MINGW32__)
-        asm (
+        __asm__ (
             "shll	$1, %0\n\t"
             "rcll	$1, 4%0\n\t"
             "rcll	$1, %2\n\t"
