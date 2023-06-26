@@ -152,7 +152,6 @@ extern "C" int main(int argc, char** argv) {
 
     /* execute the "kernel" */
     printf("ELF entry point %p\n", entry);
-    // i = (*((int (*__attribute__((sysv_abi)))(void))(entry)))();
 
     int (*entry_fp)(void) = (int(*)())entry;
     i = entry_fp();
