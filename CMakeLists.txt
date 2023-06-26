@@ -227,24 +227,11 @@ add_custom_command(TARGET boot_efi
         COMMENT "Build ${BOOT_EFI_OUTPUT_NAME} done."
         )
 
-# 制作内核
-# 将内核调整为 efi
-add_custom_target(kernel_efi DEPENDS kernel)
-add_custom_command(TARGET kernel_efi
-        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJCOPY} --target=efi-app-x86-64 ${KERNEL_ELF_OUTPUT_NAME} kernel.efi
-        -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id
-        -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn
-        -S -R .eh_frame -R .gcc_except_table
-        COMMENT "Build kernel.efi done."
-        )
-
-add_custom_target(image_uefi DEPENDS boot_efi kernel_efi)
+add_custom_target(image_uefi DEPENDS boot_efi)
 add_custom_command(TARGET image_uefi
         COMMENT "Copying bootloader and kernel"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${BOOT_EFI_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/efi/boot/
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${KERNEL_EFI_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/efi/
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/${KERNEL_ELF_OUTPUT_NAME} ${CMAKE_BINARY_DIR}/image/
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/tools/startup.nsh ${CMAKE_BINARY_DIR}/image/startup.nsh
         )
