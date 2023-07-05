@@ -44,5 +44,6 @@ endif ()
 set_target_properties(boot PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
 # 添加头文件搜索路径
+target_include_kernel_header_files(${PROJECT_NAME})
 target_include_gnu_efi_header_files(${PROJECT_NAME})
 target_include_posix_uefi_header_files(${PROJECT_NAME})
