@@ -13,8 +13,8 @@ set -e
 
 MACHINE=qemu
 
-ARCH=riscv64
-# ARCH=x86_64
+#ARCH=riscv64
+ ARCH=x86_64
 # ARCH=aarch64
 
 # 指定要使用的 efi

@@ -74,28 +74,28 @@ add_custom_command(TARGET posixuefi
         COMMENT "Build 3rd/posix-uefi done."
         )
 
-add_custom_target(kernel_pre)
+add_custom_target(deps)
 if (ARCH STREQUAL "riscv64")
-    add_custom_command(TARGET kernel_pre
+    add_custom_command(TARGET deps
             DEPENDS opensbi
             COMMAND make opensbi
             )
 
 elseif (ARCH STREQUAL "x86_64")
     if (USE_GNU_UEFI STREQUAL "1")
-        add_custom_command(TARGET kernel_pre
+        add_custom_command(TARGET deps
                 DEPENDS gnuefi
                 COMMAND make gnuefi
                 )
     else ()
-        add_custom_command(TARGET kernel_pre
+        add_custom_command(TARGET deps
                 DEPENDS posixuefi
                 COMMAND make posixuefi
                 )
     endif ()
 
 elseif (ARCH STREQUAL "aarch64")
-    add_custom_command(TARGET kernel_pre
+    add_custom_command(TARGET deps
             DEPENDS gnuefi
             COMMAND make ARCH=${ARCH} gnuefi
             )
@@ -104,6 +104,7 @@ endif ()
 # 引导
 ExternalProject_Add(
         boot_elf
+        DEPENDS deps
         BUILD_ALWAYS 1
         PREFIX ${CMAKE_BINARY_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/src/boot
@@ -140,7 +141,7 @@ ExternalProject_Add(
 # 内核本体
 ExternalProject_Add(
         kernel
-        DEPENDS kernel_pre
+        DEPENDS deps
         BUILD_ALWAYS 1
         PREFIX ${CMAKE_BINARY_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
@@ -229,7 +230,7 @@ add_custom_command(TARGET boot_efi
         COMMENT "Build ${BOOT_EFI_OUTPUT_NAME} done."
         )
 
-add_custom_target(image_uefi DEPENDS boot_efi)
+add_custom_target(image_uefi DEPENDS boot_efi kernel)
 add_custom_command(TARGET image_uefi
         COMMENT "Copying bootloader and kernel"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
