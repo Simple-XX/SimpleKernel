@@ -20,7 +20,7 @@
 /// 内核入口函数指针
 typedef int (*entry_func)(int, char**);
 
-/// 内核启动参数结构体
+/// @todo 内核启动参数结构体
 
 /**
  * @brief 声明 kernel_main 用 C 方法编译
