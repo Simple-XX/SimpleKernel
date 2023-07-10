@@ -36,6 +36,115 @@
 #endif
 
 /**
+ * List memory map
+ */
+int get_memory_map(void) {
+    efi_status_t             status;
+    efi_memory_descriptor_t* memory_map = nullptr;
+    efi_memory_descriptor_t* mement;
+    uintn_t                  memory_map_size = 0;
+    uintn_t                  map_key         = 0;
+    uintn_t                  desc_size       = 0;
+    const char*              types[]         = { "EfiReservedMemoryType",
+                                                 "EfiLoaderCode",
+                                                 "EfiLoaderData",
+                                                 "EfiBootServicesCode",
+                                                 "EfiBootServicesData",
+                                                 "EfiRuntimeServicesCode",
+                                                 "EfiRuntimeServicesData",
+                                                 "EfiConventionalMemory",
+                                                 "EfiUnusableMemory",
+                                                 "EfiACPIReclaimMemory",
+                                                 "EfiACPIMemoryNVS",
+                                                 "EfiMemoryMappedIO",
+                                                 "EfiMemoryMappedIOPortSpace",
+                                                 "EfiPalCode" };
+
+    /* get the memory map */
+    status
+      = BS->GetMemoryMap(&memory_map_size, nullptr, &map_key, &desc_size, nullptr);
+    if (status != EFI_BUFFER_TOO_SMALL || !memory_map_size) {
+        fprintf(stderr, "status != EFI_BUFFER_TOO_SMALL [0x%X] || !memory_map_size [%d], desc_size [%d]\n",status,memory_map_size,desc_size);
+        return 0;
+    }
+    /* in worst case malloc allocates two blocks, and each block might split a
+     * record into three, that's 4 additional records */
+    memory_map_size += 4 * desc_size;
+    memory_map       = (efi_memory_descriptor_t*)malloc(memory_map_size);
+    if (!memory_map) {
+        fprintf(stderr, "!memory_map\n");
+        return 1;
+    }
+    status = BS->GetMemoryMap(&memory_map_size, memory_map, &map_key,
+                              &desc_size, nullptr);
+    if (EFI_ERROR(status)) {
+        fprintf(stderr, "Unable to get memory map\n");
+        return 0;
+    }
+
+    printf("Address              Size Type\n");
+    for (mement = memory_map;
+         (uint8_t*)mement < (uint8_t*)memory_map + memory_map_size;
+         mement = NextMemoryDescriptor(mement, desc_size)) {
+        printf("%016x %8d %02x %s\n", mement->PhysicalStart,
+               mement->NumberOfPages, mement->Type, types[mement->Type]);
+    }
+
+    free(memory_map);
+    return 0;
+
+// #if defined(__x86_64__)
+//     EFI_SYSTEM_TABLE* systemTable = (EFI_SYSTEM_TABLE*)_systemtable;
+//     EFI_STATUS        status
+//       = uefi_call_wrapper(systemTable->ConOut->OutputString, 2,
+//                           systemTable->ConOut, L"Hello UEFI111!\n");
+
+//     EFI_STATUS             Status;
+//     EFI_MEMORY_DESCRIPTOR* EfiMemoryMap;
+//     ptrdiff_t              EfiMemoryMapSize;
+//     ptrdiff_t              EfiMapKey;
+//     ptrdiff_t              EfiDescriptorSize;
+//     UINT32                 EfiDescriptorVersion;
+
+//     //
+//     // Get the EFI memory map.
+//     //
+//     EfiMemoryMapSize = 0;
+//     EfiMemoryMap     = nullptr;
+//     Status = uefi_call_wrapper(systemTable->BootServices->GetMemoryMap, 5,
+//                                &EfiMemoryMapSize, EfiMemoryMap, &EfiMapKey,
+//                                &EfiDescriptorSize, &EfiDescriptorVersion);
+//     ASSERT(Status == EFI_BUFFER_TOO_SMALL);
+
+//     //
+//     // Use size returned for the AllocatePool.
+//     //
+//     EfiMemoryMap
+//       = (EFI_MEMORY_DESCRIPTOR*)AllocatePool(EfiMemoryMapSize
+//                                              + 2 * EfiDescriptorSize);
+//     ASSERT(EfiMemoryMap != nullptr);
+//     Status = uefi_call_wrapper(systemTable->BootServices->GetMemoryMap, 5,
+//                                &EfiMemoryMapSize, EfiMemoryMap, &EfiMapKey,
+//                                &EfiDescriptorSize, &EfiDescriptorVersion);
+//     if (EFI_ERROR(Status)) {
+//         FreePool(EfiMemoryMap);
+//     }
+
+//     //
+//     // Get descriptors
+//     //
+//     EFI_MEMORY_DESCRIPTOR* EfiEntry = EfiMemoryMap;
+//     do {
+//         // ... do something with EfiEntry ...
+//         EfiEntry = NextMemoryDescriptor(EfiEntry, EfiDescriptorSize);
+
+//     } while ((UINT8*)EfiEntry < (UINT8*)EfiMemoryMap + EfiMemoryMapSize);
+
+// #endif
+
+}
+
+/**
  * @brief 获取内核入口地址
  * @return entry_func       内核入口地址
  */
@@ -133,7 +242,7 @@ static entry_func get_kernel_entry(void) {
  * @SystemTable: EFI system table
  */
 extern "C" EFI_STATUS
-efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
+efi_main(void* systemTable) {
     // uefi_call_wrapper(InitializeLib, 2, image, systemTable);
     // EFI_STATUS status = uefi_call_wrapper(systemTable->ConOut->ClearScreen,
     // 1,
@@ -153,8 +262,9 @@ efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE* systemTable) {
  * @brief 进行系统初始化，加载内核
  */
 extern "C" int main(int _argc, char** _argv) {
+    get_memory_map();
     auto kernel_entry = get_kernel_entry();
-    return  kernel_entry(_argc, _argv);
+    return kernel_entry(_argc, _argv);
 }
 
 #endif
