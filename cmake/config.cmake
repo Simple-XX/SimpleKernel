@@ -17,6 +17,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
+# 设置 cmake 编译结果输出路径
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -30,11 +31,10 @@ set(VALID_MACHINE qemu)
 if (NOT DEFINED MACHINE)
     set(MACHINE qemu)
 endif ()
-message("MACHINE is: ${MACHINE}")
-
 if (NOT MACHINE IN_LIST VALID_MACHINE)
-    message(FATAL_ERROR "MACHINE must be one of ${VALID_MACHINE}")
+message(FATAL_ERROR "MACHINE must be one of ${VALID_MACHINE}")
 endif ()
+message("MACHINE is: ${MACHINE}")
 
 # 架构
 set(VALID_ARCH riscv64 x86_64 aarch64)
@@ -42,11 +42,10 @@ set(VALID_ARCH riscv64 x86_64 aarch64)
 if (NOT DEFINED ARCH)
     set(ARCH riscv64)
 endif ()
-message("ARCH is: ${ARCH}")
-
 if (NOT ARCH IN_LIST VALID_ARCH)
-    message(FATAL_ERROR "ARCH must be one of ${VALID_ARCH}")
+message(FATAL_ERROR "ARCH must be one of ${VALID_ARCH}")
 endif ()
+message("ARCH is: ${ARCH}")
 
 # 指定要使用的 efi
 if (USE_GNU_UEFI STREQUAL "1")
@@ -84,10 +83,10 @@ set(COMMON_FLAGS
 # 架构相关编译选项
 # @todo clang 交叉编译参数
 if (ARCH STREQUAL "riscv64")
-    set(ARCH_FLAGS "-march=rv64imafdc")
+    set(ARCH_FLAGS "")
 elseif (ARCH STREQUAL "x86_64")
     set(ARCH_FLAGS
-            "-march=corei7 -mtune=corei7 -m64 -mno-red-zone -z max-page-size=0x1000"
+            "-mno-red-zone -z max-page-size=0x1000"
             )
 elseif (ARCH STREQUAL "aarch64")
     set(ARCH_FLAGS "-march=armv8-a -mtune=cortex-a72")
@@ -96,14 +95,9 @@ endif ()
 set(CMAKE_C_FLAGS_KERNEL
         "${DEBUG_FLAGS} ${OPTIMIZE_FLAGS} ${COMMON_FLAGS} ${ARCH_FLAGS} "
         )
-
 set(CMAKE_C_FLAGS_BOOT
         "${CMAKE_C_FLAGS_KERNEL} -no-pie -fPIC -Wl,-shared -Wl,-Bsymbolic"
         )
-
-# 将编译选项同步到汇编
-set(CMAKE_ASM_FLAGS_KERNEL "${CMAKE_C_FLAGS_KERNEL}")
-set(CMAKE_ASM_FLAGS_BOOT "${CMAKE_C_FLAGS_BOOT}")
 
 # 将编译选项同步到 c++
 set(CMAKE_CXX_FLAGS_KERNEL
