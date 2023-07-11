@@ -1,7 +1,8 @@
+
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 #
-# CMakeLists.txt for Simple-XX/SimpleKernel.
+# .clang-format for Simple-XX/SimpleKernel.
 
 ---
 # @version clang-format version 15
