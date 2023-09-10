@@ -3,47 +3,57 @@
 # (https://github.com/Simple-XX/SimpleKernel).
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
-# 引导程序
 
-cmake_minimum_required(VERSION 3.13)
-project(boot)
-
-# 暂时没有用到的变量，消除警告
-set(ignoreMe "${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}${MACHINE}${CMAKE_ASM_FLAGS}${USE_GNU_UEFI}{COMPILE_DEFINITIONS}")
+# 设置项目名与版本
+project(
+    boot
+    VERSION 0.0.1
+)
 
 enable_language(CXX)
 
-# 引入添加头文件函数
-include(header_files)
-
-message("CMAKE_ASM_FLAGS: ${CMAKE_ASM_FLAGS}")
-message("CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
-message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
-
 add_executable(boot
-        ${CMAKE_SOURCE_DIR}/${ARCH}/boot.cpp
-        )
+    boot.cpp
+    load_elf.cpp
+    ostream.cpp
+    graphics.cpp
+    memory.cpp
+)
 
-if (USE_GNU_UEFI STREQUAL "1")
-    target_link_libraries(boot PRIVATE
-            ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/gnuefi/crt0-efi-${ARCH}.o
-            ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/gnuefi/reloc_${ARCH}.o
-            ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/gnuefi/libgnuefi.a
-            ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/lib/libefi.a
-            )
-    target_link_options(boot PRIVATE -T ${CMAKE_BINARY_DIR}/../../3rd/gnu-efi/link.ld)
+# 添加头文件
+add_header_project(boot)
+add_header_boot(boot)
+add_header_3rd(boot)
 
-else ()
-    target_link_libraries(boot PRIVATE
-            ${CMAKE_BINARY_DIR}/../../3rd/posix-uefi/crt0.o
-            ${CMAKE_BINARY_DIR}/../../3rd/posix-uefi/libuefi.a
-            )
-    target_link_options(boot PRIVATE -T ${CMAKE_BINARY_DIR}/../../3rd/posix-uefi/link.ld)
-endif ()
+# 添加编译参数
+target_compile_options(boot PRIVATE
+    ${DEFAULT_BOOT_COMPILE_OPTIONS}
+)
 
-set_target_properties(boot PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
+# 添加链接参数
+target_link_options(boot PRIVATE
+    ${DEFAULT_BOOT_LINK_OPTIONS}
+)
 
-# 添加头文件搜索路径
-target_include_kernel_header_files(${PROJECT_NAME})
-target_include_gnu_efi_header_files(${PROJECT_NAME})
-target_include_posix_uefi_header_files(${PROJECT_NAME})
+# 添加要链接的库
+target_link_libraries(boot PRIVATE
+    ${DEFAULT_BOOT_LINK_LIB}
+)
+
+# 添加依赖
+add_dependencies(boot
+    ${COMPILE_DEPENDS}
+)
+
+set_target_properties(boot PROPERTIES PREFIX "")
+set_target_properties(boot PROPERTIES OUTPUT_NAME ${BOOT_ELF_OUTPUT_NAME})
+
+# readelf -a
+readelf_a(boot)
+
+# objdump -D
+objdump_D(boot)
+
+# 制作 boot.efi
+# 将引导调整为 efi
+elf2efi(boot ${BOOT_EFI_OUTPUT_NAME})

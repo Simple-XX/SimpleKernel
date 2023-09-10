@@ -6,8 +6,8 @@
 构建 image
 
 ```
-cd cmake-kernel
-docker build -t cmake-kernel-docker .
+cd SimpleKernel
+docker build -t SimpleKernel-docker .
 ```
 
 ## 启动容器，并配置 ssh
@@ -15,13 +15,13 @@ docker build -t cmake-kernel-docker .
 运行以下命令启动容器:
 
 ```
-docker run --name cmake-kernel-container -itd -p 233:22 -v ./:/home/zone/cmake-kernel cmake-kernel-docker
+docker run --name SimpleKernel-container -itd -p 233:22 -v ./:/home/zone/SimpleKernel SimpleKernel-docker
 ```
 
 进入 docker container ubuntu 命令行环境
 
 ```
-docker exec -it cmake-kernel-container /bin/zsh
+docker exec -it SimpleKernel-container /bin/zsh
 ```
 
 ## 配置 ssh

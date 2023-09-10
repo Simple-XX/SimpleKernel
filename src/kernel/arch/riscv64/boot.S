@@ -1,16 +1,16 @@
 
 /**
  * @file boot.S
- * @brief 启动代码，进行一些设置后跳转到 kernel_main
+ * @brief boot S
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
- * @date 2021-01-01
+ * @date 2023-07-15
  * @copyright MIT LICENSE
  * https://github.com/Simple-XX/SimpleKernel
  * @par change log:
  * <table>
  * <tr><th>Date<th>Author<th>Description
- * <tr><td>2021-01-01<td>MRNIU<td>迁移到 doxygen
+ * <tr><td>2023-07-15<td>Zone.N (Zone.Niuzh@hotmail.com)<td>创建文件
  * </table>
  */
 
@@ -19,12 +19,12 @@
 .section .text.boot
 .global _start
 .type _start, @function
-.extern kernel_main
+.extern main
 _start:
     // 设置栈地址
     la sp, stack_top
     // 跳转到 C 代码执行
-    call kernel_main
+    call main
 loop:
     j loop
 
@@ -36,3 +36,5 @@ loop:
 stack_top:
     // 跳过 16KB
     .space 4096 * 4
+
+// clang-format on
