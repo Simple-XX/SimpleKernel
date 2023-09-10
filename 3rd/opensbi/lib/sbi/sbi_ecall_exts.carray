@@ -1,3 +1,0 @@
-HEADER: sbi/sbi_ecall.h
-TYPE: struct sbi_ecall_extension
-NAME: sbi_ecall_exts
