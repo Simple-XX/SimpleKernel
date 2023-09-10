@@ -1,3 +1,0 @@
-HEADER: sbi_utils/gpio/fdt_gpio.h
-TYPE: struct fdt_gpio
-NAME: fdt_gpio_drivers

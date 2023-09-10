@@ -1,3 +1,0 @@
-HEADER: sbi_utils/irqchip/fdt_irqchip.h
-TYPE: struct fdt_irqchip
-NAME: fdt_irqchip_drivers

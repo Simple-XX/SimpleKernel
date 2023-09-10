@@ -1,5 +1,0 @@
-# SPDX-License-Identifier: BSD-2-Clause
-
-config LIBFDT
-	bool
-	default n
