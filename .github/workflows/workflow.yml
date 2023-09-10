@@ -1,0 +1,114 @@
+
+# This file is a part of Simple-XX/SimpleKernel
+# (https://github.com/Simple-XX/SimpleKernel).
+#
+# workflow.yml for Simple-XX/SimpleKernel.
+
+name: build
+
+on:
+  - push
+  - pull_request
+  - release
+
+env:
+  CMAKE_BUILD_TYPE: Release
+
+jobs:
+  build_docs:
+    name: Build and publish documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install --fix-missing -y doxygen graphviz clang-format clang-tidy cppcheck qemu-system lcov
+          sudo apt install --fix-missing -y gcc g++ gcc-riscv64-linux-gnu g++-riscv64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+      - name: Build
+        run: |
+          cmake --preset=build_x86_64 
+          cmake --build build_x86_64 --target doc
+
+      - name: Publish
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{github.workspace}}/doc/html
+
+  build_ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install --fix-missing -y doxygen graphviz clang-format clang-tidy cppcheck qemu-system lcov
+          sudo apt install --fix-missing -y gcc g++ gcc-riscv64-linux-gnu g++-riscv64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+      - name: x86_64
+        run: |
+          cmake --preset=build_x86_64 
+          # @todo ci 暂时跑不过
+          #          cmake --build build_x86_64 --target boot
+          #          cmake --build build_x86_64 --target kernel
+          cmake --build build_x86_64 --target coverage
+
+      - name: riscv64
+        run: |
+          cmake --preset=build_riscv64
+          # @todo ci 暂时跑不过
+      #          cmake --build build_riscv64 --target kernel
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: build_x86_64/coverage/coverage.info
+          verbose: true
+
+#  build_osx:
+#    runs-on: macos-latest
+#    steps:
+#      - name: get code
+#        uses: actions/checkout@v3
+#
+#      - name: setup toolchain
+#        shell: bash
+#        run: |
+#          brew install x86_64-elf-gcc
+#          brew tap riscv-software-src/riscv
+#          brew install riscv-tools
+#
+#      - name: make build dir
+#        shell: bash
+#        run: |
+#          mkdir ${{github.workspace}}/build
+#
+#      - name: osx-i386
+#        shell: bash
+#        working-directory: ${{github.workspace}}/build
+#        run: |
+#          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DARCH=i386 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+#          make
+#          rm -rf ./*
+#
+#      - name: osx-x86_64
+#        shell: bash
+#        working-directory: ${{github.workspace}}/build
+#        run: |
+#          cmake -DTOOLCHAIN_PREFIX=x86_64-elf- -DCMAKE_C_COMPILER=x86_64-elf-gcc -DCMAKE_CXX_COMPILER=x86_64-elf-g++ -DARCH=x86_64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+#          make
+#          rm -rf ./*
+#
+#      - name: osx-riscv64
+#        shell: bash
+#        working-directory: ${{github.workspace}}/build
+#        run: |
+#          cmake -DTOOLCHAIN_PREFIX=riscv64-unknown-elf- -DCMAKE_C_COMPILER=riscv64-unknown-elf-gcc -DCMAKE_CXX_COMPILER=riscv64-unknown-elf-g++ -DARCH=riscv64 -DCMAKE_BUILD_TYPE=RELEASE -DHAVE_FLAG_SEARCH_PATHS_FIRST=0 ..
+#          make
+#          rm -rf ./*
