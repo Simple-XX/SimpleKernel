@@ -17,7 +17,7 @@
   目前支持的第三方资源
 
   |                          第三方内容                          |                     描述                      |     类型     | 正在使用 |
-      | :----------------------------------------------------------: | :-------------------------------------------: | :----------: | :------: |
+  | :----------------------------------------------------------: | :-------------------------------------------: | :----------: | :------: |
   |        [CPM](https://github.com/cpm-cmake/CPM.cmake)         |                 cmake 包管理                  | cmake module |    ✔     |
   | [CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake) |            为第三方包生成 licence             | cmake module |    ✔     |
   |  [google/googletest](https://github.com/google/googletest)   |                     测试                      |      库      |    ✔     |
