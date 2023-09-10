@@ -165,6 +165,7 @@ if (${TARGET_ARCH} STREQUAL "x86_64")
 elseif (${TARGET_ARCH} STREQUAL "riscv64")
     list(APPEND COMPILE_DEPENDS
         opensbi
+        cxxrt-static
     )
 elseif (${TARGET_ARCH} STREQUAL "aarch64")
     list(APPEND COMPILE_DEPENDS
