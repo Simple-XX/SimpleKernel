@@ -1,3 +1,0 @@
-HEADER: sbi_utils/ipi/fdt_ipi.h
-TYPE: struct fdt_ipi
-NAME: fdt_ipi_drivers

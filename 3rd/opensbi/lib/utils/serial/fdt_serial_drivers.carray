@@ -1,3 +1,0 @@
-HEADER: sbi_utils/serial/fdt_serial.h
-TYPE: struct fdt_serial
-NAME: fdt_serial_drivers

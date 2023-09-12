@@ -1,3 +1,0 @@
-HEADER: sbi_utils/reset/fdt_reset.h
-TYPE: struct fdt_reset
-NAME: fdt_reset_drivers

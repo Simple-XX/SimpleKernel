@@ -1,0 +1,22 @@
+
+# This file is a part of Simple-XX/SimpleKernel
+# (https://github.com/Simple-XX/SimpleKernel).
+#
+# .clang-tidy for Simple-XX/SimpleKernel.
+
+---
+Checks: '-*,\
+  bugprone-*,\
+  clang-analyzer-*,\
+  cppcoreguidelines-*,\
+  hicpp-*,\
+  llvm-*,\
+  misc-*
+  modernize-*,\
+  performance-*,\
+  portability-*,\
+  readability-*,\
+  -cppcoreguidelines-pro-type-reinterpret-cast'
+HeaderFilterRegex: '^${sourceDir}/src'
+AnalyzeTemporaryDtors: true
+...

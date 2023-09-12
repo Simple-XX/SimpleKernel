@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!--This file is a part of Simple-XX/SimpleKernel-->
+<!--(https://github.com/Simple-XX/SimpleKernel).-->
+
+<!--cppcheck-suppressions.xml for Simple-XX/SimpleKernel.-->
+
+<suppressions>
+    <suppress>
+        <!--不检查构建目录-->
+        <id>*</id>
+        <fileName>*/build*</fileName>
+    </suppress>
+    <suppress>
+        <!--不检查第三方目录-->
+        <id>*</id>
+        <fileName>*/3rd/*</fileName>
+    </suppress>
+    <suppress>
+        <!--不检查头文件缺失-->
+        <id>missingInclude</id>
+        <fileName>*</fileName>
+    </suppress>
+    <suppress>
+        <!--不检查没有匹配到的 suppress-->
+        <id>unmatchedSuppression</id>
+        <fileName>*</fileName>
+    </suppress>
+</suppressions>

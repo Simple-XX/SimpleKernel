@@ -1,3 +1,0 @@
-HEADER: sbi_utils/i2c/fdt_i2c.h
-TYPE: struct fdt_i2c_adapter
-NAME: fdt_i2c_adapter_drivers

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="CMakeSharedSettings">
-    <configurations>
-      <configuration PROFILE_NAME="riscv64_linux" ENABLED="true" GENERATION_DIR="build_riscv64" CONFIG_NAME="DEBUG" TOOLCHAIN_NAME="WSL_riscv64" GENERATION_OPTIONS="-DARCH=riscv64 -DHAVE_FLAG_SEARCH_PATHS_FIRST=0" />
-      <configuration PROFILE_NAME="x86_64_linux" ENABLED="true" GENERATION_DIR="build_x86_64" CONFIG_NAME="DEBUG" TOOLCHAIN_NAME="WSL" GENERATION_OPTIONS="-DARCH=x86_64 -DHAVE_FLAG_SEARCH_PATHS_FIRST=0" />
-    </configurations>
-  </component>
-</project>
