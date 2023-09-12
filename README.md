@@ -1,92 +1,95 @@
-
 [![codecov](https://codecov.io/gh/Simple-XX/SimpleKernel/graph/badge.svg?token=J7NKK3SBNJ)](https://codecov.io/gh/Simple-XX/SimpleKernel)
 ![workflow](https://github.com/Simple-XX/SimpleKernel/actions/workflows/workflow.yml/badge.svg)
+![commit-activity](https://img.shields.io/github/commit-activity/t/Simple-XX/SimpleKernel)
+![last-commit-boot](https://img.shields.io/github/last-commit/Simple-XX/SimpleKernel/boot)
+![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
-# boot
+[English](./README_ENG.md) | [中文](./README.md)
 
-## 本分支新增特性
+# SimpleKernel
 
-参考 [MRNIU/cmake-kernel](https://github.com/MRNIU/cmake-kernel) 的构建系统，包括以下特性
+## 关键词
 
-- [x] 对第三方依赖的支持/构建
+- kernel
+- x86_64, riscv64, aarch64
+- osdev
+- bare metal
+- c++, cmake
+- uefi, opensbi
 
-  自动下载并编译第三方依赖
+## 简介
 
-  自动生成相关 licence
+提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 
-  目前支持的第三方资源
+## 新增特性
 
-  |                          第三方内容                          |                     描述                      |     类型     | 正在使用 |
-  | :----------------------------------------------------------: | :-------------------------------------------: | :----------: | :------: |
-  |        [CPM](https://github.com/cpm-cmake/CPM.cmake)         |                 cmake 包管理                  | cmake module |    ✔     |
-  | [CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake) |            为第三方包生成 licence             | cmake module |    ✔     |
-  |  [google/googletest](https://github.com/google/googletest)   |                     测试                      |      库      |    ✔     |
-  |   [easylogingpp](https://github.com/amrayn/easyloggingpp)    |                     日志                      |      库      |          |
-  |           [rttr](https://github.com/rttrorg/rttr)            |         c++ 反射库，在设备驱动部分用          |      库      |          |
-  | [Format.cmake](https://github.com/TheLartians/Format.cmake)  | 代码格式化，支持 clang-format 与 cmake-format | cmake module |          |
-  |        [FreeImage](http://freeimage.sourceforge.net/)        |                   图片渲染                    |      库      |          |
-  |            [Freetype](https://www.freetype.org/)             |                   字体渲染                    |      库      |          |
-  |   [opensbi](https://github.com/riscv-software-src/opensbi)   |                  riscv 引导                   |      库      |    ✔     |
-  |     [gnu-efi](https://sourceforge.net/projects/gnu-efi/)     |                 gnu uefi 引导                 |      库      |    ✔     |
-  |                [ovmf](SimpleKernel/3rd/ovmf)                 |             qemu 使用的 uefi 固件             |     bin      |    ✔     |
-  |          [edk2](https://github.com/tianocore/edk2)           |        构建 qemu 使用的 uefi 固件 ovmf        |      库      |          |
-  |       [libcxxrt](https://github.com/libcxxrt/libcxxrt)       |                c++ 运行时支持                 |      库      |    ✔     |
+本分支是 SImpleKernel 的首个分支。在本分支中，完成了构建系统的基础搭建、基本的文档部署与自动化测试，当然还有最重要的，有基于 uefi 的 x86_64 内核与由 opensbi 启动的 riscv64 内核，可以在 qemu 上运行，并实现了简单的屏幕输出。
 
-- [x] 文档生成
+- 构建系统 
 
-  使用 doxygen 从生成文档
+  参考 [MRNIU/cmake-kernel](https://github.com/MRNIU/cmake-kernel) 的构建系统，详细解释见 [doc/build_system.md](./doc/build_system.md)
 
-- [x] 构建内核
+- 基于 gnu-efi 引导的 x86_64 内核
 
-  生成内核 elf 文件
+  编译后生成 boot.efi 与 kernel.elf，进入 uefi 环境后首先执行 boot.efi，初始化完成后跳转到 kernel.elf 执行
 
-- [x] 运行内核
+- 基于 opensbi 引导的 riscv64 内核
 
-  在 qemu 上运行内核
+  由 opensbi 进行初始化，直接跳转到内核地址，进入内核逻辑时为 S 态
 
-- [x] 代码格式化
+- 基于 doxygen 的文档生成与自动部署
 
-  格式化全部代码
+  github action 会将文档部署到 https://simple-xx.github.io/SimpleKernel/ (仅 main 分支)
 
-- [x] 测试
+- 基于 CPM 的第三方资源管理
 
-  单元测试 集成测试 系统测试
+  在 `3rd.cmake` 中使用 CPM 的功能自动下载、集成第三方资源
 
-- [x] CI
+- 测试
 
-  github action、codecov
+    支持 单元测试、集成测试、系统测试，引入 gtest 作为测试框架，同时统计了测试覆盖率
 
-- [x] 调试
+- 代码分析
 
-  使用 make debug 等进入调试模式
+    引入 cppcheck、clang-tidy、sanitize 工具提前发现错误
 
-从系统启动到进入内核
+- 代码格式化
 
-- x86_64，aarch64 通过 uefi 进行引导
-- riscv64 通过 opensbi 进行引导
+    使用 llvm 风格
+    
+- docker
 
-## 已支持的全部特性
+    支持使用 docker 构建，详细使用方法见 [doc/docker.md](./doc/docker.md)
 
-- [x] build
+## 已支持
 
-  内核构建与调试
+见 新增特性
 
-- [x] doxygen
+## 依赖
 
-  基于 doxygen 的文档生成
+[CPM](https://github.com/cpm-cmake/CPM.cmake)
 
-- [x] CI
-  
-  github action，github pages，code coverage，ut it st
+[CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake)
 
-- [x] x86_64
+[google/googletest](https://github.com/google/googletest)
 
-  基于 gnu-efi 的 x86_64 uefi 引导
+[opensbi](https://github.com/riscv-software-src/opensbi)
 
-- [x] riscv64
+[doxygen](https://www.doxygen.nl/)
 
-  基于 opensbi 的 riscv64 架构支持
+[lcov](https://github.com/linux-test-project/lcov)
 
-- [x] 3rd
+[gcc](https://gcc.gnu.org/)
 
-  对依赖的第三方库的自动下载、编译
+[qemu](https://www.qemu.org/)
+
+[cppcheck](https://cppcheck.sourceforge.io/)
+
+[clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
+
+[clang-format](https://clang.llvm.org/docs/ClangFormat.html)
+
+[gnu-efi](https://sourceforge.net/projects/gnu-efi/)
+
