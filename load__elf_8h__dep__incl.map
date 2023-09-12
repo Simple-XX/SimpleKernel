@@ -1,0 +1,8 @@
+<map id="/home/runner/work/SimpleKernel/SimpleKernel/src/boot/include/load_elf.h" name="/home/runner/work/SimpleKernel/SimpleKernel/src/boot/include/load_elf.h">
+<area shape="rect" id="node1" title="load_elf h" alt="" coords="443,5,637,61"/>
+<area shape="rect" id="node2" href="$src_2boot_2boot_8cpp.html" title="boot cpp" alt="" coords="5,117,200,173"/>
+<area shape="rect" id="node3" href="$graphics_8cpp.html" title="图形相关" alt="" coords="224,117,419,173"/>
+<area shape="rect" id="node4" href="$load__elf_8cpp.html" title="加载 elf 文件" alt="" coords="443,117,637,173"/>
+<area shape="rect" id="node5" href="$memory_8cpp.html" title="内存相关" alt="" coords="661,117,856,173"/>
+<area shape="rect" id="node6" href="$test_2system__test_2gnu__efi__test_2boot_8cpp.html" title="boot cpp" alt="" coords="880,109,1075,180"/>
+</map>
