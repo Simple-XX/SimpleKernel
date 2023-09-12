@@ -1,0 +1,113 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 27,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "std",
+      "description": "This preset makes sure the project actually builds with at least the specified standard",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_EXTENSIONS": "OFF",
+        "CMAKE_C_STANDARD": "17",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON"
+      }
+    },
+    {
+      "name": "configurePresets_base",
+      "hidden": true,
+      "inherits": [
+        "std"
+      ],
+      "condition": true,
+      "displayName": "configurePresets_base",
+      "description": "base configurePresets",
+      "generator": "Unix Makefiles",
+      "toolchainFile": "",
+      "binaryDir": "",
+      "installDir": "",
+      "cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": {
+          "type": "BOOL",
+          "value": "TRUE"
+        },
+        "CMAKE_EXPORT_COMPILE_COMMANDS": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "CMAKE_BUILD_TYPE": {
+          "type": "STRING",
+          "value": "Debug"
+        },
+        "COVERAGE_OUTPUT_DIR": {
+          "type": "STRING",
+          "value": "coverage"
+        },
+        "PLATFORM": {
+          "type": "STRING",
+          "value": "qemu"
+        },
+        "QEMU_GDB_PORT": {
+          "type": "STRING",
+          "value": "tcp::1234"
+        },
+        "QEMU_MONITOR_ARG": {
+          "type": "STRING",
+          "value": "telnet::2333,server,nowait"
+        },
+        "BOOT_ELF_OUTPUT_NAME": {
+          "type": "STRING",
+          "value": "boot.elf"
+        },
+        "BOOT_EFI_OUTPUT_NAME": {
+          "type": "STRING",
+          "value": "boot.efi"
+        },
+        "KERNEL_ELF_OUTPUT_NAME": {
+          "type": "STRING",
+          "value": "kernel.elf"
+        }
+      }
+    },
+    {
+      "name": "build_x86_64",
+      "hidden": false,
+      "inherits": [
+        "configurePresets_base"
+      ],
+      "displayName": "build x86_64 kernel",
+      "description": "build x86_64 kernel",
+      "toolchainFile": "${sourceDir}/cmake/x86_64-x86_64-gcc.cmake",
+      "binaryDir": "${sourceDir}/build_x86_64",
+      "cacheVariables": {
+        "TARGET_ARCH": {
+          "type": "STRING",
+          "value": "x86_64"
+        }
+      }
+    },
+    {
+      "name": "build_riscv64",
+      "hidden": false,
+      "inherits": [
+        "configurePresets_base"
+      ],
+      "displayName": "build riscv64 kernel",
+      "description": "build riscv64 kernel",
+      "toolchainFile": "${sourceDir}/cmake/x86_64-riscv64-gcc.cmake",
+      "binaryDir": "${sourceDir}/build_riscv64",
+      "cacheVariables": {
+        "TARGET_ARCH": {
+          "type": "STRING",
+          "value": "riscv64"
+        }
+      }
+    }
+  ]
+}
