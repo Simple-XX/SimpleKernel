@@ -3,244 +3,80 @@
 # (https://github.com/Simple-XX/SimpleKernel).
 #
 # CMakeLists.txt for Simple-XX/SimpleKernel.
-# CMake 入口
 
 # 设置最小 cmake 版本
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.27 FATAL_ERROR)
 
 # 设置项目名与版本
-project(SimpleKernel VERSION 0.0.1)
+project(
+        SimpleKernel
+        VERSION 0.0.1
+)
 
 # 禁止原地编译
-if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-    message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there.")
+if (${PROJECT_SOURCE_DIR} STREQUAL ${PROJECT_BINARY_DIR})
+    # 如果你看到这句话，cmake 此时已经在根目录下生成了一些临时文件，你需要删除它们
+    # CMakeFiles, CMakeCache.txt
+    message(
+            FATAL_ERROR
+            "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
+    )
 endif ()
 
 # 设置辅助 cmake 脚本路径
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-# 导入配置
-include(config)
-include(ExternalProject)
+# 导入项目配置
+include(project_config)
+# 导入头文件处理
+include(add_header)
+# 导入函数
+include(functions)
 
-# opensbi
-add_custom_target(opensbi)
-add_custom_command(TARGET opensbi
-        POST_BUILD
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/opensbi
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/3rd/opensbi
-        COMMAND
-        make
-        CROSS_COMPILE=riscv64-linux-gnu-
-        FW_JUMP=y FW_JUMP_ADDR=0x80200000
-        PLATFORM_RISCV_XLEN=64
-        PLATFORM=generic
-        O=${CMAKE_BINARY_DIR}/3rd/opensbi
-        COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_BINARY_DIR}/3rd/opensbi/platform/generic/firmware/fw_jump.elf
-        ${CMAKE_BINARY_DIR}/firmware/fw_jump.elf
-        COMMENT "build opensbi..."
-        )
+# 导入第三方依赖
+include(3rd)
 
-# gnu-efi
-add_custom_target(gnuefi)
-add_custom_command(TARGET gnuefi
-        POST_BUILD
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/gnu-efi
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/3rd/gnu-efi
-        COMMAND
-        make
-        ARCH=${ARCH}
-        OBJDIR=${CMAKE_BINARY_DIR}/3rd/gnu-efi
-        COMMENT "build gnu-efi..."
-        )
+# 导入编译配置
+include(compile_config)
 
-add_custom_target(kernel_pre)
-if (ARCH STREQUAL "riscv64")
-    add_custom_command(TARGET kernel_pre
-            DEPENDS opensbi
-            COMMAND make opensbi
-            )
-
-elseif (ARCH STREQUAL "x86_64")
-    add_custom_command(TARGET kernel_pre
-            DEPENDS gnuefi
-            COMMAND make gnuefi
-            )
-
-elseif (ARCH STREQUAL "aarch64")
-    add_custom_command(TARGET kernel_pre
-            DEPENDS gnuefi
-            COMMAND make ARCH=${ARCH} gnuefi
-            )
-
-endif ()
-
-# 内核本体
-ExternalProject_Add(
-        kernel
-        DEPENDS kernel_pre
-        BUILD_ALWAYS 1
-        PREFIX ${CMAKE_BINARY_DIR}
-        SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
-        BINARY_DIR ${CMAKE_BINARY_DIR}/src
-        CMAKE_ARGS
-        -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
-        -DCMAKE_C_COMPILER_WORKS=${CMAKE_C_COMPILER_WORKS}
-        -DCMAKE_CXX_COMPILER_WORKS=${CMAKE_CXX_COMPILER_WORKS}
-        -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=${CMAKE_FIND_ROOT_PATH_MODE_PROGRAM}
-        -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=${CMAKE_FIND_ROOT_PATH_MODE_LIBRARY}
-        -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=${CMAKE_FIND_ROOT_PATH_MODE_INCLUDE}
-        -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=${CMAKE_FIND_ROOT_PATH_MODE_PACKAGE}
-        -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
-        -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-        -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
-        -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
-        -DMACHINE=${MACHINE}
-        -DARCH=${ARCH}
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_VERBOSE_MAKEFILE=${CMAKE_VERBOSE_MAKEFILE}
-        -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-        -DCMAKE_ASM_FLAGS=${CMAKE_ASM_FLAGS}
-        -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-        -DKernelName=${KernelName}
-        BUILD_COMMAND ${GENERATOR_COMMAND}
-        INSTALL_COMMAND ""
+# qemu 参数设置
+list(APPEND QEMU_FLAGS
+    # 使用标准输出显示
+    -serial stdio
+    # 启动 telnet 服务，使用 2333 端口，不等待连接
+    -monitor ${QEMU_MONITOR_ARG}
 )
-
-# objcopy --only-keep-debug foo foo.dbg 创建一个包含调试信息的文件
-add_custom_target(kernel_debug DEPENDS kernel)
-add_custom_command(TARGET kernel_debug
-        POST_BUILD
-        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJCOPY} --only-keep-debug ${KernelName} ${KernelName}.debug
-        COMMENT "Generating kernel debug...")
-
-# objcopy --strip-debug foo 创建一个去掉调试信息的( strip 的)可执行文件
-# objcopy --add-gnu-debuglink=foo.dbg foo 为 strip 的文件添加调试信息链接
-add_custom_target(kernel_raw DEPENDS kernel)
-add_custom_command(TARGET kernel_raw
-        POST_BUILD
-        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJCOPY} --strip-debug ${KernelName}
-        COMMAND ${CMAKE_OBJCOPY} --add-gnu-debuglink=${KernelName}.debug ${KernelName}
-        COMMENT "Generating raw kernel...")
-
-# nm
-add_custom_target(nm DEPENDS kernel)
-add_custom_command(TARGET nm
-        POST_BUILD
-        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_NM} -a -A -C -l -n -s --special-syms --synthetic ${KernelName}
-        > ${KernelName}.nm
-        COMMENT "nm...")
-
-# readelf -a
-add_custom_target(readelf DEPENDS kernel)
-add_custom_command(TARGET readelf
-        POST_BUILD
-        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_READELF} -a ${KernelName} > ${KernelName}.readelf || (exit 0)
-        COMMENT "readelf...")
-
-# objdump -D
-add_custom_target(objdump DEPENDS kernel)
-add_custom_command(TARGET objdump
-        POST_BUILD
-        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_OBJDUMP} -D ${KernelName} > ${KernelName}.disassembly
-        COMMENT "Disassembling...")
-
-# 制作内核
-# 将内核调整为 efi
-add_custom_target(kernel_efi DEPENDS kernel)
-add_custom_command(TARGET kernel_efi
-        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMENT "Gen kernel.efi"
-        COMMAND ${CMAKE_OBJCOPY} --target=efi-app-x86-64 ${KernelName} kernel.efi
-        -g -R .comment -R .gnu_debuglink -R .note.gnu.build-id
-        -R .gnu.hash -R .plt -R .rela.plt -R .dynstr -R .dynsym -R .rela.dyn
-        -S -R .eh_frame -R .gcc_except_table
-        )
-
-add_custom_target(image_uefi DEPENDS kernel_efi)
-add_custom_command(TARGET image_uefi
-        COMMENT "Copying bootloader and kernel"
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/image/efi/boot
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/bin/*.efi ${CMAKE_BINARY_DIR}/image/efi/boot/
-        )
-# 制作镜像
-add_custom_target(image DEPENDS image_uefi)
-add_custom_command(TARGET image
-        POST_BUILD
-        COMMENT "Building UEFI disk image"
-        COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/kernel.img bs=1M count=33
-        COMMAND mkfs.vfat ${CMAKE_BINARY_DIR}/kernel.img -F32
-        COMMAND mcopy -s -i ${CMAKE_BINARY_DIR}/kernel.img ${CMAKE_BINARY_DIR}/image/* ::
-        )
-
-# 固件
-if (ARCH STREQUAL "riscv64")
-    set(FIRMWARE fw_jump.elf)
-    set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
-elseif (ARCH STREQUAL "x86_64")
-    set(FIRMWARE OVMF_${ARCH}.fd)
-    file(
-            COPY ${CMAKE_SOURCE_DIR}/3rd/ovmf/${FIRMWARE}
-            DESTINATION ${CMAKE_BINARY_DIR}/firmware
+# 目标平台参数
+if(TARGET_ARCH STREQUAL "x86_64")
+    list(APPEND QEMU_FLAGS
+        -m 128M
+        -net none
+        -bios ${ovmf_BINARY_DIR}/OVMF_${TARGET_ARCH}.fd
+        -hda fat:rw:./image/
     )
-    set(QEMU_FIRMWARE -bios ${CMAKE_BINARY_DIR}/firmware/${FIRMWARE})
-elseif (ARCH STREQUAL "aarch64")
-    set(FIRMWARE ovmf-aarch64.fd)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/emulation/)
-    execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/${FIRMWARE})
-    execute_process(COMMAND truncate -s 64m ${CMAKE_BINARY_DIR}/emulation/nvram.img)
-    execute_process(COMMAND dd if=${CMAKE_SOURCE_DIR}/third_party/firmware/tianocore/${FIRMWARE} of=${CMAKE_BINARY_DIR}/emulation/${FIRMWARE} conv=notrunc)
-    set(QEMU_FIRMWARE -drive if=pflash,format=raw,file=${CMAKE_BINARY_DIR}/emulation/${FIRMWARE},readonly -drive if=pflash,format=raw,file=$(CMAKE_BINARY_DIR)/emulation/nvram.img)
-endif ()
-
-# 运行 QEMU
-# qemu 配置
-set(QEMU_FLAGS -serial stdio -monitor telnet::2333,server,nowait)
-if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    #    set(QEMU_DEBUG -S -gdb tcp::1234)
-endif ()
-
-if (ARCH STREQUAL "riscv64")
-    set(QEMU_MACHINE -machine virt)
-    set(QEMU_DEVICES)
-    set(QEMU_IMAGE -kernel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${KernelName})
-    add_custom_target(run DEPENDS kernel)
-    add_custom_command(
-            TARGET run
-            COMMENT "Run SimpleKernel in qemu."
-            COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
+elseif(TARGET_ARCH STREQUAL "riscv64")
+    list(APPEND QEMU_FLAGS
+        -machine virt
+        -nographic
+        # 可选项，qemu7.0 自带了 opensbi1.0
+        -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
+        -kernel $<TARGET_FILE:kernel>
     )
+elseif(TARGET_ARCH STREQUAL "aarch64")
+    # @todo
+endif()
 
-elseif (ARCH STREQUAL "x86_64")
-    set(QEMU_MACHINE -m 128M)
-    set(QEMU_DEVICES -net none)
-    set(QEMU_IMAGE -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
-    list(APPEND QEMU_FLAGS)
-    add_custom_target(run DEPENDS image_uefi)
-    add_custom_command(
-            TARGET run
-            COMMENT "Run SimpleKernel in qemu."
-            COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
-    )
+# 添加要编译的目录
+add_subdirectory(${PROJECT_SOURCE_DIR}/src)
+add_subdirectory(${PROJECT_SOURCE_DIR}/test)
+add_subdirectory(${PROJECT_SOURCE_DIR}/doc)
 
-elseif (ARCH STREQUAL "aarch64")
-    set(QEMU_MACHINE -machine virt -cpu cortex-a72)
-    set(QEMU_DEVICES -net none)
-    #    set(QEMU_IMAGE -hda fat:rw:${CMAKE_BINARY_DIR}/image/)
-    set(QEMU_IMAGE -drive format=raw,file=${CMAKE_BINARY_DIR}/kernel.img)
-    add_custom_target(run DEPENDS image_uefi)
-    add_custom_command(
-            TARGET run
-            COMMENT "Run SimpleKernel in qemu."
-            COMMAND qemu-system-${ARCH} ${QEMU_FLAGS} ${QEMU_MACHINE} ${QEMU_DEVICES} ${QEMU_FIRMWARE} ${QEMU_IMAGE} ${QEMU_DEBUG}
-    )
-
-endif ()
+# 添加 run 和 debug target
+add_run_target(NAME run
+    DEPENDS $<$<STREQUAL:${TARGET_ARCH},x86_64>:boot> kernel ${RUN_DEPENDS} ${DEBUG_DEPENDS}
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+    TARGET ${TARGET_ARCH}
+    BOOT ${PROJECT_BINARY_DIR}/src/boot/boot.efi
+    KERNEL $<TARGET_FILE:kernel>
+    QEMU_FLAGS ${QEMU_FLAGS}
+)
