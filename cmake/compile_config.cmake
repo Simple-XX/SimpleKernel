@@ -170,5 +170,6 @@ elseif (${TARGET_ARCH} STREQUAL "riscv64")
 elseif (${TARGET_ARCH} STREQUAL "aarch64")
     list(APPEND COMPILE_DEPENDS
         gnu-efi
+            cxxrt-static
     )
 endif ()

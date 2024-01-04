@@ -108,6 +108,23 @@
           "value": "riscv64"
         }
       }
+    },
+    {
+      "name": "build_aarch64",
+      "hidden": false,
+      "inherits": [
+        "configurePresets_base"
+      ],
+      "displayName": "build aarch64 kernel",
+      "description": "build aarch64 kernel",
+      "toolchainFile": "${sourceDir}/cmake/x86_64-aarch64-gcc.cmake",
+      "binaryDir": "${sourceDir}/build_aarch64",
+      "cacheVariables": {
+        "TARGET_ARCH": {
+          "type": "STRING",
+          "value": "aarch64"
+        }
+      }
     }
   ]
 }

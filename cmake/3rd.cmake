@@ -164,7 +164,7 @@ if (${TARGET_ARCH} STREQUAL "x86_64" OR ${TARGET_ARCH} STREQUAL "aarch64")
             make_directory
             ${gnu-efi_BINARY_DIR}
             COMMAND
-            make
+                make lib gnuefi inc
             # @note 仅支持 gcc
             CC=${CMAKE_C_COMPILER}
             AR=${CMAKE_AR}
@@ -243,9 +243,11 @@ CPMAddPackage(
     GIT_REPOSITORY https://github.com/libcxxrt/libcxxrt
     GIT_TAG a0f7f5c139a7daf71de0de201b6c405d852b1dc1
 )
-target_compile_options(cxxrt-static PRIVATE
-    -fPIC
-)
+if (libcxxrt_ADDED)
+    target_compile_options(cxxrt-static PRIVATE
+            -fPIC
+    )
+endif ()
 
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后

@@ -82,9 +82,5 @@ add_run_target(NAME ${PROJECT_NAME}
     TARGET ${TARGET_ARCH}
     BOOT ${BOOT_EFI_OUTPUT_NAME}
     KERNEL $<TARGET_FILE:${PROJECT_NAME}_kernel>
-    QEMU_FLAGS
-    -m 128M
-    -net none
-    -bios ${ovmf_BINARY_DIR}/OVMF_${TARGET_ARCH}.fd
-    -hda fat:rw:./image/
+        QEMU_FLAGS ${QEMU_FLAGS}
 )

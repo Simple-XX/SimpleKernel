@@ -63,7 +63,14 @@ elseif(TARGET_ARCH STREQUAL "riscv64")
         -kernel $<TARGET_FILE:kernel>
     )
 elseif(TARGET_ARCH STREQUAL "aarch64")
-    # @todo
+    list(APPEND QEMU_FLAGS
+            -machine virt
+            -cpu cortex-a57
+            -m 128M
+            -net none
+            -bios ${ovmf_BINARY_DIR}/OVMF_${TARGET_ARCH}.fd
+            -hda fat:rw:./image/
+    )
 endif()
 
 # 添加要编译的目录

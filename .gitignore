@@ -18,3 +18,4 @@ tools/opensbi/build
 .idea
 3rd
 Doxyfile
+.gdbinit
