@@ -109,8 +109,8 @@ if (${TARGET_ARCH} STREQUAL "riscv64")
     CPMAddPackage(
         NAME opensbi
         GIT_REPOSITORY https://github.com/riscv-software-src/opensbi.git
-        GIT_TAG v1.3
-        VERSION 1.3
+        GIT_TAG v1.4
+        VERSION 1.4
         DOWNLOAD_ONLY True
     )
     if (opensbi_ADDED)
