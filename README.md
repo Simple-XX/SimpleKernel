@@ -27,6 +27,14 @@
 
 本分支是 SImpleKernel 的首个分支。在本分支中，完成了构建系统的基础搭建、基本的文档部署与自动化测试，当然还有最重要的，有基于 uefi 的 x86_64 内核与由 opensbi 启动的 riscv64 内核，可以在 qemu 上运行，并实现了简单的屏幕输出。
 
+调用顺序
+
+ - x86_64/aarch64
+  uefi->main.cpp:main->arch.cpp:arch_init
+
+- riscv64
+  opensbi->boot.S:_start->main.cpp:main->arch.cpp:arch_init
+
 - 构建系统 
 
   参考 [MRNIU/cmake-kernel](https://github.com/MRNIU/cmake-kernel) 的构建系统，详细解释见 [doc/build_system.md](./doc/build_system.md)

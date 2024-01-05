@@ -1,7 +1,7 @@
 
 /**
- * @file arch.cpp
- * @brief arch cpp
+ * @file arch_main.cpp
+ * @brief arch_main cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -16,7 +16,7 @@
 
 #include "arch.h"
 
-int32_t arch(uint32_t _argc, uint8_t **_argv) {
+int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   (void)_argc;
   (void)_argv;
 

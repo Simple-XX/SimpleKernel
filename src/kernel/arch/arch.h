@@ -1,7 +1,7 @@
 
 /**
- * @file arch.cpp
- * @brief arch cpp
+ * @file arch.h
+ * @brief arch 头文件
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -14,16 +14,11 @@
  * </table>
  */
 
-#include "arch.h"
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H
 
-int32_t arch(uint32_t _argc, uint8_t **_argv) {
-  (void)_argc;
-  (void)_argv;
+#include "cstdint"
 
-  // 进入死循环
-  while (1) {
-    ;
-  }
+int32_t arch_init(uint32_t _argc, uint8_t **_argv);
 
-  return 0;
-}
+#endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H */

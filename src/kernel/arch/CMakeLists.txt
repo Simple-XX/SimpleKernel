@@ -18,7 +18,7 @@ add_library(${PROJECT_NAME} OBJECT
     $<$<STREQUAL:${TARGET_ARCH},riscv64>:
     ${PROJECT_SOURCE_DIR}/${TARGET_ARCH}/boot.S
     >
-    ${PROJECT_SOURCE_DIR}/${TARGET_ARCH}/arch.cpp
+    ${PROJECT_SOURCE_DIR}/${TARGET_ARCH}/arch_main.cpp
 )
 
 # 添加头文件

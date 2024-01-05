@@ -1,7 +1,7 @@
 
 /**
- * @file arch.cpp
- * @brief arch cpp
+ * @file arch_main.cpp
+ * @brief arch_main cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -14,12 +14,7 @@
  * </table>
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cstdint"
-
 #include "sbi/sbi_ecall_interface.h"
 
 struct sbiret_t {
@@ -70,6 +65,14 @@ int arch(int, char **) {
   return 0;
 }
 
-#ifdef __cplusplus
+int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
+  (void)_argc;
+  (void)_argv;
+
+  // 进入死循环
+  while (1) {
+    ;
+  }
+
+  return 0;
 }
-#endif
