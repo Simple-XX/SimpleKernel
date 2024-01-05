@@ -55,3 +55,9 @@ add_dependencies(kernel
 
 set_target_properties(kernel PROPERTIES PREFIX "")
 set_target_properties(kernel PROPERTIES OUTPUT_NAME ${KERNEL_ELF_OUTPUT_NAME})
+
+# readelf -a
+readelf_a(kernel)
+
+# objdump -D
+objdump_D(kernel)

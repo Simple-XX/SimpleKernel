@@ -50,7 +50,7 @@ void put_char(const char _c) {
   return;
 }
 
-int arch(int, char **) {
+int arch(int, uint8_t **) {
   put_char('H');
   put_char('e');
   put_char('l');
@@ -68,6 +68,17 @@ int arch(int, char **) {
 int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   (void)_argc;
   (void)_argv;
+
+  put_char('H');
+  put_char('e');
+  put_char('l');
+  put_char('l');
+  put_char('W');
+  put_char('o');
+  put_char('r');
+  put_char('l');
+  put_char('d');
+  put_char('!');
 
   // 进入死循环
   while (1) {

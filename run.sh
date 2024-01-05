@@ -11,12 +11,12 @@ set -e
 # 输出实际执行内容
 #set -x
 
-TARGET_ARCH=x86_64
-# TARGET_ARCH=riscv64
+# TARGET_ARCH=x86_64
+TARGET_ARCH=riscv64
 # TARGET_ARCH=aarch64
 
 # 删除旧文件
-rm -rf build_${TARGET_ARCH}
+# rm -rf build_${TARGET_ARCH}
 # 生成
 cmake --preset build_${TARGET_ARCH}
 # 编译并运行
