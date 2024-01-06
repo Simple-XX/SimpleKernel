@@ -15,7 +15,6 @@
  */
 
 #include "cstdint"
-
 #include "sbi/sbi_ecall_interface.h"
 
 struct sbiret_t {
