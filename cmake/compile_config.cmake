@@ -47,31 +47,6 @@ list(APPEND COMMON_COMPILE_OPTIONS
     >
 )
 
-list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
-    ${COMMON_COMPILE_OPTIONS}
-    # 使用 2 字节 wchar_t
-    -fshort-wchar
-    # 允许 wchar_t
-    -fpermissive
-    # 生成位置无关代码
-    -fPIC
-
-    # 目标平台编译选项
-    $<$<STREQUAL:${TARGET_ARCH},x86_64>:
-    # 使 gnu-efi
-    -DGNU_EFI_USE_MS_ABI
-    >
-
-    $<$<STREQUAL:${TARGET_ARCH},aarch64>:
-    # 使 gnu-efi
-    -DGNU_EFI_USE_MS_ABI
-    >
-)
-
-list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
-    ${COMMON_COMPILE_OPTIONS}
-)
-
 # 通用链接选项
 list(APPEND COMMON_LINK_OPTIONS
     # 不链接 ctr0 等启动代码
@@ -95,61 +70,79 @@ list(APPEND COMMON_LINK_OPTIONS
     >
 )
 
-list(APPEND DEFAULT_BOOT_LINK_OPTIONS
-    ${COMMON_LINK_OPTIONS}
+# 通用库选项
+list(APPEND COMMON_LINK_LIB
+        ${libcxxrt_BINARY_DIR}/lib/libcxxrt.a
+        # 目标平台编译选项
+        $<$<STREQUAL:${TARGET_ARCH},x86_64>:
+        >
 
-    # 目标平台编译选项
-    $<$<STREQUAL:${TARGET_ARCH},x86_64>:
-    # 编译为共享库
-    -shared
-    # 符号级别绑定
-    -Wl,-Bsymbolic
-    >
+        $<$<STREQUAL:${TARGET_ARCH},riscv64>:
+        >
+
+        $<$<STREQUAL:${TARGET_ARCH},aarch64>:
+        >
+)
+
+list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
+        ${COMMON_COMPILE_OPTIONS}
+        # 使用 2 字节 wchar_t
+        -fshort-wchar
+        # 允许 wchar_t
+        -fpermissive
+        # 生成位置无关代码
+        -fPIC
+
+        # 目标平台编译选项
+        $<$<STREQUAL:${TARGET_ARCH},x86_64>:
+        # 使 gnu-efi
+        -DGNU_EFI_USE_MS_ABI
+        >
+
+        $<$<STREQUAL:${TARGET_ARCH},aarch64>:
+        # 使 gnu-efi
+        -DGNU_EFI_USE_MS_ABI
+        >
+)
+
+list(APPEND DEFAULT_BOOT_LINK_OPTIONS
+        ${COMMON_LINK_OPTIONS}
+
+        # 目标平台编译选项
+        $<$<STREQUAL:${TARGET_ARCH},x86_64>:
+        # 编译为共享库
+        -shared
+        # 符号级别绑定
+        -Wl,-Bsymbolic
+        >
+)
+
+list(APPEND DEFAULT_BOOT_LINK_LIB
+        ${COMMON_LINK_LIB}
+        # 目标平台编译选项
+        $<$<STREQUAL:${TARGET_ARCH},x86_64>:
+        # 链接 gnu-efi
+        # ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${TARGET_ARCH}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${TARGET_ARCH}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
+        ${gnu-efi_BINARY_DIR}/lib/libefi.a
+        >
+
+        $<$<STREQUAL:${TARGET_ARCH},aarch64>:
+        # 链接 gnu-efi
+        # ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${TARGET_ARCH}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${TARGET_ARCH}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
+        ${gnu-efi_BINARY_DIR}/lib/libefi.a
+        >
+)
+
+list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
+        ${COMMON_COMPILE_OPTIONS}
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
     ${COMMON_LINK_OPTIONS}
-
-    $<$<STREQUAL:${TARGET_ARCH},riscv64>:
-    # 链接脚本
-    -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${TARGET_ARCH}/link.ld
-    # 不生成位置无关可执行代码
-    -no-pie
-    >
-)
-
-# 通用库选项
-list(APPEND COMMON_LINK_LIB
-    ${libcxxrt_BINARY_DIR}/lib/libcxxrt.a
-    # 目标平台编译选项
-    $<$<STREQUAL:${TARGET_ARCH},x86_64>:
-    >
-
-    $<$<STREQUAL:${TARGET_ARCH},riscv64>:
-    >
-
-    $<$<STREQUAL:${TARGET_ARCH},aarch64>:
-    >
-)
-
-list(APPEND DEFAULT_BOOT_LINK_LIB
-    ${COMMON_LINK_LIB}
-    # 目标平台编译选项
-    $<$<STREQUAL:${TARGET_ARCH},x86_64>:
-    # 链接 gnu-efi
-    # ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${TARGET_ARCH}.o
-    ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${TARGET_ARCH}.o
-    ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
-    ${gnu-efi_BINARY_DIR}/lib/libefi.a
-    >
-
-    $<$<STREQUAL:${TARGET_ARCH},aarch64>:
-    # 链接 gnu-efi
-    # ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${TARGET_ARCH}.o
-    ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${TARGET_ARCH}.o
-    ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
-    ${gnu-efi_BINARY_DIR}/lib/libefi.a
-    >
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_LIB
