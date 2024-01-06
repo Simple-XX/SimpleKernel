@@ -17,8 +17,9 @@
 #ifndef SIMPLEKERNEL_LOAD_ELF_H
 #define SIMPLEKERNEL_LOAD_ELF_H
 
-#include <array>
 #include <elf.h>
+
+#include <array>
 #include <span>
 #include <utility>
 
@@ -37,7 +38,7 @@ extern "C" {
  * 图形相关
  */
 class Graphics {
-public:
+ public:
   /**
    * 构造函数
    */
@@ -71,7 +72,7 @@ public:
    */
   void print_info() const;
 
-private:
+ private:
   /// @name 默认分辨率
   /// @{
   static constexpr const uint32_t DEFAULT_WIDTH = 1920;
@@ -85,7 +86,7 @@ private:
  * 内存相关
  */
 class Memory {
-public:
+ public:
   /**
    * 构造函数
    */
@@ -109,7 +110,7 @@ public:
    */
   void print_info();
 
-private:
+ private:
   /// @name 内存映射信息
   /// @{
   uint64_t desc_count = 0;
@@ -129,7 +130,7 @@ private:
  * elf 文件相关
  */
 class Elf {
-public:
+ public:
   /**
    * 构造函数
    * @param _kernel_image_filename 要加载的内核文件
@@ -160,7 +161,7 @@ public:
    */
   auto load() const -> uintptr_t;
 
-private:
+ private:
   /// @name elf 文件相关
   /// @{
   EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *file_system_protocol = nullptr;

@@ -39,7 +39,7 @@ extern "C" {
  * 输出流
  */
 class ostream {
-public:
+ public:
   /**
    * 使用默认构造
    */
@@ -64,7 +64,8 @@ public:
    * @param _val 数据
    * @return 输出流
    */
-  template <class _t> inline auto operator<<(_t _val) -> ostream &;
+  template <class _t>
+  inline auto operator<<(_t _val) -> ostream &;
 
   /**
    * ‘<<’ 操作符重载
@@ -94,7 +95,7 @@ public:
    */
   static auto endl(ostream &_ostream) -> ostream &;
 
-private:
+ private:
   /**
    * 输出流模式枚举
    */
@@ -113,12 +114,14 @@ private:
 /// @name 输出流特化
 /// @{
 
-template <class _t> auto ostream::operator<<(_t _val) -> ostream & {
+template <class _t>
+auto ostream::operator<<(_t _val) -> ostream & {
   *this << (uint64_t)_val;
   return *this;
 }
 
-template <> inline auto ostream::operator<<(int32_t _val) -> ostream & {
+template <>
+inline auto ostream::operator<<(int32_t _val) -> ostream & {
   if (mode == d) {
     Print(L"%d", _val);
   } else if (mode == x) {
@@ -130,7 +133,8 @@ template <> inline auto ostream::operator<<(int32_t _val) -> ostream & {
   return *this;
 }
 
-template <> inline auto ostream::operator<<(uint32_t _val) -> ostream & {
+template <>
+inline auto ostream::operator<<(uint32_t _val) -> ostream & {
   if (mode == d) {
     Print(L"%d", _val);
   } else if (mode == x) {
@@ -142,7 +146,8 @@ template <> inline auto ostream::operator<<(uint32_t _val) -> ostream & {
   return *this;
 }
 
-template <> inline auto ostream::operator<<(int64_t _val) -> ostream & {
+template <>
+inline auto ostream::operator<<(int64_t _val) -> ostream & {
   if (mode == d) {
     Print(L"%ld", _val);
   } else if (mode == x) {
@@ -154,7 +159,8 @@ template <> inline auto ostream::operator<<(int64_t _val) -> ostream & {
   return *this;
 }
 
-template <> inline auto ostream::operator<<(uint64_t _val) -> ostream & {
+template <>
+inline auto ostream::operator<<(uint64_t _val) -> ostream & {
   if (mode == d) {
     Print(L"%ld", _val);
   } else if (mode == x) {
@@ -166,24 +172,28 @@ template <> inline auto ostream::operator<<(uint64_t _val) -> ostream & {
   return *this;
 }
 
-template <> inline auto ostream::operator<<(wchar_t _val) -> ostream & {
+template <>
+inline auto ostream::operator<<(wchar_t _val) -> ostream & {
   Print(L"%c", _val);
   mode = d;
   return *this;
 }
 
-template <> inline auto ostream::operator<<(const wchar_t *_val) -> ostream & {
+template <>
+inline auto ostream::operator<<(const wchar_t *_val) -> ostream & {
   Print(L"%s", _val);
   mode = d;
   return *this;
 }
 
-template <> inline auto ostream::operator<<(void *_val) -> ostream & {
+template <>
+inline auto ostream::operator<<(void *_val) -> ostream & {
   *this << reinterpret_cast<uint64_t>(_val);
   return *this;
 }
 
-template <> inline auto ostream::operator<<(const void *_val) -> ostream & {
+template <>
+inline auto ostream::operator<<(const void *_val) -> ostream & {
   *this << reinterpret_cast<uint64_t>(_val);
   return *this;
 }

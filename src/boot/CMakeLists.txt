@@ -6,18 +6,18 @@
 
 # 设置项目名与版本
 project(
-    boot
-    VERSION 0.0.1
+        boot
+        VERSION 0.0.1
 )
 
 enable_language(CXX)
 
 add_executable(boot
-    boot.cpp
-    load_elf.cpp
-    ostream.cpp
-    graphics.cpp
-    memory.cpp
+        boot.cpp
+        load_elf.cpp
+        ostream.cpp
+        graphics.cpp
+        memory.cpp
 )
 
 # 添加头文件
@@ -27,22 +27,22 @@ add_header_3rd(boot)
 
 # 添加编译参数
 target_compile_options(boot PRIVATE
-    ${DEFAULT_BOOT_COMPILE_OPTIONS}
+        ${DEFAULT_BOOT_COMPILE_OPTIONS}
 )
 
 # 添加链接参数
 target_link_options(boot PRIVATE
-    ${DEFAULT_BOOT_LINK_OPTIONS}
+        ${DEFAULT_BOOT_LINK_OPTIONS}
 )
 
 # 添加要链接的库
 target_link_libraries(boot PRIVATE
-    ${DEFAULT_BOOT_LINK_LIB}
+        ${DEFAULT_BOOT_LINK_LIB}
 )
 
 # 添加依赖
 add_dependencies(boot
-    ${COMPILE_DEPENDS}
+        ${COMPILE_DEPENDS}
 )
 
 set_target_properties(boot PROPERTIES PREFIX "")

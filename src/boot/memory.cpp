@@ -38,70 +38,70 @@ void Memory::print_info() {
         (reinterpret_cast<uint8_t *>(memory_map)) + i * desc_size);
 
     switch (MMap->Type) {
-    case EfiReservedMemoryType: {
-      debug << L"iReservedMemoryType\t\t";
-      break;
-    }
-    case EfiLoaderCode: {
-      debug << L"EfiLoaderCode\t\t\t";
-      break;
-    }
-    case EfiLoaderData: {
-      debug << L"EfiLoaderData\t\t\t";
-      break;
-    }
-    case EfiBootServicesCode: {
-      debug << L"EfiBootServicesCode\t\t";
-      break;
-    }
-    case EfiBootServicesData: {
-      debug << L"EfiBootServicesData\t\t";
-      break;
-    }
-    case EfiRuntimeServicesCode: {
-      debug << L"EfiRuntimeServicesCode\t\t";
-      break;
-    }
-    case EfiRuntimeServicesData: {
-      debug << L"EfiRuntimeServicesData\t\t";
-      break;
-    }
-    case EfiConventionalMemory: {
-      debug << L"EfiConventionalMemory\t\t";
-      break;
-    }
-    case EfiUnusableMemory: {
-      debug << L"EfiUnusableMemory\t\t";
-      break;
-    }
-    case EfiACPIReclaimMemory: {
-      debug << L"EfiACPIReclaimMemory\t\t";
-      break;
-    }
-    case EfiACPIMemoryNVS: {
-      debug << L"EfiACPIMemoryNVS\t\t";
-      break;
-    }
-    case EfiMemoryMappedIO: {
-      debug << L"EfiMemoryMappedIO\t\t";
-      break;
-    }
-    case EfiMemoryMappedIOPortSpace: {
-      debug << L"EfiMemoryMappedIOPortSpace\t\t";
-      break;
-    }
-    case EfiPalCode: {
-      debug << L"EfiPalCode\t\t";
-      break;
-    }
-    case EfiMaxMemoryType: {
-      debug << L"EfiMaxMemoryType\t\t";
-      break;
-    }
-    default: {
-      debug << L"Unknown " << ostream::hex_x << MMap->Type << L"\t\t";
-      break;
-    }
+      case EfiReservedMemoryType: {
+        debug << L"iReservedMemoryType\t\t";
+        break;
+      }
+      case EfiLoaderCode: {
+        debug << L"EfiLoaderCode\t\t\t";
+        break;
+      }
+      case EfiLoaderData: {
+        debug << L"EfiLoaderData\t\t\t";
+        break;
+      }
+      case EfiBootServicesCode: {
+        debug << L"EfiBootServicesCode\t\t";
+        break;
+      }
+      case EfiBootServicesData: {
+        debug << L"EfiBootServicesData\t\t";
+        break;
+      }
+      case EfiRuntimeServicesCode: {
+        debug << L"EfiRuntimeServicesCode\t\t";
+        break;
+      }
+      case EfiRuntimeServicesData: {
+        debug << L"EfiRuntimeServicesData\t\t";
+        break;
+      }
+      case EfiConventionalMemory: {
+        debug << L"EfiConventionalMemory\t\t";
+        break;
+      }
+      case EfiUnusableMemory: {
+        debug << L"EfiUnusableMemory\t\t";
+        break;
+      }
+      case EfiACPIReclaimMemory: {
+        debug << L"EfiACPIReclaimMemory\t\t";
+        break;
+      }
+      case EfiACPIMemoryNVS: {
+        debug << L"EfiACPIMemoryNVS\t\t";
+        break;
+      }
+      case EfiMemoryMappedIO: {
+        debug << L"EfiMemoryMappedIO\t\t";
+        break;
+      }
+      case EfiMemoryMappedIOPortSpace: {
+        debug << L"EfiMemoryMappedIOPortSpace\t\t";
+        break;
+      }
+      case EfiPalCode: {
+        debug << L"EfiPalCode\t\t";
+        break;
+      }
+      case EfiMaxMemoryType: {
+        debug << L"EfiMaxMemoryType\t\t";
+        break;
+      }
+      default: {
+        debug << L"Unknown " << ostream::hex_x << MMap->Type << L"\t\t";
+        break;
+      }
     }
 
     debug << MMap->NumberOfPages << L"\t" << ostream::hex_X

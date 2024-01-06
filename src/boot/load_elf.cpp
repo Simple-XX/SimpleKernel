@@ -14,12 +14,13 @@
  * </table>
  */
 
+#include "load_elf.h"
+
 #include <array>
 #include <cstring>
 #include <memory>
 #include <span>
 
-#include "load_elf.h"
 #include "ostream.hpp"
 
 namespace {
@@ -46,7 +47,7 @@ constexpr const uint32_t TWO_TAB_SIZE = 16;
 /// 两位数对齐
 constexpr const uint32_t ALIGN_TWO = 10;
 
-} // namespace
+}  // namespace
 
 Elf::Elf(wchar_t *_kernel_image_filename) {
   EFI_STATUS status = EFI_SUCCESS;
@@ -239,74 +240,74 @@ void Elf::print_ehdr() const {
 
   debug << L"  Class:                                ";
   switch (ehdr.e_ident[EI_CLASS]) {
-  case ELFCLASSNONE: {
-    debug << L"Invalid class";
-    break;
-  }
-  case ELFCLASS32: {
-    debug << L"ELF32";
-    break;
-  }
-  case ELFCLASS64: {
-    debug << L"ELF64";
-    break;
-  }
-  default: {
-    debug << ehdr.e_ident[EI_CLASS];
-    break;
-  }
+    case ELFCLASSNONE: {
+      debug << L"Invalid class";
+      break;
+    }
+    case ELFCLASS32: {
+      debug << L"ELF32";
+      break;
+    }
+    case ELFCLASS64: {
+      debug << L"ELF64";
+      break;
+    }
+    default: {
+      debug << ehdr.e_ident[EI_CLASS];
+      break;
+    }
   }
   debug << ostream::endl;
 
   debug << L"  Data:                                 ";
   switch (ehdr.e_ident[EI_DATA]) {
-  case ELFDATANONE: {
-    debug << L"Invalid data encoding";
-    break;
-  }
-  case ELFDATA2LSB: {
-    debug << L"2's complement, little endian";
-    break;
-  }
-  case ELFDATA2MSB: {
-    debug << L"2's complement, big endian";
-    break;
-  }
-  default: {
-    debug << ehdr.e_ident[EI_DATA];
-    break;
-  }
+    case ELFDATANONE: {
+      debug << L"Invalid data encoding";
+      break;
+    }
+    case ELFDATA2LSB: {
+      debug << L"2's complement, little endian";
+      break;
+    }
+    case ELFDATA2MSB: {
+      debug << L"2's complement, big endian";
+      break;
+    }
+    default: {
+      debug << ehdr.e_ident[EI_DATA];
+      break;
+    }
   }
   debug << ostream::endl;
 
   debug << L"  Version:                              "
         << ehdr.e_ident[EI_VERSION] << L" ";
   switch (ehdr.e_ident[EI_VERSION]) {
-  case EV_NONE: {
-    debug << L"Invalid ELF version";
-    break;
-  }
-  case EV_CURRENT: {
-    debug << L"Current version";
-    break;
-  }
-  default: {
-    debug << ehdr.e_ident[EI_VERSION];
-    break;
-  }
+    case EV_NONE: {
+      debug << L"Invalid ELF version";
+      break;
+    }
+    case EV_CURRENT: {
+      debug << L"Current version";
+      break;
+    }
+    default: {
+      debug << ehdr.e_ident[EI_VERSION];
+      break;
+    }
   }
   debug << ostream::endl;
 
   debug << L"  OS/ABI:                               ";
   switch (ehdr.e_ident[EI_OSABI]) {
-  case ELFOSABI_SYSV: {
-    debug << L"UNIX System V ABI";
-    break;
-  }
-  default: {
-    debug << ehdr.e_ident[EI_OSABI];
-    break;
-  }
+    case ELFOSABI_SYSV: {
+      debug << L"UNIX System V ABI";
+      break;
+    }
+    default: {
+      debug << ehdr.e_ident[EI_OSABI];
+      break;
+    }
   }
   debug << ostream::endl;
 
@@ -315,51 +316,51 @@ void Elf::print_ehdr() const {
 
   debug << L"  Type:                                 ";
   switch (ehdr.e_type) {
-  case ET_NONE: {
-    debug << L"No file type";
-    break;
-  }
-  case ET_REL: {
-    debug << L"Relocatable file";
-    break;
-  }
-  case ET_EXEC: {
-    debug << L"Executable file";
-    break;
-  }
-  case ET_DYN: {
-    debug << L"DYN (Shared object file)";
-    break;
-  }
-  case ET_CORE: {
-    debug << L"Core file";
-    break;
-  }
-  default: {
-    debug << ehdr.e_type;
-    break;
-  }
+    case ET_NONE: {
+      debug << L"No file type";
+      break;
+    }
+    case ET_REL: {
+      debug << L"Relocatable file";
+      break;
+    }
+    case ET_EXEC: {
+      debug << L"Executable file";
+      break;
+    }
+    case ET_DYN: {
+      debug << L"DYN (Shared object file)";
+      break;
+    }
+    case ET_CORE: {
+      debug << L"Core file";
+      break;
+    }
+    default: {
+      debug << ehdr.e_type;
+      break;
+    }
   }
   debug << ostream::endl;
 
   debug << L"  Machine:                              ";
   switch (ehdr.e_machine) {
-  case EM_X86_64: {
-    debug << L"AMD x86-64 architecture";
-    break;
-  }
-  case EM_RISCV: {
-    debug << L"RISC-V";
-    break;
-  }
-  case EM_AARCH64: {
-    debug << L"ARM AARCH64";
-    break;
-  }
-  default: {
-    debug << ehdr.e_machine;
-    break;
-  }
+    case EM_X86_64: {
+      debug << L"AMD x86-64 architecture";
+      break;
+    }
+    case EM_RISCV: {
+      debug << L"RISC-V";
+      break;
+    }
+    case EM_AARCH64: {
+      debug << L"ARM AARCH64";
+      break;
+    }
+    default: {
+      debug << ehdr.e_machine;
+      break;
+    }
   }
   debug << ostream::endl;
 
@@ -400,87 +401,87 @@ void Elf::print_phdr() const {
         << ostream::endl;
   for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
     switch (phdr[i].p_type) {
-    case PT_NULL: {
-      debug << L"  NULL\t\t";
-      break;
-    }
+      case PT_NULL: {
+        debug << L"  NULL\t\t";
+        break;
+      }
 
-    case PT_LOAD: {
-      debug << L"  LOAD\t\t";
-      break;
-    }
-    case PT_DYNAMIC: {
-      debug << L"  DYNAMIC\t";
-      break;
-    }
-    case PT_INTERP: {
-      debug << L"  INTERP\t";
-      break;
-    }
-    case PT_NOTE: {
-      debug << L"  NOTE\t\t";
-      break;
-    }
-    case PT_SHLIB: {
-      debug << L"  SHLIB\t\t";
-      break;
-    }
-    case PT_PHDR: {
-      debug << L"  PHDR\t\t";
-      break;
-    }
-    case PT_TLS: {
-      debug << L"  TLS\t\t";
-      break;
-    }
-    case PT_NUM: {
-      debug << L"  NUM\t\t";
-      break;
-    }
-    case PT_LOOS: {
-      debug << L"  LOOS\t\t";
-      break;
-    }
-    case PT_GNU_EH_FRAME: {
-      debug << L"  GNU_EH_FRAME\t";
-      break;
-    }
-    case PT_GNU_STACK: {
-      debug << L"  GNU_STACK\t";
-      break;
-    }
-    case PT_GNU_RELRO: {
-      debug << L"  GNU_RELRO\t";
-      break;
-    }
-    case PT_GNU_PROPERTY: {
-      debug << L"  GNU_PROPERTY\t";
-      break;
-    }
-    case PT_SUNWBSS: {
-      debug << L"  SUNWBSS\t\t";
-      break;
-    }
-    case PT_SUNWSTACK: {
-      debug << L"  SUNWSTACK\t";
-      break;
-    }
-    case PT_HIOS: {
-      debug << L"  HIOS\t\t";
-      break;
-    }
-    case PT_LOPROC: {
-      debug << L"  LOPROC\t\t";
-      break;
-    }
-    case PT_HIPROC: {
-      debug << L"  HIPROC\t\t";
-      break;
-    }
-    default: {
-      debug << L"  Unknown " << ostream::hex_X << phdr[i].p_type << L"\t";
-      break;
-    }
+      case PT_LOAD: {
+        debug << L"  LOAD\t\t";
+        break;
+      }
+      case PT_DYNAMIC: {
+        debug << L"  DYNAMIC\t";
+        break;
+      }
+      case PT_INTERP: {
+        debug << L"  INTERP\t";
+        break;
+      }
+      case PT_NOTE: {
+        debug << L"  NOTE\t\t";
+        break;
+      }
+      case PT_SHLIB: {
+        debug << L"  SHLIB\t\t";
+        break;
+      }
+      case PT_PHDR: {
+        debug << L"  PHDR\t\t";
+        break;
+      }
+      case PT_TLS: {
+        debug << L"  TLS\t\t";
+        break;
+      }
+      case PT_NUM: {
+        debug << L"  NUM\t\t";
+        break;
+      }
+      case PT_LOOS: {
+        debug << L"  LOOS\t\t";
+        break;
+      }
+      case PT_GNU_EH_FRAME: {
+        debug << L"  GNU_EH_FRAME\t";
+        break;
+      }
+      case PT_GNU_STACK: {
+        debug << L"  GNU_STACK\t";
+        break;
+      }
+      case PT_GNU_RELRO: {
+        debug << L"  GNU_RELRO\t";
+        break;
+      }
+      case PT_GNU_PROPERTY: {
+        debug << L"  GNU_PROPERTY\t";
+        break;
+      }
+      case PT_SUNWBSS: {
+        debug << L"  SUNWBSS\t\t";
+        break;
+      }
+      case PT_SUNWSTACK: {
+        debug << L"  SUNWSTACK\t";
+        break;
+      }
+      case PT_HIOS: {
+        debug << L"  HIOS\t\t";
+        break;
+      }
+      case PT_LOPROC: {
+        debug << L"  LOPROC\t\t";
+        break;
+      }
+      case PT_HIPROC: {
+        debug << L"  HIPROC\t\t";
+        break;
+      }
+      default: {
+        debug << L"  Unknown " << ostream::hex_X << phdr[i].p_type << L"\t";
+        break;
+      }
     }
 
     debug << ostream::hex_X << phdr[i].p_offset << L"\t";
@@ -490,38 +491,38 @@ void Elf::print_phdr() const {
     debug << ostream::hex_X << phdr[i].p_memsz << L"\t";
 
     switch (phdr[i].p_flags) {
-    case PF_X: {
-      debug << L"E\t";
-      break;
-    }
-    case PF_W: {
-      debug << L"W\t";
-      break;
-    }
-    case PF_R: {
-      debug << L"R\t";
-      break;
-    }
-    case PF_MASKOS: {
-      debug << L"OS-specific\t";
-      break;
-    }
-    case PF_MASKPROC: {
-      debug << L"Processor-specific\t";
-      break;
-    }
-    case (PF_X | PF_R): {
-      debug << L"R E\t";
-      break;
-    }
-    case (PF_W | PF_R): {
-      debug << L"RW\t";
-      break;
-    }
-    default: {
-      debug << L"Unknown " << ostream::hex_x << phdr[i].p_flags << L"\t";
-      break;
-    }
+      case PF_X: {
+        debug << L"E\t";
+        break;
+      }
+      case PF_W: {
+        debug << L"W\t";
+        break;
+      }
+      case PF_R: {
+        debug << L"R\t";
+        break;
+      }
+      case PF_MASKOS: {
+        debug << L"OS-specific\t";
+        break;
+      }
+      case PF_MASKPROC: {
+        debug << L"Processor-specific\t";
+        break;
+      }
+      case (PF_X | PF_R): {
+        debug << L"R E\t";
+        break;
+      }
+      case (PF_W | PF_R): {
+        debug << L"RW\t";
+        break;
+      }
+      default: {
+        debug << L"Unknown " << ostream::hex_x << phdr[i].p_flags << L"\t";
+        break;
+      }
     }
     debug << ostream::hex_x << phdr[i].p_align << ostream::endl;
   }
@@ -566,147 +567,147 @@ void Elf::print_shdr() const {
       debug << L"\t";
     }
     switch (shdr[i].sh_type) {
-    case SHT_NULL: {
-      debug << L"NULL\t\t";
-      break;
-    }
-    case SHT_PROGBITS: {
-      debug << L"PROGBITS\t";
-      break;
-    }
-    case SHT_SYMTAB: {
-      debug << L"SYMTAB\t\t";
-      break;
-    }
-    case SHT_STRTAB: {
-      debug << L"STRTAB\t\t";
-      break;
-    }
-    case SHT_RELA: {
-      debug << L"RELA\t\t";
-      break;
-    }
-    case SHT_HASH: {
-      debug << L"HASH\t\t";
-      break;
-    }
-    case SHT_DYNAMIC: {
-      debug << L"DYNAMIC\t\t";
-      break;
-    }
-    case SHT_NOTE: {
-      debug << L"NOTE\t\t";
-      break;
-    }
-    case SHT_NOBITS: {
-      debug << L"NOBITS\t\t";
-      break;
-    }
-    case SHT_REL: {
-      debug << L"REL\t\t";
-      break;
-    }
-    case SHT_SHLIB: {
-      debug << L"SHLIB\t\t";
-      break;
-    }
-    case SHT_DYNSYM: {
-      debug << L"DYNSYM\t\t";
-      break;
-    }
-    case SHT_INIT_ARRAY: {
-      debug << L"INIT_ARRAY\t";
-      break;
-    }
-    case SHT_FINI_ARRAY: {
-      debug << L"FINI_ARRAY\t";
-      break;
-    }
-    case SHT_PREINIT_ARRAY: {
-      debug << L"PREINIT_ARRAY\t\t";
-      break;
-    }
-    case SHT_GROUP: {
-      debug << L"GROUP\t\t";
-      break;
-    }
-    case SHT_SYMTAB_SHNDX: {
-      debug << L"SYMTAB_SHNDX\t\t";
-      break;
-    }
-    case SHT_RELR: {
-      debug << L"RELR\t\t";
-      break;
-    }
-    case SHT_NUM: {
-      debug << L"NUM\t\t";
-      break;
-    }
-    case SHT_LOOS: {
-      debug << L"LOOS\t\t";
-      break;
-    }
-    case SHT_GNU_ATTRIBUTES: {
-      debug << L"GNU_ATTRIBUTE\t\t";
-      break;
-    }
-    case SHT_GNU_HASH: {
-      debug << L"GNU_HASH\t";
-      break;
-    }
-    case SHT_GNU_LIBLIST: {
-      debug << L"GNU_LIBLIST\t\t";
-      break;
-    }
-    case SHT_CHECKSUM: {
-      debug << L"CHECKSUM\t\t";
-      break;
-    }
-    case SHT_SUNW_move: {
-      debug << L"SUNW_move\t\t";
-      break;
-    }
-    case SHT_SUNW_COMDAT: {
-      debug << L"SUNW_COMDAT\t\t";
-      break;
-    }
-    case SHT_SUNW_syminfo: {
-      debug << L"SUNW_syminfo\t\t";
-      break;
-    }
-    case SHT_GNU_verdef: {
-      debug << L"GNU_verdef\t\t";
-      break;
-    }
-    case SHT_GNU_verneed: {
-      debug << L"GNU_verneed\t";
-      break;
-    }
-    case SHT_GNU_versym: {
-      debug << L"GNU_versym\t";
-      break;
-    }
-    case SHT_LOPROC: {
-      debug << L"LOPROC\t\t";
-      break;
-    }
-    case SHT_HIPROC: {
-      debug << L"HIPROC\t\t";
-      break;
-    }
-    case SHT_LOUSER: {
-      debug << L"LOUSER\t\t";
-      break;
-    }
-    case SHT_HIUSER: {
-      debug << L"HIUSER\t\t";
-      break;
-    }
-    default: {
-      debug << L"Unknown " << ostream::hex_X << shdr[i].sh_type << L"\t";
+      case SHT_NULL: {
+        debug << L"NULL\t\t";
+        break;
+      }
+      case SHT_PROGBITS: {
+        debug << L"PROGBITS\t";
+        break;
+      }
+      case SHT_SYMTAB: {
+        debug << L"SYMTAB\t\t";
+        break;
+      }
+      case SHT_STRTAB: {
+        debug << L"STRTAB\t\t";
+        break;
+      }
+      case SHT_RELA: {
+        debug << L"RELA\t\t";
+        break;
+      }
+      case SHT_HASH: {
+        debug << L"HASH\t\t";
+        break;
+      }
+      case SHT_DYNAMIC: {
+        debug << L"DYNAMIC\t\t";
+        break;
+      }
+      case SHT_NOTE: {
+        debug << L"NOTE\t\t";
+        break;
+      }
+      case SHT_NOBITS: {
+        debug << L"NOBITS\t\t";
+        break;
+      }
+      case SHT_REL: {
+        debug << L"REL\t\t";
+        break;
+      }
+      case SHT_SHLIB: {
+        debug << L"SHLIB\t\t";
+        break;
+      }
+      case SHT_DYNSYM: {
+        debug << L"DYNSYM\t\t";
+        break;
+      }
+      case SHT_INIT_ARRAY: {
+        debug << L"INIT_ARRAY\t";
+        break;
+      }
+      case SHT_FINI_ARRAY: {
+        debug << L"FINI_ARRAY\t";
+        break;
+      }
+      case SHT_PREINIT_ARRAY: {
+        debug << L"PREINIT_ARRAY\t\t";
+        break;
+      }
+      case SHT_GROUP: {
+        debug << L"GROUP\t\t";
+        break;
+      }
+      case SHT_SYMTAB_SHNDX: {
+        debug << L"SYMTAB_SHNDX\t\t";
+        break;
+      }
+      case SHT_RELR: {
+        debug << L"RELR\t\t";
+        break;
+      }
+      case SHT_NUM: {
+        debug << L"NUM\t\t";
+        break;
+      }
+      case SHT_LOOS: {
+        debug << L"LOOS\t\t";
+        break;
+      }
+      case SHT_GNU_ATTRIBUTES: {
+        debug << L"GNU_ATTRIBUTE\t\t";
+        break;
+      }
+      case SHT_GNU_HASH: {
+        debug << L"GNU_HASH\t";
+        break;
+      }
+      case SHT_GNU_LIBLIST: {
+        debug << L"GNU_LIBLIST\t\t";
+        break;
+      }
+      case SHT_CHECKSUM: {
+        debug << L"CHECKSUM\t\t";
+        break;
+      }
+      case SHT_SUNW_move: {
+        debug << L"SUNW_move\t\t";
+        break;
+      }
+      case SHT_SUNW_COMDAT: {
+        debug << L"SUNW_COMDAT\t\t";
+        break;
+      }
+      case SHT_SUNW_syminfo: {
+        debug << L"SUNW_syminfo\t\t";
+        break;
+      }
+      case SHT_GNU_verdef: {
+        debug << L"GNU_verdef\t\t";
+        break;
+      }
+      case SHT_GNU_verneed: {
+        debug << L"GNU_verneed\t";
+        break;
+      }
+      case SHT_GNU_versym: {
+        debug << L"GNU_versym\t";
+        break;
+      }
+      case SHT_LOPROC: {
+        debug << L"LOPROC\t\t";
+        break;
+      }
+      case SHT_HIPROC: {
+        debug << L"HIPROC\t\t";
+        break;
+      }
+      case SHT_LOUSER: {
+        debug << L"LOUSER\t\t";
+        break;
+      }
+      case SHT_HIUSER: {
+        debug << L"HIUSER\t\t";
+        break;
+      }
+      default: {
+        debug << L"Unknown " << ostream::hex_X << shdr[i].sh_type << L"\t";
 
-      break;
-    }
+        break;
+      }
     }
 
     debug << ostream::hex_X << shdr[i].sh_addr << L"\t";
@@ -715,94 +716,94 @@ void Elf::print_shdr() const {
     debug << ostream::hex_X << shdr[i].sh_entsize << L"\t";
 
     switch (shdr[i].sh_flags) {
-    case 0: {
-      debug << L"0\t";
-      break;
-    }
-    case SHF_WRITE: {
-      debug << L"WRITE\t";
-      break;
-    }
-    case SHF_ALLOC: {
-      debug << L"A\t";
-      break;
-    }
-    case SHF_EXECINSTR: {
-      debug << L"EXECINSTR\t";
-      break;
-    }
-    case SHF_MERGE: {
-      debug << L"MERGE\t";
-      break;
-    }
-    case SHF_STRINGS: {
-      debug << L"STRINGS\t";
-      break;
-    }
-    case SHF_INFO_LINK: {
-      debug << L"INFO_LINK\t";
-      break;
-    }
-    case SHF_LINK_ORDER: {
-      debug << L"LINK_ORDER\t";
-      break;
-    }
-    case SHF_OS_NONCONFORMING: {
-      debug << L"OS_NONCONFORMING\t";
-      break;
-    }
-    case SHF_GROUP: {
-      debug << L"GROUP\t";
-      break;
-    }
-    case SHF_TLS: {
-      debug << L"TLS\t";
-      break;
-    }
-    case SHF_COMPRESSED: {
-      debug << L"COMPRESSED\t";
-      break;
-    }
-    case SHF_MASKOS: {
-      debug << L"MASKOS\t";
-      break;
-    }
-    case SHF_MASKPROC: {
-      debug << L"MASKPROC\t";
-      break;
-    }
-    case SHF_GNU_RETAIN: {
-      debug << L"GNU_RETAIN\t";
-      break;
-    }
-    case SHF_ORDERED: {
-      debug << L"ORDERED\t";
-      break;
-    }
-    case SHF_EXCLUDE: {
-      debug << L"EXCLUDE\t";
-      break;
-    }
-    case (SHF_WRITE | SHF_ALLOC): {
-      debug << L"WA\t";
-      break;
-    }
-    case (SHF_ALLOC | SHF_MERGE): {
-      debug << L"AM\t";
-      break;
-    }
-    case (SHF_ALLOC | SHF_EXECINSTR): {
-      debug << L"AX\t";
-      break;
-    }
-    case (SHF_MERGE | SHF_STRINGS): {
-      debug << L"MS\t";
-      break;
-    }
-    default: {
-      debug << L"Unknown " << ostream::hex_X << shdr[i].sh_flags << L"\t";
-      break;
-    }
+      case 0: {
+        debug << L"0\t";
+        break;
+      }
+      case SHF_WRITE: {
+        debug << L"WRITE\t";
+        break;
+      }
+      case SHF_ALLOC: {
+        debug << L"A\t";
+        break;
+      }
+      case SHF_EXECINSTR: {
+        debug << L"EXECINSTR\t";
+        break;
+      }
+      case SHF_MERGE: {
+        debug << L"MERGE\t";
+        break;
+      }
+      case SHF_STRINGS: {
+        debug << L"STRINGS\t";
+        break;
+      }
+      case SHF_INFO_LINK: {
+        debug << L"INFO_LINK\t";
+        break;
+      }
+      case SHF_LINK_ORDER: {
+        debug << L"LINK_ORDER\t";
+        break;
+      }
+      case SHF_OS_NONCONFORMING: {
+        debug << L"OS_NONCONFORMING\t";
+        break;
+      }
+      case SHF_GROUP: {
+        debug << L"GROUP\t";
+        break;
+      }
+      case SHF_TLS: {
+        debug << L"TLS\t";
+        break;
+      }
+      case SHF_COMPRESSED: {
+        debug << L"COMPRESSED\t";
+        break;
+      }
+      case SHF_MASKOS: {
+        debug << L"MASKOS\t";
+        break;
+      }
+      case SHF_MASKPROC: {
+        debug << L"MASKPROC\t";
+        break;
+      }
+      case SHF_GNU_RETAIN: {
+        debug << L"GNU_RETAIN\t";
+        break;
+      }
+      case SHF_ORDERED: {
+        debug << L"ORDERED\t";
+        break;
+      }
+      case SHF_EXCLUDE: {
+        debug << L"EXCLUDE\t";
+        break;
+      }
+      case (SHF_WRITE | SHF_ALLOC): {
+        debug << L"WA\t";
+        break;
+      }
+      case (SHF_ALLOC | SHF_MERGE): {
+        debug << L"AM\t";
+        break;
+      }
+      case (SHF_ALLOC | SHF_EXECINSTR): {
+        debug << L"AX\t";
+        break;
+      }
+      case (SHF_MERGE | SHF_STRINGS): {
+        debug << L"MS\t";
+        break;
+      }
+      default: {
+        debug << L"Unknown " << ostream::hex_X << shdr[i].sh_flags << L"\t";
+        break;
+      }
     }
 
     debug << shdr[i].sh_link << L"\t";
