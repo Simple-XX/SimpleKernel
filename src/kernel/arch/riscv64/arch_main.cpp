@@ -50,21 +50,6 @@ void put_char(const char _c) {
   return;
 }
 
-int arch(int, uint8_t **) {
-  put_char('H');
-  put_char('e');
-  put_char('l');
-  put_char('l');
-  put_char('W');
-  put_char('o');
-  put_char('r');
-  put_char('l');
-  put_char('d');
-  put_char('!');
-
-  return 0;
-}
-
 int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   (void)_argc;
   (void)_argv;
