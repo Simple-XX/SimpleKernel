@@ -14,10 +14,6 @@
  * </table>
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cstdint"
 
 #include "sbi/sbi_ecall_interface.h"
@@ -69,7 +65,3 @@ int main(int, char **) {
 
   return 0;
 }
-
-#ifdef __cplusplus
-}
-#endif
