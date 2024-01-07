@@ -7,67 +7,67 @@
 
 # 通用编译选项
 list(APPEND COMMON_COMPILE_OPTIONS
-    # 如果 CMAKE_BUILD_TYPE 为 Release 则使用 -O3 -Werror，否则使用 -O0 -g -ggdb
-    $<$<CONFIG:Release>:-O3;-Werror>
-    $<$<CONFIG:Debug>:-O0;-g;-ggdb>
-    # 打开全部警告
-    -Wall
-    # 打开额外警告
-    -Wextra
-    # 启用异常处理机制
-    -fexceptions
+        # 如果 CMAKE_BUILD_TYPE 为 Release 则使用 -O3 -Werror，否则使用 -O0 -g -ggdb
+        $<$<CONFIG:Release>:-O3;-Werror>
+        $<$<CONFIG:Debug>:-O0;-g;-ggdb>
+        # 打开全部警告
+        -Wall
+        # 打开额外警告
+        -Wextra
+        # 启用异常处理机制
+        -fexceptions
 
-    # 目标平台编译选项
-    # @todo clang 交叉编译参数
-    $<$<STREQUAL:${TARGET_ARCH},x86_64>:
-    # 禁用 red-zone
-    -mno-red-zone
-    >
+        # 目标平台编译选项
+        # @todo clang 交叉编译参数
+        $<$<STREQUAL:${TARGET_ARCH},x86_64>:
+        # 禁用 red-zone
+        -mno-red-zone
+        >
 
-    $<$<STREQUAL:${TARGET_ARCH},riscv64>:
-    >
+        $<$<STREQUAL:${TARGET_ARCH},riscv64>:
+        >
 
-    $<$<STREQUAL:${TARGET_ARCH},aarch64>:
-    # 生成 armv8-a 代码
-    -march=armv8-a
-    # 针对 cortex-a72 优化代码
-    -mtune=cortex-a72
-    >
+        $<$<STREQUAL:${TARGET_ARCH},aarch64>:
+        # 生成 armv8-a 代码
+        -march=armv8-a
+        # 针对 cortex-a72 优化代码
+        -mtune=cortex-a72
+        >
 
-    # gcc 特定选项
-    $<$<CXX_COMPILER_ID:GNU>:
-    >
+        # gcc 特定选项
+        $<$<CXX_COMPILER_ID:GNU>:
+        >
 
-    # clang 特定选项
-    $<$<CXX_COMPILER_ID:Clang>:
-    >
+        # clang 特定选项
+        $<$<CXX_COMPILER_ID:Clang>:
+        >
 
-    # 平台相关
-    $<$<PLATFORM_ID:Darwin>:
-    >
+        # 平台相关
+        $<$<PLATFORM_ID:Darwin>:
+        >
 )
 
 # 通用链接选项
 list(APPEND COMMON_LINK_OPTIONS
-    # 不链接 ctr0 等启动代码
-    -nostartfiles
+        # 不链接 ctr0 等启动代码
+        -nostartfiles
 
-    # 目标平台编译选项
-    # @todo clang 交叉编译参数
-    $<$<STREQUAL:${TARGET_ARCH},x86_64>:
-    # 设置最大页大小为 0x1000(4096) 字节
-    -z max-page-size=0x1000
-    >
+        # 目标平台编译选项
+        # @todo clang 交叉编译参数
+        $<$<STREQUAL:${TARGET_ARCH},x86_64>:
+        # 设置最大页大小为 0x1000(4096) 字节
+        -z max-page-size=0x1000
+        >
 
-    $<$<STREQUAL:${TARGET_ARCH},riscv64>:
-    # 链接脚本
-    -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${TARGET_ARCH}/link.ld
-    # 不生成位置无关可执行代码
-    -no-pie
-    >
+        $<$<STREQUAL:${TARGET_ARCH},riscv64>:
+        # 链接脚本
+        -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${TARGET_ARCH}/link.ld
+        # 不生成位置无关可执行代码
+        -no-pie
+        >
 
-    $<$<STREQUAL:${TARGET_ARCH},aarch64>:
-    >
+        $<$<STREQUAL:${TARGET_ARCH},aarch64>:
+        >
 )
 
 # 通用库选项
@@ -142,27 +142,27 @@ list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
-    ${COMMON_LINK_OPTIONS}
+        ${COMMON_LINK_OPTIONS}
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_LIB
-    ${COMMON_LINK_LIB}
+        ${COMMON_LINK_LIB}
 )
 
 # 编译依赖
 if (${TARGET_ARCH} STREQUAL "x86_64")
     list(APPEND COMPILE_DEPENDS
-        gnu-efi
-        cxxrt-static
+            gnu-efi
+            cxxrt-static
     )
 elseif (${TARGET_ARCH} STREQUAL "riscv64")
     list(APPEND COMPILE_DEPENDS
-        opensbi
-        cxxrt-static
+            opensbi
+            cxxrt-static
     )
 elseif (${TARGET_ARCH} STREQUAL "aarch64")
     list(APPEND COMPILE_DEPENDS
-        gnu-efi
+            gnu-efi
             cxxrt-static
     )
 endif ()
