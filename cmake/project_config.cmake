@@ -8,9 +8,9 @@
 # 设置 cmake 目标环境根目录
 # @todo 设置目录
 list(APPEND CMAKE_FIND_ROOT_PATH
-    /usr/x86_64-linux-gnu
-    /usr/riscv64-linux-gnu
-    /usr/aarch64-linux-gnu
+        /usr/x86_64-linux-gnu
+        /usr/riscv64-linux-gnu
+        /usr/aarch64-linux-gnu
 )
 # 在目标环境搜索 program
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
@@ -21,8 +21,8 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 # 设置清理目标 在 make clean 时删除文件夹
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-    # 删除 .gdbinit
-    ${CMAKE_SOURCE_DIR}/.gdbinit
+        # 删除 .gdbinit
+        ${CMAKE_SOURCE_DIR}/.gdbinit
 )
 
 # 要运行的平台
@@ -57,22 +57,22 @@ endif ()
 # qemu 运行依赖
 if (${TARGET_ARCH} STREQUAL "x86_64")
     list(APPEND RUN_DEPENDS
-        ovmf
+            ovmf
     )
 elseif (${TARGET_ARCH} STREQUAL "riscv64")
     list(APPEND RUN_DEPENDS
-        opensbi
+            opensbi
     )
 elseif (${TARGET_ARCH} STREQUAL "aarch64")
     list(APPEND RUN_DEPENDS
-        ovmf
+            ovmf
     )
 endif ()
 
 # qemu 调试依赖
 list(APPEND DEBUG_DEPENDS
-    ${RUN_DEPENDS}
-    gdbinit
+        ${RUN_DEPENDS}
+        gdbinit
 )
 
 # qemu gdb 调试端口
@@ -83,7 +83,7 @@ endif ()
 # qemu monitor 参数
 if (NOT DEFINED QEMU_MONITOR_ARG)
     set(QEMU_MONITOR_ARG
-        telnet::2333,server,nowait
+            telnet::2333,server,nowait
     )
 endif ()
 
