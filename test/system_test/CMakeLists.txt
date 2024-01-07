@@ -6,8 +6,8 @@
 
 # 设置项目名与版本
 project(
-    system-test
-    VERSION 0.0.1
+        system-test
+        VERSION 0.0.1
 )
 
 if (${TARGET_ARCH} STREQUAL "x86_64" OR ${TARGET_ARCH} STREQUAL "aarch64")

@@ -21,16 +21,17 @@ add_executable(${PROJECT_NAME}_kernel
 add_header_3rd(${PROJECT_NAME}_kernel)
 
 target_compile_options(${PROJECT_NAME}_kernel PRIVATE
-        -g -ggdb
-        -O0
-        -Wall -Wextra
+        ${DEFAULT_KERNEL_COMPILE_OPTIONS}
         -ffreestanding
 )
 
 target_link_options(${PROJECT_NAME}_kernel PRIVATE
-        -no-pie
-        -nostdlib
-        -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${TARGET_ARCH}/link.ld
+        ${DEFAULT_KERNEL_LINK_OPTIONS}
+)
+
+# 添加要链接的库
+target_link_libraries(kernel PRIVATE
+        ${DEFAULT_KERNEL_LINK_LIB}
 )
 
 add_dependencies(${PROJECT_NAME}_kernel
