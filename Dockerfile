@@ -32,6 +32,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
         make \
         cmake \
         clang-format \
+        clang-tidy \
+        cppcheck \
         qemu-system \
         build-essential \
         binutils \

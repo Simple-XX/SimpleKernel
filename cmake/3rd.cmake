@@ -269,6 +269,13 @@ add_custom_target(3rd_licenses
         write-licenses
 )
 
+# gdb
+find_program(GDB_EXE gdb)
+if (NOT GDB_EXE)
+    message(FATAL_ERROR "gdb not found.\n"
+            "Following https://www.sourceware.org/gdb/ to install.")
+endif ()
+
 # qemu
 find_program(QEMU_EXE qemu-system-${TARGET_ARCH})
 if (NOT QEMU_EXE)
