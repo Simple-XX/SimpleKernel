@@ -18,8 +18,6 @@
 #include "kernel.h"
 
 int main(int _argc, char **_argv) {
-  uint8_t *aaa = nullptr;
-  *aaa = 233;
   (void)_argc;
   (void)_argv;
 

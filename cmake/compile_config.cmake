@@ -16,6 +16,9 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -Wextra
         # 启用异常处理机制
         -fexceptions
+        # 启用 free-standing 环境
+        -ffreestanding
+
 
         # 目标平台编译选项
         # @todo clang 交叉编译参数

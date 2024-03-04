@@ -22,7 +22,6 @@ add_header_3rd(${PROJECT_NAME}_kernel)
 
 target_compile_options(${PROJECT_NAME}_kernel PRIVATE
         ${DEFAULT_KERNEL_COMPILE_OPTIONS}
-        -ffreestanding
 )
 
 target_link_options(${PROJECT_NAME}_kernel PRIVATE
