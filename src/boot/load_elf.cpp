@@ -55,16 +55,16 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   status = LibLocateProtocol(&FileSystemProtocol,
                              reinterpret_cast<void **>(&file_system_protocol));
   if (EFI_ERROR(status)) {
-    debug << L"LibLocateProtocol failed: " << status << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Elf::Elf LibLocateProtocol failed: " << status << ostream::endl;
+    return;
   }
 
   // 打开根文件系统
   status = uefi_call_wrapper(file_system_protocol->OpenVolume, 2,
                              file_system_protocol, &root_file_system);
   if (EFI_ERROR(status)) {
-    debug << L"OpenVolume failed: " << status << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Elf::Elf OpenVolume failed: " << status << ostream::endl;
+    return;
   }
 
   // 打开 elf 文件
@@ -73,17 +73,12 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
                              EFI_FILE_READ_ONLY);
 
   if (EFI_ERROR(status)) {
-    debug << L"Open failed: " << status << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Elf::Elf Open failed: " << status << ostream::endl;
+    return;
   }
 
   // 获取 elf 文件大小
-  try {
-    elf_file_size = get_file_size();
-  } catch (std::runtime_error &_e) {
-    debug << L"get_file_size failed: " << _e.what() << ostream::endl;
-    throw std::runtime_error(_e.what());
-  }
+  elf_file_size = get_file_size();
   debug << L"Kernel file size: " << elf_file_size << ostream::endl;
 
   // 分配 elf 文件缓存
@@ -91,16 +86,16 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
                              &elf_file_buffer);
 
   if (EFI_ERROR(status)) {
-    debug << L"AllocatePool failed: " << status << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Elf::Elf AllocatePool failed: " << status << ostream::endl;
+    return;
   }
 
   // 将内核文件读入内存
   status = uefi_call_wrapper(elf->Read, 3, (EFI_FILE *)elf, &elf_file_size,
                              elf_file_buffer);
   if (EFI_ERROR(status)) {
-    debug << L"Read failed: " << status << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Elf::Elf Read failed: " << status << ostream::endl;
+    return;
   }
 
   file = std::span<uint8_t>(static_cast<uint8_t *>(elf_file_buffer),
@@ -109,8 +104,8 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   // 检查 elf 头数据
   auto check_elf_identity_ret = check_elf_identity();
   if (!check_elf_identity_ret) {
-    debug << L"NOT valid ELF file" << ostream::endl;
-    throw std::runtime_error("check_elf_identity_ret == false");
+    debug << L"Elf::Elf NOT valid ELF file" << ostream::endl;
+    return;
   }
 
   // 读取 ehdr
@@ -125,52 +120,49 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
 }
 
 Elf::~Elf() {
-  try {
-    EFI_STATUS status = EFI_SUCCESS;
-    // 关闭 elf 文件
-    status = uefi_call_wrapper(elf->Close, 1, elf);
-    if (EFI_ERROR(status)) {
-      debug << L"Close failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
-    }
-    /// @note elf_file_buffer 不会被释放
-  } catch (std::runtime_error &_e) {
-    debug << L"~Elf failed: " << _e.what() << ostream::endl;
+  EFI_STATUS status = EFI_SUCCESS;
+  // 关闭 elf 文件
+  status = uefi_call_wrapper(elf->Close, 1, elf);
+  if (EFI_ERROR(status)) {
+    debug << L"Elf::~Elf() Close failed: " << status << ostream::endl;
+    return;
   }
+  /// @note elf_file_buffer 不会被释放
 }
 
 auto Elf::load_kernel_image() const -> uint64_t {
   uintptr_t image_base = 0;
   uintptr_t image_begin = 0;
-  try {
-    //      load_program_sections();
-    size_t size = 0;
-    for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
-      if (phdr[i].p_type != PT_LOAD) {
-        continue;
-      }
-      phdr[i].p_vaddr;
-      size += phdr[i].p_memsz;
-    }
-    auto section_page_count = EFI_SIZE_TO_PAGES(size);
-    auto status =
-        uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages,
-                          EfiLoaderCode, section_page_count, &image_base);
-    if (EFI_ERROR(status)) {
-      debug << L"AllocatePages failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
-    }
 
-    for (auto &i : phdr) {
-      if (i.p_type != PT_LOAD) {
-        continue;
-      }
-      memcpy((void *)(image_base + i.p_vaddr), file.data() + i.p_offset,
-             i.p_memsz);
+  //    auto load_program_sections_ret = load_program_sections();
+  //    if (!load_program_sections_ret) {
+  //      debug << L"load_program_sections failed" << ostream::endl;
+  //      return 0;
+  //    }
+  size_t size = 0;
+  for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
+    if (phdr[i].p_type != PT_LOAD) {
+      continue;
     }
+    phdr[i].p_vaddr;
+    size += phdr[i].p_memsz;
+  }
+  auto section_page_count = EFI_SIZE_TO_PAGES(size);
+  auto status =
+      uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages, EfiLoaderCode,
+                        section_page_count, &image_base);
+  if (EFI_ERROR(status)) {
+    debug << L"Elf::load_kernel_image() AllocatePages failed: " << status
+          << ostream::endl;
+    return 0;
+  }
 
-  } catch (std::runtime_error &_e) {
-    debug << L"load_kernel_image: " << _e.what() << ostream::endl;
+  for (auto &i : phdr) {
+    if (i.p_type != PT_LOAD) {
+      continue;
+    }
+    memcpy((void *)(image_base + i.p_vaddr), file.data() + i.p_offset,
+           i.p_memsz);
   }
   debug << L"load_kernel_image: " << ostream::hex_X << image_base << L" "
         << ostream::hex_X << ehdr.e_entry << L" " << ostream::hex_X
@@ -189,8 +181,8 @@ auto Elf::load() const -> uintptr_t {
       uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages, EfiLoaderCode,
                         section_page_count, &image_base);
   if (EFI_ERROR(status)) {
-    debug << L"AllocatePages failed: " << status << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Elf::load() AllocatePages failed: " << status << ostream::endl;
+    return 0;
   }
   // 将 elf 复制到分配的物理内存中
   std::memcpy(reinterpret_cast<void *>(image_base), file.data(),
@@ -813,7 +805,7 @@ void Elf::print_shdr() const {
   }
 }
 
-void Elf::load_sections(const Elf64_Phdr &_phdr) const {
+bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
   EFI_STATUS status = EFI_SUCCESS;
   void *data = nullptr;
   // 计算使用的内存页数
@@ -822,8 +814,9 @@ void Elf::load_sections(const Elf64_Phdr &_phdr) const {
   // 设置文件偏移到 p_offset
   status = uefi_call_wrapper(elf->SetPosition, 2, elf, _phdr.p_offset);
   if (EFI_ERROR(status)) {
-    debug << L"SetPosition failed: " << status << ostream::endl;
-    throw std::runtime_error("memory_map == nullptr");
+    debug << L"Elf::load_sections SetPosition failed: " << status
+          << ostream::endl;
+    return false;
   }
   uintptr_t aaa = 0;
   // status = uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAddress,
@@ -834,9 +827,9 @@ void Elf::load_sections(const Elf64_Phdr &_phdr) const {
   debug << L"_phdr.p_paddr: [" << status << L"] [" << section_page_count
         << L"] " << ostream::hex_X << aaa << ostream::endl;
   if (EFI_ERROR(status)) {
-    debug << L"AllocatePages AllocateAddress failed: " << status
-          << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Elf::load_sections AllocatePages AllocateAddress failed: "
+          << status << ostream::endl;
+    return false;
   }
 
   if (_phdr.p_filesz > 0) {
@@ -845,15 +838,16 @@ void Elf::load_sections(const Elf64_Phdr &_phdr) const {
     status = uefi_call_wrapper(gBS->AllocatePool, 3, EfiLoaderCode,
                                buffer_read_size, (void **)&data);
     if (EFI_ERROR(status)) {
-      debug << L"AllocatePool failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
+      debug << L"Elf::load_sections AllocatePool failed: " << status
+            << ostream::endl;
+      return false;
     }
     // 读数据
     status =
         uefi_call_wrapper(elf->Read, 3, elf, &buffer_read_size, (void *)data);
     if (EFI_ERROR(status)) {
-      debug << L"Read failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
+      debug << L"Elf::load_sections Read failed: " << status << ostream::endl;
+      return false;
     }
 
     // 将读出来的数据复制到其对应的物理地址
@@ -864,8 +858,9 @@ void Elf::load_sections(const Elf64_Phdr &_phdr) const {
     // 释放 program_data
     status = uefi_call_wrapper(gBS->FreePool, 1, data);
     if (EFI_ERROR(status)) {
-      debug << L"FreePool failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
+      debug << L"Elf::load_sections FreePool failed: " << status
+            << ostream::endl;
+      return false;
     }
   }
 
@@ -881,21 +876,21 @@ void Elf::load_sections(const Elf64_Phdr &_phdr) const {
     // 将填充部分置 0
     uefi_call_wrapper(gBS->SetMem, 3, zero_fill_start, zero_fill_count, 0);
   }
+  return true;
 }
 
-void Elf::load_program_sections() const {
-  uint64_t loaded = 0;
+bool Elf::load_program_sections() const {
   for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
     if (phdr[i].p_type != PT_LOAD) {
       continue;
     }
-    load_sections(phdr[i]);
-    loaded++;
+    auto load_sections_ret = load_sections(phdr[i]);
+    if (!load_sections_ret) {
+      debug << L"Elf::load_program_sections() load_sections failed " << i
+            << ostream::endl;
+      return false;
+    }
   }
 
-  if (loaded == 0) {
-    debug << L"Fatal Error: No loadable program segments found in Kernel image "
-          << ostream::endl;
-    throw std::runtime_error("loaded == 0");
-  }
+  return true;
 }

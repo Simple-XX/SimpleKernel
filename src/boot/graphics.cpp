@@ -14,8 +14,6 @@
  * </table>
  */
 
-#include <stdexcept>
-
 #include "load_elf.h"
 #include "ostream.hpp"
 
@@ -23,14 +21,15 @@ Graphics::Graphics() {
   auto status = LibLocateProtocol(&GraphicsOutputProtocol,
                                   reinterpret_cast<void **>(&gop));
   if (EFI_ERROR(status)) {
-    debug << L"Could not locate GOP: " << status << ostream::endl;
-    throw std::runtime_error("EFI_ERROR(status)");
+    debug << L"Graphics::Graphics() Could not locate GOP: " << status
+          << ostream::endl;
+    return;
   }
   if (gop == nullptr) {
-    debug << L"LibLocateProtocol(GraphicsOutputProtocol, &gop) returned "
+    debug << L"Graphics::Graphics() LibLocateProtocol(GraphicsOutputProtocol, "
+             L"&gop) returned "
           << status << " but gop is nullptr" << ostream::endl;
-
-    throw std::runtime_error("gop == nullptr");
+    return;
   }
 }
 
@@ -44,8 +43,9 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
     status = uefi_call_wrapper(gop->QueryMode, 4, gop, i, &mode_info_size,
                                &mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"QueryMode failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
+      debug << L"Graphics::set_mode QueryMode failed: " << status
+            << ostream::endl;
+      return;
     }
 
     if ((mode_info->PixelFormat == _format) &&
@@ -53,14 +53,16 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
         (mode_info->VerticalResolution == _height)) {
       status = uefi_call_wrapper(gop->SetMode, 2, gop, i);
       if (EFI_ERROR(status)) {
-        debug << L"SetMode failed: " << status << ostream::endl;
-        throw std::runtime_error("EFI_ERROR(status)");
+        debug << L"Graphics::set_mode SetMode failed: " << status
+              << ostream::endl;
+        return;
       }
     }
     status = uefi_call_wrapper(gBS->FreePool, 1, mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"FreePool failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
+      debug << L"Graphics::set_mode FreePool failed: " << status
+            << ostream::endl;
+      return;
     }
   }
 
@@ -92,8 +94,9 @@ void Graphics::print_info() const {
     auto status = uefi_call_wrapper(gop->QueryMode, 4, gop, i, &mode_info_size,
                                     &mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"QueryMode failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
+      debug << L"Graphics::print_info() QueryMode failed: " << status
+            << ostream::endl;
+      return;
     }
 
     debug << L"Mode: " << i << L", Version: " << ostream::hex_x
@@ -105,8 +108,9 @@ void Graphics::print_info() const {
 
     status = uefi_call_wrapper(gBS->FreePool, 1, mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"FreePool failed: " << status << ostream::endl;
-      throw std::runtime_error("EFI_ERROR(status)");
+      debug << L"Graphics::print_info() FreePool failed: " << status
+            << ostream::endl;
+      return;
     }
   }
 }

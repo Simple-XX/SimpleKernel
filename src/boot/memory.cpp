@@ -14,23 +14,33 @@
  * </table>
  */
 
-#include <stdexcept>
-
 #include "load_elf.h"
 #include "ostream.hpp"
 
-void Memory::flush_desc() {
+bool Memory::flush_desc() {
   memory_map = LibMemoryMap(&desc_count, &map_key, &desc_size, &desc_version);
   if (memory_map == nullptr) {
     debug << L"LibMemoryMap failed: memory_map == nullptr" << ostream::endl;
-    throw std::runtime_error("memory_map == nullptr");
+    return false;
+  }
+  return true;
+}
+
+Memory::Memory() {
+  auto flush_desc_ret = flush_desc();
+  if (!flush_desc_ret) {
+    debug << L"Memory::Memory() flush_desc failed." << ostream::endl;
+    return;
   }
 }
 
-Memory::Memory() { flush_desc(); }
-
 void Memory::print_info() {
-  flush_desc();
+  auto flush_desc_ret = flush_desc();
+  if (!flush_desc_ret) {
+    debug << L"Memory::print_info() flush_desc failed." << ostream::endl;
+    return;
+  }
+
   debug << L"Type\t\t\t\tPages\tPhysicalStart\tVirtualStart\tAttribute"
         << ostream::endl;
   for (uint64_t i = 0; i < desc_count; i++) {

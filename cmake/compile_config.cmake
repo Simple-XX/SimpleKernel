@@ -19,7 +19,6 @@ list(APPEND COMMON_COMPILE_OPTIONS
         # 启用 free-standing 环境
         -ffreestanding
 
-
         # 目标平台编译选项
         # @todo clang 交叉编译参数
         $<$<STREQUAL:${TARGET_ARCH},x86_64>:

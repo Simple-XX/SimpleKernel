@@ -122,8 +122,9 @@ class Memory {
 
   /**
    * 更新内存映射信息
+   * @return 失败返回 false
    */
-  void flush_desc();
+  bool flush_desc();
 };
 
 /**
@@ -152,12 +153,13 @@ class Elf {
 
   /**
    * 加载 elf 内核
-   * @return 内核入口点
+   * @return 成功返回内核入口地址，失败返回 0
    */
   [[nodiscard]] auto load_kernel_image() const -> uint64_t;
 
   /**
    * 将 elf 文件加载进内存
+   * @return 成功返回内核入口地址，失败返回 0
    */
   auto load() const -> uintptr_t;
 
@@ -229,12 +231,13 @@ class Elf {
    * 将 elf 段加载到内存
    * @param _phdr 要加载的程序段 phdr
    */
-  void load_sections(const Elf64_Phdr &_phdr) const;
+  bool load_sections(const Elf64_Phdr &_phdr) const;
 
   /**
    * 加载程序段
+   * @return 失败返回 false
    */
-  void load_program_sections() const;
+  bool load_program_sections() const;
 };
 
 #endif /* SIMPLEKERNEL_LOAD_ELF_H */
