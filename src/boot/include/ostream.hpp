@@ -201,6 +201,6 @@ inline auto ostream::operator<<(const void *_val) -> ostream & {
 /// @}
 
 /// 全局输出流
-static ostream debug;
+extern ostream debug;
 
 #endif /* SIMPLEKERNEL_OSTREAM_HPP */

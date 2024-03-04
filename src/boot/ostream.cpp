@@ -40,3 +40,6 @@ auto ostream::hex_X(ostream &_ostream) -> ostream & {
 }
 
 auto ostream::endl(ostream &_ostream) -> ostream & { return _ostream << L'\n'; }
+
+/// 全局输出流
+ostream debug;
