@@ -24,6 +24,7 @@ add_library(${PROJECT_NAME} OBJECT
 # 添加头文件
 add_header_arch(${PROJECT_NAME})
 add_header_3rd(${PROJECT_NAME})
+add_header_driver(${PROJECT_NAME})
 
 # 添加编译参数
 target_compile_options(${PROJECT_NAME} PRIVATE

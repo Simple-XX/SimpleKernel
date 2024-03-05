@@ -38,6 +38,8 @@ endfunction()
 function(add_header_driver _target)
     target_include_directories(${_target} PRIVATE
             ${CMAKE_SOURCE_DIR}/src/kernel/driver/include)
+    target_include_directories(${_target} PRIVATE
+            ${CMAKE_SOURCE_DIR}/src/kernel/driver/opensbi/include)
 endfunction()
 
 function(add_header_3rd _target)
