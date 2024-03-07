@@ -29,7 +29,7 @@ target_link_options(${PROJECT_NAME}_kernel PRIVATE
 )
 
 # 添加要链接的库
-target_link_libraries(kernel PRIVATE
+target_link_libraries(${PROJECT_NAME}_kernel PRIVATE
         ${DEFAULT_KERNEL_LINK_LIB}
 )
 
