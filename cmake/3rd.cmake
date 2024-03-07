@@ -249,6 +249,13 @@ if (libcxxrt_ADDED)
     )
 endif ()
 
+# https://github.com/MRNIU/opensbi_interface
+CPMAddPackage(
+        NAME opensbi_interface
+        GIT_REPOSITORY https://github.com/MRNIU/opensbi_interface
+        GIT_TAG v1.0.6
+)
+
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后
 CPMAddPackage(
