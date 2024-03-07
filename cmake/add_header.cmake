@@ -38,8 +38,6 @@ endfunction()
 function(add_header_driver _target)
     target_include_directories(${_target} PRIVATE
             ${CMAKE_SOURCE_DIR}/src/kernel/driver/include)
-    target_include_directories(${_target} PRIVATE
-            ${CMAKE_SOURCE_DIR}/src/kernel/driver/opensbi/include)
 endfunction()
 
 function(add_header_3rd _target)
@@ -51,7 +49,5 @@ function(add_header_3rd _target)
         target_include_directories(${_target} PRIVATE
                 ${gnu-efi_BINARY_DIR}/inc/protocol)
     elseif (${TARGET_ARCH} STREQUAL "riscv64")
-        target_include_directories(${_target} PRIVATE
-                ${opensbi_BINARY_DIR}/include)
     endif ()
 endfunction()

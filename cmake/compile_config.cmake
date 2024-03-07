@@ -80,6 +80,7 @@ list(APPEND COMMON_LINK_LIB
         >
 
         $<$<STREQUAL:${TARGET_ARCH},riscv64>:
+        opensbi_interface::opensbi_interface
         >
 
         $<$<STREQUAL:${TARGET_ARCH},aarch64>:

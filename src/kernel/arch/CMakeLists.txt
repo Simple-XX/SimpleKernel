@@ -35,3 +35,8 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 target_link_options(${PROJECT_NAME} PRIVATE
         ${DEFAULT_KERNEL_LINK_OPTIONS}
 )
+
+# 添加要链接的库
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        ${DEFAULT_KERNEL_LINK_LIB}
+)
