@@ -12,8 +12,6 @@ project(
 
 enable_language(CXX)
 
-add_subdirectory(opensbi)
-
 # 生成对象库
 add_library(${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/driver.cpp
@@ -34,5 +32,4 @@ target_link_options(${PROJECT_NAME} PRIVATE
 
 # 添加要链接的库
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        opensbi_driver
 )
