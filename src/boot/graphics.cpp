@@ -77,6 +77,10 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
         << gop->Mode->FrameBufferSize << ostream::endl;
 }
 
+auto Graphics::get_framebuffer() const -> std::pair<uint64_t, uint32_t> {
+  return {gop->Mode->FrameBufferBase, gop->Mode->FrameBufferSize};
+}
+
 void Graphics::print_info() const {
   debug << L"Current Mode: " << gop->Mode->Mode << L", Version: "
         << ostream::hex_x << gop->Mode->Info->Version << L", Format: "

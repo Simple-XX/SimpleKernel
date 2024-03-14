@@ -14,10 +14,12 @@
  * </table>
  */
 
+#include "kernel/arch/arch.h"
 #include "load_elf.h"
 #include "ostream.hpp"
 #include "project_config.h"
 
+// efi 使用的全局变量
 uintptr_t ImageBase = 0;
 
 extern "C" [[maybe_unused]] EFI_STATUS EFIAPI
@@ -99,8 +101,20 @@ efi_main(EFI_HANDLE _image_handle,
     return status;
   }
 
-  auto kernel_entry = (void (*)())kernel_addr;
-  kernel_entry();
+  auto framebuffer = graphics.get_framebuffer();
 
+  boot_info_t boot_info = {
+      .framebuffer = {.base = framebuffer.first, .size = framebuffer.second},
+  };
+
+  uint8_t *argv[] = {
+      reinterpret_cast<uint8_t *>(&boot_info),
+      nullptr,
+  };
+
+  auto kernel_entry = (void (*)(uint32_t, uint8_t **))kernel_addr;
+  kernel_entry(1, static_cast<uint8_t **>(argv));
+
+  // 不会执行到这里
   return EFI_SUCCESS;
 }

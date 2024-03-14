@@ -64,8 +64,10 @@ class Graphics {
    * @param _height 高度，默认为 1080
    */
   void set_mode(
-      EFI_GRAPHICS_PIXEL_FORMAT _format = PixelBlueGreenRedReserved8BitPerColor,
+      EFI_GRAPHICS_PIXEL_FORMAT _format = PixelRedGreenBlueReserved8BitPerColor,
       uint32_t _width = DEFAULT_WIDTH, uint32_t _height = DEFAULT_HEIGHT) const;
+
+  [[nodiscard]] auto get_framebuffer() const -> std::pair<uint64_t, uint32_t>;
 
   /**
    * 输出图形信息
@@ -75,8 +77,8 @@ class Graphics {
  private:
   /// @name 默认分辨率
   /// @{
-  static constexpr const uint32_t DEFAULT_WIDTH = 1920;
-  static constexpr const uint32_t DEFAULT_HEIGHT = 1080;
+  static constexpr const uint32_t DEFAULT_WIDTH = 800;
+  static constexpr const uint32_t DEFAULT_HEIGHT = 600;
   /// @}
   /// 图形输出协议
   EFI_GRAPHICS_OUTPUT_PROTOCOL *gop = nullptr;
@@ -161,7 +163,7 @@ class Elf {
    * 将 elf 文件加载进内存
    * @return 成功返回内核入口地址，失败返回 0
    */
-  auto load() const -> uintptr_t;
+  [[nodiscard]] auto load() const -> uintptr_t;
 
  private:
   /// @name elf 文件相关
@@ -231,13 +233,13 @@ class Elf {
    * 将 elf 段加载到内存
    * @param _phdr 要加载的程序段 phdr
    */
-  bool load_sections(const Elf64_Phdr &_phdr) const;
+  [[nodiscard]] bool load_sections(const Elf64_Phdr &_phdr) const;
 
   /**
    * 加载程序段
    * @return 失败返回 false
    */
-  bool load_program_sections() const;
+  [[nodiscard]] bool load_program_sections() const;
 };
 
 #endif /* SIMPLEKERNEL_LOAD_ELF_H */

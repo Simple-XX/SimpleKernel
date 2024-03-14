@@ -19,6 +19,25 @@
 
 #include "cstdint"
 
+struct boot_info_t {
+  struct framebuffer_t {
+    uint64_t base;
+    uint32_t size;
+    uint32_t width;
+    uint32_t height;
+    uint32_t pitch;
+    uint8_t bpp;
+    uint8_t type;
+    uint8_t reserved;
+  } framebuffer;
+  struct memory_map_t {
+    uint64_t base;
+    uint64_t length;
+    uint32_t type;
+    uint32_t reserved;
+  } memory_map;
+};
+
 int32_t arch_init(uint32_t _argc, uint8_t **_argv);
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H */

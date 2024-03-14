@@ -256,6 +256,13 @@ CPMAddPackage(
         GIT_TAG v1.0.6
 )
 
+# https://github.com/MRNIU/printf
+CPMAddPackage(
+        NAME printf
+        GIT_REPOSITORY https://github.com/MRNIU/printf
+        GIT_TAG v1.0.0
+)
+
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后
 CPMAddPackage(

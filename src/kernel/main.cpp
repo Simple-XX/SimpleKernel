@@ -18,10 +18,8 @@
 #include "kernel.h"
 
 int main(int _argc, char **_argv) {
-  (void)_argc;
-  (void)_argv;
-
-  auto arch_init_ret = arch_init(_argc, (uint8_t **)_argv);
+  // 架构相关初始化
+  auto arch_init_ret = arch_init(_argc, reinterpret_cast<uint8_t **>(_argv));
 
   // 进入死循环
   while (1) {
