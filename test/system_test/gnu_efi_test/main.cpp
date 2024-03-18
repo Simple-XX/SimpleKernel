@@ -14,6 +14,7 @@
  * </table>
  */
 
+#include "cpu.hpp"
 #include "kernel.h"
 
 extern "C" void _start() { main(0, nullptr); }
@@ -21,6 +22,21 @@ extern "C" void _start() { main(0, nullptr); }
 int main(int _argc, char **_argv) {
   (void)_argc;
   (void)_argv;
+
+  auto serial = CPU::Serial(CPU::COM1);
+  serial.write('H');
+  serial.write('e');
+  serial.write('l');
+  serial.write('l');
+  serial.write('o');
+  serial.write(' ');
+  serial.write('T');
+  serial.write('e');
+  serial.write('s');
+  serial.write('t');
+  serial.write('!');
+  serial.write('\n');
+
   // 进入死循环
   while (true) {
     ;

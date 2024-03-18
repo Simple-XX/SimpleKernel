@@ -57,6 +57,7 @@ add_executable(${PROJECT_NAME}_kernel
 )
 
 add_header_kernel(${PROJECT_NAME}_kernel)
+add_header_arch(${PROJECT_NAME}_kernel)
 
 target_compile_options(${PROJECT_NAME}_kernel PRIVATE
         ${DEFAULT_KERNEL_COMPILE_OPTIONS}

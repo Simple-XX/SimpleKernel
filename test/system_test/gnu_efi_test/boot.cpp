@@ -14,9 +14,6 @@
  * </table>
  */
 
-#include <exception>
-#include <stdexcept>
-
 #include "load_elf.h"
 #include "ostream.hpp"
 #include "project_config.h"
@@ -92,7 +89,6 @@ efi_main(EFI_HANDLE _image_handle,
   memory_map = LibMemoryMap(&desc_count, &map_key, &desc_size, &desc_version);
   if (memory_map == nullptr) {
     debug << L"LibMemoryMap failed: memory_map == nullptr" << ostream::endl;
-    throw std::runtime_error("memory_map == nullptr");
   }
   status = uefi_call_wrapper(gBS->ExitBootServices, 2, _image_handle, map_key);
   if (EFI_ERROR(status)) {
