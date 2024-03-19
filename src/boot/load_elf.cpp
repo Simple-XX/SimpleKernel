@@ -189,7 +189,9 @@ auto Elf::load() const -> uintptr_t {
               section_page_count * EFI_PAGE_SIZE);
 
   debug << L"AllocatePages section_page_count: " << section_page_count
-        << L" image_base: " << ostream::hex_X << image_base << ostream::endl;
+        << L" image_base: " << ostream::hex_X << image_base
+        << L", ehdr.e_entry: " << ostream::hex_X << ehdr.e_entry
+        << ostream::endl;
   return image_base + ehdr.e_entry;
 }
 

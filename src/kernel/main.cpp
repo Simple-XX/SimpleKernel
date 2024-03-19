@@ -17,6 +17,8 @@
 #include "arch.h"
 #include "kernel.h"
 
+extern "C" void _start(int _argc, char **_argv) { main(_argc, _argv); }
+
 int main(int _argc, char **_argv) {
   /// @todo c++ 全局对象初始化
 
