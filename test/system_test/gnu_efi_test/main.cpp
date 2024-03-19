@@ -14,7 +14,9 @@
  * </table>
  */
 
+#include "arch.h"
 #include "cpu.hpp"
+#include "cstdio"
 #include "kernel.h"
 
 extern "C" void _start() { main(0, nullptr); }
@@ -23,6 +25,14 @@ int main(int _argc, char **_argv) {
   (void)_argc;
   (void)_argv;
 
+  //  if (_argc != 1) {
+  //    printf("_argc != 1 [%d]\n", _argc);
+  //    return -1;
+  //  }
+  //
+  //  boot_info_t boot_info = *reinterpret_cast<boot_info_t *>(_argv[0]);
+  //  printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
+  printf("aaaa\n");
   auto serial = CPU::Serial(CPU::COM1);
   serial.write('H');
   serial.write('e');

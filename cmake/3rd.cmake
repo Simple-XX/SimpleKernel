@@ -256,11 +256,11 @@ CPMAddPackage(
         GIT_TAG v1.0.6
 )
 
-# https://github.com/MRNIU/printf
+# https://github.com/MRNIU/printf_bare_metal
 CPMAddPackage(
-        NAME printf
-        GIT_REPOSITORY https://github.com/MRNIU/printf
-        GIT_TAG v1.0.0
+        NAME printf_bare_metal
+        GIT_REPOSITORY https://github.com/MRNIU/printf_bare_metal
+        GIT_TAG v1.1.0
 )
 
 # https://github.com/cpm-cmake/CPMLicenses.cmake

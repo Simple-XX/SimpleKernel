@@ -170,4 +170,10 @@ class CPU {
   };
 };
 
+// printf_bare_metal 基本输出实现
+extern "C" void _putchar(char _character) {
+  auto serial = CPU::Serial(CPU::COM1);
+  serial.write(_character);
+}
+
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_CPU_HPP

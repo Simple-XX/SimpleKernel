@@ -18,6 +18,8 @@
 #include "kernel.h"
 
 int main(int _argc, char **_argv) {
+  /// @todo c++ 全局对象初始化
+
   // 架构相关初始化
   auto arch_init_ret = arch_init(_argc, reinterpret_cast<uint8_t **>(_argv));
 
