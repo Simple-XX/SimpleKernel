@@ -7,6 +7,16 @@
   },
   "configurePresets": [
     {
+      "name": "host",
+      "description": "Linux Only",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
       "name": "std",
       "description": "This preset makes sure the project actually builds with at least the specified standard",
       "hidden": true,
@@ -23,9 +33,9 @@
       "name": "configurePresets_base",
       "hidden": true,
       "inherits": [
+        "host",
         "std"
       ],
-      "condition": true,
       "displayName": "configurePresets_base",
       "description": "base configurePresets",
       "generator": "Unix Makefiles",
