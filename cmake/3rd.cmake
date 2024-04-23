@@ -46,17 +46,6 @@ endif ()
 include(${CPM_DOWNLOAD_LOCATION})
 # -------- get_cpm.cmake --------
 
-# https://github.com/google/googletest
-CPMAddPackage(
-        NAME googletest
-        GITHUB_REPOSITORY google/googletest
-        GIT_TAG v1.13.0
-        VERSION 1.13.0
-        OPTIONS
-        "INSTALL_GTEST OFF"
-        "gtest_force_shared_crt ON"
-)
-
 # # https://github.com/abumq/easyloggingpp
 # CPMAddPackage(
 #   NAME easylogingpp
@@ -257,7 +246,7 @@ endif ()
 CPMAddPackage(
         NAME printf_bare_metal
         GIT_REPOSITORY https://github.com/MRNIU/printf_bare_metal
-        GIT_TAG v1.1.0
+        GIT_TAG v1.2.0
 )
 
 # https://github.com/cpm-cmake/CPMLicenses.cmake
@@ -360,16 +349,21 @@ add_custom_target(clang-format
         COMMAND ${CLANG_FORMAT_EXE} -i -style=file ${ALL_SOURCE_FILES}
 )
 
-# genhtml 生成测试覆盖率报告网页
-find_program(GENHTML_EXE genhtml)
-if (NOT GENHTML_EXE)
-    message(FATAL_ERROR "genhtml not found.\n"
-            "Following https://github.com/linux-test-project/lcov to install.")
-endif ()
+if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
+    # googletest
+    find_package(GTest REQUIRED)
 
-# lcov 生成测试覆盖率报告
-find_program(LCOV_EXE lcov)
-if (NOT LCOV_EXE)
-    message(FATAL_ERROR "lcov not found.\n"
-            "Following https://github.com/linux-test-project/lcov to install.")
+    # genhtml 生成测试覆盖率报告网页
+    find_program(GENHTML_EXE genhtml)
+    if (NOT GENHTML_EXE)
+        message(FATAL_ERROR "genhtml not found.\n"
+                "Following https://github.com/linux-test-project/lcov to install.")
+    endif ()
+
+    # lcov 生成测试覆盖率报告
+    find_program(LCOV_EXE lcov)
+    if (NOT LCOV_EXE)
+        message(FATAL_ERROR "lcov not found.\n"
+                "Following https://github.com/linux-test-project/lcov to install.")
+    endif ()
 endif ()

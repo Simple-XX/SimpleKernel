@@ -13,9 +13,8 @@ project(
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/system_test)
 
 # 仅在 host 环境下进行 ut 和 it
-if (TARGET_ARCH STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
+if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
     enable_testing()
-    include(GoogleTest)
 
     list(APPEND DEFAULT_TEST_COMPILE_OPTIONS
             --coverage
@@ -33,7 +32,8 @@ if (TARGET_ARCH STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
             driver
             libc
             libcxx
-            gtest_main
+            GTest::gtest
+            GTest::gtest_main
     )
 
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/unit_test)
