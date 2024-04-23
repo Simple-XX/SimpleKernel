@@ -47,7 +47,7 @@ function(elf2efi _target _efi)
             -R .note.gnu.build-id
             -R .gnu.hash
             -R .dynsym
-            --target=efi-app-${TARGET_ARCH} --subsystem=10
+            --target=efi-app-${CMAKE_SYSTEM_PROCESSOR} --subsystem=10
     )
 endfunction()
 

@@ -15,10 +15,10 @@ enable_language(CXX)
 
 # 生成对象库
 add_library(${PROJECT_NAME} OBJECT
-        $<$<STREQUAL:${TARGET_ARCH},riscv64>:
-        ${PROJECT_SOURCE_DIR}/${TARGET_ARCH}/boot.S
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
+        ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/boot.S
         >
-        ${PROJECT_SOURCE_DIR}/${TARGET_ARCH}/arch_main.cpp
+        ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/arch_main.cpp
 )
 
 # 添加头文件

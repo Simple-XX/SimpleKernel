@@ -4,11 +4,6 @@
 # 
 # x86_64-riscv64-gcc.cmake for Simple-XX/SimpleKernel.
 
-# 目标为无操作系统的环境
-set(CMAKE_SYSTEM_NAME Generic)
-# 目标架构
-set(CMAKE_SYSTEM_PROCESSOR riscv64)
-
 if (APPLE)
     message(FATAL_ERROR "NOT support OSX, Please use linux")
 elseif (UNIX)

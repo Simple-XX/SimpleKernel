@@ -15,7 +15,7 @@ enable_language(CXX)
 
 add_executable(${PROJECT_NAME}_kernel
         boot.cpp
-        ${CMAKE_SOURCE_DIR}/src/kernel/arch/${TARGET_ARCH}/boot.S
+        ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/boot.S
 )
 
 add_header_3rd(${PROJECT_NAME}_kernel)
@@ -47,7 +47,7 @@ objdump_D(${PROJECT_NAME}_kernel)
 add_run_target(NAME ${PROJECT_NAME}
         DEPENDS ${PROJECT_NAME}_kernel ${RUN_DEPENDS} ${DEBUG_DEPENDS}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        TARGET ${TARGET_ARCH}
+        TARGET ${CMAKE_SYSTEM_PROCESSOR}
         KERNEL $<TARGET_FILE:${PROJECT_NAME}_kernel>
         QEMU_FLAGS
         -serial stdio -monitor telnet::2333,server,nowait

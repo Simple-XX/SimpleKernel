@@ -29,7 +29,7 @@ function(add_header_arch _target)
     target_include_directories(${_target} PRIVATE
             ${CMAKE_SOURCE_DIR}/src/kernel/arch)
     target_include_directories(${_target} PRIVATE
-            ${CMAKE_SOURCE_DIR}/src/kernel/arch/${TARGET_ARCH})
+            ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR})
 endfunction()
 
 function(add_header_kernel _target)
@@ -43,13 +43,13 @@ function(add_header_driver _target)
 endfunction()
 
 function(add_header_3rd _target)
-    if (${TARGET_ARCH} STREQUAL "x86_64" OR ${TARGET_ARCH} STREQUAL "aarch64")
+    if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
         target_include_directories(${_target} PRIVATE
                 ${gnu-efi_BINARY_DIR}/inc)
         target_include_directories(${_target} PRIVATE
-                ${gnu-efi_BINARY_DIR}/inc/${TARGET_ARCH})
+                ${gnu-efi_BINARY_DIR}/inc/${CMAKE_SYSTEM_PROCESSOR})
         target_include_directories(${_target} PRIVATE
                 ${gnu-efi_BINARY_DIR}/inc/protocol)
-    elseif (${TARGET_ARCH} STREQUAL "riscv64")
+    elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     endif ()
 endfunction()

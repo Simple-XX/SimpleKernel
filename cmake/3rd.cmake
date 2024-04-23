@@ -46,6 +46,17 @@ endif ()
 include(${CPM_DOWNLOAD_LOCATION})
 # -------- get_cpm.cmake --------
 
+## https://github.com/google/googletest
+#CPMAddPackage(
+#        NAME googletest
+#        GITHUB_REPOSITORY google/googletest
+#        GIT_TAG v1.13.0
+#        VERSION 1.13.0
+#        OPTIONS
+#        "INSTALL_GTEST OFF"
+#        "gtest_force_shared_crt ON"
+#)
+
 # # https://github.com/abumq/easyloggingpp
 # CPMAddPackage(
 #   NAME easylogingpp
@@ -93,7 +104,7 @@ include(${CPM_DOWNLOAD_LOCATION})
 #   add_library(Freetype::Freetype ALIAS freetype)
 # endif()
 
-if (${TARGET_ARCH} STREQUAL "riscv64")
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     # https://github.com/riscv-software-src/opensbi
     CPMAddPackage(
             NAME opensbi
@@ -132,7 +143,7 @@ if (${TARGET_ARCH} STREQUAL "riscv64")
     endif ()
 endif ()
 
-if (${TARGET_ARCH} STREQUAL "x86_64" OR ${TARGET_ARCH} STREQUAL "aarch64")
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
     # https://sourceforge.net/projects/gnu-efi/
     CPMAddPackage(
             NAME gnu-efi
@@ -164,7 +175,7 @@ if (${TARGET_ARCH} STREQUAL "x86_64" OR ${TARGET_ARCH} STREQUAL "aarch64")
                 # @note 仅支持 gcc
                 CC=${CC_}
                 AR=${AR_}
-                ARCH=${TARGET_ARCH}
+                ARCH=${CMAKE_SYSTEM_PROCESSOR}
                 OBJDIR=${gnu-efi_BINARY_DIR}
                 COMMAND
                 ${CMAKE_COMMAND}
@@ -233,7 +244,7 @@ if (gdbinit_ADDED)
     )
 endif ()
 
-if (${TARGET_ARCH} STREQUAL "riscv64")
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     # https://github.com/MRNIU/opensbi_interface
     CPMAddPackage(
             NAME opensbi_interface
@@ -246,7 +257,7 @@ endif ()
 CPMAddPackage(
         NAME printf_bare_metal
         GIT_REPOSITORY https://github.com/MRNIU/printf_bare_metal
-        GIT_TAG v1.2.0
+        GIT_TAG v1.8.0
 )
 
 # https://github.com/cpm-cmake/CPMLicenses.cmake
@@ -277,9 +288,9 @@ if (NOT GDB_EXE)
 endif ()
 
 # qemu
-find_program(QEMU_EXE qemu-system-${TARGET_ARCH})
+find_program(QEMU_EXE qemu-system-${CMAKE_SYSTEM_PROCESSOR})
 if (NOT QEMU_EXE)
-    message(FATAL_ERROR "qemu-system-${TARGET_ARCH} not found.\n"
+    message(FATAL_ERROR "qemu-system-${CMAKE_SYSTEM_PROCESSOR} not found.\n"
             "Following https://www.qemu.org/ to install.")
 endif ()
 
@@ -350,9 +361,6 @@ add_custom_target(clang-format
 )
 
 if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
-    # googletest
-    find_package(GTest REQUIRED)
-
     # genhtml 生成测试覆盖率报告网页
     find_program(GENHTML_EXE genhtml)
     if (NOT GENHTML_EXE)
