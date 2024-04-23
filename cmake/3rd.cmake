@@ -152,6 +152,13 @@ if (${TARGET_ARCH} STREQUAL "x86_64" OR ${TARGET_ARCH} STREQUAL "aarch64")
             DOWNLOAD_ONLY True
     )
     if (gnu-efi_ADDED)
+        if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
+            set(CC_ ${CMAKE_C_COMPILER})
+            set(AR_ ${CMAKE_AR})
+        elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64")
+            set(CC_ x86_64-linux-gnu-gcc)
+            set(AR_ x86_64-linux-gnu-ar)
+        endif ()
         # 编译 gnu-efi
         add_custom_target(gnu-efi
                 COMMENT "build gnu-efi..."
@@ -166,8 +173,8 @@ if (${TARGET_ARCH} STREQUAL "x86_64" OR ${TARGET_ARCH} STREQUAL "aarch64")
                 COMMAND
                 make lib gnuefi inc
                 # @note 仅支持 gcc
-                CC=${CMAKE_C_COMPILER}
-                AR=${CMAKE_AR}
+                CC=${CC_}
+                AR=${AR_}
                 ARCH=${TARGET_ARCH}
                 OBJDIR=${gnu-efi_BINARY_DIR}
                 COMMAND
@@ -237,24 +244,14 @@ if (gdbinit_ADDED)
     )
 endif ()
 
-# https://github.com/libcxxrt/libcxxrt
-CPMAddPackage(
-        NAME libcxxrt
-        GIT_REPOSITORY https://github.com/libcxxrt/libcxxrt
-        GIT_TAG a0f7f5c139a7daf71de0de201b6c405d852b1dc1
-)
-if (libcxxrt_ADDED)
-    target_compile_options(cxxrt-static PRIVATE
-            -fPIC
+if (${TARGET_ARCH} STREQUAL "riscv64")
+    # https://github.com/MRNIU/opensbi_interface
+    CPMAddPackage(
+            NAME opensbi_interface
+            GIT_REPOSITORY https://github.com/MRNIU/opensbi_interface
+            GIT_TAG v1.0.6
     )
 endif ()
-
-# https://github.com/MRNIU/opensbi_interface
-CPMAddPackage(
-        NAME opensbi_interface
-        GIT_REPOSITORY https://github.com/MRNIU/opensbi_interface
-        GIT_TAG v1.0.6
-)
 
 # https://github.com/MRNIU/printf_bare_metal
 CPMAddPackage(

@@ -74,7 +74,6 @@ list(APPEND COMMON_LINK_OPTIONS
 
 # 通用库选项
 list(APPEND COMMON_LINK_LIB
-        ${libcxxrt_BINARY_DIR}/lib/libcxxrt.a
         # 目标平台编译选项
         $<$<STREQUAL:${TARGET_ARCH},x86_64>:
         >
@@ -157,17 +156,14 @@ list(APPEND DEFAULT_KERNEL_LINK_LIB
 if (${TARGET_ARCH} STREQUAL "x86_64")
     list(APPEND COMPILE_DEPENDS
             gnu-efi
-            cxxrt-static
     )
 elseif (${TARGET_ARCH} STREQUAL "riscv64")
     list(APPEND COMPILE_DEPENDS
             opensbi
             printf_bare_metal
-            cxxrt-static
     )
 elseif (${TARGET_ARCH} STREQUAL "aarch64")
     list(APPEND COMPILE_DEPENDS
             gnu-efi
-            cxxrt-static
     )
 endif ()
