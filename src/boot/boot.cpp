@@ -103,9 +103,9 @@ efi_main(EFI_HANDLE _image_handle,
 
   auto framebuffer = graphics.get_framebuffer();
 
-  boot_info_t boot_info = {
-      .framebuffer = {.base = framebuffer.first, .size = framebuffer.second},
-  };
+  boot_info_t boot_info = {};
+  boot_info.framebuffer.base = framebuffer.first;
+  boot_info.framebuffer.size = framebuffer.second;
 
   uint8_t *argv[] = {
       reinterpret_cast<uint8_t *>(&boot_info),
