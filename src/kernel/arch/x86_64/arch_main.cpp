@@ -18,6 +18,12 @@
 #include "cpu.hpp"
 #include "cstdio"
 
+// printf_bare_metal 基本输出实现
+extern "C" void _putchar(char _character) {
+  auto serial = CPU::Serial(CPU::COM1);
+  serial.write(_character);
+}
+
 static const int pixelwidth = 4;
 static const int pitch = 800 * pixelwidth;
 
@@ -49,8 +55,8 @@ int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
   printf("hello arch_init\n");
 
-  //  static auto serial = CPU::Serial(CPU::COM1);
-  //  serial.write('!');
+  //    static auto serial = CPU::Serial(CPU::COM1);
+  //    serial.write('!');
 
   _putchar('1');
 
