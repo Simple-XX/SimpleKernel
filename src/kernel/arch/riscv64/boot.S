@@ -14,6 +14,8 @@
  * </table>
  */
 
+#include "macro.S"
+
 // clang-format off
 
 .section .text.boot
@@ -23,6 +25,15 @@
 _boot:
     // 设置栈地址
     la sp, stack_top
+
+    // 保存 sbi 传递的参数
+    // 开辟栈空间
+    addi sp, sp, -8*2
+    // a0 为启动核 id
+    sd_base a0, 0, sp
+    // a1 为 dtb 地址
+    sd_base a1, 0, sp
+
     // 跳转到 C 代码执行
     call _start
 loop:

@@ -1,4 +1,3 @@
-
 /**
  * @file arch_main.cpp
  * @brief arch_main cpp
@@ -22,22 +21,12 @@ extern "C" void _putchar(char _character) {
   sbi_debug_console_write_byte(_character);
 }
 
+// 在 riscv64 情景下，_argc 为启动核 id，_argv 为 dtb 地址
 int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
-  (void)_argc;
-  (void)_argv;
+  printf("boot hart id: %d\n", _argc);
+  printf("dtb info addr: %p\n", _argv);
 
-  sbi_debug_console_write_byte('H');
-  sbi_debug_console_write_byte('e');
-  sbi_debug_console_write_byte('l');
-  sbi_debug_console_write_byte('l');
-  sbi_debug_console_write_byte('o');
-  sbi_debug_console_write_byte('W');
-  sbi_debug_console_write_byte('o');
-  sbi_debug_console_write_byte('r');
-  sbi_debug_console_write_byte('l');
-  sbi_debug_console_write_byte('d');
-  sbi_debug_console_write_byte('!');
-  sbi_debug_console_write_byte('\n');
+  printf("hello arch_init\n");
 
   // 进入死循环
   while (1) {
