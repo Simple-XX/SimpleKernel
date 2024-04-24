@@ -97,7 +97,7 @@
       ],
       "displayName": "build x86_64 kernel",
       "description": "build x86_64 kernel",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-x86_64-gcc.cmake",
+      "toolchainFile": "${sourceDir}/cmake/x86_64-gcc.cmake",
       "binaryDir": "${sourceDir}/build_x86_64",
       "cacheVariables": {
         "CMAKE_SYSTEM_PROCESSOR": {
@@ -114,7 +114,7 @@
       ],
       "displayName": "build riscv64 kernel",
       "description": "build riscv64 kernel",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-riscv64-gcc.cmake",
+      "toolchainFile": "${sourceDir}/cmake/riscv64-gcc.cmake",
       "binaryDir": "${sourceDir}/build_riscv64",
       "cacheVariables": {
         "CMAKE_SYSTEM_PROCESSOR": {
@@ -131,7 +131,7 @@
       ],
       "displayName": "build aarch64 kernel",
       "description": "build aarch64 kernel",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-aarch64-gcc.cmake",
+      "toolchainFile": "${sourceDir}/cmake/aarch64-gcc.cmake",
       "binaryDir": "${sourceDir}/build_aarch64",
       "cacheVariables": {
         "CMAKE_SYSTEM_PROCESSOR": {

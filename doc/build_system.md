@@ -19,8 +19,9 @@
 │   ├── compile_config.cmake            // 编译选项
 │   ├── functions.cmake                 // 辅助函数
 │   ├── project_config.cmake            // 项目配置
-│   ├── x86_64-riscv64-gcc.cmake        // host 为 x86_64，target 为 riscv64 的工具链
-│   └── x86_64-x86_64-gcc.cmake         // host 为 x86_64，target 为 x86_64 的工具链
+│   ├── aarch64-gcc.cmake               // target 为 aarch64 的工具链
+│   ├── riscv64-gcc.cmake               // target 为 riscv64 的工具链
+│   └── x86_64-gcc.cmake                // target 为 x86_64 的工具链
 ├── doc                                 // 文档目录
 │   ├── CMakeLists.txt                  // 生成 doxygen 文档
 │   ├── UEFI_Spec_2_10_Aug29.pdf        // UEFI 协议文档

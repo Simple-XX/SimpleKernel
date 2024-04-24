@@ -2,13 +2,14 @@
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 # 
-# x86_64-aarch64-gcc.cmake for Simple-XX/SimpleKernel.
+# x86_64-gcc.cmake for Simple-XX/SimpleKernel.
 
 if (NOT UNIX)
     message(FATAL_ERROR "Only support Linux.")
 endif ()
 
-if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64")
+if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
+    # GCC
     find_program(Compiler_gcc g++)
     if (NOT Compiler_gcc)
         message(FATAL_ERROR "g++ not found.\n"
@@ -16,16 +17,16 @@ if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64")
     else ()
         message(STATUS "Found g++ ${Compiler_gcc}")
     endif ()
-elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
-    find_program(Compiler_gcc aarch64-linux-gnu-g++)
-    if (NOT Compiler_gcc)
+elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64")
+    find_program(Compiler_gcc_cr x86_64-linux-gnu-g++)
+    if (NOT Compiler_gcc_cr)
         message(FATAL_ERROR "aarch64-linux-gnu-g++ not found.\n"
-                "Run `sudo apt install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu` to install.")
+                "Run `sudo apt install -y g++-multilib-x86-64-linux-gnu` to install.")
     else ()
-        message(STATUS "Found aarch64-linux-gnu-g++ ${Compiler_gcc}")
+        message(STATUS "Found x86_64-linux-gnu-g++  ${Compiler_gcc_cr}")
     endif ()
 
-    set(TOOLCHAIN_PREFIX aarch64-linux-gnu-)
+    set(TOOLCHAIN_PREFIX x86_64-linux-gnu-)
     set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
     set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
     set(CMAKE_READELF ${TOOLCHAIN_PREFIX}readelf)

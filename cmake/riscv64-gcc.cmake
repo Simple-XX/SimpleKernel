@@ -2,7 +2,7 @@
 # This file is a part of Simple-XX/SimpleKernel
 # (https://github.com/Simple-XX/SimpleKernel).
 # 
-# x86_64-riscv64-gcc.cmake for Simple-XX/SimpleKernel.
+# riscv64-gcc.cmake for Simple-XX/SimpleKernel.
 
 if (NOT UNIX)
     message(FATAL_ERROR "Only support Linux.")
