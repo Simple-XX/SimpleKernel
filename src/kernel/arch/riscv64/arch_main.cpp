@@ -14,7 +14,13 @@
  * </table>
  */
 
+#include "cstdio"
 #include "opensbi_interface.h"
+
+// printf_bare_metal 基本输出实现
+extern "C" void _putchar(char _character) {
+  sbi_debug_console_write_byte(_character);
+}
 
 int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   (void)_argc;

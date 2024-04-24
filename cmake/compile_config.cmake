@@ -156,6 +156,7 @@ list(APPEND DEFAULT_KERNEL_LINK_LIB
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
     list(APPEND COMPILE_DEPENDS
             gnu-efi
+            printf_bare_metal
     )
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     list(APPEND COMPILE_DEPENDS

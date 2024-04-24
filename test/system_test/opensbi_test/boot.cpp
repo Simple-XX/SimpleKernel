@@ -32,3 +32,9 @@ int main(int, char **) {
 
   return 0;
 }
+
+extern "C" void _start(int _argc, char **_argv) {
+  /// @todo c++ 全局对象初始化
+  //  cpp_init();
+  main(_argc, _argv);
+}

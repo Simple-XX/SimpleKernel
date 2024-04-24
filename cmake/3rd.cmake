@@ -257,7 +257,7 @@ endif ()
 CPMAddPackage(
         NAME printf_bare_metal
         GIT_REPOSITORY https://github.com/MRNIU/printf_bare_metal
-        GIT_TAG v1.8.0
+        GIT_TAG v1.8.1
 )
 
 # https://github.com/cpm-cmake/CPMLicenses.cmake
