@@ -28,10 +28,5 @@ int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
 
   printf("hello arch_init\n");
 
-  // 进入死循环
-  while (1) {
-    ;
-  }
-
   return 0;
 }
