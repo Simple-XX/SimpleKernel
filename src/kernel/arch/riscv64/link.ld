@@ -20,7 +20,7 @@ OUTPUT_FORMAT(
 /* 指定输出架构 */
 OUTPUT_ARCH(riscv)
 /* 设置入口点 */
-ENTRY(_start)
+ENTRY(_boot)
 /* 设置各个 section */
 SECTIONS {
     /* Read-only sections, merged into text segment: */

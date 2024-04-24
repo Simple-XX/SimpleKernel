@@ -17,14 +17,14 @@
 // clang-format off
 
 .section .text.boot
-.global _start
-.type _start, @function
-.extern main
-_start:
+.global _boot
+.type _boot, @function
+.extern _start
+_boot:
     // 设置栈地址
     la sp, stack_top
     // 跳转到 C 代码执行
-    call main
+    call _start
 loop:
     j loop
 
