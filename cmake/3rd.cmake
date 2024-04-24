@@ -249,7 +249,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     CPMAddPackage(
             NAME opensbi_interface
             GIT_REPOSITORY https://github.com/MRNIU/opensbi_interface
-            GIT_TAG v1.0.6
+            GIT_TAG v1.1.0
     )
 endif ()
 
