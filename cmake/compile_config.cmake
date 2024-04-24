@@ -14,8 +14,6 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -Wall
         # 打开额外警告
         -Wextra
-        # 启用异常处理机制
-        -fexceptions
         # 启用 free-standing 环境
         -ffreestanding
 
