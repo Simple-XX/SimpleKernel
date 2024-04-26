@@ -16,8 +16,6 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -Wextra
         # 启用 free-standing 环境
         -ffreestanding
-        # 生成位置无关代码
-        -fPIC
 
         # 目标平台编译选项
         # @todo clang 交叉编译参数
@@ -27,6 +25,8 @@ list(APPEND COMMON_COMPILE_OPTIONS
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
+        # 生成位置无关代码
+        -fPIC
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
