@@ -18,15 +18,10 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -ffreestanding
 
         # 目标平台编译选项
-        # @todo clang 交叉编译参数
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-        # 禁用 red-zone
-        -mno-red-zone
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
-        # 生成位置无关代码
-        -fPIC
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
@@ -53,37 +48,10 @@ list(APPEND COMMON_COMPILE_OPTIONS
 list(APPEND COMMON_LINK_OPTIONS
         # 不链接 ctr0 等启动代码
         -nostartfiles
-
-        # 目标平台编译选项
-        # @todo clang 交叉编译参数
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-        # 设置最大页大小为 0x1000(4096) 字节
-        -z max-page-size=0x1000
-        >
-
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
-        # 链接脚本
-        -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
-        # 不生成位置无关可执行代码
-        -no-pie
-        >
-
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
-        >
 )
 
 # 通用库选项
 list(APPEND COMMON_LINK_LIB
-        # 目标平台编译选项
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-        >
-
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
-        opensbi_interface
-        >
-
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
-        >
 )
 
 list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
@@ -141,15 +109,42 @@ list(APPEND DEFAULT_BOOT_LINK_LIB
 
 list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
         ${COMMON_COMPILE_OPTIONS}
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
+        # 禁用 red-zone
+        -mno-red-zone
+        -fPIC
+        >
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
+        # 生成位置无关代码
+        -fPIC
+        >
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         ${COMMON_LINK_OPTIONS}
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
+        # 设置最大页大小为 0x1000(4096) 字节
+        -z max-page-size=0x1000
+        >
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
+        # 链接脚本
+        -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
+        # 不生成位置无关可执行代码
+        -no-pie
+        >
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_LIB
         ${COMMON_LINK_LIB}
         printf_bare_metal
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
+        opensbi_interface
+        >
 )
 
 # 编译依赖
@@ -161,6 +156,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     list(APPEND COMPILE_DEPENDS
             opensbi
+            opensbi_interface
             printf_bare_metal
     )
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
