@@ -16,7 +16,15 @@
 
 #include "libcxx.h"
 
-int32_t libcxx(uint32_t _argc, uint8_t **_argv) {
+void cpp_init() {
+  typedef void (*ctor_t)();
+  // 在 link.ld 中定义
+  extern ctor_t __init_array_start[];
+  ctor_t* f = __init_array_start;
+  (*f)();
+}
+
+int32_t libcxx(uint32_t _argc, uint8_t** _argv) {
   (void)_argc;
   (void)_argv;
 

@@ -14,10 +14,17 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_KERNEL_H
-#define SIMPLEKERNEL_KERNEL_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H
+#define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H
 
 #include "cstdint"
+
+/**
+ * @brief 负责 crtbegin 的工作
+ * @param  _argc 由 bootloader 传递的参数，在不同架构有不同的含义
+ * @param  _argv 由 bootloader 传递的参数，在不同架构有不同的含义
+ */
+extern "C" void _start(int _argc, char** _argv);
 
 /**
  * @brief 内核入口
@@ -25,6 +32,6 @@
  * @param  _argv                   参数列表
  * @return int                     正常返回 0
  */
-int main(int _argc, char **_argv);
+int main(int _argc, char** _argv);
 
-#endif /* SIMPLEKERNEL_KERNEL_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H */

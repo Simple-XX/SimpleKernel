@@ -14,10 +14,15 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_LIBCXX_H
-#define SIMPLEKERNEL_LIBCXX_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H
 
 #include "cstdint"
+
+/**
+ * @brief 初始化 c++ 全局对象
+ */
+extern "C" void cpp_init();
 
 /**
  * @brief 入口
@@ -25,6 +30,6 @@
  * @param  _argv                   参数列表
  * @return int32_t                 正常返回 0
  */
-int32_t libcxx(uint32_t _argc, uint8_t **_argv);
+int32_t libcxx(uint32_t _argc, uint8_t** _argv);
 
-#endif /* SIMPLEKERNEL_LIBCXX_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H */
