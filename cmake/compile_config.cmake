@@ -113,6 +113,7 @@ list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 禁用 red-zone
         -mno-red-zone
+        # 生成位置无关代码
         -fPIC
         >
 
