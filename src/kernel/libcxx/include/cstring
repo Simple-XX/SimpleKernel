@@ -31,7 +31,9 @@ inline void *memmove(void *dest, const void *src, size_t n) {
 }
 
 // 设置内存块
-inline void *memset(void *s, int c, size_t n) { return __builtin_memset(s, c, n); }
+inline void *memset(void *s, int c, size_t n) {
+  return __builtin_memset(s, c, n);
+}
 
 // 比较内存块
 inline int memcmp(const void *s1, const void *s2, size_t n) {
@@ -59,7 +61,9 @@ inline char *strncat(char *dest, const char *src, size_t n) {
 }
 
 // 比较字符串
-inline int strcmp(const char *s1, const char *s2) { return __builtin_strcmp(s1, s2); }
+inline int strcmp(const char *s1, const char *s2) {
+  return __builtin_strcmp(s1, s2);
+}
 
 // 比较指定长度的字符串
 inline int strncmp(const char *s1, const char *s2, size_t n) {
@@ -98,25 +102,23 @@ inline char *strstr(const char *haystack, const char *needle) {
 
 namespace std {
 
+using ::memcmp;
 using ::memcpy;
 using ::memmove;
 using ::memset;
-using ::memcmp;
-using ::strcpy;
-using ::strncpy;
 using ::strcat;
-using ::strncat;
-using ::strcmp;
-using ::strncmp;
-using ::strlen;
 using ::strchr;
+using ::strcmp;
+using ::strcpy;
+using ::strcspn;
+using ::strlen;
+using ::strncat;
+using ::strncmp;
+using ::strncpy;
+using ::strpbrk;
 using ::strrchr;
 using ::strspn;
-using ::strcspn;
-using ::strpbrk;
 using ::strstr;
-
-
 
 };  // namespace std
 
