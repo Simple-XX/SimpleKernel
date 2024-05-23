@@ -14,6 +14,7 @@
  */
 
 #include "cstdio"
+#include "fdt_parser.hpp"
 #include "opensbi_interface.h"
 
 // printf_bare_metal 基本输出实现
@@ -25,6 +26,8 @@ extern "C" void _putchar(char _character) {
 int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   printf("boot hart id: %d\n", _argc);
   printf("dtb info addr: %p\n", _argv);
+
+  auto result = FDT_PARSER::fdt_parser((uintptr_t)_argv);
 
   printf("hello arch_init\n");
 

@@ -260,6 +260,15 @@ CPMAddPackage(
         GIT_TAG v1.8.2
 )
 
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+    # https://github.com/MRNIU/fdt-parser
+    CPMAddPackage(
+            NAME fdt_parser
+            GIT_REPOSITORY https://github.com/MRNIU/fdt-parser
+            GIT_TAG v2.0.0
+    )
+endif ()
+
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后
 CPMAddPackage(

@@ -145,6 +145,11 @@ list(APPEND DEFAULT_KERNEL_LINK_LIB
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         opensbi_interface
+        fdt_parser
+        >
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
+        fdt_parser
         >
 )
 
@@ -159,9 +164,11 @@ elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
             opensbi
             opensbi_interface
             printf_bare_metal
+            fdt_parser
     )
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
     list(APPEND COMPILE_DEPENDS
             gnu-efi
+            fdt_parser
     )
 endif ()
