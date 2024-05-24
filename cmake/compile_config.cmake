@@ -112,34 +112,41 @@ list(APPEND DEFAULT_BOOT_LINK_LIB
 list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
         ${COMMON_COMPILE_OPTIONS}
 
+        # 不生成位置无关可执行代码
+        -fno-pie
+        # 不生成位置无关代码
+        -fno-pic
+
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
+        # 使用 kernel 内存模型
+        -mcmodel=kernel
         # 禁用 red-zone
         -mno-red-zone
-        # 生成位置无关代码
-        -fPIC
         >
-        -mno-relax
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
+        # 使用 medany 内存模型
+        # 代码和数据段可以在任意地址
+        -mcmodel=medany
+        >
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         ${COMMON_LINK_OPTIONS}
 
+        # 静态链接
+        -static
+
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 设置最大页大小为 0x1000(4096) 字节
         -z max-page-size=0x1000
         >
-        -mno-relax
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         # 链接脚本
         -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
-        # 不生成位置无关可执行代码
-        -fno-pie
-        # 不生成位置无关代码
-        -fno-pic
-        # 静态链接
-        # @toto x86 下会报错
-        -static
+        # 禁用 relax 优化
+        -mno-relax
         >
 )
 
