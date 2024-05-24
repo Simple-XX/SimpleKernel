@@ -66,7 +66,7 @@ https://github.com/MRNIU/SimpleKernel/tree/fix_FFFF
 
 ## 问题描述
 
-riscv64 静态全局对象的地址与 readelf 不一致
+riscv64 静态全局对象的地址与 readelf 不一致，这导致在手动进行 c++ 全局对象初始化的时候会访问到非法内存。
 
 ```c++
 class aaa {
@@ -108,8 +108,21 @@ int main(int _argc, char** _argv) {
   }
   return 0;
 }
-
 ```
+
+通过查看汇编发现，使用了 gp 寄存器
+
+```asm
+    802140b0:	0001                	nop
+    802140b2:	93418793          	add	a5,gp,-1740 # 8021b134 <_ZL4si32>
+    802140b6:	fef43023          	sd	a5,-32(s0)
+    802140ba:	0001                	nop
+```
+
+解决：添加 -mno-relax 参数
+
+参考：https://stackoverflow.com/questions/67505060
+
 
 1. 在 gdb 中 `p &si32`，结果符合预期(地址为 8021XXXX，与 readelf 一致)
 2. 在程序中 `ccc = &si32`，然后在 gdb 中 `p ccc`，结果错误(地址为 FFFFFFFFFFFFFXXX)

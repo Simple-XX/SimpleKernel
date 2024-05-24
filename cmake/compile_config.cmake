@@ -116,6 +116,7 @@ list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
         # 生成位置无关代码
         -fPIC
         >
+        -mno-relax
 )
 
 list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
@@ -125,6 +126,7 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         # 设置最大页大小为 0x1000(4096) 字节
         -z max-page-size=0x1000
         >
+        -mno-relax
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         # 链接脚本
