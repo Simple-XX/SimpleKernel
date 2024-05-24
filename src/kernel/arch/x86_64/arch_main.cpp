@@ -43,19 +43,6 @@ static void fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
   }
 }
 
-
-class bbb {
- public:
-  int a = 233;
-
-  bbb() : a(666) { printf("bbb init\n"); }
-
-  bbb(int _a) : a(_a) { printf("bbb init %d\n", _a); }
-};
-
-auto class_b = bbb();
-auto class_b2 = bbb(1);
-
 int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   if (_argc != 1) {
     printf("_argc != 1 [%d]\n", _argc);
@@ -68,11 +55,8 @@ int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
   printf("hello arch_init\n");
 
-  printf("class_b.a: %d\n", class_b.a);
-  printf("class_b2.a: %d\n", class_b2.a);
-
-  //    static auto serial = CPU::Serial(CPU::COM1);
-  //    serial.write('!');
+  // static auto serial = CPU::Serial(CPU::COM1);
+  // serial.write('!');
 
   _putchar('1');
 

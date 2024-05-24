@@ -24,12 +24,10 @@ extern ctor_t __init_array_start[];
 extern ctor_t __init_array_end[];
 
 void cpp_init(void) {
-  ctor_t* f;
-  for (f = __init_array_start; f < __init_array_end; f++) {
-//    (*f)();
+  for (ctor_t* f = __init_array_start; f < __init_array_end; f++) {
+    (*f)();
   }
 }
-
 };
 
 int32_t libcxx(uint32_t _argc, uint8_t** _argv) {
