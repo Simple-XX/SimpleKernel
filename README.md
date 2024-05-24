@@ -1,103 +1,131 @@
-[![codecov](https://codecov.io/gh/Simple-XX/SimpleKernel/graph/badge.svg?token=J7NKK3SBNJ)](https://codecov.io/gh/Simple-XX/SimpleKernel)
-![workflow](https://github.com/Simple-XX/SimpleKernel/actions/workflows/workflow.yml/badge.svg)
-![commit-activity](https://img.shields.io/github/commit-activity/t/Simple-XX/SimpleKernel)
-![last-commit-boot](https://img.shields.io/github/last-commit/Simple-XX/SimpleKernel/boot)
-![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
-[English](./README_ENG.md) | [中文](./README.md)
+# fix_FFFF
 
-# SimpleKernel
+此版本用于讨论bug
 
-## 关键词
+https://github.com/MRNIU/SimpleKernel/tree/fix_FFFF
 
-- kernel
-- x86_64, riscv64, aarch64
-- osdev
-- bare metal
-- c++, cmake
-- uefi, opensbi
+## How To Use（需要科学上网）
 
-## 简介
+- 安装依赖(Ubuntu) 
 
-提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
+  ```shell
+  sudo apt install --fix-missing -y doxygen graphviz clang-format clang-tidy cppcheck qemu-system lcov gdb-multiarch libgtest-dev cmake
+  sudo apt install --fix-missing -y gcc-riscv64-linux-gnu g++-riscv64-linux-gnu
+  ```
 
-## 新增特性
+- 编译
 
-本分支是 SImpleKernel 的首个分支。在本分支中，完成了构建系统的基础搭建、基本的文档部署与自动化测试，当然还有最重要的，有基于 uefi 的 x86_64 内核与由 opensbi 启动的 riscv64 内核，可以在 qemu 上运行，并实现了简单的屏幕输出。
+  ```shell
+  cd SimpleKernel
+  cmake --preset build_riscv64
+  cd build_riscv64
+  make kernel
+  ```
 
-调用顺序
+- 运行(于上一步的 build_riscv64 目录下)
 
- - x86_64/aarch64
-  uefi->main.cpp:main->arch.cpp:arch_init
+  ```shell
+  make run_run
+  ```
 
-- riscv64
-  opensbi->boot.S:_start->main.cpp:main->arch.cpp:arch_init
+- 调试(于上一步的 build_riscv64 目录下)
 
-- 构建系统 
+  ```shell
+  make run_debug
+  ```
 
-  参考 [MRNIU/cmake-kernel](https://github.com/MRNIU/cmake-kernel) 的构建系统，详细解释见 [doc/build_system.md](./doc/build_system.md)
+  此时需要新开一个 shell
 
-- 基于 gnu-efi 引导的 x86_64 内核
+  ```shell
+  gdb-multiarch
+  ```
 
-  编译后生成 boot.efi 与 kernel.elf，进入 uefi 环境后首先执行 boot.efi，初始化完成后跳转到 kernel.elf 执行
+  进入 gdb 界面后输入
 
-- 基于 opensbi 引导的 riscv64 内核
+  ```shell
+  target remote :1234
+  file image/kernel.elf
+  # 打断点到 main
+  b main
+  # 开始运行
+  c
+  ```
 
-  由 opensbi 进行初始化，直接跳转到内核地址，进入内核逻辑时为 S 态
+- 可能有用的指令
 
-- 基于 doxygen 的文档生成与自动部署
+  ```shell
+  # 在 qemu 中运行
+  make run_run
+  # 以 debug 模式在 qemu 中运行，可以使用 gdb 连接
+  make run_debug
+  # 编译 kernel，同时生成 objdump 与 readelf 结果
+  make kernel
+  ```
 
-  github action 会将文档部署到 https://simple-xx.github.io/SimpleKernel/ (仅 main 分支)
 
-- 基于 CPM 的第三方资源管理
+## 问题描述
 
-  在 `3rd.cmake` 中使用 CPM 的功能自动下载、集成第三方资源
+riscv64 静态全局对象的地址与 readelf 不一致
 
-- 测试
+```c++
+class aaa {
+ public:
+  int a = 233;
 
-    支持 单元测试、集成测试、系统测试，引入 gtest 作为测试框架，同时统计了测试覆盖率
+  aaa() : a(666) { printf("aaa init\n"); }
 
-- 代码分析
+  aaa(int _a) : a(_a) { printf("aaa init %d\n", _a); }
+};
 
-    引入 cppcheck、clang-tidy、sanitize 工具提前发现错误
+// auto class_a = aaa(2);
+// static aaa class_a2 = aaa(3);
+int i32;
+static int si32;
 
-- 代码格式化
+int main(int _argc, char** _argv) {
+  // 架构相关初始化
+  auto arch_init_ret = arch_init(_argc, reinterpret_cast<uint8_t**>(_argv));
 
-    使用 llvm 风格
-    
-- docker
+  // printf("class_a.a: %d\n", class_a.a);
+  // printf("&class_a: %p\n", &class_a);
+  // printf("&class_a2: %p\n", &class_a2);
+  printf("&i32: %p\n", &i32);
+  printf("&si32: %p\n", &si32);
+  printf("*(&si32): %p\n", *(&si32));
+  uintptr_t ccc = 0;
+  asm("nop");
+  ccc = (uintptr_t)&si32;
+  asm("nop");
 
-    支持使用 docker 构建，详细使用方法见 [doc/docker.md](./doc/docker.md)
+  printf("ccc: %X\n", ccc);
 
-## 已支持
+  printf("------\n");
 
-见 新增特性
+  // 进入死循环
+  while (1) {
+    ;
+  }
+  return 0;
+}
 
-## 依赖
+```
 
-[CPM](https://github.com/cpm-cmake/CPM.cmake)
+1. 在 gdb 中 `p &si32`，结果符合预期(地址为 8021XXXX，与 readelf 一致)
+2. 在程序中 `ccc = &si32`，然后在 gdb 中 `p ccc`，结果错误(地址为 FFFFFFFFFFFFFXXX)
 
-[CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake)
+## 相关文件路径
 
-[google/googletest](https://github.com/google/googletest)
+编译参数 cmake/compile_config.cmake
 
-[opensbi](https://github.com/riscv-software-src/opensbi)
+链接脚本 src/kernel/arch/riscv64/link.ld
 
-[doxygen](https://www.doxygen.nl/)
+boot src/kernel/arch/riscv64/boot.S
 
-[lcov](https://github.com/linux-test-project/lcov)
+cpp 初始化 src/kernel/libcxx/libcxx.cpp
 
-[gcc](https://gcc.gnu.org/)
+内核入口 src/kernel/main.cpp
 
-[qemu](https://www.qemu.org/)
+反汇编文件 build_riscv64/src/kernel/kernel.elf.disassembly
 
-[cppcheck](https://cppcheck.sourceforge.io/)
-
-[clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
-
-[clang-format](https://clang.llvm.org/docs/ClangFormat.html)
-
-[gnu-efi](https://sourceforge.net/projects/gnu-efi/)
-
+readelf 文件 build_riscv64/src/kernel/kernel.elf.readelf
