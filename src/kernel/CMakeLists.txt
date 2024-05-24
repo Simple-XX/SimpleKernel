@@ -29,6 +29,11 @@ add_header_kernel(kernel)
 add_header_driver(kernel)
 add_header_3rd(kernel)
 
+# 添加定义
+target_compile_definitions(kernel PRIVATE 
+        ${DEFAULT_KERNEL_DEFINITIONS}
+)
+
 # 添加编译参数
 target_compile_options(kernel PRIVATE
         ${DEFAULT_KERNEL_COMPILE_OPTIONS}

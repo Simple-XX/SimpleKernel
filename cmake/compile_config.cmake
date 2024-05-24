@@ -56,6 +56,14 @@ list(APPEND COMMON_LINK_OPTIONS
 list(APPEND COMMON_LINK_LIB
 )
 
+# 通用宏定义
+list(APPEND COMMON_DEFINITIONS
+)
+
+list(APPEND DEFAULT_BOOT_DEFINITIONS
+        ${COMMON_DEFINITIONS}
+)
+
 list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
         ${COMMON_COMPILE_OPTIONS}
         # 使用 2 字节 wchar_t
@@ -109,6 +117,12 @@ list(APPEND DEFAULT_BOOT_LINK_LIB
         >
 )
 
+list(APPEND DEFAULT_KERNEL_DEFINITIONS
+        ${COMMON_DEFINITIONS}
+        
+        USE_NO_RELAX=$<BOOL:${USE_NO_RELAX}>
+)
+
 list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
         ${COMMON_COMPILE_OPTIONS}
 
@@ -145,8 +159,9 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         # 链接脚本
         -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
+
         # 禁用 relax 优化
-        -mno-relax
+        $<$<BOOL:${USE_NO_RELAX}>:-mno-relax>
         >
 )
 

@@ -32,8 +32,8 @@ class aaa {
   aaa(int _a) : a(_a) { printf("aaa init %d\n", _a); }
 };
 
-// auto class_a = aaa(2);
-// static aaa class_a2 = aaa(3);
+auto class_a = aaa(2);
+static aaa class_a2 = aaa(3);
 int i32;
 static int si32;
 
@@ -41,9 +41,9 @@ int main(int _argc, char** _argv) {
   // 架构相关初始化
   auto arch_init_ret = arch_init(_argc, reinterpret_cast<uint8_t**>(_argv));
 
-  // printf("class_a.a: %d\n", class_a.a);
-  // printf("&class_a: %p\n", &class_a);
-  // printf("&class_a2: %p\n", &class_a2);
+  printf("class_a.a: %d\n", class_a.a);
+  printf("&class_a: %p\n", &class_a);
+  printf("&class_a2: %p\n", &class_a2);
   printf("&i32: %p\n", &i32);
   printf("&si32: %p\n", &si32);
   printf("*(&si32): %p\n", *(&si32));

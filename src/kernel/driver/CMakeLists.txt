@@ -17,6 +17,11 @@ add_library(${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/driver.cpp
 )
 
+# 添加定义
+target_compile_definitions(${PROJECT_NAME} PRIVATE 
+        ${DEFAULT_KERNEL_DEFINITIONS}
+)
+
 # 添加头文件
 add_header_driver(${PROJECT_NAME})
 

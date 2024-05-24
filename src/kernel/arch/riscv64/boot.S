@@ -22,7 +22,20 @@
 .global _boot
 .type _boot, @function
 .extern _start
+#if USE_NO_RELAX == 0
+.extern __global_pointer$
+#endif
 _boot:
+
+#if USE_NO_RELAX == 0
+    // 初始化 gp 寄存器
+    // 如果不初始化，则需要在编译时添加 -mno-relax 选项
+.option push
+.option norelax
+    la gp, __global_pointer$
+.option pop
+#endif
+
     // 设置栈地址
     la sp, stack_top
 
