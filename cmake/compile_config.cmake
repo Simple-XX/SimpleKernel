@@ -136,6 +136,10 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
         # 不生成位置无关可执行代码
         -no-pie
+
+        # 静态链接
+        # @toto x86 下会报错
+        -static
         >
 )
 
