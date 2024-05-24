@@ -24,8 +24,8 @@ extern ctor_t __init_array_start[];
 extern ctor_t __init_array_end[];
 
 void cpp_init(void) {
-  for (ctor_t* f = __init_array_start; f < __init_array_end; f++) {
-    (*f)();
+  for (auto ctor = __init_array_start; ctor < __init_array_end; ctor++) {
+    (*ctor)();
   }
 }
 };

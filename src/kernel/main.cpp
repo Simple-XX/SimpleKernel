@@ -33,7 +33,7 @@ class aaa {
 };
 
 auto class_a = aaa();
-static auto class_a2 = aaa(1);
+// static auto class_a2 = aaa(1);
 
 int main(int _argc, char** _argv) {
   // 架构相关初始化
