@@ -19,7 +19,6 @@
 
 #include <cstdint>
 
-extern "C" {
 // 复制内存块
 inline void *memcpy(void *dest, const void *src, size_t n) {
   return __builtin_memcpy(dest, src, n);
@@ -97,7 +96,6 @@ inline char *strpbrk(const char *s, const char *accept) {
 // 查找子字符串
 inline char *strstr(const char *haystack, const char *needle) {
   return __builtin_strstr(haystack, needle);
-}
 }
 
 namespace std {
