@@ -32,7 +32,7 @@ _boot:
     // a0 为启动核 id
     sd_base a0, 0, sp
     // a1 为 dtb 地址
-    sd_base a1, 0, sp
+    sd_base a1, 1, sp
 
     // 跳转到 C 代码执行
     call _start
