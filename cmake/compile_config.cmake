@@ -16,6 +16,8 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -Wextra
         # 启用 free-standing 环境
         -ffreestanding
+        # 保留帧指针，便于调试和栈回溯
+        -fno-omit-frame-pointer
 
         # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
