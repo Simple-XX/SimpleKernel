@@ -36,8 +36,8 @@ _boot:
 
     // 跳转到 C 代码执行
     call _start
-loop:
-    j loop
+
+    wfi
 
 // 声明所属段
 .section .bss.boot
