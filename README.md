@@ -1,144 +1,103 @@
+[![codecov](https://codecov.io/gh/Simple-XX/SimpleKernel/graph/badge.svg?token=J7NKK3SBNJ)](https://codecov.io/gh/Simple-XX/SimpleKernel)
+![workflow](https://github.com/Simple-XX/SimpleKernel/actions/workflows/workflow.yml/badge.svg)
+![commit-activity](https://img.shields.io/github/commit-activity/t/Simple-XX/SimpleKernel)
+![last-commit-boot](https://img.shields.io/github/last-commit/Simple-XX/SimpleKernel/boot)
+![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
-# fix_FFFF
+[English](./README_ENG.md) | [中文](./README.md)
 
-此版本用于讨论bug
+# SimpleKernel
 
-https://github.com/MRNIU/SimpleKernel/tree/fix_FFFF
+## 关键词
 
-## How To Use（需要科学上网）
+- kernel
+- x86_64, riscv64, aarch64
+- osdev
+- bare metal
+- c++, cmake
+- uefi, opensbi
 
-- 安装依赖(Ubuntu) 
+## 简介
 
-  ```shell
-  sudo apt install --fix-missing -y doxygen graphviz clang-format clang-tidy cppcheck qemu-system lcov gdb-multiarch libgtest-dev cmake
-  sudo apt install --fix-missing -y gcc-riscv64-linux-gnu g++-riscv64-linux-gnu
-  ```
+提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 
-- 编译
+## 新增特性
 
-  ```shell
-  cd SimpleKernel
-  cmake --preset build_riscv64
-  cd build_riscv64
-  make kernel
-  ```
+本分支是 SImpleKernel 的首个分支。在本分支中，完成了构建系统的基础搭建、基本的文档部署与自动化测试，当然还有最重要的，有基于 uefi 的 x86_64 内核与由 opensbi 启动的 riscv64 内核，可以在 qemu 上运行，并实现了简单的屏幕输出。
 
-- 运行(于上一步的 build_riscv64 目录下)
+调用顺序
 
-  ```shell
-  make run_run
-  ```
+ - x86_64/aarch64
+  uefi->main.cpp:main->arch.cpp:arch_init
 
-- 调试(于上一步的 build_riscv64 目录下)
+- riscv64
+  opensbi->boot.S:_start->main.cpp:main->arch.cpp:arch_init
 
-  ```shell
-  make run_debug
-  ```
+- 构建系统 
 
-  此时需要新开一个 shell
+  参考 [MRNIU/cmake-kernel](https://github.com/MRNIU/cmake-kernel) 的构建系统，详细解释见 [doc/build_system.md](./doc/build_system.md)
 
-  ```shell
-  gdb-multiarch
-  ```
+- 基于 gnu-efi 引导的 x86_64 内核
 
-  进入 gdb 界面后输入
+  编译后生成 boot.efi 与 kernel.elf，进入 uefi 环境后首先执行 boot.efi，初始化完成后跳转到 kernel.elf 执行
 
-  ```shell
-  target remote :1234
-  file image/kernel.elf
-  # 打断点到 main
-  b main
-  # 开始运行
-  c
-  ```
+- 基于 opensbi 引导的 riscv64 内核
 
-- 可能有用的指令
+  由 opensbi 进行初始化，直接跳转到内核地址，进入内核逻辑时为 S 态
 
-  ```shell
-  # 在 qemu 中运行
-  make run_run
-  # 以 debug 模式在 qemu 中运行，可以使用 gdb 连接
-  make run_debug
-  # 编译 kernel，同时生成 objdump 与 readelf 结果
-  make kernel
-  ```
+- 基于 doxygen 的文档生成与自动部署
 
+  github action 会将文档部署到 https://simple-xx.github.io/SimpleKernel/ (仅 main 分支)
 
-## 问题描述
+- 基于 CPM 的第三方资源管理
 
-riscv64 静态全局对象的地址与 readelf 不一致，这导致在手动进行 c++ 全局对象初始化的时候会访问到非法内存。
+  在 `3rd.cmake` 中使用 CPM 的功能自动下载、集成第三方资源
 
-```c++
-class aaa {
- public:
-  int a = 233;
+- 测试
 
-  aaa() : a(666) { printf("aaa init\n"); }
+    支持 单元测试、集成测试、系统测试，引入 gtest 作为测试框架，同时统计了测试覆盖率
 
-  aaa(int _a) : a(_a) { printf("aaa init %d\n", _a); }
-};
+- 代码分析
 
-// auto class_a = aaa(2);
-// static aaa class_a2 = aaa(3);
-int i32;
-static int si32;
+    引入 cppcheck、clang-tidy、sanitize 工具提前发现错误
 
-int main(int _argc, char** _argv) {
-  // 架构相关初始化
-  auto arch_init_ret = arch_init(_argc, reinterpret_cast<uint8_t**>(_argv));
+- 代码格式化
 
-  // printf("class_a.a: %d\n", class_a.a);
-  // printf("&class_a: %p\n", &class_a);
-  // printf("&class_a2: %p\n", &class_a2);
-  printf("&i32: %p\n", &i32);
-  printf("&si32: %p\n", &si32);
-  printf("*(&si32): %p\n", *(&si32));
-  uintptr_t ccc = 0;
-  asm("nop");
-  ccc = (uintptr_t)&si32;
-  asm("nop");
+    使用 llvm 风格
+    
+- docker
 
-  printf("ccc: %X\n", ccc);
+    支持使用 docker 构建，详细使用方法见 [doc/docker.md](./doc/docker.md)
 
-  printf("------\n");
+## 已支持
 
-  // 进入死循环
-  while (1) {
-    ;
-  }
-  return 0;
-}
-```
+见 新增特性
 
-通过查看汇编发现，使用了 gp 寄存器
+## 依赖
 
-```asm
-    802140b0:	0001                	nop
-    802140b2:	93418793          	add	a5,gp,-1740 # 8021b134 <_ZL4si32>
-    802140b6:	fef43023          	sd	a5,-32(s0)
-    802140ba:	0001                	nop
-```
+[CPM](https://github.com/cpm-cmake/CPM.cmake)
 
-解决：添加 -mno-relax 参数
+[CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake)
 
-参考：https://stackoverflow.com/questions/67505060
+[google/googletest](https://github.com/google/googletest)
 
+[opensbi](https://github.com/riscv-software-src/opensbi)
 
-1. 在 gdb 中 `p &si32`，结果符合预期(地址为 8021XXXX，与 readelf 一致)
-2. 在程序中 `ccc = &si32`，然后在 gdb 中 `p ccc`，结果错误(地址为 FFFFFFFFFFFFFXXX)
+[doxygen](https://www.doxygen.nl/)
 
-## 相关文件路径
+[lcov](https://github.com/linux-test-project/lcov)
 
-编译参数 cmake/compile_config.cmake
+[gcc](https://gcc.gnu.org/)
 
-链接脚本 src/kernel/arch/riscv64/link.ld
+[qemu](https://www.qemu.org/)
 
-boot src/kernel/arch/riscv64/boot.S
+[cppcheck](https://cppcheck.sourceforge.io/)
 
-cpp 初始化 src/kernel/libcxx/libcxx.cpp
+[clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
 
-内核入口 src/kernel/main.cpp
+[clang-format](https://clang.llvm.org/docs/ClangFormat.html)
 
-反汇编文件 build_riscv64/src/kernel/kernel.elf.disassembly
+[gnu-efi](https://sourceforge.net/projects/gnu-efi/)
 
-readelf 文件 build_riscv64/src/kernel/kernel.elf.readelf
