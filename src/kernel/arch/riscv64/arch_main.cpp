@@ -15,6 +15,7 @@
 
 #include "cstdio"
 #include "fdt_parser.hpp"
+#include "ns16550a.h"
 #include "opensbi_interface.h"
 
 // printf_bare_metal 基本输出实现
@@ -27,7 +28,23 @@ int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
   printf("boot hart id: %d\n", _argc);
   printf("dtb info addr: %p\n", _argv);
 
-  auto result = FDT_PARSER::fdt_parser((uintptr_t)_argv);
+  auto dtb_info = FDT_PARSER::fdt_parser((uintptr_t)_argv);
+
+  auto resource_mem = FDT_PARSER::resource_t();
+  dtb_info.find_via_prefix("serial@", &resource_mem);
+  auto uart = na16550a_t(resource_mem.mem.addr);
+  uart.putc('H');
+  uart.putc('e');
+  uart.putc('l');
+  uart.putc('l');
+  uart.putc('o');
+  uart.putc(' ');
+  uart.putc('u');
+  uart.putc('a');
+  uart.putc('r');
+  uart.putc('t');
+  uart.putc('!');
+  uart.putc('\n');
 
   printf("hello arch_init\n");
 

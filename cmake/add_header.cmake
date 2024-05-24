@@ -40,6 +40,10 @@ endfunction()
 function(add_header_driver _target)
     target_include_directories(${_target} PRIVATE
             ${CMAKE_SOURCE_DIR}/src/kernel/driver/include)
+    if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
+        target_include_directories(${_target} PRIVATE
+                ${CMAKE_SOURCE_DIR}/src/kernel/driver/ns16550a/include)
+    endif ()
 endfunction()
 
 function(add_header_3rd _target)

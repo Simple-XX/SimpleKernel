@@ -6,7 +6,7 @@
 
 # 设置项目名与版本
 project(
-        driver
+        ns16550a
         VERSION 0.0.1
 )
 
@@ -14,7 +14,7 @@ enable_language(CXX)
 
 # 生成对象库
 add_library(${PROJECT_NAME}
-        ${PROJECT_SOURCE_DIR}/driver.cpp
+        ${PROJECT_SOURCE_DIR}/ns16550a.cpp
 )
 
 # 添加头文件
@@ -32,13 +32,4 @@ target_link_options(${PROJECT_NAME} PRIVATE
 
 # 添加要链接的库
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
-        ns16550a
-        >
 )
-
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-        add_subdirectory(
-                ns16550a
-        )
-endif ()
