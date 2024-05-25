@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_LOAD_ELF_H
-#define SIMPLEKERNEL_LOAD_ELF_H
+#ifndef SIMPLEKERNEL_SRC_BOOT_INCLUDE_LOAD_ELF_H_
+#define SIMPLEKERNEL_SRC_BOOT_INCLUDE_LOAD_ELF_H_
 
 #include <elf.h>
 
@@ -242,4 +242,4 @@ class Elf {
   [[nodiscard]] bool load_program_sections() const;
 };
 
-#endif /* SIMPLEKERNEL_LOAD_ELF_H */
+#endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_LOAD_ELF_H_ */

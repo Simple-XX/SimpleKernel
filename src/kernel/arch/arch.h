@@ -14,10 +14,10 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_
 
-#include "cstdint"
+#include <cstdint>
 
 struct boot_info_t {
   struct framebuffer_t {
@@ -40,4 +40,4 @@ struct boot_info_t {
 
 int32_t arch_init(uint32_t _argc, uint8_t **_argv);
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_ */

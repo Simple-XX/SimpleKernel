@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_LIBC_H
-#define SIMPLEKERNEL_LIBC_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,4 +35,4 @@ int32_t libc(uint32_t _argc, uint8_t **_argv);
 }
 #endif
 
-#endif /* SIMPLEKERNEL_LIBC_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_ */

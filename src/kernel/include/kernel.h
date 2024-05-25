@@ -14,10 +14,10 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H
-#define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_
+#define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_
 
-#include "cstdint"
+#include <cstdint>
 
 /**
  * @brief 负责 crtbegin 的工作
@@ -34,4 +34,4 @@ extern "C" void _start(int _argc, char** _argv);
  */
 int main(int _argc, char** _argv);
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_ */

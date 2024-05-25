@@ -14,10 +14,10 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H
-#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_
 
-#include "cstdint"
+#include <cstdint>
 
 /**
  * @brief 初始化 c++ 全局对象
@@ -32,4 +32,4 @@ extern "C" void cpp_init();
  */
 int32_t libcxx(uint32_t _argc, uint8_t** _argv);
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_ */

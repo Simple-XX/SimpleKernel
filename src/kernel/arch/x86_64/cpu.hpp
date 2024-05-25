@@ -14,10 +14,10 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_CPU_HPP
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_CPU_HPP
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_CPU_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_CPU_HPP_
 
-#include "cstdint"
+#include <cstdint>
 
 class CPU {
  public:
@@ -170,4 +170,4 @@ class CPU {
   };
 };
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_CPU_HPP
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_CPU_HPP_

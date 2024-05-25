@@ -14,10 +14,10 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_DRIVER_H
-#define SIMPLEKERNEL_DRIVER_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_DRIVER_INCLUDE_DRIVER_H_
+#define SIMPLEKERNEL_SRC_KERNEL_DRIVER_INCLUDE_DRIVER_H_
 
-#include "cstdint"
+#include <cstdint>
 
 /**
  * @brief 入口
@@ -27,4 +27,4 @@
  */
 int32_t driver(uint32_t _argc, uint8_t **_argv);
 
-#endif /* SIMPLEKERNEL_DRIVER_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_DRIVER_INCLUDE_DRIVER_H_ */

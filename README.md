@@ -120,3 +120,9 @@
 [CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake)
 
 [google/googletest](https://github.com/google/googletest)
+
+## 开发指南
+
+代码风格：Google，已由 .clang-format 指定
+
+命名规范：[Gooele 开源项目风格指南](https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents.html)

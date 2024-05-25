@@ -14,10 +14,10 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_BOOT_H
-#define SIMPLEKERNEL_BOOT_H
+#ifndef SIMPLEKERNEL_SRC_BOOT_INCLUDE_BOOT_H_
+#define SIMPLEKERNEL_SRC_BOOT_INCLUDE_BOOT_H_
 
-#include "cstdint"
+#include <cstdint>
 
 /**
  * @brief 入口
@@ -27,4 +27,4 @@
  */
 int main(int _argc, char **_argv);
 
-#endif /* SIMPLEKERNEL_BOOT_H */
+#endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_BOOT_H_ */

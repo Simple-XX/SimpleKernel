@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_OSTREAM_HPP
-#define SIMPLEKERNEL_OSTREAM_HPP
+#ifndef SIMPLEKERNEL_SRC_BOOT_INCLUDE_OSTREAM_HPP_
+#define SIMPLEKERNEL_SRC_BOOT_INCLUDE_OSTREAM_HPP_
 
 #ifdef __cplusplus
 extern "C" {
@@ -203,4 +203,4 @@ inline auto ostream::operator<<(const void *_val) -> ostream & {
 /// 全局输出流
 extern ostream debug;
 
-#endif /* SIMPLEKERNEL_OSTREAM_HPP */
+#endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_OSTREAM_HPP_ */
