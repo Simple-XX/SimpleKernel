@@ -29,6 +29,36 @@ Kernels with different levels of completion are available, and you can start fro
 
 This branch is the first branch of SImpleKernel. In this branch, the foundation of the build system is completed, basic documentation deployment and automated testing, and of course the most important, there is a uefi based x86_64 kernel and riscv64 kernel started by opensbi, which can run on qemu, and achieve simple screen output.
 
+- Control flow
+
+  - x86_64/aarch64
+
+      <img src='https://g.gravizo.com/svg?
+      @startuml;
+      uefi_shell->efi_main:boot.cpp;
+      efi_main->_start:main.cpp;
+      _start->cpp_init:libcxx.cpp;
+      cpp_init->main:main.cpp;
+      main->arch_init:arch.cpp;
+      arch_init->main;
+      main->main;
+      @enduml
+      '>
+
+  - riscv64
+
+    <img src='https://g.gravizo.com/svg?
+      @startuml;
+      opensbi->_boot:boot.S;
+      _boot->_start:main.cpp;
+      _start->cpp_init:libcxx.cpp;
+      cpp_init->main:main.cpp;
+      main->arch_init:arch_init.cpp;
+      arch_init->main;
+      main->main;
+      @enduml
+    '>
+
 - Build system
 
   Reference [MRNIU/cmake-kernel](https://github.com/MRNIU/cmake-kernel) build system, a detailed explanation see [doc/build_system.md](./doc/build_system.md)
@@ -69,29 +99,22 @@ This branch is the first branch of SImpleKernel. In this branch, the foundation 
 
 See What's NEW
 
-## Dependencies
+## 3rd
 
 [CPM](https://github.com/cpm-cmake/CPM.cmake)
+
+[opensbi](https://github.com/riscv-software-src/opensbi)
+
+[gnu-efi](https://sourceforge.net/projects/gnu-efi/)
+
+[gdbinit](https://github.com/gdbinit/Gdbinit)
+
+[opensbi_interface](https://github.com/MRNIU/opensbi_interface)
+
+[printf_bare_metal](https://github.com/MRNIU/printf_bare_metal)
+
+[fdt_parser](https://github.com/MRNIU/fdt_parser)
 
 [CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake)
 
 [google/googletest](https://github.com/google/googletest)
-
-[opensbi](https://github.com/riscv-software-src/opensbi)
-
-[doxygen](https://www.doxygen.nl/)
-
-[lcov](https://github.com/linux-test-project/lcov)
-
-[gcc](https://gcc.gnu.org/)
-
-[qemu](https://www.qemu.org/)
-
-[cppcheck](https://cppcheck.sourceforge.io/)
-
-[clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
-
-[clang-format](https://clang.llvm.org/docs/ClangFormat.html)
-
-[gnu-efi](https://sourceforge.net/projects/gnu-efi/)
-

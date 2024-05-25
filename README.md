@@ -27,13 +27,35 @@
 
 本分支是 SImpleKernel 的首个分支。在本分支中，完成了构建系统的基础搭建、基本的文档部署与自动化测试，当然还有最重要的，有基于 uefi 的 x86_64 内核与由 opensbi 启动的 riscv64 内核，可以在 qemu 上运行，并实现了简单的屏幕输出。
 
-调用顺序
+- 调用顺序
 
- - x86_64/aarch64
-  uefi->main.cpp:main->arch.cpp:arch_init
+  - x86_64/aarch64
 
-- riscv64
-  opensbi->boot.S:_start->main.cpp:main->arch.cpp:arch_init
+      <img src='https://g.gravizo.com/svg?
+      @startuml;
+      uefi_shell->efi_main:boot.cpp;
+      efi_main->_start:main.cpp;
+      _start->cpp_init:libcxx.cpp;
+      cpp_init->main:main.cpp;
+      main->arch_init:arch.cpp;
+      arch_init->main;
+      main->main;
+      @enduml
+      '>
+
+  - riscv64
+
+    <img src='https://g.gravizo.com/svg?
+      @startuml;
+      opensbi->_boot:boot.S;
+      _boot->_start:main.cpp;
+      _start->cpp_init:libcxx.cpp;
+      cpp_init->main:main.cpp;
+      main->arch_init:arch_init.cpp;
+      arch_init->main;
+      main->main;
+      @enduml
+    '>
 
 - 构建系统 
 
@@ -45,7 +67,11 @@
 
 - 基于 opensbi 引导的 riscv64 内核
 
-  由 opensbi 进行初始化，直接跳转到内核地址，进入内核逻辑时为 S 态
+  1. 由 opensbi 进行初始化，直接跳转到内核地址，进入内核逻辑时为 S 态
+  2. gp 寄存器的初始化
+  3. 对 qemu 传递的 dtb 信息进行解析
+  4. ns16550a 串口驱动
+  5. 基于 opensbi 的 printf
 
 - 基于 doxygen 的文档生成与自动部署
 
@@ -75,29 +101,22 @@
 
 见 新增特性
 
-## 依赖
+## 使用的第三方资源
 
 [CPM](https://github.com/cpm-cmake/CPM.cmake)
+
+[opensbi](https://github.com/riscv-software-src/opensbi)
+
+[gnu-efi](https://sourceforge.net/projects/gnu-efi/)
+
+[gdbinit](https://github.com/gdbinit/Gdbinit)
+
+[opensbi_interface](https://github.com/MRNIU/opensbi_interface)
+
+[printf_bare_metal](https://github.com/MRNIU/printf_bare_metal)
+
+[fdt_parser](https://github.com/MRNIU/fdt_parser)
 
 [CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake)
 
 [google/googletest](https://github.com/google/googletest)
-
-[opensbi](https://github.com/riscv-software-src/opensbi)
-
-[doxygen](https://www.doxygen.nl/)
-
-[lcov](https://github.com/linux-test-project/lcov)
-
-[gcc](https://gcc.gnu.org/)
-
-[qemu](https://www.qemu.org/)
-
-[cppcheck](https://cppcheck.sourceforge.io/)
-
-[clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
-
-[clang-format](https://clang.llvm.org/docs/ClangFormat.html)
-
-[gnu-efi](https://sourceforge.net/projects/gnu-efi/)
-

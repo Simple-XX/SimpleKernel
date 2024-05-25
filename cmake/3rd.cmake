@@ -261,11 +261,11 @@ CPMAddPackage(
 )
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/MRNIU/fdt-parser
+    # https://github.com/MRNIU/fdt_parser
     CPMAddPackage(
             NAME fdt_parser
-            GIT_REPOSITORY https://github.com/MRNIU/fdt-parser
-            GIT_TAG v3.0.0
+            GIT_REPOSITORY https://github.com/MRNIU/fdt_parser
+            GIT_TAG v3.0.2
     )
 endif ()
 
