@@ -39,7 +39,8 @@ static int si32;
 
 int main(int _argc, char** _argv) {
   // 架构相关初始化
-  auto arch_init_ret = arch_init(_argc, reinterpret_cast<uint8_t**>(_argv));
+  [[maybe_unused]] auto arch_init_ret =
+      arch_init(_argc, reinterpret_cast<uint8_t**>(_argv));
 
   printf("class_a.a: %d\n", class_a.a);
   printf("&class_a: %p\n", &class_a);
