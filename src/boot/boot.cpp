@@ -16,7 +16,7 @@
 
 #include "kernel/arch/arch.h"
 #include "load_elf.h"
-#include "ostream.hpp"
+#include "out_stream.hpp"
 #include "project_config.h"
 
 // efi 使用的全局变量
@@ -33,36 +33,36 @@ efi_main(EFI_HANDLE _image_handle,
   status = LibLocateProtocol(&LoadedImageProtocol,
                              reinterpret_cast<void **>(&loaded_image));
   if (EFI_ERROR(status)) {
-    debug << L"LibLocateProtocol: " << status << ostream::endl;
+    debug << L"LibLocateProtocol: " << status << OutStream::endl;
     return status;
   }
 
-  debug << L"Revision:        " << ostream::hex_X << loaded_image->Revision
-        << ostream::endl;
-  debug << L"ParentHandle:    " << ostream::hex_X << loaded_image->ParentHandle
-        << ostream::endl;
-  debug << L"SystemTable:     " << ostream::hex_X << loaded_image->SystemTable
-        << ostream::endl;
-  debug << L"DeviceHandle:    " << ostream::hex_X << loaded_image->DeviceHandle
-        << ostream::endl;
-  debug << L"FilePath:        " << ostream::hex_X << loaded_image->FilePath
-        << ostream::endl;
-  debug << L"Reserved:        " << ostream::hex_X << loaded_image->Reserved
-        << ostream::endl;
-  debug << L"LoadOptionsSize: " << ostream::hex_X
-        << loaded_image->LoadOptionsSize << ostream::endl;
-  debug << L"LoadOptions:     " << ostream::hex_X << loaded_image->LoadOptions
-        << ostream::endl;
-  debug << L"ImageBase:       " << ostream::hex_X << loaded_image->ImageBase
-        << ostream::endl;
-  debug << L"ImageSize:       " << ostream::hex_X << loaded_image->ImageSize
-        << ostream::endl;
-  debug << L"ImageCodeType:   " << ostream::hex_X << loaded_image->ImageCodeType
-        << ostream::endl;
-  debug << L"ImageDataType:   " << ostream::hex_X << loaded_image->ImageDataType
-        << ostream::endl;
-  debug << L"Unload:          " << ostream::hex_X << loaded_image->Unload
-        << ostream::endl;
+  debug << L"Revision:        " << OutStream::hex_X << loaded_image->Revision
+        << OutStream::endl;
+  debug << L"ParentHandle:    " << OutStream::hex_X
+        << loaded_image->ParentHandle << OutStream::endl;
+  debug << L"SystemTable:     " << OutStream::hex_X << loaded_image->SystemTable
+        << OutStream::endl;
+  debug << L"DeviceHandle:    " << OutStream::hex_X
+        << loaded_image->DeviceHandle << OutStream::endl;
+  debug << L"FilePath:        " << OutStream::hex_X << loaded_image->FilePath
+        << OutStream::endl;
+  debug << L"Reserved:        " << OutStream::hex_X << loaded_image->Reserved
+        << OutStream::endl;
+  debug << L"LoadOptionsSize: " << OutStream::hex_X
+        << loaded_image->LoadOptionsSize << OutStream::endl;
+  debug << L"LoadOptions:     " << OutStream::hex_X << loaded_image->LoadOptions
+        << OutStream::endl;
+  debug << L"ImageBase:       " << OutStream::hex_X << loaded_image->ImageBase
+        << OutStream::endl;
+  debug << L"ImageSize:       " << OutStream::hex_X << loaded_image->ImageSize
+        << OutStream::endl;
+  debug << L"ImageCodeType:   " << OutStream::hex_X
+        << loaded_image->ImageCodeType << OutStream::endl;
+  debug << L"ImageDataType:   " << OutStream::hex_X
+        << loaded_image->ImageDataType << OutStream::endl;
+  debug << L"Unload:          " << OutStream::hex_X << loaded_image->Unload
+        << OutStream::endl;
 
   // 初始化 Graphics
   auto graphics = Graphics();
@@ -78,12 +78,12 @@ efi_main(EFI_HANDLE _image_handle,
   //    kernel_addr = elf.load_kernel_image();
   kernel_addr = elf.load();
   if (kernel_addr == 0) {
-    debug << L"Failed to load kernel" << ostream::endl;
+    debug << L"Failed to load kernel" << OutStream::endl;
     return EFI_LOAD_ERROR;
   }
 
-  debug << L"Set Kernel Entry Point to: [" << ostream::hex_X << kernel_addr
-        << L"]" << ostream::endl;
+  debug << L"Set Kernel Entry Point to: [" << OutStream::hex_X << kernel_addr
+        << L"]" << OutStream::endl;
   // 退出 boot service
   uint64_t desc_count = 0;
   EFI_MEMORY_DESCRIPTOR *memory_map = nullptr;
@@ -92,12 +92,12 @@ efi_main(EFI_HANDLE _image_handle,
   uint32_t desc_version = 0;
   memory_map = LibMemoryMap(&desc_count, &map_key, &desc_size, &desc_version);
   if (memory_map == nullptr) {
-    debug << L"LibMemoryMap failed: memory_map == nullptr" << ostream::endl;
+    debug << L"LibMemoryMap failed: memory_map == nullptr" << OutStream::endl;
   }
   status = uefi_call_wrapper(gBS->ExitBootServices, 2, _image_handle, map_key);
   if (EFI_ERROR(status)) {
     debug << L"ExitBootServices failed, Memory Map has Changed " << status
-          << ostream::endl;
+          << OutStream::endl;
     return status;
   }
 

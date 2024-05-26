@@ -21,7 +21,7 @@
 #include <memory>
 #include <span>
 
-#include "ostream.hpp"
+#include "out_stream.hpp"
 
 namespace {
 
@@ -55,7 +55,8 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   status = LibLocateProtocol(&FileSystemProtocol,
                              reinterpret_cast<void **>(&file_system_protocol));
   if (EFI_ERROR(status)) {
-    debug << L"Elf::Elf LibLocateProtocol failed: " << status << ostream::endl;
+    debug << L"Elf::Elf LibLocateProtocol failed: " << status
+          << OutStream::endl;
     return;
   }
 
@@ -63,7 +64,7 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   status = uefi_call_wrapper(file_system_protocol->OpenVolume, 2,
                              file_system_protocol, &root_file_system);
   if (EFI_ERROR(status)) {
-    debug << L"Elf::Elf OpenVolume failed: " << status << ostream::endl;
+    debug << L"Elf::Elf OpenVolume failed: " << status << OutStream::endl;
     return;
   }
 
@@ -73,20 +74,20 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
                              EFI_FILE_READ_ONLY);
 
   if (EFI_ERROR(status)) {
-    debug << L"Elf::Elf Open failed: " << status << ostream::endl;
+    debug << L"Elf::Elf Open failed: " << status << OutStream::endl;
     return;
   }
 
   // 获取 elf 文件大小
   elf_file_size = get_file_size();
-  debug << L"Kernel file size: " << elf_file_size << ostream::endl;
+  debug << L"Kernel file size: " << elf_file_size << OutStream::endl;
 
   // 分配 elf 文件缓存
   status = uefi_call_wrapper(gBS->AllocatePool, 3, EfiLoaderData, elf_file_size,
                              &elf_file_buffer);
 
   if (EFI_ERROR(status)) {
-    debug << L"Elf::Elf AllocatePool failed: " << status << ostream::endl;
+    debug << L"Elf::Elf AllocatePool failed: " << status << OutStream::endl;
     return;
   }
 
@@ -94,7 +95,7 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   status = uefi_call_wrapper(elf->Read, 3, (EFI_FILE *)elf, &elf_file_size,
                              elf_file_buffer);
   if (EFI_ERROR(status)) {
-    debug << L"Elf::Elf Read failed: " << status << ostream::endl;
+    debug << L"Elf::Elf Read failed: " << status << OutStream::endl;
     return;
   }
 
@@ -104,7 +105,7 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   // 检查 elf 头数据
   auto check_elf_identity_ret = check_elf_identity();
   if (!check_elf_identity_ret) {
-    debug << L"Elf::Elf NOT valid ELF file" << ostream::endl;
+    debug << L"Elf::Elf NOT valid ELF file" << OutStream::endl;
     return;
   }
 
@@ -124,7 +125,7 @@ Elf::~Elf() {
   // 关闭 elf 文件
   status = uefi_call_wrapper(elf->Close, 1, elf);
   if (EFI_ERROR(status)) {
-    debug << L"Elf::~Elf() Close failed: " << status << ostream::endl;
+    debug << L"Elf::~Elf() Close failed: " << status << OutStream::endl;
     return;
   }
   /// @note elf_file_buffer 不会被释放
@@ -136,7 +137,7 @@ auto Elf::load_kernel_image() const -> uint64_t {
 
   //    auto load_program_sections_ret = load_program_sections();
   //    if (!load_program_sections_ret) {
-  //      debug << L"load_program_sections failed" << ostream::endl;
+  //      debug << L"load_program_sections failed" << OutStream::endl;
   //      return 0;
   //    }
   size_t size = 0;
@@ -153,7 +154,7 @@ auto Elf::load_kernel_image() const -> uint64_t {
                         section_page_count, &image_base);
   if (EFI_ERROR(status)) {
     debug << L"Elf::load_kernel_image() AllocatePages failed: " << status
-          << ostream::endl;
+          << OutStream::endl;
     return 0;
   }
 
@@ -164,9 +165,9 @@ auto Elf::load_kernel_image() const -> uint64_t {
     memcpy((void *)(image_base + i.p_vaddr), file.data() + i.p_offset,
            i.p_memsz);
   }
-  debug << L"load_kernel_image: " << ostream::hex_X << image_base << L" "
-        << ostream::hex_X << ehdr.e_entry << L" " << ostream::hex_X
-        << image_begin << ostream::endl;
+  debug << L"load_kernel_image: " << OutStream::hex_X << image_base << L" "
+        << OutStream::hex_X << ehdr.e_entry << L" " << OutStream::hex_X
+        << image_begin << OutStream::endl;
 
   return image_base + ehdr.e_entry - image_begin;
 }
@@ -181,7 +182,7 @@ auto Elf::load() const -> uintptr_t {
       uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages, EfiLoaderCode,
                         section_page_count, &image_base);
   if (EFI_ERROR(status)) {
-    debug << L"Elf::load() AllocatePages failed: " << status << ostream::endl;
+    debug << L"Elf::load() AllocatePages failed: " << status << OutStream::endl;
     return 0;
   }
   // 将 elf 复制到分配的物理内存中
@@ -189,9 +190,9 @@ auto Elf::load() const -> uintptr_t {
               section_page_count * EFI_PAGE_SIZE);
 
   debug << L"AllocatePages section_page_count: " << section_page_count
-        << L" image_base: " << ostream::hex_X << image_base
-        << L", ehdr.e_entry: " << ostream::hex_X << ehdr.e_entry
-        << ostream::endl;
+        << L" image_base: " << OutStream::hex_X << image_base
+        << L", ehdr.e_entry: " << OutStream::hex_X << ehdr.e_entry
+        << OutStream::endl;
   return image_base + ehdr.e_entry;
 }
 
@@ -205,17 +206,17 @@ auto Elf::get_file_size() const -> size_t {
 auto Elf::check_elf_identity() const -> bool {
   if ((file[EI_MAG0] != ELFMAG0) || (file[EI_MAG1] != ELFMAG1) ||
       (file[EI_MAG2] != ELFMAG2) || (file[EI_MAG3] != ELFMAG3)) {
-    debug << L"Fatal Error: Invalid ELF header" << ostream::endl;
+    debug << L"Fatal Error: Invalid ELF header" << OutStream::endl;
     return false;
   }
   if (file[EI_CLASS] == ELFCLASS32) {
-    debug << L"Found 32bit executable but NOT SUPPORT" << ostream::endl;
+    debug << L"Found 32bit executable but NOT SUPPORT" << OutStream::endl;
     return false;
   }
   if (file[EI_CLASS] == ELFCLASS64) {
-    debug << L"Found 64bit executable" << ostream::endl;
+    debug << L"Found 64bit executable" << OutStream::endl;
   } else {
-    debug << L"Fatal Error: Invalid executable" << ostream::endl;
+    debug << L"Fatal Error: Invalid executable" << OutStream::endl;
     return false;
   }
   return true;
@@ -228,9 +229,9 @@ void Elf::get_ehdr() {
 void Elf::print_ehdr() const {
   debug << L"  Magic:    ";
   for (auto idx : ehdr.e_ident) {
-    debug << ostream::hex_x << idx << L" ";
+    debug << OutStream::hex_x << idx << L" ";
   }
-  debug << ostream::endl;
+  debug << OutStream::endl;
 
   debug << L"  Class:                                ";
   switch (ehdr.e_ident[EI_CLASS]) {
@@ -251,7 +252,7 @@ void Elf::print_ehdr() const {
       break;
     }
   }
-  debug << ostream::endl;
+  debug << OutStream::endl;
 
   debug << L"  Data:                                 ";
   switch (ehdr.e_ident[EI_DATA]) {
@@ -272,7 +273,7 @@ void Elf::print_ehdr() const {
       break;
     }
   }
-  debug << ostream::endl;
+  debug << OutStream::endl;
 
   debug << L"  Version:                              "
         << ehdr.e_ident[EI_VERSION] << L" ";
@@ -290,7 +291,7 @@ void Elf::print_ehdr() const {
       break;
     }
   }
-  debug << ostream::endl;
+  debug << OutStream::endl;
 
   debug << L"  OS/ABI:                               ";
   switch (ehdr.e_ident[EI_OSABI]) {
@@ -303,10 +304,10 @@ void Elf::print_ehdr() const {
       break;
     }
   }
-  debug << ostream::endl;
+  debug << OutStream::endl;
 
   debug << L"  ABI Version:                          "
-        << ehdr.e_ident[EI_ABIVERSION] << ostream::endl;
+        << ehdr.e_ident[EI_ABIVERSION] << OutStream::endl;
 
   debug << L"  Type:                                 ";
   switch (ehdr.e_type) {
@@ -335,7 +336,7 @@ void Elf::print_ehdr() const {
       break;
     }
   }
-  debug << ostream::endl;
+  debug << OutStream::endl;
 
   debug << L"  Machine:                              ";
   switch (ehdr.e_machine) {
@@ -356,30 +357,30 @@ void Elf::print_ehdr() const {
       break;
     }
   }
-  debug << ostream::endl;
+  debug << OutStream::endl;
 
-  debug << L"  Version:                              " << ostream::hex_x
-        << ehdr.e_version << ostream::endl;
-  debug << L"  Entry point address:                  " << ostream::hex_x
-        << ehdr.e_entry << ostream::endl;
+  debug << L"  Version:                              " << OutStream::hex_x
+        << ehdr.e_version << OutStream::endl;
+  debug << L"  Entry point address:                  " << OutStream::hex_x
+        << ehdr.e_entry << OutStream::endl;
   debug << L"  Start of program headers:             " << ehdr.e_phoff
-        << L" (bytes into file)" << ostream::endl;
+        << L" (bytes into file)" << OutStream::endl;
   debug << L"  Start of section headers:             " << ehdr.e_shoff
-        << L" (bytes into file)" << ostream::endl;
-  debug << L"  Flags:                                " << ostream::hex_x
-        << ehdr.e_flags << ostream::endl;
+        << L" (bytes into file)" << OutStream::endl;
+  debug << L"  Flags:                                " << OutStream::hex_x
+        << ehdr.e_flags << OutStream::endl;
   debug << L"  Size of this header:                  " << ehdr.e_ehsize
-        << L" (bytes)" << ostream::endl;
+        << L" (bytes)" << OutStream::endl;
   debug << L"  Size of program headers:              " << ehdr.e_phentsize
-        << L" (bytes)" << ostream::endl;
+        << L" (bytes)" << OutStream::endl;
   debug << L"  Number of program headers:            " << ehdr.e_phnum
-        << ostream::endl;
+        << OutStream::endl;
   debug << L"  Size of section headers:              " << ehdr.e_shentsize
-        << L" (bytes)" << ostream::endl;
+        << L" (bytes)" << OutStream::endl;
   debug << L"  Number of section headers:            " << ehdr.e_shnum
-        << ostream::endl;
+        << OutStream::endl;
   debug << L"  Section header string table index:    " << ehdr.e_shstrndx
-        << ostream::endl;
+        << OutStream::endl;
 }
 
 void Elf::get_phdr() {
@@ -388,11 +389,11 @@ void Elf::get_phdr() {
 }
 
 void Elf::print_phdr() const {
-  debug << L"\nProgram Headers:" << ostream::endl;
+  debug << L"\nProgram Headers:" << OutStream::endl;
   debug << L"  "
            L"Type\t\tOffset\t\tVirtAddr\tPhysAddr\tFileSiz\t\tMemSiz\t\tFlags"
            L"\tAlign"
-        << ostream::endl;
+        << OutStream::endl;
   for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
     switch (phdr[i].p_type) {
       case PT_NULL: {
@@ -473,16 +474,16 @@ void Elf::print_phdr() const {
         break;
       }
       default: {
-        debug << L"  Unknown " << ostream::hex_X << phdr[i].p_type << L"\t";
+        debug << L"  Unknown " << OutStream::hex_X << phdr[i].p_type << L"\t";
         break;
       }
     }
 
-    debug << ostream::hex_X << phdr[i].p_offset << L"\t";
-    debug << ostream::hex_X << phdr[i].p_vaddr << L"\t";
-    debug << ostream::hex_X << phdr[i].p_paddr << L"\t";
-    debug << ostream::hex_X << phdr[i].p_filesz << L"\t";
-    debug << ostream::hex_X << phdr[i].p_memsz << L"\t";
+    debug << OutStream::hex_X << phdr[i].p_offset << L"\t";
+    debug << OutStream::hex_X << phdr[i].p_vaddr << L"\t";
+    debug << OutStream::hex_X << phdr[i].p_paddr << L"\t";
+    debug << OutStream::hex_X << phdr[i].p_filesz << L"\t";
+    debug << OutStream::hex_X << phdr[i].p_memsz << L"\t";
 
     switch (phdr[i].p_flags) {
       case PF_X: {
@@ -514,11 +515,11 @@ void Elf::print_phdr() const {
         break;
       }
       default: {
-        debug << L"Unknown " << ostream::hex_x << phdr[i].p_flags << L"\t";
+        debug << L"Unknown " << OutStream::hex_x << phdr[i].p_flags << L"\t";
         break;
       }
     }
-    debug << ostream::hex_x << phdr[i].p_align << ostream::endl;
+    debug << OutStream::hex_x << phdr[i].p_align << OutStream::endl;
   }
 }
 
@@ -532,11 +533,11 @@ void Elf::get_shdr() {
 }
 
 void Elf::print_shdr() const {
-  debug << L"\nSection Headers:" << ostream::endl;
+  debug << L"\nSection Headers:" << OutStream::endl;
   debug << L" [Nr] "
            L"Name\t\t\tType\t\tAddress\t\tOffset\t\tSize\t\tEntSize\t\tFl"
            L"ags\tLink\tInfo\tAlign"
-        << ostream::endl;
+        << OutStream::endl;
   for (uint64_t i = 0; i < ehdr.e_shnum; i++) {
     debug << L" [";
     // 对齐
@@ -698,16 +699,16 @@ void Elf::print_shdr() const {
         break;
       }
       default: {
-        debug << L"Unknown " << ostream::hex_X << shdr[i].sh_type << L"\t";
+        debug << L"Unknown " << OutStream::hex_X << shdr[i].sh_type << L"\t";
 
         break;
       }
     }
 
-    debug << ostream::hex_X << shdr[i].sh_addr << L"\t";
-    debug << ostream::hex_x << shdr[i].sh_offset << L"\t\t";
-    debug << ostream::hex_X << shdr[i].sh_size << L"\t";
-    debug << ostream::hex_X << shdr[i].sh_entsize << L"\t";
+    debug << OutStream::hex_X << shdr[i].sh_addr << L"\t";
+    debug << OutStream::hex_x << shdr[i].sh_offset << L"\t\t";
+    debug << OutStream::hex_X << shdr[i].sh_size << L"\t";
+    debug << OutStream::hex_X << shdr[i].sh_entsize << L"\t";
 
     switch (shdr[i].sh_flags) {
       case 0: {
@@ -795,7 +796,7 @@ void Elf::print_shdr() const {
         break;
       }
       default: {
-        debug << L"Unknown " << ostream::hex_X << shdr[i].sh_flags << L"\t";
+        debug << L"Unknown " << OutStream::hex_X << shdr[i].sh_flags << L"\t";
         break;
       }
     }
@@ -803,7 +804,7 @@ void Elf::print_shdr() const {
     debug << shdr[i].sh_link << L"\t";
     debug << shdr[i].sh_info << L"\t";
     debug << shdr[i].sh_addralign << L"\t";
-    debug << ostream::endl;
+    debug << OutStream::endl;
   }
 }
 
@@ -817,7 +818,7 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
   status = uefi_call_wrapper(elf->SetPosition, 2, elf, _phdr.p_offset);
   if (EFI_ERROR(status)) {
     debug << L"Elf::load_sections SetPosition failed: " << status
-          << ostream::endl;
+          << OutStream::endl;
     return false;
   }
   uintptr_t aaa = 0;
@@ -827,10 +828,10 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
   status = uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages,
                              EfiLoaderData, section_page_count, &aaa);
   debug << L"_phdr.p_paddr: [" << status << L"] [" << section_page_count
-        << L"] " << ostream::hex_X << aaa << ostream::endl;
+        << L"] " << OutStream::hex_X << aaa << OutStream::endl;
   if (EFI_ERROR(status)) {
     debug << L"Elf::load_sections AllocatePages AllocateAddress failed: "
-          << status << ostream::endl;
+          << status << OutStream::endl;
     return false;
   }
 
@@ -841,14 +842,14 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
                                buffer_read_size, (void **)&data);
     if (EFI_ERROR(status)) {
       debug << L"Elf::load_sections AllocatePool failed: " << status
-            << ostream::endl;
+            << OutStream::endl;
       return false;
     }
     // 读数据
     status =
         uefi_call_wrapper(elf->Read, 3, elf, &buffer_read_size, (void *)data);
     if (EFI_ERROR(status)) {
-      debug << L"Elf::load_sections Read failed: " << status << ostream::endl;
+      debug << L"Elf::load_sections Read failed: " << status << OutStream::endl;
       return false;
     }
 
@@ -861,7 +862,7 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
     status = uefi_call_wrapper(gBS->FreePool, 1, data);
     if (EFI_ERROR(status)) {
       debug << L"Elf::load_sections FreePool failed: " << status
-            << ostream::endl;
+            << OutStream::endl;
       return false;
     }
   }
@@ -872,8 +873,8 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
   auto zero_fill_count = _phdr.p_memsz - _phdr.p_filesz;
   if (zero_fill_count > 0) {
     debug << L"Debug: Zero-filling " << zero_fill_count
-          << L" bytes at address '" << ostream::hex_x << zero_fill_start << L"'"
-          << ostream::endl;
+          << L" bytes at address '" << OutStream::hex_x << zero_fill_start
+          << L"'" << OutStream::endl;
 
     // 将填充部分置 0
     uefi_call_wrapper(gBS->SetMem, 3, zero_fill_start, zero_fill_count, 0);
@@ -889,7 +890,7 @@ bool Elf::load_program_sections() const {
     auto load_sections_ret = load_sections(phdr[i]);
     if (!load_sections_ret) {
       debug << L"Elf::load_program_sections() load_sections failed " << i
-            << ostream::endl;
+            << OutStream::endl;
       return false;
     }
   }

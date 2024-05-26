@@ -15,7 +15,7 @@ enable_language(CXX)
 add_executable(boot
         boot.cpp
         load_elf.cpp
-        ostream.cpp
+        out_stream.cpp
         graphics.cpp
         memory.cpp
 )

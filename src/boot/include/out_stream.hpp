@@ -14,8 +14,10 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_BOOT_INCLUDE_OSTREAM_HPP_
-#define SIMPLEKERNEL_SRC_BOOT_INCLUDE_OSTREAM_HPP_
+#ifndef SIMPLEKERNEL_SRC_BOOT_INCLUDE_OUT_STREAM_HPP_
+#define SIMPLEKERNEL_SRC_BOOT_INCLUDE_OUT_STREAM_HPP_
+
+#include <cstdio>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,24 +40,24 @@ extern "C" {
 /**
  * 输出流
  */
-class ostream {
+class OutStream {
  public:
   /**
    * 使用默认构造
    */
-  ostream() = default;
+  OutStream() = default;
 
   /**
    * 使用默认析构
    */
-  ~ostream() = default;
+  ~OutStream() = default;
 
   /// @name 不使用的构造函数
   /// @{
-  ostream(const ostream &) = delete;
-  ostream(ostream &&) = delete;
-  auto operator=(const ostream &) -> ostream & = delete;
-  auto operator=(ostream &&) -> ostream & = delete;
+  OutStream(const OutStream &) = delete;
+  OutStream(OutStream &&) = delete;
+  auto operator=(const OutStream &) -> OutStream & = delete;
+  auto operator=(OutStream &&) -> OutStream & = delete;
   /// @}
 
   /**
@@ -65,35 +67,35 @@ class ostream {
    * @return 输出流
    */
   template <class _t>
-  inline auto operator<<(_t _val) -> ostream &;
+  inline auto operator<<(_t _val) -> OutStream &;
 
   /**
    * ‘<<’ 操作符重载
    * @param _ostream 输出流
    * @return 输出流
    */
-  auto operator<<(ostream &(*_ostream)(ostream &)) -> ostream &;
+  auto operator<<(OutStream &(*_ostream)(OutStream &)) -> OutStream &;
 
   /**
    * 输出 16 进制
    * @param _ostream 输出流
    * @return 输出流
    */
-  static auto hex_x(ostream &_ostream) -> ostream &;
+  static auto hex_x(OutStream &_ostream) -> OutStream &;
 
   /**
    * 输出 16 进制
    * @param _ostream 输出流
    * @return 输出流
    */
-  static auto hex_X(ostream &_ostream) -> ostream &;
+  static auto hex_X(OutStream &_ostream) -> OutStream &;
 
   /**
    * 输出换行
    * @param _ostream
    * @return 输出流
    */
-  static auto endl(ostream &_ostream) -> ostream &;
+  static auto endl(OutStream &_ostream) -> OutStream &;
 
  private:
   /**
@@ -115,13 +117,13 @@ class ostream {
 /// @{
 
 template <class _t>
-auto ostream::operator<<(_t _val) -> ostream & {
+auto OutStream::operator<<(_t _val) -> OutStream & {
   *this << (uint64_t)_val;
   return *this;
 }
 
 template <>
-inline auto ostream::operator<<(int32_t _val) -> ostream & {
+inline auto OutStream::operator<<(int32_t _val) -> OutStream & {
   if (mode == d) {
     Print(L"%d", _val);
   } else if (mode == x) {
@@ -134,7 +136,7 @@ inline auto ostream::operator<<(int32_t _val) -> ostream & {
 }
 
 template <>
-inline auto ostream::operator<<(uint32_t _val) -> ostream & {
+inline auto OutStream::operator<<(uint32_t _val) -> OutStream & {
   if (mode == d) {
     Print(L"%d", _val);
   } else if (mode == x) {
@@ -147,7 +149,7 @@ inline auto ostream::operator<<(uint32_t _val) -> ostream & {
 }
 
 template <>
-inline auto ostream::operator<<(int64_t _val) -> ostream & {
+inline auto OutStream::operator<<(int64_t _val) -> OutStream & {
   if (mode == d) {
     Print(L"%ld", _val);
   } else if (mode == x) {
@@ -160,7 +162,7 @@ inline auto ostream::operator<<(int64_t _val) -> ostream & {
 }
 
 template <>
-inline auto ostream::operator<<(uint64_t _val) -> ostream & {
+inline auto OutStream::operator<<(uint64_t _val) -> OutStream & {
   if (mode == d) {
     Print(L"%ld", _val);
   } else if (mode == x) {
@@ -173,27 +175,27 @@ inline auto ostream::operator<<(uint64_t _val) -> ostream & {
 }
 
 template <>
-inline auto ostream::operator<<(wchar_t _val) -> ostream & {
+inline auto OutStream::operator<<(wchar_t _val) -> OutStream & {
   Print(L"%c", _val);
   mode = d;
   return *this;
 }
 
 template <>
-inline auto ostream::operator<<(const wchar_t *_val) -> ostream & {
+inline auto OutStream::operator<<(const wchar_t *_val) -> OutStream & {
   Print(L"%s", _val);
   mode = d;
   return *this;
 }
 
 template <>
-inline auto ostream::operator<<(void *_val) -> ostream & {
+inline auto OutStream::operator<<(void *_val) -> OutStream & {
   *this << reinterpret_cast<uint64_t>(_val);
   return *this;
 }
 
 template <>
-inline auto ostream::operator<<(const void *_val) -> ostream & {
+inline auto OutStream::operator<<(const void *_val) -> OutStream & {
   *this << reinterpret_cast<uint64_t>(_val);
   return *this;
 }
@@ -201,6 +203,6 @@ inline auto ostream::operator<<(const void *_val) -> ostream & {
 /// @}
 
 /// 全局输出流
-extern ostream debug;
+extern OutStream debug;
 
-#endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_OSTREAM_HPP_ */
+#endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_OUT_STREAM_HPP_ */

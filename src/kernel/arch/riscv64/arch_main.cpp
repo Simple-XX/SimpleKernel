@@ -32,7 +32,7 @@ int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
 
   auto resource_mem = FDT_PARSER::resource_t();
   dtb_info.find_via_prefix("serial@", &resource_mem);
-  auto uart = na16550a_t(resource_mem.mem.addr);
+  auto uart = Ns16550a(resource_mem.mem.addr);
   uart.putc('H');
   uart.putc('e');
   uart.putc('l');

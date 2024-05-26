@@ -19,22 +19,22 @@
 
 #include <cstdint>
 
-class na16550a_t {
+class Ns16550a {
  public:
   /**
    * 构造函数
    * @param _dev_addr 设备地址
    */
-  explicit na16550a_t(uintptr_t _dev_addr);
+  explicit Ns16550a(uintptr_t _dev_addr);
 
   /// @name 默认构造/析构函数
   /// @{
-  na16550a_t() = delete;
-  na16550a_t(const na16550a_t& _na16550a) = delete;
-  na16550a_t(na16550a_t&& _na16550a) = delete;
-  auto operator=(const na16550a_t& _na16550a) -> na16550a_t& = delete;
-  auto operator=(na16550a_t&& _na16550a) -> na16550a_t& = delete;
-  ~na16550a_t() = default;
+  Ns16550a() = delete;
+  Ns16550a(const Ns16550a& _na16550a) = delete;
+  Ns16550a(Ns16550a&& _na16550a) = delete;
+  auto operator=(const Ns16550a& _na16550a) -> Ns16550a& = delete;
+  auto operator=(Ns16550a&& _na16550a) -> Ns16550a& = delete;
+  ~Ns16550a() = default;
   /// @}
 
   void putc(uint8_t _c);

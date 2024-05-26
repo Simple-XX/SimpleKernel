@@ -15,12 +15,12 @@
  */
 
 #include "load_elf.h"
-#include "ostream.hpp"
+#include "out_stream.hpp"
 
 bool Memory::flush_desc() {
   memory_map = LibMemoryMap(&desc_count, &map_key, &desc_size, &desc_version);
   if (memory_map == nullptr) {
-    debug << L"LibMemoryMap failed: memory_map == nullptr" << ostream::endl;
+    debug << L"LibMemoryMap failed: memory_map == nullptr" << OutStream::endl;
     return false;
   }
   return true;
@@ -29,7 +29,7 @@ bool Memory::flush_desc() {
 Memory::Memory() {
   auto flush_desc_ret = flush_desc();
   if (!flush_desc_ret) {
-    debug << L"Memory::Memory() flush_desc failed." << ostream::endl;
+    debug << L"Memory::Memory() flush_desc failed." << OutStream::endl;
     return;
   }
 }
@@ -37,12 +37,12 @@ Memory::Memory() {
 void Memory::print_info() {
   auto flush_desc_ret = flush_desc();
   if (!flush_desc_ret) {
-    debug << L"Memory::print_info() flush_desc failed." << ostream::endl;
+    debug << L"Memory::print_info() flush_desc failed." << OutStream::endl;
     return;
   }
 
   debug << L"Type\t\t\t\tPages\tPhysicalStart\tVirtualStart\tAttribute"
-        << ostream::endl;
+        << OutStream::endl;
   for (uint64_t i = 0; i < desc_count; i++) {
     auto *MMap = reinterpret_cast<EFI_MEMORY_DESCRIPTOR *>(
         (reinterpret_cast<uint8_t *>(memory_map)) + i * desc_size);
@@ -109,15 +109,15 @@ void Memory::print_info() {
         break;
       }
       default: {
-        debug << L"Unknown " << ostream::hex_x << MMap->Type << L"\t\t";
+        debug << L"Unknown " << OutStream::hex_x << MMap->Type << L"\t\t";
         break;
       }
     }
 
-    debug << MMap->NumberOfPages << L"\t" << ostream::hex_X
-          << MMap->PhysicalStart << L"\t" << ostream::hex_X
-          << MMap->VirtualStart << L"\t" << ostream::hex_X << MMap->Attribute
-          << ostream::endl;
+    debug << MMap->NumberOfPages << L"\t" << OutStream::hex_X
+          << MMap->PhysicalStart << L"\t" << OutStream::hex_X
+          << MMap->VirtualStart << L"\t" << OutStream::hex_X << MMap->Attribute
+          << OutStream::endl;
   }
-  debug << L"map_key: " << ostream::hex_X << map_key << ostream::endl;
+  debug << L"map_key: " << OutStream::hex_X << map_key << OutStream::endl;
 }

@@ -19,7 +19,7 @@
 
 #include <cstdint>
 
-class CPU {
+class Cpu {
  public:
   /**
    * @brief  读一个字节

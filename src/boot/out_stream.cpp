@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "ostream.hpp"
+#include "out_stream.hpp"
 
 [[maybe_unused]] auto wait_for_input(EFI_INPUT_KEY *_key) -> EFI_STATUS {
   EFI_STATUS status = EFI_SUCCESS;
@@ -25,21 +25,23 @@
   return status;
 }
 
-auto ostream::operator<<(ostream &(*_ostream)(ostream &)) -> ostream & {
+auto OutStream::operator<<(OutStream &(*_ostream)(OutStream &)) -> OutStream & {
   return _ostream(*this);
 }
 
-auto ostream::hex_x(ostream &_ostream) -> ostream & {
-  _ostream.mode = ostream::x;
+auto OutStream::hex_x(OutStream &_ostream) -> OutStream & {
+  _ostream.mode = OutStream::x;
   return _ostream;
 }
 
-auto ostream::hex_X(ostream &_ostream) -> ostream & {
-  _ostream.mode = ostream::X;
+auto OutStream::hex_X(OutStream &_ostream) -> OutStream & {
+  _ostream.mode = OutStream::X;
   return _ostream;
 }
 
-auto ostream::endl(ostream &_ostream) -> ostream & { return _ostream << L'\n'; }
+auto OutStream::endl(OutStream &_ostream) -> OutStream & {
+  return _ostream << L'\n';
+}
 
 /// 全局输出流
-ostream debug;
+OutStream debug;

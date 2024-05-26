@@ -23,17 +23,17 @@
   main(_argc, _argv);
 }
 
-class aaa {
+class Aaa {
  public:
   int a = 233;
 
-  aaa() : a(666) { printf("aaa init\n"); }
+  Aaa() : a(666) { printf("Aaa init\n"); }
 
-  aaa(int _a) : a(_a) { printf("aaa init %d\n", _a); }
+  Aaa(int _a) : a(_a) { printf("Aaa init %d\n", _a); }
 };
 
-auto class_a = aaa(2);
-static aaa class_a2 = aaa(3);
+auto class_a = Aaa(2);
+static Aaa class_a2 = Aaa(3);
 int i32;
 static int si32;
 
