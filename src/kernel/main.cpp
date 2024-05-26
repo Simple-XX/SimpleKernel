@@ -18,9 +18,9 @@
 #include "kernel.h"
 #include "libcxx.h"
 
-[[maybe_unused]] void _start(int _argc, char** _argv) {
+[[maybe_unused]] void _start(int argc, char** argv) {
   CppInit();
-  main(_argc, _argv);
+  main(argc, argv);
 }
 
 class Aaa {
@@ -37,10 +37,10 @@ static Aaa class_a2 = Aaa(3);
 int i32;
 static int si32;
 
-int main(int _argc, char** _argv) {
+int main(int argc, char** argv) {
   // 架构相关初始化
   [[maybe_unused]] auto arch_init_ret =
-      ArchInit(_argc, reinterpret_cast<uint8_t**>(_argv));
+      ArchInit(argc, reinterpret_cast<uint8_t**>(argv));
 
   printf("class_a.a: %d\n", class_a.a_);
   printf("&class_a: %p\n", &class_a);

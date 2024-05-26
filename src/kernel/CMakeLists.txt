@@ -30,7 +30,7 @@ add_header_driver(kernel)
 add_header_3rd(kernel)
 
 # 添加定义
-target_compile_definitions(kernel PRIVATE 
+target_compile_definitions(kernel PRIVATE
         ${DEFAULT_KERNEL_DEFINITIONS}
 )
 

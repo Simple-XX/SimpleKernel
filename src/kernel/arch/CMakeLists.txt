@@ -23,7 +23,7 @@ add_library(${PROJECT_NAME} OBJECT
 )
 
 # 添加定义
-target_compile_definitions(${PROJECT_NAME} PRIVATE 
+target_compile_definitions(${PROJECT_NAME} PRIVATE
         ${DEFAULT_KERNEL_DEFINITIONS}
 )
 

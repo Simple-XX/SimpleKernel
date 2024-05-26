@@ -18,7 +18,7 @@ add_library(${PROJECT_NAME}
 )
 
 # 添加定义
-target_compile_definitions(${PROJECT_NAME} PRIVATE 
+target_compile_definitions(${PROJECT_NAME} PRIVATE
         ${DEFAULT_KERNEL_DEFINITIONS}
 )
 
@@ -43,7 +43,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-        add_subdirectory(
-                ns16550a
-        )
+    add_subdirectory(
+            ns16550a
+    )
 endif ()
