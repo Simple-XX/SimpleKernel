@@ -16,31 +16,31 @@
 
 #include "out_stream.hpp"
 
-[[maybe_unused]] auto wait_for_input(EFI_INPUT_KEY *_key) -> EFI_STATUS {
+[[maybe_unused]] auto wait_for_input(EFI_INPUT_KEY *key) -> EFI_STATUS {
   EFI_STATUS status = EFI_SUCCESS;
   do {
-    status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, _key);
+    status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, key);
   } while (EFI_NOT_READY == status);
 
   return status;
 }
 
-auto OutStream::operator<<(OutStream &(*_ostream)(OutStream &)) -> OutStream & {
-  return _ostream(*this);
+auto OutStream::operator<<(OutStream &(*ostream)(OutStream &)) -> OutStream & {
+  return ostream(*this);
 }
 
-auto OutStream::hex_x(OutStream &_ostream) -> OutStream & {
-  _ostream.mode_ = OutStream::x;
-  return _ostream;
+auto OutStream::hex_x(OutStream &ostream) -> OutStream & {
+  ostream.mode_ = OutStream::x;
+  return ostream;
 }
 
-auto OutStream::hex_X(OutStream &_ostream) -> OutStream & {
-  _ostream.mode_ = OutStream::X;
-  return _ostream;
+auto OutStream::hex_X(OutStream &ostream) -> OutStream & {
+  ostream.mode_ = OutStream::X;
+  return ostream;
 }
 
-auto OutStream::endl(OutStream &_ostream) -> OutStream & {
-  return _ostream << L'\n';
+auto OutStream::endl(OutStream &ostream) -> OutStream & {
+  return ostream << L'\n';
 }
 
 /// 全局输出流

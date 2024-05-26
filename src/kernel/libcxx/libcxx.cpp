@@ -31,9 +31,9 @@ void cpp_init(void) {
 }
 };
 
-int32_t libcxx(uint32_t _argc, uint8_t** _argv) {
-  (void)_argc;
-  (void)_argv;
+int32_t libcxx(uint32_t argc, uint8_t** argv) {
+  (void)argc;
+  (void)argv;
 
   // 进入死循环
   while (1) {

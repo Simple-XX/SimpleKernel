@@ -23,69 +23,69 @@ class Cpu {
  public:
   /**
    * @brief  读一个字节
-   * @param  _port           要读的端口
+   * @param  port           要读的端口
    * @return uint8_t         读取到的数据
    */
-  static inline uint8_t inb(const uint32_t _port) {
+  static inline uint8_t inb(const uint32_t port) {
     uint8_t data;
-    __asm__ __volatile__("inb %1, %0" : "=a"(data) : "dN"(_port));
+    __asm__ __volatile__("inb %1, %0" : "=a"(data) : "dN"(port));
     return data;
   }
 
   /**
    * @brief  读一个字
-   * @param  _port           要读的端口
+   * @param  port           要读的端口
    * @return uint16_t        读取到的数据
    */
-  static inline uint16_t inw(const uint32_t _port) {
+  static inline uint16_t inw(const uint32_t port) {
     uint16_t data;
-    __asm__ __volatile__("inw %1, %0" : "=a"(data) : "dN"(_port));
+    __asm__ __volatile__("inw %1, %0" : "=a"(data) : "dN"(port));
     return data;
   }
 
   /**
    * @brief  读一个双字
-   * @param  _port           要读的端口
+   * @param  port           要读的端口
    * @return uint32_t        读取到的数据
    */
-  static inline uint32_t inl(const uint32_t _port) {
+  static inline uint32_t inl(const uint32_t port) {
     uint32_t data;
-    __asm__ __volatile__("inl %1, %0" : "=a"(data) : "dN"(_port));
+    __asm__ __volatile__("inl %1, %0" : "=a"(data) : "dN"(port));
     return data;
   }
 
   /**
    * @brief  写一个字节
-   * @param  _port           要写的端口
-   * @param  _data           要写的数据
+   * @param  port           要写的端口
+   * @param  data           要写的数据
    */
-  static inline void outb(const uint32_t _port, const uint8_t _data) {
-    __asm__ __volatile__("outb %1, %0" : : "dN"(_port), "a"(_data));
+  static inline void outb(const uint32_t port, const uint8_t data) {
+    __asm__ __volatile__("outb %1, %0" : : "dN"(port), "a"(data));
   }
 
   /**
    * @brief  写一个字
-   * @param  _port           要写的端口
-   * @param  _data           要写的数据
+   * @param  port           要写的端口
+   * @param  data           要写的数据
    */
-  static inline void outw(const uint32_t _port, const uint16_t _data) {
-    __asm__ __volatile__("outw %1, %0" : : "dN"(_port), "a"(_data));
+  static inline void outw(const uint32_t port, const uint16_t data) {
+    __asm__ __volatile__("outw %1, %0" : : "dN"(port), "a"(data));
   }
 
   /**
    * @brief  写一个双字
-   * @param  _port           要写的端口
-   * @param  _data           要写的数据
+   * @param  port           要写的端口
+   * @param  data           要写的数据
    */
-  static inline void outl(const uint32_t _port, const uint32_t _data) {
-    __asm__ __volatile__("outl %1, %0" : : "dN"(_port), "a"(_data));
+  static inline void outl(const uint32_t port, const uint32_t data) {
+    __asm__ __volatile__("outl %1, %0" : : "dN"(port), "a"(data));
   }
 
   /// @name 端口
-  static constexpr const uint32_t COM1 = 0x3F8;
+  static constexpr const uint32_t kCom1 = 0x3F8;
   class Serial {
    public:
-    explicit Serial(uint32_t _port) : port_(_port) {
+    explicit Serial(uint32_t port) : port_(port) {
       // Disable all interrupts
       outb(port_ + 1, 0x00);
       // Enable DLAB (set baud rate divisor)
@@ -138,13 +138,13 @@ class Cpu {
 
     /**
      * @brief  写一个字节
-     * @param  _c              要写的数据
+     * @param  c              要写的数据
      */
-    void write(uint8_t _c) const {
+    void write(uint8_t c) const {
       while (!is_transmit_empty()) {
         ;
       }
-      outb(port_, _c);
+      outb(port_, c);
     }
 
    private:

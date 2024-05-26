@@ -19,13 +19,13 @@
 #include "cstdio"
 
 // printf_bare_metal 基本输出实现
-extern "C" void _putchar(char _character) {
-  auto serial = Cpu::Serial(Cpu::COM1);
-  serial.write(_character);
+extern "C" void _putchar(char character) {
+  auto serial = Cpu::Serial(Cpu::kCom1);
+  serial.write(character);
 }
 
-static const int pixelwidth = 4;
-static const int pitch = 800 * pixelwidth;
+static const int kPixelWidth = 4;
+static const int kPitch = 800 * kPixelWidth;
 
 static void fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
                      uint8_t w, uint8_t h) {
@@ -35,21 +35,21 @@ static void fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
   for (i = 0; i < w; i++) {
     for (j = 0; j < h; j++) {
       // putpixel(vram, 64 + j, 64 + i, (r << 16) + (g << 8) + b);
-      where[j * pixelwidth] = r;
-      where[j * pixelwidth + 1] = g;
-      where[j * pixelwidth + 2] = b;
+      where[j * kPixelWidth] = r;
+      where[j * kPixelWidth + 1] = g;
+      where[j * kPixelWidth + 2] = b;
     }
-    where += pitch;
+    where += kPitch;
   }
 }
 
-int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
-  if (_argc != 1) {
-    printf("_argc != 1 [%d]\n", _argc);
+int32_t arch_init(uint32_t argc, uint8_t **argv) {
+  if (argc != 1) {
+    printf("argc != 1 [%d]\n", argc);
     return -1;
   }
 
-  BootInfo boot_info = *reinterpret_cast<BootInfo *>(_argv[0]);
+  BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv[0]);
   printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
 
   fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);

@@ -18,13 +18,13 @@
 #include "cstdio"
 
 // printf_bare_metal 基本输出实现
-extern "C" void _putchar(char _character) {
-  // sbi_debug_console_write_byte(_character);
+extern "C" void _putchar(char character) {
+  // sbi_debug_console_write_byte(character);
 }
 
-int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
-  (void)_argc;
-  (void)_argv;
+int32_t arch_init(uint32_t argc, uint8_t **argv) {
+  (void)argc;
+  (void)argv;
 
   // 进入死循环
   while (1) {

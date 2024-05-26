@@ -20,9 +20,9 @@ extern "C" {
 
 #include "libc.h"
 
-int32_t libc(uint32_t _argc, uint8_t **_argv) {
-  (void)_argc;
-  (void)_argv;
+int32_t libc(uint32_t argc, uint8_t **argv) {
+  (void)argc;
+  (void)argv;
 
   // 进入死循环
   while (1) {

@@ -27,29 +27,29 @@ namespace {
 
 /**
  * 将 char* 转换为 wchar_t*
- * @param _dst 输出
- * @param _src 输入
+ * @param dst 输出
+ * @param src 输入
  * @return 字符数量
  */
-auto char2wchar(wchar_t *_dst, const char *_src) -> size_t {
+auto char2wchar(wchar_t *dst, const char *src) -> size_t {
   size_t idx = 0;
-  while (_src[idx] != '\0') {
-    _dst[idx] = _src[idx];
+  while (src[idx] != '\0') {
+    dst[idx] = src[idx];
     idx++;
   }
   return idx;
 }
 
 /// 一个制表符大小
-constexpr const uint32_t ONE_TAB_SIZE = 8;
+constexpr const uint32_t kOneTabSize = 8;
 /// 两个制表符大小
-constexpr const uint32_t TWO_TAB_SIZE = 16;
+constexpr const uint32_t kTwoTabSize = 16;
 /// 两位数对齐
-constexpr const uint32_t ALIGN_TWO = 10;
+constexpr const uint32_t kAlignTwo = 10;
 
 }  // namespace
 
-Elf::Elf(wchar_t *_kernel_image_filename) {
+Elf::Elf(wchar_t *kernel_image_filename) {
   EFI_STATUS status = EFI_SUCCESS;
   // 打开文件系统协议
   status = LibLocateProtocol(&FileSystemProtocol,
@@ -70,7 +70,7 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
 
   // 打开 elf 文件
   status = uefi_call_wrapper(root_file_system_->Open, 5, root_file_system_,
-                             &elf_, _kernel_image_filename, EFI_FILE_MODE_READ,
+                             &elf_, kernel_image_filename, EFI_FILE_MODE_READ,
                              EFI_FILE_READ_ONLY);
 
   if (EFI_ERROR(status)) {
@@ -543,21 +543,21 @@ void Elf::print_shdr() const {
   for (uint64_t i = 0; i < ehdr_.e_shnum; i++) {
     debug << L" [";
     // 对齐
-    if (i < ALIGN_TWO) {
+    if (i < kAlignTwo) {
       debug << L" ";
     }
     debug << i << L"] ";
 
-    std::array<wchar_t, SECTION_BUF_SIZE> buf = {0};
-    auto char2wchar_ret = char2wchar(
-        buf.data(), reinterpret_cast<const char *>(
+    std::array<wchar_t, kSectionBufferSize> buf = {0};
+    auto char2wchar_ret =
+        char2wchar(buf.data(), reinterpret_cast<const char *>(
                                    shstrtab_buf_.data() + shdr_[i].sh_name));
     debug << (const wchar_t *)buf.data() << L"\t";
 
-    if (char2wchar_ret <= TWO_TAB_SIZE) {
+    if (char2wchar_ret <= kTwoTabSize) {
       debug << L"\t";
     }
-    if (char2wchar_ret <= ONE_TAB_SIZE) {
+    if (char2wchar_ret <= kOneTabSize) {
       debug << L"\t";
     }
     if (char2wchar_ret <= 1) {
@@ -810,14 +810,14 @@ void Elf::print_shdr() const {
   }
 }
 
-bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
+bool Elf::load_sections(const Elf64_Phdr &phdr) const {
   EFI_STATUS status = EFI_SUCCESS;
   void *data = nullptr;
   // 计算使用的内存页数
-  auto section_page_count = EFI_SIZE_TO_PAGES(_phdr.p_memsz);
+  auto section_page_count = EFI_SIZE_TO_PAGES(phdr.p_memsz);
 
   // 设置文件偏移到 p_offset
-  status = uefi_call_wrapper(elf_->SetPosition, 2, elf_, _phdr.p_offset);
+  status = uefi_call_wrapper(elf_->SetPosition, 2, elf_, phdr.p_offset);
   if (EFI_ERROR(status)) {
     debug << L"Elf::load_sections SetPosition failed: " << status
           << OutStream::endl;
@@ -826,19 +826,19 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
   uintptr_t aaa = 0;
   // status = uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAddress,
   //                            EfiLoaderData, section_page_count,
-  //                            (EFI_PHYSICAL_ADDRESS*)&_phdr.p_paddr);
+  //                            (EFI_PHYSICAL_ADDRESS*)&phdr.p_paddr);
   status = uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages,
                              EfiLoaderData, section_page_count, &aaa);
-  debug << L"_phdr.p_paddr: [" << status << L"] [" << section_page_count
-        << L"] " << OutStream::hex_X << aaa << OutStream::endl;
+  debug << L"phdr.p_paddr: [" << status << L"] [" << section_page_count << L"] "
+        << OutStream::hex_X << aaa << OutStream::endl;
   if (EFI_ERROR(status)) {
     debug << L"Elf::load_sections AllocatePages AllocateAddress failed: "
           << status << OutStream::endl;
     return false;
   }
 
-  if (_phdr.p_filesz > 0) {
-    auto buffer_read_size = _phdr.p_filesz;
+  if (phdr.p_filesz > 0) {
+    auto buffer_read_size = phdr.p_filesz;
     // 为 program_data 分配内存
     status = uefi_call_wrapper(gBS->AllocatePool, 3, EfiLoaderCode,
                                buffer_read_size, (void **)&data);
@@ -857,8 +857,8 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
 
     // 将读出来的数据复制到其对应的物理地址
     uefi_call_wrapper(gBS->CopyMem, 3,
-                      reinterpret_cast<void *>(aaa + _phdr.p_paddr), data,
-                      _phdr.p_filesz);
+                      reinterpret_cast<void *>(aaa + phdr.p_paddr), data,
+                      phdr.p_filesz);
 
     // 释放 program_data
     status = uefi_call_wrapper(gBS->FreePool, 1, data);
@@ -871,8 +871,8 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
 
   // 计算填充大小
   auto *zero_fill_start =
-      reinterpret_cast<void *>(aaa + _phdr.p_paddr + _phdr.p_filesz);
-  auto zero_fill_count = _phdr.p_memsz - _phdr.p_filesz;
+      reinterpret_cast<void *>(aaa + phdr.p_paddr + phdr.p_filesz);
+  auto zero_fill_count = phdr.p_memsz - phdr.p_filesz;
   if (zero_fill_count > 0) {
     debug << L"Debug: Zero-filling " << zero_fill_count
           << L" bytes at address '" << OutStream::hex_x << zero_fill_start

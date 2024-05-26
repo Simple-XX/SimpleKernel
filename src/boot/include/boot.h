@@ -21,10 +21,10 @@
 
 /**
  * @brief 入口
- * @param  _argc                   参数个数
- * @param  _argv                   参数列表
+ * @param  argc                   参数个数
+ * @param  argv                   参数列表
  * @return int                     正常返回 0
  */
-int main(int _argc, char **_argv);
+int main(int argc, char **argv);
 
 #endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_BOOT_H_ */

@@ -23,54 +23,54 @@ class Ns16550a {
  public:
   /**
    * 构造函数
-   * @param _dev_addr 设备地址
+   * @param dev_addr 设备地址
    */
-  explicit Ns16550a(uintptr_t _dev_addr);
+  explicit Ns16550a(uintptr_t dev_addr);
 
   /// @name 默认构造/析构函数
   /// @{
   Ns16550a() = delete;
-  Ns16550a(const Ns16550a& _na16550a) = delete;
-  Ns16550a(Ns16550a&& _na16550a) = delete;
-  auto operator=(const Ns16550a& _na16550a) -> Ns16550a& = delete;
-  auto operator=(Ns16550a&& _na16550a) -> Ns16550a& = delete;
+  Ns16550a(const Ns16550a& na16550a) = delete;
+  Ns16550a(Ns16550a&& na16550a) = delete;
+  auto operator=(const Ns16550a& na16550a) -> Ns16550a& = delete;
+  auto operator=(Ns16550a&& na16550a) -> Ns16550a& = delete;
   ~Ns16550a() = default;
   /// @}
 
-  void putc(uint8_t _c);
+  void putc(uint8_t c);
 
  private:
   /// read mode: Receive holding reg
-  static constexpr const uint8_t REG_RHR = 0;
+  static constexpr const uint8_t kRegRHR = 0;
   /// write mode: Transmit Holding Reg
-  static constexpr const uint8_t REG_THR = 0;
+  static constexpr const uint8_t kRegTHR = 0;
   /// write mode: interrupt enable reg
-  static constexpr const uint8_t REG_IER = 1;
+  static constexpr const uint8_t kRegIER = 1;
   /// write mode: FIFO control Reg
-  static constexpr const uint8_t REG_FCR = 2;
+  static constexpr const uint8_t kRegFCR = 2;
   /// read mode: Interrupt Status Reg
-  static constexpr const uint8_t REG_ISR = 2;
+  static constexpr const uint8_t kRegISR = 2;
   /// write mode:Line Control Reg
-  static constexpr const uint8_t REG_LCR = 3;
+  static constexpr const uint8_t kRegLCR = 3;
   /// write mode:Modem Control Reg
-  static constexpr const uint8_t REG_MCR = 4;
+  static constexpr const uint8_t kRegMCR = 4;
   /// read mode: Line Status Reg
-  static constexpr const uint8_t REG_LSR = 5;
+  static constexpr const uint8_t kRegLSR = 5;
   /// read mode: Modem Status Reg
-  static constexpr const uint8_t REG_MSR = 6;
+  static constexpr const uint8_t kRegMSR = 6;
 
   /// LSB of divisor Latch when enabled
-  static constexpr const uint8_t UART_DLL = 0;
+  static constexpr const uint8_t kUartDLL = 0;
   /// MSB of divisor Latch when enabled
-  static constexpr const uint8_t UART_DLM = 1;
+  static constexpr const uint8_t kUartDLM = 1;
 
   uintptr_t base_addr_;
 
-  inline volatile uint8_t* Reg(uint8_t _reg);
+  inline volatile uint8_t* Reg(uint8_t reg);
 
-  inline uint8_t read(uint8_t _reg);
+  inline uint8_t read(uint8_t reg);
 
-  inline void write(uint8_t _reg, uint8_t _c);
+  inline void write(uint8_t reg, uint8_t c);
 };
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_DRIVER_NS16550A_INCLUDE_NS16550A_H_ */

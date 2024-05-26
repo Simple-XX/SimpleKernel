@@ -38,6 +38,6 @@ struct BootInfo {
   } memory_map;
 };
 
-int32_t arch_init(uint32_t _argc, uint8_t **_argv);
+int32_t arch_init(uint32_t argc, uint8_t **argv);
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_ */

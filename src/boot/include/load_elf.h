@@ -59,13 +59,13 @@ class Graphics {
 
   /**
    * 设置图形模式
-   * @param _format 图形像素格式，默认为 PixelBlueGreenRedReserved8BitPerColor
-   * @param _width 宽度，默认为 1920
-   * @param _height 高度，默认为 1080
+   * @param format 图形像素格式，默认为 PixelBlueGreenRedReserved8BitPerColor
+   * @param width 宽度，默认为 1920
+   * @param height 高度，默认为 1080
    */
   void set_mode(
-      EFI_GRAPHICS_PIXEL_FORMAT _format = PixelRedGreenBlueReserved8BitPerColor,
-      uint32_t _width = DEFAULT_WIDTH, uint32_t _height = DEFAULT_HEIGHT) const;
+      EFI_GRAPHICS_PIXEL_FORMAT format = PixelRedGreenBlueReserved8BitPerColor,
+      uint32_t width = kDefaultWidth, uint32_t height = kDefaultHeight) const;
 
   [[nodiscard]] auto get_framebuffer() const -> std::pair<uint64_t, uint32_t>;
 
@@ -77,8 +77,8 @@ class Graphics {
  private:
   /// @name 默认分辨率
   /// @{
-  static constexpr const uint32_t DEFAULT_WIDTH = 800;
-  static constexpr const uint32_t DEFAULT_HEIGHT = 600;
+  static constexpr const uint32_t kDefaultWidth = 800;
+  static constexpr const uint32_t kDefaultHeight = 600;
   /// @}
   /// 图形输出协议
   EFI_GRAPHICS_OUTPUT_PROTOCOL *gop_ = nullptr;
@@ -136,9 +136,9 @@ class Elf {
  public:
   /**
    * 构造函数
-   * @param _kernel_image_filename 要加载的内核文件
+   * @param kernel_image_filename 要加载的内核文件
    */
-  explicit Elf(wchar_t *_kernel_image_filename);
+  explicit Elf(wchar_t *kernel_image_filename);
 
   /**
    * 析构函数
@@ -182,9 +182,9 @@ class Elf {
   std::span<Elf64_Phdr> phdr_ = {};
   std::span<Elf64_Shdr> shdr_ = {};
   /// section 缓冲区大小
-  static constexpr const size_t SECTION_BUF_SIZE = 1024;
+  static constexpr const size_t kSectionBufferSize = 1024;
   /// shstrtab 缓冲
-  std::array<uint8_t, SECTION_BUF_SIZE> shstrtab_buf_ = {};
+  std::array<uint8_t, kSectionBufferSize> shstrtab_buf_ = {};
   /// @}
 
   /**
@@ -231,9 +231,9 @@ class Elf {
 
   /**
    * 将 elf 段加载到内存
-   * @param _phdr 要加载的程序段 phdr
+   * @param phdr 要加载的程序段 phdr
    */
-  [[nodiscard]] bool load_sections(const Elf64_Phdr &_phdr) const;
+  [[nodiscard]] bool load_sections(const Elf64_Phdr &phdr) const;
 
   /**
    * 加载程序段

@@ -22,9 +22,8 @@
 // efi 使用的全局变量
 uintptr_t ImageBase = 0;
 
-extern "C" [[maybe_unused]] EFI_STATUS EFIAPI
-efi_main(EFI_HANDLE _image_handle,
-         [[maybe_unused]] EFI_SYSTEM_TABLE *_system_table) {
+extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
+    EFI_HANDLE image_handle, [[maybe_unused]] EFI_SYSTEM_TABLE *system_table) {
   EFI_STATUS status = EFI_SUCCESS;
   uint64_t kernel_addr = 0;
 
@@ -94,7 +93,7 @@ efi_main(EFI_HANDLE _image_handle,
   if (memory_map == nullptr) {
     debug << L"LibMemoryMap failed: memory_map == nullptr" << OutStream::endl;
   }
-  status = uefi_call_wrapper(gBS->ExitBootServices, 2, _image_handle, map_key);
+  status = uefi_call_wrapper(gBS->ExitBootServices, 2, image_handle, map_key);
   if (EFI_ERROR(status)) {
     debug << L"ExitBootServices failed, Memory Map has Changed " << status
           << OutStream::endl;

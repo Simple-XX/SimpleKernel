@@ -33,8 +33,8 @@ Graphics::Graphics() {
   }
 }
 
-void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
-                        uint32_t _height) const {
+void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT format, uint32_t width,
+                        uint32_t height) const {
   EFI_STATUS status = EFI_SUCCESS;
 
   for (uint32_t i = 0; i < gop_->Mode->MaxMode; i++) {
@@ -48,9 +48,9 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
       return;
     }
 
-    if ((mode_info->PixelFormat == _format) &&
-        (mode_info->HorizontalResolution == _width) &&
-        (mode_info->VerticalResolution == _height)) {
+    if ((mode_info->PixelFormat == format) &&
+        (mode_info->HorizontalResolution == width) &&
+        (mode_info->VerticalResolution == height)) {
       status = uefi_call_wrapper(gop_->SetMode, 2, gop_, i);
       if (EFI_ERROR(status)) {
         debug << L"Graphics::set_mode SetMode failed: " << status

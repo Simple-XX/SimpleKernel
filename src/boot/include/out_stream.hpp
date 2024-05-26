@@ -63,39 +63,39 @@ class OutStream {
   /**
    * 输出类型
    * @tparam _t 模板类型
-   * @param _val 数据
+   * @param val 数据
    * @return 输出流
    */
   template <class _t>
-  inline auto operator<<(_t _val) -> OutStream &;
+  inline auto operator<<(_t val) -> OutStream &;
 
   /**
    * ‘<<’ 操作符重载
-   * @param _ostream 输出流
+   * @param ostream 输出流
    * @return 输出流
    */
-  auto operator<<(OutStream &(*_ostream)(OutStream &)) -> OutStream &;
+  auto operator<<(OutStream &(*ostream)(OutStream &)) -> OutStream &;
 
   /**
    * 输出 16 进制
-   * @param _ostream 输出流
+   * @param ostream 输出流
    * @return 输出流
    */
-  static auto hex_x(OutStream &_ostream) -> OutStream &;
+  static auto hex_x(OutStream &ostream) -> OutStream &;
 
   /**
    * 输出 16 进制
-   * @param _ostream 输出流
+   * @param ostream 输出流
    * @return 输出流
    */
-  static auto hex_X(OutStream &_ostream) -> OutStream &;
+  static auto hex_X(OutStream &ostream) -> OutStream &;
 
   /**
    * 输出换行
-   * @param _ostream
+   * @param ostream
    * @return 输出流
    */
-  static auto endl(OutStream &_ostream) -> OutStream &;
+  static auto endl(OutStream &ostream) -> OutStream &;
 
  private:
   /**
@@ -117,86 +117,86 @@ class OutStream {
 /// @{
 
 template <class _t>
-auto OutStream::operator<<(_t _val) -> OutStream & {
-  *this << (uint64_t)_val;
+auto OutStream::operator<<(_t val) -> OutStream & {
+  *this << (uint64_t)val;
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(int32_t _val) -> OutStream & {
+inline auto OutStream::operator<<(int32_t val) -> OutStream & {
   if (mode_ == d) {
-    Print(L"%d", _val);
+    Print(L"%d", val);
   } else if (mode_ == x) {
-    Print(L"0x%x", _val);
+    Print(L"0x%x", val);
   } else if (mode_ == X) {
-    Print(L"0x%X", _val);
+    Print(L"0x%X", val);
   }
   mode_ = d;
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(uint32_t _val) -> OutStream & {
+inline auto OutStream::operator<<(uint32_t val) -> OutStream & {
   if (mode_ == d) {
-    Print(L"%d", _val);
+    Print(L"%d", val);
   } else if (mode_ == x) {
-    Print(L"0x%x", _val);
+    Print(L"0x%x", val);
   } else if (mode_ == X) {
-    Print(L"0x%X", _val);
+    Print(L"0x%X", val);
   }
   mode_ = d;
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(int64_t _val) -> OutStream & {
+inline auto OutStream::operator<<(int64_t val) -> OutStream & {
   if (mode_ == d) {
-    Print(L"%ld", _val);
+    Print(L"%ld", val);
   } else if (mode_ == x) {
-    Print(L"0x%x", _val);
+    Print(L"0x%x", val);
   } else if (mode_ == X) {
-    Print(L"0x%X", _val);
+    Print(L"0x%X", val);
   }
   mode_ = d;
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(uint64_t _val) -> OutStream & {
+inline auto OutStream::operator<<(uint64_t val) -> OutStream & {
   if (mode_ == d) {
-    Print(L"%ld", _val);
+    Print(L"%ld", val);
   } else if (mode_ == x) {
-    Print(L"0x%x", _val);
+    Print(L"0x%x", val);
   } else if (mode_ == X) {
-    Print(L"0x%X", _val);
+    Print(L"0x%X", val);
   }
   mode_ = d;
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(wchar_t _val) -> OutStream & {
-  Print(L"%c", _val);
+inline auto OutStream::operator<<(wchar_t val) -> OutStream & {
+  Print(L"%c", val);
   mode_ = d;
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(const wchar_t *_val) -> OutStream & {
-  Print(L"%s", _val);
+inline auto OutStream::operator<<(const wchar_t *val) -> OutStream & {
+  Print(L"%s", val);
   mode_ = d;
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(void *_val) -> OutStream & {
-  *this << reinterpret_cast<uint64_t>(_val);
+inline auto OutStream::operator<<(void *val) -> OutStream & {
+  *this << reinterpret_cast<uint64_t>(val);
   return *this;
 }
 
 template <>
-inline auto OutStream::operator<<(const void *_val) -> OutStream & {
-  *this << reinterpret_cast<uint64_t>(_val);
+inline auto OutStream::operator<<(const void *val) -> OutStream & {
+  *this << reinterpret_cast<uint64_t>(val);
   return *this;
 }
 
