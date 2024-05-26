@@ -25,8 +25,8 @@ extern "C" {
 
 /**
  * @brief 入口
- * @param  argc                   参数个数
- * @param  argv                   参数列表
+ * @param argc 参数个数
+ * @param argv 参数列表
  * @return int32_t                 正常返回 0
  */
 int32_t libc(uint32_t argc, uint8_t **argv);

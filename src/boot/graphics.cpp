@@ -33,8 +33,8 @@ Graphics::Graphics() {
   }
 }
 
-void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT format, uint32_t width,
-                        uint32_t height) const {
+void Graphics::SetMode(EFI_GRAPHICS_PIXEL_FORMAT format, uint32_t width,
+                       uint32_t height) const {
   EFI_STATUS status = EFI_SUCCESS;
 
   for (uint32_t i = 0; i < gop_->Mode->MaxMode; i++) {
@@ -43,7 +43,7 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT format, uint32_t width,
     status = uefi_call_wrapper(gop_->QueryMode, 4, gop_, i, &mode_info_size,
                                &mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"Graphics::set_mode QueryMode failed: " << status
+      debug << L"Graphics::SetMode QueryMode failed: " << status
             << OutStream::endl;
       return;
     }
@@ -53,14 +53,14 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT format, uint32_t width,
         (mode_info->VerticalResolution == height)) {
       status = uefi_call_wrapper(gop_->SetMode, 2, gop_, i);
       if (EFI_ERROR(status)) {
-        debug << L"Graphics::set_mode SetMode failed: " << status
+        debug << L"Graphics::SetMode SetMode failed: " << status
               << OutStream::endl;
         return;
       }
     }
     status = uefi_call_wrapper(gBS->FreePool, 1, mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"Graphics::set_mode FreePool failed: " << status
+      debug << L"Graphics::SetMode FreePool failed: " << status
             << OutStream::endl;
       return;
     }
@@ -77,11 +77,11 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT format, uint32_t width,
         << gop_->Mode->FrameBufferSize << OutStream::endl;
 }
 
-auto Graphics::get_framebuffer() const -> std::pair<uint64_t, uint32_t> {
+auto Graphics::GetFrameBuffer() const -> std::pair<uint64_t, uint32_t> {
   return {gop_->Mode->FrameBufferBase, gop_->Mode->FrameBufferSize};
 }
 
-void Graphics::print_info() const {
+void Graphics::PrintInfo() const {
   debug << L"Current Mode: " << gop_->Mode->Mode << L", Version: "
         << OutStream::hex_x << gop_->Mode->Info->Version << L", Format: "
         << gop_->Mode->Info->PixelFormat << L", Horizontal: "
@@ -98,7 +98,7 @@ void Graphics::print_info() const {
     auto status = uefi_call_wrapper(gop_->QueryMode, 4, gop_, i,
                                     &mode_info_size, &mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"Graphics::print_info() QueryMode failed: " << status
+      debug << L"Graphics::PrintInfo() QueryMode failed: " << status
             << OutStream::endl;
       return;
     }
@@ -112,7 +112,7 @@ void Graphics::print_info() const {
 
     status = uefi_call_wrapper(gBS->FreePool, 1, mode_info);
     if (EFI_ERROR(status)) {
-      debug << L"Graphics::print_info() FreePool failed: " << status
+      debug << L"Graphics::PrintInfo() FreePool failed: " << status
             << OutStream::endl;
       return;
     }

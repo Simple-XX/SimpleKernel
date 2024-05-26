@@ -18,29 +18,29 @@
 
 Ns16550a::Ns16550a(uintptr_t dev_addr) : base_addr_(dev_addr) {
   // disable interrupt
-  write(kRegIER, 0x00);
+  Write(kRegIER, 0x00);
   // set baud rate
-  write(kRegLCR, 0x80);
-  write(kUartDLL, 0x03);
-  write(kUartDLM, 0x00);
+  Write(kRegLCR, 0x80);
+  Write(kUartDLL, 0x03);
+  Write(kUartDLM, 0x00);
   // set word length to 8-bits
-  write(kRegLCR, 0x03);
+  Write(kRegLCR, 0x03);
   // enable FIFOs
-  write(kRegFCR, 0x07);
+  Write(kRegFCR, 0x07);
   // enable receiver interrupts
-  write(kRegIER, 0x01);
+  Write(kRegIER, 0x01);
 }
 
-void Ns16550a::putc(uint8_t c) {
-  while ((read(kRegLSR) & (1 << 5)) == 0)
+void Ns16550a::PutChar(uint8_t c) {
+  while ((Read(kRegLSR) & (1 << 5)) == 0)
     ;
-  write(kRegTHR, c);
+  Write(kRegTHR, c);
 }
 
 volatile uint8_t* Ns16550a::Reg(uint8_t reg) {
   return (volatile uint8_t*)(base_addr_ + reg);
 }
 
-uint8_t Ns16550a::read(uint8_t reg) { return (*(Reg(reg))); }
+uint8_t Ns16550a::Read(uint8_t reg) { return (*(Reg(reg))); }
 
-void Ns16550a::write(uint8_t reg, uint8_t c) { (*Reg(reg)) = c; }
+void Ns16550a::Write(uint8_t reg, uint8_t c) { (*Reg(reg)) = c; }

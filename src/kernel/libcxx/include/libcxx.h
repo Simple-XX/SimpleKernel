@@ -1,7 +1,7 @@
 
 /**
- * @file libcxx.h
- * @brief libcxx 头文件
+ * @file LibCxxInit.h
+ * @brief LibCxxInit 头文件
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -22,14 +22,14 @@
 /**
  * @brief 初始化 c++ 全局对象
  */
-extern "C" void cpp_init();
+extern "C" void CppInit();
 
 /**
  * @brief 入口
- * @param  argc                   参数个数
- * @param  argv                   参数列表
+ * @param argc 参数个数
+ * @param argv 参数列表
  * @return int32_t                 正常返回 0
  */
-int32_t libcxx(uint32_t argc, uint8_t** argv);
+int32_t LibCxxInit(uint32_t argc, uint8_t** argv);
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_ */

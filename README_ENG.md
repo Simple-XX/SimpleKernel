@@ -37,10 +37,10 @@ This branch is the first branch of SImpleKernel. In this branch, the foundation 
       @startuml;
       uefi_shell->efi_main:boot.cpp;
       efi_main->_start:main.cpp;
-      _start->cpp_init:libcxx.cpp;
-      cpp_init->main:main.cpp;
-      main->arch_init:arch.cpp;
-      arch_init->main;
+    _start->CppInit:LibCxxInit.cpp;
+    CppInit->main:main.cpp;
+    main->ArchInit:arch.cpp;
+    ArchInit->main;
       main->main;
       @enduml
       '>
@@ -51,10 +51,10 @@ This branch is the first branch of SImpleKernel. In this branch, the foundation 
       @startuml;
       opensbi->_boot:boot.S;
       _boot->_start:main.cpp;
-      _start->cpp_init:libcxx.cpp;
-      cpp_init->main:main.cpp;
-      main->arch_init:arch_init.cpp;
-      arch_init->main;
+    _start->CppInit:LibCxxInit.cpp;
+    CppInit->main:main.cpp;
+    main->ArchInit:ArchInit.cpp;
+    ArchInit->main;
       main->main;
       @enduml
     '>

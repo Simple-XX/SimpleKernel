@@ -68,11 +68,11 @@
 │       │   ├── include                 // 
 │       │   │   └── libc.h              // 
 │       │   └── libc.c                  // 
-│       ├── libcxx                      // libcxx 目录
+│       ├── libcxx                      // LibCxxInit 目录
 │       │   ├── CMakeLists.txt          // 
 │       │   ├── include                 // 
-│       │   │   └── libcxx.h            // 
-│       │   └── libcxx.cpp              // 
+│       │   │   └── LibCxxInit.h            // 
+│       │   └── LibCxxInit.cpp              // 
 │       └── main.cpp                    // 内核入口
 ├── test                                // 测试目录
 │   ├── CMakeLists.txt                  // 
@@ -107,7 +107,7 @@
 2. arch 目录下存放了体系结构相关的代码，在有涉及到体系结构内容时应当将实现放在这里，向外提供统接口。
 3. driver 目录下是设备驱动。在内核开发初期，可以将驱动代码与内核一起编译，在后期应当提供独立文件。
 4. kernel 目录是内核的核心逻辑，内存管理、任务管理等。
-5. libc 与 libcxx 是 c/c++ 库的位置，提供内核可用的相关接口。
+5. libc 与 LibCxxInit 是 c/c++ 库的位置，提供内核可用的相关接口。
 
 ## 命名规范
 

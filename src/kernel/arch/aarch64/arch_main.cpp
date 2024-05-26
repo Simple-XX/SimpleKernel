@@ -22,7 +22,7 @@ extern "C" void _putchar(char character) {
   // sbi_debug_console_write_byte(character);
 }
 
-int32_t arch_init(uint32_t argc, uint8_t **argv) {
+int32_t ArchInit(uint32_t argc, uint8_t **argv) {
   (void)argc;
   (void)argv;
 

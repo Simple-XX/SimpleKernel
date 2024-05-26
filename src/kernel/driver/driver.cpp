@@ -16,7 +16,7 @@
 
 #include "driver.h"
 
-int32_t driver(uint32_t argc, uint8_t **argv) {
+int32_t Driver(uint32_t argc, uint8_t **argv) {
   (void)argc;
   (void)argv;
 

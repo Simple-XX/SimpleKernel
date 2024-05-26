@@ -66,16 +66,16 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   // 初始化 Graphics
   auto graphics = Graphics();
   // 打印图形信息
-  graphics.print_info();
+  graphics.PrintInfo();
   // 设置为 1920*1080
-  graphics.set_mode();
+  graphics.SetMode();
   // 初始化 Memory
   auto memory = Memory();
-  memory.print_info();
+  memory.PrintInfo();
   // 加载内核
   auto elf = Elf(KERNEL_NAME);
   //    kernel_addr = elf.load_kernel_image();
-  kernel_addr = elf.load();
+  kernel_addr = elf.Load();
   if (kernel_addr == 0) {
     debug << L"Failed to load kernel" << OutStream::endl;
     return EFI_LOAD_ERROR;
@@ -100,7 +100,7 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
     return status;
   }
 
-  auto framebuffer = graphics.get_framebuffer();
+  auto framebuffer = graphics.GetFrameBuffer();
 
   BootInfo boot_info = {};
   boot_info.framebuffer.base = framebuffer.first;

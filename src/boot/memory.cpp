@@ -17,7 +17,7 @@
 #include "load_elf.h"
 #include "out_stream.hpp"
 
-bool Memory::flush_desc() {
+bool Memory::FlushDesc() {
   memory_map_ =
       LibMemoryMap(&desc_count_, &map_key_, &desc_size_, &desc_version_);
   if (memory_map_ == nullptr) {
@@ -28,17 +28,17 @@ bool Memory::flush_desc() {
 }
 
 Memory::Memory() {
-  auto flush_desc_ret = flush_desc();
+  auto flush_desc_ret = FlushDesc();
   if (!flush_desc_ret) {
-    debug << L"Memory::Memory() flush_desc failed." << OutStream::endl;
+    debug << L"Memory::Memory() FlushDesc failed." << OutStream::endl;
     return;
   }
 }
 
-void Memory::print_info() {
-  auto flush_desc_ret = flush_desc();
+void Memory::PrintInfo() {
+  auto flush_desc_ret = FlushDesc();
   if (!flush_desc_ret) {
-    debug << L"Memory::print_info() flush_desc failed." << OutStream::endl;
+    debug << L"Memory::PrintInfo() FlushDesc failed." << OutStream::endl;
     return;
   }
 

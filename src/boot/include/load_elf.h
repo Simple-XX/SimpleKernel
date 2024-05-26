@@ -63,16 +63,16 @@ class Graphics {
    * @param width 宽度，默认为 1920
    * @param height 高度，默认为 1080
    */
-  void set_mode(
+  void SetMode(
       EFI_GRAPHICS_PIXEL_FORMAT format = PixelRedGreenBlueReserved8BitPerColor,
       uint32_t width = kDefaultWidth, uint32_t height = kDefaultHeight) const;
 
-  [[nodiscard]] auto get_framebuffer() const -> std::pair<uint64_t, uint32_t>;
+  [[nodiscard]] auto GetFrameBuffer() const -> std::pair<uint64_t, uint32_t>;
 
   /**
    * 输出图形信息
    */
-  void print_info() const;
+  void PrintInfo() const;
 
  private:
   /// @name 默认分辨率
@@ -110,7 +110,7 @@ class Memory {
   /**
    * 输出内存映射信息
    */
-  void print_info();
+  void PrintInfo();
 
  private:
   /// @name 内存映射信息
@@ -126,7 +126,7 @@ class Memory {
    * 更新内存映射信息
    * @return 失败返回 false
    */
-  bool flush_desc();
+  bool FlushDesc();
 };
 
 /**
@@ -157,13 +157,13 @@ class Elf {
    * 加载 elf 内核
    * @return 成功返回内核入口地址，失败返回 0
    */
-  [[nodiscard]] auto load_kernel_image() const -> uint64_t;
+  [[nodiscard]] auto LoadKernelImage() const -> uint64_t;
 
   /**
    * 将 elf 文件加载进内存
    * @return 成功返回内核入口地址，失败返回 0
    */
-  [[nodiscard]] auto load() const -> uintptr_t;
+  [[nodiscard]] auto Load() const -> uintptr_t;
 
  private:
   /// @name elf 文件相关
@@ -191,55 +191,55 @@ class Elf {
    * 获取文件大小
    * @return 文件大小
    */
-  [[nodiscard]] auto get_file_size() const -> size_t;
+  [[nodiscard]] auto GetFileSize() const -> size_t;
 
   /**
    * 检查 elf 标识
    * @return 失败返回 false
    */
-  [[nodiscard]] auto check_elf_identity() const -> bool;
+  [[nodiscard]] auto CheckElfIdentity() const -> bool;
 
   /**
    * 读取 elf 文件的 ehdr
    */
-  void get_ehdr();
+  void GetEhdr();
 
   /**
    * 输出 elf ehdr
    */
-  void print_ehdr() const;
+  void PrintEhdr() const;
 
   /**
    * 读取 elf 文件的 phdr
    */
-  void get_phdr();
+  void GetPhdr();
 
   /**
    * 输出 phdr
    */
-  void print_phdr() const;
+  void PrintPhdr() const;
 
   /**
    * 读取 elf 文件的 shdr
    */
-  void get_shdr();
+  void GetShdr();
 
   /**
    * 输出 shdr
    */
-  void print_shdr() const;
+  void PrintShdr() const;
 
   /**
    * 将 elf 段加载到内存
    * @param phdr 要加载的程序段 phdr
    */
-  [[nodiscard]] bool load_sections(const Elf64_Phdr &phdr) const;
+  [[nodiscard]] bool LoadSections(const Elf64_Phdr &phdr) const;
 
   /**
    * 加载程序段
    * @return 失败返回 false
    */
-  [[nodiscard]] bool load_program_sections() const;
+  [[nodiscard]] bool LoadProgramSections() const;
 };
 
 #endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_LOAD_ELF_H_ */

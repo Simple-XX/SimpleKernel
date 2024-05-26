@@ -37,7 +37,7 @@ class Ns16550a {
   ~Ns16550a() = default;
   /// @}
 
-  void putc(uint8_t c);
+  void PutChar(uint8_t c);
 
  private:
   /// read mode: Receive holding reg
@@ -68,9 +68,9 @@ class Ns16550a {
 
   inline volatile uint8_t* Reg(uint8_t reg);
 
-  inline uint8_t read(uint8_t reg);
+  inline uint8_t Read(uint8_t reg);
 
-  inline void write(uint8_t reg, uint8_t c);
+  inline void Write(uint8_t reg, uint8_t c);
 };
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_DRIVER_NS16550A_INCLUDE_NS16550A_H_ */

@@ -24,7 +24,7 @@ extern "C" void _putchar(char character) {
 }
 
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
-int32_t arch_init(uint32_t argc, uint8_t **argv) {
+int32_t ArchInit(uint32_t argc, uint8_t **argv) {
   printf("boot hart id: %d\n", argc);
   printf("dtb info addr: %p\n", argv);
 
@@ -33,20 +33,20 @@ int32_t arch_init(uint32_t argc, uint8_t **argv) {
   auto resource_mem = FDT_PARSER::resource_t();
   dtb_info.find_via_prefix("serial@", &resource_mem);
   auto uart = Ns16550a(resource_mem.mem.addr);
-  uart.putc('H');
-  uart.putc('e');
-  uart.putc('l');
-  uart.putc('l');
-  uart.putc('o');
-  uart.putc(' ');
-  uart.putc('u');
-  uart.putc('a');
-  uart.putc('r');
-  uart.putc('t');
-  uart.putc('!');
-  uart.putc('\n');
+  uart.PutChar('H');
+  uart.PutChar('e');
+  uart.PutChar('l');
+  uart.PutChar('l');
+  uart.PutChar('o');
+  uart.PutChar(' ');
+  uart.PutChar('u');
+  uart.PutChar('a');
+  uart.PutChar('r');
+  uart.PutChar('t');
+  uart.PutChar('!');
+  uart.PutChar('\n');
 
-  printf("hello arch_init\n");
+  printf("hello ArchInit\n");
 
   return 0;
 }

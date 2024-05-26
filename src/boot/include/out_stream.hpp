@@ -17,6 +17,7 @@
 #ifndef SIMPLEKERNEL_SRC_BOOT_INCLUDE_OUT_STREAM_HPP_
 #define SIMPLEKERNEL_SRC_BOOT_INCLUDE_OUT_STREAM_HPP_
 
+#include <cstdint>
 #include <cstdio>
 
 #ifdef __cplusplus
@@ -32,10 +33,10 @@ extern "C" {
 
 /**
  * 等待输入
- * @param _key 输入的按键
+ * @param key 输入的按键
  * @return efi 错误码
  */
-[[maybe_unused]] auto wait_for_input(EFI_INPUT_KEY *_key) -> EFI_STATUS;
+[[maybe_unused]] auto WaitForInput(EFI_INPUT_KEY *key) -> EFI_STATUS;
 
 /**
  * 输出流
@@ -62,12 +63,12 @@ class OutStream {
 
   /**
    * 输出类型
-   * @tparam _t 模板类型
+   * @tparam T 模板类型
    * @param val 数据
    * @return 输出流
    */
-  template <class _t>
-  inline auto operator<<(_t val) -> OutStream &;
+  template <class T>
+  inline auto operator<<(T val) -> OutStream &;
 
   /**
    * ‘<<’ 操作符重载
@@ -116,8 +117,8 @@ class OutStream {
 /// @name 输出流特化
 /// @{
 
-template <class _t>
-auto OutStream::operator<<(_t val) -> OutStream & {
+template <class T>
+auto OutStream::operator<<(T val) -> OutStream & {
   *this << (uint64_t)val;
   return *this;
 }

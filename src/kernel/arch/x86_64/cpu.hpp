@@ -26,7 +26,7 @@ class Cpu {
    * @param  port           要读的端口
    * @return uint8_t         读取到的数据
    */
-  static inline uint8_t inb(const uint32_t port) {
+  static inline uint8_t InByte(const uint32_t port) {
     uint8_t data;
     __asm__ __volatile__("inb %1, %0" : "=a"(data) : "dN"(port));
     return data;
@@ -37,7 +37,7 @@ class Cpu {
    * @param  port           要读的端口
    * @return uint16_t        读取到的数据
    */
-  static inline uint16_t inw(const uint32_t port) {
+  static inline uint16_t InWord(const uint32_t port) {
     uint16_t data;
     __asm__ __volatile__("inw %1, %0" : "=a"(data) : "dN"(port));
     return data;
@@ -48,7 +48,7 @@ class Cpu {
    * @param  port           要读的端口
    * @return uint32_t        读取到的数据
    */
-  static inline uint32_t inl(const uint32_t port) {
+  static inline uint32_t InLong(const uint32_t port) {
     uint32_t data;
     __asm__ __volatile__("inl %1, %0" : "=a"(data) : "dN"(port));
     return data;
@@ -59,7 +59,7 @@ class Cpu {
    * @param  port           要写的端口
    * @param  data           要写的数据
    */
-  static inline void outb(const uint32_t port, const uint8_t data) {
+  static inline void OutByte(const uint32_t port, const uint8_t data) {
     __asm__ __volatile__("outb %1, %0" : : "dN"(port), "a"(data));
   }
 
@@ -68,7 +68,7 @@ class Cpu {
    * @param  port           要写的端口
    * @param  data           要写的数据
    */
-  static inline void outw(const uint32_t port, const uint16_t data) {
+  static inline void OutWord(const uint32_t port, const uint16_t data) {
     __asm__ __volatile__("outw %1, %0" : : "dN"(port), "a"(data));
   }
 
@@ -77,7 +77,7 @@ class Cpu {
    * @param  port           要写的端口
    * @param  data           要写的数据
    */
-  static inline void outl(const uint32_t port, const uint32_t data) {
+  static inline void OutLong(const uint32_t port, const uint32_t data) {
     __asm__ __volatile__("outl %1, %0" : : "dN"(port), "a"(data));
   }
 
@@ -87,31 +87,31 @@ class Cpu {
    public:
     explicit Serial(uint32_t port) : port_(port) {
       // Disable all interrupts
-      outb(port_ + 1, 0x00);
+      OutByte(port_ + 1, 0x00);
       // Enable DLAB (set baud rate divisor)
-      outb(port_ + 3, 0x80);
+      OutByte(port_ + 3, 0x80);
       // Set divisor to 3 (lo byte) 38400 baud
-      outb(port_ + 0, 0x03);
+      OutByte(port_ + 0, 0x03);
       // (hi byte)
-      outb(port_ + 1, 0x00);
+      OutByte(port_ + 1, 0x00);
       // 8 bits, no parity, one stop bit
-      outb(port_ + 3, 0x03);
+      OutByte(port_ + 3, 0x03);
       // Enable FIFO, clear them, with 14-byte threshold
-      outb(port_ + 2, 0xC7);
+      OutByte(port_ + 2, 0xC7);
       // IRQs enabled, RTS/DSR set
-      outb(port_ + 4, 0x0B);
+      OutByte(port_ + 4, 0x0B);
       // Set in loopback mode, test the serial chip
-      outb(port_ + 4, 0x1E);
+      OutByte(port_ + 4, 0x1E);
       // Test serial chip (send byte 0xAE and check if serial returns same byte)
-      outb(port_ + 0, 0xAE);
+      OutByte(port_ + 0, 0xAE);
       // Check if serial is faulty (i.e: not same byte as sent)
-      if (inb(port_ + 0) != 0xAE) {
+      if (InByte(port_ + 0) != 0xAE) {
         /// @todo 失败处理
       }
 
       // If serial is not faulty set it in normal operation mode (not-loopback
       // with IRQs enabled and OUT#1 and OUT#2 bits enabled)
-      outb(port_ + 4, 0x0F);
+      OutByte(port_ + 4, 0x0F);
     }
 
     ~Serial() = default;
@@ -129,22 +129,22 @@ class Cpu {
      * @brief  读一个字节
      * @return uint8_t         读取到的数据
      */
-    [[nodiscard]] auto read() const -> uint8_t {
-      while (!serial_received()) {
+    [[nodiscard]] auto Read() const -> uint8_t {
+      while (!SerialReceived()) {
         ;
       }
-      return inb(port_);
+      return InByte(port_);
     }
 
     /**
      * @brief  写一个字节
      * @param  c              要写的数据
      */
-    void write(uint8_t c) const {
-      while (!is_transmit_empty()) {
+    void Write(uint8_t c) const {
+      while (!IsTransmitEmpty()) {
         ;
       }
-      outb(port_, c);
+      OutByte(port_, c);
     }
 
    private:
@@ -155,8 +155,8 @@ class Cpu {
      * @return true
      * @return false
      */
-    [[nodiscard]] auto serial_received() const -> bool {
-      return inb(port_ + 5) & 1;
+    [[nodiscard]] auto SerialReceived() const -> bool {
+      return InByte(port_ + 5) & 1;
     }
 
     /**
@@ -164,8 +164,8 @@ class Cpu {
      * @return true
      * @return false
      */
-    [[nodiscard]] auto is_transmit_empty() const -> bool {
-      return inb(port_ + 5) & 0x20;
+    [[nodiscard]] auto IsTransmitEmpty() const -> bool {
+      return InByte(port_ + 5) & 0x20;
     }
   };
 };

@@ -1,7 +1,7 @@
 
 /**
- * @file libcxx.cpp
- * @brief libcxx cpp
+ * @file LibCxxInit.cpp
+ * @brief LibCxxInit cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -23,7 +23,7 @@ typedef void (*ctor_t)(void);
 extern ctor_t __init_array_start[];
 extern ctor_t __init_array_end[];
 
-void cpp_init(void) {
+void CppInit(void) {
   for (auto ctor = __init_array_start; ctor < __init_array_end; ctor++) {
     /// @todo x86_64 crashed
     (*ctor)();
@@ -31,7 +31,7 @@ void cpp_init(void) {
 }
 };
 
-int32_t libcxx(uint32_t argc, uint8_t** argv) {
+int32_t LibCxxInit(uint32_t argc, uint8_t** argv) {
   (void)argc;
   (void)argv;
 

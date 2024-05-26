@@ -28,8 +28,8 @@ extern "C" void _start(int argc, char** argv);
 
 /**
  * @brief 内核入口
- * @param  argc                   参数个数
- * @param  argv                   参数列表
+ * @param argc 参数个数
+ * @param argv 参数列表
  * @return int                     正常返回 0
  */
 int main(int argc, char** argv);

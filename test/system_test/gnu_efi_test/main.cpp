@@ -51,7 +51,7 @@ int main(int _argc, char **_argv) {
 
   boot_info_t boot_info = *reinterpret_cast<boot_info_t *>(_argv[0]);
   printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
-  fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
+  Fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
   printf("Hello Test\n");
 
   // 进入死循环

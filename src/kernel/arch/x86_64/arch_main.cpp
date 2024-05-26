@@ -21,13 +21,13 @@
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {
   auto serial = Cpu::Serial(Cpu::kCom1);
-  serial.write(character);
+  serial.Write(character);
 }
 
 static const int kPixelWidth = 4;
 static const int kPitch = 800 * kPixelWidth;
 
-static void fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
+static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
                      uint8_t w, uint8_t h) {
   unsigned char *where = vram;
   int i, j;
@@ -43,7 +43,7 @@ static void fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
   }
 }
 
-int32_t arch_init(uint32_t argc, uint8_t **argv) {
+int32_t ArchInit(uint32_t argc, uint8_t **argv) {
   if (argc != 1) {
     printf("argc != 1 [%d]\n", argc);
     return -1;
@@ -52,8 +52,8 @@ int32_t arch_init(uint32_t argc, uint8_t **argv) {
   BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv[0]);
   printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
 
-  fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
-  printf("hello arch_init\n");
+  Fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
+  printf("hello ArchInit\n");
 
   // static auto serial = Cpu::Serial(Cpu::COM1);
   // serial.write('!');

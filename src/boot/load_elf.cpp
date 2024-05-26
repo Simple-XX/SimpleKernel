@@ -31,7 +31,7 @@ namespace {
  * @param src 输入
  * @return 字符数量
  */
-auto char2wchar(wchar_t *dst, const char *src) -> size_t {
+auto Char2Wchar(wchar_t *dst, const char *src) -> size_t {
   size_t idx = 0;
   while (src[idx] != '\0') {
     dst[idx] = src[idx];
@@ -79,7 +79,7 @@ Elf::Elf(wchar_t *kernel_image_filename) {
   }
 
   // 获取 elf 文件大小
-  elf_file_size_ = get_file_size();
+  elf_file_size_ = GetFileSize();
   debug << L"Kernel file size: " << elf_file_size_ << OutStream::endl;
 
   // 分配 elf 文件缓存
@@ -103,21 +103,21 @@ Elf::Elf(wchar_t *kernel_image_filename) {
                              elf_file_size_);
 
   // 检查 elf 头数据
-  auto check_elf_identity_ret = check_elf_identity();
+  auto check_elf_identity_ret = CheckElfIdentity();
   if (!check_elf_identity_ret) {
     debug << L"Elf::Elf NOT valid ELF file" << OutStream::endl;
     return;
   }
 
   // 读取 ehdr
-  get_ehdr();
-  print_ehdr();
+  GetEhdr();
+  PrintEhdr();
   // 读取 phdr
-  get_phdr();
-  print_phdr();
+  GetPhdr();
+  PrintPhdr();
   // 读取 shdr
-  get_shdr();
-  print_shdr();
+  GetShdr();
+  PrintShdr();
 }
 
 Elf::~Elf() {
@@ -131,7 +131,7 @@ Elf::~Elf() {
   /// @note elf_file_buffer 不会被释放
 }
 
-auto Elf::load_kernel_image() const -> uint64_t {
+auto Elf::LoadKernelImage() const -> uint64_t {
   uintptr_t image_base = 0;
   uintptr_t image_begin = 0;
 
@@ -153,7 +153,7 @@ auto Elf::load_kernel_image() const -> uint64_t {
       uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages, EfiLoaderCode,
                         section_page_count, &image_base);
   if (EFI_ERROR(status)) {
-    debug << L"Elf::load_kernel_image() AllocatePages failed: " << status
+    debug << L"Elf::LoadKernelImage() AllocatePages failed: " << status
           << OutStream::endl;
     return 0;
   }
@@ -165,14 +165,14 @@ auto Elf::load_kernel_image() const -> uint64_t {
     memcpy((void *)(image_base + i.p_vaddr), file_.data() + i.p_offset,
            i.p_memsz);
   }
-  debug << L"load_kernel_image: " << OutStream::hex_X << image_base << L" "
+  debug << L"LoadKernelImage: " << OutStream::hex_X << image_base << L" "
         << OutStream::hex_X << ehdr_.e_entry << L" " << OutStream::hex_X
         << image_begin << OutStream::endl;
 
   return image_base + ehdr_.e_entry - image_begin;
 }
 
-auto Elf::load() const -> uintptr_t {
+auto Elf::Load() const -> uintptr_t {
   // 记录 AllocatePages 分配出的物理地址
   uintptr_t image_base = 0;
   // 计算需要的内存页
@@ -196,14 +196,14 @@ auto Elf::load() const -> uintptr_t {
   return image_base + ehdr_.e_entry;
 }
 
-auto Elf::get_file_size() const -> size_t {
+auto Elf::GetFileSize() const -> size_t {
   // 获取 elf 文件大小
   auto *elf_file_info = LibFileInfo(elf_);
   auto file_size = elf_file_info->FileSize;
   return file_size;
 }
 
-auto Elf::check_elf_identity() const -> bool {
+auto Elf::CheckElfIdentity() const -> bool {
   if ((file_[EI_MAG0] != ELFMAG0) || (file_[EI_MAG1] != ELFMAG1) ||
       (file_[EI_MAG2] != ELFMAG2) || (file_[EI_MAG3] != ELFMAG3)) {
     debug << L"Fatal Error: Invalid ELF header" << OutStream::endl;
@@ -222,11 +222,11 @@ auto Elf::check_elf_identity() const -> bool {
   return true;
 }
 
-void Elf::get_ehdr() {
+void Elf::GetEhdr() {
   ehdr_ = *reinterpret_cast<const Elf64_Ehdr *>(file_.data());
 }
 
-void Elf::print_ehdr() const {
+void Elf::PrintEhdr() const {
   debug << L"  Magic:    ";
   for (auto idx : ehdr_.e_ident) {
     debug << OutStream::hex_x << idx << L" ";
@@ -383,13 +383,13 @@ void Elf::print_ehdr() const {
         << OutStream::endl;
 }
 
-void Elf::get_phdr() {
+void Elf::GetPhdr() {
   phdr_ = std::span<Elf64_Phdr>(
       reinterpret_cast<Elf64_Phdr *>(file_.data() + ehdr_.e_phoff),
       ehdr_.e_phnum);
 }
 
-void Elf::print_phdr() const {
+void Elf::PrintPhdr() const {
   debug << L"\nProgram Headers:" << OutStream::endl;
   debug << L"  "
            L"Type\t\tOffset\t\tVirtAddr\tPhysAddr\tFileSiz\t\tMemSiz\t\tFlags"
@@ -524,7 +524,7 @@ void Elf::print_phdr() const {
   }
 }
 
-void Elf::get_shdr() {
+void Elf::GetShdr() {
   shdr_ = std::span<Elf64_Shdr>(
       reinterpret_cast<Elf64_Shdr *>(file_.data() + ehdr_.e_shoff),
       ehdr_.e_shnum);
@@ -534,7 +534,7 @@ void Elf::get_shdr() {
          shdr_[ehdr_.e_shstrndx].sh_size);
 }
 
-void Elf::print_shdr() const {
+void Elf::PrintShdr() const {
   debug << L"\nSection Headers:" << OutStream::endl;
   debug << L" [Nr] "
            L"Name\t\t\tType\t\tAddress\t\tOffset\t\tSize\t\tEntSize\t\tFl"
@@ -550,7 +550,7 @@ void Elf::print_shdr() const {
 
     std::array<wchar_t, kSectionBufferSize> buf = {0};
     auto char2wchar_ret =
-        char2wchar(buf.data(), reinterpret_cast<const char *>(
+        Char2Wchar(buf.data(), reinterpret_cast<const char *>(
                                    shstrtab_buf_.data() + shdr_[i].sh_name));
     debug << (const wchar_t *)buf.data() << L"\t";
 
@@ -810,7 +810,7 @@ void Elf::print_shdr() const {
   }
 }
 
-bool Elf::load_sections(const Elf64_Phdr &phdr) const {
+bool Elf::LoadSections(const Elf64_Phdr &phdr) const {
   EFI_STATUS status = EFI_SUCCESS;
   void *data = nullptr;
   // 计算使用的内存页数
@@ -819,7 +819,7 @@ bool Elf::load_sections(const Elf64_Phdr &phdr) const {
   // 设置文件偏移到 p_offset
   status = uefi_call_wrapper(elf_->SetPosition, 2, elf_, phdr.p_offset);
   if (EFI_ERROR(status)) {
-    debug << L"Elf::load_sections SetPosition failed: " << status
+    debug << L"Elf::LoadSections SetPosition failed: " << status
           << OutStream::endl;
     return false;
   }
@@ -832,7 +832,7 @@ bool Elf::load_sections(const Elf64_Phdr &phdr) const {
   debug << L"phdr.p_paddr: [" << status << L"] [" << section_page_count << L"] "
         << OutStream::hex_X << aaa << OutStream::endl;
   if (EFI_ERROR(status)) {
-    debug << L"Elf::load_sections AllocatePages AllocateAddress failed: "
+    debug << L"Elf::LoadSections AllocatePages AllocateAddress failed: "
           << status << OutStream::endl;
     return false;
   }
@@ -843,7 +843,7 @@ bool Elf::load_sections(const Elf64_Phdr &phdr) const {
     status = uefi_call_wrapper(gBS->AllocatePool, 3, EfiLoaderCode,
                                buffer_read_size, (void **)&data);
     if (EFI_ERROR(status)) {
-      debug << L"Elf::load_sections AllocatePool failed: " << status
+      debug << L"Elf::LoadSections AllocatePool failed: " << status
             << OutStream::endl;
       return false;
     }
@@ -851,7 +851,7 @@ bool Elf::load_sections(const Elf64_Phdr &phdr) const {
     status =
         uefi_call_wrapper(elf_->Read, 3, elf_, &buffer_read_size, (void *)data);
     if (EFI_ERROR(status)) {
-      debug << L"Elf::load_sections Read failed: " << status << OutStream::endl;
+      debug << L"Elf::LoadSections Read failed: " << status << OutStream::endl;
       return false;
     }
 
@@ -863,7 +863,7 @@ bool Elf::load_sections(const Elf64_Phdr &phdr) const {
     // 释放 program_data
     status = uefi_call_wrapper(gBS->FreePool, 1, data);
     if (EFI_ERROR(status)) {
-      debug << L"Elf::load_sections FreePool failed: " << status
+      debug << L"Elf::LoadSections FreePool failed: " << status
             << OutStream::endl;
       return false;
     }
@@ -884,14 +884,14 @@ bool Elf::load_sections(const Elf64_Phdr &phdr) const {
   return true;
 }
 
-bool Elf::load_program_sections() const {
+bool Elf::LoadProgramSections() const {
   for (uint64_t i = 0; i < ehdr_.e_phnum; i++) {
     if (phdr_[i].p_type != PT_LOAD) {
       continue;
     }
-    auto load_sections_ret = load_sections(phdr_[i]);
+    auto load_sections_ret = LoadSections(phdr_[i]);
     if (!load_sections_ret) {
-      debug << L"Elf::load_program_sections() load_sections failed " << i
+      debug << L"Elf::LoadProgramSections() LoadSections failed " << i
             << OutStream::endl;
       return false;
     }

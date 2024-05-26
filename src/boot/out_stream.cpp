@@ -16,10 +16,10 @@
 
 #include "out_stream.hpp"
 
-[[maybe_unused]] auto wait_for_input(EFI_INPUT_KEY *key) -> EFI_STATUS {
+[[maybe_unused]] auto WaitForInput(EFI_INPUT_KEY *_key) -> EFI_STATUS {
   EFI_STATUS status = EFI_SUCCESS;
   do {
-    status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, key);
+    status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, _key);
   } while (EFI_NOT_READY == status);
 
   return status;
