@@ -19,8 +19,8 @@
 
 #include <cstdint>
 
-struct boot_info_t {
-  struct framebuffer_t {
+struct BootInfo {
+  struct FrameBuffer {
     uint64_t base;
     uint32_t size;
     uint32_t width;
@@ -30,7 +30,7 @@ struct boot_info_t {
     uint8_t type;
     uint8_t reserved;
   } framebuffer;
-  struct memory_map_t {
+  struct MemoryMap {
     uint64_t base;
     uint64_t length;
     uint32_t type;

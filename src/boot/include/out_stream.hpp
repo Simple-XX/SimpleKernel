@@ -101,7 +101,7 @@ class OutStream {
   /**
    * 输出流模式枚举
    */
-  enum mode_t : uint8_t {
+  enum Mode : uint8_t {
     /// 16 进制 %x
     x,
     /// 16 进制 %X
@@ -110,7 +110,7 @@ class OutStream {
     d,
   };
   /// 输出流模式
-  mode_t mode;
+  Mode mode_;
 };
 
 /// @name 输出流特化
@@ -124,67 +124,67 @@ auto OutStream::operator<<(_t _val) -> OutStream & {
 
 template <>
 inline auto OutStream::operator<<(int32_t _val) -> OutStream & {
-  if (mode == d) {
+  if (mode_ == d) {
     Print(L"%d", _val);
-  } else if (mode == x) {
+  } else if (mode_ == x) {
     Print(L"0x%x", _val);
-  } else if (mode == X) {
+  } else if (mode_ == X) {
     Print(L"0x%X", _val);
   }
-  mode = d;
+  mode_ = d;
   return *this;
 }
 
 template <>
 inline auto OutStream::operator<<(uint32_t _val) -> OutStream & {
-  if (mode == d) {
+  if (mode_ == d) {
     Print(L"%d", _val);
-  } else if (mode == x) {
+  } else if (mode_ == x) {
     Print(L"0x%x", _val);
-  } else if (mode == X) {
+  } else if (mode_ == X) {
     Print(L"0x%X", _val);
   }
-  mode = d;
+  mode_ = d;
   return *this;
 }
 
 template <>
 inline auto OutStream::operator<<(int64_t _val) -> OutStream & {
-  if (mode == d) {
+  if (mode_ == d) {
     Print(L"%ld", _val);
-  } else if (mode == x) {
+  } else if (mode_ == x) {
     Print(L"0x%x", _val);
-  } else if (mode == X) {
+  } else if (mode_ == X) {
     Print(L"0x%X", _val);
   }
-  mode = d;
+  mode_ = d;
   return *this;
 }
 
 template <>
 inline auto OutStream::operator<<(uint64_t _val) -> OutStream & {
-  if (mode == d) {
+  if (mode_ == d) {
     Print(L"%ld", _val);
-  } else if (mode == x) {
+  } else if (mode_ == x) {
     Print(L"0x%x", _val);
-  } else if (mode == X) {
+  } else if (mode_ == X) {
     Print(L"0x%X", _val);
   }
-  mode = d;
+  mode_ = d;
   return *this;
 }
 
 template <>
 inline auto OutStream::operator<<(wchar_t _val) -> OutStream & {
   Print(L"%c", _val);
-  mode = d;
+  mode_ = d;
   return *this;
 }
 
 template <>
 inline auto OutStream::operator<<(const wchar_t *_val) -> OutStream & {
   Print(L"%s", _val);
-  mode = d;
+  mode_ = d;
   return *this;
 }
 

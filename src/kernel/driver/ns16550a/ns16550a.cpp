@@ -16,7 +16,7 @@
 
 #include "ns16550a.h"
 
-Ns16550a::Ns16550a(uintptr_t _dev_addr) : base_addr(_dev_addr) {
+Ns16550a::Ns16550a(uintptr_t _dev_addr) : base_addr_(_dev_addr) {
   // disable interrupt
   write(REG_IER, 0x00);
   // set baud rate
@@ -32,12 +32,13 @@ Ns16550a::Ns16550a(uintptr_t _dev_addr) : base_addr(_dev_addr) {
 }
 
 void Ns16550a::putc(uint8_t _c) {
-  while ((read(REG_LSR) & (1 << 5)) == 0);
+  while ((read(REG_LSR) & (1 << 5)) == 0)
+    ;
   write(REG_THR, _c);
 }
 
 volatile uint8_t* Ns16550a::Reg(uint8_t _reg) {
-  return (volatile uint8_t*)(base_addr + _reg);
+  return (volatile uint8_t*)(base_addr_ + _reg);
 }
 
 uint8_t Ns16550a::read(uint8_t _reg) { return (*(Reg(_reg))); }

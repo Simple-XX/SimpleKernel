@@ -64,7 +64,7 @@ class Ns16550a {
   /// MSB of divisor Latch when enabled
   static constexpr const uint8_t UART_DLM = 1;
 
-  uintptr_t base_addr;
+  uintptr_t base_addr_;
 
   inline volatile uint8_t* Reg(uint8_t _reg);
 

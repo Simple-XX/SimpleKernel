@@ -30,12 +30,12 @@ auto OutStream::operator<<(OutStream &(*_ostream)(OutStream &)) -> OutStream & {
 }
 
 auto OutStream::hex_x(OutStream &_ostream) -> OutStream & {
-  _ostream.mode = OutStream::x;
+  _ostream.mode_ = OutStream::x;
   return _ostream;
 }
 
 auto OutStream::hex_X(OutStream &_ostream) -> OutStream & {
-  _ostream.mode = OutStream::X;
+  _ostream.mode_ = OutStream::X;
   return _ostream;
 }
 

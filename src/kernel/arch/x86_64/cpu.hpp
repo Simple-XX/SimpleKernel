@@ -85,33 +85,33 @@ class Cpu {
   static constexpr const uint32_t COM1 = 0x3F8;
   class Serial {
    public:
-    explicit Serial(uint32_t _port) : port(_port) {
+    explicit Serial(uint32_t _port) : port_(_port) {
       // Disable all interrupts
-      outb(port + 1, 0x00);
+      outb(port_ + 1, 0x00);
       // Enable DLAB (set baud rate divisor)
-      outb(port + 3, 0x80);
+      outb(port_ + 3, 0x80);
       // Set divisor to 3 (lo byte) 38400 baud
-      outb(port + 0, 0x03);
+      outb(port_ + 0, 0x03);
       // (hi byte)
-      outb(port + 1, 0x00);
+      outb(port_ + 1, 0x00);
       // 8 bits, no parity, one stop bit
-      outb(port + 3, 0x03);
+      outb(port_ + 3, 0x03);
       // Enable FIFO, clear them, with 14-byte threshold
-      outb(port + 2, 0xC7);
+      outb(port_ + 2, 0xC7);
       // IRQs enabled, RTS/DSR set
-      outb(port + 4, 0x0B);
+      outb(port_ + 4, 0x0B);
       // Set in loopback mode, test the serial chip
-      outb(port + 4, 0x1E);
+      outb(port_ + 4, 0x1E);
       // Test serial chip (send byte 0xAE and check if serial returns same byte)
-      outb(port + 0, 0xAE);
+      outb(port_ + 0, 0xAE);
       // Check if serial is faulty (i.e: not same byte as sent)
-      if (inb(port + 0) != 0xAE) {
+      if (inb(port_ + 0) != 0xAE) {
         /// @todo 失败处理
       }
 
       // If serial is not faulty set it in normal operation mode (not-loopback
       // with IRQs enabled and OUT#1 and OUT#2 bits enabled)
-      outb(port + 4, 0x0F);
+      outb(port_ + 4, 0x0F);
     }
 
     ~Serial() = default;
@@ -133,7 +133,7 @@ class Cpu {
       while (!serial_received()) {
         ;
       }
-      return inb(port);
+      return inb(port_);
     }
 
     /**
@@ -144,11 +144,11 @@ class Cpu {
       while (!is_transmit_empty()) {
         ;
       }
-      outb(port, _c);
+      outb(port_, _c);
     }
 
    private:
-    uint32_t port;
+    uint32_t port_;
 
     /**
      * @brief 串口是否接收到数据
@@ -156,7 +156,7 @@ class Cpu {
      * @return false
      */
     [[nodiscard]] auto serial_received() const -> bool {
-      return inb(port + 5) & 1;
+      return inb(port_ + 5) & 1;
     }
 
     /**
@@ -165,7 +165,7 @@ class Cpu {
      * @return false
      */
     [[nodiscard]] auto is_transmit_empty() const -> bool {
-      return inb(port + 5) & 0x20;
+      return inb(port_ + 5) & 0x20;
     }
   };
 };

@@ -49,7 +49,7 @@ int32_t arch_init(uint32_t _argc, uint8_t **_argv) {
     return -1;
   }
 
-  boot_info_t boot_info = *reinterpret_cast<boot_info_t *>(_argv[0]);
+  BootInfo boot_info = *reinterpret_cast<BootInfo *>(_argv[0]);
   printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
 
   fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);

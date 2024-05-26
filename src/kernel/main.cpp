@@ -25,11 +25,11 @@
 
 class Aaa {
  public:
-  int a = 233;
+  int a_ = 233;
 
-  Aaa() : a(666) { printf("Aaa init\n"); }
+  Aaa() : a_(666) { printf("Aaa init\n"); }
 
-  Aaa(int _a) : a(_a) { printf("Aaa init %d\n", _a); }
+  Aaa(int _a) : a_(_a) { printf("Aaa init %d\n", _a); }
 };
 
 auto class_a = Aaa(2);
@@ -42,7 +42,7 @@ int main(int _argc, char** _argv) {
   [[maybe_unused]] auto arch_init_ret =
       arch_init(_argc, reinterpret_cast<uint8_t**>(_argv));
 
-  printf("class_a.a: %d\n", class_a.a);
+  printf("class_a.a: %d\n", class_a.a_);
   printf("&class_a: %p\n", &class_a);
   printf("&class_a2: %p\n", &class_a2);
   printf("&i32: %p\n", &i32);

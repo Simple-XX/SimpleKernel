@@ -19,13 +19,13 @@
 
 Graphics::Graphics() {
   auto status = LibLocateProtocol(&GraphicsOutputProtocol,
-                                  reinterpret_cast<void **>(&gop));
+                                  reinterpret_cast<void **>(&gop_));
   if (EFI_ERROR(status)) {
     debug << L"Graphics::Graphics() Could not locate GOP: " << status
           << OutStream::endl;
     return;
   }
-  if (gop == nullptr) {
+  if (gop_ == nullptr) {
     debug << L"Graphics::Graphics() LibLocateProtocol(GraphicsOutputProtocol, "
              L"&gop) returned "
           << status << " but gop is nullptr" << OutStream::endl;
@@ -37,10 +37,10 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
                         uint32_t _height) const {
   EFI_STATUS status = EFI_SUCCESS;
 
-  for (uint32_t i = 0; i < gop->Mode->MaxMode; i++) {
+  for (uint32_t i = 0; i < gop_->Mode->MaxMode; i++) {
     EFI_GRAPHICS_OUTPUT_MODE_INFORMATION *mode_info = nullptr;
     uint64_t mode_info_size = 0;
-    status = uefi_call_wrapper(gop->QueryMode, 4, gop, i, &mode_info_size,
+    status = uefi_call_wrapper(gop_->QueryMode, 4, gop_, i, &mode_info_size,
                                &mode_info);
     if (EFI_ERROR(status)) {
       debug << L"Graphics::set_mode QueryMode failed: " << status
@@ -51,7 +51,7 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
     if ((mode_info->PixelFormat == _format) &&
         (mode_info->HorizontalResolution == _width) &&
         (mode_info->VerticalResolution == _height)) {
-      status = uefi_call_wrapper(gop->SetMode, 2, gop, i);
+      status = uefi_call_wrapper(gop_->SetMode, 2, gop_, i);
       if (EFI_ERROR(status)) {
         debug << L"Graphics::set_mode SetMode failed: " << status
               << OutStream::endl;
@@ -66,37 +66,37 @@ void Graphics::set_mode(EFI_GRAPHICS_PIXEL_FORMAT _format, uint32_t _width,
     }
   }
 
-  debug << L"Current Mode: " << gop->Mode->Mode << L", Version: "
-        << OutStream::hex_x << gop->Mode->Info->Version << L", Format: "
-        << gop->Mode->Info->PixelFormat << L", Horizontal: "
-        << gop->Mode->Info->HorizontalResolution << L", Vertical: "
-        << gop->Mode->Info->VerticalResolution << L", ScanLine: "
-        << gop->Mode->Info->PixelsPerScanLine << L", FrameBufferBase: "
-        << OutStream::hex_X << gop->Mode->FrameBufferBase
+  debug << L"Current Mode: " << gop_->Mode->Mode << L", Version: "
+        << OutStream::hex_x << gop_->Mode->Info->Version << L", Format: "
+        << gop_->Mode->Info->PixelFormat << L", Horizontal: "
+        << gop_->Mode->Info->HorizontalResolution << L", Vertical: "
+        << gop_->Mode->Info->VerticalResolution << L", ScanLine: "
+        << gop_->Mode->Info->PixelsPerScanLine << L", FrameBufferBase: "
+        << OutStream::hex_X << gop_->Mode->FrameBufferBase
         << L", FrameBufferSize: " << OutStream::hex_X
-        << gop->Mode->FrameBufferSize << OutStream::endl;
+        << gop_->Mode->FrameBufferSize << OutStream::endl;
 }
 
 auto Graphics::get_framebuffer() const -> std::pair<uint64_t, uint32_t> {
-  return {gop->Mode->FrameBufferBase, gop->Mode->FrameBufferSize};
+  return {gop_->Mode->FrameBufferBase, gop_->Mode->FrameBufferSize};
 }
 
 void Graphics::print_info() const {
-  debug << L"Current Mode: " << gop->Mode->Mode << L", Version: "
-        << OutStream::hex_x << gop->Mode->Info->Version << L", Format: "
-        << gop->Mode->Info->PixelFormat << L", Horizontal: "
-        << gop->Mode->Info->HorizontalResolution << L", Vertical: "
-        << gop->Mode->Info->VerticalResolution << L", ScanLine: "
-        << gop->Mode->Info->PixelsPerScanLine << L", FrameBufferBase: "
-        << OutStream::hex_X << gop->Mode->FrameBufferBase
+  debug << L"Current Mode: " << gop_->Mode->Mode << L", Version: "
+        << OutStream::hex_x << gop_->Mode->Info->Version << L", Format: "
+        << gop_->Mode->Info->PixelFormat << L", Horizontal: "
+        << gop_->Mode->Info->HorizontalResolution << L", Vertical: "
+        << gop_->Mode->Info->VerticalResolution << L", ScanLine: "
+        << gop_->Mode->Info->PixelsPerScanLine << L", FrameBufferBase: "
+        << OutStream::hex_X << gop_->Mode->FrameBufferBase
         << L", FrameBufferSize: " << OutStream::hex_X
-        << gop->Mode->FrameBufferSize << OutStream::endl;
+        << gop_->Mode->FrameBufferSize << OutStream::endl;
 
-  for (uint32_t i = 0; i < gop->Mode->MaxMode; i++) {
+  for (uint32_t i = 0; i < gop_->Mode->MaxMode; i++) {
     EFI_GRAPHICS_OUTPUT_MODE_INFORMATION *mode_info = nullptr;
     uint64_t mode_info_size = 0;
-    auto status = uefi_call_wrapper(gop->QueryMode, 4, gop, i, &mode_info_size,
-                                    &mode_info);
+    auto status = uefi_call_wrapper(gop_->QueryMode, 4, gop_, i,
+                                    &mode_info_size, &mode_info);
     if (EFI_ERROR(status)) {
       debug << L"Graphics::print_info() QueryMode failed: " << status
             << OutStream::endl;
@@ -104,11 +104,11 @@ void Graphics::print_info() const {
     }
 
     debug << L"Mode: " << i << L", Version: " << OutStream::hex_x
-          << gop->Mode->Info->Version << L", Format: "
-          << gop->Mode->Info->PixelFormat << L", Horizontal: "
-          << gop->Mode->Info->HorizontalResolution << L", Vertical: "
-          << gop->Mode->Info->VerticalResolution << L", ScanLine: "
-          << gop->Mode->Info->PixelsPerScanLine << OutStream::endl;
+          << gop_->Mode->Info->Version << L", Format: "
+          << gop_->Mode->Info->PixelFormat << L", Horizontal: "
+          << gop_->Mode->Info->HorizontalResolution << L", Vertical: "
+          << gop_->Mode->Info->VerticalResolution << L", ScanLine: "
+          << gop_->Mode->Info->PixelsPerScanLine << OutStream::endl;
 
     status = uefi_call_wrapper(gBS->FreePool, 1, mode_info);
     if (EFI_ERROR(status)) {

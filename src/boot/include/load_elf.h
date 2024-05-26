@@ -81,7 +81,7 @@ class Graphics {
   static constexpr const uint32_t DEFAULT_HEIGHT = 600;
   /// @}
   /// 图形输出协议
-  EFI_GRAPHICS_OUTPUT_PROTOCOL *gop = nullptr;
+  EFI_GRAPHICS_OUTPUT_PROTOCOL *gop_ = nullptr;
 };
 
 /**
@@ -115,11 +115,11 @@ class Memory {
  private:
   /// @name 内存映射信息
   /// @{
-  uint64_t desc_count = 0;
-  EFI_MEMORY_DESCRIPTOR *memory_map = nullptr;
-  uint64_t map_key = 0;
-  uint64_t desc_size = 0;
-  uint32_t desc_version = 0;
+  uint64_t desc_count_ = 0;
+  EFI_MEMORY_DESCRIPTOR *memory_map_ = nullptr;
+  uint64_t map_key_ = 0;
+  uint64_t desc_size_ = 0;
+  uint32_t desc_version_ = 0;
   /// @}
 
   /**
@@ -168,23 +168,23 @@ class Elf {
  private:
   /// @name elf 文件相关
   /// @{
-  EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *file_system_protocol = nullptr;
-  EFI_FILE *root_file_system = nullptr;
+  EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *file_system_protocol_ = nullptr;
+  EFI_FILE *root_file_system_ = nullptr;
   /// elf 文件指针
-  EFI_FILE *elf = nullptr;
+  EFI_FILE *elf_ = nullptr;
   /// elf 文件大小
-  size_t elf_file_size = 0;
+  size_t elf_file_size_ = 0;
   /// elf 文件内容缓冲区
-  void *elf_file_buffer = nullptr;
+  void *elf_file_buffer_ = nullptr;
   /// elf 文件访问
-  std::span<uint8_t> file = {};
-  Elf64_Ehdr ehdr = {};
-  std::span<Elf64_Phdr> phdr = {};
-  std::span<Elf64_Shdr> shdr = {};
+  std::span<uint8_t> file_ = {};
+  Elf64_Ehdr ehdr_ = {};
+  std::span<Elf64_Phdr> phdr_ = {};
+  std::span<Elf64_Shdr> shdr_ = {};
   /// section 缓冲区大小
   static constexpr const size_t SECTION_BUF_SIZE = 1024;
   /// shstrtab 缓冲
-  std::array<uint8_t, SECTION_BUF_SIZE> shstrtab_buf = {};
+  std::array<uint8_t, SECTION_BUF_SIZE> shstrtab_buf_ = {};
   /// @}
 
   /**

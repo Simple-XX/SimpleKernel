@@ -18,8 +18,9 @@
 #include "out_stream.hpp"
 
 bool Memory::flush_desc() {
-  memory_map = LibMemoryMap(&desc_count, &map_key, &desc_size, &desc_version);
-  if (memory_map == nullptr) {
+  memory_map_ =
+      LibMemoryMap(&desc_count_, &map_key_, &desc_size_, &desc_version_);
+  if (memory_map_ == nullptr) {
     debug << L"LibMemoryMap failed: memory_map == nullptr" << OutStream::endl;
     return false;
   }
@@ -43,9 +44,9 @@ void Memory::print_info() {
 
   debug << L"Type\t\t\t\tPages\tPhysicalStart\tVirtualStart\tAttribute"
         << OutStream::endl;
-  for (uint64_t i = 0; i < desc_count; i++) {
+  for (uint64_t i = 0; i < desc_count_; i++) {
     auto *MMap = reinterpret_cast<EFI_MEMORY_DESCRIPTOR *>(
-        (reinterpret_cast<uint8_t *>(memory_map)) + i * desc_size);
+        (reinterpret_cast<uint8_t *>(memory_map_)) + i * desc_size_);
 
     switch (MMap->Type) {
       case EfiReservedMemoryType: {
@@ -119,5 +120,5 @@ void Memory::print_info() {
           << MMap->VirtualStart << L"\t" << OutStream::hex_X << MMap->Attribute
           << OutStream::endl;
   }
-  debug << L"map_key: " << OutStream::hex_X << map_key << OutStream::endl;
+  debug << L"map_key: " << OutStream::hex_X << map_key_ << OutStream::endl;
 }

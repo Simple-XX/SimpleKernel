@@ -53,7 +53,7 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   EFI_STATUS status = EFI_SUCCESS;
   // 打开文件系统协议
   status = LibLocateProtocol(&FileSystemProtocol,
-                             reinterpret_cast<void **>(&file_system_protocol));
+                             reinterpret_cast<void **>(&file_system_protocol_));
   if (EFI_ERROR(status)) {
     debug << L"Elf::Elf LibLocateProtocol failed: " << status
           << OutStream::endl;
@@ -61,16 +61,16 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   }
 
   // 打开根文件系统
-  status = uefi_call_wrapper(file_system_protocol->OpenVolume, 2,
-                             file_system_protocol, &root_file_system);
+  status = uefi_call_wrapper(file_system_protocol_->OpenVolume, 2,
+                             file_system_protocol_, &root_file_system_);
   if (EFI_ERROR(status)) {
     debug << L"Elf::Elf OpenVolume failed: " << status << OutStream::endl;
     return;
   }
 
   // 打开 elf 文件
-  status = uefi_call_wrapper(root_file_system->Open, 5, root_file_system, &elf,
-                             _kernel_image_filename, EFI_FILE_MODE_READ,
+  status = uefi_call_wrapper(root_file_system_->Open, 5, root_file_system_,
+                             &elf_, _kernel_image_filename, EFI_FILE_MODE_READ,
                              EFI_FILE_READ_ONLY);
 
   if (EFI_ERROR(status)) {
@@ -79,12 +79,12 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   }
 
   // 获取 elf 文件大小
-  elf_file_size = get_file_size();
-  debug << L"Kernel file size: " << elf_file_size << OutStream::endl;
+  elf_file_size_ = get_file_size();
+  debug << L"Kernel file size: " << elf_file_size_ << OutStream::endl;
 
   // 分配 elf 文件缓存
-  status = uefi_call_wrapper(gBS->AllocatePool, 3, EfiLoaderData, elf_file_size,
-                             &elf_file_buffer);
+  status = uefi_call_wrapper(gBS->AllocatePool, 3, EfiLoaderData,
+                             elf_file_size_, &elf_file_buffer_);
 
   if (EFI_ERROR(status)) {
     debug << L"Elf::Elf AllocatePool failed: " << status << OutStream::endl;
@@ -92,15 +92,15 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
   }
 
   // 将内核文件读入内存
-  status = uefi_call_wrapper(elf->Read, 3, (EFI_FILE *)elf, &elf_file_size,
-                             elf_file_buffer);
+  status = uefi_call_wrapper(elf_->Read, 3, (EFI_FILE *)elf_, &elf_file_size_,
+                             elf_file_buffer_);
   if (EFI_ERROR(status)) {
     debug << L"Elf::Elf Read failed: " << status << OutStream::endl;
     return;
   }
 
-  file = std::span<uint8_t>(static_cast<uint8_t *>(elf_file_buffer),
-                            elf_file_size);
+  file_ = std::span<uint8_t>(static_cast<uint8_t *>(elf_file_buffer_),
+                             elf_file_size_);
 
   // 检查 elf 头数据
   auto check_elf_identity_ret = check_elf_identity();
@@ -123,7 +123,7 @@ Elf::Elf(wchar_t *_kernel_image_filename) {
 Elf::~Elf() {
   EFI_STATUS status = EFI_SUCCESS;
   // 关闭 elf 文件
-  status = uefi_call_wrapper(elf->Close, 1, elf);
+  status = uefi_call_wrapper(elf_->Close, 1, elf_);
   if (EFI_ERROR(status)) {
     debug << L"Elf::~Elf() Close failed: " << status << OutStream::endl;
     return;
@@ -141,12 +141,12 @@ auto Elf::load_kernel_image() const -> uint64_t {
   //      return 0;
   //    }
   size_t size = 0;
-  for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
-    if (phdr[i].p_type != PT_LOAD) {
+  for (uint64_t i = 0; i < ehdr_.e_phnum; i++) {
+    if (phdr_[i].p_type != PT_LOAD) {
       continue;
     }
-    phdr[i].p_vaddr;
-    size += phdr[i].p_memsz;
+    phdr_[i].p_vaddr;
+    size += phdr_[i].p_memsz;
   }
   auto section_page_count = EFI_SIZE_TO_PAGES(size);
   auto status =
@@ -158,25 +158,25 @@ auto Elf::load_kernel_image() const -> uint64_t {
     return 0;
   }
 
-  for (auto &i : phdr) {
+  for (auto &i : phdr_) {
     if (i.p_type != PT_LOAD) {
       continue;
     }
-    memcpy((void *)(image_base + i.p_vaddr), file.data() + i.p_offset,
+    memcpy((void *)(image_base + i.p_vaddr), file_.data() + i.p_offset,
            i.p_memsz);
   }
   debug << L"load_kernel_image: " << OutStream::hex_X << image_base << L" "
-        << OutStream::hex_X << ehdr.e_entry << L" " << OutStream::hex_X
+        << OutStream::hex_X << ehdr_.e_entry << L" " << OutStream::hex_X
         << image_begin << OutStream::endl;
 
-  return image_base + ehdr.e_entry - image_begin;
+  return image_base + ehdr_.e_entry - image_begin;
 }
 
 auto Elf::load() const -> uintptr_t {
   // 记录 AllocatePages 分配出的物理地址
   uintptr_t image_base = 0;
   // 计算需要的内存页
-  auto section_page_count = EFI_SIZE_TO_PAGES(elf_file_size);
+  auto section_page_count = EFI_SIZE_TO_PAGES(elf_file_size_);
   //  将整个 elf 文件映射到内存，方便后续读取
   auto status =
       uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages, EfiLoaderCode,
@@ -186,34 +186,34 @@ auto Elf::load() const -> uintptr_t {
     return 0;
   }
   // 将 elf 复制到分配的物理内存中
-  std::memcpy(reinterpret_cast<void *>(image_base), file.data(),
+  std::memcpy(reinterpret_cast<void *>(image_base), file_.data(),
               section_page_count * EFI_PAGE_SIZE);
 
   debug << L"AllocatePages section_page_count: " << section_page_count
         << L" image_base: " << OutStream::hex_X << image_base
-        << L", ehdr.e_entry: " << OutStream::hex_X << ehdr.e_entry
+        << L", ehdr.e_entry: " << OutStream::hex_X << ehdr_.e_entry
         << OutStream::endl;
-  return image_base + ehdr.e_entry;
+  return image_base + ehdr_.e_entry;
 }
 
 auto Elf::get_file_size() const -> size_t {
   // 获取 elf 文件大小
-  auto *elf_file_info = LibFileInfo(elf);
+  auto *elf_file_info = LibFileInfo(elf_);
   auto file_size = elf_file_info->FileSize;
   return file_size;
 }
 
 auto Elf::check_elf_identity() const -> bool {
-  if ((file[EI_MAG0] != ELFMAG0) || (file[EI_MAG1] != ELFMAG1) ||
-      (file[EI_MAG2] != ELFMAG2) || (file[EI_MAG3] != ELFMAG3)) {
+  if ((file_[EI_MAG0] != ELFMAG0) || (file_[EI_MAG1] != ELFMAG1) ||
+      (file_[EI_MAG2] != ELFMAG2) || (file_[EI_MAG3] != ELFMAG3)) {
     debug << L"Fatal Error: Invalid ELF header" << OutStream::endl;
     return false;
   }
-  if (file[EI_CLASS] == ELFCLASS32) {
+  if (file_[EI_CLASS] == ELFCLASS32) {
     debug << L"Found 32bit executable but NOT SUPPORT" << OutStream::endl;
     return false;
   }
-  if (file[EI_CLASS] == ELFCLASS64) {
+  if (file_[EI_CLASS] == ELFCLASS64) {
     debug << L"Found 64bit executable" << OutStream::endl;
   } else {
     debug << L"Fatal Error: Invalid executable" << OutStream::endl;
@@ -223,18 +223,18 @@ auto Elf::check_elf_identity() const -> bool {
 }
 
 void Elf::get_ehdr() {
-  ehdr = *reinterpret_cast<const Elf64_Ehdr *>(file.data());
+  ehdr_ = *reinterpret_cast<const Elf64_Ehdr *>(file_.data());
 }
 
 void Elf::print_ehdr() const {
   debug << L"  Magic:    ";
-  for (auto idx : ehdr.e_ident) {
+  for (auto idx : ehdr_.e_ident) {
     debug << OutStream::hex_x << idx << L" ";
   }
   debug << OutStream::endl;
 
   debug << L"  Class:                                ";
-  switch (ehdr.e_ident[EI_CLASS]) {
+  switch (ehdr_.e_ident[EI_CLASS]) {
     case ELFCLASSNONE: {
       debug << L"Invalid class";
       break;
@@ -248,14 +248,14 @@ void Elf::print_ehdr() const {
       break;
     }
     default: {
-      debug << ehdr.e_ident[EI_CLASS];
+      debug << ehdr_.e_ident[EI_CLASS];
       break;
     }
   }
   debug << OutStream::endl;
 
   debug << L"  Data:                                 ";
-  switch (ehdr.e_ident[EI_DATA]) {
+  switch (ehdr_.e_ident[EI_DATA]) {
     case ELFDATANONE: {
       debug << L"Invalid data encoding";
       break;
@@ -269,15 +269,15 @@ void Elf::print_ehdr() const {
       break;
     }
     default: {
-      debug << ehdr.e_ident[EI_DATA];
+      debug << ehdr_.e_ident[EI_DATA];
       break;
     }
   }
   debug << OutStream::endl;
 
   debug << L"  Version:                              "
-        << ehdr.e_ident[EI_VERSION] << L" ";
-  switch (ehdr.e_ident[EI_VERSION]) {
+        << ehdr_.e_ident[EI_VERSION] << L" ";
+  switch (ehdr_.e_ident[EI_VERSION]) {
     case EV_NONE: {
       debug << L"Invalid ELF version";
       break;
@@ -287,30 +287,30 @@ void Elf::print_ehdr() const {
       break;
     }
     default: {
-      debug << ehdr.e_ident[EI_VERSION];
+      debug << ehdr_.e_ident[EI_VERSION];
       break;
     }
   }
   debug << OutStream::endl;
 
   debug << L"  OS/ABI:                               ";
-  switch (ehdr.e_ident[EI_OSABI]) {
+  switch (ehdr_.e_ident[EI_OSABI]) {
     case ELFOSABI_SYSV: {
       debug << L"UNIX System V ABI";
       break;
     }
     default: {
-      debug << ehdr.e_ident[EI_OSABI];
+      debug << ehdr_.e_ident[EI_OSABI];
       break;
     }
   }
   debug << OutStream::endl;
 
   debug << L"  ABI Version:                          "
-        << ehdr.e_ident[EI_ABIVERSION] << OutStream::endl;
+        << ehdr_.e_ident[EI_ABIVERSION] << OutStream::endl;
 
   debug << L"  Type:                                 ";
-  switch (ehdr.e_type) {
+  switch (ehdr_.e_type) {
     case ET_NONE: {
       debug << L"No file type";
       break;
@@ -332,14 +332,14 @@ void Elf::print_ehdr() const {
       break;
     }
     default: {
-      debug << ehdr.e_type;
+      debug << ehdr_.e_type;
       break;
     }
   }
   debug << OutStream::endl;
 
   debug << L"  Machine:                              ";
-  switch (ehdr.e_machine) {
+  switch (ehdr_.e_machine) {
     case EM_X86_64: {
       debug << L"AMD x86-64 architecture";
       break;
@@ -353,39 +353,40 @@ void Elf::print_ehdr() const {
       break;
     }
     default: {
-      debug << ehdr.e_machine;
+      debug << ehdr_.e_machine;
       break;
     }
   }
   debug << OutStream::endl;
 
   debug << L"  Version:                              " << OutStream::hex_x
-        << ehdr.e_version << OutStream::endl;
+        << ehdr_.e_version << OutStream::endl;
   debug << L"  Entry point address:                  " << OutStream::hex_x
-        << ehdr.e_entry << OutStream::endl;
-  debug << L"  Start of program headers:             " << ehdr.e_phoff
+        << ehdr_.e_entry << OutStream::endl;
+  debug << L"  Start of program headers:             " << ehdr_.e_phoff
         << L" (bytes into file)" << OutStream::endl;
-  debug << L"  Start of section headers:             " << ehdr.e_shoff
+  debug << L"  Start of section headers:             " << ehdr_.e_shoff
         << L" (bytes into file)" << OutStream::endl;
   debug << L"  Flags:                                " << OutStream::hex_x
-        << ehdr.e_flags << OutStream::endl;
-  debug << L"  Size of this header:                  " << ehdr.e_ehsize
+        << ehdr_.e_flags << OutStream::endl;
+  debug << L"  Size of this header:                  " << ehdr_.e_ehsize
         << L" (bytes)" << OutStream::endl;
-  debug << L"  Size of program headers:              " << ehdr.e_phentsize
+  debug << L"  Size of program headers:              " << ehdr_.e_phentsize
         << L" (bytes)" << OutStream::endl;
-  debug << L"  Number of program headers:            " << ehdr.e_phnum
+  debug << L"  Number of program headers:            " << ehdr_.e_phnum
         << OutStream::endl;
-  debug << L"  Size of section headers:              " << ehdr.e_shentsize
+  debug << L"  Size of section headers:              " << ehdr_.e_shentsize
         << L" (bytes)" << OutStream::endl;
-  debug << L"  Number of section headers:            " << ehdr.e_shnum
+  debug << L"  Number of section headers:            " << ehdr_.e_shnum
         << OutStream::endl;
-  debug << L"  Section header string table index:    " << ehdr.e_shstrndx
+  debug << L"  Section header string table index:    " << ehdr_.e_shstrndx
         << OutStream::endl;
 }
 
 void Elf::get_phdr() {
-  phdr = std::span<Elf64_Phdr>(
-      reinterpret_cast<Elf64_Phdr *>(file.data() + ehdr.e_phoff), ehdr.e_phnum);
+  phdr_ = std::span<Elf64_Phdr>(
+      reinterpret_cast<Elf64_Phdr *>(file_.data() + ehdr_.e_phoff),
+      ehdr_.e_phnum);
 }
 
 void Elf::print_phdr() const {
@@ -394,8 +395,8 @@ void Elf::print_phdr() const {
            L"Type\t\tOffset\t\tVirtAddr\tPhysAddr\tFileSiz\t\tMemSiz\t\tFlags"
            L"\tAlign"
         << OutStream::endl;
-  for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
-    switch (phdr[i].p_type) {
+  for (uint64_t i = 0; i < ehdr_.e_phnum; i++) {
+    switch (phdr_[i].p_type) {
       case PT_NULL: {
         debug << L"  NULL\t\t";
         break;
@@ -474,18 +475,18 @@ void Elf::print_phdr() const {
         break;
       }
       default: {
-        debug << L"  Unknown " << OutStream::hex_X << phdr[i].p_type << L"\t";
+        debug << L"  Unknown " << OutStream::hex_X << phdr_[i].p_type << L"\t";
         break;
       }
     }
 
-    debug << OutStream::hex_X << phdr[i].p_offset << L"\t";
-    debug << OutStream::hex_X << phdr[i].p_vaddr << L"\t";
-    debug << OutStream::hex_X << phdr[i].p_paddr << L"\t";
-    debug << OutStream::hex_X << phdr[i].p_filesz << L"\t";
-    debug << OutStream::hex_X << phdr[i].p_memsz << L"\t";
+    debug << OutStream::hex_X << phdr_[i].p_offset << L"\t";
+    debug << OutStream::hex_X << phdr_[i].p_vaddr << L"\t";
+    debug << OutStream::hex_X << phdr_[i].p_paddr << L"\t";
+    debug << OutStream::hex_X << phdr_[i].p_filesz << L"\t";
+    debug << OutStream::hex_X << phdr_[i].p_memsz << L"\t";
 
-    switch (phdr[i].p_flags) {
+    switch (phdr_[i].p_flags) {
       case PF_X: {
         debug << L"E\t";
         break;
@@ -515,21 +516,22 @@ void Elf::print_phdr() const {
         break;
       }
       default: {
-        debug << L"Unknown " << OutStream::hex_x << phdr[i].p_flags << L"\t";
+        debug << L"Unknown " << OutStream::hex_x << phdr_[i].p_flags << L"\t";
         break;
       }
     }
-    debug << OutStream::hex_x << phdr[i].p_align << OutStream::endl;
+    debug << OutStream::hex_x << phdr_[i].p_align << OutStream::endl;
   }
 }
 
 void Elf::get_shdr() {
-  shdr = std::span<Elf64_Shdr>(
-      reinterpret_cast<Elf64_Shdr *>(file.data() + ehdr.e_shoff), ehdr.e_shnum);
+  shdr_ = std::span<Elf64_Shdr>(
+      reinterpret_cast<Elf64_Shdr *>(file_.data() + ehdr_.e_shoff),
+      ehdr_.e_shnum);
   // 将 shstrtab 的内容复制到 shstrtab_buf 中
 
-  memcpy(shstrtab_buf.data(), file.data() + shdr[ehdr.e_shstrndx].sh_offset,
-         shdr[ehdr.e_shstrndx].sh_size);
+  memcpy(shstrtab_buf_.data(), file_.data() + shdr_[ehdr_.e_shstrndx].sh_offset,
+         shdr_[ehdr_.e_shstrndx].sh_size);
 }
 
 void Elf::print_shdr() const {
@@ -538,7 +540,7 @@ void Elf::print_shdr() const {
            L"Name\t\t\tType\t\tAddress\t\tOffset\t\tSize\t\tEntSize\t\tFl"
            L"ags\tLink\tInfo\tAlign"
         << OutStream::endl;
-  for (uint64_t i = 0; i < ehdr.e_shnum; i++) {
+  for (uint64_t i = 0; i < ehdr_.e_shnum; i++) {
     debug << L" [";
     // 对齐
     if (i < ALIGN_TWO) {
@@ -548,8 +550,8 @@ void Elf::print_shdr() const {
 
     std::array<wchar_t, SECTION_BUF_SIZE> buf = {0};
     auto char2wchar_ret = char2wchar(
-        buf.data(),
-        reinterpret_cast<const char *>(shstrtab_buf.data() + shdr[i].sh_name));
+        buf.data(), reinterpret_cast<const char *>(
+                                   shstrtab_buf_.data() + shdr_[i].sh_name));
     debug << (const wchar_t *)buf.data() << L"\t";
 
     if (char2wchar_ret <= TWO_TAB_SIZE) {
@@ -561,7 +563,7 @@ void Elf::print_shdr() const {
     if (char2wchar_ret <= 1) {
       debug << L"\t";
     }
-    switch (shdr[i].sh_type) {
+    switch (shdr_[i].sh_type) {
       case SHT_NULL: {
         debug << L"NULL\t\t";
         break;
@@ -699,18 +701,18 @@ void Elf::print_shdr() const {
         break;
       }
       default: {
-        debug << L"Unknown " << OutStream::hex_X << shdr[i].sh_type << L"\t";
+        debug << L"Unknown " << OutStream::hex_X << shdr_[i].sh_type << L"\t";
 
         break;
       }
     }
 
-    debug << OutStream::hex_X << shdr[i].sh_addr << L"\t";
-    debug << OutStream::hex_x << shdr[i].sh_offset << L"\t\t";
-    debug << OutStream::hex_X << shdr[i].sh_size << L"\t";
-    debug << OutStream::hex_X << shdr[i].sh_entsize << L"\t";
+    debug << OutStream::hex_X << shdr_[i].sh_addr << L"\t";
+    debug << OutStream::hex_x << shdr_[i].sh_offset << L"\t\t";
+    debug << OutStream::hex_X << shdr_[i].sh_size << L"\t";
+    debug << OutStream::hex_X << shdr_[i].sh_entsize << L"\t";
 
-    switch (shdr[i].sh_flags) {
+    switch (shdr_[i].sh_flags) {
       case 0: {
         debug << L"0\t";
         break;
@@ -796,14 +798,14 @@ void Elf::print_shdr() const {
         break;
       }
       default: {
-        debug << L"Unknown " << OutStream::hex_X << shdr[i].sh_flags << L"\t";
+        debug << L"Unknown " << OutStream::hex_X << shdr_[i].sh_flags << L"\t";
         break;
       }
     }
 
-    debug << shdr[i].sh_link << L"\t";
-    debug << shdr[i].sh_info << L"\t";
-    debug << shdr[i].sh_addralign << L"\t";
+    debug << shdr_[i].sh_link << L"\t";
+    debug << shdr_[i].sh_info << L"\t";
+    debug << shdr_[i].sh_addralign << L"\t";
     debug << OutStream::endl;
   }
 }
@@ -815,7 +817,7 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
   auto section_page_count = EFI_SIZE_TO_PAGES(_phdr.p_memsz);
 
   // 设置文件偏移到 p_offset
-  status = uefi_call_wrapper(elf->SetPosition, 2, elf, _phdr.p_offset);
+  status = uefi_call_wrapper(elf_->SetPosition, 2, elf_, _phdr.p_offset);
   if (EFI_ERROR(status)) {
     debug << L"Elf::load_sections SetPosition failed: " << status
           << OutStream::endl;
@@ -847,7 +849,7 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
     }
     // 读数据
     status =
-        uefi_call_wrapper(elf->Read, 3, elf, &buffer_read_size, (void *)data);
+        uefi_call_wrapper(elf_->Read, 3, elf_, &buffer_read_size, (void *)data);
     if (EFI_ERROR(status)) {
       debug << L"Elf::load_sections Read failed: " << status << OutStream::endl;
       return false;
@@ -883,11 +885,11 @@ bool Elf::load_sections(const Elf64_Phdr &_phdr) const {
 }
 
 bool Elf::load_program_sections() const {
-  for (uint64_t i = 0; i < ehdr.e_phnum; i++) {
-    if (phdr[i].p_type != PT_LOAD) {
+  for (uint64_t i = 0; i < ehdr_.e_phnum; i++) {
+    if (phdr_[i].p_type != PT_LOAD) {
       continue;
     }
-    auto load_sections_ret = load_sections(phdr[i]);
+    auto load_sections_ret = load_sections(phdr_[i]);
     if (!load_sections_ret) {
       debug << L"Elf::load_program_sections() load_sections failed " << i
             << OutStream::endl;
