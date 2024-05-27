@@ -139,7 +139,7 @@ list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 使用 kernel 内存模型
-        -mcmodel=kernel
+        -mcmodel=large
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
