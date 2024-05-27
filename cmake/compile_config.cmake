@@ -108,7 +108,7 @@ list(APPEND DEFAULT_BOOT_LINK_LIB
         # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 链接 gnu-efi
-        # ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
         ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${CMAKE_SYSTEM_PROCESSOR}.o
         ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
         ${gnu-efi_BINARY_DIR}/lib/libefi.a
@@ -116,7 +116,7 @@ list(APPEND DEFAULT_BOOT_LINK_LIB
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
         # 链接 gnu-efi
-        # ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
         ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${CMAKE_SYSTEM_PROCESSOR}.o
         ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
         ${gnu-efi_BINARY_DIR}/lib/libefi.a

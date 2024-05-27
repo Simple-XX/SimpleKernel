@@ -74,7 +74,7 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   memory.PrintInfo();
   // 加载内核
   auto elf = Elf(KERNEL_NAME);
-  //    kernel_addr = elf.load_kernel_image();
+  //  kernel_addr = elf.load_kernel_image();
   kernel_addr = elf.Load();
   if (kernel_addr == 0) {
     debug << L"Failed to load kernel" << OutStream::endl;
@@ -93,6 +93,7 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   if (memory_map == nullptr) {
     debug << L"LibMemoryMap failed: memory_map == nullptr" << OutStream::endl;
   }
+  // 退出后不能使用输出相关方法
   status = uefi_call_wrapper(gBS->ExitBootServices, 2, image_handle, map_key);
   if (EFI_ERROR(status)) {
     debug << L"ExitBootServices failed, Memory Map has Changed " << status
@@ -100,6 +101,7 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
     return status;
   }
 
+  // 获取 framebuffer 信息
   auto framebuffer = graphics.GetFrameBuffer();
 
   BootInfo boot_info = {};

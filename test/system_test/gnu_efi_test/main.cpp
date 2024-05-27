@@ -14,17 +14,24 @@
  * </table>
  */
 
+#include <cstdint>
+
 #include "arch.h"
 #include "cpu.hpp"
 #include "cstdio"
 #include "kernel.h"
 
-extern "C" void _start(int _argc, char **_argv) { main(_argc, _argv); }
+extern "C" void _start(int argc, char **argv) { main(argc, argv); }
 
-static const int pixelwidth = 4;
-static const int pitch = 800 * pixelwidth;
+extern "C" void _putchar(char character) {
+  auto serial = Cpu::Serial(Cpu::kCom1);
+  serial.Write(character);
+}
 
-static void fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
+static const int kPixelwidth = 4;
+static const int kPitch = 800 * kPixelwidth;
+
+static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
                      uint8_t w, uint8_t h) {
   unsigned char *where = vram;
   int i, j;
@@ -32,24 +39,24 @@ static void fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
   for (i = 0; i < w; i++) {
     for (j = 0; j < h; j++) {
       // putpixel(vram, 64 + j, 64 + i, (r << 16) + (g << 8) + b);
-      where[j * pixelwidth] = r;
-      where[j * pixelwidth + 1] = g;
-      where[j * pixelwidth + 2] = b;
+      where[j * kPixelwidth] = r;
+      where[j * kPixelwidth + 1] = g;
+      where[j * kPixelwidth + 2] = b;
     }
-    where += pitch;
+    where += kPitch;
   }
 }
 
-int main(int _argc, char **_argv) {
-  (void)_argc;
-  (void)_argv;
+int main(int argc, char **argv) {
+  (void)argc;
+  (void)argv;
 
-  if (_argc != 1) {
-    printf("_argc != 1 [%d]\n", _argc);
+  if (argc != 1) {
+    printf("argc != 1 [%d]\n", argc);
     return -1;
   }
 
-  boot_info_t boot_info = *reinterpret_cast<boot_info_t *>(_argv[0]);
+  BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv[0]);
   printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
   Fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
   printf("Hello Test\n");
