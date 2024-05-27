@@ -19,9 +19,15 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -ffreestanding
         # 保留帧指针，便于调试和栈回溯
         -fno-omit-frame-pointer
+        # 禁用栈保护器
+        -fno-stack-protector
+        # 禁用栈检查
+        -fno-stack-check
 
         # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
+        # 禁用 red-zone
+        -mno-red-zone
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
@@ -63,6 +69,9 @@ list(APPEND COMMON_DEFINITIONS
 
 list(APPEND DEFAULT_BOOT_DEFINITIONS
         ${COMMON_DEFINITIONS}
+
+        # 使用 gnu-efi
+        GNU_EFI_USE_MS_ABI
 )
 
 list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
@@ -76,13 +85,9 @@ list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
 
         # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-        # 使 gnu-efi
-        -DGNU_EFI_USE_MS_ABI
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
-        # 使 gnu-efi
-        -DGNU_EFI_USE_MS_ABI
         >
 )
 
@@ -135,8 +140,6 @@ list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 使用 kernel 内存模型
         -mcmodel=kernel
-        # 禁用 red-zone
-        -mno-red-zone
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:

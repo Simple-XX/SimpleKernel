@@ -25,6 +25,11 @@ add_header_project(boot)
 add_header_boot(boot)
 add_header_3rd(boot)
 
+# 添加定义
+target_compile_definitions(boot PRIVATE
+        ${DEFAULT_BOOT_DEFINITIONS}
+)
+
 # 添加编译参数
 target_compile_options(boot PRIVATE
         ${DEFAULT_BOOT_COMPILE_OPTIONS}
