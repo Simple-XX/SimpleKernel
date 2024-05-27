@@ -7,9 +7,10 @@
 
 # 通用编译选项
 list(APPEND COMMON_COMPILE_OPTIONS
-        # 如果 CMAKE_BUILD_TYPE 为 Release 则使用 -O3 -Werror，否则使用 -O0 -g -ggdb
+        # 如果 CMAKE_BUILD_TYPE 为 Release 则使用 -O3 -Werror，否则使用 -O0 -ggdb
+        # -g 在 Debug 模式下由 cmake 自动添加
         $<$<CONFIG:Release>:-O3;-Werror>
-        $<$<CONFIG:Debug>:-O0;-g;-ggdb>
+        $<$<CONFIG:Debug>:-O0;-ggdb>
         # 打开全部警告
         -Wall
         # 打开额外警告
