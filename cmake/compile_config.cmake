@@ -152,6 +152,9 @@ list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
 list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         ${COMMON_LINK_OPTIONS}
 
+        # 链接脚本
+        -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
+
         # 静态链接
         -static
 
@@ -161,9 +164,6 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
-        # 链接脚本
-        -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
-
         # 禁用 relax 优化
         $<$<BOOL:${USE_NO_RELAX}>:-mno-relax>
         >

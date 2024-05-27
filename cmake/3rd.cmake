@@ -129,7 +129,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
                 make
                 CROSS_COMPILE=${TOOLCHAIN_PREFIX}
                 FW_JUMP=y
-                FW_JUMP_ADDR=0x80200000
+                FW_JUMP_ADDR=0x80210000
                 PLATFORM_RISCV_XLEN=64
                 PLATFORM=generic
                 O=${opensbi_BINARY_DIR}

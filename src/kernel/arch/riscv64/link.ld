@@ -6,27 +6,21 @@
  * 链接脚本，指定生成的二进制文件的布局
  */
 
+/* GNU ld (GNU Binutils for Ubuntu) 2.41 */
 /* Script for -z combreloc */
 /* Copyright (C) 2014-2022 Free Software Foundation, Inc.
    Copying and distribution of this script, with or without modification,
    are permitted in any medium without royalty provided the copyright
    notice and this notice are preserved.  */
-/* 指定输出格式 */
-OUTPUT_FORMAT(
-    "elf64-littleriscv",
-    "elf64-littleriscv",
-	"elf64-littleriscv"
-)
-/* 指定输出架构 */
+OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv",
+	      "elf64-littleriscv")
 OUTPUT_ARCH(riscv)
 /* 设置入口点 */
 ENTRY(_boot)
-/* 设置各个 section */
 SECTIONS {
     /* Read-only sections, merged into text segment: */
     PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x80200000));
-    /* 设置起始地址 */
-    . = SEGMENT_START("text-segment", 0x80200000);
+    . = SEGMENT_START("text-segment", 0x80200000) + SIZEOF_HEADERS;
     .boot           : { *(.text.boot) *(.data.boot) *(.bss.boot) }
     .interp         : { *(.interp) }
     .note.gnu.build-id  : { *(.note.gnu.build-id) }
