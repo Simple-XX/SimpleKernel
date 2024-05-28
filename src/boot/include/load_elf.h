@@ -235,11 +235,8 @@ class Elf {
    */
   [[nodiscard]] bool LoadProgramSections() const;
 
-  /**
-   * 加载 elf 内核
-   * @return 成功返回内核入口地址，失败返回 0
-   */
-  [[nodiscard]] auto LoadKernelImage() const -> uint64_t;
+  /// @bug 删掉这个函数 bootloader 会挂
+  void LoadKernelImage();
 };
 
 #endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_LOAD_ELF_H_ */

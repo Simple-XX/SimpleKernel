@@ -131,42 +131,6 @@ Elf::~Elf() {
   /// @note elf_file_buffer 不会被释放
 }
 
-auto Elf::LoadKernelImage() const -> uint64_t {
-  uintptr_t image_base = 0;
-  uintptr_t image_begin = 0;
-
-  size_t size = 0;
-  for (uint64_t i = 0; i < ehdr_.e_phnum; i++) {
-    if (phdr_[i].p_type != PT_LOAD) {
-      continue;
-    }
-    phdr_[i].p_vaddr;
-    size += phdr_[i].p_memsz;
-  }
-  auto section_page_count = EFI_SIZE_TO_PAGES(size);
-  auto status =
-      uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages, EfiLoaderCode,
-                        section_page_count, &image_base);
-  if (EFI_ERROR(status)) {
-    debug << L"Elf::LoadKernelImage() AllocatePages failed: " << status
-          << OutStream::endl;
-    return 0;
-  }
-
-  for (auto &i : phdr_) {
-    if (i.p_type != PT_LOAD) {
-      continue;
-    }
-    memcpy((void *)(image_base + i.p_vaddr), file_.data() + i.p_offset,
-           i.p_memsz);
-  }
-  debug << L"LoadKernelImage: " << OutStream::hex_X << image_base << L" "
-        << OutStream::hex_X << ehdr_.e_entry << L" " << OutStream::hex_X
-        << image_begin << OutStream::endl;
-
-  return image_base + ehdr_.e_entry - image_begin;
-}
-
 auto Elf::Load() const -> uintptr_t {
   auto ret = LoadProgramSections();
   if (!ret) {
@@ -871,6 +835,10 @@ bool Elf::LoadProgramSections() const {
       return false;
     }
   }
-
   return true;
+}
+
+void Elf::LoadKernelImage() {
+  for (auto &i : phdr_)
+    ;
 }
