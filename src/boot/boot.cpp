@@ -118,3 +118,11 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   // 不会执行到这里
   return EFI_SUCCESS;
 }
+
+/// @bug 删掉这个函数 bootloader 会挂
+void bug_function() {
+  uint8_t *aa = nullptr;
+  auto aaa = std::span<uint8_t>(aa, 0);
+  for (auto &i : aaa)
+    ;
+}

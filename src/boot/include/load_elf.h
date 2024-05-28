@@ -234,9 +234,6 @@ class Elf {
    * @return 失败返回 false
    */
   [[nodiscard]] bool LoadProgramSections() const;
-
-  /// @bug 删掉这个函数 bootloader 会挂
-  void LoadKernelImage();
 };
 
 #endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_LOAD_ELF_H_ */

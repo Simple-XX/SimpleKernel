@@ -837,8 +837,3 @@ bool Elf::LoadProgramSections() const {
   }
   return true;
 }
-
-void Elf::LoadKernelImage() {
-  for (auto &i : phdr_)
-    ;
-}
