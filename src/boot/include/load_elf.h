@@ -154,12 +154,6 @@ class Elf {
   /// @}
 
   /**
-   * 加载 elf 内核
-   * @return 成功返回内核入口地址，失败返回 0
-   */
-  [[nodiscard]] auto LoadKernelImage() const -> uint64_t;
-
-  /**
    * 将 elf 文件加载进内存
    * @return 成功返回内核入口地址，失败返回 0
    */
@@ -240,6 +234,12 @@ class Elf {
    * @return 失败返回 false
    */
   [[nodiscard]] bool LoadProgramSections() const;
+
+  /**
+   * 加载 elf 内核
+   * @return 成功返回内核入口地址，失败返回 0
+   */
+  [[nodiscard]] auto LoadKernelImage() const -> uint64_t;
 };
 
 #endif /* SIMPLEKERNEL_SRC_BOOT_INCLUDE_LOAD_ELF_H_ */

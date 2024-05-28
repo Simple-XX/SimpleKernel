@@ -74,7 +74,6 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   memory.PrintInfo();
   // 加载内核
   auto elf = Elf(KERNEL_NAME);
-  //  kernel_addr = elf.load_kernel_image();
   kernel_addr = elf.Load();
   if (kernel_addr == 0) {
     debug << L"Failed to load kernel" << OutStream::endl;

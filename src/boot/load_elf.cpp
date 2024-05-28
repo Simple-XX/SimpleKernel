@@ -135,11 +135,6 @@ auto Elf::LoadKernelImage() const -> uint64_t {
   uintptr_t image_base = 0;
   uintptr_t image_begin = 0;
 
-  //    auto load_program_sections_ret = load_program_sections();
-  //    if (!load_program_sections_ret) {
-  //      debug << L"load_program_sections failed" << OutStream::endl;
-  //      return 0;
-  //    }
   size_t size = 0;
   for (uint64_t i = 0; i < ehdr_.e_phnum; i++) {
     if (phdr_[i].p_type != PT_LOAD) {
@@ -173,27 +168,12 @@ auto Elf::LoadKernelImage() const -> uint64_t {
 }
 
 auto Elf::Load() const -> uintptr_t {
-  // 记录 AllocatePages 分配出的物理地址
-  uintptr_t image_base = 0;
-  // 计算需要的内存页
-  auto section_page_count = EFI_SIZE_TO_PAGES(elf_file_size_);
-  //  将整个 elf 文件映射到内存，方便后续读取
-  auto status =
-      uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages, EfiLoaderCode,
-                        section_page_count, &image_base);
-  if (EFI_ERROR(status)) {
-    debug << L"Elf::load() AllocatePages failed: " << status << OutStream::endl;
+  auto ret = LoadProgramSections();
+  if (!ret) {
+    debug << L"Elf::Load() failed." << OutStream::endl;
     return 0;
   }
-  // 将 elf 复制到分配的物理内存中
-  std::memcpy(reinterpret_cast<void *>(image_base), file_.data(),
-              section_page_count * EFI_PAGE_SIZE);
-
-  debug << L"AllocatePages section_page_count: " << section_page_count
-        << L" image_base: " << OutStream::hex_X << image_base
-        << L", ehdr.e_entry: " << OutStream::hex_X << ehdr_.e_entry
-        << OutStream::endl;
-  return image_base + ehdr_.e_entry;
+  return ehdr_.e_entry;
 }
 
 auto Elf::GetFileSize() const -> size_t {
@@ -823,17 +803,13 @@ bool Elf::LoadSections(const Elf64_Phdr &phdr) const {
           << OutStream::endl;
     return false;
   }
-  uintptr_t aaa = 0;
-  // status = uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAddress,
-  //                            EfiLoaderData, section_page_count,
-  //                            (EFI_PHYSICAL_ADDRESS*)&phdr.p_paddr);
-  status = uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAnyPages,
-                             EfiLoaderData, section_page_count, &aaa);
-  debug << L"phdr.p_paddr: [" << status << L"] [" << section_page_count << L"] "
-        << OutStream::hex_X << aaa << OutStream::endl;
+  status = uefi_call_wrapper(gBS->AllocatePages, 4, AllocateAddress,
+                             EfiLoaderData, section_page_count,
+                             (EFI_PHYSICAL_ADDRESS *)&phdr.p_paddr);
   if (EFI_ERROR(status)) {
     debug << L"Elf::LoadSections AllocatePages AllocateAddress failed: "
-          << status << OutStream::endl;
+          << status << L", phdr.p_paddr: " << OutStream::hex_X << phdr.p_paddr
+          << OutStream::endl;
     return false;
   }
 
@@ -856,9 +832,8 @@ bool Elf::LoadSections(const Elf64_Phdr &phdr) const {
     }
 
     // 将读出来的数据复制到其对应的物理地址
-    uefi_call_wrapper(gBS->CopyMem, 3,
-                      reinterpret_cast<void *>(aaa + phdr.p_paddr), data,
-                      phdr.p_filesz);
+    uefi_call_wrapper(gBS->CopyMem, 3, reinterpret_cast<void *>(phdr.p_paddr),
+                      data, phdr.p_filesz);
 
     // 释放 program_data
     status = uefi_call_wrapper(gBS->FreePool, 1, data);
@@ -871,7 +846,7 @@ bool Elf::LoadSections(const Elf64_Phdr &phdr) const {
 
   // 计算填充大小
   auto *zero_fill_start =
-      reinterpret_cast<void *>(aaa + phdr.p_paddr + phdr.p_filesz);
+      reinterpret_cast<void *>(phdr.p_paddr + phdr.p_filesz);
   auto zero_fill_count = phdr.p_memsz - phdr.p_filesz;
   if (zero_fill_count > 0) {
     debug << L"Debug: Zero-filling " << zero_fill_count
