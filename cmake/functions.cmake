@@ -8,6 +8,7 @@
 # 生成 target 输出文件的 readelf -a
 # _target: target 名
 # 在 ${${_target}_BINARY_DIR} 目录下生成 $<TARGET_FILE:${_target}>.readelf 文件
+# @todo 添加为 make target
 function(readelf_a _target)
     add_custom_command(TARGET ${_target}
             COMMENT "readelf -a $<TARGET_FILE:${_target}> ..."
@@ -21,6 +22,7 @@ endfunction()
 # 生成 target 输出文件的 objdump -D
 # _target: target 名
 # 在 ${${_target}_BINARY_DIR} 目录下生成 $<TARGET_FILE:${_target}>.disassembly 文件
+# @todo 添加为 make target
 function(objdump_D _target)
     add_custom_command(TARGET ${_target}
             COMMENT "objdump -D $<TARGET_FILE:${_target}> ..."
