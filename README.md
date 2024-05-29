@@ -35,10 +35,10 @@
       @startuml;
       uefi_shell->efi_main:boot.cpp;
       efi_main->_start:main.cpp;
-    _start->CppInit:LibCxxInit.cpp;
-    CppInit->main:main.cpp;
-    main->ArchInit:arch.cpp;
-    ArchInit->main;
+      _start->CppInit:LibCxxInit.cpp;
+      CppInit->main:main.cpp;
+      main->ArchInit:arch.cpp;
+      ArchInit->main;
       main->main;
       @enduml
       '>
@@ -49,10 +49,10 @@
       @startuml;
       opensbi->_boot:boot.S;
       _boot->_start:main.cpp;
-    _start->CppInit:LibCxxInit.cpp;
-    CppInit->main:main.cpp;
-    main->ArchInit:ArchInit.cpp;
-    ArchInit->main;
+      _start->CppInit:LibCxxInit.cpp;
+      CppInit->main:main.cpp;
+      main->ArchInit:ArchInit.cpp;
+      ArchInit->main;
       main->main;
       @enduml
     '>
