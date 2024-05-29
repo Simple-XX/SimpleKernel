@@ -23,15 +23,13 @@
 
 #include "out_stream.hpp"
 
-namespace {
-
 /**
  * 将 char* 转换为 wchar_t*
  * @param dst 输出
  * @param src 输入
  * @return 字符数量
  */
-auto Char2Wchar(wchar_t *dst, const char *src) -> size_t {
+static auto Char2Wchar(wchar_t *dst, const char *src) -> size_t {
   size_t idx = 0;
   while (src[idx] != '\0') {
     dst[idx] = src[idx];
@@ -41,13 +39,11 @@ auto Char2Wchar(wchar_t *dst, const char *src) -> size_t {
 }
 
 /// 一个制表符大小
-constexpr const uint32_t kOneTabSize = 8;
+static constexpr const uint32_t kOneTabSize = 8;
 /// 两个制表符大小
-constexpr const uint32_t kTwoTabSize = 16;
+static constexpr const uint32_t kTwoTabSize = 16;
 /// 两位数对齐
-constexpr const uint32_t kAlignTwo = 10;
-
-}  // namespace
+static constexpr const uint32_t kAlignTwo = 10;
 
 Elf::Elf(wchar_t *kernel_image_filename) {
   EFI_STATUS status = EFI_SUCCESS;

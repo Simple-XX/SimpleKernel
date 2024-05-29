@@ -54,6 +54,7 @@ function(elf2efi _target _efi)
             -R .comment
             -R .note.gnu.build-id
             -R .gnu.hash
+            -R .dynsym
             --target=efi-app-${CMAKE_SYSTEM_PROCESSOR} --subsystem=10
     )
 endfunction()
