@@ -106,7 +106,7 @@ class Cpu {
       OutByte(port_ + 0, 0xAE);
       // Check if serial is faulty (i.e: not same byte as sent)
       if (InByte(port_ + 0) != 0xAE) {
-        /// @todo 失败处理
+        asm("hlt");
       }
 
       // If serial is not faulty set it in normal operation mode (not-loopback

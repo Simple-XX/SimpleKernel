@@ -19,10 +19,10 @@
 #include "cstdio"
 
 // printf_bare_metal 基本输出实现
-extern "C" void _putchar(char character) {
-  auto serial = Cpu::Serial(Cpu::kCom1);
-  serial.Write(character);
-}
+/// @note 这里要注意，保证在 serial 初始化之前不能使用 printf
+/// 函数，否则会有全局对象依赖问题
+static auto serial = Cpu::Serial(Cpu::kCom1);
+extern "C" void _putchar(char character) { serial.Write(character); }
 
 static const int kPixelWidth = 4;
 static const int kPitch = 800 * kPixelWidth;
@@ -54,11 +54,6 @@ int32_t ArchInit(uint32_t argc, uint8_t **argv) {
 
   Fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
   printf("hello ArchInit\n");
-
-  // static auto serial = Cpu::Serial(Cpu::COM1);
-  // serial.write('!');
-
-  _putchar('1');
 
   return 0;
 }
