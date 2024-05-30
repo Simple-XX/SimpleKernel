@@ -43,9 +43,9 @@ _boot:
     // 开辟栈空间
     addi sp, sp, -8*2
     // a0 为启动核 id
-    sd_base a0, 0, sp
+    SdBase a0, 0, sp
     // a1 为 dtb 地址
-    sd_base a1, 1, sp
+    SdBase a1, 1, sp
 
     // 跳转到 C 代码执行
     call _start
@@ -61,4 +61,4 @@ stack_top:
     // 跳过 16KB
     .space 4096 * 4
 
-        // clang-format on
+// clang-format on
