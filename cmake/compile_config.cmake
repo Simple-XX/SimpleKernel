@@ -15,6 +15,8 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -Wall
         # 打开额外警告
         -Wextra
+        # 不符合规范的代码会警告
+        -pedantic
         # 启用 free-standing 环境
         -ffreestanding
         # 保留帧指针，便于调试和栈回溯
