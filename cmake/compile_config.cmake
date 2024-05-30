@@ -94,11 +94,15 @@ list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
 list(APPEND DEFAULT_BOOT_LINK_OPTIONS
         ${COMMON_LINK_OPTIONS}
 
-        # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 编译为共享库
         -shared
         # 符号级别绑定
+        -Wl,-Bsymbolic
+        >
+
+        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
+        -shared
         -Wl,-Bsymbolic
         >
 )
