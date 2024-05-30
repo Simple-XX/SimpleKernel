@@ -31,6 +31,7 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
 
   // 输出 efi 信息
   EFI_LOADED_IMAGE *loaded_image = nullptr;
+  /// @bug 在 aarch64 下会出错
   status = LibLocateProtocol(&LoadedImageProtocol,
                              reinterpret_cast<void **>(&loaded_image));
   if (EFI_ERROR(status)) {
