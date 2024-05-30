@@ -71,22 +71,22 @@ class Cpu {
     kExceptionStoreAmoPageFault = 15,
   };
 
-  // Supervisor Status Register, sstatus
-  // User Interrupt Enable
-  static constexpr const uint64_t SSTATUS_UIE = 1 << 0;
-  // Supervisor Interrupt Enable
-  static constexpr const uint64_t SSTATUS_SIE = 1 << 1;
-  // User Previous Interrupt Enable
-  static constexpr const uint64_t SSTATUS_UPIE = 1 << 4;
-  // Supervisor Previous Interrupt Enable
-  static constexpr const uint64_t SSTATUS_SPIE = 1 << 5;
-  // Previous mode, 1=Supervisor, 0=User
-  static constexpr const uint64_t SSTATUS_SPP = 1 << 8;
+  /// Supervisor Status Register, sstatus
+  /// User Interrupt Enable
+  static constexpr const uint64_t kSstatusUie = 1 << 0;
+  /// Supervisor Interrupt Enable
+  static constexpr const uint64_t kSstatusSie = 1 << 1;
+  /// User Previous Interrupt Enable
+  static constexpr const uint64_t kSstatusUpie = 1 << 4;
+  /// Supervisor Previous Interrupt Enable
+  static constexpr const uint64_t kSstatusSpie = 1 << 5;
+  /// Previous mode, 1=Supervisor, 0=User
+  static constexpr const uint64_t kSstatusSpp = 1 << 8;
 
   /**
    * @brief mstatus 寄存器定义
    */
-  struct mstatus_t {
+  struct Mstatus {
     union {
       struct {
         // interrupt enable
@@ -122,21 +122,15 @@ class Cpu {
         uint64_t unused3 : 27;
         // status dirty
         uint64_t sd : 1;
-      };
+      } mstatus;
       uint64_t val;
     };
-
-    mstatus_t(void) {
-      val = 0;
-      return;
-    }
-    mstatus_t(uint64_t _val) : val(_val) { return; }
   };
 
   /**
    * @brief sstatus 寄存器定义
    */
-  struct sstatus_t {
+  struct Sstatus {
     union {
       struct {
         // Reserved Writes Preserve Values, Reads Ignore Values (WPRI)
@@ -166,21 +160,18 @@ class Cpu {
         uint64_t wpri7 : 29;
         // status dirty
         uint64_t sd : 1;
-      };
+      } sstatus;
       uint64_t val;
     };
 
-    sstatus_t(void) {
-      val = 0;
-      return;
-    }
-    sstatus_t(uint64_t _val) : val(_val) { return; }
+    Sstatus(uint64_t _val) : val(_val) {}
+
     // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const sstatus_t &_sstatus) {
-    //   printf("val: 0x%p, sie: %s, spie: %s, spp: %s", _sstatus.val,
-    //          (_sstatus.sie == true ? "enable" : "disable"),
-    //          (_sstatus.spie == true ? "enable" : "disable"),
-    //          (_sstatus.spp == true ? "S mode" : "U mode"));
+    //                                 const Sstatus &sstatus) {
+    //   printf("val: 0x%p, sie: %s, spie: %s, spp: %s", sstatus.val,
+    //          (sstatus.sie == true ? "enable" : "disable"),
+    //          (sstatus.spie == true ? "enable" : "disable"),
+    //          (sstatus.spp == true ? "S mode" : "U mode"));
     //   return _os;
     // }
   };
@@ -189,18 +180,18 @@ class Cpu {
    * @brief 读取 sstatus 寄存器
    * @return uint64_t         读取到的值
    */
-  static inline sstatus_t READ_SSTATUS(void) {
-    sstatus_t x;
+  static inline Sstatus ReadSstatus(void) {
+    Sstatus x;
     asm("csrr %0, sstatus" : "=r"(x));
     return x;
   }
 
   /**
    * @brief 写 sstatus 寄存器
-   * @param  _x                要写的值
+   * @param  x                要写的值
    */
-  static inline void WRITE_SSTATUS(sstatus_t _x) {
-    asm("csrw sstatus, %0" : : "r"(_x));
+  static inline void WriteSstatus(Sstatus x) {
+    asm("csrw sstatus, %0" : : "r"(x));
   }
 
   /**
@@ -208,7 +199,7 @@ class Cpu {
    * @return uint64_t         读取到的值
    * @note Supervisor Interrupt Pending
    */
-  static inline uint64_t READ_SIP(void) {
+  static inline uint64_t ReadSip(void) {
     uint64_t x;
     asm("csrr %0, sip" : "=r"(x));
     return x;
@@ -216,26 +207,23 @@ class Cpu {
 
   /**
    * @brief 写 sip
-   * @param  _x               要写的值
+   * @param  x               要写的值
    */
-  static inline void WRITE_SIP(uint64_t _x) {
-    asm("csrw sip, %0" : : "r"(_x));
-    return;
-  }
+  static inline void WriteSip(uint64_t x) { asm("csrw sip, %0" : : "r"(x)); }
 
   // Supervisor Interrupt Enable
-  // software
-  static constexpr const uint64_t SIE_SSIE = 1 << 1;
-  // timer
-  static constexpr const uint64_t SIE_STIE = 1 << 5;
-  // external
-  static constexpr const uint64_t SIE_SEIE = 1 << 9;
+  /// software
+  static constexpr const uint64_t kSieSsie = 1 << 1;
+  /// timer
+  static constexpr const uint64_t kSieStie = 1 << 5;
+  /// external
+  static constexpr const uint64_t kSieSeie = 1 << 9;
 
   /**
    * @brief 读 sie
    * @return uint64_t         读到的值
    */
-  static inline uint64_t READ_SIE(void) {
+  static inline uint64_t ReadSie() {
     uint64_t x;
     asm("csrr %0, sie" : "=r"(x));
     return x;
@@ -243,12 +231,9 @@ class Cpu {
 
   /**
    * @brief 写 sie
-   * @param  _x                要写的值
+   * @param  x                要写的值
    */
-  static inline void WRITE_SIE(uint64_t _x) {
-    asm("csrw sie, %0" : : "r"(_x));
-    return;
-  }
+  static inline void WriteSie(uint64_t x) { asm("csrw sie, %0" : : "r"(x)); }
 
   /**
    * @brief 读 sepc
@@ -256,7 +241,7 @@ class Cpu {
    * @note machine exception program counter, holds the instruction address to
    * which a return from exception will go.
    */
-  static inline uint64_t READ_SEPC(void) {
+  static inline uint64_t ReadSepc() {
     uint64_t x;
     asm("csrr %0, sepc" : "=r"(x));
     return x;
@@ -264,19 +249,16 @@ class Cpu {
 
   /**
    * @brief 写 sepc
-   * @param  _x               要写的值
+   * @param  x               要写的值
    */
-  static inline void WRITE_SEPC(uint64_t _x) {
-    asm("csrw sepc, %0" : : "r"(_x));
-    return;
-  }
+  static inline void WriteSepc(uint64_t x) { asm("csrw sepc, %0" : : "r"(x)); }
 
   /**
    * @brief 读 stvec
    * @return uint64_t         读到的值
    * @note Supervisor Trap-Vector Base Address low two bits are mode.
    */
-  static inline uint64_t READ_STVEC(void) {
+  static inline uint64_t ReadStvec() {
     uint64_t x;
     asm("csrr %0, stvec" : "=r"(x));
     return x;
@@ -284,43 +266,40 @@ class Cpu {
 
   /**
    * @brief 写 stvec
-   * @param  _x               要写的值
+   * @param  x               要写的值
    */
-  static inline void WRITE_STVEC(uint64_t _x) {
-    asm("csrw stvec, %0" : : "r"(_x));
-    return;
+  static inline void WriteStvec(uint64_t x) {
+    asm("csrw stvec, %0" : : "r"(x));
   }
 
   /// 中断模式 直接
-  static constexpr const uint64_t TVEC_DIRECT = 0xFFFFFFFFFFFFFFFC;
+  static constexpr const uint64_t kTvecDirect = 0xFFFFFFFFFFFFFFFC;
   /// 中断模式 向量
-  static constexpr const uint64_t TVEC_VECTORED = 0xFFFFFFFFFFFFFFFD;
+  static constexpr const uint64_t kTvecVectored = 0xFFFFFFFFFFFFFFFD;
 
   /**
    * @brief 设置中断模式，直接
    */
-  static inline void STVEC_DIRECT(void) {
-    uint64_t stvec = READ_STVEC();
-    stvec = stvec & TVEC_DIRECT;
-    WRITE_STVEC(stvec);
-    return;
+  static inline void STVEC_DIRECT() {
+    auto stvec = ReadStvec();
+    stvec = stvec & kTvecDirect;
+    WriteStvec(stvec);
   }
 
   /**
    * @brief 设置中断模式，向量
    */
-  static inline void STVEC_VECTORED(void) {
-    uint64_t stvec = READ_STVEC();
-    stvec = stvec & TVEC_VECTORED;
-    WRITE_STVEC(stvec);
-    return;
+  static inline void STVEC_VECTORED() {
+    auto stvec = ReadStvec();
+    stvec = stvec & kTvecVectored;
+    WriteStvec(stvec);
   }
 
   /**
    * @brief 读 sscratch 寄存器
-   * @param  _x                要写的值
+   * @param  x                要写的值
    */
-  static inline uint64_t READ_SSCRATCH(void) {
+  static inline uint64_t ReadSscratch() {
     uint64_t x;
     __asm__ volatile("csrr %0, sscratch" : "=r"(x));
     return x;
@@ -328,23 +307,22 @@ class Cpu {
 
   /**
    * @brief 写 sscratch 寄存器
-   * @param  _x                要写的值
+   * @param  x                要写的值
    */
-  static inline void WRITE_SSCRATCH(uint64_t _x) {
-    asm("csrw sscratch, %0" : : "r"(_x));
-    return;
+  static inline void WriteSscratch(uint64_t x) {
+    asm("csrw sscratch, %0" : : "r"(x));
   }
 
   /// [63]==1 interrupt, else exception
-  static constexpr const uint64_t CAUSE_INTR_MASK = 1ULL << 63;
+  static constexpr const uint64_t kCauseIntrMask = 1ULL << 63;
   /// low bits show code
-  static constexpr const uint64_t CAUSE_CODE_MASK = ~CAUSE_INTR_MASK;
+  static constexpr const uint64_t kCauseCodeMask = ~kCauseIntrMask;
 
   /**
    * @brief 读 scause 寄存器 Supervisor Trap Cause
    * @return uint64_t         读到的值
    */
-  static inline uint64_t READ_SCAUSE(void) {
+  static inline uint64_t ReadScause() {
     uint64_t x;
     asm("csrr %0, scause" : "=r"(x));
     return x;
@@ -354,7 +332,7 @@ class Cpu {
    * @brief 读 stval 寄存器 Supervisor Trap Value
    * @return uint64_t         读到的值
    */
-  static inline uint64_t READ_STVAL(void) {
+  static inline uint64_t ReadStval() {
     uint64_t x;
     asm("csrr %0, stval" : "=r"(x));
     return x;
@@ -364,7 +342,7 @@ class Cpu {
    * @brief 读 time 寄存器 supervisor-mode cycle counter
    * @return uint64_t         读到的值
    */
-  static inline uint64_t READ_TIME(void) {
+  static inline uint64_t ReadTime() {
     uint64_t x;
     // asm ("csrr %0, time" : "=r" (x) );
     // this instruction will trap in SBI
@@ -375,35 +353,31 @@ class Cpu {
   /**
    * @brief 允许中断
    */
-  static inline void ENABLE_INTR(void) {
-    WRITE_SSTATUS(READ_SSTATUS().val | SSTATUS_SIE);
-    return;
+  static inline void EnableIntr(void) {
+    WriteSstatus(ReadSstatus().val | kSstatusSie);
   }
 
   /**
    * @brief 允许中断
-   * @param  _sstatus         要设置的 sstatus
+   * @param  sstatus         要设置的 sstatus
    */
-  static inline void ENABLE_INTR(sstatus_t &_sstatus) {
-    _sstatus.sie = true;
-    return;
+  static inline void EnableIntr(Sstatus &sstatus) {
+    sstatus.sstatus.sie = true;
   }
 
   /**
    * @brief 禁止中断
    */
-  static inline void DISABLE_INTR(void) {
-    WRITE_SSTATUS(READ_SSTATUS().val & ~SSTATUS_SIE);
-    return;
+  static inline void DisableIntr(void) {
+    WriteSstatus(ReadSstatus().val & ~kSstatusSie);
   }
 
   /**
    * @brief 禁止中断
-   * @param  _sstatus         要设置的原 sstatus 值
+   * @param  sstatus         要设置的原 sstatus 值
    */
-  static inline void DISABLE_INTR(sstatus_t &_sstatus) {
-    _sstatus.sie = false;
-    return;
+  static inline void DisableIntr(Sstatus &sstatus) {
+    sstatus.sstatus.sie = false;
   }
 
   /**
@@ -411,15 +385,15 @@ class Cpu {
    * @return true             允许
    * @return false            禁止
    */
-  static inline bool STATUS_INTR(void) {
-    sstatus_t x = READ_SSTATUS();
-    return x.sie;
+  static inline bool STATUS_INTR() {
+    auto x = ReadSstatus();
+    return x.sstatus.sie;
   }
 
   /**
    * @brief 通用寄存器
    */
-  struct xregs_t {
+  struct Xregs {
     uintptr_t zero;
     uintptr_t ra;
     uintptr_t sp;
@@ -452,7 +426,7 @@ class Cpu {
     uintptr_t t4;
     uintptr_t t5;
     uintptr_t t6;
-    // friend std::ostream &operator<<(std::ostream &_os, const xregs_t &_xregs)
+    // friend std::ostream &operator<<(std::ostream &_os, const Xregs &_xregs)
     // {
     //   printf("zero: 0x%p, ", _xregs.zero);
     //   printf("ra: 0x%p, ", _xregs.ra);
@@ -493,7 +467,7 @@ class Cpu {
   /**
    * @brief 浮点寄存器
    */
-  struct fregs_t {
+  struct Fregs {
     uintptr_t ft0;
     uintptr_t ft1;
     uintptr_t ft2;
@@ -526,7 +500,7 @@ class Cpu {
     uintptr_t ft9;
     uintptr_t ft10;
     uintptr_t ft11;
-    // friend std::ostream &operator<<(std::ostream &_os, const fregs_t &_fregs)
+    // friend std::ostream &operator<<(std::ostream &_os, const Fregs &_fregs)
     // {
     //   printf("ft0: 0x%p, ", _fregs.ft0);
     //   printf("ft1: 0x%p, ", _fregs.ft1);
@@ -567,7 +541,7 @@ class Cpu {
   /**
    * @brief satp 结构
    */
-  struct satp_t {
+  struct Satp {
     enum {
       NONE = 0,
       SV39 = 8,
@@ -592,12 +566,12 @@ class Cpu {
 
     static constexpr const uint64_t PPN_OFFSET = 12;
 
-    satp_t(void) {
+    Satp(void) {
       val = 0;
       return;
     }
-    satp_t(uint64_t _val) : val(_val) { return; }
-    // friend std::ostream &operator<<(std::ostream &_os, const satp_t &_satp) {
+    Satp(uint64_t _val) : val(_val) { return; }
+    // friend std::ostream &operator<<(std::ostream &_os, const Satp &_satp) {
     //     printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", _satp.val,
     //            _satp.ppn, _satp.asid, MODE_NAME[_satp.mode]);
     //     return _os;
@@ -608,14 +582,14 @@ class Cpu {
    * @brief 所有寄存器，在中断时使用，共 32+32+7=71 个
    */
   struct all_regs_t {
-    xregs_t xregs;
-    fregs_t fregs;
+    Xregs xregs;
+    Fregs fregs;
     uintptr_t sepc;
     uintptr_t stval;
     uintptr_t scause;
     uintptr_t sie;
-    sstatus_t sstatus;
-    satp_t satp;
+    Sstatus sstatus;
+    Satp satp;
     uintptr_t sscratch;
     // friend std::ostream &operator<<(std::ostream &_os,
     //                                 const all_regs_t &_all_regs) {
@@ -859,9 +833,9 @@ class Cpu {
     uintptr_t coreid;
     uintptr_t ra;
     callee_regs_t callee_regs;
-    satp_t satp;
+    Satp satp;
     uintptr_t sepc;
-    sstatus_t sstatus;
+    Sstatus sstatus;
     uintptr_t sie;
     uintptr_t sip;
     uintptr_t sscratch;
