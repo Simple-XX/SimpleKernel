@@ -36,4 +36,6 @@ uint32_t main(uint32_t argc, uint8_t* argv);
 
 uint32_t IntrInit(uint32_t argc, uint8_t* argv);
 
+uint32_t IntrInit(uint32_t argc, uint8_t* argv);
+
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_ */
