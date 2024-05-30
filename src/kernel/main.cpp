@@ -37,6 +37,8 @@ uint32_t main(uint32_t argc, uint8_t* argv) {
 
   IntrInit(argc, argv);
 
+  IntrInit(argc, argv);
+
   // 进入死循环
   while (1) {
     ;
