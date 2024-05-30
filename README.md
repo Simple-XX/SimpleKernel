@@ -148,7 +148,7 @@ boot branch
 
     支持使用 docker 构建，详细使用方法见 [doc/docker.md](./doc/docker.md)
 
-## 已支持
+## 已支持特性
 
 见 新增特性
 
