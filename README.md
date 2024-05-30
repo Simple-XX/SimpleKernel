@@ -10,6 +10,8 @@
 
 # SimpleKernel
 
+boot branch
+
 ## 关键词
 
 - kernel
@@ -23,9 +25,58 @@
 
 提供了各个阶段完成度不同的内核，你可以从自己喜欢的地方开始。
 
+## 快速开始
+
+1. 需要 Ubuntu 环境
+
+2. 安装依赖
+
+    ```shell
+    sudo apt install --fix-missing -y doxygen graphviz clang-format clang-tidy cppcheck qemu-system lcov gdb-multiarch libgtest-dev cmake gcc g++ gcc-riscv64-linux-gnu g++-riscv64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+    ```
+
+3. 编译并运行
+
+    ```shell
+    cd SimpleKernel
+    # 支持三种架构
+    cmake --preset build_riscv64
+    # cmake --preset build_x86_64
+    # cmake --preset build_aarch64
+    # 进入其中一个架构
+    cd build_riscv64
+    # 在 qemu 中运行
+    make run_run
+    ```
+
+4. 调试
+
+    ```shell
+    # 进入构建目录后执行
+    make run_debug
+    ```
+    
+    在一个新的 shell 中进入 gdb
+    ```shell
+    # 进入 gdb
+    gdb-multiarch
+    # 连接端口
+    target remote :1234
+    # 加载符号表
+    file image/kernel.elf
+    # 开始执行
+    c
+    ```
+
 ## 新增特性
 
 本分支是 SImpleKernel 的首个分支。在本分支中，完成了构建系统的基础搭建、基本的文档部署与自动化测试，当然还有最重要的，有基于 uefi 的 x86_64 内核与由 opensbi 启动的 riscv64 内核，可以在 qemu 上运行，并实现了简单的屏幕输出。
+
+||x86_64|riscv64|aarch64|
+| :-----------------------: | :-------------------------------: | :---------------------------------------------: | :-------------------: |
+|引导|UEFI|opensbi|UEFI(未完成)|
+|基本输出|通过 serial 实现|通过 opensbi 提供的 ecall 实现|TODO|
+|硬件资源探测|由 UEFI 传递|dtb 解析|TODO|
 
 - 调用顺序
 
@@ -91,7 +142,7 @@
 
 - 代码格式化
 
-    使用 llvm 风格
+    使用 google 风格
     
 - docker
 
