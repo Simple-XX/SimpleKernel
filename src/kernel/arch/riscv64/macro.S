@@ -21,7 +21,7 @@
 // 所有寄存器数量
 .equ kAllRegsCount, 71
 // 保存所有寄存器需要的大小
-.equ kAllRegSize, (kAllRegsCount * kRegsBytes)
+.equ kAllRegsSize, (kAllRegsCount * kRegsBytes)
 
 // 将寄存器 a 保存在 c 偏移 b 的位置
 .macro SdBase a, b, c
