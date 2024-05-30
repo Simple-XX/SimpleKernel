@@ -1,7 +1,7 @@
 
 /**
  * @file cpu.hpp
- * @brief x86_64 cpu 相关定义
+ * @brief riscv64 cpu 相关定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2024-03-05
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_CPU_HPP_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_CPU_HPP_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
 
 #include <cstdint>
 
@@ -23,4 +23,4 @@ class Cpu {
  public:
 };
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_CPU_HPP_
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_

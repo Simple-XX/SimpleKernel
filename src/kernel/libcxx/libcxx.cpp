@@ -16,22 +16,18 @@
 
 #include "libcxx.h"
 
-extern "C" {
-
 typedef void (*ctor_t)(void);
 // 在 link.ld 中定义
-extern ctor_t __init_array_start[];
-extern ctor_t __init_array_end[];
+extern "C" ctor_t __init_array_start[];
+extern "C" ctor_t __init_array_end[];
 
 void CppInit(void) {
   for (auto ctor = __init_array_start; ctor < __init_array_end; ctor++) {
-    /// @todo x86_64 crashed
     (*ctor)();
   }
 }
-};
 
-int32_t LibCxxInit(uint32_t argc, uint8_t** argv) {
+uint32_t LibCxxInit(uint32_t argc, uint8_t* argv) {
   (void)argc;
   (void)argv;
 

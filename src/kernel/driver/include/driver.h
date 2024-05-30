@@ -23,8 +23,8 @@
  * @brief 入口
  * @param argc 参数个数
  * @param argv 参数列表
- * @return int32_t                 正常返回 0
+ * @return uint32_t                 正常返回 0
  */
-int32_t Driver(uint32_t argc, uint8_t **argv);
+uint32_t Driver(uint32_t argc, uint8_t *argv);
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_DRIVER_INCLUDE_DRIVER_H_ */

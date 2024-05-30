@@ -17,30 +17,30 @@
 // clang-format off
 
 // 寄存器长度，8 字节
-.equ kRegBytes, 8
+.equ kRegsBytes, 8
 // 所有寄存器数量
-.equ kAllRegCount, 71
+.equ kAllRegsCount, 71
 // 保存所有寄存器需要的大小
-.equ kAllRegSize, (kAllRegCount * kRegBytes)
+.equ kAllRegSize, (kAllRegsCount * kRegsBytes)
 
 // 将寄存器 a 保存在 c 偏移 b 的位置
 .macro SdBase a, b, c
-sd \a, ((\b) * kRegBytes)(\c)
+sd \a, ((\b) * kRegsBytes)(\c)
 .endm
 
 // 从 c 的偏移 b 处获取数据并赋值给寄存器 a
 .macro LdBase a, b, c
-ld \a, ((\b) * kRegBytes)(\c)
+ld \a, ((\b) * kRegsBytes)(\c)
 .endm
 
 // 将 float 寄存器 a 保存在 c 偏移 b 的位置
 .macro FsdBase a, b, c
-fsd \a, ((\b) * kRegBytes)(\c)
+fsd \a, ((\b) * kRegsBytes)(\c)
 .endm
 
 // 从 c 的偏移 b 处获取数据并赋值给 float 寄存器 a
 .macro FldBase a, b, c
-fld \a, ((\b) * kRegBytes)(\c)
+fld \a, ((\b) * kRegsBytes)(\c)
 .endm
 
 // clang-format on

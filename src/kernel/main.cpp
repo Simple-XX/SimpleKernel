@@ -18,15 +18,14 @@
 #include "kernel.h"
 #include "libcxx.h"
 
-[[maybe_unused]] void _start(int argc, char** argv) {
+[[maybe_unused]] void _start(uint32_t argc, uint8_t* argv) {
   CppInit();
   main(argc, argv);
 }
 
-int main(int argc, char** argv) {
+uint32_t main(uint32_t argc, uint8_t* argv) {
   // 架构相关初始化
-  [[maybe_unused]] auto arch_init_ret =
-      ArchInit(argc, reinterpret_cast<uint8_t**>(argv));
+  [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
   // 进入死循环
   while (1) {

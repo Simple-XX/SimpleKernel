@@ -37,13 +37,13 @@ static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
   }
 }
 
-int32_t ArchInit(uint32_t argc, uint8_t **argv) {
+uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   if (argc != 1) {
     printf("argc != 1 [%d]\n", argc);
     return -1;
   }
 
-  BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv[0]);
+  BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv);
   printf("boot_info.framebuffer.base: 0x%p.\n", boot_info.framebuffer.base);
   printf("boot_info.framebuffer.size: %d.\n", boot_info.framebuffer.size);
   printf("boot_info.framebuffer.height: %d.\n", boot_info.framebuffer.height);
