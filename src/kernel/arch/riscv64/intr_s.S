@@ -20,16 +20,16 @@
 
 .section .text
 // 保存所有寄存器
-.global trap_entry
-.extern trap_handler
+.global TrapEntry
+.extern TrapHandler
 .align 4
-trap_entry:
+TrapEntry:
     // 将所有寄存器保存到栈上
     // 在栈上留出保存寄存器的空间
     addi sp, sp, -kAllRegsSize
     SaveAllRegs sp
 
-    // 调用 intr.cpp: trap_handler
+    // 调用 intr.cpp: TrapHandler
     // 传递参数
     csrr a0, sepc
     csrr a1, stval
@@ -39,7 +39,7 @@ trap_entry:
     csrr a5, sstatus
     csrr a6, satp
     csrr a7, sscratch
-    jal trap_handler
+    jal TrapHandler
 
     // 从栈上恢复所有寄存器
     LoadAllRegs sp

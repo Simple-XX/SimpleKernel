@@ -27,6 +27,8 @@ uint32_t main(uint32_t argc, uint8_t* argv) {
   // 架构相关初始化
   [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
+  IntrInit(argc, argv);
+
   // 进入死循环
   while (1) {
     ;

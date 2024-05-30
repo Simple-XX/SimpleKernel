@@ -125,12 +125,25 @@ class Cpu {
       } mstatus;
       uint64_t val;
     };
+
+    explicit Mstatus(uint64_t _val) : val(_val) {}
+
+    /// @name 构造/析构函数
+    /// @{
+    Mstatus() = default;
+    Mstatus(const Mstatus &) = default;
+    Mstatus(Mstatus &&) = default;
+    auto operator=(const Mstatus &) -> Mstatus & = default;
+    auto operator=(Mstatus &&) -> Mstatus & = default;
+    ~Mstatus() = default;
+    /// @}
   };
 
   /**
    * @brief sstatus 寄存器定义
    */
-  struct Sstatus {
+  class Sstatus {
+   public:
     union {
       struct {
         // Reserved Writes Preserve Values, Reads Ignore Values (WPRI)
@@ -160,11 +173,21 @@ class Cpu {
         uint64_t wpri7 : 29;
         // status dirty
         uint64_t sd : 1;
-      } sstatus;
-      uint64_t val;
+      } sstatus_;
+      uint64_t val_;
     };
 
-    Sstatus(uint64_t _val) : val(_val) {}
+    explicit Sstatus(uint64_t val) : val_(val) {}
+
+    /// @name 构造/析构函数
+    /// @{
+    Sstatus() = default;
+    Sstatus(const Sstatus &) = default;
+    Sstatus(Sstatus &&) = default;
+    auto operator=(const Sstatus &) -> Sstatus & = default;
+    auto operator=(Sstatus &&) -> Sstatus & = default;
+    ~Sstatus() = default;
+    /// @}
 
     // friend std::ostream &operator<<(std::ostream &_os,
     //                                 const Sstatus &sstatus) {
@@ -273,14 +296,14 @@ class Cpu {
   }
 
   /// 中断模式 直接
-  static constexpr const uint64_t kTvecDirect = 0xFFFFFFFFFFFFFFFC;
+  static constexpr const uint64_t kTvecDirect = ~0x3;
   /// 中断模式 向量
-  static constexpr const uint64_t kTvecVectored = 0xFFFFFFFFFFFFFFFD;
+  static constexpr const uint64_t kTvecVectored = ~0x2;
 
   /**
    * @brief 设置中断模式，直接
    */
-  static inline void STVEC_DIRECT() {
+  static inline void SetStvecDirect() {
     auto stvec = ReadStvec();
     stvec = stvec & kTvecDirect;
     WriteStvec(stvec);
@@ -289,7 +312,7 @@ class Cpu {
   /**
    * @brief 设置中断模式，向量
    */
-  static inline void STVEC_VECTORED() {
+  static inline void SetStvecVectored() {
     auto stvec = ReadStvec();
     stvec = stvec & kTvecVectored;
     WriteStvec(stvec);
@@ -353,8 +376,8 @@ class Cpu {
   /**
    * @brief 允许中断
    */
-  static inline void EnableIntr(void) {
-    WriteSstatus(ReadSstatus().val | kSstatusSie);
+  static inline void EnableIntr() {
+    WriteSstatus(Sstatus(ReadSstatus().val_ | kSstatusSie));
   }
 
   /**
@@ -362,14 +385,14 @@ class Cpu {
    * @param  sstatus         要设置的 sstatus
    */
   static inline void EnableIntr(Sstatus &sstatus) {
-    sstatus.sstatus.sie = true;
+    sstatus.sstatus_.sie = true;
   }
 
   /**
    * @brief 禁止中断
    */
-  static inline void DisableIntr(void) {
-    WriteSstatus(ReadSstatus().val & ~kSstatusSie);
+  static inline void DisableIntr() {
+    WriteSstatus(Sstatus(ReadSstatus().val_ & ~kSstatusSie));
   }
 
   /**
@@ -377,7 +400,7 @@ class Cpu {
    * @param  sstatus         要设置的原 sstatus 值
    */
   static inline void DisableIntr(Sstatus &sstatus) {
-    sstatus.sstatus.sie = false;
+    sstatus.sstatus_.sie = false;
   }
 
   /**
@@ -385,10 +408,12 @@ class Cpu {
    * @return true             允许
    * @return false            禁止
    */
-  static inline bool STATUS_INTR() {
-    auto x = ReadSstatus();
-    return x.sstatus.sie;
-  }
+  static inline bool GetSstatusSie() { return ReadSstatus().sstatus_.sie; }
+
+  /**
+   * @brief 允许定时器中断
+   */
+  static inline void EnableTimer() { WriteSie(ReadSie() | kSieStie); }
 
   /**
    * @brief 通用寄存器
@@ -541,18 +566,18 @@ class Cpu {
   /**
    * @brief satp 结构
    */
-  struct Satp {
+  class Satp {
+   public:
     enum {
-      NONE = 0,
-      SV39 = 8,
-      SV48 = 9,
-      SV57 = 10,
-      SV64 = 11,
+      kSatpNone = 0,
+      kSatpSv39 = 8,
+      kSatpSv48 = 9,
+      kSatpSv57 = 10,
+      kSatpSv64 = 11,
     };
     static constexpr const char *MODE_NAME[] = {
-        [NONE] = "NONE", "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
-        "UNKNOWN",       "UNKNOWN",       "UNKNOWN",       "UNKNOWN",
-        [SV39] = "SV39", [SV48] = "SV48", [SV57] = "SV57", [SV64] = "SV64",
+        "NONE",    "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN",
+        "UNKNOWN", "UNKNOWN", "SV39",    "SV48",    "SV57",    "SV64",
     };
 
     union {
@@ -560,17 +585,24 @@ class Cpu {
         uint64_t ppn : 44;
         uint64_t asid : 16;
         uint64_t mode : 4;
-      };
-      uint64_t val;
+      } satp_;
+      uint64_t val_;
     };
 
-    static constexpr const uint64_t PPN_OFFSET = 12;
+    static constexpr const uint64_t kPpnOffset = 12;
 
-    Satp(void) {
-      val = 0;
-      return;
-    }
-    Satp(uint64_t _val) : val(_val) { return; }
+    explicit Satp(uint64_t val) : val_(val) {}
+
+    /// @name 构造/析构函数
+    /// @{
+    Satp() = default;
+    Satp(const Satp &) = default;
+    Satp(Satp &&) = default;
+    auto operator=(const Satp &) -> Satp & = default;
+    auto operator=(Satp &&) -> Satp & = default;
+    ~Satp() = default;
+    /// @}
+
     // friend std::ostream &operator<<(std::ostream &_os, const Satp &_satp) {
     //     printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", _satp.val,
     //            _satp.ppn, _satp.asid, MODE_NAME[_satp.mode]);
@@ -581,7 +613,7 @@ class Cpu {
   /**
    * @brief 所有寄存器，在中断时使用，共 32+32+7=71 个
    */
-  struct all_regs_t {
+  struct AllRegs {
     Xregs xregs;
     Fregs fregs;
     uintptr_t sepc;
@@ -592,94 +624,94 @@ class Cpu {
     Satp satp;
     uintptr_t sscratch;
     // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const all_regs_t &_all_regs) {
-    //   (void)_all_regs.fregs;
-    //   _os << _all_regs.xregs << std::endl;
+    //                                 const AllRegs &all_regs) {
+    //   (void)all_regs.fregs;
+    //   _os << all_regs.xregs << std::endl;
     //   printf(
     //       "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: "
     //       "0x%p, satp: 0x%p, sscratch: 0x%p",
-    //       _all_regs.sepc, _all_regs.stval, _all_regs.scause, _all_regs.sie,
-    //       _all_regs.sstatus.val, _all_regs.satp.val, _all_regs.sscratch);
+    //       all_regs.sepc, all_regs.stval, all_regs.scause, all_regs.sie,
+    //       all_regs.sstatus_.val, all_regs.satp.val, all_regs.sscratch);
     //   return _os;
     // }
   };
 
   /**
    * @brief 读取所有寄存器
-   * @param  _all_regs        要保存读取到的的值
+   * @param  all_regs        要保存读取到的的值
    */
-  static inline void read_all_reg(all_regs_t &_all_regs) {
-    asm("mv %0, zero" : "=r"(_all_regs.xregs.zero));
-    asm("mv %0, ra" : "=r"(_all_regs.xregs.ra));
-    asm("mv %0, sp" : "=r"(_all_regs.xregs.sp));
-    asm("mv %0, gp" : "=r"(_all_regs.xregs.gp));
-    asm("mv %0, tp" : "=r"(_all_regs.xregs.tp));
-    asm("mv %0, t0" : "=r"(_all_regs.xregs.t0));
-    asm("mv %0, t1" : "=r"(_all_regs.xregs.t1));
-    asm("mv %0, t2" : "=r"(_all_regs.xregs.t2));
-    asm("mv %0, s0" : "=r"(_all_regs.xregs.s0));
-    asm("mv %0, s1" : "=r"(_all_regs.xregs.s1));
-    asm("mv %0, a0" : "=r"(_all_regs.xregs.a0));
-    asm("mv %0, a1" : "=r"(_all_regs.xregs.a1));
-    asm("mv %0, a2" : "=r"(_all_regs.xregs.a2));
-    asm("mv %0, a3" : "=r"(_all_regs.xregs.a3));
-    asm("mv %0, a4" : "=r"(_all_regs.xregs.a4));
-    asm("mv %0, a5" : "=r"(_all_regs.xregs.a5));
-    asm("mv %0, a6" : "=r"(_all_regs.xregs.a6));
-    asm("mv %0, a7" : "=r"(_all_regs.xregs.a7));
-    asm("mv %0, s2" : "=r"(_all_regs.xregs.s2));
-    asm("mv %0, s3" : "=r"(_all_regs.xregs.s3));
-    asm("mv %0, s4" : "=r"(_all_regs.xregs.s4));
-    asm("mv %0, s5" : "=r"(_all_regs.xregs.s5));
-    asm("mv %0, s6" : "=r"(_all_regs.xregs.s6));
-    asm("mv %0, s7" : "=r"(_all_regs.xregs.s7));
-    asm("mv %0, s8" : "=r"(_all_regs.xregs.s8));
-    asm("mv %0, s9" : "=r"(_all_regs.xregs.s9));
-    asm("mv %0, s10" : "=r"(_all_regs.xregs.s10));
-    asm("mv %0, s11" : "=r"(_all_regs.xregs.s11));
-    asm("mv %0, t3" : "=r"(_all_regs.xregs.t3));
-    asm("mv %0, t4" : "=r"(_all_regs.xregs.t4));
-    asm("mv %0, t5" : "=r"(_all_regs.xregs.t5));
-    asm("mv %0, t6" : "=r"(_all_regs.xregs.t6));
+  static inline void ReadAllRegs(AllRegs &all_regs) {
+    asm("mv %0, zero" : "=r"(all_regs.xregs.zero));
+    asm("mv %0, ra" : "=r"(all_regs.xregs.ra));
+    asm("mv %0, sp" : "=r"(all_regs.xregs.sp));
+    asm("mv %0, gp" : "=r"(all_regs.xregs.gp));
+    asm("mv %0, tp" : "=r"(all_regs.xregs.tp));
+    asm("mv %0, t0" : "=r"(all_regs.xregs.t0));
+    asm("mv %0, t1" : "=r"(all_regs.xregs.t1));
+    asm("mv %0, t2" : "=r"(all_regs.xregs.t2));
+    asm("mv %0, s0" : "=r"(all_regs.xregs.s0));
+    asm("mv %0, s1" : "=r"(all_regs.xregs.s1));
+    asm("mv %0, a0" : "=r"(all_regs.xregs.a0));
+    asm("mv %0, a1" : "=r"(all_regs.xregs.a1));
+    asm("mv %0, a2" : "=r"(all_regs.xregs.a2));
+    asm("mv %0, a3" : "=r"(all_regs.xregs.a3));
+    asm("mv %0, a4" : "=r"(all_regs.xregs.a4));
+    asm("mv %0, a5" : "=r"(all_regs.xregs.a5));
+    asm("mv %0, a6" : "=r"(all_regs.xregs.a6));
+    asm("mv %0, a7" : "=r"(all_regs.xregs.a7));
+    asm("mv %0, s2" : "=r"(all_regs.xregs.s2));
+    asm("mv %0, s3" : "=r"(all_regs.xregs.s3));
+    asm("mv %0, s4" : "=r"(all_regs.xregs.s4));
+    asm("mv %0, s5" : "=r"(all_regs.xregs.s5));
+    asm("mv %0, s6" : "=r"(all_regs.xregs.s6));
+    asm("mv %0, s7" : "=r"(all_regs.xregs.s7));
+    asm("mv %0, s8" : "=r"(all_regs.xregs.s8));
+    asm("mv %0, s9" : "=r"(all_regs.xregs.s9));
+    asm("mv %0, s10" : "=r"(all_regs.xregs.s10));
+    asm("mv %0, s11" : "=r"(all_regs.xregs.s11));
+    asm("mv %0, t3" : "=r"(all_regs.xregs.t3));
+    asm("mv %0, t4" : "=r"(all_regs.xregs.t4));
+    asm("mv %0, t5" : "=r"(all_regs.xregs.t5));
+    asm("mv %0, t6" : "=r"(all_regs.xregs.t6));
 
-    //    asm("mv %0, ft0" : "=r"(_all_regs.fregs.ft0));
-    //    asm("mv %0, ft1" : "=r"(_all_regs.fregs.ft1));
-    //    asm("mv %0, ft2" : "=r"(_all_regs.fregs.ft2));
-    //    asm("mv %0, ft3" : "=r"(_all_regs.fregs.ft3));
-    //    asm("mv %0, ft4" : "=r"(_all_regs.fregs.ft4));
-    //    asm("mv %0, ft5" : "=r"(_all_regs.fregs.ft5));
-    //    asm("mv %0, ft6" : "=r"(_all_regs.fregs.ft6));
-    //    asm("mv %0, ft7" : "=r"(_all_regs.fregs.ft7));
-    //    asm("mv %0, fs0" : "=r"(_all_regs.fregs.fs0));
-    //    asm("mv %0, fs1" : "=r"(_all_regs.fregs.fs1));
-    //    asm("mv %0, fa0" : "=r"(_all_regs.fregs.fa0));
-    //    asm("mv %0, fa1" : "=r"(_all_regs.fregs.fa1));
-    //    asm("mv %0, fa2" : "=r"(_all_regs.fregs.fa2));
-    //    asm("mv %0, fa3" : "=r"(_all_regs.fregs.fa3));
-    //    asm("mv %0, fa4" : "=r"(_all_regs.fregs.fa4));
-    //    asm("mv %0, fa5" : "=r"(_all_regs.fregs.fa5));
-    //    asm("mv %0, fa6" : "=r"(_all_regs.fregs.fa6));
-    //    asm("mv %0, fa7" : "=r"(_all_regs.fregs.fa7));
-    //    asm("mv %0, fs2" : "=r"(_all_regs.fregs.fs2));
-    //    asm("mv %0, fs3" : "=r"(_all_regs.fregs.fs3));
-    //    asm("mv %0, fs4" : "=r"(_all_regs.fregs.fs4));
-    //    asm("mv %0, fs5" : "=r"(_all_regs.fregs.fs5));
-    //    asm("mv %0, fs6" : "=r"(_all_regs.fregs.fs6));
-    //    asm("mv %0, fs7" : "=r"(_all_regs.fregs.fs7));
-    //    asm("mv %0, fs8" : "=r"(_all_regs.fregs.fs8));
-    //    asm("mv %0, fs9" : "=r"(_all_regs.fregs.fs9));
-    //    asm("mv %0, fs10" : "=r"(_all_regs.fregs.fs10));
-    //    asm("mv %0, fs11" : "=r"(_all_regs.fregs.fs11));
-    //    asm("mv %0, ft8" : "=r"(_all_regs.fregs.ft8));
-    //    asm("mv %0, ft9" : "=r"(_all_regs.fregs.ft9));
-    //    asm("mv %0, ft10" : "=r"(_all_regs.fregs.ft10));
-    //    asm("mv %0, ft11" : "=r"(_all_regs.fregs.ft11));
+    //    asm("mv %0, ft0" : "=r"(all_regs.fregs.ft0));
+    //    asm("mv %0, ft1" : "=r"(all_regs.fregs.ft1));
+    //    asm("mv %0, ft2" : "=r"(all_regs.fregs.ft2));
+    //    asm("mv %0, ft3" : "=r"(all_regs.fregs.ft3));
+    //    asm("mv %0, ft4" : "=r"(all_regs.fregs.ft4));
+    //    asm("mv %0, ft5" : "=r"(all_regs.fregs.ft5));
+    //    asm("mv %0, ft6" : "=r"(all_regs.fregs.ft6));
+    //    asm("mv %0, ft7" : "=r"(all_regs.fregs.ft7));
+    //    asm("mv %0, fs0" : "=r"(all_regs.fregs.fs0));
+    //    asm("mv %0, fs1" : "=r"(all_regs.fregs.fs1));
+    //    asm("mv %0, fa0" : "=r"(all_regs.fregs.fa0));
+    //    asm("mv %0, fa1" : "=r"(all_regs.fregs.fa1));
+    //    asm("mv %0, fa2" : "=r"(all_regs.fregs.fa2));
+    //    asm("mv %0, fa3" : "=r"(all_regs.fregs.fa3));
+    //    asm("mv %0, fa4" : "=r"(all_regs.fregs.fa4));
+    //    asm("mv %0, fa5" : "=r"(all_regs.fregs.fa5));
+    //    asm("mv %0, fa6" : "=r"(all_regs.fregs.fa6));
+    //    asm("mv %0, fa7" : "=r"(all_regs.fregs.fa7));
+    //    asm("mv %0, fs2" : "=r"(all_regs.fregs.fs2));
+    //    asm("mv %0, fs3" : "=r"(all_regs.fregs.fs3));
+    //    asm("mv %0, fs4" : "=r"(all_regs.fregs.fs4));
+    //    asm("mv %0, fs5" : "=r"(all_regs.fregs.fs5));
+    //    asm("mv %0, fs6" : "=r"(all_regs.fregs.fs6));
+    //    asm("mv %0, fs7" : "=r"(all_regs.fregs.fs7));
+    //    asm("mv %0, fs8" : "=r"(all_regs.fregs.fs8));
+    //    asm("mv %0, fs9" : "=r"(all_regs.fregs.fs9));
+    //    asm("mv %0, fs10" : "=r"(all_regs.fregs.fs10));
+    //    asm("mv %0, fs11" : "=r"(all_regs.fregs.fs11));
+    //    asm("mv %0, ft8" : "=r"(all_regs.fregs.ft8));
+    //    asm("mv %0, ft9" : "=r"(all_regs.fregs.ft9));
+    //    asm("mv %0, ft10" : "=r"(all_regs.fregs.ft10));
+    //    asm("mv %0, ft11" : "=r"(all_regs.fregs.ft11));
 
-    asm volatile("csrr %0, sepc" : "=r"(_all_regs.sepc));
-    asm volatile("csrr %0, stval" : "=r"(_all_regs.stval));
-    asm volatile("csrr %0, scause" : "=r"(_all_regs.scause));
-    asm volatile("csrr %0, sstatus" : "=r"(_all_regs.sstatus));
-    asm volatile("csrr %0, sscratch" : "=r"(_all_regs.sscratch));
+    asm volatile("csrr %0, sepc" : "=r"(all_regs.sepc));
+    asm volatile("csrr %0, stval" : "=r"(all_regs.stval));
+    asm volatile("csrr %0, scause" : "=r"(all_regs.scause));
+    asm volatile("csrr %0, sstatus" : "=r"(all_regs.sstatus));
+    asm volatile("csrr %0, sscratch" : "=r"(all_regs.sscratch));
 
     return;
   }
@@ -687,7 +719,7 @@ class Cpu {
   /**
    * @brief 调用者保存寄存器
    */
-  struct caller_regs_t {
+  struct CallerRegs {
     uintptr_t ra;
     uintptr_t t0;
     uintptr_t t2;
@@ -724,7 +756,7 @@ class Cpu {
     uintptr_t ft10;
     uintptr_t ft11;
     // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const caller_regs_t &_caller_regs) {
+    //                                 const Caller_Regs &_caller_regs) {
     //   printf("ra: 0x%p, ", _caller_regs.ra);
     //   printf("t0: 0x%p, ", _caller_regs.t0);
     //   printf("t2: 0x%p, ", _caller_regs.t2);
@@ -767,7 +799,7 @@ class Cpu {
   /**
    * @brief 被调用者保存寄存器
    */
-  struct callee_regs_t {
+  struct CalleeRegs {
     uintptr_t sp;
     uintptr_t s0;
     uintptr_t s1;
@@ -794,7 +826,7 @@ class Cpu {
     uintptr_t fs10;
     uintptr_t fs11;
     // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const callee_regs_t &_callee_regs) {
+    //                                 const CalleeRegs &_callee_regs) {
     //   printf("sp: 0x%p, ", _callee_regs.sp);
     //   printf("s0: 0x%p, ", _callee_regs.s0);
     //   printf("s1: 0x%p, ", _callee_regs.s1);
@@ -828,11 +860,11 @@ class Cpu {
    * @brief 上下文，用于任务切换
    * @note caller_regs 由编译器保存/恢复
    */
-  struct context_t {
+  struct Context {
     /// 运行此任务的 core id
     uintptr_t coreid;
     uintptr_t ra;
-    callee_regs_t callee_regs;
+    CalleeRegs callee_regs;
     Satp satp;
     uintptr_t sepc;
     Sstatus sstatus;
@@ -840,13 +872,13 @@ class Cpu {
     uintptr_t sip;
     uintptr_t sscratch;
     // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const context_t &_context) {
+    //                                 const Context &_context) {
     //   printf("coreid: 0x%X, ", _context.coreid);
     //   printf("ra: 0x%p\n", _context.ra);
     //   std::cout << _context.callee_regs << std::endl;
     //   printf("satp: 0x%p, ", _context.satp.val);
     //   printf("sepc: 0x%p, ", _context.sepc);
-    //   printf("sstatus: 0x%p, ", _context.sstatus.val);
+    //   printf("sstatus: 0x%p, ", _context.sstatus_.val);
     //   printf("sie: 0x%p, ", _context.sie);
     //   printf("sip: 0x%p, ", _context.sip);
     //   printf("sscratch: 0x%p", _context.sscratch);
