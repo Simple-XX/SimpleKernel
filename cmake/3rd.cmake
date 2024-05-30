@@ -144,20 +144,19 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
 endif ()
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://sourceforge.net/projects/gnu-efi/
+    # https://github.com/ncroxon/gnu-efi
     CPMAddPackage(
             NAME gnu-efi
-            URL "https://sourceforge.net/projects/gnu-efi/files/gnu-efi-3.0.17.tar.bz2"
-            VERSION 3.0.17
+            GIT_REPOSITORY https://github.com/ncroxon/gnu-efi.git
+            GIT_TAG 3.0.18
             DOWNLOAD_ONLY True
     )
     if (gnu-efi_ADDED)
         if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
             set(CC_ ${CMAKE_C_COMPILER})
             set(AR_ ${CMAKE_AR})
-        elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64")
-            set(CC_ x86_64-linux-gnu-gcc)
-            set(AR_ x86_64-linux-gnu-ar)
+        elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+            set(CROSS_COMPILE_ x86_64-linux-gnu-)
         endif ()
         # 编译 gnu-efi
         add_custom_target(gnu-efi
@@ -171,12 +170,12 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STR
                 make_directory
                 ${gnu-efi_BINARY_DIR}
                 COMMAND
-                make lib gnuefi inc
                 # @note 仅支持 gcc
-                CC=${CC_}
-                AR=${AR_}
+                make lib gnuefi inc
+                CROSS_COMPILE=${CROSS_COMPILE_}
                 ARCH=${CMAKE_SYSTEM_PROCESSOR}
                 OBJDIR=${gnu-efi_BINARY_DIR}
+                V=1
                 COMMAND
                 ${CMAKE_COMMAND}
                 -E
@@ -188,6 +187,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STR
 
     # ovmf
     # @todo 使用互联网连接或从 edk2 编译
+    # https://efi.akeo.ie/QEMU_EFI/QEMU_EFI-AA64.zip
     CPMAddPackage(
             NAME ovmf
             SOURCE_DIR ${PROJECT_SOURCE_DIR}/tools/ovmf
