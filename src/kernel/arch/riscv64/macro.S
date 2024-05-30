@@ -20,8 +20,16 @@
 .equ kRegBytes, 8
 // 所有寄存器数量
 .equ kAllRegCount, 71
+// 被调用者保存寄存器数量
+.equ kCalleeSaveRegsCount, 25
+// 调用者保存寄存器数量
+.equ kCallerSaveRegsCount, 35
 // 保存所有寄存器需要的大小
 .equ kAllRegSize, (kAllRegCount * kRegBytes)
+// 保存被调用者保存寄存器需要的大小
+.equ kCalleeSize, (kCalleeSaveRegsCount * kRegBytes)
+// 保存调用者保存寄存器需要的大小
+.equ kCallerSize, (kCallerSaveRegsCount * kRegBytes)
 
 // 将寄存器 a 保存在 c 偏移 b 的位置
 .macro SdBase a, b, c
