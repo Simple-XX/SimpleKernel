@@ -26,7 +26,7 @@
 trap_entry:
     // 将所有寄存器保存到栈上
     // 在栈上留出保存寄存器的空间
-    addi sp, sp, -kAllRegSize
+    addi sp, sp, -kAllRegsSize
     SaveAllRegs sp
 
     // 调用 intr.cpp: trap_handler
@@ -44,7 +44,7 @@ trap_entry:
     // 从栈上恢复所有寄存器
     LoadAllRegs sp
     // 释放栈上用于保存寄存器的空间
-    addi sp, sp, kAllRegSize
+    addi sp, sp, kAllRegsSize
 
     // 跳转到 sepc 处执行
     sret
