@@ -29,7 +29,7 @@ function(add_header_arch _target)
     target_include_directories(${_target} PRIVATE
             ${CMAKE_SOURCE_DIR}/src/kernel/arch)
     target_include_directories(${_target} PRIVATE
-            ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR})
+            ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/include)
 endfunction()
 
 function(add_header_kernel _target)

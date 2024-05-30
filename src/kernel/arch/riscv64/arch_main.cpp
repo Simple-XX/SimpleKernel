@@ -24,7 +24,7 @@ extern "C" void _putchar(char character) {
 }
 
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
-int32_t ArchInit(uint32_t argc, uint8_t **argv) {
+uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   printf("boot hart id: %d\n", argc);
   printf("dtb info addr: %p\n", argv);
 

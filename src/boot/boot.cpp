@@ -104,10 +104,10 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
     return status;
   }
 
-  // 获取内存信息
-
+  // 向内核传递参数
   BootInfo boot_info = {};
 
+  // 获取内存信息
   boot_info.memory_map_count = memory.GetMemoryMap(boot_info.memory_map);
 
   // 获取 framebuffer 信息
@@ -120,13 +120,8 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
   boot_info.framebuffer.height = framebuffer_height;
   boot_info.framebuffer.pitch = framebuffer_pixel_per_line * sizeof(uint32_t);
 
-  uint8_t *argv[] = {
-      reinterpret_cast<uint8_t *>(&boot_info),
-      nullptr,
-  };
-
-  auto kernel_entry = (void (*)(uint32_t, uint8_t **))kernel_addr;
-  kernel_entry(1, static_cast<uint8_t **>(argv));
+  auto kernel_entry = (void (*)(uint32_t, uint8_t *))kernel_addr;
+  kernel_entry(1, reinterpret_cast<uint8_t *>(&boot_info));
 
   // 不会执行到这里
   return EFI_SUCCESS;

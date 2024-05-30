@@ -42,6 +42,6 @@ struct BootInfo {
   } framebuffer;
 };
 
-int32_t ArchInit(uint32_t argc, uint8_t **argv);
+uint32_t ArchInit(uint32_t argc, uint8_t *argv);
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_ */

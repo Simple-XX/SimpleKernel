@@ -18,11 +18,9 @@
 #include "cstdio"
 
 // printf_bare_metal 基本输出实现
-extern "C" void _putchar(char character) {
-  (void)character;
-}
+extern "C" void _putchar(char character) { (void)character; }
 
-int32_t ArchInit(uint32_t argc, uint8_t **argv) {
+uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
   (void)argv;
 
