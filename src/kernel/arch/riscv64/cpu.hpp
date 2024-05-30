@@ -29,6 +29,9 @@ class Cpu {
     kModeMachine = 3,
   };
 
+  /// 最大中断数
+  static constexpr const uint32_t kInterruptFuncMaxCount = 17;
+
   enum {
     kIntrSoft = 0,
     /// U 态软中断
@@ -53,6 +56,29 @@ class Cpu {
     kIntrExternMachineMode = kIntrExtern + kModeMachine,
   };
 
+  /// 中断名
+  static constexpr const char *const kInterruptNames[kInterruptFuncMaxCount] = {
+      "User Software Interrupt",
+      "Supervisor Software Interrupt",
+      "Reserved",
+      "Machine Software Interrupt",
+      "User Timer Interrupt",
+      "Supervisor Timer Interrupt",
+      "Reserved",
+      "Machine Timer Interrupt",
+      "User External Interrupt",
+      "Supervisor External Interrupt",
+      "Reserved",
+      "Machine External Interrupt",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Local Interrupt X",
+  };
+
+  /// 最大异常数
+  static constexpr const uint32_t kExceptionFuncMaxCount = 17;
   enum {
     kExceptionInstructionAddressMisaligned = 0,
     kExceptionInstructionAccessFault = 1,
@@ -69,6 +95,27 @@ class Cpu {
     kExceptionInstructionPageFault = 12,
     kExceptionLoadPageFault = 13,
     kExceptionStoreAmoPageFault = 15,
+  };
+
+  /// 异常名
+  static constexpr const char *const kExceptionNames[kExceptionFuncMaxCount] = {
+      "Instruction Address Misaligned",
+      "Instruction Access Fault",
+      "Illegal Instruction",
+      "Breakpoint",
+      "Load Address Misaligned",
+      "Load Access Fault",
+      "Store/AMO Address Misaligned",
+      "Store/AMO Access Fault",
+      "Environment Call from U-mode",
+      "Environment Call from S-mode",
+      "Reserved",
+      "Environment Call from M-mode",
+      "Instruction Page Fault",
+      "Load Page Fault",
+      "Reserved",
+      "Store/AMO Page Fault",
+      "Reserved",
   };
 
   /// Supervisor Status Register, sstatus
@@ -337,9 +384,9 @@ class Cpu {
   }
 
   /// [63]==1 interrupt, else exception
-  static constexpr const uint64_t kCauseIntrMask = 1ULL << 63;
+  static constexpr const uint64_t kCauseInterruptMask = 1ULL << 63;
   /// low bits show code
-  static constexpr const uint64_t kCauseCodeMask = ~kCauseIntrMask;
+  static constexpr const uint64_t kCauseCodeMask = ~kCauseInterruptMask;
 
   /**
    * @brief 读 scause 寄存器 Supervisor Trap Cause
@@ -376,7 +423,7 @@ class Cpu {
   /**
    * @brief 允许中断
    */
-  static inline void EnableIntr() {
+  static inline void EnableSupervisorIntr() {
     WriteSstatus(Sstatus(ReadSstatus().val_ | kSstatusSie));
   }
 
@@ -384,7 +431,7 @@ class Cpu {
    * @brief 允许中断
    * @param  sstatus         要设置的 sstatus
    */
-  static inline void EnableIntr(Sstatus &sstatus) {
+  static inline void EnableSupervisorIntr(Sstatus &sstatus) {
     sstatus.sstatus_.sie = true;
   }
 
@@ -413,7 +460,7 @@ class Cpu {
   /**
    * @brief 允许定时器中断
    */
-  static inline void EnableTimer() { WriteSie(ReadSie() | kSieStie); }
+  static inline void EnableSupervisorTimer() { WriteSie(ReadSie() | kSieStie); }
 
   /**
    * @brief 通用寄存器

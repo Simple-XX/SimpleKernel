@@ -17,6 +17,7 @@
 #ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_BASE_H_
 #define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_BASE_H_
 
+#include <atomic>
 #include <cstdint>
 
 class InterruptBase {
@@ -24,12 +25,18 @@ class InterruptBase {
   /// @name 构造/析构函数
   /// @{
   InterruptBase() = default;
-  InterruptBase(const InterruptBase &) = default;
-  InterruptBase(InterruptBase &&) = default;
-  auto operator=(const InterruptBase &) -> InterruptBase & = default;
-  auto operator=(InterruptBase &&) -> InterruptBase & = default;
+  InterruptBase(const InterruptBase &) = delete;
+  InterruptBase(InterruptBase &&) = delete;
+  auto operator=(const InterruptBase &) -> InterruptBase & = delete;
+  auto operator=(InterruptBase &&) -> InterruptBase & = delete;
   virtual ~InterruptBase() = default;
   /// @}
+
+  virtual uint32_t DoInterrupt(uint32_t, uint8_t *) = 0;
+  virtual uint32_t DoException(uint32_t, uint8_t *) = 0;
+
+ protected:
+  std::atomic_bool is_inited = false;
 };
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_BASE_H_ */

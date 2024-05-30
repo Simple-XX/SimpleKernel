@@ -18,6 +18,7 @@
 #define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_
 
 #include <cstdint>
+#include <functional>
 
 #include "cpu.hpp"
 #include "interrupt_base.h"
@@ -30,34 +31,50 @@
  */
 class Clint {
  public:
-  Clint() {
-    // 开启内部中断
-    Cpu::WriteSie(Cpu::ReadSie() | Cpu::kSieSsie);
-    printf("Clint init.\n");
-  }
+  Clint();
 
   /// @name 构造/析构函数
   /// @{
-  Clint(const Clint &) = default;
-  Clint(Clint &&) = default;
-  auto operator=(const Clint &) -> Clint & = default;
-  auto operator=(Clint &&) -> Clint & = default;
+  Clint(const Clint &) = delete;
+  Clint(Clint &&) = delete;
+  auto operator=(const Clint &) -> Clint & = delete;
+  auto operator=(Clint &&) -> Clint & = delete;
   ~Clint() = default;
   /// @}
 };
 
-class Interrupt : public InterruptBase {
+class Interrupt final : public InterruptBase {
  public:
-  Interrupt() { Clint(); }
+  Interrupt();
 
   /// @name 构造/析构函数
   /// @{
-  Interrupt(const Interrupt &) = default;
-  Interrupt(Interrupt &&) = default;
-  auto operator=(const Interrupt &) -> Interrupt & = default;
-  auto operator=(Interrupt &&) -> Interrupt & = default;
+  Interrupt(const Interrupt &) = delete;
+  Interrupt(Interrupt &&) = delete;
+  auto operator=(const Interrupt &) -> Interrupt & = delete;
+  auto operator=(Interrupt &&) -> Interrupt & = delete;
   ~Interrupt() = default;
   /// @}
+
+  uint32_t DoInterrupt(uint32_t, uint8_t *) override;
+  uint32_t DoException(uint32_t, uint8_t *) override;
+
+ private:
+  // typedef std::function<uint32_t(uint32_t, uint8_t *)> InterruptFunc;
+  /**
+   * @brief 中断处理函数指针
+   * @param  _argc           参数个数
+   * @param  _argv           参数列表
+   * @return uint32_t 返回值，0 成功
+   */
+  typedef uint32_t (*InterruptFunc)(uint32_t _argc, uint8_t *_argv);
+
+  /// 中断处理函数数组
+  InterruptFunc interrupt_handlers[Cpu::kInterruptFuncMaxCount]
+      __attribute__((aligned(4)));
+  /// 异常处理函数数组
+  InterruptFunc exception_handlers[Cpu::kExceptionFuncMaxCount]
+      __attribute__((aligned(4)));
 };
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_ */

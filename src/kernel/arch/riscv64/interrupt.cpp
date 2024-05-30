@@ -18,56 +18,101 @@
 #include "cpu.hpp"
 #include "cstdio"
 #include "fdt_parser.hpp"
-#include "interrupt_base.h"
 #include "opensbi_interface.h"
+
+static Interrupt interrupt;
 
 /// 中断处理入口 intr_s.S
 extern "C" void TrapEntry();
 
 /**
  * @brief 中断处理函数
- * @param  _scause         原因
- * @param  _sepc           值
- * @param  _stval          值
- * @param  _scause         值
- * @param  _all_regs       保存在栈上的所有寄存器，实际上是 sp
- * @param  _sie            值
- * @param  _sstatus        值
- * @param  _sscratch       值
+ * @param  sepc           值
+ * @param  stval          值
+ * @param  scause         值
+ * @param  all_regs       保存在栈上的所有寄存器，实际上是 sp
+ * @param  sie            值
+ * @param  sstatus        值
+ * @param  satp           值
+ * @param  sscratch       值
  */
-extern "C" void TrapHandler(uintptr_t _sepc, uintptr_t _stval,
-                            uintptr_t _scause, Cpu::AllRegs *_all_regs,
-                            uintptr_t _sie, Cpu::Sstatus _sstatus,
-                            Cpu::Satp _satp, uintptr_t _sscratch) {
+extern "C" void TrapHandler(uintptr_t sepc, uintptr_t stval, uintptr_t scause,
+                            Cpu::AllRegs *all_regs, uintptr_t sie,
+                            Cpu::Sstatus sstatus, Cpu::Satp satp,
+                            uintptr_t sscratch) {
   // 消除 unused 警告
-  (void)_sepc;
-  (void)_stval;
-  (void)_scause;
-  (void)_all_regs;
-  (void)_sie;
-  (void)_sstatus;
-  (void)_satp;
-  (void)_sscratch;
-  if (_scause & Cpu::kCauseIntrMask) {
+  (void)sepc;
+  (void)stval;
+  (void)scause;
+  (void)all_regs;
+  (void)sie;
+  (void)sstatus;
+  (void)satp;
+  (void)sscratch;
+  auto is_interrupt = scause & Cpu::kCauseInterruptMask;
+  auto cause = scause & Cpu::kCauseCodeMask;
+  if (is_interrupt) {
     // 中断
     // 跳转到对应的处理函数
-    //    INTR::get_instance().do_interrupt(_scause & Cpu::kCauseCodeMask, 0,
-    //                                      nullptr);
-    // 如果是时钟中断
-    if ((_scause & Cpu::kCauseCodeMask) == Cpu::kIntrTimerSuperMode) {
-      // 切换到内核线程
-      //      switch_context(
-      //          &core_t::get_curr_task()->context,
-      //          &core_t::cores[Cpu::get_curr_core_id()].sched_task->context);
-      printf("1111\n");
-    }
+    interrupt.DoInterrupt(cause, nullptr);
   } else {
     // 异常
-    printf("2222\n");
     // 跳转到对应的处理函数
-    //    INTR::get_instance().do_excp(_scause & Cpu::kCauseCodeMask, 0,
-    //    nullptr);
+    interrupt.DoException(cause, nullptr);
   }
+}
+
+Clint::Clint() {
+  // 开启内部中断
+  Cpu::WriteSie(Cpu::ReadSie() | Cpu::kSieSsie);
+  printf("Clint init.\n");
+}
+
+Interrupt::Interrupt() {
+  if (is_inited == false) {
+    // 注册默认中断处理函数
+    for (auto &i : interrupt_handlers) {
+      i = [](uint32_t argc, uint8_t *argv) -> uint32_t {
+        printf("Default Interrupt Handler: %d, 0x%p\n", argc, argv);
+        return 0;
+      };
+    }
+    // 注册默认异常处理函数
+    for (auto &i : exception_handlers) {
+      i = [](uint32_t argc, uint8_t *argv) -> uint32_t {
+        printf("Default Exception Handler: %d, 0x%p\n", argc, argv);
+        return 0;
+      };
+    }
+
+    // 设置 trap vector
+    Cpu::WriteStvec((uintptr_t)TrapEntry);
+
+    // 直接跳转到处理函数
+    Cpu::SetStvecDirect();
+
+    // 开启 Supervisor 中断
+    Cpu::EnableSupervisorIntr();
+
+    // 开启时钟中断
+    Cpu::EnableSupervisorTimer();
+
+    is_inited = true;
+  }
+
+  // 初始化本地中断
+  Clint();
+  printf("Interrupt init.\n");
+}
+
+uint32_t Interrupt::DoInterrupt(uint32_t intr_no, uint8_t *context) {
+  printf("[%s] %d, 0x%p\n", Cpu::kInterruptNames[intr_no], intr_no, context);
+  return 0;
+}
+
+uint32_t Interrupt::DoException(uint32_t excp_no, uint8_t *context) {
+  printf("[%s] %d, 0x%p\n", Cpu::kExceptionNames[excp_no], excp_no, context);
+  return 0;
 }
 
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
@@ -80,26 +125,8 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   auto resource_mem = FDT_PARSER::resource_t();
   dtb_info.find_via_prefix("serial@", &resource_mem);
 
-  // 设置 trap vector
-  Cpu::WriteStvec((uintptr_t)TrapEntry);
-  // 直接跳转到处理函数
-  Cpu::SetStvecDirect();
-  // 设置处理函数
-  //  for (auto &i : interrupt_handlers) {
-  //    i = handler_default;
-  //  }
-  //  for (auto &i : excp_handlers) {
-  //    i = handler_default;
-  //  }
-
-  auto interrupt = Interrupt();
-
-  sbi_set_timer(10);
-
-  Cpu::EnableIntr();
-
-  // 开启时钟中断
-  Cpu::EnableTimer();
+  // 设置时钟中断时间
+  sbi_set_timer(1000);
 
   printf("hello IntrInit\n");
 
