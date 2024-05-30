@@ -31,6 +31,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 add_header_libc(${PROJECT_NAME})
 add_header_libcxx(${PROJECT_NAME})
 add_header_arch(${PROJECT_NAME})
+add_header_kernel(${PROJECT_NAME})
 add_header_3rd(${PROJECT_NAME})
 add_header_driver(${PROJECT_NAME})
 
