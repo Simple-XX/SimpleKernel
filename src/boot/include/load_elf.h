@@ -21,7 +21,10 @@
 
 #include <array>
 #include <span>
+#include <tuple>
 #include <utility>
+
+#include "kernel/arch/arch.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -67,7 +70,12 @@ class Graphics {
       EFI_GRAPHICS_PIXEL_FORMAT format = PixelRedGreenBlueReserved8BitPerColor,
       uint32_t width = kDefaultWidth, uint32_t height = kDefaultHeight) const;
 
-  [[nodiscard]] auto GetFrameBuffer() const -> std::pair<uint64_t, uint32_t>;
+  /**
+   * 获取图形缓冲区信息
+   * @return 缓冲区地址，缓冲区长度，垂直像素个数，水平像素个数，每行像素个数
+   */
+  [[nodiscard]] auto GetFrameBuffer() const
+      -> std::tuple<uint64_t, uint32_t, uint32_t, uint32_t, uint32_t>;
 
   /**
    * 输出图形信息
@@ -106,6 +114,14 @@ class Memory {
   auto operator=(const Memory &) -> Memory & = delete;
   auto operator=(Memory &&) -> Memory & = delete;
   /// @}
+
+  /**
+   * 获取内存信息，MemoryMap 指 arch.h 中定义的内存信息类型
+   * @param mmap 要传递给内核的 MemoryMap 结构数组
+   * @return mmap 数量
+   */
+  size_t GetMemoryMap(
+      BootInfo::MemoryMap mmap[BootInfo::kMemoryMapMaxCount]) const;
 
   /**
    * 输出内存映射信息

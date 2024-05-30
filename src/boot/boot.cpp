@@ -67,7 +67,7 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   auto graphics = Graphics();
   // 打印图形信息
   graphics.PrintInfo();
-  // 设置为 1920*1080
+  // 设置为 kDefaultWidth*kDefaultHeight
   graphics.SetMode();
   // 初始化 Memory
   auto memory = Memory();
@@ -81,7 +81,7 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   }
 
   debug << L"Set Kernel Entry Point to: [" << OutStream::hex_X << kernel_addr
-        << L"]" << OutStream::endl;
+        << L"]." << OutStream::endl;
   // 退出 boot service
   uint64_t desc_count = 0;
   EFI_MEMORY_DESCRIPTOR *memory_map = nullptr;
@@ -92,6 +92,7 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
   if (memory_map == nullptr) {
     debug << L"LibMemoryMap failed: memory_map == nullptr" << OutStream::endl;
   }
+
   // 退出后不能使用输出相关方法
   status = uefi_call_wrapper(gBS->ExitBootServices, 2, image_handle, map_key);
   if (EFI_ERROR(status)) {
@@ -100,12 +101,21 @@ extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
     return status;
   }
 
-  // 获取 framebuffer 信息
-  auto framebuffer = graphics.GetFrameBuffer();
+  // 获取内存信息
 
   BootInfo boot_info = {};
-  boot_info.framebuffer.base = framebuffer.first;
-  boot_info.framebuffer.size = framebuffer.second;
+
+  boot_info.memory_map_count = memory.GetMemoryMap(boot_info.memory_map);
+
+  // 获取 framebuffer 信息
+  auto [framebuffer_base, framebuffer_size, framebuffer_width,
+        framebuffer_height, framebuffer_pixel_per_line] =
+      graphics.GetFrameBuffer();
+  boot_info.framebuffer.base = framebuffer_base;
+  boot_info.framebuffer.size = framebuffer_size;
+  boot_info.framebuffer.width = framebuffer_width;
+  boot_info.framebuffer.height = framebuffer_height;
+  boot_info.framebuffer.pitch = framebuffer_pixel_per_line * sizeof(uint32_t);
 
   uint8_t *argv[] = {
       reinterpret_cast<uint8_t *>(&boot_info),

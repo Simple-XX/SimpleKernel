@@ -14,6 +14,7 @@
  * </table>
  */
 
+#include "kernel/arch/arch.h"
 #include "load_elf.h"
 #include "out_stream.hpp"
 
@@ -35,6 +36,74 @@ Memory::Memory() {
   }
 }
 
+size_t Memory::GetMemoryMap(
+    BootInfo::MemoryMap mmap[BootInfo::kMemoryMapMaxCount]) const {
+  // 数组边界检查
+  if (desc_count_ > BootInfo::kMemoryMapMaxCount) {
+    debug << L"Error: desc_count_ too big to load " << desc_count_ << L"."
+          << OutStream::endl;
+  }
+
+  // 将 efi 格式转换为 BootInfo::MemoryMap 格式
+  for (uint64_t i = 0; i < desc_count_; i++) {
+    auto *desc = reinterpret_cast<EFI_MEMORY_DESCRIPTOR *>(
+        (reinterpret_cast<uint8_t *>(memory_map_)) + i * desc_size_);
+
+    mmap[i].base_addr = desc->PhysicalStart;
+    mmap[i].length = desc->NumberOfPages * EFI_PAGE_SIZE;
+
+    switch (desc->Type) {
+      case EfiReservedMemoryType:
+      case EfiMemoryMappedIO:
+      case EfiMemoryMappedIOPortSpace:
+      case EfiPalCode: {
+        mmap[i].type = BootInfo::MemoryMap::kTypeReserved;
+        break;
+      }
+      case EfiUnusableMemory: {
+        mmap[i].type = BootInfo::MemoryMap::kTypeUnUsable;
+        break;
+      }
+      case EfiACPIReclaimMemory: {
+        mmap[i].type = BootInfo::MemoryMap::kTypeAcpi;
+        break;
+      }
+      case EfiLoaderCode:
+      case EfiLoaderData:
+      case EfiBootServicesCode:
+      case EfiBootServicesData:
+      case EfiRuntimeServicesCode:
+      case EfiRuntimeServicesData:
+      case EfiConventionalMemory: {
+        mmap[i].type = BootInfo::MemoryMap::kTypeRam;
+        break;
+      }
+      case EfiACPIMemoryNVS: {
+        mmap[i].type = BootInfo::MemoryMap::kTypeNvs;
+        break;
+      }
+    }
+  }
+
+  // 合并同类项
+  size_t mmap_count = desc_count_;
+  size_t j = 0;
+  for (size_t i = 1; i < mmap_count; i++) {
+    if (mmap[j].type == mmap[i].type &&
+        mmap[j].base_addr + mmap[j].length == mmap[i].base_addr) {
+      mmap[j].length += mmap[i].length;
+    } else {
+      j++;
+      if (i != j) {
+        mmap[j] = mmap[i];
+      }
+    }
+  }
+  mmap_count = j + 1;
+
+  return mmap_count;
+}
+
 void Memory::PrintInfo() {
   auto flush_desc_ret = FlushDesc();
   if (!flush_desc_ret) {
@@ -42,13 +111,19 @@ void Memory::PrintInfo() {
     return;
   }
 
+  debug << L"memory_map_: " << OutStream::hex_X << memory_map_
+        << L", desc_count_: " << desc_count_ << L", desc_size_: " << desc_size_
+        << L", sizeof(EFI_MEMORY_DESCRIPTOR): " << sizeof(EFI_MEMORY_DESCRIPTOR)
+        << L"." << OutStream::endl;
+
   debug << L"Type\t\t\t\tPages\tPhysicalStart\tVirtualStart\tAttribute"
         << OutStream::endl;
+
   for (uint64_t i = 0; i < desc_count_; i++) {
-    auto *MMap = reinterpret_cast<EFI_MEMORY_DESCRIPTOR *>(
+    auto *desc = reinterpret_cast<EFI_MEMORY_DESCRIPTOR *>(
         (reinterpret_cast<uint8_t *>(memory_map_)) + i * desc_size_);
 
-    switch (MMap->Type) {
+    switch (desc->Type) {
       case EfiReservedMemoryType: {
         debug << L"iReservedMemoryType\t\t";
         break;
@@ -110,14 +185,14 @@ void Memory::PrintInfo() {
         break;
       }
       default: {
-        debug << L"Unknown " << OutStream::hex_x << MMap->Type << L"\t\t";
+        debug << L"Unknown " << OutStream::hex_x << desc->Type << L"\t\t";
         break;
       }
     }
 
-    debug << MMap->NumberOfPages << L"\t" << OutStream::hex_X
-          << MMap->PhysicalStart << L"\t" << OutStream::hex_X
-          << MMap->VirtualStart << L"\t" << OutStream::hex_X << MMap->Attribute
+    debug << desc->NumberOfPages << L"\t" << OutStream::hex_X
+          << desc->PhysicalStart << L"\t" << OutStream::hex_X
+          << desc->VirtualStart << L"\t" << OutStream::hex_X << desc->Attribute
           << OutStream::endl;
   }
   debug << L"map_key: " << OutStream::hex_X << map_key_ << OutStream::endl;

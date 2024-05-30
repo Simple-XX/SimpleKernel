@@ -14,6 +14,8 @@
  * </table>
  */
 
+#include <tuple>
+
 #include "load_elf.h"
 #include "out_stream.hpp"
 
@@ -77,8 +79,13 @@ void Graphics::SetMode(EFI_GRAPHICS_PIXEL_FORMAT format, uint32_t width,
         << gop_->Mode->FrameBufferSize << OutStream::endl;
 }
 
-auto Graphics::GetFrameBuffer() const -> std::pair<uint64_t, uint32_t> {
-  return {gop_->Mode->FrameBufferBase, gop_->Mode->FrameBufferSize};
+auto Graphics::GetFrameBuffer() const
+    -> std::tuple<uint64_t, uint32_t, uint32_t, uint32_t, uint32_t> {
+  return std::make_tuple(gop_->Mode->FrameBufferBase,
+                         gop_->Mode->FrameBufferSize,
+                         gop_->Mode->Info->HorizontalResolution,
+                         gop_->Mode->Info->VerticalResolution,
+                         gop_->Mode->Info->PixelsPerScanLine);
 }
 
 void Graphics::PrintInfo() const {
