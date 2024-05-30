@@ -22,10 +22,12 @@
 // efi 使用的全局变量
 uintptr_t ImageBase = 0;
 
-extern "C" [[maybe_unused]] EFI_STATUS EFIAPI efi_main(
-    EFI_HANDLE image_handle, [[maybe_unused]] EFI_SYSTEM_TABLE *system_table) {
+extern "C" [[maybe_unused]] EFI_STATUS EFIAPI
+efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
   EFI_STATUS status = EFI_SUCCESS;
   uint64_t kernel_addr = 0;
+
+  InitializeLib(image_handle, system_table);
 
   // 输出 efi 信息
   EFI_LOADED_IMAGE *loaded_image = nullptr;
