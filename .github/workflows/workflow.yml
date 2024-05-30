@@ -53,17 +53,21 @@ jobs:
 
       - name: x86_64
         run: |
-          cmake --preset=build_x86_64 
-          # @todo ci 暂时跑不过
-          #          cmake --build build_x86_64 --target boot
-          #          cmake --build build_x86_64 --target kernel
+          cmake --preset=build_x86_64
+          cmake --build build_x86_64 --target boot
+          cmake --build build_x86_64 --target kernel
           cmake --build build_x86_64 --target coverage
 
       - name: riscv64
         run: |
           cmake --preset=build_riscv64
-          # @todo ci 暂时跑不过
-      #          cmake --build build_riscv64 --target kernel
+          cmake --build build_riscv64 --target kernel
+
+      - name: aarch64
+        run: |
+          cmake --preset=build_aarch64
+          cmake --build build_aarch64 --target boot
+          cmake --build build_aarch64 --target kernel
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

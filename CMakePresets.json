@@ -53,7 +53,7 @@
         },
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
-          "value": "Debug"
+          "value": "Release"
         },
         "CMAKE_SYSTEM_NAME": {
           "type": "STRING",

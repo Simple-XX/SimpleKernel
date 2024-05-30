@@ -19,7 +19,7 @@
 
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {
-  // sbi_debug_console_write_byte(character);
+  (void)character;
 }
 
 int32_t ArchInit(uint32_t argc, uint8_t **argv) {

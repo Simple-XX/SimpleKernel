@@ -27,8 +27,8 @@ extern "C" void _putchar(char character) { serial.Write(character); }
 static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
                      uint8_t b, uint32_t w, uint32_t h) {
   static const int kPixelWidth = sizeof(uint32_t);
-  for (auto i = 0; i < w; i++) {
-    for (auto j = 0; j < h; j++) {
+  for (uint32_t i = 0; i < w; i++) {
+    for (uint32_t j = 0; j < h; j++) {
       vram[j * kPixelWidth] = r;
       vram[j * kPixelWidth + 1] = g;
       vram[j * kPixelWidth + 2] = b;
@@ -54,7 +54,7 @@ int32_t ArchInit(uint32_t argc, uint8_t **argv) {
   Fillrect((uint8_t *)boot_info.framebuffer.base, boot_info.framebuffer.pitch,
            255, 0, 255, 100, 100);
 
-  for (auto i = 0; i < boot_info.memory_map_count; i++) {
+  for (uint32_t i = 0; i < boot_info.memory_map_count; i++) {
     printf(
         "boot_info.memory_map[%d].base_addr: 0x%p, length: 0x%X, type: %d.\n",
         i, boot_info.memory_map[i].base_addr, boot_info.memory_map[i].length,
