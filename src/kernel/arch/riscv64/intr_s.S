@@ -19,10 +19,10 @@
 // clang-format off
 
 .section .text
+.align 4
+.extern TrapHandler
 // 保存所有寄存器
 .global TrapEntry
-.extern TrapHandler
-.align 4
 TrapEntry:
     // 将所有寄存器保存到栈上
     SaveAllRegs
@@ -43,5 +43,4 @@ TrapEntry:
     LoadAllRegs
 
     // 跳转到 sepc 处执行
-ppppp: jal ppppp
     sret
