@@ -21,6 +21,7 @@
 #include <cstdlib>
 
 #include "iostream"
+#include "stdio.h"
 
 class Cpu {
  public:
@@ -121,103 +122,58 @@ class Cpu {
       "Reserved",
   };
 
-  /// Supervisor Status Register, sstatus
-  /// User Interrupt Enable
-  static constexpr const uint64_t kSstatusUie = 1 << 0;
-  /// Supervisor Interrupt Enable
-  static constexpr const uint64_t kSstatusSie = 1 << 1;
-  /// User Previous Interrupt Enable
-  static constexpr const uint64_t kSstatusUpie = 1 << 4;
-  /// Supervisor Previous Interrupt Enable
-  static constexpr const uint64_t kSstatusSpie = 1 << 5;
-  /// Previous mode, 1=Supervisor, 0=User
-  static constexpr const uint64_t kSstatusSpp = 1 << 8;
+  /// [63]==1 interrupt, else exception
+  static constexpr const uint64_t kCauseInterruptMask = 1ULL << 63;
+  /// low bits show code
+  static constexpr const uint64_t kCauseCodeMask = ~kCauseInterruptMask;
 
-  /**
-   * @brief mstatus 寄存器定义
-   */
-  struct Mstatus {
-    union {
-      struct {
-        // interrupt enable
-        uint64_t ie : 4;
-        // previous interrupt enable
-        uint64_t pie : 4;
-        // previous mode (supervisor)
-        uint64_t spp : 1;
-        uint64_t unused1 : 2;
-        // previous mode (machine)
-        uint64_t mpp : 2;
-        // FPU status
-        uint64_t fs : 2;
-        // extensions status
-        uint64_t xs : 2;
-        // modify privilege
-        uint64_t mprv : 1;
-        // permit supervisor user memory access
-        uint64_t sum : 1;
-        // make executable readable
-        uint64_t mxr : 1;
-        // trap virtual memory
-        uint64_t tvm : 1;
-        // timeout wait (trap WFI)
-        uint64_t tw : 1;
-        // trap SRET
-        uint64_t tsr : 1;
-        uint64_t unused2 : 9;
-        // U-mode XLEN
-        uint64_t uxl : 2;
-        // S-mode XLEN
-        uint64_t sxl : 2;
-        uint64_t unused3 : 27;
-        // status dirty
-        uint64_t sd : 1;
-      } mstatus;
-      uint64_t val;
-    };
-
-    explicit Mstatus(uint64_t _val) : val(_val) {}
-
-    /// @name 构造/析构函数
-    /// @{
-    Mstatus() = default;
-    Mstatus(const Mstatus &) = default;
-    Mstatus(Mstatus &&) = default;
-    auto operator=(const Mstatus &) -> Mstatus & = default;
-    auto operator=(Mstatus &&) -> Mstatus & = default;
-    ~Mstatus() = default;
-    /// @}
-  };
+  /// 中断模式 直接
+  static constexpr const uint64_t kTvecDirect = ~0x3;
+  /// 中断模式 向量
+  static constexpr const uint64_t kTvecVectored = ~0x2;
 
   /**
    * @brief sstatus 寄存器定义
    */
   class Sstatus {
    public:
+    /// Supervisor Status Register, sstatus
+    /// User Interrupt Enable
+    static constexpr const uint64_t kSstatusUie = 1 << 0;
+    /// Supervisor Interrupt Enable
+    static constexpr const uint64_t kSstatusSie = 1 << 1;
+    /// User Previous Interrupt Enable
+    static constexpr const uint64_t kSstatusUpie = 1 << 4;
+    /// Supervisor Previous Interrupt Enable
+    static constexpr const uint64_t kSstatusSpie = 1 << 5;
+    /// Previous mode, 1=Supervisor, 0=User
+    static constexpr const uint64_t kSstatusSpp = 1 << 8;
+
     union {
       struct {
-        // Reserved Writes Preserve Values, Reads Ignore Values (WPRI)
-        uint64_t wpri1 : 1;
+        // user interrupt enable
+        uint64_t uie : 1;
         // interrupt enable
         uint64_t sie : 1;
-        uint64_t wpri12 : 3;
-        // previous interrupt enable
+        uint64_t wpri1 : 2;
+        // user previous interrupt enable
+        uint64_t upie : 1;
+        // supervisor previous interrupt enable
         uint64_t spie : 1;
-        uint64_t ube : 1;
-        uint64_t wpri3 : 1;
+        uint64_t wpri2 : 2;
         // previous mode (supervisor)
         uint64_t spp : 1;
-        uint64_t wpri4 : 4;
+        uint64_t wpri3 : 4;
         // FPU status
         uint64_t fs : 2;
         // extensions status
         uint64_t xs : 2;
-        uint64_t wpri5 : 1;
+        uint64_t wpri4 : 1;
         // permit supervisor user memory access
         uint64_t sum : 1;
         // make executable readable
         uint64_t mxr : 1;
-        uint64_t wpri6 : 12;
+        uint64_t wpri5 : 12;
         // U-mode XLEN
         uint64_t uxl : 2;
         uint64_t wpri7 : 29;
@@ -240,236 +196,120 @@ class Cpu {
     /// @}
 
     friend std::ostream &operator<<(std::ostream &os, const Sstatus &sstatus) {
-      printf("val: 0x%p, sie: %s, spie: %s, spp: %s", sstatus.val_,
+      printf("val: 0x%p, uie: %s, sie: %s, upie: %s, spie: %s, spp: %s",
+             sstatus.val_,
+             (sstatus.sstatus_.uie == true ? "Enable" : "Disable"),
              (sstatus.sstatus_.sie == true ? "Enable" : "Disable"),
+             (sstatus.sstatus_.upie == true ? "Enable" : "Disable"),
              (sstatus.sstatus_.spie == true ? "Enable" : "Disable"),
-             (sstatus.sstatus_.spp == true ? "S Mode" : "U Mode"));
+             (sstatus.sstatus_.spp == true ? "S Mode" : "U Mode")
+
+      );
+      return os;
+    }
+  };
+
+  class Sie {
+   public:
+    // Supervisor Interrupt Enable
+    /// software
+    static constexpr const uint64_t kSieSsie = 1 << 1;
+    /// timer
+    static constexpr const uint64_t kSieStie = 1 << 5;
+    /// external
+    static constexpr const uint64_t kSieSeie = 1 << 9;
+
+    union {
+      struct {
+        /// User-level Software Interrupt Enable
+        uint64_t usie : 1;
+        /// Supervisor Software Interrupt Enable
+        uint64_t ssie : 1;
+        /// wpri
+        uint64_t wpri1 : 2;
+        /// User Timer Interrupt Enable
+        uint64_t utie : 1;
+        /// Supervisor Timer Interrupt Enable
+        uint64_t stie : 1;
+        /// wpri
+        uint64_t wpri2 : 2;
+        /// User External Interrupt Enable
+        uint64_t ueie : 1;
+        /// Supervisor External Interrupt Enable
+        uint64_t seie : 1;
+        /// wpri
+        uint64_t wpri3 : 54;
+      } sie_;
+      uint64_t val_;
+    };
+
+    explicit Sie(uint64_t val) : val_(val) {}
+
+    /// @name 构造/析构函数
+    /// @{
+    Sie() = default;
+    Sie(const Sie &) = default;
+    Sie(Sie &&) = default;
+    auto operator=(const Sie &) -> Sie & = default;
+    auto operator=(Sie &&) -> Sie & = default;
+    ~Sie() = default;
+    /// @}
+
+    friend std::ostream &operator<<(std::ostream &os, const Sie &sie) {
+      printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sie.val_,
+             (sie.sie_.ssie == true ? "Enable" : "Disable"),
+             (sie.sie_.stie == true ? "Enable" : "Disable"),
+             (sie.sie_.seie == true ? "Enable" : "Disable"));
       return os;
     }
   };
 
   /**
-   * @brief 读取 sstatus 寄存器
-   * @return uint64_t         读取到的值
+   * @brief satp 结构
    */
-  static inline Sstatus ReadSstatus(void) {
-    Sstatus x;
-    asm("csrr %0, sstatus" : "=r"(x));
-    return x;
-  }
+  class Satp {
+   public:
+    enum {
+      kSatpNone = 0,
+      kSatpSv39 = 8,
+      kSatpSv48 = 9,
+      kSatpSv57 = 10,
+      kSatpSv64 = 11,
+    };
+    static constexpr const char *kSatpModeNames[] = {
+        "NONE",    "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN",
+        "UNKNOWN", "UNKNOWN", "SV39",    "SV48",    "SV57",    "SV64",
+    };
 
-  /**
-   * @brief 写 sstatus 寄存器
-   * @param  x                要写的值
-   */
-  static inline void WriteSstatus(Sstatus x) {
-    asm("csrw sstatus, %0" : : "r"(x));
-  }
+    union {
+      struct {
+        uint64_t ppn : 44;
+        uint64_t asid : 16;
+        uint64_t mode : 4;
+      } satp_;
+      uint64_t val_;
+    };
 
-  /**
-   * @brief 读 sip
-   * @return uint64_t         读取到的值
-   * @note Supervisor Interrupt Pending
-   */
-  static inline uint64_t ReadSip(void) {
-    uint64_t x;
-    asm("csrr %0, sip" : "=r"(x));
-    return x;
-  }
+    static constexpr const uint64_t kPpnOffset = 12;
 
-  /**
-   * @brief 写 sip
-   * @param  x               要写的值
-   */
-  static inline void WriteSip(uint64_t x) { asm("csrw sip, %0" : : "r"(x)); }
+    explicit Satp(uint64_t val) : val_(val) {}
 
-  // Supervisor Interrupt Enable
-  /// software
-  static constexpr const uint64_t kSieSsie = 1 << 1;
-  /// timer
-  static constexpr const uint64_t kSieStie = 1 << 5;
-  /// external
-  static constexpr const uint64_t kSieSeie = 1 << 9;
+    /// @name 构造/析构函数
+    /// @{
+    Satp() = default;
+    Satp(const Satp &) = default;
+    Satp(Satp &&) = default;
+    auto operator=(const Satp &) -> Satp & = default;
+    auto operator=(Satp &&) -> Satp & = default;
+    ~Satp() = default;
+    /// @}
 
-  /**
-   * @brief 读 sie
-   * @return uint64_t         读到的值
-   */
-  static inline uint64_t ReadSie() {
-    uint64_t x;
-    asm("csrr %0, sie" : "=r"(x));
-    return x;
-  }
-
-  /**
-   * @brief 写 sie
-   * @param  x                要写的值
-   */
-  static inline void WriteSie(uint64_t x) { asm("csrw sie, %0" : : "r"(x)); }
-
-  /**
-   * @brief 读 sepc
-   * @return uint64_t         读到的值
-   * @note machine exception program counter, holds the instruction address to
-   * which a return from exception will go.
-   */
-  static inline uint64_t ReadSepc() {
-    uint64_t x;
-    asm("csrr %0, sepc" : "=r"(x));
-    return x;
-  }
-
-  /**
-   * @brief 写 sepc
-   * @param  x               要写的值
-   */
-  static inline void WriteSepc(uint64_t x) { asm("csrw sepc, %0" : : "r"(x)); }
-
-  /**
-   * @brief 读 stvec
-   * @return uint64_t         读到的值
-   * @note Supervisor Trap-Vector Base Address low two bits are mode.
-   */
-  static inline uint64_t ReadStvec() {
-    uint64_t x;
-    asm("csrr %0, stvec" : "=r"(x));
-    return x;
-  }
-
-  /**
-   * @brief 写 stvec
-   * @param  x               要写的值
-   */
-  static inline void WriteStvec(uint64_t x) {
-    asm("csrw stvec, %0" : : "r"(x));
-  }
-
-  /// 中断模式 直接
-  static constexpr const uint64_t kTvecDirect = ~0x3;
-  /// 中断模式 向量
-  static constexpr const uint64_t kTvecVectored = ~0x2;
-
-  /**
-   * @brief 设置中断模式，直接
-   */
-  static inline void SetStvecDirect() {
-    auto stvec = ReadStvec();
-    stvec = stvec & kTvecDirect;
-    WriteStvec(stvec);
-  }
-
-  /**
-   * @brief 设置中断模式，向量
-   */
-  static inline void SetStvecVectored() {
-    auto stvec = ReadStvec();
-    stvec = stvec & kTvecVectored;
-    WriteStvec(stvec);
-  }
-
-  /**
-   * @brief 读 sscratch 寄存器
-   * @param  x                要写的值
-   */
-  static inline uint64_t ReadSscratch() {
-    uint64_t x;
-    __asm__ volatile("csrr %0, sscratch" : "=r"(x));
-    return x;
-  }
-
-  /**
-   * @brief 写 sscratch 寄存器
-   * @param  x                要写的值
-   */
-  static inline void WriteSscratch(uint64_t x) {
-    asm("csrw sscratch, %0" : : "r"(x));
-  }
-
-  /// [63]==1 interrupt, else exception
-  static constexpr const uint64_t kCauseInterruptMask = 1ULL << 63;
-  /// low bits show code
-  static constexpr const uint64_t kCauseCodeMask = ~kCauseInterruptMask;
-
-  /**
-   * @brief 读 scause 寄存器 Supervisor Trap Cause
-   * @return uint64_t         读到的值
-   */
-  static inline uint64_t ReadScause() {
-    uint64_t x;
-    asm("csrr %0, scause" : "=r"(x));
-    return x;
-  }
-
-  /**
-   * @brief 读 stval 寄存器 Supervisor Trap Value
-   * @return uint64_t         读到的值
-   */
-  static inline uint64_t ReadStval() {
-    uint64_t x;
-    asm("csrr %0, stval" : "=r"(x));
-    return x;
-  }
-
-  /**
-   * @brief 读 time 寄存器 supervisor-mode cycle counter
-   * @return uint64_t         读到的值
-   */
-  static inline uint64_t ReadTime() {
-    uint64_t x;
-    // asm ("csrr %0, time" : "=r" (x) );
-    // this instruction will trap in SBI
-    asm("rdtime %0" : "=r"(x));
-    return x;
-  }
-
-  /**
-   * @brief 允许中断
-   */
-  static inline void EnableSupervisorIntr() {
-    WriteSstatus(Sstatus(ReadSstatus().val_ | kSstatusSie));
-  }
-
-  /**
-   * @brief 允许中断
-   * @param  sstatus         要设置的 sstatus
-   */
-  static inline void EnableSupervisorIntr(Sstatus &sstatus) {
-    sstatus.sstatus_.sie = true;
-  }
-
-  /**
-   * @brief 禁止中断
-   */
-  static inline void DisableIntr() {
-    WriteSstatus(Sstatus(ReadSstatus().val_ & ~kSstatusSie));
-  }
-
-  /**
-   * @brief 禁止中断
-   * @param  sstatus         要设置的原 sstatus 值
-   */
-  static inline void DisableIntr(Sstatus &sstatus) {
-    sstatus.sstatus_.sie = false;
-  }
-
-  /**
-   * @brief 读取中断状态
-   * @return true             允许
-   * @return false            禁止
-   */
-  static inline bool GetSstatusSie() { return ReadSstatus().sstatus_.sie; }
-
-  /**
-   * @brief 允许定时器中断
-   */
-  static inline void EnableSupervisorTimer() { WriteSie(ReadSie() | kSieStie); }
-
-  /**
-   * @brief 禁止定时器中断
-   */
-  static inline void DisableSupervisorTimer() {
-    WriteSie(ReadSie() & ~kSieStie);
-  }
+    friend std::ostream &operator<<(std::ostream &os, const Satp &satp) {
+      printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", satp.val_,
+             satp.satp_.ppn, satp.satp_.asid, kSatpModeNames[satp.satp_.mode]);
+      return os;
+    }
+  };
 
   /**
    * @brief 通用寄存器
@@ -617,53 +457,6 @@ class Cpu {
     //   printf("ft11: 0x%p", _fregs.ft11);
     //   return _os;
     // }
-  };
-
-  /**
-   * @brief satp 结构
-   */
-  class Satp {
-   public:
-    enum {
-      kSatpNone = 0,
-      kSatpSv39 = 8,
-      kSatpSv48 = 9,
-      kSatpSv57 = 10,
-      kSatpSv64 = 11,
-    };
-    static constexpr const char *kSatpModeNames[] = {
-        "NONE",    "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN",
-        "UNKNOWN", "UNKNOWN", "SV39",    "SV48",    "SV57",    "SV64",
-    };
-
-    union {
-      struct {
-        uint64_t ppn : 44;
-        uint64_t asid : 16;
-        uint64_t mode : 4;
-      } satp_;
-      uint64_t val_;
-    };
-
-    static constexpr const uint64_t kPpnOffset = 12;
-
-    explicit Satp(uint64_t val) : val_(val) {}
-
-    /// @name 构造/析构函数
-    /// @{
-    Satp() = default;
-    Satp(const Satp &) = default;
-    Satp(Satp &&) = default;
-    auto operator=(const Satp &) -> Satp & = default;
-    auto operator=(Satp &&) -> Satp & = default;
-    ~Satp() = default;
-    /// @}
-
-    friend std::ostream &operator<<(std::ostream &os, const Satp &satp) {
-      printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", satp.val_,
-             satp.satp_.ppn, satp.satp_.asid, kSatpModeNames[satp.satp_.mode]);
-      return os;
-    }
   };
 
   /**
@@ -941,6 +734,222 @@ class Cpu {
     //   return _os;
     // }
   };
+
+  /**
+   * @brief 读取 sstatus 寄存器
+   * @return uint64_t         读取到的值
+   */
+  static inline Sstatus ReadSstatus(void) {
+    Sstatus x;
+    asm("csrr %0, sstatus" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 写 sstatus 寄存器
+   * @param  x                要写的值
+   */
+  static inline void WriteSstatus(Sstatus x) {
+    asm("csrw sstatus, %0" : : "r"(x));
+  }
+
+  /**
+   * @brief 读 sip
+   * @return uint64_t         读取到的值
+   * @note Supervisor Interrupt Pending
+   */
+  static inline uint64_t ReadSip(void) {
+    uint64_t x;
+    asm("csrr %0, sip" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 写 sip
+   * @param  x               要写的值
+   */
+  static inline void WriteSip(uint64_t x) { asm("csrw sip, %0" : : "r"(x)); }
+
+  /**
+   * @brief 读 sie
+   * @return Sie         读到的值
+   */
+  static inline Sie ReadSie() {
+    Sie x;
+    asm("csrr %0, sie" : "=r"(x.val_));
+    printf("Cpu::ReadSie()0: %p\n", x.val_);
+    return x;
+  }
+
+  /**
+   * @brief 写 sie
+   * @param  x                要写的值
+   */
+  static inline void WriteSie(Sie x) {
+    printf("Cpu::WriteSie()0: %p\n", x.val_);
+    asm("csrw sie, %0" : : "r"(x.val_));
+  }
+
+  /**
+   * @brief 读 sepc
+   * @return uint64_t         读到的值
+   * @note machine exception program counter, holds the instruction address to
+   * which a return from exception will go.
+   */
+  static inline uint64_t ReadSepc() {
+    uint64_t x;
+    asm("csrr %0, sepc" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 写 sepc
+   * @param  x               要写的值
+   */
+  static inline void WriteSepc(uint64_t x) { asm("csrw sepc, %0" : : "r"(x)); }
+
+  /**
+   * @brief 读 stvec
+   * @return uint64_t         读到的值
+   * @note Supervisor Trap-Vector Base Address low two bits are mode.
+   */
+  static inline uint64_t ReadStvec() {
+    uint64_t x;
+    asm("csrr %0, stvec" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 写 stvec
+   * @param  x               要写的值
+   */
+  static inline void WriteStvec(uint64_t x) {
+    asm("csrw stvec, %0" : : "r"(x));
+  }
+
+  /**
+   * @brief 读 sscratch 寄存器
+   * @param  x                要写的值
+   */
+  static inline uint64_t ReadSscratch() {
+    uint64_t x;
+    __asm__ volatile("csrr %0, sscratch" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 写 sscratch 寄存器
+   * @param  x                要写的值
+   */
+  static inline void WriteSscratch(uint64_t x) {
+    asm("csrw sscratch, %0" : : "r"(x));
+  }
+
+  /**
+   * @brief 读 scause 寄存器 Supervisor Trap Cause
+   * @return uint64_t         读到的值
+   */
+  static inline uint64_t ReadScause() {
+    uint64_t x;
+    asm("csrr %0, scause" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 读 stval 寄存器 Supervisor Trap Value
+   * @return uint64_t         读到的值
+   */
+  static inline uint64_t ReadStval() {
+    uint64_t x;
+    asm("csrr %0, stval" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 读 time 寄存器 supervisor-mode cycle counter
+   * @return uint64_t         读到的值
+   */
+  static inline uint64_t ReadTime() {
+    uint64_t x;
+    // asm ("csrr %0, time" : "=r" (x) );
+    // this instruction will trap in SBI
+    asm("rdtime %0" : "=r"(x));
+    return x;
+  }
+
+  /**
+   * @brief 设置中断模式，直接
+   */
+  static inline void SetStvecDirect() {
+    auto stvec = ReadStvec();
+    stvec = stvec & kTvecDirect;
+    WriteStvec(stvec);
+  }
+
+  /**
+   * @brief 设置中断模式，向量
+   */
+  static inline void SetStvecVectored() {
+    auto stvec = ReadStvec();
+    stvec = stvec & kTvecVectored;
+    WriteStvec(stvec);
+  }
+
+  /**
+   * @brief 允许中断
+   */
+  static inline void EnableSupervisorIntr() {
+    WriteSstatus(Sstatus(ReadSstatus().val_ | Sstatus::kSstatusSie));
+  }
+
+  /**
+   * @brief 禁止中断
+   */
+  static inline void DisableIntr() {
+    WriteSstatus(Sstatus(ReadSstatus().val_ & ~Sstatus::kSstatusSie));
+  }
+
+  /**
+   * @brief 允许软件中断
+   */
+  static inline void EnableSupervisorSoftware() {
+    WriteSie(Sie(ReadSie().val_ | Sie::kSieSsie));
+  }
+
+  /**
+   * @brief 禁止软件中断
+   */
+  static inline void DisableSupervisorSoftware() {
+    WriteSie(Sie(ReadSie().val_ & ~Sie::kSieSsie));
+  }
+
+  /**
+   * @brief 允许定时器中断
+   */
+  static inline void EnableSupervisorTimer() {
+    WriteSie(Sie(ReadSie().val_ | Sie::kSieStie));
+  }
+
+  /**
+   * @brief 禁止定时器中断
+   */
+  static inline void DisableSupervisorTimer() {
+    WriteSie(Sie(ReadSie().val_ & ~Sie::kSieStie));
+  }
+
+  /**
+   * @brief 允许外部中断
+   */
+  static inline void EnableSupervisorExternal() {
+    WriteSie(Sie(ReadSie().val_ | Sie::kSieSeie));
+  }
+
+  /**
+   * @brief 禁止外部中断
+   */
+  static inline void DisableSupervisorExternal() {
+    WriteSie(Sie(ReadSie().val_ & ~Sie::kSieSeie));
+  }
 };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
