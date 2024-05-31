@@ -55,7 +55,7 @@ extern "C" void TrapHandler(uintptr_t sepc, uintptr_t stval, uintptr_t scause,
       "sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
       "0x%p\nsstatus: ",
       sepc, stval, scause, all_regs, sie);
-  // std::cout << sstatus << ", \nsatp: " << satp << ", \n";
+  std::cout << sstatus << ", \nsatp: " << satp << ", \n";
   // printf("sscratch: 0x%p\n", sscratch);
   // 跳转到对应的处理函数
   interrupt.Do(scause, (uint8_t *)all_regs);

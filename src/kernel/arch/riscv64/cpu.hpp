@@ -20,6 +20,8 @@
 #include <cstdint>
 #include <cstdlib>
 
+#include "iostream"
+
 class Cpu {
  public:
   /// 机器模式定义
@@ -237,14 +239,13 @@ class Cpu {
     ~Sstatus() = default;
     /// @}
 
-    // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const Sstatus &sstatus) {
-    //   printf("val: 0x%p, sie: %s, spie: %s, spp: %s", sstatus.val,
-    //          (sstatus.sie == true ? "enable" : "disable"),
-    //          (sstatus.spie == true ? "enable" : "disable"),
-    //          (sstatus.spp == true ? "S mode" : "U mode"));
-    //   return _os;
-    // }
+    friend std::ostream &operator<<(std::ostream &os, const Sstatus &sstatus) {
+      printf("val: 0x%p, sie: %s, spie: %s, spp: %s", sstatus.val_,
+             (sstatus.sstatus_.sie == true ? "Enable" : "Disable"),
+             (sstatus.sstatus_.spie == true ? "Enable" : "Disable"),
+             (sstatus.sstatus_.spp == true ? "S Mode" : "U Mode"));
+      return os;
+    }
   };
 
   /**
@@ -630,7 +631,7 @@ class Cpu {
       kSatpSv57 = 10,
       kSatpSv64 = 11,
     };
-    static constexpr const char *MODE_NAME[] = {
+    static constexpr const char *kSatpModeNames[] = {
         "NONE",    "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN",
         "UNKNOWN", "UNKNOWN", "SV39",    "SV48",    "SV57",    "SV64",
     };
@@ -658,11 +659,11 @@ class Cpu {
     ~Satp() = default;
     /// @}
 
-    // friend std::ostream &operator<<(std::ostream &_os, const Satp &_satp) {
-    //     printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", _satp.val,
-    //            _satp.ppn, _satp.asid, MODE_NAME[_satp.mode]);
-    //     return _os;
-    // }
+    friend std::ostream &operator<<(std::ostream &os, const Satp &satp) {
+      printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", satp.val_,
+             satp.satp_.ppn, satp.satp_.asid, kSatpModeNames[satp.satp_.mode]);
+      return os;
+    }
   };
 
   /**
@@ -941,42 +942,5 @@ class Cpu {
     // }
   };
 };
-
-// class Plic {
-//  public:
-//   /// @todo ？
-//   inline uint64_t PLIC_SENABLE(uint64_t core_id) {
-//     return base_addr_ + 0x2080 + core_id * 0x100;
-//   }
-
-//   inline uint64_t PLIC_MENABLE(uint64_t core_id) {
-//     return base_addr_ + 0x2000 + core_id * 0x100;
-//   }
-
-//   /// @todo ？
-//   inline uint64_t PLIC_SPRIORITY(uint64_t core_id) {
-//     return base_addr_ + 0x201000 + core_id * 0x2000;
-//   }
-
-//   inline uint64_t PLIC_MPRIORITY(uint64_t core_id) {
-//     return base_addr_ + 0x200000 + core_id * 0x2000;
-//   }
-
-//   /// @todo ？
-//   inline uint64_t PLIC_SCLAIM(uint64_t core_id) {
-//     return base_addr_ + 0x201004 + core_id * 0x2000;
-//   }
-
-//   inline uint64_t PLIC_MCLAIM(uint64_t core_id) {
-//     return base_addr_ + 0x200004 + core_id * 0x2000;
-//   }
-
-//  private:
-//   /// 最大外部中断数
-//   static constexpr const uint32_t kInterruptMaxCount = 16;
-
-//   /// 基地址，由 dtb 传递
-//   uintptr_t base_addr_;
-// };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
