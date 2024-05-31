@@ -19,9 +19,20 @@
 
 #include <atomic>
 #include <cstdint>
+#include <functional>
 
 class InterruptBase {
  public:
+  /// @todo functional 报错
+  // typedef std::function<uint32_t(uint32_t, uint8_t *)> InterruptFunc;
+  /**
+   * @brief 中断/异常处理函数指针
+   * @param  cause 中断或异常号
+   * @param  context 中断上下文
+   * @return uint32_t 返回值，0 成功
+   */
+  typedef uint32_t (*InterruptFunc)(uint32_t cause, uint8_t *context);
+
   /// @name 构造/析构函数
   /// @{
   InterruptBase() = default;
@@ -32,8 +43,19 @@ class InterruptBase {
   virtual ~InterruptBase() = default;
   /// @}
 
-  virtual uint32_t DoInterrupt(uint32_t, uint8_t *) = 0;
-  virtual uint32_t DoException(uint32_t, uint8_t *) = 0;
+  /**
+   * @brief 执行中断处理
+   * @param 不同平台有不同含义
+   * @return uint32_t 不同平台有不同含义
+   */
+  virtual uint32_t Do(uint32_t, uint8_t *) = 0;
+
+  /**
+   * @brief 注册中断处理函数
+   * @param intr_no 中断号
+   * @param func 处理函数
+   */
+  virtual void RegisterInterruptFunc(uint32_t intr_no, InterruptFunc func) = 0;
 
  protected:
   std::atomic_bool is_inited = false;

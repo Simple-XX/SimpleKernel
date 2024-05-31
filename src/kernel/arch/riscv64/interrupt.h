@@ -18,7 +18,6 @@
 #define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_
 
 #include <cstdint>
-#include <functional>
 
 #include "cpu.hpp"
 #include "interrupt_base.h"
@@ -29,7 +28,7 @@
  * 本地核心中断控制器
  * 用于控制 excp 与 intr
  */
-class Clint {
+class Clint final : public InterruptBase {
  public:
   Clint();
 
@@ -41,10 +40,95 @@ class Clint {
   auto operator=(Clint &&) -> Clint & = delete;
   ~Clint() = default;
   /// @}
+
+  /**
+   * @brief 执行中断处理
+   * @param  cause 中断或异常号
+   * @param  context 中断上下文
+   * @return uint32_t 返回值，0 成功
+   */
+  uint32_t Do(uint32_t cause, uint8_t *context) override;
+
+  void RegisterInterruptFunc(uint32_t intr_no, InterruptFunc func) override;
+
+ private:
+  /// 中断处理函数数组
+  static InterruptFunc interrupt_handlers[Cpu::kInterruptMaxCount]
+      __attribute__((aligned(4)));
+  /// 异常处理函数数组
+  static InterruptFunc exception_handlers[Cpu::kExceptionMaxCount]
+      __attribute__((aligned(4)));
+  uint32_t Interrupt(uint32_t, uint8_t *);
+  uint32_t Exception(uint32_t, uint8_t *);
 };
+
+// /**
+//  * @brief platform-level interrupt controller
+//  * 平台级中断控制器
+//  * 用于控制外部中断
+//  */
+// class PLIC {
+//  public:
+//   PLIC();
+
+//   /// @name 构造/析构函数
+//   /// @{
+//   PLIC(const PLIC &) = delete;
+//   PLIC(PLIC &&) = delete;
+//   auto operator=(const PLIC &) -> PLIC & = delete;
+//   auto operator=(PLIC &&) -> PLIC & = delete;
+//   ~PLIC() = default;
+//   /// @}
+
+//   /**
+//    * @brief 向 PLIC 询问中断
+//    * 返回发生的外部中断号
+//    * @return uint8_t         中断号
+//    */
+//   uint8_t get(void);
+
+//   /**
+//    * @brief 告知 PLIC 已经处理了当前 IRQ
+//    * @param  _no             中断号
+//    */
+//   void done(uint8_t _no);
+
+//   /**
+//    * @brief 设置中断状态
+//    * @param  _no             中断号
+//    * @param  _status         状态
+//    * @todo 不确定
+//    */
+//   void set(uint8_t _no, bool _status);
+
+//   /**
+//    * @brief 注册外部中断处理函数
+//    * @param  _no             外部中断号
+//    * @param  _interrupt_handler 外部中断处理函数
+//    */
+//   void register_externel_handler(
+//       uint8_t _no, externel_interrupt_handler_t _interrupt_handler);
+
+//   /**
+//    * @brief 执行外部中断处理
+//    * @param  _no              外部中断号
+//    */
+//   void do_externel_interrupt(uint8_t _no);
+
+//  private:
+//   /// 外部中断处理函数指针
+//   typedef void (*externel_interrupt_handler_t)(uint8_t _no);
+//   /// 最大外部中断数量
+//   static constexpr const size_t EXTERNEL_INTERRUPR_MAX = 16;
+//   /// 外部中断处理函数数组
+//   externel_interrupt_handler_t
+//       externel_interrupt_handlers[EXTERNEL_INTERRUPR_MAX];
+// };
 
 class Interrupt final : public InterruptBase {
  public:
+  Clint clint;
+
   Interrupt();
 
   /// @name 构造/析构函数
@@ -56,25 +140,17 @@ class Interrupt final : public InterruptBase {
   ~Interrupt() = default;
   /// @}
 
-  uint32_t DoInterrupt(uint32_t, uint8_t *) override;
-  uint32_t DoException(uint32_t, uint8_t *) override;
-
- private:
-  // typedef std::function<uint32_t(uint32_t, uint8_t *)> InterruptFunc;
   /**
-   * @brief 中断处理函数指针
-   * @param  _argc           参数个数
-   * @param  _argv           参数列表
+   * @brief 执行中断处理
+   * @param  cause 中断或异常号
+   * @param  context 中断上下文
    * @return uint32_t 返回值，0 成功
    */
-  typedef uint32_t (*InterruptFunc)(uint32_t _argc, uint8_t *_argv);
+  uint32_t Do(uint32_t cause, uint8_t *context) override;
 
-  /// 中断处理函数数组
-  InterruptFunc interrupt_handlers[Cpu::kInterruptFuncMaxCount]
-      __attribute__((aligned(4)));
-  /// 异常处理函数数组
-  InterruptFunc exception_handlers[Cpu::kExceptionFuncMaxCount]
-      __attribute__((aligned(4)));
+  void RegisterInterruptFunc(uint32_t intr_no, InterruptFunc func) override;
+
+ private:
 };
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_ */

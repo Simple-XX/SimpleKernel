@@ -30,7 +30,7 @@ class Cpu {
   };
 
   /// 最大中断数
-  static constexpr const uint32_t kInterruptFuncMaxCount = 17;
+  static constexpr const uint32_t kInterruptMaxCount = 17;
 
   enum {
     kIntrSoft = 0,
@@ -57,7 +57,7 @@ class Cpu {
   };
 
   /// 中断名
-  static constexpr const char *const kInterruptNames[kInterruptFuncMaxCount] = {
+  static constexpr const char *const kInterruptNames[kInterruptMaxCount] = {
       "User Software Interrupt",
       "Supervisor Software Interrupt",
       "Reserved",
@@ -78,7 +78,8 @@ class Cpu {
   };
 
   /// 最大异常数
-  static constexpr const uint32_t kExceptionFuncMaxCount = 17;
+  static constexpr const uint32_t kExceptionMaxCount = 17;
+
   enum {
     kExceptionInstructionAddressMisaligned = 0,
     kExceptionInstructionAccessFault = 1,
@@ -98,7 +99,7 @@ class Cpu {
   };
 
   /// 异常名
-  static constexpr const char *const kExceptionNames[kExceptionFuncMaxCount] = {
+  static constexpr const char *const kExceptionNames[kExceptionMaxCount] = {
       "Instruction Address Misaligned",
       "Instruction Access Fault",
       "Illegal Instruction",
@@ -933,5 +934,42 @@ class Cpu {
     // }
   };
 };
+
+// class Plic {
+//  public:
+//   /// @todo ？
+//   inline uint64_t PLIC_SENABLE(uint64_t core_id) {
+//     return base_addr_ + 0x2080 + core_id * 0x100;
+//   }
+
+//   inline uint64_t PLIC_MENABLE(uint64_t core_id) {
+//     return base_addr_ + 0x2000 + core_id * 0x100;
+//   }
+
+//   /// @todo ？
+//   inline uint64_t PLIC_SPRIORITY(uint64_t core_id) {
+//     return base_addr_ + 0x201000 + core_id * 0x2000;
+//   }
+
+//   inline uint64_t PLIC_MPRIORITY(uint64_t core_id) {
+//     return base_addr_ + 0x200000 + core_id * 0x2000;
+//   }
+
+//   /// @todo ？
+//   inline uint64_t PLIC_SCLAIM(uint64_t core_id) {
+//     return base_addr_ + 0x201004 + core_id * 0x2000;
+//   }
+
+//   inline uint64_t PLIC_MCLAIM(uint64_t core_id) {
+//     return base_addr_ + 0x200004 + core_id * 0x2000;
+//   }
+
+//  private:
+//   /// 最大外部中断数
+//   static constexpr const uint32_t kInterruptMaxCount = 16;
+
+//   /// 基地址，由 dtb 传递
+//   uintptr_t base_addr_;
+// };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
