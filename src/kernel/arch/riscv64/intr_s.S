@@ -25,9 +25,7 @@
 .align 4
 TrapEntry:
     // 将所有寄存器保存到栈上
-    // 在栈上留出保存寄存器的空间
-    addi sp, sp, -kAllRegsSize
-    SaveAllRegs sp
+    SaveAllRegs
 
     // 调用 intr.cpp: TrapHandler
     // 传递参数
@@ -42,9 +40,7 @@ TrapEntry:
     jal TrapHandler
 
     // 从栈上恢复所有寄存器
-    LoadAllRegs sp
-    // 释放栈上用于保存寄存器的空间
-    addi sp, sp, kAllRegsSize
+    LoadAllRegs
 
     // 跳转到 sepc 处执行
     sret
