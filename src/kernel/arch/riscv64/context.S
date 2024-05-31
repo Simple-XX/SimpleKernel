@@ -22,10 +22,20 @@
  * @brief 保存所有寄存器
  * @param  _base           要保存到的基地址
  */
-.macro SaveAllRegs _base
+.macro SaveAllRegs _base=sp
+    // 在栈上留出保存寄存器的空间
+    addi \_base, \_base, -kAllRegsSize
+
     SdBase  zero, 0,  \_base
     SdBase  ra,   1,  \_base
-    SdBase  sp,   2,  \_base
+    
+    // 这里需要保存旧寄存器的值
+    // 使用 ra 做临时变量
+    addi    ra, \_base, kAllRegsSize
+    SdBase  ra,   2,  \_base
+    // 恢复 ra
+    LdBase  ra,   1,  \_base
+
     SdBase  gp,   3,  \_base
     SdBase  tp,   4,  \_base
     SdBase  t0,   5,  \_base
@@ -89,45 +99,34 @@
     FsdBase ft10, 62, \_base
     FsdBase ft11, 63, \_base
 
-    csrr     t0,   sepc
-    SdBase   t0,   64, \_base
-    csrr     t0,   stval
-    SdBase   t0,   65, \_base
-    csrr     t0,   scause
-    SdBase   t0,   66, \_base
-    csrr     t0,   sie
-    SdBase   t0,   67, \_base
-    csrr     t0,   sstatus
-    SdBase   t0,   68, \_base
-    csrr     t0,   satp
-    SdBase   t0,   69, \_base
-    csrr     t0,   sscratch
-    SdBase   t0,   70, \_base
+    // 使用 ra 暂存数据
+    csrr     ra,   sepc
+    SdBase   ra,   64, \_base
+    csrr     ra,   stval
+    SdBase   ra,   65, \_base
+    csrr     ra,   scause
+    SdBase   ra,   66, \_base
+    csrr     ra,   sie
+    SdBase   ra,   67, \_base
+    csrr     ra,   sstatus
+    SdBase   ra,   68, \_base
+    csrr     ra,   satp
+    SdBase   ra,   69, \_base
+    csrr     ra,   sscratch
+    SdBase   ra,   70, \_base
+    // 恢复 ra
+    LdBase   ra,   1,  \_base
 .endm
 
 /**
  * @brief 恢复所有寄存器
  * @param  _base           要恢复数据的基地址
  */
-.macro LoadAllRegs _base
-    LdBase   t0,   64, \_base
-    csrw     sepc,     t0
-    LdBase   t0,   65, \_base
-    csrw     stval,    t0
-    LdBase   t0,   66, \_base
-    csrw     scause,   t0
-    LdBase   t0,   67, \_base
-    csrw     sie,  t0
-    LdBase   t0,   68, \_base
-    csrw     sstatus,  t0
-    LdBase   t0,   69, \_base
-    csrw     satp,     t0
-    LdBase   t0,   70, \_base
-    csrw     sscratch, t0
-
+.macro LoadAllRegs _base=sp
     LdBase  zero, 0,  \_base
     LdBase  ra,   1,  \_base
-    LdBase  sp,   2,  \_base
+    // sp 还保存有数据，暂不恢复
+    // LdBase  sp,   2,  \_base
     LdBase  gp,   3,  \_base
     LdBase  tp,   4,  \_base
     LdBase  t0,   5,  \_base
@@ -190,6 +189,30 @@
     FldBase ft9,  61, \_base
     FldBase ft10, 62, \_base
     FldBase ft11, 63, \_base
+
+    // 使用 ra 暂存数据
+    LdBase   ra,   64, \_base
+    csrw     sepc,     ra
+    LdBase   ra,   65, \_base
+    csrw     stval,    ra
+    LdBase   ra,   66, \_base
+    csrw     scause,   ra
+    LdBase   ra,   67, \_base
+    csrw     sie,  ra
+    LdBase   ra,   68, \_base
+    csrw     sstatus,  ra
+    LdBase   ra,   69, \_base
+    csrw     satp,     ra
+    LdBase   ra,   70, \_base
+    csrw     sscratch, ra
+    // 恢复 ra
+    LdBase   ra,   1,  \_base
+
+    // 恢复 sp
+    LdBase   sp,   2,  \_base
+
+    // 释放栈上用于保存寄存器的空间
+    addi \_base, \_base, kAllRegsSize
 .endm
 
 /**
