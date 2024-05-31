@@ -776,8 +776,7 @@ class Cpu {
    */
   static inline Sie ReadSie() {
     Sie x;
-    asm("csrr %0, sie" : "=r"(x.val_));
-    printf("Cpu::ReadSie()0: %p\n", x.val_);
+    asm("csrr %0, sie" : "=r"(x));
     return x;
   }
 
@@ -785,10 +784,7 @@ class Cpu {
    * @brief 写 sie
    * @param  x                要写的值
    */
-  static inline void WriteSie(Sie x) {
-    printf("Cpu::WriteSie()0: %p\n", x.val_);
-    asm("csrw sie, %0" : : "r"(x.val_));
-  }
+  static inline void WriteSie(Sie x) { asm("csrw sie, %0" : : "r"(x)); }
 
   /**
    * @brief 读 sepc
