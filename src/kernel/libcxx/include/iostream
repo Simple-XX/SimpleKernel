@@ -1,0 +1,55 @@
+
+/**
+ * @file iostream
+ * @brief C++ 输入输出
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/MRNIU/MiniCRT
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_
+
+#include <cstdint>
+
+namespace std {
+class ostream {
+ public:
+  enum openmode : uint8_t {
+    in = 1,
+    out = 2,
+    binary = 4,
+    trunc = 8,
+  };
+
+  /// @name 构造/析构函数
+  /// @{
+  ostream() = default;
+  ostream(const ostream&) = default;
+  ostream(ostream&&) = default;
+  auto operator=(const ostream&) -> ostream& = default;
+  auto operator=(ostream&&) -> ostream& = default;
+  ~ostream() = default;
+  /// @}
+
+  ostream& operator<<(char c);
+  ostream& operator<<(int n);
+  ostream& operator<<(const char* lhs);
+  ostream& operator<<(ostream& (*)(ostream&));
+};
+
+inline ostream& endl(ostream& lhs) { return lhs << '\n'; }
+
+static ostream cout [[maybe_unused]];
+
+};  // namespace std
+
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_ */
