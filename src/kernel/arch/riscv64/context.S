@@ -218,7 +218,7 @@
 /**
  * @brief 保存调用者保存寄存器
  * @param  _base           要保存到的基地址
- * @param  _off:           基地址的偏移
+ * @param  _off            基地址的偏移
  */
 .macro SaveCallerRegs _base, _off
     SdBase  ra,   0  + \_off, \_base
@@ -261,7 +261,7 @@
 /**
  * @brief 恢复调用者保存寄存器
  * @param  _base           要恢复的基地址
- * @param  _off:           基地址的偏移
+ * @param  _off            基地址的偏移
  */
 .macro LoadCallerRegs _base, _off
     LdBase  ra,   0  + \_off, \_base
@@ -304,7 +304,7 @@
 /**
  * @brief 保存被调用者保存寄存器
  * @param  _base           要保存的基地址
- * @param  _off:           基地址的偏移
+ * @param  _off            基地址的偏移
  */
 .macro SaveCaleeRegs _base, _off
     SdBase  sp,   0  + \_off, \_base
@@ -337,7 +337,7 @@
 /**
  * @brief 恢复被调用者保存寄存器
  * @param  _base           要恢复数据的基地址
- * @param  _off:           基地址的偏移
+ * @param  _off            基地址的偏移
  */
 .macro LoadCalleeRegs _base, _off
     LdBase  sp,   0  + \_off, \_base
