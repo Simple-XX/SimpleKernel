@@ -90,19 +90,19 @@
     FsdBase ft11, 63, \_base
 
     csrr     t0,   sepc
-    SdBase  t0,   64, \_base
+    SdBase   t0,   64, \_base
     csrr     t0,   stval
-    SdBase  t0,   65, \_base
+    SdBase   t0,   65, \_base
     csrr     t0,   scause
-    SdBase  t0,   66, \_base
+    SdBase   t0,   66, \_base
     csrr     t0,   sie
-    SdBase  t0,   67, \_base
+    SdBase   t0,   67, \_base
     csrr     t0,   sstatus
-    SdBase  t0,   68, \_base
+    SdBase   t0,   68, \_base
     csrr     t0,   satp
-    SdBase  t0,   69, \_base
+    SdBase   t0,   69, \_base
     csrr     t0,   sscratch
-    SdBase  t0,   70, \_base
+    SdBase   t0,   70, \_base
 .endm
 
 /**
@@ -110,19 +110,19 @@
  * @param  _base           要恢复数据的基地址
  */
 .macro LoadAllRegs _base
-    LdBase  t0,   64, \_base
+    LdBase   t0,   64, \_base
     csrw     sepc,     t0
-    LdBase  t0,   65, \_base
+    LdBase   t0,   65, \_base
     csrw     stval,    t0
-    LdBase  t0,   66, \_base
+    LdBase   t0,   66, \_base
     csrw     scause,   t0
-    LdBase  t0,   67, \_base
+    LdBase   t0,   67, \_base
     csrw     sie,  t0
-    LdBase  t0,   68, \_base
+    LdBase   t0,   68, \_base
     csrw     sstatus,  t0
-    LdBase  t0,   69, \_base
+    LdBase   t0,   69, \_base
     csrw     satp,     t0
-    LdBase  t0,   70, \_base
+    LdBase   t0,   70, \_base
     csrw     sscratch, t0
 
     LdBase  zero, 0,  \_base
