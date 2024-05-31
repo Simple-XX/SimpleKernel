@@ -464,6 +464,13 @@ class Cpu {
   static inline void EnableSupervisorTimer() { WriteSie(ReadSie() | kSieStie); }
 
   /**
+   * @brief 禁止定时器中断
+   */
+  static inline void DisableSupervisorTimer() {
+    WriteSie(ReadSie() & ~kSieStie);
+  }
+
+  /**
    * @brief 通用寄存器
    */
   struct Xregs {
