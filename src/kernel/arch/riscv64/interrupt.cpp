@@ -103,10 +103,14 @@ void Interrupt::Do(uint64_t scause, uint8_t *context) {
   auto cause = scause & Cpu::kCauseCodeMask;
   if (is_interrupt) {
     // 中断
-    DoInterrupt(cause, context);
+    if (cause < Cpu::kInterruptMaxCount) {
+      interrupt_handlers[cause](cause, context);
+    }
   } else {
     // 异常
-    DoException(cause, context);
+    if (cause < Cpu::kExceptionMaxCount) {
+      exception_handlers[cause](cause, context);
+    }
   }
 }
 
@@ -126,26 +130,21 @@ void Interrupt::RegisterInterruptFunc(uint64_t scause, InterruptFunc func) {
   }
 }
 
-void Interrupt::DoInterrupt(uint64_t cause, uint8_t *context) {
-  interrupt_handlers[cause](cause, context);
-}
-
-void Interrupt::DoException(uint64_t cause, uint8_t *context) {
-  exception_handlers[cause](cause, context);
-}
-
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
+/// @todo 从 dtb 读取 cpu 速度
 uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
-  printf("boot hart id: %d\n", argc);
-  printf("dtb info addr: %p\n", argv);
+  (void)argc;
+  (void)argv;
 
   // 注册时钟中断
   interrupt.RegisterInterruptFunc(
-      Cpu::kIntrTimerSuperMode | Cpu::kCauseCodeMask,
+      Cpu::kIntrTimerSuperMode | Cpu::kCauseInterruptMask,
       [](uint64_t, uint8_t *) -> uint64_t {
         printf("sss\n");
-        while (1);
-        sbi_set_timer(10000000);
+        static uint32_t count = 0;
+        if (count++ == 5) {
+          while (1);
+        }
         return 0;
       });
 

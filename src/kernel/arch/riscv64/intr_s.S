@@ -43,4 +43,5 @@ TrapEntry:
     LoadAllRegs
 
     // 跳转到 sepc 处执行
+ppppp: jal ppppp
     sret

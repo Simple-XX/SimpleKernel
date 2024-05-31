@@ -57,9 +57,6 @@ class Interrupt final : public InterruptBase {
   /// 异常处理函数数组
   static InterruptFunc exception_handlers[Cpu::kExceptionMaxCount]
       __attribute__((aligned(4)));
-
-  void DoInterrupt(uint64_t, uint8_t *);
-  void DoException(uint64_t, uint8_t *);
 };
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_ */
