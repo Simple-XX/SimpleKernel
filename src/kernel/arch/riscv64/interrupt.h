@@ -45,17 +45,17 @@ class Interrupt final : public InterruptBase {
 
   /**
    * @brief 注册中断处理函数
-   * @param scause 中断原因
+   * @param cause 中断原因
    * @param func 处理函数
    */
-  void RegisterInterruptFunc(uint64_t scause, InterruptFunc func) override;
+  void RegisterInterruptFunc(uint64_t cause, InterruptFunc func) override;
 
  private:
   /// 中断处理函数数组
-  static InterruptFunc interrupt_handlers[Cpu::kInterruptMaxCount]
+  static InterruptFunc interrupt_handlers[Cpu::Xcause::kInterruptMaxCount]
       __attribute__((aligned(4)));
   /// 异常处理函数数组
-  static InterruptFunc exception_handlers[Cpu::kExceptionMaxCount]
+  static InterruptFunc exception_handlers[Cpu::Xcause::kExceptionMaxCount]
       __attribute__((aligned(4)));
 };
 

@@ -20,9 +20,11 @@
 #include "fdt_parser.hpp"
 #include "opensbi_interface.h"
 
-Interrupt::InterruptFunc Interrupt::interrupt_handlers[Cpu::kInterruptMaxCount];
+Interrupt::InterruptFunc
+    Interrupt::interrupt_handlers[Cpu::Xcause::kInterruptMaxCount];
 
-Interrupt::InterruptFunc Interrupt::exception_handlers[Cpu::kExceptionMaxCount];
+Interrupt::InterruptFunc
+    Interrupt::exception_handlers[Cpu::Xcause::kExceptionMaxCount];
 
 static Interrupt interrupt __attribute__((init_priority(101)));
 
@@ -33,32 +35,33 @@ extern "C" void TrapEntry();
  * @brief 中断处理函数
  * @param  sepc           值
  * @param  stval          值
- * @param  scause         值
+ * @param  xcause         值
  * @param  all_regs       保存在栈上的所有寄存器，实际上是 sp
- * @param  sie            值
+ * @param  xie            值
  * @param  sstatus        值
  * @param  satp           值
  * @param  sscratch       值
  */
-extern "C" void TrapHandler(uintptr_t sepc, uintptr_t stval, uintptr_t scause,
-                            Cpu::AllRegs *all_regs, uintptr_t sie,
-                            Cpu::Sstatus sstatus, Cpu::Satp satp,
+extern "C" void TrapHandler(uintptr_t sepc, uintptr_t stval, Cpu::Xcause xcause,
+                            Cpu::AllRegs *all_regs, Cpu::Xie xie,
+                            Cpu::Xstatus sstatus, Cpu::Satp satp,
                             uintptr_t sscratch) {
   // 消除 unused 警告
   (void)sepc;
   (void)stval;
-  (void)sie;
+  (void)xie;
   (void)sstatus;
   (void)satp;
   (void)sscratch;
+
   printf(
-      "sepc: 0x%p, stval: 0x%p, scause: 0x%p, all_regs(sp): 0x%p, sie: "
+      "sepc: 0x%p, stval: 0x%p, xcause: 0x%p, all_regs(sp): 0x%p, xie: "
       "0x%p\nsstatus: ",
-      sepc, stval, scause, all_regs, sie);
+      sepc, stval, xcause, all_regs, xie);
   std::cout << sstatus << ", \nsatp: " << satp << ", \n";
   // printf("sscratch: 0x%p\n", sscratch);
   // 跳转到对应的处理函数
-  interrupt.Do(scause, (uint8_t *)all_regs);
+  interrupt.Do((uint64_t)xcause.val_, (uint8_t *)all_regs);
 }
 
 Interrupt::Interrupt() {
@@ -66,66 +69,75 @@ Interrupt::Interrupt() {
     // 注册默认中断处理函数
     for (auto &i : interrupt_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-        printf("[%s] %d, 0x%p\n", Cpu::kInterruptNames[cause], cause, context);
+        printf("[%s] %d, 0x%p\n", Cpu::Xcause::kInterruptNames[cause], cause,
+               context);
         return 0;
       };
     }
     // 注册默认异常处理函数
     for (auto &i : exception_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-        printf("[%s] %d, 0x%p\n", Cpu::kInterruptNames[cause], cause, context);
+        printf("[%s] %d, 0x%p\n", Cpu::Xcause::kInterruptNames[cause], cause,
+               context);
         return 0;
       };
     }
 
     // 设置 trap vector
-    Cpu::WriteStvec((uintptr_t)TrapEntry);
-
-    // 直接跳转到处理函数
-    Cpu::SetStvecDirect();
+    Cpu::SetStvecDirect((uint64_t)TrapEntry);
 
     // 开启 Supervisor 中断
     Cpu::EnableSupervisorIntr();
 
+    // 开启内部中断
+    Cpu::EnableSupervisorSoftware();
+
     // 开启时钟中断
     Cpu::EnableSupervisorTimer();
+
+    // 开启外部中断
+    // Cpu::EnableSupervisorExternal();
 
     is_inited = true;
   }
 
-  // 开启内部中断
-  Cpu::WriteSie(Cpu::ReadSie() | Cpu::kSieSsie);
   printf("Interrupt init.\n");
 }
 
-void Interrupt::Do(uint64_t scause, uint8_t *context) {
-  auto is_interrupt = scause & Cpu::kCauseInterruptMask;
-  auto cause = scause & Cpu::kCauseCodeMask;
-  if (is_interrupt) {
+void Interrupt::Do(uint64_t cause, uint8_t *context) {
+  auto xcause = Cpu::Xcause(cause);
+
+  if (xcause.xcause_.interrupt) {
     // 中断
-    if (cause < Cpu::kInterruptMaxCount) {
-      interrupt_handlers[cause](cause, context);
+    if (xcause.xcause_.exception_code < Cpu::Xcause::kInterruptMaxCount) {
+      interrupt_handlers[xcause.xcause_.exception_code](
+          xcause.xcause_.exception_code, context);
     }
   } else {
     // 异常
-    if (cause < Cpu::kExceptionMaxCount) {
-      exception_handlers[cause](cause, context);
+    if (xcause.xcause_.exception_code < Cpu::Xcause::kExceptionMaxCount) {
+      exception_handlers[xcause.xcause_.exception_code](
+          xcause.xcause_.exception_code, context);
     }
   }
 }
 
-void Interrupt::RegisterInterruptFunc(uint64_t scause, InterruptFunc func) {
-  auto is_interrupt = scause & Cpu::kCauseInterruptMask;
-  auto cause = scause & Cpu::kCauseCodeMask;
-  if (is_interrupt) {
-    if (cause < Cpu::kInterruptMaxCount) {
-      interrupt_handlers[cause] = func;
-      printf("[%s] %d, 0x%p\n", Cpu::kInterruptNames[cause], cause, func);
+void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
+  auto xcause = Cpu::Xcause(cause);
+
+  if (xcause.xcause_.interrupt) {
+    if (xcause.xcause_.exception_code < Cpu::Xcause::kInterruptMaxCount) {
+      interrupt_handlers[xcause.xcause_.exception_code] = func;
+      printf("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
+             Cpu::Xcause::kInterruptNames[xcause.xcause_.exception_code], cause,
+             func);
     }
   } else {
-    if (cause < Cpu::kExceptionMaxCount) {
-      exception_handlers[cause] = func;
-      printf("[%s] %d, 0x%p\n", Cpu::kExceptionNames[cause], cause, func);
+    if (xcause.xcause_.exception_code < Cpu::Xcause::kExceptionMaxCount) {
+      exception_handlers[xcause.xcause_.exception_code] = func;
+      printf("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
+             Cpu::Xcause::kExceptionNames[xcause.xcause_.exception_code], cause,
+             func);
     }
   }
 }
@@ -137,16 +149,16 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argv;
 
   // 注册时钟中断
-  interrupt.RegisterInterruptFunc(
-      Cpu::kIntrTimerSuperMode | Cpu::kCauseInterruptMask,
-      [](uint64_t, uint8_t *) -> uint64_t {
-        printf("sss\n");
-        static uint32_t count = 0;
-        if (count++ == 5) {
-          while (1);
-        }
-        return 0;
-      });
+  interrupt.RegisterInterruptFunc(Cpu::Xcause::kSupervisorTimerInterrupt,
+                                  [](uint64_t, uint8_t *) -> uint64_t {
+                                    printf("sss\n");
+                                    static uint32_t count = 0;
+                                    if (count++ == 5) {
+                                      while (1);
+                                    }
+                                    sbi_set_timer(10000000);
+                                    return 0;
+                                  });
 
   // 设置时钟中断时间
   sbi_set_timer(10000000);

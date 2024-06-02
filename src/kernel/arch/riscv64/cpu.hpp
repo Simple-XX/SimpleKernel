@@ -39,106 +39,6 @@ class Cpu {
     kPrivilegeLevelMachine = 3,
   };
 
-  /// 最大中断数
-  static constexpr const uint32_t kInterruptMaxCount = 17;
-
-  enum {
-    kIntrSoft = 0,
-    /// U 态软中断
-    kIntrSoftUserMode = kIntrSoft + kPrivilegeLevelUser,
-    /// S 态软中断
-    kIntrSoftSuperMode = kIntrSoft + kPrivilegeLevelSuper,
-    /// M 态软中断
-    kIntrSoftMachineMode = kIntrSoft + kPrivilegeLevelMachine,
-    kIntrTimer = 4,
-    /// U 态时钟中断
-    kIntrTimerUserMode = kIntrTimer + kPrivilegeLevelUser,
-    /// S 态时钟中断
-    kIntrTimerSuperMode = kIntrTimer + kPrivilegeLevelSuper,
-    /// M 态时钟中断
-    kIntrTimerMachineMode = kIntrTimer + kPrivilegeLevelMachine,
-    kIntrExtern = 8,
-    /// U 态外部中断
-    kIntrExternUserMode = kIntrExtern + kPrivilegeLevelUser,
-    /// S 态外部中断
-    kIntrExternSuperMode = kIntrExtern + kPrivilegeLevelSuper,
-    /// M 态外部中断
-    kIntrExternMachineMode = kIntrExtern + kPrivilegeLevelMachine,
-  };
-
-  /// 中断名
-  static constexpr const char *const kInterruptNames[kInterruptMaxCount] = {
-      "User Software Interrupt",
-      "Supervisor Software Interrupt",
-      "Reserved",
-      "Machine Software Interrupt",
-      "User Timer Interrupt",
-      "Supervisor Timer Interrupt",
-      "Reserved",
-      "Machine Timer Interrupt",
-      "User External Interrupt",
-      "Supervisor External Interrupt",
-      "Reserved",
-      "Machine External Interrupt",
-      "Reserved",
-      "Reserved",
-      "Reserved",
-      "Reserved",
-      "Local Interrupt X",
-  };
-
-  /// 最大异常数
-  static constexpr const uint32_t kExceptionMaxCount = 17;
-
-  enum {
-    kExceptionInstructionAddressMisaligned = 0,
-    kExceptionInstructionAccessFault = 1,
-    kExceptionIllegalInstruction = 2,
-    kExceptionBreakpoint = 3,
-    kExceptionLoadAddressMisaligned = 4,
-    kExceptionLoadAccessFault = 5,
-    kExceptionStoreAmoAddressMisaligned = 6,
-    kExceptionStoreAmoAccessFault = 7,
-    kExceptionEcall = 8,
-    kExceptionEcallUserMode = kExceptionEcall + kPrivilegeLevelUser,
-    kExceptionEcallSuperMode = kExceptionEcall + kPrivilegeLevelSuper,
-    kExceptionEcallMachineMode = kExceptionEcall + kPrivilegeLevelMachine,
-    kExceptionInstructionPageFault = 12,
-    kExceptionLoadPageFault = 13,
-    kExceptionStoreAmoPageFault = 15,
-  };
-
-  /// 异常名
-  static constexpr const char *const kExceptionNames[kExceptionMaxCount] = {
-      "Instruction Address Misaligned",
-      "Instruction Access Fault",
-      "Illegal Instruction",
-      "Breakpoint",
-      "Load Address Misaligned",
-      "Load Access Fault",
-      "Store/AMO Address Misaligned",
-      "Store/AMO Access Fault",
-      "Environment Call from U-mode",
-      "Environment Call from S-mode",
-      "Reserved",
-      "Environment Call from M-mode",
-      "Instruction Page Fault",
-      "Load Page Fault",
-      "Reserved",
-      "Store/AMO Page Fault",
-      "Reserved",
-  };
-
-  /// [63]==1 interrupt, else exception
-  static constexpr const uint64_t kCauseInterruptMask = 1ULL << 63;
-  /// low bits show code
-  static constexpr const uint64_t kCauseCodeMask = ~kCauseInterruptMask;
-
-  /// 中断模式 直接
-  static constexpr const uint64_t kTvecDirect = ~0x3;
-  /// 中断模式 向量
-  static constexpr const uint64_t kTvecVectored = ~0x2;
-
   /**
    * @brief Xstatus 寄存器定义
    * @see riscv-privileged-v1.10.pdf#3.1.6
@@ -223,16 +123,55 @@ class Cpu {
     ~Xstatus() = default;
     /// @}
 
-    friend std::ostream &operator<<(std::ostream &os, const Xstatus &sstatus) {
+    friend std::ostream &operator<<(std::ostream &os, const Xstatus &xstatus) {
       printf("val: 0x%p, uie: %s, sie: %s, upie: %s, spie: %s, spp: %s",
-             sstatus.val_,
-             (sstatus.xstatus_.uie == true ? "Enable" : "Disable"),
-             (sstatus.xstatus_.sie == true ? "Enable" : "Disable"),
-             (sstatus.xstatus_.upie == true ? "Enable" : "Disable"),
-             (sstatus.xstatus_.spie == true ? "Enable" : "Disable"),
-             (sstatus.xstatus_.spp == true ? "S Mode" : "U Mode")
+             xstatus.val_,
+             (xstatus.xstatus_.uie == true ? "Enable" : "Disable"),
+             (xstatus.xstatus_.sie == true ? "Enable" : "Disable"),
+             (xstatus.xstatus_.upie == true ? "Enable" : "Disable"),
+             (xstatus.xstatus_.spie == true ? "Enable" : "Disable"),
+             (xstatus.xstatus_.spp == true ? "S Mode" : "U Mode")
 
       );
+      return os;
+    }
+  };
+
+  /**
+   * @brief Xtvec 寄存器定义
+   * @see riscv-privileged-v1.10.pdf#3.1.12
+   */
+  class Xtvec {
+   public:
+    /// 中断模式 直接
+    static constexpr const uint64_t kDirect = 0x0;
+    /// 中断模式 向量
+    static constexpr const uint64_t kVectored = 0x1;
+
+    union {
+      struct {
+        uint64_t base : 62;
+        uint64_t mode : 2;
+      } xtvec_;
+      uint64_t val_;
+    };
+
+    explicit Xtvec(uint64_t val) : val_(val) {}
+
+    /// @name 构造/析构函数
+    /// @{
+    Xtvec() = default;
+    Xtvec(const Xtvec &) = default;
+    Xtvec(Xtvec &&) = default;
+    auto operator=(const Xtvec &) -> Xtvec & = default;
+    auto operator=(Xtvec &&) -> Xtvec & = default;
+    ~Xtvec() = default;
+    /// @}
+
+    friend std::ostream &operator<<(std::ostream &os, const Xtvec &xtvec) {
+      printf("val: 0x%p, mode: %s, base: 0x%p", xtvec.val_,
+             (xtvec.xtvec_.mode == kDirect ? "Direct" : "Vectored"),
+             xtvec.xtvec_.base);
       return os;
     }
   };
@@ -243,7 +182,7 @@ class Cpu {
    */
   class Xip {
    public:
-    // Supervisor Interrupt Enable
+    // Supervisor Interrupt Pending
     /// software
     static constexpr const uint64_t kSsip = 1 << 1;
     /// timer
@@ -359,6 +298,120 @@ class Cpu {
              (xie.xie_.ssie == true ? "Enable" : "Disable"),
              (xie.xie_.stie == true ? "Enable" : "Disable"),
              (xie.xie_.seie == true ? "Enable" : "Disable"));
+      return os;
+    }
+  };
+
+  /**
+   * @brief Xcause 寄存器定义
+   * @see riscv-privileged-v1.10.pdf#3.1.20
+   */
+  class Xcause {
+   public:
+    enum {
+      // 中断
+      kInterrupt = 1ULL << 63,
+      kUserSoftwareInterrupt = kInterrupt + 0,
+      kSupervisorSoftwareInterrupt = kInterrupt + 1,
+      kReserved1 = kInterrupt + 2,
+      kMachineSoftwareInterrupt = kInterrupt + 3,
+      kUserTimerInterrupt = kInterrupt + 4,
+      kSupervisorTimerInterrupt = kInterrupt + 5,
+      kReserved2 = kInterrupt + 6,
+      kMachineTimerInterrupt = kInterrupt + 7,
+      kUserExternalInterrupt = kInterrupt + 8,
+      kSupervisorExternalInterrupt = kInterrupt + 9,
+      kReserved3 = kInterrupt + 10,
+      kMachineExternalInterrupt = kInterrupt + 11,
+
+      // 异常
+      kInstructionAddressMisaligned = 0,
+      kInstructionAccessFault = 1,
+      kIllegalInstruction = 2,
+      kBreakpoint = 3,
+      kLoadAddressMisaligned = 4,
+      kLoadAccessFault = 5,
+      kStoreAmoAddressMisaligned = 6,
+      kStoreAmoAccessFault = 7,
+      kEcallUserMode = 8,
+      kEcallSuperMode = 9,
+      kReserved4 = 10,
+      kEcallMachineMode = 11,
+      kInstructionPageFault = 12,
+      kLoadPageFault = 13,
+      kReserved5 = 14,
+      kStoreAmoPageFault = 15,
+    };
+
+    /// 最大中断数
+    static constexpr const uint32_t kInterruptMaxCount = 12;
+
+    /// 中断名
+    static constexpr const char *const kInterruptNames[kInterruptMaxCount] = {
+        "User Software Interrupt",
+        "Supervisor Software Interrupt",
+        "Reserved",
+        "Machine Software Interrupt",
+        "User Timer Interrupt",
+        "Supervisor Timer Interrupt",
+        "Reserved",
+        "Machine Timer Interrupt",
+        "User External Interrupt",
+        "Supervisor External Interrupt",
+        "Reserved",
+        "Machine External Interrupt",
+    };
+
+    /// 最大异常数
+    static constexpr const uint32_t kExceptionMaxCount = 16;
+
+    /// 异常名
+    static constexpr const char *const kExceptionNames[kExceptionMaxCount] = {
+        "Instruction Address Misaligned",
+        "Instruction Access Fault",
+        "Illegal Instruction",
+        "Breakpoint",
+        "Load Address Misaligned",
+        "Load Access Fault",
+        "Store/AMO Address Misaligned",
+        "Store/AMO Access Fault",
+        "Environment Call from U-mode",
+        "Environment Call from S-mode",
+        "Reserved",
+        "Environment Call from M-mode",
+        "Instruction Page Fault",
+        "Load Page Fault",
+        "Reserved",
+        "Store/AMO Page Fault",
+    };
+
+    union {
+      struct {
+        uint64_t exception_code : 63;
+        uint64_t interrupt : 1;
+      } xcause_;
+      uint64_t val_;
+    };
+
+    explicit Xcause(uint64_t val) : val_(val) {}
+
+    /// @name 构造/析构函数
+    /// @{
+    Xcause() = default;
+    Xcause(const Xcause &) = default;
+    Xcause(Xcause &&) = default;
+    auto operator=(const Xcause &) -> Xcause & = default;
+    auto operator=(Xcause &&) -> Xcause & = default;
+    ~Xcause() = default;
+    /// @}
+
+    friend std::ostream &operator<<(std::ostream &os, const Xcause &xcause) {
+      printf("val: 0x%p, exception_code: 0x%p, interrupt: %s, name: %s",
+             xcause.val_, xcause.xcause_.exception_code,
+             xcause.xcause_.interrupt ? "Yes" : "No",
+             xcause.xcause_.interrupt
+                 ? kInterruptNames[xcause.xcause_.exception_code]
+                 : kExceptionNames[xcause.xcause_.exception_code]);
       return os;
     }
   };
@@ -568,7 +621,7 @@ class Cpu {
     uintptr_t stval;
     uintptr_t scause;
     uintptr_t sie;
-    Xstatus sstatus;
+    Xstatus xstatus;
     Satp satp;
     uintptr_t sscratch;
     // friend std::ostream &operator<<(std::ostream &_os,
@@ -576,7 +629,7 @@ class Cpu {
     //   (void)all_regs.fregs;
     //   _os << all_regs.xregs << std::endl;
     //   printf(
-    //       "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: "
+    //       "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, xstatus: "
     //       "0x%p, satp: 0x%p, sscratch: 0x%p",
     //       all_regs.sepc, all_regs.stval, all_regs.scause, all_regs.sie,
     //       all_regs.xstatus_.val, all_regs.satp.val, all_regs.sscratch);
@@ -658,7 +711,7 @@ class Cpu {
     asm volatile("csrr %0, sepc" : "=r"(all_regs.sepc));
     asm volatile("csrr %0, stval" : "=r"(all_regs.stval));
     asm volatile("csrr %0, scause" : "=r"(all_regs.scause));
-    asm volatile("csrr %0, sstatus" : "=r"(all_regs.sstatus));
+    asm volatile("csrr %0, xstatus" : "=r"(all_regs.xstatus));
     asm volatile("csrr %0, sscratch" : "=r"(all_regs.sscratch));
 
     return;
@@ -815,7 +868,7 @@ class Cpu {
     CalleeRegs callee_regs;
     Satp satp;
     uintptr_t sepc;
-    Xstatus sstatus;
+    Xstatus xstatus;
     uintptr_t sie;
     uintptr_t sip;
     uintptr_t sscratch;
@@ -826,7 +879,7 @@ class Cpu {
     //   std::cout << _context.callee_regs << std::endl;
     //   printf("satp: 0x%p, ", _context.satp.val);
     //   printf("sepc: 0x%p, ", _context.sepc);
-    //   printf("sstatus: 0x%p, ", _context.xstatus_.val);
+    //   printf("xstatus: 0x%p, ", _context.xstatus_.val);
     //   printf("sie: 0x%p, ", _context.sie);
     //   printf("sip: 0x%p, ", _context.sip);
     //   printf("sscratch: 0x%p", _context.sscratch);
@@ -905,11 +958,10 @@ class Cpu {
 
   /**
    * @brief 读 stvec
-   * @return uint64_t         读到的值
-   * @note Supervisor Trap-Vector Base Address low two bits are mode.
+   * @return Xtvec 读到的值
    */
-  static inline uint64_t ReadStvec() {
-    uint64_t x;
+  static inline Xtvec ReadStvec() {
+    Xtvec x;
     asm("csrr %0, stvec" : "=r"(x));
     return x;
   }
@@ -918,9 +970,7 @@ class Cpu {
    * @brief 写 stvec
    * @param  x               要写的值
    */
-  static inline void WriteStvec(uint64_t x) {
-    asm("csrw stvec, %0" : : "r"(x));
-  }
+  static inline void WriteStvec(Xtvec x) { asm("csrw stvec, %0" : : "r"(x)); }
 
   /**
    * @brief 读 sscratch 寄存器
@@ -977,7 +1027,18 @@ class Cpu {
    */
   static inline void SetStvecDirect() {
     auto stvec = ReadStvec();
-    stvec = stvec & kTvecDirect;
+    stvec.xtvec_.mode = Xtvec::kDirect;
+    WriteStvec(stvec);
+  }
+
+  /**
+   * @brief 设置中断模式，直接
+   * @param addr 处理函数的地址
+   */
+  static inline void SetStvecDirect(uint64_t addr) {
+    auto stvec = ReadStvec();
+    stvec.xtvec_.base = addr;
+    stvec.xtvec_.mode = Xtvec::kDirect;
     WriteStvec(stvec);
   }
 
@@ -986,7 +1047,7 @@ class Cpu {
    */
   static inline void SetStvecVectored() {
     auto stvec = ReadStvec();
-    stvec = stvec & kTvecVectored;
+    stvec.xtvec_.mode = Xtvec::kVectored;
     WriteStvec(stvec);
   }
 
