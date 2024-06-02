@@ -151,8 +151,8 @@ class Cpu {
 
     union {
       struct {
-        uint64_t base : 62;
         uint64_t mode : 2;
+        uint64_t base : 62;
       } xtvec_;
       uint64_t val_;
     };
@@ -1038,8 +1038,8 @@ class Cpu {
    */
   static inline void SetStvecDirect(uint64_t addr) {
     auto stvec = ReadStvec();
-    stvec.xtvec_.base = addr;
     stvec.xtvec_.mode = Xtvec::kDirect;
+    stvec.xtvec_.base = addr >> 2;
     WriteStvec(stvec);
   }
 
