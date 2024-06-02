@@ -26,6 +26,7 @@
 /**
  * riscv64 cpu 相关定义
  * @see riscv-privileged-v1.10.pd
+ * https://riscv.org/wp-content/uploads/2017/05/riscv-privileged-v1.10.pdf
  */
 class Cpu {
  public:
