@@ -33,33 +33,33 @@ extern "C" void TrapEntry();
 
 /**
  * @brief 中断处理函数
- * @param  sepc           值
- * @param  stval          值
+ * @param  xepc           值
+ * @param  xtval          值
  * @param  xcause         值
  * @param  all_regs       保存在栈上的所有寄存器，实际上是 sp
  * @param  xie            值
- * @param  sstatus        值
+ * @param  xstatus        值
  * @param  satp           值
  * @param  sscratch       值
  */
-extern "C" void TrapHandler(uintptr_t sepc, uintptr_t stval, Cpu::Xcause xcause,
+extern "C" void TrapHandler(uintptr_t xepc, uintptr_t xtval, Cpu::Xcause xcause,
                             Cpu::AllRegs *all_regs, Cpu::Xie xie,
-                            Cpu::Xstatus sstatus, Cpu::Satp satp,
+                            Cpu::Xstatus xstatus, Cpu::Satp satp,
                             uintptr_t sscratch) {
   // 消除 unused 警告
-  (void)sepc;
-  (void)stval;
+  (void)xepc;
+  (void)xtval;
   (void)xie;
-  (void)sstatus;
+  (void)xstatus;
   (void)satp;
   (void)sscratch;
 
-  printf(
-      "sepc: 0x%p, stval: 0x%p, xcause: 0x%p, all_regs(sp): 0x%p, xie: "
-      "0x%p\nsstatus: ",
-      sepc, stval, xcause, all_regs, xie);
-  std::cout << sstatus << ", \nsatp: " << satp << ", \n";
-  // printf("sscratch: 0x%p\n", sscratch);
+  printf("xepc: 0x%p, xtval: 0x%p, all_regs(sp): 0x%p\n", xepc, xtval,
+         all_regs);
+  std::cout << "xstatus: " << xcause << std::endl;
+  std::cout << "xie: " << xcause << std::endl;
+  std::cout << "xstatus: " << xstatus << std::endl;
+  std::cout << "satp: " << satp << std::endl;
   // 跳转到对应的处理函数
   interrupt.Do((uint64_t)xcause.val_, (uint8_t *)all_regs);
 }

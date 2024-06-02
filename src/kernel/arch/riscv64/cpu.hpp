@@ -417,20 +417,22 @@ class Cpu {
   };
 
   /**
-   * @brief satp 结构
+   * @brief satp 寄存器定义
+   * @see riscv-privileged-v1.10.pdf#4.1.12
    */
   class Satp {
    public:
     enum {
-      kSatpNone = 0,
-      kSatpSv39 = 8,
-      kSatpSv48 = 9,
-      kSatpSv57 = 10,
-      kSatpSv64 = 11,
+      kBare = 0,
+      kSv39 = 8,
+      kSv48 = 9,
+      kSv57 = 10,
+      kSv64 = 11,
     };
-    static constexpr const char *kSatpModeNames[] = {
-        "NONE",    "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN",
-        "UNKNOWN", "UNKNOWN", "SV39",    "SV48",    "SV57",    "SV64",
+
+    static constexpr const char *kModeNames[] = {
+        "Bare",     "Reserved", "Reserved", "Reserved", "Reserved", "Reserved",
+        "Reserved", "Reserved", "SV39",     "SV48",     "SV57",     "SV64",
     };
 
     union {
@@ -441,8 +443,6 @@ class Cpu {
       } satp_;
       uint64_t val_;
     };
-
-    static constexpr const uint64_t kPpnOffset = 12;
 
     explicit Satp(uint64_t val) : val_(val) {}
 
@@ -458,7 +458,7 @@ class Cpu {
 
     friend std::ostream &operator<<(std::ostream &os, const Satp &satp) {
       printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", satp.val_,
-             satp.satp_.ppn, satp.satp_.asid, kSatpModeNames[satp.satp_.mode]);
+             satp.satp_.ppn, satp.satp_.asid, kModeNames[satp.satp_.mode]);
       return os;
     }
   };
@@ -619,8 +619,8 @@ class Cpu {
     Fregs fregs;
     uintptr_t sepc;
     uintptr_t stval;
-    uintptr_t scause;
-    uintptr_t sie;
+    Xcause xcause;
+    Xie xie;
     Xstatus xstatus;
     Satp satp;
     uintptr_t sscratch;
@@ -710,7 +710,7 @@ class Cpu {
 
     asm volatile("csrr %0, sepc" : "=r"(all_regs.sepc));
     asm volatile("csrr %0, stval" : "=r"(all_regs.stval));
-    asm volatile("csrr %0, scause" : "=r"(all_regs.scause));
+    asm volatile("csrr %0, scause" : "=r"(all_regs.xcause));
     asm volatile("csrr %0, xstatus" : "=r"(all_regs.xstatus));
     asm volatile("csrr %0, sscratch" : "=r"(all_regs.sscratch));
 
@@ -869,8 +869,8 @@ class Cpu {
     Satp satp;
     uintptr_t sepc;
     Xstatus xstatus;
-    uintptr_t sie;
-    uintptr_t sip;
+    Xie xie;
+    Xip xip;
     uintptr_t sscratch;
     // friend std::ostream &operator<<(std::ostream &_os,
     //                                 const Context &_context) {
@@ -907,11 +907,11 @@ class Cpu {
 
   /**
    * @brief 读 sip
-   * @return uint64_t         读取到的值
+   * @return Xip 读取到的值
    * @note Supervisor Interrupt Pending
    */
-  static inline uint64_t ReadSip(void) {
-    uint64_t x;
+  static inline Xip ReadSip(void) {
+    Xip x;
     asm("csrr %0, sip" : "=r"(x));
     return x;
   }
@@ -920,7 +920,7 @@ class Cpu {
    * @brief 写 sip
    * @param  x               要写的值
    */
-  static inline void WriteSip(uint64_t x) { asm("csrw sip, %0" : : "r"(x)); }
+  static inline void WriteSip(Xip x) { asm("csrw sip, %0" : : "r"(x)); }
 
   /**
    * @brief 读 sie
