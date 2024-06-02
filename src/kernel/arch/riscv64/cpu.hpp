@@ -23,13 +23,20 @@
 #include "iostream"
 #include "stdio.h"
 
+/**
+ * riscv64 cpu 相关定义
+ * @see riscv-privileged-v1.10.pd
+ */
 class Cpu {
  public:
-  /// 机器模式定义
+  /**
+   * Privilege Levels
+   * @see riscv-privileged-v1.10.pd#1.3
+   */
   enum {
-    kModeUser = 0,
-    kModeSuper = 1,
-    kModeMachine = 3,
+    kPrivilegeLevelUser = 0,
+    kPrivilegeLevelSuper = 1,
+    kPrivilegeLevelMachine = 3,
   };
 
   /// 最大中断数
@@ -38,25 +45,25 @@ class Cpu {
   enum {
     kIntrSoft = 0,
     /// U 态软中断
-    kIntrSoftUserMode = kIntrSoft + kModeUser,
+    kIntrSoftUserMode = kIntrSoft + kPrivilegeLevelUser,
     /// S 态软中断
-    kIntrSoftSuperMode = kIntrSoft + kModeSuper,
+    kIntrSoftSuperMode = kIntrSoft + kPrivilegeLevelSuper,
     /// M 态软中断
-    kIntrSoftMachineMode = kIntrSoft + kModeMachine,
+    kIntrSoftMachineMode = kIntrSoft + kPrivilegeLevelMachine,
     kIntrTimer = 4,
     /// U 态时钟中断
-    kIntrTimerUserMode = kIntrTimer + kModeUser,
+    kIntrTimerUserMode = kIntrTimer + kPrivilegeLevelUser,
     /// S 态时钟中断
-    kIntrTimerSuperMode = kIntrTimer + kModeSuper,
+    kIntrTimerSuperMode = kIntrTimer + kPrivilegeLevelSuper,
     /// M 态时钟中断
-    kIntrTimerMachineMode = kIntrTimer + kModeMachine,
+    kIntrTimerMachineMode = kIntrTimer + kPrivilegeLevelMachine,
     kIntrExtern = 8,
     /// U 态外部中断
-    kIntrExternUserMode = kIntrExtern + kModeUser,
+    kIntrExternUserMode = kIntrExtern + kPrivilegeLevelUser,
     /// S 态外部中断
-    kIntrExternSuperMode = kIntrExtern + kModeSuper,
+    kIntrExternSuperMode = kIntrExtern + kPrivilegeLevelSuper,
     /// M 态外部中断
-    kIntrExternMachineMode = kIntrExtern + kModeMachine,
+    kIntrExternMachineMode = kIntrExtern + kPrivilegeLevelMachine,
   };
 
   /// 中断名
@@ -93,9 +100,9 @@ class Cpu {
     kExceptionStoreAmoAddressMisaligned = 6,
     kExceptionStoreAmoAccessFault = 7,
     kExceptionEcall = 8,
-    kExceptionEcallUserMode = kExceptionEcall + kModeUser,
-    kExceptionEcallSuperMode = kExceptionEcall + kModeSuper,
-    kExceptionEcallMachineMode = kExceptionEcall + kModeMachine,
+    kExceptionEcallUserMode = kExceptionEcall + kPrivilegeLevelUser,
+    kExceptionEcallSuperMode = kExceptionEcall + kPrivilegeLevelSuper,
+    kExceptionEcallMachineMode = kExceptionEcall + kPrivilegeLevelMachine,
     kExceptionInstructionPageFault = 12,
     kExceptionLoadPageFault = 13,
     kExceptionStoreAmoPageFault = 15,
@@ -133,91 +140,179 @@ class Cpu {
   static constexpr const uint64_t kTvecVectored = ~0x2;
 
   /**
-   * @brief sstatus 寄存器定义
+   * @brief Xstatus 寄存器定义
+   * @see riscv-privileged-v1.10.pdf#3.1.6
    */
-  class Sstatus {
+  class Xstatus {
    public:
-    /// Supervisor Status Register, sstatus
     /// User Interrupt Enable
-    static constexpr const uint64_t kSstatusUie = 1 << 0;
+    static constexpr const uint64_t kXstatusUie = 1 << 0;
     /// Supervisor Interrupt Enable
-    static constexpr const uint64_t kSstatusSie = 1 << 1;
+    static constexpr const uint64_t kXstatusSie = 1 << 1;
     /// User Previous Interrupt Enable
-    static constexpr const uint64_t kSstatusUpie = 1 << 4;
+    static constexpr const uint64_t kXstatusUpie = 1 << 4;
     /// Supervisor Previous Interrupt Enable
-    static constexpr const uint64_t kSstatusSpie = 1 << 5;
+    static constexpr const uint64_t kXstatusSpie = 1 << 5;
     /// Previous mode, 1=Supervisor, 0=User
-    static constexpr const uint64_t kSstatusSpp = 1 << 8;
+    static constexpr const uint64_t kXstatusSpp = 1 << 8;
 
     union {
       struct {
-        // user interrupt enable
+        // The UIE bit enables or disables user-mode interrupts.
         uint64_t uie : 1;
-        // interrupt enable
+        // The SIE bit enables or disables all interrupts in supervisor mode.
         uint64_t sie : 1;
-        uint64_t wpri1 : 2;
-        // user previous interrupt enable
+        // Reserved Writes Preserve Values, Reads Ignore Values 1
+        uint64_t wpri1 : 1;
+        // The MIE bit enables or disables all interrupts in machine mode.
+        uint64_t mie : 1;
+        // The UPIE bit indicates whether user-level interrupts were enabled
+        // prior to taking a user-level trap.
         uint64_t upie : 1;
-        // supervisor previous interrupt enable
+        // The SPIE bit indicates whether supervisor interrupts were enabled
+        // prior to trapping into supervisor mode.
         uint64_t spie : 1;
-        uint64_t wpri2 : 2;
-        // previous mode (supervisor)
+        uint64_t wpri2 : 1;
+        uint64_t mpie : 1;
+        // The SPP bit indicates the privilege level at which a hart was
+        // executing before entering supervisor mode.
+        // xPP holds the previous privilege mode.
         uint64_t spp : 1;
-        uint64_t wpri3 : 4;
-        // FPU status
+        uint64_t wpri3 : 2;
+        uint64_t mpp : 2;
+        // The FS field encodes the status of the floating-point unit, including
+        // the CSR fcsr and floating-point data registers f0–f31.
         uint64_t fs : 2;
-        // extensions status
+        // The XS field encodes the status of additional user-mode extensions
+        // and associated state.
         uint64_t xs : 2;
-        uint64_t wpri4 : 1;
-        // permit supervisor user memory access
+        // Modify PRiVilege
+        uint64_t mprv : 1;
+        // permit Supervisor User Memory access
         uint64_t sum : 1;
-        // make executable readable
+        // Make eXecutable Readable
         uint64_t mxr : 1;
-        uint64_t wpri5 : 12;
+        // Trap Virtual Memory
+        uint64_t tvm : 1;
+        // Timeout Wait
+        uint64_t tw : 1;
+        // Trap SRET
+        uint64_t tsr : 1;
+        uint64_t wpri4 : 9;
         // U-mode XLEN
         uint64_t uxl : 2;
-        uint64_t wpri7 : 29;
-        // status dirty
+        // S-mode XLEN
+        uint64_t sxl : 2;
+        uint64_t wpri5 : 27;
+        // The SD bit is read-only and is set when either the FS or XS bits
+        // encode a Dirty state (i.e., SD=((FS==11) OR (XS==11))).
         uint64_t sd : 1;
-      } sstatus_;
+      } xstatus_;
       uint64_t val_;
     };
 
-    explicit Sstatus(uint64_t val) : val_(val) {}
+    explicit Xstatus(uint64_t val) : val_(val) {}
 
     /// @name 构造/析构函数
     /// @{
-    Sstatus() = default;
-    Sstatus(const Sstatus &) = default;
-    Sstatus(Sstatus &&) = default;
-    auto operator=(const Sstatus &) -> Sstatus & = default;
-    auto operator=(Sstatus &&) -> Sstatus & = default;
-    ~Sstatus() = default;
+    Xstatus() = default;
+    Xstatus(const Xstatus &) = default;
+    Xstatus(Xstatus &&) = default;
+    auto operator=(const Xstatus &) -> Xstatus & = default;
+    auto operator=(Xstatus &&) -> Xstatus & = default;
+    ~Xstatus() = default;
     /// @}
 
-    friend std::ostream &operator<<(std::ostream &os, const Sstatus &sstatus) {
+    friend std::ostream &operator<<(std::ostream &os, const Xstatus &sstatus) {
       printf("val: 0x%p, uie: %s, sie: %s, upie: %s, spie: %s, spp: %s",
              sstatus.val_,
-             (sstatus.sstatus_.uie == true ? "Enable" : "Disable"),
-             (sstatus.sstatus_.sie == true ? "Enable" : "Disable"),
-             (sstatus.sstatus_.upie == true ? "Enable" : "Disable"),
-             (sstatus.sstatus_.spie == true ? "Enable" : "Disable"),
-             (sstatus.sstatus_.spp == true ? "S Mode" : "U Mode")
+             (sstatus.xstatus_.uie == true ? "Enable" : "Disable"),
+             (sstatus.xstatus_.sie == true ? "Enable" : "Disable"),
+             (sstatus.xstatus_.upie == true ? "Enable" : "Disable"),
+             (sstatus.xstatus_.spie == true ? "Enable" : "Disable"),
+             (sstatus.xstatus_.spp == true ? "S Mode" : "U Mode")
 
       );
       return os;
     }
   };
 
-  class Sie {
+  /**
+   * @brief Xip 寄存器定义
+   * @see riscv-privileged-v1.10.pdf#3.1.14
+   */
+  class Xip {
    public:
     // Supervisor Interrupt Enable
     /// software
-    static constexpr const uint64_t kSieSsie = 1 << 1;
+    static constexpr const uint64_t kSsip = 1 << 1;
     /// timer
-    static constexpr const uint64_t kSieStie = 1 << 5;
+    static constexpr const uint64_t kStip = 1 << 5;
     /// external
-    static constexpr const uint64_t kSieSeie = 1 << 9;
+    static constexpr const uint64_t kSeip = 1 << 9;
+
+    union {
+      struct {
+        /// User-level Software Interrupt Pending
+        uint64_t usip : 1;
+        /// Supervisor Software Interrupt Pending
+        uint64_t ssip : 1;
+        uint64_t wpri1 : 1;
+        uint64_t msip : 1;
+        /// User Timer Interrupt Pending
+        uint64_t utip : 1;
+        /// Supervisor Timer Interrupt Pending
+        uint64_t stip : 1;
+        uint64_t wpri2 : 1;
+        /// Machine Timer Interrupt Pending
+        uint64_t mtip : 1;
+        /// User External Interrupt Pending
+        uint64_t ueip : 1;
+        /// Supervisor External Interrupt Pending
+        uint64_t seip : 1;
+        uint64_t wpri3 : 1;
+        /// Machine External Interrupt Pending
+        uint64_t meip : 1;
+        /// wpri
+        uint64_t wpri4 : 52;
+      } xip_;
+      uint64_t val_;
+    };
+
+    explicit Xip(uint64_t val) : val_(val) {}
+
+    /// @name 构造/析构函数
+    /// @{
+    Xip() = default;
+    Xip(const Xip &) = default;
+    Xip(Xip &&) = default;
+    auto operator=(const Xip &) -> Xip & = default;
+    auto operator=(Xip &&) -> Xip & = default;
+    ~Xip() = default;
+    /// @}
+
+    friend std::ostream &operator<<(std::ostream &os, const Xip &xip) {
+      printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", xip.val_,
+             (xip.xip_.ssip == true ? "Enable" : "Disable"),
+             (xip.xip_.stip == true ? "Enable" : "Disable"),
+             (xip.xip_.seip == true ? "Enable" : "Disable"));
+      return os;
+    }
+  };
+
+  /**
+   * @brief Xie 寄存器定义
+   * @see riscv-privileged-v1.10.pdf#3.1.14
+   */
+  class Xie {
+   public:
+    // Supervisor Interrupt Enable
+    /// software
+    static constexpr const uint64_t kSsie = 1 << 1;
+    /// timer
+    static constexpr const uint64_t kStie = 1 << 5;
+    /// external
+    static constexpr const uint64_t kSeie = 1 << 9;
 
     union {
       struct {
@@ -225,41 +320,45 @@ class Cpu {
         uint64_t usie : 1;
         /// Supervisor Software Interrupt Enable
         uint64_t ssie : 1;
-        /// wpri
-        uint64_t wpri1 : 2;
+        uint64_t wpri1 : 1;
+        uint64_t msie : 1;
         /// User Timer Interrupt Enable
         uint64_t utie : 1;
         /// Supervisor Timer Interrupt Enable
         uint64_t stie : 1;
-        /// wpri
-        uint64_t wpri2 : 2;
+        uint64_t wpri2 : 1;
+        /// Machine Timer Interrupt Enable
+        uint64_t mtie : 1;
         /// User External Interrupt Enable
         uint64_t ueie : 1;
         /// Supervisor External Interrupt Enable
         uint64_t seie : 1;
+        uint64_t wpri3 : 1;
+        /// Machine External Interrupt Enable
+        uint64_t meie : 1;
         /// wpri
-        uint64_t wpri3 : 54;
-      } sie_;
+        uint64_t wpri4 : 52;
+      } xie_;
       uint64_t val_;
     };
 
-    explicit Sie(uint64_t val) : val_(val) {}
+    explicit Xie(uint64_t val) : val_(val) {}
 
     /// @name 构造/析构函数
     /// @{
-    Sie() = default;
-    Sie(const Sie &) = default;
-    Sie(Sie &&) = default;
-    auto operator=(const Sie &) -> Sie & = default;
-    auto operator=(Sie &&) -> Sie & = default;
-    ~Sie() = default;
+    Xie() = default;
+    Xie(const Xie &) = default;
+    Xie(Xie &&) = default;
+    auto operator=(const Xie &) -> Xie & = default;
+    auto operator=(Xie &&) -> Xie & = default;
+    ~Xie() = default;
     /// @}
 
-    friend std::ostream &operator<<(std::ostream &os, const Sie &sie) {
-      printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sie.val_,
-             (sie.sie_.ssie == true ? "Enable" : "Disable"),
-             (sie.sie_.stie == true ? "Enable" : "Disable"),
-             (sie.sie_.seie == true ? "Enable" : "Disable"));
+    friend std::ostream &operator<<(std::ostream &os, const Xie &xie) {
+      printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", xie.val_,
+             (xie.xie_.ssie == true ? "Enable" : "Disable"),
+             (xie.xie_.stie == true ? "Enable" : "Disable"),
+             (xie.xie_.seie == true ? "Enable" : "Disable"));
       return os;
     }
   };
@@ -469,7 +568,7 @@ class Cpu {
     uintptr_t stval;
     uintptr_t scause;
     uintptr_t sie;
-    Sstatus sstatus;
+    Xstatus sstatus;
     Satp satp;
     uintptr_t sscratch;
     // friend std::ostream &operator<<(std::ostream &_os,
@@ -480,7 +579,7 @@ class Cpu {
     //       "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, sstatus: "
     //       "0x%p, satp: 0x%p, sscratch: 0x%p",
     //       all_regs.sepc, all_regs.stval, all_regs.scause, all_regs.sie,
-    //       all_regs.sstatus_.val, all_regs.satp.val, all_regs.sscratch);
+    //       all_regs.xstatus_.val, all_regs.satp.val, all_regs.sscratch);
     //   return _os;
     // }
   };
@@ -716,7 +815,7 @@ class Cpu {
     CalleeRegs callee_regs;
     Satp satp;
     uintptr_t sepc;
-    Sstatus sstatus;
+    Xstatus sstatus;
     uintptr_t sie;
     uintptr_t sip;
     uintptr_t sscratch;
@@ -727,7 +826,7 @@ class Cpu {
     //   std::cout << _context.callee_regs << std::endl;
     //   printf("satp: 0x%p, ", _context.satp.val);
     //   printf("sepc: 0x%p, ", _context.sepc);
-    //   printf("sstatus: 0x%p, ", _context.sstatus_.val);
+    //   printf("sstatus: 0x%p, ", _context.xstatus_.val);
     //   printf("sie: 0x%p, ", _context.sie);
     //   printf("sip: 0x%p, ", _context.sip);
     //   printf("sscratch: 0x%p", _context.sscratch);
@@ -739,8 +838,8 @@ class Cpu {
    * @brief 读取 sstatus 寄存器
    * @return uint64_t         读取到的值
    */
-  static inline Sstatus ReadSstatus(void) {
-    Sstatus x;
+  static inline Xstatus ReadSstatus(void) {
+    Xstatus x;
     asm("csrr %0, sstatus" : "=r"(x));
     return x;
   }
@@ -749,7 +848,7 @@ class Cpu {
    * @brief 写 sstatus 寄存器
    * @param  x                要写的值
    */
-  static inline void WriteSstatus(Sstatus x) {
+  static inline void WriteSstatus(Xstatus x) {
     asm("csrw sstatus, %0" : : "r"(x));
   }
 
@@ -772,10 +871,10 @@ class Cpu {
 
   /**
    * @brief 读 sie
-   * @return Sie         读到的值
+   * @return Xie         读到的值
    */
-  static inline Sie ReadSie() {
-    Sie x;
+  static inline Xie ReadSie() {
+    Xie x;
     asm("csrr %0, sie" : "=r"(x));
     return x;
   }
@@ -784,7 +883,7 @@ class Cpu {
    * @brief 写 sie
    * @param  x                要写的值
    */
-  static inline void WriteSie(Sie x) { asm("csrw sie, %0" : : "r"(x)); }
+  static inline void WriteSie(Xie x) { asm("csrw sie, %0" : : "r"(x)); }
 
   /**
    * @brief 读 sepc
@@ -895,56 +994,56 @@ class Cpu {
    * @brief 允许中断
    */
   static inline void EnableSupervisorIntr() {
-    WriteSstatus(Sstatus(ReadSstatus().val_ | Sstatus::kSstatusSie));
+    WriteSstatus(Xstatus(ReadSstatus().val_ | Xstatus::kXstatusSie));
   }
 
   /**
    * @brief 禁止中断
    */
   static inline void DisableIntr() {
-    WriteSstatus(Sstatus(ReadSstatus().val_ & ~Sstatus::kSstatusSie));
+    WriteSstatus(Xstatus(ReadSstatus().val_ & ~Xstatus::kXstatusSie));
   }
 
   /**
    * @brief 允许软件中断
    */
   static inline void EnableSupervisorSoftware() {
-    WriteSie(Sie(ReadSie().val_ | Sie::kSieSsie));
+    WriteSie(Xie(ReadSie().val_ | Xie::kSsie));
   }
 
   /**
    * @brief 禁止软件中断
    */
   static inline void DisableSupervisorSoftware() {
-    WriteSie(Sie(ReadSie().val_ & ~Sie::kSieSsie));
+    WriteSie(Xie(ReadSie().val_ & ~Xie::kSsie));
   }
 
   /**
    * @brief 允许定时器中断
    */
   static inline void EnableSupervisorTimer() {
-    WriteSie(Sie(ReadSie().val_ | Sie::kSieStie));
+    WriteSie(Xie(ReadSie().val_ | Xie::kStie));
   }
 
   /**
    * @brief 禁止定时器中断
    */
   static inline void DisableSupervisorTimer() {
-    WriteSie(Sie(ReadSie().val_ & ~Sie::kSieStie));
+    WriteSie(Xie(ReadSie().val_ & ~Xie::kStie));
   }
 
   /**
    * @brief 允许外部中断
    */
   static inline void EnableSupervisorExternal() {
-    WriteSie(Sie(ReadSie().val_ | Sie::kSieSeie));
+    WriteSie(Xie(ReadSie().val_ | Xie::kSeie));
   }
 
   /**
    * @brief 禁止外部中断
    */
   static inline void DisableSupervisorExternal() {
-    WriteSie(Sie(ReadSie().val_ & ~Sie::kSieSeie));
+    WriteSie(Xie(ReadSie().val_ & ~Xie::kSeie));
   }
 };
 
