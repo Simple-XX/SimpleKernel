@@ -29,8 +29,8 @@ Interrupt::InterruptFunc
 static Interrupt interrupt __attribute__((init_priority(101)));
 
 /// 中断处理入口 intr_s.S
-extern "C" void TrapEntry() __attribute__((interrupt));
-extern "C" void __alltraps() __attribute__((interrupt));
+extern "C" void TrapEntry() __attribute__((interrupt("supervisor")));
+extern "C" void __alltraps() __attribute__((interrupt("supervisor")));
 
 /**
  * @brief 中断处理函数
@@ -87,8 +87,8 @@ Interrupt::Interrupt() {
     }
 
     // 设置 trap vector
-    // Cpu::SetStvecDirect((uint64_t)TrapEntry);
-    Cpu::SetStvecDirect((uint64_t)__alltraps);
+    Cpu::SetStvecDirect((uint64_t)TrapEntry);
+    // Cpu::SetStvecDirect((uint64_t)__alltraps);
 
     // 开启 Supervisor 中断
     Cpu::EnableSupervisorIntr();
