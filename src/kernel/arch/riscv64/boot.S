@@ -28,11 +28,14 @@
 _boot:
 
 #if USE_NO_RELAX == 0
+/// @see riscv-abi.pdf#9.1.4
+/// https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/tag/v1.0
     // 初始化 gp 寄存器
     // 如果不初始化，则需要在编译时添加 -mno-relax 选项
 .option push
 .option norelax
-    la gp, __global_pointer$
+1:  auipc gp, %pcrel_hi(__global_pointer$)
+    addi  gp, gp, %pcrel_lo(1b)
 .option pop
 #endif
 
