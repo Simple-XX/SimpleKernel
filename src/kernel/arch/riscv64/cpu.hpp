@@ -2957,120 +2957,111 @@ class Cpu {
       return value;
     }
   };
+
+  // /* Supervisor Mode Scratch Register */
+  // template <class OPS>
+  // class sscratch_reg : public ReadWriteReg<OPS> {};
+  // using sscratch = sscratch_reg<SscratchOps>;
+  // /* Supervisor Exception Program Counter */
+  // template <class OPS>
+  // class sepc_reg : public ReadWriteReg<OPS> {};
+  // using sepc = sepc_reg<SepcOps>;
+  // /* Supervisor Exception Cause */
+  // template <class OPS>
+  // class scause_reg : public ReadWriteReg<OPS> {
+  //  public:
+  //   ReadWriteField<OPS, ScauseData::interrupt> interrupt;
+  //   ReadWriteField<OPS, ScauseData::exception_code> exception_code;
+  // };
+  // using scause = scause_reg<ScauseOps>;
+  // /* Supervisor Status */
+  // template <class OPS>
+  // class sstatus_reg : public ReadWriteReg<OPS> {
+  //  public:
+  //   ReadWriteField<OPS, SstatusData::sie> sie;
+  //   ReadWriteField<OPS, SstatusData::spie> spie;
+  //   ReadWriteField<OPS, SstatusData::spp> spp;
+  // };
+  // using sstatus = sstatus_reg<SstatusOps>;
+  // /* Supervisor Trap Vector Base Address */
+  // template <class OPS>
+  // class stvec_reg : public ReadWriteReg<OPS> {
+  //  public:
+  //   ReadWriteField<OPS, StvecData::base> base;
+  //   ReadWriteField<OPS, StvecData::mode> mode;
+  // };
+  // using stvec = stvec_reg<StvecOps>;
+  // /* Supervisor Interrupt Delegation */
+  // template <class OPS>
+  // class sideleg_reg : public ReadWriteReg<OPS> {};
+  // using sideleg = sideleg_reg<SidelegOps>;
+  // /* Supervisor Exception Delegation */
+  // template <class OPS>
+  // class sedeleg_reg : public ReadWriteReg<OPS> {};
+  // using sedeleg = sedeleg_reg<SedelegOps>;
+  // /* Supervisor Interrupt Pending */
+  // template <class OPS>
+  // class sip_reg : public ReadWriteReg<OPS> {
+  //  public:
+  //   ReadWriteField<OPS, SipData::ssi> ssi;
+  //   ReadWriteField<OPS, SipData::sti> sti;
+  //   ReadWriteField<OPS, SipData::sei> sei;
+  //   ReadWriteField<OPS, SipData::usi> usi;
+  //   ReadWriteField<OPS, SipData::uti> uti;
+  //   ReadWriteField<OPS, SipData::uei> uei;
+  // };
+  // using sip = sip_reg<SipOps>;
+  // /* Supervisor Interrupt Enable */
+  // template <class OPS>
+  // class sie_reg : public ReadWriteReg<OPS> {
+  //  public:
+  //   ReadWriteField<OPS, SieData::ssi> ssi;
+  //   ReadWriteField<OPS, SieData::sti> sti;
+  //   ReadWriteField<OPS, SieData::sei> sei;
+  //   ReadWriteField<OPS, SieData::usi> usi;
+  //   ReadWriteField<OPS, SieData::uti> uti;
+  //   ReadWriteField<OPS, SieData::uei> uei;
+  // };
+  // using sie = sie_reg<SieOps>;
+
+  // /* Supervisor bad address or instruction. */
+  // template <class OPS>
+  // class stval_reg : public ReadWriteReg<OPS> {};
+  // using stval = stval_reg<StvalOps>;
+  // /* Supervisor address translation and protection. */
+  // template <class OPS>
+  // class satp_reg : public ReadWriteReg<OPS> {};
+  // using satp = satp_reg<SatpOps>;
+
+  // /** Encapsulate all CSRs in a single structure.
+  //    - No storage is required by this class.
+  //  */
+  // struct all {
+  //   /* Supervisor Mode Scratch Register */
+  //   sscratch sscratch;
+  //   /* Supervisor Exception Program Counter */
+  //   sepc sepc;
+  //   /* Supervisor Exception Cause */
+  //   scause scause;
+  //   /* Supervisor Status */
+  //   sstatus sstatus;
+  //   /* Supervisor Trap Vector Base Address */
+  //   stvec stvec;
+  //   /* Supervisor Interrupt Delegation */
+  //   sideleg sideleg;
+  //   /* Supervisor Exception Delegation */
+  //   sedeleg sedeleg;
+  //   /* Supervisor Interrupt Pending */
+  //   sip sip;
+  //   /* Supervisor Interrupt Enable */
+  //   sie sie;
+  //   /* Supervisor bad address or instruction. */
+  //   stval stval;
+  //   /* Supervisor address translation and protection. */
+  //   satp satp;
+  // };
+
+  // static all csrs;
 };
-
-// // ------------------------------------------------------------------------
-// // Register and field interface classes.
-// namespace riscv {
-// namespace csr {
-// /* Supervisor Mode Scratch Register */
-// template <class OPS>
-// class sscratch_reg : public ReadWriteReg<OPS> {};
-// using sscratch = sscratch_reg<riscv::csr::SscratchOps>;
-// /* Supervisor Exception Program Counter */
-// template <class OPS>
-// class sepc_reg : public ReadWriteReg<OPS> {};
-// using sepc = sepc_reg<riscv::csr::SepcOps>;
-// /* Supervisor Exception Cause */
-// template <class OPS>
-// class scause_reg : public ReadWriteReg<OPS> {
-//  public:
-//   ReadWriteField<OPS, riscv::csr::ScauseData::interrupt> interrupt;
-//   ReadWriteField<OPS, riscv::csr::ScauseData::exception_code>
-//   exception_code;
-// };
-// using scause = scause_reg<riscv::csr::ScauseOps>;
-// /* Supervisor Status */
-// template <class OPS>
-// class sstatus_reg : public ReadWriteReg<OPS> {
-//  public:
-//   ReadWriteField<OPS, riscv::csr::SstatusData::sie> sie;
-//   ReadWriteField<OPS, riscv::csr::SstatusData::spie> spie;
-//   ReadWriteField<OPS, riscv::csr::SstatusData::spp> spp;
-// };
-// using sstatus = sstatus_reg<riscv::csr::SstatusOps>;
-// /* Supervisor Trap Vector Base Address */
-// template <class OPS>
-// class stvec_reg : public ReadWriteReg<OPS> {
-//  public:
-//   ReadWriteField<OPS, riscv::csr::StvecData::base> base;
-//   ReadWriteField<OPS, riscv::csr::StvecData::mode> mode;
-// };
-// using stvec = stvec_reg<riscv::csr::StvecOps>;
-// /* Supervisor Interrupt Delegation */
-// template <class OPS>
-// class sideleg_reg : public ReadWriteReg<OPS> {};
-// using sideleg = sideleg_reg<riscv::csr::SidelegOps>;
-// /* Supervisor Exception Delegation */
-// template <class OPS>
-// class sedeleg_reg : public ReadWriteReg<OPS> {};
-// using sedeleg = sedeleg_reg<riscv::csr::SedelegOps>;
-// /* Supervisor Interrupt Pending */
-// template <class OPS>
-// class sip_reg : public ReadWriteReg<OPS> {
-//  public:
-//   ReadWriteField<OPS, riscv::csr::SipData::ssi> ssi;
-//   ReadWriteField<OPS, riscv::csr::SipData::sti> sti;
-//   ReadWriteField<OPS, riscv::csr::SipData::sei> sei;
-//   ReadWriteField<OPS, riscv::csr::SipData::usi> usi;
-//   ReadWriteField<OPS, riscv::csr::SipData::uti> uti;
-//   ReadWriteField<OPS, riscv::csr::SipData::uei> uei;
-// };
-// using sip = sip_reg<riscv::csr::SipOps>;
-// /* Supervisor Interrupt Enable */
-// template <class OPS>
-// class sie_reg : public ReadWriteReg<OPS> {
-//  public:
-//   ReadWriteField<OPS, riscv::csr::SieData::ssi> ssi;
-//   ReadWriteField<OPS, riscv::csr::SieData::sti> sti;
-//   ReadWriteField<OPS, riscv::csr::SieData::sei> sei;
-//   ReadWriteField<OPS, riscv::csr::SieData::usi> usi;
-//   ReadWriteField<OPS, riscv::csr::SieData::uti> uti;
-//   ReadWriteField<OPS, riscv::csr::SieData::uei> uei;
-// };
-// using sie = sie_reg<riscv::csr::SieOps>;
-
-// /* Supervisor bad address or instruction. */
-// template <class OPS>
-// class stval_reg : public ReadWriteReg<OPS> {};
-// using stval = stval_reg<riscv::csr::StvalOps>;
-// /* Supervisor address translation and protection. */
-// template <class OPS>
-// class satp_reg : public ReadWriteReg<OPS> {};
-// using satp = satp_reg<riscv::csr::SatpOps>;
-
-// /** Encapsulate all CSRs in a single structure.
-//    - No storage is required by this class.
-//  */
-// struct all {
-//   /* Supervisor Mode Scratch Register */
-//   riscv::csr::sscratch sscratch;
-//   /* Supervisor Exception Program Counter */
-//   riscv::csr::sepc sepc;
-//   /* Supervisor Exception Cause */
-//   riscv::csr::scause scause;
-//   /* Supervisor Status */
-//   riscv::csr::sstatus sstatus;
-//   /* Supervisor Trap Vector Base Address */
-//   riscv::csr::stvec stvec;
-//   /* Supervisor Interrupt Delegation */
-//   riscv::csr::sideleg sideleg;
-//   /* Supervisor Exception Delegation */
-//   riscv::csr::sedeleg sedeleg;
-//   /* Supervisor Interrupt Pending */
-//   riscv::csr::sip sip;
-//   /* Supervisor Interrupt Enable */
-//   riscv::csr::sie sie;
-//   /* Supervisor bad address or instruction. */
-//   riscv::csr::stval stval;
-//   /* Supervisor address translation and protection. */
-//   riscv::csr::satp satp;
-// };
-
-// }  // namespace csr
-
-// static csr::all csrs;
-
-// }  // namespace riscv
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
