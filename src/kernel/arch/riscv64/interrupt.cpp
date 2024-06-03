@@ -15,6 +15,8 @@
 
 #include "interrupt.h"
 
+#include <typeinfo>
+
 #include "cpu.hpp"
 #include "csr.hpp"
 #include "cstdio"
@@ -171,6 +173,8 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   auto sstatus = Sstatus();
   auto sideleg = Sideleg();
   auto sedeleg = Sedeleg();
+  auto sip = Sip();
+  auto sie = Sie();
 
   printf("sscratch.Read(): 0x%p\n", sscratch.Read());
   printf("sepc.Read(): 0x%p\n", sepc.Read());
@@ -182,6 +186,14 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   printf("sstatus.spp.Get(): 0x%p\n", sstatus.spp.Get());
   // printf("sideleg.Read(): 0x%p\n", sideleg.Read());
   // printf("sedeleg.Read(): 0x%p\n", sedeleg.Read());
+  printf("sip.Read(): 0x%p\n", sip.Read());
+  printf("sip.ssip.Get(): 0x%p\n", sip.ssip.Get());
+  printf("sip.stip.Get(): 0x%p\n", sip.stip.Get());
+  printf("sip.seip.Get(): 0x%p\n", sip.seip.Get());
+  printf("sie.Read(): 0x%p\n", sie.Read());
+  printf("sie.ssie.Get(): 0x%p\n", sie.ssie.Get());
+  printf("sie.stie.Get(): 0x%p\n", sie.stie.Get());
+  printf("sie.seie.Get(): 0x%p\n", sie.seie.Get());
 
   return 0;
 }
