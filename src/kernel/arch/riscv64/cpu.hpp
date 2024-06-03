@@ -998,10 +998,10 @@ class Cpu {
 
   /**
    * @brief 读 scause 寄存器 Supervisor Trap Cause
-   * @return uint64_t         读到的值
+   * @return Xcause         读到的值
    */
-  static inline uint64_t ReadScause() {
-    uint64_t x;
+  static inline Xcause ReadScause() {
+    Xcause x;
     asm("csrr %0, scause" : "=r"(x));
     return x;
   }

@@ -28,43 +28,26 @@ Interrupt::InterruptFunc
 
 static Interrupt interrupt __attribute__((init_priority(101)));
 
-/// 中断处理入口 intr_s.S
-extern "C" void TrapEntry() __attribute__((interrupt("supervisor")));
-extern "C" void __alltraps() __attribute__((interrupt("supervisor")));
+static __attribute__((interrupt("supervisor"))) void TarpEntry() {
+  auto sepc = Cpu::ReadSepc();
+  auto stval = Cpu::ReadStval();
+  auto scause = Cpu::ReadScause();
+  auto sp = uint64_t(0);
+  auto sie = Cpu::ReadSie();
+  auto sstatus = Cpu::ReadSstatus();
+  auto satp = Cpu::Satp();
+  auto sscratch = Cpu::ReadSscratch();
 
-/**
- * @brief 中断处理函数
- * @param  xepc           值
- * @param  xtval          值
- * @param  xcause         值
- * @param  all_regs       保存在栈上的所有寄存器，实际上是 sp
- * @param  xie            值
- * @param  xstatus        值
- * @param  satp           值
- * @param  sscratch       值
- */
-extern "C" void TrapHandler(uintptr_t xepc, uintptr_t xtval, Cpu::Xcause xcause,
-                            Cpu::AllRegs *all_regs, Cpu::Xie xie,
-                            Cpu::Xstatus xstatus, Cpu::Satp satp,
-                            uintptr_t sscratch) {
-  // 消除 unused 警告
-  (void)xepc;
-  (void)xtval;
-  (void)xie;
-  (void)xstatus;
-  (void)satp;
-  (void)sscratch;
+  std::cout << "scause: " << scause << std::endl;
+  std::cout << "sie: " << sie << std::endl;
+  std::cout << "sstatus: " << sstatus << std::endl;
+  std::cout << "satp: " << satp << std::endl;
+  printf("sepc: 0x%p, stval: 0x%p, all_regs(sp): 0x%p, sscratch: 0x%p\n", sepc,
+         stval, sp, sscratch);
 
-  printf("sepc: 0x%X\n", Cpu::ReadSepc());
+  interrupt.Do((uint64_t)scause.val_, (uint8_t *)sp);
 
-  printf("xepc: 0x%p, xtval: 0x%p, all_regs(sp): 0x%p\n", xepc, xtval,
-         all_regs);
-  // std::cout << "xstatus: " << xcause << std::endl;
-  // std::cout << "xie: " << xcause << std::endl;
-  // std::cout << "xstatus: " << xstatus << std::endl;
-  // std::cout << "satp: " << satp << std::endl;
-  // 跳转到对应的处理函数
-  interrupt.Do((uint64_t)xcause.val_, (uint8_t *)all_regs);
+  printf("Done\n");
 }
 
 Interrupt::Interrupt() {
@@ -87,8 +70,7 @@ Interrupt::Interrupt() {
     }
 
     // 设置 trap vector
-    Cpu::SetStvecDirect((uint64_t)TrapEntry);
-    // Cpu::SetStvecDirect((uint64_t)__alltraps);
+    Cpu::SetStvecDirect((uint64_t)TarpEntry);
 
     // 开启 Supervisor 中断
     Cpu::EnableSupervisorIntr();
@@ -153,18 +135,26 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argv;
 
   // 注册时钟中断
-  interrupt.RegisterInterruptFunc(Cpu::Xcause::kBreakpoint,
+  interrupt.RegisterInterruptFunc(Cpu::Xcause::kSupervisorTimerInterrupt,
                                   [](uint64_t, uint8_t *) -> uint64_t {
-                                    printf("sss\n");
+                                    printf("ttt\n");
                                     static uint32_t count = 0;
                                     if (count++ == 5) {
-                                      // while (1);
+                                      while (1);
                                     }
+                                    return 0;
+                                  });
+
+  // ebreak 中断
+  interrupt.RegisterInterruptFunc(Cpu::Xcause::kBreakpoint,
+                                  [](uint64_t, uint8_t *) -> uint64_t {
+                                    Cpu::WriteSepc(Cpu::ReadSepc() + 2);
                                     return 0;
                                   });
 
   // 设置时钟中断时间
   asm("ebreak");
+
   // sbi_set_timer(99999);
 
   printf("hello IntrInit\n");
