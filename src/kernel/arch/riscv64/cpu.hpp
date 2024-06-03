@@ -1322,9 +1322,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @tparam value 要写的值
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadWrite(const uint64_t value) {
-    return ReadWrite(value);
-  }
+  virtual inline uint64_t ReadWrite(uint64_t value) { return ReadWrite(value); }
 
   /**
    * 通过常数掩码先读后写寄存器
@@ -1345,7 +1343,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @param mask 掩码
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadSetBits(const uint64_t mask) {
+  virtual inline uint64_t ReadSetBits(uint64_t mask) {
     return ReadSetBits(mask);
   }
 
@@ -1368,7 +1366,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @param mask 掩码
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadClearBits(const uint64_t mask) {
+  virtual inline uint64_t ReadClearBits(uint64_t mask) {
     return ReadClearBits(mask);
   }
 };
@@ -1465,7 +1463,7 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    * 将寄存器的原值替换为指定值
    * @param value 新值
    */
-  virtual inline void Write(const Info::DataType value) {
+  virtual inline void Write(Info::DataType value) {
     auto org_value = Reg::Read();
     auto new_value =
         (org_value & ~Info::kBitMask) |
@@ -1478,7 +1476,7 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    * @param value 新值
    * @return Info::DataType 由寄存器规定的数据类型
    */
-  virtual inline Info::DataType ReadWrite(const Info::DataType value) {
+  virtual inline Info::DataType ReadWrite(Info::DataType value) {
     auto org_value = Reg::Read();
     auto new_value =
         (org_value & ~Info::kBitMask) |
@@ -1488,38 +1486,89 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
   }
 };
 
+class Sscratch : public ReadWriteRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Sscratch() = default;
+  Sscratch(const Sscratch &) = delete;
+  Sscratch(Sscratch &&) = delete;
+  auto operator=(const Sscratch &) -> Sscratch & = delete;
+  auto operator=(Sscratch &&) -> Sscratch & = delete;
+  virtual ~Sscratch() = default;
+  /// @}
 
+  uint64_t Read() override {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sscratch" : "=r"(value) : :);
+    return value;
+  }
 
+  void Write(uint64_t value) override {
+    __asm__ volatile("csrw sscratch, %0" : : "r"(value) :);
+  }
 
+  void WriteImm(uint64_t value) override {
+    __asm__ volatile("csrwi sscratch, %0" : : "i"(value) :);
+  }
 
-// class SpiRegs {
-//  public:
-//   class Sie : public ReadOnlyField, WriteOnlyField {
-//    public:
-//     uint64_t Get() override { return 0; }
-//     void Set() override { return; }
-//     void Clear() override { return; }
-//   };
-// };
+  uint64_t ReadWrite(uint64_t value) override {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sscratch, %1"
+                     : "=r"(prev_value)
+                     : "r"(value)
+                     :);
+    return prev_value;
+  }
 
-// class Sip : public ReadOnlyRegBase, WriteOnlyRegBase {
-//  public:
-//   inline uint64_t Read() override { return 0; }
-//   inline void Write(uint64_t) override { return; }
-//   inline void WriteImm(uint64_t) override { return; }
-//   inline uint64_t ReadWrite(uint64_t) override { return 0; }
-//   inline uint64_t ReadWriteImm(uint8_t) override { return 0; }
-//   inline void SetBits(uint64_t) override { return; }
-//   inline uint64_t ReadSetBits(uint64_t) override { return 0; }
-//   inline void ClearBits(uint64_t) override { return; }
-//   inline uint64_t ReadClearBits(uint64_t) override { return 0; }
-//   inline void SetBitsImm(uint8_t) override { return; }
-//   inline uint64_t ReadSetBitsImm(uint8_t) override { return 0; }
-//   inline void ClearBitsImm(uint8_t) override { return; }
-//   inline uint64_t ReadClearBitsImm(uint8_t) override { return 0; }
-//   SpiRegs::Sie sie;
-// };
+  uint64_t ReadWriteImm(uint8_t value) override {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sscratch, %1"
+                     : "=r"(prev_value)
+                     : "i"(value)
+                     :);
+    return prev_value;
+  }
 
-// static Sip ssss;
+  void SetBits(uint64_t mask) override {
+    __asm__ volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
+  }
+
+  uint64_t ReadSetBits(uint64_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  void ClearBits(uint64_t mask) override {
+    __asm__ volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
+  }
+
+  uint64_t ReadClearBits(uint64_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  void SetBitsImm(uint8_t mask) override {
+    __asm__ volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
+  }
+
+  uint64_t ReadSetBitsImm(uint8_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+  void ClearBitsImm(uint8_t mask) override {
+    __asm__ volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
+  }
+
+  uint64_t ReadClearBitsImm(uint8_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+};
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_

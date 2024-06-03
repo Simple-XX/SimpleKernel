@@ -16,10 +16,10 @@
 #include "interrupt.h"
 
 #include "cpu.hpp"
+#include "csr.hpp"
 #include "cstdio"
 #include "fdt_parser.hpp"
 #include "opensbi_interface.h"
-#include "csr.hpp"
 
 Interrupt::InterruptFunc
     Interrupt::interrupt_handlers[Cpu::Xcause::kInterruptMaxCount];
@@ -159,6 +159,9 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   // sbi_set_timer(99999);
 
   printf("hello IntrInit\n");
+
+  auto sscratch = Sscratch();
+  printf("sscratch.Read(): 0x%p\n", sscratch.Read());
 
   return 0;
 }
