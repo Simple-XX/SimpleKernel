@@ -1121,6 +1121,7 @@ class Cpu {
 /// 立即数掩码，大于这个值需要使用寄存器中转
 static constexpr uint64_t kCsrImmOpMask = 0x1F;
 
+/// @todo 确认所有 info 信息的掩码
 struct SscratchInfo {
  public:
 };
@@ -1138,13 +1139,39 @@ struct ScauseInfo {
     static constexpr uint64_t kAllSetMask = 1;
   };
 
-  /// @brief  @tidi 确认掩码
   struct ExceptionCode {
     using DataType = uint64_t;
     static constexpr uint64_t kBitOffset = 0;
     static constexpr uint64_t kBitWidth = 63;
     static constexpr uint64_t kBitMask = ~(1UL << 63);
     static constexpr uint64_t kAllSetMask = ~(1UL << 63);
+  };
+};
+
+struct SstatusInfo {
+  /** Parameter data for sie */
+  struct Sie {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 1;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x2;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+  /** Parameter data for spie */
+  struct Spie {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 5;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x20;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+  /** Parameter data for spp */
+  struct Spp {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 8;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x100;
+    static constexpr uint64_t kAllSetMask = 0x1;
   };
 };
 
@@ -1177,6 +1204,10 @@ class ReadOnlyRegBase {
       asm("csrr %0, sepc" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrr %0, scause" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrr %0, sstatus" : "=r"(value) : :);
+    } else {
+      printf("error\n");
     }
     return value;
   }
@@ -1215,6 +1246,10 @@ class WriteOnlyRegBase {
       asm("csrw sepc, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrw scause, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrw sstatus, %0" : : "r"(value) :);
+    } else {
+      printf("error\n");
     }
   }
 
@@ -1230,6 +1265,10 @@ class WriteOnlyRegBase {
       asm("csrwi sepc, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrwi scause, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrwi sstatus, %0" : : "i"(value) :);
+    } else {
+      printf("error\n");
     }
   }
 
@@ -1246,6 +1285,10 @@ class WriteOnlyRegBase {
       asm("csrrw %0, sepc, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrw %0, sstatus, %1" : "=r"(old_value) : "r"(value) :);
+    } else {
+      printf("error\n");
     }
     return old_value;
   }
@@ -1264,6 +1307,10 @@ class WriteOnlyRegBase {
       asm("csrrwi %0, sepc, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrwi %0, scause, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrwi %0, sstatus, %1" : "=r"(old_value) : "i"(value) :);
+    } else {
+      printf("error\n");
     }
     return old_value;
   }
@@ -1279,6 +1326,10 @@ class WriteOnlyRegBase {
       asm("csrrs zero, sepc, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrs zero, scause, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrs zero, sstatus, %0" : : "r"(mask) :);
+    } else {
+      printf("error\n");
     }
   }
 
@@ -1295,6 +1346,10 @@ class WriteOnlyRegBase {
       asm("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    } else {
+      printf("error\n");
     }
     return value;
   }
@@ -1310,6 +1365,10 @@ class WriteOnlyRegBase {
       asm("csrrc zero, sepc, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrc zero, scause, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrc zero, sstatus, %0" : : "r"(mask) :);
+    } else {
+      printf("error\n");
     }
   }
 
@@ -1326,6 +1385,10 @@ class WriteOnlyRegBase {
       asm("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    } else {
+      printf("error\n");
     }
     return value;
   }
@@ -1342,6 +1405,10 @@ class WriteOnlyRegBase {
       asm("csrrsi zero, sepc, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrsi zero, scause, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrsi zero, sstatus, %0" : : "i"(mask) :);
+    } else {
+      printf("error\n");
     }
   }
 
@@ -1358,6 +1425,10 @@ class WriteOnlyRegBase {
       asm("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    } else {
+      printf("error\n");
     }
     return value;
   }
@@ -1374,6 +1445,10 @@ class WriteOnlyRegBase {
       asm("csrrci zero, sepc, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrci zero, scause, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrci zero, sstatus, %0" : : "i"(mask) :);
+    } else {
+      printf("error\n");
     }
   }
 
@@ -1390,6 +1465,10 @@ class WriteOnlyRegBase {
       asm("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
       asm("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+      asm("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    } else {
+      printf("error\n");
     }
     return value;
   }
@@ -1680,6 +1759,23 @@ class Scause : public ReadWriteRegBase<ScauseInfo> {
   ReadWriteField<ReadWriteRegBase<ScauseInfo>, ScauseInfo::Interrupt> interrupt;
   ReadWriteField<ReadWriteRegBase<ScauseInfo>, ScauseInfo::ExceptionCode>
       exception_code;
+};
+
+class Sstatus : public ReadWriteRegBase<SstatusInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Sstatus() = default;
+  Sstatus(const Sstatus &) = delete;
+  Sstatus(Sstatus &&) = delete;
+  auto operator=(const Sstatus &) -> Sstatus & = delete;
+  auto operator=(Sstatus &&) -> Sstatus & = delete;
+  virtual ~Sstatus() = default;
+  /// @}
+
+  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Sie> sie;
+  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spie> spie;
+  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spp> spp;
 };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_

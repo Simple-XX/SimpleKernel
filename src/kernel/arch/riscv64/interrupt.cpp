@@ -167,14 +167,17 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   scause.SetBitsImm(0xF);
   scause.interrupt.Set();
   scause.SetConst<0xF>();
-
   scause.ReadWriteConst<0>();
+  auto sstatus = Sstatus();
 
   printf("sscratch.Read(): 0x%p\n", sscratch.Read());
   printf("sepc.Read(): 0x%p\n", sepc.Read());
   printf("scause.Read(): 0x%p\n", scause.Read());
   printf("scause.interrupt.Get(): 0x%p\n", scause.interrupt.Get());
   printf("scause.exception_code.Get(): 0x%p\n", scause.exception_code.Get());
+  printf("sstatus.Read(): 0x%p\n", sstatus.Read());
+  printf("sstatus.sie.Get(): 0x%p\n", sstatus.sie.Get());
+  printf("sstatus.spp.Get(): 0x%p\n", sstatus.spp.Get());
 
   return 0;
 }
