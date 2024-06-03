@@ -26,11 +26,13 @@ extern "C" function_t __fini_array_start;
 extern "C" function_t __fini_array_end;
 
 void CppInit(void) {
+  // 调用构造函数
   std::for_each(&__init_array_start, &__init_array_end,
                 [](function_t func) { (func)(); });
 }
 
 void CppDeInit(void) {
+  // 调用析构函数
   std::for_each(&__fini_array_start, &__fini_array_end,
                 [](function_t func) { (func)(); });
 }
