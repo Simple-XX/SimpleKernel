@@ -19,6 +19,7 @@
 #include "cstdio"
 #include "fdt_parser.hpp"
 #include "opensbi_interface.h"
+#include "csr.hpp"
 
 Interrupt::InterruptFunc
     Interrupt::interrupt_handlers[Cpu::Xcause::kInterruptMaxCount];
