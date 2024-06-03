@@ -13,6 +13,8 @@
  * </table>
  */
 
+#include <cstdint>
+
 #include "arch.h"
 #include "cstdio"
 #include "iostream"
