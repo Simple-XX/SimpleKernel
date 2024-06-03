@@ -856,11 +856,11 @@ class Cpu {
     //    asm("mv %0, ft10" : "=r"(all_regs.fregs.ft10));
     //    asm("mv %0, ft11" : "=r"(all_regs.fregs.ft11));
 
-    asm volatile("csrr %0, sepc" : "=r"(all_regs.sepc));
-    asm volatile("csrr %0, stval" : "=r"(all_regs.stval));
-    asm volatile("csrr %0, scause" : "=r"(all_regs.xcause));
-    asm volatile("csrr %0, xstatus" : "=r"(all_regs.xstatus));
-    asm volatile("csrr %0, sscratch" : "=r"(all_regs.sscratch));
+    asm("csrr %0, sepc" : "=r"(all_regs.sepc));
+    asm("csrr %0, stval" : "=r"(all_regs.stval));
+    asm("csrr %0, scause" : "=r"(all_regs.xcause));
+    asm("csrr %0, xstatus" : "=r"(all_regs.xstatus));
+    asm("csrr %0, sscratch" : "=r"(all_regs.sscratch));
 
     return;
   }
@@ -986,7 +986,7 @@ class Cpu {
    */
   static inline uint64_t ReadSscratch() {
     uint64_t x;
-    __asm__ volatile("csrr %0, sscratch" : "=r"(x));
+    asm("csrr %0, sscratch" : "=r"(x));
     return x;
   }
 
@@ -1172,7 +1172,7 @@ class WriteOnlyRegBase {
    * @param value 要写的值
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline void WriteImm(uint64_t value) = 0;
+  virtual inline void WriteImm(const uint8_t value) = 0;
 
   /**
    * 先读后写寄存器
@@ -1187,7 +1187,7 @@ class WriteOnlyRegBase {
    * @return uint64_t 寄存器的值
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline uint64_t ReadWriteImm(uint8_t value) = 0;
+  virtual inline uint64_t ReadWriteImm(const uint8_t value) = 0;
 
   /**
    * 通过掩码设置寄存器
@@ -1220,28 +1220,28 @@ class WriteOnlyRegBase {
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline void SetBitsImm(uint8_t mask) = 0;
+  virtual inline void SetBitsImm(const uint8_t mask) = 0;
 
   /**
    * 先读后通过掩码设置寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline uint64_t ReadSetBitsImm(uint8_t mask) = 0;
+  virtual inline uint64_t ReadSetBitsImm(const uint8_t mask) = 0;
 
   /**
    * 清零寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline void ClearBitsImm(uint8_t mask) = 0;
+  virtual inline void ClearBitsImm(const uint8_t mask) = 0;
 
   /**
    * 先读后清零寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline uint64_t ReadClearBitsImm(uint8_t mask) = 0;
+  virtual inline uint64_t ReadClearBitsImm(const uint8_t mask) = 0;
 
   /**
    * |= 重载
@@ -1391,11 +1391,10 @@ class ReadOnlyField {
 
   /**
    * 获取对应 Reg 的由 Info 规定的指定位的值
-   * @return Info::ReadDateType 由 Info 指定的返回类型
+   * @return uint64_t 指定位值
    */
-  virtual Info::ReadDateType Get() {
-    return (Info::ReadDateType)((Reg::Read() & Info::kBitMask) >>
-                                Info::kBitOffset);
+  inline uint64_t Get() {
+    return (uint64_t)((Reg::Read() & Info::kBitMask) >> Info::kBitOffset);
   }
 };
 
@@ -1420,7 +1419,7 @@ class WriteOnlyField {
   /**
    * 置位对应 Reg 的由 Info 规定的指定位
    */
-  virtual inline void Set() {
+  void Set() {
     if constexpr ((Info::kBitMask & kCsrImmOpMask) == Info::kBitMask) {
       Reg::SetBitsImm(Info::kBitMask);
     } else {
@@ -1431,7 +1430,7 @@ class WriteOnlyField {
   /**
    * 清零对应 Reg 的由 Info 规定的指定位
    */
-  virtual void Clear() {
+  void Clear() {
     if constexpr ((Info::kBitMask & kCsrImmOpMask) == Info::kBitMask) {
       Reg::ClearBitsImm(Info::kBitMask);
     } else {
@@ -1463,7 +1462,7 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    * 将寄存器的原值替换为指定值
    * @param value 新值
    */
-  virtual inline void Write(Info::DataType value) {
+  inline void Write(Info::DataType value) {
     auto org_value = Reg::Read();
     auto new_value =
         (org_value & ~Info::kBitMask) |
@@ -1476,7 +1475,7 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    * @param value 新值
    * @return Info::DataType 由寄存器规定的数据类型
    */
-  virtual inline Info::DataType ReadWrite(Info::DataType value) {
+  inline Info::DataType ReadWrite(Info::DataType value) {
     auto org_value = Reg::Read();
     auto new_value =
         (org_value & ~Info::kBitMask) |
@@ -1500,73 +1499,67 @@ class Sscratch : public ReadWriteRegBase {
 
   uint64_t Read() override {
     uint64_t value;
-    __asm__ volatile("csrr %0, sscratch" : "=r"(value) : :);
+    asm("csrr %0, sscratch" : "=r"(value) : :);
     return value;
   }
 
   void Write(uint64_t value) override {
-    __asm__ volatile("csrw sscratch, %0" : : "r"(value) :);
+    asm("csrw sscratch, %0" : : "r"(value) :);
   }
 
-  void WriteImm(uint64_t value) override {
-    __asm__ volatile("csrwi sscratch, %0" : : "i"(value) :);
+  void WriteImm(const uint8_t value) override {
+    asm("csrwi sscratch, %0" : : "i"(value) :);
   }
 
   uint64_t ReadWrite(uint64_t value) override {
     uint64_t prev_value;
-    __asm__ volatile("csrrw %0, sscratch, %1"
-                     : "=r"(prev_value)
-                     : "r"(value)
-                     :);
+    asm("csrrw %0, sscratch, %1" : "=r"(prev_value) : "r"(value) :);
     return prev_value;
   }
 
   uint64_t ReadWriteImm(uint8_t value) override {
     uint64_t prev_value;
-    __asm__ volatile("csrrwi %0, sscratch, %1"
-                     : "=r"(prev_value)
-                     : "i"(value)
-                     :);
+    asm("csrrwi %0, sscratch, %1" : "=r"(prev_value) : "i"(value) :);
     return prev_value;
   }
 
   void SetBits(uint64_t mask) override {
-    __asm__ volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
+    asm("csrrs zero, sscratch, %0" : : "r"(mask) :);
   }
 
   uint64_t ReadSetBits(uint64_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    asm("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
     return value;
   }
 
   void ClearBits(uint64_t mask) override {
-    __asm__ volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
+    asm("csrrc zero, sscratch, %0" : : "r"(mask) :);
   }
 
   uint64_t ReadClearBits(uint64_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    asm("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
     return value;
   }
 
-  void SetBitsImm(uint8_t mask) override {
-    __asm__ volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
+  void SetBitsImm(const uint8_t mask) override {
+    asm("csrrsi zero, sscratch, %0" : : "i"(mask) :);
   }
 
-  uint64_t ReadSetBitsImm(uint8_t mask) override {
+  uint64_t ReadSetBitsImm(const uint8_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    asm("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
     return value;
   }
 
-  void ClearBitsImm(uint8_t mask) override {
-    __asm__ volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
+  void ClearBitsImm(const uint8_t mask) override {
+    asm("csrrci zero, sscratch, %0" : : "i"(mask) :);
   }
 
-  uint64_t ReadClearBitsImm(uint8_t mask) override {
+  uint64_t ReadClearBitsImm(const uint8_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    asm("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
     return value;
   }
 };
@@ -1585,69 +1578,168 @@ class Sepc : public ReadWriteRegBase {
 
   uint64_t Read() override {
     uint64_t value;
-    __asm__ volatile("csrr %0, sepc" : "=r"(value) : :);
+    asm("csrr %0, sepc" : "=r"(value) : :);
     return value;
   }
 
-  void Write(uint64_t value) override {
-    __asm__ volatile("csrw sepc, %0" : : "r"(value) :);
-  }
+  void Write(uint64_t value) override { asm("csrw sepc, %0" : : "r"(value) :); }
 
-  void WriteImm(uint64_t value) override {
-    __asm__ volatile("csrwi sepc, %0" : : "i"(value) :);
+  void WriteImm(const uint8_t value) override {
+    asm("csrwi sepc, %0" : : "i"(value) :);
   }
 
   uint64_t ReadWrite(uint64_t value) override {
     uint64_t prev_value;
-    __asm__ volatile("csrrw %0, sepc, %1" : "=r"(prev_value) : "r"(value) :);
+    asm("csrrw %0, sepc, %1" : "=r"(prev_value) : "r"(value) :);
     return prev_value;
   }
 
   uint64_t ReadWriteImm(const uint8_t value) override {
     uint64_t prev_value;
-    __asm__ volatile("csrrwi %0, sepc, %1" : "=r"(prev_value) : "i"(value) :);
+    asm("csrrwi %0, sepc, %1" : "=r"(prev_value) : "i"(value) :);
     return prev_value;
   }
 
   void SetBits(uint64_t mask) override {
-    __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
+    asm("csrrs zero, sepc, %0" : : "r"(mask) :);
   }
 
   uint64_t ReadSetBits(uint64_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    asm("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     return value;
   }
 
   void ClearBits(uint64_t mask) override {
-    __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
+    asm("csrrc zero, sepc, %0" : : "r"(mask) :);
   }
 
   uint64_t ReadClearBits(uint64_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    asm("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     return value;
   }
 
-  void SetBitsImm(uint8_t mask) override {
-    __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
+  void SetBitsImm(const uint8_t mask) override {
+    asm("csrrsi zero, sepc, %0" : : "i"(mask) :);
   }
 
-  uint64_t ReadSetBitsImm(uint8_t mask) override {
+  uint64_t ReadSetBitsImm(const uint8_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    asm("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     return value;
   }
 
-  void ClearBitsImm(uint8_t mask) override {
-    __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
+  void ClearBitsImm(const uint8_t mask) override {
+    asm("csrrci zero, sepc, %0" : : "i"(mask) :);
   }
 
-  uint64_t ReadClearBitsImm(uint8_t mask) override {
+  uint64_t ReadClearBitsImm(const uint8_t mask) override {
     uint64_t value;
-    __asm__ volatile("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    asm("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     return value;
   }
+};
+
+class Scause : public ReadWriteRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Scause() = default;
+  Scause(const Scause &) = delete;
+  Scause(Scause &&) = delete;
+  auto operator=(const Scause &) -> Scause & = delete;
+  auto operator=(Scause &&) -> Scause & = delete;
+  virtual ~Scause() = default;
+  /// @}
+
+  uint64_t Read() override {
+    uint64_t value;
+    asm("csrr %0, scause" : "=r"(value) : :);
+    return value;
+  }
+
+  void Write(uint64_t value) override {
+    asm("csrw scause, %0" : : "r"(value) :);
+  }
+
+  void WriteImm(const uint8_t value) override {
+    asm("csrwi scause, %0" : : "i"(value) :);
+  }
+
+  uint64_t ReadWrite(uint64_t value) override {
+    uint64_t prev_value;
+    asm("csrrw %0, scause, %1" : "=r"(prev_value) : "r"(value) :);
+    return prev_value;
+  }
+
+  uint64_t ReadWriteImm(const uint8_t value) override {
+    uint64_t prev_value;
+    asm("csrrwi %0, scause, %1" : "=r"(prev_value) : "i"(value) :);
+    return prev_value;
+  }
+
+  void SetBits(uint64_t mask) override {
+    asm("csrrs zero, scause, %0" : : "r"(mask) :);
+  }
+
+  uint64_t ReadSetBits(uint64_t mask) override {
+    uint64_t value;
+    asm("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  void ClearBits(uint64_t mask) override {
+    asm("csrrc zero, scause, %0" : : "r"(mask) :);
+  }
+
+  uint64_t ReadClearBits(uint64_t mask) override {
+    uint64_t value;
+    asm("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  void SetBitsImm(const uint8_t mask) override {
+    asm("csrrsi zero, scause, %0" : : "i"(mask) :);
+  }
+
+  uint64_t ReadSetBitsImm(const uint8_t mask) override {
+    uint64_t value;
+    asm("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+  void ClearBitsImm(const uint8_t mask) override {
+    asm("csrrci zero, scause, %0" : : "i"(mask) :);
+  }
+
+  uint64_t ReadClearBitsImm(const uint8_t mask) override {
+    uint64_t value;
+    asm("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+  struct ScauseInfo {
+    struct Interrupt {
+      using DataType = uint64_t;
+      static constexpr uint64_t kBitOffset = 63;
+      static constexpr uint64_t kBitWidth = 1;
+      static constexpr uint64_t kBitMask = (0x1UL << 63);
+      static constexpr uint64_t kAllSetMask = 0x1;
+    };
+
+    /// @brief  @tidi 确认掩码
+    struct ExceptionCode {
+      using DataType = uint64_t;
+      static constexpr uint64_t kBitOffset = 0;
+      static constexpr uint64_t kBitWidth = 63;
+      static constexpr uint64_t kBitMask = 1UL << 62;
+      static constexpr uint64_t kAllSetMask = 1UL << 62;
+    };
+  };
+
+  ReadWriteField<Scause, ScauseInfo::Interrupt> interrupt;
+  ReadWriteField<Scause, ScauseInfo::ExceptionCode> exception_code;
 };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_

@@ -275,134 +275,7 @@ class CSR {
     DRO,
   } priv_t;
 
-
-  // ----------------------------------------------------------------
-  // sepc - SRW - Supervisor Exception Program Counter
-  //
-  /** Supervisor Exception Program Counter assembler operations */
   
-  // ----------------------------------------------------------------
-  // scause - SRW - Supervisor Exception Cause
-  //
-  /** Supervisor Exception Cause assembler operations */
-  struct ScauseOps {
-    using DataType = uint64_t;
-    static constexpr priv_t priv = SRW;
-
-    /** Read scause */
-    static uint64_t Read() {
-      uint64_t value;
-      __asm__ volatile("csrr %0, scause" : "=r"(value) : :);
-      return value;
-    }
-
-    /** Write scause */
-    static void Write(uint64_t value) {
-      __asm__ volatile("csrw scause, %0" : : "r"(value) :);
-    }
-
-    /** Write immediate value to scause */
-    static void WriteImm(uint64_t value) {
-      __asm__ volatile("csrwi scause, %0" : : "i"(value) :);
-    }
-
-    /** Read and then Write to scause */
-    static uint64_t ReadWrite(uint64_t new_value) {
-      uint64_t prev_value;
-      __asm__ volatile("csrrw %0, scause, %1"
-                       : "=r"(prev_value)
-                       : "r"(new_value)
-                       :);
-      return prev_value;
-    }
-
-    /** Read and then Write immediate value to scause */
-    static uint64_t ReadWriteImm(const uint8_t new_value) {
-      uint64_t prev_value;
-      __asm__ volatile("csrrwi %0, scause, %1"
-                       : "=r"(prev_value)
-                       : "i"(new_value)
-                       :);
-      return prev_value;
-    }
-
-    // ------------------------------------------
-    // Register CSR bit set and clear instructions
-
-    /** Atomic modify and set bits for scause */
-    static void SetBits(uint64_t mask) {
-      __asm__ volatile("csrrs zero, scause, %0" : : "r"(mask) :);
-    }
-
-    /** Atomic Read and then and set bits for scause */
-    static uint32_t ReadSetBits(uint64_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
-      return value;
-    }
-
-    /** Atomic modify and clear bits for scause */
-    static void ClrBits(uint64_t mask) {
-      __asm__ volatile("csrrc zero, scause, %0" : : "r"(mask) :);
-    }
-
-    /** Atomic Read and then and clear bits for scause */
-    static uint32_t ReadClrBits(uint64_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
-      return value;
-    }
-
-    // ------------------------------------------
-    // Immediate value CSR bit set and clear instructions (only up to 5 bits)
-
-    /** Atomic modify and set bits from immediate for scause */
-    static void SetBitsImm(const uint8_t mask) {
-      __asm__ volatile("csrrsi zero, scause, %0" : : "i"(mask) :);
-    }
-
-    /** Atomic Read and then and set bits from immediate for scause */
-    static uint64_t ReadSetBitsImm(const uint8_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
-      return value;
-    }
-
-    /** Atomic modify and clear bits from immediate for scause */
-    static void ClrBitsImm(const uint8_t mask) {
-      __asm__ volatile("csrrci zero, scause, %0" : : "i"(mask) :);
-    }
-
-    /** Atomic Read and then and clear bits from immediate for scause */
-    static uint64_t ReadClrBitsImm(const uint8_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
-      return value;
-    }
-
-  }; /* ScauseOps */
-  /** Parameter data for fields in scause */
-  struct ScauseData {
-    /** Parameter data for interrupt */
-    struct interrupt {
-      using DataType = uint64_t;
-      static constexpr uint64_t kBitOffset = (64 - 1);
-      static constexpr uint64_t kBitWidth = 1;
-      static constexpr uint64_t kBitMask = (0x1UL << ((64 - 1)));
-      static constexpr uint64_t kAllSetMask = 0x1;
-    };
-    /** Parameter data for exception_code */
-    struct exception_code {
-      using DataType = uint64_t;
-      static constexpr uint64_t kBitOffset = 0;
-      static constexpr uint64_t kBitWidth = ((64 - 2) - (0) + 1);
-      static constexpr uint64_t kBitMask =
-          ((1UL << (((64 - 2) - (0) + 1) - 1)) << (0));
-      static constexpr uint64_t kAllSetMask =
-          ((1UL << (((64 - 2) - (0) + 1) - 1)) << (0));
-    };
-  };
-
   // ----------------------------------------------------------------
   // sstatus - SRW - Supervisor Status
   //
@@ -1657,14 +1530,6 @@ class CSR {
     }
   };
 
-//   /* Supervisor Exception Cause */
-//   template <class RegOps>
-//   class scause_reg : public ReadWriteReg<RegOps> {
-//    public:
-//     ReadWriteField<RegOps, ScauseData::interrupt> interrupt;
-//     ReadWriteField<RegOps, ScauseData::exception_code> exception_code;
-//   };
-//   using scause = scause_reg<ScauseOps>;
 //   /* Supervisor Status */
 //   template <class RegOps>
 //   class sstatus_reg : public ReadWriteReg<RegOps> {
