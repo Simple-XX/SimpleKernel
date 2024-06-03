@@ -280,103 +280,7 @@ class CSR {
   // sepc - SRW - Supervisor Exception Program Counter
   //
   /** Supervisor Exception Program Counter assembler operations */
-  struct SepcOps {
-    using DataType = uint64_t;
-    static constexpr priv_t priv = SRW;
-
-    /** Read sepc */
-    static uint64_t Read() {
-      uint64_t value;
-      __asm__ volatile("csrr %0, sepc" : "=r"(value) : :);
-      return value;
-    }
-
-    /** Write sepc */
-    static void Write(uint64_t value) {
-      __asm__ volatile("csrw sepc, %0" : : "r"(value) :);
-    }
-
-    /** Write immediate value to sepc */
-    static void WriteImm(uint64_t value) {
-      __asm__ volatile("csrwi sepc, %0" : : "i"(value) :);
-    }
-
-    /** Read and then Write to sepc */
-    static uint64_t ReadWrite(uint64_t new_value) {
-      uint64_t prev_value;
-      __asm__ volatile("csrrw %0, sepc, %1"
-                       : "=r"(prev_value)
-                       : "r"(new_value)
-                       :);
-      return prev_value;
-    }
-
-    /** Read and then Write immediate value to sepc */
-    static uint64_t ReadWriteImm(const uint8_t new_value) {
-      uint64_t prev_value;
-      __asm__ volatile("csrrwi %0, sepc, %1"
-                       : "=r"(prev_value)
-                       : "i"(new_value)
-                       :);
-      return prev_value;
-    }
-
-    // ------------------------------------------
-    // Register CSR bit set and clear instructions
-
-    /** Atomic modify and set bits for sepc */
-    static void SetBits(uint64_t mask) {
-      __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
-    }
-
-    /** Atomic Read and then and set bits for sepc */
-    static uint32_t ReadSetBits(uint64_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
-      return value;
-    }
-
-    /** Atomic modify and clear bits for sepc */
-    static void ClrBits(uint64_t mask) {
-      __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
-    }
-
-    /** Atomic Read and then and clear bits for sepc */
-    static uint32_t ReadClrBits(uint64_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
-      return value;
-    }
-
-    // ------------------------------------------
-    // Immediate value CSR bit set and clear instructions (only up to 5 bits)
-
-    /** Atomic modify and set bits from immediate for sepc */
-    static void SetBitsImm(const uint8_t mask) {
-      __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
-    }
-
-    /** Atomic Read and then and set bits from immediate for sepc */
-    static uint64_t ReadSetBitsImm(const uint8_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
-      return value;
-    }
-
-    /** Atomic modify and clear bits from immediate for sepc */
-    static void ClrBitsImm(const uint8_t mask) {
-      __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
-    }
-
-    /** Atomic Read and then and clear bits from immediate for sepc */
-    static uint64_t ReadClrBitsImm(const uint8_t mask) {
-      uint64_t value;
-      __asm__ volatile("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
-      return value;
-    }
-
-  }; /* SepcOps */
-
+  
   // ----------------------------------------------------------------
   // scause - SRW - Supervisor Exception Cause
   //
@@ -1753,14 +1657,6 @@ class CSR {
     }
   };
 
-//   /* Supervisor Mode Scratch Register */
-//   template <class RegOps>
-//   class sscratch_reg : public ReadWriteReg<RegOps> {};
-//   using sscratch = sscratch_reg<SscratchOps>;
-//   /* Supervisor Exception Program Counter */
-//   template <class RegOps>
-//   class sepc_reg : public ReadWriteReg<RegOps> {};
-//   using sepc = sepc_reg<SepcOps>;
 //   /* Supervisor Exception Cause */
 //   template <class RegOps>
 //   class scause_reg : public ReadWriteReg<RegOps> {

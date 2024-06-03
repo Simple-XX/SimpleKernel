@@ -161,7 +161,9 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   printf("hello IntrInit\n");
 
   auto sscratch = Sscratch();
+  auto sepc = Sepc();
   printf("sscratch.Read(): 0x%p\n", sscratch.Read());
+  printf("sepc.Read(): 0x%p\n", sepc.Read());
 
   return 0;
 }

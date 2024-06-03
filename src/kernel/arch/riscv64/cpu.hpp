@@ -1571,4 +1571,83 @@ class Sscratch : public ReadWriteRegBase {
   }
 };
 
+class Sepc : public ReadWriteRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Sepc() = default;
+  Sepc(const Sepc &) = delete;
+  Sepc(Sepc &&) = delete;
+  auto operator=(const Sepc &) -> Sepc & = delete;
+  auto operator=(Sepc &&) -> Sepc & = delete;
+  virtual ~Sepc() = default;
+  /// @}
+
+  uint64_t Read() override {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sepc" : "=r"(value) : :);
+    return value;
+  }
+
+  void Write(uint64_t value) override {
+    __asm__ volatile("csrw sepc, %0" : : "r"(value) :);
+  }
+
+  void WriteImm(uint64_t value) override {
+    __asm__ volatile("csrwi sepc, %0" : : "i"(value) :);
+  }
+
+  uint64_t ReadWrite(uint64_t value) override {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sepc, %1" : "=r"(prev_value) : "r"(value) :);
+    return prev_value;
+  }
+
+  uint64_t ReadWriteImm(const uint8_t value) override {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sepc, %1" : "=r"(prev_value) : "i"(value) :);
+    return prev_value;
+  }
+
+  void SetBits(uint64_t mask) override {
+    __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
+  }
+
+  uint64_t ReadSetBits(uint64_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  void ClearBits(uint64_t mask) override {
+    __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
+  }
+
+  uint64_t ReadClearBits(uint64_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  void SetBitsImm(uint8_t mask) override {
+    __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
+  }
+
+  uint64_t ReadSetBitsImm(uint8_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+  void ClearBitsImm(uint8_t mask) override {
+    __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
+  }
+
+  uint64_t ReadClearBitsImm(uint8_t mask) override {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+};
+
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
