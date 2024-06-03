@@ -1121,21 +1121,25 @@ class Cpu {
 /// 立即数掩码，大于这个值需要使用寄存器中转
 static constexpr uint64_t kCsrImmOpMask = 0x1F;
 
+struct CsrRegInfoBase {
+  using DataType = uint64_t;
+  static constexpr uint64_t kBitOffset = 0;
+  static constexpr uint64_t kBitWidth = 64;
+  static constexpr uint64_t kBitMask = ~0;
+  static constexpr uint64_t kAllSetMask = ~0;
+};
+
 /// @todo 确认所有 info 信息的掩码
-struct SscratchInfo {
- public:
-};
+struct SscratchInfo : public CsrRegInfoBase {};
 
-struct SepcInfo {
- public:
-};
+struct SepcInfo : public CsrRegInfoBase {};
 
-struct ScauseInfo {
+struct ScauseInfo : public CsrRegInfoBase {
   struct Interrupt {
     using DataType = uint64_t;
     static constexpr uint64_t kBitOffset = 63;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = (1UL << 63);
+    static constexpr uint64_t kBitMask = 1UL << 63;
     static constexpr uint64_t kAllSetMask = 1;
   };
 
@@ -1148,10 +1152,10 @@ struct ScauseInfo {
   };
 };
 
-struct SstatusInfo {
+struct SstatusInfo : public CsrRegInfoBase {
   /** Parameter data for sie */
   struct Sie {
-    using DataType = uint64_t;
+    using DataType = bool;
     static constexpr uint64_t kBitOffset = 1;
     static constexpr uint64_t kBitWidth = 1;
     static constexpr uint64_t kBitMask = 0x2;
@@ -1159,7 +1163,7 @@ struct SstatusInfo {
   };
   /** Parameter data for spie */
   struct Spie {
-    using DataType = uint64_t;
+    using DataType = bool;
     static constexpr uint64_t kBitOffset = 5;
     static constexpr uint64_t kBitWidth = 1;
     static constexpr uint64_t kBitMask = 0x20;
@@ -1167,11 +1171,35 @@ struct SstatusInfo {
   };
   /** Parameter data for spp */
   struct Spp {
-    using DataType = uint64_t;
+    using DataType = bool;
     static constexpr uint64_t kBitOffset = 8;
     static constexpr uint64_t kBitWidth = 1;
     static constexpr uint64_t kBitMask = 0x100;
     static constexpr uint64_t kAllSetMask = 0x1;
+  };
+};
+
+struct StvecInfo {
+  using DataType = uint64_t;
+  static constexpr uint64_t kBitOffset = 0;
+  static constexpr uint64_t kBitWidth = 64;
+  static constexpr uint64_t kBitMask = ~0;
+  static constexpr uint64_t kAllSetMask = ~0;
+  /** Parameter data for base */
+  struct Base {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 2;
+    static constexpr uint64_t kBitWidth = 62;
+    static constexpr uint64_t kBitMask = ~0x3;
+    static constexpr uint64_t kAllSetMask = ~0x3;
+  };
+  /** Parameter data for mode */
+  struct Mode {
+    using DataType = uint8_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 2;
+    static constexpr uint64_t kBitMask = 0x3;
+    static constexpr uint64_t kAllSetMask = 0x3;
   };
 };
 
@@ -1206,6 +1234,8 @@ class ReadOnlyRegBase {
       asm("csrr %0, scause" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrr %0, sstatus" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrr %0, stvec" : "=r"(value) : :);
     } else {
       printf("error\n");
     }
@@ -1248,6 +1278,8 @@ class WriteOnlyRegBase {
       asm("csrw scause, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrw sstatus, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrw stvec, %0" : : "r"(value) :);
     } else {
       printf("error\n");
     }
@@ -1267,6 +1299,8 @@ class WriteOnlyRegBase {
       asm("csrwi scause, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrwi sstatus, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrwi stvec, %0" : : "i"(value) :);
     } else {
       printf("error\n");
     }
@@ -1287,6 +1321,8 @@ class WriteOnlyRegBase {
       asm("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrw %0, sstatus, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
     } else {
       printf("error\n");
     }
@@ -1309,6 +1345,8 @@ class WriteOnlyRegBase {
       asm("csrrwi %0, scause, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrwi %0, sstatus, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
     } else {
       printf("error\n");
     }
@@ -1328,6 +1366,8 @@ class WriteOnlyRegBase {
       asm("csrrs zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrs zero, sstatus, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrs zero, stvec, %0" : : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1348,6 +1388,8 @@ class WriteOnlyRegBase {
       asm("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1367,6 +1409,8 @@ class WriteOnlyRegBase {
       asm("csrrc zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrc zero, sstatus, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrc zero, stvec, %0" : : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1387,6 +1431,8 @@ class WriteOnlyRegBase {
       asm("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1407,6 +1453,8 @@ class WriteOnlyRegBase {
       asm("csrrsi zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrsi zero, sstatus, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrsi zero, stvec, %0" : : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1427,6 +1475,8 @@ class WriteOnlyRegBase {
       asm("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1447,6 +1497,8 @@ class WriteOnlyRegBase {
       asm("csrrci zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrci zero, sstatus, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrci zero, stvec, %0" : : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1467,6 +1519,8 @@ class WriteOnlyRegBase {
       asm("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
+      asm("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1624,10 +1678,11 @@ class ReadOnlyField {
 
   /**
    * 获取对应 Reg 的由 Info 规定的指定位的值
-   * @return uint64_t 指定位值
+   * @return Info::DataType 指定位值
    */
-  static inline uint64_t Get() {
-    return (uint64_t)((Reg::Read() & Info::kBitMask) >> Info::kBitOffset);
+  static inline Info::DataType Get() {
+    return (typename Info::DataType)((Reg::Read() & Info::kBitMask) >>
+                                     Info::kBitOffset);
   }
 };
 
@@ -1697,9 +1752,8 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    */
   static inline void Write(Info::DataType value) {
     auto org_value = Reg::Read();
-    auto new_value =
-        (org_value & ~Info::kBitMask) |
-        (((decltype(Reg::Read()))value << Info::kBitOffset) & Info::kBitMask);
+    auto new_value = (org_value & ~Info::kBitMask) |
+                     ((value << Info::kBitOffset) & Info::kBitMask);
     Reg::Write(new_value);
   }
 
@@ -1710,9 +1764,8 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    */
   static inline Info::DataType ReadWrite(Info::DataType value) {
     auto org_value = Reg::Read();
-    auto new_value =
-        (org_value & ~Info::kBitMask) |
-        (((decltype(Reg::Read()))value << Info::kBitOffset) & Info::kBitMask);
+    auto new_value = (org_value & ~Info::kBitMask) |
+                     ((value << Info::kBitOffset) & Info::kBitMask);
     Reg::Write(new_value);
     return (Info::DataType)((org_value & Info::kBitMask) >> Info::kBitOffset);
   }
@@ -1776,6 +1829,22 @@ class Sstatus : public ReadWriteRegBase<SstatusInfo> {
   ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Sie> sie;
   ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spie> spie;
   ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spp> spp;
+};
+
+class Stvec : public ReadWriteRegBase<StvecInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Stvec() = default;
+  Stvec(const Stvec &) = delete;
+  Stvec(Stvec &&) = delete;
+  auto operator=(const Stvec &) -> Stvec & = delete;
+  auto operator=(Stvec &&) -> Stvec & = delete;
+  virtual ~Stvec() = default;
+  /// @}
+
+  ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Base> base;
+  ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Mode> mode;
 };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
