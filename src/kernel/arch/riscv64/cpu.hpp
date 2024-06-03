@@ -23,6 +23,1845 @@
 #include "iostream"
 #include "stdio.h"
 
+// ------------------------------------------------------------------------
+// Base and common classes
+
+namespace riscv {
+namespace csr {
+
+/** Immediate instructions use a 5 bit immediate field */
+static constexpr uint64_t kCsrImmOpMask = 0x01F;
+
+/** CSR: Read only, and read-Write base class */
+template <class C>
+class ReadOnlyReg {
+ public:
+  using ReadDataType = typename C::DataType;
+
+  ReadOnlyReg(void) {}
+  ReadOnlyReg(const ReadOnlyReg &) = delete;
+  ReadOnlyReg &operator=(const ReadOnlyReg &) = delete;
+
+  /** Read the CSR value */
+  static inline ReadDataType read(void) { return C::read(); }
+  /** Operator alias to read the CSR value */
+  inline ReadDataType operator()(void) { return C::read(); }
+};
+
+/** CSR: Write only, and read-Write base class */
+template <class C>
+class WriteOnlyReg {
+ public:
+  using WriteDataType = typename C::DataType;
+
+  WriteOnlyReg(void) {}
+  WriteOnlyReg(const WriteOnlyReg &) = delete;
+  WriteOnlyReg &operator=(const WriteOnlyReg &) = delete;
+
+  /** Write a constant to the CSR. */
+  template <WriteDataType VALUE>
+  void write_const(void) {
+    if constexpr ((VALUE & kCsrImmOpMask) == VALUE) {
+      C::WriteImm(VALUE);
+    } else {
+      C::Write(VALUE);
+    }
+  }
+  /** Write to the CSR. */
+  inline void Write(const WriteDataType value) { C::Write(value); }
+  /** Set a constant mask of bits in the CSR. */
+  template <WriteDataType MASK>
+  void set_const(void) {
+    if constexpr ((MASK & kCsrImmOpMask) == MASK) {
+      C::SetBitsImm(MASK);
+    } else {
+      C::SetBits(MASK);
+    }
+  }
+  /** Set a mask of bits in the CSR. */
+  inline void set(WriteDataType mask) { C::SetBits(mask); }
+  /** Clear a constant mask of bits in the CSR. */
+  template <WriteDataType MASK>
+  void ClrConst(void) {
+    if constexpr ((MASK & kCsrImmOpMask) == MASK) {
+      C::ClrBitsImm(MASK);
+    } else {
+      C::ClrBits(MASK);
+    }
+  }
+  /** Clear a mask of bits in the CSR. */
+  inline void Clr(WriteDataType mask) { C::ClrBits(mask); }
+  /** Operator alias to set mask of bits in the CSR. */
+  inline void operator|=(WriteDataType mask) { C::SetBits(mask); }
+};
+
+/** CSR: Read-Write base class */
+template <class C>
+class ReadWriteReg : public ReadOnlyReg<C>, public WriteOnlyReg<C> {
+ public:
+  using datatype_t = typename C::DataType;
+
+  ReadWriteReg(void) : ReadOnlyReg<C>(), WriteOnlyReg<C>() {}
+  ReadWriteReg(const ReadWriteReg &) = delete;
+  ReadWriteReg &operator=(const ReadWriteReg &) = delete;
+
+  /** Read from, then Write a constant value to the CSR. */
+  template <datatype_t VALUE>
+  datatype_t ReadWriteConst(void) {
+    if constexpr ((VALUE & kCsrImmOpMask) == VALUE) {
+      return C::ReadWriteImm(VALUE);
+    } else {
+      return C::ReadWrite(VALUE);
+    }
+  }
+  /** Read from, then Write to the CSR. */
+  inline datatype_t ReadWrite(const datatype_t value) {
+    return C::ReadWrite(value);
+  }
+  /** Read from, then set a constant bit mask to the CSR. */
+  template <datatype_t MASK>
+  datatype_t read_set_bits_const(void) {
+    if constexpr ((MASK & kCsrImmOpMask) == MASK) {
+      return C::ReadSetBitsImm(MASK);
+    } else {
+      return C::ReadSetBits(MASK);
+    }
+  }
+  /** Read from, then set a bit mask to the CSR. */
+  inline datatype_t ReadSetBits(const datatype_t mask) {
+    return C::ReadSetBits(mask);
+  }
+  /** Read from, then clear a constant bit mask to the CSR. */
+  template <datatype_t MASK>
+  datatype_t read_clr_bits_const(void) {
+    if constexpr ((MASK & kCsrImmOpMask) == MASK) {
+      return C::ReadClrBitsImm(MASK);
+    } else {
+      return C::ReadClrBits(MASK);
+    }
+  }
+  /** Read from, then clear a bit mask to the CSR. */
+  inline datatype_t ReadClrBits(const datatype_t mask) {
+    return C::ReadClrBits(mask);
+  }
+};
+
+/** CSR Field: Read only, and read-Write base class */
+template <class C, class F>
+class ReadOnlyField {
+ public:
+  using ReadDataType = typename F::DataType;
+
+  ReadOnlyField(void) {}
+  ReadOnlyField(const ReadOnlyField &) = delete;
+  ReadOnlyField &operator=(const ReadOnlyField &) = delete;
+
+  /** Read a given field value from a CSR */
+  ReadDataType Read(void) {
+    return (ReadDataType)((C::Read() & F::BIT_MASK) >> F::BIT_OFFSET);
+  }
+};
+
+/** CSR Field: Write only, and Read-Write base class */
+template <class C, class F>
+class WriteOnlyField {
+ public:
+  using WriteDataType = typename F::DataType;
+  using reg_write_datatype_t = typename C::DataType;
+
+  WriteOnlyField(void) {}
+  WriteOnlyField(const WriteOnlyField &) = delete;
+  WriteOnlyField &operator=(const WriteOnlyField &) = delete;
+
+  inline void set(void) {
+    if constexpr ((F::BIT_MASK & kCsrImmOpMask) == F::BIT_MASK) {
+      C::SetBitsImm(F::BIT_MASK);
+    } else {
+      C::SetBits(F::BIT_MASK);
+    }
+  }
+  inline void Clr(void) {
+    if constexpr ((F::BIT_MASK & kCsrImmOpMask) == F::BIT_MASK) {
+      C::ClrBitsImm(F::BIT_MASK);
+    } else {
+      C::ClrBits(F::BIT_MASK);
+    }
+  }
+};
+
+/** CSR Field: Read-Write base class */
+template <class C, class F>
+class ReadWriteField : public ReadOnlyField<C, F>, public WriteOnlyField<C, F> {
+ public:
+  using datatype_t = typename F::DataType;
+  using reg_datatype_t = typename C::DataType;
+
+  ReadWriteField(void) : ReadOnlyField<C, F>(), WriteOnlyField<C, F>() {}
+  ReadWriteField(const ReadWriteField &) = delete;
+  ReadWriteField &operator=(const ReadWriteField &) = delete;
+
+  /* Read-modify-Write to Write a field.
+     NOTE - not atomic.
+   */
+  inline void Write(const datatype_t value) {
+    auto org_value = C::Read();
+    auto new_value = (org_value & ~F::BIT_MASK) |
+                     (((reg_datatype_t)value << F::BIT_OFFSET) & F::BIT_MASK);
+    C::Write(new_value);
+  }
+  /* Read-modify-Write to set a field, and return original value.
+     NOTE - not atomic.
+   */
+  inline datatype_t ReadWrite(const datatype_t value) {
+    auto org_value = C::Read();
+    auto new_value = (org_value & ~F::BIT_MASK) |
+                     (((reg_datatype_t)value << F::BIT_OFFSET) & F::BIT_MASK);
+    C::Write(new_value);
+    return (datatype_t)((org_value & F::BIT_MASK) >> F::BIT_OFFSET);
+  }
+};
+
+/** CSR access context and Read/Write permission.
+ */
+typedef enum {
+  URW,
+  URO,
+  SRW,
+  SRO,
+  HRW,
+  HRO,
+  MRW,
+  MRO,
+
+  DRW,
+  DRO,
+} priv_t;
+
+}  // namespace csr
+}  // namespace riscv
+
+// ------------------------------------------------------------------------
+// Assembler operations and bit field definitions
+
+namespace riscv {
+namespace csr {
+// ----------------------------------------------------------------
+// sscratch - SRW - Supervisor Mode Scratch Register
+//
+/** Supervisor Mode Scratch Register assembler operations */
+struct sscratch_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read sscratch */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sscratch" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write sscratch */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw sscratch, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to sscratch */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi sscratch, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to sscratch */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sscratch, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to sscratch */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sscratch, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for sscratch */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for sscratch */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for sscratch */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for sscratch */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for sscratch */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for sscratch */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for sscratch */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for sscratch */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* sscratch_ops */
+
+// ----------------------------------------------------------------
+// sepc - SRW - Supervisor Exception Program Counter
+//
+/** Supervisor Exception Program Counter assembler operations */
+struct sepc_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read sepc */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sepc" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write sepc */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw sepc, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to sepc */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi sepc, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to sepc */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sepc, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to sepc */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sepc, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for sepc */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for sepc */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for sepc */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for sepc */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for sepc */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for sepc */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for sepc */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for sepc */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* sepc_ops */
+
+// ----------------------------------------------------------------
+// scause - SRW - Supervisor Exception Cause
+//
+/** Supervisor Exception Cause assembler operations */
+struct scause_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read scause */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, scause" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write scause */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw scause, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to scause */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi scause, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to scause */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, scause, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to scause */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, scause, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for scause */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, scause, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for scause */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for scause */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, scause, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for scause */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for scause */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, scause, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for scause */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for scause */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, scause, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for scause */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* scause_ops */
+/** Parameter data for fields in scause */
+namespace scause_data {
+/** Parameter data for interrupt */
+struct interrupt {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = (64 - 1);
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = (0x1UL << ((64 - 1)));
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for exception_code */
+struct exception_code {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 0;
+  static constexpr uint64_t BIT_WIDTH = ((64 - 2) - (0) + 1);
+  static constexpr uint64_t BIT_MASK =
+      ((1UL << (((64 - 2) - (0) + 1) - 1)) << (0));
+  static constexpr uint64_t ALL_SET_MASK =
+      ((1UL << (((64 - 2) - (0) + 1) - 1)) << (0));
+};
+}  // namespace scause_data
+
+// ----------------------------------------------------------------
+// sstatus - SRW - Supervisor Status
+//
+/** Supervisor Status assembler operations */
+struct sstatus_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read sstatus */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sstatus" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write sstatus */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw sstatus, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to sstatus */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi sstatus, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to sstatus */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sstatus, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to sstatus */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sstatus, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for sstatus */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for sstatus */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for sstatus */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for sstatus */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for sstatus */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for sstatus */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for sstatus */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for sstatus */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* sstatus_ops */
+/** Parameter data for fields in sstatus */
+namespace sstatus_data {
+/** Parameter data for sie */
+struct sie {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 2;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x4;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for spie */
+struct spie {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 5;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x20;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for spp */
+struct spp {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 8;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x100;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+}  // namespace sstatus_data
+
+// ----------------------------------------------------------------
+// stvec - SRW - Supervisor Trap Vector Base Address
+//
+/** Supervisor Trap Vector Base Address assembler operations */
+struct stvec_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read stvec */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, stvec" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write stvec */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw stvec, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to stvec */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi stvec, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to stvec */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, stvec, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to stvec */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, stvec, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for stvec */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for stvec */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for stvec */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for stvec */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for stvec */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for stvec */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for stvec */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for stvec */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* stvec_ops */
+/** Parameter data for fields in stvec */
+namespace stvec_data {
+/** Parameter data for base */
+struct base {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 2;
+  static constexpr uint64_t BIT_WIDTH = ((64 - 1) - (2) + 1);
+  static constexpr uint64_t BIT_MASK =
+      ((1UL << (((64 - 1) - (2) + 1) - 1)) << (2));
+  static constexpr uint64_t ALL_SET_MASK =
+      ((1UL << (((64 - 1) - (2) + 1) - 1)) << (0));
+};
+/** Parameter data for mode */
+struct mode {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 0;
+  static constexpr uint64_t BIT_WIDTH = 2;
+  static constexpr uint64_t BIT_MASK = 0x3;
+  static constexpr uint64_t ALL_SET_MASK = 0x3;
+};
+}  // namespace stvec_data
+
+// ----------------------------------------------------------------
+// sideleg - SRW - Supervisor Interrupt Delegation
+//
+/** Supervisor Interrupt Delegation assembler operations */
+struct sideleg_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read sideleg */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sideleg" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write sideleg */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw sideleg, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to sideleg */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi sideleg, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to sideleg */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sideleg, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to sideleg */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sideleg, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for sideleg */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, sideleg, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for sideleg */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sideleg, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for sideleg */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, sideleg, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for sideleg */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sideleg, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for sideleg */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, sideleg, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for sideleg */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sideleg, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for sideleg */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, sideleg, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for sideleg */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sideleg, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* sideleg_ops */
+
+// ----------------------------------------------------------------
+// sedeleg - SRW - Supervisor Exception Delegation
+//
+/** Supervisor Exception Delegation assembler operations */
+struct sedeleg_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read sedeleg */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sedeleg" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write sedeleg */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw sedeleg, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to sedeleg */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi sedeleg, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to sedeleg */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sedeleg, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to sedeleg */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sedeleg, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for sedeleg */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, sedeleg, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for sedeleg */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sedeleg, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for sedeleg */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, sedeleg, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for sedeleg */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sedeleg, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for sedeleg */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, sedeleg, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for sedeleg */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sedeleg, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for sedeleg */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, sedeleg, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for sedeleg */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sedeleg, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* sedeleg_ops */
+
+// ----------------------------------------------------------------
+// sip - SRW - Supervisor Interrupt Pending
+//
+/** Supervisor Interrupt Pending assembler operations */
+struct sip_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read sip */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sip" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write sip */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw sip, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to sip */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi sip, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to sip */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sip, %1" : "=r"(prev_value) : "r"(new_value) :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to sip */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sip, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for sip */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, sip, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for sip */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sip, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for sip */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, sip, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for sip */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sip, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for sip */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, sip, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for sip */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for sip */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, sip, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for sip */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sip, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* sip_ops */
+/** Parameter data for fields in sip */
+namespace sip_data {
+/** Parameter data for ssi */
+struct ssi {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 1;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x2;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for sti */
+struct sti {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 5;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x20;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for sei */
+struct sei {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 9;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x200;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for usi */
+struct usi {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 0;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x1;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for uti */
+struct uti {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 4;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x10;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for uei */
+struct uei {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 8;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x100;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+}  // namespace sip_data
+
+// ----------------------------------------------------------------
+// sie - SRW - Supervisor Interrupt Enable
+//
+/** Supervisor Interrupt Enable assembler operations */
+struct sie_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read sie */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, sie" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write sie */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw sie, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to sie */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi sie, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to sie */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, sie, %1" : "=r"(prev_value) : "r"(new_value) :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to sie */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, sie, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for sie */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, sie, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for sie */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, sie, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for sie */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, sie, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for sie */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, sie, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for sie */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, sie, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for sie */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for sie */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, sie, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for sie */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, sie, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* sie_ops */
+/** Parameter data for fields in sie */
+namespace sie_data {
+/** Parameter data for ssi */
+struct ssi {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 1;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x2;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for sti */
+struct sti {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 5;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x20;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for sei */
+struct sei {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 9;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x200;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for usi */
+struct usi {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 0;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x1;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for uti */
+struct uti {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 4;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x10;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+/** Parameter data for uei */
+struct uei {
+  using DataType = uint64_t;
+  static constexpr uint64_t BIT_OFFSET = 8;
+  static constexpr uint64_t BIT_WIDTH = 1;
+  static constexpr uint64_t BIT_MASK = 0x100;
+  static constexpr uint64_t ALL_SET_MASK = 0x1;
+};
+}  // namespace sie_data
+
+// ----------------------------------------------------------------
+// fflags - URW - Floating-Point Accrued Exceptions.
+//
+/** Floating-Point Accrued Exceptions. assembler operations */
+struct fflags_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = URW;
+
+  /** Read fflags */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, fflags" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write fflags */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw fflags, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to fflags */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi fflags, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to fflags */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, fflags, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to fflags */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, fflags, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for fflags */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, fflags, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for fflags */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, fflags, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for fflags */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, fflags, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for fflags */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, fflags, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for fflags */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, fflags, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for fflags */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, fflags, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for fflags */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, fflags, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for fflags */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, fflags, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* fflags_ops */
+
+// ----------------------------------------------------------------
+// frm - URW - Floating-Point Dynamic Rounding Mode.
+//
+/** Floating-Point Dynamic Rounding Mode. assembler operations */
+struct frm_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = URW;
+
+  /** Read frm */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, frm" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write frm */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw frm, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to frm */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi frm, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to frm */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, frm, %1" : "=r"(prev_value) : "r"(new_value) :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to frm */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, frm, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for frm */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, frm, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for frm */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, frm, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for frm */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, frm, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for frm */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, frm, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for frm */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, frm, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for frm */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, frm, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for frm */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, frm, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for frm */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, frm, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* frm_ops */
+
+// ----------------------------------------------------------------
+// fcsr - URW - Floating-Point Control and Status
+//
+/** Floating-Point Control and Status assembler operations */
+struct fcsr_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = URW;
+
+  /** Read fcsr */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, fcsr" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write fcsr */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw fcsr, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to fcsr */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi fcsr, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to fcsr */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, fcsr, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to fcsr */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, fcsr, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for fcsr */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, fcsr, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for fcsr */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, fcsr, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for fcsr */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, fcsr, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for fcsr */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, fcsr, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for fcsr */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, fcsr, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for fcsr */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, fcsr, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for fcsr */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, fcsr, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for fcsr */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, fcsr, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* fcsr_ops */
+
+// ----------------------------------------------------------------
+// cycle - URO - Cycle counter for RDCYCLE instruction.
+//
+/** Cycle counter for RDCYCLE instruction. assembler operations */
+struct cycle_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = URO;
+
+  /** Read cycle */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, cycle" : "=r"(value) : :);
+    return value;
+  }
+
+}; /* cycle_ops */
+
+// ----------------------------------------------------------------
+// time - URO - Timer for RDTIME instruction.
+//
+/** Timer for RDTIME instruction. assembler operations */
+struct time_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = URO;
+
+  /** Read time */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, time" : "=r"(value) : :);
+    return value;
+  }
+
+}; /* time_ops */
+
+// ----------------------------------------------------------------
+// instret - URO - Instructions-retired counter for RDINSTRET instruction.
+//
+/** Instructions-retired counter for RDINSTRET instruction. assembler operations
+ */
+struct instret_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = URO;
+
+  /** Read instret */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, instret" : "=r"(value) : :);
+    return value;
+  }
+
+}; /* instret_ops */
+
+// ----------------------------------------------------------------
+// stval - SRW - Supervisor bad address or instruction.
+//
+/** Supervisor bad address or instruction. assembler operations */
+struct stval_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read stval */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, stval" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write stval */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw stval, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to stval */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi stval, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to stval */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, stval, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to stval */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, stval, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for stval */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, stval, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for stval */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, stval, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for stval */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, stval, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for stval */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, stval, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for stval */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, stval, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for stval */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, stval, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for stval */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, stval, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for stval */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, stval, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* stval_ops */
+
+// ----------------------------------------------------------------
+// satp - SRW - Supervisor address translation and protection.
+//
+/** Supervisor address translation and protection. assembler operations */
+struct satp_ops {
+  using DataType = uint64_t;
+  static constexpr priv_t priv = SRW;
+
+  /** Read satp */
+  static uint64_t Read(void) {
+    uint64_t value;
+    __asm__ volatile("csrr %0, satp" : "=r"(value) : :);
+    return value;
+  }
+
+  /** Write satp */
+  static void Write(uint64_t value) {
+    __asm__ volatile("csrw satp, %0" : : "r"(value) :);
+  }
+  /** Write immediate value to satp */
+  static void WriteImm(uint64_t value) {
+    __asm__ volatile("csrwi satp, %0" : : "i"(value) :);
+  }
+  /** Read and then Write to satp */
+  static uint64_t ReadWrite(uint64_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrw %0, satp, %1"
+                     : "=r"(prev_value)
+                     : "r"(new_value)
+                     :);
+    return prev_value;
+  }
+  /** Read and then Write immediate value to satp */
+  static uint64_t ReadWriteImm(const uint8_t new_value) {
+    uint64_t prev_value;
+    __asm__ volatile("csrrwi %0, satp, %1"
+                     : "=r"(prev_value)
+                     : "i"(new_value)
+                     :);
+    return prev_value;
+  }
+
+  // ------------------------------------------
+  // Register CSR bit set and clear instructions
+
+  /** Atomic modify and set bits for satp */
+  static void SetBits(uint64_t mask) {
+    __asm__ volatile("csrrs zero, satp, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and set bits for satp */
+  static uint32_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrs %0, satp, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits for satp */
+  static void ClrBits(uint64_t mask) {
+    __asm__ volatile("csrrc zero, satp, %0" : : "r"(mask) :);
+  }
+  /** Atomic Read and then and clear bits for satp */
+  static uint32_t ReadClrBits(uint64_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrc %0, satp, %1" : "=r"(value) : "r"(mask) :);
+    return value;
+  }
+
+  // ------------------------------------------
+  // Immediate value CSR bit set and clear instructions (only up to 5 bits)
+
+  /** Atomic modify and set bits from immediate for satp */
+  static void SetBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrsi zero, satp, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and set bits from immediate for satp */
+  static uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrsi %0, satp, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+  /** Atomic modify and clear bits from immediate for satp */
+  static void ClrBitsImm(const uint8_t mask) {
+    __asm__ volatile("csrrci zero, satp, %0" : : "i"(mask) :);
+  }
+  /** Atomic Read and then and clear bits from immediate for satp */
+  static uint64_t ReadClrBitsImm(const uint8_t mask) {
+    uint64_t value;
+    __asm__ volatile("csrrci %0, satp, %1" : "=r"(value) : "i"(mask) :);
+    return value;
+  }
+
+}; /* satp_ops */
+}  // namespace csr
+}  // namespace riscv
+
+// ------------------------------------------------------------------------
+// Register and field interface classes.
+namespace riscv {
+namespace csr {
+/* Supervisor Mode Scratch Register */
+template <class OPS>
+class sscratch_reg : public ReadWriteReg<OPS> {};
+using sscratch = sscratch_reg<riscv::csr::sscratch_ops>;
+/* Supervisor Exception Program Counter */
+template <class OPS>
+class sepc_reg : public ReadWriteReg<OPS> {};
+using sepc = sepc_reg<riscv::csr::sepc_ops>;
+/* Supervisor Exception Cause */
+template <class OPS>
+class scause_reg : public ReadWriteReg<OPS> {
+ public:
+  ReadWriteField<OPS, riscv::csr::scause_data::interrupt> interrupt;
+  ReadWriteField<OPS, riscv::csr::scause_data::exception_code> exception_code;
+};
+using scause = scause_reg<riscv::csr::scause_ops>;
+/* Supervisor Status */
+template <class OPS>
+class sstatus_reg : public ReadWriteReg<OPS> {
+ public:
+  ReadWriteField<OPS, riscv::csr::sstatus_data::sie> sie;
+  ReadWriteField<OPS, riscv::csr::sstatus_data::spie> spie;
+  ReadWriteField<OPS, riscv::csr::sstatus_data::spp> spp;
+};
+using sstatus = sstatus_reg<riscv::csr::sstatus_ops>;
+/* Supervisor Trap Vector Base Address */
+template <class OPS>
+class stvec_reg : public ReadWriteReg<OPS> {
+ public:
+  ReadWriteField<OPS, riscv::csr::stvec_data::base> base;
+  ReadWriteField<OPS, riscv::csr::stvec_data::mode> mode;
+};
+using stvec = stvec_reg<riscv::csr::stvec_ops>;
+/* Supervisor Interrupt Delegation */
+template <class OPS>
+class sideleg_reg : public ReadWriteReg<OPS> {};
+using sideleg = sideleg_reg<riscv::csr::sideleg_ops>;
+/* Supervisor Exception Delegation */
+template <class OPS>
+class sedeleg_reg : public ReadWriteReg<OPS> {};
+using sedeleg = sedeleg_reg<riscv::csr::sedeleg_ops>;
+/* Supervisor Interrupt Pending */
+template <class OPS>
+class sip_reg : public ReadWriteReg<OPS> {
+ public:
+  ReadWriteField<OPS, riscv::csr::sip_data::ssi> ssi;
+  ReadWriteField<OPS, riscv::csr::sip_data::sti> sti;
+  ReadWriteField<OPS, riscv::csr::sip_data::sei> sei;
+  ReadWriteField<OPS, riscv::csr::sip_data::usi> usi;
+  ReadWriteField<OPS, riscv::csr::sip_data::uti> uti;
+  ReadWriteField<OPS, riscv::csr::sip_data::uei> uei;
+};
+using sip = sip_reg<riscv::csr::sip_ops>;
+/* Supervisor Interrupt Enable */
+template <class OPS>
+class sie_reg : public ReadWriteReg<OPS> {
+ public:
+  ReadWriteField<OPS, riscv::csr::sie_data::ssi> ssi;
+  ReadWriteField<OPS, riscv::csr::sie_data::sti> sti;
+  ReadWriteField<OPS, riscv::csr::sie_data::sei> sei;
+  ReadWriteField<OPS, riscv::csr::sie_data::usi> usi;
+  ReadWriteField<OPS, riscv::csr::sie_data::uti> uti;
+  ReadWriteField<OPS, riscv::csr::sie_data::uei> uei;
+};
+using sie = sie_reg<riscv::csr::sie_ops>;
+
+/* Supervisor bad address or instruction. */
+template <class OPS>
+class stval_reg : public ReadWriteReg<OPS> {};
+using stval = stval_reg<riscv::csr::stval_ops>;
+/* Supervisor address translation and protection. */
+template <class OPS>
+class satp_reg : public ReadWriteReg<OPS> {};
+using satp = satp_reg<riscv::csr::satp_ops>;
+
+/** Encapsulate all CSRs in a single structure.
+   - No storage is required by this class.
+ */
+struct all {
+  /* Supervisor Mode Scratch Register */
+  riscv::csr::sscratch sscratch;
+  /* Supervisor Exception Program Counter */
+  riscv::csr::sepc sepc;
+  /* Supervisor Exception Cause */
+  riscv::csr::scause scause;
+  /* Supervisor Status */
+  riscv::csr::sstatus sstatus;
+  /* Supervisor Trap Vector Base Address */
+  riscv::csr::stvec stvec;
+  /* Supervisor Interrupt Delegation */
+  riscv::csr::sideleg sideleg;
+  /* Supervisor Exception Delegation */
+  riscv::csr::sedeleg sedeleg;
+  /* Supervisor Interrupt Pending */
+  riscv::csr::sip sip;
+  /* Supervisor Interrupt Enable */
+  riscv::csr::sie sie;
+  /* Supervisor bad address or instruction. */
+  riscv::csr::stval stval;
+  /* Supervisor address translation and protection. */
+  riscv::csr::satp satp;
+};
+
+}  // namespace csr
+
+static csr::all csrs;
+
+}  // namespace riscv
+
 /**
  * riscv64 cpu 相关定义
  * @see priv-isa-asciidoc_20240411.pdf
