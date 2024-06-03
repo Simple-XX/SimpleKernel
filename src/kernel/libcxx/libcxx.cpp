@@ -16,15 +16,23 @@
 
 #include "libcxx.h"
 
-typedef void (*ctor_t)(void);
+#include <algorithm>
+
+typedef void (*function_t)(void);
 // 在 link.ld 中定义
-extern "C" ctor_t __init_array_start[];
-extern "C" ctor_t __init_array_end[];
+extern "C" function_t __init_array_start;
+extern "C" function_t __init_array_end;
+extern "C" function_t __fini_array_start;
+extern "C" function_t __fini_array_end;
 
 void CppInit(void) {
-  for (auto ctor = __init_array_start; ctor < __init_array_end; ctor++) {
-    (*ctor)();
-  }
+  std::for_each(&__init_array_start, &__init_array_end,
+                [](function_t func) { (func)(); });
+}
+
+void CppDeInit(void) {
+  std::for_each(&__fini_array_start, &__fini_array_end,
+                [](function_t func) { (func)(); });
 }
 
 uint32_t LibCxxInit(uint32_t argc, uint8_t* argv) {
