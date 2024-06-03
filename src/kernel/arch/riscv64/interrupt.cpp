@@ -29,7 +29,8 @@ Interrupt::InterruptFunc
 static Interrupt interrupt __attribute__((init_priority(101)));
 
 /// 中断处理入口 intr_s.S
-extern "C" void TrapEntry();
+extern "C" void TrapEntry() __attribute__((interrupt));
+extern "C" void __alltraps() __attribute__((interrupt));
 
 /**
  * @brief 中断处理函数
@@ -54,12 +55,14 @@ extern "C" void TrapHandler(uintptr_t xepc, uintptr_t xtval, Cpu::Xcause xcause,
   (void)satp;
   (void)sscratch;
 
+  printf("sepc: 0x%X\n", Cpu::ReadSepc());
+
   printf("xepc: 0x%p, xtval: 0x%p, all_regs(sp): 0x%p\n", xepc, xtval,
          all_regs);
-  std::cout << "xstatus: " << xcause << std::endl;
-  std::cout << "xie: " << xcause << std::endl;
-  std::cout << "xstatus: " << xstatus << std::endl;
-  std::cout << "satp: " << satp << std::endl;
+  // std::cout << "xstatus: " << xcause << std::endl;
+  // std::cout << "xie: " << xcause << std::endl;
+  // std::cout << "xstatus: " << xstatus << std::endl;
+  // std::cout << "satp: " << satp << std::endl;
   // 跳转到对应的处理函数
   interrupt.Do((uint64_t)xcause.val_, (uint8_t *)all_regs);
 }
@@ -69,28 +72,29 @@ Interrupt::Interrupt() {
     // 注册默认中断处理函数
     for (auto &i : interrupt_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-        printf("[%s] %d, 0x%p\n", Cpu::Xcause::kInterruptNames[cause], cause,
-               context);
+        printf("Default Interrupt handler [%s] 0x%X, 0x%p\n",
+               Cpu::Xcause::kInterruptNames[cause], cause, context);
         return 0;
       };
     }
     // 注册默认异常处理函数
     for (auto &i : exception_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-        printf("[%s] %d, 0x%p\n", Cpu::Xcause::kInterruptNames[cause], cause,
-               context);
+        printf("Default Exception handler [%s] 0x%X, 0x%p\n",
+               Cpu::Xcause::kInterruptNames[cause], cause, context);
         return 0;
       };
     }
 
     // 设置 trap vector
-    Cpu::SetStvecDirect((uint64_t)TrapEntry);
+    // Cpu::SetStvecDirect((uint64_t)TrapEntry);
+    Cpu::SetStvecDirect((uint64_t)__alltraps);
 
     // 开启 Supervisor 中断
     Cpu::EnableSupervisorIntr();
 
     // 开启内部中断
-    Cpu::EnableSupervisorSoftware();
+    // Cpu::EnableSupervisorSoftware();
 
     // 开启时钟中断
     Cpu::EnableSupervisorTimer();
@@ -149,19 +153,19 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argv;
 
   // 注册时钟中断
-  interrupt.RegisterInterruptFunc(Cpu::Xcause::kSupervisorTimerInterrupt,
+  interrupt.RegisterInterruptFunc(Cpu::Xcause::kBreakpoint,
                                   [](uint64_t, uint8_t *) -> uint64_t {
                                     printf("sss\n");
                                     static uint32_t count = 0;
                                     if (count++ == 5) {
-                                      while (1);
+                                      // while (1);
                                     }
-                                    sbi_set_timer(10000000);
                                     return 0;
                                   });
 
   // 设置时钟中断时间
-  sbi_set_timer(10000000);
+  asm("ebreak");
+  // sbi_set_timer(99999);
 
   printf("hello IntrInit\n");
 

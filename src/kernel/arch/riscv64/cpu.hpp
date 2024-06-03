@@ -25,14 +25,16 @@
 
 /**
  * riscv64 cpu 相关定义
- * @see riscv-privileged-v1.10.pd
- * https://riscv.org/wp-content/uploads/2017/05/riscv-privileged-v1.10.pdf
+ * @see priv-isa-asciidoc_20240411.pdf
+ * https://github.com/riscv/riscv-isa-manual/releases/tag/20240411/priv-isa-asciidoc.pdf
+ * @see riscv-abi.pdf
+ * https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/tag/v1.0
  */
 class Cpu {
  public:
   /**
    * Privilege Levels
-   * @see riscv-privileged-v1.10.pd#1.3
+   * @see priv-isa-asciidoc_20240411.pdf#1.2
    */
   enum {
     kPrivilegeLevelUser = 0,
@@ -42,7 +44,7 @@ class Cpu {
 
   /**
    * @brief Xstatus 寄存器定义
-   * @see riscv-privileged-v1.10.pdf#3.1.6
+   * @see priv-isa-asciidoc_20240411.pdf#3.1.6
    */
   class Xstatus {
    public:
@@ -59,27 +61,27 @@ class Cpu {
 
     union {
       struct {
-        // The UIE bit enables or disables user-mode interrupts.
-        uint64_t uie : 1;
-        // The SIE bit enables or disables all interrupts in supervisor mode.
-        uint64_t sie : 1;
         // Reserved Writes Preserve Values, Reads Ignore Values 1
         uint64_t wpri1 : 1;
+        // The SIE bit enables or disables all interrupts in supervisor mode.
+        uint64_t sie : 1;
+        uint64_t wpri2 : 1;
         // The MIE bit enables or disables all interrupts in machine mode.
         uint64_t mie : 1;
-        // The UPIE bit indicates whether user-level interrupts were enabled
-        // prior to taking a user-level trap.
-        uint64_t upie : 1;
+        uint64_t wpri3 : 1;
         // The SPIE bit indicates whether supervisor interrupts were enabled
         // prior to trapping into supervisor mode.
         uint64_t spie : 1;
-        uint64_t wpri2 : 1;
+        // The MBE, SBE, and UBE bits in mstatus and mstatush are WARL fields
+        // that control the endianness of memory accesses other than instruction
+        // fetches. Instruction fetches are always little-endian.
+        uint64_t ube : 1;
         uint64_t mpie : 1;
         // The SPP bit indicates the privilege level at which a hart was
         // executing before entering supervisor mode.
         // xPP holds the previous privilege mode.
         uint64_t spp : 1;
-        uint64_t wpri3 : 2;
+        uint64_t vs : 2;
         uint64_t mpp : 2;
         // The FS field encodes the status of the floating-point unit, including
         // the CSR fcsr and floating-point data registers f0–f31.
@@ -104,7 +106,9 @@ class Cpu {
         uint64_t uxl : 2;
         // S-mode XLEN
         uint64_t sxl : 2;
-        uint64_t wpri5 : 27;
+        uint64_t sbe : 1;
+        uint64_t mbe : 1;
+        uint64_t wpri5 : 25;
         // The SD bit is read-only and is set when either the FS or XS bits
         // encode a Dirty state (i.e., SD=((FS==11) OR (XS==11))).
         uint64_t sd : 1;
@@ -125,11 +129,8 @@ class Cpu {
     /// @}
 
     friend std::ostream &operator<<(std::ostream &os, const Xstatus &xstatus) {
-      printf("val: 0x%p, uie: %s, sie: %s, upie: %s, spie: %s, spp: %s",
-             xstatus.val_,
-             (xstatus.xstatus_.uie == true ? "Enable" : "Disable"),
+      printf("val: 0x%p, sie: %s, spie: %s, spp: %s", xstatus.val_,
              (xstatus.xstatus_.sie == true ? "Enable" : "Disable"),
-             (xstatus.xstatus_.upie == true ? "Enable" : "Disable"),
              (xstatus.xstatus_.spie == true ? "Enable" : "Disable"),
              (xstatus.xstatus_.spp == true ? "S Mode" : "U Mode")
 
@@ -140,7 +141,7 @@ class Cpu {
 
   /**
    * @brief Xtvec 寄存器定义
-   * @see riscv-privileged-v1.10.pdf#3.1.12
+   * @see priv-isa-asciidoc_20240411.pdf#3.1.7
    */
   class Xtvec {
    public:
@@ -179,7 +180,7 @@ class Cpu {
 
   /**
    * @brief Xip 寄存器定义
-   * @see riscv-privileged-v1.10.pdf#3.1.14
+   * @see priv-isa-asciidoc_20240411.pdf#3.1.9
    */
   class Xip {
    public:
@@ -193,28 +194,28 @@ class Cpu {
 
     union {
       struct {
-        /// User-level Software Interrupt Pending
-        uint64_t usip : 1;
+        uint64_t zero0 : 1;
         /// Supervisor Software Interrupt Pending
         uint64_t ssip : 1;
-        uint64_t wpri1 : 1;
+        uint64_t zero2 : 1;
         uint64_t msip : 1;
-        /// User Timer Interrupt Pending
-        uint64_t utip : 1;
+        uint64_t zero4 : 1;
         /// Supervisor Timer Interrupt Pending
         uint64_t stip : 1;
-        uint64_t wpri2 : 1;
+        uint64_t zero6 : 1;
         /// Machine Timer Interrupt Pending
         uint64_t mtip : 1;
         /// User External Interrupt Pending
-        uint64_t ueip : 1;
+        uint64_t zero8 : 1;
         /// Supervisor External Interrupt Pending
         uint64_t seip : 1;
-        uint64_t wpri3 : 1;
+        uint64_t zero10 : 1;
         /// Machine External Interrupt Pending
         uint64_t meip : 1;
-        /// wpri
-        uint64_t wpri4 : 52;
+        uint64_t zero12 : 1;
+        uint64_t lcofip : 1;
+        uint64_t zero14_15 : 1;
+        uint64_t warl : 48;
       } xip_;
       uint64_t val_;
     };
@@ -242,7 +243,7 @@ class Cpu {
 
   /**
    * @brief Xie 寄存器定义
-   * @see riscv-privileged-v1.10.pdf#3.1.14
+   * @see priv-isa-asciidoc_20240411.pdf#3.1.9
    */
   class Xie {
    public:
@@ -256,28 +257,28 @@ class Cpu {
 
     union {
       struct {
-        /// User-level Software Interrupt Enable
-        uint64_t usie : 1;
+        uint64_t zero0 : 1;
         /// Supervisor Software Interrupt Enable
         uint64_t ssie : 1;
-        uint64_t wpri1 : 1;
+        uint64_t zero2 : 1;
         uint64_t msie : 1;
-        /// User Timer Interrupt Enable
-        uint64_t utie : 1;
+        uint64_t zero4 : 1;
         /// Supervisor Timer Interrupt Enable
         uint64_t stie : 1;
-        uint64_t wpri2 : 1;
+        uint64_t zero6 : 1;
         /// Machine Timer Interrupt Enable
         uint64_t mtie : 1;
-        /// User External Interrupt Enable
-        uint64_t ueie : 1;
+        uint64_t zero8 : 1;
         /// Supervisor External Interrupt Enable
         uint64_t seie : 1;
-        uint64_t wpri3 : 1;
+        uint64_t zero10 : 1;
         /// Machine External Interrupt Enable
         uint64_t meie : 1;
-        /// wpri
-        uint64_t wpri4 : 52;
+        uint64_t zero12 : 1;
+        uint64_t lcofie : 1;
+        uint64_t zero14_15 : 1;
+        /// warl
+        uint64_t wpri4 : 48;
       } xie_;
       uint64_t val_;
     };
@@ -305,7 +306,7 @@ class Cpu {
 
   /**
    * @brief Xcause 寄存器定义
-   * @see riscv-privileged-v1.10.pdf#3.1.20
+   * @see priv-isa-asciidoc_20240411.pdf#3.1.15
    */
   class Xcause {
    public:
@@ -419,7 +420,7 @@ class Cpu {
 
   /**
    * @brief satp 寄存器定义
-   * @see riscv-privileged-v1.10.pdf#4.1.12
+   * @see priv-isa-asciidoc_20240411.pdf#10.1.11
    */
   class Satp {
    public:
@@ -468,74 +469,73 @@ class Cpu {
    * @brief 通用寄存器
    */
   struct Xregs {
-    uintptr_t zero;
-    uintptr_t ra;
-    uintptr_t sp;
-    uintptr_t gp;
-    uintptr_t tp;
-    uintptr_t t0;
-    uintptr_t t1;
-    uintptr_t t2;
-    uintptr_t s0;
-    uintptr_t s1;
-    uintptr_t a0;
-    uintptr_t a1;
-    uintptr_t a2;
-    uintptr_t a3;
-    uintptr_t a4;
-    uintptr_t a5;
-    uintptr_t a6;
-    uintptr_t a7;
-    uintptr_t s2;
-    uintptr_t s3;
-    uintptr_t s4;
-    uintptr_t s5;
-    uintptr_t s6;
-    uintptr_t s7;
-    uintptr_t s8;
-    uintptr_t s9;
-    uintptr_t s10;
-    uintptr_t s11;
-    uintptr_t t3;
-    uintptr_t t4;
-    uintptr_t t5;
-    uintptr_t t6;
-    // friend std::ostream &operator<<(std::ostream &_os, const Xregs &_xregs)
-    // {
-    //   printf("zero: 0x%p, ", _xregs.zero);
-    //   printf("ra: 0x%p, ", _xregs.ra);
-    //   printf("sp: 0x%p, ", _xregs.sp);
-    //   printf("gp: 0x%p\n", _xregs.gp);
-    //   printf("tp: 0x%p, ", _xregs.tp);
-    //   printf("t0: 0x%p, ", _xregs.t0);
-    //   printf("t1: 0x%p, ", _xregs.t1);
-    //   printf("t2: 0x%p\n", _xregs.t2);
-    //   printf("s0: 0x%p, ", _xregs.s0);
-    //   printf("s1: 0x%p, ", _xregs.s1);
-    //   printf("a0: 0x%p, ", _xregs.a0);
-    //   printf("a1: 0x%p\n", _xregs.a1);
-    //   printf("a2: 0x%p, ", _xregs.a2);
-    //   printf("a3: 0x%p, ", _xregs.a3);
-    //   printf("a4: 0x%p, ", _xregs.a4);
-    //   printf("a5: 0x%p\n", _xregs.a5);
-    //   printf("a6: 0x%p, ", _xregs.a6);
-    //   printf("a7: 0x%p, ", _xregs.a7);
-    //   printf("s2: 0x%p, ", _xregs.s2);
-    //   printf("s3: 0x%p\n", _xregs.s3);
-    //   printf("s4: 0x%p, ", _xregs.s4);
-    //   printf("s5: 0x%p, ", _xregs.s5);
-    //   printf("s6: 0x%p, ", _xregs.s6);
-    //   printf("s7: 0x%p\n", _xregs.s7);
-    //   printf("s8: 0x%p, ", _xregs.s8);
-    //   printf("s9: 0x%p, ", _xregs.s9);
-    //   printf("s10: 0x%p, ", _xregs.s10);
-    //   printf("s11: 0x%p\n", _xregs.s11);
-    //   printf("t3: 0x%p, ", _xregs.t3);
-    //   printf("t4: 0x%p, ", _xregs.t4);
-    //   printf("t5: 0x%p, ", _xregs.t5);
-    //   printf("t6: 0x%p", _xregs.t6);
-    //   return _os;
-    // }
+    uint64_t zero;
+    uint64_t ra;
+    uint64_t sp;
+    uint64_t gp;
+    uint64_t tp;
+    uint64_t t0;
+    uint64_t t1;
+    uint64_t t2;
+    uint64_t s0;
+    uint64_t s1;
+    uint64_t a0;
+    uint64_t a1;
+    uint64_t a2;
+    uint64_t a3;
+    uint64_t a4;
+    uint64_t a5;
+    uint64_t a6;
+    uint64_t a7;
+    uint64_t s2;
+    uint64_t s3;
+    uint64_t s4;
+    uint64_t s5;
+    uint64_t s6;
+    uint64_t s7;
+    uint64_t s8;
+    uint64_t s9;
+    uint64_t s10;
+    uint64_t s11;
+    uint64_t t3;
+    uint64_t t4;
+    uint64_t t5;
+    uint64_t t6;
+    friend std::ostream &operator<<(std::ostream &os, const Xregs &xregs) {
+      printf("zero: 0x%p, ", xregs.zero);
+      printf("ra: 0x%p, ", xregs.ra);
+      printf("sp: 0x%p, ", xregs.sp);
+      printf("gp: 0x%p\n", xregs.gp);
+      printf("tp: 0x%p, ", xregs.tp);
+      printf("t0: 0x%p, ", xregs.t0);
+      printf("t1: 0x%p, ", xregs.t1);
+      printf("t2: 0x%p\n", xregs.t2);
+      printf("s0: 0x%p, ", xregs.s0);
+      printf("s1: 0x%p, ", xregs.s1);
+      printf("a0: 0x%p, ", xregs.a0);
+      printf("a1: 0x%p\n", xregs.a1);
+      printf("a2: 0x%p, ", xregs.a2);
+      printf("a3: 0x%p, ", xregs.a3);
+      printf("a4: 0x%p, ", xregs.a4);
+      printf("a5: 0x%p\n", xregs.a5);
+      printf("a6: 0x%p, ", xregs.a6);
+      printf("a7: 0x%p, ", xregs.a7);
+      printf("s2: 0x%p, ", xregs.s2);
+      printf("s3: 0x%p\n", xregs.s3);
+      printf("s4: 0x%p, ", xregs.s4);
+      printf("s5: 0x%p, ", xregs.s5);
+      printf("s6: 0x%p, ", xregs.s6);
+      printf("s7: 0x%p\n", xregs.s7);
+      printf("s8: 0x%p, ", xregs.s8);
+      printf("s9: 0x%p, ", xregs.s9);
+      printf("s10: 0x%p, ", xregs.s10);
+      printf("s11: 0x%p\n", xregs.s11);
+      printf("t3: 0x%p, ", xregs.t3);
+      printf("t4: 0x%p, ", xregs.t4);
+      printf("t5: 0x%p, ", xregs.t5);
+      printf("t6: 0x%p", xregs.t6);
+      return os;
+    }
   };
 
   /**
@@ -574,149 +574,42 @@ class Cpu {
     uintptr_t ft9;
     uintptr_t ft10;
     uintptr_t ft11;
-    // friend std::ostream &operator<<(std::ostream &_os, const Fregs &_fregs)
-    // {
-    //   printf("ft0: 0x%p, ", _fregs.ft0);
-    //   printf("ft1: 0x%p, ", _fregs.ft1);
-    //   printf("ft2: 0x%p, ", _fregs.ft2);
-    //   printf("ft3: 0x%p\n", _fregs.ft3);
-    //   printf("ft4: 0x%p, ", _fregs.ft4);
-    //   printf("ft5: 0x%p, ", _fregs.ft5);
-    //   printf("ft6: 0x%p, ", _fregs.ft6);
-    //   printf("ft7: 0x%p\n", _fregs.ft7);
-    //   printf("fs0: 0x%p, ", _fregs.fs0);
-    //   printf("fs1: 0x%p, ", _fregs.fs1);
-    //   printf("fa0: 0x%p, ", _fregs.fa0);
-    //   printf("fa1: 0x%p\n", _fregs.fa1);
-    //   printf("fa2: 0x%p, ", _fregs.fa2);
-    //   printf("fa3: 0x%p, ", _fregs.fa3);
-    //   printf("fa4: 0x%p, ", _fregs.fa4);
-    //   printf("fa5: 0x%p\n", _fregs.fa5);
-    //   printf("fa6: 0x%p, ", _fregs.fa6);
-    //   printf("fa7: 0x%p, ", _fregs.fa7);
-    //   printf("fs2: 0x%p, ", _fregs.fs2);
-    //   printf("fs3: 0x%p\n", _fregs.fs3);
-    //   printf("fs4: 0x%p, ", _fregs.fs4);
-    //   printf("fs5: 0x%p, ", _fregs.fs5);
-    //   printf("fs6: 0x%p, ", _fregs.fs6);
-    //   printf("fs7: 0x%p\n", _fregs.fs7);
-    //   printf("fs8: 0x%p, ", _fregs.fs8);
-    //   printf("fs9: 0x%p, ", _fregs.fs9);
-    //   printf("fs10: 0x%p, ", _fregs.fs10);
-    //   printf("fs11: 0x%p\n", _fregs.fs11);
-    //   printf("ft8: 0x%p, ", _fregs.ft8);
-    //   printf("ft9: 0x%p, ", _fregs.ft9);
-    //   printf("ft10: 0x%p, ", _fregs.ft10);
-    //   printf("ft11: 0x%p", _fregs.ft11);
-    //   return _os;
-    // }
+    friend std::ostream &operator<<(std::ostream &os, const Fregs &fregs) {
+      printf("ft0: 0x%p, ", fregs.ft0);
+      printf("ft1: 0x%p, ", fregs.ft1);
+      printf("ft2: 0x%p, ", fregs.ft2);
+      printf("ft3: 0x%p\n", fregs.ft3);
+      printf("ft4: 0x%p, ", fregs.ft4);
+      printf("ft5: 0x%p, ", fregs.ft5);
+      printf("ft6: 0x%p, ", fregs.ft6);
+      printf("ft7: 0x%p\n", fregs.ft7);
+      printf("fs0: 0x%p, ", fregs.fs0);
+      printf("fs1: 0x%p, ", fregs.fs1);
+      printf("fa0: 0x%p, ", fregs.fa0);
+      printf("fa1: 0x%p\n", fregs.fa1);
+      printf("fa2: 0x%p, ", fregs.fa2);
+      printf("fa3: 0x%p, ", fregs.fa3);
+      printf("fa4: 0x%p, ", fregs.fa4);
+      printf("fa5: 0x%p\n", fregs.fa5);
+      printf("fa6: 0x%p, ", fregs.fa6);
+      printf("fa7: 0x%p, ", fregs.fa7);
+      printf("fs2: 0x%p, ", fregs.fs2);
+      printf("fs3: 0x%p\n", fregs.fs3);
+      printf("fs4: 0x%p, ", fregs.fs4);
+      printf("fs5: 0x%p, ", fregs.fs5);
+      printf("fs6: 0x%p, ", fregs.fs6);
+      printf("fs7: 0x%p\n", fregs.fs7);
+      printf("fs8: 0x%p, ", fregs.fs8);
+      printf("fs9: 0x%p, ", fregs.fs9);
+      printf("fs10: 0x%p, ", fregs.fs10);
+      printf("fs11: 0x%p\n", fregs.fs11);
+      printf("ft8: 0x%p, ", fregs.ft8);
+      printf("ft9: 0x%p, ", fregs.ft9);
+      printf("ft10: 0x%p, ", fregs.ft10);
+      printf("ft11: 0x%p", fregs.ft11);
+      return os;
+    }
   };
-
-  /**
-   * @brief 所有寄存器，在中断时使用，共 32+32+7=71 个
-   */
-  struct AllRegs {
-    Xregs xregs;
-    Fregs fregs;
-    uintptr_t sepc;
-    uintptr_t stval;
-    Xcause xcause;
-    Xie xie;
-    Xstatus xstatus;
-    Satp satp;
-    uintptr_t sscratch;
-    // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const AllRegs &all_regs) {
-    //   (void)all_regs.fregs;
-    //   _os << all_regs.xregs << std::endl;
-    //   printf(
-    //       "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, xstatus: "
-    //       "0x%p, satp: 0x%p, sscratch: 0x%p",
-    //       all_regs.sepc, all_regs.stval, all_regs.scause, all_regs.sie,
-    //       all_regs.xstatus_.val, all_regs.satp.val, all_regs.sscratch);
-    //   return _os;
-    // }
-  };
-
-  /**
-   * @brief 读取所有寄存器
-   * @param  all_regs        要保存读取到的的值
-   */
-  static inline void ReadAllRegs(AllRegs &all_regs) {
-    asm("mv %0, zero" : "=r"(all_regs.xregs.zero));
-    asm("mv %0, ra" : "=r"(all_regs.xregs.ra));
-    asm("mv %0, sp" : "=r"(all_regs.xregs.sp));
-    asm("mv %0, gp" : "=r"(all_regs.xregs.gp));
-    asm("mv %0, tp" : "=r"(all_regs.xregs.tp));
-    asm("mv %0, t0" : "=r"(all_regs.xregs.t0));
-    asm("mv %0, t1" : "=r"(all_regs.xregs.t1));
-    asm("mv %0, t2" : "=r"(all_regs.xregs.t2));
-    asm("mv %0, s0" : "=r"(all_regs.xregs.s0));
-    asm("mv %0, s1" : "=r"(all_regs.xregs.s1));
-    asm("mv %0, a0" : "=r"(all_regs.xregs.a0));
-    asm("mv %0, a1" : "=r"(all_regs.xregs.a1));
-    asm("mv %0, a2" : "=r"(all_regs.xregs.a2));
-    asm("mv %0, a3" : "=r"(all_regs.xregs.a3));
-    asm("mv %0, a4" : "=r"(all_regs.xregs.a4));
-    asm("mv %0, a5" : "=r"(all_regs.xregs.a5));
-    asm("mv %0, a6" : "=r"(all_regs.xregs.a6));
-    asm("mv %0, a7" : "=r"(all_regs.xregs.a7));
-    asm("mv %0, s2" : "=r"(all_regs.xregs.s2));
-    asm("mv %0, s3" : "=r"(all_regs.xregs.s3));
-    asm("mv %0, s4" : "=r"(all_regs.xregs.s4));
-    asm("mv %0, s5" : "=r"(all_regs.xregs.s5));
-    asm("mv %0, s6" : "=r"(all_regs.xregs.s6));
-    asm("mv %0, s7" : "=r"(all_regs.xregs.s7));
-    asm("mv %0, s8" : "=r"(all_regs.xregs.s8));
-    asm("mv %0, s9" : "=r"(all_regs.xregs.s9));
-    asm("mv %0, s10" : "=r"(all_regs.xregs.s10));
-    asm("mv %0, s11" : "=r"(all_regs.xregs.s11));
-    asm("mv %0, t3" : "=r"(all_regs.xregs.t3));
-    asm("mv %0, t4" : "=r"(all_regs.xregs.t4));
-    asm("mv %0, t5" : "=r"(all_regs.xregs.t5));
-    asm("mv %0, t6" : "=r"(all_regs.xregs.t6));
-
-    //    asm("mv %0, ft0" : "=r"(all_regs.fregs.ft0));
-    //    asm("mv %0, ft1" : "=r"(all_regs.fregs.ft1));
-    //    asm("mv %0, ft2" : "=r"(all_regs.fregs.ft2));
-    //    asm("mv %0, ft3" : "=r"(all_regs.fregs.ft3));
-    //    asm("mv %0, ft4" : "=r"(all_regs.fregs.ft4));
-    //    asm("mv %0, ft5" : "=r"(all_regs.fregs.ft5));
-    //    asm("mv %0, ft6" : "=r"(all_regs.fregs.ft6));
-    //    asm("mv %0, ft7" : "=r"(all_regs.fregs.ft7));
-    //    asm("mv %0, fs0" : "=r"(all_regs.fregs.fs0));
-    //    asm("mv %0, fs1" : "=r"(all_regs.fregs.fs1));
-    //    asm("mv %0, fa0" : "=r"(all_regs.fregs.fa0));
-    //    asm("mv %0, fa1" : "=r"(all_regs.fregs.fa1));
-    //    asm("mv %0, fa2" : "=r"(all_regs.fregs.fa2));
-    //    asm("mv %0, fa3" : "=r"(all_regs.fregs.fa3));
-    //    asm("mv %0, fa4" : "=r"(all_regs.fregs.fa4));
-    //    asm("mv %0, fa5" : "=r"(all_regs.fregs.fa5));
-    //    asm("mv %0, fa6" : "=r"(all_regs.fregs.fa6));
-    //    asm("mv %0, fa7" : "=r"(all_regs.fregs.fa7));
-    //    asm("mv %0, fs2" : "=r"(all_regs.fregs.fs2));
-    //    asm("mv %0, fs3" : "=r"(all_regs.fregs.fs3));
-    //    asm("mv %0, fs4" : "=r"(all_regs.fregs.fs4));
-    //    asm("mv %0, fs5" : "=r"(all_regs.fregs.fs5));
-    //    asm("mv %0, fs6" : "=r"(all_regs.fregs.fs6));
-    //    asm("mv %0, fs7" : "=r"(all_regs.fregs.fs7));
-    //    asm("mv %0, fs8" : "=r"(all_regs.fregs.fs8));
-    //    asm("mv %0, fs9" : "=r"(all_regs.fregs.fs9));
-    //    asm("mv %0, fs10" : "=r"(all_regs.fregs.fs10));
-    //    asm("mv %0, fs11" : "=r"(all_regs.fregs.fs11));
-    //    asm("mv %0, ft8" : "=r"(all_regs.fregs.ft8));
-    //    asm("mv %0, ft9" : "=r"(all_regs.fregs.ft9));
-    //    asm("mv %0, ft10" : "=r"(all_regs.fregs.ft10));
-    //    asm("mv %0, ft11" : "=r"(all_regs.fregs.ft11));
-
-    asm volatile("csrr %0, sepc" : "=r"(all_regs.sepc));
-    asm volatile("csrr %0, stval" : "=r"(all_regs.stval));
-    asm volatile("csrr %0, scause" : "=r"(all_regs.xcause));
-    asm volatile("csrr %0, xstatus" : "=r"(all_regs.xstatus));
-    asm volatile("csrr %0, sscratch" : "=r"(all_regs.sscratch));
-
-    return;
-  }
 
   /**
    * @brief 调用者保存寄存器
@@ -857,6 +750,112 @@ class Cpu {
     //   return _os;
     // }
   };
+
+  /**
+   * @brief 所有寄存器，在中断时使用，共 32+32+7=71 个
+   */
+  struct AllRegs {
+    Xregs xregs;
+    Fregs fregs;
+    uintptr_t sepc;
+    uintptr_t stval;
+    Xcause xcause;
+    Xie xie;
+    Xstatus xstatus;
+    Satp satp;
+    uintptr_t sscratch;
+    // friend std::ostream &operator<<(std::ostream &_os,
+    //                                 const AllRegs &all_regs) {
+    //   (void)all_regs.fregs;
+    //   _os << all_regs.xregs << std::endl;
+    //   printf(
+    //       "sepc: 0x%p, stval: 0x%p, scause: 0x%p, sie: 0x%p, xstatus: "
+    //       "0x%p, satp: 0x%p, sscratch: 0x%p",
+    //       all_regs.sepc, all_regs.stval, all_regs.scause, all_regs.sie,
+    //       all_regs.xstatus_.val, all_regs.satp.val, all_regs.sscratch);
+    //   return _os;
+    // }
+  };
+
+  /**
+   * @brief 读取所有寄存器
+   * @param  all_regs        要保存读取到的的值
+   */
+  static inline void ReadAllRegs(AllRegs &all_regs) {
+    asm("mv %0, zero" : "=r"(all_regs.xregs.zero));
+    asm("mv %0, ra" : "=r"(all_regs.xregs.ra));
+    asm("mv %0, sp" : "=r"(all_regs.xregs.sp));
+    asm("mv %0, gp" : "=r"(all_regs.xregs.gp));
+    asm("mv %0, tp" : "=r"(all_regs.xregs.tp));
+    asm("mv %0, t0" : "=r"(all_regs.xregs.t0));
+    asm("mv %0, t1" : "=r"(all_regs.xregs.t1));
+    asm("mv %0, t2" : "=r"(all_regs.xregs.t2));
+    asm("mv %0, s0" : "=r"(all_regs.xregs.s0));
+    asm("mv %0, s1" : "=r"(all_regs.xregs.s1));
+    asm("mv %0, a0" : "=r"(all_regs.xregs.a0));
+    asm("mv %0, a1" : "=r"(all_regs.xregs.a1));
+    asm("mv %0, a2" : "=r"(all_regs.xregs.a2));
+    asm("mv %0, a3" : "=r"(all_regs.xregs.a3));
+    asm("mv %0, a4" : "=r"(all_regs.xregs.a4));
+    asm("mv %0, a5" : "=r"(all_regs.xregs.a5));
+    asm("mv %0, a6" : "=r"(all_regs.xregs.a6));
+    asm("mv %0, a7" : "=r"(all_regs.xregs.a7));
+    asm("mv %0, s2" : "=r"(all_regs.xregs.s2));
+    asm("mv %0, s3" : "=r"(all_regs.xregs.s3));
+    asm("mv %0, s4" : "=r"(all_regs.xregs.s4));
+    asm("mv %0, s5" : "=r"(all_regs.xregs.s5));
+    asm("mv %0, s6" : "=r"(all_regs.xregs.s6));
+    asm("mv %0, s7" : "=r"(all_regs.xregs.s7));
+    asm("mv %0, s8" : "=r"(all_regs.xregs.s8));
+    asm("mv %0, s9" : "=r"(all_regs.xregs.s9));
+    asm("mv %0, s10" : "=r"(all_regs.xregs.s10));
+    asm("mv %0, s11" : "=r"(all_regs.xregs.s11));
+    asm("mv %0, t3" : "=r"(all_regs.xregs.t3));
+    asm("mv %0, t4" : "=r"(all_regs.xregs.t4));
+    asm("mv %0, t5" : "=r"(all_regs.xregs.t5));
+    asm("mv %0, t6" : "=r"(all_regs.xregs.t6));
+
+    //    asm("mv %0, ft0" : "=r"(all_regs.fregs.ft0));
+    //    asm("mv %0, ft1" : "=r"(all_regs.fregs.ft1));
+    //    asm("mv %0, ft2" : "=r"(all_regs.fregs.ft2));
+    //    asm("mv %0, ft3" : "=r"(all_regs.fregs.ft3));
+    //    asm("mv %0, ft4" : "=r"(all_regs.fregs.ft4));
+    //    asm("mv %0, ft5" : "=r"(all_regs.fregs.ft5));
+    //    asm("mv %0, ft6" : "=r"(all_regs.fregs.ft6));
+    //    asm("mv %0, ft7" : "=r"(all_regs.fregs.ft7));
+    //    asm("mv %0, fs0" : "=r"(all_regs.fregs.fs0));
+    //    asm("mv %0, fs1" : "=r"(all_regs.fregs.fs1));
+    //    asm("mv %0, fa0" : "=r"(all_regs.fregs.fa0));
+    //    asm("mv %0, fa1" : "=r"(all_regs.fregs.fa1));
+    //    asm("mv %0, fa2" : "=r"(all_regs.fregs.fa2));
+    //    asm("mv %0, fa3" : "=r"(all_regs.fregs.fa3));
+    //    asm("mv %0, fa4" : "=r"(all_regs.fregs.fa4));
+    //    asm("mv %0, fa5" : "=r"(all_regs.fregs.fa5));
+    //    asm("mv %0, fa6" : "=r"(all_regs.fregs.fa6));
+    //    asm("mv %0, fa7" : "=r"(all_regs.fregs.fa7));
+    //    asm("mv %0, fs2" : "=r"(all_regs.fregs.fs2));
+    //    asm("mv %0, fs3" : "=r"(all_regs.fregs.fs3));
+    //    asm("mv %0, fs4" : "=r"(all_regs.fregs.fs4));
+    //    asm("mv %0, fs5" : "=r"(all_regs.fregs.fs5));
+    //    asm("mv %0, fs6" : "=r"(all_regs.fregs.fs6));
+    //    asm("mv %0, fs7" : "=r"(all_regs.fregs.fs7));
+    //    asm("mv %0, fs8" : "=r"(all_regs.fregs.fs8));
+    //    asm("mv %0, fs9" : "=r"(all_regs.fregs.fs9));
+    //    asm("mv %0, fs10" : "=r"(all_regs.fregs.fs10));
+    //    asm("mv %0, fs11" : "=r"(all_regs.fregs.fs11));
+    //    asm("mv %0, ft8" : "=r"(all_regs.fregs.ft8));
+    //    asm("mv %0, ft9" : "=r"(all_regs.fregs.ft9));
+    //    asm("mv %0, ft10" : "=r"(all_regs.fregs.ft10));
+    //    asm("mv %0, ft11" : "=r"(all_regs.fregs.ft11));
+
+    asm volatile("csrr %0, sepc" : "=r"(all_regs.sepc));
+    asm volatile("csrr %0, stval" : "=r"(all_regs.stval));
+    asm volatile("csrr %0, scause" : "=r"(all_regs.xcause));
+    asm volatile("csrr %0, xstatus" : "=r"(all_regs.xstatus));
+    asm volatile("csrr %0, sscratch" : "=r"(all_regs.sscratch));
+
+    return;
+  }
 
   /**
    * @brief 上下文，用于任务切换
