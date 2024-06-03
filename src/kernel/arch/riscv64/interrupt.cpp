@@ -163,18 +163,18 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   auto sscratch = Sscratch();
   auto sepc = Sepc();
   auto scause = Scause();
-  
   scause.WriteImm(2);
   scause.SetBitsImm(0xF);
   scause.interrupt.Set();
-  // scause.SetConst<0xF>();
+  scause.SetConst<0xF>();
 
-  // scause.ReadClearBitsConst<0>();
+  scause.ReadWriteConst<0>();
 
-  // auto interrupt = scause.interrupt.Get();
   printf("sscratch.Read(): 0x%p\n", sscratch.Read());
   printf("sepc.Read(): 0x%p\n", sepc.Read());
   printf("scause.Read(): 0x%p\n", scause.Read());
+  printf("scause.interrupt.Get(): 0x%p\n", scause.interrupt.Get());
+  printf("scause.exception_code.Get(): 0x%p\n", scause.exception_code.Get());
 
   return 0;
 }

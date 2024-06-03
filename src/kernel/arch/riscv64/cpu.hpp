@@ -19,6 +19,8 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <type_traits>
+#include <typeinfo>
 
 #include "iostream"
 #include "stdio.h"
@@ -1119,9 +1121,38 @@ class Cpu {
 /// 立即数掩码，大于这个值需要使用寄存器中转
 static constexpr uint64_t kCsrImmOpMask = 0x1F;
 
+struct SscratchInfo {
+ public:
+};
+
+struct SepcInfo {
+ public:
+};
+
+struct ScauseInfo {
+  struct Interrupt {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 63;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = (1UL << 63);
+    static constexpr uint64_t kAllSetMask = 1;
+  };
+
+  /// @brief  @tidi 确认掩码
+  struct ExceptionCode {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 63;
+    static constexpr uint64_t kBitMask = ~(1UL << 63);
+    static constexpr uint64_t kAllSetMask = ~(1UL << 63);
+  };
+};
+
 /**
  * 只读接口
+ * @tparam 寄存器类型
  */
+template <class Reg>
 class ReadOnlyRegBase {
  public:
   /// @name 构造/析构函数
@@ -1131,24 +1162,36 @@ class ReadOnlyRegBase {
   ReadOnlyRegBase(ReadOnlyRegBase &&) = delete;
   auto operator=(const ReadOnlyRegBase &) -> ReadOnlyRegBase & = delete;
   auto operator=(ReadOnlyRegBase &&) -> ReadOnlyRegBase & = delete;
-  virtual ~ReadOnlyRegBase() = default;
+  ~ReadOnlyRegBase() = default;
   /// @}
 
   /**
    * 读 csr 寄存器
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t Read() = 0;
+  static inline uint64_t Read() {
+    uint64_t value = -1;
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrr %0, sscratch" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrr %0, sepc" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrr %0, scause" : "=r"(value) : :);
+    }
+    return value;
+  }
 
   /**
    * () 重载
    */
-  virtual inline uint64_t operator()() { return Read(); }
+  static inline uint64_t operator()() { return Read(); }
 };
 
 /**
  * 只写接口
+ * @tparam 寄存器类型
  */
+template <class Reg>
 class WriteOnlyRegBase {
  public:
   /// @name 构造/析构函数
@@ -1165,21 +1208,47 @@ class WriteOnlyRegBase {
    * 写 csr 寄存器
    * @param value 要写的值
    */
-  virtual inline void Write(uint64_t value) = 0;
+  static inline void Write(uint64_t value) {
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrw sscratch, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrw sepc, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrw scause, %0" : : "r"(value) :);
+    }
+  }
 
   /**
    * 写 csr 寄存器，不通过寄存器中转
    * @param value 要写的值
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline void WriteImm(const uint8_t value) = 0;
+  static inline void WriteImm(const uint8_t value) {
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrwi sscratch, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrwi sepc, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrwi scause, %0" : : "i"(value) :);
+    }
+  }
 
   /**
    * 先读后写寄存器
    * @param value 要写的值
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadWrite(uint64_t value) = 0;
+  static inline uint64_t ReadWrite(uint64_t value) {
+    uint64_t old_value;
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrw %0, sscratch, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrw %0, sepc, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
+    }
+    return old_value;
+  }
 
   /**
    * 先读后写寄存器，不通过寄存器中转
@@ -1187,73 +1256,150 @@ class WriteOnlyRegBase {
    * @return uint64_t 寄存器的值
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline uint64_t ReadWriteImm(const uint8_t value) = 0;
+  static inline uint64_t ReadWriteImm(const uint8_t value) {
+    uint64_t old_value;
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrwi %0, sscratch, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrwi %0, sepc, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrwi %0, scause, %1" : "=r"(old_value) : "i"(value) :);
+    }
+    return old_value;
+  }
 
   /**
    * 通过掩码设置寄存器
    * @param mask 掩码
    */
-  virtual inline void SetBits(uint64_t mask) = 0;
+  static inline void SetBits(uint64_t mask) {
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrs zero, sscratch, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrs zero, sepc, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrs zero, scause, %0" : : "r"(mask) :);
+    }
+  }
 
   /**
    * 先读后通过掩码设置寄存器
    * @param mask 掩码
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadSetBits(uint64_t value) = 0;
+  static inline uint64_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    }
+    return value;
+  }
 
   /**
    * 清零寄存器
    * @param mask 掩码
    */
-  virtual inline void ClearBits(uint64_t mask) = 0;
+  static inline void ClearBits(uint64_t mask) {
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrc zero, sscratch, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrc zero, sepc, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrc zero, scause, %0" : : "r"(mask) :);
+    }
+  }
 
   /**
    * 先读后清零寄存器
    * @param mask 掩码
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadClearBits(uint64_t mask) = 0;
+  static inline uint64_t ReadClearBits(uint64_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
+    }
+    return value;
+  }
 
   /**
    * 通过掩码设置寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline void SetBitsImm(const uint8_t mask) = 0;
+  static inline void SetBitsImm(const uint8_t mask) {
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrsi zero, sscratch, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrsi zero, sepc, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrsi zero, scause, %0" : : "i"(mask) :);
+    }
+  }
 
   /**
    * 先读后通过掩码设置寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline uint64_t ReadSetBitsImm(const uint8_t mask) = 0;
+  static inline uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    }
+    return value;
+  }
 
   /**
    * 清零寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline void ClearBitsImm(const uint8_t mask) = 0;
+  static inline void ClearBitsImm(const uint8_t mask) {
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrci zero, sscratch, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrci zero, sepc, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrci zero, scause, %0" : : "i"(mask) :);
+    }
+  }
 
   /**
    * 先读后清零寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  virtual inline uint64_t ReadClearBitsImm(const uint8_t mask) = 0;
-
-  /**
-   * |= 重载
-   */
-  virtual inline void operator|=(uint64_t mask) { SetBits(mask); }
+  static inline uint64_t ReadClearBitsImm(const uint8_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
+    }
+    return value;
+  }
 
   /**
    * 向寄存器写常数
    * @tparam value 常数的值
    */
   template <uint64_t value>
-  void WriteConst() {
+  static void WriteConst() {
     if constexpr ((value & kCsrImmOpMask) == value) {
       WriteImm(value);
     } else {
@@ -1266,7 +1412,7 @@ class WriteOnlyRegBase {
    * @tparam mask 掩码
    */
   template <uint64_t mask>
-  void SetConst() {
+  static void SetConst() {
     if constexpr ((mask & kCsrImmOpMask) == mask) {
       SetBitsImm(mask);
     } else {
@@ -1279,19 +1425,27 @@ class WriteOnlyRegBase {
    * @tparam mask 掩码
    */
   template <uint64_t mask>
-  void ClearConst() {
+  static void ClearConst() {
     if constexpr ((mask & kCsrImmOpMask) == mask) {
       ClearBitsImm(mask);
     } else {
       ClearBits(mask);
     }
   }
+
+  /**
+   * |= 重载
+   */
+  inline void operator|=(uint64_t mask) { SetBits(mask); }
 };
 
 /**
  * 读写接口
+ * @tparam 寄存器类型
  */
-class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
+template <class Reg>
+class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
+                         public WriteOnlyRegBase<Reg> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1300,7 +1454,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
   ReadWriteRegBase(ReadWriteRegBase &&) = delete;
   auto operator=(const ReadWriteRegBase &) -> ReadWriteRegBase & = delete;
   auto operator=(ReadWriteRegBase &&) -> ReadWriteRegBase & = delete;
-  virtual ~ReadWriteRegBase() = default;
+  ~ReadWriteRegBase() = default;
   /// @}
 
   /**
@@ -1309,9 +1463,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @return uint64_t 寄存器的值
    */
   template <uint64_t value>
-  uint64_t ReadWriteConst() {
+  static uint64_t ReadWriteConst() {
     if constexpr ((value & kCsrImmOpMask) == value) {
-      return ReadWriteImm(value);
+      return ReadWriteRegBase<Reg>::ReadWriteImm(value);
     } else {
       return ReadWrite(value);
     }
@@ -1322,7 +1476,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @tparam value 要写的值
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadWrite(uint64_t value) { return ReadWrite(value); }
+  static inline uint64_t ReadWrite(uint64_t value) { return ReadWrite(value); }
 
   /**
    * 通过常数掩码先读后写寄存器
@@ -1330,9 +1484,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @return uint64_t 寄存器的值
    */
   template <uint64_t mask>
-  uint64_t ReadSetBitsConst() {
+  static uint64_t ReadSetBitsConst() {
     if constexpr ((mask & kCsrImmOpMask) == mask) {
-      return ReadSetBitsImm(mask);
+      return WriteOnlyRegBase<Reg>::ReadSetBitsImm(mask);
     } else {
       return ReadSetBits(mask);
     }
@@ -1343,7 +1497,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @param mask 掩码
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadSetBits(uint64_t mask) {
+  static inline uint64_t ReadSetBits(uint64_t mask) {
     return ReadSetBits(mask);
   }
 
@@ -1353,9 +1507,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @return uint64_t 寄存器的值
    */
   template <uint64_t mask>
-  uint64_t ReadClearBitsConst() {
+  static uint64_t ReadClearBitsConst() {
     if constexpr ((mask & kCsrImmOpMask) == mask) {
-      return ReadClearBitsImm(mask);
+      return WriteOnlyRegBase<Reg>::ReadClearBitsImm(mask);
     } else {
       return ReadClearBits(mask);
     }
@@ -1366,7 +1520,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
    * @param mask 掩码
    * @return uint64_t 寄存器的值
    */
-  virtual inline uint64_t ReadClearBits(uint64_t mask) {
+  static inline uint64_t ReadClearBits(uint64_t mask) {
     return ReadClearBits(mask);
   }
 };
@@ -1386,14 +1540,14 @@ class ReadOnlyField {
   ReadOnlyField(ReadOnlyField &&) = delete;
   auto operator=(const ReadOnlyField &) -> ReadOnlyField & = delete;
   auto operator=(ReadOnlyField &&) -> ReadOnlyField & = delete;
-  virtual ~ReadOnlyField() = default;
+  ~ReadOnlyField() = default;
   /// @}
 
   /**
    * 获取对应 Reg 的由 Info 规定的指定位的值
    * @return uint64_t 指定位值
    */
-  inline uint64_t Get() {
+  static inline uint64_t Get() {
     return (uint64_t)((Reg::Read() & Info::kBitMask) >> Info::kBitOffset);
   }
 };
@@ -1413,13 +1567,13 @@ class WriteOnlyField {
   WriteOnlyField(WriteOnlyField &&) = delete;
   auto operator=(const WriteOnlyField &) -> WriteOnlyField & = delete;
   auto operator=(WriteOnlyField &&) -> WriteOnlyField & = delete;
-  virtual ~WriteOnlyField() = default;
+  ~WriteOnlyField() = default;
   /// @}
 
   /**
    * 置位对应 Reg 的由 Info 规定的指定位
    */
-  void Set() {
+  static inline void Set() {
     if constexpr ((Info::kBitMask & kCsrImmOpMask) == Info::kBitMask) {
       Reg::SetBitsImm(Info::kBitMask);
     } else {
@@ -1430,7 +1584,7 @@ class WriteOnlyField {
   /**
    * 清零对应 Reg 的由 Info 规定的指定位
    */
-  void Clear() {
+  static inline void Clear() {
     if constexpr ((Info::kBitMask & kCsrImmOpMask) == Info::kBitMask) {
       Reg::ClearBitsImm(Info::kBitMask);
     } else {
@@ -1455,14 +1609,14 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
   ReadWriteField(ReadWriteField &&) = delete;
   auto operator=(const ReadWriteField &) -> ReadWriteField & = delete;
   auto operator=(ReadWriteField &&) -> ReadWriteField & = delete;
-  virtual ~ReadWriteField() = default;
+  ~ReadWriteField() = default;
   /// @}
 
   /**
    * 将寄存器的原值替换为指定值
    * @param value 新值
    */
-  inline void Write(Info::DataType value) {
+  static inline void Write(Info::DataType value) {
     auto org_value = Reg::Read();
     auto new_value =
         (org_value & ~Info::kBitMask) |
@@ -1475,7 +1629,7 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    * @param value 新值
    * @return Info::DataType 由寄存器规定的数据类型
    */
-  inline Info::DataType ReadWrite(Info::DataType value) {
+  static inline Info::DataType ReadWrite(Info::DataType value) {
     auto org_value = Reg::Read();
     auto new_value =
         (org_value & ~Info::kBitMask) |
@@ -1485,7 +1639,7 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
   }
 };
 
-class Sscratch : public ReadWriteRegBase {
+class Sscratch : public ReadWriteRegBase<SscratchInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1496,75 +1650,9 @@ class Sscratch : public ReadWriteRegBase {
   auto operator=(Sscratch &&) -> Sscratch & = delete;
   virtual ~Sscratch() = default;
   /// @}
-
-  uint64_t Read() override {
-    uint64_t value;
-    asm("csrr %0, sscratch" : "=r"(value) : :);
-    return value;
-  }
-
-  void Write(uint64_t value) override {
-    asm("csrw sscratch, %0" : : "r"(value) :);
-  }
-
-  void WriteImm(const uint8_t value) override {
-    asm("csrwi sscratch, %0" : : "i"(value) :);
-  }
-
-  uint64_t ReadWrite(uint64_t value) override {
-    uint64_t prev_value;
-    asm("csrrw %0, sscratch, %1" : "=r"(prev_value) : "r"(value) :);
-    return prev_value;
-  }
-
-  uint64_t ReadWriteImm(uint8_t value) override {
-    uint64_t prev_value;
-    asm("csrrwi %0, sscratch, %1" : "=r"(prev_value) : "i"(value) :);
-    return prev_value;
-  }
-
-  void SetBits(uint64_t mask) override {
-    asm("csrrs zero, sscratch, %0" : : "r"(mask) :);
-  }
-
-  uint64_t ReadSetBits(uint64_t mask) override {
-    uint64_t value;
-    asm("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
-    return value;
-  }
-
-  void ClearBits(uint64_t mask) override {
-    asm("csrrc zero, sscratch, %0" : : "r"(mask) :);
-  }
-
-  uint64_t ReadClearBits(uint64_t mask) override {
-    uint64_t value;
-    asm("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
-    return value;
-  }
-
-  void SetBitsImm(const uint8_t mask) override {
-    asm("csrrsi zero, sscratch, %0" : : "i"(mask) :);
-  }
-
-  uint64_t ReadSetBitsImm(const uint8_t mask) override {
-    uint64_t value;
-    asm("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
-    return value;
-  }
-
-  void ClearBitsImm(const uint8_t mask) override {
-    asm("csrrci zero, sscratch, %0" : : "i"(mask) :);
-  }
-
-  uint64_t ReadClearBitsImm(const uint8_t mask) override {
-    uint64_t value;
-    asm("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
-    return value;
-  }
 };
 
-class Sepc : public ReadWriteRegBase {
+class Sepc : public ReadWriteRegBase<SepcInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1575,73 +1663,9 @@ class Sepc : public ReadWriteRegBase {
   auto operator=(Sepc &&) -> Sepc & = delete;
   virtual ~Sepc() = default;
   /// @}
-
-  uint64_t Read() override {
-    uint64_t value;
-    asm("csrr %0, sepc" : "=r"(value) : :);
-    return value;
-  }
-
-  void Write(uint64_t value) override { asm("csrw sepc, %0" : : "r"(value) :); }
-
-  void WriteImm(const uint8_t value) override {
-    asm("csrwi sepc, %0" : : "i"(value) :);
-  }
-
-  uint64_t ReadWrite(uint64_t value) override {
-    uint64_t prev_value;
-    asm("csrrw %0, sepc, %1" : "=r"(prev_value) : "r"(value) :);
-    return prev_value;
-  }
-
-  uint64_t ReadWriteImm(const uint8_t value) override {
-    uint64_t prev_value;
-    asm("csrrwi %0, sepc, %1" : "=r"(prev_value) : "i"(value) :);
-    return prev_value;
-  }
-
-  void SetBits(uint64_t mask) override {
-    asm("csrrs zero, sepc, %0" : : "r"(mask) :);
-  }
-
-  uint64_t ReadSetBits(uint64_t mask) override {
-    uint64_t value;
-    asm("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
-    return value;
-  }
-
-  void ClearBits(uint64_t mask) override {
-    asm("csrrc zero, sepc, %0" : : "r"(mask) :);
-  }
-
-  uint64_t ReadClearBits(uint64_t mask) override {
-    uint64_t value;
-    asm("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
-    return value;
-  }
-
-  void SetBitsImm(const uint8_t mask) override {
-    asm("csrrsi zero, sepc, %0" : : "i"(mask) :);
-  }
-
-  uint64_t ReadSetBitsImm(const uint8_t mask) override {
-    uint64_t value;
-    asm("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
-    return value;
-  }
-
-  void ClearBitsImm(const uint8_t mask) override {
-    asm("csrrci zero, sepc, %0" : : "i"(mask) :);
-  }
-
-  uint64_t ReadClearBitsImm(const uint8_t mask) override {
-    uint64_t value;
-    asm("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
-    return value;
-  }
 };
 
-class Scause : public ReadWriteRegBase {
+class Scause : public ReadWriteRegBase<ScauseInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1653,93 +1677,9 @@ class Scause : public ReadWriteRegBase {
   virtual ~Scause() = default;
   /// @}
 
-  uint64_t Read() override {
-    uint64_t value;
-    asm("csrr %0, scause" : "=r"(value) : :);
-    return value;
-  }
-
-  void Write(uint64_t value) override {
-    asm("csrw scause, %0" : : "r"(value) :);
-  }
-
-  void WriteImm(const uint8_t value) override {
-    asm("csrwi scause, %0" : : "i"(value) :);
-  }
-
-  uint64_t ReadWrite(uint64_t value) override {
-    uint64_t prev_value;
-    asm("csrrw %0, scause, %1" : "=r"(prev_value) : "r"(value) :);
-    return prev_value;
-  }
-
-  uint64_t ReadWriteImm(const uint8_t value) override {
-    uint64_t prev_value;
-    asm("csrrwi %0, scause, %1" : "=r"(prev_value) : "i"(value) :);
-    return prev_value;
-  }
-
-  void SetBits(uint64_t mask) override {
-    asm("csrrs zero, scause, %0" : : "r"(mask) :);
-  }
-
-  uint64_t ReadSetBits(uint64_t mask) override {
-    uint64_t value;
-    asm("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
-    return value;
-  }
-
-  void ClearBits(uint64_t mask) override {
-    asm("csrrc zero, scause, %0" : : "r"(mask) :);
-  }
-
-  uint64_t ReadClearBits(uint64_t mask) override {
-    uint64_t value;
-    asm("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
-    return value;
-  }
-
-  void SetBitsImm(const uint8_t mask) override {
-    asm("csrrsi zero, scause, %0" : : "i"(mask) :);
-  }
-
-  uint64_t ReadSetBitsImm(const uint8_t mask) override {
-    uint64_t value;
-    asm("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
-    return value;
-  }
-
-  void ClearBitsImm(const uint8_t mask) override {
-    asm("csrrci zero, scause, %0" : : "i"(mask) :);
-  }
-
-  uint64_t ReadClearBitsImm(const uint8_t mask) override {
-    uint64_t value;
-    asm("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
-    return value;
-  }
-
-  struct ScauseInfo {
-    struct Interrupt {
-      using DataType = uint64_t;
-      static constexpr uint64_t kBitOffset = 63;
-      static constexpr uint64_t kBitWidth = 1;
-      static constexpr uint64_t kBitMask = (0x1UL << 63);
-      static constexpr uint64_t kAllSetMask = 0x1;
-    };
-
-    /// @brief  @tidi 确认掩码
-    struct ExceptionCode {
-      using DataType = uint64_t;
-      static constexpr uint64_t kBitOffset = 0;
-      static constexpr uint64_t kBitWidth = 63;
-      static constexpr uint64_t kBitMask = 1UL << 62;
-      static constexpr uint64_t kAllSetMask = 1UL << 62;
-    };
-  };
-
-  ReadWriteField<Scause, ScauseInfo::Interrupt> interrupt;
-  ReadWriteField<Scause, ScauseInfo::ExceptionCode> exception_code;
+  ReadWriteField<ReadWriteRegBase<ScauseInfo>, ScauseInfo::Interrupt> interrupt;
+  ReadWriteField<ReadWriteRegBase<ScauseInfo>, ScauseInfo::ExceptionCode>
+      exception_code;
 };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
