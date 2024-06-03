@@ -169,6 +169,8 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   scause.SetConst<0xF>();
   scause.ReadWriteConst<0>();
   auto sstatus = Sstatus();
+  auto sideleg = Sideleg();
+  auto sedeleg = Sedeleg();
 
   printf("sscratch.Read(): 0x%p\n", sscratch.Read());
   printf("sepc.Read(): 0x%p\n", sepc.Read());
@@ -178,6 +180,8 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   printf("sstatus.Read(): 0x%p\n", sstatus.Read());
   printf("sstatus.sie.Get(): 0x%p\n", sstatus.sie.Get());
   printf("sstatus.spp.Get(): 0x%p\n", sstatus.spp.Get());
+  // printf("sideleg.Read(): 0x%p\n", sideleg.Read());
+  // printf("sedeleg.Read(): 0x%p\n", sedeleg.Read());
 
   return 0;
 }

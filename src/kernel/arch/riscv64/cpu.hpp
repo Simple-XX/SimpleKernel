@@ -1179,12 +1179,7 @@ struct SstatusInfo : public CsrRegInfoBase {
   };
 };
 
-struct StvecInfo {
-  using DataType = uint64_t;
-  static constexpr uint64_t kBitOffset = 0;
-  static constexpr uint64_t kBitWidth = 64;
-  static constexpr uint64_t kBitMask = ~0;
-  static constexpr uint64_t kAllSetMask = ~0;
+struct StvecInfo : public CsrRegInfoBase {
   /** Parameter data for base */
   struct Base {
     using DataType = uint64_t;
@@ -1202,6 +1197,10 @@ struct StvecInfo {
     static constexpr uint64_t kAllSetMask = 0x3;
   };
 };
+
+struct SidelegInfo : public CsrRegInfoBase {};
+
+struct SedelegInfo : public CsrRegInfoBase {};
 
 /**
  * 只读接口
@@ -1236,6 +1235,10 @@ class ReadOnlyRegBase {
       asm("csrr %0, sstatus" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrr %0, stvec" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrr %0, sideleg" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrr %0, sedeleg" : "=r"(value) : :);
     } else {
       printf("error\n");
     }
@@ -1280,6 +1283,10 @@ class WriteOnlyRegBase {
       asm("csrw sstatus, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrw stvec, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrw sideleg, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrw sedeleg, %0" : : "r"(value) :);
     } else {
       printf("error\n");
     }
@@ -1301,6 +1308,10 @@ class WriteOnlyRegBase {
       asm("csrwi sstatus, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrwi stvec, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrwi sideleg, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrwi sedeleg, %0" : : "i"(value) :);
     } else {
       printf("error\n");
     }
@@ -1323,6 +1334,10 @@ class WriteOnlyRegBase {
       asm("csrrw %0, sstatus, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrw %0, sideleg, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrw %0, sedeleg, %1" : "=r"(old_value) : "r"(value) :);
     } else {
       printf("error\n");
     }
@@ -1347,6 +1362,10 @@ class WriteOnlyRegBase {
       asm("csrrwi %0, sstatus, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrwi %0, sideleg, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrwi %0, sedeleg, %1" : "=r"(old_value) : "i"(value) :);
     } else {
       printf("error\n");
     }
@@ -1368,6 +1387,10 @@ class WriteOnlyRegBase {
       asm("csrrs zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrs zero, stvec, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrs zero, sideleg, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrs zero, sedeleg, %0" : : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1390,6 +1413,10 @@ class WriteOnlyRegBase {
       asm("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrs %0, sideleg, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrs %0, sedeleg, %1" : "=r"(value) : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1411,6 +1438,10 @@ class WriteOnlyRegBase {
       asm("csrrc zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrc zero, stvec, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrc zero, sideleg, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrc zero, sedeleg, %0" : : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1433,6 +1464,10 @@ class WriteOnlyRegBase {
       asm("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrc %0, sideleg, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrc %0, sedeleg, %1" : "=r"(value) : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1455,6 +1490,10 @@ class WriteOnlyRegBase {
       asm("csrrsi zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrsi zero, stvec, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrsi zero, sideleg, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrsi zero, sedeleg, %0" : : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1477,6 +1516,10 @@ class WriteOnlyRegBase {
       asm("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrsi %0, sideleg, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrsi %0, sedeleg, %1" : "=r"(value) : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1499,6 +1542,10 @@ class WriteOnlyRegBase {
       asm("csrrci zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrci zero, stvec, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrci zero, sideleg, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrci zero, sedeleg, %0" : : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1521,6 +1568,10 @@ class WriteOnlyRegBase {
       asm("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
+      asm("csrrci %0, sideleg, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
+      asm("csrrci %0, sedeleg, %1" : "=r"(value) : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -1845,6 +1896,32 @@ class Stvec : public ReadWriteRegBase<StvecInfo> {
 
   ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Base> base;
   ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Mode> mode;
+};
+
+class Sideleg : public ReadWriteRegBase<SidelegInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Sideleg() = default;
+  Sideleg(const Sideleg &) = delete;
+  Sideleg(Sideleg &&) = delete;
+  auto operator=(const Sideleg &) -> Sideleg & = delete;
+  auto operator=(Sideleg &&) -> Sideleg & = delete;
+  virtual ~Sideleg() = default;
+  /// @}
+};
+
+class Sedeleg : public ReadWriteRegBase<SedelegInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Sedeleg() = default;
+  Sedeleg(const Sedeleg &) = delete;
+  Sedeleg(Sedeleg &&) = delete;
+  auto operator=(const Sedeleg &) -> Sedeleg & = delete;
+  auto operator=(Sedeleg &&) -> Sedeleg & = delete;
+  virtual ~Sedeleg() = default;
+  /// @}
 };
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
