@@ -1116,4 +1116,410 @@ class Cpu {
   }
 };
 
+/// 立即数掩码，大于这个值需要使用寄存器中转
+static constexpr uint64_t kCsrImmOpMask = 0x1F;
+
+/**
+ * 只读接口
+ */
+class ReadOnlyRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadOnlyRegBase() = default;
+  ReadOnlyRegBase(const ReadOnlyRegBase &) = delete;
+  ReadOnlyRegBase(ReadOnlyRegBase &&) = delete;
+  auto operator=(const ReadOnlyRegBase &) -> ReadOnlyRegBase & = delete;
+  auto operator=(ReadOnlyRegBase &&) -> ReadOnlyRegBase & = delete;
+  virtual ~ReadOnlyRegBase() = default;
+  /// @}
+
+  /**
+   * 读 csr 寄存器
+   * @return uint64_t 寄存器的值
+   */
+  virtual inline uint64_t Read() = 0;
+
+  /**
+   * () 重载
+   */
+  virtual inline uint64_t operator()() { return Read(); }
+};
+
+/**
+ * 只写接口
+ */
+class WriteOnlyRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  WriteOnlyRegBase() = default;
+  WriteOnlyRegBase(const WriteOnlyRegBase &) = delete;
+  WriteOnlyRegBase(WriteOnlyRegBase &&) = delete;
+  auto operator=(const WriteOnlyRegBase &) -> WriteOnlyRegBase & = delete;
+  auto operator=(WriteOnlyRegBase &&) -> WriteOnlyRegBase & = delete;
+  ~WriteOnlyRegBase() = default;
+  /// @}
+
+  /**
+   * 写 csr 寄存器
+   * @param value 要写的值
+   */
+  virtual inline void Write(uint64_t value) = 0;
+
+  /**
+   * 写 csr 寄存器，不通过寄存器中转
+   * @param value 要写的值
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  virtual inline void WriteImm(uint64_t value) = 0;
+
+  /**
+   * 先读后写寄存器
+   * @param value 要写的值
+   * @return uint64_t 寄存器的值
+   */
+  virtual inline uint64_t ReadWrite(uint64_t value) = 0;
+
+  /**
+   * 先读后写寄存器，不通过寄存器中转
+   * @param value 要写的值
+   * @return uint64_t 寄存器的值
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  virtual inline uint64_t ReadWriteImm(uint8_t value) = 0;
+
+  /**
+   * 通过掩码设置寄存器
+   * @param mask 掩码
+   */
+  virtual inline void SetBits(uint64_t mask) = 0;
+
+  /**
+   * 先读后通过掩码设置寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  virtual inline uint64_t ReadSetBits(uint64_t value) = 0;
+
+  /**
+   * 清零寄存器
+   * @param mask 掩码
+   */
+  virtual inline void ClearBits(uint64_t mask) = 0;
+
+  /**
+   * 先读后清零寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  virtual inline uint64_t ReadClearBits(uint64_t mask) = 0;
+
+  /**
+   * 通过掩码设置寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  virtual inline void SetBitsImm(uint8_t mask) = 0;
+
+  /**
+   * 先读后通过掩码设置寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  virtual inline uint64_t ReadSetBitsImm(uint8_t mask) = 0;
+
+  /**
+   * 清零寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  virtual inline void ClearBitsImm(uint8_t mask) = 0;
+
+  /**
+   * 先读后清零寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  virtual inline uint64_t ReadClearBitsImm(uint8_t mask) = 0;
+
+  /**
+   * |= 重载
+   */
+  virtual inline void operator|=(uint64_t mask) { SetBits(mask); }
+
+  /**
+   * 向寄存器写常数
+   * @tparam value 常数的值
+   */
+  template <uint64_t value>
+  void WriteConst() {
+    if constexpr ((value & kCsrImmOpMask) == value) {
+      WriteImm(value);
+    } else {
+      Write(value);
+    }
+  }
+
+  /**
+   * 通过掩码写寄存器
+   * @tparam mask 掩码
+   */
+  template <uint64_t mask>
+  void SetConst() {
+    if constexpr ((mask & kCsrImmOpMask) == mask) {
+      SetBitsImm(mask);
+    } else {
+      SetBits(mask);
+    }
+  }
+
+  /**
+   * 通过掩码清零寄存器
+   * @tparam mask 掩码
+   */
+  template <uint64_t mask>
+  void ClearConst() {
+    if constexpr ((mask & kCsrImmOpMask) == mask) {
+      ClearBitsImm(mask);
+    } else {
+      ClearBits(mask);
+    }
+  }
+};
+
+/**
+ * 读写接口
+ */
+class ReadWriteRegBase : public ReadOnlyRegBase, public WriteOnlyRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadWriteRegBase() = default;
+  ReadWriteRegBase(const ReadWriteRegBase &) = delete;
+  ReadWriteRegBase(ReadWriteRegBase &&) = delete;
+  auto operator=(const ReadWriteRegBase &) -> ReadWriteRegBase & = delete;
+  auto operator=(ReadWriteRegBase &&) -> ReadWriteRegBase & = delete;
+  virtual ~ReadWriteRegBase() = default;
+  /// @}
+
+  /**
+   * 先读后写常数到寄存器
+   * @tparam value 要写的值
+   * @return uint64_t 寄存器的值
+   */
+  template <uint64_t value>
+  uint64_t ReadWriteConst() {
+    if constexpr ((value & kCsrImmOpMask) == value) {
+      return ReadWriteImm(value);
+    } else {
+      return ReadWrite(value);
+    }
+  }
+
+  /**
+   * 先读后写寄存器
+   * @tparam value 要写的值
+   * @return uint64_t 寄存器的值
+   */
+  virtual inline uint64_t ReadWrite(const uint64_t value) {
+    return ReadWrite(value);
+  }
+
+  /**
+   * 通过常数掩码先读后写寄存器
+   * @tparam mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  template <uint64_t mask>
+  uint64_t ReadSetBitsConst() {
+    if constexpr ((mask & kCsrImmOpMask) == mask) {
+      return ReadSetBitsImm(mask);
+    } else {
+      return ReadSetBits(mask);
+    }
+  }
+
+  /**
+   * 通过掩码先读后写寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  virtual inline uint64_t ReadSetBits(const uint64_t mask) {
+    return ReadSetBits(mask);
+  }
+
+  /**
+   * 通过常数掩码先读后清零寄存器
+   * @tparam mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  template <uint64_t mask>
+  uint64_t ReadClearBitsConst() {
+    if constexpr ((mask & kCsrImmOpMask) == mask) {
+      return ReadClearBitsImm(mask);
+    } else {
+      return ReadClearBits(mask);
+    }
+  }
+
+  /**
+   * 通过掩码先读后清零寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  virtual inline uint64_t ReadClearBits(const uint64_t mask) {
+    return ReadClearBits(mask);
+  }
+};
+
+/**
+ * 只读位域接口
+ * @tparam Reg 寄存器类型
+ * @tparam Info 寄存器数据信息
+ */
+template <class Reg, class Info>
+class ReadOnlyField {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadOnlyField() = default;
+  ReadOnlyField(const ReadOnlyField &) = delete;
+  ReadOnlyField(ReadOnlyField &&) = delete;
+  auto operator=(const ReadOnlyField &) -> ReadOnlyField & = delete;
+  auto operator=(ReadOnlyField &&) -> ReadOnlyField & = delete;
+  virtual ~ReadOnlyField() = default;
+  /// @}
+
+  /**
+   * 获取对应 Reg 的由 Info 规定的指定位的值
+   * @return Info::ReadDateType 由 Info 指定的返回类型
+   */
+  virtual Info::ReadDateType Get() {
+    return (Info::ReadDateType)((Reg::Read() & Info::kBitMask) >>
+                                Info::kBitOffset);
+  }
+};
+
+/**
+ * 只写位域接口
+ * @tparam Reg 寄存器类型
+ * @tparam Info 寄存器数据信息
+ */
+template <class Reg, class Info>
+class WriteOnlyField {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  WriteOnlyField() = default;
+  WriteOnlyField(const WriteOnlyField &) = delete;
+  WriteOnlyField(WriteOnlyField &&) = delete;
+  auto operator=(const WriteOnlyField &) -> WriteOnlyField & = delete;
+  auto operator=(WriteOnlyField &&) -> WriteOnlyField & = delete;
+  virtual ~WriteOnlyField() = default;
+  /// @}
+
+  /**
+   * 置位对应 Reg 的由 Info 规定的指定位
+   */
+  virtual inline void Set() {
+    if constexpr ((Info::kBitMask & kCsrImmOpMask) == Info::kBitMask) {
+      Reg::SetBitsImm(Info::kBitMask);
+    } else {
+      Reg::SetBits(Info::kBitMask);
+    }
+  }
+
+  /**
+   * 清零对应 Reg 的由 Info 规定的指定位
+   */
+  virtual void Clear() {
+    if constexpr ((Info::kBitMask & kCsrImmOpMask) == Info::kBitMask) {
+      Reg::ClearBitsImm(Info::kBitMask);
+    } else {
+      Reg::ClearBits(Info::kBitMask);
+    }
+  }
+};
+
+/**
+ * 读写位域接口
+ * @tparam Reg 寄存器类型
+ * @tparam Info 寄存器数据信息
+ */
+template <class Reg, class Info>
+class ReadWriteField : public ReadOnlyField<Reg, Info>,
+                       public WriteOnlyField<Reg, Info> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadWriteField() = default;
+  ReadWriteField(const ReadWriteField &) = delete;
+  ReadWriteField(ReadWriteField &&) = delete;
+  auto operator=(const ReadWriteField &) -> ReadWriteField & = delete;
+  auto operator=(ReadWriteField &&) -> ReadWriteField & = delete;
+  virtual ~ReadWriteField() = default;
+  /// @}
+
+  /**
+   * 将寄存器的原值替换为指定值
+   * @param value 新值
+   */
+  virtual inline void Write(const Info::DataType value) {
+    auto org_value = Reg::Read();
+    auto new_value =
+        (org_value & ~Info::kBitMask) |
+        (((decltype(Reg::Read()))value << Info::kBitOffset) & Info::kBitMask);
+    Reg::Write(new_value);
+  }
+
+  /**
+   * 先读出旧值，后将寄存器的值替换为指定值
+   * @param value 新值
+   * @return Info::DataType 由寄存器规定的数据类型
+   */
+  virtual inline Info::DataType ReadWrite(const Info::DataType value) {
+    auto org_value = Reg::Read();
+    auto new_value =
+        (org_value & ~Info::kBitMask) |
+        (((decltype(Reg::Read()))value << Info::kBitOffset) & Info::kBitMask);
+    Reg::Write(new_value);
+    return (Info::DataType)((org_value & Info::kBitMask) >> Info::kBitOffset);
+  }
+};
+
+
+
+
+
+// class SpiRegs {
+//  public:
+//   class Sie : public ReadOnlyField, WriteOnlyField {
+//    public:
+//     uint64_t Get() override { return 0; }
+//     void Set() override { return; }
+//     void Clear() override { return; }
+//   };
+// };
+
+// class Sip : public ReadOnlyRegBase, WriteOnlyRegBase {
+//  public:
+//   inline uint64_t Read() override { return 0; }
+//   inline void Write(uint64_t) override { return; }
+//   inline void WriteImm(uint64_t) override { return; }
+//   inline uint64_t ReadWrite(uint64_t) override { return 0; }
+//   inline uint64_t ReadWriteImm(uint8_t) override { return 0; }
+//   inline void SetBits(uint64_t) override { return; }
+//   inline uint64_t ReadSetBits(uint64_t) override { return 0; }
+//   inline void ClearBits(uint64_t) override { return; }
+//   inline uint64_t ReadClearBits(uint64_t) override { return 0; }
+//   inline void SetBitsImm(uint8_t) override { return; }
+//   inline uint64_t ReadSetBitsImm(uint8_t) override { return 0; }
+//   inline void ClearBitsImm(uint8_t) override { return; }
+//   inline uint64_t ReadClearBitsImm(uint8_t) override { return 0; }
+//   SpiRegs::Sie sie;
+// };
+
+// static Sip ssss;
+
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
