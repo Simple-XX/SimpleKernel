@@ -19,9 +19,15 @@
 #include "kernel.h"
 #include "libcxx.h"
 
-[[maybe_unused]] void _start(uint32_t argc, uint8_t* argv) {
+void _start(uint32_t argc, uint8_t* argv) {
   CppInit();
   main(argc, argv);
+  CppDeInit();
+
+  // 进入死循环
+  while (1) {
+    ;
+  }
 }
 
 uint32_t main(uint32_t argc, uint8_t* argv) {
@@ -31,9 +37,5 @@ uint32_t main(uint32_t argc, uint8_t* argv) {
   printf("Hello printf\n");
   std::cout << "Hello ostream" << std::endl;
 
-  // 进入死循环
-  while (1) {
-    ;
-  }
   return 0;
 }

@@ -21,7 +21,14 @@
 #include "cstdio"
 #include "kernel.h"
 
-extern "C" void _start(int argc, char **argv) { main(argc, argv); }
+void _start(uint32_t argc, uint8_t *argv) {
+  main(argc, argv);
+
+  // 进入死循环
+  while (1) {
+    ;
+  }
+}
 
 extern "C" void _putchar(char character) {
   auto serial = Cpu::Serial(Cpu::kCom1);
@@ -47,7 +54,7 @@ static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
   }
 }
 
-int main(int argc, char **argv) {
+uint32_t main(uint32_t argc, uint8_t *argv) {
   (void)argc;
   (void)argv;
 

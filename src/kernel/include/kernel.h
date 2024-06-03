@@ -24,7 +24,8 @@
  * @param  argc 由 bootloader 传递的参数，在不同架构有不同的含义
  * @param  argv 由 bootloader 传递的参数，在不同架构有不同的含义
  */
-extern "C" void _start(uint32_t argc, uint8_t* argv);
+extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
+                                                     uint8_t* argv);
 
 /**
  * @brief 内核入口
