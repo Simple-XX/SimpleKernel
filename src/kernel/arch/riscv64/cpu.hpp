@@ -613,10 +613,13 @@ class Cpu {
 
   /**
    * @brief 调用者保存寄存器
+   * @see riscv-abi.pdf#1.1
+   * @see riscv-abi.pdf#1.2
    */
   struct CallerRegs {
     uintptr_t ra;
     uintptr_t t0;
+    uintptr_t t1;
     uintptr_t t2;
     uintptr_t a0;
     uintptr_t a1;
@@ -650,49 +653,52 @@ class Cpu {
     uintptr_t ft9;
     uintptr_t ft10;
     uintptr_t ft11;
-    // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const Caller_Regs &_caller_regs) {
-    //   printf("ra: 0x%p, ", _caller_regs.ra);
-    //   printf("t0: 0x%p, ", _caller_regs.t0);
-    //   printf("t2: 0x%p, ", _caller_regs.t2);
-    //   printf("a0: 0x%p\n", _caller_regs.a0);
-    //   printf("a1: 0x%p, ", _caller_regs.a1);
-    //   printf("a2: 0x%p, ", _caller_regs.a2);
-    //   printf("a3: 0x%p, ", _caller_regs.a3);
-    //   printf("a4: 0x%p\n", _caller_regs.a4);
-    //   printf("a5: 0x%p, ", _caller_regs.a5);
-    //   printf("a6: 0x%p, ", _caller_regs.a6);
-    //   printf("a7: 0x%p, ", _caller_regs.a7);
-    //   printf("t3: 0x%p\n", _caller_regs.t3);
-    //   printf("t4: 0x%p, ", _caller_regs.t4);
-    //   printf("t5: 0x%p, ", _caller_regs.t5);
-    //   printf("t6: 0x%p, ", _caller_regs.t6);
-    //   printf("ft0: 0x%p\n", _caller_regs.ft0);
-    //   printf("ft1: 0x%p, ", _caller_regs.ft1);
-    //   printf("ft2: 0x%p, ", _caller_regs.ft2);
-    //   printf("ft3: 0x%p, ", _caller_regs.ft3);
-    //   printf("ft4: 0x%p\n", _caller_regs.ft4);
-    //   printf("ft5: 0x%p, ", _caller_regs.ft5);
-    //   printf("ft6: 0x%p, ", _caller_regs.ft6);
-    //   printf("ft7: 0x%p, ", _caller_regs.ft7);
-    //   printf("fa0: 0x%p\n", _caller_regs.fa0);
-    //   printf("fa1: 0x%p", _caller_regs.fa1);
-    //   printf("fa2: 0x%p", _caller_regs.fa2);
-    //   printf("fa3: 0x%p", _caller_regs.fa3);
-    //   printf("fa4: 0x%p", _caller_regs.fa4);
-    //   printf("fa5: 0x%p", _caller_regs.fa5);
-    //   printf("fa6: 0x%p", _caller_regs.fa6);
-    //   printf("fa7: 0x%p", _caller_regs.fa7);
-    //   printf("ft8: 0x%p", _caller_regs.ft8);
-    //   printf("ft9: 0x%p", _caller_regs.ft9);
-    //   printf("ft10: 0x%p", _caller_regs.ft10);
-    //   printf("ft11: 0x%p", _caller_regs.ft11);
-    //   return _os;
-    // }
+    friend std::ostream &operator<<(std::ostream &os,
+                                    const CallerRegs &caller_regs) {
+      printf("ra: 0x%p, ", caller_regs.ra);
+      printf("t0: 0x%p, ", caller_regs.t0);
+      printf("t1: 0x%p, ", caller_regs.t1);
+      printf("t2: 0x%p, ", caller_regs.t2);
+      printf("a0: 0x%p\n", caller_regs.a0);
+      printf("a1: 0x%p, ", caller_regs.a1);
+      printf("a2: 0x%p, ", caller_regs.a2);
+      printf("a3: 0x%p, ", caller_regs.a3);
+      printf("a4: 0x%p\n", caller_regs.a4);
+      printf("a5: 0x%p, ", caller_regs.a5);
+      printf("a6: 0x%p, ", caller_regs.a6);
+      printf("a7: 0x%p, ", caller_regs.a7);
+      printf("t3: 0x%p\n", caller_regs.t3);
+      printf("t4: 0x%p, ", caller_regs.t4);
+      printf("t5: 0x%p, ", caller_regs.t5);
+      printf("t6: 0x%p, ", caller_regs.t6);
+      printf("ft0: 0x%p\n", caller_regs.ft0);
+      printf("ft1: 0x%p, ", caller_regs.ft1);
+      printf("ft2: 0x%p, ", caller_regs.ft2);
+      printf("ft3: 0x%p, ", caller_regs.ft3);
+      printf("ft4: 0x%p\n", caller_regs.ft4);
+      printf("ft5: 0x%p, ", caller_regs.ft5);
+      printf("ft6: 0x%p, ", caller_regs.ft6);
+      printf("ft7: 0x%p, ", caller_regs.ft7);
+      printf("fa0: 0x%p\n", caller_regs.fa0);
+      printf("fa1: 0x%p", caller_regs.fa1);
+      printf("fa2: 0x%p", caller_regs.fa2);
+      printf("fa3: 0x%p", caller_regs.fa3);
+      printf("fa4: 0x%p", caller_regs.fa4);
+      printf("fa5: 0x%p", caller_regs.fa5);
+      printf("fa6: 0x%p", caller_regs.fa6);
+      printf("fa7: 0x%p", caller_regs.fa7);
+      printf("ft8: 0x%p", caller_regs.ft8);
+      printf("ft9: 0x%p", caller_regs.ft9);
+      printf("ft10: 0x%p", caller_regs.ft10);
+      printf("ft11: 0x%p", caller_regs.ft11);
+      return os;
+    }
   };
 
   /**
    * @brief 被调用者保存寄存器
+   * @see riscv-abi.pdf#1.1
+   * @see riscv-abi.pdf#1.2
    */
   struct CalleeRegs {
     uintptr_t sp;
@@ -720,35 +726,35 @@ class Cpu {
     uintptr_t fs9;
     uintptr_t fs10;
     uintptr_t fs11;
-    // friend std::ostream &operator<<(std::ostream &_os,
-    //                                 const CalleeRegs &_callee_regs) {
-    //   printf("sp: 0x%p, ", _callee_regs.sp);
-    //   printf("s0: 0x%p, ", _callee_regs.s0);
-    //   printf("s1: 0x%p, ", _callee_regs.s1);
-    //   printf("s2: 0x%p\n", _callee_regs.s2);
-    //   printf("s3: 0x%p, ", _callee_regs.s3);
-    //   printf("s4: 0x%p, ", _callee_regs.s4);
-    //   printf("s5: 0x%p, ", _callee_regs.s5);
-    //   printf("s6: 0x%p\n", _callee_regs.s6);
-    //   printf("s7: 0x%p, ", _callee_regs.s7);
-    //   printf("s8: 0x%p, ", _callee_regs.s8);
-    //   printf("s9: 0x%p, ", _callee_regs.s9);
-    //   printf("s10: 0x%p\n", _callee_regs.s10);
-    //   printf("s11: 0x%p, ", _callee_regs.s11);
-    //   printf("fs0: 0x%p, ", _callee_regs.fs0);
-    //   printf("fs1: 0x%p, ", _callee_regs.fs1);
-    //   printf("fs2: 0x%p\n", _callee_regs.fs2);
-    //   printf("fs3: 0x%p, ", _callee_regs.fs3);
-    //   printf("fs4: 0x%p, ", _callee_regs.fs4);
-    //   printf("fs5: 0x%p, ", _callee_regs.fs5);
-    //   printf("fs6: 0x%p\n", _callee_regs.fs6);
-    //   printf("fs7: 0x%p, ", _callee_regs.fs7);
-    //   printf("fs8: 0x%p, ", _callee_regs.fs8);
-    //   printf("fs9: 0x%p, ", _callee_regs.fs9);
-    //   printf("fs10: 0x%p\n", _callee_regs.fs10);
-    //   printf("fs11: 0x%p", _callee_regs.fs11);
-    //   return _os;
-    // }
+    friend std::ostream &operator<<(std::ostream &os,
+                                    const CalleeRegs &callee_regs) {
+      printf("sp: 0x%p, ", callee_regs.sp);
+      printf("s0: 0x%p, ", callee_regs.s0);
+      printf("s1: 0x%p, ", callee_regs.s1);
+      printf("s2: 0x%p\n", callee_regs.s2);
+      printf("s3: 0x%p, ", callee_regs.s3);
+      printf("s4: 0x%p, ", callee_regs.s4);
+      printf("s5: 0x%p, ", callee_regs.s5);
+      printf("s6: 0x%p\n", callee_regs.s6);
+      printf("s7: 0x%p, ", callee_regs.s7);
+      printf("s8: 0x%p, ", callee_regs.s8);
+      printf("s9: 0x%p, ", callee_regs.s9);
+      printf("s10: 0x%p\n", callee_regs.s10);
+      printf("s11: 0x%p, ", callee_regs.s11);
+      printf("fs0: 0x%p, ", callee_regs.fs0);
+      printf("fs1: 0x%p, ", callee_regs.fs1);
+      printf("fs2: 0x%p\n", callee_regs.fs2);
+      printf("fs3: 0x%p, ", callee_regs.fs3);
+      printf("fs4: 0x%p, ", callee_regs.fs4);
+      printf("fs5: 0x%p, ", callee_regs.fs5);
+      printf("fs6: 0x%p\n", callee_regs.fs6);
+      printf("fs7: 0x%p, ", callee_regs.fs7);
+      printf("fs8: 0x%p, ", callee_regs.fs8);
+      printf("fs9: 0x%p, ", callee_regs.fs9);
+      printf("fs10: 0x%p\n", callee_regs.fs10);
+      printf("fs11: 0x%p", callee_regs.fs11);
+      return os;
+    }
   };
 
   /**
