@@ -1912,10 +1912,20 @@ class ReadOnlyField {
 
   /**
    * 获取对应 Reg 的由 Info 规定的指定位的值
-   * @return Info::DataType 指定位值
+   * @return Info::DataType 指定位值的信息
    */
   static inline Info::DataType Get() {
     return (typename Info::DataType)((Reg::Read() & Info::kBitMask) >>
+                                     Info::kBitOffset);
+  }
+
+  /**
+   * 从指定的值获取对应 Reg 的由 Info 规定的指定位的值
+   * @param value 指定的值
+   * @return Info::DataType 指定位值的信息
+   */
+  static inline Info::DataType Get(uint64_t value) {
+    return (typename Info::DataType)((value & Info::kBitMask) >>
                                      Info::kBitOffset);
   }
 };
@@ -2198,8 +2208,8 @@ class Stvec : public ReadWriteRegBase<StvecInfo> {
   ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Mode> mode;
 
   void SetDirect(uint64_t addr) {
-    mode.Write(kDirect);
     base.Write(addr);
+    mode.Write(kDirect);
   }
 
   /// @name 构造/析构函数
