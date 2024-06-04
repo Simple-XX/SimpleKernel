@@ -52,10 +52,12 @@ class Interrupt final : public InterruptBase {
 
  private:
   /// 中断处理函数数组
-  static InterruptFunc interrupt_handlers[ScauseInfo::kInterruptMaxCount]
+  static InterruptFunc
+      interrupt_handlers[cpu::csr::ScauseInfo::kInterruptMaxCount]
       __attribute__((aligned(4)));
   /// 异常处理函数数组
-  static InterruptFunc exception_handlers[ScauseInfo::kExceptionMaxCount]
+  static InterruptFunc
+      exception_handlers[cpu::csr::ScauseInfo::kExceptionMaxCount]
       __attribute__((aligned(4)));
 };
 
