@@ -52,13 +52,11 @@ class Interrupt final : public InterruptBase {
 
  private:
   /// 中断处理函数数组
-  static InterruptFunc
-      interrupt_handlers[cpu::csr::ScauseInfo::kInterruptMaxCount]
-      __attribute__((aligned(4)));
+  alignas(4) static InterruptFunc
+      interrupt_handlers[cpu::csr::ScauseInfo::kInterruptMaxCount];
   /// 异常处理函数数组
-  static InterruptFunc
-      exception_handlers[cpu::csr::ScauseInfo::kExceptionMaxCount]
-      __attribute__((aligned(4)));
+  alignas(4) static InterruptFunc
+      exception_handlers[cpu::csr::ScauseInfo::kExceptionMaxCount];
 };
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_ */
