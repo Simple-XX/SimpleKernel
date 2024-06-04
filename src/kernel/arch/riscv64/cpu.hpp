@@ -336,23 +336,23 @@ class ReadOnlyRegBase {
   static inline uint64_t Read() {
     uint64_t value = -1;
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrr %0, sstatus" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, sstatus" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrr %0, stvec" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, stvec" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrr %0, sip" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, sip" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrr %0, sie" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, sie" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrr %0, sscratch" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, sscratch" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrr %0, sepc" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, sepc" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrr %0, scause" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, scause" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrr %0, stval" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, stval" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrr %0, satp" : "=r"(value) : :);
+      __asm__ volatile("csrr %0, satp" : "=r"(value) : :);
     } else {
       printf("error\n");
     }
@@ -388,23 +388,23 @@ class WriteOnlyRegBase {
    */
   static inline void Write(uint64_t value) {
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrw sstatus, %0" : : "r"(value) :);
+      __asm__ volatile("csrw sstatus, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrw stvec, %0" : : "r"(value) :);
+      __asm__ volatile("csrw stvec, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrw sip, %0" : : "r"(value) :);
+      __asm__ volatile("csrw sip, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrw sie, %0" : : "r"(value) :);
+      __asm__ volatile("csrw sie, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrw sscratch, %0" : : "r"(value) :);
+      __asm__ volatile("csrw sscratch, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrw sepc, %0" : : "r"(value) :);
+      __asm__ volatile("csrw sepc, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrw scause, %0" : : "r"(value) :);
+      __asm__ volatile("csrw scause, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrw stval, %0" : : "r"(value) :);
+      __asm__ volatile("csrw stval, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrw satp, %0" : : "r"(value) :);
+      __asm__ volatile("csrw satp, %0" : : "r"(value) :);
     } else {
       printf("error\n");
     }
@@ -417,23 +417,23 @@ class WriteOnlyRegBase {
    */
   static inline void WriteImm(const uint8_t value) {
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrwi sstatus, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi sstatus, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrwi stvec, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi stvec, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrwi sip, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi sip, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrwi sie, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi sie, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrwi sscratch, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi sscratch, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrwi sepc, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi sepc, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrwi scause, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi scause, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrwi stval, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi stval, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrwi satp, %0" : : "i"(value) :);
+      __asm__ volatile("csrwi satp, %0" : : "i"(value) :);
     } else {
       printf("error\n");
     }
@@ -447,23 +447,29 @@ class WriteOnlyRegBase {
   static inline uint64_t ReadWrite(uint64_t value) {
     uint64_t old_value;
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrw %0, sstatus, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, sstatus, %1"
+                       : "=r"(old_value)
+                       : "r"(value)
+                       :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrw %0, sip, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, sip, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrw %0, sie, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, sie, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrw %0, sscratch, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, sscratch, %1"
+                       : "=r"(old_value)
+                       : "r"(value)
+                       :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrw %0, sepc, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, sepc, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrw %0, stval, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, stval, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrw %0, satp, %1" : "=r"(old_value) : "r"(value) :);
+      __asm__ volatile("csrrw %0, satp, %1" : "=r"(old_value) : "r"(value) :);
     } else {
       printf("error\n");
     }
@@ -479,23 +485,32 @@ class WriteOnlyRegBase {
   static inline uint64_t ReadWriteImm(const uint8_t value) {
     uint64_t old_value;
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrwi %0, sstatus, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, sstatus, %1"
+                       : "=r"(old_value)
+                       : "i"(value)
+                       :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrwi %0, sip, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, sip, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrwi %0, sie, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, sie, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrwi %0, sscratch, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, sscratch, %1"
+                       : "=r"(old_value)
+                       : "i"(value)
+                       :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrwi %0, sepc, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, sepc, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrwi %0, scause, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, scause, %1"
+                       : "=r"(old_value)
+                       : "i"(value)
+                       :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrwi %0, stval, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, stval, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrwi %0, satp, %1" : "=r"(old_value) : "i"(value) :);
+      __asm__ volatile("csrrwi %0, satp, %1" : "=r"(old_value) : "i"(value) :);
     } else {
       printf("error\n");
     }
@@ -508,23 +523,23 @@ class WriteOnlyRegBase {
    */
   static inline void SetBits(uint64_t mask) {
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrs zero, sip, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, sip, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrs zero, sie, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, sie, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrs zero, scause, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrs zero, stval, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, stval, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrs zero, satp, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrs zero, satp, %0" : : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -538,23 +553,23 @@ class WriteOnlyRegBase {
   static inline uint64_t ReadSetBits(uint64_t mask) {
     uint64_t value;
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrs %0, sip, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, sip, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrs %0, sie, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, sie, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrs %0, stval, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, stval, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrs %0, satp, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrs %0, satp, %1" : "=r"(value) : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -567,23 +582,23 @@ class WriteOnlyRegBase {
    */
   static inline void ClearBits(uint64_t mask) {
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrc zero, sip, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, sip, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrc zero, sie, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, sie, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrc zero, scause, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrc zero, stval, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, stval, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrc zero, satp, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrc zero, satp, %0" : : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -597,23 +612,23 @@ class WriteOnlyRegBase {
   static inline uint64_t ReadClearBits(uint64_t mask) {
     uint64_t value;
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrc %0, sip, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, sip, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrc %0, sie, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, sie, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrc %0, stval, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, stval, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrc %0, satp, %1" : "=r"(value) : "r"(mask) :);
+      __asm__ volatile("csrrc %0, satp, %1" : "=r"(value) : "r"(mask) :);
     } else {
       printf("error\n");
     }
@@ -627,23 +642,23 @@ class WriteOnlyRegBase {
    */
   static inline void SetBitsImm(const uint8_t mask) {
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrsi zero, sip, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, sip, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrsi zero, sie, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, sie, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrsi zero, scause, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrsi zero, stval, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, stval, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrsi zero, satp, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrsi zero, satp, %0" : : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -657,23 +672,23 @@ class WriteOnlyRegBase {
   static inline uint64_t ReadSetBitsImm(const uint8_t mask) {
     uint64_t value;
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrsi %0, stval, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, stval, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrsi %0, satp, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrsi %0, satp, %1" : "=r"(value) : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -687,23 +702,23 @@ class WriteOnlyRegBase {
    */
   static inline void ClearBitsImm(const uint8_t mask) {
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrci zero, sip, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, sip, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrci zero, sie, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, sie, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrci zero, scause, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrci zero, stval, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, stval, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrci zero, satp, %0" : : "i"(mask) :);
+      __asm__ volatile("csrrci zero, satp, %0" : : "i"(mask) :);
     } else {
       printf("error\n");
     }
@@ -717,23 +732,23 @@ class WriteOnlyRegBase {
   static inline uint64_t ReadClearBitsImm(const uint8_t mask) {
     uint64_t value;
     if constexpr (std::is_same<Reg, SstatusInfo>::value) {
-      asm volatile("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
-      asm volatile("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
-      asm volatile("csrrci %0, sip, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, sip, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
-      asm volatile("csrrci %0, sie, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, sie, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm volatile("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm volatile("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm volatile("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
-      asm volatile("csrrci %0, stval, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, stval, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
-      asm volatile("csrrci %0, satp, %1" : "=r"(value) : "i"(mask) :);
+      __asm__ volatile("csrrci %0, satp, %1" : "=r"(value) : "i"(mask) :);
     } else {
       printf("error\n");
     }
