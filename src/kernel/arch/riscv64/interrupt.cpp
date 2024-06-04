@@ -32,28 +32,20 @@ Interrupt::InterruptFunc
 static Interrupt interrupt __attribute__((init_priority(101)));
 
 static __attribute__((interrupt("supervisor"))) void TarpEntry() {
-  auto sepc = Sepc();
-  auto stval = Stval();
-  auto scause = Scause();
-  auto sp = uint64_t(0);
-  auto sie = Sie();
-  auto sstatus = Sstatus();
-  auto satp = Satp();
-  auto sscratch = Sscratch();
-
-  std::cout << "sepc: " << sepc << std::endl;
-  std::cout << "stval: " << stval << std::endl;
-  std::cout << "scause: " << scause << std::endl;
-  std::cout << "sie: " << sie << std::endl;
-  std::cout << "sstatus: " << sstatus << std::endl;
-  std::cout << "satp: " << satp << std::endl;
-  std::cout << "sscratch: " << sscratch << std::endl;
+  std::cout << "sepc: " << kAllCsr.sepc << std::endl;
+  std::cout << "stval: " << kAllCsr.stval << std::endl;
+  std::cout << "stvec: " << kAllCsr.stvec << std::endl;
+  std::cout << "scause: " << kAllCsr.scause << std::endl;
+  std::cout << "sie: " << kAllCsr.sie << std::endl;
+  std::cout << "sstatus: " << kAllCsr.sstatus << std::endl;
+  std::cout << "satp: " << kAllCsr.satp << std::endl;
+  std::cout << "sscratch: " << kAllCsr.sscratch << std::endl;
 
   // printf("sepc: 0x%p, stval: 0x%p, all_regs(sp): 0x%p, sscratch: 0x%p\n",
   // sepc,
   //        stval, sp, sscratch);
 
-  interrupt.Do((uint64_t)scause.Read(), (uint8_t *)sp);
+  interrupt.Do((uint64_t)kAllCsr.scause.Read(), nullptr);
 
   printf("Done\n");
 }
@@ -78,19 +70,26 @@ Interrupt::Interrupt() {
     }
 
     // 设置 trap vector
-    Cpu::SetStvecDirect((uint64_t)TarpEntry);
+    // Cpu::SetStvecDirect((uint64_t)TarpEntry);
+    // kAllCsr.stvec.Write((uint64_t)TarpEntry);
+    kAllCsr.stvec.SetDirect((uint64_t)TarpEntry);
+
+    auto aaa = kAllCsr.stvec.Read();
+
+    std::cout << "stval: " << kAllCsr.stvec << std::endl;
+    std::cout << "stval: " << aaa << std::endl;
 
     // 开启 Supervisor 中断
-    Cpu::EnableSupervisorIntr();
+    // kAllCsr.sstatus.sie.Set();
 
     // 开启内部中断
-    // Cpu::EnableSupervisorSoftware();
+    // kAllCsr.sie.ssie.Set();
 
     // 开启时钟中断
-    Cpu::EnableSupervisorTimer();
+    // kAllCsr.sie.stie.Set();
 
     // 开启外部中断
-    // Cpu::EnableSupervisorExternal();
+    // kAllCsr.sie.seie.Set();
 
     is_inited = true;
   }
@@ -156,12 +155,12 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   // ebreak 中断
   interrupt.RegisterInterruptFunc(Cpu::Xcause::kBreakpoint,
                                   [](uint64_t, uint8_t *) -> uint64_t {
-                                    Cpu::WriteSepc(Cpu::ReadSepc() + 2);
+                                    kAllCsr.sepc.Write(kAllCsr.sepc.Read() + 2);
                                     return 0;
                                   });
 
   // 设置时钟中断时间
-  asm("ebreak");
+  // asm("ebreak");
 
   // sbi_set_timer(99999);
 

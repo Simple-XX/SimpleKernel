@@ -1180,14 +1180,6 @@ struct SstatusInfo : public CsrRegInfoBase {
 };
 
 struct StvecInfo : public CsrRegInfoBase {
-  /** Parameter data for base */
-  struct Base {
-    using DataType = uint64_t;
-    static constexpr uint64_t kBitOffset = 2;
-    static constexpr uint64_t kBitWidth = 62;
-    static constexpr uint64_t kBitMask = ~0x3;
-    static constexpr uint64_t kAllSetMask = ~0x3;
-  };
   /** Parameter data for mode */
   struct Mode {
     using DataType = uint8_t;
@@ -1195,6 +1187,14 @@ struct StvecInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitWidth = 2;
     static constexpr uint64_t kBitMask = 0x3;
     static constexpr uint64_t kAllSetMask = 0x3;
+  };
+  /** Parameter data for base */
+  struct Base {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 62;
+    static constexpr uint64_t kBitMask = ~0x3;
+    static constexpr uint64_t kAllSetMask = ~0x3;
   };
 };
 
@@ -2197,6 +2197,11 @@ class Stvec : public ReadWriteRegBase<StvecInfo> {
   ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Base> base;
   ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Mode> mode;
 
+  void SetDirect(uint64_t addr) {
+    mode.Write(kDirect);
+    base.Write(addr);
+  }
+
   /// @name 构造/析构函数
   /// @{
   Stvec() = default;
@@ -2362,5 +2367,43 @@ class Satp : public ReadWriteRegBase<SatpInfo> {
     return os;
   }
 };
+
+class AllCsr {
+ public:
+  /* Supervisor Mode Scratch Register */
+  Sscratch sscratch;
+  /* Supervisor Exception Program Counter */
+  Sepc sepc;
+  /* Supervisor Exception Cause */
+  Scause scause;
+  /* Supervisor Status */
+  Sstatus sstatus;
+  /* Supervisor Trap Vector Base Address */
+  Stvec stvec;
+  /* Supervisor Interrupt Delegation */
+  Sideleg sideleg;
+  /* Supervisor Exception Delegation */
+  Sedeleg sedeleg;
+  /* Supervisor Interrupt Pending */
+  Sip sip;
+  /* Supervisor Interrupt Enable */
+  Sie sie;
+  /* Supervisor bad address or instruction. */
+  Stval stval;
+  /* Supervisor address translation and protection. */
+  Satp satp;
+
+  /// @name 构造/析构函数
+  /// @{
+  AllCsr() = default;
+  AllCsr(const AllCsr &) = delete;
+  AllCsr(AllCsr &&) = delete;
+  auto operator=(const AllCsr &) -> AllCsr & = delete;
+  auto operator=(AllCsr &&) -> AllCsr & = delete;
+  virtual ~AllCsr() = default;
+  /// @}
+};
+
+static AllCsr kAllCsr;
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_CPU_HPP_
