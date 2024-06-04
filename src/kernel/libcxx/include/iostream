@@ -40,13 +40,20 @@ class ostream {
   ~ostream() = default;
   /// @}
 
-  ostream& operator<<(char c);
-  ostream& operator<<(int n);
-  ostream& operator<<(const char* lhs);
+  ostream& operator<<(int8_t val);
+  ostream& operator<<(uint8_t val);
+  ostream& operator<<(const char* val);
+  ostream& operator<<(int16_t val);
+  ostream& operator<<(uint16_t val);
+  ostream& operator<<(int32_t val);
+  ostream& operator<<(uint32_t val);
+  ostream& operator<<(int64_t val);
+  ostream& operator<<(uint64_t val);
+
   ostream& operator<<(ostream& (*)(ostream&));
 };
 
-inline ostream& endl(ostream& lhs) { return lhs << '\n'; }
+inline ostream& endl(ostream& os) { return os << "\n"; }
 
 static ostream cout [[maybe_unused]];
 

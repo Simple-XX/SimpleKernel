@@ -17,22 +17,54 @@
 
 #include "iostream"
 
+#include <cstdint>
+
 #include "cstdio"
 
 namespace std {
 
-ostream& ostream::operator<<(char c) {
-  printf("%c", c);
+ostream& ostream::operator<<(int8_t val) {
+  printf("%d", val);
   return *this;
 }
 
-ostream& ostream::operator<<(int n) {
-  printf("%d", n);
+ostream& ostream::operator<<(uint8_t val) {
+  printf("%d", val);
   return *this;
 }
 
-ostream& ostream::operator<<(const char* lhs) {
-  printf("%s", lhs);
+ostream& ostream::operator<<(const char* val) {
+  printf("%s", val);
+  return *this;
+}
+
+ostream& ostream::operator<<(int16_t val) {
+  printf("%d", val);
+  return *this;
+}
+
+ostream& ostream::operator<<(uint16_t val) {
+  printf("%d", val);
+  return *this;
+}
+
+ostream& ostream::operator<<(int32_t val) {
+  printf("%d", val);
+  return *this;
+}
+
+ostream& ostream::operator<<(uint32_t val) {
+  printf("%d", val);
+  return *this;
+}
+
+ostream& ostream::operator<<(int64_t val) {
+  printf("%ld", val);
+  return *this;
+}
+
+ostream& ostream::operator<<(uint64_t val) {
+  printf("%ld", val);
   return *this;
 }
 
