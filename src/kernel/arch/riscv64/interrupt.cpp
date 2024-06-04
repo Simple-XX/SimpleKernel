@@ -32,6 +32,7 @@ Interrupt::InterruptFunc
 static Interrupt interrupt __attribute__((init_priority(101)));
 
 __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
+  std::cout << std::endl;
   std::cout << "sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
   std::cout << "stval: " << cpu::csr::kAllCsr.stval << std::endl;
   std::cout << "stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
@@ -42,13 +43,7 @@ __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
   std::cout << "satp: " << cpu::csr::kAllCsr.satp << std::endl;
   std::cout << "sscratch: " << cpu::csr::kAllCsr.sscratch << std::endl;
 
-  // printf("sepc: 0x%p, stval: 0x%p, all_regs(sp): 0x%p, sscratch: 0x%p\n",
-  // sepc,
-  //        stval, sp, sscratch);
-
   interrupt.Do((uint64_t)cpu::csr::kAllCsr.scause.Read(), nullptr);
-
-  printf("Done\n");
 }
 
 Interrupt::Interrupt() {
@@ -84,16 +79,6 @@ Interrupt::Interrupt() {
 
     // 开启外部中断
     cpu::csr::kAllCsr.sie.seie.Set();
-
-    // std::cout << "ctor sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
-    // std::cout << "ctor stval: " << cpu::csr::kAllCsr.stval << std::endl;
-    // std::cout << "ctor stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
-    // std::cout << "ctor scause: " << cpu::csr::kAllCsr.scause << std::endl;
-    // std::cout << "ctor sie: " << cpu::csr::kAllCsr.sie << std::endl;
-    // std::cout << "ctor sstatus: " << cpu::csr::kAllCsr.sstatus << std::endl;
-    // std::cout << "ctor satp: " << cpu::csr::kAllCsr.satp << std::endl;
-    // std::cout << "ctor sscratch: " << cpu::csr::kAllCsr.sscratch <<
-    // std::endl;
 
     is_inited = true;
   }
@@ -145,7 +130,6 @@ static uint64_t kInterval = 0;
 /// @todo 从 dtb 读取 cpu 速度
 uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
-  (void)argv;
 
   // 获取 cpu 速度
   auto result = FDT_PARSER::fdt_parser((uintptr_t)argv);
@@ -158,17 +142,20 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   // 注册时钟中断
   interrupt.RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kSupervisorTimerInterrupt,
-      [](uint64_t, uint8_t *) -> uint64_t {
+      [](uint64_t exception_code, uint8_t *) -> uint64_t {
         sbi_set_timer(cpu::csr::kAllCsr.time.Read() + kInterval);
+        printf("Handle %s\n",
+               cpu::csr::ScauseInfo::kInterruptNames[exception_code]);
         return 0;
       });
 
   // ebreak 中断
   interrupt.RegisterInterruptFunc(
-      cpu::csr::ScauseInfo::kBreakpoint, [](uint64_t, uint8_t *) -> uint64_t {
-        printf("Handle %s\n", cpu::csr::ScauseInfo::kExceptionNames
-                                  [cpu::csr::ScauseInfo::kBreakpoint]);
+      cpu::csr::ScauseInfo::kBreakpoint,
+      [](uint64_t exception_code, uint8_t *) -> uint64_t {
         cpu::csr::kAllCsr.sepc.Write(cpu::csr::kAllCsr.sepc.Read() + 2);
+        printf("Handle %s\n",
+               cpu::csr::ScauseInfo::kExceptionNames[exception_code]);
         return 0;
       });
 
@@ -178,16 +165,6 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   sbi_set_timer(kInterval);
 
   printf("hello IntrInit\n");
-
-  std::cout << "sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
-  std::cout << "stval: " << cpu::csr::kAllCsr.stval << std::endl;
-  std::cout << "stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
-  std::cout << "scause: " << cpu::csr::kAllCsr.scause << std::endl;
-  std::cout << "sie: " << cpu::csr::kAllCsr.sie << std::endl;
-  std::cout << "sip: " << cpu::csr::kAllCsr.sip << std::endl;
-  std::cout << "sstatus: " << cpu::csr::kAllCsr.sstatus << std::endl;
-  std::cout << "satp: " << cpu::csr::kAllCsr.satp << std::endl;
-  std::cout << "sscratch: " << cpu::csr::kAllCsr.sscratch << std::endl;
 
   return 0;
 }
