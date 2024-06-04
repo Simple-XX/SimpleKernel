@@ -85,16 +85,15 @@ Interrupt::Interrupt() {
     // 开启外部中断
     cpu::csr::kAllCsr.sie.seie.Set();
 
-    cpu::csr::kAllCsr.sstatus.spp.Set();
-
-    std::cout << "ctor sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
-    std::cout << "ctor stval: " << cpu::csr::kAllCsr.stval << std::endl;
-    std::cout << "ctor stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
-    std::cout << "ctor scause: " << cpu::csr::kAllCsr.scause << std::endl;
-    std::cout << "ctor sie: " << cpu::csr::kAllCsr.sie << std::endl;
-    std::cout << "ctor sstatus: " << cpu::csr::kAllCsr.sstatus << std::endl;
-    std::cout << "ctor satp: " << cpu::csr::kAllCsr.satp << std::endl;
-    std::cout << "ctor sscratch: " << cpu::csr::kAllCsr.sscratch << std::endl;
+    // std::cout << "ctor sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
+    // std::cout << "ctor stval: " << cpu::csr::kAllCsr.stval << std::endl;
+    // std::cout << "ctor stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
+    // std::cout << "ctor scause: " << cpu::csr::kAllCsr.scause << std::endl;
+    // std::cout << "ctor sie: " << cpu::csr::kAllCsr.sie << std::endl;
+    // std::cout << "ctor sstatus: " << cpu::csr::kAllCsr.sstatus << std::endl;
+    // std::cout << "ctor satp: " << cpu::csr::kAllCsr.satp << std::endl;
+    // std::cout << "ctor sscratch: " << cpu::csr::kAllCsr.sscratch <<
+    // std::endl;
 
     is_inited = true;
   }
@@ -140,6 +139,15 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   }
 }
 
+static inline uint64_t READ_TIME(void) {
+  uint64_t x;
+  // asm ("csrr %0, time" : "=r" (x) );
+  // this instruction will trap in SBI
+  asm("rdtime %0" : "=r"(x));
+  return x;
+}
+static constexpr const uint64_t INTERVAL = 390000000 / 20;
+
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
 /// @todo 从 dtb 读取 cpu 速度
 uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
@@ -150,11 +158,7 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   interrupt.RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kSupervisorTimerInterrupt,
       [](uint64_t, uint8_t *) -> uint64_t {
-        cpu::csr::kAllCsr.sip.stip.Clear();
-        static uint32_t count = 0;
-        if (++count == 2) {
-          while (1);
-        }
+        sbi_set_timer(READ_TIME() + INTERVAL);
         return 0;
       });
 
@@ -171,13 +175,9 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   asm("ebreak");
 
   // 设置时钟中断时间
-  sbi_set_timer(9999999);
+  sbi_set_timer(INTERVAL);
 
   printf("hello IntrInit\n");
-  cpu::csr::kAllCsr.sip.stip.Set();
-  // cpu::csr::kAllCsr.sie.stie.Clear();
-
-  // cpu::csr::kAllCsr.sstatus.spp.Set();
 
   std::cout << "sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
   std::cout << "stval: " << cpu::csr::kAllCsr.stval << std::endl;
