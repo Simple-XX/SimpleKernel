@@ -165,6 +165,24 @@ struct SieInfo : public CsrRegInfoBase {
 };
 
 /**
+ * @brief time 寄存器定义
+ * @see priv-isa.pdf#10.1.4
+ */
+struct TimeInfo : public CsrRegInfoBase {};
+
+/**
+ * @brief cycle 寄存器定义
+ * @see priv-isa.pdf#10.1.4
+ */
+struct CycleInfo : public CsrRegInfoBase {};
+
+/**
+ * @brief instret 寄存器定义
+ * @see priv-isa.pdf#10.1.4
+ */
+struct InstretInfo : public CsrRegInfoBase {};
+
+/**
  * @brief sscratch 寄存器定义
  * @see priv-isa.pdf#10.1.6
  */
@@ -313,6 +331,12 @@ struct SatpInfo : public CsrRegInfoBase {
 };
 
 /**
+ * @brief stimecmp 寄存器定义
+ * @see priv-isa.pdf#16.1.1
+ */
+struct StimecmpInfo : public CsrRegInfoBase {};
+
+/**
  * 只读接口
  * @tparam 寄存器类型
  */
@@ -343,6 +367,12 @@ class ReadOnlyRegBase {
       __asm__ volatile("csrr %0, sip" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       __asm__ volatile("csrr %0, sie" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, TimeInfo>::value) {
+      __asm__ volatile("csrr %0, time" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, CycleInfo>::value) {
+      __asm__ volatile("csrr %0, cycle" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, InstretInfo>::value) {
+      __asm__ volatile("csrr %0, instret" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
       __asm__ volatile("csrr %0, sscratch" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
@@ -353,6 +383,8 @@ class ReadOnlyRegBase {
       __asm__ volatile("csrr %0, stval" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
       __asm__ volatile("csrr %0, satp" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, StimecmpInfo>::value) {
+      __asm__ volatile("csrr %0, stimecmp" : "=r"(value) : :);
     } else {
       printf("error\n");
     }
@@ -1124,6 +1156,60 @@ class Sie : public ReadWriteRegBase<SieInfo> {
   }
 };
 
+class Time : public ReadOnlyRegBase<TimeInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Time() = default;
+  Time(const Time &) = delete;
+  Time(Time &&) = delete;
+  auto operator=(const Time &) -> Time & = delete;
+  auto operator=(Time &&) -> Time & = delete;
+  virtual ~Time() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Time &time) {
+    printf("val: 0x%p", time.Read());
+    return os;
+  }
+};
+
+class Cycle : public ReadOnlyRegBase<CycleInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Cycle() = default;
+  Cycle(const Cycle &) = delete;
+  Cycle(Cycle &&) = delete;
+  auto operator=(const Cycle &) -> Cycle & = delete;
+  auto operator=(Cycle &&) -> Cycle & = delete;
+  virtual ~Cycle() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Cycle &cycle) {
+    printf("val: 0x%p", cycle.Read());
+    return os;
+  }
+};
+
+class Instret : public ReadOnlyRegBase<InstretInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Instret() = default;
+  Instret(const Instret &) = delete;
+  Instret(Instret &&) = delete;
+  auto operator=(const Instret &) -> Instret & = delete;
+  auto operator=(Instret &&) -> Instret & = delete;
+  virtual ~Instret() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Instret &instret) {
+    printf("val: 0x%p", instret.Read());
+    return os;
+  }
+};
+
 class Sscratch : public ReadWriteRegBase<SscratchInfo> {
  public:
   /// @name 构造/析构函数
@@ -1231,17 +1317,39 @@ class Satp : public ReadWriteRegBase<SatpInfo> {
   }
 };
 
+class Stimecmp : public ReadOnlyRegBase<StimecmpInfo> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  Stimecmp() = default;
+  Stimecmp(const Stimecmp &) = delete;
+  Stimecmp(Stimecmp &&) = delete;
+  auto operator=(const Stimecmp &) -> Stimecmp & = delete;
+  auto operator=(Stimecmp &&) -> Stimecmp & = delete;
+  virtual ~Stimecmp() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Stimecmp &stimecmp) {
+    printf("val: 0x%p", stimecmp.Read());
+    return os;
+  }
+};
+
 class AllCsr {
  public:
   Sstatus sstatus;
   Stvec stvec;
   Sip sip;
   Sie sie;
+  Time time;
+  Cycle cycle;
+  Instret instret;
   Sscratch sscratch;
   Sepc sepc;
   Scause scause;
   Stval stval;
   Satp satp;
+  Stimecmp stimecmp;
 
   /// @name 构造/析构函数
   /// @{

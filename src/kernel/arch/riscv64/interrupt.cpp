@@ -139,14 +139,7 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   }
 }
 
-static inline uint64_t READ_TIME(void) {
-  uint64_t x;
-  // asm ("csrr %0, time" : "=r" (x) );
-  // this instruction will trap in SBI
-  asm("rdtime %0" : "=r"(x));
-  return x;
-}
-static constexpr const uint64_t INTERVAL = 390000000 / 20;
+static uint64_t kInterval = 0;
 
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
 /// @todo 从 dtb 读取 cpu 速度
@@ -154,19 +147,26 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
   (void)argv;
 
+  // 获取 cpu 速度
+  auto result = FDT_PARSER::fdt_parser((uintptr_t)argv);
+  FDT_PARSER::resource_t cpu_frequency;
+  cpu_frequency.type = FDT_PARSER::resource_t::FREQUENCY;
+  result.find_via_prefix("cpus", &cpu_frequency);
+
+  kInterval = cpu_frequency.frequency;
+
   // 注册时钟中断
   interrupt.RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kSupervisorTimerInterrupt,
       [](uint64_t, uint8_t *) -> uint64_t {
-        sbi_set_timer(READ_TIME() + INTERVAL);
+        sbi_set_timer(cpu::csr::kAllCsr.time.Read() + kInterval);
         return 0;
       });
 
   // ebreak 中断
   interrupt.RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kBreakpoint, [](uint64_t, uint8_t *) -> uint64_t {
-        printf("Handle ebreak.\n");
-        printf("Handle %s\n", cpu::csr::ScauseInfo::kInterruptNames
+        printf("Handle %s\n", cpu::csr::ScauseInfo::kExceptionNames
                                   [cpu::csr::ScauseInfo::kBreakpoint]);
         cpu::csr::kAllCsr.sepc.Write(cpu::csr::kAllCsr.sepc.Read() + 2);
         return 0;
@@ -175,7 +175,7 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   asm("ebreak");
 
   // 设置时钟中断时间
-  sbi_set_timer(INTERVAL);
+  sbi_set_timer(kInterval);
 
   printf("hello IntrInit\n");
 
