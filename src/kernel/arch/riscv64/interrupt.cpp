@@ -31,7 +31,7 @@ Interrupt::InterruptFunc
 
 static Interrupt interrupt __attribute__((init_priority(101)));
 
-__attribute__((interrupt("supervisor"))) static void TarpEntry() {
+__attribute__((interrupt("supervisor"))) alignas(2) static void TarpEntry() {
   std::cout << "sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
   std::cout << "stval: " << cpu::csr::kAllCsr.stval << std::endl;
   std::cout << "stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
