@@ -32,23 +32,28 @@ Interrupt::InterruptFunc
 static Interrupt interrupt __attribute__((init_priority(101)));
 
 static __attribute__((interrupt("supervisor"))) void TarpEntry() {
-  auto sepc = Cpu::ReadSepc();
-  auto stval = Cpu::ReadStval();
-  auto scause = Cpu::ReadScause();
+  auto sepc = Sepc();
+  auto stval = Stval();
+  auto scause = Scause();
   auto sp = uint64_t(0);
-  auto sie = Cpu::ReadSie();
-  auto sstatus = Cpu::ReadSstatus();
-  auto satp = Cpu::Satp();
-  auto sscratch = Cpu::ReadSscratch();
+  auto sie = Sie();
+  auto sstatus = Sstatus();
+  auto satp = Satp();
+  auto sscratch = Sscratch();
 
+  std::cout << "sepc: " << sepc << std::endl;
+  std::cout << "stval: " << stval << std::endl;
   std::cout << "scause: " << scause << std::endl;
   std::cout << "sie: " << sie << std::endl;
   std::cout << "sstatus: " << sstatus << std::endl;
   std::cout << "satp: " << satp << std::endl;
-  printf("sepc: 0x%p, stval: 0x%p, all_regs(sp): 0x%p, sscratch: 0x%p\n", sepc,
-         stval, sp, sscratch);
+  std::cout << "sscratch: " << sscratch << std::endl;
 
-  interrupt.Do((uint64_t)scause.val_, (uint8_t *)sp);
+  // printf("sepc: 0x%p, stval: 0x%p, all_regs(sp): 0x%p, sscratch: 0x%p\n",
+  // sepc,
+  //        stval, sp, sscratch);
+
+  interrupt.Do((uint64_t)scause.Read(), (uint8_t *)sp);
 
   printf("Done\n");
 }
@@ -161,43 +166,6 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   // sbi_set_timer(99999);
 
   printf("hello IntrInit\n");
-
-  auto sscratch = Sscratch();
-  auto sepc = Sepc();
-  auto scause = Scause();
-  scause.WriteImm(2);
-  scause.SetBitsImm(0xF);
-  scause.interrupt.Set();
-  scause.SetConst<0xF>();
-  scause.ReadWriteConst<0>();
-  auto sstatus = Sstatus();
-  auto sideleg = Sideleg();
-  auto sedeleg = Sedeleg();
-  auto sip = Sip();
-  auto sie = Sie();
-  auto stval = Stval();
-  auto satp = Satp();
-
-  printf("sscratch.Read(): 0x%p\n", sscratch.Read());
-  printf("sepc.Read(): 0x%p\n", sepc.Read());
-  printf("scause.Read(): 0x%p\n", scause.Read());
-  printf("scause.interrupt.Get(): 0x%p\n", scause.interrupt.Get());
-  printf("scause.exception_code.Get(): 0x%p\n", scause.exception_code.Get());
-  printf("sstatus.Read(): 0x%p\n", sstatus.Read());
-  printf("sstatus.sie.Get(): 0x%p\n", sstatus.sie.Get());
-  printf("sstatus.spp.Get(): 0x%p\n", sstatus.spp.Get());
-  // printf("sideleg.Read(): 0x%p\n", sideleg.Read());
-  // printf("sedeleg.Read(): 0x%p\n", sedeleg.Read());
-  printf("sip.Read(): 0x%p\n", sip.Read());
-  printf("sip.ssip.Get(): 0x%p\n", sip.ssip.Get());
-  printf("sip.stip.Get(): 0x%p\n", sip.stip.Get());
-  printf("sip.seip.Get(): 0x%p\n", sip.seip.Get());
-  printf("sie.Read(): 0x%p\n", sie.Read());
-  printf("sie.ssie.Get(): 0x%p\n", sie.ssie.Get());
-  printf("sie.stie.Get(): 0x%p\n", sie.stie.Get());
-  printf("sie.seie.Get(): 0x%p\n", sie.seie.Get());
-  printf("stval.Read(): 0x%p\n", stval.Read());
-  printf("satp.Read(): 0x%p\n", satp.Read());
 
   return 0;
 }
