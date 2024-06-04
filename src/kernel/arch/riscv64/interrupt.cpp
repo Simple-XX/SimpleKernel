@@ -65,7 +65,7 @@ Interrupt::Interrupt() {
     for (auto &i : exception_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
         printf("Default Exception handler [%s] 0x%X, 0x%p\n",
-               cpu::csr::ScauseInfo::kInterruptNames[cause], cause, context);
+               cpu::csr::ScauseInfo::kExceptionNames[cause], cause, context);
         return 0;
       };
     }
