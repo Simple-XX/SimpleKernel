@@ -37,6 +37,7 @@ __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
   std::cout << "stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
   std::cout << "scause: " << cpu::csr::kAllCsr.scause << std::endl;
   std::cout << "sie: " << cpu::csr::kAllCsr.sie << std::endl;
+  std::cout << "sip: " << cpu::csr::kAllCsr.sip << std::endl;
   std::cout << "sstatus: " << cpu::csr::kAllCsr.sstatus << std::endl;
   std::cout << "satp: " << cpu::csr::kAllCsr.satp << std::endl;
   std::cout << "sscratch: " << cpu::csr::kAllCsr.sscratch << std::endl;
@@ -149,8 +150,9 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   interrupt.RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kSupervisorTimerInterrupt,
       [](uint64_t, uint8_t *) -> uint64_t {
+        cpu::csr::kAllCsr.sip.stip.Clear();
         static uint32_t count = 0;
-        if (count++ == 5) {
+        if (++count == 2) {
           while (1);
         }
         return 0;
@@ -169,17 +171,20 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   asm("ebreak");
 
   // 设置时钟中断时间
-  // sbi_set_timer(99999);
+  sbi_set_timer(9999999);
 
   printf("hello IntrInit\n");
+  cpu::csr::kAllCsr.sip.stip.Set();
+  // cpu::csr::kAllCsr.sie.stie.Clear();
 
-  cpu::csr::kAllCsr.sstatus.spp.Set();
+  // cpu::csr::kAllCsr.sstatus.spp.Set();
 
   std::cout << "sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
   std::cout << "stval: " << cpu::csr::kAllCsr.stval << std::endl;
   std::cout << "stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
   std::cout << "scause: " << cpu::csr::kAllCsr.scause << std::endl;
   std::cout << "sie: " << cpu::csr::kAllCsr.sie << std::endl;
+  std::cout << "sip: " << cpu::csr::kAllCsr.sip << std::endl;
   std::cout << "sstatus: " << cpu::csr::kAllCsr.sstatus << std::endl;
   std::cout << "satp: " << cpu::csr::kAllCsr.satp << std::endl;
   std::cout << "sscratch: " << cpu::csr::kAllCsr.sscratch << std::endl;
