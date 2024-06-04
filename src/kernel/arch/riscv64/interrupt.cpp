@@ -31,7 +31,7 @@ Interrupt::InterruptFunc
 
 static Interrupt interrupt __attribute__((init_priority(101)));
 
-__attribute__((interrupt("supervisor"))) alignas(2) static void TarpEntry() {
+__attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
   std::cout << "sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
   std::cout << "stval: " << cpu::csr::kAllCsr.stval << std::endl;
   std::cout << "stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
@@ -83,6 +83,17 @@ Interrupt::Interrupt() {
 
     // 开启外部中断
     cpu::csr::kAllCsr.sie.seie.Set();
+
+    cpu::csr::kAllCsr.sstatus.spp.Set();
+
+    std::cout << "ctor sepc: " << cpu::csr::kAllCsr.sepc << std::endl;
+    std::cout << "ctor stval: " << cpu::csr::kAllCsr.stval << std::endl;
+    std::cout << "ctor stvec: " << cpu::csr::kAllCsr.stvec << std::endl;
+    std::cout << "ctor scause: " << cpu::csr::kAllCsr.scause << std::endl;
+    std::cout << "ctor sie: " << cpu::csr::kAllCsr.sie << std::endl;
+    std::cout << "ctor sstatus: " << cpu::csr::kAllCsr.sstatus << std::endl;
+    std::cout << "ctor satp: " << cpu::csr::kAllCsr.satp << std::endl;
+    std::cout << "ctor sscratch: " << cpu::csr::kAllCsr.sscratch << std::endl;
 
     is_inited = true;
   }
@@ -138,7 +149,6 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   interrupt.RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kSupervisorTimerInterrupt,
       [](uint64_t, uint8_t *) -> uint64_t {
-        printf("ttt\n");
         static uint32_t count = 0;
         if (count++ == 5) {
           while (1);
@@ -149,13 +159,16 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   // ebreak 中断
   interrupt.RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kBreakpoint, [](uint64_t, uint8_t *) -> uint64_t {
+        printf("Handle ebreak.\n");
+        printf("Handle %s\n", cpu::csr::ScauseInfo::kInterruptNames
+                                  [cpu::csr::ScauseInfo::kBreakpoint]);
         cpu::csr::kAllCsr.sepc.Write(cpu::csr::kAllCsr.sepc.Read() + 2);
         return 0;
       });
 
-  // 设置时钟中断时间
-  // asm("ebreak");
+  asm("ebreak");
 
+  // 设置时钟中断时间
   // sbi_set_timer(99999);
 
   printf("hello IntrInit\n");
