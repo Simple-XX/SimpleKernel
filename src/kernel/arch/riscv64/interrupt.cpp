@@ -175,6 +175,8 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   auto sedeleg = Sedeleg();
   auto sip = Sip();
   auto sie = Sie();
+  auto stval = Stval();
+  auto satp = Satp();
 
   printf("sscratch.Read(): 0x%p\n", sscratch.Read());
   printf("sepc.Read(): 0x%p\n", sepc.Read());
@@ -194,6 +196,8 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   printf("sie.ssie.Get(): 0x%p\n", sie.ssie.Get());
   printf("sie.stie.Get(): 0x%p\n", sie.stie.Get());
   printf("sie.seie.Get(): 0x%p\n", sie.seie.Get());
+  printf("stval.Read(): 0x%p\n", stval.Read());
+  printf("satp.Read(): 0x%p\n", satp.Read());
 
   return 0;
 }
