@@ -19,8 +19,8 @@
 
 #include <cstdint>
 
-class Cpu {
- public:
-};
+namespace cpu {
+;
+};  // namespace cpu
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_HPP_
