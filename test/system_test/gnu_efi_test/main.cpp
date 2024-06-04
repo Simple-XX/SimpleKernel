@@ -31,7 +31,7 @@ void _start(uint32_t argc, uint8_t *argv) {
 }
 
 extern "C" void _putchar(char character) {
-  auto serial = Cpu::Serial(Cpu::kCom1);
+  auto serial = cpu::Serial(cpu::kCom1);
   serial.Write(character);
 }
 

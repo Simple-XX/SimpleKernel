@@ -21,7 +21,7 @@
 // printf_bare_metal 基本输出实现
 /// @note 这里要注意，保证在 serial 初始化之前不能使用 printf
 /// 函数，否则会有全局对象依赖问题
-static auto serial = Cpu::Serial(Cpu::kCom1);
+static auto serial = cpu::Serial(cpu::kCom1);
 extern "C" void _putchar(char character) { serial.Write(character); }
 
 static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
