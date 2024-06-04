@@ -1417,13 +1417,7 @@ class ReadOnlyRegBase {
    */
   static inline uint64_t Read() {
     uint64_t value = -1;
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrr %0, sscratch" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrr %0, sepc" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrr %0, scause" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrr %0, sstatus" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrr %0, stvec" : "=r"(value) : :);
@@ -1431,6 +1425,12 @@ class ReadOnlyRegBase {
       asm("csrr %0, sip" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrr %0, sie" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrr %0, sscratch" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrr %0, sepc" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrr %0, scause" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrr %0, stval" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1469,13 +1469,7 @@ class WriteOnlyRegBase {
    * @param value 要写的值
    */
   static inline void Write(uint64_t value) {
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrw sscratch, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrw sepc, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrw scause, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrw sstatus, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrw stvec, %0" : : "r"(value) :);
@@ -1483,6 +1477,12 @@ class WriteOnlyRegBase {
       asm("csrw sip, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrw sie, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrw sscratch, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrw sepc, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrw scause, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrw stval, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1498,13 +1498,7 @@ class WriteOnlyRegBase {
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
   static inline void WriteImm(const uint8_t value) {
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrwi sscratch, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrwi sepc, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrwi scause, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrwi sstatus, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrwi stvec, %0" : : "i"(value) :);
@@ -1512,6 +1506,12 @@ class WriteOnlyRegBase {
       asm("csrwi sip, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrwi sie, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrwi sscratch, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrwi sepc, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrwi scause, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrwi stval, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1528,13 +1528,7 @@ class WriteOnlyRegBase {
    */
   static inline uint64_t ReadWrite(uint64_t value) {
     uint64_t old_value;
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrw %0, sscratch, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrw %0, sepc, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrw %0, sstatus, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
@@ -1542,6 +1536,12 @@ class WriteOnlyRegBase {
       asm("csrrw %0, sip, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrw %0, sie, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrw %0, sscratch, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrw %0, sepc, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrw %0, stval, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1560,13 +1560,7 @@ class WriteOnlyRegBase {
    */
   static inline uint64_t ReadWriteImm(const uint8_t value) {
     uint64_t old_value;
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrwi %0, sscratch, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrwi %0, sepc, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrwi %0, scause, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrwi %0, sstatus, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
@@ -1574,6 +1568,12 @@ class WriteOnlyRegBase {
       asm("csrrwi %0, sip, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrwi %0, sie, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrwi %0, sscratch, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrwi %0, sepc, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrwi %0, scause, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrwi %0, stval, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1589,13 +1589,7 @@ class WriteOnlyRegBase {
    * @param mask 掩码
    */
   static inline void SetBits(uint64_t mask) {
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrs zero, sscratch, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrs zero, sepc, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrs zero, scause, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrs zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrs zero, stvec, %0" : : "r"(mask) :);
@@ -1603,6 +1597,12 @@ class WriteOnlyRegBase {
       asm("csrrs zero, sip, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrs zero, sie, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrs zero, sscratch, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrs zero, sepc, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrs zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrs zero, stval, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1619,13 +1619,7 @@ class WriteOnlyRegBase {
    */
   static inline uint64_t ReadSetBits(uint64_t mask) {
     uint64_t value;
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
@@ -1633,6 +1627,12 @@ class WriteOnlyRegBase {
       asm("csrrs %0, sip, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrs %0, sie, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrs %0, stval, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1648,13 +1648,7 @@ class WriteOnlyRegBase {
    * @param mask 掩码
    */
   static inline void ClearBits(uint64_t mask) {
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrc zero, sscratch, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrc zero, sepc, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrc zero, scause, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrc zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrc zero, stvec, %0" : : "r"(mask) :);
@@ -1662,6 +1656,12 @@ class WriteOnlyRegBase {
       asm("csrrc zero, sip, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrc zero, sie, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrc zero, sscratch, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrc zero, sepc, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrc zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrc zero, stval, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1678,13 +1678,7 @@ class WriteOnlyRegBase {
    */
   static inline uint64_t ReadClearBits(uint64_t mask) {
     uint64_t value;
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
@@ -1692,6 +1686,12 @@ class WriteOnlyRegBase {
       asm("csrrc %0, sip, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrc %0, sie, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrc %0, stval, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1708,13 +1708,7 @@ class WriteOnlyRegBase {
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
   static inline void SetBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrsi zero, sscratch, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrsi zero, sepc, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrsi zero, scause, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrsi zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrsi zero, stvec, %0" : : "i"(mask) :);
@@ -1722,6 +1716,12 @@ class WriteOnlyRegBase {
       asm("csrrsi zero, sip, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrsi zero, sie, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrsi zero, sscratch, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrsi zero, sepc, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrsi zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrsi zero, stval, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1738,13 +1738,7 @@ class WriteOnlyRegBase {
    */
   static inline uint64_t ReadSetBitsImm(const uint8_t mask) {
     uint64_t value;
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
@@ -1752,6 +1746,12 @@ class WriteOnlyRegBase {
       asm("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrsi %0, stval, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1768,13 +1768,7 @@ class WriteOnlyRegBase {
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
   static inline void ClearBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrci zero, sscratch, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrci zero, sepc, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrci zero, scause, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrci zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrci zero, stvec, %0" : : "i"(mask) :);
@@ -1782,6 +1776,12 @@ class WriteOnlyRegBase {
       asm("csrrci zero, sip, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrci zero, sie, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrci zero, sscratch, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrci zero, sepc, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrci zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrci zero, stval, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
@@ -1798,13 +1798,7 @@ class WriteOnlyRegBase {
    */
   static inline uint64_t ReadClearBitsImm(const uint8_t mask) {
     uint64_t value;
-    if constexpr (std::is_same<Reg, SscratchInfo>::value) {
-      asm("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
-      asm("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
-      asm("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SstatusInfo>::value) {
+    if constexpr (std::is_same<Reg, SstatusInfo>::value) {
       asm("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
@@ -1812,6 +1806,12 @@ class WriteOnlyRegBase {
       asm("csrrci %0, sip, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
       asm("csrrci %0, sie, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SscratchInfo>::value) {
+      asm("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, SepcInfo>::value) {
+      asm("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, ScauseInfo>::value) {
+      asm("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvalInfo>::value) {
       asm("csrrci %0, stval, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SatpInfo>::value) {
