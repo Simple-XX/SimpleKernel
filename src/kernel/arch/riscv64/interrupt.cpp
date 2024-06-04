@@ -18,17 +18,16 @@
 #include <typeinfo>
 
 #include "cpu.hpp"
-#include "csr.hpp"
 #include "cstdio"
 #include "fdt_parser.hpp"
 #include "iostream"
 #include "opensbi_interface.h"
 
 Interrupt::InterruptFunc
-    Interrupt::interrupt_handlers[Scause::kInterruptMaxCount];
+    Interrupt::interrupt_handlers[ScauseInfo::kInterruptMaxCount];
 
 Interrupt::InterruptFunc
-    Interrupt::exception_handlers[Scause::kExceptionMaxCount];
+    Interrupt::exception_handlers[ScauseInfo::kExceptionMaxCount];
 
 static Interrupt interrupt __attribute__((init_priority(101)));
 
@@ -57,7 +56,7 @@ Interrupt::Interrupt() {
     for (auto &i : interrupt_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
         printf("Default Interrupt handler [%s] 0x%X, 0x%p\n",
-               Scause::kInterruptNames[cause], cause, context);
+               ScauseInfo::kInterruptNames[cause], cause, context);
         return 0;
       };
     }
@@ -65,7 +64,7 @@ Interrupt::Interrupt() {
     for (auto &i : exception_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
         printf("Default Exception handler [%s] 0x%X, 0x%p\n",
-               Scause::kInterruptNames[cause], cause, context);
+               ScauseInfo::kInterruptNames[cause], cause, context);
         return 0;
       };
     }
@@ -97,12 +96,12 @@ void Interrupt::Do(uint64_t cause, uint8_t *context) {
 
   if (interrupt) {
     // 中断
-    if (exception_code < Scause::kInterruptMaxCount) {
+    if (exception_code < ScauseInfo::kInterruptMaxCount) {
       interrupt_handlers[exception_code](exception_code, context);
     }
   } else {
     // 异常
-    if (exception_code < Scause::kExceptionMaxCount) {
+    if (exception_code < ScauseInfo::kExceptionMaxCount) {
       exception_handlers[exception_code](exception_code, context);
     }
   }
@@ -113,16 +112,16 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   auto exception_code = kAllCsr.scause.exception_code.Get(cause);
 
   if (interrupt) {
-    if (exception_code < Scause::kInterruptMaxCount) {
+    if (exception_code < ScauseInfo::kInterruptMaxCount) {
       interrupt_handlers[exception_code] = func;
       printf("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
-             Scause::kInterruptNames[exception_code], cause, func);
+             ScauseInfo::kInterruptNames[exception_code], cause, func);
     }
   } else {
-    if (exception_code < Scause::kExceptionMaxCount) {
+    if (exception_code < ScauseInfo::kExceptionMaxCount) {
       exception_handlers[exception_code] = func;
       printf("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
-             Scause::kExceptionNames[exception_code], cause, func);
+             ScauseInfo::kExceptionNames[exception_code], cause, func);
     }
   }
 }
@@ -134,7 +133,7 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argv;
 
   // 注册时钟中断
-  interrupt.RegisterInterruptFunc(Scause::kSupervisorTimerInterrupt,
+  interrupt.RegisterInterruptFunc(ScauseInfo::kSupervisorTimerInterrupt,
                                   [](uint64_t, uint8_t *) -> uint64_t {
                                     printf("ttt\n");
                                     static uint32_t count = 0;
@@ -145,7 +144,7 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
                                   });
 
   // ebreak 中断
-  interrupt.RegisterInterruptFunc(Scause::kBreakpoint,
+  interrupt.RegisterInterruptFunc(ScauseInfo::kBreakpoint,
                                   [](uint64_t, uint8_t *) -> uint64_t {
                                     kAllCsr.sepc.Write(kAllCsr.sepc.Read() + 2);
                                     return 0;

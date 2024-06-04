@@ -1129,31 +1129,11 @@ struct CsrRegInfoBase {
   static constexpr uint64_t kAllSetMask = ~0;
 };
 
-/// @todo 确认所有 info 信息的掩码
-struct SscratchInfo : public CsrRegInfoBase {};
-
-struct SepcInfo : public CsrRegInfoBase {};
-
-struct ScauseInfo : public CsrRegInfoBase {
-  struct Interrupt {
-    using DataType = uint64_t;
-    static constexpr uint64_t kBitOffset = 63;
-    static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 1UL << 63;
-    static constexpr uint64_t kAllSetMask = 1;
-  };
-
-  struct ExceptionCode {
-    using DataType = uint64_t;
-    static constexpr uint64_t kBitOffset = 0;
-    static constexpr uint64_t kBitWidth = 63;
-    static constexpr uint64_t kBitMask = ~(1UL << 63);
-    static constexpr uint64_t kAllSetMask = ~(1UL << 63);
-  };
-};
-
+/**
+ * @brief sstatus 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.1
+ */
 struct SstatusInfo : public CsrRegInfoBase {
-  /** Parameter data for sie */
   struct Sie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 1;
@@ -1161,7 +1141,7 @@ struct SstatusInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitMask = 0x2;
     static constexpr uint64_t kAllSetMask = 0x1;
   };
-  /** Parameter data for spie */
+
   struct Spie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 5;
@@ -1169,7 +1149,7 @@ struct SstatusInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitMask = 0x20;
     static constexpr uint64_t kAllSetMask = 0x1;
   };
-  /** Parameter data for spp */
+
   struct Spp {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 8;
@@ -1179,8 +1159,16 @@ struct SstatusInfo : public CsrRegInfoBase {
   };
 };
 
+/**
+ * @brief stvec 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.2
+ */
 struct StvecInfo : public CsrRegInfoBase {
-  /** Parameter data for mode */
+  /// 中断模式 直接
+  static constexpr const uint64_t kDirect = 0x0;
+  /// 中断模式 向量
+  static constexpr const uint64_t kVectored = 0x1;
+
   struct Mode {
     using DataType = uint8_t;
     static constexpr uint64_t kBitOffset = 0;
@@ -1188,7 +1176,7 @@ struct StvecInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitMask = 0x3;
     static constexpr uint64_t kAllSetMask = 0x3;
   };
-  /** Parameter data for base */
+
   struct Base {
     using DataType = uint64_t;
     static constexpr uint64_t kBitOffset = 0;
@@ -1198,13 +1186,11 @@ struct StvecInfo : public CsrRegInfoBase {
   };
 };
 
-struct SidelegInfo : public CsrRegInfoBase {};
-
-struct SedelegInfo : public CsrRegInfoBase {};
-
-/** Parameter data for fields in sip */
+/**
+ * @brief sip 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.3
+ */
 struct SipInfo : public CsrRegInfoBase {
-  /** Parameter data for ssi */
   struct Ssip {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 1;
@@ -1212,7 +1198,7 @@ struct SipInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitMask = 0x2;
     static constexpr uint64_t kAllSetMask = 0x1;
   };
-  /** Parameter data for sti */
+
   struct Stip {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 5;
@@ -1220,7 +1206,7 @@ struct SipInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitMask = 0x20;
     static constexpr uint64_t kAllSetMask = 0x1;
   };
-  /** Parameter data for sei */
+
   struct Seip {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 9;
@@ -1230,8 +1216,11 @@ struct SipInfo : public CsrRegInfoBase {
   };
 };
 
+/**
+ * @brief sip 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.3
+ */
 struct SieInfo : public CsrRegInfoBase {
-  /** Parameter data for ssi */
   struct Ssie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 1;
@@ -1239,6 +1228,7 @@ struct SieInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitMask = 0x2;
     static constexpr uint64_t kAllSetMask = 0x1;
   };
+
   struct Stie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 5;
@@ -1246,6 +1236,7 @@ struct SieInfo : public CsrRegInfoBase {
     static constexpr uint64_t kBitMask = 0x20;
     static constexpr uint64_t kAllSetMask = 0x1;
   };
+
   struct Seie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 9;
@@ -1255,9 +1246,131 @@ struct SieInfo : public CsrRegInfoBase {
   };
 };
 
+/**
+ * @brief sscratch 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.6
+ */
+struct SscratchInfo : public CsrRegInfoBase {};
+
+/**
+ * @brief sepc 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.7
+ */
+struct SepcInfo : public CsrRegInfoBase {};
+
+/**
+ * @brief scause 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.8
+ */
+struct ScauseInfo : public CsrRegInfoBase {
+  enum {
+    // 中断
+    kInterrupt = 1ULL << 63,
+    kSupervisorSoftwareInterrupt = kInterrupt + 1,
+    kSupervisorTimerInterrupt = kInterrupt + 5,
+    kSupervisorExternalInterrupt = kInterrupt + 9,
+    kCounterOverflowInterrupt = kInterrupt + 13,
+
+    // 异常
+    kInstructionAddressMisaligned = 0,
+    kInstructionAccessFault = 1,
+    kIllegalInstruction = 2,
+    kBreakpoint = 3,
+    kLoadAddressMisaligned = 4,
+    kLoadAccessFault = 5,
+    kStoreAmoAddressMisaligned = 6,
+    kStoreAmoAccessFault = 7,
+    kEcallUserMode = 8,
+    kEcallSuperMode = 9,
+    kReserved4 = 10,
+    kEcallMachineMode = 11,
+    kInstructionPageFault = 12,
+    kLoadPageFault = 13,
+    kReserved5 = 14,
+    kStoreAmoPageFault = 15,
+    kSoftwareCheck = 18,
+    kHardwareError = 19,
+  };
+
+  /// 最大中断数
+  static constexpr const uint32_t kInterruptMaxCount = 16;
+
+  /// 中断名
+  static constexpr const char *const kInterruptNames[kInterruptMaxCount] = {
+      "Reserved", "Supervisor Software Interrupt", "Reserved", "Reserved",
+      "Reserved", "Supervisor Timer Interrupt",    "Reserved", "Reserved",
+      "Reserved", "Supervisor External Interrupt", "Reserved", "Reserved",
+      "Reserved", "Counter-overflow Interrupt",    "Reserved", "Reserved",
+  };
+
+  /// 最大异常数
+  static constexpr const uint32_t kExceptionMaxCount = 20;
+
+  /// 异常名
+  static constexpr const char *const kExceptionNames[kExceptionMaxCount] = {
+      "Instruction Address Misaligned",
+      "Instruction Access Fault",
+      "Illegal Instruction",
+      "Breakpoint",
+      "Load Address Misaligned",
+      "Load Access Fault",
+      "Store/AMO Address Misaligned",
+      "Store/AMO Access Fault",
+      "Environment Call from U-mode",
+      "Environment Call from S-mode",
+      "Reserved",
+      "Reserved",
+      "Instruction Page Fault",
+      "Load Page Fault",
+      "Reserved",
+      "Store/AMO Page Fault",
+      "Reserved",
+      "Reserved",
+      "SoftwareCheck",
+      "HardwareError",
+  };
+
+  struct ExceptionCode {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 63;
+    static constexpr uint64_t kBitMask = 0x7FFFFFFFFFFFFFFF;
+    static constexpr uint64_t kAllSetMask = 0x7FFFFFFFFFFFFFFF;
+  };
+
+  struct Interrupt {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 63;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x8000000000000000;
+    static constexpr uint64_t kAllSetMask = 1;
+  };
+};
+
+/**
+ * @brief stval 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.9
+ */
 struct StvalInfo : public CsrRegInfoBase {};
 
+/**
+ * @brief satp 寄存器定义
+ * @see priv-isa-asciidoc_20240411.pdf#10.1.11
+ */
 struct SatpInfo : public CsrRegInfoBase {
+  enum {
+    kBare = 0,
+    kSv39 = 8,
+    kSv48 = 9,
+    kSv57 = 10,
+    kSv64 = 11,
+  };
+
+  static constexpr const char *kModeNames[] = {
+      "Bare",     "Reserved", "Reserved", "Reserved", "Reserved", "Reserved",
+      "Reserved", "Reserved", "SV39",     "SV48",     "SV57",     "SV64",
+  };
+
   struct Ppn {
     using DataType = uint64_t;
     static constexpr uint64_t kBitOffset = 0;
@@ -1314,10 +1427,6 @@ class ReadOnlyRegBase {
       asm("csrr %0, sstatus" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrr %0, stvec" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrr %0, sideleg" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrr %0, sedeleg" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrr %0, sip" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1370,10 +1479,6 @@ class WriteOnlyRegBase {
       asm("csrw sstatus, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrw stvec, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrw sideleg, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrw sedeleg, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrw sip, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1403,10 +1508,6 @@ class WriteOnlyRegBase {
       asm("csrwi sstatus, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrwi stvec, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrwi sideleg, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrwi sedeleg, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrwi sip, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1437,10 +1538,6 @@ class WriteOnlyRegBase {
       asm("csrrw %0, sstatus, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrw %0, sideleg, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrw %0, sedeleg, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrw %0, sip, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1473,10 +1570,6 @@ class WriteOnlyRegBase {
       asm("csrrwi %0, sstatus, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrwi %0, sideleg, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrwi %0, sedeleg, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrwi %0, sip, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1506,10 +1599,6 @@ class WriteOnlyRegBase {
       asm("csrrs zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrs zero, stvec, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrs zero, sideleg, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrs zero, sedeleg, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrs zero, sip, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1540,10 +1629,6 @@ class WriteOnlyRegBase {
       asm("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrs %0, sideleg, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrs %0, sedeleg, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrs %0, sip, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1573,10 +1658,6 @@ class WriteOnlyRegBase {
       asm("csrrc zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrc zero, stvec, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrc zero, sideleg, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrc zero, sedeleg, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrc zero, sip, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1607,10 +1688,6 @@ class WriteOnlyRegBase {
       asm("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrc %0, sideleg, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrc %0, sedeleg, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrc %0, sip, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1641,10 +1718,6 @@ class WriteOnlyRegBase {
       asm("csrrsi zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrsi zero, stvec, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrsi zero, sideleg, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrsi zero, sedeleg, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrsi zero, sip, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1675,10 +1748,6 @@ class WriteOnlyRegBase {
       asm("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrsi %0, sideleg, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrsi %0, sedeleg, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1709,10 +1778,6 @@ class WriteOnlyRegBase {
       asm("csrrci zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrci zero, stvec, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrci zero, sideleg, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrci zero, sedeleg, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrci zero, sip, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -1743,10 +1808,6 @@ class WriteOnlyRegBase {
       asm("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, StvecInfo>::value) {
       asm("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SidelegInfo>::value) {
-      asm("csrrci %0, sideleg, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, SedelegInfo>::value) {
-      asm("csrrci %0, sedeleg, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SipInfo>::value) {
       asm("csrrci %0, sip, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, SieInfo>::value) {
@@ -2015,6 +2076,121 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
   }
 };
 
+class Sstatus : public ReadWriteRegBase<SstatusInfo> {
+ public:
+  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Sie> sie;
+  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spie> spie;
+  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spp> spp;
+
+  /// @name 构造/析构函数
+  /// @{
+  Sstatus() = default;
+  Sstatus(const Sstatus &) = delete;
+  Sstatus(Sstatus &&) = delete;
+  auto operator=(const Sstatus &) -> Sstatus & = delete;
+  auto operator=(Sstatus &&) -> Sstatus & = delete;
+  virtual ~Sstatus() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Sstatus &sstatus) {
+    auto sie = sstatus.sie.Get();
+    auto spie = sstatus.spie.Get();
+    auto spp = sstatus.spp.Get();
+    printf("val: 0x%p, sie: %s, spie: %s, spp: %s", sstatus.Read(),
+           (sie == true ? "Enable" : "Disable"),
+           (spie == true ? "Enable" : "Disable"),
+           (spp == true ? "S Mode" : "U Mode")
+
+    );
+    return os;
+  }
+};
+
+class Stvec : public ReadWriteRegBase<StvecInfo> {
+ public:
+  ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Base> base;
+  ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Mode> mode;
+
+  void SetDirect(uint64_t addr) {
+    base.Write(addr);
+    mode.Write(StvecInfo::kDirect);
+  }
+
+  /// @name 构造/析构函数
+  /// @{
+  Stvec() = default;
+  Stvec(const Stvec &) = delete;
+  Stvec(Stvec &&) = delete;
+  auto operator=(const Stvec &) -> Stvec & = delete;
+  auto operator=(Stvec &&) -> Stvec & = delete;
+  virtual ~Stvec() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Stvec &stvec) {
+    auto mode = stvec.mode.Get();
+    auto base = stvec.base.Get();
+    printf("val: 0x%p, mode: %s, base: 0x%p", stvec.Read(),
+           (mode == StvecInfo::kDirect ? "Direct" : "Vectored"), base);
+    return os;
+  }
+};
+
+class Sip : public ReadWriteRegBase<SipInfo> {
+ public:
+  ReadWriteField<ReadWriteRegBase<SipInfo>, SipInfo::Ssip> ssip;
+  ReadWriteField<ReadWriteRegBase<SipInfo>, SipInfo::Stip> stip;
+  ReadWriteField<ReadWriteRegBase<SipInfo>, SipInfo::Seip> seip;
+
+  /// @name 构造/析构函数
+  /// @{
+  Sip() = default;
+  Sip(const Sip &) = delete;
+  Sip(Sip &&) = delete;
+  auto operator=(const Sip &) -> Sip & = delete;
+  auto operator=(Sip &&) -> Sip & = delete;
+  virtual ~Sip() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Sip &sip) {
+    auto ssip = sip.ssip.Get();
+    auto stip = sip.stip.Get();
+    auto seip = sip.seip.Get();
+    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sip.Read(),
+           (ssip == true ? "Enable" : "Disable"),
+           (stip == true ? "Enable" : "Disable"),
+           (seip == true ? "Enable" : "Disable"));
+    return os;
+  }
+};
+
+class Sie : public ReadWriteRegBase<SieInfo> {
+ public:
+  ReadWriteField<ReadWriteRegBase<SieInfo>, SieInfo::Ssie> ssie;
+  ReadWriteField<ReadWriteRegBase<SieInfo>, SieInfo::Stie> stie;
+  ReadWriteField<ReadWriteRegBase<SieInfo>, SieInfo::Seie> seie;
+
+  /// @name 构造/析构函数
+  /// @{
+  Sie() = default;
+  Sie(const Sie &) = delete;
+  Sie(Sie &&) = delete;
+  auto operator=(const Sie &) -> Sie & = delete;
+  auto operator=(Sie &&) -> Sie & = delete;
+  virtual ~Sie() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Sie &sie) {
+    auto ssie = sie.ssie.Get();
+    auto stie = sie.stie.Get();
+    auto seie = sie.seie.Get();
+    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sie.Read(),
+           (ssie == true ? "Enable" : "Disable"),
+           (stie == true ? "Enable" : "Disable"),
+           (seie == true ? "Enable" : "Disable"));
+    return os;
+  }
+};
+
 class Sscratch : public ReadWriteRegBase<SscratchInfo> {
  public:
   /// @name 构造/析构函数
@@ -2051,89 +2227,8 @@ class Sepc : public ReadWriteRegBase<SepcInfo> {
   }
 };
 
-/**
- * @brief scause 寄存器定义
- * @see priv-isa-asciidoc_20240411.pdf#3.1.15
- */
 class Scause : public ReadWriteRegBase<ScauseInfo> {
  public:
-  enum {
-    // 中断
-    kInterrupt = 1ULL << 63,
-    kUserSoftwareInterrupt = kInterrupt + 0,
-    kSupervisorSoftwareInterrupt = kInterrupt + 1,
-    kReserved1 = kInterrupt + 2,
-    kMachineSoftwareInterrupt = kInterrupt + 3,
-    kUserTimerInterrupt = kInterrupt + 4,
-    kSupervisorTimerInterrupt = kInterrupt + 5,
-    kReserved2 = kInterrupt + 6,
-    kMachineTimerInterrupt = kInterrupt + 7,
-    kUserExternalInterrupt = kInterrupt + 8,
-    kSupervisorExternalInterrupt = kInterrupt + 9,
-    kReserved3 = kInterrupt + 10,
-    kMachineExternalInterrupt = kInterrupt + 11,
-
-    // 异常
-    kInstructionAddressMisaligned = 0,
-    kInstructionAccessFault = 1,
-    kIllegalInstruction = 2,
-    kBreakpoint = 3,
-    kLoadAddressMisaligned = 4,
-    kLoadAccessFault = 5,
-    kStoreAmoAddressMisaligned = 6,
-    kStoreAmoAccessFault = 7,
-    kEcallUserMode = 8,
-    kEcallSuperMode = 9,
-    kReserved4 = 10,
-    kEcallMachineMode = 11,
-    kInstructionPageFault = 12,
-    kLoadPageFault = 13,
-    kReserved5 = 14,
-    kStoreAmoPageFault = 15,
-  };
-
-  /// 最大中断数
-  static constexpr const uint32_t kInterruptMaxCount = 12;
-
-  /// 中断名
-  static constexpr const char *const kInterruptNames[kInterruptMaxCount] = {
-      "User Software Interrupt",
-      "Supervisor Software Interrupt",
-      "Reserved",
-      "Machine Software Interrupt",
-      "User Timer Interrupt",
-      "Supervisor Timer Interrupt",
-      "Reserved",
-      "Machine Timer Interrupt",
-      "User External Interrupt",
-      "Supervisor External Interrupt",
-      "Reserved",
-      "Machine External Interrupt",
-  };
-
-  /// 最大异常数
-  static constexpr const uint32_t kExceptionMaxCount = 16;
-
-  /// 异常名
-  static constexpr const char *const kExceptionNames[kExceptionMaxCount] = {
-      "Instruction Address Misaligned",
-      "Instruction Access Fault",
-      "Illegal Instruction",
-      "Breakpoint",
-      "Load Address Misaligned",
-      "Load Access Fault",
-      "Store/AMO Address Misaligned",
-      "Store/AMO Access Fault",
-      "Environment Call from U-mode",
-      "Environment Call from S-mode",
-      "Reserved",
-      "Environment Call from M-mode",
-      "Instruction Page Fault",
-      "Load Page Fault",
-      "Reserved",
-      "Store/AMO Page Fault",
-  };
-
   ReadWriteField<ReadWriteRegBase<ScauseInfo>, ScauseInfo::Interrupt> interrupt;
   ReadWriteField<ReadWriteRegBase<ScauseInfo>, ScauseInfo::ExceptionCode>
       exception_code;
@@ -2153,170 +2248,8 @@ class Scause : public ReadWriteRegBase<ScauseInfo> {
     auto interrupt = scause.interrupt.Get();
     printf("val: 0x%p, exception_code: 0x%p, interrupt: %s, name: %s",
            scause.Read(), exception_code, interrupt ? "Yes" : "No",
-           interrupt ? kInterruptNames[exception_code]
-                     : kExceptionNames[exception_code]);
-    return os;
-  }
-};
-
-/**
- * @brief sstatus 寄存器定义
- * @see priv-isa-asciidoc_20240411.pdf#3.1.6
- */
-class Sstatus : public ReadWriteRegBase<SstatusInfo> {
- public:
-  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Sie> sie;
-  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spie> spie;
-  ReadWriteField<ReadWriteRegBase<SstatusInfo>, SstatusInfo::Spp> spp;
-
-  /// @name 构造/析构函数
-  /// @{
-  Sstatus() = default;
-  Sstatus(const Sstatus &) = delete;
-  Sstatus(Sstatus &&) = delete;
-  auto operator=(const Sstatus &) -> Sstatus & = delete;
-  auto operator=(Sstatus &&) -> Sstatus & = delete;
-  virtual ~Sstatus() = default;
-  /// @}
-
-  friend std::ostream &operator<<(std::ostream &os, const Sstatus &sstatus) {
-    auto sie = sstatus.sie.Get();
-    auto spie = sstatus.spie.Get();
-    auto spp = sstatus.spp.Get();
-    printf("val: 0x%p, sie: %s, spie: %s, spp: %s", sstatus.Read(),
-           (sie == true ? "Enable" : "Disable"),
-           (spie == true ? "Enable" : "Disable"),
-           (spp == true ? "S Mode" : "U Mode")
-
-    );
-    return os;
-  }
-};
-
-/**
- * @brief stvec 寄存器定义
- * @see priv-isa-asciidoc_20240411.pdf#3.1.7
- */
-class Stvec : public ReadWriteRegBase<StvecInfo> {
- public:
-  /// 中断模式 直接
-  static constexpr const uint64_t kDirect = 0x0;
-  /// 中断模式 向量
-  static constexpr const uint64_t kVectored = 0x1;
-
-  ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Base> base;
-  ReadWriteField<ReadWriteRegBase<StvecInfo>, StvecInfo::Mode> mode;
-
-  void SetDirect(uint64_t addr) {
-    base.Write(addr);
-    mode.Write(kDirect);
-  }
-
-  /// @name 构造/析构函数
-  /// @{
-  Stvec() = default;
-  Stvec(const Stvec &) = delete;
-  Stvec(Stvec &&) = delete;
-  auto operator=(const Stvec &) -> Stvec & = delete;
-  auto operator=(Stvec &&) -> Stvec & = delete;
-  virtual ~Stvec() = default;
-  /// @}
-
-  friend std::ostream &operator<<(std::ostream &os, const Stvec &stvec) {
-    auto mode = stvec.mode.Get();
-    auto base = stvec.base.Get();
-    printf("val: 0x%p, mode: %s, base: 0x%p", stvec.Read(),
-           (mode == kDirect ? "Direct" : "Vectored"), base);
-    return os;
-  }
-};
-
-class Sideleg : public ReadWriteRegBase<SidelegInfo> {
- public:
-  /// @name 构造/析构函数
-  /// @{
-  Sideleg() = default;
-  Sideleg(const Sideleg &) = delete;
-  Sideleg(Sideleg &&) = delete;
-  auto operator=(const Sideleg &) -> Sideleg & = delete;
-  auto operator=(Sideleg &&) -> Sideleg & = delete;
-  virtual ~Sideleg() = default;
-  /// @}
-};
-
-class Sedeleg : public ReadWriteRegBase<SedelegInfo> {
- public:
-  /// @name 构造/析构函数
-  /// @{
-  Sedeleg() = default;
-  Sedeleg(const Sedeleg &) = delete;
-  Sedeleg(Sedeleg &&) = delete;
-  auto operator=(const Sedeleg &) -> Sedeleg & = delete;
-  auto operator=(Sedeleg &&) -> Sedeleg & = delete;
-  virtual ~Sedeleg() = default;
-  /// @}
-};
-
-/**
- * @brief sip 寄存器定义
- * @see priv-isa-asciidoc_20240411.pdf#3.1.9
- */
-class Sip : public ReadWriteRegBase<SipInfo> {
- public:
-  ReadWriteField<ReadWriteRegBase<SipInfo>, SipInfo::Ssip> ssip;
-  ReadWriteField<ReadWriteRegBase<SipInfo>, SipInfo::Stip> stip;
-  ReadWriteField<ReadWriteRegBase<SipInfo>, SipInfo::Seip> seip;
-
-  /// @name 构造/析构函数
-  /// @{
-  Sip() = default;
-  Sip(const Sip &) = delete;
-  Sip(Sip &&) = delete;
-  auto operator=(const Sip &) -> Sip & = delete;
-  auto operator=(Sip &&) -> Sip & = delete;
-  virtual ~Sip() = default;
-  /// @}
-
-  friend std::ostream &operator<<(std::ostream &os, const Sip &sip) {
-    auto ssip = sip.ssip.Get();
-    auto stip = sip.stip.Get();
-    auto seip = sip.seip.Get();
-    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sip.Read(),
-           (ssip == true ? "Enable" : "Disable"),
-           (stip == true ? "Enable" : "Disable"),
-           (seip == true ? "Enable" : "Disable"));
-    return os;
-  }
-};
-
-/**
- * @brief sie 寄存器定义
- * @see priv-isa-asciidoc_20240411.pdf#3.1.9
- */
-class Sie : public ReadWriteRegBase<SieInfo> {
- public:
-  ReadWriteField<ReadWriteRegBase<SieInfo>, SieInfo::Ssie> ssie;
-  ReadWriteField<ReadWriteRegBase<SieInfo>, SieInfo::Stie> stie;
-  ReadWriteField<ReadWriteRegBase<SieInfo>, SieInfo::Seie> seie;
-
-  /// @name 构造/析构函数
-  /// @{
-  Sie() = default;
-  Sie(const Sie &) = delete;
-  Sie(Sie &&) = delete;
-  auto operator=(const Sie &) -> Sie & = delete;
-  auto operator=(Sie &&) -> Sie & = delete;
-  virtual ~Sie() = default;
-  /// @}
-
-  friend std::ostream &operator<<(std::ostream &os, const Sie &sie) {
-    auto ssie = sie.ssie.Get();
-    auto stie = sie.stie.Get();
-    auto seie = sie.seie.Get();
-    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sie.Read(),
-           (ssie == true ? "Enable" : "Disable"),
-           (stie == true ? "Enable" : "Disable"),
-           (seie == true ? "Enable" : "Disable"));
+           interrupt ? ScauseInfo::kInterruptNames[exception_code]
+                     : ScauseInfo::kExceptionNames[exception_code]);
     return os;
   }
 };
@@ -2341,19 +2274,6 @@ class Stval : public ReadWriteRegBase<StvalInfo> {
 
 class Satp : public ReadWriteRegBase<SatpInfo> {
  public:
-  enum {
-    kBare = 0,
-    kSv39 = 8,
-    kSv48 = 9,
-    kSv57 = 10,
-    kSv64 = 11,
-  };
-
-  static constexpr const char *kModeNames[] = {
-      "Bare",     "Reserved", "Reserved", "Reserved", "Reserved", "Reserved",
-      "Reserved", "Reserved", "SV39",     "SV48",     "SV57",     "SV64",
-  };
-
   ReadWriteField<ReadWriteRegBase<SatpInfo>, SatpInfo::Ppn> ppn;
   ReadWriteField<ReadWriteRegBase<SatpInfo>, SatpInfo::Asid> asid;
   ReadWriteField<ReadWriteRegBase<SatpInfo>, SatpInfo::Mode> mode;
@@ -2373,34 +2293,21 @@ class Satp : public ReadWriteRegBase<SatpInfo> {
     auto asid = satp.asid.Get();
     auto mode = satp.mode.Get();
     printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", satp.Read(), ppn, asid,
-           kModeNames[mode]);
+           SatpInfo::kModeNames[mode]);
     return os;
   }
 };
 
 class AllCsr {
  public:
-  /* Supervisor Mode Scratch Register */
-  Sscratch sscratch;
-  /* Supervisor Exception Program Counter */
-  Sepc sepc;
-  /* Supervisor Exception Cause */
-  Scause scause;
-  /* Supervisor Status */
   Sstatus sstatus;
-  /* Supervisor Trap Vector Base Address */
   Stvec stvec;
-  /* Supervisor Interrupt Delegation */
-  Sideleg sideleg;
-  /* Supervisor Exception Delegation */
-  Sedeleg sedeleg;
-  /* Supervisor Interrupt Pending */
   Sip sip;
-  /* Supervisor Interrupt Enable */
   Sie sie;
-  /* Supervisor bad address or instruction. */
+  Sscratch sscratch;
+  Sepc sepc;
+  Scause scause;
   Stval stval;
-  /* Supervisor address translation and protection. */
   Satp satp;
 
   /// @name 构造/析构函数
