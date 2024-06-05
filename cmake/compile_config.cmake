@@ -177,7 +177,7 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
 
 list(APPEND DEFAULT_KERNEL_LINK_LIB
         ${COMMON_LINK_LIB}
-        
+
         printf_bare_metal
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
