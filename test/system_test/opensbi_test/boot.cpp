@@ -14,27 +14,85 @@
  * </table>
  */
 
+#include "cstdio"
+#include "libcxx.h"
 #include "opensbi_interface.h"
 
-int main(int, char **) {
-  sbi_debug_console_write_byte('H');
-  sbi_debug_console_write_byte('e');
-  sbi_debug_console_write_byte('l');
-  sbi_debug_console_write_byte('l');
-  sbi_debug_console_write_byte('o');
-  sbi_debug_console_write_byte('W');
-  sbi_debug_console_write_byte('o');
-  sbi_debug_console_write_byte('r');
-  sbi_debug_console_write_byte('l');
-  sbi_debug_console_write_byte('d');
-  sbi_debug_console_write_byte('!');
-  sbi_debug_console_write_byte('\n');
+// printf_bare_metal 基本输出实现
+extern "C" void _putchar(char character) {
+  sbi_debug_console_write_byte(character);
+}
+
+template <uint32_t V>
+class TestStaticConstructDestruct {
+ public:
+  TestStaticConstructDestruct(unsigned int& v) : _v(v) { _v |= V; }
+  ~TestStaticConstructDestruct() { _v &= ~V; }
+
+ private:
+  unsigned int& _v;
+};
+
+static int global_value_with_init = 42;
+static uint32_t global_u32_value_with_init{0xa1a2a3a4ul};
+static uint64_t global_u64_value_with_init{0xb1b2b3b4b5b6b7b8ull};
+static float global_f32_value_with_init{3.14};
+static double global_f64_value_with_init{1.44};
+static uint16_t global_u16_value_with_init{0x1234};
+static uint8_t global_u8a_value_with_init{0x42};
+static uint8_t global_u8b_value_with_init{0x43};
+static uint8_t global_u8c_value_with_init{0x44};
+static uint8_t global_u8d_value_with_init{0x45};
+static volatile bool global_bool_keep_running{true};
+
+static unsigned int global_value1_with_constructor = 1;
+static unsigned int global_value2_with_constructor = 2;
+
+static TestStaticConstructDestruct<0x200> constructor_destructor_1(
+    global_value1_with_constructor);
+static TestStaticConstructDestruct<0x200> constructor_destructor_2(
+    global_value2_with_constructor);
+static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
+    global_value2_with_constructor};
+static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
+    global_value1_with_constructor};
+
+uint32_t main(uint32_t, uint8_t*) {
+  global_u8c_value_with_init++;
+  global_u32_value_with_init++;
+  global_u64_value_with_init++;
+  global_f32_value_with_init++;
+  global_u8b_value_with_init++;
+  global_f64_value_with_init++;
+  global_u8d_value_with_init++;
+  global_u16_value_with_init++;
+  global_u8a_value_with_init++;
+  global_value_with_init++;
+  global_bool_keep_running = false;
+
+  _putchar('H');
+  _putchar('e');
+  _putchar('l');
+  _putchar('l');
+  _putchar('o');
+  _putchar('W');
+  _putchar('o');
+  _putchar('r');
+  _putchar('l');
+  _putchar('d');
+  _putchar('!');
+  _putchar('\n');
 
   return 0;
 }
 
-extern "C" void _start(int _argc, char **_argv) {
-  /// @todo c++ 全局对象初始化
-  //  cpp_init();
-  main(_argc, _argv);
+extern "C" void _start(uint32_t argc, uint8_t* argv) {
+  CppInit();
+  main(argc, argv);
+  CppDeInit();
+
+  // 进入死循环
+  while (1) {
+    ;
+  }
 }

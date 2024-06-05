@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}_kernel
         ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/boot.S
 )
 
+add_header_libcxx(${PROJECT_NAME}_kernel)
 add_header_3rd(${PROJECT_NAME}_kernel)
 
 target_compile_options(${PROJECT_NAME}_kernel PRIVATE
@@ -31,6 +32,7 @@ target_link_options(${PROJECT_NAME}_kernel PRIVATE
 # 添加要链接的库
 target_link_libraries(${PROJECT_NAME}_kernel PRIVATE
         ${DEFAULT_KERNEL_LINK_LIB}
+        libcxx
 )
 
 add_dependencies(${PROJECT_NAME}_kernel
