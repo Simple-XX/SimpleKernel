@@ -265,7 +265,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} ST
     CPMAddPackage(
             NAME fdt_parser
             GIT_REPOSITORY https://github.com/MRNIU/fdt_parser
-            GIT_TAG v3.0.3
+            GIT_TAG v3.1.0
     )
 endif ()
 
