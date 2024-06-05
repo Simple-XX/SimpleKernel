@@ -53,7 +53,7 @@ static volatile bool global_bool_keep_running{true};
 // static unsigned int global_value2_with_constructor = 2;
 
 // static TestStaticConstructDestruct<0x200> constructor_destructor_1(
-// global_value1_with_constructor);
+//     global_value1_with_constructor);
 // static TestStaticConstructDestruct<0x200> constructor_destructor_2(
 //     global_value2_with_constructor);
 // static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
