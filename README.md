@@ -32,7 +32,11 @@ boot branch
 2. 安装依赖
 
     ```shell
-    sudo apt install --fix-missing -y doxygen graphviz clang-format clang-tidy cppcheck qemu-system lcov gdb-multiarch libgtest-dev cmake gcc g++ gcc-riscv64-linux-gnu g++-riscv64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+    sudo apt install --fix-missing -y gcc g++ gcc-riscv64-linux-gnu g++-riscv64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+    sudo apt install --fix-missing -y cmake qemu-system gdb-multiarch
+    sudo apt install --fix-missing -y doxygen graphviz
+    sudo apt install --fix-missing -y doxygen graphviz 
+    sudo apt install --fix-missing -y clang-format clang-tidy cppcheck libgtest-dev lcov
     ```
 
 3. 编译并运行
