@@ -49,7 +49,7 @@ readelf_a(${PROJECT_NAME})
 objdump_D(${PROJECT_NAME})
 
 # 添加 run 和 debug target
-add_run_target(NAME ${PROJECT_NAME}
+add_run_target(NAME ${PROJECT_NAME}_
         DEPENDS boot ${PROJECT_NAME} ${RUN_DEPENDS} ${DEBUG_DEPENDS}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         TARGET ${CMAKE_SYSTEM_PROCESSOR}

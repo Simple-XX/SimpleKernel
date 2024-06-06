@@ -55,14 +55,14 @@ boot branch
     # 进入其中一个架构
     cd build_riscv64
     # 在 qemu 中运行
-    make run_run
+    make run
     ```
 
 4. 调试
 
     ```shell
     # 进入构建目录后执行
-    make run_debug
+    make debug
     ```
     
     在一个新的 shell 中进入 gdb

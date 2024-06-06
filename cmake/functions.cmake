@@ -139,7 +139,7 @@ function(add_run_target)
     endif ()
 
     # 添加 target
-    add_custom_target(${ARG_NAME}_run DEPENDS ${ARG_DEPENDS}
+    add_custom_target(${ARG_NAME}run DEPENDS ${ARG_DEPENDS}
             WORKING_DIRECTORY ${ARG_WORKING_DIRECTORY}
             COMMAND ${CMAKE_COMMAND} -E make_directory image/
             ${commands}
@@ -147,7 +147,7 @@ function(add_run_target)
             qemu-system-${ARG_TARGET}
             ${ARG_QEMU_FLAGS}
     )
-    add_custom_target(${ARG_NAME}_debug DEPENDS ${ARG_DEPENDS}
+    add_custom_target(${ARG_NAME}debug DEPENDS ${ARG_DEPENDS}
             WORKING_DIRECTORY ${ARG_WORKING_DIRECTORY}
             COMMAND ${CMAKE_COMMAND} -E make_directory image/
             ${commands}
