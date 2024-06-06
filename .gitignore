@@ -16,6 +16,5 @@ cmake-build*
 tools/opensbi/build
 .vscode
 .idea
-# 3rd
 Doxyfile
 .gdbinit
