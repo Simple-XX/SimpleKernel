@@ -13,3 +13,6 @@
 [submodule "3rd/gdbinit"]
 	path = 3rd/gdbinit
 	url = https://github.com/gdbinit/Gdbinit.git
+[submodule "3rd/gnu-efi"]
+	path = 3rd/gnu-efi
+	url = https://github.com/ncroxon/gnu-efi.git

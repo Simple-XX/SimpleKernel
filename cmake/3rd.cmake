@@ -104,80 +104,6 @@ include(${CPM_DOWNLOAD_LOCATION})
 #   add_library(Freetype::Freetype ALIAS freetype)
 # endif()
 
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/ncroxon/gnu-efi
-    CPMAddPackage(
-            NAME gnu-efi
-            GIT_REPOSITORY https://github.com/ncroxon/gnu-efi.git
-            GIT_TAG 3.0.18
-            DOWNLOAD_ONLY True
-    )
-    if (gnu-efi_ADDED)
-        if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
-            set(CC_ ${CMAKE_C_COMPILER})
-            set(AR_ ${CMAKE_AR})
-        elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
-            set(CROSS_COMPILE_ x86_64-linux-gnu-)
-        endif ()
-        # 编译 gnu-efi
-        add_custom_target(gnu-efi
-                COMMENT "build gnu-efi..."
-                # make 时编译
-                ALL
-                WORKING_DIRECTORY ${gnu-efi_SOURCE_DIR}
-                COMMAND
-                ${CMAKE_COMMAND}
-                -E
-                make_directory
-                ${gnu-efi_BINARY_DIR}
-                COMMAND
-                # @note 仅支持 gcc
-                make lib gnuefi inc
-                CROSS_COMPILE=${CROSS_COMPILE_}
-                ARCH=${CMAKE_SYSTEM_PROCESSOR}
-                OBJDIR=${gnu-efi_BINARY_DIR}
-                V=1
-                COMMAND
-                ${CMAKE_COMMAND}
-                -E
-                copy_directory
-                ${gnu-efi_SOURCE_DIR}/inc
-                ${gnu-efi_BINARY_DIR}/inc
-        )
-    endif ()
-
-    # ovmf
-    # @todo 使用互联网连接或从 edk2 编译
-    # https://efi.akeo.ie/QEMU_EFI/QEMU_EFI-AA64.zip
-    CPMAddPackage(
-            NAME ovmf
-            SOURCE_DIR ${PROJECT_SOURCE_DIR}/tools/ovmf
-    )
-    if (ovmf_ADDED)
-        add_custom_target(ovmf
-                COMMENT "build ovmf ..."
-                # make 时编译
-                ALL
-                WORKING_DIRECTORY ${ovmf_SOURCE_DIR}
-                COMMAND
-                ${CMAKE_COMMAND}
-                -E
-                copy
-                ${ovmf_SOURCE_DIR}/*
-                ${ovmf_BINARY_DIR}
-        )
-    endif ()
-
-    # # https://github.com/tianocore/edk2
-    # # @todo 下载下来的文件为 makefile 形式，需要自己编译
-    # CPMAddPackage(
-    #   NAME edk2
-    #   GIT_REPOSITORY https://github.com/tianocore/edk2.git
-    #   GIT_TAG edk2-stable202305
-    #   DOWNLOAD_ONLY True
-    # )
-endif ()
-
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后
 CPMAddPackage(
@@ -261,6 +187,77 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} ST
     # https://github.com/MRNIU/fdt_parser.git
     add_subdirectory(3rd/fdt_parser)
 endif ()
+
+
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+        # https://github.com/ncroxon/gnu-efi.git
+        set(gnu-efi_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/gnu-efi)
+        set(gnu-efi_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/gnu-efi)
+        if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
+                set(CC_ ${CMAKE_C_COMPILER})
+                set(AR_ ${CMAKE_AR})
+        elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+                set(CROSS_COMPILE_ x86_64-linux-gnu-)
+        endif ()
+        # 编译 gnu-efi
+        add_custom_target(gnu-efi
+                COMMENT "build gnu-efi..."
+                # make 时编译
+                ALL
+                WORKING_DIRECTORY ${gnu-efi_SOURCE_DIR}
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                make_directory
+                ${gnu-efi_BINARY_DIR}
+                COMMAND
+                # @note 仅支持 gcc
+                make lib gnuefi inc
+                CROSS_COMPILE=${CROSS_COMPILE_}
+                ARCH=${CMAKE_SYSTEM_PROCESSOR}
+                OBJDIR=${gnu-efi_BINARY_DIR}
+                V=1
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                copy_directory
+                ${gnu-efi_SOURCE_DIR}/inc
+                ${gnu-efi_BINARY_DIR}/inc
+        )
+
+    # ovmf
+    # @todo 使用互联网连接或从 edk2 编译
+    # https://efi.akeo.ie/QEMU_EFI/QEMU_EFI-AA64.zip
+    CPMAddPackage(
+            NAME ovmf
+            SOURCE_DIR ${PROJECT_SOURCE_DIR}/tools/ovmf
+    )
+    if (ovmf_ADDED)
+        add_custom_target(ovmf
+                COMMENT "build ovmf ..."
+                # make 时编译
+                ALL
+                WORKING_DIRECTORY ${ovmf_SOURCE_DIR}
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                copy
+                ${ovmf_SOURCE_DIR}/*
+                ${ovmf_BINARY_DIR}
+        )
+    endif ()
+
+    # # https://github.com/tianocore/edk2
+    # # @todo 下载下来的文件为 makefile 形式，需要自己编译
+    # CPMAddPackage(
+    #   NAME edk2
+    #   GIT_REPOSITORY https://github.com/tianocore/edk2.git
+    #   GIT_TAG edk2-stable202305
+    #   DOWNLOAD_ONLY True
+    # )
+endif ()
+
+
 
 # gdb
 find_program(GDB_EXE gdb)
