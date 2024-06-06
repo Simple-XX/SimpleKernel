@@ -178,33 +178,6 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STR
     # )
 endif ()
 
-# https://github.com/gdbinit/Gdbinit
-CPMAddPackage(
-        NAME gdbinit
-        GIT_REPOSITORY https://github.com/gdbinit/Gdbinit.git
-        GIT_TAG e5138c24226bdd05360ca41743d8315a9e366c40
-        DOWNLOAD_ONLY True
-)
-if (gdbinit_ADDED)
-    add_custom_target(gdbinit
-            COMMENT "Generate gdbinit ..."
-            WORKING_DIRECTORY ${gdbinit_SOURCE_DIR}
-            # 复制到根目录下并重命名
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            copy
-            ${gdbinit_SOURCE_DIR}/gdbinit
-            ${CMAKE_SOURCE_DIR}/.gdbinit
-            COMMAND
-            echo "target remote ${QEMU_GDB_PORT}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
-            COMMAND
-            echo "add-symbol-file ${kernel_BINARY_DIR}/${KERNEL_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
-            COMMAND
-            echo "add-symbol-file ${boot_BINARY_DIR}/${BOOT_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
-    )
-endif ()
-
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后
 CPMAddPackage(
@@ -225,11 +198,32 @@ add_custom_target(3rd_licenses
         write-licenses
 )
 
-# https://github.com/MRNIU/printf_bare_metal
+# https://github.com/gdbinit/Gdbinit.git
+set(gdbinit_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/gdbinit)
+set(gdbinit_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/gdbinit)
+add_custom_target(gdbinit
+        COMMENT "Generate gdbinit ..."
+        WORKING_DIRECTORY ${gdbinit_SOURCE_DIR}
+        # 复制到根目录下并重命名
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        copy
+        ${gdbinit_SOURCE_DIR}/gdbinit
+        ${CMAKE_SOURCE_DIR}/.gdbinit
+        COMMAND
+        echo "target remote ${QEMU_GDB_PORT}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
+        COMMAND
+        echo "add-symbol-file ${kernel_BINARY_DIR}/${KERNEL_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
+        COMMAND
+        echo "add-symbol-file ${boot_BINARY_DIR}/${BOOT_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
+)
+
+# https://github.com/MRNIU/printf_bare_metal.git
 add_subdirectory(3rd/printf_bare_metal)
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-        # https://github.com/riscv-software-src/opensbi
+        # https://github.com/riscv-software-src/opensbi.git
         # 编译 opensbi
         set(opensbi_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/opensbi)
         set(opensbi_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/opensbi)
@@ -259,12 +253,12 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
                 ${opensbi_BINARY_DIR}/include
         )
 
-        # https://github.com/MRNIU/opensbi_interface
+        # https://github.com/MRNIU/opensbi_interface.git
         add_subdirectory(3rd/opensbi_interface)
 endif ()
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/MRNIU/fdt_parser
+    # https://github.com/MRNIU/fdt_parser.git
     add_subdirectory(3rd/fdt_parser)
 endif ()
 
