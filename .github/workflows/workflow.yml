@@ -15,8 +15,7 @@ env:
   CMAKE_BUILD_TYPE: Release
 
 jobs:
-  build_docs:
-    name: Build and publish documentation
+  build_ubuntu:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,31 +30,8 @@ jobs:
           sudo apt install --fix-missing -y doxygen graphviz
           sudo apt install --fix-missing -y doxygen graphviz 
           sudo apt install --fix-missing -y clang-format clang-tidy cppcheck libgtest-dev lcov
-
-      - name: Build
-        run: |
-          cmake --preset=build_x86_64 
-          cmake --build build_x86_64 --target doc
-
-      - name: Publish
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{github.workspace}}/doc/html
-
-  build_ubuntu:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install --fix-missing -y gcc g++ gcc-riscv64-linux-gnu g++-riscv64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          sudo apt install --fix-missing -y cmake qemu-system gdb-multiarch
-          sudo apt install --fix-missing -y doxygen graphviz
-          sudo apt install --fix-missing -y doxygen graphviz 
-          sudo apt install --fix-missing -y clang-format clang-tidy cppcheck libgtest-dev lcov
+          git submodule init
+          git submodule update
 
       - name: x86_64
         run: |
@@ -80,3 +56,16 @@ jobs:
         with:
           files: build_x86_64/coverage/coverage.info
           verbose: true
+
+      - name: Build Doc
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cmake --preset=build_x86_64 
+          cmake --build build_x86_64 --target doc
+
+      - name: Publish
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ${{github.workspace}}/doc/html
