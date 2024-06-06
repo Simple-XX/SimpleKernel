@@ -1,0 +1,12 @@
+[submodule "3rd/fdt_parser"]
+	path = 3rd/fdt_parser
+	url = https://github.com/MRNIU/fdt_parser.git
+[submodule "3rd/printf_bare_metal"]
+	path = 3rd/printf_bare_metal
+	url = https://github.com/MRNIU/printf_bare_metal.git
+[submodule "3rd/opensbi_interface"]
+	path = 3rd/opensbi_interface
+	url = https://github.com/MRNIU/opensbi_interface.git
+[submodule "3rd/opensbi"]
+	path = 3rd/opensbi
+	url = https://github.com/riscv-software-src/opensbi.git

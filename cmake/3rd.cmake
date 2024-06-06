@@ -104,45 +104,6 @@ include(${CPM_DOWNLOAD_LOCATION})
 #   add_library(Freetype::Freetype ALIAS freetype)
 # endif()
 
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-    # https://github.com/riscv-software-src/opensbi
-    CPMAddPackage(
-            NAME opensbi
-            GIT_REPOSITORY https://github.com/riscv-software-src/opensbi.git
-            GIT_TAG v1.4
-            VERSION 1.4
-            DOWNLOAD_ONLY True
-    )
-    if (opensbi_ADDED)
-        # 编译 opensbi
-        add_custom_target(opensbi
-                COMMENT "build opensbi..."
-                # make 时编译
-                ALL
-                WORKING_DIRECTORY ${opensbi_SOURCE_DIR}
-                COMMAND
-                ${CMAKE_COMMAND}
-                -E
-                make_directory
-                ${opensbi_BINARY_DIR}
-                COMMAND
-                make
-                CROSS_COMPILE=${TOOLCHAIN_PREFIX}
-                FW_JUMP=y
-                FW_JUMP_ADDR=0x80210000
-                PLATFORM_RISCV_XLEN=64
-                PLATFORM=generic
-                O=${opensbi_BINARY_DIR}
-                COMMAND
-                ${CMAKE_COMMAND}
-                -E
-                copy_directory
-                ${opensbi_SOURCE_DIR}/include
-                ${opensbi_BINARY_DIR}/include
-        )
-    endif ()
-endif ()
-
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
     # https://github.com/ncroxon/gnu-efi
     CPMAddPackage(
@@ -244,31 +205,6 @@ if (gdbinit_ADDED)
     )
 endif ()
 
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-    # https://github.com/MRNIU/opensbi_interface
-    CPMAddPackage(
-            NAME opensbi_interface
-            GIT_REPOSITORY https://github.com/MRNIU/opensbi_interface
-            GIT_TAG v1.1.0
-    )
-endif ()
-
-# https://github.com/MRNIU/printf_bare_metal
-CPMAddPackage(
-        NAME printf_bare_metal
-        GIT_REPOSITORY https://github.com/MRNIU/printf_bare_metal
-        GIT_TAG v1.8.2
-)
-
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/MRNIU/fdt_parser
-    CPMAddPackage(
-            NAME fdt_parser
-            GIT_REPOSITORY https://github.com/MRNIU/fdt_parser
-            GIT_TAG v3.1.0
-    )
-endif ()
-
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后
 CPMAddPackage(
@@ -288,6 +224,49 @@ add_custom_target(3rd_licenses
         make
         write-licenses
 )
+
+# https://github.com/MRNIU/printf_bare_metal
+add_subdirectory(3rd/printf_bare_metal)
+
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
+        # https://github.com/riscv-software-src/opensbi
+        # 编译 opensbi
+        set(opensbi_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/opensbi)
+        set(opensbi_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/opensbi)
+        add_custom_target(opensbi
+                COMMENT "build opensbi..."
+                # make 时编译
+                ALL
+                WORKING_DIRECTORY ${opensbi_SOURCE_DIR}
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                make_directory
+                ${opensbi_BINARY_DIR}
+                COMMAND
+                make
+                CROSS_COMPILE=${TOOLCHAIN_PREFIX}
+                FW_JUMP=y
+                FW_JUMP_ADDR=0x80210000
+                PLATFORM_RISCV_XLEN=64
+                PLATFORM=generic
+                O=${opensbi_BINARY_DIR}
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                copy_directory
+                ${opensbi_SOURCE_DIR}/include
+                ${opensbi_BINARY_DIR}/include
+        )
+
+        # https://github.com/MRNIU/opensbi_interface
+        add_subdirectory(3rd/opensbi_interface)
+endif ()
+
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+    # https://github.com/MRNIU/fdt_parser
+    add_subdirectory(3rd/fdt_parser)
+endif ()
 
 # gdb
 find_program(GDB_EXE gdb)
