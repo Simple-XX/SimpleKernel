@@ -39,6 +39,11 @@ boot branch
     sudo apt install --fix-missing -y clang-format clang-tidy cppcheck libgtest-dev lcov
     ```
 
+    ```shell
+    git submodule init
+    git submodule update
+    ```
+
 3. 编译并运行
 
     ```shell
@@ -132,9 +137,9 @@ boot branch
 
   github action 会将文档部署到 https://simple-xx.github.io/SimpleKernel/ (仅 main 分支)
 
-- 基于 CPM 的第三方资源管理
+- 基于 git submodule 的第三方资源管理
 
-  在 `3rd.cmake` 中使用 CPM 的功能自动下载、集成第三方资源
+  使用 git submodule 集成第三方资源
 
 - 测试
 
@@ -158,8 +163,6 @@ boot branch
 
 ## 使用的第三方资源
 
-[CPM](https://github.com/cpm-cmake/CPM.cmake)
-
 [opensbi](https://github.com/riscv-software-src/opensbi)
 
 [gnu-efi](https://sourceforge.net/projects/gnu-efi/)
@@ -171,8 +174,6 @@ boot branch
 [printf_bare_metal](https://github.com/MRNIU/printf_bare_metal)
 
 [fdt_parser](https://github.com/MRNIU/fdt_parser)
-
-[CPMLicences.cmake](https://github.com/TheLartians/CPMLicenses.cmake)
 
 [google/googletest](https://github.com/google/googletest)
 
