@@ -16,6 +16,3 @@
 [submodule "3rd/gnu-efi"]
 	path = 3rd/gnu-efi
 	url = https://github.com/ncroxon/gnu-efi.git
-[submodule "3rd/emio"]
-	path = 3rd/emio
-	url = https://github.com/Viatorus/emio.git
