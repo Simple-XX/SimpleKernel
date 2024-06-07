@@ -42,11 +42,8 @@ add_dependencies(${PROJECT_NAME}
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${KERNEL_ELF_OUTPUT_NAME})
 
-# readelf -a
-readelf_a(${PROJECT_NAME})
-
-# objdump -D
-objdump_D(${PROJECT_NAME})
+# 获取目标文件信息
+objdump_readelf_nm(${PROJECT_NAME})
 
 # 添加 run 和 debug target
 add_run_target(NAME ${PROJECT_NAME}_
