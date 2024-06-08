@@ -21,7 +21,7 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -fPIC
         # 生成位置无关可执行程序
         -fPIE
-        # 启用 free-standing 环境
+        # 启用 free-standing 环境，该选项隐含了 -fno-builtin
         -ffreestanding
         # 保留帧指针，便于调试和栈回溯
         -fno-omit-frame-pointer
