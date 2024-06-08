@@ -1,7 +1,7 @@
 
 /**
- * @file LibCxxInit.cpp
- * @brief LibCxxInit cpp
+ * @file libcxx.cpp
+ * @brief libcxx cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -35,16 +35,4 @@ void CppDeInit(void) {
   // 调用析构函数
   std::for_each(&__fini_array_start, &__fini_array_end,
                 [](function_t func) { (func)(); });
-}
-
-uint32_t LibCxxInit(uint32_t argc, uint8_t* argv) {
-  (void)argc;
-  (void)argv;
-
-  // 进入死循环
-  while (1) {
-    ;
-  }
-
-  return 0;
 }

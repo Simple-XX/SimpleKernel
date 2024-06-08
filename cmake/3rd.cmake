@@ -5,47 +5,6 @@
 # 3rd.cmake for Simple-XX/SimpleKernel.
 # 依赖管理
 
-# 设置依赖下载路径
-set(CPM_SOURCE_CACHE ${CMAKE_SOURCE_DIR}/3rd)
-# 优先使用本地文件
-set(CPM_USE_LOCAL_PACKAGES True)
-# https://github.com/cpm-cmake/CPM.cmake
-# -------- get_cpm.cmake --------
-set(CPM_DOWNLOAD_VERSION 0.38.2)
-
-if (CPM_SOURCE_CACHE)
-    set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-elseif (DEFINED ENV{CPM_SOURCE_CACHE})
-    set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-else ()
-    set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-endif ()
-
-# Expand relative path. This is important if the provided path contains a tilde (~)
-get_filename_component(CPM_DOWNLOAD_LOCATION ${CPM_DOWNLOAD_LOCATION} ABSOLUTE)
-
-function(download_cpm)
-    message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-    file(DOWNLOAD
-            https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
-            ${CPM_DOWNLOAD_LOCATION}
-    )
-endfunction()
-
-if (NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
-    download_cpm()
-else ()
-    # resume download if it previously failed
-    file(READ ${CPM_DOWNLOAD_LOCATION} check)
-    if ("${check}" STREQUAL "")
-        download_cpm()
-    endif ()
-    unset(check)
-endif ()
-
-include(${CPM_DOWNLOAD_LOCATION})
-# -------- get_cpm.cmake --------
-
 ## https://github.com/google/googletest
 #CPMAddPackage(
 #        NAME googletest
@@ -104,17 +63,35 @@ include(${CPM_DOWNLOAD_LOCATION})
 #   add_library(Freetype::Freetype ALIAS freetype)
 # endif()
 
+# https://github.com/gdbinit/Gdbinit.git
+set(gdbinit_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/gdbinit)
+set(gdbinit_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/gdbinit)
+add_custom_target(gdbinit
+        COMMENT "Generate gdbinit ..."
+        WORKING_DIRECTORY ${gdbinit_SOURCE_DIR}
+        # 复制到根目录下并重命名
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        copy
+        ${gdbinit_SOURCE_DIR}/gdbinit
+        ${CMAKE_SOURCE_DIR}/.gdbinit
+        COMMAND
+        echo "target remote ${QEMU_GDB_PORT}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
+        COMMAND
+        echo "add-symbol-file ${kernel_BINARY_DIR}/${KERNEL_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
+        COMMAND
+        echo "add-symbol-file ${boot_BINARY_DIR}/${BOOT_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
+)
+
+# https://github.com/MRNIU/printf_bare_metal.git
+add_subdirectory(3rd/printf_bare_metal)
+
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-    # https://github.com/riscv-software-src/opensbi
-    CPMAddPackage(
-            NAME opensbi
-            GIT_REPOSITORY https://github.com/riscv-software-src/opensbi.git
-            GIT_TAG v1.4
-            VERSION 1.4
-            DOWNLOAD_ONLY True
-    )
-    if (opensbi_ADDED)
+        # https://github.com/riscv-software-src/opensbi.git
         # 编译 opensbi
+        set(opensbi_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/opensbi)
+        set(opensbi_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/opensbi)
         add_custom_target(opensbi
                 COMMENT "build opensbi..."
                 # make 时编译
@@ -140,23 +117,25 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
                 ${opensbi_SOURCE_DIR}/include
                 ${opensbi_BINARY_DIR}/include
         )
-    endif ()
+
+        # https://github.com/MRNIU/opensbi_interface.git
+        add_subdirectory(3rd/opensbi_interface)
+endif ()
+
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+    # https://github.com/MRNIU/fdt_parser.git
+    add_subdirectory(3rd/fdt_parser)
 endif ()
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/ncroxon/gnu-efi
-    CPMAddPackage(
-            NAME gnu-efi
-            GIT_REPOSITORY https://github.com/ncroxon/gnu-efi.git
-            GIT_TAG 3.0.18
-            DOWNLOAD_ONLY True
-    )
-    if (gnu-efi_ADDED)
+        # https://github.com/ncroxon/gnu-efi.git
+        set(gnu-efi_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/gnu-efi)
+        set(gnu-efi_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/gnu-efi)
         if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
-            set(CC_ ${CMAKE_C_COMPILER})
-            set(AR_ ${CMAKE_AR})
+                set(CC_ ${CMAKE_C_COMPILER})
+                set(AR_ ${CMAKE_AR})
         elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
-            set(CROSS_COMPILE_ x86_64-linux-gnu-)
+                set(CROSS_COMPILE_ x86_64-linux-gnu-)
         endif ()
         # 编译 gnu-efi
         add_custom_target(gnu-efi
@@ -183,16 +162,12 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STR
                 ${gnu-efi_SOURCE_DIR}/inc
                 ${gnu-efi_BINARY_DIR}/inc
         )
-    endif ()
 
     # ovmf
     # @todo 使用互联网连接或从 edk2 编译
     # https://efi.akeo.ie/QEMU_EFI/QEMU_EFI-AA64.zip
-    CPMAddPackage(
-            NAME ovmf
-            SOURCE_DIR ${PROJECT_SOURCE_DIR}/tools/ovmf
-    )
-    if (ovmf_ADDED)
+        set(ovmf_SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/ovmf)
+        set(ovmf_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/ovmf)
         add_custom_target(ovmf
                 COMMENT "build ovmf ..."
                 # make 时编译
@@ -201,93 +176,16 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STR
                 COMMAND
                 ${CMAKE_COMMAND}
                 -E
+                make_directory
+                ${ovmf_BINARY_DIR}
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
                 copy
                 ${ovmf_SOURCE_DIR}/*
                 ${ovmf_BINARY_DIR}
         )
-    endif ()
-
-    # # https://github.com/tianocore/edk2
-    # # @todo 下载下来的文件为 makefile 形式，需要自己编译
-    # CPMAddPackage(
-    #   NAME edk2
-    #   GIT_REPOSITORY https://github.com/tianocore/edk2.git
-    #   GIT_TAG edk2-stable202305
-    #   DOWNLOAD_ONLY True
-    # )
 endif ()
-
-# https://github.com/gdbinit/Gdbinit
-CPMAddPackage(
-        NAME gdbinit
-        GIT_REPOSITORY https://github.com/gdbinit/Gdbinit.git
-        GIT_TAG e5138c24226bdd05360ca41743d8315a9e366c40
-        DOWNLOAD_ONLY True
-)
-if (gdbinit_ADDED)
-    add_custom_target(gdbinit
-            COMMENT "Generate gdbinit ..."
-            WORKING_DIRECTORY ${gdbinit_SOURCE_DIR}
-            # 复制到根目录下并重命名
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            copy
-            ${gdbinit_SOURCE_DIR}/gdbinit
-            ${CMAKE_SOURCE_DIR}/.gdbinit
-            COMMAND
-            echo "target remote ${QEMU_GDB_PORT}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
-            COMMAND
-            echo "add-symbol-file ${kernel_BINARY_DIR}/${KERNEL_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
-            COMMAND
-            echo "add-symbol-file ${boot_BINARY_DIR}/${BOOT_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
-    )
-endif ()
-
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-    # https://github.com/MRNIU/opensbi_interface
-    CPMAddPackage(
-            NAME opensbi_interface
-            GIT_REPOSITORY https://github.com/MRNIU/opensbi_interface
-            GIT_TAG v1.1.0
-    )
-endif ()
-
-# https://github.com/MRNIU/printf_bare_metal
-CPMAddPackage(
-        NAME printf_bare_metal
-        GIT_REPOSITORY https://github.com/MRNIU/printf_bare_metal
-        GIT_TAG v1.8.2
-)
-
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/MRNIU/fdt_parser
-    CPMAddPackage(
-            NAME fdt_parser
-            GIT_REPOSITORY https://github.com/MRNIU/fdt_parser
-            GIT_TAG v3.1.0
-    )
-endif ()
-
-# https://github.com/cpm-cmake/CPMLicenses.cmake
-# 保持在 CPMAddPackage 的最后
-CPMAddPackage(
-        NAME CPMLicenses.cmake
-        GITHUB_REPOSITORY cpm-cmake/CPMLicenses.cmake
-        VERSION 0.0.7
-)
-if (CPMLicenses.cmake_ADDED)
-    cpm_licenses_create_disclaimer_target(
-            write-licenses "${CMAKE_CURRENT_SOURCE_DIR}/3rd/LICENSE" "${CPM_PACKAGES}"
-    )
-endif ()
-# make 时自动在 3rd 文件夹下生成 LICENSE 文件
-add_custom_target(3rd_licenses
-        ALL
-        COMMAND
-        make
-        write-licenses
-)
 
 # gdb
 find_program(GDB_EXE gdb)

@@ -5,37 +5,24 @@
 # functions.cmake for Simple-XX/SimpleKernel.
 # 辅助函数
 
-# 生成 target 输出文件的 readelf -a
+# 生成 target 输出文件的 objdump -D, readelf -a, nm -a
 # _target: target 名
+# 在 ${${_target}_BINARY_DIR} 目录下生成 $<TARGET_FILE:${_target}>.asm 文件
 # 在 ${${_target}_BINARY_DIR} 目录下生成 $<TARGET_FILE:${_target}>.readelf 文件
-function(readelf_a _target)
-    add_custom_target(${_target}_readelf_a
-            WORKING_DIRECTORY ${${_target}_BINARY_DIR}
-            COMMAND ${CMAKE_READELF} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE:${_target}>.readelf || (exit 0)
-    )
+# 在 ${${_target}_BINARY_DIR} 目录下生成 $<TARGET_FILE:${_target}>.sym 文件
+function(objdump_readelf_nm _target)
     add_custom_command(TARGET ${_target}
-            COMMENT "readelf -a $<TARGET_FILE:${_target}> ..."
-            POST_BUILD
-            DEPENDS ${_target}
-            WORKING_DIRECTORY ${${_target}_BINARY_DIR}
-            COMMAND ${CMAKE_READELF} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE:${_target}>.readelf || (exit 0)
+        VERBATIM
+        POST_BUILD
+        DEPENDS ${_target}
+        WORKING_DIRECTORY ${${_target}_BINARY_DIR}
+        COMMAND ${CMAKE_OBJDUMP} -D $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.asm
+        COMMAND ${CMAKE_READELF} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.readelf || exit 0
+        COMMAND ${CMAKE_NM} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.sym
+        COMMENT "Generating symbol table, assembly, and readelf result for ${_target}"
     )
-endfunction()
-
-# 生成 target 输出文件的 objdump -D
-# _target: target 名
-# 在 ${${_target}_BINARY_DIR} 目录下生成 $<TARGET_FILE:${_target}>.disassembly 文件
-function(objdump_D _target)
-    add_custom_target(${_target}_objdump_D
-            WORKING_DIRECTORY ${${_target}_BINARY_DIR}
-            COMMAND ${CMAKE_OBJDUMP} -D $<TARGET_FILE:${_target}> > $<TARGET_FILE:${_target}>.disassembly
-    )
-    add_custom_command(TARGET ${_target}
-            COMMENT "objdump -D $<TARGET_FILE:${_target}> ..."
-            POST_BUILD
-            DEPENDS ${_target}
-            WORKING_DIRECTORY ${${_target}_BINARY_DIR}
-            COMMAND ${CMAKE_OBJDUMP} -D $<TARGET_FILE:${_target}> > $<TARGET_FILE:${_target}>.disassembly
+    set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES
+        "$<TARGET_FILE_DIR:${_target}>/${_target}.asm;$<TARGET_FILE_DIR:${_target}>/${_target}.readelf;$<TARGET_FILE_DIR:${_target}>/${_target}.sym;"
     )
 endfunction()
 
@@ -139,7 +126,7 @@ function(add_run_target)
     endif ()
 
     # 添加 target
-    add_custom_target(${ARG_NAME}_run DEPENDS ${ARG_DEPENDS}
+    add_custom_target(${ARG_NAME}run DEPENDS ${ARG_DEPENDS}
             WORKING_DIRECTORY ${ARG_WORKING_DIRECTORY}
             COMMAND ${CMAKE_COMMAND} -E make_directory image/
             ${commands}
@@ -147,7 +134,7 @@ function(add_run_target)
             qemu-system-${ARG_TARGET}
             ${ARG_QEMU_FLAGS}
     )
-    add_custom_target(${ARG_NAME}_debug DEPENDS ${ARG_DEPENDS}
+    add_custom_target(${ARG_NAME}debug DEPENDS ${ARG_DEPENDS}
             WORKING_DIRECTORY ${ARG_WORKING_DIRECTORY}
             COMMAND ${CMAKE_COMMAND} -E make_directory image/
             ${commands}

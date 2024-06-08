@@ -21,14 +21,6 @@
 #include "kernel.h"
 #include "libcxx.h"
 
-class aaa {
- public:
-  aaa(uint32_t a) { ; }
-  ~aaa() { ; }
-};
-
-static aaa AAA(0);
-
 void _start(uint32_t argc, uint8_t* argv) {
   CppInit();
   main(argc, argv);
