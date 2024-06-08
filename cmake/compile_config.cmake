@@ -160,6 +160,8 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
 
         # 静态链接
         -static
+        # 不链接标准库
+        -nostdlib
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 设置最大页大小为 0x1000(4096) 字节
