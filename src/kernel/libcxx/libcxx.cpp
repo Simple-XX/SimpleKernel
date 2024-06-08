@@ -25,6 +25,12 @@ extern "C" function_t __init_array_end;
 extern "C" function_t __fini_array_start;
 extern "C" function_t __fini_array_end;
 
+extern "C" void *__dso_handle __attribute__((weak)) = &__dso_handle;
+extern "C" int __cxa_atexit(void (*func)(void *), void *arg, void *dso_handle) {
+  func(arg);
+  return 0;
+}
+
 void CppInit(void) {
   // 调用构造函数
   std::for_each(&__init_array_start, &__init_array_end,
