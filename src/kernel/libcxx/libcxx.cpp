@@ -1,7 +1,7 @@
 
 /**
- * @file LibCxxInit.cpp
- * @brief LibCxxInit cpp
+ * @file libcxx.cpp
+ * @brief libcxx cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
