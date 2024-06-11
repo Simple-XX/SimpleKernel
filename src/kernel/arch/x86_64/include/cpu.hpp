@@ -173,7 +173,7 @@ class Serial {
  * @return rbp 寄存器的值
  */
 static inline uint64_t ReadRbp() {
-  uint64_t rbp;
+  uint64_t rbp = -1;
   __asm__ volatile("mov %%rbp, %0" : "=r"(rbp));
   return rbp;
 }
