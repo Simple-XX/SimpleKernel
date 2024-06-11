@@ -22,7 +22,7 @@ list(APPEND COMMON_COMPILE_OPTIONS
         # 生成位置无关可执行程序
         -fPIE
         # 禁用运行时类型支持
-        -fno-rtti
+        $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
         # 禁用异常支持
         -fno-exceptions
         # 启用 free-standing 环境，该选项隐含了 -fno-builtin
