@@ -1,7 +1,7 @@
 
 /**
- * @file boot.cpp
- * @brief boot cpp
+ * @file main.cpp
+ * @brief main cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15

@@ -14,7 +14,7 @@ enable_language(ASM)
 enable_language(CXX)
 
 add_executable(${PROJECT_NAME}_kernel
-        boot.cpp
+        main.cpp
         ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/boot.S
 )
 
