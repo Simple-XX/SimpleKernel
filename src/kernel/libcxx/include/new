@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW
-#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW_
 
 #include <cstddef>
 
@@ -35,4 +35,4 @@ void operator delete[](void*);
 
 void operator delete[](void*, size_t);
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW_ */
