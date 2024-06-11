@@ -37,6 +37,9 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
   printf("Hello printf\n");
+
+  DumpStack();
+
   std::cout << "Hello ostream" << std::endl;
 
   return 0;
