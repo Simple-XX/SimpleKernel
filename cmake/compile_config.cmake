@@ -33,6 +33,8 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -fno-stack-protector
         # 禁用栈检查
         -fno-stack-check
+        # 不使用 common 段
+        -fno-common
 
         # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:

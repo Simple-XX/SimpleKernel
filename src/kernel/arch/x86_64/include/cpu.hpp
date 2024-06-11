@@ -25,7 +25,7 @@ namespace cpu {
  * @param  port           要读的端口
  * @return uint8_t         读取到的数据
  */
-static inline uint8_t InByte(const uint32_t port) {
+static __always_inline uint8_t InByte(const uint32_t port) {
   uint8_t data;
   __asm__ volatile("inb %1, %0" : "=a"(data) : "dN"(port));
   return data;
@@ -36,7 +36,7 @@ static inline uint8_t InByte(const uint32_t port) {
  * @param  port           要读的端口
  * @return uint16_t        读取到的数据
  */
-static inline uint16_t InWord(const uint32_t port) {
+static __always_inline uint16_t InWord(const uint32_t port) {
   uint16_t data;
   __asm__ volatile("inw %1, %0" : "=a"(data) : "dN"(port));
   return data;
@@ -47,7 +47,7 @@ static inline uint16_t InWord(const uint32_t port) {
  * @param  port           要读的端口
  * @return uint32_t        读取到的数据
  */
-static inline uint32_t InLong(const uint32_t port) {
+static __always_inline uint32_t InLong(const uint32_t port) {
   uint32_t data;
   __asm__ volatile("inl %1, %0" : "=a"(data) : "dN"(port));
   return data;
@@ -58,7 +58,7 @@ static inline uint32_t InLong(const uint32_t port) {
  * @param  port           要写的端口
  * @param  data           要写的数据
  */
-static inline void OutByte(const uint32_t port, const uint8_t data) {
+static __always_inline void OutByte(const uint32_t port, const uint8_t data) {
   __asm__ volatile("outb %1, %0" : : "dN"(port), "a"(data));
 }
 
@@ -67,7 +67,7 @@ static inline void OutByte(const uint32_t port, const uint8_t data) {
  * @param  port           要写的端口
  * @param  data           要写的数据
  */
-static inline void OutWord(const uint32_t port, const uint16_t data) {
+static __always_inline void OutWord(const uint32_t port, const uint16_t data) {
   __asm__ volatile("outw %1, %0" : : "dN"(port), "a"(data));
 }
 
@@ -76,7 +76,7 @@ static inline void OutWord(const uint32_t port, const uint16_t data) {
  * @param  port           要写的端口
  * @param  data           要写的数据
  */
-static inline void OutLong(const uint32_t port, const uint32_t data) {
+static __always_inline void OutLong(const uint32_t port, const uint32_t data) {
   __asm__ volatile("outl %1, %0" : : "dN"(port), "a"(data));
 }
 
@@ -175,7 +175,7 @@ class Serial {
  * 读 rbp 寄存器
  * @return rbp 寄存器的值
  */
-static inline uint64_t ReadRbp() {
+static __always_inline uint64_t ReadRbp() {
   uint64_t rbp = -1;
   __asm__ volatile("mov %%rbp, %0" : "=r"(rbp));
   return rbp;

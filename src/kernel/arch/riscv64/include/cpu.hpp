@@ -25,9 +25,9 @@ namespace cpu {
  * 读 fp 寄存器
  * @return fp 寄存器的值
  */
-static inline uint64_t ReadFp() {
+static __always_inline uint64_t ReadFp() {
   uint64_t fp = -1;
-  __asm__ volatile("mv %0, s0" : "=r"(fp));
+  __asm__ volatile("mv %0, fp" : "=r"(fp));
   return fp;
 }
 
