@@ -57,14 +57,10 @@ void DumpStack() {
   uint64_t *ra = nullptr;
 
   printf("------DumpStack------\n");
-  static int aaa = 0;
-  while (fp) {
-    if (aaa++ > 3) {
-      while (1);
-    }
+  while (fp && *fp) {
     ra = fp - 1;
-    printf("[0x%p]\n", *ra);
     fp = (uint64_t *)*(fp - 2);
+    printf("[0x%p]\n", *ra);
   }
   printf("----DumpStack End----\n");
 }

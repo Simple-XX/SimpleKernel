@@ -29,18 +29,10 @@ void DumpStack() {
   uint64_t *ra = nullptr;
 
   printf("------DumpStack------\n");
-  static int aaa = 0;
-  while (fp) {
-    // printf("[0x%p]\n", fp);
-    if (aaa++ > 3) {
-      while (1);
-    }
-    printf("fp: [0x%p]\n", fp);
-    printf("fp-1: [0x%p]\n", fp - 1);
-    printf("fp-2: [0x%p]\n", fp - 2);
-    ra = (uint64_t *)*(fp - 1);
+  while (fp && *fp) {
+    ra = fp - 1;
     fp = (uint64_t *)*(fp - 2);
-    printf("[0x%p]\n", ra);
+    printf("[0x%p]\n", *ra);
   }
   printf("----DumpStack End----\n");
 }

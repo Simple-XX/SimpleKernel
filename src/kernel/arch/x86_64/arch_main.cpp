@@ -71,10 +71,10 @@ void DumpStack() {
   uint64_t *rip = nullptr;
 
   printf("------DumpStack------\n");
-  while (rbp) {
+  while (rbp && *rbp) {
     rip = rbp + 1;
-    printf("[0x%p]\n", *rip);
     rbp = (uint64_t *)*rbp;
+    printf("[0x%p]\n", *rip);
   }
   printf("----DumpStack End----\n");
 }
