@@ -57,6 +57,19 @@ static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
 static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
     global_value1_with_constructor};
 
+class AbsClass {
+ public:
+  AbsClass() { val = 'B'; }
+  virtual ~AbsClass() { ; }
+  virtual void Func() = 0;
+  char val = 'A';
+};
+
+class InsClass : public AbsClass {
+ public:
+  void Func() override { val = 'C'; }
+};
+
 uint32_t main(uint32_t, uint8_t*) {
   global_u8c_value_with_init++;
   global_u32_value_with_init++;
@@ -69,6 +82,13 @@ uint32_t main(uint32_t, uint8_t*) {
   global_u8a_value_with_init++;
   global_value_with_init++;
   global_bool_keep_running = false;
+
+  auto inst_class = InsClass();
+  _putchar(inst_class.val);
+  _putchar('\n');
+  inst_class.Func();
+  _putchar(inst_class.val);
+  _putchar('\n');
 
   _putchar('H');
   _putchar('e');

@@ -61,6 +61,19 @@ static volatile bool global_bool_keep_running{true};
 // static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
 //     global_value1_with_constructor};
 
+class AbsClass {
+ public:
+  AbsClass() { val = 'B'; }
+  virtual ~AbsClass() { ; }
+  virtual void Func() = 0;
+  char val = 'A';
+};
+
+class InsClass : public AbsClass {
+ public:
+  void Func() override { val = 'C'; }
+};
+
 static const int kPixelwidth = 4;
 static const int kPitch = 800 * kPixelwidth;
 
@@ -101,6 +114,12 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv);
   printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
   Fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
+
+  auto inst_class = InsClass();
+  printf("%c\n", inst_class.val);
+  inst_class.Func();
+  printf("%c\n", inst_class.val);
+
   printf("Hello Test\n");
 
   // 进入死循环
