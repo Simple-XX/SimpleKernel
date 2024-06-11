@@ -27,7 +27,7 @@ namespace cpu {
  */
 static inline uint8_t InByte(const uint32_t port) {
   uint8_t data;
-  __asm__ __volatile__("inb %1, %0" : "=a"(data) : "dN"(port));
+  __asm__ volatile("inb %1, %0" : "=a"(data) : "dN"(port));
   return data;
 }
 
@@ -38,7 +38,7 @@ static inline uint8_t InByte(const uint32_t port) {
  */
 static inline uint16_t InWord(const uint32_t port) {
   uint16_t data;
-  __asm__ __volatile__("inw %1, %0" : "=a"(data) : "dN"(port));
+  __asm__ volatile("inw %1, %0" : "=a"(data) : "dN"(port));
   return data;
 }
 
@@ -49,7 +49,7 @@ static inline uint16_t InWord(const uint32_t port) {
  */
 static inline uint32_t InLong(const uint32_t port) {
   uint32_t data;
-  __asm__ __volatile__("inl %1, %0" : "=a"(data) : "dN"(port));
+  __asm__ volatile("inl %1, %0" : "=a"(data) : "dN"(port));
   return data;
 }
 
@@ -59,7 +59,7 @@ static inline uint32_t InLong(const uint32_t port) {
  * @param  data           要写的数据
  */
 static inline void OutByte(const uint32_t port, const uint8_t data) {
-  __asm__ __volatile__("outb %1, %0" : : "dN"(port), "a"(data));
+  __asm__ volatile("outb %1, %0" : : "dN"(port), "a"(data));
 }
 
 /**
@@ -68,7 +68,7 @@ static inline void OutByte(const uint32_t port, const uint8_t data) {
  * @param  data           要写的数据
  */
 static inline void OutWord(const uint32_t port, const uint16_t data) {
-  __asm__ __volatile__("outw %1, %0" : : "dN"(port), "a"(data));
+  __asm__ volatile("outw %1, %0" : : "dN"(port), "a"(data));
 }
 
 /**
@@ -77,7 +77,7 @@ static inline void OutWord(const uint32_t port, const uint16_t data) {
  * @param  data           要写的数据
  */
 static inline void OutLong(const uint32_t port, const uint32_t data) {
-  __asm__ __volatile__("outl %1, %0" : : "dN"(port), "a"(data));
+  __asm__ volatile("outl %1, %0" : : "dN"(port), "a"(data));
 }
 
 /// @name 端口
@@ -167,6 +167,17 @@ class Serial {
     return InByte(port_ + 5) & 0x20;
   }
 };
+
+/**
+ * 读 rbp 寄存器
+ * @return rbo 寄存器的值
+ */
+static inline uint64_t ReadRbp() {
+  uint64_t rbp;
+  __asm__ volatile("mov %%rbp, %0" : "=r"(rbp));
+  return rbp;
+}
+
 };  // namespace cpu
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_HPP_

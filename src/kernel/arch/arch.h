@@ -17,6 +17,7 @@
 #ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_
 #define SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_
 
+#include <cstddef>
 #include <cstdint>
 
 struct BootInfo {
@@ -42,6 +43,18 @@ struct BootInfo {
   } framebuffer;
 };
 
+/**
+ * 体系结构相关初始化
+ * @param argc 在不同体系结构有不同含义
+ * @param argv 在不同体系结构有不同含义
+ */
 uint32_t ArchInit(uint32_t argc, uint8_t *argv);
+
+/// 最大保存调用栈数量
+static constexpr const size_t kMaxStaskCount = 128;
+/**
+ * 打印调用栈
+ */
+void DumpStack();
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_ */
