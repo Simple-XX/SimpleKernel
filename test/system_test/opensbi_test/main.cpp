@@ -14,6 +14,7 @@
  * </table>
  */
 
+#include "cpu.hpp"
 #include "cstdio"
 #include "libcxx.h"
 #include "opensbi_interface.h"
@@ -23,14 +24,35 @@ extern "C" void _putchar(char character) {
   sbi_debug_console_write_byte(character);
 }
 
+void DumpStack() {
+  uint64_t *fp = (uint64_t *)cpu::ReadFp();
+  uint64_t *ra = nullptr;
+
+  printf("------DumpStack------\n");
+  static int aaa = 0;
+  while (fp) {
+    // printf("[0x%p]\n", fp);
+    if (aaa++ > 3) {
+      while (1);
+    }
+    printf("fp: [0x%p]\n", fp);
+    printf("fp-1: [0x%p]\n", fp - 1);
+    printf("fp-2: [0x%p]\n", fp - 2);
+    ra = (uint64_t *)*(fp - 1);
+    fp = (uint64_t *)*(fp - 2);
+    printf("[0x%p]\n", ra);
+  }
+  printf("----DumpStack End----\n");
+}
+
 template <uint32_t V>
 class TestStaticConstructDestruct {
  public:
-  TestStaticConstructDestruct(unsigned int& v) : _v(v) { _v |= V; }
+  TestStaticConstructDestruct(unsigned int &v) : _v(v) { _v |= V; }
   ~TestStaticConstructDestruct() { _v &= ~V; }
 
  private:
-  unsigned int& _v;
+  unsigned int &_v;
 };
 
 static int global_value_with_init = 42;
@@ -70,7 +92,7 @@ class InsClass : public AbsClass {
   void Func() override { val = 'C'; }
 };
 
-uint32_t main(uint32_t, uint8_t*) {
+uint32_t main(uint32_t, uint8_t *) {
   global_u8c_value_with_init++;
   global_u32_value_with_init++;
   global_u64_value_with_init++;
@@ -90,6 +112,8 @@ uint32_t main(uint32_t, uint8_t*) {
   _putchar(inst_class.val);
   _putchar('\n');
 
+  DumpStack();
+
   _putchar('H');
   _putchar('e');
   _putchar('l');
@@ -106,7 +130,7 @@ uint32_t main(uint32_t, uint8_t*) {
   return 0;
 }
 
-extern "C" void _start(uint32_t argc, uint8_t* argv) {
+extern "C" void _start(uint32_t argc, uint8_t *argv) {
   CppInit();
   main(argc, argv);
   CppDeInit();

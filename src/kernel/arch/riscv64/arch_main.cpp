@@ -13,6 +13,7 @@
  * </table>
  */
 
+#include "cpu.hpp"
 #include "cstdio"
 #include "fdt_parser.hpp"
 #include "ns16550a.h"
@@ -49,4 +50,21 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   printf("hello ArchInit\n");
 
   return 0;
+}
+
+void DumpStack() {
+  uint64_t *fp = (uint64_t *)cpu::ReadFp();
+  uint64_t *ra = nullptr;
+
+  printf("------DumpStack------\n");
+  static int aaa = 0;
+  while (fp) {
+    if (aaa++ > 3) {
+      while (1);
+    }
+    ra = fp - 1;
+    printf("[0x%p]\n", *ra);
+    fp = (uint64_t *)*(fp - 2);
+  }
+  printf("----DumpStack End----\n");
 }
