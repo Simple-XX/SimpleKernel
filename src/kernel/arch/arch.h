@@ -50,8 +50,6 @@ struct BootInfo {
  */
 uint32_t ArchInit(uint32_t argc, uint8_t *argv);
 
-/// 最大保存调用栈数量
-static constexpr const size_t kMaxStaskCount = 128;
 /**
  * 打印调用栈
  */
