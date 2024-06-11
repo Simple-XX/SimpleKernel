@@ -170,7 +170,7 @@ class Serial {
 
 /**
  * 读 rbp 寄存器
- * @return rbo 寄存器的值
+ * @return rbp 寄存器的值
  */
 static inline uint64_t ReadRbp() {
   uint64_t rbp;
