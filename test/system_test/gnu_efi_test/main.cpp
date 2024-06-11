@@ -19,13 +19,10 @@
 #include "arch.h"
 #include "cpu.hpp"
 #include "cstdio"
-#include "kernel.h"
 #include "libcxx.h"
 
-extern "C" void _putchar(char character) {
-  auto serial = cpu::Serial(cpu::kCom1);
-  serial.Write(character);
-}
+static auto serial = cpu::Serial(cpu::kCom1);
+extern "C" void _putchar(char character) { serial.Write(character); }
 
 void DumpStack() {
   uint64_t *rbp = (uint64_t *)cpu::ReadRbp();

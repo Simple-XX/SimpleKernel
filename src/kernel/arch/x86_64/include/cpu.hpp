@@ -82,6 +82,9 @@ static inline void OutLong(const uint32_t port, const uint32_t data) {
 
 /// @name 端口
 static constexpr const uint32_t kCom1 = 0x3F8;
+/**
+ * 串口定义
+ */
 class Serial {
  public:
   explicit Serial(uint32_t port) : port_(port) {
