@@ -27,6 +27,38 @@ extern "C" void _putchar(char character) {
   serial.Write(character);
 }
 
+void DumpStack() {
+  uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
+  uint64_t *rip = nullptr;
+
+  printf("------DumpStack------\n");
+  while (rbp) {
+    rip = rbp + 1;
+    printf("[0x%p]\n", *rip);
+    rbp = (uint64_t *)*rbp;
+  }
+  printf("----DumpStack End----\n");
+}
+
+static const int kPixelwidth = 4;
+static const int kPitch = 800 * kPixelwidth;
+
+static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
+                     uint8_t w, uint8_t h) {
+  unsigned char *where = vram;
+  int i, j;
+
+  for (i = 0; i < w; i++) {
+    for (j = 0; j < h; j++) {
+      // putpixel(vram, 64 + j, 64 + i, (r << 16) + (g << 8) + b);
+      where[j * kPixelwidth] = r;
+      where[j * kPixelwidth + 1] = g;
+      where[j * kPixelwidth + 2] = b;
+    }
+    where += kPitch;
+  }
+}
+
 template <uint32_t V>
 class TestStaticConstructDestruct {
  public:
@@ -74,25 +106,6 @@ class InsClass : public AbsClass {
   void Func() override { val = 'C'; }
 };
 
-static const int kPixelwidth = 4;
-static const int kPitch = 800 * kPixelwidth;
-
-static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
-                     uint8_t w, uint8_t h) {
-  unsigned char *where = vram;
-  int i, j;
-
-  for (i = 0; i < w; i++) {
-    for (j = 0; j < h; j++) {
-      // putpixel(vram, 64 + j, 64 + i, (r << 16) + (g << 8) + b);
-      where[j * kPixelwidth] = r;
-      where[j * kPixelwidth + 1] = g;
-      where[j * kPixelwidth + 2] = b;
-    }
-    where += kPitch;
-  }
-}
-
 uint32_t main(uint32_t argc, uint8_t *argv) {
   if (argc != 1) {
     printf("argc != 1 [%d]\n", argc);
@@ -119,6 +132,8 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   printf("%c\n", inst_class.val);
   inst_class.Func();
   printf("%c\n", inst_class.val);
+
+  DumpStack();
 
   printf("Hello Test\n");
 

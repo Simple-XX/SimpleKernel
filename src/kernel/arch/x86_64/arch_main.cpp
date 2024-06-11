@@ -68,7 +68,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
 
 void DumpStack() {
   uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
-  uint64_t *rip;
+  uint64_t *rip = nullptr;
 
   printf("------DumpStack------\n");
   while (rbp) {

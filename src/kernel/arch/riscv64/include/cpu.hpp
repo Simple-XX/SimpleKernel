@@ -20,7 +20,17 @@
 #include <cstdint>
 
 namespace cpu {
-;
+
+/**
+ * 读 fp 寄存器
+ * @return fp 寄存器的值
+ */
+static inline uint64_t ReadFp() {
+  uint64_t fp = -1;
+  __asm__ volatile("mv %0, s0" : "=r"(fp));
+  return fp;
+}
+
 };  // namespace cpu
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
