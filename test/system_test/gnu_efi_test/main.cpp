@@ -49,17 +49,17 @@ static uint8_t global_u8c_value_with_init{0x44};
 static uint8_t global_u8d_value_with_init{0x45};
 static volatile bool global_bool_keep_running{true};
 
-// static unsigned int global_value1_with_constructor = 1;
-// static unsigned int global_value2_with_constructor = 2;
+static unsigned int global_value1_with_constructor = 1;
+static unsigned int global_value2_with_constructor = 2;
 
-// static TestStaticConstructDestruct<0x200> constructor_destructor_1(
-//     global_value1_with_constructor);
-// static TestStaticConstructDestruct<0x200> constructor_destructor_2(
-//     global_value2_with_constructor);
-// static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
-//     global_value2_with_constructor};
-// static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
-//     global_value1_with_constructor};
+static TestStaticConstructDestruct<0x200> constructor_destructor_1(
+    global_value1_with_constructor);
+static TestStaticConstructDestruct<0x200> constructor_destructor_2(
+    global_value2_with_constructor);
+static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
+    global_value2_with_constructor};
+static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
+    global_value1_with_constructor};
 
 class AbsClass {
  public:
