@@ -11,7 +11,7 @@ project(
 )
 
 add_executable(unit_test
-        example.cpp
+        kernel_elf_test.cpp
 )
 
 target_compile_options(unit_test PRIVATE

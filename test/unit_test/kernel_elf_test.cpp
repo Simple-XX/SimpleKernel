@@ -1,7 +1,7 @@
 
 /**
- * @file example.cpp
- * @brief 单元测试示例
+ * @file kernel_elf_test.cpp
+ * @brief elf 解析测试
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-09-02
@@ -14,6 +14,12 @@
  * </table>
  */
 
+#include "kernel/include/kernel_elf.hpp"
+
 #include "gtest/gtest.h"
 
-TEST(example, test_group1) { EXPECT_EQ(0, 0); }
+TEST(kernel_elf, DefaultConstructor) {
+  auto kerlen_elf = KernelElf();
+  EXPECT_EQ(kerlen_elf.strtab_, nullptr);
+  EXPECT_EQ(kerlen_elf.symtab_.size(), 0);
+}
