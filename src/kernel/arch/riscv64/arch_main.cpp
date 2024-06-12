@@ -16,6 +16,7 @@
 #include "cpu.hpp"
 #include "cstdio"
 #include "fdt_parser.hpp"
+#include "kernel_elf.hpp"
 #include "ns16550a.h"
 #include "opensbi_interface.h"
 
@@ -47,6 +48,9 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   uart.PutChar('!');
   uart.PutChar('\n');
 
+  // 解析内核 elf 信息
+  kernel_elf = KernelElf();
+
   printf("hello ArchInit\n");
 
   return 0;
@@ -61,6 +65,13 @@ void DumpStack() {
     ra = fp - 1;
     fp = (uint64_t *)*(fp - 2);
     printf("[0x%p]\n", *ra);
+    // 打印函数名
+    // for (auto i : kernel_elf.symtab_) {
+    //   if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*ra >= i.st_value) &&
+    //       (*ra <= i.st_value + i.st_size)) {
+    //     printf("[%s] 0x%p\n", kernel_elf.strtab_ + i.st_name, *ra);
+    //   }
+    // }
   }
   printf("----DumpStack End----\n");
 }

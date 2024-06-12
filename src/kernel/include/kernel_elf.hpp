@@ -41,13 +41,18 @@ class KernelElf {
    * @param elf_addr elf 地址
    * @param elf_size elf 大小
    */
-  explicit KernelElf(uint64_t elf_addr, size_t elf_size = 0) {
+  explicit KernelElf(uint64_t elf_addr, size_t elf_size) {
+    if (!elf_addr || !elf_size) {
+      printf("Fatal Error: Invalid elf_addr or elf_size.\n");
+      return;
+    }
+
     elf_ = std::span<uint8_t>((uint8_t *)elf_addr, elf_size);
 
     // 检查 elf 头数据
     auto check_elf_identity_ret = CheckElfIdentity();
     if (!check_elf_identity_ret) {
-      printf("Elf::Elf NOT valid ELF file.\n");
+      printf("KernelElf NOT valid ELF file.\n");
       return;
     }
 
