@@ -20,6 +20,7 @@
 #include "cpu.hpp"
 #include "cstdio"
 #include "cstring"
+#include "kernel_elf.hpp"
 
 // printf_bare_metal 基本输出实现
 /// @note 这里要注意，保证在 serial 初始化之前不能使用 printf
@@ -38,49 +39,6 @@ static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
     }
     vram += pitch;
   }
-}
-
-/// 符号表地址
-static Elf64_Sym *symtab = nullptr;
-/// 符号个数
-static size_t sym_count = 0;
-/// 字符串表地址
-static uint8_t *strtab = nullptr;
-
-/**
- * 解析 elf 信息
- * @param ehdr elf 头
- */
-static uint32_t ParseElf(uint64_t elf_addr) {
-  auto ehdr = (Elf64_Ehdr *)elf_addr;
-  if (memcmp(ehdr->e_ident,
-             "\x7f"
-             "ELF",
-             4) != 0) {
-    printf("Invalid ELF file\n");
-    return -1;
-  }
-
-  auto shdr = (Elf64_Shdr *)((uint8_t *)ehdr + ehdr->e_shoff);
-  auto shstrtab = (const char *)ehdr + shdr[ehdr->e_shstrndx].sh_offset;
-
-  // 查找符号表和字符串表
-  for (size_t i = 0; i < ehdr->e_shnum; ++i) {
-    if (strcmp(shstrtab + shdr[i].sh_name, ".symtab") == 0) {
-      symtab = (Elf64_Sym *)((uint8_t *)ehdr + shdr[i].sh_offset);
-      sym_count = shdr[i].sh_size / sizeof(Elf64_Sym);
-
-    } else if (strcmp(shstrtab + shdr[i].sh_name, ".strtab") == 0) {
-      strtab = (uint8_t *)ehdr + shdr[i].sh_offset;
-    }
-  }
-
-  if (!symtab || !strtab) {
-    printf("Symbol table or string table not found\n");
-    return -1;
-  }
-
-  return 0;
 }
 
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
@@ -111,11 +69,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   }
 
   // 解析内核 elf 信息
-  auto ret = ParseElf(boot_info.elf_addr);
-  if (ret != 0) {
-    printf("ParseElf failed!\n");
-    return -1;
-  }
+  kernel_elf = KernelElf(boot_info.elf_addr, boot_info.elf_size);
 
   printf("hello ArchInit\n");
 
@@ -132,12 +86,10 @@ void DumpStack() {
     rbp = (uint64_t *)*rbp;
 
     // 打印函数名
-    for (size_t i = 0; i < sym_count; i++) {
-      if (ELF64_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
-        if (*rip >= symtab[i].st_value &&
-            *rip <= symtab[i].st_value + symtab[i].st_size) {
-          printf("[%s] 0x%p\n", strtab + symtab[i].st_name, *rip);
-        }
+    for (auto i : kernel_elf.symtab_) {
+      if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*rip >= i.st_value) &&
+          (*rip <= i.st_value + i.st_size)) {
+        printf("[%s] 0x%p\n", kernel_elf.strtab_ + i.st_name, *rip);
       }
     }
   }
