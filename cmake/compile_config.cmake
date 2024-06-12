@@ -29,10 +29,6 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -ffreestanding
         # 保留帧指针，便于调试和栈回溯
         -fno-omit-frame-pointer
-        # 禁用栈保护
-        -fno-stack-protector
-        # 禁用栈检查
-        -fno-stack-check
         # 不使用 common 段
         -fno-common
 
