@@ -70,6 +70,19 @@ int memcmp(const void *str1, const void *str2, size_t n) {
   return 0;
 }
 
+// 在内存块中查找字符
+void *memchr(const void *str, int c, size_t n) {
+  const unsigned char *src = (const unsigned char *)str;
+
+  while (n-- > 0) {
+    if (*src == c) {
+      return (void *)src;
+    }
+    src++;
+  }
+  return NULL;
+}
+
 // 复制字符串
 char *strcpy(char *dest, const char *src) {
   char *address = dest;
@@ -153,6 +166,17 @@ char *strchr(const char *s, int c) {
     }
   } while (*s++);
   return NULL;
+}
+
+char *strrchr(const char *s, int c) {
+  char *rtnval = 0;
+
+  do {
+    if (*s == c) {
+      rtnval = (char *)s;
+    }
+  } while (*s++);
+  return (rtnval);
 }
 
 #ifdef __cplusplus

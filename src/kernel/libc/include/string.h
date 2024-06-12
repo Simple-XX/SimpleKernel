@@ -35,6 +35,9 @@ void *memset(void *dest, int val, size_t n);
 // 比较内存块
 int memcmp(const void *str1, const void *str2, size_t n);
 
+// 在内存块中查找字符
+void *memchr(const void *str, int c, size_t n);
+
 // 复制字符串
 char *strcpy(char *dest, const char *src);
 
@@ -58,6 +61,9 @@ size_t strnlen(const char *s, size_t n);
 
 // 查找字符在字符串中的首次出现
 char *strchr(const char *s, int c);
+
+// 反向查找字符在字符串中的首次出现
+char *strrchr(const char *s, int c);
 
 #ifdef __cplusplus
 }
