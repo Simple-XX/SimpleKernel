@@ -124,16 +124,16 @@ Elf::~Elf() {
     debug << L"Elf::~Elf() Close failed: " << status << OutStream::endl;
     return;
   }
-  /// @note elf_file_buffer 不会被释放
+  /// @note elf_file_buffer_ 不会被释放，传递给内核使用
 }
 
-auto Elf::Load() const -> uintptr_t {
+auto Elf::Load() const -> std::pair<uintptr_t, std::pair<uintptr_t, size_t>> {
   auto ret = LoadProgramSections();
   if (!ret) {
     debug << L"Elf::Load() failed." << OutStream::endl;
-    return 0;
+    return {0, {(uintptr_t)elf_file_buffer_, elf_file_size_}};
   }
-  return ehdr_.e_entry;
+  return {ehdr_.e_entry, {(uintptr_t)elf_file_buffer_, elf_file_size_}};
 }
 
 auto Elf::GetFileSize() const -> size_t {

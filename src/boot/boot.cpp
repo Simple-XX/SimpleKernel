@@ -25,7 +25,6 @@ uintptr_t ImageBase = 0;
 extern "C" [[maybe_unused]] EFI_STATUS EFIAPI
 efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
   EFI_STATUS status = EFI_SUCCESS;
-  uint64_t kernel_addr = 0;
 
   InitializeLib(image_handle, system_table);
 
@@ -77,7 +76,7 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
   memory.PrintInfo();
   // 加载内核
   auto elf = Elf(KERNEL_NAME);
-  kernel_addr = elf.Load();
+  auto [kernel_addr, elf_info] = elf.Load();
   if (kernel_addr == 0) {
     debug << L"Failed to load kernel" << OutStream::endl;
     return EFI_LOAD_ERROR;
@@ -85,6 +84,10 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
 
   debug << L"Set Kernel Entry Point to: [" << OutStream::hex_X << kernel_addr
         << L"]." << OutStream::endl;
+  debug << L"Elf addr: [" << OutStream::hex_X << elf_info.first << L"]."
+        << OutStream::endl;
+  debug << L"Elf size: [" << OutStream::hex_X << elf_info.second << L"]."
+        << OutStream::endl;
   // 退出 boot service
   uint64_t desc_count = 0;
   EFI_MEMORY_DESCRIPTOR *memory_map = nullptr;
@@ -119,6 +122,10 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
   boot_info.framebuffer.width = framebuffer_width;
   boot_info.framebuffer.height = framebuffer_height;
   boot_info.framebuffer.pitch = framebuffer_pixel_per_line * sizeof(uint32_t);
+
+  // 获取 elf 地址
+  boot_info.elf_addr = elf_info.first;
+  boot_info.elf_size = elf_info.second;
 
   auto kernel_entry = (void (*)(uint32_t, uint8_t *))kernel_addr;
   kernel_entry(1, reinterpret_cast<uint8_t *>(&boot_info));

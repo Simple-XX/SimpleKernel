@@ -170,10 +170,12 @@ class Elf {
   /// @}
 
   /**
-   * 将 elf 文件加载进内存
-   * @return 成功返回内核入口地址，失败返回 0
+   * 将 elf 文件加载进内存，返回程序入口和 elf 文件地址
+   * @return first 成功返回内核入口地址，失败返回 0
+   * @return second elf 文件在内存中的位置与大小
    */
-  [[nodiscard]] auto Load() const -> uintptr_t;
+  [[nodiscard]] auto Load() const
+      -> std::pair<uintptr_t, std::pair<uintptr_t, size_t>>;
 
  private:
   /// @name elf 文件相关
