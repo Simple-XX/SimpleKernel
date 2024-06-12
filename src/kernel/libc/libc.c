@@ -24,7 +24,7 @@
 uint64_t __stack_chk_guard = 0x595E9FBD94FDA766;
 
 /// 栈保护检查失败后进入死循环
-__attribute__((noreturn)) __stack_chk_fail() {
+__attribute__((noreturn)) void __stack_chk_fail() {
   printf("Error: Stack smashing detected!\n");
   while (1);
 }
