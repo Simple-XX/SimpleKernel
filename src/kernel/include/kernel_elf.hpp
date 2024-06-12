@@ -39,9 +39,9 @@ class KernelElf {
   /**
    * 构造函数
    * @param elf_addr elf 地址
-   * @param elf_size elf 大小
+   * @param elf_size elf 大小，默认为 64，Elf64_Ehdr 的大小
    */
-  explicit KernelElf(uint64_t elf_addr, size_t elf_size) {
+  explicit KernelElf(uint64_t elf_addr, size_t elf_size = 64) {
     if (!elf_addr || !elf_size) {
       printf("Fatal Error: Invalid elf_addr or elf_size.\n");
       return;
