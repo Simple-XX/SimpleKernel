@@ -39,7 +39,7 @@ __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
   std::cout << "satp: " << cpu::csr::kAllCsr.satp << std::endl;
   std::cout << "sscratch: " << cpu::csr::kAllCsr.sscratch << std::endl;
 
-  kInterrupt.getInstance().Do((uint64_t)cpu::csr::kAllCsr.scause.Read(),
+  kInterrupt.GetInstance().Do((uint64_t)cpu::csr::kAllCsr.scause.Read(),
                               nullptr);
 }
 
@@ -129,11 +129,11 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
 
   // 获取 cpu 速度
-  kInterval = kKernelFdt.getInstance().GetTimebaseFrequency();
+  kInterval = kKernelFdt.GetInstance().GetTimebaseFrequency();
   printf("kInterval: 0x%X\n", kInterval);
 
   // 注册时钟中断
-  kInterrupt.getInstance().RegisterInterruptFunc(
+  kInterrupt.GetInstance().RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kSupervisorTimerInterrupt,
       [](uint64_t exception_code, uint8_t *) -> uint64_t {
         sbi_set_timer(cpu::csr::kAllCsr.time.Read() + kInterval);
@@ -143,7 +143,7 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
       });
 
   // ebreak 中断
-  kInterrupt.getInstance().RegisterInterruptFunc(
+  kInterrupt.GetInstance().RegisterInterruptFunc(
       cpu::csr::ScauseInfo::kBreakpoint,
       [](uint64_t exception_code, uint8_t *) -> uint64_t {
         cpu::csr::kAllCsr.sepc.Write(cpu::csr::kAllCsr.sepc.Read() + 2);
