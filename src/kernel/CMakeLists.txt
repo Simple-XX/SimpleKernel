@@ -61,15 +61,5 @@ add_dependencies(${PROJECT_NAME}
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${KERNEL_ELF_OUTPUT_NAME})
 
-# # 获取 crt 文件位置
-# execute_process(COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=crti.o OUTPUT_VARIABLE CRTI_O OUTPUT_STRIP_TRAILING_WHITESPACE)
-# execute_process(COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=crtbegin.o OUTPUT_VARIABLE CRTBEGIN_O OUTPUT_STRIP_TRAILING_WHITESPACE)
-# execute_process(COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=crtend.o OUTPUT_VARIABLE CRTEND_O OUTPUT_STRIP_TRAILING_WHITESPACE)
-# execute_process(COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=crtn.o OUTPUT_VARIABLE CRTN_O OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-# # 设置链接指令
-# # set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_LINKER} <CMAKE_CXX_LINK_FLAGS> <FLAGS> <LINK_FLAGS> ${CRTI_O} ${CRTBEGIN_O} <OBJECTS> <LINK_LIBRARIES> ${CRTEND_O} ${CRTN_O} -o <TARGET>")
-# set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_LINKER} -g -T /home/parallels/github/MRNIU/SimpleKernel_copy/src/kernel/arch/x86_64/link.ld -static -z max-page-size=0x1000 ${CRTI_O} ${CRTBEGIN_O} <OBJECTS> <LINK_LIBRARIES> ${CRTEND_O} ${CRTN_O} -o <TARGET>")
-
 # 获取目标文件信息
 objdump_readelf_nm(${PROJECT_NAME})
