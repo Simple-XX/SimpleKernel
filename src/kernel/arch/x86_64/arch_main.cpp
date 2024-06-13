@@ -47,29 +47,29 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
     return -1;
   }
 
-  BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv);
-  printf("boot_info.framebuffer.base: 0x%p.\n", boot_info.framebuffer.base);
-  printf("boot_info.framebuffer.size: %d.\n", boot_info.framebuffer.size);
-  printf("boot_info.framebuffer.height: %d.\n", boot_info.framebuffer.height);
-  printf("boot_info.framebuffer.width: %d.\n", boot_info.framebuffer.width);
-  printf("boot_info.framebuffer.pitch: %d.\n", boot_info.framebuffer.pitch);
+  kBootInfo = *reinterpret_cast<BootInfo *>(argv);
+  printf("kBootInfo.framebuffer.base: 0x%p.\n", kBootInfo.framebuffer.base);
+  printf("kBootInfo.framebuffer.size: %d.\n", kBootInfo.framebuffer.size);
+  printf("kBootInfo.framebuffer.height: %d.\n", kBootInfo.framebuffer.height);
+  printf("kBootInfo.framebuffer.width: %d.\n", kBootInfo.framebuffer.width);
+  printf("kBootInfo.framebuffer.pitch: %d.\n", kBootInfo.framebuffer.pitch);
 
-  printf("boot_info.elf_addr: 0x%X.\n", boot_info.elf_addr);
-  printf("boot_info.elf_size: %d.\n", boot_info.elf_size);
+  printf("kBootInfo.elf_addr: 0x%X.\n", kBootInfo.elf_addr);
+  printf("kBootInfo.elf_size: %d.\n", kBootInfo.elf_size);
 
   // 在屏幕上绘制矩形
-  Fillrect((uint8_t *)boot_info.framebuffer.base, boot_info.framebuffer.pitch,
+  Fillrect((uint8_t *)kBootInfo.framebuffer.base, kBootInfo.framebuffer.pitch,
            255, 0, 255, 100, 100);
 
-  for (uint32_t i = 0; i < boot_info.memory_map_count; i++) {
+  for (uint32_t i = 0; i < kBootInfo.memory_map_count; i++) {
     printf(
-        "boot_info.memory_map[%d].base_addr: 0x%p, length: 0x%X, type: %d.\n",
-        i, boot_info.memory_map[i].base_addr, boot_info.memory_map[i].length,
-        boot_info.memory_map[i].type);
+        "kBootInfo.memory_map[%d].base_addr: 0x%p, length: 0x%X, type: %d.\n",
+        i, kBootInfo.memory_map[i].base_addr, kBootInfo.memory_map[i].length,
+        kBootInfo.memory_map[i].type);
   }
 
   // 解析内核 elf 信息
-  kernel_elf = KernelElf(boot_info.elf_addr, boot_info.elf_size);
+  kernel_elf = KernelElf(kBootInfo.elf_addr, kBootInfo.elf_size);
 
   printf("hello ArchInit\n");
 

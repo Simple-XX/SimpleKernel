@@ -1,6 +1,4 @@
-[submodule "3rd/fdt_parser"]
-	path = 3rd/fdt_parser
-	url = https://github.com/MRNIU/fdt_parser.git
+
 [submodule "3rd/printf_bare_metal"]
 	path = 3rd/printf_bare_metal
 	url = https://github.com/MRNIU/printf_bare_metal.git

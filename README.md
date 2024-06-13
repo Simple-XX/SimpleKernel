@@ -173,7 +173,7 @@ boot branch
 
 [printf_bare_metal](https://github.com/MRNIU/printf_bare_metal)
 
-[fdt_parser](https://github.com/MRNIU/fdt_parser)
+[dtc](https://git.kernel.org/pub/scm/utils/dtc/dtc.git)
 
 [google/googletest](https://github.com/google/googletest)
 

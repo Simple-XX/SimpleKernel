@@ -77,6 +77,9 @@ struct BootInfo {
   size_t elf_size;
 };
 
+/// 保存内核基本信息
+[[maybe_unused]] static BootInfo kBootInfo;
+
 /**
  * 体系结构相关初始化
  * @param argc 在不同体系结构有不同含义

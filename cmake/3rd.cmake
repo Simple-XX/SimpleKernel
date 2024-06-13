@@ -123,10 +123,6 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
 endif ()
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/MRNIU/fdt_parser.git
-    add_subdirectory(3rd/fdt_parser)
-endif ()
-
 # https://git.kernel.org/pub/scm/utils/dtc/dtc.git
 set(dtc_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/dtc)
 set(dtc_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/dtc)
