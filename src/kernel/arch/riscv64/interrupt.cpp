@@ -130,7 +130,8 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
 
   // 获取 cpu 速度
-  kInterval = kKernelFdt.GetTimebaseFrequency();
+  kInterval = kKernelFdt.getInstance().GetTimebaseFrequency();
+  printf("kInterval: 0x%X\n", kInterval);
 
   // 注册时钟中断
   interrupt.RegisterInterruptFunc(
