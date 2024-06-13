@@ -153,6 +153,11 @@ extern "C" void __cxa_guard_abort(GuardType* guard) {
 /// @}
 
 /**
+ * 纯虚函数调用处理
+ */
+extern "C" void __cxa_pure_virtual() { while (1); }
+
+/**
  * c++ 全局对象构造
  */
 void CppInit(void) {
