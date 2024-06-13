@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "kernel/arch/arch.h"
+#include "kernel/include/kernel.h"
 #include "load_elf.h"
 #include "out_stream.hpp"
 #include "project_config.h"
@@ -108,27 +108,27 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
   }
 
   // 向内核传递参数
-  BootInfo boot_info = {};
+  BasicInfo basic_info = {};
 
   // 获取内存信息
-  boot_info.memory_map_count = memory.GetMemoryMap(boot_info.memory_map);
+  basic_info.memory_map_count = memory.GetMemoryMap(basic_info.memory_map);
 
   // 获取 framebuffer 信息
   auto [framebuffer_base, framebuffer_size, framebuffer_width,
         framebuffer_height, framebuffer_pixel_per_line] =
       graphics.GetFrameBuffer();
-  boot_info.framebuffer.base = framebuffer_base;
-  boot_info.framebuffer.size = framebuffer_size;
-  boot_info.framebuffer.width = framebuffer_width;
-  boot_info.framebuffer.height = framebuffer_height;
-  boot_info.framebuffer.pitch = framebuffer_pixel_per_line * sizeof(uint32_t);
+  basic_info.framebuffer.base = framebuffer_base;
+  basic_info.framebuffer.size = framebuffer_size;
+  basic_info.framebuffer.width = framebuffer_width;
+  basic_info.framebuffer.height = framebuffer_height;
+  basic_info.framebuffer.pitch = framebuffer_pixel_per_line * sizeof(uint32_t);
 
   // 获取 elf 地址
-  boot_info.elf_addr = elf_info.first;
-  boot_info.elf_size = elf_info.second;
+  basic_info.elf_addr = elf_info.first;
+  basic_info.elf_size = elf_info.second;
 
   auto kernel_entry = (void (*)(uint32_t, uint8_t *))kernel_addr;
-  kernel_entry(1, reinterpret_cast<uint8_t *>(&boot_info));
+  kernel_entry(1, reinterpret_cast<uint8_t *>(&basic_info));
 
   // 不会执行到这里
   return EFI_SUCCESS;

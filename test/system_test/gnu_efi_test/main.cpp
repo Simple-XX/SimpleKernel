@@ -16,10 +16,10 @@
 
 #include <cstdint>
 
-#include "arch.h"
 #include "cpu.hpp"
 #include "cstdio"
 #include "cstring"
+#include "kernel.h"
 #include "kernel_elf.hpp"
 #include "libcxx.h"
 
@@ -130,9 +130,9 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   global_value_with_init++;
   global_bool_keep_running = false;
 
-  BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv);
-  printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
-  Fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
+  BasicInfo basic_info = *reinterpret_cast<BasicInfo *>(argv);
+  printf("basic_info.framebuffer.base: 0x%X\n", basic_info.framebuffer.base);
+  Fillrect((uint8_t *)basic_info.framebuffer.base, 255, 0, 255, 100, 100);
 
   auto inst_class = InsClass();
   printf("%c\n", inst_class.val);
@@ -140,7 +140,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   printf("%c\n", inst_class.val);
 
   // 解析内核 elf 信息
-  kKernelElf = KernelElf(boot_info.elf_addr, boot_info.elf_size);
+  kKernelElf = KernelElf(basic_info.elf_addr, basic_info.elf_size);
 
   printf("Hello Test\n");
 

@@ -17,7 +17,63 @@
 #ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_
 #define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_
 
+#include <cstddef>
 #include <cstdint>
+
+struct BasicInfo {
+  /// 最大内存表数量
+  static constexpr const uint32_t kMemoryMapMaxCount = 256;
+  struct MemoryMap {
+    /// 内存类型
+    enum {
+      /// 可用
+      kTypeRam = 1,
+      /// 保留
+      kTypeReserved,
+      /// ACPI
+      kTypeAcpi,
+      /// NV
+      kTypeNvs,
+      /// 不可用
+      kTypeUnUsable
+    };
+    /// 地址
+    uint64_t base_addr;
+    /// 长度
+    uint64_t length;
+    /// 类型
+    uint32_t type;
+    /// 保留
+    uint32_t reserved;
+  } memory_map[kMemoryMapMaxCount];
+  /// 内存表数量
+  uint32_t memory_map_count;
+
+  /// 显示缓冲区
+  struct FrameBuffer {
+    /// 地址
+    uint64_t base;
+    /// 长度
+    uint32_t size;
+    /// 屏幕宽像素个数
+    uint32_t width;
+    /// 屏幕高像素个数
+    uint32_t height;
+    /// 每行字节数
+    uint32_t pitch;
+    /// 每像素字节数
+    uint8_t bpp;
+    /// 显示类型
+    uint8_t type;
+    /// 保留
+    uint8_t reserved;
+  } framebuffer;
+
+  /// elf 地址
+  uint64_t elf_addr;
+  /// elf 大小
+  size_t elf_size;
+};
 
 /**
  * @brief 负责 crtbegin 的工作
@@ -34,5 +90,8 @@ extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
  * @return uint32_t 正常返回 0
  */
 uint32_t main(uint32_t argc, uint8_t* argv);
+
+/// 保存内核基本信息
+[[maybe_unused]] static BasicInfo kBasicInfo;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_ */
