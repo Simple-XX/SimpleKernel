@@ -18,6 +18,7 @@
 #define SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_
 
 #include <cstdint>
+#include <cstddef>
 
 /**
  * 体系结构相关初始化
@@ -25,6 +26,9 @@
  * @param argv 在不同体系结构有不同含义
  */
 uint32_t ArchInit(uint32_t argc, uint8_t *argv);
+
+/// 最多回溯 128 层调用栈
+static constexpr const size_t kMaxFramesCount = 128;
 
 /**
  * 打印调用栈

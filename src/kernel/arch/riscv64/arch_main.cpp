@@ -19,6 +19,7 @@
 #include "cstdio"
 #include "kernel_elf.hpp"
 #include "kernel_fdt.hpp"
+#include "libc.h"
 #include "ns16550a.h"
 
 // printf_bare_metal 基本输出实现
@@ -57,24 +58,4 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   printf("hello ArchInit\n");
 
   return 0;
-}
-
-void DumpStack() {
-  uint64_t *fp = (uint64_t *)cpu::ReadFp();
-  uint64_t *ra = nullptr;
-
-  printf("------DumpStack------\n");
-  while (fp && *fp) {
-    ra = fp - 1;
-    fp = (uint64_t *)*(fp - 2);
-    printf("[0x%p]\n", *ra);
-    // 打印函数名
-    // for (auto i : kernel_elf.symtab_) {
-    //   if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*ra >= i.st_value) &&
-    //       (*ra <= i.st_value + i.st_size)) {
-    //     printf("[%s] 0x%p\n", kernel_elf.strtab_ + i.st_name, *ra);
-    //   }
-    // }
-  }
-  printf("----DumpStack End----\n");
 }
