@@ -125,7 +125,7 @@ static uint64_t kInterval = 0;
 
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
 /// @todo 从 dtb 读取 cpu 速度
-uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
+uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
 
   // 获取 cpu 速度
@@ -157,7 +157,7 @@ uint32_t IntrInit(uint32_t argc, uint8_t *argv) {
   // 设置时钟中断时间
   sbi_set_timer(kInterval);
 
-  printf("hello IntrInit\n");
+  printf("hello InterruptInit\n");
 
   return 0;
 }

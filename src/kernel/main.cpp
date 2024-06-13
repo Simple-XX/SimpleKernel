@@ -42,7 +42,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
 
   std::cout << "Hello ostream" << std::endl;
 
-  IntrInit(argc, argv);
+  InterruptInit(argc, argv);
 
   // 进入死循环
   while (1) {

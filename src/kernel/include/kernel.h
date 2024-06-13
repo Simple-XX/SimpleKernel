@@ -93,7 +93,7 @@ extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
  */
 uint32_t main(uint32_t argc, uint8_t* argv);
 
-uint32_t IntrInit(uint32_t argc, uint8_t* argv);
+uint32_t InterruptInit(uint32_t argc, uint8_t* argv);
 
 /// 保存内核基本信息
 [[maybe_unused]] static Singleton<BasicInfo> kBasicInfo;
