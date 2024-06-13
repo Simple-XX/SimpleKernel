@@ -125,42 +125,42 @@ boot branch
 
 - libc 支持
 
-  |    函数/变量名     |               用途               |      |
-  | :----------------: | :------------------------------: | :--: |
-  | __stack_chk_guard  |              栈保护              |      |
-  | __stack_chk_fail() |       栈保护检查失败后调用       |      |
-  |      memcpy()      |            复制内存块            |      |
-  |     memmove()      |  复制内存块，可以处理重叠区域。  |      |
-  |      memset()      |            设置内存块            |      |
-  |      memcmp()      |            比较内存块            |      |
-  |      memchr()      |        在内存块中查找字符        |      |
-  |      strcpy()      |            复制字符串            |      |
-  |     strncpy()      |       复制指定长度的字符串       |      |
-  |      strcat()      |            连接字符串            |      |
-  |      strcmp()      |            比较字符串            |      |
-  |     strncmp()      |       比较指定长度的字符串       |      |
-  |      strlen()      |          获取字符串长度          |      |
-  |     strnlen()      |        获取指定字符串长度        |      |
-  |      strchr()      |   查找字符在字符串中的首次出现   |      |
-  |     strrchr()      | 反向查找字符在字符串中的首次出现 |      |
+  |     函数/变量名      |               用途               |      |
+  | :------------------: | :------------------------------: | :--: |
+  | `__stack_chk_guard`  |              栈保护              |      |
+  | `__stack_chk_fail()` |       栈保护检查失败后调用       |      |
+  |      `memcpy()`      |            复制内存块            |      |
+  |     `memmove()`      |  复制内存块，可以处理重叠区域。  |      |
+  |      `memset()`      |            设置内存块            |      |
+  |      `memcmp()`      |            比较内存块            |      |
+  |      `memchr()`      |        在内存块中查找字符        |      |
+  |      `strcpy()`      |            复制字符串            |      |
+  |     `strncpy()`      |       复制指定长度的字符串       |      |
+  |      `strcat()`      |            连接字符串            |      |
+  |      `strcmp()`      |            比较字符串            |      |
+  |     `strncmp()`      |       比较指定长度的字符串       |      |
+  |      `strlen()`      |          获取字符串长度          |      |
+  |     `strnlen()`      |        获取指定字符串长度        |      |
+  |      `strchr()`      |   查找字符在字符串中的首次出现   |      |
+  |     `strrchr()`      | 反向查找字符在字符串中的首次出现 |      |
 
 - libc++ 支持
 
-    |      函数/变量名      |                 用途                 |      |
-    | :-------------------: | :----------------------------------: | :--: |
-    |    __cxa_atexit()     |             注册析构函数             |      |
-    |   __cxa_finalize()    |             调用析构函数             |      |
-    | __cxa_guard_acquire() |         静态局部变量初始化锁         |      |
-    | __cxa_guard_release() |        静态局部变量初始化完成        |      |
-    |  __cxa_guard_abort()  |        静态局部变量初始化出错        |      |
-    |    operator new()     | 运算符重载，空实现，用于全局对象支持 |      |
-    |   operator new[]()    | 运算符重载，空实现，用于全局对象支持 |      |
-    |    operator new()     | 运算符重载，空实现，用于全局对象支持 |      |
-    |   operator new[]()    | 运算符重载，空实现，用于全局对象支持 |      |
-    |   operator delete()   | 运算符重载，空实现，用于全局对象支持 |      |
-    |   operator delete()   | 运算符重载，空实现，用于全局对象支持 |      |
-    |  operator delete[]()  | 运算符重载，空实现，用于全局对象支持 |      |
-    |  operator delete[]()  | 运算符重载，空实现，用于全局对象支持 |      |
+    |       函数/变量名       |                 用途                 |      |
+    | :---------------------: | :----------------------------------: | :--: |
+    |    `__cxa_atexit()`     |             注册析构函数             |      |
+    |   `__cxa_finalize()`    |             调用析构函数             |      |
+    | `__cxa_guard_acquire()` |         静态局部变量初始化锁         |      |
+    | `__cxa_guard_release()` |        静态局部变量初始化完成        |      |
+    |  `__cxa_guard_abort()`  |        静态局部变量初始化出错        |      |
+    |    `operator new()`     | 运算符重载，空实现，用于全局对象支持 |      |
+    |   `operator new[]()`    | 运算符重载，空实现，用于全局对象支持 |      |
+    |    `operator new()`     | 运算符重载，空实现，用于全局对象支持 |      |
+    |   `operator new[]()`    | 运算符重载，空实现，用于全局对象支持 |      |
+    |   `operator delete()`   | 运算符重载，空实现，用于全局对象支持 |      |
+    |   `operator delete()`   | 运算符重载，空实现，用于全局对象支持 |      |
+    |  `operator delete[]()`  | 运算符重载，空实现，用于全局对象支持 |      |
+    |  `operator delete[]()`  | 运算符重载，空实现，用于全局对象支持 |      |
 
 - 打印函数调用栈
 
@@ -180,13 +180,13 @@ boot branch
 
 - 全局对象
 
-  |                 对象名                 |                 位置                 |          用途           |
-  | :------------------------------------: | :----------------------------------: | :---------------------: |
-  |          static ostream cout           |  src/kernel/libcxx/include/iostream  | 内核中的 std::cout 实现 |
-  | static Singleton<KernelElf> kKernelElf |  src/kernel/include/kernel_elf.hpp   | 解析内核自身的 elf 信息 |
-  | static Singleton<KernelFdt> kKernelFdt |  src/kernel/include/kernel_fdt.hpp   |      解析 dtb 信息      |
-  | static Singleton<BasicInfo> kBasicInfo |     src/kernel/include/kernel.h      |      内核基本信息       |
-  | static cpu::Serial kSerial(cpu::kCom1) | src/kernel/arch/x86_64/arch_main.cpp |     X86_64 下的串口     |
+  |                  对象名                  |                 位置                 |          用途           |
+  | :--------------------------------------: | :----------------------------------: | :---------------------: |
+  |          `static ostream cout`           |  src/kernel/libcxx/include/iostream  | 内核中的 std::cout 实现 |
+  | `static Singleton<KernelElf> kKernelElf` |  src/kernel/include/kernel_elf.hpp   | 解析内核自身的 elf 信息 |
+  | `static Singleton<KernelFdt> kKernelFdt` |  src/kernel/include/kernel_fdt.hpp   |      解析 dtb 信息      |
+  | `static Singleton<BasicInfo> kBasicInfo` |     src/kernel/include/kernel.h      |      内核基本信息       |
+  | `static cpu::Serial kSerial(cpu::kCom1)` | src/kernel/arch/x86_64/arch_main.cpp |     X86_64 下的串口     |
 
 - 基于 doxygen 的文档生成与自动部署
 
