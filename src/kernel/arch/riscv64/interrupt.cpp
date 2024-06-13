@@ -67,16 +67,16 @@ Interrupt::Interrupt() {
     cpu::csr::kAllCsr.stvec.SetDirect((uint64_t)TarpEntry);
 
     // 开启 Supervisor 中断
-    // cpu::csr::kAllCsr.sstatus.sie.Set();
+    cpu::csr::kAllCsr.sstatus.sie.Set();
 
     // 开启内部中断
-    // cpu::csr::kAllCsr.sie.ssie.Set();
+    cpu::csr::kAllCsr.sie.ssie.Set();
 
     // 开启时钟中断
-    // cpu::csr::kAllCsr.sie.stie.Set();
+    cpu::csr::kAllCsr.sie.stie.Set();
 
     // 开启外部中断
-    // cpu::csr::kAllCsr.sie.seie.Set();
+    cpu::csr::kAllCsr.sie.seie.Set();
 
     is_inited = true;
   }
