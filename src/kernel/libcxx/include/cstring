@@ -17,86 +17,7 @@
 #ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTRING_
 #define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTRING_
 
-#include <cstdint>
-
-// 复制内存块
-inline void *memcpy(void *dest, const void *src, size_t n) {
-  return __builtin_memcpy(dest, src, n);
-}
-
-// 复制内存块，可以处理重叠区域。
-inline void *memmove(void *dest, const void *src, size_t n) {
-  return __builtin_memmove(dest, src, n);
-}
-
-// 设置内存块
-inline void *memset(void *s, int c, size_t n) {
-  return __builtin_memset(s, c, n);
-}
-
-// 比较内存块
-inline int memcmp(const void *s1, const void *s2, size_t n) {
-  return __builtin_memcmp(s1, s2, n);
-}
-
-// 复制字符串
-inline char *strcpy(char *dest, const char *src) {
-  return __builtin_strcpy(dest, src);
-}
-
-// 复制指定长度的字符串
-inline char *strncpy(char *dest, const char *src, size_t n) {
-  return __builtin_strncpy(dest, src, n);
-}
-
-// 连接字符串
-inline char *strcat(char *dest, const char *src) {
-  return __builtin_strcat(dest, src);
-}
-
-// 连接指定长度的字符串
-inline char *strncat(char *dest, const char *src, size_t n) {
-  return __builtin_strncat(dest, src, n);
-}
-
-// 比较字符串
-inline int strcmp(const char *s1, const char *s2) {
-  return __builtin_strcmp(s1, s2);
-}
-
-// 比较指定长度的字符串
-inline int strncmp(const char *s1, const char *s2, size_t n) {
-  return __builtin_strncmp(s1, s2, n);
-}
-
-// 获取字符串长度
-inline size_t strlen(const char *s) { return __builtin_strlen(s); }
-
-// 查找字符在字符串中的首次出现
-inline char *strchr(const char *s, int c) { return __builtin_strchr(s, c); }
-
-// 查找字符在字符串中的最后一次出现
-inline char *strrchr(const char *s, int c) { return __builtin_strrchr(s, c); }
-
-// 计算字符串中连续出现的指定字符的长度
-inline size_t strspn(const char *s, const char *accept) {
-  return __builtin_strspn(s, accept);
-}
-
-// 计算字符串中不含指定字符的长度
-inline size_t strcspn(const char *s, const char *reject) {
-  return __builtin_strcspn(s, reject);
-}
-
-// 查找字符串中任意一个指定字符的首次出现
-inline char *strpbrk(const char *s, const char *accept) {
-  return __builtin_strpbrk(s, accept);
-}
-
-// 查找子字符串
-inline char *strstr(const char *haystack, const char *needle) {
-  return __builtin_strstr(haystack, needle);
-}
+#include "string.h"
 
 namespace std {
 
@@ -108,15 +29,10 @@ using ::strcat;
 using ::strchr;
 using ::strcmp;
 using ::strcpy;
-using ::strcspn;
 using ::strlen;
-using ::strncat;
 using ::strncmp;
 using ::strncpy;
-using ::strpbrk;
-using ::strrchr;
-using ::strspn;
-using ::strstr;
+using ::strnlen;
 
 };  // namespace std
 

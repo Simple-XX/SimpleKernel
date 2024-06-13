@@ -15,6 +15,7 @@ enable_language(CXX)
 # 生成对象库
 add_library(${PROJECT_NAME} OBJECT
         ${PROJECT_SOURCE_DIR}/libcxx.cpp
+        ${PROJECT_SOURCE_DIR}/new.cpp
         ${PROJECT_SOURCE_DIR}/iostream.cpp
 )
 

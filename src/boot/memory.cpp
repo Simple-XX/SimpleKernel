@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "kernel/arch/arch.h"
+#include "kernel/include/kernel.h"
 #include "load_elf.h"
 #include "out_stream.hpp"
 
@@ -37,14 +37,14 @@ Memory::Memory() {
 }
 
 size_t Memory::GetMemoryMap(
-    BootInfo::MemoryMap mmap[BootInfo::kMemoryMapMaxCount]) const {
+    BasicInfo::MemoryMap mmap[BasicInfo::kMemoryMapMaxCount]) const {
   // 数组边界检查
-  if (desc_count_ > BootInfo::kMemoryMapMaxCount) {
+  if (desc_count_ > BasicInfo::kMemoryMapMaxCount) {
     debug << L"Error: desc_count_ too big to load " << desc_count_ << L"."
           << OutStream::endl;
   }
 
-  // 将 efi 格式转换为 BootInfo::MemoryMap 格式
+  // 将 efi 格式转换为 BasicInfo::MemoryMap 格式
   for (uint64_t i = 0; i < desc_count_; i++) {
     auto *desc = reinterpret_cast<EFI_MEMORY_DESCRIPTOR *>(
         (reinterpret_cast<uint8_t *>(memory_map_)) + i * desc_size_);
@@ -57,15 +57,15 @@ size_t Memory::GetMemoryMap(
       case EfiMemoryMappedIO:
       case EfiMemoryMappedIOPortSpace:
       case EfiPalCode: {
-        mmap[i].type = BootInfo::MemoryMap::kTypeReserved;
+        mmap[i].type = BasicInfo::MemoryMap::kTypeReserved;
         break;
       }
       case EfiUnusableMemory: {
-        mmap[i].type = BootInfo::MemoryMap::kTypeUnUsable;
+        mmap[i].type = BasicInfo::MemoryMap::kTypeUnUsable;
         break;
       }
       case EfiACPIReclaimMemory: {
-        mmap[i].type = BootInfo::MemoryMap::kTypeAcpi;
+        mmap[i].type = BasicInfo::MemoryMap::kTypeAcpi;
         break;
       }
       case EfiLoaderCode:
@@ -75,11 +75,11 @@ size_t Memory::GetMemoryMap(
       case EfiRuntimeServicesCode:
       case EfiRuntimeServicesData:
       case EfiConventionalMemory: {
-        mmap[i].type = BootInfo::MemoryMap::kTypeRam;
+        mmap[i].type = BasicInfo::MemoryMap::kTypeRam;
         break;
       }
       case EfiACPIMemoryNVS: {
-        mmap[i].type = BootInfo::MemoryMap::kTypeNvs;
+        mmap[i].type = BasicInfo::MemoryMap::kTypeNvs;
         break;
       }
     }

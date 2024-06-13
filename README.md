@@ -76,6 +76,7 @@ intr branch
     # 开始执行
     c
     ```
+    
 
 ## 新增特性
 
@@ -104,6 +105,36 @@ intr branch
     x86_64 时钟中断
 
     x86_64 键盘中断
+
+## 执行流
+
+  - x86_64/aarch64
+
+      <img src='https://g.gravizo.com/svg?
+      @startuml;
+      uefi_shell->efi_main:boot.cpp;
+      efi_main->_start:main.cpp;
+      _start->CppInit:LibCxxInit.cpp;
+      CppInit->main:main.cpp;
+      main->ArchInit:arch.cpp;
+      ArchInit->main;
+      main->main;
+      @enduml
+      '>
+
+  - riscv64
+
+    <img src='https://g.gravizo.com/svg?
+      @startuml;
+      opensbi->_boot:boot.S;
+      _boot->_start:main.cpp;
+      _start->CppInit:LibCxxInit.cpp;
+      CppInit->main:main.cpp;
+      main->ArchInit:ArchInit.cpp;
+      ArchInit->main;
+      main->main;
+      @enduml
+    '>
 
 ## 已支持特性
 
@@ -135,9 +166,6 @@ intr branch
 
   - [ ] [aarch64] 基于 gnuefi 的 bootloader(调试中)
 
-  
-
-
 ## 使用的第三方资源
 
 [opensbi](https://github.com/riscv-software-src/opensbi)
@@ -150,7 +178,7 @@ intr branch
 
 [printf_bare_metal](https://github.com/MRNIU/printf_bare_metal)
 
-[fdt_parser](https://github.com/MRNIU/fdt_parser)
+[dtc](https://git.kernel.org/pub/scm/utils/dtc/dtc.git)
 
 [google/googletest](https://github.com/google/googletest)
 

@@ -19,29 +19,16 @@
 
 #include <cstdint>
 
-struct BootInfo {
-  static constexpr const uint32_t kMemoryMapMaxCount = 256;
-  struct MemoryMap {
-    enum { kTypeRam = 1, kTypeReserved, kTypeAcpi, kTypeNvs, kTypeUnUsable };
-    uint64_t base_addr;
-    uint64_t length;
-    uint32_t type;
-    uint32_t reserved;
-  } memory_map[kMemoryMapMaxCount];
-  uint32_t memory_map_count;
-
-  struct FrameBuffer {
-    uint64_t base;
-    uint32_t size;
-    uint32_t width;
-    uint32_t height;
-    uint32_t pitch;
-    uint8_t bpp;
-    uint8_t type;
-    uint8_t reserved;
-  } framebuffer;
-};
-
+/**
+ * 体系结构相关初始化
+ * @param argc 在不同体系结构有不同含义
+ * @param argv 在不同体系结构有不同含义
+ */
 uint32_t ArchInit(uint32_t argc, uint8_t *argv);
+
+/**
+ * 打印调用栈
+ */
+void DumpStack();
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_ */

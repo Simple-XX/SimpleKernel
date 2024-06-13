@@ -6,9 +6,9 @@
 
 FROM ubuntu:latest
 
-# 替换为你想要的用户名
-ARG user=zone
-ARG password=zone
+# 默认用户
+ARG user=dev
+ARG password=dev
 
 # 元数据
 LABEL maintainer="Zone.N" email="zone.niuzh@hotmail.com"
@@ -27,22 +27,26 @@ RUN DEBIAN_FRONTEND=noninteractive \
         tar \
         git \
         vim \
-        doxygen \
-        graphviz \
         make \
-        cmake \
-        clang-format \
-        clang-tidy \
-        cppcheck \
-        qemu-system \
         build-essential \
         binutils \
         valgrind \
-        gdb-multiarch \
         gcc \
         g++ \
         gcc-riscv64-linux-gnu \
         g++-riscv64-linux-gnu \
+        gcc-aarch64-linux-gnu \
+        g++-aarch64-linux-gnu \
+        cmake \
+        qemu-system \
+        gdb-multiarch \
+        doxygen \
+        graphviz \
+        clang-format \
+        clang-tidy \
+        cppcheck \
+        libgtest-dev \
+        lcov \
     && apt clean \
     && git config --global --add safe.directory '*' \
     && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -60,9 +64,9 @@ RUN useradd --create-home --no-log-init --shell /bin/zsh ${user} \
     && echo "${user}:${password}" | chpasswd
 
 # 指定容器登录用户
-# USER ${user}
+USER ${user}
 
-# 指定容器起来的工作目录
+# 指定容器启动的工作目录
 WORKDIR /home/${user}
 
 # 开放 22 端口

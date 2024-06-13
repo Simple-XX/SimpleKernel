@@ -1362,9 +1362,17 @@ class AllCsr {
   /// @}
 };
 
-static AllCsr kAllCsr;
-
 };  // namespace csr
+
+/**
+ * 读 fp 寄存器
+ * @return fp 寄存器的值
+ */
+static __always_inline uint64_t ReadFp() {
+  uint64_t fp = -1;
+  __asm__ volatile("mv %0, fp" : "=r"(fp));
+  return fp;
+}
 
 /**
  * @brief 通用寄存器
@@ -1640,5 +1648,11 @@ struct Context {
   }
 };
 };  // namespace cpu
+
+namespace cpu::csr {
+
+static AllCsr kAllCsr;
+
+};
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_

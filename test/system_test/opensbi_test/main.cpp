@@ -1,7 +1,7 @@
 
 /**
- * @file boot.cpp
- * @brief boot cpp
+ * @file main.cpp
+ * @brief main cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -14,23 +14,38 @@
  * </table>
  */
 
+#include <opensbi_interface.h>
+
+#include "cpu.hpp"
 #include "cstdio"
 #include "libcxx.h"
-#include "opensbi_interface.h"
 
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {
   sbi_debug_console_write_byte(character);
 }
 
+void DumpStack() {
+  uint64_t *fp = (uint64_t *)cpu::ReadFp();
+  uint64_t *ra = nullptr;
+
+  printf("------DumpStack------\n");
+  while (fp && *fp) {
+    ra = fp - 1;
+    fp = (uint64_t *)*(fp - 2);
+    printf("[0x%p]\n", *ra);
+  }
+  printf("----DumpStack End----\n");
+}
+
 template <uint32_t V>
 class TestStaticConstructDestruct {
  public:
-  TestStaticConstructDestruct(unsigned int& v) : _v(v) { _v |= V; }
+  TestStaticConstructDestruct(unsigned int &v) : _v(v) { _v |= V; }
   ~TestStaticConstructDestruct() { _v &= ~V; }
 
  private:
-  unsigned int& _v;
+  unsigned int &_v;
 };
 
 static int global_value_with_init = 42;
@@ -57,7 +72,20 @@ static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
 static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
     global_value1_with_constructor};
 
-uint32_t main(uint32_t, uint8_t*) {
+class AbsClass {
+ public:
+  AbsClass() { val = 'B'; }
+  virtual ~AbsClass() { ; }
+  virtual void Func() = 0;
+  char val = 'A';
+};
+
+class InsClass : public AbsClass {
+ public:
+  void Func() override { val = 'C'; }
+};
+
+uint32_t main(uint32_t, uint8_t *) {
   global_u8c_value_with_init++;
   global_u32_value_with_init++;
   global_u64_value_with_init++;
@@ -69,6 +97,15 @@ uint32_t main(uint32_t, uint8_t*) {
   global_u8a_value_with_init++;
   global_value_with_init++;
   global_bool_keep_running = false;
+
+  auto inst_class = InsClass();
+  _putchar(inst_class.val);
+  _putchar('\n');
+  inst_class.Func();
+  _putchar(inst_class.val);
+  _putchar('\n');
+
+  DumpStack();
 
   _putchar('H');
   _putchar('e');
@@ -86,7 +123,7 @@ uint32_t main(uint32_t, uint8_t*) {
   return 0;
 }
 
-extern "C" void _start(uint32_t argc, uint8_t* argv) {
+extern "C" void _start(uint32_t argc, uint8_t *argv) {
   CppInit();
   main(argc, argv);
   CppDeInit();

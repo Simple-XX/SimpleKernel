@@ -10,7 +10,6 @@ build_riscv64
 build_x86_64
 doc/html
 .gdbinit
-tools/opensbi/build
 .vscode
 .idea
 Doxyfile

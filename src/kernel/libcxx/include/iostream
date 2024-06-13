@@ -55,7 +55,7 @@ class ostream {
 
 inline ostream& endl(ostream& os) { return os << "\n"; }
 
-static ostream cout [[maybe_unused]];
+[[maybe_unused]] static ostream cout;
 
 };  // namespace std
 

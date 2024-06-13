@@ -55,5 +55,7 @@ function(add_header_3rd _target)
         target_include_directories(${_target} PRIVATE
                 ${gnu-efi_BINARY_DIR}/inc/protocol)
     elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
+        target_include_directories(${_target} PRIVATE
+                ${dtc_BINARY_DIR}/libfdt)
     endif ()
 endfunction()

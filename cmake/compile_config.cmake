@@ -21,14 +21,16 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -fPIC
         # 生成位置无关可执行程序
         -fPIE
-        # 启用 free-standing 环境
+        # 禁用运行时类型支持
+        $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+        # 禁用异常支持
+        -fno-exceptions
+        # 启用 free-standing 环境，该选项隐含了 -fno-builtin
         -ffreestanding
         # 保留帧指针，便于调试和栈回溯
         -fno-omit-frame-pointer
-        # 禁用栈保护器
-        -fno-stack-protector
-        # 禁用栈检查
-        -fno-stack-check
+        # 不使用 common 段
+        -fno-common
 
         # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
@@ -160,6 +162,8 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
 
         # 静态链接
         -static
+        # 不链接标准库
+        -nostdlib
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 设置最大页大小为 0x1000(4096) 字节
@@ -179,11 +183,11 @@ list(APPEND DEFAULT_KERNEL_LINK_LIB
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         opensbi_interface
-        fdt_parser
+        ${dtc_BINARY_DIR}/libfdt/libfdt.a
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
-        fdt_parser
+        ${dtc_BINARY_DIR}/libfdt/libfdt.a
         >
 )
 
@@ -198,11 +202,11 @@ elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
             opensbi
             opensbi_interface
             printf_bare_metal
-            fdt_parser
+            dtc
     )
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
     list(APPEND COMPILE_DEPENDS
             gnu-efi
-            fdt_parser
+            dtc
     )
 endif ()

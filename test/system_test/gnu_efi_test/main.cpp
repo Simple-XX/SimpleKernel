@@ -16,15 +16,53 @@
 
 #include <cstdint>
 
-#include "arch.h"
 #include "cpu.hpp"
 #include "cstdio"
+#include "cstring"
 #include "kernel.h"
+#include "kernel_elf.hpp"
 #include "libcxx.h"
 
-extern "C" void _putchar(char character) {
-  auto serial = cpu::Serial(cpu::kCom1);
-  serial.Write(character);
+static auto serial = cpu::Serial(cpu::kCom1);
+extern "C" void _putchar(char character) { serial.Write(character); }
+
+void DumpStack() {
+  uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
+  uint64_t *rip = nullptr;
+
+  printf("------DumpStack------\n");
+  while (rbp && *rbp) {
+    rip = rbp + 1;
+    rbp = (uint64_t *)*rbp;
+
+    // 打印函数名
+    for (auto i : kKernelElf.symtab_) {
+      if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*rip >= i.st_value) &&
+          (*rip <= i.st_value + i.st_size)) {
+        printf("[%s] 0x%p\n", kKernelElf.strtab_ + i.st_name, *rip);
+      }
+    }
+  }
+  printf("----DumpStack End----\n");
+}
+
+static const int kPixelwidth = 4;
+static const int kPitch = 800 * kPixelwidth;
+
+static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
+                     uint8_t w, uint8_t h) {
+  unsigned char *where = vram;
+  int i, j;
+
+  for (i = 0; i < w; i++) {
+    for (j = 0; j < h; j++) {
+      // putpixel(vram, 64 + j, 64 + i, (r << 16) + (g << 8) + b);
+      where[j * kPixelwidth] = r;
+      where[j * kPixelwidth + 1] = g;
+      where[j * kPixelwidth + 2] = b;
+    }
+    where += kPitch;
+  }
 }
 
 template <uint32_t V>
@@ -49,36 +87,30 @@ static uint8_t global_u8c_value_with_init{0x44};
 static uint8_t global_u8d_value_with_init{0x45};
 static volatile bool global_bool_keep_running{true};
 
-// static unsigned int global_value1_with_constructor = 1;
-// static unsigned int global_value2_with_constructor = 2;
+static unsigned int global_value1_with_constructor = 1;
+static unsigned int global_value2_with_constructor = 2;
 
-// static TestStaticConstructDestruct<0x200> constructor_destructor_1(
-//     global_value1_with_constructor);
-// static TestStaticConstructDestruct<0x200> constructor_destructor_2(
-//     global_value2_with_constructor);
-// static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
-//     global_value2_with_constructor};
-// static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
-//     global_value1_with_constructor};
+static TestStaticConstructDestruct<0x200> constructor_destructor_1(
+    global_value1_with_constructor);
+static TestStaticConstructDestruct<0x200> constructor_destructor_2(
+    global_value2_with_constructor);
+static TestStaticConstructDestruct<0x100000> constructor_destructor_3{
+    global_value2_with_constructor};
+static TestStaticConstructDestruct<0x100000> constructor_destructor_4{
+    global_value1_with_constructor};
 
-static const int kPixelwidth = 4;
-static const int kPitch = 800 * kPixelwidth;
+class AbsClass {
+ public:
+  AbsClass() { val = 'B'; }
+  virtual ~AbsClass() { ; }
+  virtual void Func() = 0;
+  char val = 'A';
+};
 
-static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
-                     uint8_t w, uint8_t h) {
-  unsigned char *where = vram;
-  int i, j;
-
-  for (i = 0; i < w; i++) {
-    for (j = 0; j < h; j++) {
-      // putpixel(vram, 64 + j, 64 + i, (r << 16) + (g << 8) + b);
-      where[j * kPixelwidth] = r;
-      where[j * kPixelwidth + 1] = g;
-      where[j * kPixelwidth + 2] = b;
-    }
-    where += kPitch;
-  }
-}
+class InsClass : public AbsClass {
+ public:
+  void Func() override { val = 'C'; }
+};
 
 uint32_t main(uint32_t argc, uint8_t *argv) {
   if (argc != 1) {
@@ -98,15 +130,22 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   global_value_with_init++;
   global_bool_keep_running = false;
 
-  BootInfo boot_info = *reinterpret_cast<BootInfo *>(argv);
-  printf("boot_info.framebuffer.base: 0x%X\n", boot_info.framebuffer.base);
-  Fillrect((uint8_t *)boot_info.framebuffer.base, 255, 0, 255, 100, 100);
+  BasicInfo basic_info = *reinterpret_cast<BasicInfo *>(argv);
+  printf("basic_info.framebuffer.base: 0x%X\n", basic_info.framebuffer.base);
+  Fillrect((uint8_t *)basic_info.framebuffer.base, 255, 0, 255, 100, 100);
+
+  auto inst_class = InsClass();
+  printf("%c\n", inst_class.val);
+  inst_class.Func();
+  printf("%c\n", inst_class.val);
+
+  // 解析内核 elf 信息
+  kKernelElf = KernelElf(basic_info.elf_addr, basic_info.elf_size);
+
+  DumpStack();
+
   printf("Hello Test\n");
 
-  // 进入死循环
-  while (true) {
-    ;
-  }
   return 0;
 }
 

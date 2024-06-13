@@ -21,7 +21,7 @@
 #include "kernel.h"
 #include "libcxx.h"
 
-void _start(uint32_t argc, uint8_t* argv) {
+void _start(uint32_t argc, uint8_t *argv) {
   CppInit();
   main(argc, argv);
   CppDeInit();
@@ -32,11 +32,14 @@ void _start(uint32_t argc, uint8_t* argv) {
   }
 }
 
-uint32_t main(uint32_t argc, uint8_t* argv) {
+uint32_t main(uint32_t argc, uint8_t *argv) {
   // 架构相关初始化
   [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
   printf("Hello printf\n");
+
+  DumpStack();
+
   std::cout << "Hello ostream" << std::endl;
 
   IntrInit(argc, argv);

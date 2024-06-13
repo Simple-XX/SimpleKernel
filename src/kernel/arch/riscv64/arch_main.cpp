@@ -13,10 +13,13 @@
  * </table>
  */
 
+#include <opensbi_interface.h>
+
+#include "cpu.hpp"
 #include "cstdio"
-#include "fdt_parser.hpp"
+#include "kernel_elf.hpp"
+#include "kernel_fdt.hpp"
 #include "ns16550a.h"
-#include "opensbi_interface.h"
 
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {
@@ -28,11 +31,13 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   printf("boot hart id: %d\n", argc);
   printf("dtb info addr: %p\n", argv);
 
-  auto dtb_info = FDT_PARSER::fdt_parser((uintptr_t)argv);
+  kKernelFdt = KernelFdt((uint64_t)argv);
 
-  auto resource_mem = FDT_PARSER::resource_t();
-  dtb_info.find_via_prefix("serial@", &resource_mem);
-  auto uart = Ns16550a(resource_mem.mem.addr);
+  auto [memory_base, memory_size] = kKernelFdt.GetMemory();
+  printf("Memory address = 0x%p, size = 0x%X\n", memory_base, memory_size);
+
+  auto [serial_base, serial_size] = kKernelFdt.GetSerial();
+  auto uart = Ns16550a(serial_base);
   uart.PutChar('H');
   uart.PutChar('e');
   uart.PutChar('l');
@@ -46,7 +51,30 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   uart.PutChar('!');
   uart.PutChar('\n');
 
+  // 解析内核 elf 信息
+  kKernelElf = KernelElf();
+
   printf("hello ArchInit\n");
 
   return 0;
+}
+
+void DumpStack() {
+  uint64_t *fp = (uint64_t *)cpu::ReadFp();
+  uint64_t *ra = nullptr;
+
+  printf("------DumpStack------\n");
+  while (fp && *fp) {
+    ra = fp - 1;
+    fp = (uint64_t *)*(fp - 2);
+    printf("[0x%p]\n", *ra);
+    // 打印函数名
+    // for (auto i : kernel_elf.symtab_) {
+    //   if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*ra >= i.st_value) &&
+    //       (*ra <= i.st_value + i.st_size)) {
+    //     printf("[%s] 0x%p\n", kernel_elf.strtab_ + i.st_name, *ra);
+    //   }
+    // }
+  }
+  printf("----DumpStack End----\n");
 }
