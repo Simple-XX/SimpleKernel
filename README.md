@@ -117,7 +117,7 @@ boot branch
       @enduml
     '>
 
-- 构建系统 
+- 构建系统
 
   参考 [MRNIU/cmake-kernel](https://github.com/MRNIU/cmake-kernel) 的构建系统，详细解释见 [doc/build_system.md](./doc/build_system.md)
 
@@ -129,7 +129,7 @@ boot branch
 
   1. 由 opensbi 进行初始化，直接跳转到内核地址，进入内核逻辑时为 S 态
   2. gp 寄存器的初始化
-  3. 对 qemu 传递的 dtb 信息进行解析
+  3. 使用 libfdt(dtc 的一部分) 对 qemu 传递的 dtb 信息进行解析
   4. ns16550a 串口驱动
   5. 基于 opensbi 的 printf
 

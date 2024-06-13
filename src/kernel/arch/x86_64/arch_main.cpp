@@ -25,7 +25,7 @@
 // printf_bare_metal 基本输出实现
 /// @note 这里要注意，保证在 serial 初始化之前不能使用 printf
 /// 函数，否则会有全局对象依赖问题
-static auto serial = cpu::Serial(cpu::kCom1);
+static cpu::Serial serial(cpu::kCom1);
 extern "C" void _putchar(char character) { serial.Write(character); }
 
 static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
@@ -69,7 +69,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   }
 
   // 解析内核 elf 信息
-  kernel_elf = KernelElf(kBootInfo.elf_addr, kBootInfo.elf_size);
+  kKernelElf = KernelElf(kBootInfo.elf_addr, kBootInfo.elf_size);
 
   printf("hello ArchInit\n");
 
@@ -86,10 +86,10 @@ void DumpStack() {
     rbp = (uint64_t *)*rbp;
 
     // 打印函数名
-    for (auto i : kernel_elf.symtab_) {
+    for (auto i : kKernelElf.symtab_) {
       if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*rip >= i.st_value) &&
           (*rip <= i.st_value + i.st_size)) {
-        printf("[%s] 0x%p\n", kernel_elf.strtab_ + i.st_name, *rip);
+        printf("[%s] 0x%p\n", kKernelElf.strtab_ + i.st_name, *rip);
       }
     }
   }

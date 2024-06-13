@@ -36,10 +36,10 @@ void DumpStack() {
     rbp = (uint64_t *)*rbp;
 
     // 打印函数名
-    for (auto i : kernel_elf.symtab_) {
+    for (auto i : kKernelElf.symtab_) {
       if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*rip >= i.st_value) &&
           (*rip <= i.st_value + i.st_size)) {
-        printf("[%s] 0x%p\n", kernel_elf.strtab_ + i.st_name, *rip);
+        printf("[%s] 0x%p\n", kKernelElf.strtab_ + i.st_name, *rip);
       }
     }
   }
@@ -140,7 +140,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   printf("%c\n", inst_class.val);
 
   // 解析内核 elf 信息
-  kernel_elf = KernelElf(boot_info.elf_addr, boot_info.elf_size);
+  kKernelElf = KernelElf(boot_info.elf_addr, boot_info.elf_size);
 
   printf("Hello Test\n");
 

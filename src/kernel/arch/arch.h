@@ -77,9 +77,6 @@ struct BootInfo {
   size_t elf_size;
 };
 
-/// 保存内核基本信息
-[[maybe_unused]] static BootInfo kBootInfo;
-
 /**
  * 体系结构相关初始化
  * @param argc 在不同体系结构有不同含义
@@ -91,5 +88,8 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv);
  * 打印调用栈
  */
 void DumpStack();
+
+/// 保存内核基本信息
+[[maybe_unused]] static BootInfo kBootInfo;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_ARCH_H_ */

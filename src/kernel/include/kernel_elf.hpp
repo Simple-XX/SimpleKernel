@@ -121,6 +121,6 @@ class KernelElf {
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
-static auto kernel_elf = KernelElf();
+[[maybe_unused]] static KernelElf kKernelElf;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_ELF_HPP_ */

@@ -139,6 +139,6 @@ class KernelFdt {
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
-static auto kernel_fdt = KernelFdt();
+[[maybe_unused]] static KernelFdt kKernelFdt;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_FDT_HPP_ */
