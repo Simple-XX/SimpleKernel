@@ -82,24 +82,3 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
 
   return 0;
 }
-
-void DumpStack() {
-  uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
-  uint64_t *rip = nullptr;
-
-  printf("------DumpStack------\n");
-  while (rbp && *rbp) {
-    rip = rbp + 1;
-    rbp = (uint64_t *)*rbp;
-
-    // 打印函数名
-    for (auto i : kKernelElf.GetInstance().symtab_) {
-      if ((ELF64_ST_TYPE(i.st_info) == STT_FUNC) && (*rip >= i.st_value) &&
-          (*rip <= i.st_value + i.st_size)) {
-        printf("[%s] 0x%p\n", kKernelElf.GetInstance().strtab_ + i.st_name,
-               *rip);
-      }
-    }
-  }
-  printf("----DumpStack End----\n");
-}

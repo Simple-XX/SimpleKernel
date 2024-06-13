@@ -17,19 +17,19 @@
 #include "cpu.hpp"
 #include "cstdio"
 #include "kernel_elf.hpp"
-#include "kernel_fdt.hpp"
 #include "libc.h"
 
 extern "C" __always_inline int backtrace(void **buffer, int size) {
-  uint64_t *fp = (uint64_t *)cpu::ReadFp();
-  uint64_t *ra = nullptr;
+  uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
+  uint64_t *rip = nullptr;
 
   int count = 0;
-  while (fp && *fp && count < size) {
-    ra = fp - 1;
-    fp = (uint64_t *)*(fp - 2);
-    buffer[count++] = (void *)*ra;
+  while (rbp && *rbp && count < size) {
+    rip = rbp + 1;
+    rbp = (uint64_t *)*rbp;
+    buffer[count++] = (void *)*rip;
   }
+
   return count;
 }
 
@@ -41,7 +41,15 @@ void DumpStack() {
 
   printf("------DumpStack------\n");
   for (auto i = 0; i < num_frames; i++) {
-    printf("[0x%p]\n", buffer[i]);
+    // 打印函数名
+    for (auto j : kKernelElf.GetInstance().symtab_) {
+      if ((ELF64_ST_TYPE(j.st_info) == STT_FUNC) &&
+          ((uint64_t)buffer[i] >= j.st_value) &&
+          ((uint64_t)buffer[i] <= j.st_value + j.st_size)) {
+        printf("[%s] 0x%p\n", kKernelElf.GetInstance().strtab_ + j.st_name,
+               (uint64_t)buffer[i]);
+      }
+    }
   }
   printf("----DumpStack End----\n");
 }

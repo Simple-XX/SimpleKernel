@@ -28,15 +28,6 @@ extern "C" {
  */
 int backtrace(void **buffer, int size);
 
-/**
- * 获取调用栈可读符号
- * @param buffer 指向一个存有调用栈返回地址的数组，保存输出
- * @param size 数组中的地址数量，即调用栈的深度
- * @return char**
- * 返回一个指向字符串数组的指针，每个字符串描述一个调用栈帧。失败时返回 NULL
- */
-char **backtrace_symbols(void *const *buffer, int size);
-
 #ifdef __cplusplus
 }
 #endif
