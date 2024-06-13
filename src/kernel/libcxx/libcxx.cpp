@@ -92,6 +92,66 @@ extern "C" void __cxa_finalize(void* destructor_func) {
   }
 }
 
+/// @name 保证静态局部变量线程安全
+/// @todo 确保正确
+/// @{
+/**
+ * if ( obj_guard.first_byte == 0 ) {
+ *     if ( __cxa_guard_acquire(&obj_guard) ) {
+ *       try {
+ *         ... initialize the object ...;
+ *       }
+ *       catch (...) {
+ *         __cxa_guard_abort(&obj_guard);
+ *         throw;
+ *       }
+ *       ... queue object destructor with __cxa_atexit() ...;
+ *       __cxa_guard_release(&obj_guard);
+ *     }
+ *  }
+ */
+
+struct GuardType {
+  /// 是否被使用
+  uint64_t is_in_use : 8;
+  /// 是否已初始化
+  uint64_t is_initialized : 8;
+  uint64_t pad : 48;
+};
+
+/**
+ * 检测静态局部变量是否已经初始化
+ * @param guard 锁，一个 64 位变量
+ * @return 未初始化返回非零值，已初始化返回 0
+ */
+extern "C" int __cxa_guard_acquire(GuardType* guard) {
+  if (!guard->is_in_use && !guard->is_initialized) {
+    guard->is_in_use = 1;
+  }
+  return !guard->is_initialized;
+}
+
+/**
+ * 用于检测静态局部变量是否已经初始化，并设置锁
+ * @param guard 锁，一个 64 位变量
+ * @return 未初始化返回非零值并设置锁，已初始化返回 0
+ */
+extern "C" void __cxa_guard_release(GuardType* guard) {
+  guard->is_in_use = 0;
+  guard->is_initialized = 1;
+}
+
+/**
+ * 如果在初始化过程中出现异常或其他错误，调用此函数以释放锁而不标记变量为已初始化
+ * @param guard 锁
+ */
+extern "C" void __cxa_guard_abort(GuardType* guard) {
+  guard->is_in_use = 0;
+  guard->is_initialized = 0;
+}
+
+/// @}
+
 /**
  * c++ 全局对象构造
  */
