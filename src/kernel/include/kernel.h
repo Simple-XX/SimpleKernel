@@ -20,6 +20,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "singleton.hpp"
+
 struct BasicInfo {
   /// 最大内存表数量
   static constexpr const uint32_t kMemoryMapMaxCount = 256;
@@ -92,6 +94,6 @@ extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
 uint32_t main(uint32_t argc, uint8_t* argv);
 
 /// 保存内核基本信息
-[[maybe_unused]] static BasicInfo kBasicInfo;
+[[maybe_unused]] static Singleton<BasicInfo> kBasicInfo;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_ */

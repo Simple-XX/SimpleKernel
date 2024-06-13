@@ -52,7 +52,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   uart.PutChar('\n');
 
   // 解析内核 elf 信息
-  kKernelElf = KernelElf();
+  kKernelElf.getInstance() = KernelElf();
 
   printf("hello ArchInit\n");
 
