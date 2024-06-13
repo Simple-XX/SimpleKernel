@@ -25,6 +25,7 @@
 
 #include "cstdio"
 #include "cstring"
+#include "singleton.hpp"
 
 /**
  * elf 文件相关
@@ -121,6 +122,6 @@ class KernelElf {
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
-[[maybe_unused]] static KernelElf kKernelElf;
+[[maybe_unused]] static Singleton<KernelElf> kKernelElf;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_ELF_HPP_ */

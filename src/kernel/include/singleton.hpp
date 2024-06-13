@@ -17,10 +17,6 @@
 #ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_SINGLETON_HPP_
 #define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_SINGLETON_HPP_
 
-#include <atomic>
-#include <cstddef>
-#include <cstdint>
-
 // 单例模板类
 template <typename T>
 class Singleton {
