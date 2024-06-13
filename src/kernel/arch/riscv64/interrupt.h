@@ -21,6 +21,7 @@
 
 #include "cpu.hpp"
 #include "interrupt_base.h"
+#include "singleton.hpp"
 #include "stdio.h"
 
 class Interrupt final : public InterruptBase {
@@ -58,5 +59,9 @@ class Interrupt final : public InterruptBase {
   alignas(4) static InterruptFunc
       exception_handlers[cpu::csr::ScauseInfo::kExceptionMaxCount];
 };
+
+/// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
+[[maybe_unused]] static Singleton<Interrupt> kInterrupt
+    __attribute__((init_priority(101)));
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_ */
