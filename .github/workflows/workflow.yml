@@ -29,7 +29,6 @@ jobs:
           sudo apt install --fix-missing -y gcc g++ gcc-riscv64-linux-gnu g++-riscv64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
           sudo apt install --fix-missing -y cmake qemu-system gdb-multiarch
           sudo apt install --fix-missing -y doxygen graphviz
-          sudo apt install --fix-missing -y doxygen graphviz 
           sudo apt install --fix-missing -y clang-format clang-tidy cppcheck libgtest-dev lcov
           git submodule init
           git submodule update
