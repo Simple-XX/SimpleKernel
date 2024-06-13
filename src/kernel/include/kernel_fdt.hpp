@@ -134,6 +134,48 @@ class KernelFdt {
     return {base, size};
   }
 
+  /**
+   * 获取 cpu 时钟
+   * @return uint64_t 时钟频率
+   */
+  uint64_t GetTimebaseFrequency() {
+    uint64_t timebase_frequency = 0;
+
+    int len = 0;
+
+    // 找到 /cpus 节点
+    auto offset = fdt_path_offset(fdt_addr_, "/cpus");
+    if (offset < 0) {
+      printf("Error finding /cpus node: %s\n", fdt_strerror(offset));
+      return 0;
+    }
+
+    // 遍历 /cpus 子节点，查找 timebase-frequency 属性
+    for (auto cpu_offset = fdt_first_subnode(fdt_addr_, offset);
+         cpu_offset >= 0;
+         cpu_offset = fdt_next_subnode(fdt_addr_, cpu_offset)) {
+      // auto prop =
+      // fdt_getprop(fdt_addr_, cpu_offset, "timebase-frequency", &len);
+      // // 当前节点没有 timebase-frequency 属性，继续下一个子节点
+      // if (!prop) {
+      //   continue;
+      // }
+
+      // if (len != sizeof(uint32_t)) {
+      //   printf("Unexpected timebase-frequency size\n");
+      //   continue;
+      // }
+
+      // auto reg = (const uint64_t *)prop;
+      // uint32_t timebase_frequency = fdt32_to_cpu(reg[0]);
+      // printf("timebase-frequency: %u Hz\n", timebase_frequency);
+      // break;
+    }
+
+    printf("timebase-frequency not found in any CPU node\n");
+    return timebase_frequency;
+  }
+
  private:
   void *fdt_addr_;
 };
