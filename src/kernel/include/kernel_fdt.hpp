@@ -35,6 +35,7 @@
 
 #include "cstdio"
 #include "cstring"
+#include "singleton.hpp"
 
 /**
  * elf 文件相关
@@ -139,6 +140,6 @@ class KernelFdt {
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
-[[maybe_unused]] static KernelFdt kKernelFdt;
+[[maybe_unused]] static Singleton<KernelFdt> kKernelFdt;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_FDT_HPP_ */
