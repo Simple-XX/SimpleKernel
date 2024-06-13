@@ -25,11 +25,12 @@
 #pragma GCC diagnostic pop
 #endif
 
+#include <opensbi_interface.h>
+
 #include "cpu.hpp"
 #include "cstdio"
 #include "kernel_elf.hpp"
 #include "ns16550a.h"
-#include "opensbi_interface.h"
 
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {

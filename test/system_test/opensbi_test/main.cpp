@@ -14,10 +14,11 @@
  * </table>
  */
 
+#include <opensbi_interface.h>
+
 #include "cpu.hpp"
 #include "cstdio"
 #include "libcxx.h"
-#include "opensbi_interface.h"
 
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {
