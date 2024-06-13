@@ -22,7 +22,7 @@ template <typename T>
 class Singleton {
  public:
   // 获取单例实例的静态方法
-  static T& getInstance() {
+  static T& GetInstance() {
     static T instance;
     return instance;
   }

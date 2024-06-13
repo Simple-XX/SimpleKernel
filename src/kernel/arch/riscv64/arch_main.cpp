@@ -31,12 +31,12 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   printf("boot hart id: %d\n", argc);
   printf("dtb info addr: %p\n", argv);
 
-  kKernelFdt.getInstance() = KernelFdt((uint64_t)argv);
+  kKernelFdt.GetInstance() = KernelFdt((uint64_t)argv);
 
-  auto [memory_base, memory_size] = kKernelFdt.getInstance().GetMemory();
+  auto [memory_base, memory_size] = kKernelFdt.GetInstance().GetMemory();
   printf("Memory address = 0x%p, size = 0x%X\n", memory_base, memory_size);
 
-  auto [serial_base, serial_size] = kKernelFdt.getInstance().GetSerial();
+  auto [serial_base, serial_size] = kKernelFdt.GetInstance().GetSerial();
   auto uart = Ns16550a(serial_base);
   uart.PutChar('H');
   uart.PutChar('e');
@@ -52,7 +52,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   uart.PutChar('\n');
 
   // 解析内核 elf 信息
-  kKernelElf.getInstance() = KernelElf();
+  kKernelElf.GetInstance() = KernelElf();
 
   printf("hello ArchInit\n");
 
