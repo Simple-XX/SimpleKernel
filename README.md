@@ -153,6 +153,7 @@ boot branch
     | `__cxa_guard_acquire()` |         静态局部变量初始化锁         |      |
     | `__cxa_guard_release()` |        静态局部变量初始化完成        |      |
     |  `__cxa_guard_abort()`  |        静态局部变量初始化出错        |      |
+    |    `__cxa_rethrow()`    |         用于简单处理 `throw`         |      |
     |    `operator new()`     | 运算符重载，空实现，用于全局对象支持 |      |
     |   `operator new[]()`    | 运算符重载，空实现，用于全局对象支持 |      |
     |    `operator new()`     | 运算符重载，空实现，用于全局对象支持 |      |
@@ -165,6 +166,10 @@ boot branch
 - 打印函数调用栈
 
   逐层回溯帧指针后与 elf 信息进行对比，实现对函数调用栈的打印
+
+- 基础 c++ 异常 支持
+
+  通过 throw 抛出异常后停机，没有上下文相关的处理
 
 - 基于 gnu-efi 引导的 x86_64 内核
 

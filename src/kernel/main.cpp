@@ -40,6 +40,8 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
 
   DumpStack();
 
+  throw;
+
   std::cout << "Hello ostream" << std::endl;
 
   return 0;
