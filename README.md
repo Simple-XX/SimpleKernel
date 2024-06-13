@@ -77,34 +77,6 @@ intr branch
     c
     ```
 
-## 新增特性
-
-- riscv64
-
-    1. 对 CSR 寄存器的抽象
-
-    2. 寄存器状态打印
-
-    3. 基于 Direct 的中断处理
-    
-    4. 中断注册函数
-
-    5. 时钟中断
-
-- TODO
-
-    riscv64 外部中断
-
-    riscv64 键盘中断
-
-    x86_64 cpu 抽象
-
-    x86_64 中断处理
-
-    x86_64 时钟中断
-
-    x86_64 键盘中断
-
 ## 执行流
 
   - x86_64/aarch64
@@ -135,6 +107,35 @@ intr branch
       @enduml
     '>
 
+
+## 新增特性
+
+- riscv64
+
+    1. 对 CSR 寄存器的抽象
+
+    2. 寄存器状态打印
+
+    3. 基于 Direct 的中断处理
+    
+    4. 中断注册函数
+
+    5. 时钟中断
+
+- TODO
+
+    riscv64 外部中断
+
+    riscv64 键盘中断
+
+    x86_64 cpu 抽象
+
+    x86_64 中断处理
+
+    x86_64 时钟中断
+
+    x86_64 键盘中断
+
 ## 已支持特性
 
   - [x] [BUILD] 使用 CMake 的构建系统
@@ -144,6 +145,10 @@ intr branch
   - [x] [BUILD] 第三方资源集成
 
   - [x] [COMMON] C++ 全局对象的构造
+
+  - [x] [COMMON] C++ 静态局部对象构造
+
+  - [x] [COMMON] C 栈保护支持
 
   - [x] [COMMON] printf 支持
 
@@ -155,6 +160,8 @@ intr branch
 
   - [x] [x86_64] 显示缓冲区探测
 
+  - [x] [x86_64] 调用栈回溯
+
   - [x] [riscv64] gp 寄存器的初始化
 
   - [x] [riscv64] 基于 opensbi 的基本输出
@@ -162,6 +169,8 @@ intr branch
   - [x] [riscv64] device tree 硬件信息解析
   
   - [x] [riscv64] ns16550a 串口驱动
+
+  - [x] [riscv64] 调用栈回溯(仅打印地址)
 
   - [ ] [aarch64] 基于 gnuefi 的 bootloader(调试中)
 
