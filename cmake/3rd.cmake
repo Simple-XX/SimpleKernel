@@ -123,34 +123,35 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
 endif ()
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-# https://git.kernel.org/pub/scm/utils/dtc/dtc.git
-set(dtc_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/dtc)
-set(dtc_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/dtc)
-set(dtc_CC ${CMAKE_C_COMPILER})
-set(dtc_AR ${CMAKE_AR})
-# 编译 libfdt
-add_custom_target(dtc
-        COMMENT "build libdtc..."
-        # make 时编译
-        ALL
-        WORKING_DIRECTORY ${dtc_SOURCE_DIR}
-        COMMAND
-        ${CMAKE_COMMAND}
-        -E
-        make_directory
-        ${dtc_BINARY_DIR}/libfdt
-        COMMAND
-        CC=${dtc_CC}
-        AR=${dtc_AR}
-        make libfdt/libfdt.a
-        COMMAND
-        ${CMAKE_COMMAND}
-        -E
-        copy
-        ${dtc_SOURCE_DIR}/libfdt/*.a
-        ${dtc_SOURCE_DIR}/libfdt/*.h
-        ${dtc_BINARY_DIR}/libfdt
-)
+        # https://git.kernel.org/pub/scm/utils/dtc/dtc.git
+        set(dtc_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/dtc)
+        set(dtc_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/dtc)
+        set(dtc_CC ${CMAKE_C_COMPILER})
+        set(dtc_AR ${CMAKE_AR})
+        # 编译 libfdt
+        add_custom_target(dtc
+                COMMENT "build libdtc..."
+                # make 时编译
+                ALL
+                WORKING_DIRECTORY ${dtc_SOURCE_DIR}
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                make_directory
+                ${dtc_BINARY_DIR}/libfdt
+                COMMAND
+                CC=${dtc_CC}
+                AR=${dtc_AR}
+                make libfdt/libfdt.a
+                COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                copy
+                ${dtc_SOURCE_DIR}/libfdt/*.a
+                ${dtc_SOURCE_DIR}/libfdt/*.h
+                ${dtc_BINARY_DIR}/libfdt
+        )
+endif ()
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
         # https://github.com/ncroxon/gnu-efi.git
