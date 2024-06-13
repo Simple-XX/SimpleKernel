@@ -142,14 +142,10 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   // 解析内核 elf 信息
   kKernelElf = KernelElf(basic_info.elf_addr, basic_info.elf_size);
 
-  printf("Hello Test\n");
-
   DumpStack();
 
-  // 进入死循环
-  while (true) {
-    ;
-  }
+  printf("Hello Test\n");
+
   return 0;
 }
 
