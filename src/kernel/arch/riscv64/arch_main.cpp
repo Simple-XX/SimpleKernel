@@ -13,23 +13,12 @@
  * </table>
  */
 
-// 禁用 GCC/Clang 的警告
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-#endif
-
-#include <libfdt.h>
-
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
-
 #include <opensbi_interface.h>
 
 #include "cpu.hpp"
 #include "cstdio"
 #include "kernel_elf.hpp"
+#include "kernel_fdt.hpp"
 #include "ns16550a.h"
 
 // printf_bare_metal 基本输出实现
@@ -37,63 +26,30 @@ extern "C" void _putchar(char character) {
   sbi_debug_console_write_byte(character);
 }
 
-void parse_memory_node(const void *fdt) {
-  int offset;
-  const struct fdt_property *prop;
-  const uint64_t *reg;
-  int len;
-
-  // 找到 /memory 节点
-  offset = fdt_path_offset(fdt, "/memory");
-  if (offset < 0) {
-    printf("Error finding /memory node: %s\n", fdt_strerror(offset));
-    return;
-  }
-
-  // 获取 reg 属性
-  prop = fdt_get_property(fdt, offset, "reg", &len);
-  if (!prop) {
-    printf("Error finding reg property: %s\n", fdt_strerror(len));
-    return;
-  }
-
-  // 解析 reg 属性，通常包含基地址和大小
-  reg = (const uint64_t *)prop->data;
-  for (size_t i = 0; i < len / sizeof(uint64_t); i += 2) {
-    uint64_t base = fdt64_to_cpu(reg[i]);
-    uint64_t size = fdt64_to_cpu(reg[i + 1]);
-    printf("Memory region: base address = 0x%llx, size = 0x%llx\n", base, size);
-  }
-}
-
 // 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   printf("boot hart id: %d\n", argc);
   printf("dtb info addr: %p\n", argv);
 
-  // auto dtb_info = FDT_PARSER::fdt_parser((uintptr_t)argv);
+  kernel_fdt = KernelFdt((uint64_t)argv);
 
-  // auto resource_mem = FDT_PARSER::resource_t();
-  // dtb_info.find_via_prefix("serial@", &resource_mem);
-  // auto uart = Ns16550a(resource_mem.mem.addr);
-  // uart.PutChar('H');
-  // uart.PutChar('e');
-  // uart.PutChar('l');
-  // uart.PutChar('l');
-  // uart.PutChar('o');
-  // uart.PutChar(' ');
-  // uart.PutChar('u');
-  // uart.PutChar('a');
-  // uart.PutChar('r');
-  // uart.PutChar('t');
-  // uart.PutChar('!');
-  // uart.PutChar('\n');
+  auto [memory_base, memory_size] = kernel_fdt.GetMemory();
+  printf("Memory address = 0x%p, size = 0x%X\n", memory_base, memory_size);
 
-  if (fdt_check_header((void *)argv) != 0) {
-    printf("Invalid device tree blob\n");
-  }
-
-  parse_memory_node((void *)argv);
+  auto [serial_base, serial_size] = kernel_fdt.GetSerial();
+  auto uart = Ns16550a(serial_base);
+  uart.PutChar('H');
+  uart.PutChar('e');
+  uart.PutChar('l');
+  uart.PutChar('l');
+  uart.PutChar('o');
+  uart.PutChar(' ');
+  uart.PutChar('u');
+  uart.PutChar('a');
+  uart.PutChar('r');
+  uart.PutChar('t');
+  uart.PutChar('!');
+  uart.PutChar('\n');
 
   // 解析内核 elf 信息
   kernel_elf = KernelElf();
