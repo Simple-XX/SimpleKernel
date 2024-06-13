@@ -19,7 +19,7 @@
 #include "kernel_elf.hpp"
 #include "libc.h"
 
-extern "C" __always_inline int backtrace(void **buffer, int size) {
+int backtrace(void **buffer, int size) {
   uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
   uint64_t *rip = nullptr;
 

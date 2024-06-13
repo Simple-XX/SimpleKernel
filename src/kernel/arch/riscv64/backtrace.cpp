@@ -1,3 +1,4 @@
+
 /**
  * @file backtrace.cpp
  * @brief 栈回溯实现
@@ -20,7 +21,7 @@
 #include "kernel_fdt.hpp"
 #include "libc.h"
 
-extern "C" __always_inline int backtrace(void **buffer, int size) {
+int backtrace(void **buffer, int size) {
   uint64_t *fp = (uint64_t *)cpu::ReadFp();
   uint64_t *ra = nullptr;
 
