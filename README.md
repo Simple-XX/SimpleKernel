@@ -171,6 +171,10 @@ boot branch
 
   通过 throw 抛出异常后停机，没有上下文相关的处理
 
+- 带颜色的输出
+
+  基于 ANSI 转义码，在支持 ANSI 转义码的终端中可以显示有颜色的字符串
+
 - 基于 gnu-efi 引导的 x86_64 内核
 
   编译后生成 boot.efi 与 kernel.elf，进入 uefi 环境后首先执行 boot.efi，初始化完成后跳转到 kernel.elf 执行

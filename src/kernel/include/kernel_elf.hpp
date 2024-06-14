@@ -23,8 +23,8 @@
 #include <cstdint>
 #include <span>
 
-#include "cstdio"
 #include "cstring"
+#include "kernel_log.hpp"
 #include "singleton.hpp"
 
 /**
@@ -44,8 +44,8 @@ class KernelElf {
    */
   explicit KernelElf(uint64_t elf_addr, size_t elf_size = 64) {
     if (!elf_addr || !elf_size) {
-      printf("Fatal Error: Invalid elf_addr or elf_size.\n");
-      return;
+      err("Fatal Error: Invalid elf_addr or elf_size.\n");
+      throw;
     }
 
     elf_ = std::span<uint8_t>((uint8_t *)elf_addr, elf_size);
@@ -53,8 +53,8 @@ class KernelElf {
     // 检查 elf 头数据
     auto check_elf_identity_ret = CheckElfIdentity();
     if (!check_elf_identity_ret) {
-      printf("KernelElf NOT valid ELF file.\n");
-      return;
+      err("KernelElf NOT valid ELF file.\n");
+      throw;
     }
 
     ehdr_ = *reinterpret_cast<const Elf64_Ehdr *>(elf_.data());
@@ -106,16 +106,16 @@ class KernelElf {
   [[nodiscard]] bool CheckElfIdentity() const {
     if ((elf_[EI_MAG0] != ELFMAG0) || (elf_[EI_MAG1] != ELFMAG1) ||
         (elf_[EI_MAG2] != ELFMAG2) || (elf_[EI_MAG3] != ELFMAG3)) {
-      printf("Fatal Error: Invalid ELF header.\n");
-      return false;
+      err("Fatal Error: Invalid ELF header.\n");
+      throw;
     }
     if (elf_[EI_CLASS] == ELFCLASS32) {
-      printf("Found 32bit executable but NOT SUPPORT.\n");
-      return false;
+      err("Found 32bit executable but NOT SUPPORT.\n");
+      throw;
     }
     if (elf_[EI_CLASS] != ELFCLASS64) {
-      printf("Fatal Error: Invalid executable.\n");
-      return false;
+      err("Fatal Error: Invalid executable.\n");
+      throw;
     }
     return true;
   }

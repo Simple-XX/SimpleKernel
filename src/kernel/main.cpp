@@ -37,15 +37,13 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   // 架构相关初始化
   [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
-  printf("Hello printf\n");
-
   info("Hello printf\n");
-  warn("Hello printf\n");
-  err("Hello printf\n");
+
+  info("Hello info\n");
+  warn("Hello warn\n");
+  err("Hello err\n");
 
   DumpStack();
-
-  throw;
 
   std::cout << "Hello ostream" << std::endl;
 

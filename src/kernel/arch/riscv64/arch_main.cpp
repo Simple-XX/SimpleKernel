@@ -55,7 +55,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   // 解析内核 elf 信息
   kKernelElf.GetInstance() = KernelElf();
 
-  printf("hello ArchInit\n");
+  info("Hello riscv64 ArchInit\n");
 
   return 0;
 }

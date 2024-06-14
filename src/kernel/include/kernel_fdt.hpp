@@ -33,8 +33,8 @@
 #include <cstdint>
 #include <utility>
 
-#include "cstdio"
 #include "cstring"
+#include "kernel_log.hpp"
 #include "singleton.hpp"
 
 /**
@@ -48,14 +48,14 @@ class KernelFdt {
    */
   explicit KernelFdt(uint64_t fdt_addr) : fdt_addr_((void *)fdt_addr) {
     if (!fdt_addr_) {
-      printf("Fatal Error: Invalid fdt_addr.\n");
-      return;
+      err("Fatal Error: Invalid fdt_addr.\n");
+      throw;
     }
 
     // 检查 fdt 头数据
     if (fdt_check_header(fdt_addr_) != 0) {
-      printf("Invalid device tree blob\n");
-      return;
+      err("Invalid device tree blob\n");
+      throw;
     }
   }
 
@@ -82,15 +82,15 @@ class KernelFdt {
     // 找到 /memory 节点
     auto offset = fdt_path_offset(fdt_addr_, "/memory");
     if (offset < 0) {
-      printf("Error finding /memory node: %s\n", fdt_strerror(offset));
-      return {};
+      err("Error finding /memory node: %s\n", fdt_strerror(offset));
+      throw;
     }
 
     // 获取 reg 属性
     auto prop = fdt_get_property(fdt_addr_, offset, "reg", &len);
     if (!prop) {
-      printf("Error finding reg property: %s\n", fdt_strerror(len));
-      return {};
+      err("Error finding reg property: %s\n", fdt_strerror(len));
+      throw;
     }
 
     // 解析 reg 属性，通常包含基地址和大小
@@ -115,15 +115,15 @@ class KernelFdt {
     // 找到 /memory 节点
     auto offset = fdt_path_offset(fdt_addr_, "/soc/serial");
     if (offset < 0) {
-      printf("Error finding /soc/serial node: %s\n", fdt_strerror(offset));
-      return {};
+      err("Error finding /soc/serial node: %s\n", fdt_strerror(offset));
+      throw;
     }
 
     // 获取 reg 属性
     auto prop = fdt_get_property(fdt_addr_, offset, "reg", &len);
     if (!prop) {
-      printf("Error finding reg property: %s\n", fdt_strerror(len));
-      return {};
+      err("Error finding reg property: %s\n", fdt_strerror(len));
+      throw;
     }
 
     // 解析 reg 属性，通常包含基地址和大小
