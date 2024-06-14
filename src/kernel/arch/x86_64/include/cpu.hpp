@@ -26,6 +26,10 @@
 #include "iostream"
 #include "kernel_log.hpp"
 
+/**
+ * x86_64 cpu 相关定义
+ * @note 寄存器读写设计见 arch/README.md
+ */
 namespace cpu {
 /**
  * @brief  读一个字节
@@ -178,7 +182,7 @@ class Serial {
   }
 };
 
-/// 第一部分：寄存器定义
+// 第一部分：寄存器定义
 namespace reginfo {
 
 struct RegInfoBase {
@@ -194,7 +198,8 @@ struct RbpInfo : public RegInfoBase {};
 
 };  // namespace reginfo
 
-/// 第二部分：读/写模版实现
+// 第二部分：读/写模版实现
+namespace {
 /**
  * 只读接口
  * @tparam 寄存器类型
@@ -283,45 +288,25 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   /// @}
 };
 
-/// 第三部分：寄存器实例
+// 第三部分：寄存器实例
 class Rbp : public ReadWriteRegBase<reginfo::RbpInfo> {
  public:
-  /// @name 构造/析构函数
-  /// @{
-  Rbp() = default;
-  Rbp(const Rbp &) = delete;
-  Rbp(Rbp &&) = delete;
-  auto operator=(const Rbp &) -> Rbp & = delete;
-  auto operator=(Rbp &&) -> Rbp & = delete;
-  virtual ~Rbp() = default;
-  /// @}
-
   friend std::ostream &operator<<(std::ostream &os, const Rbp &rbp) {
     printf("val: 0x%p", rbp.Read());
     return os;
   }
 };
 
-/// 第四部分：访问接口
-/**
- * @brief 通用寄存器
- */
-class AllXreg {
- public:
+/// 通用寄存器
+struct AllXreg {
   Rbp rbp;
-
-  /// @name 构造/析构函数
-  /// @{
-  AllXreg() = default;
-  AllXreg(const AllXreg &) = delete;
-  AllXreg(AllXreg &&) = delete;
-  auto operator=(const AllXreg &) -> AllXreg & = delete;
-  auto operator=(AllXreg &&) -> AllXreg & = delete;
-  virtual ~AllXreg() = default;
-  /// @}
 };
 
-static AllXreg kAllXreg;
+};  // namespace
+
+
+// 第四部分：访问接口
+[[maybe_unused]] static AllXreg kAllXreg;
 
 };  // namespace cpu
 

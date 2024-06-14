@@ -28,21 +28,11 @@
 
 /**
  * riscv64 cpu 相关定义
- * @note 分为四个部分
- * 1. 寄存器定义
- *    如果寄存器有特殊的位域含义(如 csr 寄存器)，参考 RegInfoBase 给出
- * 2. 读/写模版实现
- *    针对通用寄存器只实现 Read/Write 接口
- *    csr 寄存器还有 ReadImm/WriteImm/ReadWrite/ReadWriteImm 等接口
- *    调用时根据寄存器类型选择对应的模版实现
- * 3. 寄存器实例
- *    通过向读写模版传递寄存器定义，生成对应的实例
- * 4. 访问接口
- *    通过访问接口访问寄存器
+ * @note 寄存器读写设计见 arch/README.md
  */
 namespace cpu {
 
-/// 第一部分：寄存器定义
+// 第一部分：寄存器定义
 namespace reginfo {
 
 struct RegInfoBase {
@@ -58,7 +48,8 @@ struct FpInfo : public RegInfoBase {};
 
 };  // namespace reginfo
 
-/// 第二部分：读/写模版实现
+// 第二部分：读/写模版实现
+namespace {
 /**
  * 只读接口
  * @tparam 寄存器类型
@@ -156,14 +147,15 @@ class Fp : public ReadWriteRegBase<reginfo::FpInfo> {
   }
 };
 
-// 第四部分：访问接口
-
 /// 通用寄存器
 struct AllXreg {
   Fp fp;
 };
 
-static AllXreg kAllXreg;
+};  // namespace
+
+// 第四部分：访问接口
+[[maybe_unused]] static AllXreg kAllXreg;
 
 };  // namespace cpu
 

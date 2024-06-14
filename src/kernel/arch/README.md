@@ -46,9 +46,41 @@ arch 目录下放置了与架构强相关的内容
 添加寄存器时，按照以上四步进行
 
 ```c++
+
+/**
+ * @file cpu.hpp
+ * @brief riscv64 cpu 相关定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2024-03-05
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2024-03-05<td>Zone.N (Zone.Niuzh@hotmail.com)<td>创建文件
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
+
+#include <cstdint>
+#include <cstdlib>
+#include <type_traits>
+#include <typeinfo>
+
+#include "cstdio"
+#include "iostream"
+#include "kernel_log.hpp"
+
+/**
+ * riscv64 cpu 相关定义
+ * @note 寄存器读写设计见 arch/README.md
+ */
 namespace cpu {
 
-/// 第一部分：寄存器定义
+// 第一部分：寄存器定义
 namespace reginfo {
 
 struct RegInfoBase {
@@ -64,7 +96,8 @@ struct FpInfo : public RegInfoBase {};
 
 };  // namespace reginfo
 
-/// 第二部分：读/写模版实现
+// 第二部分：读/写模版实现
+namespace {
 /**
  * 只读接口
  * @tparam 寄存器类型
@@ -153,36 +186,28 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   /// @}
 };
 
-/// 第三部分：寄存器实例
+// 第三部分：寄存器实例
 class Fp : public ReadWriteRegBase<reginfo::FpInfo> {
  public:
-  /// @name 构造/析构函数
-  /// @{
-  Fp() = default;
-  Fp(const Fp &) = delete;
-  Fp(Fp &&) = delete;
-  auto operator=(const Fp &) -> Fp & = delete;
-  auto operator=(Fp &&) -> Fp & = delete;
-  virtual ~Fp() = default;
-  /// @}
-
   friend std::ostream &operator<<(std::ostream &os, const Fp &fp) {
     printf("val: 0x%p", fp.Read());
     return os;
   }
 };
 
-/// 第四部分：访问接口
-/**
- * @brief 通用寄存器
- */
+/// 通用寄存器
 struct AllXreg {
   Fp fp;
 };
 
-static AllXreg kAllXreg;
+};  // namespace
+
+// 第四部分：访问接口
+[[maybe_unused]] static AllXreg kAllXreg;
 
 };  // namespace cpu
+
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
 
 ```
 
