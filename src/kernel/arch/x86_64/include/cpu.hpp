@@ -202,7 +202,7 @@ namespace cr {
 struct Cr0Info : public RegInfoBase {};
 struct Cr2Info : public RegInfoBase {};
 struct Cr3Info : public RegInfoBase {};
-struct Cr5Info : public RegInfoBase {};
+struct Cr4Info : public RegInfoBase {};
 struct Cr8Info : public RegInfoBase {};
 
 };  // namespace cr
@@ -235,7 +235,7 @@ class ReadOnlyRegBase {
   static __always_inline uint64_t Read() {
     uint64_t value = -1;
     if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
-      __asm__ volatile("mv %0, fp" : "=r"(value) : :);
+      __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("csrr %0, sstatus" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
@@ -276,7 +276,7 @@ class WriteOnlyRegBase {
    */
   static __always_inline void Write(uint64_t value) {
     if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
-      __asm__ volatile("mv fp, %0" : : "r"(value) :);
+      __asm__("mov %0, %%rbp;" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("csrw sstatus, %0" : : "r"(value) :);
     } else {
