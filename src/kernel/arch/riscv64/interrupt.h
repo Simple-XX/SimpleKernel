@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_
-#define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INTERRUPT_H_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INTERRUPT_H_
 
 #include <cstdint>
 
@@ -64,4 +64,4 @@ class Interrupt final : public InterruptBase {
 [[maybe_unused]] static Singleton<Interrupt> kInterrupt
     __attribute__((init_priority(101)));
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_INTERRUPT_H_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INTERRUPT_H_ */
