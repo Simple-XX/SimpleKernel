@@ -16,8 +16,13 @@
 
 #include <opensbi_interface.h>
 
+#include <cstdint>
+
 #include "cpu.hpp"
 #include "cstdio"
+#include "cstring"
+#include "kernel.h"
+#include "kernel_elf.hpp"
 #include "libcxx.h"
 
 // printf_bare_metal 基本输出实现
@@ -26,7 +31,7 @@ extern "C" void _putchar(char character) {
 }
 
 void DumpStack() {
-  uint64_t *fp = (uint64_t *)cpu::ReadFp();
+  uint64_t *fp = (uint64_t *)cpu::kAllXreg.fp.Read();
   uint64_t *ra = nullptr;
 
   printf("------DumpStack------\n");

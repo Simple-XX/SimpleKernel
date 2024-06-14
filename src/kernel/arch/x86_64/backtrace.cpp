@@ -20,7 +20,7 @@
 #include "libc.h"
 
 int backtrace(void **buffer, int size) {
-  uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
+  uint64_t *rbp = (uint64_t *)cpu::kAllXreg.rbp.Read();
   uint64_t *rip = nullptr;
 
   int count = 0;
