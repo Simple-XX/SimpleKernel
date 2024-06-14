@@ -18,7 +18,18 @@
 #define SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_HPP_
 
 #include <cstdint>
+#include <cstdlib>
+#include <type_traits>
+#include <typeinfo>
 
+#include "cstdio"
+#include "iostream"
+#include "kernel_log.hpp"
+
+/**
+ * x86_64 cpu 相关定义
+ * @note 寄存器读写设计见 arch/README.md
+ */
 namespace cpu {
 /**
  * @brief  读一个字节
@@ -171,15 +182,131 @@ class Serial {
   }
 };
 
+// 第一部分：寄存器定义
+namespace reginfo {
+
+struct RegInfoBase {
+  using DataType = uint64_t;
+  static constexpr uint64_t kBitOffset = 0;
+  static constexpr uint64_t kBitWidth = 64;
+  static constexpr uint64_t kBitMask = ~0;
+  static constexpr uint64_t kAllSetMask = ~0;
+};
+
+/// 通用寄存器
+struct RbpInfo : public RegInfoBase {};
+
+};  // namespace reginfo
+
+// 第二部分：读/写模版实现
+namespace {
 /**
- * 读 rbp 寄存器
- * @return rbp 寄存器的值
+ * 只读接口
+ * @tparam 寄存器类型
  */
-static __always_inline uint64_t ReadRbp() {
-  uint64_t rbp = -1;
-  __asm__ volatile("mov %%rbp, %0" : "=r"(rbp));
-  return rbp;
-}
+template <class Reg>
+class ReadOnlyRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadOnlyRegBase() = default;
+  ReadOnlyRegBase(const ReadOnlyRegBase &) = delete;
+  ReadOnlyRegBase(ReadOnlyRegBase &&) = delete;
+  auto operator=(const ReadOnlyRegBase &) -> ReadOnlyRegBase & = delete;
+  auto operator=(ReadOnlyRegBase &&) -> ReadOnlyRegBase & = delete;
+  ~ReadOnlyRegBase() = default;
+  /// @}
+
+  /**
+   * 读寄存器
+   * @return uint64_t 寄存器的值
+   */
+  static __always_inline uint64_t Read() {
+    uint64_t value = -1;
+    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+      __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+    return value;
+  }
+
+  /**
+   * () 重载
+   */
+  static __always_inline uint64_t operator()() { return Read(); }
+};
+
+/**
+ * 只写接口
+ * @tparam 寄存器类型
+ */
+template <class Reg>
+class WriteOnlyRegBase {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  WriteOnlyRegBase() = default;
+  WriteOnlyRegBase(const WriteOnlyRegBase &) = delete;
+  WriteOnlyRegBase(WriteOnlyRegBase &&) = delete;
+  auto operator=(const WriteOnlyRegBase &) -> WriteOnlyRegBase & = delete;
+  auto operator=(WriteOnlyRegBase &&) -> WriteOnlyRegBase & = delete;
+  ~WriteOnlyRegBase() = default;
+  /// @}
+
+  /**
+   * 写寄存器
+   * @param value 要写的值
+   */
+  static __always_inline void Write(uint64_t value) {
+    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+      __asm__ volatile("mv fp, %0" : : "r"(value) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+};
+
+/**
+ * 读写接口
+ * @tparam 寄存器类型
+ */
+template <class Reg>
+class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
+                         public WriteOnlyRegBase<Reg> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadWriteRegBase() = default;
+  ReadWriteRegBase(const ReadWriteRegBase &) = delete;
+  ReadWriteRegBase(ReadWriteRegBase &&) = delete;
+  auto operator=(const ReadWriteRegBase &) -> ReadWriteRegBase & = delete;
+  auto operator=(ReadWriteRegBase &&) -> ReadWriteRegBase & = delete;
+  ~ReadWriteRegBase() = default;
+  /// @}
+};
+
+// 第三部分：寄存器实例
+class Rbp : public ReadWriteRegBase<reginfo::RbpInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Rbp &rbp) {
+    printf("val: 0x%p", rbp.Read());
+    return os;
+  }
+};
+
+/// 通用寄存器
+struct AllXreg {
+  Rbp rbp;
+};
+
+};  // namespace
+
+
+// 第四部分：访问接口
+[[maybe_unused]] static AllXreg kAllXreg;
 
 };  // namespace cpu
 
