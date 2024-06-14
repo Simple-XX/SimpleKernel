@@ -172,6 +172,15 @@ extern "C" void __cxa_rethrow() {
   while (1);
 }
 
+extern "C" void _Unwind_Resume() {
+  Err("----_Unwind_Resume----\n");
+  while (1);
+}
+extern "C" void __gxx_personality_v0() {
+  Err("----__gxx_personality_v0----\n");
+  while (1);
+}
+
 /**
  * c++ 全局对象构造
  */
