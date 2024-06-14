@@ -27,7 +27,7 @@ static auto serial = cpu::Serial(cpu::kCom1);
 extern "C" void _putchar(char character) { serial.Write(character); }
 
 void DumpStack() {
-  uint64_t *rbp = (uint64_t *)cpu::ReadRbp();
+  uint64_t *rbp = (uint64_t *)cpu::kAllXreg.rbp.Read();
   uint64_t *rip = nullptr;
 
   printf("------DumpStack------\n");

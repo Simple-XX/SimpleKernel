@@ -22,7 +22,7 @@
 #include "libc.h"
 
 int backtrace(void **buffer, int size) {
-  uint64_t *fp = (uint64_t *)cpu::ReadFp();
+  uint64_t *fp = (uint64_t *)cpu::kAllXreg.fp.Read();
   uint64_t *ra = nullptr;
 
   int count = 0;
