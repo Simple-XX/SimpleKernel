@@ -196,6 +196,17 @@ struct RegInfoBase {
 /// 通用寄存器
 struct RbpInfo : public RegInfoBase {};
 
+/// cr 寄存器
+namespace cr {
+
+struct Cr0Info : public RegInfoBase {};
+struct Cr2Info : public RegInfoBase {};
+struct Cr3Info : public RegInfoBase {};
+struct Cr5Info : public RegInfoBase {};
+struct Cr8Info : public RegInfoBase {};
+
+};  // namespace cr
+
 };  // namespace reginfo
 
 // 第二部分：读/写模版实现
@@ -224,7 +235,11 @@ class ReadOnlyRegBase {
   static __always_inline uint64_t Read() {
     uint64_t value = -1;
     if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
-      __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+      __asm__ volatile("mv %0, fp" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrr %0, sstatus" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrr %0, stvec" : "=r"(value) : :);
     } else {
       Err("No Type\n");
       throw;
@@ -262,11 +277,211 @@ class WriteOnlyRegBase {
   static __always_inline void Write(uint64_t value) {
     if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
       __asm__ volatile("mv fp, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrw sstatus, %0" : : "r"(value) :);
     } else {
       Err("No Type\n");
       throw;
     }
   }
+
+  /**
+   * 写 csr 寄存器，不通过寄存器中转
+   * @param value 要写的值
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline void WriteImm(const uint8_t value) {
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrwi sstatus, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrwi stvec, %0" : : "i"(value) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 先读后写寄存器
+   * @param value 要写的值
+   * @return uint64_t 寄存器的值
+   */
+  static __always_inline uint64_t ReadWrite(uint64_t value) {
+    uint64_t old_value;
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrw %0, sstatus, %1"
+                       : "=r"(old_value)
+                       : "r"(value)
+                       :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+    return old_value;
+  }
+
+  /**
+   * 先读后写寄存器，不通过寄存器中转
+   * @param value 要写的值
+   * @return uint64_t 寄存器的值
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline uint64_t ReadWriteImm(const uint8_t value) {
+    uint64_t old_value;
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrwi %0, sstatus, %1"
+                       : "=r"(old_value)
+                       : "i"(value)
+                       :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+    return old_value;
+  }
+
+  /**
+   * 通过掩码设置寄存器
+   * @param mask 掩码
+   */
+  static __always_inline void SetBits(uint64_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 先读后通过掩码设置寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  static __always_inline uint64_t ReadSetBits(uint64_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+    return value;
+  }
+
+  /**
+   * 清零寄存器
+   * @param mask 掩码
+   */
+  static __always_inline void ClearBits(uint64_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 先读后清零寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  static __always_inline uint64_t ReadClearBits(uint64_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+    return value;
+  }
+
+  /**
+   * 通过掩码设置寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline void SetBitsImm(const uint8_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 先读后通过掩码设置寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+    return value;
+  }
+
+  /**
+   * 清零寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline void ClearBitsImm(const uint8_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 先读后清零寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline uint64_t ReadClearBitsImm(const uint8_t mask) {
+    uint64_t value;
+    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+      __asm__ volatile("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+    return value;
+  }
+
+  /**
+   * |= 重载
+   */
+  __always_inline void operator|=(uint64_t mask) { SetBits(mask); }
 };
 
 /**
@@ -286,6 +501,144 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   auto operator=(ReadWriteRegBase &&) -> ReadWriteRegBase & = delete;
   ~ReadWriteRegBase() = default;
   /// @}
+
+  /**
+   * 先读后写寄存器
+   * @tparam value 要写的值
+   * @return uint64_t 寄存器的值
+   */
+  static __always_inline uint64_t ReadWrite(uint64_t value) {
+    return ReadWrite(value);
+  }
+
+  /**
+   * 通过掩码先读后写寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  static __always_inline uint64_t ReadSetBits(uint64_t mask) {
+    return ReadSetBits(mask);
+  }
+
+  /**
+   * 通过掩码先读后清零寄存器
+   * @param mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  static __always_inline uint64_t ReadClearBits(uint64_t mask) {
+    return ReadClearBits(mask);
+  }
+};
+
+/**
+ * 只读位域接口
+ * @tparam Reg 寄存器类型
+ * @tparam Info 寄存器数据信息
+ */
+template <class Reg, class Info>
+class ReadOnlyField {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadOnlyField() = default;
+  ReadOnlyField(const ReadOnlyField &) = delete;
+  ReadOnlyField(ReadOnlyField &&) = delete;
+  auto operator=(const ReadOnlyField &) -> ReadOnlyField & = delete;
+  auto operator=(ReadOnlyField &&) -> ReadOnlyField & = delete;
+  ~ReadOnlyField() = default;
+  /// @}
+
+  /**
+   * 获取对应 Reg 的由 Info 规定的指定位的值
+   * @return Info::DataType 指定位值的信息
+   */
+  static __always_inline Info::DataType Get() {
+    return (typename Info::DataType)((Reg::Read() & Info::kBitMask) >>
+                                     Info::kBitOffset);
+  }
+
+  /**
+   * 从指定的值获取对应 Reg 的由 Info 规定的指定位的值
+   * @param value 指定的值
+   * @return Info::DataType 指定位值的信息
+   */
+  static __always_inline Info::DataType Get(uint64_t value) {
+    return (typename Info::DataType)((value & Info::kBitMask) >>
+                                     Info::kBitOffset);
+  }
+};
+
+/**
+ * 只写位域接口
+ * @tparam Reg 寄存器类型
+ * @tparam Info 寄存器数据信息
+ */
+template <class Reg, class Info>
+class WriteOnlyField {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  WriteOnlyField() = default;
+  WriteOnlyField(const WriteOnlyField &) = delete;
+  WriteOnlyField(WriteOnlyField &&) = delete;
+  auto operator=(const WriteOnlyField &) -> WriteOnlyField & = delete;
+  auto operator=(WriteOnlyField &&) -> WriteOnlyField & = delete;
+  ~WriteOnlyField() = default;
+  /// @}
+
+  /**
+   * 置位对应 Reg 的由 Info 规定的指定位
+   */
+  static __always_inline void Set() { Reg::SetBits(Info::kBitMask); }
+
+  /**
+   * 清零对应 Reg 的由 Info 规定的指定位
+   */
+  static __always_inline void Clear() { Reg::ClearBits(Info::kBitMask); }
+};
+
+/**
+ * 读写位域接口
+ * @tparam Reg 寄存器类型
+ * @tparam Info 寄存器数据信息
+ */
+template <class Reg, class Info>
+class ReadWriteField : public ReadOnlyField<Reg, Info>,
+                       public WriteOnlyField<Reg, Info> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadWriteField() = default;
+  ReadWriteField(const ReadWriteField &) = delete;
+  ReadWriteField(ReadWriteField &&) = delete;
+  auto operator=(const ReadWriteField &) -> ReadWriteField & = delete;
+  auto operator=(ReadWriteField &&) -> ReadWriteField & = delete;
+  ~ReadWriteField() = default;
+  /// @}
+
+  /**
+   * 将寄存器的原值替换为指定值
+   * @param value 新值
+   */
+  static __always_inline void Write(Info::DataType value) {
+    auto org_value = Reg::Read();
+    auto new_value = (org_value & ~Info::kBitMask) |
+                     ((value << Info::kBitOffset) & Info::kBitMask);
+    Reg::Write(new_value);
+  }
+
+  /**
+   * 先读出旧值，后将寄存器的值替换为指定值
+   * @param value 新值
+   * @return Info::DataType 由寄存器规定的数据类型
+   */
+  static __always_inline Info::DataType ReadWrite(Info::DataType value) {
+    auto org_value = Reg::Read();
+    auto new_value = (org_value & ~Info::kBitMask) |
+                     ((value << Info::kBitOffset) & Info::kBitMask);
+    Reg::Write(new_value);
+    return (Info::DataType)((org_value & Info::kBitMask) >> Info::kBitOffset);
+  }
 };
 
 // 第三部分：寄存器实例
@@ -303,7 +656,6 @@ struct AllXreg {
 };
 
 };  // namespace
-
 
 // 第四部分：访问接口
 [[maybe_unused]] static AllXreg kAllXreg;
