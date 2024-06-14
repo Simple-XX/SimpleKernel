@@ -39,7 +39,6 @@ void DumpStack() {
   // 获取调用栈中的地址
   auto num_frames = backtrace(buffer, kMaxFramesCount);
 
-  printf("------DumpStack------\n");
   for (auto i = 0; i < num_frames; i++) {
     // 打印函数名
     for (auto j : kKernelElf.GetInstance().symtab_) {
@@ -51,5 +50,4 @@ void DumpStack() {
       }
     }
   }
-  printf("----DumpStack End----\n");
 }
