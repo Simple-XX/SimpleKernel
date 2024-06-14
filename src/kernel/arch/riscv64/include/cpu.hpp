@@ -147,42 +147,20 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   /// @}
 };
 
-/// 第三部分：寄存器实例
+// 第三部分：寄存器实例
 class Fp : public ReadWriteRegBase<reginfo::FpInfo> {
  public:
-  /// @name 构造/析构函数
-  /// @{
-  Fp() = default;
-  Fp(const Fp &) = delete;
-  Fp(Fp &&) = delete;
-  auto operator=(const Fp &) -> Fp & = delete;
-  auto operator=(Fp &&) -> Fp & = delete;
-  virtual ~Fp() = default;
-  /// @}
-
   friend std::ostream &operator<<(std::ostream &os, const Fp &fp) {
     printf("val: 0x%p", fp.Read());
     return os;
   }
 };
 
-/// 第四部分：访问接口
-/**
- * @brief 通用寄存器
- */
-class AllXreg {
- public:
-  Fp fp;
+// 第四部分：访问接口
 
-  /// @name 构造/析构函数
-  /// @{
-  AllXreg() = default;
-  AllXreg(const AllXreg &) = delete;
-  AllXreg(AllXreg &&) = delete;
-  auto operator=(const AllXreg &) -> AllXreg & = delete;
-  auto operator=(AllXreg &&) -> AllXreg & = delete;
-  virtual ~AllXreg() = default;
-  /// @}
+/// 通用寄存器
+struct AllXreg {
+  Fp fp;
 };
 
 static AllXreg kAllXreg;
