@@ -24,6 +24,13 @@
 #include "cstdio"
 #include "iostream"
 
+/**
+ * x86_64 cpu 相关定义
+ * @see ia32v3.pdf
+ * Intel® 64 and IA-32 Architectures Software Developer’s Manual
+ * Volume 3 (3A, 3B, 3C, & 3D): System Programming Guide
+ * Order Number: 325384-083US
+ */
 namespace cpu {
 /**
  * @brief  读一个字节
