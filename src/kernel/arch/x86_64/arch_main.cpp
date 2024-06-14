@@ -44,7 +44,7 @@ static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
 
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   if (argc != 1) {
-    err("argc != 1 [%d]\n", argc);
+    Err("argc != 1 [%d]\n", argc);
     throw;
   }
 
@@ -79,7 +79,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   kKernelElf.GetInstance() = KernelElf(kBasicInfo.GetInstance().elf_addr,
                                        kBasicInfo.GetInstance().elf_size);
 
-  info("Hello x8_64 ArchInit\n");
+  Info("Hello x8_64 ArchInit\n");
 
   return 0;
 }

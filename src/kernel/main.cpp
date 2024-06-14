@@ -37,11 +37,10 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   // 架构相关初始化
   [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
-  info("Hello printf\n");
-
-  info("Hello info\n");
-  warn("Hello warn\n");
-  err("Hello err\n");
+  printf("Hello SimpleKernel\n");
+  Info("Hello SimpleKernel\n");
+  Warn("Hello SimpleKernel\n");
+  Err("Hello SimpleKernel\n");
 
   DumpStack();
 

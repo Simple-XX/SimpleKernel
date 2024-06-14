@@ -19,13 +19,13 @@
 #include <stdint.h>
 
 // 声明内核提供的函数
-extern void err(const char* format, ...);
+extern void Err(const char* format, ...);
 
 /// 栈保护
 uint64_t __stack_chk_guard = 0x595E9FBD94FDA766;
 
 /// 栈保护检查失败后进入死循环
 __attribute__((noreturn)) void __stack_chk_fail() {
-  err("Error: Stack smashing detected!\n");
+  Err("Error: Stack smashing detected!\n");
   while (1);
 }

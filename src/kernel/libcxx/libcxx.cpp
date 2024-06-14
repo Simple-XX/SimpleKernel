@@ -20,7 +20,7 @@
 
 // 声明内核提供的函数
 extern void DumpStack();
-extern "C" void err(const char* format, ...);
+extern "C" void Err(const char* format, ...);
 
 /// 全局构造函数函数指针
 typedef void (*function_t)(void);
@@ -166,9 +166,9 @@ extern "C" void __cxa_pure_virtual() { while (1); }
  * @note 这里只能处理 throw，无法处理异常类型
  */
 extern "C" void __cxa_rethrow() {
-  err("----__cxa_rethrow----\n");
+  Err("----__cxa_rethrow----\n");
   DumpStack();
-  err("--__cxa_rethrow End--\n");
+  Err("--__cxa_rethrow End--\n");
   while (1);
 }
 

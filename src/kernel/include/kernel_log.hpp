@@ -38,7 +38,7 @@ static constexpr const auto kWhite = "\033[37m";
 /**
  * @brief 与 printf 类似，只是颜色不同
  */
-extern "C" inline void info(const char* format, ...) {
+extern "C" inline void Info(const char* format, ...) {
   va_list args;
   va_start(args, format);
   printf("%s", kCyan);
@@ -47,7 +47,7 @@ extern "C" inline void info(const char* format, ...) {
   va_end(args);
 }
 
-extern "C" inline void warn(const char* format, ...) {
+extern "C" inline void Warn(const char* format, ...) {
   va_list args;
   va_start(args, format);
   printf("%s", kYellow);
@@ -56,7 +56,7 @@ extern "C" inline void warn(const char* format, ...) {
   va_end(args);
 }
 
-extern "C" inline void err(const char* format, ...) {
+extern "C" inline void Err(const char* format, ...) {
   va_list args;
   va_start(args, format);
   printf("%s", kRed);
