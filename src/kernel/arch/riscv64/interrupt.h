@@ -54,10 +54,10 @@ class Interrupt final : public InterruptBase {
  private:
   /// 中断处理函数数组
   alignas(4) static InterruptFunc
-      interrupt_handlers[cpu::csr::ScauseInfo::kInterruptMaxCount];
+      interrupt_handlers[cpu::reginfo::csr::ScauseInfo::kInterruptMaxCount];
   /// 异常处理函数数组
   alignas(4) static InterruptFunc
-      exception_handlers[cpu::csr::ScauseInfo::kExceptionMaxCount];
+      exception_handlers[cpu::reginfo::csr::ScauseInfo::kExceptionMaxCount];
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
