@@ -30,6 +30,7 @@
  * Intel® 64 and IA-32 Architectures Software Developer’s Manual
  * Volume 3 (3A, 3B, 3C, & 3D): System Programming Guide
  * Order Number: 325384-083US
+ * https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
  */
 namespace cpu {
 /**
