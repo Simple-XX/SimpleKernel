@@ -369,7 +369,7 @@ class ReadOnlyRegBase {
   /// @}
 
   /**
-   * 读 csr 寄存器
+   * 读寄存器
    * @return uint64_t 寄存器的值
    */
   static __always_inline uint64_t Read() {
@@ -433,7 +433,7 @@ class WriteOnlyRegBase {
   /// @}
 
   /**
-   * 写 csr 寄存器
+   * 写寄存器
    * @param value 要写的值
    */
   static __always_inline void Write(uint64_t value) {
