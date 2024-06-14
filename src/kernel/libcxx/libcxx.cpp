@@ -18,6 +18,10 @@
 
 #include <algorithm>
 
+// 声明内核提供的函数
+extern void DumpStack();
+extern "C" void Err(const char* format, ...);
+
 /// 全局构造函数函数指针
 typedef void (*function_t)(void);
 // 在 link.ld 中定义
@@ -156,6 +160,26 @@ extern "C" void __cxa_guard_abort(GuardType* guard) {
  * 纯虚函数调用处理
  */
 extern "C" void __cxa_pure_virtual() { while (1); }
+
+/**
+ * 异常处理
+ * @note 这里只能处理 throw，无法处理异常类型
+ */
+extern "C" void __cxa_rethrow() {
+  Err("----__cxa_rethrow----\n");
+  DumpStack();
+  Err("--__cxa_rethrow End--\n");
+  while (1);
+}
+
+extern "C" void _Unwind_Resume() {
+  Err("----_Unwind_Resume----\n");
+  while (1);
+}
+extern "C" void __gxx_personality_v0() {
+  Err("----__gxx_personality_v0----\n");
+  while (1);
+}
 
 /**
  * c++ 全局对象构造

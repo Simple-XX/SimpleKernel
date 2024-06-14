@@ -23,8 +23,6 @@ list(APPEND COMMON_COMPILE_OPTIONS
         -fPIE
         # 禁用运行时类型支持
         $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-        # 禁用异常支持
-        -fno-exceptions
         # 启用 free-standing 环境，该选项隐含了 -fno-builtin
         -ffreestanding
         # 保留帧指针，便于调试和栈回溯

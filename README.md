@@ -125,11 +125,11 @@ intr branch
 - TODO
 
     riscv64 外部中断
-
+    
     riscv64 键盘中断
 
     x86_64 cpu 抽象
-
+    
     x86_64 中断处理
 
     x86_64 时钟中断
@@ -151,6 +151,10 @@ intr branch
   - [x] [COMMON] C 栈保护支持
 
   - [x] [COMMON] printf 支持
+
+  - [x] [COMMON] 简单的 C++ 异常支持
+
+  - [x] [COMMON] 带颜色的字符串输出
 
   - [x] [x86_64] 基于 gnuefi 的 bootloader
 

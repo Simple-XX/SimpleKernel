@@ -21,6 +21,7 @@ add_library(${PROJECT_NAME} OBJECT
         ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/boot.S
         >
         ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/arch_main.cpp
+        ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/backtrace.cpp
         ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/interrupt.cpp
 )
 

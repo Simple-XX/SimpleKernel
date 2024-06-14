@@ -19,6 +19,7 @@
 #include "cstdio"
 #include "iostream"
 #include "kernel_fdt.hpp"
+#include "kernel_log.hpp"
 #include "opensbi_interface.h"
 
 Interrupt::InterruptFunc
@@ -80,7 +81,7 @@ Interrupt::Interrupt() {
     is_inited = true;
   }
 
-  printf("Interrupt init.\n");
+  Info("Interrupt init.\n");
 }
 
 void Interrupt::Do(uint64_t cause, uint8_t *context) {
@@ -157,7 +158,7 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   // 设置时钟中断时间
   sbi_set_timer(kInterval);
 
-  printf("hello InterruptInit\n");
+  Info("Hello InterruptInit\n");
 
   return 0;
 }
