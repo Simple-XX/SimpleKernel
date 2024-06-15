@@ -10,20 +10,29 @@ project(
         VERSION 0.0.1
 )
 
-add_executable(unit_test
+enable_language(CXX)
+
+add_executable(${PROJECT_NAME}
+        riscv64_cpu_test.cpp
+        x86_64_cpu_test.cpp
         kernel_elf_test.cpp
 )
 
-target_compile_options(unit_test PRIVATE
+add_header_arch(${PROJECT_NAME})
+add_header_kernel(${PROJECT_NAME})
+
+target_compile_options(${PROJECT_NAME} PRIVATE
         ${DEFAULT_TEST_COMPILE_OPTIONS}
 )
 
-target_link_options(unit_test PRIVATE
+target_link_options(${PROJECT_NAME} PRIVATE
         ${DEFAULT_TEST_LINK_OPTIONS}
 )
 
-target_link_libraries(unit_test PRIVATE
+target_link_libraries(${PROJECT_NAME} PRIVATE
         ${DEFAULT_TEST_LINK_LIB}
+
+        printf_bare_metal
 )
 
-gtest_discover_tests(unit_test)
+gtest_discover_tests(${PROJECT_NAME})

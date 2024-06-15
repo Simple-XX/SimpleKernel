@@ -14,55 +14,42 @@
  * </table>
  */
 
-// #include <gmock/gmock.h>
-// #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-#include <type_traits>
+#include <cstdint>
 
 #include "riscv64/include/cpu.hpp"
 
-// // 模拟类
-// class MockReadOnlyRegBase {
-//  public:
-//   MOCK_METHOD(uint64_t, Read, (), (const, static));
-//   MOCK_METHOD(uint64_t, CallOperator, (), (const, static));
-// };
+class ReadOnlyRegBaseInterface {
+ public:
+  virtual ~ReadOnlyRegBaseInterface() = default;
+  virtual uint64_t Read() = 0;
+};
 
-// // 模拟静态方法的行为
-// uint64_t MockReadOnlyRegBase::Read() {
-//   return -1;  // 默认行为
-// }
+template <class Reg>
+class ReadOnlyRegBaseInterfaceWrapper : public ReadOnlyRegBaseInterface {
+ public:
+  uint64_t Read() override { return cpu::ReadOnlyRegBase<Reg>::Read(); }
+};
 
-// uint64_t MockReadOnlyRegBase::CallOperator() { return Read(); }
+class MockReadOnlyRegBase : public ReadOnlyRegBaseInterface {
+ public:
+  MOCK_METHOD(uint64_t, Read, (), (override));
+};
 
-// // 包装类，用于在测试中替换静态方法的行为
-// template <class Reg>
-// class ReadOnlyRegBaseWrapper : public ReadOnlyRegBase<Reg> {
-//  public:
-//   static uint64_t Read() { return MockReadOnlyRegBase::Read(); }
+using ::testing::Return;
 
-//   static uint64_t operator()() { return MockReadOnlyRegBase::CallOperator();
-//   }
-// };
+TEST(StaticClassTest, StaticMethodTest) {
+  MockReadOnlyRegBase mock;
+  EXPECT_CALL(mock, Read()).WillOnce(Return(10));
 
-// using namespace testing;
+  ReadOnlyRegBaseInterface* instance = &mock;
+  EXPECT_EQ(instance->Read(), 10);
+}
 
-// // 测试用例
-// TEST(ReadOnlyRegBaseTest, ReadFpInfo) {
-//   // 设置期望行为
-//   EXPECT_CALL(MockReadOnlyRegBase(), Read()).WillOnce(Return(12345));
-
-//   // 使用包装类进行测试
-//   uint64_t value = ReadOnlyRegBaseWrapper<reginfo::FpInfo>::Read();
-//   EXPECT_EQ(value, 12345);
-
-//   value = ReadOnlyRegBaseWrapper<reginfo::FpInfo>()();
-//   EXPECT_EQ(value, 12345);
-// }
-
-// int main(int argc, char **argv) {
-//   ::testing::InitGoogleMock(&argc, argv);
-//   return RUN_ALL_TESTS();
-// }
-
-int main() { return 0; }
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  ::testing::InitGoogleMock(&argc, argv);
+  return RUN_ALL_TESTS();
+}

@@ -16,6 +16,9 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/system_test)
 if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
     enable_testing()
     list(APPEND DEFAULT_TEST_COMPILE_OPTIONS
+                -Wall
+                -Wextra
+                -pedantic
                 --coverage
         )
 
@@ -27,9 +30,9 @@ if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
         )
 
         list(APPEND DEFAULT_TEST_LINK_LIB
-                GTest::gtest
-                GTest::gmock
-                GTest::gtest_main
+                gtest
+                gmock
+                gtest_main
         )
 
         add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/unit_test)

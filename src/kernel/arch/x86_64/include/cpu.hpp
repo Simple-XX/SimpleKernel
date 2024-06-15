@@ -297,7 +297,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
 class Rbp : public ReadWriteRegBase<reginfo::RbpInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Rbp &rbp) {
-    printf("val: 0x%p", rbp.Read());
+    printf("val: 0x%p", (void *)rbp.Read());
     return os;
   }
 };

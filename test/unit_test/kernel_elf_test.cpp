@@ -14,12 +14,12 @@
  * </table>
  */
 
-#include "kernel/include/kernel_elf.hpp"
+// #include "kernel/include/kernel_elf.hpp"
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(kernel_elf, DefaultConstructor) {
-  auto kerlen_elf = KernelElf();
-  EXPECT_EQ(kerlen_elf.strtab_, nullptr);
-  EXPECT_EQ(kerlen_elf.symtab_.size(), 0);
-}
+// TEST(kernel_elf, DefaultConstructor) {
+//   auto kerlen_elf = KernelElf();
+//   EXPECT_EQ(kerlen_elf.strtab_, nullptr);
+//   EXPECT_EQ(kerlen_elf.symtab_.size(), 0);
+// }

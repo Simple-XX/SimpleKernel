@@ -147,7 +147,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
 class Fp : public ReadWriteRegBase<reginfo::FpInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Fp &fp) {
-    printf("val: 0x%p", fp.Read());
+    printf("val: 0x%p", (void *)fp.Read());
     return os;
   }
 };
