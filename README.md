@@ -40,8 +40,7 @@ boot branch
     ```
 
     ```shell
-    git submodule init
-    git submodule update
+    git submodule update --init --recursive
     ```
 
 3. 编译并运行

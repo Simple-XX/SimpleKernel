@@ -103,6 +103,14 @@
         "CMAKE_SYSTEM_PROCESSOR": {
           "type": "STRING",
           "value": "x86_64"
+        },
+        "EXECUTABLE_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_x86_64/bin"
+        },
+        "LIBRARY_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_x86_64/lib"
         }
       }
     },
@@ -120,6 +128,14 @@
         "CMAKE_SYSTEM_PROCESSOR": {
           "type": "STRING",
           "value": "riscv64"
+        },
+        "EXECUTABLE_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_riscv64/bin"
+        },
+        "LIBRARY_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_riscv64/lib"
         },
         "USE_NO_RELAX": {
           "type": "BOOL",
@@ -141,6 +157,14 @@
         "CMAKE_SYSTEM_PROCESSOR": {
           "type": "STRING",
           "value": "aarch64"
+        },
+        "EXECUTABLE_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_aarch64/bin"
+        },
+        "LIBRARY_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_aarch64/lib"
         }
       }
     }

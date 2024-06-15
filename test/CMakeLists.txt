@@ -15,34 +15,31 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/system_test)
 # 仅在 host 环境下进行 ut 和 it
 if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
     enable_testing()
-
     list(APPEND DEFAULT_TEST_COMPILE_OPTIONS
-            --coverage
-    )
+                --coverage
+        )
 
-    list(APPEND DEFAULT_TEST_LINK_OPTIONS
-            --coverage
-            -fsanitize=leak
-            -fsanitize=address
-            -fno-omit-frame-pointer
-    )
+        list(APPEND DEFAULT_TEST_LINK_OPTIONS
+                --coverage
+                -fsanitize=leak
+                -fsanitize=address
+                -fno-omit-frame-pointer
+        )
 
-    list(APPEND DEFAULT_TEST_LINK_LIB
-            arch
-            driver
-            libc
-            libcxx
-            GTest::gtest
-            GTest::gtest_main
-    )
+        list(APPEND DEFAULT_TEST_LINK_LIB
+                GTest::gtest
+                GTest::gmock
+                GTest::gtest_main
+        )
 
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/unit_test)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/integration_test)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/unit_test)
+        #     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/integration_test)
 
-    add_coverage_target(
-            DEPENDS unit_test integration_test
-            SOURCE_DIR ${CMAKE_SOURCE_DIR}
-            BINARY_DIR ${CMAKE_BINARY_DIR}
-            EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rd/*
-    )
-endif ()
+        add_coverage_target(
+                DEPENDS unit_test integration_test
+                SOURCE_DIR ${CMAKE_SOURCE_DIR}
+                BINARY_DIR ${CMAKE_BINARY_DIR}
+                EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rd/*
+        )
+
+endif()

@@ -30,8 +30,7 @@ jobs:
           sudo apt install --fix-missing -y cmake qemu-system gdb-multiarch
           sudo apt install --fix-missing -y doxygen graphviz
           sudo apt install --fix-missing -y clang-format clang-tidy cppcheck libgtest-dev lcov
-          git submodule init
-          git submodule update
+          git submodule update --init --recursive
 
       - name: x86_64
         run: |
