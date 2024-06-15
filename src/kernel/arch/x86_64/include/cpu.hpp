@@ -29,6 +29,11 @@
 /**
  * x86_64 cpu 相关定义
  * @note 寄存器读写设计见 arch/README.md
+ * @see sdm.pdf
+ * Intel® 64 and IA-32 Architectures Software Developer’s Manual
+ * Volume 3 (3A, 3B, 3C, & 3D): System Programming Guide
+ * Order Number: 325384-083US
+ * https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
  */
 namespace cpu {
 /**
@@ -196,16 +201,160 @@ struct RegInfoBase {
 /// 通用寄存器
 struct RbpInfo : public RegInfoBase {};
 
-/// cr 寄存器
+/**
+ * @brief efer 寄存器
+ * @see sdm.pdf#2.2.1
+ */
+struct EferInfo : public RegInfoBase {
+  struct Sce {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 1 << kBitOffset;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+
+  struct Lme {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 8;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 1 << kBitOffset;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+
+  /// @note Read Only
+  struct Lma {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 10;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 1 << kBitOffset;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+
+  struct Nxe {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 11;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 1 << kBitOffset;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+};
+
+/**
+ * @brief rflags 寄存器
+ * @see sdm.pdf#2.3
+ */
+struct RflagsInfo : public RegInfoBase {
+  struct If {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 9;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 1 << kBitOffset;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+};
+
+/**
+ * @brief gdtr 寄存器
+ * @see sdm.pdf#2.4.1
+ */
+struct GdtrInfo : public RegInfoBase {};
+
+/**
+ * @brief ldtr 寄存器
+ * @see sdm.pdf#2.4.2
+ */
+struct LdtrInfo : public RegInfoBase {};
+
+/**
+ * @brief idtr 寄存器
+ * @see sdm.pdf#2.4.3
+ */
+struct IdtrInfo : public RegInfoBase {};
+
+/**
+ * @brief tr 寄存器
+ * @see sdm.pdf#2.4.4
+ */
+struct TrInfo : public RegInfoBase {};
+
+/**
+ * @brief cr 寄存器
+ * @see sdm.pdf#2.5
+ */
 namespace cr {
 
-struct Cr0Info : public RegInfoBase {};
+struct Cr0Info : public RegInfoBase {
+  struct Pe {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x2;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+
+  struct Pg {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 31;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x80000000;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+};
+
 struct Cr2Info : public RegInfoBase {};
-struct Cr3Info : public RegInfoBase {};
-struct Cr4Info : public RegInfoBase {};
+
+struct Cr3Info : public RegInfoBase {
+  struct Pwt {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 3;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x8;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+
+  struct Pcd {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 4;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x10;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+
+  struct PageDirectoryBase {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 12;
+    static constexpr uint64_t kBitWidth = 52;
+    static constexpr uint64_t kBitMask = ~0xFFF;
+    static constexpr uint64_t kAllSetMask = 0xFFFFFFFFFFFFF;
+  };
+};
+
+struct Cr4Info : public RegInfoBase {
+  struct Pae {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 5;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask = 0x20;
+    static constexpr uint64_t kAllSetMask = 0x1;
+  };
+};
+
 struct Cr8Info : public RegInfoBase {};
 
 };  // namespace cr
+
+/**
+ * @brief cpuid 寄存器
+ * @see sdm.pdf#2.5.1
+ */
+struct CpuidInfo : public RegInfoBase {};
+
+/**
+ * @brief xcr0 寄存器
+ * @see sdm.pdf#2.6
+ */
+struct Xcr0Info : public RegInfoBase {};
 
 };  // namespace reginfo
 
