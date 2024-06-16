@@ -20,9 +20,16 @@
 #include "libc.h"
 
 int backtrace(void **buffer, int size) {
-  (void)buffer;
-  (void)size;
-  return 0;
+  uint64_t *x29 = (uint64_t *)cpu::kAllXreg.x29.Read();
+
+  int count = 0;
+  while (x29 && *x29 && count < size) {
+    uint64_t lr = x29[1];
+    x29 = (uint64_t *)x29[0];
+    buffer[count++] = (void *)lr;
+  }
+
+  return count;
 }
 
 void DumpStack() {
@@ -31,15 +38,9 @@ void DumpStack() {
   // 获取调用栈中的地址
   auto num_frames = backtrace(buffer, kMaxFramesCount);
 
+  // 打印地址
+  /// @todo 打印函数名，需要 elf 支持
   for (auto i = 0; i < num_frames; i++) {
-    // 打印函数名
-    for (auto j : kKernelElf.GetInstance().symtab_) {
-      if ((ELF64_ST_TYPE(j.st_info) == STT_FUNC) &&
-          ((uint64_t)buffer[i] >= j.st_value) &&
-          ((uint64_t)buffer[i] <= j.st_value + j.st_size)) {
-        printf("[%s] 0x%p\n", kKernelElf.GetInstance().strtab_ + j.st_name,
-               (uint64_t)buffer[i]);
-      }
-    }
+    printf("[0x%p]\n", buffer[i]);
   }
 }

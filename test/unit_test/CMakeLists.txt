@@ -15,6 +15,7 @@ enable_language(CXX)
 add_executable(${PROJECT_NAME}
         riscv64_cpu_test.cpp
         x86_64_cpu_test.cpp
+        aarch64_cpu_test.cpp
         kernel_elf_test.cpp
 )
 

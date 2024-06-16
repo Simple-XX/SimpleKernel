@@ -137,6 +137,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} ST
                 COMMAND
                 CC=${dtc_CC}
                 AR=${dtc_AR}
+                HOME=${dtc_BINARY_DIR}
                 make libfdt/libfdt.a
                 COMMAND
                 ${CMAKE_COMMAND}
