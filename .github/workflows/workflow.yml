@@ -37,6 +37,7 @@ jobs:
           cmake --preset=build_x86_64
           cmake --build build_x86_64 --target boot
           cmake --build build_x86_64 --target kernel
+          cmake --build build_x86_64 --target unit-test
           cmake --build build_x86_64 --target coverage
 
       - name: riscv64

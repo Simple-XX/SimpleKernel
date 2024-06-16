@@ -83,7 +83,8 @@ function(add_coverage_target)
             -b ${ARG_SOURCE_DIR}
             --no-external
             ${EXCLUDES}
-            --rc lcov_branch_coverage=1
+            --rc branch_coverage=1
+            --ignore-errors mismatch
             COMMAND ${GENHTML_EXE}
             ${COVERAGE_OUTPUT_DIR}/coverage.info
             -o ${COVERAGE_OUTPUT_DIR}
