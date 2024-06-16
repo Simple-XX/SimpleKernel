@@ -14,48 +14,48 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_INTERRUPT_H_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_INTERRUPT_H_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_INTERRUPT_H_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_INTERRUPT_H_
 
 #include <cstdint>
 
 #include "cpu.hpp"
+#include "interrupt_base.h"
+#include "singleton.hpp"
+#include "stdio.h"
 
-/**
- * @brief core-local interrupt controller
- * 本地核心中断控制器
- * 用于控制 excp 与 intr
- */
-class Clint {
+class Interrupt final : public InterruptBase {
  public:
-  Clint() {
-    // 开启内部中断
-    Cpu::WriteSie(Cpu::ReadSie() | Cpu::kSieSsie);
-    printf("Clint init.\n");
-  }
+  Interrupt();
 
   /// @name 构造/析构函数
   /// @{
-  Clint(const Clint &) = default;
-  Clint(Clint &&) = default;
-  auto operator=(const Clint &) -> Clint & = default;
-  auto operator=(Clint &&) -> Clint & = default;
-  ~Clint() = default;
-  /// @}
-};
-
-class Interrupt : public InterruptBase {
- public:
-  Interrupt() { auto clint = Clint(); }
-
-  /// @name 构造/析构函数
-  /// @{
-  Interrupt(const Interrupt &) = default;
-  Interrupt(Interrupt &&) = default;
-  auto operator=(const Interrupt &) -> Interrupt & = default;
-  auto operator=(Interrupt &&) -> Interrupt & = default;
+  Interrupt(const Interrupt &) = delete;
+  Interrupt(Interrupt &&) = delete;
+  auto operator=(const Interrupt &) -> Interrupt & = delete;
+  auto operator=(Interrupt &&) -> Interrupt & = delete;
   ~Interrupt() = default;
   /// @}
+
+  /**
+   * @brief 执行中断处理
+   * @param  cause 中断或异常号
+   * @param  context 中断上下文
+   */
+  void Do(uint64_t cause, uint8_t *context) override;
+
+  /**
+   * @brief 注册中断处理函数
+   * @param cause 中断原因
+   * @param func 处理函数
+   */
+  void RegisterInterruptFunc(uint64_t cause, InterruptFunc func) override;
+
+ private:
 };
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_INTERRUPT_H_ */
+/// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
+[[maybe_unused]] static Singleton<Interrupt> kInterrupt
+    __attribute__((init_priority(101)));
+
+#endif /* SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_INTERRUPT_H_ */
