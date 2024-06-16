@@ -31,8 +31,6 @@ target_link_options(${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         ${DEFAULT_TEST_LINK_LIB}
-
-        printf_bare_metal
 )
 
 gtest_discover_tests(${PROJECT_NAME})

@@ -1,6 +1,6 @@
 
 /**
- * @file riscv_cpu_test.cpp
+ * @file riscv64_cpu_test.cpp
  * @brief riscv64 cpu 相关测试
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,42 +14,20 @@
  * </table>
  */
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include <cstdint>
 
 #include "riscv64/include/cpu.hpp"
 
-class ReadOnlyRegBaseInterface {
- public:
-  virtual ~ReadOnlyRegBaseInterface() = default;
-  virtual uint64_t Read() = 0;
-};
-
-template <class Reg>
-class ReadOnlyRegBaseInterfaceWrapper : public ReadOnlyRegBaseInterface {
- public:
-  uint64_t Read() override { return cpu::ReadOnlyRegBase<Reg>::Read(); }
-};
-
-class MockReadOnlyRegBase : public ReadOnlyRegBaseInterface {
- public:
-  MOCK_METHOD(uint64_t, Read, (), (override));
-};
-
-using ::testing::Return;
-
-TEST(StaticClassTest, StaticMethodTest) {
-  MockReadOnlyRegBase mock;
-  EXPECT_CALL(mock, Read()).WillOnce(Return(10));
-
-  ReadOnlyRegBaseInterface* instance = &mock;
-  EXPECT_EQ(instance->Read(), 10);
+TEST(Riscv64RegInfoBaseTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::RegInfoBase::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::RegInfoBase::kBitWidth, 64);
+  EXPECT_EQ(cpu::reginfo::RegInfoBase::kBitMask, 0xFFFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::reginfo::RegInfoBase::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
 }
 
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  ::testing::InitGoogleMock(&argc, argv);
-  return RUN_ALL_TESTS();
+TEST(Riscv64FpInfoTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::FpInfo::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::FpInfo::kBitWidth, 64);
+  EXPECT_EQ(cpu::reginfo::FpInfo::kBitMask, 0xFFFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::reginfo::FpInfo::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
 }

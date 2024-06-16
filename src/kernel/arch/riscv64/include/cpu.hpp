@@ -43,9 +43,11 @@ struct RegInfoBase {
   /// 位宽
   static constexpr uint64_t kBitWidth = 64;
   /// 掩码，(val & kBitMask) == 对应当前位的值
-  static constexpr uint64_t kBitMask = (1UL << (kBitWidth - 1)) << kBitOffset;
+  static constexpr uint64_t kBitMask =
+      (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
   /// 对应位置位掩码
-  static constexpr uint64_t kAllSetMask = 1UL << (kBitWidth - 1);
+  static constexpr uint64_t kAllSetMask =
+      (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
 };
 
 /// 通用寄存器
