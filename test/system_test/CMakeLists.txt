@@ -10,8 +10,10 @@ project(
         VERSION 0.0.1
 )
 
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gnu_efi_test)
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi_test)
+elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+    
 endif ()

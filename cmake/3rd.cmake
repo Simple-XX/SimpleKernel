@@ -5,17 +5,6 @@
 # 3rd.cmake for Simple-XX/SimpleKernel.
 # 依赖管理
 
-## https://github.com/google/googletest
-#CPMAddPackage(
-#        NAME googletest
-#        GITHUB_REPOSITORY google/googletest
-#        GIT_TAG v1.13.0
-#        VERSION 1.13.0
-#        OPTIONS
-#        "INSTALL_GTEST OFF"
-#        "gtest_force_shared_crt ON"
-#)
-
 # # https://github.com/abumq/easyloggingpp
 # CPMAddPackage(
 #   NAME easylogingpp
@@ -62,6 +51,12 @@
 # if (freetype_ADDED)
 #   add_library(Freetype::Freetype ALIAS freetype)
 # endif()
+
+# https://github.com/google/googletest.git
+if (NOT TARGET gtest)
+        add_subdirectory(3rd/googletest)
+        include(GoogleTest)
+endif()
 
 # https://github.com/gdbinit/Gdbinit.git
 set(gdbinit_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/gdbinit)
@@ -142,6 +137,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} ST
                 COMMAND
                 CC=${dtc_CC}
                 AR=${dtc_AR}
+                HOME=${dtc_BINARY_DIR}
                 make libfdt/libfdt.a
                 COMMAND
                 ${CMAKE_COMMAND}

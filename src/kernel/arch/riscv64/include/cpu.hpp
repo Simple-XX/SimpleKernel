@@ -42,11 +42,18 @@ namespace cpu {
 namespace reginfo {
 
 struct RegInfoBase {
+  /// 寄存器数据类型
   using DataType = uint64_t;
+  /// 起始位
   static constexpr uint64_t kBitOffset = 0;
+  /// 位宽
   static constexpr uint64_t kBitWidth = 64;
-  static constexpr uint64_t kBitMask = ~0;
-  static constexpr uint64_t kAllSetMask = ~0;
+  /// 掩码，(val & kBitMask) == 对应当前位的值
+  static constexpr uint64_t kBitMask =
+      (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+  /// 对应位置位掩码
+  static constexpr uint64_t kAllSetMask =
+      (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
 };
 
 /// 通用寄存器
@@ -1081,7 +1088,7 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
 class Fp : public ReadWriteRegBase<reginfo::FpInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Fp &fp) {
-    printf("val: 0x%p", fp.Read());
+    printf("val: 0x%p", (void *)fp.Read());
     return os;
   }
 };
