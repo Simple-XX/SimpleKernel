@@ -31,3 +31,24 @@ TEST(Riscv64FpInfoTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::FpInfo::kBitMask, 0xFFFFFFFFFFFFFFFF);
   EXPECT_EQ(cpu::reginfo::FpInfo::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
 }
+
+TEST(Riscv64SstatusInfoSieTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Sie::kBitOffset, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Sie::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Sie::kBitMask, 2);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Sie::kAllSetMask, 1);
+}
+
+TEST(Riscv64SstatusInfoSpieTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spie::kBitOffset, 5);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spie::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spie::kBitMask, 0x20);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spie::kAllSetMask, 1);
+}
+
+TEST(Riscv64SstatusInfoSppTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spp::kBitOffset, 8);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spp::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spp::kBitMask, 0x100);
+  EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spp::kAllSetMask, 1);
+}

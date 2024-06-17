@@ -72,24 +72,30 @@ struct SstatusInfo : public RegInfoBase {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 1;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x2;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct Spie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 5;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x20;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct Spp {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 8;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x100;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 };
 
@@ -1126,7 +1132,7 @@ class Sstatus : public ReadWriteRegBase<reginfo::csr::SstatusInfo> {
     auto sie = sstatus.sie.Get();
     auto spie = sstatus.spie.Get();
     auto spp = sstatus.spp.Get();
-    printf("val: 0x%p, sie: %s, spie: %s, spp: %s", sstatus.Read(),
+    printf("val: 0x%p, sie: %s, spie: %s, spp: %s", (void *)sstatus.Read(),
            (sie == true ? "Enable" : "Disable"),
            (spie == true ? "Enable" : "Disable"),
            (spp == true ? "S Mode" : "U Mode")
@@ -1163,7 +1169,7 @@ class Stvec : public ReadWriteRegBase<reginfo::csr::StvecInfo> {
   friend std::ostream &operator<<(std::ostream &os, const Stvec &stvec) {
     auto mode = stvec.mode.Get();
     auto base = stvec.base.Get();
-    printf("val: 0x%p, mode: %s, base: 0x%p", stvec.Read(),
+    printf("val: 0x%p, mode: %s, base: 0x%lX", (void *)stvec.Read(),
            (mode == reginfo::csr::StvecInfo::kDirect ? "Direct" : "Vectored"),
            base);
     return os;
@@ -1196,7 +1202,7 @@ class Sip : public ReadWriteRegBase<reginfo::csr::SipInfo> {
     auto ssip = sip.ssip.Get();
     auto stip = sip.stip.Get();
     auto seip = sip.seip.Get();
-    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sip.Read(),
+    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", (void *)sip.Read(),
            (ssip == true ? "Enable" : "Disable"),
            (stip == true ? "Enable" : "Disable"),
            (seip == true ? "Enable" : "Disable"));
@@ -1230,7 +1236,7 @@ class Sie : public ReadWriteRegBase<reginfo::csr::SieInfo> {
     auto ssie = sie.ssie.Get();
     auto stie = sie.stie.Get();
     auto seie = sie.seie.Get();
-    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", sie.Read(),
+    printf("val: 0x%p, ssie: %s, stie: %s, seie: %s", (void *)sie.Read(),
            (ssie == true ? "Enable" : "Disable"),
            (stie == true ? "Enable" : "Disable"),
            (seie == true ? "Enable" : "Disable"));
@@ -1251,7 +1257,7 @@ class Time : public ReadOnlyRegBase<reginfo::csr::TimeInfo> {
   /// @}
 
   friend std::ostream &operator<<(std::ostream &os, const Time &time) {
-    printf("val: 0x%p", time.Read());
+    printf("val: 0x%p", (void *)time.Read());
     return os;
   }
 };
@@ -1269,7 +1275,7 @@ class Cycle : public ReadOnlyRegBase<reginfo::csr::CycleInfo> {
   /// @}
 
   friend std::ostream &operator<<(std::ostream &os, const Cycle &cycle) {
-    printf("val: 0x%p", cycle.Read());
+    printf("val: 0x%p", (void *)cycle.Read());
     return os;
   }
 };
@@ -1287,7 +1293,7 @@ class Instret : public ReadOnlyRegBase<reginfo::csr::InstretInfo> {
   /// @}
 
   friend std::ostream &operator<<(std::ostream &os, const Instret &instret) {
-    printf("val: 0x%p", instret.Read());
+    printf("val: 0x%p", (void *)instret.Read());
     return os;
   }
 };
@@ -1305,7 +1311,7 @@ class Sscratch : public ReadWriteRegBase<reginfo::csr::SscratchInfo> {
   /// @}
 
   friend std::ostream &operator<<(std::ostream &os, const Sscratch &sscratch) {
-    printf("val: 0x%p", sscratch.Read());
+    printf("val: 0x%p", (void *)sscratch.Read());
     return os;
   }
 };
@@ -1323,7 +1329,7 @@ class Sepc : public ReadWriteRegBase<reginfo::csr::SepcInfo> {
   /// @}
 
   friend std::ostream &operator<<(std::ostream &os, const Sepc &sepc) {
-    printf("val: 0x%p", sepc.Read());
+    printf("val: 0x%p", (void *)sepc.Read());
     return os;
   }
 };
@@ -1350,8 +1356,8 @@ class Scause : public ReadWriteRegBase<reginfo::csr::ScauseInfo> {
   friend std::ostream &operator<<(std::ostream &os, const Scause &scause) {
     auto exception_code = scause.exception_code.Get();
     auto interrupt = scause.interrupt.Get();
-    printf("val: 0x%p, exception_code: 0x%p, interrupt: %s, name: %s",
-           scause.Read(), exception_code, interrupt ? "Yes" : "No",
+    printf("val: 0x%p, exception_code: 0x%lX, interrupt: %s, name: %s",
+           (void *)scause.Read(), exception_code, interrupt ? "Yes" : "No",
            interrupt
                ? reginfo::csr::ScauseInfo::kInterruptNames[exception_code]
                : reginfo::csr::ScauseInfo::kExceptionNames[exception_code]);
@@ -1372,7 +1378,7 @@ class Stval : public ReadWriteRegBase<reginfo::csr::StvalInfo> {
   /// @}
 
   friend std::ostream &operator<<(std::ostream &os, const Stval &stval) {
-    printf("val: 0x%p", stval.Read());
+    printf("val: 0x%p", (void *)stval.Read());
     return os;
   }
 };
@@ -1403,8 +1409,8 @@ class Satp : public ReadWriteRegBase<reginfo::csr::SatpInfo> {
     auto ppn = satp.ppn.Get();
     auto asid = satp.asid.Get();
     auto mode = satp.mode.Get();
-    printf("val: 0x%p, ppn: 0x%p, asid: 0x%p, mode: %s", satp.Read(), ppn, asid,
-           reginfo::csr::SatpInfo::kModeNames[mode]);
+    printf("val: 0x%p, ppn: 0x%lX, asid: 0x%X, mode: %s", (void *)satp.Read(),
+           ppn, asid, reginfo::csr::SatpInfo::kModeNames[mode]);
     return os;
   }
 };
@@ -1422,7 +1428,7 @@ class Stimecmp : public ReadOnlyRegBase<reginfo::csr::StimecmpInfo> {
   /// @}
 
   friend std::ostream &operator<<(std::ostream &os, const Stimecmp &stimecmp) {
-    printf("val: 0x%p", stimecmp.Read());
+    printf("val: 0x%p", (void *)stimecmp.Read());
     return os;
   }
 };
