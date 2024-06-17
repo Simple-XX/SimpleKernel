@@ -19,12 +19,6 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 # 在目标环境搜索头文件
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-# 设置清理目标 在 make clean 时删除文件夹
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-        # 删除 .gdbinit
-        ${CMAKE_SOURCE_DIR}/.gdbinit
-)
-
 # 要运行的平台
 list(APPEND VALID_PLATFORM qemu)
 if (NOT DEFINED PLATFORM)
