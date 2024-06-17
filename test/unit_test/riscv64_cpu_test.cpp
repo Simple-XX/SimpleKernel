@@ -52,3 +52,17 @@ TEST(Riscv64SstatusInfoSppTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spp::kBitMask, 0x100);
   EXPECT_EQ(cpu::reginfo::csr::SstatusInfo::Spp::kAllSetMask, 1);
 }
+
+TEST(Riscv64StvecInfoModeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Mode::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Mode::kBitWidth, 2);
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Mode::kBitMask, 0x3);
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Mode::kAllSetMask, 0x3);
+}
+
+TEST(Riscv64StvecInfoBaseTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kBitWidth, 62);
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kBitMask, ~0x3);
+  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kAllSetMask, ~0x3);
+}

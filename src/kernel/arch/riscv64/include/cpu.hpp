@@ -113,8 +113,12 @@ struct StvecInfo : public RegInfoBase {
     using DataType = uint8_t;
     static constexpr uint64_t kBitOffset = 0;
     static constexpr uint64_t kBitWidth = 2;
-    static constexpr uint64_t kBitMask = 0x3;
-    static constexpr uint64_t kAllSetMask = 0x3;
+    // static constexpr uint64_t kBitMask = 0x3;
+    // static constexpr uint64_t kAllSetMask = 0x3;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct Base {
