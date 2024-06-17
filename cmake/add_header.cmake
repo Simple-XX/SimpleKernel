@@ -47,15 +47,12 @@ function(add_header_driver _target)
 endfunction()
 
 function(add_header_3rd _target)
-    if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
         target_include_directories(${_target} PRIVATE
                 ${gnu-efi_BINARY_DIR}/inc)
         target_include_directories(${_target} PRIVATE
                 ${gnu-efi_BINARY_DIR}/inc/${CMAKE_SYSTEM_PROCESSOR})
         target_include_directories(${_target} PRIVATE
                 ${gnu-efi_BINARY_DIR}/inc/protocol)
-    elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
         target_include_directories(${_target} PRIVATE
                 ${dtc_BINARY_DIR}/libfdt)
-    endif ()
 endfunction()

@@ -20258,5 +20258,4 @@ static constexpr const uint8_t kernel_elf_data[] = {
 
 static constexpr const size_t kernel_elf_data_len = 242808;
 
-
 #endif  // SIMPLEKERNEL_TEST_UNIT_TEST_KERNEL_ELF_H_
