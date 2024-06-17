@@ -60,9 +60,23 @@ TEST(Riscv64StvecInfoModeTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Mode::kAllSetMask, 0x3);
 }
 
-TEST(Riscv64StvecInfoBaseTest, ValueTest) {
-  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kBitOffset, 0);
-  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kBitWidth, 62);
-  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kBitMask, ~0x3);
-  EXPECT_EQ(cpu::reginfo::csr::StvecInfo::Base::kAllSetMask, ~0x3);
+TEST(Riscv64SipInfoSsipTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Ssip::kBitOffset, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Ssip::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Ssip::kBitMask, 0x2);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Ssip::kAllSetMask, 1);
+}
+
+TEST(Riscv64SipInfoStipTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Stip::kBitOffset, 05);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Stip::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Stip::kBitMask, 0x20);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Stip::kAllSetMask, 1);
+}
+
+TEST(Riscv64SipInfoSeipTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Seip::kBitOffset, 9);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Seip::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Seip::kBitMask, 0x200);
+  EXPECT_EQ(cpu::reginfo::csr::SipInfo::Seip::kAllSetMask, 1);
 }
