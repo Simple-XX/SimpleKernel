@@ -150,6 +150,8 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} ST
             ${dtc_SOURCE_DIR}/libfdt/*.a
             ${dtc_SOURCE_DIR}/libfdt/*.h
             ${dtc_BINARY_DIR}/libfdt
+            COMMAND
+            make clean
     )
 endif ()
 
