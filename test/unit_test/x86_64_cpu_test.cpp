@@ -31,3 +31,31 @@ TEST(x8664RbpInfoTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::RbpInfo::kBitMask, 0xFFFFFFFFFFFFFFFF);
   EXPECT_EQ(cpu::reginfo::RbpInfo::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
 }
+
+TEST(x8664EferInfoSceTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::EferInfo::Sce::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Sce::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Sce::kBitMask, 0x1);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Sce::kAllSetMask, 1);
+}
+
+TEST(x8664EferInfoLmeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lme::kBitOffset, 8);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lme::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lme::kBitMask, 0x100);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lme::kAllSetMask, 1);
+}
+
+TEST(x8664EferInfoLmaTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lma::kBitOffset, 10);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lma::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lma::kBitMask, 0x400);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Lma::kAllSetMask, 1);
+}
+
+TEST(x8664EferInfoNxeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::EferInfo::Nxe::kBitOffset, 11);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Nxe::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Nxe::kBitMask, 0x800);
+  EXPECT_EQ(cpu::reginfo::EferInfo::Nxe::kAllSetMask, 1);
+}
