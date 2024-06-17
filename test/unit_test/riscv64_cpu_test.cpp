@@ -80,3 +80,24 @@ TEST(Riscv64SipInfoSeipTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::csr::SipInfo::Seip::kBitMask, 0x200);
   EXPECT_EQ(cpu::reginfo::csr::SipInfo::Seip::kAllSetMask, 1);
 }
+
+TEST(Riscv64SieInfoSsiepTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Ssie::kBitOffset, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Ssie::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Ssie::kBitMask, 0x2);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Ssie::kAllSetMask, 1);
+}
+
+TEST(Riscv64SieInfoStieTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Stie::kBitOffset, 5);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Stie::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Stie::kBitMask, 0x20);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Stie::kAllSetMask, 1);
+}
+
+TEST(Riscv64SieInfoSeieTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Seie::kBitOffset, 9);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Seie::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Seie::kBitMask, 0x200);
+  EXPECT_EQ(cpu::reginfo::csr::SieInfo::Seie::kAllSetMask, 1);
+}

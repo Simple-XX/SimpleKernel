@@ -173,24 +173,30 @@ struct SieInfo : public RegInfoBase {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 1;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x2;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct Stie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 5;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x20;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct Seie {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 9;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x200;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 };
 
