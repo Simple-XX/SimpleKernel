@@ -22,4 +22,7 @@
 uint64_t __stack_chk_guard = 0x595E9FBD94FDA766;
 
 /// 栈保护检查失败后进入死循环
-__attribute__((noreturn)) void __stack_chk_fail() { while (1); }
+__attribute__((noreturn)) void __stack_chk_fail() {
+  while (1)
+    ;
+}

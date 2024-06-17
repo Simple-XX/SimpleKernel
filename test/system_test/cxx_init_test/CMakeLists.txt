@@ -15,7 +15,7 @@ enable_language(ASM)
 
 add_executable(${PROJECT_NAME}
         main.cpp
-        
+
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/boot.S
         >
@@ -52,26 +52,26 @@ objdump_readelf_nm(${PROJECT_NAME})
 
 # 添加 run 和 debug target
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-        add_run_target(NAME ${PROJECT_NAME}_
-        DEPENDS boot ${PROJECT_NAME} ${RUN_DEPENDS} ${DEBUG_DEPENDS}
-        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        TARGET ${CMAKE_SYSTEM_PROCESSOR}
-        BOOT ${boot_BINARY_DIR}/${BOOT_EFI_OUTPUT_NAME}
-        KERNEL $<TARGET_FILE:${PROJECT_NAME}>
-        QEMU_FLAGS ${QEMU_FLAGS}
-        )
+    add_run_target(NAME ${PROJECT_NAME}_
+            DEPENDS boot ${PROJECT_NAME} ${RUN_DEPENDS} ${DEBUG_DEPENDS}
+            WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+            TARGET ${CMAKE_SYSTEM_PROCESSOR}
+            BOOT ${boot_BINARY_DIR}/${BOOT_EFI_OUTPUT_NAME}
+            KERNEL $<TARGET_FILE:${PROJECT_NAME}>
+            QEMU_FLAGS ${QEMU_FLAGS}
+    )
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-        add_run_target(NAME ${PROJECT_NAME}_
-        DEPENDS ${PROJECT_NAME} ${RUN_DEPENDS} ${DEBUG_DEPENDS}
-        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        TARGET ${CMAKE_SYSTEM_PROCESSOR}
-        KERNEL $<TARGET_FILE:${PROJECT_NAME}>
-        QEMU_FLAGS
-        -serial stdio -monitor telnet::2333,server,nowait
-        -machine virt -nographic
-        -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
-        -kernel $<TARGET_FILE:${PROJECT_NAME}>
-        )
+    add_run_target(NAME ${PROJECT_NAME}_
+            DEPENDS ${PROJECT_NAME} ${RUN_DEPENDS} ${DEBUG_DEPENDS}
+            WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+            TARGET ${CMAKE_SYSTEM_PROCESSOR}
+            KERNEL $<TARGET_FILE:${PROJECT_NAME}>
+            QEMU_FLAGS
+            -serial stdio -monitor telnet::2333,server,nowait
+            -machine virt -nographic
+            -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
+            -kernel $<TARGET_FILE:${PROJECT_NAME}>
+    )
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    
+
 endif ()

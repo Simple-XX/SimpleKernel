@@ -12,17 +12,17 @@
 # 在 ${${_target}_BINARY_DIR} 目录下生成 $<TARGET_FILE:${_target}>.sym 文件
 function(objdump_readelf_nm _target)
     add_custom_command(TARGET ${_target}
-        VERBATIM
-        POST_BUILD
-        DEPENDS ${_target}
-        WORKING_DIRECTORY ${${_target}_BINARY_DIR}
-        COMMAND ${CMAKE_OBJDUMP} -D $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.asm
-        COMMAND ${CMAKE_READELF} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.readelf || exit 0
-        COMMAND ${CMAKE_NM} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.sym
-        COMMENT "Generating symbol table, assembly, and readelf result for ${_target}"
+            VERBATIM
+            POST_BUILD
+            DEPENDS ${_target}
+            WORKING_DIRECTORY ${${_target}_BINARY_DIR}
+            COMMAND ${CMAKE_OBJDUMP} -D $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.asm
+            COMMAND ${CMAKE_READELF} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.readelf || exit 0
+            COMMAND ${CMAKE_NM} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.sym
+            COMMENT "Generating symbol table, assembly, and readelf result for ${_target}"
     )
     set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES
-        "$<TARGET_FILE_DIR:${_target}>/${_target}.asm;$<TARGET_FILE_DIR:${_target}>/${_target}.readelf;$<TARGET_FILE_DIR:${_target}>/${_target}.sym;"
+            "$<TARGET_FILE_DIR:${_target}>/${_target}.asm;$<TARGET_FILE_DIR:${_target}>/${_target}.readelf;$<TARGET_FILE_DIR:${_target}>/${_target}.sym;"
     )
 endfunction()
 

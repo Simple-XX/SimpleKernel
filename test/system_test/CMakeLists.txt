@@ -15,7 +15,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/opensbi_test)
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    
+
 endif ()
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cxx_init_test)
