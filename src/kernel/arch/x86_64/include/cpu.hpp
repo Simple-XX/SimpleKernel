@@ -414,10 +414,32 @@ class ReadOnlyRegBase {
     uint64_t value = -1;
     if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+      __asm__ volatile("pushfq; popq %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrr %0, sstatus" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrr %0, stvec" : "=r"(value) : :);
+      __asm__ volatile("mov %%cr0, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+      __asm__ volatile("mov %%cr2, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+      __asm__ volatile("mov %%cr3, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+      __asm__ volatile("mov %%cr4, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+      __asm__ volatile("mov %%cr8, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::CpuidInfo>::value) {
+      __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else {
       Err("No Type\n");
       throw;
@@ -454,9 +476,31 @@ class WriteOnlyRegBase {
    */
   static __always_inline void Write(uint64_t value) {
     if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
-      __asm__("mov %0, %%rbp;" : : "r"(value) :);
+      __asm__("mov %0, %%rbp" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+      __asm__ volatile("pushq %0; popfq" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+      // __asm__("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrw sstatus, %0" : : "r"(value) :);
+      __asm__ volatile("mov %0, %%cr0" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+      __asm__ volatile("mov %0, %%cr2" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+      __asm__ volatile("mov %0, %%cr3" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+      __asm__ volatile("mov %0, %%cr4" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+      __asm__ volatile("mov %0, %%cr8" : : "r"(value) :);
+    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+      // __asm__("mov %0, %%rbp" : : "r"(value) :);
     } else {
       Err("No Type\n");
       throw;
