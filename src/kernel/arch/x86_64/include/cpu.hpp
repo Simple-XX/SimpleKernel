@@ -306,16 +306,20 @@ struct Cr0Info : public RegInfoBase {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 0;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x2;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct Pg {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 31;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x80000000;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 };
 
@@ -326,24 +330,30 @@ struct Cr3Info : public RegInfoBase {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 3;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x8;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct Pcd {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 4;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x10;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 
   struct PageDirectoryBase {
     using DataType = uint64_t;
     static constexpr uint64_t kBitOffset = 12;
     static constexpr uint64_t kBitWidth = 52;
-    static constexpr uint64_t kBitMask = ~0xFFF;
-    static constexpr uint64_t kAllSetMask = 0xFFFFFFFFFFFFF;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 };
 
@@ -352,8 +362,10 @@ struct Cr4Info : public RegInfoBase {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 5;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 0x20;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 };
 

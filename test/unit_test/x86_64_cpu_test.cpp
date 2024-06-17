@@ -66,3 +66,44 @@ TEST(x8664RflagsInfoNxeTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::RflagsInfo::If::kBitMask, 0x200);
   EXPECT_EQ(cpu::reginfo::RflagsInfo::If::kAllSetMask, 1);
 }
+
+TEST(x8664Cr0InfoPeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pe::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pe::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pe::kBitMask, 0x1);
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pe::kAllSetMask, 1);
+}
+
+TEST(x8664Cr0InfoPgTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pg::kBitOffset, 31);
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pg::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pg::kBitMask, 0x80000000);
+  EXPECT_EQ(cpu::reginfo::cr::Cr0Info::Pg::kAllSetMask, 1);
+}
+
+TEST(x8664Cr3InfoPwtTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pwt::kBitOffset, 3);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pwt::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pwt::kBitMask, 0x8);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pwt::kAllSetMask, 1);
+}
+
+TEST(x8664Cr0InfoPcdTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pcd::kBitOffset, 4);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pcd::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pcd::kBitMask, 0x10);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::Pcd::kAllSetMask, 1);
+}
+TEST(x8664Cr3InfoPageDirectoryBaseTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::PageDirectoryBase::kBitOffset, 12);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::PageDirectoryBase::kBitWidth, 52);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::PageDirectoryBase::kBitMask, ~0xFFF);
+  EXPECT_EQ(cpu::reginfo::cr::Cr3Info::PageDirectoryBase::kAllSetMask, 0xFFFFFFFFFFFFF);
+}
+
+TEST(x8664Cr4InfoPaeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::cr::Cr4Info::Pae::kBitOffset, 5);
+  EXPECT_EQ(cpu::reginfo::cr::Cr4Info::Pae::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::cr::Cr4Info::Pae::kBitMask, 0x20);
+  EXPECT_EQ(cpu::reginfo::cr::Cr4Info::Pae::kAllSetMask, 1);
+}
