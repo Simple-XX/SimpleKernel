@@ -17,3 +17,5 @@ elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
     
 endif ()
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cxx_init_test)
