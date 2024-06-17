@@ -78,6 +78,10 @@ add_custom_target(gdbinit
         COMMAND
         echo "add-symbol-file ${boot_BINARY_DIR}/${BOOT_ELF_OUTPUT_NAME}" >> ${CMAKE_SOURCE_DIR}/.gdbinit
 )
+# 在 make clean 时删除 .gdbinit
+set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES
+        ${CMAKE_SOURCE_DIR}/.gdbinit
+)
 
 # https://github.com/MRNIU/printf_bare_metal.git
 add_subdirectory(3rd/printf_bare_metal)
