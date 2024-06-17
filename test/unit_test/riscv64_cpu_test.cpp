@@ -101,3 +101,20 @@ TEST(Riscv64SieInfoSeieTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::csr::SieInfo::Seie::kBitMask, 0x200);
   EXPECT_EQ(cpu::reginfo::csr::SieInfo::Seie::kAllSetMask, 1);
 }
+
+TEST(Riscv64ScauseInfoExceptionCodeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::ExceptionCode::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::ExceptionCode::kBitWidth, 63);
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::ExceptionCode::kBitMask,
+            0x7FFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::ExceptionCode::kAllSetMask,
+            0x7FFFFFFFFFFFFFFF);
+}
+
+TEST(Riscv64ScauseInfoInterruptTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::Interrupt::kBitOffset, 63);
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::Interrupt::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::Interrupt::kBitMask,
+            0x8000000000000000);
+  EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::Interrupt::kAllSetMask, 1);
+}
