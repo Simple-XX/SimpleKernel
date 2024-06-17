@@ -508,22 +508,6 @@ class WriteOnlyRegBase {
   }
 
   /**
-   * 写 csr 寄存器，不通过寄存器中转
-   * @param value 要写的值
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline void WriteImm(const uint8_t value) {
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrwi sstatus, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrwi stvec, %0" : : "i"(value) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-  }
-
-  /**
    * 先读后写寄存器
    * @param value 要写的值
    * @return uint64_t 寄存器的值
@@ -537,28 +521,6 @@ class WriteOnlyRegBase {
                        :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-    return old_value;
-  }
-
-  /**
-   * 先读后写寄存器，不通过寄存器中转
-   * @param value 要写的值
-   * @return uint64_t 寄存器的值
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline uint64_t ReadWriteImm(const uint8_t value) {
-    uint64_t old_value;
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrwi %0, sstatus, %1"
-                       : "=r"(old_value)
-                       : "i"(value)
-                       :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
     } else {
       Err("No Type\n");
       throw;
@@ -625,74 +587,6 @@ class WriteOnlyRegBase {
       __asm__ volatile("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-    return value;
-  }
-
-  /**
-   * 通过掩码设置寄存器，不通过寄存器中转
-   * @param mask 掩码
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline void SetBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-  }
-
-  /**
-   * 先读后通过掩码设置寄存器，不通过寄存器中转
-   * @param mask 掩码
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline uint64_t ReadSetBitsImm(const uint8_t mask) {
-    uint64_t value;
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-    return value;
-  }
-
-  /**
-   * 清零寄存器，不通过寄存器中转
-   * @param mask 掩码
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline void ClearBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-  }
-
-  /**
-   * 先读后清零寄存器，不通过寄存器中转
-   * @param mask 掩码
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline uint64_t ReadClearBitsImm(const uint8_t mask) {
-    uint64_t value;
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
     } else {
       Err("No Type\n");
       throw;
