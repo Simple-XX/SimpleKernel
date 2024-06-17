@@ -351,22 +351,28 @@ struct SatpInfo : public RegInfoBase {
     using DataType = uint64_t;
     static constexpr uint64_t kBitOffset = 0;
     static constexpr uint64_t kBitWidth = 44;
-    static constexpr uint64_t kBitMask = 0xF0000FFFFFFFFFFF;
-    static constexpr uint64_t kAllSetMask = 0xFFFFFFFFFFF;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
   struct Asid {
     using DataType = uint16_t;
     static constexpr uint64_t kBitOffset = 44;
     static constexpr uint64_t kBitWidth = 16;
-    static constexpr uint64_t kBitMask = ~0xF0000FFFFFFFFFFF;
-    static constexpr uint64_t kAllSetMask = 0xFFFF;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
   struct Mode {
     using DataType = uint8_t;
     static constexpr uint64_t kBitOffset = 60;
     static constexpr uint64_t kBitWidth = 4;
-    static constexpr uint64_t kBitMask = ~0xFFFFFFFFFFFFFFF;
-    static constexpr uint64_t kAllSetMask = 0xF;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 };
 

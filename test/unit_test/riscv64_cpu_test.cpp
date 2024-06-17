@@ -118,3 +118,24 @@ TEST(Riscv64ScauseInfoInterruptTest, ValueTest) {
             0x8000000000000000);
   EXPECT_EQ(cpu::reginfo::csr::ScauseInfo::Interrupt::kAllSetMask, 1);
 }
+
+TEST(Riscv64SatpInfoPpnTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Ppn::kBitOffset, 0);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Ppn::kBitWidth, 44);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Ppn::kBitMask, 0xFFFFFFFFFFF);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Ppn::kAllSetMask, 0xFFFFFFFFFFF);
+}
+
+TEST(Riscv64SatpInfoAsidTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Asid::kBitOffset, 44);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Asid::kBitWidth, 16);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Asid::kBitMask, ~0xF0000FFFFFFFFFFF);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Asid::kAllSetMask, 0xFFFF);
+}
+
+TEST(Riscv64SatpInfoModeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Mode::kBitOffset, 60);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Mode::kBitWidth, 4);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Mode::kBitMask, ~0xFFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::reginfo::csr::SatpInfo::Mode::kAllSetMask, 0xF);
+}
