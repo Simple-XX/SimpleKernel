@@ -264,8 +264,10 @@ struct RflagsInfo : public RegInfoBase {
     using DataType = bool;
     static constexpr uint64_t kBitOffset = 9;
     static constexpr uint64_t kBitWidth = 1;
-    static constexpr uint64_t kBitMask = 1 << kBitOffset;
-    static constexpr uint64_t kAllSetMask = 0x1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
   };
 };
 

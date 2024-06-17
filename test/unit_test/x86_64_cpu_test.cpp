@@ -59,3 +59,10 @@ TEST(x8664EferInfoNxeTest, ValueTest) {
   EXPECT_EQ(cpu::reginfo::EferInfo::Nxe::kBitMask, 0x800);
   EXPECT_EQ(cpu::reginfo::EferInfo::Nxe::kAllSetMask, 1);
 }
+
+TEST(x8664RflagsInfoNxeTest, ValueTest) {
+  EXPECT_EQ(cpu::reginfo::RflagsInfo::If::kBitOffset, 9);
+  EXPECT_EQ(cpu::reginfo::RflagsInfo::If::kBitWidth, 1);
+  EXPECT_EQ(cpu::reginfo::RflagsInfo::If::kBitMask, 0x200);
+  EXPECT_EQ(cpu::reginfo::RflagsInfo::If::kAllSetMask, 1);
+}
