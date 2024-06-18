@@ -796,6 +796,31 @@ class Efer : public ReadWriteRegBase<reginfo::EferInfo> {
   }
 };
 
+class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
+ public:
+  ReadWriteField<ReadWriteRegBase<reginfo::RflagsInfo>, reginfo::RflagsInfo::If>
+      interrupt_enable_flag;
+
+  /// @name 构造/析构函数
+  /// @{
+  Rflags() = default;
+  Rflags(const Rflags &) = delete;
+  Rflags(Rflags &&) = delete;
+  auto operator=(const Rflags &) -> Rflags & = delete;
+  auto operator=(Rflags &&) -> Rflags & = delete;
+  virtual ~Rflags() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Rflags &Rflags) {
+    auto interrupt_enable_flag = Rflags.interrupt_enable_flag.Get();
+    printf("val: 0x%p, if: %s, lme: %s, lma: %s, nxe: %s",
+           (void *)Rflags.Read(),
+           (interrupt_enable_flag == true ? "Enable" : "Disable")
+    );
+    return os;
+  }
+};
+
 /// 通用寄存器
 struct AllXreg {
   Rbp rbp;
