@@ -508,27 +508,6 @@ class WriteOnlyRegBase {
   }
 
   /**
-   * 先读后写寄存器
-   * @param value 要写的值
-   * @return uint64_t 寄存器的值
-   */
-  static __always_inline uint64_t ReadWrite(uint64_t value) {
-    uint64_t old_value;
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrw %0, sstatus, %1"
-                       : "=r"(old_value)
-                       : "r"(value)
-                       :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-    return old_value;
-  }
-
-  /**
    * 通过掩码设置寄存器
    * @param mask 掩码
    */
@@ -624,7 +603,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
    * @return uint64_t 寄存器的值
    */
   static __always_inline uint64_t ReadWrite(uint64_t value) {
-    return ReadWrite(value);
+    auto old_value = ReadOnlyRegBase<Reg>::Read();
+    WriteOnlyRegBase<Reg>::Write(value);
+    return old_value;
   }
 
   /**
