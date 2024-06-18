@@ -444,31 +444,31 @@ class ReadOnlyRegBase {
     typename RegInfo::DataType value{};
     if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       __asm__ volatile("pushfq; popq %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       __asm__ volatile("sgdt %0" : "=m"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("mov %%cr0, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
       __asm__ volatile("mov %%cr2, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
       __asm__ volatile("mov %%cr3, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
       __asm__ volatile("mov %%cr4, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("mov %%cr8, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::CpuidInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::CpuidInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else {
       Err("No Type\n");
@@ -504,32 +504,32 @@ class WriteOnlyRegBase {
    * 写寄存器
    * @param value 要写的值
    */
-  static __always_inline void Write(Reg::DataType value) {
-    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+  static __always_inline void Write(RegInfo::DataType value) {
+    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       __asm__ volatile("pushq %0; popfq" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       __asm__ volatile("lgdt %0" : : "m"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("mov %0, %%cr0" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
       __asm__ volatile("mov %0, %%cr2" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
       __asm__ volatile("mov %0, %%cr3" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
       __asm__ volatile("mov %0, %%cr4" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("mov %0, %%cr8" : : "r"(value) :);
-    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else {
       Err("No Type\n");
@@ -542,31 +542,31 @@ class WriteOnlyRegBase {
    * @param offset 位偏移
    */
   static __always_inline void SetBits(uint64_t offset) {
-    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
       // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
       // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
       // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
       // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("bts %%cr0, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
       __asm__ volatile("bts %%cr2, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
       __asm__ volatile("bts %%cr3, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
       __asm__ volatile("bts %%cr4, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("bts %%cr8, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(offset) :);
     } else {
       Err("No Type\n");
@@ -579,31 +579,31 @@ class WriteOnlyRegBase {
    * @param offset 位偏移
    */
   static __always_inline void ClearBits(uint64_t offset) {
-    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
       // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
       // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
       // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
       // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("btr %%cr0, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
       __asm__ volatile("btr %%cr2, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
       __asm__ volatile("btr %%cr3, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
       __asm__ volatile("btr %%cr4, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("btr %%cr8, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(offset) :);
     } else {
       Err("No Type\n");
@@ -638,33 +638,33 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
   /**
    * 先读后写寄存器
    * @tparam value 要写的值
-   * @return Reg::DataType 寄存器的值
+   * @return RegInfo::DataType 寄存器的值
    */
-  static __always_inline Reg::DataType ReadWrite(Reg::DataType value) {
-    auto old_value = ReadOnlyRegBase<Reg>::Read();
-    WriteOnlyRegBase<Reg>::Write(value);
+  static __always_inline RegInfo::DataType ReadWrite(RegInfo::DataType value) {
+    auto old_value = ReadOnlyRegBase<RegInfo>::Read();
+    WriteOnlyRegBase<RegInfo>::Write(value);
     return old_value;
   }
 
   /**
    * 通过偏移先读后写寄存器
    * @param offset 偏移
-   * @return Reg::DataType 寄存器的值
+   * @return RegInfo::DataType 寄存器的值
    */
-  static __always_inline Reg::DataType ReadSetBits(uint64_t offset) {
-    auto old_value = ReadOnlyRegBase<Reg>::Read();
-    WriteOnlyRegBase<Reg>::SetBits(offset);
+  static __always_inline RegInfo::DataType ReadSetBits(uint64_t offset) {
+    auto old_value = ReadOnlyRegBase<RegInfo>::Read();
+    WriteOnlyRegBase<RegInfo>::SetBits(offset);
     return old_value;
   }
 
   /**
    * 通过偏移先读后清零寄存器
    * @param offset 偏移
-   * @return Reg::DataType 寄存器的值
+   * @return RegInfo::DataType 寄存器的值
    */
-  static __always_inline Reg::DataType ReadClearBits(uint64_t offset) {
-    auto old_value = ReadOnlyRegBase<Reg>::Read();
-    WriteOnlyRegBase<Reg>::ClearBits(offset);
+  static __always_inline RegInfo::DataType ReadClearBits(uint64_t offset) {
+    auto old_value = ReadOnlyRegBase<RegInfo>::Read();
+    WriteOnlyRegBase<RegInfo>::ClearBits(offset);
     return old_value;
   }
 };
@@ -672,9 +672,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
 /**
  * 只读位域接口
  * @tparam Reg 寄存器类型
- * @tparam Info 寄存器数据信息
+ * @tparam RegInfo 寄存器数据信息
  */
-template <class Reg, class Info>
+template <class Reg, class RegInfo>
 class ReadOnlyField {
  public:
   /// @name 构造/析构函数
@@ -688,33 +688,35 @@ class ReadOnlyField {
   /// @}
 
   /**
-   * 获取对应 Reg 的由 Info 规定的指定位的值
-   * @return Info::DataType 指定位值的信息
+   * 获取对应 Reg 的由 RegInfo 规定的指定位的值
+   * @return RegInfo::DataType 指定位值的信息
    */
-  static __always_inline Info::DataType Get() {
-    if constexpr (std::is_same<Info, reginfo::GdtrInfo::Limit>::value) {
+  static __always_inline RegInfo::DataType Get() {
+    if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo::Limit>::value) {
       return Reg::Read().limit;
-    } else if constexpr (std::is_same<Info, reginfo::GdtrInfo::Base>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      reginfo::GdtrInfo::Base>::value) {
       return Reg::Read().base;
     } else {
-      return (typename Info::DataType)((Reg::Read() & Info::kBitMask) >>
-                                       Info::kBitOffset);
+      return (typename RegInfo::DataType)((Reg::Read() & RegInfo::kBitMask) >>
+                                          RegInfo::kBitOffset);
     }
   }
 
   /**
-   * 从指定的值获取对应 Reg 的由 Info 规定的指定位的值
+   * 从指定的值获取对应 Reg 的由 RegInfo 规定的指定位的值
    * @param value 指定的值
-   * @return Info::DataType 指定位值的信息
+   * @return RegInfo::DataType 指定位值的信息
    */
-  static __always_inline Info::DataType Get(Info::DataType value) {
-    if constexpr (std::is_same<Info, reginfo::GdtrInfo::Limit>::value) {
+  static __always_inline RegInfo::DataType Get(RegInfo::DataType value) {
+    if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo::Limit>::value) {
       return value;
-    } else if constexpr (std::is_same<Info, reginfo::GdtrInfo::Base>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      reginfo::GdtrInfo::Base>::value) {
       return value;
     } else {
-      return (typename Info::DataType)((value & Info::kBitMask) >>
-                                       Info::kBitOffset);
+      return (typename RegInfo::DataType)((value & RegInfo::kBitMask) >>
+                                          RegInfo::kBitOffset);
     }
   }
 };
@@ -722,9 +724,9 @@ class ReadOnlyField {
 /**
  * 只写位域接口
  * @tparam Reg 寄存器类型
- * @tparam Info 寄存器数据信息
+ * @tparam RegInfo 寄存器数据信息
  */
-template <class Reg, class Info>
+template <class Reg, class RegInfo>
 class WriteOnlyField {
  public:
   /// @name 构造/析构函数
@@ -738,24 +740,24 @@ class WriteOnlyField {
   /// @}
 
   /**
-   * 置位对应 Reg 的由 Info 规定的指定位
+   * 置位对应 Reg 的由 RegInfo 规定的指定位
    */
-  static __always_inline void Set() { Reg::SetBits(Info::kBitOffset); }
+  static __always_inline void Set() { Reg::SetBits(RegInfo::kBitOffset); }
 
   /**
-   * 清零对应 Reg 的由 Info 规定的指定位
+   * 清零对应 Reg 的由 RegInfo 规定的指定位
    */
-  static __always_inline void Clear() { Reg::ClearBits(Info::kBitOffset); }
+  static __always_inline void Clear() { Reg::ClearBits(RegInfo::kBitOffset); }
 };
 
 /**
  * 读写位域接口
  * @tparam Reg 寄存器类型
- * @tparam Info 寄存器数据信息
+ * @tparam RegInfo 寄存器数据信息
  */
-template <class Reg, class Info>
-class ReadWriteField : public ReadOnlyField<Reg, Info>,
-                       public WriteOnlyField<Reg, Info> {
+template <class Reg, class RegInfo>
+class ReadWriteField : public ReadOnlyField<Reg, RegInfo>,
+                       public WriteOnlyField<Reg, RegInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -771,24 +773,25 @@ class ReadWriteField : public ReadOnlyField<Reg, Info>,
    * 将寄存器的原值替换为指定值
    * @param value 新值
    */
-  static __always_inline void Write(Info::DataType value) {
+  static __always_inline void Write(RegInfo::DataType value) {
     auto org_value = Reg::Read();
-    auto new_value = (org_value & ~Info::kBitMask) |
-                     ((value << Info::kBitOffset) & Info::kBitMask);
+    auto new_value = (org_value & ~RegInfo::kBitMask) |
+                     ((value << RegInfo::kBitOffset) & RegInfo::kBitMask);
     Reg::Write(new_value);
   }
 
   /**
    * 先读出旧值，后将寄存器的值替换为指定值
    * @param value 新值
-   * @return Info::DataType 由寄存器规定的数据类型
+   * @return RegInfo::DataType 由寄存器规定的数据类型
    */
-  static __always_inline Info::DataType ReadWrite(Info::DataType value) {
+  static __always_inline RegInfo::DataType ReadWrite(RegInfo::DataType value) {
     auto org_value = Reg::Read();
-    auto new_value = (org_value & ~Info::kBitMask) |
-                     ((value << Info::kBitOffset) & Info::kBitMask);
+    auto new_value = (org_value & ~RegInfo::kBitMask) |
+                     ((value << RegInfo::kBitOffset) & RegInfo::kBitMask);
     Reg::Write(new_value);
-    return (Info::DataType)((org_value & Info::kBitMask) >> Info::kBitOffset);
+    return (RegInfo::DataType)((org_value & RegInfo::kBitMask) >>
+                               RegInfo::kBitOffset);
   }
 };
 
