@@ -476,19 +476,19 @@ class WriteOnlyRegBase {
    */
   static __always_inline void Write(uint64_t value) {
     if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
-      __asm__("mov %0, %%rbp" : : "r"(value) :);
+      __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
-      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
       __asm__ volatile("pushq %0; popfq" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
-      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
-      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
-      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
-      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("mov %0, %%cr0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
@@ -500,7 +500,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("mov %0, %%cr8" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
-      // __asm__("mov %0, %%rbp" : : "r"(value) :);
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else {
       Err("No Type\n");
       throw;
@@ -508,69 +508,77 @@ class WriteOnlyRegBase {
   }
 
   /**
-   * 通过掩码设置寄存器
-   * @param mask 掩码
+   * 通过偏移设置寄存器
+   * @param offset 位偏移
    */
-  static __always_inline void SetBits(uint64_t mask) {
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
+  static __always_inline void SetBits(uint64_t offset) {
+    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+      __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+      // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
+      __asm__ volatile("bts %%cr0, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+      __asm__ volatile("bts %%cr2, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+      __asm__ volatile("bts %%cr3, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+      __asm__ volatile("bts %%cr4, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+      __asm__ volatile("bts %%cr8, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(offset) :);
     } else {
       Err("No Type\n");
       throw;
     }
-  }
-
-  /**
-   * 先读后通过掩码设置寄存器
-   * @param mask 掩码
-   * @return uint64_t 寄存器的值
-   */
-  static __always_inline uint64_t ReadSetBits(uint64_t mask) {
-    uint64_t value;
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-    return value;
   }
 
   /**
    * 清零寄存器
-   * @param mask 掩码
+   * @param offset 位偏移
    */
-  static __always_inline void ClearBits(uint64_t mask) {
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
+  static __always_inline void ClearBits(uint64_t offset) {
+    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+      __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
+      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
+      // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
+      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
+      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
+      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::TrInfo>::value) {
+      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
+      __asm__ volatile("btr %%cr0, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr2Info>::value) {
+      __asm__ volatile("btr %%cr2, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr3Info>::value) {
+      __asm__ volatile("btr %%cr3, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr4Info>::value) {
+      __asm__ volatile("btr %%cr4, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr8Info>::value) {
+      __asm__ volatile("btr %%cr8, %0" : : "r"(offset) :);
+    } else if constexpr (std::is_same<Reg, reginfo::Xcr0Info>::value) {
+      // __asm__ volatile("mov %0, %%rbp" : : "r"(offset) :);
     } else {
       Err("No Type\n");
       throw;
     }
-  }
-
-  /**
-   * 先读后清零寄存器
-   * @param mask 掩码
-   * @return uint64_t 寄存器的值
-   */
-  static __always_inline uint64_t ReadClearBits(uint64_t mask) {
-    uint64_t value;
-    if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::cr::Cr0Info>::value) {
-      __asm__ volatile("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-    return value;
   }
 
   /**
@@ -609,21 +617,25 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   }
 
   /**
-   * 通过掩码先读后写寄存器
-   * @param mask 掩码
+   * 通过偏移先读后写寄存器
+   * @param offset 偏移
    * @return uint64_t 寄存器的值
    */
-  static __always_inline uint64_t ReadSetBits(uint64_t mask) {
-    return ReadSetBits(mask);
+  static __always_inline uint64_t ReadSetBits(uint64_t offset) {
+    auto old_value = ReadOnlyRegBase<Reg>::Read();
+    WriteOnlyRegBase<Reg>::SetBits(offset);
+    return old_value;
   }
 
   /**
-   * 通过掩码先读后清零寄存器
-   * @param mask 掩码
+   * 通过偏移先读后清零寄存器
+   * @param offset 偏移
    * @return uint64_t 寄存器的值
    */
-  static __always_inline uint64_t ReadClearBits(uint64_t mask) {
-    return ReadClearBits(mask);
+  static __always_inline uint64_t ReadClearBits(uint64_t offset) {
+    auto old_value = ReadOnlyRegBase<Reg>::Read();
+    WriteOnlyRegBase<Reg>::ClearBits(offset);
+    return old_value;
   }
 };
 
@@ -686,12 +698,12 @@ class WriteOnlyField {
   /**
    * 置位对应 Reg 的由 Info 规定的指定位
    */
-  static __always_inline void Set() { Reg::SetBits(Info::kBitMask); }
+  static __always_inline void Set() { Reg::SetBits(Info::kBitOffset); }
 
   /**
    * 清零对应 Reg 的由 Info 规定的指定位
    */
-  static __always_inline void Clear() { Reg::ClearBits(Info::kBitMask); }
+  static __always_inline void Clear() { Reg::ClearBits(Info::kBitOffset); }
 };
 
 /**
