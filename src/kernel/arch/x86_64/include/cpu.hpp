@@ -844,6 +844,14 @@ class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
   }
 };
 
+class Tr : public ReadWriteRegBase<reginfo::TrInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Tr &tr) {
+    printf("val: 0x%p", (void *)tr.Read());
+    return os;
+  }
+};
+
 /// 通用寄存器
 struct AllXreg {
   Rbp rbp;
