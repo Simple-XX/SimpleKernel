@@ -407,10 +407,10 @@ class ReadOnlyRegBase {
 
   /**
    * 读寄存器
-   * @return uint64_t 寄存器的值
+   * @return Reg::DataType 寄存器的值
    */
-  static __always_inline uint64_t Read() {
-    uint64_t value = -1;
+  static __always_inline Reg::DataType Read() {
+    typename Reg::DataType value{};
     if constexpr (std::is_same<Reg, reginfo::FpInfo>::value) {
       __asm__ volatile("mv %0, fp" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
@@ -449,7 +449,7 @@ class ReadOnlyRegBase {
   /**
    * () 重载
    */
-  static __always_inline uint64_t operator()() { return Read(); }
+  static __always_inline Reg::DataType operator()() { return Read(); }
 };
 
 /**
@@ -473,7 +473,7 @@ class WriteOnlyRegBase {
    * 写寄存器
    * @param value 要写的值
    */
-  static __always_inline void Write(uint64_t value) {
+  static __always_inline void Write(Reg::DataType value) {
     if constexpr (std::is_same<Reg, reginfo::FpInfo>::value) {
       __asm__ volatile("mv fp, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
