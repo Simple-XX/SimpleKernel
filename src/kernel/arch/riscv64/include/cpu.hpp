@@ -531,8 +531,189 @@ class WriteOnlyRegBase {
   }
 
   /**
+   * 通过掩码设置寄存器
+   * @param mask 掩码
+   */
+  static __always_inline void SetBits(uint64_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
+      __asm__ volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
+      __asm__ volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
+      __asm__ volatile("csrrs zero, sip, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
+      __asm__ volatile("csrrs zero, sie, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
+      __asm__ volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
+      __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
+      __asm__ volatile("csrrs zero, scause, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
+      __asm__ volatile("csrrs zero, stval, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
+      __asm__ volatile("csrrs zero, satp, %0" : : "r"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 清零寄存器
+   * @param mask 掩码
+   */
+  static __always_inline void ClearBits(uint64_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
+      __asm__ volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
+      __asm__ volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
+      __asm__ volatile("csrrc zero, sip, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
+      __asm__ volatile("csrrc zero, sie, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
+      __asm__ volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
+      __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
+      __asm__ volatile("csrrc zero, scause, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
+      __asm__ volatile("csrrc zero, stval, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
+      __asm__ volatile("csrrc zero, satp, %0" : : "r"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 通过掩码设置寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline void SetBitsImm(const uint8_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
+      __asm__ volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
+      __asm__ volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
+      __asm__ volatile("csrrsi zero, sip, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
+      __asm__ volatile("csrrsi zero, sie, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
+      __asm__ volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
+      __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
+      __asm__ volatile("csrrsi zero, scause, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
+      __asm__ volatile("csrrsi zero, stval, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
+      __asm__ volatile("csrrsi zero, satp, %0" : : "i"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 清零寄存器，不通过寄存器中转
+   * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
+   */
+  static __always_inline void ClearBitsImm(const uint8_t mask) {
+    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
+      __asm__ volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
+      __asm__ volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
+      __asm__ volatile("csrrci zero, sip, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
+      __asm__ volatile("csrrci zero, sie, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
+      __asm__ volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
+      __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
+      __asm__ volatile("csrrci zero, scause, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
+      __asm__ volatile("csrrci zero, stval, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
+      __asm__ volatile("csrrci zero, satp, %0" : : "i"(mask) :);
+    } else {
+      Err("No Type\n");
+      throw;
+    }
+  }
+
+  /**
+   * 向寄存器写常数
+   * @tparam value 常数的值
+   */
+  template <uint64_t value>
+  static void WriteConst() {
+    if constexpr ((value & reginfo::csr::kCsrImmOpMask) == value) {
+      WriteImm(value);
+    } else {
+      Write(value);
+    }
+  }
+
+  /**
+   * 通过掩码写寄存器
+   * @tparam mask 掩码
+   */
+  template <uint64_t mask>
+  static void SetConst() {
+    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
+      SetBitsImm(mask);
+    } else {
+      SetBits(mask);
+    }
+  }
+
+  /**
+   * 通过掩码清零寄存器
+   * @tparam mask 掩码
+   */
+  template <uint64_t mask>
+  static void ClearConst() {
+    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
+      ClearBitsImm(mask);
+    } else {
+      ClearBits(mask);
+    }
+  }
+
+  /**
+   * |= 重载
+   */
+  __always_inline void operator|=(uint64_t mask) { SetBits(mask); }
+};
+
+/**
+ * 读写接口
+ * @tparam 寄存器类型
+ */
+template <class Reg>
+class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
+                         public WriteOnlyRegBase<Reg> {
+ public:
+  /// @name 构造/析构函数
+  /// @{
+  ReadWriteRegBase() = default;
+  ReadWriteRegBase(const ReadWriteRegBase &) = delete;
+  ReadWriteRegBase(ReadWriteRegBase &&) = delete;
+  auto operator=(const ReadWriteRegBase &) -> ReadWriteRegBase & = delete;
+  auto operator=(ReadWriteRegBase &&) -> ReadWriteRegBase & = delete;
+  ~ReadWriteRegBase() = default;
+  /// @}
+
+  /**
    * 先读后写寄存器
-   * @param value 要写的值
+   * @tparam value 要写的值
    * @return uint64_t 寄存器的值
    */
   static __always_inline uint64_t ReadWrite(uint64_t value) {
@@ -611,31 +792,16 @@ class WriteOnlyRegBase {
   }
 
   /**
-   * 通过掩码设置寄存器
-   * @param mask 掩码
+   * 先读后写常数到寄存器
+   * @tparam value 要写的值
+   * @return uint64_t 寄存器的值
    */
-  static __always_inline void SetBits(uint64_t mask) {
-    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
-      __asm__ volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
-      __asm__ volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrs zero, sip, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrs zero, sie, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
-      __asm__ volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
-      __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
-      __asm__ volatile("csrrs zero, scause, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
-      __asm__ volatile("csrrs zero, stval, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
-      __asm__ volatile("csrrs zero, satp, %0" : : "r"(mask) :);
+  template <uint64_t value>
+  static uint64_t ReadWriteConst() {
+    if constexpr ((value & reginfo::csr::kCsrImmOpMask) == value) {
+      return ReadWriteRegBase<Reg>::ReadWriteImm(value);
     } else {
-      Err("No Type\n");
-      throw;
+      return ReadWrite(value);
     }
   }
 
@@ -672,31 +838,48 @@ class WriteOnlyRegBase {
   }
 
   /**
-   * 清零寄存器
+   * 先读后通过掩码设置寄存器，不通过寄存器中转
    * @param mask 掩码
+   * @note 只能写 kCsrImmOpMask 范围内的值
    */
-  static __always_inline void ClearBits(uint64_t mask) {
+  static __always_inline uint64_t ReadSetBitsImm(const uint8_t mask) {
+    uint64_t value;
     if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
-      __asm__ volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
-      __asm__ volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrc zero, sip, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrc zero, sie, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
-      __asm__ volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
-      __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
-      __asm__ volatile("csrrc zero, scause, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
-      __asm__ volatile("csrrc zero, stval, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, stval, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
-      __asm__ volatile("csrrc zero, satp, %0" : : "r"(mask) :);
+      __asm__ volatile("csrrsi %0, satp, %1" : "=r"(value) : "i"(mask) :);
     } else {
       Err("No Type\n");
       throw;
+    }
+    return value;
+  }
+
+  /**
+   * 通过常数掩码先读后写寄存器
+   * @tparam mask 掩码
+   * @return uint64_t 寄存器的值
+   */
+  template <uint64_t mask>
+  static uint64_t ReadSetBitsConst() {
+    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
+      return ReadSetBitsImm(mask);
+    } else {
+      return ReadSetBits(mask);
     }
   }
 
@@ -733,98 +916,6 @@ class WriteOnlyRegBase {
   }
 
   /**
-   * 通过掩码设置寄存器，不通过寄存器中转
-   * @param mask 掩码
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline void SetBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
-      __asm__ volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
-      __asm__ volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrsi zero, sip, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrsi zero, sie, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
-      __asm__ volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
-      __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
-      __asm__ volatile("csrrsi zero, scause, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
-      __asm__ volatile("csrrsi zero, stval, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
-      __asm__ volatile("csrrsi zero, satp, %0" : : "i"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-  }
-
-  /**
-   * 先读后通过掩码设置寄存器，不通过寄存器中转
-   * @param mask 掩码
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline uint64_t ReadSetBitsImm(const uint8_t mask) {
-    uint64_t value;
-    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
-      __asm__ volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
-      __asm__ volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
-      __asm__ volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
-      __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
-      __asm__ volatile("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
-      __asm__ volatile("csrrsi %0, stval, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
-      __asm__ volatile("csrrsi %0, satp, %1" : "=r"(value) : "i"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-    return value;
-  }
-
-  /**
-   * 清零寄存器，不通过寄存器中转
-   * @param mask 掩码
-   * @note 只能写 kCsrImmOpMask 范围内的值
-   */
-  static __always_inline void ClearBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<Reg, reginfo::csr::SstatusInfo>::value) {
-      __asm__ volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvecInfo>::value) {
-      __asm__ volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrci zero, sip, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrci zero, sie, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SscratchInfo>::value) {
-      __asm__ volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SepcInfo>::value) {
-      __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::ScauseInfo>::value) {
-      __asm__ volatile("csrrci zero, scause, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::StvalInfo>::value) {
-      __asm__ volatile("csrrci zero, stval, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<Reg, reginfo::csr::SatpInfo>::value) {
-      __asm__ volatile("csrrci zero, satp, %0" : : "i"(mask) :);
-    } else {
-      Err("No Type\n");
-      throw;
-    }
-  }
-
-  /**
    * 先读后清零寄存器，不通过寄存器中转
    * @param mask 掩码
    * @note 只能写 kCsrImmOpMask 范围内的值
@@ -857,115 +948,6 @@ class WriteOnlyRegBase {
   }
 
   /**
-   * 向寄存器写常数
-   * @tparam value 常数的值
-   */
-  template <uint64_t value>
-  static void WriteConst() {
-    if constexpr ((value & reginfo::csr::kCsrImmOpMask) == value) {
-      WriteImm(value);
-    } else {
-      Write(value);
-    }
-  }
-
-  /**
-   * 通过掩码写寄存器
-   * @tparam mask 掩码
-   */
-  template <uint64_t mask>
-  static void SetConst() {
-    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
-      SetBitsImm(mask);
-    } else {
-      SetBits(mask);
-    }
-  }
-
-  /**
-   * 通过掩码清零寄存器
-   * @tparam mask 掩码
-   */
-  template <uint64_t mask>
-  static void ClearConst() {
-    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
-      ClearBitsImm(mask);
-    } else {
-      ClearBits(mask);
-    }
-  }
-
-  /**
-   * |= 重载
-   */
-  __always_inline void operator|=(uint64_t mask) { SetBits(mask); }
-};
-
-/**
- * 读写接口
- * @tparam 寄存器类型
- */
-template <class Reg>
-class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
-                         public WriteOnlyRegBase<Reg> {
- public:
-  /// @name 构造/析构函数
-  /// @{
-  ReadWriteRegBase() = default;
-  ReadWriteRegBase(const ReadWriteRegBase &) = delete;
-  ReadWriteRegBase(ReadWriteRegBase &&) = delete;
-  auto operator=(const ReadWriteRegBase &) -> ReadWriteRegBase & = delete;
-  auto operator=(ReadWriteRegBase &&) -> ReadWriteRegBase & = delete;
-  ~ReadWriteRegBase() = default;
-  /// @}
-
-  /**
-   * 先读后写常数到寄存器
-   * @tparam value 要写的值
-   * @return uint64_t 寄存器的值
-   */
-  template <uint64_t value>
-  static uint64_t ReadWriteConst() {
-    if constexpr ((value & reginfo::csr::kCsrImmOpMask) == value) {
-      return ReadWriteRegBase<Reg>::ReadWriteImm(value);
-    } else {
-      return ReadWrite(value);
-    }
-  }
-
-  /**
-   * 先读后写寄存器
-   * @tparam value 要写的值
-   * @return uint64_t 寄存器的值
-   */
-  static __always_inline uint64_t ReadWrite(uint64_t value) {
-    return ReadWrite(value);
-  }
-
-  /**
-   * 通过常数掩码先读后写寄存器
-   * @tparam mask 掩码
-   * @return uint64_t 寄存器的值
-   */
-  template <uint64_t mask>
-  static uint64_t ReadSetBitsConst() {
-    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
-      return WriteOnlyRegBase<Reg>::ReadSetBitsImm(mask);
-    } else {
-      return ReadSetBits(mask);
-    }
-  }
-
-  /**
-   * 通过掩码先读后写寄存器
-   * @param mask 掩码
-   * @return uint64_t 寄存器的值
-   */
-  static __always_inline uint64_t ReadSetBits(uint64_t mask) {
-    return ReadSetBits(mask);
-  }
-
-  /**
    * 通过常数掩码先读后清零寄存器
    * @tparam mask 掩码
    * @return uint64_t 寄存器的值
@@ -977,15 +959,6 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
     } else {
       return ReadClearBits(mask);
     }
-  }
-
-  /**
-   * 通过掩码先读后清零寄存器
-   * @param mask 掩码
-   * @return uint64_t 寄存器的值
-   */
-  static __always_inline uint64_t ReadClearBits(uint64_t mask) {
-    return ReadClearBits(mask);
   }
 };
 
