@@ -280,9 +280,9 @@ struct Gdt {
   uint16_t limit;
   /// 全局描述符表 64位 基地址
   uint64_t base;
-} [[packed]];
+} __attribute__((packed));
 struct GdtrInfo : public RegInfoBase {
-  using DataType = Gdt *;
+  using DataType = Gdt;
 
   /// @note Read Only
   struct Limit {
@@ -448,7 +448,7 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
       __asm__ volatile("pushfq; popq %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
-      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+      __asm__ volatile("sgdt %0" : "=m"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
@@ -511,7 +511,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<Reg, reginfo::RflagsInfo>::value) {
       __asm__ volatile("pushq %0; popfq" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::GdtrInfo>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
+      __asm__ volatile("lgdt %0" : : "m"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::LdtrInfo>::value) {
       // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<Reg, reginfo::IdtrInfo>::value) {
@@ -842,8 +842,7 @@ class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
 
   friend std::ostream &operator<<(std::ostream &os, const Rflags &Rflags) {
     auto interrupt_enable_flag = Rflags.interrupt_enable_flag.Get();
-    printf("val: 0x%p, if: %s, lme: %s, lma: %s, nxe: %s",
-           (void *)Rflags.Read(),
+    printf("val: 0x%p, if: %s", (void *)Rflags.Read(),
            (interrupt_enable_flag == true ? "Enable" : "Disable"));
     return os;
   }
@@ -852,7 +851,8 @@ class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
 class Gdtr : public ReadWriteRegBase<reginfo::GdtrInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Gdtr &gdtr) {
-    printf("val: 0x%p", (void *)gdtr.Read());
+    printf("base: 0x%p, limit: %d", (void *)gdtr.Read().base,
+           gdtr.Read().limit);
     return os;
   }
 };
@@ -973,7 +973,7 @@ class Cr4 : public ReadWriteRegBase<reginfo::cr::Cr4Info> {
 
   friend std::ostream &operator<<(std::ostream &os, const Cr4 &cr4) {
     auto pae = cr4.pae.Get();
-    printf("val: 0x%p, pae: %s, pg: %s", (void *)cr4.Read(),
+    printf("val: 0x%p, pae: %s", (void *)cr4.Read(),
            (pae == true ? "Enable" : "Disable"));
     return os;
   }

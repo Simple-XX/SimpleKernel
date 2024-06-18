@@ -27,19 +27,19 @@
 //     Interrupt::exception_handlers[cpu::cr::ScauseInfo::kExceptionMaxCount];
 
 // __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
-  // std::cout << std::endl;
-  // std::cout << "sepc: " << cpu::cr::kAllCsr.sepc << std::endl;
-  // std::cout << "stval: " << cpu::cr::kAllCsr.stval << std::endl;
-  // std::cout << "stvec: " << cpu::cr::kAllCsr.stvec << std::endl;
-  // std::cout << "scause: " << cpu::cr::kAllCsr.scause << std::endl;
-  // std::cout << "sie: " << cpu::cr::kAllCsr.sie << std::endl;
-  // std::cout << "sip: " << cpu::cr::kAllCsr.sip << std::endl;
-  // std::cout << "sstatus: " << cpu::cr::kAllCsr.sstatus << std::endl;
-  // std::cout << "satp: " << cpu::cr::kAllCsr.satp << std::endl;
-  // std::cout << "sscratch: " << cpu::cr::kAllCsr.sscratch << std::endl;
+// std::cout << std::endl;
+// std::cout << "sepc: " << cpu::cr::kAllCsr.sepc << std::endl;
+// std::cout << "stval: " << cpu::cr::kAllCsr.stval << std::endl;
+// std::cout << "stvec: " << cpu::cr::kAllCsr.stvec << std::endl;
+// std::cout << "scause: " << cpu::cr::kAllCsr.scause << std::endl;
+// std::cout << "sie: " << cpu::cr::kAllCsr.sie << std::endl;
+// std::cout << "sip: " << cpu::cr::kAllCsr.sip << std::endl;
+// std::cout << "sstatus: " << cpu::cr::kAllCsr.sstatus << std::endl;
+// std::cout << "satp: " << cpu::cr::kAllCsr.satp << std::endl;
+// std::cout << "sscratch: " << cpu::cr::kAllCsr.sscratch << std::endl;
 
-  // kInterrupt.GetInstance().Do((uint64_t)cpu::cr::kAllCsr.scause.Read(),
-  //                             nullptr);
+// kInterrupt.GetInstance().Do((uint64_t)cpu::cr::kAllCsr.scause.Read(),
+//                             nullptr);
 // }
 
 Interrupt::Interrupt() {
@@ -131,6 +131,14 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   // 获取 cpu 速度
   kInterval = 100000;
   printf("kInterval: 0x%X\n", kInterval);
+
+  std::cout << cpu::kAllCr.gdtr << std::endl;
+  std::cout << cpu::kAllCr.rflags << std::endl;
+  std::cout << cpu::kAllCr.cr0 << std::endl;
+  std::cout << cpu::kAllCr.cr2 << std::endl;
+  std::cout << cpu::kAllCr.cr3 << std::endl;
+  std::cout << cpu::kAllCr.cr4 << std::endl;
+  std::cout << cpu::kAllCr.cr8 << std::endl;
 
   // 注册时钟中断
   // kInterrupt.GetInstance().RegisterInterruptFunc(
