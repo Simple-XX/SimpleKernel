@@ -275,7 +275,36 @@ struct RflagsInfo : public RegInfoBase {
  * @brief gdtr 寄存器
  * @see sdm.pdf#2.4.1
  */
-struct GdtrInfo : public RegInfoBase {};
+struct Gdt {
+  /// 全局描述符表限长
+  uint16_t limit;
+  /// 全局描述符表 64位 基地址
+  uint64_t base;
+} [[packed]];
+struct GdtrInfo : public RegInfoBase {
+  using DataType = Gdt *;
+
+  /// @note Read Only
+  struct Limit {
+    using DataType = uint16_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 16;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
+  };
+
+  struct Base {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 16;
+    static constexpr uint64_t kBitWidth = 80;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
+  };
+};
 
 /**
  * @brief ldtr 寄存器
