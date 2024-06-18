@@ -815,8 +815,31 @@ class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
     auto interrupt_enable_flag = Rflags.interrupt_enable_flag.Get();
     printf("val: 0x%p, if: %s, lme: %s, lma: %s, nxe: %s",
            (void *)Rflags.Read(),
-           (interrupt_enable_flag == true ? "Enable" : "Disable")
-    );
+           (interrupt_enable_flag == true ? "Enable" : "Disable"));
+    return os;
+  }
+};
+
+class Gdtr : public ReadWriteRegBase<reginfo::GdtrInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Gdtr &gdtr) {
+    printf("val: 0x%p", (void *)gdtr.Read());
+    return os;
+  }
+};
+
+class Ldtr : public ReadWriteRegBase<reginfo::LdtrInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Ldtr &ldtr) {
+    printf("val: 0x%p", (void *)ldtr.Read());
+    return os;
+  }
+};
+
+class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Idtr &idtr) {
+    printf("val: 0x%p", (void *)idtr.Read());
     return os;
   }
 };
