@@ -759,15 +759,57 @@ class Rbp : public ReadWriteRegBase<reginfo::RbpInfo> {
   }
 };
 
+class Efer : public ReadWriteRegBase<reginfo::EferInfo> {
+ public:
+  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Sce>
+      sce;
+  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Lme>
+      lme;
+  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Lma>
+      lma;
+  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Nxe>
+      nxe;
+
+  /// @name 构造/析构函数
+  /// @{
+  Efer() = default;
+  Efer(const Efer &) = delete;
+  Efer(Efer &&) = delete;
+  auto operator=(const Efer &) -> Efer & = delete;
+  auto operator=(Efer &&) -> Efer & = delete;
+  virtual ~Efer() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Efer &efer) {
+    auto sce = efer.sce.Get();
+    auto lme = efer.lme.Get();
+    auto lma = efer.lma.Get();
+    auto nxe = efer.nxe.Get();
+    printf("val: 0x%p, sce: %s, lme: %s, lma: %s, nxe: %s", (void *)efer.Read(),
+           (sce == true ? "Enable" : "Disable"),
+           (lme == true ? "Enable" : "Disable"),
+           (lma == true ? "Enable" : "Disable"),
+           (nxe == true ? "Enable" : "Disable")
+
+    );
+    return os;
+  }
+};
+
 /// 通用寄存器
 struct AllXreg {
   Rbp rbp;
+};
+
+struct AllCr {
+  Efer efer;
 };
 
 };  // namespace
 
 // 第四部分：访问接口
 [[maybe_unused]] static AllXreg kAllXreg;
+[[maybe_unused]] static AllCr kAllCr;
 
 };  // namespace cpu
 
