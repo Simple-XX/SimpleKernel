@@ -613,7 +613,7 @@ class WriteOnlyRegBase {
   /**
    * |= 重载
    */
-  __always_inline void operator|=(uint64_t mask) { SetBits(mask); }
+  __always_inline void operator|=(uint64_t offset) { SetBits(offset); }
 };
 
 /**
@@ -637,9 +637,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   /**
    * 先读后写寄存器
    * @tparam value 要写的值
-   * @return uint64_t 寄存器的值
+   * @return Reg::DataType 寄存器的值
    */
-  static __always_inline uint64_t ReadWrite(uint64_t value) {
+  static __always_inline Reg::DataType ReadWrite(Reg::DataType value) {
     auto old_value = ReadOnlyRegBase<Reg>::Read();
     WriteOnlyRegBase<Reg>::Write(value);
     return old_value;
@@ -648,9 +648,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   /**
    * 通过偏移先读后写寄存器
    * @param offset 偏移
-   * @return uint64_t 寄存器的值
+   * @return Reg::DataType 寄存器的值
    */
-  static __always_inline uint64_t ReadSetBits(uint64_t offset) {
+  static __always_inline Reg::DataType ReadSetBits(uint64_t offset) {
     auto old_value = ReadOnlyRegBase<Reg>::Read();
     WriteOnlyRegBase<Reg>::SetBits(offset);
     return old_value;
@@ -659,9 +659,9 @@ class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
   /**
    * 通过偏移先读后清零寄存器
    * @param offset 偏移
-   * @return uint64_t 寄存器的值
+   * @return Reg::DataType 寄存器的值
    */
-  static __always_inline uint64_t ReadClearBits(uint64_t offset) {
+  static __always_inline Reg::DataType ReadClearBits(uint64_t offset) {
     auto old_value = ReadOnlyRegBase<Reg>::Read();
     WriteOnlyRegBase<Reg>::ClearBits(offset);
     return old_value;
