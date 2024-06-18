@@ -885,7 +885,96 @@ class Cr0 : public ReadWriteRegBase<reginfo::cr::Cr0Info> {
   }
 };
 
+class Cr2 : public ReadWriteRegBase<reginfo::cr::Cr2Info> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Cr2 &cr2) {
+    printf("val: 0x%p", (void *)cr2.Read());
+    return os;
+  }
+};
+
+class Cr3 : public ReadWriteRegBase<reginfo::cr::Cr3Info> {
+ public:
+  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr3Info>,
+                 reginfo::cr::Cr3Info::Pwt>
+      pwt;
+  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr3Info>,
+                 reginfo::cr::Cr3Info::Pcd>
+      pcd;
+  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr3Info>,
+                 reginfo::cr::Cr3Info::PageDirectoryBase>
+      page_directory_base;
+
+  /// @name 构造/析构函数
+  /// @{
+  Cr3() = default;
+  Cr3(const Cr3 &) = delete;
+  Cr3(Cr3 &&) = delete;
+  auto operator=(const Cr3 &) -> Cr3 & = delete;
+  auto operator=(Cr3 &&) -> Cr3 & = delete;
+  virtual ~Cr3() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Cr3 &cr3) {
+    auto pwt = cr3.pwt.Get();
+    auto pcd = cr3.pcd.Get();
+    auto page_directory_base = cr3.page_directory_base.Get();
+    printf("val: 0x%p, pwt: %s, pcd: %s, page_directory_base: 0x%p",
+           (void *)cr3.Read(), (pwt == true ? "Enable" : "Disable"),
+           (pcd == true ? "Enable" : "Disable"), (void *)page_directory_base);
+    return os;
+  }
+};
+
+class Cr4 : public ReadWriteRegBase<reginfo::cr::Cr4Info> {
+ public:
+  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr4Info>,
+                 reginfo::cr::Cr4Info::Pae>
+      pae;
+
+  /// @name 构造/析构函数
+  /// @{
+  Cr4() = default;
+  Cr4(const Cr4 &) = delete;
+  Cr4(Cr4 &&) = delete;
+  auto operator=(const Cr4 &) -> Cr4 & = delete;
+  auto operator=(Cr4 &&) -> Cr4 & = delete;
+  virtual ~Cr4() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Cr4 &cr4) {
+    auto pae = cr4.pae.Get();
+    printf("val: 0x%p, pae: %s, pg: %s", (void *)cr4.Read(),
+           (pae == true ? "Enable" : "Disable"));
+    return os;
+  }
+};
+
+class Cr8 : public ReadWriteRegBase<reginfo::cr::Cr8Info> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Cr8 &cr8) {
+    printf("val: 0x%p", (void *)cr8.Read());
+    return os;
+  }
+};
+
 };  // namespace cr
+
+class Cpuid : public ReadOnlyRegBase<reginfo::CpuidInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Cpuid &cpuid) {
+    printf("val: 0x%p", (void *)cpuid.Read());
+    return os;
+  }
+};
+
+class Xcr0 : public ReadWriteRegBase<reginfo::Xcr0Info> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Xcr0 &xcr0) {
+    printf("val: 0x%p", (void *)xcr0.Read());
+    return os;
+  }
+};
 
 /// 通用寄存器
 struct AllXreg {
@@ -894,6 +983,18 @@ struct AllXreg {
 
 struct AllCr {
   Efer efer;
+  Rflags rflags;
+  Gdtr gdtr;
+  Ldtr ldtr;
+  Idtr idtr;
+  Tr tr;
+  cr::Cr0 cr0;
+  cr::Cr2 cr2;
+  cr::Cr3 cr3;
+  cr::Cr4 cr4;
+  cr::Cr8 cr8;
+  Cpuid cpuid;
+  Xcr0 xcr0;
 };
 
 };  // namespace
