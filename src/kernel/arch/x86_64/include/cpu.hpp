@@ -275,13 +275,14 @@ struct RflagsInfo : public RegInfoBase {
  * @brief gdtr 寄存器
  * @see sdm.pdf#2.4.1
  */
-struct Gdt {
-  /// 全局描述符表限长
-  uint16_t limit;
-  /// 全局描述符表 64位 基地址
-  uint64_t base;
-} __attribute__((packed));
 struct GdtrInfo : public RegInfoBase {
+  struct Gdt {
+    /// 全局描述符表限长
+    uint16_t limit;
+    /// 全局描述符表基地址
+    uint64_t base;
+  } __attribute__((packed));
+
   using DataType = Gdt;
 
   /// @note Read Only
@@ -297,8 +298,8 @@ struct GdtrInfo : public RegInfoBase {
 
   struct Base {
     using DataType = uint64_t;
-    static constexpr uint64_t kBitOffset = 16;
-    static constexpr uint64_t kBitWidth = 80;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 64;
     static constexpr uint64_t kBitMask =
         (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
     static constexpr uint64_t kAllSetMask =
@@ -691,8 +692,14 @@ class ReadOnlyField {
    * @return Info::DataType 指定位值的信息
    */
   static __always_inline Info::DataType Get() {
-    return (typename Info::DataType)((Reg::Read() & Info::kBitMask) >>
-                                     Info::kBitOffset);
+    if constexpr (std::is_same<Info, reginfo::GdtrInfo::Limit>::value) {
+      return Reg::Read().limit;
+    } else if constexpr (std::is_same<Info, reginfo::GdtrInfo::Base>::value) {
+      return Reg::Read().base;
+    } else {
+      return (typename Info::DataType)((Reg::Read() & Info::kBitMask) >>
+                                       Info::kBitOffset);
+    }
   }
 
   /**
@@ -700,9 +707,15 @@ class ReadOnlyField {
    * @param value 指定的值
    * @return Info::DataType 指定位值的信息
    */
-  static __always_inline Info::DataType Get(uint64_t value) {
-    return (typename Info::DataType)((value & Info::kBitMask) >>
-                                     Info::kBitOffset);
+  static __always_inline Info::DataType Get(Info::DataType value) {
+    if constexpr (std::is_same<Info, reginfo::GdtrInfo::Limit>::value) {
+      return value;
+    } else if constexpr (std::is_same<Info, reginfo::GdtrInfo::Base>::value) {
+      return value;
+    } else {
+      return (typename Info::DataType)((value & Info::kBitMask) >>
+                                       Info::kBitOffset);
+    }
   }
 };
 
@@ -850,6 +863,11 @@ class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
 
 class Gdtr : public ReadWriteRegBase<reginfo::GdtrInfo> {
  public:
+  ReadWriteField<ReadWriteRegBase<reginfo::GdtrInfo>, reginfo::GdtrInfo::Limit>
+      limit;
+  ReadWriteField<ReadWriteRegBase<reginfo::GdtrInfo>, reginfo::GdtrInfo::Base>
+      base;
+
   friend std::ostream &operator<<(std::ostream &os, const Gdtr &gdtr) {
     printf("base: 0x%p, limit: %d", (void *)gdtr.Read().base,
            gdtr.Read().limit);
