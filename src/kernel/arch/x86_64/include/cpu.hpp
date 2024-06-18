@@ -423,7 +423,7 @@ namespace {
  * 只读接口
  * @tparam 寄存器类型
  */
-template <class Reg>
+template <class RegInfo>
 class ReadOnlyRegBase {
  public:
   /// @name 构造/析构函数
@@ -438,11 +438,11 @@ class ReadOnlyRegBase {
 
   /**
    * 读寄存器
-   * @return Reg::DataType 寄存器的值
+   * @return RegInfo::DataType 寄存器的值
    */
-  static __always_inline Reg::DataType Read() {
-    typename Reg::DataType value{};
-    if constexpr (std::is_same<Reg, reginfo::RbpInfo>::value) {
+  static __always_inline RegInfo::DataType Read() {
+    typename RegInfo::DataType value{};
+    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<Reg, reginfo::EferInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
@@ -480,14 +480,14 @@ class ReadOnlyRegBase {
   /**
    * () 重载
    */
-  static __always_inline Reg::DataType operator()() { return Read(); }
+  static __always_inline RegInfo::DataType operator()() { return Read(); }
 };
 
 /**
  * 只写接口
  * @tparam 寄存器类型
  */
-template <class Reg>
+template <class RegInfo>
 class WriteOnlyRegBase {
  public:
   /// @name 构造/析构函数
@@ -621,9 +621,9 @@ class WriteOnlyRegBase {
  * 读写接口
  * @tparam 寄存器类型
  */
-template <class Reg>
-class ReadWriteRegBase : public ReadOnlyRegBase<Reg>,
-                         public WriteOnlyRegBase<Reg> {
+template <class RegInfo>
+class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
+                         public WriteOnlyRegBase<RegInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
