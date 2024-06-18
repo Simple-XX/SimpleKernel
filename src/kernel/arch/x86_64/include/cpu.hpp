@@ -852,6 +852,41 @@ class Tr : public ReadWriteRegBase<reginfo::TrInfo> {
   }
 };
 
+namespace cr {
+
+class Cr0 : public ReadWriteRegBase<reginfo::cr::Cr0Info> {
+ public:
+  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr0Info>,
+                 reginfo::cr::Cr0Info::Pe>
+      pe;
+  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr0Info>,
+                 reginfo::cr::Cr0Info::Pg>
+      pg;
+
+  /// @name 构造/析构函数
+  /// @{
+  Cr0() = default;
+  Cr0(const Cr0 &) = delete;
+  Cr0(Cr0 &&) = delete;
+  auto operator=(const Cr0 &) -> Cr0 & = delete;
+  auto operator=(Cr0 &&) -> Cr0 & = delete;
+  virtual ~Cr0() = default;
+  /// @}
+
+  friend std::ostream &operator<<(std::ostream &os, const Cr0 &cr0) {
+    auto pe = cr0.pe.Get();
+    auto pg = cr0.pg.Get();
+    printf("val: 0x%p, pe: %s, pg: %s", (void *)cr0.Read(),
+           (pe == true ? "Enable" : "Disable"),
+           (pg == true ? "Enable" : "Disable")
+
+    );
+    return os;
+  }
+};
+
+};  // namespace cr
+
 /// 通用寄存器
 struct AllXreg {
   Rbp rbp;
