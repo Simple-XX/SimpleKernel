@@ -326,7 +326,7 @@ struct IdtrInfo : public RegInfoBase {
     union {
       struct {
         // 低位地址
-        uint64_t offset0 : 16;
+        uint64_t offset1 : 16;
         // 选择子
         uint64_t selector : 16;
         // 中断栈表
@@ -342,9 +342,9 @@ struct IdtrInfo : public RegInfoBase {
         // 存在位
         uint64_t p : 1;
         // 中段地址
-        uint64_t offset1 : 16;
+        uint64_t offset2 : 16;
         // 高位地址
-        uint64_t offset2 : 32;
+        uint64_t offset3 : 32;
         // 保留
         uint64_t reserved : 32;
       } idt;
