@@ -317,7 +317,15 @@ struct LdtrInfo : public RegInfoBase {};
  * @brief idtr 寄存器
  * @see sdm.pdf#2.4.3
  */
-struct IdtrInfo : public RegInfoBase {};
+struct IdtrInfo : public RegInfoBase {
+  struct Idtr {
+    uint16_t limit;
+    uint64_t base;
+  } __attribute__((packed));
+
+  using DataType = Idtr;
+  static constexpr uint64_t kBitWidth = 80;
+};
 
 /**
  * @brief tr 寄存器
