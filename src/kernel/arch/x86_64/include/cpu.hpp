@@ -310,6 +310,7 @@ struct GdtrInfo : public RegInfoBase {
 /**
  * @brief ldtr 寄存器
  * @see sdm.pdf#2.4.2
+ * @see sdm.pdf#6.3.1
  */
 struct LdtrInfo : public RegInfoBase {};
 
@@ -318,6 +319,35 @@ struct LdtrInfo : public RegInfoBase {};
  * @see sdm.pdf#2.4.3
  */
 struct IdtrInfo : public RegInfoBase {
+  /// 最大中断数
+  static constexpr const uint32_t kInterruptMaxCount = 22;
+
+  /// 中断名
+  static constexpr const char *const kInterruptNames[kInterruptMaxCount] = {
+      "Divide Error",
+      "Debug Exception",
+      "NMI Interrupt",
+      "Breakpoint",
+      "Overflow",
+      "BOUND Range Exceeded",
+      "Invalid Opcode (Undefined Opcode)",
+      "Device Not Available (No Math Coprocessor)",
+      "Double Fault",
+      "Coprocessor Segment Overrun (reserved)",
+      "Invalid TSS",
+      "Segment Not Present",
+      "Stack-Segment Fault",
+      "General Protection",
+      "Page Fault",
+      "(Intel reserved. Do not use.)",
+      "x87 FPU Floating-Point Error (Math Fault)",
+      "Alignment Check",
+      "Machine Check",
+      "SIMD Floating-Point Exception",
+      "Virtualization Exception",
+      "Control Protection Exception",
+  };
+
   /**
    * @brief idt 结构
    * @see sdm.pdf#6.14.1

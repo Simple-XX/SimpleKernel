@@ -44,6 +44,9 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
 
   DumpStack();
 
+  // asm("int 13");
+  auto aaa = 1 / 0;
+
   std::cout << "Hello ostream" << std::endl;
 
   InterruptInit(argc, argv);

@@ -20,11 +20,8 @@
 #include "iostream"
 #include "kernel_log.hpp"
 
-// Interrupt::InterruptFunc
-//     Interrupt::interrupt_handlers[cpu::cr::ScauseInfo::kInterruptMaxCount];
-
-// Interrupt::InterruptFunc
-//     Interrupt::exception_handlers[cpu::cr::ScauseInfo::kExceptionMaxCount];
+Interrupt::InterruptFunc
+    Interrupt::interrupt_handlers[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
 
 // __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
 // std::cout << std::endl;
@@ -45,21 +42,13 @@
 Interrupt::Interrupt() {
   if (is_inited == false) {
     // 注册默认中断处理函数
-    // for (auto &i : interrupt_handlers) {
-    //   i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-    //     printf("Default Interrupt handler [%s] 0x%X, 0x%p\n",
-    //            cpu::cr::ScauseInfo::kInterruptNames[cause], cause, context);
-    //     return 0;
-    //   };
-    // }
-    // // 注册默认异常处理函数
-    // for (auto &i : exception_handlers) {
-    //   i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-    //     printf("Default Exception handler [%s] 0x%X, 0x%p\n",
-    //            cpu::cr::ScauseInfo::kExceptionNames[cause], cause, context);
-    //     return 0;
-    //   };
-    // }
+    for (auto &i : interrupt_handlers) {
+      i = [](uint64_t cause, uint8_t *context) -> uint64_t {
+        printf("Default Interrupt handler [%s] 0x%X, 0x%p\n",
+               cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause, context);
+        return 0;
+      };
+    }
 
     // // 设置 trap vector
     // cpu::cr::kAllCsr.stvec.SetDirect((uint64_t)TarpEntry);
@@ -141,6 +130,8 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   std::cout << cpu::kAllCr.cr3 << std::endl;
   std::cout << cpu::kAllCr.cr4 << std::endl;
   std::cout << cpu::kAllCr.cr8 << std::endl;
+
+  kInterrupt.GetInstance();
 
   // 注册时钟中断
   // kInterrupt.GetInstance().RegisterInterruptFunc(

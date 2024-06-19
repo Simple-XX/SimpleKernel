@@ -52,12 +52,9 @@ class Interrupt final : public InterruptBase {
   void RegisterInterruptFunc(uint64_t cause, InterruptFunc func) override;
 
  private:
-//   /// 中断处理函数数组
-//   alignas(4) static InterruptFunc
-//       interrupt_handlers[cpu::cr::ScauseInfo::kInterruptMaxCount];
-//   /// 异常处理函数数组
-//   alignas(4) static InterruptFunc
-//       exception_handlers[cpu::cr::ScauseInfo::kExceptionMaxCount];
+  /// 中断处理函数数组
+  alignas(4) static InterruptFunc
+      interrupt_handlers[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
