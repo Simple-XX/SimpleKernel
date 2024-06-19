@@ -318,9 +318,43 @@ struct LdtrInfo : public RegInfoBase {};
  * @see sdm.pdf#2.4.3
  */
 struct IdtrInfo : public RegInfoBase {
+  /**
+   * @brief idt 结构
+   * @see sdm.pdf#6.14.1
+   */
+  struct Idt {
+    union {
+      struct {
+        // 低位地址
+        uint64_t offset0 : 16;
+        // 选择子
+        uint64_t selector : 16;
+        // 中断栈表
+        uint64_t ist : 3;
+        // 填充 0
+        uint64_t zero0 : 5;
+        // 类型
+        uint64_t type : 4;
+        // 填充 0
+        uint64_t zero1 : 1;
+        // 权限
+        uint64_t dpl : 2;
+        // 存在位
+        uint64_t p : 1;
+        // 中段地址
+        uint64_t offset1 : 16;
+        // 高位地址
+        uint64_t offset2 : 32;
+        // 保留
+        uint64_t reserved : 32;
+      } idt;
+      uint64_t val[2];
+    };
+  } __attribute__((packed));
+
   struct Idtr {
     uint16_t limit;
-    uint64_t base;
+    Idt base;
   } __attribute__((packed));
 
   using DataType = Idtr;
@@ -937,8 +971,8 @@ class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
       base;
 
   friend std::ostream &operator<<(std::ostream &os, const Idtr &idtr) {
-    printf("base: 0x%p, limit: %d", (void *)idtr.Read().base,
-           idtr.Read().limit);
+    printf("base: 0x%p, 0x%p, limit: %d", (void *)idtr.Read().base.val[0],
+           (void *)idtr.Read().base.val[1], idtr.Read().limit);
     return os;
   }
 };
