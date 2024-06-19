@@ -325,6 +325,26 @@ struct IdtrInfo : public RegInfoBase {
 
   using DataType = Idtr;
   static constexpr uint64_t kBitWidth = 80;
+
+  struct Limit {
+    using DataType = uint16_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 16;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
+  };
+
+  struct Base {
+    using DataType = uint64_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 64;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
+  };
 };
 
 /**
@@ -464,7 +484,7 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+      __asm__ volatile("sidt %0" : "=m"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
       // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
@@ -527,11 +547,11 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       __asm__ volatile("lgdt %0" : : "m"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
+      __asm__ volatile("lidt %0" : : "m"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("mov %0, %%cr0" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -543,7 +563,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("mov %0, %%cr8" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
+      Err("TODO\n");
     } else {
       Err("No Type\n");
       throw;
@@ -565,15 +585,15 @@ class WriteOnlyRegBase {
       value |= (1ULL << offset);
       Write(value);
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
-      // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
-      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("bts %%cr0, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -585,7 +605,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("bts %%cr8, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(offset) :);
+      Err("TODO\n");
     } else {
       Err("No Type\n");
       throw;
@@ -607,15 +627,15 @@ class WriteOnlyRegBase {
       value &= ~(1ULL << offset);
       Write(value);
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
-      // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
-      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("btr %%cr0, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -627,7 +647,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("btr %%cr8, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(offset) :);
+      Err("TODO\n");
     } else {
       Err("No Type\n");
       throw;
@@ -911,8 +931,14 @@ class Ldtr : public ReadWriteRegBase<reginfo::LdtrInfo> {
 
 class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
  public:
+  ReadWriteField<ReadWriteRegBase<reginfo::IdtrInfo>, reginfo::IdtrInfo::Limit>
+      limit;
+  ReadWriteField<ReadWriteRegBase<reginfo::IdtrInfo>, reginfo::IdtrInfo::Base>
+      base;
+
   friend std::ostream &operator<<(std::ostream &os, const Idtr &idtr) {
-    printf("val: 0x%p", (void *)idtr.Read());
+    printf("base: 0x%p, limit: %d", (void *)idtr.Read().base,
+           idtr.Read().limit);
     return os;
   }
 };
