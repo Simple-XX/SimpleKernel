@@ -352,9 +352,13 @@ struct IdtrInfo : public RegInfoBase {
     };
   } __attribute__((packed));
 
+  /**
+   * @brief idtr 结构
+   * @see sdm.pdf#2.4
+   */
   struct Idtr {
     uint16_t limit;
-    Idt base;
+    Idt *base;
   } __attribute__((packed));
 
   using DataType = Idtr;
@@ -971,8 +975,8 @@ class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
       base;
 
   friend std::ostream &operator<<(std::ostream &os, const Idtr &idtr) {
-    printf("base: 0x%p, 0x%p, limit: %d", (void *)idtr.Read().base.val[0],
-           (void *)idtr.Read().base.val[1], idtr.Read().limit);
+    printf("base: 0x%p, limit: %d", (void *)idtr.Read().base,
+           idtr.Read().limit);
     return os;
   }
 };
