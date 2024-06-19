@@ -445,7 +445,10 @@ class ReadOnlyRegBase {
     if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
-      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+      uint32_t low{};
+      uint32_t high{};
+      __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(0xC0000080) :);
+      value = ((uint64_t)high << 32) | low;
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       __asm__ volatile("pushfq; popq %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
@@ -508,7 +511,9 @@ class WriteOnlyRegBase {
     if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
-      // __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
+      uint32_t low = value & 0xFFFFFFFF;
+      uint32_t high = value >> 32;
+      __asm__ volatile("wrmsr" : : "c"(0xC0000080), "a"(low), "d"(high) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       __asm__ volatile("pushq %0; popfq" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
@@ -545,7 +550,12 @@ class WriteOnlyRegBase {
     if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
-      // __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
+      uint32_t low{};
+      uint32_t high{};
+      __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(0xC0000080) :);
+      uint64_t value = ((uint64_t)high << 32) | low;
+      value |= (1ULL << offset);
+      Write(value);
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
@@ -582,7 +592,12 @@ class WriteOnlyRegBase {
     if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
       __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
-      // __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
+      uint32_t low{};
+      uint32_t high{};
+      __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(0xC0000080) :);
+      uint64_t value = ((uint64_t)high << 32) | low;
+      value &= ~(1ULL << offset);
+      Write(value);
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
       // __asm__ volatile("pushq %0; popfq" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {

@@ -132,6 +132,7 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   kInterval = 100000;
   printf("kInterval: 0x%X\n", kInterval);
 
+  std::cout << cpu::kAllCr.efer << std::endl;
   std::cout << cpu::kAllCr.gdtr << std::endl;
   std::cout << cpu::kAllCr.gdtr.limit.Get() << std::endl;
   std::cout << cpu::kAllCr.gdtr.limit.Get(71) << std::endl;
