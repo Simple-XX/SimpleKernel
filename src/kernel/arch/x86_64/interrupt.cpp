@@ -134,10 +134,7 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
 
   std::cout << cpu::kAllCr.efer << std::endl;
   std::cout << cpu::kAllCr.gdtr << std::endl;
-  std::cout << cpu::kAllCr.gdtr.limit.Get() << std::endl;
-  std::cout << cpu::kAllCr.gdtr.limit.Get(71) << std::endl;
-  std::cout << cpu::kAllCr.gdtr.base.Get() << std::endl;
-  std::cout << cpu::kAllCr.gdtr.base.Get(127855256) << std::endl;
+  std::cout << cpu::kAllCr.idtr << std::endl;
   std::cout << cpu::kAllCr.rflags << std::endl;
   std::cout << cpu::kAllCr.cr0 << std::endl;
   std::cout << cpu::kAllCr.cr2 << std::endl;
