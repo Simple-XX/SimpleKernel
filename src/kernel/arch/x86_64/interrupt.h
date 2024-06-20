@@ -55,6 +55,9 @@ class Interrupt final : public InterruptBase {
   /// 中断处理函数数组
   alignas(4) static InterruptFunc
       interrupt_handlers[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
+
+  alignas(16) static cpu::reginfo::IdtrInfo::Idt
+      idts[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化
