@@ -50,7 +50,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
 
 
   // asm("int 13");
-  auto aaa = 1 / 0;
+  // auto aaa = 1 / 0;
 
   // 进入死循环
   while (1) {

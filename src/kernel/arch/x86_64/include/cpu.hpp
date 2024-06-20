@@ -274,18 +274,94 @@ struct RflagsInfo : public RegInfoBase {
 /**
  * @brief gdtr 寄存器
  * @see sdm.pdf#2.4.1
+ * @see sdm.pdf#3.5.1
+ * @see sdm.pdf#3.5.2
  */
 struct GdtrInfo : public RegInfoBase {
+  /**
+   * 段描述符结构
+   * @see sdm.pdf#3.4.5
+   */
+  struct SegmentDescriptor {
+    enum Type {
+      kDataReadOnly = 0,
+      kDataReadOnlyAccessed = 1,
+      kDataReadWrite = 2,
+      kDataReadWriteAccessed = 3,
+      kDataReadOnlyExpandDown = 4,
+      kDataReadOnlyExpandDownAccessed = 5,
+      kDataReadWriteExpandDown = 6,
+      kDataReadWriteExpandDownAccessed = 7,
+
+      kCodeExecuteOnly = 8,
+      kCodeExecuteOnlyAccessed = 9,
+      kCodeExecuteRead = 10,
+      kCodeExecuteReadAccessed = 11,
+      kCodeExecuteOnlyConforming = 12,
+      kCodeExecuteOnlyConformingAccessed = 13,
+      kCodeExecuteReadConforming = 14,
+      kCodeExecuteReadConformingAccessed = 15
+    };
+
+    enum S {
+      kSystem = 0,
+      kCodeData = 1,
+    };
+
+    enum DPL {
+      kRing0 = 0,
+      kRing1 = 1,
+      kRing2 = 2,
+      kRing3 = 3,
+    };
+
+    enum P {
+      kNotPresent = 0,
+      kPresent = 1,
+    };
+
+    enum AVL {
+      kNotAvailable = 0,
+      kAvailable = 1,
+    };
+
+    enum L {
+      kLegacy = 0,
+      k64Bit = 1,
+    };
+
+    union {
+      struct {
+        uint64_t unused1 : 40;
+        /// Segment type
+        uint64_t type : 4;
+        /// Descriptor type
+        uint64_t s : 1;
+        /// Specifies the privilege level of the segment
+        uint64_t dpl : 2;
+        /// Indicates whether the segment is present in memory (set) or not
+        /// present (clear).
+        uint64_t p : 1;
+        uint64_t unused2 : 4;
+        /// Available for use by system software
+        uint64_t avl : 1;
+        /// 64-bit code segment (IA-32e mode only)
+        uint64_t l : 1;
+        uint64_t unused3 : 10;
+      } segment_descriptor;
+      uint64_t val;
+    };
+  };
+
   struct Gdt {
     /// 全局描述符表限长
     uint16_t limit;
     /// 全局描述符表基地址
-    uint64_t base;
+    SegmentDescriptor *base;
   } __attribute__((packed));
 
   using DataType = Gdt;
 
-  /// @note Read Only
   struct Limit {
     using DataType = uint16_t;
     static constexpr uint64_t kBitOffset = 0;
@@ -550,11 +626,11 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       __asm__ volatile("sgdt %0" : "=m"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
       __asm__ volatile("sidt %0" : "=m"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+      Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("mov %%cr0, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -568,7 +644,7 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::CpuidInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      // __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
+      Err("TODO\n");
     } else {
       Err("No Type\n");
       throw;
@@ -808,6 +884,12 @@ class ReadOnlyField {
     } else if constexpr (std::is_same<RegInfo,
                                       reginfo::GdtrInfo::Base>::value) {
       return Reg::Read().base;
+    } else if constexpr (std::is_same<RegInfo,
+                                      reginfo::IdtrInfo::Limit>::value) {
+      return Reg::Read().limit;
+    } else if constexpr (std::is_same<RegInfo,
+                                      reginfo::IdtrInfo::Base>::value) {
+      return Reg::Read().base;
     } else {
       return (typename RegInfo::DataType)((Reg::Read() & RegInfo::kBitMask) >>
                                           RegInfo::kBitOffset);
@@ -824,6 +906,12 @@ class ReadOnlyField {
       return value;
     } else if constexpr (std::is_same<RegInfo,
                                       reginfo::GdtrInfo::Base>::value) {
+      return value;
+    } else if constexpr (std::is_same<RegInfo,
+                                      reginfo::IdtrInfo::Limit>::value) {
+      return value;
+    } else if constexpr (std::is_same<RegInfo,
+                                      reginfo::IdtrInfo::Base>::value) {
       return value;
     } else {
       return (typename RegInfo::DataType)((value & RegInfo::kBitMask) >>
