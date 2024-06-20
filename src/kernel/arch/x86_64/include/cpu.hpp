@@ -353,14 +353,17 @@ struct GdtrInfo : public RegInfoBase {
     };
   };
 
-  struct Gdt {
+  /// gdt 数量
+  static constexpr const uint16_t kGdtMaxCount = 8;
+
+  struct Gdtr {
     /// 全局描述符表限长
     uint16_t limit;
     /// 全局描述符表基地址
     SegmentDescriptor *base;
   } __attribute__((packed));
 
-  using DataType = Gdt;
+  using DataType = Gdtr;
 
   struct Limit {
     using DataType = uint16_t;
@@ -433,7 +436,7 @@ struct IdtrInfo : public RegInfoBase {
       struct {
         // 低位地址
         uint64_t offset1 : 16;
-        // 选择子
+        // 段选择子
         uint64_t selector : 16;
         // 中断栈表
         uint64_t ist : 3;
