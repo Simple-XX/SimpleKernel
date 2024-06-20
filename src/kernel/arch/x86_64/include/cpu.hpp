@@ -590,6 +590,79 @@ struct CpuidInfo : public RegInfoBase {};
  */
 struct Xcr0Info : public RegInfoBase {};
 
+/**
+ * @brief 段寄存器
+ * @see sdm.pdf#3.4.3
+ */
+namespace segment_register {
+/**
+ * @brief 段选择子
+ * @see sdm.pdf#3.4.2
+ */
+struct SegmentSelector : public RegInfoBase {
+  struct Rpl {
+    using DataType = uint8_t;
+    static constexpr uint64_t kBitOffset = 0;
+    static constexpr uint64_t kBitWidth = 2;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
+  };
+
+  struct Ti {
+    using DataType = bool;
+    static constexpr uint64_t kBitOffset = 2;
+    static constexpr uint64_t kBitWidth = 1;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
+  };
+
+  struct Index {
+    using DataType = uint16_t;
+    static constexpr uint64_t kBitOffset = 3;
+    static constexpr uint64_t kBitWidth = 13;
+    static constexpr uint64_t kBitMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) << kBitOffset : ~0ULL;
+    static constexpr uint64_t kAllSetMask =
+        (kBitWidth < 64) ? ((1ULL << kBitWidth) - 1) : ~0ULL;
+  };
+};
+
+struct CsInfo : public RegInfoBase {
+  using DataType = uint16_t;
+  static constexpr uint64_t kBitWidth = 16;
+};
+
+struct SsInfo : public RegInfoBase {
+  using DataType = uint16_t;
+  static constexpr uint64_t kBitWidth = 16;
+};
+
+struct DsInfo : public RegInfoBase {
+  using DataType = uint16_t;
+  static constexpr uint64_t kBitWidth = 16;
+};
+
+struct EsInfo : public RegInfoBase {
+  using DataType = uint16_t;
+  static constexpr uint64_t kBitWidth = 16;
+};
+
+struct FsInfo : public RegInfoBase {
+  using DataType = uint16_t;
+  static constexpr uint64_t kBitWidth = 16;
+};
+
+struct GsInfo : public RegInfoBase {
+  using DataType = uint16_t;
+  static constexpr uint64_t kBitWidth = 16;
+};
+
+};  // namespace segment_register
+
 };  // namespace reginfo
 
 // 第二部分：读/写模版实现
@@ -647,6 +720,30 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::CpuidInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::CsInfo>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::SsInfo>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::DsInfo>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::EsInfo>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::FsInfo>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::GsInfo>::value) {
       Err("TODO\n");
     } else {
       Err("No Type\n");
@@ -710,6 +807,30 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("mov %0, %%cr8" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::Cs0Info>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::Ss0Info>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::Ds0Info>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::Es0Info>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::Fs0Info>::value) {
+      Err("TODO\n");
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             reginfo::segment_register::Gs0Info>::value) {
       Err("TODO\n");
     } else {
       Err("No Type\n");
@@ -1234,6 +1355,56 @@ class Xcr0 : public ReadWriteRegBase<reginfo::Xcr0Info> {
   }
 };
 
+namespace segment_register {
+class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Cs &cs) {
+    printf("val: 0x%p", (void *)cs.Read());
+    return os;
+  }
+};
+
+class Ss : public ReadWriteRegBase<reginfo::segment_register::SsInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Ss &ss) {
+    printf("val: 0x%p", (void *)ss.Read());
+    return os;
+  }
+};
+
+class Ds : public ReadWriteRegBase<reginfo::segment_register::DsInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Ds &ds) {
+    printf("val: 0x%p", (void *)ds.Read());
+    return os;
+  }
+};
+
+class Es : public ReadWriteRegBase<reginfo::segment_register::EsInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Es &es) {
+    printf("val: 0x%p", (void *)es.Read());
+    return os;
+  }
+};
+
+class Fs : public ReadWriteRegBase<reginfo::segment_register::FsInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Fs &fs) {
+    printf("val: 0x%p", (void *)fs.Read());
+    return os;
+  }
+};
+
+class Gs : public ReadWriteRegBase<reginfo::segment_register::GsInfo> {
+ public:
+  friend std::ostream &operator<<(std::ostream &os, const Gs &gs) {
+    printf("val: 0x%p", (void *)gs.Read());
+    return os;
+  }
+};
+};  // namespace segment_register
+
 /// 通用寄存器
 struct AllXreg {
   Rbp rbp;
@@ -1253,6 +1424,12 @@ struct AllCr {
   cr::Cr8 cr8;
   Cpuid cpuid;
   Xcr0 xcr0;
+  segment_register::Cs cs;
+  segment_register::Ss ss;
+  segment_register::Ds ds;
+  segment_register::Es es;
+  segment_register::Fs fs;
+  segment_register::Gs gs;
 };
 
 };  // namespace
