@@ -593,6 +593,9 @@ struct Xcr0Info : public RegInfoBase {};
 /**
  * @brief 段寄存器
  * @see sdm.pdf#3.4.3
+ * @note In 64-bit mode the CS/SS/DS/ES segments are ignored and the base
+ * address is always 0 to provide a full 64bit address space. The FS and GS
+ * segments are still functional in 64-bit mode.
  */
 namespace segment_register {
 /**
@@ -810,27 +813,27 @@ class WriteOnlyRegBase {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::Cs0Info>::value) {
+                             reginfo::segment_register::CsInfo>::value) {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::Ss0Info>::value) {
+                             reginfo::segment_register::SsInfo>::value) {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::Ds0Info>::value) {
+                             reginfo::segment_register::DsInfo>::value) {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::Es0Info>::value) {
+                             reginfo::segment_register::EsInfo>::value) {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::Fs0Info>::value) {
+                             reginfo::segment_register::FsInfo>::value) {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::Gs0Info>::value) {
+                             reginfo::segment_register::GsInfo>::value) {
       Err("TODO\n");
     } else {
       Err("No Type\n");
