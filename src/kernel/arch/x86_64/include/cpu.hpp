@@ -281,8 +281,11 @@ struct GdtrInfo : public RegInfoBase {
   /**
    * 段描述符结构
    * @see sdm.pdf#3.4.5
+   * @see sdm.pdf#5.2.1
+   * @see sdm.pdf#5.3.1
    */
-  struct SegmentDescriptor {
+  class SegmentDescriptor {
+   public:
     enum Type {
       kDataReadOnly = 0,
       kDataReadOnlyAccessed = 1,
@@ -351,6 +354,42 @@ struct GdtrInfo : public RegInfoBase {
       } segment_descriptor;
       uint64_t val;
     };
+
+    explicit SegmentDescriptor(Type type, S s, DPL dpl, P p, AVL avl, L l)
+        : val(0) {
+      segment_descriptor.type = type;
+      segment_descriptor.s = s;
+      segment_descriptor.dpl = dpl;
+      segment_descriptor.p = p;
+      segment_descriptor.avl = avl;
+      segment_descriptor.l = l;
+    }
+
+    /// @name 构造/析构函数
+    /// @{
+    SegmentDescriptor() = default;
+    SegmentDescriptor(const SegmentDescriptor &) = delete;
+    SegmentDescriptor(SegmentDescriptor &&) = delete;
+    auto operator=(const SegmentDescriptor &) -> SegmentDescriptor & = delete;
+    auto operator=(SegmentDescriptor &&) -> SegmentDescriptor & = delete;
+    virtual ~SegmentDescriptor() = default;
+    /// @}
+
+    friend std::ostream &operator<<(
+        std::ostream &os, const SegmentDescriptor &segment_descriptor) {
+      printf("val: 0x%p, type: 0x%X, s: %s, dpl: 0x%X, p: %s, avl: %s, l: %s",
+             (void *)segment_descriptor.val,
+             segment_descriptor.segment_descriptor.type,
+             (segment_descriptor.segment_descriptor.s == kSystem) ? "System"
+                                                                  : "CodeData",
+             segment_descriptor.segment_descriptor.dpl,
+             segment_descriptor.segment_descriptor.p ? "Present" : "NotPresent",
+             segment_descriptor.segment_descriptor.avl ? "Available"
+                                                       : "NotAvailable",
+             (segment_descriptor.segment_descriptor.l == kLegacy) ? "Legacy"
+                                                                  : "64Bit");
+      return os;
+    }
   };
 
   /// gdt 数量
