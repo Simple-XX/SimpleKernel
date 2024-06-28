@@ -1362,7 +1362,7 @@ namespace segment_register {
 class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Cs &cs) {
-    printf("val: 0x%p", (void *)cs.Read());
+    printf("val: 0x%X", cs.Read());
     return os;
   }
 };
@@ -1370,7 +1370,7 @@ class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
 class Ss : public ReadWriteRegBase<reginfo::segment_register::SsInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Ss &ss) {
-    printf("val: 0x%p", (void *)ss.Read());
+    printf("val: 0x%X", ss.Read());
     return os;
   }
 };
@@ -1378,7 +1378,7 @@ class Ss : public ReadWriteRegBase<reginfo::segment_register::SsInfo> {
 class Ds : public ReadWriteRegBase<reginfo::segment_register::DsInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Ds &ds) {
-    printf("val: 0x%p", (void *)ds.Read());
+    printf("val: 0x%X", ds.Read());
     return os;
   }
 };
@@ -1386,7 +1386,7 @@ class Ds : public ReadWriteRegBase<reginfo::segment_register::DsInfo> {
 class Es : public ReadWriteRegBase<reginfo::segment_register::EsInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Es &es) {
-    printf("val: 0x%p", (void *)es.Read());
+    printf("val: 0x%X", es.Read());
     return os;
   }
 };
@@ -1394,7 +1394,7 @@ class Es : public ReadWriteRegBase<reginfo::segment_register::EsInfo> {
 class Fs : public ReadWriteRegBase<reginfo::segment_register::FsInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Fs &fs) {
-    printf("val: 0x%p", (void *)fs.Read());
+    printf("val: 0x%X", fs.Read());
     return os;
   }
 };
@@ -1402,7 +1402,7 @@ class Fs : public ReadWriteRegBase<reginfo::segment_register::FsInfo> {
 class Gs : public ReadWriteRegBase<reginfo::segment_register::GsInfo> {
  public:
   friend std::ostream &operator<<(std::ostream &os, const Gs &gs) {
-    printf("val: 0x%p", (void *)gs.Read());
+    printf("val: 0x%X", gs.Read());
     return os;
   }
 };
