@@ -335,7 +335,9 @@ struct GdtrInfo : public RegInfoBase {
 
     union {
       struct {
-        uint64_t unused1 : 40;
+        uint64_t limit_low : 16;
+        uint64_t base_low : 16;
+        uint64_t base_mid : 8;
         /// Segment type
         uint64_t type : 4;
         /// Descriptor type
@@ -345,12 +347,14 @@ struct GdtrInfo : public RegInfoBase {
         /// Indicates whether the segment is present in memory (set) or not
         /// present (clear).
         uint64_t p : 1;
-        uint64_t unused2 : 4;
+        uint64_t limit_high : 4;
         /// Available for use by system software
         uint64_t avl : 1;
         /// 64-bit code segment (IA-32e mode only)
         uint64_t l : 1;
-        uint64_t unused3 : 10;
+        uint64_t db : 1;
+        uint64_t g : 1;
+        uint64_t base_high : 8;
       } segment_descriptor;
       uint64_t val;
     };
@@ -368,10 +372,10 @@ struct GdtrInfo : public RegInfoBase {
     /// @name 构造/析构函数
     /// @{
     SegmentDescriptor() = default;
-    SegmentDescriptor(const SegmentDescriptor &) = delete;
-    SegmentDescriptor(SegmentDescriptor &&) = delete;
-    auto operator=(const SegmentDescriptor &) -> SegmentDescriptor & = delete;
-    auto operator=(SegmentDescriptor &&) -> SegmentDescriptor & = delete;
+    SegmentDescriptor(const SegmentDescriptor &) = default;
+    SegmentDescriptor(SegmentDescriptor &&) = default;
+    auto operator=(const SegmentDescriptor &) -> SegmentDescriptor & = default;
+    auto operator=(SegmentDescriptor &&) -> SegmentDescriptor & = default;
     virtual ~SegmentDescriptor() = default;
     /// @}
 
@@ -393,7 +397,7 @@ struct GdtrInfo : public RegInfoBase {
   };
 
   /// gdt 数量
-  static constexpr const uint16_t kGdtMaxCount = 8;
+  static constexpr const uint16_t kGdtMaxCount = 5;
 
   struct Gdtr {
     /// 全局描述符表限长
