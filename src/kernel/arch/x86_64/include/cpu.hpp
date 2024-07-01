@@ -646,6 +646,8 @@ namespace segment_register {
  * @see sdm.pdf#3.4.2
  */
 struct SegmentSelector : public RegInfoBase {
+  using DataType = uint16_t;
+  static constexpr uint64_t kBitWidth = 16;
   struct Rpl {
     using DataType = uint8_t;
     static constexpr uint64_t kBitOffset = 0;
@@ -678,35 +680,17 @@ struct SegmentSelector : public RegInfoBase {
 };
 
 /// 无法直接写入，通常是在调用远跳转、调用或返回时更改
-struct CsInfo : public RegInfoBase {
-  using DataType = uint16_t;
-  static constexpr uint64_t kBitWidth = 16;
-};
+struct CsInfo : public SegmentSelector {};
 
-struct SsInfo : public RegInfoBase {
-  using DataType = uint16_t;
-  static constexpr uint64_t kBitWidth = 16;
-};
+struct SsInfo : public SegmentSelector {};
 
-struct DsInfo : public RegInfoBase {
-  using DataType = uint16_t;
-  static constexpr uint64_t kBitWidth = 16;
-};
+struct DsInfo : public SegmentSelector {};
 
-struct EsInfo : public RegInfoBase {
-  using DataType = uint16_t;
-  static constexpr uint64_t kBitWidth = 16;
-};
+struct EsInfo : public SegmentSelector {};
 
-struct FsInfo : public RegInfoBase {
-  using DataType = uint16_t;
-  static constexpr uint64_t kBitWidth = 16;
-};
+struct FsInfo : public SegmentSelector {};
 
-struct GsInfo : public RegInfoBase {
-  using DataType = uint16_t;
-  static constexpr uint64_t kBitWidth = 16;
-};
+struct GsInfo : public SegmentSelector {};
 
 };  // namespace segment_register
 
@@ -1399,50 +1383,212 @@ class Xcr0 : public ReadWriteRegBase<reginfo::Xcr0Info> {
 };
 
 namespace segment_register {
-class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
+class Cs : public ReadOnlyRegBase<reginfo::segment_register::CsInfo> {
  public:
+  ReadOnlyField<ReadOnlyRegBase<reginfo::segment_register::CsInfo>,
+                reginfo::segment_register::CsInfo::Rpl>
+      rpl;
+
+  ReadOnlyField<ReadOnlyRegBase<reginfo::segment_register::CsInfo>,
+                reginfo::segment_register::CsInfo::Ti>
+      ti;
+
+  ReadOnlyField<ReadOnlyRegBase<reginfo::segment_register::CsInfo>,
+                reginfo::segment_register::CsInfo::Index>
+      index;
+
+  /// @name 构造/析构函数
+  /// @{
+  Cs() = default;
+  Cs(const Cs &) = delete;
+  Cs(Cs &&) = delete;
+  auto operator=(const Cs &) -> Cs & = delete;
+  auto operator=(Cs &&) -> Cs & = delete;
+  virtual ~Cs() = default;
+  /// @}
+
   friend std::ostream &operator<<(std::ostream &os, const Cs &cs) {
-    printf("val: 0x%X", cs.Read());
+    auto val = cs.Read();
+    auto rpl = cs.rpl.Get();
+    auto ti = cs.ti.Get();
+    auto index = cs.index.Get();
+    printf("val: 0x%X, rpl: %d, ti: %s, index: 0x%X", val, rpl,
+           ti ? "LDT" : "GDT", index);
     return os;
   }
 };
 
 class Ss : public ReadWriteRegBase<reginfo::segment_register::SsInfo> {
  public:
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::SsInfo>,
+                 reginfo::segment_register::SsInfo::Rpl>
+      rpl;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::SsInfo>,
+                 reginfo::segment_register::SsInfo::Ti>
+      ti;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::SsInfo>,
+                 reginfo::segment_register::SsInfo::Index>
+      index;
+
+  /// @name 构造/析构函数
+  /// @{
+  Ss() = default;
+  Ss(const Ss &) = delete;
+  Ss(Ss &&) = delete;
+  auto operator=(const Ss &) -> Ss & = delete;
+  auto operator=(Ss &&) -> Ss & = delete;
+  virtual ~Ss() = default;
+  /// @}
+
   friend std::ostream &operator<<(std::ostream &os, const Ss &ss) {
-    printf("val: 0x%X", ss.Read());
+    auto val = ss.Read();
+    auto rpl = ss.rpl.Get();
+    auto ti = ss.ti.Get();
+    auto index = ss.index.Get();
+    printf("val: 0x%X, rpl: %d, ti: %s, index: 0x%X", val, rpl,
+           ti ? "LDT" : "GDT", index);
     return os;
   }
 };
 
 class Ds : public ReadWriteRegBase<reginfo::segment_register::DsInfo> {
  public:
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::DsInfo>,
+                 reginfo::segment_register::DsInfo::Rpl>
+      rpl;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::DsInfo>,
+                 reginfo::segment_register::DsInfo::Ti>
+      ti;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::DsInfo>,
+                 reginfo::segment_register::DsInfo::Index>
+      index;
+
+  /// @name 构造/析构函数
+  /// @{
+  Ds() = default;
+  Ds(const Ds &) = delete;
+  Ds(Ds &&) = delete;
+  auto operator=(const Ds &) -> Ds & = delete;
+  auto operator=(Ds &&) -> Ds & = delete;
+  virtual ~Ds() = default;
+  /// @}
+
   friend std::ostream &operator<<(std::ostream &os, const Ds &ds) {
-    printf("val: 0x%X", ds.Read());
+    auto val = ds.Read();
+    auto rpl = ds.rpl.Get();
+    auto ti = ds.ti.Get();
+    auto index = ds.index.Get();
+    printf("val: 0x%X, rpl: %d, ti: %s, index: 0x%X", val, rpl,
+           ti ? "LDT" : "GDT", index);
     return os;
   }
 };
 
 class Es : public ReadWriteRegBase<reginfo::segment_register::EsInfo> {
  public:
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::EsInfo>,
+                 reginfo::segment_register::EsInfo::Rpl>
+      rpl;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::EsInfo>,
+                 reginfo::segment_register::EsInfo::Ti>
+      ti;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::EsInfo>,
+                 reginfo::segment_register::EsInfo::Index>
+      index;
+
+  /// @name 构造/析构函数
+  /// @{
+  Es() = default;
+  Es(const Es &) = delete;
+  Es(Es &&) = delete;
+  auto operator=(const Es &) -> Es & = delete;
+  auto operator=(Es &&) -> Es & = delete;
+  virtual ~Es() = default;
+  /// @}
+
   friend std::ostream &operator<<(std::ostream &os, const Es &es) {
-    printf("val: 0x%X", es.Read());
+    auto val = es.Read();
+    auto rpl = es.rpl.Get();
+    auto ti = es.ti.Get();
+    auto index = es.index.Get();
+    printf("val: 0x%X, rpl: %d, ti: %s, index: 0x%X", val, rpl,
+           ti ? "LDT" : "GDT", index);
     return os;
   }
 };
 
 class Fs : public ReadWriteRegBase<reginfo::segment_register::FsInfo> {
  public:
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::FsInfo>,
+                 reginfo::segment_register::FsInfo::Rpl>
+      rpl;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::FsInfo>,
+                 reginfo::segment_register::FsInfo::Ti>
+      ti;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::FsInfo>,
+                 reginfo::segment_register::FsInfo::Index>
+      index;
+
+  /// @name 构造/析构函数
+  /// @{
+  Fs() = default;
+  Fs(const Fs &) = delete;
+  Fs(Fs &&) = delete;
+  auto operator=(const Fs &) -> Fs & = delete;
+  auto operator=(Fs &&) -> Fs & = delete;
+  virtual ~Fs() = default;
+  /// @}
+
   friend std::ostream &operator<<(std::ostream &os, const Fs &fs) {
-    printf("val: 0x%X", fs.Read());
+    auto val = fs.Read();
+    auto rpl = fs.rpl.Get();
+    auto ti = fs.ti.Get();
+    auto index = fs.index.Get();
+    printf("val: 0x%X, rpl: %d, ti: %s, index: 0x%X", val, rpl,
+           ti ? "LDT" : "GDT", index);
     return os;
   }
 };
 
 class Gs : public ReadWriteRegBase<reginfo::segment_register::GsInfo> {
  public:
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::GsInfo>,
+                 reginfo::segment_register::GsInfo::Rpl>
+      rpl;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::GsInfo>,
+                 reginfo::segment_register::GsInfo::Ti>
+      ti;
+
+  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::GsInfo>,
+                 reginfo::segment_register::GsInfo::Index>
+      index;
+
+  /// @name 构造/析构函数
+  /// @{
+  Gs() = default;
+  Gs(const Gs &) = delete;
+  Gs(Gs &&) = delete;
+  auto operator=(const Gs &) -> Gs & = delete;
+  auto operator=(Gs &&) -> Gs & = delete;
+  virtual ~Gs() = default;
+  /// @}
+
   friend std::ostream &operator<<(std::ostream &os, const Gs &gs) {
-    printf("val: 0x%X", gs.Read());
+    auto val = gs.Read();
+    auto rpl = gs.rpl.Get();
+    auto ti = gs.ti.Get();
+    auto index = gs.index.Get();
+    printf("val: 0x%X, rpl: %d, ti: %s, index: 0x%X", val, rpl,
+           ti ? "LDT" : "GDT", index);
     return os;
   }
 };

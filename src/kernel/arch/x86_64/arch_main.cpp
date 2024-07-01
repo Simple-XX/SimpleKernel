@@ -29,6 +29,10 @@
 static cpu::Serial kSerial(cpu::kCom1);
 extern "C" void _putchar(char character) { kSerial.Write(character); }
 
+/// gdt 描述符表
+static cpu::reginfo::GdtrInfo::SegmentDescriptor
+    segment_descriptors[cpu::reginfo::GdtrInfo::kGdtMaxCount] = {};
+
 static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
                      uint8_t b, uint32_t w, uint32_t h) {
   static const int kPixelWidth = sizeof(uint32_t);
@@ -79,33 +83,35 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   kKernelElf.GetInstance() = KernelElf(kBasicInfo.GetInstance().elf_addr,
                                        kBasicInfo.GetInstance().elf_size);
 
-  auto sd0 = cpu::reginfo::GdtrInfo::SegmentDescriptor();
-
-  auto sd1 = cpu::reginfo::GdtrInfo::SegmentDescriptor(
+  // 设置段描述符
+  // 第一个全 0
+  segment_descriptors[0] = cpu::reginfo::GdtrInfo::SegmentDescriptor();
+  // 内核代码段描述符
+  segment_descriptors[1] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeExecuteRead,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing0,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
-
-  auto sd2 = cpu::reginfo::GdtrInfo::SegmentDescriptor(
+  // 内核数据段描述符
+  segment_descriptors[2] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kDataReadWrite,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing0,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
-
-  auto sd3 = cpu::reginfo::GdtrInfo::SegmentDescriptor(
+  // 用户代码段描述符
+  segment_descriptors[3] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeExecuteRead,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing3,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
-
-  auto sd4 = cpu::reginfo::GdtrInfo::SegmentDescriptor(
+  // 用户数据段描述符
+  segment_descriptors[4] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kDataReadWrite,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing3,
