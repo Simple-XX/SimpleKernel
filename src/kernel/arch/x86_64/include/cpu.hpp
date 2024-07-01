@@ -677,6 +677,7 @@ struct SegmentSelector : public RegInfoBase {
   };
 };
 
+/// 无法直接写入，通常是在调用远跳转、调用或返回时更改
 struct CsInfo : public RegInfoBase {
   using DataType = uint16_t;
   static constexpr uint64_t kBitWidth = 16;
@@ -770,27 +771,27 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::CsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %%cs, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::SsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %%ss, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::DsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %%ds, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::EsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %%es, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::FsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %%fs, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::GsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %%gs, %0" : "=r"(value) : :);
     } else {
       Err("No Type\n");
       throw;
@@ -856,28 +857,24 @@ class WriteOnlyRegBase {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::CsInfo>::value) {
-      Err("TODO\n");
-    } else if constexpr (std::is_same<
-                             RegInfo,
                              reginfo::segment_register::SsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %0, %%ss" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::DsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %0, %%ds" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::EsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %0, %%es" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::FsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %0, %%fs" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::GsInfo>::value) {
-      Err("TODO\n");
+      __asm__ volatile("mov %0, %%gs" : : "r"(value) :);
     } else {
       Err("No Type\n");
       throw;
