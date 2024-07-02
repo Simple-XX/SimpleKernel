@@ -31,7 +31,42 @@ extern "C" void _putchar(char character) { kSerial.Write(character); }
 
 /// gdt 描述符表
 static cpu::reginfo::GdtrInfo::SegmentDescriptor
-    segment_descriptors[cpu::reginfo::GdtrInfo::kGdtMaxCount] = {};
+    kSegmentDescriptors[cpu::reginfo::GdtrInfo::kGdtMaxCount] = {
+        // 第一个全 0
+        cpu::reginfo::GdtrInfo::SegmentDescriptor(),
+        // 内核代码段描述符
+        cpu::reginfo::GdtrInfo::SegmentDescriptor(
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeExecuteRead,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing0,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit),
+        // 内核数据段描述符
+        cpu::reginfo::GdtrInfo::SegmentDescriptor(
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kDataReadWrite,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing0,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit),
+        // 用户代码段描述符
+        cpu::reginfo::GdtrInfo::SegmentDescriptor(
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeExecuteRead,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing3,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit),
+        // 用户数据段描述符
+        cpu::reginfo::GdtrInfo::SegmentDescriptor(
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kDataReadWrite,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing3,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
+            cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit),
+};
 
 static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
                      uint8_t b, uint32_t w, uint32_t h) {
@@ -83,47 +118,12 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   kKernelElf.GetInstance() = KernelElf(kBasicInfo.GetInstance().elf_addr,
                                        kBasicInfo.GetInstance().elf_size);
 
-  // 设置段描述符
-  // 第一个全 0
-  segment_descriptors[0] = cpu::reginfo::GdtrInfo::SegmentDescriptor();
-  // 内核代码段描述符
-  segment_descriptors[1] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeExecuteRead,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing0,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
-  // 内核数据段描述符
-  segment_descriptors[2] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kDataReadWrite,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing0,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
-  // 用户代码段描述符
-  segment_descriptors[3] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeExecuteRead,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing3,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
-  // 用户数据段描述符
-  segment_descriptors[4] = cpu::reginfo::GdtrInfo::SegmentDescriptor(
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kDataReadWrite,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kCodeData,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kRing3,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kPresent,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
-      cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
   // 加载描述符
   cpu::reginfo::GdtrInfo::Gdtr gdtr{
       .limit = (sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
                 cpu::reginfo::GdtrInfo::kGdtMaxCount) -
                1,
-      .base = segment_descriptors,
+      .base = kSegmentDescriptors,
   };
   cpu::kAllCr.gdtr.Write(gdtr);
   // 刷新段选择子
