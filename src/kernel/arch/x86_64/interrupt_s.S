@@ -89,9 +89,15 @@ IsrErrorCode_\name:
     iretq
 .endm
 
-.macro IRQ name, no
-.global irq\name
-irq\name:
+/**
+ * @brief 中断请求处理
+ * @param name 函数名
+ * @param no irq 号
+ */
+.macro Irq name, no
+.global Irq_\name
+.type Irq_\name, @function
+Irq_\name:
     // 关中断
     cli
     // 保存寄存器

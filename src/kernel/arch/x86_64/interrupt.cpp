@@ -47,40 +47,22 @@ extern "C" void IsrNoErrorCode_MC();
 extern "C" void IsrNoErrorCode_XM();
 extern "C" void IsrNoErrorCode_VE();
 extern "C" void IsrNoErrorCode_SYCALL();
-
-/// IRQ:中断请求(Interrupt Request)
-/// 电脑系统计时器
-extern "C" void irq0(void);
-/// 键盘
-extern "C" void irq1(void);
-/// 与 IRQ9 相接，MPU-401 MD 使用
-extern "C" void irq2(void);
-/// 串口设备
-extern "C" void irq3(void);
-/// 串口设备
-extern "C" void irq4(void);
-/// 建议声卡使用
-extern "C" void irq5(void);
-/// 软驱传输控制使用
-extern "C" void irq6(void);
-/// 打印机传输控制使用
-extern "C" void irq7(void);
-/// 即时时钟
-extern "C" void irq8(void);
-/// 与 IRQ2 相接，可设定给其他硬件
-extern "C" void irq9(void);
-/// 建议网卡使用
-extern "C" void irq10(void);
-/// 建议 AGP 显卡使用
-extern "C" void irq11(void);
-/// 接 PS/2 鼠标，也可设定给其他硬件
-extern "C" void irq12(void);
-/// 协处理器使用
-extern "C" void irq13(void);
-/// IDE0 传输控制使用
-extern "C" void irq14(void);
-/// IDE1 传输控制使用
-extern "C" void irq15(void);
+extern "C" void Irq_0();
+extern "C" void Irq_1();
+extern "C" void Irq_2();
+extern "C" void Irq_3();
+extern "C" void Irq_4();
+extern "C" void Irq_5();
+extern "C" void Irq_6();
+extern "C" void Irq_7();
+extern "C" void Irq_8();
+extern "C" void Irq_9();
+extern "C" void Irq_10();
+extern "C" void Irq_11();
+extern "C" void Irq_12();
+extern "C" void Irq_13();
+extern "C" void Irq_14();
+extern "C" void Irq_15();
 
 struct intr_context_t {
   uint64_t r15;
@@ -110,6 +92,7 @@ extern "C" void TarpEntry(uint8_t no, intr_context_t *intr_context) {
 }
 
 void Interrupt::SetUpIdts() {
+  // isr
   idts[cpu::reginfo::IdtrInfo::kDivideError] = cpu::reginfo::IdtrInfo::Idt(
       (uint64_t)IsrNoErrorCode_DE, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
@@ -217,8 +200,89 @@ void Interrupt::SetUpIdts() {
       cpu::reginfo::IdtrInfo::Idt(
           (uint64_t)IsrNoErrorCode_SYCALL, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
-          cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+          cpu::reginfo::IdtrInfo::Idt::DPL::kRing3,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  // irq
+  idts[cpu::reginfo::IdtrInfo::kIrq0] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_0, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq1] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_1, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq2] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_2, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq3] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_3, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq4] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_4, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq5] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_5, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq6] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_6, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq7] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_7, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq8] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_8, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq9] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_9, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq10] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_10, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq11] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_11, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq12] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_12, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq13] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_13, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq14] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_14, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+  idts[cpu::reginfo::IdtrInfo::kIrq15] = cpu::reginfo::IdtrInfo::Idt(
+      (uint64_t)Irq_15, 8, 0x0,
+      cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+      cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+      cpu::reginfo::IdtrInfo::Idt::P::kPresent);
 }
 
 Interrupt::Interrupt() {
