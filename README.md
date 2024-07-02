@@ -53,6 +53,8 @@ boot branch
     # cmake --preset build_aarch64
     # 进入其中一个架构
     cd build_riscv64
+    # 编译内核
+    make kernel
     # 在 qemu 中运行
     make run
     ```
