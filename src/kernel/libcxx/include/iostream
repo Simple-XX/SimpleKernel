@@ -1,0 +1,62 @@
+
+/**
+ * @file iostream
+ * @brief C++ 输入输出
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/MRNIU/MiniCRT
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_
+
+#include <cstdint>
+
+namespace std {
+class ostream {
+ public:
+  enum openmode : uint8_t {
+    in = 1,
+    out = 2,
+    binary = 4,
+    trunc = 8,
+  };
+
+  /// @name 构造/析构函数
+  /// @{
+  ostream() = default;
+  ostream(const ostream&) = default;
+  ostream(ostream&&) = default;
+  auto operator=(const ostream&) -> ostream& = default;
+  auto operator=(ostream&&) -> ostream& = default;
+  ~ostream() = default;
+  /// @}
+
+  ostream& operator<<(int8_t val);
+  ostream& operator<<(uint8_t val);
+  ostream& operator<<(const char* val);
+  ostream& operator<<(int16_t val);
+  ostream& operator<<(uint16_t val);
+  ostream& operator<<(int32_t val);
+  ostream& operator<<(uint32_t val);
+  ostream& operator<<(int64_t val);
+  ostream& operator<<(uint64_t val);
+
+  ostream& operator<<(ostream& (*)(ostream&));
+};
+
+inline ostream& endl(ostream& os) { return os << "\n"; }
+
+[[maybe_unused]] static ostream cout;
+
+};  // namespace std
+
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_ */

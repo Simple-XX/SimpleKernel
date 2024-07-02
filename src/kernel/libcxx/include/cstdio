@@ -1,0 +1,23 @@
+
+/**
+ * @file cstdio
+ * @brief cstdio 定义
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * Based on https://github.com/mpaland/printf
+ * @version 1.0
+ * @date 2023-05-08
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-05-08<td>Zone.N<td>创建文件
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTDIO_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTDIO_
+
+#include "stdio.h"
+
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTDIO_ */

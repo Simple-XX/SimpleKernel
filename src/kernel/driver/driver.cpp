@@ -16,9 +16,9 @@
 
 #include "driver.h"
 
-int32_t driver(uint32_t _argc, uint8_t **_argv) {
-  (void)_argc;
-  (void)_argv;
+uint32_t Driver(uint32_t argc, uint8_t *argv) {
+  (void)argc;
+  (void)argv;
 
   // 进入死循环
   while (1) {

@@ -1,0 +1,22 @@
+
+[submodule "3rd/printf_bare_metal"]
+	path = 3rd/printf_bare_metal
+	url = https://github.com/MRNIU/printf_bare_metal.git
+[submodule "3rd/opensbi_interface"]
+	path = 3rd/opensbi_interface
+	url = https://github.com/MRNIU/opensbi_interface.git
+[submodule "3rd/opensbi"]
+	path = 3rd/opensbi
+	url = https://github.com/riscv-software-src/opensbi.git
+[submodule "3rd/gdbinit"]
+	path = 3rd/gdbinit
+	url = https://github.com/gdbinit/Gdbinit.git
+[submodule "3rd/gnu-efi"]
+	path = 3rd/gnu-efi
+	url = https://github.com/ncroxon/gnu-efi.git
+[submodule "3rd/dtc"]
+	path = 3rd/dtc
+	url = https://git.kernel.org/pub/scm/utils/dtc/dtc.git
+[submodule "3rd/googletest"]
+	path = 3rd/googletest
+	url = https://github.com/google/googletest.git

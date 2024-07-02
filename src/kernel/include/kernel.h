@@ -14,17 +14,86 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_KERNEL_H
-#define SIMPLEKERNEL_KERNEL_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_
+#define SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_
 
-#include "cstdint"
+#include <cstddef>
+#include <cstdint>
+
+#include "singleton.hpp"
+
+struct BasicInfo {
+  /// 最大内存表数量
+  static constexpr const uint32_t kMemoryMapMaxCount = 256;
+  struct MemoryMap {
+    /// 内存类型
+    enum {
+      /// 可用
+      kTypeRam = 1,
+      /// 保留
+      kTypeReserved,
+      /// ACPI
+      kTypeAcpi,
+      /// NV
+      kTypeNvs,
+      /// 不可用
+      kTypeUnUsable
+    };
+    /// 地址
+    uint64_t base_addr;
+    /// 长度
+    uint64_t length;
+    /// 类型
+    uint32_t type;
+    /// 保留
+    uint32_t reserved;
+  } memory_map[kMemoryMapMaxCount];
+  /// 内存表数量
+  uint32_t memory_map_count;
+
+  /// 显示缓冲区
+  struct FrameBuffer {
+    /// 地址
+    uint64_t base;
+    /// 长度
+    uint32_t size;
+    /// 屏幕宽像素个数
+    uint32_t width;
+    /// 屏幕高像素个数
+    uint32_t height;
+    /// 每行字节数
+    uint32_t pitch;
+    /// 每像素字节数
+    uint8_t bpp;
+    /// 显示类型
+    uint8_t type;
+    /// 保留
+    uint8_t reserved;
+  } framebuffer;
+
+  /// elf 地址
+  uint64_t elf_addr;
+  /// elf 大小
+  size_t elf_size;
+};
+
+/**
+ * @brief 负责 crtbegin 的工作
+ * @param  argc 由 bootloader 传递的参数，在不同架构有不同的含义
+ * @param  argv 由 bootloader 传递的参数，在不同架构有不同的含义
+ */
+extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
+                                                     uint8_t* argv);
 
 /**
  * @brief 内核入口
- * @param  _argc                   参数个数
- * @param  _argv                   参数列表
- * @return int                     正常返回 0
+ * @param argc 参数个数
+ * @param argv 参数指针
+ * @return uint32_t 正常返回 0
  */
-int main(int _argc, char **_argv);
+uint32_t main(uint32_t argc, uint8_t* argv);
 
-#endif /* SIMPLEKERNEL_KERNEL_H */
+/// 保存内核基本信息
+[[maybe_unused]] static Singleton<BasicInfo> kBasicInfo;
+
+#endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_ */

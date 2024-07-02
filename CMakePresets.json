@@ -7,15 +7,25 @@
   },
   "configurePresets": [
     {
+      "name": "host",
+      "description": "Linux Only",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
       "name": "std",
       "description": "This preset makes sure the project actually builds with at least the specified standard",
       "hidden": true,
       "cacheVariables": {
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_C_STANDARD": "17",
+        "CMAKE_C_STANDARD": "23",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_CXX_STANDARD": "23",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON"
       }
     },
@@ -23,9 +33,9 @@
       "name": "configurePresets_base",
       "hidden": true,
       "inherits": [
+        "host",
         "std"
       ],
-      "condition": true,
       "displayName": "configurePresets_base",
       "description": "base configurePresets",
       "generator": "Unix Makefiles",
@@ -35,7 +45,7 @@
       "cacheVariables": {
         "CMAKE_VERBOSE_MAKEFILE": {
           "type": "BOOL",
-          "value": "TRUE"
+          "value": "FALSE"
         },
         "CMAKE_EXPORT_COMPILE_COMMANDS": {
           "type": "BOOL",
@@ -44,6 +54,10 @@
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
           "value": "Debug"
+        },
+        "CMAKE_SYSTEM_NAME": {
+          "type": "STRING",
+          "value": "Generic"
         },
         "COVERAGE_OUTPUT_DIR": {
           "type": "STRING",
@@ -83,12 +97,20 @@
       ],
       "displayName": "build x86_64 kernel",
       "description": "build x86_64 kernel",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-x86_64-gcc.cmake",
+      "toolchainFile": "${sourceDir}/cmake/x86_64-gcc.cmake",
       "binaryDir": "${sourceDir}/build_x86_64",
       "cacheVariables": {
-        "TARGET_ARCH": {
+        "CMAKE_SYSTEM_PROCESSOR": {
           "type": "STRING",
           "value": "x86_64"
+        },
+        "EXECUTABLE_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_x86_64/bin"
+        },
+        "LIBRARY_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_x86_64/lib"
         }
       }
     },
@@ -100,12 +122,49 @@
       ],
       "displayName": "build riscv64 kernel",
       "description": "build riscv64 kernel",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-riscv64-gcc.cmake",
+      "toolchainFile": "${sourceDir}/cmake/riscv64-gcc.cmake",
       "binaryDir": "${sourceDir}/build_riscv64",
       "cacheVariables": {
-        "TARGET_ARCH": {
+        "CMAKE_SYSTEM_PROCESSOR": {
           "type": "STRING",
           "value": "riscv64"
+        },
+        "EXECUTABLE_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_riscv64/bin"
+        },
+        "LIBRARY_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_riscv64/lib"
+        },
+        "USE_NO_RELAX": {
+          "type": "BOOL",
+          "value": "OFF"
+        }
+      }
+    },
+    {
+      "name": "build_aarch64",
+      "hidden": false,
+      "inherits": [
+        "configurePresets_base"
+      ],
+      "displayName": "build aarch64 kernel",
+      "description": "build aarch64 kernel",
+      "toolchainFile": "${sourceDir}/cmake/aarch64-gcc.cmake",
+      "binaryDir": "${sourceDir}/build_aarch64",
+      "cacheVariables": {
+        "CMAKE_SYSTEM_PROCESSOR": {
+          "type": "STRING",
+          "value": "aarch64"
+        },
+        "EXECUTABLE_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_aarch64/bin"
+        },
+        "LIBRARY_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build_aarch64/lib"
         }
       }
     }

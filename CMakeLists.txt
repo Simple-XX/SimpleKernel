@@ -41,30 +41,37 @@ include(compile_config)
 
 # qemu 参数设置
 list(APPEND QEMU_FLAGS
-    # 使用标准输出显示
-    -serial stdio
-    # 启动 telnet 服务，使用 2333 端口，不等待连接
-    -monitor ${QEMU_MONITOR_ARG}
+        # 使用标准输出显示
+        -serial stdio
+        # 启动 telnet 服务，使用 2333 端口，不等待连接
+        -monitor ${QEMU_MONITOR_ARG}
 )
 # 目标平台参数
-if(TARGET_ARCH STREQUAL "x86_64")
+if (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
     list(APPEND QEMU_FLAGS
-        -m 128M
-        -net none
-        -bios ${ovmf_BINARY_DIR}/OVMF_${TARGET_ARCH}.fd
-        -hda fat:rw:./image/
+            -m 128M
+            -net none
+            -bios ${ovmf_BINARY_DIR}/OVMF_${CMAKE_SYSTEM_PROCESSOR}.fd
+            -hda fat:rw:./image/
     )
-elseif(TARGET_ARCH STREQUAL "riscv64")
+elseif (CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv64")
     list(APPEND QEMU_FLAGS
-        -machine virt
-        -nographic
-        # 可选项，qemu7.0 自带了 opensbi1.0
-        -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
-        -kernel $<TARGET_FILE:kernel>
+            -machine virt
+            -nographic
+            # 可选项，qemu7.0 自带了 opensbi1.0
+            -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
+            -kernel $<TARGET_FILE:kernel>
     )
-elseif(TARGET_ARCH STREQUAL "aarch64")
-    # @todo
-endif()
+elseif (CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND QEMU_FLAGS
+            -machine virt
+            -cpu cortex-a57
+            -m 128M
+            -net none
+            -bios ${ovmf_BINARY_DIR}/OVMF_${CMAKE_SYSTEM_PROCESSOR}.fd
+            -hda fat:rw:./image/
+    )
+endif ()
 
 # 添加要编译的目录
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
@@ -72,11 +79,11 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/test)
 add_subdirectory(${PROJECT_SOURCE_DIR}/doc)
 
 # 添加 run 和 debug target
-add_run_target(NAME run
-    DEPENDS $<$<STREQUAL:${TARGET_ARCH},x86_64>:boot> kernel ${RUN_DEPENDS} ${DEBUG_DEPENDS}
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-    TARGET ${TARGET_ARCH}
-    BOOT ${PROJECT_BINARY_DIR}/src/boot/boot.efi
-    KERNEL $<TARGET_FILE:kernel>
-    QEMU_FLAGS ${QEMU_FLAGS}
+add_run_target(
+        DEPENDS $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:boot> kernel ${RUN_DEPENDS} ${DEBUG_DEPENDS}
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        TARGET ${CMAKE_SYSTEM_PROCESSOR}
+        BOOT ${PROJECT_BINARY_DIR}/src/boot/boot.efi
+        KERNEL $<TARGET_FILE:kernel>
+        QEMU_FLAGS ${QEMU_FLAGS}
 )

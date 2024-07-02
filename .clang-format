@@ -7,6 +7,6 @@
 ---
 # @version clang-format version 15
 # @see https://clang.llvm.org/docs/ClangFormatStyleOptions.html
-# 使用 LLVM 规范
-BasedOnStyle: LLVM
+# 使用 Google 规范
+BasedOnStyle: Google
 ...

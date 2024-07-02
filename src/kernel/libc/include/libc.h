@@ -14,25 +14,7 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_LIBC_H
-#define SIMPLEKERNEL_LIBC_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "stdint.h"
-
-/**
- * @brief 入口
- * @param  _argc                   参数个数
- * @param  _argv                   参数列表
- * @return int32_t                 正常返回 0
- */
-int32_t libc(uint32_t _argc, uint8_t **_argv);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* SIMPLEKERNEL_LIBC_H */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_ */

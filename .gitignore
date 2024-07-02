@@ -4,17 +4,13 @@
 #
 # .gitignore for Simple-XX/SimpleKernel.
 
-*.o
 .DS_Store
-build
 build_aarch64
 build_riscv64
 build_x86_64
 doc/html
-cmake-build*
 .gdbinit
-tools/opensbi/build
 .vscode
 .idea
-3rd
 Doxyfile
+.gdbinit

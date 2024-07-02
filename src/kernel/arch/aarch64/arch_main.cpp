@@ -1,7 +1,7 @@
 
 /**
- * @file arch.cpp
- * @brief arch cpp
+ * @file arch_main.cpp
+ * @brief arch_main cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -15,10 +15,14 @@
  */
 
 #include "arch.h"
+#include "cstdio"
 
-int32_t arch(uint32_t _argc, uint8_t **_argv) {
-  (void)_argc;
-  (void)_argv;
+// printf_bare_metal 基本输出实现
+extern "C" void _putchar(char character) { (void)character; }
+
+uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
+  (void)argc;
+  (void)argv;
 
   // 进入死循环
   while (1) {

@@ -14,19 +14,46 @@
  * </table>
  */
 
+#include "macro.S"
+
 // clang-format off
 
 .section .text.boot
-.global _start
-.type _start, @function
-.extern main
-_start:
+.global _boot
+.type _boot, @function
+.extern _start
+#if USE_NO_RELAX == 0
+.extern __global_pointer$
+#endif
+_boot:
+
+#if USE_NO_RELAX == 0
+/// @see riscv-abi.pdf#9.1.4
+/// https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/tag/v1.0
+    // 初始化 gp 寄存器
+    // 如果不初始化，则需要在编译时添加 -mno-relax 选项
+.option push
+.option norelax
+1:  auipc gp, %pcrel_hi(__global_pointer$)
+    addi  gp, gp, %pcrel_lo(1b)
+.option pop
+#endif
+
     // 设置栈地址
     la sp, stack_top
+
+    // 保存 sbi 传递的参数
+    // 开辟栈空间
+    addi sp, sp, -8*2
+    // a0 为启动核 id
+    SdBase a0, 0, sp
+    // a1 为 dtb 地址
+    SdBase a1, 1, sp
+
     // 跳转到 C 代码执行
-    call main
-loop:
-    j loop
+    call _start
+
+    wfi
 
 // 声明所属段
 .section .bss.boot

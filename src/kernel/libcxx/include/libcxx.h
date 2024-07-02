@@ -14,17 +14,19 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_LIBCXX_H
-#define SIMPLEKERNEL_LIBCXX_H
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_
 
-#include "cstdint"
+#include <cstdint>
 
 /**
- * @brief 入口
- * @param  _argc                   参数个数
- * @param  _argv                   参数列表
- * @return int32_t                 正常返回 0
+ * @brief 构造 c++ 全局对象
  */
-int32_t libcxx(uint32_t _argc, uint8_t **_argv);
+void CppInit();
 
-#endif /* SIMPLEKERNEL_LIBCXX_H */
+/**
+ * @brief 析构 c++ 全局对象
+ */
+void CppDeInit();
+
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_ */

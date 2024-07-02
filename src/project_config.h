@@ -14,11 +14,11 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_PROJECT_CONFIG_H
-#define SIMPLEKERNEL_PROJECT_CONFIG_H
+#ifndef SIMPLEKERNEL_SRC_PROJECT_CONFIG_H_
+#define SIMPLEKERNEL_SRC_PROJECT_CONFIG_H_
 
-#include "cstdint"
+#include <cstdint>
 
 #define KERNEL_NAME (wchar_t *)L"kernel.elf"
 
-#endif /* SIMPLEKERNEL_PROJECT_CONFIG_H */
+#endif /* SIMPLEKERNEL_SRC_PROJECT_CONFIG_H_ */

@@ -1,4 +1,3 @@
-
 /**
  * @file main.cpp
  * @brief 内核入口
@@ -14,15 +13,38 @@
  * </table>
  */
 
-#include "kernel.h"
+#include <cstdint>
 
-int main(int _argc, char **_argv) {
-  (void)_argc;
-  (void)_argv;
+#include "arch.h"
+#include "cstdio"
+#include "iostream"
+#include "kernel.h"
+#include "kernel_log.hpp"
+#include "libcxx.h"
+
+void _start(uint32_t argc, uint8_t *argv) {
+  CppInit();
+  main(argc, argv);
+  CppDeInit();
 
   // 进入死循环
   while (1) {
     ;
   }
+}
+
+uint32_t main(uint32_t argc, uint8_t *argv) {
+  // 架构相关初始化
+  [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
+
+  printf("Hello SimpleKernel\n");
+  Info("Hello SimpleKernel\n");
+  Warn("Hello SimpleKernel\n");
+  Err("Hello SimpleKernel\n");
+
+  DumpStack();
+
+  std::cout << "Hello ostream" << std::endl;
+
   return 0;
 }
