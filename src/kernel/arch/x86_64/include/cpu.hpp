@@ -272,6 +272,34 @@ struct RflagsInfo : public RegInfoBase {
 };
 
 /**
+ * @brief 系统段与门描述符类型
+ * @see sdm.pdf#3.5
+ */
+enum SystemSegmentAndGateDescriptorTypes {
+  kReserved0 = 0,
+  k16BitTssAvailable = 1,
+  kLdt = 2,
+  k16BitTssBusy = 3,
+  k16BitCallGate = 4,
+  kTaskGate = 5,
+  k16BitInterruptGate = 6,
+  k16BitTrapGate = 7,
+  kReserved8 = 8,
+  k32BitTssAvailable = 9,
+  k64BitTssAvailable = k32BitTssAvailable,
+  kReserved10 = 10,
+  k32BitTssBusy = 11,
+  k64BitTssBusy = k32BitTssBusy,
+  k32BitCallGate = 12,
+  k64BitCallGate = k32BitCallGate,
+  kReserved13 = 13,
+  k32BitInterruptGate = 14,
+  k64BitInterruptGate = k32BitInterruptGate,
+  k32BitTrapGate = 15,
+  k64BitTrapGate = k32BitTrapGate,
+};
+
+/**
  * @brief gdtr 寄存器
  * @see sdm.pdf#2.4.1
  * @see sdm.pdf#3.5.1
@@ -475,6 +503,8 @@ struct IdtrInfo : public RegInfoBase {
    * @see sdm.pdf#6.14.1
    */
   struct Idt {
+    using Type = SystemSegmentAndGateDescriptorTypes;
+
     union {
       struct {
         // 低位地址
