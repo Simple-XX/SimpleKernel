@@ -42,22 +42,6 @@ cpu::reginfo::IdtrInfo::Idt
 //                             nullptr);
 // }
 
-void set_idt(cpu::reginfo::IdtrInfo::Idt *idt, uint64_t base, uint16_t selector,
-             uint8_t ist, uint8_t type, uint8_t dpl, uint8_t p) {
-  idt->idt.offset1 = base & 0xFFFF;
-  idt->idt.selector = selector;
-  idt->idt.ist = ist;
-  idt->idt.zero0 = 0;
-  idt->idt.type = type;
-  idt->idt.zero1 = 0;
-  idt->idt.dpl = dpl;
-  idt->idt.p = p;
-  idt->idt.offset2 = (base >> 16) & 0xFFFF;
-  idt->idt.offset3 = base >> 32;
-  idt->idt.reserved = 0;
-  return;
-}
-
 Interrupt::Interrupt() {
   if (is_inited == false) {
     // 注册默认中断处理函数
@@ -72,7 +56,11 @@ Interrupt::Interrupt() {
     // 初始化 idts
     // for (auto &i : idts)
     for (size_t i = 0; i < cpu::reginfo::IdtrInfo::kInterruptMaxCount; i++) {
-      set_idt(&idts[i], (uint64_t)&interrupt_handlers, 8, 0x0, 0xE, 0, 1);
+      idts[i] = cpu::reginfo::IdtrInfo::Idt(
+          (uint64_t)&interrupt_handlers, 8, 0x0,
+          cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
+          cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
+          cpu::reginfo::IdtrInfo::Idt::P::kPresent);
     }
 
     static auto idtr = cpu::reginfo::IdtrInfo::Idtr{
@@ -81,13 +69,15 @@ Interrupt::Interrupt() {
                  1,
         .base = idts,
     };
-    printf("idtr: 0x%p\n", &idtr);
-    printf("idtr.limit: %d\n", idtr.limit);
-    printf("idtr.base: 0x%p\n", idtr.base);
     cpu::kAllCr.idtr.Write(idtr);
 
     std::cout << cpu::kAllCr.idtr << std::endl;
-    // while(1);
+    for (size_t i = 0; i < (cpu::kAllCr.idtr.Read().limit + 1) /
+                               sizeof(cpu::reginfo::IdtrInfo::Idtr);
+         i++) {
+      printf("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
+      std::cout << *(cpu::kAllCr.idtr.Read().base + i) << std::endl;
+    }
 
     // // 开启 Supervisor 中断
     // cpu::cr::kAllCsr.sstatus.sie.Set();

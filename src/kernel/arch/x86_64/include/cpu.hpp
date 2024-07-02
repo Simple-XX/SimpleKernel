@@ -299,6 +299,20 @@ enum SystemSegmentAndGateDescriptorTypes {
   k64BitTrapGate = k32BitTrapGate,
 };
 
+/// 描述符权限级别
+enum DescriptorDpl {
+  kRing0 = 0,
+  kRing1 = 1,
+  kRing2 = 2,
+  kRing3 = 3,
+};
+
+/// 描述符存在位
+enum DescriptorP {
+  kNotPresent = 0,
+  kPresent = 1,
+};
+
 /**
  * @brief gdtr 寄存器
  * @see sdm.pdf#2.4.1
@@ -339,17 +353,8 @@ struct GdtrInfo : public RegInfoBase {
       kCodeData = 1,
     };
 
-    enum DPL {
-      kRing0 = 0,
-      kRing1 = 1,
-      kRing2 = 2,
-      kRing3 = 3,
-    };
-
-    enum P {
-      kNotPresent = 0,
-      kPresent = 1,
-    };
+    using DPL = DescriptorDpl;
+    using P = DescriptorP;
 
     enum AVL {
       kNotAvailable = 0,
@@ -472,6 +477,68 @@ struct IdtrInfo : public RegInfoBase {
   /// 最大中断数
   static constexpr const uint32_t kInterruptMaxCount = 22;
 
+  /// 中断号
+  /// @see sdm.pdf#6.3.1
+  enum {
+    kDivideError = 0,
+    kDebugException = 1,
+    kNmiInterrupt = 2,
+    kBreakpoint = 3,
+    kOverflow = 4,
+    kBoundRangeExceeded = 5,
+    kInvalidOpcode = 6,
+    kDeviceNotAvailable = 7,
+    kDoubleFault = 8,
+    kCoprocessorSegmentOverrun = 9,
+    kInvalidTss = 10,
+    kSegmentNotPresent = 11,
+    kStackSegmentFault = 12,
+    kGeneralProtection = 13,
+    kPageFault = 14,
+    kX87FpuFloatingPointError = 16,
+    kAlignmentCheck = 17,
+    kMachineCheck = 18,
+    kSIMDFloatingPointException = 19,
+    kVirtualizationException = 20,
+    ControlProtectionException = 21,
+
+    /// @todo
+    /// 电脑系统计时器
+    kIrq0 = 32,
+    /// 键盘
+    kIrq1 = 33,
+    /// 与 IRQ9 相接，MPU-401 MD 使用
+    kIrq2 = 34,
+    /// 串口设备
+    kIrq3 = 35,
+    /// 串口设备
+    kIrq4 = 36,
+    /// 建议声卡使用
+    kIrq5 = 37,
+    /// 软驱传输控制使用
+    kIrq6 = 38,
+    /// 打印机传输控制使用
+    kIrq7 = 39,
+    /// 即时时钟
+    kIrq8 = 40,
+    /// 与 IRQ2 相接，可设定给其他硬件
+    kIrq9 = 41,
+    /// 建议网卡使用
+    kIrq10 = 42,
+    /// 建议 AGP 显卡使用
+    kIrq11 = 43,
+    /// 接 PS/2 鼠标，也可设定给其他硬件
+    kIrq12 = 44,
+    /// 协处理器使用
+    kIrq13 = 45,
+    /// SATA 主硬盘
+    kIrq14 = 46,
+    /// SATA 从硬盘
+    kIrq15 = 47,
+    /// 系统调用
+    kIrq128 = 128,
+  };
+
   /// 中断名
   static constexpr const char *const kInterruptNames[kInterruptMaxCount] = {
       "Divide Error",
@@ -499,12 +566,39 @@ struct IdtrInfo : public RegInfoBase {
   };
 
   /**
+   * @brief 错误码结构
+   * @see sdm.pdf#6.13
+   */
+  struct ErrorCode {
+    // When set, indicates that the exception occurred during delivery of an
+    // event external to the program, such as an interrupt or an earlier
+    // exception.1 The bit is cleared if the exception occurred during delivery
+    // of a software interrupt (INT n, INT3, or INTO).
+    uint32_t ext : 1;
+    // When set, indicates that the index portion of the error code refers to a
+    // gate descriptor in the IDT; when clear, indicates that the index refers
+    // to a descriptor in the GDT or the current LDT.
+    uint32_t idt : 1;
+    // Only used when the IDT flag is clear. When set, the TI flag indicates
+    // that the index portion of the error code refers to a segment or gate
+    // descriptor in the LDT; when clear, it indi- cates that the index refers
+    // to a descriptor in the current GDT.
+    uint32_t ti : 1;
+    // The segment selector index field provides an index into the IDT, GDT, or
+    // current LDT to the segment or gate selector being referenced by the error
+    // code.
+    uint32_t segment_selector_index : 29;
+  };
+
+  /**
    * @brief idt 结构
    * @see sdm.pdf#6.14.1
    */
   class Idt {
    public:
     using Type = SystemSegmentAndGateDescriptorTypes;
+    using DPL = DescriptorDpl;
+    using P = DescriptorP;
 
     union {
       struct {
