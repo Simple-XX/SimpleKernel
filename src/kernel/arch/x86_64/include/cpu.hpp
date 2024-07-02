@@ -376,7 +376,7 @@ struct GdtrInfo : public RegInfoBase {
     SegmentDescriptor(SegmentDescriptor &&) = default;
     auto operator=(const SegmentDescriptor &) -> SegmentDescriptor & = default;
     auto operator=(SegmentDescriptor &&) -> SegmentDescriptor & = default;
-    virtual ~SegmentDescriptor() = default;
+    ~SegmentDescriptor() = default;
     /// @}
 
     friend std::ostream &operator<<(
