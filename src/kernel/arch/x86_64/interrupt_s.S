@@ -20,9 +20,15 @@
 
 // 声明 C 中的函数
 .extern TarpEntry
-.macro ISR_NO_ERROR_CODE no
-.global isr\no
-isr\no:
+
+/**
+ * @brief 处理无错误码的中断
+ * @param name 函数名
+ * @param no 错误号
+ */
+.macro IsrNoErrorCode name no
+.global \name
+\name:
     // 关中断
     cli
     // 保存现场
@@ -42,9 +48,14 @@ isr\no:
     iretq
 .endm
 
-.macro ISR_ERROR_CODE no
-.global isr\no
-isr\no:
+/**
+ * @brief 处理有错误码的中断
+ * @param name 函数名
+ * @param no 错误号
+ */
+.macro IsrErrorCode name no
+.global \name
+\name:
     // 关中断
     cli
     // 压栈 intr_context_t 的最后几个成员
@@ -76,56 +87,6 @@ isr\no:
     iretq
 .endm
 
-// 定义中断处理函数
-// 64-ia-32-architectures-software-developer-vol-3a-manual#Table 6-1
-// 0 #DE 除 0 异常
-ISR_NO_ERROR_CODE  0
-// 1 #DB 调试异常
-ISR_NO_ERROR_CODE  1
-// 2 NMI
-ISR_NO_ERROR_CODE  2
-// 3 BP 断点异常
-ISR_NO_ERROR_CODE  3
-// 4 #OF 溢出
-ISR_NO_ERROR_CODE  4
-// 5 #BR 对数组的引用超出边界
-ISR_NO_ERROR_CODE  5
-// 6 #UD 无效或未定义的操作码
-ISR_NO_ERROR_CODE  6
-// 7 #NM 设备不可用(无数学协处理器)
-ISR_NO_ERROR_CODE  7
-// 8 #DF 双重故障(有错误代码)
-ISR_ERROR_CODE    8
-// 9 协处理器跨段操作
-ISR_NO_ERROR_CODE  9
-// 10 #TS 无效TSS(有错误代码)
-ISR_ERROR_CODE   10
-// 11 #NP 段不存在(有错误代码)
-ISR_ERROR_CODE   11
-// 12 #SS 栈错误(有错误代码)
-ISR_ERROR_CODE   12
-// 13 #GP 常规保护(有错误代码)
-ISR_ERROR_CODE   13
-// 14 #PF 页故障(有错误代码)
-ISR_ERROR_CODE   14
-// 15 没有使用
-// 16 #MF 浮点处理单元错误
-ISR_NO_ERROR_CODE 16
-// 17 #AC 对齐检查
-ISR_ERROR_CODE   17
-// 18 #MC 机器检查
-ISR_NO_ERROR_CODE 18
-// 19 #XM SIMD(单指令多数据)浮点异常
-ISR_NO_ERROR_CODE 19
-// 20 #VE 虚拟化异常
-ISR_NO_ERROR_CODE 20
-// 21 ~ 31 保留
-// 32 ～ 255 用户自定义
-// 128=0x80 用于系统调用
-ISR_NO_ERROR_CODE 128
-
-// 声明 C 中的函数
-.extern TarpEntry
 .macro IRQ name, no
 .global irq\name
 irq\name:
@@ -143,6 +104,51 @@ irq\name:
     popa
     iretq
 .endm
+
+// 定义中断处理函数
+// 64-ia-32-architectures-software-developer-vol-3a-manual#Table 6-1
+// 0 #DE 除 0 异常
+IsrNoErrorCode  IsrNoErrorCode_DE, 0
+// 1 #DB 调试异常
+IsrNoErrorCode  IsrNoErrorCode_DB, 1
+// 2 NMI
+IsrNoErrorCode IsrNoErrorCode_NMI, 2
+// 3 BP 断点异常
+IsrNoErrorCode IsrNoErrorCode_BP, 3
+// 4 #OF 溢出
+IsrNoErrorCode IsrNoErrorCode_OF, 4
+// 5 #BR 对数组的引用超出边界
+IsrNoErrorCode IsrNoErrorCode_BR, 5
+// 6 #UD 无效或未定义的操作码
+IsrNoErrorCode IsrNoErrorCode_UD, 6
+// 7 #NM 设备不可用(无数学协处理器)
+IsrNoErrorCode IsrNoErrorCode_NM, 7
+// 8 #DF 双重故障(有错误代码)
+IsrErrorCode IsrErrorCode_DF, 8
+// 10 #TS 无效TSS(有错误代码)
+IsrErrorCode IsrErrorCode_TS, 10
+// 11 #NP 段不存在(有错误代码)
+IsrErrorCode IsrErrorCode_NP, 11
+// 12 #SS 栈错误(有错误代码)
+IsrErrorCode IsrErrorCode_SS, 12
+// 13 #GP 常规保护(有错误代码)
+IsrErrorCode IsrErrorCode_GP, 13
+// 14 #PF 页故障(有错误代码)
+IsrErrorCode IsrErrorCode_PF, 14
+// 16 #MF 浮点处理单元错误
+IsrNoErrorCode IsrNoErrorCode_MF, 16
+// 17 #AC 对齐检查
+IsrErrorCode IsrErrorCode_AC, 17
+// 18 #MC 机器检查
+IsrNoErrorCode IsrNoErrorCode_MC, 18
+// 19 #XM SIMD(单指令多数据)浮点异常
+IsrNoErrorCode IsrNoErrorCode_XM, 19
+// 20 #VE 虚拟化异常
+IsrNoErrorCode IsrNoErrorCode_VE, 20
+// 21 ~ 31 保留
+// 32 ～ 255 用户自定义
+// 128=0x80 用于系统调用
+IsrNoErrorCode IsrNoErrorCode_SYCALL, 128
 
 // 电脑系统计时器
 IRQ   0,    32

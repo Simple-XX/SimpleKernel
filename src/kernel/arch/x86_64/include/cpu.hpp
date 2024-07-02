@@ -489,6 +489,7 @@ struct IdtrInfo : public RegInfoBase {
     kInvalidOpcode = 6,
     kDeviceNotAvailable = 7,
     kDoubleFault = 8,
+    // 386 后不再使用
     kCoprocessorSegmentOverrun = 9,
     kInvalidTss = 10,
     kSegmentNotPresent = 11,
