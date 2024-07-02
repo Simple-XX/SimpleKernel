@@ -75,9 +75,12 @@ Interrupt::Interrupt() {
       set_idt(&idts[i], (uint64_t)&interrupt_handlers, 8, 0x0, 0xE, 0, 1);
     }
 
-    static auto idtr = cpu::reginfo::IdtrInfo::Idtr{};
-    idtr.limit = cpu::reginfo::IdtrInfo::kInterruptMaxCount;
-    idtr.base = idts;
+    static auto idtr = cpu::reginfo::IdtrInfo::Idtr{
+        .limit = sizeof(cpu::reginfo::IdtrInfo::Idtr) *
+                     cpu::reginfo::IdtrInfo::kInterruptMaxCount -
+                 1,
+        .base = idts,
+    };
     printf("idtr: 0x%p\n", &idtr);
     printf("idtr.limit: %d\n", idtr.limit);
     printf("idtr.base: 0x%p\n", idtr.base);
