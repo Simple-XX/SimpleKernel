@@ -18,16 +18,15 @@
 
 // clang-format off
 
-/*
 // 声明 C 中的函数
-.extern isr_handler
+.extern TarpEntry
 .macro ISR_NO_ERROR_CODE no
 .global isr\no
 isr\no:
     // 关中断
     cli
     // 保存现场
-    pusha_64
+    pusha
     // 传递中断号
     mov $\no, %rdi
     // 传递
@@ -36,9 +35,9 @@ isr\no:
     xor %rdx, %rdx
     xor %rbp, %rbp
     // 调用处理函数
-    call isr_handler
+    call TarpEntry
     // 恢复现场
-    popa_64
+    popa
     // 中断返回
     iretq
 .endm
@@ -62,7 +61,7 @@ isr\no:
     push 40(%rsp)
     // RIP
     push 40(%rsp)
-    pusha_64
+    pusha
     // 传递中断号
     mov $\no, %rdi
     // 传递栈地址
@@ -72,8 +71,8 @@ isr\no:
     // 相当于函数开始时的 0(%rsp)
     mov  160(%rsp), %rdx
     xor %rbp, %rbp
-    call isr_handler
-    popa_64
+    call TarpEntry
+    popa
     iretq
 .endm
 
@@ -126,22 +125,22 @@ ISR_NO_ERROR_CODE 20
 ISR_NO_ERROR_CODE 128
 
 // 声明 C 中的函数
-.extern irq_handler
+.extern TarpEntry
 .macro IRQ name, no
 .global irq\name
 irq\name:
     // 关中断
     cli
     // 保存寄存器
-    pusha_64
+    pusha
     // 传递中断号
     mov $\no, %rdi
     // 传递栈地址
     mov %rsp, %rsi
     xor %rdx, %rdx
     xor %rbp, %rbp
-    call irq_handler
-    popa_64
+    call TarpEntry
+    popa
     iretq
 .endm
 
@@ -177,4 +176,3 @@ IRQ  13,    45
 IRQ  14,    46
 // IDE1 传输控制使用
 IRQ  15,    47
-*/
