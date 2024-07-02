@@ -127,11 +127,15 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   };
   cpu::kAllCr.gdtr.Write(gdtr);
   // 刷新段选择子
+  /// 0x10 == 16 == sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor)*2
+  /// 即 gdt 表中第二项的偏移
   cpu::kAllCr.ds.Write(0x10);
   cpu::kAllCr.es.Write(0x10);
   cpu::kAllCr.fs.Write(0x10);
   cpu::kAllCr.gs.Write(0x10);
   cpu::kAllCr.ss.Write(0x10);
+  /// 0x8 == 8 == sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor)*1
+  /// 即 gdt 表中第一项的偏移
   cpu::kAllCr.cs.Write(0x8);
 
   std::cout << "es: " << cpu::kAllCr.es << std::endl;
