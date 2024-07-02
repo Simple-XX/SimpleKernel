@@ -419,7 +419,7 @@ struct GdtrInfo : public RegInfoBase {
   };
 
   struct Base {
-    using DataType = uint64_t;
+    using DataType = SegmentDescriptor *;
     static constexpr uint64_t kBitOffset = 0;
     static constexpr uint64_t kBitWidth = 64;
     static constexpr uint64_t kBitMask =
