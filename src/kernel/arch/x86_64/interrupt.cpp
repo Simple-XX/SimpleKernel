@@ -111,111 +111,111 @@ extern "C" void TarpEntry(uint8_t no, intr_context_t *intr_context) {
 
 void Interrupt::SetUpIdts() {
   idts[cpu::reginfo::IdtrInfo::kDivideError] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrNoErrorCode_DE, 8, 0x0,
+      (uint64_t)IsrNoErrorCode_DE, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kDebugException] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrNoErrorCode_DB, 8, 0x0,
+      (uint64_t)IsrNoErrorCode_DB, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kNmiInterrupt] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrNoErrorCode_NMI, 8, 0x0,
+      (uint64_t)IsrNoErrorCode_NMI, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kBreakpoint] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrNoErrorCode_BP, 8, 0x0,
+      (uint64_t)IsrNoErrorCode_BP, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kOverflow] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrNoErrorCode_OF, 8, 0x0,
+      (uint64_t)IsrNoErrorCode_OF, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kBoundRangeExceeded] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrNoErrorCode_BR, 8, 0x0,
+          (uint64_t)IsrNoErrorCode_BR, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kInvalidOpcode] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrNoErrorCode_UD, 8, 0x0,
+      (uint64_t)IsrNoErrorCode_UD, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kDeviceNotAvailable] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrNoErrorCode_NM, 8, 0x0,
+          (uint64_t)IsrNoErrorCode_NM, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kDoubleFault] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrErrorCode_DF, 8, 0x0,
+      (uint64_t)IsrErrorCode_DF, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kInvalidTss] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrErrorCode_TS, 8, 0x0,
+      (uint64_t)IsrErrorCode_TS, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kSegmentNotPresent] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrErrorCode_NP, 8, 0x0,
+          (uint64_t)IsrErrorCode_NP, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kStackSegmentFault] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrErrorCode_SS, 8, 0x0,
+          (uint64_t)IsrErrorCode_SS, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kGeneralProtection] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrErrorCode_GP, 8, 0x0,
+          (uint64_t)IsrErrorCode_GP, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kPageFault] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrErrorCode_PF, 8, 0x0,
+      (uint64_t)IsrErrorCode_PF, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kX87FpuFloatingPointError] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrNoErrorCode_MF, 8, 0x0,
+          (uint64_t)IsrNoErrorCode_MF, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kAlignmentCheck] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrErrorCode_AC, 8, 0x0,
+      (uint64_t)IsrErrorCode_AC, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kMachineCheck] = cpu::reginfo::IdtrInfo::Idt(
-      (uint64_t)&IsrNoErrorCode_MC, 8, 0x0,
+      (uint64_t)IsrNoErrorCode_MC, 8, 0x0,
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kSIMDFloatingPointException] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrNoErrorCode_XM, 8, 0x0,
+          (uint64_t)IsrNoErrorCode_XM, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::kVirtualizationException] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrNoErrorCode_VE, 8, 0x0,
+          (uint64_t)IsrNoErrorCode_VE, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
   idts[cpu::reginfo::IdtrInfo::ControlProtectionException] =
       cpu::reginfo::IdtrInfo::Idt(
-          (uint64_t)&IsrNoErrorCode_SYCALL, 8, 0x0,
+          (uint64_t)IsrNoErrorCode_SYCALL, 8, 0x0,
           cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
           cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
           cpu::reginfo::IdtrInfo::Idt::P::kPresent);
