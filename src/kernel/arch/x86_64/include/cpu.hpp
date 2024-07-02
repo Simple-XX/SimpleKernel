@@ -502,7 +502,8 @@ struct IdtrInfo : public RegInfoBase {
    * @brief idt 结构
    * @see sdm.pdf#6.14.1
    */
-  struct Idt {
+  class Idt {
+   public:
     using Type = SystemSegmentAndGateDescriptorTypes;
 
     union {
@@ -532,7 +533,42 @@ struct IdtrInfo : public RegInfoBase {
       } idt;
       uint64_t val[2];
     };
-  } __attribute__((packed));
+
+    explicit Idt(uint64_t base, uint16_t selector, uint8_t ist, uint8_t type,
+                 uint8_t dpl, uint8_t p)
+        : val{} {
+      idt.offset1 = base & 0xFFFF;
+      idt.selector = selector;
+      idt.ist = ist;
+      idt.type = type;
+      idt.dpl = dpl;
+      idt.p = p;
+      idt.offset2 = (base >> 16) & 0xFFFF;
+      idt.offset3 = base >> 32;
+    }
+
+    /// @name 构造/析构函数
+    /// @{
+    Idt() = default;
+    Idt(const Idt &) = default;
+    Idt(Idt &&) = default;
+    auto operator=(const Idt &) -> Idt & = default;
+    auto operator=(Idt &&) -> Idt & = default;
+    ~Idt() = default;
+    /// @}
+
+    friend std::ostream &operator<<(std::ostream &os, const Idt &idt) {
+      printf(
+          "val: 0x%p 0x%p, offset: 0x%p, selector: 0x%p, type: %d, dpl: 0x%X, "
+          "p: %s",
+          (void *)idt.val[0], (void *)idt.val[1],
+          ((uint64_t)idt.idt.offset3 << 32) |
+              ((uint64_t)idt.idt.offset2 << 16) | (uint64_t)idt.idt.offset1,
+          idt.idt.selector, idt.idt.type, idt.idt.dpl,
+          idt.idt.p ? "Present" : "NotPresent");
+      return os;
+    }
+  };
 
   /**
    * @brief idtr 结构
