@@ -841,6 +841,17 @@ class WriteOnlyRegBase {
       Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
+                             reginfo::segment_register::CsInfo>::value) {
+      __asm__ volatile(
+          "push %0\n\t"
+          "pushq $WriteCsLabel\n\t"
+          "retfq\n\t"
+          "WriteCsLabel: \n\t"
+          :
+          : "r"(value)
+          :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
                              reginfo::segment_register::SsInfo>::value) {
       __asm__ volatile("mov %0, %%ss" : : "r"(value) :);
     } else if constexpr (std::is_same<
@@ -1383,17 +1394,17 @@ class Xcr0 : public ReadWriteRegBase<reginfo::Xcr0Info> {
 };
 
 namespace segment_register {
-class Cs : public ReadOnlyRegBase<reginfo::segment_register::CsInfo> {
+class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
  public:
-  ReadOnlyField<ReadOnlyRegBase<reginfo::segment_register::CsInfo>,
+  ReadOnlyField<ReadWriteRegBase<reginfo::segment_register::CsInfo>,
                 reginfo::segment_register::CsInfo::Rpl>
       rpl;
 
-  ReadOnlyField<ReadOnlyRegBase<reginfo::segment_register::CsInfo>,
+  ReadOnlyField<ReadWriteRegBase<reginfo::segment_register::CsInfo>,
                 reginfo::segment_register::CsInfo::Ti>
       ti;
 
-  ReadOnlyField<ReadOnlyRegBase<reginfo::segment_register::CsInfo>,
+  ReadOnlyField<ReadWriteRegBase<reginfo::segment_register::CsInfo>,
                 reginfo::segment_register::CsInfo::Index>
       index;
 

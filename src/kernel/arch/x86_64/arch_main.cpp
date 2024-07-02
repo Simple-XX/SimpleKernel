@@ -46,6 +46,30 @@ static void Fillrect(uint8_t *vram, uint32_t pitch, uint8_t r, uint8_t g,
   }
 }
 
+struct GDTEntry {
+  uint16_t Limit0 = 0;
+  uint16_t Base0 = 0;
+  uint8_t Base1 = 0;
+  uint8_t AccessByte = 0;
+  uint8_t Limit1_Flags = 0;
+  uint8_t Base2 = 0;
+};
+
+GDTEntry gdt[5];
+
+void gdt_set_gate(int num, uint32_t base, uint32_t limit, uint8_t access,
+                  uint8_t gran) {
+  // gdt[num].Base0 = (base & 0xFFFF);
+  // gdt[num].Base1 = (base >> 16) & 0xFF;
+  // gdt[num].Base2 = (base >> 24) & 0xFF;
+
+  // gdt[num].Limit0 = (limit & 0xFFFF);
+  // gdt[num].Limit1_Flags = (limit >> 16) & 0x0F;
+
+  gdt[num].Limit1_Flags |= gran & 0xF0;
+  gdt[num].AccessByte = access;
+}
+
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   if (argc != 1) {
     Err("argc != 1 [%d]\n", argc);
@@ -119,13 +143,48 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
       cpu::reginfo::GdtrInfo::SegmentDescriptor::kNotAvailable,
       cpu::reginfo::GdtrInfo::SegmentDescriptor::k64Bit);
 
-  std::cout << sd0 << std::endl;
-  std::cout << sd1 << std::endl;
-  std::cout << sd2 << std::endl;
-  std::cout << sd3 << std::endl;
-  std::cout << sd4 << std::endl;
+  // std::cout << segment_descriptors[0] << std::endl;
+  // std::cout << segment_descriptors[1] << std::endl;
+  // std::cout << segment_descriptors[2] << std::endl;
+  // std::cout << segment_descriptors[3] << std::endl;
+  // std::cout << segment_descriptors[4] << std::endl;
 
-  Info("Hello x8_64 ArchInit\n");
+  gdt_set_gate(0, 0, 0, 0, 0);
+  gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xAF);
+  gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xAF);
+  gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xAF);
+  gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xAF);
+
+  cpu::reginfo::GdtrInfo::Gdtr gdtr{};
+  gdtr.limit = (sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
+                cpu::reginfo::GdtrInfo::kGdtMaxCount) -
+               1;
+  // gdtr.base = segment_descriptors;
+  gdtr.base = (cpu::reginfo::GdtrInfo::SegmentDescriptor *)gdt;
+  cpu::kAllCr.gdtr.Write(gdtr);
+
+  cpu::kAllCr.ds.Write(0x10);
+  cpu::kAllCr.es.Write(0x10);
+  cpu::kAllCr.fs.Write(0x10);
+  cpu::kAllCr.gs.Write(0x10);
+  cpu::kAllCr.ss.Write(0x10);
+  cpu::kAllCr.cs.Write(0x8);
+
+  std::cout << cpu::kAllCr.es << std::endl;
+  std::cout << cpu::kAllCr.cs << std::endl;
+  std::cout << cpu::kAllCr.ss << std::endl;
+  std::cout << cpu::kAllCr.ds << std::endl;
+  std::cout << cpu::kAllCr.fs << std::endl;
+  std::cout << cpu::kAllCr.gs << std::endl;
+
+  for (auto i = 0; i < (cpu::kAllCr.gdtr.Read().limit + 1) /
+                           sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor);
+       i++) {
+    printf("[0x%X]0x%p\n", i, cpu::kAllCr.gdtr.Read().base + i);
+    std::cout << *(cpu::kAllCr.gdtr.Read().base + i) << std::endl;
+  }
+
+  Info("Hello x86_64 ArchInit\n");
 
   return 0;
 }
