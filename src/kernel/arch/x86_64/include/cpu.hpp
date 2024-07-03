@@ -571,24 +571,40 @@ struct IdtrInfo : public RegInfoBase {
    * @see sdm.pdf#6.13
    */
   struct ErrorCode {
-    // When set, indicates that the exception occurred during delivery of an
-    // event external to the program, such as an interrupt or an earlier
-    // exception.1 The bit is cleared if the exception occurred during delivery
-    // of a software interrupt (INT n, INT3, or INTO).
-    uint32_t ext : 1;
-    // When set, indicates that the index portion of the error code refers to a
-    // gate descriptor in the IDT; when clear, indicates that the index refers
-    // to a descriptor in the GDT or the current LDT.
-    uint32_t idt : 1;
-    // Only used when the IDT flag is clear. When set, the TI flag indicates
-    // that the index portion of the error code refers to a segment or gate
-    // descriptor in the LDT; when clear, it indi- cates that the index refers
-    // to a descriptor in the current GDT.
-    uint32_t ti : 1;
-    // The segment selector index field provides an index into the IDT, GDT, or
-    // current LDT to the segment or gate selector being referenced by the error
-    // code.
-    uint32_t segment_selector_index : 29;
+    union {
+      struct {
+        // When set, indicates that the exception occurred during
+        // delivery of an event external to the program, such as an interrupt or
+        // an earlier exception.1 The bit is cleared if the exception occurred
+        // during delivery of a software interrupt (INT n, INT3, or INTO).
+        uint32_t ext : 1;
+        // When set, indicates that the index portion of the error code refers
+        // to a gate descriptor in the IDT; when clear, indicates that the index
+        // refers to a descriptor in the GDT or the current LDT.
+        uint32_t idt : 1;
+        // Only used when the IDT flag is clear. When set, the TI flag indicates
+        // that the index portion of the error code refers to a segment or gate
+        // descriptor in the LDT; when clear, it indi- cates that the index
+        // refers to a descriptor in the current GDT.
+        uint32_t ti : 1;
+        // The segment selector index field provides an index into the IDT, GDT,
+        // or current LDT to the segment or gate selector being referenced by
+        // the error code.
+        uint32_t segment_selector_index : 29;
+      } error_code;
+      uint32_t val;
+    };
+
+    friend std::ostream &operator<<(std::ostream &os,
+                                    const ErrorCode &error_code) {
+      printf(
+          "val: 0x%p 0x%p, ext: %d, idt: %d, ti: %d, segment_selector_index: "
+          "0x%X",
+          (void *)error_code.val, error_code.error_code.ext,
+          error_code.error_code.idt, error_code.error_code.ti,
+          error_code.error_code.segment_selector_index);
+      return os;
+    }
   };
 
   /**
