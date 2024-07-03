@@ -32,6 +32,8 @@
 IsrNoErrorCode_\name:
     // 关中断
     cli
+    // 压入占位用的 error_code
+    push $0x0
     // 保存现场
     pusha
     // 传递中断号
@@ -45,6 +47,8 @@ IsrNoErrorCode_\name:
     call TarpEntry
     // 恢复现场
     popa
+    // 弹出占位用的 error_code
+    add $8, %rsp
     // 中断返回
     iretq
 .endm
@@ -65,24 +69,24 @@ IsrErrorCode_\name:
     // 在 64 位模式下，不论特权级是否改变，都会压入 ss，rsp
     // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.2
     // SS
-    push 40(%rsp)
+    // push 40(%rsp)
     // RSP
-    push 40(%rsp)
+    // push 40(%rsp)
     // RFLAGS
-    push 40(%rsp)
+    // push 40(%rsp)
     // CS
-    push 40(%rsp)
+    // push 40(%rsp)
     // RIP
-    push 40(%rsp)
+    // push 40(%rsp)
+    // 错误码
+    // push 40(%rsp)
     pusha
     // 传递中断号
     mov $\no, %rdi
     // 传递栈地址
     mov %rsp, %rsi
-    // 传递错误码
-    // 160 == sizeof(intr_context_t)
-    // 相当于函数开始时的 0(%rsp)
-    mov  160(%rsp), %rdx
+    // 清零
+    xor %rdx, %rdx
     xor %rbp, %rbp
     call TarpEntry
     popa

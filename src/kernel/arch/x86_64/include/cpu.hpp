@@ -598,7 +598,7 @@ struct IdtrInfo : public RegInfoBase {
     friend std::ostream &operator<<(std::ostream &os,
                                     const ErrorCode &error_code) {
       printf(
-          "val: 0x%p 0x%p, ext: %d, idt: %d, ti: %d, segment_selector_index: "
+          "val: 0x%p, ext: %d, idt: %d, ti: %d, segment_selector_index: "
           "0x%X",
           (void *)error_code.val, error_code.error_code.ext,
           error_code.error_code.idt, error_code.error_code.ti,
@@ -1810,6 +1810,59 @@ struct AllCr {
 };
 
 };  // namespace
+
+/// 中断上下文
+struct InterruptContext {
+  // pusha 压入
+  uint64_t r15;
+  uint64_t r14;
+  uint64_t r13;
+  uint64_t r12;
+  uint64_t r11;
+  uint64_t r10;
+  uint64_t r9;
+  uint64_t r8;
+  uint64_t rbp;
+  uint64_t rdi;
+  uint64_t rsi;
+  uint64_t rdx;
+  uint64_t rcx;
+  uint64_t rbx;
+  uint64_t rax;
+  reginfo::IdtrInfo::ErrorCode error_code;
+  // 以下由 cpu 自动压入
+  uint64_t rip;
+  uint64_t cs;
+  uint64_t rflags;
+  uint64_t rsp;
+  uint64_t ss;
+
+  friend std::ostream &operator<<(std::ostream &os,
+                                  const InterruptContext &interrupt_context) {
+    printf("r15: 0x%X\n", interrupt_context.r15);
+    printf("r14: 0x%X\n", interrupt_context.r14);
+    printf("r13: 0x%X\n", interrupt_context.r13);
+    printf("r12: 0x%X\n", interrupt_context.r12);
+    printf("r11: 0x%X\n", interrupt_context.r11);
+    printf("r10: 0x%X\n", interrupt_context.r10);
+    printf("r9: 0x%X\n", interrupt_context.r9);
+    printf("r8: 0x%X\n", interrupt_context.r8);
+    printf("rbp: 0x%X\n", interrupt_context.rbp);
+    printf("rdi: 0x%X\n", interrupt_context.rdi);
+    printf("rsi: 0x%X\n", interrupt_context.rsi);
+    printf("rdx: 0x%X\n", interrupt_context.rdx);
+    printf("rcx: 0x%X\n", interrupt_context.rcx);
+    printf("rbx: 0x%X\n", interrupt_context.rbx);
+    printf("rax: 0x%X\n", interrupt_context.rax);
+    std::cout << "error_code: " << interrupt_context.error_code << std::endl;
+    printf("rip: 0x%X\n", interrupt_context.rip);
+    printf("cs: 0x%X\n", interrupt_context.cs);
+    printf("rflags: 0x%X\n", interrupt_context.rflags);
+    printf("rsp: 0x%X\n", interrupt_context.rsp);
+    printf("ss: 0x%X", interrupt_context.ss);
+    return os;
+  }
+};
 
 // 第四部分：访问接口
 [[maybe_unused]] static AllXreg kAllXreg;

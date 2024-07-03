@@ -64,31 +64,15 @@ extern "C" void Irq_13();
 extern "C" void Irq_14();
 extern "C" void Irq_15();
 
-struct intr_context_t {
-  uint64_t r15;
-  uint64_t r14;
-  uint64_t r13;
-  uint64_t r12;
-  uint64_t r11;
-  uint64_t r10;
-  uint64_t r9;
-  uint64_t r8;
-  uint64_t rbp;
-  uint64_t rdi;
-  uint64_t rsi;
-  uint64_t rdx;
-  uint64_t rcx;
-  uint64_t rbx;
-  uint64_t rax;
-  uint64_t rip;
-  uint64_t cs;
-  uint64_t rflags;
-  uint64_t rsp;
-  uint64_t ss;
-};
-
-extern "C" void TarpEntry(uint8_t no, intr_context_t *intr_context) {
-  kInterrupt.GetInstance().Do(no, nullptr);
+/**
+ * @brief 中断处理函数
+ * @param no 中断号
+ * @param interrupt_context 中断上下文
+ */
+extern "C" void TarpEntry(uint8_t no,
+                          cpu::InterruptContext *interrupt_context) {
+  std::cout << *interrupt_context << std::endl;
+  kInterrupt.GetInstance().Do(no, (uint8_t *)interrupt_context);
 }
 
 void Interrupt::SetUpIdts() {
