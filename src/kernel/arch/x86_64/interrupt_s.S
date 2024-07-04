@@ -57,6 +57,7 @@ IsrNoErrorCode_\name:
  * @brief 处理有错误码的中断
  * @param name 函数名
  * @param no 错误号
+ * @todo
  */
 .macro IsrErrorCode name no
 .global IsrErrorCode_\name
@@ -97,6 +98,7 @@ Irq_\name:
     mov $\no, %rdi
     // 传递栈地址
     mov %rsp, %rsi
+    // 清零
     xor %rdx, %rdx
     xor %rbp, %rbp
     call TarpEntry

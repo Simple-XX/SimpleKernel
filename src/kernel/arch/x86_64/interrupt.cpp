@@ -276,12 +276,13 @@ Interrupt::Interrupt() {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
         printf("Default Interrupt handler [%s] 0x%X, 0x%p\n",
                cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause, context);
-        return 0;
+        while (1);
       };
     }
 
+    // 初始化 idt
     SetUpIdts();
-
+    // 写入 idtr
     static auto idtr = cpu::reginfo::IdtrInfo::Idtr{
         .limit = sizeof(cpu::reginfo::IdtrInfo::Idtr) *
                      cpu::reginfo::IdtrInfo::kInterruptMaxCount -
@@ -290,6 +291,7 @@ Interrupt::Interrupt() {
     };
     cpu::kAllCr.idtr.Write(idtr);
 
+    // 输出 idt 信息
     std::cout << cpu::kAllCr.idtr << std::endl;
     for (size_t i = 0; i < (cpu::kAllCr.idtr.Read().limit + 1) /
                                sizeof(cpu::reginfo::IdtrInfo::Idtr);
