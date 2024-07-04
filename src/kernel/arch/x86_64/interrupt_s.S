@@ -35,7 +35,7 @@ IsrNoErrorCode_\name:
     // 压入占位用的 error_code
     push $0x0
     // 保存现场
-    pusha
+    pushqa
     // 传递中断号
     mov $\no, %rdi
     // 传递栈地址
@@ -46,7 +46,7 @@ IsrNoErrorCode_\name:
     // 调用处理函数
     call TarpEntry
     // 恢复现场
-    popa
+    popqa
     // 弹出占位用的 error_code
     add $8, %rsp
     // 中断返回
@@ -105,7 +105,7 @@ Irq_\name:
     // 关中断
     cli
     // 保存寄存器
-    pusha
+    pushqa
     // 传递中断号
     mov $\no, %rdi
     // 传递栈地址
@@ -113,7 +113,7 @@ Irq_\name:
     xor %rdx, %rdx
     xor %rbp, %rbp
     call TarpEntry
-    popa
+    popqa
     iretq
 .endm
 

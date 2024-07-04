@@ -1829,6 +1829,7 @@ struct InterruptContext {
   uint64_t rcx;
   uint64_t rbx;
   uint64_t rax;
+  // uint64_t error_code;
   reginfo::IdtrInfo::ErrorCode error_code;
   // 以下由 cpu 自动压入
   uint64_t rip;
