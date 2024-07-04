@@ -64,23 +64,8 @@ IsrNoErrorCode_\name:
 IsrErrorCode_\name:
     // 关中断
     cli
-    // 压栈 intr_context_t 的最后几个成员
-    // 40(%rsp) 是因为每次压栈都会使 rsp+8，执行完后 rsp 刚好移动到下一个数据
-    // 在 64 位模式下，不论特权级是否改变，都会压入 ss，rsp
-    // 64-ia-32-architectures-software-developer-vol-3a-manual#6.14.2
-    // SS
-    // push 40(%rsp)
-    // RSP
-    // push 40(%rsp)
-    // RFLAGS
-    // push 40(%rsp)
-    // CS
-    // push 40(%rsp)
-    // RIP
-    // push 40(%rsp)
-    // 错误码
-    // push 40(%rsp)
-    pusha
+    push $0x233
+    pushqa
     // 传递中断号
     mov $\no, %rdi
     // 传递栈地址
@@ -89,7 +74,9 @@ IsrErrorCode_\name:
     xor %rdx, %rdx
     xor %rbp, %rbp
     call TarpEntry
-    popa
+    popqa
+    add $8, %rsp
+    //hlt
     iretq
 .endm
 

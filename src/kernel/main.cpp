@@ -54,7 +54,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   // 进入死循环
   while (1) {
     for (uint64_t i = 0; i < 99999999; i++) {
-        }
+    }
     printf("-");
   }
   return 0;
