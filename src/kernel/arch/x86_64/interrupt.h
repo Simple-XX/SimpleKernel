@@ -60,9 +60,9 @@ class Interrupt final : public InterruptBase {
       idts[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
 
   /**
-   * @brief 初始化 idts
+   * @brief 初始化 idtr
    */
-  void SetUpIdts();
+  void SetUpIdtr();
 };
 
 /// 全局 elf 对象，需要在相应体系结构初始化时重新初始化

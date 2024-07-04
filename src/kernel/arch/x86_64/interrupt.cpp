@@ -75,7 +75,7 @@ extern "C" void TarpEntry(uint8_t no,
   kInterrupt.GetInstance().Do(no, (uint8_t *)interrupt_context);
 }
 
-void Interrupt::SetUpIdts() {
+void Interrupt::SetUpIdtr() {
   // isr
   idts[cpu::reginfo::IdtrInfo::kDivideError] = cpu::reginfo::IdtrInfo::Idt(
       (uint64_t)IsrNoErrorCode_DE, 8, 0x0,
@@ -267,6 +267,24 @@ void Interrupt::SetUpIdts() {
       cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
       cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
       cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+
+  // 写入 idtr
+  static auto idtr = cpu::reginfo::IdtrInfo::Idtr{
+      .limit = sizeof(cpu::reginfo::IdtrInfo::Idtr) *
+                   cpu::reginfo::IdtrInfo::kInterruptMaxCount -
+               1,
+      .base = idts,
+  };
+  cpu::kAllCr.idtr.Write(idtr);
+
+  // 输出 idtr 信息
+  std::cout << cpu::kAllCr.idtr << std::endl;
+  for (size_t i = 0; i < (cpu::kAllCr.idtr.Read().limit + 1) /
+                             sizeof(cpu::reginfo::IdtrInfo::Idtr);
+       i++) {
+    printf("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
+    std::cout << *(cpu::kAllCr.idtr.Read().base + i) << std::endl;
+  }
 }
 
 Interrupt::Interrupt() {
@@ -280,25 +298,12 @@ Interrupt::Interrupt() {
       };
     }
 
-    // 初始化 idt
-    SetUpIdts();
-    // 写入 idtr
-    static auto idtr = cpu::reginfo::IdtrInfo::Idtr{
-        .limit = sizeof(cpu::reginfo::IdtrInfo::Idtr) *
-                     cpu::reginfo::IdtrInfo::kInterruptMaxCount -
-                 1,
-        .base = idts,
-    };
-    cpu::kAllCr.idtr.Write(idtr);
+    // 初始化 idtr
+    SetUpIdtr();
 
-    // 输出 idt 信息
-    std::cout << cpu::kAllCr.idtr << std::endl;
-    for (size_t i = 0; i < (cpu::kAllCr.idtr.Read().limit + 1) /
-                               sizeof(cpu::reginfo::IdtrInfo::Idtr);
-         i++) {
-      printf("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
-      std::cout << *(cpu::kAllCr.idtr.Read().base + i) << std::endl;
-    }
+    // 初始化 loacl apic
+
+    // 初始化 io apic
 
     // // 开启 Supervisor 中断
     // cpu::cr::kAllCsr.sstatus.sie.Set();

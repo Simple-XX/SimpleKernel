@@ -598,10 +598,10 @@ struct IdtrInfo : public RegInfoBase {
     friend std::ostream &operator<<(std::ostream &os,
                                     const ErrorCode &error_code) {
       printf(
-          "val: 0x%p, ext: %d, idt: %d, ti: %d, segment_selector_index: "
+          "val: 0x%X, ext: %d, idt: %d, ti: %d, segment_selector_index: "
           "0x%X",
-          (void *)error_code.val, error_code.error_code.ext,
-          error_code.error_code.idt, error_code.error_code.ti,
+          error_code.val, error_code.error_code.ext, error_code.error_code.idt,
+          error_code.error_code.ti,
           error_code.error_code.segment_selector_index);
       return os;
     }
