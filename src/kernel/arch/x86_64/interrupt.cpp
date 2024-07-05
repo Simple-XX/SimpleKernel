@@ -287,7 +287,8 @@ void Interrupt::SetUpIdtr() {
   }
 }
 
-Interrupt::Interrupt() {
+Interrupt::Interrupt()
+    : pic(cpu::reginfo::IdtrInfo::kIrq0, cpu::reginfo::IdtrInfo::kIrq8) {
   if (is_inited == false) {
     // 注册默认中断处理函数
     for (auto &i : interrupt_handlers) {
@@ -304,18 +305,6 @@ Interrupt::Interrupt() {
     // 初始化 loacl apic
 
     // 初始化 io apic
-
-    // // 开启 Supervisor 中断
-    // cpu::cr::kAllCsr.sstatus.sie.Set();
-
-    // // 开启内部中断
-    // cpu::cr::kAllCsr.sie.ssie.Set();
-
-    // // 开启时钟中断
-    // cpu::cr::kAllCsr.sie.stie.Set();
-
-    // // 开启外部中断
-    // cpu::cr::kAllCsr.sie.seie.Set();
 
     is_inited = true;
   }
@@ -337,17 +326,11 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   }
 }
 
-static uint64_t kInterval = 0;
-
-// 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
-/// @todo 从 dtb 读取 cpu 速度
+// 在 x86_64 情景下，argc 为参数个数，argv 为 BasicInfo 地址
+/// @todo 读取 cpu 速度
 uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
   (void)argv;
-
-  // 获取 cpu 速度
-  kInterval = 100000;
-  printf("kInterval: 0x%X\n", kInterval);
 
   std::cout << cpu::kAllCr.efer << std::endl;
   std::cout << cpu::kAllCr.gdtr << std::endl;
@@ -359,34 +342,27 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   std::cout << cpu::kAllCr.cr4 << std::endl;
   std::cout << cpu::kAllCr.cr8 << std::endl;
 
+  // 初始化中断
   kInterrupt.GetInstance();
 
   // 注册时钟中断
-  // kInterrupt.GetInstance().RegisterInterruptFunc(
-  //     cpu::cr::ScauseInfo::kSupervisorTimerInterrupt,
-  //     [](uint64_t exception_code, uint8_t *) -> uint64_t {
-  //       sbi_set_timer(cpu::cr::kAllCsr.time.Read() + kInterval);
-  //       printf("Handle %s\n",
-  //              cpu::cr::ScauseInfo::kInterruptNames[exception_code]);
-  //       return 0;
-  //     });
+  kInterrupt.GetInstance().RegisterInterruptFunc(
+      cpu::reginfo::IdtrInfo::kIrq0,
+      [](uint64_t exception_code, uint8_t *) -> uint64_t {
+        printf("timer\n");
+        printf("Handle %s\n",
+               cpu::reginfo::IdtrInfo::kInterruptNames[exception_code]);
+        kInterrupt.GetInstance().pic.Clear(exception_code);
+        return 0;
+      });
 
-  // ebreak 中断
-  // kInterrupt.GetInstance().RegisterInterruptFunc(
-  //     cpu::cr::ScauseInfo::kBreakpoint,
-  //     [](uint64_t exception_code, uint8_t *) -> uint64_t {
-  //       cpu::cr::kAllCsr.sepc.Write(cpu::cr::kAllCsr.sepc.Read() + 2);
-  //       printf("Handle %s\n",
-  //              cpu::cr::ScauseInfo::kExceptionNames[exception_code]);
-  //       return 0;
-  //     });
-
-  // asm("ebreak");
-
-  // 设置时钟中断时间
-  // sbi_set_timer(kInterval);
+  kInterrupt.GetInstance().pic.Enable(cpu::reginfo::IdtrInfo::kIrq0);
+  asm("sti");
 
   Info("Hello InterruptInit\n");
+
+  // asm("int $1");
+  // auto aaa = 1 / 0;
 
   return 0;
 }

@@ -65,7 +65,7 @@ IsrNoErrorCode_\name:
 IsrErrorCode_\name:
     // 关中断
     cli
-    push $0x233
+    hlt
     pushqa
     // 传递中断号
     mov $\no, %rdi
@@ -76,8 +76,6 @@ IsrErrorCode_\name:
     xor %rbp, %rbp
     call TarpEntry
     popqa
-    add $8, %rsp
-    //hlt
     iretq
 .endm
 

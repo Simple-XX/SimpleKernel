@@ -26,6 +26,8 @@
 
 class Interrupt final : public InterruptBase {
  public:
+  cpu::Pic pic;
+
   Interrupt();
 
   /// @name 构造/析构函数

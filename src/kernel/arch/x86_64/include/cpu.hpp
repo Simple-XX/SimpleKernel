@@ -187,6 +187,148 @@ class Serial {
   }
 };
 
+/**
+ * 中断控制器(8259A)
+ * @note master 处理 8 个中断，slave 处理八个中断
+ * @note 工作在 8086 模式下，中断处理完后需要通知 pic 重置 ISR 寄存器
+ */
+class Pic {
+ public:
+  /**
+   * 构造函数
+   * @param offset1 主片中断偏移，共 8 个
+   * @param offset2 从片中断偏移，共 8 个
+   */
+  explicit Pic(uint8_t offset1, uint8_t offset2)
+      : offset1_(offset1), offset2_(offset2) {
+    // 0001 0001
+    OutByte(kPicMasterCommand, kIcw1Init | kIcw1Icw4);
+    // 设置主片 IRQ 从 offset1_ 号中断开始
+    OutByte(kPic1Data, offset1_);
+    // 设置主片 IR2 引脚连接从片
+    // 4: 0000 0100
+    OutByte(kPic1Data, 4);
+    // 设置主片按照 8086 的方式工作
+    OutByte(kPic1Data, kIcw48086);
+
+    OutByte(kPicSlaveCommand, kIcw1Init | kIcw1Icw4);
+    // 设置从片 IRQ 从 offset2_ 号中断开始
+    OutByte(kPic2Data, offset2_);
+    // 告诉从片输出引脚和主片 IR2 号相连
+    // 2: 0000 0010
+    OutByte(kPic2Data, 2);
+    // 设置从片按照 8086 的方式工作
+    OutByte(kPic2Data, kIcw48086);
+
+    // 关闭所有中断
+    OutByte(kPic1Data, 0xFF);
+    OutByte(kPic2Data, 0xFF);
+  }
+
+  /// @name 构造/析构函数
+  /// @{
+  Pic() = delete;
+  Pic(const Pic &) = delete;
+  Pic(Pic &&) = delete;
+  auto operator=(const Pic &) -> Pic & = delete;
+  auto operator=(Pic &&) -> Pic & = delete;
+  ~Pic() = default;
+  /// @}
+
+  /**
+   * 开启 pic 的 no 中断
+   * @param no 中断号
+   */
+  void Enable(uint8_t no) {
+    uint8_t mask = 0;
+    if (no >= offset2_) {
+      mask = ((InByte(kPic2Data)) & (~(1 << (no % 8))));
+      OutByte(kPic2Data, mask);
+    } else {
+      mask = ((InByte(kPic1Data)) & (~(1 << (no % 8))));
+      OutByte(kPic1Data, mask);
+    }
+  }
+
+  /**
+   * 关闭 8259A 芯片的所有中断
+   */
+  void Disable() {
+    // 屏蔽所有中断
+    OutByte(kPic1Data, 0xFF);
+    OutByte(kPic2Data, 0xFF);
+  }
+
+  /**
+   * 关闭 pic 的 no 中断
+   * @param no 中断号
+   */
+  void Disable(uint8_t no) {
+    uint8_t mask = 0;
+    if (no >= offset2_) {
+      mask = ((InByte(kPic2Data)) | (1 << (no % 8)));
+      OutByte(kPic2Data, mask);
+    } else {
+      mask = ((InByte(kPic1Data)) | (1 << (no % 8)));
+      OutByte(kPic1Data, mask);
+    }
+  }
+
+  /**
+   * 通知 pic no 中断处理完毕
+   * @param no 中断号
+   */
+  void Clear(uint8_t no) {
+    // 按照我们的设置，从 offset1_ 号中断起为用户自定义中断
+    // 因为单片的 Intel 8259A 芯片只能处理 8 级中断
+    // 故大于等于 offset2_ 的中断号是由从片处理的
+    if (no >= offset2_) {
+      // 发送重设信号给从片
+      OutByte(kPicSlaveCommand, kEoi);
+    } else {
+      // 发送重设信号给主片
+      OutByte(kPicMasterCommand, kEoi);
+    }
+  }
+
+ private:
+  uint8_t offset1_;
+  uint8_t offset2_;
+
+  /// Master (IRQs 0-7)
+  static constexpr const uint8_t kPicMaster = 0x20;
+  /// Slave  (IRQs 8-15)
+  static constexpr const uint8_t kPicSlave = 0xA0;
+  static constexpr const uint8_t kPicMasterCommand = kPicMaster;
+  static constexpr const uint8_t kPic1Data = kPicMaster + 1;
+  static constexpr const uint8_t kPicSlaveCommand = kPicSlave;
+  static constexpr const uint8_t kPic2Data = kPicSlave + 1;
+  /// End-of-interrupt command code
+  static constexpr const uint8_t kEoi = 0x20;
+
+  /// Indicates that ICW4 will be present
+  static constexpr const uint8_t kIcw1Icw4 = 0x01;
+  /// Single (cascade) mode
+  static constexpr const uint8_t ICW1_SINGLE = 0x02;
+  /// Call address interval 4 (8)
+  static constexpr const uint8_t ICW1_INTERVAL4 = 0x04;
+  /// Level triggered (edge) mode
+  static constexpr const uint8_t ICW1_LEVEL = 0x08;
+  /// Initialization - required!
+  static constexpr const uint8_t kIcw1Init = 0x10;
+
+  /// 8086/88 (MCS-80/85) mode
+  static constexpr const uint8_t kIcw48086 = 0x01;
+  /// Auto (normal) EOI
+  static constexpr const uint8_t ICW4_AUTO = 0x02;
+  /// Buffered mode/slave
+  static constexpr const uint8_t ICW4_BUF_SLAVE = 0x08;
+  /// Buffered mode/master
+  static constexpr const uint8_t ICW4_BUF_MASTER = 0x0C;
+  /// Special fully nested (not)
+  static constexpr const uint8_t ICW4_SFNM = 0x10;
+};
+
 // 第一部分：寄存器定义
 namespace reginfo {
 
