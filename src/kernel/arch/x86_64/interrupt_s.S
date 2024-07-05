@@ -65,7 +65,6 @@ IsrNoErrorCode_\name:
 IsrErrorCode_\name:
     // 关中断
     cli
-    hlt
     pushqa
     // 传递中断号
     mov $\no, %rdi

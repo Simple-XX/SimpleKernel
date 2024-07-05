@@ -572,7 +572,17 @@ struct GdtrInfo : public RegInfoBase {
   };
 
   /// gdt 数量
-  static constexpr const uint16_t kGdtMaxCount = 5;
+  static constexpr const uint16_t kMaxCount = 5;
+  /// 首个空描述符索引
+  static constexpr const uint16_t kNullIndex = 0;
+  /// 内核代码段描述符索引
+  static constexpr const uint16_t kKernelCodeIndex = 1;
+  /// 内核数据段描述符索引
+  static constexpr const uint16_t kKernelDataIndex = 2;
+  /// 用户代码段描述符索引
+  static constexpr const uint16_t kUserCodeIndex = 3;
+  /// 用户数据段描述符索引
+  static constexpr const uint16_t kUserDataIndex = 4;
 
   struct Gdtr {
     /// 全局描述符表限长

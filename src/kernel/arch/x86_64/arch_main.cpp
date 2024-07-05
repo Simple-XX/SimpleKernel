@@ -29,9 +29,9 @@
 static cpu::Serial kSerial(cpu::kCom1);
 extern "C" void _putchar(char character) { kSerial.Write(character); }
 
-/// gdt 描述符表
+/// gdt 描述符表，顺序与 cpu::reginfo::GdtrInfo 中的定义一致
 static cpu::reginfo::GdtrInfo::SegmentDescriptor
-    kSegmentDescriptors[cpu::reginfo::GdtrInfo::kGdtMaxCount] = {
+    kSegmentDescriptors[cpu::reginfo::GdtrInfo::kMaxCount] = {
         // 第一个全 0
         cpu::reginfo::GdtrInfo::SegmentDescriptor(),
         // 内核代码段描述符
@@ -121,22 +121,26 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   // 加载描述符
   cpu::reginfo::GdtrInfo::Gdtr gdtr{
       .limit = (sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                cpu::reginfo::GdtrInfo::kGdtMaxCount) -
+                cpu::reginfo::GdtrInfo::kMaxCount) -
                1,
       .base = kSegmentDescriptors,
   };
   cpu::kAllCr.gdtr.Write(gdtr);
-  // 刷新段选择子
-  /// 0x10 == 16 == sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor)*2
-  /// 即 gdt 表中第二项的偏移
-  cpu::kAllCr.ds.Write(0x10);
-  cpu::kAllCr.es.Write(0x10);
-  cpu::kAllCr.fs.Write(0x10);
-  cpu::kAllCr.gs.Write(0x10);
-  cpu::kAllCr.ss.Write(0x10);
-  /// 0x8 == 8 == sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor)*1
-  /// 即 gdt 表中第一项的偏移
-  cpu::kAllCr.cs.Write(0x8);
+
+  // 加载内核数据段描述符
+  cpu::kAllCr.ds.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
+                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.es.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
+                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.fs.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
+                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.gs.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
+                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.ss.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
+                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
+  // 加载内核代码段描述符
+  cpu::kAllCr.cs.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
+                       cpu::reginfo::GdtrInfo::kKernelCodeIndex);
 
   std::cout << "es: " << cpu::kAllCr.es << std::endl;
   std::cout << "cs: " << cpu::kAllCr.cs << std::endl;

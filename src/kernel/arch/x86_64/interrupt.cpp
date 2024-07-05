@@ -357,7 +357,7 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
       });
 
   kInterrupt.GetInstance().pic.Enable(cpu::reginfo::IdtrInfo::kIrq0);
-  asm("sti");
+//   asm("sti");
 
   Info("Hello InterruptInit\n");
 

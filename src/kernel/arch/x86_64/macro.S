@@ -16,6 +16,16 @@
 
 // clang-format off
 
+// 段选择子，见 cpu::reginfo::GdtrInfo 中的定义
+// 内核代码段选择子
+.equ kKernelCodeIndex, 0x08
+// 内核数据段选择子
+.equ kKernelDataIndex, 0x10
+// 用户代码段选择子
+.equ kUserCodeIndex, 0x18
+// 用户数据段选择子
+.equ kUserDataIndex, 0x20
+
 /**
  * @brief 通用寄存器的保存
  */
