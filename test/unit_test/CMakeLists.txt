@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}
         aarch64_cpu_test.cpp
         kernel_elf_test.cpp
         kernel_fdt_test.cpp
+        libc_bit_test.cpp
 )
 
 add_header_arch(${PROJECT_NAME})
@@ -35,6 +36,7 @@ target_link_options(${PROJECT_NAME} PRIVATE
 target_link_libraries(${PROJECT_NAME} PRIVATE
         ${DEFAULT_TEST_LINK_LIB}
         ${dtc_BINARY_DIR}/libfdt/libfdt.a
+        libc
 )
 
 add_dependencies(${PROJECT_NAME}

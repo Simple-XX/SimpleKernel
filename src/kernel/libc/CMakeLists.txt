@@ -17,6 +17,7 @@ add_library(${PROJECT_NAME} OBJECT
         ${PROJECT_SOURCE_DIR}/libc.c
         ${PROJECT_SOURCE_DIR}/string.c
         ${PROJECT_SOURCE_DIR}/stdio.c
+        ${PROJECT_SOURCE_DIR}/bit.c
 )
 
 # 添加定义
