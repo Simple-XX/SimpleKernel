@@ -87,8 +87,12 @@ extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
 
 /**
  * @brief 内核入口
- * @param argc 参数个数
+ * @param argc 
+ *          riscv64: 启动核 id
+ *          x86_64: 参数个数
  * @param argv 参数指针
+ *          riscv64: dtb 地址
+ *          x86_64: BasicInfo 地址
  * @return uint32_t 正常返回 0
  */
 uint32_t main(uint32_t argc, uint8_t* argv);

@@ -111,7 +111,6 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   }
 }
 
-// 在 x86_64 情景下，argc 为参数个数，argv 为 BasicInfo 地址
 /// @todo 读取 cpu 速度
 uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   (void)argc;
