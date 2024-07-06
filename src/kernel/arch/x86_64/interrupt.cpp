@@ -72,7 +72,7 @@ void Interrupt::SetUpIdtr() {
 
 Interrupt::Interrupt()
     : pic(cpu::reginfo::IdtrInfo::kIrq0, cpu::reginfo::IdtrInfo::kIrq8),
-      pit(1) {
+      pit(200) {
   if (is_inited == false) {
     // 注册默认中断处理函数
     for (auto &i : interrupt_handlers) {
@@ -134,9 +134,11 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
   kInterrupt.GetInstance().RegisterInterruptFunc(
       cpu::reginfo::IdtrInfo::kIrq0,
       [](uint64_t exception_code, uint8_t *) -> uint64_t {
-        printf("timer\n");
-        printf("Handle %s\n",
-               cpu::reginfo::IdtrInfo::kInterruptNames[exception_code]);
+        kInterrupt.GetInstance().pit.Ticks();
+        if (kInterrupt.GetInstance().pit.GetTicks() % 100 == 0) {
+          printf("Handle %d %s\n", exception_code,
+                 cpu::reginfo::IdtrInfo::kInterruptNames[exception_code]);
+        }
         kInterrupt.GetInstance().pic.Clear(exception_code);
         return 0;
       });

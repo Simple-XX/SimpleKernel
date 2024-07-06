@@ -189,6 +189,7 @@ class Serial {
 
 /**
  * 中断控制器(8259A)
+ * @see https://wiki.osdev.org/8259_PIC
  * @note master 处理 8 个中断，slave 处理八个中断
  * @note 工作在 8086 模式下，中断处理完后需要通知 pic 重置 ISR 寄存器
  */
@@ -291,6 +292,18 @@ class Pic {
     }
   }
 
+  /**
+   * Returns the combined value of the cascaded PICs irq request register
+   * @return uint16_t 值
+   */
+  uint16_t GetIrr() { return GetIrqReg(kOcw3ReadIrr); }
+
+  /**
+   * Returns the combined value of the cascaded PICs in-service register
+   * @return uint16_t 值
+   */
+  uint16_t GetIsr() { return GetIrqReg(kOcw3ReadIsr); }
+
  private:
   uint8_t offset1_;
   uint8_t offset2_;
@@ -309,24 +322,42 @@ class Pic {
   /// Indicates that ICW4 will be present
   static constexpr const uint8_t kIcw1Icw4 = 0x01;
   /// Single (cascade) mode
-  static constexpr const uint8_t ICW1_SINGLE = 0x02;
+  static constexpr const uint8_t kIcw1Single = 0x02;
   /// Call address interval 4 (8)
-  static constexpr const uint8_t ICW1_INTERVAL4 = 0x04;
+  static constexpr const uint8_t kIcw1Interval4 = 0x04;
   /// Level triggered (edge) mode
-  static constexpr const uint8_t ICW1_LEVEL = 0x08;
+  static constexpr const uint8_t kIcw1Level = 0x08;
   /// Initialization - required!
   static constexpr const uint8_t kIcw1Init = 0x10;
+
+  /// OCW3 irq ready next CMD read
+  static constexpr const uint8_t kOcw3ReadIrr = 0x0A;
+  /// OCW3 irq service next CMD read
+  static constexpr const uint8_t kOcw3ReadIsr = 0x0B;
 
   /// 8086/88 (MCS-80/85) mode
   static constexpr const uint8_t kIcw48086 = 0x01;
   /// Auto (normal) EOI
-  static constexpr const uint8_t ICW4_AUTO = 0x02;
+  static constexpr const uint8_t kIcw4Auto = 0x02;
   /// Buffered mode/slave
-  static constexpr const uint8_t ICW4_BUF_SLAVE = 0x08;
+  static constexpr const uint8_t kIcw4BufferSlave = 0x08;
   /// Buffered mode/master
-  static constexpr const uint8_t ICW4_BUF_MASTER = 0x0C;
+  static constexpr const uint8_t kIcw4BufferMaster = 0x0C;
   /// Special fully nested (not)
-  static constexpr const uint8_t ICW4_SFNM = 0x10;
+  static constexpr const uint8_t kIcw4Sfnm = 0x10;
+
+  /**
+   * 获取中断请求寄存器的值
+   * @note OCW3 to PIC CMD to get the register values.  PIC2 is chained, and
+   * represents IRQs 8-15.  PIC1 is IRQs 0-7, with 2 being the chain
+   * @param ocw3 OCW3
+   * @return uint16_t 值
+   */
+  uint16_t GetIrqReg(uint8_t ocw3) {
+    OutByte(kMasterCommand, ocw3);
+    OutByte(kSlaveCommand, ocw3);
+    return (InByte(kSlaveCommand) << 8) | InByte(kMasterCommand);
+  }
 };
 
 /**
@@ -340,24 +371,16 @@ class Pit {
    * 构造函数
    * @param frequency 每秒中断次数
    */
-  explicit Pit(size_t frequency) {
-    // Intel 8253/8254 PIT芯片 I/O端口地址范围是40h~43h
-    // 输入频率为 1193180，frequency 即每秒中断次数
-    uint32_t divisor = 1193180 / frequency;
+  explicit Pit(uint16_t frequency) {
+    uint16_t divisor = kMaxFrequency / frequency;
 
-    // D7 D6 D5 D4 D3 D2 D1 D0
-    // 0  0  1  1  0  1  1  0
-    // 即就是 36 H
     // 设置 8253/8254 芯片工作在模式 3 下
-    OutByte(0x43, 0x36);
-
-    // 拆分低字节和高字节
-    uint8_t low = (uint8_t)(divisor & 0xFF);
-    uint8_t hign = (uint8_t)((divisor >> 8) & 0xFF);
+    OutByte(kCommand, (uint8_t)kChannel0 | (uint8_t)kHighAndLow |
+                          (uint8_t)kSquareWaveGenerator);
 
     // 分别写入低字节和高字节
-    OutByte(0x40, low);
-    OutByte(0x40, hign);
+    OutByte(kChannel0Data, divisor & 0xFF);
+    OutByte(kChannel0Data, divisor >> 8);
   }
 
   /// @name 构造/析构函数
@@ -370,70 +393,78 @@ class Pit {
   ~Pit() = default;
   /// @}
 
- private:
-  static constexpr const size_t kMaxFrequency = 1193180;
-#if defined QEMU || defined VBOX || defined VMWARE
-  static constexpr const size_t kDivisor = 59659;
-#else
-  static constexpr const size_t kDivisor = 1193;
-#endif /* defined QEMU || defined VBOX || defined VMWARE */
-  static constexpr const size_t kFrequency = (kMaxFrequency / kDivisor);
-  static constexpr const size_t kFrequency_MS =
-      (kMaxFrequency * 1000 / kDivisor);
-
-  static constexpr const size_t PIT_CH0_DAT = 0x40;
-  static constexpr const size_t PIT_CH1_DAT = 0x41;
-  static constexpr const size_t PIT_CH2_DAT = 0x42;
-  static constexpr const size_t PIT_CMD = 0x43;
-  static constexpr const size_t PIT_PCSPK = 0x61;
-  /* CMD BYTE BREAKDOWN
-   *   0b00000000
-   *            =   BCD/Binary (1 = BCD)
-   *         ===    Operating Mode
-   *       ==       Access Mode
-   *     ==         Select Channel
-   *   Operating Mode:
-   *     0 0 0 =    interrupt on terminal count
-   *     0 0 1 =    hardware re-triggerable one-shot
-   *     0 1 0 =    rate generator
-   *     0 1 1 =    square wave generator
-   *     1 0 0 =    software triggered strobe
-   *     1 0 1 =    hardware triggered strobe
-   *   Access Mode:
-   *     0 0 =      latch count value
-   *     0 1 =      low only
-   *     1 0 =      high only
-   *     1 1 =      low/high
-   *   Select Channel:
-   *     0 0 =      channel 0
-   *     0 1 =      channel 1
-   *     1 0 =      channel 2
-   *     1 1 =      read-back command (8254 only)
+  /**
+   * 计数器更新
    */
+  void Ticks() { ticks_ += 1; }
 
-  // IO Port of PIT channel
-  // Channel One is not guaranteed to be
-  //   implemented, especially on modern hardware.
+  /**
+   * 获取时钟中断次数
+   * @return size_t 时钟中断次数
+   */
+  size_t GetTicks() const { return ticks_; }
+
+ private:
+  /// 最大频率
+  static constexpr const size_t kMaxFrequency = 1193180;
+  /// 通道 0 数据端口
+  static constexpr const size_t kChannel0Data = 0x40;
+  /// 模式/命令端口
+  static constexpr const size_t kCommand = 0x43;
+
+  /**
+   * Bits         Usage
+   * 6 and 7      Select channel :
+   *                 0 0 = Channel 0
+   *                 0 1 = Channel 1
+   *                 1 0 = Channel 2
+   *                 1 1 = Read-back command (8254 only)
+   */
   enum Channel {
-    Zero = 0b00000000,
-    Two = 0b10000000,
+    kChannel0 = 0x0,
+    kChannel1 = 0x40,
+    kChannel2 = 0x80,
   };
 
+  /**
+   * Bits         Usage
+   * 4 and 5      Access mode :
+   *                 0 0 = Latch count value command
+   *                 0 1 = Access mode: lobyte only
+   *                 1 0 = Access mode: hibyte only
+   *                 1 1 = Access mode: lobyte/hibyte
+   */
   enum Access {
-    LatchCount = 0b00000000,
-    LowOnly = 0b00010000,
-    HighOnly = 0b00100000,
-    HighAndLow = 0b00110000,
+    kLatchCount = 0x0,
+    kLowOnly = 0x10,
+    kHighOnly = 0x20,
+    kHighAndLow = 0x30,
   };
 
+  /**
+   * Bits         Usage
+   * 1 to 3       Operating mode :
+   *                 0 0 0 = Mode 0 (interrupt on terminal count)
+   *                 0 0 1 = Mode 1 (hardware re-triggerable one-shot)
+   *                 0 1 0 = Mode 2 (rate generator)
+   *                 0 1 1 = Mode 3 (square wave generator)
+   *                 1 0 0 = Mode 4 (software triggered strobe)
+   *                 1 0 1 = Mode 5 (hardware triggered strobe)
+   *                 1 1 0 = Mode 2 (rate generator, same as 010b)
+   *                 1 1 1 = Mode 3 (square wave generator, same as 011b)
+   * 0            BCD/Binary mode: 0 = 16-bit binary, 1 = four-digit BCD
+   */
   enum Mode {
-    InterruptOnTerminalCount = 0b00000000,
-    HardwareRetriggerableOneShot = 0b00000010,
-    RateGenerator = 0b00000100,
-    SquareWaveGenerator = 0b00000110,
-    SoftwareStrobe = 0b00001000,
-    HardwareStrobe = 0b00001010,
+    kInterruptOnTerminalCount = 0x0,
+    kHardwareRetriggerableOneShot = 0x2,
+    kRateGenerator = 0x4,
+    kSquareWaveGenerator = 0x6,
+    kSoftwareTriggeredStrobe = 0x8,
+    kHardwareTriggeredStrobe = 0xA,
   };
+
+  /// 计数器
+  volatile size_t ticks_ = 0;
 };
 
 // 第一部分：寄存器定义
@@ -823,6 +854,32 @@ struct IdtrInfo : public RegInfoBase {
       "SIMD Floating-Point Exception",
       "Virtualization Exception",
       "Control Protection Exception",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Reserved",
+      "Irq0",
+      "Irq1",
+      "Irq2",
+      "Irq3",
+      "Irq4",
+      "Irq5",
+      "Irq6",
+      "Irq7",
+      "Irq8",
+      "Irq9",
+      "Irq10",
+      "Irq11",
+      "Irq12",
+      "Irq13",
+      "Irq14",
+      "Irq15",
   };
 
   /**
