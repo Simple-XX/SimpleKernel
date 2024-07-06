@@ -986,11 +986,12 @@ struct IdtrInfo : public RegInfoBase {
 
     friend std::ostream &operator<<(std::ostream &os, const Idt &idt) {
       printf(
-          "val: 0x%p 0x%p, offset: 0x%p, selector: 0x%p, type: %d, dpl: 0x%X, "
+          "val: 0x%p 0x%p, offset: 0x%p, selector: 0x%X, type: %d, dpl: 0x%X, "
           "p: %s",
           (void *)idt.val[0], (void *)idt.val[1],
-          ((uint64_t)idt.idt.offset3 << 32) |
-              ((uint64_t)idt.idt.offset2 << 16) | (uint64_t)idt.idt.offset1,
+          (void *)(((uint64_t)idt.idt.offset3 << 32) |
+                   ((uint64_t)idt.idt.offset2 << 16) |
+                   (uint64_t)idt.idt.offset1),
           idt.idt.selector, idt.idt.type, idt.idt.dpl,
           idt.idt.p ? "Present" : "NotPresent");
       return os;
@@ -2151,11 +2152,11 @@ struct InterruptContext {
 
   friend std::ostream &operator<<(std::ostream &os,
                                   const InterruptContext &interrupt_context) {
-    printf("rip: 0x%X\n", interrupt_context.rip);
-    printf("cs: 0x%X\n", interrupt_context.cs);
-    printf("rflags: 0x%X\n", interrupt_context.rflags);
-    printf("rsp: 0x%X\n", interrupt_context.rsp);
-    printf("ss: 0x%X", interrupt_context.ss);
+    printf("rip: 0x%lX\n", interrupt_context.rip);
+    printf("cs: 0x%lX\n", interrupt_context.cs);
+    printf("rflags: 0x%lX\n", interrupt_context.rflags);
+    printf("rsp: 0x%lX\n", interrupt_context.rsp);
+    printf("ss: 0x%lX", interrupt_context.ss);
     return os;
   }
 };
@@ -2176,11 +2177,11 @@ struct InterruptContextErrorCode {
     std::cout << std::endl
               << interrupt_context_error_code.error_code << std::endl;
     printf("padding: 0x%X\n", interrupt_context_error_code.padding);
-    printf("rip: 0x%X\n", interrupt_context_error_code.rip);
-    printf("cs: 0x%X\n", interrupt_context_error_code.cs);
-    printf("rflags: 0x%X\n", interrupt_context_error_code.rflags);
-    printf("rsp: 0x%X\n", interrupt_context_error_code.rsp);
-    printf("ss: 0x%X", interrupt_context_error_code.ss);
+    printf("rip: 0x%lX\n", interrupt_context_error_code.rip);
+    printf("cs: 0x%lX\n", interrupt_context_error_code.cs);
+    printf("rflags: 0x%lX\n", interrupt_context_error_code.rflags);
+    printf("rsp: 0x%lX\n", interrupt_context_error_code.rsp);
+    printf("ss: 0x%lX", interrupt_context_error_code.ss);
     return os;
   }
 };

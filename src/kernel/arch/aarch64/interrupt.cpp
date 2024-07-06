@@ -30,14 +30,7 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   (void)func;
 }
 
-static uint64_t kInterval = 0;
-
-// 在 riscv64 情景下，argc 为启动核 id，argv 为 dtb 地址
-/// @todo 从 dtb 读取 cpu 速度
-uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
-  (void)argc;
-  (void)argv;
-
+uint32_t InterruptInit(uint32_t, uint8_t *) {
   Info("Hello InterruptInit\n");
 
   return 0;
