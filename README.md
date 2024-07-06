@@ -114,19 +114,15 @@ intr branch
 - riscv64
 
     1. 对 CSR 寄存器的抽象
-
     2. 寄存器状态打印
-
     3. 基于 Direct 的中断处理
-    
     4. 中断注册函数
-
     5. 时钟中断
 
 - X86_64
 
     1. cpu 抽象
-    2. 8259 pic 控制器抽象
+    2. 8259A pic 控制器抽象
     3. 8253/8254 timer 控制器抽象
     4. gdt 初始化
     5. 中断处理流程
@@ -135,11 +131,9 @@ intr branch
     
 - TODO
 
-    riscv64 外部中断
+    riscv64 PLIC
     
-    riscv64 键盘中断
-
-    x86_64 键盘中断
+    x86_64 APIC
 
 ## 已支持特性
 
