@@ -1384,7 +1384,14 @@ class WriteOnlyRegBase {
       value |= (1ULL << offset);
       Write(value);
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
-      Err("TODO\n");
+      if (offset == reginfo::RflagsInfo::If::kBitOffset) {
+        __asm__ volatile("sti");
+      } else {
+        typename RegInfo::DataType old_value = 0;
+        __asm__ volatile("pushfq; popq %0" : "=r"(old_value) : :);
+        auto new_value = old_value | (1 << offset);
+        Write(new_value);
+      }
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
@@ -1426,7 +1433,14 @@ class WriteOnlyRegBase {
       value &= ~(1ULL << offset);
       Write(value);
     } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
-      Err("TODO\n");
+      if (offset == reginfo::RflagsInfo::If::kBitOffset) {
+        __asm__ volatile("cli");
+      } else {
+        typename RegInfo::DataType old_value = 0;
+        __asm__ volatile("pushfq; popq %0" : "=r"(old_value) : :);
+        auto new_value = old_value & (~(1ULL << offset));
+        Write(new_value);
+      }
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {

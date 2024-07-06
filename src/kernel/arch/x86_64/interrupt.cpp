@@ -143,8 +143,10 @@ uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
         return 0;
       });
 
+  // 允许时钟中断
   kInterrupt.GetInstance().pic.Enable(cpu::reginfo::IdtrInfo::kIrq0);
-  asm("sti");
+  // 开启中断
+  cpu::kAllCr.rflags.interrupt_enable_flag.Set();
 
   Info("Hello InterruptInit\n");
 
