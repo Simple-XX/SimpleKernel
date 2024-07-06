@@ -111,11 +111,7 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   }
 }
 
-/// @todo 读取 cpu 速度
-uint32_t InterruptInit(uint32_t argc, uint8_t *argv) {
-  (void)argc;
-  (void)argv;
-
+uint32_t InterruptInit(uint32_t, uint8_t *) {
   std::cout << cpu::kAllCr.efer << std::endl;
   std::cout << cpu::kAllCr.gdtr << std::endl;
   std::cout << cpu::kAllCr.idtr << std::endl;
