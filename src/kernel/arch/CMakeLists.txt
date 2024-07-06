@@ -16,7 +16,6 @@ enable_language(CXX)
 # 生成对象库
 add_library(${PROJECT_NAME} OBJECT
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
-        ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/context.S
         ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/boot.S
         >
         ${PROJECT_SOURCE_DIR}/${CMAKE_SYSTEM_PROCESSOR}/macro.S
