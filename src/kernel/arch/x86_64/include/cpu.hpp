@@ -202,16 +202,16 @@ class Pic {
   explicit Pic(uint8_t offset1, uint8_t offset2)
       : offset1_(offset1), offset2_(offset2) {
     // 0001 0001
-    OutByte(kPicMasterCommand, kIcw1Init | kIcw1Icw4);
+    OutByte(kMasterCommand, kIcw1Init | kIcw1Icw4);
     // 设置主片 IRQ 从 offset1_ 号中断开始
-    OutByte(kPic1Data, offset1_);
+    OutByte(kMasterData, offset1_);
     // 设置主片 IR2 引脚连接从片
     // 4: 0000 0100
-    OutByte(kPic1Data, 4);
+    OutByte(kMasterData, 4);
     // 设置主片按照 8086 的方式工作
-    OutByte(kPic1Data, kIcw48086);
+    OutByte(kMasterData, kIcw48086);
 
-    OutByte(kPicSlaveCommand, kIcw1Init | kIcw1Icw4);
+    OutByte(kSlaveCommand, kIcw1Init | kIcw1Icw4);
     // 设置从片 IRQ 从 offset2_ 号中断开始
     OutByte(kPic2Data, offset2_);
     // 告诉从片输出引脚和主片 IR2 号相连
@@ -221,7 +221,7 @@ class Pic {
     OutByte(kPic2Data, kIcw48086);
 
     // 关闭所有中断
-    OutByte(kPic1Data, 0xFF);
+    OutByte(kMasterData, 0xFF);
     OutByte(kPic2Data, 0xFF);
   }
 
@@ -245,8 +245,8 @@ class Pic {
       mask = ((InByte(kPic2Data)) & (~(1 << (no % 8))));
       OutByte(kPic2Data, mask);
     } else {
-      mask = ((InByte(kPic1Data)) & (~(1 << (no % 8))));
-      OutByte(kPic1Data, mask);
+      mask = ((InByte(kMasterData)) & (~(1 << (no % 8))));
+      OutByte(kMasterData, mask);
     }
   }
 
@@ -255,7 +255,7 @@ class Pic {
    */
   void Disable() {
     // 屏蔽所有中断
-    OutByte(kPic1Data, 0xFF);
+    OutByte(kMasterData, 0xFF);
     OutByte(kPic2Data, 0xFF);
   }
 
@@ -269,8 +269,8 @@ class Pic {
       mask = ((InByte(kPic2Data)) | (1 << (no % 8)));
       OutByte(kPic2Data, mask);
     } else {
-      mask = ((InByte(kPic1Data)) | (1 << (no % 8)));
-      OutByte(kPic1Data, mask);
+      mask = ((InByte(kMasterData)) | (1 << (no % 8)));
+      OutByte(kMasterData, mask);
     }
   }
 
@@ -284,10 +284,10 @@ class Pic {
     // 故大于等于 offset2_ 的中断号是由从片处理的
     if (no >= offset2_) {
       // 发送重设信号给从片
-      OutByte(kPicSlaveCommand, kEoi);
+      OutByte(kSlaveCommand, kEoi);
     } else {
       // 发送重设信号给主片
-      OutByte(kPicMasterCommand, kEoi);
+      OutByte(kMasterCommand, kEoi);
     }
   }
 
@@ -296,13 +296,13 @@ class Pic {
   uint8_t offset2_;
 
   /// Master (IRQs 0-7)
-  static constexpr const uint8_t kPicMaster = 0x20;
+  static constexpr const uint8_t kMaster = 0x20;
   /// Slave  (IRQs 8-15)
-  static constexpr const uint8_t kPicSlave = 0xA0;
-  static constexpr const uint8_t kPicMasterCommand = kPicMaster;
-  static constexpr const uint8_t kPic1Data = kPicMaster + 1;
-  static constexpr const uint8_t kPicSlaveCommand = kPicSlave;
-  static constexpr const uint8_t kPic2Data = kPicSlave + 1;
+  static constexpr const uint8_t kSlave = 0xA0;
+  static constexpr const uint8_t kMasterCommand = kMaster;
+  static constexpr const uint8_t kMasterData = kMaster + 1;
+  static constexpr const uint8_t kSlaveCommand = kSlave;
+  static constexpr const uint8_t kPic2Data = kSlave + 1;
   /// End-of-interrupt command code
   static constexpr const uint8_t kEoi = 0x20;
 
@@ -327,6 +327,113 @@ class Pic {
   static constexpr const uint8_t ICW4_BUF_MASTER = 0x0C;
   /// Special fully nested (not)
   static constexpr const uint8_t ICW4_SFNM = 0x10;
+};
+
+/**
+ * 时钟控制器(8253/8254)
+ * @see https://en.wikipedia.org/wiki/Intel_8253
+ * @see https://wiki.osdev.org/Programmable_Interval_Timer
+ */
+class Pit {
+ public:
+  /**
+   * 构造函数
+   * @param frequency 每秒中断次数
+   */
+  explicit Pit(size_t frequency) {
+    // Intel 8253/8254 PIT芯片 I/O端口地址范围是40h~43h
+    // 输入频率为 1193180，frequency 即每秒中断次数
+    uint32_t divisor = 1193180 / frequency;
+
+    // D7 D6 D5 D4 D3 D2 D1 D0
+    // 0  0  1  1  0  1  1  0
+    // 即就是 36 H
+    // 设置 8253/8254 芯片工作在模式 3 下
+    OutByte(0x43, 0x36);
+
+    // 拆分低字节和高字节
+    uint8_t low = (uint8_t)(divisor & 0xFF);
+    uint8_t hign = (uint8_t)((divisor >> 8) & 0xFF);
+
+    // 分别写入低字节和高字节
+    OutByte(0x40, low);
+    OutByte(0x40, hign);
+  }
+
+  /// @name 构造/析构函数
+  /// @{
+  Pit() = delete;
+  Pit(const Pit &) = delete;
+  Pit(Pit &&) = delete;
+  auto operator=(const Pit &) -> Pit & = delete;
+  auto operator=(Pit &&) -> Pit & = delete;
+  ~Pit() = default;
+  /// @}
+
+ private:
+  static constexpr const size_t kMaxFrequency = 1193180;
+#if defined QEMU || defined VBOX || defined VMWARE
+  static constexpr const size_t kDivisor = 59659;
+#else
+  static constexpr const size_t kDivisor = 1193;
+#endif /* defined QEMU || defined VBOX || defined VMWARE */
+  static constexpr const size_t kFrequency = (kMaxFrequency / kDivisor);
+  static constexpr const size_t kFrequency_MS =
+      (kMaxFrequency * 1000 / kDivisor);
+
+  static constexpr const size_t PIT_CH0_DAT = 0x40;
+  static constexpr const size_t PIT_CH1_DAT = 0x41;
+  static constexpr const size_t PIT_CH2_DAT = 0x42;
+  static constexpr const size_t PIT_CMD = 0x43;
+  static constexpr const size_t PIT_PCSPK = 0x61;
+  /* CMD BYTE BREAKDOWN
+   *   0b00000000
+   *            =   BCD/Binary (1 = BCD)
+   *         ===    Operating Mode
+   *       ==       Access Mode
+   *     ==         Select Channel
+   *   Operating Mode:
+   *     0 0 0 =    interrupt on terminal count
+   *     0 0 1 =    hardware re-triggerable one-shot
+   *     0 1 0 =    rate generator
+   *     0 1 1 =    square wave generator
+   *     1 0 0 =    software triggered strobe
+   *     1 0 1 =    hardware triggered strobe
+   *   Access Mode:
+   *     0 0 =      latch count value
+   *     0 1 =      low only
+   *     1 0 =      high only
+   *     1 1 =      low/high
+   *   Select Channel:
+   *     0 0 =      channel 0
+   *     0 1 =      channel 1
+   *     1 0 =      channel 2
+   *     1 1 =      read-back command (8254 only)
+   */
+
+  // IO Port of PIT channel
+  // Channel One is not guaranteed to be
+  //   implemented, especially on modern hardware.
+  enum Channel {
+    Zero = 0b00000000,
+    Two = 0b10000000,
+  };
+
+  enum Access {
+    LatchCount = 0b00000000,
+    LowOnly = 0b00010000,
+    HighOnly = 0b00100000,
+    HighAndLow = 0b00110000,
+  };
+
+  enum Mode {
+    InterruptOnTerminalCount = 0b00000000,
+    HardwareRetriggerableOneShot = 0b00000010,
+    RateGenerator = 0b00000100,
+    SquareWaveGenerator = 0b00000110,
+    SoftwareStrobe = 0b00001000,
+    HardwareStrobe = 0b00001010,
+  };
 };
 
 // 第一部分：寄存器定义
@@ -627,7 +734,7 @@ struct LdtrInfo : public RegInfoBase {};
  */
 struct IdtrInfo : public RegInfoBase {
   /// 最大中断数
-  static constexpr const uint32_t kInterruptMaxCount = 22;
+  static constexpr const uint32_t kInterruptMaxCount = 256;
 
   /// 中断号
   /// @see sdm.pdf#6.3.1
@@ -1963,27 +2070,8 @@ struct AllCr {
 
 };  // namespace
 
-/// 中断上下文
+/// 中断上下文，由 cpu 自动压入，无错误码
 struct InterruptContext {
-  // pusha 压入
-  uint64_t r15;
-  uint64_t r14;
-  uint64_t r13;
-  uint64_t r12;
-  uint64_t r11;
-  uint64_t r10;
-  uint64_t r9;
-  uint64_t r8;
-  uint64_t rbp;
-  uint64_t rdi;
-  uint64_t rsi;
-  uint64_t rdx;
-  uint64_t rcx;
-  uint64_t rbx;
-  uint64_t rax;
-  reginfo::IdtrInfo::ErrorCode error_code;
-  uint32_t padding;
-  // 以下由 cpu 自动压入
   uint64_t rip;
   uint64_t cs;
   uint64_t rflags;
@@ -1992,27 +2080,36 @@ struct InterruptContext {
 
   friend std::ostream &operator<<(std::ostream &os,
                                   const InterruptContext &interrupt_context) {
-    printf("r15: 0x%X\n", interrupt_context.r15);
-    printf("r14: 0x%X\n", interrupt_context.r14);
-    printf("r13: 0x%X\n", interrupt_context.r13);
-    printf("r12: 0x%X\n", interrupt_context.r12);
-    printf("r11: 0x%X\n", interrupt_context.r11);
-    printf("r10: 0x%X\n", interrupt_context.r10);
-    printf("r9: 0x%X\n", interrupt_context.r9);
-    printf("r8: 0x%X\n", interrupt_context.r8);
-    printf("rbp: 0x%X\n", interrupt_context.rbp);
-    printf("rdi: 0x%X\n", interrupt_context.rdi);
-    printf("rsi: 0x%X\n", interrupt_context.rsi);
-    printf("rdx: 0x%X\n", interrupt_context.rdx);
-    printf("rcx: 0x%X\n", interrupt_context.rcx);
-    printf("rbx: 0x%X\n", interrupt_context.rbx);
-    printf("rax: 0x%X\n", interrupt_context.rax);
-    std::cout << "error_code: " << interrupt_context.error_code << std::endl;
     printf("rip: 0x%X\n", interrupt_context.rip);
     printf("cs: 0x%X\n", interrupt_context.cs);
     printf("rflags: 0x%X\n", interrupt_context.rflags);
     printf("rsp: 0x%X\n", interrupt_context.rsp);
     printf("ss: 0x%X", interrupt_context.ss);
+    return os;
+  }
+};
+
+/// 中断上下文，由 cpu 自动压入，有错误码
+struct InterruptContextErrorCode {
+  reginfo::IdtrInfo::ErrorCode error_code;
+  uint32_t padding;
+  uint64_t rip;
+  uint64_t cs;
+  uint64_t rflags;
+  uint64_t rsp;
+  uint64_t ss;
+
+  friend std::ostream &operator<<(
+      std::ostream &os,
+      const InterruptContextErrorCode &interrupt_context_error_code) {
+    std::cout << std::endl
+              << interrupt_context_error_code.error_code << std::endl;
+    printf("padding: 0x%X\n", interrupt_context_error_code.padding);
+    printf("rip: 0x%X\n", interrupt_context_error_code.rip);
+    printf("cs: 0x%X\n", interrupt_context_error_code.cs);
+    printf("rflags: 0x%X\n", interrupt_context_error_code.rflags);
+    printf("rsp: 0x%X\n", interrupt_context_error_code.rsp);
+    printf("ss: 0x%X", interrupt_context_error_code.ss);
     return os;
   }
 };

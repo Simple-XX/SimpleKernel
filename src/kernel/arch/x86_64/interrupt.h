@@ -27,6 +27,7 @@
 class Interrupt final : public InterruptBase {
  public:
   cpu::Pic pic;
+  cpu::Pit pit;
 
   Interrupt();
 
@@ -64,6 +65,7 @@ class Interrupt final : public InterruptBase {
   /**
    * @brief 初始化 idtr
    */
+  template <uint8_t no = 0>
   void SetUpIdtr();
 };
 
