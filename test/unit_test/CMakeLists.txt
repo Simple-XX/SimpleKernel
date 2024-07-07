@@ -19,6 +19,9 @@ add_executable(${PROJECT_NAME}
         kernel_elf_test.cpp
         kernel_fdt_test.cpp
         libc_bit_test.cpp
+
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../src/kernel/firstfit_allocator.cpp
+        firstfit_allocator_test.cpp
 )
 
 add_header_arch(${PROJECT_NAME})

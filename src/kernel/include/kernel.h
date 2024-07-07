@@ -87,7 +87,7 @@ extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
 
 /**
  * @brief 内核入口
- * @param argc 
+ * @param argc
  *          riscv64: 启动核 id
  *          x86_64: 参数个数
  * @param argv 参数指针
@@ -98,6 +98,8 @@ extern "C" [[maybe_unused]] [[noreturn]] void _start(uint32_t argc,
 uint32_t main(uint32_t argc, uint8_t* argv);
 
 uint32_t InterruptInit(uint32_t argc, uint8_t* argv);
+
+uint32_t PhysicalMemoryInit(uint32_t argc, uint8_t* argv);
 
 /// 保存内核基本信息
 [[maybe_unused]] static Singleton<BasicInfo> kBasicInfo;
