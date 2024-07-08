@@ -139,5 +139,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
 
   Info("Hello x86_64 ArchInit\n");
 
+  /// @bug 返回后 gdtr 会爆炸，导致重启
+
   return 0;
 }
