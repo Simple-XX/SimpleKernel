@@ -15,11 +15,11 @@
  */
 
 #include <cstdint>
+#include <cstdio>
+#include <cstring>
 
+#include "basic_info.hpp"
 #include "cpu.hpp"
-#include "cstdio"
-#include "cstring"
-#include "kernel.h"
 #include "libcxx.h"
 
 #ifdef __x86_64__

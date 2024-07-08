@@ -24,8 +24,6 @@
 #include <tuple>
 #include <utility>
 
-#include "kernel/include/kernel.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,61 +34,6 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-/**
- * 图形相关
- */
-class Graphics {
- public:
-  /**
-   * 构造函数
-   */
-  Graphics();
-
-  /**
-   * 析构函数
-   */
-  ~Graphics() = default;
-
-  /// @name 不使用的构造函数
-  /// @{
-  Graphics(const Graphics &) = delete;
-  Graphics(Graphics &&) = delete;
-  auto operator=(const Graphics &) -> Graphics & = delete;
-  auto operator=(Graphics &&) -> Graphics & = delete;
-  /// @}
-
-  /**
-   * 设置图形模式
-   * @param format 图形像素格式，默认为 PixelBlueGreenRedReserved8BitPerColor
-   * @param width 宽度，默认为 1920
-   * @param height 高度，默认为 1080
-   */
-  void SetMode(
-      EFI_GRAPHICS_PIXEL_FORMAT format = PixelRedGreenBlueReserved8BitPerColor,
-      uint32_t width = kDefaultWidth, uint32_t height = kDefaultHeight) const;
-
-  /**
-   * 获取图形缓冲区信息
-   * @return 缓冲区地址，缓冲区长度，垂直像素个数，水平像素个数，每行像素个数
-   */
-  [[nodiscard]] auto GetFrameBuffer() const
-      -> std::tuple<uint64_t, uint32_t, uint32_t, uint32_t, uint32_t>;
-
-  /**
-   * 输出图形信息
-   */
-  void PrintInfo() const;
-
- private:
-  /// @name 默认分辨率
-  /// @{
-  static constexpr const uint32_t kDefaultWidth = 800;
-  static constexpr const uint32_t kDefaultHeight = 600;
-  /// @}
-  /// 图形输出协议
-  EFI_GRAPHICS_OUTPUT_PROTOCOL *gop_ = nullptr;
-};
 
 /**
  * 内存相关
@@ -116,12 +59,10 @@ class Memory {
   /// @}
 
   /**
-   * 获取内存信息，MemoryMap 指 arch.h 中定义的内存信息类型
-   * @param mmap 要传递给内核的 MemoryMap 结构数组
-   * @return mmap 数量
+   * 获取内存信息，只保留地址与长度
+   * @return std::pair<uint64_t, size_t> 内存地址与长度
    */
-  size_t GetMemoryMap(
-      BasicInfo::MemoryMap mmap[BasicInfo::kMemoryMapMaxCount]) const;
+  std::pair<uint64_t, size_t> GetMemory() const;
 
   /**
    * 输出内存映射信息

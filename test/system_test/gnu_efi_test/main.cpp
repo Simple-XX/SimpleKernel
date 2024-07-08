@@ -15,34 +15,33 @@
  */
 
 #include <cstdint>
+#include <cstdio>
+#include <cstring>
 
+#include "basic_info.hpp"
 #include "cpu.hpp"
-#include "cstdio"
-#include "cstring"
-#include "kernel.h"
 
 extern "C" void _putchar(char character) {
   auto serial = cpu::Serial(cpu::kCom1);
   serial.Write(character);
 }
 
-static const int kPixelwidth = 4;
-static const int kPitch = 800 * kPixelwidth;
-
-static void Fillrect(uint8_t *vram, uint8_t r, uint8_t g, unsigned char b,
-                     uint8_t w, uint8_t h) {
-  unsigned char *where = vram;
-  int i, j;
-
-  for (i = 0; i < w; i++) {
-    for (j = 0; j < h; j++) {
-      // putpixel(vram, 64 + j, 64 + i, (r << 16) + (g << 8) + b);
-      where[j * kPixelwidth] = r;
-      where[j * kPixelwidth + 1] = g;
-      where[j * kPixelwidth + 2] = b;
-    }
-    where += kPitch;
-  }
+// 引用链接脚本中的变量
+/// @see http://wiki.osdev.org/Using_Linker_Script_Values
+/// 内核开始
+extern "C" void *__executable_start[];
+/// 内核结束
+extern "C" void *end[];
+BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
+  (void)argc;
+  auto basic_info = *reinterpret_cast<BasicInfo *>(argv);
+  physical_memory_addr = basic_info.physical_memory_addr;
+  physical_memory_size = basic_info.physical_memory_size;
+  kernel_addr = reinterpret_cast<uint64_t>(__executable_start);
+  kernel_size = reinterpret_cast<uint64_t>(end) -
+                reinterpret_cast<uint64_t>(__executable_start);
+  elf_addr = basic_info.elf_addr;
+  elf_size = basic_info.elf_size;
 }
 
 uint32_t main(uint32_t argc, uint8_t *argv) {
@@ -51,9 +50,8 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
     return -1;
   }
 
-  BasicInfo basic_info = *reinterpret_cast<BasicInfo *>(argv);
-  printf("basic_info.framebuffer.base: 0x%X\n", basic_info.framebuffer.base);
-  Fillrect((uint8_t *)basic_info.framebuffer.base, 255, 0, 255, 100, 100);
+  kBasicInfo.GetInstance() = BasicInfo(argc, argv);
+  std::cout << kBasicInfo.GetInstance();
 
   printf("Hello Test\n");
 

@@ -41,6 +41,8 @@ include(compile_config)
 
 # qemu 参数设置
 list(APPEND QEMU_FLAGS
+        # 不启用图形界面
+        -nographic
         # 使用标准输出显示
         -serial stdio
         # 启动 telnet 服务，使用 2333 端口，不等待连接
@@ -57,7 +59,6 @@ if (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
 elseif (CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv64")
     list(APPEND QEMU_FLAGS
             -machine virt
-            -nographic
             # 可选项，qemu7.0 自带了 opensbi1.0
             -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
             -kernel $<TARGET_FILE:kernel>
