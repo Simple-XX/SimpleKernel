@@ -15,6 +15,7 @@
 
 #include <opensbi_interface.h>
 
+#include "basic_info.hpp"
 #include "cpu.hpp"
 #include "cstdio"
 #include "kernel_elf.hpp"
@@ -27,14 +28,34 @@ extern "C" void _putchar(char character) {
   sbi_debug_console_write_byte(character);
 }
 
+// 引用链接脚本中的变量
+/// @see http://wiki.osdev.org/Using_Linker_Script_Values
+/// 内核开始
+extern "C" void *__executable_start[];
+/// 内核结束
+extern "C" void *end[];
+BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
+  (void)argc;
+  (void)argv;
+  auto [memory_base, memory_size] = kKernelFdt.GetInstance().GetMemory();
+  physical_memory_addr = memory_base;
+  physical_memory_size = memory_size;
+
+  kernel_addr = reinterpret_cast<uint64_t>(__executable_start);
+  kernel_size = reinterpret_cast<uint64_t>(end) -
+                reinterpret_cast<uint64_t>(__executable_start);
+  elf_addr = 0;
+  elf_size = 0;
+}
+
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   printf("boot hart id: %d\n", argc);
   printf("dtb info addr: %p\n", argv);
 
   kKernelFdt.GetInstance() = KernelFdt((uint64_t)argv);
 
-  auto [memory_base, memory_size] = kKernelFdt.GetInstance().GetMemory();
-  printf("Memory address = 0x%p, size = 0x%X\n", memory_base, memory_size);
+  kBasicInfo.GetInstance() = BasicInfo(argc, argv);
+  std::cout << kBasicInfo.GetInstance();
 
   auto [serial_base, serial_size] = kKernelFdt.GetInstance().GetSerial();
   auto uart = Ns16550a(serial_base);

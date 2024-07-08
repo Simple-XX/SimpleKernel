@@ -132,8 +132,20 @@ intr branch
 - TODO
 
     riscv64 PLIC
-    
+
     x86_64 APIC
+
+- 全局对象
+
+  |                  对象名                  |                 位置                 |          用途           |
+  | :--------------------------------------: | :----------------------------------: | :---------------------: |
+  |          `static ostream cout`           |  src/kernel/libcxx/include/iostream  | 内核中的 std::cout 实现 |
+  | `static Singleton<KernelElf> kKernelElf` |  src/kernel/include/kernel_elf.hpp   | 解析内核自身的 elf 信息 |
+  | `static Singleton<KernelFdt> kKernelFdt` |  src/kernel/include/kernel_fdt.hpp   |      解析 dtb 信息      |
+  | `static Singleton<BasicInfo> kBasicInfo` |  src/kernel/include/basic_info.hpp   |      内核基本信息       |
+  | `static cpu::Serial kSerial(cpu::kCom1)` | src/kernel/arch/x86_64/arch_main.cpp |     X86_64 下的串口     |
+
+  
 
 ## 已支持特性
 

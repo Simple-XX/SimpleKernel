@@ -16,7 +16,6 @@ add_executable(${PROJECT_NAME}
         boot.cpp
         load_elf.cpp
         out_stream.cpp
-        graphics.cpp
         memory.cpp
 )
 

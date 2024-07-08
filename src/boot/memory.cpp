@@ -14,7 +14,6 @@
  * </table>
  */
 
-#include "kernel/include/kernel.h"
 #include "load_elf.h"
 #include "out_stream.hpp"
 
@@ -36,72 +35,17 @@ Memory::Memory() {
   }
 }
 
-size_t Memory::GetMemoryMap(
-    BasicInfo::MemoryMap mmap[BasicInfo::kMemoryMapMaxCount]) const {
-  // 数组边界检查
-  if (desc_count_ > BasicInfo::kMemoryMapMaxCount) {
-    debug << L"Error: desc_count_ too big to load " << desc_count_ << L"."
-          << OutStream::endl;
-  }
-
-  // 将 efi 格式转换为 BasicInfo::MemoryMap 格式
+std::pair<uint64_t, size_t> Memory::GetMemory() const {
+  uint64_t addr = 0;
+  size_t size = 0;
+  // 统计所有内存
   for (uint64_t i = 0; i < desc_count_; i++) {
     auto *desc = reinterpret_cast<EFI_MEMORY_DESCRIPTOR *>(
         (reinterpret_cast<uint8_t *>(memory_map_)) + i * desc_size_);
-
-    mmap[i].base_addr = desc->PhysicalStart;
-    mmap[i].length = desc->NumberOfPages * EFI_PAGE_SIZE;
-
-    switch (desc->Type) {
-      case EfiReservedMemoryType:
-      case EfiMemoryMappedIO:
-      case EfiMemoryMappedIOPortSpace:
-      case EfiPalCode: {
-        mmap[i].type = BasicInfo::MemoryMap::kTypeReserved;
-        break;
-      }
-      case EfiUnusableMemory: {
-        mmap[i].type = BasicInfo::MemoryMap::kTypeUnUsable;
-        break;
-      }
-      case EfiACPIReclaimMemory: {
-        mmap[i].type = BasicInfo::MemoryMap::kTypeAcpi;
-        break;
-      }
-      case EfiLoaderCode:
-      case EfiLoaderData:
-      case EfiBootServicesCode:
-      case EfiBootServicesData:
-      case EfiRuntimeServicesCode:
-      case EfiRuntimeServicesData:
-      case EfiConventionalMemory: {
-        mmap[i].type = BasicInfo::MemoryMap::kTypeRam;
-        break;
-      }
-      case EfiACPIMemoryNVS: {
-        mmap[i].type = BasicInfo::MemoryMap::kTypeNvs;
-        break;
-      }
-    }
+    size += desc->NumberOfPages * EFI_PAGE_SIZE;
   }
 
-  // 合并同类项
-  size_t mmap_count = desc_count_;
-  size_t j = 0;
-  for (size_t i = 1; i < mmap_count; i++) {
-    if (mmap[j].type == mmap[i].type &&
-        mmap[j].base_addr + mmap[j].length == mmap[i].base_addr) {
-      mmap[j].length += mmap[i].length;
-    } else {
-      j++;
-      if (i != j) {
-        mmap[j] = mmap[i];
-      }
-    }
-  }
-  mmap_count = j + 1;
-
-  return mmap_count;
+  return {addr, size};
 }
 
 void Memory::PrintInfo() {

@@ -22,8 +22,8 @@
 
 /**
  * 体系结构相关初始化
- * @param argc 在不同体系结构有不同含义
- * @param argv 在不同体系结构有不同含义
+ * @param argc 在不同体系结构有不同含义，同 _start
+ * @param argv 在不同体系结构有不同含义，同 _start
  */
 uint32_t ArchInit(uint32_t argc, uint8_t *argv);
 

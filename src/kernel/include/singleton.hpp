@@ -21,14 +21,14 @@
 template <typename T>
 class Singleton {
  public:
+  Singleton() = default;
+  ~Singleton() = default;
+
   // 获取单例实例的静态方法
   static T& GetInstance() {
     static T instance;
     return instance;
   }
-
-  Singleton() = default;
-  ~Singleton() = default;
 
  private:
   /// @name 构造/析构函数

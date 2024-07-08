@@ -14,7 +14,6 @@
  * </table>
  */
 
-#include "kernel/include/kernel.h"
 #include "load_elf.h"
 #include "out_stream.hpp"
 #include "project_config.h"
@@ -65,12 +64,6 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
   debug << L"Unload:          " << OutStream::hex_X << loaded_image->Unload
         << OutStream::endl;
 
-  // 初始化 Graphics
-  auto graphics = Graphics();
-  // 打印图形信息
-  graphics.PrintInfo();
-  // 设置为 kDefaultWidth*kDefaultHeight
-  graphics.SetMode();
   // 初始化 Memory
   auto memory = Memory();
   memory.PrintInfo();
@@ -107,23 +100,23 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
     return status;
   }
 
-  // 向内核传递参数
-  BasicInfo basic_info = {};
+  /// 基础信息
+  /// @note 结构与 basic_info.hpp 同步
+  struct {
+    uint64_t physical_memory_addr;
+    size_t physical_memory_size;
+    uint64_t kernel_addr;
+    size_t kernel_size;
+    uint64_t elf_addr;
+    size_t elf_size;
+  } basic_info;
 
-  // 获取内存信息
-  basic_info.memory_map_count = memory.GetMemoryMap(basic_info.memory_map);
+  // 获取物理内存信息
+  auto [physical_memory_addr, physical_memory_size] = memory.GetMemory();
 
-  // 获取 framebuffer 信息
-  auto [framebuffer_base, framebuffer_size, framebuffer_width,
-        framebuffer_height, framebuffer_pixel_per_line] =
-      graphics.GetFrameBuffer();
-  basic_info.framebuffer.base = framebuffer_base;
-  basic_info.framebuffer.size = framebuffer_size;
-  basic_info.framebuffer.width = framebuffer_width;
-  basic_info.framebuffer.height = framebuffer_height;
-  basic_info.framebuffer.pitch = framebuffer_pixel_per_line * sizeof(uint32_t);
-
-  // 获取 elf 地址
+  // 填充信息
+  basic_info.physical_memory_addr = physical_memory_addr;
+  basic_info.physical_memory_size = physical_memory_size;
   basic_info.elf_addr = elf_info.first;
   basic_info.elf_size = elf_info.second;
 
