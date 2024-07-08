@@ -37,14 +37,10 @@ class PhysicalMemoryManager {
  public:
   /**
    * @brief 构造函数
-   * @param name 分配器名
-   * @param addr 要管理的内存开始地址
-   * @param length 要管理的内存长度，单位由派生类型指定
+   * @param addr 物理地址起点
+   * @param pages_count 物理页数
    */
-  explicit PhysicalMemoryManager(const char *name, uint64_t addr,
-                                 size_t length) {
-    ;
-  }
+  explicit PhysicalMemoryManager(uint64_t addr, size_t pages_count);
 
   /// @name 构造/析构函数
   /// @{
@@ -58,136 +54,129 @@ class PhysicalMemoryManager {
   /// @}
 
   /**
-   * @brief 初始化
-   * @return true            成功
-   * @return false           失败
-   * @todo 移动到构造函数去
+   * @brief 获取物理内存页数
+   * @return size_t 物理内存页数
    */
-  bool init(void);
-
-  /**
-   * @brief 获取物理内存长度
-   * @return size_t          物理内存长度
-   */
-  size_t get_pmm_length(void) const;
+  size_t GetPagesCount() const;
 
   /**
    * @brief 获取内核空间起始地址
-   * @return uintptr_t        内核空间起始地址
+   * @return uint64_t        内核空间起始地址
    */
-  uintptr_t get_kernel_space_start(void) const;
+  uint64_t GetKernelSpaceAddr() const;
 
   /**
-   * @brief 获取内核空间大小，单位为 byte
-   * @return size_t           内核空间大小
+   * @brief 获取内核空间页数
+   * @return size_t 内核空间页数
    */
-  size_t get_kernel_space_length(void) const;
+  size_t GetKernelSpacePagesCount() const;
 
   /**
-   * @brief 获取非内核空间起始地址
-   * @return uintptr_t        非内核空间起始地址
+   * @brief 获取用户间起始地址
+   * @return uint64_t 用户间起始地址
    */
-  uintptr_t get_non_kernel_space_start(void) const;
+  uint64_t GetUserSpaceAddr() const;
 
   /**
-   * @brief 获取非内核空间大小，单位为 byte
-   * @return size_t           非内核空间大小
+   * @brief 获取用户间页数
+   * @return size_t 用户间页数
    */
-  size_t get_non_kernel_space_length(void) const;
+  size_t GetUserSpacePagesCount() const;
 
   /**
    * @brief 获取当前已使用页数
-   * @return size_t          已使用页数
+   * @return size_t 已使用页数
    */
-  size_t get_used_pages_count(void) const;
+  size_t GetUsedPagesCount() const;
 
   /**
-   * @brief 获取当前空闲页
-   * @return size_t          空闲页数
+   * @brief 获取当前空闲页数
+   * @return size_t 空闲页数
    */
-  size_t get_free_pages_count(void) const;
+  size_t GetFreePagesCount() const;
 
   /**
    * @brief 分配一页
-   * @return uintptr_t       分配的内存起始地址
+   * @return uint64_t       分配的内存起始地址
    */
-  uintptr_t alloc_page(void);
+  uint64_t AllocUserPage();
 
   /**
    * @brief 分配多页
    * @param  _len            页数
-   * @return uintptr_t       分配的内存起始地址
+   * @return uint64_t       分配的内存起始地址
    */
-  uintptr_t alloc_pages(size_t _len);
+  uint64_t AllocUserPages(size_t _len);
 
   /**
    * @brief 分配以指定地址开始的 _len 页
-   * @param  _addr           指定的地址
+   * @param  addr           指定的地址
    * @param  _len            页数
    * @return true            成功
    * @return false           失败
    */
-  bool alloc_pages(uintptr_t _addr, size_t _len);
+  bool AllocUserPagesAt(uint64_t addr, size_t _len);
 
   /**
    * @brief 在内核空间申请一页
-   * @return uintptr_t       分配的内存起始地址
+   * @return uint64_t       分配的内存起始地址
    */
-  uintptr_t alloc_page_kernel(void);
+  uint64_t AllocKernelPage();
 
   /**
-   * @brief 在内核空间分配 _len 页
-   * @param  _len            页数
-   * @return uintptr_t       分配到的内存起始地址
+   * @brief 在内核空间分配 pages_count 页
+   * @param  pages_count 页数
+   * @return uint64_t 分配到的内存起始地址
    */
-  uintptr_t alloc_pages_kernel(size_t _len);
+  uint64_t AllocKernelPages(size_t pages_count);
 
   /**
    * @brief 在内核空间分配以指定地址开始的 _len 页
-   * @param  _addr           指定的地址
-   * @param  _len            页数
-   * @return true            成功
-   * @return false           失败
+   * @param addr 指定的地址
+   * @param pages_count 页数
+   * @return true 成功
+   * @return false 失败
    */
-  bool alloc_pages_kernel(uintptr_t _addr, size_t _len);
+  bool AllocKernelPagesAt(uint64_t addr, size_t pages_count);
 
   /**
    * @brief 回收一页
-   * @param  _addr           要回收的地址
+   * @param addr 要回收的地址
    */
-  void free_page(uintptr_t _addr);
+  void FreePage(uint64_t addr);
 
   /**
    * @brief 回收多页
-   * @param  _addr           要回收的地址
-   * @param  _len            页数
+   * @param addr 要回收的地址
+   * @param pages_count 页数
    */
-  void free_pages(uintptr_t _addr, size_t _len);
+  void FreePages(uint64_t addr, size_t pages_count);
 
  private:
   /// 物理内存开始地址
-  uintptr_t addr_;
+  uint64_t addr_;
   /// 物理内存页数
-  size_t pages_count;
+  size_t pages_count_;
   /// 内核空间起始地址
-  uintptr_t kernel_addr;
+  uint64_t kernel_addr_;
   /// 内核页数
-  size_t kernel_pages_count;
+  size_t kernel_pages_count_;
   /// 用户空间起始地址
-  uintptr_t user_start;
+  uint64_t user_start_;
   /// 用户空间页数
-  size_t user_pages_count;
+  size_t user_pages_count_;
 
-  /// 内核空间不会位于内存中间，导致出现非内核空间被切割为两部分的情况
+  /// 内核空间不会位于内存中间，导致出现用户间被切割为两部分的情况
   /// 物理内存分配器，分配内核空间
-  AllocatorBase *kernel_allocator;
+  AllocatorBase *kernel_allocator_;
   /// 物理内存分配器，分配用户空间
-  AllocatorBase *user_allocator;
+  AllocatorBase *user_allocator_;
 
   /**
-   * @brief 将 multiboot2/dtb 信息移动到内核空间
+   * @brief 将 elf 与 dtb
+   * 信息移动到内核空间，位于内核结束后的下一页，分别占用一页
    */
-  void move_boot_info(void);
+  void MoveElfDtb();
 };
 
 /// 全局物理内存管理器
