@@ -37,6 +37,7 @@ extern "C" void *end[];
 BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
   (void)argc;
   (void)argv;
+
   auto [memory_base, memory_size] = kKernelFdt.GetInstance().GetMemory();
   physical_memory_addr = memory_base;
   physical_memory_size = memory_size;
@@ -46,6 +47,8 @@ BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
                 reinterpret_cast<uint64_t>(__executable_start);
   elf_addr = 0;
   elf_size = 0;
+
+  fdt_addr = reinterpret_cast<uint64_t>(argv);
 }
 
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {

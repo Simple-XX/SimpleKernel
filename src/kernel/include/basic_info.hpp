@@ -40,6 +40,9 @@ struct BasicInfo {
   /// elf 大小
   size_t elf_size;
 
+  /// fdt 地址
+  uint64_t fdt_addr;
+
   /**
    * 构造函数，在 arch_main.cpp 中定义
    * @param argc 同 _start
@@ -65,6 +68,7 @@ struct BasicInfo {
            basic_info.kernel_size);
     printf("elf_addr: 0x%X, size 0x%X\n", basic_info.elf_addr,
            basic_info.elf_size);
+    printf("fdt_addr: 0x%X\n", basic_info.fdt_addr);
     return os;
   }
 };

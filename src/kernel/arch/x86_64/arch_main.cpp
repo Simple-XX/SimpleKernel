@@ -76,14 +76,19 @@ extern "C" void *__executable_start[];
 extern "C" void *end[];
 BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
   (void)argc;
+
   auto basic_info = *reinterpret_cast<BasicInfo *>(argv);
   physical_memory_addr = basic_info.physical_memory_addr;
   physical_memory_size = basic_info.physical_memory_size;
+
   kernel_addr = reinterpret_cast<uint64_t>(__executable_start);
   kernel_size = reinterpret_cast<uint64_t>(end) -
                 reinterpret_cast<uint64_t>(__executable_start);
+
   elf_addr = basic_info.elf_addr;
   elf_size = basic_info.elf_size;
+
+  fdt_addr = 0;
 }
 
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
