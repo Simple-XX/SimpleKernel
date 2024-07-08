@@ -29,33 +29,33 @@
 
 PhysicalMemoryManager::PhysicalMemoryManager(uint64_t addr, size_t pages_count)
     : addr_(addr), pages_count_(pages_count) {
-  // // 内核空间地址开始
-  // kernel_addr_ = kBasicInfo.GetInstance().kernel_addr;
-  // // 长度手动指定
-  // kernel_pages_count_ = kKernelSpaceSize / kPageSize;
-  // // 非内核空间在内核空间结束后
-  // user_start_ = kBasicInfo.GetInstance().kernel_addr + kKernelSpaceSize;
-  // // 长度为总长度减去内核长度
-  // user_pages_count_ = pages_count_ - kernel_pages_count_;
+  // 内核空间地址开始
+  kernel_addr_ = kBasicInfo.GetInstance().kernel_addr;
+  // 长度手动指定
+  kernel_pages_count_ = kKernelSpaceSize / kPageSize;
+  // 非内核空间在内核空间结束后
+  user_start_ = kBasicInfo.GetInstance().kernel_addr + kKernelSpaceSize;
+  // 长度为总长度减去内核长度
+  user_pages_count_ = pages_count_ - kernel_pages_count_;
 
-  // // 创建分配器
-  // // 内核空间
-  // static FirstFitAllocator first_fit_allocator_kernel(
-  //     "First Fit Allocator(Kernel space)", kernel_addr_, kernel_pages_count_);
-  // kernel_allocator_ = (AllocatorBase*)&first_fit_allocator_kernel;
-  // // 用户空间
-  // static FirstFitAllocator first_fit_allocator(
-  //     "First Fit Allocator(User space)", user_start_, user_pages_count_);
-  // user_allocator_ = (AllocatorBase*)&first_fit_allocator;
+  // 创建分配器
+  // 内核空间
+  static FirstFitAllocator first_fit_allocator_kernel(
+      "First Fit Allocator(Kernel space)", kernel_addr_, kernel_pages_count_);
+  kernel_allocator_ = (AllocatorBase*)&first_fit_allocator_kernel;
+  // 用户空间
+  static FirstFitAllocator first_fit_allocator(
+      "First Fit Allocator(User space)", user_start_, user_pages_count_);
+  user_allocator_ = (AllocatorBase*)&first_fit_allocator;
 
-  // // 内核占用页数
-  // auto kernel_pages = kBasicInfo.GetInstance().kernel_size / kPageSize;
-  // if (kBasicInfo.GetInstance().kernel_size % kPageSize != 0) {
-  //   kernel_pages++;
-  // }
-  // // 将内核已使用部进行分配
-  // AllocKernelPagesAt(kBasicInfo.GetInstance().kernel_addr, kernel_pages);
-  // MoveElfDtb();
+  // 内核占用页数
+  auto kernel_pages = kBasicInfo.GetInstance().kernel_size / kPageSize;
+  if (kBasicInfo.GetInstance().kernel_size % kPageSize != 0) {
+    kernel_pages++;
+  }
+  // 将内核已使用部进行分配
+  AllocKernelPagesAt(kBasicInfo.GetInstance().kernel_addr, kernel_pages);
+  MoveElfDtb();
 }
 
 size_t PhysicalMemoryManager::GetPagesCount() const { return pages_count_; }
@@ -128,32 +128,31 @@ void PhysicalMemoryManager::FreePages(uint64_t addr, size_t pages_count) {
 }
 
 void PhysicalMemoryManager::MoveElfDtb() {
-  auto old_elf_addr = kBasicInfo.GetInstance().elf_addr;
-  // auto old_dtb_addr = kBasicInfo.GetInstance().dtb_addr;
-  // 计算需要多少页
-  auto elf_pages = kBasicInfo.GetInstance().elf_size / kPageSize;
-  if (kBasicInfo.GetInstance().elf_size % kPageSize != 0) {
-    elf_pages++;
-  }
-  // auto dtb_pages = kBasicInfo.GetInstance().dtb_size / kPageSize;
-  // if (kBasicInfo.GetInstance().dtb_size % kPageSize != 0) {
-  //   elf_pages++;
-  // }
-  // 申请空间
-  auto new_elf_addr = AllocKernelPages(elf_pages);
-  // auto new_dtb_addr = AllocKernelPages(dtb_pages);
-  // 复制过来，完成后以前的内存就可以使用了
-  memcpy((void*)old_elf_addr, (void*)new_elf_addr, elf_pages * kPageSize);
-  // memcpy((void*)old_dtb_addr, (void*)new_dtb_addr, dtb_pages * kPageSize);
-  // 更新 kBasicInfo 信息
-  kBasicInfo.GetInstance().elf_addr = new_elf_addr;
-  // kBasicInfo.GetInstance().dtb_addr = new_dtb_addr;
   // 重新初始化
-  if (kBasicInfo.GetInstance().elf_size != 0) {
+  if (kBasicInfo.GetInstance().elf_addr != 0) {
+    auto old_elf_addr = kBasicInfo.GetInstance().elf_addr;
+    // 计算需要多少页
+    auto elf_pages = kBasicInfo.GetInstance().elf_size / kPageSize;
+    if (kBasicInfo.GetInstance().elf_size % kPageSize != 0) {
+      elf_pages++;
+    }
+    // 申请空间
+    auto new_elf_addr = AllocKernelPages(elf_pages);
+    // 复制过来，完成后以前的内存就可以使用了
+    memcpy((void*)new_elf_addr, (void*)old_elf_addr, elf_pages * kPageSize);
+    // 更新 kBasicInfo 信息
+    kBasicInfo.GetInstance().elf_addr = new_elf_addr;
     kKernelElf.GetInstance() = KernelElf(kBasicInfo.GetInstance().elf_addr,
                                          kBasicInfo.GetInstance().elf_size);
   }
-  // kKernelFdt.GetInstance() = KernelFdt(kBasicInfo.GetInstance().dtb_addr);
+  if (kBasicInfo.GetInstance().fdt_addr != 0) {
+    auto old_fdt_addr = kBasicInfo.GetInstance().fdt_addr;
+    auto fdt_pages = 1;
+    auto new_fdt_addr = AllocKernelPages(fdt_pages);
+    memcpy((void*)new_fdt_addr, (void*)old_fdt_addr, fdt_pages * kPageSize);
+    kBasicInfo.GetInstance().fdt_addr = new_fdt_addr;
+    kKernelFdt.GetInstance() = KernelFdt(kBasicInfo.GetInstance().fdt_addr);
+  }
 }
 
 uint32_t PhysicalMemoryInit(uint32_t argc, uint8_t* argv) {
