@@ -27,7 +27,7 @@ intr branch
 
 ## 快速开始
 
-1. 需要 Ubuntu 环境
+1. 需要 Ubuntu 环境或使用 docker(见 tools/docker.md)
 
 2. 安装依赖
 
