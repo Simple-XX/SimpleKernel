@@ -20,6 +20,7 @@
 #include <stdarg.h>
 
 #include "cstdio"
+#include "../../project_config.h"
 
 namespace {
 
@@ -38,6 +39,17 @@ static constexpr const auto kWhite = "\033[37m";
 /**
  * @brief 与 printf 类似，只是颜色不同
  */
+extern "C" inline void Debug(const char* format, ...) {
+#ifdef DEBUG_LOG
+  va_list args;
+  va_start(args, format);
+  printf("%s", kMagenta);
+  vprintf(format, args);
+  printf("%s", kReset);
+  va_end(args);
+#endif
+}
+
 extern "C" inline void Info(const char* format, ...) {
   va_list args;
   va_start(args, format);

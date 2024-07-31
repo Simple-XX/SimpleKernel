@@ -71,6 +71,8 @@ list(APPEND COMMON_LINK_LIB
 
 # 通用宏定义
 list(APPEND COMMON_DEFINITIONS
+        $<$<CONFIG:Release>:RELEASE>
+        $<$<CONFIG:Debug>:DEBUG>
 )
 
 list(APPEND DEFAULT_BOOT_DEFINITIONS
