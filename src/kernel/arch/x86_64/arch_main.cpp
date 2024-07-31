@@ -113,6 +113,9 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   };
   cpu::kAllCr.gdtr.Write(gdtr);
 
+  Debug("sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor): %d\n",
+        sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor));
+
   // 加载内核数据段描述符
   cpu::kAllCr.ds.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
                        cpu::reginfo::GdtrInfo::kKernelDataIndex);
