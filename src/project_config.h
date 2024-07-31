@@ -21,8 +21,8 @@
 
 #define KERNEL_NAME (wchar_t *)L"kernel.elf"
 
-#ifdef DEBUG
-#define DEBUG_LOG
+#ifdef SIMPLEKERNEL_DEBUG
+#define SIMPLEKERNEL_DEBUG_LOG
 #endif
 
 #endif /* SIMPLEKERNEL_SRC_PROJECT_CONFIG_H_ */

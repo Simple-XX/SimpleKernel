@@ -38,6 +38,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
   printf("Hello SimpleKernel\n");
+  Debug("Hello SimpleKernel\n");
   Info("Hello SimpleKernel\n");
   Warn("Hello SimpleKernel\n");
   Err("Hello SimpleKernel\n");
