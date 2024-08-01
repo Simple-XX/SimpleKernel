@@ -56,7 +56,10 @@ RUN apt install --no-install-recommends --fix-missing -y \
     git \
     qemu-system \
     gdb-multiarch \
-    libgtest-dev
+    libgtest-dev \
+    pkg-config \
+    flex \
+    bison
 RUN apt install --no-install-recommends --fix-missing -y \
     gcc \
     g++ \
