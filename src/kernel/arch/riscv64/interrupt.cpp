@@ -82,7 +82,7 @@ Interrupt::Interrupt() {
     is_inited = true;
   }
 
-  Info("Interrupt init.\n");
+  log::Info("Interrupt init.\n");
 }
 
 void Interrupt::Do(uint64_t cause, uint8_t *context) {
@@ -155,7 +155,7 @@ uint32_t InterruptInit(uint32_t, uint8_t *) {
   // 设置时钟中断时间
   sbi_set_timer(kInterval);
 
-  Info("Hello InterruptInit\n");
+  log::Info("Hello InterruptInit\n");
 
   return 0;
 }

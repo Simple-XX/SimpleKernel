@@ -38,10 +38,14 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   [[maybe_unused]] auto arch_init_ret = ArchInit(argc, argv);
 
   printf("Hello SimpleKernel\n");
-  Debug("Hello SimpleKernel\n");
-  Info("Hello SimpleKernel\n");
-  Warn("Hello SimpleKernel\n");
-  Err("Hello SimpleKernel\n");
+  log::Debug("Hello SimpleKernel\n");
+  log::Info("Hello SimpleKernel\n");
+  log::Warn("Hello SimpleKernel\n");
+  log::Err("Hello SimpleKernel\n");
+  log::debug << "Hello SimpleKernel\n";
+  log::info << "Hello SimpleKernel\n";
+  log::warn << "Hello SimpleKernel\n";
+  log::err << "Hello SimpleKernel\n";
 
   DumpStack();
 

@@ -34,8 +34,58 @@ static constexpr const auto kMagenta = "\033[35m";
 static constexpr const auto kCyan = "\033[36m";
 static constexpr const auto kWhite = "\033[37m";
 
+template <void (*OutputFunction)(const char* format, ...)>
+class Logger : public std::ostream {
+ public:
+  Logger& operator<<(int8_t val) override {
+    OutputFunction("%d", val);
+    return *this;
+  }
+
+  Logger& operator<<(uint8_t val) override {
+    OutputFunction("%d", val);
+    return *this;
+  }
+
+  Logger& operator<<(const char* val) override {
+    OutputFunction("%s", val);
+    return *this;
+  }
+
+  Logger& operator<<(int16_t val) override {
+    OutputFunction("%d", val);
+    return *this;
+  }
+
+  Logger& operator<<(uint16_t val) override {
+    OutputFunction("%d", val);
+    return *this;
+  }
+
+  Logger& operator<<(int32_t val) override {
+    OutputFunction("%d", val);
+    return *this;
+  }
+
+  Logger& operator<<(uint32_t val) override {
+    OutputFunction("%d", val);
+    return *this;
+  }
+
+  Logger& operator<<(int64_t val) override {
+    OutputFunction("%ld", val);
+    return *this;
+  }
+
+  Logger& operator<<(uint64_t val) override {
+    OutputFunction("%ld", val);
+    return *this;
+  }
+};
+
 }  // namespace
 
+namespace log {
 /**
  * @brief 与 printf 类似，只是颜色不同
  */
@@ -77,5 +127,12 @@ extern "C" inline void Err(const char* format, ...) {
   printf("%s", kReset);
   va_end(args);
 }
+
+[[maybe_unused]] static Logger<Info> info;
+[[maybe_unused]] static Logger<Warn> warn;
+[[maybe_unused]] static Logger<Debug> debug;
+[[maybe_unused]] static Logger<Err> err;
+
+}  // namespace log
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_LOG_HPP_ */
