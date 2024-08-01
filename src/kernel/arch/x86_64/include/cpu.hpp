@@ -1336,14 +1336,17 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::CsInfo>::value) {
-      __asm__ volatile(
-          "push %0\n\t"
-          "pushq $WriteCsLabel\n\t"
-          "retfq\n\t"
-          "WriteCsLabel: \n\t"
-          :
-          : "r"(value)
-          :);
+      auto JumpFunction = [=](uint16_t value) {
+        __asm__ volatile(
+            "push %0\n\t"
+            "pushq $WriteCsLabel\n\t"
+            "retfq\n\t"
+            "WriteCsLabel: \n\t"
+            :
+            : "r"(value)
+            :);
+      };
+      JumpFunction(value);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::SsInfo>::value) {
