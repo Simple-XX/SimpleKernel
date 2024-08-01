@@ -48,13 +48,13 @@ class KernelFdt {
    */
   explicit KernelFdt(uint64_t fdt_addr) : fdt_addr_((void *)fdt_addr) {
     if (!fdt_addr_) {
-      Err("Fatal Error: Invalid fdt_addr.\n");
+      log::Err("Fatal Error: Invalid fdt_addr.\n");
       throw;
     }
 
     // 检查 fdt 头数据
     if (fdt_check_header(fdt_addr_) != 0) {
-      Err("Invalid device tree blob\n");
+      log::Err("Invalid device tree blob\n");
       throw;
     }
   }
@@ -82,14 +82,14 @@ class KernelFdt {
     // 找到 /memory 节点
     auto offset = fdt_path_offset(fdt_addr_, "/memory");
     if (offset < 0) {
-      Err("Error finding /memory node: %s\n", fdt_strerror(offset));
+      log::Err("Error finding /memory node: %s\n", fdt_strerror(offset));
       throw;
     }
 
     // 获取 reg 属性
     auto prop = fdt_get_property(fdt_addr_, offset, "reg", &len);
     if (!prop) {
-      Err("Error finding reg property: %s\n", fdt_strerror(len));
+      log::Err("Error finding reg property: %s\n", fdt_strerror(len));
       throw;
     }
 
@@ -115,14 +115,14 @@ class KernelFdt {
     // 找到 /memory 节点
     auto offset = fdt_path_offset(fdt_addr_, "/soc/serial");
     if (offset < 0) {
-      Err("Error finding /soc/serial node: %s\n", fdt_strerror(offset));
+      log::Err("Error finding /soc/serial node: %s\n", fdt_strerror(offset));
       throw;
     }
 
     // 获取 reg 属性
     auto prop = fdt_get_property(fdt_addr_, offset, "reg", &len);
     if (!prop) {
-      Err("Error finding reg property: %s\n", fdt_strerror(len));
+      log::Err("Error finding reg property: %s\n", fdt_strerror(len));
       throw;
     }
 

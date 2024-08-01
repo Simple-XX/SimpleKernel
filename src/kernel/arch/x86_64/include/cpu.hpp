@@ -1227,11 +1227,11 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       __asm__ volatile("sgdt %0" : "=m"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
       __asm__ volatile("sidt %0" : "=m"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("mov %%cr0, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -1245,7 +1245,7 @@ class ReadOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::CpuidInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::CsInfo>::value) {
@@ -1271,7 +1271,7 @@ class ReadOnlyRegBase {
                              reginfo::segment_register::GsInfo>::value) {
       __asm__ volatile("mov %%gs, %0" : "=r"(value) : :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return value;
@@ -1316,11 +1316,11 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
       __asm__ volatile("lgdt %0" : : "m"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
       __asm__ volatile("lidt %0" : : "m"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("mov %0, %%cr0" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -1332,18 +1332,21 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("mov %0, %%cr8" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::CsInfo>::value) {
-      __asm__ volatile(
-          "push %0\n\t"
-          "pushq $WriteCsLabel\n\t"
-          "retfq\n\t"
-          "WriteCsLabel: \n\t"
-          :
-          : "r"(value)
-          :);
+      auto JumpFunction = [=](uint16_t value) {
+        __asm__ volatile(
+            "push %0\n\t"
+            "pushq $WriteCsLabel\n\t"
+            "retfq\n\t"
+            "WriteCsLabel: \n\t"
+            :
+            : "r"(value)
+            :);
+      };
+      JumpFunction(value);
     } else if constexpr (std::is_same<
                              RegInfo,
                              reginfo::segment_register::SsInfo>::value) {
@@ -1365,7 +1368,7 @@ class WriteOnlyRegBase {
                              reginfo::segment_register::GsInfo>::value) {
       __asm__ volatile("mov %0, %%gs" : : "r"(value) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -1394,13 +1397,13 @@ class WriteOnlyRegBase {
         Write(new_value);
       }
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("bts %%cr0, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -1412,9 +1415,9 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("bts %%cr8, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -1443,13 +1446,13 @@ class WriteOnlyRegBase {
         Write(new_value);
       }
     } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
       __asm__ volatile("btr %%cr0, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
@@ -1461,9 +1464,9 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
       __asm__ volatile("btr %%cr8, %0" : : "r"(offset) :);
     } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      Err("TODO\n");
+      log::Err("TODO\n");
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }

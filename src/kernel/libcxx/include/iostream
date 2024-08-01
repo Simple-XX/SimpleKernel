@@ -40,17 +40,17 @@ class ostream {
   ~ostream() = default;
   /// @}
 
-  ostream& operator<<(int8_t val);
-  ostream& operator<<(uint8_t val);
-  ostream& operator<<(const char* val);
-  ostream& operator<<(int16_t val);
-  ostream& operator<<(uint16_t val);
-  ostream& operator<<(int32_t val);
-  ostream& operator<<(uint32_t val);
-  ostream& operator<<(int64_t val);
-  ostream& operator<<(uint64_t val);
+  virtual ostream& operator<<(int8_t val);
+  virtual ostream& operator<<(uint8_t val);
+  virtual ostream& operator<<(const char* val);
+  virtual ostream& operator<<(int16_t val);
+  virtual ostream& operator<<(uint16_t val);
+  virtual ostream& operator<<(int32_t val);
+  virtual ostream& operator<<(uint32_t val);
+  virtual ostream& operator<<(int64_t val);
+  virtual ostream& operator<<(uint64_t val);
 
-  ostream& operator<<(ostream& (*)(ostream&));
+  virtual ostream& operator<<(ostream& (*)(ostream&));
 };
 
 inline ostream& endl(ostream& os) { return os << "\n"; }

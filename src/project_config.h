@@ -21,6 +21,10 @@
 
 #define KERNEL_NAME (wchar_t *)L"kernel.elf"
 
+#ifdef SIMPLEKERNEL_DEBUG
+#define SIMPLEKERNEL_DEBUG_LOG
+#endif
+
 /// 使用 4KB 页大小
 #define kPageSize (0x1000)
 

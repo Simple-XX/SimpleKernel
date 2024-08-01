@@ -77,7 +77,7 @@ Interrupt::Interrupt()
     // 注册默认中断处理函数
     for (auto &i : interrupt_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-        Info("Default Interrupt handler [%s] 0x%X, 0x%p\n",
+        log::Info("Default Interrupt handler [%s] 0x%X, 0x%p\n",
              cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause, context);
         DumpStack();
         while (1);
@@ -94,7 +94,7 @@ Interrupt::Interrupt()
     is_inited = true;
   }
 
-  Info("Interrupt init.\n");
+  log::Info("Interrupt init.\n");
 }
 
 void Interrupt::Do(uint64_t cause, uint8_t *context) {
@@ -143,7 +143,7 @@ uint32_t InterruptInit(uint32_t, uint8_t *) {
   // 开启中断
   cpu::kAllCr.rflags.interrupt_enable_flag.Set();
 
-  Info("Hello InterruptInit\n");
+  log::Info("Hello InterruptInit\n");
 
   return 0;
 }

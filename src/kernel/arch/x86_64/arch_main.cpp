@@ -93,7 +93,7 @@ BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
 
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   if (argc != 1) {
-    Err("argc != 1 [%d]\n", argc);
+    log::Err("argc != 1 [%d]\n", argc);
     throw;
   }
 
@@ -112,6 +112,10 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
       .base = kSegmentDescriptors,
   };
   cpu::kAllCr.gdtr.Write(gdtr);
+
+  log::Debug("sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor): %d\n",
+             sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor));
+  log::Debug("kSegmentDescriptors: 0x%X\n", kSegmentDescriptors);
 
   // 加载内核数据段描述符
   cpu::kAllCr.ds.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
@@ -142,9 +146,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
     std::cout << *(cpu::kAllCr.gdtr.Read().base + i) << std::endl;
   }
 
-  Info("Hello x86_64 ArchInit\n");
-
-  /// @bug 返回后 gdtr 会爆炸，导致重启
+  log::Info("Hello x86_64 ArchInit\n");
 
   return 0;
 }

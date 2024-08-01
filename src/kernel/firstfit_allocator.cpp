@@ -26,7 +26,7 @@ FirstFitAllocator::FirstFitAllocator(const char* name, uint64_t addr,
                                      size_t pages_count)
     : AllocatorBase(name, addr, pages_count) {
   if (addr % PAGE_SIZE != 0) {
-    Err("addr not aligned. 0x%lX\n", addr);
+    log::Err("addr not aligned. 0x%lX\n", addr);
     throw;
   }
   printf("%s: 0x%p(0x%X pages) init.\n", name_, addr_, length_);
@@ -37,7 +37,7 @@ uint64_t FirstFitAllocator::Alloc(size_t pages_count) {
   // 在位图中寻找连续 pages_count 的位置
   auto [is_found, idx] = Find(pages_count, false);
   if (is_found == false) {
-    Warn("NO ENOUGH MEM %d.\n", pages_count);
+    log::Warn("NO ENOUGH MEM %d.\n", pages_count);
     return res_addr;
   }
   // 遍历区域
@@ -57,13 +57,13 @@ uint64_t FirstFitAllocator::Alloc(size_t pages_count) {
 bool FirstFitAllocator::AllocAt(uint64_t addr, size_t pages_count) {
   // 页对齐
   if (addr % PAGE_SIZE != 0) {
-    Warn("addr not aligned 0x%lX.\n", addr);
+    log::Warn("addr not aligned 0x%lX.\n", addr);
     return false;
   }
   // 申请地址超出范围
   if (addr < addr_ || addr > addr_ ||
       addr + pages_count * PAGE_SIZE > addr_ + length_ * PAGE_SIZE) {
-    Warn("out of range 0x%lX %d.\n", addr, pages_count);
+    log::Warn("out of range 0x%lX %d.\n", addr, pages_count);
     return false;
   }
   // 计算 addr 在 map 中的索引
@@ -90,13 +90,13 @@ bool FirstFitAllocator::AllocAt(uint64_t addr, size_t pages_count) {
 void FirstFitAllocator::Free(uint64_t addr, size_t pages_count) {
   // 页对齐
   if (addr % PAGE_SIZE != 0) {
-    Warn("addr not aligned 0x%lX.\n", addr);
+    log::Warn("addr not aligned 0x%lX.\n", addr);
     return;
   }
   // 申请地址超出范围
   if (addr < addr_ || addr > addr_ ||
       addr + pages_count * PAGE_SIZE > addr_ + length_ * PAGE_SIZE) {
-    Warn("out of range 0x%lX %d.\n", addr, pages_count);
+    log::Warn("out of range 0x%lX %d.\n", addr, pages_count);
     return;
   }
   // 计算 addr 在 map 中的索引

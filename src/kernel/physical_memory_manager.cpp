@@ -157,9 +157,9 @@ void PhysicalMemoryManager::MoveElfDtb() {
 
 uint32_t PhysicalMemoryInit(uint32_t argc, uint8_t* argv) {
   // 初始化物理内存管理器
-  kPhysicalMemoryManager.GetInstance() =
-      PhysicalMemoryManager(kBasicInfo.GetInstance().physical_memory_addr,
-                            kBasicInfo.GetInstance().physical_memory_size);
+  // kPhysicalMemoryManager.GetInstance() =
+      // PhysicalMemoryManager(kBasicInfo.GetInstance().physical_memory_addr,
+                            // kBasicInfo.GetInstance().physical_memory_size);
 
-  Info("Hello PhysicalMemoryInit\n");
+  // Info("Hello PhysicalMemoryInit\n");
 }

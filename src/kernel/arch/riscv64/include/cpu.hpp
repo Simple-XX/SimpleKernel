@@ -448,7 +448,7 @@ class ReadOnlyRegBase {
                                       reginfo::csr::StimecmpInfo>::value) {
       __asm__ volatile("csrr %0, stimecmp" : "=r"(value) : :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return value;
@@ -508,7 +508,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrw satp, %0" : : "r"(value) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -542,7 +542,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrwi satp, %0" : : "i"(value) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -575,7 +575,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrs zero, satp, %0" : : "r"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -608,7 +608,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrc zero, satp, %0" : : "r"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -642,7 +642,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrsi zero, satp, %0" : : "i"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -676,7 +676,7 @@ class WriteOnlyRegBase {
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrci zero, satp, %0" : : "i"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
@@ -780,7 +780,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrw %0, satp, %1" : "=r"(old_value) : "r"(value) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return old_value;
@@ -826,7 +826,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrwi %0, satp, %1" : "=r"(old_value) : "i"(value) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return old_value;
@@ -876,7 +876,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrs %0, satp, %1" : "=r"(value) : "r"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return value;
@@ -912,7 +912,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrsi %0, satp, %1" : "=r"(value) : "i"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return value;
@@ -962,7 +962,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrc %0, satp, %1" : "=r"(value) : "r"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return value;
@@ -999,7 +999,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
     } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
       __asm__ volatile("csrrci %0, satp, %1" : "=r"(value) : "i"(mask) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return value;

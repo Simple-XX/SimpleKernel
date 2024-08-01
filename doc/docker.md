@@ -1,5 +1,14 @@
 
-# 构建 Docker 并通过 ssh 使用
+# Docker
+
+## 使用构建好的镜像
+
+```shell
+cd SimpleKernel
+docker pull ptrnull233/simple_kernel:latest
+docker run --name SimpleKernel-container -itd -p 233:22 -v ./:/root/SimpleKernel ptrnull233/simple_kernel:latest
+docker exec -it SimpleKernel-container /bin/zsh
+```
 
 ## 构建 Docker image
 
@@ -7,7 +16,7 @@
 
 ```
 cd SimpleKernel
-docker build -t SimpleKernel-docker .
+docker buildx build  -t simple_kernel-docker-image ./tools
 ```
 
 ## 启动容器，并配置 ssh
@@ -15,7 +24,7 @@ docker build -t SimpleKernel-docker .
 运行以下命令启动容器:
 
 ```
-docker run --name SimpleKernel-container -itd -p 233:22 -v ./:/home/zone/SimpleKernel SimpleKernel-docker
+docker run --name SimpleKernel-container -itd -p 233:22 -v ./:/root/SimpleKernel simple_kernel-docker-image
 ```
 
 进入 docker container ubuntu 命令行环境
