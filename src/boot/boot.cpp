@@ -19,7 +19,9 @@
 #include "project_config.h"
 
 // efi 使用的全局变量
+#if defined(__x86_64__)
 uintptr_t ImageBase = 0;
+#endif
 
 extern "C" [[maybe_unused]] EFI_STATUS EFIAPI
 efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
