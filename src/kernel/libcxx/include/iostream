@@ -20,7 +20,7 @@
 
 #include <cstdint>
 
-namespace std {
+namespace sk_std {
 class ostream {
  public:
   enum openmode : uint8_t {
@@ -57,6 +57,6 @@ inline ostream& endl(ostream& os) { return os << "\n"; }
 
 [[maybe_unused]] static ostream cout;
 
-};  // namespace std
+};  // namespace sk_std
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_ */

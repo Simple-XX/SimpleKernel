@@ -36,7 +36,7 @@ static constexpr const auto kCyan = "\033[36m";
 static constexpr const auto kWhite = "\033[37m";
 
 template <void (*OutputFunction)(const char* format, ...)>
-class Logger : public std::ostream {
+class Logger : public sk_std::ostream {
  public:
   Logger& operator<<(int8_t val) override {
     OutputFunction("%d", val);

@@ -60,8 +60,8 @@ struct BasicInfo {
   ~BasicInfo() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os,
-                                  const BasicInfo &basic_info) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const BasicInfo &basic_info) {
     printf("physical_memory_addr: 0x%X, size 0x%X.\n",
            basic_info.physical_memory_addr, basic_info.physical_memory_size);
     printf("kernel_addr: 0x%X, size 0x%X.\n", basic_info.kernel_addr,
