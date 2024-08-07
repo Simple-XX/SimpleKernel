@@ -21,7 +21,7 @@
 
 #include "cstdio"
 
-namespace std {
+namespace sk_std {
 
 ostream& ostream::operator<<(int8_t val) {
   printf("%d", val);
@@ -72,4 +72,4 @@ ostream& ostream::operator<<(ostream& (*manip)(ostream&)) {
   return manip(*this);
 }
 
-};  // namespace std
+};  // namespace sk_std

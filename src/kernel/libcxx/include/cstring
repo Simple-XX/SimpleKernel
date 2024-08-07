@@ -19,7 +19,7 @@
 
 #include "string.h"
 
-namespace std {
+namespace sk_std {
 
 using ::memcmp;
 using ::memcpy;
@@ -34,6 +34,6 @@ using ::strncmp;
 using ::strncpy;
 using ::strnlen;
 
-};  // namespace std
+};  // namespace sk_std
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTRING_ */

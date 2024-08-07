@@ -98,7 +98,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   }
 
   kBasicInfo.GetInstance() = BasicInfo(argc, argv);
-  std::cout << kBasicInfo.GetInstance();
+  sk_std::cout << kBasicInfo.GetInstance();
 
   // 解析内核 elf 信息
   kKernelElf.GetInstance() = KernelElf(kBasicInfo.GetInstance().elf_addr,

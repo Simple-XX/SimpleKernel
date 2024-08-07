@@ -49,7 +49,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
 
   DumpStack();
 
-  std::cout << "Hello ostream" << std::endl;
+  sk_std::cout << "Hello ostream" << sk_std::endl;
 
   InterruptInit(argc, argv);
 

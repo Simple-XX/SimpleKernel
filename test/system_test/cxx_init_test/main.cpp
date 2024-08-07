@@ -30,6 +30,8 @@ extern "C" void _putchar(char character) { serial.Write(character); }
 extern "C" void _putchar(char character) {
   sbi_debug_console_write_byte(character);
 }
+#elif __aarch64__
+extern "C" void _putchar(char character) { (void)character; }
 #endif
 
 template <uint32_t V>

@@ -58,7 +58,7 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   kKernelFdt.GetInstance() = KernelFdt((uint64_t)argv);
 
   kBasicInfo.GetInstance() = BasicInfo(argc, argv);
-  std::cout << kBasicInfo.GetInstance();
+  sk_std::cout << kBasicInfo.GetInstance();
 
   auto [serial_base, serial_size] = kKernelFdt.GetInstance().GetSerial();
   auto uart = Ns16550a(serial_base);
