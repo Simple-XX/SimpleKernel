@@ -1184,7 +1184,7 @@ class Sstatus : public ReadWriteRegBase<reginfo::csr::SstatusInfo> {
   virtual ~Sstatus() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Sstatus &sstatus) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sstatus &sstatus) {
     auto sie = sstatus.sie.Get();
     auto spie = sstatus.spie.Get();
     auto spp = sstatus.spp.Get();
@@ -1222,7 +1222,7 @@ class Stvec : public ReadWriteRegBase<reginfo::csr::StvecInfo> {
   virtual ~Stvec() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Stvec &stvec) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Stvec &stvec) {
     auto mode = stvec.mode.Get();
     auto base = stvec.base.Get();
     printf("val: 0x%p, mode: %s, base: 0x%lX", (void *)stvec.Read(),
@@ -1254,7 +1254,7 @@ class Sip : public ReadWriteRegBase<reginfo::csr::SipInfo> {
   virtual ~Sip() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Sip &sip) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sip &sip) {
     auto ssip = sip.ssip.Get();
     auto stip = sip.stip.Get();
     auto seip = sip.seip.Get();
@@ -1288,7 +1288,7 @@ class Sie : public ReadWriteRegBase<reginfo::csr::SieInfo> {
   virtual ~Sie() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Sie &sie) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sie &sie) {
     auto ssie = sie.ssie.Get();
     auto stie = sie.stie.Get();
     auto seie = sie.seie.Get();
@@ -1312,7 +1312,7 @@ class Time : public ReadOnlyRegBase<reginfo::csr::TimeInfo> {
   virtual ~Time() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Time &time) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Time &time) {
     printf("val: 0x%p", (void *)time.Read());
     return os;
   }
@@ -1330,7 +1330,7 @@ class Cycle : public ReadOnlyRegBase<reginfo::csr::CycleInfo> {
   virtual ~Cycle() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Cycle &cycle) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cycle &cycle) {
     printf("val: 0x%p", (void *)cycle.Read());
     return os;
   }
@@ -1348,7 +1348,7 @@ class Instret : public ReadOnlyRegBase<reginfo::csr::InstretInfo> {
   virtual ~Instret() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Instret &instret) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Instret &instret) {
     printf("val: 0x%p", (void *)instret.Read());
     return os;
   }
@@ -1366,7 +1366,7 @@ class Sscratch : public ReadWriteRegBase<reginfo::csr::SscratchInfo> {
   virtual ~Sscratch() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Sscratch &sscratch) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sscratch &sscratch) {
     printf("val: 0x%p", (void *)sscratch.Read());
     return os;
   }
@@ -1384,7 +1384,7 @@ class Sepc : public ReadWriteRegBase<reginfo::csr::SepcInfo> {
   virtual ~Sepc() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Sepc &sepc) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sepc &sepc) {
     printf("val: 0x%p", (void *)sepc.Read());
     return os;
   }
@@ -1409,7 +1409,7 @@ class Scause : public ReadWriteRegBase<reginfo::csr::ScauseInfo> {
   virtual ~Scause() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Scause &scause) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Scause &scause) {
     auto exception_code = scause.exception_code.Get();
     auto interrupt = scause.interrupt.Get();
     printf("val: 0x%p, exception_code: 0x%lX, interrupt: %s, name: %s",
@@ -1433,7 +1433,7 @@ class Stval : public ReadWriteRegBase<reginfo::csr::StvalInfo> {
   virtual ~Stval() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Stval &stval) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Stval &stval) {
     printf("val: 0x%p", (void *)stval.Read());
     return os;
   }
@@ -1461,7 +1461,7 @@ class Satp : public ReadWriteRegBase<reginfo::csr::SatpInfo> {
   virtual ~Satp() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Satp &satp) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Satp &satp) {
     auto ppn = satp.ppn.Get();
     auto asid = satp.asid.Get();
     auto mode = satp.mode.Get();
@@ -1483,7 +1483,7 @@ class Stimecmp : public ReadOnlyRegBase<reginfo::csr::StimecmpInfo> {
   virtual ~Stimecmp() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Stimecmp &stimecmp) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Stimecmp &stimecmp) {
     printf("val: 0x%p", (void *)stimecmp.Read());
     return os;
   }

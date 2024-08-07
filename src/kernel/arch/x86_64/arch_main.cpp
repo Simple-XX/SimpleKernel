@@ -132,18 +132,18 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   cpu::kAllCr.cs.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
                        cpu::reginfo::GdtrInfo::kKernelCodeIndex);
 
-  std::cout << "es: " << cpu::kAllCr.es << std::endl;
-  std::cout << "cs: " << cpu::kAllCr.cs << std::endl;
-  std::cout << "ss: " << cpu::kAllCr.ss << std::endl;
-  std::cout << "ds: " << cpu::kAllCr.ds << std::endl;
-  std::cout << "fs: " << cpu::kAllCr.fs << std::endl;
-  std::cout << "gs: " << cpu::kAllCr.gs << std::endl;
+  sk_std::cout << "es: " << cpu::kAllCr.es << sk_std::endl;
+  sk_std::cout << "cs: " << cpu::kAllCr.cs << sk_std::endl;
+  sk_std::cout << "ss: " << cpu::kAllCr.ss << sk_std::endl;
+  sk_std::cout << "ds: " << cpu::kAllCr.ds << sk_std::endl;
+  sk_std::cout << "fs: " << cpu::kAllCr.fs << sk_std::endl;
+  sk_std::cout << "gs: " << cpu::kAllCr.gs << sk_std::endl;
 
   for (size_t i = 0; i < (cpu::kAllCr.gdtr.Read().limit + 1) /
                              sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor);
        i++) {
     printf("gdtr[%d] 0x%p\n", i, cpu::kAllCr.gdtr.Read().base + i);
-    std::cout << *(cpu::kAllCr.gdtr.Read().base + i) << std::endl;
+    sk_std::cout << *(cpu::kAllCr.gdtr.Read().base + i) << sk_std::endl;
   }
 
   log::Info("Hello x86_64 ArchInit\n");
