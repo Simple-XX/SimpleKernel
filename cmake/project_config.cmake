@@ -48,27 +48,6 @@ if (NOT ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" 
     message(FATAL_ERROR "Only support gnu-gcc/clang")
 endif ()
 
-# qemu 运行依赖
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-    list(APPEND RUN_DEPENDS
-            ovmf
-    )
-elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-    list(APPEND RUN_DEPENDS
-            opensbi
-    )
-elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    list(APPEND RUN_DEPENDS
-            ovmf
-    )
-endif ()
-
-# qemu 调试依赖
-list(APPEND DEBUG_DEPENDS
-        ${RUN_DEPENDS}
-        gdbinit
-)
-
 # qemu gdb 调试端口
 if (NOT DEFINED QEMU_GDB_PORT)
     set(QEMU_GDB_PORT tcp::1234)

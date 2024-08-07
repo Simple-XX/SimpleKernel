@@ -62,6 +62,10 @@ elseif (CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv64")
             # 可选项，qemu7.0 自带了 opensbi1.0
             -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
             -kernel $<TARGET_FILE:kernel>
+            # @todo 暂时还不支持 riscv64 的 uefi 启动
+            # 预期路线: qemu->uefi->opensbi + kernel(payload)
+            # -bios ${ovmf_BINARY_DIR}/OVMF_${CMAKE_SYSTEM_PROCESSOR}.fd
+            # -hda fat:rw:./image/
     )
 elseif (CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
     list(APPEND QEMU_FLAGS
@@ -81,7 +85,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/doc)
 
 # 添加 run 和 debug target
 add_run_target(
-        DEPENDS $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:boot> kernel ${RUN_DEPENDS} ${DEBUG_DEPENDS}
+        DEPENDS $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:boot> kernel
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         TARGET ${CMAKE_SYSTEM_PROCESSOR}
         BOOT ${PROJECT_BINARY_DIR}/src/boot/boot.efi

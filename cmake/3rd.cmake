@@ -121,99 +121,97 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     add_subdirectory(3rd/opensbi_interface)
 endif ()
 
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://git.kernel.org/pub/scm/utils/dtc/dtc.git
-    set(dtc_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/dtc)
-    set(dtc_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/dtc)
-    set(dtc_CC ${CMAKE_C_COMPILER})
-    set(dtc_AR ${CMAKE_AR})
-    # 编译 libfdt
-    add_custom_target(dtc
-            COMMENT "build libdtc..."
-            # make 时编译
-            ALL
-            WORKING_DIRECTORY ${dtc_SOURCE_DIR}
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            make_directory
-            ${dtc_BINARY_DIR}/libfdt
-            COMMAND
-            CC=${dtc_CC}
-            AR=${dtc_AR}
-            HOME=${dtc_BINARY_DIR}
-            make libfdt/libfdt.a
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            copy
-            ${dtc_SOURCE_DIR}/libfdt/*.a
-            ${dtc_SOURCE_DIR}/libfdt/*.h
-            ${dtc_BINARY_DIR}/libfdt
-            COMMAND
-            make clean
-    )
-endif ()
+# https://git.kernel.org/pub/scm/utils/dtc/dtc.git
+set(dtc_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/dtc)
+set(dtc_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/dtc)
+set(dtc_CC ${CMAKE_C_COMPILER})
+set(dtc_AR ${CMAKE_AR})
+# 编译 libfdt
+add_custom_target(dtc
+        COMMENT "build libdtc..."
+        # make 时编译
+        ALL
+        WORKING_DIRECTORY ${dtc_SOURCE_DIR}
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        make_directory
+        ${dtc_BINARY_DIR}/libfdt
+        COMMAND
+        CC=${dtc_CC}
+        AR=${dtc_AR}
+        HOME=${dtc_BINARY_DIR}
+        make libfdt/libfdt.a
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        copy
+        ${dtc_SOURCE_DIR}/libfdt/*.a
+        ${dtc_SOURCE_DIR}/libfdt/*.h
+        ${dtc_BINARY_DIR}/libfdt
+        COMMAND
+        make clean
+)
 
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    # https://github.com/ncroxon/gnu-efi.git
-    set(gnu-efi_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/gnu-efi)
-    set(gnu-efi_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/gnu-efi)
-    if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
-        set(CC_ ${CMAKE_C_COMPILER})
-        set(AR_ ${CMAKE_AR})
-    elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
-        set(CROSS_COMPILE_ x86_64-linux-gnu-)
-    endif ()
-    # 编译 gnu-efi
-    add_custom_target(gnu-efi
-            COMMENT "build gnu-efi..."
-            # make 时编译
-            ALL
-            WORKING_DIRECTORY ${gnu-efi_SOURCE_DIR}
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            make_directory
-            ${gnu-efi_BINARY_DIR}
-            COMMAND
-            # @note 仅支持 gcc
-            make lib gnuefi inc
-            CROSS_COMPILE=${CROSS_COMPILE_}
-            ARCH=${CMAKE_SYSTEM_PROCESSOR}
-            OBJDIR=${gnu-efi_BINARY_DIR}
-            V=1
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            copy_directory
-            ${gnu-efi_SOURCE_DIR}/inc
-            ${gnu-efi_BINARY_DIR}/inc
-    )
-
-    # ovmf
-    # @todo 使用互联网连接或从 edk2 编译
-    # https://efi.akeo.ie/QEMU_EFI/QEMU_EFI-AA64.zip
-    set(ovmf_SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/ovmf)
-    set(ovmf_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/ovmf)
-    add_custom_target(ovmf
-            COMMENT "build ovmf ..."
-            # make 时编译
-            ALL
-            WORKING_DIRECTORY ${ovmf_SOURCE_DIR}
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            make_directory
-            ${ovmf_BINARY_DIR}
-            COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            copy
-            ${ovmf_SOURCE_DIR}/*
-            ${ovmf_BINARY_DIR}
-    )
+# https://github.com/ncroxon/gnu-efi.git
+set(gnu-efi_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd/gnu-efi)
+set(gnu-efi_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/gnu-efi)
+if (CMAKE_SYSTEM_PROCESSOR STREQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
+set(CC_ ${CMAKE_C_COMPILER})
+set(AR_ ${CMAKE_AR})
+elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+set(CROSS_COMPILE_ x86_64-linux-gnu-)
+elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "riscv64")
+set(CROSS_COMPILE_ riscv64-linux-gnu-)
 endif ()
+# 编译 gnu-efi
+add_custom_target(gnu-efi
+        COMMENT "build gnu-efi..."
+        # make 时编译
+        ALL
+        WORKING_DIRECTORY ${gnu-efi_SOURCE_DIR}
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        make_directory
+        ${gnu-efi_BINARY_DIR}
+        COMMAND
+        # @note 仅支持 gcc
+        make lib gnuefi inc
+        CROSS_COMPILE=${CROSS_COMPILE_}
+        ARCH=${CMAKE_SYSTEM_PROCESSOR}
+        OBJDIR=${gnu-efi_BINARY_DIR}
+        V=1
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        copy_directory
+        ${gnu-efi_SOURCE_DIR}/inc
+        ${gnu-efi_BINARY_DIR}/inc
+)
+
+# ovmf
+# @todo 使用互联网连接或从 edk2 编译
+# https://efi.akeo.ie/QEMU_EFI/QEMU_EFI-AA64.zip
+set(ovmf_SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/ovmf)
+set(ovmf_BINARY_DIR ${CMAKE_BINARY_DIR}/3rd/ovmf)
+add_custom_target(ovmf
+        COMMENT "build ovmf ..."
+        # make 时编译
+        ALL
+        WORKING_DIRECTORY ${ovmf_SOURCE_DIR}
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        make_directory
+        ${ovmf_BINARY_DIR}
+        COMMAND
+        ${CMAKE_COMMAND}
+        -E
+        copy
+        ${ovmf_SOURCE_DIR}/*
+        ${ovmf_BINARY_DIR}
+)
 
 # gdb
 find_program(GDB_EXE gdb)

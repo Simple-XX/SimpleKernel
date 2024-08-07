@@ -118,6 +118,12 @@ function(add_run_target)
         list(APPEND commands
                 COMMAND ${CMAKE_COMMAND} -E copy ${ARG_BOOT} image/
         )
+    elseif (${ARG_TARGET} STREQUAL "riscv64")
+        get_filename_component(BOOT_FILE_NAME ${ARG_BOOT} NAME)
+        configure_file(${CMAKE_SOURCE_DIR}/tools/startup.nsh.in image/startup.nsh @ONLY)
+        list(APPEND commands
+                COMMAND ${CMAKE_COMMAND} -E copy ${ARG_BOOT} image/
+        )
     elseif (${ARG_TARGET} STREQUAL "aarch64")
         get_filename_component(BOOT_FILE_NAME ${ARG_BOOT} NAME)
         configure_file(${CMAKE_SOURCE_DIR}/tools/startup.nsh.in image/startup.nsh @ONLY)

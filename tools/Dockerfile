@@ -21,8 +21,11 @@ RUN apt install --no-install-recommends --fix-missing -y \
     sudo \
     zsh \
     zip \
+    unzip \
+    telnet \
     tar
 RUN apt install --no-install-recommends --fix-missing -y \
+    file \
     vim \
     doxygen \
     valgrind \
