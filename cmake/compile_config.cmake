@@ -195,37 +195,28 @@ list(APPEND DEFAULT_KERNEL_LINK_LIB
         ${COMMON_LINK_LIB}
 
         printf_bare_metal
+        ${dtc_BINARY_DIR}/libfdt/libfdt.a
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         opensbi_interface
-        ${dtc_BINARY_DIR}/libfdt/libfdt.a
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
-        ${dtc_BINARY_DIR}/libfdt/libfdt.a
         >
 )
 
 # 编译依赖
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-    list(APPEND COMPILE_DEPENDS
+list(APPEND COMPILE_DEPENDS
             ovmf
             gnu-efi
+            dtc
             printf_bare_metal
     )
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     list(APPEND COMPILE_DEPENDS
-            ovmf
             opensbi
             opensbi_interface
-            printf_bare_metal
-            dtc
-            gnu-efi
     )
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-    list(APPEND COMPILE_DEPENDS
-            ovmf
-            gnu-efi
-            dtc
-    )
 endif ()
