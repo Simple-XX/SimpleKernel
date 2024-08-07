@@ -16,7 +16,7 @@ function(objdump_readelf_nm _target)
             POST_BUILD
             DEPENDS ${_target}
             WORKING_DIRECTORY ${${_target}_BINARY_DIR}
-            COMMAND ${CMAKE_OBJDUMP} -D $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.asm
+            COMMAND ${CMAKE_OBJDUMP} -D $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.asm || exit 0
             COMMAND ${CMAKE_READELF} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.readelf || exit 0
             COMMAND ${CMAKE_NM} -a $<TARGET_FILE:${_target}> > $<TARGET_FILE_DIR:${_target}>/${_target}.sym
             COMMENT "Generating symbol table, assembly, and readelf result for ${_target}"

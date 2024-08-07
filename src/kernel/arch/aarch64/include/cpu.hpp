@@ -83,7 +83,7 @@ class ReadOnlyRegBase {
     if constexpr (std::is_same<RegInfo, reginfo::X29Info>::value) {
       __asm__ volatile("mov %0, x29" : "=r"(value) : :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
     return value;
@@ -120,7 +120,7 @@ class WriteOnlyRegBase {
     if constexpr (std::is_same<RegInfo, reginfo::X29Info>::value) {
       __asm__ volatile("mv fp, %0" : : "r"(value) :);
     } else {
-      Err("No Type\n");
+      log::Err("No Type\n");
       throw;
     }
   }
