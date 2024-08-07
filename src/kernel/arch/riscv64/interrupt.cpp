@@ -29,16 +29,16 @@ Interrupt::InterruptFunc Interrupt::exception_handlers
     [cpu::reginfo::csr::ScauseInfo::kExceptionMaxCount];
 
 __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
-  std::cout << std::endl;
-  std::cout << "sepc: " << cpu::kAllCsr.sepc << std::endl;
-  std::cout << "stval: " << cpu::kAllCsr.stval << std::endl;
-  std::cout << "stvec: " << cpu::kAllCsr.stvec << std::endl;
-  std::cout << "scause: " << cpu::kAllCsr.scause << std::endl;
-  std::cout << "sie: " << cpu::kAllCsr.sie << std::endl;
-  std::cout << "sip: " << cpu::kAllCsr.sip << std::endl;
-  std::cout << "sstatus: " << cpu::kAllCsr.sstatus << std::endl;
-  std::cout << "satp: " << cpu::kAllCsr.satp << std::endl;
-  std::cout << "sscratch: " << cpu::kAllCsr.sscratch << std::endl;
+  sk_std::cout << sk_std::endl;
+  sk_std::cout << "sepc: " << cpu::kAllCsr.sepc << sk_std::endl;
+  sk_std::cout << "stval: " << cpu::kAllCsr.stval << sk_std::endl;
+  sk_std::cout << "stvec: " << cpu::kAllCsr.stvec << sk_std::endl;
+  sk_std::cout << "scause: " << cpu::kAllCsr.scause << sk_std::endl;
+  sk_std::cout << "sie: " << cpu::kAllCsr.sie << sk_std::endl;
+  sk_std::cout << "sip: " << cpu::kAllCsr.sip << sk_std::endl;
+  sk_std::cout << "sstatus: " << cpu::kAllCsr.sstatus << sk_std::endl;
+  sk_std::cout << "satp: " << cpu::kAllCsr.satp << sk_std::endl;
+  sk_std::cout << "sscratch: " << cpu::kAllCsr.sscratch << sk_std::endl;
 
   kInterrupt.GetInstance().Do((uint64_t)cpu::kAllCsr.scause.Read(), nullptr);
 }

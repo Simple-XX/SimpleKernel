@@ -692,8 +692,8 @@ struct GdtrInfo : public RegInfoBase {
     ~SegmentDescriptor() = default;
     /// @}
 
-    friend std::ostream &operator<<(
-        std::ostream &os, const SegmentDescriptor &segment_descriptor) {
+    friend sk_std::ostream &operator<<(
+        sk_std::ostream &os, const SegmentDescriptor &segment_descriptor) {
       printf("val: 0x%p, type: 0x%X, s: %s, dpl: 0x%X, p: %s, avl: %s, l: %s",
              (void *)segment_descriptor.val,
              segment_descriptor.segment_descriptor.type,
@@ -911,8 +911,8 @@ struct IdtrInfo : public RegInfoBase {
       uint32_t val;
     };
 
-    friend std::ostream &operator<<(std::ostream &os,
-                                    const ErrorCode &error_code) {
+    friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                       const ErrorCode &error_code) {
       printf(
           "val: 0x%X, ext: %d, idt: %d, ti: %d, segment_selector_index: "
           "0x%X",
@@ -984,7 +984,7 @@ struct IdtrInfo : public RegInfoBase {
     ~Idt() = default;
     /// @}
 
-    friend std::ostream &operator<<(std::ostream &os, const Idt &idt) {
+    friend sk_std::ostream &operator<<(sk_std::ostream &os, const Idt &idt) {
       printf(
           "val: 0x%p 0x%p, offset: 0x%p, selector: 0x%X, type: %d, dpl: 0x%X, "
           "p: %s",
@@ -1697,7 +1697,7 @@ class Efer : public ReadWriteRegBase<reginfo::EferInfo> {
   virtual ~Efer() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Efer &efer) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Efer &efer) {
     auto sce = efer.sce.Get();
     auto lme = efer.lme.Get();
     auto lma = efer.lma.Get();
@@ -1728,7 +1728,8 @@ class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
   virtual ~Rflags() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Rflags &Rflags) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Rflags &Rflags) {
     auto interrupt_enable_flag = Rflags.interrupt_enable_flag.Get();
     printf("val: 0x%p, if: %s", (void *)Rflags.Read(),
            (interrupt_enable_flag == true ? "Enable" : "Disable"));
@@ -1743,7 +1744,7 @@ class Gdtr : public ReadWriteRegBase<reginfo::GdtrInfo> {
   ReadWriteField<ReadWriteRegBase<reginfo::GdtrInfo>, reginfo::GdtrInfo::Base>
       base;
 
-  friend std::ostream &operator<<(std::ostream &os, const Gdtr &gdtr) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Gdtr &gdtr) {
     printf("base: 0x%p, limit: %d", (void *)gdtr.Read().base,
            gdtr.Read().limit);
     return os;
@@ -1752,7 +1753,7 @@ class Gdtr : public ReadWriteRegBase<reginfo::GdtrInfo> {
 
 class Ldtr : public ReadWriteRegBase<reginfo::LdtrInfo> {
  public:
-  friend std::ostream &operator<<(std::ostream &os, const Ldtr &ldtr) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Ldtr &ldtr) {
     printf("val: 0x%p", (void *)ldtr.Read());
     return os;
   }
@@ -1765,7 +1766,7 @@ class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
   ReadWriteField<ReadWriteRegBase<reginfo::IdtrInfo>, reginfo::IdtrInfo::Base>
       base;
 
-  friend std::ostream &operator<<(std::ostream &os, const Idtr &idtr) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Idtr &idtr) {
     printf("base: 0x%p, limit: %d", (void *)idtr.Read().base,
            idtr.Read().limit);
     return os;
@@ -1774,7 +1775,7 @@ class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
 
 class Tr : public ReadWriteRegBase<reginfo::TrInfo> {
  public:
-  friend std::ostream &operator<<(std::ostream &os, const Tr &tr) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Tr &tr) {
     printf("val: 0x%p", (void *)tr.Read());
     return os;
   }
@@ -1801,7 +1802,7 @@ class Cr0 : public ReadWriteRegBase<reginfo::cr::Cr0Info> {
   virtual ~Cr0() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Cr0 &cr0) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cr0 &cr0) {
     auto pe = cr0.pe.Get();
     auto pg = cr0.pg.Get();
     printf("val: 0x%p, pe: %s, pg: %s", (void *)cr0.Read(),
@@ -1815,7 +1816,7 @@ class Cr0 : public ReadWriteRegBase<reginfo::cr::Cr0Info> {
 
 class Cr2 : public ReadWriteRegBase<reginfo::cr::Cr2Info> {
  public:
-  friend std::ostream &operator<<(std::ostream &os, const Cr2 &cr2) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cr2 &cr2) {
     printf("val: 0x%p", (void *)cr2.Read());
     return os;
   }
@@ -1843,7 +1844,7 @@ class Cr3 : public ReadWriteRegBase<reginfo::cr::Cr3Info> {
   virtual ~Cr3() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Cr3 &cr3) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cr3 &cr3) {
     auto pwt = cr3.pwt.Get();
     auto pcd = cr3.pcd.Get();
     auto page_directory_base = cr3.page_directory_base.Get();
@@ -1870,7 +1871,7 @@ class Cr4 : public ReadWriteRegBase<reginfo::cr::Cr4Info> {
   virtual ~Cr4() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Cr4 &cr4) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cr4 &cr4) {
     auto pae = cr4.pae.Get();
     printf("val: 0x%p, pae: %s", (void *)cr4.Read(),
            (pae == true ? "Enable" : "Disable"));
@@ -1880,7 +1881,7 @@ class Cr4 : public ReadWriteRegBase<reginfo::cr::Cr4Info> {
 
 class Cr8 : public ReadWriteRegBase<reginfo::cr::Cr8Info> {
  public:
-  friend std::ostream &operator<<(std::ostream &os, const Cr8 &cr8) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cr8 &cr8) {
     printf("val: 0x%p", (void *)cr8.Read());
     return os;
   }
@@ -1890,7 +1891,7 @@ class Cr8 : public ReadWriteRegBase<reginfo::cr::Cr8Info> {
 
 class Cpuid : public ReadOnlyRegBase<reginfo::CpuidInfo> {
  public:
-  friend std::ostream &operator<<(std::ostream &os, const Cpuid &cpuid) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cpuid &cpuid) {
     printf("val: 0x%p", (void *)cpuid.Read());
     return os;
   }
@@ -1898,7 +1899,7 @@ class Cpuid : public ReadOnlyRegBase<reginfo::CpuidInfo> {
 
 class Xcr0 : public ReadWriteRegBase<reginfo::Xcr0Info> {
  public:
-  friend std::ostream &operator<<(std::ostream &os, const Xcr0 &xcr0) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Xcr0 &xcr0) {
     printf("val: 0x%p", (void *)xcr0.Read());
     return os;
   }
@@ -1929,7 +1930,7 @@ class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
   virtual ~Cs() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Cs &cs) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cs &cs) {
     auto val = cs.Read();
     auto rpl = cs.rpl.Get();
     auto ti = cs.ti.Get();
@@ -1964,7 +1965,7 @@ class Ss : public ReadWriteRegBase<reginfo::segment_register::SsInfo> {
   virtual ~Ss() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Ss &ss) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Ss &ss) {
     auto val = ss.Read();
     auto rpl = ss.rpl.Get();
     auto ti = ss.ti.Get();
@@ -1999,7 +2000,7 @@ class Ds : public ReadWriteRegBase<reginfo::segment_register::DsInfo> {
   virtual ~Ds() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Ds &ds) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Ds &ds) {
     auto val = ds.Read();
     auto rpl = ds.rpl.Get();
     auto ti = ds.ti.Get();
@@ -2034,7 +2035,7 @@ class Es : public ReadWriteRegBase<reginfo::segment_register::EsInfo> {
   virtual ~Es() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Es &es) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Es &es) {
     auto val = es.Read();
     auto rpl = es.rpl.Get();
     auto ti = es.ti.Get();
@@ -2069,7 +2070,7 @@ class Fs : public ReadWriteRegBase<reginfo::segment_register::FsInfo> {
   virtual ~Fs() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Fs &fs) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Fs &fs) {
     auto val = fs.Read();
     auto rpl = fs.rpl.Get();
     auto ti = fs.ti.Get();
@@ -2104,7 +2105,7 @@ class Gs : public ReadWriteRegBase<reginfo::segment_register::GsInfo> {
   virtual ~Gs() = default;
   /// @}
 
-  friend std::ostream &operator<<(std::ostream &os, const Gs &gs) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Gs &gs) {
     auto val = gs.Read();
     auto rpl = gs.rpl.Get();
     auto ti = gs.ti.Get();
@@ -2153,8 +2154,8 @@ struct InterruptContext {
   uint64_t rsp;
   uint64_t ss;
 
-  friend std::ostream &operator<<(std::ostream &os,
-                                  const InterruptContext &interrupt_context) {
+  friend sk_std::ostream &operator<<(
+      sk_std::ostream &os, const InterruptContext &interrupt_context) {
     printf("rip: 0x%lX\n", interrupt_context.rip);
     printf("cs: 0x%lX\n", interrupt_context.cs);
     printf("rflags: 0x%lX\n", interrupt_context.rflags);
@@ -2174,11 +2175,11 @@ struct InterruptContextErrorCode {
   uint64_t rsp;
   uint64_t ss;
 
-  friend std::ostream &operator<<(
-      std::ostream &os,
+  friend sk_std::ostream &operator<<(
+      sk_std::ostream &os,
       const InterruptContextErrorCode &interrupt_context_error_code) {
-    std::cout << std::endl
-              << interrupt_context_error_code.error_code << std::endl;
+    sk_std::cout << sk_std::endl
+                 << interrupt_context_error_code.error_code << sk_std::endl;
     printf("padding: 0x%X\n", interrupt_context_error_code.padding);
     printf("rip: 0x%lX\n", interrupt_context_error_code.rip);
     printf("cs: 0x%lX\n", interrupt_context_error_code.cs);

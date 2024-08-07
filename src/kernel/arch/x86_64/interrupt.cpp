@@ -60,12 +60,12 @@ void Interrupt::SetUpIdtr() {
     cpu::kAllCr.idtr.Write(idtr);
 
     // 输出 idtr 信息
-    std::cout << cpu::kAllCr.idtr << std::endl;
+    sk_std::cout << cpu::kAllCr.idtr << sk_std::endl;
     for (size_t i = 0; i < (cpu::kAllCr.idtr.Read().limit + 1) /
                                sizeof(cpu::reginfo::IdtrInfo::Idtr);
          i++) {
       printf("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
-      std::cout << *(cpu::kAllCr.idtr.Read().base + i) << std::endl;
+      sk_std::cout << *(cpu::kAllCr.idtr.Read().base + i) << sk_std::endl;
     }
   }
 }
@@ -78,7 +78,8 @@ Interrupt::Interrupt()
     for (auto &i : interrupt_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
         log::Info("Default Interrupt handler [%s] 0x%X, 0x%p\n",
-             cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause, context);
+                  cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause,
+                  context);
         DumpStack();
         while (1);
       };
@@ -112,15 +113,15 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
 }
 
 uint32_t InterruptInit(uint32_t, uint8_t *) {
-  std::cout << cpu::kAllCr.efer << std::endl;
-  std::cout << cpu::kAllCr.gdtr << std::endl;
-  std::cout << cpu::kAllCr.idtr << std::endl;
-  std::cout << cpu::kAllCr.rflags << std::endl;
-  std::cout << cpu::kAllCr.cr0 << std::endl;
-  std::cout << cpu::kAllCr.cr2 << std::endl;
-  std::cout << cpu::kAllCr.cr3 << std::endl;
-  std::cout << cpu::kAllCr.cr4 << std::endl;
-  std::cout << cpu::kAllCr.cr8 << std::endl;
+  sk_std::cout << cpu::kAllCr.efer << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.gdtr << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.idtr << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.rflags << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.cr0 << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.cr2 << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.cr3 << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.cr4 << sk_std::endl;
+  sk_std::cout << cpu::kAllCr.cr8 << sk_std::endl;
 
   // 初始化中断
   kInterrupt.GetInstance();
