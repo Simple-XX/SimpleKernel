@@ -45,7 +45,7 @@
       "cacheVariables": {
         "CMAKE_VERBOSE_MAKEFILE": {
           "type": "BOOL",
-          "value": "FALSE"
+          "value": "TRUE"
         },
         "CMAKE_EXPORT_COMPILE_COMMANDS": {
           "type": "BOOL",

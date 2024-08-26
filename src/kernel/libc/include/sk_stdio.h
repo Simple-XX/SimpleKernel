@@ -1,7 +1,7 @@
 
 /**
- * @file stdio.h
- * @brief stdio 定义
+ * @file sk_stdio.h
+ * @brief sk_stdio 定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-03-31
@@ -15,9 +15,9 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_STDIO_H_
-#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_STDIO_H_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_STDIO_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_STDIO_H_
 
 #include <printf_bare_metal.h>
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_STDIO_H_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_STDIO_H_ */

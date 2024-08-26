@@ -18,8 +18,8 @@
 
 #include "basic_info.hpp"
 #include "cpu.hpp"
-#include "cstdio"
-#include "cstring"
+#include "sk_cstdio"
+#include "sk_cstring"
 #include "kernel_elf.hpp"
 #include "kernel_log.hpp"
 

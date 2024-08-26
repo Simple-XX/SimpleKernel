@@ -18,7 +18,7 @@
 
 #include <cstdint>
 
-#include "cstdio"
+#include "sk_cstdio"
 
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {

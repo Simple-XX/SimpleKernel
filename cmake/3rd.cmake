@@ -116,6 +116,14 @@ if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
             ${opensbi_SOURCE_DIR}/include
             ${opensbi_BINARY_DIR}/include
     )
+    add_library(opensbi-fw_jump INTERFACE)
+    add_dependencies(opensbi-fw_jump opensbi)
+    target_include_directories(opensbi-fw_jump INTERFACE
+        ${dtc_BINARY_DIR}/libfdt
+    )
+    target_link_libraries(opensbi-fw_jump INTERFACE
+        ${dtc_BINARY_DIR}/libfdt/libfdt.a
+    )
 
     # https://github.com/MRNIU/opensbi_interface.git
     add_subdirectory(3rd/opensbi_interface)
@@ -151,6 +159,14 @@ add_custom_target(dtc
         ${dtc_BINARY_DIR}/libfdt
         COMMAND
         make clean
+)
+add_library(dtc-lib INTERFACE)
+add_dependencies(dtc-lib dtc)
+target_include_directories(dtc-lib INTERFACE
+        ${dtc_BINARY_DIR}/libfdt
+)
+target_link_libraries(dtc-lib INTERFACE
+        ${dtc_BINARY_DIR}/libfdt/libfdt.a
 )
 
 # https://github.com/ncroxon/gnu-efi.git
@@ -188,6 +204,19 @@ add_custom_target(gnu-efi
         copy_directory
         ${gnu-efi_SOURCE_DIR}/inc
         ${gnu-efi_BINARY_DIR}/inc
+)
+add_library(gnu-efi-lib INTERFACE)
+add_dependencies(gnu-efi-lib gnu-efi)
+target_include_directories(gnu-efi-lib INTERFACE
+        ${gnu-efi_BINARY_DIR}/inc
+        ${gnu-efi_BINARY_DIR}/inc/${CMAKE_SYSTEM_PROCESSOR}
+        ${gnu-efi_BINARY_DIR}/inc/protocol
+)
+target_link_libraries(gnu-efi-lib INTERFACE
+        ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${CMAKE_SYSTEM_PROCESSOR}.o
+        ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
+        ${gnu-efi_BINARY_DIR}/lib/libefi.a
 )
 
 # ovmf

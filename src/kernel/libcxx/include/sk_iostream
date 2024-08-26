@@ -1,6 +1,6 @@
 
 /**
- * @file iostream
+ * @file sk_iostream
  * @brief C++ 输入输出
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -15,8 +15,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_
-#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_IOSTREAM_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_IOSTREAM_
 
 #include <cstdint>
 
@@ -59,4 +59,4 @@ inline ostream& endl(ostream& os) { return os << "\n"; }
 
 };  // namespace sk_std
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_IOSTREAM_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_IOSTREAM_ */

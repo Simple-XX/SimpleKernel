@@ -70,8 +70,8 @@ arch 目录下放置了与架构强相关的内容
 #include <type_traits>
 #include <typeinfo>
 
-#include "cstdio"
-#include "iostream"
+#include "sk_cstdio"
+#include "sk_iostream"
 #include "kernel_log.hpp"
 
 /**

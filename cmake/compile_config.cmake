@@ -5,8 +5,16 @@
 # compile_config.cmake for Simple-XX/SimpleKernel.
 # 配置信息
 
+# 通用宏定义
+add_library(compile_definitions INTERFACE)
+target_compile_definitions(compile_definitions INTERFACE
+        $<$<CONFIG:Release>:SIMPLEKERNEL_RELEASE>
+        $<$<CONFIG:Debug>:SIMPLEKERNEL_DEBUG>
+)
+
 # 通用编译选项
-list(APPEND COMMON_COMPILE_OPTIONS
+add_library(compile_options INTERFACE)
+target_compile_options(compile_options INTERFACE
         # 如果 CMAKE_BUILD_TYPE 为 Release 则使用 -O3 -Werror，否则使用 -O0 -ggdb
         # -g 在 Debug 模式下由 cmake 自动添加
         $<$<CONFIG:Release>:-O3;-Werror>
@@ -60,30 +68,28 @@ list(APPEND COMMON_COMPILE_OPTIONS
 )
 
 # 通用链接选项
-list(APPEND COMMON_LINK_OPTIONS
+add_library(link_options INTERFACE)
+target_link_options(link_options INTERFACE
         # 不链接 ctr0 等启动代码
         -nostartfiles
 )
 
 # 通用库选项
-list(APPEND COMMON_LINK_LIB
+add_library(link_libraries INTERFACE)
+target_link_libraries(link_libraries INTERFACE
+        compile_definitions
+        compile_options
+        link_options
 )
 
-# 通用宏定义
-list(APPEND COMMON_DEFINITIONS
-        $<$<CONFIG:Release>:SIMPLEKERNEL_RELEASE>
-        $<$<CONFIG:Debug>:SIMPLEKERNEL_DEBUG>
-)
-
-list(APPEND DEFAULT_BOOT_DEFINITIONS
-        ${COMMON_DEFINITIONS}
-
+add_library(boot_compile_definitions INTERFACE)
+target_compile_definitions(boot_compile_definitions INTERFACE
         # 使用 gnu-efi
         GNU_EFI_USE_MS_ABI
 )
 
-list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
-        ${COMMON_COMPILE_OPTIONS}
+add_library(boot_compile_options INTERFACE)
+target_compile_options(boot_compile_options INTERFACE
         # 使用 2 字节 wchar_t
         -fshort-wchar
         # 允许 wchar_t
@@ -97,9 +103,8 @@ list(APPEND DEFAULT_BOOT_COMPILE_OPTIONS
         >
 )
 
-list(APPEND DEFAULT_BOOT_LINK_OPTIONS
-        ${COMMON_LINK_OPTIONS}
-
+add_library(boot_link_options INTERFACE)
+target_link_options(boot_link_options INTERFACE
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 编译为共享库
         -shared
@@ -120,43 +125,37 @@ list(APPEND DEFAULT_BOOT_LINK_OPTIONS
         >
 )
 
-list(APPEND DEFAULT_BOOT_LINK_LIB
-        ${COMMON_LINK_LIB}
+add_library(boot_link_libraries INTERFACE)
+target_link_libraries(boot_link_libraries INTERFACE
+        link_libraries
+        boot_compile_definitions
+        boot_compile_options
+        boot_link_options
+
         # 目标平台编译选项
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 链接 gnu-efi
-        ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
-        ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${CMAKE_SYSTEM_PROCESSOR}.o
-        ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
-        ${gnu-efi_BINARY_DIR}/lib/libefi.a
+        gnu-efi-lib
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         # 链接 gnu-efi
-        ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
-        ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${CMAKE_SYSTEM_PROCESSOR}.o
-        ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
-        ${gnu-efi_BINARY_DIR}/lib/libefi.a
+        gnu-efi-lib
         >
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
         # 链接 gnu-efi
-        ${gnu-efi_BINARY_DIR}/gnuefi/reloc_${CMAKE_SYSTEM_PROCESSOR}.o
-        ${gnu-efi_BINARY_DIR}/gnuefi/crt0-efi-${CMAKE_SYSTEM_PROCESSOR}.o
-        ${gnu-efi_BINARY_DIR}/gnuefi/libgnuefi.a
-        ${gnu-efi_BINARY_DIR}/lib/libefi.a
+        gnu-efi-lib
         >
 )
 
-list(APPEND DEFAULT_KERNEL_DEFINITIONS
-        ${COMMON_DEFINITIONS}
-
+add_library(kernel_compile_definitions INTERFACE)
+target_compile_definitions(kernel_compile_definitions INTERFACE
         USE_NO_RELAX=$<BOOL:${USE_NO_RELAX}>
 )
 
-list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
-        ${COMMON_COMPILE_OPTIONS}
-
+add_library(kernel_compile_options INTERFACE)
+target_compile_options(kernel_compile_options INTERFACE
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
         # 使用 kernel 内存模型
         -mcmodel=large
@@ -169,9 +168,8 @@ list(APPEND DEFAULT_KERNEL_COMPILE_OPTIONS
         >
 )
 
-list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
-        ${COMMON_LINK_OPTIONS}
-
+add_library(kernel_link_options INTERFACE)
+target_link_options(kernel_link_options INTERFACE
         # 链接脚本
         -T ${CMAKE_SOURCE_DIR}/src/kernel/arch/${CMAKE_SYSTEM_PROCESSOR}/link.ld
 
@@ -191,11 +189,15 @@ list(APPEND DEFAULT_KERNEL_LINK_OPTIONS
         >
 )
 
-list(APPEND DEFAULT_KERNEL_LINK_LIB
-        ${COMMON_LINK_LIB}
+add_library(kernel_link_libraries INTERFACE)
+target_link_libraries(kernel_link_libraries INTERFACE
+        link_libraries
+        kernel_compile_definitions
+        kernel_compile_options
+        kernel_link_options
 
         printf_bare_metal
-        ${dtc_BINARY_DIR}/libfdt/libfdt.a
+        dtc-lib
 
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
         opensbi_interface
@@ -204,19 +206,3 @@ list(APPEND DEFAULT_KERNEL_LINK_LIB
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
         >
 )
-
-# 编译依赖
-list(APPEND COMPILE_DEPENDS
-            ovmf
-            gnu-efi
-            dtc
-            printf_bare_metal
-    )
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
-    list(APPEND COMPILE_DEPENDS
-            opensbi
-            opensbi_interface
-    )
-elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-endif ()

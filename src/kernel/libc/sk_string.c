@@ -1,7 +1,7 @@
 
 /**
- * @file string.c
- * @brief string 实现
+ * @file sk_string.c
+ * @brief sk_string 实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-05-08
@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "string.h"
+#include "sk_string.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,6 +1,6 @@
 
 /**
- * @file new.cpp
+ * @file sk_new.cpp
  * @brief 内存分配实现
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "new"
+#include "sk_new"
 
 #include <cstddef>
 

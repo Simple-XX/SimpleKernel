@@ -20,8 +20,8 @@
 #include <stdarg.h>
 
 #include "../../project_config.h"
-#include "cstdio"
-#include "iostream"
+#include "sk_cstdio"
+#include "sk_iostream"
 
 namespace {
 

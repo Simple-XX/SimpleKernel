@@ -1,7 +1,7 @@
 
 /**
- * @file string.h
- * @brief string 定义
+ * @file sk_string.h
+ * @brief sk_string 定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-05-08
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_STRING_H_
-#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_STRING_H_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_STRING_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_STRING_H_
 
 #include <stddef.h>
 
@@ -69,4 +69,4 @@ char *strrchr(const char *s, int c);
 }
 #endif
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_STRING_H_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_STRING_H_ */

@@ -1,6 +1,6 @@
 
 /**
- * @file iostream
+ * @file sk_iostream
  * @brief C++ 输入输出
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -15,11 +15,11 @@
  * </table>
  */
 
-#include "iostream"
+#include "sk_iostream"
 
 #include <cstdint>
 
-#include "cstdio"
+#include "sk_cstdio"
 
 namespace sk_std {
 

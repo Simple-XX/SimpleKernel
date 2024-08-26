@@ -28,8 +28,6 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 # 导入项目配置
 include(project_config)
-# 导入头文件处理
-include(add_header)
 # 导入函数
 include(functions)
 
@@ -85,7 +83,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/doc)
 
 # 添加 run 和 debug target
 add_run_target(
-        DEPENDS $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:boot> kernel
+        DEPENDS ovmf $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:opensbi-fw_jump> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:boot> $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:boot> kernel
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         TARGET ${CMAKE_SYSTEM_PROCESSOR}
         BOOT ${PROJECT_BINARY_DIR}/src/boot/boot.efi

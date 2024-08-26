@@ -16,11 +16,11 @@
 #include "interrupt.h"
 
 #include "cpu.hpp"
-#include "cstdio"
-#include "iostream"
 #include "kernel_fdt.hpp"
 #include "kernel_log.hpp"
 #include "opensbi_interface.h"
+#include "sk_cstdio"
+#include "sk_iostream"
 
 Interrupt::InterruptFunc Interrupt::interrupt_handlers
     [cpu::reginfo::csr::ScauseInfo::kInterruptMaxCount];

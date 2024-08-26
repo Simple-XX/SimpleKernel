@@ -17,11 +17,11 @@
 
 #include "basic_info.hpp"
 #include "cpu.hpp"
-#include "cstdio"
 #include "kernel_elf.hpp"
 #include "kernel_fdt.hpp"
-#include "libc.h"
 #include "ns16550a.h"
+#include "sk_cstdio"
+#include "sk_libc.h"
 
 // printf_bare_metal 基本输出实现
 extern "C" void _putchar(char character) {
