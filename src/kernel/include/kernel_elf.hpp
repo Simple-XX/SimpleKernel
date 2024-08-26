@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <span>
 
-#include "cstring"
+#include "sk_cstring"
 #include "kernel_log.hpp"
 #include "singleton.hpp"
 

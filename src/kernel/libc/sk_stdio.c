@@ -1,7 +1,7 @@
 
 /**
- * @file stdio.h
- * @brief stdio 定义
+ * @file sk_stdio.h
+ * @brief sk_stdio 定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-03-31
@@ -15,4 +15,4 @@
  * </table>
  */
 
-#include "stdio.h"
+#include "sk_stdio.h"

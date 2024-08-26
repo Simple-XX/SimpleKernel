@@ -20,33 +20,14 @@ add_executable(${PROJECT_NAME}
 )
 
 # 添加头文件
-add_header_project(${PROJECT_NAME})
-add_header_boot(${PROJECT_NAME})
-add_header_3rd(${PROJECT_NAME})
-
-# 添加定义
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-        ${DEFAULT_BOOT_DEFINITIONS}
-)
-
-# 添加编译参数
-target_compile_options(${PROJECT_NAME} PRIVATE
-        ${DEFAULT_BOOT_COMPILE_OPTIONS}
-)
-
-# 添加链接参数
-target_link_options(${PROJECT_NAME} PRIVATE
-        ${DEFAULT_BOOT_LINK_OPTIONS}
+target_include_directories(${PROJECT_NAME} PRIVATE
+        include
+        ${CMAKE_SOURCE_DIR}/src
 )
 
 # 添加要链接的库
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        ${DEFAULT_BOOT_LINK_LIB}
-)
-
-# 添加依赖
-add_dependencies(${PROJECT_NAME}
-        ${COMPILE_DEPENDS}
+        boot_link_libraries
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")

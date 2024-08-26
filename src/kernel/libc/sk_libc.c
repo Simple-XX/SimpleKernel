@@ -1,6 +1,6 @@
 
 /**
- * @file libc.c
+ * @file sk_libc.c
  * @brief c 运行时支持
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "libc.h"
+#include "sk_libc.h"
 
 #include <stdint.h>
 
@@ -22,7 +22,4 @@
 uint64_t __stack_chk_guard = 0x595E9FBD94FDA766;
 
 /// 栈保护检查失败后进入死循环
-__attribute__((noreturn)) void __stack_chk_fail() {
-  while (1)
-    ;
-}
+__attribute__((noreturn)) void __stack_chk_fail() { while (1); }

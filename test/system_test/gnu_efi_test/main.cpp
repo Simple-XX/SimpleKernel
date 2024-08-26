@@ -15,11 +15,11 @@
  */
 
 #include <cstdint>
-#include <cstdio>
-#include <cstring>
 
 #include "basic_info.hpp"
 #include "cpu.hpp"
+#include "sk_cstdio"
+#include "sk_cstring"
 
 extern "C" void _putchar(char character) {
   auto serial = cpu::Serial(cpu::kCom1);
@@ -34,14 +34,19 @@ extern "C" void *__executable_start[];
 extern "C" void *end[];
 BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
   (void)argc;
+
   auto basic_info = *reinterpret_cast<BasicInfo *>(argv);
   physical_memory_addr = basic_info.physical_memory_addr;
   physical_memory_size = basic_info.physical_memory_size;
+
   kernel_addr = reinterpret_cast<uint64_t>(__executable_start);
   kernel_size = reinterpret_cast<uint64_t>(end) -
                 reinterpret_cast<uint64_t>(__executable_start);
+
   elf_addr = basic_info.elf_addr;
   elf_size = basic_info.elf_size;
+
+  fdt_addr = 0;
 }
 
 uint32_t main(uint32_t argc, uint8_t *argv) {
@@ -51,7 +56,7 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   }
 
   kBasicInfo.GetInstance() = BasicInfo(argc, argv);
-  std::cout << kBasicInfo.GetInstance();
+  sk_std::cout << kBasicInfo.GetInstance();
 
   printf("Hello Test\n");
 

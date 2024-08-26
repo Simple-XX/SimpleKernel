@@ -1,7 +1,7 @@
 
 /**
- * @file libcxx.cpp
- * @brief libcxx cpp
+ * @file sk_libcxx.cpp
+ * @brief sk_libcxx cpp
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -14,7 +14,7 @@
  * </table>
  */
 
-#include "libcxx.h"
+#include "sk_libcxx.h"
 
 #include <algorithm>
 
@@ -155,27 +155,15 @@ extern "C" void __cxa_guard_abort(GuardType* guard) {
 /**
  * 纯虚函数调用处理
  */
-extern "C" void __cxa_pure_virtual() {
-  while (1)
-    ;
-}
+extern "C" void __cxa_pure_virtual() { while (1); }
 
 /**
  * 异常处理
  * @note 这里只能处理 throw，无法处理异常类型
  */
-extern "C" void __cxa_rethrow() {
-  while (1)
-    ;
-}
-extern "C" void _Unwind_Resume() {
-  while (1)
-    ;
-}
-extern "C" void __gxx_personality_v0() {
-  while (1)
-    ;
-}
+extern "C" void __cxa_rethrow() { while (1); }
+extern "C" void _Unwind_Resume() { while (1); }
+extern "C" void __gxx_personality_v0() { while (1); }
 
 /**
  * c++ 全局对象构造

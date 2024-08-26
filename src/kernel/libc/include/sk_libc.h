@@ -1,7 +1,7 @@
 
 /**
- * @file libc.h
- * @brief libc 头文件
+ * @file sk_libc.h
+ * @brief sk_libc 头文件
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -14,7 +14,7 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_
-#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_LIBC_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_LIBC_H_
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_LIBC_H_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBC_INCLUDE_SK_LIBC_H_ */

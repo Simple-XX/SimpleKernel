@@ -16,10 +16,10 @@
 
 #include "arch.h"
 #include "cpu.hpp"
-#include "cstdio"
+#include "sk_cstdio"
 #include "kernel_elf.hpp"
 #include "kernel_fdt.hpp"
-#include "libc.h"
+#include "sk_libc.h"
 
 int backtrace(void **buffer, int size) {
   uint64_t *fp = (uint64_t *)cpu::kAllXreg.fp.Read();

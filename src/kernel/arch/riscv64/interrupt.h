@@ -22,7 +22,7 @@
 #include "cpu.hpp"
 #include "interrupt_base.h"
 #include "singleton.hpp"
-#include "stdio.h"
+#include "sk_stdio.h"
 
 class Interrupt final : public InterruptBase {
  public:

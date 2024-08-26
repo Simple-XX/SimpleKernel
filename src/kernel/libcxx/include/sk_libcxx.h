@@ -1,7 +1,7 @@
 
 /**
- * @file libcxx.h
- * @brief libcxx 头文件
+ * @file sk_libcxx.h
+ * @brief sk_libcxx 头文件
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-07-15
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_
-#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_LIBCXX_H_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_LIBCXX_H_
 
 #include <cstdint>
 
@@ -29,4 +29,4 @@ void CppInit();
  */
 void CppDeInit();
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_LIBCXX_H_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_LIBCXX_H_ */

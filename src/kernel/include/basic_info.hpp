@@ -19,10 +19,10 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <cstdio>
-#include <iostream>
 
 #include "singleton.hpp"
+#include "sk_cstdio"
+#include "sk_iostream"
 
 struct BasicInfo {
   /// physical_memory 地址

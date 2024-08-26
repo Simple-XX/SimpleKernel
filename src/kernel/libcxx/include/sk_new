@@ -1,6 +1,6 @@
 
 /**
- * @file new
+ * @file sk_new
  * @brief 内存分配
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW_
-#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_NEW_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_NEW_
 
 #include <cstddef>
 
@@ -35,4 +35,4 @@ void operator delete[](void*);
 
 void operator delete[](void*, size_t);
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_NEW_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_NEW_ */

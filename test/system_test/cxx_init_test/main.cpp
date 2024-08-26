@@ -15,12 +15,12 @@
  */
 
 #include <cstdint>
-#include <cstdio>
-#include <cstring>
 
 #include "basic_info.hpp"
 #include "cpu.hpp"
-#include "libcxx.h"
+#include "sk_cstdio"
+#include "sk_cstring"
+#include "sk_libcxx.h"
 
 #ifdef __x86_64__
 static auto serial = cpu::Serial(cpu::kCom1);

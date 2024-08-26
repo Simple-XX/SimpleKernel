@@ -112,6 +112,7 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
     uint64_t elf_addr;
     size_t elf_size;
   } basic_info;
+  std::fill_n(reinterpret_cast<uint8_t *>(&basic_info), sizeof(basic_info), 0);
 
   // 获取物理内存信息
   auto [physical_memory_addr, physical_memory_size] = memory.GetMemory();

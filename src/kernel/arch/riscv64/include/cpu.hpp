@@ -22,9 +22,9 @@
 #include <type_traits>
 #include <typeinfo>
 
-#include "cstdio"
-#include "iostream"
 #include "kernel_log.hpp"
+#include "sk_cstdio"
+#include "sk_iostream"
 
 /**
  * riscv64 cpu 相关定义

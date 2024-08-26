@@ -16,11 +16,11 @@
 #include <cstdint>
 
 #include "arch.h"
-#include "cstdio"
-#include "iostream"
+#include "sk_cstdio"
+#include "sk_iostream"
 #include "kernel.h"
 #include "kernel_log.hpp"
-#include "libcxx.h"
+#include "sk_libcxx.h"
 
 void _start(uint32_t argc, uint8_t *argv) {
   CppInit();

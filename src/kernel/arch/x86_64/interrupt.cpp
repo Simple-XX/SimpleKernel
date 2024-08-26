@@ -17,9 +17,9 @@
 
 #include "arch.h"
 #include "cpu.hpp"
-#include "cstdio"
-#include "iostream"
 #include "kernel_log.hpp"
+#include "sk_cstdio"
+#include "sk_iostream"
 
 Interrupt::InterruptFunc
     Interrupt::interrupt_handlers[cpu::reginfo::IdtrInfo::kInterruptMaxCount];

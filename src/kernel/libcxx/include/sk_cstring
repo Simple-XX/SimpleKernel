@@ -1,7 +1,7 @@
 
 /**
- * @file cstring
- * @brief cstring 定义
+ * @file sk_cstring
+ * @brief sk_cstring 定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2023-05-08
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTRING_
-#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTRING_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_CSTRING_
+#define SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_CSTRING_
 
 #include "string.h"
 
@@ -36,4 +36,4 @@ using ::strnlen;
 
 };  // namespace sk_std
 
-#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_CSTRING_ */
+#endif /* SIMPLEKERNEL_SRC_KERNEL_LIBCXX_INCLUDE_SK_CSTRING_ */
