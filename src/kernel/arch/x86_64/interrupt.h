@@ -26,8 +26,8 @@
 
 class Interrupt final : public InterruptBase {
  public:
-  cpu::Pic pic;
-  cpu::Pit pit;
+  cpu::Pic pic_;
+  cpu::Pit pit_;
 
   Interrupt();
 
