@@ -71,10 +71,8 @@ class FirstFitAllocator : AllocatorBase {
   void Free(uint64_t addr, size_t pages_count) override;
 
  private:
-  static constexpr const uint64_t PAGE_SIZE = 0x1000;
-
   /// 位图，每一位表示一页内存，1 表示已使用，0 表示未使用
-  std::bitset<PAGE_SIZE * sizeof(uint64_t)> map;
+  std::bitset<kPageSize * sizeof(uint64_t)> map;
 
   /**
    * @brief 寻找连续 pages_count 个 val 位，返回开始索引

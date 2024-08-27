@@ -25,7 +25,7 @@
 FirstFitAllocator::FirstFitAllocator(const char* name, uint64_t addr,
                                      size_t pages_count)
     : AllocatorBase(name, addr, pages_count) {
-  if (addr % PAGE_SIZE != 0) {
+  if (addr % kPageSize != 0) {
     log::Err("addr not aligned. 0x%lX\n", addr);
     throw;
   }
@@ -47,7 +47,7 @@ uint64_t FirstFitAllocator::Alloc(size_t pages_count) {
   }
   // 计算实际地址
   // 分配器起始地址+页长度*第几页
-  res_addr = addr_ + (PAGE_SIZE * idx);
+  res_addr = addr_ + (kPageSize * idx);
   // 更新统计信息
   free_length_ -= pages_count;
   used_length_ += pages_count;
@@ -56,18 +56,18 @@ uint64_t FirstFitAllocator::Alloc(size_t pages_count) {
 
 bool FirstFitAllocator::AllocAt(uint64_t addr, size_t pages_count) {
   // 页对齐
-  if (addr % PAGE_SIZE != 0) {
+  if (addr % kPageSize != 0) {
     log::Warn("addr not aligned 0x%lX.\n", addr);
     return false;
   }
   // 申请地址超出范围
   if (addr < addr_ || addr > addr_ ||
-      addr + pages_count * PAGE_SIZE > addr_ + length_ * PAGE_SIZE) {
+      addr + pages_count * kPageSize > addr_ + length_ * kPageSize) {
     log::Warn("out of range 0x%lX %d.\n", addr, pages_count);
     return false;
   }
   // 计算 addr 在 map 中的索引
-  size_t idx = (addr - addr_) / PAGE_SIZE;
+  size_t idx = (addr - addr_) / kPageSize;
   // 遍历
   for (auto i = idx; i < idx + pages_count; i++) {
     // 如果在范围内有已经分配的内存，返回 false
@@ -89,18 +89,18 @@ bool FirstFitAllocator::AllocAt(uint64_t addr, size_t pages_count) {
 
 void FirstFitAllocator::Free(uint64_t addr, size_t pages_count) {
   // 页对齐
-  if (addr % PAGE_SIZE != 0) {
+  if (addr % kPageSize != 0) {
     log::Warn("addr not aligned 0x%lX.\n", addr);
     return;
   }
   // 申请地址超出范围
   if (addr < addr_ || addr > addr_ ||
-      addr + pages_count * PAGE_SIZE > addr_ + length_ * PAGE_SIZE) {
+      addr + pages_count * kPageSize > addr_ + length_ * kPageSize) {
     log::Warn("out of range 0x%lX %d.\n", addr, pages_count);
     return;
   }
   // 计算 addr 在 map 中的索引
-  size_t idx = (addr - addr_) / PAGE_SIZE;
+  size_t idx = (addr - addr_) / kPageSize;
   for (auto i = idx; i < idx + pages_count; i++) {
     map[i] = 0;
   }
