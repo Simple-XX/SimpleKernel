@@ -142,8 +142,8 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   for (size_t i = 0; i < (cpu::kAllCr.gdtr.Read().limit + 1) /
                              sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor);
        i++) {
-    printf("gdtr[%d] 0x%p\n", i, cpu::kAllCr.gdtr.Read().base + i);
-    sk_std::cout << *(cpu::kAllCr.gdtr.Read().base + i) << sk_std::endl;
+    log::Debug("gdtr[%d] 0x%p\n", i, cpu::kAllCr.gdtr.Read().base + i);
+    log::debug << *(cpu::kAllCr.gdtr.Read().base + i) << sk_std::endl;
   }
 
   log::Info("Hello x86_64 ArchInit\n");

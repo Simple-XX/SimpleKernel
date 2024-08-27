@@ -64,15 +64,15 @@ void Interrupt::SetUpIdtr() {
     for (size_t i = 0; i < (cpu::kAllCr.idtr.Read().limit + 1) /
                                sizeof(cpu::reginfo::IdtrInfo::Idtr);
          i++) {
-      printf("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
-      sk_std::cout << *(cpu::kAllCr.idtr.Read().base + i) << sk_std::endl;
+      log::Debug("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
+      log::debug << *(cpu::kAllCr.idtr.Read().base + i) << sk_std::endl;
     }
   }
 }
 
 Interrupt::Interrupt()
-    : pic(cpu::reginfo::IdtrInfo::kIrq0, cpu::reginfo::IdtrInfo::kIrq8),
-      pit(200) {
+    : pic_(cpu::reginfo::IdtrInfo::kIrq0, cpu::reginfo::IdtrInfo::kIrq8),
+      pit_(200) {
   if (is_inited == false) {
     // 注册默认中断处理函数
     for (auto &i : interrupt_handlers) {
@@ -107,7 +107,7 @@ void Interrupt::Do(uint64_t cause, uint8_t *context) {
 void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   if (cause < cpu::reginfo::IdtrInfo::kInterruptMaxCount) {
     interrupt_handlers[cause] = func;
-    printf("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
+    log::Debug("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
            cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause, func);
   }
 }
@@ -130,17 +130,17 @@ uint32_t InterruptInit(uint32_t, uint8_t *) {
   kInterrupt.GetInstance().RegisterInterruptFunc(
       cpu::reginfo::IdtrInfo::kIrq0,
       [](uint64_t exception_code, uint8_t *) -> uint64_t {
-        kInterrupt.GetInstance().pit.Ticks();
-        if (kInterrupt.GetInstance().pit.GetTicks() % 100 == 0) {
-          printf("Handle %d %s\n", exception_code,
+        kInterrupt.GetInstance().pit_.Ticks();
+        if (kInterrupt.GetInstance().pit_.GetTicks() % 100 == 0) {
+          log::Info("Handle %d %s\n", exception_code,
                  cpu::reginfo::IdtrInfo::kInterruptNames[exception_code]);
         }
-        kInterrupt.GetInstance().pic.Clear(exception_code);
+        kInterrupt.GetInstance().pic_.Clear(exception_code);
         return 0;
       });
 
   // 允许时钟中断
-  kInterrupt.GetInstance().pic.Enable(cpu::reginfo::IdtrInfo::kIrq0);
+  kInterrupt.GetInstance().pic_.Enable(cpu::reginfo::IdtrInfo::kIrq0);
   // 开启中断
   cpu::kAllCr.rflags.interrupt_enable_flag.Set();
 
