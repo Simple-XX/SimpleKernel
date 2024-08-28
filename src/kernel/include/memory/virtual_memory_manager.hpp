@@ -23,164 +23,228 @@
 #include "physical_memory_manager.h"
 #include "singleton.hpp"
 
+// TODO: 可以优化
+
+/// 页表项，最底层
+typedef uintptr_t pte_t;
+/// 页表，也可以是页目录，它们的结构是一样的
+typedef uintptr_t* pt_t;
+
+/// 每个页表能映射多少页 = 页大小/页表项大小: 2^9
+static constexpr const size_t VMM_PAGES_PRE_PAGE_TABLE =
+    COMMON::PAGE_SIZE / sizeof(pte_t);
+
+/// 映射内核空间的大小
+static constexpr const size_t VMM_KERNEL_SPACE_SIZE = COMMON::KERNEL_SPACE_SIZE;
+
+/// 内核映射的页数
+static constexpr const size_t VMM_KERNEL_SPACE_PAGES =
+    VMM_KERNEL_SPACE_SIZE / COMMON::PAGE_SIZE;
+
+#if defined(__i386__)
+/// P = 1 表示有效； P = 0 表示无效。
+static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
+/// 如果为 0  表示页面只读或可执行。
+static constexpr const uint8_t VMM_PAGE_READABLE = 0;
+static constexpr const uint8_t VMM_PAGE_WRITABLE = 1 << 1;
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 0;
+/// U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
+/// 如果为 1 那么运行在任何特权级上的程序都可以访问该页面。
+static constexpr const uint8_t VMM_PAGE_USER = 1 << 2;
+/// 内核虚拟地址相对物理地址的偏移
+static constexpr const size_t KERNEL_OFFSET = 0x0;
+/// PTE 属性位数
+static constexpr const size_t VMM_PTE_PROP_BITS = 12;
+/// PTE 页内偏移位数
+static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+/// VPN 位数
+static constexpr const size_t VMM_VPN_BITS = 10;
+/// VPN 位数掩码，10 位 VPN
+static constexpr const size_t VMM_VPN_BITS_MASK = 0x3FF;
+/// i386 使用了两级页表
+static constexpr const size_t VMM_PT_LEVEL = 2;
+
+#elif defined(__x86_64__)
+/// P = 1 表示有效； P = 0 表示无效。
+static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
+/// 如果为 0  表示页面只读或可执行。
+static constexpr const uint8_t VMM_PAGE_READABLE = 0;
+static constexpr const uint8_t VMM_PAGE_WRITABLE = 1 << 1;
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 0;
+/// U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
+/// 如果为 1 那么运行在任何特权级上的程序都可以访问该页面。
+static constexpr const uint8_t VMM_PAGE_USER = 1 << 2;
+/// 内核虚拟地址相对物理地址的偏移
+static constexpr const size_t KERNEL_OFFSET = 0x0;
+/// PTE 属性位数
+static constexpr const size_t VMM_PTE_PROP_BITS = 12;
+/// PTE 页内偏移位数
+static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+/// VPN 位数
+static constexpr const size_t VMM_VPN_BITS = 9;
+/// VPN 位数掩码，9 位 VPN
+static constexpr const size_t VMM_VPN_BITS_MASK = 0x1FF;
+/// x86_64 使用了四级页表
+static constexpr const size_t VMM_PT_LEVEL = 4;
+
+#elif defined(__riscv)
+/// 有效位
+static constexpr const uint8_t VMM_PAGE_VALID = CPU::pte_t::VALID;
+/// 可读位
+static constexpr const uint8_t VMM_PAGE_READABLE = CPU::pte_t::READ;
+/// 可写位s
+static constexpr const uint8_t VMM_PAGE_WRITABLE = CPU::pte_t::WRITE;
+/// 可执行位
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = CPU::pte_t::EXEC;
+/// 用户位
+static constexpr const uint8_t VMM_PAGE_USER = CPU::pte_t::USER;
+/// 全局位，我们不会使用
+static constexpr const uint8_t VMM_PAGE_GLOBAL = CPU::pte_t::GLOBAL;
+/// 已使用位，用于替换算法
+static constexpr const uint8_t VMM_PAGE_ACCESSED = CPU::pte_t::ACCESSED;
+/// 已修改位，用于替换算法
+static constexpr const uint8_t VMM_PAGE_DIRTY = CPU::pte_t::DIRTY;
+/// 内核虚拟地址相对物理地址的偏移
+static constexpr const size_t KERNEL_OFFSET = 0x0;
+/// PTE 属性位数
+static constexpr const size_t VMM_PTE_PROP_BITS = 10;
+/// PTE 页内偏移位数
+static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+/// VPN 位数
+static constexpr const size_t VMM_VPN_BITS = 9;
+/// VPN 位数掩码，9 位 VPN
+static constexpr const size_t VMM_VPN_BITS_MASK = 0x1FF;
+/// riscv64 使用了三级页表
+static constexpr const size_t VMM_PT_LEVEL = 3;
+#endif
+
 /**
- * @brief 虚拟内存管理接口
- * 对物理内存的管理来说
- * 1. 管理所有的物理内存，不论是否被机器保留/无法访问
- * 2. 内存开始地址与长度由 bootloader 给出: x86 下为 grub, riscv 下为 opensbi
- * 3.
- *    不关心内存是否被使用，但是默认的物理内存分配空间从内核结束后开始
- *    如果由体系结构需要分配内核开始前内存空间的，则尽量避免
- * 4. 最管理单位为页
+ * @brief 虚拟地址到物理地址转换
+ * @param  _va             要转换的虚拟地址
+ * @return constexpr uintptr_t 转换好的地址
+ */
+static constexpr uintptr_t VMM_VA2PA(uintptr_t _va) {
+  return _va - KERNEL_OFFSET;
+}
+
+/**
+ * @brief 物理地址到虚拟地址转换
+ * @param  _pa             要转换的物理地址
+ * @return constexpr uintptr_t 转换好的地址
+ */
+static constexpr uintptr_t VMM_PA2VA(uintptr_t _pa) {
+  return _pa + KERNEL_OFFSET;
+}
+
+/**
+ * @brief 虚拟内存抽象
  */
 class VirtualMemoryManager {
+ private:
+  /**
+   * @brief 物理地址转换到页表项
+   * @param  _pa             物理地址
+   * @return constexpr uintptr_t 对应的虚拟地址
+   * @note 0~11: pte 属性
+   * 12~31: 页表的物理页地址
+   */
+  static constexpr uintptr_t PA2PTE(uintptr_t _pa) {
+    return (_pa >> VMM_PAGE_OFF_BITS) << VMM_PTE_PROP_BITS;
+  }
+
+  /**
+   * @brief 页表项转换到物理地址
+   * @param  _pte            页表
+   * @return constexpr uintptr_t 对应的物理地址
+   */
+  static constexpr uintptr_t PTE2PA(const pte_t _pte) {
+    return (((uintptr_t)_pte) >> VMM_PTE_PROP_BITS) << VMM_PAGE_OFF_BITS;
+  }
+
+  /**
+   * @brief 计算 X 级页表的位置
+   * @param  _level          级别
+   * @return constexpr uintptr_t 偏移
+   */
+  static constexpr uintptr_t PXSHIFT(const size_t _level) {
+    return VMM_PAGE_OFF_BITS + (VMM_VPN_BITS * _level);
+  }
+
+  /**
+   * @brief 获取 _va 的第 _level 级 VPN
+   * @note 例如虚拟地址右移 12+(10 * _level) 位，
+   * 得到的就是第 _level 级页表的 VPN
+   */
+  static constexpr uintptr_t PX(size_t _level, uintptr_t _va) {
+    return (_va >> PXSHIFT(_level)) & VMM_VPN_BITS_MASK;
+  }
+
+  /**
+   * @brief 在 _pgd 中查找 _va 对应的页表项
+   * 如果未找到，_alloc 为真时会进行分配
+   * @param  _pgd            要查找的页目录
+   * @param  _va             虚拟地址
+   * @param  _alloc          是否分配
+   * @return pte_t*          未找到返回 nullptr
+   */
+  pte_t* find(const pt_t _pgd, uintptr_t _va, bool _alloc);
+
+ protected:
  public:
   /**
-   * @brief 构造函数
-   * @param addr 物理地址起点
-   * @param pages_count 物理页数
+   * @brief 获取单例
+   * @return VirtualMemoryManager&             静态对象
    */
-  explicit VirtualMemoryManager(uint64_t addr, size_t pages_count);
-
-  /// @name 构造/析构函数
-  /// @{
-  VirtualMemoryManager() = default;
-  VirtualMemoryManager(const VirtualMemoryManager &) = default;
-  VirtualMemoryManager(VirtualMemoryManager &&) = default;
-  auto operator=(const VirtualMemoryManager &) -> VirtualMemoryManager & =
-                                                      default;
-  auto operator=(VirtualMemoryManager &&) -> VirtualMemoryManager & = default;
-  ~VirtualMemoryManager() = default;
-  /// @}
+  static VirtualMemoryManager& get_instance(void);
 
   /**
-   * @brief 获取物理内存页数
-   * @return size_t 物理内存页数
-   */
-  size_t GetPagesCount() const;
-
-  /**
-   * @brief 获取内核空间起始地址
-   * @return uint64_t        内核空间起始地址
-   */
-  uint64_t GetKernelSpaceAddr() const;
-
-  /**
-   * @brief 获取内核空间页数
-   * @return size_t 内核空间页数
-   */
-  size_t GetKernelSpacePagesCount() const;
-
-  /**
-   * @brief 获取用户间起始地址
-   * @return uint64_t 用户间起始地址
-   */
-  uint64_t GetUserSpaceAddr() const;
-
-  /**
-   * @brief 获取用户间页数
-   * @return size_t 用户间页数
-   */
-  size_t GetUserSpacePagesCount() const;
-
-  /**
-   * @brief 获取当前已使用页数
-   * @return size_t 已使用页数
-   */
-  size_t GetUsedPagesCount() const;
-
-  /**
-   * @brief 获取当前空闲页数
-   * @return size_t 空闲页数
-   */
-  size_t GetFreePagesCount() const;
-
-  /**
-   * @brief 分配一页
-   * @return uint64_t       分配的内存起始地址
-   */
-  uint64_t AllocUserPage();
-
-  /**
-   * @brief 分配多页
-   * @param  _len            页数
-   * @return uint64_t       分配的内存起始地址
-   */
-  uint64_t AllocUserPages(size_t _len);
-
-  /**
-   * @brief 分配以指定地址开始的 _len 页
-   * @param  addr           指定的地址
-   * @param  _len            页数
+   * @brief 初始化
    * @return true            成功
    * @return false           失败
    */
-  bool AllocUserPagesAt(uint64_t addr, size_t _len);
+  bool init(void);
 
   /**
-   * @brief 在内核空间申请一页
-   * @return uint64_t       分配的内存起始地址
+   * @brief 获取当前页目录
+   * @return pt_t            当前页目录
    */
-  uint64_t AllocKernelPage();
+  pt_t get_pgd(void);
 
   /**
-   * @brief 在内核空间分配 pages_count 页
-   * @param  pages_count 页数
-   * @return uint64_t 分配到的内存起始地址
+   * @brief 设置当前页目录
+   * @param  _pgd            要设置的页目录
    */
-  uint64_t AllocKernelPages(size_t pages_count);
+  void set_pgd(const pt_t _pgd);
 
   /**
-   * @brief 在内核空间分配以指定地址开始的 _len 页
-   * @param addr 指定的地址
-   * @param pages_count 页数
-   * @return true 成功
-   * @return false 失败
+   * @brief 映射物理地址到虚拟地址
+   * @param  _pgd            要使用的页目录
+   * @param  _va             要映射的虚拟地址
+   * @param  _pa             物理地址
+   * @param  _flag           属性
    */
-  bool AllocKernelPagesAt(uint64_t addr, size_t pages_count);
+  void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag);
 
   /**
-   * @brief 回收一页
-   * @param addr 要回收的地址
+   * @brief 取消映射
+   * @param  _pgd            要操作的页目录
+   * @param  _va             要取消映射的虚拟地址
    */
-  void FreePage(uint64_t addr);
+  void unmmap(const pt_t _pgd, uintptr_t _va);
 
   /**
-   * @brief 回收多页
-   * @param addr 要回收的地址
-   * @param pages_count 页数
+   * @brief 获取映射的物理地址
+   * @param  _pgd            页目录
+   * @param  _va             虚拟地址
+   * @param  _pa             如果已经映射，保存映射的物理地址，否则为 nullptr
+   * @return true            已映射
+   * @return false           未映射
    */
-  void FreePages(uint64_t addr, size_t pages_count);
-
- private:
-  /// 物理内存开始地址
-  uint64_t addr_;
-  /// 物理内存页数
-  size_t pages_count_;
-  /// 内核空间起始地址
-  uint64_t kernel_addr_;
-  /// 内核页数
-  size_t kernel_pages_count_;
-  /// 用户空间起始地址
-  uint64_t user_start_;
-  /// 用户空间页数
-  size_t user_pages_count_;
-
-  /// 内核空间不会位于内存中间，导致出现用户间被切割为两部分的情况
-  /// 物理内存分配器，分配内核空间
-  AllocatorBase *kernel_allocator_;
-  /// 物理内存分配器，分配用户空间
-  AllocatorBase *user_allocator_;
-
-  /**
-   * @brief 将 elf 与 dtb
-   * 信息移动到内核空间，位于内核结束后的下一页，分别占用一页
-   */
-  void MoveElfDtb();
+  bool get_mmap(const pt_t _pgd, uintptr_t _va, const void* _pa);
 };
 
-/// 全局物理内存管理器
-[[maybe_unused]] static Singleton<VirtualMemoryManager> kPhysicalMemoryManager;
+/// 全局虚拟内存管理器
+[[maybe_unused]] static Singleton<VirtualMemoryManager> kVirtualMemoryManager;
 
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_MEMORY_VIRTUAL_MEMORY_MANAGER_HPP_ \
         */

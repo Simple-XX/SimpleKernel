@@ -25,9 +25,6 @@
 #define SIMPLEKERNEL_DEBUG_LOG
 #endif
 
-/// 使用 4KB 页大小
-#define kPageSize (0x1000)
-
 /// 内核空间设为 64MB
 #define kKernelSpaceSize (0x4000000)
 

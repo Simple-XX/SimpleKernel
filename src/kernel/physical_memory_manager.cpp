@@ -23,9 +23,8 @@
 #include "kernel_elf.hpp"
 #include "kernel_fdt.hpp"
 #include "kernel_log.hpp"
-#include "memory/firstfit_allocator.h"
+#include "memory/firstfit_allocator.hpp"
 #include "project_config.h"
-// #include "resource.h"
 
 PhysicalMemoryManager::PhysicalMemoryManager(uint64_t addr, size_t pages_count)
     : addr_(addr), pages_count_(pages_count) {
@@ -40,11 +39,11 @@ PhysicalMemoryManager::PhysicalMemoryManager(uint64_t addr, size_t pages_count)
 
   // 创建分配器
   // 内核空间
-  static FirstFitAllocator first_fit_allocator_kernel(
+  static FirstFitAllocator<kPageSize> first_fit_allocator_kernel(
       "First Fit Allocator(Kernel space)", kernel_addr_, kernel_pages_count_);
   kernel_allocator_ = (AllocatorBase*)&first_fit_allocator_kernel;
   // 用户空间
-  static FirstFitAllocator first_fit_allocator(
+  static FirstFitAllocator<kPageSize> first_fit_allocator(
       "First Fit Allocator(User space)", user_start_, user_pages_count_);
   user_allocator_ = (AllocatorBase*)&first_fit_allocator;
 

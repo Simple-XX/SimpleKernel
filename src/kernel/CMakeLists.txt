@@ -21,7 +21,6 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/driver)
 
 add_executable(${PROJECT_NAME}
         main.cpp
-        firstfit_allocator.cpp
         physical_memory_manager.cpp
 )
 

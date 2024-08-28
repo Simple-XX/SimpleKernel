@@ -35,6 +35,9 @@
  */
 class PhysicalMemoryManager {
  public:
+  /// 页大小 4096 bytes
+  static constexpr const uint64_t kPageSize = 0x1000;
+
   /**
    * @brief 构造函数
    * @param addr 物理地址起点

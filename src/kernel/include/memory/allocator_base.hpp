@@ -85,9 +85,6 @@ class AllocatorBase {
   virtual size_t GetFreeCount() const { return free_length_; }
 
  protected:
-  /// 页大小 4096 bytes
-  static constexpr const uint64_t kPageSize = 0x1000;
-
   /// 分配器名称
   const char *name_;
   /// 当前管理的内存区域地址
