@@ -17,7 +17,7 @@
 #include <cstdint>
 
 #include "basic_info.hpp"
-#include "cpu.hpp"
+#include "cpu/cpu.hpp"
 #include "sk_cstdio"
 #include "sk_cstring"
 

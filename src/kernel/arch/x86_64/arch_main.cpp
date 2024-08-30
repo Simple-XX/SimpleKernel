@@ -17,11 +17,11 @@
 #include <elf.h>
 
 #include "basic_info.hpp"
-#include "cpu.hpp"
-#include "sk_cstdio"
-#include "sk_cstring"
+#include "cpu/cpu.hpp"
 #include "kernel_elf.hpp"
 #include "kernel_log.hpp"
+#include "sk_cstdio"
+#include "sk_cstring"
 
 // printf_bare_metal 基本输出实现
 /// @note 这里要注意，保证在 serial 初始化之前不能使用 printf
@@ -29,43 +29,47 @@
 static cpu::Serial kSerial(cpu::kCom1);
 extern "C" void _putchar(char character) { kSerial.Write(character); }
 
-/// gdt 描述符表，顺序与 cpu::reginfo::GdtrInfo 中的定义一致
-static cpu::reginfo::GdtrInfo::SegmentDescriptor
-    kSegmentDescriptors[cpu::reginfo::GdtrInfo::kMaxCount] = {
+/// gdt 描述符表，顺序与 cpu::register_info::GdtrInfo 中的定义一致
+static cpu::register_info::GdtrInfo::SegmentDescriptor
+    kSegmentDescriptors[cpu::register_info::GdtrInfo::kMaxCount] = {
         // 第一个全 0
-        cpu::reginfo::GdtrInfo::SegmentDescriptor(),
+        cpu::register_info::GdtrInfo::SegmentDescriptor(),
         // 内核代码段描述符
-        cpu::reginfo::GdtrInfo::SegmentDescriptor(
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::Type::kCodeExecuteRead,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::S::kCodeData,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::DPL::kRing0,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::P::kPresent,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::L::k64Bit),
+        cpu::register_info::GdtrInfo::SegmentDescriptor(
+            cpu::register_info::GdtrInfo::SegmentDescriptor::Type::
+                kCodeExecuteRead,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::S::kCodeData,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::DPL::kRing0,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::P::kPresent,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::L::k64Bit),
         // 内核数据段描述符
-        cpu::reginfo::GdtrInfo::SegmentDescriptor(
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::Type::kDataReadWrite,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::S::kCodeData,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::DPL::kRing0,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::P::kPresent,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::L::k64Bit),
+        cpu::register_info::GdtrInfo::SegmentDescriptor(
+            cpu::register_info::GdtrInfo::SegmentDescriptor::Type::
+                kDataReadWrite,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::S::kCodeData,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::DPL::kRing0,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::P::kPresent,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::L::k64Bit),
         // 用户代码段描述符
-        cpu::reginfo::GdtrInfo::SegmentDescriptor(
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::Type::kCodeExecuteRead,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::S::kCodeData,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::DPL::kRing3,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::P::kPresent,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::L::k64Bit),
+        cpu::register_info::GdtrInfo::SegmentDescriptor(
+            cpu::register_info::GdtrInfo::SegmentDescriptor::Type::
+                kCodeExecuteRead,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::S::kCodeData,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::DPL::kRing3,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::P::kPresent,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::L::k64Bit),
         // 用户数据段描述符
-        cpu::reginfo::GdtrInfo::SegmentDescriptor(
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::Type::kDataReadWrite,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::S::kCodeData,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::DPL::kRing3,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::P::kPresent,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
-            cpu::reginfo::GdtrInfo::SegmentDescriptor::L::k64Bit),
+        cpu::register_info::GdtrInfo::SegmentDescriptor(
+            cpu::register_info::GdtrInfo::SegmentDescriptor::Type::
+                kDataReadWrite,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::S::kCodeData,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::DPL::kRing3,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::P::kPresent,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::AVL::kNotAvailable,
+            cpu::register_info::GdtrInfo::SegmentDescriptor::L::k64Bit),
 };
 
 // 引用链接脚本中的变量
@@ -93,7 +97,7 @@ BasicInfo::BasicInfo(uint32_t argc, uint8_t *argv) {
 
 uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   if (argc != 1) {
-    log::Err("argc != 1 [%d]\n", argc);
+    klog::Err("argc != 1 [%d]\n", argc);
     throw;
   }
 
@@ -105,32 +109,32 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
                                        kBasicInfo.GetInstance().elf_size);
 
   // 加载描述符
-  cpu::reginfo::GdtrInfo::Gdtr gdtr{
-      .limit = (sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                cpu::reginfo::GdtrInfo::kMaxCount) -
+  cpu::register_info::GdtrInfo::Gdtr gdtr{
+      .limit = (sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor) *
+                cpu::register_info::GdtrInfo::kMaxCount) -
                1,
       .base = kSegmentDescriptors,
   };
   cpu::kAllCr.gdtr.Write(gdtr);
 
-  log::Debug("sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor): %d\n",
-             sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor));
-  log::Debug("kSegmentDescriptors: 0x%X\n", kSegmentDescriptors);
+  klog::Debug("sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor): %d\n",
+              sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor));
+  klog::Debug("kSegmentDescriptors: 0x%X\n", kSegmentDescriptors);
 
   // 加载内核数据段描述符
-  cpu::kAllCr.ds.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
-  cpu::kAllCr.es.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
-  cpu::kAllCr.fs.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
-  cpu::kAllCr.gs.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
-  cpu::kAllCr.ss.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                       cpu::reginfo::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.ds.Write(sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor) *
+                       cpu::register_info::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.es.Write(sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor) *
+                       cpu::register_info::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.fs.Write(sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor) *
+                       cpu::register_info::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.gs.Write(sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor) *
+                       cpu::register_info::GdtrInfo::kKernelDataIndex);
+  cpu::kAllCr.ss.Write(sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor) *
+                       cpu::register_info::GdtrInfo::kKernelDataIndex);
   // 加载内核代码段描述符
-  cpu::kAllCr.cs.Write(sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor) *
-                       cpu::reginfo::GdtrInfo::kKernelCodeIndex);
+  cpu::kAllCr.cs.Write(sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor) *
+                       cpu::register_info::GdtrInfo::kKernelCodeIndex);
 
   sk_std::cout << "es: " << cpu::kAllCr.es << sk_std::endl;
   sk_std::cout << "cs: " << cpu::kAllCr.cs << sk_std::endl;
@@ -139,14 +143,15 @@ uint32_t ArchInit(uint32_t argc, uint8_t *argv) {
   sk_std::cout << "fs: " << cpu::kAllCr.fs << sk_std::endl;
   sk_std::cout << "gs: " << cpu::kAllCr.gs << sk_std::endl;
 
-  for (size_t i = 0; i < (cpu::kAllCr.gdtr.Read().limit + 1) /
-                             sizeof(cpu::reginfo::GdtrInfo::SegmentDescriptor);
+  for (size_t i = 0;
+       i < (cpu::kAllCr.gdtr.Read().limit + 1) /
+               sizeof(cpu::register_info::GdtrInfo::SegmentDescriptor);
        i++) {
-    log::Debug("gdtr[%d] 0x%p\n", i, cpu::kAllCr.gdtr.Read().base + i);
-    log::debug << *(cpu::kAllCr.gdtr.Read().base + i) << sk_std::endl;
+    klog::Debug("gdtr[%d] 0x%p\n", i, cpu::kAllCr.gdtr.Read().base + i);
+    klog::debug << *(cpu::kAllCr.gdtr.Read().base + i) << sk_std::endl;
   }
 
-  log::Info("Hello x86_64 ArchInit\n");
+  klog::Info("Hello x86_64 ArchInit\n");
 
   return 0;
 }

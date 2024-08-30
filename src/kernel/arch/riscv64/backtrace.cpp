@@ -15,10 +15,10 @@
  */
 
 #include "arch.h"
-#include "cpu.hpp"
-#include "sk_cstdio"
+#include "cpu/cpu.hpp"
 #include "kernel_elf.hpp"
 #include "kernel_fdt.hpp"
+#include "sk_cstdio"
 #include "sk_libc.h"
 
 int backtrace(void **buffer, int size) {

@@ -160,7 +160,7 @@ uint32_t PhysicalMemoryInit(uint32_t, uint8_t*) {
       PhysicalMemoryManager(kBasicInfo.GetInstance().physical_memory_addr,
                             kBasicInfo.GetInstance().physical_memory_size);
 
-  log::Info("Hello PhysicalMemoryInit\n");
+  klog::Info("Hello PhysicalMemoryInit\n");
 
   return 0;
 }

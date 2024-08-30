@@ -15,7 +15,7 @@
 
 #include "interrupt.h"
 
-#include "cpu.hpp"
+#include "cpu/cpu.hpp"
 #include "kernel_fdt.hpp"
 #include "kernel_log.hpp"
 #include "opensbi_interface.h"
@@ -23,10 +23,10 @@
 #include "sk_iostream"
 
 Interrupt::InterruptFunc Interrupt::interrupt_handlers
-    [cpu::reginfo::csr::ScauseInfo::kInterruptMaxCount];
+    [cpu::register_info::csr::ScauseInfo::kInterruptMaxCount];
 
 Interrupt::InterruptFunc Interrupt::exception_handlers
-    [cpu::reginfo::csr::ScauseInfo::kExceptionMaxCount];
+    [cpu::register_info::csr::ScauseInfo::kExceptionMaxCount];
 
 __attribute__((interrupt("supervisor"))) alignas(4) static void TarpEntry() {
   sk_std::cout << sk_std::endl;
@@ -49,8 +49,8 @@ Interrupt::Interrupt() {
     for (auto &i : interrupt_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
         printf("Default Interrupt handler [%s] 0x%X, 0x%p\n",
-               cpu::reginfo::csr::ScauseInfo::kInterruptNames[cause], cause,
-               context);
+               cpu::register_info::csr::ScauseInfo::kInterruptNames[cause],
+               cause, context);
         return 0;
       };
     }
@@ -58,8 +58,8 @@ Interrupt::Interrupt() {
     for (auto &i : exception_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
         printf("Default Exception handler [%s] 0x%X, 0x%p\n",
-               cpu::reginfo::csr::ScauseInfo::kExceptionNames[cause], cause,
-               context);
+               cpu::register_info::csr::ScauseInfo::kExceptionNames[cause],
+               cause, context);
         return 0;
       };
     }
@@ -82,7 +82,7 @@ Interrupt::Interrupt() {
     is_inited = true;
   }
 
-  log::Info("Interrupt init.\n");
+  klog::Info("Interrupt init.\n");
 }
 
 void Interrupt::Do(uint64_t cause, uint8_t *context) {
@@ -91,12 +91,14 @@ void Interrupt::Do(uint64_t cause, uint8_t *context) {
 
   if (interrupt) {
     // 中断
-    if (exception_code < cpu::reginfo::csr::ScauseInfo::kInterruptMaxCount) {
+    if (exception_code <
+        cpu::register_info::csr::ScauseInfo::kInterruptMaxCount) {
       interrupt_handlers[exception_code](exception_code, context);
     }
   } else {
     // 异常
-    if (exception_code < cpu::reginfo::csr::ScauseInfo::kExceptionMaxCount) {
+    if (exception_code <
+        cpu::register_info::csr::ScauseInfo::kExceptionMaxCount) {
       exception_handlers[exception_code](exception_code, context);
     }
   }
@@ -107,18 +109,22 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
   auto exception_code = cpu::kAllCsr.scause.exception_code.Get(cause);
 
   if (interrupt) {
-    if (exception_code < cpu::reginfo::csr::ScauseInfo::kInterruptMaxCount) {
+    if (exception_code <
+        cpu::register_info::csr::ScauseInfo::kInterruptMaxCount) {
       interrupt_handlers[exception_code] = func;
-      printf("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
-             cpu::reginfo::csr::ScauseInfo::kInterruptNames[exception_code],
-             cause, func);
+      printf(
+          "RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
+          cpu::register_info::csr::ScauseInfo::kInterruptNames[exception_code],
+          cause, func);
     }
   } else {
-    if (exception_code < cpu::reginfo::csr::ScauseInfo::kExceptionMaxCount) {
+    if (exception_code <
+        cpu::register_info::csr::ScauseInfo::kExceptionMaxCount) {
       exception_handlers[exception_code] = func;
-      printf("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
-             cpu::reginfo::csr::ScauseInfo::kExceptionNames[exception_code],
-             cause, func);
+      printf(
+          "RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
+          cpu::register_info::csr::ScauseInfo::kExceptionNames[exception_code],
+          cause, func);
     }
   }
 }
@@ -132,21 +138,21 @@ uint32_t InterruptInit(uint32_t, uint8_t *) {
 
   // 注册时钟中断
   kInterrupt.GetInstance().RegisterInterruptFunc(
-      cpu::reginfo::csr::ScauseInfo::kSupervisorTimerInterrupt,
+      cpu::register_info::csr::ScauseInfo::kSupervisorTimerInterrupt,
       [](uint64_t exception_code, uint8_t *) -> uint64_t {
         sbi_set_timer(cpu::kAllCsr.time.Read() + kInterval);
-        printf("Handle %s\n",
-               cpu::reginfo::csr::ScauseInfo::kInterruptNames[exception_code]);
+        printf("Handle %s\n", cpu::register_info::csr::ScauseInfo::
+                                  kInterruptNames[exception_code]);
         return 0;
       });
 
   // ebreak 中断
   kInterrupt.GetInstance().RegisterInterruptFunc(
-      cpu::reginfo::csr::ScauseInfo::kBreakpoint,
+      cpu::register_info::csr::ScauseInfo::kBreakpoint,
       [](uint64_t exception_code, uint8_t *) -> uint64_t {
         cpu::kAllCsr.sepc.Write(cpu::kAllCsr.sepc.Read() + 2);
-        printf("Handle %s\n",
-               cpu::reginfo::csr::ScauseInfo::kExceptionNames[exception_code]);
+        printf("Handle %s\n", cpu::register_info::csr::ScauseInfo::
+                                  kExceptionNames[exception_code]);
         return 0;
       });
 
@@ -155,7 +161,7 @@ uint32_t InterruptInit(uint32_t, uint8_t *) {
   // 设置时钟中断时间
   sbi_set_timer(kInterval);
 
-  log::Info("Hello InterruptInit\n");
+  klog::Info("Hello InterruptInit\n");
 
   return 0;
 }

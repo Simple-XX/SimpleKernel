@@ -16,16 +16,16 @@
 #include "interrupt.h"
 
 #include "arch.h"
-#include "cpu.hpp"
+#include "cpu/cpu.hpp"
 #include "kernel_log.hpp"
 #include "sk_cstdio"
 #include "sk_iostream"
 
-Interrupt::InterruptFunc
-    Interrupt::interrupt_handlers[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
+Interrupt::InterruptFunc Interrupt::interrupt_handlers
+    [cpu::register_info::IdtrInfo::kInterruptMaxCount];
 
-cpu::reginfo::IdtrInfo::Idt
-    Interrupt::idts[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
+cpu::register_info::IdtrInfo::Idt
+    Interrupt::idts[cpu::register_info::IdtrInfo::kInterruptMaxCount];
 
 /**
  * @brief 中断处理函数
@@ -42,18 +42,18 @@ TarpEntry(uint8_t *interrupt_context) {
 
 template <uint8_t no>
 void Interrupt::SetUpIdtr() {
-  if constexpr (no < cpu::reginfo::IdtrInfo::kInterruptMaxCount - 1) {
-    idts[no] = cpu::reginfo::IdtrInfo::Idt(
+  if constexpr (no < cpu::register_info::IdtrInfo::kInterruptMaxCount - 1) {
+    idts[no] = cpu::register_info::IdtrInfo::Idt(
         (uint64_t)TarpEntry<no>, 8, 0x0,
-        cpu::reginfo::IdtrInfo::Idt::Type::k64BitInterruptGate,
-        cpu::reginfo::IdtrInfo::Idt::DPL::kRing0,
-        cpu::reginfo::IdtrInfo::Idt::P::kPresent);
+        cpu::register_info::IdtrInfo::Idt::Type::k64BitInterruptGate,
+        cpu::register_info::IdtrInfo::Idt::DPL::kRing0,
+        cpu::register_info::IdtrInfo::Idt::P::kPresent);
     SetUpIdtr<no + 1>();
   } else {
     // 写入 idtr
-    static auto idtr = cpu::reginfo::IdtrInfo::Idtr{
-        .limit = sizeof(cpu::reginfo::IdtrInfo::Idtr) *
-                     cpu::reginfo::IdtrInfo::kInterruptMaxCount -
+    static auto idtr = cpu::register_info::IdtrInfo::Idtr{
+        .limit = sizeof(cpu::register_info::IdtrInfo::Idtr) *
+                     cpu::register_info::IdtrInfo::kInterruptMaxCount -
                  1,
         .base = idts,
     };
@@ -62,24 +62,25 @@ void Interrupt::SetUpIdtr() {
     // 输出 idtr 信息
     sk_std::cout << cpu::kAllCr.idtr << sk_std::endl;
     for (size_t i = 0; i < (cpu::kAllCr.idtr.Read().limit + 1) /
-                               sizeof(cpu::reginfo::IdtrInfo::Idtr);
+                               sizeof(cpu::register_info::IdtrInfo::Idtr);
          i++) {
-      log::Debug("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
-      log::debug << *(cpu::kAllCr.idtr.Read().base + i) << sk_std::endl;
+      klog::Debug("idtr[%d] 0x%p\n", i, cpu::kAllCr.idtr.Read().base + i);
+      klog::debug << *(cpu::kAllCr.idtr.Read().base + i) << sk_std::endl;
     }
   }
 }
 
 Interrupt::Interrupt()
-    : pic_(cpu::reginfo::IdtrInfo::kIrq0, cpu::reginfo::IdtrInfo::kIrq8),
+    : pic_(cpu::register_info::IdtrInfo::kIrq0,
+           cpu::register_info::IdtrInfo::kIrq8),
       pit_(200) {
   if (is_inited == false) {
     // 注册默认中断处理函数
     for (auto &i : interrupt_handlers) {
       i = [](uint64_t cause, uint8_t *context) -> uint64_t {
-        log::Info("Default Interrupt handler [%s] 0x%X, 0x%p\n",
-                  cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause,
-                  context);
+        klog::Info("Default Interrupt handler [%s] 0x%X, 0x%p\n",
+                   cpu::register_info::IdtrInfo::kInterruptNames[cause], cause,
+                   context);
         DumpStack();
         while (1);
       };
@@ -95,20 +96,21 @@ Interrupt::Interrupt()
     is_inited = true;
   }
 
-  log::Info("Interrupt init.\n");
+  klog::Info("Interrupt init.\n");
 }
 
 void Interrupt::Do(uint64_t cause, uint8_t *context) {
-  if (cause < cpu::reginfo::IdtrInfo::kInterruptMaxCount) {
+  if (cause < cpu::register_info::IdtrInfo::kInterruptMaxCount) {
     interrupt_handlers[cause](cause, context);
   }
 }
 
 void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
-  if (cause < cpu::reginfo::IdtrInfo::kInterruptMaxCount) {
+  if (cause < cpu::register_info::IdtrInfo::kInterruptMaxCount) {
     interrupt_handlers[cause] = func;
-    log::Debug("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
-           cpu::reginfo::IdtrInfo::kInterruptNames[cause], cause, func);
+    klog::Debug("RegisterInterruptFunc [%s] 0x%X, 0x%p\n",
+                cpu::register_info::IdtrInfo::kInterruptNames[cause], cause,
+                func);
   }
 }
 
@@ -128,23 +130,24 @@ uint32_t InterruptInit(uint32_t, uint8_t *) {
 
   // 注册时钟中断
   kInterrupt.GetInstance().RegisterInterruptFunc(
-      cpu::reginfo::IdtrInfo::kIrq0,
+      cpu::register_info::IdtrInfo::kIrq0,
       [](uint64_t exception_code, uint8_t *) -> uint64_t {
         kInterrupt.GetInstance().pit_.Ticks();
         if (kInterrupt.GetInstance().pit_.GetTicks() % 100 == 0) {
-          log::Info("Handle %d %s\n", exception_code,
-                 cpu::reginfo::IdtrInfo::kInterruptNames[exception_code]);
+          klog::Info(
+              "Handle %d %s\n", exception_code,
+              cpu::register_info::IdtrInfo::kInterruptNames[exception_code]);
         }
         kInterrupt.GetInstance().pic_.Clear(exception_code);
         return 0;
       });
 
   // 允许时钟中断
-  kInterrupt.GetInstance().pic_.Enable(cpu::reginfo::IdtrInfo::kIrq0);
+  kInterrupt.GetInstance().pic_.Enable(cpu::register_info::IdtrInfo::kIrq0);
   // 开启中断
   cpu::kAllCr.rflags.interrupt_enable_flag.Set();
 
-  log::Info("Hello InterruptInit\n");
+  klog::Info("Hello InterruptInit\n");
 
   return 0;
 }

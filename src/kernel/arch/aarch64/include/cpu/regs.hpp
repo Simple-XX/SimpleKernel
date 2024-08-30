@@ -1,7 +1,7 @@
 
 /**
- * @file cpu.hpp
- * @brief aarch64 cpu 相关定义
+ * @file regs.hpp
+ * @brief aarch64 寄存器相关定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2024-03-05
@@ -14,17 +14,17 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_HPP_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_HPP_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_REGS_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_REGS_HPP_
 
 #include <cstdint>
 #include <cstdlib>
 #include <type_traits>
 #include <typeinfo>
 
+#include "kernel_log.hpp"
 #include "sk_cstdio"
 #include "sk_iostream"
-#include "kernel_log.hpp"
 
 /**
  * aarch64 cpu 相关定义
@@ -33,7 +33,7 @@
 namespace cpu {
 
 // 第一部分：寄存器定义
-namespace reginfo {
+namespace register_info {
 
 struct RegInfoBase {
   /// 寄存器数据类型
@@ -53,7 +53,7 @@ struct RegInfoBase {
 /// 通用寄存器
 struct X29Info : public RegInfoBase {};
 
-};  // namespace reginfo
+};  // namespace register_info
 
 // 第二部分：读/写模版实现
 namespace {
@@ -80,10 +80,10 @@ class ReadOnlyRegBase {
    */
   static __always_inline RegInfo::DataType Read() {
     typename RegInfo::DataType value{};
-    if constexpr (std::is_same<RegInfo, reginfo::X29Info>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::X29Info>::value) {
       __asm__ volatile("mov %0, x29" : "=r"(value) : :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return value;
@@ -117,10 +117,10 @@ class WriteOnlyRegBase {
    * @param value 要写的值
    */
   static __always_inline void Write(RegInfo::DataType value) {
-    if constexpr (std::is_same<RegInfo, reginfo::X29Info>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::X29Info>::value) {
       __asm__ volatile("mv fp, %0" : : "r"(value) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -146,7 +146,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
 };
 
 // 第三部分：寄存器实例
-class X29 : public ReadWriteRegBase<reginfo::X29Info> {
+class X29 : public ReadWriteRegBase<register_info::X29Info> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const X29 &x29) {
     printf("val: 0x%p", (void *)x29.Read());
@@ -166,4 +166,4 @@ struct AllXreg {
 
 };  // namespace cpu
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_HPP_
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_REGS_HPP_

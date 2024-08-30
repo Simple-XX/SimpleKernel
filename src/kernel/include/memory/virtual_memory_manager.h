@@ -21,7 +21,7 @@
 #include <cstdint>
 #include <functional>
 
-#include "cpu.hpp"
+#include "cpu/cpu.hpp"
 #include "physical_memory_manager.h"
 #include "singleton.hpp"
 

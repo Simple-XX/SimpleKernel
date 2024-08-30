@@ -41,7 +41,7 @@ class FirstFitAllocator : public AllocatorBase {
                              size_t pages_count)
       : AllocatorBase(name, addr, pages_count) {
     if (addr % page_size != 0) {
-      log::Err("addr not aligned. 0x%lX\n", addr);
+      klog::Err("addr not aligned. 0x%lX\n", addr);
       throw;
     }
     printf("%s: 0x%p(0x%X pages) init.\n", name_, addr_, length_);
@@ -67,7 +67,7 @@ class FirstFitAllocator : public AllocatorBase {
     // 在位图中寻找连续 pages_count 的位置
     auto [is_found, idx] = Find(pages_count, false);
     if (is_found == false) {
-      log::Warn("NO ENOUGH MEM %d.\n", pages_count);
+      klog::Warn("NO ENOUGH MEM %d.\n", pages_count);
       return res_addr;
     }
     // 遍历区域
@@ -94,13 +94,13 @@ class FirstFitAllocator : public AllocatorBase {
   bool AllocAt(uint64_t addr, size_t pages_count) override {
     // 页对齐
     if (addr % page_size != 0) {
-      log::Warn("addr not aligned 0x%lX.\n", addr);
+      klog::Warn("addr not aligned 0x%lX.\n", addr);
       return false;
     }
     // 申请地址超出范围
     if (addr < addr_ || addr > addr_ ||
         addr + pages_count * page_size > addr_ + length_ * page_size) {
-      log::Warn("out of range 0x%lX %d.\n", addr, pages_count);
+      klog::Warn("out of range 0x%lX %d.\n", addr, pages_count);
       return false;
     }
     // 计算 addr 在 map_ 中的索引
@@ -132,13 +132,13 @@ class FirstFitAllocator : public AllocatorBase {
   void Free(uint64_t addr, size_t pages_count) override {
     // 页对齐
     if (addr % page_size != 0) {
-      log::Warn("addr not aligned 0x%lX.\n", addr);
+      klog::Warn("addr not aligned 0x%lX.\n", addr);
       return;
     }
     // 申请地址超出范围
     if (addr < addr_ || addr > addr_ ||
         addr + pages_count * page_size > addr_ + length_ * page_size) {
-      log::Warn("out of range 0x%lX %d.\n", addr, pages_count);
+      klog::Warn("out of range 0x%lX %d.\n", addr, pages_count);
       return;
     }
     // 计算 addr 在 map_ 中的索引

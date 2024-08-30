@@ -15,10 +15,14 @@
 
 #include "interrupt.h"
 
-#include "cstdio"
 #include "kernel_log.hpp"
+#include "sk_cstdio"
 
+<<<<<<< HEAD
 Interrupt::Interrupt() { log::Info("Interrupt init.\n"); }
+=======
+Interrupt::Interrupt() { klog::Info("Interrupt init.\n"); }
+>>>>>>> new_intr
 
 void Interrupt::Do(uint64_t cause, uint8_t *context) {
   (void)cause;
@@ -31,7 +35,11 @@ void Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptFunc func) {
 }
 
 uint32_t InterruptInit(uint32_t, uint8_t *) {
+<<<<<<< HEAD
   log::Info("Hello InterruptInit\n");
+=======
+  klog::Info("Hello InterruptInit\n");
+>>>>>>> new_intr
 
   return 0;
 }

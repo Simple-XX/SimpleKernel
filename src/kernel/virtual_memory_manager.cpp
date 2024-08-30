@@ -57,7 +57,7 @@ void VirtualMemoryManager::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
   pte_t* pte = find(_pgd, _va, true);
   // 一般情况下不应该为空
   if (pte == nullptr) {
-    log::Err("pte == nullptr\n");
+    klog::Err("pte == nullptr\n");
     throw;
   }
 
@@ -65,7 +65,7 @@ void VirtualMemoryManager::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
   if (((*pte & cpu::vmm_info::VMM_PAGE_VALID) ==
        cpu::vmm_info::VMM_PAGE_VALID) &&
       ((*pte & ((1 << cpu::vmm_info::VMM_PTE_PROP_BITS) - 1)) == _flag)) {
-    log::Warn("remap.\n");
+    klog::Warn("remap.\n");
   }
   // 没有映射，或更改了 flag
   else {
@@ -85,12 +85,12 @@ void VirtualMemoryManager::unmmap(const pt_t _pgd, uintptr_t _va) {
   // 找到页表项
   // 未找到
   if (pte == nullptr) {
-    log::Warn("VirtualMemoryManager::unmmap: find.\n");
+    klog::Warn("VirtualMemoryManager::unmmap: find.\n");
     return;
   }
   // 找到了，但是并没有被映射
   if ((*pte & cpu::vmm_info::VMM_PAGE_VALID) == 0) {
-    log::Warn("VirtualMemoryManager::unmmap: not mapped.\n");
+    klog::Warn("VirtualMemoryManager::unmmap: not mapped.\n");
   }
   // 置零
   *pte = 0x00;
@@ -153,7 +153,7 @@ pte_t* VirtualMemoryManager::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
         // 申请失败则返回
         if (pgd == nullptr) {
           // 如果出现这种情况，说明物理内存不够，一般不会出现
-          log::Err("No Enough Memory\n");
+          klog::Err("No Enough Memory\n");
           throw;
           return nullptr;
         }
@@ -176,7 +176,7 @@ uint32_t VirtualMemoryInit(uint32_t, uint8_t*) {
   // 初始化虚拟内存管理器
   kVirtualMemoryManager.GetInstance() = VirtualMemoryManager();
 
-  log::Info("Hello VirtualMemoryInit\n");
+  klog::Info("Hello VirtualMemoryInit\n");
 
   return 0;
 }

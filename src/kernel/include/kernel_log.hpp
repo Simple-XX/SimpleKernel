@@ -86,7 +86,7 @@ class Logger : public sk_std::ostream {
 
 }  // namespace
 
-namespace log {
+namespace klog {
 /**
  * @brief 与 printf 类似，只是颜色不同
  */
