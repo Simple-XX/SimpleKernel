@@ -19,6 +19,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 
 #include "cpu.hpp"
 #include "physical_memory_manager.h"
@@ -29,18 +30,15 @@
 /// 页表项，最底层
 typedef uintptr_t pte_t;
 /// 页表，也可以是页目录，它们的结构是一样的
-typedef uintptr_t* pt_t;
+typedef uintptr_t *pt_t;
 
 /// 每个页表能映射多少页 = 页大小/页表项大小: 2^9
 static constexpr const size_t VMM_PAGES_PRE_PAGE_TABLE =
     PhysicalMemoryManager::kPageSize / sizeof(pte_t);
 
-/// 映射内核空间的大小
-static constexpr const size_t VMM_KERNEL_SPACE_SIZE = COMMON::KERNEL_SPACE_SIZE;
-
 /// 内核映射的页数
 static constexpr const size_t VMM_KERNEL_SPACE_PAGES =
-    VMM_KERNEL_SPACE_SIZE / PhysicalMemoryManager::kPageSize;
+    kKernelSpaceSize / PhysicalMemoryManager::kPageSize;
 
 /**
  * @brief 虚拟内存抽象
@@ -53,7 +51,73 @@ static constexpr const size_t VMM_KERNEL_SPACE_PAGES =
  *  - 三级页表项（最低级）
  */
 class VirtualMemoryManager {
+ public:
+  /**
+   * @brief 构造函数
+   * @param addr 物理地址起点
+   * @param pages_count 物理页数
+   */
+  explicit VirtualMemoryManager();
+
+  /// @name 构造/析构函数
+  /// @{
+  // VirtualMemoryManager() = default;
+  VirtualMemoryManager(const VirtualMemoryManager &) = default;
+  VirtualMemoryManager(VirtualMemoryManager &&) = default;
+  auto operator=(const VirtualMemoryManager &) -> VirtualMemoryManager & =
+                                                      default;
+  auto operator=(VirtualMemoryManager &&) -> VirtualMemoryManager & = default;
+  ~VirtualMemoryManager() = default;
+  /// @}
+
+  /**
+   * @brief 初始化
+   * @return true            成功
+   * @return false           失败
+   */
+  bool init(void);
+
+  /**
+   * @brief 获取当前页目录
+   * @return pt_t            当前页目录
+   */
+  pt_t get_pgd(void);
+
+  /**
+   * @brief 设置当前页目录
+   * @param  _pgd            要设置的页目录
+   */
+  void set_pgd(const pt_t _pgd);
+
+  /**
+   * @brief 映射物理地址到虚拟地址
+   * @param  _pgd            要使用的页目录
+   * @param  _va             要映射的虚拟地址
+   * @param  _pa             物理地址
+   * @param  _flag           属性
+   */
+  void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag);
+
+  /**
+   * @brief 取消映射
+   * @param  _pgd            要操作的页目录
+   * @param  _va             要取消映射的虚拟地址
+   */
+  void unmmap(const pt_t _pgd, uintptr_t _va);
+
+  /**
+   * @brief 获取映射的物理地址
+   * @param  _pgd            页目录
+   * @param  _va             虚拟地址
+   * @param  _pa             如果已经映射，保存映射的物理地址，否则为 nullptr
+   * @return true            已映射
+   * @return false           未映射
+   */
+  bool get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa);
+
  private:
+  std::function<uint64_t()> AllocKernelPage;
+
   /**
    * @brief 物理地址转换到页表项
    * @param  _pa             物理地址
@@ -103,60 +167,7 @@ class VirtualMemoryManager {
    * @param  _alloc          是否分配
    * @return pte_t*          未找到返回 nullptr
    */
-  pte_t* find(const pt_t _pgd, uintptr_t _va, bool _alloc);
-
- protected:
- public:
-  /**
-   * @brief 获取单例
-   * @return VirtualMemoryManager&             静态对象
-   */
-  static VirtualMemoryManager& get_instance(void);
-
-  /**
-   * @brief 初始化
-   * @return true            成功
-   * @return false           失败
-   */
-  bool init(void);
-
-  /**
-   * @brief 获取当前页目录
-   * @return pt_t            当前页目录
-   */
-  pt_t get_pgd(void);
-
-  /**
-   * @brief 设置当前页目录
-   * @param  _pgd            要设置的页目录
-   */
-  void set_pgd(const pt_t _pgd);
-
-  /**
-   * @brief 映射物理地址到虚拟地址
-   * @param  _pgd            要使用的页目录
-   * @param  _va             要映射的虚拟地址
-   * @param  _pa             物理地址
-   * @param  _flag           属性
-   */
-  void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag);
-
-  /**
-   * @brief 取消映射
-   * @param  _pgd            要操作的页目录
-   * @param  _va             要取消映射的虚拟地址
-   */
-  void unmmap(const pt_t _pgd, uintptr_t _va);
-
-  /**
-   * @brief 获取映射的物理地址
-   * @param  _pgd            页目录
-   * @param  _va             虚拟地址
-   * @param  _pa             如果已经映射，保存映射的物理地址，否则为 nullptr
-   * @return true            已映射
-   * @return false           未映射
-   */
-  bool get_mmap(const pt_t _pgd, uintptr_t _va, const void* _pa);
+  pte_t *find(const pt_t _pgd, uintptr_t _va, bool _alloc);
 };
 
 /// 全局虚拟内存管理器

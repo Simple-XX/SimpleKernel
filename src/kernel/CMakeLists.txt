@@ -22,6 +22,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/driver)
 add_executable(${PROJECT_NAME}
         main.cpp
         physical_memory_manager.cpp
+        virtual_memory_manager.cpp
 )
 
 target_include_directories(kernel PRIVATE
