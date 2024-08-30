@@ -116,7 +116,9 @@ class VirtualMemoryManager {
   bool get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa);
 
  private:
-  std::function<uint64_t()> AllocKernelPage;
+  /// @todo
+  // std::function<uint64_t()> AllocKernelPage;
+  uint64_t AllocKernelPage() { return 0; }
 
   /**
    * @brief 物理地址转换到页表项

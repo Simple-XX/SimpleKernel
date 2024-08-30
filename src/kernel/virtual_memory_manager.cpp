@@ -19,6 +19,7 @@
 #include "basic_info.hpp"
 #include "kernel_log.hpp"
 #include "sk_cstdio"
+#include <functional>
 #include "sk_cstring"
 
 VirtualMemoryManager::VirtualMemoryManager() {
