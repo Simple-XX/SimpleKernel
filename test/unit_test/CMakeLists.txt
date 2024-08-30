@@ -21,6 +21,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
+        ./
         ${CMAKE_SOURCE_DIR}/src/kernel/include
         ${CMAKE_SOURCE_DIR}/src/kernel/arch
 )
@@ -35,7 +36,7 @@ target_link_options(${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         ${DEFAULT_TEST_LINK_LIB}
-        ${dtc_BINARY_DIR}/libfdt/libfdt.a
+        dtc-lib
 )
 
 gtest_discover_tests(${PROJECT_NAME})

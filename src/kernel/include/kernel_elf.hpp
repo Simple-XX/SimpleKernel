@@ -44,7 +44,7 @@ class KernelElf {
    */
   explicit KernelElf(uint64_t elf_addr, size_t elf_size = 64) {
     if (!elf_addr || !elf_size) {
-      log::Err("Fatal Error: Invalid elf_addr or elf_size.\n");
+      klog::Err("Fatal Error: Invalid elf_addr or elf_size.\n");
       throw;
     }
 
@@ -53,7 +53,7 @@ class KernelElf {
     // 检查 elf 头数据
     auto check_elf_identity_ret = CheckElfIdentity();
     if (!check_elf_identity_ret) {
-      log::Err("KernelElf NOT valid ELF file.\n");
+      klog::Err("KernelElf NOT valid ELF file.\n");
       throw;
     }
 
@@ -106,15 +106,15 @@ class KernelElf {
   [[nodiscard]] bool CheckElfIdentity() const {
     if ((elf_[EI_MAG0] != ELFMAG0) || (elf_[EI_MAG1] != ELFMAG1) ||
         (elf_[EI_MAG2] != ELFMAG2) || (elf_[EI_MAG3] != ELFMAG3)) {
-      log::Err("Fatal Error: Invalid ELF header.\n");
+      klog::Err("Fatal Error: Invalid ELF header.\n");
       throw;
     }
     if (elf_[EI_CLASS] == ELFCLASS32) {
-      log::Err("Found 32bit executable but NOT SUPPORT.\n");
+      klog::Err("Found 32bit executable but NOT SUPPORT.\n");
       throw;
     }
     if (elf_[EI_CLASS] != ELFCLASS64) {
-      log::Err("Fatal Error: Invalid executable.\n");
+      klog::Err("Fatal Error: Invalid executable.\n");
       throw;
     }
     return true;

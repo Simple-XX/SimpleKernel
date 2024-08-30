@@ -1,0 +1,92 @@
+
+/**
+ * @file sk_iostream
+ * @brief 测试使用的 sk_iostream
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2021-09-18
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * Based on https://github.com/MRNIU/MiniCRT
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2021-09-18<td>digmouse233<td>迁移到 doxygen
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_TEST_UNIT_TEST_SK_IOSTREAM_
+#define SIMPLEKERNEL_TEST_UNIT_TEST_SK_IOSTREAM_
+
+#include <cstdint>
+#include <iostream>
+
+namespace sk_std {
+class ostream : public std::ostream {
+ public:
+  enum openmode : uint8_t {
+    in = 1,
+    out = 2,
+    binary = 4,
+    trunc = 8,
+  };
+
+  /// @name 构造/析构函数
+  /// @{
+  ostream() = default;
+  ostream(const ostream&) = default;
+  ostream(ostream&&) = default;
+  auto operator=(const ostream&) -> ostream& = default;
+  auto operator=(ostream&&) -> ostream& = default;
+  ~ostream() = default;
+  /// @}
+
+  virtual ostream& operator<<(int8_t val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(uint8_t val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(const char* val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(int16_t val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(uint16_t val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(int32_t val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(uint32_t val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(int64_t val) {
+    (void)val;
+    return *this;
+  }
+  virtual ostream& operator<<(uint64_t val) {
+    (void)val;
+    return *this;
+  }
+
+  virtual ostream& operator<<(ostream& (*manip)(ostream&)) {
+    return manip(*this);
+  }
+};
+
+inline ostream& endl(ostream& os) { return os << "\n"; }
+
+[[maybe_unused]] static ostream cout;
+
+};  // namespace sk_std
+
+#endif /* SIMPLEKERNEL_TEST_UNIT_TEST_SK_IOSTREAM_ */

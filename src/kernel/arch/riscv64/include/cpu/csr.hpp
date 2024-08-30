@@ -1,7 +1,7 @@
 
 /**
- * @file cpu.hpp
- * @brief riscv64 cpu 相关定义
+ * @file csr.hpp
+ * @brief riscv64 csr 相关定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2024-03-05
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_CSR_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_CSR_HPP_
 
 #include <cstdint>
 #include <cstdlib>
@@ -27,7 +27,7 @@
 #include "sk_iostream"
 
 /**
- * riscv64 cpu 相关定义
+ * riscv64 cpu Control and Status Registers 相关定义
  * @note 寄存器读写设计见 arch/README.md
  * @see priv-isa.pdf
  * https://github.com/riscv/riscv-isa-manual/releases/tag/20240411/priv-isa-asciidoc.pdf
@@ -39,7 +39,7 @@
 namespace cpu {
 
 // 第一部分：寄存器定义
-namespace reginfo {
+namespace register_info {
 
 struct RegInfoBase {
   /// 寄存器数据类型
@@ -384,7 +384,7 @@ struct StimecmpInfo : public RegInfoBase {};
 
 };  // namespace csr
 
-};  // namespace reginfo
+};  // namespace register_info
 
 // 第二部分：读/写模版实现
 namespace {
@@ -411,44 +411,51 @@ class ReadOnlyRegBase {
    */
   static __always_inline RegInfo::DataType Read() {
     typename RegInfo::DataType value{};
-    if constexpr (std::is_same<RegInfo, reginfo::FpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::FpInfo>::value) {
       __asm__ volatile("mv %0, fp" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SstatusInfo>::value) {
+                                      register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrr %0, sstatus" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrr %0, stvec" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SipInfo>::value) {
       __asm__ volatile("csrr %0, sip" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
       __asm__ volatile("csrr %0, sie" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::TimeInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::TimeInfo>::value) {
       __asm__ volatile("csrr %0, time" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::CycleInfo>::value) {
+                                      register_info::csr::CycleInfo>::value) {
       __asm__ volatile("csrr %0, cycle" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::InstretInfo>::value) {
+                                      register_info::csr::InstretInfo>::value) {
       __asm__ volatile("csrr %0, instret" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrr %0, sscratch" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrr %0, sepc" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrr %0, scause" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrr %0, stval" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
-      __asm__ volatile("csrr %0, satp" : "=r"(value) : :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StimecmpInfo>::value) {
+                                      register_info::csr::SatpInfo>::value) {
+      __asm__ volatile("csrr %0, satp" : "=r"(value) : :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::StimecmpInfo>::value) {
       __asm__ volatile("csrr %0, stimecmp" : "=r"(value) : :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return value;
@@ -482,33 +489,38 @@ class WriteOnlyRegBase {
    * @param value 要写的值
    */
   static __always_inline void Write(RegInfo::DataType value) {
-    if constexpr (std::is_same<RegInfo, reginfo::FpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::FpInfo>::value) {
       __asm__ volatile("mv fp, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SstatusInfo>::value) {
+                                      register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrw sstatus, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrw stvec, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrw sip, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrw sie, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrw sip, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrw sie, %0" : : "r"(value) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrw sscratch, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrw sepc, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrw scause, %0" : : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrw stval, %0" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrw satp, %0" : : "r"(value) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -519,30 +531,36 @@ class WriteOnlyRegBase {
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
   static __always_inline void WriteImm(const uint8_t value) {
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrwi sstatus, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrwi stvec, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrwi sip, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrwi sie, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrwi sip, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrwi sie, %0" : : "i"(value) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrwi sscratch, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrwi sepc, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrwi scause, %0" : : "i"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrwi stval, %0" : : "i"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrwi satp, %0" : : "i"(value) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -552,30 +570,36 @@ class WriteOnlyRegBase {
    * @param mask 掩码
    */
   static __always_inline void SetBits(uint64_t mask) {
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrs zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrs zero, stvec, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrs zero, sip, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrs zero, sie, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrs zero, sip, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrs zero, sie, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrs zero, sscratch, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrs zero, sepc, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrs zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrs zero, stval, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrs zero, satp, %0" : : "r"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -585,30 +609,36 @@ class WriteOnlyRegBase {
    * @param mask 掩码
    */
   static __always_inline void ClearBits(uint64_t mask) {
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrc zero, sstatus, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrc zero, stvec, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrc zero, sip, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrc zero, sie, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrc zero, sip, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrc zero, sie, %0" : : "r"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrc zero, sscratch, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrc zero, sepc, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrc zero, scause, %0" : : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrc zero, stval, %0" : : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrc zero, satp, %0" : : "r"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -619,30 +649,36 @@ class WriteOnlyRegBase {
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
   static __always_inline void SetBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrsi zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrsi zero, stvec, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrsi zero, sip, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrsi zero, sie, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrsi zero, sip, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrsi zero, sie, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrsi zero, sscratch, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrsi zero, sepc, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrsi zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrsi zero, stval, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrsi zero, satp, %0" : : "i"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -653,30 +689,36 @@ class WriteOnlyRegBase {
    * @note 只能写 kCsrImmOpMask 范围内的值
    */
   static __always_inline void ClearBitsImm(const uint8_t mask) {
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrci zero, sstatus, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrci zero, stvec, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrci zero, sip, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrci zero, sie, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrci zero, sip, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrci zero, sie, %0" : : "i"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrci zero, sscratch, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrci zero, sepc, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrci zero, scause, %0" : : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrci zero, stval, %0" : : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrci zero, satp, %0" : : "i"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -687,7 +729,7 @@ class WriteOnlyRegBase {
    */
   template <uint64_t value>
   static void WriteConst() {
-    if constexpr ((value & reginfo::csr::kCsrImmOpMask) == value) {
+    if constexpr ((value & register_info::csr::kCsrImmOpMask) == value) {
       WriteImm(value);
     } else {
       Write(value);
@@ -700,7 +742,7 @@ class WriteOnlyRegBase {
    */
   template <uint64_t mask>
   static void SetConst() {
-    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
+    if constexpr ((mask & register_info::csr::kCsrImmOpMask) == mask) {
       SetBitsImm(mask);
     } else {
       SetBits(mask);
@@ -713,7 +755,7 @@ class WriteOnlyRegBase {
    */
   template <uint64_t mask>
   static void ClearConst() {
-    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
+    if constexpr ((mask & register_info::csr::kCsrImmOpMask) == mask) {
       ClearBitsImm(mask);
     } else {
       ClearBits(mask);
@@ -751,36 +793,42 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   static __always_inline RegInfo::DataType ReadWrite(RegInfo::DataType value) {
     typename RegInfo::DataType old_value{};
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrw %0, sstatus, %1"
                        : "=r"(old_value)
                        : "r"(value)
                        :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrw %0, stvec, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrw %0, sip, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrw %0, sie, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrw %0, sip, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrw %0, sie, %1" : "=r"(old_value) : "r"(value) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrw %0, sscratch, %1"
                        : "=r"(old_value)
                        : "r"(value)
                        :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrw %0, sepc, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrw %0, scause, %1" : "=r"(old_value) : "r"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrw %0, stval, %1" : "=r"(old_value) : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrw %0, satp, %1" : "=r"(old_value) : "r"(value) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return old_value;
@@ -794,39 +842,45 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   static __always_inline RegInfo::DataType ReadWriteImm(const uint8_t value) {
     typename RegInfo::DataType old_value{};
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrwi %0, sstatus, %1"
                        : "=r"(old_value)
                        : "i"(value)
                        :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrwi %0, stvec, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrwi %0, sip, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrwi %0, sie, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrwi %0, sip, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrwi %0, sie, %1" : "=r"(old_value) : "i"(value) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrwi %0, sscratch, %1"
                        : "=r"(old_value)
                        : "i"(value)
                        :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrwi %0, sepc, %1" : "=r"(old_value) : "i"(value) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrwi %0, scause, %1"
                        : "=r"(old_value)
                        : "i"(value)
                        :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrwi %0, stval, %1" : "=r"(old_value) : "i"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrwi %0, satp, %1" : "=r"(old_value) : "i"(value) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return old_value;
@@ -839,7 +893,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   template <uint64_t value>
   static RegInfo::DataType ReadWriteConst() {
-    if constexpr ((value & reginfo::csr::kCsrImmOpMask) == value) {
+    if constexpr ((value & register_info::csr::kCsrImmOpMask) == value) {
       return ReadWriteRegBase<RegInfo>::ReadWriteImm(value);
     } else {
       return ReadWrite(value);
@@ -853,30 +907,36 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   static __always_inline RegInfo::DataType ReadSetBits(uint64_t mask) {
     typename RegInfo::DataType value{};
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrs %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrs %0, stvec, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrs %0, sip, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrs %0, sie, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrs %0, sip, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrs %0, sie, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrs %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrs %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrs %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrs %0, stval, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrs %0, satp, %1" : "=r"(value) : "r"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return value;
@@ -889,30 +949,36 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   static __always_inline RegInfo::DataType ReadSetBitsImm(const uint8_t mask) {
     typename RegInfo::DataType value{};
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrsi %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrsi %0, stvec, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrsi %0, sip, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrsi %0, sie, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrsi %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrsi %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrsi %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrsi %0, stval, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrsi %0, satp, %1" : "=r"(value) : "i"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return value;
@@ -925,7 +991,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   template <uint64_t mask>
   static RegInfo::DataType ReadSetBitsConst() {
-    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
+    if constexpr ((mask & register_info::csr::kCsrImmOpMask) == mask) {
       return ReadSetBitsImm(mask);
     } else {
       return ReadSetBits(mask);
@@ -939,30 +1005,36 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   static __always_inline RegInfo::DataType ReadClearBits(uint64_t mask) {
     typename RegInfo::DataType value{};
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrc %0, sstatus, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrc %0, stvec, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrc %0, sip, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrc %0, sie, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrc %0, sip, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrc %0, sie, %1" : "=r"(value) : "r"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrc %0, sscratch, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrc %0, sepc, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrc %0, scause, %1" : "=r"(value) : "r"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrc %0, stval, %1" : "=r"(value) : "r"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrc %0, satp, %1" : "=r"(value) : "r"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return value;
@@ -976,30 +1048,36 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
   static __always_inline RegInfo::DataType ReadClearBitsImm(
       const uint8_t mask) {
     typename RegInfo::DataType value{};
-    if constexpr (std::is_same<RegInfo, reginfo::csr::SstatusInfo>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::csr::SstatusInfo>::value) {
       __asm__ volatile("csrrci %0, sstatus, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvecInfo>::value) {
+                                      register_info::csr::StvecInfo>::value) {
       __asm__ volatile("csrrci %0, stvec, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SipInfo>::value) {
-      __asm__ volatile("csrrci %0, sip, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SieInfo>::value) {
-      __asm__ volatile("csrrci %0, sie, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::SscratchInfo>::value) {
+                                      register_info::csr::SipInfo>::value) {
+      __asm__ volatile("csrrci %0, sip, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SieInfo>::value) {
+      __asm__ volatile("csrrci %0, sie, %1" : "=r"(value) : "i"(mask) :);
+    } else if constexpr (std::is_same<
+                             RegInfo,
+                             register_info::csr::SscratchInfo>::value) {
       __asm__ volatile("csrrci %0, sscratch, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SepcInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SepcInfo>::value) {
       __asm__ volatile("csrrci %0, sepc, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::ScauseInfo>::value) {
+                                      register_info::csr::ScauseInfo>::value) {
       __asm__ volatile("csrrci %0, scause, %1" : "=r"(value) : "i"(mask) :);
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::csr::StvalInfo>::value) {
+                                      register_info::csr::StvalInfo>::value) {
       __asm__ volatile("csrrci %0, stval, %1" : "=r"(value) : "i"(mask) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::csr::SatpInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::csr::SatpInfo>::value) {
       __asm__ volatile("csrrci %0, satp, %1" : "=r"(value) : "i"(mask) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return value;
@@ -1012,7 +1090,7 @@ class ReadWriteRegBase : public ReadOnlyRegBase<RegInfo>,
    */
   template <uint64_t mask>
   static RegInfo::DataType ReadClearBitsConst() {
-    if constexpr ((mask & reginfo::csr::kCsrImmOpMask) == mask) {
+    if constexpr ((mask & register_info::csr::kCsrImmOpMask) == mask) {
       return WriteOnlyRegBase<RegInfo>::ReadClearBitsImm(mask);
     } else {
       return ReadClearBits(mask);
@@ -1080,7 +1158,7 @@ class WriteOnlyField {
    * 置位对应 Reg 的由 RegInfo 规定的指定位
    */
   static __always_inline void Set() {
-    if constexpr ((RegInfo::kBitMask & reginfo::csr::kCsrImmOpMask) ==
+    if constexpr ((RegInfo::kBitMask & register_info::csr::kCsrImmOpMask) ==
                   RegInfo::kBitMask) {
       Reg::SetBitsImm(RegInfo::kBitMask);
     } else {
@@ -1092,7 +1170,7 @@ class WriteOnlyField {
    * 清零对应 Reg 的由 RegInfo 规定的指定位
    */
   static __always_inline void Clear() {
-    if constexpr ((RegInfo::kBitMask & reginfo::csr::kCsrImmOpMask) ==
+    if constexpr ((RegInfo::kBitMask & register_info::csr::kCsrImmOpMask) ==
                   RegInfo::kBitMask) {
       Reg::ClearBitsImm(RegInfo::kBitMask);
     } else {
@@ -1147,7 +1225,7 @@ class ReadWriteField : public ReadOnlyField<Reg, RegInfo>,
 };
 
 // 第三部分：寄存器实例
-class Fp : public ReadWriteRegBase<reginfo::FpInfo> {
+class Fp : public ReadWriteRegBase<register_info::FpInfo> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Fp &fp) {
     printf("val: 0x%p", (void *)fp.Read());
@@ -1162,16 +1240,16 @@ struct AllXreg {
 
 namespace csr {
 
-class Sstatus : public ReadWriteRegBase<reginfo::csr::SstatusInfo> {
+class Sstatus : public ReadWriteRegBase<register_info::csr::SstatusInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SstatusInfo>,
-                 reginfo::csr::SstatusInfo::Sie>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SstatusInfo>,
+                 register_info::csr::SstatusInfo::Sie>
       sie;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SstatusInfo>,
-                 reginfo::csr::SstatusInfo::Spie>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SstatusInfo>,
+                 register_info::csr::SstatusInfo::Spie>
       spie;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SstatusInfo>,
-                 reginfo::csr::SstatusInfo::Spp>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SstatusInfo>,
+                 register_info::csr::SstatusInfo::Spp>
       spp;
 
   /// @name 构造/析构函数
@@ -1184,7 +1262,8 @@ class Sstatus : public ReadWriteRegBase<reginfo::csr::SstatusInfo> {
   virtual ~Sstatus() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sstatus &sstatus) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Sstatus &sstatus) {
     auto sie = sstatus.sie.Get();
     auto spie = sstatus.spie.Get();
     auto spp = sstatus.spp.Get();
@@ -1198,18 +1277,18 @@ class Sstatus : public ReadWriteRegBase<reginfo::csr::SstatusInfo> {
   }
 };
 
-class Stvec : public ReadWriteRegBase<reginfo::csr::StvecInfo> {
+class Stvec : public ReadWriteRegBase<register_info::csr::StvecInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::StvecInfo>,
-                 reginfo::csr::StvecInfo::Base>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::StvecInfo>,
+                 register_info::csr::StvecInfo::Base>
       base;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::StvecInfo>,
-                 reginfo::csr::StvecInfo::Mode>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::StvecInfo>,
+                 register_info::csr::StvecInfo::Mode>
       mode;
 
   void SetDirect(uint64_t addr) {
     base.Write(addr);
-    mode.Write(reginfo::csr::StvecInfo::kDirect);
+    mode.Write(register_info::csr::StvecInfo::kDirect);
   }
 
   /// @name 构造/析构函数
@@ -1226,22 +1305,23 @@ class Stvec : public ReadWriteRegBase<reginfo::csr::StvecInfo> {
     auto mode = stvec.mode.Get();
     auto base = stvec.base.Get();
     printf("val: 0x%p, mode: %s, base: 0x%lX", (void *)stvec.Read(),
-           (mode == reginfo::csr::StvecInfo::kDirect ? "Direct" : "Vectored"),
+           (mode == register_info::csr::StvecInfo::kDirect ? "Direct"
+                                                           : "Vectored"),
            base);
     return os;
   }
 };
 
-class Sip : public ReadWriteRegBase<reginfo::csr::SipInfo> {
+class Sip : public ReadWriteRegBase<register_info::csr::SipInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SipInfo>,
-                 reginfo::csr::SipInfo::Ssip>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SipInfo>,
+                 register_info::csr::SipInfo::Ssip>
       ssip;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SipInfo>,
-                 reginfo::csr::SipInfo::Stip>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SipInfo>,
+                 register_info::csr::SipInfo::Stip>
       stip;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SipInfo>,
-                 reginfo::csr::SipInfo::Seip>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SipInfo>,
+                 register_info::csr::SipInfo::Seip>
       seip;
 
   /// @name 构造/析构函数
@@ -1266,16 +1346,16 @@ class Sip : public ReadWriteRegBase<reginfo::csr::SipInfo> {
   }
 };
 
-class Sie : public ReadWriteRegBase<reginfo::csr::SieInfo> {
+class Sie : public ReadWriteRegBase<register_info::csr::SieInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SieInfo>,
-                 reginfo::csr::SieInfo::Ssie>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SieInfo>,
+                 register_info::csr::SieInfo::Ssie>
       ssie;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SieInfo>,
-                 reginfo::csr::SieInfo::Stie>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SieInfo>,
+                 register_info::csr::SieInfo::Stie>
       stie;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SieInfo>,
-                 reginfo::csr::SieInfo::Seie>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SieInfo>,
+                 register_info::csr::SieInfo::Seie>
       seie;
 
   /// @name 构造/析构函数
@@ -1300,7 +1380,7 @@ class Sie : public ReadWriteRegBase<reginfo::csr::SieInfo> {
   }
 };
 
-class Time : public ReadOnlyRegBase<reginfo::csr::TimeInfo> {
+class Time : public ReadOnlyRegBase<register_info::csr::TimeInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1318,7 +1398,7 @@ class Time : public ReadOnlyRegBase<reginfo::csr::TimeInfo> {
   }
 };
 
-class Cycle : public ReadOnlyRegBase<reginfo::csr::CycleInfo> {
+class Cycle : public ReadOnlyRegBase<register_info::csr::CycleInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1336,7 +1416,7 @@ class Cycle : public ReadOnlyRegBase<reginfo::csr::CycleInfo> {
   }
 };
 
-class Instret : public ReadOnlyRegBase<reginfo::csr::InstretInfo> {
+class Instret : public ReadOnlyRegBase<register_info::csr::InstretInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1348,13 +1428,14 @@ class Instret : public ReadOnlyRegBase<reginfo::csr::InstretInfo> {
   virtual ~Instret() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Instret &instret) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Instret &instret) {
     printf("val: 0x%p", (void *)instret.Read());
     return os;
   }
 };
 
-class Sscratch : public ReadWriteRegBase<reginfo::csr::SscratchInfo> {
+class Sscratch : public ReadWriteRegBase<register_info::csr::SscratchInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1366,13 +1447,14 @@ class Sscratch : public ReadWriteRegBase<reginfo::csr::SscratchInfo> {
   virtual ~Sscratch() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sscratch &sscratch) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Sscratch &sscratch) {
     printf("val: 0x%p", (void *)sscratch.Read());
     return os;
   }
 };
 
-class Sepc : public ReadWriteRegBase<reginfo::csr::SepcInfo> {
+class Sepc : public ReadWriteRegBase<register_info::csr::SepcInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1390,13 +1472,13 @@ class Sepc : public ReadWriteRegBase<reginfo::csr::SepcInfo> {
   }
 };
 
-class Scause : public ReadWriteRegBase<reginfo::csr::ScauseInfo> {
+class Scause : public ReadWriteRegBase<register_info::csr::ScauseInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::ScauseInfo>,
-                 reginfo::csr::ScauseInfo::Interrupt>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::ScauseInfo>,
+                 register_info::csr::ScauseInfo::Interrupt>
       interrupt;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::ScauseInfo>,
-                 reginfo::csr::ScauseInfo::ExceptionCode>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::ScauseInfo>,
+                 register_info::csr::ScauseInfo::ExceptionCode>
       exception_code;
 
   /// @name 构造/析构函数
@@ -1409,19 +1491,21 @@ class Scause : public ReadWriteRegBase<reginfo::csr::ScauseInfo> {
   virtual ~Scause() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Scause &scause) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Scause &scause) {
     auto exception_code = scause.exception_code.Get();
     auto interrupt = scause.interrupt.Get();
-    printf("val: 0x%p, exception_code: 0x%lX, interrupt: %s, name: %s",
-           (void *)scause.Read(), exception_code, interrupt ? "Yes" : "No",
-           interrupt
-               ? reginfo::csr::ScauseInfo::kInterruptNames[exception_code]
-               : reginfo::csr::ScauseInfo::kExceptionNames[exception_code]);
+    printf(
+        "val: 0x%p, exception_code: 0x%lX, interrupt: %s, name: %s",
+        (void *)scause.Read(), exception_code, interrupt ? "Yes" : "No",
+        interrupt
+            ? register_info::csr::ScauseInfo::kInterruptNames[exception_code]
+            : register_info::csr::ScauseInfo::kExceptionNames[exception_code]);
     return os;
   }
 };
 
-class Stval : public ReadWriteRegBase<reginfo::csr::StvalInfo> {
+class Stval : public ReadWriteRegBase<register_info::csr::StvalInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1439,16 +1523,16 @@ class Stval : public ReadWriteRegBase<reginfo::csr::StvalInfo> {
   }
 };
 
-class Satp : public ReadWriteRegBase<reginfo::csr::SatpInfo> {
+class Satp : public ReadWriteRegBase<register_info::csr::SatpInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SatpInfo>,
-                 reginfo::csr::SatpInfo::Ppn>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SatpInfo>,
+                 register_info::csr::SatpInfo::Ppn>
       ppn;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SatpInfo>,
-                 reginfo::csr::SatpInfo::Asid>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SatpInfo>,
+                 register_info::csr::SatpInfo::Asid>
       asid;
-  ReadWriteField<ReadWriteRegBase<reginfo::csr::SatpInfo>,
-                 reginfo::csr::SatpInfo::Mode>
+  ReadWriteField<ReadWriteRegBase<register_info::csr::SatpInfo>,
+                 register_info::csr::SatpInfo::Mode>
       mode;
 
   /// @name 构造/析构函数
@@ -1466,12 +1550,12 @@ class Satp : public ReadWriteRegBase<reginfo::csr::SatpInfo> {
     auto asid = satp.asid.Get();
     auto mode = satp.mode.Get();
     printf("val: 0x%p, ppn: 0x%lX, asid: 0x%X, mode: %s", (void *)satp.Read(),
-           ppn, asid, reginfo::csr::SatpInfo::kModeNames[mode]);
+           ppn, asid, register_info::csr::SatpInfo::kModeNames[mode]);
     return os;
   }
 };
 
-class Stimecmp : public ReadOnlyRegBase<reginfo::csr::StimecmpInfo> {
+class Stimecmp : public ReadOnlyRegBase<register_info::csr::StimecmpInfo> {
  public:
   /// @name 构造/析构函数
   /// @{
@@ -1483,7 +1567,8 @@ class Stimecmp : public ReadOnlyRegBase<reginfo::csr::StimecmpInfo> {
   virtual ~Stimecmp() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Stimecmp &stimecmp) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Stimecmp &stimecmp) {
     printf("val: 0x%p", (void *)stimecmp.Read());
     return os;
   }
@@ -1526,4 +1611,4 @@ class AllCsr {
 
 };  // namespace cpu
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_HPP_
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_CSR_HPP_

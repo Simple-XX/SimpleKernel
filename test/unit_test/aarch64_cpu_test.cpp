@@ -16,18 +16,18 @@
 
 #include <gtest/gtest.h>
 
-#include "aarch64/include/cpu.hpp"
+#include "aarch64/include/cpu/cpu.hpp"
 
 TEST(Aarch64RegInfoBaseTest, ValueTest) {
-  EXPECT_EQ(cpu::reginfo::RegInfoBase::kBitOffset, 0);
-  EXPECT_EQ(cpu::reginfo::RegInfoBase::kBitWidth, 64);
-  EXPECT_EQ(cpu::reginfo::RegInfoBase::kBitMask, 0xFFFFFFFFFFFFFFFF);
-  EXPECT_EQ(cpu::reginfo::RegInfoBase::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::register_info::RegInfoBase::kBitOffset, 0);
+  EXPECT_EQ(cpu::register_info::RegInfoBase::kBitWidth, 64);
+  EXPECT_EQ(cpu::register_info::RegInfoBase::kBitMask, 0xFFFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::register_info::RegInfoBase::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
 }
 
 TEST(Aarch64X29InfoTest, ValueTest) {
-  EXPECT_EQ(cpu::reginfo::X29Info::kBitOffset, 0);
-  EXPECT_EQ(cpu::reginfo::X29Info::kBitWidth, 64);
-  EXPECT_EQ(cpu::reginfo::X29Info::kBitMask, 0xFFFFFFFFFFFFFFFF);
-  EXPECT_EQ(cpu::reginfo::X29Info::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::register_info::X29Info::kBitOffset, 0);
+  EXPECT_EQ(cpu::register_info::X29Info::kBitWidth, 64);
+  EXPECT_EQ(cpu::register_info::X29Info::kBitMask, 0xFFFFFFFFFFFFFFFF);
+  EXPECT_EQ(cpu::register_info::X29Info::kAllSetMask, 0xFFFFFFFFFFFFFFFF);
 }

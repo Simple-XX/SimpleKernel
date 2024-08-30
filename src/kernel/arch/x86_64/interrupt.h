@@ -19,7 +19,7 @@
 
 #include <cstdint>
 
-#include "cpu.hpp"
+#include "cpu/cpu.hpp"
 #include "interrupt_base.h"
 #include "singleton.hpp"
 #include "sk_stdio.h"
@@ -57,10 +57,10 @@ class Interrupt final : public InterruptBase {
  private:
   /// 中断处理函数数组
   static InterruptFunc
-      interrupt_handlers[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
+      interrupt_handlers[cpu::register_info::IdtrInfo::kInterruptMaxCount];
 
-  static cpu::reginfo::IdtrInfo::Idt
-      idts[cpu::reginfo::IdtrInfo::kInterruptMaxCount];
+  static cpu::register_info::IdtrInfo::Idt
+      idts[cpu::register_info::IdtrInfo::kInterruptMaxCount];
 
   /**
    * @brief 初始化 idtr

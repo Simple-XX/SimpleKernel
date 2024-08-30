@@ -1,7 +1,7 @@
 
 /**
- * @file cpu.hpp
- * @brief x86_64 cpu 相关定义
+ * @file cr.hpp
+ * @brief x86_64 cr 相关定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2024-03-05
@@ -14,461 +14,26 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_HPP_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_HPP_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_CR_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_CR_HPP_
 
 #include <cstdint>
 #include <cstdlib>
 #include <type_traits>
 #include <typeinfo>
 
+#include "kernel_log.hpp"
 #include "sk_cstdio"
 #include "sk_iostream"
-#include "kernel_log.hpp"
 
 /**
- * x86_64 cpu 相关定义
+ * x86_64 cpu Control Registers 相关定义
  * @note 寄存器读写设计见 arch/README.md
- * @see sdm.pdf
- * Intel® 64 and IA-32 Architectures Software Developer’s Manual
- * Volume 3 (3A, 3B, 3C, & 3D): System Programming Guide
- * Order Number: 325384-083US
- * https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
  */
 namespace cpu {
-/**
- * @brief  读一个字节
- * @param  port           要读的端口
- * @return uint8_t         读取到的数据
- */
-static __always_inline uint8_t InByte(const uint32_t port) {
-  uint8_t data;
-  __asm__ volatile("inb %1, %0" : "=a"(data) : "dN"(port));
-  return data;
-}
-
-/**
- * @brief  读一个字
- * @param  port           要读的端口
- * @return uint16_t        读取到的数据
- */
-static __always_inline uint16_t InWord(const uint32_t port) {
-  uint16_t data;
-  __asm__ volatile("inw %1, %0" : "=a"(data) : "dN"(port));
-  return data;
-}
-
-/**
- * @brief  读一个双字
- * @param  port           要读的端口
- * @return uint32_t        读取到的数据
- */
-static __always_inline uint32_t InLong(const uint32_t port) {
-  uint32_t data;
-  __asm__ volatile("inl %1, %0" : "=a"(data) : "dN"(port));
-  return data;
-}
-
-/**
- * @brief  写一个字节
- * @param  port           要写的端口
- * @param  data           要写的数据
- */
-static __always_inline void OutByte(const uint32_t port, const uint8_t data) {
-  __asm__ volatile("outb %1, %0" : : "dN"(port), "a"(data));
-}
-
-/**
- * @brief  写一个字
- * @param  port           要写的端口
- * @param  data           要写的数据
- */
-static __always_inline void OutWord(const uint32_t port, const uint16_t data) {
-  __asm__ volatile("outw %1, %0" : : "dN"(port), "a"(data));
-}
-
-/**
- * @brief  写一个双字
- * @param  port           要写的端口
- * @param  data           要写的数据
- */
-static __always_inline void OutLong(const uint32_t port, const uint32_t data) {
-  __asm__ volatile("outl %1, %0" : : "dN"(port), "a"(data));
-}
-
-/// @name 端口
-static constexpr const uint32_t kCom1 = 0x3F8;
-/**
- * 串口定义
- */
-class Serial {
- public:
-  explicit Serial(uint32_t port) : port_(port) {
-    // Disable all interrupts
-    OutByte(port_ + 1, 0x00);
-    // Enable DLAB (set baud rate divisor)
-    OutByte(port_ + 3, 0x80);
-    // Set divisor to 3 (lo byte) 38400 baud
-    OutByte(port_ + 0, 0x03);
-    // (hi byte)
-    OutByte(port_ + 1, 0x00);
-    // 8 bits, no parity, one stop bit
-    OutByte(port_ + 3, 0x03);
-    // Enable FIFO, clear them, with 14-byte threshold
-    OutByte(port_ + 2, 0xC7);
-    // IRQs enabled, RTS/DSR set
-    OutByte(port_ + 4, 0x0B);
-    // Set in loopback mode, test the serial chip
-    OutByte(port_ + 4, 0x1E);
-    // Test serial chip (send byte 0xAE and check if serial returns same byte)
-    OutByte(port_ + 0, 0xAE);
-    // Check if serial is faulty (i.e: not same byte as sent)
-    if (InByte(port_ + 0) != 0xAE) {
-      asm("hlt");
-    }
-
-    // If serial is not faulty set it in normal operation mode (not-loopback
-    // with IRQs enabled and OUT#1 and OUT#2 bits enabled)
-    OutByte(port_ + 4, 0x0F);
-  }
-
-  ~Serial() = default;
-
-  /// @name 不使用的构造函数
-  /// @{
-  Serial() = delete;
-  Serial(const Serial &) = delete;
-  Serial(Serial &&) = delete;
-  auto operator=(const Serial &) -> Serial & = delete;
-  auto operator=(Serial &&) -> Serial & = delete;
-  /// @}
-
-  /**
-   * @brief  读一个字节
-   * @return uint8_t         读取到的数据
-   */
-  [[nodiscard]] auto Read() const -> uint8_t {
-    while (!SerialReceived()) {
-      ;
-    }
-    return InByte(port_);
-  }
-
-  /**
-   * @brief  写一个字节
-   * @param  c              要写的数据
-   */
-  void Write(uint8_t c) const {
-    while (!IsTransmitEmpty()) {
-      ;
-    }
-    OutByte(port_, c);
-  }
-
- private:
-  uint32_t port_;
-
-  /**
-   * @brief 串口是否接收到数据
-   * @return true
-   * @return false
-   */
-  [[nodiscard]] auto SerialReceived() const -> bool {
-    return InByte(port_ + 5) & 1;
-  }
-
-  /**
-   * @brief 串口是否可以发送数据
-   * @return true
-   * @return false
-   */
-  [[nodiscard]] auto IsTransmitEmpty() const -> bool {
-    return InByte(port_ + 5) & 0x20;
-  }
-};
-
-/**
- * 中断控制器(8259A)
- * @see https://wiki.osdev.org/8259_PIC
- * @note master 处理 8 个中断，slave 处理八个中断
- * @note 工作在 8086 模式下，中断处理完后需要通知 pic 重置 ISR 寄存器
- */
-class Pic {
- public:
-  /**
-   * 构造函数
-   * @param offset1 主片中断偏移，共 8 个
-   * @param offset2 从片中断偏移，共 8 个
-   */
-  explicit Pic(uint8_t offset1, uint8_t offset2)
-      : offset1_(offset1), offset2_(offset2) {
-    // 0001 0001
-    OutByte(kMasterCommand, kIcw1Init | kIcw1Icw4);
-    // 设置主片 IRQ 从 offset1_ 号中断开始
-    OutByte(kMasterData, offset1_);
-    // 设置主片 IR2 引脚连接从片
-    // 4: 0000 0100
-    OutByte(kMasterData, 4);
-    // 设置主片按照 8086 的方式工作
-    OutByte(kMasterData, kIcw48086);
-
-    OutByte(kSlaveCommand, kIcw1Init | kIcw1Icw4);
-    // 设置从片 IRQ 从 offset2_ 号中断开始
-    OutByte(kPic2Data, offset2_);
-    // 告诉从片输出引脚和主片 IR2 号相连
-    // 2: 0000 0010
-    OutByte(kPic2Data, 2);
-    // 设置从片按照 8086 的方式工作
-    OutByte(kPic2Data, kIcw48086);
-
-    // 关闭所有中断
-    OutByte(kMasterData, 0xFF);
-    OutByte(kPic2Data, 0xFF);
-  }
-
-  /// @name 构造/析构函数
-  /// @{
-  Pic() = delete;
-  Pic(const Pic &) = delete;
-  Pic(Pic &&) = delete;
-  auto operator=(const Pic &) -> Pic & = delete;
-  auto operator=(Pic &&) -> Pic & = delete;
-  ~Pic() = default;
-  /// @}
-
-  /**
-   * 开启 pic 的 no 中断
-   * @param no 中断号
-   */
-  void Enable(uint8_t no) {
-    uint8_t mask = 0;
-    if (no >= offset2_) {
-      mask = ((InByte(kPic2Data)) & (~(1 << (no % 8))));
-      OutByte(kPic2Data, mask);
-    } else {
-      mask = ((InByte(kMasterData)) & (~(1 << (no % 8))));
-      OutByte(kMasterData, mask);
-    }
-  }
-
-  /**
-   * 关闭 8259A 芯片的所有中断
-   */
-  void Disable() {
-    // 屏蔽所有中断
-    OutByte(kMasterData, 0xFF);
-    OutByte(kPic2Data, 0xFF);
-  }
-
-  /**
-   * 关闭 pic 的 no 中断
-   * @param no 中断号
-   */
-  void Disable(uint8_t no) {
-    uint8_t mask = 0;
-    if (no >= offset2_) {
-      mask = ((InByte(kPic2Data)) | (1 << (no % 8)));
-      OutByte(kPic2Data, mask);
-    } else {
-      mask = ((InByte(kMasterData)) | (1 << (no % 8)));
-      OutByte(kMasterData, mask);
-    }
-  }
-
-  /**
-   * 通知 pic no 中断处理完毕
-   * @param no 中断号
-   */
-  void Clear(uint8_t no) {
-    // 按照我们的设置，从 offset1_ 号中断起为用户自定义中断
-    // 因为单片的 Intel 8259A 芯片只能处理 8 级中断
-    // 故大于等于 offset2_ 的中断号是由从片处理的
-    if (no >= offset2_) {
-      // 发送重设信号给从片
-      OutByte(kSlaveCommand, kEoi);
-    } else {
-      // 发送重设信号给主片
-      OutByte(kMasterCommand, kEoi);
-    }
-  }
-
-  /**
-   * Returns the combined value of the cascaded PICs irq request register
-   * @return uint16_t 值
-   */
-  uint16_t GetIrr() { return GetIrqReg(kOcw3ReadIrr); }
-
-  /**
-   * Returns the combined value of the cascaded PICs in-service register
-   * @return uint16_t 值
-   */
-  uint16_t GetIsr() { return GetIrqReg(kOcw3ReadIsr); }
-
- private:
-  uint8_t offset1_;
-  uint8_t offset2_;
-
-  /// Master (IRQs 0-7)
-  static constexpr const uint8_t kMaster = 0x20;
-  /// Slave  (IRQs 8-15)
-  static constexpr const uint8_t kSlave = 0xA0;
-  static constexpr const uint8_t kMasterCommand = kMaster;
-  static constexpr const uint8_t kMasterData = kMaster + 1;
-  static constexpr const uint8_t kSlaveCommand = kSlave;
-  static constexpr const uint8_t kPic2Data = kSlave + 1;
-  /// End-of-interrupt command code
-  static constexpr const uint8_t kEoi = 0x20;
-
-  /// Indicates that ICW4 will be present
-  static constexpr const uint8_t kIcw1Icw4 = 0x01;
-  /// Single (cascade) mode
-  static constexpr const uint8_t kIcw1Single = 0x02;
-  /// Call address interval 4 (8)
-  static constexpr const uint8_t kIcw1Interval4 = 0x04;
-  /// Level triggered (edge) mode
-  static constexpr const uint8_t kIcw1Level = 0x08;
-  /// Initialization - required!
-  static constexpr const uint8_t kIcw1Init = 0x10;
-
-  /// OCW3 irq ready next CMD read
-  static constexpr const uint8_t kOcw3ReadIrr = 0x0A;
-  /// OCW3 irq service next CMD read
-  static constexpr const uint8_t kOcw3ReadIsr = 0x0B;
-
-  /// 8086/88 (MCS-80/85) mode
-  static constexpr const uint8_t kIcw48086 = 0x01;
-  /// Auto (normal) EOI
-  static constexpr const uint8_t kIcw4Auto = 0x02;
-  /// Buffered mode/slave
-  static constexpr const uint8_t kIcw4BufferSlave = 0x08;
-  /// Buffered mode/master
-  static constexpr const uint8_t kIcw4BufferMaster = 0x0C;
-  /// Special fully nested (not)
-  static constexpr const uint8_t kIcw4Sfnm = 0x10;
-
-  /**
-   * 获取中断请求寄存器的值
-   * @note OCW3 to PIC CMD to get the register values.  PIC2 is chained, and
-   * represents IRQs 8-15.  PIC1 is IRQs 0-7, with 2 being the chain
-   * @param ocw3 OCW3
-   * @return uint16_t 值
-   */
-  uint16_t GetIrqReg(uint8_t ocw3) {
-    OutByte(kMasterCommand, ocw3);
-    OutByte(kSlaveCommand, ocw3);
-    return (InByte(kSlaveCommand) << 8) | InByte(kMasterCommand);
-  }
-};
-
-/**
- * 时钟控制器(8253/8254)
- * @see https://en.wikipedia.org/wiki/Intel_8253
- * @see https://wiki.osdev.org/Programmable_Interval_Timer
- */
-class Pit {
- public:
-  /**
-   * 构造函数
-   * @param frequency 每秒中断次数
-   */
-  explicit Pit(uint16_t frequency) {
-    uint16_t divisor = kMaxFrequency / frequency;
-
-    // 设置 8253/8254 芯片工作在模式 3 下
-    OutByte(kCommand, (uint8_t)kChannel0 | (uint8_t)kHighAndLow |
-                          (uint8_t)kSquareWaveGenerator);
-
-    // 分别写入低字节和高字节
-    OutByte(kChannel0Data, divisor & 0xFF);
-    OutByte(kChannel0Data, divisor >> 8);
-  }
-
-  /// @name 构造/析构函数
-  /// @{
-  Pit() = delete;
-  Pit(const Pit &) = delete;
-  Pit(Pit &&) = delete;
-  auto operator=(const Pit &) -> Pit & = delete;
-  auto operator=(Pit &&) -> Pit & = delete;
-  ~Pit() = default;
-  /// @}
-
-  /**
-   * 计数器更新
-   */
-  void Ticks() { ticks_ += 1; }
-
-  /**
-   * 获取时钟中断次数
-   * @return size_t 时钟中断次数
-   */
-  size_t GetTicks() const { return ticks_; }
-
- private:
-  /// 最大频率
-  static constexpr const size_t kMaxFrequency = 1193180;
-  /// 通道 0 数据端口
-  static constexpr const size_t kChannel0Data = 0x40;
-  /// 模式/命令端口
-  static constexpr const size_t kCommand = 0x43;
-
-  /**
-   * Bits         Usage
-   * 6 and 7      Select channel :
-   *                 0 0 = Channel 0
-   *                 0 1 = Channel 1
-   *                 1 0 = Channel 2
-   *                 1 1 = Read-back command (8254 only)
-   */
-  enum Channel {
-    kChannel0 = 0x0,
-    kChannel1 = 0x40,
-    kChannel2 = 0x80,
-  };
-
-  /**
-   * Bits         Usage
-   * 4 and 5      Access mode :
-   *                 0 0 = Latch count value command
-   *                 0 1 = Access mode: lobyte only
-   *                 1 0 = Access mode: hibyte only
-   *                 1 1 = Access mode: lobyte/hibyte
-   */
-  enum Access {
-    kLatchCount = 0x0,
-    kLowOnly = 0x10,
-    kHighOnly = 0x20,
-    kHighAndLow = 0x30,
-  };
-
-  /**
-   * Bits         Usage
-   * 1 to 3       Operating mode :
-   *                 0 0 0 = Mode 0 (interrupt on terminal count)
-   *                 0 0 1 = Mode 1 (hardware re-triggerable one-shot)
-   *                 0 1 0 = Mode 2 (rate generator)
-   *                 0 1 1 = Mode 3 (square wave generator)
-   *                 1 0 0 = Mode 4 (software triggered strobe)
-   *                 1 0 1 = Mode 5 (hardware triggered strobe)
-   *                 1 1 0 = Mode 2 (rate generator, same as 010b)
-   *                 1 1 1 = Mode 3 (square wave generator, same as 011b)
-   * 0            BCD/Binary mode: 0 = 16-bit binary, 1 = four-digit BCD
-   */
-  enum Mode {
-    kInterruptOnTerminalCount = 0x0,
-    kHardwareRetriggerableOneShot = 0x2,
-    kRateGenerator = 0x4,
-    kSquareWaveGenerator = 0x6,
-    kSoftwareTriggeredStrobe = 0x8,
-    kHardwareTriggeredStrobe = 0xA,
-  };
-
-  /// 计数器
-  volatile size_t ticks_ = 0;
-};
 
 // 第一部分：寄存器定义
-namespace reginfo {
+namespace register_info {
 
 struct RegInfoBase {
   /// 寄存器数据类型
@@ -1188,7 +753,7 @@ struct GsInfo : public SegmentSelector {};
 
 };  // namespace segment_register
 
-};  // namespace reginfo
+};  // namespace register_info
 
 // 第二部分：读/写模版实现
 namespace {
@@ -1215,63 +780,75 @@ class ReadOnlyRegBase {
    */
   static __always_inline RegInfo::DataType Read() {
     typename RegInfo::DataType value{};
-    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::RbpInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::EferInfo>::value) {
       uint32_t low{};
       uint32_t high{};
       __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(0xC0000080) :);
       value = ((uint64_t)high << 32) | low;
-    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::RflagsInfo>::value) {
       __asm__ volatile("pushfq; popq %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::GdtrInfo>::value) {
       __asm__ volatile("sgdt %0" : "=m"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::LdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::IdtrInfo>::value) {
       __asm__ volatile("sidt %0" : "=m"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, register_info::TrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr0Info>::value) {
       __asm__ volatile("mov %%cr0, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr2Info>::value) {
       __asm__ volatile("mov %%cr2, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr3Info>::value) {
       __asm__ volatile("mov %%cr3, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr4Info>::value) {
       __asm__ volatile("mov %%cr4, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr8Info>::value) {
       __asm__ volatile("mov %%cr8, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::CpuidInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::CpuidInfo>::value) {
       __asm__ volatile("mov %%rbp, %0" : "=r"(value) : :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      log::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::Xcr0Info>::value) {
+      klog::Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::CsInfo>::value) {
+                             register_info::segment_register::CsInfo>::value) {
       __asm__ volatile("mov %%cs, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::SsInfo>::value) {
+                             register_info::segment_register::SsInfo>::value) {
       __asm__ volatile("mov %%ss, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::DsInfo>::value) {
+                             register_info::segment_register::DsInfo>::value) {
       __asm__ volatile("mov %%ds, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::EsInfo>::value) {
+                             register_info::segment_register::EsInfo>::value) {
       __asm__ volatile("mov %%es, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::FsInfo>::value) {
+                             register_info::segment_register::FsInfo>::value) {
       __asm__ volatile("mov %%fs, %0" : "=r"(value) : :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::GsInfo>::value) {
+                             register_info::segment_register::GsInfo>::value) {
       __asm__ volatile("mov %%gs, %0" : "=r"(value) : :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
     return value;
@@ -1305,37 +882,48 @@ class WriteOnlyRegBase {
    * @param value 要写的值
    */
   static __always_inline void Write(RegInfo::DataType value) {
-    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::RbpInfo>::value) {
       __asm__ volatile("mov %0, %%rbp" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::EferInfo>::value) {
       uint32_t low = value & 0xFFFFFFFF;
       uint32_t high = value >> 32;
       __asm__ volatile("wrmsr" : : "c"(0xC0000080), "a"(low), "d"(high) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::RflagsInfo>::value) {
       __asm__ volatile("pushq %0; popfq" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::GdtrInfo>::value) {
       __asm__ volatile("lgdt %0" : : "m"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::LdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::IdtrInfo>::value) {
       __asm__ volatile("lidt %0" : : "m"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo, register_info::TrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr0Info>::value) {
       __asm__ volatile("mov %0, %%cr0" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr2Info>::value) {
       __asm__ volatile("mov %0, %%cr2" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr3Info>::value) {
       __asm__ volatile("mov %0, %%cr3" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr4Info>::value) {
       __asm__ volatile("mov %0, %%cr4" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr8Info>::value) {
       __asm__ volatile("mov %0, %%cr8" : : "r"(value) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      log::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::Xcr0Info>::value) {
+      klog::Err("TODO\n");
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::CsInfo>::value) {
+                             register_info::segment_register::CsInfo>::value) {
       auto JumpFunction = [=](uint16_t value) {
         __asm__ volatile(
             "push %0\n\t"
@@ -1349,26 +937,26 @@ class WriteOnlyRegBase {
       JumpFunction(value);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::SsInfo>::value) {
+                             register_info::segment_register::SsInfo>::value) {
       __asm__ volatile("mov %0, %%ss" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::DsInfo>::value) {
+                             register_info::segment_register::DsInfo>::value) {
       __asm__ volatile("mov %0, %%ds" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::EsInfo>::value) {
+                             register_info::segment_register::EsInfo>::value) {
       __asm__ volatile("mov %0, %%es" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::FsInfo>::value) {
+                             register_info::segment_register::FsInfo>::value) {
       __asm__ volatile("mov %0, %%fs" : : "r"(value) :);
     } else if constexpr (std::is_same<
                              RegInfo,
-                             reginfo::segment_register::GsInfo>::value) {
+                             register_info::segment_register::GsInfo>::value) {
       __asm__ volatile("mov %0, %%gs" : : "r"(value) :);
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -1378,17 +966,19 @@ class WriteOnlyRegBase {
    * @param offset 位偏移
    */
   static __always_inline void SetBits(uint64_t offset) {
-    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::RbpInfo>::value) {
       __asm__ volatile("bts %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::EferInfo>::value) {
       uint32_t low{};
       uint32_t high{};
       __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(0xC0000080) :);
       uint64_t value = ((uint64_t)high << 32) | low;
       value |= (1ULL << offset);
       Write(value);
-    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
-      if (offset == reginfo::RflagsInfo::If::kBitOffset) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::RflagsInfo>::value) {
+      if (offset == register_info::RflagsInfo::If::kBitOffset) {
         __asm__ volatile("sti");
       } else {
         typename RegInfo::DataType old_value = 0;
@@ -1396,28 +986,37 @@ class WriteOnlyRegBase {
         auto new_value = old_value | (1 << offset);
         Write(new_value);
       }
-    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::GdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::LdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::IdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo, register_info::TrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr0Info>::value) {
       __asm__ volatile("bts %%cr0, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr2Info>::value) {
       __asm__ volatile("bts %%cr2, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr3Info>::value) {
       __asm__ volatile("bts %%cr3, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr4Info>::value) {
       __asm__ volatile("bts %%cr4, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr8Info>::value) {
       __asm__ volatile("bts %%cr8, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      log::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::Xcr0Info>::value) {
+      klog::Err("TODO\n");
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -1427,17 +1026,19 @@ class WriteOnlyRegBase {
    * @param offset 位偏移
    */
   static __always_inline void ClearBits(uint64_t offset) {
-    if constexpr (std::is_same<RegInfo, reginfo::RbpInfo>::value) {
+    if constexpr (std::is_same<RegInfo, register_info::RbpInfo>::value) {
       __asm__ volatile("btr %%rbp, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::EferInfo>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::EferInfo>::value) {
       uint32_t low{};
       uint32_t high{};
       __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(0xC0000080) :);
       uint64_t value = ((uint64_t)high << 32) | low;
       value &= ~(1ULL << offset);
       Write(value);
-    } else if constexpr (std::is_same<RegInfo, reginfo::RflagsInfo>::value) {
-      if (offset == reginfo::RflagsInfo::If::kBitOffset) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::RflagsInfo>::value) {
+      if (offset == register_info::RflagsInfo::If::kBitOffset) {
         __asm__ volatile("cli");
       } else {
         typename RegInfo::DataType old_value = 0;
@@ -1445,28 +1046,37 @@ class WriteOnlyRegBase {
         auto new_value = old_value & (~(1ULL << offset));
         Write(new_value);
       }
-    } else if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::LdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::IdtrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::TrInfo>::value) {
-      log::Err("TODO\n");
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr0Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::GdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::LdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::IdtrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo, register_info::TrInfo>::value) {
+      klog::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr0Info>::value) {
       __asm__ volatile("btr %%cr0, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr2Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr2Info>::value) {
       __asm__ volatile("btr %%cr2, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr3Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr3Info>::value) {
       __asm__ volatile("btr %%cr3, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr4Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr4Info>::value) {
       __asm__ volatile("btr %%cr4, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::cr::Cr8Info>::value) {
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::cr::Cr8Info>::value) {
       __asm__ volatile("btr %%cr8, %0" : : "r"(offset) :);
-    } else if constexpr (std::is_same<RegInfo, reginfo::Xcr0Info>::value) {
-      log::Err("TODO\n");
+    } else if constexpr (std::is_same<RegInfo,
+                                      register_info::Xcr0Info>::value) {
+      klog::Err("TODO\n");
     } else {
-      log::Err("No Type\n");
+      klog::Err("No Type\n");
       throw;
     }
   }
@@ -1552,16 +1162,17 @@ class ReadOnlyField {
    * @return RegInfo::DataType 指定位值的信息
    */
   static __always_inline RegInfo::DataType Get() {
-    if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo::Limit>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::GdtrInfo::Limit>::value) {
       return Reg::Read().limit;
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::GdtrInfo::Base>::value) {
+                                      register_info::GdtrInfo::Base>::value) {
       return Reg::Read().base;
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::IdtrInfo::Limit>::value) {
+                                      register_info::IdtrInfo::Limit>::value) {
       return Reg::Read().limit;
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::IdtrInfo::Base>::value) {
+                                      register_info::IdtrInfo::Base>::value) {
       return Reg::Read().base;
     } else {
       return (typename RegInfo::DataType)((Reg::Read() & RegInfo::kBitMask) >>
@@ -1575,16 +1186,17 @@ class ReadOnlyField {
    * @return RegInfo::DataType 指定位值的信息
    */
   static __always_inline RegInfo::DataType Get(RegInfo::DataType value) {
-    if constexpr (std::is_same<RegInfo, reginfo::GdtrInfo::Limit>::value) {
+    if constexpr (std::is_same<RegInfo,
+                               register_info::GdtrInfo::Limit>::value) {
       return value;
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::GdtrInfo::Base>::value) {
+                                      register_info::GdtrInfo::Base>::value) {
       return value;
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::IdtrInfo::Limit>::value) {
+                                      register_info::IdtrInfo::Limit>::value) {
       return value;
     } else if constexpr (std::is_same<RegInfo,
-                                      reginfo::IdtrInfo::Base>::value) {
+                                      register_info::IdtrInfo::Base>::value) {
       return value;
     } else {
       return (typename RegInfo::DataType)((value & RegInfo::kBitMask) >>
@@ -1668,7 +1280,7 @@ class ReadWriteField : public ReadOnlyField<Reg, RegInfo>,
 };
 
 // 第三部分：寄存器实例
-class Rbp : public ReadWriteRegBase<reginfo::RbpInfo> {
+class Rbp : public ReadWriteRegBase<register_info::RbpInfo> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Rbp &rbp) {
     printf("val: 0x%p", (void *)rbp.Read());
@@ -1676,15 +1288,19 @@ class Rbp : public ReadWriteRegBase<reginfo::RbpInfo> {
   }
 };
 
-class Efer : public ReadWriteRegBase<reginfo::EferInfo> {
+class Efer : public ReadWriteRegBase<register_info::EferInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Sce>
+  ReadWriteField<ReadWriteRegBase<register_info::EferInfo>,
+                 register_info::EferInfo::Sce>
       sce;
-  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Lme>
+  ReadWriteField<ReadWriteRegBase<register_info::EferInfo>,
+                 register_info::EferInfo::Lme>
       lme;
-  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Lma>
+  ReadWriteField<ReadWriteRegBase<register_info::EferInfo>,
+                 register_info::EferInfo::Lma>
       lma;
-  ReadWriteField<ReadWriteRegBase<reginfo::EferInfo>, reginfo::EferInfo::Nxe>
+  ReadWriteField<ReadWriteRegBase<register_info::EferInfo>,
+                 register_info::EferInfo::Nxe>
       nxe;
 
   /// @name 构造/析构函数
@@ -1713,9 +1329,10 @@ class Efer : public ReadWriteRegBase<reginfo::EferInfo> {
   }
 };
 
-class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
+class Rflags : public ReadWriteRegBase<register_info::RflagsInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::RflagsInfo>, reginfo::RflagsInfo::If>
+  ReadWriteField<ReadWriteRegBase<register_info::RflagsInfo>,
+                 register_info::RflagsInfo::If>
       interrupt_enable_flag;
 
   /// @name 构造/析构函数
@@ -1737,11 +1354,13 @@ class Rflags : public ReadWriteRegBase<reginfo::RflagsInfo> {
   }
 };
 
-class Gdtr : public ReadWriteRegBase<reginfo::GdtrInfo> {
+class Gdtr : public ReadWriteRegBase<register_info::GdtrInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::GdtrInfo>, reginfo::GdtrInfo::Limit>
+  ReadWriteField<ReadWriteRegBase<register_info::GdtrInfo>,
+                 register_info::GdtrInfo::Limit>
       limit;
-  ReadWriteField<ReadWriteRegBase<reginfo::GdtrInfo>, reginfo::GdtrInfo::Base>
+  ReadWriteField<ReadWriteRegBase<register_info::GdtrInfo>,
+                 register_info::GdtrInfo::Base>
       base;
 
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Gdtr &gdtr) {
@@ -1751,7 +1370,7 @@ class Gdtr : public ReadWriteRegBase<reginfo::GdtrInfo> {
   }
 };
 
-class Ldtr : public ReadWriteRegBase<reginfo::LdtrInfo> {
+class Ldtr : public ReadWriteRegBase<register_info::LdtrInfo> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Ldtr &ldtr) {
     printf("val: 0x%p", (void *)ldtr.Read());
@@ -1759,11 +1378,13 @@ class Ldtr : public ReadWriteRegBase<reginfo::LdtrInfo> {
   }
 };
 
-class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
+class Idtr : public ReadWriteRegBase<register_info::IdtrInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::IdtrInfo>, reginfo::IdtrInfo::Limit>
+  ReadWriteField<ReadWriteRegBase<register_info::IdtrInfo>,
+                 register_info::IdtrInfo::Limit>
       limit;
-  ReadWriteField<ReadWriteRegBase<reginfo::IdtrInfo>, reginfo::IdtrInfo::Base>
+  ReadWriteField<ReadWriteRegBase<register_info::IdtrInfo>,
+                 register_info::IdtrInfo::Base>
       base;
 
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Idtr &idtr) {
@@ -1773,7 +1394,7 @@ class Idtr : public ReadWriteRegBase<reginfo::IdtrInfo> {
   }
 };
 
-class Tr : public ReadWriteRegBase<reginfo::TrInfo> {
+class Tr : public ReadWriteRegBase<register_info::TrInfo> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Tr &tr) {
     printf("val: 0x%p", (void *)tr.Read());
@@ -1783,13 +1404,13 @@ class Tr : public ReadWriteRegBase<reginfo::TrInfo> {
 
 namespace cr {
 
-class Cr0 : public ReadWriteRegBase<reginfo::cr::Cr0Info> {
+class Cr0 : public ReadWriteRegBase<register_info::cr::Cr0Info> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr0Info>,
-                 reginfo::cr::Cr0Info::Pe>
+  ReadWriteField<ReadWriteRegBase<register_info::cr::Cr0Info>,
+                 register_info::cr::Cr0Info::Pe>
       pe;
-  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr0Info>,
-                 reginfo::cr::Cr0Info::Pg>
+  ReadWriteField<ReadWriteRegBase<register_info::cr::Cr0Info>,
+                 register_info::cr::Cr0Info::Pg>
       pg;
 
   /// @name 构造/析构函数
@@ -1814,7 +1435,7 @@ class Cr0 : public ReadWriteRegBase<reginfo::cr::Cr0Info> {
   }
 };
 
-class Cr2 : public ReadWriteRegBase<reginfo::cr::Cr2Info> {
+class Cr2 : public ReadWriteRegBase<register_info::cr::Cr2Info> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cr2 &cr2) {
     printf("val: 0x%p", (void *)cr2.Read());
@@ -1822,16 +1443,16 @@ class Cr2 : public ReadWriteRegBase<reginfo::cr::Cr2Info> {
   }
 };
 
-class Cr3 : public ReadWriteRegBase<reginfo::cr::Cr3Info> {
+class Cr3 : public ReadWriteRegBase<register_info::cr::Cr3Info> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr3Info>,
-                 reginfo::cr::Cr3Info::Pwt>
+  ReadWriteField<ReadWriteRegBase<register_info::cr::Cr3Info>,
+                 register_info::cr::Cr3Info::Pwt>
       pwt;
-  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr3Info>,
-                 reginfo::cr::Cr3Info::Pcd>
+  ReadWriteField<ReadWriteRegBase<register_info::cr::Cr3Info>,
+                 register_info::cr::Cr3Info::Pcd>
       pcd;
-  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr3Info>,
-                 reginfo::cr::Cr3Info::PageDirectoryBase>
+  ReadWriteField<ReadWriteRegBase<register_info::cr::Cr3Info>,
+                 register_info::cr::Cr3Info::PageDirectoryBase>
       page_directory_base;
 
   /// @name 构造/析构函数
@@ -1855,10 +1476,10 @@ class Cr3 : public ReadWriteRegBase<reginfo::cr::Cr3Info> {
   }
 };
 
-class Cr4 : public ReadWriteRegBase<reginfo::cr::Cr4Info> {
+class Cr4 : public ReadWriteRegBase<register_info::cr::Cr4Info> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::cr::Cr4Info>,
-                 reginfo::cr::Cr4Info::Pae>
+  ReadWriteField<ReadWriteRegBase<register_info::cr::Cr4Info>,
+                 register_info::cr::Cr4Info::Pae>
       pae;
 
   /// @name 构造/析构函数
@@ -1879,7 +1500,7 @@ class Cr4 : public ReadWriteRegBase<reginfo::cr::Cr4Info> {
   }
 };
 
-class Cr8 : public ReadWriteRegBase<reginfo::cr::Cr8Info> {
+class Cr8 : public ReadWriteRegBase<register_info::cr::Cr8Info> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cr8 &cr8) {
     printf("val: 0x%p", (void *)cr8.Read());
@@ -1889,7 +1510,7 @@ class Cr8 : public ReadWriteRegBase<reginfo::cr::Cr8Info> {
 
 };  // namespace cr
 
-class Cpuid : public ReadOnlyRegBase<reginfo::CpuidInfo> {
+class Cpuid : public ReadOnlyRegBase<register_info::CpuidInfo> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Cpuid &cpuid) {
     printf("val: 0x%p", (void *)cpuid.Read());
@@ -1897,7 +1518,7 @@ class Cpuid : public ReadOnlyRegBase<reginfo::CpuidInfo> {
   }
 };
 
-class Xcr0 : public ReadWriteRegBase<reginfo::Xcr0Info> {
+class Xcr0 : public ReadWriteRegBase<register_info::Xcr0Info> {
  public:
   friend sk_std::ostream &operator<<(sk_std::ostream &os, const Xcr0 &xcr0) {
     printf("val: 0x%p", (void *)xcr0.Read());
@@ -1906,18 +1527,18 @@ class Xcr0 : public ReadWriteRegBase<reginfo::Xcr0Info> {
 };
 
 namespace segment_register {
-class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
+class Cs : public ReadWriteRegBase<register_info::segment_register::CsInfo> {
  public:
-  ReadOnlyField<ReadWriteRegBase<reginfo::segment_register::CsInfo>,
-                reginfo::segment_register::CsInfo::Rpl>
+  ReadOnlyField<ReadWriteRegBase<register_info::segment_register::CsInfo>,
+                register_info::segment_register::CsInfo::Rpl>
       rpl;
 
-  ReadOnlyField<ReadWriteRegBase<reginfo::segment_register::CsInfo>,
-                reginfo::segment_register::CsInfo::Ti>
+  ReadOnlyField<ReadWriteRegBase<register_info::segment_register::CsInfo>,
+                register_info::segment_register::CsInfo::Ti>
       ti;
 
-  ReadOnlyField<ReadWriteRegBase<reginfo::segment_register::CsInfo>,
-                reginfo::segment_register::CsInfo::Index>
+  ReadOnlyField<ReadWriteRegBase<register_info::segment_register::CsInfo>,
+                register_info::segment_register::CsInfo::Index>
       index;
 
   /// @name 构造/析构函数
@@ -1941,18 +1562,18 @@ class Cs : public ReadWriteRegBase<reginfo::segment_register::CsInfo> {
   }
 };
 
-class Ss : public ReadWriteRegBase<reginfo::segment_register::SsInfo> {
+class Ss : public ReadWriteRegBase<register_info::segment_register::SsInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::SsInfo>,
-                 reginfo::segment_register::SsInfo::Rpl>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::SsInfo>,
+                 register_info::segment_register::SsInfo::Rpl>
       rpl;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::SsInfo>,
-                 reginfo::segment_register::SsInfo::Ti>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::SsInfo>,
+                 register_info::segment_register::SsInfo::Ti>
       ti;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::SsInfo>,
-                 reginfo::segment_register::SsInfo::Index>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::SsInfo>,
+                 register_info::segment_register::SsInfo::Index>
       index;
 
   /// @name 构造/析构函数
@@ -1976,18 +1597,18 @@ class Ss : public ReadWriteRegBase<reginfo::segment_register::SsInfo> {
   }
 };
 
-class Ds : public ReadWriteRegBase<reginfo::segment_register::DsInfo> {
+class Ds : public ReadWriteRegBase<register_info::segment_register::DsInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::DsInfo>,
-                 reginfo::segment_register::DsInfo::Rpl>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::DsInfo>,
+                 register_info::segment_register::DsInfo::Rpl>
       rpl;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::DsInfo>,
-                 reginfo::segment_register::DsInfo::Ti>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::DsInfo>,
+                 register_info::segment_register::DsInfo::Ti>
       ti;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::DsInfo>,
-                 reginfo::segment_register::DsInfo::Index>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::DsInfo>,
+                 register_info::segment_register::DsInfo::Index>
       index;
 
   /// @name 构造/析构函数
@@ -2011,18 +1632,18 @@ class Ds : public ReadWriteRegBase<reginfo::segment_register::DsInfo> {
   }
 };
 
-class Es : public ReadWriteRegBase<reginfo::segment_register::EsInfo> {
+class Es : public ReadWriteRegBase<register_info::segment_register::EsInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::EsInfo>,
-                 reginfo::segment_register::EsInfo::Rpl>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::EsInfo>,
+                 register_info::segment_register::EsInfo::Rpl>
       rpl;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::EsInfo>,
-                 reginfo::segment_register::EsInfo::Ti>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::EsInfo>,
+                 register_info::segment_register::EsInfo::Ti>
       ti;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::EsInfo>,
-                 reginfo::segment_register::EsInfo::Index>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::EsInfo>,
+                 register_info::segment_register::EsInfo::Index>
       index;
 
   /// @name 构造/析构函数
@@ -2046,18 +1667,18 @@ class Es : public ReadWriteRegBase<reginfo::segment_register::EsInfo> {
   }
 };
 
-class Fs : public ReadWriteRegBase<reginfo::segment_register::FsInfo> {
+class Fs : public ReadWriteRegBase<register_info::segment_register::FsInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::FsInfo>,
-                 reginfo::segment_register::FsInfo::Rpl>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::FsInfo>,
+                 register_info::segment_register::FsInfo::Rpl>
       rpl;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::FsInfo>,
-                 reginfo::segment_register::FsInfo::Ti>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::FsInfo>,
+                 register_info::segment_register::FsInfo::Ti>
       ti;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::FsInfo>,
-                 reginfo::segment_register::FsInfo::Index>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::FsInfo>,
+                 register_info::segment_register::FsInfo::Index>
       index;
 
   /// @name 构造/析构函数
@@ -2081,18 +1702,18 @@ class Fs : public ReadWriteRegBase<reginfo::segment_register::FsInfo> {
   }
 };
 
-class Gs : public ReadWriteRegBase<reginfo::segment_register::GsInfo> {
+class Gs : public ReadWriteRegBase<register_info::segment_register::GsInfo> {
  public:
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::GsInfo>,
-                 reginfo::segment_register::GsInfo::Rpl>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::GsInfo>,
+                 register_info::segment_register::GsInfo::Rpl>
       rpl;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::GsInfo>,
-                 reginfo::segment_register::GsInfo::Ti>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::GsInfo>,
+                 register_info::segment_register::GsInfo::Ti>
       ti;
 
-  ReadWriteField<ReadWriteRegBase<reginfo::segment_register::GsInfo>,
-                 reginfo::segment_register::GsInfo::Index>
+  ReadWriteField<ReadWriteRegBase<register_info::segment_register::GsInfo>,
+                 register_info::segment_register::GsInfo::Index>
       index;
 
   /// @name 构造/析构函数
@@ -2146,54 +1767,10 @@ struct AllCr {
 
 };  // namespace
 
-/// 中断上下文，由 cpu 自动压入，无错误码
-struct InterruptContext {
-  uint64_t rip;
-  uint64_t cs;
-  uint64_t rflags;
-  uint64_t rsp;
-  uint64_t ss;
-
-  friend sk_std::ostream &operator<<(
-      sk_std::ostream &os, const InterruptContext &interrupt_context) {
-    printf("rip: 0x%lX\n", interrupt_context.rip);
-    printf("cs: 0x%lX\n", interrupt_context.cs);
-    printf("rflags: 0x%lX\n", interrupt_context.rflags);
-    printf("rsp: 0x%lX\n", interrupt_context.rsp);
-    printf("ss: 0x%lX", interrupt_context.ss);
-    return os;
-  }
-};
-
-/// 中断上下文，由 cpu 自动压入，有错误码
-struct InterruptContextErrorCode {
-  reginfo::IdtrInfo::ErrorCode error_code;
-  uint32_t padding;
-  uint64_t rip;
-  uint64_t cs;
-  uint64_t rflags;
-  uint64_t rsp;
-  uint64_t ss;
-
-  friend sk_std::ostream &operator<<(
-      sk_std::ostream &os,
-      const InterruptContextErrorCode &interrupt_context_error_code) {
-    sk_std::cout << sk_std::endl
-                 << interrupt_context_error_code.error_code << sk_std::endl;
-    printf("padding: 0x%X\n", interrupt_context_error_code.padding);
-    printf("rip: 0x%lX\n", interrupt_context_error_code.rip);
-    printf("cs: 0x%lX\n", interrupt_context_error_code.cs);
-    printf("rflags: 0x%lX\n", interrupt_context_error_code.rflags);
-    printf("rsp: 0x%lX\n", interrupt_context_error_code.rsp);
-    printf("ss: 0x%lX", interrupt_context_error_code.ss);
-    return os;
-  }
-};
-
 // 第四部分：访问接口
 [[maybe_unused]] static AllXreg kAllXreg;
 [[maybe_unused]] static AllCr kAllCr;
 
 };  // namespace cpu
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_HPP_
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_CR_HPP_

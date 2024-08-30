@@ -1,0 +1,39 @@
+
+/**
+ * @file sk_cstring
+ * @brief 测试使用的 sk_cstring
+ * @author Zone.N (Zone.Niuzh@hotmail.com)
+ * @version 1.0
+ * @date 2023-05-08
+ * @copyright MIT LICENSE
+ * https://github.com/Simple-XX/SimpleKernel
+ * @par change log:
+ * <table>
+ * <tr><th>Date<th>Author<th>Description
+ * <tr><td>2023-05-08<td>Zone.N<td>创建文件
+ * </table>
+ */
+
+#ifndef SIMPLEKERNEL_TEST_UNIT_TEST_SK_CSTRING_
+#define SIMPLEKERNEL_TEST_UNIT_TEST_SK_CSTRING_
+
+#include "cstring"
+
+namespace sk_std {
+
+using ::memcmp;
+using ::memcpy;
+using ::memmove;
+using ::memset;
+using ::strcat;
+using ::strchr;
+using ::strcmp;
+using ::strcpy;
+using ::strlen;
+using ::strncmp;
+using ::strncpy;
+using ::strnlen;
+
+};  // namespace sk_std
+
+#endif /* SIMPLEKERNEL_TEST_UNIT_TEST_SK_CSTRING_ */
