@@ -16,10 +16,10 @@
 #include <cstdint>
 
 #include "arch.h"
-#include "sk_cstdio"
-#include "sk_iostream"
 #include "kernel.h"
 #include "kernel_log.hpp"
+#include "sk_cstdio"
+#include "sk_iostream"
 #include "sk_libcxx.h"
 
 void _start(uint32_t argc, uint8_t *argv) {
@@ -54,6 +54,8 @@ uint32_t main(uint32_t argc, uint8_t *argv) {
   InterruptInit(argc, argv);
 
   PhysicalMemoryInit(argc, argv);
+
+  VirtualMemoryInit(argc, argv);
 
   // 进入死循环
   while (1) {

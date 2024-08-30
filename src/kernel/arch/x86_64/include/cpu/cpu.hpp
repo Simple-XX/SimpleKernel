@@ -512,6 +512,53 @@ struct InterruptContextErrorCode {
   }
 };
 
+namespace vmm {
+/// P = 1 表示有效； P = 0 表示无效。
+static constexpr const uint8_t VMM_PAGE_VALID = 1 << 0;
+/// 如果为 0  表示页面只读或可执行。
+static constexpr const uint8_t VMM_PAGE_READABLE = 0;
+static constexpr const uint8_t VMM_PAGE_WRITABLE = 1 << 1;
+static constexpr const uint8_t VMM_PAGE_EXECUTABLE = 0;
+/// U/S-- 位 2 是用户 / 超级用户 (User/Supervisor) 标志。
+/// 如果为 1 那么运行在任何特权级上的程序都可以访问该页面。
+static constexpr const uint8_t VMM_PAGE_USER = 1 << 2;
+/// 内核虚拟地址相对物理地址的偏移
+static constexpr const size_t KERNEL_OFFSET = 0x0;
+/// PTE 属性位数
+static constexpr const size_t VMM_PTE_PROP_BITS = 12;
+/// PTE 页内偏移位数
+static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+/// VPN 位数
+static constexpr const size_t VMM_VPN_BITS = 9;
+/// VPN 位数掩码，9 位 VPN
+static constexpr const size_t VMM_VPN_BITS_MASK = 0x1FF;
+/// x86_64 使用了四级页表
+static constexpr const size_t VMM_PT_LEVEL = 4;
+
+// 开启 PG
+inline void EnablePage() { kAllCr.cr0.pg.Set(); }
+inline void DisablePage() { kAllCr.cr0.pg.Clear(); }
+
+/**
+ * @brief 设置 页目录
+ * @param  _pgd            要设置的页表
+ * @return true            成功
+ * @return false           失败
+ */
+inline void SetPageDirectory(uint64_t pgd) { kAllCr.cr3.Write(pgd); }
+
+/**
+ * @brief 获取页目录 CR3
+ * @return uint64_t        CR3 值
+ */
+inline uint64_t GetPageDirectory() { return kAllCr.cr3.Read(); }
+
+inline void FlushPage(uint64_t addr) {
+  __asm__ volatile("invlpg (%0)" : : "r"(addr) : "memory");
+}
+
+};  // namespace vmm
+
 };  // namespace cpu
 
 #endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_CPU_HPP_

@@ -45,4 +45,6 @@ uint32_t InterruptInit(uint32_t argc, uint8_t* argv);
 
 uint32_t PhysicalMemoryInit(uint32_t argc, uint8_t* argv);
 
+uint32_t VirtualMemoryInit(uint32_t argc, uint8_t* argv);
+
 #endif /* SIMPLEKERNEL_SRC_KERNEL_INCLUDE_KERNEL_H_ */

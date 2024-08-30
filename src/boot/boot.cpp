@@ -68,7 +68,6 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
 
   // 初始化 Memory
   auto memory = Memory();
-  memory.PrintInfo();
   // 加载内核
   auto elf = Elf(KERNEL_NAME);
   auto [kernel_addr, elf_info] = elf.Load();
@@ -76,6 +75,9 @@ efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_table) {
     debug << L"Failed to load kernel" << OutStream::endl;
     return EFI_LOAD_ERROR;
   }
+
+  // 输出内存映射 Memory
+  memory.PrintInfo();
 
   debug << L"Set Kernel Entry Point to: [" << OutStream::hex_X << kernel_addr
         << L"]." << OutStream::endl;

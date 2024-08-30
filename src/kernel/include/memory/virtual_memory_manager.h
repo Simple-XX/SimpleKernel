@@ -57,11 +57,11 @@ class VirtualMemoryManager {
    * @param addr 物理地址起点
    * @param pages_count 物理页数
    */
-  explicit VirtualMemoryManager();
+  explicit VirtualMemoryManager(uint32_t, uint8_t *);
 
   /// @name 构造/析构函数
   /// @{
-  // VirtualMemoryManager() = default;
+  VirtualMemoryManager() = default;
   VirtualMemoryManager(const VirtualMemoryManager &) = default;
   VirtualMemoryManager(VirtualMemoryManager &&) = default;
   auto operator=(const VirtualMemoryManager &) -> VirtualMemoryManager & =
@@ -118,7 +118,9 @@ class VirtualMemoryManager {
  private:
   /// @todo
   // std::function<uint64_t()> AllocKernelPage;
-  uint64_t AllocKernelPage() { return 0; }
+  uint64_t AllocKernelPage() {
+    return kPhysicalMemoryManager.GetInstance().AllocKernelPage();
+  }
 
   /**
    * @brief 物理地址转换到页表项
@@ -128,8 +130,7 @@ class VirtualMemoryManager {
    * 12~31: 页表的物理页地址
    */
   static constexpr uintptr_t PA2PTE(uintptr_t _pa) {
-    return (_pa >> cpu::vmm_info::VMM_PAGE_OFF_BITS)
-           << cpu::vmm_info::VMM_PTE_PROP_BITS;
+    return (_pa >> cpu::vmm::VMM_PAGE_OFF_BITS) << cpu::vmm::VMM_PTE_PROP_BITS;
   }
 
   /**
@@ -138,8 +139,8 @@ class VirtualMemoryManager {
    * @return constexpr uintptr_t 对应的物理地址
    */
   static constexpr uintptr_t PTE2PA(const pte_t _pte) {
-    return (((uintptr_t)_pte) >> cpu::vmm_info::VMM_PTE_PROP_BITS)
-           << cpu::vmm_info::VMM_PAGE_OFF_BITS;
+    return (((uintptr_t)_pte) >> cpu::vmm::VMM_PTE_PROP_BITS)
+           << cpu::vmm::VMM_PAGE_OFF_BITS;
   }
 
   /**
@@ -148,8 +149,7 @@ class VirtualMemoryManager {
    * @return constexpr uintptr_t 偏移
    */
   static constexpr uintptr_t PXSHIFT(const size_t _level) {
-    return cpu::vmm_info::VMM_PAGE_OFF_BITS +
-           (cpu::vmm_info::VMM_VPN_BITS * _level);
+    return cpu::vmm::VMM_PAGE_OFF_BITS + (cpu::vmm::VMM_VPN_BITS * _level);
   }
 
   /**
@@ -158,7 +158,7 @@ class VirtualMemoryManager {
    * 得到的就是第 _level 级页表的 VPN
    */
   static constexpr uintptr_t PX(size_t _level, uintptr_t _va) {
-    return (_va >> PXSHIFT(_level)) & cpu::vmm_info::VMM_VPN_BITS_MASK;
+    return (_va >> PXSHIFT(_level)) & cpu::vmm::VMM_VPN_BITS_MASK;
   }
 
   /**
