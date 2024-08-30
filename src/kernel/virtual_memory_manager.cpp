@@ -31,6 +31,15 @@ VirtualMemoryManager::VirtualMemoryManager(uint32_t, uint8_t*) {
       get_mmap((pt_t)kernel_pgd, kBasicInfo.GetInstance().kernel_addr, &pa);
   klog::Debug("res: %d, pa 0x%X\n", res, pa);
 
+  klog::Debug("cr0: 0x%X\n", cpu::kAllCr.cr0.Read());
+  klog::Debug("cr3: 0x%X\n", cpu::kAllCr.cr3.Read());
+
+  klog::Debug("kernel_pgd: 0x%X\n", kernel_pgd);
+  klog::Debug("*kernel_pgd: 0x%X\n", *((uint64_t*)kernel_pgd));
+  klog::Debug("**kernel_pgd: 0x%X\n", *((uint64_t*)*((uint64_t*)kernel_pgd)));
+  klog::Debug("**kernel_pgd: 0x%X\n",
+              *((uint64_t*)*((uint64_t*)*((uint64_t*)kernel_pgd))));
+
   // 分配一页用于保存页目录
   // pt_t pgd_kernel = (pt_t)AllocKernelPage();
   // memset(pgd_kernel, 0, PhysicalMemoryManager::kPageSize);
