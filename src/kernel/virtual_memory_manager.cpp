@@ -14,18 +14,12 @@
  * </table>
  */
 
-#include "memory/virtual_memory_manager.hpp"
+#include "memory/virtual_memory_manager.h"
 
 #include <cstdio>
 #include <cstring>
 
-#include "basic_info.hpp"
-#include "kernel_elf.hpp"
-#include "kernel_fdt.hpp"
 #include "kernel_log.hpp"
-#include "memory/firstfit_allocator.h"
-#include "project_config.h"
-// #include "resource.h"
 
 // 在 _pgd 中查找 _va 对应的页表项
 // 如果未找到，_alloc 为真时会进行分配
@@ -33,12 +27,12 @@ pte_t* VirtualMemoryManager::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
   pt_t pgd = _pgd;
   // sv39 共有三级页表，一级一级查找
   // -1 是因为最后一级是具体的某一页，在函数最后直接返回
-  for (size_t level = VMM_PT_LEVEL - 1; level > 0; level--) {
+  for (size_t level = cpu::vmm_info::VMM_PT_LEVEL - 1; level > 0; level--) {
     // 每次循环会找到 _va 的第 level 级页表 pgd
     // 相当于 pgd_level[VPN_level]，这样相当于得到了第 level 级页表的地址
     pte_t* pte = (pte_t*)&pgd[PX(level, _va)];
     // 解引用 pte，如果有效，获取 level+1 级页表，
-    if ((*pte & VMM_PAGE_VALID) == 1) {
+    if ((*pte & cpu::vmm_info::VMM_PAGE_VALID) == 1) {
       // pgd 指向下一级页表
       // *pte 保存的是页表项，需要转换为对应的物理地址
       pgd = (pt_t)PTE2PA(*pte);
@@ -50,7 +44,7 @@ pte_t* VirtualMemoryManager::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
       if (_alloc == true) {
         // 申请新的物理页
         pgd = (pt_t)PMM::get_instance().alloc_page_kernel();
-        bzero(pgd, COMMON::PAGE_SIZE);
+        bzero(pgd, PhysicalMemoryManager::kPageSize);
         // 申请失败则返回
         if (pgd == nullptr) {
           // 如果出现这种情况，说明物理内存不够，一般不会出现
@@ -58,9 +52,9 @@ pte_t* VirtualMemoryManager::find(const pt_t _pgd, uintptr_t _va, bool _alloc) {
           return nullptr;
         }
         // 清零
-        bzero(pgd, COMMON::PAGE_SIZE);
+        bzero(pgd, PhysicalMemoryManager::kPageSize);
         // 填充页表项
-        *pte = PA2PTE((uintptr_t)pgd) | VMM_PAGE_VALID;
+        *pte = PA2PTE((uintptr_t)pgd) | cpu::vmm_info::VMM_PAGE_VALID;
       }
       // 不分配的话直接返回
       else {
@@ -84,14 +78,15 @@ bool VirtualMemoryManager::init(void) {
 #endif
   // 分配一页用于保存页目录
   pt_t pgd_kernel = (pt_t)PMM::get_instance().alloc_page_kernel();
-  bzero(pgd_kernel, COMMON::PAGE_SIZE);
+  bzero(pgd_kernel, PhysicalMemoryManager::kPageSize);
   // 映射内核空间
   for (uintptr_t addr = (uintptr_t)COMMON::KERNEL_START_ADDR;
        addr < (uintptr_t)COMMON::KERNEL_START_ADDR + VMM_KERNEL_SPACE_SIZE;
-       addr += COMMON::PAGE_SIZE) {
+       addr += PhysicalMemoryManager::kPageSize) {
     // TODO: 区分代码/数据等段分别映射
     mmap(pgd_kernel, addr, addr,
-         VMM_PAGE_READABLE | VMM_PAGE_WRITABLE | VMM_PAGE_EXECUTABLE);
+         cpu::vmm_info::VMM_PAGE_READABLE | cpu::vmm_info::VMM_PAGE_WRITABLE |
+             cpu::vmm_info::VMM_PAGE_EXECUTABLE);
   }
   // 设置页目录
   set_pgd(pgd_kernel);
@@ -117,16 +112,18 @@ void VirtualMemoryManager::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
   // 一般情况下不应该为空
   assert(pte != nullptr);
   // 已经映射过了 且 flag 没有变化
-  if (((*pte & VMM_PAGE_VALID) == VMM_PAGE_VALID) &&
-      ((*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) == _flag)) {
+  if (((*pte & cpu::vmm_info::VMM_PAGE_VALID) ==
+       cpu::vmm_info::VMM_PAGE_VALID) &&
+      ((*pte & ((1 << cpu::vmm_info::VMM_PTE_PROP_BITS) - 1)) == _flag)) {
     warn("remap.\n");
   }
   // 没有映射，或更改了 flag
   else {
     // 那么设置 *pte
     // pte 解引用后的值是页表项
-    *pte = PA2PTE(_pa) | _flag | (*pte & ((1 << VMM_PTE_PROP_BITS) - 1)) |
-           VMM_PAGE_VALID;
+    *pte = PA2PTE(_pa) | _flag |
+           (*pte & ((1 << cpu::vmm_info::VMM_PTE_PROP_BITS) - 1)) |
+           cpu::vmm_info::VMM_PAGE_VALID;
     // 刷新缓存
     CPU::VMM_FLUSH(0);
   }
@@ -142,7 +139,7 @@ void VirtualMemoryManager::unmmap(const pt_t _pgd, uintptr_t _va) {
     return;
   }
   // 找到了，但是并没有被映射
-  if ((*pte & VMM_PAGE_VALID) == 0) {
+  if ((*pte & cpu::vmm_info::VMM_PAGE_VALID) == 0) {
     warn("VirtualMemoryManager::unmmap: not mapped.\n");
   }
   // 置零
@@ -158,7 +155,7 @@ bool VirtualMemoryManager::get_mmap(const pt_t _pgd, uintptr_t _va,
   pte_t* pte = find(_pgd, _va, false);
   bool res = false;
   // pte 不为空且有效，说明映射了
-  if ((pte != nullptr) && ((*pte & VMM_PAGE_VALID) == 1)) {
+  if ((pte != nullptr) && ((*pte & cpu::vmm_info::VMM_PAGE_VALID) == 1)) {
     // 如果 _pa 不为空
     if (_pa != nullptr) {
       // 设置 _pa

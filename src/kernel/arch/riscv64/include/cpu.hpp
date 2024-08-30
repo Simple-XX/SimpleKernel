@@ -38,6 +38,37 @@
  */
 namespace cpu {
 
+// namespace vmm_info {
+// /// 有效位
+// static constexpr const uint8_t VMM_PAGE_VALID = CPU::pte_t::VALID;
+// /// 可读位
+// static constexpr const uint8_t VMM_PAGE_READABLE = CPU::pte_t::READ;
+// /// 可写位s
+// static constexpr const uint8_t VMM_PAGE_WRITABLE = CPU::pte_t::WRITE;
+// /// 可执行位
+// static constexpr const uint8_t VMM_PAGE_EXECUTABLE = CPU::pte_t::EXEC;
+// /// 用户位
+// static constexpr const uint8_t VMM_PAGE_USER = CPU::pte_t::USER;
+// /// 全局位，我们不会使用
+// static constexpr const uint8_t VMM_PAGE_GLOBAL = CPU::pte_t::GLOBAL;
+// /// 已使用位，用于替换算法
+// static constexpr const uint8_t VMM_PAGE_ACCESSED = CPU::pte_t::ACCESSED;
+// /// 已修改位，用于替换算法
+// static constexpr const uint8_t VMM_PAGE_DIRTY = CPU::pte_t::DIRTY;
+// /// 内核虚拟地址相对物理地址的偏移
+// static constexpr const size_t KERNEL_OFFSET = 0x0;
+// /// PTE 属性位数
+// static constexpr const size_t VMM_PTE_PROP_BITS = 10;
+// /// PTE 页内偏移位数
+// static constexpr const size_t VMM_PAGE_OFF_BITS = 12;
+// /// VPN 位数
+// static constexpr const size_t VMM_VPN_BITS = 9;
+// /// VPN 位数掩码，9 位 VPN
+// static constexpr const size_t VMM_VPN_BITS_MASK = 0x1FF;
+// /// riscv64 使用了三级页表
+// static constexpr const size_t VMM_PT_LEVEL = 3;
+// };  // namespace vmm_info
+
 // 第一部分：寄存器定义
 namespace reginfo {
 
@@ -1184,7 +1215,8 @@ class Sstatus : public ReadWriteRegBase<reginfo::csr::SstatusInfo> {
   virtual ~Sstatus() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sstatus &sstatus) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Sstatus &sstatus) {
     auto sie = sstatus.sie.Get();
     auto spie = sstatus.spie.Get();
     auto spp = sstatus.spp.Get();
@@ -1348,7 +1380,8 @@ class Instret : public ReadOnlyRegBase<reginfo::csr::InstretInfo> {
   virtual ~Instret() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Instret &instret) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Instret &instret) {
     printf("val: 0x%p", (void *)instret.Read());
     return os;
   }
@@ -1366,7 +1399,8 @@ class Sscratch : public ReadWriteRegBase<reginfo::csr::SscratchInfo> {
   virtual ~Sscratch() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Sscratch &sscratch) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Sscratch &sscratch) {
     printf("val: 0x%p", (void *)sscratch.Read());
     return os;
   }
@@ -1409,7 +1443,8 @@ class Scause : public ReadWriteRegBase<reginfo::csr::ScauseInfo> {
   virtual ~Scause() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Scause &scause) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Scause &scause) {
     auto exception_code = scause.exception_code.Get();
     auto interrupt = scause.interrupt.Get();
     printf("val: 0x%p, exception_code: 0x%lX, interrupt: %s, name: %s",
@@ -1483,7 +1518,8 @@ class Stimecmp : public ReadOnlyRegBase<reginfo::csr::StimecmpInfo> {
   virtual ~Stimecmp() = default;
   /// @}
 
-  friend sk_std::ostream &operator<<(sk_std::ostream &os, const Stimecmp &stimecmp) {
+  friend sk_std::ostream &operator<<(sk_std::ostream &os,
+                                     const Stimecmp &stimecmp) {
     printf("val: 0x%p", (void *)stimecmp.Read());
     return os;
   }
