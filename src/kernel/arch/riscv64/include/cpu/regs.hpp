@@ -1,7 +1,7 @@
 
 /**
- * @file csr.hpp
- * @brief riscv64 csr 相关定义
+ * @file regs.hpp
+ * @brief riscv64 寄存器相关定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2024-03-05
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_CSR_HPP_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_CSR_HPP_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_REGS_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_REGS_HPP_
 
 #include <cstdint>
 #include <cstdlib>
@@ -1611,4 +1611,4 @@ class AllCsr {
 
 };  // namespace cpu
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_CSR_HPP_
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_RISCV64_INCLUDE_CPU_REGS_HPP_

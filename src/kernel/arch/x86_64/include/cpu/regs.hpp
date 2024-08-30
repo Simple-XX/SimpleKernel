@@ -1,7 +1,7 @@
 
 /**
- * @file cr.hpp
- * @brief x86_64 cr 相关定义
+ * @file regs.hpp
+ * @brief x86_64 寄存器相关定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2024-03-05
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_CR_HPP_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_CR_HPP_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_REGS_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_REGS_HPP_
 
 #include <cstdint>
 #include <cstdlib>
@@ -1773,4 +1773,4 @@ struct AllCr {
 
 };  // namespace cpu
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_CR_HPP_
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_X86_64_INCLUDE_CPU_REGS_HPP_

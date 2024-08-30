@@ -22,8 +22,8 @@
 #include <type_traits>
 #include <typeinfo>
 
-#include "csr.hpp"
 #include "kernel_log.hpp"
+#include "regs.hpp"
 #include "sk_cstdio"
 #include "sk_iostream"
 

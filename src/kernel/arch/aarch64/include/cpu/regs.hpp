@@ -1,7 +1,7 @@
 
 /**
- * @file sr.hpp
- * @brief aarch64 sr 相关定义
+ * @file regs.hpp
+ * @brief aarch64 寄存器相关定义
  * @author Zone.N (Zone.Niuzh@hotmail.com)
  * @version 1.0
  * @date 2024-03-05
@@ -14,8 +14,8 @@
  * </table>
  */
 
-#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_SR_HPP_
-#define SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_SR_HPP_
+#ifndef SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_REGS_HPP_
+#define SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_REGS_HPP_
 
 #include <cstdint>
 #include <cstdlib>
@@ -166,4 +166,4 @@ struct AllXreg {
 
 };  // namespace cpu
 
-#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_SR_HPP_
+#endif  // SIMPLEKERNEL_SRC_KERNEL_ARCH_AARCH64_INCLUDE_CPU_REGS_HPP_
