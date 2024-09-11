@@ -71,23 +71,16 @@ class VirtualMemoryManager {
   /// @}
 
   /**
-   * @brief 初始化
-   * @return true            成功
-   * @return false           失败
-   */
-  bool init(void);
-
-  /**
    * @brief 获取当前页目录
    * @return pt_t            当前页目录
    */
-  pt_t get_pgd(void);
+  pt_t GetPageDirectory();
 
   /**
    * @brief 设置当前页目录
    * @param  _pgd            要设置的页目录
    */
-  void set_pgd(const pt_t _pgd);
+  void SetPageDirectory(const pt_t _pgd);
 
   /**
    * @brief 映射物理地址到虚拟地址
@@ -96,14 +89,14 @@ class VirtualMemoryManager {
    * @param  _pa             物理地址
    * @param  _flag           属性
    */
-  void mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag);
+  void Mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa, uint32_t _flag);
 
   /**
    * @brief 取消映射
    * @param  _pgd            要操作的页目录
    * @param  _va             要取消映射的虚拟地址
    */
-  void unmmap(const pt_t _pgd, uintptr_t _va);
+  void Unmmap(const pt_t _pgd, uintptr_t _va);
 
   /**
    * @brief 获取映射的物理地址
@@ -113,7 +106,7 @@ class VirtualMemoryManager {
    * @return true            已映射
    * @return false           未映射
    */
-  bool get_mmap(const pt_t _pgd, uintptr_t _va, const void *_pa);
+  bool GetMmap(const pt_t _pgd, uintptr_t _va, const void *_pa);
 
  private:
   /// @todo

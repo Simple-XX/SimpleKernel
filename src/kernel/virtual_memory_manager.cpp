@@ -32,30 +32,29 @@ VirtualMemoryManager::VirtualMemoryManager(uint32_t, uint8_t*) {
        addr < kBasicInfo.GetInstance().kernel_addr + kKernelSpaceSize;
        addr += PhysicalMemoryManager::kPageSize) {
     // TODO: 区分代码/数据等段分别映射
-    mmap(pgd_kernel, addr, addr,
+    Mmap(pgd_kernel, addr, addr,
          cpu::vmm::VMM_PAGE_READABLE | cpu::vmm::VMM_PAGE_WRITABLE |
              cpu::vmm::VMM_PAGE_EXECUTABLE);
   }
   // 设置页目录
-  klog::Debug("set_pgd: 0x%X\n", pgd_kernel);
-  set_pgd(pgd_kernel);
+  klog::Debug("SetPageDirectory: 0x%X\n", pgd_kernel);
+  SetPageDirectory(pgd_kernel);
   // 开启分页
   cpu::vmm::EnablePage();
 }
 
-pt_t VirtualMemoryManager::get_pgd(void) {
+pt_t VirtualMemoryManager::GetPageDirectory() {
   return (pt_t)cpu::vmm::GetPageDirectory();
 }
 
-void VirtualMemoryManager::set_pgd(const pt_t _pgd) {
+void VirtualMemoryManager::SetPageDirectory(const pt_t _pgd) {
   // 设置页目录
   cpu::vmm::SetPageDirectory((uint64_t)_pgd);
   // 刷新缓存
   cpu::vmm::FlushPage(0);
-  return;
 }
 
-void VirtualMemoryManager::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
+void VirtualMemoryManager::Mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
                                 uint32_t _flag) {
   pte_t* pte = find(_pgd, _va, true);
   // 一般情况下不应该为空
@@ -79,31 +78,29 @@ void VirtualMemoryManager::mmap(const pt_t _pgd, uintptr_t _va, uintptr_t _pa,
     // 刷新缓存
     cpu::vmm::FlushPage(0);
   }
-  return;
 }
 
-void VirtualMemoryManager::unmmap(const pt_t _pgd, uintptr_t _va) {
+void VirtualMemoryManager::Unmmap(const pt_t _pgd, uintptr_t _va) {
   pte_t* pte = find(_pgd, _va, false);
   // 找到页表项
   // 未找到
   if (pte == nullptr) {
-    klog::Warn("VirtualMemoryManager::unmmap: find.\n");
+    klog::Warn("VirtualMemoryManager::Unmmap: find.\n");
     return;
   }
   // 找到了，但是并没有被映射
   if ((*pte & cpu::vmm::VMM_PAGE_VALID) == 0) {
-    klog::Warn("VirtualMemoryManager::unmmap: not mapped.\n");
+    klog::Warn("VirtualMemoryManager::Unmmap: not mapped.\n");
   }
   // 置零
   *pte = 0x00;
   // 刷新缓存
   cpu::vmm::FlushPage(0);
   // TODO: 如果一页表都被 unmap，释放占用的物理内存
-  return;
 }
 
-bool VirtualMemoryManager::get_mmap(const pt_t _pgd, uintptr_t _va,
-                                    const void* _pa) {
+bool VirtualMemoryManager::GetMmap(const pt_t _pgd, uintptr_t _va,
+                                   const void* _pa) {
   pte_t* pte = find(_pgd, _va, false);
   bool res = false;
   // pte 不为空且有效，说明映射了
