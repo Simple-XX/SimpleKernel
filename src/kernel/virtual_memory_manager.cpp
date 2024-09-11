@@ -24,40 +24,23 @@
 #include "sk_cstring"
 
 VirtualMemoryManager::VirtualMemoryManager(uint32_t, uint8_t*) {
-  auto kernel_pgd = cpu::vmm::GetPageDirectory();
-  uint64_t pa = 0;
-
-  auto res =
-      get_mmap((pt_t)kernel_pgd, kBasicInfo.GetInstance().kernel_addr, &pa);
-  klog::Debug("res: %d, pa 0x%X\n", res, pa);
-
-  klog::Debug("cr0: 0x%X\n", cpu::kAllCr.cr0.Read());
-  klog::Debug("cr3: 0x%X\n", cpu::kAllCr.cr3.Read());
-
-  klog::Debug("kernel_pgd: 0x%X\n", kernel_pgd);
-  klog::Debug("*kernel_pgd: 0x%X\n", *((uint64_t*)kernel_pgd));
-  klog::Debug("**kernel_pgd: 0x%X\n", *((uint64_t*)*((uint64_t*)kernel_pgd)));
-  klog::Debug("**kernel_pgd: 0x%X\n",
-              *((uint64_t*)*((uint64_t*)*((uint64_t*)kernel_pgd))));
-
   // 分配一页用于保存页目录
-  // pt_t pgd_kernel = (pt_t)AllocKernelPage();
-  // memset(pgd_kernel, 0, PhysicalMemoryManager::kPageSize);
-  // // 映射内核空间
-  // for (uint64_t addr = kBasicInfo.GetInstance().kernel_addr;
-  //      addr < kBasicInfo.GetInstance().kernel_addr + kKernelSpaceSize;
-  //      addr += PhysicalMemoryManager::kPageSize) {
-  //   // TODO: 区分代码/数据等段分别映射
-  //   mmap(pgd_kernel, addr, addr,
-  //        cpu::vmm::VMM_PAGE_READABLE | cpu::vmm::VMM_PAGE_WRITABLE |
-  //            cpu::vmm::VMM_PAGE_EXECUTABLE);
-  // }
+  pt_t pgd_kernel = (pt_t)AllocKernelPage();
+  memset(pgd_kernel, 0, PhysicalMemoryManager::kPageSize);
+  // 映射内核空间
+  for (uint64_t addr = kBasicInfo.GetInstance().kernel_addr;
+       addr < kBasicInfo.GetInstance().kernel_addr + kKernelSpaceSize;
+       addr += PhysicalMemoryManager::kPageSize) {
+    // TODO: 区分代码/数据等段分别映射
+    mmap(pgd_kernel, addr, addr,
+         cpu::vmm::VMM_PAGE_READABLE | cpu::vmm::VMM_PAGE_WRITABLE |
+             cpu::vmm::VMM_PAGE_EXECUTABLE);
+  }
   // 设置页目录
-  // cpu::vmm::DisablePage();
-  // klog::Debug("set_pgd: 0x%X\n", pgd_kernel);
-  // set_pgd(pgd_kernel);
+  klog::Debug("set_pgd: 0x%X\n", pgd_kernel);
+  set_pgd(pgd_kernel);
   // 开启分页
-  // cpu::vmm::EnablePage();
+  cpu::vmm::EnablePage();
 }
 
 pt_t VirtualMemoryManager::get_pgd(void) {
