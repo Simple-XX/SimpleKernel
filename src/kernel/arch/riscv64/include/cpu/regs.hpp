@@ -1203,9 +1203,10 @@ class ReadWriteField : public ReadOnlyField<Reg, RegInfo>,
    * @param value 新值
    */
   static __always_inline void Write(RegInfo::DataType value) {
-    auto org_value = Reg::Read();
-    auto new_value = (org_value & ~RegInfo::kBitMask) |
-                     ((value << RegInfo::kBitOffset) & RegInfo::kBitMask);
+    uint64_t org_value = Reg::Read();
+    uint64_t new_value =
+        (org_value & ~RegInfo::kBitMask) |
+        (((uint64_t)value << RegInfo::kBitOffset) & RegInfo::kBitMask);
     Reg::Write(new_value);
   }
 
@@ -1215,9 +1216,10 @@ class ReadWriteField : public ReadOnlyField<Reg, RegInfo>,
    * @return RegInfo::DataType 由寄存器规定的数据类型
    */
   static __always_inline RegInfo::DataType ReadWrite(RegInfo::DataType value) {
-    auto org_value = Reg::Read();
-    auto new_value = (org_value & ~RegInfo::kBitMask) |
-                     ((value << RegInfo::kBitOffset) & RegInfo::kBitMask);
+    uint64_t org_value = Reg::Read();
+    uint64_t new_value =
+        (org_value & ~RegInfo::kBitMask) |
+        (((uint64_t)value << RegInfo::kBitOffset) & RegInfo::kBitMask);
     Reg::Write(new_value);
     return (RegInfo::DataType)((org_value & RegInfo::kBitMask) >>
                                RegInfo::kBitOffset);
