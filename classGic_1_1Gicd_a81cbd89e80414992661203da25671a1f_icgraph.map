@@ -1,0 +1,13 @@
+<map id="Gic::Gicd::Write" name="Gic::Gicd::Write">
+<area shape="rect" id="Node000001" title=" " alt="" coords="547,55,669,80"/>
+<area shape="rect" id="Node000002" href="$classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670" title=" " alt="" coords="317,29,499,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="533,61,498,56,499,51,533,55"/>
+<area shape="rect" id="Node000006" href="$classGic_1_1Gicd.html#adadfa9c27c5ca6ff35fc468f6e71ece6" title=" " alt="" coords="349,79,467,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="533,79,467,87,467,82,533,74"/>
+<area shape="rect" id="Node000003" href="$classGic.html#ab46e6d9e05b378d69d0f5c120aa2e154" title=" " alt="" coords="188,5,260,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="303,31,260,25,261,20,304,26"/>
+<area shape="rect" id="Node000004" href="$classGic.html#a95e93d4c431de2b81969c6503801301e" title=" " alt="" coords="179,55,269,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="304,59,270,64,269,59,303,54"/>
+<area shape="rect" id="Node000005" href="$classInterrupt.html#a54eb0d6a11a1fd7af2308f2bd2ff0775" title=" " alt="" coords="5,55,131,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="165,70,131,70,131,65,165,65"/>
+</map>

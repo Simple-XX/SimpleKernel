@@ -1,0 +1,22 @@
+<map id="TaskManager::GetCurrentCpuSched" name="TaskManager::GetCurrentCpuSched">
+<area shape="rect" id="Node000001" title="获取当前核心的调度数据" alt="" coords="660,98,872,138"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a71763ebababa9aa90bad6a07c66edede" title="阻塞当前任务" alt="" coords="218,5,370,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="718,94,667,69,611,49,549,35,485,26,370,20,370,15,485,21,550,30,613,43,670,64,720,89"/>
+<area shape="rect" id="Node000004" href="$classTaskManager.html#ae3444c55ab7b6ec348a56b596229fc0f" title="退出当前线程" alt="" coords="223,80,365,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="704,96,659,81,612,70,542,64,472,66,407,73,353,83,352,77,407,68,472,61,542,59,612,65,661,76,706,91"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#af7525954e852c09c1dd8ba50235f1d78" title="调度函数 选择下一个任务并切换上下文" alt="" coords="437,129,612,155"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="647,133,613,136,612,131,646,127"/>
+<area shape="rect" id="Node000006" href="$classTaskManager.html#a86fe8ff01e353a0acb150c90e8081811" title="线程睡眠" alt="" coords="218,155,370,180"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="702,145,659,159,612,169,549,176,484,178,370,176,370,171,484,173,548,170,612,163,657,153,701,140"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#aa1041f9ed06a9d0b6b738621c30e1921" title="更新系统 tick" alt="" coords="199,204,389,229"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="714,146,666,167,613,185,497,206,390,216,389,211,497,201,611,179,664,162,712,141"/>
+<area shape="rect" id="Node000008" href="$classTaskManager.html#aecc6edadfbd8fd250db72884b1e23f93" title="唤醒等待指定资源的所有任务" alt="" coords="441,80,608,105"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="646,108,608,104,608,99,647,103"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#aadc206ac53400212078270833533f247" title="等待子进程退出" alt="" coords="5,5,151,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="204,21,151,21,151,15,204,15"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="451,127,436,119,420,107,411,95,402,82,388,69,356,49,324,33,326,28,358,44,391,65,405,79,415,91,424,103,439,114,454,122"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="451,129,354,108,355,103,452,124"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="424,156,370,162,370,156,423,150"/>
+<area shape="poly" id="edge8_Node000005_Node000007" title=" " alt="" coords="479,162,390,194,347,207,345,201,389,189,477,157"/>
+<area shape="poly" id="edge12_Node000008_Node000004" title=" " alt="" coords="427,95,365,95,365,90,427,90"/>
+</map>

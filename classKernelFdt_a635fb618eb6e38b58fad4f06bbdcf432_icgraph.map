@@ -1,0 +1,7 @@
+<map id="KernelFdt::GetGIC" name="KernelFdt::GetGIC">
+<area shape="rect" id="Node000001" title=" " alt="" coords="216,31,355,56"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html#a37442d67449eab8995236f8b72dee1ed" title=" " alt="" coords="6,5,167,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,35,167,31,168,26,203,30"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#a0c070f3fc698532281ad7e83451d1f55" title=" " alt="" coords="5,55,168,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,56,168,60,168,55,202,51"/>
+</map>

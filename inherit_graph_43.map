@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classSchedulerBase.html" title="调度器基类接口" alt="" coords="5,80,124,105"/>
+<area shape="rect" id="Node000001" href="$classCfsScheduler.html" title="CFS (Completely Fair Scheduler) 调度器" alt="" coords="201,5,307,31"/>
+<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="101,71,171,40,204,28,206,33,173,44,103,76"/>
+<area shape="rect" id="Node000002" href="$classFifoScheduler.html" title="先来先服务 (FIFO) 调度器" alt="" coords="199,55,309,80"/>
+<area shape="poly" id="edge8_Node000000_Node000002" title=" " alt="" coords="137,80,198,72,199,77,138,86"/>
+<area shape="rect" id="Node000003" href="$classIdleScheduler.html" title="Idle 调度器" alt="" coords="199,104,309,129"/>
+<area shape="poly" id="edge9_Node000000_Node000003" title=" " alt="" coords="138,99,199,107,198,112,137,105"/>
+<area shape="rect" id="Node000004" href="$classRoundRobinScheduler.html" title="Round&#45;Robin 调度器" alt="" coords="172,153,336,179"/>
+<area shape="poly" id="edge10_Node000000_Node000004" title=" " alt="" coords="105,109,173,138,210,151,208,156,171,143,103,114"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="FifoScheduler" name="FifoScheduler">
+<area shape="rect" id="Node000001" title="先来先服务 (FIFO) 调度器" alt="" coords="21,788,159,1173"/>
+<area shape="rect" id="Node000002" href="$classSchedulerBase.html" title="调度器基类接口" alt="" coords="5,193,175,739"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,752,93,788,87,788,87,752"/>
+<area shape="rect" id="Node000003" href="$structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="15,5,165,131"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,131,93,177,87,177,87,131"/>
+</map>

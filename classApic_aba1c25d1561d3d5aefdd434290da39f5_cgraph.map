@@ -1,0 +1,25 @@
+<map id="Apic::PrintInfo" name="Apic::PrintInfo">
+<area shape="rect" id="Node000001" title="打印所有 APIC 信息（调试用）" alt="" coords="5,169,119,195"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#a4622fc9c86daca19fdc81d4bcd7f2149" title="打印 IO APIC 信息（调试用）" alt="" coords="177,92,303,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,167,196,121,198,125,93,172"/>
+<area shape="rect" id="Node000007" href="$classLocalApic.html#af0eac16550b73a6d87d505bf3295d62c" title="打印 Local APIC 信息（调试用）" alt="" coords="167,219,313,244"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="109,192,180,212,179,217,108,197"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#a4bcfeb99883c755edbc5c70aebd86612" title="获取 IO APIC ID" alt="" coords="409,5,515,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="262,90,306,65,360,41,395,30,397,35,362,46,309,70,264,94"/>
+<area shape="rect" id="Node000005" href="$classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f" title="获取 IO APIC 最大重定向条目数" alt="" coords="365,55,559,95"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="303,94,351,87,352,93,303,99"/>
+<area shape="rect" id="Node000006" href="$classIoApic.html#a37944c22a1220d3db82a0710fb8c5134" title="获取 IO APIC 版本" alt="" coords="391,120,533,145"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="303,110,378,119,377,125,303,115"/>
+<area shape="rect" id="Node000004" href="$classIoApic.html#afe65f9ea16d8267e09cb585cf060caee" title="读取 IO APIC 寄存器" alt="" coords="611,63,713,88"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="516,28,563,41,611,56,610,61,562,46,514,33"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="560,73,597,73,597,78,560,78"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="515,117,562,105,610,90,611,95,563,110,517,122"/>
+<area shape="rect" id="Node000008" href="$classLocalApic.html#a5d8915494fa6031ccde79ee1b24cdbf6" title="获取 APIC 版本信息" alt="" coords="367,169,557,195"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="297,216,390,195,391,200,298,221"/>
+<area shape="rect" id="Node000009" href="$classLocalApic.html#a933b92b105f223a4e31cab92958dedba" title="获取任务优先级" alt="" coords="367,219,557,244"/>
+<area shape="poly" id="edge10_Node000007_Node000009" title=" " alt="" coords="314,229,353,229,353,234,314,234"/>
+<area shape="rect" id="Node000010" href="$classLocalApic.html#a579ae8f114ab23ac92d830ebbfeb3518" title="获取定时器当前计数值" alt="" coords="361,269,563,309"/>
+<area shape="poly" id="edge11_Node000007_Node000010" title=" " alt="" coords="291,241,372,263,370,268,289,247"/>
+<area shape="rect" id="Node000011" href="$classLocalApic.html#acec1f3c4dc919cdeac31f5ce3bf1bbeb" title="检查 x2APIC 是否启用" alt="" coords="362,333,562,359"/>
+<area shape="poly" id="edge12_Node000007_Node000011" title=" " alt="" coords="257,242,302,280,331,301,362,318,383,327,381,332,360,323,328,305,298,284,253,246"/>
+</map>

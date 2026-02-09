@@ -1,4 +1,24 @@
 var searchData=
 [
-  ['root_5ffile_5fsystem_188',['root_file_system',['../classElf.html#a2401458a0b098dcccfa120bb64c12afd',1,'Elf']]]
+  ['g_5fdtor_5fcount_0',['g_dtor_count',['../ctor__dtor__test_8cpp.html#ace431a5179729d02ccdf8b98be8c9d86',1,'ctor_dtor_test.cpp']]],
+  ['gic_5f_1',['gic_',['../classInterrupt.html#aa9f43e1e97d63b757aa4b51f3807a2ee',1,'Interrupt']]],
+  ['gicd_5f_2',['gicd_',['../classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6',1,'Gic']]],
+  ['gicr_5f_3',['gicr_',['../classGic.html#adf2f5ef07ebc1e916f3c44df324d425c',1,'Gic']]],
+  ['global_5fbool_5fkeep_5frunning_4',['global_bool_keep_running',['../ctor__dtor__test_8cpp.html#ab318d94cfeb36b542b05a9f111d5755f',1,'ctor_dtor_test.cpp']]],
+  ['global_5fu16_5fvalue_5fwith_5finit_5',['global_u16_value_with_init',['../ctor__dtor__test_8cpp.html#a08388217386b03f63120f4f55eebb05f',1,'ctor_dtor_test.cpp']]],
+  ['global_5fu32_5fvalue_5fwith_5finit_6',['global_u32_value_with_init',['../ctor__dtor__test_8cpp.html#a5989b9b415c73164b2e638355d4da869',1,'ctor_dtor_test.cpp']]],
+  ['global_5fu64_5fvalue_5fwith_5finit_7',['global_u64_value_with_init',['../ctor__dtor__test_8cpp.html#a2f5540c4ba25c08fb73a200559f24d8f',1,'ctor_dtor_test.cpp']]],
+  ['global_5fu8a_5fvalue_5fwith_5finit_8',['global_u8a_value_with_init',['../ctor__dtor__test_8cpp.html#a948b83901bd51374518aaaa29c1ebd9b',1,'ctor_dtor_test.cpp']]],
+  ['global_5fu8b_5fvalue_5fwith_5finit_9',['global_u8b_value_with_init',['../ctor__dtor__test_8cpp.html#a42ed6394d3001c194facd0489cf760d1',1,'ctor_dtor_test.cpp']]],
+  ['global_5fu8c_5fvalue_5fwith_5finit_10',['global_u8c_value_with_init',['../ctor__dtor__test_8cpp.html#a807f7c273cbbcf6c3ac3375eff164dd0',1,'ctor_dtor_test.cpp']]],
+  ['global_5fu8d_5fvalue_5fwith_5finit_11',['global_u8d_value_with_init',['../ctor__dtor__test_8cpp.html#a016ab196b6711dcf6da58e40c6688e28',1,'ctor_dtor_test.cpp']]],
+  ['global_5fvalue1_5fwith_5fconstructor_12',['global_value1_with_constructor',['../ctor__dtor__test_8cpp.html#a2c2899c5d94d1ae14c96e6ff910bb3cd',1,'ctor_dtor_test.cpp']]],
+  ['global_5fvalue2_5fwith_5fconstructor_13',['global_value2_with_constructor',['../ctor__dtor__test_8cpp.html#a0c30e733b226c40281132263a548422d',1,'ctor_dtor_test.cpp']]],
+  ['global_5fvalue_5fwith_5finit_14',['global_value_with_init',['../ctor__dtor__test_8cpp.html#a4054bd985d024c1c2692cd82802669d4',1,'ctor_dtor_test.cpp']]],
+  ['gpe0_5fblk_15',['gpe0_blk',['../structAcpi_1_1Fadt.html#a464878a15d49725c60108f89c9b881c4',1,'Acpi::Fadt::gpe0_blk'],['../acpi_8h.html#a0f1a152654967c937dcba6ded7bf2cc8',1,'gpe0_blk:&#160;acpi.h']]],
+  ['gpe0_5fblk_5flen_16',['gpe0_blk_len',['../structAcpi_1_1Fadt.html#acb2502c8f6234ebc72fba343917fe915',1,'Acpi::Fadt::gpe0_blk_len'],['../acpi_8h.html#a40c13c9beeae9bbf2b8aebdb32a262cc',1,'gpe0_blk_len:&#160;acpi.h']]],
+  ['gpe1_5fbase_17',['gpe1_base',['../structAcpi_1_1Fadt.html#ab2f9ff1e4bcbdf561ba500872034213a',1,'Acpi::Fadt::gpe1_base'],['../acpi_8h.html#ab62083a25f01cd370973beff49eced9f',1,'gpe1_base:&#160;acpi.h']]],
+  ['gpe1_5fblk_18',['gpe1_blk',['../acpi_8h.html#a5df0ac19d47365ce763fc27fb8f1cbfa',1,'gpe1_blk:&#160;acpi.h'],['../structAcpi_1_1Fadt.html#ad9f76f8029f99c7004548bb619cb0647',1,'Acpi::Fadt::gpe1_blk']]],
+  ['gpe1_5fblk_5flen_19',['gpe1_blk_len',['../acpi_8h.html#a7b8e4afd98861f10da62c68de02b9213',1,'gpe1_blk_len:&#160;acpi.h'],['../structAcpi_1_1Fadt.html#a8ecebb6a03da8b77f9d7a44fedbc3bb9',1,'Acpi::Fadt::gpe1_blk_len']]],
+  ['guard_20',['guard',['../structGuardType.html#a4f750b86253c383330cf44f4bf232952',1,'GuardType']]]
 ];

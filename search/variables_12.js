@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['task_5fcontext_0',['task_context',['../structTaskControlBlock.html#af087bcb6f419c7484c1200719e0751a9',1,'TaskControlBlock']]],
+  ['task_5ftable_5f_1',['task_table_',['../classTaskManager.html#abc5030703356936b612fec5dd4c91c5b',1,'TaskManager']]],
+  ['task_5ftable_5flock_5f_2',['task_table_lock_',['../classTaskManager.html#af14711655dcdd45271bfcd36d30c435d',1,'TaskManager']]],
+  ['tgid_3',['tgid',['../structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc',1,'TaskControlBlock']]],
+  ['thread_5fgroup_5fnext_4',['thread_group_next',['../structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5',1,'TaskControlBlock']]],
+  ['thread_5fgroup_5fprev_5',['thread_group_prev',['../structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39',1,'TaskControlBlock']]],
+  ['thread_5fid_6',['thread_id',['../structtest__env_1_1CoreEnvironment.html#a8702c87a8a13d96da7e064684e4b245a',1,'test_env::CoreEnvironment']]],
+  ['thread_5fto_5fcore_5fmap_5f_7',['thread_to_core_map_',['../classtest__env_1_1TestEnvironmentState.html#a315f768cc39201b72402233203f7f667',1,'test_env::TestEnvironmentState']]],
+  ['time_5fslice_5fdefault_8',['time_slice_default',['../structTaskControlBlock_1_1SchedInfo.html#a1285800eebf37bb44c68ebc43ccdbc86',1,'TaskControlBlock::SchedInfo']]],
+  ['time_5fslice_5fremaining_9',['time_slice_remaining',['../structTaskControlBlock_1_1SchedInfo.html#acbbd6ad7913e4f93e31eabd16c1691ee',1,'TaskControlBlock::SchedInfo']]],
+  ['timestamp_10',['timestamp',['../structTaskManager_1_1InterruptWork.html#a112fb416b1b1232162c26fc822cb986c',1,'TaskManager::InterruptWork::timestamp'],['../structtest__env_1_1CoreEnvironment_1_1SwitchEvent.html#ad717b7800f719fdae9bf8b5186b163fb',1,'test_env::CoreEnvironment::SwitchEvent::timestamp']]],
+  ['to_11',['to',['../structtest__env_1_1CoreEnvironment_1_1SwitchEvent.html#ae2772f846a7aee1df7d4d5a1740b58fe',1,'test_env::CoreEnvironment::SwitchEvent']]],
+  ['total_5fdequeues_12',['total_dequeues',['../structSchedulerBase_1_1Stats.html#a2b77710183b8706262c53dc712f0ba0d',1,'SchedulerBase::Stats']]],
+  ['total_5fenqueues_13',['total_enqueues',['../structSchedulerBase_1_1Stats.html#ad5a40384c3c0c779491463433e2a311e',1,'SchedulerBase::Stats']]],
+  ['total_5fpicks_14',['total_picks',['../structSchedulerBase_1_1Stats.html#a8659b427d166ead02a1cb2a6d44f14fa',1,'SchedulerBase::Stats']]],
+  ['total_5fpreemptions_15',['total_preemptions',['../structSchedulerBase_1_1Stats.html#a4e5165fd2356707d9c3cfa69b773a7f6',1,'SchedulerBase::Stats']]],
+  ['total_5fruntime_16',['total_runtime',['../structTaskControlBlock_1_1SchedInfo.html#aa3b63fccb72be5ed876174f421ca5fae',1,'TaskControlBlock::SchedInfo']]],
+  ['total_5fschedules_17',['total_schedules',['../structCpuSchedData.html#aa46c34b237397559af347e4f852fd75f',1,'CpuSchedData']]],
+  ['tp_18',['tp',['../structcpu__io_1_1TrapContext.html#ab43511ac1029a1ef02cf57fc8c878bef',1,'cpu_io::TrapContext']]],
+  ['trap_5fcontext_5fptr_19',['trap_context_ptr',['../structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226',1,'TaskControlBlock']]]
+];

@@ -1,0 +1,7 @@
+<map id="TaskTestHarness::SetNumCores" name="TaskTestHarness::SetNumCores">
+<area shape="rect" id="Node000001" title="设置测试使用的核心数量（在 SetUp 前调用）" alt="" coords="232,45,459,70"/>
+<area shape="rect" id="Node000002" href="$classEnvironmentLayerTest.html#a32935143b073249d83b7ed2c19079271" title=" " alt="" coords="11,5,178,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,46,178,39,179,33,232,40"/>
+<area shape="rect" id="Node000003" href="$classTaskSchedulingExample.html#aaaba6b045c859716abd7f0780a0c5dda" title=" " alt="" coords="5,69,184,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,74,185,81,184,75,232,69"/>
+</map>

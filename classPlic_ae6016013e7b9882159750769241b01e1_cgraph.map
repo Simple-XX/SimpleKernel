@@ -1,0 +1,11 @@
+<map id="Plic::Done" name="Plic::Done">
+<area shape="rect" id="Node000001" title="告知 Plic 已经处理了当前 IRQ" alt="" coords="5,55,92,80"/>
+<area shape="rect" id="Node000002" href="$classPlic.html#a9e776017bdc409c93853e4c7331ec090" title="获取声明/完成寄存器" alt="" coords="155,5,310,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,53,139,39,169,32,170,37,141,45,93,58"/>
+<area shape="rect" id="Node000003" href="$classPlic.html#acc08cea25259c0e5b03f4403960a6120" title="计算 context ID" alt="" coords="163,55,302,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="92,65,150,65,150,70,92,70"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="140,104,325,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="93,76,172,98,171,103,91,81"/>
+<area shape="rect" id="Node000005" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="373,97,636,137"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="326,114,359,114,359,119,326,119"/>
+</map>

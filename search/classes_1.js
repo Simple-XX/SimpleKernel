@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['graphics_101',['Graphics',['../classGraphics.html',1,'']]]
+  ['basicinfo_0',['BasicInfo',['../structBasicInfo.html',1,'']]]
 ];

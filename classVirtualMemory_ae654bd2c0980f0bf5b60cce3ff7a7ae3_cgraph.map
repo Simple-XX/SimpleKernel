@@ -1,0 +1,28 @@
+<map id="VirtualMemory::ClonePageDirectory" name="VirtualMemory::ClonePageDirectory">
+<area shape="rect" id="Node000001" title="复制页表" alt="" coords="5,139,200,179"/>
+<area shape="rect" id="Node000002" href="$memory_8cpp.html#a8006724372b77924155bd8618fe57516" title=" " alt="" coords="789,5,897,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,138,775,28,776,33,201,144"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#adf6d48183927262a6c7929493f0c74f5" title="回收页表，释放所有映射和子页表" alt="" coords="248,247,456,287"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,177,293,239,291,244,149,182"/>
+<area shape="rect" id="Node000008" href="$classVirtualMemory.html#acd2f1fff14fc36c984c7edbbabf95b0b" title="递归复制页表" alt="" coords="504,139,695,179"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="200,157,490,157,490,162,200,162"/>
+<area shape="rect" id="Node000004" href="$memory_8cpp.html#a274dd8714485eed9c9328973d44ec5dc" title=" " alt="" coords="791,312,894,337"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="438,285,504,297,651,312,778,320,777,325,650,317,504,302,437,290"/>
+<area shape="rect" id="Node000005" href="$classVirtualMemory.html#a5d99f94ac5108601c7ea895ad52f6c33" title="递归释放页表" alt="" coords="504,247,695,287"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="456,265,490,265,490,270,456,270"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="685,285,779,307,778,312,684,290"/>
+<area shape="poly" id="edge8_Node000005_Node000005" title=" " alt="" coords="554,248,551,238,559,228,575,223,599,221,628,224,643,231,641,236,626,229,599,226,576,228,562,233,557,239,559,246"/>
+<area shape="rect" id="Node000006" href="$namespacecpu__io_1_1virtual__memory.html#a841eeee221133f726f9ac2e26577c475" title=" " alt="" coords="755,183,931,223"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="675,245,752,224,754,229,677,250"/>
+<area shape="rect" id="Node000007" href="$namespacecpu__io_1_1virtual__memory.html#a5bc8f484f80076b5c3f5cf419fd24aec" title=" " alt="" coords="744,247,941,287"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="695,265,730,265,730,270,695,270"/>
+<area shape="poly" id="edge10_Node000008_Node000002" title=" " alt="" coords="618,137,671,89,705,63,741,41,775,28,776,33,744,46,708,67,674,93,622,141"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="651,177,675,191,697,210,713,233,720,256,727,277,744,297,761,307,779,314,777,319,758,312,741,301,722,280,715,258,708,236,693,213,671,196,648,182"/>
+<area shape="poly" id="edge13_Node000008_Node000006" title=" " alt="" coords="695,174,742,182,741,188,694,179"/>
+<area shape="poly" id="edge14_Node000008_Node000007" title=" " alt="" coords="638,177,744,233,762,240,760,245,742,238,636,182"/>
+<area shape="poly" id="edge16_Node000008_Node000008" title=" " alt="" coords="554,140,551,130,559,120,575,115,599,113,628,116,643,123,641,128,626,121,599,118,576,120,562,125,557,131,559,138"/>
+<area shape="rect" id="Node000009" href="$namespacecpu__io_1_1virtual__memory.html#a8746d12e9902e04e68ca29991a9d76cb" title=" " alt="" coords="743,55,943,95"/>
+<area shape="poly" id="edge12_Node000008_Node000009" title=" " alt="" coords="653,137,742,105,764,97,766,102,744,110,655,142"/>
+<area shape="rect" id="Node000010" href="$namespacecpu__io_1_1virtual__memory.html#af3655e31d3c72e1c80b4348cc3e55a71" title=" " alt="" coords="744,119,941,159"/>
+<area shape="poly" id="edge15_Node000008_Node000010" title=" " alt="" coords="695,149,730,146,731,151,695,154"/>
+</map>

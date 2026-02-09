@@ -1,0 +1,5 @@
+<map id="Mutex" name="Mutex">
+<area shape="rect" id="Node000001" title="互斥锁（Mutex）" alt="" coords="5,573,195,999"/>
+<area shape="rect" id="Node000002" href="$structResourceId.html" title="资源 ID" alt="" coords="25,5,175,511"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,511,103,557,97,557,97,511"/>
+</map>

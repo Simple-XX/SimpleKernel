@@ -1,0 +1,7 @@
+<map id="RoundRobinScheduler" name="RoundRobinScheduler">
+<area shape="rect" id="Node000001" title="Round&#45;Robin 调度器" alt="" coords="5,788,197,1213"/>
+<area shape="rect" id="Node000002" href="$classSchedulerBase.html" title="调度器基类接口" alt="" coords="17,193,186,739"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,752,104,788,99,788,99,752"/>
+<area shape="rect" id="Node000003" href="$structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="26,5,177,131"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,131,104,177,99,177,99,131"/>
+</map>

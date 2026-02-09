@@ -1,0 +1,7 @@
+<map id="Gic" name="Gic">
+<area shape="rect" id="Node000001" title="gic 中断控制器驱动" alt="" coords="161,833,312,1339"/>
+<area shape="rect" id="Node000002" href="$classGic_1_1Gicd.html" title=" " alt="" coords="5,5,223,771"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,771,192,817,187,818,179,772"/>
+<area shape="rect" id="Node000003" href="$classGic_1_1Gicr.html" title=" " alt="" coords="247,25,475,751"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="299,751,287,818,282,817,294,750"/>
+</map>

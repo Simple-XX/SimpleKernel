@@ -1,0 +1,35 @@
+var kernel__log_8hpp =
+[
+    [ "klog::detail::Logger< Level >", "classklog_1_1detail_1_1Logger.html", "classklog_1_1detail_1_1Logger" ],
+    [ "klog::detail::LogBase< Level, Args >", "structklog_1_1detail_1_1LogBase.html", "structklog_1_1detail_1_1LogBase" ],
+    [ "klog::Debug< Args >", "structklog_1_1Debug.html", "structklog_1_1Debug" ],
+    [ "klog::Info< Args >", "structklog_1_1Info.html", "structklog_1_1Info" ],
+    [ "klog::Warn< Args >", "structklog_1_1Warn.html", "structklog_1_1Warn" ],
+    [ "klog::Err< Args >", "structklog_1_1Err.html", "structklog_1_1Err" ],
+    [ "LogLevel", "kernel__log_8hpp.html#acd7289dac267a42c332aa9de8035c058", [
+      [ "kDebug", "kernel__log_8hpp.html#acd7289dac267a42c332aa9de8035c058ac755183201f18ee5617a59bc9decb20c", null ],
+      [ "kInfo", "kernel__log_8hpp.html#acd7289dac267a42c332aa9de8035c058ac8ca41f64403523cff16285ad76af703", null ],
+      [ "kWarn", "kernel__log_8hpp.html#acd7289dac267a42c332aa9de8035c058ad4fa508b8ac4556b460a0f552315e00c", null ],
+      [ "kErr", "kernel__log_8hpp.html#acd7289dac267a42c332aa9de8035c058ad7fcb4d21eac534743b5f6afd750daea", null ],
+      [ "kLogLevelMax", "kernel__log_8hpp.html#acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f", null ]
+    ] ],
+    [ "Debug", "kernel__log_8hpp.html#a1c9bf700538807a09dcd85cdd9321fc2", null ],
+    [ "DebugBlob", "kernel__log_8hpp.html#ac339ed4f65e6f389be0ddece9c4aaa26", null ],
+    [ "Err", "kernel__log_8hpp.html#aa49b1c4c25e6f7ce42d694ebe18d0b0b", null ],
+    [ "Info", "kernel__log_8hpp.html#a35379ffad8826362be8a583daaa5c3bf", null ],
+    [ "Warn", "kernel__log_8hpp.html#a334e22eed076d552e2c3b1b628a4f3c8", null ],
+    [ "debug", "kernel__log_8hpp.html#adef30339dcbd2c123c2f3edb380df8a7", null ],
+    [ "err", "kernel__log_8hpp.html#a65717ff6ada47a23f0486977f682ea29", null ],
+    [ "info", "kernel__log_8hpp.html#aa59f931199fed6d453591f3766150ea0", null ],
+    [ "kBlue", "kernel__log_8hpp.html#ade9a23e153a210a0740da00111ceed76", null ],
+    [ "kCyan", "kernel__log_8hpp.html#a8a7f42a6d8b3e6c24411c5bdd2f77356", null ],
+    [ "kGreen", "kernel__log_8hpp.html#a521ec5c56fac131c04967aec6a50758b", null ],
+    [ "kLogColors", "kernel__log_8hpp.html#adbd58831ddfa1a86c82bd88f5f3c158c", null ],
+    [ "kMagenta", "kernel__log_8hpp.html#a4f89ba928b14726ef81947ed5b8c0bd1", null ],
+    [ "kRed", "kernel__log_8hpp.html#a8b6d722bf10436c6340cf49b41e18208", null ],
+    [ "kReset", "kernel__log_8hpp.html#a44c0b56ea841945f6668fae3c6a233bb", null ],
+    [ "kWhite", "kernel__log_8hpp.html#a1a89b52ceb28ae243016cc09e98ded2d", null ],
+    [ "kYellow", "kernel__log_8hpp.html#a4af8b794b23b244d2bbb13d2d6940f59", null ],
+    [ "log_lock", "kernel__log_8hpp.html#a2027af72ff878049f22ed5c5963d8f1d", null ],
+    [ "warn", "kernel__log_8hpp.html#aede2035fc3b887ffd2e5bd40b036048f", null ]
+];

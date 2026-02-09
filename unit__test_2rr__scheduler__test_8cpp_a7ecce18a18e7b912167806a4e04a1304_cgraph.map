@@ -1,0 +1,7 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,45,60,70"/>
+<area shape="rect" id="Node000002" href="$classRoundRobinScheduler.html#a34587bb9bb9a178e8fbc073242aa8c89" title="将任务加入就绪队列尾部" alt="" coords="108,5,272,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,49,94,42,95,47,61,55"/>
+<area shape="rect" id="Node000003" href="$classRoundRobinScheduler.html#a8375833e98f003cb72591b23c0187708" title="选择下一个要运行的任务" alt="" coords="108,69,272,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="61,60,95,67,94,72,60,65"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="switch_to" name="switch_to">
+<area shape="rect" id="Node000001" title=" " alt="" coords="660,153,744,179"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#af7525954e852c09c1dd8ba50235f1d78" title="调度函数 选择下一个任务并切换上下文" alt="" coords="437,79,612,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="669,148,611,118,579,107,580,102,613,113,671,144"/>
+<area shape="rect" id="Node000008" href="$task__scheduling__example__test_8cpp.html#ae2476f4138ea3da243c4248b722039c5" title="示例：清空切换历史" alt="" coords="490,128,559,153"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="646,161,559,148,560,143,647,155"/>
+<area shape="rect" id="Node000009" href="$task__scheduling__example__test_8cpp.html#ad287521df6cc3daaa5fb96ea8afcfd38" title="示例：验证多次切换的历史记录" alt="" coords="490,177,559,203"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="647,176,560,188,559,183,646,171"/>
+<area shape="rect" id="Node000010" href="$task__scheduling__example__test_8cpp.html#aff367fc7a0b493d3bba6057fce1a57eb" title="示例：验证 switch_to 记录切换历史" alt="" coords="490,227,559,252"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="670,188,613,218,560,234,559,229,611,213,668,184"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#a71763ebababa9aa90bad6a07c66edede" title="阻塞当前任务" alt="" coords="218,5,370,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="478,76,389,45,349,33,350,28,390,39,480,71"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#ae3444c55ab7b6ec348a56b596229fc0f" title="退出当前线程" alt="" coords="223,55,365,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="423,83,365,77,365,72,424,78"/>
+<area shape="rect" id="Node000006" href="$classTaskManager.html#a86fe8ff01e353a0acb150c90e8081811" title="线程睡眠" alt="" coords="218,104,370,129"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="424,105,370,111,370,106,423,100"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#aa1041f9ed06a9d0b6b738621c30e1921" title="更新系统 tick" alt="" coords="199,153,389,179"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="459,111,438,118,415,130,390,143,352,156,350,151,388,138,412,126,436,113,457,106"/>
+<area shape="rect" id="Node000004" href="$classTaskManager.html#aadc206ac53400212078270833533f247" title="等待子进程退出" alt="" coords="5,5,151,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="204,21,151,21,151,15,204,15"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Apic" name="Apic">
+<area shape="rect" id="Node000001" title="APIC 管理类，管理整个系统的 Local APIC 和 IO APIC." alt="" coords="137,2373,332,2899"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html" title="Local APIC 驱动类" alt="" coords="5,5,221,2311"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,2311,215,2357,209,2357,205,2311"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html" title="IO APIC 驱动类" alt="" coords="245,455,467,1861"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="345,1861,328,2107,301,2350,300,2357,295,2357,296,2349,323,2106,340,1861"/>
+</map>

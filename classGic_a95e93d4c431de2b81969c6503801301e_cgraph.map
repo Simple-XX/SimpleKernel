@@ -1,0 +1,15 @@
+<map id="Gic::SetUP" name="Gic::SetUP">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,96,56"/>
+<area shape="rect" id="Node000002" href="$classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670" title=" " alt="" coords="144,5,325,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,34,130,30,131,35,97,40"/>
+<area shape="rect" id="Node000004" href="$classGic_1_1Gicr.html#a73bf402c370116a4f8e7773a3093f86b" title=" " alt="" coords="173,55,297,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="97,47,159,55,159,60,96,52"/>
+<area shape="rect" id="Node000003" href="$classGic_1_1Gicd.html#a81cbd89e80414992661203da25671a1f" title=" " alt="" coords="405,5,527,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="326,15,391,15,391,21,326,21"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="373,55,559,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="297,65,360,65,360,70,297,70"/>
+<area shape="rect" id="Node000007" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="411,104,521,129"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="295,77,398,100,397,105,294,83"/>
+<area shape="rect" id="Node000006" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="607,47,869,87"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="559,65,593,65,593,70,559,70"/>
+</map>

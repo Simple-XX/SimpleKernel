@@ -1,0 +1,7 @@
+<map id="SchedulerBase::OnScheduled" name="SchedulerBase::OnScheduled">
+<area shape="rect" id="Node000001" title="任务开始运行时调用 (从 Ready 变为 Running)" alt="" coords="108,31,319,56"/>
+<area shape="rect" id="Node000002" href="$unit__test_2cfs__scheduler__test_8cpp.html#af3f9af0055ea9b3c9948e250a9845d19" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,31,60,24,60,19,110,26"/>
+<area shape="rect" id="Node000003" href="$unit__test_2fifo__scheduler__test_8cpp.html#abbc9c6fc038f6192238f4267b5fee40f" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="105,60,61,66,60,61,104,55"/>
+</map>

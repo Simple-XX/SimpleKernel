@@ -1,0 +1,22 @@
+<map id="InterruptInit" name="InterruptInit">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,156,104,181"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#afe7f925ac3cb632ed212166712288451" title=" " alt="" coords="311,5,483,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="61,154,96,107,121,81,151,60,186,44,223,32,296,19,297,24,224,37,188,49,153,64,124,85,100,111,66,157"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="304,55,489,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="66,154,101,121,125,104,151,90,220,71,290,63,291,68,221,76,153,95,128,108,105,125,69,158"/>
+<area shape="rect" id="Node000005" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="312,131,481,156"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="104,162,298,148,298,153,104,168"/>
+<area shape="rect" id="Node000006" href="$aarch64_2timer_8cpp.html#a8febf243f0581d61474fd6b56cfdb544" title=" " alt="" coords="163,105,245,131"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="92,153,152,133,153,138,94,158"/>
+<area shape="rect" id="Node000007" href="$arch_8cpp.html#ac73d8c3647dca189d5c572ba9c48f471" title=" " alt="" coords="159,207,249,232"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="94,179,153,200,152,205,92,184"/>
+<area shape="rect" id="Node000008" href="$aarch64_2interrupt__main_8cpp.html#afeb27dda805c973ef825d7f26ea196c8" title=" " alt="" coords="152,256,256,281"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="72,180,108,210,153,242,162,247,159,252,151,247,105,214,68,184"/>
+<area shape="rect" id="Node000009" href="$aarch64_2interrupt__main_8cpp.html#a2a09df74b4cb8ba4d0fe481aaa679816" title="中断处理函数" alt="" coords="153,305,255,331"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="65,180,100,233,125,264,154,292,159,296,156,300,150,296,121,268,95,236,61,183"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="537,23,800,63"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="483,23,524,27,523,32,483,29"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="489,57,523,54,524,59,490,62"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="244,105,334,81,335,86,245,110"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="245,121,298,128,298,133,244,126"/>
+</map>

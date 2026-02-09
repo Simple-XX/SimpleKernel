@@ -1,0 +1,106 @@
+<map id="Singleton::GetInstance" name="Singleton::GetInstance">
+<area shape="rect" id="Node000001" title=" " alt="" coords="693,1016,863,1042"/>
+<area shape="rect" id="Node000002" href="$aarch64_2arch__main_8cpp.html#aa26c42c34bbb6c8c7cd4a8664dc7952f" title=" " alt="" coords="267,76,339,102"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="774,1003,772,827,767,699,758,561,742,423,718,297,703,242,686,194,666,156,643,127,610,102,571,85,530,74,487,70,405,73,340,83,339,78,405,67,487,65,531,69,573,80,612,97,647,123,671,153,691,192,708,240,724,296,747,422,763,560,773,699,778,826,780,1003"/>
+<area shape="rect" id="Node000003" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="67,127,122,152"/>
+<area shape="poly" id="edge26_Node000001_Node000003" title=" " alt="" coords="772,1003,758,806,730,510,712,361,691,230,668,132,656,99,643,80,595,42,548,20,502,10,455,10,406,18,353,32,233,66,198,79,165,95,114,129,111,125,162,91,196,74,231,61,352,26,405,13,454,4,502,4,550,15,597,38,647,77,661,97,673,130,697,229,717,360,736,510,763,806,778,1003"/>
+<area shape="rect" id="Node000004" href="$x86__64_2arch__main_8cpp.html#aef7722ec22df90253efc0918932cc95c" title=" " alt="" coords="498,330,570,355"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="773,1003,762,870,739,678,722,580,701,490,674,417,660,389,643,368,628,357,609,349,570,343,571,338,610,344,630,352,647,365,664,386,679,415,706,489,727,579,745,677,768,869,778,1003"/>
+<area shape="rect" id="Node000005" href="$x86__64_2arch__main_8cpp.html#a0eb8a6ba9bf6955a6c5a89ee62171f6e" title=" " alt="" coords="484,379,584,404"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="772,1003,760,879,736,702,719,612,698,529,673,462,658,437,644,418,616,401,584,394,585,388,618,396,647,414,663,434,677,460,703,528,724,610,741,701,766,878,777,1003"/>
+<area shape="rect" id="Node000006" href="$structBasicInfo.html#a6ac16be61163567a93151ef9289daf66" title=" " alt="" coords="459,428,609,454"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="772,1003,758,888,733,726,715,644,695,569,671,508,657,484,643,467,628,455,609,448,611,443,630,451,647,463,662,481,675,505,700,567,721,642,738,725,764,887,777,1003"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="457,478,611,503"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="771,1003,756,896,729,749,712,675,692,607,669,553,643,516,628,505,610,498,612,493,631,501,647,513,673,550,697,606,717,673,735,748,761,895,776,1002"/>
+<area shape="rect" id="Node000008" href="$clone__system__test_8cpp.html#a22a28daf23b20387a79c91fa118a1689" title="Clone 系统测试入口" alt="" coords="462,527,606,552"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="770,1004,754,906,726,774,709,707,689,647,667,598,643,566,626,554,606,546,607,541,629,549,647,562,672,596,694,645,714,706,731,773,759,905,776,1003"/>
+<area shape="rect" id="Node000009" href="$aarch64_2backtrace_8cpp.html#a8446673829abff96859f4f7fef26c6fc" title=" " alt="" coords="255,127,352,152"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="774,1002,771,833,765,712,755,582,739,452,716,333,701,281,684,237,665,200,643,174,612,150,575,134,537,124,496,119,418,121,352,131,352,125,417,115,497,114,538,118,577,129,614,145,647,170,669,197,689,235,706,280,721,332,744,451,760,581,771,712,776,833,779,1002"/>
+<area shape="rect" id="Node000010" href="$exit__system__test_8cpp.html#a1ad372ba4b1c37c4dd0fa4cfec12038d" title="Exit 系统测试入口" alt="" coords="467,576,601,602"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="774,1003,770,926,763,875,752,821,735,765,713,710,682,659,644,615,624,602,601,595,603,590,626,597,647,611,687,656,717,707,740,763,757,820,768,875,775,925,779,1002"/>
+<area shape="rect" id="Node000011" href="$riscv64_2interrupt__main_8cpp.html#aada1bdd2466a8124b0f271eb7ab5398c" title=" " alt="" coords="487,626,581,651"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="773,1003,765,934,745,842,729,794,707,746,679,702,644,665,614,648,581,641,582,636,616,643,647,660,683,699,711,743,734,792,751,841,771,933,778,1002"/>
+<area shape="rect" id="Node000012" href="$classInterrupt.html#a736dd658be198f3dc94db0f876fb2499" title=" " alt="" coords="463,675,605,700"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="771,1003,761,943,739,864,722,823,701,783,675,746,644,714,625,702,605,695,607,690,628,698,647,710,679,742,706,780,727,821,744,863,766,942,777,1002"/>
+<area shape="rect" id="Node000013" href="$interrupt__test_8cpp.html#a16953e19a2974c8249f2109a4522237e" title=" " alt="" coords="479,724,589,750"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="768,1003,754,954,729,891,693,826,670,797,644,771,618,756,589,746,590,741,620,751,647,767,674,793,697,823,734,889,759,952,773,1002"/>
+<area shape="rect" id="Node000014" href="$aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530" title=" " alt="" coords="254,178,353,203"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="774,1002,770,841,763,726,753,602,736,479,713,367,699,319,683,277,664,243,644,218,611,195,575,179,536,170,496,166,418,169,352,180,351,175,417,164,496,160,537,164,577,174,614,190,647,214,669,240,688,275,704,317,718,366,742,478,758,602,769,726,775,841,779,1002"/>
+<area shape="rect" id="Node000015" href="$aarch64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea" title=" " alt="" coords="240,800,367,826"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="767,1004,752,960,728,907,692,855,670,833,644,815,607,799,568,789,528,784,487,783,411,790,349,803,348,798,410,785,487,778,528,778,569,784,609,794,647,811,673,829,696,852,732,904,757,958,772,1002"/>
+<area shape="rect" id="Node000016" href="$aarch64_2interrupt__main_8cpp.html#a442cc7b3e5aa811808094d0a4e4e7e40" title=" " alt="" coords="463,876,605,916"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="750,1010,702,973,644,937,601,918,603,913,647,932,705,969,753,1005"/>
+<area shape="rect" id="Node000017" href="$classMutex.html#a99d18d08046311956a9a69f1f8c9daaa" title="检查锁是否被当前线程持有" alt="" coords="423,991,645,1016"/>
+<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="680,1022,644,1018,645,1013,680,1016"/>
+<area shape="rect" id="Node000018" href="$classMutex.html#a8e45acd6b7246a9ffb6cdbe928ae14a4" title="获取锁（阻塞）" alt="" coords="253,966,354,991"/>
+<area shape="poly" id="edge25_Node000001_Node000018" title=" " alt="" coords="739,1013,694,995,645,981,566,971,487,969,354,975,354,970,487,963,566,966,646,976,696,990,741,1008"/>
+<area shape="rect" id="Node000020" href="$classMutex.html#a2b3ee46462679c651e6e1b40c8ebf881" title="尝试获取锁（非阻塞）" alt="" coords="243,1028,363,1054"/>
+<area shape="poly" id="edge53_Node000001_Node000020" title=" " alt="" coords="679,1034,364,1042,363,1037,679,1029"/>
+<area shape="rect" id="Node000021" href="$classMutex.html#abd80d453457fcf4f39a5a5c3f10fe5aa" title="释放锁" alt="" coords="244,1086,363,1111"/>
+<area shape="poly" id="edge54_Node000001_Node000021" title=" " alt="" coords="679,1046,363,1093,362,1087,679,1041"/>
+<area shape="rect" id="Node000023" href="$kernel__task__test_8cpp.html#ae49d3755a7181bd34a1c87abe708b4da" title=" " alt="" coords="469,1143,599,1168"/>
+<area shape="poly" id="edge24_Node000001_Node000023" title=" " alt="" coords="754,1053,706,1090,646,1126,594,1146,592,1141,644,1121,703,1086,750,1049"/>
+<area shape="rect" id="Node000024" href="$memory_8cpp.html#a0d8c809343a4f03aea31ffbf8891a11d" title=" " alt="" coords="255,252,352,278"/>
+<area shape="poly" id="edge27_Node000001_Node000024" title=" " alt="" coords="773,1002,765,859,744,653,727,546,705,450,677,371,661,341,644,319,623,306,593,295,514,280,427,272,352,268,352,263,428,266,515,275,595,290,626,301,647,315,666,338,682,369,710,448,732,545,749,652,770,859,778,1002"/>
+<area shape="rect" id="Node000025" href="$memory_8cpp.html#a9297078da36ecdef3c2e61bccf119a47" title=" " alt="" coords="471,1192,597,1218"/>
+<area shape="poly" id="edge29_Node000001_Node000025" title=" " alt="" coords="765,1055,718,1119,685,1153,647,1182,623,1193,597,1201,596,1195,621,1188,644,1177,681,1149,714,1116,760,1052"/>
+<area shape="rect" id="Node000026" href="$syscall_8cpp.html#a6d9ce836fd264a98548781886f375d2a" title="创建新线程（或进程）" alt="" coords="491,1291,577,1316"/>
+<area shape="poly" id="edge30_Node000001_Node000026" title=" " alt="" coords="773,1056,759,1104,734,1165,697,1228,674,1256,647,1281,613,1297,578,1305,577,1300,612,1292,644,1276,670,1252,693,1225,729,1163,754,1103,768,1054"/>
+<area shape="rect" id="Node000029" href="$syscall_8cpp.html#a34c7946fbbdfb071d2b453a745dcb9b4" title="退出当前进程或线程" alt="" coords="496,1340,572,1366"/>
+<area shape="poly" id="edge33_Node000001_Node000029" title=" " alt="" coords="776,1056,764,1113,741,1188,724,1227,703,1265,677,1300,647,1330,630,1341,611,1348,573,1355,572,1350,609,1343,627,1336,644,1326,673,1296,698,1262,719,1224,736,1186,759,1112,770,1055"/>
+<area shape="rect" id="Node000030" href="$syscall_8cpp.html#a01fbd4b45143dd51bf6f338d8ee325da" title="创建新进程（fork）" alt="" coords="495,1390,573,1415"/>
+<area shape="poly" id="edge35_Node000001_Node000030" title=" " alt="" coords="778,1056,769,1122,748,1210,731,1257,709,1302,681,1344,647,1380,630,1392,611,1399,573,1406,573,1400,610,1394,628,1387,644,1376,677,1341,705,1299,726,1255,743,1208,764,1121,772,1055"/>
+<area shape="rect" id="Node000031" href="$syscall_8cpp.html#aa03f906affa67ef23ebfbcb79efa569f" title="快速用户空间互斥锁操作（futex）" alt="" coords="491,1439,577,1464"/>
+<area shape="poly" id="edge37_Node000001_Node000031" title=" " alt="" coords="779,1056,773,1130,755,1231,738,1285,715,1338,685,1387,647,1430,631,1441,614,1448,577,1455,576,1450,612,1443,629,1436,644,1426,681,1384,711,1336,733,1283,750,1230,768,1129,774,1055"/>
+<area shape="rect" id="Node000032" href="$syscall_8cpp.html#a17717d9e7bc25b272fe4dbb63bc52baa" title="获取当前线程ID" alt="" coords="489,1488,579,1514"/>
+<area shape="poly" id="edge39_Node000001_Node000032" title=" " alt="" coords="780,1056,777,1138,772,1193,761,1252,745,1314,721,1374,689,1430,647,1479,632,1490,615,1497,579,1504,578,1499,613,1492,629,1485,644,1475,685,1427,716,1372,740,1312,756,1251,766,1192,772,1138,775,1055"/>
+<area shape="rect" id="Node000033" href="$syscall_8cpp.html#a4dd37ef811b362b4638eb21fab7f09fc" title="获取线程的CPU亲和性" alt="" coords="453,1587,615,1612"/>
+<area shape="poly" id="edge41_Node000001_Node000033" title=" " alt="" coords="777,1056,763,1169,737,1325,719,1405,699,1478,675,1537,647,1578,633,1588,617,1596,615,1591,630,1584,643,1574,670,1535,694,1476,714,1404,732,1324,758,1168,771,1055"/>
+<area shape="rect" id="Node000034" href="$syscall_8cpp.html#afc0c058ad3c8a4b5746d97c2f49b97a4" title="设置线程的CPU亲和性" alt="" coords="453,1636,615,1662"/>
+<area shape="poly" id="edge42_Node000001_Node000034" title=" " alt="" coords="777,1056,765,1178,740,1350,723,1437,702,1517,677,1582,663,1608,647,1627,633,1638,617,1645,614,1641,630,1633,643,1623,658,1605,672,1580,697,1515,718,1436,735,1349,760,1177,772,1056"/>
+<area shape="rect" id="Node000035" href="$syscall_8cpp.html#ab5c00759c95d8ce9e9db75b1b55a9552" title="设置线程ID地址（用于线程退出时的清理）" alt="" coords="457,1538,611,1563"/>
+<area shape="poly" id="edge43_Node000001_Node000035" title=" " alt="" coords="776,1056,761,1160,734,1301,716,1373,696,1439,673,1492,647,1528,631,1540,612,1548,610,1543,628,1535,643,1525,668,1489,691,1437,711,1372,728,1300,755,1159,771,1055"/>
+<area shape="rect" id="Node000036" href="$syscall_8cpp.html#a83d46a7afcd47f11ed83ae871d058d20" title="休眠指定毫秒数" alt="" coords="491,1686,577,1711"/>
+<area shape="poly" id="edge45_Node000001_Node000036" title=" " alt="" coords="778,1056,767,1186,744,1372,726,1468,705,1556,679,1627,664,1655,647,1676,632,1688,614,1696,578,1702,577,1697,613,1691,629,1683,643,1673,659,1652,674,1625,700,1554,721,1467,738,1372,762,1185,772,1055"/>
+<area shape="rect" id="Node000037" href="$syscall_8cpp.html#a23ac80734740f098e56332da33758ace" title="主动放弃CPU，让出时间片" alt="" coords="493,1242,575,1267"/>
+<area shape="poly" id="edge46_Node000001_Node000037" title=" " alt="" coords="770,1056,752,1095,726,1143,691,1191,647,1231,612,1248,576,1255,575,1250,610,1243,644,1227,687,1187,722,1140,748,1093,765,1054"/>
+<area shape="rect" id="Node000038" href="$thread__group__system__test_8cpp.html#a5b31dadbdb315ea840b8dc6a7cb2cf81" title="线程组系统测试入口" alt="" coords="437,1735,631,1760"/>
+<area shape="poly" id="edge48_Node000001_Node000038" title=" " alt="" coords="778,1056,769,1195,747,1396,730,1500,708,1595,681,1673,665,1703,647,1726,632,1737,629,1733,643,1722,660,1700,676,1671,703,1593,724,1499,741,1396,763,1194,773,1055"/>
+<area shape="rect" id="Node000039" href="$aarch64_2timer_8cpp.html#a8febf243f0581d61474fd6b56cfdb544" title=" " alt="" coords="493,228,575,254"/>
+<area shape="poly" id="edge49_Node000001_Node000039" title=" " alt="" coords="773,1003,765,853,743,635,726,521,704,418,677,332,661,300,643,275,629,263,612,254,574,245,576,240,613,249,632,258,647,271,665,297,682,330,710,416,732,520,749,634,770,853,778,1002"/>
+<area shape="rect" id="Node000040" href="$aarch64_2timer_8cpp.html#a85b082ebd75de9086c93c05ad124fc8c" title=" " alt="" coords="479,826,589,851"/>
+<area shape="poly" id="edge51_Node000001_Node000040" title=" " alt="" coords="762,1006,743,973,716,935,683,897,644,866,617,853,588,846,590,841,619,848,647,862,687,894,720,932,747,970,766,1003"/>
+<area shape="rect" id="Node000041" href="$system__test_2virtual__memory__test_8cpp.html#a8027cdd5d224276fe32cfe407e4dfe88" title=" " alt="" coords="455,1784,613,1810"/>
+<area shape="poly" id="edge55_Node000001_Node000041" title=" " alt="" coords="778,1056,771,1204,750,1420,733,1532,711,1634,682,1718,666,1750,647,1775,632,1787,615,1795,612,1790,629,1782,643,1771,661,1747,678,1716,705,1633,728,1531,744,1420,765,1204,773,1056"/>
+<area shape="rect" id="Node000042" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="423,1834,645,1859"/>
+<area shape="poly" id="edge56_Node000001_Node000042" title=" " alt="" coords="779,1055,772,1212,753,1443,736,1563,714,1673,684,1763,667,1798,647,1824,633,1836,630,1831,643,1821,662,1795,680,1761,709,1671,731,1562,748,1442,767,1211,773,1055"/>
+<area shape="rect" id="Node000043" href="$wait__system__test_8cpp.html#a1d61aadd4f03596c1c9a64a5e4e5191c" title="Wait 系统测试入口" alt="" coords="465,1883,603,1908"/>
+<area shape="poly" id="edge57_Node000001_Node000043" title=" " alt="" coords="779,1056,774,1221,767,1339,756,1467,739,1594,717,1712,686,1808,668,1845,647,1874,627,1888,604,1896,602,1891,625,1884,643,1870,663,1843,681,1806,711,1710,734,1594,751,1466,762,1338,769,1220,774,1055"/>
+<area shape="rect" id="Node000044" href="$x86__64_2arch__main_8cpp.html#a94c31dc3a1de17229bc6863fff8eddd7" title=" " alt="" coords="460,1932,608,1958"/>
+<area shape="poly" id="edge58_Node000001_Node000044" title=" " alt="" coords="779,1056,776,1230,769,1355,759,1490,743,1626,720,1751,705,1805,688,1853,669,1893,647,1923,630,1936,609,1944,607,1940,627,1932,643,1919,664,1890,683,1851,700,1804,714,1749,737,1625,754,1490,764,1354,770,1229,774,1056"/>
+<area shape="rect" id="Node000045" href="$structTaskControlBlock.html#a5cb17ff89e47654f129a269f7b8becbb" title=" " alt="" coords="461,1982,607,2022"/>
+<area shape="poly" id="edge59_Node000001_Node000045" title=" " alt="" coords="779,1056,776,1237,770,1369,760,1512,743,1655,720,1788,706,1846,689,1897,669,1940,647,1972,629,1987,608,1997,606,1992,626,1983,643,1969,665,1937,684,1895,701,1844,715,1786,738,1655,754,1511,765,1368,771,1237,774,1056"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="254,104,123,136,122,131,253,98"/>
+<area shape="poly" id="edge9_Node000009_Node000003" title=" " alt="" coords="241,142,122,142,122,137,241,137"/>
+<area shape="poly" id="edge15_Node000014_Node000003" title=" " alt="" coords="240,178,121,149,123,144,241,173"/>
+<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="409,993,354,987,354,981,410,987"/>
+<area shape="poly" id="edge21_Node000017_Node000020" title=" " alt="" coords="442,1021,364,1034,363,1029,441,1016"/>
+<area shape="poly" id="edge22_Node000017_Node000021" title=" " alt="" coords="490,1024,336,1088,334,1083,488,1019"/>
+<area shape="rect" id="Node000019" href="$classLockGuard.html#aa283d6b19fddd2287f84dcf937b92e5b" title="构造函数，自动获取锁" alt="" coords="11,966,179,991"/>
+<area shape="poly" id="edge20_Node000018_Node000019" title=" " alt="" coords="239,981,179,981,179,976,239,976"/>
+<area shape="rect" id="Node000022" href="$classLockGuard.html#af889562d8ed81c2337c94d0c915d65ca" title="析构函数，自动释放锁" alt="" coords="5,1086,184,1111"/>
+<area shape="poly" id="edge23_Node000021_Node000022" title=" " alt="" coords="230,1101,184,1101,184,1096,230,1096"/>
+<area shape="poly" id="edge28_Node000024_Node000003" title=" " alt="" coords="268,248,116,155,118,150,271,243"/>
+<area shape="rect" id="Node000027" href="$syscall_8cpp.html#a9c01f57bb4ef6f1b91ccce212494a199" title=" " alt="" coords="232,1390,375,1415"/>
+<area shape="poly" id="edge31_Node000026_Node000027" title=" " alt="" coords="478,1315,424,1330,367,1361,322,1392,319,1387,364,1356,422,1325,476,1309"/>
+<area shape="rect" id="Node000028" href="$arch_2aarch64_2syscall_8cpp.html#a27f252437c17e7b5d2e8aef749daf1f0" title=" " alt="" coords="61,1390,129,1415"/>
+<area shape="poly" id="edge32_Node000027_Node000028" title=" " alt="" coords="218,1405,129,1405,129,1400,218,1400"/>
+<area shape="poly" id="edge34_Node000029_Node000027" title=" " alt="" coords="483,1367,364,1392,363,1387,482,1361"/>
+<area shape="poly" id="edge36_Node000030_Node000027" title=" " alt="" coords="481,1405,375,1405,375,1400,481,1400"/>
+<area shape="poly" id="edge38_Node000031_Node000027" title=" " alt="" coords="477,1442,363,1418,364,1413,478,1437"/>
+<area shape="poly" id="edge40_Node000032_Node000027" title=" " alt="" coords="475,1495,422,1480,364,1449,319,1417,322,1413,367,1444,424,1475,476,1490"/>
+<area shape="poly" id="edge44_Node000035_Node000027" title=" " alt="" coords="443,1539,421,1529,385,1503,353,1472,311,1417,315,1414,357,1468,388,1499,424,1524,445,1534"/>
+<area shape="poly" id="edge47_Node000037_Node000027" title=" " alt="" coords="480,1262,451,1269,424,1281,388,1306,357,1337,315,1391,311,1388,353,1333,385,1302,421,1276,449,1264,479,1257"/>
+<area shape="poly" id="edge50_Node000039_Node000014" title=" " alt="" coords="479,232,352,204,354,199,480,227"/>
+<area shape="poly" id="edge52_Node000040_Node000015" title=" " alt="" coords="465,834,366,823,367,817,466,828"/>
+</map>

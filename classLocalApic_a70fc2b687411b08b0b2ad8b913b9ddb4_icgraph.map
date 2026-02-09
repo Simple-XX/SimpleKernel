@@ -1,0 +1,5 @@
+<map id="LocalApic::SetupPeriodicTimer" name="LocalApic::SetupPeriodicTimer">
+<area shape="rect" id="Node000001" title="设置周期性定时器" alt="" coords="239,5,420,45"/>
+<area shape="rect" id="Node000002" href="$classApic.html#a91da5ed274fac8574ed249557d284100" title="设置 Local APIC 定时器" alt="" coords="5,13,191,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,28,191,28,191,23,225,23"/>
+</map>

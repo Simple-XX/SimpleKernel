@@ -1,0 +1,7 @@
+<map id="test_env::TestEnvironmentState::ClearCurrentThreadEnvironment" name="test_env::TestEnvironmentState::ClearCurrentThreadEnvironment">
+<area shape="rect" id="Node000001" title="清除当前线程的环境实例指针" alt="" coords="256,23,531,63"/>
+<area shape="rect" id="Node000002" href="$classKernelFdtTest.html#ac4830f8e9de1b9c480a11943659acc4b" title=" " alt="" coords="15,5,198,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,33,198,29,199,23,242,27"/>
+<area shape="rect" id="Node000003" href="$classTaskTestHarness.html#a2cb71293bed79eba46bd9a86291cb4bd" title=" " alt="" coords="5,55,208,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,59,208,62,208,56,242,53"/>
+</map>

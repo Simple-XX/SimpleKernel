@@ -1,0 +1,7 @@
+<map id="strtox_main" name="strtox_main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="121,31,221,56"/>
+<area shape="rect" id="Node000002" href="$sk__stdlib_8c.html#a878c9e072297bf2070dc918474e4bc75" title="将字符串按指定进制转换为长长整数，并可以获取转换结束位置" alt="" coords="9,5,69,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,34,69,26,70,21,108,29"/>
+<area shape="rect" id="Node000003" href="$sk__stdlib_8c.html#aa78b1ce1f2cd88ff0051eaa7bf3c538a" title="将字符串按指定进制转换为无符号长长整数，并可以获取转换结束位置" alt="" coords="5,55,73,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="108,57,74,64,73,59,107,52"/>
+</map>

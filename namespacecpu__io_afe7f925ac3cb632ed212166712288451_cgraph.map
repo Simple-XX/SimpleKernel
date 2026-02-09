@@ -1,0 +1,5 @@
+<map id="cpu_io::EnableInterrupt" name="cpu_io::EnableInterrupt">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,177,38"/>
+<area shape="rect" id="Node000002" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="225,5,488,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,23,211,23,211,28,178,28"/>
+</map>

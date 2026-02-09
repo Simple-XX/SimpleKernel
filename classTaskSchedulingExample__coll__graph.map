@@ -1,0 +1,9 @@
+<map id="TaskSchedulingExample" name="TaskSchedulingExample">
+<area shape="rect" id="Node000001" title="演示如何使用环境层编写任务调度测试" alt="" coords="61,623,232,708"/>
+<area shape="rect" id="Node000002" href="$classTaskTestHarness.html" title="Task 模块单元测试的基类 Fixture." alt="" coords="57,448,236,573"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,587,149,622,144,622,144,587"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,163,99,228"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="68,240,130,447,125,448,63,242"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html" title="测试环境状态" alt="" coords="123,5,360,385"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="187,387,173,433,168,431,182,385"/>
+</map>

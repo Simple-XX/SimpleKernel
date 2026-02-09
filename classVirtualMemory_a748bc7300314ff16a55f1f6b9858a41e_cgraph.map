@@ -1,0 +1,10 @@
+<map id="VirtualMemory::InitCurrentCore" name="VirtualMemory::InitCurrentCore">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,45,231,70"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io_1_1virtual__memory.html#a711073bec6e8a5bdc81bc4300f2da029" title=" " alt="" coords="279,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,42,265,36,266,41,217,47"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io_1_1virtual__memory.html#a34641ac6c78b4598532a2d089c1357b2" title=" " alt="" coords="279,69,455,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="217,67,266,74,265,79,217,73"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="503,37,765,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="455,33,489,37,489,43,455,39"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="455,76,489,72,489,77,455,81"/>
+</map>

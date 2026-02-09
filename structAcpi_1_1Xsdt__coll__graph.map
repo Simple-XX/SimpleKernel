@@ -1,0 +1,5 @@
+<map id="Acpi::Xsdt" name="Acpi::Xsdt">
+<area shape="rect" id="Node000001" title="Extended System Description Table (XSDT)" alt="" coords="54,293,133,359"/>
+<area shape="rect" id="Node000002" href="$structAcpi_1_1Description__header.html" title="System Description Table Header." alt="" coords="5,5,181,231"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,231,96,277,91,277,91,231"/>
+</map>

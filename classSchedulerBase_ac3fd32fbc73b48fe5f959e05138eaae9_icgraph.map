@@ -1,0 +1,5 @@
+<map id="SchedulerBase::BoostPriority" name="SchedulerBase::BoostPriority">
+<area shape="rect" id="Node000001" title="优先级提升：当任务持有资源时被更高优先级任务等待，提升其优先级" alt="" coords="108,5,319,31"/>
+<area shape="rect" id="Node000002" href="$unit__test_2fifo__scheduler__test_8cpp.html#a68f7923b4ef231d855afb7fa46c331e1" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,21,60,21,60,15,95,15"/>
+</map>

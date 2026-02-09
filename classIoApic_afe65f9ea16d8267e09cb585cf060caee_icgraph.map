@@ -1,0 +1,28 @@
+<map id="IoApic::Read" name="IoApic::Read">
+<area shape="rect" id="Node000001" title="读取 IO APIC 寄存器" alt="" coords="656,84,759,109"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#a4bcfeb99883c755edbc5c70aebd86612" title="获取 IO APIC ID" alt="" coords="450,5,555,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="674,79,642,61,607,44,555,29,556,24,609,40,645,56,677,74"/>
+<area shape="rect" id="Node000005" href="$classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f" title="获取 IO APIC 最大重定向条目数" alt="" coords="405,105,600,145"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="642,108,601,114,600,109,642,103"/>
+<area shape="rect" id="Node000010" href="$classIoApic.html#a37944c22a1220d3db82a0710fb8c5134" title="获取 IO APIC 版本" alt="" coords="432,55,573,80"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="642,90,573,80,574,75,643,85"/>
+<area shape="rect" id="Node000011" href="$classIoApic.html#a8cf120774e68dccf1a1847ab9b642554" title="读取 IO APIC 重定向表项" alt="" coords="397,169,608,195"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="679,120,646,140,609,159,571,172,569,167,607,154,644,136,676,115"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#a4622fc9c86daca19fdc81d4bcd7f2149" title="打印 IO APIC 信息（调试用）" alt="" coords="195,17,321,43"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="436,24,321,30,321,24,436,19"/>
+<area shape="rect" id="Node000004" href="$classApic.html#aba1c25d1561d3d5aefdd434290da39f5" title="打印所有 APIC 信息（调试用）" alt="" coords="5,17,119,43"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="182,33,119,33,119,27,182,27"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="414,102,396,94,372,75,348,56,320,45,322,40,351,52,375,70,399,89,416,97"/>
+<area shape="rect" id="Node000006" href="$classIoApic.html#aa35d2bf3bfc0c1a778711855bc85a8f6" title=" " alt="" coords="203,116,313,141"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="391,129,314,130,314,125,391,124"/>
+<area shape="rect" id="Node000007" href="$classIoApic.html#a2e25ca00e1a01ce1e9dd83195fd3bb2d" title="屏蔽 IRQ" alt="" coords="197,165,319,191"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="398,150,317,168,316,163,397,145"/>
+<area shape="rect" id="Node000008" href="$classIoApic.html#a6304603301681590e61f5d9dc3cfd087" title="设置 IO APIC 重定向表项" alt="" coords="167,67,349,92"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="391,107,327,95,328,89,392,101"/>
+<area shape="rect" id="Node000009" href="$classIoApic.html#a57e460e6fbe7c46914f96f28c5eca53e" title="取消屏蔽 IRQ" alt="" coords="187,215,329,240"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="411,153,399,159,385,170,376,182,366,194,351,206,324,217,322,212,348,201,362,190,371,179,381,166,396,154,408,148"/>
+<area shape="poly" id="edge11_Node000010_Node000003" title=" " alt="" coords="418,57,320,42,321,37,419,52"/>
+<area shape="poly" id="edge13_Node000011_Node000006" title=" " alt="" coords="429,169,313,143,314,138,431,164"/>
+<area shape="poly" id="edge14_Node000011_Node000007" title=" " alt="" coords="384,183,320,182,320,176,384,177"/>
+<area shape="poly" id="edge15_Node000011_Node000009" title=" " alt="" coords="421,200,328,217,327,212,420,195"/>
+</map>

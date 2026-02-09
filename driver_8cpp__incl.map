@@ -1,5 +1,8 @@
-<map id="/home/runner/work/SimpleKernel/SimpleKernel/src/kernel/driver/driver.cpp" name="/home/runner/work/SimpleKernel/SimpleKernel/src/kernel/driver/driver.cpp">
-<area shape="rect" id="node1" title="driver cpp" alt="" coords="5,5,200,61"/>
-<area shape="rect" id="node2" href="$driver_8h.html" title="driver 头文件" alt="" coords="67,109,138,136"/>
-<area shape="rect" id="node3" title=" " alt="" coords="69,184,136,211"/>
+<map id="/root/src/driver/driver.cpp" name="/root/src/driver/driver.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,191,31"/>
+<area shape="rect" id="Node000002" href="$driver_8h.html" title=" " alt="" coords="27,79,97,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,32,76,68,72,65,90,30"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="65,152,131,177"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="104,30,110,63,111,104,106,139,101,138,106,104,105,64,98,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="70,103,88,138,84,141,66,106"/>
 </map>

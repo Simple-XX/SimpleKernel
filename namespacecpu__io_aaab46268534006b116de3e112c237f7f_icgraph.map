@@ -1,0 +1,9 @@
+<map id="cpu_io::GetInterruptStatus" name="cpu_io::GetInterruptStatus">
+<area shape="rect" id="Node000001" title=" " alt="" coords="172,55,364,80"/>
+<area shape="rect" id="Node000002" href="$classSpinLock.html#a1552c84e7da6f0b350fd4f4ae12a1079" title="获得锁" alt="" coords="5,5,124,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,54,117,33,118,28,203,49"/>
+<area shape="rect" id="Node000003" href="$example__environment__test_8cpp.html#ad20bee1750db7488f1c2a296c9092ec9" title="测试中断状态控制" alt="" coords="30,55,99,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,70,99,70,99,65,158,65"/>
+<area shape="rect" id="Node000004" href="$task__scheduling__example__test_8cpp.html#a873f10b8178330509de06bc3e4347db1" title="示例：验证中断状态在任务切换时的行为" alt="" coords="30,104,99,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="202,86,100,111,99,106,201,81"/>
+</map>

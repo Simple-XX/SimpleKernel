@@ -1,0 +1,5 @@
+<map id="IdleScheduler" name="IdleScheduler">
+<area shape="rect" id="Node000001" title="Idle 调度器" alt="" coords="5,619,175,884"/>
+<area shape="rect" id="Node000002" href="$classSchedulerBase.html" title="调度器基类接口" alt="" coords="5,5,175,571"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,585,93,619,87,619,87,585"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="VirtualMemory::DestroyPageDirectory" name="VirtualMemory::DestroyPageDirectory">
+<area shape="rect" id="Node000001" title="回收页表，释放所有映射和子页表" alt="" coords="5,34,213,74"/>
+<area shape="rect" id="Node000002" href="$memory_8cpp.html#a274dd8714485eed9c9328973d44ec5dc" title=" " alt="" coords="547,5,650,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,40,261,35,534,18,534,24,262,41,214,45"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#a5d99f94ac5108601c7ea895ad52f6c33" title="递归释放页表" alt="" coords="261,74,452,114"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,68,248,74,247,79,213,73"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="421,71,544,32,545,37,422,76"/>
+<area shape="poly" id="edge6_Node000003_Node000003" title=" " alt="" coords="312,74,309,64,316,55,332,49,357,47,385,50,400,57,398,62,383,55,357,53,333,55,320,59,314,65,317,73"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io_1_1virtual__memory.html#a841eeee221133f726f9ac2e26577c475" title=" " alt="" coords="511,67,687,107"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="452,89,497,87,497,93,452,94"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io_1_1virtual__memory.html#a5bc8f484f80076b5c3f5cf419fd24aec" title=" " alt="" coords="500,131,697,171"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="442,111,501,126,500,131,441,117"/>
+</map>

@@ -1,0 +1,20 @@
+<map id="SpinLock::Lock" name="SpinLock::Lock">
+<area shape="rect" id="Node000001" title="获得锁" alt="" coords="5,129,124,155"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a6c4ee629d8129247969cace77d47fecb" title=" " alt="" coords="179,5,357,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,127,113,84,140,60,171,40,185,33,187,38,173,44,144,64,117,88,78,131"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#afe7f925ac3cb632ed212166712288451" title=" " alt="" coords="182,55,354,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="88,127,171,89,195,81,197,86,173,94,91,132"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="175,104,361,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="124,132,161,127,162,133,124,137"/>
+<area shape="rect" id="Node000006" href="$namespacecpu__io.html#aaab46268534006b116de3e112c237f7f" title=" " alt="" coords="172,153,364,179"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="124,146,159,150,158,156,124,152"/>
+<area shape="rect" id="Node000007" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="213,203,323,228"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="92,152,173,188,201,196,199,202,171,192,90,157"/>
+<area shape="rect" id="Node000008" href="$sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f" title=" " alt="" coords="229,252,307,277"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="78,153,117,195,144,218,173,237,216,253,214,258,171,242,141,222,114,198,74,157"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="412,73,675,113"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="321,28,365,39,461,66,459,71,363,45,320,33"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="354,73,399,77,398,82,354,78"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="361,106,398,103,399,108,361,111"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="316,151,363,138,454,114,455,119,365,143,318,156"/>
+</map>

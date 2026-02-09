@@ -1,0 +1,9 @@
+<map id="/root/src/arch/x86_64/sipi.h" name="/root/src/arch/x86_64/sipi.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="92,5,227,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,100,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,48,81,87,78,83,132,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="124,93,195,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,46,162,79,157,79,157,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="219,93,286,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="184,44,230,82,226,86,180,48"/>
+</map>

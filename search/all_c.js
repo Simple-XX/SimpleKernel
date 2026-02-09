@@ -1,5 +1,27 @@
 var searchData=
 [
-  ['kernel_2eh_46',['kernel.h',['../kernel_8h.html',1,'']]],
-  ['kernel_5fname_47',['KERNEL_NAME',['../project__config_8h.html#a69e7bc540e11270eeecd410c206297fe',1,'project_config.h']]]
+  ['b_0',['b',['../structparam.html#a530185376023967da2d58622e43ae51f',1,'param']]],
+  ['backtrace_1',['backtrace',['../aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb',1,'backtrace(std::array&lt; uint64_t, kMaxFrameCount &gt; &amp;buffer) -&gt; int:&#160;backtrace.cpp'],['../arch_8h.html#a560d6c985b03fa37322dac744aa27d01',1,'backtrace(void **buffer, int size) -&gt; int:&#160;arch.h'],['../riscv64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb',1,'backtrace(std::array&lt; uint64_t, kMaxFrameCount &gt; &amp;buffer) -&gt; int:&#160;backtrace.cpp'],['../x86__64_2backtrace_8cpp.html#ae8123f0cefe28726eb11cfb623867344',1,'backtrace(std::array&lt; uint64_t, kMaxFrameCount &gt; &amp;buffer) -&gt; int:&#160;backtrace.cpp']]],
+  ['backtrace_2ecpp_2',['backtrace.cpp',['../aarch64_2backtrace_8cpp.html',1,'(Global Namespace)'],['../riscv64_2backtrace_8cpp.html',1,'(Global Namespace)'],['../x86__64_2backtrace_8cpp.html',1,'(Global Namespace)']]],
+  ['balance_3',['Balance',['../classTaskManager.html#a68f938a4d8f069f9f4ead850bd75b0cd',1,'TaskManager']]],
+  ['base_5faddr_5f_4',['base_addr_',['../classGic_1_1Gicd.html#a61cee2b573c38447843a2cbb195a1e34',1,'Gic::Gicd::base_addr_'],['../classGic_1_1Gicr.html#a4dceb042eed0c8a4bf89ae8a06784bd3',1,'Gic::Gicr::base_addr_'],['../classNs16550a.html#a5a00abce4fdf8984d107c63e5f936119',1,'Ns16550a::base_addr_'],['../classPl011.html#a6f2f28cfc5311247057396f0544acebd',1,'Pl011::base_addr_'],['../classPlic.html#a2980f6f61cd1cabc5930eaf04f17b673',1,'Plic::base_addr_']]],
+  ['base_5faddress_5f_5',['base_address_',['../classIoApic.html#a0a5d4300299b1a0e555cc513845dfa9d',1,'IoApic']]],
+  ['base_5fclock_5f_6',['base_clock_',['../classPl011.html#a348b19a14b542ff4b969e283f9ef4bdc',1,'Pl011']]],
+  ['base_5fpriority_7',['base_priority',['../structTaskControlBlock_1_1SchedInfo.html#ac2b8ff6d1ffd5de93728567adae43e3d',1,'TaskControlBlock::SchedInfo']]],
+  ['basic_5finfo_2ehpp_8',['basic_info.hpp',['../basic__info_8hpp.html',1,'']]],
+  ['basicinfo_9',['basicinfo',['../structBasicInfo.html#a625c7f57e4c10bce67b5acc5f71d4423',1,'BasicInfo::BasicInfo()'],['../structBasicInfo.html',1,'BasicInfo'],['../structBasicInfo.html#a534dde956546c1bb31e6f45d9aad6c7d',1,'BasicInfo::BasicInfo(BasicInfo &amp;&amp;)=default'],['../structBasicInfo.html#a9a78411d867415346e8c64dc2325c476',1,'BasicInfo::BasicInfo(const BasicInfo &amp;)=default'],['../structBasicInfo.html#a6ac16be61163567a93151ef9289daf66',1,'BasicInfo::BasicInfo(int argc, const char **argv)']]],
+  ['baud_5frate_5f_10',['baud_rate_',['../classPl011.html#a89558166b159260d69edcf5d9391dcb8',1,'Pl011']]],
+  ['bindthreadtocore_11',['BindThreadToCore',['../classtest__env_1_1TestEnvironmentState.html#a345611d0a521ef20e5c49eeffd43342d',1,'test_env::TestEnvironmentState']]],
+  ['block_12',['Block',['../classTaskManager.html#a71763ebababa9aa90bad6a07c66edede',1,'TaskManager']]],
+  ['block_2ecpp_13',['block.cpp',['../block_8cpp.html',1,'']]],
+  ['blocked_5fon_14',['blocked_on',['../structTaskControlBlock.html#a603f127b15f3dc015b911289650523be',1,'TaskControlBlock']]],
+  ['blocked_5ftasks_15',['blocked_tasks',['../structCpuSchedData.html#a423b18d4f4cc91af9c44bb95d141362f',1,'CpuSchedData']]],
+  ['blockquote_16',['&lt;/blockquote&gt;',['../md_TODO__interface__refactor.html#autotoc_md266',1,'']]],
+  ['boostpriority_17',['BoostPriority',['../classSchedulerBase.html#ac3fd32fbc73b48fe5f959e05138eaae9',1,'SchedulerBase']]],
+  ['boot_18',['Phase 1: Infrastructure (Boot)',['../md__2root_2README__ENG.html#autotoc_md351',1,'']]],
+  ['bootstrap_20processor_20初始化_19',['bootstrap processor 初始化',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md30',1,'1. BSP (Bootstrap Processor) 初始化'],['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md76',1,'1. BSP (Bootstrap Processor) 初始化'],['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md51',1,'1. BSP (Bootstrap Processor) 初始化']]],
+  ['broadcastipi_20',['broadcastipi',['../classInterrupt.html#ab8c5204a97ad86dad0cb5f9de59192b8',1,'Interrupt::BroadcastIpi() -&gt; Expected&lt; void &gt; override'],['../classInterrupt.html#ab8c5204a97ad86dad0cb5f9de59192b8',1,'Interrupt::BroadcastIpi() -&gt; Expected&lt; void &gt; override'],['../classInterrupt.html#ab8c5204a97ad86dad0cb5f9de59192b8',1,'Interrupt::BroadcastIpi() -&gt; Expected&lt; void &gt; override'],['../classInterruptBase.html#a0c3fbbd3d8cc4d459ddd9b1b64121433',1,'InterruptBase::BroadcastIpi()'],['../classLocalApic.html#a6dfaeb288214a8bd2e12e6c03b746a64',1,'LocalApic::BroadcastIpi()'],['../classApic.html#a2aa64fcdf94de1a4f5b3aba12ed08a7a',1,'Apic::BroadcastIpi()']]],
+  ['bsp_21',['主处理器初始化 (BSP)',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md164',1,'']]],
+  ['bsp_20bootstrap_20processor_20初始化_22',['bsp bootstrap processor 初始化',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md30',1,'1. BSP (Bootstrap Processor) 初始化'],['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md51',1,'1. BSP (Bootstrap Processor) 初始化'],['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md76',1,'1. BSP (Bootstrap Processor) 初始化']]],
+  ['build_20and_20run_23',['⚡ Build and Run',['../md__2root_2README__ENG.html#autotoc_md347',1,'']]]
 ];

@@ -1,4 +1,26 @@
 var searchData=
 [
-  ['flush_5fdesc_138',['flush_desc',['../classMemory.html#a0d7799e95e8dda035f91d14e2febcfcd',1,'Memory']]]
+  ['enable_0',['enable',['../classGic_1_1Gicr.html#a78dff64a380b254f9ac5d21f195a8b82',1,'Gic::Gicr::Enable()'],['../classGic_1_1Gicd.html#a99d368cb79a17798cce9de9fd9a0a870',1,'Gic::Gicd::Enable(uint32_t intid) const']]],
+  ['enablegrp1ns_1',['EnableGrp1NS',['../classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670',1,'Gic::Gicd']]],
+  ['enableinterrupt_2',['EnableInterrupt',['../namespacecpu__io.html#afe7f925ac3cb632ed212166712288451',1,'cpu_io']]],
+  ['enablepage_3',['EnablePage',['../namespacecpu__io_1_1virtual__memory.html#a711073bec6e8a5bdc81bc4300f2da029',1,'cpu_io::virtual_memory']]],
+  ['enabletimer_4',['EnableTimer',['../classLocalApic.html#ac60426a6345dfe7593b29c22b0888115',1,'LocalApic']]],
+  ['enablex2apic_5',['EnableX2Apic',['../classLocalApic.html#a3f7b7c00383f231e77c8b33ff340a2f9',1,'LocalApic']]],
+  ['enablexapic_6',['EnableXApic',['../classLocalApic.html#a385380dd373545bb139e0a36068c46fc',1,'LocalApic']]],
+  ['enqueue_7',['enqueue',['../classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7',1,'CfsScheduler::Enqueue()'],['../classFifoScheduler.html#a5adf3af96fb0bae4c3d289e4e3823de0',1,'FifoScheduler::Enqueue()'],['../classIdleScheduler.html#a982565c7b44db5f68199ac77c7ceee24',1,'IdleScheduler::Enqueue()'],['../classRoundRobinScheduler.html#a34587bb9bb9a178e8fbc073242aa8c89',1,'RoundRobinScheduler::Enqueue()'],['../classSchedulerBase.html#acdc1dcafd0bdb5e81c1a399b09a0ed14',1,'SchedulerBase::Enqueue()']]],
+  ['entryargument_8',['EntryArgument',['../structcpu__io_1_1CalleeSavedContext.html#a1ae45175010d9b66ef6db82b668baa1d',1,'cpu_io::CalleeSavedContext']]],
+  ['entryfunction_9',['EntryFunction',['../structcpu__io_1_1CalleeSavedContext.html#a057438d663910d4cb7abcbb5615397ab',1,'cpu_io::CalleeSavedContext']]],
+  ['err_10',['err',['../structklog_1_1Err.html#a07e25640026854fde5b74c90acbb7beb',1,'klog::Err::Err()'],['../namespaceklog.html#aa49b1c4c25e6f7ce42d694ebe18d0b0b',1,'klog::Err()']]],
+  ['error_11',['Error',['../structError.html#a832e3dca1adbf321f0616b2d7081e19d',1,'Error']]],
+  ['error_5fcurrent_5fel_5fsp0_5fhandler_12',['error_current_el_sp0_handler',['../aarch64_2interrupt__main_8cpp.html#a31425f6fd50a46f059b0ca6113f30526',1,'interrupt_main.cpp']]],
+  ['error_5fcurrent_5fel_5fspx_5fhandler_13',['error_current_el_spx_handler',['../aarch64_2interrupt__main_8cpp.html#a5b08556441748722109a24c67f6a1dbc',1,'interrupt_main.cpp']]],
+  ['error_5flower_5fel_5faarch32_5fhandler_14',['error_lower_el_aarch32_handler',['../aarch64_2interrupt__main_8cpp.html#a9dbd24e6805f4d4f8b86afab8fbd24fe',1,'interrupt_main.cpp']]],
+  ['error_5flower_5fel_5faarch64_5fhandler_15',['error_lower_el_aarch64_handler',['../aarch64_2interrupt__main_8cpp.html#a3a4bfe42750a0869a40dd01702d438e7',1,'interrupt_main.cpp']]],
+  ['exit_16',['Exit',['../classTaskManager.html#ae3444c55ab7b6ec348a56b596229fc0f',1,'TaskManager']]],
+  ['exit_5fsystem_5ftest_17',['exit_system_test',['../exit__system__test_8cpp.html#a1ad372ba4b1c37c4dd0fa4cfec12038d',1,'exit_system_test() -&gt; bool:&#160;exit_system_test.cpp'],['../system__test_8h.html#a1ad372ba4b1c37c4dd0fa4cfec12038d',1,'exit_system_test() -&gt; bool:&#160;exit_system_test.cpp']]],
+  ['expect_5feq_5fhelper_18',['expect_eq_helper',['../system__test_8h.html#aa65c78c72f83432078d407f7b46440d4',1,'system_test.h']]],
+  ['expect_5fge_5fhelper_19',['expect_ge_helper',['../system__test_8h.html#a0cca59a9c2e302eb7c4e39c454bc300c',1,'system_test.h']]],
+  ['expect_5fgt_5fhelper_20',['expect_gt_helper',['../system__test_8h.html#a47f200fae161f662e366d06b4d2ecff4',1,'system_test.h']]],
+  ['expect_5flt_5fhelper_21',['expect_lt_helper',['../system__test_8h.html#aceed4ede7295e7c0cd9e82be71096ed2',1,'system_test.h']]],
+  ['expect_5fne_5fhelper_22',['expect_ne_helper',['../system__test_8h.html#a68e8bf69a874d175a5c112d92e3eaac1',1,'system_test.h']]]
 ];

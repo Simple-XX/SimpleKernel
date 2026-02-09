@@ -1,0 +1,21 @@
+<map id="Error::message" name="Error::message">
+<area shape="rect" id="Node000001" title=" " alt="" coords="371,179,491,204"/>
+<area shape="rect" id="Node000002" href="$aarch64_2arch__main_8cpp.html#aa26c42c34bbb6c8c7cd4a8664dc7952f" title=" " alt="" coords="179,5,251,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="416,168,380,105,353,72,321,44,287,29,251,22,252,17,288,24,324,40,357,68,384,102,421,165"/>
+<area shape="rect" id="Node000004" href="$x86__64_2arch__main_8cpp.html#aef7722ec22df90253efc0918932cc95c" title=" " alt="" coords="179,55,251,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="409,170,371,130,347,110,321,94,286,80,251,73,252,68,288,75,324,89,350,106,375,126,413,166"/>
+<area shape="rect" id="Node000005" href="$x86__64_2arch__main_8cpp.html#a0eb8a6ba9bf6955a6c5a89ee62171f6e" title=" " alt="" coords="165,104,265,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="393,175,322,143,265,128,267,123,324,138,395,170"/>
+<area shape="rect" id="Node000006" href="$structBasicInfo.html#a6ac16be61163567a93151ef9289daf66" title=" " alt="" coords="140,153,291,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="357,185,290,177,291,172,357,180"/>
+<area shape="rect" id="Node000007" href="$classApic.html#a02c227a2528fb3a8c7b00a2dc3b516ff" title="初始化当前 CPU 的 Local APIC" alt="" coords="108,203,323,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="358,202,323,206,323,201,357,197"/>
+<area shape="rect" id="Node000008" href="$classKernelElf.html#af02f46849b67568666efd984ece31a67" title=" " alt="" coords="143,252,288,277"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="393,213,324,242,280,254,278,249,322,237,391,208"/>
+<area shape="rect" id="Node000009" href="$classKernelFdt.html#a35c6fabd23230de5dee7763f2d1318ec" title=" " alt="" coords="138,301,293,327"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="412,217,374,255,350,275,324,291,292,304,290,299,321,286,347,270,370,251,408,213"/>
+<area shape="rect" id="Node000010" href="$classApic.html#ade18168e69461b8ee4c8d34d91091b58" title="唤醒所有应用处理器 (AP)" alt="" coords="142,351,289,376"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="420,218,384,280,357,313,324,340,290,356,288,351,321,336,353,309,379,277,416,215"/>
+<area shape="rect" id="Node000003" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="166,21,60,21,60,15,166,15"/>
+</map>

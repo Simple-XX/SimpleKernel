@@ -1,0 +1,11 @@
+<map id="klog::detail::Logger::operator&lt;&lt;" name="klog::detail::Logger::operator&lt;&lt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,152,71"/>
+<area shape="rect" id="Node000002" href="$classklog_1_1detail_1_1Logger.html#aa72557f28dfdc2479aee0f6b562155be" title="输出格式化内容" alt="" coords="200,31,347,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,48,186,48,186,53,152,53"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="395,13,580,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="346,39,381,35,381,41,347,45"/>
+<area shape="rect" id="Node000005" href="$sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f" title=" " alt="" coords="448,62,527,87"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="347,56,435,66,434,71,347,62"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="628,5,891,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="580,23,614,23,614,28,580,28"/>
+</map>

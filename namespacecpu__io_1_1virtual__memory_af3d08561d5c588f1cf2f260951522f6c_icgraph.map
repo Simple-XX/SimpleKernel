@@ -1,0 +1,11 @@
+<map id="cpu_io::virtual_memory::PageAlignUp" name="cpu_io::virtual_memory::PageAlignUp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="516,23,692,63"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#a19ea83e0f3f85e55b12deec2a20972a2" title="映射设备内存 (MMIO)" alt="" coords="276,5,468,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="502,35,468,31,469,26,503,30"/>
+<area shape="rect" id="Node000004" href="$memory_8cpp.html#a0d8c809343a4f03aea31ffbf8891a11d" title=" " alt="" coords="323,55,421,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="503,56,421,65,421,60,502,51"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,5,228,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="262,21,228,21,228,15,262,15"/>
+<area shape="rect" id="Node000005" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="89,55,144,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="310,70,144,70,144,65,310,65"/>
+</map>

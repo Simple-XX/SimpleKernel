@@ -1,5 +1,21 @@
 var searchData=
 [
-  ['hex_5fx_43',['hex_x',['../classostream.html#a4ec6f2934351244c566df995f0aa6d99',1,'ostream']]],
-  ['hex_5fx_44',['hex_X',['../classostream.html#afaa63ab1ab5310f2e4ccaeaf26a1d9f9',1,'ostream']]]
+  ['_5f_5fattribute_5f_5f_0',['__attribute__',['../classAcpi.html#a81a08ef9b98f83ed42baf57a1bc13c68',1,'Acpi::__attribute__((packed))'],['../classAcpi.html#a7c7988325afef4f68a8f6f3bdbb1d51a',1,'Acpi::__attribute__((packed))'],['../classAcpi.html#a3358014ac2406deff5e6eb6f2be99cf3',1,'Acpi::__attribute__((packed))'],['../classAcpi.html#a73ff625ff1702a010d3734926d3878bc',1,'Acpi::__attribute__((packed))'],['../classAcpi.html#a11a7da1f641f9fdf5ad0595527cab2da',1,'Acpi::__attribute__((packed))'],['../classAcpi.html#a4df32cf871e2b3f3f69db7da08f42b2c',1,'Acpi::__attribute__((packed))'],['../classAcpi.html#aaff457ff2dc0db4c707d8c666b3950be',1,'Acpi::__attribute__((packed))'],['../include_2sipi_8h.html#a763d4c58430a5a94703eba0ed093d12a',1,'__attribute__((packed)):&#160;sipi.h'],['../sipi_8h.html#a763d4c58430a5a94703eba0ed093d12a',1,'__attribute__((packed)):&#160;sipi.h'],['../namespaceper__cpu.html#a3f116a6df9566ddec4351f08f26eab47',1,'per_cpu::__attribute__()'],['../sk__stdlib_8c.html#a1b6824bfd4ec0404a4f875ed8db0274e',1,'__attribute__((noreturn)):&#160;sk_stdlib.c']]],
+  ['_5f_5fcxa_5fatexit_1',['__cxa_atexit',['../sk__libcxx_8cpp.html#aff24887624198dfb5988dd8c3c4f4b7c',1,'sk_libcxx.cpp']]],
+  ['_5f_5fcxa_5ffinalize_2',['__cxa_finalize',['../sk__libcxx_8cpp.html#a20f8c653429bdbc40ad9e103b9bfd9bd',1,'sk_libcxx.cpp']]],
+  ['_5f_5fcxa_5fguard_5fabort_3',['__cxa_guard_abort',['../sk__libcxx_8cpp.html#a12fdd025f44161e71f43cd3e4ae3d973',1,'sk_libcxx.cpp']]],
+  ['_5f_5fcxa_5fguard_5facquire_4',['__cxa_guard_acquire',['../sk__libcxx_8cpp.html#ae4178c4bf7c4efac3d1c817ea2359b43',1,'sk_libcxx.cpp']]],
+  ['_5f_5fcxa_5fguard_5frelease_5',['__cxa_guard_release',['../sk__libcxx_8cpp.html#af5b93a0b7e35ba28ea38348bff3c4c55',1,'sk_libcxx.cpp']]],
+  ['_5f_5fcxa_5fpure_5fvirtual_6',['__cxa_pure_virtual',['../sk__libcxx_8cpp.html#a6be7d9ce80c86f5178635fa86c2dd5e7',1,'sk_libcxx.cpp']]],
+  ['_5f_5fdso_5fhandle_7',['__dso_handle',['../sk__libcxx_8cpp.html#a19df960d2907e9c08a720ae7683e632c',1,'sk_libcxx.cpp']]],
+  ['_5f_5fetext_8',['__etext',['../basic__info_8hpp.html#a4441c495b112f8419dfbf1e0cf2102fb',1,'basic_info.hpp']]],
+  ['_5f_5fexecutable_5fstart_9',['__executable_start',['../basic__info_8hpp.html#a9c6fbf9a57242794712975337a624b43',1,'basic_info.hpp']]],
+  ['_5f_5ffini_5farray_5fend_10',['__fini_array_end',['../sk__libcxx_8cpp.html#a337b2464bd1c72ed4340e1f0d496bf44',1,'sk_libcxx.cpp']]],
+  ['_5f_5ffini_5farray_5fstart_11',['__fini_array_start',['../sk__libcxx_8cpp.html#a66db7682da68ee991c83b157e94ec916',1,'sk_libcxx.cpp']]],
+  ['_5f_5finit_5farray_5fend_12',['__init_array_end',['../sk__libcxx_8cpp.html#aa7e80f6a504a0136615a6499a04c73c4',1,'sk_libcxx.cpp']]],
+  ['_5f_5finit_5farray_5fstart_13',['__init_array_start',['../sk__libcxx_8cpp.html#a712761290ad098358f092397279d4331',1,'sk_libcxx.cpp']]],
+  ['_5f_5fstack_5fchk_5fguard_14',['__stack_chk_guard',['../sk__stdlib_8c.html#a0ca7385353138143c2e7a12f7665fd3c',1,'sk_stdlib.c']]],
+  ['_5fboot_15',['_boot',['../basic__info_8hpp.html#a698036b5e342c2164fb7fd7249d0e801',1,'basic_info.hpp']]],
+  ['_5fstart_16',['_start',['../kernel_8h.html#a1051fb5b0c9ae8b443c542089ac538bd',1,'_start(int argc, const char **argv):&#160;main.cpp'],['../src_2main_8cpp.html#a1051fb5b0c9ae8b443c542089ac538bd',1,'_start(int argc, const char **argv):&#160;main.cpp'],['../tests_2integration__test_2opensbi__test_2main_8cpp.html#a1069cf333a0c1ad48689c63dfe3347dd',1,'_start(uint32_t argc, uint8_t *argv):&#160;main.cpp'],['../tests_2system__test_2main_8cpp.html#a1051fb5b0c9ae8b443c542089ac538bd',1,'_start(int argc, const char **argv):&#160;main.cpp']]],
+  ['_5fv_17',['_v',['../classTestStaticConstructDestruct.html#a836204c77a0039aaad3857a5da978bfb',1,'TestStaticConstructDestruct']]]
 ];

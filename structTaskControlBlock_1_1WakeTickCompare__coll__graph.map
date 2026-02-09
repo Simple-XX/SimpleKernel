@@ -1,0 +1,3 @@
+<map id="TaskControlBlock::WakeTickCompare" name="TaskControlBlock::WakeTickCompare">
+<area shape="rect" id="Node000001" title="任务唤醒时间比较函数，时间越早优先级越高" alt="" coords="5,5,201,85"/>
+</map>

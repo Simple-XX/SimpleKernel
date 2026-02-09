@@ -1,0 +1,9 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,60,80"/>
+<area shape="rect" id="Node000002" href="$classFifoScheduler.html#a5adf3af96fb0bae4c3d289e4e3823de0" title="将任务加入就绪队列尾部" alt="" coords="126,5,301,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,55,107,39,138,31,139,36,109,45,61,60"/>
+<area shape="rect" id="Node000003" href="$classFifoScheduler.html#aef00ac8598306934125afadc8d65b842" title="获取就绪队列大小" alt="" coords="108,55,319,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="60,65,95,65,95,70,60,70"/>
+<area shape="rect" id="Node000004" href="$classFifoScheduler.html#a5a798dfc0f1f5a493298bf3f4c792746" title="选择下一个要运行的任务（队列头部）" alt="" coords="125,104,301,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="61,74,109,89,144,98,142,103,107,94,59,79"/>
+</map>

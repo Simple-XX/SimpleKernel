@@ -1,0 +1,5 @@
+<map id="SchedulerBase::OnTick" name="SchedulerBase::OnTick">
+<area shape="rect" id="Node000001" title="Tick 更新：每个时钟中断时调用，用于更新调度器状态" alt="" coords="108,5,279,31"/>
+<area shape="rect" id="Node000002" href="$unit__test_2fifo__scheduler__test_8cpp.html#a3ba6d78580675067e77fff9c6b0ba280" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
+</map>

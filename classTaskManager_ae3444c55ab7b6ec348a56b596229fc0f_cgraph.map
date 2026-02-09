@@ -1,0 +1,38 @@
+<map id="TaskManager::Exit" name="TaskManager::Exit">
+<area shape="rect" id="Node000001" title="退出当前线程" alt="" coords="5,189,147,215"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a4c1b1e56864ca791fe96710270acfc11" title="获取当前核心的调度数据" alt="" coords="474,157,686,197"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,196,460,180,460,185,147,201"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#a926010fadc0b0d1f1df608c59d4a57a0" title="获取当前任务" alt="" coords="472,107,688,132"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="123,187,194,170,331,147,458,130,459,135,331,152,195,175,124,192"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#a63b9cd5ec9df1dc6878eff6cc355fccb" title="回收僵尸进程资源" alt="" coords="220,264,399,289"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="104,212,146,232,195,250,225,258,223,263,194,255,144,237,102,217"/>
+<area shape="rect" id="Node000008" href="$classTaskManager.html#acfa70286ca9b8c538d1f75ba4d953ec8" title="将孤儿进程过继给 init 进程" alt="" coords="195,313,424,339"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="90,213,133,256,163,280,196,300,212,307,210,311,193,304,160,284,130,260,86,217"/>
+<area shape="rect" id="Node000009" href="$classTaskManager.html#af7525954e852c09c1dd8ba50235f1d78" title="调度函数 选择下一个任务并切换上下文" alt="" coords="222,63,397,88"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="88,187,132,147,162,124,193,105,232,89,234,94,196,110,165,129,135,151,92,191"/>
+<area shape="rect" id="Node000011" href="$classTaskManager.html#aecc6edadfbd8fd250db72884b1e23f93" title="唤醒等待指定资源的所有任务" alt="" coords="226,215,393,240"/>
+<area shape="poly" id="edge16_Node000001_Node000011" title=" " alt="" coords="147,207,213,214,212,219,147,212"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="967,56,1152,81"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="669,154,988,82,989,87,670,159"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="1200,23,1463,63"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1152,57,1186,54,1186,60,1152,63"/>
+<area shape="rect" id="Node000006" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="736,56,919,81"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="643,104,751,82,752,87,644,109"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="919,66,953,66,953,71,919,71"/>
+<area shape="poly" id="edge11_Node000009_Node000002" title=" " alt="" coords="340,86,473,141,499,150,497,155,471,146,338,91"/>
+<area shape="poly" id="edge12_Node000009_Node000005" title=" " alt="" coords="388,85,488,102,487,107,387,91"/>
+<area shape="poly" id="edge10_Node000009_Node000006" title=" " alt="" coords="397,72,722,67,722,73,397,77"/>
+<area shape="rect" id="Node000010" href="$arch_8cpp.html#ad982abdb7f3d8729656c6b5422b2e61d" title=" " alt="" coords="538,5,622,31"/>
+<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="370,60,524,27,525,32,371,65"/>
+<area shape="poly" id="edge15_Node000010_Node000004" title=" " alt="" coords="622,17,1187,36,1186,41,622,22"/>
+<area shape="poly" id="edge14_Node000010_Node000006" title=" " alt="" coords="623,24,752,51,751,56,622,29"/>
+<area shape="poly" id="edge17_Node000011_Node000002" title=" " alt="" coords="377,212,460,196,461,202,378,217"/>
+<area shape="rect" id="Node000012" href="$structResourceId.html#ad6b4733a8896d35652c1969f1eca1651" title="获取资源数据" alt="" coords="502,221,658,247"/>
+<area shape="poly" id="edge18_Node000011_Node000012" title=" " alt="" coords="393,227,488,229,488,234,393,232"/>
+<area shape="rect" id="Node000013" href="$structResourceId.html#ace28b59e657c4a031a54daabf85e59aa" title="获取类型名称（用于调试）" alt="" coords="483,271,677,296"/>
+<area shape="poly" id="edge19_Node000011_Node000013" title=" " alt="" coords="372,237,505,265,504,270,371,243"/>
+<area shape="rect" id="Node000014" href="$resource__id_8hpp.html#afd66b2606db93ecfaf8b3972a9b953ad" title="获取资源类型的字符串表示（用于调试）" alt="" coords="740,295,915,320"/>
+<area shape="poly" id="edge20_Node000013_Node000014" title=" " alt="" coords="678,290,727,295,726,300,677,295"/>
+<area shape="rect" id="Node000015" href="$structResourceId.html#adc2ead50d28fd71ff0c0d9b2529af45c" title="获取资源类型" alt="" coords="750,245,905,271"/>
+<area shape="poly" id="edge21_Node000013_Node000015" title=" " alt="" coords="677,271,736,265,736,270,678,276"/>
+</map>

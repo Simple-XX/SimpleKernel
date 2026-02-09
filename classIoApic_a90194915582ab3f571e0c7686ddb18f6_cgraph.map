@@ -1,0 +1,5 @@
+<map id="IoApic::WriteRedirectionEntry" name="IoApic::WriteRedirectionEntry">
+<area shape="rect" id="Node000001" title="写入 IO APIC 重定向表项" alt="" coords="5,5,184,45"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#a30d6614d1ce0815a5af5a2261c222a60" title="写入 IO APIC 寄存器" alt="" coords="232,13,337,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,23,218,23,218,28,184,28"/>
+</map>

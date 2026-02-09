@@ -1,0 +1,9 @@
+<map id="FifoScheduler::IsEmpty" name="FifoScheduler::IsEmpty">
+<area shape="rect" id="Node000001" title="判断队列是否为空" alt="" coords="108,55,279,80"/>
+<area shape="rect" id="Node000002" href="$unit__test_2fifo__scheduler__test_8cpp.html#a7fd90c6d3abea19241949f9ade754749" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,53,59,29,61,24,139,48"/>
+<area shape="rect" id="Node000003" href="$unit__test_2fifo__scheduler__test_8cpp.html#a9fd2c9dc0cf84eaee8fd5ab64b709919" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="94,70,60,70,60,65,94,65"/>
+<area shape="rect" id="Node000004" href="$unit__test_2fifo__scheduler__test_8cpp.html#aff8bfefa77f464b0545de3743e45b121" title=" " alt="" coords="5,104,60,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="139,87,61,111,59,106,138,82"/>
+</map>

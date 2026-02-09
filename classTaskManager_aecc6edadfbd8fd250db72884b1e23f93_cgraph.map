@@ -1,0 +1,17 @@
+<map id="TaskManager::Wakeup" name="TaskManager::Wakeup">
+<area shape="rect" id="Node000001" title="唤醒等待指定资源的所有任务" alt="" coords="5,70,172,95"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a4c1b1e56864ca791fe96710270acfc11" title="获取当前核心的调度数据" alt="" coords="220,5,432,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,67,229,46,230,51,143,73"/>
+<area shape="rect" id="Node000005" href="$structResourceId.html#ad6b4733a8896d35652c1969f1eca1651" title="获取资源数据" alt="" coords="248,70,404,95"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="172,80,234,80,234,85,172,85"/>
+<area shape="rect" id="Node000006" href="$structResourceId.html#ace28b59e657c4a031a54daabf85e59aa" title="获取类型名称（用于调试）" alt="" coords="229,119,423,145"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="151,93,252,114,250,119,150,98"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="480,13,665,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="432,23,466,23,466,28,432,28"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="713,5,976,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="666,23,699,23,699,28,666,28"/>
+<area shape="rect" id="Node000007" href="$resource__id_8hpp.html#afd66b2606db93ecfaf8b3972a9b953ad" title="获取资源类型的字符串表示（用于调试）" alt="" coords="485,94,660,119"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="423,119,472,114,472,120,424,125"/>
+<area shape="rect" id="Node000008" href="$structResourceId.html#adc2ead50d28fd71ff0c0d9b2529af45c" title="获取资源类型" alt="" coords="495,143,650,169"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="424,139,482,145,481,150,423,144"/>
+</map>

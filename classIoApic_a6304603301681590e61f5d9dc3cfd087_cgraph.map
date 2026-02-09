@@ -1,0 +1,11 @@
+<map id="IoApic::SetIrqRedirection" name="IoApic::SetIrqRedirection">
+<area shape="rect" id="Node000001" title="设置 IO APIC 重定向表项" alt="" coords="5,45,188,70"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f" title="获取 IO APIC 最大重定向条目数" alt="" coords="236,5,431,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,42,222,38,223,43,188,48"/>
+<area shape="rect" id="Node000004" href="$classIoApic.html#a90194915582ab3f571e0c7686ddb18f6" title="写入 IO APIC 重定向表项" alt="" coords="244,69,423,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,67,231,73,230,78,188,72"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#afe65f9ea16d8267e09cb585cf060caee" title="读取 IO APIC 寄存器" alt="" coords="480,13,583,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="431,23,466,23,466,28,431,28"/>
+<area shape="rect" id="Node000005" href="$classIoApic.html#a30d6614d1ce0815a5af5a2261c222a60" title="写入 IO APIC 寄存器" alt="" coords="479,77,584,102"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="423,87,465,87,465,92,423,92"/>
+</map>

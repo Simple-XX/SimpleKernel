@@ -1,0 +1,7 @@
+<map id="TaskTestHarness::TearDown" name="TaskTestHarness::TearDown">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,45,208,70"/>
+<area shape="rect" id="Node000002" href="$classtest__env_1_1TestEnvironmentState.html#a0471b738ca17c6086d4763e96bca4378" title="清除当前线程的环境实例指针" alt="" coords="256,5,531,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,43,242,40,243,45,208,49"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a68313ea42aac333a30a65aa0c49d73b4" title="清空所有核心的切换历史" alt="" coords="296,69,491,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,66,283,74,282,80,208,71"/>
+</map>

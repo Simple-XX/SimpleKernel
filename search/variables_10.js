@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['ra_0',['ra',['../structcpu__io_1_1CalleeSavedContext.html#a8d51bdeccc1497f2924d24470cadb7af',1,'cpu_io::CalleeSavedContext']]],
+  ['ready_5fqueue_1',['ready_queue',['../classFifoScheduler.html#a9822c23b6c95b6a6658fbe8943b9fd92',1,'FifoScheduler::ready_queue'],['../classRoundRobinScheduler.html#a049d6d48c92749b9a009e79583c7a2af',1,'RoundRobinScheduler::ready_queue']]],
+  ['ready_5fqueue_5f_2',['ready_queue_',['../classCfsScheduler.html#ababcf6de07ced3c7a5275d6a2b26801e',1,'CfsScheduler']]],
+  ['register_5fbit_5foffset_3',['register_bit_offset',['../acpi_8h.html#a1bb708e81eb305de29febf0575beddd1',1,'register_bit_offset:&#160;acpi.h'],['../structAcpi_1_1GenericAddressStructure.html#aac2d087e8e57e270692f226593f8c355',1,'Acpi::GenericAddressStructure::register_bit_offset']]],
+  ['register_5fbit_5fwidth_4',['register_bit_width',['../structAcpi_1_1GenericAddressStructure.html#a831af6d27cc203787cbbba46880d59b9',1,'Acpi::GenericAddressStructure::register_bit_width'],['../acpi_8h.html#a13d63924c7f27e5b15c97607340a514a',1,'register_bit_width:&#160;acpi.h']]],
+  ['reserved_5',['reserved',['../structAcpi_1_1Rsdp.html#a30c508b046bf2d4f03f84a239d5d1441',1,'Acpi::Rsdp::reserved'],['../structAcpi_1_1Fadt.html#a6f094abea5d5bed95a662297dcdb29a6',1,'Acpi::Fadt::reserved'],['../acpi_8h.html#a44250b05084d8d01ee7b9375ae4c840a',1,'reserved:&#160;acpi.h']]],
+  ['reserved0_6',['reserved0',['../structGic_1_1Gicd_1_1GICD__CTLR.html#ae38258c84271a26a82f6f2f20eef28c7',1,'Gic::Gicd::GICD_CTLR::reserved0'],['../structGic_1_1Gicd_1_1GICD__TYPER.html#a6f849dc098bd9ba70507ec5f7baa0bd9',1,'Gic::Gicd::GICD_TYPER::reserved0'],['../structGic_1_1Gicd_1_1GICD__IIDR.html#ac345fd3db4f70f460f4354177371adbe',1,'Gic::Gicd::GICD_IIDR::reserved0']]],
+  ['reserved1_7',['reserved1',['../structGic_1_1Gicd_1_1GICD__CTLR.html#aab6787bb482502615969b3699c7adc7d',1,'Gic::Gicd::GICD_CTLR::reserved1'],['../structGic_1_1Gicd_1_1GICD__TYPER.html#a81f93e812b49a9ad0ac35267cba05abc',1,'Gic::Gicd::GICD_TYPER::reserved1']]],
+  ['reserved2_8',['reserved2',['../structAcpi_1_1Fadt.html#a91db0de95d61d18fb619613a6e0dcffe',1,'Acpi::Fadt::reserved2'],['../acpi_8h.html#a646df3514a24749a0f54731bf41c6c67',1,'reserved2:&#160;acpi.h']]],
+  ['reset_5freg_9',['reset_reg',['../structAcpi_1_1Fadt.html#ac54fe018fbac3c6e8b7bd2a3ac8c0b60',1,'Acpi::Fadt::reset_reg'],['../acpi_8h.html#a9da458f5e48d79e9b245d177fab57203',1,'reset_reg:&#160;acpi.h']]],
+  ['reset_5fvalue_10',['reset_value',['../structAcpi_1_1Fadt.html#a473aa1d3bcc98591cf3c86fa46d13504',1,'Acpi::Fadt::reset_value'],['../acpi_8h.html#ac3f15f86bdaf5ea4629a9530deabb75f',1,'reset_value:&#160;acpi.h']]],
+  ['resource_5fid_5f_11',['resource_id_',['../classMutex.html#a5a08f669f1a403487275964fc1162006',1,'Mutex']]],
+  ['revision_12',['revision',['../acpi_8h.html#ab01c6e281b316b1770d5646f3d3101c4',1,'revision:&#160;acpi.h'],['../structAcpi_1_1Rsdp.html#a3cab5b5f1e43c2c3ae64dc6fc67966e1',1,'Acpi::Rsdp::revision'],['../structGic_1_1Gicd_1_1GICD__IIDR.html#a461fc3bd9b7ca0e18b9d1356f37f98e9',1,'Gic::Gicd::GICD_IIDR::revision'],['../structAcpi_1_1Description__header.html#a6d6c2f1160a29505c253e904679bc115',1,'Acpi::Description_header::revision']]],
+  ['riscv64_5fvirt_5fdtb_5fdata_13',['riscv64_virt_dtb_data',['../riscv64__virt_8dtb_8h.html#aa09e1a553265e47a682ce48eab75e73a',1,'riscv64_virt.dtb.h']]],
+  ['riscv64_5fvirt_5fdtb_5fdata_5flen_14',['riscv64_virt_dtb_data_len',['../riscv64__virt_8dtb_8h.html#a4b876aa94a64ff10b7b3cd908532ab8d',1,'riscv64_virt.dtb.h']]],
+  ['rsdp_5faddr_5f_15',['rsdp_addr_',['../classAcpi.html#ab3eb78d965c647d9bd4c6ef1a43485ef',1,'Acpi']]],
+  ['rsdt_5faddress_16',['rsdt_address',['../structAcpi_1_1Rsdp.html#ad534ada8ac90d933c17bc3f519fc15db',1,'Acpi::Rsdp::rsdt_address'],['../acpi_8h.html#a502a3436fb16ff00a5de98a6ae50c8c8',1,'rsdt_address:&#160;acpi.h']]],
+  ['running_5ftask_17',['running_task',['../structper__cpu_1_1PerCpu.html#a2ad676bb796dc66fcd41607bf4846fe9',1,'per_cpu::PerCpu::running_task'],['../per__cpu_8hpp.html#ae11edf9e98e4600dead9f9050a80970a',1,'running_task:&#160;per_cpu.hpp']]],
+  ['rwp_18',['rwp',['../structGic_1_1Gicd_1_1GICD__CTLR.html#adcbe7eac203088942c958b85e624cc18',1,'Gic::Gicd::GICD_CTLR']]]
+];

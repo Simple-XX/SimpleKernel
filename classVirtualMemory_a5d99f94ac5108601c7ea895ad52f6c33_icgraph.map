@@ -1,0 +1,8 @@
+<map id="VirtualMemory::RecursiveFreePageTable" name="VirtualMemory::RecursiveFreePageTable">
+<area shape="rect" id="Node000001" title="递归释放页表" alt="" coords="504,29,695,69"/>
+<area shape="poly" id="edge3_Node000001_Node000001" title=" " alt="" coords="641,18,626,11,599,8,576,10,561,15,556,21,559,28,554,30,551,20,558,10,575,5,599,3,628,6,643,13"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#adf6d48183927262a6c7929493f0c74f5" title="回收页表，释放所有映射和子页表" alt="" coords="248,29,456,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="490,52,456,52,456,47,490,47"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3" title="复制页表" alt="" coords="5,29,200,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="234,52,200,52,200,47,234,47"/>
+</map>

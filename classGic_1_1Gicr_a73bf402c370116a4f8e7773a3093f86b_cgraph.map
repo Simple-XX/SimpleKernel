@@ -1,0 +1,9 @@
+<map id="Gic::Gicr::SetUP" name="Gic::Gicr::SetUP">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,38,129,63"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="177,13,363,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,40,163,36,164,41,130,46"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="215,62,325,87"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="130,55,201,64,201,69,129,61"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="411,5,673,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,23,397,23,397,28,363,28"/>
+</map>

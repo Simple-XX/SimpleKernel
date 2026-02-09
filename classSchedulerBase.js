@@ -1,0 +1,25 @@
+var classSchedulerBase =
+[
+    [ "Stats", "structSchedulerBase_1_1Stats.html", "structSchedulerBase_1_1Stats" ],
+    [ "SchedulerBase", "classSchedulerBase.html#a9f4fedd1189f28d904901937c249b439", null ],
+    [ "SchedulerBase", "classSchedulerBase.html#aeacb0b82fcde69ad7a52bf70b303fe94", null ],
+    [ "SchedulerBase", "classSchedulerBase.html#aa8868ee3ddc1627213f5ed80f1455ee9", null ],
+    [ "~SchedulerBase", "classSchedulerBase.html#a475f4eafacf748df5a9374f7c4b5da4d", null ],
+    [ "BoostPriority", "classSchedulerBase.html#ac3fd32fbc73b48fe5f959e05138eaae9", null ],
+    [ "Dequeue", "classSchedulerBase.html#a9a543ca832f2355aa552960cfab2a217", null ],
+    [ "Enqueue", "classSchedulerBase.html#acdc1dcafd0bdb5e81c1a399b09a0ed14", null ],
+    [ "GetQueueSize", "classSchedulerBase.html#a720b3af97b9a475730f397ffd9811e08", null ],
+    [ "GetStats", "classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e", null ],
+    [ "IsEmpty", "classSchedulerBase.html#a7d56ec3790b81a98841b72f1c83ebe5c", null ],
+    [ "OnPreempted", "classSchedulerBase.html#af65c2e1cb826459c0927b4997a1efbe3", null ],
+    [ "OnScheduled", "classSchedulerBase.html#a5c891e21d4b1628ba4e59980f138142d", null ],
+    [ "OnTick", "classSchedulerBase.html#a11e1dbdb53df8c9a79c36f17ac29b1df", null ],
+    [ "OnTimeSliceExpired", "classSchedulerBase.html#ae74a11e45c08b3ada750983b848e8420", null ],
+    [ "operator=", "classSchedulerBase.html#a409803b500e6eba932a2f9f499c6aa8d", null ],
+    [ "operator=", "classSchedulerBase.html#a7123a4e6ee15bd5bb9b7d3320249d800", null ],
+    [ "PickNext", "classSchedulerBase.html#a9f12e642c119b4ffc8915c732d329c31", null ],
+    [ "ResetStats", "classSchedulerBase.html#a84866e4ce79224c5eb2602e02fad5040", null ],
+    [ "RestorePriority", "classSchedulerBase.html#aacc92ea4aed8b0b643d7c8eef115c3da", null ],
+    [ "name", "classSchedulerBase.html#abbd29119b4aa4dfb73e363c8538fb456", null ],
+    [ "stats_", "classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94", null ]
+];

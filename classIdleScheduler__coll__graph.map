@@ -1,0 +1,20 @@
+<map id="IdleScheduler" name="IdleScheduler">
+<area shape="rect" id="Node000001" title="Idle 调度器" alt="" coords="257,1461,427,1727"/>
+<area shape="rect" id="Node000002" href="$classSchedulerBase.html" title="调度器基类接口" alt="" coords="156,713,325,1259"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="291,1272,323,1461,317,1462,286,1273"/>
+<area shape="rect" id="Node000003" href="$structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="5,195,156,321"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="97,321,180,697,175,698,92,322"/>
+<area shape="rect" id="Node000004" href="$structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="510,573,699,1399"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="512,1207,408,1447,403,1445,507,1205"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="702,909,712,921,719,938,726,986,722,1023,713,1050,708,1048,717,1022,721,986,714,939,707,923,698,912"/>
+<area shape="rect" id="Node000005" href="$structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="180,155,379,361"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="326,360,392,510,506,761,501,763,388,512,321,362"/>
+<area shape="rect" id="Node000006" href="$unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="403,185,607,331"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="517,331,548,557,543,557,512,331"/>
+<area shape="rect" id="Node000007" href="$structcpu__io_1_1TrapContext.html" title=" " alt="" coords="631,175,781,341"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="697,341,667,558,662,557,692,340"/>
+<area shape="rect" id="Node000008" href="$structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="805,155,1001,361"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="870,362,799,550,708,763,704,761,794,548,865,360"/>
+<area shape="rect" id="Node000009" href="$structResourceId.html" title="资源 ID" alt="" coords="1025,5,1176,511"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="1028,491,1016,512,947,619,868,719,787,810,713,887,709,883,783,807,864,716,943,615,1012,509,1023,488"/>
+</map>

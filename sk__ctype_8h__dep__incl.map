@@ -1,0 +1,11 @@
+<map id="/root/src/libc/include/sk_ctype.h" name="/root/src/libc/include/sk_ctype.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="115,5,268,45"/>
+<area shape="rect" id="Node000002" href="$sk__ctype_8c.html" title=" " alt="" coords="5,93,180,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,56,109,95,106,91,155,52"/>
+<area shape="rect" id="Node000004" href="$sk__stdlib_8c.html" title=" " alt="" coords="204,93,379,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="228,52,278,91,275,95,225,56"/>
+<area shape="rect" id="Node000003" href="$sk__ctype__test_8cpp.html" title=" " alt="" coords="18,167,167,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,132,95,167,90,167,90,132"/>
+<area shape="rect" id="Node000005" href="$sk__libc__test_8cpp.html" title=" " alt="" coords="217,167,366,207"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="294,132,294,167,289,167,289,132"/>
+</map>

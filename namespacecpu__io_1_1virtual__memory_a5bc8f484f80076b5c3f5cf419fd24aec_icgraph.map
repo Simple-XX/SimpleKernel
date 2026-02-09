@@ -1,0 +1,28 @@
+<map id="cpu_io::virtual_memory::PageTableEntryToPhysical" name="cpu_io::virtual_memory::PageTableEntryToPhysical">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1041,109,1239,149"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#a7441d7b32e1941d347851bd3da1ad6fb" title="在页表中查找虚拟地址对应的页表项" alt="" coords="775,51,993,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1036,108,973,94,974,89,1037,103"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#a2889f5a5b3c2b625cb3042e125ed5ac2" title="获取虚拟地址对应的物理地址映射" alt="" coords="520,5,725,31"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="1102,102,1052,69,992,42,925,26,855,16,787,13,726,13,726,8,787,8,855,11,926,20,994,37,1055,64,1105,98"/>
+<area shape="rect" id="Node000004" href="$classVirtualMemory.html#acbbc8c7f29e2611d4b56003323473e3d" title="映射单个页面" alt="" coords="530,112,715,137"/>
+<area shape="poly" id="edge8_Node000001_Node000004" title=" " alt="" coords="1028,130,715,128,715,123,1028,125"/>
+<area shape="rect" id="Node000008" href="$classVirtualMemory.html#acd2f1fff14fc36c984c7edbbabf95b0b" title="递归复制页表" alt="" coords="789,190,979,230"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="1064,155,948,193,947,187,1063,150"/>
+<area shape="rect" id="Node000010" href="$classVirtualMemory.html#a5d99f94ac5108601c7ea895ad52f6c33" title="递归释放页表" alt="" coords="789,278,979,318"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="1107,160,1055,201,995,244,930,280,927,276,992,240,1052,197,1104,156"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="772,51,685,33,686,28,773,46"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="773,97,686,115,685,109,772,91"/>
+<area shape="rect" id="Node000007" href="$classVirtualMemory.html#af6bc99b477b9a096c0fcb846a6ef874a" title="取消映射单个页面" alt="" coords="521,59,725,84"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="761,74,725,74,725,69,761,69"/>
+<area shape="rect" id="Node000005" href="$classVirtualMemory.html#a19ea83e0f3f85e55b12deec2a20972a2" title="映射设备内存 (MMIO)" alt="" coords="277,112,469,137"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="516,127,470,127,470,122,516,122"/>
+<area shape="rect" id="Node000006" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,112,228,137"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="263,127,228,127,228,122,263,122"/>
+<area shape="poly" id="edge11_Node000008_Node000008" title=" " alt="" coords="928,178,912,171,884,169,859,171,844,175,839,181,842,189,836,190,834,180,841,171,858,165,884,163,914,166,930,173"/>
+<area shape="rect" id="Node000009" href="$classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3" title="复制页表" alt="" coords="276,226,471,266"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="775,220,471,242,470,237,775,215"/>
+<area shape="poly" id="edge15_Node000010_Node000010" title=" " alt="" coords="928,266,912,259,884,257,859,259,844,263,839,269,842,277,836,278,834,268,841,259,858,253,884,251,914,254,930,261"/>
+<area shape="rect" id="Node000011" href="$classVirtualMemory.html#adf6d48183927262a6c7929493f0c74f5" title="回收页表，释放所有映射和子页表" alt="" coords="519,270,727,310"/>
+<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="775,297,727,296,727,291,775,292"/>
+<area shape="poly" id="edge14_Node000011_Node000009" title=" " alt="" coords="505,272,471,266,471,261,506,267"/>
+</map>

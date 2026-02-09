@@ -1,0 +1,9 @@
+<map id="klog::detail::LogBase::LogBase" name="klog::detail::LogBase::LogBase">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,164,71"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="212,13,397,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,39,198,35,199,40,165,44"/>
+<area shape="rect" id="Node000004" href="$sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f" title=" " alt="" coords="265,62,344,87"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="165,57,252,66,251,72,164,62"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="445,5,708,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="398,23,431,23,431,28,398,28"/>
+</map>

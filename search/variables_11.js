@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['s0_0',['s0',['../structcpu__io_1_1CalleeSavedContext.html#a2465aa1cc6000fdbea64727bf617db44',1,'cpu_io::CalleeSavedContext']]],
+  ['s1_1',['s1',['../structcpu__io_1_1CalleeSavedContext.html#a178b758cb3f34566853ed22f34aa4663',1,'cpu_io::CalleeSavedContext']]],
+  ['s4bios_5freq_2',['s4bios_req',['../structAcpi_1_1Fadt.html#a7cdb3ebeab482fa12f4393e49ad900e6',1,'Acpi::Fadt::s4bios_req'],['../acpi_8h.html#a8f1295e1df9d664b1bd85e49272d5ce3',1,'s4bios_req:&#160;acpi.h']]],
+  ['saved_5fintr_5fenable_5f_3',['saved_intr_enable_',['../classSpinLock.html#ad3fbd04e65ccc13b68d1334a018afefa',1,'SpinLock']]],
+  ['sched_5fdata_4',['sched_data',['../structper__cpu_1_1PerCpu.html#a2f5f0d8a8272a9cf2d0c3e99f1de7fbd',1,'per_cpu::PerCpu::sched_data'],['../structTaskControlBlock.html#a6a0b5c38f6f6f0ea6365be1d20c0497b',1,'TaskControlBlock::sched_data'],['../per__cpu_8hpp.html#a2212638d15cc941050a49d7089c8ca9d',1,'sched_data:&#160;per_cpu.hpp']]],
+  ['sched_5finfo_5',['sched_info',['../structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace',1,'TaskControlBlock']]],
+  ['schedulers_6',['schedulers',['../structCpuSchedData.html#aacdbbd31d2d0170d68170478472eb462',1,'CpuSchedData']]],
+  ['sci_5fint_7',['sci_int',['../acpi_8h.html#a695d0543cd5deeed5a95db534488444e',1,'sci_int:&#160;acpi.h'],['../structAcpi_1_1Fadt.html#a9fd2d4dcc34aac3515695c8ee1ab62ac',1,'Acpi::Fadt::sci_int']]],
+  ['security_5fextn_8',['security_extn',['../structGic_1_1Gicd_1_1GICD__TYPER.html#a043297213860de358e0e3b135f2a3d98',1,'Gic::Gicd::GICD_TYPER']]],
+  ['shdr_5f_9',['shdr_',['../classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4',1,'KernelElf']]],
+  ['sid_10',['sid',['../structTaskControlBlock.html#ae826edd217cadcc7d43cb366e8812c0e',1,'TaskControlBlock']]],
+  ['signature_11',['signature',['../structAcpi_1_1Rsdp.html#accdd808eced05e287baaafc0d29fea5f',1,'Acpi::Rsdp::signature'],['../structAcpi_1_1Description__header.html#a431dc35533ca4fae171533b0ee1a26ae',1,'Acpi::Description_header::signature'],['../acpi_8h.html#ad062e372a0f0dce043b8411fdce3e0cb',1,'signature:&#160;acpi.h']]],
+  ['sipi_5fparams_12',['sipi_params',['../include_2sipi_8h.html#a32702e3ad83c6b6890156c1019d9b212',1,'sipi_params:&#160;sipi.h'],['../sipi_8h.html#a32702e3ad83c6b6890156c1019d9b212',1,'sipi_params:&#160;sipi.h']]],
+  ['sk_5fputchar_13',['sk_putchar',['../sk__stdio_8c.html#ad11358bfe1843fdd3c3cb2e73af54298',1,'sk_putchar:&#160;sk_stdio.c'],['../sk__stdio_8h.html#a15ce3a1064b136eabaea65e2c7cee22e',1,'sk_putchar:&#160;sk_stdio.c']]],
+  ['sleep_5fcontrol_5freg_14',['sleep_control_reg',['../acpi_8h.html#a065c3930b11e98d6de6118319e67c55a',1,'sleep_control_reg:&#160;acpi.h'],['../structAcpi_1_1Fadt.html#a05f5a151ef76ee5d1f120e8c11242352',1,'Acpi::Fadt::sleep_control_reg']]],
+  ['sleep_5fstatus_5freg_15',['sleep_status_reg',['../acpi_8h.html#a83a1735f61bf515a640df7f3b02baca1',1,'sleep_status_reg:&#160;acpi.h'],['../structAcpi_1_1Fadt.html#a7e404f02aaa2b9ac1fd25daf228e8517',1,'Acpi::Fadt::sleep_status_reg']]],
+  ['sleeping_5ftasks_16',['sleeping_tasks',['../structCpuSchedData.html#a372821ab2bda158cb12c2f4d7a689bbe',1,'CpuSchedData']]],
+  ['smi_5fcmd_17',['smi_cmd',['../acpi_8h.html#ab0ef049e3776b7fc40887a0549581de0',1,'smi_cmd:&#160;acpi.h'],['../structAcpi_1_1Fadt.html#a9ece4ef74339e25d7f6c6fe2ecd1b9ef',1,'Acpi::Fadt::smi_cmd']]],
+  ['sp_18',['sp',['../structcpu__io_1_1CalleeSavedContext.html#ac8866e4383da3b3d951455395e4b73e2',1,'cpu_io::CalleeSavedContext::sp'],['../structcpu__io_1_1TrapContext.html#a7aa6b6430180233bb6ea9bc076296b87',1,'cpu_io::TrapContext::sp']]],
+  ['stats_5f_19',['stats_',['../classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94',1,'SchedulerBase']]],
+  ['status_20',['status',['../structTaskControlBlock.html#a0ce7d1d1287b24fe59df20cdff362fea',1,'TaskControlBlock']]],
+  ['strtab_5f_21',['strtab_',['../classKernelElf.html#ad87a34471942192ac2c132356f6ea36b',1,'KernelElf']]],
+  ['switch_5fhistory_22',['switch_history',['../structtest__env_1_1CoreEnvironment.html#a4c1deafdeb3c17b00cd50dad7949ee47',1,'test_env::CoreEnvironment']]],
+  ['symtab_5f_23',['symtab_',['../classKernelElf.html#a2e189a1bf1c110b2fb362b45f77224ab',1,'KernelElf']]]
+];

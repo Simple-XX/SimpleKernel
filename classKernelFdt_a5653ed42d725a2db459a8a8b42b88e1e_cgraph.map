@@ -1,0 +1,7 @@
+<map id="KernelFdt::GetPlic" name="KernelFdt::GetPlic">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,144,56"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html#a5fcb99314338e70889be7fb31398c2de" title=" " alt="" coords="192,5,420,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,33,178,29,178,35,145,38"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#a2bd0a7113b8a58fa59a871a471175583" title=" " alt="" coords="209,55,403,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,48,195,53,195,58,144,53"/>
+</map>

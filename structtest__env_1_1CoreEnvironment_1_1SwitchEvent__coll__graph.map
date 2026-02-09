@@ -1,0 +1,16 @@
+<map id="test_env::CoreEnvironment::SwitchEvent" name="test_env::CoreEnvironment::SwitchEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="436,1476,627,1576"/>
+<area shape="rect" id="Node000002" href="$structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="437,573,626,1399"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="534,1399,534,1459,529,1459,529,1399"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="628,909,638,921,646,938,653,986,649,1023,639,1050,634,1048,644,1022,647,986,641,939,634,923,624,912"/>
+<area shape="rect" id="Node000003" href="$structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="5,155,204,361"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="147,360,180,434,218,509,268,597,323,684,429,841,425,844,318,687,264,600,213,512,175,436,142,362"/>
+<area shape="rect" id="Node000004" href="$unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="228,185,432,331"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="352,330,435,627,430,629,347,332"/>
+<area shape="rect" id="Node000005" href="$structcpu__io_1_1TrapContext.html" title=" " alt="" coords="456,175,607,341"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="534,341,534,557,529,557,529,341"/>
+<area shape="rect" id="Node000006" href="$structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="631,155,827,361"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="708,362,662,550,633,655,628,653,657,549,703,360"/>
+<area shape="rect" id="Node000007" href="$structResourceId.html" title="资源 ID" alt="" coords="851,5,1001,511"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="853,488,842,512,795,601,742,689,638,846,633,843,738,686,790,598,837,509,848,485"/>
+</map>

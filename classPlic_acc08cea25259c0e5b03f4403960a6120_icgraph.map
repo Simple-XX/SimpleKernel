@@ -1,0 +1,9 @@
+<map id="Plic::GetContextId" name="Plic::GetContextId">
+<area shape="rect" id="Node000001" title="计算 context ID" alt="" coords="147,55,285,80"/>
+<area shape="rect" id="Node000002" href="$classPlic.html#ae6016013e7b9882159750769241b01e1" title="告知 Plic 已经处理了当前 IRQ" alt="" coords="9,5,95,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,53,95,33,96,28,161,48"/>
+<area shape="rect" id="Node000003" href="$classPlic.html#a658abe866472d73845205e14924cb8f9" title="设置指定中断源的使能状态" alt="" coords="15,55,89,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="132,70,90,70,90,65,132,65"/>
+<area shape="rect" id="Node000004" href="$classPlic.html#a76fe5261ee151ea8684e171cb63d0967" title="向 Plic 询问中断" alt="" coords="5,104,99,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,87,96,106,95,101,160,81"/>
+</map>

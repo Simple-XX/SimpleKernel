@@ -1,0 +1,27 @@
+<map id="FifoScheduler::PickNext" name="FifoScheduler::PickNext">
+<area shape="rect" id="Node000001" title="选择下一个要运行的任务（队列头部）" alt="" coords="108,277,284,303"/>
+<area shape="rect" id="Node000002" href="$unit__test_2fifo__scheduler__test_8cpp.html#a7fd90c6d3abea19241949f9ade754749" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,266,134,165,99,103,58,44,48,33,52,29,62,40,103,100,139,162,187,263"/>
+<area shape="rect" id="Node000003" href="$unit__test_2fifo__scheduler__test_8cpp.html#a369be40f9950a416471a352a51c36b45" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,267,128,187,58,93,48,82,51,79,62,90,133,184,183,264"/>
+<area shape="rect" id="Node000004" href="$unit__test_2fifo__scheduler__test_8cpp.html#a06015d8f487202029095f460811dc914" title=" " alt="" coords="5,104,60,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="173,269,58,143,47,132,50,128,62,139,177,265"/>
+<area shape="rect" id="Node000005" href="$unit__test_2fifo__scheduler__test_8cpp.html#ac198eaff3e2e29a98c1c26fd232a52a5" title=" " alt="" coords="5,153,60,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="166,271,49,181,52,177,169,267"/>
+<area shape="rect" id="Node000006" href="$unit__test_2fifo__scheduler__test_8cpp.html#a9fd2c9dc0cf84eaee8fd5ab64b709919" title=" " alt="" coords="5,203,60,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="154,274,59,230,61,225,156,269"/>
+<area shape="rect" id="Node000007" href="$unit__test_2fifo__scheduler__test_8cpp.html#a4255ec0cf17a6fa74bc3379e7edc07a0" title=" " alt="" coords="5,252,60,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="100,278,60,271,61,266,101,272"/>
+<area shape="rect" id="Node000008" href="$unit__test_2fifo__scheduler__test_8cpp.html#aff8bfefa77f464b0545de3743e45b121" title=" " alt="" coords="5,301,60,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="97,307,60,313,60,307,96,302"/>
+<area shape="rect" id="Node000009" href="$unit__test_2fifo__scheduler__test_8cpp.html#a95c38e20ac63a379a980e44fd76fd8dc" title=" " alt="" coords="5,351,60,376"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="155,311,61,354,59,349,153,306"/>
+<area shape="rect" id="Node000010" href="$unit__test_2fifo__scheduler__test_8cpp.html#a68f7923b4ef231d855afb7fa46c331e1" title=" " alt="" coords="5,400,60,425"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="168,314,53,402,49,398,165,309"/>
+<area shape="rect" id="Node000011" href="$unit__test_2fifo__scheduler__test_8cpp.html#aa2ed7636116bc1c92b9729bdc7558c88" title=" " alt="" coords="5,449,60,475"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="176,315,62,439,49,451,45,447,58,435,173,311"/>
+<area shape="rect" id="Node000012" href="$unit__test_2fifo__scheduler__test_8cpp.html#abbc9c6fc038f6192238f4267b5fee40f" title=" " alt="" coords="5,499,60,524"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="182,316,132,394,62,488,50,500,46,497,58,484,127,391,178,313"/>
+<area shape="rect" id="Node000013" href="$unit__test_2fifo__scheduler__test_8cpp.html#a1301e34d16c900e1df31650d8cc02e36" title=" " alt="" coords="5,548,60,573"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="186,317,137,417,102,478,62,537,51,550,47,546,58,534,98,475,133,414,181,314"/>
+</map>

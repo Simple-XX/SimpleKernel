@@ -1,0 +1,9 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,60,80"/>
+<area shape="rect" id="Node000002" href="$classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="109,5,280,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,55,107,39,132,32,134,37,109,45,61,60"/>
+<area shape="rect" id="Node000003" href="$classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="115,55,275,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="60,65,101,65,101,70,60,70"/>
+<area shape="rect" id="Node000004" href="$classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="108,104,281,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="61,74,109,89,138,98,136,103,107,94,60,79"/>
+</map>

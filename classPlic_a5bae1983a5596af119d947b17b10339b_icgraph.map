@@ -1,0 +1,7 @@
+<map id="Plic::SourcePriority" name="Plic::SourcePriority">
+<area shape="rect" id="Node000001" title="获取中断源优先级寄存器" alt="" coords="129,31,273,56"/>
+<area shape="rect" id="Node000002" href="$classPlic.html#a5af803e29ad50b52fbb8e51bcb4dcf36" title=" " alt="" coords="5,5,81,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,32,81,27,82,21,116,27"/>
+<area shape="rect" id="Node000003" href="$classPlic.html#a658abe866472d73845205e14924cb8f9" title="设置指定中断源的使能状态" alt="" coords="6,55,81,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="116,59,81,64,81,59,115,54"/>
+</map>

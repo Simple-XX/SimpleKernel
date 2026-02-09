@@ -1,0 +1,11 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,60,105"/>
+<area shape="rect" id="Node000002" href="$classSchedulerBase.html#ac3fd32fbc73b48fe5f959e05138eaae9" title="优先级提升：当任务持有资源时被更高优先级任务等待，提升其优先级" alt="" coords="114,5,325,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="47,78,74,58,107,40,127,32,129,37,109,44,77,62,50,82"/>
+<area shape="rect" id="Node000003" href="$classFifoScheduler.html#a5adf3af96fb0bae4c3d289e4e3823de0" title="将任务加入就绪队列尾部" alt="" coords="132,55,307,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="60,86,118,78,119,84,61,92"/>
+<area shape="rect" id="Node000004" href="$classFifoScheduler.html#a5a798dfc0f1f5a493298bf3f4c792746" title="选择下一个要运行的任务（队列头部）" alt="" coords="131,104,307,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="61,93,118,101,117,106,60,99"/>
+<area shape="rect" id="Node000005" href="$classSchedulerBase.html#aacc92ea4aed8b0b643d7c8eef115c3da" title="优先级恢复：当任务释放资源后，恢复其原始优先级" alt="" coords="108,153,331,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="52,103,78,121,109,138,133,147,132,152,107,143,75,126,49,108"/>
+</map>

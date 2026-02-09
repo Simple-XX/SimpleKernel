@@ -1,4 +1,25 @@
 var searchData=
 [
-  ['value_192',['value',['../structsbiret__t.html#a78449f5d7934aa1a6cd54351b16cc00d',1,'sbiret_t']]]
+  ['iapc_5fboot_5farch_0',['iapc_boot_arch',['../structAcpi_1_1Fadt.html#a9859c2afe9a5b73e00bb0b796ac24204',1,'Acpi::Fadt::iapc_boot_arch'],['../acpi_8h.html#a290c7026a84914a7353a22c316837108',1,'iapc_boot_arch:&#160;acpi.h']]],
+  ['idbits_1',['idbits',['../structGic_1_1Gicd_1_1GICD__TYPER.html#af7e41aedfae96f7e49adf41482f7a6c2',1,'Gic::Gicd::GICD_TYPER']]],
+  ['idle_5ftask_2',['idle_task',['../structper__cpu_1_1PerCpu.html#a859b16b924d4d11d01ec72ead0e5b3f2',1,'per_cpu::PerCpu::idle_task'],['../per__cpu_8hpp.html#a9a31203c3769eb7cefbb5433eec968dd',1,'idle_task:&#160;per_cpu.hpp']]],
+  ['idle_5ftask_5f_3',['idle_task_',['../classIdleScheduler.html#addb84129480def6f280ace77e9d648ae',1,'IdleScheduler']]],
+  ['idle_5ftime_4',['idle_time',['../structCpuSchedData.html#a8ca152fe34da6749379572d7eea4c370',1,'CpuSchedData']]],
+  ['idts_5',['idts',['../classInterrupt.html#a39f9b021fba2ecfa98709fb0bc0b8aeb',1,'Interrupt']]],
+  ['implementer_6',['implementer',['../structGic_1_1Gicd_1_1GICD__IIDR.html#a741aa3d42e85e5c2266da6d52dcca64b',1,'Gic::Gicd::GICD_IIDR']]],
+  ['info_7',['info',['../namespaceklog.html#aa59f931199fed6d453591f3766150ea0',1,'klog']]],
+  ['inherited_5fpriority_8',['inherited_priority',['../structTaskControlBlock_1_1SchedInfo.html#a372bec2a94e4ec1783bcf80d2b42e43b',1,'TaskControlBlock::SchedInfo']]],
+  ['interrupt_5fenabled_9',['interrupt_enabled',['../structtest__env_1_1CoreEnvironment.html#a1131ac80a40dff3cf842d15d2a78586f',1,'test_env::CoreEnvironment']]],
+  ['interrupt_5fhandlers_10',['interrupt_handlers',['../classInterrupt.html#a7e766f763f24ae075f15a99e9ab9cb50',1,'Interrupt::interrupt_handlers'],['../classInterrupt.html#a796c78d73d686e605d0cccd332a600e1',1,'Interrupt::interrupt_handlers']]],
+  ['interrupt_5fhandlers_5f_11',['interrupt_handlers_',['../classInterrupt.html#ac13deb08b742936197719f3d4badc679',1,'Interrupt::interrupt_handlers_'],['../classPlic.html#ad65a66c8c63c7d98caa484813d7b80d8',1,'Plic::interrupt_handlers_']]],
+  ['interrupt_5fno_12',['interrupt_no',['../structTaskManager_1_1InterruptWork.html#a418b253cc2f3d27fd60990ffaec5ee20',1,'TaskManager::InterruptWork']]],
+  ['interrupt_5fnumber_13',['interrupt_number',['../structTaskControlBlock.html#a8489d78bae9be9f8293675dbcb46088a',1,'TaskControlBlock']]],
+  ['interrupt_5fthreads_5f_14',['interrupt_threads_',['../classTaskManager.html#a5d6830c00a3e81dca6d2dc3c5379fc83',1,'TaskManager']]],
+  ['interrupt_5fthreads_5flock_5f_15',['interrupt_threads_lock_',['../classTaskManager.html#aa130b9c08feb39a8d8c653fbff4a4fa6',1,'TaskManager']]],
+  ['interrupt_5fwork_5fqueues_5f_16',['interrupt_work_queues_',['../classTaskManager.html#a82c2ca716e81aba77419830f345aaa05',1,'TaskManager']]],
+  ['interval_17',['interval',['../structBasicInfo.html#a377d4387938f46e0d7b4bed3c5f45f8d',1,'BasicInfo']]],
+  ['io_5fapic_5f_18',['io_apic_',['../classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a',1,'Apic']]],
+  ['is_5finterrupt_5fthread_19',['is_interrupt_thread',['../structTaskControlBlock.html#acaba2173a3196a62881d80f604e632fe',1,'TaskControlBlock']]],
+  ['is_5fx2apic_5fmode_5f_20',['is_x2apic_mode_',['../classLocalApic.html#a4a63c5378da856c2a5f1ea0460a6744e',1,'LocalApic']]],
+  ['it_5flines_5fnumber_21',['it_lines_number',['../structGic_1_1Gicd_1_1GICD__TYPER.html#aa41a0bdfde570eff6f71781c6a418a4f',1,'Gic::Gicd::GICD_TYPER']]]
 ];

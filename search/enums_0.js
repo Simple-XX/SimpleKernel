@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mode_5ft_193',['mode_t',['../classostream.html#a2f1697fb486d2afcde8e8a5b7f6608f6',1,'ostream']]]
+  ['cloneflags_0',['CloneFlags',['../task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6a',1,'task_control_block.hpp']]]
 ];

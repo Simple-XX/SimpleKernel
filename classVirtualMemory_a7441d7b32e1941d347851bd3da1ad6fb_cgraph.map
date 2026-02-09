@@ -1,0 +1,15 @@
+<map id="VirtualMemory::FindPageTableEntry" name="VirtualMemory::FindPageTableEntry">
+<area shape="rect" id="Node000001" title="在页表中查找虚拟地址对应的页表项" alt="" coords="5,151,224,191"/>
+<area shape="rect" id="Node000002" href="$memory_8cpp.html#a8006724372b77924155bd8618fe57516" title=" " alt="" coords="318,5,426,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,149,191,95,229,66,271,41,304,28,306,33,273,46,232,70,194,99,136,153"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io_1_1virtual__memory.html#a8746d12e9902e04e68ca29991a9d76cb" title=" " alt="" coords="272,55,472,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,149,271,105,292,97,294,102,273,110,163,154"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io_1_1virtual__memory.html#a4eeadf3e9e222bf2725743b69fe760b6" title=" " alt="" coords="283,119,461,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="224,155,269,149,269,155,224,160"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io_1_1virtual__memory.html#a841eeee221133f726f9ac2e26577c475" title=" " alt="" coords="284,183,460,223"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="224,182,271,188,270,193,224,188"/>
+<area shape="rect" id="Node000006" href="$namespacecpu__io_1_1virtual__memory.html#a5bc8f484f80076b5c3f5cf419fd24aec" title=" " alt="" coords="273,247,471,287"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="163,189,273,233,294,240,292,245,271,238,161,194"/>
+<area shape="rect" id="Node000007" href="$namespacecpu__io_1_1virtual__memory.html#af3655e31d3c72e1c80b4348cc3e55a71" title=" " alt="" coords="273,311,471,351"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="137,189,195,243,233,272,273,297,287,304,284,308,271,302,230,276,192,247,134,193"/>
+</map>

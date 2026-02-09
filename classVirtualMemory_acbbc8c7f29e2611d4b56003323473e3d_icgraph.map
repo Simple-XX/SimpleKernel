@@ -1,0 +1,7 @@
+<map id="VirtualMemory::MapPage" name="VirtualMemory::MapPage">
+<area shape="rect" id="Node000001" title="映射单个页面" alt="" coords="516,5,701,31"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#a19ea83e0f3f85e55b12deec2a20972a2" title="映射设备内存 (MMIO)" alt="" coords="276,5,468,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="502,21,468,21,468,15,502,15"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,5,228,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="262,21,228,21,228,15,262,15"/>
+</map>

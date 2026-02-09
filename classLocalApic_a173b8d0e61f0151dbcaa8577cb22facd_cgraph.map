@@ -1,0 +1,5 @@
+<map id="LocalApic::SetupOneShotTimer" name="LocalApic::SetupOneShotTimer">
+<area shape="rect" id="Node000001" title="设置单次定时器" alt="" coords="5,5,228,31"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#ac60426a6345dfe7593b29c22b0888115" title="启用 Local APIC 定时器" alt="" coords="276,5,451,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,15,262,15,262,21,228,21"/>
+</map>

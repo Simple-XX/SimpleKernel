@@ -1,0 +1,5 @@
+<map id="VirtualMemory::MapMMIO" name="VirtualMemory::MapMMIO">
+<area shape="rect" id="Node000001" title="映射设备内存 (MMIO)" alt="" coords="276,5,468,31"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,5,228,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,21,228,21,228,15,262,15"/>
+</map>

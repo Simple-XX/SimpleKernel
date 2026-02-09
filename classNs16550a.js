@@ -1,0 +1,25 @@
+var classNs16550a =
+[
+    [ "Ns16550a", "classNs16550a.html#a4f918b935b4f0a86de03c04b32832609", null ],
+    [ "Ns16550a", "classNs16550a.html#a3affdfb3f4bb566ffc79c4a0d6870940", null ],
+    [ "Ns16550a", "classNs16550a.html#a3e76273dbf46619f76a072e5ca5a78fc", null ],
+    [ "Ns16550a", "classNs16550a.html#a8e4b02b5d7790e55908ce2f53e4f69be", null ],
+    [ "~Ns16550a", "classNs16550a.html#a0b6b7c10624e3c3ccc3e0cf762500882", null ],
+    [ "GetChar", "classNs16550a.html#a11f744a7b09a73bbc2e63a0ad2c64cb7", null ],
+    [ "operator=", "classNs16550a.html#ae632980df83b90feec7b9885d70cfd37", null ],
+    [ "operator=", "classNs16550a.html#af63379def781e11fde186a663c9a0559", null ],
+    [ "PutChar", "classNs16550a.html#a1a19a88d2c052717462771b318e8310d", null ],
+    [ "TryGetChar", "classNs16550a.html#a04f567fe20d6fa5e67a245c877a7d909", null ],
+    [ "base_addr_", "classNs16550a.html#a5a00abce4fdf8984d107c63e5f936119", null ],
+    [ "kRegFCR", "classNs16550a.html#a6f38798857a5249c9fe94aac1a42ecf7", null ],
+    [ "kRegIER", "classNs16550a.html#a1aedfbf54af4f82dc7396b20a0f75177", null ],
+    [ "kRegISR", "classNs16550a.html#a323b90d889a8aefe492a2ddb5a56210d", null ],
+    [ "kRegLCR", "classNs16550a.html#a981f3ecd9e43fdf2b099a12387e7944f", null ],
+    [ "kRegLSR", "classNs16550a.html#ae6cdebe81b039924cace0255d02e5a7e", null ],
+    [ "kRegMCR", "classNs16550a.html#adc15c40f59a4f33cdbf9ce5eabd3f95c", null ],
+    [ "kRegMSR", "classNs16550a.html#ae71c015df5f99fff8316319e6a4dfda7", null ],
+    [ "kRegRHR", "classNs16550a.html#a6b2b1c457998a2cf9bb269e72071ef2c", null ],
+    [ "kRegTHR", "classNs16550a.html#a03195b45cfb5613304663d87f8861160", null ],
+    [ "kUartDLL", "classNs16550a.html#a8fbc955ceee0ec497e2d5ab7a8eb2496", null ],
+    [ "kUartDLM", "classNs16550a.html#adbe77ff74a382b65e9de3a05537442bd", null ]
+];

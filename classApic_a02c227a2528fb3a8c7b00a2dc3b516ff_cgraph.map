@@ -1,0 +1,11 @@
+<map id="Apic::InitCurrentCpuLocalApic" name="Apic::InitCurrentCpuLocalApic">
+<area shape="rect" id="Node000001" title="初始化当前 CPU 的 Local APIC" alt="" coords="5,42,220,67"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="268,15,453,41"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,40,254,37,255,42,220,46"/>
+<area shape="rect" id="Node000004" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="301,66,421,91"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="220,62,287,69,287,74,220,68"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="501,5,764,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="454,24,487,24,487,29,454,30"/>
+<area shape="rect" id="Node000005" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="565,70,700,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="421,77,551,79,551,84,421,82"/>
+</map>

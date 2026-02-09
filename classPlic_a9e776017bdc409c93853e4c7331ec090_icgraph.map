@@ -1,0 +1,7 @@
+<map id="Plic::ClaimComplete" name="Plic::ClaimComplete">
+<area shape="rect" id="Node000001" title="获取声明/完成寄存器" alt="" coords="147,31,301,56"/>
+<area shape="rect" id="Node000002" href="$classPlic.html#ae6016013e7b9882159750769241b01e1" title="告知 Plic 已经处理了当前 IRQ" alt="" coords="9,5,95,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,33,95,27,96,22,134,27"/>
+<area shape="rect" id="Node000003" href="$classPlic.html#a76fe5261ee151ea8684e171cb63d0967" title="向 Plic 询问中断" alt="" coords="5,55,99,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="134,59,99,63,99,58,133,53"/>
+</map>

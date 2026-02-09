@@ -1,0 +1,5 @@
+<map id="LocalApic::DisableXApic" name="LocalApic::DisableXApic">
+<area shape="rect" id="Node000001" title="禁用传统 xAPIC 模式" alt="" coords="5,5,184,31"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#ae58be5b508f31713e48075f27e0c77ca" title="检查传统 xAPIC 是否启用" alt="" coords="232,5,424,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,15,218,15,218,21,185,21"/>
+</map>

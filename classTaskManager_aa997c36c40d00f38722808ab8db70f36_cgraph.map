@@ -1,0 +1,10 @@
+<map id="TaskManager::InitCurrentCore" name="TaskManager::InitCurrentCore">
+<area shape="rect" id="Node000001" title="初始化 per cpu 的调度数据，创建 idle 线程" alt="" coords="5,31,220,56"/>
+<area shape="rect" id="Node000002" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="268,5,451,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,30,254,26,254,31,221,35"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="499,31,684,56"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="220,41,485,41,485,46,220,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="452,25,485,29,485,34,451,31"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="732,23,995,63"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="684,41,718,41,718,46,684,46"/>
+</map>

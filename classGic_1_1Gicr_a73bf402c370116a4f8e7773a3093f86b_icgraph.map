@@ -1,0 +1,7 @@
+<map id="Gic::Gicr::SetUP" name="Gic::Gicr::SetUP">
+<area shape="rect" id="Node000001" title=" " alt="" coords="317,5,441,31"/>
+<area shape="rect" id="Node000002" href="$classGic.html#a95e93d4c431de2b81969c6503801301e" title=" " alt="" coords="179,5,269,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,21,269,21,269,15,304,15"/>
+<area shape="rect" id="Node000003" href="$classInterrupt.html#a54eb0d6a11a1fd7af2308f2bd2ff0775" title=" " alt="" coords="5,5,131,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="165,21,131,21,131,15,165,15"/>
+</map>

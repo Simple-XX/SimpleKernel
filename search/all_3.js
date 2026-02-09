@@ -1,6 +1,29 @@
 var searchData=
 [
-  ['arch_3',['arch',['../aarch64_2arch_8cpp.html#a6e72ac01cbd693797621b4ee1d02c9e5',1,'arch(uint32_t _argc, uint8_t **_argv):&#160;arch.cpp'],['../arch_8cpp.html#a6e72ac01cbd693797621b4ee1d02c9e5',1,'arch(uint32_t _argc, uint8_t **_argv):&#160;arch.cpp'],['../arch_8h.html#a6e72ac01cbd693797621b4ee1d02c9e5',1,'arch(uint32_t _argc, uint8_t **_argv):&#160;arch.cpp'],['../riscv64_2arch_8cpp.html#a03bc8720ee66b4d5ef3b10b00d92294f',1,'arch(int, char **):&#160;arch.cpp'],['../x86__64_2arch_8cpp.html#a6e72ac01cbd693797621b4ee1d02c9e5',1,'arch(uint32_t _argc, uint8_t **_argv):&#160;arch.cpp']]],
-  ['arch_2ecpp_4',['arch.cpp',['../aarch64_2arch_8cpp.html',1,'(Global Namespace)'],['../arch_8cpp.html',1,'(Global Namespace)'],['../riscv64_2arch_8cpp.html',1,'(Global Namespace)'],['../x86__64_2arch_8cpp.html',1,'(Global Namespace)']]],
-  ['arch_2eh_5',['arch.h',['../arch_8h.html',1,'']]]
+  ['3️⃣_20测试验证_0',['3️⃣ 测试验证',['../md__2root_2README.html#autotoc_md300',1,'']]],
+  ['3️⃣_20test_20and_20verify_1',['3️⃣ Test and Verify',['../md__2root_2README__ENG.html#autotoc_md338',1,'']]],
+  ['3：内存管理（memory）_2',['阶段 3：内存管理（Memory）',['../md__2root_2README.html#autotoc_md315',1,'']]],
+  ['3_20中断分发机制_3',['3. 中断分发机制',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md179',1,'']]],
+  ['3_20中断处理函数注册_4',['3. 中断处理函数注册',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md156',1,'']]],
+  ['3_20关键机制_5',['3. 关键机制',['../md_task__unit__test__new__design.html#autotoc_md256',1,'']]],
+  ['3_20字符输出实现_6',['3. 字符输出实现',['../md_2___xE8_xB0_x83_xE8_xAF_x95_xE8_xBE_x93_xE5_x87_xBA.html#autotoc_md130',1,'']]],
+  ['3_20易于扩展_7',['3. 易于扩展',['../md__2root_2tests_2unit__test_2task_2IMPLEMENTATION__SUMMARY.html#autotoc_md463',1,'']]],
+  ['3_20测试层_20test_20layer_8',['3. 测试层 (Test Layer)',['../md__2root_2tests_2unit__test_2task_2README__ENVIRONMENT__LAYER.html#autotoc_md485',1,'']]],
+  ['3_20辅助_20cmake_20模块_9',['3. 辅助 CMake 模块',['../md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html#autotoc_md4',1,'']]],
+  ['3_20运行时中断管理_10',['3. 运行时中断管理',['../md__2root_2src_2driver_2apic_2README.html#autotoc_md396',1,'']]],
+  ['3_20进入容器_11',['3. 进入容器',['../md_docker.html#autotoc_md235',1,'']]],
+  ['3_20连接并打开项目_12',['3. 连接并打开项目',['../md_docker.html#autotoc_md243',1,'']]],
+  ['3_20验证调度行为_13',['3. 验证调度行为',['../md__2root_2tests_2unit__test_2task_2IMPLEMENTATION__SUMMARY.html#autotoc_md456',1,'']]],
+  ['3_20验证_20ssh_20免密登录_14',['3. 验证 SSH 免密登录',['../md_docker.html#autotoc_md239',1,'']]],
+  ['3_201_20测试隔离_15',['3.1 测试隔离',['../md_task__unit__test__new__design.html#autotoc_md257',1,'']]],
+  ['3_202_20多核支持与亲和性_16',['3.2 多核支持与亲和性',['../md_task__unit__test__new__design.html#autotoc_md258',1,'']]],
+  ['3_203_20tt_20switch_5fto_20tt_20处理（架构无关）_17',['3.3 &lt;tt&gt;switch_to&lt;/tt&gt; 处理（架构无关）',['../md_task__unit__test__new__design.html#autotoc_md259',1,'']]],
+  ['3_204_20超时保护（避免死循环）_18',['3.4 超时保护（避免死循环）',['../md_task__unit__test__new__design.html#autotoc_md260',1,'']]],
+  ['3_20init_20sipi_20sipi_20序列_19',['3. INIT-SIPI-SIPI 序列',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md32',1,'']]],
+  ['3_20mock_20层集成_20',['3. Mock 层集成',['../md__2root_2tests_2unit__test_2task_2IMPLEMENTATION__SUMMARY.html#autotoc_md451',1,'']]],
+  ['3_20psci_20cpuon接口_21',['3. PSCI CpuOn接口',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md78',1,'']]],
+  ['3_20sbi_20hart启动接口_22',['3. SBI Hart启动接口',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md53',1,'']]],
+  ['3_3a_20重新设计_20tt_20driver_20h_20tt_23',['TODO-3: 重新设计 &lt;tt&gt;driver.h&lt;/tt&gt;',['../md_TODO__interface__refactor.html#autotoc_md272',1,'']]],
+  ['3_3a_20memory_20management_24',['Phase 3: Memory Management',['../md__2root_2README__ENG.html#autotoc_md353',1,'']]],
+  ['3_5f中断_2emd_25',['3_中断.md',['../3___xE4_xB8_xAD_xE6_x96_xAD_8md.html',1,'']]]
 ];

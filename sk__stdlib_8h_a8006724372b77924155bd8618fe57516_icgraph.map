@@ -1,0 +1,30 @@
+<map id="aligned_alloc" name="aligned_alloc">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1036,231,1144,256"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="802,40,955,65"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1078,219,1065,186,1045,149,1019,111,986,80,954,65,957,60,990,76,1023,108,1050,146,1070,184,1083,217"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3" title="复制页表" alt="" coords="521,291,716,331"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1023,238,904,234,836,237,770,247,708,268,655,294,653,289,706,263,769,242,836,232,904,228,1023,233"/>
+<area shape="rect" id="Node000004" href="$classVirtualMemory.html#a7441d7b32e1941d347851bd3da1ad6fb" title="在页表中查找虚拟地址对应的页表项" alt="" coords="769,90,988,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1067,222,1032,186,987,151,948,132,951,128,989,146,1035,182,1071,218"/>
+<area shape="rect" id="Node000008" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,129,228,155"/>
+<area shape="poly" id="edge15_Node000001_Node000008" title=" " alt="" coords="1031,230,988,221,778,191,569,170,379,157,228,149,228,143,379,151,569,165,779,186,988,215,1032,225"/>
+<area shape="rect" id="Node000010" href="$sk__new_8cpp.html#a92ec3b3ae6ee3cc37464ce2e38705a10" title=" " alt="" coords="825,256,933,281"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1022,254,933,265,932,260,1022,249"/>
+<area shape="rect" id="Node000011" href="$sk__new_8cpp.html#ae8a86a56ba6702ef0fdbf0674e73553f" title=" " alt="" coords="819,305,938,331"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1057,265,989,297,939,310,938,305,987,291,1055,260"/>
+<area shape="rect" id="Node000012" href="$classVirtualMemory.html#acd2f1fff14fc36c984c7edbbabf95b0b" title="递归复制页表" alt="" coords="783,379,974,419"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1071,268,1035,306,990,346,928,381,925,377,986,341,1031,303,1067,265"/>
+<area shape="rect" id="Node000013" href="$structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42" title="构造函数 (内核线程)" alt="" coords="769,443,988,483"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="1084,270,1072,306,1053,351,1025,395,990,433,971,445,968,441,986,429,1021,392,1048,348,1067,305,1079,268"/>
+<area shape="rect" id="Node000005" href="$classVirtualMemory.html#a2889f5a5b3c2b625cb3042e125ed5ac2" title="获取虚拟地址对应的物理地址映射" alt="" coords="516,104,721,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="756,116,722,117,722,111,756,110"/>
+<area shape="rect" id="Node000006" href="$classVirtualMemory.html#acbbc8c7f29e2611d4b56003323473e3d" title="映射单个页面" alt="" coords="526,5,711,31"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="787,88,768,79,744,61,720,44,689,33,691,28,723,40,747,57,771,74,790,83"/>
+<area shape="rect" id="Node000009" href="$classVirtualMemory.html#af6bc99b477b9a096c0fcb846a6ef874a" title="取消映射单个页面" alt="" coords="517,55,721,80"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="756,93,696,83,697,77,756,87"/>
+<area shape="rect" id="Node000007" href="$classVirtualMemory.html#a19ea83e0f3f85e55b12deec2a20972a2" title="映射设备内存 (MMIO)" alt="" coords="276,55,468,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="542,36,437,57,436,52,541,31"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="315,87,162,132,160,127,313,82"/>
+<area shape="poly" id="edge12_Node000012_Node000003" title=" " alt="" coords="805,377,678,334,680,329,807,372"/>
+<area shape="poly" id="edge13_Node000012_Node000012" title=" " alt="" coords="914,368,902,361,879,358,858,360,846,365,842,371,844,378,839,380,837,370,843,360,857,355,879,353,903,356,917,363"/>
+</map>

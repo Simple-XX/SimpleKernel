@@ -1,0 +1,12 @@
+<map id="TEST_F" name="TEST_F">
+<area shape="rect" id="Node000001" title="示例：清空切换历史" alt="" coords="5,31,75,56"/>
+<area shape="rect" id="Node000002" href="$arch_8cpp.html#ad982abdb7f3d8729656c6b5422b2e61d" title=" " alt="" coords="123,31,207,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,41,109,41,109,46,75,46"/>
+<area shape="rect" id="Node000003" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="255,5,437,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="207,35,241,30,242,35,207,40"/>
+<area shape="rect" id="Node000005" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="719,23,981,63"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="207,41,705,41,705,46,207,46"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="485,5,671,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="438,15,472,15,472,21,438,21"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="671,24,705,27,704,32,671,29"/>
+</map>

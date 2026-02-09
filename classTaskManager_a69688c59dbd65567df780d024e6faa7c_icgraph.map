@@ -1,0 +1,8 @@
+<map id="TaskManager::AllocatePid" name="TaskManager::AllocatePid">
+<area shape="rect" id="Node000001" title="分配新的 PID" alt="" coords="425,31,615,56"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#ae97ee6101a6462300666058cc4bedd05" title="添加任务" alt="" coords="207,5,377,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="411,34,377,30,378,25,412,29"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="5,31,159,56"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="412,46,159,46,159,41,412,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="193,33,159,37,159,31,193,27"/>
+</map>

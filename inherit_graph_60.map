@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,31,107,56"/>
+<area shape="rect" id="Node000001" href="$classKernelFdtTest.html" title=" " alt="" coords="165,5,275,31"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="120,31,164,24,165,29,121,36"/>
+<area shape="rect" id="Node000002" href="$classTaskTestHarness.html" title="Task 模块单元测试的基类 Fixture." alt="" coords="155,55,285,80"/>
+<area shape="poly" id="edge13_Node000000_Node000002" title=" " alt="" coords="121,50,155,55,154,60,120,55"/>
+<area shape="rect" id="Node000003" href="$classEnvironmentLayerTest.html" title="测试环境层基本功能" alt="" coords="339,29,506,55"/>
+<area shape="poly" id="edge14_Node000002_Node000003" title=" " alt="" coords="299,55,339,50,339,55,299,60"/>
+<area shape="rect" id="Node000004" href="$classTaskSchedulingExample.html" title="演示如何使用环境层编写任务调度测试" alt="" coords="333,79,512,104"/>
+<area shape="poly" id="edge15_Node000002_Node000004" title=" " alt="" coords="299,74,333,78,333,83,299,79"/>
+</map>

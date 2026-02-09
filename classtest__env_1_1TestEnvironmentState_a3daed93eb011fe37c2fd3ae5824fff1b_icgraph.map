@@ -1,0 +1,11 @@
+<map id="test_env::TestEnvironmentState::InitializeCores" name="test_env::TestEnvironmentState::InitializeCores">
+<area shape="rect" id="Node000001" title="初始化指定数量的核心" alt="" coords="457,23,652,63"/>
+<area shape="rect" id="Node000002" href="$classKernelFdtTest.html#a35a89f4028950bcc95d57a0f9f3899b4" title=" " alt="" coords="242,5,399,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="443,34,399,29,400,24,444,29"/>
+<area shape="rect" id="Node000003" href="$classTaskTestHarness.html#a9b21a4be72464267c2d3059fa165ca6d" title=" " alt="" coords="232,55,409,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="444,57,410,61,409,56,444,52"/>
+<area shape="rect" id="Node000004" href="$classEnvironmentLayerTest.html#a32935143b073249d83b7ed2c19079271" title=" " alt="" coords="11,15,178,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="218,56,178,50,179,44,219,50"/>
+<area shape="rect" id="Node000005" href="$classTaskSchedulingExample.html#aaaba6b045c859716abd7f0780a0c5dda" title=" " alt="" coords="5,79,184,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="219,84,184,89,184,84,218,79"/>
+</map>

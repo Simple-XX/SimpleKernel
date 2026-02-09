@@ -1,0 +1,11 @@
+<map id="LocalApic::PrintInfo" name="LocalApic::PrintInfo">
+<area shape="rect" id="Node000001" title="打印 Local APIC 信息（调试用）" alt="" coords="5,84,152,109"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#a5d8915494fa6031ccde79ee1b24cdbf6" title="获取 APIC 版本信息" alt="" coords="205,5,396,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,82,147,60,199,39,224,32,226,37,201,45,149,65,105,86"/>
+<area shape="rect" id="Node000003" href="$classLocalApic.html#a933b92b105f223a4e31cab92958dedba" title="获取任务优先级" alt="" coords="205,55,396,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,84,191,79,192,84,153,90"/>
+<area shape="rect" id="Node000004" href="$classLocalApic.html#a579ae8f114ab23ac92d830ebbfeb3518" title="获取定时器当前计数值" alt="" coords="200,105,401,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="153,103,187,108,186,113,152,109"/>
+<area shape="rect" id="Node000005" href="$classLocalApic.html#acec1f3c4dc919cdeac31f5ce3bf1bbeb" title="检查 x2APIC 是否启用" alt="" coords="201,169,401,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="103,107,148,131,201,154,229,163,227,168,199,159,145,135,101,112"/>
+</map>

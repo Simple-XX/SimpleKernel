@@ -1,0 +1,9 @@
+<map id="SchedulerBase::ResetStats" name="SchedulerBase::ResetStats">
+<area shape="rect" id="Node000001" title="重置统计信息" alt="" coords="108,55,304,80"/>
+<area shape="rect" id="Node000002" href="$unit__test_2cfs__scheduler__test_8cpp.html#acce4d0ae51d4aedb69a0e1f4a7e7f490" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,53,60,28,61,23,148,48"/>
+<area shape="rect" id="Node000003" href="$unit__test_2fifo__scheduler__test_8cpp.html#a1301e34d16c900e1df31650d8cc02e36" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="94,70,60,70,60,65,94,65"/>
+<area shape="rect" id="Node000004" href="$unit__test_2rr__scheduler__test_8cpp.html#a143e91347951d281c4ff56d9005ddc74" title=" " alt="" coords="5,104,60,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="148,86,61,112,60,107,147,81"/>
+</map>

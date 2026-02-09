@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['simplekernel_20启动_201',['SimpleKernel 启动',['../md_1__xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html',1,'']]],
-  ['simplekernel_20工具链_202',['SimpleKernel 工具链',['../md_0__xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html',1,'']]]
+  ['generic_20interrupt_20controller_0',['GIC (Generic Interrupt Controller)',['../md__2root_2src_2driver_2gic_2README.html',1,'']]],
+  ['gic_20generic_20interrupt_20controller_1',['GIC (Generic Interrupt Controller)',['../md__2root_2src_2driver_2gic_2README.html',1,'']]],
+  ['git_20commit_20规范_2',['Git Commit 规范',['../md_git__commit.html',1,'']]]
 ];

@@ -1,0 +1,7 @@
+<map id="LocalApic::WakeupAp" name="LocalApic::WakeupAp">
+<area shape="rect" id="Node000001" title="唤醒应用处理器 (AP)" alt="" coords="5,31,165,56"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#a6b837d6e2763369280afc50976b1064a" title="发送 INIT IPI" alt="" coords="226,5,387,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,32,212,26,213,31,166,37"/>
+<area shape="rect" id="Node000003" href="$classLocalApic.html#acd008bf0645ca650746c65287ad109de" title="发送 SIPI (Startup IPI)" alt="" coords="213,55,400,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,49,200,53,199,58,165,55"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="TaskManager::Schedule" name="TaskManager::Schedule">
+<area shape="rect" id="Node000001" title="调度函数 选择下一个任务并切换上下文" alt="" coords="437,80,612,105"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a71763ebababa9aa90bad6a07c66edede" title="阻塞当前任务" alt="" coords="218,5,370,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="479,77,389,45,349,33,350,28,390,39,481,72"/>
+<area shape="rect" id="Node000004" href="$classTaskManager.html#ae3444c55ab7b6ec348a56b596229fc0f" title="退出当前线程" alt="" coords="223,55,365,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="423,84,365,78,365,72,424,79"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#a86fe8ff01e353a0acb150c90e8081811" title="线程睡眠" alt="" coords="218,104,370,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="424,106,370,111,370,106,423,101"/>
+<area shape="rect" id="Node000006" href="$classTaskManager.html#aa1041f9ed06a9d0b6b738621c30e1921" title="更新系统 tick" alt="" coords="199,153,389,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="478,113,390,143,347,156,345,151,389,138,476,108"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#aadc206ac53400212078270833533f247" title="等待子进程退出" alt="" coords="5,5,151,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="204,21,151,21,151,15,204,15"/>
+</map>

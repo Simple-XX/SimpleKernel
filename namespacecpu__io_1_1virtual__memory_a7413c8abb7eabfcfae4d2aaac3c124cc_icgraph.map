@@ -1,0 +1,7 @@
+<map id="cpu_io::virtual_memory::PageAlign" name="cpu_io::virtual_memory::PageAlign">
+<area shape="rect" id="Node000001" title=" " alt="" coords="516,5,692,45"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#a19ea83e0f3f85e55b12deec2a20972a2" title="映射设备内存 (MMIO)" alt="" coords="276,13,468,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="502,28,468,28,468,23,502,23"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,13,228,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="262,28,228,28,228,23,262,23"/>
+</map>

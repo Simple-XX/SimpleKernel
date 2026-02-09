@@ -1,0 +1,29 @@
+<map id="syscall_dispatcher" name="syscall_dispatcher">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,179,148,204"/>
+<area shape="rect" id="Node000002" href="$syscall_8cpp.html#a6d9ce836fd264a98548781886f375d2a" title="创建新线程（或进程）" alt="" coords="229,5,316,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,177,124,112,156,73,194,40,215,29,217,34,198,44,160,77,128,115,87,180"/>
+<area shape="rect" id="Node000004" href="$syscall_8cpp.html#a34c7946fbbdfb071d2b453a745dcb9b4" title="退出当前进程或线程" alt="" coords="235,55,311,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="88,176,132,134,162,110,195,89,221,78,223,82,197,94,165,114,136,138,92,180"/>
+<area shape="rect" id="Node000005" href="$syscall_8cpp.html#a01fbd4b45143dd51bf6f338d8ee325da" title="创建新进程（fork）" alt="" coords="234,104,311,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="105,176,195,138,220,129,222,134,197,143,107,181"/>
+<area shape="rect" id="Node000006" href="$syscall_8cpp.html#aa03f906affa67ef23ebfbcb79efa569f" title="快速用户空间互斥锁操作（futex）" alt="" coords="230,153,315,179"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="148,179,216,171,216,176,149,185"/>
+<area shape="rect" id="Node000007" href="$syscall_8cpp.html#a17717d9e7bc25b272fe4dbb63bc52baa" title="获取当前线程ID" alt="" coords="228,203,317,228"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="149,197,214,206,214,211,148,203"/>
+<area shape="rect" id="Node000008" href="$syscall_8cpp.html#ab5c00759c95d8ce9e9db75b1b55a9552" title="设置线程ID地址（用于线程退出时的清理）" alt="" coords="196,252,349,277"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="109,202,197,237,220,245,218,250,195,242,107,207"/>
+<area shape="rect" id="Node000009" href="$syscall_8cpp.html#a4fa66935c10e294006b6310af1c68f37" title="向文件描述符写入数据" alt="" coords="231,351,315,376"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="87,203,129,266,160,304,198,336,219,347,216,352,194,340,156,307,124,269,83,206"/>
+<area shape="rect" id="Node000011" href="$syscall_8cpp.html#a23ac80734740f098e56332da33758ace" title="主动放弃CPU，让出时间片" alt="" coords="231,301,314,327"/>
+<area shape="poly" id="edge15_Node000001_Node000011" title=" " alt="" coords="92,203,137,243,166,266,197,286,219,296,217,301,195,291,163,271,133,247,89,206"/>
+<area shape="rect" id="Node000003" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="397,153,567,179"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="317,25,351,40,385,63,416,90,464,141,460,145,412,94,381,67,348,44,315,30"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="312,75,350,89,405,116,451,144,449,148,402,121,348,94,310,80"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="312,123,415,148,414,153,311,128"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="316,163,383,163,383,169,316,169"/>
+<area shape="poly" id="edge10_Node000007_Node000003" title=" " alt="" coords="317,202,414,179,415,184,318,207"/>
+<area shape="poly" id="edge12_Node000008_Node000003" title=" " alt="" coords="315,249,348,237,401,210,448,184,450,188,404,215,350,242,317,254"/>
+<area shape="rect" id="Node000010" href="$sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f" title=" " alt="" coords="443,351,521,376"/>
+<area shape="poly" id="edge14_Node000009_Node000010" title=" " alt="" coords="315,361,429,361,429,366,315,366"/>
+<area shape="poly" id="edge16_Node000011_Node000003" title=" " alt="" coords="313,302,348,286,381,263,412,237,460,187,463,191,415,241,384,268,351,291,315,306"/>
+</map>

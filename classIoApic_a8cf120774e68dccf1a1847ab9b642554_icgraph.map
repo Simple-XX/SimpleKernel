@@ -1,0 +1,9 @@
+<map id="IoApic::ReadRedirectionEntry" name="IoApic::ReadRedirectionEntry">
+<area shape="rect" id="Node000001" title="读取 IO APIC 重定向表项" alt="" coords="195,55,405,80"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#aa35d2bf3bfc0c1a778711855bc85a8f6" title=" " alt="" coords="21,5,131,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,54,131,33,132,27,229,49"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#a2e25ca00e1a01ce1e9dd83195fd3bb2d" title="屏蔽 IRQ" alt="" coords="15,55,137,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="181,70,138,70,138,65,181,65"/>
+<area shape="rect" id="Node000004" href="$classIoApic.html#a57e460e6fbe7c46914f96f28c5eca53e" title="取消屏蔽 IRQ" alt="" coords="5,104,147,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="229,86,135,107,134,101,228,80"/>
+</map>

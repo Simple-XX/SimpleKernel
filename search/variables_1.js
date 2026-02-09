@@ -1,8 +1,19 @@
 var searchData=
 [
-  ['ehdr_175',['ehdr',['../classElf.html#aa938244c41792cd337c27e7989496900',1,'Elf']]],
-  ['elf_176',['elf',['../classElf.html#a8cdfe3309959985aa774604b6ec9da86',1,'Elf']]],
-  ['elf_5ffile_5fbuffer_177',['elf_file_buffer',['../classElf.html#a656cc0c33708cae16ff34547eb8f8c85',1,'Elf']]],
-  ['elf_5ffile_5fsize_178',['elf_file_size',['../classElf.html#a24d94ce5a17e48b96ae4e82de062e7e4',1,'Elf']]],
-  ['error_179',['error',['../structsbiret__t.html#a907730633f8936f3e11a4a10aa8a8442',1,'sbiret_t']]]
+  ['a_0',['a',['../structparam.html#a31e7a737c0d08d6b80db6a41d8123db3',1,'param']]],
+  ['a0_1',['a0',['../structcpu__io_1_1TrapContext.html#a9d01ccdbd59df7c6caa436336712e956',1,'cpu_io::TrapContext']]],
+  ['a3v_2',['a3v',['../structGic_1_1Gicd_1_1GICD__TYPER.html#a1ef51029cd195598c8a9b23007083d66',1,'Gic::Gicd::GICD_TYPER']]],
+  ['access_5fsize_3',['access_size',['../acpi_8h.html#ad6fc6b46f5f6149c37f2251106426ebd',1,'access_size:&#160;acpi.h'],['../structAcpi_1_1GenericAddressStructure.html#a35ca0294adc81252d8ac4af3a27e844e',1,'Acpi::GenericAddressStructure::access_size']]],
+  ['acpi_5fdisable_4',['acpi_disable',['../structAcpi_1_1Fadt.html#a04a13132ac3ce05288d9ce5c94e90998',1,'Acpi::Fadt::acpi_disable'],['../acpi_8h.html#a63048441ebdc7183369816a47961326c',1,'acpi_disable:&#160;acpi.h']]],
+  ['acpi_5fenable_5',['acpi_enable',['../structAcpi_1_1Fadt.html#af4edc76baa6e64efd5a5a4e18a18bdca',1,'Acpi::Fadt::acpi_enable'],['../acpi_8h.html#a6588b784bcd23334ce83045af0175030',1,'acpi_enable:&#160;acpi.h']]],
+  ['address_6',['address',['../structAcpi_1_1GenericAddressStructure.html#a5e08daebce06aa2d3972e13b09054a6c',1,'Acpi::GenericAddressStructure::address'],['../acpi_8h.html#ab6b52376c1b9d81e6ea6f95a1225f832',1,'address:&#160;acpi.h']]],
+  ['address_5fspace_5fid_7',['address_space_id',['../structAcpi_1_1GenericAddressStructure.html#a7704b09162b935128c6cdd5bdf394b7b',1,'Acpi::GenericAddressStructure::address_space_id'],['../acpi_8h.html#af1f52659feeaaf23c753edcace4a8585',1,'address_space_id:&#160;acpi.h']]],
+  ['ap_5fstart16_8',['ap_start16',['../include_2sipi_8h.html#a07a57de9cb60e2d021c86cad5661685d',1,'ap_start16:&#160;sipi.h'],['../sipi_8h.html#a07a57de9cb60e2d021c86cad5661685d',1,'ap_start16:&#160;sipi.h']]],
+  ['ap_5fstart64_5fend_9',['ap_start64_end',['../include_2sipi_8h.html#a09112885e666deab3901a558c383fa20',1,'ap_start64_end:&#160;sipi.h'],['../sipi_8h.html#a09112885e666deab3901a558c383fa20',1,'ap_start64_end:&#160;sipi.h']]],
+  ['apic_5fbase_5f_10',['apic_base_',['../classLocalApic.html#a14dea9be5f7231166d31af785352a911',1,'LocalApic']]],
+  ['are_5fns_11',['are_ns',['../structGic_1_1Gicd_1_1GICD__CTLR.html#affc567aae387544fabfafb5ec02a647f',1,'Gic::Gicd::GICD_CTLR']]],
+  ['are_5fs_12',['are_s',['../structGic_1_1Gicd_1_1GICD__CTLR.html#a6ea36b1756a635f09d86a826e992d12e',1,'Gic::Gicd::GICD_CTLR']]],
+  ['arm_5fboot_5farch_13',['arm_boot_arch',['../structAcpi_1_1Fadt.html#a276d80c5eab054d3be331e7df1c96764',1,'Acpi::Fadt::arm_boot_arch'],['../acpi_8h.html#a636838d05e60a6d9eef9d08ace2f8903',1,'arm_boot_arch:&#160;acpi.h']]],
+  ['atexit_5ffunc_5fcount_14',['atexit_func_count',['../sk__libcxx_8cpp.html#a274fc39b50e61c00c4653b5bbc1f0baf',1,'sk_libcxx.cpp']]],
+  ['atexit_5ffuncs_15',['atexit_funcs',['../sk__libcxx_8cpp.html#af95be90ce4e510360f34e8f5042d0b46',1,'sk_libcxx.cpp']]]
 ];

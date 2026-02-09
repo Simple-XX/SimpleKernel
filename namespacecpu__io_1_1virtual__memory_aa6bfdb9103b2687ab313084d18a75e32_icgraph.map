@@ -1,0 +1,11 @@
+<map id="cpu_io::virtual_memory::FlushTLBAll" name="cpu_io::virtual_memory::FlushTLBAll">
+<area shape="rect" id="Node000001" title=" " alt="" coords="768,23,944,63"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#acbbc8c7f29e2611d4b56003323473e3d" title="映射单个页面" alt="" coords="525,5,711,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="754,35,710,30,711,25,754,30"/>
+<area shape="rect" id="Node000005" href="$classVirtualMemory.html#af6bc99b477b9a096c0fcb846a6ef874a" title="取消映射单个页面" alt="" coords="516,55,720,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="754,56,721,60,720,54,754,51"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#a19ea83e0f3f85e55b12deec2a20972a2" title="映射设备内存 (MMIO)" alt="" coords="276,5,468,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="511,21,468,21,468,15,511,15"/>
+<area shape="rect" id="Node000004" href="$classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,5,228,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="262,21,228,21,228,15,262,15"/>
+</map>

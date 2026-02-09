@@ -1,4 +1,29 @@
 var searchData=
 [
-  ['gop_182',['gop',['../classGraphics.html#a0684dbe06b0ddeb8577869b9a5993443',1,'Graphics']]]
+  ['c_0',['c',['../structparam.html#af6748b853f7ebd0746905df81998b25d',1,'param']]],
+  ['century_1',['century',['../structAcpi_1_1Fadt.html#a995d32ff53ea45d4882e541e3339007a',1,'Acpi::Fadt::century'],['../acpi_8h.html#ac57a5f6294dfdc3db38d630c5d589f31',1,'century:&#160;acpi.h']]],
+  ['cfs_2',['cfs',['../unionTaskControlBlock_1_1SchedData.html#a758d61fadd7873af3da44e19f7215918',1,'TaskControlBlock::SchedData']]],
+  ['checksum_3',['checksum',['../acpi_8h.html#a59eac9627282a484fbaf0aa7aa3b8a9a',1,'checksum:&#160;acpi.h'],['../structAcpi_1_1Description__header.html#a1b6a37b45e1ee484ebf4987f459d134a',1,'Acpi::Description_header::checksum'],['../structAcpi_1_1Rsdp.html#a11900eefa9bab5b7e116e314ef4eb37b',1,'Acpi::Rsdp::checksum']]],
+  ['clone_5fflags_4',['clone_flags',['../structTaskControlBlock.html#a3dc16c5123d950519cd74d3ee82591d9',1,'TaskControlBlock']]],
+  ['code_5',['code',['../structError.html#a3fd10fc0be9fa90f230b46b0618e9df3',1,'Error']]],
+  ['constructor_5fdestructor_5f1_6',['constructor_destructor_1',['../ctor__dtor__test_8cpp.html#ab920461d852665574e61f15204083b6e',1,'ctor_dtor_test.cpp']]],
+  ['constructor_5fdestructor_5f2_7',['constructor_destructor_2',['../ctor__dtor__test_8cpp.html#abe9674a3957290f2d070126a972b9525',1,'ctor_dtor_test.cpp']]],
+  ['constructor_5fdestructor_5f3_8',['constructor_destructor_3',['../ctor__dtor__test_8cpp.html#a4afba5f3de74469df265231427019a31',1,'ctor_dtor_test.cpp']]],
+  ['constructor_5fdestructor_5f4_9',['constructor_destructor_4',['../ctor__dtor__test_8cpp.html#aa117cd79ab14a1b0f80cf244cf4f7211',1,'ctor_dtor_test.cpp']]],
+  ['context_5fcount_5f_10',['context_count_',['../classPlic.html#a3b190463443994fc9604544f2b29deb2',1,'Plic']]],
+  ['context_5fswitches_11',['context_switches',['../structTaskControlBlock_1_1SchedInfo.html#a624c068b546e06d50d9b512c04df5ab2',1,'TaskControlBlock::SchedInfo']]],
+  ['context_5fto_5ftask_5fmap_5f_12',['context_to_task_map_',['../classtest__env_1_1TestEnvironmentState.html#a8c85810045c65712fc4899039546a8ac',1,'test_env::TestEnvironmentState']]],
+  ['core_5fcount_13',['core_count',['../structBasicInfo.html#a00488d4b1702eb6c75ef2bf2a54dd9eb',1,'BasicInfo']]],
+  ['core_5fid_14',['core_id',['../structper__cpu_1_1PerCpu.html#a9350604c0f4b37d3acda077569d4e766',1,'per_cpu::PerCpu::core_id'],['../structtest__env_1_1CoreEnvironment.html#ac9a4df06fdd9f9af2771e62eb0262dea',1,'test_env::CoreEnvironment::core_id'],['../structtest__env_1_1CoreEnvironment_1_1SwitchEvent.html#a34ebbf068de15778c75adabff1c81ffc',1,'test_env::CoreEnvironment::SwitchEvent::core_id'],['../per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca',1,'core_id:&#160;per_cpu.hpp']]],
+  ['core_5fid_5f_15',['core_id_',['../classSpinLock.html#abd4b5f1d813d2bfc29c5bee5da8a8aad',1,'SpinLock']]],
+  ['cores_5f_16',['cores_',['../classtest__env_1_1TestEnvironmentState.html#ae7fae7ca997c20251aaf163a46c62e37',1,'test_env::TestEnvironmentState']]],
+  ['cpu_5faffinity_17',['cpu_affinity',['../structTaskControlBlock.html#a82296b6fec3ae8a120ffec4f0e97ef81',1,'TaskControlBlock']]],
+  ['cpu_5fcount_5f_18',['cpu_count_',['../classApic.html#ac4f645668b3c41bdffc63a52825c96f2',1,'Apic']]],
+  ['cpu_5fnumber_19',['cpu_number',['../structGic_1_1Gicd_1_1GICD__TYPER.html#a3c4ea093c53d5ea40d933cbf7096d7cc',1,'Gic::Gicd::GICD_TYPER']]],
+  ['cpu_5fschedulers_5f_20',['cpu_schedulers_',['../classTaskManager.html#aaebe944e28d505769c2acc4ce1c8cca5',1,'TaskManager']]],
+  ['cr3_21',['cr3',['../structsipi__params__t.html#acd63dd6204be72bf6dc528a77e8fa74c',1,'sipi_params_t::cr3'],['../include_2sipi_8h.html#aa9166a91c5e8b2b51b0a9677f9ba56a0',1,'cr3:&#160;sipi.h'],['../sipi_8h.html#aa9166a91c5e8b2b51b0a9677f9ba56a0',1,'cr3:&#160;sipi.h']]],
+  ['creator_5fid_22',['creator_id',['../structAcpi_1_1Description__header.html#a3517597dbdf620d6ec6ae3bac4455910',1,'Acpi::Description_header::creator_id'],['../acpi_8h.html#ab38918ce2820bbdf42112e514c767817',1,'creator_id:&#160;acpi.h']]],
+  ['creator_5frevision_23',['creator_revision',['../structAcpi_1_1Description__header.html#a96ecae5ed1bb8e8be9d24a3355ddb9f1',1,'Acpi::Description_header::creator_revision'],['../acpi_8h.html#a88d54492f1cf62a366b9dacdfd9fbe9a',1,'creator_revision:&#160;acpi.h']]],
+  ['cst_5fcnt_24',['cst_cnt',['../structAcpi_1_1Fadt.html#a02d5f5d1014422fa01b4c75e22352c9d',1,'Acpi::Fadt::cst_cnt'],['../acpi_8h.html#a99a379cd5acb74bba7b451bd5cd63a7f',1,'cst_cnt:&#160;acpi.h']]],
+  ['current_5fthread_5fenv_25',['current_thread_env',['../namespacetest__env.html#a6aeda4d3d2c083d356fcfa8e43988c7e',1,'test_env']]]
 ];

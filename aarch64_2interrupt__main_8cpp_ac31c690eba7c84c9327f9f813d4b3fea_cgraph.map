@@ -1,0 +1,17 @@
+<map id="InterruptInitSMP" name="InterruptInitSMP">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,132,105"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#afe7f925ac3cb632ed212166712288451" title=" " alt="" coords="344,5,516,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,77,179,61,336,30,337,36,181,66,115,82"/>
+<area shape="rect" id="Node000004" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="345,56,515,81"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="132,86,331,73,332,78,132,91"/>
+<area shape="rect" id="Node000005" href="$aarch64_2timer_8cpp.html#a85b082ebd75de9086c93c05ad124fc8c" title=" " alt="" coords="180,105,289,131"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="133,100,167,105,166,110,132,105"/>
+<area shape="rect" id="Node000007" href="$aarch64_2interrupt__main_8cpp.html#a2a09df74b4cb8ba4d0fe481aaa679816" title="中断处理函数" alt="" coords="183,155,286,180"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="99,103,181,141,193,146,191,151,179,146,96,108"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="571,49,833,89"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="499,28,581,44,580,49,498,33"/>
+<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="285,103,365,82,366,87,286,108"/>
+<area shape="rect" id="Node000006" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="337,105,523,131"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="290,115,324,115,324,121,290,121"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="500,103,577,89,578,94,501,108"/>
+</map>

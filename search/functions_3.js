@@ -1,4 +1,25 @@
 var searchData=
 [
-  ['driver_133',['driver',['../driver_8cpp.html#a06475316d2443b94d393c59426f08649',1,'driver(uint32_t _argc, uint8_t **_argv):&#160;driver.cpp'],['../driver_8h.html#a06475316d2443b94d393c59426f08649',1,'driver(uint32_t _argc, uint8_t **_argv):&#160;driver.cpp']]]
+  ['callee_0',['callee',['../tests_2integration__test_2aarch64__minimal_2main_8cpp.html#a5edd8ed15ba1e6af9ee3fea0b2e33542',1,'main.cpp']]],
+  ['calloc_1',['calloc',['../memory_8cpp.html#af4e7470f55c08b061783fe2519b65bff',1,'calloc(size_t num, size_t size):&#160;memory.cpp'],['../sk__stdlib_8h.html#af4e7470f55c08b061783fe2519b65bff',1,'calloc(size_t num, size_t size):&#160;memory.cpp']]],
+  ['cfs_5fscheduler_5ftest_2',['cfs_scheduler_test',['../system__test_8h.html#ac3069ba7e9bb7a60adb5c90069dc9c0b',1,'cfs_scheduler_test() -&gt; bool:&#160;cfs_scheduler_test.cpp'],['../system__test_2cfs__scheduler__test_8cpp.html#ac3069ba7e9bb7a60adb5c90069dc9c0b',1,'cfs_scheduler_test() -&gt; bool:&#160;cfs_scheduler_test.cpp']]],
+  ['cfsscheduler_3',['cfsscheduler',['../classCfsScheduler.html#a7fbf33db6d0e1b4e2610d94c7457d4a7',1,'CfsScheduler::CfsScheduler(const CfsScheduler &amp;)=delete'],['../classCfsScheduler.html#ab4f1239bad0c3fcee607dba6d3766564',1,'CfsScheduler::CfsScheduler()=default'],['../classCfsScheduler.html#a0ade3fe4685c3984eed58aa590a3d7ea',1,'CfsScheduler::CfsScheduler(CfsScheduler &amp;&amp;)=delete']]],
+  ['checkelfclass_4',['CheckElfClass',['../classKernelElf.html#a0e9b0d48211532a1ec15c0723283306d',1,'KernelElf']]],
+  ['checkelfidentity_5',['CheckElfIdentity',['../classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430',1,'KernelElf']]],
+  ['checkelfmagic_6',['CheckElfMagic',['../classKernelElf.html#a287a85a00b09bca4b4d66ebf67d97fb0',1,'KernelElf']]],
+  ['checkpsci_7',['CheckPSCI',['../classKernelFdt.html#afb5dc015fd1a90c3e6bd418108564867',1,'KernelFdt']]],
+  ['checkx2apicsupport_8',['CheckX2ApicSupport',['../classLocalApic.html#a6825aa2604f305f89053d5e31d5ec52e',1,'LocalApic']]],
+  ['claimcomplete_9',['ClaimComplete',['../classPlic.html#a9e776017bdc409c93853e4c7331ec090',1,'Plic']]],
+  ['clear_10',['clear',['../classGic_1_1Gicd.html#a49c8374c7d899e0f4618e632bb9977df',1,'Gic::Gicd::Clear()'],['../classGic_1_1Gicr.html#aadf47462e452a6ba0647d910af1294b0',1,'Gic::Gicr::Clear()']]],
+  ['clearcurrentthreadenvironment_11',['ClearCurrentThreadEnvironment',['../classtest__env_1_1TestEnvironmentState.html#a0471b738ca17c6086d4763e96bca4378',1,'test_env::TestEnvironmentState']]],
+  ['clearswitchhistory_12',['ClearSwitchHistory',['../classtest__env_1_1TestEnvironmentState.html#a68313ea42aac333a30a65aa0c49d73b4',1,'test_env::TestEnvironmentState']]],
+  ['clone_13',['Clone',['../classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2',1,'TaskManager']]],
+  ['clone_5fsystem_5ftest_14',['clone_system_test',['../system__test_8h.html#a22a28daf23b20387a79c91fa118a1689',1,'clone_system_test() -&gt; bool:&#160;clone_system_test.cpp'],['../clone__system__test_8cpp.html#a22a28daf23b20387a79c91fa118a1689',1,'clone_system_test() -&gt; bool:&#160;clone_system_test.cpp']]],
+  ['clonepagedirectory_15',['ClonePageDirectory',['../classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3',1,'VirtualMemory']]],
+  ['configurelvtentries_16',['ConfigureLvtEntries',['../classLocalApic.html#a90214426802a867483c981b0e3513cee',1,'LocalApic']]],
+  ['coreenvironment_17',['CoreEnvironment',['../structtest__env_1_1CoreEnvironment.html#a0ea2f2a01d3ccf854b62e2543036c808',1,'test_env::CoreEnvironment']]],
+  ['countnodesbydevicetype_18',['CountNodesByDeviceType',['../classKernelFdt.html#a3e0d462a7a317a3f8aff335d4cacb339',1,'KernelFdt']]],
+  ['cppdeinit_19',['cppdeinit',['../sk__libcxx_8h.html#ace4b6de6e1ac3081329da66be1b45f76',1,'CppDeInit():&#160;sk_libcxx.cpp'],['../sk__libcxx_8cpp.html#ace4b6de6e1ac3081329da66be1b45f76',1,'CppDeInit():&#160;sk_libcxx.cpp']]],
+  ['cppinit_20',['cppinit',['../sk__libcxx_8h.html#a8c22041b9886ca00cff1e90cd43eb3f2',1,'CppInit():&#160;sk_libcxx.cpp'],['../sk__libcxx_8cpp.html#a8c22041b9886ca00cff1e90cd43eb3f2',1,'CppInit():&#160;sk_libcxx.cpp']]],
+  ['ctor_5fdtor_5ftest_21',['ctor_dtor_test',['../ctor__dtor__test_8cpp.html#afe415420c72c400f3156b40cbd68c16f',1,'ctor_dtor_test() -&gt; bool:&#160;ctor_dtor_test.cpp'],['../system__test_8h.html#afe415420c72c400f3156b40cbd68c16f',1,'ctor_dtor_test() -&gt; bool:&#160;ctor_dtor_test.cpp']]]
 ];

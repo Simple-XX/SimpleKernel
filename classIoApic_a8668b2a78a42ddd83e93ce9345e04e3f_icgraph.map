@@ -1,0 +1,15 @@
+<map id="IoApic::GetMaxRedirectionEntries" name="IoApic::GetMaxRedirectionEntries">
+<area shape="rect" id="Node000001" title="获取 IO APIC 最大重定向条目数" alt="" coords="397,97,592,137"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#aa35d2bf3bfc0c1a778711855bc85a8f6" title=" " alt="" coords="203,5,313,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="446,92,400,67,348,44,313,33,315,28,350,40,402,63,449,87"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#a2e25ca00e1a01ce1e9dd83195fd3bb2d" title="屏蔽 IRQ" alt="" coords="197,55,319,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="384,96,319,83,320,77,386,91"/>
+<area shape="rect" id="Node000004" href="$classIoApic.html#a4622fc9c86daca19fdc81d4bcd7f2149" title="打印 IO APIC 信息（调试用）" alt="" coords="195,104,321,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="384,119,321,119,321,114,384,114"/>
+<area shape="rect" id="Node000006" href="$classIoApic.html#a6304603301681590e61f5d9dc3cfd087" title="设置 IO APIC 重定向表项" alt="" coords="167,153,349,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="386,142,320,156,319,151,384,137"/>
+<area shape="rect" id="Node000007" href="$classIoApic.html#a57e460e6fbe7c46914f96f28c5eca53e" title="取消屏蔽 IRQ" alt="" coords="187,203,329,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="448,146,402,170,350,192,312,205,310,200,348,188,399,165,446,141"/>
+<area shape="rect" id="Node000005" href="$classApic.html#aba1c25d1561d3d5aefdd434290da39f5" title="打印所有 APIC 信息（调试用）" alt="" coords="5,104,119,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="182,119,119,119,119,114,182,114"/>
+</map>

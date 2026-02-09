@@ -1,0 +1,9 @@
+<map id="ArchInit" name="ArchInit">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,77,56"/>
+<area shape="rect" id="Node000002" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="125,5,295,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,35,112,30,112,35,78,41"/>
+<area shape="rect" id="Node000003" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="150,55,270,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="78,46,137,54,136,60,77,51"/>
+<area shape="rect" id="Node000004" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="343,55,477,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="270,65,329,65,329,70,270,70"/>
+</map>

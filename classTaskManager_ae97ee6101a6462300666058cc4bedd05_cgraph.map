@@ -1,0 +1,12 @@
+<map id="TaskManager::AddTask" name="TaskManager::AddTask">
+<area shape="rect" id="Node000001" title="添加任务" alt="" coords="5,55,176,80"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a69688c59dbd65567df780d024e6faa7c" title="分配新的 PID" alt="" coords="224,5,413,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,52,245,31,246,36,151,57"/>
+<area shape="rect" id="Node000003" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="227,55,410,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,65,214,65,214,70,177,70"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="461,80,647,105"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="150,77,224,89,340,95,448,94,448,100,339,100,224,94,149,83"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="411,75,448,79,447,84,410,80"/>
+<area shape="rect" id="Node000005" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="695,73,957,113"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="647,90,681,90,681,95,647,95"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,129,60,155"/>
+<area shape="rect" id="Node000002" href="$classFifoScheduler.html#a5adf3af96fb0bae4c3d289e4e3823de0" title="将任务加入就绪队列尾部" alt="" coords="126,5,301,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="37,128,63,84,83,60,106,40,117,34,120,38,110,44,86,64,67,87,42,131"/>
+<area shape="rect" id="Node000003" href="$classFifoScheduler.html#aef00ac8598306934125afadc8d65b842" title="获取就绪队列大小" alt="" coords="108,55,319,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="47,127,74,107,107,89,126,82,128,86,109,94,77,112,50,131"/>
+<area shape="rect" id="Node000004" href="$classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e" title="获取调度器统计信息" alt="" coords="122,104,305,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="60,136,109,129,110,134,61,141"/>
+<area shape="rect" id="Node000005" href="$classFifoScheduler.html#a640af125fb8da20ddf91479577f18d80" title="任务被抢占时调用" alt="" coords="110,153,317,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="61,143,105,149,104,154,60,148"/>
+<area shape="rect" id="Node000006" href="$classSchedulerBase.html#a5c891e21d4b1628ba4e59980f138142d" title="任务开始运行时调用 (从 Ready 变为 Running)" alt="" coords="108,203,319,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="52,153,78,171,109,188,133,196,131,201,107,192,75,175,49,157"/>
+<area shape="rect" id="Node000007" href="$classFifoScheduler.html#a5a798dfc0f1f5a493298bf3f4c792746" title="选择下一个要运行的任务（队列头部）" alt="" coords="125,252,301,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="42,154,68,195,87,218,110,237,123,244,120,249,106,242,83,222,64,199,38,156"/>
+</map>

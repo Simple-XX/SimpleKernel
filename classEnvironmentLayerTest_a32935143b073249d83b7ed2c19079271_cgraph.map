@@ -1,0 +1,13 @@
+<map id="EnvironmentLayerTest::SetUp" name="EnvironmentLayerTest::SetUp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,45,172,85"/>
+<area shape="rect" id="Node000002" href="$classTaskTestHarness.html#a34722547f18a938d8f44c28bcbbc8b2c" title="设置测试使用的核心数量（在 SetUp 前调用）" alt="" coords="220,27,447,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,54,206,50,207,56,173,59"/>
+<area shape="rect" id="Node000003" href="$classTaskTestHarness.html#a9b21a4be72464267c2d3059fa165ca6d" title=" " alt="" coords="245,77,422,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,71,231,77,231,82,172,76"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a345611d0a521ef20e5c49eeffd43342d" title="将指定线程绑定到核心" alt="" coords="528,5,723,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="392,74,520,46,521,51,393,79"/>
+<area shape="rect" id="Node000005" href="$classtest__env_1_1TestEnvironmentState.html#a3daed93eb011fe37c2fd3ae5824fff1b" title="初始化指定数量的核心" alt="" coords="528,69,723,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="422,87,514,87,514,92,422,92"/>
+<area shape="rect" id="Node000006" href="$classtest__env_1_1TestEnvironmentState.html#ab05dc3b7eda4beb5233d58b197c70a58" title="设置当前线程的环境实例指针" alt="" coords="495,133,756,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="393,99,521,128,520,133,392,105"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="SchedulerBase" name="SchedulerBase">
+<area shape="rect" id="Node000001" title="调度器基类接口" alt="" coords="5,193,175,739"/>
+<area shape="rect" id="Node000002" href="$structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="15,5,165,131"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,131,93,177,87,177,87,131"/>
+</map>

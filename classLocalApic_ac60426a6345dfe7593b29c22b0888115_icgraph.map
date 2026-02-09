@@ -1,0 +1,9 @@
+<map id="LocalApic::EnableTimer" name="LocalApic::EnableTimer">
+<area shape="rect" id="Node000001" title="启用 Local APIC 定时器" alt="" coords="509,35,684,60"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#a173b8d0e61f0151dbcaa8577cb22facd" title="设置单次定时器" alt="" coords="239,5,461,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="495,38,457,33,457,28,496,33"/>
+<area shape="rect" id="Node000003" href="$classLocalApic.html#a70fc2b687411b08b0b2ad8b913b9ddb4" title="设置周期性定时器" alt="" coords="259,55,441,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="496,61,441,68,440,62,495,56"/>
+<area shape="rect" id="Node000004" href="$classApic.html#a91da5ed274fac8574ed249557d284100" title="设置 Local APIC 定时器" alt="" coords="5,63,191,88"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="245,78,191,78,191,73,245,73"/>
+</map>

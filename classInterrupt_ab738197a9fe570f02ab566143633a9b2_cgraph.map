@@ -1,0 +1,7 @@
+<map id="Interrupt::SGI" name="Interrupt::SGI">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,113,31"/>
+<area shape="rect" id="Node000002" href="$classGic.html#aab9f7f62a1f6076a1cc7bc616208c8b6" title=" " alt="" coords="161,5,235,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,15,148,15,148,21,114,21"/>
+<area shape="rect" id="Node000003" href="$classGic_1_1Gicr.html#a5fff1f87939912138ececd6ac3f56b9c" title=" " alt="" coords="283,5,427,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="235,15,269,15,269,21,235,21"/>
+</map>

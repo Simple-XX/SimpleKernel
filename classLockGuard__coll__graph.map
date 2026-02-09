@@ -1,0 +1,7 @@
+<map id="LockGuard&lt; Mutex &gt;" name="LockGuard&lt; Mutex &gt;">
+<area shape="rect" id="Node000001" title="RAII 风格的锁守卫模板类" alt="" coords="23,1061,177,1227"/>
+<area shape="rect" id="Node000002" href="$classMutex.html" title="互斥锁（Mutex）" alt="" coords="5,573,195,999"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,999,103,1045,97,1045,97,999"/>
+<area shape="rect" id="Node000003" href="$structResourceId.html" title="资源 ID" alt="" coords="25,5,175,511"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,511,103,557,97,557,97,511"/>
+</map>

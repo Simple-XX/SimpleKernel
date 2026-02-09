@@ -1,0 +1,20 @@
+<map id="/root/tests/unit_test/task/fixtures/task_test_harness.hpp" name="/root/tests/unit_test/task/fixtures/task_test_harness.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="61,5,232,60"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,108,109,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,62,81,100,77,96,118,58"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="90,181,161,207"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,61,131,168,126,167,141,60"/>
+<area shape="rect" id="Node000004" href="$test__environment__state_8hpp.html" title=" " alt="" coords="205,108,411,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="197,58,275,99,273,104,195,62"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="280,136,169,179,167,174,278,131"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="185,181,252,207"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="295,135,246,175,242,170,292,131"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="276,181,340,207"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="311,134,311,168,305,168,305,134"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="364,181,428,207"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="324,131,373,170,369,175,320,135"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="453,181,577,207"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="342,131,469,174,467,179,340,136"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="601,181,663,207"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="367,131,588,178,586,183,366,136"/>
+</map>

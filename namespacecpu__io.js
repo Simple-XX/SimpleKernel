@@ -1,0 +1,38 @@
+var namespacecpu__io =
+[
+    [ "virtual_memory", "namespacecpu__io_1_1virtual__memory.html", [
+      [ "EnablePage", "namespacecpu__io_1_1virtual__memory.html#a711073bec6e8a5bdc81bc4300f2da029", null ],
+      [ "FlushTLBAll", "namespacecpu__io_1_1virtual__memory.html#aa6bfdb9103b2687ab313084d18a75e32", null ],
+      [ "GetKernelPagePermissions", "namespacecpu__io_1_1virtual__memory.html#ac315dfa2ba9c5d0ea4aa9a5b76c1b4f0", null ],
+      [ "GetPageDirectory", "namespacecpu__io_1_1virtual__memory.html#acac13e4ce3e785b0e52dfb296d2c15b7", null ],
+      [ "GetTableEntryPermissions", "namespacecpu__io_1_1virtual__memory.html#a8746d12e9902e04e68ca29991a9d76cb", null ],
+      [ "GetUserPagePermissions", "namespacecpu__io_1_1virtual__memory.html#af2bed9d8a049c2d40634b15b8e3adca9", null ],
+      [ "GetVirtualPageNumber", "namespacecpu__io_1_1virtual__memory.html#a4eeadf3e9e222bf2725743b69fe760b6", null ],
+      [ "IsPageAligned", "namespacecpu__io_1_1virtual__memory.html#a487abf50e746c58d9e930ff99ebbbd3e", null ],
+      [ "IsPageTableEntryValid", "namespacecpu__io_1_1virtual__memory.html#a841eeee221133f726f9ac2e26577c475", null ],
+      [ "PageAlign", "namespacecpu__io_1_1virtual__memory.html#a7413c8abb7eabfcfae4d2aaac3c124cc", null ],
+      [ "PageAlignUp", "namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c", null ],
+      [ "PageTableEntryToPhysical", "namespacecpu__io_1_1virtual__memory.html#a5bc8f484f80076b5c3f5cf419fd24aec", null ],
+      [ "PhysicalToPageTableEntry", "namespacecpu__io_1_1virtual__memory.html#af3655e31d3c72e1c80b4348cc3e55a71", null ],
+      [ "SetPageDirectory", "namespacecpu__io_1_1virtual__memory.html#a34641ac6c78b4598532a2d089c1357b2", null ],
+      [ "kExec", "namespacecpu__io_1_1virtual__memory.html#acdc8358978b1c0c8af4b8a344cf44bcb", null ],
+      [ "kGlobal", "namespacecpu__io_1_1virtual__memory.html#a287b28e9187a2b1491e7927692616499", null ],
+      [ "kPageOffsetBits", "namespacecpu__io_1_1virtual__memory.html#abdd8c36f28f76a8b48f7b73c815ca5f0", null ],
+      [ "kPageSize", "namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a", null ],
+      [ "kPageTableLevels", "namespacecpu__io_1_1virtual__memory.html#aa477c683e1a30439416431db45bf3b6b", null ],
+      [ "kPteAttributeBits", "namespacecpu__io_1_1virtual__memory.html#a382dae71680c204d9624f2b285ea66b6", null ],
+      [ "kRead", "namespacecpu__io_1_1virtual__memory.html#a68165e4013e416fac212c8d8ee13fbb7", null ],
+      [ "kUser", "namespacecpu__io_1_1virtual__memory.html#a678c90ef7647e95c7570c9297564d66c", null ],
+      [ "kValid", "namespacecpu__io_1_1virtual__memory.html#a11b0ef214253c2315c3bba21f7f5a163", null ],
+      [ "kVpnBits", "namespacecpu__io_1_1virtual__memory.html#adeae00b54ad7e3e619c73290e28f5557", null ],
+      [ "kVpnMask", "namespacecpu__io_1_1virtual__memory.html#a236612843b04c028666e220290f0fc9d", null ],
+      [ "kWrite", "namespacecpu__io_1_1virtual__memory.html#a8ca5321f5065ee04ec4e9ce82570ab14", null ]
+    ] ],
+    [ "CalleeSavedContext", "structcpu__io_1_1CalleeSavedContext.html", "structcpu__io_1_1CalleeSavedContext" ],
+    [ "TrapContext", "structcpu__io_1_1TrapContext.html", "structcpu__io_1_1TrapContext" ],
+    [ "DisableInterrupt", "namespacecpu__io.html#a6c4ee629d8129247969cace77d47fecb", null ],
+    [ "EnableInterrupt", "namespacecpu__io.html#afe7f925ac3cb632ed212166712288451", null ],
+    [ "GetCurrentCoreId", "namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72", null ],
+    [ "GetInterruptStatus", "namespacecpu__io.html#aaab46268534006b116de3e112c237f7f", null ],
+    [ "Pause", "namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b", null ]
+];

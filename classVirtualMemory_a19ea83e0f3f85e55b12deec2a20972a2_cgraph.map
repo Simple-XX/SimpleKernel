@@ -1,0 +1,28 @@
+<map id="VirtualMemory::MapMMIO" name="VirtualMemory::MapMMIO">
+<area shape="rect" id="Node000001" title="映射设备内存 (MMIO)" alt="" coords="5,312,197,337"/>
+<area shape="rect" id="Node000002" href="$classVirtualMemory.html#acbbc8c7f29e2611d4b56003323473e3d" title="映射单个页面" alt="" coords="245,255,431,280"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,309,271,281,272,286,155,315"/>
+<area shape="rect" id="Node000011" href="$namespacecpu__io_1_1virtual__memory.html#a7413c8abb7eabfcfae4d2aaac3c124cc" title=" " alt="" coords="250,305,426,345"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="198,322,237,322,237,327,198,327"/>
+<area shape="rect" id="Node000012" href="$namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c" title=" " alt="" coords="250,369,426,409"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="150,335,251,362,250,368,149,340"/>
+<area shape="rect" id="Node000003" href="$classVirtualMemory.html#a7441d7b32e1941d347851bd3da1ad6fb" title="在页表中查找虚拟地址对应的页表项" alt="" coords="479,139,697,179"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="362,252,478,196,513,182,515,187,480,200,364,257"/>
+<area shape="rect" id="Node000007" href="$namespacecpu__io_1_1virtual__memory.html#a841eeee221133f726f9ac2e26577c475" title=" " alt="" coords="757,183,933,223"/>
+<area shape="poly" id="edge10_Node000002_Node000007" title=" " alt="" coords="430,252,478,246,744,213,744,218,479,251,431,258"/>
+<area shape="rect" id="Node000008" href="$namespacecpu__io_1_1virtual__memory.html#a5bc8f484f80076b5c3f5cf419fd24aec" title=" " alt="" coords="747,247,944,287"/>
+<area shape="poly" id="edge11_Node000002_Node000008" title=" " alt="" coords="431,265,733,265,733,270,431,270"/>
+<area shape="rect" id="Node000009" href="$namespacecpu__io_1_1virtual__memory.html#af3655e31d3c72e1c80b4348cc3e55a71" title=" " alt="" coords="747,311,944,351"/>
+<area shape="poly" id="edge12_Node000002_Node000009" title=" " alt="" coords="431,276,733,315,732,320,430,282"/>
+<area shape="rect" id="Node000010" href="$namespacecpu__io_1_1virtual__memory.html#aa6bfdb9103b2687ab313084d18a75e32" title=" " alt="" coords="500,355,676,395"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="402,278,432,290,447,301,457,313,466,324,480,334,506,348,504,352,477,339,462,327,453,316,444,305,429,295,400,283"/>
+<area shape="rect" id="Node000004" href="$memory_8cpp.html#a8006724372b77924155bd8618fe57516" title=" " alt="" coords="791,5,899,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="609,137,667,89,705,63,744,41,777,29,779,34,746,46,707,68,670,93,612,141"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io_1_1virtual__memory.html#a8746d12e9902e04e68ca29991a9d76cb" title=" " alt="" coords="745,55,945,95"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="648,137,744,105,768,97,769,102,746,110,650,142"/>
+<area shape="rect" id="Node000006" href="$namespacecpu__io_1_1virtual__memory.html#a4eeadf3e9e222bf2725743b69fe760b6" title=" " alt="" coords="756,119,935,159"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="697,148,742,145,743,150,698,154"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="698,175,744,183,743,189,697,181"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="628,177,746,233,766,240,764,245,744,238,626,182"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="608,178,666,236,705,269,747,297,759,303,757,308,744,302,702,273,663,240,605,181"/>
+</map>

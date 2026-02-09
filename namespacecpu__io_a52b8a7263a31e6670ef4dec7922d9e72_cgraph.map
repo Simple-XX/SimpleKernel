@@ -1,0 +1,5 @@
+<map id="cpu_io::GetCurrentCoreId" name="cpu_io::GetCurrentCoreId">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,191,38"/>
+<area shape="rect" id="Node000002" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="239,5,501,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,23,225,23,225,28,191,28"/>
+</map>

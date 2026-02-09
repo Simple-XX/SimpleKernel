@@ -1,0 +1,11 @@
+<map id="LocalApic::IsX2ApicEnabled" name="LocalApic::IsX2ApicEnabled">
+<area shape="rect" id="Node000001" title="检查 x2APIC 是否启用" alt="" coords="401,55,601,80"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#a9bd6e35272efaaf123b51cafa1e3804c" title="禁用 x2APIC 模式" alt="" coords="167,5,353,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="425,54,322,33,324,28,426,49"/>
+<area shape="rect" id="Node000003" href="$classLocalApic.html#a3f7b7c00383f231e77c8b33ff340a2f9" title="启用 x2APIC 模式" alt="" coords="169,55,351,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="388,70,351,70,351,65,388,65"/>
+<area shape="rect" id="Node000004" href="$classLocalApic.html#af0eac16550b73a6d87d505bf3295d62c" title="打印 Local APIC 信息（调试用）" alt="" coords="187,104,333,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="426,85,324,107,322,101,425,80"/>
+<area shape="rect" id="Node000005" href="$classApic.html#aba1c25d1561d3d5aefdd434290da39f5" title="打印所有 APIC 信息（调试用）" alt="" coords="5,104,119,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="173,119,119,119,119,114,173,114"/>
+</map>

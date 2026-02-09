@@ -1,0 +1,13 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,60,129"/>
+<area shape="rect" id="Node000002" href="$classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b" title="从就绪队列中移除指定任务" alt="" coords="119,5,293,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="41,102,68,71,107,40,120,33,122,38,109,44,72,75,45,106"/>
+<area shape="rect" id="Node000003" href="$classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="121,55,291,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="59,105,107,89,136,81,137,86,109,94,61,110"/>
+<area shape="rect" id="Node000004" href="$classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e" title="获取调度器统计信息" alt="" coords="115,104,297,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="60,114,101,114,101,119,60,119"/>
+<area shape="rect" id="Node000005" href="$classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="119,153,293,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="61,123,109,138,141,147,140,152,107,143,59,128"/>
+<area shape="rect" id="Node000006" href="$classSchedulerBase.html#a84866e4ce79224c5eb2602e02fad5040" title="重置统计信息" alt="" coords="108,203,304,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="46,128,72,158,109,188,126,196,123,200,107,192,68,162,41,131"/>
+</map>

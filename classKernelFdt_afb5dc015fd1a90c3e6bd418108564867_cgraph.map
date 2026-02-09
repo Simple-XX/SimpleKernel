@@ -1,0 +1,9 @@
+<map id="KernelFdt::CheckPSCI" name="KernelFdt::CheckPSCI">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,167,80"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html#a3ec35216ec7b4ddf55458f3b4824c816" title=" " alt="" coords="261,5,414,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,52,214,39,258,31,259,36,215,45,152,57"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#a6aaec73b42091f1bd31139cca0937e21" title=" " alt="" coords="242,55,433,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,65,228,65,228,70,167,70"/>
+<area shape="rect" id="Node000004" href="$classKernelFdt.html#af30a345a6a90077e0c395afc7acdb48c" title=" " alt="" coords="215,104,460,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,77,259,99,258,104,151,83"/>
+</map>

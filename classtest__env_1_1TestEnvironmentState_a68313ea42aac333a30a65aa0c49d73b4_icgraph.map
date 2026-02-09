@@ -1,0 +1,5 @@
+<map id="test_env::TestEnvironmentState::ClearSwitchHistory" name="test_env::TestEnvironmentState::ClearSwitchHistory">
+<area shape="rect" id="Node000001" title="清空所有核心的切换历史" alt="" coords="256,5,451,45"/>
+<area shape="rect" id="Node000002" href="$classTaskTestHarness.html#a2cb71293bed79eba46bd9a86291cb4bd" title=" " alt="" coords="5,13,208,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,28,208,28,208,23,243,23"/>
+</map>

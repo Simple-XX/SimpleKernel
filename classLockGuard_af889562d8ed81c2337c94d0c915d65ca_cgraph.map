@@ -1,0 +1,10 @@
+<map id="LockGuard::~LockGuard" name="LockGuard::~LockGuard">
+<area shape="rect" id="Node000001" title="析构函数，自动释放锁" alt="" coords="5,5,184,31"/>
+<area shape="rect" id="Node000002" href="$classMutex.html#abd80d453457fcf4f39a5a5c3f10fe5aa" title="释放锁" alt="" coords="232,5,351,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,15,218,15,218,21,184,21"/>
+<area shape="rect" id="Node000003" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="668,5,837,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="351,15,654,15,654,21,351,21"/>
+<area shape="rect" id="Node000004" href="$classMutex.html#a99d18d08046311956a9a69f1f8c9daaa" title="检查锁是否被当前线程持有" alt="" coords="399,31,620,56"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="351,22,387,26,386,32,351,28"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="620,29,654,26,655,31,620,34"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="InterruptInit" name="InterruptInit">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,62,104,87"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="289,13,475,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,60,108,39,151,21,214,12,276,11,276,17,214,17,153,27,110,43,75,64"/>
+<area shape="rect" id="Node000004" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="297,62,467,87"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="104,72,283,72,283,77,104,77"/>
+<area shape="rect" id="Node000005" href="$aarch64_2timer_8cpp.html#a8febf243f0581d61474fd6b56cfdb544" title=" " alt="" coords="156,37,237,62"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="104,63,142,56,143,62,105,69"/>
+<area shape="rect" id="Node000006" href="$arch_8cpp.html#ac73d8c3647dca189d5c572ba9c48f471" title=" " alt="" coords="152,138,241,163"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="81,85,161,129,159,134,78,90"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="523,5,785,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="475,23,509,23,509,28,475,28"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="237,41,275,37,276,42,238,47"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="238,52,284,59,283,64,237,57"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="IoApic::GetVersion" name="IoApic::GetVersion">
+<area shape="rect" id="Node000001" title="获取 IO APIC 版本" alt="" coords="5,5,147,31"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#afe65f9ea16d8267e09cb585cf060caee" title="读取 IO APIC 寄存器" alt="" coords="195,5,297,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,15,181,15,181,21,147,21"/>
+</map>

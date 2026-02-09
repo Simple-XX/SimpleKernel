@@ -1,0 +1,5 @@
+<map id="LocalApic::SendStartupIpi" name="LocalApic::SendStartupIpi">
+<area shape="rect" id="Node000001" title="发送 SIPI (Startup IPI)" alt="" coords="213,5,400,31"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#a088e472bc2424550e72bf1155608ecca" title="唤醒应用处理器 (AP)" alt="" coords="5,5,165,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,21,166,21,166,15,200,15"/>
+</map>

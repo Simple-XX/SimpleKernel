@@ -1,0 +1,23 @@
+<map id="TaskManager::Sleep" name="TaskManager::Sleep">
+<area shape="rect" id="Node000001" title="线程睡眠" alt="" coords="5,83,157,109"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a4c1b1e56864ca791fe96710270acfc11" title="获取当前核心的调度数据" alt="" coords="430,5,642,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,81,205,68,416,37,417,42,206,73,141,86"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#a926010fadc0b0d1f1df608c59d4a57a0" title="获取当前任务" alt="" coords="428,171,644,197"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="144,106,206,119,453,166,452,171,205,124,143,111"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#af7525954e852c09c1dd8ba50235f1d78" title="调度函数 选择下一个任务并切换上下文" alt="" coords="205,83,380,109"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="157,93,192,93,192,99,157,99"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="923,19,1108,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="643,24,909,28,909,33,642,29"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="1156,37,1419,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1108,38,1142,41,1142,46,1108,43"/>
+<area shape="rect" id="Node000006" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="692,121,875,146"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="599,169,707,146,708,151,600,174"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="813,118,971,48,974,53,815,123"/>
+<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="337,81,453,47,454,52,338,86"/>
+<area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="323,106,429,149,476,165,474,170,427,155,321,111"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="380,101,428,105,679,124,678,129,428,111,380,107"/>
+<area shape="rect" id="Node000008" href="$arch_8cpp.html#ad982abdb7f3d8729656c6b5422b2e61d" title=" " alt="" coords="494,70,578,95"/>
+<area shape="poly" id="edge11_Node000007_Node000008" title=" " alt="" coords="380,89,480,83,480,88,380,94"/>
+<area shape="poly" id="edge13_Node000008_Node000004" title=" " alt="" coords="578,79,1142,60,1143,65,578,84"/>
+<area shape="poly" id="edge12_Node000008_Node000006" title=" " alt="" coords="579,89,708,115,707,120,578,94"/>
+</map>

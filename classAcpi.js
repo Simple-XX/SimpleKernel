@@ -1,0 +1,25 @@
+var classAcpi =
+[
+    [ "Description_header", "structAcpi_1_1Description__header.html", "structAcpi_1_1Description__header" ],
+    [ "Dsdt", "structAcpi_1_1Dsdt.html", "structAcpi_1_1Dsdt" ],
+    [ "Fadt", "structAcpi_1_1Fadt.html", "structAcpi_1_1Fadt" ],
+    [ "GenericAddressStructure", "structAcpi_1_1GenericAddressStructure.html", "structAcpi_1_1GenericAddressStructure" ],
+    [ "Rsdp", "structAcpi_1_1Rsdp.html", "structAcpi_1_1Rsdp" ],
+    [ "Rsdt", "structAcpi_1_1Rsdt.html", "structAcpi_1_1Rsdt" ],
+    [ "Xsdt", "structAcpi_1_1Xsdt.html", "structAcpi_1_1Xsdt" ],
+    [ "Acpi", "classAcpi.html#a29bdeb0fee338893f822ff33eb961f89", null ],
+    [ "Acpi", "classAcpi.html#ac3129c2a360d4306e6ce9aa6b8fdc639", null ],
+    [ "Acpi", "classAcpi.html#aad7d3a576fc8322a5b738f5c72fb9692", null ],
+    [ "Acpi", "classAcpi.html#aad5c8a674241ae0041f8226947bc3ea2", null ],
+    [ "~Acpi", "classAcpi.html#aa52a6e574cf796fc0a42727930d79b03", null ],
+    [ "__attribute__", "classAcpi.html#aaff457ff2dc0db4c707d8c666b3950be", null ],
+    [ "__attribute__", "classAcpi.html#a81a08ef9b98f83ed42baf57a1bc13c68", null ],
+    [ "__attribute__", "classAcpi.html#a7c7988325afef4f68a8f6f3bdbb1d51a", null ],
+    [ "__attribute__", "classAcpi.html#a3358014ac2406deff5e6eb6f2be99cf3", null ],
+    [ "__attribute__", "classAcpi.html#a73ff625ff1702a010d3734926d3878bc", null ],
+    [ "__attribute__", "classAcpi.html#a11a7da1f641f9fdf5ad0595527cab2da", null ],
+    [ "__attribute__", "classAcpi.html#a4df32cf871e2b3f3f69db7da08f42b2c", null ],
+    [ "operator=", "classAcpi.html#a70f4c219673371e493efc2d4a3aae65f", null ],
+    [ "operator=", "classAcpi.html#a9b4cab774c67b2ebecfa22b34eed9f29", null ],
+    [ "rsdp_addr_", "classAcpi.html#ab3eb78d965c647d9bd4c6ef1a43485ef", null ]
+];

@@ -1,0 +1,11 @@
+<map id="ArchInitSMP" name="ArchInitSMP">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,105,80"/>
+<area shape="rect" id="Node000002" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="153,5,323,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,52,176,32,178,37,104,57"/>
+<area shape="rect" id="Node000003" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="178,55,298,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="105,65,164,65,164,70,105,70"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="183,104,293,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="104,77,178,98,176,103,102,83"/>
+<area shape="rect" id="Node000004" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="371,55,505,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="298,65,357,65,357,70,298,70"/>
+</map>

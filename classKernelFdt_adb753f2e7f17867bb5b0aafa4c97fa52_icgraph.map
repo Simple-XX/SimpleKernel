@@ -1,0 +1,13 @@
+<map id="KernelFdt::GetMemory" name="KernelFdt::GetMemory">
+<area shape="rect" id="Node000001" title=" " alt="" coords="123,104,292,129"/>
+<area shape="rect" id="Node000002" href="$kernel__fdt__test_8cpp.html#a91683a9c8a9360ead4e91bc16fde3b9f" title=" " alt="" coords="5,5,75,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,99,62,33,64,29,175,95"/>
+<area shape="rect" id="Node000003" href="$kernel__fdt__test_8cpp.html#a9190a3506035ef3df5e06fdd1405beb7" title=" " alt="" coords="5,55,75,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,103,74,80,76,75,151,97"/>
+<area shape="rect" id="Node000004" href="$kernel__fdt__test_8cpp.html#a8fe016514d6e87482fc37e6442a052eb" title=" " alt="" coords="5,104,75,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="109,119,75,119,75,114,109,114"/>
+<area shape="rect" id="Node000005" href="$kernel__fdt__test_8cpp.html#ab5a9b9a82cf3d717e39f264a52f3e957" title=" " alt="" coords="5,153,75,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="151,136,76,159,74,153,150,131"/>
+<area shape="rect" id="Node000006" href="$kernel__fdt__test_8cpp.html#a97226890d940da2ba211728d437e6c71" title=" " alt="" coords="5,203,75,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="175,139,64,205,62,200,172,134"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="TaskManager::GetCurrentTask" name="TaskManager::GetCurrentTask">
+<area shape="rect" id="Node000001" title="获取当前任务" alt="" coords="5,13,221,38"/>
+<area shape="rect" id="Node000002" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="269,13,452,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,23,255,23,255,28,222,28"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="500,13,685,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="453,23,486,23,486,28,453,28"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="733,5,996,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="686,23,719,23,719,28,686,28"/>
+</map>

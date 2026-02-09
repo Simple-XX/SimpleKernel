@@ -1,0 +1,5 @@
+<map id="sys_yield" name="sys_yield">
+<area shape="rect" id="Node000001" title="主动放弃CPU，让出时间片" alt="" coords="5,5,88,31"/>
+<area shape="rect" id="Node000002" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="136,5,305,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,15,122,15,122,21,88,21"/>
+</map>

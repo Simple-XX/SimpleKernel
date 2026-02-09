@@ -1,0 +1,31 @@
+<map id="TaskManager::Block" name="TaskManager::Block">
+<area shape="rect" id="Node000001" title="阻塞当前任务" alt="" coords="5,158,157,183"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a4c1b1e56864ca791fe96710270acfc11" title="获取当前核心的调度数据" alt="" coords="450,5,662,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,156,144,124,204,92,262,72,322,57,436,35,437,41,323,62,264,77,206,97,147,128,101,160"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#a926010fadc0b0d1f1df608c59d4a57a0" title="获取当前任务" alt="" coords="448,171,664,197"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="158,170,434,178,434,183,157,175"/>
+<area shape="rect" id="Node000007" href="$structResourceId.html#ad6b4733a8896d35652c1969f1eca1651" title="获取资源数据" alt="" coords="225,209,381,234"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="138,181,234,203,233,208,137,186"/>
+<area shape="rect" id="Node000008" href="$structResourceId.html#ace28b59e657c4a031a54daabf85e59aa" title="获取类型名称（用于调试）" alt="" coords="205,258,400,283"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="101,181,147,213,206,244,226,251,224,256,204,249,145,217,98,186"/>
+<area shape="rect" id="Node000011" href="$classTaskManager.html#af7525954e852c09c1dd8ba50235f1d78" title="调度函数 选择下一个任务并切换上下文" alt="" coords="215,107,390,133"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="137,155,233,133,234,138,138,160"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="943,19,1128,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="663,24,929,28,929,33,662,29"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="1176,37,1439,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1128,38,1162,41,1162,46,1128,43"/>
+<area shape="rect" id="Node000006" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="712,121,895,146"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="619,169,727,146,728,151,620,174"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="833,118,991,48,994,53,835,123"/>
+<area shape="rect" id="Node000009" href="$resource__id_8hpp.html#afd66b2606db93ecfaf8b3972a9b953ad" title="获取资源类型的字符串表示（用于调试）" alt="" coords="469,233,643,258"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="400,258,455,253,455,258,400,264"/>
+<area shape="rect" id="Node000010" href="$structResourceId.html#adc2ead50d28fd71ff0c0d9b2529af45c" title="获取资源类型" alt="" coords="479,282,633,307"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="400,277,465,283,465,289,400,283"/>
+<area shape="poly" id="edge13_Node000011_Node000002" title=" " alt="" coords="330,105,447,55,469,47,471,52,449,60,332,110"/>
+<area shape="poly" id="edge14_Node000011_Node000005" title=" " alt="" coords="355,130,492,165,491,170,353,135"/>
+<area shape="poly" id="edge12_Node000011_Node000006" title=" " alt="" coords="390,120,698,128,698,133,390,125"/>
+<area shape="rect" id="Node000012" href="$arch_8cpp.html#ad982abdb7f3d8729656c6b5422b2e61d" title=" " alt="" coords="514,70,598,95"/>
+<area shape="poly" id="edge15_Node000011_Node000012" title=" " alt="" coords="389,105,500,88,501,93,390,110"/>
+<area shape="poly" id="edge17_Node000012_Node000004" title=" " alt="" coords="598,79,1162,60,1163,65,598,84"/>
+<area shape="poly" id="edge16_Node000012_Node000006" title=" " alt="" coords="599,89,728,115,727,120,598,94"/>
+</map>

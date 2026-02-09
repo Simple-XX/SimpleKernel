@@ -1,0 +1,22 @@
+<map id="TaskManager::GetCurrentTask" name="TaskManager::GetCurrentTask">
+<area shape="rect" id="Node000001" title="获取当前任务" alt="" coords="660,132,876,157"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a71763ebababa9aa90bad6a07c66edede" title="阻塞当前任务" alt="" coords="218,31,370,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="714,130,611,102,484,76,370,57,370,52,485,71,613,97,715,125"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#aadc206ac53400212078270833533f247" title="等待子进程退出" alt="" coords="5,5,151,31"/>
+<area shape="poly" id="edge12_Node000001_Node000003" title=" " alt="" coords="734,127,678,96,611,67,550,47,502,35,389,21,263,14,151,16,151,11,263,9,390,15,503,30,552,42,613,62,680,92,736,123"/>
+<area shape="rect" id="Node000004" href="$classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="448,284,601,309"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="745,169,687,217,613,267,569,286,567,282,611,262,684,213,742,165"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#ae3444c55ab7b6ec348a56b596229fc0f" title="退出当前线程" alt="" coords="223,107,365,132"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="690,132,612,122,481,117,365,119,365,113,481,112,612,117,691,127"/>
+<area shape="rect" id="Node000006" href="$classTaskManager.html#af7525954e852c09c1dd8ba50235f1d78" title="调度函数 选择下一个任务并切换上下文" alt="" coords="437,132,612,157"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="646,147,612,147,612,142,646,142"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#a86fe8ff01e353a0acb150c90e8081811" title="线程睡眠" alt="" coords="218,183,370,208"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="679,162,612,171,371,193,370,188,612,166,678,157"/>
+<area shape="rect" id="Node000008" href="$classTaskManager.html#aa1041f9ed06a9d0b6b738621c30e1921" title="更新系统 tick" alt="" coords="199,232,389,257"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="717,164,613,194,497,217,390,235,389,229,496,212,611,189,715,159"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="204,35,151,29,151,24,204,30"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="481,129,323,58,325,54,483,124"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="423,136,365,130,365,124,424,131"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="453,163,353,185,352,180,452,158"/>
+<area shape="poly" id="edge9_Node000006_Node000008" title=" " alt="" coords="495,167,447,196,390,223,356,234,354,229,388,218,444,191,492,163"/>
+</map>

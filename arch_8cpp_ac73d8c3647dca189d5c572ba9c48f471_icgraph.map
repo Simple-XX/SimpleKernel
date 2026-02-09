@@ -1,0 +1,7 @@
+<map id="trap_entry" name="trap_entry">
+<area shape="rect" id="Node000001" title=" " alt="" coords="180,31,269,56"/>
+<area shape="rect" id="Node000002" href="$riscv64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530" title=" " alt="" coords="19,5,118,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,37,118,29,119,23,167,31"/>
+<area shape="rect" id="Node000003" href="$riscv64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea" title=" " alt="" coords="5,55,132,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,55,133,60,132,55,166,50"/>
+</map>

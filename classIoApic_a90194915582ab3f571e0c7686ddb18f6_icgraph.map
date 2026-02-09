@@ -1,0 +1,11 @@
+<map id="IoApic::WriteRedirectionEntry" name="IoApic::WriteRedirectionEntry">
+<area shape="rect" id="Node000001" title="写入 IO APIC 重定向表项" alt="" coords="236,73,415,113"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#aa35d2bf3bfc0c1a778711855bc85a8f6" title=" " alt="" coords="41,5,152,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,70,187,45,148,33,150,28,189,39,261,65"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#a2e25ca00e1a01ce1e9dd83195fd3bb2d" title="屏蔽 IRQ" alt="" coords="35,55,158,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="222,84,158,77,159,71,223,79"/>
+<area shape="rect" id="Node000004" href="$classIoApic.html#a6304603301681590e61f5d9dc3cfd087" title="设置 IO APIC 重定向表项" alt="" coords="5,104,188,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="223,106,188,110,188,104,222,101"/>
+<area shape="rect" id="Node000005" href="$classIoApic.html#a57e460e6fbe7c46914f96f28c5eca53e" title="取消屏蔽 IRQ" alt="" coords="26,153,167,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="257,120,189,143,146,156,145,151,187,138,255,115"/>
+</map>

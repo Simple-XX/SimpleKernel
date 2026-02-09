@@ -1,0 +1,5 @@
+<map id="RoundRobinScheduler::OnPreempted" name="RoundRobinScheduler::OnPreempted">
+<area shape="rect" id="Node000001" title="任务被抢占时调用" alt="" coords="108,5,272,45"/>
+<area shape="rect" id="Node000002" href="$unit__test_2rr__scheduler__test_8cpp.html#a143e91347951d281c4ff56d9005ddc74" title=" " alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+</map>

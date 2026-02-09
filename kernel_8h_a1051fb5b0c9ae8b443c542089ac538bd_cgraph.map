@@ -1,0 +1,18 @@
+<map id="_start" name="_start">
+<area shape="rect" id="Node000001" title="负责 crtbegin 的工作" alt="" coords="5,80,64,105"/>
+<area shape="rect" id="Node000002" href="$sk__libcxx_8cpp.html#ace4b6de6e1ac3081329da66be1b45f76" title="析构 c++ 全局对象" alt="" coords="124,5,211,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="52,77,111,40,121,34,124,39,113,44,55,82"/>
+<area shape="rect" id="Node000003" href="$sk__libcxx_8cpp.html#a8c22041b9886ca00cff1e90cd43eb3f2" title="构造 c++ 全局对象" alt="" coords="133,55,201,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="64,85,119,74,120,79,65,90"/>
+<area shape="rect" id="Node000004" href="$tests_2integration__test_2aarch64__minimal_2main_8cpp.html#acdef7a1fd863a6d3770c1268cb06add3" title=" " alt="" coords="140,104,195,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="65,95,127,107,126,112,64,100"/>
+<area shape="rect" id="Node000008" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="112,153,223,179"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="56,103,113,138,126,145,124,150,111,143,54,108"/>
+<area shape="rect" id="Node000005" href="$tests_2integration__test_2aarch64__minimal_2main_8cpp.html#a5edd8ed15ba1e6af9ee3fea0b2e33542" title=" " alt="" coords="281,53,343,79"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="194,105,267,79,269,84,196,110"/>
+<area shape="rect" id="Node000006" href="$tests_2integration__test_2aarch64__minimal_2main_8cpp.html#ad4f8ea699a908e7075b9a4ed2f0010f2" title=" " alt="" coords="401,79,452,104"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="194,111,387,92,388,98,195,117"/>
+<area shape="rect" id="Node000007" href="$tests_2integration__test_2aarch64__minimal_2main_8cpp.html#ae4c122955327cf2c32cc6ecb0e5d8e18" title=" " alt="" coords="271,155,353,180"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="196,123,263,148,261,153,194,128"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="343,70,388,80,387,85,342,75"/>
+</map>

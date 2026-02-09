@@ -1,0 +1,5 @@
+<map id="SchedulerBase::RestorePriority" name="SchedulerBase::RestorePriority">
+<area shape="rect" id="Node000001" title="优先级恢复：当任务释放资源后，恢复其原始优先级" alt="" coords="108,5,331,31"/>
+<area shape="rect" id="Node000002" href="$unit__test_2fifo__scheduler__test_8cpp.html#a68f7923b4ef231d855afb7fa46c331e1" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
+</map>

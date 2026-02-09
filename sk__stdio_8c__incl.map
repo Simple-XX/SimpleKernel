@@ -1,0 +1,11 @@
+<map id="/root/src/libc/sk_stdio.c" name="/root/src/libc/sk_stdio.c">
+<area shape="rect" id="Node000001" title=" " alt="" coords="65,5,236,31"/>
+<area shape="rect" id="Node000002" href="$sk__stdio_8h.html" title=" " alt="" coords="48,79,136,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,33,112,70,108,67,139,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="161,79,261,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="163,29,194,66,190,70,159,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,80,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="86,106,61,142,56,139,82,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="104,152,179,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="102,103,128,139,123,142,98,106"/>
+</map>

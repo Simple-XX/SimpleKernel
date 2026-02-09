@@ -1,0 +1,5 @@
+<map id="sys_set_tid_address" name="sys_set_tid_address">
+<area shape="rect" id="Node000001" title="设置线程ID地址（用于线程退出时的清理）" alt="" coords="5,5,159,31"/>
+<area shape="rect" id="Node000002" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="207,5,376,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,15,193,15,193,21,159,21"/>
+</map>

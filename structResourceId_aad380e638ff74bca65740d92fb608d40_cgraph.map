@@ -1,0 +1,5 @@
+<map id="ResourceId::operator bool" name="ResourceId::operator bool">
+<area shape="rect" id="Node000001" title="检查是否为无效资源" alt="" coords="5,5,195,31"/>
+<area shape="rect" id="Node000002" href="$structResourceId.html#adc2ead50d28fd71ff0c0d9b2529af45c" title="获取资源类型" alt="" coords="243,5,397,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,15,229,15,229,21,195,21"/>
+</map>

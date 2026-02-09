@@ -1,0 +1,13 @@
+<map id="Interrupt::Interrupt" name="Interrupt::Interrupt">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,62,148,87"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="196,13,381,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,59,219,39,221,44,133,65"/>
+<area shape="rect" id="Node000004" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="204,62,373,87"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="148,72,190,72,190,77,148,77"/>
+<area shape="rect" id="Node000005" href="$classGic.html#aab9f7f62a1f6076a1cc7bc616208c8b6" title=" " alt="" coords="252,111,325,137"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="133,85,239,110,238,115,131,90"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="429,5,692,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="382,23,415,23,415,28,382,28"/>
+<area shape="rect" id="Node000006" href="$classGic_1_1Gicr.html#a5fff1f87939912138ececd6ac3f56b9c" title=" " alt="" coords="489,111,633,137"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="326,121,475,121,475,127,326,127"/>
+</map>

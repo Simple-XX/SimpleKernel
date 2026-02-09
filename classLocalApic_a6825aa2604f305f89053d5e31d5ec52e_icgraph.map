@@ -1,0 +1,5 @@
+<map id="LocalApic::CheckX2ApicSupport" name="LocalApic::CheckX2ApicSupport">
+<area shape="rect" id="Node000001" title="检查 CPU 是否支持 x2APIC" alt="" coords="235,5,461,31"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#a3f7b7c00383f231e77c8b33ff340a2f9" title="启用 x2APIC 模式" alt="" coords="5,5,187,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,21,187,21,187,15,221,15"/>
+</map>

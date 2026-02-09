@@ -1,0 +1,9 @@
+<map id="Plic::Plic" name="Plic::Plic">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,81,80"/>
+<area shape="rect" id="Node000002" href="$classPlic.html#a54c3cd6e3325dfe97f89bc00c304c42c" title="获取优先级阈值寄存器" alt="" coords="129,5,293,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,54,129,39,154,32,155,37,130,45,82,59"/>
+<area shape="rect" id="Node000003" href="$classPlic.html#a81f982b9566deb66ae68f48dd980563e" title="设置使能位寄存器中指定中断源的状态" alt="" coords="143,55,279,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="81,65,129,65,129,70,81,70"/>
+<area shape="rect" id="Node000004" href="$classPlic.html#a5bae1983a5596af119d947b17b10339b" title="获取中断源优先级寄存器" alt="" coords="139,104,283,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="82,76,155,97,153,103,81,81"/>
+</map>

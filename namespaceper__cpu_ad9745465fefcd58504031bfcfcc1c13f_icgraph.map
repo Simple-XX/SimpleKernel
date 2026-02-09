@@ -1,0 +1,43 @@
+<map id="per_cpu::GetCurrentCore" name="per_cpu::GetCurrentCore">
+<area shape="rect" id="Node000001" title=" " alt="" coords="924,383,1107,408"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#ae97ee6101a6462300666058cc4bedd05" title="添加任务" alt="" coords="683,71,853,96"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="998,372,947,286,912,235,874,185,826,136,784,98,787,94,830,132,878,182,917,232,952,284,1003,369"/>
+<area shape="rect" id="Node000004" href="$classTaskManager.html#a926010fadc0b0d1f1df608c59d4a57a0" title="获取当前任务" alt="" coords="660,196,876,221"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="992,375,941,323,874,267,835,243,797,224,800,219,838,238,878,263,944,319,996,371"/>
+<area shape="rect" id="Node000008" href="$classTaskManager.html#af7525954e852c09c1dd8ba50235f1d78" title="调度函数 选择下一个任务并切换上下文" alt="" coords="437,259,612,284"/>
+<area shape="poly" id="edge18_Node000001_Node000008" title=" " alt="" coords="970,380,875,347,730,312,602,287,603,281,732,306,877,342,972,375"/>
+<area shape="rect" id="Node000011" href="$classTaskManager.html#aa997c36c40d00f38722808ab8db70f36" title="初始化 per cpu 的调度数据，创建 idle 线程" alt="" coords="661,509,875,535"/>
+<area shape="poly" id="edge16_Node000001_Node000011" title=" " alt="" coords="990,419,939,456,877,492,825,512,823,507,875,488,936,452,987,415"/>
+<area shape="rect" id="Node000012" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="741,559,795,584"/>
+<area shape="poly" id="edge17_Node000001_Node000012" title=" " alt="" coords="1001,422,952,486,917,521,877,550,836,566,796,572,795,567,834,561,875,545,913,517,948,483,997,418"/>
+<area shape="rect" id="Node000013" href="$arch_8cpp.html#ad982abdb7f3d8729656c6b5422b2e61d" title=" " alt="" coords="726,357,810,383"/>
+<area shape="poly" id="edge19_Node000001_Node000013" title=" " alt="" coords="910,387,810,377,811,372,911,382"/>
+<area shape="rect" id="Node000015" href="$task__scheduling__example__test_8cpp.html#ad287521df6cc3daaa5fb96ea8afcfd38" title="示例：验证多次切换的历史记录" alt="" coords="490,409,559,435"/>
+<area shape="poly" id="edge24_Node000001_Node000015" title=" " alt="" coords="911,404,560,423,559,418,910,398"/>
+<area shape="rect" id="Node000016" href="$task__scheduling__example__test_8cpp.html#aff367fc7a0b493d3bba6057fce1a57eb" title="示例：验证 switch_to 记录切换历史" alt="" coords="490,459,559,484"/>
+<area shape="poly" id="edge25_Node000001_Node000016" title=" " alt="" coords="935,413,876,423,560,470,559,464,876,418,934,408"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="448,5,601,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="706,70,572,33,574,28,707,64"/>
+<area shape="poly" id="edge6_Node000004_Node000003" title=" " alt="" coords="740,188,658,109,636,78,626,65,611,52,573,33,575,28,613,48,630,62,640,75,662,106,743,184"/>
+<area shape="rect" id="Node000005" href="$classTaskManager.html#a71763ebababa9aa90bad6a07c66edede" title="阻塞当前任务" alt="" coords="218,107,370,132"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="686,196,362,135,363,129,687,191"/>
+<area shape="rect" id="Node000006" href="$classTaskManager.html#aadc206ac53400212078270833533f247" title="等待子进程退出" alt="" coords="5,81,151,107"/>
+<area shape="poly" id="edge15_Node000004_Node000006" title=" " alt="" coords="726,193,672,170,611,147,502,115,389,97,263,90,151,92,151,87,263,85,390,91,503,109,613,142,674,165,729,188"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#ae3444c55ab7b6ec348a56b596229fc0f" title="退出当前线程" alt="" coords="223,183,365,208"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="646,206,612,205,365,199,365,194,612,199,646,201"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="705,227,576,261,574,256,704,222"/>
+<area shape="rect" id="Node000009" href="$classTaskManager.html#a86fe8ff01e353a0acb150c90e8081811" title="线程睡眠" alt="" coords="218,245,370,271"/>
+<area shape="poly" id="edge13_Node000004_Node000009" title=" " alt="" coords="646,224,371,253,370,247,646,219"/>
+<area shape="rect" id="Node000010" href="$classTaskManager.html#aa1041f9ed06a9d0b6b738621c30e1921" title="更新系统 tick" alt="" coords="199,295,389,320"/>
+<area shape="poly" id="edge14_Node000004_Node000010" title=" " alt="" coords="741,232,684,268,649,285,613,298,556,310,498,317,390,318,390,313,497,311,555,305,611,293,647,280,681,263,738,227"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="204,111,151,105,151,100,204,106"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="496,252,446,213,388,172,320,134,323,130,391,168,450,209,499,248"/>
+<area shape="poly" id="edge10_Node000008_Node000007" title=" " alt="" coords="471,257,333,211,334,206,473,252"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="423,268,370,265,370,260,424,263"/>
+<area shape="poly" id="edge12_Node000008_Node000010" title=" " alt="" coords="430,289,376,297,375,292,429,284"/>
+<area shape="poly" id="edge20_Node000013_Node000008" title=" " alt="" coords="722,355,556,287,558,282,724,350"/>
+<area shape="rect" id="Node000014" href="$task__scheduling__example__test_8cpp.html#ae2476f4138ea3da243c4248b722039c5" title="示例：清空切换历史" alt="" coords="490,360,559,385"/>
+<area shape="poly" id="edge21_Node000013_Node000014" title=" " alt="" coords="712,373,560,375,560,370,712,368"/>
+<area shape="poly" id="edge22_Node000013_Node000015" title=" " alt="" coords="713,384,560,417,559,412,712,379"/>
+<area shape="poly" id="edge23_Node000013_Node000016" title=" " alt="" coords="734,392,678,421,613,450,560,466,559,461,611,445,676,416,731,387"/>
+</map>

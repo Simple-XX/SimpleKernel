@@ -1,0 +1,5 @@
+<map id="Apic::StartupAp" name="Apic::StartupAp">
+<area shape="rect" id="Node000001" title="启动 AP (Application Processor)" alt="" coords="200,5,323,31"/>
+<area shape="rect" id="Node000002" href="$classApic.html#ade18168e69461b8ee4c8d34d91091b58" title="唤醒所有应用处理器 (AP)" alt="" coords="5,5,152,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,21,152,21,152,15,186,15"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="KernelFdtTest::SetUp" name="KernelFdtTest::SetUp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,77,163,102"/>
+<area shape="rect" id="Node000002" href="$classtest__env_1_1TestEnvironmentState.html#a345611d0a521ef20e5c49eeffd43342d" title="将指定线程绑定到核心" alt="" coords="244,5,439,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,74,210,55,245,46,246,51,211,60,135,79"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a3daed93eb011fe37c2fd3ae5824fff1b" title="初始化指定数量的核心" alt="" coords="244,69,439,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,87,230,87,230,92,163,92"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#ab05dc3b7eda4beb5233d58b197c70a58" title="设置当前线程的环境实例指针" alt="" coords="211,133,472,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="135,99,211,119,246,127,245,133,210,124,134,105"/>
+</map>

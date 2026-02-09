@@ -1,0 +1,9 @@
+<map id="Gic::Gicr::SetupSGI" name="Gic::Gicr::SetupSGI">
+<area shape="rect" id="Node000001" title=" " alt="" coords="317,31,461,56"/>
+<area shape="rect" id="Node000002" href="$classGic.html#aab9f7f62a1f6076a1cc7bc616208c8b6" title=" " alt="" coords="196,31,269,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,46,269,46,269,41,304,41"/>
+<area shape="rect" id="Node000003" href="$classInterrupt.html#a736dd658be198f3dc94db0f876fb2499" title=" " alt="" coords="5,5,148,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="182,38,148,32,149,27,183,33"/>
+<area shape="rect" id="Node000004" href="$classInterrupt.html#ab738197a9fe570f02ab566143633a9b2" title=" " alt="" coords="23,55,131,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="183,54,131,62,130,56,182,48"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="Mutex::IsLockedByCurrentTask" name="Mutex::IsLockedByCurrentTask">
+<area shape="rect" id="Node000001" title="检查锁是否被当前线程持有" alt="" coords="400,55,621,80"/>
+<area shape="rect" id="Node000002" href="$classMutex.html#a8e45acd6b7246a9ffb6cdbe928ae14a4" title="获取锁（阻塞）" alt="" coords="241,5,343,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="440,54,342,32,343,27,441,49"/>
+<area shape="rect" id="Node000004" href="$classMutex.html#a2b3ee46462679c651e6e1b40c8ebf881" title="尝试获取锁（非阻塞）" alt="" coords="232,55,352,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="386,70,352,70,352,65,386,65"/>
+<area shape="rect" id="Node000005" href="$classMutex.html#abd80d453457fcf4f39a5a5c3f10fe5aa" title="释放锁" alt="" coords="233,104,351,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="441,86,350,107,349,101,440,80"/>
+<area shape="rect" id="Node000003" href="$classLockGuard.html#aa283d6b19fddd2287f84dcf937b92e5b" title="构造函数，自动获取锁" alt="" coords="11,5,179,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="227,21,179,21,179,15,227,15"/>
+<area shape="rect" id="Node000006" href="$classLockGuard.html#af889562d8ed81c2337c94d0c915d65ca" title="析构函数，自动释放锁" alt="" coords="5,104,184,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="219,119,184,119,184,114,219,114"/>
+</map>

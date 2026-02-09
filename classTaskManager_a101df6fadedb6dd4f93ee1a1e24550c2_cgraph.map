@@ -1,0 +1,26 @@
+<map id="TaskManager::Clone" name="TaskManager::Clone">
+<area shape="rect" id="Node000001" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="5,155,159,180"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#ae97ee6101a6462300666058cc4bedd05" title="添加任务" alt="" coords="229,56,400,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,152,146,121,206,90,228,83,230,88,208,95,148,126,102,157"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#a69688c59dbd65567df780d024e6faa7c" title="分配新的 PID" alt="" coords="471,5,660,31"/>
+<area shape="poly" id="edge8_Node000001_Node000003" title=" " alt="" coords="89,153,133,97,166,66,206,41,268,19,333,8,398,3,457,4,457,9,398,8,334,13,269,25,208,46,170,70,137,100,93,156"/>
+<area shape="rect" id="Node000007" href="$memory_8cpp.html#a8006724372b77924155bd8618fe57516" title=" " alt="" coords="261,105,369,131"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="142,152,247,130,248,135,143,157"/>
+<area shape="rect" id="Node000008" href="$classTaskManager.html#a68d6b636f85f72416de99952e61a1508" title="按 PID 查找任务" alt="" coords="229,155,401,180"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="159,165,215,165,215,170,159,170"/>
+<area shape="rect" id="Node000009" href="$classTaskManager.html#a926010fadc0b0d1f1df608c59d4a57a0" title="获取当前任务" alt="" coords="207,204,423,229"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="143,178,241,199,240,204,142,183"/>
+<area shape="rect" id="Node000010" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="230,253,399,279"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="102,178,148,209,208,240,230,247,228,252,206,245,146,214,99,182"/>
+<area shape="rect" id="Node000011" href="$structcpu__io_1_1TrapContext.html#a18be9aebb331edf000d87ab406ac6f75" title=" " alt="" coords="239,303,390,343"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="95,179,140,232,172,263,208,289,228,299,225,304,205,294,168,267,136,236,91,182"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="378,53,488,31,489,36,379,59"/>
+<area shape="rect" id="Node000004" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title=" " alt="" coords="474,107,657,132"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="379,79,489,101,488,107,378,84"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="708,81,893,107"/>
+<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="400,71,694,86,694,91,400,76"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="657,107,694,103,695,108,658,112"/>
+<area shape="rect" id="Node000006" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="941,74,1204,114"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="894,91,927,91,927,97,894,97"/>
+<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="384,201,422,190,480,164,531,137,533,141,483,169,424,195,386,207"/>
+</map>

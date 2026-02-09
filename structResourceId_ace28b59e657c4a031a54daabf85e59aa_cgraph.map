@@ -1,0 +1,7 @@
+<map id="ResourceId::GetTypeName" name="ResourceId::GetTypeName">
+<area shape="rect" id="Node000001" title="获取类型名称（用于调试）" alt="" coords="5,31,200,56"/>
+<area shape="rect" id="Node000002" href="$resource__id_8hpp.html#afd66b2606db93ecfaf8b3972a9b953ad" title="获取资源类型的字符串表示（用于调试）" alt="" coords="248,5,423,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,30,234,26,234,32,201,35"/>
+<area shape="rect" id="Node000003" href="$structResourceId.html#adc2ead50d28fd71ff0c0d9b2529af45c" title="获取资源类型" alt="" coords="258,55,413,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="200,51,244,55,244,61,200,56"/>
+</map>

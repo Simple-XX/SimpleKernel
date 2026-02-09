@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['构建_20docker_20并通过_20ssh_20使用_203',['构建 Docker 并通过 ssh 使用',['../md_docker.html',1,'']]]
+  ['interrupt_20controller_0',['GIC (Generic Interrupt Controller)',['../md__2root_2src_2driver_2gic_2README.html',1,'']]],
+  ['interrupt_20controller_20plic_1',['Platform-Level Interrupt Controller (PLIC)',['../md__2root_2src_2driver_2plic_2README.html',1,'']]]
 ];

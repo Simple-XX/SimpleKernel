@@ -1,0 +1,5 @@
+<map id="TaskManager::AddTask" name="TaskManager::AddTask">
+<area shape="rect" id="Node000001" title="添加任务" alt="" coords="207,5,377,31"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="5,5,159,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,21,159,21,159,15,193,15"/>
+</map>

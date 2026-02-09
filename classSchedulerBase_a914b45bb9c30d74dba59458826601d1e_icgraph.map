@@ -1,0 +1,13 @@
+<map id="SchedulerBase::GetStats" name="SchedulerBase::GetStats">
+<area shape="rect" id="Node000001" title="获取调度器统计信息" alt="" coords="108,104,291,129"/>
+<area shape="rect" id="Node000002" href="$unit__test_2cfs__scheduler__test_8cpp.html#aebb54e098e3dbe06be2cfd039f42ee59" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,99,54,33,57,29,167,95"/>
+<area shape="rect" id="Node000003" href="$unit__test_2cfs__scheduler__test_8cpp.html#acce4d0ae51d4aedb69a0e1f4a7e7f490" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="142,103,59,78,61,73,144,98"/>
+<area shape="rect" id="Node000004" href="$unit__test_2fifo__scheduler__test_8cpp.html#abbc9c6fc038f6192238f4267b5fee40f" title=" " alt="" coords="5,104,60,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="94,119,60,119,60,114,94,114"/>
+<area shape="rect" id="Node000005" href="$unit__test_2fifo__scheduler__test_8cpp.html#a1301e34d16c900e1df31650d8cc02e36" title=" " alt="" coords="5,153,60,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="144,136,61,161,59,156,142,131"/>
+<area shape="rect" id="Node000006" href="$unit__test_2rr__scheduler__test_8cpp.html#a143e91347951d281c4ff56d9005ddc74" title=" " alt="" coords="5,203,60,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="167,139,57,205,54,200,164,134"/>
+</map>
