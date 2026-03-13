@@ -1,5 +1,5 @@
 /**
- * Copyright The SimpleKernel Contributors
+ * @copyright Copyright The SimpleKernel Contributors
  */
 
 #include <cpu_io.h>
@@ -17,6 +17,7 @@
 
 namespace {
 
+/// bmalloc 日志回调（空实现）
 struct BmallocLogger {
   auto operator()(const char* format, ...) const -> int {
     (void)format;

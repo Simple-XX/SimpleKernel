@@ -20,22 +20,6 @@
 class VirtualMemory {
  public:
   /**
-   * @brief 构造函数
-   * @post 内核页表目录已分配并清零
-   * @post 全部物理内存已映射
-   */
-  VirtualMemory();
-
-  /// @name 构造/析构函数
-  /// @{
-  VirtualMemory(const VirtualMemory&) = delete;
-  VirtualMemory(VirtualMemory&&) = default;
-  auto operator=(const VirtualMemory&) -> VirtualMemory& = delete;
-  auto operator=(VirtualMemory&&) -> VirtualMemory& = default;
-  ~VirtualMemory() = default;
-  /// @}
-
-  /**
    * @brief 初始化当前核心的页表
    * @pre 内核页表目录已初始化
    * @post 当前核心的页表目录已设置并启用分页
@@ -103,6 +87,21 @@ class VirtualMemory {
   [[nodiscard]] auto ClonePageDirectory(void* src_page_dir,
                                         bool copy_mappings = true)
       -> Expected<void*>;
+
+  /// @name 构造/析构函数
+  /// @{
+  /**
+   * @brief 构造函数
+   * @post 内核页表目录已分配并清零
+   * @post 全部物理内存已映射
+   */
+  VirtualMemory();
+  VirtualMemory(const VirtualMemory&) = delete;
+  VirtualMemory(VirtualMemory&&) = default;
+  auto operator=(const VirtualMemory&) -> VirtualMemory& = delete;
+  auto operator=(VirtualMemory&&) -> VirtualMemory& = default;
+  ~VirtualMemory() = default;
+  /// @}
 
  private:
   void* kernel_page_dir_{nullptr};
