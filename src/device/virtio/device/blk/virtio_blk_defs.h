@@ -271,11 +271,11 @@ struct [[gnu::packed]] BlkLifetime {
 };
 
 /// 标准扇区大小（字节）
-static constexpr size_t kSectorSize = 512;
+inline constexpr size_t kSectorSize = 512;
 
 /// GET_ID 请求返回的设备 ID 字符串最大长度（字节）
 /// @note 如果字符串长度为 20 字节，则没有 NUL 终止符
-static constexpr size_t kDeviceIdMaxLen = 20;
+inline constexpr size_t kDeviceIdMaxLen = 20;
 
 /**
  * @brief VirtIO 设备性能监控统计数据

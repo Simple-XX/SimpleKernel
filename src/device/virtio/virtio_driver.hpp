@@ -85,9 +85,15 @@ class VirtioDriver {
    * @pre  node.mmio_base != 0，MatchStatic() 已返回 true
    * @post 设备已注册到 DeviceManager（node.block_device 已填入适配器指针）
    */
-  auto Probe(DeviceNode& node) -> Expected<void>;
+  [[nodiscard]] auto Probe(DeviceNode& node) -> Expected<void>;
 
-  auto Remove([[maybe_unused]] DeviceNode& node) -> Expected<void> {
+  /**
+   * @brief 卸载所有 VirtIO 块设备
+   * @param  node 设备节点
+   * @return Expected<void> 成功返回空值
+   */
+  [[nodiscard]] auto Remove([[maybe_unused]] DeviceNode& node)
+      -> Expected<void> {
     for (size_t i = 0; i < blk_device_count_; ++i) {
       blk_devices_[i].reset();
       dma_buffers_[i].reset();
@@ -98,16 +104,29 @@ class VirtioDriver {
     return {};
   }
 
+  /**
+   * @brief 获取第一个 VirtIO 块设备实例
+   * @return 设备实例指针，若不存在则返回 nullptr
+   */
   [[nodiscard]] auto GetBlkDevice() -> virtio::blk::VirtioBlk<>* {
     return (blk_device_count_ > 0 && blk_devices_[0].has_value())
                ? &blk_devices_[0].value()
                : nullptr;
   }
 
+  /**
+   * @brief 获取第一个块设备的 IRQ 号
+   * @return IRQ 号，若无设备则返回 0
+   */
   [[nodiscard]] auto GetIrq() const -> uint32_t {
     return blk_device_count_ > 0 ? irqs_[0] : 0;
   }
 
+  /**
+   * @brief 处理所有块设备中断
+   * @tparam CompletionCallback 完成回调类型
+   * @param  on_complete        回调函数
+   */
   template <typename CompletionCallback>
   auto HandleInterrupt(CompletionCallback&& on_complete) -> void {
     for (size_t i = 0; i < blk_device_count_; ++i) {
@@ -117,6 +136,16 @@ class VirtioDriver {
       }
     }
   }
+
+  /// @name 构造/析构函数
+  /// @{
+  VirtioDriver() = default;
+  VirtioDriver(const VirtioDriver&) = delete;
+  VirtioDriver(VirtioDriver&&) = delete;
+  auto operator=(const VirtioDriver&) -> VirtioDriver& = delete;
+  auto operator=(VirtioDriver&&) -> VirtioDriver& = delete;
+  ~VirtioDriver() = default;
+  /// @}
 
  private:
   static constexpr MatchEntry kMatchTable[] = {

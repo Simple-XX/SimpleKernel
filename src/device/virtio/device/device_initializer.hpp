@@ -46,15 +46,6 @@ template <TransportConcept TransportImpl>
 class DeviceInitializer {
  public:
   /**
-   * @brief 构造函数
-   *
-   * @param transport 传输层引用（必须在 DeviceInitializer 生命周期内保持有效）
-   * @pre transport.IsValid() == true
-   */
-  explicit DeviceInitializer(TransportImpl& transport)
-      : transport_(transport) {}
-
-  /**
    * @brief 执行 virtio 设备初始化序列
    *
    * 完整执行设备初始化流程（步骤 1-6）：
@@ -190,6 +181,24 @@ class DeviceInitializer {
   [[nodiscard]] auto transport() const -> const TransportImpl& {
     return transport_;
   }
+
+  /// @name 构造/析构函数
+  /// @{
+  /**
+   * @brief 构造函数
+   *
+   * @param transport 传输层引用（必须在 DeviceInitializer 生命周期内保持有效）
+   * @pre transport.IsValid() == true
+   */
+  explicit DeviceInitializer(TransportImpl& transport)
+      : transport_(transport) {}
+  DeviceInitializer() = delete;
+  DeviceInitializer(const DeviceInitializer&) = delete;
+  DeviceInitializer(DeviceInitializer&&) = delete;
+  auto operator=(const DeviceInitializer&) -> DeviceInitializer& = delete;
+  auto operator=(DeviceInitializer&&) -> DeviceInitializer& = delete;
+  ~DeviceInitializer() = default;
+  /// @}
 
  private:
   /// 底层传输层引用

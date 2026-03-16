@@ -22,38 +22,6 @@ namespace pl011 {
 class Pl011 {
  public:
   /**
-   * @brief 构造函数
-   * @param dev_addr  设备 MMIO 基地址
-   * @param clock     串口时钟（0 表示不设置波特率）
-   * @param baud_rate 波特率（0 表示不设置波特率）
-   */
-  explicit Pl011(uint64_t dev_addr, uint64_t clock = 0, uint64_t baud_rate = 0)
-      : mmio_(dev_addr), base_clock_(clock), baud_rate_(baud_rate) {
-    mmio_.Write<uint32_t>(kRegRSRECR, 0);
-    mmio_.Write<uint32_t>(kRegCR, 0);
-
-    if (baud_rate_ != 0) {
-      uint32_t divisor = (base_clock_ * 4) / baud_rate_;
-      mmio_.Write<uint32_t>(kRegIBRD, divisor >> 6);
-      mmio_.Write<uint32_t>(kRegFBRD, divisor & 0x3f);
-    }
-
-    mmio_.Write<uint32_t>(kRegLCRH, kLCRHWlen8);
-    mmio_.Write<uint32_t>(kRegIMSC, kIMSCRxim);
-    mmio_.Write<uint32_t>(kRegCR, kCREnable | kCRTxEnable | kCRRxEnable);
-  }
-
-  /// @name 默认构造/析构函数
-  /// @{
-  Pl011() = default;
-  Pl011(const Pl011&) = delete;
-  Pl011(Pl011&&) = default;
-  auto operator=(const Pl011&) -> Pl011& = delete;
-  auto operator=(Pl011&&) -> Pl011& = default;
-  ~Pl011() = default;
-  /// @}
-
-  /**
    * @brief 写入一个字符
    * @param c 待写入的字符
    */
@@ -145,6 +113,37 @@ class Pl011 {
     }
   }
 
+  /// @name 构造/析构函数
+  /// @{
+  /**
+   * @brief 构造函数
+   * @param dev_addr  设备 MMIO 基地址
+   * @param clock     串口时钟（0 表示不设置波特率）
+   * @param baud_rate 波特率（0 表示不设置波特率）
+   */
+  explicit Pl011(uint64_t dev_addr, uint64_t clock = 0, uint64_t baud_rate = 0)
+      : mmio_(dev_addr), base_clock_(clock), baud_rate_(baud_rate) {
+    mmio_.Write<uint32_t>(kRegRSRECR, 0);
+    mmio_.Write<uint32_t>(kRegCR, 0);
+
+    if (baud_rate_ != 0) {
+      uint32_t divisor = (base_clock_ * 4) / baud_rate_;
+      mmio_.Write<uint32_t>(kRegIBRD, divisor >> 6);
+      mmio_.Write<uint32_t>(kRegFBRD, divisor & 0x3f);
+    }
+
+    mmio_.Write<uint32_t>(kRegLCRH, kLCRHWlen8);
+    mmio_.Write<uint32_t>(kRegIMSC, kIMSCRxim);
+    mmio_.Write<uint32_t>(kRegCR, kCREnable | kCRTxEnable | kCRRxEnable);
+  }
+  Pl011() = default;
+  Pl011(const Pl011&) = delete;
+  Pl011(Pl011&&) = default;
+  auto operator=(const Pl011&) -> Pl011& = delete;
+  auto operator=(Pl011&&) -> Pl011& = default;
+  ~Pl011() = default;
+  /// @}
+
  private:
   /// data register
   static constexpr uint32_t kRegDR = 0x00;
@@ -184,7 +183,7 @@ class Pl011 {
   /// interrupt mask bits
   static constexpr uint32_t kIMSCRxim = (1 << 4);
 
-  MmioAccessor mmio_;
+  MmioAccessor mmio_{};
   uint64_t base_clock_{0};
   uint64_t baud_rate_{0};
 };

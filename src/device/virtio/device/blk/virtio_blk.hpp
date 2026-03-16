@@ -473,8 +473,9 @@ class VirtioBlk {
    */
   [[nodiscard]] auto GetStats() const -> VirtioStats { return stats_; }
 
-  /// @name 移动/拷贝控制
+  /// @name 构造/析构函数
   /// @{
+  VirtioBlk() = delete;
   VirtioBlk(VirtioBlk&& other) noexcept
       : transport_(std::move(other.transport_)),
         vq_(std::move(other.vq_)),
@@ -829,9 +830,9 @@ class VirtioBlk {
   /// Virtqueue 实例（当前支持单队列）
   VirtqueueT vq_;
   /// 协商后的特性位掩码
-  uint64_t negotiated_features_;
+  uint64_t negotiated_features_{0};
   /// DMA region backing the request slot pool
-  DmaRegion slot_dma_;
+  DmaRegion slot_dma_{};
   /// Pointer to request slot array (lives in slot_dma_ memory)
   RequestSlot* slots_{nullptr};
   /// Address translation callback
@@ -841,9 +842,9 @@ class VirtioBlk {
   /// 请求槽占用位图（bit i = 1 表示 slots_[i] 被占用）
   uint64_t slot_bitmap_{};
   /// 上次 Kick 时的 avail idx（用于 Event Index 通知抑制）
-  uint16_t old_avail_idx_;
+  uint16_t old_avail_idx_{0};
   /// 请求完成标志（由简化版 HandleInterrupt 在中断上下文中设置）
-  volatile bool request_completed_;
+  volatile bool request_completed_{false};
 };
 
 }  // namespace virtio::blk

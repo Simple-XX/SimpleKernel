@@ -17,14 +17,13 @@ namespace acpi {
  */
 class Acpi {
  public:
+  /// @name 构造/析构函数
+  /// @{
   /**
    * @brief 构造函数
    * @param rsdp RSDP 地址
    */
   explicit Acpi(uint64_t rsdp) : rsdp_addr_(rsdp) {}
-
-  /// @name 默认构造/析构函数
-  /// @{
   Acpi() = default;
   Acpi(const Acpi&) = delete;
   Acpi(Acpi&&) = default;

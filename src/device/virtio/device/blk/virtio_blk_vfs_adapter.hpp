@@ -22,8 +22,22 @@ class VirtioBlkVfsAdapter final : public vfs::BlockDevice {
  public:
   using VirtioBlkType = VirtioBlk<>;
 
-  explicit VirtioBlkVfsAdapter(VirtioBlkType* dev, uint32_t index = 0)
-      : dev_(dev), index_(index) {}
+  /// @name 构造/析构函数
+  /// @{
+  /**
+   * @brief 构造函数
+   * @param  _dev   VirtIO 块设备实例
+   * @param  _index 设备索引
+   */
+  explicit VirtioBlkVfsAdapter(VirtioBlkType* _dev, uint32_t _index = 0)
+      : dev_(_dev), index_(_index) {}
+  VirtioBlkVfsAdapter() = delete;
+  VirtioBlkVfsAdapter(const VirtioBlkVfsAdapter&) = delete;
+  VirtioBlkVfsAdapter(VirtioBlkVfsAdapter&&) = delete;
+  auto operator=(const VirtioBlkVfsAdapter&) -> VirtioBlkVfsAdapter& = delete;
+  auto operator=(VirtioBlkVfsAdapter&&) -> VirtioBlkVfsAdapter& = delete;
+  ~VirtioBlkVfsAdapter() override = default;
+  /// @}
 
   auto ReadSectors(uint64_t lba, uint32_t count, void* buf)
       -> Expected<size_t> override {
@@ -65,7 +79,7 @@ class VirtioBlkVfsAdapter final : public vfs::BlockDevice {
 
  private:
   static constexpr uint32_t kSectorSize = 512;
-  VirtioBlkType* dev_;
+  VirtioBlkType* dev_{nullptr};
   uint32_t index_{0};
 };
 

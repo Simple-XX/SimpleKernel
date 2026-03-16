@@ -636,6 +636,7 @@ class SplitVirtqueue final : public VirtqueueBase {
 
   /// @name 构造/析构函数
   /// @{
+  SplitVirtqueue() = delete;
   SplitVirtqueue(const SplitVirtqueue&) = delete;
   auto operator=(const SplitVirtqueue&) -> SplitVirtqueue& = delete;
   auto operator=(SplitVirtqueue&&) -> SplitVirtqueue& = delete;
@@ -664,11 +665,11 @@ class SplitVirtqueue final : public VirtqueueBase {
 
  private:
   /// 描述符表指针（指向 DMA 内存）
-  volatile Desc* desc_ = nullptr;
+  volatile Desc* desc_{nullptr};
   /// Available Ring 指针（指向 DMA 内存）
-  volatile Avail* avail_ = nullptr;
+  volatile Avail* avail_{nullptr};
   /// Used Ring 指针（指向 DMA 内存）
-  volatile Used* used_ = nullptr;
+  volatile Used* used_{nullptr};
 
   /// 队列大小（描述符数量，必须为 2 的幂）
   uint16_t queue_size_{0};

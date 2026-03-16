@@ -46,16 +46,6 @@ class Ns16550a {
     return uart;
   }
 
-  /// @name 构造/析构函数
-  /// @{
-  Ns16550a() = default;
-  Ns16550a(const Ns16550a&) = delete;
-  Ns16550a(Ns16550a&&) = default;
-  auto operator=(const Ns16550a&) -> Ns16550a& = delete;
-  auto operator=(Ns16550a&&) -> Ns16550a& = default;
-  ~Ns16550a() = default;
-  /// @}
-
   /**
    * @brief 写入一个字符
    * @param c 待写入的字符
@@ -120,6 +110,16 @@ class Ns16550a {
     return (mmio_.Read<uint8_t>(kRegISR) & 0x01) == 0;
   }
 
+  /// @name 构造/析构函数
+  /// @{
+  Ns16550a() = default;
+  Ns16550a(const Ns16550a&) = delete;
+  Ns16550a(Ns16550a&&) = default;
+  auto operator=(const Ns16550a&) -> Ns16550a& = delete;
+  auto operator=(Ns16550a&&) -> Ns16550a& = default;
+  ~Ns16550a() = default;
+  /// @}
+
  private:
   /// read mode: Receive holding reg
   static constexpr uint8_t kRegRHR = 0;
@@ -145,7 +145,7 @@ class Ns16550a {
   /// MSB of divisor Latch when enabled
   static constexpr uint8_t kUartDLM = 1;
 
-  MmioAccessor mmio_;
+  MmioAccessor mmio_{};
 
   explicit Ns16550a(uint64_t dev_addr) : mmio_(dev_addr) {}
 };

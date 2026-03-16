@@ -23,7 +23,10 @@ class Ns16550aDriver {
 
   /// @note 使用 Ns16550aDriverSingleton::instance() 访问单例。
 
-  /// 返回用于注册的 DriverEntry。
+  /**
+   * @brief 返回用于注册的 DriverEntry
+   * @return DriverEntry 常量引用
+   */
   [[nodiscard]] static auto GetEntry() -> const DriverEntry& {
     static const DriverEntry entry{
         .name = "ns16550a",
@@ -52,15 +55,6 @@ class Ns16550aDriver {
     static constexpr size_t kMinRegisterSpace = 8;
     return node.mmio_base != 0 && node.mmio_size >= kMinRegisterSpace;
   }
-  /// @name 构造/析构函数
-  /// @{
-  Ns16550aDriver() = default;
-  Ns16550aDriver(const Ns16550aDriver&) = delete;
-  Ns16550aDriver(Ns16550aDriver&&) = default;
-  auto operator=(const Ns16550aDriver&) -> Ns16550aDriver& = delete;
-  auto operator=(Ns16550aDriver&&) -> Ns16550aDriver& = default;
-  ~Ns16550aDriver() = default;
-  /// @}
 
   /**
    * @brief 初始化 NS16550A UART。
@@ -68,7 +62,7 @@ class Ns16550aDriver {
    * @pre  node.mmio_base != 0
    * @post uart_ 有效；node.type == DeviceType::kChar
    */
-  auto Probe(DeviceNode& node) -> Expected<void> {
+  [[nodiscard]] auto Probe(DeviceNode& node) -> Expected<void> {
     auto ctx = mmio_helper::Prepare(node, 0x100);
     if (!ctx) {
       return std::unexpected(ctx.error());
@@ -85,11 +79,31 @@ class Ns16550aDriver {
     return {};
   }
 
-  auto Remove([[maybe_unused]] DeviceNode& node) -> Expected<void> {
+  /**
+   * @brief 卸载驱动
+   * @param  node 设备节点
+   * @return Expected<void> 成功返回空值
+   */
+  [[nodiscard]] auto Remove([[maybe_unused]] DeviceNode& node)
+      -> Expected<void> {
     return {};
   }
 
+  /**
+   * @brief 获取 NS16550A 设备实例
+   * @return 设备实例指针
+   */
   [[nodiscard]] auto GetDevice() -> Ns16550aType* { return &uart_; }
+
+  /// @name 构造/析构函数
+  /// @{
+  Ns16550aDriver() = default;
+  Ns16550aDriver(const Ns16550aDriver&) = delete;
+  Ns16550aDriver(Ns16550aDriver&&) = default;
+  auto operator=(const Ns16550aDriver&) -> Ns16550aDriver& = delete;
+  auto operator=(Ns16550aDriver&&) -> Ns16550aDriver& = default;
+  ~Ns16550aDriver() = default;
+  /// @}
 
  private:
   static constexpr MatchEntry kMatchTable[] = {
@@ -97,7 +111,7 @@ class Ns16550aDriver {
       {BusType::kPlatform, "ns16550"},
   };
 
-  Ns16550aType uart_;
+  Ns16550aType uart_{};
 };
 
 using Ns16550aDriverSingleton = etl::singleton<Ns16550aDriver>;
