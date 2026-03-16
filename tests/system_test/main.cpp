@@ -50,18 +50,18 @@ void run_tests_main() {
   int failed = 0;
 
   for (const auto& test : test_cases) {
-    klog::Info("----%s----", test.name);
+    klog::Info("----{}----", test.name);
     if (test.func()) {
       passed++;
-      klog::Info("----%s PASS----", test.name);
+      klog::Info("----{} PASS----", test.name);
     } else {
       failed++;
-      klog::Err("----%s FAIL----", test.name);
+      klog::Err("----{} FAIL----", test.name);
     }
   }
 
   klog::Info("========================================");
-  klog::Info("Result: %d passed, %d failed, %d total", passed, failed,
+  klog::Info("Result: {} passed, {} failed, {} total", passed, failed,
              passed + failed);
   klog::Info("========================================");
 

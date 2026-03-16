@@ -54,26 +54,26 @@ void test_thread_group_basic(void* /*arg*/) {
   g_thread_counter = 0;
   g_thread_completed = 0;
 
-  // 创建主线程
-  auto* leader =
-      new TaskControlBlock("ThreadGroupLeader", 10, nullptr, nullptr);
-  leader->pid = 1000;
-  leader->aux->tgid = 1000;
+  auto leader_holder = kstd::make_unique<TaskControlBlock>(
+      "ThreadGroupLeader", 10, nullptr, nullptr);
+  auto* leader = leader_holder.get();
+  leader->pid = 90000;
+  leader->aux->tgid = 90000;
 
   // 创建并加入线程组的线程
   auto thread1 = kstd::make_unique<TaskControlBlock>(
       "Thread1", 10, thread_increment, reinterpret_cast<void*>(1));
-  thread1->pid = 1001;
+  thread1->pid = 90001;
   thread1->JoinThreadGroup(leader);
 
   auto thread2 = kstd::make_unique<TaskControlBlock>(
       "Thread2", 10, thread_increment, reinterpret_cast<void*>(2));
-  thread2->pid = 1002;
+  thread2->pid = 90002;
   thread2->JoinThreadGroup(leader);
 
   auto thread3 = kstd::make_unique<TaskControlBlock>(
       "Thread3", 10, thread_increment, reinterpret_cast<void*>(3));
-  thread3->pid = 1003;
+  thread3->pid = 90003;
   thread3->JoinThreadGroup(leader);
 
   // 验证线程组大小
@@ -104,9 +104,6 @@ void test_thread_group_basic(void* /*arg*/) {
              g_thread_completed.load());
   klog::Info("Final counter value: {} (expected 30)", g_thread_counter.load());
 
-  // 清理
-  delete leader;
-
   bool passed = (g_thread_completed == 3 && g_thread_counter >= 30);
   if (passed) {
     klog::Info("Thread Group Basic Test: PASS");
@@ -125,18 +122,21 @@ void test_thread_group_basic(void* /*arg*/) {
 void test_thread_group_dynamic(void* /*arg*/) {
   klog::Info("=== Thread Group Dynamic Test ===");
 
-  // 创建主线程
-  auto* leader = new TaskControlBlock("DynamicLeader", 10, nullptr, nullptr);
-  leader->pid = 2000;
-  leader->aux->tgid = 2000;
+  auto leader_holder = kstd::make_unique<TaskControlBlock>("DynamicLeader", 10,
+                                                           nullptr, nullptr);
+  auto* leader = leader_holder.get();
+  leader->pid = 91000;
+  leader->aux->tgid = 91000;
 
-  // 创建线程池
   constexpr int kThreadCount = 5;
+  etl::unique_ptr<TaskControlBlock> thread_holders[kThreadCount];
   TaskControlBlock* threads[kThreadCount];
 
   for (int i = 0; i < kThreadCount; ++i) {
-    threads[i] = new TaskControlBlock("DynamicThread", 10, nullptr, nullptr);
-    threads[i]->pid = 2001 + i;
+    thread_holders[i] = kstd::make_unique<TaskControlBlock>("DynamicThread", 10,
+                                                            nullptr, nullptr);
+    threads[i] = thread_holders[i].get();
+    threads[i]->pid = 91001 + i;
   }
 
   // 动态加入
@@ -151,7 +151,6 @@ void test_thread_group_dynamic(void* /*arg*/) {
   klog::Info("Final group size: {} (expected {})", final_size,
              kThreadCount + 1);
 
-  // 动态离开
   klog::Info("Leaving threads...");
   for (int i = 0; i < kThreadCount; ++i) {
     threads[i]->LeaveThreadGroup();
@@ -161,12 +160,6 @@ void test_thread_group_dynamic(void* /*arg*/) {
 
   size_t remaining_size = leader->GetThreadGroupSize();
   klog::Info("Remaining group size: {} (expected 1)", remaining_size);
-
-  // 清理
-  for (int i = 0; i < kThreadCount; ++i) {
-    delete threads[i];
-  }
-  delete leader;
 
   bool passed = (final_size == static_cast<size_t>(kThreadCount + 1) &&
                  remaining_size == 1);
@@ -203,10 +196,11 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
 
   g_thread_completed = 0;
 
-  // 创建主线程
-  auto* leader = new TaskControlBlock("ConcurrentLeader", 10, nullptr, nullptr);
-  leader->pid = 3000;
-  leader->aux->tgid = 3000;
+  auto leader_holder = kstd::make_unique<TaskControlBlock>(
+      "ConcurrentLeader", 10, nullptr, nullptr);
+  auto* leader = leader_holder.get();
+  leader->pid = 92000;
+  leader->aux->tgid = 92000;
 
   // 创建多个工作线程
   constexpr int kWorkerCount = 4;
@@ -214,7 +208,7 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
     auto worker = kstd::make_unique<TaskControlBlock>(
         "ConcurrentWorker", 10, concurrent_exit_worker,
         reinterpret_cast<void*>(i));
-    worker->pid = 3001 + i;
+    worker->pid = 92001 + i;
     worker->JoinThreadGroup(leader);
     TaskManagerSingleton::instance().AddTask(std::move(worker));
   }
@@ -228,8 +222,6 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
 
   klog::Info("Completed threads: {} (expected {})", g_thread_completed.load(),
              kWorkerCount);
-
-  delete leader;
 
   bool passed = (g_thread_completed == kWorkerCount);
   if (passed) {

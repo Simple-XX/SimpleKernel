@@ -105,9 +105,13 @@ auto test_fifo_dequeue() -> bool {
   FifoScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   TaskControlBlock task2("Task2", 2, nullptr, nullptr);
+  task2.fsm.Receive(MsgSchedule{});
   TaskControlBlock task3("Task3", 3, nullptr, nullptr);
+  task3.fsm.Receive(MsgSchedule{});
   TaskControlBlock task4("Task4", 4, nullptr, nullptr);
+  task4.fsm.Receive(MsgSchedule{});
 
   scheduler.Enqueue(&task1);
   scheduler.Enqueue(&task2);
@@ -196,10 +200,15 @@ auto test_fifo_mixed_operations() -> bool {
   FifoScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   TaskControlBlock task2("Task2", 2, nullptr, nullptr);
+  task2.fsm.Receive(MsgSchedule{});
   TaskControlBlock task3("Task3", 3, nullptr, nullptr);
+  task3.fsm.Receive(MsgSchedule{});
   TaskControlBlock task4("Task4", 4, nullptr, nullptr);
+  task4.fsm.Receive(MsgSchedule{});
   TaskControlBlock task5("Task5", 5, nullptr, nullptr);
+  task5.fsm.Receive(MsgSchedule{});
 
   // 复杂的混合操作序列
   scheduler.Enqueue(&task1);
@@ -237,6 +246,7 @@ auto test_fifo_repeated_enqueue() -> bool {
   FifoScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
 
   // 模拟任务多次时间片用完后重新入队
   scheduler.Enqueue(&task1);
@@ -263,6 +273,7 @@ auto test_fifo_hooks() -> bool {
   FifoScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   task1.sched_info.priority = 5;
 
   // 测试各种钩子函数不会崩溃
@@ -295,6 +306,7 @@ auto test_fifo_robustness() -> bool {
   FifoScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
 
   // 空队列操作
   EXPECT_EQ(scheduler.PickNext(), nullptr,

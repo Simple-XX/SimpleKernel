@@ -75,6 +75,7 @@ auto kernel_task_test() -> bool {
     timeout--;
   }
 
+  EXPECT_GT(timeout, 0, "Tasks should complete before timeout");
   EXPECT_EQ(g_task_a_counter, 5, "Task A count");
   EXPECT_EQ(g_task_b_counter, 5, "Task B count");
 

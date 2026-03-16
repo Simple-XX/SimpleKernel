@@ -18,8 +18,8 @@
 #include "task_control_block.hpp"
 #include "task_manager.hpp"
 
+/// @todo Implement user task tests when ELF loading path is testable
 auto user_task_test() -> bool {
-  klog::Info("user_task_test: start");
-
+  klog::Info("user_task_test: SKIPPED (not yet implemented)");
   return true;
 }

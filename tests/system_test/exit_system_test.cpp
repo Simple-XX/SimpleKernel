@@ -104,6 +104,7 @@ void test_exit_normal(void* /*arg*/) {
     g_tests_failed++;
   }
 
+  delete task;
   g_tests_completed++;
   sys_exit(passed ? 0 : 1);
 }
@@ -182,6 +183,7 @@ void test_exit_with_error(void* /*arg*/) {
     g_tests_failed++;
   }
 
+  delete task;
   g_tests_completed++;
   sys_exit(passed ? 0 : 1);
 }
@@ -337,6 +339,7 @@ void test_orphan_exit(void* /*arg*/) {
     g_tests_failed++;
   }
 
+  delete orphan;
   g_tests_completed++;
   sys_exit(passed ? 0 : 1);
 }
@@ -372,36 +375,33 @@ void test_zombie_process(void* /*arg*/) {
 
   TaskManagerSingleton::instance().AddTask(std::move(parent_uptr));
 
-  auto child_uptr =
-      kstd::make_unique<TaskControlBlock>("Child", 10, nullptr, nullptr);
-  child_uptr->pid = 5301;
-  child_uptr->aux->tgid = 5301;
-  child_uptr->aux->parent_pid = parent->pid;
-  auto* child = child_uptr.get();
+  auto* local_child =
+      new TaskControlBlock("ZombieFsmTest", 10, nullptr, nullptr);
+  local_child->pid = 5301;
+  local_child->aux->tgid = 5301;
+  local_child->aux->parent_pid = parent->pid;
 
-  if (child->aux->parent_pid != parent->pid) {
+  if (local_child->aux->parent_pid != parent->pid) {
     klog::Err(
         "test_zombie_process: FAIL — child parent_pid mismatch "
         "(expected {}, got {})",
-        parent->pid, child->aux->parent_pid);
+        parent->pid, local_child->aux->parent_pid);
     passed = false;
   }
 
-  TaskManagerSingleton::instance().AddTask(std::move(child_uptr));
-
-  // 2. 子进程退出时，因父进程仍存在，应变为 kZombie（等待父进程 wait）
-  child->aux->exit_code = 0;
-  child->fsm.Receive(MsgSchedule{});     // kUnInit -> kReady
-  child->fsm.Receive(MsgSchedule{});     // kReady -> kRunning
-  child->fsm.Receive(MsgExit{0, true});  // kRunning -> kZombie (has parent)
-  if (child->GetStatus() != TaskStatus::kZombie) {
+  local_child->aux->exit_code = 0;
+  local_child->fsm.Receive(MsgSchedule{});  // kUnInit -> kReady
+  local_child->fsm.Receive(MsgSchedule{});  // kReady -> kRunning
+  local_child->fsm.Receive(
+      MsgExit{0, true});  // kRunning -> kZombie (has parent)
+  if (local_child->GetStatus() != TaskStatus::kZombie) {
     klog::Err(
         "test_zombie_process: FAIL — child with living parent should be "
         "kZombie (got {})",
-        static_cast<int>(child->GetStatus()));
+        static_cast<int>(local_child->GetStatus()));
     passed = false;
   }
-  if (child->aux->parent_pid != parent->pid) {
+  if (local_child->aux->parent_pid != parent->pid) {
     klog::Err(
         "test_zombie_process: FAIL — child parent_pid changed after "
         "status update");
@@ -409,7 +409,9 @@ void test_zombie_process(void* /*arg*/) {
   }
 
   klog::Info("Child process (pid={}) became zombie, waiting for parent to reap",
-             child->pid);
+             local_child->pid);
+
+  delete local_child;
 
   // 3. 用真实工作函数验证有父进程的子任务能正常执行
   std::atomic<int> work_flag{0};

@@ -170,11 +170,12 @@ auto test_cfs_weight_impact() -> bool {
             low_priority.sched_data.cfs.vruntime,
             "High priority task should have lower vruntime growth");
 
-  // 低优先级的 vruntime 应该约为高优先级的 2 倍
-  uint64_t ratio = low_priority.sched_data.cfs.vruntime /
-                   high_priority.sched_data.cfs.vruntime;
-  EXPECT_EQ(ratio, 2,
-            "vruntime ratio should match weight ratio (approximately 2)");
+  uint64_t expected = high_priority.sched_data.cfs.vruntime * 2;
+  uint64_t tolerance = expected / 10;
+  EXPECT_GE(low_priority.sched_data.cfs.vruntime, expected - tolerance,
+            "vruntime ratio lower bound (should be ~2x)");
+  EXPECT_LE(low_priority.sched_data.cfs.vruntime, expected + tolerance,
+            "vruntime ratio upper bound (should be ~2x)");
 
   klog::Info("test_cfs_weight_impact passed");
   return true;

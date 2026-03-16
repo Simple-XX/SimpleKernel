@@ -22,7 +22,6 @@
 
 namespace {
 
-std::atomic<int> g_child_exit_code{0};
 std::atomic<int> g_wait_completed{0};
 
 std::atomic<int> g_tests_completed{0};
@@ -43,7 +42,6 @@ void child_work(void* arg) {
   }
 
   klog::Info("Child {}: exiting with code {}", child_id, exit_code);
-  g_child_exit_code = exit_code;
   sys_exit(exit_code);
 }
 

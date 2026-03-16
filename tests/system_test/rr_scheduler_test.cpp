@@ -67,8 +67,11 @@ auto test_rr_round_robin_behavior() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   TaskControlBlock task2("Task2", 2, nullptr, nullptr);
+  task2.fsm.Receive(MsgSchedule{});
   TaskControlBlock task3("Task3", 3, nullptr, nullptr);
+  task3.fsm.Receive(MsgSchedule{});
 
   // 第一轮
   scheduler.Enqueue(&task1);
@@ -100,6 +103,7 @@ auto test_rr_time_slice_management() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   task1.sched_info.time_slice_default = 20;
   task1.sched_info.time_slice_remaining = 5;  // 时间片快用完了
 
@@ -129,9 +133,13 @@ auto test_rr_dequeue() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   TaskControlBlock task2("Task2", 2, nullptr, nullptr);
+  task2.fsm.Receive(MsgSchedule{});
   TaskControlBlock task3("Task3", 3, nullptr, nullptr);
+  task3.fsm.Receive(MsgSchedule{});
   TaskControlBlock task4("Task4", 4, nullptr, nullptr);
+  task4.fsm.Receive(MsgSchedule{});
 
   scheduler.Enqueue(&task1);
   scheduler.Enqueue(&task2);
@@ -255,10 +263,15 @@ auto test_rr_mixed_operations() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   TaskControlBlock task2("Task2", 2, nullptr, nullptr);
+  task2.fsm.Receive(MsgSchedule{});
   TaskControlBlock task3("Task3", 3, nullptr, nullptr);
+  task3.fsm.Receive(MsgSchedule{});
   TaskControlBlock task4("Task4", 4, nullptr, nullptr);
+  task4.fsm.Receive(MsgSchedule{});
   TaskControlBlock task5("Task5", 5, nullptr, nullptr);
+  task5.fsm.Receive(MsgSchedule{});
 
   // 复杂的混合操作序列
   scheduler.Enqueue(&task1);
@@ -296,8 +309,11 @@ auto test_rr_multiple_rounds() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   TaskControlBlock task2("Task2", 2, nullptr, nullptr);
+  task2.fsm.Receive(MsgSchedule{});
   TaskControlBlock task3("Task3", 3, nullptr, nullptr);
+  task3.fsm.Receive(MsgSchedule{});
 
   // 进行 5 轮时间片轮转
   for (int round = 0; round < 5; ++round) {
@@ -321,6 +337,7 @@ auto test_rr_hooks() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   task1.sched_info.priority = 5;
 
   // 测试各种钩子函数不会崩溃
@@ -352,6 +369,7 @@ auto test_rr_robustness() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
 
   // 空队列操作
   EXPECT_EQ(scheduler.PickNext(), nullptr,
@@ -379,8 +397,11 @@ auto test_rr_interleaved_operations() -> bool {
   RoundRobinScheduler scheduler;
 
   TaskControlBlock task1("Task1", 1, nullptr, nullptr);
+  task1.fsm.Receive(MsgSchedule{});
   TaskControlBlock task2("Task2", 2, nullptr, nullptr);
+  task2.fsm.Receive(MsgSchedule{});
   TaskControlBlock task3("Task3", 3, nullptr, nullptr);
+  task3.fsm.Receive(MsgSchedule{});
 
   // 交替的入队和出队操作
   scheduler.Enqueue(&task1);

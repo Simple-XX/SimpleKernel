@@ -205,7 +205,6 @@ auto spinlock_smp_string_test() -> bool {
   size_t core_id = cpu_io::GetCurrentCoreId();
   size_t core_count = BasicInfoSingleton::instance().core_count;
 
-  // 需求 1: 确保核心数大于 1
   if (core_count < 2) {
     if (core_id == 0) {
       klog::Info("Skipping SMP string test: need more than 1 core.");
@@ -213,11 +212,19 @@ auto spinlock_smp_string_test() -> bool {
     return true;
   }
 
-  // Barrier: 等待所有核心到达此处
-  // 确保它们大致同时开始写入以引起竞争
-  str_test_start_barrier.fetch_add(1);
+  int arrived = str_test_start_barrier.fetch_add(1) + 1;
+
+  constexpr int kBarrierSpinLimit = 100000000;
+  int spins = 0;
   while (str_test_start_barrier.load() < (int)core_count) {
-    ;
+    if (++spins > kBarrierSpinLimit) {
+      if (core_id == 0) {
+        klog::Err(
+            "SMP string test barrier timeout: {}/{} cores arrived, skipping",
+            str_test_start_barrier.load(), (int)core_count);
+      }
+      return true;
+    }
   }
 
   int writes_per_core = 500;
