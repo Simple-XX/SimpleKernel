@@ -1,7 +1,7 @@
 # AGENTS.md — src/arch/
 
 ## OVERVIEW
-Per-architecture implementations of `arch.h` unified interface. Each arch has identical file structure: boot.S, arch_main.cpp, interrupt.cpp, timer.cpp, switch.S, syscall.cpp, backtrace.cpp, link.ld.
+Per-architecture implementations of `arch.h` unified interface. Each arch has identical file structure: boot.S, arch_main.cpp, early_console.cpp, interrupt.S, interrupt_main.cpp, interrupt.cpp, timer.cpp, switch.S, syscall.cpp, backtrace.cpp, macro.S, link.ld.
 
 ## STRUCTURE
 ```

@@ -32,10 +32,6 @@ include/
   driver_registry.hpp   # DriverRegistry + mmio_helper::Prepare (MMIO setup helper)
   device_node.hpp       # DeviceNode, BusType, DeviceType + Bus concept
   platform_bus.hpp      # PlatformBus — FDT-driven device enumeration
-  acpi_bus.hpp          # ACPI bus (x86_64 path, placeholder)
-  pci_bus.hpp           # PCI bus (placeholder)
-  platform_traits.hpp   # Compile-time platform feature detection
-  block_device_provider.hpp  # DELETED — use DeviceNode::block_device via DeviceManager::FindDevicesByType
 ```
 
 ## WHERE TO LOOK

@@ -1,7 +1,7 @@
 # AGENTS.md — src/filesystem/
 
 ## OVERVIEW
-Three-layer filesystem: VFS abstraction (Inode/Dentry/File/Superblock), RamFS (in-memory, static pool allocation), FatFS (3rd-party FAT wrapper over VirtIO block device). FileDescriptor table per-task.
+Three-layer filesystem: VFS abstraction (types in vfs_types.hpp, filesystem ops in filesystem.hpp), RamFS (in-memory, static pool allocation), FatFS (3rd-party FAT wrapper over VirtIO block device). FileDescriptor table per-task.
 
 ## STRUCTURE
 ```
@@ -11,12 +11,11 @@ filesystem.cpp            # FileSystemInit() — mounts root RamFS, registers Fa
 file_descriptor.cpp       # FD operations implementation
 vfs/
   include/
-    dentry.hpp            # Dentry — directory entry cache, name→inode mapping
-    file.hpp              # File — open file state, position, ops
-    inode.hpp             # Inode — filesystem object metadata + operations table
+    block_device.hpp      # Block device abstraction for filesystem I/O
+    filesystem.hpp        # Filesystem type registration and superblock operations
     mount.hpp             # Mount point management
-    superblock.hpp        # Superblock — per-filesystem instance state
     vfs.hpp               # VFS public API — open, read, write, close, mkdir, etc.
+    vfs_types.hpp         # Core VFS types: Inode, Dentry, File, Superblock, ops tables
   vfs_internal.hpp        # VFS internal helpers (not exported)
   vfs.cpp                 # VFS core — Dentry cache, superblock management
   open.cpp close.cpp read.cpp write.cpp  # Per-syscall VFS operations
@@ -24,22 +23,23 @@ vfs/
 ramfs/
   include/
     ramfs.hpp             # RamFS — register_filesystem, Inode/Dentry ops
-  ramfs.cpp               # RamFS implementation — static pool, 605 lines
+  ramfs.cpp               # RamFS implementation — static pool
 fatfs/
   include/
     fatfs.hpp             # FatFS kernel wrapper
+    ffconf.h              # FatFS configuration (3rd-party)
   fatfs.cpp               # FatFS → VFS bridge
   diskio.cpp              # FatFS disk I/O — routes to VirtIO block device
 ```
 
 ## WHERE TO LOOK
-- **Adding a filesystem** → Implement Superblock/Inode/Dentry/File ops, register via `register_filesystem()`
+- **Adding a filesystem** → Implement ops from `vfs_types.hpp`, register via `filesystem.hpp`
 - **VFS operations** → One .cpp per syscall in `vfs/` (open.cpp, read.cpp, etc.)
-- **Block device I/O** → `fatfs/diskio.cpp` → `block_device_provider.hpp` in device/
+- **Block device I/O** → `fatfs/diskio.cpp` → `vfs/include/block_device.hpp`
 - **Mount flow** → `filesystem.cpp` → mounts "/" as RamFS at boot
 
 ## CONVENTIONS
-- VFS follows Linux-style layering: Superblock → Inode → Dentry → File
+- VFS follows Linux-style layering: Superblock → Inode → Dentry → File (all types in `vfs_types.hpp`)
 - One .cpp per VFS operation (same pattern as task/ syscalls)
 - RamFS uses static pool allocation (no heap) — fixed-size inode/dentry arrays
 - FatFS wraps 3rd-party `ff.h` library — `diskio.cpp` is the HAL adaptation layer

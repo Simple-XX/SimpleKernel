@@ -31,6 +31,7 @@ cmake/                # Toolchain files, build helpers
 |-----------|---------|----------------|
 | `src/arch/arch.h` | Arch-agnostic entry points | `src/arch/{arch}/*.cpp` |
 | `src/include/interrupt_base.h` | Interrupt subsystem ABC | `src/arch/{arch}/interrupt.cpp` |
+| `src/include/kernel.h` | Singleton aliases, global includes | header-only (defines `TaskManagerSingleton`, `DeviceManagerSingleton`, etc.) |
 | `src/memory/include/virtual_memory.hpp` | Virtual memory mgmt | `src/memory/virtual_memory.cpp` |
 | `src/include/expected.hpp` | `Expected<T>`, `Error`, `ErrorCode` | header-only |
 | `src/include/kernel_fdt.hpp` | Device tree parser | header-only (utility) |

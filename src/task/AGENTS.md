@@ -12,7 +12,10 @@ include/
   rr_scheduler.hpp         # Round-Robin — time-slice based preemption
   idle_scheduler.hpp       # Idle — runs when no other tasks ready
   task_control_block.hpp   # TCB — task state, context, priority, stack
+  task_fsm.hpp             # Task state machine — valid state transitions
   task_manager.hpp         # TaskManagerSingleton (etl::singleton<TaskManager>) — owns schedulers, dispatches
+  task_messages.hpp        # Task-related message types for inter-task communication
+  lifecycle_messages.hpp   # Task lifecycle event message definitions
   resource_id.hpp          # Typed resource IDs (TaskId, etc.)
 schedule.cpp               # Schedule() — main scheduling loop, context switch trigger
 task_control_block.cpp     # TCB construction, state transitions
