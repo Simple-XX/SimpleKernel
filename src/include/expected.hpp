@@ -27,6 +27,11 @@ enum class ErrorCode : uint64_t {
   // SpinLock 相关错误 (0x300 - 0x3FF)
   kSpinLockRecursiveLock = 0x300,
   kSpinLockNotOwned = 0x301,
+  // Mutex 相关错误 (0x380 - 0x3FF)
+  kMutexNoTaskContext = 0x380,
+  kMutexRecursiveLock = 0x381,
+  kMutexNotOwned = 0x382,
+  kMutexNotLocked = 0x383,
   // VirtualMemory 相关错误 (0x400 - 0x4FF)
   kVmAllocationFailed = 0x400,
   kVmMapFailed = 0x401,
@@ -122,7 +127,6 @@ enum class ErrorCode : uint64_t {
   kBlkReadFailed = 0xB01,
   kBlkWriteFailed = 0xB02,
   kBlkSectorOutOfRange = 0xB03,
-  // IrqChip 相关错误 (0xC00 - 0xCFF)
   // IrqChip 相关错误 (0x900 - 0x9FF)
   kIrqChipInvalidIrq = 0x900,
   kIrqChipIrqNotEnabled = 0x901,
@@ -166,6 +170,14 @@ constexpr auto GetErrorMessage(ErrorCode code) -> const char* {
       return "Recursive spinlock detected";
     case ErrorCode::kSpinLockNotOwned:
       return "Spinlock not owned by current core";
+    case ErrorCode::kMutexNoTaskContext:
+      return "Mutex operation outside task context";
+    case ErrorCode::kMutexRecursiveLock:
+      return "Recursive mutex lock detected";
+    case ErrorCode::kMutexNotOwned:
+      return "Mutex not owned by current task";
+    case ErrorCode::kMutexNotLocked:
+      return "Mutex not locked";
     case ErrorCode::kVmAllocationFailed:
       return "Virtual memory allocation failed";
     case ErrorCode::kVmMapFailed:

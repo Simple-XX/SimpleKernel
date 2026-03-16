@@ -20,6 +20,10 @@ auto Open(const char* path, OpenFlags flags) -> Expected<File*> {
     return std::unexpected(Error(ErrorCode::kInvalidArgument));
   }
 
+  if (strlen(path) >= kMaxPathLength) {
+    return std::unexpected(Error(ErrorCode::kFsInvalidPath));
+  }
+
   LockGuard<SpinLock> guard(GetVfsState().vfs_lock_);
   // 查找或创建 dentry
   auto lookup_result = Lookup(path);
@@ -109,6 +113,7 @@ auto Open(const char* path, OpenFlags flags) -> Expected<File*> {
   file->dentry = dentry;
   file->offset = 0;
   file->flags = flags;
+  dentry->ref_count++;
 
   // 从文件系统获取 FileOps
   if (file->inode != nullptr && file->inode->fs != nullptr) {

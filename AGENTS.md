@@ -52,7 +52,7 @@ cmake/                # Toolchain files, build helpers
 ## CONVENTIONS
 - **Style**: Google C++ via `.clang-format`, enforced by pre-commit
 - **Naming**: files=`snake_case`, classes=`PascalCase`, vars=`snake_case`, members=`snake_case_` (trailing _), constants=`kCamelCase`, macros=`SCREAMING_SNAKE`
-- **Headers**: `#ifndef SIMPLEKERNEL_SRC_INCLUDE_FILENAME_HPP_` guard format
+- **Headers**: `#pragma once` guard (all headers use this consistently)
 - **Copyright**: `/** @copyright Copyright The SimpleKernel Contributors */`
 - **Includes**: system → third-party → project. Use `kstd_cstdio`/`kstd_vector`, never std dynamic alloc
 - **Returns**: trailing return type `auto Func() -> RetType`

@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <limits>
 
+#include "expected.hpp"
 #include "resource_id.hpp"
 #include "task_control_block.hpp"
 
@@ -35,12 +36,11 @@ class Mutex {
    * @brief 获取锁（阻塞）
    *
    * 如果锁已被其他线程持有，当前线程将被阻塞直到锁可用。
-   * 如果当前线程已持有锁，返回 false（不支持递归）。
+   * 如果当前线程已持有锁，返回错误（不支持递归）。
    *
-   * @return true  成功获取锁
-   * @return false 失败（如递归获取）
+   * @return Expected<void> 成功返回空值，失败返回错误
    */
-  [[nodiscard]] auto Lock() -> bool;
+  [[nodiscard]] auto Lock() -> Expected<void>;
 
   /**
    * @brief 释放锁
@@ -48,20 +48,18 @@ class Mutex {
    * 释放锁并唤醒一个等待线程（如果有）。
    * 只能由持有锁的线程调用。
    *
-   * @return true  成功释放锁
-   * @return false 失败（如当前线程未持有锁）
+   * @return Expected<void> 成功返回空值，失败返回错误
    */
-  [[nodiscard]] auto UnLock() -> bool;
+  [[nodiscard]] auto UnLock() -> Expected<void>;
 
   /**
    * @brief 尝试获取锁（非阻塞）
    *
    * 尝试获取锁，如果锁不可用则立即返回。
    *
-   * @return true  成功获取锁
-   * @return false 锁不可用或递归获取
+   * @return Expected<void> 成功返回空值，失败返回错误
    */
-  [[nodiscard]] auto TryLock() -> bool;
+  [[nodiscard]] auto TryLock() -> Expected<void>;
 
   /**
    * @brief 检查锁是否被当前线程持有

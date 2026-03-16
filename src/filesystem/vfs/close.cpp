@@ -25,6 +25,10 @@ auto Close(File* file) -> Expected<void> {
     }
   }
 
+  if (file->dentry != nullptr && file->dentry->ref_count > 0) {
+    file->dentry->ref_count--;
+  }
+
   etl::unique_ptr<File> file_guard(file);
   return {};
 }

@@ -4,8 +4,7 @@
 
 #pragma once
 
-#include <etl/priority_queue.h>
-#include <etl/vector.h>
+#include <etl/multiset.h>
 
 #include <cassert>
 #include <cstdint>
@@ -36,20 +35,17 @@ class CfsScheduler : public SchedulerBase {
   static constexpr uint64_t kMinGranularity = 10;  // 10 ticks
 
   /**
-   * @brief vruntime 比较器 (用于优先队列)
+   * @brief vruntime 比较器 (用于 multiset 红黑树)
    *
-   * 按 vruntime 从小到大排序，确保最小 vruntime 的任务在队列顶部。
+   * 按 vruntime 升序排序，确保 begin() 返回 vruntime 最小的任务。
    */
   struct VruntimeCompare {
-    /**
-     * @brief 比较两个任务的 vruntime
-     * @param a 第一个任务控制块指针
-     * @param b 第二个任务控制块指针
-     * @return bool 如果 a 的 vruntime 大于 b 返回 true
-     */
     auto operator()(const TaskControlBlock* a, const TaskControlBlock* b) const
         -> bool {
-      return a->sched_data.cfs.vruntime > b->sched_data.cfs.vruntime;
+      if (a->sched_data.cfs.vruntime != b->sched_data.cfs.vruntime) {
+        return a->sched_data.cfs.vruntime < b->sched_data.cfs.vruntime;
+      }
+      return a < b;
     }
   };
 
@@ -74,51 +70,26 @@ class CfsScheduler : public SchedulerBase {
       task->sched_data.cfs.weight = kDefaultWeight;
     }
 
-    if (ready_queue_.full()) {
+    if (ready_queue_.size() >= ready_queue_.max_size()) {
       klog::Err("CfsScheduler::Enqueue: ready_queue_ full, dropping task");
       return;
     }
-    ready_queue_.push(task);
+    ready_queue_.insert(task);
     stats_.total_enqueues++;
   }
 
   /**
    * @brief 从就绪队列中移除指定任务
    * @param task 要移除的任务控制块指针
-   *
-   * 注意：优先队列不支持高效的任意元素删除，这里需要重建队列。
-   * 实际实现中建议使用红黑树替代优先队列以支持 O(log n) 删除。
    */
   auto Dequeue(TaskControlBlock* task) -> void override {
     if (!task) {
       return;
     }
 
-    // 临时向量用于重建队列
-    etl::vector<TaskControlBlock*, kernel::config::kMaxReadyTasks> temp;
-    bool found = false;
-
-    // 将所有元素弹出，除了要删除的任务
-    while (!ready_queue_.empty()) {
-      auto* t = ready_queue_.top();
-      ready_queue_.pop();
-      if (t == task) {
-        found = true;
-      } else {
-        if (!temp.full()) {
-          temp.push_back(t);
-        }
-      }
-    }
-
-    // 重建队列
-    for (auto* t : temp) {
-      if (!ready_queue_.full()) {
-        ready_queue_.push(t);
-      }
-    }
-
-    if (found) {
+    auto it = ready_queue_.find(task);
+    if (it != ready_queue_.end()) {
+      ready_queue_.erase(it);
       stats_.total_dequeues++;
     }
   }
@@ -134,13 +105,13 @@ class CfsScheduler : public SchedulerBase {
       return nullptr;
     }
 
-    auto* next = ready_queue_.top();
-    ready_queue_.pop();
+    auto it = ready_queue_.begin();
+    auto* next = *it;
+    ready_queue_.erase(it);
     stats_.total_picks++;
 
-    // 更新 min_vruntime 为队列中最小的 vruntime
     if (!ready_queue_.empty()) {
-      min_vruntime_ = ready_queue_.top()->sched_data.cfs.vruntime;
+      min_vruntime_ = (*ready_queue_.begin())->sched_data.cfs.vruntime;
     } else {
       min_vruntime_ = next->sched_data.cfs.vruntime;
     }
@@ -184,7 +155,7 @@ class CfsScheduler : public SchedulerBase {
 
     // 检查是否需要抢占：队列中有 vruntime 更小的任务
     if (!ready_queue_.empty()) {
-      auto* next = ready_queue_.top();
+      auto* next = *ready_queue_.begin();
       // 如果队列顶部任务的 vruntime 比当前任务小超过阈值，则需要抢占
       if (next->sched_data.cfs.vruntime + kMinGranularity <
           current->sched_data.cfs.vruntime) {
@@ -228,11 +199,9 @@ class CfsScheduler : public SchedulerBase {
   /// @}
 
  private:
-  /// 就绪队列 (优先队列，按 vruntime 排序)
-  etl::priority_queue<
-      TaskControlBlock*, kernel::config::kMaxReadyTasks,
-      etl::vector<TaskControlBlock*, kernel::config::kMaxReadyTasks>,
-      VruntimeCompare>
+  /// 就绪队列 (红黑树，按 vruntime 升序排序，begin() = 最小 vruntime)
+  etl::multiset<TaskControlBlock*, kernel::config::kMaxReadyTasks,
+                VruntimeCompare>
       ready_queue_;
 
   /// 当前最小 vruntime (用于新任务初始化)

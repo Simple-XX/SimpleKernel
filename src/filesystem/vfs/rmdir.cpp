@@ -76,7 +76,13 @@ auto RmDir(const char* path) -> Expected<void> {
 
   // 从父目录中移除 dentry
   RemoveChild(parent_dentry, target_dentry);
-  etl::unique_ptr<Dentry> dentry_guard(target_dentry);
+
+  if (target_dentry->ref_count > 0) {
+    target_dentry->deleted = true;
+    target_dentry->inode = nullptr;
+  } else {
+    etl::unique_ptr<Dentry> dentry_guard(target_dentry);
+  }
 
   klog::Debug("VFS: removed directory '{}'", path);
   return {};

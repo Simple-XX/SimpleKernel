@@ -163,6 +163,12 @@ auto TaskManager::AddTask(etl::unique_ptr<TaskControlBlock> task) -> void {
 }
 
 auto TaskManager::AllocatePid() -> size_t {
+  /// @note 当前 PID 分配器为简单的原子自增，存在以下限制：
+  ///   1. 不支持 PID 回收与重用（已退出的任务的 PID 不会被回收）
+  ///   2. 不检测溢出（size_t 耗尽后回绕为 0，可能与现有 PID 冲突）
+  ///   3. 不保证全局唯一性（依赖 size_t 足够大 + 系统生命周期内不会耗尽）
+  /// 对于教学内核而言，size_t 的范围（2^64）在实际使用中不会溢出。
+  /// 生产级实现应使用位图或 ID 分配器（如 Linux 的 IDR/IDA）。
   return pid_allocator_.fetch_add(1);
 }
 

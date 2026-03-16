@@ -10,6 +10,9 @@
 
 namespace vfs {
 
+/// @brief VFS 路径最大长度限制
+static constexpr size_t kMaxPathLength = 4096;
+
 /// @brief VFS 全局状态结构体
 struct VfsState {
   bool initialized = false;

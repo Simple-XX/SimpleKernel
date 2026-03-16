@@ -20,6 +20,7 @@ inline constexpr uint64_t kSyscallGettid = 178;
 inline constexpr uint64_t kSyscallFutex = 98;
 inline constexpr uint64_t kSyscallSetTidAddress = 96;
 inline constexpr uint64_t kSyscallFork = 1220;
+inline constexpr uint64_t kSyscallSleep = 101;
 #elif defined(__x86_64__)
 // x86_64 使用自己的编号
 inline constexpr uint64_t kSyscallWrite = 1;
@@ -30,6 +31,7 @@ inline constexpr uint64_t kSyscallGettid = 186;
 inline constexpr uint64_t kSyscallFutex = 202;
 inline constexpr uint64_t kSyscallSetTidAddress = 218;
 inline constexpr uint64_t kSyscallFork = 57;
+inline constexpr uint64_t kSyscallSleep = 35;
 #else
 #error "Unsupported architecture for syscall numbers"
 #endif

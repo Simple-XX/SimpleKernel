@@ -141,9 +141,28 @@ class LockGuard {
    */
   explicit LockGuard(mutex_type& mutex) : mutex_(mutex) {
     mutex_.Lock().or_else([&](auto&& err) {
+      char core_buf[4] = {};
+      auto core_id = cpu_io::GetCurrentCoreId();
+      size_t pos = 0;
+      if (core_id == 0) {
+        core_buf[pos++] = '0';
+      } else {
+        char tmp[4] = {};
+        size_t tmp_pos = 0;
+        while (core_id > 0 && tmp_pos < sizeof(tmp)) {
+          tmp[tmp_pos++] = static_cast<char>('0' + (core_id % 10));
+          core_id /= 10;
+        }
+        while (tmp_pos > 0) {
+          core_buf[pos++] = tmp[--tmp_pos];
+        }
+      }
+      core_buf[pos] = '\0';
       klog::RawPut("PANIC: LockGuard failed to acquire lock '");
       klog::RawPut(mutex_.name);
-      klog::RawPut("': ");
+      klog::RawPut("' on core ");
+      klog::RawPut(core_buf);
+      klog::RawPut(": ");
       klog::RawPut(err.message());
       klog::RawPut("\n");
       while (true) {
@@ -158,9 +177,28 @@ class LockGuard {
    */
   ~LockGuard() {
     mutex_.UnLock().or_else([&](auto&& err) {
+      char core_buf[4] = {};
+      auto core_id = cpu_io::GetCurrentCoreId();
+      size_t pos = 0;
+      if (core_id == 0) {
+        core_buf[pos++] = '0';
+      } else {
+        char tmp[4] = {};
+        size_t tmp_pos = 0;
+        while (core_id > 0 && tmp_pos < sizeof(tmp)) {
+          tmp[tmp_pos++] = static_cast<char>('0' + (core_id % 10));
+          core_id /= 10;
+        }
+        while (tmp_pos > 0) {
+          core_buf[pos++] = tmp[--tmp_pos];
+        }
+      }
+      core_buf[pos] = '\0';
       klog::RawPut("PANIC: LockGuard failed to release lock '");
       klog::RawPut(mutex_.name);
-      klog::RawPut("': ");
+      klog::RawPut("' on core ");
+      klog::RawPut(core_buf);
+      klog::RawPut(": ");
       klog::RawPut(err.message());
       klog::RawPut("\n");
       while (true) {

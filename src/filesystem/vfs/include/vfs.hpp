@@ -51,6 +51,10 @@ struct Dentry {
   Dentry* next_sibling{nullptr};
   /// 文件系统私有数据
   void* fs_private{nullptr};
+  /// 引用计数（打开的 File 数量）
+  uint32_t ref_count{0};
+  /// 标记为已删除（unlink/rmdir 时 ref_count > 0）
+  bool deleted{false};
 };
 
 /**

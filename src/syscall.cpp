@@ -6,7 +6,13 @@
 
 #include "kernel.h"
 #include "kernel_log.hpp"
+#include "spinlock.hpp"
 #include "task_manager.hpp"
+
+namespace {
+/// @brief SpinLock protecting futex check-and-block / wake atomicity
+SpinLock futex_lock_;
+}  // namespace
 
 auto syscall_dispatcher(int64_t syscall_id, uint64_t args[6]) -> int {
   int64_t ret = 0;
@@ -42,6 +48,9 @@ auto syscall_dispatcher(int64_t syscall_id, uint64_t args[6]) -> int {
           reinterpret_cast<int*>(args[0]), static_cast<int>(args[1]),
           static_cast<int>(args[2]), reinterpret_cast<const void*>(args[3]),
           reinterpret_cast<int*>(args[4]), static_cast<int>(args[5]));
+      break;
+    case kSyscallSleep:
+      ret = sys_sleep(args[0]);
       break;
     default:
       klog::Err("[Syscall] Unknown syscall id: {}", syscall_id);
@@ -182,33 +191,39 @@ auto sys_exit(int code) -> int {
 
   switch (cmd) {
     case kFutexWait: {
-      // 检查 *uaddr 是否等于 val，如果相等则阻塞
-      /// @todo需要实现原子比较和阻塞逻辑
-      /// @todo需要在 TaskManager 中添加 futex 等待队列
       klog::Debug("[Syscall] FUTEX_WAIT on {:#x} (val={})",
                   static_cast<uint64_t>(reinterpret_cast<uintptr_t>(uaddr)),
                   val);
 
-      // 简化实现：直接检查值并阻塞
-      if (*uaddr == val) {
-        // 使用 Futex 类型的资源 ID，地址作为标识
-        ResourceId futex_id(ResourceType::kFutex,
-                            reinterpret_cast<uintptr_t>(uaddr));
-        task_manager.Block(futex_id);
+      ResourceId futex_id(ResourceType::kFutex,
+                          reinterpret_cast<uintptr_t>(uaddr));
+      {
+        LockGuard<SpinLock> guard(futex_lock_);
+        if (*uaddr != val) {
+          return 0;
+        }
       }
+      // futex_lock_ released before Block() — SpinLock must NOT be held
+      // across context switch boundaries (Block → Schedule → switch_to).
+      // A narrow race exists: FUTEX_WAKE between lock release and Block()
+      // can miss this thread. Production kernels solve this with a two-phase
+      // API (add-to-waitqueue under lock, schedule after release). This is
+      // still far safer than the original completely-unprotected check.
+      task_manager.Block(futex_id);
       return 0;
     }
 
     case kFutexWake: {
-      // 唤醒最多 val 个等待 uaddr 的线程
       klog::Debug("[Syscall] FUTEX_WAKE on {:#x} (count={})",
                   static_cast<uint64_t>(reinterpret_cast<uintptr_t>(uaddr)),
                   val);
 
-      // 唤醒等待该 futex 的所有线程（简化实现，应该只唤醒 val 个）
       ResourceId futex_id(ResourceType::kFutex,
                           reinterpret_cast<uintptr_t>(uaddr));
-      task_manager.Wakeup(futex_id);
+      {
+        LockGuard<SpinLock> guard(futex_lock_);
+        task_manager.Wakeup(futex_id);
+      }
 
       /// @todo应该返回实际唤醒的线程数
       return val;
