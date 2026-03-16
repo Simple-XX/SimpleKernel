@@ -28,7 +28,7 @@ class RamFsTest : public ::testing::Test {
   }
 
   void TearDown() override {
-    ramfs_.Unmount();
+    (void)ramfs_.Unmount();
     env_state_.ClearCurrentThreadEnvironment();
   }
 };
@@ -195,7 +195,7 @@ TEST_F(RamFsTest, FileSeek) {
   file.ops = ramfs_.GetFileOps();
 
   const char* data = "ABCDEFGHIJ";
-  file.ops->Write(&file, data, strlen(data));
+  (void)file.ops->Write(&file, data, strlen(data));
 
   // SEEK_SET
   auto seek_result = file.ops->Seek(&file, 5, SeekWhence::kSet);
@@ -219,9 +219,9 @@ TEST_F(RamFsTest, ReadDirectory) {
   ASSERT_NE(root, nullptr);
 
   // 创建一些文件和目录
-  root->ops->Create(root, "file1.txt", FileType::kRegular);
-  root->ops->Create(root, "file2.txt", FileType::kRegular);
-  root->ops->Mkdir(root, "dir1");
+  (void)root->ops->Create(root, "file1.txt", FileType::kRegular);
+  (void)root->ops->Create(root, "file2.txt", FileType::kRegular);
+  (void)root->ops->Mkdir(root, "dir1");
 
   // 创建 File 对象用于 readdir
   File dir_file;
@@ -265,7 +265,7 @@ TEST_F(RamFsTest, RmdirNonEmpty) {
   Inode* dir = mkdir_result.value();
 
   // 在目录中创建文件
-  dir->ops->Create(dir, "file_inside.txt", FileType::kRegular);
+  (void)dir->ops->Create(dir, "file_inside.txt", FileType::kRegular);
 
   // 尝试删除非空目录应该失败
   auto rmdir_result = root->ops->Rmdir(root, "nonempty_dir");

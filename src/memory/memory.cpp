@@ -91,8 +91,13 @@ auto MemoryInit() -> void {
 
   // 重新映射早期控制台地址（如果有的话）
   if (SIMPLEKERNEL_EARLY_CONSOLE_BASE != 0) {
-    VirtualMemorySingleton::instance().MapMMIO(
-        SIMPLEKERNEL_EARLY_CONSOLE_BASE, cpu_io::virtual_memory::kPageSize);
+    VirtualMemorySingleton::instance()
+        .MapMMIO(SIMPLEKERNEL_EARLY_CONSOLE_BASE,
+                 cpu_io::virtual_memory::kPageSize)
+        .or_else([](Error err) -> Expected<void*> {
+          klog::Warn("Failed to remap early console MMIO: {}", err.message());
+          return std::unexpected(err);
+        });
   }
 
   klog::Info("Memory initialization completed");

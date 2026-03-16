@@ -27,8 +27,24 @@ auto DefaultInterruptHandler(uint64_t cause, cpu_io::TrapContext* context)
 Interrupt::Interrupt() {
   auto [dist_base_addr, dist_size, redist_base_addr, redist_size] =
       KernelFdtSingleton::instance().GetGIC().value();
-  VirtualMemorySingleton::instance().MapMMIO(dist_base_addr, dist_size);
-  VirtualMemorySingleton::instance().MapMMIO(redist_base_addr, redist_size);
+  VirtualMemorySingleton::instance()
+      .MapMMIO(dist_base_addr, dist_size)
+      .or_else([](Error err) -> Expected<void*> {
+        klog::Err("Failed to map GIC distributor MMIO: {}", err.message());
+        while (true) {
+          cpu_io::Pause();
+        }
+        return std::unexpected(err);
+      });
+  VirtualMemorySingleton::instance()
+      .MapMMIO(redist_base_addr, redist_size)
+      .or_else([](Error err) -> Expected<void*> {
+        klog::Err("Failed to map GIC redistributor MMIO: {}", err.message());
+        while (true) {
+          cpu_io::Pause();
+        }
+        return std::unexpected(err);
+      });
 
   gic_ = std::move(Gic(dist_base_addr, redist_base_addr));
 

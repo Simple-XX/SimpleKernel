@@ -27,6 +27,7 @@ auto Apic::InitCurrentCpuLocalApic() -> Expected<void> {
       .or_else([](Error err) -> Expected<void> {
         klog::Err("Failed to initialize Local APIC for current CPU: {}",
                   err.message());
+        return std::unexpected(err);
       });
 }
 

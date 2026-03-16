@@ -35,7 +35,7 @@ auto task1_func(void* arg) -> void {
              static_cast<uint64_t>(reinterpret_cast<uintptr_t>(arg)));
   for (int i = 0; i < 5; ++i) {
     klog::Info("Task1: iteration {}/5", i + 1);
-    sys_sleep(1000);
+    (void)sys_sleep(1000);
   }
   klog::Info("Task1: exiting with code 0");
   sys_exit(0);
@@ -48,9 +48,9 @@ auto task2_func(void* arg) -> void {
   uint64_t count = 0;
   while (1) {
     klog::Info("Task2: yield count={}", count++);
-    sys_sleep(2000);
+    (void)sys_sleep(2000);
     // 主动让出 CPU
-    sys_yield();
+    (void)sys_yield();
   }
 }
 
@@ -61,7 +61,7 @@ auto task3_func(void* arg) -> void {
   while (1) {
     uint64_t old_value = global_counter.fetch_add(1, std::memory_order_relaxed);
     klog::Info("Task3: global_counter {} -> {}", old_value, old_value + 1);
-    sys_sleep(3000);
+    (void)sys_sleep(3000);
   }
 }
 
@@ -74,7 +74,7 @@ auto task4_func(void* arg) -> void {
     auto* cpu_sched = per_cpu::GetCurrentCore().sched_data;
     auto start_tick = cpu_sched->local_tick;
     klog::Info("Task4: sleeping for 4s (iteration {})", iteration++);
-    sys_sleep(4000);
+    (void)sys_sleep(4000);
     auto end_tick = cpu_sched->local_tick;
     klog::Info("Task4: woke up (slept ~{} ticks)", end_tick - start_tick);
   }

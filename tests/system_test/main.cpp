@@ -22,7 +22,6 @@ namespace {
 struct test_case {
   const char* name;
   bool (*func)(void);
-  // 是否为多核测试，需要所有核心参与
   bool is_smp_test = false;
 };
 
@@ -46,30 +45,37 @@ std::array<test_case, 18> test_cases = {
     test_case{"kernel_task_test", kernel_task_test, false},
     test_case{"user_task_test", user_task_test, false}};
 
-/// 主核运行所有测试
 void run_tests_main() {
-  for (auto test : test_cases) {
+  int passed = 0;
+  int failed = 0;
+
+  for (const auto& test : test_cases) {
     klog::Info("----%s----", test.name);
     if (test.func()) {
-      klog::Info("----%s passed----", test.name);
+      passed++;
+      klog::Info("----%s PASS----", test.name);
     } else {
-      klog::Err("----%s failed----", test.name);
+      failed++;
+      klog::Err("----%s FAIL----", test.name);
     }
   }
-  klog::Info("All tests done.");
+
+  klog::Info("========================================");
+  klog::Info("Result: %d passed, %d failed, %d total", passed, failed,
+             passed + failed);
+  klog::Info("========================================");
+
+  QemuExit(failed == 0);
 }
 
-/// 从核只参与多核测试
 void run_tests_smp() {
-  for (auto test : test_cases) {
+  for (const auto& test : test_cases) {
     if (test.is_smp_test) {
-      // 从核静默参与多核测试，不输出日志
       test.func();
     }
   }
 }
 
-/// 非启动核入口
 auto main_smp(int argc, const char** argv) -> int {
   per_cpu::GetCurrentCore() = per_cpu::PerCpu(cpu_io::GetCurrentCoreId());
   ArchInitSMP(argc, argv);
@@ -78,7 +84,6 @@ auto main_smp(int argc, const char** argv) -> int {
   TaskManagerSingleton::instance().InitCurrentCore();
   klog::Info("Hello SimpleKernel SMP");
 
-  // 从核只参与多核测试
   run_tests_smp();
 
   __builtin_unreachable();
@@ -101,37 +106,22 @@ void _start(int argc, const char** argv) {
 }
 
 auto main(int argc, const char** argv) -> int {
-  // 初始化当前核心的 per_cpu 数据
   per_cpu::PerCpuArraySingleton::create();
   per_cpu::GetCurrentCore() = per_cpu::PerCpu(cpu_io::GetCurrentCoreId());
 
-  // 架构相关初始化
   ArchInit(argc, argv);
-
-  // 内存相关初始化
   MemoryInit();
-
-  // 中断相关初始化
   InterruptInit(argc, argv);
-
-  // 设备管理器初始化
   DeviceInit();
-
-  // 文件系统初始化
   FileSystemInit();
 
-  // 初始化任务管理器 (设置主线程)
   TaskManagerSingleton::create();
   TaskManagerSingleton::instance().InitCurrentCore();
-
-  // 唤醒其余 core
-  // WakeUpOtherCores();
 
   DumpStack();
 
   klog::Info("Hello SimpleKernel");
 
-  // 主核运行所有测试（包括多核测试）
   run_tests_main();
 
   __builtin_unreachable();

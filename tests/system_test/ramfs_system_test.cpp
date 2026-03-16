@@ -47,7 +47,7 @@ auto ramfs_system_test() -> bool {
               "ramfs_system_test: read content mismatch");
     klog::Info("ramfs_system_test: read back: {}", buf);
 
-    vfs::Close(file);
+    (void)vfs::Close(file);
   }
 
   // T3: Seek to middle, partial read
@@ -75,7 +75,7 @@ auto ramfs_system_test() -> bool {
               "ramfs_system_test: partial read content mismatch");
     klog::Info("ramfs_system_test: partial read from offset 7: {}", buf);
 
-    vfs::Close(file);
+    (void)vfs::Close(file);
   }
 
   // T4: MkDir + ReadDir
@@ -91,7 +91,7 @@ auto ramfs_system_test() -> bool {
                   vfs::OpenFlags::kOCreate | vfs::OpenFlags::kOWriteOnly);
     EXPECT_TRUE(inner.has_value(),
                 "ramfs_system_test: open /testdir/inner.txt failed");
-    vfs::Close(inner.value());
+    (void)vfs::Close(inner.value());
 
     // ReadDir on /testdir
     auto dir_file_result = vfs::Open(
@@ -110,7 +110,7 @@ auto ramfs_system_test() -> bool {
     klog::Info("ramfs_system_test: readdir returned {} entries",
                readdir_result.value());
 
-    vfs::Close(dir_file);
+    (void)vfs::Close(dir_file);
   }
 
   // T5: Unlink a file, confirm it can't be re-opened without kOCreate
@@ -150,16 +150,16 @@ auto ramfs_system_test() -> bool {
 
     const char kDataA[] = "AAAA";
     const char kDataB[] = "BBBB";
-    vfs::Write(f1.value(), kDataA, 4);
-    vfs::Write(f2.value(), kDataB, 4);
+    (void)vfs::Write(f1.value(), kDataA, 4);
+    (void)vfs::Write(f2.value(), kDataB, 4);
 
-    vfs::Seek(f1.value(), 0, vfs::SeekWhence::kSet);
-    vfs::Seek(f2.value(), 0, vfs::SeekWhence::kSet);
+    (void)vfs::Seek(f1.value(), 0, vfs::SeekWhence::kSet);
+    (void)vfs::Seek(f2.value(), 0, vfs::SeekWhence::kSet);
 
     char buf1[8] = {};
     char buf2[8] = {};
-    vfs::Read(f1.value(), buf1, 4);
-    vfs::Read(f2.value(), buf2, 4);
+    (void)vfs::Read(f1.value(), buf1, 4);
+    (void)vfs::Read(f2.value(), buf2, 4);
 
     EXPECT_EQ(memcmp(buf1, kDataA, 4), 0,
               "ramfs_system_test: fileA data corrupted by fileB");
@@ -167,10 +167,10 @@ auto ramfs_system_test() -> bool {
               "ramfs_system_test: fileB data corrupted by fileA");
     klog::Info("ramfs_system_test: two files are independent");
 
-    vfs::Close(f1.value());
-    vfs::Close(f2.value());
-    vfs::Unlink("/fileA.txt");
-    vfs::Unlink("/fileB.txt");
+    (void)vfs::Close(f1.value());
+    (void)vfs::Close(f2.value());
+    (void)vfs::Unlink("/fileA.txt");
+    (void)vfs::Unlink("/fileB.txt");
   }
 
   klog::Info("ramfs_system_test: all tests passed");

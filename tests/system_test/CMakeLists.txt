@@ -50,9 +50,15 @@ LIST (APPEND ${PROJECT_NAME}_QEMU_BOOT_FLAGS
       "-D;${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_qemu.log")
 # 目标平台参数
 IF(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
-    LIST (APPEND ${PROJECT_NAME}_QEMU_BOOT_FLAGS -drive
-          file=fat:rw:${CMAKE_BINARY_DIR}/bin,format=raw,media=disk -bios
-          ${u-boot_BINARY_DIR}/u-boot.rom)
+    LIST (
+        APPEND
+        ${PROJECT_NAME}_QEMU_BOOT_FLAGS
+        -drive
+        file=fat:rw:${CMAKE_BINARY_DIR}/bin,format=raw,media=disk
+        -bios
+        ${u-boot_BINARY_DIR}/u-boot.rom
+        -device
+        isa-debug-exit,iobase=0xf4,iosize=0x04)
 ELSEIF(CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv64")
     LIST (APPEND ${PROJECT_NAME}_QEMU_BOOT_FLAGS -bios
           ${u-boot_BINARY_DIR}/spl/u-boot-spl.bin -device

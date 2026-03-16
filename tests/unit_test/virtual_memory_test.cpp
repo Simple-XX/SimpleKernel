@@ -129,8 +129,8 @@ TEST_F(VirtualMemoryTest, UnmapPage) {
   void* phys_addr = reinterpret_cast<void*>(0x80001000);
 
   // 映射页面
-  vm.MapPage(page_dir, virt_addr, phys_addr,
-             cpu_io::virtual_memory::GetUserPagePermissions());
+  (void)vm.MapPage(page_dir, virt_addr, phys_addr,
+                   cpu_io::virtual_memory::GetUserPagePermissions());
 
   // 取消映射
   auto result = vm.UnmapPage(page_dir, virt_addr);
@@ -217,8 +217,8 @@ TEST_F(VirtualMemoryTest, RemapPage) {
   void* phys_addr2 = reinterpret_cast<void*>(0x80002000);
 
   // 第一次映射
-  vm.MapPage(page_dir, virt_addr, phys_addr1,
-             cpu_io::virtual_memory::GetUserPagePermissions());
+  (void)vm.MapPage(page_dir, virt_addr, phys_addr1,
+                   cpu_io::virtual_memory::GetUserPagePermissions());
 
   // 重新映射到不同的物理地址
   auto result = vm.MapPage(page_dir, virt_addr, phys_addr2,
@@ -248,8 +248,8 @@ TEST_F(VirtualMemoryTest, DestroyPageDirectoryWithoutFreePages) {
   for (size_t i = 0; i < kNumPages; ++i) {
     void* virt_addr = reinterpret_cast<void*>(0x10000 + i * kPageSize);
     void* phys_addr = reinterpret_cast<void*>(0x80000000 + i * kPageSize);
-    vm.MapPage(page_dir, virt_addr, phys_addr,
-               cpu_io::virtual_memory::GetUserPagePermissions());
+    (void)vm.MapPage(page_dir, virt_addr, phys_addr,
+                     cpu_io::virtual_memory::GetUserPagePermissions());
   }
 
   size_t allocated_before = MockAllocator::GetInstance().GetAllocatedCount();
@@ -278,8 +278,8 @@ TEST_F(VirtualMemoryTest, ClonePageDirectoryWithMappings) {
   for (size_t i = 0; i < kNumPages; ++i) {
     void* virt_addr = reinterpret_cast<void*>(0x10000 + i * kPageSize);
     void* phys_addr = reinterpret_cast<void*>(0x80000000 + i * kPageSize);
-    vm.MapPage(src_page_dir, virt_addr, phys_addr,
-               cpu_io::virtual_memory::GetUserPagePermissions());
+    (void)vm.MapPage(src_page_dir, virt_addr, phys_addr,
+                     cpu_io::virtual_memory::GetUserPagePermissions());
   }
 
   // 克隆页表（复制映射）
@@ -326,8 +326,8 @@ TEST_F(VirtualMemoryTest, ClonePageDirectoryWithoutMappings) {
   for (size_t i = 0; i < kNumPages; ++i) {
     void* virt_addr = reinterpret_cast<void*>(0x10000 + i * kPageSize);
     void* phys_addr = reinterpret_cast<void*>(0x80000000 + i * kPageSize);
-    vm.MapPage(src_page_dir, virt_addr, phys_addr,
-               cpu_io::virtual_memory::GetUserPagePermissions());
+    (void)vm.MapPage(src_page_dir, virt_addr, phys_addr,
+                     cpu_io::virtual_memory::GetUserPagePermissions());
   }
 
   // 克隆页表（不复制映射）
@@ -390,8 +390,8 @@ TEST_F(VirtualMemoryTest, MemoryLeakCheck) {
   for (size_t i = 0; i < 10; ++i) {
     void* virt_addr = reinterpret_cast<void*>(0x10000 + i * 0x1000);
     void* phys_addr = reinterpret_cast<void*>(0x80000000 + i * 0x1000);
-    vm.MapPage(page_dir1, virt_addr, phys_addr,
-               cpu_io::virtual_memory::GetUserPagePermissions());
+    (void)vm.MapPage(page_dir1, virt_addr, phys_addr,
+                     cpu_io::virtual_memory::GetUserPagePermissions());
   }
 
   // 克隆

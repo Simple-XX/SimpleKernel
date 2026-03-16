@@ -39,8 +39,8 @@ auto fatfs_system_test() -> bool {
 
   // Create /mnt and /mnt/fat directories in the VFS tree (in ramfs at /)
   // before mounting. MkDir is idempotent-ish — ignore errors if exists.
-  vfs::MkDir("/mnt");
-  vfs::MkDir("/mnt/fat");
+  (void)vfs::MkDir("/mnt");
+  (void)vfs::MkDir("/mnt/fat");
 
   static fatfs::FatFsFileSystem fat_fs(0);
   auto fat_mount = fat_fs.Mount(blk);
@@ -71,7 +71,7 @@ auto fatfs_system_test() -> bool {
     klog::Info("fatfs_system_test: wrote {} bytes to /mnt/fat/test.txt",
                write_result.value());
 
-    vfs::Close(file);
+    (void)vfs::Close(file);
   }
 
   // T4: Read back and verify
@@ -93,7 +93,7 @@ auto fatfs_system_test() -> bool {
               "fatfs_system_test: read content mismatch");
     klog::Info("fatfs_system_test: verified read: {}", buf);
 
-    vfs::Close(file);
+    (void)vfs::Close(file);
   }
 
   // T5: MkDir on FAT volume
@@ -110,7 +110,7 @@ auto fatfs_system_test() -> bool {
     EXPECT_TRUE(inner.has_value(),
                 "fatfs_system_test: create /mnt/fat/subdir/inner.txt failed");
     if (inner.has_value()) {
-      vfs::Close(inner.value());
+      (void)vfs::Close(inner.value());
     }
 
     // ReadDir on root of fat volume to find subdir
@@ -128,7 +128,7 @@ auto fatfs_system_test() -> bool {
                 "fatfs_system_test: readdir /mnt/fat should return > 1 entry");
       klog::Info("fatfs_system_test: readdir /mnt/fat returned {} entries",
                  readdir_result.value());
-      vfs::Close(dir_file.value());
+      (void)vfs::Close(dir_file.value());
     }
   }
 
@@ -164,7 +164,7 @@ auto fatfs_system_test() -> bool {
       EXPECT_EQ(memcmp(buf, kMsg, sizeof(kMsg) - 1), 0,
                 "fatfs_system_test: data corrupted after remount");
       klog::Info("fatfs_system_test: persistence verified: {}", buf);
-      vfs::Close(file_result.value());
+      (void)vfs::Close(file_result.value());
     }
   }
 

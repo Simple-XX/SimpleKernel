@@ -161,7 +161,15 @@ auto InterruptInit(int, const char**) -> void {
   // 初始化 plic
   auto [plic_addr, plic_size, ndev, context_count] =
       KernelFdtSingleton::instance().GetPlic().value();
-  VirtualMemorySingleton::instance().MapMMIO(plic_addr, plic_size);
+  VirtualMemorySingleton::instance()
+      .MapMMIO(plic_addr, plic_size)
+      .or_else([](Error err) -> Expected<void*> {
+        klog::Err("Failed to map PLIC MMIO: {}", err.message());
+        while (true) {
+          cpu_io::Pause();
+        }
+        return std::unexpected(err);
+      });
   InterruptSingleton::instance().InitPlic(plic_addr, ndev, context_count);
 
   // 设置 trap vector
