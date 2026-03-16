@@ -91,8 +91,8 @@ auto TaskManager::InitCurrentCore() -> void {
   cpu_data.idle_task = idle_task;
 }
 
-auto TaskManager::AddTask(TaskControlBlock* task) -> void {
-  assert(task != nullptr && "AddTask: task must not be null");
+auto TaskManager::AddTask(etl::unique_ptr<TaskControlBlock> task) -> void {
+  assert(task.get() != nullptr && "AddTask: task must not be null");
   assert(task->GetStatus() == TaskStatus::kUnInit &&
          "AddTask: task status must be kUnInit");
   // 分配 PID
@@ -101,33 +101,35 @@ auto TaskManager::AddTask(TaskControlBlock* task) -> void {
   }
 
   // 如果 tgid 未设置，则将其设为自己的 pid (单线程进程或线程组的主线程)
-  if (task->tgid == 0) {
-    task->tgid = task->pid;
+  if (task->aux->tgid == 0) {
+    task->aux->tgid = task->pid;
   }
+
+  auto* task_ptr = task.get();
+  Pid pid = task_ptr->pid;
 
   // 加入全局任务表
   {
     LockGuard lock_guard{task_table_lock_};
     if (task_table_.full()) {
-      klog::Err("AddTask: task_table_ full, cannot add task (pid={})",
-                task->pid);
+      klog::Err("AddTask: task_table_ full, cannot add task (pid={})", pid);
       return;
     }
-    task_table_[task->pid] = etl::unique_ptr<TaskControlBlock>(task);
+    task_table_[pid] = std::move(task);
   }
 
   // 设置任务状态为 kReady
   // Transition: kUnInit -> kReady
-  task->fsm.Receive(MsgSchedule{});
+  task_ptr->fsm.Receive(MsgSchedule{});
 
   // 简单的负载均衡：如果指定了亲和性，放入对应核心，否则放入当前核心
   // 更复杂的逻辑可以是：寻找最空闲的核心
   size_t target_core = cpu_io::GetCurrentCoreId();
 
-  if (task->cpu_affinity.value() != UINT64_MAX) {
+  if (task_ptr->aux->cpu_affinity.value() != UINT64_MAX) {
     // 寻找第一个允许的核心
     for (size_t core_id = 0; core_id < SIMPLEKERNEL_MAX_CORE_COUNT; ++core_id) {
-      if (task->cpu_affinity.value() & (1UL << core_id)) {
+      if (task_ptr->aux->cpu_affinity.value() & (1UL << core_id)) {
         target_core = core_id;
         break;
       }
@@ -138,9 +140,10 @@ auto TaskManager::AddTask(TaskControlBlock* task) -> void {
 
   {
     LockGuard<SpinLock> lock_guard(cpu_sched.lock);
-    if (task->policy < SchedPolicy::kPolicyCount) {
-      if (cpu_sched.schedulers[static_cast<uint8_t>(task->policy)]) {
-        cpu_sched.schedulers[static_cast<uint8_t>(task->policy)]->Enqueue(task);
+    if (task_ptr->policy < SchedPolicy::kPolicyCount) {
+      if (cpu_sched.schedulers[static_cast<uint8_t>(task_ptr->policy)]) {
+        cpu_sched.schedulers[static_cast<uint8_t>(task_ptr->policy)]->Enqueue(
+            task_ptr);
       }
     }
   }
@@ -151,7 +154,7 @@ auto TaskManager::AddTask(TaskControlBlock* task) -> void {
     TaskControlBlock* current = cpu_data.running_task;
     // 如果当前是 idle 任务，或新任务的策略优先级更高，触发调度
     if (current == cpu_data.idle_task ||
-        (current && task->policy < current->policy)) {
+        (current && task_ptr->policy < current->policy)) {
       // 注意：这里不能直接调用 Schedule()，因为可能在中断上下文中
       // 实际应该设置一个 need_resched 标志，在中断返回前检查
       // 为简化，这里暂时不做抢占，只在时间片耗尽时调度
@@ -211,9 +214,9 @@ auto TaskManager::ReparentChildren(TaskControlBlock* parent) -> void {
 
   // 遍历所有任务，找到父进程是当前任务的子进程
   for (auto& [pid, task] : task_table_) {
-    if (task && task->parent_pid == parent->pid) {
+    if (task && task->aux->parent_pid == parent->pid) {
       // 将子进程过继给 init 进程
-      task->parent_pid = kInitPid;
+      task->aux->parent_pid = kInitPid;
       klog::Debug("ReparentChildren: Task {} reparented to init (PID {})",
                   task->pid, kInitPid);
       // 如果子进程已经是僵尸状态，通知 init 进程回收
@@ -230,7 +233,7 @@ auto TaskManager::GetThreadGroup(Pid tgid)
 
   // 遍历任务表，找到所有 tgid 匹配的线程
   for (auto& [pid, task] : task_table_) {
-    if (task && task->tgid == tgid) {
+    if (task && task->aux->tgid == tgid) {
       result.push_back(task.get());
     }
   }

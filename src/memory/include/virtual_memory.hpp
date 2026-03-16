@@ -13,9 +13,19 @@
 #include "expected.hpp"
 
 /**
- * @brief 虚拟内存管理抽象基类
- * @details 定义了必须通过继承实现的核心虚拟内存接口
+ * @brief 虚拟内存管理器（具体类，非抽象基类）
+ *
+ * @details 本类是内核虚拟内存子系统的唯一实现，通过
+ *          cpu_io::virtual_memory 命名空间中的架构相关辅助函数
+ *          实现跨架构（x86_64/riscv64/aarch64）的页表操作。
+ *          架构差异由 cpu_io 库在编译期分发，本类本身不使用虚函数
+ *          或条件编译。
+ *
+ *          物理页帧的分配/释放由外部分配器（bmalloc）提供，
+ *          本类通过 aligned_alloc/aligned_free 间接调用。
+ *
  * @note 地址操作、页表项操作等实用函数请使用 cpu_io 库提供的接口
+ * @note 以 VirtualMemorySingleton 全局单例方式使用
  */
 class VirtualMemory {
  public:

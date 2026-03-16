@@ -12,6 +12,7 @@
 #include <limits>
 
 #include "expected.hpp"
+#include "kernel_log.hpp"
 #include "kstd_cstdio"
 
 /**
@@ -139,9 +140,12 @@ class LockGuard {
    * @param mutex 要保护的锁对象
    */
   explicit LockGuard(mutex_type& mutex) : mutex_(mutex) {
-    mutex_.Lock().or_else([](auto&& err) {
-      (void)err;
-      // klog::Err("LockGuard: Failed to acquire lock: {}", err.message());
+    mutex_.Lock().or_else([&](auto&& err) {
+      klog::RawPut("PANIC: LockGuard failed to acquire lock '");
+      klog::RawPut(mutex_.name);
+      klog::RawPut("': ");
+      klog::RawPut(err.message());
+      klog::RawPut("\n");
       while (true) {
         cpu_io::Pause();
       }
@@ -153,9 +157,12 @@ class LockGuard {
    * @brief 析构函数，自动释放锁
    */
   ~LockGuard() {
-    mutex_.UnLock().or_else([](auto&& err) {
-      (void)err;
-      // klog::Err("LockGuard: Failed to release lock: {}", err.message());
+    mutex_.UnLock().or_else([&](auto&& err) {
+      klog::RawPut("PANIC: LockGuard failed to release lock '");
+      klog::RawPut(mutex_.name);
+      klog::RawPut("': ");
+      klog::RawPut(err.message());
+      klog::RawPut("\n");
       while (true) {
         cpu_io::Pause();
       }

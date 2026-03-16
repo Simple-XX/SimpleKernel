@@ -20,7 +20,7 @@ auto TaskManager::Exit(int exit_code) -> void {
     LockGuard<SpinLock> lock_guard(cpu_sched.lock);
 
     // 设置退出码
-    current->exit_code = exit_code;
+    current->aux->exit_code = exit_code;
 
     // 检查是否是线程组的主线程
     bool is_group_leader = current->IsThreadGroupLeader();
@@ -30,7 +30,7 @@ auto TaskManager::Exit(int exit_code) -> void {
       klog::Warn(
           "Exit: Thread group leader (pid={}, tgid={}) exiting, but group "
           "still has {} threads",
-          current->pid, current->tgid, current->GetThreadGroupSize());
+          current->pid, current->aux->tgid, current->GetThreadGroupSize());
     }
 
     // 从线程组中移除
@@ -41,7 +41,7 @@ auto TaskManager::Exit(int exit_code) -> void {
       ReparentChildren(current);
     }
 
-    if (current->parent_pid != 0) {
+    if (current->aux->parent_pid != 0) {
       // 有父进程，进入僵尸状态等待回收
       // Transition: kRunning -> kZombie
       current->fsm.Receive(MsgExit{exit_code, true});
@@ -49,13 +49,13 @@ auto TaskManager::Exit(int exit_code) -> void {
       // 唤醒等待此进程退出的父进程
       // 父进程会阻塞在 ChildExit 类型的资源上，数据是父进程自己的 PID
       auto wait_resource_id =
-          ResourceId(ResourceType::kChildExit, current->parent_pid);
+          ResourceId(ResourceType::kChildExit, current->aux->parent_pid);
       Wakeup(wait_resource_id);
 
       /// @todo 通知父进程 (发送 SIGCHLD)
 
       klog::Debug("Exit: pid={} waking up parent={} on resource={}",
-                  current->pid, current->parent_pid,
+                  current->pid, current->aux->parent_pid,
                   wait_resource_id.GetTypeName());
     } else {
       // 没有父进程，直接退出并释放资源

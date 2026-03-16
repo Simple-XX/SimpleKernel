@@ -26,7 +26,7 @@ auto TaskManager::Wait(Pid pid, int* status, bool no_hang, bool untraced)
       // 遍历任务表寻找符合条件的子进程
       for (auto& [task_pid, task] : task_table_) {
         // 检查是否是当前进程的子进程
-        bool is_child = (task->parent_pid == current->pid);
+        bool is_child = (task->aux->parent_pid == current->pid);
 
         // 检查 PID 匹配条件
         bool pid_match = false;
@@ -35,13 +35,13 @@ auto TaskManager::Wait(Pid pid, int* status, bool no_hang, bool untraced)
           pid_match = is_child;
         } else if (pid == 0) {
           // 等待同进程组的任意子进程
-          pid_match = is_child && (task->pgid == current->pgid);
+          pid_match = is_child && (task->aux->pgid == current->aux->pgid);
         } else if (pid > 0) {
           // 等待指定 PID 的子进程
           pid_match = is_child && (task->pid == pid);
         } else {
           // pid < -1: 等待进程组 ID 为 |pid| 的任意子进程
-          pid_match = is_child && (task->pgid == static_cast<Pid>(-pid));
+          pid_match = is_child && (task->aux->pgid == static_cast<Pid>(-pid));
         }
 
         if (!pid_match) {
@@ -71,14 +71,14 @@ auto TaskManager::Wait(Pid pid, int* status, bool no_hang, bool untraced)
       assert((target->GetStatus() == TaskStatus::kZombie ||
               target->GetStatus() == TaskStatus::kExited) &&
              "Wait: target task must be kZombie or kExited");
-      assert(target->parent_pid == current->pid &&
+      assert(target->aux->parent_pid == current->pid &&
              "Wait: target parent_pid must match current pid");
 
       Pid result_pid = target->pid;
 
       // 返回退出状态
       if (status) {
-        *status = target->exit_code;
+        *status = target->aux->exit_code;
       }
 
       // 清理僵尸进程

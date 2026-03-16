@@ -253,7 +253,7 @@ auto sys_exit(int code) -> int {
     return -1;
   }
 
-  *mask = target->cpu_affinity;
+  *mask = target->aux->cpu_affinity;
   return 0;
 }
 
@@ -282,7 +282,7 @@ auto sys_exit(int code) -> int {
     return -1;
   }
 
-  target->cpu_affinity = *mask;
+  target->aux->cpu_affinity = *mask;
 
   klog::Debug("[Syscall] Set CPU affinity for task {} to {:#x}", target->pid,
               *mask);

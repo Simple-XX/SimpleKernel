@@ -73,7 +73,50 @@ enum class SchedPolicy : uint8_t {
 using ThreadGroupLink = etl::bidirectional_link<0>;
 
 /**
+ * @brief 非调度热路径的任务辅助数据
+ *
+ * @details 包含进程/线程的标识、克隆标志、CPU 亲和性、文件描述符等
+ *          仅在 clone/exit/wait/block 等慢路径中访问的字段。
+ *          从 TaskControlBlock 分离以减少调度热路径的缓存压力。
+ */
+struct TaskAuxData {
+  /// 父线程 ID
+  Pid parent_pid{0};
+  /// 进程组 ID
+  Pid pgid{0};
+  /// 会话 ID
+  Pid sid{0};
+  /// 线程组 ID (主线程的 PID)
+  Pid tgid{0};
+
+  /// 退出码
+  int exit_code{0};
+
+  /// 克隆标志位
+  CloneFlags clone_flags{};
+
+  /// CPU 亲和性位掩码
+  CpuAffinity cpu_affinity{UINT64_MAX};
+
+  /// 等待的资源 ID
+  ResourceId blocked_on{};
+
+  /// 是否为中断线程
+  bool is_interrupt_thread{false};
+  /// 关联的中断号
+  uint64_t interrupt_number{0};
+
+  /// @todo 优先级继承相关
+
+  /// 文件描述符表
+  filesystem::FileDescriptorTable* fd_table{nullptr};
+};
+
+/**
  * @brief 任务控制块，管理进程/线程的核心数据结构
+ *
+ * @details 仅保留调度热路径字段（状态机、优先级、上下文、页表等）。
+ *          进程级辅助数据存储在 TaskAuxData 中，通过 aux 指针访问。
  */
 struct TaskControlBlock : public ThreadGroupLink {
   /// 默认内核栈大小 (16 KB)
@@ -114,26 +157,12 @@ struct TaskControlBlock : public ThreadGroupLink {
 
   /// 线程 ID (Task ID)
   Pid pid{0};
-  /// 父线程 ID
-  Pid parent_pid{0};
-  /// 进程组 ID
-  Pid pgid{0};
-  /// 会话 ID
-  Pid sid{0};
-  /// 线程组 ID (主线程的 PID)
-  Pid tgid{0};
 
   /// 任务状态机
   TaskFsm fsm{};
 
   /// 调度策略
   SchedPolicy policy{SchedPolicy::kNormal};
-
-  /// 退出码
-  int exit_code{0};
-
-  /// 克隆标志位
-  CloneFlags clone_flags{};
 
   /**
    * @brief 基础调度信息
@@ -186,21 +215,8 @@ struct TaskControlBlock : public ThreadGroupLink {
   /// 页表
   uint64_t* page_table{nullptr};
 
-  /// CPU 亲和性位掩码
-  CpuAffinity cpu_affinity{UINT64_MAX};
-
-  /// 等待的资源 ID
-  ResourceId blocked_on{};
-
-  /// 是否为中断线程
-  bool is_interrupt_thread{false};
-  /// 关联的中断号
-  uint64_t interrupt_number{0};
-
-  /// @todo 优先级继承相关
-
-  /// 文件描述符表
-  filesystem::FileDescriptorTable* fd_table{nullptr};
+  /// 非调度热路径的辅助数据
+  TaskAuxData* aux{nullptr};
 
   /**
    * @brief 获取当前任务状态
@@ -212,7 +228,9 @@ struct TaskControlBlock : public ThreadGroupLink {
    * @brief 检查是否是线程组的主线程
    * @return true 如果是主线程 (pid == tgid)
    */
-  [[nodiscard]] auto IsThreadGroupLeader() const -> bool { return pid == tgid; }
+  [[nodiscard]] auto IsThreadGroupLeader() const -> bool {
+    return aux && pid == aux->tgid;
+  }
 
   /**
    * @brief 将线程添加到线程组
@@ -240,7 +258,8 @@ struct TaskControlBlock : public ThreadGroupLink {
    */
   [[nodiscard]] auto InSameThreadGroup(const TaskControlBlock* other) const
       -> bool {
-    return other && (tgid == other->tgid) && (tgid != 0);
+    return aux && other && other->aux && (aux->tgid == other->aux->tgid) &&
+           (aux->tgid != 0);
   }
 
   /// @name 构造/析构函数

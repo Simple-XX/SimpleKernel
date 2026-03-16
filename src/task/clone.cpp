@@ -57,41 +57,41 @@ auto TaskManager::Clone(uint64_t flags, void* user_stack, int* parent_tid,
   // 设置父进程 ID
   if (flags & clone_flag::kParent) {
     // 保持与父进程相同的父进程
-    child->parent_pid = parent->parent_pid;
+    child->aux->parent_pid = parent->aux->parent_pid;
   } else {
-    child->parent_pid = parent->pid;
+    child->aux->parent_pid = parent->pid;
   }
 
   // 处理线程组 ID (TGID)
   if (flags & clone_flag::kThread) {
     // 创建线程: 共享线程组
-    child->tgid = parent->tgid;
-    child->pgid = parent->pgid;
-    child->sid = parent->sid;
+    child->aux->tgid = parent->aux->tgid;
+    child->aux->pgid = parent->aux->pgid;
+    child->aux->sid = parent->aux->sid;
 
     // 将子线程加入父线程的线程组
     if (parent->IsThreadGroupLeader()) {
       child->JoinThreadGroup(parent);
     } else {
       // 找到线程组的主线程
-      TaskControlBlock* leader = FindTask(parent->tgid);
+      TaskControlBlock* leader = FindTask(parent->aux->tgid);
       if (leader) {
         child->JoinThreadGroup(leader);
       } else {
         klog::Warn("Clone: Thread group leader not found for tgid={}",
-                   parent->tgid);
+                   parent->aux->tgid);
       }
     }
   } else {
     // 创建进程: 新的线程组
     // 新进程的 tgid 是自己的 pid
-    child->tgid = new_pid;
-    child->pgid = parent->pgid;
-    child->sid = parent->sid;
+    child->aux->tgid = new_pid;
+    child->aux->pgid = parent->aux->pgid;
+    child->aux->sid = parent->aux->sid;
   }
 
   // 克隆标志位
-  child->clone_flags = CloneFlags(flags);
+  child->aux->clone_flags = CloneFlags(flags);
 
   // 处理文件描述符表 (kCloneFiles)
   /// @todo 当前未实现文件系统，此标志暂时仅记录
@@ -202,14 +202,14 @@ auto TaskManager::Clone(uint64_t flags, void* user_stack, int* parent_tid,
   }
 
   // 将子任务添加到调度器
-  AddTask(child_ptr.release());
+  AddTask(std::move(child_ptr));
 
   // 打印详细的 clone 信息
   const char* clone_type = (flags & clone_flag::kThread) ? "thread" : "process";
   const char* vm_type = (flags & clone_flag::kVm) ? "shared" : "copied";
   klog::Debug(
       "Clone: created {} - parent={}, child={}, tgid={}, vm={}, flags={:#x}",
-      clone_type, parent->pid, new_pid, child->tgid, vm_type,
+      clone_type, parent->pid, new_pid, child->aux->tgid, vm_type,
       static_cast<uint64_t>(flags));
   return new_pid;
 }

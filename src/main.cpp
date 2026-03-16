@@ -95,15 +95,15 @@ auto create_test_tasks() -> void {
       "Task4-Sleep", 10, task4_func, reinterpret_cast<void*>(0x4444));
 
   // 设置 CPU 亲和性，绑定到当前核心
-  task1->cpu_affinity = (1UL << core_id);
-  task2->cpu_affinity = (1UL << core_id);
-  task3->cpu_affinity = (1UL << core_id);
-  task4->cpu_affinity = (1UL << core_id);
+  task1->aux->cpu_affinity = (1UL << core_id);
+  task2->aux->cpu_affinity = (1UL << core_id);
+  task3->aux->cpu_affinity = (1UL << core_id);
+  task4->aux->cpu_affinity = (1UL << core_id);
 
-  tm.AddTask(task1.release());
-  tm.AddTask(task2.release());
-  tm.AddTask(task3.release());
-  tm.AddTask(task4.release());
+  tm.AddTask(std::move(task1));
+  tm.AddTask(std::move(task2));
+  tm.AddTask(std::move(task3));
+  tm.AddTask(std::move(task4));
 
   klog::Info("Created 4 test tasks");
 }

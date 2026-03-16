@@ -35,12 +35,12 @@ auto TaskManager::Wakeup(ResourceId resource_id) -> void {
 
     assert(task->GetStatus() == TaskStatus::kBlocked &&
            "Wakeup: task status must be kBlocked");
-    assert(task->blocked_on == resource_id &&
+    assert(task->aux->blocked_on == resource_id &&
            "Wakeup: task blocked_on must match resource_id");
 
     // 将任务标记为就绪
     task->fsm.Receive(MsgWakeup{});
-    task->blocked_on = ResourceId{};
+    task->aux->blocked_on = ResourceId{};
 
     // 将任务重新加入对应调度器的就绪队列
     auto* scheduler =

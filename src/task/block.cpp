@@ -33,7 +33,7 @@ auto TaskManager::Block(ResourceId resource_id) -> void {
     // Transition: kRunning -> kBlocked
     current->fsm.Receive(MsgBlock{resource_id});
     // Record blocked resource
-    current->blocked_on = resource_id;
+    current->aux->blocked_on = resource_id;
     list.push_back(current);
 
     klog::Debug("Block: pid={} blocked on resource={}, data={:#x}",

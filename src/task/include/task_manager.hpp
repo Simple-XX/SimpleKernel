@@ -86,13 +86,14 @@ class TaskManager {
   auto InitCurrentCore() -> void;
 
   /**
-   * @brief 添加任务
+   * @brief 添加任务（接管所有权）
    *
    * 根据任务的调度策略，将其添加到对应的调度器中。
    *
-   * @param task 任务控制块指针，状态应为 kUnInit
+   * @param task 任务控制块，所有权转移给 TaskManager
+   * @pre task 非空，状态为 kUnInit
    */
-  auto AddTask(TaskControlBlock* task) -> void;
+  auto AddTask(etl::unique_ptr<TaskControlBlock> task) -> void;
 
   /**
    * @brief 调度函数

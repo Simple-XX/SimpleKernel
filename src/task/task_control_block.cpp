@@ -95,7 +95,7 @@ auto TaskControlBlock::JoinThreadGroup(TaskControlBlock* leader) -> void {
   }
 
   // 设置 tgid
-  tgid = leader->tgid;
+  aux->tgid = leader->aux->tgid;
 
   // 在 leader 之后插入自身
   etl::link_splice<ThreadGroupLink>(*leader, *this);
@@ -104,7 +104,7 @@ auto TaskControlBlock::JoinThreadGroup(TaskControlBlock* leader) -> void {
 auto TaskControlBlock::LeaveThreadGroup() -> void { ThreadGroupLink::unlink(); }
 
 auto TaskControlBlock::GetThreadGroupSize() const -> size_t {
-  if (tgid == 0) {
+  if (aux->tgid == 0) {
     // 未加入任何线程组
     return 1;
   }
@@ -131,6 +131,13 @@ auto TaskControlBlock::GetThreadGroupSize() const -> size_t {
 TaskControlBlock::TaskControlBlock(const char* _name, int priority,
                                    ThreadEntry entry, void* arg)
     : name(_name) {
+  // 分配辅助数据
+  aux = new TaskAuxData{};
+  if (!aux) {
+    klog::Err("Failed to allocate TaskAuxData for task {}", name);
+    return;
+  }
+
   // 设置优先级
   sched_info.priority = priority;
   sched_info.base_priority = priority;
@@ -160,6 +167,13 @@ TaskControlBlock::TaskControlBlock(const char* _name, int priority,
 TaskControlBlock::TaskControlBlock(const char* _name, int priority,
                                    uint8_t* elf, int argc, char** argv)
     : name(_name) {
+  // 分配辅助数据
+  aux = new TaskAuxData{};
+  if (!aux) {
+    klog::Err("Failed to allocate TaskAuxData for task {}", name);
+    return;
+  }
+
   // 设置优先级
   sched_info.priority = priority;
   sched_info.base_priority = priority;
@@ -188,9 +202,15 @@ TaskControlBlock::~TaskControlBlock() {
   // 释放页表（如果有用户空间页表）
   if (page_table) {
     // 如果是私有页表（非共享），需要释放物理页
-    auto should_free_pages = !(clone_flags & clone_flag::kVm);
+    auto should_free_pages = !(aux->clone_flags & clone_flag::kVm);
     VirtualMemorySingleton::instance().DestroyPageDirectory(page_table,
                                                             should_free_pages);
     page_table = nullptr;
+  }
+
+  // 释放辅助数据
+  if (aux) {
+    delete aux;
+    aux = nullptr;
   }
 }
