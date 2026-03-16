@@ -6,7 +6,6 @@
 
 #include <cstdint>
 
-#include "sk_stdio.h"
 #include "system_test.h"
 #include "task_control_block.hpp"
 #include "task_messages.hpp"
@@ -14,7 +13,7 @@
 namespace {
 
 auto test_idle_basic_functionality() -> bool {
-  sk_printf("Running test_idle_basic_functionality...\n");
+  klog::Info("Running test_idle_basic_functionality...");
 
   IdleScheduler scheduler;
 
@@ -55,12 +54,12 @@ auto test_idle_basic_functionality() -> bool {
   EXPECT_EQ(scheduler.GetQueueSize(), 1,
             "Queue size should still be 1 after multiple PickNext");
 
-  sk_printf("test_idle_basic_functionality passed\n");
+  klog::Info("test_idle_basic_functionality passed");
   return true;
 }
 
 auto test_idle_pick_next_does_not_remove() -> bool {
-  sk_printf("Running test_idle_pick_next_does_not_remove...\n");
+  klog::Info("Running test_idle_pick_next_does_not_remove...");
 
   IdleScheduler scheduler;
 
@@ -76,12 +75,12 @@ auto test_idle_pick_next_does_not_remove() -> bool {
               "Queue size should remain 1 after PickNext");
   }
 
-  sk_printf("test_idle_pick_next_does_not_remove passed\n");
+  klog::Info("test_idle_pick_next_does_not_remove passed");
   return true;
 }
 
 auto test_idle_enqueue_dequeue() -> bool {
-  sk_printf("Running test_idle_enqueue_dequeue...\n");
+  klog::Info("Running test_idle_enqueue_dequeue...");
 
   IdleScheduler scheduler;
 
@@ -106,12 +105,12 @@ auto test_idle_enqueue_dequeue() -> bool {
   EXPECT_EQ(scheduler.PickNext(), &idle_task,
             "PickNext should return idle task after re-enqueue");
 
-  sk_printf("test_idle_enqueue_dequeue passed\n");
+  klog::Info("test_idle_enqueue_dequeue passed");
   return true;
 }
 
 auto test_idle_on_tick_always_false() -> bool {
-  sk_printf("Running test_idle_on_tick_always_false...\n");
+  klog::Info("Running test_idle_on_tick_always_false...");
 
   IdleScheduler scheduler;
 
@@ -125,12 +124,12 @@ auto test_idle_on_tick_always_false() -> bool {
     EXPECT_FALSE(need_resched, "OnTick should always return false for idle");
   }
 
-  sk_printf("test_idle_on_tick_always_false passed\n");
+  klog::Info("test_idle_on_tick_always_false passed");
   return true;
 }
 
 auto test_idle_on_time_slice_expired_always_false() -> bool {
-  sk_printf("Running test_idle_on_time_slice_expired_always_false...\n");
+  klog::Info("Running test_idle_on_time_slice_expired_always_false...");
 
   IdleScheduler scheduler;
 
@@ -141,12 +140,12 @@ auto test_idle_on_time_slice_expired_always_false() -> bool {
   bool need_requeue = scheduler.OnTimeSliceExpired(&idle_task);
   EXPECT_FALSE(need_requeue, "OnTimeSliceExpired should return false for idle");
 
-  sk_printf("test_idle_on_time_slice_expired_always_false passed\n");
+  klog::Info("test_idle_on_time_slice_expired_always_false passed");
   return true;
 }
 
 auto test_idle_statistics() -> bool {
-  sk_printf("Running test_idle_statistics...\n");
+  klog::Info("Running test_idle_statistics...");
 
   IdleScheduler scheduler;
 
@@ -165,8 +164,8 @@ auto test_idle_statistics() -> bool {
   EXPECT_EQ(stats.total_enqueues, 1, "Enqueues should be 1");
 
   // 测试选择统计（PickNext 不移除）
-  scheduler.PickNext();
-  scheduler.PickNext();
+  (void)scheduler.PickNext();
+  (void)scheduler.PickNext();
   stats = scheduler.GetStats();
   EXPECT_EQ(stats.total_picks, 2, "Picks should be 2");
 
@@ -188,12 +187,12 @@ auto test_idle_statistics() -> bool {
   EXPECT_EQ(stats.total_picks, 0, "Picks should be 0 after reset");
   EXPECT_EQ(stats.total_preemptions, 0, "Preemptions should be 0 after reset");
 
-  sk_printf("test_idle_statistics passed\n");
+  klog::Info("test_idle_statistics passed");
   return true;
 }
 
 auto test_idle_dequeue_wrong_task() -> bool {
-  sk_printf("Running test_idle_dequeue_wrong_task...\n");
+  klog::Info("Running test_idle_dequeue_wrong_task...");
 
   IdleScheduler scheduler;
 
@@ -209,12 +208,12 @@ auto test_idle_dequeue_wrong_task() -> bool {
   EXPECT_EQ(scheduler.PickNext(), &idle_task,
             "Idle task should still be present");
 
-  sk_printf("test_idle_dequeue_wrong_task passed\n");
+  klog::Info("test_idle_dequeue_wrong_task passed");
   return true;
 }
 
 auto test_idle_robustness() -> bool {
-  sk_printf("Running test_idle_robustness...\n");
+  klog::Info("Running test_idle_robustness...");
 
   IdleScheduler scheduler;
 
@@ -238,14 +237,14 @@ auto test_idle_robustness() -> bool {
   EXPECT_EQ(scheduler.PickNext(), &idle_task2,
             "New idle task should replace old one");
 
-  sk_printf("test_idle_robustness passed\n");
+  klog::Info("test_idle_robustness passed");
   return true;
 }
 
 }  // namespace
 
 auto idle_scheduler_test() -> bool {
-  sk_printf("\n=== Idle Scheduler System Tests ===\n");
+  klog::Info("\n=== Idle Scheduler System Tests ===\n");
 
   if (!test_idle_basic_functionality()) {
     return false;
@@ -279,6 +278,6 @@ auto idle_scheduler_test() -> bool {
     return false;
   }
 
-  sk_printf("=== All Idle Scheduler Tests Passed ===\n\n");
+  klog::Info("=== All Idle Scheduler Tests Passed ===\n");
   return true;
 }

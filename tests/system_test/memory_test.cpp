@@ -10,7 +10,6 @@
 #include "arch.h"
 #include "basic_info.hpp"
 #include "kernel.h"
-#include "kstd_cstdio"
 #include "kstd_cstring"
 #include "kstd_libcxx.h"
 #include "sk_stdlib.h"
@@ -23,7 +22,7 @@ void* aligned_alloc(size_t alignment, size_t size);
 }
 
 auto memory_test() -> bool {
-  sk_printf("memory_test: start\n");
+  klog::Info("memory_test: start");
 
   // Test 1: malloc & free
   size_t size = 1024;
@@ -42,7 +41,7 @@ auto memory_test() -> bool {
   }
 
   free(ptr);
-  sk_printf("memory_test: malloc/free passed\n");
+  klog::Info("memory_test: malloc/free passed");
 
   // Test 2: aligned_alloc
   size_t alignment = 256;
@@ -54,7 +53,7 @@ auto memory_test() -> bool {
             "memory_test: aligned_alloc alignment failed");
 
   free(aligned_ptr);
-  sk_printf("memory_test: aligned_alloc passed\n");
+  klog::Info("memory_test: aligned_alloc passed");
 
   // Test 3: Multiple small allocations
   const int count = 10;
@@ -74,7 +73,7 @@ auto memory_test() -> bool {
     }
     free(ptrs[i]);
   }
-  sk_printf("memory_test: multi alloc passed\n");
+  klog::Info("memory_test: multi alloc passed");
 
   return true;
 }

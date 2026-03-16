@@ -72,16 +72,6 @@ void InitTaskContext(cpu_io::CalleeSavedContext* task_context,
   task_context->StackPointer() = stack_top;
 }
 
-#include <stdarg.h>
 #include <stdio.h>
 
 extern "C" void etl_putchar(int c) { putchar(c); }
-
-#undef sk_printf
-extern "C" int sk_printf(const char* format, ...) {
-  va_list args;
-  va_start(args, format);
-  int ret = vprintf(format, args);
-  va_end(args);
-  return ret;
-}

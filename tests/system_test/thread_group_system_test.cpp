@@ -11,9 +11,9 @@
 #include "arch.h"
 #include "basic_info.hpp"
 #include "kernel.h"
-#include "kstd_cstdio"
 #include "kstd_cstring"
 #include "kstd_libcxx.h"
+#include "kstd_memory"
 #include "sk_stdlib.h"
 #include "syscall.hpp"
 #include "system_test.h"
@@ -35,13 +35,13 @@ void thread_increment(void* arg) {
 
   for (int i = 0; i < 10; ++i) {
     g_thread_counter++;
-    klog::Debug("Thread %zu: counter=%d, iter=%d", thread_id,
+    klog::Debug("Thread {}: counter={}, iter={}", thread_id,
                 g_thread_counter.load(), i);
-    sys_sleep(10);
+    (void)sys_sleep(10);
   }
 
   g_thread_completed++;
-  klog::Info("Thread %zu: completed", thread_id);
+  klog::Info("Thread {}: completed", thread_id);
   sys_exit(0);
 }
 
@@ -58,32 +58,32 @@ void test_thread_group_basic(void* /*arg*/) {
   auto* leader =
       new TaskControlBlock("ThreadGroupLeader", 10, nullptr, nullptr);
   leader->pid = 1000;
-  leader->tgid = 1000;
+  leader->aux->tgid = 1000;
 
   // 创建并加入线程组的线程
-  auto* thread1 = new TaskControlBlock("Thread1", 10, thread_increment,
-                                       reinterpret_cast<void*>(1));
+  auto thread1 = kstd::make_unique<TaskControlBlock>(
+      "Thread1", 10, thread_increment, reinterpret_cast<void*>(1));
   thread1->pid = 1001;
   thread1->JoinThreadGroup(leader);
 
-  auto* thread2 = new TaskControlBlock("Thread2", 10, thread_increment,
-                                       reinterpret_cast<void*>(2));
+  auto thread2 = kstd::make_unique<TaskControlBlock>(
+      "Thread2", 10, thread_increment, reinterpret_cast<void*>(2));
   thread2->pid = 1002;
   thread2->JoinThreadGroup(leader);
 
-  auto* thread3 = new TaskControlBlock("Thread3", 10, thread_increment,
-                                       reinterpret_cast<void*>(3));
+  auto thread3 = kstd::make_unique<TaskControlBlock>(
+      "Thread3", 10, thread_increment, reinterpret_cast<void*>(3));
   thread3->pid = 1003;
   thread3->JoinThreadGroup(leader);
 
   // 验证线程组大小
   size_t group_size = leader->GetThreadGroupSize();
-  klog::Info("Thread group size: %zu (expected 4)", group_size);
+  klog::Info("Thread group size: {} (expected 4)", group_size);
 
   // 验证所有线程在同一线程组
-  if (leader->InSameThreadGroup(thread1) &&
-      leader->InSameThreadGroup(thread2) &&
-      leader->InSameThreadGroup(thread3)) {
+  if (leader->InSameThreadGroup(thread1.get()) &&
+      leader->InSameThreadGroup(thread2.get()) &&
+      leader->InSameThreadGroup(thread3.get())) {
     klog::Info("All threads are in the same thread group: PASS");
   } else {
     klog::Err("Thread group membership check failed: FAIL");
@@ -91,18 +91,18 @@ void test_thread_group_basic(void* /*arg*/) {
 
   // 添加到调度器
   auto& task_mgr = TaskManagerSingleton::instance();
-  task_mgr.AddTask(thread1);
-  task_mgr.AddTask(thread2);
-  task_mgr.AddTask(thread3);
+  task_mgr.AddTask(std::move(thread1));
+  task_mgr.AddTask(std::move(thread2));
+  task_mgr.AddTask(std::move(thread3));
 
   // 等待线程完成
   for (int i = 0; i < 200 && g_thread_completed < 3; ++i) {
-    sys_sleep(50);
+    (void)sys_sleep(50);
   }
 
-  klog::Info("Thread completed count: %d (expected 3)",
+  klog::Info("Thread completed count: {} (expected 3)",
              g_thread_completed.load());
-  klog::Info("Final counter value: %d (expected 30)", g_thread_counter.load());
+  klog::Info("Final counter value: {} (expected 30)", g_thread_counter.load());
 
   // 清理
   delete leader;
@@ -128,7 +128,7 @@ void test_thread_group_dynamic(void* /*arg*/) {
   // 创建主线程
   auto* leader = new TaskControlBlock("DynamicLeader", 10, nullptr, nullptr);
   leader->pid = 2000;
-  leader->tgid = 2000;
+  leader->aux->tgid = 2000;
 
   // 创建线程池
   constexpr int kThreadCount = 5;
@@ -144,11 +144,11 @@ void test_thread_group_dynamic(void* /*arg*/) {
   for (int i = 0; i < kThreadCount; ++i) {
     threads[i]->JoinThreadGroup(leader);
     size_t size = leader->GetThreadGroupSize();
-    klog::Debug("After join %d: group size=%zu", i, size);
+    klog::Debug("After join {}: group size={}", i, size);
   }
 
   size_t final_size = leader->GetThreadGroupSize();
-  klog::Info("Final group size: %zu (expected %d)", final_size,
+  klog::Info("Final group size: {} (expected {})", final_size,
              kThreadCount + 1);
 
   // 动态离开
@@ -156,11 +156,11 @@ void test_thread_group_dynamic(void* /*arg*/) {
   for (int i = 0; i < kThreadCount; ++i) {
     threads[i]->LeaveThreadGroup();
     size_t size = leader->GetThreadGroupSize();
-    klog::Debug("After leave %d: group size=%zu", i, size);
+    klog::Debug("After leave {}: group size={}", i, size);
   }
 
   size_t remaining_size = leader->GetThreadGroupSize();
-  klog::Info("Remaining group size: %zu (expected 1)", remaining_size);
+  klog::Info("Remaining group size: {} (expected 1)", remaining_size);
 
   // 清理
   for (int i = 0; i < kThreadCount; ++i) {
@@ -189,11 +189,11 @@ void concurrent_exit_worker(void* arg) {
 
   // 执行一些工作
   for (int i = 0; i < 5; ++i) {
-    klog::Debug("ConcurrentExitWorker %zu: iter=%d", thread_id, i);
-    sys_sleep(20);
+    klog::Debug("ConcurrentExitWorker {}: iter={}", thread_id, i);
+    (void)sys_sleep(20);
   }
 
-  klog::Info("ConcurrentExitWorker %zu: exiting", thread_id);
+  klog::Info("ConcurrentExitWorker {}: exiting", thread_id);
   g_thread_completed++;
   sys_exit(0);
 }
@@ -206,27 +206,27 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
   // 创建主线程
   auto* leader = new TaskControlBlock("ConcurrentLeader", 10, nullptr, nullptr);
   leader->pid = 3000;
-  leader->tgid = 3000;
+  leader->aux->tgid = 3000;
 
   // 创建多个工作线程
   constexpr int kWorkerCount = 4;
   for (int i = 0; i < kWorkerCount; ++i) {
-    auto* worker =
-        new TaskControlBlock("ConcurrentWorker", 10, concurrent_exit_worker,
-                             reinterpret_cast<void*>(i));
+    auto worker = kstd::make_unique<TaskControlBlock>(
+        "ConcurrentWorker", 10, concurrent_exit_worker,
+        reinterpret_cast<void*>(i));
     worker->pid = 3001 + i;
     worker->JoinThreadGroup(leader);
-    TaskManagerSingleton::instance().AddTask(worker);
+    TaskManagerSingleton::instance().AddTask(std::move(worker));
   }
 
-  klog::Info("Started %d worker threads", kWorkerCount);
+  klog::Info("Started {} worker threads", kWorkerCount);
 
   // 等待所有线程完成
   for (int i = 0; i < 100 && g_thread_completed < kWorkerCount; ++i) {
-    sys_sleep(50);
+    (void)sys_sleep(50);
   }
 
-  klog::Info("Completed threads: %d (expected %d)", g_thread_completed.load(),
+  klog::Info("Completed threads: {} (expected {})", g_thread_completed.load(),
              kWorkerCount);
 
   delete leader;
@@ -249,32 +249,32 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
  * @brief 线程组系统测试入口
  */
 auto thread_group_system_test() -> bool {
-  sk_printf("=== Thread Group System Test Suite ===\n");
+  klog::Info("=== Thread Group System Test Suite ===");
 
   g_tests_completed = 0;
   g_tests_failed = 0;
 
   // 测试 1: 基本线程组功能
-  auto* test1 = new TaskControlBlock("TestThreadGroupBasic", 10,
-                                     test_thread_group_basic, nullptr);
-  TaskManagerSingleton::instance().AddTask(test1);
+  auto test1 = kstd::make_unique<TaskControlBlock>(
+      "TestThreadGroupBasic", 10, test_thread_group_basic, nullptr);
+  TaskManagerSingleton::instance().AddTask(std::move(test1));
 
   // 测试 2: 动态加入和离开
-  auto* test2 = new TaskControlBlock("TestThreadGroupDynamic", 10,
-                                     test_thread_group_dynamic, nullptr);
-  TaskManagerSingleton::instance().AddTask(test2);
+  auto test2 = kstd::make_unique<TaskControlBlock>(
+      "TestThreadGroupDynamic", 10, test_thread_group_dynamic, nullptr);
+  TaskManagerSingleton::instance().AddTask(std::move(test2));
 
   // 测试 3: 并发退出
-  auto* test3 =
-      new TaskControlBlock("TestThreadGroupConcurrentExit", 10,
-                           test_thread_group_concurrent_exit, nullptr);
-  TaskManagerSingleton::instance().AddTask(test3);
+  auto test3 = kstd::make_unique<TaskControlBlock>(
+      "TestThreadGroupConcurrentExit", 10, test_thread_group_concurrent_exit,
+      nullptr);
+  TaskManagerSingleton::instance().AddTask(std::move(test3));
 
   // 同步等待所有测试完成
   constexpr int kExpectedTests = 3;
   int timeout = 400;
   while (timeout > 0) {
-    sys_sleep(50);
+    (void)sys_sleep(50);
     if (g_tests_completed >= kExpectedTests) {
       break;
     }
@@ -285,6 +285,6 @@ auto thread_group_system_test() -> bool {
             "All thread group tests should complete");
   EXPECT_EQ(g_tests_failed.load(), 0, "No thread group tests should fail");
 
-  sk_printf("Thread Group System Test Suite: COMPLETED\n");
+  klog::Info("Thread Group System Test Suite: COMPLETED");
   return true;
 }

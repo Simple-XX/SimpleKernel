@@ -57,7 +57,7 @@ inline constexpr const char* kLevelColor[] = {
     kRed,
 };
 
-/// @brief 存储于 MPMC 队列中的日志条目
+/// 存储于 MPMC 队列中的日志条目
 struct LogEntry {
   uint64_t seq{0};
   uint64_t core_id{0};

@@ -10,7 +10,6 @@
 #include "arch.h"
 #include "basic_info.hpp"
 #include "kernel.h"
-#include "kstd_cstdio"
 #include "kstd_cstring"
 #include "kstd_libcxx.h"
 #include "sk_stdlib.h"
@@ -20,7 +19,7 @@
 #include "task_manager.hpp"
 
 auto user_task_test() -> bool {
-  sk_printf("user_task_test: start\n");
+  klog::Info("user_task_test: start");
 
   return true;
 }

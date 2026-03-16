@@ -6,7 +6,6 @@
 
 #include <cstdint>
 
-#include "sk_stdio.h"
 #include "system_test.h"
 #include "task_control_block.hpp"
 #include "task_messages.hpp"
@@ -14,7 +13,7 @@
 namespace {
 
 auto test_rr_basic_functionality() -> bool {
-  sk_printf("Running test_rr_basic_functionality...\n");
+  klog::Info("Running test_rr_basic_functionality...");
 
   RoundRobinScheduler scheduler;
 
@@ -58,12 +57,12 @@ auto test_rr_basic_functionality() -> bool {
   EXPECT_EQ(scheduler.PickNext(), nullptr,
             "PickNext should return nullptr after all tasks picked");
 
-  sk_printf("test_rr_basic_functionality passed\n");
+  klog::Info("test_rr_basic_functionality passed");
   return true;
 }
 
 auto test_rr_round_robin_behavior() -> bool {
-  sk_printf("Running test_rr_round_robin_behavior...\n");
+  klog::Info("Running test_rr_round_robin_behavior...");
 
   RoundRobinScheduler scheduler;
 
@@ -91,12 +90,12 @@ auto test_rr_round_robin_behavior() -> bool {
 
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty after 2 rounds");
 
-  sk_printf("test_rr_round_robin_behavior passed\n");
+  klog::Info("test_rr_round_robin_behavior passed");
   return true;
 }
 
 auto test_rr_time_slice_management() -> bool {
-  sk_printf("Running test_rr_time_slice_management...\n");
+  klog::Info("Running test_rr_time_slice_management...");
 
   RoundRobinScheduler scheduler;
 
@@ -120,12 +119,12 @@ auto test_rr_time_slice_management() -> bool {
   EXPECT_EQ(task1.sched_info.time_slice_remaining, 20,
             "OnTimeSliceExpired should reset time slice");
 
-  sk_printf("test_rr_time_slice_management passed\n");
+  klog::Info("test_rr_time_slice_management passed");
   return true;
 }
 
 auto test_rr_dequeue() -> bool {
-  sk_printf("Running test_rr_dequeue...\n");
+  klog::Info("Running test_rr_dequeue...");
 
   RoundRobinScheduler scheduler;
 
@@ -160,12 +159,12 @@ auto test_rr_dequeue() -> bool {
 
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty");
 
-  sk_printf("test_rr_dequeue passed\n");
+  klog::Info("test_rr_dequeue passed");
   return true;
 }
 
 auto test_rr_statistics() -> bool {
-  sk_printf("Running test_rr_statistics...\n");
+  klog::Info("Running test_rr_statistics...");
 
   RoundRobinScheduler scheduler;
 
@@ -186,8 +185,8 @@ auto test_rr_statistics() -> bool {
   EXPECT_EQ(stats.total_enqueues, 2, "Enqueues should be 2");
 
   // 测试选择统计
-  scheduler.PickNext();
-  scheduler.PickNext();
+  (void)scheduler.PickNext();
+  (void)scheduler.PickNext();
   stats = scheduler.GetStats();
   EXPECT_EQ(stats.total_picks, 2, "Picks should be 2");
 
@@ -211,12 +210,12 @@ auto test_rr_statistics() -> bool {
   EXPECT_EQ(stats.total_picks, 0, "Picks should be 0 after reset");
   EXPECT_EQ(stats.total_preemptions, 0, "Preemptions should be 0 after reset");
 
-  sk_printf("test_rr_statistics passed\n");
+  klog::Info("test_rr_statistics passed");
   return true;
 }
 
 auto test_rr_fairness() -> bool {
-  sk_printf("Running test_rr_fairness...\n");
+  klog::Info("Running test_rr_fairness...");
 
   RoundRobinScheduler scheduler;
   constexpr size_t kTaskCount = 50;
@@ -246,12 +245,12 @@ auto test_rr_fairness() -> bool {
     delete tasks[i];
   }
 
-  sk_printf("test_rr_fairness passed\n");
+  klog::Info("test_rr_fairness passed");
   return true;
 }
 
 auto test_rr_mixed_operations() -> bool {
-  sk_printf("Running test_rr_mixed_operations...\n");
+  klog::Info("Running test_rr_mixed_operations...");
 
   RoundRobinScheduler scheduler;
 
@@ -287,12 +286,12 @@ auto test_rr_mixed_operations() -> bool {
 
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty");
 
-  sk_printf("test_rr_mixed_operations passed\n");
+  klog::Info("test_rr_mixed_operations passed");
   return true;
 }
 
 auto test_rr_multiple_rounds() -> bool {
-  sk_printf("Running test_rr_multiple_rounds...\n");
+  klog::Info("Running test_rr_multiple_rounds...");
 
   RoundRobinScheduler scheduler;
 
@@ -312,12 +311,12 @@ auto test_rr_multiple_rounds() -> bool {
     EXPECT_TRUE(scheduler.IsEmpty(), "Queue should be empty after each round");
   }
 
-  sk_printf("test_rr_multiple_rounds passed\n");
+  klog::Info("test_rr_multiple_rounds passed");
   return true;
 }
 
 auto test_rr_hooks() -> bool {
-  sk_printf("Running test_rr_hooks...\n");
+  klog::Info("Running test_rr_hooks...");
 
   RoundRobinScheduler scheduler;
 
@@ -343,12 +342,12 @@ auto test_rr_hooks() -> bool {
   auto* picked = scheduler.PickNext();
   EXPECT_EQ(picked, &task1, "Scheduler should still work after hook calls");
 
-  sk_printf("test_rr_hooks passed\n");
+  klog::Info("test_rr_hooks passed");
   return true;
 }
 
 auto test_rr_robustness() -> bool {
-  sk_printf("Running test_rr_robustness...\n");
+  klog::Info("Running test_rr_robustness...");
 
   RoundRobinScheduler scheduler;
 
@@ -370,12 +369,12 @@ auto test_rr_robustness() -> bool {
   scheduler.Dequeue(nullptr);  // 不应崩溃
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should still be empty");
 
-  sk_printf("test_rr_robustness passed\n");
+  klog::Info("test_rr_robustness passed");
   return true;
 }
 
 auto test_rr_interleaved_operations() -> bool {
-  sk_printf("Running test_rr_interleaved_operations...\n");
+  klog::Info("Running test_rr_interleaved_operations...");
 
   RoundRobinScheduler scheduler;
 
@@ -402,14 +401,14 @@ auto test_rr_interleaved_operations() -> bool {
 
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty");
 
-  sk_printf("test_rr_interleaved_operations passed\n");
+  klog::Info("test_rr_interleaved_operations passed");
   return true;
 }
 
 }  // namespace
 
 auto rr_scheduler_test() -> bool {
-  sk_printf("\n=== Round-Robin Scheduler System Tests ===\n");
+  klog::Info("\n=== Round-Robin Scheduler System Tests ===\n");
 
   if (!test_rr_basic_functionality()) {
     return false;
@@ -455,6 +454,6 @@ auto rr_scheduler_test() -> bool {
     return false;
   }
 
-  sk_printf("=== All Round-Robin Scheduler Tests Passed ===\n\n");
+  klog::Info("=== All Round-Robin Scheduler Tests Passed ===\n");
   return true;
 }

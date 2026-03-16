@@ -310,13 +310,13 @@ TEST(DentryStructTest, DentryDefaults) {
 
 // OpenFlags 测试
 TEST(OpenFlagsTest, FlagValues) {
-  EXPECT_EQ(kOReadOnly, 0x0000u);
-  EXPECT_EQ(kOWriteOnly, 0x0001u);
-  EXPECT_EQ(kOReadWrite, 0x0002u);
-  EXPECT_EQ(kOCreate, 0x0040u);
-  EXPECT_EQ(kOTruncate, 0x0200u);
-  EXPECT_EQ(kOAppend, 0x0400u);
-  EXPECT_EQ(kODirectory, 0x010000u);
+  EXPECT_EQ(static_cast<uint32_t>(OpenFlags::kOReadOnly), 0x0000u);
+  EXPECT_EQ(static_cast<uint32_t>(OpenFlags::kOWriteOnly), 0x0001u);
+  EXPECT_EQ(static_cast<uint32_t>(OpenFlags::kOReadWrite), 0x0002u);
+  EXPECT_EQ(static_cast<uint32_t>(OpenFlags::kOCreate), 0x0040u);
+  EXPECT_EQ(static_cast<uint32_t>(OpenFlags::kOTruncate), 0x0200u);
+  EXPECT_EQ(static_cast<uint32_t>(OpenFlags::kOAppend), 0x0400u);
+  EXPECT_EQ(static_cast<uint32_t>(OpenFlags::kODirectory), 0x010000u);
 }
 
 // SeekWhence 测试

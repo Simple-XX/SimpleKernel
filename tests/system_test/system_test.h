@@ -7,7 +7,7 @@
 
 #include <type_traits>
 
-#include "kstd_cstdio"
+#include "kernel_log.hpp"
 
 template <typename T1, typename T2>
 bool expect_eq_helper(const T1& val1, const T2& val2, const char* msg) {
@@ -17,10 +17,10 @@ bool expect_eq_helper(const T1& val1, const T2& val2, const char* msg) {
 #pragma GCC diagnostic pop
     if constexpr (std::is_convertible_v<T1, long> &&
                   std::is_convertible_v<T2, long>) {
-      sk_printf("FAIL: %s. Expected %ld, got %ld\n", msg, (long)(val2),
+      klog::Err("FAIL: {}. Expected {}, got {}", msg, (long)(val2),
                 (long)(val1));
     } else {
-      sk_printf("FAIL: %s.\n", msg);
+      klog::Err("FAIL: {}", msg);
     }
     return false;
   }
@@ -35,10 +35,10 @@ bool expect_ne_helper(const T1& val1, const T2& val2, const char* msg) {
 #pragma GCC diagnostic pop
     if constexpr (std::is_convertible_v<T1, long> &&
                   std::is_convertible_v<T2, long>) {
-      sk_printf("FAIL: %s. Expected not %ld, got %ld\n", msg, (long)(val2),
+      klog::Err("FAIL: {}. Expected not {}, got {}", msg, (long)(val2),
                 (long)(val1));
     } else {
-      sk_printf("FAIL: %s.\n", msg);
+      klog::Err("FAIL: {}", msg);
     }
     return false;
   }
@@ -53,10 +53,9 @@ bool expect_gt_helper(const T1& val1, const T2& val2, const char* msg) {
 #pragma GCC diagnostic pop
     if constexpr (std::is_convertible_v<T1, long> &&
                   std::is_convertible_v<T2, long>) {
-      sk_printf("FAIL: %s. Expected %ld > %ld\n", msg, (long)(val1),
-                (long)(val2));
+      klog::Err("FAIL: {}. Expected {} > {}", msg, (long)(val1), (long)(val2));
     } else {
-      sk_printf("FAIL: %s.\n", msg);
+      klog::Err("FAIL: {}", msg);
     }
     return false;
   }
@@ -71,10 +70,9 @@ bool expect_lt_helper(const T1& val1, const T2& val2, const char* msg) {
 #pragma GCC diagnostic pop
     if constexpr (std::is_convertible_v<T1, long> &&
                   std::is_convertible_v<T2, long>) {
-      sk_printf("FAIL: %s. Expected %ld < %ld\n", msg, (long)(val1),
-                (long)(val2));
+      klog::Err("FAIL: {}. Expected {} < {}", msg, (long)(val1), (long)(val2));
     } else {
-      sk_printf("FAIL: %s.\n", msg);
+      klog::Err("FAIL: {}", msg);
     }
     return false;
   }
@@ -89,10 +87,9 @@ bool expect_ge_helper(const T1& val1, const T2& val2, const char* msg) {
 #pragma GCC diagnostic pop
     if constexpr (std::is_convertible_v<T1, long> &&
                   std::is_convertible_v<T2, long>) {
-      sk_printf("FAIL: %s. Expected %ld >= %ld\n", msg, (long)(val1),
-                (long)(val2));
+      klog::Err("FAIL: {}. Expected {} >= {}", msg, (long)(val1), (long)(val2));
     } else {
-      sk_printf("FAIL: %s.\n", msg);
+      klog::Err("FAIL: {}", msg);
     }
     return false;
   }
@@ -124,16 +121,16 @@ bool expect_ge_helper(const T1& val1, const T2& val2, const char* msg) {
     return false;                           \
   }
 
-#define EXPECT_TRUE(cond, msg)     \
-  if (!(cond)) {                   \
-    sk_printf("FAIL: %s.\n", msg); \
-    return false;                  \
+#define EXPECT_TRUE(cond, msg)  \
+  if (!(cond)) {                \
+    klog::Err("FAIL: {}", msg); \
+    return false;               \
   }
 
-#define EXPECT_FALSE(cond, msg)    \
-  if (cond) {                      \
-    sk_printf("FAIL: %s.\n", msg); \
-    return false;                  \
+#define EXPECT_FALSE(cond, msg) \
+  if (cond) {                   \
+    klog::Err("FAIL: {}", msg); \
+    return false;               \
   }
 
 auto ctor_dtor_test() -> bool;

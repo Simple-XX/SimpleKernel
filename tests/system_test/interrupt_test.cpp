@@ -13,7 +13,6 @@
 #include "basic_info.hpp"
 #include "interrupt_base.h"
 #include "kernel.h"
-#include "kstd_cstdio"
 #include "kstd_cstring"
 #include "kstd_libcxx.h"
 #include "sk_stdlib.h"
@@ -21,11 +20,11 @@
 
 /// @todo 等用户态调通后补上
 auto interrupt_test() -> bool {
-  sk_printf("interrupt_test: start\n");
+  klog::Info("interrupt_test: start");
 
-  InterruptSingleton::instance().BroadcastIpi();
+  (void)InterruptSingleton::instance().BroadcastIpi();
 
-  sk_printf("interrupt_test: broadcast ipi passed\n");
+  klog::Info("interrupt_test: broadcast ipi passed");
 
   return true;
 }

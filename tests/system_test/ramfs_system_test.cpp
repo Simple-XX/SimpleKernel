@@ -5,21 +5,20 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "kstd_cstdio"
 #include "kstd_cstring"
 #include "system_test.h"
 #include "vfs.hpp"
 
 auto ramfs_system_test() -> bool {
-  sk_printf("ramfs_system_test: start\n");
+  klog::Info("ramfs_system_test: start");
 
   // FileSystemInit() has already been called in main.cpp.
   // ramfs is mounted at "/" — use VFS directly.
 
   // T1: Create file, write, read back
   {
-    auto file_result =
-        vfs::Open("/hello.txt", vfs::kOCreate | vfs::kOReadWrite);
+    auto file_result = vfs::Open(
+        "/hello.txt", vfs::OpenFlags::kOCreate | vfs::OpenFlags::kOReadWrite);
     EXPECT_TRUE(file_result.has_value(),
                 "ramfs_system_test: open /hello.txt failed");
     vfs::File* file = file_result.value();
@@ -29,7 +28,7 @@ auto ramfs_system_test() -> bool {
     EXPECT_TRUE(write_result.has_value(), "ramfs_system_test: write failed");
     EXPECT_EQ(write_result.value(), sizeof(kMsg) - 1,
               "ramfs_system_test: write byte count mismatch");
-    sk_printf("ramfs_system_test: wrote %zu bytes\n", write_result.value());
+    klog::Info("ramfs_system_test: wrote {} bytes", write_result.value());
 
     // Seek back to start
     auto seek_result = vfs::Seek(file, 0, vfs::SeekWhence::kSet);
@@ -46,14 +45,14 @@ auto ramfs_system_test() -> bool {
               "ramfs_system_test: read byte count mismatch");
     EXPECT_EQ(memcmp(buf, kMsg, sizeof(kMsg) - 1), 0,
               "ramfs_system_test: read content mismatch");
-    sk_printf("ramfs_system_test: read back: %s\n", buf);
+    klog::Info("ramfs_system_test: read back: {}", buf);
 
     vfs::Close(file);
   }
 
   // T3: Seek to middle, partial read
   {
-    auto file_result = vfs::Open("/hello.txt", vfs::kOReadOnly);
+    auto file_result = vfs::Open("/hello.txt", vfs::OpenFlags::kOReadOnly);
     EXPECT_TRUE(file_result.has_value(),
                 "ramfs_system_test: re-open for seek test failed");
     vfs::File* file = file_result.value();
@@ -74,7 +73,7 @@ auto ramfs_system_test() -> bool {
               "ramfs_system_test: partial read count mismatch");
     EXPECT_EQ(memcmp(buf, "ramfs", 5), 0,
               "ramfs_system_test: partial read content mismatch");
-    sk_printf("ramfs_system_test: partial read from offset 7: %.5s\n", buf);
+    klog::Info("ramfs_system_test: partial read from offset 7: {}", buf);
 
     vfs::Close(file);
   }
@@ -84,18 +83,19 @@ auto ramfs_system_test() -> bool {
     auto mkdir_result = vfs::MkDir("/testdir");
     EXPECT_TRUE(mkdir_result.has_value(),
                 "ramfs_system_test: mkdir /testdir failed");
-    sk_printf("ramfs_system_test: mkdir /testdir ok\n");
+    klog::Info("ramfs_system_test: mkdir /testdir ok");
 
     // Create a file inside
     auto inner =
-        vfs::Open("/testdir/inner.txt", vfs::kOCreate | vfs::kOWriteOnly);
+        vfs::Open("/testdir/inner.txt",
+                  vfs::OpenFlags::kOCreate | vfs::OpenFlags::kOWriteOnly);
     EXPECT_TRUE(inner.has_value(),
                 "ramfs_system_test: open /testdir/inner.txt failed");
     vfs::Close(inner.value());
 
     // ReadDir on /testdir
-    auto dir_file_result =
-        vfs::Open("/testdir", vfs::kOReadOnly | vfs::kODirectory);
+    auto dir_file_result = vfs::Open(
+        "/testdir", vfs::OpenFlags::kOReadOnly | vfs::OpenFlags::kODirectory);
     EXPECT_TRUE(dir_file_result.has_value(),
                 "ramfs_system_test: open /testdir as dir failed");
     vfs::File* dir_file = dir_file_result.value();
@@ -107,8 +107,8 @@ auto ramfs_system_test() -> bool {
     // Expect at least "." + ".." + "inner.txt" = 3 entries
     EXPECT_GT(readdir_result.value(), static_cast<size_t>(2),
               "ramfs_system_test: readdir should return > 2 entries");
-    sk_printf("ramfs_system_test: readdir returned %zu entries\n",
-              readdir_result.value());
+    klog::Info("ramfs_system_test: readdir returned {} entries",
+               readdir_result.value());
 
     vfs::Close(dir_file);
   }
@@ -118,12 +118,12 @@ auto ramfs_system_test() -> bool {
     auto unlink_result = vfs::Unlink("/hello.txt");
     EXPECT_TRUE(unlink_result.has_value(),
                 "ramfs_system_test: unlink /hello.txt failed");
-    sk_printf("ramfs_system_test: unlink /hello.txt ok\n");
+    klog::Info("ramfs_system_test: unlink /hello.txt ok");
 
-    auto reopen = vfs::Open("/hello.txt", vfs::kOReadOnly);
+    auto reopen = vfs::Open("/hello.txt", vfs::OpenFlags::kOReadOnly);
     EXPECT_FALSE(reopen.has_value(),
                  "ramfs_system_test: /hello.txt should be gone after unlink");
-    sk_printf("ramfs_system_test: confirmed /hello.txt no longer exists\n");
+    klog::Info("ramfs_system_test: confirmed /hello.txt no longer exists");
   }
 
   // T6: RmDir
@@ -136,13 +136,15 @@ auto ramfs_system_test() -> bool {
     auto rmdir_result = vfs::RmDir("/testdir");
     EXPECT_TRUE(rmdir_result.has_value(),
                 "ramfs_system_test: rmdir /testdir failed");
-    sk_printf("ramfs_system_test: rmdir /testdir ok\n");
+    klog::Info("ramfs_system_test: rmdir /testdir ok");
   }
 
   // T7: Two independent files do not share data
   {
-    auto f1 = vfs::Open("/fileA.txt", vfs::kOCreate | vfs::kOReadWrite);
-    auto f2 = vfs::Open("/fileB.txt", vfs::kOCreate | vfs::kOReadWrite);
+    auto f1 = vfs::Open("/fileA.txt",
+                        vfs::OpenFlags::kOCreate | vfs::OpenFlags::kOReadWrite);
+    auto f2 = vfs::Open("/fileB.txt",
+                        vfs::OpenFlags::kOCreate | vfs::OpenFlags::kOReadWrite);
     EXPECT_TRUE(f1.has_value(), "ramfs_system_test: open fileA failed");
     EXPECT_TRUE(f2.has_value(), "ramfs_system_test: open fileB failed");
 
@@ -163,7 +165,7 @@ auto ramfs_system_test() -> bool {
               "ramfs_system_test: fileA data corrupted by fileB");
     EXPECT_EQ(memcmp(buf2, kDataB, 4), 0,
               "ramfs_system_test: fileB data corrupted by fileA");
-    sk_printf("ramfs_system_test: two files are independent\n");
+    klog::Info("ramfs_system_test: two files are independent");
 
     vfs::Close(f1.value());
     vfs::Close(f2.value());
@@ -171,6 +173,6 @@ auto ramfs_system_test() -> bool {
     vfs::Unlink("/fileB.txt");
   }
 
-  sk_printf("ramfs_system_test: all tests passed\n");
+  klog::Info("ramfs_system_test: all tests passed");
   return true;
 }

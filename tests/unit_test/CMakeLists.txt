@@ -82,6 +82,7 @@ TARGET_LINK_LIBRARIES (
             task
             filesystem
             fatfs_lib
+            3rd_compile_definitions
             etl::etl)
 
 GTEST_DISCOVER_TESTS (${PROJECT_NAME})

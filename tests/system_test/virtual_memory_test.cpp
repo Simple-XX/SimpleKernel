@@ -12,7 +12,6 @@
 #include "arch.h"
 #include "basic_info.hpp"
 #include "kernel.h"
-#include "kstd_cstdio"
 #include "kstd_cstring"
 #include "kstd_libcxx.h"
 #include "sk_stdlib.h"
@@ -28,7 +27,7 @@ void* aligned_alloc(size_t alignment, size_t size);
 // VirtualMemorySingleton is defined in virtual_memory.hpp
 
 auto virtual_memory_test() -> bool {
-  sk_printf("virtual_memory_test: start\n");
+  klog::Info("virtual_memory_test: start");
 
   auto& vm = VirtualMemorySingleton::instance();
 
@@ -38,8 +37,8 @@ auto virtual_memory_test() -> bool {
   EXPECT_TRUE(user_page_dir != nullptr,
               "virtual_memory_test: failed to create user page directory");
   memset(user_page_dir, 0, cpu_io::virtual_memory::kPageSize);
-  sk_printf("virtual_memory_test: user page directory created at %p\n",
-            user_page_dir);
+  klog::Info("virtual_memory_test: user page directory created at {}",
+             user_page_dir);
 
   // Test 2: 映射页面
   void* virt_addr = reinterpret_cast<void*>(0x200000);
@@ -50,8 +49,8 @@ auto virtual_memory_test() -> bool {
                  cpu_io::virtual_memory::GetUserPagePermissions());
   EXPECT_TRUE(map_result.has_value(),
               "virtual_memory_test: failed to map page");
-  sk_printf("virtual_memory_test: mapped va=%p to pa=%p\n", virt_addr,
-            phys_addr);
+  klog::Info("virtual_memory_test: mapped va={} to pa={}", virt_addr,
+             phys_addr);
 
   // Test 3: 获取映射
   auto mapped = vm.GetMapping(user_page_dir, virt_addr);
@@ -59,7 +58,7 @@ auto virtual_memory_test() -> bool {
   if (mapped) {
     EXPECT_EQ(*mapped, phys_addr,
               "virtual_memory_test: mapping address mismatch");
-    sk_printf("virtual_memory_test: verified mapping pa=%p\n", *mapped);
+    klog::Info("virtual_memory_test: verified mapping pa={}", *mapped);
   }
 
   // Test 4: 映射多个页面
@@ -75,7 +74,7 @@ auto virtual_memory_test() -> bool {
     EXPECT_TRUE(result.has_value(),
                 "virtual_memory_test: failed to map multiple pages");
   }
-  sk_printf("virtual_memory_test: mapped %zu pages\n", kNumPages);
+  klog::Info("virtual_memory_test: mapped {} pages", kNumPages);
 
   // Test 5: 验证多页映射
   for (size_t i = 0; i < kNumPages; ++i) {
@@ -91,7 +90,7 @@ auto virtual_memory_test() -> bool {
       EXPECT_EQ(*m, pa, "virtual_memory_test: multiple page mapping mismatch");
     }
   }
-  sk_printf("virtual_memory_test: verified %zu page mappings\n", kNumPages);
+  klog::Info("virtual_memory_test: verified {} page mappings", kNumPages);
 
   // Test 6: 取消映射
   auto unmap_result = vm.UnmapPage(user_page_dir, virt_addr);
@@ -101,7 +100,7 @@ auto virtual_memory_test() -> bool {
   auto unmapped = vm.GetMapping(user_page_dir, virt_addr);
   EXPECT_TRUE(!unmapped.has_value(),
               "virtual_memory_test: page still mapped after unmap");
-  sk_printf("virtual_memory_test: unmapped va=%p\n", virt_addr);
+  klog::Info("virtual_memory_test: unmapped va={}", virt_addr);
 
   // Test 7: 克隆页表（复制映射）
   auto clone_result = vm.ClonePageDirectory(user_page_dir, true);
@@ -110,8 +109,8 @@ auto virtual_memory_test() -> bool {
   void* cloned_page_dir = clone_result.value();
   EXPECT_TRUE(cloned_page_dir != user_page_dir,
               "virtual_memory_test: cloned page dir same as source");
-  sk_printf("virtual_memory_test: cloned page directory to %p\n",
-            cloned_page_dir);
+  klog::Info("virtual_memory_test: cloned page directory to {}",
+             cloned_page_dir);
 
   // Test 8: 验证克隆的映射
   for (size_t i = 0; i < kNumPages; ++i) {
@@ -136,15 +135,15 @@ auto virtual_memory_test() -> bool {
                 "virtual_memory_test: source and clone mappings differ");
     }
   }
-  sk_printf("virtual_memory_test: verified cloned mappings\n");
+  klog::Info("virtual_memory_test: verified cloned mappings");
 
   // Test 9: 克隆页表（不复制映射）
   auto clone_no_map_result = vm.ClonePageDirectory(user_page_dir, false);
   EXPECT_TRUE(clone_no_map_result.has_value(),
               "virtual_memory_test: failed to clone page dir (no mappings)");
   void* cloned_no_map = clone_no_map_result.value();
-  sk_printf("virtual_memory_test: cloned page directory (no mappings) to %p\n",
-            cloned_no_map);
+  klog::Info("virtual_memory_test: cloned page directory (no mappings) to {}",
+             cloned_no_map);
 
   // 验证新页表没有映射
   for (size_t i = 0; i < kNumPages; ++i) {
@@ -155,7 +154,7 @@ auto virtual_memory_test() -> bool {
     EXPECT_TRUE(!m.has_value(),
                 "virtual_memory_test: cloned (no map) should have no mappings");
   }
-  sk_printf("virtual_memory_test: verified no mappings in cloned page dir\n");
+  klog::Info("virtual_memory_test: verified no mappings in cloned page dir");
 
   // Test 10: 在克隆的页表中添加新映射
   void* new_va = reinterpret_cast<void*>(0x400000);
@@ -179,17 +178,17 @@ auto virtual_memory_test() -> bool {
     EXPECT_EQ(*clone_m, new_pa,
               "virtual_memory_test: new mapping address incorrect");
   }
-  sk_printf("virtual_memory_test: verified independent mappings\n");
+  klog::Info("virtual_memory_test: verified independent mappings");
 
   // Test 11: 销毁页表
   vm.DestroyPageDirectory(user_page_dir, false);
-  sk_printf("virtual_memory_test: destroyed user page directory\n");
+  klog::Info("virtual_memory_test: destroyed user page directory");
 
   vm.DestroyPageDirectory(cloned_page_dir, false);
-  sk_printf("virtual_memory_test: destroyed cloned page directory\n");
+  klog::Info("virtual_memory_test: destroyed cloned page directory");
 
   vm.DestroyPageDirectory(cloned_no_map, false);
-  sk_printf("virtual_memory_test: destroyed cloned (no map) page directory\n");
+  klog::Info("virtual_memory_test: destroyed cloned (no map) page directory");
 
   // Test 12: 重新映射测试
   void* test_page_dir = aligned_alloc(cpu_io::virtual_memory::kPageSize,
@@ -203,8 +202,8 @@ auto virtual_memory_test() -> bool {
   void* test_pa2 = reinterpret_cast<void*>(0x94000000);
 
   // 第一次映射
-  vm.MapPage(test_page_dir, test_va, test_pa1,
-             cpu_io::virtual_memory::GetUserPagePermissions());
+  (void)vm.MapPage(test_page_dir, test_va, test_pa1,
+                   cpu_io::virtual_memory::GetUserPagePermissions());
 
   auto m1 = vm.GetMapping(test_page_dir, test_va);
   EXPECT_TRUE(m1.has_value(), "virtual_memory_test: first mapping failed");
@@ -213,20 +212,20 @@ auto virtual_memory_test() -> bool {
   }
 
   // 重新映射到不同物理地址
-  vm.MapPage(test_page_dir, test_va, test_pa2,
-             cpu_io::virtual_memory::GetUserPagePermissions());
+  (void)vm.MapPage(test_page_dir, test_va, test_pa2,
+                   cpu_io::virtual_memory::GetUserPagePermissions());
 
   auto m2 = vm.GetMapping(test_page_dir, test_va);
   EXPECT_TRUE(m2.has_value(), "virtual_memory_test: remap failed");
   if (m2) {
     EXPECT_EQ(*m2, test_pa2, "virtual_memory_test: remap address incorrect");
   }
-  sk_printf("virtual_memory_test: verified remap from %p to %p\n", test_pa1,
-            test_pa2);
+  klog::Info("virtual_memory_test: verified remap from {} to {}", test_pa1,
+             test_pa2);
 
   // 清理
   vm.DestroyPageDirectory(test_page_dir, false);
 
-  sk_printf("virtual_memory_test: all tests passed\n");
+  klog::Info("virtual_memory_test: all tests passed");
   return true;
 }

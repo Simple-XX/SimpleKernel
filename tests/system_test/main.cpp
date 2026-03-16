@@ -10,7 +10,6 @@
 #include "kernel.h"
 #include "kernel_log.hpp"
 #include "kstd_cstdio"
-#include "kstd_iostream"
 #include "kstd_libcxx.h"
 #include "per_cpu.hpp"
 #include "spinlock.hpp"
@@ -130,7 +129,7 @@ auto main(int argc, const char** argv) -> int {
 
   DumpStack();
 
-  klog::info << "Hello SimpleKernel";
+  klog::Info("Hello SimpleKernel");
 
   // 主核运行所有测试（包括多核测试）
   run_tests_main();

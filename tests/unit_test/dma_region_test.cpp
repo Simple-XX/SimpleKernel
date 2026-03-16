@@ -24,7 +24,7 @@ TEST(DmaRegionTest, ValidRegion) {
       .size = sizeof(buf),
   };
   EXPECT_TRUE(region.IsValid());
-  EXPECT_EQ(region.data(), buf);
+  EXPECT_EQ(region.Data(), buf);
   EXPECT_EQ(region.phys, 0x8000'0000u);
   EXPECT_EQ(region.size, 256u);
 }

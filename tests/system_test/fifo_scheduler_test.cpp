@@ -6,7 +6,6 @@
 
 #include <cstdint>
 
-#include "sk_stdio.h"
 #include "system_test.h"
 #include "task_control_block.hpp"
 #include "task_messages.hpp"
@@ -14,7 +13,7 @@
 namespace {
 
 auto test_fifo_basic_functionality() -> bool {
-  sk_printf("Running test_fifo_basic_functionality...\n");
+  klog::Info("Running test_fifo_basic_functionality...");
 
   FifoScheduler scheduler;
 
@@ -61,12 +60,12 @@ auto test_fifo_basic_functionality() -> bool {
   EXPECT_EQ(scheduler.PickNext(), nullptr,
             "PickNext should return nullptr after all tasks picked");
 
-  sk_printf("test_fifo_basic_functionality passed\n");
+  klog::Info("test_fifo_basic_functionality passed");
   return true;
 }
 
 auto test_fifo_ordering() -> bool {
-  sk_printf("Running test_fifo_ordering...\n");
+  klog::Info("Running test_fifo_ordering...");
 
   FifoScheduler scheduler;
   constexpr size_t kTaskCount = 10;
@@ -96,12 +95,12 @@ auto test_fifo_ordering() -> bool {
     delete tasks[i];
   }
 
-  sk_printf("test_fifo_ordering passed\n");
+  klog::Info("test_fifo_ordering passed");
   return true;
 }
 
 auto test_fifo_dequeue() -> bool {
-  sk_printf("Running test_fifo_dequeue...\n");
+  klog::Info("Running test_fifo_dequeue...");
 
   FifoScheduler scheduler;
 
@@ -136,12 +135,12 @@ auto test_fifo_dequeue() -> bool {
 
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty");
 
-  sk_printf("test_fifo_dequeue passed\n");
+  klog::Info("test_fifo_dequeue passed");
   return true;
 }
 
 auto test_fifo_statistics() -> bool {
-  sk_printf("Running test_fifo_statistics...\n");
+  klog::Info("Running test_fifo_statistics...");
 
   FifoScheduler scheduler;
 
@@ -162,8 +161,8 @@ auto test_fifo_statistics() -> bool {
   EXPECT_EQ(stats.total_enqueues, 2, "Enqueues should be 2");
 
   // 测试选择统计
-  scheduler.PickNext();
-  scheduler.PickNext();
+  (void)scheduler.PickNext();
+  (void)scheduler.PickNext();
   stats = scheduler.GetStats();
   EXPECT_EQ(stats.total_picks, 2, "Picks should be 2");
 
@@ -187,12 +186,12 @@ auto test_fifo_statistics() -> bool {
   EXPECT_EQ(stats.total_picks, 0, "Picks should be 0 after reset");
   EXPECT_EQ(stats.total_preemptions, 0, "Preemptions should be 0 after reset");
 
-  sk_printf("test_fifo_statistics passed\n");
+  klog::Info("test_fifo_statistics passed");
   return true;
 }
 
 auto test_fifo_mixed_operations() -> bool {
-  sk_printf("Running test_fifo_mixed_operations...\n");
+  klog::Info("Running test_fifo_mixed_operations...");
 
   FifoScheduler scheduler;
 
@@ -228,12 +227,12 @@ auto test_fifo_mixed_operations() -> bool {
 
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty");
 
-  sk_printf("test_fifo_mixed_operations passed\n");
+  klog::Info("test_fifo_mixed_operations passed");
   return true;
 }
 
 auto test_fifo_repeated_enqueue() -> bool {
-  sk_printf("Running test_fifo_repeated_enqueue...\n");
+  klog::Info("Running test_fifo_repeated_enqueue...");
 
   FifoScheduler scheduler;
 
@@ -254,12 +253,12 @@ auto test_fifo_repeated_enqueue() -> bool {
 
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty");
 
-  sk_printf("test_fifo_repeated_enqueue passed\n");
+  klog::Info("test_fifo_repeated_enqueue passed");
   return true;
 }
 
 auto test_fifo_hooks() -> bool {
-  sk_printf("Running test_fifo_hooks...\n");
+  klog::Info("Running test_fifo_hooks...");
 
   FifoScheduler scheduler;
 
@@ -286,12 +285,12 @@ auto test_fifo_hooks() -> bool {
   auto* picked = scheduler.PickNext();
   EXPECT_EQ(picked, &task1, "Scheduler should still work after hook calls");
 
-  sk_printf("test_fifo_hooks passed\n");
+  klog::Info("test_fifo_hooks passed");
   return true;
 }
 
 auto test_fifo_robustness() -> bool {
-  sk_printf("Running test_fifo_robustness...\n");
+  klog::Info("Running test_fifo_robustness...");
 
   FifoScheduler scheduler;
 
@@ -308,14 +307,14 @@ auto test_fifo_robustness() -> bool {
   scheduler.Dequeue(&task1);  // 再次移除已移除的任务，不应崩溃
   EXPECT_TRUE(scheduler.IsEmpty(), "Scheduler should be empty");
 
-  sk_printf("test_fifo_robustness passed\n");
+  klog::Info("test_fifo_robustness passed");
   return true;
 }
 
 }  // namespace
 
 auto fifo_scheduler_test() -> bool {
-  sk_printf("\n=== FIFO Scheduler System Tests ===\n");
+  klog::Info("\n=== FIFO Scheduler System Tests ===\n");
 
   if (!test_fifo_basic_functionality()) {
     return false;
@@ -349,6 +348,6 @@ auto fifo_scheduler_test() -> bool {
     return false;
   }
 
-  sk_printf("=== All FIFO Scheduler Tests Passed ===\n\n");
+  klog::Info("=== All FIFO Scheduler Tests Passed ===\n");
   return true;
 }
