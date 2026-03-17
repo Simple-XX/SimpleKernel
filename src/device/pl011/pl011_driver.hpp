@@ -106,7 +106,6 @@ class Pl011Driver {
  private:
   static constexpr MatchEntry kMatchTable[] = {
       {BusType::kPlatform, "arm,pl011"},
-      {BusType::kPlatform, "arm,primecell"},
   };
 
   Pl011Type uart_{};

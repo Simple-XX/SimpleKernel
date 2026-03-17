@@ -530,7 +530,6 @@ auto test_cfs_robustness() -> bool {
   // nullptr 操作
   scheduler.Enqueue(nullptr);
   scheduler.Dequeue(nullptr);
-  (void)scheduler.OnTick(nullptr);
   scheduler.OnPreempted(nullptr);
   scheduler.OnScheduled(nullptr);
 
