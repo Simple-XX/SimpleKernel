@@ -67,8 +67,7 @@ auto TaskManager::TickUpdate() -> void {
     }
   }
 
-  // 如果需要抢占，触发调度
-  if (need_preempt) {
+  if (need_preempt && cpu_sched.scheduler_started) {
     Schedule();
   }
 }

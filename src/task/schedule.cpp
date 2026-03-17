@@ -25,6 +25,7 @@
 
 auto TaskManager::Schedule() -> void {
   auto& cpu_sched = GetCurrentCpuSched();
+  cpu_sched.scheduler_started = true;
   cpu_sched.lock.Lock().or_else([](auto&& err) {
     klog::Err("Schedule: Failed to acquire lock: {}", err.message());
     while (true) {

@@ -62,6 +62,9 @@ struct CpuSchedData {
   /// 本核心的总调度次数
   uint64_t total_schedules{0};
 
+  /// Schedule() 是否已被显式调用
+  bool scheduler_started{false};
+
   /// @name 构造/析构函数
   /// @{
   CpuSchedData() = default;

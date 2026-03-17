@@ -163,13 +163,12 @@ auto main(int argc, const char** argv) -> int {
   TaskManagerSingleton::create();
   TaskManagerSingleton::instance().InitCurrentCore();
 
+  TimerInit();
+
   // 唤醒其余 core
   WakeUpOtherCores();
 
   DumpStack();
-
-  // 初始化定时器
-  TimerInit();
 
   klog::Info("Hello SimpleKernel");
 
