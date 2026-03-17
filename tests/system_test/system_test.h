@@ -213,3 +213,24 @@ inline void QemuExit([[maybe_unused]] bool success) {
 #endif
   __builtin_unreachable();
 }
+
+// ===========================================================================
+// Test thread result tracking
+// ===========================================================================
+
+/// 测试线程运行状态
+enum class TestThreadStatus : uint8_t {
+  kPending,  ///< 等待启动
+  kRunning,  ///< 运行中
+  kPassed,   ///< 测试通过
+  kFailed,   ///< 测试失败
+  kTimeout,  ///< 超时未完成
+};
+
+/// 单个测试线程的结果记录
+struct TestResult {
+  const char* name = nullptr;
+  int64_t pid = 0;
+  TestThreadStatus status = TestThreadStatus::kPending;
+  int exit_code = -1;
+};
