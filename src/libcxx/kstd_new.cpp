@@ -57,11 +57,11 @@ void* operator new[](size_t size, size_t alignment) noexcept {
   return aligned_alloc(alignment, size);
 }
 
-void* operator new(size_t size, std::align_val_t alignment) noexcept {
+void* operator new(size_t size, std::align_val_t alignment) {
   return operator new(size, static_cast<size_t>(alignment));
 }
 
-void* operator new[](size_t size, std::align_val_t alignment) noexcept {
+void* operator new[](size_t size, std::align_val_t alignment) {
   return operator new[](size, static_cast<size_t>(alignment));
 }
 

@@ -28,7 +28,7 @@ auto TimerInitSMP() -> void {
   cpu_io::Sie::Stie::Set();
 
   // 设置初次时钟中断时间
-  sbi_set_timer(interval);
+  sbi_set_timer(cpu_io::Time::Read() + interval);
 }
 
 auto TimerInit() -> void {
@@ -44,5 +44,5 @@ auto TimerInit() -> void {
   cpu_io::Sie::Stie::Set();
 
   // 设置初次时钟中断时间
-  sbi_set_timer(interval);
+  sbi_set_timer(cpu_io::Time::Read() + interval);
 }
