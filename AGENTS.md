@@ -51,29 +51,23 @@ cmake/                # Toolchain files, build helpers
 | `src/task/include/*.hpp` | Task/scheduler interfaces | `src/task/*.cpp` |
 
 ## CONVENTIONS
-- **Style**: Google C++ via `.clang-format`, enforced by pre-commit
-- **Naming**: files=`snake_case`, classes=`PascalCase`, vars=`snake_case`, members=`snake_case_` (trailing _), constants=`kCamelCase`, macros=`SCREAMING_SNAKE`
-- **Headers**: `#pragma once` guard (all headers use this consistently)
-- **Copyright**: `/** @copyright Copyright The SimpleKernel Contributors */`
-- **Includes**: system → third-party → project. Use `kstd_cstdio`/`kstd_vector`, never std dynamic alloc
-- **Returns**: trailing return type `auto Func() -> RetType`
+
+> Full reference: `docs/coding_standards.md` — read it before generating any code.
+> Baseline example file: `src/include/spinlock.hpp`
+
+- **C++ style**: see `docs/coding_standards.md` (naming, headers, includes, returns, attributes, Doxygen, error handling, freestanding constraints)
 - **CMake**: UPPERCASE commands/keywords, 4-space indent, 80-char lines, space before `(`
 
 ## ANTI-PATTERNS
-- **NO** exceptions, RTTI, `dynamic_cast`, `typeid`
-- **NO** heap allocation before memory subsystem init — use `src/libc/` and `src/libcxx/`
-- **NO** standard library dynamic containers in freestanding — use `sk_` prefixed versions
-- **NO** implementation in interface headers (exception: `__always_inline` perf-critical, utility parsers)
+
+> See also `docs/coding_standards.md` §9–§10 for full prohibited-patterns list.
+
 - **NO** modifying interface .h/.hpp files to add implementation
 - **NO** `as any`/type suppression equivalents
 
 ## UNIQUE STYLES
-- `Expected<T>` for all error returns (no exceptions)
 - `etl::singleton<T>` with named aliases in `kernel.h` (e.g. `TaskManagerSingleton::instance()`, `DeviceManagerSingleton::create()`)
 - `LockGuard<SpinLock>` RAII locking
-- `__builtin_unreachable()` for dead code paths
-- `[[nodiscard]]`, `[[maybe_unused]]` attributes used extensively
-- Doxygen `@pre`/`@post`/`@brief` on every interface method
 
 ## COMMANDS
 ```bash
