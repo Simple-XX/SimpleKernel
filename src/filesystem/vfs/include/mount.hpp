@@ -80,6 +80,13 @@ class MountTable {
   [[nodiscard]] auto GetRootDentry(MountPoint* mp) -> Dentry*;
 
   /**
+   * @brief 根据 dentry 查找挂载在其上的文件系统
+   * @param dentry 目标 dentry
+   * @return MountPoint* 挂载在该 dentry 上的挂载点，未找到返回 nullptr
+   */
+  [[nodiscard]] auto FindByMountDentry(const Dentry* dentry) -> MountPoint*;
+
+  /**
    * @brief 检查路径是否是挂载点
    * @param path 路径
    * @return true 是挂载点

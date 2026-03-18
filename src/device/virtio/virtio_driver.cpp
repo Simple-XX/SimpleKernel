@@ -61,7 +61,7 @@ auto VirtioDriver::Probe(DeviceNode& node) -> Expected<void> {
       // Allocate slot DMA buffer
       auto [slot_size, slot_align] =
           virtio::blk::VirtioBlk<>::GetRequiredSlotMemSize();
-      slot_buffers_[idx] = kstd::make_unique<IoBuffer>(slot_size);
+      slot_buffers_[idx] = kstd::make_unique<IoBuffer>(slot_size, slot_align);
       if (!slot_buffers_[idx] || !slot_buffers_[idx]->IsValid()) {
         klog::Err("VirtioDriver: failed to allocate slot DMA buffer at {:#x}",
                   ctx->base);

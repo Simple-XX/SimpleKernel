@@ -116,12 +116,21 @@ auto disk_ioctl(BYTE pdrv, BYTE cmd, void* buff) -> DRESULT {
       return r ? RES_OK : RES_ERROR;
     }
     case GET_SECTOR_COUNT:
+      if (buff == nullptr) {
+        return RES_PARERR;
+      }
       static_cast<LBA_t*>(buff)[0] = static_cast<LBA_t>(dev->GetSectorCount());
       return RES_OK;
     case GET_SECTOR_SIZE:
+      if (buff == nullptr) {
+        return RES_PARERR;
+      }
       static_cast<WORD*>(buff)[0] = static_cast<WORD>(dev->GetSectorSize());
       return RES_OK;
     case GET_BLOCK_SIZE:
+      if (buff == nullptr) {
+        return RES_PARERR;
+      }
       static_cast<DWORD*>(buff)[0] = 1;
       return RES_OK;
     case CTRL_TRIM:

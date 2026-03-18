@@ -26,6 +26,7 @@ auto IoApic::SetIrqRedirection(uint8_t irq, uint8_t vector,
   auto max_entries = GetMaxRedirectionEntries();
   if (irq >= max_entries) {
     klog::Err("IRQ {} exceeds maximum entries {}", irq, max_entries);
+    return;
   }
 
   // 构造重定向表项
@@ -49,6 +50,7 @@ auto IoApic::MaskIrq(uint8_t irq) const -> void {
   auto max_entries = GetMaxRedirectionEntries();
   if (irq >= max_entries) {
     klog::Err("IRQ {} exceeds maximum entries {}", irq, max_entries);
+    return;
   }
 
   auto entry = ReadRedirectionEntry(irq);
@@ -60,6 +62,7 @@ auto IoApic::UnmaskIrq(uint8_t irq) const -> void {
   auto max_entries = GetMaxRedirectionEntries();
   if (irq >= max_entries) {
     klog::Err("IRQ {} exceeds maximum entries {}", irq, max_entries);
+    return;
   }
 
   auto entry = ReadRedirectionEntry(irq);

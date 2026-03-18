@@ -40,8 +40,11 @@ auto FileDescriptorTable::operator=(FileDescriptorTable&& other)
       return Expected<void>{};
     });
 
-    LockGuard guard1(lock_);
-    LockGuard guard2(other.lock_);
+    // 使用地址确定加锁顺序，避免死锁
+    auto* first_lock = (this < &other) ? &lock_ : &other.lock_;
+    auto* second_lock = (this < &other) ? &other.lock_ : &lock_;
+    LockGuard guard1(*first_lock);
+    LockGuard guard2(*second_lock);
 
     for (int i = 0; i < kMaxFd; ++i) {
       table_[i] = other.table_[i];
@@ -159,11 +162,20 @@ auto FileDescriptorTable::SetupStandardFiles(vfs::File* stdin_file,
     -> Expected<void> {
   LockGuard guard(lock_);
 
+  // 仅对之前未占用的槽位增加计数
+  if (table_[kStdinFd] == nullptr && stdin_file != nullptr) {
+    ++open_count_;
+  }
+  if (table_[kStdoutFd] == nullptr && stdout_file != nullptr) {
+    ++open_count_;
+  }
+  if (table_[kStderrFd] == nullptr && stderr_file != nullptr) {
+    ++open_count_;
+  }
+
   table_[kStdinFd] = stdin_file;
   table_[kStdoutFd] = stdout_file;
   table_[kStderrFd] = stderr_file;
-
-  open_count_ += 3;
 
   return {};
 }

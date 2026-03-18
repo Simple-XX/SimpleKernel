@@ -200,6 +200,20 @@ auto MountTable::GetRootDentry(MountPoint* mp) -> Dentry* {
   return mp->root_dentry;
 }
 
+auto MountTable::FindByMountDentry(const Dentry* dentry) -> MountPoint* {
+  if (dentry == nullptr) {
+    return nullptr;
+  }
+
+  for (size_t i = 0; i < kMaxMounts; ++i) {
+    if (mounts_[i].active && mounts_[i].mount_dentry == dentry) {
+      return &mounts_[i];
+    }
+  }
+
+  return nullptr;
+}
+
 auto MountTable::IsMountPoint(const char* path) -> bool {
   if (path == nullptr) {
     return false;

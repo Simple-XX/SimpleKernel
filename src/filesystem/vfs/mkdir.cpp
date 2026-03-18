@@ -23,14 +23,21 @@ auto MkDir(const char* path) -> Expected<void> {
   const char* last_slash = strrchr(path, '/');
   if (last_slash == nullptr || last_slash == path) {
     strncpy(parent_path, "/", sizeof(parent_path));
-    strncpy(dir_name, path[0] == '/' ? path + 1 : path, sizeof(dir_name));
+    const char* name_start = path[0] == '/' ? path + 1 : path;
+    if (strlen(name_start) >= sizeof(dir_name)) {
+      return std::unexpected(Error(ErrorCode::kFsInvalidPath));
+    }
+    strncpy(dir_name, name_start, sizeof(dir_name));
   } else {
     size_t parent_len = last_slash - path;
     if (parent_len >= sizeof(parent_path)) {
-      parent_len = sizeof(parent_path) - 1;
+      return std::unexpected(Error(ErrorCode::kFsInvalidPath));
     }
     strncpy(parent_path, path, parent_len);
     parent_path[parent_len] = '\0';
+    if (strlen(last_slash + 1) >= sizeof(dir_name)) {
+      return std::unexpected(Error(ErrorCode::kFsInvalidPath));
+    }
     strncpy(dir_name, last_slash + 1, sizeof(dir_name));
   }
   dir_name[sizeof(dir_name) - 1] = '\0';
@@ -70,6 +77,7 @@ auto MkDir(const char* path) -> Expected<void> {
   }
 
   strncpy(new_dentry->name, dir_name, sizeof(new_dentry->name) - 1);
+  new_dentry->name[sizeof(new_dentry->name) - 1] = '\0';
   new_dentry->inode = result.value();
   AddChild(parent_dentry, new_dentry.release());
 

@@ -42,14 +42,21 @@ auto Open(const char* path, OpenFlags flags) -> Expected<File*> {
     const char* last_slash = strrchr(path, '/');
     if (last_slash == nullptr || last_slash == path) {
       strncpy(parent_path, "/", sizeof(parent_path));
-      strncpy(file_name, path[0] == '/' ? path + 1 : path, sizeof(file_name));
+      const char* name_start = path[0] == '/' ? path + 1 : path;
+      if (strlen(name_start) >= sizeof(file_name)) {
+        return std::unexpected(Error(ErrorCode::kFsInvalidPath));
+      }
+      strncpy(file_name, name_start, sizeof(file_name));
     } else {
       size_t parent_len = last_slash - path;
       if (parent_len >= sizeof(parent_path)) {
-        parent_len = sizeof(parent_path) - 1;
+        return std::unexpected(Error(ErrorCode::kFsInvalidPath));
       }
       strncpy(parent_path, path, parent_len);
       parent_path[parent_len] = '\0';
+      if (strlen(last_slash + 1) >= sizeof(file_name)) {
+        return std::unexpected(Error(ErrorCode::kFsInvalidPath));
+      }
       strncpy(file_name, last_slash + 1, sizeof(file_name));
     }
     file_name[sizeof(file_name) - 1] = '\0';

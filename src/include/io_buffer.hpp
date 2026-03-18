@@ -65,7 +65,7 @@ struct DmaRegion {
    */
   [[nodiscard]] auto SubRegion(size_t offset, size_t len) const
       -> Expected<DmaRegion> {
-    if (offset + len > size) {
+    if (offset > size || len > size - offset) {
       return std::unexpected(Error{ErrorCode::kInvalidArgument});
     }
     return DmaRegion{

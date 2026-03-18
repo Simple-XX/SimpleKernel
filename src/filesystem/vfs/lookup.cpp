@@ -120,15 +120,11 @@ auto Lookup(const char* path) -> Expected<Dentry*> {
 
     // 检查是否遇到挂载点
     if (current->inode != nullptr) {
-      // 检查是否有文件系统挂载在此 dentry 上
-      for (size_t i = 0; i < MountTable::kMaxMounts; ++i) {
-        MountPoint* next_mp = GetVfsState().mount_table->Lookup(p);
-        if (next_mp != nullptr && next_mp != mp &&
-            next_mp->mount_dentry == current) {
-          mp = next_mp;
-          current = next_mp->root_dentry;
-          break;
-        }
+      MountPoint* next_mp =
+          GetVfsState().mount_table->FindByMountDentry(current);
+      if (next_mp != nullptr && next_mp != mp) {
+        mp = next_mp;
+        current = next_mp->root_dentry;
       }
     }
   }
