@@ -58,6 +58,12 @@ enum class ErrorCode : uint64_t {
   kTaskKernelStackAllocationFailed = 0x705,
   kTaskNoChildFound = 0x706,
   kTaskInvalidPid = 0x707,
+  // Signal 相关错误 (0xC00 - 0xCFF)
+  kSignalInvalidNumber = 0xC00,
+  kSignalInvalidPid = 0xC01,
+  kSignalPermissionDenied = 0xC02,
+  kSignalUncatchable = 0xC03,
+  kSignalTaskNotFound = 0xC04,
   // Device 相关错误 (0x800 - 0x8FF)
   kDeviceNotFound = 0x800,
   kDeviceAlreadyOpen = 0x801,
@@ -222,6 +228,16 @@ constexpr auto GetErrorMessage(ErrorCode code) -> const char* {
       return "No child process found";
     case ErrorCode::kTaskInvalidPid:
       return "Invalid PID";
+    case ErrorCode::kSignalInvalidNumber:
+      return "Invalid signal number";
+    case ErrorCode::kSignalInvalidPid:
+      return "Invalid PID for signal delivery";
+    case ErrorCode::kSignalPermissionDenied:
+      return "Signal delivery permission denied";
+    case ErrorCode::kSignalUncatchable:
+      return "Cannot catch or ignore this signal";
+    case ErrorCode::kSignalTaskNotFound:
+      return "Target task not found for signal delivery";
     case ErrorCode::kDeviceNotFound:
       return "Device not found";
     case ErrorCode::kDeviceAlreadyOpen:

@@ -9,6 +9,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "signal.hpp"
+
 // 参考 Linux 系统调用号
 #if defined(__riscv) || defined(__aarch64__)
 // RISC-V 64 和 AArch64 使用 asm-generic 编号
@@ -21,6 +23,9 @@ inline constexpr uint64_t kSyscallFutex = 98;
 inline constexpr uint64_t kSyscallSetTidAddress = 96;
 inline constexpr uint64_t kSyscallFork = 1220;
 inline constexpr uint64_t kSyscallSleep = 101;
+inline constexpr uint64_t kSyscallKill = 129;
+inline constexpr uint64_t kSyscallSigaction = 134;
+inline constexpr uint64_t kSyscallSigprocmask = 135;
 #elif defined(__x86_64__)
 // x86_64 使用自己的编号
 inline constexpr uint64_t kSyscallWrite = 1;
@@ -32,6 +37,9 @@ inline constexpr uint64_t kSyscallFutex = 202;
 inline constexpr uint64_t kSyscallSetTidAddress = 218;
 inline constexpr uint64_t kSyscallFork = 57;
 inline constexpr uint64_t kSyscallSleep = 35;
+inline constexpr uint64_t kSyscallKill = 62;
+inline constexpr uint64_t kSyscallSigaction = 13;
+inline constexpr uint64_t kSyscallSigprocmask = 14;
 #else
 #error "Unsupported architecture for syscall numbers"
 #endif
@@ -179,3 +187,29 @@ auto sys_exit(int code) -> int;
  */
 [[nodiscard]] auto sys_sched_setaffinity(int pid, size_t cpusetsize,
                                          const uint64_t* mask) -> int;
+
+/**
+ * @brief 向指定进程发送信号
+ * @param pid 目标进程 PID
+ * @param sig 信号编号
+ * @return 成功返回 0，失败返回负数
+ */
+[[nodiscard]] auto sys_kill(int pid, int sig) -> int;
+
+/**
+ * @brief 设置信号处理函数
+ * @param signum 信号编号
+ * @param handler 新的信号处理函数
+ * @return 成功返回 0，失败返回负数
+ */
+[[nodiscard]] auto sys_sigaction(int signum, SignalHandler handler) -> int;
+
+/**
+ * @brief 修改进程信号掩码
+ * @param how 操作方式 (SIG_BLOCK, SIG_UNBLOCK, SIG_SETMASK)
+ * @param set 要操作的信号集
+ * @param oldset 旧信号集存储位置（可为 nullptr）
+ * @return 成功返回 0，失败返回负数
+ */
+[[nodiscard]] auto sys_sigprocmask(int how, uint32_t set, uint32_t* oldset)
+    -> int;

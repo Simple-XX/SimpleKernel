@@ -14,6 +14,7 @@
 
 #include "file_descriptor.hpp"
 #include "resource_id.hpp"
+#include "signal.hpp"
 #include "task_fsm.hpp"
 
 /// 进程 ID 类型
@@ -100,6 +101,9 @@ struct TaskAuxData {
 
   /// 等待的资源 ID
   ResourceId blocked_on{};
+
+  /// 信号状态
+  SignalState signals{};
 
   /// 是否为中断线程
   bool is_interrupt_thread{false};

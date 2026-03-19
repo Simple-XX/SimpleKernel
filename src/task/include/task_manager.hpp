@@ -24,6 +24,7 @@
 #include "per_cpu.hpp"
 #include "resource_id.hpp"
 #include "scheduler_base.hpp"
+#include "signal.hpp"
 #include "spinlock.hpp"
 #include "task_control_block.hpp"
 
@@ -141,11 +142,29 @@ class TaskManager {
   auto Block(ResourceId resource_id) -> void;
 
   /**
+   * @brief 阻塞当前任务（调用者已持有 cpu_sched.lock，不调用 Schedule）
+   * @param cpu_sched 当前核心的调度数据
+   * @param resource_id 等待的资源 ID
+   * @pre cpu_sched.lock 已被调用者持有
+   * @post 当前任务已转移到 blocked_tasks，FSM 状态为 kBlocked
+   * @note 调用者必须在释放锁后调用 Schedule()
+   */
+  auto Block(CpuSchedData& cpu_sched, ResourceId resource_id) -> void;
+
+  /**
    * @brief 唤醒等待指定资源的所有任务
    * @param resource_id 资源 ID
    * @note 会唤醒所有阻塞在此资源上的任务
    */
   auto Wakeup(ResourceId resource_id) -> void;
+
+  /**
+   * @brief 唤醒等待指定资源的所有任务（调用者已持有 cpu_sched.lock）
+   * @param cpu_sched 当前核心的调度数据
+   * @param resource_id 资源 ID
+   * @pre cpu_sched.lock 已被调用者持有
+   */
+  auto Wakeup(CpuSchedData& cpu_sched, ResourceId resource_id) -> void;
 
   /**
    * @brief 克隆当前任务 (fork/clone 系统调用)
@@ -184,6 +203,54 @@ class TaskManager {
    * @return TaskControlBlock* 找到的任务，未找到返回 nullptr
    */
   [[nodiscard]] auto FindTask(Pid pid) -> TaskControlBlock*;
+
+  /**
+   * @brief 获取当前核心的调度数据
+   * @return CpuSchedData& 当前核心的调度数据引用
+   */
+  [[nodiscard]] auto GetCurrentCpuSched() -> CpuSchedData& {
+    return cpu_schedulers_[cpu_io::GetCurrentCoreId()];
+  }
+
+  /// @name 信号机制
+  /// @{
+
+  /**
+   * @brief 向指定任务发送信号
+   * @param pid 目标任务 PID
+   * @param signum 信号编号
+   * @return Expected<void> 成功返回空值，失败返回错误
+   */
+  [[nodiscard]] auto SendSignal(Pid pid, int signum) -> Expected<void>;
+
+  /**
+   * @brief 检查并处理当前任务的待处理信号
+   * @return int 处理的信号编号，无信号返回 0
+   */
+  [[nodiscard]] auto CheckPendingSignals() -> int;
+
+  /**
+   * @brief 设置信号处理函数
+   * @param signum 信号编号
+   * @param action 新的信号动作
+   * @param old_action 旧的信号动作（输出参数，可为 nullptr）
+   * @return Expected<void> 成功返回空值，失败返回错误
+   */
+  [[nodiscard]] auto SetSignalAction(int signum, const SignalAction& action,
+                                     SignalAction* old_action)
+      -> Expected<void>;
+
+  /**
+   * @brief 修改当前任务的信号掩码
+   * @param how 操作方式 (kSigBlock, kSigUnblock, kSigSetmask)
+   * @param set 要操作的信号集
+   * @param oldset 旧信号集输出（可为 nullptr）
+   * @return Expected<void> 成功返回空值，失败返回错误
+   */
+  [[nodiscard]] auto SetSignalMask(int how, uint32_t set, uint32_t* oldset)
+      -> Expected<void>;
+
+  /// @}
 
   /// @name 构造/析构函数
   /// @{
@@ -256,14 +323,6 @@ class TaskManager {
    * @brief 负载均衡 (空闲 core 窃取任务)
    */
   auto Balance() -> void;
-
-  /**
-   * @brief 获取当前核心的调度数据
-   * @return CpuSchedData& 当前核心的调度数据引用
-   */
-  [[nodiscard]] auto GetCurrentCpuSched() -> CpuSchedData& {
-    return cpu_schedulers_[cpu_io::GetCurrentCoreId()];
-  }
 
   /**
    * @brief 获取线程组的所有线程

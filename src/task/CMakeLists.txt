@@ -16,4 +16,5 @@ TARGET_SOURCES (
               clone.cpp
               wait.cpp
               task_manager.cpp
-              mutex.cpp)
+              mutex.cpp
+              signal.cpp)
