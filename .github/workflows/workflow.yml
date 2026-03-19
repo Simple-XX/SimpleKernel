@@ -7,10 +7,6 @@ on:
   - pull_request
   - release
 
-env:
-  CMAKE_BUILD_TYPE: Release
-  DOCKER_IMAGE: ptrnull233/simple_kernel:latest
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,29 +22,23 @@ jobs:
           submodules: recursive
 
       - name: x86_64
-        uses: addnab/docker-run-action@v3
+        uses: devcontainers/ci@v0.3
         with:
-          image: ${{ env.DOCKER_IMAGE }}
-          options: -v ${{ github.workspace }}:/root -e CMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }}
-          run: |
+          runCmd: |
             cmake --preset=build_x86_64
             cmake --build build_x86_64 --target SimpleKernel unit-test coverage docs
 
       - name: riscv64
-        uses: addnab/docker-run-action@v3
+        uses: devcontainers/ci@v0.3
         with:
-          image: ${{ env.DOCKER_IMAGE }}
-          options: -v ${{ github.workspace }}:/root -e CMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }}
-          run: |
+          runCmd: |
             cmake --preset=build_riscv64
             cmake --build build_riscv64 --target SimpleKernel
 
       - name: aarch64
-        uses: addnab/docker-run-action@v3
+        uses: devcontainers/ci@v0.3
         with:
-          image: ${{ env.DOCKER_IMAGE }}
-          options: -v ${{ github.workspace }}:/root -e CMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }}
-          run: |
+          runCmd: |
             cmake --preset=build_aarch64
             cmake --build build_aarch64 --target SimpleKernel
 
@@ -64,8 +54,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ github.workspace }}/docs/html
-
-      # - name: Super-Linter
-      #   uses: super-linter/super-linter@v7.2.0
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
