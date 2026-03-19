@@ -27,13 +27,16 @@ RUN apt-get update && apt-get upgrade -y && \
     python3-cryptography \
     python3-pyelftools \
     python3-setuptools \
+    uuid-dev \
     libgnutls28-dev \
     swig \
     libgtest-dev \
     doxygen \
     graphviz \
     lcov \
-    qemu-system \
+    qemu-system-x86 \
+    qemu-system-arm \
+    qemu-system-misc \
     gdb-multiarch \
     gcc-14 g++-14 \
     gcc-14-riscv64-linux-gnu g++-14-riscv64-linux-gnu \
