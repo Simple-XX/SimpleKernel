@@ -1,0 +1,8 @@
+<map id="virtio::SplitVirtqueue::SubmitChain" name="virtio::SplitVirtqueue::SubmitChain">
+<area shape="rect" id="Node000001" title="提交 Scatter&#45;Gather 描述符链" alt="" coords="5,35,161,75"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1SplitVirtqueue.html#ae21a0e671f4b0c144918876a632305fc" title="将描述符链提交到 Available Ring" alt="" coords="209,5,365,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,41,195,36,196,41,162,46"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb" title=" " alt="" coords="413,42,520,67"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="162,54,209,55,365,55,399,54,399,59,365,60,209,60,162,59"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,35,400,41,399,46,365,41"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="virtio::SplitVirtqueue::HasUsed" name="virtio::SplitVirtqueue::HasUsed">
+<area shape="rect" id="Node000001" title="检查 Used Ring 中是否有已完成的缓冲区" alt="" coords="209,5,365,45"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1SplitVirtqueue.html#aed8da4b76b73a63d64ca3a0e6987b2bb" title="从 Used Ring 弹出一个已完成的元素" alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,28,161,28,161,23,196,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="StateSleeping" name="StateSleeping">
+<area shape="rect" id="Node000001" title="Sleeping 状态 — 任务已挂起，等待唤醒时钟" alt="" coords="11,163,176,248"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,181,115"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,128,96,163,91,163,91,128"/>
+</map>

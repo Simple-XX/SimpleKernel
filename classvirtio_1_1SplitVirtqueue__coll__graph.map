@@ -1,0 +1,13 @@
+<map id="virtio::SplitVirtqueue" name="virtio::SplitVirtqueue">
+<area shape="rect" id="Node000001" title="Split Virtqueue 管理类" alt="" coords="318,556,477,1261"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1VirtqueueBase.html" title="Virtqueue 基类（C++23 Deducing this 编译期多态）" alt="" coords="5,168,213,493"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,504,320,747,315,750,194,507"/>
+<area shape="rect" id="Node000003" href="$structvirtio_1_1SplitVirtqueue_1_1Desc.html" title="Virtqueue 描述符表条目" alt="" coords="238,251,386,411"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="326,410,345,539,340,539,321,411"/>
+<area shape="rect" id="Node000004" href="$structvirtio_1_1SplitVirtqueue_1_1Avail.html" title="Virtqueue Available Ring." alt="" coords="410,251,558,411"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="475,411,455,539,450,539,469,410"/>
+<area shape="rect" id="Node000005" href="$structvirtio_1_1SplitVirtqueue_1_1Used.html" title="Virtqueue Used Ring." alt="" coords="582,261,730,401"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="627,402,486,717,481,714,623,400"/>
+<area shape="rect" id="Node000006" href="$structvirtio_1_1SplitVirtqueue_1_1UsedElem.html" title="Virtqueue Used Ring 元素" alt="" coords="582,5,730,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="659,105,659,244,653,244,653,105"/>
+</map>

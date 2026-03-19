@@ -1,0 +1,15 @@
+<map id="virtio::blk::VirtioBlk::UpdateUsedEvent" name="virtio::blk::VirtioBlk::UpdateUsedEvent">
+<area shape="rect" id="Node000001" title="更新 avail&#45;&gt;used_event 字段" alt="" coords="627,37,775,77"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ad4cdea5b5a95384a5d379be0eb68ff4a" title="中断处理（带完成回调）" alt="" coords="425,5,573,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="613,46,573,40,574,34,613,41"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a92da81f8831b00ff61070050d3779e5b" title="同步提交请求的内部实现" alt="" coords="419,69,579,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="613,74,579,79,578,74,613,69"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ad68417f4f9c3dee20746038af378a94b" title="同步读取一个扇区" alt="" coords="223,37,371,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="405,77,371,72,371,66,406,72"/>
+<area shape="rect" id="Node000006" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a252d86443729721fb9e6722fadb63fef" title="同步写入一个扇区" alt="" coords="223,101,371,141"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="406,107,371,112,371,107,405,101"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1blk_1_1VirtioBlkVfsAdapter.html#a388c8a17feb4fa44f7413befebffd98a" title="读取连续扇区" alt="" coords="5,37,175,77"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="209,60,175,60,175,55,209,55"/>
+<area shape="rect" id="Node000007" href="$classvirtio_1_1blk_1_1VirtioBlkVfsAdapter.html#a9079e223f63fc517a7ace31b0bfd5c82" title="写入连续扇区" alt="" coords="5,101,175,141"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="209,124,175,124,175,119,209,119"/>
+</map>

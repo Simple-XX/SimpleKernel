@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['function_5ft_0',['function_t',['../sk__libcxx_8cpp.html#a3961598bfa060030080b7e04e6ea2ddb',1,'sk_libcxx.cpp']]]
+  ['cloneflags_0',['CloneFlags',['../task__control__block_8hpp.html#a021249efe1ae6c78bf53218e22452a0d',1,'task_control_block.hpp']]],
+  ['cpuaffinity_1',['CpuAffinity',['../task__control__block_8hpp.html#a7471666c25dbc632c4490c73f7f8e792',1,'task_control_block.hpp']]]
 ];

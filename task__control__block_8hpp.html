@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/task/include/task_control_block.hpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/task/include/task_control_block.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,167 +91,235 @@ $(document).ready(function(){initNavTree('task__control__block_8hpp.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">task_control_block.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="cpu__io_8h_source.html">cpu_io.h</a>&gt;</code><br />
+<code>#include &lt;etl/flags.h&gt;</code><br />
+<code>#include &lt;etl/intrusive_links.h&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
+<code>#include &quot;<a class="el" href="file__descriptor_8hpp_source.html">file_descriptor.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="resource__id_8hpp_source.html">resource_id.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="task__fsm_8hpp_source.html">task_fsm.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for task_control_block.hpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="task__control__block_8hpp__incl.png" border="0" usemap="#a_2root_2src_2task_2include_2task__control__block_8hpp" alt=""/></div>
-<map name="a_2root_2src_2task_2include_2task__control__block_8hpp" id="a_2root_2src_2task_2include_2task__control__block_8hpp">
-<area shape="rect" title=" " alt="" coords="647,5,823,45"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="473,93,549,119"/>
-<area shape="poly" title=" " alt="" coords="683,48,558,91,556,86,681,43"/>
-<area shape="rect" title=" " alt="" coords="5,240,76,265"/>
-<area shape="poly" title=" " alt="" coords="648,40,508,59,345,88,266,106,195,125,135,146,93,169,79,182,67,197,51,229,46,226,63,194,75,178,90,164,133,141,193,120,265,100,344,83,507,54,647,34"/>
-<area shape="rect" title=" " alt="" coords="677,240,743,265"/>
-<area shape="poly" title=" " alt="" coords="736,46,715,227,710,226,731,45"/>
-<area shape="rect" title=" " alt="" coords="773,93,829,119"/>
-<area shape="poly" title=" " alt="" coords="753,44,784,81,780,84,749,47"/>
-<area shape="rect" href="resource__id_8hpp.html" title=" " alt="" coords="853,93,978,119"/>
-<area shape="poly" title=" " alt="" coords="780,43,877,85,875,90,777,48"/>
-<area shape="rect" title=" " alt="" coords="386,167,453,192"/>
-<area shape="poly" title=" " alt="" coords="498,121,447,160,443,156,495,117"/>
-<area shape="rect" title=" " alt="" coords="477,167,546,192"/>
-<area shape="poly" title=" " alt="" coords="514,119,514,153,509,153,509,119"/>
-<area shape="poly" title=" " alt="" coords="473,109,406,110,320,118,225,136,178,151,134,169,92,198,60,231,56,227,89,194,131,164,176,146,224,131,319,113,406,105,473,104"/>
-<area shape="poly" title=" " alt="" coords="538,116,579,137,624,165,661,196,693,228,689,232,658,200,620,169,577,142,536,121"/>
-<area shape="rect" title=" " alt="" coords="381,240,445,265"/>
-<area shape="poly" title=" " alt="" coords="528,117,544,132,558,151,565,172,560,193,540,215,514,231,486,242,459,249,458,243,484,237,511,226,536,211,556,191,560,173,553,154,540,136,524,121"/>
-<area shape="rect" title=" " alt="" coords="549,240,613,265"/>
-<area shape="poly" title=" " alt="" coords="544,116,577,135,592,149,604,165,609,181,609,198,598,229,593,227,603,197,604,182,600,168,588,153,574,140,542,121"/>
-<area shape="rect" title=" " alt="" coords="100,240,224,265"/>
-<area shape="poly" title=" " alt="" coords="473,110,392,113,293,122,202,139,169,152,147,168,140,181,140,196,150,227,145,229,135,197,135,180,143,165,166,148,201,134,292,117,391,108,473,105"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="157,167,362,192"/>
-<area shape="poly" title=" " alt="" coords="474,121,314,166,312,160,472,115"/>
-<area shape="poly" title=" " alt="" coords="225,195,90,238,88,233,223,189"/>
-<area shape="poly" title=" " alt="" coords="332,189,663,241,663,247,331,195"/>
-<area shape="poly" title=" " alt="" coords="285,190,376,232,374,237,283,194"/>
-<area shape="poly" title=" " alt="" coords="312,189,535,239,534,244,310,195"/>
-<area shape="poly" title=" " alt="" coords="245,194,191,234,188,229,242,190"/>
-<area shape="rect" title=" " alt="" coords="248,240,311,265"/>
-<area shape="poly" title=" " alt="" coords="265,192,275,226,270,228,260,193"/>
-<area shape="poly" title=" " alt="" coords="900,121,739,234,736,230,897,117"/>
-<area shape="rect" title=" " alt="" coords="872,167,959,192"/>
-<area shape="poly" title=" " alt="" coords="918,119,918,153,913,153,913,119"/>
+<div class="center"><img src="task__control__block_8hpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2task_2include_2task__control__block_8hpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2task_2include_2task__control__block_8hpp" id="a_2workspaces_2SimpleKernel_2src_2task_2include_2task__control__block_8hpp">
+<area shape="rect" title=" " alt="" coords="423,5,617,60"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="437,328,513,353"/>
+<area shape="poly" title=" " alt="" coords="424,37,336,47,289,57,242,71,195,90,153,115,115,145,84,183,73,204,70,224,74,241,84,256,100,270,121,282,175,302,239,316,306,326,423,335,423,341,305,331,238,322,173,307,119,287,97,274,80,260,69,243,64,224,68,203,79,180,111,141,150,110,193,85,240,66,288,52,335,42,423,32"/>
+<area shape="rect" title=" " alt="" coords="122,475,193,500"/>
+<area shape="poly" title=" " alt="" coords="424,47,295,65,159,95,99,115,51,138,19,164,11,178,8,193,8,342,11,363,19,383,46,418,82,446,118,466,115,471,79,450,42,422,14,386,6,365,3,342,3,192,6,176,15,160,48,133,97,110,158,90,295,60,423,41"/>
+<area shape="rect" title=" " alt="" coords="1004,475,1071,500"/>
+<area shape="poly" title=" " alt="" coords="617,37,854,56,1139,87,1271,108,1379,132,1421,145,1453,160,1474,175,1481,192,1481,342,1476,374,1460,396,1437,412,1406,429,1380,440,1345,450,1257,466,1085,485,1084,480,1256,461,1344,445,1379,435,1404,424,1434,408,1456,392,1471,372,1476,342,1476,193,1470,179,1450,164,1419,150,1378,137,1270,113,1139,93,854,61,617,43"/>
+<area shape="rect" title=" " alt="" coords="334,108,421,133"/>
+<area shape="poly" title=" " alt="" coords="478,62,409,103,407,99,475,58"/>
+<area shape="rect" title=" " alt="" coords="445,108,595,133"/>
+<area shape="poly" title=" " alt="" coords="523,60,523,94,517,94,517,60"/>
+<area shape="rect" title=" " alt="" coords="93,181,149,207"/>
+<area shape="poly" title=" " alt="" coords="448,63,322,110,161,178,159,173,320,106,447,58"/>
+<area shape="rect" href="file__descriptor_8hpp.html" title=" " alt="" coords="620,108,761,133"/>
+<area shape="poly" title=" " alt="" coords="573,58,657,99,654,104,571,62"/>
+<area shape="rect" href="resource__id_8hpp.html" title=" " alt="" coords="1516,255,1641,280"/>
+<area shape="poly" title=" " alt="" coords="617,33,843,40,1117,53,1249,63,1362,75,1449,89,1479,97,1499,106,1530,135,1552,171,1567,209,1576,241,1571,242,1562,210,1547,174,1526,138,1496,110,1477,102,1448,94,1362,80,1248,68,1117,59,842,46,617,39"/>
+<area shape="rect" href="task__fsm_8hpp.html" title=" " alt="" coords="1103,108,1214,133"/>
+<area shape="poly" title=" " alt="" coords="617,44,1090,107,1089,113,617,50"/>
+<area shape="rect" title=" " alt="" coords="1004,401,1071,427"/>
+<area shape="poly" title=" " alt="" coords="513,344,991,404,990,409,513,349"/>
+<area shape="rect" title=" " alt="" coords="652,401,721,427"/>
+<area shape="poly" title=" " alt="" coords="510,351,640,394,639,399,508,356"/>
+<area shape="poly" title=" " alt="" coords="443,356,322,404,191,470,188,466,320,399,441,351"/>
+<area shape="poly" title=" " alt="" coords="514,346,614,366,734,399,792,424,898,454,991,475,990,480,897,460,790,429,732,404,613,371,512,351"/>
+<area shape="rect" title=" " alt="" coords="256,475,320,500"/>
+<area shape="poly" title=" " alt="" coords="440,356,395,375,351,403,324,433,303,464,299,461,319,429,348,399,393,370,438,351"/>
+<area shape="rect" title=" " alt="" coords="348,475,412,500"/>
+<area shape="poly" title=" " alt="" coords="438,353,396,371,377,385,362,403,357,417,358,431,368,461,363,463,352,432,352,416,358,400,373,381,393,367,435,348"/>
+<area shape="rect" title=" " alt="" coords="542,475,666,500"/>
+<area shape="poly" title=" " alt="" coords="514,350,555,368,575,382,592,400,604,430,608,461,603,461,599,431,587,403,572,386,553,373,512,355"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="372,401,577,427"/>
+<area shape="poly" title=" " alt="" coords="477,354,477,388,472,388,472,354"/>
+<area shape="poly" title=" " alt="" coords="424,429,207,478,206,472,423,424"/>
+<area shape="poly" title=" " alt="" coords="565,424,991,477,990,483,565,429"/>
+<area shape="poly" title=" " alt="" coords="446,429,332,472,330,467,444,424"/>
+<area shape="poly" title=" " alt="" coords="461,429,408,468,405,464,458,425"/>
+<area shape="poly" title=" " alt="" coords="497,424,572,465,569,470,494,429"/>
+<area shape="rect" title=" " alt="" coords="443,475,506,500"/>
+<area shape="poly" title=" " alt="" coords="477,427,477,461,472,461,472,427"/>
+<area shape="poly" title=" " alt="" coords="660,136,588,164,491,207,384,263,331,295,282,330,237,363,199,403,181,433,168,463,163,461,177,431,195,400,233,359,278,326,328,291,381,258,489,202,586,159,658,131"/>
+<area shape="poly" title=" " alt="" coords="736,131,1119,232,1312,289,1375,311,1405,326,1417,347,1421,367,1417,385,1407,401,1392,415,1371,427,1320,448,1259,463,1196,474,1085,486,1084,481,1195,469,1258,458,1318,443,1369,422,1388,411,1403,397,1412,383,1415,367,1412,349,1401,330,1373,316,1310,294,1118,237,735,136"/>
+<area shape="poly" title=" " alt="" coords="620,134,608,136,484,149,388,156,291,166,168,184,163,185,162,180,168,179,291,160,387,151,484,144,608,131,620,129"/>
+<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="727,328,838,353"/>
+<area shape="poly" title=" " alt="" coords="751,131,792,149,810,163,825,180,830,193,833,215,831,244,823,281,803,319,798,316,817,279,826,244,827,215,825,195,820,183,807,166,789,154,749,136"/>
+<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="707,181,811,207"/>
+<area shape="poly" title=" " alt="" coords="704,132,740,169,736,173,700,136"/>
+<area shape="rect" href="vfs_8hpp.html" title=" " alt="" coords="587,181,658,207"/>
+<area shape="poly" title=" " alt="" coords="681,136,645,173,641,169,678,132"/>
+<area shape="poly" title=" " alt="" coords="827,351,883,370,943,399,985,430,1019,462,1015,466,982,434,940,404,881,375,825,356"/>
+<area shape="rect" title=" " alt="" coords="847,401,929,427"/>
+<area shape="poly" title=" " alt="" coords="801,351,861,391,858,396,798,356"/>
+<area shape="poly" title=" " alt="" coords="707,205,568,229,508,243,478,257,471,269,468,284,470,315,465,315,463,284,466,267,474,253,506,238,567,224,706,200"/>
+<area shape="poly" title=" " alt="" coords="773,205,822,253,845,281,860,305,877,328,903,351,947,377,992,396,990,401,945,382,900,355,873,331,856,308,840,284,818,256,769,209"/>
+<area shape="poly" title=" " alt="" coords="707,206,573,229,507,243,461,257,390,288,337,317,288,353,228,403,199,434,175,465,171,462,195,431,225,399,284,349,334,312,387,283,459,252,506,238,572,224,706,201"/>
+<area shape="poly" title=" " alt="" coords="772,205,789,227,803,254,804,286,797,316,792,314,799,286,797,255,784,229,768,209"/>
+<area shape="rect" title=" " alt="" coords="625,255,705,280"/>
+<area shape="poly" title=" " alt="" coords="745,209,693,248,690,244,742,205"/>
+<area shape="rect" title=" " alt="" coords="729,255,788,280"/>
+<area shape="poly" title=" " alt="" coords="761,207,761,241,756,241,756,207"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1027,255,1144,280"/>
+<area shape="poly" title=" " alt="" coords="811,204,1020,249,1019,254,810,209"/>
+<area shape="rect" title=" " alt="" coords="913,328,1009,353"/>
+<area shape="poly" title=" " alt="" coords="799,204,848,224,896,253,927,283,950,314,945,317,923,286,893,257,845,228,797,209"/>
+<area shape="poly" title=" " alt="" coords="1027,278,526,336,526,331,1026,273"/>
+<area shape="poly" title=" " alt="" coords="1084,281,1048,389,1043,387,1079,280"/>
+<area shape="poly" title=" " alt="" coords="1090,280,1096,344,1094,386,1085,428,1075,449,1061,466,1057,463,1070,446,1080,426,1089,385,1091,344,1085,280"/>
+<area shape="rect" title=" " alt="" coords="1135,328,1233,353"/>
+<area shape="poly" title=" " alt="" coords="1103,278,1158,318,1155,322,1100,282"/>
+<area shape="rect" title=" " alt="" coords="1257,328,1391,353"/>
+<area shape="poly" title=" " alt="" coords="1124,277,1273,321,1271,327,1123,283"/>
+<area shape="poly" title=" " alt="" coords="1067,282,995,323,992,319,1064,278"/>
+<area shape="rect" href="vfs__types_8hpp.html" title=" " alt="" coords="487,255,601,280"/>
+<area shape="poly" title=" " alt="" coords="612,209,569,247,565,244,608,205"/>
+<area shape="poly" title=" " alt="" coords="516,283,405,331,336,365,268,404,222,436,182,468,179,463,218,432,265,399,333,361,403,326,514,278"/>
+<area shape="poly" title=" " alt="" coords="565,278,701,355,836,424,917,453,991,473,990,478,916,458,834,429,698,359,562,282"/>
+<area shape="poly" title=" " alt="" coords="583,277,732,321,730,327,582,283"/>
+<area shape="poly" title=" " alt="" coords="1577,281,1543,360,1521,402,1499,429,1466,445,1420,458,1305,475,1184,484,1085,488,1084,483,1183,479,1305,470,1419,452,1464,440,1496,425,1517,399,1539,358,1572,279"/>
+<area shape="rect" title=" " alt="" coords="1567,328,1654,353"/>
+<area shape="poly" title=" " alt="" coords="1586,279,1602,315,1598,317,1582,281"/>
+<area shape="rect" title=" " alt="" coords="1678,328,1765,353"/>
+<area shape="poly" title=" " alt="" coords="1603,278,1687,319,1685,324,1600,282"/>
+<area shape="poly" title=" " alt="" coords="1155,135,1100,243,1095,241,1150,133"/>
+<area shape="rect" title=" " alt="" coords="1185,181,1265,207"/>
+<area shape="poly" title=" " alt="" coords="1172,132,1207,169,1203,173,1168,135"/>
+<area shape="rect" href="task__messages_8hpp.html" title=" " alt="" coords="1290,181,1441,207"/>
+<area shape="poly" title=" " alt="" coords="1193,131,1320,174,1318,179,1191,136"/>
+<area shape="poly" title=" " alt="" coords="1400,204,1532,248,1530,253,1399,209"/>
+<area shape="rect" title=" " alt="" coords="1308,255,1423,280"/>
+<area shape="poly" title=" " alt="" coords="1368,207,1368,241,1363,241,1363,207"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="task__control__block_8hpp__dep__incl.png" border="0" usemap="#a_2root_2src_2task_2include_2task__control__block_8hppdep" alt=""/></div>
-<map name="a_2root_2src_2task_2include_2task__control__block_8hppdep" id="a_2root_2src_2task_2include_2task__control__block_8hppdep">
-<area shape="rect" title=" " alt="" coords="3219,5,3395,45"/>
-<area shape="rect" href="mutex_8hpp.html" title=" " alt="" coords="4081,299,4281,324"/>
-<area shape="poly" title=" " alt="" coords="3327,56,3355,98,3394,148,3444,196,3472,217,3501,234,3552,251,3618,261,3695,268,3777,271,3938,274,4008,276,4063,281,4136,296,4135,301,4062,287,4007,281,3938,279,3777,276,3695,273,3618,267,3551,256,3499,238,3469,221,3440,200,3390,151,3351,101,3322,59"/>
-<area shape="rect" href="src_2main_8cpp.html" title=" " alt="" coords="4112,394,4251,419"/>
-<area shape="poly" title=" " alt="" coords="3409,29,3773,52,4002,70,4234,91,4929,177,5394,240,5550,265,5596,275,5616,282,5626,297,5630,312,5626,326,5616,341,5595,350,5554,358,5421,372,5236,383,5020,392,4576,403,4251,407,4251,402,4575,398,5020,387,5236,378,5421,367,5554,353,5594,345,5613,337,5622,324,5624,312,5621,299,5613,286,5595,280,5549,270,5393,245,4929,182,4233,96,4002,75,3773,57,3408,35"/>
-<area shape="rect" href="cfs__scheduler_8hpp.html" title=" " alt="" coords="193,196,351,236"/>
-<area shape="poly" title=" " alt="" coords="3205,30,2575,33,1666,43,1216,52,826,63,541,78,451,86,404,96,367,117,334,144,287,198,283,194,330,140,364,112,402,91,450,81,540,72,826,58,1216,47,1666,38,2575,28,3205,24"/>
-<area shape="rect" href="system__test_2cfs__scheduler__test_8cpp.html" title=" " alt="" coords="5,284,152,339"/>
-<area shape="poly" title=" " alt="" coords="3205,30,2561,35,1627,47,1163,56,762,67,467,80,374,88,325,96,287,112,251,133,187,185,135,240,99,285,95,282,131,236,183,181,248,129,285,107,323,91,373,82,467,75,762,61,1163,50,1627,41,2561,30,3205,25"/>
-<area shape="rect" href="unit__test_2cfs__scheduler__test_8cpp.html" title=" " alt="" coords="177,291,351,331"/>
-<area shape="poly" title=" " alt="" coords="3205,29,2653,30,1864,38,1466,47,1113,58,839,75,742,85,678,96,618,114,559,138,448,193,355,250,291,294,288,289,352,245,446,189,557,133,617,109,677,91,741,79,838,69,1113,53,1466,41,1864,33,2653,25,3205,24"/>
-<area shape="rect" href="fifo__scheduler_8hpp.html" title=" " alt="" coords="1245,196,1403,236"/>
-<area shape="poly" title=" " alt="" coords="3205,34,2805,56,2550,74,2292,96,2037,123,1786,154,1404,206,1403,200,1785,149,2037,118,2292,91,2549,69,2805,51,3205,29"/>
-<area shape="rect" href="system__test_2fifo__scheduler__test_8cpp.html" title=" " alt="" coords="949,284,1099,339"/>
-<area shape="poly" title=" " alt="" coords="3205,29,2958,32,2612,41,2215,61,2011,77,1811,96,1646,112,1517,126,1390,150,1233,199,1186,218,1140,241,1064,286,1061,282,1138,236,1184,213,1231,193,1389,145,1516,120,1645,107,1810,91,2010,71,2214,56,2612,36,2958,27,3205,24"/>
-<area shape="rect" href="unit__test_2fifo__scheduler__test_8cpp.html" title=" " alt="" coords="1123,291,1299,331"/>
-<area shape="poly" title=" " alt="" coords="3205,38,2886,68,2417,120,2149,154,1869,193,1587,237,1311,287,1279,294,1278,289,1310,281,1586,232,1868,187,2148,148,2417,114,2885,63,3205,33"/>
-<area shape="rect" href="idle__scheduler_8hpp.html" title=" " alt="" coords="951,196,1110,236"/>
-<area shape="poly" title=" " alt="" coords="3205,30,2679,37,1950,50,1297,69,1085,82,1024,89,999,96,992,106,989,118,992,145,1004,171,1018,195,1014,197,999,174,987,146,983,117,987,104,996,91,1023,83,1085,77,1296,64,1950,45,2679,32,3205,25"/>
-<area shape="rect" href="rr__scheduler_8hpp.html" title=" " alt="" coords="769,196,927,236"/>
-<area shape="poly" title=" " alt="" coords="3205,30,2689,36,1969,49,1312,69,1089,81,1019,88,982,96,945,117,911,144,863,198,859,194,908,140,942,112,980,91,1018,83,1089,76,1312,63,1969,44,2689,31,3205,25"/>
-<area shape="rect" href="system__test_2rr__scheduler__test_8cpp.html" title=" " alt="" coords="376,291,573,331"/>
-<area shape="poly" title=" " alt="" coords="3205,30,2654,38,1876,51,1161,71,918,83,841,89,801,96,752,114,705,138,617,193,545,249,496,293,492,289,542,245,614,189,702,133,750,109,799,91,841,84,918,77,1161,66,1875,46,2654,32,3205,25"/>
-<area shape="rect" href="unit__test_2rr__scheduler__test_8cpp.html" title=" " alt="" coords="597,291,763,331"/>
-<area shape="poly" title=" " alt="" coords="3205,31,2674,38,1929,51,1246,71,1014,83,941,89,902,96,856,114,823,135,793,161,758,198,719,247,692,292,687,290,715,244,754,194,790,158,820,131,854,110,901,91,940,84,1014,77,1246,66,1928,46,2674,32,3205,25"/>
-<area shape="rect" href="scheduler__base_8hpp.html" title=" " alt="" coords="1010,101,1169,141"/>
-<area shape="poly" title=" " alt="" coords="3205,29,2790,32,2207,42,1903,50,1619,61,1374,77,1188,96,1153,103,1152,98,1188,91,1373,71,1618,56,1903,45,2207,36,2790,27,3205,24"/>
-<area shape="rect" href="task__manager_8hpp.html" title=" " alt="" coords="3227,196,3386,236"/>
-<area shape="poly" title=" " alt="" coords="3309,59,3309,195,3304,195,3304,59"/>
-<area shape="rect" href="clone__system__test_8cpp.html" title=" " alt="" coords="4306,291,4513,331"/>
-<area shape="poly" title=" " alt="" coords="3343,52,3391,91,3437,135,3469,172,3505,205,3558,234,3626,252,3714,264,3814,269,3922,272,4131,273,4222,275,4294,281,4334,289,4333,294,4293,287,4221,280,4131,278,3921,277,3814,275,3713,269,3625,257,3556,238,3502,209,3466,176,3433,139,3388,95,3339,56"/>
-<area shape="rect" href="exit__system__test_8cpp.html" title=" " alt="" coords="4537,291,4735,331"/>
-<area shape="poly" title=" " alt="" coords="3363,49,3437,91,3488,132,3522,170,3558,204,3582,219,3613,234,3652,246,3698,255,3807,268,3931,273,4064,274,4324,272,4436,274,4526,281,4565,289,4564,294,4525,287,4436,279,4324,277,4064,279,3931,278,3806,273,3697,260,3651,251,3611,238,3580,224,3555,208,3518,174,3484,136,3435,96,3360,54"/>
-<area shape="rect" href="kernel__task__test_8cpp.html" title=" " alt="" coords="4759,291,4951,331"/>
-<area shape="poly" title=" " alt="" coords="3380,47,3517,88,3702,139,3913,191,4128,233,4222,247,4301,254,4437,258,4573,262,4653,269,4747,281,4785,289,4784,294,4746,287,4653,274,4573,267,4437,263,4301,259,4221,252,4128,239,3912,196,3700,144,3515,93,3378,52"/>
-<area shape="rect" href="thread__group__system__test_8cpp.html" title=" " alt="" coords="4975,284,5174,339"/>
-<area shape="poly" title=" " alt="" coords="3409,44,3968,152,4411,233,4566,250,4687,255,4808,262,4963,281,4976,284,4975,289,4962,287,4808,268,4687,261,4565,255,4410,239,3967,157,3408,49"/>
-<area shape="rect" href="user__task__test_8cpp.html" title=" " alt="" coords="5198,291,5378,331"/>
-<area shape="poly" title=" " alt="" coords="3409,36,3595,60,3810,91,4026,130,4193,165,4361,200,4578,233,4749,250,4883,254,5016,260,5095,268,5187,281,5222,289,5221,294,5186,287,5094,273,5016,265,4882,259,4748,255,4577,239,4360,205,4192,171,4025,135,3809,96,3595,65,3408,41"/>
-<area shape="rect" href="wait__system__test_8cpp.html" title=" " alt="" coords="5403,291,5603,331"/>
-<area shape="poly" title=" " alt="" coords="3409,33,3665,58,3974,91,4685,171,4995,214,5391,281,5427,289,5426,294,5390,287,4994,219,4684,176,3973,96,3665,63,3408,38"/>
-<area shape="rect" href="task__control__block_8cpp.html" title=" " alt="" coords="4743,101,4886,141"/>
-<area shape="poly" title=" " alt="" coords="3408,26,3697,32,4077,45,4451,64,4606,76,4724,91,4758,98,4757,103,4724,96,4606,81,4451,69,4076,50,3697,38,3408,31"/>
-<area shape="rect" href="test__environment__state_8cpp.html" title=" " alt="" coords="4910,93,5098,148"/>
-<area shape="poly" title=" " alt="" coords="3409,26,3729,32,4159,45,4587,64,4764,76,4899,91,4910,92,4909,98,4898,96,4764,82,4586,69,4159,50,3729,37,3408,31"/>
-<area shape="rect" href="task__scheduling__example__test_8cpp.html" title=" " alt="" coords="5123,93,5285,148"/>
-<area shape="poly" title=" " alt="" coords="3409,25,3768,29,4260,39,4752,59,4956,73,5111,91,5123,93,5122,98,5110,96,4956,78,4751,64,4259,45,3768,34,3409,30"/>
-<area shape="poly" title=" " alt="" coords="4184,338,4184,394,4179,394,4179,338"/>
-<area shape="rect" href="mutex__test_8cpp.html" title=" " alt="" coords="3829,387,3987,427"/>
-<area shape="poly" title=" " alt="" coords="4136,331,3964,389,3962,384,4134,326"/>
-<area shape="poly" title=" " alt="" coords="222,244,134,286,132,281,219,240"/>
-<area shape="poly" title=" " alt="" coords="272,250,268,292,263,291,267,249"/>
-<area shape="rect" href="schedule_8cpp.html" title=" " alt="" coords="1323,299,1519,324"/>
-<area shape="poly" title=" " alt="" coords="1355,243,1411,296,1407,300,1352,247"/>
-<area shape="rect" href="task__manager_8cpp.html" title=" " alt="" coords="787,291,925,331"/>
-<area shape="poly" title=" " alt="" coords="1232,232,1092,255,938,287,912,294,911,289,937,281,1091,249,1231,227"/>
-<area shape="poly" title=" " alt="" coords="1251,243,1100,289,1098,284,1249,238"/>
-<area shape="poly" title=" " alt="" coords="1292,247,1235,293,1232,289,1289,243"/>
-<area shape="poly" title=" " alt="" coords="985,245,893,294,890,289,982,240"/>
-<area shape="poly" title=" " alt="" coords="853,249,857,291,852,292,848,250"/>
-<area shape="poly" title=" " alt="" coords="760,242,551,294,549,289,759,237"/>
-<area shape="poly" title=" " alt="" coords="803,245,715,294,713,289,801,240"/>
-<area shape="poly" title=" " alt="" coords="996,135,352,208,351,203,996,130"/>
-<area shape="poly" title=" " alt="" coords="1151,143,1278,193,1276,198,1149,148"/>
-<area shape="poly" title=" " alt="" coords="1072,154,1045,197,1040,195,1068,151"/>
-<area shape="poly" title=" " alt="" coords="1029,148,898,198,896,193,1027,143"/>
-<area shape="poly" title=" " alt="" coords="1183,123,3227,209,3227,214,1182,129"/>
-<area shape="poly" title=" " alt="" coords="3400,229,3435,233,3611,248,3749,254,3887,261,4063,281,4137,296,4136,301,4062,287,3887,266,3749,259,3611,253,3434,239,3399,234"/>
-<area shape="poly" title=" " alt="" coords="3400,229,3435,233,3564,239,3731,242,3817,245,3897,252,3966,264,4020,282,4037,294,4048,307,4057,322,4071,337,4117,368,4159,392,4156,396,4114,373,4068,341,4053,325,4043,310,4034,298,4017,286,3965,269,3896,257,3816,250,3731,247,3564,244,3434,239,3399,234"/>
-<area shape="poly" title=" " alt="" coords="3400,228,3435,233,3488,239,3534,240,3614,239,3652,240,3691,247,3734,260,3783,282,3800,294,3811,307,3834,337,3887,385,3884,389,3830,340,3807,310,3797,298,3780,286,3732,265,3690,252,3651,246,3614,244,3534,245,3488,244,3434,239,3399,234"/>
-<area shape="poly" title=" " alt="" coords="3213,221,2863,227,2377,239,1888,258,1685,271,1531,287,1462,301,1460,296,1530,281,1684,266,1888,253,2377,233,2863,221,3213,216"/>
-<area shape="poly" title=" " alt="" coords="3213,221,2716,228,2006,241,1331,261,1084,273,938,287,908,294,906,289,937,281,1083,268,1331,255,2006,236,2716,223,3213,216"/>
-<area shape="rect" href="aarch64_2timer_8cpp.html" title=" " alt="" coords="3844,291,4007,331"/>
-<area shape="poly" title=" " alt="" coords="3400,228,3435,233,3631,254,3717,263,3826,281,3859,289,3858,294,3825,287,3716,269,3630,259,3434,239,3399,234"/>
-<area shape="rect" href="riscv64_2interrupt__main_8cpp.html" title=" " alt="" coords="1543,291,1702,331"/>
-<area shape="poly" title=" " alt="" coords="3214,221,2896,226,2462,237,2029,257,1850,270,1714,287,1681,294,1680,289,1713,281,1849,265,2029,252,2462,232,2896,221,3214,216"/>
-<area shape="rect" href="riscv64_2timer_8cpp.html" title=" " alt="" coords="1726,291,1885,331"/>
-<area shape="poly" title=" " alt="" coords="3213,222,2928,228,2548,240,2171,260,2015,272,1896,287,1863,294,1862,289,1896,281,2014,267,2171,254,2548,235,2928,223,3213,216"/>
-<area shape="rect" href="syscall_8cpp.html" title=" " alt="" coords="1909,299,2059,324"/>
-<area shape="poly" title=" " alt="" coords="3214,222,2632,243,2308,262,2174,273,2073,287,2016,301,2015,296,2071,281,2174,268,2308,256,2632,237,3213,217"/>
-<area shape="rect" href="block_8cpp.html" title=" " alt="" coords="2084,299,2257,324"/>
-<area shape="poly" title=" " alt="" coords="3213,220,3037,223,2802,233,2537,253,2402,268,2270,287,2207,301,2206,296,2269,281,2401,262,2536,248,2802,227,3037,218,3213,215"/>
-<area shape="rect" href="clone_8cpp.html" title=" " alt="" coords="2281,299,2455,324"/>
-<area shape="poly" title=" " alt="" coords="3213,222,3069,228,2882,239,2675,258,2467,287,2406,301,2405,296,2466,281,2674,253,2882,234,3068,222,3213,217"/>
-<area shape="rect" href="exit_8cpp.html" title=" " alt="" coords="2479,299,2641,324"/>
-<area shape="poly" title=" " alt="" coords="3214,225,2960,244,2807,262,2654,287,2596,301,2595,296,2653,281,2806,257,2960,239,3213,219"/>
-<area shape="rect" href="sleep_8cpp.html" title=" " alt="" coords="2665,299,2839,324"/>
-<area shape="poly" title=" " alt="" coords="3214,230,3045,253,2851,287,2792,301,2790,296,2850,281,3044,248,3214,225"/>
-<area shape="rect" href="tick__update_8cpp.html" title=" " alt="" coords="2863,291,2998,331"/>
-<area shape="poly" title=" " alt="" coords="3214,238,3116,260,3010,287,2986,294,2984,289,3009,281,3114,255,3213,233"/>
-<area shape="rect" href="wait_8cpp.html" title=" " alt="" coords="3022,299,3189,324"/>
-<area shape="poly" title=" " alt="" coords="3255,244,3131,301,3129,296,3252,239"/>
-<area shape="rect" href="wakeup_8cpp.html" title=" " alt="" coords="3213,299,3401,324"/>
-<area shape="poly" title=" " alt="" coords="3309,250,3309,298,3304,298,3304,250"/>
-<area shape="poly" title=" " alt="" coords="3400,224,3500,233,3723,246,3898,249,4072,257,4174,266,4294,281,4335,289,4334,294,4293,287,4173,272,4071,262,3897,254,3723,251,3500,239,3399,230"/>
-<area shape="poly" title=" " alt="" coords="3400,222,3557,233,3830,244,4043,245,4255,252,4379,263,4526,281,4565,289,4564,294,4525,287,4379,268,4254,258,4043,250,3830,249,3557,239,3400,227"/>
-<area shape="poly" title=" " alt="" coords="3400,221,3612,233,3785,240,3932,242,4181,241,4301,242,4430,248,4575,260,4747,281,4786,289,4785,294,4746,287,4575,266,4429,253,4301,248,4181,246,3932,247,3785,245,3612,239,3400,226"/>
-<area shape="poly" title=" " alt="" coords="3400,216,3729,223,4180,235,4632,254,4820,267,4963,281,4976,283,4975,289,4962,287,4820,272,4632,260,4180,240,3729,228,3400,221"/>
-<area shape="poly" title=" " alt="" coords="3400,215,3769,220,4285,230,4806,250,5023,264,5187,281,5224,289,5223,294,5186,287,5022,269,4806,255,4285,236,3768,225,3400,221"/>
-<area shape="poly" title=" " alt="" coords="3400,215,3804,219,4380,230,4963,250,5207,264,5391,281,5432,289,5431,294,5390,287,5206,269,4963,255,4379,235,3804,225,3400,221"/>
-<area shape="rect" href="arch_8cpp.html" title=" " alt="" coords="3425,291,3575,331"/>
-<area shape="poly" title=" " alt="" coords="3359,240,3462,289,3460,294,3357,244"/>
-<area shape="rect" href="task__test__harness_8cpp.html" title=" " alt="" coords="3599,284,3769,339"/>
-<area shape="poly" title=" " alt="" coords="3400,236,3587,281,3599,284,3598,290,3586,287,3399,241"/>
+<div class="center"><img src="task__control__block_8hpp__dep__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2task_2include_2task__control__block_8hppdep" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2task_2include_2task__control__block_8hppdep" id="a_2workspaces_2SimpleKernel_2src_2task_2include_2task__control__block_8hppdep">
+<area shape="rect" title=" " alt="" coords="2248,5,2441,60"/>
+<area shape="rect" href="mutex_8hpp.html" title=" " alt="" coords="365,218,559,258"/>
+<area shape="poly" title=" " alt="" coords="2234,38,1921,43,1510,55,1105,76,937,92,811,111,722,134,636,163,502,220,499,216,634,158,720,129,809,105,937,86,1104,71,1510,49,1921,37,2234,32"/>
+<area shape="rect" href="src_2main_8cpp.html" title=" " alt="" coords="5,321,199,361"/>
+<area shape="poly" title=" " alt="" coords="2234,37,1888,40,1425,51,1187,61,966,73,776,90,632,111,556,129,480,154,336,214,216,275,133,323,131,318,213,271,334,209,478,149,554,124,631,105,775,84,965,68,1187,55,1425,46,1888,35,2234,32"/>
+<area shape="rect" href="mutex__test_8cpp.html" title=" " alt="" coords="440,313,633,368"/>
+<area shape="poly" title=" " alt="" coords="2234,39,1989,48,1680,62,1381,83,1257,96,1164,111,1081,131,997,155,836,212,695,269,592,316,590,311,693,264,834,207,995,150,1079,126,1163,105,1257,90,1380,77,1680,56,1988,42,2234,34"/>
+<area shape="rect" href="cfs__scheduler_8hpp.html" title=" " alt="" coords="1130,218,1378,258"/>
+<area shape="poly" title=" " alt="" coords="2234,39,2046,46,1821,59,1608,80,1521,94,1456,111,1403,134,1353,163,1277,220,1274,216,1350,159,1400,129,1454,105,1520,89,1607,75,1820,54,2045,41,2234,34"/>
+<area shape="rect" href="system__test_2cfs__scheduler__test_8cpp.html" title=" " alt="" coords="657,313,851,368"/>
+<area shape="poly" title=" " alt="" coords="2234,41,1770,65,1525,85,1424,97,1348,111,1269,131,1190,156,1037,212,905,269,807,316,804,311,902,264,1035,207,1188,150,1268,126,1347,105,1424,92,1524,80,1769,60,2234,35"/>
+<area shape="rect" href="unit__test_2cfs__scheduler__test_8cpp.html" title=" " alt="" coords="875,313,1087,368"/>
+<area shape="poly" title=" " alt="" coords="2234,41,2081,50,1906,65,1742,84,1676,97,1626,111,1587,127,1556,146,1509,187,1461,229,1430,249,1391,268,1312,292,1247,301,1181,305,1098,316,1087,318,1086,313,1098,311,1181,299,1246,295,1310,287,1389,263,1427,245,1458,225,1505,183,1553,142,1584,123,1624,105,1675,91,1741,79,1905,59,2081,45,2234,36"/>
+<area shape="rect" href="fifo__scheduler_8hpp.html" title=" " alt="" coords="1664,211,1857,265"/>
+<area shape="poly" title=" " alt="" coords="2235,46,2036,71,1945,89,1909,99,1882,110,1850,132,1821,159,1779,212,1775,209,1817,155,1846,128,1879,106,1907,94,1944,83,2035,65,2234,41"/>
+<area shape="rect" href="system__test_2fifo__scheduler__test_8cpp.html" title=" " alt="" coords="1111,313,1304,368"/>
+<area shape="poly" title=" " alt="" coords="2234,43,2100,53,1949,67,1811,86,1755,98,1712,110,1663,140,1603,187,1543,235,1494,268,1305,318,1303,313,1492,263,1540,231,1600,183,1660,136,1710,106,1753,93,1810,81,1949,62,2099,47,2234,38"/>
+<area shape="rect" href="unit__test_2fifo__scheduler__test_8cpp.html" title=" " alt="" coords="1328,313,1543,368"/>
+<area shape="poly" title=" " alt="" coords="2235,38,2141,44,2034,56,1921,78,1811,110,1763,132,1729,155,1653,213,1574,268,1488,316,1486,311,1571,263,1650,209,1726,151,1761,127,1809,106,1919,73,2033,51,2141,39,2234,33"/>
+<area shape="rect" href="idle__scheduler_8hpp.html" title=" " alt="" coords="1979,211,2172,265"/>
+<area shape="poly" title=" " alt="" coords="2235,45,2199,54,2164,67,2131,85,2103,110,2088,133,2080,160,2076,211,2070,210,2074,159,2083,131,2099,106,2128,81,2161,62,2197,49,2234,40"/>
+<area shape="rect" href="idle__scheduler__test_8cpp.html" title=" " alt="" coords="1784,313,1977,368"/>
+<area shape="poly" title=" " alt="" coords="2235,53,2153,75,2112,91,2073,110,2041,131,2012,156,1962,212,1923,269,1896,315,1891,312,1918,266,1958,209,2009,152,2038,127,2070,106,2109,86,2151,70,2233,48"/>
+<area shape="rect" href="rr__scheduler_8hpp.html" title=" " alt="" coords="2196,218,2435,258"/>
+<area shape="poly" title=" " alt="" coords="2342,74,2321,218,2315,218,2336,73"/>
+<area shape="rect" href="system__test_2rr__scheduler__test_8cpp.html" title=" " alt="" coords="2226,313,2453,368"/>
+<area shape="poly" title=" " alt="" coords="2383,68,2416,109,2445,159,2454,186,2459,213,2458,240,2448,267,2427,294,2399,315,2396,311,2423,291,2444,264,2452,239,2454,213,2449,187,2440,161,2411,112,2379,72"/>
+<area shape="rect" href="unit__test_2rr__scheduler__test_8cpp.html" title=" " alt="" coords="2477,313,2679,368"/>
+<area shape="poly" title=" " alt="" coords="2402,66,2449,106,2490,159,2525,217,2570,312,2565,314,2520,219,2486,162,2445,110,2399,70"/>
+<area shape="rect" href="scheduler__base_8hpp.html" title=" " alt="" coords="2113,108,2307,163"/>
+<area shape="poly" title=" " alt="" coords="2300,70,2247,110,2244,106,2297,66"/>
+<area shape="rect" href="task__manager_8hpp.html" title=" " alt="" coords="3796,211,3989,265"/>
+<area shape="poly" title=" " alt="" coords="2455,46,3796,221,3796,227,2455,51"/>
+<area shape="rect" href="clone__system__test_8cpp.html" title=" " alt="" coords="5545,313,5739,368"/>
+<area shape="poly" title=" " alt="" coords="2456,41,2763,68,3138,105,3271,115,3386,115,3583,110,3677,114,3774,128,3881,158,4003,208,4022,222,4033,237,4043,251,4060,263,4100,273,4160,282,4331,294,4550,300,4792,302,5256,303,5430,305,5534,311,5545,312,5545,318,5534,316,5430,310,5256,308,4792,308,4549,305,4331,299,4159,287,4098,279,4058,268,4039,255,4028,240,4018,225,4001,213,3879,163,3773,133,3676,119,3583,116,3386,121,3271,120,3138,111,2763,74,2455,46"/>
+<area shape="rect" href="exit__system__test_8cpp.html" title=" " alt="" coords="5763,313,5956,368"/>
+<area shape="poly" title=" " alt="" coords="2455,33,2656,40,2923,52,3224,73,3528,105,3678,119,3797,129,3853,137,3912,152,3976,175,4050,208,4069,222,4081,237,4092,251,4111,263,4155,274,4222,283,4413,295,4656,301,4926,303,5442,302,5636,304,5752,311,5763,312,5762,318,5751,316,5636,310,5442,308,4926,308,4656,306,4412,301,4222,288,4154,279,4109,268,4089,255,4077,241,4065,226,4047,213,3974,180,3910,157,3852,143,3796,134,3678,125,3527,111,3224,79,2923,58,2656,45,2455,39"/>
+<area shape="rect" href="kernel__task__test_8cpp.html" title=" " alt="" coords="5980,313,6173,368"/>
+<area shape="poly" title=" " alt="" coords="2455,34,2743,42,3117,56,3483,77,3635,90,3750,105,3852,122,3931,138,4007,163,4099,208,4118,223,4131,238,4143,252,4162,263,4210,275,4284,285,4494,297,4763,303,5060,304,5628,302,5842,304,5969,311,5980,312,5979,318,5968,316,5841,309,5628,308,5060,310,4762,308,4494,303,4284,290,4209,280,4160,268,4139,256,4127,241,4115,227,4097,213,4005,168,3930,143,3851,127,3750,111,3635,96,3483,83,3117,62,2743,47,2455,39"/>
+<area shape="rect" href="tests_2system__test_2main_8cpp.html" title=" " alt="" coords="6197,321,6404,361"/>
+<area shape="poly" title=" " alt="" coords="2456,32,2771,36,3185,47,3397,57,3594,69,3763,85,3891,105,3967,124,4025,143,4081,169,4149,208,4168,224,4180,238,4193,252,4212,263,4265,276,4346,286,4576,299,4869,305,5194,306,5814,303,6047,304,6186,311,6229,318,6228,323,6186,316,6047,309,5814,308,5194,311,4869,311,4576,305,4346,291,4264,281,4210,268,4189,256,4176,242,4164,227,4146,213,4078,174,4023,148,3965,129,3889,111,3762,91,3593,74,3396,62,3185,53,2770,41,2455,37"/>
+<area shape="rect" href="thread__group__system__test_8cpp.html" title=" " alt="" coords="6428,313,6621,368"/>
+<area shape="poly" title=" " alt="" coords="2455,34,2820,43,3298,58,3740,79,3900,91,3995,105,4056,124,4102,146,4200,209,4218,224,4231,239,4243,252,4263,263,4321,277,4409,288,4660,302,4979,307,5334,307,6011,302,6265,303,6417,311,6428,312,6427,318,6416,316,6265,309,6011,307,5334,312,4979,313,4660,307,4409,293,4320,282,4261,268,4240,256,4227,243,4214,228,4196,213,4100,150,4054,129,3993,111,3899,97,3739,84,3298,63,2820,48,2455,39"/>
+<area shape="rect" href="user__task__test_8cpp.html" title=" " alt="" coords="6645,313,6839,368"/>
+<area shape="poly" title=" " alt="" coords="2455,33,2838,40,3343,54,3810,75,3979,89,4079,105,4131,125,4170,147,4250,209,4268,225,4281,239,4294,252,4314,263,4376,278,4471,290,4595,298,4741,304,5086,309,5468,309,6197,302,6471,303,6634,311,6645,312,6645,318,6634,316,6471,308,6197,307,5468,314,5086,315,4741,310,4594,304,4471,295,4375,283,4312,268,4291,256,4277,243,4265,228,4247,213,4167,152,4129,130,4077,111,3978,94,3809,80,3342,59,2838,45,2455,38"/>
+<area shape="rect" href="wait__system__test_8cpp.html" title=" " alt="" coords="6863,313,7056,368"/>
+<area shape="poly" title=" " alt="" coords="2455,33,2817,39,3306,52,3794,74,3997,88,4150,105,4210,118,4255,132,4300,147,4358,160,4555,189,4735,210,4901,225,5056,234,5339,242,5604,240,5869,237,6153,243,6308,251,6474,264,6655,284,6852,311,6863,313,6862,318,6851,316,6654,289,6474,270,6307,256,6153,248,5869,242,5604,245,5339,247,5056,240,4901,230,4735,215,4554,194,4358,165,4298,152,4253,138,4208,123,4150,111,3996,94,3794,79,3306,58,2817,44,2455,38"/>
+<area shape="rect" href="task__control__block_8cpp.html" title=" " alt="" coords="4369,108,4563,163"/>
+<area shape="poly" title=" " alt="" coords="2455,33,2853,39,3400,53,3949,74,4177,89,4350,105,4369,108,4368,113,4350,111,4177,94,3949,80,3400,58,2853,45,2455,38"/>
+<area shape="rect" href="test__environment__state_8cpp.html" title=" " alt="" coords="4587,108,4795,163"/>
+<area shape="poly" title=" " alt="" coords="2455,32,2892,38,3505,50,4123,72,4381,87,4576,105,4588,107,4587,112,4575,111,4380,92,4123,77,3505,56,2892,43,2455,38"/>
+<area shape="poly" title=" " alt="" coords="382,264,170,323,169,318,381,259"/>
+<area shape="rect" href="mutex_8cpp.html" title=" " alt="" coords="223,321,416,361"/>
+<area shape="poly" title=" " alt="" coords="426,268,348,323,345,318,423,264"/>
+<area shape="poly" title=" " alt="" coords="486,268,519,311,515,315,482,271"/>
+<area shape="poly" title=" " alt="" coords="1135,263,863,316,852,318,851,313,861,311,1133,258"/>
+<area shape="poly" title=" " alt="" coords="1191,265,1053,316,1051,311,1189,260"/>
+<area shape="rect" href="schedule_8cpp.html" title=" " alt="" coords="1567,321,1760,361"/>
+<area shape="poly" title=" " alt="" coords="1728,277,1684,322,1680,318,1724,273"/>
+<area shape="rect" href="task__manager_8cpp.html" title=" " alt="" coords="2002,321,2202,361"/>
+<area shape="poly" title=" " alt="" coords="1863,267,2039,318,2037,323,1862,272"/>
+<area shape="poly" title=" " alt="" coords="1651,258,1492,283,1316,316,1305,318,1304,313,1315,311,1491,278,1650,253"/>
+<area shape="poly" title=" " alt="" coords="1664,272,1521,316,1519,311,1662,267"/>
+<area shape="poly" title=" " alt="" coords="2088,278,2099,319,2094,321,2083,279"/>
+<area shape="poly" title=" " alt="" coords="2014,274,1933,316,1930,311,2011,269"/>
+<area shape="poly" title=" " alt="" coords="2264,266,2143,323,2141,318,2262,261"/>
+<area shape="poly" title=" " alt="" coords="2326,271,2336,312,2330,314,2320,272"/>
+<area shape="poly" title=" " alt="" coords="2379,261,2510,311,2509,316,2377,266"/>
+<area shape="poly" title=" " alt="" coords="2099,151,1378,226,1378,221,2099,146"/>
+<area shape="poly" title=" " alt="" coords="2100,164,1858,218,1857,212,2099,159"/>
+<area shape="poly" title=" " alt="" coords="2165,173,2112,213,2109,208,2162,169"/>
+<area shape="poly" title=" " alt="" coords="2249,170,2297,216,2293,219,2246,174"/>
+<area shape="poly" title=" " alt="" coords="2321,141,3796,228,3796,234,2321,146"/>
+<area shape="poly" title=" " alt="" coords="3782,244,1785,282,210,316,171,323,170,318,210,311,1785,277,3782,239"/>
+<area shape="poly" title=" " alt="" coords="3783,244,1919,280,906,302,428,316,388,323,387,318,427,311,906,296,1919,275,3782,239"/>
+<area shape="poly" title=" " alt="" coords="3783,244,2067,276,1125,297,803,307,645,316,634,318,633,312,644,311,802,302,1124,292,2067,270,3782,239"/>
+<area shape="poly" title=" " alt="" coords="3782,243,3364,248,2783,261,2199,282,1956,298,1772,316,1733,323,1732,318,1771,311,1955,292,2199,277,2783,255,3364,243,3782,238"/>
+<area shape="poly" title=" " alt="" coords="3782,244,3444,252,2991,267,2542,288,2356,301,2214,316,2174,323,2173,318,2214,311,2355,296,2542,283,2991,262,3444,247,3782,239"/>
+<area shape="rect" href="aarch64_2timer_8cpp.html" title=" " alt="" coords="2704,321,2903,361"/>
+<area shape="poly" title=" " alt="" coords="3782,245,3614,252,3397,264,3156,285,2914,316,2876,323,2875,318,2914,311,3156,280,3397,259,3613,246,3782,239"/>
+<area shape="rect" href="riscv64_2interrupt__main_8cpp.html" title=" " alt="" coords="2927,313,3120,368"/>
+<area shape="poly" title=" " alt="" coords="3783,248,3488,271,3309,290,3132,316,3121,318,3120,313,3131,311,3309,285,3487,266,3782,243"/>
+<area shape="rect" href="riscv64_2timer_8cpp.html" title=" " alt="" coords="3144,321,3337,361"/>
+<area shape="poly" title=" " alt="" coords="3783,254,3581,279,3349,316,3315,323,3314,318,3348,311,3580,274,3782,248"/>
+<area shape="rect" href="syscall_8cpp.html" title=" " alt="" coords="3361,321,3555,361"/>
+<area shape="poly" title=" " alt="" coords="3783,267,3567,316,3536,323,3535,318,3565,311,3782,261"/>
+<area shape="rect" href="block_8cpp.html" title=" " alt="" coords="3579,321,3772,361"/>
+<area shape="poly" title=" " alt="" coords="3825,273,3717,323,3715,318,3823,269"/>
+<area shape="rect" href="clone_8cpp.html" title=" " alt="" coords="3796,321,3989,361"/>
+<area shape="poly" title=" " alt="" coords="3895,279,3895,320,3890,320,3890,279"/>
+<area shape="rect" href="exit_8cpp.html" title=" " alt="" coords="4013,321,4207,361"/>
+<area shape="poly" title=" " alt="" coords="3963,269,4070,318,4068,323,3960,273"/>
+<area shape="rect" href="sleep_8cpp.html" title=" " alt="" coords="4231,321,4424,361"/>
+<area shape="poly" title=" " alt="" coords="4004,262,4220,311,4251,318,4249,323,4219,316,4002,267"/>
+<area shape="rect" href="tick__update_8cpp.html" title=" " alt="" coords="4448,321,4641,361"/>
+<area shape="poly" title=" " alt="" coords="4003,262,4009,263,4129,279,4223,286,4317,294,4437,311,4473,318,4472,323,4436,316,4317,299,4223,291,4128,284,4008,268,4002,267"/>
+<area shape="rect" href="wait_8cpp.html" title=" " alt="" coords="4665,321,4859,361"/>
+<area shape="poly" title=" " alt="" coords="4004,262,4009,263,4107,275,4190,282,4332,286,4473,290,4557,298,4654,311,4692,318,4691,323,4654,316,4556,303,4473,296,4331,291,4189,287,4106,280,4008,268,4003,267"/>
+<area shape="rect" href="wakeup_8cpp.html" title=" " alt="" coords="4883,321,5076,361"/>
+<area shape="poly" title=" " alt="" coords="4004,262,4009,263,4140,278,4251,285,4440,286,4630,287,4741,295,4872,311,4910,318,4909,323,4871,316,4741,300,4630,292,4440,291,4250,290,4139,283,4008,268,4003,267"/>
+<area shape="poly" title=" " alt="" coords="4004,262,4009,263,4240,285,4436,293,4610,291,4771,285,4933,278,5107,277,5303,286,5534,311,5545,312,5545,318,5534,316,5303,291,5107,282,4933,284,4772,290,4610,297,4436,299,4240,291,4008,268,4003,267"/>
+<area shape="poly" title=" " alt="" coords="4003,256,4060,263,4317,280,4535,285,4727,282,4907,275,5086,270,5278,271,5495,283,5752,311,5763,312,5762,318,5751,316,5495,288,5278,276,5086,275,4907,281,4727,287,4535,291,4316,286,4059,268,4003,261"/>
+<area shape="poly" title=" " alt="" coords="4004,252,4110,263,4393,277,4633,280,4844,276,5041,269,5238,264,5449,266,5688,280,5969,311,5980,312,5979,318,5968,316,5687,285,5448,271,5238,269,5041,274,4844,281,4633,286,4393,283,4110,268,4003,257"/>
+<area shape="poly" title=" " alt="" coords="4004,249,4161,263,4358,270,4604,274,5174,276,5744,284,5989,294,6186,311,6229,318,6228,323,6186,316,5989,299,5744,289,5174,281,4604,279,4358,276,4161,268,4003,255"/>
+<area shape="poly" title=" " alt="" coords="4003,247,4211,263,4427,269,4694,272,5315,272,5634,274,5936,280,6203,292,6417,311,6428,312,6427,318,6416,316,6202,297,5936,285,5634,280,5315,278,4694,277,4427,275,4211,268,4003,253"/>
+<area shape="poly" title=" " alt="" coords="4003,246,4262,263,4494,269,4781,271,5449,270,5793,272,6117,278,6404,290,6634,311,6645,312,6645,318,6634,316,6403,296,6117,283,5793,277,5449,276,4781,276,4494,274,4262,268,4003,251"/>
+<area shape="poly" title=" " alt="" coords="4003,245,4313,263,4561,268,4868,270,5584,268,5951,270,6298,276,6605,289,6737,299,6852,311,6863,312,6862,318,6851,316,6737,304,6605,294,6298,281,5951,275,5584,274,4868,275,4561,274,4313,268,4003,250"/>
+<area shape="rect" href="arch_8cpp.html" title=" " alt="" coords="5100,313,5293,368"/>
+<area shape="poly" title=" " alt="" coords="4004,262,4009,263,4173,280,4312,287,4434,288,4549,285,4663,283,4786,284,4925,292,5089,311,5100,312,5099,318,5088,316,4925,297,4786,289,4663,288,4549,291,4434,293,4311,293,4172,286,4008,268,4003,267"/>
+<area shape="rect" href="task__test__harness_8cpp.html" title=" " alt="" coords="5317,313,5521,368"/>
+<area shape="poly" title=" " alt="" coords="4004,262,4009,263,4205,283,4372,291,4520,290,4657,286,4795,282,4943,282,5110,290,5306,311,5317,312,5317,318,5306,316,5109,295,4942,287,4795,287,4657,291,4520,296,4372,296,4205,288,4008,268,4003,267"/>
 </map>
 </div>
 </div>
@@ -259,6 +327,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskAuxData.html">TaskAuxData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">非调度热路径的任务辅助数据  <a href="structTaskAuxData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务控制块，管理进程/线程的核心数据结构  <a href="structTaskControlBlock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,6 +346,12 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">不同调度器的专用字段 (互斥使用)  <a href="unionTaskControlBlock_1_1SchedData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceclone__flag" id="r_namespaceclone__flag"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html">clone_flag</a></td></tr>
+<tr class="memdesc:namespaceclone__flag"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clone 标志位常量 (用于 sys_clone 系统调用) <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a7b3497faea769e764efc8647bc2103f1" id="r_a7b3497faea769e764efc8647bc2103f1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a> = size_t</td></tr>
@@ -283,44 +360,87 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a78d16f92c80a8342bc67d945b720a1cf" id="r_a78d16f92c80a8342bc67d945b720a1cf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a78d16f92c80a8342bc67d945b720a1cf">ThreadEntry</a> = void(*)(void *)</td></tr>
 <tr class="memdesc:a78d16f92c80a8342bc67d945b720a1cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">线程入口函数类型  <br /></td></tr>
 <tr class="separator:a78d16f92c80a8342bc67d945b720a1cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a021249efe1ae6c78bf53218e22452a0d" id="r_a021249efe1ae6c78bf53218e22452a0d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a021249efe1ae6c78bf53218e22452a0d">CloneFlags</a> = etl::flags&lt; uint64_t, <a class="el" href="namespaceclone__flag.html#a63b61d870860fbcdf386b76fbf6d9021">clone_flag::kAllMask</a> &gt;</td></tr>
+<tr class="memdesc:a021249efe1ae6c78bf53218e22452a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">克隆标志位  <br /></td></tr>
+<tr class="separator:a021249efe1ae6c78bf53218e22452a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7471666c25dbc632c4490c73f7f8e792" id="r_a7471666c25dbc632c4490c73f7f8e792"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a7471666c25dbc632c4490c73f7f8e792">CpuAffinity</a> = etl::flags&lt; uint64_t &gt;</td></tr>
+<tr class="memdesc:a7471666c25dbc632c4490c73f7f8e792"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU 亲和性位掩码  <br /></td></tr>
+<tr class="separator:a7471666c25dbc632c4490c73f7f8e792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0588793b1f89cbbb10332d69f5edae" id="r_a1a0588793b1f89cbbb10332d69f5edae"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a1a0588793b1f89cbbb10332d69f5edae">ThreadGroupLink</a> = etl::bidirectional_link&lt; 0 &gt;</td></tr>
+<tr class="memdesc:a1a0588793b1f89cbbb10332d69f5edae"><td class="mdescLeft">&#160;</td><td class="mdescRight">线程组侵入式链表节点类型  <br /></td></tr>
+<tr class="separator:a1a0588793b1f89cbbb10332d69f5edae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a621e1ac4b663435d18b9ec55284dda6a" id="r_a621e1ac4b663435d18b9ec55284dda6a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6a">CloneFlags</a> : uint64_t { <br />
-&#160;&#160;<a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5">kCloneAll</a> = 0
-, <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116">kCloneVm</a> = 0x00000100
-, <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa41409c871d0338db7c837734fa30421f">kCloneFs</a> = 0x00000200
-, <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aabd62342a60b500de9eab77f6e8a414b9">kCloneFiles</a> = 0x00000400
-, <br />
-&#160;&#160;<a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa137ff90667f2e45b11ca9872bedae4f1">kCloneSighand</a> = 0x00000800
-, <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aac643601978e8b48da2ffa0a6263a40cc">kCloneParent</a> = 0x00008000
-, <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aae66d5c84a141422ec33bc1d5a095f0c2">kCloneThread</a> = 0x00010000
-<br />
- }</td></tr>
-<tr class="memdesc:a621e1ac4b663435d18b9ec55284dda6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clone 标志位 (用于 sys_clone 系统调用)  <a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6a">More...</a><br /></td></tr>
-<tr class="separator:a621e1ac4b663435d18b9ec55284dda6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d987b98f8f913fcd928b7ab94e726a2" id="r_a5d987b98f8f913fcd928b7ab94e726a2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2">TaskStatus</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e">kUnInit</a>
-, <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863">kReady</a>
-, <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a24f35cf992cb19498f5a83aa6cadfa8f">kRunning</a>
-, <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2acf8962434c9f2b7be945c9766c6db9df">kSleeping</a>
-, <br />
-&#160;&#160;<a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a825228abe8e14b673f73133b36daf2dc">kBlocked</a>
-, <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722">kExited</a>
-, <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2ae5bcea9577cc11324251f070f1e12f7c">kZombie</a>
-<br />
- }</td></tr>
-<tr class="memdesc:a5d987b98f8f913fcd928b7ab94e726a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务状态枚举  <a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2">More...</a><br /></td></tr>
-<tr class="separator:a5d987b98f8f913fcd928b7ab94e726a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49a208767f4bf1cfd0e39b9db74b8af1" id="r_a49a208767f4bf1cfd0e39b9db74b8af1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a> : uint8_t { <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a083bf2e4794281bd20e819d17073840f">kRealTime</a> = 0
-, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f">kNormal</a> = 1
-, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a19d8199da79ca4c28eb644052b08f632">kIdle</a> = 2
-, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0">kPolicyCount</a>
+<tr class="memitem:a49a208767f4bf1cfd0e39b9db74b8af1" id="r_a49a208767f4bf1cfd0e39b9db74b8af1"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a> : uint8_t { <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ae0f4fc1e0994e23b803ed82fb5e9930b">kRealTime</a> = 0
+, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416">kNormal</a> = 1
+, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1af5137a026a4b2f3b1c8a21cfc60dd14b">kIdle</a> = 2
+, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f">kPolicyCount</a>
  }</td></tr>
 <tr class="memdesc:a49a208767f4bf1cfd0e39b9db74b8af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">调度策略  <a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">More...</a><br /></td></tr>
 <tr class="separator:a49a208767f4bf1cfd0e39b9db74b8af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:af4da9961993044c7e3a54183fb1bf588" id="r_af4da9961993044c7e3a54183fb1bf588"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html#af4da9961993044c7e3a54183fb1bf588">clone_flag::kVm</a> = 0x00000100</td></tr>
+<tr class="memdesc:af4da9961993044c7e3a54183fb1bf588"><td class="mdescLeft">&#160;</td><td class="mdescRight">共享地址空间  <br /></td></tr>
+<tr class="separator:af4da9961993044c7e3a54183fb1bf588"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7235cacaf1d068ad46a91d2833ee80c" id="r_ac7235cacaf1d068ad46a91d2833ee80c"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html#ac7235cacaf1d068ad46a91d2833ee80c">clone_flag::kFs</a> = 0x00000200</td></tr>
+<tr class="memdesc:ac7235cacaf1d068ad46a91d2833ee80c"><td class="mdescLeft">&#160;</td><td class="mdescRight">共享文件系统信息  <br /></td></tr>
+<tr class="separator:ac7235cacaf1d068ad46a91d2833ee80c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e4cd37cadac5e1d1eac369bae2104f1" id="r_a4e4cd37cadac5e1d1eac369bae2104f1"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html#a4e4cd37cadac5e1d1eac369bae2104f1">clone_flag::kFiles</a> = 0x00000400</td></tr>
+<tr class="memdesc:a4e4cd37cadac5e1d1eac369bae2104f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">共享文件描述符表  <br /></td></tr>
+<tr class="separator:a4e4cd37cadac5e1d1eac369bae2104f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70bb1e44c23d1e050d4c094a18ed578f" id="r_a70bb1e44c23d1e050d4c094a18ed578f"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html#a70bb1e44c23d1e050d4c094a18ed578f">clone_flag::kSighand</a> = 0x00000800</td></tr>
+<tr class="memdesc:a70bb1e44c23d1e050d4c094a18ed578f"><td class="mdescLeft">&#160;</td><td class="mdescRight">共享信号处理器  <br /></td></tr>
+<tr class="separator:a70bb1e44c23d1e050d4c094a18ed578f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7a7233868490e16c4729159c52fc62d" id="r_ab7a7233868490e16c4729159c52fc62d"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html#ab7a7233868490e16c4729159c52fc62d">clone_flag::kParent</a> = 0x00008000</td></tr>
+<tr class="memdesc:ab7a7233868490e16c4729159c52fc62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">保持相同父进程  <br /></td></tr>
+<tr class="separator:ab7a7233868490e16c4729159c52fc62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2714a7276eeed925a4dad809694df24" id="r_ac2714a7276eeed925a4dad809694df24"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html#ac2714a7276eeed925a4dad809694df24">clone_flag::kThread</a> = 0x00010000</td></tr>
+<tr class="memdesc:ac2714a7276eeed925a4dad809694df24"><td class="mdescLeft">&#160;</td><td class="mdescRight">同一线程组  <br /></td></tr>
+<tr class="separator:ac2714a7276eeed925a4dad809694df24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b61d870860fbcdf386b76fbf6d9021" id="r_a63b61d870860fbcdf386b76fbf6d9021"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceclone__flag.html#a63b61d870860fbcdf386b76fbf6d9021">clone_flag::kAllMask</a></td></tr>
+<tr class="memdesc:a63b61d870860fbcdf386b76fbf6d9021"><td class="mdescLeft">&#160;</td><td class="mdescRight">全部标志掩码  <br /></td></tr>
+<tr class="separator:a63b61d870860fbcdf386b76fbf6d9021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a021249efe1ae6c78bf53218e22452a0d" name="a021249efe1ae6c78bf53218e22452a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a021249efe1ae6c78bf53218e22452a0d">&#9670;&#160;</a></span>CloneFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="task__control__block_8hpp.html#a021249efe1ae6c78bf53218e22452a0d">CloneFlags</a> =  etl::flags&lt;uint64_t, <a class="el" href="namespaceclone__flag.html#a63b61d870860fbcdf386b76fbf6d9021">clone_flag::kAllMask</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>克隆标志位 </p>
+
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00048">48</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a7471666c25dbc632c4490c73f7f8e792" name="a7471666c25dbc632c4490c73f7f8e792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7471666c25dbc632c4490c73f7f8e792">&#9670;&#160;</a></span>CpuAffinity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="task__control__block_8hpp.html#a7471666c25dbc632c4490c73f7f8e792">CpuAffinity</a> =  etl::flags&lt;uint64_t&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CPU 亲和性位掩码 </p>
+
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00051">51</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a7b3497faea769e764efc8647bc2103f1" name="a7b3497faea769e764efc8647bc2103f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b3497faea769e764efc8647bc2103f1">&#9670;&#160;</a></span>Pid</h2>
 
@@ -336,7 +456,7 @@ Enumerations</h2></td></tr>
 <p>进程 ID 类型 </p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00017">17</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00020">20</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
 
 </div>
 </div>
@@ -354,147 +474,73 @@ Enumerations</h2></td></tr>
 
 <p>线程入口函数类型 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00020">20</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00023">23</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a621e1ac4b663435d18b9ec55284dda6a" name="a621e1ac4b663435d18b9ec55284dda6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a621e1ac4b663435d18b9ec55284dda6a">&#9670;&#160;</a></span>CloneFlags</h2>
+<a id="a1a0588793b1f89cbbb10332d69f5edae" name="a1a0588793b1f89cbbb10332d69f5edae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a0588793b1f89cbbb10332d69f5edae">&#9670;&#160;</a></span>ThreadGroupLink</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6a">CloneFlags</a> : uint64_t</td>
+          <td class="memname">using <a class="el" href="task__control__block_8hpp.html#a1a0588793b1f89cbbb10332d69f5edae">ThreadGroupLink</a> =  etl::bidirectional_link&lt;0&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Clone 标志位 (用于 sys_clone 系统调用) </p>
-<dl class="section note"><dt>Note</dt><dd>参考 Linux clone flags </dd></dl>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5" name="a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5"></a>kCloneAll&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116" name="a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116"></a>kCloneVm&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a621e1ac4b663435d18b9ec55284dda6aa41409c871d0338db7c837734fa30421f" name="a621e1ac4b663435d18b9ec55284dda6aa41409c871d0338db7c837734fa30421f"></a>kCloneFs&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a621e1ac4b663435d18b9ec55284dda6aabd62342a60b500de9eab77f6e8a414b9" name="a621e1ac4b663435d18b9ec55284dda6aabd62342a60b500de9eab77f6e8a414b9"></a>kCloneFiles&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a621e1ac4b663435d18b9ec55284dda6aa137ff90667f2e45b11ca9872bedae4f1" name="a621e1ac4b663435d18b9ec55284dda6aa137ff90667f2e45b11ca9872bedae4f1"></a>kCloneSighand&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a621e1ac4b663435d18b9ec55284dda6aac643601978e8b48da2ffa0a6263a40cc" name="a621e1ac4b663435d18b9ec55284dda6aac643601978e8b48da2ffa0a6263a40cc"></a>kCloneParent&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a621e1ac4b663435d18b9ec55284dda6aae66d5c84a141422ec33bc1d5a095f0c2" name="a621e1ac4b663435d18b9ec55284dda6aae66d5c84a141422ec33bc1d5a095f0c2"></a>kCloneThread&#160;</td><td class="fielddoc"></td></tr>
-</table>
+<p>线程组侵入式链表节点类型 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00026">26</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>                : uint64_t {</div>
-<div class="line"><span class="lineno">   27</span>  <span class="comment">// 全部共享</span></div>
-<div class="line"><span class="lineno">   28</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5">kCloneAll</a> = 0,</div>
-<div class="line"><span class="lineno">   29</span>  <span class="comment">// 共享地址空间</span></div>
-<div class="line"><span class="lineno">   30</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116">kCloneVm</a> = 0x00000100,</div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// 共享文件系统信息</span></div>
-<div class="line"><span class="lineno">   32</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa41409c871d0338db7c837734fa30421f">kCloneFs</a> = 0x00000200,</div>
-<div class="line"><span class="lineno">   33</span>  <span class="comment">// 共享文件描述符表</span></div>
-<div class="line"><span class="lineno">   34</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aabd62342a60b500de9eab77f6e8a414b9">kCloneFiles</a> = 0x00000400,</div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// 共享信号处理器</span></div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa137ff90667f2e45b11ca9872bedae4f1">kCloneSighand</a> = 0x00000800,</div>
-<div class="line"><span class="lineno">   37</span>  <span class="comment">// 保持相同父进程</span></div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aac643601978e8b48da2ffa0a6263a40cc">kCloneParent</a> = 0x00008000,</div>
-<div class="line"><span class="lineno">   39</span>  <span class="comment">// 同一线程组</span></div>
-<div class="line"><span class="lineno">   40</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aae66d5c84a141422ec33bc1d5a095f0c2">kCloneThread</a> = 0x00010000,</div>
-<div class="line"><span class="lineno">   41</span>};</div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116">kCloneVm</a></div><div class="ttdeci">@ kCloneVm</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00030">task_control_block.hpp:30</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aa137ff90667f2e45b11ca9872bedae4f1"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa137ff90667f2e45b11ca9872bedae4f1">kCloneSighand</a></div><div class="ttdeci">@ kCloneSighand</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00036">task_control_block.hpp:36</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aa41409c871d0338db7c837734fa30421f"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa41409c871d0338db7c837734fa30421f">kCloneFs</a></div><div class="ttdeci">@ kCloneFs</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00032">task_control_block.hpp:32</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aabd62342a60b500de9eab77f6e8a414b9"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aabd62342a60b500de9eab77f6e8a414b9">kCloneFiles</a></div><div class="ttdeci">@ kCloneFiles</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00034">task_control_block.hpp:34</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aac643601978e8b48da2ffa0a6263a40cc"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aac643601978e8b48da2ffa0a6263a40cc">kCloneParent</a></div><div class="ttdeci">@ kCloneParent</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00038">task_control_block.hpp:38</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aae66d5c84a141422ec33bc1d5a095f0c2"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aae66d5c84a141422ec33bc1d5a095f0c2">kCloneThread</a></div><div class="ttdeci">@ kCloneThread</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00040">task_control_block.hpp:40</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5">kCloneAll</a></div><div class="ttdeci">@ kCloneAll</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00028">task_control_block.hpp:28</a></div></div>
-</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00073">73</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+
 </div>
 </div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a49a208767f4bf1cfd0e39b9db74b8af1" name="a49a208767f4bf1cfd0e39b9db74b8af1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49a208767f4bf1cfd0e39b9db74b8af1">&#9670;&#160;</a></span>SchedPolicy</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a> : uint8_t</td>
+          <td class="memname">enum class <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a> : uint8_t</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>调度策略 </p>
+<p>Task status type alias — backed by FSM state IDs </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>为什么要定义 <a class="el" href="namespaceTaskStatusId.html" title="任务状态 ID — 用作 etl::fsm 的状态 ID">TaskStatusId</a> 与 TaskStatus 两个命名空间？可以直接用 TaskStatus 吗？ </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1a083bf2e4794281bd20e819d17073840f" name="a49a208767f4bf1cfd0e39b9db74b8af1a083bf2e4794281bd20e819d17073840f"></a>kRealTime&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f" name="a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f"></a>kNormal&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1a19d8199da79ca4c28eb644052b08f632" name="a49a208767f4bf1cfd0e39b9db74b8af1a19d8199da79ca4c28eb644052b08f632"></a>kIdle&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0" name="a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0"></a>kPolicyCount&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1ae0f4fc1e0994e23b803ed82fb5e9930b" name="a49a208767f4bf1cfd0e39b9db74b8af1ae0f4fc1e0994e23b803ed82fb5e9930b"></a>kRealTime&#160;</td><td class="fielddoc"><p>实时任务 (最高优先级) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416" name="a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416"></a>kNormal&#160;</td><td class="fielddoc"><p>普通任务 </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1af5137a026a4b2f3b1c8a21cfc60dd14b" name="a49a208767f4bf1cfd0e39b9db74b8af1af5137a026a4b2f3b1c8a21cfc60dd14b"></a>kIdle&#160;</td><td class="fielddoc"><p>空闲任务 (最低优先级) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f" name="a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f"></a>kPolicyCount&#160;</td><td class="fielddoc"><p>策略数量 </p>
+</td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00066">66</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>                 : uint8_t {</div>
-<div class="line"><span class="lineno">   67</span>  <span class="comment">// 实时任务 (最高优先级)</span></div>
-<div class="line"><span class="lineno">   68</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a083bf2e4794281bd20e819d17073840f">kRealTime</a> = 0,</div>
-<div class="line"><span class="lineno">   69</span>  <span class="comment">// 普通任务</span></div>
-<div class="line"><span class="lineno">   70</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f">kNormal</a> = 1,</div>
-<div class="line"><span class="lineno">   71</span>  <span class="comment">// 空闲任务 (最低优先级)</span></div>
-<div class="line"><span class="lineno">   72</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a19d8199da79ca4c28eb644052b08f632">kIdle</a> = 2,</div>
-<div class="line"><span class="lineno">   73</span>  <span class="comment">// 策略数量</span></div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0">kPolicyCount</a></div>
-<div class="line"><span class="lineno">   75</span>};</div>
-<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1a083bf2e4794281bd20e819d17073840f"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a083bf2e4794281bd20e819d17073840f">kRealTime</a></div><div class="ttdeci">@ kRealTime</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00068">task_control_block.hpp:68</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1a19d8199da79ca4c28eb644052b08f632"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a19d8199da79ca4c28eb644052b08f632">kIdle</a></div><div class="ttdeci">@ kIdle</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00072">task_control_block.hpp:72</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f">kNormal</a></div><div class="ttdeci">@ kNormal</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00070">task_control_block.hpp:70</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0">kPolicyCount</a></div><div class="ttdeci">@ kPolicyCount</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00075">task_control_block.hpp:74</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a5d987b98f8f913fcd928b7ab94e726a2" name="a5d987b98f8f913fcd928b7ab94e726a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d987b98f8f913fcd928b7ab94e726a2">&#9670;&#160;</a></span>TaskStatus</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2">TaskStatus</a> : uint8_t</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>任务状态枚举 </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e" name="a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e"></a>kUnInit&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863" name="a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863"></a>kReady&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5d987b98f8f913fcd928b7ab94e726a2a24f35cf992cb19498f5a83aa6cadfa8f" name="a5d987b98f8f913fcd928b7ab94e726a2a24f35cf992cb19498f5a83aa6cadfa8f"></a>kRunning&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5d987b98f8f913fcd928b7ab94e726a2acf8962434c9f2b7be945c9766c6db9df" name="a5d987b98f8f913fcd928b7ab94e726a2acf8962434c9f2b7be945c9766c6db9df"></a>kSleeping&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5d987b98f8f913fcd928b7ab94e726a2a825228abe8e14b673f73133b36daf2dc" name="a5d987b98f8f913fcd928b7ab94e726a2a825228abe8e14b673f73133b36daf2dc"></a>kBlocked&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722" name="a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722"></a>kExited&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5d987b98f8f913fcd928b7ab94e726a2ae5bcea9577cc11324251f070f1e12f7c" name="a5d987b98f8f913fcd928b7ab94e726a2ae5bcea9577cc11324251f070f1e12f7c"></a>kZombie&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00046">46</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>                : uint8_t {</div>
-<div class="line"><span class="lineno">   47</span>  <span class="comment">// 未初始化</span></div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e">kUnInit</a>,</div>
-<div class="line"><span class="lineno">   49</span>  <span class="comment">// 就绪</span></div>
-<div class="line"><span class="lineno">   50</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863">kReady</a>,</div>
-<div class="line"><span class="lineno">   51</span>  <span class="comment">// 正在运行</span></div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a24f35cf992cb19498f5a83aa6cadfa8f">kRunning</a>,</div>
-<div class="line"><span class="lineno">   53</span>  <span class="comment">// 睡眠中</span></div>
-<div class="line"><span class="lineno">   54</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2acf8962434c9f2b7be945c9766c6db9df">kSleeping</a>,</div>
-<div class="line"><span class="lineno">   55</span>  <span class="comment">// 阻塞</span></div>
-<div class="line"><span class="lineno">   56</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a825228abe8e14b673f73133b36daf2dc">kBlocked</a>,</div>
-<div class="line"><span class="lineno">   57</span>  <span class="comment">// 已退出</span></div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722">kExited</a>,</div>
-<div class="line"><span class="lineno">   59</span>  <span class="comment">// 僵尸状态 (等待回收)</span></div>
-<div class="line"><span class="lineno">   60</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2ae5bcea9577cc11324251f070f1e12f7c">kZombie</a>,</div>
-<div class="line"><span class="lineno">   61</span>};</div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2a24f35cf992cb19498f5a83aa6cadfa8f"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a24f35cf992cb19498f5a83aa6cadfa8f">kRunning</a></div><div class="ttdeci">@ kRunning</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00052">task_control_block.hpp:52</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863">kReady</a></div><div class="ttdeci">@ kReady</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00050">task_control_block.hpp:50</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2a825228abe8e14b673f73133b36daf2dc"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a825228abe8e14b673f73133b36daf2dc">kBlocked</a></div><div class="ttdeci">@ kBlocked</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00056">task_control_block.hpp:56</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722">kExited</a></div><div class="ttdeci">@ kExited</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00058">task_control_block.hpp:58</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2acf8962434c9f2b7be945c9766c6db9df"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2acf8962434c9f2b7be945c9766c6db9df">kSleeping</a></div><div class="ttdeci">@ kSleeping</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00054">task_control_block.hpp:54</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2ae5bcea9577cc11324251f070f1e12f7c"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2ae5bcea9577cc11324251f070f1e12f7c">kZombie</a></div><div class="ttdeci">@ kZombie</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00060">task_control_block.hpp:60</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e">kUnInit</a></div><div class="ttdeci">@ kUnInit</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00048">task_control_block.hpp:48</a></div></div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00061">61</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>                       : uint8_t {</div>
+<div class="line"><span class="lineno">   63</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ae0f4fc1e0994e23b803ed82fb5e9930b">kRealTime</a> = 0,</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416">kNormal</a> = 1,</div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1af5137a026a4b2f3b1c8a21cfc60dd14b">kIdle</a> = 2,</div>
+<div class="line"><span class="lineno">   69</span>  <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f">kPolicyCount</a></div>
+<div class="line"><span class="lineno">   70</span>};</div>
+<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416">SchedPolicy::kNormal</a></div><div class="ttdeci">@ kNormal</div><div class="ttdoc">普通任务</div></div>
+<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f">SchedPolicy::kPolicyCount</a></div><div class="ttdeci">@ kPolicyCount</div><div class="ttdoc">策略数量</div></div>
+<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1ae0f4fc1e0994e23b803ed82fb5e9930b"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ae0f4fc1e0994e23b803ed82fb5e9930b">SchedPolicy::kRealTime</a></div><div class="ttdeci">@ kRealTime</div><div class="ttdoc">实时任务 (最高优先级)</div></div>
+<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1af5137a026a4b2f3b1c8a21cfc60dd14b"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1af5137a026a4b2f3b1c8a21cfc60dd14b">SchedPolicy::kIdle</a></div><div class="ttdeci">@ kIdle</div><div class="ttdoc">空闲任务 (最低优先级)</div></div>
 </div><!-- fragment -->
 </div>
 </div>

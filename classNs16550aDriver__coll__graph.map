@@ -1,0 +1,9 @@
+<map id="Ns16550aDriver" name="Ns16550aDriver">
+<area shape="rect" id="Node000001" title="NS16550A UART 驱动" alt="" coords="47,1101,201,1487"/>
+<area shape="rect" id="Node000002" href="$structMatchEntry.html" title="驱动静态匹配表中的一条记录" alt="" coords="5,673,107,759"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="58,759,60,901,65,989,75,1077,76,1085,70,1085,69,1078,60,989,55,901,53,759"/>
+<area shape="rect" id="Node000003" href="$classns16550a_1_1Ns16550a.html" title="NS16550A 串口驱动" alt="" coords="131,393,288,1039"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,1039,167,1078,165,1085,160,1085,161,1077,167,1038"/>
+<area shape="rect" id="Node000004" href="$structMmioAccessor.html" title="通用 MMIO 寄存器访问器" alt="" coords="137,5,282,331"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="212,331,212,377,207,377,207,331"/>
+</map>

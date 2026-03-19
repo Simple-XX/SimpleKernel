@@ -1,0 +1,19 @@
+<map id="/workspaces/SimpleKernel/src/device/virtio/transport/mmio.hpp" name="/workspaces/SimpleKernel/src/device/virtio/transport/mmio.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="589,5,783,60"/>
+<area shape="rect" id="Node000002" href="$virtio__blk_8hpp.html" title=" " alt="" coords="523,108,716,163"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="663,73,639,109,635,106,659,70"/>
+<area shape="rect" id="Node000007" href="$virtio__driver_8cpp.html" title=" " alt="" coords="657,416,851,471"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="714,71,731,107,750,194,759,282,760,359,759,416,753,416,755,359,754,282,745,195,726,109,710,73"/>
+<area shape="rect" id="Node000003" href="$virtio__blk__vfs__adapter_8hpp.html" title=" " alt="" coords="376,211,599,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="576,173,524,213,520,208,573,169"/>
+<area shape="rect" id="Node000004" href="$virtio__driver_8hpp.html" title=" " alt="" coords="423,313,616,368"/>
+<area shape="poly" id="edge8_Node000002_Node000004" title=" " alt="" coords="627,176,626,221,621,244,612,267,592,294,567,315,563,311,588,290,608,264,616,243,620,220,622,176"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="502,278,514,312,508,314,497,279"/>
+<area shape="rect" id="Node000005" href="$riscv64_2interrupt__main_8cpp.html" title=" " alt="" coords="5,416,199,471"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="410,371,211,419,200,421,199,416,209,413,409,366"/>
+<area shape="rect" id="Node000006" href="$device_8cpp.html" title=" " alt="" coords="223,423,416,463"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="456,376,358,425,356,421,454,372"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="594,371,694,413,692,418,592,376"/>
+<area shape="rect" id="Node000008" href="$virtio__driver__test_8cpp.html" title=" " alt="" coords="440,416,633,471"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="529,381,535,415,530,416,524,382"/>
+</map>

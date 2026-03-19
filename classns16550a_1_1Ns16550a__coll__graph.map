@@ -1,0 +1,5 @@
+<map id="ns16550a::Ns16550a" name="ns16550a::Ns16550a">
+<area shape="rect" id="Node000001" title="NS16550A 串口驱动" alt="" coords="5,393,163,1039"/>
+<area shape="rect" id="Node000002" href="$structMmioAccessor.html" title="通用 MMIO 寄存器访问器" alt="" coords="11,5,157,331"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,331,87,377,81,377,81,331"/>
+</map>

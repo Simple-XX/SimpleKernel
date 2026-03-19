@@ -1,0 +1,9 @@
+<map id="sys_futex" name="sys_futex">
+<area shape="rect" id="Node000001" title="快速用户空间互斥锁操作（futex）" alt="" coords="5,55,91,80"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="139,5,239,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,52,137,33,139,38,86,57"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="151,55,227,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="91,65,137,65,137,70,91,70"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="143,104,234,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="86,78,139,97,137,102,84,83"/>
+</map>

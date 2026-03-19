@@ -1,11 +1,15 @@
 <map id="Apic::InitCurrentCpuLocalApic" name="Apic::InitCurrentCpuLocalApic">
-<area shape="rect" id="Node000001" title="初始化当前 CPU 的 Local APIC" alt="" coords="5,42,220,67"/>
-<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="268,15,453,41"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,40,254,37,255,42,220,46"/>
-<area shape="rect" id="Node000004" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="301,66,421,91"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="220,62,287,69,287,74,220,68"/>
-<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="501,5,764,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="454,24,487,24,487,29,454,30"/>
-<area shape="rect" id="Node000005" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="565,70,700,95"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="421,77,551,79,551,84,421,82"/>
+<area shape="rect" id="Node000001" title="初始化当前 CPU 的 Local APIC" alt="" coords="5,80,220,105"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="323,5,399,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,77,267,39,309,28,310,33,269,45,151,82"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="268,55,453,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,79,254,75,255,81,220,84"/>
+<area shape="rect" id="Node000005" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="319,104,402,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="220,100,306,109,305,114,220,106"/>
+<area shape="rect" id="Node000006" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="301,153,421,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="153,103,269,139,296,147,295,152,267,145,151,108"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="501,47,764,87"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="454,65,487,65,487,70,454,70"/>
+<area shape="rect" id="Node000007" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="565,153,700,179"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="421,163,551,163,551,169,421,169"/>
 </map>

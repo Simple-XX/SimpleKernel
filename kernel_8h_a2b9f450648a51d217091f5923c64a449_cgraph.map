@@ -1,0 +1,21 @@
+<map id="FileSystemInit" name="FileSystemInit">
+<area shape="rect" id="Node000001" title="文件系统初始化" alt="" coords="5,130,120,155"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="419,19,495,44"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,128,105,75,133,47,167,25,197,14,229,7,293,3,354,7,406,16,405,21,354,13,293,8,230,13,199,19,169,30,136,51,109,79,73,131"/>
+<area shape="rect" id="Node000003" href="$namespacevfs.html#acec885fcabeaba10d159e2634911dc39" title="获取全局挂载表实例" alt="" coords="383,104,531,130"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,136,368,120,369,125,120,141"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="415,206,498,231"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="86,153,124,172,169,189,230,202,293,210,401,216,401,221,292,216,229,208,167,194,122,177,84,157"/>
+<area shape="rect" id="Node000005" href="$namespacevfs.html#ad10df9cc721f7881387ddfc914a26bee" title="VFS 全局初始化" alt="" coords="216,155,287,180"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="121,147,203,158,202,164,120,153"/>
+<area shape="rect" id="Node000007" href="$classfatfs_1_1FatFsFileSystem.html#ac05aa43dff2d10d945924b35257c3fac" title="挂载 FatFS 卷" alt="" coords="168,40,335,80"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="92,127,191,83,193,88,94,132"/>
+<area shape="rect" id="Node000008" href="$classramfs_1_1RamFs.html#a5ad3d246da876565ea0f39c424db553f" title="挂载 ramfs" alt="" coords="170,256,333,282"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="77,154,116,193,169,235,197,249,194,253,167,239,113,197,74,157"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="286,156,390,130,392,136,288,162"/>
+<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="288,174,402,202,401,207,286,179"/>
+<area shape="rect" id="Node000006" href="$namespacevfs.html#aa5aeb25168763769b1d16de4f480c55a" title=" " alt="" coords="393,155,521,180"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="287,165,379,165,379,170,287,170"/>
+<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="335,46,405,36,406,41,335,51"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="303,254,401,229,403,234,304,259"/>
+</map>

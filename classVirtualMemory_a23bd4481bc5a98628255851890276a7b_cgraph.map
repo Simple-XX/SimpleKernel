@@ -1,0 +1,7 @@
+<map id="VirtualMemory::DestroyPageDirectory" name="VirtualMemory::DestroyPageDirectory">
+<area shape="rect" id="Node000001" title="回收页表，释放所有映射和子页表" alt="" coords="5,23,213,63"/>
+<area shape="rect" id="Node000002" href="$memory_8cpp.html#a2e24be38b7d2a964e53cb2c7719aef52" title=" " alt="" coords="261,5,364,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,28,247,23,248,29,214,33"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="263,55,363,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,53,249,57,249,63,213,58"/>
+</map>

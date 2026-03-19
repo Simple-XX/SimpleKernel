@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/tests/system_test/interrupt_test.cpp Source File</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/tests/system_test/interrupt_test.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -109,34 +109,30 @@ $(document).ready(function(){initNavTree('interrupt__test_8cpp_source.html','');
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="basic__info_8hpp.html">basic_info.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="interrupt__base_8h.html">interrupt_base.h</a>&quot;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="kernel_8h.html">kernel.h</a>&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="singleton_8hpp.html">singleton.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;sk_cstdio&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;sk_cstring&quot;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="sk__libcxx_8h.html">sk_libcxx.h</a>&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="sk__stdlib_8h.html">sk_stdlib.h</a>&quot;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="system__test_8h.html">system_test.h</a>&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="interrupt__test_8cpp.html#a16953e19a2974c8249f2109a4522237e">   24</a></span><span class="keyword">auto</span> <a class="code hl_function" href="interrupt__test_8cpp.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a>() -&gt; <span class="keywordtype">bool</span> {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;memory_test: start\n&quot;</span>);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;kstd_cstring&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="kstd__libcxx_8h.html">kstd_libcxx.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="sk__stdlib_8h.html">sk_stdlib.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="system__test_8h.html">system_test.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="interrupt__test_8cpp.html#a16953e19a2974c8249f2109a4522237e">   22</a></span><span class="keyword">auto</span> <a class="code hl_function" href="interrupt__test_8cpp.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a>() -&gt; <span class="keywordtype">bool</span> {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;interrupt_test: start&quot;</span>);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  (void)InterruptSingleton::instance().BroadcastIpi();</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().BroadcastIpi();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;interrupt_test: broadcast ipi passed&quot;</span>);</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;memory_test: multi alloc passed\n&quot;</span>);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
 <div class="ttc" id="aarch_8h_html"><div class="ttname"><a href="arch_8h.html">arch.h</a></div></div>
 <div class="ttc" id="abasic__info_8hpp_html"><div class="ttname"><a href="basic__info_8hpp.html">basic_info.hpp</a></div></div>
-<div class="ttc" id="aclassSingleton_html_a68856b49e098eadba37b60366db33ebd"><div class="ttname"><a href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton::GetInstance</a></div><div class="ttdeci">static auto GetInstance() -&gt; T &amp;</div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00023">singleton.hpp:23</a></div></div>
 <div class="ttc" id="acpu__io_8h_html"><div class="ttname"><a href="cpu__io_8h.html">cpu_io.h</a></div></div>
 <div class="ttc" id="ainterrupt__base_8h_html"><div class="ttname"><a href="interrupt__base_8h.html">interrupt_base.h</a></div></div>
-<div class="ttc" id="ainterrupt__test_8cpp_html_a16953e19a2974c8249f2109a4522237e"><div class="ttname"><a href="interrupt__test_8cpp.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a></div><div class="ttdeci">auto interrupt_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="interrupt__test_8cpp_source.html#l00024">interrupt_test.cpp:24</a></div></div>
+<div class="ttc" id="ainterrupt__test_8cpp_html_a16953e19a2974c8249f2109a4522237e"><div class="ttname"><a href="interrupt__test_8cpp.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a></div><div class="ttdeci">auto interrupt_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="interrupt__test_8cpp_source.html#l00022">interrupt_test.cpp:22</a></div></div>
 <div class="ttc" id="akernel_8h_html"><div class="ttname"><a href="kernel_8h.html">kernel.h</a></div></div>
-<div class="ttc" id="asingleton_8hpp_html"><div class="ttname"><a href="singleton_8hpp.html">singleton.hpp</a></div></div>
-<div class="ttc" id="ask__libcxx_8h_html"><div class="ttname"><a href="sk__libcxx_8h.html">sk_libcxx.h</a></div></div>
-<div class="ttc" id="ask__stdio_8h_html_ad8142b94111a30f723c6c0a2301bae7f"><div class="ttname"><a href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a></div><div class="ttdeci">int sk_printf(const char *format,...) __attribute__((format(printf</div></div>
+<div class="ttc" id="akstd__libcxx_8h_html"><div class="ttname"><a href="kstd__libcxx_8h.html">kstd_libcxx.h</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a1f6b347e95b475341e195f363a9f20a3"><div class="ttname"><a href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a></div><div class="ttdeci">auto Info(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 INFO 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00182">kernel_log.hpp:182</a></div></div>
 <div class="ttc" id="ask__stdlib_8h_html"><div class="ttname"><a href="sk__stdlib_8h.html">sk_stdlib.h</a></div></div>
 <div class="ttc" id="asystem__test_8h_html"><div class="ttname"><a href="system__test_8h.html">system_test.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

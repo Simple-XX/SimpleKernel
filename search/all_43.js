@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['单元测试环境层实现总结_0',['Task 单元测试环境层实现总结',['../md__2root_2tests_2unit__test_2task_2IMPLEMENTATION__SUMMARY.html',1,'']]],
-  ['单核测试_1',['单核测试',['../md__2root_2tests_2unit__test_2task_2README__ENVIRONMENT__LAYER.html#autotoc_md488',1,'']]],
-  ['单核环境状态_2',['&lt;tt&gt;CoreEnvironment&lt;/tt&gt; - 单核环境状态',['../md__2root_2tests_2unit__test_2task_2README__ENVIRONMENT__LAYER.html#autotoc_md480',1,'']]]
+  ['命名约定_0',['命名约定',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md313',1,'']]],
+  ['命名规范_1',['2. 命名规范',['../md_coding__standards.html#autotoc_md241',1,'']]]
 ];

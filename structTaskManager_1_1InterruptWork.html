@@ -118,19 +118,23 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a418b253cc2f3d27fd60990ffaec5ee20" id="r_a418b253cc2f3d27fd60990ffaec5ee20"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#a418b253cc2f3d27fd60990ffaec5ee20">interrupt_no</a></td></tr>
+<tr class="memitem:a418b253cc2f3d27fd60990ffaec5ee20" id="r_a418b253cc2f3d27fd60990ffaec5ee20"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#a418b253cc2f3d27fd60990ffaec5ee20">interrupt_no</a> {0}</td></tr>
+<tr class="memdesc:a418b253cc2f3d27fd60990ffaec5ee20"><td class="mdescLeft">&#160;</td><td class="mdescRight">中断号  <br /></td></tr>
 <tr class="separator:a418b253cc2f3d27fd60990ffaec5ee20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4172b194c3714ae3372f48f35a23c9cc" id="r_a4172b194c3714ae3372f48f35a23c9cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#a4172b194c3714ae3372f48f35a23c9cc">data</a></td></tr>
+<tr class="memitem:a4172b194c3714ae3372f48f35a23c9cc" id="r_a4172b194c3714ae3372f48f35a23c9cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#a4172b194c3714ae3372f48f35a23c9cc">data</a> {nullptr}</td></tr>
+<tr class="memdesc:a4172b194c3714ae3372f48f35a23c9cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">中断上下文  <br /></td></tr>
 <tr class="separator:a4172b194c3714ae3372f48f35a23c9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112fb416b1b1232162c26fc822cb986c" id="r_a112fb416b1b1232162c26fc822cb986c"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#a112fb416b1b1232162c26fc822cb986c">timestamp</a></td></tr>
+<tr class="memitem:a112fb416b1b1232162c26fc822cb986c" id="r_a112fb416b1b1232162c26fc822cb986c"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#a112fb416b1b1232162c26fc822cb986c">timestamp</a> {0}</td></tr>
+<tr class="memdesc:a112fb416b1b1232162c26fc822cb986c"><td class="mdescLeft">&#160;</td><td class="mdescRight">时间戳  <br /></td></tr>
 <tr class="separator:a112fb416b1b1232162c26fc822cb986c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc4a09f806ae2dd5cf37e5832d3c178f" id="r_afc4a09f806ae2dd5cf37e5832d3c178f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskManager_1_1InterruptWork.html#aa929a99bed2f3f6546595f0a90001e43">WorkHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#afc4a09f806ae2dd5cf37e5832d3c178f">handler</a> = nullptr</td></tr>
+<tr class="memitem:afc4a09f806ae2dd5cf37e5832d3c178f" id="r_afc4a09f806ae2dd5cf37e5832d3c178f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskManager_1_1InterruptWork.html#aa929a99bed2f3f6546595f0a90001e43">WorkHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskManager_1_1InterruptWork.html#afc4a09f806ae2dd5cf37e5832d3c178f">handler</a> {nullptr}</td></tr>
+<tr class="memdesc:afc4a09f806ae2dd5cf37e5832d3c178f"><td class="mdescLeft">&#160;</td><td class="mdescRight">工作处理函数  <br /></td></tr>
 <tr class="separator:afc4a09f806ae2dd5cf37e5832d3c178f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>中断线程处理结构体 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00177">177</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00205">205</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aa929a99bed2f3f6546595f0a90001e43" name="aa929a99bed2f3f6546595f0a90001e43"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa929a99bed2f3f6546595f0a90001e43">&#9670;&#160;</a></span>WorkHandler</h2>
@@ -144,7 +148,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00178">178</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00206">206</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -156,13 +160,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>* TaskManager::InterruptWork::data</td>
+          <td class="memname"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>* TaskManager::InterruptWork::data {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00183">183</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p>中断上下文 </p>
 
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00211">211</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  211</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="afc4a09f806ae2dd5cf37e5832d3c178f" name="afc4a09f806ae2dd5cf37e5832d3c178f"></a>
@@ -172,13 +179,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structTaskManager_1_1InterruptWork.html#aa929a99bed2f3f6546595f0a90001e43">WorkHandler</a> TaskManager::InterruptWork::handler = nullptr</td>
+          <td class="memname"><a class="el" href="structTaskManager_1_1InterruptWork.html#aa929a99bed2f3f6546595f0a90001e43">WorkHandler</a> TaskManager::InterruptWork::handler {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00187">187</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p>工作处理函数 </p>
 
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00216">216</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  216</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a418b253cc2f3d27fd60990ffaec5ee20" name="a418b253cc2f3d27fd60990ffaec5ee20"></a>
@@ -188,13 +198,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t TaskManager::InterruptWork::interrupt_no</td>
+          <td class="memname">uint64_t TaskManager::InterruptWork::interrupt_no {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00181">181</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p>中断号 </p>
 
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00209">209</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  209</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a112fb416b1b1232162c26fc822cb986c" name="a112fb416b1b1232162c26fc822cb986c"></a>
@@ -204,17 +217,20 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t TaskManager::InterruptWork::timestamp</td>
+          <td class="memname">uint64_t TaskManager::InterruptWork::timestamp {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00185">185</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p>时间戳 </p>
 
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00213">213</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  213</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/root/src/task/include/<a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/task/include/<a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

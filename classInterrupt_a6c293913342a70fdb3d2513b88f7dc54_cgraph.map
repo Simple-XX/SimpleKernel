@@ -1,0 +1,5 @@
+<map id="Interrupt::Sgi" name="Interrupt::Sgi">
+<area shape="rect" id="Node000001" title="设置 SGI 中断" alt="" coords="5,5,112,31"/>
+<area shape="rect" id="Node000002" href="$classGic.html#a1c36f1585f54075b78b09acf00a80eaa" title="配置软件生成中断 (SGI)" alt="" coords="160,5,231,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,15,146,15,146,21,112,21"/>
+</map>

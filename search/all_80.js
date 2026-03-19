@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['的设计理念_0',['🤖 面向 AI 的设计理念',['../md__2root_2README.html#autotoc_md295',1,'']]]
+  ['软件中断分发_0',['2. 软件中断分发',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md165',1,'']]]
 ];

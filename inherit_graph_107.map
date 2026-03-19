@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classvirtio_1_1VirtqueueBase.html" title="Virtqueue 基类（C++23 Deducing this 编译期多态）" alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000001" href="$classvirtio_1_1SplitVirtqueue.html" title="Split Virtqueue 管理类" alt="" coords="212,5,368,31"/>
+<area shape="poly" id="edge43_Node000000_Node000001" title=" " alt="" coords="178,15,212,15,212,21,178,21"/>
+</map>

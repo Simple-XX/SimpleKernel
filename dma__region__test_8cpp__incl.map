@@ -1,0 +1,20 @@
+<map id="/workspaces/SimpleKernel/tests/unit_test/dma_region_test.cpp" name="/workspaces/SimpleKernel/tests/unit_test/dma_region_test.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="67,5,267,60"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,108,109,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,62,85,102,81,97,132,58"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="133,108,200,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,60,169,94,164,94,164,60"/>
+<area shape="rect" id="Node000004" href="$io__buffer_8hpp.html" title=" " alt="" coords="224,108,331,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="202,58,253,97,250,102,199,62"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="137,181,207,207"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="262,136,202,176,199,171,259,131"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="248,255,315,280"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="278,134,274,167,273,206,278,241,273,241,268,207,268,166,273,133"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="283,181,336,207"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="285,133,301,168,296,170,280,135"/>
+<area shape="rect" id="Node000008" href="$expected_8hpp.html" title=" " alt="" coords="361,181,471,207"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="301,131,382,173,380,177,298,136"/>
+<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="396,209,317,250,314,246,393,204"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="375,255,457,280"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="419,207,419,241,413,241,413,207"/>
+</map>

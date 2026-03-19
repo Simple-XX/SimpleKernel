@@ -1,0 +1,5 @@
+<map id="TaskManager::ReparentChildren" name="TaskManager::ReparentChildren">
+<area shape="rect" id="Node000001" title="将孤儿进程过继给 init 进程" alt="" coords="5,5,235,31"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="283,5,383,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,15,269,15,269,21,235,21"/>
+</map>

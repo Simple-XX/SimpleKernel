@@ -1,0 +1,13 @@
+<map id="/workspaces/SimpleKernel/src/device/pl011/pl011_driver.hpp" name="/workspaces/SimpleKernel/src/device/pl011/pl011_driver.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="181,5,375,60"/>
+<area shape="rect" id="Node000002" href="$aarch64_2early__console_8cpp.html" title=" " alt="" coords="5,211,199,265"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,60,133,80,104,109,94,134,91,160,97,210,91,211,85,160,89,132,100,107,130,76,167,55"/>
+<area shape="rect" id="Node000003" href="$pl011__singleton_8h.html" title=" " alt="" coords="115,108,308,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,73,231,109,227,106,251,70"/>
+<area shape="rect" id="Node000004" href="$aarch64_2interrupt__main_8cpp.html" title=" " alt="" coords="236,211,429,265"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="306,71,323,107,334,162,336,210,331,211,329,162,318,109,301,73"/>
+<area shape="rect" id="Node000005" href="$device_8cpp.html" title=" " alt="" coords="384,115,577,155"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="344,64,443,113,441,117,342,68"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="174,174,132,213,129,209,171,170"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="255,169,303,209,299,213,252,174"/>
+</map>

@@ -90,12 +90,14 @@ $(document).ready(function(){initNavTree('structper__cpu_1_1PerCpu.html',''); in
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structper__cpu_1_1PerCpu-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">per_cpu::PerCpu Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>每个 CPU 核心的局部数据  
+ <a href="structper__cpu_1_1PerCpu.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>&gt;</code></p>
 <div class="dynheader">
@@ -103,32 +105,68 @@ Collaboration diagram for per_cpu::PerCpu:</div>
 <div class="dyncontent">
 <div class="center"><img src="structper__cpu_1_1PerCpu__coll__graph.png" border="0" usemap="#aper__cpu_1_1PerCpu_coll__map" alt="Collaboration graph"/></div>
 <map name="aper__cpu_1_1PerCpu_coll__map" id="aper__cpu_1_1PerCpu_coll__map">
-<area shape="rect" title=" " alt="" coords="743,1476,861,1781"/>
-<area shape="rect" href="structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="535,573,725,1399"/>
-<area shape="poly" title=" " alt="" coords="727,1339,760,1459,754,1461,722,1340"/>
-<area shape="poly" title=" " alt="" coords="727,909,737,921,745,938,751,986,748,1023,738,1050,733,1048,743,1022,746,986,740,939,732,923,723,912"/>
-<area shape="rect" href="structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="5,155,204,361"/>
-<area shape="poly" title=" " alt="" coords="144,360,177,435,218,509,290,613,371,713,452,803,526,880,522,884,448,807,367,716,286,616,213,512,172,437,139,362"/>
-<area shape="rect" href="unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="228,185,432,331"/>
-<area shape="poly" title=" " alt="" coords="362,330,531,740,527,742,357,332"/>
-<area shape="rect" href="structcpu__io_1_1TrapContext.html" title=" " alt="" coords="456,175,607,341"/>
-<area shape="poly" title=" " alt="" coords="545,340,574,557,569,558,540,341"/>
-<area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="631,155,827,361"/>
-<area shape="poly" title=" " alt="" coords="722,361,701,550,700,557,694,556,695,549,717,361"/>
-<area shape="rect" href="structResourceId.html" title="资源 ID" alt="" coords="851,5,1001,511"/>
-<area shape="poly" title=" " alt="" coords="853,482,842,512,734,767,729,765,837,510,848,480"/>
-<area shape="rect" href="structCpuSchedData.html" title="每个核心的调度数据 (RunQueue)" alt="" coords="982,903,1113,1069"/>
-<area shape="poly" title=" " alt="" coords="1022,1070,900,1400,870,1475,865,1473,896,1398,1017,1068"/>
-<area shape="rect" href="classSpinLock.html" title="自旋锁" alt="" coords="1026,45,1215,471"/>
-<area shape="poly" title=" " alt="" coords="1102,471,1060,887,1055,886,1097,471"/>
+<area shape="rect" title="每个 CPU 核心的局部数据" alt="" coords="1515,2597,1633,2923"/>
+<area shape="rect" href="structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="1166,1935,1355,2520"/>
+<area shape="poly" title=" " alt="" coords="1358,2388,1508,2643,1504,2645,1353,2390"/>
+<area shape="rect" title=" " alt="" coords="553,1657,678,1722"/>
+<area shape="poly" title=" " alt="" coords="628,1735,652,1803,669,1838,692,1870,745,1926,804,1978,867,2025,932,2067,1058,2137,1167,2187,1164,2192,1056,2142,929,2071,864,2029,801,1982,741,1930,688,1874,665,1841,647,1805,623,1736"/>
+<area shape="rect" href="classTaskFsm.html" title="任务有限状态机" alt="" coords="703,1507,811,1872"/>
+<area shape="poly" title=" " alt="" coords="813,1853,824,1870,860,1916,899,1959,985,2038,1073,2106,1154,2160,1151,2165,1070,2111,981,2042,895,1963,855,1919,820,1874,808,1856"/>
+<area shape="rect" href="structStateUnInit.html" title="UnInit 状态 — 任务尚未初始化" alt="" coords="37,741,202,826"/>
+<area shape="poly" title=" " alt="" coords="113,827,96,956,92,1042,95,1135,108,1231,119,1278,134,1324,153,1367,176,1408,204,1446,237,1481,253,1491,274,1498,327,1504,391,1501,460,1495,530,1488,595,1484,651,1489,673,1495,691,1504,692,1505,689,1509,689,1509,671,1500,650,1494,595,1490,530,1493,461,1500,391,1507,327,1509,273,1503,251,1496,234,1485,200,1450,171,1411,148,1370,129,1325,114,1279,103,1232,90,1136,87,1042,91,956,108,826"/>
+<area shape="rect" title=" " alt="" coords="5,173,164,283"/>
+<area shape="poly" title=" " alt="" coords="92,296,119,740,114,741,86,296"/>
+<area shape="rect" href="structStateReady.html" title="Ready 状态 — 任务已就绪，等待调度" alt="" coords="235,741,401,826"/>
+<area shape="poly" title=" " alt="" coords="321,826,327,973,345,1172,359,1271,379,1361,405,1433,420,1460,437,1481,457,1491,487,1495,561,1494,637,1491,669,1495,691,1504,692,1505,689,1509,689,1509,667,1500,637,1496,561,1499,486,1501,456,1496,434,1485,416,1463,400,1435,374,1362,354,1272,339,1172,322,974,316,826"/>
+<area shape="rect" title=" " alt="" coords="189,181,397,275"/>
+<area shape="poly" title=" " alt="" coords="298,289,319,740,313,741,293,289"/>
+<area shape="rect" href="structStateRunning.html" title="Running 状态 — 任务正在执行" alt="" coords="467,711,633,856"/>
+<area shape="poly" title=" " alt="" coords="543,857,534,984,535,1063,540,1147,552,1235,574,1321,605,1405,648,1481,657,1489,668,1493,680,1496,692,1505,695,1508,691,1512,688,1509,678,1501,667,1498,655,1494,644,1484,600,1407,568,1323,547,1236,535,1148,529,1063,529,984,537,856"/>
+<area shape="rect" title=" " alt="" coords="421,166,644,290"/>
+<area shape="poly" title=" " alt="" coords="538,304,550,710,545,710,532,304"/>
+<area shape="rect" href="structStateSleeping.html" title="Sleeping 状态 — 任务已挂起，等待唤醒时钟" alt="" coords="674,741,839,826"/>
+<area shape="poly" title=" " alt="" coords="759,826,759,1490,754,1490,754,826"/>
+<area shape="rect" title=" " alt="" coords="669,173,845,283"/>
+<area shape="poly" title=" " alt="" coords="759,296,759,740,754,740,754,296"/>
+<area shape="rect" href="structStateBlocked.html" title="Blocked 状态 — 任务阻塞，等待资源" alt="" coords="867,741,1033,826"/>
+<area shape="poly" title=" " alt="" coords="953,826,953,971,944,1165,935,1264,921,1355,902,1430,890,1460,876,1484,863,1495,849,1498,836,1500,824,1509,823,1510,819,1506,820,1505,834,1495,848,1493,861,1490,872,1481,885,1458,897,1429,916,1354,929,1263,939,1165,947,970,948,826"/>
+<area shape="rect" title=" " alt="" coords="869,173,1039,283"/>
+<area shape="poly" title=" " alt="" coords="956,296,953,740,948,740,951,296"/>
+<area shape="rect" href="structStateExited.html" title="Exited 状态 — 任务已退出，无父任务回收" alt="" coords="1059,741,1225,826"/>
+<area shape="poly" title=" " alt="" coords="1146,826,1148,973,1141,1171,1131,1271,1115,1361,1092,1435,1078,1463,1061,1485,1043,1495,1017,1500,952,1501,883,1500,852,1503,825,1511,824,1506,851,1498,883,1495,952,1495,1016,1495,1041,1490,1058,1481,1073,1460,1087,1433,1110,1360,1125,1270,1135,1171,1143,973,1141,826"/>
+<area shape="rect" title=" " alt="" coords="1064,173,1225,283"/>
+<area shape="poly" title=" " alt="" coords="1147,296,1145,740,1140,740,1142,296"/>
+<area shape="rect" href="structStateZombie.html" title="Zombie 状态 — 任务已退出，等待父任务回收" alt="" coords="1251,741,1417,826"/>
+<area shape="poly" title=" " alt="" coords="1347,826,1370,955,1378,1041,1379,1135,1370,1230,1360,1278,1347,1324,1330,1369,1308,1410,1280,1449,1248,1485,1233,1495,1214,1502,1167,1508,1110,1507,1048,1503,924,1495,869,1498,826,1510,824,1505,869,1493,924,1489,1048,1497,1110,1502,1166,1503,1213,1497,1230,1490,1244,1481,1276,1446,1303,1408,1325,1366,1342,1322,1355,1277,1364,1230,1373,1134,1372,1042,1365,956,1342,827"/>
+<area shape="rect" title=" " alt="" coords="1250,173,1421,283"/>
+<area shape="poly" title=" " alt="" coords="1338,296,1337,740,1331,740,1333,296"/>
+<area shape="rect" href="structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="835,1587,1033,1792"/>
+<area shape="poly" title=" " alt="" coords="998,1791,1160,2055,1155,2058,994,1794"/>
+<area shape="rect" href="unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="1057,1617,1261,1762"/>
+<area shape="poly" title=" " alt="" coords="1176,1762,1205,1918,1200,1919,1170,1763"/>
+<area shape="rect" href="structcpu__io_1_1TrapContext.html" title=" " alt="" coords="1285,1607,1436,1772"/>
+<area shape="poly" title=" " alt="" coords="1348,1773,1321,1919,1316,1918,1343,1772"/>
+<area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="1460,1587,1656,1792"/>
+<area shape="poly" title=" " alt="" coords="1512,1793,1451,1912,1366,2060,1362,2057,1446,1909,1507,1791"/>
+<area shape="rect" href="structTaskAuxData.html" title="非调度热路径的任务辅助数据" alt="" coords="1681,1577,1833,1802"/>
+<area shape="poly" title=" " alt="" coords="1713,1803,1693,1840,1669,1874,1599,1955,1521,2030,1443,2097,1370,2153,1367,2149,1439,2093,1518,2026,1595,1951,1665,1870,1688,1837,1708,1801"/>
+<area shape="rect" href="classResourceId.html" title="资源 ID" alt="" coords="1513,521,1664,1046"/>
+<area shape="poly" title=" " alt="" coords="1590,1046,1597,1151,1609,1261,1629,1373,1656,1482,1670,1505,1698,1560,1693,1563,1665,1508,1652,1484,1624,1375,1604,1262,1592,1151,1585,1046"/>
+<area shape="rect" href="classfilesystem_1_1FileDescriptorTable.html" title="进程级文件描述符表" alt="" coords="1688,513,1868,1053"/>
+<area shape="poly" title=" " alt="" coords="1757,1053,1755,1077,1752,1280,1755,1483,1756,1560,1751,1560,1750,1483,1746,1280,1750,1077,1751,1053"/>
+<area shape="rect" href="classSpinLock.html" title="自旋锁" alt="" coords="1761,5,1950,451"/>
+<area shape="poly" title=" " alt="" coords="1827,451,1821,497,1815,497,1822,451"/>
+<area shape="rect" href="structCpuSchedData.html" title="每个核心的调度数据 (RunQueue)" alt="" coords="1833,1077,1979,1483"/>
+<area shape="poly" title=" " alt="" coords="1879,451,1883,513,1897,799,1905,1061,1899,1061,1892,799,1878,513,1874,451"/>
+<area shape="poly" title=" " alt="" coords="1897,1483,1879,1673,1865,1774,1847,1873,1802,2065,1749,2256,1693,2433,1641,2583,1636,2582,1688,2431,1744,2254,1797,2063,1842,1871,1860,1773,1873,1672,1892,1482"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
 <tr class="memitem:a069d5dbdf01247427ab8d9a87eb00b29" id="r_a069d5dbdf01247427ab8d9a87eb00b29"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a069d5dbdf01247427ab8d9a87eb00b29">PerCpu</a> (size_t id)</td></tr>
 <tr class="separator:a069d5dbdf01247427ab8d9a87eb00b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
 <tr class="memitem:afb2be12b62411304d3ac704e84e902a8" id="r_afb2be12b62411304d3ac704e84e902a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#afb2be12b62411304d3ac704e84e902a8">PerCpu</a> ()=default</td></tr>
 <tr class="separator:afb2be12b62411304d3ac704e84e902a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab40ba7db702d853e25cdba10c63b8193" id="r_ab40ba7db702d853e25cdba10c63b8193"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#ab40ba7db702d853e25cdba10c63b8193">PerCpu</a> (const <a class="el" href="structper__cpu_1_1PerCpu.html">PerCpu</a> &amp;)=default</td></tr>
@@ -144,22 +182,23 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a9350604c0f4b37d3acda077569d4e766" id="r_a9350604c0f4b37d3acda077569d4e766"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a9350604c0f4b37d3acda077569d4e766">core_id</a></td></tr>
+<tr class="memitem:a9350604c0f4b37d3acda077569d4e766" id="r_a9350604c0f4b37d3acda077569d4e766"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a9350604c0f4b37d3acda077569d4e766">core_id</a> {0}</td></tr>
 <tr class="memdesc:a9350604c0f4b37d3acda077569d4e766"><td class="mdescLeft">&#160;</td><td class="mdescRight">核心 ID  <br /></td></tr>
 <tr class="separator:a9350604c0f4b37d3acda077569d4e766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ad676bb796dc66fcd41607bf4846fe9" id="r_a2ad676bb796dc66fcd41607bf4846fe9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a2ad676bb796dc66fcd41607bf4846fe9">running_task</a> = nullptr</td></tr>
+<tr class="memitem:a2ad676bb796dc66fcd41607bf4846fe9" id="r_a2ad676bb796dc66fcd41607bf4846fe9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a2ad676bb796dc66fcd41607bf4846fe9">running_task</a> {nullptr}</td></tr>
 <tr class="memdesc:a2ad676bb796dc66fcd41607bf4846fe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">当前运行的任务  <br /></td></tr>
 <tr class="separator:a2ad676bb796dc66fcd41607bf4846fe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a859b16b924d4d11d01ec72ead0e5b3f2" id="r_a859b16b924d4d11d01ec72ead0e5b3f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a859b16b924d4d11d01ec72ead0e5b3f2">idle_task</a> = nullptr</td></tr>
+<tr class="memitem:a859b16b924d4d11d01ec72ead0e5b3f2" id="r_a859b16b924d4d11d01ec72ead0e5b3f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a859b16b924d4d11d01ec72ead0e5b3f2">idle_task</a> {nullptr}</td></tr>
 <tr class="memdesc:a859b16b924d4d11d01ec72ead0e5b3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">空闲任务  <br /></td></tr>
 <tr class="separator:a859b16b924d4d11d01ec72ead0e5b3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f5f0d8a8272a9cf2d0c3e99f1de7fbd" id="r_a2f5f0d8a8272a9cf2d0c3e99f1de7fbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCpuSchedData.html">CpuSchedData</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a2f5f0d8a8272a9cf2d0c3e99f1de7fbd">sched_data</a> = nullptr</td></tr>
+<tr class="memitem:a2f5f0d8a8272a9cf2d0c3e99f1de7fbd" id="r_a2f5f0d8a8272a9cf2d0c3e99f1de7fbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCpuSchedData.html">CpuSchedData</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structper__cpu_1_1PerCpu.html#a2f5f0d8a8272a9cf2d0c3e99f1de7fbd">sched_data</a> {nullptr}</td></tr>
 <tr class="memdesc:a2f5f0d8a8272a9cf2d0c3e99f1de7fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">调度数据 (RunQueue) 指针  <br /></td></tr>
 <tr class="separator:a2f5f0d8a8272a9cf2d0c3e99f1de7fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00024">24</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
+<div class="textblock"><p>每个 CPU 核心的局部数据 </p>
+
+<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00023">23</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a069d5dbdf01247427ab8d9a87eb00b29" name="a069d5dbdf01247427ab8d9a87eb00b29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a069d5dbdf01247427ab8d9a87eb00b29">&#9670;&#160;</a></span>PerCpu() <span class="overload">[1/4]</span></h2>
@@ -185,9 +224,9 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00035">35</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>: <a class="code hl_variable" href="structper__cpu_1_1PerCpu.html#a9350604c0f4b37d3acda077569d4e766">core_id</a>(<span class="keywordtype">id</span>) {}</div>
-<div class="ttc" id="astructper__cpu_1_1PerCpu_html_a9350604c0f4b37d3acda077569d4e766"><div class="ttname"><a href="structper__cpu_1_1PerCpu.html#a9350604c0f4b37d3acda077569d4e766">per_cpu::PerCpu::core_id</a></div><div class="ttdeci">size_t core_id</div><div class="ttdoc">核心 ID</div><div class="ttdef"><b>Definition</b> <a href="per__cpu_8hpp_source.html#l00026">per_cpu.hpp:26</a></div></div>
+<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00036">36</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>: <a class="code hl_variable" href="structper__cpu_1_1PerCpu.html#a9350604c0f4b37d3acda077569d4e766">core_id</a>(<span class="keywordtype">id</span>) {}</div>
+<div class="ttc" id="astructper__cpu_1_1PerCpu_html_a9350604c0f4b37d3acda077569d4e766"><div class="ttname"><a href="structper__cpu_1_1PerCpu.html#a9350604c0f4b37d3acda077569d4e766">per_cpu::PerCpu::core_id</a></div><div class="ttdeci">size_t core_id</div><div class="ttdoc">核心 ID</div><div class="ttdef"><b>Definition</b> <a href="per__cpu_8hpp_source.html#l00025">per_cpu.hpp:25</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -354,15 +393,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t per_cpu::PerCpu::core_id</td>
+          <td class="memname">size_t per_cpu::PerCpu::core_id {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>核心 ID </p>
 
-<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00026">26</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00025">25</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a859b16b924d4d11d01ec72ead0e5b3f2" name="a859b16b924d4d11d01ec72ead0e5b3f2"></a>
@@ -372,15 +412,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* per_cpu::PerCpu::idle_task = nullptr</td>
+          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* per_cpu::PerCpu::idle_task {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>空闲任务 </p>
 
-<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00031">31</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00030">30</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a2ad676bb796dc66fcd41607bf4846fe9" name="a2ad676bb796dc66fcd41607bf4846fe9"></a>
@@ -390,15 +431,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* per_cpu::PerCpu::running_task = nullptr</td>
+          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* per_cpu::PerCpu::running_task {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>当前运行的任务 </p>
 
-<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00029">29</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00028">28</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a2f5f0d8a8272a9cf2d0c3e99f1de7fbd" name="a2f5f0d8a8272a9cf2d0c3e99f1de7fbd"></a>
@@ -408,19 +450,20 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structCpuSchedData.html">CpuSchedData</a>* per_cpu::PerCpu::sched_data = nullptr</td>
+          <td class="memname"><a class="el" href="structCpuSchedData.html">CpuSchedData</a>* per_cpu::PerCpu::sched_data {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>调度数据 (RunQueue) 指针 </p>
 
-<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00033">33</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="per__cpu_8hpp_source.html#l00032">32</a> of file <a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/root/src/include/<a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/include/<a class="el" href="per__cpu_8hpp_source.html">per_cpu.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

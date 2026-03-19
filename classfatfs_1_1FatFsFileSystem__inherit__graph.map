@@ -1,0 +1,5 @@
+<map id="fatfs::FatFsFileSystem" name="fatfs::FatFsFileSystem">
+<area shape="rect" id="Node000001" title="FatFS VFS 适配器" alt="" coords="5,259,192,1144"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="35,5,163,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,224,101,259,96,259,96,224"/>
+</map>

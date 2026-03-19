@@ -1,0 +1,19 @@
+<map id="mmio_helper::Prepare" name="mmio_helper::Prepare">
+<area shape="rect" id="Node000001" title="从节点提取 MMIO base/size 并通过 VirtualMemory 映射该区域。" alt="" coords="568,55,735,80"/>
+<area shape="rect" id="Node000002" href="$classNs16550aDriver.html#a1746711196ece82196c8aa186966683b" title="初始化 NS16550A UART。" alt="" coords="348,5,520,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="581,54,490,33,491,28,582,49"/>
+<area shape="rect" id="Node000004" href="$classPl011Driver.html#a4f566e44664c6388453e0d32a8b55f4e" title="初始化 PL011 UART。" alt="" coords="363,55,505,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="554,70,506,70,506,65,554,65"/>
+<area shape="rect" id="Node000006" href="$classVirtioDriver.html#a87cc3f14f78089d301df1837f9df1c34" title="初始化 VirtIO 设备" alt="" coords="363,104,505,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="582,86,491,107,490,101,581,80"/>
+<area shape="rect" id="Node000003" href="$classNs16550aDriver.html#a1870119f0ccd5fb0f029893f62467760" title="返回用于注册的 DriverEntry" alt="" coords="108,5,300,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="334,21,300,21,300,15,334,15"/>
+<area shape="rect" id="Node000005" href="$classPl011Driver.html#acb4d4605fe297d640758583302ce7e3c" title="返回用于注册的 DriverEntry" alt="" coords="123,55,285,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="349,70,286,70,286,65,349,65"/>
+<area shape="rect" id="Node000007" href="$classVirtioDriver.html#a3cbbd67b9d07ab2974fb6d9f6c4db20f" title="返回驱动注册入口" alt="" coords="123,104,285,129"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="349,119,286,119,286,114,349,114"/>
+<area shape="rect" id="Node000008" href="$virtio__driver__test_8cpp.html#af5fbb3fc86c579110c146ef3aa631373" title=" " alt="" coords="5,79,60,104"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="108,105,60,98,61,93,109,100"/>
+<area shape="rect" id="Node000009" href="$virtio__driver__test_8cpp.html#aaee49fb5f0c750315f9fe42a579b5da0" title=" " alt="" coords="5,128,60,153"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="109,133,61,140,60,134,108,127"/>
+</map>

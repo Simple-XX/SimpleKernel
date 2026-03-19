@@ -1,0 +1,7 @@
+<map id="TaskFsm::Receive" name="TaskFsm::Receive">
+<area shape="rect" id="Node000001" title="向 FSM 发送消息" alt="" coords="268,31,407,56"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#aa43228da3cb31deee114ace7ff02b293" title="初始化 per cpu 的调度数据，创建 idle 线程" alt="" coords="5,5,220,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,37,220,33,220,27,255,31"/>
+<area shape="rect" id="Node000003" href="$classTaskManager.html#a31b16f7a44d9b66654bdf52bba94be9a" title="调度函数 选择下一个任务并切换上下文" alt="" coords="25,55,200,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,55,201,61,200,55,254,50"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="StateExited" name="StateExited">
+<area shape="rect" id="Node000001" title="Exited 状态 — 任务已退出，无父任务回收" alt="" coords="5,163,171,248"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="7,5,169,115"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,128,91,163,85,163,85,128"/>
+</map>

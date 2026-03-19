@@ -1,3 +1,21 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classIoApic.html" title="IO APIC 驱动类" alt="" coords="5,5,68,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,203,112,228"/>
+<area shape="rect" id="Node000001" href="$structMsgBlock.html" title="阻塞消息，携带资源 ID" alt="" coords="186,5,271,31"/>
+<area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="66,189,79,155,99,116,125,75,158,40,184,25,187,30,162,44,129,78,103,118,84,158,71,191"/>
+<area shape="rect" id="Node000002" href="$structMsgExit.html" title="退出消息，携带退出码与父任务标志" alt="" coords="191,55,266,80"/>
+<area shape="poly" id="edge10_Node000000_Node000002" title=" " alt="" coords="72,189,107,139,131,112,159,89,190,74,192,79,161,94,135,116,111,142,76,192"/>
+<area shape="rect" id="Node000003" href="$structMsgReap.html" title="回收消息（无负载，用作事件）" alt="" coords="187,104,270,129"/>
+<area shape="poly" id="edge11_Node000000_Node000003" title=" " alt="" coords="83,191,118,164,159,138,186,126,188,131,161,143,121,169,87,195"/>
+<area shape="rect" id="Node000004" href="$structMsgSchedule.html" title="调度消息（无负载，用作事件）" alt="" coords="175,153,283,179"/>
+<area shape="poly" id="edge12_Node000000_Node000004" title=" " alt="" coords="116,196,183,176,185,181,117,201"/>
+<area shape="rect" id="Node000005" href="$structMsgSleep.html" title="睡眠消息，携带唤醒时钟" alt="" coords="186,203,271,228"/>
+<area shape="poly" id="edge13_Node000000_Node000005" title=" " alt="" coords="126,213,186,213,186,218,126,218"/>
+<area shape="rect" id="Node000006" href="$structMsgWakeup.html" title="唤醒消息（无负载，用作事件）" alt="" coords="179,252,279,277"/>
+<area shape="poly" id="edge14_Node000000_Node000006" title=" " alt="" coords="117,229,185,249,183,254,116,235"/>
+<area shape="rect" id="Node000007" href="$structMsgYield.html" title="让出消息（无负载，用作事件）" alt="" coords="188,301,269,327"/>
+<area shape="poly" id="edge15_Node000000_Node000007" title=" " alt="" coords="87,235,121,261,161,286,189,299,187,304,159,291,118,265,83,239"/>
+<area shape="rect" id="Node000008" href="$structThreadCreateMsg.html" title="线程创建消息" alt="" coords="160,351,297,376"/>
+<area shape="poly" id="edge16_Node000000_Node000008" title=" " alt="" coords="77,238,112,288,135,313,162,336,185,348,182,353,158,340,132,317,108,291,72,242"/>
+<area shape="rect" id="Node000009" href="$structThreadExitMsg.html" title="线程退出消息" alt="" coords="169,400,288,425"/>
+<area shape="poly" id="edge17_Node000000_Node000009" title=" " alt="" coords="71,240,104,312,130,351,162,385,182,398,179,402,158,389,126,354,99,314,66,242"/>
 </map>

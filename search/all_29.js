@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['上下文到任务的映射_0',['上下文到任务的映射',['../md__2root_2tests_2unit__test_2task_2IMPLEMENTATION__SUMMARY.html#autotoc_md473',1,'']]]
+  ['与_20ai_20工具的结合方式_0',['与 AI 工具的结合方式',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md294',1,'']]]
 ];

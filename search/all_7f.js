@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['电源状态结构_0',['电源状态结构',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md92',1,'']]]
+  ['贡献指南_0',['🤝 贡献指南',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md316',1,'']]],
+  ['贡献方式_1',['🎯 贡献方式',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md317',1,'']]]
 ];

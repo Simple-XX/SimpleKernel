@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/arch/riscv64/include/interrupt.h File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/arch/riscv64/include/interrupt.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,75 +90,76 @@ $(document).ready(function(){initNavTree('riscv64_2include_2interrupt_8h.html','
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">interrupt.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="cpu__io_8h_source.html">cpu_io.h</a>&gt;</code><br />
+<code>#include &lt;etl/singleton.h&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &quot;<a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="plic_8h_source.html">plic.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="singleton_8hpp_source.html">singleton.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sk__stdio_8h_source.html">sk_stdio.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for interrupt.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="riscv64_2include_2interrupt_8h__incl.png" border="0" usemap="#a_2root_2src_2arch_2riscv64_2include_2interrupt_8h" alt=""/></div>
-<map name="a_2root_2src_2arch_2riscv64_2include_2interrupt_8h" id="a_2root_2src_2arch_2riscv64_2include_2interrupt_8h">
-<area shape="rect" title=" " alt="" coords="948,5,1107,45"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="357,167,433,192"/>
-<area shape="poly" title=" " alt="" coords="949,48,748,96,447,168,446,163,747,91,948,43"/>
-<area shape="rect" title=" " alt="" coords="866,313,933,339"/>
-<area shape="poly" title=" " alt="" coords="1046,44,1067,72,1087,109,1100,150,1101,172,1097,193,1077,235,1044,267,996,296,947,315,945,310,993,292,1040,263,1073,232,1091,191,1095,171,1094,151,1083,111,1063,75,1042,47"/>
-<area shape="rect" title=" " alt="" coords="926,167,982,192"/>
-<area shape="poly" title=" " alt="" coords="1017,47,988,95,964,154,959,152,984,92,1012,44"/>
-<area shape="rect" href="interrupt__base_8h.html" title=" " alt="" coords="759,93,887,119"/>
-<area shape="poly" title=" " alt="" coords="979,48,867,91,865,86,978,43"/>
-<area shape="rect" href="plic_8h.html" title=" " alt="" coords="999,93,1056,119"/>
-<area shape="poly" title=" " alt="" coords="1030,46,1030,79,1025,79,1025,46"/>
-<area shape="rect" href="singleton_8hpp.html" title=" " alt="" coords="1188,93,1299,119"/>
-<area shape="poly" title=" " alt="" coords="1080,43,1200,86,1198,91,1078,48"/>
-<area shape="rect" href="sk__stdio_8h.html" title=" " alt="" coords="1323,93,1411,119"/>
-<area shape="poly" title=" " alt="" coords="1108,42,1310,89,1309,94,1106,48"/>
-<area shape="rect" title=" " alt="" coords="189,240,255,265"/>
-<area shape="poly" title=" " alt="" coords="368,194,264,237,262,232,366,190"/>
-<area shape="rect" title=" " alt="" coords="279,240,349,265"/>
-<area shape="poly" title=" " alt="" coords="384,194,339,233,336,229,381,190"/>
-<area shape="rect" title=" " alt="" coords="580,313,651,339"/>
-<area shape="poly" title=" " alt="" coords="434,179,471,184,513,194,555,211,592,238,602,252,610,268,617,299,611,300,605,270,598,255,588,242,553,216,512,199,470,189,433,185"/>
-<area shape="poly" title=" " alt="" coords="434,188,617,237,854,308,852,313,616,243,433,193"/>
-<area shape="rect" title=" " alt="" coords="219,313,283,339"/>
-<area shape="poly" title=" " alt="" coords="358,188,250,207,200,222,181,232,169,242,165,250,165,258,173,275,191,291,214,305,211,309,188,295,169,278,159,259,160,249,165,238,178,227,198,217,248,202,357,182"/>
-<area shape="rect" title=" " alt="" coords="339,313,403,339"/>
-<area shape="poly" title=" " alt="" coords="357,188,254,208,207,223,190,232,179,242,174,253,179,264,202,280,239,294,327,315,325,320,238,299,199,285,175,267,169,253,174,238,187,228,205,218,253,202,357,183"/>
-<area shape="rect" title=" " alt="" coords="5,313,129,339"/>
-<area shape="poly" title=" " alt="" coords="358,187,264,203,209,220,158,242,118,272,87,304,83,301,114,268,155,238,208,215,262,198,357,181"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="373,240,578,265"/>
-<area shape="poly" title=" " alt="" coords="410,190,454,229,450,233,406,194"/>
-<area shape="poly" title=" " alt="" coords="499,263,582,305,579,309,497,268"/>
-<area shape="poly" title=" " alt="" coords="544,263,852,314,851,319,543,268"/>
-<area shape="poly" title=" " alt="" coords="440,268,297,313,296,308,439,263"/>
-<area shape="poly" title=" " alt="" coords="460,268,401,307,398,303,457,263"/>
-<area shape="poly" title=" " alt="" coords="410,268,143,314,142,309,409,263"/>
-<area shape="rect" title=" " alt="" coords="444,313,507,339"/>
-<area shape="poly" title=" " alt="" coords="478,266,478,300,473,300,473,266"/>
-<area shape="poly" title=" " alt="" coords="760,121,447,172,447,167,759,115"/>
-<area shape="poly" title=" " alt="" coords="835,117,850,139,864,166,887,237,899,299,894,300,882,239,860,168,845,142,830,120"/>
-<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="740,167,851,192"/>
-<area shape="poly" title=" " alt="" coords="821,120,807,155,802,153,816,118"/>
-<area shape="poly" title=" " alt="" coords="809,191,851,238,889,300,885,303,847,242,805,194"/>
-<area shape="rect" title=" " alt="" coords="754,240,837,265"/>
-<area shape="poly" title=" " alt="" coords="798,192,798,226,793,226,793,192"/>
-<area shape="poly" title=" " alt="" coords="999,113,855,133,780,149,750,159,729,169,694,199,665,235,643,271,628,302,623,300,638,268,661,232,690,195,726,164,748,154,779,144,854,128,998,108"/>
-<area shape="poly" title=" " alt="" coords="1043,117,1057,132,1071,150,1078,171,1075,193,1048,233,1013,265,975,291,940,310,938,305,972,286,1010,261,1044,229,1070,191,1073,172,1066,153,1053,135,1039,121"/>
-<area shape="poly" title=" " alt="" coords="1017,121,978,159,974,155,1013,117"/>
-<area shape="rect" title=" " alt="" coords="1007,167,1061,192"/>
-<area shape="poly" title=" " alt="" coords="1031,119,1034,153,1029,153,1026,119"/>
-<area shape="rect" title=" " alt="" coords="1281,167,1355,192"/>
-<area shape="poly" title=" " alt="" coords="1361,121,1336,157,1332,154,1357,117"/>
-<area shape="rect" title=" " alt="" coords="1379,167,1454,192"/>
-<area shape="poly" title=" " alt="" coords="1378,117,1403,154,1399,157,1373,121"/>
+<div class="center"><img src="riscv64_2include_2interrupt_8h__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2include_2interrupt_8h" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2include_2interrupt_8h" id="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2include_2interrupt_8h">
+<area shape="rect" title=" " alt="" coords="254,5,447,60"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="522,255,598,280"/>
+<area shape="poly" title=" " alt="" coords="400,58,471,108,506,142,536,180,550,211,558,240,553,242,545,212,531,183,502,145,468,112,397,62"/>
+<area shape="rect" title=" " alt="" coords="320,401,387,427"/>
+<area shape="poly" title=" " alt="" coords="254,41,172,54,131,65,92,81,59,100,32,125,14,156,8,193,8,269,10,295,15,316,27,333,47,351,66,362,93,372,163,387,307,406,306,411,162,393,92,377,64,367,44,355,23,337,11,318,4,296,3,269,3,192,9,154,28,122,55,96,90,76,129,60,171,49,253,36"/>
+<area shape="rect" title=" " alt="" coords="199,108,313,133"/>
+<area shape="poly" title=" " alt="" coords="324,62,281,101,277,97,320,58"/>
+<area shape="rect" title=" " alt="" coords="133,181,189,207"/>
+<area shape="poly" title=" " alt="" coords="258,62,221,82,189,110,173,138,166,168,161,166,168,136,185,106,218,78,256,58"/>
+<area shape="rect" href="interrupt__base_8h.html" title=" " alt="" coords="213,181,341,207"/>
+<area shape="poly" title=" " alt="" coords="350,61,342,97,328,135,301,173,296,170,323,132,337,95,345,60"/>
+<area shape="rect" href="plic_8h.html" title=" " alt="" coords="389,108,446,133"/>
+<area shape="poly" title=" " alt="" coords="373,58,402,95,398,99,369,62"/>
+<area shape="rect" href="sk__stdio_8h.html" title=" " alt="" coords="597,108,685,133"/>
+<area shape="poly" title=" " alt="" coords="440,58,591,102,589,107,439,63"/>
+<area shape="rect" title=" " alt="" coords="517,328,584,353"/>
+<area shape="poly" title=" " alt="" coords="561,281,557,315,551,314,556,280"/>
+<area shape="rect" title=" " alt="" coords="608,328,677,353"/>
+<area shape="poly" title=" " alt="" coords="575,278,620,317,617,321,572,282"/>
+<area shape="rect" title=" " alt="" coords="1010,401,1081,427"/>
+<area shape="poly" title=" " alt="" coords="598,267,690,272,805,282,916,299,960,311,992,326,1008,339,1021,355,1039,387,1034,390,1016,358,1004,342,989,330,958,316,914,305,804,287,689,277,598,273"/>
+<area shape="poly" title=" " alt="" coords="545,282,383,395,380,391,542,278"/>
+<area shape="rect" title=" " alt="" coords="916,401,980,427"/>
+<area shape="poly" title=" " alt="" coords="598,265,689,267,801,275,856,282,905,293,945,307,971,326,979,341,979,358,967,390,962,388,974,357,974,343,967,330,942,312,903,298,855,287,800,280,688,272,598,271"/>
+<area shape="rect" title=" " alt="" coords="511,401,575,427"/>
+<area shape="poly" title=" " alt="" coords="546,282,525,302,508,329,505,345,509,360,525,390,520,392,504,362,500,345,503,327,521,299,542,278"/>
+<area shape="rect" title=" " alt="" coords="663,401,787,427"/>
+<area shape="poly" title=" " alt="" coords="599,276,646,294,670,309,691,326,711,356,722,387,717,388,706,358,687,330,667,313,644,299,597,281"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="752,328,957,353"/>
+<area shape="poly" title=" " alt="" coords="599,275,795,322,794,327,598,280"/>
+<area shape="poly" title=" " alt="" coords="886,351,1002,394,1000,399,884,356"/>
+<area shape="poly" title=" " alt="" coords="774,356,400,409,400,403,774,351"/>
+<area shape="poly" title=" " alt="" coords="871,351,924,391,920,395,868,355"/>
+<area shape="poly" title=" " alt="" coords="805,356,589,405,587,400,804,351"/>
+<area shape="poly" title=" " alt="" coords="835,356,760,397,758,392,833,351"/>
+<area shape="rect" title=" " alt="" coords="823,401,886,427"/>
+<area shape="poly" title=" " alt="" coords="857,354,857,388,852,388,852,354"/>
+<area shape="poly" title=" " alt="" coords="323,204,509,251,508,256,322,209"/>
+<area shape="poly" title=" " alt="" coords="285,206,305,254,349,387,344,389,300,256,280,208"/>
+<area shape="rect" title=" " alt="" coords="179,255,291,280"/>
+<area shape="poly" title=" " alt="" coords="273,208,251,244,246,242,268,206"/>
+<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="43,255,154,280"/>
+<area shape="poly" title=" " alt="" coords="250,209,141,252,139,247,248,204"/>
+<area shape="poly" title=" " alt="" coords="120,278,323,392,320,397,118,283"/>
+<area shape="rect" title=" " alt="" coords="57,328,140,353"/>
+<area shape="poly" title=" " alt="" coords="101,280,101,314,96,314,96,280"/>
+<area shape="poly" title=" " alt="" coords="422,133,434,168,444,187,457,205,485,229,517,247,515,251,482,233,453,208,439,190,429,170,417,135"/>
+<area shape="poly" title=" " alt="" coords="446,120,554,130,628,142,709,160,794,186,877,221,955,268,991,295,1023,326,1040,356,1047,387,1042,388,1035,358,1019,330,987,299,952,272,875,226,792,191,708,165,627,147,553,135,446,126"/>
+<area shape="poly" title=" " alt="" coords="417,134,361,388,356,387,412,133"/>
+<area shape="poly" title=" " alt="" coords="389,132,203,184,202,178,388,127"/>
+<area shape="poly" title=" " alt="" coords="396,136,313,177,311,173,394,131"/>
+<area shape="rect" title=" " alt="" coords="467,181,522,207"/>
+<area shape="poly" title=" " alt="" coords="432,131,474,170,470,174,428,135"/>
 </map>
 </div>
 </div>
@@ -167,9 +168,31 @@ Include dependency graph for interrupt.h:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterrupt.html">Interrupt</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">中断处理  <a href="classInterrupt.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AArch64 中断控制器实现  <a href="classInterrupt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a6305d2833dd0b1f0992e3a1f96a210dd" id="r_a6305d2833dd0b1f0992e3a1f96a210dd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="riscv64_2include_2interrupt_8h.html#a6305d2833dd0b1f0992e3a1f96a210dd">InterruptSingleton</a> = etl::singleton&lt; <a class="el" href="classInterrupt.html">Interrupt</a> &gt;</td></tr>
+<tr class="separator:a6305d2833dd0b1f0992e3a1f96a210dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a6305d2833dd0b1f0992e3a1f96a210dd" name="a6305d2833dd0b1f0992e3a1f96a210dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6305d2833dd0b1f0992e3a1f96a210dd">&#9670;&#160;</a></span>InterruptSingleton</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="aarch64_2include_2interrupt_8h.html#a6305d2833dd0b1f0992e3a1f96a210dd">InterruptSingleton</a> =  etl::singleton&lt;<a class="el" href="classInterrupt.html">Interrupt</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="riscv64_2include_2interrupt_8h_source.html#l00101">101</a> of file <a class="el" href="riscv64_2include_2interrupt_8h_source.html">interrupt.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

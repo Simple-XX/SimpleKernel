@@ -1,0 +1,13 @@
+<map id="Pl011Driver::GetEntry" name="Pl011Driver::GetEntry">
+<area shape="rect" id="Node000001" title="返回用于注册的 DriverEntry" alt="" coords="5,55,168,80"/>
+<area shape="rect" id="Node000002" href="$classPl011Driver.html#a145d45fc45830814b22836dca8da192a" title=" " alt="" coords="216,5,399,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,52,236,31,237,36,145,57"/>
+<area shape="rect" id="Node000003" href="$classPl011Driver.html#a4f566e44664c6388453e0d32a8b55f4e" title="初始化 PL011 UART。" alt="" coords="236,55,379,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,65,222,65,222,70,169,70"/>
+<area shape="rect" id="Node000006" href="$classPl011Driver.html#a5a2be882ab0e8a5fccf553716655e2ce" title="卸载驱动" alt="" coords="227,104,387,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="145,77,237,98,236,104,144,83"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="489,31,571,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="379,57,475,47,475,52,379,62"/>
+<area shape="rect" id="Node000005" href="$namespacemmio__helper.html#abef9cac26ccb76a6b4b911f8f1ccae76" title="从节点提取 MMIO base/size 并通过 VirtualMemory 映射该区域。" alt="" coords="447,80,613,105"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="379,73,433,79,432,84,379,78"/>
+</map>

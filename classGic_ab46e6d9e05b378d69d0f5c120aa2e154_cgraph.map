@@ -1,7 +1,7 @@
 <map id="Gic::Gic" name="Gic::Gic">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,77,31"/>
-<area shape="rect" id="Node000002" href="$classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670" title=" " alt="" coords="125,5,307,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,15,112,15,112,21,77,21"/>
-<area shape="rect" id="Node000003" href="$classGic_1_1Gicd.html#a81cbd89e80414992661203da25671a1f" title=" " alt="" coords="355,5,477,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="307,15,341,15,341,21,307,21"/>
+<area shape="rect" id="Node000001" title="构造函数" alt="" coords="5,31,77,56"/>
+<area shape="rect" id="Node000002" href="$classGic_1_1Gicd.html#a1ce76d1eabd522f218f449daab1aed2e" title="允许 no&#45;sec group1 中断" alt="" coords="125,5,305,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,36,114,30,115,35,78,41"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="174,55,257,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="78,46,161,57,160,63,77,51"/>
 </map>

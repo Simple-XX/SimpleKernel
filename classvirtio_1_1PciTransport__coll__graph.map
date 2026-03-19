@@ -1,0 +1,5 @@
+<map id="virtio::PciTransport" name="virtio::PciTransport">
+<area shape="rect" id="Node000001" title="Virtio PCI 传输层（占位）" alt="" coords="15,419,177,684"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1Transport.html" title="Virtio 传输层基类（零虚表开销，C++23 Deducing this）" alt="" coords="5,5,187,371"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,384,99,419,93,419,93,384"/>
+</map>

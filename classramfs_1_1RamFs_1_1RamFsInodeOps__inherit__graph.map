@@ -1,0 +1,5 @@
+<map id="ramfs::RamFs::RamFsInodeOps" name="ramfs::RamFs::RamFsInodeOps">
+<area shape="rect" id="Node000001" title="Inode 操作实现类" alt="" coords="5,439,224,604"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="59,5,170,391"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,404,117,439,112,439,112,404"/>
+</map>

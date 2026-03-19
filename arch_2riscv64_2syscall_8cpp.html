@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/arch/riscv64/syscall.cpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/arch/riscv64/syscall.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -97,75 +97,54 @@ $(document).ready(function(){initNavTree('arch_2riscv64_2syscall_8cpp.html','');
 <div class="textblock"><code>#include &quot;<a class="el" href="syscall_8hpp_source.html">syscall.hpp</a>&quot;</code><br />
 <code>#include &quot;interrupt.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="singleton_8hpp_source.html">singleton.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for syscall.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="arch_2riscv64_2syscall_8cpp__incl.png" border="0" usemap="#a_2root_2src_2arch_2riscv64_2syscall_8cpp" alt=""/></div>
-<map name="a_2root_2src_2arch_2riscv64_2syscall_8cpp" id="a_2root_2src_2arch_2riscv64_2syscall_8cpp">
-<area shape="rect" title=" " alt="" coords="986,5,1145,45"/>
-<area shape="rect" href="syscall_8hpp.html" title=" " alt="" coords="519,167,614,192"/>
-<area shape="poly" title=" " alt="" coords="1004,48,618,165,617,160,1003,43"/>
-<area shape="rect" title=" " alt="" coords="956,93,1047,119"/>
-<area shape="poly" title=" " alt="" coords="1052,47,1022,84,1018,81,1048,44"/>
-<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1071,93,1188,119"/>
-<area shape="poly" title=" " alt="" coords="1083,44,1113,81,1109,84,1079,47"/>
-<area shape="rect" href="singleton_8hpp.html" title=" " alt="" coords="1455,167,1566,192"/>
-<area shape="poly" title=" " alt="" coords="1121,43,1465,160,1463,165,1120,48"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="467,240,543,265"/>
-<area shape="poly" title=" " alt="" coords="559,194,526,231,522,228,555,191"/>
-<area shape="rect" title=" " alt="" coords="426,387,497,412"/>
-<area shape="poly" title=" " alt="" coords="524,195,487,213,471,225,458,241,446,274,444,310,448,344,455,373,450,374,443,345,439,310,441,273,454,239,467,222,484,208,521,190"/>
-<area shape="rect" title=" " alt="" coords="631,387,697,412"/>
-<area shape="poly" title=" " alt="" coords="574,191,656,373,651,375,569,193"/>
-<area shape="rect" title=" " alt="" coords="701,313,768,339"/>
-<area shape="poly" title=" " alt="" coords="543,263,689,308,687,313,541,268"/>
-<area shape="rect" title=" " alt="" coords="507,313,576,339"/>
-<area shape="poly" title=" " alt="" coords="514,264,532,300,527,302,509,267"/>
-<area shape="poly" title=" " alt="" coords="504,267,471,374,466,373,499,265"/>
-<area shape="poly" title=" " alt="" coords="526,264,590,311,648,374,644,378,586,315,522,268"/>
-<area shape="rect" title=" " alt="" coords="333,387,397,412"/>
-<area shape="poly" title=" " alt="" coords="496,268,388,379,384,375,492,264"/>
-<area shape="rect" title=" " alt="" coords="5,387,69,412"/>
-<area shape="poly" title=" " alt="" coords="467,259,382,265,275,275,173,292,132,303,103,316,86,328,72,343,51,376,46,373,68,340,83,324,100,311,130,298,172,287,274,270,381,259,467,253"/>
-<area shape="rect" title=" " alt="" coords="94,387,218,412"/>
-<area shape="poly" title=" " alt="" coords="467,256,381,258,274,267,222,274,176,284,139,298,115,315,110,329,113,344,122,360,135,375,131,379,118,363,108,346,104,328,111,312,137,293,174,279,221,269,273,261,380,253,467,251"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="125,313,331,339"/>
-<area shape="poly" title=" " alt="" coords="467,266,287,313,285,307,466,261"/>
-<area shape="poly" title=" " alt="" coords="266,336,414,381,412,386,265,341"/>
-<area shape="poly" title=" " alt="" coords="298,336,617,388,616,393,298,341"/>
-<area shape="poly" title=" " alt="" coords="251,336,332,378,330,383,249,341"/>
-<area shape="poly" title=" " alt="" coords="198,341,82,384,80,379,196,336"/>
-<area shape="poly" title=" " alt="" coords="218,341,179,379,176,375,214,337"/>
-<area shape="rect" title=" " alt="" coords="242,387,305,412"/>
-<area shape="poly" title=" " alt="" coords="238,338,261,374,256,377,233,340"/>
-<area shape="poly" title=" " alt="" coords="1189,115,1232,133,1252,147,1268,165,1273,177,1274,191,1268,221,1256,248,1242,267,1202,294,1144,317,1072,338,994,355,835,381,711,396,711,391,835,376,993,350,1071,333,1142,312,1199,289,1238,263,1251,245,1263,219,1269,191,1268,179,1263,168,1248,151,1230,138,1187,120"/>
-<area shape="rect" title=" " alt="" coords="953,167,1009,192"/>
-<area shape="poly" title=" " alt="" coords="1107,121,1019,163,1017,158,1104,116"/>
-<area shape="rect" title=" " alt="" coords="1034,167,1105,192"/>
-<area shape="poly" title=" " alt="" coords="1121,121,1090,158,1086,154,1117,117"/>
-<area shape="rect" title=" " alt="" coords="1129,167,1253,192"/>
-<area shape="poly" title=" " alt="" coords="1141,117,1174,154,1170,158,1137,121"/>
-<area shape="poly" title=" " alt="" coords="1189,116,1442,163,1441,168,1188,121"/>
-<area shape="rect" title=" " alt="" coords="1145,240,1228,265"/>
-<area shape="poly" title=" " alt="" coords="1071,121,994,141,962,154,943,168,939,179,943,190,1012,208,1133,236,1131,242,1010,213,940,194,934,179,939,165,960,149,992,136,1070,115"/>
-<area shape="rect" title=" " alt="" coords="1329,167,1431,192"/>
-<area shape="poly" title=" " alt="" coords="1170,116,1327,160,1325,165,1169,121"/>
-<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="775,167,879,192"/>
-<area shape="poly" title=" " alt="" coords="1081,121,889,166,888,161,1080,116"/>
-<area shape="poly" title=" " alt="" coords="776,195,558,243,556,237,774,189"/>
-<area shape="poly" title=" " alt="" coords="813,194,791,215,769,241,754,271,743,301,738,299,749,269,764,239,787,211,810,190"/>
-<area shape="poly" title=" " alt="" coords="826,193,782,340,762,353,733,364,661,380,581,391,511,398,510,392,580,386,660,375,732,359,759,349,778,337,821,192"/>
-<area shape="poly" title=" " alt="" coords="879,188,1132,237,1131,242,878,193"/>
-<area shape="rect" title=" " alt="" coords="1041,240,1121,265"/>
-<area shape="poly" title=" " alt="" coords="868,189,1029,234,1027,239,867,195"/>
-<area shape="rect" title=" " alt="" coords="823,240,881,265"/>
-<area shape="poly" title=" " alt="" coords="833,191,846,226,841,228,828,193"/>
-<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="906,240,1017,265"/>
-<area shape="poly" title=" " alt="" coords="850,190,928,231,926,236,847,194"/>
-<area shape="poly" title=" " alt="" coords="946,268,894,303,825,341,767,366,712,386,710,381,765,361,823,336,891,298,944,263"/>
-<area shape="rect" title=" " alt="" coords="920,313,1003,339"/>
-<area shape="poly" title=" " alt="" coords="964,266,964,300,959,300,959,266"/>
+<div class="center"><img src="arch_2riscv64_2syscall_8cpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2syscall_8cpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2syscall_8cpp" id="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2syscall_8cpp">
+<area shape="rect" title=" " alt="" coords="763,5,967,45"/>
+<area shape="rect" href="syscall_8hpp.html" title=" " alt="" coords="475,93,569,119"/>
+<area shape="poly" title=" " alt="" coords="783,48,583,93,582,88,782,43"/>
+<area shape="rect" title=" " alt="" coords="947,93,1038,119"/>
+<area shape="poly" title=" " alt="" coords="897,43,964,84,961,88,894,48"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="806,93,923,119"/>
+<area shape="poly" title=" " alt="" coords="867,46,867,79,862,79,862,46"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="423,167,499,192"/>
+<area shape="poly" title=" " alt="" coords="514,121,482,158,478,154,510,117"/>
+<area shape="rect" title=" " alt="" coords="5,313,76,339"/>
+<area shape="poly" title=" " alt="" coords="475,111,390,118,284,138,228,155,173,177,121,206,75,242,56,270,47,300,42,299,51,267,71,238,118,202,170,172,226,150,282,133,390,113,474,105"/>
+<area shape="rect" title=" " alt="" coords="561,313,627,339"/>
+<area shape="poly" title=" " alt="" coords="529,118,573,239,590,299,585,301,567,241,524,120"/>
+<area shape="rect" title=" " alt="" coords="657,240,723,265"/>
+<area shape="poly" title=" " alt="" coords="498,189,644,234,643,240,497,195"/>
+<area shape="rect" title=" " alt="" coords="462,240,531,265"/>
+<area shape="poly" title=" " alt="" coords="469,191,487,226,482,229,464,194"/>
+<area shape="poly" title=" " alt="" coords="423,186,254,205,167,221,132,231,107,242,91,255,76,270,55,302,50,299,72,267,87,251,105,238,131,226,166,216,254,200,422,181"/>
+<area shape="poly" title=" " alt="" coords="483,190,514,210,545,238,568,269,586,300,581,302,564,272,541,242,510,215,480,194"/>
+<area shape="rect" title=" " alt="" coords="101,313,165,339"/>
+<area shape="poly" title=" " alt="" coords="423,184,347,188,255,197,172,214,141,227,121,242,115,255,114,270,123,300,117,302,109,270,110,253,117,238,139,222,171,209,255,192,346,182,422,179"/>
+<area shape="rect" title=" " alt="" coords="277,313,341,339"/>
+<area shape="poly" title=" " alt="" coords="450,194,333,306,329,302,446,191"/>
+<area shape="rect" title=" " alt="" coords="365,313,489,339"/>
+<area shape="poly" title=" " alt="" coords="461,193,436,301,430,299,455,192"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="131,240,337,265"/>
+<area shape="poly" title=" " alt="" coords="425,195,285,238,283,233,423,189"/>
+<area shape="poly" title=" " alt="" coords="204,268,86,311,84,306,202,263"/>
+<area shape="poly" title=" " alt="" coords="292,263,548,313,547,318,291,268"/>
+<area shape="poly" title=" " alt="" coords="219,268,162,307,159,303,216,263"/>
+<area shape="poly" title=" " alt="" coords="248,263,288,302,285,306,244,267"/>
+<area shape="poly" title=" " alt="" coords="266,263,384,306,382,311,264,268"/>
+<area shape="rect" title=" " alt="" coords="189,313,252,339"/>
+<area shape="poly" title=" " alt="" coords="234,266,228,300,223,299,229,265"/>
+<area shape="poly" title=" " alt="" coords="806,120,513,172,512,166,805,115"/>
+<area shape="poly" title=" " alt="" coords="924,115,1088,143,1188,165,1194,179,1188,194,1164,206,1120,217,995,234,853,245,737,252,737,247,853,240,994,228,1119,212,1162,201,1184,190,1189,179,1184,169,1087,148,923,120"/>
+<area shape="poly" title=" " alt="" coords="846,121,817,141,788,168,772,194,765,218,756,242,737,267,715,284,691,298,642,316,640,311,688,293,712,280,733,263,752,240,760,217,767,192,784,165,814,137,843,117"/>
+<area shape="rect" title=" " alt="" coords="1075,167,1174,192"/>
+<area shape="poly" title=" " alt="" coords="907,116,1070,160,1069,166,906,121"/>
+<area shape="rect" title=" " alt="" coords="798,167,931,192"/>
+<area shape="poly" title=" " alt="" coords="867,119,867,153,862,153,862,119"/>
+<area shape="rect" title=" " alt="" coords="955,167,1051,192"/>
+<area shape="poly" title=" " alt="" coords="888,116,970,158,967,163,886,121"/>
 </map>
 </div>
 </div>
@@ -173,18 +152,19 @@ Include dependency graph for syscall.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a27f252437c17e7b5d2e8aef749daf1f0" id="r_a27f252437c17e7b5d2e8aef749daf1f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="arch_2riscv64_2syscall_8cpp.html#a27f252437c17e7b5d2e8aef749daf1f0">Syscall</a> (uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *context_ptr)</td></tr>
-<tr class="separator:a27f252437c17e7b5d2e8aef749daf1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35e03404e29a182c498f027b4c9e2832" id="r_a35e03404e29a182c498f027b4c9e2832"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="arch_2riscv64_2syscall_8cpp.html#a35e03404e29a182c498f027b4c9e2832">Syscall</a> (uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *context_ptr) -&gt; void</td></tr>
+<tr class="memdesc:a35e03404e29a182c498f027b4c9e2832"><td class="mdescLeft">&#160;</td><td class="mdescRight">AArch64 系统调用处理  <br /></td></tr>
+<tr class="separator:a35e03404e29a182c498f027b4c9e2832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a27f252437c17e7b5d2e8aef749daf1f0" name="a27f252437c17e7b5d2e8aef749daf1f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27f252437c17e7b5d2e8aef749daf1f0">&#9670;&#160;</a></span>Syscall()</h2>
+<a id="a35e03404e29a182c498f027b4c9e2832" name="a35e03404e29a182c498f027b4c9e2832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35e03404e29a182c498f027b4c9e2832">&#9670;&#160;</a></span>Syscall()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Syscall </td>
+          <td class="memname">auto Syscall </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname"><em>cause</em>, </td>
@@ -198,70 +178,80 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt; void </td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>AArch64 系统调用处理 </p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="arch_2riscv64_2syscall_8cpp_source.html#l00011">11</a> of file <a class="el" href="arch_2riscv64_2syscall_8cpp_source.html">syscall.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   11</span>                                                       {</div>
-<div class="line"><span class="lineno">   12</span>  <span class="comment">// 获取系统调用号和参数</span></div>
-<div class="line"><span class="lineno">   13</span>  uint64_t syscall_id = 0;</div>
-<div class="line"><span class="lineno">   14</span>  uint64_t args[6] = {0};</div>
-<div class="line"><span class="lineno">   15</span> </div>
-<div class="line"><span class="lineno">   16</span>  syscall_id = context_ptr-&gt;a7;</div>
-<div class="line"><span class="lineno">   17</span>  args[0] = context_ptr-&gt;<a class="code hl_variable" href="structcpu__io_1_1TrapContext.html#a9d01ccdbd59df7c6caa436336712e956">a0</a>;</div>
-<div class="line"><span class="lineno">   18</span>  args[1] = context_ptr-&gt;a1;</div>
-<div class="line"><span class="lineno">   19</span>  args[2] = context_ptr-&gt;a2;</div>
-<div class="line"><span class="lineno">   20</span>  args[3] = context_ptr-&gt;a3;</div>
-<div class="line"><span class="lineno">   21</span>  args[4] = context_ptr-&gt;a4;</div>
-<div class="line"><span class="lineno">   22</span>  args[5] = context_ptr-&gt;a5;</div>
-<div class="line"><span class="lineno">   23</span> </div>
-<div class="line"><span class="lineno">   24</span>  <span class="comment">// 执行处理函数</span></div>
-<div class="line"><span class="lineno">   25</span>  <span class="keyword">auto</span> ret = <a class="code hl_function" href="syscall_8hpp.html#a9c01f57bb4ef6f1b91ccce212494a199">syscall_dispatcher</a>(syscall_id, args);</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>  <span class="comment">// 设置返回值</span></div>
-<div class="line"><span class="lineno">   28</span>  context_ptr-&gt;<a class="code hl_variable" href="structcpu__io_1_1TrapContext.html#a9d01ccdbd59df7c6caa436336712e956">a0</a> = <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(ret);</div>
-<div class="line"><span class="lineno">   29</span>  <span class="comment">// 跳过 ecall 指令</span></div>
-<div class="line"><span class="lineno">   30</span>  context_ptr-&gt;sepc += 4;</div>
-<div class="line"><span class="lineno">   31</span>}</div>
-<div class="ttc" id="astructcpu__io_1_1TrapContext_html_a9d01ccdbd59df7c6caa436336712e956"><div class="ttname"><a href="structcpu__io_1_1TrapContext.html#a9d01ccdbd59df7c6caa436336712e956">cpu_io::TrapContext::a0</a></div><div class="ttdeci">uint64_t a0</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00183">cpu_io.h:183</a></div></div>
-<div class="ttc" id="asyscall_8hpp_html_a9c01f57bb4ef6f1b91ccce212494a199"><div class="ttname"><a href="syscall_8hpp.html#a9c01f57bb4ef6f1b91ccce212494a199">syscall_dispatcher</a></div><div class="ttdeci">int syscall_dispatcher(int64_t syscall_id, uint64_t args[6])</div><div class="ttdef"><b>Definition</b> <a href="syscall_8cpp_source.html#l00011">syscall.cpp:11</a></div></div>
+<p class="definition">Definition at line <a class="el" href="arch_2riscv64_2syscall_8cpp_source.html#l00010">10</a> of file <a class="el" href="arch_2riscv64_2syscall_8cpp_source.html">syscall.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   10</span>                                                               {</div>
+<div class="line"><span class="lineno">   11</span>  <span class="comment">// 获取系统调用号和参数</span></div>
+<div class="line"><span class="lineno">   12</span>  uint64_t syscall_id = 0;</div>
+<div class="line"><span class="lineno">   13</span>  uint64_t args[6] = {0};</div>
+<div class="line"><span class="lineno">   14</span> </div>
+<div class="line"><span class="lineno">   15</span>  syscall_id = context_ptr-&gt;a7;</div>
+<div class="line"><span class="lineno">   16</span>  args[0] = context_ptr-&gt;<a class="code hl_variable" href="structcpu__io_1_1TrapContext.html#a9d01ccdbd59df7c6caa436336712e956">a0</a>;</div>
+<div class="line"><span class="lineno">   17</span>  args[1] = context_ptr-&gt;a1;</div>
+<div class="line"><span class="lineno">   18</span>  args[2] = context_ptr-&gt;a2;</div>
+<div class="line"><span class="lineno">   19</span>  args[3] = context_ptr-&gt;a3;</div>
+<div class="line"><span class="lineno">   20</span>  args[4] = context_ptr-&gt;a4;</div>
+<div class="line"><span class="lineno">   21</span>  args[5] = context_ptr-&gt;a5;</div>
+<div class="line"><span class="lineno">   22</span> </div>
+<div class="line"><span class="lineno">   23</span>  <span class="comment">// 执行处理函数</span></div>
+<div class="line"><span class="lineno">   24</span>  <span class="keyword">auto</span> ret = <a class="code hl_function" href="syscall_8hpp.html#a7f71c582273219080713170bdd1d4323">syscall_dispatcher</a>(syscall_id, args);</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>  <span class="comment">// 设置返回值</span></div>
+<div class="line"><span class="lineno">   27</span>  context_ptr-&gt;<a class="code hl_variable" href="structcpu__io_1_1TrapContext.html#a9d01ccdbd59df7c6caa436336712e956">a0</a> = <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(ret);</div>
+<div class="line"><span class="lineno">   28</span>  <span class="comment">// 跳过 ecall 指令</span></div>
+<div class="line"><span class="lineno">   29</span>  context_ptr-&gt;sepc += 4;</div>
+<div class="line"><span class="lineno">   30</span>}</div>
+<div class="ttc" id="astructcpu__io_1_1TrapContext_html_a9d01ccdbd59df7c6caa436336712e956"><div class="ttname"><a href="structcpu__io_1_1TrapContext.html#a9d01ccdbd59df7c6caa436336712e956">cpu_io::TrapContext::a0</a></div><div class="ttdeci">uint64_t a0</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00188">cpu_io.h:188</a></div></div>
+<div class="ttc" id="asyscall_8hpp_html_a7f71c582273219080713170bdd1d4323"><div class="ttname"><a href="syscall_8hpp.html#a7f71c582273219080713170bdd1d4323">syscall_dispatcher</a></div><div class="ttdeci">auto syscall_dispatcher(int64_t syscall_id, uint64_t args[6]) -&gt; int</div><div class="ttdef"><b>Definition</b> <a href="syscall_8cpp_source.html#l00017">syscall.cpp:17</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="arch_2riscv64_2syscall_8cpp_a27f252437c17e7b5d2e8aef749daf1f0_cgraph.png" border="0" usemap="#aarch_2riscv64_2syscall_8cpp_a27f252437c17e7b5d2e8aef749daf1f0_cgraph" alt=""/></div>
-<map name="aarch_2riscv64_2syscall_8cpp_a27f252437c17e7b5d2e8aef749daf1f0_cgraph" id="aarch_2riscv64_2syscall_8cpp_a27f252437c17e7b5d2e8aef749daf1f0_cgraph">
-<area shape="rect" title=" " alt="" coords="5,179,73,204"/>
-<area shape="rect" href="syscall_8cpp.html#a9c01f57bb4ef6f1b91ccce212494a199" title=" " alt="" coords="121,179,264,204"/>
-<area shape="poly" title=" " alt="" coords="73,189,107,189,107,194,73,194"/>
-<area shape="rect" href="syscall_8cpp.html#a6d9ce836fd264a98548781886f375d2a" title="创建新线程（或进程）" alt="" coords="345,5,432,31"/>
-<area shape="poly" title=" " alt="" coords="198,177,240,112,272,73,310,40,331,29,333,34,314,44,276,77,244,115,203,180"/>
-<area shape="rect" href="syscall_8cpp.html#a34c7946fbbdfb071d2b453a745dcb9b4" title="退出当前进程或线程" alt="" coords="351,55,427,80"/>
-<area shape="poly" title=" " alt="" coords="204,176,248,134,278,110,311,89,337,78,339,82,313,94,281,114,252,138,208,180"/>
-<area shape="rect" href="syscall_8cpp.html#a01fbd4b45143dd51bf6f338d8ee325da" title="创建新进程（fork）" alt="" coords="350,104,427,129"/>
-<area shape="poly" title=" " alt="" coords="221,176,311,138,336,129,338,134,313,143,223,181"/>
-<area shape="rect" href="syscall_8cpp.html#aa03f906affa67ef23ebfbcb79efa569f" title="快速用户空间互斥锁操作（futex）" alt="" coords="346,153,431,179"/>
-<area shape="poly" title=" " alt="" coords="264,179,332,171,332,176,265,185"/>
-<area shape="rect" href="syscall_8cpp.html#a17717d9e7bc25b272fe4dbb63bc52baa" title="获取当前线程ID" alt="" coords="344,203,433,228"/>
-<area shape="poly" title=" " alt="" coords="265,197,330,206,330,211,264,203"/>
-<area shape="rect" href="syscall_8cpp.html#ab5c00759c95d8ce9e9db75b1b55a9552" title="设置线程ID地址（用于线程退出时的清理）" alt="" coords="312,252,465,277"/>
-<area shape="poly" title=" " alt="" coords="225,202,313,237,336,245,334,250,311,242,223,207"/>
-<area shape="rect" href="syscall_8cpp.html#a4fa66935c10e294006b6310af1c68f37" title="向文件描述符写入数据" alt="" coords="347,351,431,376"/>
-<area shape="poly" title=" " alt="" coords="203,203,245,266,276,304,314,336,335,347,332,352,310,340,272,307,240,269,199,206"/>
-<area shape="rect" href="syscall_8cpp.html#a23ac80734740f098e56332da33758ace" title="主动放弃CPU，让出时间片" alt="" coords="347,301,430,327"/>
-<area shape="poly" title=" " alt="" coords="208,203,253,243,282,266,313,286,335,296,333,301,311,291,279,271,249,247,205,206"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="513,153,683,179"/>
-<area shape="poly" title=" " alt="" coords="433,25,467,40,501,63,532,90,580,141,576,145,528,94,497,67,464,44,431,30"/>
-<area shape="poly" title=" " alt="" coords="428,75,466,89,521,116,567,144,565,148,518,121,464,94,426,80"/>
-<area shape="poly" title=" " alt="" coords="428,123,531,148,530,153,427,128"/>
-<area shape="poly" title=" " alt="" coords="432,163,499,163,499,169,432,169"/>
-<area shape="poly" title=" " alt="" coords="433,202,530,179,531,184,434,207"/>
-<area shape="poly" title=" " alt="" coords="431,249,464,237,517,210,564,184,566,188,520,215,466,242,433,254"/>
-<area shape="rect" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f" title=" " alt="" coords="559,351,637,376"/>
-<area shape="poly" title=" " alt="" coords="431,361,545,361,545,366,431,366"/>
-<area shape="poly" title=" " alt="" coords="429,302,464,286,497,263,528,237,576,187,579,191,531,241,500,268,467,291,431,306"/>
+<div class="center"><img src="arch_2riscv64_2syscall_8cpp_a35e03404e29a182c498f027b4c9e2832_cgraph.png" border="0" usemap="#aarch_2riscv64_2syscall_8cpp_a35e03404e29a182c498f027b4c9e2832_cgraph" alt=""/></div>
+<map name="aarch_2riscv64_2syscall_8cpp_a35e03404e29a182c498f027b4c9e2832_cgraph" id="aarch_2riscv64_2syscall_8cpp_a35e03404e29a182c498f027b4c9e2832_cgraph">
+<area shape="rect" title="AArch64 系统调用处理" alt="" coords="5,215,73,241"/>
+<area shape="rect" href="syscall_8cpp.html#a7f71c582273219080713170bdd1d4323" title=" " alt="" coords="121,215,264,241"/>
+<area shape="poly" title=" " alt="" coords="73,225,107,225,107,231,73,231"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="525,141,601,166"/>
+<area shape="poly" title=" " alt="" coords="194,214,206,175,228,123,262,69,285,46,311,27,352,8,388,3,425,10,467,27,496,47,520,74,553,127,549,130,516,77,493,51,464,32,423,15,388,8,353,14,313,32,288,50,267,72,233,125,211,177,200,216"/>
+<area shape="rect" href="syscall_8cpp.html#afad53ff6b95bf6179b42aac97f2c609e" title="创建新线程（或进程）" alt="" coords="345,42,432,67"/>
+<area shape="poly" title=" " alt="" coords="198,214,240,149,272,110,310,77,331,66,333,70,314,81,276,114,244,152,203,217"/>
+<area shape="rect" href="syscall_8cpp.html#a7604e519b5138da9c1db6a2626e1998f" title="退出当前进程或线程" alt="" coords="351,239,427,265"/>
+<area shape="poly" title=" " alt="" coords="265,234,337,243,336,248,264,239"/>
+<area shape="rect" href="syscall_8cpp.html#aacb8aae87d617d88cea5c7515a1cf622" title="创建新进程（fork）" alt="" coords="350,91,427,117"/>
+<area shape="poly" title=" " alt="" coords="204,213,248,171,278,147,311,126,336,115,338,120,313,130,281,151,252,175,208,217"/>
+<area shape="rect" href="syscall_8cpp.html#a7e0465bdb3adc9a861f78e561bb0cf0c" title="快速用户空间互斥锁操作（futex）" alt="" coords="346,289,431,314"/>
+<area shape="poly" title=" " alt="" coords="223,238,313,275,333,282,332,287,311,280,221,243"/>
+<area shape="rect" href="syscall_8cpp.html#aa3457b4ff33f8308631329d0ccdafd26" title="获取当前线程ID" alt="" coords="344,141,433,166"/>
+<area shape="poly" title=" " alt="" coords="221,213,311,175,331,168,333,173,313,180,223,218"/>
+<area shape="rect" href="syscall_8cpp.html#a29162da1696b208f87b148aef8449e5f" title="设置线程ID地址（用于线程退出时的清理）" alt="" coords="312,190,465,215"/>
+<area shape="poly" title=" " alt="" coords="264,216,298,212,299,217,265,222"/>
+<area shape="rect" href="syscall_8cpp.html#a25c4acbedb0e92618dfb30e0e67827c7" title="休眠指定毫秒数" alt="" coords="345,338,432,363"/>
+<area shape="poly" title=" " alt="" coords="208,239,252,281,281,304,313,324,334,334,331,338,311,329,278,308,248,285,204,243"/>
+<area shape="rect" href="syscall_8cpp.html#af2cff00ae45f6e285b75cff49dff52d4" title="向文件描述符写入数据" alt="" coords="347,387,431,413"/>
+<area shape="poly" title=" " alt="" coords="203,239,244,304,276,341,313,374,335,385,333,390,311,378,272,345,240,307,198,242"/>
+<area shape="rect" href="syscall_8cpp.html#aec4395077c896b991b8d8beb2eefd40f" title="主动放弃CPU，让出时间片" alt="" coords="347,437,430,462"/>
+<area shape="poly" title=" " alt="" coords="201,240,214,276,237,326,271,378,291,402,314,423,336,436,333,440,310,428,287,406,266,381,233,328,209,278,196,242"/>
+<area shape="poly" title=" " alt="" coords="433,63,467,76,507,102,540,129,537,133,503,106,464,81,431,68"/>
+<area shape="poly" title=" " alt="" coords="426,241,464,226,503,201,537,174,540,178,507,205,467,230,428,246"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="522,239,605,265"/>
+<area shape="poly" title=" " alt="" coords="427,249,508,249,508,255,427,255"/>
+<area shape="poly" title=" " alt="" coords="428,112,513,136,511,142,427,117"/>
+<area shape="poly" title=" " alt="" coords="430,291,464,275,503,233,544,176,548,179,507,236,467,280,433,295"/>
+<area shape="rect" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="513,338,613,363"/>
+<area shape="poly" title=" " alt="" coords="432,311,506,332,504,337,431,316"/>
+<area shape="rect" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="518,289,609,314"/>
+<area shape="poly" title=" " alt="" coords="432,299,504,299,504,304,432,304"/>
+<area shape="poly" title=" " alt="" coords="433,151,511,151,511,156,433,156"/>
+<area shape="poly" title=" " alt="" coords="434,187,511,165,512,170,435,193"/>
+<area shape="rect" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="516,387,611,413"/>
+<area shape="poly" title=" " alt="" coords="431,397,502,397,502,403,431,403"/>
 </map>
 </div>
 

@@ -1,0 +1,11 @@
+<map id="virtio::blk::VirtioBlk::ProcessCompletions" name="virtio::blk::VirtioBlk::ProcessCompletions">
+<area shape="rect" id="Node000001" title="处理 Used Ring 中已完成的请求" alt="" coords="5,101,168,141"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aae42cda1f43edaa3c9e0a07d3a156edc" title="根据描述符链头索引查找请求槽" alt="" coords="216,5,381,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,99,215,55,231,48,233,53,217,60,127,104"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a928f265d102c1e2fd68c653f504fed8e" title="释放请求槽" alt="" coords="225,69,373,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,106,211,100,211,105,169,112"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aea67e100df43d1ca6348ad3589ff7f8b" title="将设备 BlkStatus 映射为 ErrorCode" alt="" coords="225,133,373,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="169,131,211,138,211,143,168,136"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#ac9fcdd47fa1ff396470a667dec3a1597" title=" " alt="" coords="247,198,350,223"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="125,139,217,183,240,191,238,196,215,188,123,144"/>
+</map>

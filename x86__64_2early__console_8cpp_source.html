@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/arch/x86_64/early_console.cpp Source File</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/arch/x86_64/early_console.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -99,36 +99,35 @@ $(document).ready(function(){initNavTree('x86__64_2early__console_8cpp_source.ht
 <div class="contents">
 <a href="x86__64_2early__console_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="cpu__io_8h.html">cpu_io.h</a>&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="singleton_8hpp.html">singleton.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;sk_cstdio&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;etl/singleton.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="x86__64_2early__console_8cpp.html#aa961a1bfc3cd908ed61ecae8082fee93">    8</a></span><span class="keyword">using </span><a class="code hl_typedef" href="x86__64_2early__console_8cpp.html#aa961a1bfc3cd908ed61ecae8082fee93">SerialSingleton</a> = etl::singleton&lt;cpu_io::Serial&gt;;</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>{</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>cpu_io::Serial* serial = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keywordtype">void</span> console_putchar(<span class="keywordtype">int</span> c, [[maybe_unused]] <span class="keywordtype">void</span>* ctx) {</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordflow">if</span> (serial) {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    serial-&gt;Write(c);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  }</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">struct </span>EarlyConsole {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  EarlyConsole() {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;cpu_io::Serial&gt;::GetInstance</a>() = cpu_io::Serial(cpu_io::kCom1);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    serial = &amp;<a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;cpu_io::Serial&gt;::GetInstance</a>();</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_variable" href="sk__stdio_8h.html#a15ce3a1064b136eabaea65e2c7cee22e">sk_putchar</a> = console_putchar;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  }</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>};</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>EarlyConsole early_console;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}  <span class="comment">// namespace</span></div>
-<div class="ttc" id="aclassSingleton_html_a68856b49e098eadba37b60366db33ebd"><div class="ttname"><a href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton::GetInstance</a></div><div class="ttdeci">static auto GetInstance() -&gt; T &amp;</div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00023">singleton.hpp:23</a></div></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">struct </span>EarlyConsole {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  EarlyConsole() {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    SerialSingleton::create(cpu_io::kCom1);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    serial = &amp;SerialSingleton::instance();</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>EarlyConsole early_console;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}  <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="x86__64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60">   26</a></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <span class="keyword">auto</span> <a class="code hl_function" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60">etl_putchar</a>(<span class="keywordtype">int</span> c) -&gt; <span class="keywordtype">void</span> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordflow">if</span> (serial) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    serial-&gt;Write(c);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
+</div>
+<div class="ttc" id="aaarch64_2early__console_8cpp_html_a00b66d463088c2b14f7766792ee8bc60"><div class="ttname"><a href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60">etl_putchar</a></div><div class="ttdeci">auto etl_putchar(int c) -&gt; void</div><div class="ttdoc">早期控制台字符输出</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2early__console_8cpp_source.html#l00043">early_console.cpp:43</a></div></div>
 <div class="ttc" id="acpu__io_8h_html"><div class="ttname"><a href="cpu__io_8h.html">cpu_io.h</a></div></div>
-<div class="ttc" id="asingleton_8hpp_html"><div class="ttname"><a href="singleton_8hpp.html">singleton.hpp</a></div></div>
-<div class="ttc" id="ask__stdio_8h_html_a15ce3a1064b136eabaea65e2c7cee22e"><div class="ttname"><a href="sk__stdio_8h.html#a15ce3a1064b136eabaea65e2c7cee22e">sk_putchar</a></div><div class="ttdeci">void(* sk_putchar)(int c, void *ctx)</div><div class="ttdef"><b>Definition</b> <a href="sk__stdio_8c_source.html#l00024">sk_stdio.c:24</a></div></div>
+<div class="ttc" id="ax86__64_2early__console_8cpp_html_aa961a1bfc3cd908ed61ecae8082fee93"><div class="ttname"><a href="x86__64_2early__console_8cpp.html#aa961a1bfc3cd908ed61ecae8082fee93">SerialSingleton</a></div><div class="ttdeci">etl::singleton&lt; cpu_io::Serial &gt; SerialSingleton</div><div class="ttdef"><b>Definition</b> <a href="x86__64_2early__console_8cpp_source.html#l00008">early_console.cpp:8</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

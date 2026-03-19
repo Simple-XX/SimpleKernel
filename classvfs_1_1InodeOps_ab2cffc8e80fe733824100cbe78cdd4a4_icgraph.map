@@ -1,0 +1,11 @@
+<map id="vfs::InodeOps::Rmdir" name="vfs::InodeOps::Rmdir">
+<area shape="rect" id="Node000001" title="删除目录" alt="" coords="339,55,497,80"/>
+<area shape="rect" id="Node000002" href="$namespacevfs.html#a9a3d6b35240ad82e6eb2920d3a3d02fb" title="删除目录" alt="" coords="200,5,291,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="359,53,290,33,292,28,361,48"/>
+<area shape="rect" id="Node000004" href="$ramfs__test_8cpp.html#ae3065eed1e62e3c753d07cedae489a2f" title=" " alt="" coords="211,55,280,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="325,70,280,70,280,65,325,65"/>
+<area shape="rect" id="Node000005" href="$ramfs__test_8cpp.html#a883b448a3b938f49985d13947b923662" title=" " alt="" coords="211,104,280,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="361,86,281,110,279,104,359,81"/>
+<area shape="rect" id="Node000003" href="$ramfs__system__test_8cpp.html#a0c73a2434a6f18c0fac51e32863e40e9" title=" " alt="" coords="5,5,152,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="186,21,152,21,152,15,186,15"/>
+</map>

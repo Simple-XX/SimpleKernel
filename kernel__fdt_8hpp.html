@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/include/kernel_fdt.hpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/include/kernel_fdt.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,116 +90,115 @@ $(document).ready(function(){initNavTree('kernel__fdt_8hpp.html',''); initResiza
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">kernel_fdt.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;libfdt_env.h&gt;</code><br />
 <code>#include &lt;libfdt.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__io_8h_source.html">cpu_io.h</a>&gt;</code><br />
+<code>#include &lt;etl/singleton.h&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &quot;<a class="el" href="expected_8hpp_source.html">expected.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="singleton_8hpp_source.html">singleton.hpp</a>&quot;</code><br />
-<code>#include &quot;sk_cassert&quot;</code><br />
+<code>#include &quot;kstd_cstring&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for kernel_fdt.hpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="kernel__fdt_8hpp__incl.png" border="0" usemap="#a_2root_2src_2include_2kernel__fdt_8hpp" alt=""/></div>
-<map name="a_2root_2src_2include_2kernel__fdt_8hpp" id="a_2root_2src_2include_2kernel__fdt_8hpp">
-<area shape="rect" title=" " alt="" coords="351,5,521,45"/>
+<div class="center"><img src="kernel__fdt_8hpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2include_2kernel__fdt_8hpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2include_2kernel__fdt_8hpp" id="a_2workspaces_2SimpleKernel_2src_2include_2kernel__fdt_8hpp">
+<area shape="rect" title=" " alt="" coords="905,5,1098,45"/>
 <area shape="rect" title=" " alt="" coords="5,93,104,119"/>
-<area shape="poly" title=" " alt="" coords="351,47,118,94,117,89,350,42"/>
+<area shape="poly" title=" " alt="" coords="904,33,561,53,342,71,118,96,117,91,342,66,560,48,904,28"/>
 <area shape="rect" title=" " alt="" coords="129,93,197,119"/>
-<area shape="poly" title=" " alt="" coords="371,48,211,94,209,89,370,43"/>
-<area shape="rect" title=" " alt="" coords="585,387,655,412"/>
-<area shape="poly" title=" " alt="" coords="430,47,419,76,410,113,408,152,416,191,445,233,494,284,597,376,593,380,491,288,441,236,411,193,402,153,405,112,414,74,425,45"/>
-<area shape="rect" title=" " alt="" coords="303,387,369,412"/>
-<area shape="poly" title=" " alt="" coords="372,48,326,68,282,96,264,113,250,132,241,154,237,178,237,254,245,291,263,324,287,353,311,376,308,380,283,357,259,327,240,293,232,254,232,178,236,153,245,130,260,109,279,92,324,63,370,43"/>
-<area shape="rect" title=" " alt="" coords="670,93,725,119"/>
-<area shape="poly" title=" " alt="" coords="499,43,658,90,656,95,498,48"/>
-<area shape="rect" title=" " alt="" coords="749,93,809,119"/>
-<area shape="poly" title=" " alt="" coords="522,42,736,90,735,96,521,47"/>
-<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="323,240,434,265"/>
-<area shape="poly" title=" " alt="" coords="410,47,388,68,370,94,362,129,361,164,366,198,373,226,368,227,361,199,356,165,357,128,366,92,383,65,406,43"/>
-<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="477,93,595,119"/>
-<area shape="poly" title=" " alt="" coords="462,43,512,82,509,87,459,48"/>
-<area shape="rect" href="singleton_8hpp.html" title=" " alt="" coords="1055,167,1166,192"/>
-<area shape="poly" title=" " alt="" coords="488,43,608,91,633,105,660,116,763,140,847,149,932,153,1042,164,1041,169,932,158,846,154,762,146,658,121,631,110,606,96,486,48"/>
-<area shape="rect" title=" " alt="" coords="833,93,924,119"/>
-<area shape="poly" title=" " alt="" coords="522,38,820,90,819,96,521,43"/>
-<area shape="poly" title=" " alt="" coords="378,267,346,374,341,373,373,265"/>
-<area shape="rect" title=" " alt="" coords="373,313,456,339"/>
-<area shape="poly" title=" " alt="" coords="387,264,405,300,400,302,382,267"/>
-<area shape="poly" title=" " alt="" coords="491,121,445,137,395,162,349,196,330,217,314,241,305,275,307,311,315,345,326,373,321,375,310,346,302,312,300,274,310,239,325,214,345,192,392,157,443,132,489,116"/>
-<area shape="rect" title=" " alt="" coords="880,167,936,192"/>
-<area shape="poly" title=" " alt="" coords="596,113,717,134,867,164,866,169,716,139,595,119"/>
-<area shape="rect" title=" " alt="" coords="961,167,1031,192"/>
-<area shape="poly" title=" " alt="" coords="595,113,614,116,779,137,948,164,947,169,778,143,613,121,594,119"/>
-<area shape="rect" title=" " alt="" coords="425,167,549,192"/>
-<area shape="poly" title=" " alt="" coords="530,121,505,157,500,154,526,117"/>
-<area shape="poly" title=" " alt="" coords="595,114,614,116,826,139,1042,164,1041,169,826,144,613,121,595,119"/>
-<area shape="rect" title=" " alt="" coords="509,240,592,265"/>
-<area shape="poly" title=" " alt="" coords="545,118,555,139,564,166,565,198,561,227,555,226,560,198,559,167,550,141,540,120"/>
-<area shape="rect" title=" " alt="" coords="625,167,727,192"/>
-<area shape="poly" title=" " alt="" coords="560,116,642,158,640,163,557,121"/>
-<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="752,167,856,192"/>
-<area shape="poly" title=" " alt="" coords="580,116,748,161,747,166,578,121"/>
-<area shape="poly" title=" " alt="" coords="785,194,716,241,678,275,646,315,633,344,626,374,620,372,628,342,642,312,675,272,713,237,782,190"/>
-<area shape="poly" title=" " alt="" coords="752,193,740,195,448,243,447,238,740,189,752,187"/>
-<area shape="poly" title=" " alt="" coords="764,195,606,239,604,234,763,189"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="766,240,842,265"/>
-<area shape="poly" title=" " alt="" coords="807,192,807,226,801,226,801,192"/>
-<area shape="rect" title=" " alt="" coords="1157,313,1224,339"/>
-<area shape="poly" title=" " alt="" coords="816,190,853,227,879,246,907,263,968,287,1032,303,1093,314,1144,319,1143,325,1092,319,1031,309,966,292,904,268,876,251,850,231,812,194"/>
-<area shape="rect" title=" " alt="" coords="917,240,997,265"/>
-<area shape="poly" title=" " alt="" coords="830,190,921,232,919,237,828,194"/>
-<area shape="rect" title=" " alt="" coords="1021,240,1080,265"/>
-<area shape="poly" title=" " alt="" coords="844,189,1009,237,1008,242,843,195"/>
-<area shape="poly" title=" " alt="" coords="766,267,719,286,694,299,673,315,648,344,632,375,627,373,644,341,669,311,692,294,716,281,764,262"/>
-<area shape="poly" title=" " alt="" coords="768,268,384,386,382,381,766,263"/>
-<area shape="poly" title=" " alt="" coords="843,259,862,263,1001,286,1139,311,1144,312,1143,317,1138,316,1000,292,861,268,842,264"/>
-<area shape="rect" title=" " alt="" coords="912,313,981,339"/>
-<area shape="poly" title=" " alt="" coords="828,263,912,305,910,309,826,268"/>
-<area shape="rect" title=" " alt="" coords="861,387,925,412"/>
-<area shape="poly" title=" " alt="" coords="843,261,935,286,974,300,995,312,1001,323,1001,335,989,354,966,371,939,384,937,379,963,366,985,351,996,333,996,324,991,315,972,305,933,291,841,266"/>
-<area shape="rect" title=" " alt="" coords="959,387,1023,412"/>
-<area shape="poly" title=" " alt="" coords="843,260,947,285,992,299,1017,312,1023,328,1023,345,1010,376,1005,374,1018,344,1018,328,1013,315,990,304,945,290,841,265"/>
-<area shape="rect" title=" " alt="" coords="1053,387,1177,412"/>
-<area shape="poly" title=" " alt="" coords="843,260,957,287,1037,311,1074,341,1101,373,1097,376,1070,345,1035,316,955,292,842,265"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="683,313,888,339"/>
-<area shape="poly" title=" " alt="" coords="803,266,794,301,789,300,798,265"/>
-<area shape="poly" title=" " alt="" coords="760,341,661,384,658,379,758,336"/>
-<area shape="poly" title=" " alt="" coords="714,341,383,393,382,388,713,336"/>
-<area shape="poly" title=" " alt="" coords="804,336,866,377,863,381,801,341"/>
-<area shape="poly" title=" " alt="" coords="819,336,946,380,945,385,817,341"/>
-<area shape="poly" title=" " alt="" coords="839,336,1049,381,1048,386,838,341"/>
-<area shape="rect" title=" " alt="" coords="754,387,817,412"/>
-<area shape="poly" title=" " alt="" coords="788,339,788,373,783,373,783,339"/>
+<area shape="poly" title=" " alt="" coords="904,32,598,51,406,69,210,96,210,91,406,64,598,45,904,27"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="887,167,963,192"/>
+<area shape="poly" title=" " alt="" coords="994,47,940,155,935,153,989,45"/>
+<area shape="rect" title=" " alt="" coords="1039,240,1108,265"/>
+<area shape="poly" title=" " alt="" coords="1010,45,1068,226,1063,228,1005,46"/>
+<area shape="rect" title=" " alt="" coords="1005,313,1075,339"/>
+<area shape="poly" title=" " alt="" coords="1019,44,1073,126,1102,181,1123,239,1126,253,1122,266,1104,291,1080,309,1076,304,1100,287,1118,264,1120,253,1117,241,1097,183,1068,128,1014,47"/>
+<area shape="rect" title=" " alt="" coords="395,313,461,339"/>
+<area shape="poly" title=" " alt="" coords="905,36,763,51,603,77,528,94,462,115,409,140,390,154,375,168,367,184,364,201,371,237,390,272,411,301,406,305,385,275,366,239,359,201,362,182,371,165,386,150,407,135,460,110,527,89,602,72,763,46,904,31"/>
+<area shape="rect" title=" " alt="" coords="1089,93,1204,119"/>
+<area shape="poly" title=" " alt="" coords="1037,43,1115,84,1112,89,1035,48"/>
+<area shape="rect" title=" " alt="" coords="1228,93,1284,119"/>
+<area shape="poly" title=" " alt="" coords="1063,43,1215,89,1214,95,1062,48"/>
+<area shape="rect" title=" " alt="" coords="1309,93,1363,119"/>
+<area shape="poly" title=" " alt="" coords="1091,43,1296,91,1295,96,1089,48"/>
+<area shape="rect" title=" " alt="" coords="1387,93,1447,119"/>
+<area shape="poly" title=" " alt="" coords="1099,39,1226,61,1375,91,1374,96,1225,66,1098,44"/>
+<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="221,93,331,119"/>
+<area shape="poly" title=" " alt="" coords="904,38,653,62,351,96,345,97,344,91,350,91,653,57,904,32"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="668,93,785,119"/>
+<area shape="poly" title=" " alt="" coords="936,48,781,92,779,87,935,43"/>
+<area shape="rect" title=" " alt="" coords="1472,93,1573,119"/>
+<area shape="poly" title=" " alt="" coords="1099,37,1459,91,1458,96,1098,42"/>
+<area shape="rect" title=" " alt="" coords="465,240,532,265"/>
+<area shape="poly" title=" " alt="" coords="888,192,875,195,713,219,551,243,546,244,545,238,550,237,712,214,874,189,887,187"/>
+<area shape="poly" title=" " alt="" coords="950,190,1038,232,1036,236,948,194"/>
+<area shape="poly" title=" " alt="" coords="937,191,1024,301,1020,304,933,194"/>
+<area shape="poly" title=" " alt="" coords="888,192,875,195,749,215,695,224,626,243,537,276,464,310,461,305,535,271,625,237,694,219,749,210,874,189,887,187"/>
+<area shape="rect" title=" " alt="" coords="916,313,980,339"/>
+<area shape="poly" title=" " alt="" coords="930,192,947,299,941,300,925,193"/>
+<area shape="rect" title=" " alt="" coords="589,313,653,339"/>
+<area shape="poly" title=" " alt="" coords="888,192,875,195,839,200,807,201,750,200,725,202,700,208,674,221,647,242,637,254,631,269,624,300,619,299,626,267,633,252,643,238,671,216,698,203,724,197,750,195,807,196,838,195,874,189,887,187"/>
+<area shape="rect" title=" " alt="" coords="767,313,891,339"/>
+<area shape="poly" title=" " alt="" coords="921,194,877,267,849,304,845,301,872,264,917,191"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="657,240,863,265"/>
+<area shape="poly" title=" " alt="" coords="900,194,801,237,798,232,898,190"/>
+<area shape="poly" title=" " alt="" coords="806,263,992,310,991,315,804,268"/>
+<area shape="poly" title=" " alt="" coords="707,268,475,317,474,312,706,263"/>
+<area shape="poly" title=" " alt="" coords="791,263,905,306,904,311,789,268"/>
+<area shape="poly" title=" " alt="" coords="739,268,657,309,655,305,737,263"/>
+<area shape="poly" title=" " alt="" coords="773,264,811,302,807,305,770,268"/>
+<area shape="rect" title=" " alt="" coords="681,313,743,339"/>
+<area shape="poly" title=" " alt="" coords="754,267,730,304,725,301,750,264"/>
+<area shape="poly" title=" " alt="" coords="280,118,293,185,309,226,331,264,357,287,387,305,384,310,354,292,327,267,304,228,288,186,275,119"/>
+<area shape="rect" title=" " alt="" coords="177,167,260,192"/>
+<area shape="poly" title=" " alt="" coords="269,121,239,158,235,154,264,117"/>
+<area shape="poly" title=" " alt="" coords="759,116,881,159,879,164,758,121"/>
+<area shape="poly" title=" " alt="" coords="728,120,720,156,710,176,696,194,675,204,637,217,546,242,545,237,636,212,673,199,693,190,706,173,715,154,723,118"/>
+<area shape="poly" title=" " alt="" coords="722,121,694,157,675,177,652,194,623,207,597,213,547,213,524,212,502,215,479,224,455,242,445,254,438,269,432,300,426,299,433,268,441,252,451,238,476,220,500,210,524,207,548,207,596,208,622,202,649,190,671,173,690,154,717,118"/>
+<area shape="rect" title=" " alt="" coords="764,167,863,192"/>
+<area shape="poly" title=" " alt="" coords="742,117,790,156,787,160,739,121"/>
+<area shape="rect" title=" " alt="" coords="385,167,519,192"/>
+<area shape="poly" title=" " alt="" coords="683,121,510,166,509,161,682,116"/>
+<area shape="rect" title=" " alt="" coords="543,167,639,192"/>
+<area shape="poly" title=" " alt="" coords="706,121,626,163,624,158,704,116"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="kernel__fdt_8hpp__dep__incl.png" border="0" usemap="#a_2root_2src_2include_2kernel__fdt_8hppdep" alt=""/></div>
-<map name="a_2root_2src_2include_2kernel__fdt_8hppdep" id="a_2root_2src_2include_2kernel__fdt_8hppdep">
-<area shape="rect" title=" " alt="" coords="561,5,732,45"/>
-<area shape="rect" href="aarch64_2arch__main_8cpp.html" title=" " alt="" coords="5,93,168,133"/>
-<area shape="poly" title=" " alt="" coords="548,42,376,65,180,96,169,98,168,93,180,91,375,60,547,37"/>
-<area shape="rect" href="aarch64_2interrupt_8cpp.html" title=" " alt="" coords="192,93,355,133"/>
-<area shape="poly" title=" " alt="" coords="552,51,356,96,354,91,551,46"/>
-<area shape="rect" href="aarch64_2interrupt__main_8cpp.html" title=" " alt="" coords="379,93,541,133"/>
-<area shape="poly" title=" " alt="" coords="595,53,502,96,500,91,592,49"/>
-<area shape="rect" href="aarch64_2timer_8cpp.html" title=" " alt="" coords="565,93,728,133"/>
-<area shape="poly" title=" " alt="" coords="649,59,649,93,644,93,644,59"/>
-<area shape="rect" href="riscv64_2arch__main_8cpp.html" title=" " alt="" coords="753,93,911,133"/>
-<area shape="poly" title=" " alt="" coords="701,49,793,91,790,96,699,54"/>
-<area shape="rect" href="riscv64_2interrupt__main_8cpp.html" title=" " alt="" coords="935,93,1094,133"/>
-<area shape="poly" title=" " alt="" coords="741,46,935,91,934,96,740,51"/>
-<area shape="rect" href="kernel__fdt__test_8cpp.html" title=" " alt="" coords="1118,93,1269,133"/>
-<area shape="poly" title=" " alt="" coords="746,36,915,60,1107,91,1118,93,1117,98,1106,96,914,65,745,42"/>
+<div class="center"><img src="kernel__fdt_8hpp__dep__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2include_2kernel__fdt_8hppdep" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2include_2kernel__fdt_8hppdep" id="a_2workspaces_2SimpleKernel_2src_2include_2kernel__fdt_8hppdep">
+<area shape="rect" title=" " alt="" coords="907,5,1100,45"/>
+<area shape="rect" href="aarch64_2arch__main_8cpp.html" title=" " alt="" coords="5,93,199,148"/>
+<area shape="poly" title=" " alt="" coords="893,33,585,53,398,71,212,96,199,98,199,93,211,91,398,66,585,47,893,28"/>
+<area shape="rect" href="aarch64_2interrupt_8cpp.html" title=" " alt="" coords="223,101,443,141"/>
+<area shape="poly" title=" " alt="" coords="893,40,689,63,456,96,417,103,416,98,455,91,689,57,893,35"/>
+<area shape="rect" href="aarch64_2interrupt__main_8cpp.html" title=" " alt="" coords="467,93,660,148"/>
+<area shape="poly" title=" " alt="" coords="894,51,673,96,661,99,660,93,672,91,893,45"/>
+<area shape="rect" href="aarch64_2timer_8cpp.html" title=" " alt="" coords="684,101,883,141"/>
+<area shape="poly" title=" " alt="" coords="947,53,829,103,827,98,945,48"/>
+<area shape="rect" href="riscv64_2arch__main_8cpp.html" title=" " alt="" coords="907,93,1100,148"/>
+<area shape="poly" title=" " alt="" coords="1006,59,1006,93,1001,93,1001,59"/>
+<area shape="rect" href="riscv64_2interrupt__main_8cpp.html" title=" " alt="" coords="1124,93,1317,148"/>
+<area shape="poly" title=" " alt="" coords="1061,48,1161,91,1158,96,1059,53"/>
+<area shape="rect" href="device_8cpp.html" title=" " alt="" coords="1328,196,1521,236"/>
+<area shape="poly" title=" " alt="" coords="1114,28,1167,35,1223,47,1279,65,1332,91,1351,109,1374,136,1415,194,1410,197,1369,140,1347,112,1328,96,1277,70,1222,52,1166,40,1113,33"/>
+<area shape="rect" href="platform__bus_8hpp.html" title=" " alt="" coords="1393,93,1595,148"/>
+<area shape="poly" title=" " alt="" coords="1114,43,1375,91,1393,94,1392,100,1373,96,1113,48"/>
+<area shape="rect" href="kernel__fdt__test_8cpp.html" title=" " alt="" coords="1620,93,1813,148"/>
+<area shape="poly" title=" " alt="" coords="1114,32,1342,54,1475,70,1608,91,1620,93,1619,98,1607,96,1475,76,1341,59,1113,37"/>
+<area shape="poly" title=" " alt="" coords="1468,161,1441,198,1437,194,1464,157"/>
 </map>
 </div>
 </div>
@@ -208,8 +207,31 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelFdt.html">KernelFdt</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FDT（Flattened Device Tree）解析器  <a href="classKernelFdt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a84db2597de4ac8927104bc9977cdc1ff" id="r_a84db2597de4ac8927104bc9977cdc1ff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel__fdt_8hpp.html#a84db2597de4ac8927104bc9977cdc1ff">KernelFdtSingleton</a> = etl::singleton&lt; <a class="el" href="classKernelFdt.html">KernelFdt</a> &gt;</td></tr>
+<tr class="separator:a84db2597de4ac8927104bc9977cdc1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a84db2597de4ac8927104bc9977cdc1ff" name="a84db2597de4ac8927104bc9977cdc1ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84db2597de4ac8927104bc9977cdc1ff">&#9670;&#160;</a></span>KernelFdtSingleton</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="kernel__fdt_8hpp.html#a84db2597de4ac8927104bc9977cdc1ff">KernelFdtSingleton</a> =  etl::singleton&lt;<a class="el" href="classKernelFdt.html">KernelFdt</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kernel__fdt_8hpp_source.html#l00830">830</a> of file <a class="el" href="kernel__fdt_8hpp_source.html">kernel_fdt.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

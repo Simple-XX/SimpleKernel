@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['除数锁存器（当_20lcr_20dlab_201_20时）_0',['除数锁存器（当 LCR.DLAB=1 时）',['../md__2root_2src_2driver_2ns16550a_2README.html#autotoc_md420',1,'']]]
+  ['🤝_20贡献指南_0',['🤝 贡献指南',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md316',1,'']]],
+  ['🤝_20contributing_1',['🤝 Contributing',['../md__2workspaces_2SimpleKernel_2README__ENG.html#autotoc_md354',1,'']]]
 ];

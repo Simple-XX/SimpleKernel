@@ -1,0 +1,7 @@
+<map id="ResourceId::GetType" name="ResourceId::GetType">
+<area shape="rect" id="Node000001" title="获取资源类型" alt="" coords="248,31,403,56"/>
+<area shape="rect" id="Node000002" href="$classResourceId.html#a37fef1bc70b4847d901104e2265c4841" title="获取类型名称（用于调试）" alt="" coords="5,5,200,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,36,200,32,201,26,235,30"/>
+<area shape="rect" id="Node000003" href="$classResourceId.html#aad380e638ff74bca65740d92fb608d40" title="检查是否为有效资源" alt="" coords="8,55,197,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="235,56,198,60,197,54,234,50"/>
+</map>

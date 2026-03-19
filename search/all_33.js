@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['代码贡献流程_0',['🔧 代码贡献流程',['../md__2root_2README.html#autotoc_md326',1,'']]],
-  ['代码质量工具_1',['代码质量工具',['../md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html#autotoc_md21',1,'']]],
-  ['代码风格_2',['🎨 代码风格',['../md__2root_2README.html#autotoc_md320',1,'']]]
+  ['优势_0',['优势',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md177',1,'优势'],['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md203',1,'优势'],['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md229',1,'优势']]]
 ];

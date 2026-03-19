@@ -1,0 +1,5 @@
+<map id="MsgBlock" name="MsgBlock">
+<area shape="rect" id="Node000001" title="阻塞消息，携带资源 ID" alt="" coords="19,133,133,459"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,147,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,99,79,133,73,133,73,99"/>
+</map>

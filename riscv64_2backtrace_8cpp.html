@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/arch/riscv64/backtrace.cpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/arch/riscv64/backtrace.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -97,109 +97,93 @@ $(document).ready(function(){initNavTree('riscv64_2backtrace_8cpp.html',''); ini
 <div class="textblock"><code>#include &lt;<a class="el" href="cpu__io_8h_source.html">cpu_io.h</a>&gt;</code><br />
 <code>#include &lt;elf.h&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
-<code>#include &lt;cerrno&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &quot;<a class="el" href="arch_8h_source.html">arch.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="basic__info_8hpp_source.html">basic_info.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="kernel_8h_source.html">kernel.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="singleton_8hpp_source.html">singleton.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for backtrace.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="riscv64_2backtrace_8cpp__incl.png" border="0" usemap="#a_2root_2src_2arch_2riscv64_2backtrace_8cpp" alt=""/></div>
-<map name="a_2root_2src_2arch_2riscv64_2backtrace_8cpp" id="a_2root_2src_2arch_2riscv64_2backtrace_8cpp">
-<area shape="rect" title=" " alt="" coords="1267,5,1426,45"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="377,313,453,339"/>
-<area shape="poly" title=" " alt="" coords="1267,31,1113,44,1015,58,910,77,801,104,691,140,585,186,487,242,455,271,431,303,426,300,451,268,484,238,583,181,690,135,800,99,909,72,1015,52,1112,39,1267,26"/>
-<area shape="rect" title=" " alt="" coords="1201,460,1268,485"/>
-<area shape="poly" title=" " alt="" coords="1427,26,1592,35,1688,44,1784,58,1871,78,1943,103,1971,119,1992,136,2006,156,2011,178,2011,328,2004,343,1985,356,1919,381,1823,403,1708,423,1467,453,1282,470,1282,465,1466,448,1708,417,1822,398,1917,376,1982,352,2000,339,2005,327,2005,178,2001,158,1988,140,1968,123,1941,108,1870,83,1783,64,1687,50,1591,40,1426,31"/>
-<area shape="rect" title=" " alt="" coords="1920,167,1971,192"/>
-<area shape="poly" title=" " alt="" coords="1427,37,1547,60,1681,91,1806,128,1908,162,1906,167,1804,133,1679,96,1546,65,1426,43"/>
-<area shape="rect" title=" " alt="" coords="639,240,695,265"/>
-<area shape="poly" title=" " alt="" coords="1291,48,709,240,707,235,1289,43"/>
-<area shape="rect" title=" " alt="" coords="2046,93,2109,119"/>
-<area shape="poly" title=" " alt="" coords="1426,29,1693,50,1860,68,2027,91,2033,92,2032,97,2026,96,1859,73,1693,55,1426,34"/>
-<area shape="rect" href="arch_8h.html" title=" " alt="" coords="497,240,559,265"/>
-<area shape="poly" title=" " alt="" coords="1268,48,1074,96,789,176,574,240,572,235,787,171,1073,91,1266,43"/>
-<area shape="rect" href="basic__info_8hpp.html" title=" " alt="" coords="1213,93,1329,119"/>
-<area shape="poly" title=" " alt="" coords="1330,47,1294,85,1290,81,1326,44"/>
-<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1091,167,1208,192"/>
-<area shape="poly" title=" " alt="" coords="1287,48,1243,68,1203,95,1179,124,1162,155,1157,152,1175,121,1200,91,1241,63,1285,43"/>
-<area shape="rect" href="singleton_8hpp.html" title=" " alt="" coords="1373,240,1483,265"/>
-<area shape="poly" title=" " alt="" coords="1356,45,1422,226,1417,228,1351,46"/>
-<area shape="rect" href="kernel__elf_8hpp.html" title=" " alt="" coords="1554,93,1667,119"/>
-<area shape="poly" title=" " alt="" coords="1411,43,1560,87,1558,92,1409,48"/>
-<area shape="rect" title=" " alt="" coords="827,387,893,412"/>
-<area shape="poly" title=" " alt="" coords="453,334,466,336,659,368,814,389,813,395,658,373,465,341,452,339"/>
-<area shape="rect" title=" " alt="" coords="452,387,521,412"/>
-<area shape="poly" title=" " alt="" coords="428,337,467,375,463,379,425,341"/>
-<area shape="rect" title=" " alt="" coords="599,460,670,485"/>
-<area shape="poly" title=" " alt="" coords="417,339,423,374,430,393,442,410,474,434,512,451,550,461,586,466,585,472,549,466,510,456,471,439,438,414,425,396,418,375,412,339"/>
-<area shape="poly" title=" " alt="" coords="453,333,466,336,640,375,815,409,1023,441,1188,463,1187,468,1022,447,814,415,639,380,465,341,452,339"/>
-<area shape="rect" title=" " alt="" coords="5,460,69,485"/>
-<area shape="poly" title=" " alt="" coords="377,334,227,353,151,369,120,379,99,389,83,402,70,417,50,449,45,446,66,414,79,398,96,384,119,374,149,364,226,348,376,328"/>
-<area shape="rect" title=" " alt="" coords="100,460,164,485"/>
-<area shape="poly" title=" " alt="" coords="377,332,309,337,228,347,156,364,129,375,111,388,105,402,106,416,118,447,113,449,100,417,100,400,107,385,126,370,154,359,227,341,308,331,376,326"/>
-<area shape="rect" title=" " alt="" coords="291,460,415,485"/>
-<area shape="poly" title=" " alt="" coords="412,340,366,448,361,446,407,338"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="121,387,327,412"/>
-<area shape="poly" title=" " alt="" coords="385,341,269,384,267,379,383,336"/>
-<area shape="poly" title=" " alt="" coords="290,409,586,460,585,466,290,415"/>
-<area shape="poly" title=" " alt="" coords="327,405,1188,465,1188,471,327,411"/>
-<area shape="poly" title=" " alt="" coords="195,415,81,457,80,453,193,410"/>
-<area shape="poly" title=" " alt="" coords="211,414,159,454,156,449,208,410"/>
-<area shape="poly" title=" " alt="" coords="246,410,321,451,319,455,244,414"/>
-<area shape="rect" title=" " alt="" coords="193,460,255,485"/>
-<area shape="poly" title=" " alt="" coords="227,412,227,446,221,446,221,412"/>
-<area shape="poly" title=" " alt="" coords="511,268,446,308,443,304,508,263"/>
-<area shape="poly" title=" " alt="" coords="544,263,565,285,586,312,604,347,617,383,633,446,628,447,612,385,599,349,582,315,561,288,540,267"/>
-<area shape="poly" title=" " alt="" coords="554,263,635,298,737,336,936,391,1188,457,1187,462,934,396,735,341,633,303,552,268"/>
-<area shape="rect" title=" " alt="" coords="477,313,571,339"/>
-<area shape="poly" title=" " alt="" coords="530,266,528,300,523,300,525,266"/>
-<area shape="poly" title=" " alt="" coords="1213,113,1071,124,894,147,807,164,730,185,668,211,645,226,629,241,626,252,629,265,636,338,640,412,639,447,633,446,635,412,631,339,624,266,621,252,624,239,642,222,666,206,728,180,806,159,893,142,1070,119,1212,108"/>
-<area shape="poly" title=" " alt="" coords="1280,117,1307,162,1341,226,1367,290,1372,318,1371,339,1351,376,1325,408,1295,435,1268,455,1265,450,1292,430,1321,405,1347,373,1365,338,1367,318,1361,292,1336,228,1302,165,1276,120"/>
-<area shape="poly" title=" " alt="" coords="1253,121,1182,162,1179,157,1250,116"/>
-<area shape="poly" title=" " alt="" coords="1285,117,1407,228,1403,232,1282,121"/>
-<area shape="rect" title=" " alt="" coords="1194,240,1297,265"/>
-<area shape="poly" title=" " alt="" coords="1271,120,1252,227,1247,226,1266,119"/>
-<area shape="poly" title=" " alt="" coords="1151,192,1151,231,1153,286,1163,349,1184,411,1196,431,1212,449,1208,452,1192,434,1179,413,1158,351,1148,287,1145,231,1146,192"/>
-<area shape="poly" title=" " alt="" coords="1091,189,918,208,813,224,709,243,708,243,707,237,707,237,813,218,918,203,1090,183"/>
-<area shape="rect" title=" " alt="" coords="1047,240,1118,265"/>
-<area shape="poly" title=" " alt="" coords="1140,194,1105,232,1101,228,1136,191"/>
-<area shape="rect" title=" " alt="" coords="719,240,843,265"/>
-<area shape="poly" title=" " alt="" coords="1091,195,854,240,853,235,1090,189"/>
-<area shape="poly" title=" " alt="" coords="1195,189,1370,234,1369,239,1193,195"/>
-<area shape="rect" title=" " alt="" coords="748,313,831,339"/>
-<area shape="poly" title=" " alt="" coords="1091,191,1003,210,954,224,908,242,856,273,814,306,811,302,853,269,905,238,952,219,1001,205,1090,186"/>
-<area shape="poly" title=" " alt="" coords="1166,190,1220,229,1217,234,1163,194"/>
-<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="919,240,1023,265"/>
-<area shape="poly" title=" " alt="" coords="1122,195,1013,237,1011,232,1120,190"/>
-<area shape="poly" title=" " alt="" coords="919,262,693,287,467,316,466,311,692,282,918,257"/>
-<area shape="poly" title=" " alt="" coords="1009,263,1041,276,1070,293,1081,303,1087,315,1088,327,1082,340,1070,351,1053,360,1008,375,907,395,906,389,1007,370,1051,355,1067,346,1078,337,1083,326,1082,316,1077,307,1067,297,1039,281,1007,268"/>
-<area shape="poly" title=" " alt="" coords="955,268,844,341,666,455,663,450,841,336,952,263"/>
-<area shape="poly" title=" " alt="" coords="943,268,833,311,831,306,941,263"/>
-<area shape="rect" title=" " alt="" coords="905,313,985,339"/>
-<area shape="poly" title=" " alt="" coords="969,267,956,301,951,300,964,265"/>
-<area shape="rect" title=" " alt="" coords="1009,313,1068,339"/>
-<area shape="poly" title=" " alt="" coords="984,264,1020,301,1016,305,980,268"/>
-<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="1245,313,1355,339"/>
-<area shape="poly" title=" " alt="" coords="1023,263,1234,308,1233,313,1022,268"/>
-<area shape="poly" title=" " alt="" coords="1303,339,1301,373,1290,413,1277,434,1261,452,1257,449,1273,431,1286,411,1296,372,1298,339"/>
-<area shape="rect" title=" " alt="" coords="1193,387,1276,412"/>
-<area shape="poly" title=" " alt="" coords="1291,341,1256,378,1253,375,1287,337"/>
-<area shape="poly" title=" " alt="" coords="1586,121,1555,140,1526,168,1519,181,1516,194,1515,219,1513,243,1508,255,1498,267,1466,291,1435,305,1405,311,1375,311,1311,308,1274,309,1234,316,1141,341,1070,364,999,388,906,415,684,464,683,459,905,409,997,383,1068,359,1140,336,1233,311,1274,304,1311,303,1375,306,1404,306,1433,300,1463,287,1494,263,1504,252,1508,242,1510,218,1510,193,1514,179,1522,165,1551,136,1584,117"/>
-<area shape="poly" title=" " alt="" coords="1650,116,1695,135,1742,163,1763,181,1779,201,1791,225,1795,251,1795,328,1790,347,1778,365,1758,381,1732,395,1667,419,1588,438,1502,452,1418,461,1282,472,1281,467,1418,456,1502,446,1587,432,1665,414,1730,390,1755,377,1774,361,1785,345,1789,327,1789,252,1785,226,1775,204,1759,184,1739,167,1693,139,1648,121"/>
-<area shape="poly" title=" " alt="" coords="1668,114,1775,135,1907,164,1906,169,1774,140,1667,120"/>
-<area shape="poly" title=" " alt="" coords="1554,119,1222,170,1221,164,1553,113"/>
-<area shape="poly" title=" " alt="" coords="1571,121,1526,140,1482,169,1457,198,1440,229,1436,226,1453,195,1478,165,1523,135,1569,116"/>
-<area shape="poly" title=" " alt="" coords="1648,116,1678,129,1706,146,1722,168,1724,180,1718,193,1696,215,1662,235,1618,253,1569,270,1464,297,1369,316,1368,311,1462,292,1567,265,1616,248,1659,230,1693,211,1714,191,1718,180,1717,170,1702,150,1676,134,1646,121"/>
-<area shape="rect" title=" " alt="" coords="1829,167,1896,192"/>
-<area shape="poly" title=" " alt="" coords="1652,116,1817,162,1815,167,1650,121"/>
-<area shape="rect" title=" " alt="" coords="1536,167,1589,192"/>
-<area shape="poly" title=" " alt="" coords="1605,121,1580,157,1576,154,1601,118"/>
-<area shape="rect" title=" " alt="" coords="1613,167,1704,192"/>
-<area shape="poly" title=" " alt="" coords="1621,118,1646,154,1641,157,1616,121"/>
+<div class="center"><img src="riscv64_2backtrace_8cpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2backtrace_8cpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2backtrace_8cpp" id="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2backtrace_8cpp">
+<area shape="rect" title=" " alt="" coords="1131,5,1353,45"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="385,240,461,265"/>
+<area shape="poly" title=" " alt="" coords="1131,35,958,49,758,74,662,91,576,113,506,139,478,153,457,169,446,181,438,196,429,227,424,225,434,194,442,178,454,165,475,149,503,134,574,108,660,86,757,68,957,43,1130,30"/>
+<area shape="rect" title=" " alt="" coords="1239,387,1306,412"/>
+<area shape="poly" title=" " alt="" coords="1354,43,1452,64,1549,94,1590,112,1623,132,1646,154,1654,178,1654,254,1651,268,1643,281,1615,305,1574,326,1524,344,1415,374,1320,393,1319,388,1414,369,1523,339,1572,321,1612,300,1639,278,1646,266,1649,254,1649,178,1641,156,1620,136,1588,117,1547,99,1450,70,1353,48"/>
+<area shape="rect" title=" " alt="" coords="1563,167,1614,192"/>
+<area shape="poly" title=" " alt="" coords="1286,43,1552,159,1550,164,1284,48"/>
+<area shape="rect" title=" " alt="" coords="1739,93,1795,119"/>
+<area shape="poly" title=" " alt="" coords="1354,36,1527,59,1721,91,1726,92,1725,97,1720,96,1526,64,1353,42"/>
+<area shape="rect" href="arch_8h.html" title=" " alt="" coords="468,167,531,192"/>
+<area shape="poly" title=" " alt="" coords="1131,45,992,68,841,96,677,134,544,168,543,163,676,129,840,91,991,62,1130,40"/>
+<area shape="rect" href="basic__info_8hpp.html" title=" " alt="" coords="873,93,989,119"/>
+<area shape="poly" title=" " alt="" coords="1168,48,991,92,990,87,1167,43"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="777,167,894,192"/>
+<area shape="poly" title=" " alt="" coords="1131,36,1053,44,974,56,906,73,881,83,862,95,852,108,845,122,839,153,833,152,840,120,848,105,859,91,878,79,905,68,973,51,1052,39,1130,31"/>
+<area shape="rect" href="kernel_8h.html" title=" " alt="" coords="1689,313,1763,339"/>
+<area shape="poly" title=" " alt="" coords="1354,28,1444,34,1537,46,1618,64,1649,77,1672,91,1692,114,1707,141,1725,198,1731,254,1731,299,1725,299,1726,255,1719,199,1702,143,1687,117,1668,95,1647,81,1616,69,1536,51,1443,39,1353,33"/>
+<area shape="rect" href="kernel__elf_8hpp.html" title=" " alt="" coords="1185,93,1299,119"/>
+<area shape="poly" title=" " alt="" coords="1245,46,1245,79,1239,79,1239,46"/>
+<area shape="rect" title=" " alt="" coords="638,313,705,339"/>
+<area shape="poly" title=" " alt="" coords="462,262,625,309,624,314,461,267"/>
+<area shape="rect" title=" " alt="" coords="897,313,966,339"/>
+<area shape="poly" title=" " alt="" coords="462,257,883,315,882,321,461,262"/>
+<area shape="rect" title=" " alt="" coords="464,387,535,412"/>
+<area shape="poly" title=" " alt="" coords="432,265,489,373,485,376,427,267"/>
+<area shape="poly" title=" " alt="" coords="446,263,524,300,574,320,627,336,711,354,797,368,968,386,1117,394,1226,396,1226,401,1117,400,967,392,797,374,710,360,625,341,573,325,522,305,443,268"/>
+<area shape="rect" title=" " alt="" coords="154,387,218,412"/>
+<area shape="poly" title=" " alt="" coords="386,265,373,268,336,273,303,273,244,270,218,271,194,277,169,291,146,315,140,329,143,344,164,375,160,378,138,346,135,329,141,312,166,287,192,272,218,266,244,265,303,268,336,268,372,263,385,260"/>
+<area shape="rect" title=" " alt="" coords="349,387,413,412"/>
+<area shape="poly" title=" " alt="" coords="422,267,391,374,385,373,417,265"/>
+<area shape="rect" title=" " alt="" coords="5,387,129,412"/>
+<area shape="poly" title=" " alt="" coords="386,265,373,268,303,277,248,279,195,287,166,298,134,316,103,344,81,376,77,373,99,340,131,311,164,293,194,282,247,274,303,272,372,263,385,260"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="155,313,361,339"/>
+<area shape="poly" title=" " alt="" coords="398,268,299,310,296,305,396,263"/>
+<area shape="poly" title=" " alt="" coords="298,336,451,381,450,386,296,341"/>
+<area shape="poly" title=" " alt="" coords="361,332,1226,392,1226,397,361,337"/>
+<area shape="poly" title=" " alt="" coords="248,341,209,379,206,375,244,337"/>
+<area shape="poly" title=" " alt="" coords="279,336,350,377,348,382,276,341"/>
+<area shape="poly" title=" " alt="" coords="228,341,112,384,110,379,226,336"/>
+<area shape="rect" title=" " alt="" coords="243,387,305,412"/>
+<area shape="poly" title=" " alt="" coords="263,338,271,373,266,374,258,340"/>
+<area shape="poly" title=" " alt="" coords="489,194,448,232,444,229,485,190"/>
+<area shape="poly" title=" " alt="" coords="502,192,502,372,497,372,497,192"/>
+<area shape="poly" title=" " alt="" coords="526,190,696,263,790,304,831,320,885,336,979,357,1073,373,1226,391,1225,397,1072,379,978,363,884,341,829,325,788,309,694,268,524,195"/>
+<area shape="rect" title=" " alt="" coords="267,240,361,265"/>
+<area shape="poly" title=" " alt="" coords="471,195,358,237,356,233,469,190"/>
+<area shape="poly" title=" " alt="" coords="887,121,828,141,766,169,689,220,619,279,561,335,520,378,516,375,557,331,616,275,686,216,763,164,826,136,885,116"/>
+<area shape="poly" title=" " alt="" coords="934,119,939,154,947,174,959,190,979,207,1000,216,1040,221,1084,222,1109,227,1135,238,1187,268,1228,312,1249,342,1265,372,1260,375,1245,345,1224,315,1183,273,1133,242,1107,232,1083,228,1040,226,998,221,977,211,955,194,942,176,934,156,929,119"/>
+<area shape="rect" title=" " alt="" coords="969,167,1083,192"/>
+<area shape="poly" title=" " alt="" coords="948,117,1001,156,998,160,945,121"/>
+<area shape="poly" title=" " alt="" coords="917,121,864,160,861,156,914,117"/>
+<area shape="poly" title=" " alt="" coords="777,193,475,245,474,240,776,188"/>
+<area shape="poly" title=" " alt="" coords="781,195,736,212,715,225,697,242,682,270,675,300,670,298,677,268,693,238,712,221,734,208,779,190"/>
+<area shape="poly" title=" " alt="" coords="895,188,1007,210,1059,224,1097,238,1146,269,1191,306,1256,374,1253,378,1187,310,1143,273,1094,242,1058,229,1006,216,894,193"/>
+<area shape="rect" title=" " alt="" coords="827,240,926,265"/>
+<area shape="poly" title=" " alt="" coords="844,191,865,227,861,229,840,194"/>
+<area shape="rect" title=" " alt="" coords="950,240,1083,265"/>
+<area shape="poly" title=" " alt="" coords="865,190,975,232,973,237,863,195"/>
+<area shape="rect" title=" " alt="" coords="707,240,803,265"/>
+<area shape="poly" title=" " alt="" coords="824,194,780,233,777,229,821,190"/>
+<area shape="poly" title=" " alt="" coords="1689,338,1670,341,1476,372,1320,394,1319,389,1475,367,1670,336,1688,333"/>
+<area shape="poly" title=" " alt="" coords="1220,121,1187,141,1155,168,1137,194,1128,219,1118,243,1097,267,1070,286,1039,301,980,319,979,314,1037,296,1067,282,1094,263,1114,240,1123,217,1132,192,1151,165,1184,137,1218,116"/>
+<area shape="poly" title=" " alt="" coords="1235,121,1199,168,1166,221,1151,243,1126,267,1090,296,1058,314,979,341,860,369,740,387,632,396,549,400,549,395,631,391,739,382,859,364,977,336,1056,309,1087,291,1123,263,1147,240,1162,218,1194,165,1231,117"/>
+<area shape="poly" title=" " alt="" coords="1299,110,1356,117,1417,128,1469,144,1489,153,1503,165,1513,182,1519,199,1519,216,1515,233,1496,265,1466,295,1429,322,1389,347,1314,384,1312,379,1386,342,1426,318,1462,291,1492,262,1510,231,1514,215,1513,200,1509,184,1499,168,1486,158,1467,149,1415,133,1355,122,1298,115"/>
+<area shape="poly" title=" " alt="" coords="1300,115,1545,164,1550,165,1549,170,1544,169,1299,120"/>
+<area shape="poly" title=" " alt="" coords="1208,121,1075,165,1073,160,1206,116"/>
+<area shape="poly" title=" " alt="" coords="1185,120,908,168,907,163,1185,115"/>
+<area shape="rect" title=" " alt="" coords="1209,167,1275,192"/>
+<area shape="poly" title=" " alt="" coords="1245,119,1245,153,1239,153,1239,119"/>
+<area shape="rect" title=" " alt="" coords="1299,167,1353,192"/>
+<area shape="poly" title=" " alt="" coords="1257,117,1303,155,1300,160,1254,121"/>
+<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="1377,167,1488,192"/>
+<area shape="poly" title=" " alt="" coords="1274,116,1390,159,1388,164,1272,121"/>
+<area shape="poly" title=" " alt="" coords="1434,193,1426,227,1410,267,1385,301,1356,333,1301,380,1298,376,1352,329,1381,298,1405,264,1421,226,1428,192"/>
+<area shape="rect" title=" " alt="" coords="1313,240,1395,265"/>
+<area shape="poly" title=" " alt="" coords="1422,194,1379,233,1375,229,1418,190"/>
 </map>
 </div>
 </div>
@@ -209,8 +193,9 @@ Include dependency graph for backtrace.cpp:</div>
 Functions</h2></td></tr>
 <tr class="memitem:a7986cc449f6e96ca1ee111a6ee7940bb" id="r_a7986cc449f6e96ca1ee111a6ee7940bb"><td class="memItemLeft" align="right" valign="top">__always_inline auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="riscv64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb">backtrace</a> (std::array&lt; uint64_t, <a class="el" href="arch_8h.html#aa6bf08e475b70fd9c9f5c7c5dbb04fac">kMaxFrameCount</a> &gt; &amp;buffer) -&gt; int</td></tr>
 <tr class="separator:a7986cc449f6e96ca1ee111a6ee7940bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8446673829abff96859f4f7fef26c6fc" id="r_a8446673829abff96859f4f7fef26c6fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="riscv64_2backtrace_8cpp.html#a8446673829abff96859f4f7fef26c6fc">DumpStack</a> ()</td></tr>
-<tr class="separator:a8446673829abff96859f4f7fef26c6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a393a5995bbd64c00f1902a4ae0110847" id="r_a393a5995bbd64c00f1902a4ae0110847"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="riscv64_2backtrace_8cpp.html#a393a5995bbd64c00f1902a4ae0110847">DumpStack</a> () -&gt; void</td></tr>
+<tr class="memdesc:a393a5995bbd64c00f1902a4ae0110847"><td class="mdescLeft">&#160;</td><td class="mdescRight">打印调用栈  <br /></td></tr>
+<tr class="separator:a393a5995bbd64c00f1902a4ae0110847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a7986cc449f6e96ca1ee111a6ee7940bb" name="a7986cc449f6e96ca1ee111a6ee7940bb"></a>
@@ -230,92 +215,94 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="riscv64_2backtrace_8cpp_source.html#l00018">18</a> of file <a class="el" href="riscv64_2backtrace_8cpp_source.html">backtrace.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   19</span>           {</div>
-<div class="line"><span class="lineno">   20</span>  <span class="keyword">auto</span> fp_value = cpu_io::Fp::Read();</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keywordtype">size_t</span> count = 0;</div>
-<div class="line"><span class="lineno">   22</span> </div>
-<div class="line"><span class="lineno">   23</span>  <span class="comment">// RISC-V 栈帧布局 (使用 -fno-omit-frame-pointer):</span></div>
-<div class="line"><span class="lineno">   24</span>  <span class="comment">// fp[-1] (fp - 8):  保存的返回地址 (ra)</span></div>
-<div class="line"><span class="lineno">   25</span>  <span class="comment">// fp[-2] (fp - 16): 保存的上一个帧指针 (saved fp)</span></div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">while</span> ((fp_value &amp; 0x07) == 0 &amp;&amp; count &lt; buffer.max_size()) {</div>
-<div class="line"><span class="lineno">   28</span>    <span class="keyword">auto</span>* fp = <span class="keyword">reinterpret_cast&lt;</span>uint64_t*<span class="keyword">&gt;</span>(fp_value);</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keyword">auto</span> ra = *(fp - 1);</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keyword">auto</span> saved_fp = *(fp - 2);</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>    <span class="comment">// 检查返回地址是否在代码段范围内</span></div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> (ra &lt; <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="basic__info_8hpp.html#a9c6fbf9a57242794712975337a624b43">__executable_start</a>) ||</div>
-<div class="line"><span class="lineno">   34</span>        ra &gt; <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="basic__info_8hpp.html#a4441c495b112f8419dfbf1e0cf2102fb">__etext</a>)) {</div>
-<div class="line"><span class="lineno">   35</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   36</span>    }</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>    buffer[count++] = ra;</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>    <span class="comment">// 如果 saved_fp 为 0 或无效，停止遍历</span></div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> (saved_fp == 0) {</div>
-<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   43</span>    }</div>
-<div class="line"><span class="lineno">   44</span>    fp_value = saved_fp;</div>
-<div class="line"><span class="lineno">   45</span>  }</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> int(count);</div>
-<div class="line"><span class="lineno">   47</span>}</div>
-<div class="ttc" id="abasic__info_8hpp_html_a4441c495b112f8419dfbf1e0cf2102fb"><div class="ttname"><a href="basic__info_8hpp.html#a4441c495b112f8419dfbf1e0cf2102fb">__etext</a></div><div class="ttdeci">void * __etext[]</div><div class="ttdoc">代码段结束</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00020">basic_info.hpp:20</a></div></div>
-<div class="ttc" id="abasic__info_8hpp_html_a9c6fbf9a57242794712975337a624b43"><div class="ttname"><a href="basic__info_8hpp.html#a9c6fbf9a57242794712975337a624b43">__executable_start</a></div><div class="ttdeci">void * __executable_start[]</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00018">basic_info.hpp:18</a></div></div>
+<p class="definition">Definition at line <a class="el" href="riscv64_2backtrace_8cpp_source.html#l00017">17</a> of file <a class="el" href="riscv64_2backtrace_8cpp_source.html">backtrace.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span>           {</div>
+<div class="line"><span class="lineno">   19</span>  <span class="keyword">auto</span> fp_value = cpu_io::Fp::Read();</div>
+<div class="line"><span class="lineno">   20</span>  <span class="keywordtype">size_t</span> count = 0;</div>
+<div class="line"><span class="lineno">   21</span> </div>
+<div class="line"><span class="lineno">   22</span>  <span class="comment">// RISC-V 栈帧布局 (使用 -fno-omit-frame-pointer):</span></div>
+<div class="line"><span class="lineno">   23</span>  <span class="comment">// fp[-1] (fp - 8):  保存的返回地址 (ra)</span></div>
+<div class="line"><span class="lineno">   24</span>  <span class="comment">// fp[-2] (fp - 16): 保存的上一个帧指针 (saved fp)</span></div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">while</span> ((fp_value &amp; 0x07) == 0 &amp;&amp; count &lt; buffer.max_size()) {</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keyword">auto</span>* fp = <span class="keyword">reinterpret_cast&lt;</span>uint64_t*<span class="keyword">&gt;</span>(fp_value);</div>
+<div class="line"><span class="lineno">   28</span>    <span class="keyword">auto</span> ra = *(fp - 1);</div>
+<div class="line"><span class="lineno">   29</span>    <span class="keyword">auto</span> saved_fp = *(fp - 2);</div>
+<div class="line"><span class="lineno">   30</span> </div>
+<div class="line"><span class="lineno">   31</span>    <span class="comment">// 检查返回地址是否在代码段范围内</span></div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> (ra &lt; <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="basic__info_8hpp.html#a9c6fbf9a57242794712975337a624b43">__executable_start</a>) ||</div>
+<div class="line"><span class="lineno">   33</span>        ra &gt; <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="basic__info_8hpp.html#a4441c495b112f8419dfbf1e0cf2102fb">__etext</a>)) {</div>
+<div class="line"><span class="lineno">   34</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   35</span>    }</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>    buffer[count++] = ra;</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>    <span class="comment">// 如果 saved_fp 为 0 或无效，停止遍历</span></div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> (saved_fp == 0) {</div>
+<div class="line"><span class="lineno">   41</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   42</span>    }</div>
+<div class="line"><span class="lineno">   43</span>    fp_value = saved_fp;</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(count);</div>
+<div class="line"><span class="lineno">   46</span>}</div>
+<div class="ttc" id="abasic__info_8hpp_html_a4441c495b112f8419dfbf1e0cf2102fb"><div class="ttname"><a href="basic__info_8hpp.html#a4441c495b112f8419dfbf1e0cf2102fb">__etext</a></div><div class="ttdeci">void * __etext[]</div><div class="ttdoc">代码段结束</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00019">basic_info.hpp:19</a></div></div>
+<div class="ttc" id="abasic__info_8hpp_html_a9c6fbf9a57242794712975337a624b43"><div class="ttname"><a href="basic__info_8hpp.html#a9c6fbf9a57242794712975337a624b43">__executable_start</a></div><div class="ttdeci">void * __executable_start[]</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00017">basic_info.hpp:17</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a8446673829abff96859f4f7fef26c6fc" name="a8446673829abff96859f4f7fef26c6fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8446673829abff96859f4f7fef26c6fc">&#9670;&#160;</a></span>DumpStack()</h2>
+<a id="a393a5995bbd64c00f1902a4ae0110847" name="a393a5995bbd64c00f1902a4ae0110847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a393a5995bbd64c00f1902a4ae0110847">&#9670;&#160;</a></span>DumpStack()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void DumpStack </td>
+          <td class="memname">auto DumpStack </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt;  void</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>打印调用栈 </p>
 
-<p class="definition">Definition at line <a class="el" href="riscv64_2backtrace_8cpp_source.html#l00049">49</a> of file <a class="el" href="riscv64_2backtrace_8cpp_source.html">backtrace.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>                 {</div>
-<div class="line"><span class="lineno">   50</span>  std::array&lt;uint64_t, kMaxFrameCount&gt; buffer{};</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <span class="comment">// 获取调用栈中的地址</span></div>
-<div class="line"><span class="lineno">   53</span>  <span class="keyword">auto</span> num_frames = <a class="code hl_function" href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb">backtrace</a>(buffer);</div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>  <span class="comment">// 打印函数名</span></div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> current_frame_idx = 0; current_frame_idx &lt; num_frames;</div>
-<div class="line"><span class="lineno">   57</span>       current_frame_idx++) {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> symtab : <a class="code hl_class" href="classSingleton.html">Singleton</a>&lt;<a class="code hl_class" href="classKernelElf.html">KernelElf</a>&gt;::GetInstance().symtab_) {</div>
-<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">if</span> ((ELF64_ST_TYPE(symtab.st_info) == STT_FUNC) &amp;&amp;</div>
-<div class="line"><span class="lineno">   60</span>          (buffer[current_frame_idx] &gt;= symtab.st_value) &amp;&amp;</div>
-<div class="line"><span class="lineno">   61</span>          (buffer[current_frame_idx] &lt;= symtab.st_value + symtab.st_size)) {</div>
-<div class="line"><span class="lineno">   62</span>        <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;[%s] 0x%p\n&quot;</span>,</div>
-<div class="line"><span class="lineno">   63</span>                  <a class="code hl_class" href="classSingleton.html">Singleton&lt;KernelElf&gt;::GetInstance</a>().strtab_ + symtab.st_name,</div>
+<p>打印调用栈 </p>
+<dl class="section note"><dt>Note</dt><dd>调用 backtrace 获取调用栈并解析符号后输出到日志 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="riscv64_2backtrace_8cpp_source.html#l00048">48</a> of file <a class="el" href="riscv64_2backtrace_8cpp_source.html">backtrace.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                         {</div>
+<div class="line"><span class="lineno">   49</span>  std::array&lt;uint64_t, kMaxFrameCount&gt; buffer{};</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="comment">// 获取调用栈中的地址</span></div>
+<div class="line"><span class="lineno">   52</span>  <span class="keyword">auto</span> num_frames = <a class="code hl_function" href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb">backtrace</a>(buffer);</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>  <span class="comment">// 打印函数名</span></div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> current_frame_idx = 0; current_frame_idx &lt; num_frames;</div>
+<div class="line"><span class="lineno">   56</span>       current_frame_idx++) {</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> symtab : <a class="code hl_typedef" href="kernel__elf_8hpp.html#aabf1808205f4ceaa3a3d7d6378e14872">KernelElfSingleton</a>::instance().symtab) {</div>
+<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">if</span> ((ELF64_ST_TYPE(symtab.st_info) == STT_FUNC) &amp;&amp;</div>
+<div class="line"><span class="lineno">   59</span>          (buffer[current_frame_idx] &gt;= symtab.st_value) &amp;&amp;</div>
+<div class="line"><span class="lineno">   60</span>          (buffer[current_frame_idx] &lt;= symtab.st_value + symtab.st_size)) {</div>
+<div class="line"><span class="lineno">   61</span>        <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;[{}] {:#x}&quot;</span>,</div>
+<div class="line"><span class="lineno">   62</span>                  <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(</div>
+<div class="line"><span class="lineno">   63</span>                      KernelElfSingleton::instance().strtab + symtab.st_name),</div>
 <div class="line"><span class="lineno">   64</span>                  buffer[current_frame_idx]);</div>
 <div class="line"><span class="lineno">   65</span>      }</div>
 <div class="line"><span class="lineno">   66</span>    }</div>
 <div class="line"><span class="lineno">   67</span>  }</div>
 <div class="line"><span class="lineno">   68</span>}</div>
 <div class="ttc" id="aaarch64_2backtrace_8cpp_html_a7986cc449f6e96ca1ee111a6ee7940bb"><div class="ttname"><a href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb">backtrace</a></div><div class="ttdeci">__always_inline auto backtrace(std::array&lt; uint64_t, kMaxFrameCount &gt; &amp;buffer) -&gt; int</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2backtrace_8cpp_source.html#l00018">backtrace.cpp:18</a></div></div>
-<div class="ttc" id="aclassKernelElf_html"><div class="ttname"><a href="classKernelElf.html">KernelElf</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00023">kernel_elf.hpp:23</a></div></div>
-<div class="ttc" id="aclassSingleton_html"><div class="ttname"><a href="classSingleton.html">Singleton</a></div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00010">singleton.hpp:10</a></div></div>
-<div class="ttc" id="astructklog_1_1Err_html"><div class="ttname"><a href="structklog_1_1Err.html">klog::Err</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00188">kernel_log.hpp:188</a></div></div>
+<div class="ttc" id="akernel__elf_8hpp_html_aabf1808205f4ceaa3a3d7d6378e14872"><div class="ttname"><a href="kernel__elf_8hpp.html#aabf1808205f4ceaa3a3d7d6378e14872">KernelElfSingleton</a></div><div class="ttdeci">etl::singleton&lt; KernelElf &gt; KernelElfSingleton</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00154">kernel_elf.hpp:154</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a16b493848cd618512fc9fb61d3980bd7"><div class="ttname"><a href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a></div><div class="ttdeci">auto Err(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 ERROR 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00200">kernel_log.hpp:200</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="riscv64_2backtrace_8cpp_a8446673829abff96859f4f7fef26c6fc_cgraph.png" border="0" usemap="#ariscv64_2backtrace_8cpp_a8446673829abff96859f4f7fef26c6fc_cgraph" alt=""/></div>
-<map name="ariscv64_2backtrace_8cpp_a8446673829abff96859f4f7fef26c6fc_cgraph" id="ariscv64_2backtrace_8cpp_a8446673829abff96859f4f7fef26c6fc_cgraph">
-<area shape="rect" title=" " alt="" coords="5,31,103,56"/>
-<area shape="rect" href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb" title=" " alt="" coords="192,5,279,31"/>
-<area shape="poly" title=" " alt="" coords="102,34,178,23,179,29,103,39"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="151,55,320,80"/>
-<area shape="poly" title=" " alt="" coords="103,47,137,52,137,57,102,52"/>
+<div class="center"><img src="riscv64_2backtrace_8cpp_a393a5995bbd64c00f1902a4ae0110847_cgraph.png" border="0" usemap="#ariscv64_2backtrace_8cpp_a393a5995bbd64c00f1902a4ae0110847_cgraph" alt=""/></div>
+<map name="ariscv64_2backtrace_8cpp_a393a5995bbd64c00f1902a4ae0110847_cgraph" id="ariscv64_2backtrace_8cpp_a393a5995bbd64c00f1902a4ae0110847_cgraph">
+<area shape="rect" title="打印调用栈" alt="" coords="5,31,103,56"/>
+<area shape="rect" href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb" title=" " alt="" coords="151,5,237,31"/>
+<area shape="poly" title=" " alt="" coords="102,32,137,26,138,31,103,37"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="156,55,232,80"/>
+<area shape="poly" title=" " alt="" coords="103,49,143,56,142,61,103,54"/>
 </map>
 </div>
 

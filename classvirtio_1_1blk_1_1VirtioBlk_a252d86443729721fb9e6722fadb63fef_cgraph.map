@@ -1,0 +1,33 @@
+<map id="virtio::blk::VirtioBlk::Write" name="virtio::blk::VirtioBlk::Write">
+<area shape="rect" id="Node000001" title="同步写入一个扇区" alt="" coords="5,216,153,256"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a92da81f8831b00ff61070050d3779e5b" title="同步提交请求的内部实现" alt="" coords="201,216,361,256"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,233,188,233,188,239,154,239"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a65c030d25edc331b47332bc808766451" title="异步入队请求的内部实现" alt="" coords="417,184,565,224"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="361,221,403,215,404,220,362,226"/>
+<area shape="rect" id="Node000007" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a098b48ede00a55c5abcf9897ff278aab" title="批量触发硬件通知" alt="" coords="417,56,565,96"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="296,214,343,161,374,132,408,106,417,100,420,105,411,110,377,136,347,165,300,217"/>
+<area shape="rect" id="Node000009" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2eba21cbbca77632e2e999fbfe52d967" title="处理 Used Ring 中已完成的请求" alt="" coords="409,248,572,288"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="362,246,396,251,395,256,361,251"/>
+<area shape="rect" id="Node000012" href="$namespacecpu__io.html#ac9fcdd47fa1ff396470a667dec3a1597" title=" " alt="" coords="651,377,754,402"/>
+<area shape="poly" id="edge14_Node000002_Node000012" title=" " alt="" coords="320,254,410,298,646,370,645,375,408,302,317,259"/>
+<area shape="rect" id="Node000013" href="$classvirtio_1_1blk_1_1VirtioBlk.html#acbd79b96538cd9e7b97954f57e399c09" title="更新 avail&#45;&gt;used_event 字段" alt="" coords="417,120,565,160"/>
+<area shape="poly" id="edge15_Node000002_Node000013" title=" " alt="" coords="319,213,408,170,424,163,426,168,410,174,322,218"/>
+<area shape="rect" id="Node000014" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="445,363,536,389"/>
+<area shape="poly" id="edge17_Node000002_Node000014" title=" " alt="" coords="304,254,351,297,411,342,439,356,436,360,408,346,347,302,300,258"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a3291dde37cac408e3d4730148219439b" title="从请求槽池中分配一个空闲槽（O(1) 位图算法）" alt="" coords="629,120,777,160"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="557,181,622,161,624,167,558,186"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a928f265d102c1e2fd68c653f504fed8e" title="释放请求槽" alt="" coords="629,184,777,224"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="565,201,615,201,615,207,565,207"/>
+<area shape="rect" id="Node000006" href="$namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb" title=" " alt="" coords="649,70,756,95"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="552,182,570,170,585,154,593,138,602,122,618,106,635,96,638,101,622,110,606,125,598,141,589,157,574,174,554,186"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="565,76,636,78,635,83,565,81"/>
+<area shape="rect" id="Node000008" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2e45e2d49fd7e55241c86643bcbb67f2" title="判断是否需要发送通知（处理 wrap&#45;around）" alt="" coords="629,5,777,45"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="565,56,615,44,616,49,566,61"/>
+<area shape="poly" id="edge11_Node000009_Node000005" title=" " alt="" coords="557,245,622,225,624,231,558,250"/>
+<area shape="rect" id="Node000010" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aae42cda1f43edaa3c9e0a07d3a156edc" title="根据描述符链头索引查找请求槽" alt="" coords="620,312,785,352"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="558,286,624,305,622,311,557,291"/>
+<area shape="rect" id="Node000011" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aea67e100df43d1ca6348ad3589ff7f8b" title="将设备 BlkStatus 映射为 ErrorCode" alt="" coords="629,248,777,288"/>
+<area shape="poly" id="edge12_Node000009_Node000011" title=" " alt="" coords="572,265,615,265,615,271,572,271"/>
+<area shape="poly" id="edge13_Node000009_Node000012" title=" " alt="" coords="544,286,574,305,589,320,598,335,607,348,622,362,640,371,637,376,618,366,602,352,593,337,585,323,570,309,541,290"/>
+<area shape="poly" id="edge16_Node000013_Node000006" title=" " alt="" coords="565,117,640,97,642,102,566,123"/>
+</map>

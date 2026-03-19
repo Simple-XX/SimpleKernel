@@ -1,0 +1,5 @@
+<map id="TaskControlBlock::GetStatus" name="TaskControlBlock::GetStatus">
+<area shape="rect" id="Node000001" title="获取当前任务状态" alt="" coords="5,5,212,31"/>
+<area shape="rect" id="Node000002" href="$classTaskFsm.html#ae980ff471cb089a7effbf5bb9dfdeeb4" title="获取当前状态 ID" alt="" coords="260,5,416,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,15,246,15,246,21,212,21"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="vfs::MountPoint" name="vfs::MountPoint">
+<area shape="rect" id="Node000001" title="挂载点" alt="" coords="193,944,309,1029"/>
+<area shape="rect" id="Node000002" href="$structvfs_1_1Dentry.html" title="Dentry — 目录项缓存（路径名 ↔ Inode 的映射）" alt="" coords="283,711,376,837"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="309,838,274,930,269,928,304,836"/>
+<area shape="poly" id="edge5_Node000002_Node000002" title=" " alt="" coords="377,749,395,755,401,763,403,774,400,786,394,794,389,790,395,783,397,774,396,766,392,760,375,754"/>
+<area shape="rect" id="Node000003" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="139,453,247,619"/>
+<area shape="poly" id="edge8_Node000001_Node000003" title=" " alt="" coords="182,619,176,675,174,737,177,802,188,866,199,898,215,928,210,931,194,900,183,867,172,803,168,737,171,674,176,619"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="243,618,288,696,283,699,238,620"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="5,95,133,301"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="66,301,68,469,75,564,89,657,106,735,124,794,150,851,192,919,200,930,195,933,187,921,146,853,119,796,101,736,84,658,70,564,62,469,61,301"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="109,300,160,437,155,439,104,302"/>
+<area shape="rect" id="Node000005" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="158,5,269,391"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="205,391,202,437,197,437,199,391"/>
+<area shape="rect" id="Node000006" href="$classvfs_1_1BlockDevice.html" title="块设备抽象基类" alt="" coords="515,681,656,867"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="516,859,504,869,461,898,414,924,325,963,323,958,412,919,458,894,501,865,513,855"/>
+</map>

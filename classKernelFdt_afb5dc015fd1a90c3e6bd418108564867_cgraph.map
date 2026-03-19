@@ -1,9 +1,14 @@
 <map id="KernelFdt::CheckPSCI" name="KernelFdt::CheckPSCI">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,167,80"/>
-<area shape="rect" id="Node000002" href="$classKernelFdt.html#a3ec35216ec7b4ddf55458f3b4824c816" title=" " alt="" coords="261,5,414,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,52,214,39,258,31,259,36,215,45,152,57"/>
-<area shape="rect" id="Node000003" href="$classKernelFdt.html#a6aaec73b42091f1bd31139cca0937e21" title=" " alt="" coords="242,55,433,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,65,228,65,228,70,167,70"/>
-<area shape="rect" id="Node000004" href="$classKernelFdt.html#af30a345a6a90077e0c395afc7acdb48c" title=" " alt="" coords="215,104,460,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,77,259,99,258,104,151,83"/>
+<area shape="rect" id="Node000001" title="判断 PSCI 信息" alt="" coords="5,57,167,82"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="508,31,608,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,54,157,33,214,16,283,5,337,3,391,7,460,16,505,25,504,30,460,21,391,13,337,8,283,11,215,21,159,38,112,59"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#a3ec35216ec7b4ddf55458f3b4824c816" title="按路径查找节点" alt="" coords="261,31,414,57"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,59,247,50,247,56,167,64"/>
+<area shape="rect" id="Node000004" href="$classKernelFdt.html#a6aaec73b42091f1bd31139cca0937e21" title="获取 PSCI method 属性" alt="" coords="242,81,433,106"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="167,74,229,80,228,86,166,80"/>
+<area shape="rect" id="Node000005" href="$classKernelFdt.html#af30a345a6a90077e0c395afc7acdb48c" title="验证 PSCI 函数 ID" alt="" coords="215,130,460,155"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="117,80,215,116,249,125,247,130,214,121,115,85"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="427,127,459,116,499,92,533,64,536,68,503,96,461,121,429,132"/>
+<area shape="rect" id="Node000006" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="520,130,596,155"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="460,140,507,140,507,145,460,145"/>
 </map>

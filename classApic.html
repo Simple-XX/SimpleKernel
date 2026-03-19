@@ -106,18 +106,16 @@ Collaboration diagram for Apic:</div>
 <div class="dyncontent">
 <div class="center"><img src="classApic__coll__graph.png" border="0" usemap="#aApic_coll__map" alt="Collaboration graph"/></div>
 <map name="aApic_coll__map" id="aApic_coll__map">
-<area shape="rect" title="APIC 管理类，管理整个系统的 Local APIC 和 IO APIC." alt="" coords="137,2373,332,2899"/>
+<area shape="rect" title="APIC 管理类，管理整个系统的 Local APIC 和 IO APIC." alt="" coords="137,2373,332,2919"/>
 <area shape="rect" href="classLocalApic.html" title="Local APIC 驱动类" alt="" coords="5,5,221,2311"/>
-<area shape="poly" title=" " alt="" coords="211,2311,215,2357,209,2357,205,2311"/>
-<area shape="rect" href="classIoApic.html" title="IO APIC 驱动类" alt="" coords="245,455,467,1861"/>
-<area shape="poly" title=" " alt="" coords="345,1861,328,2107,301,2350,300,2357,295,2357,296,2349,323,2106,340,1861"/>
+<area shape="poly" title=" " alt="" coords="210,2311,214,2357,209,2357,205,2311"/>
+<area shape="rect" href="classIoApic.html" title="IO APIC 驱动类" alt="" coords="245,445,467,1871"/>
+<area shape="poly" title=" " alt="" coords="342,1871,325,2112,300,2350,299,2357,294,2357,295,2349,320,2111,337,1871"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1155d4f0fd5ce1d113f51bc455934402" id="r_a1155d4f0fd5ce1d113f51bc455934402"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a1155d4f0fd5ce1d113f51bc455934402">Apic</a> (const size_t cpu_count)</td></tr>
-<tr class="separator:a1155d4f0fd5ce1d113f51bc455934402"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02c227a2528fb3a8c7b00a2dc3b516ff" id="r_a02c227a2528fb3a8c7b00a2dc3b516ff"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a02c227a2528fb3a8c7b00a2dc3b516ff">InitCurrentCpuLocalApic</a> () -&gt; <a class="el" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a>&lt; void &gt;</td></tr>
 <tr class="memdesc:a02c227a2528fb3a8c7b00a2dc3b516ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">初始化当前 CPU 的 Local APIC  <br /></td></tr>
 <tr class="separator:a02c227a2528fb3a8c7b00a2dc3b516ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,19 +137,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9777b7b1e7864680faba6e8bafd529dc" id="r_a9777b7b1e7864680faba6e8bafd529dc"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a9777b7b1e7864680faba6e8bafd529dc">StartupAp</a> (uint32_t apic_id, uint64_t ap_code_addr, size_t ap_code_size, uint64_t target_addr) const -&gt; <a class="el" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a>&lt; void &gt;</td></tr>
 <tr class="memdesc:a9777b7b1e7864680faba6e8bafd529dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">启动 AP (Application Processor)  <br /></td></tr>
 <tr class="separator:a9777b7b1e7864680faba6e8bafd529dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade18168e69461b8ee4c8d34d91091b58" id="r_ade18168e69461b8ee4c8d34d91091b58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#ade18168e69461b8ee4c8d34d91091b58">StartupAllAps</a> (uint64_t ap_code_addr, size_t ap_code_size, uint64_t target_addr) const</td></tr>
-<tr class="memdesc:ade18168e69461b8ee4c8d34d91091b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">唤醒所有应用处理器 (AP)  <br /></td></tr>
-<tr class="separator:ade18168e69461b8ee4c8d34d91091b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad78648056423720100a4ccc8fc629cd3" id="r_ad78648056423720100a4ccc8fc629cd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#ad78648056423720100a4ccc8fc629cd3">SendEoi</a> () const</td></tr>
-<tr class="memdesc:ad78648056423720100a4ccc8fc629cd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">发送 EOI 信号给当前 CPU 的 Local APIC  <br /></td></tr>
-<tr class="separator:ad78648056423720100a4ccc8fc629cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91da5ed274fac8574ed249557d284100" id="r_a91da5ed274fac8574ed249557d284100"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a91da5ed274fac8574ed249557d284100">SetupPeriodicTimer</a> (uint32_t frequency_hz, uint8_t vector) const</td></tr>
-<tr class="memdesc:a91da5ed274fac8574ed249557d284100"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置 Local APIC 定时器  <br /></td></tr>
-<tr class="separator:a91da5ed274fac8574ed249557d284100"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba1c25d1561d3d5aefdd434290da39f5" id="r_aba1c25d1561d3d5aefdd434290da39f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#aba1c25d1561d3d5aefdd434290da39f5">PrintInfo</a> () const</td></tr>
-<tr class="memdesc:aba1c25d1561d3d5aefdd434290da39f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">打印所有 APIC 信息（调试用）  <br /></td></tr>
-<tr class="separator:aba1c25d1561d3d5aefdd434290da39f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">默认构造/析构函数</div></td></tr>
+<tr class="memitem:a81b4abb694e982a05ce313053759b8d1" id="r_a81b4abb694e982a05ce313053759b8d1"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a81b4abb694e982a05ce313053759b8d1">StartupAllAps</a> (uint64_t ap_code_addr, size_t ap_code_size, uint64_t target_addr) const -&gt; void</td></tr>
+<tr class="memdesc:a81b4abb694e982a05ce313053759b8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">唤醒所有应用处理器 (AP)  <br /></td></tr>
+<tr class="separator:a81b4abb694e982a05ce313053759b8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51fbfa73c4b21d81667ede92730b35bb" id="r_a51fbfa73c4b21d81667ede92730b35bb"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a51fbfa73c4b21d81667ede92730b35bb">SendEoi</a> () const -&gt; void</td></tr>
+<tr class="memdesc:a51fbfa73c4b21d81667ede92730b35bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">发送 EOI 信号给当前 CPU 的 Local APIC  <br /></td></tr>
+<tr class="separator:a51fbfa73c4b21d81667ede92730b35bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a439d0b92a75b4767e3fdb2e74171c692" id="r_a439d0b92a75b4767e3fdb2e74171c692"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a439d0b92a75b4767e3fdb2e74171c692">SetupPeriodicTimer</a> (uint32_t frequency_hz, uint8_t vector) const -&gt; void</td></tr>
+<tr class="memdesc:a439d0b92a75b4767e3fdb2e74171c692"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置 Local APIC 定时器  <br /></td></tr>
+<tr class="separator:a439d0b92a75b4767e3fdb2e74171c692"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a306473bda77a8a8b93c400851251e755" id="r_a306473bda77a8a8b93c400851251e755"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a306473bda77a8a8b93c400851251e755">PrintInfo</a> () const -&gt; void</td></tr>
+<tr class="memdesc:a306473bda77a8a8b93c400851251e755"><td class="mdescLeft">&#160;</td><td class="mdescRight">打印所有 APIC 信息（调试用）  <br /></td></tr>
+<tr class="separator:a306473bda77a8a8b93c400851251e755"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
+<tr class="memitem:a1155d4f0fd5ce1d113f51bc455934402" id="r_a1155d4f0fd5ce1d113f51bc455934402"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a1155d4f0fd5ce1d113f51bc455934402">Apic</a> (const size_t cpu_count)</td></tr>
+<tr class="separator:a1155d4f0fd5ce1d113f51bc455934402"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab79e8c9db40f463c8da66a9dc711faaf" id="r_ab79e8c9db40f463c8da66a9dc711faaf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#ab79e8c9db40f463c8da66a9dc711faaf">Apic</a> ()=default</td></tr>
 <tr class="separator:ab79e8c9db40f463c8da66a9dc711faaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37594ac339951ea7c981c7932b0645fd" id="r_a37594ac339951ea7c981c7932b0645fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a37594ac339951ea7c981c7932b0645fd">Apic</a> (const <a class="el" href="classApic.html">Apic</a> &amp;)=delete</td></tr>
@@ -167,13 +167,13 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:af93733906e44265497332e3fc220fdc1" id="r_af93733906e44265497332e3fc220fdc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLocalApic.html">LocalApic</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a></td></tr>
+<tr class="memitem:af93733906e44265497332e3fc220fdc1" id="r_af93733906e44265497332e3fc220fdc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLocalApic.html">LocalApic</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a> {}</td></tr>
 <tr class="memdesc:af93733906e44265497332e3fc220fdc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local APIC 操作接口（静态实例，用于当前 CPU）  <br /></td></tr>
 <tr class="separator:af93733906e44265497332e3fc220fdc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74e48ee2e612e5f34dd8f70fe2cab99a" id="r_a74e48ee2e612e5f34dd8f70fe2cab99a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classIoApic.html">IoApic</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a></td></tr>
+<tr class="memitem:a74e48ee2e612e5f34dd8f70fe2cab99a" id="r_a74e48ee2e612e5f34dd8f70fe2cab99a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classIoApic.html">IoApic</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a> {}</td></tr>
 <tr class="memdesc:a74e48ee2e612e5f34dd8f70fe2cab99a"><td class="mdescLeft">&#160;</td><td class="mdescRight">只支持一个 IO APIC  <br /></td></tr>
 <tr class="separator:a74e48ee2e612e5f34dd8f70fe2cab99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4f645668b3c41bdffc63a52825c96f2" id="r_ac4f645668b3c41bdffc63a52825c96f2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#ac4f645668b3c41bdffc63a52825c96f2">cpu_count_</a></td></tr>
+<tr class="memitem:ac4f645668b3c41bdffc63a52825c96f2" id="r_ac4f645668b3c41bdffc63a52825c96f2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApic.html#ac4f645668b3c41bdffc63a52825c96f2">cpu_count_</a> {0}</td></tr>
 <tr class="memdesc:ac4f645668b3c41bdffc63a52825c96f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">系统 CPU 数量  <br /></td></tr>
 <tr class="separator:ac4f645668b3c41bdffc63a52825c96f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -186,7 +186,7 @@ Private Attributes</h2></td></tr>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="apic_8h_source.html#l00023">23</a> of file <a class="el" href="apic_8h_source.html">apic.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="apic_8h_source.html#l00022">22</a> of file <a class="el" href="apic_8h_source.html">apic.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1155d4f0fd5ce1d113f51bc455934402" name="a1155d4f0fd5ce1d113f51bc455934402"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1155d4f0fd5ce1d113f51bc455934402">&#9670;&#160;</a></span>Apic() <span class="overload">[1/4]</span></h2>
@@ -355,7 +355,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   79</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#a6dfaeb288214a8bd2e12e6c03b746a64">BroadcastIpi</a>(vector);</div>
 <div class="line"><span class="lineno">   80</span>}</div>
 <div class="ttc" id="aclassApic_html_af93733906e44265497332e3fc220fdc1"><div class="ttname"><a href="classApic.html#af93733906e44265497332e3fc220fdc1">Apic::local_apic_</a></div><div class="ttdeci">LocalApic local_apic_</div><div class="ttdoc">Local APIC 操作接口（静态实例，用于当前 CPU）</div><div class="ttdef"><b>Definition</b> <a href="apic_8h_source.html#l00127">apic.h:127</a></div></div>
-<div class="ttc" id="aclassLocalApic_html_a6dfaeb288214a8bd2e12e6c03b746a64"><div class="ttname"><a href="classLocalApic.html#a6dfaeb288214a8bd2e12e6c03b746a64">LocalApic::BroadcastIpi</a></div><div class="ttdeci">auto BroadcastIpi(uint8_t vector) const -&gt; Expected&lt; void &gt;</div><div class="ttdoc">广播 IPI 到所有其他 CPU</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00112">local_apic.cpp:112</a></div></div>
+<div class="ttc" id="aclassLocalApic_html_a6dfaeb288214a8bd2e12e6c03b746a64"><div class="ttname"><a href="classLocalApic.html#a6dfaeb288214a8bd2e12e6c03b746a64">LocalApic::BroadcastIpi</a></div><div class="ttdeci">auto BroadcastIpi(uint8_t vector) const -&gt; Expected&lt; void &gt;</div><div class="ttdoc">广播 IPI 到所有其他 CPU</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00136">local_apic.cpp:136</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -382,38 +382,42 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   19</span>                                                     {</div>
 <div class="line"><span class="lineno">   20</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#ad94b3e7dc5659cd5bf9378cf9fa308dc">Init</a>()</div>
 <div class="line"><span class="lineno">   21</span>      .and_then([]() -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
-<div class="line"><span class="lineno">   22</span>        <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(</div>
-<div class="line"><span class="lineno">   23</span>            <span class="stringliteral">&quot;Local APIC initialized successfully for CPU with APIC ID 0x%x\n&quot;</span>,</div>
+<div class="line"><span class="lineno">   22</span>        <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(</div>
+<div class="line"><span class="lineno">   23</span>            <span class="stringliteral">&quot;Local APIC initialized successfully for CPU with APIC ID {:#x}&quot;</span>,</div>
 <div class="line"><span class="lineno">   24</span>            <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
 <div class="line"><span class="lineno">   25</span>        <span class="keywordflow">return</span> {};</div>
 <div class="line"><span class="lineno">   26</span>      })</div>
 <div class="line"><span class="lineno">   27</span>      .or_else([](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
-<div class="line"><span class="lineno">   28</span>        <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;Failed to initialize Local APIC for current CPU: %s\n&quot;</span>,</div>
+<div class="line"><span class="lineno">   28</span>        <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to initialize Local APIC for current CPU: {}&quot;</span>,</div>
 <div class="line"><span class="lineno">   29</span>                  err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
 <div class="line"><span class="lineno">   30</span>        <span class="keywordflow">return</span> std::unexpected(err);</div>
 <div class="line"><span class="lineno">   31</span>      });</div>
 <div class="line"><span class="lineno">   32</span>}</div>
-<div class="ttc" id="aclassLocalApic_html_ad94b3e7dc5659cd5bf9378cf9fa308dc"><div class="ttname"><a href="classLocalApic.html#ad94b3e7dc5659cd5bf9378cf9fa308dc">LocalApic::Init</a></div><div class="ttdeci">auto Init() -&gt; Expected&lt; void &gt;</div><div class="ttdoc">初始化 Local APIC</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00009">local_apic.cpp:9</a></div></div>
-<div class="ttc" id="aexpected_8hpp_html_a87330dc74eb67e824914b8d343050757"><div class="ttname"><a href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a></div><div class="ttdeci">std::expected&lt; T, Error &gt; Expected</div><div class="ttdoc">std::expected 别名模板</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00162">expected.hpp:162</a></div></div>
+<div class="ttc" id="aclassLocalApic_html_ad94b3e7dc5659cd5bf9378cf9fa308dc"><div class="ttname"><a href="classLocalApic.html#ad94b3e7dc5659cd5bf9378cf9fa308dc">LocalApic::Init</a></div><div class="ttdeci">auto Init() -&gt; Expected&lt; void &gt;</div><div class="ttdoc">初始化 Local APIC</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00010">local_apic.cpp:10</a></div></div>
+<div class="ttc" id="aexpected_8hpp_html_a87330dc74eb67e824914b8d343050757"><div class="ttname"><a href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a></div><div class="ttdeci">std::expected&lt; T, Error &gt; Expected</div><div class="ttdoc">std::expected 别名模板</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00365">expected.hpp:365</a></div></div>
 <div class="ttc" id="anamespacecpu__io_html_a52b8a7263a31e6670ef4dec7922d9e72"><div class="ttname"><a href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a></div><div class="ttdeci">auto GetCurrentCoreId() -&gt; size_t</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00026">cpu_io.h:26</a></div></div>
-<div class="ttc" id="astructError_html"><div class="ttname"><a href="structError.html">Error</a></div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00150">expected.hpp:150</a></div></div>
-<div class="ttc" id="astructError_html_aa63ee10532d668f25a5147d7dc753749"><div class="ttname"><a href="structError.html#aa63ee10532d668f25a5147d7dc753749">Error::message</a></div><div class="ttdeci">constexpr auto message() const -&gt; const char *</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00155">expected.hpp:155</a></div></div>
-<div class="ttc" id="astructklog_1_1Err_html"><div class="ttname"><a href="structklog_1_1Err.html">klog::Err</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00188">kernel_log.hpp:188</a></div></div>
-<div class="ttc" id="astructklog_1_1Info_html"><div class="ttname"><a href="structklog_1_1Info.html">klog::Info</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00168">kernel_log.hpp:168</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a16b493848cd618512fc9fb61d3980bd7"><div class="ttname"><a href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a></div><div class="ttdeci">auto Err(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 ERROR 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00200">kernel_log.hpp:200</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a1f6b347e95b475341e195f363a9f20a3"><div class="ttname"><a href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a></div><div class="ttdeci">auto Info(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 INFO 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00182">kernel_log.hpp:182</a></div></div>
+<div class="ttc" id="astructError_html"><div class="ttname"><a href="structError.html">Error</a></div><div class="ttdoc">错误类型，用于 std::expected</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00343">expected.hpp:343</a></div></div>
+<div class="ttc" id="astructError_html_aa63ee10532d668f25a5147d7dc753749"><div class="ttname"><a href="structError.html#aa63ee10532d668f25a5147d7dc753749">Error::message</a></div><div class="ttdeci">constexpr auto message() const -&gt; const char *</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00358">expected.hpp:358</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classApic_a02c227a2528fb3a8c7b00a2dc3b516ff_cgraph.png" border="0" usemap="#aclassApic_a02c227a2528fb3a8c7b00a2dc3b516ff_cgraph" alt=""/></div>
 <map name="aclassApic_a02c227a2528fb3a8c7b00a2dc3b516ff_cgraph" id="aclassApic_a02c227a2528fb3a8c7b00a2dc3b516ff_cgraph">
-<area shape="rect" title="初始化当前 CPU 的 Local APIC" alt="" coords="5,42,220,67"/>
-<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="268,15,453,41"/>
-<area shape="poly" title=" " alt="" coords="220,40,254,37,255,42,220,46"/>
-<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="301,66,421,91"/>
-<area shape="poly" title=" " alt="" coords="220,62,287,69,287,74,220,68"/>
-<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="501,5,764,45"/>
-<area shape="poly" title=" " alt="" coords="454,24,487,24,487,29,454,30"/>
-<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="565,70,700,95"/>
-<area shape="poly" title=" " alt="" coords="421,77,551,79,551,84,421,82"/>
+<area shape="rect" title="初始化当前 CPU 的 Local APIC" alt="" coords="5,80,220,105"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="323,5,399,31"/>
+<area shape="poly" title=" " alt="" coords="150,77,267,39,309,28,310,33,269,45,151,82"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="268,55,453,80"/>
+<area shape="poly" title=" " alt="" coords="220,79,254,75,255,81,220,84"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="319,104,402,129"/>
+<area shape="poly" title=" " alt="" coords="220,100,306,109,305,114,220,106"/>
+<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="301,153,421,179"/>
+<area shape="poly" title=" " alt="" coords="153,103,269,139,296,147,295,152,267,145,151,108"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="501,47,764,87"/>
+<area shape="poly" title=" " alt="" coords="454,65,487,65,487,70,454,70"/>
+<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="565,153,700,179"/>
+<area shape="poly" title=" " alt="" coords="421,163,551,163,551,169,421,169"/>
 </map>
 </div>
 
@@ -447,20 +451,30 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00049">49</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>                                                {</div>
 <div class="line"><span class="lineno">   50</span>  <span class="comment">// 检查 IRQ 是否在有效范围内</span></div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (irq &gt;= <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f">GetMaxRedirectionEntries</a>()) {</div>
-<div class="line"><span class="lineno">   52</span>    <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;IRQ %u exceeds IO APIC range (max: %u)\n&quot;</span>, irq,</div>
-<div class="line"><span class="lineno">   53</span>              <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f">GetMaxRedirectionEntries</a>() - 1);</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (irq &gt;= <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6">GetMaxRedirectionEntries</a>()) {</div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;IRQ {} exceeds IO APIC range (max: {})&quot;</span>, irq,</div>
+<div class="line"><span class="lineno">   53</span>              <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6">GetMaxRedirectionEntries</a>() - 1);</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa0fcf97f4fa849ec449424ba729a6b52d">ErrorCode::kApicInvalidIrq</a>));</div>
 <div class="line"><span class="lineno">   55</span>  }</div>
 <div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a2e25ca00e1a01ce1e9dd83195fd3bb2d">MaskIrq</a>(irq);</div>
+<div class="line"><span class="lineno">   57</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#afd360dac0b88d00c3937237c9bb4904c">MaskIrq</a>(irq);</div>
 <div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> {};</div>
 <div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="aclassApic_html_a74e48ee2e612e5f34dd8f70fe2cab99a"><div class="ttname"><a href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">Apic::io_apic_</a></div><div class="ttdeci">IoApic io_apic_</div><div class="ttdoc">只支持一个 IO APIC</div><div class="ttdef"><b>Definition</b> <a href="apic_8h_source.html#l00130">apic.h:130</a></div></div>
-<div class="ttc" id="aclassIoApic_html_a2e25ca00e1a01ce1e9dd83195fd3bb2d"><div class="ttname"><a href="classIoApic.html#a2e25ca00e1a01ce1e9dd83195fd3bb2d">IoApic::MaskIrq</a></div><div class="ttdeci">void MaskIrq(uint8_t irq) const</div><div class="ttdoc">屏蔽 IRQ</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00047">io_apic.cpp:47</a></div></div>
-<div class="ttc" id="aclassIoApic_html_a8668b2a78a42ddd83e93ce9345e04e3f"><div class="ttname"><a href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f">IoApic::GetMaxRedirectionEntries</a></div><div class="ttdeci">auto GetMaxRedirectionEntries() const -&gt; uint32_t</div><div class="ttdoc">获取 IO APIC 最大重定向条目数</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00081">io_apic.cpp:81</a></div></div>
+<div class="ttc" id="aclassIoApic_html_a9b64f1b3a5dcdff27190942e43699ff6"><div class="ttname"><a href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6">IoApic::GetMaxRedirectionEntries</a></div><div class="ttdeci">auto GetMaxRedirectionEntries() const -&gt; uint32_t</div><div class="ttdoc">获取 IO APIC 最大重定向条目数</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00083">io_apic.cpp:83</a></div></div>
+<div class="ttc" id="aclassIoApic_html_afd360dac0b88d00c3937237c9bb4904c"><div class="ttname"><a href="classIoApic.html#afd360dac0b88d00c3937237c9bb4904c">IoApic::MaskIrq</a></div><div class="ttdeci">auto MaskIrq(uint8_t irq) const -&gt; void</div><div class="ttdoc">屏蔽 IRQ</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00049">io_apic.cpp:49</a></div></div>
 <div class="ttc" id="aexpected_8hpp_html_a4d45a9675d1bf454764383179f3c895fa0fcf97f4fa849ec449424ba729a6b52d"><div class="ttname"><a href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa0fcf97f4fa849ec449424ba729a6b52d">ErrorCode::kApicInvalidIrq</a></div><div class="ttdeci">@ kApicInvalidIrq</div></div>
-</div><!-- fragment -->
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classApic_ad85ba704b3b39300b90cbd96dae3f1c8_cgraph.png" border="0" usemap="#aclassApic_ad85ba704b3b39300b90cbd96dae3f1c8_cgraph" alt=""/></div>
+<map name="aclassApic_ad85ba704b3b39300b90cbd96dae3f1c8_cgraph" id="aclassApic_ad85ba704b3b39300b90cbd96dae3f1c8_cgraph">
+<area shape="rect" title="屏蔽 IRQ" alt="" coords="5,5,116,31"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="164,5,240,31"/>
+<area shape="poly" title=" " alt="" coords="116,15,150,15,150,21,116,21"/>
+</map>
+</div>
+
 </div>
 </div>
 <a id="a4dafc7341e50b98d0047551a2dd17eb8" name="a4dafc7341e50b98d0047551a2dd17eb8"></a>
@@ -515,90 +529,93 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="aba1c25d1561d3d5aefdd434290da39f5" name="aba1c25d1561d3d5aefdd434290da39f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba1c25d1561d3d5aefdd434290da39f5">&#9670;&#160;</a></span>PrintInfo()</h2>
+<a id="a306473bda77a8a8b93c400851251e755" name="a306473bda77a8a8b93c400851251e755"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a306473bda77a8a8b93c400851251e755">&#9670;&#160;</a></span>PrintInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Apic::PrintInfo </td>
+          <td class="memname">auto Apic::PrintInfo </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>打印所有 APIC 信息（调试用） </p>
 
-<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00149">149</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  149</span>                           {</div>
-<div class="line"><span class="lineno">  150</span>  <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#af0eac16550b73a6d87d505bf3295d62c">PrintInfo</a>();</div>
-<div class="line"><span class="lineno">  151</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a4622fc9c86daca19fdc81d4bcd7f2149">PrintInfo</a>();</div>
-<div class="line"><span class="lineno">  152</span>}</div>
-<div class="ttc" id="aclassIoApic_html_a4622fc9c86daca19fdc81d4bcd7f2149"><div class="ttname"><a href="classIoApic.html#a4622fc9c86daca19fdc81d4bcd7f2149">IoApic::PrintInfo</a></div><div class="ttdeci">void PrintInfo() const</div><div class="ttdoc">打印 IO APIC 信息（调试用）</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00086">io_apic.cpp:86</a></div></div>
-<div class="ttc" id="aclassLocalApic_html_af0eac16550b73a6d87d505bf3295d62c"><div class="ttname"><a href="classLocalApic.html#af0eac16550b73a6d87d505bf3295d62c">LocalApic::PrintInfo</a></div><div class="ttdeci">void PrintInfo() const</div><div class="ttdoc">打印 Local APIC 信息（调试用）</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00338">local_apic.cpp:338</a></div></div>
+<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00142">142</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>                                   {</div>
+<div class="line"><span class="lineno">  143</span>  <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#aa1cd6eb49010de2f5a31e58f233ed841">PrintInfo</a>();</div>
+<div class="line"><span class="lineno">  144</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#aab34419aede6503ec483cd97982026b8">PrintInfo</a>();</div>
+<div class="line"><span class="lineno">  145</span>}</div>
+<div class="ttc" id="aclassIoApic_html_aab34419aede6503ec483cd97982026b8"><div class="ttname"><a href="classIoApic.html#aab34419aede6503ec483cd97982026b8">IoApic::PrintInfo</a></div><div class="ttdeci">auto PrintInfo() const -&gt; void</div><div class="ttdoc">打印 IO APIC 信息（调试用）</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00088">io_apic.cpp:88</a></div></div>
+<div class="ttc" id="aclassLocalApic_html_aa1cd6eb49010de2f5a31e58f233ed841"><div class="ttname"><a href="classLocalApic.html#aa1cd6eb49010de2f5a31e58f233ed841">LocalApic::PrintInfo</a></div><div class="ttdeci">auto PrintInfo() const -&gt; void</div><div class="ttdoc">打印 Local APIC 信息（调试用）</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00407">local_apic.cpp:407</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classApic_aba1c25d1561d3d5aefdd434290da39f5_cgraph.png" border="0" usemap="#aclassApic_aba1c25d1561d3d5aefdd434290da39f5_cgraph" alt=""/></div>
-<map name="aclassApic_aba1c25d1561d3d5aefdd434290da39f5_cgraph" id="aclassApic_aba1c25d1561d3d5aefdd434290da39f5_cgraph">
-<area shape="rect" title="打印所有 APIC 信息（调试用）" alt="" coords="5,169,119,195"/>
-<area shape="rect" href="classIoApic.html#a4622fc9c86daca19fdc81d4bcd7f2149" title="打印 IO APIC 信息（调试用）" alt="" coords="177,92,303,117"/>
-<area shape="poly" title=" " alt="" coords="91,167,196,121,198,125,93,172"/>
-<area shape="rect" href="classLocalApic.html#af0eac16550b73a6d87d505bf3295d62c" title="打印 Local APIC 信息（调试用）" alt="" coords="167,219,313,244"/>
-<area shape="poly" title=" " alt="" coords="109,192,180,212,179,217,108,197"/>
-<area shape="rect" href="classIoApic.html#a4bcfeb99883c755edbc5c70aebd86612" title="获取 IO APIC ID" alt="" coords="409,5,515,31"/>
-<area shape="poly" title=" " alt="" coords="262,90,306,65,360,41,395,30,397,35,362,46,309,70,264,94"/>
-<area shape="rect" href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f" title="获取 IO APIC 最大重定向条目数" alt="" coords="365,55,559,95"/>
-<area shape="poly" title=" " alt="" coords="303,94,351,87,352,93,303,99"/>
-<area shape="rect" href="classIoApic.html#a37944c22a1220d3db82a0710fb8c5134" title="获取 IO APIC 版本" alt="" coords="391,120,533,145"/>
-<area shape="poly" title=" " alt="" coords="303,110,378,119,377,125,303,115"/>
-<area shape="rect" href="classIoApic.html#afe65f9ea16d8267e09cb585cf060caee" title="读取 IO APIC 寄存器" alt="" coords="611,63,713,88"/>
+<div class="center"><img src="classApic_a306473bda77a8a8b93c400851251e755_cgraph.png" border="0" usemap="#aclassApic_a306473bda77a8a8b93c400851251e755_cgraph" alt=""/></div>
+<map name="aclassApic_a306473bda77a8a8b93c400851251e755_cgraph" id="aclassApic_a306473bda77a8a8b93c400851251e755_cgraph">
+<area shape="rect" title="打印所有 APIC 信息（调试用）" alt="" coords="5,193,119,219"/>
+<area shape="rect" href="classIoApic.html#aab34419aede6503ec483cd97982026b8" title="打印 IO APIC 信息（调试用）" alt="" coords="177,120,303,145"/>
+<area shape="poly" title=" " alt="" coords="93,191,194,148,197,153,95,196"/>
+<area shape="rect" href="classLocalApic.html#aa1cd6eb49010de2f5a31e58f233ed841" title="打印 Local APIC 信息（调试用）" alt="" coords="167,243,313,268"/>
+<area shape="poly" title=" " alt="" coords="109,216,180,236,179,241,108,221"/>
+<area shape="rect" href="classIoApic.html#a84a98de61c9ad2c70aea29e6c15ceb53" title="获取 IO APIC ID" alt="" coords="409,5,515,31"/>
+<area shape="poly" title=" " alt="" coords="253,118,298,80,328,59,360,41,395,28,397,33,362,46,331,63,302,84,257,122"/>
+<area shape="rect" href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6" title="获取 IO APIC 最大重定向条目数" alt="" coords="365,55,559,95"/>
+<area shape="poly" title=" " alt="" coords="289,117,370,96,372,101,291,123"/>
+<area shape="rect" href="classIoApic.html#a9b7e2dea22dfb23e3fa2e8b4689170ca" title="获取 IO APIC 版本" alt="" coords="391,120,533,145"/>
+<area shape="poly" title=" " alt="" coords="303,130,377,130,377,135,303,135"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="421,169,503,195"/>
+<area shape="poly" title=" " alt="" coords="298,143,408,167,407,173,297,148"/>
+<area shape="rect" href="classIoApic.html#a54ba3671325a3bbffdf48b4638041835" title="读取 IO APIC 寄存器" alt="" coords="611,63,713,88"/>
 <area shape="poly" title=" " alt="" coords="516,28,563,41,611,56,610,61,562,46,514,33"/>
 <area shape="poly" title=" " alt="" coords="560,73,597,73,597,78,560,78"/>
 <area shape="poly" title=" " alt="" coords="515,117,562,105,610,90,611,95,563,110,517,122"/>
-<area shape="rect" href="classLocalApic.html#a5d8915494fa6031ccde79ee1b24cdbf6" title="获取 APIC 版本信息" alt="" coords="367,169,557,195"/>
-<area shape="poly" title=" " alt="" coords="297,216,390,195,391,200,298,221"/>
-<area shape="rect" href="classLocalApic.html#a933b92b105f223a4e31cab92958dedba" title="获取任务优先级" alt="" coords="367,219,557,244"/>
-<area shape="poly" title=" " alt="" coords="314,229,353,229,353,234,314,234"/>
-<area shape="rect" href="classLocalApic.html#a579ae8f114ab23ac92d830ebbfeb3518" title="获取定时器当前计数值" alt="" coords="361,269,563,309"/>
-<area shape="poly" title=" " alt="" coords="291,241,372,263,370,268,289,247"/>
-<area shape="rect" href="classLocalApic.html#acec1f3c4dc919cdeac31f5ce3bf1bbeb" title="检查 x2APIC 是否启用" alt="" coords="362,333,562,359"/>
-<area shape="poly" title=" " alt="" coords="257,242,302,280,331,301,362,318,383,327,381,332,360,323,328,305,298,284,253,246"/>
+<area shape="poly" title=" " alt="" coords="269,240,360,205,406,192,408,197,362,210,271,245"/>
+<area shape="rect" href="classLocalApic.html#a410675fb205fda049e4b067e98712a11" title="获取 APIC 版本信息" alt="" coords="367,219,557,244"/>
+<area shape="poly" title=" " alt="" coords="313,245,353,240,353,246,314,250"/>
+<area shape="rect" href="classLocalApic.html#a5f61f81efd6dd8491f498f7c0aa05d8c" title="获取任务优先级" alt="" coords="367,268,557,293"/>
+<area shape="poly" title=" " alt="" coords="314,261,353,266,353,271,313,266"/>
+<area shape="rect" href="classLocalApic.html#a6f283dee94a41553f2aea694d48ca5ab" title="获取定时器当前计数值" alt="" coords="361,318,563,358"/>
+<area shape="poly" title=" " alt="" coords="271,266,362,304,384,311,382,316,360,308,269,271"/>
+<area shape="rect" href="classLocalApic.html#a908e06990910b962fd838d3e72e9de52" title="检查 x2APIC 是否启用" alt="" coords="362,383,562,408"/>
+<area shape="poly" title=" " alt="" coords="253,266,297,316,328,344,363,368,380,376,378,381,360,372,325,348,293,320,249,270"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="ad78648056423720100a4ccc8fc629cd3" name="ad78648056423720100a4ccc8fc629cd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad78648056423720100a4ccc8fc629cd3">&#9670;&#160;</a></span>SendEoi()</h2>
+<a id="a51fbfa73c4b21d81667ede92730b35bb" name="a51fbfa73c4b21d81667ede92730b35bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51fbfa73c4b21d81667ede92730b35bb">&#9670;&#160;</a></span>SendEoi()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Apic::SendEoi </td>
+          <td class="memname">auto Apic::SendEoi </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>发送 EOI 信号给当前 CPU 的 Local APIC </p>
 
-<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00143">143</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span>{ <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#ab0f2c45bb617c223d86319edc0c1e005">SendEoi</a>(); }</div>
-<div class="ttc" id="aclassLocalApic_html_ab0f2c45bb617c223d86319edc0c1e005"><div class="ttname"><a href="classLocalApic.html#ab0f2c45bb617c223d86319edc0c1e005">LocalApic::SendEoi</a></div><div class="ttdeci">void SendEoi() const</div><div class="ttdoc">发送中断结束信号 (EOI)</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00073">local_apic.cpp:73</a></div></div>
+<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00135">135</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>{ <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#a4c13751fb4f4c5d042d24477fa880cc6">SendEoi</a>(); }</div>
+<div class="ttc" id="aclassLocalApic_html_a4c13751fb4f4c5d042d24477fa880cc6"><div class="ttname"><a href="classLocalApic.html#a4c13751fb4f4c5d042d24477fa880cc6">LocalApic::SendEoi</a></div><div class="ttdeci">auto SendEoi() const -&gt; void</div><div class="ttdoc">发送中断结束信号 (EOI)</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00088">local_apic.cpp:88</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classApic_ad78648056423720100a4ccc8fc629cd3_cgraph.png" border="0" usemap="#aclassApic_ad78648056423720100a4ccc8fc629cd3_cgraph" alt=""/></div>
-<map name="aclassApic_ad78648056423720100a4ccc8fc629cd3_cgraph" id="aclassApic_ad78648056423720100a4ccc8fc629cd3_cgraph">
+<div class="center"><img src="classApic_a51fbfa73c4b21d81667ede92730b35bb_cgraph.png" border="0" usemap="#aclassApic_a51fbfa73c4b21d81667ede92730b35bb_cgraph" alt=""/></div>
+<map name="aclassApic_a51fbfa73c4b21d81667ede92730b35bb_cgraph" id="aclassApic_a51fbfa73c4b21d81667ede92730b35bb_cgraph">
 <area shape="rect" title="发送 EOI 信号给当前 CPU 的 Local APIC" alt="" coords="5,5,116,31"/>
-<area shape="rect" href="classLocalApic.html#ab0f2c45bb617c223d86319edc0c1e005" title="发送中断结束信号 (EOI)" alt="" coords="164,5,308,31"/>
+<area shape="rect" href="classLocalApic.html#a4c13751fb4f4c5d042d24477fa880cc6" title="发送中断结束信号 (EOI)" alt="" coords="164,5,308,31"/>
 <area shape="poly" title=" " alt="" coords="116,15,150,15,150,21,116,21"/>
 </map>
 </div>
@@ -645,7 +662,7 @@ Here is the call graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">   74</span>                      {</div>
 <div class="line"><span class="lineno">   75</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#a7b701e5d94374c6249278cbb23b2a5b6">SendIpi</a>(target_apic_id, vector);</div>
 <div class="line"><span class="lineno">   76</span>}</div>
-<div class="ttc" id="aclassLocalApic_html_a7b701e5d94374c6249278cbb23b2a5b6"><div class="ttname"><a href="classLocalApic.html#a7b701e5d94374c6249278cbb23b2a5b6">LocalApic::SendIpi</a></div><div class="ttdeci">auto SendIpi(uint32_t destination_apic_id, uint8_t vector) const -&gt; Expected&lt; void &gt;</div><div class="ttdoc">发送处理器间中断 (IPI)</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00082">local_apic.cpp:82</a></div></div>
+<div class="ttc" id="aclassLocalApic_html_a7b701e5d94374c6249278cbb23b2a5b6"><div class="ttname"><a href="classLocalApic.html#a7b701e5d94374c6249278cbb23b2a5b6">LocalApic::SendIpi</a></div><div class="ttdeci">auto SendIpi(uint32_t destination_apic_id, uint8_t vector) const -&gt; Expected&lt; void &gt;</div><div class="ttdoc">发送处理器间中断 (IPI)</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00099">local_apic.cpp:99</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -702,28 +719,38 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00034">34</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>                      {</div>
 <div class="line"><span class="lineno">   37</span>  <span class="comment">// 检查 IRQ 是否在有效范围内</span></div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (irq &gt;= <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f">GetMaxRedirectionEntries</a>()) {</div>
-<div class="line"><span class="lineno">   39</span>    <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;IRQ %u exceeds IO APIC range (max: %u)\n&quot;</span>, irq,</div>
-<div class="line"><span class="lineno">   40</span>              <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f">GetMaxRedirectionEntries</a>() - 1);</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (irq &gt;= <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6">GetMaxRedirectionEntries</a>()) {</div>
+<div class="line"><span class="lineno">   39</span>    <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;IRQ {} exceeds IO APIC range (max: {})&quot;</span>, irq,</div>
+<div class="line"><span class="lineno">   40</span>              <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6">GetMaxRedirectionEntries</a>() - 1);</div>
 <div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa0fcf97f4fa849ec449424ba729a6b52d">ErrorCode::kApicInvalidIrq</a>));</div>
 <div class="line"><span class="lineno">   42</span>  }</div>
 <div class="line"><span class="lineno">   43</span> </div>
 <div class="line"><span class="lineno">   44</span>  <span class="comment">// 设置重定向</span></div>
-<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a6304603301681590e61f5d9dc3cfd087">SetIrqRedirection</a>(irq, vector, destination_apic_id, mask);</div>
+<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a9e9ad25654fc4da2b13c125be6e12332">SetIrqRedirection</a>(irq, vector, destination_apic_id, mask);</div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> {};</div>
 <div class="line"><span class="lineno">   47</span>}</div>
-<div class="ttc" id="aclassIoApic_html_a6304603301681590e61f5d9dc3cfd087"><div class="ttname"><a href="classIoApic.html#a6304603301681590e61f5d9dc3cfd087">IoApic::SetIrqRedirection</a></div><div class="ttdeci">void SetIrqRedirection(uint8_t irq, uint8_t vector, uint32_t destination_apic_id, bool mask=false) const</div><div class="ttdoc">设置 IO APIC 重定向表项</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00021">io_apic.cpp:21</a></div></div>
-</div><!-- fragment -->
+<div class="ttc" id="aclassIoApic_html_a9e9ad25654fc4da2b13c125be6e12332"><div class="ttname"><a href="classIoApic.html#a9e9ad25654fc4da2b13c125be6e12332">IoApic::SetIrqRedirection</a></div><div class="ttdeci">auto SetIrqRedirection(uint8_t irq, uint8_t vector, uint32_t destination_apic_id, bool mask=false) const -&gt; void</div><div class="ttdoc">设置 IO APIC 重定向表项</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00022">io_apic.cpp:22</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classApic_a7c56f535cd788871f935925f4a95c876_cgraph.png" border="0" usemap="#aclassApic_a7c56f535cd788871f935925f4a95c876_cgraph" alt=""/></div>
+<map name="aclassApic_a7c56f535cd788871f935925f4a95c876_cgraph" id="aclassApic_a7c56f535cd788871f935925f4a95c876_cgraph">
+<area shape="rect" title="设置 IRQ 重定向" alt="" coords="5,5,176,31"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="224,5,300,31"/>
+<area shape="poly" title=" " alt="" coords="176,15,210,15,210,21,176,21"/>
+</map>
+</div>
+
 </div>
 </div>
-<a id="a91da5ed274fac8574ed249557d284100" name="a91da5ed274fac8574ed249557d284100"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91da5ed274fac8574ed249557d284100">&#9670;&#160;</a></span>SetupPeriodicTimer()</h2>
+<a id="a439d0b92a75b4767e3fdb2e74171c692" name="a439d0b92a75b4767e3fdb2e74171c692"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a439d0b92a75b4767e3fdb2e74171c692">&#9670;&#160;</a></span>SetupPeriodicTimer()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Apic::SetupPeriodicTimer </td>
+          <td class="memname">auto Apic::SetupPeriodicTimer </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>frequency_hz</em>, </td>
@@ -737,7 +764,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -751,34 +778,22 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00145">145</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  145</span>                                                                         {</div>
-<div class="line"><span class="lineno">  146</span>  <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#a70fc2b687411b08b0b2ad8b913b9ddb4">SetupPeriodicTimer</a>(frequency_hz, vector);</div>
-<div class="line"><span class="lineno">  147</span>}</div>
-<div class="ttc" id="aclassLocalApic_html_a70fc2b687411b08b0b2ad8b913b9ddb4"><div class="ttname"><a href="classLocalApic.html#a70fc2b687411b08b0b2ad8b913b9ddb4">LocalApic::SetupPeriodicTimer</a></div><div class="ttdeci">void SetupPeriodicTimer(uint32_t frequency_hz, uint8_t vector) const</div><div class="ttdoc">设置周期性定时器</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00210">local_apic.cpp:210</a></div></div>
-</div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classApic_a91da5ed274fac8574ed249557d284100_cgraph.png" border="0" usemap="#aclassApic_a91da5ed274fac8574ed249557d284100_cgraph" alt=""/></div>
-<map name="aclassApic_a91da5ed274fac8574ed249557d284100_cgraph" id="aclassApic_a91da5ed274fac8574ed249557d284100_cgraph">
-<area shape="rect" title="设置 Local APIC 定时器" alt="" coords="5,13,191,38"/>
-<area shape="rect" href="classLocalApic.html#a70fc2b687411b08b0b2ad8b913b9ddb4" title="设置周期性定时器" alt="" coords="239,5,420,45"/>
-<area shape="poly" title=" " alt="" coords="191,23,225,23,225,28,191,28"/>
-<area shape="rect" href="classLocalApic.html#ac60426a6345dfe7593b29c22b0888115" title="启用 Local APIC 定时器" alt="" coords="468,13,643,38"/>
-<area shape="poly" title=" " alt="" coords="420,23,454,23,454,28,420,28"/>
-</map>
-</div>
-
+<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00137">137</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  138</span>            {</div>
+<div class="line"><span class="lineno">  139</span>  <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#a62f004b2178b4c3f04255dbe5c4679ce">SetupPeriodicTimer</a>(frequency_hz, vector);</div>
+<div class="line"><span class="lineno">  140</span>}</div>
+<div class="ttc" id="aclassLocalApic_html_a62f004b2178b4c3f04255dbe5c4679ce"><div class="ttname"><a href="classLocalApic.html#a62f004b2178b4c3f04255dbe5c4679ce">LocalApic::SetupPeriodicTimer</a></div><div class="ttdeci">auto SetupPeriodicTimer(uint32_t frequency_hz, uint8_t vector) const -&gt; void</div><div class="ttdoc">设置周期性定时器</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00256">local_apic.cpp:256</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-<a id="ade18168e69461b8ee4c8d34d91091b58" name="ade18168e69461b8ee4c8d34d91091b58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade18168e69461b8ee4c8d34d91091b58">&#9670;&#160;</a></span>StartupAllAps()</h2>
+<a id="a81b4abb694e982a05ce313053759b8d1" name="a81b4abb694e982a05ce313053759b8d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81b4abb694e982a05ce313053759b8d1">&#9670;&#160;</a></span>StartupAllAps()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Apic::StartupAllAps </td>
+          <td class="memname">auto Apic::StartupAllAps </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname"><em>ap_code_addr</em>, </td>
@@ -798,7 +813,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -816,46 +831,47 @@ Here is the call graph for this function:</div>
 <dd>
 函数内部会将启动代码复制到指定的目标地址，并计算 start_vector </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00120">120</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  121</span>                                                     {</div>
-<div class="line"><span class="lineno">  122</span>  <a class="code hl_define" href="sk__assert_8h.html#aca9cc707df79e034b240eaa8596b7e64">sk_assert_msg</a>(ap_code_addr != 0 &amp;&amp; ap_code_size != 0,</div>
-<div class="line"><span class="lineno">  123</span>                <span class="stringliteral">&quot;Invalid AP code parameters: addr=0x%llx, size=%zu&quot;</span>,</div>
-<div class="line"><span class="lineno">  124</span>                ap_code_addr, ap_code_size);</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>  <span class="comment">// 启动 APIC ID 0 到 cpu_count_-1 的所有处理器</span></div>
-<div class="line"><span class="lineno">  127</span>  <span class="comment">// 跳过当前的 BSP (Bootstrap Processor)</span></div>
-<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> apic_id = 0; apic_id &lt; <a class="code hl_variable" href="classApic.html#ac4f645668b3c41bdffc63a52825c96f2">cpu_count_</a>; apic_id++) {</div>
-<div class="line"><span class="lineno">  129</span>    <span class="comment">// 跳过当前 BSP</span></div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(apic_id) == <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>()) {</div>
-<div class="line"><span class="lineno">  131</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  132</span>    }</div>
-<div class="line"><span class="lineno">  133</span>    <a class="code hl_function" href="classApic.html#a9777b7b1e7864680faba6e8bafd529dc">StartupAp</a>(<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(apic_id), ap_code_addr, ap_code_size,</div>
-<div class="line"><span class="lineno">  134</span>              target_addr)</div>
-<div class="line"><span class="lineno">  135</span>        .or_else([apic_id](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
-<div class="line"><span class="lineno">  136</span>          <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;Failed to start AP with APIC ID 0x%x: %s\n&quot;</span>, apic_id,</div>
-<div class="line"><span class="lineno">  137</span>                    err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
-<div class="line"><span class="lineno">  138</span>          <span class="keywordflow">return</span> std::unexpected(err);</div>
-<div class="line"><span class="lineno">  139</span>        });</div>
-<div class="line"><span class="lineno">  140</span>  }</div>
-<div class="line"><span class="lineno">  141</span>}</div>
+<p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00110">110</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>                                                             {</div>
+<div class="line"><span class="lineno">  112</span>  assert(ap_code_addr != 0 &amp;&amp; <span class="stringliteral">&quot;AP code address must not be null&quot;</span>);</div>
+<div class="line"><span class="lineno">  113</span>  assert(ap_code_size != 0 &amp;&amp; <span class="stringliteral">&quot;AP code size must not be zero&quot;</span>);</div>
+<div class="line"><span class="lineno">  114</span>  assert((target_addr &amp; 0xFFF) == 0 &amp;&amp; <span class="stringliteral">&quot;Target address must be 4KB aligned&quot;</span>);</div>
+<div class="line"><span class="lineno">  115</span>  assert(target_addr &lt; 0x100000 &amp;&amp;</div>
+<div class="line"><span class="lineno">  116</span>         <span class="stringliteral">&quot;Target address exceeds real mode limit (1MB)&quot;</span>);</div>
+<div class="line"><span class="lineno">  117</span> </div>
+<div class="line"><span class="lineno">  118</span>  <span class="comment">// 启动 APIC ID 0 到 cpu_count_-1 的所有处理器</span></div>
+<div class="line"><span class="lineno">  119</span>  <span class="comment">// 跳过当前的 BSP (Bootstrap Processor)</span></div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> apic_id = 0; apic_id &lt; <a class="code hl_variable" href="classApic.html#ac4f645668b3c41bdffc63a52825c96f2">cpu_count_</a>; apic_id++) {</div>
+<div class="line"><span class="lineno">  121</span>    <span class="comment">// 跳过当前 BSP</span></div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(apic_id) == <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>()) {</div>
+<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  124</span>    }</div>
+<div class="line"><span class="lineno">  125</span>    <a class="code hl_function" href="classApic.html#a9777b7b1e7864680faba6e8bafd529dc">StartupAp</a>(<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(apic_id), ap_code_addr, ap_code_size,</div>
+<div class="line"><span class="lineno">  126</span>              target_addr)</div>
+<div class="line"><span class="lineno">  127</span>        .or_else([apic_id](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
+<div class="line"><span class="lineno">  128</span>          <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to start AP with APIC ID {:#x}: {}&quot;</span>, apic_id,</div>
+<div class="line"><span class="lineno">  129</span>                    err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
+<div class="line"><span class="lineno">  130</span>          <span class="keywordflow">return</span> std::unexpected(err);</div>
+<div class="line"><span class="lineno">  131</span>        });</div>
+<div class="line"><span class="lineno">  132</span>  }</div>
+<div class="line"><span class="lineno">  133</span>}</div>
 <div class="ttc" id="aclassApic_html_a9777b7b1e7864680faba6e8bafd529dc"><div class="ttname"><a href="classApic.html#a9777b7b1e7864680faba6e8bafd529dc">Apic::StartupAp</a></div><div class="ttdeci">auto StartupAp(uint32_t apic_id, uint64_t ap_code_addr, size_t ap_code_size, uint64_t target_addr) const -&gt; Expected&lt; void &gt;</div><div class="ttdoc">启动 AP (Application Processor)</div><div class="ttdef"><b>Definition</b> <a href="apic_8cpp_source.html#l00082">apic.cpp:82</a></div></div>
-<div class="ttc" id="ask__assert_8h_html_aca9cc707df79e034b240eaa8596b7e64"><div class="ttname"><a href="sk__assert_8h.html#aca9cc707df79e034b240eaa8596b7e64">sk_assert_msg</a></div><div class="ttdeci">#define sk_assert_msg(expr, fmt,...)</div><div class="ttdoc">带自定义消息的运行时断言宏（支持变长参数）</div><div class="ttdef"><b>Definition</b> <a href="sk__assert_8h_source.html#l00038">sk_assert.h:38</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classApic_ade18168e69461b8ee4c8d34d91091b58_cgraph.png" border="0" usemap="#aclassApic_ade18168e69461b8ee4c8d34d91091b58_cgraph" alt=""/></div>
-<map name="aclassApic_ade18168e69461b8ee4c8d34d91091b58_cgraph" id="aclassApic_ade18168e69461b8ee4c8d34d91091b58_cgraph">
-<area shape="rect" title="唤醒所有应用处理器 (AP)" alt="" coords="5,69,152,94"/>
-<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="200,15,385,41"/>
-<area shape="poly" title=" " alt="" coords="130,66,228,41,229,47,131,71"/>
-<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="233,69,353,94"/>
-<area shape="poly" title=" " alt="" coords="152,79,219,79,219,84,152,84"/>
-<area shape="rect" href="classApic.html#a9777b7b1e7864680faba6e8bafd529dc" title="启动 AP (Application Processor)" alt="" coords="231,118,354,143"/>
-<area shape="poly" title=" " alt="" coords="135,91,224,112,223,117,134,97"/>
-<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="433,5,696,45"/>
-<area shape="poly" title=" " alt="" coords="386,24,419,24,419,29,386,30"/>
-<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="497,70,632,95"/>
-<area shape="poly" title=" " alt="" coords="353,79,483,80,483,85,353,84"/>
+<div class="center"><img src="classApic_a81b4abb694e982a05ce313053759b8d1_cgraph.png" border="0" usemap="#aclassApic_a81b4abb694e982a05ce313053759b8d1_cgraph" alt=""/></div>
+<map name="aclassApic_a81b4abb694e982a05ce313053759b8d1_cgraph" id="aclassApic_a81b4abb694e982a05ce313053759b8d1_cgraph">
+<area shape="rect" title="唤醒所有应用处理器 (AP)" alt="" coords="5,55,152,80"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="255,5,331,31"/>
+<area shape="poly" title=" " alt="" coords="134,52,241,27,242,32,135,57"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="200,55,385,80"/>
+<area shape="poly" title=" " alt="" coords="152,65,186,65,186,70,152,70"/>
+<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="233,105,353,131"/>
+<area shape="poly" title=" " alt="" coords="134,78,226,100,225,105,133,83"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="433,45,696,85"/>
+<area shape="poly" title=" " alt="" coords="386,64,419,63,419,69,386,69"/>
+<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="497,109,632,135"/>
+<area shape="poly" title=" " alt="" coords="353,116,483,118,483,123,353,122"/>
 </map>
 </div>
 
@@ -914,50 +930,40 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00082">82</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   84</span>                      {</div>
-<div class="line"><span class="lineno">   85</span>  <span class="comment">// 检查参数有效性</span></div>
-<div class="line"><span class="lineno">   86</span>  <a class="code hl_define" href="sk__assert_8h.html#aca9cc707df79e034b240eaa8596b7e64">sk_assert_msg</a>(ap_code_addr != 0 &amp;&amp; ap_code_size != 0,</div>
-<div class="line"><span class="lineno">   87</span>                <span class="stringliteral">&quot;Invalid AP code parameters: addr=0x%llx, size=%zu&quot;</span>,</div>
-<div class="line"><span class="lineno">   88</span>                ap_code_addr, ap_code_size);</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>  <span class="comment">// 检查目标地址是否对齐到 4KB 边界（SIPI 要求）</span></div>
-<div class="line"><span class="lineno">   91</span>  <a class="code hl_define" href="sk__assert_8h.html#aca9cc707df79e034b240eaa8596b7e64">sk_assert_msg</a>((target_addr &amp; 0xFFF) == 0,</div>
-<div class="line"><span class="lineno">   92</span>                <span class="stringliteral">&quot;Target address 0x%llx is not aligned to 4KB boundary&quot;</span>,</div>
-<div class="line"><span class="lineno">   93</span>                target_addr);</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="comment">// 检查目标地址是否在有效范围内（实模式可访问）</span></div>
-<div class="line"><span class="lineno">   96</span>  <span class="comment">// 1MB 以上的地址在实模式下不可访问</span></div>
-<div class="line"><span class="lineno">   97</span>  <a class="code hl_define" href="sk__assert_8h.html#aca9cc707df79e034b240eaa8596b7e64">sk_assert_msg</a>(target_addr &lt; 0x100000,</div>
-<div class="line"><span class="lineno">   98</span>                <span class="stringliteral">&quot;Target address 0x%llx exceeds real mode limit (1MB)&quot;</span>,</div>
-<div class="line"><span class="lineno">   99</span>                target_addr);</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  std::memcpy(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(target_addr),</div>
-<div class="line"><span class="lineno">  102</span>              <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(ap_code_addr), ap_code_size);</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>  <span class="comment">// 验证复制是否成功</span></div>
-<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">if</span> (std::memcmp(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(target_addr),</div>
-<div class="line"><span class="lineno">  106</span>                  <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(ap_code_addr),</div>
-<div class="line"><span class="lineno">  107</span>                  ap_code_size) != 0) {</div>
-<div class="line"><span class="lineno">  108</span>    <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;AP code copy verification failed\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa7a5c2aa9d221e08ca71fe4bf72ba7002">ErrorCode::kApicCodeCopyFailed</a>));</div>
-<div class="line"><span class="lineno">  110</span>  }</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>  <span class="comment">// 计算启动向量 (物理地址 / 4096)</span></div>
-<div class="line"><span class="lineno">  113</span>  <span class="keyword">auto</span> start_vector = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(target_addr &gt;&gt; 12);</div>
-<div class="line"><span class="lineno">  114</span>  <span class="comment">// 使用 Local APIC 发送 INIT-SIPI-SIPI 序列</span></div>
-<div class="line"><span class="lineno">  115</span>  <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#a088e472bc2424550e72bf1155608ecca">WakeupAp</a>(apic_id, start_vector);</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">return</span> {};</div>
-<div class="line"><span class="lineno">  118</span>}</div>
-<div class="ttc" id="aclassLocalApic_html_a088e472bc2424550e72bf1155608ecca"><div class="ttname"><a href="classLocalApic.html#a088e472bc2424550e72bf1155608ecca">LocalApic::WakeupAp</a></div><div class="ttdeci">void WakeupAp(uint32_t destination_apic_id, uint8_t start_vector) const</div><div class="ttdoc">唤醒应用处理器 (AP)</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00431">local_apic.cpp:431</a></div></div>
+<div class="line"><span class="lineno">   85</span>  assert(ap_code_addr != 0 &amp;&amp; <span class="stringliteral">&quot;AP code address must not be null&quot;</span>);</div>
+<div class="line"><span class="lineno">   86</span>  assert(ap_code_size != 0 &amp;&amp; <span class="stringliteral">&quot;AP code size must not be zero&quot;</span>);</div>
+<div class="line"><span class="lineno">   87</span>  assert((target_addr &amp; 0xFFF) == 0 &amp;&amp; <span class="stringliteral">&quot;Target address must be 4KB aligned&quot;</span>);</div>
+<div class="line"><span class="lineno">   88</span>  assert(target_addr &lt; 0x100000 &amp;&amp;</div>
+<div class="line"><span class="lineno">   89</span>         <span class="stringliteral">&quot;Target address exceeds real mode limit (1MB)&quot;</span>);</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>  std::memcpy(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(target_addr),</div>
+<div class="line"><span class="lineno">   92</span>              <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(ap_code_addr), ap_code_size);</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>  <span class="comment">// 验证复制是否成功</span></div>
+<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">if</span> (std::memcmp(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(target_addr),</div>
+<div class="line"><span class="lineno">   96</span>                  <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(ap_code_addr),</div>
+<div class="line"><span class="lineno">   97</span>                  ap_code_size) != 0) {</div>
+<div class="line"><span class="lineno">   98</span>    <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;AP code copy verification failed&quot;</span>);</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa7a5c2aa9d221e08ca71fe4bf72ba7002">ErrorCode::kApicCodeCopyFailed</a>));</div>
+<div class="line"><span class="lineno">  100</span>  }</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>  <span class="comment">// 计算启动向量 (物理地址 / 4096)</span></div>
+<div class="line"><span class="lineno">  103</span>  <span class="keyword">auto</span> start_vector = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(target_addr &gt;&gt; 12);</div>
+<div class="line"><span class="lineno">  104</span>  <span class="comment">// 使用 Local APIC 发送 INIT-SIPI-SIPI 序列</span></div>
+<div class="line"><span class="lineno">  105</span>  <a class="code hl_variable" href="classApic.html#af93733906e44265497332e3fc220fdc1">local_apic_</a>.<a class="code hl_function" href="classLocalApic.html#afb7c98a96f586c46f98b0cbd92f1fbf4">WakeupAp</a>(apic_id, start_vector);</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">return</span> {};</div>
+<div class="line"><span class="lineno">  108</span>}</div>
+<div class="ttc" id="aclassLocalApic_html_afb7c98a96f586c46f98b0cbd92f1fbf4"><div class="ttname"><a href="classLocalApic.html#afb7c98a96f586c46f98b0cbd92f1fbf4">LocalApic::WakeupAp</a></div><div class="ttdeci">auto WakeupAp(uint32_t destination_apic_id, uint8_t start_vector) const -&gt; void</div><div class="ttdoc">唤醒应用处理器 (AP)</div><div class="ttdef"><b>Definition</b> <a href="local__apic_8cpp_source.html#l00510">local_apic.cpp:510</a></div></div>
 <div class="ttc" id="aexpected_8hpp_html_a4d45a9675d1bf454764383179f3c895fa7a5c2aa9d221e08ca71fe4bf72ba7002"><div class="ttname"><a href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa7a5c2aa9d221e08ca71fe4bf72ba7002">ErrorCode::kApicCodeCopyFailed</a></div><div class="ttdeci">@ kApicCodeCopyFailed</div></div>
 </div><!-- fragment --><div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classApic_a9777b7b1e7864680faba6e8bafd529dc_icgraph.png" border="0" usemap="#aclassApic_a9777b7b1e7864680faba6e8bafd529dc_icgraph" alt=""/></div>
-<map name="aclassApic_a9777b7b1e7864680faba6e8bafd529dc_icgraph" id="aclassApic_a9777b7b1e7864680faba6e8bafd529dc_icgraph">
-<area shape="rect" title="启动 AP (Application Processor)" alt="" coords="200,5,323,31"/>
-<area shape="rect" href="classApic.html#ade18168e69461b8ee4c8d34d91091b58" title="唤醒所有应用处理器 (AP)" alt="" coords="5,5,152,31"/>
-<area shape="poly" title=" " alt="" coords="186,21,152,21,152,15,186,15"/>
+<div class="center"><img src="classApic_a9777b7b1e7864680faba6e8bafd529dc_cgraph.png" border="0" usemap="#aclassApic_a9777b7b1e7864680faba6e8bafd529dc_cgraph" alt=""/></div>
+<map name="aclassApic_a9777b7b1e7864680faba6e8bafd529dc_cgraph" id="aclassApic_a9777b7b1e7864680faba6e8bafd529dc_cgraph">
+<area shape="rect" title="启动 AP (Application Processor)" alt="" coords="5,5,128,31"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="176,5,252,31"/>
+<area shape="poly" title=" " alt="" coords="128,15,162,15,162,21,128,21"/>
 </map>
 </div>
 
@@ -991,17 +997,27 @@ Here is the caller graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="apic_8cpp_source.html#l00061">61</a> of file <a class="el" href="apic_8cpp_source.html">apic.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>                                                  {</div>
 <div class="line"><span class="lineno">   62</span>  <span class="comment">// 检查 IRQ 是否在有效范围内</span></div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (irq &gt;= <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f">GetMaxRedirectionEntries</a>()) {</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;IRQ %u exceeds IO APIC range (max: %u)\n&quot;</span>, irq,</div>
-<div class="line"><span class="lineno">   65</span>              <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a8668b2a78a42ddd83e93ce9345e04e3f">GetMaxRedirectionEntries</a>() - 1);</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (irq &gt;= <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6">GetMaxRedirectionEntries</a>()) {</div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;IRQ {} exceeds IO APIC range (max: {})&quot;</span>, irq,</div>
+<div class="line"><span class="lineno">   65</span>              <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6">GetMaxRedirectionEntries</a>() - 1);</div>
 <div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa0fcf97f4fa849ec449424ba729a6b52d">ErrorCode::kApicInvalidIrq</a>));</div>
 <div class="line"><span class="lineno">   67</span>  }</div>
 <div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a57e460e6fbe7c46914f96f28c5eca53e">UnmaskIrq</a>(irq);</div>
+<div class="line"><span class="lineno">   69</span>  <a class="code hl_variable" href="classApic.html#a74e48ee2e612e5f34dd8f70fe2cab99a">io_apic_</a>.<a class="code hl_function" href="classIoApic.html#a8339ea5aaea5fd8fcd3aae022181b0ac">UnmaskIrq</a>(irq);</div>
 <div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> {};</div>
 <div class="line"><span class="lineno">   71</span>}</div>
-<div class="ttc" id="aclassIoApic_html_a57e460e6fbe7c46914f96f28c5eca53e"><div class="ttname"><a href="classIoApic.html#a57e460e6fbe7c46914f96f28c5eca53e">IoApic::UnmaskIrq</a></div><div class="ttdeci">void UnmaskIrq(uint8_t irq) const</div><div class="ttdoc">取消屏蔽 IRQ</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00059">io_apic.cpp:59</a></div></div>
-</div><!-- fragment -->
+<div class="ttc" id="aclassIoApic_html_a8339ea5aaea5fd8fcd3aae022181b0ac"><div class="ttname"><a href="classIoApic.html#a8339ea5aaea5fd8fcd3aae022181b0ac">IoApic::UnmaskIrq</a></div><div class="ttdeci">auto UnmaskIrq(uint8_t irq) const -&gt; void</div><div class="ttdoc">取消屏蔽 IRQ</div><div class="ttdef"><b>Definition</b> <a href="io__apic_8cpp_source.html#l00061">io_apic.cpp:61</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classApic_a9e06b43a2128267a8b640315588e90f1_cgraph.png" border="0" usemap="#aclassApic_a9e06b43a2128267a8b640315588e90f1_cgraph" alt=""/></div>
+<map name="aclassApic_a9e06b43a2128267a8b640315588e90f1_cgraph" id="aclassApic_a9e06b43a2128267a8b640315588e90f1_cgraph">
+<area shape="rect" title="取消屏蔽 IRQ" alt="" coords="5,5,135,31"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="183,5,259,31"/>
+<area shape="poly" title=" " alt="" coords="135,15,169,15,169,21,135,21"/>
+</map>
+</div>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -1015,7 +1031,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Apic::cpu_count_</td>
+          <td class="memname">size_t Apic::cpu_count_ {0}</td>
         </tr>
       </table>
   </td>
@@ -1028,7 +1044,8 @@ Here is the caller graph for this function:</div>
 <p>系统 CPU 数量 </p>
 
 <p class="definition">Definition at line <a class="el" href="apic_8h_source.html#l00133">133</a> of file <a class="el" href="apic_8h_source.html">apic.h</a>.</p>
-
+<div class="fragment"><div class="line"><span class="lineno">  133</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a74e48ee2e612e5f34dd8f70fe2cab99a" name="a74e48ee2e612e5f34dd8f70fe2cab99a"></a>
@@ -1041,7 +1058,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classIoApic.html">IoApic</a> Apic::io_apic_</td>
+          <td class="memname"><a class="el" href="classIoApic.html">IoApic</a> Apic::io_apic_ {}</td>
         </tr>
       </table>
   </td>
@@ -1054,7 +1071,8 @@ Here is the caller graph for this function:</div>
 <p>只支持一个 IO APIC </p>
 
 <p class="definition">Definition at line <a class="el" href="apic_8h_source.html#l00130">130</a> of file <a class="el" href="apic_8h_source.html">apic.h</a>.</p>
-
+<div class="fragment"><div class="line"><span class="lineno">  130</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="af93733906e44265497332e3fc220fdc1" name="af93733906e44265497332e3fc220fdc1"></a>
@@ -1067,7 +1085,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classLocalApic.html">LocalApic</a> Apic::local_apic_</td>
+          <td class="memname"><a class="el" href="classLocalApic.html">LocalApic</a> Apic::local_apic_ {}</td>
         </tr>
       </table>
   </td>
@@ -1080,12 +1098,13 @@ Here is the caller graph for this function:</div>
 <p>Local APIC 操作接口（静态实例，用于当前 CPU） </p>
 
 <p class="definition">Definition at line <a class="el" href="apic_8h_source.html#l00127">127</a> of file <a class="el" href="apic_8h_source.html">apic.h</a>.</p>
-
+<div class="fragment"><div class="line"><span class="lineno">  127</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/root/src/driver/apic/include/<a class="el" href="apic_8h_source.html">apic.h</a></li>
-<li>/root/src/driver/apic/<a class="el" href="apic_8cpp_source.html">apic.cpp</a></li>
+<li>/workspaces/SimpleKernel/src/arch/x86_64/apic/include/<a class="el" href="apic_8h_source.html">apic.h</a></li>
+<li>/workspaces/SimpleKernel/src/arch/x86_64/apic/<a class="el" href="apic_8cpp_source.html">apic.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

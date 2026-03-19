@@ -1,0 +1,15 @@
+<map id="vfs::File" name="vfs::File">
+<area shape="rect" id="Node000001" title="File — 打开的文件实例（每次 open 产生一个）" alt="" coords="210,1129,275,1215"/>
+<area shape="rect" id="Node000002" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="87,453,195,619"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,619,105,714,96,828,96,888,102,949,115,1009,134,1066,146,1087,162,1107,198,1139,194,1143,158,1110,142,1090,130,1068,110,1010,97,950,91,889,90,828,100,713,117,618"/>
+<area shape="rect" id="Node000005" href="$structvfs_1_1Dentry.html" title="Dentry — 目录项缓存（路径名 ↔ Inode 的映射）" alt="" coords="196,811,289,937"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="169,618,222,795,217,797,163,620"/>
+<area shape="rect" id="Node000003" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="5,95,133,301"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="94,300,123,437,118,438,89,301"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="158,5,269,391"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="175,392,165,437,160,436,170,390"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="245,937,245,1113,240,1113,240,937"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="290,830,300,834,309,843,314,856,316,874,313,895,306,909,302,906,308,893,311,874,309,857,304,846,297,838,289,835"/>
+<area shape="rect" id="Node000006" href="$classvfs_1_1FileOps.html" title="File 操作接口" alt="" coords="429,681,534,1067"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="431,1051,418,1068,390,1097,357,1121,292,1155,289,1150,354,1116,386,1093,414,1065,426,1048"/>
+</map>

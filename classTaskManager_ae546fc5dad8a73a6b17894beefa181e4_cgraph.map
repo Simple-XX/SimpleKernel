@@ -1,0 +1,9 @@
+<map id="TaskManager::Wait" name="TaskManager::Wait">
+<area shape="rect" id="Node000001" title="等待子进程退出" alt="" coords="5,31,151,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="252,5,352,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,32,238,22,239,28,151,38"/>
+<area shape="rect" id="Node000003" href="$structTaskControlBlock.html#a76c836142838b3127b032710242c9606" title="获取当前任务状态" alt="" coords="199,55,405,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,48,185,52,185,57,151,54"/>
+<area shape="rect" id="Node000004" href="$classTaskFsm.html#ae980ff471cb089a7effbf5bb9dfdeeb4" title="获取当前状态 ID" alt="" coords="453,55,609,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="405,65,440,65,440,70,405,70"/>
+</map>

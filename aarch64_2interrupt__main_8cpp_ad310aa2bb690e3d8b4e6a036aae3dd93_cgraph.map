@@ -1,0 +1,11 @@
+<map id="InterruptInitSMP" name="InterruptInitSMP">
+<area shape="rect" id="Node000001" title="从核的体系结构相关中断初始化" alt="" coords="5,62,132,87"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#afe7f925ac3cb632ed212166712288451" title=" " alt="" coords="180,13,352,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,59,201,39,202,44,121,65"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="225,62,307,87"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="132,72,211,72,211,77,132,77"/>
+<area shape="rect" id="Node000005" href="$aarch64_2interrupt__main_8cpp.html#a2919dc0dfaf51370359170295f4c4b96" title="异常向量表入口" alt="" coords="215,111,317,137"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="121,85,202,105,201,111,119,90"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="400,5,663,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,23,386,23,386,28,352,28"/>
+</map>

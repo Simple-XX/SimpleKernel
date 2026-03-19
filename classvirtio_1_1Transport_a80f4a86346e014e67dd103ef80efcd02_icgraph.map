@@ -1,0 +1,5 @@
+<map id="virtio::Transport::Reset" name="virtio::Transport::Reset">
+<area shape="rect" id="Node000001" title="重置设备" alt="" coords="215,5,347,45"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1MmioTransport.html#a4e80fcab7020b2cf4f05a5e8a144cadb" title="构造函数" alt="" coords="5,5,167,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,28,167,28,167,23,201,23"/>
+</map>

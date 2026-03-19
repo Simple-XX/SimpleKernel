@@ -1,0 +1,5 @@
+<map id="virtio::SplitVirtqueue::AvailUsedEvent" name="virtio::SplitVirtqueue::AvailUsedEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,161,45"/>
+<area shape="rect" id="Node000002" href="$structvirtio_1_1SplitVirtqueue_1_1Avail.html#a3e1c73b773062afb577460521673f398" title="获取 used_event 字段的指针" alt="" coords="209,5,365,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,23,196,23,196,28,161,28"/>
+</map>

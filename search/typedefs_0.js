@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['expected_0',['Expected',['../expected_8hpp.html#a87330dc74eb67e824914b8d343050757',1,'expected.hpp']]]
+  ['basicinfosingleton_0',['BasicInfoSingleton',['../basic__info_8hpp.html#adcaa2bb9713422806f71ab25c56bef1b',1,'basic_info.hpp']]]
 ];

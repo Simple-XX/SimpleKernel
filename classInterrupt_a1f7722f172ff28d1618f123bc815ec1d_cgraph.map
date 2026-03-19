@@ -1,0 +1,15 @@
+<map id="Interrupt::SetUp" name="Interrupt::SetUp">
+<area shape="rect" id="Node000001" title="设置 GIC" alt="" coords="5,31,131,56"/>
+<area shape="rect" id="Node000002" href="$classGic.html#a459dfc63122e38dc0f518ee4f2935576" title="初始化当前 CPU 的 GIC 配置" alt="" coords="179,31,269,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,41,165,41,165,46,131,46"/>
+<area shape="rect" id="Node000003" href="$classGic_1_1Gicd.html#a1ce76d1eabd522f218f449daab1aed2e" title="允许 no&#45;sec group1 中断" alt="" coords="317,5,497,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="269,34,303,30,304,35,270,40"/>
+<area shape="rect" id="Node000004" href="$classGic_1_1Gicr.html#a3aa2fc7b86ab6a8f40889bf7e405db7b" title="初始化 gicr，在多核场景使用" alt="" coords="345,55,469,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="270,47,332,55,331,60,269,52"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="545,29,731,55"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="469,58,531,51,531,56,470,63"/>
+<area shape="rect" id="Node000007" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="583,79,693,104"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="470,71,569,82,569,87,469,76"/>
+<area shape="rect" id="Node000006" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="779,22,1041,62"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="731,39,765,39,765,45,731,45"/>
+</map>

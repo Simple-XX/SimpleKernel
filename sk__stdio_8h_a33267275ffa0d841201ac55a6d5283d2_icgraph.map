@@ -1,0 +1,28 @@
+<map id="etl_putchar" name="etl_putchar">
+<area shape="rect" id="Node000001" title="早期控制台字符输出" alt="" coords="628,143,723,168"/>
+<area shape="rect" id="Node000002" href="$kstd__libcxx_8cpp.html#ac9ea6a9e63fc867f857c3dff70463280" title="libc assert() 失败时调用的底层接口" alt="" coords="43,5,147,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="642,138,579,107,460,72,340,48,231,33,147,24,147,19,231,27,341,43,462,67,581,102,644,133"/>
+<area shape="rect" id="Node000003" href="$namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="437,117,580,143"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="614,149,580,143,581,138,615,144"/>
+<area shape="rect" id="Node000010" href="$syscall_8cpp.html#af2cff00ae45f6e285b75cff49dff52d4" title="向文件描述符写入数据" alt="" coords="467,167,551,192"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="615,167,551,176,550,171,614,161"/>
+<area shape="rect" id="Node000013" href="$aarch64_2interrupt__main_8cpp.html#afeb27dda805c973ef825d7f26ea196c8" title="UART 中断处理函数" alt="" coords="457,216,561,241"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="640,177,581,206,549,218,547,213,579,201,638,172"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e" title="绕过队列直接输出至串口（用于 panic 路径）" alt="" coords="257,80,364,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="427,117,364,105,365,100,428,112"/>
+<area shape="rect" id="Node000007" href="$namespaceklog_1_1detail.html#af04e0d33a64c0a74c672361396bc644b" title="将队列中所有条目输出至串口" alt="" coords="232,153,389,179"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="426,148,381,156,380,151,425,143"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="267,77,183,45,146,33,147,28,185,39,269,72"/>
+<area shape="rect" id="Node000005" href="$classLockGuard.html#aa283d6b19fddd2287f84dcf937b92e5b" title="构造函数，自动获取锁" alt="" coords="11,55,179,80"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="243,87,179,80,179,75,244,82"/>
+<area shape="rect" id="Node000006" href="$classLockGuard.html#af889562d8ed81c2337c94d0c915d65ca" title="析构函数，自动释放锁" alt="" coords="5,104,184,129"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="244,103,185,109,184,104,244,97"/>
+<area shape="rect" id="Node000008" href="$namespaceklog.html#a3cdfcc82de35833e08bab8c2b728e44a" title="强制将队列中所有日志条目输出至串口" alt="" coords="48,153,141,179"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="218,169,142,169,142,163,218,163"/>
+<area shape="rect" id="Node000009" href="$namespaceklog_1_1detail.html#a0562f234b6226d15eb2a3c4750078004" title="核心实现：格式化消息并入队，随后尝试排空" alt="" coords="31,203,158,228"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="242,184,152,205,151,200,241,179"/>
+<area shape="rect" id="Node000011" href="$syscall_8cpp.html#a7f71c582273219080713170bdd1d4323" title=" " alt="" coords="239,203,382,228"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="454,192,381,205,380,200,453,187"/>
+<area shape="rect" id="Node000012" href="$arch_2aarch64_2syscall_8cpp.html#a35e03404e29a182c498f027b4c9e2832" title="AArch64 系统调用处理" alt="" coords="61,252,129,277"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="242,234,129,260,128,254,240,229"/>
+</map>

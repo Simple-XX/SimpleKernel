@@ -93,8 +93,6 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt>Struct <a class="el" href="structError.html">Error</a>  </dt>
-<dd><a class="anchor" id="_todo000008"></a>还需要传递一个具体错误信息的字符串  </dd>
 <dt>Member <a class="el" href="arch_8cpp.html#a13c92ba83f807779913f45bc9ac404b0">InitTaskContext</a>  (<a class="el" href="structcpu__io_1_1CalleeSavedContext.html">cpu_io::CalleeSavedContext</a> *task_context, void(*entry)(void *), void *arg, uint64_t stack_top)</dt>
 <dd><a class="anchor" id="_todo000003"></a>x86_64 实现待补充  </dd>
 <dt>Member <a class="el" href="arch_8cpp.html#a68bd5f23f249b2c277d460dc2e2ee47a">InitTaskContext</a>  (<a class="el" href="structcpu__io_1_1CalleeSavedContext.html">cpu_io::CalleeSavedContext</a> *task_context, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *trap_context_ptr, uint64_t stack_top)</dt>
@@ -108,41 +106,42 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <p class="enddd"><a class="anchor" id="_todo000001"></a>默认使用 SGI 0 作为 IPI 中断  </p>
 </dd>
 <dt>Member <a class="el" href="system__test_8h.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a>  () -&gt; bool</dt>
-<dd><a class="anchor" id="_todo000029"></a>等用户态调通后补上  </dd>
-<dt>Member <a class="el" href="structklog_1_1detail_1_1LogBase.html#aff6da3194227678f1d1c85bb9e05efcb">klog::detail::LogBase&lt; Level, Args &gt;::LogBase</a>  (Args &amp;&amp;... args, const std::source_location &amp;location=std::source_location::current())</dt>
-<dd><a class="anchor" id="_todo000009"></a>解决警告  </dd>
-<dt>Member <a class="el" href="syscall_8cpp.html#aa03f906affa67ef23ebfbcb79efa569f">sys_futex</a>  (int *uaddr, int op, int val, const void *timeout, int *uaddr2, int val3)</dt>
-<dd><p class="startdd"><a class="anchor" id="_todo000013"></a>需要实现原子比较和阻塞逻辑 </p>
-<p class="interdd"><a class="anchor" id="_todo000014"></a></p>
-<p class="interdd"><a class="anchor" id="_todo000015"></a>需要在 <a class="el" href="classTaskManager.html" title="任务管理器">TaskManager</a> 中添加 futex 等待队列 </p>
-<p class="interdd"><a class="anchor" id="_todo000016"></a>应该返回实际唤醒的线程数 </p>
-<p class="enddd"><a class="anchor" id="_todo000017"></a>实现 FUTEX_REQUEUE  </p>
+<dd><a class="anchor" id="_todo000026"></a>等用户态调通后补上  </dd>
+<dt>Member <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a>  </dt>
+<dd><a class="anchor" id="_todo000020"></a>为什么要定义 <a class="el" href="namespaceTaskStatusId.html" title="任务状态 ID — 用作 etl::fsm 的状态 ID">TaskStatusId</a> 与 TaskStatus 两个命名空间？可以直接用 TaskStatus 吗？  </dd>
+<dt>Member <a class="el" href="syscall_8cpp.html#a7e0465bdb3adc9a861f78e561bb0cf0c">sys_futex</a>  (int *uaddr, int op, int val, const void *timeout, int *uaddr2, int val3) -&gt; int</dt>
+<dd><p class="startdd"><a class="anchor" id="_todo000014"></a>实现 FUTEX_REQUEUE </p>
+<p class="enddd"><a class="anchor" id="_todo000013"></a>应该返回实际唤醒的线程数  </p>
 </dd>
-<dt>Member <a class="el" href="syscall_8cpp.html#afc0c058ad3c8a4b5746d97c2f49b97a4">sys_sched_setaffinity</a>  (int pid, size_t cpusetsize, const uint64_t *mask)</dt>
-<dd><a class="anchor" id="_todo000018"></a>如果当前任务不在允许的 CPU 上运行，应该触发迁移  </dd>
-<dt>Member <a class="el" href="syscall_8cpp.html#ab5c00759c95d8ce9e9db75b1b55a9552">sys_set_tid_address</a>  (int *tidptr)</dt>
+<dt>Member <a class="el" href="syscall_8cpp.html#a7c490d0367177a75035cb12b79b24416">sys_sched_setaffinity</a>  (int pid, size_t cpusetsize, const uint64_t *mask) -&gt; int</dt>
+<dd><a class="anchor" id="_todo000015"></a>如果当前任务不在允许的 CPU 上运行，应该触发迁移  </dd>
+<dt>Member <a class="el" href="syscall_8cpp.html#a29162da1696b208f87b148aef8449e5f">sys_set_tid_address</a>  (int *tidptr) -&gt; int</dt>
 <dd><a class="anchor" id="_todo000012"></a>需要在 <a class="el" href="structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构">TaskControlBlock</a> 中添加字段保存 tidptr  </dd>
-<dt>Member <a class="el" href="syscall_8cpp.html#a4fa66935c10e294006b6310af1c68f37">sys_write</a>  (int fd, const char *buf, size_t len)</dt>
+<dt>Member <a class="el" href="syscall_8cpp.html#af2cff00ae45f6e285b75cff49dff52d4">sys_write</a>  (int fd, const char *buf, size_t len) -&gt; int</dt>
 <dd><a class="anchor" id="_todo000011"></a>应该检查 buf 是否在用户空间合法范围内  </dd>
-<dt>Member <a class="el" href="arch_2x86__64_2syscall_8cpp.html#a27f252437c17e7b5d2e8aef749daf1f0">Syscall</a>  (uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *context_ptr)</dt>
+<dt>Member <a class="el" href="arch_2x86__64_2syscall_8cpp.html#a35e03404e29a182c498f027b4c9e2832">Syscall</a>  (uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *context_ptr) -&gt; void</dt>
 <dd><a class="anchor" id="_todo000007"></a>  </dd>
+<dt>Member <a class="el" href="structTaskAuxData.html#a58236ccc1dc7e9c37ab5bea4c039c3b1">TaskAuxData::fd_table</a>  </dt>
+<dd><a class="anchor" id="_todo000021"></a>优先级继承相关  </dd>
 <dt>Member <a class="el" href="structTaskControlBlock.html#a87bcaeb8999f4d5e383a5d2bd8c13925">TaskControlBlock::TaskControlBlock</a>  (const char *name, int priority, uint8_t *elf, int argc, char **argv)</dt>
-<dd><a class="anchor" id="_todo000025"></a>  </dd>
-<dt>Member <a class="el" href="classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2">TaskManager::Clone</a>  (uint64_t flags, void *user_stack, int *parent_tid, int *child_tid, void *tls, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> &amp;parent_context)</dt>
-<dd><p class="startdd"><a class="anchor" id="_todo000021"></a>当前未实现文件系统，此标志暂时仅记录 </p>
-<p class="interdd"><a class="anchor" id="_todo000020"></a>当前未实现信号机制，此标志暂时仅记录 </p>
-<p class="enddd"><a class="anchor" id="_todo000019"></a>当前未实现文件系统，此标志暂时仅记录  </p>
+<dd><a class="anchor" id="_todo000022"></a>  </dd>
+<dt>Member <a class="el" href="classTaskManager.html#ad2fdc9ffa97ac49ce08133d7ce0728bb">TaskManager::Clone</a>  (uint64_t flags, void *user_stack, int *parent_tid, int *child_tid, void *tls, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> &amp;parent_context) -&gt; Expected&lt; Pid &gt;</dt>
+<dd><p class="startdd"><a class="anchor" id="_todo000016"></a>当前未实现文件系统，此标志暂时仅记录 </p>
+<p class="interdd"><a class="anchor" id="_todo000017"></a>当前未实现信号机制，此标志暂时仅记录 </p>
+<p class="enddd"><a class="anchor" id="_todo000018"></a>当前未实现文件系统，此标志暂时仅记录  </p>
 </dd>
-<dt>Member <a class="el" href="classTaskManager.html#ae3444c55ab7b6ec348a56b596229fc0f">TaskManager::Exit</a>  (int exit_code=0)</dt>
-<dd><p class="startdd"><a class="anchor" id="_todo000022"></a>实现信号机制后，发送 SIGKILL 给线程组中的所有线程 </p>
-<p class="enddd"><a class="anchor" id="_todo000023"></a>通知父进程 (发送 SIGCHLD)  </p>
+<dt>Member <a class="el" href="classTaskManager.html#a43eaded67dae35b5a652605bcd1269f1">TaskManager::Exit</a>  (int exit_code=0) -&gt; void</dt>
+<dd><a class="anchor" id="_todo000019"></a>通知父进程 (发送 SIGCHLD)  </dd>
+<dt>Member <a class="el" href="classTaskManager.html#a61a07d0a4a926c1f0fa6cd5203dd1960">TaskManager::ReparentChildren</a>  (<a class="el" href="structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构">TaskControlBlock</a> *parent) -&gt; void</dt>
+<dd><p class="startdd"><a class="anchor" id="_todo000023"></a>当前的 pid 是自增的，需要考虑多核情况 </p>
+<p class="enddd"><a class="anchor" id="_todo000024"></a>实现向 init 进程发送 SIGCHLD 信号  </p>
 </dd>
-<dt>Member <a class="el" href="classTaskManager.html#acfa70286ca9b8c538d1f75ba4d953ec8">TaskManager::ReparentChildren</a>  (<a class="el" href="structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构">TaskControlBlock</a> *parent)</dt>
-<dd><p class="startdd"><a class="anchor" id="_todo000026"></a>当前的 pid 是自增的，需要考虑多核情况 </p>
-<p class="enddd"><a class="anchor" id="_todo000027"></a>实现向 init 进程发送 SIGCHLD 信号  </p>
-</dd>
-<dt>Member <a class="el" href="classTaskManager.html#aee251dfccf1511abff3458d75f4aa034">TaskManager::SignalThreadGroup</a>  (Pid tgid, int signal)</dt>
-<dd><a class="anchor" id="_todo000028"></a>实现信号机制后，向线程组中的所有线程发送信号 </dd>
+<dt>Member <a class="el" href="classTaskManager.html#aee4bf91de80d65099cd0e9f07490fb6c">TaskManager::SignalThreadGroup</a>  (Pid tgid, int signal) -&gt; void</dt>
+<dd><a class="anchor" id="_todo000025"></a>实现信号机制后，向线程组中的所有线程发送信号  </dd>
+<dt>Member <a class="el" href="user__task__test_8cpp.html#a52fd809179f673370990e8f711d37fd3">user_task_test</a>  () -&gt; bool</dt>
+<dd><a class="anchor" id="_todo000027"></a>Implement user task tests when ELF loading path is testable  </dd>
+<dt>Class <a class="el" href="classvirtio_1_1PciTransport.html">virtio::PciTransport</a>  </dt>
+<dd><a class="anchor" id="_todo000008"></a>实现 PCI Modern (1.0+) 传输层 </dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

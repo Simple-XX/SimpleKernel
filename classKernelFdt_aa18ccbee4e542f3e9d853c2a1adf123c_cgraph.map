@@ -1,5 +1,7 @@
 <map id="KernelFdt::GetSerial" name="KernelFdt::GetSerial">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,157,31"/>
-<area shape="rect" id="Node000002" href="$classKernelFdt.html#a3ec35216ec7b4ddf55458f3b4824c816" title=" " alt="" coords="205,5,359,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,15,191,15,191,21,158,21"/>
+<area shape="rect" id="Node000001" title="获取串口信息" alt="" coords="5,31,157,56"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html#a3ec35216ec7b4ddf55458f3b4824c816" title="按路径查找节点" alt="" coords="226,5,379,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,32,212,26,213,31,158,37"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#a2bd0a7113b8a58fa59a871a471175583" title="获取 reg 属性（返回第一个 reg 条目）" alt="" coords="205,55,400,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,49,192,53,191,58,158,54"/>
 </map>

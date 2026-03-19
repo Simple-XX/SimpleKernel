@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['处理程序入口_0',['Trap 处理程序入口',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md175',1,'']]],
-  ['处理（架构无关）_1',['3.3 &lt;tt&gt;switch_to&lt;/tt&gt; 处理（架构无关）',['../md_task__unit__test__new__design.html#autotoc_md259',1,'']]]
+  ['寄存器定义_0',['寄存器定义',['../md_2___xE8_xB0_x83_xE8_xAF_x95_xE8_xBE_x93_xE5_x87_xBA.html#autotoc_md120',1,'']]],
+  ['寄存器管理_1',['📋 CSR 寄存器管理',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md183',1,'']]],
+  ['寄存器访问实现_2',['寄存器访问实现',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md94',1,'']]],
+  ['寄存器详解_3',['寄存器详解',['../md_2___xE8_xB0_x83_xE8_xAF_x95_xE8_xBE_x93_xE5_x87_xBA.html#autotoc_md146',1,'']]]
 ];

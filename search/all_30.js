@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['交叉编译工具链_0',['GCC 交叉编译工具链',['../md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html#autotoc_md6',1,'']]]
+  ['从处理器初始化_20ap_0',['从处理器初始化 (AP)',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md175',1,'']]],
+  ['从处理器初始化_20secondary_20cpus_1',['从处理器初始化 (Secondary CPUs)',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md226',1,'']]],
+  ['从hart初始化_2',['从hart初始化',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md201',1,'']]]
 ];

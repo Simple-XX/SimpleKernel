@@ -1,0 +1,9 @@
+<map id="vfs::Init" name="vfs::Init">
+<area shape="rect" id="Node000001" title="VFS 全局初始化" alt="" coords="5,55,76,80"/>
+<area shape="rect" id="Node000002" href="$namespacevfs.html#acec885fcabeaba10d159e2634911dc39" title="获取全局挂载表实例" alt="" coords="124,5,272,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,54,143,32,145,37,77,59"/>
+<area shape="rect" id="Node000003" href="$namespacevfs.html#aa5aeb25168763769b1d16de4f480c55a" title=" " alt="" coords="134,55,262,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="76,65,120,65,120,70,76,70"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="157,104,239,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="77,76,145,97,143,102,76,81"/>
+</map>

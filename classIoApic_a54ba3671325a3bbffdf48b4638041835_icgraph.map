@@ -1,0 +1,17 @@
+<map id="IoApic::Read" name="IoApic::Read">
+<area shape="rect" id="Node000001" title="读取 IO APIC 寄存器" alt="" coords="583,55,685,80"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#a84a98de61c9ad2c70aea29e6c15ceb53" title="获取 IO APIC ID" alt="" coords="385,5,490,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="570,54,534,45,489,33,491,28,535,39,571,49"/>
+<area shape="rect" id="Node000005" href="$classIoApic.html#a9b64f1b3a5dcdff27190942e43699ff6" title="获取 IO APIC 最大重定向条目数" alt="" coords="340,105,535,145"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="577,87,507,107,506,102,576,81"/>
+<area shape="rect" id="Node000007" href="$classIoApic.html#a9b7e2dea22dfb23e3fa2e8b4689170ca" title="获取 IO APIC 版本" alt="" coords="367,55,508,80"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="569,70,508,70,508,65,569,65"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#aab34419aede6503ec483cd97982026b8" title="打印 IO APIC 信息（调试用）" alt="" coords="167,55,292,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="372,36,284,57,283,52,371,31"/>
+<area shape="rect" id="Node000004" href="$classApic.html#a306473bda77a8a8b93c400851251e755" title="打印所有 APIC 信息（调试用）" alt="" coords="5,55,119,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="153,70,119,70,119,65,153,65"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="350,104,276,83,277,78,352,98"/>
+<area shape="rect" id="Node000006" href="$classIoApic.html#aa35d2bf3bfc0c1a778711855bc85a8f6" title=" " alt="" coords="174,112,285,137"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="326,127,285,127,285,122,326,122"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="353,70,292,70,292,65,353,65"/>
+</map>

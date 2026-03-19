@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/tests/system_test/system_test.h Source File</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/tests/system_test/system_test.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -98,216 +98,307 @@ $(document).ready(function(){initNavTree('system__test_8h_source.html',''); init
 </div><!--header-->
 <div class="contents">
 <a href="system__test_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef SIMPLEKERNEL_TESTS_SYSTEM_TEST_SYSTEM_TEST_H_</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define SIMPLEKERNEL_TESTS_SYSTEM_TEST_SYSTEM_TEST_H_</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;sk_cstdio&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;etl/vector.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
-<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="system__test_8h.html#aa65c78c72f83432078d407f7b46440d4">   13</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#aa65c78c72f83432078d407f7b46440d4">expect_eq_helper</a>(<span class="keyword">const</span> T1 &amp;val1, <span class="keyword">const</span> T2 &amp;val2, <span class="keyword">const</span> <span class="keywordtype">char</span> *msg) {</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordflow">if</span> (val1 != val2) {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, long&gt; &amp;&amp;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                  std::is_convertible_v&lt;T2, long&gt;) {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s. Expected %ld, got %ld\n&quot;</span>, msg, (<span class="keywordtype">long</span>)(val2),</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                (<span class="keywordtype">long</span>)(val1));</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s.\n&quot;</span>, msg);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    }</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  }</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="kernel__log_8hpp.html">kernel_log.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// Assertion helpers</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="system__test_8h.html#aa65c78c72f83432078d407f7b46440d4">   19</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#aa65c78c72f83432078d407f7b46440d4">expect_eq_helper</a>(<span class="keyword">const</span> T1&amp; val1, <span class="keyword">const</span> T2&amp; val2, <span class="keyword">const</span> <span class="keywordtype">char</span>* msg) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordflow">if</span> (val1 != val2) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, uint64_t&gt; &amp;&amp;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                  std::is_convertible_v&lt;T2, uint64_t&gt;) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}. Expected {}, got {}&quot;</span>, msg,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val2), <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val1));</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}&quot;</span>, msg);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
 </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="system__test_8h.html#a68e8bf69a874d175a5c112d92e3eaac1">   31</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#a68e8bf69a874d175a5c112d92e3eaac1">expect_ne_helper</a>(<span class="keyword">const</span> T1 &amp;val1, <span class="keyword">const</span> T2 &amp;val2, <span class="keyword">const</span> <span class="keywordtype">char</span> *msg) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">if</span> (val1 == val2) {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, long&gt; &amp;&amp;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                  std::is_convertible_v&lt;T2, long&gt;) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s. Expected not %ld, got %ld\n&quot;</span>, msg, (<span class="keywordtype">long</span>)(val2),</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                (<span class="keywordtype">long</span>)(val1));</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s.\n&quot;</span>, msg);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="system__test_8h.html#a68e8bf69a874d175a5c112d92e3eaac1">   37</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#a68e8bf69a874d175a5c112d92e3eaac1">expect_ne_helper</a>(<span class="keyword">const</span> T1&amp; val1, <span class="keyword">const</span> T2&amp; val2, <span class="keyword">const</span> <span class="keywordtype">char</span>* msg) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">if</span> (val1 == val2) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, uint64_t&gt; &amp;&amp;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                  std::is_convertible_v&lt;T2, uint64_t&gt;) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}. Expected not {}, got {}&quot;</span>, msg,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val2), <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val1));</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}&quot;</span>, msg);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
 </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
-<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="system__test_8h.html#a47f200fae161f662e366d06b4d2ecff4">   49</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#a47f200fae161f662e366d06b4d2ecff4">expect_gt_helper</a>(<span class="keyword">const</span> T1 &amp;val1, <span class="keyword">const</span> T2 &amp;val2, <span class="keyword">const</span> <span class="keywordtype">char</span> *msg) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">if</span> (!(val1 &gt; val2)) {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, long&gt; &amp;&amp;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                  std::is_convertible_v&lt;T2, long&gt;) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s. Expected %ld &gt; %ld\n&quot;</span>, msg, (<span class="keywordtype">long</span>)(val1),</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                (<span class="keywordtype">long</span>)(val2));</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s.\n&quot;</span>, msg);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="system__test_8h.html#a47f200fae161f662e366d06b4d2ecff4">   55</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#a47f200fae161f662e366d06b4d2ecff4">expect_gt_helper</a>(<span class="keyword">const</span> T1&amp; val1, <span class="keyword">const</span> T2&amp; val2, <span class="keyword">const</span> <span class="keywordtype">char</span>* msg) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">if</span> (!(val1 &gt; val2)) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, uint64_t&gt; &amp;&amp;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                  std::is_convertible_v&lt;T2, uint64_t&gt;) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}. Expected {} &gt; {}&quot;</span>, msg, <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val1),</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val2));</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}&quot;</span>, msg);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
 </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
-<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="system__test_8h.html#aceed4ede7295e7c0cd9e82be71096ed2">   67</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#aceed4ede7295e7c0cd9e82be71096ed2">expect_lt_helper</a>(<span class="keyword">const</span> T1 &amp;val1, <span class="keyword">const</span> T2 &amp;val2, <span class="keyword">const</span> <span class="keywordtype">char</span> *msg) {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">if</span> (!(val1 &lt; val2)) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, long&gt; &amp;&amp;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                  std::is_convertible_v&lt;T2, long&gt;) {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s. Expected %ld &lt; %ld\n&quot;</span>, msg, (<span class="keywordtype">long</span>)(val1),</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                (<span class="keywordtype">long</span>)(val2));</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s.\n&quot;</span>, msg);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>}</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="system__test_8h.html#aceed4ede7295e7c0cd9e82be71096ed2">   73</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#aceed4ede7295e7c0cd9e82be71096ed2">expect_lt_helper</a>(<span class="keyword">const</span> T1&amp; val1, <span class="keyword">const</span> T2&amp; val2, <span class="keyword">const</span> <span class="keywordtype">char</span>* msg) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">if</span> (!(val1 &lt; val2)) {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, uint64_t&gt; &amp;&amp;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                  std::is_convertible_v&lt;T2, uint64_t&gt;) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}. Expected {} &lt; {}&quot;</span>, msg, <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val1),</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val2));</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}&quot;</span>, msg);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
 </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
-<div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="system__test_8h.html#a0cca59a9c2e302eb7c4e39c454bc300c">   85</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#a0cca59a9c2e302eb7c4e39c454bc300c">expect_ge_helper</a>(<span class="keyword">const</span> T1 &amp;val1, <span class="keyword">const</span> T2 &amp;val2, <span class="keyword">const</span> <span class="keywordtype">char</span> *msg) {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">if</span> (!(val1 &gt;= val2)) {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, long&gt; &amp;&amp;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                  std::is_convertible_v&lt;T2, long&gt;) {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s. Expected %ld &gt;= %ld\n&quot;</span>, msg, (<span class="keywordtype">long</span>)(val1),</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                (<span class="keywordtype">long</span>)(val2));</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;FAIL: %s.\n&quot;</span>, msg);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    }</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="system__test_8h.html#a0cca59a9c2e302eb7c4e39c454bc300c">   91</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#a0cca59a9c2e302eb7c4e39c454bc300c">expect_ge_helper</a>(<span class="keyword">const</span> T1&amp; val1, <span class="keyword">const</span> T2&amp; val2, <span class="keyword">const</span> <span class="keywordtype">char</span>* msg) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keywordflow">if</span> (!(val1 &gt;= val2)) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, uint64_t&gt; &amp;&amp;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                  std::is_convertible_v&lt;T2, uint64_t&gt;) {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}. Expected {} &gt;= {}&quot;</span>, msg, <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val1),</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val2));</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}&quot;</span>, msg);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="foldopen" id="foldopen00102" data-start="" data-end="">
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">  102</a></span><span class="preprocessor">#define EXPECT_EQ(val1, val2, msg)          \</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">  if (!expect_eq_helper(val1, val2, msg)) { \</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">    return false;                           \</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">  }</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="system__test_8h.html#a296af9cc81367d8564da02d71819f3cf">  109</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="system__test_8h.html#a296af9cc81367d8564da02d71819f3cf">expect_le_helper</a>(<span class="keyword">const</span> T1&amp; val1, <span class="keyword">const</span> T2&amp; val2, <span class="keyword">const</span> <span class="keywordtype">char</span>* msg) {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wsign-compare&quot;</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordflow">if</span> (!(val1 &lt;= val2)) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_convertible_v&lt;T1, uint64_t&gt; &amp;&amp;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                  std::is_convertible_v&lt;T2, uint64_t&gt;) {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}. Expected {} &lt;= {}&quot;</span>, msg, <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val1),</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(val2));</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;FAIL: {}&quot;</span>, msg);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    }</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="foldopen" id="foldopen00107" data-start="" data-end="">
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="system__test_8h.html#a40d1cd7aa0dc349c5fe213484073bfaf">  107</a></span><span class="preprocessor">#define EXPECT_NE(val1, val2, msg)          \</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">  if (!expect_ne_helper(val1, val2, msg)) { \</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">    return false;                           \</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">  }</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="" data-end="">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">  126</a></span><span class="preprocessor">#define EXPECT_EQ(val1, val2, msg)          \</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">  if (!expect_eq_helper(val1, val2, msg)) { \</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">    return false;                           \</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">  }</span></div>
 </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="foldopen" id="foldopen00112" data-start="" data-end="">
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="system__test_8h.html#aab850358cd9bdeb95d390ab0918461da">  112</a></span><span class="preprocessor">#define EXPECT_GT(val1, val2, msg)          \</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">  if (!expect_gt_helper(val1, val2, msg)) { \</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">    return false;                           \</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">  }</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="foldopen" id="foldopen00131" data-start="" data-end="">
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="system__test_8h.html#a40d1cd7aa0dc349c5fe213484073bfaf">  131</a></span><span class="preprocessor">#define EXPECT_NE(val1, val2, msg)          \</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">  if (!expect_ne_helper(val1, val2, msg)) { \</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">    return false;                           \</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">  }</span></div>
 </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="foldopen" id="foldopen00117" data-start="" data-end="">
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="system__test_8h.html#a45ed0feb3ca6ecf81f5798108eb73227">  117</a></span><span class="preprocessor">#define EXPECT_LT(val1, val2, msg)          \</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">  if (!expect_lt_helper(val1, val2, msg)) { \</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">    return false;                           \</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">  }</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="foldopen" id="foldopen00136" data-start="" data-end="">
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="system__test_8h.html#aab850358cd9bdeb95d390ab0918461da">  136</a></span><span class="preprocessor">#define EXPECT_GT(val1, val2, msg)          \</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">  if (!expect_gt_helper(val1, val2, msg)) { \</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">    return false;                           \</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">  }</span></div>
 </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="foldopen" id="foldopen00122" data-start="" data-end="">
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="system__test_8h.html#abc8e7d496c617c4ecfca7a250d9b9637">  122</a></span><span class="preprocessor">#define EXPECT_GE(val1, val2, msg)          \</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">  if (!expect_ge_helper(val1, val2, msg)) { \</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">    return false;                           \</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">  }</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="foldopen" id="foldopen00141" data-start="" data-end="">
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="system__test_8h.html#a45ed0feb3ca6ecf81f5798108eb73227">  141</a></span><span class="preprocessor">#define EXPECT_LT(val1, val2, msg)          \</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="preprocessor">  if (!expect_lt_helper(val1, val2, msg)) { \</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">    return false;                           \</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="preprocessor">  }</span></div>
 </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="foldopen" id="foldopen00127" data-start="" data-end="">
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="system__test_8h.html#a00a870caa41dce04e9db04bd0c2fca57">  127</a></span><span class="preprocessor">#define EXPECT_TRUE(cond, msg)     \</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">  if (!(cond)) {                   \</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">    sk_printf(&quot;FAIL: %s.\n&quot;, msg); \</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">    return false;                  \</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">  }</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="foldopen" id="foldopen00146" data-start="" data-end="">
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="system__test_8h.html#abc8e7d496c617c4ecfca7a250d9b9637">  146</a></span><span class="preprocessor">#define EXPECT_GE(val1, val2, msg)          \</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="preprocessor">  if (!expect_ge_helper(val1, val2, msg)) { \</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">    return false;                           \</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">  }</span></div>
 </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="foldopen" id="foldopen00133" data-start="" data-end="">
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="system__test_8h.html#aa627ee666d1479db9959f3423adc3549">  133</a></span><span class="preprocessor">#define EXPECT_FALSE(cond, msg)    \</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">  if (cond) {                      \</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">    sk_printf(&quot;FAIL: %s.\n&quot;, msg); \</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">    return false;                  \</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">  }</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="foldopen" id="foldopen00151" data-start="" data-end="">
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="system__test_8h.html#a0c11e8393f0db744e20303c423cb1940">  151</a></span><span class="preprocessor">#define EXPECT_LE(val1, val2, msg)          \</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">  if (!expect_le_helper(val1, val2, msg)) { \</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="preprocessor">    return false;                           \</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">  }</span></div>
 </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#afe415420c72c400f3156b40cbd68c16f">ctor_dtor_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ac61fbc90ca3cf0de62dcaa7fcfed07e0">spinlock_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a8027cdd5d224276fe32cfe407e4dfe88">virtual_memory_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a336c8a8f6547d5525f9471e55e926ad1">sk_list_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a918ef6d14a77b2ee5ca17e4a10752b7c">sk_queue_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ae55cc0a87f02c5a81ef6fa6aabf0f83a">sk_vector_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a84e2aa9ed25324d990a6a102682fa0f8">sk_priority_queue_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a485323d8f99aec8ffec3e0c9141c518d">sk_rb_tree_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a84df36725bae955064dcfd631f15d271">sk_set_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a1c8aaa619ff6db90ff38d47873cedec5">sk_unordered_map_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ab1f7bcb3ad9778f98e5a6eb91aa56f2b">fifo_scheduler_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a1e8196c335bbae5d58fad93dab00a3e9">rr_scheduler_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ac3069ba7e9bb7a60adb5c90069dc9c0b">cfs_scheduler_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a5b31dadbdb315ea840b8dc6a7cb2cf81">thread_group_system_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a1d61aadd4f03596c1c9a64a5e4e5191c">wait_system_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a22a28daf23b20387a79c91fa118a1689">clone_system_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a1ad372ba4b1c37c4dd0fa4cfec12038d">exit_system_test</a>() -&gt; bool;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="foldopen" id="foldopen00158" data-start="{" data-end="}">
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="namespaceMutexTest.html">  158</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceMutexTest.html">MutexTest</a> {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="namespaceMutexTest.html#abc74ec1cd896a7998ed9800769b21582">  159</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceMutexTest.html#abc74ec1cd896a7998ed9800769b21582">RunTest</a>();</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="foldopen" id="foldopen00156" data-start="" data-end="">
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="system__test_8h.html#a00a870caa41dce04e9db04bd0c2fca57">  156</a></span><span class="preprocessor">#define EXPECT_TRUE(cond, msg)  \</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">  if (!(cond)) {                \</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">    klog::Err(&quot;FAIL: {}&quot;, msg); \</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="preprocessor">    return false;               \</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="preprocessor">  }</span></div>
 </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#endif </span><span class="comment">/* SIMPLEKERNEL_TESTS_SYSTEM_TEST_SYSTEM_TEST_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="anamespaceMutexTest_html"><div class="ttname"><a href="namespaceMutexTest.html">MutexTest</a></div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00158">system_test.h:158</a></div></div>
-<div class="ttc" id="anamespaceMutexTest_html_abc74ec1cd896a7998ed9800769b21582"><div class="ttname"><a href="namespaceMutexTest.html#abc74ec1cd896a7998ed9800769b21582">MutexTest::RunTest</a></div><div class="ttdeci">void RunTest()</div></div>
-<div class="ttc" id="ask__stdio_8h_html_ad8142b94111a30f723c6c0a2301bae7f"><div class="ttname"><a href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a></div><div class="ttdeci">int sk_printf(const char *format,...) __attribute__((format(printf</div></div>
-<div class="ttc" id="asystem__test_8h_html_a0cca59a9c2e302eb7c4e39c454bc300c"><div class="ttname"><a href="system__test_8h.html#a0cca59a9c2e302eb7c4e39c454bc300c">expect_ge_helper</a></div><div class="ttdeci">bool expect_ge_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00085">system_test.h:85</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a16953e19a2974c8249f2109a4522237e"><div class="ttname"><a href="system__test_8h.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a></div><div class="ttdeci">auto interrupt_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="interrupt__test_8cpp_source.html#l00024">interrupt_test.cpp:24</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a1ad372ba4b1c37c4dd0fa4cfec12038d"><div class="ttname"><a href="system__test_8h.html#a1ad372ba4b1c37c4dd0fa4cfec12038d">exit_system_test</a></div><div class="ttdeci">auto exit_system_test() -&gt; bool</div><div class="ttdoc">Exit 系统测试入口</div><div class="ttdef"><b>Definition</b> <a href="exit__system__test_8cpp_source.html#l00221">exit_system_test.cpp:221</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a1c8aaa619ff6db90ff38d47873cedec5"><div class="ttname"><a href="system__test_8h.html#a1c8aaa619ff6db90ff38d47873cedec5">sk_unordered_map_test</a></div><div class="ttdeci">auto sk_unordered_map_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2sk__unordered__map__test_8cpp_source.html#l00203">sk_unordered_map_test.cpp:203</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a1d61aadd4f03596c1c9a64a5e4e5191c"><div class="ttname"><a href="system__test_8h.html#a1d61aadd4f03596c1c9a64a5e4e5191c">wait_system_test</a></div><div class="ttdeci">auto wait_system_test() -&gt; bool</div><div class="ttdoc">Wait 系统测试入口</div><div class="ttdef"><b>Definition</b> <a href="wait__system__test_8cpp_source.html#l00310">wait_system_test.cpp:310</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a1e8196c335bbae5d58fad93dab00a3e9"><div class="ttname"><a href="system__test_8h.html#a1e8196c335bbae5d58fad93dab00a3e9">rr_scheduler_test</a></div><div class="ttdeci">auto rr_scheduler_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2rr__scheduler__test_8cpp_source.html#l00410">rr_scheduler_test.cpp:410</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a22a28daf23b20387a79c91fa118a1689"><div class="ttname"><a href="system__test_8h.html#a22a28daf23b20387a79c91fa118a1689">clone_system_test</a></div><div class="ttdeci">auto clone_system_test() -&gt; bool</div><div class="ttdoc">Clone 系统测试入口</div><div class="ttdef"><b>Definition</b> <a href="clone__system__test_8cpp_source.html#l00291">clone_system_test.cpp:291</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a336c8a8f6547d5525f9471e55e926ad1"><div class="ttname"><a href="system__test_8h.html#a336c8a8f6547d5525f9471e55e926ad1">sk_list_test</a></div><div class="ttdeci">auto sk_list_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2sk__list__test_8cpp_source.html#l00232">sk_list_test.cpp:232</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a47f200fae161f662e366d06b4d2ecff4"><div class="ttname"><a href="system__test_8h.html#a47f200fae161f662e366d06b4d2ecff4">expect_gt_helper</a></div><div class="ttdeci">bool expect_gt_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00049">system_test.h:49</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a485323d8f99aec8ffec3e0c9141c518d"><div class="ttname"><a href="system__test_8h.html#a485323d8f99aec8ffec3e0c9141c518d">sk_rb_tree_test</a></div><div class="ttdeci">auto sk_rb_tree_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2sk__rb__tree__test_8cpp_source.html#l00059">sk_rb_tree_test.cpp:59</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a5b31dadbdb315ea840b8dc6a7cb2cf81"><div class="ttname"><a href="system__test_8h.html#a5b31dadbdb315ea840b8dc6a7cb2cf81">thread_group_system_test</a></div><div class="ttdeci">auto thread_group_system_test() -&gt; bool</div><div class="ttdoc">线程组系统测试入口</div><div class="ttdef"><b>Definition</b> <a href="thread__group__system__test_8cpp_source.html#l00241">thread_group_system_test.cpp:241</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a68e8bf69a874d175a5c112d92e3eaac1"><div class="ttname"><a href="system__test_8h.html#a68e8bf69a874d175a5c112d92e3eaac1">expect_ne_helper</a></div><div class="ttdeci">bool expect_ne_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00031">system_test.h:31</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a8027cdd5d224276fe32cfe407e4dfe88"><div class="ttname"><a href="system__test_8h.html#a8027cdd5d224276fe32cfe407e4dfe88">virtual_memory_test</a></div><div class="ttdeci">auto virtual_memory_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2virtual__memory__test_8cpp_source.html#l00030">virtual_memory_test.cpp:30</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a84df36725bae955064dcfd631f15d271"><div class="ttname"><a href="system__test_8h.html#a84df36725bae955064dcfd631f15d271">sk_set_test</a></div><div class="ttdeci">auto sk_set_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2sk__set__test_8cpp_source.html#l00082">sk_set_test.cpp:82</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a84e2aa9ed25324d990a6a102682fa0f8"><div class="ttname"><a href="system__test_8h.html#a84e2aa9ed25324d990a6a102682fa0f8">sk_priority_queue_test</a></div><div class="ttdeci">auto sk_priority_queue_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2sk__priority__queue__test_8cpp_source.html#l00071">sk_priority_queue_test.cpp:71</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a918ef6d14a77b2ee5ca17e4a10752b7c"><div class="ttname"><a href="system__test_8h.html#a918ef6d14a77b2ee5ca17e4a10752b7c">sk_queue_test</a></div><div class="ttdeci">auto sk_queue_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2sk__queue__test_8cpp_source.html#l00043">sk_queue_test.cpp:43</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_aa65c78c72f83432078d407f7b46440d4"><div class="ttname"><a href="system__test_8h.html#aa65c78c72f83432078d407f7b46440d4">expect_eq_helper</a></div><div class="ttdeci">bool expect_eq_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00013">system_test.h:13</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_ab1f7bcb3ad9778f98e5a6eb91aa56f2b"><div class="ttname"><a href="system__test_8h.html#ab1f7bcb3ad9778f98e5a6eb91aa56f2b">fifo_scheduler_test</a></div><div class="ttdeci">auto fifo_scheduler_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2fifo__scheduler__test_8cpp_source.html#l00316">fifo_scheduler_test.cpp:316</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_ac3069ba7e9bb7a60adb5c90069dc9c0b"><div class="ttname"><a href="system__test_8h.html#ac3069ba7e9bb7a60adb5c90069dc9c0b">cfs_scheduler_test</a></div><div class="ttdeci">auto cfs_scheduler_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2cfs__scheduler__test_8cpp_source.html#l00549">cfs_scheduler_test.cpp:549</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_ac61fbc90ca3cf0de62dcaa7fcfed07e0"><div class="ttname"><a href="system__test_8h.html#ac61fbc90ca3cf0de62dcaa7fcfed07e0">spinlock_test</a></div><div class="ttdeci">auto spinlock_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2spinlock__test_8cpp_source.html#l00339">spinlock_test.cpp:339</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_aceed4ede7295e7c0cd9e82be71096ed2"><div class="ttname"><a href="system__test_8h.html#aceed4ede7295e7c0cd9e82be71096ed2">expect_lt_helper</a></div><div class="ttdeci">bool expect_lt_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00067">system_test.h:67</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_ae55cc0a87f02c5a81ef6fa6aabf0f83a"><div class="ttname"><a href="system__test_8h.html#ae55cc0a87f02c5a81ef6fa6aabf0f83a">sk_vector_test</a></div><div class="ttdeci">auto sk_vector_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2sk__vector__test_8cpp_source.html#l00179">sk_vector_test.cpp:179</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_afe415420c72c400f3156b40cbd68c16f"><div class="ttname"><a href="system__test_8h.html#afe415420c72c400f3156b40cbd68c16f">ctor_dtor_test</a></div><div class="ttdeci">auto ctor_dtor_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="ctor__dtor__test_8cpp_source.html#l00064">ctor_dtor_test.cpp:64</a></div></div>
+<div class="foldopen" id="foldopen00162" data-start="" data-end="">
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="system__test_8h.html#aa627ee666d1479db9959f3423adc3549">  162</a></span><span class="preprocessor">#define EXPECT_FALSE(cond, msg) \</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">  if (cond) {                   \</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="preprocessor">    klog::Err(&quot;FAIL: {}&quot;, msg); \</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">    return false;               \</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">  }</span></div>
+</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">// Test declarations</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#afe415420c72c400f3156b40cbd68c16f">ctor_dtor_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ac61fbc90ca3cf0de62dcaa7fcfed07e0">spinlock_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a8027cdd5d224276fe32cfe407e4dfe88">virtual_memory_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ab1f7bcb3ad9778f98e5a6eb91aa56f2b">fifo_scheduler_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a1e8196c335bbae5d58fad93dab00a3e9">rr_scheduler_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ac3069ba7e9bb7a60adb5c90069dc9c0b">cfs_scheduler_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a124151818611b6698e2b092e2aed421a">idle_scheduler_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a5b31dadbdb315ea840b8dc6a7cb2cf81">thread_group_system_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a1d61aadd4f03596c1c9a64a5e4e5191c">wait_system_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a22a28daf23b20387a79c91fa118a1689">clone_system_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a1ad372ba4b1c37c4dd0fa4cfec12038d">exit_system_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a0c73a2434a6f18c0fac51e32863e40e9">ramfs_system_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a9836048479097cd2cad3669eccc57389">fatfs_system_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#adcdd769af8aefa39375682eedd3cac7f">memory_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#ae49d3755a7181bd34a1c87abe708b4da">kernel_task_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a52fd809179f673370990e8f711d37fd3">user_task_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="keyword">auto</span> <a class="code hl_function" href="system__test_8h.html#a7c0a7b9c6c8ca59eaaa84173e5c002af">mutex_test</a>() -&gt; bool;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">// QEMU exit</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="foldopen" id="foldopen00196" data-start="{" data-end="}">
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="system__test_8h.html#a1783018e1abe3ee06842728ab4e51fb8">  196</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="system__test_8h.html#a1783018e1abe3ee06842728ab4e51fb8">QemuExit</a>([[maybe_unused]] <span class="keywordtype">bool</span> success) {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="preprocessor">#if defined(__riscv)</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="comment">// sifive_test device (virt machine 默认存在，地址 0x100000)</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="comment">// 0x5555 = FINISHER_PASS, 0x3333 = FINISHER_FAIL</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keyword">volatile</span> <span class="keyword">auto</span>* finisher = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">volatile </span>uint32_t*<span class="keyword">&gt;</span>(0x100000);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  *finisher = success ? 0x5555 : 0x3333;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="preprocessor">#elif defined(__x86_64__)</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="comment">// isa-debug-exit device (需要 QEMU 参数:</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="comment">//   -device isa-debug-exit,iobase=0xf4,iosize=0x04)</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="comment">// QEMU 退出码 = (val &lt;&lt; 1) | 1，所以 0 -&gt; 1(pass), 1 -&gt; 3(fail)</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  uint32_t code = success ? 0 : 1;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="keyword">asm</span> <span class="keyword">volatile</span>(<span class="stringliteral">&quot;outl %0, %1&quot;</span> ::<span class="stringliteral">&quot;a&quot;</span>(code), <span class="stringliteral">&quot;Nd&quot;</span>(<span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(0xf4)));</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#elif defined(__aarch64__)</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="comment">// PSCI SYSTEM_OFF (function id = 0x84000008)</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="comment">// 需要 EL2/EL3 支持（ATF 已提供）</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="keyword">register</span> uint64_t x0 <span class="keyword">asm</span>(<span class="stringliteral">&quot;x0&quot;</span>) = 0x84000008;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="keyword">asm</span> <span class="keyword">volatile</span>(<span class="stringliteral">&quot;hvc #0&quot;</span> : <span class="stringliteral">&quot;+r&quot;</span>(x0));</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  __builtin_unreachable();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>}</div>
+</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">// Test thread result tracking</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">// ===========================================================================</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="foldopen" id="foldopen00222" data-start="{" data-end="};">
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5">  222</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5">TestThreadStatus</a> : uint8_t {</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <a class="code hl_enumvalue" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5aa09be96128822643f3487a1415eb861c">kPending</a>,  </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <a class="code hl_enumvalue" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5a2fc7fbf0d19294f85dd3880460dd3c0a">kRunning</a>,  </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <a class="code hl_enumvalue" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5a2e1165dab7cbb5e985ea3b1e5d64f619">kPassed</a>,   </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <a class="code hl_enumvalue" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5ab62fa3c9492b6dae76c23d6dfa466611">kFailed</a>,   </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <a class="code hl_enumvalue" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5a7f27861ff1d3f550c6aa77150d7edabd">kTimeout</a>,  </div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>};</div>
+</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
+<div class="foldopen" id="foldopen00231" data-start="{" data-end="};">
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="structTestResult.html">  231</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structTestResult.html">TestResult</a> {</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno"><a class="line" href="structTestResult.html#ab20a53f6ac62965f8de447294fa1da36">  232</a></span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_variable" href="structTestResult.html#ab20a53f6ac62965f8de447294fa1da36">name</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno"><a class="line" href="structTestResult.html#a894249ba153557fdbc403255050a72b5">  233</a></span>  int64_t <a class="code hl_variable" href="structTestResult.html#a894249ba153557fdbc403255050a72b5">pid</a> = 0;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="structTestResult.html#aede78bfa37be77eb6cd74f3f47a54005">  234</a></span>  <a class="code hl_enumeration" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5">TestThreadStatus</a> <a class="code hl_variable" href="structTestResult.html#aede78bfa37be77eb6cd74f3f47a54005">status</a> = <a class="code hl_enumvalue" href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5aa09be96128822643f3487a1415eb861c">TestThreadStatus::kPending</a>;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="structTestResult.html#a5396aece0f973f282fb59c7a7170fa38">  235</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="structTestResult.html#a5396aece0f973f282fb59c7a7170fa38">exit_code</a> = -1;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>};</div>
+</div>
+<div class="ttc" id="akernel__log_8hpp_html"><div class="ttname"><a href="kernel__log_8hpp.html">kernel_log.hpp</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a16b493848cd618512fc9fb61d3980bd7"><div class="ttname"><a href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a></div><div class="ttdeci">auto Err(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 ERROR 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00200">kernel_log.hpp:200</a></div></div>
+<div class="ttc" id="astructTestResult_html"><div class="ttname"><a href="structTestResult.html">TestResult</a></div><div class="ttdoc">单个测试线程的结果记录</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00231">system_test.h:231</a></div></div>
+<div class="ttc" id="astructTestResult_html_a5396aece0f973f282fb59c7a7170fa38"><div class="ttname"><a href="structTestResult.html#a5396aece0f973f282fb59c7a7170fa38">TestResult::exit_code</a></div><div class="ttdeci">int exit_code</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00235">system_test.h:235</a></div></div>
+<div class="ttc" id="astructTestResult_html_a894249ba153557fdbc403255050a72b5"><div class="ttname"><a href="structTestResult.html#a894249ba153557fdbc403255050a72b5">TestResult::pid</a></div><div class="ttdeci">int64_t pid</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00233">system_test.h:233</a></div></div>
+<div class="ttc" id="astructTestResult_html_ab20a53f6ac62965f8de447294fa1da36"><div class="ttname"><a href="structTestResult.html#ab20a53f6ac62965f8de447294fa1da36">TestResult::name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00232">system_test.h:232</a></div></div>
+<div class="ttc" id="astructTestResult_html_aede78bfa37be77eb6cd74f3f47a54005"><div class="ttname"><a href="structTestResult.html#aede78bfa37be77eb6cd74f3f47a54005">TestResult::status</a></div><div class="ttdeci">TestThreadStatus status</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00234">system_test.h:234</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a0c73a2434a6f18c0fac51e32863e40e9"><div class="ttname"><a href="system__test_8h.html#a0c73a2434a6f18c0fac51e32863e40e9">ramfs_system_test</a></div><div class="ttdeci">auto ramfs_system_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="ramfs__system__test_8cpp_source.html#l00012">ramfs_system_test.cpp:12</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a0cca59a9c2e302eb7c4e39c454bc300c"><div class="ttname"><a href="system__test_8h.html#a0cca59a9c2e302eb7c4e39c454bc300c">expect_ge_helper</a></div><div class="ttdeci">bool expect_ge_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00091">system_test.h:91</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a124151818611b6698e2b092e2aed421a"><div class="ttname"><a href="system__test_8h.html#a124151818611b6698e2b092e2aed421a">idle_scheduler_test</a></div><div class="ttdeci">auto idle_scheduler_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="idle__scheduler__test_8cpp_source.html#l00246">idle_scheduler_test.cpp:246</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a16953e19a2974c8249f2109a4522237e"><div class="ttname"><a href="system__test_8h.html#a16953e19a2974c8249f2109a4522237e">interrupt_test</a></div><div class="ttdeci">auto interrupt_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="interrupt__test_8cpp_source.html#l00022">interrupt_test.cpp:22</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a1783018e1abe3ee06842728ab4e51fb8"><div class="ttname"><a href="system__test_8h.html#a1783018e1abe3ee06842728ab4e51fb8">QemuExit</a></div><div class="ttdeci">void QemuExit(bool success)</div><div class="ttdoc">测试结束后退出 QEMU，success=true 表示全部通过</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00196">system_test.h:196</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a1ad372ba4b1c37c4dd0fa4cfec12038d"><div class="ttname"><a href="system__test_8h.html#a1ad372ba4b1c37c4dd0fa4cfec12038d">exit_system_test</a></div><div class="ttdeci">auto exit_system_test() -&gt; bool</div><div class="ttdoc">Exit 系统测试入口</div><div class="ttdef"><b>Definition</b> <a href="exit__system__test_8cpp_source.html#l00452">exit_system_test.cpp:452</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a1d61aadd4f03596c1c9a64a5e4e5191c"><div class="ttname"><a href="system__test_8h.html#a1d61aadd4f03596c1c9a64a5e4e5191c">wait_system_test</a></div><div class="ttdeci">auto wait_system_test() -&gt; bool</div><div class="ttdoc">Wait 系统测试入口</div><div class="ttdef"><b>Definition</b> <a href="wait__system__test_8cpp_source.html#l00326">wait_system_test.cpp:326</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a1e8196c335bbae5d58fad93dab00a3e9"><div class="ttname"><a href="system__test_8h.html#a1e8196c335bbae5d58fad93dab00a3e9">rr_scheduler_test</a></div><div class="ttdeci">auto rr_scheduler_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2rr__scheduler__test_8cpp_source.html#l00431">rr_scheduler_test.cpp:431</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a22a28daf23b20387a79c91fa118a1689"><div class="ttname"><a href="system__test_8h.html#a22a28daf23b20387a79c91fa118a1689">clone_system_test</a></div><div class="ttdeci">auto clone_system_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="clone__system__test_8cpp_source.html#l00425">clone_system_test.cpp:425</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a296af9cc81367d8564da02d71819f3cf"><div class="ttname"><a href="system__test_8h.html#a296af9cc81367d8564da02d71819f3cf">expect_le_helper</a></div><div class="ttdeci">bool expect_le_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00109">system_test.h:109</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a47f200fae161f662e366d06b4d2ecff4"><div class="ttname"><a href="system__test_8h.html#a47f200fae161f662e366d06b4d2ecff4">expect_gt_helper</a></div><div class="ttdeci">bool expect_gt_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00055">system_test.h:55</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a52fd809179f673370990e8f711d37fd3"><div class="ttname"><a href="system__test_8h.html#a52fd809179f673370990e8f711d37fd3">user_task_test</a></div><div class="ttdeci">auto user_task_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="user__task__test_8cpp_source.html#l00022">user_task_test.cpp:22</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a5b31dadbdb315ea840b8dc6a7cb2cf81"><div class="ttname"><a href="system__test_8h.html#a5b31dadbdb315ea840b8dc6a7cb2cf81">thread_group_system_test</a></div><div class="ttdeci">auto thread_group_system_test() -&gt; bool</div><div class="ttdoc">线程组系统测试入口</div><div class="ttdef"><b>Definition</b> <a href="thread__group__system__test_8cpp_source.html#l00243">thread_group_system_test.cpp:243</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a68e8bf69a874d175a5c112d92e3eaac1"><div class="ttname"><a href="system__test_8h.html#a68e8bf69a874d175a5c112d92e3eaac1">expect_ne_helper</a></div><div class="ttdeci">bool expect_ne_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00037">system_test.h:37</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a7c0a7b9c6c8ca59eaaa84173e5c002af"><div class="ttname"><a href="system__test_8h.html#a7c0a7b9c6c8ca59eaaa84173e5c002af">mutex_test</a></div><div class="ttdeci">auto mutex_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="mutex__test_8cpp_source.html#l00297">mutex_test.cpp:297</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a8027cdd5d224276fe32cfe407e4dfe88"><div class="ttname"><a href="system__test_8h.html#a8027cdd5d224276fe32cfe407e4dfe88">virtual_memory_test</a></div><div class="ttdeci">auto virtual_memory_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2virtual__memory__test_8cpp_source.html#l00029">virtual_memory_test.cpp:29</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a9836048479097cd2cad3669eccc57389"><div class="ttname"><a href="system__test_8h.html#a9836048479097cd2cad3669eccc57389">fatfs_system_test</a></div><div class="ttdeci">auto fatfs_system_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="fatfs__system__test_8cpp_source.html#l00016">fatfs_system_test.cpp:16</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_aa65c78c72f83432078d407f7b46440d4"><div class="ttname"><a href="system__test_8h.html#aa65c78c72f83432078d407f7b46440d4">expect_eq_helper</a></div><div class="ttdeci">bool expect_eq_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00019">system_test.h:19</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_ab1f7bcb3ad9778f98e5a6eb91aa56f2b"><div class="ttname"><a href="system__test_8h.html#ab1f7bcb3ad9778f98e5a6eb91aa56f2b">fifo_scheduler_test</a></div><div class="ttdeci">auto fifo_scheduler_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2fifo__scheduler__test_8cpp_source.html#l00328">fifo_scheduler_test.cpp:328</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_ac3069ba7e9bb7a60adb5c90069dc9c0b"><div class="ttname"><a href="system__test_8h.html#ac3069ba7e9bb7a60adb5c90069dc9c0b">cfs_scheduler_test</a></div><div class="ttdeci">auto cfs_scheduler_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2cfs__scheduler__test_8cpp_source.html#l00554">cfs_scheduler_test.cpp:554</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_ac61fbc90ca3cf0de62dcaa7fcfed07e0"><div class="ttname"><a href="system__test_8h.html#ac61fbc90ca3cf0de62dcaa7fcfed07e0">spinlock_test</a></div><div class="ttdeci">auto spinlock_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="system__test_2spinlock__test_8cpp_source.html#l00348">spinlock_test.cpp:348</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_aceed4ede7295e7c0cd9e82be71096ed2"><div class="ttname"><a href="system__test_8h.html#aceed4ede7295e7c0cd9e82be71096ed2">expect_lt_helper</a></div><div class="ttdeci">bool expect_lt_helper(const T1 &amp;val1, const T2 &amp;val2, const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00073">system_test.h:73</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_adcdd769af8aefa39375682eedd3cac7f"><div class="ttname"><a href="system__test_8h.html#adcdd769af8aefa39375682eedd3cac7f">memory_test</a></div><div class="ttdeci">auto memory_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="memory__test_8cpp_source.html#l00024">memory_test.cpp:24</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_ae49d3755a7181bd34a1c87abe708b4da"><div class="ttname"><a href="system__test_8h.html#ae49d3755a7181bd34a1c87abe708b4da">kernel_task_test</a></div><div class="ttdeci">auto kernel_task_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="kernel__task__test_8cpp_source.html#l00051">kernel_task_test.cpp:51</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_af9e5b0a761857519c43daef48527fdc5"><div class="ttname"><a href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5">TestThreadStatus</a></div><div class="ttdeci">TestThreadStatus</div><div class="ttdoc">测试线程运行状态</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00222">system_test.h:222</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_af9e5b0a761857519c43daef48527fdc5a2e1165dab7cbb5e985ea3b1e5d64f619"><div class="ttname"><a href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5a2e1165dab7cbb5e985ea3b1e5d64f619">TestThreadStatus::kPassed</a></div><div class="ttdeci">@ kPassed</div><div class="ttdoc">测试通过</div></div>
+<div class="ttc" id="asystem__test_8h_html_af9e5b0a761857519c43daef48527fdc5a2fc7fbf0d19294f85dd3880460dd3c0a"><div class="ttname"><a href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5a2fc7fbf0d19294f85dd3880460dd3c0a">TestThreadStatus::kRunning</a></div><div class="ttdeci">@ kRunning</div><div class="ttdoc">运行中</div></div>
+<div class="ttc" id="asystem__test_8h_html_af9e5b0a761857519c43daef48527fdc5a7f27861ff1d3f550c6aa77150d7edabd"><div class="ttname"><a href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5a7f27861ff1d3f550c6aa77150d7edabd">TestThreadStatus::kTimeout</a></div><div class="ttdeci">@ kTimeout</div><div class="ttdoc">超时未完成</div></div>
+<div class="ttc" id="asystem__test_8h_html_af9e5b0a761857519c43daef48527fdc5aa09be96128822643f3487a1415eb861c"><div class="ttname"><a href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5aa09be96128822643f3487a1415eb861c">TestThreadStatus::kPending</a></div><div class="ttdeci">@ kPending</div><div class="ttdoc">等待启动</div></div>
+<div class="ttc" id="asystem__test_8h_html_af9e5b0a761857519c43daef48527fdc5ab62fa3c9492b6dae76c23d6dfa466611"><div class="ttname"><a href="system__test_8h.html#af9e5b0a761857519c43daef48527fdc5ab62fa3c9492b6dae76c23d6dfa466611">TestThreadStatus::kFailed</a></div><div class="ttdeci">@ kFailed</div><div class="ttdoc">测试失败</div></div>
+<div class="ttc" id="asystem__test_8h_html_afe415420c72c400f3156b40cbd68c16f"><div class="ttname"><a href="system__test_8h.html#afe415420c72c400f3156b40cbd68c16f">ctor_dtor_test</a></div><div class="ttdeci">auto ctor_dtor_test() -&gt; bool</div><div class="ttdef"><b>Definition</b> <a href="ctor__dtor__test_8cpp_source.html#l00063">ctor_dtor_test.cpp:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

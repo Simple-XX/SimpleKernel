@@ -1,0 +1,7 @@
+<map id="ns16550a::Ns16550a::PutChar" name="ns16550a::Ns16550a::PutChar">
+<area shape="rect" id="Node000001" title="写入一个字符" alt="" coords="5,23,164,63"/>
+<area shape="rect" id="Node000002" href="$structMmioAccessor.html#acbb27077fc125776a50c812e11712195" title="Read from MMIO register." alt="" coords="213,5,371,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,31,199,27,199,32,165,36"/>
+<area shape="rect" id="Node000003" href="$structMmioAccessor.html#aa9979ffd2deb9589687e8d2bc3518287" title="Write to MMIO register." alt="" coords="212,55,372,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="165,50,199,54,198,59,164,55"/>
+</map>

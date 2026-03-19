@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ns16550a_2ecpp_0',['ns16550a.cpp',['../ns16550a_8cpp.html',1,'']]],
-  ['ns16550a_2eh_1',['ns16550a.h',['../ns16550a_8h.html',1,'']]]
+  ['ns16550a_2ehpp_0',['ns16550a.hpp',['../ns16550a_8hpp.html',1,'']]],
+  ['ns16550a_5fdriver_2ehpp_1',['ns16550a_driver.hpp',['../ns16550a__driver_8hpp.html',1,'']]]
 ];

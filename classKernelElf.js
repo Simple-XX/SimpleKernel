@@ -15,6 +15,6 @@ var classKernelElf =
     [ "elf_", "classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1", null ],
     [ "phdr_", "classKernelElf.html#a973d9505302b30ba3bdc0b69f6266caa", null ],
     [ "shdr_", "classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4", null ],
-    [ "strtab_", "classKernelElf.html#ad87a34471942192ac2c132356f6ea36b", null ],
-    [ "symtab_", "classKernelElf.html#a2e189a1bf1c110b2fb362b45f77224ab", null ]
+    [ "strtab", "classKernelElf.html#a8292f3a7f1e4b3651a4616c6374471a1", null ],
+    [ "symtab", "classKernelElf.html#af692f8d0c8daceba82d1f493959e0626", null ]
 ];

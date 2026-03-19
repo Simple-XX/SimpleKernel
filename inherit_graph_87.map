@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="5,55,128,80"/>
+<area shape="rect" id="Node000001" href="$classMockFs.html" title=" " alt="" coords="223,5,295,31"/>
+<area shape="poly" id="edge36_Node000000_Node000001" title=" " alt="" coords="130,49,222,24,224,30,131,54"/>
+<area shape="rect" id="Node000002" href="$classfatfs_1_1FatFsFileSystem.html" title="FatFS VFS 适配器" alt="" coords="176,55,343,80"/>
+<area shape="poly" id="edge37_Node000000_Node000002" title=" " alt="" coords="142,65,176,65,176,70,142,70"/>
+<area shape="rect" id="Node000003" href="$classramfs_1_1RamFs.html" title="ramfs 文件系统实现" alt="" coords="203,104,316,129"/>
+<area shape="poly" id="edge38_Node000000_Node000003" title=" " alt="" coords="131,81,209,101,208,106,129,86"/>
+</map>

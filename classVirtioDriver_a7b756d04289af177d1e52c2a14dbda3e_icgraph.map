@@ -1,0 +1,9 @@
+<map id="VirtioDriver::VirtioDriver" name="VirtioDriver::VirtioDriver">
+<area shape="rect" id="Node000001" title=" " alt="" coords="319,31,499,56"/>
+<area shape="rect" id="Node000002" href="$classVirtioDriver.html#a3cbbd67b9d07ab2974fb6d9f6c4db20f" title="返回驱动注册入口" alt="" coords="108,31,271,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="305,46,271,46,271,41,305,41"/>
+<area shape="rect" id="Node000003" href="$virtio__driver__test_8cpp.html#af5fbb3fc86c579110c146ef3aa631373" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="97,31,60,25,61,20,97,26"/>
+<area shape="rect" id="Node000004" href="$virtio__driver__test_8cpp.html#aaee49fb5f0c750315f9fe42a579b5da0" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="95,61,61,66,60,61,94,55"/>
+</map>

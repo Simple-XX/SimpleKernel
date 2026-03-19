@@ -34,5 +34,8 @@ var namespacecpu__io =
     [ "EnableInterrupt", "namespacecpu__io.html#afe7f925ac3cb632ed212166712288451", null ],
     [ "GetCurrentCoreId", "namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72", null ],
     [ "GetInterruptStatus", "namespacecpu__io.html#aaab46268534006b116de3e112c237f7f", null ],
-    [ "Pause", "namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b", null ]
+    [ "Mb", "namespacecpu__io.html#ac419b73e6532c3bed2479c93dff706cf", null ],
+    [ "Pause", "namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b", null ],
+    [ "Rmb", "namespacecpu__io.html#ac9fcdd47fa1ff396470a667dec3a1597", null ],
+    [ "Wmb", "namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb", null ]
 ];

@@ -1,0 +1,9 @@
+<map id="Ns16550aDriver::Probe" name="Ns16550aDriver::Probe">
+<area shape="rect" id="Node000001" title="初始化 NS16550A UART。" alt="" coords="5,70,177,95"/>
+<area shape="rect" id="Node000002" href="$classns16550a_1_1Ns16550a.html#a8e231f67c1fd54cbd7924d79f04eaa64" title="工厂方法：创建并初始化 NS16550A 驱动" alt="" coords="229,5,388,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,67,219,46,220,51,141,73"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="267,70,350,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,80,254,80,254,85,178,85"/>
+<area shape="rect" id="Node000004" href="$namespacemmio__helper.html#abef9cac26ccb76a6b4b911f8f1ccae76" title="从节点提取 MMIO base/size 并通过 VirtualMemory 映射该区域。" alt="" coords="225,119,392,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,93,239,114,238,119,147,98"/>
+</map>

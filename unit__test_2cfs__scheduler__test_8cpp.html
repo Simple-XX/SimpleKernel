@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/tests/unit_test/cfs_scheduler_test.cpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/tests/unit_test/cfs_scheduler_test.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,68 +96,127 @@ $(document).ready(function(){initNavTree('unit__test_2cfs__scheduler__test_8cpp.
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="cfs__scheduler_8hpp_source.html">cfs_scheduler.hpp</a>&quot;</code><br />
 <code>#include &lt;gtest/gtest.h&gt;</code><br />
-<code>#include &quot;sk_vector&quot;</code><br />
+<code>#include &quot;kstd_vector&quot;</code><br />
 <code>#include &quot;<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for cfs_scheduler_test.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp__incl.png" border="0" usemap="#a_2root_2tests_2unit__test_2cfs__scheduler__test_8cpp" alt=""/></div>
-<map name="a_2root_2tests_2unit__test_2cfs__scheduler__test_8cpp" id="a_2root_2tests_2unit__test_2cfs__scheduler__test_8cpp">
-<area shape="rect" title=" " alt="" coords="570,5,745,45"/>
-<area shape="rect" href="cfs__scheduler_8hpp.html" title=" " alt="" coords="339,93,477,119"/>
-<area shape="poly" title=" " alt="" coords="598,48,458,92,457,87,597,43"/>
-<area shape="rect" href="task__control__block_8hpp.html" title=" " alt="" coords="363,240,535,265"/>
-<area shape="poly" title=" " alt="" coords="667,45,675,76,680,115,676,156,670,176,659,194,640,208,611,221,537,240,536,235,609,216,638,204,655,190,665,174,671,155,674,115,669,77,661,46"/>
-<area shape="rect" title=" " alt="" coords="560,167,645,192"/>
-<area shape="poly" title=" " alt="" coords="653,47,614,154,609,153,648,45"/>
-<area shape="rect" title=" " alt="" coords="720,93,824,119"/>
-<area shape="poly" title=" " alt="" coords="687,43,745,83,742,88,684,48"/>
-<area shape="rect" title=" " alt="" coords="99,460,165,485"/>
-<area shape="poly" title=" " alt="" coords="339,114,260,120,174,131,97,147,67,157,46,169,26,186,15,204,9,225,8,251,8,327,10,347,17,366,40,401,70,429,101,451,98,455,67,433,36,404,12,369,5,349,3,327,3,251,4,224,10,202,22,183,42,164,65,152,95,142,173,126,260,115,338,108"/>
-<area shape="rect" href="scheduler__base_8hpp.html" title=" " alt="" coords="219,167,370,192"/>
-<area shape="poly" title=" " alt="" coords="391,121,326,162,323,157,388,116"/>
-<area shape="poly" title=" " alt="" coords="414,118,445,226,440,227,409,120"/>
-<area shape="rect" title=" " alt="" coords="445,167,536,192"/>
-<area shape="poly" title=" " alt="" coords="423,117,468,155,465,160,420,121"/>
-<area shape="rect" title=" " alt="" coords="56,167,195,192"/>
-<area shape="poly" title=" " alt="" coords="363,121,185,166,183,161,362,116"/>
-<area shape="poly" title=" " alt="" coords="440,116,559,159,557,164,438,121"/>
-<area shape="poly" title=" " alt="" coords="276,194,210,241,174,275,144,315,130,348,125,383,126,418,129,446,124,447,121,418,120,383,125,346,139,312,170,272,207,237,273,190"/>
-<area shape="rect" title=" " alt="" coords="926,460,997,485"/>
-<area shape="poly" title=" " alt="" coords="371,189,465,205,582,231,708,266,830,311,897,338,922,355,948,385,960,416,964,446,959,447,955,417,943,388,919,359,894,343,828,316,706,271,580,236,464,211,370,194"/>
-<area shape="poly" title=" " alt="" coords="321,190,413,232,411,237,318,194"/>
-<area shape="poly" title=" " alt="" coords="363,264,247,283,197,297,166,315,146,345,135,381,132,416,132,446,127,446,126,416,130,380,141,343,162,311,195,292,246,278,363,259"/>
-<area shape="poly" title=" " alt="" coords="536,256,623,267,723,290,774,307,825,328,873,354,918,385,942,414,956,445,952,448,937,417,914,389,871,358,823,333,773,312,721,295,622,273,535,261"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="453,313,529,339"/>
-<area shape="poly" title=" " alt="" coords="458,264,479,300,475,303,454,267"/>
-<area shape="rect" title=" " alt="" coords="553,313,609,339"/>
-<area shape="poly" title=" " alt="" coords="472,263,549,304,547,309,469,268"/>
-<area shape="rect" href="resource__id_8hpp.html" title=" " alt="" coords="176,313,301,339"/>
-<area shape="poly" title=" " alt="" coords="416,268,286,311,285,306,415,263"/>
-<area shape="poly" title=" " alt="" coords="466,341,294,414,179,458,177,453,292,410,464,336"/>
-<area shape="poly" title=" " alt="" coords="529,334,542,336,594,343,639,345,717,344,754,345,793,351,835,363,883,384,903,397,921,414,949,447,944,450,917,417,900,402,880,389,833,368,792,356,754,351,717,349,639,351,593,348,541,341,528,339"/>
-<area shape="rect" title=" " alt="" coords="688,387,755,412"/>
-<area shape="poly" title=" " alt="" coords="529,336,675,381,674,386,527,341"/>
-<area shape="rect" title=" " alt="" coords="779,387,848,412"/>
-<area shape="poly" title=" " alt="" coords="529,333,542,336,765,384,764,389,541,341,528,339"/>
-<area shape="rect" title=" " alt="" coords="343,460,407,485"/>
-<area shape="poly" title=" " alt="" coords="482,341,441,388,393,450,389,447,437,385,478,337"/>
-<area shape="rect" title=" " alt="" coords="435,460,499,485"/>
-<area shape="poly" title=" " alt="" coords="481,340,463,361,449,388,447,402,448,418,457,447,452,448,442,419,441,402,444,386,459,358,477,337"/>
-<area shape="rect" title=" " alt="" coords="710,460,834,485"/>
-<area shape="poly" title=" " alt="" coords="529,334,542,336,614,341,710,345,758,348,801,356,837,367,862,385,868,395,869,406,858,425,837,442,813,456,810,452,834,438,854,422,864,405,863,397,858,388,835,372,800,361,757,354,709,350,614,347,541,341,528,339"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="459,387,664,412"/>
-<area shape="poly" title=" " alt="" coords="504,337,542,375,538,379,500,341"/>
-<area shape="poly" title=" " alt="" coords="493,415,179,466,179,461,492,409"/>
-<area shape="poly" title=" " alt="" coords="626,409,913,460,912,465,625,415"/>
-<area shape="poly" title=" " alt="" coords="532,415,419,457,417,453,530,410"/>
-<area shape="poly" title=" " alt="" coords="548,414,495,454,492,449,545,410"/>
-<area shape="poly" title=" " alt="" coords="596,409,726,453,724,458,594,415"/>
-<area shape="rect" title=" " alt="" coords="530,460,593,485"/>
-<area shape="poly" title=" " alt="" coords="564,412,564,446,559,446,559,412"/>
-<area shape="poly" title=" " alt="" coords="228,341,185,388,146,449,142,447,181,385,224,337"/>
-<area shape="rect" title=" " alt="" coords="195,387,282,412"/>
-<area shape="poly" title=" " alt="" coords="241,339,241,373,236,373,236,339"/>
+<div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2tests_2unit__test_2cfs__scheduler__test_8cpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2tests_2unit__test_2cfs__scheduler__test_8cpp" id="a_2workspaces_2SimpleKernel_2tests_2unit__test_2cfs__scheduler__test_8cpp">
+<area shape="rect" title=" " alt="" coords="1146,5,1358,60"/>
+<area shape="rect" href="cfs__scheduler_8hpp.html" title=" " alt="" coords="664,108,803,133"/>
+<area shape="poly" title=" " alt="" coords="1146,54,816,108,815,103,1145,49"/>
+<area shape="rect" href="task__control__block_8hpp.html" title=" " alt="" coords="1111,255,1283,280"/>
+<area shape="poly" title=" " alt="" coords="1248,61,1236,109,1205,242,1200,241,1231,107,1243,60"/>
+<area shape="rect" title=" " alt="" coords="1245,108,1349,133"/>
+<area shape="poly" title=" " alt="" coords="1268,59,1287,95,1283,97,1263,61"/>
+<area shape="rect" title=" " alt="" coords="1373,108,1472,133"/>
+<area shape="poly" title=" " alt="" coords="1305,58,1389,99,1386,104,1303,62"/>
+<area shape="rect" title=" " alt="" coords="1061,181,1171,207"/>
+<area shape="poly" title=" " alt="" coords="795,131,1048,177,1047,183,794,136"/>
+<area shape="rect" title=" " alt="" coords="895,621,964,647"/>
+<area shape="poly" title=" " alt="" coords="664,130,596,143,560,153,527,167,498,185,474,207,459,234,453,266,453,342,457,387,464,405,478,425,510,460,540,485,570,504,601,517,669,540,754,571,821,596,882,616,881,621,819,601,752,576,668,545,599,522,568,508,537,489,506,464,474,428,459,407,451,388,448,342,448,266,454,232,470,204,494,181,525,163,559,148,595,138,663,125"/>
+<area shape="rect" title=" " alt="" coords="1247,695,1313,720"/>
+<area shape="poly" title=" " alt="" coords="664,125,556,127,432,136,317,154,273,167,242,184,223,201,213,219,209,239,208,266,208,562,213,594,227,614,249,627,278,633,349,636,388,638,427,644,500,656,597,667,830,684,1233,702,1233,707,830,689,596,672,499,661,426,649,387,643,349,641,277,638,247,632,224,618,208,596,203,562,203,266,204,239,208,217,219,198,238,179,271,162,316,149,431,131,556,122,664,119"/>
+<area shape="rect" href="kernel__config_8hpp.html" title=" " alt="" coords="32,181,168,207"/>
+<area shape="poly" title=" " alt="" coords="664,132,187,184,182,185,181,179,186,179,664,126"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1024,475,1141,500"/>
+<area shape="poly" title=" " alt="" coords="747,131,858,239,1014,400,1067,462,1063,465,1010,403,855,243,744,135"/>
+<area shape="rect" href="scheduler__base_8hpp.html" title=" " alt="" coords="253,181,403,207"/>
+<area shape="poly" title=" " alt="" coords="669,136,407,182,406,176,668,131"/>
+<area shape="poly" title=" " alt="" coords="799,131,892,151,993,179,1050,204,1156,247,1154,252,1048,209,991,184,890,156,798,136"/>
+<area shape="rect" title=" " alt="" coords="347,695,418,720"/>
+<area shape="poly" title=" " alt="" coords="83,209,57,229,33,256,13,295,8,339,8,562,10,574,17,585,44,608,83,628,132,647,240,676,334,695,333,701,239,681,130,652,81,633,41,612,13,589,5,576,3,562,3,339,7,294,28,253,53,225,80,205"/>
+<area shape="rect" href="project__config_8h.html" title=" " alt="" coords="43,255,168,280"/>
+<area shape="poly" title=" " alt="" coords="104,207,106,241,101,241,98,207"/>
+<area shape="poly" title=" " alt="" coords="1137,498,1183,516,1205,529,1225,546,1248,578,1264,615,1280,680,1275,681,1259,616,1243,581,1221,550,1202,534,1180,521,1135,503"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="1286,548,1362,573"/>
+<area shape="poly" title=" " alt="" coords="1122,497,1273,542,1272,547,1121,503"/>
+<area shape="rect" title=" " alt="" coords="1041,621,1108,647"/>
+<area shape="poly" title=" " alt="" coords="1085,501,1079,608,1073,607,1079,500"/>
+<area shape="rect" title=" " alt="" coords="1112,548,1211,573"/>
+<area shape="poly" title=" " alt="" coords="1097,498,1140,537,1137,541,1094,502"/>
+<area shape="rect" title=" " alt="" coords="904,548,1037,573"/>
+<area shape="poly" title=" " alt="" coords="1066,502,1002,543,999,538,1063,498"/>
+<area shape="rect" title=" " alt="" coords="784,548,880,573"/>
+<area shape="poly" title=" " alt="" coords="1043,503,887,547,885,542,1042,497"/>
+<area shape="poly" title=" " alt="" coords="1286,571,978,627,977,621,1285,566"/>
+<area shape="poly" title=" " alt="" coords="1323,575,1290,682,1285,681,1318,573"/>
+<area shape="poly" title=" " alt="" coords="1304,576,1225,613,1174,633,1121,649,1059,661,977,671,780,688,432,707,432,701,780,682,977,666,1058,655,1119,644,1172,628,1223,608,1302,571"/>
+<area shape="poly" title=" " alt="" coords="1286,575,1122,622,1121,617,1285,570"/>
+<area shape="rect" title=" " alt="" coords="1644,695,1708,720"/>
+<area shape="poly" title=" " alt="" coords="1362,563,1593,589,1704,605,1740,613,1758,619,1764,629,1765,640,1755,659,1737,676,1714,690,1711,686,1733,672,1751,656,1760,639,1759,631,1754,623,1739,618,1703,611,1593,595,1362,569"/>
+<area shape="rect" title=" " alt="" coords="1732,695,1796,720"/>
+<area shape="poly" title=" " alt="" coords="1362,563,1605,589,1722,605,1761,612,1779,619,1787,634,1788,651,1779,683,1774,682,1783,651,1782,636,1776,623,1759,617,1721,610,1604,594,1362,568"/>
+<area shape="rect" title=" " alt="" coords="1821,695,1945,720"/>
+<area shape="poly" title=" " alt="" coords="1363,563,1607,587,1731,603,1801,619,1822,632,1841,648,1869,681,1865,685,1837,652,1819,636,1799,624,1730,608,1606,592,1362,568"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="1539,621,1744,647"/>
+<area shape="poly" title=" " alt="" coords="1363,568,1578,616,1577,621,1362,573"/>
+<area shape="poly" title=" " alt="" coords="1584,649,1327,699,1326,694,1583,644"/>
+<area shape="poly" title=" " alt="" coords="1538,644,432,706,432,701,1538,638"/>
+<area shape="poly" title=" " alt="" coords="1649,646,1667,681,1662,683,1645,648"/>
+<area shape="poly" title=" " alt="" coords="1662,644,1734,685,1731,690,1660,649"/>
+<area shape="poly" title=" " alt="" coords="1681,644,1831,688,1829,693,1679,649"/>
+<area shape="rect" title=" " alt="" coords="1557,695,1619,720"/>
+<area shape="poly" title=" " alt="" coords="1635,649,1607,685,1603,682,1630,645"/>
+<area shape="poly" title=" " alt="" coords="329,207,325,255,324,329,332,415,341,458,354,499,376,549,398,587,429,616,474,644,519,656,598,667,817,684,1233,702,1232,707,817,690,597,672,518,662,472,649,425,621,394,590,371,552,350,501,336,459,326,415,319,329,320,255,324,207"/>
+<area shape="poly" title=" " alt="" coords="310,209,267,239,217,286,194,314,175,344,162,378,157,413,157,562,158,588,162,608,171,626,188,645,222,668,260,685,299,695,334,700,333,706,297,700,258,690,219,673,185,649,167,629,157,610,153,589,152,562,152,412,157,376,170,342,189,310,213,282,264,235,307,205"/>
+<area shape="poly" title=" " alt="" coords="404,199,1098,255,1097,261,403,204"/>
+<area shape="poly" title=" " alt="" coords="1284,265,1393,268,1516,276,1574,284,1626,294,1670,308,1700,326,1718,345,1725,365,1727,413,1727,489,1724,536,1717,555,1701,575,1680,593,1659,603,1620,612,1578,614,1527,624,1325,692,1323,687,1526,619,1577,609,1619,607,1658,598,1677,588,1697,571,1712,553,1719,535,1721,489,1721,413,1720,366,1713,348,1697,330,1667,313,1625,300,1573,289,1515,282,1393,273,1283,270"/>
+<area shape="poly" title=" " alt="" coords="1111,277,942,293,737,318,635,335,543,355,466,378,411,404,369,437,356,455,346,474,338,518,341,573,356,632,374,681,369,683,350,634,336,574,333,518,341,472,351,452,365,433,408,399,464,373,542,350,634,330,736,313,942,288,1111,272"/>
+<area shape="poly" title=" " alt="" coords="1221,278,1318,334,1366,369,1396,400,1407,427,1411,450,1407,474,1396,501,1379,524,1359,542,1355,538,1375,521,1391,499,1401,473,1405,450,1402,428,1391,403,1363,373,1315,339,1218,282"/>
+<area shape="rect" title=" " alt="" coords="1425,328,1511,353"/>
+<area shape="poly" title=" " alt="" coords="1241,277,1412,322,1411,327,1240,283"/>
+<area shape="rect" title=" " alt="" coords="1535,328,1686,353"/>
+<area shape="poly" title=" " alt="" coords="1264,277,1531,323,1530,328,1263,283"/>
+<area shape="rect" title=" " alt="" coords="944,401,1000,427"/>
+<area shape="poly" title=" " alt="" coords="1181,282,1105,330,1003,396,1000,392,1103,326,1178,278"/>
+<area shape="rect" href="file__descriptor_8hpp.html" title=" " alt="" coords="747,328,888,353"/>
+<area shape="poly" title=" " alt="" coords="1137,283,893,328,892,323,1136,277"/>
+<area shape="rect" href="resource__id_8hpp.html" title=" " alt="" coords="1456,475,1581,500"/>
+<area shape="poly" title=" " alt="" coords="1241,277,1297,297,1356,326,1401,358,1443,395,1503,462,1499,465,1439,399,1398,362,1353,330,1295,302,1239,283"/>
+<area shape="rect" href="task__fsm_8hpp.html" title=" " alt="" coords="1115,328,1226,353"/>
+<area shape="poly" title=" " alt="" coords="1195,281,1182,316,1177,314,1190,279"/>
+<area shape="poly" title=" " alt="" coords="831,351,874,388,902,408,933,424,971,438,1005,447,1064,452,1124,456,1159,462,1200,472,1228,484,1256,498,1292,508,1323,512,1351,521,1364,531,1377,547,1385,566,1386,586,1380,606,1370,625,1340,660,1309,688,1305,684,1337,657,1365,622,1375,604,1381,585,1380,567,1372,549,1361,535,1349,526,1322,517,1291,513,1254,502,1226,489,1198,477,1158,467,1124,461,1063,458,1004,452,970,443,931,429,899,412,870,392,827,355"/>
+<area shape="poly" title=" " alt="" coords="747,352,632,368,504,396,447,414,401,435,371,459,363,472,360,486,360,562,366,627,378,681,373,682,361,628,355,562,355,486,358,470,367,456,399,431,445,409,503,391,631,363,746,347"/>
+<area shape="poly" title=" " alt="" coords="843,351,935,393,933,398,841,356"/>
+<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="497,548,607,573"/>
+<area shape="poly" title=" " alt="" coords="801,356,728,406,638,477,573,540,570,536,634,473,725,402,798,351"/>
+<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="765,401,869,427"/>
+<area shape="poly" title=" " alt="" coords="820,354,820,388,815,388,815,354"/>
+<area shape="rect" href="vfs_8hpp.html" title=" " alt="" coords="489,401,559,427"/>
+<area shape="poly" title=" " alt="" coords="771,356,573,404,572,398,770,351"/>
+<area shape="poly" title=" " alt="" coords="592,571,721,606,883,644,1077,677,1233,698,1232,703,1076,682,882,649,719,611,590,576"/>
+<area shape="rect" title=" " alt="" coords="511,621,593,647"/>
+<area shape="poly" title=" " alt="" coords="555,574,555,608,549,608,549,574"/>
+<area shape="poly" title=" " alt="" coords="808,429,763,476,722,528,692,571,659,610,607,649,563,671,517,686,432,704,431,698,515,681,561,666,604,644,655,606,688,567,718,524,759,473,804,425"/>
+<area shape="poly" title=" " alt="" coords="861,424,1027,468,1026,474,859,429"/>
+<area shape="poly" title=" " alt="" coords="870,421,1035,449,1154,472,1218,501,1292,539,1290,544,1216,506,1153,477,1034,454,869,426"/>
+<area shape="poly" title=" " alt="" coords="808,429,791,449,777,476,760,527,761,549,774,571,785,578,808,586,876,601,1028,624,1027,629,875,606,807,591,783,583,770,575,756,550,755,527,772,474,787,446,804,425"/>
+<area shape="poly" title=" " alt="" coords="870,420,921,437,945,453,964,473,969,486,969,498,954,519,926,535,894,547,892,542,924,530,950,515,964,497,964,487,959,476,941,457,919,442,869,425"/>
+<area shape="poly" title=" " alt="" coords="788,429,737,450,681,477,626,510,580,542,577,538,623,506,679,472,735,445,786,424"/>
+<area shape="rect" title=" " alt="" coords="787,475,867,500"/>
+<area shape="poly" title=" " alt="" coords="822,427,826,461,821,462,816,427"/>
+<area shape="rect" title=" " alt="" coords="891,475,949,500"/>
+<area shape="poly" title=" " alt="" coords="835,424,893,464,890,469,832,429"/>
+<area shape="rect" href="vfs__types_8hpp.html" title=" " alt="" coords="395,475,509,500"/>
+<area shape="poly" title=" " alt="" coords="514,429,475,467,472,463,510,425"/>
+<area shape="poly" title=" " alt="" coords="454,500,455,530,460,570,474,611,486,629,500,645,516,652,541,660,615,672,827,690,1059,699,1233,703,1233,708,1059,705,827,695,615,678,539,665,514,657,497,649,481,633,469,613,455,571,449,531,449,500"/>
+<area shape="poly" title=" " alt="" coords="451,501,393,682,388,680,446,500"/>
+<area shape="poly" title=" " alt="" coords="470,498,526,538,523,542,467,502"/>
+<area shape="poly" title=" " alt="" coords="1512,502,1480,549,1464,578,1454,602,1442,625,1420,649,1375,678,1328,697,1326,692,1372,673,1417,645,1438,622,1450,600,1459,576,1475,547,1508,499"/>
+<area shape="rect" title=" " alt="" coords="1489,548,1575,573"/>
+<area shape="poly" title=" " alt="" coords="1523,500,1530,534,1525,535,1518,501"/>
+<area shape="rect" title=" " alt="" coords="1599,548,1686,573"/>
+<area shape="poly" title=" " alt="" coords="1540,498,1612,539,1609,543,1537,502"/>
+<area shape="poly" title=" " alt="" coords="1159,355,1137,376,1116,403,1101,433,1091,462,1086,460,1096,431,1111,400,1133,373,1155,351"/>
+<area shape="rect" title=" " alt="" coords="1125,401,1205,427"/>
+<area shape="poly" title=" " alt="" coords="1172,354,1170,388,1165,388,1167,353"/>
+<area shape="rect" href="task__messages_8hpp.html" title=" " alt="" coords="1230,401,1381,427"/>
+<area shape="poly" title=" " alt="" coords="1194,351,1272,392,1270,397,1191,356"/>
+<area shape="poly" title=" " alt="" coords="1340,424,1472,468,1470,473,1339,429"/>
+<area shape="rect" title=" " alt="" coords="1267,475,1381,500"/>
+<area shape="poly" title=" " alt="" coords="1311,426,1320,461,1315,462,1306,428"/>
 </map>
 </div>
 </div>
@@ -232,66 +291,68 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   15</span> </div>
 <div class="line"><span class="lineno">   16</span>  <span class="comment">// 创建测试任务</span></div>
 <div class="line"><span class="lineno">   17</span>  <a class="code hl_struct" href="structTaskControlBlock.html">TaskControlBlock</a> task1(<span class="stringliteral">&quot;Task1&quot;</span>, 1, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   18</span>  task1.status = <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863">TaskStatus::kReady</a>;</div>
+<div class="line"><span class="lineno">   18</span>  task1.status = <a class="code hl_variable" href="namespaceTaskStatusId.html#a48d6295edc2081c1659fa432b49c47cc">TaskStatus::kReady</a>;</div>
 <div class="line"><span class="lineno">   19</span>  task1.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
 <div class="line"><span class="lineno">   20</span>  task1.sched_data.cfs.vruntime = 0;</div>
 <div class="line"><span class="lineno">   21</span> </div>
 <div class="line"><span class="lineno">   22</span>  <a class="code hl_struct" href="structTaskControlBlock.html">TaskControlBlock</a> task2(<span class="stringliteral">&quot;Task2&quot;</span>, 2, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   23</span>  task2.status = <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863">TaskStatus::kReady</a>;</div>
+<div class="line"><span class="lineno">   23</span>  task2.status = <a class="code hl_variable" href="namespaceTaskStatusId.html#a48d6295edc2081c1659fa432b49c47cc">TaskStatus::kReady</a>;</div>
 <div class="line"><span class="lineno">   24</span>  task2.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
 <div class="line"><span class="lineno">   25</span>  task2.sched_data.cfs.vruntime = 0;</div>
 <div class="line"><span class="lineno">   26</span> </div>
 <div class="line"><span class="lineno">   27</span>  <span class="comment">// 测试空队列</span></div>
 <div class="line"><span class="lineno">   28</span>  <a class="code hl_define" href="system__test_8h.html#a00a870caa41dce04e9db04bd0c2fca57">EXPECT_TRUE</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf">IsEmpty</a>());</div>
 <div class="line"><span class="lineno">   29</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 0);</div>
-<div class="line"><span class="lineno">   30</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   30</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   31</span> </div>
 <div class="line"><span class="lineno">   32</span>  <span class="comment">// 加入任务</span></div>
-<div class="line"><span class="lineno">   33</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">   33</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
 <div class="line"><span class="lineno">   34</span>  <a class="code hl_define" href="system__test_8h.html#aa627ee666d1479db9959f3423adc3549">EXPECT_FALSE</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf">IsEmpty</a>());</div>
 <div class="line"><span class="lineno">   35</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 1);</div>
 <div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">   37</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">   38</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 2);</div>
 <div class="line"><span class="lineno">   39</span> </div>
 <div class="line"><span class="lineno">   40</span>  <span class="comment">// 选择任务（vruntime 相同时，按入队顺序）</span></div>
-<div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span>* next1 = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span>* next1 = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">   42</span>  <a class="code hl_define" href="system__test_8h.html#a40d1cd7aa0dc349c5fe213484073bfaf">EXPECT_NE</a>(next1, <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   43</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 1);</div>
 <div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <span class="keyword">auto</span>* next2 = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keyword">auto</span>* next2 = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">   46</span>  <a class="code hl_define" href="system__test_8h.html#a40d1cd7aa0dc349c5fe213484073bfaf">EXPECT_NE</a>(next2, <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   47</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 0);</div>
 <div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   49</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   50</span>  <a class="code hl_define" href="system__test_8h.html#a00a870caa41dce04e9db04bd0c2fca57">EXPECT_TRUE</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf">IsEmpty</a>());</div>
 <div class="line"><span class="lineno">   51</span>}</div>
-<div class="ttc" id="aclassCfsScheduler_html"><div class="ttname"><a href="classCfsScheduler.html">CfsScheduler</a></div><div class="ttdoc">CFS (Completely Fair Scheduler) 调度器</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00028">cfs_scheduler.hpp:28</a></div></div>
-<div class="ttc" id="aclassCfsScheduler_html_a01d33013d4c2c345cddd2173aee478b7"><div class="ttname"><a href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">CfsScheduler::Enqueue</a></div><div class="ttdeci">void Enqueue(TaskControlBlock *task) override</div><div class="ttdoc">将任务加入就绪队列</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00054">cfs_scheduler.hpp:54</a></div></div>
-<div class="ttc" id="aclassCfsScheduler_html_a60e123dead4f8e6e313a422795a71c84"><div class="ttname"><a href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">CfsScheduler::PickNext</a></div><div class="ttdeci">TaskControlBlock * PickNext() override</div><div class="ttdoc">选择下一个要运行的任务</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00116">cfs_scheduler.hpp:116</a></div></div>
-<div class="ttc" id="aclassCfsScheduler_html_ab72fdf9094d6feda4332bb9ac92d42bf"><div class="ttname"><a href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf">CfsScheduler::IsEmpty</a></div><div class="ttdeci">auto IsEmpty() const -&gt; bool override</div><div class="ttdoc">判断队列是否为空</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00145">cfs_scheduler.hpp:145</a></div></div>
-<div class="ttc" id="aclassCfsScheduler_html_ad4026ee603e784fa319c1968b97cea2b"><div class="ttname"><a href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a></div><div class="ttdeci">static constexpr uint32_t kDefaultWeight</div><div class="ttdoc">默认权重 (对应 nice 值为 0)</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00031">cfs_scheduler.hpp:31</a></div></div>
-<div class="ttc" id="aclassCfsScheduler_html_ad9e2cc9b7165c92a7ded25f193debed9"><div class="ttname"><a href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">CfsScheduler::GetQueueSize</a></div><div class="ttdeci">auto GetQueueSize() const -&gt; size_t override</div><div class="ttdoc">获取就绪队列大小</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00139">cfs_scheduler.hpp:139</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html"><div class="ttname"><a href="structTaskControlBlock.html">TaskControlBlock</a></div><div class="ttdoc">任务控制块，管理进程/线程的核心数据结构</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00080">task_control_block.hpp:80</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a00a870caa41dce04e9db04bd0c2fca57"><div class="ttname"><a href="system__test_8h.html#a00a870caa41dce04e9db04bd0c2fca57">EXPECT_TRUE</a></div><div class="ttdeci">#define EXPECT_TRUE(cond, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00127">system_test.h:127</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a40d1cd7aa0dc349c5fe213484073bfaf"><div class="ttname"><a href="system__test_8h.html#a40d1cd7aa0dc349c5fe213484073bfaf">EXPECT_NE</a></div><div class="ttdeci">#define EXPECT_NE(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00107">system_test.h:107</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_aa627ee666d1479db9959f3423adc3549"><div class="ttname"><a href="system__test_8h.html#aa627ee666d1479db9959f3423adc3549">EXPECT_FALSE</a></div><div class="ttdeci">#define EXPECT_FALSE(cond, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00133">system_test.h:133</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_abfc1b6826e51b93338e02cabfa5cfcd1"><div class="ttname"><a href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a></div><div class="ttdeci">#define EXPECT_EQ(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00102">system_test.h:102</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a7f1984e27dfac1310a3ac5c981abf863">kReady</a></div><div class="ttdeci">@ kReady</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00050">task_control_block.hpp:50</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html"><div class="ttname"><a href="classCfsScheduler.html">CfsScheduler</a></div><div class="ttdoc">CFS (Completely Fair Scheduler) 调度器</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00029">cfs_scheduler.hpp:29</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_a8f4c08f61512a799fc059e4e50adc2ea"><div class="ttname"><a href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">CfsScheduler::PickNext</a></div><div class="ttdeci">auto PickNext() -&gt; TaskControlBlock *override</div><div class="ttdoc">选择下一个要运行的任务</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00103">cfs_scheduler.hpp:103</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_a9de164228221ab5a8e15184998e17062"><div class="ttname"><a href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">CfsScheduler::Enqueue</a></div><div class="ttdeci">auto Enqueue(TaskControlBlock *task) -&gt; void override</div><div class="ttdoc">将任务加入就绪队列</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00058">cfs_scheduler.hpp:58</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_ab72fdf9094d6feda4332bb9ac92d42bf"><div class="ttname"><a href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf">CfsScheduler::IsEmpty</a></div><div class="ttdeci">auto IsEmpty() const -&gt; bool override</div><div class="ttdoc">判断队列是否为空</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00134">cfs_scheduler.hpp:134</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_ad4026ee603e784fa319c1968b97cea2b"><div class="ttname"><a href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a></div><div class="ttdeci">static constexpr uint32_t kDefaultWeight</div><div class="ttdoc">默认权重 (对应 nice 值为 0)</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00032">cfs_scheduler.hpp:32</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_ad9e2cc9b7165c92a7ded25f193debed9"><div class="ttname"><a href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">CfsScheduler::GetQueueSize</a></div><div class="ttdeci">auto GetQueueSize() const -&gt; size_t override</div><div class="ttdoc">获取就绪队列大小</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00126">cfs_scheduler.hpp:126</a></div></div>
+<div class="ttc" id="anamespaceTaskStatusId_html_a48d6295edc2081c1659fa432b49c47cc"><div class="ttname"><a href="namespaceTaskStatusId.html#a48d6295edc2081c1659fa432b49c47cc">TaskStatusId::kReady</a></div><div class="ttdeci">constexpr etl::fsm_state_id_t kReady</div><div class="ttdef"><b>Definition</b> <a href="task__fsm_8hpp_source.html#l00015">task_fsm.hpp:15</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html"><div class="ttname"><a href="structTaskControlBlock.html">TaskControlBlock</a></div><div class="ttdoc">任务控制块，管理进程/线程的核心数据结构</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00121">task_control_block.hpp:121</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a00a870caa41dce04e9db04bd0c2fca57"><div class="ttname"><a href="system__test_8h.html#a00a870caa41dce04e9db04bd0c2fca57">EXPECT_TRUE</a></div><div class="ttdeci">#define EXPECT_TRUE(cond, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00156">system_test.h:156</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a40d1cd7aa0dc349c5fe213484073bfaf"><div class="ttname"><a href="system__test_8h.html#a40d1cd7aa0dc349c5fe213484073bfaf">EXPECT_NE</a></div><div class="ttdeci">#define EXPECT_NE(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00131">system_test.h:131</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_aa627ee666d1479db9959f3423adc3549"><div class="ttname"><a href="system__test_8h.html#aa627ee666d1479db9959f3423adc3549">EXPECT_FALSE</a></div><div class="ttdeci">#define EXPECT_FALSE(cond, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00162">system_test.h:162</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_abfc1b6826e51b93338e02cabfa5cfcd1"><div class="ttname"><a href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a></div><div class="ttdeci">#define EXPECT_EQ(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00126">system_test.h:126</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_a0abce9590f1914a15ff917017a5a4fb0_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_a0abce9590f1914a15ff917017a5a4fb0_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_a0abce9590f1914a15ff917017a5a4fb0_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_a0abce9590f1914a15ff917017a5a4fb0_cgraph">
 <area shape="rect" title=" " alt="" coords="5,80,60,105"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="126,5,297,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="126,5,297,31"/>
 <area shape="poly" title=" " alt="" coords="48,77,74,58,107,40,126,32,128,37,109,44,77,62,51,82"/>
 <area shape="rect" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9" title="获取就绪队列大小" alt="" coords="108,55,315,80"/>
 <area shape="poly" title=" " alt="" coords="60,86,108,79,109,85,61,92"/>
 <area shape="rect" href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf" title="判断队列是否为空" alt="" coords="127,104,295,129"/>
 <area shape="poly" title=" " alt="" coords="61,94,114,101,113,106,60,99"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="125,153,298,179"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="125,153,298,179"/>
 <area shape="poly" title=" " alt="" coords="52,103,78,121,109,138,133,147,131,152,107,143,75,126,49,108"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="363,5,439,31"/>
+<area shape="poly" title=" " alt="" coords="297,15,349,15,349,21,297,21"/>
 </map>
 </div>
 
@@ -331,7 +392,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  240</span>  task.sched_data.cfs.weight = 0;  <span class="comment">// 权重未设置</span></div>
 <div class="line"><span class="lineno">  241</span>  task.sched_data.cfs.vruntime = 0;</div>
 <div class="line"><span class="lineno">  242</span> </div>
-<div class="line"><span class="lineno">  243</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task);</div>
+<div class="line"><span class="lineno">  243</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task);</div>
 <div class="line"><span class="lineno">  244</span> </div>
 <div class="line"><span class="lineno">  245</span>  <span class="comment">// 权重应该被设置为默认值</span></div>
 <div class="line"><span class="lineno">  246</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(task.sched_data.cfs.weight, <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>);</div>
@@ -342,8 +403,10 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_aa9f896c4b0465ee3357e86b777506bf1_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_aa9f896c4b0465ee3357e86b777506bf1_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_aa9f896c4b0465ee3357e86b777506bf1_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_aa9f896c4b0465ee3357e86b777506bf1_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,60,31"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="108,5,279,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="108,5,279,31"/>
 <area shape="poly" title=" " alt="" coords="60,15,94,15,94,21,60,21"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="327,5,403,31"/>
+<area shape="poly" title=" " alt="" coords="279,15,313,15,313,21,279,21"/>
 </map>
 </div>
 
@@ -391,36 +454,38 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  195</span>  task3.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
 <div class="line"><span class="lineno">  196</span>  task3.sched_data.cfs.vruntime = 300;</div>
 <div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
-<div class="line"><span class="lineno">  199</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
-<div class="line"><span class="lineno">  200</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task3);</div>
+<div class="line"><span class="lineno">  198</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">  199</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  200</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task3);</div>
 <div class="line"><span class="lineno">  201</span> </div>
 <div class="line"><span class="lineno">  202</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 3);</div>
 <div class="line"><span class="lineno">  203</span> </div>
 <div class="line"><span class="lineno">  204</span>  <span class="comment">// 移除中间的任务</span></div>
-<div class="line"><span class="lineno">  205</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b">Dequeue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  205</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a43333e0f013127e182ca764171403d76">Dequeue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">  206</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 2);</div>
 <div class="line"><span class="lineno">  207</span> </div>
 <div class="line"><span class="lineno">  208</span>  <span class="comment">// 验证只剩下 task1 和 task3</span></div>
-<div class="line"><span class="lineno">  209</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), &amp;task1);</div>
-<div class="line"><span class="lineno">  210</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), &amp;task3);</div>
-<div class="line"><span class="lineno">  211</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  209</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), &amp;task1);</div>
+<div class="line"><span class="lineno">  210</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), &amp;task3);</div>
+<div class="line"><span class="lineno">  211</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  212</span>}</div>
-<div class="ttc" id="aclassCfsScheduler_html_a9d25e904bd65f8ce0176ead3656ded8b"><div class="ttname"><a href="classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b">CfsScheduler::Dequeue</a></div><div class="ttdeci">void Dequeue(TaskControlBlock *task) override</div><div class="ttdoc">从就绪队列中移除指定任务</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00080">cfs_scheduler.hpp:80</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_a43333e0f013127e182ca764171403d76"><div class="ttname"><a href="classCfsScheduler.html#a43333e0f013127e182ca764171403d76">CfsScheduler::Dequeue</a></div><div class="ttdeci">auto Dequeue(TaskControlBlock *task) -&gt; void override</div><div class="ttdoc">从就绪队列中移除指定任务</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00085">cfs_scheduler.hpp:85</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_aed73b95306c5e8140dfb63984a324474_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_aed73b95306c5e8140dfb63984a324474_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_aed73b95306c5e8140dfb63984a324474_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_aed73b95306c5e8140dfb63984a324474_cgraph">
 <area shape="rect" title=" " alt="" coords="5,80,60,105"/>
-<area shape="rect" href="classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b" title="从就绪队列中移除指定任务" alt="" coords="125,5,298,31"/>
+<area shape="rect" href="classCfsScheduler.html#a43333e0f013127e182ca764171403d76" title="从就绪队列中移除指定任务" alt="" coords="125,5,298,31"/>
 <area shape="poly" title=" " alt="" coords="48,77,74,58,107,40,126,32,128,37,109,44,77,62,51,82"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="126,55,297,80"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="126,55,297,80"/>
 <area shape="poly" title=" " alt="" coords="60,86,112,79,113,84,61,92"/>
 <area shape="rect" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9" title="获取就绪队列大小" alt="" coords="108,104,315,129"/>
 <area shape="poly" title=" " alt="" coords="61,94,104,99,103,105,60,99"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="125,153,298,179"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="125,153,298,179"/>
 <area shape="poly" title=" " alt="" coords="52,103,78,121,109,138,133,147,131,152,107,143,75,126,49,108"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="363,55,439,80"/>
+<area shape="poly" title=" " alt="" coords="297,65,349,65,349,70,297,70"/>
 </map>
 </div>
 
@@ -471,9 +536,9 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  400</span>  <a class="code hl_define" href="system__test_8h.html#aab850358cd9bdeb95d390ab0918461da">EXPECT_GT</a>(task.sched_data.cfs.vruntime, 0);</div>
 <div class="line"><span class="lineno">  401</span>  <a class="code hl_define" href="system__test_8h.html#a45ed0feb3ca6ecf81f5798108eb73227">EXPECT_LT</a>(task.sched_data.cfs.vruntime, 10);  <span class="comment">// 应该很小</span></div>
 <div class="line"><span class="lineno">  402</span>}</div>
-<div class="ttc" id="aclassCfsScheduler_html_a86995b6ca7b05f86740051d1a4464e61"><div class="ttname"><a href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61">CfsScheduler::OnTick</a></div><div class="ttdeci">auto OnTick(TaskControlBlock *current) -&gt; bool override</div><div class="ttdoc">每个 tick 更新任务的 vruntime</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00156">cfs_scheduler.hpp:156</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_a45ed0feb3ca6ecf81f5798108eb73227"><div class="ttname"><a href="system__test_8h.html#a45ed0feb3ca6ecf81f5798108eb73227">EXPECT_LT</a></div><div class="ttdeci">#define EXPECT_LT(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00117">system_test.h:117</a></div></div>
-<div class="ttc" id="asystem__test_8h_html_aab850358cd9bdeb95d390ab0918461da"><div class="ttname"><a href="system__test_8h.html#aab850358cd9bdeb95d390ab0918461da">EXPECT_GT</a></div><div class="ttdeci">#define EXPECT_GT(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00112">system_test.h:112</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_a86995b6ca7b05f86740051d1a4464e61"><div class="ttname"><a href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61">CfsScheduler::OnTick</a></div><div class="ttdeci">auto OnTick(TaskControlBlock *current) -&gt; bool override</div><div class="ttdoc">每个 tick 更新任务的 vruntime</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00147">cfs_scheduler.hpp:147</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_a45ed0feb3ca6ecf81f5798108eb73227"><div class="ttname"><a href="system__test_8h.html#a45ed0feb3ca6ecf81f5798108eb73227">EXPECT_LT</a></div><div class="ttdeci">#define EXPECT_LT(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00141">system_test.h:141</a></div></div>
+<div class="ttc" id="asystem__test_8h_html_aab850358cd9bdeb95d390ab0918461da"><div class="ttname"><a href="system__test_8h.html#aab850358cd9bdeb95d390ab0918461da">EXPECT_GT</a></div><div class="ttdeci">#define EXPECT_GT(val1, val2, msg)</div><div class="ttdef"><b>Definition</b> <a href="system__test_8h_source.html#l00136">system_test.h:136</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -597,44 +662,46 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  305</span>  task3.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
 <div class="line"><span class="lineno">  306</span>  task3.sched_data.cfs.vruntime = 750;</div>
 <div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
-<div class="line"><span class="lineno">  309</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
-<div class="line"><span class="lineno">  310</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task3);</div>
+<div class="line"><span class="lineno">  308</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">  309</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  310</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task3);</div>
 <div class="line"><span class="lineno">  311</span> </div>
 <div class="line"><span class="lineno">  312</span>  <span class="comment">// 初始 min_vruntime 应该是 0</span></div>
 <div class="line"><span class="lineno">  313</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#af7364c6a1919471e2ce41a45d734f64f">GetMinVruntime</a>(), 0);</div>
 <div class="line"><span class="lineno">  314</span> </div>
 <div class="line"><span class="lineno">  315</span>  <span class="comment">// 选择 task2 (vruntime = 500)</span></div>
-<div class="line"><span class="lineno">  316</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  316</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  317</span> </div>
 <div class="line"><span class="lineno">  318</span>  <span class="comment">// min_vruntime 应该更新为队列中最小的 (750)</span></div>
 <div class="line"><span class="lineno">  319</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#af7364c6a1919471e2ce41a45d734f64f">GetMinVruntime</a>(), 750);</div>
 <div class="line"><span class="lineno">  320</span> </div>
 <div class="line"><span class="lineno">  321</span>  <span class="comment">// 选择 task3 (vruntime = 750)</span></div>
-<div class="line"><span class="lineno">  322</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  322</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  323</span> </div>
 <div class="line"><span class="lineno">  324</span>  <span class="comment">// min_vruntime 应该更新为 1000</span></div>
 <div class="line"><span class="lineno">  325</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#af7364c6a1919471e2ce41a45d734f64f">GetMinVruntime</a>(), 1000);</div>
 <div class="line"><span class="lineno">  326</span> </div>
 <div class="line"><span class="lineno">  327</span>  <span class="comment">// 选择 task1 (vruntime = 1000)</span></div>
-<div class="line"><span class="lineno">  328</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  328</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  329</span> </div>
 <div class="line"><span class="lineno">  330</span>  <span class="comment">// 队列为空，min_vruntime 保持为 1000</span></div>
 <div class="line"><span class="lineno">  331</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#af7364c6a1919471e2ce41a45d734f64f">GetMinVruntime</a>(), 1000);</div>
 <div class="line"><span class="lineno">  332</span>}</div>
-<div class="ttc" id="aclassCfsScheduler_html_af7364c6a1919471e2ce41a45d734f64f"><div class="ttname"><a href="classCfsScheduler.html#af7364c6a1919471e2ce41a45d734f64f">CfsScheduler::GetMinVruntime</a></div><div class="ttdeci">auto GetMinVruntime() const -&gt; uint64_t</div><div class="ttdoc">获取当前 min_vruntime</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00196">cfs_scheduler.hpp:196</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_af7364c6a1919471e2ce41a45d734f64f"><div class="ttname"><a href="classCfsScheduler.html#af7364c6a1919471e2ce41a45d734f64f">CfsScheduler::GetMinVruntime</a></div><div class="ttdeci">auto GetMinVruntime() const -&gt; uint64_t</div><div class="ttdoc">获取当前 min_vruntime</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00187">cfs_scheduler.hpp:187</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_ae560e796513091e4e49b20cc4ea183f2_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_ae560e796513091e4e49b20cc4ea183f2_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_ae560e796513091e4e49b20cc4ea183f2_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_ae560e796513091e4e49b20cc4ea183f2_cgraph">
 <area shape="rect" title=" " alt="" coords="5,55,60,80"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="134,5,305,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="134,5,305,31"/>
 <area shape="poly" title=" " alt="" coords="59,55,107,39,140,31,141,36,109,45,61,60"/>
 <area shape="rect" href="classCfsScheduler.html#af7364c6a1919471e2ce41a45d734f64f" title="获取当前 min_vruntime" alt="" coords="108,55,331,80"/>
 <area shape="poly" title=" " alt="" coords="60,65,94,65,94,70,60,70"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="133,104,306,129"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="133,104,306,129"/>
 <area shape="poly" title=" " alt="" coords="61,74,109,89,146,98,144,103,107,94,59,79"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="379,5,455,31"/>
+<area shape="poly" title=" " alt="" coords="305,15,365,15,365,21,305,21"/>
 </map>
 </div>
 
@@ -733,8 +800,8 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   89</span>  task1.sched_data.cfs.vruntime = 1000;</div>
 <div class="line"><span class="lineno">   90</span> </div>
 <div class="line"><span class="lineno">   91</span>  <span class="comment">// 加入第一个任务</span></div>
-<div class="line"><span class="lineno">   92</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keyword">auto</span>* picked1 = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">   92</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">   93</span>  <span class="keyword">auto</span>* picked1 = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">   94</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(picked1, &amp;task1);</div>
 <div class="line"><span class="lineno">   95</span> </div>
 <div class="line"><span class="lineno">   96</span>  <span class="comment">// 第二个任务 vruntime = 0 (新任务)</span></div>
@@ -742,7 +809,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   98</span>  task2.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
 <div class="line"><span class="lineno">   99</span>  task2.sched_data.cfs.vruntime = 0;</div>
 <div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  101</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">  102</span>  <span class="comment">// 新任务的 vruntime 应该被设置为 min_vruntime (1000)</span></div>
 <div class="line"><span class="lineno">  103</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(task2.sched_data.cfs.vruntime, 1000);</div>
 <div class="line"><span class="lineno">  104</span>}</div>
@@ -752,10 +819,12 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_aa0a7f85d4754c791b8f6a03f5ac54118_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_aa0a7f85d4754c791b8f6a03f5ac54118_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_aa0a7f85d4754c791b8f6a03f5ac54118_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_aa0a7f85d4754c791b8f6a03f5ac54118_cgraph">
 <area shape="rect" title=" " alt="" coords="5,31,60,56"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="109,5,280,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="109,5,280,31"/>
 <area shape="poly" title=" " alt="" coords="60,37,100,30,101,35,61,42"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="108,55,281,80"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="108,55,281,80"/>
 <area shape="poly" title=" " alt="" coords="61,45,96,50,96,55,60,50"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="329,5,405,31"/>
+<area shape="poly" title=" " alt="" coords="280,15,315,15,315,21,280,21"/>
 </map>
 </div>
 
@@ -792,41 +861,43 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  216</span>  <a class="code hl_class" href="classCfsScheduler.html">CfsScheduler</a> scheduler;</div>
 <div class="line"><span class="lineno">  217</span> </div>
 <div class="line"><span class="lineno">  218</span>  <span class="comment">// Enqueue 空指针应该不崩溃</span></div>
-<div class="line"><span class="lineno">  219</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(<span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  220</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  219</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  220</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  221</span> </div>
 <div class="line"><span class="lineno">  222</span>  <span class="comment">// Dequeue 空指针应该不崩溃</span></div>
-<div class="line"><span class="lineno">  223</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b">Dequeue</a>(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  223</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a43333e0f013127e182ca764171403d76">Dequeue</a>(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  224</span> </div>
 <div class="line"><span class="lineno">  225</span>  <span class="comment">// OnTick 空指针应该不崩溃</span></div>
 <div class="line"><span class="lineno">  226</span>  <a class="code hl_define" href="system__test_8h.html#aa627ee666d1479db9959f3423adc3549">EXPECT_FALSE</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61">OnTick</a>(<span class="keyword">nullptr</span>));</div>
 <div class="line"><span class="lineno">  227</span> </div>
 <div class="line"><span class="lineno">  228</span>  <span class="comment">// OnPreempted 空指针应该不崩溃</span></div>
-<div class="line"><span class="lineno">  229</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a879e8e243482bacddc588eab69eb5b61">OnPreempted</a>(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  229</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#ab51f62668696f5adbf4bee9db2507a13">OnPreempted</a>(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  230</span> </div>
 <div class="line"><span class="lineno">  231</span>  <span class="comment">// OnScheduled 空指针应该不崩溃</span></div>
-<div class="line"><span class="lineno">  232</span>  scheduler.<a class="code hl_function" href="classSchedulerBase.html#a5c891e21d4b1628ba4e59980f138142d">OnScheduled</a>(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  232</span>  scheduler.<a class="code hl_function" href="classSchedulerBase.html#abc638a97168078cc3cd949844b1ca714">OnScheduled</a>(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  233</span>}</div>
-<div class="ttc" id="aclassCfsScheduler_html_a879e8e243482bacddc588eab69eb5b61"><div class="ttname"><a href="classCfsScheduler.html#a879e8e243482bacddc588eab69eb5b61">CfsScheduler::OnPreempted</a></div><div class="ttdeci">void OnPreempted(TaskControlBlock *task) override</div><div class="ttdoc">任务被抢占时调用</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00185">cfs_scheduler.hpp:185</a></div></div>
-<div class="ttc" id="aclassSchedulerBase_html_a5c891e21d4b1628ba4e59980f138142d"><div class="ttname"><a href="classSchedulerBase.html#a5c891e21d4b1628ba4e59980f138142d">SchedulerBase::OnScheduled</a></div><div class="ttdeci">virtual void OnScheduled(TaskControlBlock *task)</div><div class="ttdoc">任务开始运行时调用 (从 Ready 变为 Running)</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00125">scheduler_base.hpp:125</a></div></div>
+<div class="ttc" id="aclassCfsScheduler_html_ab51f62668696f5adbf4bee9db2507a13"><div class="ttname"><a href="classCfsScheduler.html#ab51f62668696f5adbf4bee9db2507a13">CfsScheduler::OnPreempted</a></div><div class="ttdeci">auto OnPreempted(TaskControlBlock *task) -&gt; void override</div><div class="ttdoc">任务被抢占时调用</div><div class="ttdef"><b>Definition</b> <a href="cfs__scheduler_8hpp_source.html#l00176">cfs_scheduler.hpp:176</a></div></div>
+<div class="ttc" id="aclassSchedulerBase_html_abc638a97168078cc3cd949844b1ca714"><div class="ttname"><a href="classSchedulerBase.html#abc638a97168078cc3cd949844b1ca714">SchedulerBase::OnScheduled</a></div><div class="ttdeci">virtual auto OnScheduled(TaskControlBlock *task) -&gt; void</div><div class="ttdoc">任务开始运行时调用 (从 Ready 变为 Running)</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00126">scheduler_base.hpp:126</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_af3f9af0055ea9b3c9948e250a9845d19_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_af3f9af0055ea9b3c9948e250a9845d19_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_af3f9af0055ea9b3c9948e250a9845d19_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_af3f9af0055ea9b3c9948e250a9845d19_cgraph">
 <area shape="rect" title=" " alt="" coords="5,129,60,155"/>
-<area shape="rect" href="classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b" title="从就绪队列中移除指定任务" alt="" coords="127,5,300,31"/>
+<area shape="rect" href="classCfsScheduler.html#a43333e0f013127e182ca764171403d76" title="从就绪队列中移除指定任务" alt="" coords="127,5,300,31"/>
 <area shape="poly" title=" " alt="" coords="37,128,63,84,83,60,106,40,117,34,120,38,110,44,86,64,67,87,42,131"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="128,55,299,80"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="128,55,299,80"/>
 <area shape="poly" title=" " alt="" coords="47,127,74,107,107,89,126,82,128,86,109,94,77,112,50,131"/>
-<area shape="rect" href="classCfsScheduler.html#a879e8e243482bacddc588eab69eb5b61" title="任务被抢占时调用" alt="" coords="111,104,315,129"/>
+<area shape="rect" href="classCfsScheduler.html#ab51f62668696f5adbf4bee9db2507a13" title="任务被抢占时调用" alt="" coords="111,104,315,129"/>
 <area shape="poly" title=" " alt="" coords="60,136,109,129,110,134,61,141"/>
-<area shape="rect" href="classSchedulerBase.html#a5c891e21d4b1628ba4e59980f138142d" title="任务开始运行时调用 (从 Ready 变为 Running)" alt="" coords="108,153,319,179"/>
+<area shape="rect" href="classSchedulerBase.html#abc638a97168078cc3cd949844b1ca714" title="任务开始运行时调用 (从 Ready 变为 Running)" alt="" coords="108,153,319,179"/>
 <area shape="poly" title=" " alt="" coords="61,143,105,149,104,154,60,148"/>
 <area shape="rect" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="133,203,293,228"/>
 <area shape="poly" title=" " alt="" coords="52,153,78,171,109,188,133,196,131,201,107,192,75,175,49,157"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="127,252,300,277"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="127,252,300,277"/>
 <area shape="poly" title=" " alt="" coords="42,154,68,195,87,218,110,237,123,244,120,249,106,242,83,222,64,199,38,156"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="367,55,443,80"/>
+<area shape="poly" title=" " alt="" coords="299,65,352,65,352,70,299,70"/>
 </map>
 </div>
 
@@ -872,7 +943,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  171</span>  <span class="comment">// 这样 OnTick 后：task1 = 2000, task2 = 1995，差距 5 &lt; 10</span></div>
 <div class="line"><span class="lineno">  172</span>  task2.sched_data.cfs.vruntime = 1995;</div>
 <div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  174</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">  175</span> </div>
 <div class="line"><span class="lineno">  176</span>  <span class="keywordtype">bool</span> should_preempt = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61">OnTick</a>(&amp;task1);</div>
 <div class="line"><span class="lineno">  177</span> </div>
@@ -885,10 +956,12 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_a4a3a2f6691c22b985149a9212e3ecaf5_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_a4a3a2f6691c22b985149a9212e3ecaf5_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_a4a3a2f6691c22b985149a9212e3ecaf5_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_a4a3a2f6691c22b985149a9212e3ecaf5_cgraph">
 <area shape="rect" title=" " alt="" coords="5,31,60,56"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="108,5,279,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="108,5,279,31"/>
 <area shape="poly" title=" " alt="" coords="60,37,99,30,100,35,61,42"/>
 <area shape="rect" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="113,55,273,80"/>
 <area shape="poly" title=" " alt="" coords="60,45,100,51,99,56,60,50"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="327,5,403,31"/>
+<area shape="poly" title=" " alt="" coords="279,15,313,15,313,21,279,21"/>
 </map>
 </div>
 
@@ -932,7 +1005,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  147</span>  task2.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
 <div class="line"><span class="lineno">  148</span>  task2.sched_data.cfs.vruntime = 0;  <span class="comment">// 更小的 vruntime</span></div>
 <div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  150</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">  151</span> </div>
 <div class="line"><span class="lineno">  152</span>  <span class="comment">// task1 运行，vruntime 不断增长</span></div>
 <div class="line"><span class="lineno">  153</span>  task1.sched_data.cfs.vruntime = 100;</div>
@@ -947,10 +1020,12 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_a02078cb61dbe2147cb3de6c04311b1a4_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_a02078cb61dbe2147cb3de6c04311b1a4_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_a02078cb61dbe2147cb3de6c04311b1a4_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_a02078cb61dbe2147cb3de6c04311b1a4_cgraph">
 <area shape="rect" title=" " alt="" coords="5,31,60,56"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="108,5,279,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="108,5,279,31"/>
 <area shape="poly" title=" " alt="" coords="60,37,99,30,100,35,61,42"/>
 <area shape="rect" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="113,55,273,80"/>
 <area shape="poly" title=" " alt="" coords="60,45,100,51,99,56,60,50"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="327,5,403,31"/>
+<area shape="poly" title=" " alt="" coords="279,15,313,15,313,21,279,21"/>
 </map>
 </div>
 
@@ -994,7 +1069,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  455</span>  task2.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
 <div class="line"><span class="lineno">  456</span>  task2.sched_data.cfs.vruntime = 0;</div>
 <div class="line"><span class="lineno">  457</span> </div>
-<div class="line"><span class="lineno">  458</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  458</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">  459</span> </div>
 <div class="line"><span class="lineno">  460</span>  <span class="comment">// 触发抢占</span></div>
 <div class="line"><span class="lineno">  461</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61">OnTick</a>(&amp;task1);</div>
@@ -1002,25 +1077,27 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  463</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_preemptions, 1);</div>
 <div class="line"><span class="lineno">  464</span> </div>
 <div class="line"><span class="lineno">  465</span>  <span class="comment">// OnPreempted 也会增加抢占计数</span></div>
-<div class="line"><span class="lineno">  466</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a879e8e243482bacddc588eab69eb5b61">OnPreempted</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">  466</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#ab51f62668696f5adbf4bee9db2507a13">OnPreempted</a>(&amp;task1);</div>
 <div class="line"><span class="lineno">  467</span>  stats = scheduler.<a class="code hl_function" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">GetStats</a>();</div>
 <div class="line"><span class="lineno">  468</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_preemptions, 2);</div>
 <div class="line"><span class="lineno">  469</span>}</div>
-<div class="ttc" id="aclassSchedulerBase_html_a914b45bb9c30d74dba59458826601d1e"><div class="ttname"><a href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">SchedulerBase::GetStats</a></div><div class="ttdeci">virtual auto GetStats() const -&gt; const Stats &amp;</div><div class="ttdoc">获取调度器统计信息</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00131">scheduler_base.hpp:131</a></div></div>
+<div class="ttc" id="aclassSchedulerBase_html_a914b45bb9c30d74dba59458826601d1e"><div class="ttname"><a href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">SchedulerBase::GetStats</a></div><div class="ttdeci">virtual auto GetStats() const -&gt; const Stats &amp;</div><div class="ttdoc">获取调度器统计信息</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00132">scheduler_base.hpp:132</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_aebb54e098e3dbe06be2cfd039f42ee59_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_aebb54e098e3dbe06be2cfd039f42ee59_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_aebb54e098e3dbe06be2cfd039f42ee59_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_aebb54e098e3dbe06be2cfd039f42ee59_cgraph">
 <area shape="rect" title=" " alt="" coords="5,80,60,105"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="125,5,295,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="125,5,295,31"/>
 <area shape="poly" title=" " alt="" coords="48,77,74,58,107,40,127,32,128,37,109,44,77,62,51,82"/>
 <area shape="rect" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e" title="获取调度器统计信息" alt="" coords="119,55,301,80"/>
 <area shape="poly" title=" " alt="" coords="60,86,107,79,108,85,61,92"/>
-<area shape="rect" href="classCfsScheduler.html#a879e8e243482bacddc588eab69eb5b61" title="任务被抢占时调用" alt="" coords="108,104,312,129"/>
+<area shape="rect" href="classCfsScheduler.html#ab51f62668696f5adbf4bee9db2507a13" title="任务被抢占时调用" alt="" coords="108,104,312,129"/>
 <area shape="poly" title=" " alt="" coords="61,94,103,99,102,105,60,99"/>
 <area shape="rect" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="130,153,290,179"/>
 <area shape="poly" title=" " alt="" coords="52,103,78,121,109,138,133,147,131,152,107,143,75,126,49,108"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="360,5,436,31"/>
+<area shape="poly" title=" " alt="" coords="296,15,346,15,346,21,296,21"/>
 </map>
 </div>
 
@@ -1056,7 +1133,7 @@ Here is the call graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">  405</span>                                             {</div>
 <div class="line"><span class="lineno">  406</span>  <a class="code hl_class" href="classCfsScheduler.html">CfsScheduler</a> scheduler;</div>
 <div class="line"><span class="lineno">  407</span> </div>
-<div class="line"><span class="lineno">  408</span>  sk_std::vector&lt;TaskControlBlock*&gt; tasks;</div>
+<div class="line"><span class="lineno">  408</span>  kstd::vector&lt;TaskControlBlock*&gt; tasks;</div>
 <div class="line"><span class="lineno">  409</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 5; ++i) {</div>
 <div class="line"><span class="lineno">  410</span>    <span class="keyword">auto</span>* task = <span class="keyword">new</span> <a class="code hl_struct" href="structTaskControlBlock.html">TaskControlBlock</a>(<span class="stringliteral">&quot;Task&quot;</span>, 10, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  411</span>    task-&gt;sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a>;</div>
@@ -1066,24 +1143,24 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  415</span> </div>
 <div class="line"><span class="lineno">  416</span>  <span class="comment">// 加入 5 个任务</span></div>
 <div class="line"><span class="lineno">  417</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>* task : tasks) {</div>
-<div class="line"><span class="lineno">  418</span>    scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(task);</div>
+<div class="line"><span class="lineno">  418</span>    scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(task);</div>
 <div class="line"><span class="lineno">  419</span>  }</div>
 <div class="line"><span class="lineno">  420</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 5);</div>
 <div class="line"><span class="lineno">  421</span> </div>
 <div class="line"><span class="lineno">  422</span>  <span class="comment">// 移除 3 个任务</span></div>
-<div class="line"><span class="lineno">  423</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
-<div class="line"><span class="lineno">  424</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
-<div class="line"><span class="lineno">  425</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  423</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
+<div class="line"><span class="lineno">  424</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
+<div class="line"><span class="lineno">  425</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  426</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 2);</div>
 <div class="line"><span class="lineno">  427</span> </div>
 <div class="line"><span class="lineno">  428</span>  <span class="comment">// 加入 2 个任务</span></div>
-<div class="line"><span class="lineno">  429</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(tasks[0]);</div>
-<div class="line"><span class="lineno">  430</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(tasks[1]);</div>
+<div class="line"><span class="lineno">  429</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(tasks[0]);</div>
+<div class="line"><span class="lineno">  430</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(tasks[1]);</div>
 <div class="line"><span class="lineno">  431</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 4);</div>
 <div class="line"><span class="lineno">  432</span> </div>
 <div class="line"><span class="lineno">  433</span>  <span class="comment">// 清空队列</span></div>
 <div class="line"><span class="lineno">  434</span>  <span class="keywordflow">while</span> (!scheduler.<a class="code hl_function" href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf">IsEmpty</a>()) {</div>
-<div class="line"><span class="lineno">  435</span>    scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  435</span>    scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  436</span>  }</div>
 <div class="line"><span class="lineno">  437</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 0);</div>
 <div class="line"><span class="lineno">  438</span>  <a class="code hl_define" href="system__test_8h.html#a00a870caa41dce04e9db04bd0c2fca57">EXPECT_TRUE</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf">IsEmpty</a>());</div>
@@ -1099,14 +1176,16 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_a32157c39bdb47319f34bac16a5849e1f_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_a32157c39bdb47319f34bac16a5849e1f_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_a32157c39bdb47319f34bac16a5849e1f_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_a32157c39bdb47319f34bac16a5849e1f_cgraph">
 <area shape="rect" title=" " alt="" coords="5,80,60,105"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="126,5,297,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="126,5,297,31"/>
 <area shape="poly" title=" " alt="" coords="48,77,74,58,107,40,126,32,128,37,109,44,77,62,51,82"/>
 <area shape="rect" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9" title="获取就绪队列大小" alt="" coords="108,55,315,80"/>
 <area shape="poly" title=" " alt="" coords="60,86,108,79,109,85,61,92"/>
 <area shape="rect" href="classCfsScheduler.html#ab72fdf9094d6feda4332bb9ac92d42bf" title="判断队列是否为空" alt="" coords="127,104,295,129"/>
 <area shape="poly" title=" " alt="" coords="61,94,114,101,113,106,60,99"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="125,153,298,179"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="125,153,298,179"/>
 <area shape="poly" title=" " alt="" coords="52,103,78,121,109,138,133,147,131,152,107,143,75,126,49,108"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="363,5,439,31"/>
+<area shape="poly" title=" " alt="" coords="297,15,349,15,349,21,297,21"/>
 </map>
 </div>
 
@@ -1151,52 +1230,54 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  259</span>  task2.sched_data.cfs.vruntime = 0;</div>
 <div class="line"><span class="lineno">  260</span> </div>
 <div class="line"><span class="lineno">  261</span>  <span class="comment">// 测试 enqueue 计数</span></div>
-<div class="line"><span class="lineno">  262</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
-<div class="line"><span class="lineno">  263</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  262</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">  263</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">  264</span>  <span class="keyword">auto</span> stats = scheduler.<a class="code hl_function" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">GetStats</a>();</div>
 <div class="line"><span class="lineno">  265</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_enqueues, 2);</div>
 <div class="line"><span class="lineno">  266</span> </div>
 <div class="line"><span class="lineno">  267</span>  <span class="comment">// 测试 pick 计数</span></div>
-<div class="line"><span class="lineno">  268</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  268</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  269</span>  stats = scheduler.<a class="code hl_function" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">GetStats</a>();</div>
 <div class="line"><span class="lineno">  270</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_picks, 1);</div>
 <div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  272</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  273</span>  stats = scheduler.<a class="code hl_function" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">GetStats</a>();</div>
 <div class="line"><span class="lineno">  274</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_picks, 2);</div>
 <div class="line"><span class="lineno">  275</span> </div>
 <div class="line"><span class="lineno">  276</span>  <span class="comment">// 测试 dequeue 计数</span></div>
-<div class="line"><span class="lineno">  277</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
-<div class="line"><span class="lineno">  278</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
-<div class="line"><span class="lineno">  279</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b">Dequeue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">  277</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">  278</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  279</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a43333e0f013127e182ca764171403d76">Dequeue</a>(&amp;task1);</div>
 <div class="line"><span class="lineno">  280</span>  stats = scheduler.<a class="code hl_function" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">GetStats</a>();</div>
 <div class="line"><span class="lineno">  281</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_dequeues, 1);</div>
 <div class="line"><span class="lineno">  282</span> </div>
 <div class="line"><span class="lineno">  283</span>  <span class="comment">// 测试重置统计</span></div>
-<div class="line"><span class="lineno">  284</span>  scheduler.<a class="code hl_function" href="classSchedulerBase.html#a84866e4ce79224c5eb2602e02fad5040">ResetStats</a>();</div>
+<div class="line"><span class="lineno">  284</span>  scheduler.<a class="code hl_function" href="classSchedulerBase.html#ae49df54bf03d2b6d302e052614ba3b2e">ResetStats</a>();</div>
 <div class="line"><span class="lineno">  285</span>  stats = scheduler.<a class="code hl_function" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">GetStats</a>();</div>
 <div class="line"><span class="lineno">  286</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_enqueues, 0);</div>
 <div class="line"><span class="lineno">  287</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_picks, 0);</div>
 <div class="line"><span class="lineno">  288</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_dequeues, 0);</div>
 <div class="line"><span class="lineno">  289</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(stats.total_preemptions, 0);</div>
 <div class="line"><span class="lineno">  290</span>}</div>
-<div class="ttc" id="aclassSchedulerBase_html_a84866e4ce79224c5eb2602e02fad5040"><div class="ttname"><a href="classSchedulerBase.html#a84866e4ce79224c5eb2602e02fad5040">SchedulerBase::ResetStats</a></div><div class="ttdeci">virtual void ResetStats()</div><div class="ttdoc">重置统计信息</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00136">scheduler_base.hpp:136</a></div></div>
+<div class="ttc" id="aclassSchedulerBase_html_ae49df54bf03d2b6d302e052614ba3b2e"><div class="ttname"><a href="classSchedulerBase.html#ae49df54bf03d2b6d302e052614ba3b2e">SchedulerBase::ResetStats</a></div><div class="ttdeci">virtual auto ResetStats() -&gt; void</div><div class="ttdoc">重置统计信息</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00137">scheduler_base.hpp:137</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_acce4d0ae51d4aedb69a0e1f4a7e7f490_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_acce4d0ae51d4aedb69a0e1f4a7e7f490_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_acce4d0ae51d4aedb69a0e1f4a7e7f490_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_acce4d0ae51d4aedb69a0e1f4a7e7f490_cgraph">
 <area shape="rect" title=" " alt="" coords="5,104,60,129"/>
-<area shape="rect" href="classCfsScheduler.html#a9d25e904bd65f8ce0176ead3656ded8b" title="从就绪队列中移除指定任务" alt="" coords="119,5,293,31"/>
+<area shape="rect" href="classCfsScheduler.html#a43333e0f013127e182ca764171403d76" title="从就绪队列中移除指定任务" alt="" coords="119,5,293,31"/>
 <area shape="poly" title=" " alt="" coords="41,102,68,71,107,40,120,33,122,38,109,44,72,75,45,106"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="121,55,291,80"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="121,55,291,80"/>
 <area shape="poly" title=" " alt="" coords="59,105,107,89,136,81,137,86,109,94,61,110"/>
 <area shape="rect" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e" title="获取调度器统计信息" alt="" coords="115,104,297,129"/>
 <area shape="poly" title=" " alt="" coords="60,114,101,114,101,119,60,119"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="119,153,293,179"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="119,153,293,179"/>
 <area shape="poly" title=" " alt="" coords="61,123,109,138,141,147,140,152,107,143,59,128"/>
-<area shape="rect" href="classSchedulerBase.html#a84866e4ce79224c5eb2602e02fad5040" title="重置统计信息" alt="" coords="108,203,304,228"/>
+<area shape="rect" href="classSchedulerBase.html#ae49df54bf03d2b6d302e052614ba3b2e" title="重置统计信息" alt="" coords="108,203,304,228"/>
 <area shape="poly" title=" " alt="" coords="46,128,72,158,109,188,126,196,123,200,107,192,68,162,41,131"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="352,55,428,80"/>
+<area shape="poly" title=" " alt="" coords="292,65,338,65,338,70,292,70"/>
 </map>
 </div>
 
@@ -1245,17 +1326,17 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   67</span>  task3.sched_data.cfs.vruntime = 750;</div>
 <div class="line"><span class="lineno">   68</span> </div>
 <div class="line"><span class="lineno">   69</span>  <span class="comment">// 按任意顺序加入任务</span></div>
-<div class="line"><span class="lineno">   70</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
-<div class="line"><span class="lineno">   71</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
-<div class="line"><span class="lineno">   72</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task3);</div>
+<div class="line"><span class="lineno">   70</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">   71</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">   72</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task3);</div>
 <div class="line"><span class="lineno">   73</span> </div>
 <div class="line"><span class="lineno">   74</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9">GetQueueSize</a>(), 3);</div>
 <div class="line"><span class="lineno">   75</span> </div>
 <div class="line"><span class="lineno">   76</span>  <span class="comment">// 应该按 vruntime 从小到大选择</span></div>
-<div class="line"><span class="lineno">   77</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), &amp;task2);  <span class="comment">// vruntime = 500</span></div>
-<div class="line"><span class="lineno">   78</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), &amp;task3);  <span class="comment">// vruntime = 750</span></div>
-<div class="line"><span class="lineno">   79</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), &amp;task1);  <span class="comment">// vruntime = 1000</span></div>
-<div class="line"><span class="lineno">   80</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   77</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), &amp;task2);  <span class="comment">// vruntime = 500</span></div>
+<div class="line"><span class="lineno">   78</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), &amp;task3);  <span class="comment">// vruntime = 750</span></div>
+<div class="line"><span class="lineno">   79</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), &amp;task1);  <span class="comment">// vruntime = 1000</span></div>
+<div class="line"><span class="lineno">   80</span>  <a class="code hl_define" href="system__test_8h.html#abfc1b6826e51b93338e02cabfa5cfcd1">EXPECT_EQ</a>(scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>(), <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   81</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1263,12 +1344,14 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_a3d450e26dd9f4e99a12dc7fde794d3ef_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_a3d450e26dd9f4e99a12dc7fde794d3ef_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_a3d450e26dd9f4e99a12dc7fde794d3ef_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_a3d450e26dd9f4e99a12dc7fde794d3ef_cgraph">
 <area shape="rect" title=" " alt="" coords="5,55,60,80"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="126,5,297,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="126,5,297,31"/>
 <area shape="poly" title=" " alt="" coords="59,55,107,39,138,31,139,37,109,45,61,60"/>
 <area shape="rect" href="classCfsScheduler.html#ad9e2cc9b7165c92a7ded25f193debed9" title="获取就绪队列大小" alt="" coords="108,55,315,80"/>
 <area shape="poly" title=" " alt="" coords="60,65,94,65,94,70,60,70"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="125,104,298,129"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="125,104,298,129"/>
 <area shape="poly" title=" " alt="" coords="61,74,109,89,144,98,142,103,107,94,59,79"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="363,5,439,31"/>
+<area shape="poly" title=" " alt="" coords="297,15,349,15,349,21,297,21"/>
 </map>
 </div>
 
@@ -1312,10 +1395,10 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  115</span>  task2.sched_data.cfs.weight = <a class="code hl_variable" href="classCfsScheduler.html#ad4026ee603e784fa319c1968b97cea2b">CfsScheduler::kDefaultWeight</a> / 2;  <span class="comment">// 低优先级</span></div>
 <div class="line"><span class="lineno">  116</span>  task2.sched_data.cfs.vruntime = 0;</div>
 <div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task1);</div>
-<div class="line"><span class="lineno">  119</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7">Enqueue</a>(&amp;task2);</div>
+<div class="line"><span class="lineno">  118</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task1);</div>
+<div class="line"><span class="lineno">  119</span>  scheduler.<a class="code hl_function" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062">Enqueue</a>(&amp;task2);</div>
 <div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>  <span class="keyword">auto</span>* first = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84">PickNext</a>();</div>
+<div class="line"><span class="lineno">  121</span>  <span class="keyword">auto</span>* first = scheduler.<a class="code hl_function" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea">PickNext</a>();</div>
 <div class="line"><span class="lineno">  122</span>  <a class="code hl_define" href="system__test_8h.html#a40d1cd7aa0dc349c5fe213484073bfaf">EXPECT_NE</a>(first, <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  123</span> </div>
 <div class="line"><span class="lineno">  124</span>  <span class="comment">// 模拟 OnTick 更新 vruntime</span></div>
@@ -1337,12 +1420,14 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="unit__test_2cfs__scheduler__test_8cpp_ae436bb8b8ed2fb5f7a24055a4d4c8ff4_cgraph.png" border="0" usemap="#aunit__test_2cfs__scheduler__test_8cpp_ae436bb8b8ed2fb5f7a24055a4d4c8ff4_cgraph" alt=""/></div>
 <map name="aunit__test_2cfs__scheduler__test_8cpp_ae436bb8b8ed2fb5f7a24055a4d4c8ff4_cgraph" id="aunit__test_2cfs__scheduler__test_8cpp_ae436bb8b8ed2fb5f7a24055a4d4c8ff4_cgraph">
 <area shape="rect" title=" " alt="" coords="5,55,60,80"/>
-<area shape="rect" href="classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="109,5,280,31"/>
+<area shape="rect" href="classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="109,5,280,31"/>
 <area shape="poly" title=" " alt="" coords="59,55,107,39,132,32,134,37,109,45,61,60"/>
 <area shape="rect" href="classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="115,55,275,80"/>
 <area shape="poly" title=" " alt="" coords="60,65,101,65,101,70,60,70"/>
-<area shape="rect" href="classCfsScheduler.html#a60e123dead4f8e6e313a422795a71c84" title="选择下一个要运行的任务" alt="" coords="108,104,281,129"/>
+<area shape="rect" href="classCfsScheduler.html#a8f4c08f61512a799fc059e4e50adc2ea" title="选择下一个要运行的任务" alt="" coords="108,104,281,129"/>
 <area shape="poly" title=" " alt="" coords="61,74,109,89,138,98,136,103,107,94,60,79"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="329,5,405,31"/>
+<area shape="poly" title=" " alt="" coords="280,15,315,15,315,21,280,21"/>
 </map>
 </div>
 

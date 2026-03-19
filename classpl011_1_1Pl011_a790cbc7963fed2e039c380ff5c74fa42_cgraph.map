@@ -1,0 +1,10 @@
+<map id="pl011::Pl011::HandleInterrupt" name="pl011::Pl011::HandleInterrupt">
+<area shape="rect" id="Node000001" title="处理串口接收中断，对每个收到的字符调用回调" alt="" coords="5,31,217,56"/>
+<area shape="rect" id="Node000002" href="$classpl011_1_1Pl011.html#a4ae9ca17bc18ff9ac43867c0743d0f51" title="阻塞式读取一个字符" alt="" coords="267,5,430,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,29,253,25,254,31,218,35"/>
+<area shape="rect" id="Node000004" href="$classpl011_1_1Pl011.html#a265bb63d948c01f759aa58080cd4da64" title="检查接收缓冲区是否有数据可读（不消耗数据）" alt="" coords="265,55,432,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="218,51,252,55,252,60,217,57"/>
+<area shape="rect" id="Node000003" href="$structMmioAccessor.html#acbb27077fc125776a50c812e11712195" title="Read from MMIO register." alt="" coords="480,31,639,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="431,25,467,30,466,35,430,30"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="432,55,466,51,467,57,433,60"/>
+</map>

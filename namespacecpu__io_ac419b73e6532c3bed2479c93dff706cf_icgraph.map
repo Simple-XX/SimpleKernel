@@ -1,0 +1,5 @@
+<map id="cpu_io::Mb" name="cpu_io::Mb">
+<area shape="rect" id="Node000001" title=" " alt="" coords="240,13,332,38"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1VirtqueueBase.html#ae2fea1ef92b064a77bbc9a66a3d09217" title="提交 Scatter&#45;Gather 链并通知设备" alt="" coords="5,5,192,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,28,192,28,192,23,227,23"/>
+</map>

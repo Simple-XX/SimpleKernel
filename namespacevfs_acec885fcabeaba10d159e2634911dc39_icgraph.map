@@ -1,0 +1,19 @@
+<map id="vfs::GetMountTable" name="vfs::GetMountTable">
+<area shape="rect" id="Node000001" title="获取全局挂载表实例" alt="" coords="413,80,561,105"/>
+<area shape="rect" id="Node000002" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="108,5,247,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="426,79,365,63,236,33,237,28,366,58,427,74"/>
+<area shape="rect" id="Node000003" href="$filesystem_8cpp.html#a2b9f450648a51d217091f5923c64a449" title="文件系统子系统初始化入口" alt="" coords="120,55,235,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="400,88,235,75,235,69,400,83"/>
+<area shape="rect" id="Node000005" href="$namespacevfs.html#ad10df9cc721f7881387ddfc914a26bee" title="VFS 全局初始化" alt="" coords="295,105,365,131"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="400,109,366,115,365,110,400,104"/>
+<area shape="rect" id="Node000008" href="$vfs__test_8cpp.html#aed43bce1095065d3601462f609b1c850" title=" " alt="" coords="295,155,365,180"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="448,114,359,157,356,152,446,109"/>
+<area shape="rect" id="Node000004" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="106,70,60,70,60,65,106,65"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="307,97,279,70,245,44,222,33,224,28,248,40,282,66,311,93"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="281,105,215,83,217,78,283,100"/>
+<area shape="rect" id="Node000006" href="$classVfsTest.html#ae7fc211c7acf8d669061ae26936532b1" title=" " alt="" coords="119,104,235,129"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="281,120,235,120,236,115,281,115"/>
+<area shape="rect" id="Node000007" href="$vfs__test_8cpp.html#a4dc8b29eef13d7b173baa00381556445" title=" " alt="" coords="143,153,212,179"/>
+<area shape="poly" id="edge8_Node000005_Node000007" title=" " alt="" coords="283,136,213,158,211,153,281,130"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="RamFsTest::SetUp" name="RamFsTest::SetUp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,106,145,131"/>
+<area shape="rect" id="Node000002" href="$classtest__env_1_1TestEnvironmentState.html#a345611d0a521ef20e5c49eeffd43342d" title="将指定线程绑定到核心" alt="" coords="227,5,421,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,103,140,79,192,55,216,47,218,52,194,60,142,84,99,108"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a3daed93eb011fe37c2fd3ae5824fff1b" title="初始化指定数量的核心" alt="" coords="227,69,421,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,108,213,100,213,105,146,113"/>
+<area shape="rect" id="Node000004" href="$classramfs_1_1RamFs.html#a5ad3d246da876565ea0f39c424db553f" title="挂载 ramfs" alt="" coords="243,134,405,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,124,229,133,229,139,146,129"/>
+<area shape="rect" id="Node000006" href="$classtest__env_1_1TestEnvironmentState.html#ab05dc3b7eda4beb5233d58b197c70a58" title="设置当前线程的环境实例指针" alt="" coords="193,184,455,224"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="103,129,194,168,224,178,223,183,192,173,101,134"/>
+<area shape="rect" id="Node000005" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="503,134,585,159"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="406,144,489,144,489,149,406,149"/>
+</map>

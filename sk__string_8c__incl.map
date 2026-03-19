@@ -1,7 +1,7 @@
-<map id="/root/src/libc/sk_string.c" name="/root/src/libc/sk_string.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,181,31"/>
-<area shape="rect" id="Node000002" href="$sk__string_8h.html" title=" " alt="" coords="47,79,140,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,31,96,65,91,65,91,31"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="56,152,131,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="96,104,96,138,91,138,91,104"/>
+<map id="/workspaces/SimpleKernel/src/libc/sk_string.c" name="/workspaces/SimpleKernel/src/libc/sk_string.c">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,199,45"/>
+<area shape="rect" id="Node000002" href="$sk__string_8h.html" title=" " alt="" coords="55,93,149,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,46,105,79,99,79,99,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="65,167,139,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,119,105,153,99,153,99,119"/>
 </map>

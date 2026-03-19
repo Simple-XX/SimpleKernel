@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/tests/system_test/fifo_scheduler_test.cpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/tests/system_test/fifo_scheduler_test.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,76 +96,132 @@ $(document).ready(function(){initNavTree('system__test_2fifo__scheduler__test_8c
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="fifo__scheduler_8hpp_source.html">fifo_scheduler.hpp</a>&quot;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
-<code>#include &quot;<a class="el" href="sk__stdio_8h_source.html">sk_stdio.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="system__test_8h_source.html">system_test.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="task__messages_8hpp_source.html">task_messages.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for fifo_scheduler_test.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="system__test_2fifo__scheduler__test_8cpp__incl.png" border="0" usemap="#a_2root_2tests_2system__test_2fifo__scheduler__test_8cpp" alt=""/></div>
-<map name="a_2root_2tests_2system__test_2fifo__scheduler__test_8cpp" id="a_2root_2tests_2system__test_2fifo__scheduler__test_8cpp">
-<area shape="rect" title=" " alt="" coords="459,5,608,60"/>
-<area shape="rect" href="fifo__scheduler_8hpp.html" title=" " alt="" coords="218,108,358,133"/>
-<area shape="poly" title=" " alt="" coords="459,63,334,106,333,101,458,58"/>
-<area shape="rect" title=" " alt="" coords="179,475,245,500"/>
-<area shape="poly" title=" " alt="" coords="459,43,326,60,251,74,178,90,111,110,57,134,36,147,21,162,11,177,8,193,8,342,12,368,24,392,42,412,64,429,116,456,166,473,164,478,113,461,61,434,38,416,20,395,7,370,3,342,3,192,6,175,17,158,33,143,54,129,109,105,176,85,250,68,326,55,458,38"/>
-<area shape="rect" href="task__control__block_8hpp.html" title=" " alt="" coords="311,255,483,280"/>
-<area shape="poly" title=" " alt="" coords="539,60,540,92,537,131,527,171,509,208,482,234,451,252,448,247,479,230,505,205,522,169,531,130,534,92,533,60"/>
-<area shape="rect" href="sk__stdio_8h.html" title=" " alt="" coords="571,108,659,133"/>
-<area shape="poly" title=" " alt="" coords="560,58,596,96,592,100,556,62"/>
-<area shape="rect" href="system__test_8h.html" title=" " alt="" coords="757,108,872,133"/>
-<area shape="poly" title=" " alt="" coords="609,54,765,102,764,107,608,59"/>
-<area shape="rect" href="scheduler__base_8hpp.html" title=" " alt="" coords="345,181,495,207"/>
-<area shape="poly" title=" " alt="" coords="310,131,388,172,385,177,308,136"/>
-<area shape="poly" title=" " alt="" coords="276,135,261,150,248,168,242,187,246,205,273,231,308,248,305,253,270,235,242,208,236,187,243,166,257,147,272,132"/>
-<area shape="rect" title=" " alt="" coords="256,181,320,207"/>
-<area shape="poly" title=" " alt="" coords="291,134,291,168,285,168,285,134"/>
-<area shape="rect" title=" " alt="" coords="43,181,181,207"/>
-<area shape="poly" title=" " alt="" coords="261,136,155,178,153,174,259,131"/>
-<area shape="rect" title=" " alt="" coords="974,475,1045,500"/>
-<area shape="poly" title=" " alt="" coords="467,204,634,251,739,286,842,326,917,353,947,370,979,400,997,430,1007,460,1002,462,993,432,975,403,944,374,915,358,840,330,737,291,633,256,465,209"/>
-<area shape="poly" title=" " alt="" coords="374,209,324,226,268,250,212,285,188,306,166,330,149,354,140,376,139,399,148,426,163,447,182,465,179,469,159,451,143,428,134,399,135,375,145,351,162,326,184,302,209,280,265,246,322,221,372,204"/>
-<area shape="poly" title=" " alt="" coords="419,208,408,242,403,241,414,206"/>
-<area shape="poly" title=" " alt="" coords="484,269,584,280,704,302,767,319,830,340,890,367,947,399,978,428,999,461,995,464,974,432,944,403,888,371,828,345,766,324,703,307,584,285,483,275"/>
-<area shape="poly" title=" " alt="" coords="312,281,252,299,224,313,198,330,174,352,158,373,152,397,158,426,171,446,187,464,183,467,167,450,154,428,147,397,153,371,170,348,194,326,221,308,250,294,310,276"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="478,328,554,353"/>
-<area shape="poly" title=" " alt="" coords="418,278,486,318,483,323,415,282"/>
-<area shape="rect" title=" " alt="" coords="208,328,264,353"/>
-<area shape="poly" title=" " alt="" coords="372,282,276,325,274,320,370,278"/>
-<area shape="rect" href="resource__id_8hpp.html" title=" " alt="" coords="288,328,413,353"/>
-<area shape="poly" title=" " alt="" coords="392,282,368,318,364,315,387,279"/>
-<area shape="poly" title=" " alt="" coords="554,338,623,340,713,348,813,366,862,381,909,399,956,429,992,462,988,466,953,433,907,404,860,386,811,372,713,353,623,345,554,344"/>
-<area shape="poly" title=" " alt="" coords="493,356,250,471,247,466,490,351"/>
-<area shape="rect" title=" " alt="" coords="483,401,549,427"/>
-<area shape="poly" title=" " alt="" coords="519,354,519,388,513,388,513,354"/>
-<area shape="rect" title=" " alt="" coords="573,401,643,427"/>
-<area shape="poly" title=" " alt="" coords="532,351,584,391,581,395,529,355"/>
-<area shape="rect" title=" " alt="" coords="412,475,476,500"/>
-<area shape="poly" title=" " alt="" coords="503,356,482,376,464,403,453,432,448,461,443,460,448,431,459,400,478,373,500,352"/>
-<area shape="rect" title=" " alt="" coords="551,475,615,500"/>
-<area shape="poly" title=" " alt="" coords="504,356,489,370,476,388,469,407,473,426,486,441,502,454,539,472,536,477,499,459,482,445,468,428,464,407,471,386,485,367,500,352"/>
-<area shape="rect" title=" " alt="" coords="826,475,950,500"/>
-<area shape="poly" title=" " alt="" coords="554,340,636,343,735,352,827,369,862,383,886,400,895,414,898,430,897,461,892,461,893,430,890,416,882,403,860,387,826,374,735,357,636,348,554,345"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="667,401,872,427"/>
-<area shape="poly" title=" " alt="" coords="555,350,716,395,715,400,554,355"/>
-<area shape="poly" title=" " alt="" coords="809,424,961,469,960,474,807,429"/>
-<area shape="poly" title=" " alt="" coords="680,429,260,483,259,477,679,424"/>
-<area shape="poly" title=" " alt="" coords="718,429,490,479,489,474,716,424"/>
-<area shape="poly" title=" " alt="" coords="740,429,627,472,625,467,738,424"/>
-<area shape="poly" title=" " alt="" coords="790,424,858,465,855,470,787,429"/>
-<area shape="rect" title=" " alt="" coords="738,475,801,500"/>
-<area shape="poly" title=" " alt="" coords="772,427,772,461,767,461,767,427"/>
-<area shape="poly" title=" " alt="" coords="341,356,234,467,231,463,337,352"/>
-<area shape="rect" title=" " alt="" coords="169,401,255,427"/>
-<area shape="poly" title=" " alt="" coords="330,356,248,397,246,393,327,351"/>
-<area shape="rect" title=" " alt="" coords="571,181,645,207"/>
-<area shape="poly" title=" " alt="" coords="616,134,613,168,608,168,611,133"/>
-<area shape="rect" title=" " alt="" coords="669,181,744,207"/>
-<area shape="poly" title=" " alt="" coords="631,131,683,171,679,175,628,135"/>
-<area shape="rect" title=" " alt="" coords="769,181,861,207"/>
-<area shape="poly" title=" " alt="" coords="817,134,817,168,812,168,812,134"/>
-<area shape="rect" title=" " alt="" coords="885,181,968,207"/>
-<area shape="poly" title=" " alt="" coords="834,131,898,171,895,176,831,136"/>
+<div class="center"><img src="system__test_2fifo__scheduler__test_8cpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2tests_2system__test_2fifo__scheduler__test_8cpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2tests_2system__test_2fifo__scheduler__test_8cpp" id="a_2workspaces_2SimpleKernel_2tests_2system__test_2fifo__scheduler__test_8cpp">
+<area shape="rect" title=" " alt="" coords="1646,5,1839,60"/>
+<area shape="rect" href="fifo__scheduler_8hpp.html" title=" " alt="" coords="1135,108,1275,133"/>
+<area shape="poly" title=" " alt="" coords="1646,52,1289,109,1288,103,1646,47"/>
+<area shape="rect" title=" " alt="" coords="1351,695,1417,720"/>
+<area shape="poly" title=" " alt="" coords="1775,59,1799,84,1822,116,1840,153,1847,192,1847,562,1843,579,1833,594,1797,621,1745,643,1682,662,1545,689,1431,704,1430,699,1544,684,1681,657,1743,638,1795,616,1829,590,1838,577,1841,562,1841,193,1835,154,1817,119,1795,88,1771,62"/>
+<area shape="rect" href="task__control__block_8hpp.html" title=" " alt="" coords="1229,255,1401,280"/>
+<area shape="poly" title=" " alt="" coords="1696,63,1349,250,1346,246,1693,58"/>
+<area shape="rect" href="task__messages_8hpp.html" title=" " alt="" coords="1525,401,1675,427"/>
+<area shape="poly" title=" " alt="" coords="1745,60,1745,193,1745,269,1742,315,1734,334,1719,355,1689,381,1655,399,1652,394,1686,377,1715,352,1730,332,1737,314,1740,269,1740,193,1740,60"/>
+<area shape="rect" href="system__test_8h.html" title=" " alt="" coords="1881,401,1996,427"/>
+<area shape="poly" title=" " alt="" coords="1806,58,1844,81,1881,111,1908,148,1916,169,1919,193,1919,269,1924,333,1935,387,1930,388,1919,334,1913,269,1913,193,1911,171,1903,150,1877,114,1841,85,1803,62"/>
+<area shape="rect" title=" " alt="" coords="1205,181,1280,207"/>
+<area shape="poly" title=" " alt="" coords="1214,132,1233,168,1228,171,1209,135"/>
+<area shape="rect" href="kernel__config_8hpp.html" title=" " alt="" coords="37,181,173,207"/>
+<area shape="poly" title=" " alt="" coords="1135,129,188,190,187,185,1135,124"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1109,475,1227,500"/>
+<area shape="poly" title=" " alt="" coords="1203,135,1183,191,1174,228,1171,266,1171,342,1171,461,1165,461,1165,342,1165,266,1169,227,1178,189,1198,133"/>
+<area shape="rect" href="scheduler__base_8hpp.html" title=" " alt="" coords="593,181,743,207"/>
+<area shape="poly" title=" " alt="" coords="1135,134,758,184,757,178,1135,129"/>
+<area shape="poly" title=" " alt="" coords="1232,131,1265,151,1294,180,1309,210,1315,241,1310,242,1304,212,1290,183,1261,155,1230,136"/>
+<area shape="rect" title=" " alt="" coords="297,695,367,720"/>
+<area shape="poly" title=" " alt="" coords="86,209,58,229,33,256,12,295,8,339,8,562,10,583,16,601,38,633,70,657,111,675,155,688,201,696,283,703,282,709,200,702,154,693,109,680,68,662,34,636,11,604,5,584,3,562,3,339,7,294,28,253,55,225,83,205"/>
+<area shape="rect" href="project__config_8h.html" title=" " alt="" coords="43,255,168,280"/>
+<area shape="poly" title=" " alt="" coords="108,207,108,241,103,241,103,207"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="526,548,602,573"/>
+<area shape="poly" title=" " alt="" coords="1109,498,616,556,615,551,1109,493"/>
+<area shape="rect" title=" " alt="" coords="1072,621,1139,647"/>
+<area shape="poly" title=" " alt="" coords="1158,502,1139,523,1122,549,1113,579,1109,608,1104,607,1108,578,1118,547,1135,520,1154,498"/>
+<area shape="poly" title=" " alt="" coords="1166,501,1158,536,1159,555,1166,572,1186,590,1207,599,1230,601,1254,599,1303,597,1329,603,1354,619,1365,633,1374,649,1383,680,1378,681,1369,651,1361,636,1350,623,1327,608,1303,602,1254,604,1230,606,1206,604,1183,595,1162,575,1153,556,1152,535,1160,500"/>
+<area shape="rect" title=" " alt="" coords="1176,548,1275,573"/>
+<area shape="poly" title=" " alt="" coords="1180,499,1209,535,1205,539,1175,502"/>
+<area shape="rect" title=" " alt="" coords="1299,548,1432,573"/>
+<area shape="poly" title=" " alt="" coords="1201,498,1321,541,1319,546,1199,503"/>
+<area shape="rect" title=" " alt="" coords="741,548,837,573"/>
+<area shape="poly" title=" " alt="" coords="1110,502,851,551,850,545,1109,497"/>
+<area shape="poly" title=" " alt="" coords="547,576,364,689,361,685,544,571"/>
+<area shape="poly" title=" " alt="" coords="602,564,1059,624,1058,629,602,570"/>
+<area shape="rect" title=" " alt="" coords="877,621,947,647"/>
+<area shape="poly" title=" " alt="" coords="603,567,859,619,864,620,863,625,858,624,602,572"/>
+<area shape="poly" title=" " alt="" coords="603,567,622,571,717,583,792,589,866,597,960,619,988,631,1017,644,1104,666,1192,682,1337,700,1336,705,1191,687,1103,671,1015,649,986,636,958,624,865,602,791,594,716,588,621,576,602,572"/>
+<area shape="rect" title=" " alt="" coords="596,695,660,720"/>
+<area shape="poly" title=" " alt="" coords="568,573,575,606,588,646,611,683,607,686,583,648,569,608,563,574"/>
+<area shape="rect" title=" " alt="" coords="791,695,855,720"/>
+<area shape="poly" title=" " alt="" coords="603,567,732,595,789,609,816,619,825,634,830,650,830,681,825,681,824,651,820,636,813,623,787,614,731,600,602,572"/>
+<area shape="rect" title=" " alt="" coords="447,695,571,720"/>
+<area shape="poly" title=" " alt="" coords="562,574,544,622,521,683,516,681,539,620,557,572"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="597,621,803,647"/>
+<area shape="poly" title=" " alt="" coords="587,571,667,613,665,617,585,576"/>
+<area shape="poly" title=" " alt="" coords="641,649,382,699,381,694,640,644"/>
+<area shape="poly" title=" " alt="" coords="803,643,1337,698,1337,704,802,649"/>
+<area shape="poly" title=" " alt="" coords="690,649,651,687,648,683,686,645"/>
+<area shape="poly" title=" " alt="" coords="721,644,792,685,790,690,718,649"/>
+<area shape="poly" title=" " alt="" coords="670,649,554,692,552,687,668,644"/>
+<area shape="rect" title=" " alt="" coords="685,695,747,720"/>
+<area shape="poly" title=" " alt="" coords="705,646,713,681,708,682,700,648"/>
+<area shape="poly" title=" " alt="" coords="593,199,499,204,395,214,301,231,265,243,239,257,221,274,212,292,209,313,208,339,208,562,210,582,217,601,240,635,270,664,301,685,298,690,267,668,236,639,212,603,205,583,203,562,203,339,203,312,207,290,217,271,236,253,262,238,299,226,394,208,499,199,592,194"/>
+<area shape="poly" title=" " alt="" coords="656,209,604,257,572,292,543,331,519,373,505,416,503,437,504,458,510,479,521,498,534,511,555,523,609,544,711,571,794,587,859,593,925,599,1008,619,1035,631,1061,644,1135,665,1211,680,1337,699,1337,704,1210,686,1134,670,1059,649,1032,636,1006,624,924,605,859,598,793,593,710,576,607,549,552,528,531,516,517,502,505,481,499,459,497,437,500,415,514,371,538,328,568,288,600,253,652,205"/>
+<area shape="poly" title=" " alt="" coords="744,201,1215,252,1215,258,743,206"/>
+<area shape="poly" title=" " alt="" coords="1229,271,970,277,810,288,648,306,498,333,431,350,373,371,326,395,289,422,266,452,261,469,259,486,259,562,264,597,278,630,296,659,314,683,310,686,291,662,273,632,259,598,253,562,253,486,255,467,262,450,286,418,323,390,371,366,430,345,497,328,647,300,810,282,970,272,1228,265"/>
+<area shape="poly" title=" " alt="" coords="1229,281,1114,297,972,322,817,357,665,404,619,417,581,427,549,443,535,457,521,476,517,491,521,507,542,537,538,540,516,509,511,491,516,474,531,453,546,439,579,422,617,412,663,399,816,352,971,316,1114,291,1228,275"/>
+<area shape="poly" title=" " alt="" coords="1332,278,1382,326,1423,380,1446,428,1460,480,1469,548,1474,599,1470,622,1458,648,1440,671,1418,689,1415,685,1436,668,1454,645,1465,620,1469,599,1464,548,1454,481,1441,430,1418,383,1378,330,1328,282"/>
+<area shape="rect" title=" " alt="" coords="1443,328,1530,353"/>
+<area shape="poly" title=" " alt="" coords="1343,278,1447,320,1445,325,1341,282"/>
+<area shape="rect" title=" " alt="" coords="1554,328,1705,353"/>
+<area shape="poly" title=" " alt="" coords="1366,277,1566,322,1565,328,1365,283"/>
+<area shape="rect" title=" " alt="" coords="1205,401,1261,427"/>
+<area shape="poly" title=" " alt="" coords="1296,282,1270,302,1248,329,1238,358,1235,387,1230,387,1233,357,1243,327,1266,298,1293,278"/>
+<area shape="rect" href="file__descriptor_8hpp.html" title=" " alt="" coords="989,328,1131,353"/>
+<area shape="poly" title=" " alt="" coords="1274,283,1115,327,1113,322,1273,277"/>
+<area shape="rect" href="resource__id_8hpp.html" title=" " alt="" coords="1673,475,1799,500"/>
+<area shape="poly" title=" " alt="" coords="1401,267,1489,271,1583,281,1665,298,1697,311,1719,326,1739,358,1747,394,1748,431,1744,461,1739,461,1742,430,1742,395,1734,360,1715,330,1695,315,1664,303,1582,286,1488,276,1401,272"/>
+<area shape="rect" href="task__fsm_8hpp.html" title=" " alt="" coords="1257,328,1367,353"/>
+<area shape="poly" title=" " alt="" coords="1317,280,1316,315,1310,314,1312,280"/>
+<area shape="poly" title=" " alt="" coords="990,350,839,369,751,384,665,404,567,430,527,448,479,477,436,509,407,539,384,574,360,622,348,653,340,682,335,680,343,651,355,620,380,572,403,536,433,505,476,472,524,443,565,425,663,399,750,379,838,364,989,345"/>
+<area shape="poly" title=" " alt="" coords="1078,351,1195,424,1233,442,1270,454,1335,468,1365,477,1394,491,1421,513,1446,547,1454,565,1456,584,1447,622,1428,657,1406,686,1402,683,1423,654,1442,620,1451,584,1449,566,1442,549,1417,517,1391,496,1363,482,1334,473,1268,459,1231,447,1192,429,1075,356"/>
+<area shape="poly" title=" " alt="" coords="1089,351,1193,394,1191,398,1087,356"/>
+<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="889,548,999,573"/>
+<area shape="poly" title=" " alt="" coords="1065,353,1068,381,1069,420,1064,462,1048,501,1023,527,994,545,991,540,1020,523,1043,499,1059,460,1064,419,1063,382,1060,354"/>
+<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="676,401,780,427"/>
+<area shape="poly" title=" " alt="" coords="1007,356,794,401,793,396,1006,351"/>
+<area shape="rect" href="vfs_8hpp.html" title=" " alt="" coords="950,401,1021,427"/>
+<area shape="poly" title=" " alt="" coords="1050,355,1009,394,1006,390,1046,351"/>
+<area shape="poly" title=" " alt="" coords="1000,569,1151,595,1258,619,1316,650,1362,684,1359,688,1313,655,1256,624,1150,601,999,574"/>
+<area shape="rect" title=" " alt="" coords="1163,621,1245,647"/>
+<area shape="poly" title=" " alt="" coords="986,571,1150,615,1148,620,985,576"/>
+<area shape="poly" title=" " alt="" coords="677,425,600,443,559,458,520,477,473,509,442,540,381,623,345,683,341,681,376,620,438,536,470,505,517,472,557,453,598,438,675,420"/>
+<area shape="poly" title=" " alt="" coords="781,421,1096,472,1096,477,780,426"/>
+<area shape="poly" title=" " alt="" coords="716,429,660,477,589,541,585,537,657,473,712,425"/>
+<area shape="poly" title=" " alt="" coords="726,428,718,457,712,495,714,536,721,555,731,571,755,588,791,600,834,607,883,610,979,613,1054,619,1059,620,1058,625,1053,624,979,619,882,616,834,612,789,605,753,593,727,575,716,557,709,537,706,495,712,456,721,426"/>
+<area shape="poly" title=" " alt="" coords="733,427,742,460,756,499,776,535,771,538,751,501,737,461,728,428"/>
+<area shape="poly" title=" " alt="" coords="762,424,809,444,859,472,897,504,927,535,923,539,893,508,856,477,807,449,760,429"/>
+<area shape="rect" title=" " alt="" coords="765,475,845,500"/>
+<area shape="poly" title=" " alt="" coords="742,425,784,463,781,467,739,429"/>
+<area shape="rect" title=" " alt="" coords="531,475,589,500"/>
+<area shape="poly" title=" " alt="" coords="702,429,601,472,599,467,700,424"/>
+<area shape="rect" href="vfs__types_8hpp.html" title=" " alt="" coords="921,475,1034,500"/>
+<area shape="poly" title=" " alt="" coords="987,427,983,461,977,461,981,427"/>
+<area shape="poly" title=" " alt="" coords="921,497,688,522,577,537,514,550,464,580,418,616,380,654,352,685,348,682,376,650,414,612,461,575,512,546,576,532,687,516,920,491"/>
+<area shape="poly" title=" " alt="" coords="999,498,1066,532,1152,571,1194,584,1228,591,1262,600,1301,619,1340,650,1369,682,1365,686,1336,654,1299,624,1260,605,1227,596,1192,589,1150,576,1064,537,997,502"/>
+<area shape="poly" title=" " alt="" coords="974,501,958,537,953,535,969,499"/>
+<area shape="poly" title=" " alt="" coords="1692,503,1644,521,1599,550,1580,574,1571,599,1561,623,1540,649,1515,667,1486,681,1431,699,1430,694,1484,676,1512,662,1537,645,1557,621,1566,597,1575,572,1596,546,1642,516,1690,498"/>
+<area shape="rect" title=" " alt="" coords="1609,548,1695,573"/>
+<area shape="poly" title=" " alt="" coords="1724,502,1678,541,1675,537,1721,498"/>
+<area shape="rect" title=" " alt="" coords="1719,548,1806,573"/>
+<area shape="poly" title=" " alt="" coords="1743,499,1756,534,1751,536,1738,501"/>
+<area shape="poly" title=" " alt="" coords="1312,355,1299,390,1289,410,1275,428,1245,453,1213,471,1210,467,1242,449,1271,425,1284,407,1294,388,1307,353"/>
+<area shape="rect" title=" " alt="" coords="1336,401,1416,427"/>
+<area shape="poly" title=" " alt="" coords="1325,352,1359,389,1355,393,1321,355"/>
+<area shape="poly" title=" " alt="" coords="1359,351,1541,395,1540,401,1358,356"/>
+<area shape="poly" title=" " alt="" coords="1623,424,1703,466,1701,471,1621,429"/>
+<area shape="rect" title=" " alt="" coords="1535,475,1649,500"/>
+<area shape="poly" title=" " alt="" coords="1601,427,1597,461,1592,461,1596,427"/>
+<area shape="poly" title=" " alt="" coords="1881,423,1241,482,1241,477,1880,418"/>
+<area shape="poly" title=" " alt="" coords="1938,427,1900,552,1878,617,1865,648,1831,667,1783,681,1726,692,1663,699,1535,707,1431,709,1431,704,1535,702,1662,694,1725,686,1782,676,1829,662,1861,645,1873,615,1895,550,1933,426"/>
+<area shape="rect" title=" " alt="" coords="2049,475,2143,500"/>
+<area shape="poly" title=" " alt="" coords="1965,424,2059,467,2057,471,1963,429"/>
+<area shape="rect" title=" " alt="" coords="1933,475,2025,500"/>
+<area shape="poly" title=" " alt="" coords="1948,426,1968,461,1963,464,1943,428"/>
 </map>
 </div>
 </div>
@@ -192,53 +248,53 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="system__test_2fifo__scheduler__test_8cpp_source.html#l00316">316</a> of file <a class="el" href="system__test_2fifo__scheduler__test_8cpp_source.html">fifo_scheduler_test.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  316</span>                                   {</div>
-<div class="line"><span class="lineno">  317</span>  <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;\n=== FIFO Scheduler System Tests ===\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  318</span> </div>
-<div class="line"><span class="lineno">  319</span>  <span class="keywordflow">if</span> (!test_fifo_basic_functionality()) {</div>
-<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  321</span>  }</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>  <span class="keywordflow">if</span> (!test_fifo_ordering()) {</div>
-<div class="line"><span class="lineno">  324</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  325</span>  }</div>
-<div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>  <span class="keywordflow">if</span> (!test_fifo_dequeue()) {</div>
-<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  329</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="system__test_2fifo__scheduler__test_8cpp_source.html#l00328">328</a> of file <a class="el" href="system__test_2fifo__scheduler__test_8cpp_source.html">fifo_scheduler_test.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  328</span>                                   {</div>
+<div class="line"><span class="lineno">  329</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;\n=== FIFO Scheduler System Tests ===\n&quot;</span>);</div>
 <div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>  <span class="keywordflow">if</span> (!test_fifo_statistics()) {</div>
+<div class="line"><span class="lineno">  331</span>  <span class="keywordflow">if</span> (!test_fifo_basic_functionality()) {</div>
 <div class="line"><span class="lineno">  332</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  333</span>  }</div>
 <div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>  <span class="keywordflow">if</span> (!test_fifo_mixed_operations()) {</div>
+<div class="line"><span class="lineno">  335</span>  <span class="keywordflow">if</span> (!test_fifo_ordering()) {</div>
 <div class="line"><span class="lineno">  336</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  337</span>  }</div>
 <div class="line"><span class="lineno">  338</span> </div>
-<div class="line"><span class="lineno">  339</span>  <span class="keywordflow">if</span> (!test_fifo_repeated_enqueue()) {</div>
+<div class="line"><span class="lineno">  339</span>  <span class="keywordflow">if</span> (!test_fifo_dequeue()) {</div>
 <div class="line"><span class="lineno">  340</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  341</span>  }</div>
 <div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>  <span class="keywordflow">if</span> (!test_fifo_hooks()) {</div>
+<div class="line"><span class="lineno">  343</span>  <span class="keywordflow">if</span> (!test_fifo_statistics()) {</div>
 <div class="line"><span class="lineno">  344</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  345</span>  }</div>
 <div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>  <span class="keywordflow">if</span> (!test_fifo_robustness()) {</div>
+<div class="line"><span class="lineno">  347</span>  <span class="keywordflow">if</span> (!test_fifo_mixed_operations()) {</div>
 <div class="line"><span class="lineno">  348</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  349</span>  }</div>
 <div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>  <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;=== All FIFO Scheduler Tests Passed ===\n\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  352</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  353</span>}</div>
-<div class="ttc" id="ask__stdio_8h_html_ad8142b94111a30f723c6c0a2301bae7f"><div class="ttname"><a href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a></div><div class="ttdeci">int sk_printf(const char *format,...) __attribute__((format(printf</div></div>
+<div class="line"><span class="lineno">  351</span>  <span class="keywordflow">if</span> (!test_fifo_repeated_enqueue()) {</div>
+<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  353</span>  }</div>
+<div class="line"><span class="lineno">  354</span> </div>
+<div class="line"><span class="lineno">  355</span>  <span class="keywordflow">if</span> (!test_fifo_hooks()) {</div>
+<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  357</span>  }</div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>  <span class="keywordflow">if</span> (!test_fifo_robustness()) {</div>
+<div class="line"><span class="lineno">  360</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  361</span>  }</div>
+<div class="line"><span class="lineno">  362</span> </div>
+<div class="line"><span class="lineno">  363</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;=== All FIFO Scheduler Tests Passed ===\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  364</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  365</span>}</div>
+<div class="ttc" id="anamespaceklog_html_a1f6b347e95b475341e195f363a9f20a3"><div class="ttname"><a href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a></div><div class="ttdeci">auto Info(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 INFO 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00182">kernel_log.hpp:182</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="system__test_2fifo__scheduler__test_8cpp_ab1f7bcb3ad9778f98e5a6eb91aa56f2b_cgraph.png" border="0" usemap="#asystem__test_2fifo__scheduler__test_8cpp_ab1f7bcb3ad9778f98e5a6eb91aa56f2b_cgraph" alt=""/></div>
 <map name="asystem__test_2fifo__scheduler__test_8cpp_ab1f7bcb3ad9778f98e5a6eb91aa56f2b_cgraph" id="asystem__test_2fifo__scheduler__test_8cpp_ab1f7bcb3ad9778f98e5a6eb91aa56f2b_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,151,31"/>
-<area shape="rect" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f" title=" " alt="" coords="199,5,277,31"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="199,5,281,31"/>
 <area shape="poly" title=" " alt="" coords="151,15,185,15,185,21,151,21"/>
 </map>
 </div>

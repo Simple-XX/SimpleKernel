@@ -12,6 +12,6 @@ var classSpinLock =
     [ "UnLock", "classSpinLock.html#aef0f49fb04aa9d32bb17158788ce8cd3", null ],
     [ "core_id_", "classSpinLock.html#abd4b5f1d813d2bfc29c5bee5da8a8aad", null ],
     [ "locked_", "classSpinLock.html#a0f44bb2186bb648733c6ae7e452893bb", null ],
-    [ "name_", "classSpinLock.html#a126d1652f41f89a93f3cbf82b3cba4ef", null ],
+    [ "name", "classSpinLock.html#a76a268f610393fbd268506018feb0fef", null ],
     [ "saved_intr_enable_", "classSpinLock.html#ad3fbd04e65ccc13b68d1334a018afefa", null ]
 ];

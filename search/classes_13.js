@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xsdt_0',['Xsdt',['../structAcpi_1_1Xsdt.html',1,'Acpi']]]
+  ['waketickcompare_0',['WakeTickCompare',['../structTaskControlBlock_1_1WakeTickCompare.html',1,'TaskControlBlock']]]
 ];

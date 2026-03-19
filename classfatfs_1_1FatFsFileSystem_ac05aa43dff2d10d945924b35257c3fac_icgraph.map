@@ -1,0 +1,9 @@
+<map id="fatfs::FatFsFileSystem::Mount" name="fatfs::FatFsFileSystem::Mount">
+<area shape="rect" id="Node000001" title="挂载 FatFS 卷" alt="" coords="295,23,461,63"/>
+<area shape="rect" id="Node000002" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="108,5,247,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,34,247,29,247,24,281,28"/>
+<area shape="rect" id="Node000003" href="$filesystem_8cpp.html#a2b9f450648a51d217091f5923c64a449" title="文件系统子系统初始化入口" alt="" coords="120,55,235,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,58,235,63,235,58,280,52"/>
+<area shape="rect" id="Node000004" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="106,70,60,70,60,65,106,65"/>
+</map>

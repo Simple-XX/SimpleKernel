@@ -1,0 +1,7 @@
+<map id="TaskFsm::Start" name="TaskFsm::Start">
+<area shape="rect" id="Node000001" title="启动 FSM（在 TCB 完全构造后调用）" alt="" coords="272,45,391,70"/>
+<area shape="rect" id="Node000002" href="$structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42" title="构造函数 (内核线程)" alt="" coords="5,5,224,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,49,224,44,225,39,258,44"/>
+<area shape="rect" id="Node000003" href="$structTaskControlBlock.html#a87bcaeb8999f4d5e383a5d2bd8c13925" title="构造函数 (用户线程)" alt="" coords="5,69,224,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="258,71,225,76,224,71,258,65"/>
+</map>

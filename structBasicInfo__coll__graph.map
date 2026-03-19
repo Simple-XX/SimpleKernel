@@ -1,3 +1,3 @@
 <map id="BasicInfo" name="BasicInfo">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,187,451"/>
+<area shape="rect" id="Node000001" title="内核基础信息（物理内存、内核地址、CPU 核数等）" alt="" coords="5,5,187,471"/>
 </map>

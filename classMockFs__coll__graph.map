@@ -1,0 +1,16 @@
+<map id="MockFs" name="MockFs">
+<area shape="rect" id="Node000001" title=" " alt="" coords="185,701,319,947"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="5,95,133,301"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,315,57,389,60,472,73,557,97,638,115,673,137,706,187,763,183,767,133,709,110,675,92,640,68,558,55,472,51,389,54,315"/>
+<area shape="rect" id="Node000006" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="107,463,215,629"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="99,300,138,447,133,448,94,302"/>
+<area shape="rect" id="Node000003" href="$classvfs_1_1BlockDevice.html" title="块设备抽象基类" alt="" coords="240,453,381,639"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="294,640,284,686,279,685,289,638"/>
+<area shape="rect" id="Node000004" href="$classMockFileOps.html" title=" " alt="" coords="406,473,503,619"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="419,620,382,679,332,742,327,739,378,676,415,617"/>
+<area shape="rect" id="Node000005" href="$classvfs_1_1FileOps.html" title="File 操作接口" alt="" coords="402,5,507,391"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="457,404,457,473,452,473,452,404"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="182,628,196,677,199,685,194,687,191,678,177,630"/>
+<area shape="rect" id="Node000007" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="158,5,269,391"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="187,391,179,448,173,447,182,390"/>
+</map>

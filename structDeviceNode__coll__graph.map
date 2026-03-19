@@ -1,0 +1,5 @@
+<map id="DeviceNode" name="DeviceNode">
+<area shape="rect" id="Node000001" title="单个设备的硬件资源描述。" alt="" coords="11,253,141,499"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1BlockDevice.html" title="块设备抽象基类" alt="" coords="5,5,147,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,191,79,237,73,237,73,191"/>
+</map>

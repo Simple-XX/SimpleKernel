@@ -1,15 +1,17 @@
 <map id="KernelElf::KernelElf" name="KernelElf::KernelElf">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,151,129"/>
-<area shape="rect" id="Node000002" href="$classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430" title=" " alt="" coords="199,55,393,80"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,101,225,80,226,86,135,107"/>
-<area shape="rect" id="Node000005" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="236,104,356,129"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="151,114,222,114,222,119,151,119"/>
-<area shape="rect" id="Node000007" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="241,153,351,179"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="135,127,228,148,227,153,134,132"/>
+<area shape="rect" id="Node000001" title="构造函数" alt="" coords="5,104,151,129"/>
+<area shape="rect" id="Node000002" href="$classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430" title=" " alt="" coords="199,29,393,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,102,198,63,223,56,225,61,200,69,107,106"/>
+<area shape="rect" id="Node000005" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="258,79,334,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="151,106,244,95,245,100,151,111"/>
+<area shape="rect" id="Node000006" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="236,128,356,153"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="151,122,222,130,222,135,151,127"/>
+<area shape="rect" id="Node000008" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="241,177,351,203"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="109,127,200,162,229,171,228,176,198,167,107,132"/>
 <area shape="rect" id="Node000003" href="$classKernelElf.html#a0e9b0d48211532a1ec15c0723283306d" title=" " alt="" coords="443,5,622,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="357,52,457,31,458,36,358,57"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="393,29,429,26,430,31,394,35"/>
 <area shape="rect" id="Node000004" href="$classKernelElf.html#a287a85a00b09bca4b4d66ebf67d97fb0" title=" " alt="" coords="441,55,624,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="394,65,427,65,427,70,394,70"/>
-<area shape="rect" id="Node000006" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="465,104,600,129"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="356,114,452,114,452,119,356,119"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="394,50,428,53,428,59,393,55"/>
+<area shape="rect" id="Node000007" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="465,128,600,153"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="356,138,452,138,452,143,356,143"/>
 </map>

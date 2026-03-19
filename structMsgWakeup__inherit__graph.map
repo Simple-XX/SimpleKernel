@@ -1,0 +1,5 @@
+<map id="MsgWakeup" name="MsgWakeup">
+<area shape="rect" id="Node000001" title="唤醒消息（无负载，用作事件）" alt="" coords="35,133,127,199"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,156,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,100,83,133,78,133,78,100"/>
+</map>

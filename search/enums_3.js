@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resourcetype_0',['ResourceType',['../resource__id_8hpp.html#aeea667e01168927f6d83af2e203019bc',1,'resource_id.hpp']]]
+  ['errorcode_0',['ErrorCode',['../expected_8hpp.html#a4d45a9675d1bf454764383179f3c895f',1,'expected.hpp']]]
 ];

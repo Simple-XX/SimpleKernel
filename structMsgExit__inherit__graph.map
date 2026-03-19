@@ -1,0 +1,5 @@
+<map id="MsgExit" name="MsgExit">
+<area shape="rect" id="Node000001" title="退出消息，携带退出码与父任务标志" alt="" coords="23,133,129,479"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,147,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,99,79,133,73,133,73,99"/>
+</map>

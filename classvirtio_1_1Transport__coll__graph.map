@@ -1,0 +1,3 @@
+<map id="virtio::Transport" name="virtio::Transport">
+<area shape="rect" id="Node000001" title="Virtio 传输层基类（零虚表开销，C++23 Deducing this）" alt="" coords="5,5,187,371"/>
+</map>

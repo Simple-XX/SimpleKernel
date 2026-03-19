@@ -1,7 +1,8 @@
 var searchData=
 [
   ['absclass_0',['AbsClass',['../classAbsClass.html',1,'']]],
-  ['acpi_1',['Acpi',['../classAcpi.html',1,'']]],
+  ['acpi_1',['Acpi',['../classacpi_1_1Acpi.html',1,'acpi']]],
   ['apic_2',['Apic',['../classApic.html',1,'']]],
-  ['atexit_5ffunc_5fentry_5ft_3',['atexit_func_entry_t',['../structatexit__func__entry__t.html',1,'']]]
+  ['atexit_5ffunc_5fentry_5ft_3',['atexit_func_entry_t',['../structatexit__func__entry__t.html',1,'']]],
+  ['avail_4',['Avail',['../structvirtio_1_1SplitVirtqueue_1_1Avail.html',1,'virtio::SplitVirtqueue']]]
 ];

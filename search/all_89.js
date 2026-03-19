@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['结构_0',['多核系统中的 APIC 结构',['../md__2root_2src_2driver_2apic_2README.html#autotoc_md383',1,'']]]
+  ['附录_3a_20检查清单_0',['附录: 检查清单',['../md_coding__standards.html#autotoc_md274',1,'']]]
 ];

@@ -1,0 +1,5 @@
+<map id="PlatformBus" name="PlatformBus">
+<area shape="rect" id="Node000001" title="平台总线 — 从扁平设备树（FDT）枚举设备" alt="" coords="54,873,183,1219"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html" title="FDT（Flattened Device Tree）解析器" alt="" coords="5,5,232,811"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,811,121,857,116,857,116,811"/>
+</map>

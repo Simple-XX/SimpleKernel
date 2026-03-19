@@ -1,0 +1,7 @@
+<map id="vfs::Write" name="vfs::Write">
+<area shape="rect" id="Node000001" title="向文件写入数据" alt="" coords="200,31,285,56"/>
+<area shape="rect" id="Node000002" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="9,5,148,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,37,148,31,149,26,187,32"/>
+<area shape="rect" id="Node000003" href="$ramfs__system__test_8cpp.html#a0c73a2434a6f18c0fac51e32863e40e9" title=" " alt="" coords="5,55,152,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="187,54,152,59,152,54,186,49"/>
+</map>

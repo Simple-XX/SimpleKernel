@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classGic.html',''); initResizable(); }
 </div><!--header-->
 <div class="contents">
 
-<p>gic 中断控制器驱动  
+<p>GIC 中断控制器驱动  
  <a href="classGic.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="gic_8h_source.html">gic.h</a>&gt;</code></p>
@@ -108,44 +108,51 @@ Collaboration diagram for Gic:</div>
 <div class="dyncontent">
 <div class="center"><img src="classGic__coll__graph.png" border="0" usemap="#aGic_coll__map" alt="Collaboration graph"/></div>
 <map name="aGic_coll__map" id="aGic_coll__map">
-<area shape="rect" title="gic 中断控制器驱动" alt="" coords="161,833,312,1339"/>
-<area shape="rect" href="classGic_1_1Gicd.html" title=" " alt="" coords="5,5,223,771"/>
-<area shape="poly" title=" " alt="" coords="184,771,192,817,187,818,179,772"/>
-<area shape="rect" href="classGic_1_1Gicr.html" title=" " alt="" coords="247,25,475,751"/>
-<area shape="poly" title=" " alt="" coords="299,751,287,818,282,817,294,750"/>
+<area shape="rect" title="GIC 中断控制器驱动" alt="" coords="145,973,296,1499"/>
+<area shape="rect" href="classGic_1_1Gicd.html" title="GIC Distributor 接口" alt="" coords="5,5,207,911"/>
+<area shape="poly" title=" " alt="" coords="175,911,182,957,177,958,170,911"/>
+<area shape="rect" href="classGic_1_1Gicr.html" title="GIC Redistributor 接口" alt="" coords="231,85,442,831"/>
+<area shape="poly" title=" " alt="" coords="284,831,265,957,260,957,278,831"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic_1_1Gicd.html">Gicd</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">GIC Distributor 接口  <a href="classGic_1_1Gicd.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic_1_1Gicr.html">Gicr</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">GIC Redistributor 接口  <a href="classGic_1_1Gicr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a459dfc63122e38dc0f518ee4f2935576" id="r_a459dfc63122e38dc0f518ee4f2935576"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a459dfc63122e38dc0f518ee4f2935576">SetUp</a> () const -&gt; void</td></tr>
+<tr class="memdesc:a459dfc63122e38dc0f518ee4f2935576"><td class="mdescLeft">&#160;</td><td class="mdescRight">初始化当前 CPU 的 GIC 配置  <br /></td></tr>
+<tr class="separator:a459dfc63122e38dc0f518ee4f2935576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0635a4d4b30049040df77591253f1a1d" id="r_a0635a4d4b30049040df77591253f1a1d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a0635a4d4b30049040df77591253f1a1d">Spi</a> (uint32_t intid, uint32_t cpuid) const -&gt; void</td></tr>
+<tr class="memdesc:a0635a4d4b30049040df77591253f1a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">配置共享外设中断 (SPI)  <br /></td></tr>
+<tr class="separator:a0635a4d4b30049040df77591253f1a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61fe90349f98f56ca6f675e4135ca675" id="r_a61fe90349f98f56ca6f675e4135ca675"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a61fe90349f98f56ca6f675e4135ca675">Ppi</a> (uint32_t intid, uint32_t cpuid) const -&gt; void</td></tr>
+<tr class="memdesc:a61fe90349f98f56ca6f675e4135ca675"><td class="mdescLeft">&#160;</td><td class="mdescRight">配置私有外设中断 (PPI)  <br /></td></tr>
+<tr class="separator:a61fe90349f98f56ca6f675e4135ca675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c36f1585f54075b78b09acf00a80eaa" id="r_a1c36f1585f54075b78b09acf00a80eaa"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a1c36f1585f54075b78b09acf00a80eaa">Sgi</a> (uint32_t intid, uint32_t cpuid) const -&gt; void</td></tr>
+<tr class="memdesc:a1c36f1585f54075b78b09acf00a80eaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">配置软件生成中断 (SGI)  <br /></td></tr>
+<tr class="separator:a1c36f1585f54075b78b09acf00a80eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
 <tr class="memitem:ab46e6d9e05b378d69d0f5c120aa2e154" id="r_ab46e6d9e05b378d69d0f5c120aa2e154"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#ab46e6d9e05b378d69d0f5c120aa2e154">Gic</a> (uint64_t gicd_base_addr, uint64_t gicr_base_addr)</td></tr>
+<tr class="memdesc:ab46e6d9e05b378d69d0f5c120aa2e154"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造函数  <br /></td></tr>
 <tr class="separator:ab46e6d9e05b378d69d0f5c120aa2e154"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95e93d4c431de2b81969c6503801301e" id="r_a95e93d4c431de2b81969c6503801301e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a95e93d4c431de2b81969c6503801301e">SetUP</a> () const</td></tr>
-<tr class="separator:a95e93d4c431de2b81969c6503801301e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9df3f81b40dd76b44304a542ed6e74ab" id="r_a9df3f81b40dd76b44304a542ed6e74ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a9df3f81b40dd76b44304a542ed6e74ab">SPI</a> (uint32_t intid, uint32_t cpuid) const</td></tr>
-<tr class="separator:a9df3f81b40dd76b44304a542ed6e74ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb84f58ea07b6c03dc7bb27a49489cc0" id="r_adb84f58ea07b6c03dc7bb27a49489cc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#adb84f58ea07b6c03dc7bb27a49489cc0">PPI</a> (uint32_t intid, uint32_t cpuid) const</td></tr>
-<tr class="separator:adb84f58ea07b6c03dc7bb27a49489cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab9f7f62a1f6076a1cc7bc616208c8b6" id="r_aab9f7f62a1f6076a1cc7bc616208c8b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#aab9f7f62a1f6076a1cc7bc616208c8b6">SGI</a> (uint32_t intid, uint32_t cpuid) const</td></tr>
-<tr class="separator:aab9f7f62a1f6076a1cc7bc616208c8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">默认构造/析构函数</div></td></tr>
 <tr class="memitem:a269dc1325f19f018a81d81b2942978c6" id="r_a269dc1325f19f018a81d81b2942978c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a269dc1325f19f018a81d81b2942978c6">Gic</a> ()=default</td></tr>
 <tr class="separator:a269dc1325f19f018a81d81b2942978c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa2425ffdcc2b6fdd79869805c8fcc90" id="r_afa2425ffdcc2b6fdd79869805c8fcc90"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#afa2425ffdcc2b6fdd79869805c8fcc90">Gic</a> (const <a class="el" href="classGic.html">Gic</a> &amp;na16550a)=delete</td></tr>
-<tr class="separator:afa2425ffdcc2b6fdd79869805c8fcc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25df9f6b4fec027a48e32068a702aa97" id="r_a25df9f6b4fec027a48e32068a702aa97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a25df9f6b4fec027a48e32068a702aa97">Gic</a> (<a class="el" href="classGic.html">Gic</a> &amp;&amp;na16550a)=delete</td></tr>
-<tr class="separator:a25df9f6b4fec027a48e32068a702aa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49dff442e16420914db0429a6ca6f38c" id="r_a49dff442e16420914db0429a6ca6f38c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a49dff442e16420914db0429a6ca6f38c">operator=</a> (const <a class="el" href="classGic.html">Gic</a> &amp;na16550a) -&gt; <a class="el" href="classGic.html">Gic</a> &amp;=delete</td></tr>
-<tr class="separator:a49dff442e16420914db0429a6ca6f38c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e73e1b6cd6afa0cd2b7bd80be0b17ad" id="r_a6e73e1b6cd6afa0cd2b7bd80be0b17ad"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a6e73e1b6cd6afa0cd2b7bd80be0b17ad">operator=</a> (<a class="el" href="classGic.html">Gic</a> &amp;&amp;na16550a) -&gt; <a class="el" href="classGic.html">Gic</a> &amp;=default</td></tr>
-<tr class="separator:a6e73e1b6cd6afa0cd2b7bd80be0b17ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3226b5f43ec26d33c9ffef74fc778cef" id="r_a3226b5f43ec26d33c9ffef74fc778cef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a3226b5f43ec26d33c9ffef74fc778cef">Gic</a> (const <a class="el" href="classGic.html">Gic</a> &amp;)=delete</td></tr>
+<tr class="separator:a3226b5f43ec26d33c9ffef74fc778cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5056ef9e0ad817a54e4a606befe002a9" id="r_a5056ef9e0ad817a54e4a606befe002a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a5056ef9e0ad817a54e4a606befe002a9">Gic</a> (<a class="el" href="classGic.html">Gic</a> &amp;&amp;)=delete</td></tr>
+<tr class="separator:a5056ef9e0ad817a54e4a606befe002a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83f035e6bc5919ab0e9a21705c5440cf" id="r_a83f035e6bc5919ab0e9a21705c5440cf"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a83f035e6bc5919ab0e9a21705c5440cf">operator=</a> (const <a class="el" href="classGic.html">Gic</a> &amp;) -&gt; <a class="el" href="classGic.html">Gic</a> &amp;=delete</td></tr>
+<tr class="separator:a83f035e6bc5919ab0e9a21705c5440cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf274b2a0a251743cefc02d0ec73881b" id="r_aaf274b2a0a251743cefc02d0ec73881b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#aaf274b2a0a251743cefc02d0ec73881b">operator=</a> (<a class="el" href="classGic.html">Gic</a> &amp;&amp;) -&gt; <a class="el" href="classGic.html">Gic</a> &amp;=default</td></tr>
+<tr class="separator:aaf274b2a0a251743cefc02d0ec73881b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ff9618cddfdf7b04bb829101d170d6f" id="r_a5ff9618cddfdf7b04bb829101d170d6f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a5ff9618cddfdf7b04bb829101d170d6f">~Gic</a> ()=default</td></tr>
 <tr class="separator:a5ff9618cddfdf7b04bb829101d170d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -153,32 +160,34 @@ Public Member Functions</h2></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a782276d0d675191183e2615a29ce0166" id="r_a782276d0d675191183e2615a29ce0166"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a782276d0d675191183e2615a29ce0166">kCompatibleName</a> = &quot;arm,gic-v3&quot;</td></tr>
 <tr class="separator:a782276d0d675191183e2615a29ce0166"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aada584a8107ea93e10754834166cd1f5" id="r_aada584a8107ea93e10754834166cd1f5"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#aada584a8107ea93e10754834166cd1f5">kSGIBase</a> = 0</td></tr>
-<tr class="separator:aada584a8107ea93e10754834166cd1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d9f403b3924da4fcd271cd998bc5d1f" id="r_a3d9f403b3924da4fcd271cd998bc5d1f"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a3d9f403b3924da4fcd271cd998bc5d1f">kSGICount</a> = 16</td></tr>
-<tr class="separator:a3d9f403b3924da4fcd271cd998bc5d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56c9c92897f2819cbcf33cda56f13ebc" id="r_a56c9c92897f2819cbcf33cda56f13ebc"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a56c9c92897f2819cbcf33cda56f13ebc">kPPIBase</a> = 16</td></tr>
-<tr class="separator:a56c9c92897f2819cbcf33cda56f13ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62845bf50e0a040902cc362754ac71ba" id="r_a62845bf50e0a040902cc362754ac71ba"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a62845bf50e0a040902cc362754ac71ba">kPPICount</a> = 16</td></tr>
-<tr class="separator:a62845bf50e0a040902cc362754ac71ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cce758a89d33ca112a0c42d162fed99" id="r_a4cce758a89d33ca112a0c42d162fed99"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a4cce758a89d33ca112a0c42d162fed99">kSPIBase</a> = 32</td></tr>
-<tr class="separator:a4cce758a89d33ca112a0c42d162fed99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad733ea692ae06a4f6066a8fd8e3f5ea6" id="r_ad733ea692ae06a4f6066a8fd8e3f5ea6"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#ad733ea692ae06a4f6066a8fd8e3f5ea6">kSPICount</a> = 988</td></tr>
-<tr class="separator:ad733ea692ae06a4f6066a8fd8e3f5ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c1b0bfb2468acc84c7330f607f5c229" id="r_a3c1b0bfb2468acc84c7330f607f5c229"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a3c1b0bfb2468acc84c7330f607f5c229">kSgiBase</a> = 0</td></tr>
+<tr class="separator:a3c1b0bfb2468acc84c7330f607f5c229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae261d7d0bd5c9a386c055081b07ead9c" id="r_ae261d7d0bd5c9a386c055081b07ead9c"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#ae261d7d0bd5c9a386c055081b07ead9c">kSgiCount</a> = 16</td></tr>
+<tr class="separator:ae261d7d0bd5c9a386c055081b07ead9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abeca94707673918c42d6dc523360816f" id="r_abeca94707673918c42d6dc523360816f"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#abeca94707673918c42d6dc523360816f">kPpiBase</a> = 16</td></tr>
+<tr class="separator:abeca94707673918c42d6dc523360816f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a047f7365453c04823e456dbecacec4cb" id="r_a047f7365453c04823e456dbecacec4cb"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a047f7365453c04823e456dbecacec4cb">kPpiCount</a> = 16</td></tr>
+<tr class="separator:a047f7365453c04823e456dbecacec4cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20897198578df573c8d3978cd7b2d784" id="r_a20897198578df573c8d3978cd7b2d784"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a20897198578df573c8d3978cd7b2d784">kSpiBase</a> = 32</td></tr>
+<tr class="separator:a20897198578df573c8d3978cd7b2d784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac02e7ca0a0961f865d00264b1a1331f2" id="r_ac02e7ca0a0961f865d00264b1a1331f2"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#ac02e7ca0a0961f865d00264b1a1331f2">kSpiCount</a> = 988</td></tr>
+<tr class="separator:ac02e7ca0a0961f865d00264b1a1331f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a2ac91e644e5b2be52eaf0019e6f2a8f6" id="r_a2ac91e644e5b2be52eaf0019e6f2a8f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGic_1_1Gicd.html">Gicd</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a></td></tr>
+<tr class="memitem:a2ac91e644e5b2be52eaf0019e6f2a8f6" id="r_a2ac91e644e5b2be52eaf0019e6f2a8f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGic_1_1Gicd.html">Gicd</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a> {}</td></tr>
+<tr class="memdesc:a2ac91e644e5b2be52eaf0019e6f2a8f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distributor 实例  <br /></td></tr>
 <tr class="separator:a2ac91e644e5b2be52eaf0019e6f2a8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf2f5ef07ebc1e916f3c44df324d425c" id="r_adf2f5ef07ebc1e916f3c44df324d425c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGic_1_1Gicr.html">Gicr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a></td></tr>
+<tr class="memitem:adf2f5ef07ebc1e916f3c44df324d425c" id="r_adf2f5ef07ebc1e916f3c44df324d425c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGic_1_1Gicr.html">Gicr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a> {}</td></tr>
+<tr class="memdesc:adf2f5ef07ebc1e916f3c44df324d425c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Redistributor 实例  <br /></td></tr>
 <tr class="separator:adf2f5ef07ebc1e916f3c44df324d425c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>gic 中断控制器驱动 </p>
+<div class="textblock"><p>GIC 中断控制器驱动 </p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://developer.arm.com/documentation/100095/0003/Generic-Interrupt-Controller-CPU-Interface/GIC-programmers-model/CPU-interface-memory-mapped-register-descriptions">https://developer.arm.com/documentation/100095/0003/Generic-Interrupt-Controller-CPU-Interface/GIC-programmers-model/CPU-interface-memory-mapped-register-descriptions</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00020">20</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00017">17</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab46e6d9e05b378d69d0f5c120aa2e154" name="ab46e6d9e05b378d69d0f5c120aa2e154"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab46e6d9e05b378d69d0f5c120aa2e154">&#9670;&#160;</a></span>Gic() <span class="overload">[1/4]</span></h2>
@@ -213,10 +222,12 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>构造函数 </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>构造函数 </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gicd_base_addr</td><td>gic distributor 地址 </td></tr>
-    <tr><td class="paramname">gicr_base_addr</td><td>gic redistributor 地址</td></tr>
+    <tr><td class="paramname">gicd_base_addr</td><td>GIC Distributor 地址 </td></tr>
+    <tr><td class="paramname">gicr_base_addr</td><td>GIC Redistributor 地址</td></tr>
   </table>
   </dd>
 </dl>
@@ -227,24 +238,24 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   15</span>  cpu_io::ICC_IGRPEN1_EL1::Enable::Clear();</div>
 <div class="line"><span class="lineno">   16</span>  cpu_io::ICC_PMR_EL1::Priority::Set();</div>
 <div class="line"><span class="lineno">   17</span> </div>
-<div class="line"><span class="lineno">   18</span>  <a class="code hl_variable" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a>.<a class="code hl_function" href="classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670">EnableGrp1NS</a>();</div>
+<div class="line"><span class="lineno">   18</span>  <a class="code hl_variable" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a>.<a class="code hl_function" href="classGic_1_1Gicd.html#a1ce76d1eabd522f218f449daab1aed2e">EnableGrp1Ns</a>();</div>
 <div class="line"><span class="lineno">   19</span> </div>
-<div class="line"><span class="lineno">   20</span>  <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Gic init.\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   20</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Gic init.&quot;</span>);</div>
 <div class="line"><span class="lineno">   21</span>}</div>
-<div class="ttc" id="aclassGic_1_1Gicd_html_ab71b7bc24e091366b002583f6cf96670"><div class="ttname"><a href="classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670">Gic::Gicd::EnableGrp1NS</a></div><div class="ttdeci">void EnableGrp1NS() const</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00291">gic.h:291</a></div></div>
-<div class="ttc" id="aclassGic_html_a2ac91e644e5b2be52eaf0019e6f2a8f6"><div class="ttname"><a href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">Gic::gicd_</a></div><div class="ttdeci">Gicd gicd_</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00590">gic.h:590</a></div></div>
-<div class="ttc" id="aclassGic_html_adf2f5ef07ebc1e916f3c44df324d425c"><div class="ttname"><a href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">Gic::gicr_</a></div><div class="ttdeci">Gicr gicr_</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00591">gic.h:591</a></div></div>
-<div class="ttc" id="astructklog_1_1Info_html"><div class="ttname"><a href="structklog_1_1Info.html">klog::Info</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00168">kernel_log.hpp:168</a></div></div>
+<div class="ttc" id="aclassGic_1_1Gicd_html_a1ce76d1eabd522f218f449daab1aed2e"><div class="ttname"><a href="classGic_1_1Gicd.html#a1ce76d1eabd522f218f449daab1aed2e">Gic::Gicd::EnableGrp1Ns</a></div><div class="ttdeci">auto EnableGrp1Ns() const -&gt; void</div><div class="ttdoc">允许 no-sec group1 中断</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00066">gic.cpp:66</a></div></div>
+<div class="ttc" id="aclassGic_html_a2ac91e644e5b2be52eaf0019e6f2a8f6"><div class="ttname"><a href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">Gic::gicd_</a></div><div class="ttdeci">Gicd gicd_</div><div class="ttdoc">Distributor 实例</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00678">gic.h:678</a></div></div>
+<div class="ttc" id="aclassGic_html_adf2f5ef07ebc1e916f3c44df324d425c"><div class="ttname"><a href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">Gic::gicr_</a></div><div class="ttdeci">Gicr gicr_</div><div class="ttdoc">Redistributor 实例</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00680">gic.h:680</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a1f6b347e95b475341e195f363a9f20a3"><div class="ttname"><a href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a></div><div class="ttdeci">auto Info(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 INFO 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00182">kernel_log.hpp:182</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classGic_ab46e6d9e05b378d69d0f5c120aa2e154_cgraph.png" border="0" usemap="#aclassGic_ab46e6d9e05b378d69d0f5c120aa2e154_cgraph" alt=""/></div>
 <map name="aclassGic_ab46e6d9e05b378d69d0f5c120aa2e154_cgraph" id="aclassGic_ab46e6d9e05b378d69d0f5c120aa2e154_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,77,31"/>
-<area shape="rect" href="classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670" title=" " alt="" coords="125,5,307,31"/>
-<area shape="poly" title=" " alt="" coords="77,15,112,15,112,21,77,21"/>
-<area shape="rect" href="classGic_1_1Gicd.html#a81cbd89e80414992661203da25671a1f" title=" " alt="" coords="355,5,477,31"/>
-<area shape="poly" title=" " alt="" coords="307,15,341,15,341,21,307,21"/>
+<area shape="rect" title="构造函数" alt="" coords="5,31,77,56"/>
+<area shape="rect" href="classGic_1_1Gicd.html#a1ce76d1eabd522f218f449daab1aed2e" title="允许 no&#45;sec group1 中断" alt="" coords="125,5,305,31"/>
+<area shape="poly" title=" " alt="" coords="77,36,114,30,115,35,78,41"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="174,55,257,80"/>
+<area shape="poly" title=" " alt="" coords="78,46,161,57,160,63,77,51"/>
 </map>
 </div>
 
@@ -275,8 +286,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="afa2425ffdcc2b6fdd79869805c8fcc90" name="afa2425ffdcc2b6fdd79869805c8fcc90"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa2425ffdcc2b6fdd79869805c8fcc90">&#9670;&#160;</a></span>Gic() <span class="overload">[3/4]</span></h2>
+<a id="a3226b5f43ec26d33c9ffef74fc778cef" name="a3226b5f43ec26d33c9ffef74fc778cef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3226b5f43ec26d33c9ffef74fc778cef">&#9670;&#160;</a></span>Gic() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +299,7 @@ Here is the call graph for this function:</div>
           <td class="memname">Gic::Gic </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classGic.html">Gic</a> &amp;&#160;</td>
-          <td class="paramname"><em>na16550a</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -301,8 +312,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a25df9f6b4fec027a48e32068a702aa97" name="a25df9f6b4fec027a48e32068a702aa97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25df9f6b4fec027a48e32068a702aa97">&#9670;&#160;</a></span>Gic() <span class="overload">[4/4]</span></h2>
+<a id="a5056ef9e0ad817a54e4a606befe002a9" name="a5056ef9e0ad817a54e4a606befe002a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5056ef9e0ad817a54e4a606befe002a9">&#9670;&#160;</a></span>Gic() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -314,7 +325,7 @@ Here is the call graph for this function:</div>
           <td class="memname">Gic::Gic </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGic.html">Gic</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>na16550a</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -353,8 +364,8 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a49dff442e16420914db0429a6ca6f38c" name="a49dff442e16420914db0429a6ca6f38c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49dff442e16420914db0429a6ca6f38c">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="a83f035e6bc5919ab0e9a21705c5440cf" name="a83f035e6bc5919ab0e9a21705c5440cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83f035e6bc5919ab0e9a21705c5440cf">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,7 +377,7 @@ Here is the call graph for this function:</div>
           <td class="memname">auto Gic::operator= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classGic.html">Gic</a> &amp;&#160;</td>
-          <td class="paramname"><em>na16550a</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classGic.html">Gic</a> &amp;=delete</td>
         </tr>
       </table>
@@ -379,8 +390,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a6e73e1b6cd6afa0cd2b7bd80be0b17ad" name="a6e73e1b6cd6afa0cd2b7bd80be0b17ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e73e1b6cd6afa0cd2b7bd80be0b17ad">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="aaf274b2a0a251743cefc02d0ec73881b" name="aaf274b2a0a251743cefc02d0ec73881b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf274b2a0a251743cefc02d0ec73881b">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -392,7 +403,7 @@ Here is the call graph for this function:</div>
           <td class="memname">auto Gic::operator= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGic.html">Gic</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>na16550a</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classGic.html">Gic</a> &amp;=default</td>
         </tr>
       </table>
@@ -405,14 +416,14 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="adb84f58ea07b6c03dc7bb27a49489cc0" name="adb84f58ea07b6c03dc7bb27a49489cc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb84f58ea07b6c03dc7bb27a49489cc0">&#9670;&#160;</a></span>PPI()</h2>
+<a id="a61fe90349f98f56ca6f675e4135ca675" name="a61fe90349f98f56ca6f675e4135ca675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61fe90349f98f56ca6f675e4135ca675">&#9670;&#160;</a></span>Ppi()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Gic::PPI </td>
+          <td class="memname">auto Gic::Ppi </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>intid</em>, </td>
@@ -426,104 +437,103 @@ Here is the call graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>配置私有外设中断 (PPI) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intid</td><td>中断号 </td></tr>
+    <tr><td class="paramname">cpuid</td><td>CPU 编号 </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="gic_8cpp_source.html#l00035">35</a> of file <a class="el" href="gic_8cpp_source.html">gic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>                                                  {</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_variable" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a>.<a class="code hl_function" href="classGic_1_1Gicr.html#a6fc23637cb49765e04142064ca9712dd">SetupPPI</a>(intid, cpuid);</div>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>                                                          {</div>
+<div class="line"><span class="lineno">   36</span>  <a class="code hl_variable" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a>.<a class="code hl_function" href="classGic_1_1Gicr.html#a447ad677a43af060ffce49aa972f0876">SetupPpi</a>(intid, cpuid);</div>
 <div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="aclassGic_1_1Gicr_html_a6fc23637cb49765e04142064ca9712dd"><div class="ttname"><a href="classGic_1_1Gicr.html#a6fc23637cb49765e04142064ca9712dd">Gic::Gicr::SetupPPI</a></div><div class="ttdeci">void SetupPPI(uint32_t intid, uint32_t cpuid) const</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00203">gic.cpp:203</a></div></div>
+<div class="ttc" id="aclassGic_1_1Gicr_html_a447ad677a43af060ffce49aa972f0876"><div class="ttname"><a href="classGic_1_1Gicr.html#a447ad677a43af060ffce49aa972f0876">Gic::Gicr::SetupPpi</a></div><div class="ttdeci">auto SetupPpi(uint32_t intid, uint32_t cpuid) const -&gt; void</div><div class="ttdoc">设置指定 PPI 中断 PPI: private peripheral interrupt, 私有外设中断，该中断来源于外设，但是该中断只对指定的 core 有效</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00206">gic.cpp:206</a></div></div>
 </div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classGic_adb84f58ea07b6c03dc7bb27a49489cc0_cgraph.png" border="0" usemap="#aclassGic_adb84f58ea07b6c03dc7bb27a49489cc0_cgraph" alt=""/></div>
-<map name="aclassGic_adb84f58ea07b6c03dc7bb27a49489cc0_cgraph" id="aclassGic_adb84f58ea07b6c03dc7bb27a49489cc0_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,76,31"/>
-<area shape="rect" href="classGic_1_1Gicr.html#a6fc23637cb49765e04142064ca9712dd" title=" " alt="" coords="124,5,267,31"/>
-<area shape="poly" title=" " alt="" coords="76,15,110,15,110,21,76,21"/>
-</map>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classGic_adb84f58ea07b6c03dc7bb27a49489cc0_icgraph.png" border="0" usemap="#aclassGic_adb84f58ea07b6c03dc7bb27a49489cc0_icgraph" alt=""/></div>
-<map name="aclassGic_adb84f58ea07b6c03dc7bb27a49489cc0_icgraph" id="aclassGic_adb84f58ea07b6c03dc7bb27a49489cc0_icgraph">
-<area shape="rect" title=" " alt="" coords="160,5,231,31"/>
-<area shape="rect" href="classInterrupt.html#a724313558675f9b3c0f1504907519ec7" title=" " alt="" coords="5,5,112,31"/>
+<div class="center"><img src="classGic_a61fe90349f98f56ca6f675e4135ca675_icgraph.png" border="0" usemap="#aclassGic_a61fe90349f98f56ca6f675e4135ca675_icgraph" alt=""/></div>
+<map name="aclassGic_a61fe90349f98f56ca6f675e4135ca675_icgraph" id="aclassGic_a61fe90349f98f56ca6f675e4135ca675_icgraph">
+<area shape="rect" title="配置私有外设中断 (PPI)" alt="" coords="160,5,231,31"/>
+<area shape="rect" href="classInterrupt.html#a3a696d9ab85fd7ca861656d7a73d58f2" title="设置 PPI 中断" alt="" coords="5,5,112,31"/>
 <area shape="poly" title=" " alt="" coords="146,21,112,21,112,15,146,15"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a95e93d4c431de2b81969c6503801301e" name="a95e93d4c431de2b81969c6503801301e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95e93d4c431de2b81969c6503801301e">&#9670;&#160;</a></span>SetUP()</h2>
+<a id="a459dfc63122e38dc0f518ee4f2935576" name="a459dfc63122e38dc0f518ee4f2935576"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a459dfc63122e38dc0f518ee4f2935576">&#9670;&#160;</a></span>SetUp()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Gic::SetUP </td>
+          <td class="memname">auto Gic::SetUp </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>初始化当前 CPU 的 GIC 配置 </p>
+
 <p class="definition">Definition at line <a class="el" href="gic_8cpp_source.html#l00023">23</a> of file <a class="el" href="gic_8cpp_source.html">gic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   23</span>                      {</div>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>                              {</div>
 <div class="line"><span class="lineno">   24</span>  cpu_io::ICC_IGRPEN1_EL1::Enable::Clear();</div>
 <div class="line"><span class="lineno">   25</span>  cpu_io::ICC_PMR_EL1::Priority::Set();</div>
-<div class="line"><span class="lineno">   26</span>  <a class="code hl_variable" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a>.<a class="code hl_function" href="classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670">EnableGrp1NS</a>();</div>
+<div class="line"><span class="lineno">   26</span>  <a class="code hl_variable" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a>.<a class="code hl_function" href="classGic_1_1Gicd.html#a1ce76d1eabd522f218f449daab1aed2e">EnableGrp1Ns</a>();</div>
 <div class="line"><span class="lineno">   27</span> </div>
-<div class="line"><span class="lineno">   28</span>  <a class="code hl_variable" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a>.<a class="code hl_function" href="classGic_1_1Gicr.html#a73bf402c370116a4f8e7773a3093f86b">SetUP</a>();</div>
+<div class="line"><span class="lineno">   28</span>  <a class="code hl_variable" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a>.<a class="code hl_function" href="classGic_1_1Gicr.html#a3aa2fc7b86ab6a8f40889bf7e405db7b">SetUp</a>();</div>
 <div class="line"><span class="lineno">   29</span>}</div>
-<div class="ttc" id="aclassGic_1_1Gicr_html_a73bf402c370116a4f8e7773a3093f86b"><div class="ttname"><a href="classGic_1_1Gicr.html#a73bf402c370116a4f8e7773a3093f86b">Gic::Gicr::SetUP</a></div><div class="ttdeci">void SetUP() const</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00109">gic.cpp:109</a></div></div>
+<div class="ttc" id="aclassGic_1_1Gicr_html_a3aa2fc7b86ab6a8f40889bf7e405db7b"><div class="ttname"><a href="classGic_1_1Gicr.html#a3aa2fc7b86ab6a8f40889bf7e405db7b">Gic::Gicr::SetUp</a></div><div class="ttdeci">auto SetUp() const -&gt; void</div><div class="ttdoc">初始化 gicr，在多核场景使用</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00112">gic.cpp:112</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classGic_a95e93d4c431de2b81969c6503801301e_cgraph.png" border="0" usemap="#aclassGic_a95e93d4c431de2b81969c6503801301e_cgraph" alt=""/></div>
-<map name="aclassGic_a95e93d4c431de2b81969c6503801301e_cgraph" id="aclassGic_a95e93d4c431de2b81969c6503801301e_cgraph">
-<area shape="rect" title=" " alt="" coords="5,31,96,56"/>
-<area shape="rect" href="classGic_1_1Gicd.html#ab71b7bc24e091366b002583f6cf96670" title=" " alt="" coords="144,5,325,31"/>
+<div class="center"><img src="classGic_a459dfc63122e38dc0f518ee4f2935576_cgraph.png" border="0" usemap="#aclassGic_a459dfc63122e38dc0f518ee4f2935576_cgraph" alt=""/></div>
+<map name="aclassGic_a459dfc63122e38dc0f518ee4f2935576_cgraph" id="aclassGic_a459dfc63122e38dc0f518ee4f2935576_cgraph">
+<area shape="rect" title="初始化当前 CPU 的 GIC 配置" alt="" coords="5,31,96,56"/>
+<area shape="rect" href="classGic_1_1Gicd.html#a1ce76d1eabd522f218f449daab1aed2e" title="允许 no&#45;sec group1 中断" alt="" coords="144,5,324,31"/>
 <area shape="poly" title=" " alt="" coords="96,34,130,30,131,35,97,40"/>
-<area shape="rect" href="classGic_1_1Gicr.html#a73bf402c370116a4f8e7773a3093f86b" title=" " alt="" coords="173,55,297,80"/>
-<area shape="poly" title=" " alt="" coords="97,47,159,55,159,60,96,52"/>
-<area shape="rect" href="classGic_1_1Gicd.html#a81cbd89e80414992661203da25671a1f" title=" " alt="" coords="405,5,527,31"/>
-<area shape="poly" title=" " alt="" coords="326,15,391,15,391,21,326,21"/>
-<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="373,55,559,80"/>
-<area shape="poly" title=" " alt="" coords="297,65,360,65,360,70,297,70"/>
-<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="411,104,521,129"/>
-<area shape="poly" title=" " alt="" coords="295,77,398,100,397,105,294,83"/>
-<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="607,47,869,87"/>
-<area shape="poly" title=" " alt="" coords="559,65,593,65,593,70,559,70"/>
+<area shape="rect" href="classGic_1_1Gicr.html#a3aa2fc7b86ab6a8f40889bf7e405db7b" title="初始化 gicr，在多核场景使用" alt="" coords="172,55,296,80"/>
+<area shape="poly" title=" " alt="" coords="97,47,159,55,158,60,96,52"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="372,29,557,55"/>
+<area shape="poly" title=" " alt="" coords="296,58,358,51,358,56,297,63"/>
+<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="409,79,520,104"/>
+<area shape="poly" title=" " alt="" coords="297,71,396,82,395,87,296,76"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="605,22,868,62"/>
+<area shape="poly" title=" " alt="" coords="558,39,591,39,591,45,558,45"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classGic_a95e93d4c431de2b81969c6503801301e_icgraph.png" border="0" usemap="#aclassGic_a95e93d4c431de2b81969c6503801301e_icgraph" alt=""/></div>
-<map name="aclassGic_a95e93d4c431de2b81969c6503801301e_icgraph" id="aclassGic_a95e93d4c431de2b81969c6503801301e_icgraph">
-<area shape="rect" title=" " alt="" coords="179,5,269,31"/>
-<area shape="rect" href="classInterrupt.html#a54eb0d6a11a1fd7af2308f2bd2ff0775" title=" " alt="" coords="5,5,131,31"/>
+<div class="center"><img src="classGic_a459dfc63122e38dc0f518ee4f2935576_icgraph.png" border="0" usemap="#aclassGic_a459dfc63122e38dc0f518ee4f2935576_icgraph" alt=""/></div>
+<map name="aclassGic_a459dfc63122e38dc0f518ee4f2935576_icgraph" id="aclassGic_a459dfc63122e38dc0f518ee4f2935576_icgraph">
+<area shape="rect" title="初始化当前 CPU 的 GIC 配置" alt="" coords="179,5,269,31"/>
+<area shape="rect" href="classInterrupt.html#a1f7722f172ff28d1618f123bc815ec1d" title="设置 GIC" alt="" coords="5,5,131,31"/>
 <area shape="poly" title=" " alt="" coords="165,21,131,21,131,15,165,15"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="aab9f7f62a1f6076a1cc7bc616208c8b6" name="aab9f7f62a1f6076a1cc7bc616208c8b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab9f7f62a1f6076a1cc7bc616208c8b6">&#9670;&#160;</a></span>SGI()</h2>
+<a id="a1c36f1585f54075b78b09acf00a80eaa" name="a1c36f1585f54075b78b09acf00a80eaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c36f1585f54075b78b09acf00a80eaa">&#9670;&#160;</a></span>Sgi()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Gic::SGI </td>
+          <td class="memname">auto Gic::Sgi </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>intid</em>, </td>
@@ -537,49 +547,48 @@ Here is the caller graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>配置软件生成中断 (SGI) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intid</td><td>中断号 </td></tr>
+    <tr><td class="paramname">cpuid</td><td>CPU 编号 </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="gic_8cpp_source.html#l00039">39</a> of file <a class="el" href="gic_8cpp_source.html">gic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>                                                  {</div>
-<div class="line"><span class="lineno">   40</span>  <a class="code hl_variable" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a>.<a class="code hl_function" href="classGic_1_1Gicr.html#a5fff1f87939912138ececd6ac3f56b9c">SetupSGI</a>(intid, cpuid);</div>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>                                                          {</div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_variable" href="classGic.html#adf2f5ef07ebc1e916f3c44df324d425c">gicr_</a>.<a class="code hl_function" href="classGic_1_1Gicr.html#a60754c4be9fa798145f9622be4275821">SetupSgi</a>(intid, cpuid);</div>
 <div class="line"><span class="lineno">   41</span>}</div>
-<div class="ttc" id="aclassGic_1_1Gicr_html_a5fff1f87939912138ececd6ac3f56b9c"><div class="ttname"><a href="classGic_1_1Gicr.html#a5fff1f87939912138ececd6ac3f56b9c">Gic::Gicr::SetupSGI</a></div><div class="ttdeci">void SetupSGI(uint32_t intid, uint32_t cpuid) const</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00209">gic.cpp:209</a></div></div>
+<div class="ttc" id="aclassGic_1_1Gicr_html_a60754c4be9fa798145f9622be4275821"><div class="ttname"><a href="classGic_1_1Gicr.html#a60754c4be9fa798145f9622be4275821">Gic::Gicr::SetupSgi</a></div><div class="ttdeci">auto SetupSgi(uint32_t intid, uint32_t cpuid) const -&gt; void</div><div class="ttdoc">设置指定 SGI 中断 SGI: Software Generated Interrupt, 软件生成中断，用于处理器间通信</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00212">gic.cpp:212</a></div></div>
 </div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classGic_aab9f7f62a1f6076a1cc7bc616208c8b6_cgraph.png" border="0" usemap="#aclassGic_aab9f7f62a1f6076a1cc7bc616208c8b6_cgraph" alt=""/></div>
-<map name="aclassGic_aab9f7f62a1f6076a1cc7bc616208c8b6_cgraph" id="aclassGic_aab9f7f62a1f6076a1cc7bc616208c8b6_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,79,31"/>
-<area shape="rect" href="classGic_1_1Gicr.html#a5fff1f87939912138ececd6ac3f56b9c" title=" " alt="" coords="127,5,271,31"/>
-<area shape="poly" title=" " alt="" coords="79,15,113,15,113,21,79,21"/>
-</map>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classGic_aab9f7f62a1f6076a1cc7bc616208c8b6_icgraph.png" border="0" usemap="#aclassGic_aab9f7f62a1f6076a1cc7bc616208c8b6_icgraph" alt=""/></div>
-<map name="aclassGic_aab9f7f62a1f6076a1cc7bc616208c8b6_icgraph" id="aclassGic_aab9f7f62a1f6076a1cc7bc616208c8b6_icgraph">
-<area shape="rect" title=" " alt="" coords="196,31,269,56"/>
+<div class="center"><img src="classGic_a1c36f1585f54075b78b09acf00a80eaa_icgraph.png" border="0" usemap="#aclassGic_a1c36f1585f54075b78b09acf00a80eaa_icgraph" alt=""/></div>
+<map name="aclassGic_a1c36f1585f54075b78b09acf00a80eaa_icgraph" id="aclassGic_a1c36f1585f54075b78b09acf00a80eaa_icgraph">
+<area shape="rect" title="配置软件生成中断 (SGI)" alt="" coords="196,31,267,56"/>
 <area shape="rect" href="classInterrupt.html#a736dd658be198f3dc94db0f876fb2499" title=" " alt="" coords="5,5,148,31"/>
 <area shape="poly" title=" " alt="" coords="182,38,148,32,149,27,183,33"/>
-<area shape="rect" href="classInterrupt.html#ab738197a9fe570f02ab566143633a9b2" title=" " alt="" coords="23,55,131,80"/>
-<area shape="poly" title=" " alt="" coords="183,54,131,62,130,56,182,48"/>
+<area shape="rect" href="classInterrupt.html#a6c293913342a70fdb3d2513b88f7dc54" title="设置 SGI 中断" alt="" coords="23,55,130,80"/>
+<area shape="poly" title=" " alt="" coords="183,53,131,62,130,56,182,48"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a9df3f81b40dd76b44304a542ed6e74ab" name="a9df3f81b40dd76b44304a542ed6e74ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9df3f81b40dd76b44304a542ed6e74ab">&#9670;&#160;</a></span>SPI()</h2>
+<a id="a0635a4d4b30049040df77591253f1a1d" name="a0635a4d4b30049040df77591253f1a1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0635a4d4b30049040df77591253f1a1d">&#9670;&#160;</a></span>Spi()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Gic::SPI </td>
+          <td class="memname">auto Gic::Spi </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>intid</em>, </td>
@@ -593,33 +602,32 @@ Here is the caller graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>配置共享外设中断 (SPI) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intid</td><td>中断号 </td></tr>
+    <tr><td class="paramname">cpuid</td><td>CPU 编号 </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="gic_8cpp_source.html#l00031">31</a> of file <a class="el" href="gic_8cpp_source.html">gic.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>                                                  {</div>
-<div class="line"><span class="lineno">   32</span>  <a class="code hl_variable" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a>.<a class="code hl_function" href="classGic_1_1Gicd.html#a1e331360868fc483461fe8ad25176517">SetupSPI</a>(intid, cpuid);</div>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>                                                          {</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_variable" href="classGic.html#a2ac91e644e5b2be52eaf0019e6f2a8f6">gicd_</a>.<a class="code hl_function" href="classGic_1_1Gicd.html#a5a9f18ec90a416ccfbd0991cfdcc7d0b">SetupSpi</a>(intid, cpuid);</div>
 <div class="line"><span class="lineno">   33</span>}</div>
-<div class="ttc" id="aclassGic_1_1Gicd_html_a1e331360868fc483461fe8ad25176517"><div class="ttname"><a href="classGic_1_1Gicd.html#a1e331360868fc483461fe8ad25176517">Gic::Gicd::SetupSPI</a></div><div class="ttdeci">void SetupSPI(uint32_t intid, uint32_t cpuid) const</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00134">gic.cpp:134</a></div></div>
+<div class="ttc" id="aclassGic_1_1Gicd_html_a5a9f18ec90a416ccfbd0991cfdcc7d0b"><div class="ttname"><a href="classGic_1_1Gicd.html#a5a9f18ec90a416ccfbd0991cfdcc7d0b">Gic::Gicd::SetupSpi</a></div><div class="ttdeci">auto SetupSpi(uint32_t intid, uint32_t cpuid) const -&gt; void</div><div class="ttdoc">设置指定 SPI 中断 SPI: shared peripheral interrupt, 共享外设中断，该中断来源于外设，但是该中断可以对所有的 core 有效</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00137">gic.cpp:137</a></div></div>
 </div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classGic_a9df3f81b40dd76b44304a542ed6e74ab_cgraph.png" border="0" usemap="#aclassGic_a9df3f81b40dd76b44304a542ed6e74ab_cgraph" alt=""/></div>
-<map name="aclassGic_a9df3f81b40dd76b44304a542ed6e74ab_cgraph" id="aclassGic_a9df3f81b40dd76b44304a542ed6e74ab_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,76,31"/>
-<area shape="rect" href="classGic_1_1Gicd.html#a1e331360868fc483461fe8ad25176517" title=" " alt="" coords="124,5,269,31"/>
-<area shape="poly" title=" " alt="" coords="76,15,110,15,110,21,76,21"/>
-</map>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classGic_a9df3f81b40dd76b44304a542ed6e74ab_icgraph.png" border="0" usemap="#aclassGic_a9df3f81b40dd76b44304a542ed6e74ab_icgraph" alt=""/></div>
-<map name="aclassGic_a9df3f81b40dd76b44304a542ed6e74ab_icgraph" id="aclassGic_a9df3f81b40dd76b44304a542ed6e74ab_icgraph">
-<area shape="rect" title=" " alt="" coords="160,5,231,31"/>
-<area shape="rect" href="classInterrupt.html#a97a05ff3ce620392d7d1681dfadf119a" title=" " alt="" coords="5,5,112,31"/>
+<div class="center"><img src="classGic_a0635a4d4b30049040df77591253f1a1d_icgraph.png" border="0" usemap="#aclassGic_a0635a4d4b30049040df77591253f1a1d_icgraph" alt=""/></div>
+<map name="aclassGic_a0635a4d4b30049040df77591253f1a1d_icgraph" id="aclassGic_a0635a4d4b30049040df77591253f1a1d_icgraph">
+<area shape="rect" title="配置共享外设中断 (SPI)" alt="" coords="160,5,231,31"/>
+<area shape="rect" href="classInterrupt.html#ab3464e8c6528fd248ed91a3b90b67973" title="设置 SPI 中断" alt="" coords="5,5,112,31"/>
 <area shape="poly" title=" " alt="" coords="146,21,112,21,112,15,146,15"/>
 </map>
 </div>
@@ -637,7 +645,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classGic_1_1Gicd.html">Gicd</a> Gic::gicd_</td>
+          <td class="memname"><a class="el" href="classGic_1_1Gicd.html">Gicd</a> Gic::gicd_ {}</td>
         </tr>
       </table>
   </td>
@@ -647,8 +655,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00590">590</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<p>Distributor 实例 </p>
 
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00678">678</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  678</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="adf2f5ef07ebc1e916f3c44df324d425c" name="adf2f5ef07ebc1e916f3c44df324d425c"></a>
@@ -661,7 +672,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classGic_1_1Gicr.html">Gicr</a> Gic::gicr_</td>
+          <td class="memname"><a class="el" href="classGic_1_1Gicr.html">Gicr</a> Gic::gicr_ {}</td>
         </tr>
       </table>
   </td>
@@ -671,8 +682,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00591">591</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<p>Redistributor 实例 </p>
 
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00680">680</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  680</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a782276d0d675191183e2615a29ce0166" name="a782276d0d675191183e2615a29ce0166"></a>
@@ -695,12 +709,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00022">22</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00019">19</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
 
 </div>
 </div>
-<a id="a56c9c92897f2819cbcf33cda56f13ebc" name="a56c9c92897f2819cbcf33cda56f13ebc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56c9c92897f2819cbcf33cda56f13ebc">&#9670;&#160;</a></span>kPPIBase</h2>
+<a id="abeca94707673918c42d6dc523360816f" name="abeca94707673918c42d6dc523360816f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abeca94707673918c42d6dc523360816f">&#9670;&#160;</a></span>kPpiBase</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -709,7 +723,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t Gic::kPPIBase = 16</td>
+          <td class="memname">constexpr size_t Gic::kPpiBase = 16</td>
         </tr>
       </table>
   </td>
@@ -719,12 +733,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00026">26</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00023">23</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
 
 </div>
 </div>
-<a id="a62845bf50e0a040902cc362754ac71ba" name="a62845bf50e0a040902cc362754ac71ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62845bf50e0a040902cc362754ac71ba">&#9670;&#160;</a></span>kPPICount</h2>
+<a id="a047f7365453c04823e456dbecacec4cb" name="a047f7365453c04823e456dbecacec4cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a047f7365453c04823e456dbecacec4cb">&#9670;&#160;</a></span>kPpiCount</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -733,31 +747,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t Gic::kPPICount = 16</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00027">27</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
-
-</div>
-</div>
-<a id="aada584a8107ea93e10754834166cd1f5" name="aada584a8107ea93e10754834166cd1f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aada584a8107ea93e10754834166cd1f5">&#9670;&#160;</a></span>kSGIBase</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr size_t Gic::kSGIBase = 0</td>
+          <td class="memname">constexpr size_t Gic::kPpiCount = 16</td>
         </tr>
       </table>
   </td>
@@ -771,8 +761,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a3d9f403b3924da4fcd271cd998bc5d1f" name="a3d9f403b3924da4fcd271cd998bc5d1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d9f403b3924da4fcd271cd998bc5d1f">&#9670;&#160;</a></span>kSGICount</h2>
+<a id="a3c1b0bfb2468acc84c7330f607f5c229" name="a3c1b0bfb2468acc84c7330f607f5c229"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c1b0bfb2468acc84c7330f607f5c229">&#9670;&#160;</a></span>kSgiBase</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -781,7 +771,55 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t Gic::kSGICount = 16</td>
+          <td class="memname">constexpr size_t Gic::kSgiBase = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00021">21</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+
+</div>
+</div>
+<a id="ae261d7d0bd5c9a386c055081b07ead9c" name="ae261d7d0bd5c9a386c055081b07ead9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae261d7d0bd5c9a386c055081b07ead9c">&#9670;&#160;</a></span>kSgiCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t Gic::kSgiCount = 16</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00022">22</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+
+</div>
+</div>
+<a id="a20897198578df573c8d3978cd7b2d784" name="a20897198578df573c8d3978cd7b2d784"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20897198578df573c8d3978cd7b2d784">&#9670;&#160;</a></span>kSpiBase</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t Gic::kSpiBase = 32</td>
         </tr>
       </table>
   </td>
@@ -795,8 +833,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a4cce758a89d33ca112a0c42d162fed99" name="a4cce758a89d33ca112a0c42d162fed99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cce758a89d33ca112a0c42d162fed99">&#9670;&#160;</a></span>kSPIBase</h2>
+<a id="ac02e7ca0a0961f865d00264b1a1331f2" name="ac02e7ca0a0961f865d00264b1a1331f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac02e7ca0a0961f865d00264b1a1331f2">&#9670;&#160;</a></span>kSpiCount</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -805,7 +843,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t Gic::kSPIBase = 32</td>
+          <td class="memname">constexpr size_t Gic::kSpiCount = 988</td>
         </tr>
       </table>
   </td>
@@ -815,37 +853,13 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00028">28</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
-
-</div>
-</div>
-<a id="ad733ea692ae06a4f6066a8fd8e3f5ea6" name="ad733ea692ae06a4f6066a8fd8e3f5ea6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad733ea692ae06a4f6066a8fd8e3f5ea6">&#9670;&#160;</a></span>kSPICount</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr size_t Gic::kSPICount = 988</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00029">29</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gic_8h_source.html#l00026">26</a> of file <a class="el" href="gic_8h_source.html">gic.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/root/src/driver/gic/include/<a class="el" href="gic_8h_source.html">gic.h</a></li>
-<li>/root/src/driver/gic/<a class="el" href="gic_8cpp_source.html">gic.cpp</a></li>
+<li>/workspaces/SimpleKernel/src/arch/aarch64/gic/include/<a class="el" href="gic_8h_source.html">gic.h</a></li>
+<li>/workspaces/SimpleKernel/src/arch/aarch64/gic/<a class="el" href="gic_8cpp_source.html">gic.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,0 +1,5 @@
+<map id="virtio::MmioTransport" name="virtio::MmioTransport">
+<area shape="rect" id="Node000001" title="Virtio MMIO 传输层" alt="" coords="15,419,177,904"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1Transport.html" title="Virtio 传输层基类（零虚表开销，C++23 Deducing this）" alt="" coords="5,5,187,371"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,385,99,419,93,419,93,385"/>
+</map>

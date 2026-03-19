@@ -1,0 +1,5 @@
+<map id="uart_handler" name="uart_handler">
+<area shape="rect" id="Node000001" title="UART 中断处理函数" alt="" coords="5,5,109,31"/>
+<area shape="rect" id="Node000002" href="$aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="157,5,252,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,15,144,15,144,21,110,21"/>
+</map>

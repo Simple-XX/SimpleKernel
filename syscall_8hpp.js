@@ -1,16 +1,16 @@
 var syscall_8hpp =
 [
-    [ "sys_clone", "syscall_8hpp.html#a6d9ce836fd264a98548781886f375d2a", null ],
-    [ "sys_exit", "syscall_8hpp.html#a34c7946fbbdfb071d2b453a745dcb9b4", null ],
-    [ "sys_fork", "syscall_8hpp.html#a01fbd4b45143dd51bf6f338d8ee325da", null ],
-    [ "sys_futex", "syscall_8hpp.html#aa03f906affa67ef23ebfbcb79efa569f", null ],
-    [ "sys_gettid", "syscall_8hpp.html#a17717d9e7bc25b272fe4dbb63bc52baa", null ],
-    [ "sys_sched_getaffinity", "syscall_8hpp.html#a4dd37ef811b362b4638eb21fab7f09fc", null ],
-    [ "sys_sched_setaffinity", "syscall_8hpp.html#afc0c058ad3c8a4b5746d97c2f49b97a4", null ],
-    [ "sys_set_tid_address", "syscall_8hpp.html#ab5c00759c95d8ce9e9db75b1b55a9552", null ],
-    [ "sys_sleep", "syscall_8hpp.html#a83d46a7afcd47f11ed83ae871d058d20", null ],
-    [ "sys_write", "syscall_8hpp.html#a4fa66935c10e294006b6310af1c68f37", null ],
-    [ "sys_yield", "syscall_8hpp.html#a23ac80734740f098e56332da33758ace", null ],
-    [ "Syscall", "syscall_8hpp.html#a754e3c00eb93be17daa96d00a12bc447", null ],
-    [ "syscall_dispatcher", "syscall_8hpp.html#a9c01f57bb4ef6f1b91ccce212494a199", null ]
+    [ "sys_clone", "syscall_8hpp.html#afad53ff6b95bf6179b42aac97f2c609e", null ],
+    [ "sys_exit", "syscall_8hpp.html#a7604e519b5138da9c1db6a2626e1998f", null ],
+    [ "sys_fork", "syscall_8hpp.html#aacb8aae87d617d88cea5c7515a1cf622", null ],
+    [ "sys_futex", "syscall_8hpp.html#a7e0465bdb3adc9a861f78e561bb0cf0c", null ],
+    [ "sys_gettid", "syscall_8hpp.html#aa3457b4ff33f8308631329d0ccdafd26", null ],
+    [ "sys_sched_getaffinity", "syscall_8hpp.html#a414c1ccbcab1407025b73fee1ad24b73", null ],
+    [ "sys_sched_setaffinity", "syscall_8hpp.html#a7c490d0367177a75035cb12b79b24416", null ],
+    [ "sys_set_tid_address", "syscall_8hpp.html#a29162da1696b208f87b148aef8449e5f", null ],
+    [ "sys_sleep", "syscall_8hpp.html#a25c4acbedb0e92618dfb30e0e67827c7", null ],
+    [ "sys_write", "syscall_8hpp.html#af2cff00ae45f6e285b75cff49dff52d4", null ],
+    [ "sys_yield", "syscall_8hpp.html#aec4395077c896b991b8d8beb2eefd40f", null ],
+    [ "Syscall", "syscall_8hpp.html#aa87eb679ee873a53e1ea660bc52819c1", null ],
+    [ "syscall_dispatcher", "syscall_8hpp.html#a7f71c582273219080713170bdd1d4323", null ]
 ];

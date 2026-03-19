@@ -1,0 +1,5 @@
+<map id="Apic::SendEoi" name="Apic::SendEoi">
+<area shape="rect" id="Node000001" title="发送 EOI 信号给当前 CPU 的 Local APIC" alt="" coords="5,5,116,31"/>
+<area shape="rect" id="Node000002" href="$classLocalApic.html#a4c13751fb4f4c5d042d24477fa880cc6" title="发送中断结束信号 (EOI)" alt="" coords="164,5,308,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,15,150,15,150,21,116,21"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Pl011Driver::Probe" name="Pl011Driver::Probe">
+<area shape="rect" id="Node000001" title="初始化 PL011 UART。" alt="" coords="5,31,148,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="238,5,321,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,32,224,22,224,27,149,37"/>
+<area shape="rect" id="Node000003" href="$namespacemmio__helper.html#abef9cac26ccb76a6b4b911f8f1ccae76" title="从节点提取 MMIO base/size 并通过 VirtualMemory 映射该区域。" alt="" coords="196,55,363,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="149,49,183,53,182,59,148,54"/>
+</map>

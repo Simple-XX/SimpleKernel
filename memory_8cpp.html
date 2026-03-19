@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/memory.cpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/memory/memory.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -100,122 +100,99 @@ $(document).ready(function(){initNavTree('memory_8cpp.html',''); initResizable()
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &quot;<a class="el" href="arch_8h_source.html">arch.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="basic__info_8hpp_source.html">basic_info.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="kernel_8h_source.html">kernel.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="sk__stdlib_8h_source.html">sk_stdlib.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="virtual__memory_8hpp_source.html">virtual_memory.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for memory.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp__incl.png" border="0" usemap="#a_2root_2src_2memory_8cpp" alt=""/></div>
-<map name="a_2root_2src_2memory_8cpp" id="a_2root_2src_2memory_8cpp">
-<area shape="rect" title=" " alt="" coords="1335,5,1493,31"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="479,372,555,397"/>
-<area shape="poly" title=" " alt="" coords="1335,24,899,43,683,60,606,70,562,81,529,96,503,112,487,132,481,164,481,239,483,272,490,304,509,358,504,360,485,306,478,273,475,239,475,163,482,130,500,108,526,91,560,76,605,65,683,54,899,38,1334,19"/>
-<area shape="rect" title=" " alt="" coords="633,519,704,544"/>
-<area shape="poly" title=" " alt="" coords="1335,27,1129,45,879,74,764,93,669,114,605,138,588,151,582,164,582,239,584,278,590,317,611,393,636,458,659,505,654,507,631,460,606,394,585,318,579,279,577,239,577,163,583,148,602,134,667,109,763,87,878,69,1128,39,1334,22"/>
-<area shape="rect" title=" " alt="" coords="2025,79,2110,104"/>
-<area shape="poly" title=" " alt="" coords="1494,23,1724,43,2006,76,2012,77,2011,82,2006,81,1724,48,1493,28"/>
-<area shape="rect" title=" " alt="" coords="2096,152,2199,177"/>
-<area shape="poly" title=" " alt="" coords="1494,19,1581,24,1686,34,1800,51,1912,76,1941,88,1970,102,2097,145,2096,150,1968,106,1939,93,1911,81,1799,56,1685,40,1580,29,1493,24"/>
-<area shape="rect" href="arch_8h.html" title=" " alt="" coords="377,299,440,324"/>
-<area shape="poly" title=" " alt="" coords="1334,22,1115,23,840,30,708,38,594,48,507,63,479,71,461,81,442,102,427,127,417,155,411,184,406,240,408,285,403,285,401,240,405,183,412,153,422,125,437,99,458,77,477,66,506,57,593,43,708,32,840,25,1115,17,1334,16"/>
-<area shape="rect" href="basic__info_8hpp.html" title=" " alt="" coords="1187,152,1303,177"/>
-<area shape="poly" title=" " alt="" coords="1402,33,1270,145,1267,141,1398,29"/>
-<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1071,225,1189,251"/>
-<area shape="poly" title=" " alt="" coords="1382,33,1337,51,1283,78,1228,112,1177,154,1156,183,1141,214,1136,211,1151,180,1173,150,1224,108,1281,73,1335,46,1380,28"/>
-<area shape="rect" href="kernel__elf_8hpp.html" title=" " alt="" coords="1453,152,1567,177"/>
-<area shape="poly" title=" " alt="" coords="1424,30,1497,139,1492,142,1420,33"/>
-<area shape="rect" href="sk__stdlib_8h.html" title=" " alt="" coords="2223,152,2315,177"/>
-<area shape="poly" title=" " alt="" coords="1494,17,1589,21,1706,31,1833,48,1959,76,1987,88,2014,101,2101,125,2210,148,2209,154,2100,130,2012,107,1984,93,1957,81,1832,54,1705,36,1589,27,1493,23"/>
-<area shape="rect" href="virtual__memory_8hpp.html" title=" " alt="" coords="1747,79,1899,104"/>
-<area shape="poly" title=" " alt="" coords="1480,28,1744,74,1744,79,1479,33"/>
-<area shape="rect" title=" " alt="" coords="1073,445,1139,471"/>
-<area shape="poly" title=" " alt="" coords="555,388,1059,448,1059,454,555,393"/>
-<area shape="rect" title=" " alt="" coords="537,445,606,471"/>
-<area shape="poly" title=" " alt="" coords="528,396,556,433,552,436,524,399"/>
-<area shape="poly" title=" " alt="" coords="517,398,515,433,518,452,527,469,546,489,570,503,621,521,619,526,567,508,543,493,522,472,513,453,510,433,512,398"/>
-<area shape="rect" title=" " alt="" coords="1329,519,1395,544"/>
-<area shape="poly" title=" " alt="" coords="556,394,693,430,869,468,995,488,1120,504,1315,523,1314,529,1119,509,994,493,868,473,692,435,554,399"/>
-<area shape="rect" title=" " alt="" coords="154,519,218,544"/>
-<area shape="poly" title=" " alt="" coords="479,393,280,420,188,436,145,447,140,461,143,476,152,492,165,507,161,511,148,496,138,478,134,460,142,443,187,430,280,415,478,388"/>
-<area shape="rect" title=" " alt="" coords="349,519,413,544"/>
-<area shape="poly" title=" " alt="" coords="507,400,403,511,399,507,504,396"/>
-<area shape="rect" title=" " alt="" coords="5,519,129,544"/>
-<area shape="poly" title=" " alt="" coords="479,393,283,418,187,433,134,448,117,460,103,475,81,508,77,505,99,472,114,456,131,443,186,428,282,413,478,388"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="155,445,361,471"/>
-<area shape="poly" title=" " alt="" coords="479,399,314,444,312,439,478,394"/>
-<area shape="poly" title=" " alt="" coords="324,468,620,519,619,524,324,473"/>
-<area shape="poly" title=" " alt="" coords="361,463,1315,524,1315,530,361,469"/>
-<area shape="poly" title=" " alt="" coords="248,473,209,511,206,507,244,469"/>
-<area shape="poly" title=" " alt="" coords="279,468,350,509,348,514,276,473"/>
-<area shape="poly" title=" " alt="" coords="228,473,112,516,110,511,226,468"/>
-<area shape="rect" title=" " alt="" coords="243,519,305,544"/>
-<area shape="poly" title=" " alt="" coords="263,470,271,505,266,506,258,472"/>
-<area shape="poly" title=" " alt="" coords="427,322,489,362,486,367,425,326"/>
-<area shape="poly" title=" " alt="" coords="415,323,448,391,476,433,510,469,536,486,564,500,620,518,619,523,562,505,533,491,507,473,472,436,443,394,411,326"/>
-<area shape="poly" title=" " alt="" coords="441,319,720,395,890,433,1061,468,1316,518,1315,524,1060,473,889,439,719,400,440,324"/>
-<area shape="rect" title=" " alt="" coords="308,372,403,397"/>
-<area shape="poly" title=" " alt="" coords="402,326,374,363,370,360,398,323"/>
-<area shape="poly" title=" " alt="" coords="1187,173,1056,186,896,210,818,227,749,247,694,272,674,286,659,300,662,381,670,505,664,505,656,381,654,298,670,282,691,267,747,242,816,221,895,204,1055,180,1186,167"/>
-<area shape="poly" title=" " alt="" coords="1255,176,1283,218,1320,282,1354,360,1367,402,1375,445,1375,477,1371,506,1366,505,1370,476,1370,446,1362,404,1349,362,1315,284,1279,220,1251,179"/>
-<area shape="poly" title=" " alt="" coords="1228,180,1162,220,1159,216,1225,175"/>
-<area shape="rect" href="singleton_8hpp.html" title=" " alt="" coords="1400,299,1511,324"/>
-<area shape="poly" title=" " alt="" coords="1263,175,1369,248,1428,288,1425,293,1366,253,1260,180"/>
-<area shape="rect" title=" " alt="" coords="668,299,771,324"/>
-<area shape="poly" title=" " alt="" coords="1204,180,775,297,774,292,1202,175"/>
-<area shape="poly" title=" " alt="" coords="1190,246,1241,264,1266,279,1288,297,1307,321,1323,348,1345,406,1358,461,1363,505,1358,505,1353,462,1340,407,1318,350,1303,324,1284,301,1263,283,1239,269,1188,251"/>
-<area shape="rect" title=" " alt="" coords="943,299,999,324"/>
-<area shape="poly" title=" " alt="" coords="1106,253,1011,295,1009,291,1103,248"/>
-<area shape="rect" title=" " alt="" coords="1075,299,1145,324"/>
-<area shape="poly" title=" " alt="" coords="1129,252,1119,286,1114,285,1124,250"/>
-<area shape="rect" title=" " alt="" coords="795,299,919,324"/>
-<area shape="poly" title=" " alt="" coords="1087,253,915,298,913,293,1085,248"/>
-<area shape="poly" title=" " alt="" coords="1183,248,1390,293,1389,298,1182,253"/>
-<area shape="rect" title=" " alt="" coords="731,372,814,397"/>
-<area shape="poly" title=" " alt="" coords="1119,253,1074,289,1012,326,930,352,828,375,827,370,929,346,1010,322,1071,285,1115,249"/>
-<area shape="poly" title=" " alt="" coords="1072,252,784,301,784,296,1071,247"/>
-<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="1170,299,1274,324"/>
-<area shape="poly" title=" " alt="" coords="1146,249,1198,288,1195,292,1143,253"/>
-<area shape="poly" title=" " alt="" coords="1170,325,1158,327,989,347,822,363,568,383,568,377,822,358,989,341,1158,321,1169,320"/>
-<area shape="poly" title=" " alt="" coords="1227,324,1230,359,1227,380,1219,399,1206,415,1189,428,1153,446,1151,441,1186,423,1202,411,1214,396,1222,378,1225,359,1222,324"/>
-<area shape="poly" title=" " alt="" coords="1181,327,1031,375,847,450,706,515,703,510,845,445,1029,369,1180,322"/>
-<area shape="poly" title=" " alt="" coords="1170,325,1158,327,996,350,833,375,829,375,828,370,832,369,995,345,1158,321,1170,319"/>
-<area shape="rect" title=" " alt="" coords="1125,372,1205,397"/>
-<area shape="poly" title=" " alt="" coords="1215,326,1185,363,1181,359,1210,323"/>
-<area shape="rect" title=" " alt="" coords="1042,372,1101,397"/>
-<area shape="poly" title=" " alt="" coords="1199,326,1110,368,1107,364,1197,322"/>
-<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="1888,372,1999,397"/>
-<area shape="poly" title=" " alt="" coords="1275,315,1875,374,1874,379,1274,320"/>
-<area shape="poly" title=" " alt="" coords="1958,396,1973,412,1986,432,1991,452,1990,463,1984,473,1953,488,1896,500,1733,517,1552,527,1409,532,1409,526,1551,522,1733,512,1895,495,1951,483,1980,469,1985,461,1986,453,1981,434,1968,415,1954,399"/>
-<area shape="rect" title=" " alt="" coords="1887,445,1970,471"/>
-<area shape="poly" title=" " alt="" coords="1944,398,1936,432,1931,431,1938,397"/>
-<area shape="poly" title=" " alt="" coords="1483,180,1457,193,1434,210,1421,229,1420,239,1424,249,1438,263,1456,273,1496,285,1514,291,1527,298,1532,310,1526,325,1488,373,1449,405,1408,426,1365,439,1268,453,1213,460,1152,473,1031,498,910,515,718,531,718,525,909,510,1030,493,1151,468,1212,455,1268,447,1364,433,1406,421,1446,401,1484,369,1521,323,1527,310,1523,302,1512,295,1495,290,1454,278,1435,268,1420,252,1415,240,1416,227,1430,206,1454,189,1480,175"/>
-<area shape="poly" title=" " alt="" coords="1529,176,1553,196,1576,224,1597,265,1602,310,1602,386,1597,418,1581,444,1559,467,1531,485,1469,511,1410,526,1408,520,1467,506,1529,480,1556,463,1577,441,1591,416,1597,386,1597,310,1592,266,1572,227,1550,200,1525,180"/>
-<area shape="poly" title=" " alt="" coords="1454,179,1203,226,1202,221,1453,174"/>
-<area shape="poly" title=" " alt="" coords="1454,179,1413,197,1395,210,1380,227,1376,244,1384,260,1400,276,1421,290,1418,294,1397,280,1380,264,1371,244,1376,224,1391,206,1410,192,1452,174"/>
-<area shape="poly" title=" " alt="" coords="1534,175,1677,248,1909,364,1907,368,1674,253,1531,180"/>
-<area shape="rect" title=" " alt="" coords="1434,225,1485,251"/>
-<area shape="poly" title=" " alt="" coords="1504,179,1478,216,1473,213,1499,176"/>
-<area shape="rect" title=" " alt="" coords="1687,225,1754,251"/>
-<area shape="poly" title=" " alt="" coords="1545,175,1675,219,1674,224,1543,180"/>
-<area shape="rect" title=" " alt="" coords="1509,225,1562,251"/>
-<area shape="poly" title=" " alt="" coords="1517,177,1529,212,1524,213,1512,179"/>
-<area shape="rect" title=" " alt="" coords="1778,225,1869,251"/>
-<area shape="poly" title=" " alt="" coords="1561,175,1765,221,1764,226,1560,180"/>
-<area shape="rect" title=" " alt="" coords="2231,225,2306,251"/>
-<area shape="poly" title=" " alt="" coords="2271,178,2271,212,2266,212,2266,178"/>
-<area shape="poly" title=" " alt="" coords="1747,95,1497,98,1334,104,1162,115,992,132,836,155,766,170,705,187,654,206,613,228,581,256,556,292,538,328,526,360,521,358,533,326,552,289,577,253,610,223,651,201,704,182,765,165,835,150,991,126,1161,110,1334,99,1496,93,1747,90"/>
-<area shape="poly" title=" " alt="" coords="1847,102,1875,122,1899,151,1913,178,1921,202,1920,226,1907,252,1873,296,1839,332,1805,362,1770,385,1735,404,1698,418,1622,435,1540,444,1451,449,1353,457,1245,473,1096,498,947,515,718,531,718,525,946,510,1095,493,1244,468,1352,451,1450,443,1539,438,1621,430,1696,413,1732,399,1767,381,1802,357,1836,328,1869,292,1902,249,1915,225,1915,203,1908,180,1894,153,1871,126,1844,106"/>
-<area shape="poly" title=" " alt="" coords="1891,102,1946,118,2001,144,2025,162,2044,183,2056,208,2061,236,2061,386,2057,416,2047,438,2030,456,2005,473,1955,493,1887,508,1806,519,1718,527,1543,533,1409,534,1409,528,1543,528,1718,521,1806,514,1886,503,1954,488,2002,468,2026,452,2043,435,2052,414,2055,386,2055,237,2051,210,2039,186,2021,166,1999,149,1945,123,1889,107"/>
-<area shape="poly" title=" " alt="" coords="1876,101,2083,147,2082,152,1875,107"/>
-<area shape="poly" title=" " alt="" coords="1747,105,1317,157,1316,152,1747,99"/>
-<area shape="poly" title=" " alt="" coords="1748,105,1605,125,1443,155,1299,190,1180,224,1179,219,1298,185,1441,149,1605,120,1747,99"/>
-<area shape="poly" title=" " alt="" coords="1836,102,1860,131,1884,170,1893,191,1896,213,1893,233,1883,252,1858,271,1822,285,1777,295,1726,303,1619,311,1524,314,1524,308,1619,306,1726,298,1776,290,1820,279,1855,266,1879,249,1888,232,1891,213,1887,193,1879,172,1856,134,1832,106"/>
-<area shape="poly" title=" " alt="" coords="1901,101,1943,119,1962,133,1978,151,1991,177,1997,205,1997,235,1993,264,1977,319,1959,361,1954,359,1972,317,1988,263,1992,234,1992,206,1986,179,1973,153,1958,137,1940,124,1899,106"/>
-<area shape="poly" title=" " alt="" coords="1817,106,1739,216,1735,213,1813,103"/>
-<area shape="poly" title=" " alt="" coords="1826,104,1826,212,1821,212,1821,104"/>
-<area shape="poly" title=" " alt="" coords="1900,101,2210,149,2209,154,1899,106"/>
+<div class="center"><img src="memory_8cpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2memory_2memory_8cpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2memory_2memory_8cpp" id="a_2workspaces_2SimpleKernel_2src_2memory_2memory_8cpp">
+<area shape="rect" title=" " alt="" coords="431,5,625,45"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="602,240,678,265"/>
+<area shape="poly" title=" " alt="" coords="516,47,499,81,496,99,500,118,521,154,550,185,581,211,610,231,607,235,578,215,546,189,517,157,495,120,491,99,494,79,511,44"/>
+<area shape="rect" title=" " alt="" coords="209,387,279,412"/>
+<area shape="poly" title=" " alt="" coords="431,37,301,54,162,82,101,101,52,123,19,149,11,163,8,178,8,254,13,284,27,309,49,330,75,348,137,374,196,388,194,393,135,379,73,353,45,334,23,312,8,285,3,254,3,178,6,161,15,146,49,119,99,96,161,77,300,49,431,32"/>
+<area shape="rect" title=" " alt="" coords="221,93,307,119"/>
+<area shape="poly" title=" " alt="" coords="466,48,317,92,315,87,464,43"/>
+<area shape="rect" title=" " alt="" coords="331,93,434,119"/>
+<area shape="poly" title=" " alt="" coords="494,48,417,89,415,84,492,43"/>
+<area shape="rect" href="arch_8h.html" title=" " alt="" coords="153,167,215,192"/>
+<area shape="poly" title=" " alt="" coords="431,39,302,60,247,76,211,95,201,108,194,122,188,153,182,152,189,121,197,105,208,91,245,71,301,55,431,33"/>
+<area shape="rect" href="basic__info_8hpp.html" title=" " alt="" coords="686,93,802,119"/>
+<area shape="poly" title=" " alt="" coords="581,43,700,86,699,91,579,48"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1088,167,1205,192"/>
+<area shape="poly" title=" " alt="" coords="611,43,814,91,1091,161,1089,166,813,96,609,48"/>
+<area shape="rect" href="kernel_8h.html" title=" " alt="" coords="1661,313,1736,339"/>
+<area shape="poly" title=" " alt="" coords="625,26,851,37,1136,60,1277,78,1407,101,1515,129,1559,146,1594,164,1628,194,1656,231,1678,268,1692,299,1687,301,1673,270,1652,234,1625,198,1590,169,1556,151,1513,134,1406,106,1277,83,1135,65,851,42,625,32"/>
+<area shape="rect" href="kernel__elf_8hpp.html" title=" " alt="" coords="1021,93,1134,119"/>
+<area shape="poly" title=" " alt="" coords="625,38,1007,92,1006,97,625,43"/>
+<area shape="rect" href="virtual__memory_8hpp.html" title=" " alt="" coords="509,93,661,119"/>
+<area shape="poly" title=" " alt="" coords="544,44,571,80,567,84,540,47"/>
+<area shape="rect" title=" " alt="" coords="1009,313,1076,339"/>
+<area shape="poly" title=" " alt="" coords="679,258,996,314,995,319,678,263"/>
+<area shape="rect" title=" " alt="" coords="865,313,935,339"/>
+<area shape="poly" title=" " alt="" coords="679,262,853,309,851,314,678,267"/>
+<area shape="poly" title=" " alt="" coords="603,263,511,283,405,316,334,348,275,382,273,377,332,344,403,311,510,278,601,258"/>
+<area shape="rect" title=" " alt="" coords="1080,387,1147,412"/>
+<area shape="poly" title=" " alt="" coords="666,263,749,298,854,336,968,366,1067,387,1066,392,967,371,853,341,747,303,664,268"/>
+<area shape="rect" title=" " alt="" coords="619,387,683,412"/>
+<area shape="poly" title=" " alt="" coords="645,265,653,313,655,373,649,373,648,314,640,266"/>
+<area shape="rect" title=" " alt="" coords="739,387,803,412"/>
+<area shape="poly" title=" " alt="" coords="653,264,753,375,749,378,649,268"/>
+<area shape="rect" title=" " alt="" coords="345,387,469,412"/>
+<area shape="poly" title=" " alt="" coords="602,262,500,282,453,297,423,315,415,328,410,343,407,373,402,373,405,342,410,326,419,311,451,293,499,277,601,257"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="433,313,639,339"/>
+<area shape="poly" title=" " alt="" coords="625,268,566,307,563,303,622,263"/>
+<area shape="poly" title=" " alt="" coords="490,341,294,389,292,384,488,336"/>
+<area shape="poly" title=" " alt="" coords="629,336,1066,390,1065,395,628,341"/>
+<area shape="poly" title=" " alt="" coords="556,336,622,377,619,382,553,341"/>
+<area shape="poly" title=" " alt="" coords="574,336,726,382,725,387,573,341"/>
+<area shape="poly" title=" " alt="" coords="516,341,441,382,439,377,514,336"/>
+<area shape="rect" title=" " alt="" coords="505,387,567,412"/>
+<area shape="poly" title=" " alt="" coords="539,339,539,373,533,373,533,339"/>
+<area shape="poly" title=" " alt="" coords="216,183,589,241,588,246,215,188"/>
+<area shape="poly" title=" " alt="" coords="182,193,174,220,168,257,167,298,177,338,193,360,213,377,209,381,189,363,172,340,162,299,162,256,169,219,177,191"/>
+<area shape="poly" title=" " alt="" coords="217,188,449,254,611,296,778,336,936,367,1067,388,1066,394,935,372,777,341,610,302,448,259,215,193"/>
+<area shape="rect" title=" " alt="" coords="43,240,138,265"/>
+<area shape="poly" title=" " alt="" coords="171,194,118,234,115,229,167,190"/>
+<area shape="poly" title=" " alt="" coords="686,120,597,143,488,181,431,206,376,237,324,273,278,315,260,344,251,374,245,373,255,342,274,312,321,269,373,233,429,201,486,176,596,138,685,115"/>
+<area shape="poly" title=" " alt="" coords="757,117,831,185,884,226,941,263,963,272,982,277,1019,280,1054,287,1072,296,1090,312,1100,325,1107,341,1115,373,1109,374,1102,343,1096,328,1086,315,1069,301,1052,292,1018,286,982,282,961,277,939,268,881,231,827,189,753,121"/>
+<area shape="rect" title=" " alt="" coords="661,167,776,192"/>
+<area shape="poly" title=" " alt="" coords="742,120,730,155,725,153,737,118"/>
+<area shape="poly" title=" " alt="" coords="803,115,1075,163,1074,168,802,120"/>
+<area shape="poly" title=" " alt="" coords="1088,193,1075,195,692,247,691,242,1074,189,1087,187"/>
+<area shape="poly" title=" " alt="" coords="1140,194,1061,304,1057,301,1136,191"/>
+<area shape="poly" title=" " alt="" coords="1206,183,1409,204,1501,219,1532,228,1550,238,1556,252,1550,267,1524,290,1483,312,1433,331,1376,348,1258,376,1161,393,1160,388,1257,370,1374,343,1431,326,1481,307,1521,286,1546,264,1551,252,1546,242,1530,233,1500,224,1408,209,1205,188"/>
+<area shape="rect" title=" " alt="" coords="1437,240,1536,265"/>
+<area shape="poly" title=" " alt="" coords="1202,189,1425,236,1424,241,1201,195"/>
+<area shape="rect" title=" " alt="" coords="1160,240,1293,265"/>
+<area shape="poly" title=" " alt="" coords="1161,190,1205,229,1202,233,1158,194"/>
+<area shape="rect" title=" " alt="" coords="1317,240,1413,265"/>
+<area shape="poly" title=" " alt="" coords="1183,189,1318,233,1316,238,1181,195"/>
+<area shape="poly" title=" " alt="" coords="1661,338,1643,341,1370,376,1161,397,1161,391,1370,371,1642,336,1660,333"/>
+<area shape="poly" title=" " alt="" coords="1023,121,980,139,959,152,942,168,923,200,911,235,905,270,902,300,897,299,899,270,906,234,918,198,938,165,956,148,977,134,1021,116"/>
+<area shape="poly" title=" " alt="" coords="1041,121,789,195,661,222,561,239,513,249,463,263,409,285,347,316,302,346,266,379,262,375,299,342,344,311,407,280,462,258,512,244,560,234,660,217,787,189,1040,116"/>
+<area shape="poly" title=" " alt="" coords="1111,116,1217,151,1350,189,1384,196,1415,197,1471,194,1497,195,1522,201,1546,215,1570,238,1586,263,1591,286,1586,307,1572,324,1551,339,1525,352,1458,372,1379,386,1297,394,1160,400,1160,395,1297,389,1378,381,1456,367,1523,347,1549,335,1568,320,1581,304,1585,286,1581,265,1566,242,1543,219,1520,206,1496,200,1471,199,1415,202,1384,201,1349,195,1216,156,1110,121"/>
+<area shape="poly" title=" " alt="" coords="1021,121,790,167,789,161,1020,116"/>
+<area shape="poly" title=" " alt="" coords="1091,117,1128,155,1124,159,1087,121"/>
+<area shape="rect" title=" " alt="" coords="1529,167,1580,192"/>
+<area shape="poly" title=" " alt="" coords="1134,109,1302,128,1407,144,1516,164,1515,169,1406,149,1301,133,1134,115"/>
+<area shape="rect" title=" " alt="" coords="1361,167,1428,192"/>
+<area shape="poly" title=" " alt="" coords="1129,116,1349,165,1347,170,1128,121"/>
+<area shape="rect" title=" " alt="" coords="1452,167,1505,192"/>
+<area shape="poly" title=" " alt="" coords="1135,112,1270,132,1439,164,1438,169,1269,137,1134,117"/>
+<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="953,167,1063,192"/>
+<area shape="poly" title=" " alt="" coords="1068,121,1031,159,1027,155,1064,117"/>
+<area shape="poly" title=" " alt="" coords="1027,190,1052,210,1083,238,1112,272,1134,312,1138,328,1137,345,1129,375,1123,373,1132,344,1133,329,1130,314,1108,276,1079,242,1049,214,1023,194"/>
+<area shape="rect" title=" " alt="" coords="952,240,1035,265"/>
+<area shape="poly" title=" " alt="" coords="1008,193,1001,227,996,226,1003,192"/>
+<area shape="poly" title=" " alt="" coords="590,119,596,152,608,191,627,227,622,230,603,193,591,153,584,120"/>
+<area shape="poly" title=" " alt="" coords="536,121,463,145,376,183,333,209,293,239,257,274,228,315,223,329,223,344,233,373,228,375,218,344,218,328,223,312,253,271,289,235,330,204,374,178,461,140,535,116"/>
+<area shape="poly" title=" " alt="" coords="594,117,616,153,632,173,651,190,691,217,726,237,793,260,862,279,948,311,1080,378,1078,383,946,316,861,284,791,266,724,242,688,222,648,194,628,176,612,156,589,120"/>
+<area shape="poly" title=" " alt="" coords="608,116,686,158,684,162,606,121"/>
+<area shape="poly" title=" " alt="" coords="654,116,940,164,939,169,653,121"/>
 </map>
 </div>
 </div>
@@ -223,32 +200,34 @@ Include dependency graph for memory.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9c36d0fe3ec4675cbffdc9b52f5fb399" id="r_a9c36d0fe3ec4675cbffdc9b52f5fb399"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a9c36d0fe3ec4675cbffdc9b52f5fb399">malloc</a> (size_t size)</td></tr>
-<tr class="separator:a9c36d0fe3ec4675cbffdc9b52f5fb399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbedc913aa4651b3c3b4b3aecd9b4711" id="r_afbedc913aa4651b3c3b4b3aecd9b4711"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#afbedc913aa4651b3c3b4b3aecd9b4711">free</a> (void *ptr)</td></tr>
-<tr class="separator:afbedc913aa4651b3c3b4b3aecd9b4711"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4e7470f55c08b061783fe2519b65bff" id="r_af4e7470f55c08b061783fe2519b65bff"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#af4e7470f55c08b061783fe2519b65bff">calloc</a> (size_t num, size_t size)</td></tr>
-<tr class="separator:af4e7470f55c08b061783fe2519b65bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f723f009d0b6f246530cbbac3ec1dd4" id="r_a0f723f009d0b6f246530cbbac3ec1dd4"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a0f723f009d0b6f246530cbbac3ec1dd4">realloc</a> (void *ptr, size_t new_size)</td></tr>
-<tr class="separator:a0f723f009d0b6f246530cbbac3ec1dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8006724372b77924155bd8618fe57516" id="r_a8006724372b77924155bd8618fe57516"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a8006724372b77924155bd8618fe57516">aligned_alloc</a> (size_t alignment, size_t size)</td></tr>
-<tr class="separator:a8006724372b77924155bd8618fe57516"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a274dd8714485eed9c9328973d44ec5dc" id="r_a274dd8714485eed9c9328973d44ec5dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a274dd8714485eed9c9328973d44ec5dc">aligned_free</a> (void *ptr)</td></tr>
-<tr class="separator:a274dd8714485eed9c9328973d44ec5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d8c809343a4f03aea31ffbf8891a11d" id="r_a0d8c809343a4f03aea31ffbf8891a11d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a0d8c809343a4f03aea31ffbf8891a11d">MemoryInit</a> ()</td></tr>
-<tr class="separator:a0d8c809343a4f03aea31ffbf8891a11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9297078da36ecdef3c2e61bccf119a47" id="r_a9297078da36ecdef3c2e61bccf119a47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a9297078da36ecdef3c2e61bccf119a47">MemoryInitSMP</a> ()</td></tr>
-<tr class="separator:a9297078da36ecdef3c2e61bccf119a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a731dcf123897780b41e2d3e9d8cea78a" id="r_a731dcf123897780b41e2d3e9d8cea78a"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a731dcf123897780b41e2d3e9d8cea78a">malloc</a> (size_t size) -&gt; void *</td></tr>
+<tr class="separator:a731dcf123897780b41e2d3e9d8cea78a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ed07d281e278344a04cd737697f843d" id="r_a7ed07d281e278344a04cd737697f843d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a7ed07d281e278344a04cd737697f843d">free</a> (void *ptr) -&gt; void</td></tr>
+<tr class="separator:a7ed07d281e278344a04cd737697f843d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4024d1e7458d20ad2f152b0f98fd3a3e" id="r_a4024d1e7458d20ad2f152b0f98fd3a3e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a4024d1e7458d20ad2f152b0f98fd3a3e">calloc</a> (size_t num, size_t size) -&gt; void *</td></tr>
+<tr class="separator:a4024d1e7458d20ad2f152b0f98fd3a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac12923ad2eca3db7b2d8d856b5902ed6" id="r_ac12923ad2eca3db7b2d8d856b5902ed6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#ac12923ad2eca3db7b2d8d856b5902ed6">realloc</a> (void *ptr, size_t new_size) -&gt; void *</td></tr>
+<tr class="separator:ac12923ad2eca3db7b2d8d856b5902ed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c66c5ed90bbf8c21483fdf9c769636f" id="r_a1c66c5ed90bbf8c21483fdf9c769636f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a1c66c5ed90bbf8c21483fdf9c769636f">aligned_alloc</a> (size_t alignment, size_t size) -&gt; void *</td></tr>
+<tr class="separator:a1c66c5ed90bbf8c21483fdf9c769636f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e24be38b7d2a964e53cb2c7719aef52" id="r_a2e24be38b7d2a964e53cb2c7719aef52"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a2e24be38b7d2a964e53cb2c7719aef52">aligned_free</a> (void *ptr) -&gt; void</td></tr>
+<tr class="separator:a2e24be38b7d2a964e53cb2c7719aef52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97dad1f7048065936858b6302fb25eab" id="r_a97dad1f7048065936858b6302fb25eab"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#a97dad1f7048065936858b6302fb25eab">MemoryInit</a> () -&gt; void</td></tr>
+<tr class="memdesc:a97dad1f7048065936858b6302fb25eab"><td class="mdescLeft">&#160;</td><td class="mdescRight">内存子系统初始化  <br /></td></tr>
+<tr class="separator:a97dad1f7048065936858b6302fb25eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9551d61ca7e53f16e631b089c0756dd" id="r_ad9551d61ca7e53f16e631b089c0756dd"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8cpp.html#ad9551d61ca7e53f16e631b089c0756dd">MemoryInitSMP</a> () -&gt; void</td></tr>
+<tr class="memdesc:ad9551d61ca7e53f16e631b089c0756dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">多核内存子系统初始化  <br /></td></tr>
+<tr class="separator:ad9551d61ca7e53f16e631b089c0756dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a8006724372b77924155bd8618fe57516" name="a8006724372b77924155bd8618fe57516"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8006724372b77924155bd8618fe57516">&#9670;&#160;</a></span>aligned_alloc()</h2>
+<a id="a1c66c5ed90bbf8c21483fdf9c769636f" name="a1c66c5ed90bbf8c21483fdf9c769636f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c66c5ed90bbf8c21483fdf9c769636f">&#9670;&#160;</a></span>aligned_alloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void * aligned_alloc </td>
+          <td class="memname">auto aligned_alloc </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>alignment</em>, </td>
@@ -262,119 +241,116 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt; void* </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00062">62</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>                                                              {</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (allocator) {</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> allocator-&gt;aligned_alloc(alignment, size);</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   67</span>}</div>
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00058">58</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>                                                                      {</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">if</span> (allocator) {</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> allocator-&gt;aligned_alloc(alignment, size);</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp_a8006724372b77924155bd8618fe57516_icgraph.png" border="0" usemap="#amemory_8cpp_a8006724372b77924155bd8618fe57516_icgraph" alt=""/></div>
-<map name="amemory_8cpp_a8006724372b77924155bd8618fe57516_icgraph" id="amemory_8cpp_a8006724372b77924155bd8618fe57516_icgraph">
-<area shape="rect" title=" " alt="" coords="1036,281,1144,307"/>
-<area shape="rect" href="classTaskManager.html#a101df6fadedb6dd4f93ee1a1e24550c2" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="802,40,955,65"/>
-<area shape="poly" title=" " alt="" coords="1081,268,1071,226,1053,175,1025,123,1007,100,986,80,954,63,957,59,990,76,1011,97,1029,120,1058,173,1076,224,1087,267"/>
-<area shape="rect" href="classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3" title="复制页表" alt="" coords="521,317,716,357"/>
-<area shape="poly" title=" " alt="" coords="1056,277,1024,260,987,247,927,234,878,229,830,233,770,247,734,261,700,280,645,319,642,314,697,275,732,256,769,242,829,228,878,224,927,229,989,242,1026,255,1059,272"/>
-<area shape="rect" href="classVirtualMemory.html#a7441d7b32e1941d347851bd3da1ad6fb" title="在页表中查找虚拟地址对应的页表项" alt="" coords="769,90,988,130"/>
-<area shape="poly" title=" " alt="" coords="1075,270,1040,210,1016,178,986,151,954,132,957,128,990,147,1020,175,1045,207,1080,268"/>
-<area shape="rect" href="classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title=" " alt="" coords="5,129,228,155"/>
-<area shape="poly" title=" " alt="" coords="1065,273,1030,244,987,219,924,201,840,186,633,165,413,152,228,146,228,141,413,147,633,159,841,181,925,196,989,214,1033,239,1068,269"/>
-<area shape="rect" href="memory__test_8cpp.html#adcdd769af8aefa39375682eedd3cac7f" title=" " alt="" coords="824,256,933,281"/>
-<area shape="poly" title=" " alt="" coords="1022,289,933,278,934,273,1023,283"/>
-<area shape="rect" href="sk__new_8cpp.html#a92ec3b3ae6ee3cc37464ce2e38705a10" title=" " alt="" coords="825,305,933,331"/>
-<area shape="poly" title=" " alt="" coords="1022,304,933,315,932,309,1022,299"/>
-<area shape="rect" href="sk__new_8cpp.html#ae8a86a56ba6702ef0fdbf0674e73553f" title=" " alt="" coords="819,355,938,380"/>
-<area shape="poly" title=" " alt="" coords="1055,316,989,346,939,360,938,354,987,341,1053,311"/>
-<area shape="rect" href="classVirtualMemory.html#acd2f1fff14fc36c984c7edbbabf95b0b" title="递归复制页表" alt="" coords="783,429,974,469"/>
-<area shape="poly" title=" " alt="" coords="1071,319,1035,356,990,395,927,431,925,426,986,390,1031,352,1067,315"/>
-<area shape="rect" href="structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42" title="构造函数 (内核线程)" alt="" coords="769,493,988,533"/>
-<area shape="poly" title=" " alt="" coords="1084,321,1072,357,1052,401,1025,445,990,483,971,495,968,490,986,479,1021,442,1048,398,1067,355,1079,319"/>
-<area shape="rect" href="system__test_2virtual__memory__test_8cpp.html#a8027cdd5d224276fe32cfe407e4dfe88" title=" " alt="" coords="799,557,958,583"/>
-<area shape="poly" title=" " alt="" coords="1089,321,1080,370,1063,431,1034,493,1014,522,990,547,959,564,957,559,986,543,1010,518,1029,491,1058,429,1075,368,1083,320"/>
-<area shape="rect" href="classVirtualMemory.html#a2889f5a5b3c2b625cb3042e125ed5ac2" title="获取虚拟地址对应的物理地址映射" alt="" coords="516,104,721,129"/>
-<area shape="poly" title=" " alt="" coords="756,116,722,117,722,111,756,110"/>
-<area shape="rect" href="classVirtualMemory.html#acbbc8c7f29e2611d4b56003323473e3d" title="映射单个页面" alt="" coords="526,5,711,31"/>
-<area shape="poly" title=" " alt="" coords="787,88,768,79,744,61,720,44,689,33,691,28,723,40,747,57,771,74,790,83"/>
-<area shape="rect" href="classVirtualMemory.html#af6bc99b477b9a096c0fcb846a6ef874a" title="取消映射单个页面" alt="" coords="517,55,721,80"/>
-<area shape="poly" title=" " alt="" coords="756,93,696,83,697,77,756,87"/>
-<area shape="rect" href="classVirtualMemory.html#a19ea83e0f3f85e55b12deec2a20972a2" title="映射设备内存 (MMIO)" alt="" coords="276,55,468,80"/>
-<area shape="poly" title=" " alt="" coords="542,36,437,57,436,52,541,31"/>
-<area shape="poly" title=" " alt="" coords="315,87,162,132,160,127,313,82"/>
-<area shape="poly" title=" " alt="" coords="818,426,665,359,667,354,820,421"/>
-<area shape="poly" title=" " alt="" coords="914,417,902,410,879,407,858,409,846,414,842,420,844,428,839,429,837,419,843,410,857,404,879,402,903,405,917,412"/>
+<div class="center"><img src="memory_8cpp_a1c66c5ed90bbf8c21483fdf9c769636f_icgraph.png" border="0" usemap="#amemory_8cpp_a1c66c5ed90bbf8c21483fdf9c769636f_icgraph" alt=""/></div>
+<map name="amemory_8cpp_a1c66c5ed90bbf8c21483fdf9c769636f_icgraph" id="amemory_8cpp_a1c66c5ed90bbf8c21483fdf9c769636f_icgraph">
+<area shape="rect" title=" " alt="" coords="276,283,384,308"/>
+<area shape="rect" href="classTaskManager.html#ad2fdc9ffa97ac49ce08133d7ce0728bb" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="40,5,193,31"/>
+<area shape="poly" title=" " alt="" coords="323,270,315,221,298,160,269,98,250,70,226,45,211,35,193,28,195,23,213,30,230,41,254,66,274,95,303,158,320,220,329,269"/>
+<area shape="rect" href="classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3" title="复制页表" alt="" coords="19,55,214,95"/>
+<area shape="poly" title=" " alt="" coords="319,270,307,234,288,191,261,147,226,109,208,98,211,93,230,105,265,143,293,188,312,232,324,269"/>
+<area shape="rect" href="classVirtualMemory.html#a7441d7b32e1941d347851bd3da1ad6fb" title="在页表中查找虚拟地址对应的页表项" alt="" coords="7,119,226,159"/>
+<area shape="poly" title=" " alt="" coords="313,272,278,222,254,196,227,174,204,162,207,157,229,169,257,192,282,219,317,269"/>
+<area shape="rect" href="classIoBuffer.html#ac99a8d3414321db07940b317c6871e9d" title="构造函数" alt="" coords="51,184,183,209"/>
+<area shape="poly" title=" " alt="" coords="304,276,269,248,227,223,182,209,184,204,229,218,272,244,307,271"/>
+<area shape="rect" href="memory__test_8cpp.html#adcdd769af8aefa39375682eedd3cac7f" title=" " alt="" coords="62,233,171,259"/>
+<area shape="poly" title=" " alt="" coords="266,282,227,273,171,260,172,255,229,267,267,277"/>
+<area shape="rect" href="kstd__new_8cpp.html#a92ec3b3ae6ee3cc37464ce2e38705a10" title=" " alt="" coords="63,283,171,308"/>
+<area shape="poly" title=" " alt="" coords="262,298,171,298,171,293,262,293"/>
+<area shape="rect" href="kstd__new_8cpp.html#ae8a86a56ba6702ef0fdbf0674e73553f" title=" " alt="" coords="57,332,176,357"/>
+<area shape="poly" title=" " alt="" coords="263,314,229,322,174,335,173,329,227,317,262,309"/>
+<area shape="rect" href="classVirtualMemory.html#acd2f1fff14fc36c984c7edbbabf95b0b" title="递归复制页表" alt="" coords="21,382,212,422"/>
+<area shape="poly" title=" " alt="" coords="305,319,270,346,229,371,197,384,195,379,227,366,267,342,302,315"/>
+<area shape="rect" href="structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42" title="构造函数 (内核线程)" alt="" coords="7,446,226,486"/>
+<area shape="poly" title=" " alt="" coords="319,322,284,379,259,410,230,436,208,448,206,444,226,432,255,406,280,376,315,319"/>
+<area shape="rect" href="system__test_2virtual__memory__test_8cpp.html#a8027cdd5d224276fe32cfe407e4dfe88" title=" " alt="" coords="37,511,196,536"/>
+<area shape="poly" title=" " alt="" coords="326,322,315,362,296,410,268,459,250,481,230,500,198,517,195,512,226,496,246,477,264,456,291,408,310,360,321,321"/>
+<area shape="rect" href="classVirtualMemory.html#a0854e9b79bc77a621c7a806d711c52a6" title="构造函数" alt="" coords="5,560,228,585"/>
+<area shape="poly" title=" " alt="" coords="329,322,320,371,303,432,274,495,254,524,230,549,209,562,207,558,226,545,250,521,269,493,298,430,315,369,323,321"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a274dd8714485eed9c9328973d44ec5dc" name="a274dd8714485eed9c9328973d44ec5dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a274dd8714485eed9c9328973d44ec5dc">&#9670;&#160;</a></span>aligned_free()</h2>
+<a id="a2e24be38b7d2a964e53cb2c7719aef52" name="a2e24be38b7d2a964e53cb2c7719aef52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e24be38b7d2a964e53cb2c7719aef52">&#9670;&#160;</a></span>aligned_free()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void aligned_free </td>
+          <td class="memname">auto aligned_free </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>ptr</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; void </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00069">69</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>                                        {</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (allocator) {</div>
-<div class="line"><span class="lineno">   71</span>    allocator-&gt;aligned_free(ptr);</div>
-<div class="line"><span class="lineno">   72</span>  }</div>
-<div class="line"><span class="lineno">   73</span>}</div>
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00065">65</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>                                                {</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">if</span> (allocator) {</div>
+<div class="line"><span class="lineno">   67</span>    allocator-&gt;aligned_free(ptr);</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
+<div class="line"><span class="lineno">   69</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp_a274dd8714485eed9c9328973d44ec5dc_icgraph.png" border="0" usemap="#amemory_8cpp_a274dd8714485eed9c9328973d44ec5dc_icgraph" alt=""/></div>
-<map name="amemory_8cpp_a274dd8714485eed9c9328973d44ec5dc_icgraph" id="amemory_8cpp_a274dd8714485eed9c9328973d44ec5dc_icgraph">
-<area shape="rect" title=" " alt="" coords="743,133,845,159"/>
-<area shape="rect" href="classVirtualMemory.html#adf6d48183927262a6c7929493f0c74f5" title="回收页表，释放所有映射和子页表" alt="" coords="248,135,456,175"/>
-<area shape="poly" title=" " alt="" coords="778,123,745,74,721,50,693,32,643,13,600,8,557,15,505,32,463,53,426,81,371,137,367,133,422,77,460,49,503,27,556,10,600,3,644,8,696,28,724,46,749,70,782,120"/>
-<area shape="rect" href="sk__new_8cpp.html#a685b8dd6f158da142f098ab348f0c54f" title=" " alt="" coords="538,43,661,68"/>
-<area shape="poly" title=" " alt="" coords="765,126,732,103,694,82,660,70,662,65,696,77,735,98,768,122"/>
-<area shape="rect" href="sk__new_8cpp.html#ae6d3b8074a8e988e898bcd347a65157c" title=" " alt="" coords="533,92,665,117"/>
-<area shape="poly" title=" " alt="" coords="728,135,659,120,660,115,729,130"/>
-<area shape="rect" href="classVirtualMemory.html#acd2f1fff14fc36c984c7edbbabf95b0b" title="递归复制页表" alt="" coords="257,223,447,263"/>
-<area shape="poly" title=" " alt="" coords="772,170,738,198,696,220,633,238,568,248,505,253,448,253,448,247,504,247,567,243,632,233,694,215,735,193,769,166"/>
-<area shape="rect" href="classVirtualMemory.html#a5d99f94ac5108601c7ea895ad52f6c33" title="递归释放页表" alt="" coords="504,166,695,206"/>
-<area shape="poly" title=" " alt="" coords="729,162,696,169,694,164,728,157"/>
-<area shape="rect" href="structTaskControlBlock.html#a5cb17ff89e47654f129a269f7b8becbb" title=" " alt="" coords="527,281,672,321"/>
-<area shape="poly" title=" " alt="" coords="780,172,745,218,722,242,696,264,663,283,660,278,693,260,718,239,741,214,775,169"/>
-<area shape="rect" href="classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3" title="复制页表" alt="" coords="5,179,200,219"/>
-<area shape="poly" title=" " alt="" coords="235,179,201,185,200,179,234,173"/>
-<area shape="poly" title=" " alt="" coords="242,227,200,219,201,214,243,221"/>
-<area shape="poly" title=" " alt="" coords="394,212,379,205,352,202,328,204,314,209,309,215,311,222,306,224,304,214,311,204,327,199,352,197,381,199,396,207"/>
-<area shape="poly" title=" " alt="" coords="490,175,456,171,456,166,491,170"/>
-<area shape="poly" title=" " alt="" coords="632,154,621,147,599,145,581,147,570,151,566,157,568,165,563,166,560,156,566,147,579,141,599,139,622,142,635,150"/>
+<div class="center"><img src="memory_8cpp_a2e24be38b7d2a964e53cb2c7719aef52_icgraph.png" border="0" usemap="#amemory_8cpp_a2e24be38b7d2a964e53cb2c7719aef52_icgraph" alt=""/></div>
+<map name="amemory_8cpp_a2e24be38b7d2a964e53cb2c7719aef52_icgraph" id="amemory_8cpp_a2e24be38b7d2a964e53cb2c7719aef52_icgraph">
+<area shape="rect" title=" " alt="" coords="261,293,364,318"/>
+<area shape="rect" href="classVirtualMemory.html#a23bd4481bc5a98628255851890276a7b" title="回收页表，释放所有映射和子页表" alt="" coords="5,5,213,45"/>
+<area shape="poly" title=" " alt="" coords="306,279,297,232,280,173,252,112,234,84,212,59,195,48,198,43,215,55,238,81,257,109,285,171,302,231,311,278"/>
+<area shape="rect" href="kstd__new_8cpp.html#ad3b4b3666ac41731cffaf068e27463f4" title=" " alt="" coords="48,70,171,95"/>
+<area shape="poly" title=" " alt="" coords="303,280,293,241,274,195,248,148,231,127,212,109,192,97,170,90,172,85,194,92,215,105,235,123,252,145,279,192,298,239,309,278"/>
+<area shape="rect" href="kstd__new_8cpp.html#a26edb424f899b76d0b7340f4366cf285" title=" " alt="" coords="48,119,171,145"/>
+<area shape="poly" title=" " alt="" coords="299,281,267,218,242,186,212,158,192,148,170,141,172,136,194,143,215,154,246,182,271,216,304,279"/>
+<area shape="rect" href="kstd__new_8cpp.html#ad311b9b099cca45db0b203ebe898d505" title=" " alt="" coords="48,169,171,194"/>
+<area shape="poly" title=" " alt="" coords="293,284,258,244,236,224,212,208,170,192,172,187,215,203,240,220,262,240,297,280"/>
+<area shape="rect" href="kstd__new_8cpp.html#affca2c1ebed9fb9e2f61281aea4dc528" title=" " alt="" coords="43,218,175,243"/>
+<area shape="poly" title=" " alt="" coords="277,288,212,257,175,246,176,241,214,252,279,283"/>
+<area shape="rect" href="kstd__new_8cpp.html#a222ab58798ed240a8debbad819be062f" title=" " alt="" coords="43,267,175,293"/>
+<area shape="poly" title=" " alt="" coords="247,300,175,291,176,286,248,295"/>
+<area shape="rect" href="kstd__new_8cpp.html#a5e60876a137c418506b9d67e5c878eed" title=" " alt="" coords="43,317,175,342"/>
+<area shape="poly" title=" " alt="" coords="248,316,176,324,175,319,247,310"/>
+<area shape="rect" href="classIoBuffer.html#abf329f878bec7ad2844c62774493b4c7" title=" " alt="" coords="36,366,183,391"/>
+<area shape="poly" title=" " alt="" coords="278,327,214,356,172,368,171,363,212,351,276,322"/>
+<area shape="rect" href="classVirtualMemory.html#acd2f1fff14fc36c984c7edbbabf95b0b" title="递归复制页表" alt="" coords="14,416,205,456"/>
+<area shape="poly" title=" " alt="" coords="295,331,260,369,215,405,188,418,185,414,212,400,257,365,291,327"/>
+<area shape="rect" href="classVirtualMemory.html#a9615e624556db837ac9aec12ebf83c00" title="递归释放页表" alt="" coords="14,480,205,520"/>
+<area shape="poly" title=" " alt="" coords="305,332,273,400,247,438,215,470,195,482,193,478,212,466,243,434,268,398,300,329"/>
+<area shape="rect" href="classIoBuffer.html#affad1b6973e167107f3a1841a9968fbf" title=" " alt="" coords="38,545,181,570"/>
+<area shape="poly" title=" " alt="" coords="310,333,301,377,283,431,255,487,237,512,215,534,182,551,180,547,212,530,233,508,251,484,278,429,296,375,305,331"/>
+<area shape="rect" href="structTaskControlBlock.html#a5cb17ff89e47654f129a269f7b8becbb" title=" " alt="" coords="37,595,182,635"/>
+<area shape="poly" title=" " alt="" coords="312,332,305,384,289,452,260,522,240,554,215,583,184,603,181,599,212,579,236,551,255,519,284,450,300,383,307,331"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="af4e7470f55c08b061783fe2519b65bff" name="af4e7470f55c08b061783fe2519b65bff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4e7470f55c08b061783fe2519b65bff">&#9670;&#160;</a></span>calloc()</h2>
+<a id="a4024d1e7458d20ad2f152b0f98fd3a3e" name="a4024d1e7458d20ad2f152b0f98fd3a3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4024d1e7458d20ad2f152b0f98fd3a3e">&#9670;&#160;</a></span>calloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void * calloc </td>
+          <td class="memname">auto calloc </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>num</em>, </td>
@@ -388,72 +364,72 @@ Here is the caller graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt; void* </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00048">48</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>                                                 {</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (allocator) {</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> allocator-&gt;calloc(num, size);</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00044">44</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>                                                         {</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (allocator) {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> allocator-&gt;calloc(num, size);</div>
+<div class="line"><span class="lineno">   47</span>  }</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="afbedc913aa4651b3c3b4b3aecd9b4711" name="afbedc913aa4651b3c3b4b3aecd9b4711"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbedc913aa4651b3c3b4b3aecd9b4711">&#9670;&#160;</a></span>free()</h2>
+<a id="a7ed07d281e278344a04cd737697f843d" name="a7ed07d281e278344a04cd737697f843d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ed07d281e278344a04cd737697f843d">&#9670;&#160;</a></span>free()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void free </td>
+          <td class="memname">auto free </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>ptr</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; void </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00042">42</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>                                {</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (allocator) {</div>
-<div class="line"><span class="lineno">   44</span>    allocator-&gt;free(ptr);</div>
-<div class="line"><span class="lineno">   45</span>  }</div>
-<div class="line"><span class="lineno">   46</span>}</div>
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00038">38</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>                                        {</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (allocator) {</div>
+<div class="line"><span class="lineno">   40</span>    allocator-&gt;free(ptr);</div>
+<div class="line"><span class="lineno">   41</span>  }</div>
+<div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp_afbedc913aa4651b3c3b4b3aecd9b4711_icgraph.png" border="0" usemap="#amemory_8cpp_afbedc913aa4651b3c3b4b3aecd9b4711_icgraph" alt=""/></div>
-<map name="amemory_8cpp_afbedc913aa4651b3c3b4b3aecd9b4711_icgraph" id="amemory_8cpp_afbedc913aa4651b3c3b4b3aecd9b4711_icgraph">
+<div class="center"><img src="memory_8cpp_a7ed07d281e278344a04cd737697f843d_icgraph.png" border="0" usemap="#amemory_8cpp_a7ed07d281e278344a04cd737697f843d_icgraph" alt=""/></div>
+<map name="amemory_8cpp_a7ed07d281e278344a04cd737697f843d_icgraph" id="amemory_8cpp_a7ed07d281e278344a04cd737697f843d_icgraph">
 <area shape="rect" title=" " alt="" coords="185,104,233,129"/>
 <area shape="rect" href="memory__test_8cpp.html#adcdd769af8aefa39375682eedd3cac7f" title=" " alt="" coords="17,5,126,31"/>
 <area shape="poly" title=" " alt="" coords="188,95,165,69,136,44,114,33,117,28,139,40,169,65,192,91"/>
-<area shape="rect" href="sk__new_8cpp.html#afa145befcf5e7b83424408ca503c8637" title=" " alt="" coords="10,55,133,80"/>
+<area shape="rect" href="kstd__new_8cpp.html#a7d25a598f8e149818fa4280716f561c4" title=" " alt="" coords="10,55,133,80"/>
 <area shape="poly" title=" " alt="" coords="171,106,107,83,108,78,173,101"/>
-<area shape="rect" href="sk__new_8cpp.html#aeb70b064678e54ac9d17095b41f45e10" title=" " alt="" coords="10,104,133,129"/>
+<area shape="rect" href="kstd__new_8cpp.html#a9f278e9ba1790d198990564963bd35cf" title=" " alt="" coords="10,104,133,129"/>
 <area shape="poly" title=" " alt="" coords="172,119,133,119,133,114,172,114"/>
-<area shape="rect" href="sk__new_8cpp.html#a22aea74a1155aa798d6032da46da2391" title=" " alt="" coords="5,153,137,179"/>
+<area shape="rect" href="kstd__new_8cpp.html#a533e9abfedcfc193aaf57b7099300de6" title=" " alt="" coords="5,153,137,179"/>
 <area shape="poly" title=" " alt="" coords="173,132,108,156,107,151,171,127"/>
-<area shape="rect" href="sk__new_8cpp.html#af43c18f24479333933613aeb791e9cf9" title=" " alt="" coords="5,203,137,228"/>
+<area shape="rect" href="kstd__new_8cpp.html#aeca1629b42dd74868711f4c450732b9e" title=" " alt="" coords="5,203,137,228"/>
 <area shape="poly" title=" " alt="" coords="192,142,168,168,139,192,114,205,112,200,136,188,164,164,188,138"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a9c36d0fe3ec4675cbffdc9b52f5fb399" name="a9c36d0fe3ec4675cbffdc9b52f5fb399"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c36d0fe3ec4675cbffdc9b52f5fb399">&#9670;&#160;</a></span>malloc()</h2>
+<a id="a731dcf123897780b41e2d3e9d8cea78a" name="a731dcf123897780b41e2d3e9d8cea78a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a731dcf123897780b41e2d3e9d8cea78a">&#9670;&#160;</a></span>malloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void * malloc </td>
+          <td class="memname">auto malloc </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>size</em></td><td>)</td>
@@ -463,101 +439,117 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00035">35</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>                                     {</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (allocator) {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> allocator-&gt;malloc(size);</div>
-<div class="line"><span class="lineno">   38</span>  }</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   40</span>}</div>
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00031">31</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>                                             {</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (allocator) {</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> allocator-&gt;malloc(size);</div>
+<div class="line"><span class="lineno">   34</span>  }</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   36</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp_a9c36d0fe3ec4675cbffdc9b52f5fb399_icgraph.png" border="0" usemap="#amemory_8cpp_a9c36d0fe3ec4675cbffdc9b52f5fb399_icgraph" alt=""/></div>
-<map name="amemory_8cpp_a9c36d0fe3ec4675cbffdc9b52f5fb399_icgraph" id="amemory_8cpp_a9c36d0fe3ec4675cbffdc9b52f5fb399_icgraph">
+<div class="center"><img src="memory_8cpp_a731dcf123897780b41e2d3e9d8cea78a_icgraph.png" border="0" usemap="#amemory_8cpp_a731dcf123897780b41e2d3e9d8cea78a_icgraph" alt=""/></div>
+<map name="amemory_8cpp_a731dcf123897780b41e2d3e9d8cea78a_icgraph" id="amemory_8cpp_a731dcf123897780b41e2d3e9d8cea78a_icgraph">
 <area shape="rect" title=" " alt="" coords="172,104,239,129"/>
 <area shape="rect" href="memory__test_8cpp.html#adcdd769af8aefa39375682eedd3cac7f" title=" " alt="" coords="10,5,119,31"/>
 <area shape="poly" title=" " alt="" coords="181,95,155,69,123,44,101,33,104,28,125,40,158,65,185,91"/>
-<area shape="rect" href="sk__new_8cpp.html#a160dcabc54bbecfc69484678cafadb81" title=" " alt="" coords="11,55,119,80"/>
+<area shape="rect" href="kstd__new_8cpp.html#a160dcabc54bbecfc69484678cafadb81" title=" " alt="" coords="11,55,119,80"/>
 <area shape="poly" title=" " alt="" coords="158,103,101,83,103,78,160,98"/>
-<area shape="rect" href="sk__new_8cpp.html#a92ec3b3ae6ee3cc37464ce2e38705a10" title=" " alt="" coords="11,104,119,129"/>
+<area shape="rect" href="kstd__new_8cpp.html#a92ec3b3ae6ee3cc37464ce2e38705a10" title=" " alt="" coords="11,104,119,129"/>
 <area shape="poly" title=" " alt="" coords="158,119,119,119,119,114,158,114"/>
-<area shape="rect" href="sk__new_8cpp.html#af2243bb4c2126b7b2b393e06090fbe59" title=" " alt="" coords="5,153,124,179"/>
+<area shape="rect" href="kstd__new_8cpp.html#af2243bb4c2126b7b2b393e06090fbe59" title=" " alt="" coords="5,153,124,179"/>
 <area shape="poly" title=" " alt="" coords="160,135,103,156,101,151,158,130"/>
-<area shape="rect" href="sk__new_8cpp.html#ae8a86a56ba6702ef0fdbf0674e73553f" title=" " alt="" coords="5,203,124,228"/>
+<area shape="rect" href="kstd__new_8cpp.html#ae8a86a56ba6702ef0fdbf0674e73553f" title=" " alt="" coords="5,203,124,228"/>
 <area shape="poly" title=" " alt="" coords="185,141,158,167,125,192,102,205,99,200,123,188,154,163,181,137"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a0d8c809343a4f03aea31ffbf8891a11d" name="a0d8c809343a4f03aea31ffbf8891a11d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d8c809343a4f03aea31ffbf8891a11d">&#9670;&#160;</a></span>MemoryInit()</h2>
+<a id="a97dad1f7048065936858b6302fb25eab" name="a97dad1f7048065936858b6302fb25eab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97dad1f7048065936858b6302fb25eab">&#9670;&#160;</a></span>MemoryInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void MemoryInit </td>
+          <td class="memname">auto MemoryInit </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; void </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00075">75</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>                  {</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keyword">auto</span> allocator_addr =</div>
-<div class="line"><span class="lineno">   77</span>      <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c">cpu_io::virtual_memory::PageAlignUp</a>(</div>
-<div class="line"><span class="lineno">   78</span>          <a class="code hl_class" href="classSingleton.html">Singleton&lt;BasicInfo&gt;::GetInstance</a>().elf_addr +</div>
-<div class="line"><span class="lineno">   79</span>          <a class="code hl_class" href="classSingleton.html">Singleton&lt;KernelElf&gt;::GetInstance</a>().GetElfSize()));</div>
-<div class="line"><span class="lineno">   80</span>  <span class="keyword">auto</span> allocator_size =</div>
-<div class="line"><span class="lineno">   81</span>      <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;BasicInfo&gt;::GetInstance</a>().physical_memory_addr +</div>
-<div class="line"><span class="lineno">   82</span>      <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;BasicInfo&gt;::GetInstance</a>().physical_memory_size -</div>
-<div class="line"><span class="lineno">   83</span>      <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(allocator_addr);</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>  <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;bmalloc address: %p, size: 0x%lX\n&quot;</span>, allocator_addr,</div>
-<div class="line"><span class="lineno">   86</span>             allocator_size);</div>
+<p>内存子系统初始化 </p>
+
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00071">71</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>                          {</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keyword">auto</span> allocator_addr =</div>
+<div class="line"><span class="lineno">   73</span>      <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c">cpu_io::virtual_memory::PageAlignUp</a>(</div>
+<div class="line"><span class="lineno">   74</span>          BasicInfoSingleton::instance().elf_addr +</div>
+<div class="line"><span class="lineno">   75</span>          KernelElfSingleton::instance().GetElfSize()));</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keyword">auto</span> allocator_size = BasicInfoSingleton::instance().physical_memory_addr +</div>
+<div class="line"><span class="lineno">   77</span>                        BasicInfoSingleton::instance().physical_memory_size -</div>
+<div class="line"><span class="lineno">   78</span>                        <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(allocator_addr);</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;bmalloc address: {:#x}, size: {:#X}&quot;</span>,</div>
+<div class="line"><span class="lineno">   81</span>             <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span>uintptr_t<span class="keyword">&gt;</span>(allocator_addr)),</div>
+<div class="line"><span class="lineno">   82</span>             <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(allocator_size));</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>  <span class="keyword">static</span> bmalloc::Bmalloc&lt;BmallocLogger&gt; bmallocator(allocator_addr,</div>
+<div class="line"><span class="lineno">   85</span>                                                     allocator_size);</div>
+<div class="line"><span class="lineno">   86</span>  allocator = &amp;bmallocator;</div>
 <div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  <span class="keyword">static</span> bmalloc::Bmalloc&lt;BmallocLogger&gt; bmallocator(allocator_addr,</div>
-<div class="line"><span class="lineno">   89</span>                                                     allocator_size);</div>
-<div class="line"><span class="lineno">   90</span>  allocator = &amp;bmallocator;</div>
+<div class="line"><span class="lineno">   88</span>  <span class="comment">// 初始化当前核心的虚拟内存</span></div>
+<div class="line"><span class="lineno">   89</span>  VirtualMemorySingleton::create();</div>
+<div class="line"><span class="lineno">   90</span>  VirtualMemorySingleton::instance().InitCurrentCore();</div>
 <div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>  <span class="comment">// 初始化当前核心的虚拟内存</span></div>
-<div class="line"><span class="lineno">   93</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;VirtualMemory&gt;::GetInstance</a>().InitCurrentCore();</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="comment">// 重新映射早期控制台地址（如果有的话）</span></div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">if</span> (SIMPLEKERNEL_EARLY_CONSOLE_BASE != 0) {</div>
-<div class="line"><span class="lineno">   97</span>    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;VirtualMemory&gt;::GetInstance</a>().MapMMIO(</div>
-<div class="line"><span class="lineno">   98</span>        SIMPLEKERNEL_EARLY_CONSOLE_BASE, <a class="code hl_variable" href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a>);</div>
-<div class="line"><span class="lineno">   99</span>  }</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Memory initialization completed\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  102</span>}</div>
-<div class="ttc" id="aclassSingleton_html"><div class="ttname"><a href="classSingleton.html">Singleton</a></div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00010">singleton.hpp:10</a></div></div>
-<div class="ttc" id="aclassSingleton_html_a68856b49e098eadba37b60366db33ebd"><div class="ttname"><a href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton::GetInstance</a></div><div class="ttdeci">static auto GetInstance() -&gt; T &amp;</div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00023">singleton.hpp:23</a></div></div>
-<div class="ttc" id="anamespacecpu__io_1_1virtual__memory_html_a24fb424f54d414703cda572dc076d71a"><div class="ttname"><a href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a></div><div class="ttdeci">static constexpr size_t kPageSize</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00058">cpu_io.h:58</a></div></div>
-<div class="ttc" id="anamespacecpu__io_1_1virtual__memory_html_af3d08561d5c588f1cf2f260951522f6c"><div class="ttname"><a href="namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c">cpu_io::virtual_memory::PageAlignUp</a></div><div class="ttdeci">auto PageAlignUp(uint64_t addr) -&gt; uint64_t</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00156">cpu_io.h:156</a></div></div>
-<div class="ttc" id="astructklog_1_1Info_html"><div class="ttname"><a href="structklog_1_1Info.html">klog::Info</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00168">kernel_log.hpp:168</a></div></div>
+<div class="line"><span class="lineno">   92</span>  <span class="comment">// 重新映射早期控制台地址（如果有的话）</span></div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (SIMPLEKERNEL_EARLY_CONSOLE_BASE != 0) {</div>
+<div class="line"><span class="lineno">   94</span>    VirtualMemorySingleton::instance()</div>
+<div class="line"><span class="lineno">   95</span>        .MapMMIO(SIMPLEKERNEL_EARLY_CONSOLE_BASE,</div>
+<div class="line"><span class="lineno">   96</span>                 <a class="code hl_variable" href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a>)</div>
+<div class="line"><span class="lineno">   97</span>        .or_else([](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void*&gt;</a> {</div>
+<div class="line"><span class="lineno">   98</span>          <a class="code hl_function" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a>(<span class="stringliteral">&quot;Failed to remap early console MMIO: {}&quot;</span>, err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
+<div class="line"><span class="lineno">   99</span>          <span class="keywordflow">return</span> std::unexpected(err);</div>
+<div class="line"><span class="lineno">  100</span>        });</div>
+<div class="line"><span class="lineno">  101</span>  }</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Memory initialization completed&quot;</span>);</div>
+<div class="line"><span class="lineno">  104</span>}</div>
+<div class="ttc" id="aexpected_8hpp_html_a87330dc74eb67e824914b8d343050757"><div class="ttname"><a href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a></div><div class="ttdeci">std::expected&lt; T, Error &gt; Expected</div><div class="ttdoc">std::expected 别名模板</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00365">expected.hpp:365</a></div></div>
+<div class="ttc" id="anamespacecpu__io_1_1virtual__memory_html_a24fb424f54d414703cda572dc076d71a"><div class="ttname"><a href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a></div><div class="ttdeci">static constexpr size_t kPageSize</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00063">cpu_io.h:63</a></div></div>
+<div class="ttc" id="anamespacecpu__io_1_1virtual__memory_html_af3d08561d5c588f1cf2f260951522f6c"><div class="ttname"><a href="namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c">cpu_io::virtual_memory::PageAlignUp</a></div><div class="ttdeci">auto PageAlignUp(uint64_t addr) -&gt; uint64_t</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00161">cpu_io.h:161</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a1f6b347e95b475341e195f363a9f20a3"><div class="ttname"><a href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a></div><div class="ttdeci">auto Info(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 INFO 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00182">kernel_log.hpp:182</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a9e1498fdd041865e7e917ef040d186eb"><div class="ttname"><a href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a></div><div class="ttdeci">auto Warn(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 WARN 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00191">kernel_log.hpp:191</a></div></div>
+<div class="ttc" id="astructError_html"><div class="ttname"><a href="structError.html">Error</a></div><div class="ttdoc">错误类型，用于 std::expected</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00343">expected.hpp:343</a></div></div>
+<div class="ttc" id="astructError_html_aa63ee10532d668f25a5147d7dc753749"><div class="ttname"><a href="structError.html#aa63ee10532d668f25a5147d7dc753749">Error::message</a></div><div class="ttdeci">constexpr auto message() const -&gt; const char *</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00358">expected.hpp:358</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_cgraph.png" border="0" usemap="#amemory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_cgraph" alt=""/></div>
-<map name="amemory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_cgraph" id="amemory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_cgraph">
-<area shape="rect" title=" " alt="" coords="5,35,103,60"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="154,5,323,31"/>
-<area shape="poly" title=" " alt="" coords="102,37,145,30,145,36,103,42"/>
-<area shape="rect" href="namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c" title=" " alt="" coords="151,55,327,95"/>
-<area shape="poly" title=" " alt="" coords="103,52,137,57,136,63,102,57"/>
+<div class="center"><img src="memory_8cpp_a97dad1f7048065936858b6302fb25eab_cgraph.png" border="0" usemap="#amemory_8cpp_a97dad1f7048065936858b6302fb25eab_cgraph" alt=""/></div>
+<map name="amemory_8cpp_a97dad1f7048065936858b6302fb25eab_cgraph" id="amemory_8cpp_a97dad1f7048065936858b6302fb25eab_cgraph">
+<area shape="rect" title="内存子系统初始化" alt="" coords="5,84,103,109"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="197,5,280,31"/>
+<area shape="poly" title=" " alt="" coords="73,82,108,60,150,40,183,28,185,33,152,44,110,65,76,86"/>
+<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="179,55,299,80"/>
+<area shape="poly" title=" " alt="" coords="102,86,165,76,165,82,103,92"/>
+<area shape="rect" href="namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c" title=" " alt="" coords="151,105,327,145"/>
+<area shape="poly" title=" " alt="" coords="103,101,137,107,136,112,102,107"/>
+<area shape="rect" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="193,169,284,195"/>
+<area shape="poly" title=" " alt="" coords="74,107,109,131,152,154,181,165,179,170,150,159,106,135,71,112"/>
+<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="375,55,509,80"/>
+<area shape="poly" title=" " alt="" coords="299,65,361,65,361,70,299,70"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_icgraph.png" border="0" usemap="#amemory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_icgraph" alt=""/></div>
-<map name="amemory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_icgraph" id="amemory_8cpp_a0d8c809343a4f03aea31ffbf8891a11d_icgraph">
-<area shape="rect" title=" " alt="" coords="108,5,205,31"/>
+<div class="center"><img src="memory_8cpp_a97dad1f7048065936858b6302fb25eab_icgraph.png" border="0" usemap="#amemory_8cpp_a97dad1f7048065936858b6302fb25eab_icgraph" alt=""/></div>
+<map name="amemory_8cpp_a97dad1f7048065936858b6302fb25eab_icgraph" id="amemory_8cpp_a97dad1f7048065936858b6302fb25eab_icgraph">
+<area shape="rect" title="内存子系统初始化" alt="" coords="108,5,205,31"/>
 <area shape="rect" href="tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,5,60,31"/>
 <area shape="poly" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
 </map>
@@ -565,47 +557,49 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a9297078da36ecdef3c2e61bccf119a47" name="a9297078da36ecdef3c2e61bccf119a47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9297078da36ecdef3c2e61bccf119a47">&#9670;&#160;</a></span>MemoryInitSMP()</h2>
+<a id="ad9551d61ca7e53f16e631b089c0756dd" name="ad9551d61ca7e53f16e631b089c0756dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9551d61ca7e53f16e631b089c0756dd">&#9670;&#160;</a></span>MemoryInitSMP()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void MemoryInitSMP </td>
+          <td class="memname">auto MemoryInitSMP </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; void </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00104">104</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>                     {</div>
-<div class="line"><span class="lineno">  105</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;VirtualMemory&gt;::GetInstance</a>().InitCurrentCore();</div>
-<div class="line"><span class="lineno">  106</span>  <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;SMP Memory initialization completed\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  107</span>}</div>
+<p>多核内存子系统初始化 </p>
+
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00106">106</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>                             {</div>
+<div class="line"><span class="lineno">  107</span>  VirtualMemorySingleton::instance().InitCurrentCore();</div>
+<div class="line"><span class="lineno">  108</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;SMP Memory initialization completed&quot;</span>);</div>
+<div class="line"><span class="lineno">  109</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="memory_8cpp_a9297078da36ecdef3c2e61bccf119a47_cgraph.png" border="0" usemap="#amemory_8cpp_a9297078da36ecdef3c2e61bccf119a47_cgraph" alt=""/></div>
-<map name="amemory_8cpp_a9297078da36ecdef3c2e61bccf119a47_cgraph" id="amemory_8cpp_a9297078da36ecdef3c2e61bccf119a47_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,131,31"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="179,5,348,31"/>
+<div class="center"><img src="memory_8cpp_ad9551d61ca7e53f16e631b089c0756dd_cgraph.png" border="0" usemap="#amemory_8cpp_ad9551d61ca7e53f16e631b089c0756dd_cgraph" alt=""/></div>
+<map name="amemory_8cpp_ad9551d61ca7e53f16e631b089c0756dd_cgraph" id="amemory_8cpp_ad9551d61ca7e53f16e631b089c0756dd_cgraph">
+<area shape="rect" title="多核内存子系统初始化" alt="" coords="5,5,131,31"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="179,5,261,31"/>
 <area shape="poly" title=" " alt="" coords="131,15,165,15,165,21,131,21"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a0f723f009d0b6f246530cbbac3ec1dd4" name="a0f723f009d0b6f246530cbbac3ec1dd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f723f009d0b6f246530cbbac3ec1dd4">&#9670;&#160;</a></span>realloc()</h2>
+<a id="ac12923ad2eca3db7b2d8d856b5902ed6" name="ac12923ad2eca3db7b2d8d856b5902ed6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac12923ad2eca3db7b2d8d856b5902ed6">&#9670;&#160;</a></span>realloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void * realloc </td>
+          <td class="memname">auto realloc </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>ptr</em>, </td>
@@ -619,18 +613,18 @@ Here is the call graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt; void* </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00055">55</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>                                                     {</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">if</span> (allocator) {</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> allocator-&gt;realloc(ptr, new_size);</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<p class="definition">Definition at line <a class="el" href="memory_8cpp_source.html#l00051">51</a> of file <a class="el" href="memory_8cpp_source.html">memory.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>                                                             {</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (allocator) {</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> allocator-&gt;realloc(ptr, new_size);</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   56</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -639,7 +633,7 @@ Here is the call graph for this function:</div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="memory_8cpp.html">memory.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_94d7edf6f8f3d9af5fd63c44172da41c.html">memory</a></li><li class="navelem"><a class="el" href="memory_8cpp.html">memory.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

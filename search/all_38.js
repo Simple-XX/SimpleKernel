@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['依赖_0',['依赖',['../md__2root_2src_2driver_2apic_2README.html#autotoc_md399',1,'']]]
+  ['典型设备树配置_0',['2. 典型设备树配置',['../md_2___xE8_xB0_x83_xE8_xAF_x95_xE8_xBE_x93_xE5_x87_xBA.html#autotoc_md144',1,'']]]
 ];

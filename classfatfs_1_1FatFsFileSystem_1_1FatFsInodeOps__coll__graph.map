@@ -1,0 +1,19 @@
+<map id="fatfs::FatFsFileSystem::FatFsInodeOps" name="fatfs::FatFsFileSystem::FatFsInodeOps">
+<area shape="rect" id="Node000001" title="FatFS inode 操作实现" alt="" coords="272,453,431,633"/>
+<area shape="rect" id="Node000003" href="$classfatfs_1_1FatFsFileSystem.html" title="FatFS VFS 适配器" alt="" coords="135,696,322,1521"/>
+<area shape="poly" id="edge7_Node000003_Node000001" title=" " alt="" coords="294,635,284,658,277,681,272,679,280,656,289,633"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="233,5,344,391"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="329,403,338,453,332,454,323,404"/>
+<area shape="rect" id="Node000005" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="140,461,248,626"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="238,391,223,446,218,444,233,390"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="319,865,347,769,367,672,369,650,374,650,373,672,352,770,325,866"/>
+<area shape="rect" id="Node000006" href="$classfatfs_1_1FatFsFileSystem_1_1FatFsFileOps.html" title="FatFS 文件操作实现" alt="" coords="89,1584,248,1764"/>
+<area shape="poly" id="edge10_Node000006_Node000003" title=" " alt="" coords="169,1522,167,1546,166,1568,161,1567,162,1545,164,1521"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="46,95,174,301"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="112,315,116,467,130,633,139,695,134,696,125,634,111,467,107,315"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="137,300,173,444,168,445,132,301"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="176,626,174,672,174,679,169,680,169,672,171,626"/>
+<area shape="poly" id="edge8_Node000003_Node000006" title=" " alt="" coords="192,1583,197,1560,200,1538,205,1538,202,1560,197,1584"/>
+<area shape="rect" id="Node000007" href="$classvfs_1_1FileOps.html" title="File 操作接口" alt="" coords="5,916,111,1301"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="88,1315,105,1418,126,1521,143,1583,137,1585,121,1522,100,1419,82,1315"/>
+</map>

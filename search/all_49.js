@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['命名约定_0',['命名约定',['../md__2root_2README.html#autotoc_md321',1,'']]]
+  ['安装_20qemu_0',['安装 QEMU',['../md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html#autotoc_md22',1,'']]]
 ];

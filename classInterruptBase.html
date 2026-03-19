@@ -97,17 +97,20 @@ $(document).ready(function(){initNavTree('classInterruptBase.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
+<p>中断子系统抽象基类  
+ <a href="classInterruptBase.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for InterruptBase:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterruptBase__inherit__graph.png" border="0" usemap="#aInterruptBase_inherit__map" alt="Inheritance graph"/></div>
 <map name="aInterruptBase_inherit__map" id="aInterruptBase_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,5,184,371"/>
-<area shape="rect" href="classInterrupt.html" title="中断处理" alt="" coords="5,419,184,1424"/>
-<area shape="poly" title=" " alt="" coords="81,384,80,418,75,418,76,384"/>
-<area shape="poly" title=" " alt="" coords="97,384,97,418,92,418,92,384"/>
-<area shape="poly" title=" " alt="" coords="113,384,114,418,109,418,108,384"/>
+<area shape="rect" title="中断子系统抽象基类" alt="" coords="5,5,208,391"/>
+<area shape="rect" href="classInterrupt.html" title="AArch64 中断控制器实现" alt="" coords="5,439,208,1544"/>
+<area shape="poly" title=" " alt="" coords="93,404,93,439,87,439,88,404"/>
+<area shape="poly" title=" " alt="" coords="109,404,109,439,104,439,104,404"/>
+<area shape="poly" title=" " alt="" coords="125,404,126,439,121,439,120,404"/>
 </map>
 </div>
 <div class="dynheader">
@@ -115,30 +118,33 @@ Collaboration diagram for InterruptBase:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterruptBase__coll__graph.png" border="0" usemap="#aInterruptBase_coll__map" alt="Collaboration graph"/></div>
 <map name="aInterruptBase_coll__map" id="aInterruptBase_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,184,371"/>
+<area shape="rect" title="中断子系统抽象基类" alt="" coords="5,5,208,391"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a1ee9c0fa7707b572d8dc789bebb7a088" id="r_a1ee9c0fa7707b572d8dc789bebb7a088"><td class="memItemLeft" align="right" valign="top">typedef uint64_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#a1ee9c0fa7707b572d8dc789bebb7a088">InterruptFunc</a>) (uint64_t cause, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *context)</td></tr>
-<tr class="memdesc:a1ee9c0fa7707b572d8dc789bebb7a088"><td class="mdescLeft">&#160;</td><td class="mdescRight">中断/异常处理函数指针  <br /></td></tr>
-<tr class="separator:a1ee9c0fa7707b572d8dc789bebb7a088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d086a7d2510a3626ed51660efcb313" id="r_a92d086a7d2510a3626ed51660efcb313"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#a92d086a7d2510a3626ed51660efcb313">InterruptDelegate</a> = etl::delegate&lt; uint64_t(uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *)&gt;</td></tr>
+<tr class="memdesc:a92d086a7d2510a3626ed51660efcb313"><td class="mdescLeft">&#160;</td><td class="mdescRight">类型安全的中断处理委托  <br /></td></tr>
+<tr class="separator:a92d086a7d2510a3626ed51660efcb313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a08371f71dd964f861d80c216a8ebfe6d" id="r_a08371f71dd964f861d80c216a8ebfe6d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#a08371f71dd964f861d80c216a8ebfe6d">Do</a> (uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *)=0</td></tr>
-<tr class="memdesc:a08371f71dd964f861d80c216a8ebfe6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">执行中断处理  <br /></td></tr>
-<tr class="separator:a08371f71dd964f861d80c216a8ebfe6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8ea05a7cdcc8ff926b1a8b840096b73" id="r_ac8ea05a7cdcc8ff926b1a8b840096b73"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#ac8ea05a7cdcc8ff926b1a8b840096b73">RegisterInterruptFunc</a> (uint64_t cause, <a class="el" href="classInterruptBase.html#a1ee9c0fa7707b572d8dc789bebb7a088">InterruptFunc</a> func)=0</td></tr>
-<tr class="memdesc:ac8ea05a7cdcc8ff926b1a8b840096b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">注册中断处理函数  <br /></td></tr>
-<tr class="separator:ac8ea05a7cdcc8ff926b1a8b840096b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d8e636c70f1c40857b372f86d7091de" id="r_a7d8e636c70f1c40857b372f86d7091de"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#a7d8e636c70f1c40857b372f86d7091de">Do</a> (uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *) -&gt; void=0</td></tr>
+<tr class="memdesc:a7d8e636c70f1c40857b372f86d7091de"><td class="mdescLeft">&#160;</td><td class="mdescRight">执行中断处理  <br /></td></tr>
+<tr class="separator:a7d8e636c70f1c40857b372f86d7091de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f8e03652ccab8984d75befe335bc08a" id="r_a0f8e03652ccab8984d75befe335bc08a"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#a0f8e03652ccab8984d75befe335bc08a">RegisterInterruptFunc</a> (uint64_t cause, <a class="el" href="classInterruptBase.html#a92d086a7d2510a3626ed51660efcb313">InterruptDelegate</a> func) -&gt; void=0</td></tr>
+<tr class="memdesc:a0f8e03652ccab8984d75befe335bc08a"><td class="mdescLeft">&#160;</td><td class="mdescRight">注册中断处理函数  <br /></td></tr>
+<tr class="separator:a0f8e03652ccab8984d75befe335bc08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b56471b63d7c73a45d9674df7da8084" id="r_a9b56471b63d7c73a45d9674df7da8084"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#a9b56471b63d7c73a45d9674df7da8084">SendIpi</a> (uint64_t target_cpu_mask) -&gt; <a class="el" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a>&lt; void &gt;=0</td></tr>
 <tr class="memdesc:a9b56471b63d7c73a45d9674df7da8084"><td class="mdescLeft">&#160;</td><td class="mdescRight">发送 IPI 到指定核心  <br /></td></tr>
 <tr class="separator:a9b56471b63d7c73a45d9674df7da8084"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c3fbbd3d8cc4d459ddd9b1b64121433" id="r_a0c3fbbd3d8cc4d459ddd9b1b64121433"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#a0c3fbbd3d8cc4d459ddd9b1b64121433">BroadcastIpi</a> () -&gt; <a class="el" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a>&lt; void &gt;=0</td></tr>
 <tr class="memdesc:a0c3fbbd3d8cc4d459ddd9b1b64121433"><td class="mdescLeft">&#160;</td><td class="mdescRight">广播 IPI 到所有其他核心  <br /></td></tr>
 <tr class="separator:a0c3fbbd3d8cc4d459ddd9b1b64121433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbf783418c1b12abae9660008d53c021" id="r_abbf783418c1b12abae9660008d53c021"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#abbf783418c1b12abae9660008d53c021">RegisterExternalInterrupt</a> (uint32_t irq, uint32_t cpu_id, uint32_t priority, <a class="el" href="classInterruptBase.html#a92d086a7d2510a3626ed51660efcb313">InterruptDelegate</a> handler) -&gt; <a class="el" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a>&lt; void &gt;=0</td></tr>
+<tr class="memdesc:abbf783418c1b12abae9660008d53c021"><td class="mdescLeft">&#160;</td><td class="mdescRight">注册外部中断处理函数  <br /></td></tr>
+<tr class="separator:abbf783418c1b12abae9660008d53c021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
 <tr class="memitem:aef88d49f6a5374276585d241c49b8c3a" id="r_aef88d49f6a5374276585d241c49b8c3a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterruptBase.html#aef88d49f6a5374276585d241c49b8c3a">InterruptBase</a> ()=default</td></tr>
 <tr class="separator:aef88d49f6a5374276585d241c49b8c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,23 +160,27 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6f91b2d190c76d5e918cf06a2dc3ee73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
+<div class="textblock"><p>中断子系统抽象基类 </p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
+<p>所有架构的中断处理必须实现此接口。 已知实现：PLIC（RISC-V）、GIC（AArch64）、APIC（x86_64）</p>
+<dl class="section pre"><dt>Precondition</dt><dd>硬件中断控制器已初始化 </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>可通过 RegisterInterruptFunc 注册中断处理函数 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="interrupt__base_8h_source.html#l00014">14</a> of file <a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interrupt__base_8h_source.html#l00023">23</a> of file <a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a1ee9c0fa7707b572d8dc789bebb7a088" name="a1ee9c0fa7707b572d8dc789bebb7a088"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ee9c0fa7707b572d8dc789bebb7a088">&#9670;&#160;</a></span>InterruptFunc</h2>
+<a id="a92d086a7d2510a3626ed51660efcb313" name="a92d086a7d2510a3626ed51660efcb313"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92d086a7d2510a3626ed51660efcb313">&#9670;&#160;</a></span>InterruptDelegate</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint64_t(* InterruptBase::InterruptFunc) (uint64_t cause, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *context)</td>
+          <td class="memname">using <a class="el" href="classInterruptBase.html#a92d086a7d2510a3626ed51660efcb313">InterruptBase::InterruptDelegate</a> =  etl::delegate&lt;uint64_t(uint64_t, <a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>*)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>中断/异常处理函数指针 </p>
+<p>类型安全的中断处理委托 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cause</td><td>中断或异常号 </td></tr>
@@ -180,7 +190,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>uint64_t 返回值，0 成功 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="interrupt__base_8h_source.html#l00022">22</a> of file <a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interrupt__base_8h_source.html#l00031">31</a> of file <a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a>.</p>
 
 </div>
 </div>
@@ -318,8 +328,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a08371f71dd964f861d80c216a8ebfe6d" name="a08371f71dd964f861d80c216a8ebfe6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08371f71dd964f861d80c216a8ebfe6d">&#9670;&#160;</a></span>Do()</h2>
+<a id="a7d8e636c70f1c40857b372f86d7091de" name="a7d8e636c70f1c40857b372f86d7091de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d8e636c70f1c40857b372f86d7091de">&#9670;&#160;</a></span>Do()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -328,7 +338,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void InterruptBase::Do </td>
+          <td class="memname">virtual auto InterruptBase::Do </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname">, </td>
@@ -342,7 +352,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt;  void</td>
         </tr>
       </table>
   </td>
@@ -360,7 +370,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classInterrupt.html#a51915f51ae69c1062c70af4ee128f4d8">Interrupt</a>, <a class="el" href="classInterrupt.html#a51915f51ae69c1062c70af4ee128f4d8">Interrupt</a>, and <a class="el" href="classInterrupt.html#a51915f51ae69c1062c70af4ee128f4d8">Interrupt</a>.</p>
+<p>Implemented in <a class="el" href="classInterrupt.html#ab2108e338d21ed15e1f5e77562063f8c">Interrupt</a>, <a class="el" href="classInterrupt.html#ab2108e338d21ed15e1f5e77562063f8c">Interrupt</a>, and <a class="el" href="classInterrupt.html#ab2108e338d21ed15e1f5e77562063f8c">Interrupt</a>.</p>
 
 </div>
 </div>
@@ -416,8 +426,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac8ea05a7cdcc8ff926b1a8b840096b73" name="ac8ea05a7cdcc8ff926b1a8b840096b73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8ea05a7cdcc8ff926b1a8b840096b73">&#9670;&#160;</a></span>RegisterInterruptFunc()</h2>
+<a id="abbf783418c1b12abae9660008d53c021" name="abbf783418c1b12abae9660008d53c021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbf783418c1b12abae9660008d53c021">&#9670;&#160;</a></span>RegisterExternalInterrupt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -426,7 +436,69 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void InterruptBase::RegisterInterruptFunc </td>
+          <td class="memname">virtual auto InterruptBase::RegisterExternalInterrupt </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>irq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cpu_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classInterruptBase.html#a92d086a7d2510a3626ed51660efcb313">InterruptDelegate</a>&#160;</td>
+          <td class="paramname"><em>handler</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt;  <a class="el" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a>&lt; void &gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>注册外部中断处理函数 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irq</td><td>外部中断号（平台相关: PLIC source_id / GIC INTID / APIC IRQ） </td></tr>
+    <tr><td class="paramname">cpu_id</td><td>目标 CPU 核心 ID，中断将路由到该核心 </td></tr>
+    <tr><td class="paramname">priority</td><td>中断优先级 </td></tr>
+    <tr><td class="paramname">handler</td><td>中断处理函数 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Expected&lt;void&gt; 成功时返回 void，失败时返回错误 </dd></dl>
+
+<p>Implemented in <a class="el" href="classInterrupt.html#aa2d8a2a32dd46cf168f90fe8af02d6f5">Interrupt</a>, <a class="el" href="classInterrupt.html#aa2d8a2a32dd46cf168f90fe8af02d6f5">Interrupt</a>, and <a class="el" href="classInterrupt.html#aa2d8a2a32dd46cf168f90fe8af02d6f5">Interrupt</a>.</p>
+
+</div>
+</div>
+<a id="a0f8e03652ccab8984d75befe335bc08a" name="a0f8e03652ccab8984d75befe335bc08a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f8e03652ccab8984d75befe335bc08a">&#9670;&#160;</a></span>RegisterInterruptFunc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual auto InterruptBase::RegisterInterruptFunc </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname"><em>cause</em>, </td>
@@ -434,13 +506,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classInterruptBase.html#a1ee9c0fa7707b572d8dc789bebb7a088">InterruptFunc</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classInterruptBase.html#a92d086a7d2510a3626ed51660efcb313">InterruptDelegate</a>&#160;</td>
           <td class="paramname"><em>func</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt;  void</td>
         </tr>
       </table>
   </td>
@@ -459,7 +531,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classInterrupt.html#ad2bbed1f4b7aeda8804d950080d0ebbf">Interrupt</a>, <a class="el" href="classInterrupt.html#ad2bbed1f4b7aeda8804d950080d0ebbf">Interrupt</a>, and <a class="el" href="classInterrupt.html#ad2bbed1f4b7aeda8804d950080d0ebbf">Interrupt</a>.</p>
+<p>Implemented in <a class="el" href="classInterrupt.html#ab65600cf366375d6551752420171ff21">Interrupt</a>, <a class="el" href="classInterrupt.html#ab65600cf366375d6551752420171ff21">Interrupt</a>, and <a class="el" href="classInterrupt.html#ab65600cf366375d6551752420171ff21">Interrupt</a>.</p>
 
 </div>
 </div>
@@ -501,7 +573,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/root/src/include/<a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a></li>
+<li>/workspaces/SimpleKernel/src/include/<a class="el" href="interrupt__base_8h_source.html">interrupt_base.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

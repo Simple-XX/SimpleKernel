@@ -1,0 +1,7 @@
+<map id="DeviceManager::RegisterBus" name="DeviceManager::RegisterBus">
+<area shape="rect" id="Node000001" title="注册总线并立即枚举其设备。" alt="" coords="5,31,216,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="267,5,343,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,28,254,22,254,27,209,33"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="264,55,347,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,53,251,58,250,63,213,59"/>
+</map>

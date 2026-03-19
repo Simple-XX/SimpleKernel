@@ -1,0 +1,5 @@
+<map id="ns16550a::Ns16550a::HasData" name="ns16550a::Ns16550a::HasData">
+<area shape="rect" id="Node000001" title="检查接收缓冲区是否有数据可读（不消耗数据）" alt="" coords="5,5,164,45"/>
+<area shape="rect" id="Node000002" href="$structMmioAccessor.html#acbb27077fc125776a50c812e11712195" title="Read from MMIO register." alt="" coords="212,13,371,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,23,198,23,198,28,164,28"/>
+</map>

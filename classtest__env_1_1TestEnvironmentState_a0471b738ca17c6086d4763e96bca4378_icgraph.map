@@ -1,7 +1,15 @@
 <map id="test_env::TestEnvironmentState::ClearCurrentThreadEnvironment" name="test_env::TestEnvironmentState::ClearCurrentThreadEnvironment">
-<area shape="rect" id="Node000001" title="清除当前线程的环境实例指针" alt="" coords="256,23,531,63"/>
-<area shape="rect" id="Node000002" href="$classKernelFdtTest.html#ac4830f8e9de1b9c480a11943659acc4b" title=" " alt="" coords="15,5,198,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,33,198,29,199,23,242,27"/>
-<area shape="rect" id="Node000003" href="$classTaskTestHarness.html#a2cb71293bed79eba46bd9a86291cb4bd" title=" " alt="" coords="5,55,208,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,59,208,62,208,56,242,53"/>
+<area shape="rect" id="Node000001" title="清除当前线程的环境实例指针" alt="" coords="475,97,749,137"/>
+<area shape="rect" id="Node000002" href="$classKernelFdtTest.html#ac4830f8e9de1b9c480a11943659acc4b" title=" " alt="" coords="234,5,417,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="553,94,426,45,386,33,387,28,428,39,555,89"/>
+<area shape="rect" id="Node000003" href="$classRamFsTest.html#a6169ed5a19008611e8daba6a17df02d8" title=" " alt="" coords="243,55,408,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="481,97,399,83,400,77,482,92"/>
+<area shape="rect" id="Node000004" href="$classTaskTestHarness.html#a2cb71293bed79eba46bd9a86291cb4bd" title=" " alt="" coords="224,104,427,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="461,119,427,119,427,114,461,114"/>
+<area shape="rect" id="Node000005" href="$classVfsTest.html#a42ff389062155ea405824b4e19a5d728" title=" " alt="" coords="255,153,396,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="482,142,396,157,396,151,481,136"/>
+<area shape="rect" id="Node000006" href="$classBaseEnvTest.html#aed3fdec9853a7afa7a4c79fe89168607" title=" " alt="" coords="237,203,413,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="553,145,428,193,383,205,382,200,426,187,552,140"/>
+<area shape="rect" id="Node000007" href="$classFdTableTest.html#ad0a8431c26c9a3e51f69725ec57951d4" title=" " alt="" coords="5,203,176,228"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="223,218,176,218,176,213,223,213"/>
 </map>

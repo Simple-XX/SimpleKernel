@@ -1,0 +1,35 @@
+<map id="virtio::blk::VirtioBlkVfsAdapter::WriteSectors" name="virtio::blk::VirtioBlkVfsAdapter::WriteSectors">
+<area shape="rect" id="Node000001" title="写入连续扇区" alt="" coords="5,216,175,256"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a252d86443729721fb9e6722fadb63fef" title="同步写入一个扇区" alt="" coords="223,216,371,256"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,233,209,233,209,239,175,239"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a92da81f8831b00ff61070050d3779e5b" title="同步提交请求的内部实现" alt="" coords="419,216,579,256"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="371,233,405,233,405,239,371,239"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a65c030d25edc331b47332bc808766451" title="异步入队请求的内部实现" alt="" coords="634,184,782,224"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="578,221,620,215,621,220,579,226"/>
+<area shape="rect" id="Node000008" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a098b48ede00a55c5abcf9897ff278aab" title="批量触发硬件通知" alt="" coords="634,56,782,96"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="514,214,560,161,591,132,625,106,635,100,637,105,628,110,595,136,564,165,518,217"/>
+<area shape="rect" id="Node000010" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2eba21cbbca77632e2e999fbfe52d967" title="处理 Used Ring 中已完成的请求" alt="" coords="627,248,789,288"/>
+<area shape="poly" id="edge10_Node000003_Node000010" title=" " alt="" coords="579,246,613,251,613,256,578,251"/>
+<area shape="rect" id="Node000013" href="$namespacecpu__io.html#ac9fcdd47fa1ff396470a667dec3a1597" title=" " alt="" coords="869,377,971,402"/>
+<area shape="poly" id="edge15_Node000003_Node000013" title=" " alt="" coords="537,254,628,298,863,370,862,375,626,302,535,259"/>
+<area shape="rect" id="Node000014" href="$classvirtio_1_1blk_1_1VirtioBlk.html#acbd79b96538cd9e7b97954f57e399c09" title="更新 avail&#45;&gt;used_event 字段" alt="" coords="634,120,782,160"/>
+<area shape="poly" id="edge16_Node000003_Node000014" title=" " alt="" coords="537,213,626,170,641,163,643,168,628,174,539,218"/>
+<area shape="rect" id="Node000015" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="663,363,753,389"/>
+<area shape="poly" id="edge18_Node000003_Node000015" title=" " alt="" coords="521,254,568,297,628,342,656,356,654,360,625,346,565,302,518,258"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a3291dde37cac408e3d4730148219439b" title="从请求槽池中分配一个空闲槽（O(1) 位图算法）" alt="" coords="846,120,994,160"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="774,181,839,161,841,167,776,186"/>
+<area shape="rect" id="Node000006" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a928f265d102c1e2fd68c653f504fed8e" title="释放请求槽" alt="" coords="846,184,994,224"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="783,201,832,201,832,207,783,207"/>
+<area shape="rect" id="Node000007" href="$namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb" title=" " alt="" coords="867,70,973,95"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="769,182,788,170,802,154,811,138,819,122,836,106,852,96,855,101,839,110,824,125,815,141,807,157,791,174,772,186"/>
+<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="783,76,853,78,853,83,782,81"/>
+<area shape="rect" id="Node000009" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2e45e2d49fd7e55241c86643bcbb67f2" title="判断是否需要发送通知（处理 wrap&#45;around）" alt="" coords="846,5,994,45"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="782,56,832,44,833,49,783,61"/>
+<area shape="poly" id="edge12_Node000010_Node000006" title=" " alt="" coords="774,245,839,225,841,231,776,250"/>
+<area shape="rect" id="Node000011" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aae42cda1f43edaa3c9e0a07d3a156edc" title="根据描述符链头索引查找请求槽" alt="" coords="837,312,1003,352"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="776,286,841,305,839,311,774,291"/>
+<area shape="rect" id="Node000012" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aea67e100df43d1ca6348ad3589ff7f8b" title="将设备 BlkStatus 映射为 ErrorCode" alt="" coords="846,248,994,288"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="790,265,832,265,832,271,790,271"/>
+<area shape="poly" id="edge14_Node000010_Node000013" title=" " alt="" coords="761,286,791,305,806,320,815,335,824,348,839,362,857,371,855,376,836,366,820,352,811,337,802,323,788,309,758,290"/>
+<area shape="poly" id="edge17_Node000014_Node000007" title=" " alt="" coords="782,117,858,97,859,102,783,123"/>
+</map>

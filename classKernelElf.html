@@ -99,23 +99,28 @@ $(document).ready(function(){initNavTree('classKernelElf.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
+<p>ELF 文件相关  
+ <a href="classKernelElf.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for KernelElf:</div>
 <div class="dyncontent">
 <div class="center"><img src="classKernelElf__coll__graph.png" border="0" usemap="#aKernelElf_coll__map" alt="Collaboration graph"/></div>
 <map name="aKernelElf_coll__map" id="aKernelElf_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,151,571"/>
+<area shape="rect" title="ELF 文件相关" alt="" coords="5,5,151,591"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af02f46849b67568666efd984ece31a67" id="r_af02f46849b67568666efd984ece31a67"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#af02f46849b67568666efd984ece31a67">KernelElf</a> (uint64_t elf_addr)</td></tr>
-<tr class="separator:af02f46849b67568666efd984ece31a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63dd93bf028ffda7dd0cbd7dd433ae16" id="r_a63dd93bf028ffda7dd0cbd7dd433ae16"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a63dd93bf028ffda7dd0cbd7dd433ae16">GetElfSize</a> () const -&gt; size_t</td></tr>
+<tr class="memdesc:a63dd93bf028ffda7dd0cbd7dd433ae16"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取 elf 文件大小  <br /></td></tr>
 <tr class="separator:a63dd93bf028ffda7dd0cbd7dd433ae16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
+<tr class="memitem:af02f46849b67568666efd984ece31a67" id="r_af02f46849b67568666efd984ece31a67"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#af02f46849b67568666efd984ece31a67">KernelElf</a> (uint64_t elf_addr)</td></tr>
+<tr class="memdesc:af02f46849b67568666efd984ece31a67"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造函数  <br /></td></tr>
+<tr class="separator:af02f46849b67568666efd984ece31a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc0fdc5e33cfb35b38a553ab89023cbf" id="r_adc0fdc5e33cfb35b38a553ab89023cbf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#adc0fdc5e33cfb35b38a553ab89023cbf">KernelElf</a> ()=default</td></tr>
 <tr class="separator:adc0fdc5e33cfb35b38a553ab89023cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21ef7e9c67de0739a59e5f8d43af7b4f" id="r_a21ef7e9c67de0739a59e5f8d43af7b4f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a21ef7e9c67de0739a59e5f8d43af7b4f">KernelElf</a> (const <a class="el" href="classKernelElf.html">KernelElf</a> &amp;)=default</td></tr>
@@ -131,12 +136,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2e189a1bf1c110b2fb362b45f77224ab" id="r_a2e189a1bf1c110b2fb362b45f77224ab"><td class="memItemLeft" align="right" valign="top">std::span&lt; Elf64_Sym &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a2e189a1bf1c110b2fb362b45f77224ab">symtab_</a></td></tr>
-<tr class="memdesc:a2e189a1bf1c110b2fb362b45f77224ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号表  <br /></td></tr>
-<tr class="separator:a2e189a1bf1c110b2fb362b45f77224ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad87a34471942192ac2c132356f6ea36b" id="r_ad87a34471942192ac2c132356f6ea36b"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#ad87a34471942192ac2c132356f6ea36b">strtab_</a> = nullptr</td></tr>
-<tr class="memdesc:ad87a34471942192ac2c132356f6ea36b"><td class="mdescLeft">&#160;</td><td class="mdescRight">字符串表  <br /></td></tr>
-<tr class="separator:ad87a34471942192ac2c132356f6ea36b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af692f8d0c8daceba82d1f493959e0626" id="r_af692f8d0c8daceba82d1f493959e0626"><td class="memItemLeft" align="right" valign="top">std::span&lt; Elf64_Sym &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#af692f8d0c8daceba82d1f493959e0626">symtab</a> {}</td></tr>
+<tr class="memdesc:af692f8d0c8daceba82d1f493959e0626"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号表  <br /></td></tr>
+<tr class="separator:af692f8d0c8daceba82d1f493959e0626"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8292f3a7f1e4b3651a4616c6374471a1" id="r_a8292f3a7f1e4b3651a4616c6374471a1"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a8292f3a7f1e4b3651a4616c6374471a1">strtab</a> {nullptr}</td></tr>
+<tr class="memdesc:a8292f3a7f1e4b3651a4616c6374471a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">字符串表  <br /></td></tr>
+<tr class="separator:a8292f3a7f1e4b3651a4616c6374471a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -146,13 +151,13 @@ Protected Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">elf 文件相关</div></td></tr>
-<tr class="memitem:a296fd2b56c4221ea528f773a109dbbc1" id="r_a296fd2b56c4221ea528f773a109dbbc1"><td class="memItemLeft" align="right" valign="top">std::span&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a></td></tr>
+<tr class="memitem:a296fd2b56c4221ea528f773a109dbbc1" id="r_a296fd2b56c4221ea528f773a109dbbc1"><td class="memItemLeft" align="right" valign="top">std::span&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a> {}</td></tr>
 <tr class="separator:a296fd2b56c4221ea528f773a109dbbc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad2fd54cf45896e9ee9ef37a9ce836f6" id="r_aad2fd54cf45896e9ee9ef37a9ce836f6"><td class="memItemLeft" align="right" valign="top">Elf64_Ehdr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a> = {}</td></tr>
+<tr class="memitem:aad2fd54cf45896e9ee9ef37a9ce836f6" id="r_aad2fd54cf45896e9ee9ef37a9ce836f6"><td class="memItemLeft" align="right" valign="top">Elf64_Ehdr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a> {}</td></tr>
 <tr class="separator:aad2fd54cf45896e9ee9ef37a9ce836f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a973d9505302b30ba3bdc0b69f6266caa" id="r_a973d9505302b30ba3bdc0b69f6266caa"><td class="memItemLeft" align="right" valign="top">std::span&lt; Elf64_Phdr &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a973d9505302b30ba3bdc0b69f6266caa">phdr_</a></td></tr>
+<tr class="memitem:a973d9505302b30ba3bdc0b69f6266caa" id="r_a973d9505302b30ba3bdc0b69f6266caa"><td class="memItemLeft" align="right" valign="top">std::span&lt; Elf64_Phdr &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a973d9505302b30ba3bdc0b69f6266caa">phdr_</a> {}</td></tr>
 <tr class="separator:a973d9505302b30ba3bdc0b69f6266caa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6923a9b1c6a30f2a036bf72b1ebaa9d4" id="r_a6923a9b1c6a30f2a036bf72b1ebaa9d4"><td class="memItemLeft" align="right" valign="top">std::span&lt; Elf64_Shdr &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a></td></tr>
+<tr class="memitem:a6923a9b1c6a30f2a036bf72b1ebaa9d4" id="r_a6923a9b1c6a30f2a036bf72b1ebaa9d4"><td class="memItemLeft" align="right" valign="top">std::span&lt; Elf64_Shdr &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a> {}</td></tr>
 <tr class="separator:a6923a9b1c6a30f2a036bf72b1ebaa9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
@@ -163,9 +168,10 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a0e9b0d48211532a1ec15c0723283306d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors elf 文件相关 </dd></dl>
+<div class="textblock"><p>ELF 文件相关 </p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00023">23</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00022">22</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af02f46849b67568666efd984ece31a67" name="af02f46849b67568666efd984ece31a67"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af02f46849b67568666efd984ece31a67">&#9670;&#160;</a></span>KernelElf() <span class="overload">[1/4]</span></h2>
@@ -190,110 +196,109 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>构造函数 </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>构造函数 </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">elf_addr</td><td>elf 地址 </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00034">34</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>                                        {</div>
-<div class="line"><span class="lineno">   35</span>    <a class="code hl_define" href="sk__assert_8h.html#aca9cc707df79e034b240eaa8596b7e64">sk_assert_msg</a>(elf_addr != 0U, <span class="stringliteral">&quot;Invalid elf_addr[0x%lX].\n&quot;</span>, elf_addr);</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a> = std::span&lt;uint8_t&gt;(<span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(elf_addr), EI_NIDENT);</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>    <span class="comment">// 检查 elf 头数据</span></div>
-<div class="line"><span class="lineno">   40</span>    <a class="code hl_function" href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430">CheckElfIdentity</a>().or_else([](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
-<div class="line"><span class="lineno">   41</span>      <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;KernelElf NOT valid ELF file: %s\n&quot;</span>, err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
-<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><span class="lineno">   43</span>        <a class="code hl_function" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a>();</div>
-<div class="line"><span class="lineno">   44</span>      }</div>
-<div class="line"><span class="lineno">   45</span>      <span class="keywordflow">return</span> {};</div>
-<div class="line"><span class="lineno">   46</span>    });</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>    <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a> = *<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>Elf64_Ehdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data());</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>    <span class="comment">// 重新计算 elf 大小</span></div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordtype">size_t</span> max_size = EI_NIDENT;</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phoff != 0) {</div>
-<div class="line"><span class="lineno">   53</span>      <span class="keywordtype">size_t</span> ph_end = <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phoff + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phnum * <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phentsize;</div>
-<div class="line"><span class="lineno">   54</span>      <span class="keywordflow">if</span> (ph_end &gt; max_size) {</div>
-<div class="line"><span class="lineno">   55</span>        max_size = ph_end;</div>
-<div class="line"><span class="lineno">   56</span>      }</div>
-<div class="line"><span class="lineno">   57</span>    }</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff != 0) {</div>
-<div class="line"><span class="lineno">   59</span>      <span class="keywordtype">size_t</span> sh_end = <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shnum * <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shentsize;</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">if</span> (sh_end &gt; max_size) {</div>
-<div class="line"><span class="lineno">   61</span>        max_size = sh_end;</div>
-<div class="line"><span class="lineno">   62</span>      }</div>
-<div class="line"><span class="lineno">   63</span>      <span class="keyword">const</span> <span class="keyword">auto</span>* shdrs =</div>
-<div class="line"><span class="lineno">   64</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>Elf64_Shdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff);</div>
-<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shnum; ++i) {</div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordtype">size_t</span> section_end = shdrs[i].sh_offset + shdrs[i].sh_size;</div>
-<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">if</span> (section_end &gt; max_size) {</div>
-<div class="line"><span class="lineno">   68</span>          max_size = section_end;</div>
-<div class="line"><span class="lineno">   69</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00042">42</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>                                        {</div>
+<div class="line"><span class="lineno">   43</span>    assert(elf_addr != 0U &amp;&amp; <span class="stringliteral">&quot;elf_addr is null&quot;</span>);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a> = std::span&lt;uint8_t&gt;(<span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(elf_addr), EI_NIDENT);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>    <span class="comment">// 检查 elf 头数据</span></div>
+<div class="line"><span class="lineno">   48</span>    <a class="code hl_function" href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430">CheckElfIdentity</a>().or_else([](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
+<div class="line"><span class="lineno">   49</span>      <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;KernelElf NOT valid ELF file: {}&quot;</span>, err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
+<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><span class="lineno">   51</span>        <a class="code hl_function" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a>();</div>
+<div class="line"><span class="lineno">   52</span>      }</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">return</span> {};</div>
+<div class="line"><span class="lineno">   54</span>    });</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a> = *<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>Elf64_Ehdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data());</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    <span class="comment">// 重新计算 elf 大小</span></div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordtype">size_t</span> max_size = EI_NIDENT;</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phoff != 0) {</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keywordtype">size_t</span> ph_end = <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phoff + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phnum * <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phentsize;</div>
+<div class="line"><span class="lineno">   62</span>      <span class="keywordflow">if</span> (ph_end &gt; max_size) {</div>
+<div class="line"><span class="lineno">   63</span>        max_size = ph_end;</div>
+<div class="line"><span class="lineno">   64</span>      }</div>
+<div class="line"><span class="lineno">   65</span>    }</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff != 0) {</div>
+<div class="line"><span class="lineno">   67</span>      <span class="keywordtype">size_t</span> sh_end = <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shnum * <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shentsize;</div>
+<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">if</span> (sh_end &gt; max_size) {</div>
+<div class="line"><span class="lineno">   69</span>        max_size = sh_end;</div>
 <div class="line"><span class="lineno">   70</span>      }</div>
-<div class="line"><span class="lineno">   71</span>    }</div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a> = std::span&lt;uint8_t&gt;(<span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(elf_addr), max_size);</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    <a class="code hl_variable" href="classKernelElf.html#a973d9505302b30ba3bdc0b69f6266caa">phdr_</a> = std::span&lt;Elf64_Phdr&gt;(</div>
-<div class="line"><span class="lineno">   75</span>        <span class="keyword">reinterpret_cast&lt;</span>Elf64_Phdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phoff),</div>
-<div class="line"><span class="lineno">   76</span>        <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phnum);</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>    <a class="code hl_variable" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a> = std::span&lt;Elf64_Shdr&gt;(</div>
-<div class="line"><span class="lineno">   79</span>        <span class="keyword">reinterpret_cast&lt;</span>Elf64_Shdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff),</div>
-<div class="line"><span class="lineno">   80</span>        <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shnum);</div>
+<div class="line"><span class="lineno">   71</span>      <span class="keyword">const</span> <span class="keyword">auto</span>* shdrs =</div>
+<div class="line"><span class="lineno">   72</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>Elf64_Shdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff);</div>
+<div class="line"><span class="lineno">   73</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shnum; ++i) {</div>
+<div class="line"><span class="lineno">   74</span>        <span class="keywordtype">size_t</span> section_end = shdrs[i].sh_offset + shdrs[i].sh_size;</div>
+<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">if</span> (section_end &gt; max_size) {</div>
+<div class="line"><span class="lineno">   76</span>          max_size = section_end;</div>
+<div class="line"><span class="lineno">   77</span>        }</div>
+<div class="line"><span class="lineno">   78</span>      }</div>
+<div class="line"><span class="lineno">   79</span>    }</div>
+<div class="line"><span class="lineno">   80</span>    <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a> = std::span&lt;uint8_t&gt;(<span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(elf_addr), max_size);</div>
 <div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>    <span class="keyword">const</span> <span class="keyword">auto</span>* shstrtab = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data()) +</div>
-<div class="line"><span class="lineno">   83</span>                           <a class="code hl_variable" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a>[<a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shstrndx].sh_offset;</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> shdr : <a class="code hl_variable" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a>) {</div>
-<div class="line"><span class="lineno">   85</span><span class="preprocessor">#ifdef SIMPLEKERNEL_DEBUG</span></div>
-<div class="line"><span class="lineno">   86</span>      <a class="code hl_struct" href="structklog_1_1Debug.html">klog::Debug</a>(<span class="stringliteral">&quot;sh_name: [%s]\n&quot;</span>, shstrtab + shdr.sh_name);</div>
-<div class="line"><span class="lineno">   87</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">   88</span>      <span class="keywordflow">if</span> (<a class="code hl_define" href="sk__string__test_8cpp.html#a6b5d9a1031ac2602e31df1ba551bfafe">strcmp</a>(shstrtab + shdr.sh_name, <span class="stringliteral">&quot;.symtab&quot;</span>) == 0) {</div>
-<div class="line"><span class="lineno">   89</span>        <a class="code hl_variable" href="classKernelElf.html#a2e189a1bf1c110b2fb362b45f77224ab">symtab_</a> = std::span&lt;Elf64_Sym&gt;(</div>
-<div class="line"><span class="lineno">   90</span>            <span class="keyword">reinterpret_cast&lt;</span>Elf64_Sym*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + shdr.sh_offset),</div>
-<div class="line"><span class="lineno">   91</span>            (shdr.sh_size / <span class="keyword">sizeof</span>(Elf64_Sym)));</div>
-<div class="line"><span class="lineno">   92</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_define" href="sk__string__test_8cpp.html#a6b5d9a1031ac2602e31df1ba551bfafe">strcmp</a>(shstrtab + shdr.sh_name, <span class="stringliteral">&quot;.strtab&quot;</span>) == 0) {</div>
-<div class="line"><span class="lineno">   93</span>        <a class="code hl_variable" href="classKernelElf.html#ad87a34471942192ac2c132356f6ea36b">strtab_</a> = <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + shdr.sh_offset;</div>
-<div class="line"><span class="lineno">   94</span>      }</div>
-<div class="line"><span class="lineno">   95</span>    }</div>
-<div class="line"><span class="lineno">   96</span>  }</div>
-<div class="ttc" id="aclassKernelElf_html_a296fd2b56c4221ea528f773a109dbbc1"><div class="ttname"><a href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">KernelElf::elf_</a></div><div class="ttdeci">std::span&lt; uint8_t &gt; elf_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00117">kernel_elf.hpp:117</a></div></div>
-<div class="ttc" id="aclassKernelElf_html_a2e189a1bf1c110b2fb362b45f77224ab"><div class="ttname"><a href="classKernelElf.html#a2e189a1bf1c110b2fb362b45f77224ab">KernelElf::symtab_</a></div><div class="ttdeci">std::span&lt; Elf64_Sym &gt; symtab_</div><div class="ttdoc">符号表</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00026">kernel_elf.hpp:26</a></div></div>
-<div class="ttc" id="aclassKernelElf_html_a6923a9b1c6a30f2a036bf72b1ebaa9d4"><div class="ttname"><a href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">KernelElf::shdr_</a></div><div class="ttdeci">std::span&lt; Elf64_Shdr &gt; shdr_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00120">kernel_elf.hpp:120</a></div></div>
-<div class="ttc" id="aclassKernelElf_html_a973d9505302b30ba3bdc0b69f6266caa"><div class="ttname"><a href="classKernelElf.html#a973d9505302b30ba3bdc0b69f6266caa">KernelElf::phdr_</a></div><div class="ttdeci">std::span&lt; Elf64_Phdr &gt; phdr_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00119">kernel_elf.hpp:119</a></div></div>
-<div class="ttc" id="aclassKernelElf_html_aad2fd54cf45896e9ee9ef37a9ce836f6"><div class="ttname"><a href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">KernelElf::ehdr_</a></div><div class="ttdeci">Elf64_Ehdr ehdr_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00118">kernel_elf.hpp:118</a></div></div>
-<div class="ttc" id="aclassKernelElf_html_ac5a7c5b17591f6383a967c9cd3e02430"><div class="ttname"><a href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430">KernelElf::CheckElfIdentity</a></div><div class="ttdeci">auto CheckElfIdentity() const -&gt; Expected&lt; void &gt;</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00127">kernel_elf.hpp:127</a></div></div>
-<div class="ttc" id="aclassKernelElf_html_ad87a34471942192ac2c132356f6ea36b"><div class="ttname"><a href="classKernelElf.html#ad87a34471942192ac2c132356f6ea36b">KernelElf::strtab_</a></div><div class="ttdeci">uint8_t * strtab_</div><div class="ttdoc">字符串表</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00028">kernel_elf.hpp:28</a></div></div>
-<div class="ttc" id="aexpected_8hpp_html_a87330dc74eb67e824914b8d343050757"><div class="ttname"><a href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a></div><div class="ttdeci">std::expected&lt; T, Error &gt; Expected</div><div class="ttdoc">std::expected 别名模板</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00162">expected.hpp:162</a></div></div>
+<div class="line"><span class="lineno">   82</span>    <a class="code hl_variable" href="classKernelElf.html#a973d9505302b30ba3bdc0b69f6266caa">phdr_</a> = std::span&lt;Elf64_Phdr&gt;(</div>
+<div class="line"><span class="lineno">   83</span>        <span class="keyword">reinterpret_cast&lt;</span>Elf64_Phdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phoff),</div>
+<div class="line"><span class="lineno">   84</span>        <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_phnum);</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>    <a class="code hl_variable" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a> = std::span&lt;Elf64_Shdr&gt;(</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keyword">reinterpret_cast&lt;</span>Elf64_Shdr*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shoff),</div>
+<div class="line"><span class="lineno">   88</span>        <a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shnum);</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>    <span class="keyword">const</span> <span class="keyword">auto</span>* shstrtab = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data()) +</div>
+<div class="line"><span class="lineno">   91</span>                           <a class="code hl_variable" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a>[<a class="code hl_variable" href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">ehdr_</a>.e_shstrndx].sh_offset;</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> shdr : <a class="code hl_variable" href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">shdr_</a>) {</div>
+<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">if</span> (<a class="code hl_define" href="sk__string__test_8cpp.html#a6b5d9a1031ac2602e31df1ba551bfafe">strcmp</a>(shstrtab + shdr.sh_name, <span class="stringliteral">&quot;.symtab&quot;</span>) == 0) {</div>
+<div class="line"><span class="lineno">   94</span>        <a class="code hl_variable" href="classKernelElf.html#af692f8d0c8daceba82d1f493959e0626">symtab</a> = std::span&lt;Elf64_Sym&gt;(</div>
+<div class="line"><span class="lineno">   95</span>            <span class="keyword">reinterpret_cast&lt;</span>Elf64_Sym*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + shdr.sh_offset),</div>
+<div class="line"><span class="lineno">   96</span>            (shdr.sh_size / <span class="keyword">sizeof</span>(Elf64_Sym)));</div>
+<div class="line"><span class="lineno">   97</span>      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_define" href="sk__string__test_8cpp.html#a6b5d9a1031ac2602e31df1ba551bfafe">strcmp</a>(shstrtab + shdr.sh_name, <span class="stringliteral">&quot;.strtab&quot;</span>) == 0) {</div>
+<div class="line"><span class="lineno">   98</span>        <a class="code hl_variable" href="classKernelElf.html#a8292f3a7f1e4b3651a4616c6374471a1">strtab</a> = <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.data() + shdr.sh_offset;</div>
+<div class="line"><span class="lineno">   99</span>      }</div>
+<div class="line"><span class="lineno">  100</span>    }</div>
+<div class="line"><span class="lineno">  101</span>  }</div>
+<div class="ttc" id="aclassKernelElf_html_a296fd2b56c4221ea528f773a109dbbc1"><div class="ttname"><a href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">KernelElf::elf_</a></div><div class="ttdeci">std::span&lt; uint8_t &gt; elf_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00114">kernel_elf.hpp:114</a></div></div>
+<div class="ttc" id="aclassKernelElf_html_a6923a9b1c6a30f2a036bf72b1ebaa9d4"><div class="ttname"><a href="classKernelElf.html#a6923a9b1c6a30f2a036bf72b1ebaa9d4">KernelElf::shdr_</a></div><div class="ttdeci">std::span&lt; Elf64_Shdr &gt; shdr_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00117">kernel_elf.hpp:117</a></div></div>
+<div class="ttc" id="aclassKernelElf_html_a8292f3a7f1e4b3651a4616c6374471a1"><div class="ttname"><a href="classKernelElf.html#a8292f3a7f1e4b3651a4616c6374471a1">KernelElf::strtab</a></div><div class="ttdeci">uint8_t * strtab</div><div class="ttdoc">字符串表</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00027">kernel_elf.hpp:27</a></div></div>
+<div class="ttc" id="aclassKernelElf_html_a973d9505302b30ba3bdc0b69f6266caa"><div class="ttname"><a href="classKernelElf.html#a973d9505302b30ba3bdc0b69f6266caa">KernelElf::phdr_</a></div><div class="ttdeci">std::span&lt; Elf64_Phdr &gt; phdr_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00116">kernel_elf.hpp:116</a></div></div>
+<div class="ttc" id="aclassKernelElf_html_aad2fd54cf45896e9ee9ef37a9ce836f6"><div class="ttname"><a href="classKernelElf.html#aad2fd54cf45896e9ee9ef37a9ce836f6">KernelElf::ehdr_</a></div><div class="ttdeci">Elf64_Ehdr ehdr_</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00115">kernel_elf.hpp:115</a></div></div>
+<div class="ttc" id="aclassKernelElf_html_ac5a7c5b17591f6383a967c9cd3e02430"><div class="ttname"><a href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430">KernelElf::CheckElfIdentity</a></div><div class="ttdeci">auto CheckElfIdentity() const -&gt; Expected&lt; void &gt;</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00124">kernel_elf.hpp:124</a></div></div>
+<div class="ttc" id="aclassKernelElf_html_af692f8d0c8daceba82d1f493959e0626"><div class="ttname"><a href="classKernelElf.html#af692f8d0c8daceba82d1f493959e0626">KernelElf::symtab</a></div><div class="ttdeci">std::span&lt; Elf64_Sym &gt; symtab</div><div class="ttdoc">符号表</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00025">kernel_elf.hpp:25</a></div></div>
+<div class="ttc" id="aexpected_8hpp_html_a87330dc74eb67e824914b8d343050757"><div class="ttname"><a href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a></div><div class="ttdeci">std::expected&lt; T, Error &gt; Expected</div><div class="ttdoc">std::expected 别名模板</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00365">expected.hpp:365</a></div></div>
 <div class="ttc" id="anamespacecpu__io_html_acf7d7c3a4a0720cfd4f57914b52c7e9b"><div class="ttname"><a href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a></div><div class="ttdeci">void Pause()</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00020">cpu_io.h:20</a></div></div>
-<div class="ttc" id="ask__assert_8h_html_aca9cc707df79e034b240eaa8596b7e64"><div class="ttname"><a href="sk__assert_8h.html#aca9cc707df79e034b240eaa8596b7e64">sk_assert_msg</a></div><div class="ttdeci">#define sk_assert_msg(expr, fmt,...)</div><div class="ttdoc">带自定义消息的运行时断言宏（支持变长参数）</div><div class="ttdef"><b>Definition</b> <a href="sk__assert_8h_source.html#l00038">sk_assert.h:38</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a16b493848cd618512fc9fb61d3980bd7"><div class="ttname"><a href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a></div><div class="ttdeci">auto Err(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 ERROR 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00200">kernel_log.hpp:200</a></div></div>
 <div class="ttc" id="ask__string__test_8cpp_html_a6b5d9a1031ac2602e31df1ba551bfafe"><div class="ttname"><a href="sk__string__test_8cpp.html#a6b5d9a1031ac2602e31df1ba551bfafe">strcmp</a></div><div class="ttdeci">#define strcmp</div><div class="ttdef"><b>Definition</b> <a href="sk__string__test_8cpp_source.html#l00016">sk_string_test.cpp:16</a></div></div>
-<div class="ttc" id="astructError_html"><div class="ttname"><a href="structError.html">Error</a></div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00150">expected.hpp:150</a></div></div>
-<div class="ttc" id="astructError_html_aa63ee10532d668f25a5147d7dc753749"><div class="ttname"><a href="structError.html#aa63ee10532d668f25a5147d7dc753749">Error::message</a></div><div class="ttdeci">constexpr auto message() const -&gt; const char *</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00155">expected.hpp:155</a></div></div>
-<div class="ttc" id="astructklog_1_1Debug_html"><div class="ttname"><a href="structklog_1_1Debug.html">klog::Debug</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00146">kernel_log.hpp:146</a></div></div>
-<div class="ttc" id="astructklog_1_1Err_html"><div class="ttname"><a href="structklog_1_1Err.html">klog::Err</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00188">kernel_log.hpp:188</a></div></div>
+<div class="ttc" id="astructError_html"><div class="ttname"><a href="structError.html">Error</a></div><div class="ttdoc">错误类型，用于 std::expected</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00343">expected.hpp:343</a></div></div>
+<div class="ttc" id="astructError_html_aa63ee10532d668f25a5147d7dc753749"><div class="ttname"><a href="structError.html#aa63ee10532d668f25a5147d7dc753749">Error::message</a></div><div class="ttdeci">constexpr auto message() const -&gt; const char *</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00358">expected.hpp:358</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classKernelElf_af02f46849b67568666efd984ece31a67_cgraph.png" border="0" usemap="#aclassKernelElf_af02f46849b67568666efd984ece31a67_cgraph" alt=""/></div>
 <map name="aclassKernelElf_af02f46849b67568666efd984ece31a67_cgraph" id="aclassKernelElf_af02f46849b67568666efd984ece31a67_cgraph">
-<area shape="rect" title=" " alt="" coords="5,104,151,129"/>
-<area shape="rect" href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430" title=" " alt="" coords="199,55,393,80"/>
-<area shape="poly" title=" " alt="" coords="134,101,225,80,226,86,135,107"/>
-<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="236,104,356,129"/>
-<area shape="poly" title=" " alt="" coords="151,114,222,114,222,119,151,119"/>
-<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="241,153,351,179"/>
-<area shape="poly" title=" " alt="" coords="135,127,228,148,227,153,134,132"/>
+<area shape="rect" title="构造函数" alt="" coords="5,104,151,129"/>
+<area shape="rect" href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430" title=" " alt="" coords="199,29,393,55"/>
+<area shape="poly" title=" " alt="" coords="105,102,198,63,223,56,225,61,200,69,107,106"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="258,79,334,104"/>
+<area shape="poly" title=" " alt="" coords="151,106,244,95,245,100,151,111"/>
+<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="236,128,356,153"/>
+<area shape="poly" title=" " alt="" coords="151,122,222,130,222,135,151,127"/>
+<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="241,177,351,203"/>
+<area shape="poly" title=" " alt="" coords="109,127,200,162,229,171,228,176,198,167,107,132"/>
 <area shape="rect" href="classKernelElf.html#a0e9b0d48211532a1ec15c0723283306d" title=" " alt="" coords="443,5,622,31"/>
-<area shape="poly" title=" " alt="" coords="357,52,457,31,458,36,358,57"/>
+<area shape="poly" title=" " alt="" coords="393,29,429,26,430,31,394,35"/>
 <area shape="rect" href="classKernelElf.html#a287a85a00b09bca4b4d66ebf67d97fb0" title=" " alt="" coords="441,55,624,80"/>
-<area shape="poly" title=" " alt="" coords="394,65,427,65,427,70,394,70"/>
-<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="465,104,600,129"/>
-<area shape="poly" title=" " alt="" coords="356,114,452,114,452,119,356,119"/>
+<area shape="poly" title=" " alt="" coords="394,50,428,53,428,59,393,55"/>
+<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="465,128,600,153"/>
+<area shape="poly" title=" " alt="" coords="356,138,452,138,452,143,356,143"/>
 </map>
 </div>
 
@@ -426,16 +431,16 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>检查 ELF class (32/64 bit) </p>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00146">146</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  146</span>                                                             {</div>
-<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_CLASS] == ELFCLASS32) {</div>
-<div class="line"><span class="lineno">  148</span>      <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa531a47ef0ea83f4f692b2830fdecfd47">ErrorCode::kElfUnsupported32Bit</a>));</div>
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00143">143</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>                                                             {</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_CLASS] == ELFCLASS32) {</div>
+<div class="line"><span class="lineno">  145</span>      <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa531a47ef0ea83f4f692b2830fdecfd47">ErrorCode::kElfUnsupported32Bit</a>));</div>
+<div class="line"><span class="lineno">  146</span>    }</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_CLASS] != ELFCLASS64) {</div>
+<div class="line"><span class="lineno">  148</span>      <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fac3ec97ef7572129d1bbf351d36551302">ErrorCode::kElfInvalidClass</a>));</div>
 <div class="line"><span class="lineno">  149</span>    }</div>
-<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_CLASS] != ELFCLASS64) {</div>
-<div class="line"><span class="lineno">  151</span>      <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fac3ec97ef7572129d1bbf351d36551302">ErrorCode::kElfInvalidClass</a>));</div>
-<div class="line"><span class="lineno">  152</span>    }</div>
-<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">return</span> {};</div>
-<div class="line"><span class="lineno">  154</span>  }</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">return</span> {};</div>
+<div class="line"><span class="lineno">  151</span>  }</div>
 <div class="ttc" id="aexpected_8hpp_html_a4d45a9675d1bf454764383179f3c895fa531a47ef0ea83f4f692b2830fdecfd47"><div class="ttname"><a href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa531a47ef0ea83f4f692b2830fdecfd47">ErrorCode::kElfUnsupported32Bit</a></div><div class="ttdeci">@ kElfUnsupported32Bit</div></div>
 <div class="ttc" id="aexpected_8hpp_html_a4d45a9675d1bf454764383179f3c895fac3ec97ef7572129d1bbf351d36551302"><div class="ttname"><a href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fac3ec97ef7572129d1bbf351d36551302">ErrorCode::kElfInvalidClass</a></div><div class="ttdeci">@ kElfInvalidClass</div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -446,7 +451,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title=" " alt="" coords="441,5,620,31"/>
 <area shape="rect" href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430" title=" " alt="" coords="199,5,393,31"/>
 <area shape="poly" title=" " alt="" coords="427,21,394,21,394,15,427,15"/>
-<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title=" " alt="" coords="5,5,151,31"/>
+<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title="构造函数" alt="" coords="5,5,151,31"/>
 <area shape="poly" title=" " alt="" coords="185,21,151,21,151,15,185,15"/>
 </map>
 </div>
@@ -477,12 +482,12 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>检查 elf 标识 </p><dl class="section return"><dt>Returns</dt><dd>成功返回 Expected&lt;void&gt;，失败返回错误 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00127">127</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  127</span>                                                                {</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classKernelElf.html#a287a85a00b09bca4b4d66ebf67d97fb0">CheckElfMagic</a>().and_then([<span class="keyword">this</span>]() { <span class="keywordflow">return</span> <a class="code hl_function" href="classKernelElf.html#a0e9b0d48211532a1ec15c0723283306d">CheckElfClass</a>(); });</div>
-<div class="line"><span class="lineno">  129</span>  }</div>
-<div class="ttc" id="aclassKernelElf_html_a0e9b0d48211532a1ec15c0723283306d"><div class="ttname"><a href="classKernelElf.html#a0e9b0d48211532a1ec15c0723283306d">KernelElf::CheckElfClass</a></div><div class="ttdeci">auto CheckElfClass() const -&gt; Expected&lt; void &gt;</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00146">kernel_elf.hpp:146</a></div></div>
-<div class="ttc" id="aclassKernelElf_html_a287a85a00b09bca4b4d66ebf67d97fb0"><div class="ttname"><a href="classKernelElf.html#a287a85a00b09bca4b4d66ebf67d97fb0">KernelElf::CheckElfMagic</a></div><div class="ttdeci">auto CheckElfMagic() const -&gt; Expected&lt; void &gt;</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00135">kernel_elf.hpp:135</a></div></div>
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00124">124</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  124</span>                                                                {</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classKernelElf.html#a287a85a00b09bca4b4d66ebf67d97fb0">CheckElfMagic</a>().and_then([<span class="keyword">this</span>]() { <span class="keywordflow">return</span> <a class="code hl_function" href="classKernelElf.html#a0e9b0d48211532a1ec15c0723283306d">CheckElfClass</a>(); });</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="ttc" id="aclassKernelElf_html_a0e9b0d48211532a1ec15c0723283306d"><div class="ttname"><a href="classKernelElf.html#a0e9b0d48211532a1ec15c0723283306d">KernelElf::CheckElfClass</a></div><div class="ttdeci">auto CheckElfClass() const -&gt; Expected&lt; void &gt;</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00143">kernel_elf.hpp:143</a></div></div>
+<div class="ttc" id="aclassKernelElf_html_a287a85a00b09bca4b4d66ebf67d97fb0"><div class="ttname"><a href="classKernelElf.html#a287a85a00b09bca4b4d66ebf67d97fb0">KernelElf::CheckElfMagic</a></div><div class="ttdeci">auto CheckElfMagic() const -&gt; Expected&lt; void &gt;</div><div class="ttdef"><b>Definition</b> <a href="kernel__elf_8hpp_source.html#l00132">kernel_elf.hpp:132</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -501,7 +506,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classKernelElf_ac5a7c5b17591f6383a967c9cd3e02430_icgraph.png" border="0" usemap="#aclassKernelElf_ac5a7c5b17591f6383a967c9cd3e02430_icgraph" alt=""/></div>
 <map name="aclassKernelElf_ac5a7c5b17591f6383a967c9cd3e02430_icgraph" id="aclassKernelElf_ac5a7c5b17591f6383a967c9cd3e02430_icgraph">
 <area shape="rect" title=" " alt="" coords="199,5,393,31"/>
-<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title=" " alt="" coords="5,5,151,31"/>
+<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title="构造函数" alt="" coords="5,5,151,31"/>
 <area shape="poly" title=" " alt="" coords="185,21,151,21,151,15,185,15"/>
 </map>
 </div>
@@ -532,14 +537,14 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>检查 ELF magic number </p>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00135">135</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>                                                             {</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> ((<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG0] != ELFMAG0) || (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG1] != ELFMAG1) ||</div>
-<div class="line"><span class="lineno">  137</span>        (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG2] != ELFMAG2) || (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG3] != ELFMAG3)) {</div>
-<div class="line"><span class="lineno">  138</span>      <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa79eccec0fbbb209464fffa0ab721ff70">ErrorCode::kElfInvalidMagic</a>));</div>
-<div class="line"><span class="lineno">  139</span>    }</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">return</span> {};</div>
-<div class="line"><span class="lineno">  141</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00132">132</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  132</span>                                                             {</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">if</span> ((<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG0] != ELFMAG0) || (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG1] != ELFMAG1) ||</div>
+<div class="line"><span class="lineno">  134</span>        (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG2] != ELFMAG2) || (<a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>[EI_MAG3] != ELFMAG3)) {</div>
+<div class="line"><span class="lineno">  135</span>      <span class="keywordflow">return</span> std::unexpected(<a class="code hl_struct" href="structError.html">Error</a>(<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa79eccec0fbbb209464fffa0ab721ff70">ErrorCode::kElfInvalidMagic</a>));</div>
+<div class="line"><span class="lineno">  136</span>    }</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">return</span> {};</div>
+<div class="line"><span class="lineno">  138</span>  }</div>
 <div class="ttc" id="aexpected_8hpp_html_a4d45a9675d1bf454764383179f3c895fa79eccec0fbbb209464fffa0ab721ff70"><div class="ttname"><a href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa79eccec0fbbb209464fffa0ab721ff70">ErrorCode::kElfInvalidMagic</a></div><div class="ttdeci">@ kElfInvalidMagic</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -549,7 +554,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title=" " alt="" coords="441,5,624,31"/>
 <area shape="rect" href="classKernelElf.html#ac5a7c5b17591f6383a967c9cd3e02430" title=" " alt="" coords="199,5,393,31"/>
 <area shape="poly" title=" " alt="" coords="428,21,394,21,394,15,428,15"/>
-<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title=" " alt="" coords="5,5,151,31"/>
+<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title="构造函数" alt="" coords="5,5,151,31"/>
 <area shape="poly" title=" " alt="" coords="185,21,151,21,151,15,185,15"/>
 </map>
 </div>
@@ -578,16 +583,18 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>获取 elf 文件大小 </p><dl class="section return"><dt>Returns</dt><dd>elf 文件大小 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00112">112</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.size(); }</div>
+<p>获取 elf 文件大小 </p>
+<dl class="section return"><dt>Returns</dt><dd>elf 文件大小 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00033">33</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classKernelElf.html#a296fd2b56c4221ea528f773a109dbbc1">elf_</a>.size(); }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classKernelElf_a63dd93bf028ffda7dd0cbd7dd433ae16_icgraph.png" border="0" usemap="#aclassKernelElf_a63dd93bf028ffda7dd0cbd7dd433ae16_icgraph" alt=""/></div>
 <map name="aclassKernelElf_a63dd93bf028ffda7dd0cbd7dd433ae16_icgraph" id="aclassKernelElf_a63dd93bf028ffda7dd0cbd7dd433ae16_icgraph">
-<area shape="rect" title=" " alt="" coords="108,5,263,31"/>
+<area shape="rect" title="获取 elf 文件大小" alt="" coords="108,5,263,31"/>
 <area shape="rect" href="kernel__elf__test_8cpp.html#a3d9fea908eba37aff8e08a85c2265609" title=" " alt="" coords="5,5,60,31"/>
 <area shape="poly" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
 </map>
@@ -658,7 +665,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Elf64_Ehdr KernelElf::ehdr_ = {}</td>
+          <td class="memname">Elf64_Ehdr KernelElf::ehdr_ {}</td>
         </tr>
       </table>
   </td>
@@ -668,8 +675,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00118">118</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>{};</div>
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00115">115</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>{};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -683,7 +690,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::span&lt;uint8_t&gt; KernelElf::elf_</td>
+          <td class="memname">std::span&lt;uint8_t&gt; KernelElf::elf_ {}</td>
         </tr>
       </table>
   </td>
@@ -693,8 +700,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00117">117</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00114">114</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a973d9505302b30ba3bdc0b69f6266caa" name="a973d9505302b30ba3bdc0b69f6266caa"></a>
@@ -707,7 +715,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::span&lt;Elf64_Phdr&gt; KernelElf::phdr_</td>
+          <td class="memname">std::span&lt;Elf64_Phdr&gt; KernelElf::phdr_ {}</td>
         </tr>
       </table>
   </td>
@@ -717,8 +725,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00119">119</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00116">116</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a6923a9b1c6a30f2a036bf72b1ebaa9d4" name="a6923a9b1c6a30f2a036bf72b1ebaa9d4"></a>
@@ -731,7 +740,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::span&lt;Elf64_Shdr&gt; KernelElf::shdr_</td>
+          <td class="memname">std::span&lt;Elf64_Shdr&gt; KernelElf::shdr_ {}</td>
         </tr>
       </table>
   </td>
@@ -741,48 +750,51 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00120">120</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00117">117</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
-<a id="ad87a34471942192ac2c132356f6ea36b" name="ad87a34471942192ac2c132356f6ea36b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad87a34471942192ac2c132356f6ea36b">&#9670;&#160;</a></span>strtab_</h2>
+<a id="a8292f3a7f1e4b3651a4616c6374471a1" name="a8292f3a7f1e4b3651a4616c6374471a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8292f3a7f1e4b3651a4616c6374471a1">&#9670;&#160;</a></span>strtab</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t* KernelElf::strtab_ = nullptr</td>
+          <td class="memname">uint8_t* KernelElf::strtab {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>字符串表 </p>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00028">28</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00027">27</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
-<a id="a2e189a1bf1c110b2fb362b45f77224ab" name="a2e189a1bf1c110b2fb362b45f77224ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e189a1bf1c110b2fb362b45f77224ab">&#9670;&#160;</a></span>symtab_</h2>
+<a id="af692f8d0c8daceba82d1f493959e0626" name="af692f8d0c8daceba82d1f493959e0626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af692f8d0c8daceba82d1f493959e0626">&#9670;&#160;</a></span>symtab</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::span&lt;Elf64_Sym&gt; KernelElf::symtab_</td>
+          <td class="memname">std::span&lt;Elf64_Sym&gt; KernelElf::symtab {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>符号表 </p>
 
-<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00026">26</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="kernel__elf_8hpp_source.html#l00025">25</a> of file <a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/root/src/include/<a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/include/<a class="el" href="kernel__elf_8hpp_source.html">kernel_elf.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

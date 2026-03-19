@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['运行方式_0',['运行方式',['../md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html#autotoc_md14',1,'']]],
-  ['运行时中断管理_1',['3. 运行时中断管理',['../md__2root_2src_2driver_2apic_2README.html#autotoc_md396',1,'']]]
+  ['📄_20许可证_0',['📄 许可证',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md319',1,'']]],
+  ['📄_20license_1',['📄 License',['../md__2workspaces_2SimpleKernel_2README__ENG.html#autotoc_md357',1,'']]]
 ];

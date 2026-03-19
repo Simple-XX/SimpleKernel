@@ -1,0 +1,7 @@
+<map id="DeviceInit" name="DeviceInit">
+<area shape="rect" id="Node000001" title="设备子系统初始化" alt="" coords="5,31,93,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="145,5,221,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,32,131,25,132,30,94,38"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="141,55,224,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="94,49,128,55,127,60,93,54"/>
+</map>

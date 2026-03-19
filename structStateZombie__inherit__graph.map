@@ -1,0 +1,5 @@
+<map id="StateZombie" name="StateZombie">
+<area shape="rect" id="Node000001" title="Zombie 状态 — 任务已退出，等待父任务回收" alt="" coords="8,163,173,248"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,176,115"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,128,93,163,88,163,88,128"/>
+</map>

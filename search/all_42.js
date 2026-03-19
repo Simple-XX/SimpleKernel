@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['功能特性_0',['功能特性',['../md__2root_2src_2driver_2gic_2README.html#autotoc_md402',1,'功能特性'],['../md__2root_2src_2driver_2ns16550a_2README.html#autotoc_md412',1,'功能特性'],['../md__2root_2src_2driver_2pl011_2README.html#autotoc_md424',1,'功能特性']]]
+  ['启动代码位置_0',['AP 启动代码位置',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md46',1,'']]],
+  ['启动代码_1',['启动代码',['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md41',1,'2. AP 启动代码'],['../md_1___xE7_xB3_xBB_xE7_xBB_x9F_xE5_x90_xAF_xE5_x8A_xA8.html#autotoc_md62',1,'2. Hart 启动代码']]],
+  ['启动阶段_2',['2. AP 启动阶段',['../md__2workspaces_2SimpleKernel_2src_2arch_2x86__64_2apic_2README.html#autotoc_md409',1,'']]]
 ];

@@ -1,0 +1,7 @@
+<map id="virtio::AlignUp" name="virtio::AlignUp">
+<area shape="rect" id="Node000001" title="将值向上对齐到指定边界" alt="" coords="209,45,324,70"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1SplitVirtqueue.html#a3d33af1d81e008abb1bcb52a03910522" title="计算给定队列大小所需的 DMA 内存字节数" alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,48,161,42,162,36,196,42"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1SplitVirtqueue.html#a9d18bdcc42dfacc313443a423a5e6b64" title="从预分配的 DMA 缓冲区构造 SplitVirtqueue" alt="" coords="5,69,161,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,72,162,78,161,73,195,67"/>
+</map>

@@ -92,8 +92,8 @@ $(document).ready(function(){initNavTree('md_3___xE4_xB8_xAD_xE6_x96_xAD.html','
   <div class="headertitle"><div class="title">多架构中断处理系统</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md143"></a> SimpleKernel 实现了跨多个架构的完整中断处理系统，每个架构都有其特定的中断控制器和处理机制。</p>
-<h1><a class="anchor" id="autotoc_md144"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md153"></a> SimpleKernel 实现了跨多个架构的完整中断处理系统，每个架构都有其特定的中断控制器和处理机制。</p>
+<h1><a class="anchor" id="autotoc_md154"></a>
 🏗️ 架构对比总览</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -112,11 +112,11 @@ $(document).ready(function(){initNavTree('md_3___xE4_xB8_xAD_xE6_x96_xAD.html','
 <td class="markdownTableBodyNone">特权级别   </td><td class="markdownTableBodyNone">Ring 0-3   </td><td class="markdownTableBodyNone">M/S/U Mode   </td><td class="markdownTableBodyNone">EL0-3   </td></tr>
 </table>
 <hr  />
-<h1><a class="anchor" id="autotoc_md146"></a>
+<h1><a class="anchor" id="autotoc_md156"></a>
 x86_64 中断处理系统</h1>
-<h2><a class="anchor" id="autotoc_md147"></a>
+<h2><a class="anchor" id="autotoc_md157"></a>
 🏗️ 系统架构</h2>
-<h3><a class="anchor" id="autotoc_md148"></a>
+<h3><a class="anchor" id="autotoc_md158"></a>
 核心组件</h3>
 <div class="fragment"><div class="line">┌─────────────────────────────────────────────────────────────┐</div>
 <div class="line">│                    x86_64 中断处理系统                       │</div>
@@ -142,100 +142,96 @@ x86_64 中断处理系统</h1>
 <div class="line">│  ├── 键盘中断 (0xF1)                                       │</div>
 <div class="line">│  └── 默认异常处理器                                         │</div>
 <div class="line">└─────────────────────────────────────────────────────────────┘</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md149"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md159"></a>
 📋 中断描述符表 (IDT) 管理</h2>
-<h3><a class="anchor" id="autotoc_md150"></a>
+<h3><a class="anchor" id="autotoc_md160"></a>
 IDT 初始化流程</h3>
 <div class="fragment"><div class="line"><span class="keyword">class </span><a class="code hl_class" href="classInterrupt.html">Interrupt</a> {</div>
 <div class="line">    <span class="comment">// 256个中断处理函数数组</span></div>
-<div class="line">    <span class="keyword">static</span> std::array&lt;InterruptFunc, 256&gt; <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>;</div>
+<div class="line">    <span class="keyword">static</span> std::array&lt;InterruptFunc, 256&gt; <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 256个中断描述符条目</span></div>
-<div class="line">    <span class="keyword">static</span> std::array&lt;cpu_io::IdtrInfo::Idt, 256&gt; <a class="code hl_variable" href="classInterrupt.html#a39f9b021fba2ecfa98709fb0bc0b8aeb">idts</a>;</div>
+<div class="line">    <span class="keyword">static</span> std::array&lt;cpu_io::IdtrInfo::Idt, 256&gt; <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">idts</a>;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 模板递归初始化所有IDT条目</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;u<span class="keywordtype">int</span>8_t no = 0&gt;</div>
-<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">SetUpIdtr</a>();</div>
+<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">SetUpIdtr</a>();</div>
 <div class="line">};</div>
-<div class="ttc" id="aclassInterrupt_html"><div class="ttname"><a href="classInterrupt.html">Interrupt</a></div><div class="ttdoc">中断处理</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2include_2interrupt_8h_source.html#l00017">interrupt.h:17</a></div></div>
-<div class="ttc" id="aclassInterrupt_html_a39f9b021fba2ecfa98709fb0bc0b8aeb"><div class="ttname"><a href="classInterrupt.html#a39f9b021fba2ecfa98709fb0bc0b8aeb">Interrupt::idts</a></div><div class="ttdeci">static std::array&lt; cpu_io::detail::register_info::IdtrInfo::Idt, cpu_io::detail::register_info::IdtrInfo::kInterruptMaxCount &gt; idts</div><div class="ttdef"><b>Definition</b> <a href="x86__64_2include_2interrupt_8h_source.html#l00050">interrupt.h:50</a></div></div>
-<div class="ttc" id="aclassInterrupt_html_a796c78d73d686e605d0cccd332a600e1"><div class="ttname"><a href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">Interrupt::interrupt_handlers</a></div><div class="ttdeci">static std::array&lt; InterruptFunc, kMaxInterrupt &gt; interrupt_handlers</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2include_2interrupt_8h_source.html#l00049">interrupt.h:49</a></div></div>
-<div class="ttc" id="aclassInterrupt_html_aa65a42b62d85b12d8da83ad7e68fbe59"><div class="ttname"><a href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">Interrupt::SetUpIdtr</a></div><div class="ttdeci">void SetUpIdtr()</div><div class="ttdoc">初始化 idtr</div><div class="ttdef"><b>Definition</b> <a href="x86__64_2interrupt_8cpp_source.html#l00071">interrupt.cpp:71</a></div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md151"></a>
+<div class="ttc" id="aclassInterrupt_html"><div class="ttname"><a href="classInterrupt.html">Interrupt</a></div><div class="ttdoc">AArch64 中断控制器实现</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2include_2interrupt_8h_source.html#l00019">interrupt.h:19</a></div></div>
+<div class="ttc" id="aclassInterrupt_html_a7214c5dde8ca509678acd6825bdbeba7"><div class="ttname"><a href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">Interrupt::SetUpIdtr</a></div><div class="ttdeci">auto SetUpIdtr() -&gt; void</div><div class="ttdoc">初始化 idtr</div><div class="ttdef"><b>Definition</b> <a href="x86__64_2interrupt_8cpp_source.html#l00062">interrupt.cpp:62</a></div></div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md161"></a>
 模板递归初始化机制</h3>
 <div class="fragment"><div class="line"><span class="keyword">template</span> &lt;u<span class="keywordtype">int</span>8_t no&gt;</div>
-<div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">Interrupt::SetUpIdtr</a>() {</div>
-<div class="line">    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">no</a> &lt; kInterruptMaxCount - 1) {</div>
+<div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">Interrupt::SetUpIdtr</a>() {</div>
+<div class="line">    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">no</a> &lt; kInterruptMaxCount - 1) {</div>
 <div class="line">        <span class="comment">// 为每个中断号创建IDT条目</span></div>
-<div class="line">        <a class="code hl_variable" href="classInterrupt.html#a39f9b021fba2ecfa98709fb0bc0b8aeb">idts</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">no</a>] = cpu_io::IdtrInfo::Idt(</div>
-<div class="line">            <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint64_t</a><span class="keyword">&gt;</span>(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">TarpEntry&lt;no&gt;</a>),  <span class="comment">// 中断入口地址</span></div>
+<div class="line">        <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">idts</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">no</a>] = cpu_io::IdtrInfo::Idt(</div>
+<div class="line">            <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint64_t</a><span class="keyword">&gt;</span>(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">TarpEntry&lt;no&gt;</a>),  <span class="comment">// 中断入口地址</span></div>
 <div class="line">            8,                                          <span class="comment">// 代码段选择子</span></div>
 <div class="line">            0x0,                                        <span class="comment">// IST (中断栈表)</span></div>
 <div class="line">            Idt::Type::k64BitInterruptGate,            <span class="comment">// 64位中断门</span></div>
 <div class="line">            Idt::DPL::kRing0,                          <span class="comment">// 特权级别0</span></div>
 <div class="line">            Idt::P::kPresent                           <span class="comment">// 存在位</span></div>
 <div class="line">        );</div>
-<div class="line">        <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">SetUpIdtr&lt;no + 1&gt;</a>();  <span class="comment">// 递归初始化下一个</span></div>
+<div class="line">        <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">SetUpIdtr&lt;no + 1&gt;</a>();  <span class="comment">// 递归初始化下一个</span></div>
 <div class="line">    } <span class="keywordflow">else</span> {</div>
 <div class="line">        <span class="comment">// 最后一步：写入IDTR寄存器</span></div>
-<div class="line">        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">idtr</a> = IdtrInfo::Idtr{</div>
-<div class="line">            .limit = <span class="keyword">sizeof</span>(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">Idt</a>) * kInterruptMaxCount - 1,</div>
-<div class="line">            .<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">base</a> = <a class="code hl_variable" href="classInterrupt.html#a39f9b021fba2ecfa98709fb0bc0b8aeb">idts</a>.data(),</div>
+<div class="line">        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">idtr</a> = IdtrInfo::Idtr{</div>
+<div class="line">            .limit = <span class="keyword">sizeof</span>(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">Idt</a>) * kInterruptMaxCount - 1,</div>
+<div class="line">            .base = <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">idts</a>.data(),</div>
 <div class="line">        };</div>
-<div class="line">        cpu_io::Idtr::Write(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">idtr</a>);</div>
+<div class="line">        cpu_io::Idtr::Write(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">idtr</a>);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md152"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md162"></a>
 中断入口模板</h3>
 <p>每个中断号都有独立的入口函数：</p>
 <div class="fragment"><div class="line"><span class="keyword">template</span> &lt;u<span class="keywordtype">int</span>8_t no&gt;</div>
-<div class="line"><a class="code hl_function" href="include_2sipi_8h.html#a763d4c58430a5a94703eba0ed093d12a">__attribute__</a>((target(<span class="stringliteral">&quot;general-regs-only&quot;</span>)))</div>
-<div class="line"><a class="code hl_function" href="include_2sipi_8h.html#a763d4c58430a5a94703eba0ed093d12a">__attribute__</a>((interrupt))</div>
+<div class="line">__attribute__((target(<span class="stringliteral">&quot;general-regs-only&quot;</span>)))</div>
+<div class="line">__attribute__((interrupt))</div>
 <div class="line"><span class="keywordtype">void</span> TarpEntry(uint8_t *interrupt_context) {</div>
 <div class="line">    <span class="comment">// 调用统一的中断分发器</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().Do(no, interrupt_context);</div>
+<div class="line">    InterruptSingleton::instance().Do(no, interrupt_context);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSingleton_html_a68856b49e098eadba37b60366db33ebd"><div class="ttname"><a href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton::GetInstance</a></div><div class="ttdeci">static auto GetInstance() -&gt; T &amp;</div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00023">singleton.hpp:23</a></div></div>
-<div class="ttc" id="ainclude_2sipi_8h_html_a763d4c58430a5a94703eba0ed093d12a"><div class="ttname"><a href="include_2sipi_8h.html#a763d4c58430a5a94703eba0ed093d12a">__attribute__</a></div><div class="ttdeci">struct sipi_params_t __attribute__((packed))</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md153"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md163"></a>
 🎯 中断处理流程</h2>
-<h3><a class="anchor" id="autotoc_md154"></a>
+<h3><a class="anchor" id="autotoc_md164"></a>
 1. 硬件中断触发</h3>
 <div class="fragment"><div class="line">硬件事件 → CPU 中断 → 查找 IDT[vector] → 调用 TarpEntry&lt;vector&gt;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md155"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md165"></a>
 2. 软件中断分发</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#a51915f51ae69c1062c70af4ee128f4d8">Interrupt::Do</a>(uint64_t cause, uint8_t *context) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a> &lt; kInterruptMaxCount) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#ab2108e338d21ed15e1f5e77562063f8c">Interrupt::Do</a>(uint64_t cause, uint8_t *context) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a> &lt; kInterruptMaxCount) {</div>
 <div class="line">        <span class="comment">// 调用注册的中断处理函数</span></div>
-<div class="line">        <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>](<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">context</a>);</div>
+<div class="line">        <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>](<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">context</a>);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassInterrupt_html_a51915f51ae69c1062c70af4ee128f4d8"><div class="ttname"><a href="classInterrupt.html#a51915f51ae69c1062c70af4ee128f4d8">Interrupt::Do</a></div><div class="ttdeci">void Do(uint64_t cause, cpu_io::TrapContext *context) override</div><div class="ttdoc">执行中断处理</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt_8cpp_source.html#l00039">interrupt.cpp:39</a></div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md156"></a>
+<div class="ttc" id="aclassInterrupt_html_ab2108e338d21ed15e1f5e77562063f8c"><div class="ttname"><a href="classInterrupt.html#ab2108e338d21ed15e1f5e77562063f8c">Interrupt::Do</a></div><div class="ttdeci">auto Do(uint64_t cause, cpu_io::TrapContext *context) -&gt; void override</div><div class="ttdoc">执行中断处理</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt_8cpp_source.html#l00063">interrupt.cpp:63</a></div></div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md166"></a>
 3. 中断处理函数注册</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#ad2bbed1f4b7aeda8804d950080d0ebbf">Interrupt::RegisterInterruptFunc</a>(uint64_t cause, InterruptFunc func) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a> &lt; kInterruptMaxCount) {</div>
-<div class="line">        <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>] = func;</div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Debug.html">klog::Debug</a>(<span class="stringliteral">&quot;RegisterInterruptFunc [%s] 0x%X\n&quot;</span>,</div>
-<div class="line">                   <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">kInterruptNames</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>], <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>);</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#ab65600cf366375d6551752420171ff21">Interrupt::RegisterInterruptFunc</a>(uint64_t cause, InterruptFunc func) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a> &lt; kInterruptMaxCount) {</div>
+<div class="line">        <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>] = func;</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963">klog::Debug</a>(<span class="stringliteral">&quot;RegisterInterruptFunc [%s] 0x%X\n&quot;</span>,</div>
+<div class="line">                   <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">kInterruptNames</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>], <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassInterrupt_html_ad2bbed1f4b7aeda8804d950080d0ebbf"><div class="ttname"><a href="classInterrupt.html#ad2bbed1f4b7aeda8804d950080d0ebbf">Interrupt::RegisterInterruptFunc</a></div><div class="ttdeci">void RegisterInterruptFunc(uint64_t cause, InterruptFunc func) override</div><div class="ttdoc">注册中断处理函数</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt_8cpp_source.html#l00044">interrupt.cpp:44</a></div></div>
-<div class="ttc" id="astructklog_1_1Debug_html"><div class="ttname"><a href="structklog_1_1Debug.html">klog::Debug</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00146">kernel_log.hpp:146</a></div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md157"></a>
+<div class="ttc" id="aclassInterrupt_html_ab65600cf366375d6551752420171ff21"><div class="ttname"><a href="classInterrupt.html#ab65600cf366375d6551752420171ff21">Interrupt::RegisterInterruptFunc</a></div><div class="ttdeci">auto RegisterInterruptFunc(uint64_t cause, InterruptDelegate func) -&gt; void override</div><div class="ttdoc">注册中断处理函数</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt_8cpp_source.html#l00068">interrupt.cpp:68</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a5303b815d2299fd2fa306bd4b43a3963"><div class="ttname"><a href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963">klog::Debug</a></div><div class="ttdeci">auto Debug(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00173">kernel_log.hpp:173</a></div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md167"></a>
 ⏰ APIC 定时器中断</h2>
-<h3><a class="anchor" id="autotoc_md158"></a>
+<h3><a class="anchor" id="autotoc_md168"></a>
 定时器配置</h3>
 <div class="fragment"><div class="line"><span class="comment">// 定时器配置常量</span></div>
 <div class="line"><span class="keyword">constexpr</span> uint8_t kApicTimerVector = 0xF0;      <span class="comment">// 定时器中断向量</span></div>
 <div class="line"><span class="keyword">constexpr</span> uint32_t kApicTimerFrequencyHz = 100; <span class="comment">// 100Hz 频率</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 初始化定时器</span></div>
-<div class="line"><a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance</a>().SetupPeriodicTimer(</div>
+<div class="line">ApicSingleton::instance().SetupPeriodicTimer(</div>
 <div class="line">    kApicTimerFrequencyHz,</div>
 <div class="line">    kApicTimerVector</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md159"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md169"></a>
 定时器中断处理</h3>
 <div class="fragment"><div class="line">uint64_t ApicTimerHandler(uint64_t cause, uint8_t *context) {</div>
 <div class="line">    <span class="keyword">static</span> uint64_t tick_count = 0;</div>
@@ -243,18 +239,18 @@ IDT 初始化流程</h3>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 降低日志输出频率</span></div>
 <div class="line">    <span class="keywordflow">if</span> (tick_count % 100 == 0) {</div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;APIC Timer interrupt %lu, vector 0x%X\n&quot;</span>,</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;APIC Timer interrupt %lu, vector 0x%X\n&quot;</span>,</div>
 <div class="line">                   tick_count, cause);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 发送EOI信号确认中断处理完成</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance</a>().SendEoi();</div>
+<div class="line">    ApicSingleton::instance().SendEoi();</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="astructklog_1_1Info_html"><div class="ttname"><a href="structklog_1_1Info.html">klog::Info</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00168">kernel_log.hpp:168</a></div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md160"></a>
+<div class="ttc" id="anamespaceklog_html_a1f6b347e95b475341e195f363a9f20a3"><div class="ttname"><a href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a></div><div class="ttdeci">auto Info(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 INFO 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00182">kernel_log.hpp:182</a></div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md170"></a>
 ⌨️ 键盘中断处理</h2>
-<h3><a class="anchor" id="autotoc_md161"></a>
+<h3><a class="anchor" id="autotoc_md171"></a>
 键盘中断配置</h3>
 <div class="fragment"><div class="line"><span class="keyword">constexpr</span> uint8_t kKeyboardVector = 0xF1;  <span class="comment">// 键盘中断向量</span></div>
 <div class="line"><span class="keyword">constexpr</span> uint8_t kKeyboardIrq = 1;        <span class="comment">// 键盘使用IRQ1</span></div>
@@ -264,12 +260,12 @@ IDT 初始化流程</h3>
 <div class="line">    uint32_t destination_apic_id = <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 配置IRQ重定向</span></div>
-<div class="line">    <span class="keywordflow">return</span> <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance</a>().SetIrqRedirection(</div>
+<div class="line">    <span class="keywordflow">return</span> ApicSingleton::instance().SetIrqRedirection(</div>
 <div class="line">        kKeyboardIrq, vector, destination_apic_id, <span class="keyword">false</span></div>
 <div class="line">    );</div>
 <div class="line">}</div>
 <div class="ttc" id="anamespacecpu__io_html_a52b8a7263a31e6670ef4dec7922d9e72"><div class="ttname"><a href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a></div><div class="ttdeci">auto GetCurrentCoreId() -&gt; size_t</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00026">cpu_io.h:26</a></div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md162"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md172"></a>
 键盘扫描码处理</h3>
 <div class="fragment"><div class="line">uint64_t KeyboardHandler(uint64_t cause, uint8_t *context) {</div>
 <div class="line">    <span class="comment">// 读取键盘扫描码 (端口0x60)</span></div>
@@ -277,7 +273,7 @@ IDT 初始化流程</h3>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 处理按键按下事件 (最高位为0)</span></div>
 <div class="line">    <span class="keywordflow">if</span> (!(scancode &amp; 0x80)) {</div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Key pressed: scancode 0x%02X\n&quot;</span>, scancode);</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Key pressed: scancode 0x%02X\n&quot;</span>, scancode);</div>
 <div class="line"> </div>
 <div class="line">        <span class="comment">// 扫描码到ASCII转换</span></div>
 <div class="line">        <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> scancode_to_ascii[] = {</div>
@@ -291,29 +287,29 @@ IDT 初始化流程</h3>
 <div class="line">        <span class="keywordflow">if</span> (scancode &lt; <span class="keyword">sizeof</span>(scancode_to_ascii) &amp;&amp;</div>
 <div class="line">            scancode_to_ascii[scancode]) {</div>
 <div class="line">            <span class="keywordtype">char</span> ascii_char = scancode_to_ascii[scancode];</div>
-<div class="line">            <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Key: &#39;%c&#39;\n&quot;</span>, ascii_char);</div>
+<div class="line">            <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Key: &#39;%c&#39;\n&quot;</span>, ascii_char);</div>
 <div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 发送EOI信号</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance</a>().SendEoi();</div>
+<div class="line">    ApicSingleton::instance().SendEoi();</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md163"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md173"></a>
 🚀 系统初始化</h2>
-<h3><a class="anchor" id="autotoc_md164"></a>
+<h3><a class="anchor" id="autotoc_md174"></a>
 主处理器初始化 (BSP)</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8">InterruptInit</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
 <div class="line">    <span class="comment">// 1. 初始化IDT</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SetUpIdtr();</div>
+<div class="line">    InterruptSingleton::instance().SetUpIdtr();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 2. 注册APIC定时器中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        kApicTimerVector, ApicTimerHandler</div>
 <div class="line">    );</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 3. 注册键盘中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        kKeyboardVector, KeyboardHandler</div>
 <div class="line">    );</div>
 <div class="line"> </div>
@@ -321,32 +317,32 @@ IDT 初始化流程</h3>
 <div class="line">    <a class="code hl_function" href="namespacecpu__io.html#afe7f925ac3cb632ed212166712288451">cpu_io::EnableInterrupt</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 5. 启动定时器</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance</a>().SetupPeriodicTimer(</div>
+<div class="line">    ApicSingleton::instance().SetupPeriodicTimer(</div>
 <div class="line">        kApicTimerFrequencyHz, kApicTimerVector</div>
 <div class="line">    );</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 6. 启用键盘中断</span></div>
 <div class="line">    EnableKeyboardInterrupt(kKeyboardVector);</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;x86_64 interrupt system initialized\n&quot;</span>);</div>
+<div class="line">    <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;x86_64 interrupt system initialized\n&quot;</span>);</div>
 <div class="line">}</div>
-<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_a660e4785391d83bb3aa43f15ae53a530"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit</a></div><div class="ttdeci">void InterruptInit(int, const char **)</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt__main_8cpp_source.html#l00146">interrupt_main.cpp:146</a></div></div>
+<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_a51f9c37118da7a1c32e70f272cc7b3e8"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8">InterruptInit</a></div><div class="ttdeci">auto InterruptInit(int, const char **) -&gt; void</div><div class="ttdoc">体系结构相关中断初始化</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt__main_8cpp_source.html#l00175">interrupt_main.cpp:175</a></div></div>
 <div class="ttc" id="anamespacecpu__io_html_afe7f925ac3cb632ed212166712288451"><div class="ttname"><a href="namespacecpu__io.html#afe7f925ac3cb632ed212166712288451">cpu_io::EnableInterrupt</a></div><div class="ttdeci">void EnableInterrupt()</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00034">cpu_io.h:34</a></div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md165"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md175"></a>
 从处理器初始化 (AP)</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea">InterruptInitSMP</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93">InterruptInitSMP</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
 <div class="line">    <span class="comment">// 1. 每个核心都需要初始化自己的IDT</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SetUpIdtr();</div>
+<div class="line">    InterruptSingleton::instance().SetUpIdtr();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 2. 启用中断</span></div>
 <div class="line">    <a class="code hl_function" href="namespacecpu__io.html#afe7f925ac3cb632ed212166712288451">cpu_io::EnableInterrupt</a>();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;x86_64 SMP interrupt initialization complete\n&quot;</span>);</div>
+<div class="line">    <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;x86_64 SMP interrupt initialization complete\n&quot;</span>);</div>
 <div class="line">}</div>
-<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_ac31c690eba7c84c9327f9f813d4b3fea"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea">InterruptInitSMP</a></div><div class="ttdeci">void InterruptInitSMP(int, const char **)</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt__main_8cpp_source.html#l00170">interrupt_main.cpp:170</a></div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md166"></a>
+<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_ad310aa2bb690e3d8b4e6a036aae3dd93"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93">InterruptInitSMP</a></div><div class="ttdeci">auto InterruptInitSMP(int, const char **) -&gt; void</div><div class="ttdoc">从核的体系结构相关中断初始化</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt__main_8cpp_source.html#l00200">interrupt_main.cpp:200</a></div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md176"></a>
 📊 性能特点</h2>
-<h3><a class="anchor" id="autotoc_md167"></a>
+<h3><a class="anchor" id="autotoc_md177"></a>
 优势</h3>
 <ul>
 <li>**模板递归初始化**：编译时生成所有IDT条目，零运行时开销</li>
@@ -354,7 +350,7 @@ IDT 初始化流程</h3>
 <li>**APIC集成**：现代多核处理器高效中断处理</li>
 <li>**统一接口**：InterruptBase 抽象层支持跨架构兼容</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md168"></a>
+<h3><a class="anchor" id="autotoc_md178"></a>
 设计考量</h3>
 <ul>
 <li>**256个中断向量**：完整覆盖x86_64中断空间</li>
@@ -363,11 +359,11 @@ IDT 初始化流程</h3>
 <li>**IRQ重定向**：支持多核中断负载均衡</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md170"></a>
+<h1><a class="anchor" id="autotoc_md180"></a>
 RISC-V 64 中断处理系统</h1>
-<h2><a class="anchor" id="autotoc_md171"></a>
+<h2><a class="anchor" id="autotoc_md181"></a>
 🏗️ 系统架构</h2>
-<h3><a class="anchor" id="autotoc_md172"></a>
+<h3><a class="anchor" id="autotoc_md182"></a>
 核心组件</h3>
 <div class="fragment"><div class="line">┌─────────────────────────────────────────────────────────────┐</div>
 <div class="line">│                   RISC-V 中断处理系统                        │</div>
@@ -398,9 +394,9 @@ RISC-V 64 中断处理系统</h1>
 <div class="line">│  ├── 中断号映射                                             │</div>
 <div class="line">│  └── 设备中断配置                                           │</div>
 <div class="line">└─────────────────────────────────────────────────────────────┘</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md173"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md183"></a>
 📋 CSR 寄存器管理</h2>
-<h3><a class="anchor" id="autotoc_md174"></a>
+<h3><a class="anchor" id="autotoc_md184"></a>
 关键控制状态寄存器</h3>
 <div class="fragment"><div class="line"><span class="comment">// 中断使能配置</span></div>
 <div class="line"><span class="keywordtype">void</span> SetupInterrupts() {</div>
@@ -415,7 +411,7 @@ RISC-V 64 中断处理系统</h1>
 <div class="line">    <span class="comment">// 全局中断使能</span></div>
 <div class="line">    cpu_io::SSTATUS::SIE::Set();</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md175"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md185"></a>
 Trap 处理程序入口</h3>
 <div class="fragment"><div class="line"><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <span class="keywordtype">void</span> TrapEntry();  <span class="comment">// 汇编实现的trap入口</span></div>
 <div class="line"> </div>
@@ -425,7 +421,7 @@ Trap 处理程序入口</h3>
 <div class="line">    <span class="comment">// 检查是否为中断（最高位为1）</span></div>
 <div class="line">    <span class="keywordflow">if</span> (cause &amp; (1ULL &lt;&lt; 63)) {</div>
 <div class="line">        uint64_t interrupt_cause = cause &amp; ~(1ULL &lt;&lt; 63);</div>
-<div class="line">        <span class="keywordflow">return</span> <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().Do(</div>
+<div class="line">        <span class="keywordflow">return</span> InterruptSingleton::instance().Do(</div>
 <div class="line">            interrupt_cause,</div>
 <div class="line">            <span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(context)</div>
 <div class="line">        );</div>
@@ -434,35 +430,35 @@ Trap 处理程序入口</h3>
 <div class="line">        <span class="keywordflow">return</span> HandleException(cause, epc, context);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md176"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md186"></a>
 🎯 中断处理流程</h2>
-<h3><a class="anchor" id="autotoc_md177"></a>
+<h3><a class="anchor" id="autotoc_md187"></a>
 1. 硬件中断流程</h3>
 <div class="fragment"><div class="line">外部设备 → PLIC → Hart 中断线 → 读取 SCAUSE → 分发处理</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md178"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md188"></a>
 2. 定时器中断流程</h3>
 <div class="fragment"><div class="line">SBI定时器 → M模式中断 → 代理到S模式 → SCAUSE[5] → 处理函数</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md179"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md189"></a>
 3. 中断分发机制</h3>
 <div class="fragment"><div class="line"><span class="keyword">class </span><a class="code hl_class" href="classInterrupt.html">Interrupt</a> : <span class="keyword">public</span> <a class="code hl_class" href="classInterruptBase.html">InterruptBase</a> {</div>
 <div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> kInterruptMaxCount = 64;</div>
-<div class="line">    <span class="keyword">static</span> std::array&lt;InterruptFunc, kInterruptMaxCount&gt; <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>;</div>
+<div class="line">    <span class="keyword">static</span> std::array&lt;InterruptFunc, kInterruptMaxCount&gt; <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>;</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">    <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#a51915f51ae69c1062c70af4ee128f4d8">Do</a>(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint8_t</a> *<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">context</a>)<span class="keyword"> override </span>{</div>
-<div class="line">        <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a> &lt; kInterruptMaxCount &amp;&amp; <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>]) {</div>
-<div class="line">            <span class="keywordflow">return</span> <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>](<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">context</a>);</div>
+<div class="line">    <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#ab2108e338d21ed15e1f5e77562063f8c">Do</a>(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint8_t</a> *<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">context</a>)<span class="keyword"> override </span>{</div>
+<div class="line">        <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a> &lt; kInterruptMaxCount &amp;&amp; <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>]) {</div>
+<div class="line">            <span class="keywordflow">return</span> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>](<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">context</a>);</div>
 <div class="line">        }</div>
 <div class="line"> </div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Warn.html">klog::Warn</a>(<span class="stringliteral">&quot;Unhandled interrupt: cause=%lu\n&quot;</span>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>);</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a>(<span class="stringliteral">&quot;Unhandled interrupt: cause=%lu\n&quot;</span>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>);</div>
 <div class="line">        <span class="keywordflow">return</span> 0;</div>
 <div class="line">    }</div>
 <div class="line">};</div>
-<div class="ttc" id="aclassInterruptBase_html"><div class="ttname"><a href="classInterruptBase.html">InterruptBase</a></div><div class="ttdef"><b>Definition</b> <a href="interrupt__base_8h_source.html#l00014">interrupt_base.h:14</a></div></div>
-<div class="ttc" id="astructklog_1_1Warn_html"><div class="ttname"><a href="structklog_1_1Warn.html">klog::Warn</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00178">kernel_log.hpp:178</a></div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md180"></a>
+<div class="ttc" id="aclassInterruptBase_html"><div class="ttname"><a href="classInterruptBase.html">InterruptBase</a></div><div class="ttdoc">中断子系统抽象基类</div><div class="ttdef"><b>Definition</b> <a href="interrupt__base_8h_source.html#l00023">interrupt_base.h:23</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a9e1498fdd041865e7e917ef040d186eb"><div class="ttname"><a href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a></div><div class="ttdeci">auto Warn(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 WARN 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00191">kernel_log.hpp:191</a></div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md190"></a>
 🎛️ PLIC 中断控制器</h2>
-<h3><a class="anchor" id="autotoc_md181"></a>
+<h3><a class="anchor" id="autotoc_md191"></a>
 PLIC 初始化配置</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> SetupPlic() {</div>
 <div class="line">    <span class="keyword">auto</span> plic_base = GetPlicBaseFromDT();  <span class="comment">// 从设备树获取基地址</span></div>
@@ -486,7 +482,7 @@ PLIC 初始化配置</h3>
 <div class="line">                            hart_id * PLIC_THRESHOLD_STRIDE;</div>
 <div class="line">    WritePlicReg(threshold_reg, 0x0, 0);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md182"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md192"></a>
 PLIC 中断处理</h3>
 <div class="fragment"><div class="line">uint64_t PlicInterruptHandler(uint64_t cause, uint8_t *context) {</div>
 <div class="line">    uint32_t hart_id = <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>();</div>
@@ -498,11 +494,11 @@ PLIC 中断处理</h3>
 <div class="line">    uint32_t irq = ReadPlicReg(claim_reg, 0x0);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (irq == 0) {</div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Warn.html">klog::Warn</a>(<span class="stringliteral">&quot;Spurious PLIC interrupt\n&quot;</span>);</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a>(<span class="stringliteral">&quot;Spurious PLIC interrupt\n&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">return</span> 0;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_struct" href="structklog_1_1Debug.html">klog::Debug</a>(<span class="stringliteral">&quot;PLIC interrupt: IRQ %u\n&quot;</span>, irq);</div>
+<div class="line">    <a class="code hl_function" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963">klog::Debug</a>(<span class="stringliteral">&quot;PLIC interrupt: IRQ %u\n&quot;</span>, irq);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 2. 调用特定设备的中断处理程序</span></div>
 <div class="line">    <span class="keyword">auto</span> device_handler = GetDeviceHandler(irq);</div>
@@ -515,9 +511,9 @@ PLIC 中断处理</h3>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md183"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md193"></a>
 ⏰ SBI 定时器中断</h2>
-<h3><a class="anchor" id="autotoc_md184"></a>
+<h3><a class="anchor" id="autotoc_md194"></a>
 定时器配置</h3>
 <div class="fragment"><div class="line"><span class="keyword">constexpr</span> uint64_t kTimerIntervalCycles = 10000000;  <span class="comment">// 10M cycles ≈ 100Hz</span></div>
 <div class="line"> </div>
@@ -527,11 +523,11 @@ PLIC 中断处理</h3>
 <div class="line">    sbi::SetTimer(current_time + kTimerIntervalCycles);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 注册定时器中断处理函数 (监管模式定时器中断 = 5)</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        5, TimerInterruptHandler</div>
 <div class="line">    );</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md185"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md195"></a>
 定时器中断处理</h3>
 <div class="fragment"><div class="line">uint64_t TimerInterruptHandler(uint64_t cause, uint8_t *context) {</div>
 <div class="line">    <span class="keyword">static</span> uint64_t tick_count = 0;</div>
@@ -543,14 +539,14 @@ PLIC 中断处理</h3>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 降低日志输出频率</span></div>
 <div class="line">    <span class="keywordflow">if</span> (tick_count % 100 == 0) {</div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Timer interrupt %lu, cause %lu\n&quot;</span>, tick_count, cause);</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Timer interrupt %lu, cause %lu\n&quot;</span>, tick_count, cause);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md186"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md196"></a>
 🔌 UART 中断处理</h2>
-<h3><a class="anchor" id="autotoc_md187"></a>
+<h3><a class="anchor" id="autotoc_md197"></a>
 UART 中断配置</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> SetupUartInterrupt() {</div>
 <div class="line">    <span class="comment">// 从设备树获取UART中断号</span></div>
@@ -560,14 +556,14 @@ UART 中断配置</h3>
 <div class="line">    EnablePlicInterrupt(uart_irq);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 注册UART中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        uart_irq, UartInterruptHandler</div>
 <div class="line">    );</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 配置UART硬件启用中断</span></div>
 <div class="line">    ConfigureUartInterrupts();</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md188"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md198"></a>
 UART 中断处理</h3>
 <div class="fragment"><div class="line">uint64_t UartInterruptHandler(uint64_t cause, uint8_t *context) {</div>
 <div class="line">    <span class="comment">// 读取UART中断状态</span></div>
@@ -578,7 +574,7 @@ UART 中断处理</h3>
 <div class="line">    <span class="keywordflow">if</span> (interrupt_status &amp; UART_IIR_RDI) {</div>
 <div class="line">        <span class="keywordflow">while</span> (ReadUartReg(uart_base, UART_LSR_OFFSET) &amp; UART_LSR_DR) {</div>
 <div class="line">            <span class="keywordtype">char</span> received_char = ReadUartReg(uart_base, UART_RBR_OFFSET);</div>
-<div class="line">            <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;UART received: &#39;%c&#39; (0x%02X)\n&quot;</span>,</div>
+<div class="line">            <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;UART received: &#39;%c&#39; (0x%02X)\n&quot;</span>,</div>
 <div class="line">                      received_char, received_char);</div>
 <div class="line"> </div>
 <div class="line">            <span class="comment">// 回显字符</span></div>
@@ -588,13 +584,13 @@ UART 中断处理</h3>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md189"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md199"></a>
 🚀 系统初始化</h2>
-<h3><a class="anchor" id="autotoc_md190"></a>
+<h3><a class="anchor" id="autotoc_md200"></a>
 主hart初始化</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8">InterruptInit</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
 <div class="line">    <span class="comment">// 1. 解析设备树获取中断配置</span></div>
-<div class="line">    <span class="keyword">auto</span> kernel_fdt = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance</a>();</div>
+<div class="line">    <span class="keyword">auto</span> kernel_fdt = KernelFdtSingleton::instance();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 2. 设置trap向量</span></div>
 <div class="line">    cpu_io::STVEC::Write(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(TrapEntry));</div>
@@ -603,12 +599,12 @@ UART 中断处理</h3>
 <div class="line">    SetupPlic();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 4. 注册定时器中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        5, TimerInterruptHandler  <span class="comment">// 监管模式定时器中断</span></div>
 <div class="line">    );</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 5. 注册外部中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        9, PlicInterruptHandler   <span class="comment">// 监管模式外部中断</span></div>
 <div class="line">    );</div>
 <div class="line"> </div>
@@ -623,11 +619,11 @@ UART 中断处理</h3>
 <div class="line">    <span class="comment">// 8. 启动其他hart</span></div>
 <div class="line">    StartSecondaryHarts();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;RISC-V interrupt system initialized\n&quot;</span>);</div>
+<div class="line">    <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;RISC-V interrupt system initialized\n&quot;</span>);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md191"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md201"></a>
 从hart初始化</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea">InterruptInitSMP</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93">InterruptInitSMP</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
 <div class="line">    <span class="comment">// 1. 设置trap向量</span></div>
 <div class="line">    cpu_io::STVEC::Write(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(TrapEntry));</div>
 <div class="line"> </div>
@@ -639,12 +635,12 @@ UART 中断处理</h3>
 <div class="line">    <span class="comment">// 3. 启动定时器</span></div>
 <div class="line">    SetupTimer();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;RISC-V SMP hart %lu initialized\n&quot;</span>,</div>
+<div class="line">    <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;RISC-V SMP hart %lu initialized\n&quot;</span>,</div>
 <div class="line">               <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md192"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md202"></a>
 📊 性能特点</h2>
-<h3><a class="anchor" id="autotoc_md193"></a>
+<h3><a class="anchor" id="autotoc_md203"></a>
 优势</h3>
 <ul>
 <li>**PLIC优先级仲裁**：硬件级中断优先级管理</li>
@@ -652,7 +648,7 @@ UART 中断处理</h3>
 <li>**设备树配置**：动态硬件配置发现</li>
 <li>**多hart支持**：原生多核中断处理</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md194"></a>
+<h3><a class="anchor" id="autotoc_md204"></a>
 设计考量</h3>
 <ul>
 <li>**CSR直接访问**：避免特权级切换开销</li>
@@ -661,11 +657,11 @@ UART 中断处理</h3>
 <li>**trap统一入口**：简化异常和中断处理</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md196"></a>
+<h1><a class="anchor" id="autotoc_md206"></a>
 AArch64 中断处理系统</h1>
-<h2><a class="anchor" id="autotoc_md197"></a>
+<h2><a class="anchor" id="autotoc_md207"></a>
 🏗️ 系统架构</h2>
-<h3><a class="anchor" id="autotoc_md198"></a>
+<h3><a class="anchor" id="autotoc_md208"></a>
 核心组件</h3>
 <div class="fragment"><div class="line">┌─────────────────────────────────────────────────────────────┐</div>
 <div class="line">│                   AArch64 中断处理系统                       │</div>
@@ -698,12 +694,12 @@ AArch64 中断处理系统</h1>
 <div class="line">│  ├── 设备中断配置                                           │</div>
 <div class="line">│  └── PSCI 多核启动管理                                      │</div>
 <div class="line">└─────────────────────────────────────────────────────────────┘</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md199"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md209"></a>
 📋 异常向量表管理</h2>
-<h3><a class="anchor" id="autotoc_md200"></a>
+<h3><a class="anchor" id="autotoc_md210"></a>
 异常向量表结构</h3>
 <div class="fragment"><div class="line"><span class="comment">// 异常向量表入口定义</span></div>
-<div class="line"><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a2a09df74b4cb8ba4d0fe481aaa679816">vector_table</a>();  <span class="comment">// 汇编实现的向量表</span></div>
+<div class="line"><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a2919dc0dfaf51370359170295f4c4b96">vector_table</a>();  <span class="comment">// 汇编实现的向量表</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 向量表包含16个入口，每个入口128字节</span></div>
 <div class="line"><span class="keyword">struct </span>ExceptionVectors {</div>
@@ -731,8 +727,8 @@ AArch64 中断处理系统</h1>
 <div class="line">    <span class="keywordtype">void</span> lower_el_aarch32_fiq();</div>
 <div class="line">    <span class="keywordtype">void</span> lower_el_aarch32_serror();</div>
 <div class="line">};</div>
-<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_a2a09df74b4cb8ba4d0fe481aaa679816"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#a2a09df74b4cb8ba4d0fe481aaa679816">vector_table</a></div><div class="ttdeci">void vector_table()</div><div class="ttdoc">中断处理函数</div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md201"></a>
+<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_a2919dc0dfaf51370359170295f4c4b96"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#a2919dc0dfaf51370359170295f4c4b96">vector_table</a></div><div class="ttdeci">auto vector_table() -&gt; void</div><div class="ttdoc">异常向量表入口</div></div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md211"></a>
 异常处理器实现</h3>
 <div class="fragment"><div class="line"><span class="comment">// C++异常处理函数</span></div>
 <div class="line"><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <span class="keywordtype">void</span> sync_exception_handler(uint64_t esr, uint64_t elr,</div>
@@ -762,69 +758,67 @@ AArch64 中断处理系统</h1>
 <div class="line"> </div>
 <div class="line"><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <span class="keywordtype">void</span> irq_exception_handler(uint64_t context) {</div>
 <div class="line">    <span class="comment">// 读取中断确认寄存器获取中断ID</span></div>
-<div class="line">    uint32_t intid = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Gic&gt;::GetInstance</a>().GetInterruptId();</div>
+<div class="line">    uint32_t intid = GicSingleton::instance().GetInterruptId();</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (intid == 1023) {  <span class="comment">// Spurious interrupt</span></div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Warn.html">klog::Warn</a>(<span class="stringliteral">&quot;Spurious interrupt\n&quot;</span>);</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a>(<span class="stringliteral">&quot;Spurious interrupt\n&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">return</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 调用注册的中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().Do(intid,</div>
+<div class="line">    InterruptSingleton::instance().Do(intid,</div>
 <div class="line">        <span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(context));</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 发送End of Interrupt信号</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Gic&gt;::GetInstance</a>().EndOfInterrupt(intid);</div>
+<div class="line">    GicSingleton::instance().EndOfInterrupt(intid);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md202"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md212"></a>
 🎯 中断处理流程</h2>
-<h3><a class="anchor" id="autotoc_md203"></a>
+<h3><a class="anchor" id="autotoc_md213"></a>
 1. 硬件中断流程</h3>
 <div class="fragment"><div class="line">外部设备 → GIC分发器 → CPU接口 → 异常向量表 → IRQ处理器</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md204"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md214"></a>
 2. 中断ID获取和处理</h3>
 <div class="fragment"><div class="line"><span class="keyword">class </span><a class="code hl_class" href="classInterrupt.html">Interrupt</a> : <span class="keyword">public</span> <a class="code hl_class" href="classInterruptBase.html">InterruptBase</a> {</div>
 <div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> kInterruptMaxCount = 1024;  <span class="comment">// GIC支持1024个中断</span></div>
-<div class="line">    <span class="keyword">static</span> std::array&lt;InterruptFunc, kInterruptMaxCount&gt; <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>;</div>
+<div class="line">    <span class="keyword">static</span> std::array&lt;InterruptFunc, kInterruptMaxCount&gt; <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>;</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">    <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#a51915f51ae69c1062c70af4ee128f4d8">Do</a>(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint8_t</a> *<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">context</a>)<span class="keyword"> override </span>{</div>
-<div class="line">        <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a> &lt; kInterruptMaxCount &amp;&amp; <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>]) {</div>
-<div class="line">            <span class="keywordflow">return</span> <a class="code hl_variable" href="classInterrupt.html#a796c78d73d686e605d0cccd332a600e1">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>](<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">context</a>);</div>
+<div class="line">    <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#ab2108e338d21ed15e1f5e77562063f8c">Do</a>(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint64_t</a> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint8_t</a> *<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">context</a>)<span class="keyword"> override </span>{</div>
+<div class="line">        <span class="keywordflow">if</span> (<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a> &lt; kInterruptMaxCount &amp;&amp; <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>]) {</div>
+<div class="line">            <span class="keywordflow">return</span> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">interrupt_handlers</a>[<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>](<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">context</a>);</div>
 <div class="line">        }</div>
 <div class="line"> </div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Warn.html">klog::Warn</a>(<span class="stringliteral">&quot;Unhandled interrupt: INTID=%lu\n&quot;</span>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cause</a>);</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a>(<span class="stringliteral">&quot;Unhandled interrupt: INTID=%lu\n&quot;</span>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cause</a>);</div>
 <div class="line">        <span class="keywordflow">return</span> 0;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 设置中断为SPI类型</span></div>
-<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#a97a05ff3ce620392d7d1681dfadf119a">SPI</a>(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">intid</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cpu_id</a>) {</div>
-<div class="line">        <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Gic&gt;::GetInstance</a>().SetInterruptType(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">intid</a>,</div>
+<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">SPI</a>(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">intid</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cpu_id</a>) {</div>
+<div class="line">        GicSingleton::instance().SetInterruptType(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">intid</a>,</div>
 <div class="line">            Gic::InterruptType::SPI);</div>
-<div class="line">        <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Gic&gt;::GetInstance</a>().SetTargetCpu(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">intid</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cpu_id</a>);</div>
-<div class="line">        <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Gic&gt;::GetInstance</a>().EnableInterrupt(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">intid</a>);</div>
+<div class="line">        GicSingleton::instance().SetTargetCpu(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">intid</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cpu_id</a>);</div>
+<div class="line">        GicSingleton::instance().EnableInterrupt(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">intid</a>);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 设置中断为PPI类型</span></div>
-<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#a724313558675f9b3c0f1504907519ec7">PPI</a>(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">intid</a>, <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">cpu_id</a>) {</div>
-<div class="line">        <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Gic&gt;::GetInstance</a>().SetInterruptType(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">intid</a>,</div>
+<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">PPI</a>(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">intid</a>, <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">uint32_t</a> <a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">cpu_id</a>) {</div>
+<div class="line">        GicSingleton::instance().SetInterruptType(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">intid</a>,</div>
 <div class="line">            Gic::InterruptType::PPI);</div>
-<div class="line">        <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Gic&gt;::GetInstance</a>().EnableInterrupt(<a class="code hl_function" href="classInterrupt.html#aa65a42b62d85b12d8da83ad7e68fbe59">intid</a>);</div>
+<div class="line">        GicSingleton::instance().EnableInterrupt(<a class="code hl_function" href="classInterrupt.html#a7214c5dde8ca509678acd6825bdbeba7">intid</a>);</div>
 <div class="line">    }</div>
 <div class="line">};</div>
-<div class="ttc" id="aclassInterrupt_html_a724313558675f9b3c0f1504907519ec7"><div class="ttname"><a href="classInterrupt.html#a724313558675f9b3c0f1504907519ec7">Interrupt::PPI</a></div><div class="ttdeci">__always_inline void PPI(uint32_t intid, uint32_t cpuid) const</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2include_2interrupt_8h_source.html#l00041">interrupt.h:41</a></div></div>
-<div class="ttc" id="aclassInterrupt_html_a97a05ff3ce620392d7d1681dfadf119a"><div class="ttname"><a href="classInterrupt.html#a97a05ff3ce620392d7d1681dfadf119a">Interrupt::SPI</a></div><div class="ttdeci">__always_inline void SPI(uint32_t intid, uint32_t cpuid) const</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2include_2interrupt_8h_source.html#l00038">interrupt.h:38</a></div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md205"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md215"></a>
 🎛️ GIC 中断控制器</h2>
-<h3><a class="anchor" id="autotoc_md206"></a>
+<h3><a class="anchor" id="autotoc_md216"></a>
 GIC 初始化配置</h3>
 <div class="fragment"><div class="line"><span class="keyword">class </span><a class="code hl_class" href="classGic.html">Gic</a> {</div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t <a class="code hl_variable" href="classGic.html#aada584a8107ea93e10754834166cd1f5">kSGIBase</a> = 0;      <span class="comment">// SGI: 0-15</span></div>
-<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t <a class="code hl_variable" href="classGic.html#a56c9c92897f2819cbcf33cda56f13ebc">kPPIBase</a> = 16;     <span class="comment">// PPI: 16-31</span></div>
-<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t <a class="code hl_variable" href="classGic.html#a4cce758a89d33ca112a0c42d162fed99">kSPIBase</a> = 32;     <span class="comment">// SPI: 32-1019</span></div>
+<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t kSGIBase = 0;      <span class="comment">// SGI: 0-15</span></div>
+<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t kPPIBase = 16;     <span class="comment">// PPI: 16-31</span></div>
+<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t kSPIBase = 32;     <span class="comment">// SPI: 32-1019</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classGic.html#a95e93d4c431de2b81969c6503801301e">SetUP</a>() {</div>
+<div class="line">    <span class="keywordtype">void</span> SetUP() {</div>
 <div class="line">        <span class="keyword">auto</span> gic_base = GetGicBaseFromDT();  <span class="comment">// 从设备树获取基地址</span></div>
 <div class="line"> </div>
 <div class="line">        <span class="comment">// 1. 初始化分发器(Distributor)</span></div>
@@ -843,7 +837,7 @@ GIC 初始化配置</h3>
 <div class="line">        WriteReg(dist_base + GICD_CTLR, 0);</div>
 <div class="line"> </div>
 <div class="line">        <span class="comment">// 配置所有SPI为边沿触发，高优先级</span></div>
-<div class="line">        <span class="keywordflow">for</span> (uint32_t i = <a class="code hl_variable" href="classGic.html#a4cce758a89d33ca112a0c42d162fed99">kSPIBase</a>; i &lt; 1020; i += 32) {</div>
+<div class="line">        <span class="keywordflow">for</span> (uint32_t i = kSPIBase; i &lt; 1020; i += 32) {</div>
 <div class="line">            WriteReg(dist_base + GICD_ICFGR + (i/16)*4, 0x55555555);</div>
 <div class="line">        }</div>
 <div class="line"> </div>
@@ -853,7 +847,7 @@ GIC 初始化配置</h3>
 <div class="line">        }</div>
 <div class="line"> </div>
 <div class="line">        <span class="comment">// 设置SPI目标CPU为CPU0</span></div>
-<div class="line">        <span class="keywordflow">for</span> (uint32_t i = <a class="code hl_variable" href="classGic.html#a4cce758a89d33ca112a0c42d162fed99">kSPIBase</a>; i &lt; 1020; i += 4) {</div>
+<div class="line">        <span class="keywordflow">for</span> (uint32_t i = kSPIBase; i &lt; 1020; i += 4) {</div>
 <div class="line">            WriteReg(dist_base + GICD_ITARGETSR + i, 0x01010101);</div>
 <div class="line">        }</div>
 <div class="line">    }</div>
@@ -866,12 +860,8 @@ GIC 初始化配置</h3>
 <div class="line">        WriteReg(cpu_base + GICC_CTLR, GICC_CTLR_ENABLE);</div>
 <div class="line">    }</div>
 <div class="line">};</div>
-<div class="ttc" id="aclassGic_html"><div class="ttname"><a href="classGic.html">Gic</a></div><div class="ttdoc">gic 中断控制器驱动</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00020">gic.h:20</a></div></div>
-<div class="ttc" id="aclassGic_html_a4cce758a89d33ca112a0c42d162fed99"><div class="ttname"><a href="classGic.html#a4cce758a89d33ca112a0c42d162fed99">Gic::kSPIBase</a></div><div class="ttdeci">static constexpr size_t kSPIBase</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00028">gic.h:28</a></div></div>
-<div class="ttc" id="aclassGic_html_a56c9c92897f2819cbcf33cda56f13ebc"><div class="ttname"><a href="classGic.html#a56c9c92897f2819cbcf33cda56f13ebc">Gic::kPPIBase</a></div><div class="ttdeci">static constexpr size_t kPPIBase</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00026">gic.h:26</a></div></div>
-<div class="ttc" id="aclassGic_html_a95e93d4c431de2b81969c6503801301e"><div class="ttname"><a href="classGic.html#a95e93d4c431de2b81969c6503801301e">Gic::SetUP</a></div><div class="ttdeci">void SetUP() const</div><div class="ttdef"><b>Definition</b> <a href="gic_8cpp_source.html#l00023">gic.cpp:23</a></div></div>
-<div class="ttc" id="aclassGic_html_aada584a8107ea93e10754834166cd1f5"><div class="ttname"><a href="classGic.html#aada584a8107ea93e10754834166cd1f5">Gic::kSGIBase</a></div><div class="ttdeci">static constexpr size_t kSGIBase</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00024">gic.h:24</a></div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md207"></a>
+<div class="ttc" id="aclassGic_html"><div class="ttname"><a href="classGic.html">Gic</a></div><div class="ttdoc">GIC 中断控制器驱动</div><div class="ttdef"><b>Definition</b> <a href="gic_8h_source.html#l00017">gic.h:17</a></div></div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md217"></a>
 GIC 中断处理</h3>
 <div class="fragment"><div class="line">uint32_t Gic::GetInterruptId() {</div>
 <div class="line">    uint64_t cpu_base = GetGicCpuBaseFromDT();</div>
@@ -898,21 +888,21 @@ GIC 中断处理</h3>
 <div class="line">    WriteReg(dist_base + GICD_ISENABLER + reg_offset,</div>
 <div class="line">             1U &lt;&lt; bit_offset);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md208"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md218"></a>
 ⏰ Generic Timer 中断</h2>
-<h3><a class="anchor" id="autotoc_md209"></a>
+<h3><a class="anchor" id="autotoc_md219"></a>
 定时器配置</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> SetupTimer() {</div>
 <div class="line">    <span class="comment">// 从设备树获取定时器中断ID</span></div>
-<div class="line">    <span class="keyword">auto</span> timer_intid = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance</a>()</div>
-<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,armv8-timer&quot;</span>) + <a class="code hl_variable" href="classGic.html#a56c9c92897f2819cbcf33cda56f13ebc">Gic::kPPIBase</a>;</div>
+<div class="line">    <span class="keyword">auto</span> timer_intid = KernelFdtSingleton::instance()</div>
+<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,armv8-timer&quot;</span>) + Gic::kPPIBase;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 配置为PPI类型中断</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().PPI(timer_intid,</div>
+<div class="line">    InterruptSingleton::instance().PPI(timer_intid,</div>
 <div class="line">        <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 注册定时器中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        timer_intid, timer_handler);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 配置虚拟定时器</span></div>
@@ -927,7 +917,7 @@ GIC 中断处理</h3>
 <div class="line">    cpu_io::CNTV_CTL_EL0::ENABLE::Set();    <span class="comment">// 启用定时器</span></div>
 <div class="line">    cpu_io::CNTV_CTL_EL0::IMASK::Clear();   <span class="comment">// 取消中断屏蔽</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md210"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md220"></a>
 定时器中断处理</h3>
 <div class="fragment"><div class="line">uint64_t timer_handler(uint64_t cause, uint8_t *context) {</div>
 <div class="line">    <span class="keyword">static</span> uint64_t tick_count = 0;</div>
@@ -939,30 +929,30 @@ GIC 中断处理</h3>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 降低日志输出频率</span></div>
 <div class="line">    <span class="keywordflow">if</span> (tick_count % 10 == 0) {</div>
-<div class="line">        <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Timer interrupt %lu, INTID %lu\n&quot;</span>, tick_count, cause);</div>
+<div class="line">        <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Timer interrupt %lu, INTID %lu\n&quot;</span>, tick_count, cause);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md211"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md221"></a>
 🔌 UART 中断处理</h2>
-<h3><a class="anchor" id="autotoc_md212"></a>
+<h3><a class="anchor" id="autotoc_md222"></a>
 UART 中断配置</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> SetupUartInterrupt() {</div>
 <div class="line">    <span class="comment">// 从设备树获取UART中断ID</span></div>
-<div class="line">    <span class="keyword">auto</span> uart_intid = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance</a>()</div>
-<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,pl011&quot;</span>) + <a class="code hl_variable" href="classGic.html#a4cce758a89d33ca112a0c42d162fed99">Gic::kSPIBase</a>;</div>
+<div class="line">    <span class="keyword">auto</span> uart_intid = KernelFdtSingleton::instance()</div>
+<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,pl011&quot;</span>) + Gic::kSPIBase;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 配置为SPI类型中断，路由到当前CPU</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SPI(uart_intid,</div>
+<div class="line">    InterruptSingleton::instance().SPI(uart_intid,</div>
 <div class="line">        <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 注册UART中断处理函数</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        uart_intid, <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#afeb27dda805c973ef825d7f26ea196c8">uart_handler</a>);</div>
 <div class="line">}</div>
-<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_afeb27dda805c973ef825d7f26ea196c8"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#afeb27dda805c973ef825d7f26ea196c8">uart_handler</a></div><div class="ttdeci">auto uart_handler(uint64_t cause, cpu_io::TrapContext *) -&gt; uint64_t</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt__main_8cpp_source.html#l00141">interrupt_main.cpp:141</a></div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md213"></a>
+<div class="ttc" id="aaarch64_2interrupt__main_8cpp_html_afeb27dda805c973ef825d7f26ea196c8"><div class="ttname"><a href="aarch64_2interrupt__main_8cpp.html#afeb27dda805c973ef825d7f26ea196c8">uart_handler</a></div><div class="ttdeci">auto uart_handler(uint64_t cause, cpu_io::TrapContext *) -&gt; uint64_t</div><div class="ttdoc">UART 中断处理函数</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2interrupt__main_8cpp_source.html#l00169">interrupt_main.cpp:169</a></div></div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md223"></a>
 UART 中断处理</h3>
 <div class="fragment"><div class="line">uint64_t <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#afeb27dda805c973ef825d7f26ea196c8">uart_handler</a>(uint64_t cause, uint8_t *context) {</div>
 <div class="line">    <span class="keyword">auto</span> uart_base = GetUartBaseFromDT();</div>
@@ -974,7 +964,7 @@ UART 中断处理</h3>
 <div class="line">    <span class="keywordflow">if</span> (mis &amp; PL011_MIS_RXMIS) {</div>
 <div class="line">        <span class="keywordflow">while</span> (!(ReadReg(uart_base + PL011_FR) &amp; PL011_FR_RXFE)) {</div>
 <div class="line">            <span class="keywordtype">char</span> received_char = ReadReg(uart_base + PL011_DR) &amp; 0xFF;</div>
-<div class="line">            <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;UART received: &#39;%c&#39; (0x%02X)\n&quot;</span>,</div>
+<div class="line">            <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;UART received: &#39;%c&#39; (0x%02X)\n&quot;</span>,</div>
 <div class="line">                      received_char, received_char);</div>
 <div class="line"> </div>
 <div class="line">            <span class="comment">// 回显字符</span></div>
@@ -993,31 +983,31 @@ UART 中断处理</h3>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md214"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md224"></a>
 🚀 系统初始化</h2>
-<h3><a class="anchor" id="autotoc_md215"></a>
+<h3><a class="anchor" id="autotoc_md225"></a>
 主处理器初始化 (Primary CPU)</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8">InterruptInit</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
 <div class="line">    <span class="comment">// 1. 设置异常向量表基地址</span></div>
-<div class="line">    cpu_io::VBAR_EL1::Write(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a2a09df74b4cb8ba4d0fe481aaa679816">vector_table</a>));</div>
+<div class="line">    cpu_io::VBAR_EL1::Write(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a2919dc0dfaf51370359170295f4c4b96">vector_table</a>));</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 2. 初始化GIC</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SetUP();</div>
+<div class="line">    InterruptSingleton::instance().SetUP();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 3. 配置定时器中断</span></div>
-<div class="line">    <span class="keyword">auto</span> timer_intid = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance</a>()</div>
-<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,armv8-timer&quot;</span>) + <a class="code hl_variable" href="classGic.html#a56c9c92897f2819cbcf33cda56f13ebc">Gic::kPPIBase</a>;</div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().PPI(timer_intid,</div>
+<div class="line">    <span class="keyword">auto</span> timer_intid = KernelFdtSingleton::instance()</div>
+<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,armv8-timer&quot;</span>) + Gic::kPPIBase;</div>
+<div class="line">    InterruptSingleton::instance().PPI(timer_intid,</div>
 <div class="line">        <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        timer_intid, timer_handler);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 4. 配置UART中断</span></div>
-<div class="line">    <span class="keyword">auto</span> uart_intid = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance</a>()</div>
-<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,pl011&quot;</span>) + <a class="code hl_variable" href="classGic.html#a4cce758a89d33ca112a0c42d162fed99">Gic::kSPIBase</a>;</div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SPI(uart_intid,</div>
+<div class="line">    <span class="keyword">auto</span> uart_intid = KernelFdtSingleton::instance()</div>
+<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,pl011&quot;</span>) + Gic::kSPIBase;</div>
+<div class="line">    InterruptSingleton::instance().SPI(uart_intid,</div>
 <div class="line">        <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        uart_intid, <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#afeb27dda805c973ef825d7f26ea196c8">uart_handler</a>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 5. 启用中断</span></div>
@@ -1029,23 +1019,23 @@ UART 中断处理</h3>
 <div class="line">    <span class="comment">// 7. 启动其他CPU核心</span></div>
 <div class="line">    StartSecondaryCpus();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;AArch64 interrupt system initialized\n&quot;</span>);</div>
+<div class="line">    <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;AArch64 interrupt system initialized\n&quot;</span>);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md216"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md226"></a>
 从处理器初始化 (Secondary CPUs)</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea">InterruptInitSMP</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93">InterruptInitSMP</a>(<span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> **) {</div>
 <div class="line">    <span class="comment">// 1. 设置异常向量表</span></div>
-<div class="line">    cpu_io::VBAR_EL1::Write(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a2a09df74b4cb8ba4d0fe481aaa679816">vector_table</a>));</div>
+<div class="line">    cpu_io::VBAR_EL1::Write(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_function" href="aarch64_2interrupt__main_8cpp.html#a2919dc0dfaf51370359170295f4c4b96">vector_table</a>));</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 2. 初始化GIC CPU接口</span></div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SetUP();</div>
+<div class="line">    InterruptSingleton::instance().SetUP();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 3. 配置定时器中断</span></div>
-<div class="line">    <span class="keyword">auto</span> timer_intid = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance</a>()</div>
-<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,armv8-timer&quot;</span>) + <a class="code hl_variable" href="classGic.html#a56c9c92897f2819cbcf33cda56f13ebc">Gic::kPPIBase</a>;</div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().PPI(timer_intid,</div>
+<div class="line">    <span class="keyword">auto</span> timer_intid = KernelFdtSingleton::instance()</div>
+<div class="line">        .GetAarch64Intid(<span class="stringliteral">&quot;arm,armv8-timer&quot;</span>) + Gic::kPPIBase;</div>
+<div class="line">    InterruptSingleton::instance().PPI(timer_intid,</div>
 <div class="line">        <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
-<div class="line">    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(</div>
+<div class="line">    InterruptSingleton::instance().RegisterInterruptFunc(</div>
 <div class="line">        timer_intid, timer_handler);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 4. 启用中断</span></div>
@@ -1054,13 +1044,13 @@ UART 中断处理</h3>
 <div class="line">    <span class="comment">// 5. 启动定时器</span></div>
 <div class="line">    SetupTimer();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;AArch64 SMP CPU %u initialized\n&quot;</span>,</div>
+<div class="line">    <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;AArch64 SMP CPU %u initialized\n&quot;</span>,</div>
 <div class="line">               <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>());</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md217"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md227"></a>
 多核启动流程</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> StartSecondaryCpus() {</div>
-<div class="line">    <span class="keywordtype">size_t</span> core_count = <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;BasicInfo&gt;::GetInstance</a>().core_count;</div>
+<div class="line">    <span class="keywordtype">size_t</span> core_count = BasicInfoSingleton::instance().core_count;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; core_count; i++) {  <span class="comment">// 跳过CPU 0</span></div>
 <div class="line">        <span class="comment">// 使用PSCI启动CPU</span></div>
@@ -1069,16 +1059,16 @@ UART 中断处理</h3>
 <div class="line"> </div>
 <div class="line">        <span class="keywordflow">if</span> ((ret != cpu_io::psci::SUCCESS) &amp;&amp;</div>
 <div class="line">            (ret != cpu_io::psci::ALREADY_ON)) {</div>
-<div class="line">            <a class="code hl_struct" href="structklog_1_1Warn.html">klog::Warn</a>(<span class="stringliteral">&quot;CPU %d start failed: %d\n&quot;</span>, i, ret);</div>
+<div class="line">            <a class="code hl_function" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb">klog::Warn</a>(<span class="stringliteral">&quot;CPU %d start failed: %d\n&quot;</span>, i, ret);</div>
 <div class="line">        } <span class="keywordflow">else</span> {</div>
-<div class="line">            <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;CPU %d started successfully\n&quot;</span>, i);</div>
+<div class="line">            <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;CPU %d started successfully\n&quot;</span>, i);</div>
 <div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="ttc" id="abasic__info_8hpp_html_a698036b5e342c2164fb7fd7249d0e801"><div class="ttname"><a href="basic__info_8hpp.html#a698036b5e342c2164fb7fd7249d0e801">_boot</a></div><div class="ttdeci">void _boot()</div><div class="ttdoc">内核入口，在 boot.S 中定义</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md218"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md228"></a>
 📊 性能特点</h2>
-<h3><a class="anchor" id="autotoc_md219"></a>
+<h3><a class="anchor" id="autotoc_md229"></a>
 优势</h3>
 <ul>
 <li>**异常级别隔离**：EL0-EL3提供完整的特权级保护</li>
@@ -1086,7 +1076,7 @@ UART 中断处理</h3>
 <li>**Generic Timer**：高精度系统定时器</li>
 <li>**PSCI标准**：标准化的多核电源管理</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md220"></a>
+<h3><a class="anchor" id="autotoc_md230"></a>
 设计考量</h3>
 <ul>
 <li>**向量表对齐**：2KB对齐要求确保性能</li>
@@ -1095,9 +1085,9 @@ UART 中断处理</h3>
 <li>**编译器限制**：手动异常处理避免属性限制</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md222"></a>
+<h1><a class="anchor" id="autotoc_md232"></a>
 🔍 多架构对比分析</h1>
-<h2><a class="anchor" id="autotoc_md223"></a>
+<h2><a class="anchor" id="autotoc_md233"></a>
 中断控制器对比</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -1113,7 +1103,7 @@ UART 中断处理</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">EOI机制   </td><td class="markdownTableBodyNone">APIC EOI寄存器   </td><td class="markdownTableBodyNone">PLIC Complete   </td><td class="markdownTableBodyNone">GIC EOIR寄存器   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md224"></a>
+<h2><a class="anchor" id="autotoc_md234"></a>
 定时器机制对比</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -1125,14 +1115,14 @@ UART 中断处理</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">AArch64   </td><td class="markdownTableBodyNone">Generic Timer   </td><td class="markdownTableBodyNone">系统频率   </td><td class="markdownTableBodyNone">系统寄存器   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md225"></a>
+<h2><a class="anchor" id="autotoc_md235"></a>
 初始化复杂度</h2>
 <ol type="1">
 <li><b>x86_64</b>: 模板递归初始化，编译时优化</li>
 <li><b>RISC-V</b>: 设备树解析 + CSR配置</li>
 <li><b>AArch64</b>: 异常向量表 + GIC多阶段初始化</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md226"></a>
+<h2><a class="anchor" id="autotoc_md236"></a>
 性能特征</h2>
 <ul>
 <li><b>x86_64</b>: 模板元编程优化，零运行时开销</li>
@@ -1141,20 +1131,20 @@ UART 中断处理</h3>
 </ul>
 <p>这种多架构设计确保了SimpleKernel在不同硬件平台上的高效运行，同时保持了统一的编程接口。 kKeyboardVector, KeyboardHandler );</p>
 <p>// 4. 启用键盘中断 EnableKeyboardInterrupt(kKeyboardVector);</p>
-<p>// 5. 启用APIC定时器 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance()</a>.SetupPeriodicTimer(
+<p>// 5. 启用APIC定时器 ApicSingleton::instance().SetupPeriodicTimer(
         kApicTimerFrequencyHz, kApicTimerVector
     );</p>
 <p>// 6. 开启全局中断 cpu_io::Rflags::If::Set();</p>
-<p><a class="el" href="structklog_1_1Info.html">klog::Info</a>("Hello InterruptInit\n"); } </p><div class="fragment"><div class="line">### 应用处理器初始化 (SMP)</div>
-</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea">InterruptInitSMP(int, const char **)</a> { // 1. 初始化IDT (每个CPU都需要) <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance()</a>.SetUpIdtr();</p>
-<p>// 2. 启用APIC定时器 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance()</a>.SetupPeriodicTimer(
+<p><a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Hello InterruptInit\n"); } </p><div class="fragment"><div class="line">### 应用处理器初始化 (SMP)</div>
+</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93" title="从核的体系结构相关中断初始化">InterruptInitSMP(int, const char **)</a> { // 1. 初始化IDT (每个CPU都需要) InterruptSingleton::instance().SetUpIdtr();</p>
+<p>// 2. 启用APIC定时器 ApicSingleton::instance().SetupPeriodicTimer(
         kApicTimerFrequencyHz, kApicTimerVector
     );</p>
 <p>// 3. 开启全局中断 cpu_io::Rflags::If::Set();</p>
-<p><a class="el" href="structklog_1_1Info.html">klog::Info</a>("Hello InterruptInit SMP\n"); } </p><div class="fragment"><div class="line">## 🔧 默认异常处理</div>
+<p><a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Hello InterruptInit SMP\n"); } </p><div class="fragment"><div class="line">## 🔧 默认异常处理</div>
 <div class="line"> </div>
 <div class="line">系统为所有未注册的中断/异常提供默认处理器：</div>
-</div><!-- fragment --><p> cpp <a class="el" href="classInterrupt.html#a736dd658be198f3dc94db0f876fb2499">Interrupt::Interrupt()</a> { // 为所有中断注册默认处理函数 for (auto &amp;i : interrupt_handlers) { i = [](uint64_t cause, uint8_t *context) -&gt; uint64_t { <a class="el" href="structklog_1_1Info.html">klog::Info</a>("Default Interrupt handler [%s] 0x%X, 0x%p\n", kInterruptNames[cause], cause, context); <a class="el" href="aarch64_2backtrace_8cpp.html#a8446673829abff96859f4f7fef26c6fc">DumpStack()</a>; // 打印调用栈 while (true) { ; } // 停机 }; } <a class="el" href="structklog_1_1Info.html">klog::Info</a>("Interrupt init.\n"); } </p><div class="fragment"><div class="line">## 📊 中断上下文结构</div>
+</div><!-- fragment --><p> cpp <a class="el" href="classInterrupt.html#a736dd658be198f3dc94db0f876fb2499">Interrupt::Interrupt()</a> { // 为所有中断注册默认处理函数 for (auto &amp;i : interrupt_handlers) { i = [](uint64_t cause, uint8_t *context) -&gt; uint64_t { <a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Default Interrupt handler [%s] 0x%X, 0x%p\n", kInterruptNames[cause], cause, context); <a class="el" href="aarch64_2backtrace_8cpp.html#a393a5995bbd64c00f1902a4ae0110847" title="打印调用栈">DumpStack()</a>; // 打印调用栈 while (true) { ; } // 停机 }; } <a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Interrupt init.\n"); } </p><div class="fragment"><div class="line">## 📊 中断上下文结构</div>
 <div class="line"> </div>
 <div class="line">### 无错误码中断上下文</div>
 </div><!-- fragment --><p> cpp struct InterruptContext { uint64_t rip; // 指令指针 uint64_t cs; // 代码段选择子 uint64_t rflags; // 标志寄存器 uint64_t rsp; // 栈指针 uint64_t ss; // 栈段选择子 }; </p><div class="fragment"><div class="line">### 有错误码中断上下文</div>
@@ -1186,8 +1176,8 @@ UART 中断处理</h3>
 <div class="line">## 🐛 调试和监控</div>
 <div class="line"> </div>
 <div class="line">### 中断信息输出</div>
-</div><!-- fragment --><p> cpp // 调试模式下输出中断注册信息 <a class="el" href="structklog_1_1Debug.html">klog::Debug</a>("RegisterInterruptFunc [%s] 0x%X, 0x%p\n", kInterruptNames[cause], cause, func);</p>
-<p>// IDT条目调试信息 for (size_t i = 0; i &lt; interrupt_count; i++) { <a class="el" href="structklog_1_1Debug.html">klog::Debug</a>("idtr[%d] 0x%p\n", i, idtr.base + i); } </p><div class="fragment"><div class="line">### 错误处理</div>
+</div><!-- fragment --><p> cpp // 调试模式下输出中断注册信息 <a class="el" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）">klog::Debug</a>("RegisterInterruptFunc [%s] 0x%X, 0x%p\n", kInterruptNames[cause], cause, func);</p>
+<p>// IDT条目调试信息 for (size_t i = 0; i &lt; interrupt_count; i++) { <a class="el" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）">klog::Debug</a>("idtr[%d] 0x%p\n", i, idtr.base + i); } </p><div class="fragment"><div class="line">### 错误处理</div>
 <div class="line">- **栈转储**: 未处理异常时自动打印调用栈</div>
 <div class="line">- **系统停机**: 严重错误时安全停机</div>
 <div class="line">- **中断名称映射**: 通过名称数组提供可读的中断信息</div>
@@ -1215,20 +1205,20 @@ UART 中断处理</h3>
 <div class="line">## 🏗️ 系统架构</div>
 <div class="line"> </div>
 <div class="line">### 核心组件</div>
-</div><!-- fragment --><p> ┌─────────────────────────────────────────────────────────────┐ │ RISC-V 64 中断处理系统 │ ├─────────────────────────────────────────────────────────────┤ │ <a class="el" href="classInterruptBase.html">InterruptBase</a> (抽象基类) │ │ ├── Do(cause, context) │ │ └── RegisterInterruptFunc(cause, func) │ ├─────────────────────────────────────────────────────────────┤ │ <a class="el" href="classInterrupt.html" title="中断处理">Interrupt</a> (RISC-V实现) │ │ ├── 中断/异常分离处理 │ │ ├── CSR scause 解码 │ │ ├── 中断处理函数数组 │ │ └── 异常处理函数数组 │ ├─────────────────────────────────────────────────────────────┤ │ PLIC (Platform-Level <a class="el" href="classInterrupt.html" title="中断处理">Interrupt</a> Controller) │ │ ├── 外部中断路由 │ │ ├── 中断优先级管理 │ │ ├── 多 Hart 中断分发 │ │ └── 中断完成确认 │ ├─────────────────────────────────────────────────────────────┤ │ OpenSBI 接口 │ │ ├── SBI 定时器服务 │ │ ├── Hart 启动管理 │ │ ├── 系统调用接口 │ │ └── 调试控制台 │ ├─────────────────────────────────────────────────────────────┤ │ 设备特定中断 │ │ ├── 定时器中断 (SBI Timer) │ │ ├── 串口中断 (NS16550A) │ │ ├── 外部中断 (PLIC) │ │ └── 断点异常 (ebreak) │ └─────────────────────────────────────────────────────────────┘ </p><div class="fragment"><div class="line">## 📋 CSR 寄存器管理</div>
+</div><!-- fragment --><p> ┌─────────────────────────────────────────────────────────────┐ │ RISC-V 64 中断处理系统 │ ├─────────────────────────────────────────────────────────────┤ │ <a class="el" href="classInterruptBase.html" title="中断子系统抽象基类">InterruptBase</a> (抽象基类) │ │ ├── Do(cause, context) │ │ └── RegisterInterruptFunc(cause, func) │ ├─────────────────────────────────────────────────────────────┤ │ <a class="el" href="classInterrupt.html" title="AArch64 中断控制器实现">Interrupt</a> (RISC-V实现) │ │ ├── 中断/异常分离处理 │ │ ├── CSR scause 解码 │ │ ├── 中断处理函数数组 │ │ └── 异常处理函数数组 │ ├─────────────────────────────────────────────────────────────┤ │ PLIC (Platform-Level <a class="el" href="classInterrupt.html" title="AArch64 中断控制器实现">Interrupt</a> Controller) │ │ ├── 外部中断路由 │ │ ├── 中断优先级管理 │ │ ├── 多 Hart 中断分发 │ │ └── 中断完成确认 │ ├─────────────────────────────────────────────────────────────┤ │ OpenSBI 接口 │ │ ├── SBI 定时器服务 │ │ ├── Hart 启动管理 │ │ ├── 系统调用接口 │ │ └── 调试控制台 │ ├─────────────────────────────────────────────────────────────┤ │ 设备特定中断 │ │ ├── 定时器中断 (SBI Timer) │ │ ├── 串口中断 (NS16550A) │ │ ├── 外部中断 (PLIC) │ │ └── 断点异常 (ebreak) │ └─────────────────────────────────────────────────────────────┘ </p><div class="fragment"><div class="line">## 📋 CSR 寄存器管理</div>
 <div class="line"> </div>
 <div class="line">### 关键 CSR 寄存器</div>
 </div><!-- fragment --><p> cpp // 中断/异常处理相关的CSR寄存器</p><ul>
 <li>stvec: Supervisor Trap Vector Base Address (陷阱向量基址)</li>
 <li>scause: Supervisor Cause Register (陷阱原因)</li>
 <li>sstatus: Supervisor Status Register (监管者状态)</li>
-<li>sie: Supervisor <a class="el" href="classInterrupt.html" title="中断处理">Interrupt</a> Enable (监管者中断使能)</li>
-<li>sip: Supervisor <a class="el" href="classInterrupt.html" title="中断处理">Interrupt</a> Pending (监管者中断挂起)</li>
+<li>sie: Supervisor <a class="el" href="classInterrupt.html" title="AArch64 中断控制器实现">Interrupt</a> Enable (监管者中断使能)</li>
+<li>sip: Supervisor <a class="el" href="classInterrupt.html" title="AArch64 中断控制器实现">Interrupt</a> Pending (监管者中断挂起)</li>
 <li>sepc: Supervisor Exception Program Counter (异常PC)</li>
 <li><p class="startli">stval: Supervisor Trap Value (陷阱值) </p><div class="fragment"><div class="line">### scause 寄存器解码</div>
 </div><!-- fragment --><p> cpp void Interrupt::Do(uint64_t cause, uint8_t *context) { // 解析 scause 寄存器 auto interrupt = cpu_io::Scause::Interrupt::Get(cause); // 最高位 auto exception_code = cpu_io::Scause::ExceptionCode::Get(cause); // 低位</p>
 <p class="startli">if (interrupt) { // 处理中断 (异步事件) if (exception_code &lt; kInterruptMaxCount) { interrupt_handlers_[exception_code](exception_code, context); } } else { // 处理异常 (同步事件) if (exception_code &lt; kExceptionMaxCount) { exception_handlers_[exception_code](exception_code, context); } } } </p><div class="fragment"><div class="line">### 陷阱入口设置</div>
-</div><!-- fragment --><p> cpp // 设置陷阱向量 - 直接模式 <b>attribute</b>((interrupt("supervisor"))) alignas(4) void TarpEntry() { <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance()</a>.Do( static_cast&lt;uint64_t&gt;(cpu_io::Scause::Read()), nullptr ); }</p>
+</div><!-- fragment --><p> cpp // 设置陷阱向量 - 直接模式 <b>attribute</b>((interrupt("supervisor"))) alignas(4) void TarpEntry() { InterruptSingleton::instance().Do( static_cast&lt;uint64_t&gt;(cpu_io::Scause::Read()), nullptr ); }</p>
 </li>
 </ul>
 <p>// 初始化时设置 cpu_io::Stvec::SetDirect(reinterpret_cast&lt;uint64_t&gt;(TarpEntry)); </p><div class="fragment"><div class="line">## 🎯 中断/异常分类处理</div>
@@ -1239,61 +1229,61 @@ UART 中断处理</h3>
 <div class="line"> </div>
 <div class="line">### 定时器配置和处理</div>
 </div><!-- fragment --><p> cpp namespace { uint64_t kInterval = 0; // 定时器间隔 }</p>
-<p>void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit(int, const char **)</a> { // 从设备树获取时钟频率 kInterval = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance()</a>.GetTimebaseFrequency(); <a class="el" href="structklog_1_1Info.html">klog::Info</a>("kInterval: 0x%X\n", kInterval);</p>
-<p>// 注册定时器中断处理函数 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance()</a>.RegisterInterruptFunc( kSupervisorTimerInterrupt, [](uint64_t exception_code, uint8_t *) -&gt; uint64_t { // 设置下一次定时器中断 sbi_set_timer(cpu_io::Time::Read() + kInterval); <a class="el" href="structklog_1_1Info.html">klog::Info</a>("Handle %s\n", kInterruptNames[exception_code]); return 0; } );</p>
+<p>void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8" title="体系结构相关中断初始化">InterruptInit(int, const char **)</a> { // 从设备树获取时钟频率 kInterval = KernelFdtSingleton::instance().GetTimebaseFrequency(); <a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("kInterval: 0x%X\n", kInterval);</p>
+<p>// 注册定时器中断处理函数 InterruptSingleton::instance().RegisterInterruptFunc( kSupervisorTimerInterrupt, [](uint64_t exception_code, uint8_t *) -&gt; uint64_t { // 设置下一次定时器中断 sbi_set_timer(cpu_io::Time::Read() + kInterval); <a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Handle %s\n", kInterruptNames[exception_code]); return 0; } );</p>
 <p>// 启用定时器中断 cpu_io::Sie::Stie::Set();</p>
 <p>// 设置首次定时器中断 sbi_set_timer(kInterval); } </p><div class="fragment"><div class="line">### OpenSBI 定时器接口</div>
 </div><!-- fragment --><p> cpp // 设置定时器中断时间 (绝对时间) sbi_set_timer(cpu_io::Time::Read() + kInterval);</p>
 <p>// 读取当前时间 uint64_t current_time = cpu_io::Time::Read(); </p><div class="fragment"><div class="line">## 🔌 PLIC 外部中断控制</div>
 <div class="line"> </div>
 <div class="line">### PLIC 初始化</div>
-</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit(int, const char **)</a> { // 从设备树获取PLIC信息 auto [plic_addr, plic_size, ndev, context_count] = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance()</a>.GetPlic();</p>
-<p>// 初始化PLIC实例 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a> = std::move(Plic(plic_addr, ndev, context_count));</p>
-<p>// 注册外部中断处理函数 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance()</a>.RegisterInterruptFunc( kSupervisorExternalInterrupt, [](uint64_t exception_code, uint8_t *) -&gt; uint64_t { // 查询中断源 auto source_id = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.Which(); <a class="el" href="structklog_1_1Debug.html">klog::Debug</a>("External interrupt from source %d\n", source_id);</p>
-<p>// 执行中断处理 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.Do(source_id, nullptr);</p>
-<p>// 完成中断处理 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.Done(source_id); return 0; } );</p>
+</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8" title="体系结构相关中断初始化">InterruptInit(int, const char **)</a> { // 从设备树获取PLIC信息 auto [plic_addr, plic_size, ndev, context_count] = KernelFdtSingleton::instance().GetPlic();</p>
+<p>// 初始化PLIC实例 PlicSingleton::create(plic_addr, ndev, context_count);</p>
+<p>// 注册外部中断处理函数 InterruptSingleton::instance().RegisterInterruptFunc( kSupervisorExternalInterrupt, [](uint64_t exception_code, uint8_t *) -&gt; uint64_t { // 查询中断源 auto source_id = PlicSingleton::instance().Which(); <a class="el" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）">klog::Debug</a>("External interrupt from source %d\n", source_id);</p>
+<p>// 执行中断处理 PlicSingleton::instance().Do(source_id, nullptr);</p>
+<p>// 完成中断处理 PlicSingleton::instance().Done(source_id); return 0; } );</p>
 <p>// 启用外部中断 cpu_io::Sie::Seie::Set(); } </p><div class="fragment"><div class="line">### PLIC 寄存器布局</div>
 </div><!-- fragment --><p> cpp class <a class="el" href="classPlic.html" title="Plic 驱动">Plic</a> { private: static constexpr uint64_t kSourcePriorityOffset = 0x000000; // 优先级 static constexpr uint64_t kPendingBitsOffset = 0x001000; // 挂起位 static constexpr uint64_t kEnableBitsOffset = 0x002000; // 使能位 static constexpr uint64_t kContextOffset = 0x200000; // 上下文</p>
 <p>static constexpr uint64_t kContextSize = 0x1000; // 上下文大小 static constexpr uint64_t kPriorityThresholdOffset = 0x0; // 优先级阈值 static constexpr uint64_t kClaimCompleteOffset = 0x4; // 声明/完成 }; </p><div class="fragment"><div class="line">### PLIC 中断处理流程</div>
-</div><!-- fragment --><p> cpp // 1. 中断触发 → PLIC 路由到指定 Hart // 2. Hart 接收外部中断 → 查询中断源 auto source_id = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.Which();</p>
-<p>// 3. 执行设备特定的中断处理 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.Do(source_id, nullptr);</p>
-<p>// 4. 通知 PLIC 中断处理完成 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.Done(source_id); </p><div class="fragment"><div class="line">## 📡 串口中断处理</div>
+</div><!-- fragment --><p> cpp // 1. 中断触发 → PLIC 路由到指定 Hart // 2. Hart 接收外部中断 → 查询中断源 auto source_id = PlicSingleton::instance().Which();</p>
+<p>// 3. 执行设备特定的中断处理 PlicSingleton::instance().Do(source_id, nullptr);</p>
+<p>// 4. 通知 PLIC 中断处理完成 PlicSingleton::instance().Done(source_id); </p><div class="fragment"><div class="line">## 📡 串口中断处理</div>
 <div class="line"> </div>
 <div class="line">### NS16550A 串口中断</div>
-</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit(int, const char **)</a> { // 从设备树获取串口信息 auto [base, size, irq] = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance()</a>.GetSerial();</p>
-<p>// 初始化串口驱动 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Ns16550a&gt;::GetInstance()</a> = std::move(Ns16550a(base));</p>
-<p>// 注册串口中断处理函数 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.RegisterInterruptFunc( irq, // 串口IRQ号 [](uint64_t, uint8_t *) -&gt; uint64_t { // 读取串口字符并回显 sk_putchar(<a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Ns16550a&gt;::GetInstance()</a>.TryGetChar(), nullptr); return 0; } );</p>
-<p>// 为当前核心启用串口中断 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Plic&gt;::GetInstance()</a>.Set( <a class="el" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId()</a>, // Hart ID irq, // 中断源ID 1, // 优先级 true // 启用 ); } </p><div class="fragment"><div class="line">## 🛑 异常处理</div>
+</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8" title="体系结构相关中断初始化">InterruptInit(int, const char **)</a> { // 从设备树获取串口信息 auto [base, size, irq] = KernelFdtSingleton::instance().GetSerial();</p>
+<p>// 初始化串口驱动 Ns16550aSingleton::create(base);</p>
+<p>// 注册串口中断处理函数 PlicSingleton::instance().RegisterInterruptFunc( irq, // 串口IRQ号 [](uint64_t, uint8_t *) -&gt; uint64_t { // 读取串口字符并回显 sk_putchar(Ns16550aSingleton::instance().TryGetChar(), nullptr); return 0; } );</p>
+<p>// 为当前核心启用串口中断 PlicSingleton::instance().Set( <a class="el" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId()</a>, // Hart ID irq, // 中断源ID 1, // 优先级 true // 启用 ); } </p><div class="fragment"><div class="line">## 🛑 异常处理</div>
 <div class="line"> </div>
 <div class="line">### 断点异常 (ebreak)</div>
-</div><!-- fragment --><p> cpp // 注册断点异常处理 <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance()</a>.RegisterInterruptFunc( kBreakpoint, [](uint64_t exception_code, uint8_t *) -&gt; uint64_t { // ebreak 指令是2字节，需要跳过 cpu_io::Sepc::Write(cpu_io::Sepc::Read() + 2); <a class="el" href="structklog_1_1Info.html">klog::Info</a>("Handle %s\n", kExceptionNames[exception_code]); return 0; } ); </p><div class="fragment"><div class="line">### 默认异常处理</div>
-</div><!-- fragment --><p> cpp <a class="el" href="classInterrupt.html#a736dd658be198f3dc94db0f876fb2499">Interrupt::Interrupt()</a> { // 默认异常处理 - 系统停机 for (auto &amp;i : exception_handlers_) { i = [](uint64_t cause, uint8_t *context) -&gt; uint64_t { <a class="el" href="structklog_1_1Err.html">klog::Err</a>("Default Exception handler [%s] 0x%X, 0x%p\n", kExceptionNames[cause], cause, context); while (1) ; // 停机等待 return 0; }; } } </p><div class="fragment"><div class="line">## 🚀 多核系统初始化</div>
+</div><!-- fragment --><p> cpp // 注册断点异常处理 InterruptSingleton::instance().RegisterInterruptFunc( kBreakpoint, [](uint64_t exception_code, uint8_t *) -&gt; uint64_t { // ebreak 指令是2字节，需要跳过 cpu_io::Sepc::Write(cpu_io::Sepc::Read() + 2); <a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Handle %s\n", kExceptionNames[exception_code]); return 0; } ); </p><div class="fragment"><div class="line">### 默认异常处理</div>
+</div><!-- fragment --><p> cpp <a class="el" href="classInterrupt.html#a736dd658be198f3dc94db0f876fb2499">Interrupt::Interrupt()</a> { // 默认异常处理 - 系统停机 for (auto &amp;i : exception_handlers_) { i = [](uint64_t cause, uint8_t *context) -&gt; uint64_t { <a class="el" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志">klog::Err</a>("Default Exception handler [%s] 0x%X, 0x%p\n", kExceptionNames[cause], cause, context); while (1) ; // 停机等待 return 0; }; } } </p><div class="fragment"><div class="line">## 🚀 多核系统初始化</div>
 <div class="line"> </div>
 <div class="line">### 主核心 (BSP) 初始化</div>
-</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit(int, const char **)</a> { // 1. 获取系统配置信息 kInterval = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance()</a>.GetTimebaseFrequency();</p>
+</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8" title="体系结构相关中断初始化">InterruptInit(int, const char **)</a> { // 1. 获取系统配置信息 kInterval = KernelFdtSingleton::instance().GetTimebaseFrequency();</p>
 <p>// 2. 注册所有中断/异常处理函数 RegisterTimerInterrupt(); RegisterExternalInterrupt(); RegisterSerialInterrupt(); RegisterBreakpointException();</p>
 <p>// 3. 初始化硬件控制器 InitializePlic(); InitializeSerial();</p>
 <p>// 4. 设置陷阱向量和启用中断 cpu_io::Stvec::SetDirect(reinterpret_cast&lt;uint64_t&gt;(TarpEntry)); cpu_io::Sstatus::Sie::Set(); // 启用监管者中断 cpu_io::Sie::Ssie::Set(); // 启用软件中断 cpu_io::Sie::Stie::Set(); // 启用定时器中断 cpu_io::Sie::Seie::Set(); // 启用外部中断</p>
 <p>// 5. 启动定时器 sbi_set_timer(kInterval);</p>
-<p>// 6. 启动其他核心 for (size_t i = 0; i &lt; core_count; i++) { auto ret = sbi_hart_start(i, reinterpret_cast&lt;uint64_t&gt;(_boot), 0); if (ret.error != SBI_SUCCESS &amp;&amp; ret.error != SBI_ERR_ALREADY_AVAILABLE) { <a class="el" href="structklog_1_1Warn.html">klog::Warn</a>("hart %d start failed: %d\n", i, ret.error); } } } </p><div class="fragment"><div class="line">### 应用核心 (AP) 初始化</div>
-</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea">InterruptInitSMP(int, const char **)</a> { // 1. 设置陷阱向量 (与BSP相同) cpu_io::Stvec::SetDirect(reinterpret_cast&lt;uint64_t&gt;(TarpEntry));</p>
+<p>// 6. 启动其他核心 for (size_t i = 0; i &lt; core_count; i++) { auto ret = sbi_hart_start(i, reinterpret_cast&lt;uint64_t&gt;(_boot), 0); if (ret.error != SBI_SUCCESS &amp;&amp; ret.error != SBI_ERR_ALREADY_AVAILABLE) { <a class="el" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志">klog::Warn</a>("hart %d start failed: %d\n", i, ret.error); } } } </p><div class="fragment"><div class="line">### 应用核心 (AP) 初始化</div>
+</div><!-- fragment --><p> cpp void <a class="el" href="aarch64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93" title="从核的体系结构相关中断初始化">InterruptInitSMP(int, const char **)</a> { // 1. 设置陷阱向量 (与BSP相同) cpu_io::Stvec::SetDirect(reinterpret_cast&lt;uint64_t&gt;(TarpEntry));</p>
 <p>// 2. 启用中断 (与BSP相同) cpu_io::Sstatus::Sie::Set(); cpu_io::Sie::Ssie::Set(); cpu_io::Sie::Stie::Set(); cpu_io::Sie::Seie::Set();</p>
 <p>// 3. 启动定时器 (使用全局间隔) sbi_set_timer(kInterval);</p>
-<p><a class="el" href="structklog_1_1Info.html">klog::Info</a>("Hello InterruptInitSMP\n"); } </p><div class="fragment"><div class="line">## 🔧 OpenSBI 集成</div>
+<p><a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Hello InterruptInitSMP\n"); } </p><div class="fragment"><div class="line">## 🔧 OpenSBI 集成</div>
 <div class="line"> </div>
 <div class="line">### SBI 调用接口</div>
 </div><!-- fragment --><p> cpp // Hart 管理 sbi_hart_start(hart_id, start_addr, priv); // 启动指定Hart sbi_hart_stop(); // 停止当前Hart sbi_hart_get_status(hart_id); // 获取Hart状态</p>
 <p>// 定时器服务 sbi_set_timer(stime_value); // 设置定时器 uint64_t time = cpu_io::Time::Read(); // 读取当前时间</p>
 <p>// 调试服务 sbi_debug_console_write_byte(ch); // 调试控制台输出</p>
 <p>// 系统重置 sbi_system_reset(reset_type, reset_reason); // 系统重置 </p><div class="fragment"><div class="line">### SBI 错误处理</div>
-</div><!-- fragment --><p> cpp auto ret = sbi_hart_start(i, start_addr, 0); switch (ret.error) { case SBI_SUCCESS: <a class="el" href="structklog_1_1Info.html">klog::Info</a>("Hart %zu started successfully\n", i); break; case SBI_ERR_ALREADY_AVAILABLE: <a class="el" href="structklog_1_1Debug.html">klog::Debug</a>("Hart %zu already running\n", i); break; default: <a class="el" href="structklog_1_1Warn.html">klog::Warn</a>("Hart %zu start failed: %ld\n", i, ret.error); break; } </p><div class="fragment"><div class="line">## 📊 设备树 (Device Tree) 集成</div>
+</div><!-- fragment --><p> cpp auto ret = sbi_hart_start(i, start_addr, 0); switch (ret.error) { case SBI_SUCCESS: <a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("Hart %zu started successfully\n", i); break; case SBI_ERR_ALREADY_AVAILABLE: <a class="el" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）">klog::Debug</a>("Hart %zu already running\n", i); break; default: <a class="el" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志">klog::Warn</a>("Hart %zu start failed: %ld\n", i, ret.error); break; } </p><div class="fragment"><div class="line">## 📊 设备树 (Device Tree) 集成</div>
 <div class="line"> </div>
 <div class="line">### 从设备树获取硬件信息</div>
-</div><!-- fragment --><p> cpp class <a class="el" href="classKernelFdt.html">KernelFdt</a> { public: // 获取时钟频率 uint64_t GetTimebaseFrequency();</p>
+</div><!-- fragment --><p> cpp class <a class="el" href="classKernelFdt.html" title="FDT（Flattened Device Tree）解析器">KernelFdt</a> { public: // 获取时钟频率 uint64_t GetTimebaseFrequency();</p>
 <p>// 获取PLIC信息 &lt;地址, 大小, 设备数, 上下文数&gt; std::tuple&lt;uint64_t, uint64_t, size_t, size_t&gt; GetPlic();</p>
 <p>// 获取串口信息 &lt;地址, 大小, IRQ号&gt; std::tuple&lt;uint64_t, uint64_t, uint32_t&gt; GetSerial(); };</p>
-<p>// 使用示例 auto [plic_addr, plic_size, ndev, context_count] = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance()</a>.GetPlic();</p>
-<p>auto [serial_base, serial_size, serial_irq] = <a class="el" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelFdt&gt;::GetInstance()</a>.GetSerial(); </p><div class="fragment"><div class="line">## ⚡ 性能优化特性</div>
+<p>// 使用示例 auto [plic_addr, plic_size, ndev, context_count] = KernelFdtSingleton::instance().GetPlic();</p>
+<p>auto [serial_base, serial_size, serial_irq] = KernelFdtSingleton::instance().GetSerial(); </p><div class="fragment"><div class="line">## ⚡ 性能优化特性</div>
 <div class="line"> </div>
 <div class="line">### 1. 对齐优化</div>
 </div><!-- fragment --><p> cpp // 4字节对齐的中断处理函数数组 alignas(4) std::array&lt;InterruptFunc, kInterruptMaxCount&gt; interrupt_handlers_; alignas(4) std::array&lt;InterruptFunc, kExceptionMaxCount&gt; exception_handlers_;</p>
@@ -1323,10 +1313,10 @@ UART 中断处理</h3>
 <div class="line">## 🐛 调试和监控</div>
 <div class="line"> </div>
 <div class="line">### 中断信息输出</div>
-</div><!-- fragment --><p> cpp // 中断注册调试信息 <a class="el" href="structklog_1_1Info.html">klog::Info</a>("RegisterInterruptFunc [%s] 0x%X, 0x%p\n", kInterruptNames[exception_code], cause, func);</p>
-<p>// PLIC外部中断调试 <a class="el" href="structklog_1_1Debug.html">klog::Debug</a>("External interrupt from source %d\n", source_id);</p>
-<p>// CSR状态监控 <a class="el" href="structklog_1_1Debug.html">klog::Debug</a>("scause: 0x%lX, sepc: 0x%lX\n", cpu_io::Scause::Read(), cpu_io::Sepc::Read()); </p><div class="fragment"><div class="line">### 异常调试</div>
-</div><!-- fragment --><p> cpp // 异常处理时的详细信息输出 <a class="el" href="structklog_1_1Err.html">klog::Err</a>("Exception [%s] at PC 0x%lX, tval: 0x%lX\n", kExceptionNames[cause], cpu_io::Sepc::Read(), cpu_io::Stval::Read()); </p><div class="fragment"><div class="line">## 📚 相关文档</div>
+</div><!-- fragment --><p> cpp // 中断注册调试信息 <a class="el" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志">klog::Info</a>("RegisterInterruptFunc [%s] 0x%X, 0x%p\n", kInterruptNames[exception_code], cause, func);</p>
+<p>// PLIC外部中断调试 <a class="el" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）">klog::Debug</a>("External interrupt from source %d\n", source_id);</p>
+<p>// CSR状态监控 <a class="el" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）">klog::Debug</a>("scause: 0x%lX, sepc: 0x%lX\n", cpu_io::Scause::Read(), cpu_io::Sepc::Read()); </p><div class="fragment"><div class="line">### 异常调试</div>
+</div><!-- fragment --><p> cpp // 异常处理时的详细信息输出 <a class="el" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志">klog::Err</a>("Exception [%s] at PC 0x%lX, tval: 0x%lX\n", kExceptionNames[cause], cpu_io::Sepc::Read(), cpu_io::Stval::Read()); </p><div class="fragment"><div class="line">## 📚 相关文档</div>
 <div class="line"> </div>
 <div class="line">- [OpenSBI 接口文档](../3rd/opensbi_interface/README.md)</div>
 <div class="line">- [PLIC 驱动文档](../src/driver/plic/README.md)</div>

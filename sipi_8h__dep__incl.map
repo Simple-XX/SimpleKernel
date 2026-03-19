@@ -1,5 +1,5 @@
-<map id="/root/src/arch/x86_64/sipi.h" name="/root/src/arch/x86_64/sipi.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="10,5,145,45"/>
-<area shape="rect" id="Node000002" href="$x86__64_2arch__main_8cpp.html" title=" " alt="" coords="5,93,149,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,59,80,93,75,93,75,59"/>
+<map id="/workspaces/SimpleKernel/src/arch/x86_64/include/sipi.h" name="/workspaces/SimpleKernel/src/arch/x86_64/include/sipi.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,228,45"/>
+<area shape="rect" id="Node000002" href="$x86__64_2arch__main_8cpp.html" title=" " alt="" coords="5,93,232,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,59,121,93,116,93,116,59"/>
 </map>

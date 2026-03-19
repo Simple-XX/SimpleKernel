@@ -1,0 +1,5 @@
+<map id="Interrupt::Spi" name="Interrupt::Spi">
+<area shape="rect" id="Node000001" title="设置 SPI 中断" alt="" coords="5,5,112,31"/>
+<area shape="rect" id="Node000002" href="$classGic.html#a0635a4d4b30049040df77591253f1a1d" title="配置共享外设中断 (SPI)" alt="" coords="160,5,231,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,15,146,15,146,21,112,21"/>
+</map>

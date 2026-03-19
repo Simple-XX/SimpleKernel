@@ -1,0 +1,28 @@
+<map id="/workspaces/SimpleKernel/src/device/virtio/device" name="/workspaces/SimpleKernel/src/device/virtio/device">
+<area shape="rect" id="node1" href="dir_523f5577a6131d88d2c2cd6cb5202441.html" title="virt_queue" alt="" coords="401,136,492,161"/>
+<area shape="rect" id="node2" href="dir_f7d04695b2766164f8341c15aa3f5a45.html" title="transport" alt="" coords="295,136,377,161"/>
+<area shape="poly" id="edge2" href="dir_000008_000049.html" alt="" coords="378,90,354,126,349,123,374,87"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000008_000049.html" title="2" alt="" coords="356,118,366,133"/>
+<area shape="rect" id="node11" href="dir_b0856f6b0d80ccb263b2f415c91f9e17.html" title="include" alt="" coords="516,136,585,161"/>
+<area shape="poly" id="edge1" href="dir_000008_000025.html" alt="" coords="408,86,430,96,509,128,507,133,428,101,406,91"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000008_000025.html" title="6" alt="" coords="502,114,511,129"/>
+<area shape="rect" id="node4" href="dir_0dea5b0e4f474acd4c40373a261f6ff0.html" title="blk" alt="" coords="441,63,484,88"/>
+<area shape="poly" id="edge4" href="dir_000005_000052.html" alt="" coords="463,89,455,123,450,122,457,88"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000005_000052.html" title="1" alt="" coords="457,113,466,127"/>
+<area shape="poly" id="edge7" href="dir_000005_000049.html" alt="" coords="447,90,429,101,372,132,370,127,427,96,444,86"/>
+<area shape="rect" id="edge7-headlabel" href="dir_000005_000049.html" title="1" alt="" coords="374,128,384,142"/>
+<area shape="rect" id="node9" href="dir_475521bcc5d72920903fa03272aee527.html" title="filesystem" alt="" coords="609,136,700,161"/>
+<area shape="poly" id="edge3" href="dir_000005_000010.html" alt="" coords="485,82,612,129,610,134,483,87"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000005_000010.html" title="1" alt="" coords="605,114,614,129"/>
+<area shape="rect" id="node10" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html" title="tests" alt="" coords="725,136,779,161"/>
+<area shape="poly" id="edge5" href="dir_000005_000047.html" alt="" coords="485,79,712,133,711,139,483,84"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000005_000047.html" title="1" alt="" coords="704,119,714,134"/>
+<area shape="poly" id="edge6" href="dir_000005_000025.html" alt="" coords="478,86,527,125,524,129,475,90"/>
+<area shape="rect" id="edge6-headlabel" href="dir_000005_000025.html" title="4" alt="" coords="523,110,532,125"/>
+<area shape="rect" id="node5" href="dir_cb3b6696d9a0602084c83f0916102e63.html" title="console" alt="" coords="255,63,327,88"/>
+<area shape="rect" id="node6" href="dir_3e044cf1f21ef3bb75ac349d6e8b73d4.html" title="gpu" alt="" coords="183,63,230,88"/>
+<area shape="rect" id="node7" href="dir_108cd372c6ffe846eb241d7a990a0699.html" title="input" alt="" coords="105,63,159,88"/>
+<area shape="rect" id="node8" href="dir_946db13bdc95eacec938d7e538cfeb0c.html" title="net" alt="" coords="37,63,80,88"/>
+<area shape="rect" id="clust2" href="dir_17b31eb15cc71d1cdf2abb874a5ea22d.html" alt="" coords="27,52,495,99"/>
+<area shape="rect" id="clust1" href="dir_db0ac770e725fc92db743b99664830f8.html" title="virtio" alt="" coords="16,16,505,172"/>
+</map>

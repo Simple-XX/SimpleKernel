@@ -1,3 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structGuardType.html" title=" " alt="" coords="5,5,96,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,153,117,179"/>
+<area shape="rect" id="Node000001" href="$structStateBlocked.html" title="Blocked 状态 — 任务阻塞，等待资源" alt="" coords="168,5,275,31"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="75,140,112,91,137,64,164,40,183,28,186,33,167,44,140,68,116,94,80,143"/>
+<area shape="rect" id="Node000002" href="$structStateExited.html" title="Exited 状态 — 任务已退出，无父任务回收" alt="" coords="173,55,270,80"/>
+<area shape="poly" id="edge3_Node000000_Node000002" title=" " alt="" coords="87,142,123,116,164,89,186,78,189,83,167,94,126,120,90,147"/>
+<area shape="rect" id="Node000003" href="$structStateReady.html" title="Ready 状态 — 任务已就绪，等待调度" alt="" coords="173,104,270,129"/>
+<area shape="poly" id="edge4_Node000000_Node000003" title=" " alt="" coords="115,147,178,127,180,132,117,152"/>
+<area shape="rect" id="Node000004" href="$structStateRunning.html" title="Running 状态 — 任务正在执行" alt="" coords="167,153,276,179"/>
+<area shape="poly" id="edge5_Node000000_Node000004" title=" " alt="" coords="131,163,166,163,166,169,131,169"/>
+<area shape="rect" id="Node000005" href="$structStateSleeping.html" title="Sleeping 状态 — 任务已挂起，等待唤醒时钟" alt="" coords="165,203,277,228"/>
+<area shape="poly" id="edge6_Node000000_Node000005" title=" " alt="" coords="117,180,180,200,178,205,115,185"/>
+<area shape="rect" id="Node000006" href="$structStateUnInit.html" title="UnInit 状态 — 任务尚未初始化" alt="" coords="174,252,269,277"/>
+<area shape="poly" id="edge7_Node000000_Node000006" title=" " alt="" coords="91,185,167,237,191,250,189,254,164,242,88,190"/>
+<area shape="rect" id="Node000007" href="$structStateZombie.html" title="Zombie 状态 — 任务已退出，等待父任务回收" alt="" coords="168,301,275,327"/>
+<area shape="poly" id="edge8_Node000000_Node000007" title=" " alt="" coords="80,189,117,237,141,263,167,287,188,299,185,303,164,291,137,267,113,241,76,192"/>
 </map>

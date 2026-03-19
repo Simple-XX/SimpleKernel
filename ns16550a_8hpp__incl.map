@@ -1,0 +1,17 @@
+<map id="/workspaces/SimpleKernel/src/device/ns16550a/ns16550a.hpp" name="/workspaces/SimpleKernel/src/device/ns16550a/ns16550a.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="88,5,343,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="219,167,286,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,45,249,152,244,154,217,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="141,93,215,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="209,47,192,82,187,80,204,44"/>
+<area shape="rect" id="Node000004" href="$expected_8hpp.html" title=" " alt="" coords="5,93,116,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="179,48,97,89,94,85,177,43"/>
+<area shape="rect" id="Node000006" href="$mmio__accessor_8hpp.html" title=" " alt="" coords="291,93,441,119"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="253,43,333,84,330,89,250,48"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="92,116,209,159,207,164,91,121"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="19,167,102,192"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="63,119,63,153,58,153,58,119"/>
+<area shape="poly" id="edge8_Node000006_Node000002" title=" " alt="" coords="349,121,284,162,281,157,346,116"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="331,167,401,192"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="369,119,369,153,363,153,363,119"/>
+</map>

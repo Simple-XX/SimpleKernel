@@ -1,0 +1,5 @@
+<map id="vfs::BlockDevice::GetName" name="vfs::BlockDevice::GetName">
+<area shape="rect" id="Node000001" title="获取设备名称（如 &quot;virtio&#45;blk0&quot;）" alt="" coords="192,5,393,31"/>
+<area shape="rect" id="Node000002" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="5,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,21,144,21,144,15,178,15"/>
+</map>

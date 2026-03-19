@@ -1,0 +1,5 @@
+<map id="vfs::BlockDevice::GetSectorCount" name="vfs::BlockDevice::GetSectorCount">
+<area shape="rect" id="Node000001" title="获取设备总扇区数" alt="" coords="192,5,395,45"/>
+<area shape="rect" id="Node000002" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="5,13,144,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,28,144,28,144,23,178,23"/>
+</map>

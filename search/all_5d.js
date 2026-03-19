@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['开发指南_0',['📝 开发指南',['../md__2root_2README.html#autotoc_md319',1,'']]],
-  ['开发环境配置_1',['Docker 开发环境配置',['../md_docker.html',1,'']]],
-  ['开启方式_2',['开启方式',['../md_2___xE8_xB0_x83_xE8_xAF_x95_xE8_xBE_x93_xE5_x87_xBA.html#autotoc_md102',1,'']]]
+  ['方法签名_0',['5. 方法签名',['../md_coding__standards.html#autotoc_md251',1,'']]],
+  ['方法_1',['方法',['../md_coding__standards.html#autotoc_md263',1,'']]]
 ];

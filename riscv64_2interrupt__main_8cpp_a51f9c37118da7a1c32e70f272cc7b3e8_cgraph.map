@@ -1,0 +1,19 @@
+<map id="InterruptInit" name="InterruptInit">
+<area shape="rect" id="Node000001" title="体系结构相关中断初始化" alt="" coords="5,129,104,155"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="207,5,283,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,127,98,84,122,60,151,40,192,23,194,28,153,44,126,64,101,88,67,131"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="152,55,337,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="75,127,110,108,151,89,173,81,174,86,153,94,113,112,78,132"/>
+<area shape="rect" id="Node000005" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="203,104,286,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="104,133,189,121,190,127,105,138"/>
+<area shape="rect" id="Node000006" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="185,153,305,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="105,146,171,154,171,159,104,151"/>
+<area shape="rect" id="Node000008" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="189,203,300,228"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="79,152,153,189,177,197,175,202,151,194,76,157"/>
+<area shape="rect" id="Node000009" href="$arch_8cpp.html#ac73d8c3647dca189d5c572ba9c48f471" title=" " alt="" coords="200,252,289,277"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="67,153,102,195,126,219,153,238,187,252,185,257,151,243,123,223,98,199,63,156"/>
+<area shape="rect" id="Node000004" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="385,47,648,87"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="338,65,371,65,371,70,338,70"/>
+<area shape="rect" id="Node000007" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="449,153,584,179"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="305,163,435,163,435,169,305,169"/>
+</map>

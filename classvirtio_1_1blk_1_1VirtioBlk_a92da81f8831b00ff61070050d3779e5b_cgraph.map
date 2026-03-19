@@ -1,0 +1,31 @@
+<map id="virtio::blk::VirtioBlk::SubmitSyncRequest" name="virtio::blk::VirtioBlk::SubmitSyncRequest">
+<area shape="rect" id="Node000001" title="同步提交请求的内部实现" alt="" coords="5,216,165,256"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a65c030d25edc331b47332bc808766451" title="异步入队请求的内部实现" alt="" coords="221,184,369,224"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,221,207,215,208,220,166,226"/>
+<area shape="rect" id="Node000006" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a098b48ede00a55c5abcf9897ff278aab" title="批量触发硬件通知" alt="" coords="221,56,369,96"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="100,214,147,161,178,132,212,106,221,100,224,105,215,110,181,136,151,165,104,217"/>
+<area shape="rect" id="Node000008" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2eba21cbbca77632e2e999fbfe52d967" title="处理 Used Ring 中已完成的请求" alt="" coords="213,248,376,288"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="166,246,200,251,199,256,165,251"/>
+<area shape="rect" id="Node000011" href="$namespacecpu__io.html#ac9fcdd47fa1ff396470a667dec3a1597" title=" " alt="" coords="455,377,558,402"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="124,254,214,298,450,370,449,375,212,302,121,259"/>
+<area shape="rect" id="Node000012" href="$classvirtio_1_1blk_1_1VirtioBlk.html#acbd79b96538cd9e7b97954f57e399c09" title="更新 avail&#45;&gt;used_event 字段" alt="" coords="221,120,369,160"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="123,213,212,170,228,163,230,168,214,174,126,218"/>
+<area shape="rect" id="Node000013" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="249,363,340,389"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="108,254,155,297,215,342,243,356,240,360,212,346,151,302,104,258"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a3291dde37cac408e3d4730148219439b" title="从请求槽池中分配一个空闲槽（O(1) 位图算法）" alt="" coords="433,120,581,160"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="361,181,426,161,428,167,362,186"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a928f265d102c1e2fd68c653f504fed8e" title="释放请求槽" alt="" coords="433,184,581,224"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="369,201,419,201,419,207,369,207"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb" title=" " alt="" coords="453,70,560,95"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="356,182,374,170,389,154,397,138,406,122,422,106,439,96,442,101,426,110,410,125,402,141,393,157,378,174,358,186"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="369,76,440,78,439,83,369,81"/>
+<area shape="rect" id="Node000007" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2e45e2d49fd7e55241c86643bcbb67f2" title="判断是否需要发送通知（处理 wrap&#45;around）" alt="" coords="433,5,581,45"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="369,56,419,44,420,49,370,61"/>
+<area shape="poly" id="edge10_Node000008_Node000004" title=" " alt="" coords="361,245,426,225,428,231,362,250"/>
+<area shape="rect" id="Node000009" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aae42cda1f43edaa3c9e0a07d3a156edc" title="根据描述符链头索引查找请求槽" alt="" coords="424,312,589,352"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="362,286,428,305,426,311,361,291"/>
+<area shape="rect" id="Node000010" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aea67e100df43d1ca6348ad3589ff7f8b" title="将设备 BlkStatus 映射为 ErrorCode" alt="" coords="433,248,581,288"/>
+<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="376,265,419,265,419,271,376,271"/>
+<area shape="poly" id="edge12_Node000008_Node000011" title=" " alt="" coords="348,286,378,305,393,320,402,335,411,348,426,362,444,371,441,376,422,366,406,352,397,337,389,323,374,309,345,290"/>
+<area shape="poly" id="edge15_Node000012_Node000005" title=" " alt="" coords="369,117,444,97,446,102,370,123"/>
+</map>

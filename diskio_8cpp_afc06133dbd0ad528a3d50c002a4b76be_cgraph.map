@@ -1,0 +1,5 @@
+<map id="disk_status" name="disk_status">
+<area shape="rect" id="Node000001" title="查询磁盘驱动器状态。" alt="" coords="5,13,101,38"/>
+<area shape="rect" id="Node000002" href="$classfatfs_1_1FatFsFileSystem.html#aa524b5d748c218d166ad7c6a6b78cd83" title="获取指定驱动器的块设备" alt="" coords="149,5,316,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,23,136,23,136,28,102,28"/>
+</map>

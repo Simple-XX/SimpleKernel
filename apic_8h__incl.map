@@ -1,7 +1,7 @@
-<map id="/root/src/driver/apic/include/apic.h" name="/root/src/driver/apic/include/apic.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="655,5,803,45"/>
+<map id="/workspaces/SimpleKernel/src/arch/x86_64/apic/include/apic.h" name="/workspaces/SimpleKernel/src/arch/x86_64/apic/include/apic.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="602,5,855,45"/>
 <area shape="rect" id="Node000002" href="$cpu__io_8h.html" title=" " alt="" coords="485,167,561,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="655,44,604,64,580,78,559,95,540,124,530,154,525,152,535,121,555,92,577,73,602,59,653,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="642,48,597,67,559,95,540,124,530,154,525,152,535,121,555,91,595,62,640,43"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="707,313,774,339"/>
 <area shape="poly" id="edge17_Node000001_Node000006" title=" " alt="" coords="776,43,819,64,861,91,911,130,951,171,964,193,969,217,965,241,951,267,924,285,882,300,788,321,787,315,881,295,922,281,947,264,960,239,964,217,959,195,947,175,908,134,858,96,816,69,774,48"/>
 <area shape="rect" id="Node000012" title=" " alt="" coords="673,167,729,192"/>

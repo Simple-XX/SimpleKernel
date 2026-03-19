@@ -1,0 +1,12 @@
+<map id="vfs::MountTable::Mount" name="vfs::MountTable::Mount">
+<area shape="rect" id="Node000001" title="挂载文件系统到指定路径" alt="" coords="5,81,180,107"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="263,5,339,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,79,251,33,253,38,129,84"/>
+<area shape="rect" id="Node000003" href="$namespacevfs.html#aa5aeb25168763769b1d16de4f480c55a" title=" " alt="" coords="421,107,549,132"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,86,274,85,374,91,427,101,426,106,373,97,273,91,181,92"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="259,107,342,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="181,102,245,110,245,115,180,107"/>
+<area shape="rect" id="Node000005" href="$namespacevfs.html#a717ddd37ea8d1fd42d4e21941bd03dc4" title=" " alt="" coords="228,156,373,181"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="129,104,229,141,252,149,250,154,227,146,127,109"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="348,153,423,133,424,138,350,159"/>
+</map>

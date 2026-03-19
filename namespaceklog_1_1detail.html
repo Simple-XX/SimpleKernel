@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('namespaceklog_1_1detail.html',''); ini
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">klog::detail Namespace Reference</div></div>
 </div><!--header-->
@@ -99,88 +100,71 @@ $(document).ready(function(){initNavTree('namespaceklog_1_1detail.html',''); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structklog_1_1detail_1_1LogBase.html">LogBase</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklog_1_1detail_1_1Logger.html">Logger</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">流式日志输出器  <a href="classklog_1_1detail_1_1Logger.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structklog_1_1detail_1_1LogEntry.html">LogEntry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">存储于 MPMC 队列中的日志条目  <a href="structklog_1_1detail_1_1LogEntry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:acd7289dac267a42c332aa9de8035c058" id="r_acd7289dac267a42c332aa9de8035c058"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058">LogLevel</a> { <br />
-&#160;&#160;<a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ac755183201f18ee5617a59bc9decb20c">kDebug</a>
-, <a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ac8ca41f64403523cff16285ad76af703">kInfo</a>
-, <a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ad4fa508b8ac4556b460a0f552315e00c">kWarn</a>
-, <a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ad7fcb4d21eac534743b5f6afd750daea">kErr</a>
-, <br />
-&#160;&#160;<a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f">kLogLevelMax</a>
-<br />
+<tr class="memitem:a8151f46c462f0921e4003dd0a78b07ae" id="r_a8151f46c462f0921e4003dd0a78b07ae"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07ae">Level</a> : uint8_t { <a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aeabb53ce21b7c0b7c8a8f7860a41901d29">kDebug</a> = 0
+, <a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea176a473e63c17ccdac91640c67f149bf">kInfo</a> = 1
+, <a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea61a920eb4a24199ec6a36dd90f2a30b7">kWarn</a> = 2
+, <a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea9b99a2b91d086cb660c4e3fdbdd8a2b0">kErr</a> = 3
  }</td></tr>
-<tr class="separator:acd7289dac267a42c332aa9de8035c058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a8151f46c462f0921e4003dd0a78b07ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">日志级别  <a href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07ae">More...</a><br /></td></tr>
+<tr class="separator:a8151f46c462f0921e4003dd0a78b07ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:af01b0252de3bdf62356b8f5905c0cb1a" id="r_af01b0252de3bdf62356b8f5905c0cb1a"><td class="memItemLeft" align="right" valign="top">__always_inline auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a">PutStr</a> (const char *s) -&gt; void</td></tr>
+<tr class="memdesc:af01b0252de3bdf62356b8f5905c0cb1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">通过 etl_putchar 输出字符串（空指针安全）  <br /></td></tr>
+<tr class="separator:af01b0252de3bdf62356b8f5905c0cb1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af04e0d33a64c0a74c672361396bc644b" id="r_af04e0d33a64c0a74c672361396bc644b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#af04e0d33a64c0a74c672361396bc644b">TryDrain</a> () -&gt; void</td></tr>
+<tr class="memdesc:af04e0d33a64c0a74c672361396bc644b"><td class="mdescLeft">&#160;</td><td class="mdescRight">将队列中所有条目输出至串口  <br /></td></tr>
+<tr class="separator:af04e0d33a64c0a74c672361396bc644b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0562f234b6226d15eb2a3c4750078004" id="r_a0562f234b6226d15eb2a3c4750078004"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07ae">Level</a> Lvl, typename... Args&gt; </td></tr>
+<tr class="memitem:a0562f234b6226d15eb2a3c4750078004"><td class="memTemplItemLeft" align="right" valign="top">__always_inline auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a0562f234b6226d15eb2a3c4750078004">Log</a> (etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</td></tr>
+<tr class="memdesc:a0562f234b6226d15eb2a3c4750078004"><td class="mdescLeft">&#160;</td><td class="mdescRight">核心实现：格式化消息并入队，随后尝试排空  <br /></td></tr>
+<tr class="separator:a0562f234b6226d15eb2a3c4750078004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a2027af72ff878049f22ed5c5963d8f1d" id="r_a2027af72ff878049f22ed5c5963d8f1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSpinLock.html">SpinLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a2027af72ff878049f22ed5c5963d8f1d">log_lock</a> (&quot;kernel_log&quot;)</td></tr>
-<tr class="separator:a2027af72ff878049f22ed5c5963d8f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44c0b56ea841945f6668fae3c6a233bb" id="r_a44c0b56ea841945f6668fae3c6a233bb"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a44c0b56ea841945f6668fae3c6a233bb">kReset</a> = &quot;\033[0m&quot;</td></tr>
-<tr class="memdesc:a44c0b56ea841945f6668fae3c6a233bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">ANSI 转义码，在支持 ANSI 转义码的终端中可以显示颜色  <br /></td></tr>
+<tr class="memitem:aeaf0e45dd4afbfcb02110f1ee5d9a84f" id="r_aeaf0e45dd4afbfcb02110f1ee5d9a84f"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#aeaf0e45dd4afbfcb02110f1ee5d9a84f">kMinLevel</a></td></tr>
+<tr class="memdesc:aeaf0e45dd4afbfcb02110f1ee5d9a84f"><td class="mdescLeft">&#160;</td><td class="mdescRight">编译期最低日志级别  <br /></td></tr>
+<tr class="separator:aeaf0e45dd4afbfcb02110f1ee5d9a84f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4ce300de73bfb59cc6f5740ec93aab1" id="r_aa4ce300de73bfb59cc6f5740ec93aab1"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#aa4ce300de73bfb59cc6f5740ec93aab1">kLevelLabel</a> []</td></tr>
+<tr class="memdesc:aa4ce300de73bfb59cc6f5740ec93aab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">日志级别标签（定宽，对齐输出）  <br /></td></tr>
+<tr class="separator:aa4ce300de73bfb59cc6f5740ec93aab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af12a8dfb2db2c5e8ba09d43b4ade5050" id="r_af12a8dfb2db2c5e8ba09d43b4ade5050"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#af12a8dfb2db2c5e8ba09d43b4ade5050">kLevelColor</a> []</td></tr>
+<tr class="memdesc:af12a8dfb2db2c5e8ba09d43b4ade5050"><td class="mdescLeft">&#160;</td><td class="mdescRight">日志级别对应的颜色（按 Level 枚举索引）  <br /></td></tr>
+<tr class="separator:af12a8dfb2db2c5e8ba09d43b4ade5050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7424e0e8c9d282275fa78ff8d4765c1" id="r_ac7424e0e8c9d282275fa78ff8d4765c1"><td class="memItemLeft" align="right" valign="top">mpmc_queue::MPMCQueue&lt; <a class="el" href="structklog_1_1detail_1_1LogEntry.html">LogEntry</a>, 256 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#ac7424e0e8c9d282275fa78ff8d4765c1">log_queue</a></td></tr>
+<tr class="memdesc:ac7424e0e8c9d282275fa78ff8d4765c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">全局日志队列（64 KB 静态内存，constexpr 构造）  <br /></td></tr>
+<tr class="separator:ac7424e0e8c9d282275fa78ff8d4765c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a506519d0c9ae8a66e38078d1783f69db" id="r_a506519d0c9ae8a66e38078d1783f69db"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a506519d0c9ae8a66e38078d1783f69db">log_seq</a> {0}</td></tr>
+<tr class="memdesc:a506519d0c9ae8a66e38078d1783f69db"><td class="mdescLeft">&#160;</td><td class="mdescRight">用于跨核心排序的单调递增序列计数器  <br /></td></tr>
+<tr class="separator:a506519d0c9ae8a66e38078d1783f69db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a018a8e41af17ca14a1ea56c9ff7347fb" id="r_a018a8e41af17ca14a1ea56c9ff7347fb"><td class="memItemLeft" align="right" valign="top">std::atomic_flag&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a018a8e41af17ca14a1ea56c9ff7347fb">drain_flag</a> = ATOMIC_FLAG_INIT</td></tr>
+<tr class="memdesc:a018a8e41af17ca14a1ea56c9ff7347fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">单消费者排空保护（非阻塞 try-lock）  <br /></td></tr>
+<tr class="separator:a018a8e41af17ca14a1ea56c9ff7347fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af74195a26f05fb0b3ad5edc17d27dd1e" id="r_af74195a26f05fb0b3ad5edc17d27dd1e"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#af74195a26f05fb0b3ad5edc17d27dd1e">dropped_count</a> {0}</td></tr>
+<tr class="memdesc:af74195a26f05fb0b3ad5edc17d27dd1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">队列满时丢弃的条目计数  <br /></td></tr>
+<tr class="separator:af74195a26f05fb0b3ad5edc17d27dd1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">ANSI 转义码</div></td></tr>
+<tr class="memitem:a44c0b56ea841945f6668fae3c6a233bb" id="r_a44c0b56ea841945f6668fae3c6a233bb"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a44c0b56ea841945f6668fae3c6a233bb">kReset</a> = &quot;\033[0m&quot;</td></tr>
 <tr class="separator:a44c0b56ea841945f6668fae3c6a233bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b6d722bf10436c6340cf49b41e18208" id="r_a8b6d722bf10436c6340cf49b41e18208"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a8b6d722bf10436c6340cf49b41e18208">kRed</a> = &quot;\033[31m&quot;</td></tr>
+<tr class="memitem:a8b6d722bf10436c6340cf49b41e18208" id="r_a8b6d722bf10436c6340cf49b41e18208"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a8b6d722bf10436c6340cf49b41e18208">kRed</a> = &quot;\033[31m&quot;</td></tr>
 <tr class="separator:a8b6d722bf10436c6340cf49b41e18208"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a521ec5c56fac131c04967aec6a50758b" id="r_a521ec5c56fac131c04967aec6a50758b"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a521ec5c56fac131c04967aec6a50758b">kGreen</a> = &quot;\033[32m&quot;</td></tr>
+<tr class="memitem:a521ec5c56fac131c04967aec6a50758b" id="r_a521ec5c56fac131c04967aec6a50758b"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a521ec5c56fac131c04967aec6a50758b">kGreen</a> = &quot;\033[32m&quot;</td></tr>
 <tr class="separator:a521ec5c56fac131c04967aec6a50758b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4af8b794b23b244d2bbb13d2d6940f59" id="r_a4af8b794b23b244d2bbb13d2d6940f59"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a4af8b794b23b244d2bbb13d2d6940f59">kYellow</a> = &quot;\033[33m&quot;</td></tr>
+<tr class="memitem:a4af8b794b23b244d2bbb13d2d6940f59" id="r_a4af8b794b23b244d2bbb13d2d6940f59"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a4af8b794b23b244d2bbb13d2d6940f59">kYellow</a> = &quot;\033[33m&quot;</td></tr>
 <tr class="separator:a4af8b794b23b244d2bbb13d2d6940f59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade9a23e153a210a0740da00111ceed76" id="r_ade9a23e153a210a0740da00111ceed76"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#ade9a23e153a210a0740da00111ceed76">kBlue</a> = &quot;\033[34m&quot;</td></tr>
-<tr class="separator:ade9a23e153a210a0740da00111ceed76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f89ba928b14726ef81947ed5b8c0bd1" id="r_a4f89ba928b14726ef81947ed5b8c0bd1"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a4f89ba928b14726ef81947ed5b8c0bd1">kMagenta</a> = &quot;\033[35m&quot;</td></tr>
-<tr class="separator:a4f89ba928b14726ef81947ed5b8c0bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a7f42a6d8b3e6c24411c5bdd2f77356" id="r_a8a7f42a6d8b3e6c24411c5bdd2f77356"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a8a7f42a6d8b3e6c24411c5bdd2f77356">kCyan</a> = &quot;\033[36m&quot;</td></tr>
+<tr class="memitem:a8a7f42a6d8b3e6c24411c5bdd2f77356" id="r_a8a7f42a6d8b3e6c24411c5bdd2f77356"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a8a7f42a6d8b3e6c24411c5bdd2f77356">kCyan</a> = &quot;\033[36m&quot;</td></tr>
 <tr class="separator:a8a7f42a6d8b3e6c24411c5bdd2f77356"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a89b52ceb28ae243016cc09e98ded2d" id="r_a1a89b52ceb28ae243016cc09e98ded2d"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#a1a89b52ceb28ae243016cc09e98ded2d">kWhite</a> = &quot;\033[37m&quot;</td></tr>
-<tr class="separator:a1a89b52ceb28ae243016cc09e98ded2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbd58831ddfa1a86c82bd88f5f3c158c" id="r_adbd58831ddfa1a86c82bd88f5f3c158c"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; const char *, <a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f">kLogLevelMax</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklog_1_1detail.html#adbd58831ddfa1a86c82bd88f5f3c158c">kLogColors</a></td></tr>
-<tr class="separator:adbd58831ddfa1a86c82bd88f5f3c158c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="acd7289dac267a42c332aa9de8035c058" name="acd7289dac267a42c332aa9de8035c058"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd7289dac267a42c332aa9de8035c058">&#9670;&#160;</a></span>LogLevel</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058">klog::detail::LogLevel</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acd7289dac267a42c332aa9de8035c058ac755183201f18ee5617a59bc9decb20c" name="acd7289dac267a42c332aa9de8035c058ac755183201f18ee5617a59bc9decb20c"></a>kDebug&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="acd7289dac267a42c332aa9de8035c058ac8ca41f64403523cff16285ad76af703" name="acd7289dac267a42c332aa9de8035c058ac8ca41f64403523cff16285ad76af703"></a>kInfo&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="acd7289dac267a42c332aa9de8035c058ad4fa508b8ac4556b460a0f552315e00c" name="acd7289dac267a42c332aa9de8035c058ad4fa508b8ac4556b460a0f552315e00c"></a>kWarn&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="acd7289dac267a42c332aa9de8035c058ad7fcb4d21eac534743b5f6afd750daea" name="acd7289dac267a42c332aa9de8035c058ad7fcb4d21eac534743b5f6afd750daea"></a>kErr&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f" name="acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f"></a>kLogLevelMax&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00034">34</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>              {</div>
-<div class="line"><span class="lineno">   35</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ac755183201f18ee5617a59bc9decb20c">kDebug</a>,</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ac8ca41f64403523cff16285ad76af703">kInfo</a>,</div>
-<div class="line"><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ad4fa508b8ac4556b460a0f552315e00c">kWarn</a>,</div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ad7fcb4d21eac534743b5f6afd750daea">kErr</a>,</div>
-<div class="line"><span class="lineno">   39</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f">kLogLevelMax</a>,</div>
-<div class="line"><span class="lineno">   40</span>};</div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f"><div class="ttname"><a href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f">klog::detail::kLogLevelMax</a></div><div class="ttdeci">@ kLogLevelMax</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00039">kernel_log.hpp:39</a></div></div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_acd7289dac267a42c332aa9de8035c058ac755183201f18ee5617a59bc9decb20c"><div class="ttname"><a href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ac755183201f18ee5617a59bc9decb20c">klog::detail::kDebug</a></div><div class="ttdeci">@ kDebug</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00035">kernel_log.hpp:35</a></div></div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_acd7289dac267a42c332aa9de8035c058ac8ca41f64403523cff16285ad76af703"><div class="ttname"><a href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ac8ca41f64403523cff16285ad76af703">klog::detail::kInfo</a></div><div class="ttdeci">@ kInfo</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00036">kernel_log.hpp:36</a></div></div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_acd7289dac267a42c332aa9de8035c058ad4fa508b8ac4556b460a0f552315e00c"><div class="ttname"><a href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ad4fa508b8ac4556b460a0f552315e00c">klog::detail::kWarn</a></div><div class="ttdeci">@ kWarn</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00037">kernel_log.hpp:37</a></div></div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_acd7289dac267a42c332aa9de8035c058ad7fcb4d21eac534743b5f6afd750daea"><div class="ttname"><a href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058ad7fcb4d21eac534743b5f6afd750daea">klog::detail::kErr</a></div><div class="ttdeci">@ kErr</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00038">kernel_log.hpp:38</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="ade9a23e153a210a0740da00111ceed76" name="ade9a23e153a210a0740da00111ceed76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade9a23e153a210a0740da00111ceed76">&#9670;&#160;</a></span>kBlue</h2>
+<a id="a8151f46c462f0921e4003dd0a78b07ae" name="a8151f46c462f0921e4003dd0a78b07ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8151f46c462f0921e4003dd0a78b07ae">&#9670;&#160;</a></span>Level</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,18 +173,341 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto klog::detail::kBlue = &quot;\033[34m&quot;</td>
+          <td class="memname">enum class <a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07ae">klog::detail::Level</a> : uint8_t</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00029">29</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<p>日志级别 </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8151f46c462f0921e4003dd0a78b07aeabb53ce21b7c0b7c8a8f7860a41901d29" name="a8151f46c462f0921e4003dd0a78b07aeabb53ce21b7c0b7c8a8f7860a41901d29"></a>kDebug&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8151f46c462f0921e4003dd0a78b07aea176a473e63c17ccdac91640c67f149bf" name="a8151f46c462f0921e4003dd0a78b07aea176a473e63c17ccdac91640c67f149bf"></a>kInfo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8151f46c462f0921e4003dd0a78b07aea61a920eb4a24199ec6a36dd90f2a30b7" name="a8151f46c462f0921e4003dd0a78b07aea61a920eb4a24199ec6a36dd90f2a30b7"></a>kWarn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8151f46c462f0921e4003dd0a78b07aea9b99a2b91d086cb660c4e3fdbdd8a2b0" name="a8151f46c462f0921e4003dd0a78b07aea9b99a2b91d086cb660c4e3fdbdd8a2b0"></a>kErr&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00029">29</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>                 : uint8_t {</div>
+<div class="line"><span class="lineno">   30</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aeabb53ce21b7c0b7c8a8f7860a41901d29">kDebug</a> = 0,</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea176a473e63c17ccdac91640c67f149bf">kInfo</a> = 1,</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea61a920eb4a24199ec6a36dd90f2a30b7">kWarn</a> = 2,</div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_enumvalue" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea9b99a2b91d086cb660c4e3fdbdd8a2b0">kErr</a> = 3,</div>
+<div class="line"><span class="lineno">   34</span>};</div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a8151f46c462f0921e4003dd0a78b07aea176a473e63c17ccdac91640c67f149bf"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea176a473e63c17ccdac91640c67f149bf">klog::detail::Level::kInfo</a></div><div class="ttdeci">@ kInfo</div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a8151f46c462f0921e4003dd0a78b07aea61a920eb4a24199ec6a36dd90f2a30b7"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea61a920eb4a24199ec6a36dd90f2a30b7">klog::detail::Level::kWarn</a></div><div class="ttdeci">@ kWarn</div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a8151f46c462f0921e4003dd0a78b07aea9b99a2b91d086cb660c4e3fdbdd8a2b0"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aea9b99a2b91d086cb660c4e3fdbdd8a2b0">klog::detail::Level::kErr</a></div><div class="ttdeci">@ kErr</div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a8151f46c462f0921e4003dd0a78b07aeabb53ce21b7c0b7c8a8f7860a41901d29"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07aeabb53ce21b7c0b7c8a8f7860a41901d29">klog::detail::Level::kDebug</a></div><div class="ttdeci">@ kDebug</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a0562f234b6226d15eb2a3c4750078004" name="a0562f234b6226d15eb2a3c4750078004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0562f234b6226d15eb2a3c4750078004">&#9670;&#160;</a></span>Log()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07ae">Level</a> Lvl, typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">__always_inline auto klog::detail::Log </td>
+          <td>(</td>
+          <td class="paramtype">etl::format_string&lt; Args... &gt;&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; void </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>核心实现：格式化消息并入队，随后尝试排空 </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Lvl</td><td>编译期日志级别，低于 kMinLevel 时整个函数被编译器消除 </td></tr>
+    <tr><td class="paramname">Args</td><td>可变格式化参数类型 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00143">143</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  144</span>            {</div>
+<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (Lvl &lt; <a class="code hl_variable" href="namespaceklog_1_1detail.html#aeaf0e45dd4afbfcb02110f1ee5d9a84f">kMinLevel</a>) {</div>
+<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  147</span>  }</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>  LogEntry entry{};</div>
+<div class="line"><span class="lineno">  150</span>  entry.seq = log_seq.fetch_add(1, std::memory_order_relaxed);</div>
+<div class="line"><span class="lineno">  151</span>  entry.core_id = <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>();</div>
+<div class="line"><span class="lineno">  152</span>  entry.level = Lvl;</div>
+<div class="line"><span class="lineno">  153</span>  <span class="keyword">auto</span>* <a class="code hl_variable" href="basic__info_8hpp.html#a6a57db0096456f14176cf7e7affa1929">end</a> = etl::format_to_n(entry.msg, <span class="keyword">sizeof</span>(entry.msg) - 1, fmt,</div>
+<div class="line"><span class="lineno">  154</span>                               <span class="keyword">static_cast&lt;</span>Args&amp;&amp;<span class="keyword">&gt;</span>(args)...);</div>
+<div class="line"><span class="lineno">  155</span>  *<a class="code hl_variable" href="basic__info_8hpp.html#a6a57db0096456f14176cf7e7affa1929">end</a> = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>  <span class="keywordflow">if</span> (!log_queue.push(entry)) {</div>
+<div class="line"><span class="lineno">  158</span>    <span class="comment">// 队列满：尝试排空后重试一次</span></div>
+<div class="line"><span class="lineno">  159</span>    TryDrain();</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">if</span> (!log_queue.push(entry)) {</div>
+<div class="line"><span class="lineno">  161</span>      dropped_count.fetch_add(1, std::memory_order_relaxed);</div>
+<div class="line"><span class="lineno">  162</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  163</span>    }</div>
+<div class="line"><span class="lineno">  164</span>  }</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span>  <a class="code hl_function" href="namespaceklog_1_1detail.html#af04e0d33a64c0a74c672361396bc644b">TryDrain</a>();</div>
+<div class="line"><span class="lineno">  167</span>}</div>
+<div class="ttc" id="abasic__info_8hpp_html_a6a57db0096456f14176cf7e7affa1929"><div class="ttname"><a href="basic__info_8hpp.html#a6a57db0096456f14176cf7e7affa1929">end</a></div><div class="ttdeci">void * end[]</div><div class="ttdoc">内核结束</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00021">basic_info.hpp:21</a></div></div>
+<div class="ttc" id="anamespacecpu__io_html_a52b8a7263a31e6670ef4dec7922d9e72"><div class="ttname"><a href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a></div><div class="ttdeci">auto GetCurrentCoreId() -&gt; size_t</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00026">cpu_io.h:26</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_aeaf0e45dd4afbfcb02110f1ee5d9a84f"><div class="ttname"><a href="namespaceklog_1_1detail.html#aeaf0e45dd4afbfcb02110f1ee5d9a84f">klog::detail::kMinLevel</a></div><div class="ttdeci">constexpr auto kMinLevel</div><div class="ttdoc">编译期最低日志级别</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00037">kernel_log.hpp:37</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_af04e0d33a64c0a74c672361396bc644b"><div class="ttname"><a href="namespaceklog_1_1detail.html#af04e0d33a64c0a74c672361396bc644b">klog::detail::TryDrain</a></div><div class="ttdeci">auto TryDrain() -&gt; void</div><div class="ttdoc">将队列中所有条目输出至串口</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00098">kernel_log.hpp:98</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceklog_1_1detail_a0562f234b6226d15eb2a3c4750078004_cgraph.png" border="0" usemap="#anamespaceklog_1_1detail_a0562f234b6226d15eb2a3c4750078004_cgraph" alt=""/></div>
+<map name="anamespaceklog_1_1detail_a0562f234b6226d15eb2a3c4750078004_cgraph" id="anamespaceklog_1_1detail_a0562f234b6226d15eb2a3c4750078004_cgraph">
+<area shape="rect" title="核心实现：格式化消息并入队，随后尝试排空" alt="" coords="5,41,132,66"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="385,15,571,41"/>
+<area shape="poly" title=" " alt="" coords="132,47,371,32,372,37,132,52"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#af04e0d33a64c0a74c672361396bc644b" title="将队列中所有条目输出至串口" alt="" coords="180,66,337,91"/>
+<area shape="poly" title=" " alt="" coords="133,59,167,64,166,69,132,64"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="619,5,881,45"/>
+<area shape="poly" title=" " alt="" coords="571,24,605,24,605,29,571,30"/>
+<area shape="poly" title=" " alt="" coords="314,63,409,41,410,46,315,68"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="407,67,549,93"/>
+<area shape="poly" title=" " alt="" coords="338,76,393,77,393,82,338,82"/>
+<area shape="rect" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="703,70,797,95"/>
+<area shape="poly" title=" " alt="" coords="549,78,689,79,689,85,549,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af01b0252de3bdf62356b8f5905c0cb1a" name="af01b0252de3bdf62356b8f5905c0cb1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af01b0252de3bdf62356b8f5905c0cb1a">&#9670;&#160;</a></span>PutStr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__always_inline auto klog::detail::PutStr </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> -&gt; void </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>通过 etl_putchar 输出字符串（空指针安全） </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00082">82</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>                                                   {</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (!s) {</div>
+<div class="line"><span class="lineno">   84</span>    s = <span class="stringliteral">&quot;(null)&quot;</span>;</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
+<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">while</span> (*s) {</div>
+<div class="line"><span class="lineno">   87</span>    <a class="code hl_function" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60">etl_putchar</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(*s));</div>
+<div class="line"><span class="lineno">   88</span>    ++s;</div>
+<div class="line"><span class="lineno">   89</span>  }</div>
+<div class="line"><span class="lineno">   90</span>}</div>
+<div class="ttc" id="aaarch64_2early__console_8cpp_html_a00b66d463088c2b14f7766792ee8bc60"><div class="ttname"><a href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60">etl_putchar</a></div><div class="ttdeci">auto etl_putchar(int c) -&gt; void</div><div class="ttdoc">早期控制台字符输出</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2early__console_8cpp_source.html#l00043">early_console.cpp:43</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_cgraph.png" border="0" usemap="#anamespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_cgraph" alt=""/></div>
+<map name="anamespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_cgraph" id="anamespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_cgraph">
+<area shape="rect" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="5,5,148,31"/>
+<area shape="rect" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="196,5,291,31"/>
+<area shape="poly" title=" " alt="" coords="148,15,182,15,182,21,148,21"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_icgraph.png" border="0" usemap="#anamespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_icgraph" alt=""/></div>
+<map name="anamespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_icgraph" id="anamespaceklog_1_1detail_af01b0252de3bdf62356b8f5905c0cb1a_icgraph">
+<area shape="rect" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="437,129,580,155"/>
+<area shape="rect" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e" title="绕过队列直接输出至串口（用于 panic 路径）" alt="" coords="257,80,364,105"/>
+<area shape="poly" title=" " alt="" coords="443,129,362,108,363,103,445,123"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#af04e0d33a64c0a74c672361396bc644b" title="将队列中所有条目输出至串口" alt="" coords="232,153,389,179"/>
+<area shape="poly" title=" " alt="" coords="424,155,390,159,389,154,423,150"/>
+<area shape="rect" href="kstd__libcxx_8cpp.html#ac9ea6a9e63fc867f857c3dff70463280" title="libc assert() 失败时调用的底层接口" alt="" coords="43,5,147,31"/>
+<area shape="poly" title=" " alt="" coords="267,77,183,45,146,33,147,28,185,39,269,72"/>
+<area shape="rect" href="classLockGuard.html#aa283d6b19fddd2287f84dcf937b92e5b" title="构造函数，自动获取锁" alt="" coords="11,55,179,80"/>
+<area shape="poly" title=" " alt="" coords="243,87,179,80,179,75,244,82"/>
+<area shape="rect" href="classLockGuard.html#af889562d8ed81c2337c94d0c915d65ca" title="析构函数，自动释放锁" alt="" coords="5,104,184,129"/>
+<area shape="poly" title=" " alt="" coords="244,103,185,109,184,104,244,97"/>
+<area shape="rect" href="namespaceklog.html#a3cdfcc82de35833e08bab8c2b728e44a" title="强制将队列中所有日志条目输出至串口" alt="" coords="48,153,141,179"/>
+<area shape="poly" title=" " alt="" coords="218,169,142,169,142,163,218,163"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#a0562f234b6226d15eb2a3c4750078004" title="核心实现：格式化消息并入队，随后尝试排空" alt="" coords="31,203,158,228"/>
+<area shape="poly" title=" " alt="" coords="242,184,152,205,151,200,241,179"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af04e0d33a64c0a74c672361396bc644b" name="af04e0d33a64c0a74c672361396bc644b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af04e0d33a64c0a74c672361396bc644b">&#9670;&#160;</a></span>TryDrain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto klog::detail::TryDrain </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; void </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>将队列中所有条目输出至串口 </p>
+<p>使用 atomic_flag 实现非阻塞 try-lock，同一时刻仅一个核心执行排空， 其他核心直接返回，等待下次调用时再排空。 </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00098">98</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>                               {</div>
+<div class="line"><span class="lineno">   99</span>  <span class="comment">// 非阻塞 try-lock：若其他核心正在排空则立即返回</span></div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceklog_1_1detail.html#a018a8e41af17ca14a1ea56c9ff7347fb">drain_flag</a>.test_and_set(std::memory_order_acquire)) {</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  102</span>  }</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>  <span class="comment">// 若有丢弃条目则上报</span></div>
+<div class="line"><span class="lineno">  105</span>  <span class="keyword">auto</span> dropped = dropped_count.exchange(0, std::memory_order_relaxed);</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">if</span> (dropped &gt; 0) {</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordtype">char</span> drop_buf[64];</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keyword">auto</span>* <a class="code hl_variable" href="basic__info_8hpp.html#a6a57db0096456f14176cf7e7affa1929">end</a> = etl::format_to_n(drop_buf, <span class="keyword">sizeof</span>(drop_buf) - 1,</div>
+<div class="line"><span class="lineno">  109</span>                                 <span class="stringliteral">&quot;\033[31m[LOG] dropped {} entries\033[0m\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  110</span>                                 <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(dropped));</div>
+<div class="line"><span class="lineno">  111</span>    *<a class="code hl_variable" href="basic__info_8hpp.html#a6a57db0096456f14176cf7e7affa1929">end</a> = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  112</span>    PutStr(drop_buf);</div>
+<div class="line"><span class="lineno">  113</span>  }</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>  <span class="comment">// 排空循环</span></div>
+<div class="line"><span class="lineno">  116</span>  <span class="keyword">auto</span> printer_core = <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>();</div>
+<div class="line"><span class="lineno">  117</span>  LogEntry entry{};</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keywordflow">while</span> (<a class="code hl_variable" href="namespaceklog_1_1detail.html#ac7424e0e8c9d282275fa78ff8d4765c1">log_queue</a>.pop(entry)) {</div>
+<div class="line"><span class="lineno">  119</span>    <span class="comment">// 格式: [id][core_id1 core_id2 LEVEL] msg</span></div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordtype">char</span> hdr_buf[48];</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keyword">auto</span>* hdr_end =</div>
+<div class="line"><span class="lineno">  122</span>        etl::format_to_n(hdr_buf, <span class="keyword">sizeof</span>(hdr_buf) - 1, <span class="stringliteral">&quot;[{}][{} {} {}]&quot;</span>,</div>
+<div class="line"><span class="lineno">  123</span>                         entry.seq, entry.core_id, printer_core,</div>
+<div class="line"><span class="lineno">  124</span>                         kLevelLabel[<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(entry.level)]);</div>
+<div class="line"><span class="lineno">  125</span>    *hdr_end = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  126</span>    <a class="code hl_function" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a">PutStr</a>(kLevelColor[<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(entry.level)]);</div>
+<div class="line"><span class="lineno">  127</span>    <a class="code hl_function" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a">PutStr</a>(hdr_buf);</div>
+<div class="line"><span class="lineno">  128</span>    <a class="code hl_function" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a">PutStr</a>(entry.msg);</div>
+<div class="line"><span class="lineno">  129</span>    <a class="code hl_function" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a">PutStr</a>(kReset);</div>
+<div class="line"><span class="lineno">  130</span>    <a class="code hl_function" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a">PutStr</a>(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  131</span>  }</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>  <a class="code hl_variable" href="namespaceklog_1_1detail.html#a018a8e41af17ca14a1ea56c9ff7347fb">drain_flag</a>.clear(std::memory_order_release);</div>
+<div class="line"><span class="lineno">  134</span>}</div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a018a8e41af17ca14a1ea56c9ff7347fb"><div class="ttname"><a href="namespaceklog_1_1detail.html#a018a8e41af17ca14a1ea56c9ff7347fb">klog::detail::drain_flag</a></div><div class="ttdeci">std::atomic_flag drain_flag</div><div class="ttdoc">单消费者排空保护（非阻塞 try-lock）</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00076">kernel_log.hpp:76</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_ac7424e0e8c9d282275fa78ff8d4765c1"><div class="ttname"><a href="namespaceklog_1_1detail.html#ac7424e0e8c9d282275fa78ff8d4765c1">klog::detail::log_queue</a></div><div class="ttdeci">mpmc_queue::MPMCQueue&lt; LogEntry, 256 &gt; log_queue</div><div class="ttdoc">全局日志队列（64 KB 静态内存，constexpr 构造）</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00070">kernel_log.hpp:70</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_af01b0252de3bdf62356b8f5905c0cb1a"><div class="ttname"><a href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a">klog::detail::PutStr</a></div><div class="ttdeci">__always_inline auto PutStr(const char *s) -&gt; void</div><div class="ttdoc">通过 etl_putchar 输出字符串（空指针安全）</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00082">kernel_log.hpp:82</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_cgraph.png" border="0" usemap="#anamespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_cgraph" alt=""/></div>
+<map name="anamespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_cgraph" id="anamespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_cgraph">
+<area shape="rect" title="将队列中所有条目输出至串口" alt="" coords="5,42,163,67"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="211,15,396,41"/>
+<area shape="poly" title=" " alt="" coords="163,42,197,38,197,44,163,48"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="232,66,375,91"/>
+<area shape="poly" title=" " alt="" coords="163,61,218,67,218,72,163,66"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="444,5,707,45"/>
+<area shape="poly" title=" " alt="" coords="396,24,430,24,430,29,396,30"/>
+<area shape="rect" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="528,70,623,95"/>
+<area shape="poly" title=" " alt="" coords="375,77,515,79,515,84,375,82"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_icgraph.png" border="0" usemap="#anamespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_icgraph" alt=""/></div>
+<map name="anamespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_icgraph" id="anamespaceklog_1_1detail_af04e0d33a64c0a74c672361396bc644b_icgraph">
+<area shape="rect" title="将队列中所有条目输出至串口" alt="" coords="180,31,337,56"/>
+<area shape="rect" href="namespaceklog.html#a3cdfcc82de35833e08bab8c2b728e44a" title="强制将队列中所有日志条目输出至串口" alt="" coords="22,5,115,31"/>
+<area shape="poly" title=" " alt="" coords="166,34,115,27,116,22,167,28"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#a0562f234b6226d15eb2a3c4750078004" title="核心实现：格式化消息并入队，随后尝试排空" alt="" coords="5,55,132,80"/>
+<area shape="poly" title=" " alt="" coords="167,58,133,62,132,57,166,52"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a018a8e41af17ca14a1ea56c9ff7347fb" name="a018a8e41af17ca14a1ea56c9ff7347fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a018a8e41af17ca14a1ea56c9ff7347fb">&#9670;&#160;</a></span>drain_flag</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic_flag klog::detail::drain_flag = ATOMIC_FLAG_INIT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>单消费者排空保护（非阻塞 try-lock） </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00076">76</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+
+</div>
+</div>
+<a id="af74195a26f05fb0b3ad5edc17d27dd1e" name="af74195a26f05fb0b3ad5edc17d27dd1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af74195a26f05fb0b3ad5edc17d27dd1e">&#9670;&#160;</a></span>dropped_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;uint64_t&gt; klog::detail::dropped_count {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>队列满时丢弃的条目计数 </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00079">79</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a8a7f42a6d8b3e6c24411c5bdd2f77356" name="a8a7f42a6d8b3e6c24411c5bdd2f77356"></a>
@@ -218,12 +525,12 @@ Variables</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00031">31</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00025">25</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
 
 </div>
 </div>
@@ -242,17 +549,17 @@ Variables</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00027">27</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00023">23</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
 
 </div>
 </div>
-<a id="adbd58831ddfa1a86c82bd88f5f3c158c" name="adbd58831ddfa1a86c82bd88f5f3c158c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbd58831ddfa1a86c82bd88f5f3c158c">&#9670;&#160;</a></span>kLogColors</h2>
+<a id="af12a8dfb2db2c5e8ba09d43b4ade5050" name="af12a8dfb2db2c5e8ba09d43b4ade5050"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af12a8dfb2db2c5e8ba09d43b4ade5050">&#9670;&#160;</a></span>kLevelColor</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,18 +568,18 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr std::array&lt;const char*, <a class="el" href="namespaceklog_1_1detail.html#acd7289dac267a42c332aa9de8035c058a410596056339c40cf8a19da54084777f">kLogLevelMax</a>&gt; klog::detail::kLogColors</td>
+          <td class="memname">constexpr const char* klog::detail::kLevelColor[]</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
 <div class="line">    </div>
-<div class="line">    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a4f89ba928b14726ef81947ed5b8c0bd1">kMagenta</a>,</div>
+<div class="line">    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a521ec5c56fac131c04967aec6a50758b">kGreen</a>,</div>
 <div class="line">    </div>
 <div class="line">    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a8a7f42a6d8b3e6c24411c5bdd2f77356">kCyan</a>,</div>
 <div class="line">    </div>
@@ -280,27 +587,29 @@ Variables</h2></td></tr>
 <div class="line">    </div>
 <div class="line">    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a8b6d722bf10436c6340cf49b41e18208">kRed</a>,</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_a4af8b794b23b244d2bbb13d2d6940f59"><div class="ttname"><a href="namespaceklog_1_1detail.html#a4af8b794b23b244d2bbb13d2d6940f59">klog::detail::kYellow</a></div><div class="ttdeci">static constexpr auto kYellow</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00028">kernel_log.hpp:28</a></div></div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_a4f89ba928b14726ef81947ed5b8c0bd1"><div class="ttname"><a href="namespaceklog_1_1detail.html#a4f89ba928b14726ef81947ed5b8c0bd1">klog::detail::kMagenta</a></div><div class="ttdeci">static constexpr auto kMagenta</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00030">kernel_log.hpp:30</a></div></div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_a8a7f42a6d8b3e6c24411c5bdd2f77356"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8a7f42a6d8b3e6c24411c5bdd2f77356">klog::detail::kCyan</a></div><div class="ttdeci">static constexpr auto kCyan</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00031">kernel_log.hpp:31</a></div></div>
-<div class="ttc" id="anamespaceklog_1_1detail_html_a8b6d722bf10436c6340cf49b41e18208"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8b6d722bf10436c6340cf49b41e18208">klog::detail::kRed</a></div><div class="ttdeci">static constexpr auto kRed</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00026">kernel_log.hpp:26</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a4af8b794b23b244d2bbb13d2d6940f59"><div class="ttname"><a href="namespaceklog_1_1detail.html#a4af8b794b23b244d2bbb13d2d6940f59">klog::detail::kYellow</a></div><div class="ttdeci">constexpr auto kYellow</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00024">kernel_log.hpp:24</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a521ec5c56fac131c04967aec6a50758b"><div class="ttname"><a href="namespaceklog_1_1detail.html#a521ec5c56fac131c04967aec6a50758b">klog::detail::kGreen</a></div><div class="ttdeci">constexpr auto kGreen</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00023">kernel_log.hpp:23</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a8a7f42a6d8b3e6c24411c5bdd2f77356"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8a7f42a6d8b3e6c24411c5bdd2f77356">klog::detail::kCyan</a></div><div class="ttdeci">constexpr auto kCyan</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00025">kernel_log.hpp:25</a></div></div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a8b6d722bf10436c6340cf49b41e18208"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8b6d722bf10436c6340cf49b41e18208">klog::detail::kRed</a></div><div class="ttdeci">constexpr auto kRed</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00022">kernel_log.hpp:22</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00042">42</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>                                                           {</div>
-<div class="line"><span class="lineno">   43</span>    <span class="comment">// kDebug</span></div>
-<div class="line"><span class="lineno">   44</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a4f89ba928b14726ef81947ed5b8c0bd1">kMagenta</a>,</div>
-<div class="line"><span class="lineno">   45</span>    <span class="comment">// kInfo</span></div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a8a7f42a6d8b3e6c24411c5bdd2f77356">kCyan</a>,</div>
-<div class="line"><span class="lineno">   47</span>    <span class="comment">// kWarn</span></div>
-<div class="line"><span class="lineno">   48</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a4af8b794b23b244d2bbb13d2d6940f59">kYellow</a>,</div>
-<div class="line"><span class="lineno">   49</span>    <span class="comment">// kErr</span></div>
-<div class="line"><span class="lineno">   50</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a8b6d722bf10436c6340cf49b41e18208">kRed</a>,</div>
-<div class="line"><span class="lineno">   51</span>};</div>
+<p>日志级别对应的颜色（按 Level 枚举索引） </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00049">49</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>                                             {</div>
+<div class="line"><span class="lineno">   50</span>    <span class="comment">// 调试</span></div>
+<div class="line"><span class="lineno">   51</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a521ec5c56fac131c04967aec6a50758b">kGreen</a>,</div>
+<div class="line"><span class="lineno">   52</span>    <span class="comment">// 信息</span></div>
+<div class="line"><span class="lineno">   53</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a8a7f42a6d8b3e6c24411c5bdd2f77356">kCyan</a>,</div>
+<div class="line"><span class="lineno">   54</span>    <span class="comment">// 警告</span></div>
+<div class="line"><span class="lineno">   55</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a4af8b794b23b244d2bbb13d2d6940f59">kYellow</a>,</div>
+<div class="line"><span class="lineno">   56</span>    <span class="comment">// 错误</span></div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="namespaceklog_1_1detail.html#a8b6d722bf10436c6340cf49b41e18208">kRed</a>,</div>
+<div class="line"><span class="lineno">   58</span>};</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a4f89ba928b14726ef81947ed5b8c0bd1" name="a4f89ba928b14726ef81947ed5b8c0bd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f89ba928b14726ef81947ed5b8c0bd1">&#9670;&#160;</a></span>kMagenta</h2>
+<a id="aa4ce300de73bfb59cc6f5740ec93aab1" name="aa4ce300de73bfb59cc6f5740ec93aab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4ce300de73bfb59cc6f5740ec93aab1">&#9670;&#160;</a></span>kLevelLabel</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,17 +618,60 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto klog::detail::kMagenta = &quot;\033[35m&quot;</td>
+          <td class="memname">constexpr const char* klog::detail::kLevelLabel[]</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <span class="stringliteral">&quot;DEBUG&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;INFO &quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;WARN &quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;ERROR&quot;</span>,</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p>日志级别标签（定宽，对齐输出） </p>
 
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00030">30</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00041">41</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>                                             {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="stringliteral">&quot;DEBUG&quot;</span>,</div>
+<div class="line"><span class="lineno">   43</span>    <span class="stringliteral">&quot;INFO &quot;</span>,</div>
+<div class="line"><span class="lineno">   44</span>    <span class="stringliteral">&quot;WARN &quot;</span>,</div>
+<div class="line"><span class="lineno">   45</span>    <span class="stringliteral">&quot;ERROR&quot;</span>,</div>
+<div class="line"><span class="lineno">   46</span>};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aeaf0e45dd4afbfcb02110f1ee5d9a84f" name="aeaf0e45dd4afbfcb02110f1ee5d9a84f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaf0e45dd4afbfcb02110f1ee5d9a84f">&#9670;&#160;</a></span>kMinLevel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto klog::detail::kMinLevel</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07ae">Level</a><span class="keyword">&gt;</span>(SIMPLEKERNEL_MIN_LOG_LEVEL)</div>
+<div class="ttc" id="anamespaceklog_1_1detail_html_a8151f46c462f0921e4003dd0a78b07ae"><div class="ttname"><a href="namespaceklog_1_1detail.html#a8151f46c462f0921e4003dd0a78b07ae">klog::detail::Level</a></div><div class="ttdeci">Level</div><div class="ttdoc">日志级别</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00029">kernel_log.hpp:29</a></div></div>
+</div><!-- fragment -->
+<p>编译期最低日志级别 </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00037">37</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
 
 </div>
 </div>
@@ -338,12 +690,12 @@ Variables</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00026">26</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00022">22</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
 
 </div>
 </div>
@@ -362,38 +714,12 @@ Variables</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>ANSI 转义码，在支持 ANSI 转义码的终端中可以显示颜色 </p>
-
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00025">25</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a1a89b52ceb28ae243016cc09e98ded2d" name="a1a89b52ceb28ae243016cc09e98ded2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a89b52ceb28ae243016cc09e98ded2d">&#9670;&#160;</a></span>kWhite</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto klog::detail::kWhite = &quot;\033[37m&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00032">32</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00021">21</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
 
 </div>
 </div>
@@ -412,17 +738,17 @@ Variables</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00028">28</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00024">24</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a2027af72ff878049f22ed5c5963d8f1d" name="a2027af72ff878049f22ed5c5963d8f1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2027af72ff878049f22ed5c5963d8f1d">&#9670;&#160;</a></span>log_lock</h2>
+<a id="ac7424e0e8c9d282275fa78ff8d4765c1" name="ac7424e0e8c9d282275fa78ff8d4765c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7424e0e8c9d282275fa78ff8d4765c1">&#9670;&#160;</a></span>log_queue</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -431,11 +757,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSpinLock.html">SpinLock</a> klog::detail::log_lock(&quot;kernel_log&quot;) </td>
-          <td>(</td>
-          <td class="paramtype">&quot;kernel_log&quot;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname">mpmc_queue::MPMCQueue&lt;<a class="el" href="structklog_1_1detail_1_1LogEntry.html">LogEntry</a>, 256&gt; klog::detail::log_queue</td>
         </tr>
       </table>
   </td>
@@ -445,6 +767,37 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>全局日志队列（64 KB 静态内存，constexpr 构造） </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00070">70</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a506519d0c9ae8a66e38078d1783f69db" name="a506519d0c9ae8a66e38078d1783f69db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a506519d0c9ae8a66e38078d1783f69db">&#9670;&#160;</a></span>log_seq</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;uint64_t&gt; klog::detail::log_seq {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>用于跨核心排序的单调递增序列计数器 </p>
+
+<p class="definition">Definition at line <a class="el" href="kernel__log_8hpp_source.html#l00073">73</a> of file <a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

@@ -104,22 +104,69 @@ $(document).ready(function(){initNavTree('structTaskControlBlock.html',''); init
 
 <p><code>#include &lt;<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>&gt;</code></p>
 <div class="dynheader">
+Inheritance diagram for TaskControlBlock:</div>
+<div class="dyncontent">
+<div class="center"><img src="structTaskControlBlock__inherit__graph.png" border="0" usemap="#aTaskControlBlock_inherit__map" alt="Inheritance graph"/></div>
+<map name="aTaskControlBlock_inherit__map" id="aTaskControlBlock_inherit__map">
+<area shape="rect" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="5,119,195,824"/>
+<area shape="rect" title=" " alt="" coords="37,5,163,71"/>
+<area shape="poly" title=" " alt="" coords="103,85,103,118,97,118,97,85"/>
+</map>
+</div>
+<div class="dynheader">
 Collaboration diagram for TaskControlBlock:</div>
 <div class="dyncontent">
 <div class="center"><img src="structTaskControlBlock__coll__graph.png" border="0" usemap="#aTaskControlBlock_coll__map" alt="Collaboration graph"/></div>
 <map name="aTaskControlBlock_coll__map" id="aTaskControlBlock_coll__map">
-<area shape="rect" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="437,573,626,1399"/>
-<area shape="poly" title=" " alt="" coords="628,909,638,921,646,938,653,986,649,1023,639,1050,634,1048,644,1022,647,986,641,939,634,923,624,912"/>
-<area shape="rect" href="structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="5,155,204,361"/>
-<area shape="poly" title=" " alt="" coords="147,360,180,434,218,509,268,597,323,684,429,841,425,844,318,687,264,600,213,512,175,436,142,362"/>
-<area shape="rect" href="unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="228,185,432,331"/>
-<area shape="poly" title=" " alt="" coords="352,330,435,627,430,629,347,332"/>
-<area shape="rect" href="structcpu__io_1_1TrapContext.html" title=" " alt="" coords="456,175,607,341"/>
-<area shape="poly" title=" " alt="" coords="534,341,534,557,529,557,529,341"/>
-<area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="631,155,827,361"/>
-<area shape="poly" title=" " alt="" coords="708,362,662,550,633,655,628,653,657,549,703,360"/>
-<area shape="rect" href="structResourceId.html" title="资源 ID" alt="" coords="851,5,1001,511"/>
-<area shape="poly" title=" " alt="" coords="853,488,842,512,795,601,742,689,638,846,633,843,738,686,790,598,837,509,848,485"/>
+<area shape="rect" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="1065,1544,1254,2129"/>
+<area shape="rect" title=" " alt="" coords="553,1266,678,1331"/>
+<area shape="poly" title=" " alt="" coords="629,1344,653,1411,671,1447,692,1480,734,1529,779,1575,879,1659,978,1728,1066,1782,1063,1787,975,1733,875,1663,776,1579,730,1532,688,1483,666,1449,648,1413,624,1345"/>
+<area shape="rect" href="classTaskFsm.html" title="任务有限状态机" alt="" coords="703,1116,811,1481"/>
+<area shape="poly" title=" " alt="" coords="813,1460,824,1480,876,1554,935,1624,996,1688,1054,1743,1051,1747,992,1692,931,1628,872,1557,820,1483,808,1463"/>
+<area shape="rect" href="structStateUnInit.html" title="UnInit 状态 — 任务尚未初始化" alt="" coords="15,741,181,826"/>
+<area shape="poly" title=" " alt="" coords="112,825,130,877,158,939,196,1000,220,1027,246,1051,282,1073,315,1082,394,1089,460,1092,547,1090,631,1094,666,1101,691,1114,692,1114,689,1118,689,1118,664,1106,630,1100,547,1096,460,1097,394,1095,314,1087,280,1078,243,1055,216,1031,192,1003,153,941,125,879,107,827"/>
+<area shape="rect" title=" " alt="" coords="5,173,164,283"/>
+<area shape="poly" title=" " alt="" coords="89,296,100,740,94,741,84,296"/>
+<area shape="rect" href="structStateReady.html" title="Ready 状态 — 任务已就绪，等待调度" alt="" coords="257,741,422,826"/>
+<area shape="poly" title=" " alt="" coords="351,825,365,876,388,936,420,997,461,1052,479,1067,496,1076,539,1089,561,1095,582,1096,619,1093,654,1094,672,1101,692,1114,692,1114,689,1118,688,1118,670,1106,653,1099,619,1098,582,1101,561,1100,537,1095,494,1081,476,1072,457,1055,415,1000,383,938,360,877,346,827"/>
+<area shape="rect" title=" " alt="" coords="189,181,397,275"/>
+<area shape="poly" title=" " alt="" coords="300,289,338,740,333,741,295,289"/>
+<area shape="rect" href="structStateRunning.html" title="Running 状态 — 任务正在执行" alt="" coords="471,711,637,856"/>
+<area shape="poly" title=" " alt="" coords="563,856,572,912,588,973,613,1035,648,1090,658,1098,669,1102,680,1105,692,1114,695,1118,691,1121,688,1118,678,1110,667,1107,655,1103,644,1094,608,1037,583,975,567,913,557,857"/>
+<area shape="rect" title=" " alt="" coords="421,166,644,290"/>
+<area shape="poly" title=" " alt="" coords="538,304,554,710,549,710,533,304"/>
+<area shape="rect" href="structStateSleeping.html" title="Sleeping 状态 — 任务已挂起，等待唤醒时钟" alt="" coords="674,741,839,826"/>
+<area shape="poly" title=" " alt="" coords="759,826,759,1100,754,1100,754,826"/>
+<area shape="rect" title=" " alt="" coords="669,173,845,283"/>
+<area shape="poly" title=" " alt="" coords="759,296,759,740,754,740,754,296"/>
+<area shape="rect" href="structStateBlocked.html" title="Blocked 状态 — 任务阻塞，等待资源" alt="" coords="867,741,1033,826"/>
+<area shape="poly" title=" " alt="" coords="953,827,950,884,938,955,915,1028,898,1062,876,1094,863,1104,849,1107,836,1110,824,1118,823,1119,819,1115,820,1114,834,1105,848,1102,860,1099,872,1090,893,1060,910,1026,933,954,944,884,948,826"/>
+<area shape="rect" title=" " alt="" coords="869,173,1039,283"/>
+<area shape="poly" title=" " alt="" coords="956,296,953,740,948,740,951,296"/>
+<area shape="rect" href="structStateExited.html" title="Exited 状态 — 任务已退出，无父任务回收" alt="" coords="1059,741,1225,826"/>
+<area shape="poly" title=" " alt="" coords="1137,827,1125,876,1107,935,1081,997,1047,1055,1026,1079,998,1094,973,1102,950,1105,909,1102,869,1101,848,1107,825,1119,823,1114,846,1102,868,1096,909,1096,950,1099,972,1097,996,1090,1022,1075,1043,1052,1076,995,1102,933,1120,874,1132,826"/>
+<area shape="rect" title=" " alt="" coords="1064,173,1225,283"/>
+<area shape="poly" title=" " alt="" coords="1147,296,1145,740,1140,740,1142,296"/>
+<area shape="rect" href="structStateZombie.html" title="Zombie 状态 — 任务已退出，等待父任务回收" alt="" coords="1251,741,1417,826"/>
+<area shape="poly" title=" " alt="" coords="1333,826,1324,878,1307,939,1279,1001,1261,1030,1239,1055,1212,1076,1187,1085,1126,1095,1063,1099,980,1098,894,1101,857,1108,825,1120,823,1115,855,1103,894,1096,980,1092,1063,1093,1126,1089,1186,1080,1210,1071,1235,1051,1256,1026,1274,998,1302,937,1318,877,1327,826"/>
+<area shape="rect" title=" " alt="" coords="1250,173,1421,283"/>
+<area shape="poly" title=" " alt="" coords="1338,296,1337,740,1331,740,1333,296"/>
+<area shape="rect" href="structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="835,1196,1033,1401"/>
+<area shape="poly" title=" " alt="" coords="979,1401,1061,1594,1056,1596,974,1403"/>
+<area shape="rect" href="unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="1057,1226,1261,1371"/>
+<area shape="poly" title=" " alt="" coords="1162,1372,1162,1528,1157,1528,1157,1372"/>
+<area shape="rect" href="structcpu__io_1_1TrapContext.html" title=" " alt="" coords="1285,1216,1436,1381"/>
+<area shape="poly" title=" " alt="" coords="1332,1383,1262,1569,1257,1567,1327,1381"/>
+<area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="1460,1196,1656,1401"/>
+<area shape="poly" title=" " alt="" coords="1501,1403,1450,1483,1358,1605,1267,1716,1262,1713,1354,1601,1445,1480,1497,1400"/>
+<area shape="rect" href="structTaskAuxData.html" title="非调度热路径的任务辅助数据" alt="" coords="1681,1186,1833,1411"/>
+<area shape="poly" title=" " alt="" coords="1715,1413,1694,1449,1669,1483,1624,1531,1575,1577,1469,1660,1364,1729,1270,1783,1267,1778,1361,1725,1466,1656,1571,1573,1620,1528,1665,1480,1690,1446,1710,1410"/>
+<area shape="rect" href="classResourceId.html" title="资源 ID" alt="" coords="1604,521,1755,1046"/>
+<area shape="poly" title=" " alt="" coords="1711,1046,1718,1092,1732,1169,1727,1170,1713,1092,1706,1046"/>
+<area shape="rect" href="classfilesystem_1_1FileDescriptorTable.html" title="进程级文件描述符表" alt="" coords="1779,513,1959,1053"/>
+<area shape="poly" title=" " alt="" coords="1816,1054,1807,1093,1790,1170,1784,1169,1802,1091,1811,1053"/>
+<area shape="rect" href="classSpinLock.html" title="自旋锁" alt="" coords="1774,5,1963,451"/>
+<area shape="poly" title=" " alt="" coords="1871,451,1871,497,1866,497,1866,451"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -140,33 +187,31 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e96afd7da4feb231b605e2b7cebfc42" id="r_a6e96afd7da4feb231b605e2b7cebfc42"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42">TaskControlBlock</a> (const char *<a class="el" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>, int priority, <a class="el" href="task__control__block_8hpp.html#a78d16f92c80a8342bc67d945b720a1cf">ThreadEntry</a> <a class="el" href="acpi_8h.html#a9f4b9757ed06b7cffea1bd7b35f6c093">entry</a>, void *arg)</td></tr>
+<tr class="memitem:a76c836142838b3127b032710242c9606" id="r_a76c836142838b3127b032710242c9606"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a76c836142838b3127b032710242c9606">GetStatus</a> () const -&gt; etl::fsm_state_id_t</td></tr>
+<tr class="memdesc:a76c836142838b3127b032710242c9606"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取当前任务状态  <br /></td></tr>
+<tr class="separator:a76c836142838b3127b032710242c9606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9da1f4f59f187bcbbcdc70ae2bbd8f04" id="r_a9da1f4f59f187bcbbcdc70ae2bbd8f04"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a9da1f4f59f187bcbbcdc70ae2bbd8f04">IsThreadGroupLeader</a> () const -&gt; bool</td></tr>
+<tr class="memdesc:a9da1f4f59f187bcbbcdc70ae2bbd8f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查是否是线程组的主线程  <br /></td></tr>
+<tr class="separator:a9da1f4f59f187bcbbcdc70ae2bbd8f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a052edc4f5b79f9c721ce006164b9f55d" id="r_a052edc4f5b79f9c721ce006164b9f55d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a052edc4f5b79f9c721ce006164b9f55d">JoinThreadGroup</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *leader) -&gt; void</td></tr>
+<tr class="memdesc:a052edc4f5b79f9c721ce006164b9f55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">将线程添加到线程组  <br /></td></tr>
+<tr class="separator:a052edc4f5b79f9c721ce006164b9f55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4062a5640e8c34b97cf48fa739b40097" id="r_a4062a5640e8c34b97cf48fa739b40097"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a4062a5640e8c34b97cf48fa739b40097">LeaveThreadGroup</a> () -&gt; void</td></tr>
+<tr class="memdesc:a4062a5640e8c34b97cf48fa739b40097"><td class="mdescLeft">&#160;</td><td class="mdescRight">从线程组中移除自己  <br /></td></tr>
+<tr class="separator:a4062a5640e8c34b97cf48fa739b40097"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae844392c292dd1b44e6beaaf19e289e9" id="r_ae844392c292dd1b44e6beaaf19e289e9"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ae844392c292dd1b44e6beaaf19e289e9">GetThreadGroupSize</a> () const -&gt; size_t</td></tr>
+<tr class="memdesc:ae844392c292dd1b44e6beaaf19e289e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取线程组中的线程数量  <br /></td></tr>
+<tr class="separator:ae844392c292dd1b44e6beaaf19e289e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b381708a113a6446f751e0940ff4150" id="r_a9b381708a113a6446f751e0940ff4150"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a9b381708a113a6446f751e0940ff4150">InSameThreadGroup</a> (const <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *other) const -&gt; bool</td></tr>
+<tr class="memdesc:a9b381708a113a6446f751e0940ff4150"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查是否与另一个任务在同一线程组  <br /></td></tr>
+<tr class="separator:a9b381708a113a6446f751e0940ff4150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
+<tr class="memitem:a6e96afd7da4feb231b605e2b7cebfc42" id="r_a6e96afd7da4feb231b605e2b7cebfc42"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42">TaskControlBlock</a> (const char *<a class="el" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>, int priority, <a class="el" href="task__control__block_8hpp.html#a78d16f92c80a8342bc67d945b720a1cf">ThreadEntry</a> entry, void *arg)</td></tr>
 <tr class="memdesc:a6e96afd7da4feb231b605e2b7cebfc42"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造函数 (内核线程)  <br /></td></tr>
 <tr class="separator:a6e96afd7da4feb231b605e2b7cebfc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87bcaeb8999f4d5e383a5d2bd8c13925" id="r_a87bcaeb8999f4d5e383a5d2bd8c13925"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a87bcaeb8999f4d5e383a5d2bd8c13925">TaskControlBlock</a> (const char *<a class="el" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>, int priority, uint8_t *elf, int argc, char **argv)</td></tr>
 <tr class="memdesc:a87bcaeb8999f4d5e383a5d2bd8c13925"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造函数 (用户线程)  <br /></td></tr>
 <tr class="separator:a87bcaeb8999f4d5e383a5d2bd8c13925"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">线程组相关方法</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd><p class="startdd">优先级继承相关 </p>
-<p class="enddd">文件系统相关 </p>
-</dd></dl>
-</div></td></tr>
-<tr class="memitem:a9da1f4f59f187bcbbcdc70ae2bbd8f04" id="r_a9da1f4f59f187bcbbcdc70ae2bbd8f04"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a9da1f4f59f187bcbbcdc70ae2bbd8f04">IsThreadGroupLeader</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:a9da1f4f59f187bcbbcdc70ae2bbd8f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查是否是线程组的主线程  <br /></td></tr>
-<tr class="separator:a9da1f4f59f187bcbbcdc70ae2bbd8f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bff7bd9a4bd5b131838e6ab9bd27510" id="r_a0bff7bd9a4bd5b131838e6ab9bd27510"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a0bff7bd9a4bd5b131838e6ab9bd27510">JoinThreadGroup</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *leader)</td></tr>
-<tr class="memdesc:a0bff7bd9a4bd5b131838e6ab9bd27510"><td class="mdescLeft">&#160;</td><td class="mdescRight">将线程添加到线程组  <br /></td></tr>
-<tr class="separator:a0bff7bd9a4bd5b131838e6ab9bd27510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92a35ef0fd97587e74a7be2970675b3d" id="r_a92a35ef0fd97587e74a7be2970675b3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a92a35ef0fd97587e74a7be2970675b3d">LeaveThreadGroup</a> ()</td></tr>
-<tr class="memdesc:a92a35ef0fd97587e74a7be2970675b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">从线程组中移除自己  <br /></td></tr>
-<tr class="separator:a92a35ef0fd97587e74a7be2970675b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad085eb7e2b19b32796612d82c5871bfd" id="r_ad085eb7e2b19b32796612d82c5871bfd"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ad085eb7e2b19b32796612d82c5871bfd">GetThreadGroupSize</a> () const -&gt; size_t</td></tr>
-<tr class="memdesc:ad085eb7e2b19b32796612d82c5871bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取线程组中的线程数量  <br /></td></tr>
-<tr class="separator:ad085eb7e2b19b32796612d82c5871bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b381708a113a6446f751e0940ff4150" id="r_a9b381708a113a6446f751e0940ff4150"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a9b381708a113a6446f751e0940ff4150">InSameThreadGroup</a> (const <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *other) const -&gt; bool</td></tr>
-<tr class="memdesc:a9b381708a113a6446f751e0940ff4150"><td class="mdescLeft">&#160;</td><td class="mdescRight">检查是否与另一个任务在同一线程组  <br /></td></tr>
-<tr class="separator:a9b381708a113a6446f751e0940ff4150"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
 <tr class="memitem:ab717f2972eeecbff1e902d7b6f339cf1" id="r_ab717f2972eeecbff1e902d7b6f339cf1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ab717f2972eeecbff1e902d7b6f339cf1">TaskControlBlock</a> ()=default</td></tr>
 <tr class="separator:ab717f2972eeecbff1e902d7b6f339cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76d1c354f3db4ac7fe77a180b0ab6dc3" id="r_a76d1c354f3db4ac7fe77a180b0ab6dc3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a76d1c354f3db4ac7fe77a180b0ab6dc3">TaskControlBlock</a> (const <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> &amp;)=delete</td></tr>
@@ -182,80 +227,49 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af98827b16fc1af01c793e7aef9b0608a" id="r_af98827b16fc1af01c793e7aef9b0608a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a> = &quot;Unnamed Task&quot;</td></tr>
+<tr class="memitem:af98827b16fc1af01c793e7aef9b0608a" id="r_af98827b16fc1af01c793e7aef9b0608a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a> {&quot;Unnamed Task&quot;}</td></tr>
 <tr class="memdesc:af98827b16fc1af01c793e7aef9b0608a"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务名称  <br /></td></tr>
 <tr class="separator:af98827b16fc1af01c793e7aef9b0608a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca9ca152ecda65751f10c515c4dbb867" id="r_aca9ca152ecda65751f10c515c4dbb867"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#aca9ca152ecda65751f10c515c4dbb867">pid</a> = 0</td></tr>
+<tr class="memitem:aca9ca152ecda65751f10c515c4dbb867" id="r_aca9ca152ecda65751f10c515c4dbb867"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#aca9ca152ecda65751f10c515c4dbb867">pid</a> {0}</td></tr>
 <tr class="memdesc:aca9ca152ecda65751f10c515c4dbb867"><td class="mdescLeft">&#160;</td><td class="mdescRight">线程 ID (Task ID)  <br /></td></tr>
 <tr class="separator:aca9ca152ecda65751f10c515c4dbb867"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ba9b0da6c408d7b4ef9e9e6637f0556" id="r_a9ba9b0da6c408d7b4ef9e9e6637f0556"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a9ba9b0da6c408d7b4ef9e9e6637f0556">parent_pid</a> = 0</td></tr>
-<tr class="memdesc:a9ba9b0da6c408d7b4ef9e9e6637f0556"><td class="mdescLeft">&#160;</td><td class="mdescRight">父线程 ID  <br /></td></tr>
-<tr class="separator:a9ba9b0da6c408d7b4ef9e9e6637f0556"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a594adb2ab65f5fa0fb2897117f920ddf" id="r_a594adb2ab65f5fa0fb2897117f920ddf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a594adb2ab65f5fa0fb2897117f920ddf">pgid</a> = 0</td></tr>
-<tr class="memdesc:a594adb2ab65f5fa0fb2897117f920ddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">进程组 ID  <br /></td></tr>
-<tr class="separator:a594adb2ab65f5fa0fb2897117f920ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae826edd217cadcc7d43cb366e8812c0e" id="r_ae826edd217cadcc7d43cb366e8812c0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ae826edd217cadcc7d43cb366e8812c0e">sid</a> = 0</td></tr>
-<tr class="memdesc:ae826edd217cadcc7d43cb366e8812c0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">会话 ID  <br /></td></tr>
-<tr class="separator:ae826edd217cadcc7d43cb366e8812c0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb0a79022e0b3c343512c8a135272bcc" id="r_acb0a79022e0b3c343512c8a135272bcc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a> = 0</td></tr>
-<tr class="memdesc:acb0a79022e0b3c343512c8a135272bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">线程组 ID (主线程的 PID)  <br /></td></tr>
-<tr class="separator:acb0a79022e0b3c343512c8a135272bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ce7d1d1287b24fe59df20cdff362fea" id="r_a0ce7d1d1287b24fe59df20cdff362fea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2">TaskStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a0ce7d1d1287b24fe59df20cdff362fea">status</a> = <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e">TaskStatus::kUnInit</a></td></tr>
-<tr class="memdesc:a0ce7d1d1287b24fe59df20cdff362fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">线程状态  <br /></td></tr>
-<tr class="separator:a0ce7d1d1287b24fe59df20cdff362fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a017d7cfbc80709c0dfd826de0199a2a2" id="r_a017d7cfbc80709c0dfd826de0199a2a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a017d7cfbc80709c0dfd826de0199a2a2">policy</a> = <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f">SchedPolicy::kNormal</a></td></tr>
+<tr class="memitem:a60d6d6fbc92bddcdbd10a2beced98849" id="r_a60d6d6fbc92bddcdbd10a2beced98849"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTaskFsm.html">TaskFsm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a60d6d6fbc92bddcdbd10a2beced98849">fsm</a> {}</td></tr>
+<tr class="memdesc:a60d6d6fbc92bddcdbd10a2beced98849"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务状态机  <br /></td></tr>
+<tr class="separator:a60d6d6fbc92bddcdbd10a2beced98849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a017d7cfbc80709c0dfd826de0199a2a2" id="r_a017d7cfbc80709c0dfd826de0199a2a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a017d7cfbc80709c0dfd826de0199a2a2">policy</a> {<a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416">SchedPolicy::kNormal</a>}</td></tr>
 <tr class="memdesc:a017d7cfbc80709c0dfd826de0199a2a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">调度策略  <br /></td></tr>
 <tr class="separator:a017d7cfbc80709c0dfd826de0199a2a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bbeb5cef9a8125fee0b15a471a511ea" id="r_a8bbeb5cef9a8125fee0b15a471a511ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a8bbeb5cef9a8125fee0b15a471a511ea">exit_code</a> = 0</td></tr>
-<tr class="memdesc:a8bbeb5cef9a8125fee0b15a471a511ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">退出码  <br /></td></tr>
-<tr class="separator:a8bbeb5cef9a8125fee0b15a471a511ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dc16c5123d950519cd74d3ee82591d9" id="r_a3dc16c5123d950519cd74d3ee82591d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6a">CloneFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a3dc16c5123d950519cd74d3ee82591d9">clone_flags</a> = <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5">kCloneAll</a></td></tr>
-<tr class="memdesc:a3dc16c5123d950519cd74d3ee82591d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">克隆标志位  <br /></td></tr>
-<tr class="separator:a3dc16c5123d950519cd74d3ee82591d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3075e45ca454dbb5309161896e432ace" id="r_a3075e45ca454dbb5309161896e432ace"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTaskControlBlock_1_1SchedInfo.html">TaskControlBlock::SchedInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a></td></tr>
 <tr class="separator:a3075e45ca454dbb5309161896e432ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a0b5c38f6f6f0ea6365be1d20c0497b" id="r_a6a0b5c38f6f6f0ea6365be1d20c0497b"><td class="memItemLeft" align="right" valign="top">union <a class="el" href="unionTaskControlBlock_1_1SchedData.html">TaskControlBlock::SchedData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a6a0b5c38f6f6f0ea6365be1d20c0497b">sched_data</a></td></tr>
 <tr class="separator:a6a0b5c38f6f6f0ea6365be1d20c0497b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3caa0ee9155156382e9224e9b3d811f" id="r_ad3caa0ee9155156382e9224e9b3d811f"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> = nullptr</td></tr>
+<tr class="memitem:ad3caa0ee9155156382e9224e9b3d811f" id="r_ad3caa0ee9155156382e9224e9b3d811f"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> {nullptr}</td></tr>
 <tr class="memdesc:ad3caa0ee9155156382e9224e9b3d811f"><td class="mdescLeft">&#160;</td><td class="mdescRight">内核栈  <br /></td></tr>
 <tr class="separator:ad3caa0ee9155156382e9224e9b3d811f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4dcf4dd6f3edffbf3e17d8ff4845226" id="r_af4dcf4dd6f3edffbf3e17d8ff4845226"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226">trap_context_ptr</a> = nullptr</td></tr>
+<tr class="memitem:af4dcf4dd6f3edffbf3e17d8ff4845226" id="r_af4dcf4dd6f3edffbf3e17d8ff4845226"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226">trap_context_ptr</a> {nullptr}</td></tr>
 <tr class="memdesc:af4dcf4dd6f3edffbf3e17d8ff4845226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trap 上下文  <br /></td></tr>
 <tr class="separator:af4dcf4dd6f3edffbf3e17d8ff4845226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af087bcb6f419c7484c1200719e0751a9" id="r_af087bcb6f419c7484c1200719e0751a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcpu__io_1_1CalleeSavedContext.html">cpu_io::CalleeSavedContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#af087bcb6f419c7484c1200719e0751a9">task_context</a> {}</td></tr>
 <tr class="memdesc:af087bcb6f419c7484c1200719e0751a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务上下文  <br /></td></tr>
 <tr class="separator:af087bcb6f419c7484c1200719e0751a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6be0a3e64ef7334a846d9444014d867" id="r_ad6be0a3e64ef7334a846d9444014d867"><td class="memItemLeft" align="right" valign="top">uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a> = nullptr</td></tr>
+<tr class="memitem:ad6be0a3e64ef7334a846d9444014d867" id="r_ad6be0a3e64ef7334a846d9444014d867"><td class="memItemLeft" align="right" valign="top">uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a> {nullptr}</td></tr>
 <tr class="memdesc:ad6be0a3e64ef7334a846d9444014d867"><td class="mdescLeft">&#160;</td><td class="mdescRight">页表  <br /></td></tr>
 <tr class="separator:ad6be0a3e64ef7334a846d9444014d867"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82296b6fec3ae8a120ffec4f0e97ef81" id="r_a82296b6fec3ae8a120ffec4f0e97ef81"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a82296b6fec3ae8a120ffec4f0e97ef81">cpu_affinity</a> = UINT64_MAX</td></tr>
-<tr class="memdesc:a82296b6fec3ae8a120ffec4f0e97ef81"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU 亲和性位掩码  <br /></td></tr>
-<tr class="separator:a82296b6fec3ae8a120ffec4f0e97ef81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a603f127b15f3dc015b911289650523be" id="r_a603f127b15f3dc015b911289650523be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structResourceId.html">ResourceId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a603f127b15f3dc015b911289650523be">blocked_on</a> {}</td></tr>
-<tr class="memdesc:a603f127b15f3dc015b911289650523be"><td class="mdescLeft">&#160;</td><td class="mdescRight">等待的资源 ID  <br /></td></tr>
-<tr class="separator:a603f127b15f3dc015b911289650523be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaba2173a3196a62881d80f604e632fe" id="r_acaba2173a3196a62881d80f604e632fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#acaba2173a3196a62881d80f604e632fe">is_interrupt_thread</a> = false</td></tr>
-<tr class="memdesc:acaba2173a3196a62881d80f604e632fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">是否为中断线程  <br /></td></tr>
-<tr class="separator:acaba2173a3196a62881d80f604e632fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8489d78bae9be9f8293675dbcb46088a" id="r_a8489d78bae9be9f8293675dbcb46088a"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a8489d78bae9be9f8293675dbcb46088a">interrupt_number</a> = 0</td></tr>
-<tr class="memdesc:a8489d78bae9be9f8293675dbcb46088a"><td class="mdescLeft">&#160;</td><td class="mdescRight">关联的中断号  <br /></td></tr>
-<tr class="separator:a8489d78bae9be9f8293675dbcb46088a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">侵入式线程组链表</div></td></tr>
-<tr class="memitem:a7aa8478bbb656a0cd2ddef95bc985ac5" id="r_a7aa8478bbb656a0cd2ddef95bc985ac5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a> = nullptr</td></tr>
-<tr class="separator:a7aa8478bbb656a0cd2ddef95bc985ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ed9b7e8167bb1066b5bf9d917977f39" id="r_a0ed9b7e8167bb1066b5bf9d917977f39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a> = nullptr</td></tr>
-<tr class="separator:a0ed9b7e8167bb1066b5bf9d917977f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace5256db8b1107c2dec127cff755586a" id="r_ace5256db8b1107c2dec127cff755586a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskAuxData.html">TaskAuxData</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a> {nullptr}</td></tr>
+<tr class="memdesc:ace5256db8b1107c2dec127cff755586a"><td class="mdescLeft">&#160;</td><td class="mdescRight">非调度热路径的辅助数据  <br /></td></tr>
+<tr class="separator:ace5256db8b1107c2dec127cff755586a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a63b2165100c2ed6dcac074c61eebfdd9" id="r_a63b2165100c2ed6dcac074c61eebfdd9"><td class="memItemLeft" align="right" valign="top">static constexpr const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#a63b2165100c2ed6dcac074c61eebfdd9">kDefaultKernelStackSize</a> = 16 * 1024</td></tr>
-<tr class="memdesc:a63b2165100c2ed6dcac074c61eebfdd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">默认内核栈大小 (16 KB)  <br /></td></tr>
-<tr class="separator:a63b2165100c2ed6dcac074c61eebfdd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af12109542293f6bba85cbe4dda86306f" id="r_af12109542293f6bba85cbe4dda86306f"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock.html#af12109542293f6bba85cbe4dda86306f">kDefaultKernelStackSize</a> = 16 * 1024</td></tr>
+<tr class="memdesc:af12109542293f6bba85cbe4dda86306f"><td class="mdescLeft">&#160;</td><td class="mdescRight">默认内核栈大小 (16 KB)  <br /></td></tr>
+<tr class="separator:af12109542293f6bba85cbe4dda86306f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>任务控制块，管理进程/线程的核心数据结构 </p>
+<p>仅保留调度热路径字段（状态机、优先级、上下文、页表等）。 进程级辅助数据存储在 <a class="el" href="structTaskAuxData.html" title="非调度热路径的任务辅助数据">TaskAuxData</a> 中，通过 aux 指针访问。 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00080">80</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00121">121</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6e96afd7da4feb231b605e2b7cebfc42" name="a6e96afd7da4feb231b605e2b7cebfc42"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e96afd7da4feb231b605e2b7cebfc42">&#9670;&#160;</a></span>TaskControlBlock() <span class="overload">[1/5]</span></h2>
@@ -306,58 +320,71 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00144">144</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  146</span>    : <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>(<a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>) {</div>
-<div class="line"><span class="lineno">  147</span>  <span class="comment">// 设置优先级</span></div>
-<div class="line"><span class="lineno">  148</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a> = priority;</div>
-<div class="line"><span class="lineno">  149</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2b8ff6d1ffd5de93728567adae43e3d">base_priority</a> = priority;</div>
-<div class="line"><span class="lineno">  150</span> </div>
-<div class="line"><span class="lineno">  151</span>  <span class="comment">// 分配内核栈</span></div>
-<div class="line"><span class="lineno">  152</span>  <a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> = <span class="keyword">static_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(<a class="code hl_function" href="sk__stdlib_8h.html#a8006724372b77924155bd8618fe57516">aligned_alloc</a>(</div>
-<div class="line"><span class="lineno">  153</span>      <a class="code hl_variable" href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a>, <a class="code hl_variable" href="structTaskControlBlock.html#a63b2165100c2ed6dcac074c61eebfdd9">kDefaultKernelStackSize</a>));</div>
-<div class="line"><span class="lineno">  154</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>) {</div>
-<div class="line"><span class="lineno">  155</span>    <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;Failed to allocate kernel stack for task %s\n&quot;</span>, <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>);</div>
-<div class="line"><span class="lineno">  156</span>    <a class="code hl_variable" href="structTaskControlBlock.html#a0ce7d1d1287b24fe59df20cdff362fea">status</a> = <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722">TaskStatus::kExited</a>;</div>
-<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  158</span>  }</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>  <span class="comment">// 设置 trap_context_ptr 指向内核栈顶预留的位置</span></div>
-<div class="line"><span class="lineno">  161</span>  <a class="code hl_variable" href="structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226">trap_context_ptr</a> = <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_struct" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>*<span class="keyword">&gt;</span>(</div>
-<div class="line"><span class="lineno">  162</span>      <a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> + <a class="code hl_variable" href="structTaskControlBlock.html#a63b2165100c2ed6dcac074c61eebfdd9">kDefaultKernelStackSize</a> - <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>));</div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00131">131</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  133</span>    : <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>(_name) {</div>
+<div class="line"><span class="lineno">  134</span>  <span class="comment">// 分配辅助数据</span></div>
+<div class="line"><span class="lineno">  135</span>  <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a> = <span class="keyword">new</span> <a class="code hl_struct" href="structTaskAuxData.html">TaskAuxData</a>{};</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>) {</div>
+<div class="line"><span class="lineno">  137</span>    <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to allocate TaskAuxData for task {}&quot;</span>, <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>);</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  139</span>  }</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>  <span class="comment">// 设置优先级</span></div>
+<div class="line"><span class="lineno">  142</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a> = priority;</div>
+<div class="line"><span class="lineno">  143</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2b8ff6d1ffd5de93728567adae43e3d">base_priority</a> = priority;</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>  <span class="comment">// 分配内核栈</span></div>
+<div class="line"><span class="lineno">  146</span>  <a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> = <span class="keyword">static_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(<a class="code hl_function" href="sk__stdlib_8h.html#a8006724372b77924155bd8618fe57516">aligned_alloc</a>(</div>
+<div class="line"><span class="lineno">  147</span>      <a class="code hl_variable" href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a>, <a class="code hl_variable" href="structTaskControlBlock.html#af12109542293f6bba85cbe4dda86306f">kDefaultKernelStackSize</a>));</div>
+<div class="line"><span class="lineno">  148</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>) {</div>
+<div class="line"><span class="lineno">  149</span>    <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to allocate kernel stack for task {}&quot;</span>, <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>);</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  151</span>  }</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>  <span class="comment">// 设置 trap_context_ptr 指向内核栈顶预留的位置</span></div>
+<div class="line"><span class="lineno">  154</span>  <a class="code hl_variable" href="structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226">trap_context_ptr</a> = <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_struct" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>*<span class="keyword">&gt;</span>(</div>
+<div class="line"><span class="lineno">  155</span>      <a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> + <a class="code hl_variable" href="structTaskControlBlock.html#af12109542293f6bba85cbe4dda86306f">kDefaultKernelStackSize</a> - <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>));</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>  <span class="comment">// 设置内核栈顶</span></div>
+<div class="line"><span class="lineno">  158</span>  <span class="keyword">auto</span> stack_top =</div>
+<div class="line"><span class="lineno">  159</span>      <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>) + <a class="code hl_variable" href="structTaskControlBlock.html#af12109542293f6bba85cbe4dda86306f">kDefaultKernelStackSize</a>;</div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span>  <span class="comment">// 初始化任务上下文</span></div>
+<div class="line"><span class="lineno">  162</span>  <a class="code hl_function" href="aarch64_2arch__main_8cpp.html#a51a1f934a70cf48db916c9c6c7bb5cad">InitTaskContext</a>(&amp;<a class="code hl_variable" href="structTaskControlBlock.html#af087bcb6f419c7484c1200719e0751a9">task_context</a>, entry, arg, stack_top);</div>
 <div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>  <span class="comment">// 设置内核栈顶</span></div>
-<div class="line"><span class="lineno">  165</span>  <span class="keyword">auto</span> stack_top =</div>
-<div class="line"><span class="lineno">  166</span>      <span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>) + <a class="code hl_variable" href="structTaskControlBlock.html#a63b2165100c2ed6dcac074c61eebfdd9">kDefaultKernelStackSize</a>;</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>  <span class="comment">// 初始化任务上下文</span></div>
-<div class="line"><span class="lineno">  169</span>  <a class="code hl_function" href="aarch64_2arch__main_8cpp.html#a13c92ba83f807779913f45bc9ac404b0">InitTaskContext</a>(&amp;<a class="code hl_variable" href="structTaskControlBlock.html#af087bcb6f419c7484c1200719e0751a9">task_context</a>, <a class="code hl_variable" href="acpi_8h.html#a9f4b9757ed06b7cffea1bd7b35f6c093">entry</a>, arg, stack_top);</div>
-<div class="line"><span class="lineno">  170</span>}</div>
-<div class="ttc" id="aaarch64_2arch__main_8cpp_html_a13c92ba83f807779913f45bc9ac404b0"><div class="ttname"><a href="aarch64_2arch__main_8cpp.html#a13c92ba83f807779913f45bc9ac404b0">InitTaskContext</a></div><div class="ttdeci">void InitTaskContext(cpu_io::CalleeSavedContext *task_context, void(*entry)(void *), void *arg, uint64_t stack_top)</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2arch__main_8cpp_source.html#l00079">arch_main.cpp:79</a></div></div>
-<div class="ttc" id="aacpi_8h_html_a9f4b9757ed06b7cffea1bd7b35f6c093"><div class="ttname"><a href="acpi_8h.html#a9f4b9757ed06b7cffea1bd7b35f6c093">entry</a></div><div class="ttdeci">uint32_t * entry</div><div class="ttdef"><b>Definition</b> <a href="acpi_8h_source.html#l00001">acpi.h:1</a></div></div>
-<div class="ttc" id="anamespacecpu__io_1_1virtual__memory_html_a24fb424f54d414703cda572dc076d71a"><div class="ttname"><a href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a></div><div class="ttdeci">static constexpr size_t kPageSize</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00058">cpu_io.h:58</a></div></div>
-<div class="ttc" id="ask__stdlib_8h_html_a8006724372b77924155bd8618fe57516"><div class="ttname"><a href="sk__stdlib_8h.html#a8006724372b77924155bd8618fe57516">aligned_alloc</a></div><div class="ttdeci">void * aligned_alloc(size_t alignment, size_t size)</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00062">memory.cpp:62</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ac2111c5fb74dd8f8113f7734540caa00"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">TaskControlBlock::SchedInfo::priority</a></div><div class="ttdeci">int priority</div><div class="ttdoc">优先级 (数字越小优先级越高)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00134">task_control_block.hpp:134</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ac2b8ff6d1ffd5de93728567adae43e3d"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ac2b8ff6d1ffd5de93728567adae43e3d">TaskControlBlock::SchedInfo::base_priority</a></div><div class="ttdeci">int base_priority</div><div class="ttdoc">基础优先级 (静态，用于优先级继承)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00136">task_control_block.hpp:136</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_a0ce7d1d1287b24fe59df20cdff362fea"><div class="ttname"><a href="structTaskControlBlock.html#a0ce7d1d1287b24fe59df20cdff362fea">TaskControlBlock::status</a></div><div class="ttdeci">TaskStatus status</div><div class="ttdoc">线程状态</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00119">task_control_block.hpp:119</a></div></div>
+<div class="line"><span class="lineno">  164</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a60d6d6fbc92bddcdbd10a2beced98849">fsm</a>.<a class="code hl_function" href="classTaskFsm.html#aa51051086374affc76f2d516d3531889">Start</a>();</div>
+<div class="line"><span class="lineno">  165</span>}</div>
+<div class="ttc" id="aaarch64_2arch__main_8cpp_html_a51a1f934a70cf48db916c9c6c7bb5cad"><div class="ttname"><a href="aarch64_2arch__main_8cpp.html#a51a1f934a70cf48db916c9c6c7bb5cad">InitTaskContext</a></div><div class="ttdeci">auto InitTaskContext(cpu_io::CalleeSavedContext *task_context, void(*entry)(void *), void *arg, uint64_t stack_top) -&gt; void</div><div class="ttdoc">初始化内核线程的任务上下文（重载1）</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2arch__main_8cpp_source.html#l00077">arch_main.cpp:77</a></div></div>
+<div class="ttc" id="aclassTaskFsm_html_aa51051086374affc76f2d516d3531889"><div class="ttname"><a href="classTaskFsm.html#aa51051086374affc76f2d516d3531889">TaskFsm::Start</a></div><div class="ttdeci">auto Start() -&gt; void</div><div class="ttdoc">启动 FSM（在 TCB 完全构造后调用）</div><div class="ttdef"><b>Definition</b> <a href="task__fsm_8hpp_source.html#l00157">task_fsm.hpp:157</a></div></div>
+<div class="ttc" id="anamespacecpu__io_1_1virtual__memory_html_a24fb424f54d414703cda572dc076d71a"><div class="ttname"><a href="namespacecpu__io_1_1virtual__memory.html#a24fb424f54d414703cda572dc076d71a">cpu_io::virtual_memory::kPageSize</a></div><div class="ttdeci">static constexpr size_t kPageSize</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00063">cpu_io.h:63</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a16b493848cd618512fc9fb61d3980bd7"><div class="ttname"><a href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a></div><div class="ttdeci">auto Err(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 ERROR 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00200">kernel_log.hpp:200</a></div></div>
+<div class="ttc" id="ask__stdlib_8h_html_a8006724372b77924155bd8618fe57516"><div class="ttname"><a href="sk__stdlib_8h.html#a8006724372b77924155bd8618fe57516">aligned_alloc</a></div><div class="ttdeci">void * aligned_alloc(size_t alignment, size_t size)</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00058">memory.cpp:58</a></div></div>
+<div class="ttc" id="astructTaskAuxData_html"><div class="ttname"><a href="structTaskAuxData.html">TaskAuxData</a></div><div class="ttdoc">非调度热路径的任务辅助数据</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00082">task_control_block.hpp:82</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ac2111c5fb74dd8f8113f7734540caa00"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">TaskControlBlock::SchedInfo::priority</a></div><div class="ttdeci">int priority</div><div class="ttdoc">优先级 (数字越小优先级越高)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00172">task_control_block.hpp:172</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ac2b8ff6d1ffd5de93728567adae43e3d"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ac2b8ff6d1ffd5de93728567adae43e3d">TaskControlBlock::SchedInfo::base_priority</a></div><div class="ttdeci">int base_priority</div><div class="ttdoc">基础优先级 (静态，用于优先级继承)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00174">task_control_block.hpp:174</a></div></div>
 <div class="ttc" id="astructTaskControlBlock_html_a3075e45ca454dbb5309161896e432ace"><div class="ttname"><a href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">TaskControlBlock::sched_info</a></div><div class="ttdeci">struct TaskControlBlock::SchedInfo sched_info</div></div>
-<div class="ttc" id="astructTaskControlBlock_html_a63b2165100c2ed6dcac074c61eebfdd9"><div class="ttname"><a href="structTaskControlBlock.html#a63b2165100c2ed6dcac074c61eebfdd9">TaskControlBlock::kDefaultKernelStackSize</a></div><div class="ttdeci">static constexpr const size_t kDefaultKernelStackSize</div><div class="ttdoc">默认内核栈大小 (16 KB)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00082">task_control_block.hpp:82</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_ad3caa0ee9155156382e9224e9b3d811f"><div class="ttname"><a href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">TaskControlBlock::kernel_stack</a></div><div class="ttdeci">uint8_t * kernel_stack</div><div class="ttdoc">内核栈</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00171">task_control_block.hpp:171</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_af087bcb6f419c7484c1200719e0751a9"><div class="ttname"><a href="structTaskControlBlock.html#af087bcb6f419c7484c1200719e0751a9">TaskControlBlock::task_context</a></div><div class="ttdeci">cpu_io::CalleeSavedContext task_context</div><div class="ttdoc">任务上下文</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00176">task_control_block.hpp:176</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_af4dcf4dd6f3edffbf3e17d8ff4845226"><div class="ttname"><a href="structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226">TaskControlBlock::trap_context_ptr</a></div><div class="ttdeci">cpu_io::TrapContext * trap_context_ptr</div><div class="ttdoc">Trap 上下文</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00174">task_control_block.hpp:174</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_af98827b16fc1af01c793e7aef9b0608a"><div class="ttname"><a href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">TaskControlBlock::name</a></div><div class="ttdeci">const char * name</div><div class="ttdoc">任务名称</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00099">task_control_block.hpp:99</a></div></div>
-<div class="ttc" id="astructcpu__io_1_1TrapContext_html"><div class="ttname"><a href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a></div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00181">cpu_io.h:181</a></div></div>
-<div class="ttc" id="astructklog_1_1Err_html"><div class="ttname"><a href="structklog_1_1Err.html">klog::Err</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00188">kernel_log.hpp:188</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722"><div class="ttname"><a href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2a829e9a9be95f71d0db69307258a97722">kExited</a></div><div class="ttdeci">@ kExited</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00058">task_control_block.hpp:58</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_a60d6d6fbc92bddcdbd10a2beced98849"><div class="ttname"><a href="structTaskControlBlock.html#a60d6d6fbc92bddcdbd10a2beced98849">TaskControlBlock::fsm</a></div><div class="ttdeci">TaskFsm fsm</div><div class="ttdoc">任务状态机</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00162">task_control_block.hpp:162</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_ace5256db8b1107c2dec127cff755586a"><div class="ttname"><a href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">TaskControlBlock::aux</a></div><div class="ttdeci">TaskAuxData * aux</div><div class="ttdoc">非调度热路径的辅助数据</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00219">task_control_block.hpp:219</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_ad3caa0ee9155156382e9224e9b3d811f"><div class="ttname"><a href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">TaskControlBlock::kernel_stack</a></div><div class="ttdeci">uint8_t * kernel_stack</div><div class="ttdoc">内核栈</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00209">task_control_block.hpp:209</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_af087bcb6f419c7484c1200719e0751a9"><div class="ttname"><a href="structTaskControlBlock.html#af087bcb6f419c7484c1200719e0751a9">TaskControlBlock::task_context</a></div><div class="ttdeci">cpu_io::CalleeSavedContext task_context</div><div class="ttdoc">任务上下文</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00214">task_control_block.hpp:214</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_af12109542293f6bba85cbe4dda86306f"><div class="ttname"><a href="structTaskControlBlock.html#af12109542293f6bba85cbe4dda86306f">TaskControlBlock::kDefaultKernelStackSize</a></div><div class="ttdeci">static constexpr size_t kDefaultKernelStackSize</div><div class="ttdoc">默认内核栈大小 (16 KB)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00123">task_control_block.hpp:123</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_af4dcf4dd6f3edffbf3e17d8ff4845226"><div class="ttname"><a href="structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226">TaskControlBlock::trap_context_ptr</a></div><div class="ttdeci">cpu_io::TrapContext * trap_context_ptr</div><div class="ttdoc">Trap 上下文</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00212">task_control_block.hpp:212</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_af98827b16fc1af01c793e7aef9b0608a"><div class="ttname"><a href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">TaskControlBlock::name</a></div><div class="ttdeci">const char * name</div><div class="ttdoc">任务名称</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00156">task_control_block.hpp:156</a></div></div>
+<div class="ttc" id="astructcpu__io_1_1TrapContext_html"><div class="ttname"><a href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a></div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00186">cpu_io.h:186</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="structTaskControlBlock_a6e96afd7da4feb231b605e2b7cebfc42_cgraph.png" border="0" usemap="#astructTaskControlBlock_a6e96afd7da4feb231b605e2b7cebfc42_cgraph" alt=""/></div>
 <map name="astructTaskControlBlock_a6e96afd7da4feb231b605e2b7cebfc42_cgraph" id="astructTaskControlBlock_a6e96afd7da4feb231b605e2b7cebfc42_cgraph">
 <area shape="rect" title="构造函数 (内核线程)" alt="" coords="5,103,224,143"/>
-<area shape="rect" href="memory_8cpp.html#a8006724372b77924155bd8618fe57516" title=" " alt="" coords="279,85,387,110"/>
-<area shape="poly" title=" " alt="" coords="224,107,265,103,266,108,225,113"/>
-<area shape="rect" href="aarch64_2arch__main_8cpp.html#a13c92ba83f807779913f45bc9ac404b0" title=" " alt="" coords="272,134,395,159"/>
+<area shape="rect" href="memory_8cpp.html#a1c66c5ed90bbf8c21483fdf9c769636f" title=" " alt="" coords="279,35,387,61"/>
+<area shape="poly" title=" " alt="" coords="173,100,281,63,283,68,175,105"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="295,85,371,110"/>
+<area shape="poly" title=" " alt="" coords="224,107,281,101,282,106,225,113"/>
+<area shape="rect" href="aarch64_2arch__main_8cpp.html#a51a1f934a70cf48db916c9c6c7bb5cad" title="初始化内核线程的任务上下文（重载1）" alt="" coords="272,134,395,159"/>
 <area shape="poly" title=" " alt="" coords="225,132,259,136,258,141,224,137"/>
+<area shape="rect" href="classTaskFsm.html#aa51051086374affc76f2d516d3531889" title="启动 FSM（在 TCB 完全构造后调用）" alt="" coords="274,183,393,209"/>
+<area shape="poly" title=" " alt="" coords="176,140,282,176,280,181,174,145"/>
 <area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html#a1ae45175010d9b66ef6db82b668baa1d" title=" " alt="" coords="443,5,647,45"/>
 <area shape="poly" title=" " alt="" coords="372,132,393,119,408,103,416,88,425,71,441,55,450,49,453,54,444,59,429,75,421,90,412,107,396,123,375,136"/>
 <area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html#a057438d663910d4cb7abcbb5615397ab" title=" " alt="" coords="443,69,647,109"/>
@@ -367,7 +394,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html#a4dc21308ff38303ff2484b49c84daa2d" title=" " alt="" coords="443,184,647,224"/>
 <area shape="poly" title=" " alt="" coords="382,157,458,178,457,183,380,162"/>
 <area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html#a90361985987010520dd23face113731f" title=" " alt="" coords="443,248,647,288"/>
-<area shape="poly" title=" " alt="" coords="349,157,389,195,444,234,457,240,455,245,441,238,386,199,345,161"/>
+<area shape="poly" title=" " alt="" coords="377,157,396,169,412,186,421,203,429,218,444,234,453,239,450,244,441,238,425,222,416,205,408,189,393,173,374,162"/>
 </map>
 </div>
 
@@ -428,22 +455,43 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd></dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000022">Todo:</a></b></dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00172">172</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>    : <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>(<a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>) {</div>
-<div class="line"><span class="lineno">  175</span>  <span class="comment">// 设置优先级</span></div>
-<div class="line"><span class="lineno">  176</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a> = priority;</div>
-<div class="line"><span class="lineno">  177</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2b8ff6d1ffd5de93728567adae43e3d">base_priority</a> = priority;</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  180</span>  (void)<a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>;</div>
-<div class="line"><span class="lineno">  181</span>  (void)priority;</div>
-<div class="line"><span class="lineno">  182</span>  (void)elf;</div>
-<div class="line"><span class="lineno">  183</span>  (void)argc;</div>
-<div class="line"><span class="lineno">  184</span>  (void)argv;</div>
-<div class="line"><span class="lineno">  185</span>  LoadElf(<span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  186</span>}</div>
-</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00167">167</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  169</span>    : <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>(_name) {</div>
+<div class="line"><span class="lineno">  170</span>  <span class="comment">// 分配辅助数据</span></div>
+<div class="line"><span class="lineno">  171</span>  <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a> = <span class="keyword">new</span> <a class="code hl_struct" href="structTaskAuxData.html">TaskAuxData</a>{};</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>) {</div>
+<div class="line"><span class="lineno">  173</span>    <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to allocate TaskAuxData for task {}&quot;</span>, <a class="code hl_variable" href="structTaskControlBlock.html#af98827b16fc1af01c793e7aef9b0608a">name</a>);</div>
+<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  175</span>  }</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>  <span class="comment">// 设置优先级</span></div>
+<div class="line"><span class="lineno">  178</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a> = priority;</div>
+<div class="line"><span class="lineno">  179</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2b8ff6d1ffd5de93728567adae43e3d">base_priority</a> = priority;</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  182</span>  (void)_name;</div>
+<div class="line"><span class="lineno">  183</span>  (void)priority;</div>
+<div class="line"><span class="lineno">  184</span>  (void)elf;</div>
+<div class="line"><span class="lineno">  185</span>  (void)argc;</div>
+<div class="line"><span class="lineno">  186</span>  (void)argv;</div>
+<div class="line"><span class="lineno">  187</span>  LoadElf(<span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a60d6d6fbc92bddcdbd10a2beced98849">fsm</a>.<a class="code hl_function" href="classTaskFsm.html#aa51051086374affc76f2d516d3531889">Start</a>();</div>
+<div class="line"><span class="lineno">  190</span>}</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="structTaskControlBlock_a87bcaeb8999f4d5e383a5d2bd8c13925_cgraph.png" border="0" usemap="#astructTaskControlBlock_a87bcaeb8999f4d5e383a5d2bd8c13925_cgraph" alt=""/></div>
+<map name="astructTaskControlBlock_a87bcaeb8999f4d5e383a5d2bd8c13925_cgraph" id="astructTaskControlBlock_a87bcaeb8999f4d5e383a5d2bd8c13925_cgraph">
+<area shape="rect" title="构造函数 (用户线程)" alt="" coords="5,23,224,63"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="293,5,369,31"/>
+<area shape="poly" title=" " alt="" coords="224,28,280,21,280,27,225,33"/>
+<area shape="rect" href="classTaskFsm.html#aa51051086374affc76f2d516d3531889" title="启动 FSM（在 TCB 完全构造后调用）" alt="" coords="272,55,391,80"/>
+<area shape="poly" title=" " alt="" coords="225,53,259,57,258,62,224,58"/>
+</map>
+</div>
+
 </div>
 </div>
 <a id="ab717f2972eeecbff1e902d7b6f339cf1" name="ab717f2972eeecbff1e902d7b6f339cf1"></a>
@@ -538,58 +586,109 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00188">188</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  188</span>                                    {</div>
-<div class="line"><span class="lineno">  189</span>  <span class="comment">// 从线程组中移除</span></div>
-<div class="line"><span class="lineno">  190</span>  <a class="code hl_function" href="structTaskControlBlock.html#a92a35ef0fd97587e74a7be2970675b3d">LeaveThreadGroup</a>();</div>
-<div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>  <span class="comment">// 释放内核栈</span></div>
-<div class="line"><span class="lineno">  193</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>) {</div>
-<div class="line"><span class="lineno">  194</span>    <a class="code hl_function" href="sk__stdlib_8h.html#a274dd8714485eed9c9328973d44ec5dc">aligned_free</a>(<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>);</div>
-<div class="line"><span class="lineno">  195</span>    <a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  196</span>  }</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>  <span class="comment">// 释放页表（如果有用户空间页表）</span></div>
-<div class="line"><span class="lineno">  199</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a>) {</div>
-<div class="line"><span class="lineno">  200</span>    <span class="comment">// 如果是私有页表（非共享），需要释放物理页</span></div>
-<div class="line"><span class="lineno">  201</span>    <span class="keyword">auto</span> should_free_pages = !(<a class="code hl_variable" href="structTaskControlBlock.html#a3dc16c5123d950519cd74d3ee82591d9">clone_flags</a> &amp; <a class="code hl_enumvalue" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116">kCloneVm</a>);</div>
-<div class="line"><span class="lineno">  202</span>    <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;VirtualMemory&gt;::GetInstance</a>().DestroyPageDirectory(</div>
-<div class="line"><span class="lineno">  203</span>        <a class="code hl_variable" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a>, should_free_pages);</div>
-<div class="line"><span class="lineno">  204</span>    <a class="code hl_variable" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  205</span>  }</div>
-<div class="line"><span class="lineno">  206</span>}</div>
-<div class="ttc" id="aclassSingleton_html_a68856b49e098eadba37b60366db33ebd"><div class="ttname"><a href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton::GetInstance</a></div><div class="ttdeci">static auto GetInstance() -&gt; T &amp;</div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00023">singleton.hpp:23</a></div></div>
-<div class="ttc" id="ask__stdlib_8h_html_a274dd8714485eed9c9328973d44ec5dc"><div class="ttname"><a href="sk__stdlib_8h.html#a274dd8714485eed9c9328973d44ec5dc">aligned_free</a></div><div class="ttdeci">void aligned_free(void *ptr)</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00069">memory.cpp:69</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_a3dc16c5123d950519cd74d3ee82591d9"><div class="ttname"><a href="structTaskControlBlock.html#a3dc16c5123d950519cd74d3ee82591d9">TaskControlBlock::clone_flags</a></div><div class="ttdeci">CloneFlags clone_flags</div><div class="ttdoc">克隆标志位</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00127">task_control_block.hpp:127</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_a92a35ef0fd97587e74a7be2970675b3d"><div class="ttname"><a href="structTaskControlBlock.html#a92a35ef0fd97587e74a7be2970675b3d">TaskControlBlock::LeaveThreadGroup</a></div><div class="ttdeci">void LeaveThreadGroup()</div><div class="ttdoc">从线程组中移除自己</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8cpp_source.html#l00105">task_control_block.cpp:105</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_ad6be0a3e64ef7334a846d9444014d867"><div class="ttname"><a href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">TaskControlBlock::page_table</a></div><div class="ttdeci">uint64_t * page_table</div><div class="ttdoc">页表</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00178">task_control_block.hpp:178</a></div></div>
-<div class="ttc" id="atask__control__block_8hpp_html_a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116"><div class="ttname"><a href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aa0ac877a691c7178aac585f9139553116">kCloneVm</a></div><div class="ttdeci">@ kCloneVm</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00030">task_control_block.hpp:30</a></div></div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00192">192</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  192</span>                                    {</div>
+<div class="line"><span class="lineno">  193</span>  <span class="comment">// 从线程组中移除</span></div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_function" href="structTaskControlBlock.html#a4062a5640e8c34b97cf48fa739b40097">LeaveThreadGroup</a>();</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>  <span class="comment">// 释放内核栈</span></div>
+<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>) {</div>
+<div class="line"><span class="lineno">  198</span>    <a class="code hl_function" href="sk__stdlib_8h.html#a274dd8714485eed9c9328973d44ec5dc">aligned_free</a>(<a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a>);</div>
+<div class="line"><span class="lineno">  199</span>    <a class="code hl_variable" href="structTaskControlBlock.html#ad3caa0ee9155156382e9224e9b3d811f">kernel_stack</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  200</span>  }</div>
+<div class="line"><span class="lineno">  201</span> </div>
+<div class="line"><span class="lineno">  202</span>  <span class="comment">// 释放页表（如果有用户空间页表）</span></div>
+<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a>) {</div>
+<div class="line"><span class="lineno">  204</span>    <span class="comment">// 如果是私有页表（非共享），需要释放物理页</span></div>
+<div class="line"><span class="lineno">  205</span>    <span class="keyword">auto</span> should_free_pages = !(<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a7a16568a1a6ac5aefb88e576e561b069">clone_flags</a> &amp; <a class="code hl_variable" href="namespaceclone__flag.html#af4da9961993044c7e3a54183fb1bf588">clone_flag::kVm</a>);</div>
+<div class="line"><span class="lineno">  206</span>    VirtualMemorySingleton::instance().DestroyPageDirectory(<a class="code hl_variable" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a>,</div>
+<div class="line"><span class="lineno">  207</span>                                                            should_free_pages);</div>
+<div class="line"><span class="lineno">  208</span>    <a class="code hl_variable" href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">page_table</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  209</span>  }</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>  <span class="comment">// 释放辅助数据</span></div>
+<div class="line"><span class="lineno">  212</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>) {</div>
+<div class="line"><span class="lineno">  213</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>;</div>
+<div class="line"><span class="lineno">  214</span>    <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  215</span>  }</div>
+<div class="line"><span class="lineno">  216</span>}</div>
+<div class="ttc" id="anamespaceclone__flag_html_af4da9961993044c7e3a54183fb1bf588"><div class="ttname"><a href="namespaceclone__flag.html#af4da9961993044c7e3a54183fb1bf588">clone_flag::kVm</a></div><div class="ttdeci">constexpr uint64_t kVm</div><div class="ttdoc">共享地址空间</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00031">task_control_block.hpp:31</a></div></div>
+<div class="ttc" id="ask__stdlib_8h_html_a274dd8714485eed9c9328973d44ec5dc"><div class="ttname"><a href="sk__stdlib_8h.html#a274dd8714485eed9c9328973d44ec5dc">aligned_free</a></div><div class="ttdeci">void aligned_free(void *ptr)</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00065">memory.cpp:65</a></div></div>
+<div class="ttc" id="astructTaskAuxData_html_a7a16568a1a6ac5aefb88e576e561b069"><div class="ttname"><a href="structTaskAuxData.html#a7a16568a1a6ac5aefb88e576e561b069">TaskAuxData::clone_flags</a></div><div class="ttdeci">CloneFlags clone_flags</div><div class="ttdoc">克隆标志位</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00096">task_control_block.hpp:96</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_a4062a5640e8c34b97cf48fa739b40097"><div class="ttname"><a href="structTaskControlBlock.html#a4062a5640e8c34b97cf48fa739b40097">TaskControlBlock::LeaveThreadGroup</a></div><div class="ttdeci">auto LeaveThreadGroup() -&gt; void</div><div class="ttdoc">从线程组中移除自己</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8cpp_source.html#l00104">task_control_block.cpp:104</a></div></div>
+<div class="ttc" id="astructTaskControlBlock_html_ad6be0a3e64ef7334a846d9444014d867"><div class="ttname"><a href="structTaskControlBlock.html#ad6be0a3e64ef7334a846d9444014d867">TaskControlBlock::page_table</a></div><div class="ttdeci">uint64_t * page_table</div><div class="ttdoc">页表</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00216">task_control_block.hpp:216</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="structTaskControlBlock_a5cb17ff89e47654f129a269f7b8becbb_cgraph.png" border="0" usemap="#astructTaskControlBlock_a5cb17ff89e47654f129a269f7b8becbb_cgraph" alt=""/></div>
 <map name="astructTaskControlBlock_a5cb17ff89e47654f129a269f7b8becbb_cgraph" id="astructTaskControlBlock_a5cb17ff89e47654f129a269f7b8becbb_cgraph">
-<area shape="rect" title=" " alt="" coords="5,47,151,87"/>
-<area shape="rect" href="memory_8cpp.html#a274dd8714485eed9c9328973d44ec5dc" title=" " alt="" coords="261,5,363,31"/>
-<area shape="poly" title=" " alt="" coords="151,49,247,29,248,34,152,55"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="227,55,397,80"/>
-<area shape="poly" title=" " alt="" coords="151,65,213,65,213,70,151,70"/>
-<area shape="rect" href="structTaskControlBlock.html#a92a35ef0fd97587e74a7be2970675b3d" title="从线程组中移除自己" alt="" coords="199,105,425,145"/>
-<area shape="poly" title=" " alt="" coords="152,83,217,99,216,104,151,88"/>
+<area shape="rect" title=" " alt="" coords="5,27,151,67"/>
+<area shape="rect" href="memory_8cpp.html#a2e24be38b7d2a964e53cb2c7719aef52" title=" " alt="" coords="261,5,363,31"/>
+<area shape="poly" title=" " alt="" coords="151,36,246,23,247,29,152,41"/>
+<area shape="rect" href="structTaskControlBlock.html#a4062a5640e8c34b97cf48fa739b40097" title="从线程组中移除自己" alt="" coords="199,55,425,95"/>
+<area shape="poly" title=" " alt="" coords="152,53,185,57,185,63,151,59"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad085eb7e2b19b32796612d82c5871bfd" name="ad085eb7e2b19b32796612d82c5871bfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad085eb7e2b19b32796612d82c5871bfd">&#9670;&#160;</a></span>GetThreadGroupSize()</h2>
+<a id="a76c836142838b3127b032710242c9606" name="a76c836142838b3127b032710242c9606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76c836142838b3127b032710242c9606">&#9670;&#160;</a></span>GetStatus()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t TaskControlBlock::GetThreadGroupSize </td>
+          <td class="memname">auto TaskControlBlock::GetStatus </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; etl::fsm_state_id_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>获取当前任务状态 </p>
+<dl class="section return"><dt>Returns</dt><dd>etl::fsm_state_id_t 当前任务状态 ID </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00088">88</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>                                                            {</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="structTaskControlBlock.html#a60d6d6fbc92bddcdbd10a2beced98849">fsm</a>.<a class="code hl_function" href="classTaskFsm.html#ae980ff471cb089a7effbf5bb9dfdeeb4">GetStateId</a>();</div>
+<div class="line"><span class="lineno">   90</span>}</div>
+<div class="ttc" id="aclassTaskFsm_html_ae980ff471cb089a7effbf5bb9dfdeeb4"><div class="ttname"><a href="classTaskFsm.html#ae980ff471cb089a7effbf5bb9dfdeeb4">TaskFsm::GetStateId</a></div><div class="ttdeci">auto GetStateId() const -&gt; etl::fsm_state_id_t</div><div class="ttdoc">获取当前状态 ID</div><div class="ttdef"><b>Definition</b> <a href="task__fsm_8hpp_source.html#l00169">task_fsm.hpp:169</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="structTaskControlBlock_a76c836142838b3127b032710242c9606_cgraph.png" border="0" usemap="#astructTaskControlBlock_a76c836142838b3127b032710242c9606_cgraph" alt=""/></div>
+<map name="astructTaskControlBlock_a76c836142838b3127b032710242c9606_cgraph" id="astructTaskControlBlock_a76c836142838b3127b032710242c9606_cgraph">
+<area shape="rect" title="获取当前任务状态" alt="" coords="5,5,212,31"/>
+<area shape="rect" href="classTaskFsm.html#ae980ff471cb089a7effbf5bb9dfdeeb4" title="获取当前状态 ID" alt="" coords="260,5,416,31"/>
+<area shape="poly" title=" " alt="" coords="212,15,246,15,246,21,212,21"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="structTaskControlBlock_a76c836142838b3127b032710242c9606_icgraph.png" border="0" usemap="#astructTaskControlBlock_a76c836142838b3127b032710242c9606_icgraph" alt=""/></div>
+<map name="astructTaskControlBlock_a76c836142838b3127b032710242c9606_icgraph" id="astructTaskControlBlock_a76c836142838b3127b032710242c9606_icgraph">
+<area shape="rect" title="获取当前任务状态" alt="" coords="228,31,435,56"/>
+<area shape="rect" href="classTaskManager.html#a31b16f7a44d9b66654bdf52bba94be9a" title="调度函数 选择下一个任务并切换上下文" alt="" coords="5,5,180,31"/>
+<area shape="poly" title=" " alt="" coords="214,34,180,30,180,25,215,28"/>
+<area shape="rect" href="classTaskManager.html#ae546fc5dad8a73a6b17894beefa181e4" title="等待子进程退出" alt="" coords="20,55,165,80"/>
+<area shape="poly" title=" " alt="" coords="215,58,166,63,165,57,214,52"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae844392c292dd1b44e6beaaf19e289e9" name="ae844392c292dd1b44e6beaaf19e289e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae844392c292dd1b44e6beaaf19e289e9">&#9670;&#160;</a></span>GetThreadGroupSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto TaskControlBlock::GetThreadGroupSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const -&gt; size_t</td>
@@ -600,36 +699,33 @@ Here is the call graph for this function:</div>
 <p>获取线程组中的线程数量 </p>
 <dl class="section return"><dt>Returns</dt><dd>size_t 线程数量 (包括自己) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00118">118</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>                                                  {</div>
-<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a> == 0) {</div>
-<div class="line"><span class="lineno">  120</span>    <span class="comment">// 未加入任何线程组</span></div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> 1;</div>
-<div class="line"><span class="lineno">  122</span>  }</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>  <span class="comment">// 计数自己</span></div>
-<div class="line"><span class="lineno">  125</span>  <span class="keywordtype">size_t</span> count = 1;</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>  <span class="comment">// 向前遍历</span></div>
-<div class="line"><span class="lineno">  128</span>  <span class="keyword">const</span> <a class="code hl_struct" href="structTaskControlBlock.html">TaskControlBlock</a>* curr = <a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a>;</div>
-<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">while</span> (curr) {</div>
-<div class="line"><span class="lineno">  130</span>    count++;</div>
-<div class="line"><span class="lineno">  131</span>    curr = curr-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a>;</div>
-<div class="line"><span class="lineno">  132</span>  }</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span>  <span class="comment">// 向后遍历</span></div>
-<div class="line"><span class="lineno">  135</span>  curr = <a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>;</div>
-<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">while</span> (curr) {</div>
-<div class="line"><span class="lineno">  137</span>    count++;</div>
-<div class="line"><span class="lineno">  138</span>    curr = curr-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>;</div>
-<div class="line"><span class="lineno">  139</span>  }</div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span>  <span class="keywordflow">return</span> count;</div>
-<div class="line"><span class="lineno">  142</span>}</div>
-<div class="ttc" id="astructTaskControlBlock_html"><div class="ttname"><a href="structTaskControlBlock.html">TaskControlBlock</a></div><div class="ttdoc">任务控制块，管理进程/线程的核心数据结构</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00080">task_control_block.hpp:80</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_a0ed9b7e8167bb1066b5bf9d917977f39"><div class="ttname"><a href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">TaskControlBlock::thread_group_prev</a></div><div class="ttdeci">TaskControlBlock * thread_group_prev</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00115">task_control_block.hpp:115</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_a7aa8478bbb656a0cd2ddef95bc985ac5"><div class="ttname"><a href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">TaskControlBlock::thread_group_next</a></div><div class="ttdeci">TaskControlBlock * thread_group_next</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00114">task_control_block.hpp:114</a></div></div>
-<div class="ttc" id="astructTaskControlBlock_html_acb0a79022e0b3c343512c8a135272bcc"><div class="ttname"><a href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">TaskControlBlock::tgid</a></div><div class="ttdeci">Pid tgid</div><div class="ttdoc">线程组 ID (主线程的 PID)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00110">task_control_block.hpp:110</a></div></div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00106">106</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>                                                          {</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">tgid</a> == 0) {</div>
+<div class="line"><span class="lineno">  108</span>    <span class="comment">// 未加入任何线程组</span></div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordtype">size_t</span> count = 1;</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>  <span class="comment">// 向前遍历至链表头</span></div>
+<div class="line"><span class="lineno">  115</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="task__control__block_8hpp.html#a1a0588793b1f89cbbb10332d69f5edae">ThreadGroupLink</a>* curr = etl_previous;</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">while</span> (curr) {</div>
+<div class="line"><span class="lineno">  117</span>    ++count;</div>
+<div class="line"><span class="lineno">  118</span>    curr = curr-&gt;etl_previous;</div>
+<div class="line"><span class="lineno">  119</span>  }</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>  <span class="comment">// 向后遍历至链表尾</span></div>
+<div class="line"><span class="lineno">  122</span>  curr = etl_next;</div>
+<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">while</span> (curr) {</div>
+<div class="line"><span class="lineno">  124</span>    ++count;</div>
+<div class="line"><span class="lineno">  125</span>    curr = curr-&gt;etl_next;</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">return</span> count;</div>
+<div class="line"><span class="lineno">  129</span>}</div>
+<div class="ttc" id="astructTaskAuxData_html_a192120a29c0ba83e029ab7107982c49c"><div class="ttname"><a href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">TaskAuxData::tgid</a></div><div class="ttdeci">Pid tgid</div><div class="ttdoc">线程组 ID (主线程的 PID)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00090">task_control_block.hpp:90</a></div></div>
+<div class="ttc" id="atask__control__block_8hpp_html_a1a0588793b1f89cbbb10332d69f5edae"><div class="ttname"><a href="task__control__block_8hpp.html#a1a0588793b1f89cbbb10332d69f5edae">ThreadGroupLink</a></div><div class="ttdeci">etl::bidirectional_link&lt; 0 &gt; ThreadGroupLink</div><div class="ttdoc">线程组侵入式链表节点类型</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00073">task_control_block.hpp:73</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -666,10 +762,11 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true 如果在同一线程组 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00226">226</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>                                                                      {</div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">return</span> other &amp;&amp; (<a class="code hl_variable" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a> == other-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a>) &amp;&amp; (<a class="code hl_variable" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a> != 0);</div>
-<div class="line"><span class="lineno">  228</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00259">259</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  260</span>              {</div>
+<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a> &amp;&amp; other &amp;&amp; other-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a> &amp;&amp; (<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">tgid</a> == other-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">tgid</a>) &amp;&amp;</div>
+<div class="line"><span class="lineno">  262</span>           (<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">tgid</a> != 0);</div>
+<div class="line"><span class="lineno">  263</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -699,24 +796,26 @@ Here is the call graph for this function:</div>
 <p>检查是否是线程组的主线程 </p>
 <dl class="section return"><dt>Returns</dt><dd>true 如果是主线程 (pid == tgid) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00200">200</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  200</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="structTaskControlBlock.html#aca9ca152ecda65751f10c515c4dbb867">pid</a> == <a class="code hl_variable" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a>; }</div>
-<div class="ttc" id="astructTaskControlBlock_html_aca9ca152ecda65751f10c515c4dbb867"><div class="ttname"><a href="structTaskControlBlock.html#aca9ca152ecda65751f10c515c4dbb867">TaskControlBlock::pid</a></div><div class="ttdeci">Pid pid</div><div class="ttdoc">线程 ID (Task ID)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00102">task_control_block.hpp:102</a></div></div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00231">231</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  231</span>                                                         {</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a> &amp;&amp; <a class="code hl_variable" href="structTaskControlBlock.html#aca9ca152ecda65751f10c515c4dbb867">pid</a> == <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">tgid</a>;</div>
+<div class="line"><span class="lineno">  233</span>  }</div>
+<div class="ttc" id="astructTaskControlBlock_html_aca9ca152ecda65751f10c515c4dbb867"><div class="ttname"><a href="structTaskControlBlock.html#aca9ca152ecda65751f10c515c4dbb867">TaskControlBlock::pid</a></div><div class="ttdeci">Pid pid</div><div class="ttdoc">线程 ID (Task ID)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00159">task_control_block.hpp:159</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a0bff7bd9a4bd5b131838e6ab9bd27510" name="a0bff7bd9a4bd5b131838e6ab9bd27510"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bff7bd9a4bd5b131838e6ab9bd27510">&#9670;&#160;</a></span>JoinThreadGroup()</h2>
+<a id="a052edc4f5b79f9c721ce006164b9f55d" name="a052edc4f5b79f9c721ce006164b9f55d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a052edc4f5b79f9c721ce006164b9f55d">&#9670;&#160;</a></span>JoinThreadGroup()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TaskControlBlock::JoinThreadGroup </td>
+          <td class="memname">auto TaskControlBlock::JoinThreadGroup </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td>
           <td class="paramname"><em>leader</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -730,37 +829,32 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>调用者需要确保加锁 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00088">88</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>                                                               {</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">if</span> (!leader || leader == <span class="keyword">this</span>) {</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   91</span>  }</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>  <span class="comment">// 设置 tgid</span></div>
-<div class="line"><span class="lineno">   94</span>  <a class="code hl_variable" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a> = leader-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#acb0a79022e0b3c343512c8a135272bcc">tgid</a>;</div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>  <span class="comment">// 如果 leader 已经有其他线程，插入到链表头部</span></div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (leader-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>) {</div>
-<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a> = leader-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>;</div>
-<div class="line"><span class="lineno">   99</span>    <a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a> = <span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  100</span>  }</div>
-<div class="line"><span class="lineno">  101</span>  leader-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a> = <span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  102</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a> = leader;</div>
-<div class="line"><span class="lineno">  103</span>}</div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00092">92</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>                                                                       {</div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (!leader || leader == <span class="keyword">this</span>) {</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   95</span>  }</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>  <span class="comment">// 设置 tgid</span></div>
+<div class="line"><span class="lineno">   98</span>  <a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">tgid</a> = leader-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#ace5256db8b1107c2dec127cff755586a">aux</a>-&gt;<a class="code hl_variable" href="structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c">tgid</a>;</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  <span class="comment">// 在 leader 之后插入自身</span></div>
+<div class="line"><span class="lineno">  101</span>  etl::link_splice&lt;ThreadGroupLink&gt;(*leader, *<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  102</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a92a35ef0fd97587e74a7be2970675b3d" name="a92a35ef0fd97587e74a7be2970675b3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92a35ef0fd97587e74a7be2970675b3d">&#9670;&#160;</a></span>LeaveThreadGroup()</h2>
+<a id="a4062a5640e8c34b97cf48fa739b40097" name="a4062a5640e8c34b97cf48fa739b40097"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4062a5640e8c34b97cf48fa739b40097">&#9670;&#160;</a></span>LeaveThreadGroup()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TaskControlBlock::LeaveThreadGroup </td>
+          <td class="memname">auto TaskControlBlock::LeaveThreadGroup </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; void</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -768,24 +862,13 @@ Here is the call graph for this function:</div>
 <p>从线程组中移除自己 </p>
 <dl class="section note"><dt>Note</dt><dd>调用者需要确保加锁 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00105">105</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>                                        {</div>
-<div class="line"><span class="lineno">  106</span>  <span class="comment">// 从双向链表中移除</span></div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a>) {</div>
-<div class="line"><span class="lineno">  108</span>    <a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a>-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a> = <a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>;</div>
-<div class="line"><span class="lineno">  109</span>  }</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>) {</div>
-<div class="line"><span class="lineno">  111</span>    <a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a>-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a> = <a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a>;</div>
-<div class="line"><span class="lineno">  112</span>  }</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a0ed9b7e8167bb1066b5bf9d917977f39">thread_group_prev</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  115</span>  <a class="code hl_variable" href="structTaskControlBlock.html#a7aa8478bbb656a0cd2ddef95bc985ac5">thread_group_next</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  116</span>}</div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8cpp_source.html#l00104">104</a> of file <a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>{ ThreadGroupLink::unlink(); }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="structTaskControlBlock_a92a35ef0fd97587e74a7be2970675b3d_icgraph.png" border="0" usemap="#astructTaskControlBlock_a92a35ef0fd97587e74a7be2970675b3d_icgraph" alt=""/></div>
-<map name="astructTaskControlBlock_a92a35ef0fd97587e74a7be2970675b3d_icgraph" id="astructTaskControlBlock_a92a35ef0fd97587e74a7be2970675b3d_icgraph">
+<div class="center"><img src="structTaskControlBlock_a4062a5640e8c34b97cf48fa739b40097_icgraph.png" border="0" usemap="#astructTaskControlBlock_a4062a5640e8c34b97cf48fa739b40097_icgraph" alt=""/></div>
+<map name="astructTaskControlBlock_a4062a5640e8c34b97cf48fa739b40097_icgraph" id="astructTaskControlBlock_a4062a5640e8c34b97cf48fa739b40097_icgraph">
 <area shape="rect" title="从线程组中移除自己" alt="" coords="199,5,425,45"/>
 <area shape="rect" href="structTaskControlBlock.html#a5cb17ff89e47654f129a269f7b8becbb" title=" " alt="" coords="5,5,151,45"/>
 <area shape="poly" title=" " alt="" coords="185,28,151,28,151,23,185,23"/>
@@ -847,117 +930,46 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a603f127b15f3dc015b911289650523be" name="a603f127b15f3dc015b911289650523be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a603f127b15f3dc015b911289650523be">&#9670;&#160;</a></span>blocked_on</h2>
+<a id="ace5256db8b1107c2dec127cff755586a" name="ace5256db8b1107c2dec127cff755586a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace5256db8b1107c2dec127cff755586a">&#9670;&#160;</a></span>aux</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structResourceId.html">ResourceId</a> TaskControlBlock::blocked_on {}</td>
+          <td class="memname"><a class="el" href="structTaskAuxData.html">TaskAuxData</a>* TaskControlBlock::aux {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>等待的资源 ID </p>
+<p>非调度热路径的辅助数据 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00184">184</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  184</span>{};</div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00219">219</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  219</span>{<span class="keyword">nullptr</span>};</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a3dc16c5123d950519cd74d3ee82591d9" name="a3dc16c5123d950519cd74d3ee82591d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dc16c5123d950519cd74d3ee82591d9">&#9670;&#160;</a></span>clone_flags</h2>
+<a id="a60d6d6fbc92bddcdbd10a2beced98849" name="a60d6d6fbc92bddcdbd10a2beced98849"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60d6d6fbc92bddcdbd10a2beced98849">&#9670;&#160;</a></span>fsm</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6a">CloneFlags</a> TaskControlBlock::clone_flags = <a class="el" href="task__control__block_8hpp.html#a621e1ac4b663435d18b9ec55284dda6aaf94b1d0d41e1048035cbea17f534d0f5">kCloneAll</a></td>
+          <td class="memname"><a class="el" href="classTaskFsm.html">TaskFsm</a> TaskControlBlock::fsm {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>克隆标志位 </p>
+<p>任务状态机 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00127">127</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00162">162</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>{};</div>
+</div><!-- fragment -->
 </div>
 </div>
-<a id="a82296b6fec3ae8a120ffec4f0e97ef81" name="a82296b6fec3ae8a120ffec4f0e97ef81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82296b6fec3ae8a120ffec4f0e97ef81">&#9670;&#160;</a></span>cpu_affinity</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t TaskControlBlock::cpu_affinity = UINT64_MAX</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>CPU 亲和性位掩码 </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00181">181</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a8bbeb5cef9a8125fee0b15a471a511ea" name="a8bbeb5cef9a8125fee0b15a471a511ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bbeb5cef9a8125fee0b15a471a511ea">&#9670;&#160;</a></span>exit_code</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int TaskControlBlock::exit_code = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>退出码 </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00124">124</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a8489d78bae9be9f8293675dbcb46088a" name="a8489d78bae9be9f8293675dbcb46088a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8489d78bae9be9f8293675dbcb46088a">&#9670;&#160;</a></span>interrupt_number</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t TaskControlBlock::interrupt_number = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>关联的中断号 </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00189">189</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="acaba2173a3196a62881d80f604e632fe" name="acaba2173a3196a62881d80f604e632fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acaba2173a3196a62881d80f604e632fe">&#9670;&#160;</a></span>is_interrupt_thread</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TaskControlBlock::is_interrupt_thread = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>是否为中断线程 </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00187">187</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a63b2165100c2ed6dcac074c61eebfdd9" name="a63b2165100c2ed6dcac074c61eebfdd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63b2165100c2ed6dcac074c61eebfdd9">&#9670;&#160;</a></span>kDefaultKernelStackSize</h2>
+<a id="af12109542293f6bba85cbe4dda86306f" name="af12109542293f6bba85cbe4dda86306f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af12109542293f6bba85cbe4dda86306f">&#9670;&#160;</a></span>kDefaultKernelStackSize</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -966,7 +978,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const size_t TaskControlBlock::kDefaultKernelStackSize = 16 * 1024</td>
+          <td class="memname">constexpr size_t TaskControlBlock::kDefaultKernelStackSize = 16 * 1024</td>
         </tr>
       </table>
   </td>
@@ -978,7 +990,7 @@ Here is the caller graph for this function:</div>
 
 <p>默认内核栈大小 (16 KB) </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00082">82</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00123">123</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
 
 </div>
 </div>
@@ -989,15 +1001,16 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t* TaskControlBlock::kernel_stack = nullptr</td>
+          <td class="memname">uint8_t* TaskControlBlock::kernel_stack {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>内核栈 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00171">171</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00209">209</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  209</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="af98827b16fc1af01c793e7aef9b0608a" name="af98827b16fc1af01c793e7aef9b0608a"></a>
@@ -1007,15 +1020,16 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* TaskControlBlock::name = &quot;Unnamed Task&quot;</td>
+          <td class="memname">const char* TaskControlBlock::name {&quot;Unnamed Task&quot;}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>任务名称 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00099">99</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00156">156</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  156</span>{<span class="stringliteral">&quot;Unnamed Task&quot;</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ad6be0a3e64ef7334a846d9444014d867" name="ad6be0a3e64ef7334a846d9444014d867"></a>
@@ -1025,51 +1039,16 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t* TaskControlBlock::page_table = nullptr</td>
+          <td class="memname">uint64_t* TaskControlBlock::page_table {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>页表 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00178">178</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a9ba9b0da6c408d7b4ef9e9e6637f0556" name="a9ba9b0da6c408d7b4ef9e9e6637f0556"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ba9b0da6c408d7b4ef9e9e6637f0556">&#9670;&#160;</a></span>parent_pid</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a> TaskControlBlock::parent_pid = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>父线程 ID </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00104">104</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a594adb2ab65f5fa0fb2897117f920ddf" name="a594adb2ab65f5fa0fb2897117f920ddf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a594adb2ab65f5fa0fb2897117f920ddf">&#9670;&#160;</a></span>pgid</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a> TaskControlBlock::pgid = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>进程组 ID </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00106">106</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00216">216</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  216</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aca9ca152ecda65751f10c515c4dbb867" name="aca9ca152ecda65751f10c515c4dbb867"></a>
@@ -1079,15 +1058,16 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a> TaskControlBlock::pid = 0</td>
+          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a> TaskControlBlock::pid {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>线程 ID (Task ID) </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00102">102</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00159">159</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  159</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a017d7cfbc80709c0dfd826de0199a2a2" name="a017d7cfbc80709c0dfd826de0199a2a2"></a>
@@ -1097,15 +1077,17 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a> TaskControlBlock::policy = <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a227e8416235cd3b43077ca91504a463f">SchedPolicy::kNormal</a></td>
+          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1">SchedPolicy</a> TaskControlBlock::policy {<a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416">SchedPolicy::kNormal</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>调度策略 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00121">121</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00165">165</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  165</span>{<a class="code hl_enumvalue" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416">SchedPolicy::kNormal</a>};</div>
+<div class="ttc" id="atask__control__block_8hpp_html_a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416"><div class="ttname"><a href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a07fa7a19aa722c635a15e94cb7f50416">SchedPolicy::kNormal</a></div><div class="ttdeci">@ kNormal</div><div class="ttdoc">普通任务</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a6a0b5c38f6f6f0ea6365be1d20c0497b" name="a6a0b5c38f6f6f0ea6365be1d20c0497b"></a>
@@ -1136,42 +1118,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ae826edd217cadcc7d43cb366e8812c0e" name="ae826edd217cadcc7d43cb366e8812c0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae826edd217cadcc7d43cb366e8812c0e">&#9670;&#160;</a></span>sid</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a> TaskControlBlock::sid = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>会话 ID </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00108">108</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a0ce7d1d1287b24fe59df20cdff362fea" name="a0ce7d1d1287b24fe59df20cdff362fea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ce7d1d1287b24fe59df20cdff362fea">&#9670;&#160;</a></span>status</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2">TaskStatus</a> TaskControlBlock::status = <a class="el" href="task__control__block_8hpp.html#a5d987b98f8f913fcd928b7ab94e726a2aea2cc5ef767941164ec1261929e4cd6e">TaskStatus::kUnInit</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>线程状态 </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00119">119</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
 <a id="af087bcb6f419c7484c1200719e0751a9" name="af087bcb6f419c7484c1200719e0751a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af087bcb6f419c7484c1200719e0751a9">&#9670;&#160;</a></span>task_context</h2>
 
@@ -1186,59 +1132,9 @@ Here is the caller graph for this function:</div>
 
 <p>任务上下文 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00176">176</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  176</span>{};</div>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00214">214</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  214</span>{};</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="acb0a79022e0b3c343512c8a135272bcc" name="acb0a79022e0b3c343512c8a135272bcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb0a79022e0b3c343512c8a135272bcc">&#9670;&#160;</a></span>tgid</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="task__control__block_8hpp.html#a7b3497faea769e764efc8647bc2103f1">Pid</a> TaskControlBlock::tgid = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>线程组 ID (主线程的 PID) </p>
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00110">110</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a7aa8478bbb656a0cd2ddef95bc985ac5" name="a7aa8478bbb656a0cd2ddef95bc985ac5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7aa8478bbb656a0cd2ddef95bc985ac5">&#9670;&#160;</a></span>thread_group_next</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* TaskControlBlock::thread_group_next = nullptr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00114">114</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a0ed9b7e8167bb1066b5bf9d917977f39" name="a0ed9b7e8167bb1066b5bf9d917977f39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ed9b7e8167bb1066b5bf9d917977f39">&#9670;&#160;</a></span>thread_group_prev</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* TaskControlBlock::thread_group_prev = nullptr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00115">115</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
 </div>
 </div>
 <a id="af4dcf4dd6f3edffbf3e17d8ff4845226" name="af4dcf4dd6f3edffbf3e17d8ff4845226"></a>
@@ -1248,20 +1144,21 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>* TaskControlBlock::trap_context_ptr = nullptr</td>
+          <td class="memname"><a class="el" href="structcpu__io_1_1TrapContext.html">cpu_io::TrapContext</a>* TaskControlBlock::trap_context_ptr {nullptr}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Trap 上下文 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00174">174</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00212">212</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  212</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>/root/src/task/include/<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a></li>
-<li>/root/src/task/<a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a></li>
+<li>/workspaces/SimpleKernel/src/task/include/<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/task/<a class="el" href="task__control__block_8cpp_source.html">task_control_block.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

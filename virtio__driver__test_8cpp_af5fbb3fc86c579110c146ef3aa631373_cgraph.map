@@ -1,0 +1,33 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,330,60,355"/>
+<area shape="rect" id="Node000002" href="$classVirtioDriver.html#a3cbbd67b9d07ab2974fb6d9f6c4db20f" title="返回驱动注册入口" alt="" coords="108,330,271,355"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,340,94,340,94,345,60,345"/>
+<area shape="rect" id="Node000003" href="$classVirtioDriver.html#a87cc3f14f78089d301df1837f9df1c34" title="初始化 VirtIO 设备" alt="" coords="337,281,480,306"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="246,327,338,306,339,312,247,333"/>
+<area shape="rect" id="Node000015" href="$classVirtioDriver.html#a611b0c80f6b510346d13c0af2950cb83" title="卸载所有 VirtIO 块设备" alt="" coords="329,330,488,355"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="271,340,316,340,316,345,271,345"/>
+<area shape="rect" id="Node000016" href="$classVirtioDriver.html#a7b756d04289af177d1e52c2a14dbda3e" title=" " alt="" coords="319,379,499,405"/>
+<area shape="poly" id="edge15_Node000002_Node000016" title=" " alt="" coords="247,353,339,374,338,379,246,358"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a65b2cb378de4a64bee98948681b93503" title="创建并初始化块设备" alt="" coords="571,101,719,141"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="417,279,467,218,504,182,545,151,557,145,559,149,548,156,507,186,471,222,421,282"/>
+<area shape="rect" id="Node000009" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="607,166,683,191"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="424,278,476,241,546,202,593,186,594,191,548,206,479,245,427,283"/>
+<area shape="rect" id="Node000010" href="$classvirtio_1_1blk_1_1VirtioBlk.html#aaed018a55b3d101003bf798b07c525a6" title="计算 RequestSlot DMA 内存所需字节数" alt="" coords="547,216,743,256"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="461,278,548,257,549,262,462,283"/>
+<area shape="rect" id="Node000011" href="$io__buffer_8hpp.html#a3116fc9c19dccfa18d7134aa02a930c6" title="恒等映射：物理地址 == 虚拟地址（早期启动 / 无 MMU 时的默认实现）" alt="" coords="575,281,715,306"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="480,291,561,291,561,296,480,296"/>
+<area shape="rect" id="Node000012" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="603,330,686,355"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="471,303,591,329,590,334,470,309"/>
+<area shape="rect" id="Node000013" href="$namespacemmio__helper.html#abef9cac26ccb76a6b4b911f8f1ccae76" title="从节点提取 MMIO base/size 并通过 VirtualMemory 映射该区域。" alt="" coords="561,379,728,405"/>
+<area shape="poly" id="edge12_Node000003_Node000013" title=" " alt="" coords="472,304,500,316,515,329,525,342,534,354,548,366,561,372,558,377,545,370,530,358,520,345,512,333,497,321,470,309"/>
+<area shape="rect" id="Node000014" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="599,429,690,454"/>
+<area shape="poly" id="edge13_Node000003_Node000014" title=" " alt="" coords="479,304,500,317,512,329,519,342,525,368,531,392,537,404,548,415,566,426,587,433,585,438,564,431,545,419,533,407,526,394,520,369,514,344,508,332,497,321,477,308"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1DeviceInitializer.html#a152f516d005f2c89a0d1cff4587675c5" title="激活设备，开始正常运行" alt="" coords="791,5,961,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="689,99,790,55,807,48,809,53,792,60,691,104"/>
+<area shape="rect" id="Node000006" href="$classvirtio_1_1DeviceInitializer.html#a4b04ddf221c72f7d9942fd0f6d06a547" title="执行 virtio 设备初始化序列" alt="" coords="791,69,961,109"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="719,108,777,100,777,106,719,114"/>
+<area shape="rect" id="Node000007" href="$classvirtio_1_1DeviceInitializer.html#a163d39c87bdf2daa46df3e96da263650" title="配置并激活指定的 virtqueue" alt="" coords="791,133,961,173"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="719,129,777,137,777,142,719,134"/>
+<area shape="rect" id="Node000008" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ac3a1f8b1fd22b8f3cd749d66505fb40e" title=" " alt="" coords="802,197,950,237"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="716,139,744,151,768,167,792,183,806,190,803,194,789,188,765,171,741,156,713,144"/>
+</map>

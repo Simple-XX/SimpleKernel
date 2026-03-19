@@ -1,0 +1,11 @@
+<map id="ArchInit" name="ArchInit">
+<area shape="rect" id="Node000001" title="体系结构相关初始化" alt="" coords="5,55,77,80"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="147,5,223,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,53,134,33,136,38,78,58"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="144,55,227,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="78,65,130,65,130,70,78,70"/>
+<area shape="rect" id="Node000004" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="125,104,245,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="78,77,136,97,134,102,77,82"/>
+<area shape="rect" id="Node000005" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="293,104,428,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,114,279,114,279,119,246,119"/>
+</map>

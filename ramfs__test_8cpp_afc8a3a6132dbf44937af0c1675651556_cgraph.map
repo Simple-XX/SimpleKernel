@@ -1,0 +1,9 @@
+<map id="TEST_F" name="TEST_F">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,75,80"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1InodeOps.html#a45b634889f988376eac511bd6215ddda" title="在目录中创建新文件" alt="" coords="123,5,285,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,54,122,39,146,32,147,37,123,45,76,59"/>
+<area shape="rect" id="Node000003" href="$classvfs_1_1FileOps.html#a7aef73346cabd213e5523bcef65eca03" title="调整文件偏移量" alt="" coords="135,55,273,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="75,65,120,65,120,70,75,70"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1FileOps.html#ae44071b818591e0f8fd04982e6501ce4" title="向文件写入数据" alt="" coords="133,104,275,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="76,75,148,97,147,102,74,80"/>
+</map>

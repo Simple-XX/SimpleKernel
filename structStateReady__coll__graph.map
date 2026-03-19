@@ -1,0 +1,5 @@
+<map id="StateReady" name="StateReady">
+<area shape="rect" id="Node000001" title="Ready 状态 — 任务已就绪，等待调度" alt="" coords="27,148,192,233"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,213,100"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,114,112,148,107,148,107,114"/>
+</map>

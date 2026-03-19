@@ -1,0 +1,5 @@
+<map id="virtio::blk::VirtioBlkVfsAdapter::GetSectorCount" name="virtio::blk::VirtioBlkVfsAdapter::GetSectorCount">
+<area shape="rect" id="Node000001" title="获取设备总扇区数" alt="" coords="5,5,188,45"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a1ef7ec8d663fc73cd6ce9a341319b7e8" title="获取设备容量" alt="" coords="236,5,384,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,23,222,23,222,28,189,28"/>
+</map>

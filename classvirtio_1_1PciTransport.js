@@ -1,0 +1,25 @@
+var classvirtio_1_1PciTransport =
+[
+    [ "AckInterrupt", "classvirtio_1_1PciTransport.html#adf1cffd3376f38dd98ac5cf707068d7d", null ],
+    [ "GetConfigGeneration", "classvirtio_1_1PciTransport.html#a4522b0f3abd422013607cafc883ac5a8", null ],
+    [ "GetDeviceFeatures", "classvirtio_1_1PciTransport.html#ab96b9b1e1e65bf9697f0dcfe782b58cc", null ],
+    [ "GetDeviceId", "classvirtio_1_1PciTransport.html#ad9cd44c8a9d73a220946da06573a2c13", null ],
+    [ "GetInterruptStatus", "classvirtio_1_1PciTransport.html#af684a67388262708a26116301a2e276d", null ],
+    [ "GetQueueNumMax", "classvirtio_1_1PciTransport.html#a8670e14cce6634fc6d91602154183941", null ],
+    [ "GetQueueReady", "classvirtio_1_1PciTransport.html#a3951a113b6a05ccbb3a5e64a5eb7927d", null ],
+    [ "GetStatus", "classvirtio_1_1PciTransport.html#ad67cbca1247f4f3972ab6e0f161487b8", null ],
+    [ "GetVendorId", "classvirtio_1_1PciTransport.html#a1e5a1e3270b25362622497c0d2329731", null ],
+    [ "IsValid", "classvirtio_1_1PciTransport.html#a423d74ed1cd007b4a2dbb455b36bf32f", null ],
+    [ "NotifyQueue", "classvirtio_1_1PciTransport.html#a2ac253c995c8d6d373cd71f3c2524f22", null ],
+    [ "ReadConfigU16", "classvirtio_1_1PciTransport.html#ad40849973845ffc992fbf3e632a6499f", null ],
+    [ "ReadConfigU32", "classvirtio_1_1PciTransport.html#a731ff948a5d359e9d3015e5d8c649dbe", null ],
+    [ "ReadConfigU64", "classvirtio_1_1PciTransport.html#af3d4fd5cc2f4342cde2b5a1aeae935ac", null ],
+    [ "ReadConfigU8", "classvirtio_1_1PciTransport.html#a7e6618e78ca080e47b22c096e418dfb7", null ],
+    [ "SetDriverFeatures", "classvirtio_1_1PciTransport.html#ac6e6f59f0948e9e19f27692c878eaf5d", null ],
+    [ "SetQueueAvail", "classvirtio_1_1PciTransport.html#afbd85a834008eb8596e5caabd6c47c38", null ],
+    [ "SetQueueDesc", "classvirtio_1_1PciTransport.html#ac31ceca7d3952a2b6e732fcf6ae66af9", null ],
+    [ "SetQueueNum", "classvirtio_1_1PciTransport.html#a1faafd326af50854a6fa05d016d87a45", null ],
+    [ "SetQueueReady", "classvirtio_1_1PciTransport.html#a5ef8969b1458371071a16bb6c441a811", null ],
+    [ "SetQueueUsed", "classvirtio_1_1PciTransport.html#af4ca6bda264781aed3ab66d63e84945a", null ],
+    [ "SetStatus", "classvirtio_1_1PciTransport.html#acc53302a7ecb29a617e34a913d647a90", null ]
+];

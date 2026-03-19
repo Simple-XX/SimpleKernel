@@ -1,0 +1,7 @@
+<map id="virtio::Transport" name="virtio::Transport">
+<area shape="rect" id="Node000001" title="Virtio 传输层基类（零虚表开销，C++23 Deducing this）" alt="" coords="89,5,271,371"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1MmioTransport.html" title="Virtio MMIO 传输层" alt="" coords="5,419,168,904"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,385,137,419,132,418,139,384"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1PciTransport.html" title="Virtio PCI 传输层（占位）" alt="" coords="192,529,355,794"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="221,384,250,528,245,529,216,385"/>
+</map>

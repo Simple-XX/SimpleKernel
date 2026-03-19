@@ -1,0 +1,23 @@
+<map id="/workspaces/SimpleKernel/src/device/virtio/virt_queue/misc.hpp" name="/workspaces/SimpleKernel/src/device/virtio/virt_queue/misc.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="331,5,524,60"/>
+<area shape="rect" id="Node000002" href="$split_8hpp.html" title=" " alt="" coords="331,211,524,265"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,73,386,109,381,135,386,162,396,187,409,209,405,212,391,189,381,163,376,135,381,107,397,71"/>
+<area shape="rect" id="Node000010" href="$virtqueue__base_8hpp.html" title=" " alt="" coords="396,108,597,163"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="456,70,481,106,476,109,451,73"/>
+<area shape="rect" id="Node000003" href="$virtio__blk_8hpp.html" title=" " alt="" coords="331,313,524,368"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="430,279,430,313,425,313,425,279"/>
+<area shape="rect" id="Node000004" href="$virtio__blk__vfs__adapter_8hpp.html" title=" " alt="" coords="243,416,465,471"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="402,381,375,417,371,414,398,378"/>
+<area shape="rect" id="Node000005" href="$virtio__driver_8hpp.html" title=" " alt="" coords="331,519,524,573"/>
+<area shape="poly" id="edge9_Node000003_Node000005" title=" " alt="" coords="461,378,479,415,485,443,479,471,468,497,452,520,448,517,463,495,474,470,479,443,474,417,456,380"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="383,480,410,517,406,520,379,483"/>
+<area shape="rect" id="Node000006" href="$riscv64_2interrupt__main_8cpp.html" title=" " alt="" coords="5,621,199,676"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="330,580,188,624,186,619,329,575"/>
+<area shape="rect" id="Node000007" href="$device_8cpp.html" title=" " alt="" coords="223,629,416,669"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="391,585,341,630,338,627,387,581"/>
+<area shape="rect" id="Node000008" href="$virtio__driver_8cpp.html" title=" " alt="" coords="440,621,633,676"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="468,581,510,619,506,623,464,585"/>
+<area shape="rect" id="Node000009" href="$virtio__driver__test_8cpp.html" title=" " alt="" coords="657,621,851,676"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="526,575,670,619,668,624,525,580"/>
+<area shape="poly" id="edge11_Node000010_Node000002" title=" " alt="" coords="473,176,448,212,443,209,468,173"/>
+</map>

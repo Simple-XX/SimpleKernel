@@ -1,0 +1,25 @@
+<map id="vfs::Open" name="vfs::Open">
+<area shape="rect" id="Node000001" title="打开文件" alt="" coords="5,131,89,156"/>
+<area shape="rect" id="Node000002" href="$namespacevfs.html#a1f319700095b5c6a4308289a9f190aa7" title="添加子 dentry" alt="" coords="426,5,534,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,128,89,92,111,73,136,58,207,33,281,19,351,13,412,12,412,17,352,18,281,24,208,38,138,63,114,78,92,96,60,132"/>
+<area shape="rect" id="Node000003" href="$classvfs_1_1InodeOps.html#a45b634889f988376eac511bd6215ddda" title="在目录中创建新文件" alt="" coords="157,155,319,180"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="90,146,143,153,143,158,89,151"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="188,204,288,229"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="69,154,101,172,138,190,175,202,174,207,136,195,99,177,67,158"/>
+<area shape="rect" id="Node000005" href="$classvfs_1_1FileSystem.html#a2db4470f64b2b51611fd397715e9f154" title="获取文件系统的文件操作接口" alt="" coords="137,253,339,279"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="59,155,90,197,113,220,139,240,151,246,148,251,136,244,109,224,86,201,54,158"/>
+<area shape="rect" id="Node000006" href="$namespacevfs.html#aa5aeb25168763769b1d16de4f480c55a" title=" " alt="" coords="416,55,544,80"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="64,128,97,108,136,90,205,74,276,65,402,61,402,66,276,70,206,79,138,95,99,112,67,133"/>
+<area shape="rect" id="Node000007" href="$namespacevfs.html#ab13a5ee8d7ce0e205943bf30c6d5fffa" title="路径解析，查找 dentry" alt="" coords="190,105,286,131"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="89,135,176,123,177,129,90,140"/>
+<area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="259,103,315,72,386,40,412,31,414,36,388,44,318,76,262,107"/>
+<area shape="poly" id="edge10_Node000007_Node000006" title=" " alt="" coords="285,106,405,80,406,86,287,111"/>
+<area shape="rect" id="Node000008" href="$namespacevfs.html#aa856f00891a7489bb883b8501f25d703" title="复制路径组件到缓冲区" alt="" coords="387,203,573,228"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="287,121,314,128,340,140,356,152,365,165,374,177,388,189,401,195,398,200,385,194,370,181,361,168,352,156,337,144,312,133,286,126"/>
+<area shape="rect" id="Node000009" href="$namespacevfs.html#a1ff3d436875fc8c5da193242bf010442" title="在 dentry 的子节点中查找指定名称" alt="" coords="425,252,535,277"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="287,118,315,126,340,140,352,152,359,165,365,191,371,216,377,227,388,239,413,252,410,257,385,243,373,230,366,217,360,192,354,167,348,155,337,144,313,131,285,123"/>
+<area shape="rect" id="Node000010" href="$classvfs_1_1InodeOps.html#af27f0ad7fd502bb65eafa84e6e282306" title="在目录中查找指定名称的 inode" alt="" coords="397,104,563,129"/>
+<area shape="poly" id="edge11_Node000007_Node000010" title=" " alt="" coords="286,115,383,115,384,120,286,120"/>
+<area shape="rect" id="Node000011" href="$namespacevfs.html#a490771ecf458352f6712396d6585358a" title="跳过路径中的前导斜杠" alt="" coords="391,153,569,179"/>
+<area shape="poly" id="edge12_Node000007_Node000011" title=" " alt="" coords="287,125,403,148,402,153,286,130"/>
+</map>

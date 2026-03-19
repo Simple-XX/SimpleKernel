@@ -1,0 +1,3 @@
+<map id="virtio::blk::BlkDiscardWriteZeroes" name="virtio::blk::BlkDiscardWriteZeroes">
+<area shape="rect" id="Node000001" title="Discard/Write Zeroes/Secure Erase 请求段" alt="" coords="5,5,195,165"/>
+</map>

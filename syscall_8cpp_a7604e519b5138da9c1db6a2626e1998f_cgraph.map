@@ -1,0 +1,7 @@
+<map id="sys_exit" name="sys_exit">
+<area shape="rect" id="Node000001" title="退出当前进程或线程" alt="" coords="5,31,81,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="133,5,209,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,33,119,26,120,31,82,38"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="129,55,212,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="82,48,116,54,115,60,81,53"/>
+</map>

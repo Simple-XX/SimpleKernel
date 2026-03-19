@@ -1,0 +1,5 @@
+<map id="virtio::SplitVirtqueue" name="virtio::SplitVirtqueue">
+<area shape="rect" id="Node000001" title="Split Virtqueue 管理类" alt="" coords="30,379,189,1144"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1VirtqueueBase.html" title="Virtqueue 基类（C++23 Deducing this 编译期多态）" alt="" coords="5,5,213,331"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,344,112,378,107,378,107,344"/>
+</map>

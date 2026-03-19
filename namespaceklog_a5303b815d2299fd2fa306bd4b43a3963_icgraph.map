@@ -1,0 +1,70 @@
+<map id="klog::Debug" name="klog::Debug">
+<area shape="rect" id="Node000001" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="641,631,741,656"/>
+<area shape="rect" id="Node000002" href="$classTaskManager.html#a2b410371e4688b22afe7e4691a47e8e6" title="阻塞当前任务" alt="" coords="395,5,547,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="687,617,682,495,668,322,656,234,640,153,618,88,605,63,591,44,571,29,546,21,548,16,573,25,595,40,610,60,623,85,645,152,661,233,674,321,688,494,692,617"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#afb5dc015fd1a90c3e6bd418108564867" title="判断 PSCI 信息" alt="" coords="130,80,291,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="686,617,679,513,663,370,650,298,635,233,615,180,591,145,571,132,542,121,463,106,374,98,292,95,292,90,375,93,464,101,543,116,573,127,595,141,620,178,640,231,656,297,668,370,684,513,691,617"/>
+<area shape="rect" id="Node000004" href="$classTaskManager.html#ad2fdc9ffa97ac49ce08133d7ce0728bb" title="克隆当前任务 (fork/clone 系统调用)" alt="" coords="394,156,547,181"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="685,617,676,523,658,396,646,332,630,274,612,227,591,196,571,182,547,173,549,168,574,177,595,192,617,225,635,272,651,331,663,395,681,522,691,616"/>
+<area shape="rect" id="Node000005" href="$classVirtualMemory.html#ae654bd2c0980f0bf5b60cce3ff7a7ae3" title="复制页表" alt="" coords="373,206,568,246"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="684,617,673,536,653,428,626,326,609,286,591,260,567,243,570,238,595,256,614,284,631,324,658,427,678,535,690,617"/>
+<area shape="rect" id="Node000006" href="$classVirtualMemory.html#a23bd4481bc5a98628255851890276a7b" title="回收页表，释放所有映射和子页表" alt="" coords="367,270,575,310"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="688,617,684,556,670,477,658,436,641,395,619,357,592,324,573,311,576,306,595,320,624,354,646,393,663,434,676,476,689,556,693,616"/>
+<area shape="rect" id="Node000007" href="$classTaskManager.html#a43eaded67dae35b5a652605bcd1269f1" title="退出当前线程" alt="" coords="400,335,541,360"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="686,617,680,565,665,498,653,464,637,430,617,400,592,373,568,359,541,351,542,346,570,354,595,369,621,396,641,428,658,462,670,497,685,564,691,616"/>
+<area shape="rect" id="Node000008" href="$classKernelFdt.html#a3fd4b86c6c6a03a909e07138ec3a11d9" title="获取 aarch64 中断号" alt="" coords="372,384,569,409"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="684,617,675,574,658,521,631,467,613,443,592,423,569,409,571,405,595,419,617,440,635,465,663,519,680,573,689,616"/>
+<area shape="rect" id="Node000009" href="$classKernelFdt.html#a35c6fabd23230de5dee7763f2d1318ec" title="构造函数" alt="" coords="393,433,548,459"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="681,618,669,584,651,544,625,505,592,472,571,461,547,453,549,448,573,456,595,468,629,501,655,542,674,582,686,616"/>
+<area shape="rect" id="Node000010" href="$classMutex.html#a73f2d128f19570bd0000e57d8b6b8521" title="获取锁（阻塞）" alt="" coords="420,483,521,508"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="675,620,642,569,619,543,592,522,557,507,521,500,522,495,559,502,595,517,623,539,646,565,680,617"/>
+<area shape="rect" id="Node000012" href="$classVirtualMemory.html#acbbc8c7f29e2611d4b56003323473e3d" title="映射单个页面" alt="" coords="378,532,563,557"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="666,623,633,596,592,571,561,560,563,555,594,566,636,591,670,619"/>
+<area shape="rect" id="Node000013" href="$namespacevfs.html#a628f118a94d2d7c9d5747cc63f76f155" title="创建目录" alt="" coords="426,631,515,656"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="627,646,516,646,516,641,627,641"/>
+<area shape="rect" id="Node000016" href="$namespacevfs.html#a3ff991d7efce0508dad20b97f2a2bda7" title="打开文件" alt="" coords="429,581,513,607"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="630,630,593,621,513,604,514,599,594,615,631,625"/>
+<area shape="rect" id="Node000017" href="$classTaskManager.html#a4b4aef87f0ff1c867e64a041dcd8fb53" title="回收僵尸进程资源" alt="" coords="381,779,560,804"/>
+<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="680,670,646,720,622,747,595,768,561,783,559,778,592,764,619,743,642,717,675,667"/>
+<area shape="rect" id="Node000018" href="$classTaskManager.html#a61a07d0a4a926c1f0fa6cd5203dd1960" title="将孤儿进程过继给 init 进程" alt="" coords="356,828,585,853"/>
+<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="686,670,674,704,655,744,629,784,595,817,572,830,569,826,592,813,625,781,650,741,669,702,680,668"/>
+<area shape="rect" id="Node000019" href="$namespacevfs.html#a9a3d6b35240ad82e6eb2920d3a3d02fb" title="删除目录" alt="" coords="425,729,516,755"/>
+<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="668,668,635,695,594,719,555,733,517,740,516,735,554,727,592,714,632,691,665,664"/>
+<area shape="rect" id="Node000020" href="$classInterrupt.html#a835af1dfff0488977d5b2767c9df4c54" title="初始化 idtr" alt="" coords="397,877,544,903"/>
+<area shape="poly" id="edge22_Node000001_Node000020" title=" " alt="" coords="689,670,680,713,663,767,635,821,617,846,595,867,571,881,545,889,544,884,569,876,592,863,613,842,631,818,658,765,675,712,684,669"/>
+<area shape="rect" id="Node000021" href="$classTaskManager.html#aee4bf91de80d65099cd0e9f07490fb6c" title="向线程组中的所有线程发送信号" alt="" coords="370,927,571,967"/>
+<area shape="poly" id="edge23_Node000001_Node000021" title=" " alt="" coords="691,670,684,722,669,788,656,823,640,857,620,888,595,916,573,931,570,927,592,912,616,885,635,854,651,821,663,787,679,721,686,670"/>
+<area shape="rect" id="Node000022" href="$syscall_8cpp.html#a7e0465bdb3adc9a861f78e561bb0cf0c" title="快速用户空间互斥锁操作（futex）" alt="" coords="428,992,513,1017"/>
+<area shape="poly" id="edge24_Node000001_Node000022" title=" " alt="" coords="694,670,691,733,679,817,667,862,649,906,626,946,595,981,577,994,556,1002,514,1009,513,1004,554,997,574,989,592,977,621,943,644,903,662,860,674,816,686,733,688,669"/>
+<area shape="rect" id="Node000025" href="$syscall_8cpp.html#a7c490d0367177a75035cb12b79b24416" title="设置线程的CPU亲和性" alt="" coords="389,1041,552,1067"/>
+<area shape="poly" id="edge27_Node000001_Node000025" title=" " alt="" coords="690,670,678,752,659,860,631,963,614,1003,595,1031,576,1044,554,1053,552,1048,573,1040,591,1027,610,1001,626,961,654,859,673,751,684,669"/>
+<area shape="rect" id="Node000026" href="$classMutex.html#af23ea1e8b1117a948437451da7041227" title="尝试获取锁（非阻塞）" alt="" coords="411,1091,531,1116"/>
+<area shape="poly" id="edge28_Node000001_Node000026" title=" " alt="" coords="690,670,681,762,662,884,650,946,634,1002,616,1048,595,1080,565,1098,531,1107,530,1101,563,1094,591,1076,612,1046,629,1001,645,945,657,884,675,761,685,669"/>
+<area shape="rect" id="Node000027" href="$namespacevfs.html#a921acc95350b2eb0f731cba27d862892" title="删除文件" alt="" coords="425,680,517,705"/>
+<area shape="poly" id="edge29_Node000001_Node000027" title=" " alt="" coords="628,662,594,670,518,686,516,681,593,665,627,657"/>
+<area shape="rect" id="Node000028" href="$classMutex.html#adb826acb26d01965e1467558275ffe03" title="释放锁" alt="" coords="411,1140,530,1165"/>
+<area shape="poly" id="edge31_Node000001_Node000028" title=" " alt="" coords="691,670,683,771,666,909,653,979,638,1043,618,1095,595,1131,565,1149,531,1157,530,1152,563,1144,591,1127,614,1093,633,1041,648,978,661,909,678,771,686,670"/>
+<area shape="rect" id="Node000030" href="$classKernelFdt.html#af30a345a6a90077e0c395afc7acdb48c" title="验证 PSCI 函数 ID" alt="" coords="348,55,593,80"/>
+<area shape="poly" id="edge33_Node000001_Node000030" title=" " alt="" coords="686,617,680,506,664,351,651,272,635,200,615,141,591,101,564,82,567,78,595,98,620,139,640,198,656,271,669,350,685,506,692,617"/>
+<area shape="rect" id="Node000031" href="$classTaskManager.html#ae546fc5dad8a73a6b17894beefa181e4" title="等待子进程退出" alt="" coords="398,1189,543,1215"/>
+<area shape="poly" id="edge35_Node000001_Node000031" title=" " alt="" coords="692,670,685,780,669,933,657,1011,641,1082,620,1140,609,1163,595,1180,572,1196,544,1204,543,1199,569,1191,592,1176,604,1160,616,1138,636,1081,652,1010,664,933,680,780,686,670"/>
+<area shape="rect" id="Node000032" href="$classTaskManager.html#a96d2a8187ce732bac7d0d952fd502181" title="唤醒等待指定资源的所有任务" alt="" coords="387,1239,554,1264"/>
+<area shape="poly" id="edge36_Node000001_Node000032" title=" " alt="" coords="692,670,687,789,673,957,660,1043,644,1121,622,1185,610,1210,595,1229,577,1243,555,1251,554,1246,574,1238,591,1225,605,1207,618,1183,639,1120,655,1042,667,956,682,789,687,670"/>
+<area shape="rect" id="Node000011" href="$classLockGuard.html#aa283d6b19fddd2287f84dcf937b92e5b" title="构造函数，自动获取锁" alt="" coords="127,483,295,508"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="406,498,295,498,295,493,406,493"/>
+<area shape="rect" id="Node000014" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="141,605,280,631"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="412,640,280,627,280,622,412,635"/>
+<area shape="rect" id="Node000015" href="$ramfs__system__test_8cpp.html#a0c73a2434a6f18c0fac51e32863e40e9" title=" " alt="" coords="137,668,284,693"/>
+<area shape="poly" id="edge14_Node000013_Node000015" title=" " alt="" coords="413,654,285,673,284,668,412,649"/>
+<area shape="poly" id="edge16_Node000016_Node000014" title=" " alt="" coords="416,602,280,614,280,609,415,596"/>
+<area shape="poly" id="edge17_Node000016_Node000015" title=" " alt="" coords="415,604,349,621,325,631,301,644,243,670,241,666,299,640,322,627,347,615,414,599"/>
+<area shape="poly" id="edge21_Node000019_Node000015" title=" " alt="" coords="411,733,347,719,257,696,258,691,349,714,412,728"/>
+<area shape="rect" id="Node000023" href="$syscall_8cpp.html#a7f71c582273219080713170bdd1d4323" title=" " alt="" coords="139,992,282,1017"/>
+<area shape="poly" id="edge25_Node000022_Node000023" title=" " alt="" coords="414,1007,282,1007,282,1002,414,1002"/>
+<area shape="rect" id="Node000024" href="$arch_2aarch64_2syscall_8cpp.html#a35e03404e29a182c498f027b4c9e2832" title="AArch64 系统调用处理" alt="" coords="5,992,73,1017"/>
+<area shape="poly" id="edge26_Node000023_Node000024" title=" " alt="" coords="126,1007,73,1007,73,1002,126,1002"/>
+<area shape="poly" id="edge30_Node000027_Node000015" title=" " alt="" coords="411,693,284,687,285,681,411,687"/>
+<area shape="rect" id="Node000029" href="$classLockGuard.html#af889562d8ed81c2337c94d0c915d65ca" title="析构函数，自动释放锁" alt="" coords="121,1140,300,1165"/>
+<area shape="poly" id="edge32_Node000028_Node000029" title=" " alt="" coords="398,1155,300,1155,300,1150,398,1150"/>
+<area shape="poly" id="edge34_Node000030_Node000003" title=" " alt="" coords="335,83,292,87,291,82,334,78"/>
+</map>

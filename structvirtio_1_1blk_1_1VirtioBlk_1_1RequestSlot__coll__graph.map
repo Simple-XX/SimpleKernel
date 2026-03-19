@@ -1,0 +1,5 @@
+<map id="virtio::blk::VirtioBlk&lt; TransportT, VirtqueueT &gt;::RequestSlot" name="virtio::blk::VirtioBlk&lt; TransportT, VirtqueueT &gt;::RequestSlot">
+<area shape="rect" id="Node000001" title="异步请求上下文槽" alt="" coords="6,173,182,308"/>
+<area shape="rect" id="Node000002" href="$structvirtio_1_1blk_1_1BlkReqHeader.html" title="块设备请求头" alt="" coords="5,5,183,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,111,97,157,91,157,91,111"/>
+</map>

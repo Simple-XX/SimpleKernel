@@ -1,0 +1,23 @@
+<map id="TaskManager::Schedule" name="TaskManager::Schedule">
+<area shape="rect" id="Node000001" title="调度函数 选择下一个任务并切换上下文" alt="" coords="5,131,180,156"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="293,5,369,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,129,156,85,190,60,227,40,279,23,281,28,229,44,193,65,159,89,109,133"/>
+<area shape="rect" id="Node000003" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title="获取当前核心的 PerCpu 数据" alt="" coords="483,204,665,229"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,129,237,125,302,125,369,129,435,141,466,151,496,165,546,194,543,199,494,169,464,156,434,146,369,134,302,130,237,131,180,135"/>
+<area shape="rect" id="Node000006" href="$structTaskControlBlock.html#a76c836142838b3127b032710242c9606" title="获取当前任务状态" alt="" coords="228,55,435,80"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="132,128,227,97,275,82,276,87,229,102,133,133"/>
+<area shape="rect" id="Node000008" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="276,156,387,181"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="180,150,263,159,262,164,180,155"/>
+<area shape="rect" id="Node000009" href="$classTaskFsm.html#a3bc7b6c5bb2b61f619450e1fef401268" title="向 FSM 发送消息" alt="" coords="262,205,401,231"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="125,154,229,191,257,199,256,205,227,197,124,159"/>
+<area shape="rect" id="Node000010" href="$arch_8cpp.html#ad982abdb7f3d8729656c6b5422b2e61d" title=" " alt="" coords="289,255,373,280"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="109,154,159,197,193,221,229,241,276,256,275,261,227,246,190,225,156,201,106,158"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="713,204,899,229"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="666,214,700,214,700,219,666,219"/>
+<area shape="rect" id="Node000005" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="947,222,1209,262"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="899,223,933,226,932,231,899,228"/>
+<area shape="rect" id="Node000007" href="$classTaskFsm.html#ae980ff471cb089a7effbf5bb9dfdeeb4" title="获取当前状态 ID" alt="" coords="496,55,652,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="435,65,482,65,482,70,435,70"/>
+<area shape="poly" id="edge10_Node000010_Node000003" title=" " alt="" coords="373,256,499,230,500,235,374,261"/>
+<area shape="poly" id="edge11_Node000010_Node000005" title=" " alt="" coords="374,263,933,244,933,250,374,269"/>
+</map>

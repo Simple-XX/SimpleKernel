@@ -1,0 +1,5 @@
+<map id="pl011::Pl011" name="pl011::Pl011">
+<area shape="rect" id="Node000001" title="PL011 串口驱动" alt="" coords="5,393,215,1139"/>
+<area shape="rect" id="Node000002" href="$structMmioAccessor.html" title="通用 MMIO 寄存器访问器" alt="" coords="37,5,183,331"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,331,113,376,107,376,107,331"/>
+</map>

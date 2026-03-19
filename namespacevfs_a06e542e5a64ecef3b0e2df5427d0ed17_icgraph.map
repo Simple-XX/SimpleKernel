@@ -1,0 +1,10 @@
+<map id="vfs::RemoveChild" name="vfs::RemoveChild">
+<area shape="rect" id="Node000001" title="从父 dentry 中移除子 dentry" alt="" coords="340,31,477,56"/>
+<area shape="rect" id="Node000002" href="$namespacevfs.html#a9a3d6b35240ad82e6eb2920d3a3d02fb" title="删除目录" alt="" coords="201,5,291,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="326,33,291,28,292,22,327,28"/>
+<area shape="rect" id="Node000004" href="$namespacevfs.html#a921acc95350b2eb0f731cba27d862892" title="删除文件" alt="" coords="200,55,292,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="327,58,293,63,292,58,326,53"/>
+<area shape="rect" id="Node000003" href="$ramfs__system__test_8cpp.html#a0c73a2434a6f18c0fac51e32863e40e9" title=" " alt="" coords="5,31,152,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="188,29,153,35,152,30,187,24"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="186,61,152,56,153,51,187,56"/>
+</map>

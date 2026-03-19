@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['各架构实现_0',['各架构实现',['../md__2root_2src_2arch_2README.html#autotoc_md371',1,'']]]
+  ['字符输出实现_0',['3. 字符输出实现',['../md_2___xE8_xB0_x83_xE8_xAF_x95_xE8_xBE_x93_xE5_x87_xBA.html#autotoc_md140',1,'']]]
 ];

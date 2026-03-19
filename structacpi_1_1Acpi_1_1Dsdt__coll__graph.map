@@ -1,0 +1,5 @@
+<map id="acpi::Acpi::Dsdt" name="acpi::Acpi::Dsdt">
+<area shape="rect" id="Node000001" title="Differentiated System Description Table (DSDT)" alt="" coords="43,293,175,359"/>
+<area shape="rect" id="Node000002" href="$structacpi_1_1Acpi_1_1DescriptionHeader.html" title="System Description Table Header." alt="" coords="5,5,212,231"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,231,111,277,106,277,106,231"/>
+</map>

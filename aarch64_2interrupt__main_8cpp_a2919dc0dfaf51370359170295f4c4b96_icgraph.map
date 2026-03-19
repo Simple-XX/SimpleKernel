@@ -1,0 +1,9 @@
+<map id="vector_table" name="vector_table">
+<area shape="rect" id="Node000001" title="异常向量表入口" alt="" coords="283,31,385,56"/>
+<area shape="rect" id="Node000002" href="$aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8" title="体系结构相关中断初始化" alt="" coords="122,5,221,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="269,36,221,28,221,23,270,31"/>
+<area shape="rect" id="Node000004" href="$aarch64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93" title="从核的体系结构相关中断初始化" alt="" coords="108,55,235,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="269,56,235,61,235,55,269,50"/>
+<area shape="rect" id="Node000003" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="108,21,60,21,60,15,108,15"/>
+</map>

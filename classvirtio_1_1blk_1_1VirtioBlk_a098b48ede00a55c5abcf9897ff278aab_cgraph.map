@@ -1,0 +1,7 @@
+<map id="virtio::blk::VirtioBlk::Kick" name="virtio::blk::VirtioBlk::Kick">
+<area shape="rect" id="Node000001" title="批量触发硬件通知" alt="" coords="5,35,153,75"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2e45e2d49fd7e55241c86643bcbb67f2" title="判断是否需要发送通知（处理 wrap&#45;around）" alt="" coords="201,5,349,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,41,187,36,188,41,154,46"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb" title=" " alt="" coords="222,70,329,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,63,209,70,208,76,153,68"/>
+</map>

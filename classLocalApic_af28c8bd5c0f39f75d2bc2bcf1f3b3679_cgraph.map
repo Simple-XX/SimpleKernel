@@ -1,0 +1,5 @@
+<map id="LocalApic::SendInitIpi" name="LocalApic::SendInitIpi">
+<area shape="rect" id="Node000001" title="发送 INIT IPI" alt="" coords="5,5,167,31"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="215,5,297,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,15,201,15,201,21,167,21"/>
+</map>

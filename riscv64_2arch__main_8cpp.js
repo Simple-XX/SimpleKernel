@@ -1,8 +1,8 @@
 var riscv64_2arch__main_8cpp =
 [
-    [ "ArchInit", "riscv64_2arch__main_8cpp.html#aa26c42c34bbb6c8c7cd4a8664dc7952f", null ],
-    [ "ArchInitSMP", "riscv64_2arch__main_8cpp.html#ad90b12c5e1b1a5911044c7c1286289da", null ],
-    [ "InitTaskContext", "riscv64_2arch__main_8cpp.html#a68bd5f23f249b2c277d460dc2e2ee47a", null ],
-    [ "InitTaskContext", "riscv64_2arch__main_8cpp.html#a13c92ba83f807779913f45bc9ac404b0", null ],
-    [ "WakeUpOtherCores", "riscv64_2arch__main_8cpp.html#a94c31dc3a1de17229bc6863fff8eddd7", null ]
+    [ "ArchInit", "riscv64_2arch__main_8cpp.html#a6a670facdde513eab1f26f8a04e2efbd", null ],
+    [ "ArchInitSMP", "riscv64_2arch__main_8cpp.html#af6a7df6e3d37dee1b7150666735bb379", null ],
+    [ "InitTaskContext", "riscv64_2arch__main_8cpp.html#a5b7c13f163ec871df440fc0c27bf8151", null ],
+    [ "InitTaskContext", "riscv64_2arch__main_8cpp.html#a51a1f934a70cf48db916c9c6c7bb5cad", null ],
+    [ "WakeUpOtherCores", "riscv64_2arch__main_8cpp.html#a45bade4d9944a7cbaf145a73dbafbf71", null ]
 ];

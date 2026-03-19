@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/include/kernel.h Source File</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/include/kernel.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -98,23 +98,26 @@ $(document).ready(function(){initNavTree('kernel_8h_source.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <a href="kernel_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef SIMPLEKERNEL_SRC_INCLUDE_KERNEL_H_</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define SIMPLEKERNEL_SRC_INCLUDE_KERNEL_H_</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> [[maybe_unused]] [[noreturn]] <span class="keywordtype">void</span> <a class="code hl_function" href="kernel_8h.html#a1051fb5b0c9ae8b443c542089ac538bd">_start</a>(<span class="keywordtype">int</span> argc,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                                                     <span class="keyword">const</span> <span class="keywordtype">char</span>** argv);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">auto</span> <a class="code hl_function" href="tests_2integration__test_2aarch64__minimal_2main_8cpp.html#acdef7a1fd863a6d3770c1268cb06add3">main</a>(<span class="keywordtype">int</span> argc, <span class="keyword">const</span> <span class="keywordtype">char</span>** argv) -&gt; int;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keywordtype">void</span> <a class="code hl_function" href="kernel_8h.html#a0d8c809343a4f03aea31ffbf8891a11d">MemoryInit</a>();</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keywordtype">void</span> <a class="code hl_function" href="kernel_8h.html#a9297078da36ecdef3c2e61bccf119a47">MemoryInitSMP</a>();</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif </span><span class="comment">/* SIMPLEKERNEL_SRC_INCLUDE_KERNEL_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="akernel_8h_html_a0d8c809343a4f03aea31ffbf8891a11d"><div class="ttname"><a href="kernel_8h.html#a0d8c809343a4f03aea31ffbf8891a11d">MemoryInit</a></div><div class="ttdeci">void MemoryInit()</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00075">memory.cpp:75</a></div></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> [[maybe_unused]] [[noreturn]] <span class="keywordtype">void</span> <a class="code hl_function" href="kernel_8h.html#a1051fb5b0c9ae8b443c542089ac538bd">_start</a>(<span class="keywordtype">int</span> argc,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                                                     <span class="keyword">const</span> <span class="keywordtype">char</span>** argv);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">auto</span> <a class="code hl_function" href="tests_2integration__test_2aarch64__minimal_2main_8cpp.html#acdef7a1fd863a6d3770c1268cb06add3">main</a>(<span class="keywordtype">int</span> argc, <span class="keyword">const</span> <span class="keywordtype">char</span>** argv) -&gt; int;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">auto</span> <a class="code hl_function" href="kernel_8h.html#a97dad1f7048065936858b6302fb25eab">MemoryInit</a>() -&gt; void;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">auto</span> <a class="code hl_function" href="kernel_8h.html#ad9551d61ca7e53f16e631b089c0756dd">MemoryInitSMP</a>() -&gt; void;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">auto</span> <a class="code hl_function" href="kernel_8h.html#a2bddae538bbd6d759ecfe3085f1dfbe4">DeviceInit</a>() -&gt; void;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">auto</span> <a class="code hl_function" href="kernel_8h.html#a2b9f450648a51d217091f5923c64a449">FileSystemInit</a>() -&gt; void;</div>
 <div class="ttc" id="akernel_8h_html_a1051fb5b0c9ae8b443c542089ac538bd"><div class="ttname"><a href="kernel_8h.html#a1051fb5b0c9ae8b443c542089ac538bd">_start</a></div><div class="ttdeci">void _start(int argc, const char **argv)</div><div class="ttdoc">负责 crtbegin 的工作</div><div class="ttdef"><b>Definition</b> <a href="src_2main_8cpp_source.html#l00134">main.cpp:134</a></div></div>
-<div class="ttc" id="akernel_8h_html_a9297078da36ecdef3c2e61bccf119a47"><div class="ttname"><a href="kernel_8h.html#a9297078da36ecdef3c2e61bccf119a47">MemoryInitSMP</a></div><div class="ttdeci">void MemoryInitSMP()</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00104">memory.cpp:104</a></div></div>
+<div class="ttc" id="akernel_8h_html_a2b9f450648a51d217091f5923c64a449"><div class="ttname"><a href="kernel_8h.html#a2b9f450648a51d217091f5923c64a449">FileSystemInit</a></div><div class="ttdeci">auto FileSystemInit() -&gt; void</div><div class="ttdoc">文件系统初始化</div><div class="ttdef"><b>Definition</b> <a href="filesystem_8cpp_source.html#l00017">filesystem.cpp:17</a></div></div>
+<div class="ttc" id="akernel_8h_html_a2bddae538bbd6d759ecfe3085f1dfbe4"><div class="ttname"><a href="kernel_8h.html#a2bddae538bbd6d759ecfe3085f1dfbe4">DeviceInit</a></div><div class="ttdeci">auto DeviceInit() -&gt; void</div><div class="ttdoc">设备子系统初始化</div><div class="ttdef"><b>Definition</b> <a href="device_8cpp_source.html#l00028">device.cpp:28</a></div></div>
+<div class="ttc" id="akernel_8h_html_a97dad1f7048065936858b6302fb25eab"><div class="ttname"><a href="kernel_8h.html#a97dad1f7048065936858b6302fb25eab">MemoryInit</a></div><div class="ttdeci">auto MemoryInit() -&gt; void</div><div class="ttdoc">内存子系统初始化</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00071">memory.cpp:71</a></div></div>
+<div class="ttc" id="akernel_8h_html_ad9551d61ca7e53f16e631b089c0756dd"><div class="ttname"><a href="kernel_8h.html#ad9551d61ca7e53f16e631b089c0756dd">MemoryInitSMP</a></div><div class="ttdeci">auto MemoryInitSMP() -&gt; void</div><div class="ttdoc">多核内存子系统初始化</div><div class="ttdef"><b>Definition</b> <a href="memory_8cpp_source.html#l00106">memory.cpp:106</a></div></div>
 <div class="ttc" id="atests_2integration__test_2aarch64__minimal_2main_8cpp_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="tests_2integration__test_2aarch64__minimal_2main_8cpp.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition</b> <a href="tests_2integration__test_2aarch64__minimal_2main_8cpp_source.html#l00033">main.cpp:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

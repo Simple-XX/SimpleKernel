@@ -1,0 +1,9 @@
+<map id="IoApic::GetMaxRedirectionEntries" name="IoApic::GetMaxRedirectionEntries">
+<area shape="rect" id="Node000001" title="获取 IO APIC 最大重定向条目数" alt="" coords="340,23,535,63"/>
+<area shape="rect" id="Node000002" href="$classIoApic.html#aa35d2bf3bfc0c1a778711855bc85a8f6" title=" " alt="" coords="174,5,285,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="326,32,285,27,286,22,327,27"/>
+<area shape="rect" id="Node000003" href="$classIoApic.html#aab34419aede6503ec483cd97982026b8" title="打印 IO APIC 信息（调试用）" alt="" coords="167,55,292,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="327,59,292,63,292,58,326,53"/>
+<area shape="rect" id="Node000004" href="$classApic.html#a306473bda77a8a8b93c400851251e755" title="打印所有 APIC 信息（调试用）" alt="" coords="5,55,119,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="153,70,119,70,119,65,153,65"/>
+</map>

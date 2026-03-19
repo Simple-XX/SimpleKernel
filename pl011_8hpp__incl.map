@@ -1,0 +1,12 @@
+<map id="/workspaces/SimpleKernel/src/device/pl011/pl011.hpp" name="/workspaces/SimpleKernel/src/device/pl011/pl011.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,205,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="57,167,124,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,47,71,69,59,94,57,110,59,125,74,154,69,156,54,127,51,110,53,93,67,66,84,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="68,93,143,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="108,46,108,79,103,79,103,46"/>
+<area shape="rect" id="Node000004" href="$mmio__accessor_8hpp.html" title=" " alt="" coords="167,93,318,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="140,43,212,84,209,89,137,48"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="219,121,129,163,127,158,217,116"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="207,167,278,192"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="245,119,245,153,240,153,240,119"/>
+</map>

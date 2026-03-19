@@ -105,56 +105,231 @@ Collaboration diagram for CpuSchedData:</div>
 <div class="dyncontent">
 <div class="center"><img src="structCpuSchedData__coll__graph.png" border="0" usemap="#aCpuSchedData_coll__map" alt="Collaboration graph"/></div>
 <map name="aCpuSchedData_coll__map" id="aCpuSchedData_coll__map">
-<area shape="rect" title="每个核心的调度数据 (RunQueue)" alt="" coords="35,493,165,659"/>
-<area shape="rect" href="classSpinLock.html" title="自旋锁" alt="" coords="5,5,195,431"/>
-<area shape="poly" title=" " alt="" coords="103,431,103,477,97,477,97,431"/>
+<area shape="rect" title="每个核心的调度数据 (RunQueue)" alt="" coords="27,513,173,919"/>
+<area shape="rect" href="classSpinLock.html" title="自旋锁" alt="" coords="5,5,195,451"/>
+<area shape="poly" title=" " alt="" coords="103,451,103,497,97,497,97,451"/>
 </map>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
+<tr class="memitem:ae1fdbc65dff68e2d3b82b639ea15c02b" id="r_ae1fdbc65dff68e2d3b82b639ea15c02b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#ae1fdbc65dff68e2d3b82b639ea15c02b">CpuSchedData</a> ()=default</td></tr>
+<tr class="separator:ae1fdbc65dff68e2d3b82b639ea15c02b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268140952899d18b3249b791a0e3f10d" id="r_a268140952899d18b3249b791a0e3f10d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a268140952899d18b3249b791a0e3f10d">CpuSchedData</a> (const <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;)=delete</td></tr>
+<tr class="separator:a268140952899d18b3249b791a0e3f10d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa69961c8cfb18668634438fbd91e0486" id="r_aa69961c8cfb18668634438fbd91e0486"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#aa69961c8cfb18668634438fbd91e0486">CpuSchedData</a> (<a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;&amp;)=delete</td></tr>
+<tr class="separator:aa69961c8cfb18668634438fbd91e0486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25f3afad6b642c4db9ca6e9520f63480" id="r_a25f3afad6b642c4db9ca6e9520f63480"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a25f3afad6b642c4db9ca6e9520f63480">operator=</a> (const <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;) -&gt; <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;=delete</td></tr>
+<tr class="separator:a25f3afad6b642c4db9ca6e9520f63480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a8c5de24520c9a779073d95a3ee35f0" id="r_a5a8c5de24520c9a779073d95a3ee35f0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a5a8c5de24520c9a779073d95a3ee35f0">operator=</a> (<a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;&amp;) -&gt; <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;=delete</td></tr>
+<tr class="separator:a5a8c5de24520c9a779073d95a3ee35f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97a8bf2e25eb3ab46bbbf9bb64b9272f" id="r_a97a8bf2e25eb3ab46bbbf9bb64b9272f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a97a8bf2e25eb3ab46bbbf9bb64b9272f">~CpuSchedData</a> ()=default</td></tr>
+<tr class="separator:a97a8bf2e25eb3ab46bbbf9bb64b9272f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a17b3856e96572c8b483f957f0f716bf8" id="r_a17b3856e96572c8b483f957f0f716bf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSpinLock.html">SpinLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a17b3856e96572c8b483f957f0f716bf8">lock</a> {&quot;sched_lock&quot;}</td></tr>
 <tr class="separator:a17b3856e96572c8b483f957f0f716bf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacdbbd31d2d0170d68170478472eb462" id="r_aacdbbd31d2d0170d68170478472eb462"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classSchedulerBase.html">SchedulerBase</a> *, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0">SchedPolicy::kPolicyCount</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#aacdbbd31d2d0170d68170478472eb462">schedulers</a> {}</td></tr>
-<tr class="memdesc:aacdbbd31d2d0170d68170478472eb462"><td class="mdescLeft">&#160;</td><td class="mdescRight">调度器数组 (按策略索引)  <br /></td></tr>
-<tr class="separator:aacdbbd31d2d0170d68170478472eb462"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a372821ab2bda158cb12c2f4d7a689bbe" id="r_a372821ab2bda158cb12c2f4d7a689bbe"><td class="memItemLeft" align="right" valign="top">sk_std::priority_queue&lt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *, sk_std::vector&lt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> * &gt;, <a class="el" href="structTaskControlBlock_1_1WakeTickCompare.html">TaskControlBlock::WakeTickCompare</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a372821ab2bda158cb12c2f4d7a689bbe">sleeping_tasks</a></td></tr>
-<tr class="memdesc:a372821ab2bda158cb12c2f4d7a689bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">睡眠队列 (优先队列，按唤醒时间排序)  <br /></td></tr>
-<tr class="separator:a372821ab2bda158cb12c2f4d7a689bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a423b18d4f4cc91af9c44bb95d141362f" id="r_a423b18d4f4cc91af9c44bb95d141362f"><td class="memItemLeft" align="right" valign="top">sk_std::unordered_map&lt; <a class="el" href="structResourceId.html">ResourceId</a>, sk_std::list&lt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a423b18d4f4cc91af9c44bb95d141362f">blocked_tasks</a></td></tr>
-<tr class="memdesc:a423b18d4f4cc91af9c44bb95d141362f"><td class="mdescLeft">&#160;</td><td class="mdescRight">阻塞队列 (按资源 ID 分组)  <br /></td></tr>
-<tr class="separator:a423b18d4f4cc91af9c44bb95d141362f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc34289bcce0931fb4afd7e44d4b63df" id="r_acc34289bcce0931fb4afd7e44d4b63df"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#acc34289bcce0931fb4afd7e44d4b63df">local_tick</a> = 0</td></tr>
+<tr class="memitem:a42e540eb1dc8da57c79414589ae31948" id="r_a42e540eb1dc8da57c79414589ae31948"><td class="memItemLeft" align="right" valign="top">std::array&lt; etl::unique_ptr&lt; <a class="el" href="classSchedulerBase.html">SchedulerBase</a> &gt;, static_cast&lt; uint8_t &gt;(<a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f">SchedPolicy::kPolicyCount</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a42e540eb1dc8da57c79414589ae31948">schedulers</a> {}</td></tr>
+<tr class="memdesc:a42e540eb1dc8da57c79414589ae31948"><td class="mdescLeft">&#160;</td><td class="mdescRight">调度器数组 (按策略索引)  <br /></td></tr>
+<tr class="separator:a42e540eb1dc8da57c79414589ae31948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51ae57d0ec83c6b3966e3cc30d585e77" id="r_a51ae57d0ec83c6b3966e3cc30d585e77"><td class="memItemLeft" align="right" valign="top">etl::priority_queue&lt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *, <a class="el" href="namespacekernel_1_1config.html#a2fab54b63fa3433e858acf9b67f74a15">kernel::config::kMaxSleepingTasks</a>, etl::vector&lt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *, <a class="el" href="namespacekernel_1_1config.html#a2fab54b63fa3433e858acf9b67f74a15">kernel::config::kMaxSleepingTasks</a> &gt;, <a class="el" href="structTaskControlBlock_1_1WakeTickCompare.html">TaskControlBlock::WakeTickCompare</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a51ae57d0ec83c6b3966e3cc30d585e77">sleeping_tasks</a></td></tr>
+<tr class="memdesc:a51ae57d0ec83c6b3966e3cc30d585e77"><td class="mdescLeft">&#160;</td><td class="mdescRight">睡眠队列 (优先队列，按唤醒时间排序)  <br /></td></tr>
+<tr class="separator:a51ae57d0ec83c6b3966e3cc30d585e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0a55cd781036a705866122ddd09021b" id="r_ab0a55cd781036a705866122ddd09021b"><td class="memItemLeft" align="right" valign="top">etl::unordered_map&lt; <a class="el" href="classResourceId.html">ResourceId</a>, etl::list&lt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *, <a class="el" href="namespacekernel_1_1config.html#acac6ab85c312c27bbe6edfd81c10ce6f">kernel::config::kMaxBlockedPerGroup</a> &gt;, <a class="el" href="namespacekernel_1_1config.html#a017191f7241a2b9dbd6e32660e10fbb0">kernel::config::kMaxBlockedGroups</a>, <a class="el" href="namespacekernel_1_1config.html#adc951a583d6da1edbfc3d2cf6aa19157">kernel::config::kMaxBlockedGroupsBuckets</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#ab0a55cd781036a705866122ddd09021b">blocked_tasks</a></td></tr>
+<tr class="memdesc:ab0a55cd781036a705866122ddd09021b"><td class="mdescLeft">&#160;</td><td class="mdescRight">阻塞队列 (按资源 ID 分组)  <br /></td></tr>
+<tr class="separator:ab0a55cd781036a705866122ddd09021b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc34289bcce0931fb4afd7e44d4b63df" id="r_acc34289bcce0931fb4afd7e44d4b63df"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#acc34289bcce0931fb4afd7e44d4b63df">local_tick</a> {0}</td></tr>
 <tr class="memdesc:acc34289bcce0931fb4afd7e44d4b63df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-CPU tick 计数 (每个核心独立计时)  <br /></td></tr>
 <tr class="separator:acc34289bcce0931fb4afd7e44d4b63df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ca152fe34da6749379572d7eea4c370" id="r_a8ca152fe34da6749379572d7eea4c370"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a8ca152fe34da6749379572d7eea4c370">idle_time</a> = 0</td></tr>
+<tr class="memitem:a8ca152fe34da6749379572d7eea4c370" id="r_a8ca152fe34da6749379572d7eea4c370"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a8ca152fe34da6749379572d7eea4c370">idle_time</a> {0}</td></tr>
 <tr class="memdesc:a8ca152fe34da6749379572d7eea4c370"><td class="mdescLeft">&#160;</td><td class="mdescRight">本核心的空闲时间 (单位: ticks)  <br /></td></tr>
 <tr class="separator:a8ca152fe34da6749379572d7eea4c370"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa46c34b237397559af347e4f852fd75f" id="r_aa46c34b237397559af347e4f852fd75f"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#aa46c34b237397559af347e4f852fd75f">total_schedules</a> = 0</td></tr>
+<tr class="memitem:aa46c34b237397559af347e4f852fd75f" id="r_aa46c34b237397559af347e4f852fd75f"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#aa46c34b237397559af347e4f852fd75f">total_schedules</a> {0}</td></tr>
 <tr class="memdesc:aa46c34b237397559af347e4f852fd75f"><td class="mdescLeft">&#160;</td><td class="mdescRight">本核心的总调度次数  <br /></td></tr>
 <tr class="separator:aa46c34b237397559af347e4f852fd75f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91feb5b19a3ed83ef87a6693cd2dc5a0" id="r_a91feb5b19a3ed83ef87a6693cd2dc5a0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpuSchedData.html#a91feb5b19a3ed83ef87a6693cd2dc5a0">scheduler_started</a> {false}</td></tr>
+<tr class="memdesc:a91feb5b19a3ed83ef87a6693cd2dc5a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule() 是否已被显式调用  <br /></td></tr>
+<tr class="separator:a91feb5b19a3ed83ef87a6693cd2dc5a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>每个核心的调度数据 (RunQueue) </p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00030">30</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a423b18d4f4cc91af9c44bb95d141362f" name="a423b18d4f4cc91af9c44bb95d141362f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a423b18d4f4cc91af9c44bb95d141362f">&#9670;&#160;</a></span>blocked_tasks</h2>
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00033">33</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae1fdbc65dff68e2d3b82b639ea15c02b" name="ae1fdbc65dff68e2d3b82b639ea15c02b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1fdbc65dff68e2d3b82b639ea15c02b">&#9670;&#160;</a></span>CpuSchedData() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CpuSchedData::CpuSchedData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a268140952899d18b3249b791a0e3f10d" name="a268140952899d18b3249b791a0e3f10d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a268140952899d18b3249b791a0e3f10d">&#9670;&#160;</a></span>CpuSchedData() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CpuSchedData::CpuSchedData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa69961c8cfb18668634438fbd91e0486" name="aa69961c8cfb18668634438fbd91e0486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa69961c8cfb18668634438fbd91e0486">&#9670;&#160;</a></span>CpuSchedData() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CpuSchedData::CpuSchedData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a97a8bf2e25eb3ab46bbbf9bb64b9272f" name="a97a8bf2e25eb3ab46bbbf9bb64b9272f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97a8bf2e25eb3ab46bbbf9bb64b9272f">&#9670;&#160;</a></span>~CpuSchedData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CpuSchedData::~CpuSchedData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a25f3afad6b642c4db9ca6e9520f63480" name="a25f3afad6b642c4db9ca6e9520f63480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25f3afad6b642c4db9ca6e9520f63480">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto CpuSchedData::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;=delete</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a8c5de24520c9a779073d95a3ee35f0" name="a5a8c5de24520c9a779073d95a3ee35f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a8c5de24520c9a779073d95a3ee35f0">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto CpuSchedData::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="structCpuSchedData.html">CpuSchedData</a> &amp;=delete</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab0a55cd781036a705866122ddd09021b" name="ab0a55cd781036a705866122ddd09021b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0a55cd781036a705866122ddd09021b">&#9670;&#160;</a></span>blocked_tasks</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">sk_std::unordered_map&lt;<a class="el" href="structResourceId.html">ResourceId</a>, sk_std::list&lt;<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>*&gt; &gt; CpuSchedData::blocked_tasks</td>
+          <td class="memname">etl::unordered_map&lt; <a class="el" href="classResourceId.html">ResourceId</a>, etl::list&lt;<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>*, <a class="el" href="namespacekernel_1_1config.html#acac6ab85c312c27bbe6edfd81c10ce6f">kernel::config::kMaxBlockedPerGroup</a>&gt;, <a class="el" href="namespacekernel_1_1config.html#a017191f7241a2b9dbd6e32660e10fbb0">kernel::config::kMaxBlockedGroups</a>, <a class="el" href="namespacekernel_1_1config.html#adc951a583d6da1edbfc3d2cf6aa19157">kernel::config::kMaxBlockedGroupsBuckets</a>&gt; CpuSchedData::blocked_tasks</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>阻塞队列 (按资源 ID 分组) </p>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00043">43</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00054">54</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -165,15 +340,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t CpuSchedData::idle_time = 0</td>
+          <td class="memname">uint64_t CpuSchedData::idle_time {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>本核心的空闲时间 (单位: ticks) </p>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00049">49</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00060">60</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="acc34289bcce0931fb4afd7e44d4b63df" name="acc34289bcce0931fb4afd7e44d4b63df"></a>
@@ -183,15 +359,16 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t CpuSchedData::local_tick = 0</td>
+          <td class="memname">uint64_t CpuSchedData::local_tick {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Per-CPU tick 计数 (每个核心独立计时) </p>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00046">46</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00057">57</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a17b3856e96572c8b483f957f0f716bf8" name="a17b3856e96572c8b483f957f0f716bf8"></a>
@@ -206,45 +383,64 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00031">31</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{<span class="stringliteral">&quot;sched_lock&quot;</span>};</div>
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00034">34</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{<span class="stringliteral">&quot;sched_lock&quot;</span>};</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aacdbbd31d2d0170d68170478472eb462" name="aacdbbd31d2d0170d68170478472eb462"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacdbbd31d2d0170d68170478472eb462">&#9670;&#160;</a></span>schedulers</h2>
+<a id="a91feb5b19a3ed83ef87a6693cd2dc5a0" name="a91feb5b19a3ed83ef87a6693cd2dc5a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91feb5b19a3ed83ef87a6693cd2dc5a0">&#9670;&#160;</a></span>scheduler_started</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;<a class="el" href="classSchedulerBase.html">SchedulerBase</a>*, <a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1ab4f971585d9e17099a7ae6926066cda0">SchedPolicy::kPolicyCount</a>&gt; CpuSchedData::schedulers {}</td>
+          <td class="memname">bool CpuSchedData::scheduler_started {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Schedule() 是否已被显式调用 </p>
+
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00066">66</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{<span class="keyword">false</span>};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a42e540eb1dc8da57c79414589ae31948" name="a42e540eb1dc8da57c79414589ae31948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42e540eb1dc8da57c79414589ae31948">&#9670;&#160;</a></span>schedulers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;etl::unique_ptr&lt;<a class="el" href="classSchedulerBase.html">SchedulerBase</a>&gt;, static_cast&lt;uint8_t&gt;(<a class="el" href="task__control__block_8hpp.html#a49a208767f4bf1cfd0e39b9db74b8af1a8739334beebd2f75ec624babfd36e96f">SchedPolicy::kPolicyCount</a>)&gt; CpuSchedData::schedulers {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>调度器数组 (按策略索引) </p>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00034">34</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{};</div>
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00039">39</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{};</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a372821ab2bda158cb12c2f4d7a689bbe" name="a372821ab2bda158cb12c2f4d7a689bbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a372821ab2bda158cb12c2f4d7a689bbe">&#9670;&#160;</a></span>sleeping_tasks</h2>
+<a id="a51ae57d0ec83c6b3966e3cc30d585e77" name="a51ae57d0ec83c6b3966e3cc30d585e77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51ae57d0ec83c6b3966e3cc30d585e77">&#9670;&#160;</a></span>sleeping_tasks</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">sk_std::priority_queue&lt;<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>*, sk_std::vector&lt;<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>*&gt;, <a class="el" href="structTaskControlBlock_1_1WakeTickCompare.html">TaskControlBlock::WakeTickCompare</a>&gt; CpuSchedData::sleeping_tasks</td>
+          <td class="memname">etl::priority_queue&lt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>*, <a class="el" href="namespacekernel_1_1config.html#a2fab54b63fa3433e858acf9b67f74a15">kernel::config::kMaxSleepingTasks</a>, etl::vector&lt;<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>*, <a class="el" href="namespacekernel_1_1config.html#a2fab54b63fa3433e858acf9b67f74a15">kernel::config::kMaxSleepingTasks</a>&gt;, <a class="el" href="structTaskControlBlock_1_1WakeTickCompare.html">TaskControlBlock::WakeTickCompare</a>&gt; CpuSchedData::sleeping_tasks</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>睡眠队列 (优先队列，按唤醒时间排序) </p>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00039">39</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00046">46</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -255,19 +451,20 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t CpuSchedData::total_schedules = 0</td>
+          <td class="memname">uint64_t CpuSchedData::total_schedules {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>本核心的总调度次数 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00052">52</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="task__manager_8hpp_source.html#l00063">63</a> of file <a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{0};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/root/src/task/include/<a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/task/include/<a class="el" href="task__manager_8hpp_source.html">task_manager.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

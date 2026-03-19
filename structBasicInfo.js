@@ -7,7 +7,6 @@ var structBasicInfo =
     [ "~BasicInfo", "structBasicInfo.html#a6436a67ff973427e46bcf271fbe2eb74", null ],
     [ "operator=", "structBasicInfo.html#a83d87944ee54eb16a706896a62079928", null ],
     [ "operator=", "structBasicInfo.html#afe8e9f80187b32a0b734ebb44b56262c", null ],
-    [ "operator<<", "structBasicInfo.html#ac03462d46c483a51fd70f98abc7ee045", null ],
     [ "core_count", "structBasicInfo.html#a00488d4b1702eb6c75ef2bf2a54dd9eb", null ],
     [ "elf_addr", "structBasicInfo.html#a95b48c14bd28a686e81373643c82ff3a", null ],
     [ "fdt_addr", "structBasicInfo.html#a0948f05fbea22eae3fd445ee206afffb", null ],

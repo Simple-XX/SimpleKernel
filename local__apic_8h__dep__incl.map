@@ -1,13 +1,11 @@
-<map id="/root/src/driver/apic/include/local_apic.h" name="/root/src/driver/apic/include/local_apic.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="271,5,425,45"/>
-<area shape="rect" id="Node000002" href="$apic_8h.html" title=" " alt="" coords="274,93,422,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="351,59,351,93,345,93,345,59"/>
-<area shape="rect" id="Node000003" href="$x86__64_2arch__main_8cpp.html" title=" " alt="" coords="5,181,149,221"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="276,140,137,184,136,179,275,135"/>
-<area shape="rect" id="Node000004" href="$x86__64_2include_2interrupt_8h.html" title=" " alt="" coords="173,181,341,221"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="320,145,279,183,276,179,316,141"/>
-<area shape="rect" id="Node000005" href="$apic_8cpp.html" title=" " alt="" coords="366,181,514,221"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="380,141,421,179,418,183,376,145"/>
-<area shape="rect" id="Node000006" href="$local__apic_8cpp.html" title=" " alt="" coords="538,181,686,221"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="420,135,555,179,553,184,418,140"/>
+<map id="/workspaces/SimpleKernel/src/arch/x86_64/apic/include/local_apic.h" name="/workspaces/SimpleKernel/src/arch/x86_64/apic/include/local_apic.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="239,5,450,60"/>
+<area shape="rect" id="Node000002" href="$apic_8h.html" title=" " alt="" coords="218,108,471,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="347,74,347,108,342,108,342,74"/>
+<area shape="rect" id="Node000003" href="$apic_8cpp.html" title=" " alt="" coords="5,203,223,243"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="286,156,162,206,160,201,284,151"/>
+<area shape="rect" id="Node000004" href="$local__apic_8cpp.html" title=" " alt="" coords="247,196,442,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="347,161,347,196,342,196,342,161"/>
+<area shape="rect" id="Node000005" href="$x86__64_2include_2interrupt_8h.html" title=" " alt="" coords="467,196,660,251"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="402,151,503,193,501,198,400,156"/>
 </map>

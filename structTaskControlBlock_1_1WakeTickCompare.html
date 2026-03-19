@@ -111,16 +111,17 @@ Collaboration diagram for TaskControlBlock::WakeTickCompare:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4e3476ead4d48c5ae44aa57a976bce34" id="r_a4e3476ead4d48c5ae44aa57a976bce34"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock_1_1WakeTickCompare.html#a4e3476ead4d48c5ae44aa57a976bce34">operator()</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *a, <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *b)</td></tr>
-<tr class="separator:a4e3476ead4d48c5ae44aa57a976bce34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311b744a6aab1e817866817b21472aaa" id="r_a311b744a6aab1e817866817b21472aaa"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock_1_1WakeTickCompare.html#a311b744a6aab1e817866817b21472aaa">operator()</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *a, <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *b) -&gt; bool</td></tr>
+<tr class="memdesc:a311b744a6aab1e817866817b21472aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">比较两个任务的唤醒时间  <br /></td></tr>
+<tr class="separator:a311b744a6aab1e817866817b21472aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>任务唤醒时间比较函数，时间越早优先级越高 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00092">92</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00143">143</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4e3476ead4d48c5ae44aa57a976bce34" name="a4e3476ead4d48c5ae44aa57a976bce34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e3476ead4d48c5ae44aa57a976bce34">&#9670;&#160;</a></span>operator()()</h2>
+<a id="a311b744a6aab1e817866817b21472aaa" name="a311b744a6aab1e817866817b21472aaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a311b744a6aab1e817866817b21472aaa">&#9670;&#160;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,7 +130,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool TaskControlBlock::WakeTickCompare::operator() </td>
+          <td class="memname">auto TaskControlBlock::WakeTickCompare::operator() </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -143,7 +144,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt; bool </td>
         </tr>
       </table>
   </td>
@@ -153,17 +154,27 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00093">93</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>                                                              {</div>
-<div class="line"><span class="lineno">   94</span>      <span class="keywordflow">return</span> a-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ae0b893b503976ca280b3c17e540e240a">wake_tick</a> &gt; b-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ae0b893b503976ca280b3c17e540e240a">wake_tick</a>;</div>
-<div class="line"><span class="lineno">   95</span>    }</div>
-<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ae0b893b503976ca280b3c17e540e240a"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ae0b893b503976ca280b3c17e540e240a">TaskControlBlock::SchedInfo::wake_tick</a></div><div class="ttdeci">uint64_t wake_tick</div><div class="ttdoc">唤醒时间</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00140">task_control_block.hpp:140</a></div></div>
+<p>比较两个任务的唤醒时间 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>第一个任务控制块指针 </td></tr>
+    <tr><td class="paramname">b</td><td>第二个任务控制块指针 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool 如果 a 的唤醒时间晚于 b 返回 true </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00150">150</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>                                                                      {</div>
+<div class="line"><span class="lineno">  151</span>      <span class="keywordflow">return</span> a-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ae0b893b503976ca280b3c17e540e240a">wake_tick</a> &gt; b-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ae0b893b503976ca280b3c17e540e240a">wake_tick</a>;</div>
+<div class="line"><span class="lineno">  152</span>    }</div>
+<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ae0b893b503976ca280b3c17e540e240a"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ae0b893b503976ca280b3c17e540e240a">TaskControlBlock::SchedInfo::wake_tick</a></div><div class="ttdeci">uint64_t wake_tick</div><div class="ttdoc">唤醒时间</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00178">task_control_block.hpp:178</a></div></div>
 <div class="ttc" id="astructTaskControlBlock_html_a3075e45ca454dbb5309161896e432ace"><div class="ttname"><a href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">TaskControlBlock::sched_info</a></div><div class="ttdeci">struct TaskControlBlock::SchedInfo sched_info</div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/root/src/task/include/<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/task/include/<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

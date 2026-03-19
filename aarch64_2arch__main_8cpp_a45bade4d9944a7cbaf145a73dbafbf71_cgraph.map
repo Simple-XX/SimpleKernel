@@ -1,0 +1,7 @@
+<map id="WakeUpOtherCores" name="WakeUpOtherCores">
+<area shape="rect" id="Node000001" title="唤醒其余 core" alt="" coords="5,31,153,56"/>
+<area shape="rect" id="Node000002" href="$basic__info_8hpp.html#a698036b5e342c2164fb7fd7249d0e801" title="内核入口，在 boot.S 中定义" alt="" coords="217,5,276,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,30,203,22,204,27,154,35"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="201,55,292,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,51,188,56,187,62,153,57"/>
+</map>

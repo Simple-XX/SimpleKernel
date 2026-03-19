@@ -1,0 +1,11 @@
+<map id="klog::detail::TryDrain" name="klog::detail::TryDrain">
+<area shape="rect" id="Node000001" title="将队列中所有条目输出至串口" alt="" coords="5,42,163,67"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="211,15,396,41"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,42,197,38,197,44,163,48"/>
+<area shape="rect" id="Node000004" href="$namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="232,66,375,91"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,61,218,67,218,72,163,66"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="444,5,707,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,24,430,24,430,29,396,30"/>
+<area shape="rect" id="Node000005" href="$aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="528,70,623,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="375,77,515,79,515,84,375,82"/>
+</map>

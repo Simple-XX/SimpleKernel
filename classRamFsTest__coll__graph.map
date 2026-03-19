@@ -1,0 +1,29 @@
+<map id="RamFsTest" name="RamFsTest">
+<area shape="rect" id="Node000001" title=" " alt="" coords="190,1732,293,1817"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,1214,99,1279"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,1293,55,1361,63,1447,81,1539,95,1585,113,1628,129,1657,149,1684,193,1730,189,1734,145,1687,125,1660,108,1631,90,1587,76,1541,58,1447,50,1361,48,1293"/>
+<area shape="rect" id="Node000003" href="$classramfs_1_1RamFs.html" title="ramfs 文件系统实现" alt="" coords="545,864,730,1629"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="547,1568,503,1631,459,1673,409,1707,357,1734,309,1754,307,1749,355,1729,406,1703,456,1669,499,1628,542,1565"/>
+<area shape="rect" id="Node000008" href="$classramfs_1_1RamFs_1_1RamFsInodeOps.html" title="Inode 操作实现类" alt="" coords="733,1692,952,1857"/>
+<area shape="poly" id="edge12_Node000008_Node000003" title=" " alt="" coords="733,1442,776,1546,816,1652,823,1675,818,1677,811,1654,771,1548,728,1444"/>
+<area shape="rect" id="Node000009" href="$classramfs_1_1RamFs_1_1RamFsFileOps.html" title="File 操作实现类" alt="" coords="469,1692,675,1857"/>
+<area shape="poly" id="edge15_Node000009_Node000003" title=" " alt="" coords="573,1630,571,1654,569,1676,564,1675,565,1653,568,1629"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="628,95,756,301"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="710,314,727,453,748,620,752,693,745,787,733,874,727,873,740,786,746,693,743,620,721,454,705,315"/>
+<area shape="rect" id="Node000006" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="603,453,711,619"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="684,301,670,437,665,437,679,301"/>
+<area shape="rect" id="Node000005" href="$structramfs_1_1RamFs_1_1RamInode.html" title="ramfs 内部 inode 数据" alt="" coords="315,681,493,787"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="451,785,478,822,504,863,541,939,536,942,499,865,474,825,446,788"/>
+<area shape="poly" id="edge8_Node000005_Node000005" title=" " alt="" coords="495,717,512,723,520,734,512,745,508,742,515,734,509,727,493,722"/>
+<area shape="poly" id="edge9_Node000003_Node000006" title=" " alt="" coords="658,619,651,848,646,847,652,619"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="605,581,485,673,482,669,601,577"/>
+<area shape="rect" id="Node000007" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="782,5,893,391"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="784,364,770,392,724,462,719,459,766,389,779,362"/>
+<area shape="poly" id="edge11_Node000008_Node000007" title=" " alt="" coords="884,404,892,469,895,535,895,1248,891,1369,882,1491,858,1692,852,1691,876,1490,886,1369,889,1248,889,535,886,470,879,404"/>
+<area shape="poly" id="edge10_Node000003_Node000008" title=" " alt="" coords="745,1693,728,1669,716,1646,720,1643,733,1667,749,1690"/>
+<area shape="poly" id="edge13_Node000003_Node000009" title=" " alt="" coords="595,1691,600,1667,604,1645,609,1646,605,1669,600,1692"/>
+<area shape="rect" id="Node000010" href="$classvfs_1_1FileOps.html" title="File 操作接口" alt="" coords="383,1054,489,1439"/>
+<area shape="poly" id="edge14_Node000009_Node000010" title=" " alt="" coords="416,1453,418,1507,425,1562,438,1616,457,1667,471,1690,467,1693,452,1669,433,1617,420,1563,413,1508,411,1453"/>
+<area shape="rect" id="Node000011" href="$classtest__env_1_1TestEnvironmentState.html" title="测试环境状态" alt="" coords="123,1057,360,1437"/>
+<area shape="poly" id="edge16_Node000001_Node000011" title=" " alt="" coords="244,1437,244,1715,239,1715,239,1437"/>
+</map>

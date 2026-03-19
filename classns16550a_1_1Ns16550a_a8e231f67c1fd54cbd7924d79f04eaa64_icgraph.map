@@ -1,0 +1,7 @@
+<map id="ns16550a::Ns16550a::Create" name="ns16550a::Ns16550a::Create">
+<area shape="rect" id="Node000001" title="工厂方法：创建并初始化 NS16550A 驱动" alt="" coords="465,5,624,45"/>
+<area shape="rect" id="Node000002" href="$classNs16550aDriver.html#a1746711196ece82196c8aa186966683b" title="初始化 NS16550A UART。" alt="" coords="245,13,417,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="451,28,418,28,418,23,451,23"/>
+<area shape="rect" id="Node000003" href="$classNs16550aDriver.html#a1870119f0ccd5fb0f029893f62467760" title="返回用于注册的 DriverEntry" alt="" coords="5,13,197,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="231,28,198,28,198,23,231,23"/>
+</map>

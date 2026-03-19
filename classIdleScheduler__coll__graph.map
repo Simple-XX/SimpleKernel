@@ -1,20 +1,57 @@
 <map id="IdleScheduler" name="IdleScheduler">
-<area shape="rect" id="Node000001" title="Idle 调度器" alt="" coords="257,1461,427,1727"/>
-<area shape="rect" id="Node000002" href="$classSchedulerBase.html" title="调度器基类接口" alt="" coords="156,713,325,1259"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="291,1272,323,1461,317,1462,286,1273"/>
-<area shape="rect" id="Node000003" href="$structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="5,195,156,321"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="97,321,180,697,175,698,92,322"/>
-<area shape="rect" id="Node000004" href="$structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="510,573,699,1399"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="512,1207,408,1447,403,1445,507,1205"/>
-<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="702,909,712,921,719,938,726,986,722,1023,713,1050,708,1048,717,1022,721,986,714,939,707,923,698,912"/>
-<area shape="rect" id="Node000005" href="$structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="180,155,379,361"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="326,360,392,510,506,761,501,763,388,512,321,362"/>
-<area shape="rect" id="Node000006" href="$unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="403,185,607,331"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="517,331,548,557,543,557,512,331"/>
-<area shape="rect" id="Node000007" href="$structcpu__io_1_1TrapContext.html" title=" " alt="" coords="631,175,781,341"/>
-<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="697,341,667,558,662,557,692,340"/>
-<area shape="rect" id="Node000008" href="$structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="805,155,1001,361"/>
-<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="870,362,799,550,708,763,704,761,794,548,865,360"/>
-<area shape="rect" id="Node000009" href="$structResourceId.html" title="资源 ID" alt="" coords="1025,5,1176,511"/>
-<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="1028,491,1016,512,947,619,868,719,787,810,713,887,709,883,783,807,864,716,943,615,1012,509,1023,488"/>
+<area shape="rect" id="Node000001" title="Idle 调度器" alt="" coords="664,2192,833,2657"/>
+<area shape="rect" id="Node000002" href="$classSchedulerBase.html" title="调度器基类接口" alt="" coords="563,1564,732,2109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="699,2123,711,2191,706,2192,694,2124"/>
+<area shape="rect" id="Node000003" href="$structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="377,1236,528,1361"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="478,1360,559,1586,554,1588,472,1362"/>
+<area shape="rect" id="Node000004" href="$structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="951,1544,1141,2129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="954,2026,843,2243,839,2241,949,2023"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="553,1266,678,1331"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="631,1343,655,1410,672,1446,692,1480,727,1520,793,1587,953,1743,949,1747,789,1591,723,1524,688,1483,668,1448,650,1412,626,1345"/>
+<area shape="rect" id="Node000006" href="$classTaskFsm.html" title="任务有限状态机" alt="" coords="703,1116,811,1481"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="813,1456,824,1480,882,1586,945,1686,940,1689,878,1589,820,1483,808,1458"/>
+<area shape="rect" id="Node000007" href="$structStateUnInit.html" title="UnInit 状态 — 任务尚未初始化" alt="" coords="15,741,181,826"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="112,825,130,877,158,939,196,1000,220,1027,246,1051,282,1073,315,1082,394,1089,460,1092,547,1090,631,1094,666,1101,691,1114,692,1114,689,1118,689,1118,664,1106,630,1100,547,1096,460,1097,394,1095,314,1087,280,1078,243,1055,216,1031,192,1003,153,941,125,879,107,827"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="5,173,164,283"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="89,296,100,740,94,741,84,296"/>
+<area shape="rect" id="Node000009" href="$structStateReady.html" title="Ready 状态 — 任务已就绪，等待调度" alt="" coords="257,741,422,826"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="351,825,365,876,388,936,420,997,461,1052,479,1067,496,1076,539,1089,561,1095,582,1096,619,1093,654,1094,672,1101,692,1114,692,1114,689,1118,688,1118,670,1106,653,1099,619,1098,582,1101,561,1100,537,1095,494,1081,476,1072,457,1055,415,1000,383,938,360,877,346,827"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="189,181,397,275"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="300,289,338,740,333,741,295,289"/>
+<area shape="rect" id="Node000011" href="$structStateRunning.html" title="Running 状态 — 任务正在执行" alt="" coords="471,711,637,856"/>
+<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="563,856,572,912,588,973,613,1035,648,1090,658,1098,669,1102,680,1105,692,1114,695,1118,691,1121,688,1118,678,1110,667,1107,655,1103,644,1094,608,1037,583,975,567,913,557,857"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="421,166,644,290"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="538,304,554,710,549,710,533,304"/>
+<area shape="rect" id="Node000013" href="$structStateSleeping.html" title="Sleeping 状态 — 任务已挂起，等待唤醒时钟" alt="" coords="674,741,839,826"/>
+<area shape="poly" id="edge12_Node000006_Node000013" title=" " alt="" coords="759,826,759,1100,754,1100,754,826"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="669,173,845,283"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="759,296,759,740,754,740,754,296"/>
+<area shape="rect" id="Node000015" href="$structStateBlocked.html" title="Blocked 状态 — 任务阻塞，等待资源" alt="" coords="867,741,1033,826"/>
+<area shape="poly" id="edge14_Node000006_Node000015" title=" " alt="" coords="953,827,950,884,938,955,915,1028,898,1062,876,1094,863,1104,849,1107,836,1110,824,1118,823,1119,819,1115,820,1114,834,1105,848,1102,860,1099,872,1090,893,1060,910,1026,933,954,944,884,948,826"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="869,173,1039,283"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="956,296,953,740,948,740,951,296"/>
+<area shape="rect" id="Node000017" href="$structStateExited.html" title="Exited 状态 — 任务已退出，无父任务回收" alt="" coords="1059,741,1225,826"/>
+<area shape="poly" id="edge16_Node000006_Node000017" title=" " alt="" coords="1137,827,1125,876,1107,935,1081,997,1047,1055,1026,1079,998,1094,973,1102,950,1105,909,1102,869,1101,848,1107,825,1119,823,1114,846,1102,868,1096,909,1096,950,1099,972,1097,996,1090,1022,1075,1043,1052,1076,995,1102,933,1120,874,1132,826"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="1064,173,1225,283"/>
+<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="1147,296,1145,740,1140,740,1142,296"/>
+<area shape="rect" id="Node000019" href="$structStateZombie.html" title="Zombie 状态 — 任务已退出，等待父任务回收" alt="" coords="1251,741,1417,826"/>
+<area shape="poly" id="edge18_Node000006_Node000019" title=" " alt="" coords="1333,826,1324,878,1307,939,1279,1001,1261,1030,1239,1055,1212,1076,1187,1085,1126,1095,1063,1099,980,1098,894,1101,857,1108,825,1120,823,1115,855,1103,894,1096,980,1092,1063,1093,1126,1089,1186,1080,1210,1071,1235,1051,1256,1026,1274,998,1302,937,1318,877,1327,826"/>
+<area shape="rect" id="Node000020" title=" " alt="" coords="1250,173,1421,283"/>
+<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="1338,296,1337,740,1331,740,1333,296"/>
+<area shape="rect" id="Node000021" href="$structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="835,1196,1033,1401"/>
+<area shape="poly" id="edge20_Node000004_Node000021" title=" " alt="" coords="958,1401,984,1527,979,1528,953,1402"/>
+<area shape="rect" id="Node000022" href="$unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="1057,1226,1261,1371"/>
+<area shape="poly" id="edge21_Node000004_Node000022" title=" " alt="" coords="1147,1372,1114,1529,1108,1528,1142,1371"/>
+<area shape="rect" id="Node000023" href="$structcpu__io_1_1TrapContext.html" title=" " alt="" coords="1285,1216,1436,1381"/>
+<area shape="poly" id="edge22_Node000004_Node000023" title=" " alt="" coords="1326,1383,1275,1483,1214,1585,1152,1683,1148,1680,1210,1582,1270,1480,1321,1380"/>
+<area shape="rect" id="Node000024" href="$structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="1460,1196,1656,1401"/>
+<area shape="poly" id="edge23_Node000004_Node000024" title=" " alt="" coords="1506,1403,1479,1444,1449,1483,1378,1561,1301,1634,1156,1757,1152,1753,1298,1630,1374,1557,1445,1480,1475,1441,1501,1400"/>
+<area shape="rect" id="Node000025" href="$structTaskAuxData.html" title="非调度热路径的任务辅助数据" alt="" coords="1681,1186,1833,1411"/>
+<area shape="poly" id="edge24_Node000004_Node000025" title=" " alt="" coords="1717,1413,1696,1450,1669,1483,1611,1539,1546,1591,1479,1637,1409,1679,1274,1749,1157,1798,1155,1793,1272,1744,1407,1675,1476,1633,1543,1586,1607,1535,1665,1480,1691,1447,1712,1410"/>
+<area shape="rect" id="Node000026" href="$classResourceId.html" title="资源 ID" alt="" coords="1604,521,1755,1046"/>
+<area shape="poly" id="edge25_Node000025_Node000026" title=" " alt="" coords="1711,1046,1718,1092,1732,1169,1727,1170,1713,1092,1706,1046"/>
+<area shape="rect" id="Node000027" href="$classfilesystem_1_1FileDescriptorTable.html" title="进程级文件描述符表" alt="" coords="1779,513,1959,1053"/>
+<area shape="poly" id="edge26_Node000025_Node000027" title=" " alt="" coords="1816,1054,1807,1093,1790,1170,1784,1169,1802,1091,1811,1053"/>
+<area shape="rect" id="Node000028" href="$classSpinLock.html" title="自旋锁" alt="" coords="1774,5,1963,451"/>
+<area shape="poly" id="edge27_Node000027_Node000028" title=" " alt="" coords="1871,451,1871,497,1866,497,1866,451"/>
 </map>

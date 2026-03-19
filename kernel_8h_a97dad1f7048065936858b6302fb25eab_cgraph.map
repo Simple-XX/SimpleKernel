@@ -1,0 +1,13 @@
+<map id="MemoryInit" name="MemoryInit">
+<area shape="rect" id="Node000001" title="内存子系统初始化" alt="" coords="5,84,103,109"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="197,5,280,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,82,108,60,150,40,183,28,185,33,152,44,110,65,76,86"/>
+<area shape="rect" id="Node000003" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="179,55,299,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="102,86,165,76,165,82,103,92"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io_1_1virtual__memory.html#af3d08561d5c588f1cf2f260951522f6c" title=" " alt="" coords="151,105,327,145"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="103,101,137,107,136,112,102,107"/>
+<area shape="rect" id="Node000006" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="193,169,284,195"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="74,107,109,131,152,154,181,165,179,170,150,159,106,135,71,112"/>
+<area shape="rect" id="Node000004" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="375,55,509,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="299,65,361,65,361,70,299,70"/>
+</map>

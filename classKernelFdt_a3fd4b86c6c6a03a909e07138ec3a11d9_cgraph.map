@@ -1,5 +1,7 @@
 <map id="KernelFdt::GetAarch64Intid" name="KernelFdt::GetAarch64Intid">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,203,31"/>
-<area shape="rect" id="Node000002" href="$classKernelFdt.html#a9ef34e2623b2d840a600a069393b5d24" title=" " alt="" coords="251,5,531,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,15,237,15,237,21,203,21"/>
+<area shape="rect" id="Node000001" title="获取 aarch64 中断号" alt="" coords="5,31,203,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="341,5,441,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,32,327,21,327,26,203,37"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#a9ef34e2623b2d840a600a069393b5d24" title="根据 compatible 查找已启用的节点（跳过 status=&quot;disabled&quot;）" alt="" coords="251,55,531,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,49,237,52,237,57,202,54"/>
 </map>

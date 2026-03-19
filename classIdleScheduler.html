@@ -106,9 +106,9 @@ Inheritance diagram for IdleScheduler:</div>
 <div class="dyncontent">
 <div class="center"><img src="classIdleScheduler__inherit__graph.png" border="0" usemap="#aIdleScheduler_inherit__map" alt="Inheritance graph"/></div>
 <map name="aIdleScheduler_inherit__map" id="aIdleScheduler_inherit__map">
-<area shape="rect" title="Idle 调度器" alt="" coords="5,619,175,884"/>
+<area shape="rect" title="Idle 调度器" alt="" coords="5,619,175,1084"/>
 <area shape="rect" href="classSchedulerBase.html" title="调度器基类接口" alt="" coords="5,5,175,571"/>
-<area shape="poly" title=" " alt="" coords="93,585,93,619,87,619,87,585"/>
+<area shape="poly" title=" " alt="" coords="93,584,93,619,87,619,87,584"/>
 </map>
 </div>
 <div class="dynheader">
@@ -116,41 +116,75 @@ Collaboration diagram for IdleScheduler:</div>
 <div class="dyncontent">
 <div class="center"><img src="classIdleScheduler__coll__graph.png" border="0" usemap="#aIdleScheduler_coll__map" alt="Collaboration graph"/></div>
 <map name="aIdleScheduler_coll__map" id="aIdleScheduler_coll__map">
-<area shape="rect" title="Idle 调度器" alt="" coords="257,1461,427,1727"/>
-<area shape="rect" href="classSchedulerBase.html" title="调度器基类接口" alt="" coords="156,713,325,1259"/>
-<area shape="poly" title=" " alt="" coords="291,1272,323,1461,317,1462,286,1273"/>
-<area shape="rect" href="structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="5,195,156,321"/>
-<area shape="poly" title=" " alt="" coords="97,321,180,697,175,698,92,322"/>
-<area shape="rect" href="structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="510,573,699,1399"/>
-<area shape="poly" title=" " alt="" coords="512,1207,408,1447,403,1445,507,1205"/>
-<area shape="poly" title=" " alt="" coords="702,909,712,921,719,938,726,986,722,1023,713,1050,708,1048,717,1022,721,986,714,939,707,923,698,912"/>
-<area shape="rect" href="structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="180,155,379,361"/>
-<area shape="poly" title=" " alt="" coords="326,360,392,510,506,761,501,763,388,512,321,362"/>
-<area shape="rect" href="unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="403,185,607,331"/>
-<area shape="poly" title=" " alt="" coords="517,331,548,557,543,557,512,331"/>
-<area shape="rect" href="structcpu__io_1_1TrapContext.html" title=" " alt="" coords="631,175,781,341"/>
-<area shape="poly" title=" " alt="" coords="697,341,667,558,662,557,692,340"/>
-<area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="805,155,1001,361"/>
-<area shape="poly" title=" " alt="" coords="870,362,799,550,708,763,704,761,794,548,865,360"/>
-<area shape="rect" href="structResourceId.html" title="资源 ID" alt="" coords="1025,5,1176,511"/>
-<area shape="poly" title=" " alt="" coords="1028,491,1016,512,947,619,868,719,787,810,713,887,709,883,783,807,864,716,943,615,1012,509,1023,488"/>
+<area shape="rect" title="Idle 调度器" alt="" coords="664,2192,833,2657"/>
+<area shape="rect" href="classSchedulerBase.html" title="调度器基类接口" alt="" coords="563,1564,732,2109"/>
+<area shape="poly" title=" " alt="" coords="699,2123,711,2191,706,2192,694,2124"/>
+<area shape="rect" href="structSchedulerBase_1_1Stats.html" title="调度器统计信息" alt="" coords="377,1236,528,1361"/>
+<area shape="poly" title=" " alt="" coords="478,1360,559,1586,554,1588,472,1362"/>
+<area shape="rect" href="structTaskControlBlock.html" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="951,1544,1141,2129"/>
+<area shape="poly" title=" " alt="" coords="954,2026,843,2243,839,2241,949,2023"/>
+<area shape="rect" title=" " alt="" coords="553,1266,678,1331"/>
+<area shape="poly" title=" " alt="" coords="631,1343,655,1410,672,1446,692,1480,727,1520,793,1587,953,1743,949,1747,789,1591,723,1524,688,1483,668,1448,650,1412,626,1345"/>
+<area shape="rect" href="classTaskFsm.html" title="任务有限状态机" alt="" coords="703,1116,811,1481"/>
+<area shape="poly" title=" " alt="" coords="813,1456,824,1480,882,1586,945,1686,940,1689,878,1589,820,1483,808,1458"/>
+<area shape="rect" href="structStateUnInit.html" title="UnInit 状态 — 任务尚未初始化" alt="" coords="15,741,181,826"/>
+<area shape="poly" title=" " alt="" coords="112,825,130,877,158,939,196,1000,220,1027,246,1051,282,1073,315,1082,394,1089,460,1092,547,1090,631,1094,666,1101,691,1114,692,1114,689,1118,689,1118,664,1106,630,1100,547,1096,460,1097,394,1095,314,1087,280,1078,243,1055,216,1031,192,1003,153,941,125,879,107,827"/>
+<area shape="rect" title=" " alt="" coords="5,173,164,283"/>
+<area shape="poly" title=" " alt="" coords="89,296,100,740,94,741,84,296"/>
+<area shape="rect" href="structStateReady.html" title="Ready 状态 — 任务已就绪，等待调度" alt="" coords="257,741,422,826"/>
+<area shape="poly" title=" " alt="" coords="351,825,365,876,388,936,420,997,461,1052,479,1067,496,1076,539,1089,561,1095,582,1096,619,1093,654,1094,672,1101,692,1114,692,1114,689,1118,688,1118,670,1106,653,1099,619,1098,582,1101,561,1100,537,1095,494,1081,476,1072,457,1055,415,1000,383,938,360,877,346,827"/>
+<area shape="rect" title=" " alt="" coords="189,181,397,275"/>
+<area shape="poly" title=" " alt="" coords="300,289,338,740,333,741,295,289"/>
+<area shape="rect" href="structStateRunning.html" title="Running 状态 — 任务正在执行" alt="" coords="471,711,637,856"/>
+<area shape="poly" title=" " alt="" coords="563,856,572,912,588,973,613,1035,648,1090,658,1098,669,1102,680,1105,692,1114,695,1118,691,1121,688,1118,678,1110,667,1107,655,1103,644,1094,608,1037,583,975,567,913,557,857"/>
+<area shape="rect" title=" " alt="" coords="421,166,644,290"/>
+<area shape="poly" title=" " alt="" coords="538,304,554,710,549,710,533,304"/>
+<area shape="rect" href="structStateSleeping.html" title="Sleeping 状态 — 任务已挂起，等待唤醒时钟" alt="" coords="674,741,839,826"/>
+<area shape="poly" title=" " alt="" coords="759,826,759,1100,754,1100,754,826"/>
+<area shape="rect" title=" " alt="" coords="669,173,845,283"/>
+<area shape="poly" title=" " alt="" coords="759,296,759,740,754,740,754,296"/>
+<area shape="rect" href="structStateBlocked.html" title="Blocked 状态 — 任务阻塞，等待资源" alt="" coords="867,741,1033,826"/>
+<area shape="poly" title=" " alt="" coords="953,827,950,884,938,955,915,1028,898,1062,876,1094,863,1104,849,1107,836,1110,824,1118,823,1119,819,1115,820,1114,834,1105,848,1102,860,1099,872,1090,893,1060,910,1026,933,954,944,884,948,826"/>
+<area shape="rect" title=" " alt="" coords="869,173,1039,283"/>
+<area shape="poly" title=" " alt="" coords="956,296,953,740,948,740,951,296"/>
+<area shape="rect" href="structStateExited.html" title="Exited 状态 — 任务已退出，无父任务回收" alt="" coords="1059,741,1225,826"/>
+<area shape="poly" title=" " alt="" coords="1137,827,1125,876,1107,935,1081,997,1047,1055,1026,1079,998,1094,973,1102,950,1105,909,1102,869,1101,848,1107,825,1119,823,1114,846,1102,868,1096,909,1096,950,1099,972,1097,996,1090,1022,1075,1043,1052,1076,995,1102,933,1120,874,1132,826"/>
+<area shape="rect" title=" " alt="" coords="1064,173,1225,283"/>
+<area shape="poly" title=" " alt="" coords="1147,296,1145,740,1140,740,1142,296"/>
+<area shape="rect" href="structStateZombie.html" title="Zombie 状态 — 任务已退出，等待父任务回收" alt="" coords="1251,741,1417,826"/>
+<area shape="poly" title=" " alt="" coords="1333,826,1324,878,1307,939,1279,1001,1261,1030,1239,1055,1212,1076,1187,1085,1126,1095,1063,1099,980,1098,894,1101,857,1108,825,1120,823,1115,855,1103,894,1096,980,1092,1063,1093,1126,1089,1186,1080,1210,1071,1235,1051,1256,1026,1274,998,1302,937,1318,877,1327,826"/>
+<area shape="rect" title=" " alt="" coords="1250,173,1421,283"/>
+<area shape="poly" title=" " alt="" coords="1338,296,1337,740,1331,740,1333,296"/>
+<area shape="rect" href="structTaskControlBlock_1_1SchedInfo.html" title="基础调度信息" alt="" coords="835,1196,1033,1401"/>
+<area shape="poly" title=" " alt="" coords="958,1401,984,1527,979,1528,953,1402"/>
+<area shape="rect" href="unionTaskControlBlock_1_1SchedData.html" title="不同调度器的专用字段 (互斥使用)" alt="" coords="1057,1226,1261,1371"/>
+<area shape="poly" title=" " alt="" coords="1147,1372,1114,1529,1108,1528,1142,1371"/>
+<area shape="rect" href="structcpu__io_1_1TrapContext.html" title=" " alt="" coords="1285,1216,1436,1381"/>
+<area shape="poly" title=" " alt="" coords="1326,1383,1275,1483,1214,1585,1152,1683,1148,1680,1210,1582,1270,1480,1321,1380"/>
+<area shape="rect" href="structcpu__io_1_1CalleeSavedContext.html" title=" " alt="" coords="1460,1196,1656,1401"/>
+<area shape="poly" title=" " alt="" coords="1506,1403,1479,1444,1449,1483,1378,1561,1301,1634,1156,1757,1152,1753,1298,1630,1374,1557,1445,1480,1475,1441,1501,1400"/>
+<area shape="rect" href="structTaskAuxData.html" title="非调度热路径的任务辅助数据" alt="" coords="1681,1186,1833,1411"/>
+<area shape="poly" title=" " alt="" coords="1717,1413,1696,1450,1669,1483,1611,1539,1546,1591,1479,1637,1409,1679,1274,1749,1157,1798,1155,1793,1272,1744,1407,1675,1476,1633,1543,1586,1607,1535,1665,1480,1691,1447,1712,1410"/>
+<area shape="rect" href="classResourceId.html" title="资源 ID" alt="" coords="1604,521,1755,1046"/>
+<area shape="poly" title=" " alt="" coords="1711,1046,1718,1092,1732,1169,1727,1170,1713,1092,1706,1046"/>
+<area shape="rect" href="classfilesystem_1_1FileDescriptorTable.html" title="进程级文件描述符表" alt="" coords="1779,513,1959,1053"/>
+<area shape="poly" title=" " alt="" coords="1816,1054,1807,1093,1790,1170,1784,1169,1802,1091,1811,1053"/>
+<area shape="rect" href="classSpinLock.html" title="自旋锁" alt="" coords="1774,5,1963,451"/>
+<area shape="poly" title=" " alt="" coords="1871,451,1871,497,1866,497,1866,451"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa64aaaa9867c5cba9ee16a773404e714" id="r_aa64aaaa9867c5cba9ee16a773404e714"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#aa64aaaa9867c5cba9ee16a773404e714">IdleScheduler</a> ()</td></tr>
-<tr class="memdesc:aa64aaaa9867c5cba9ee16a773404e714"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造函数  <br /></td></tr>
-<tr class="separator:aa64aaaa9867c5cba9ee16a773404e714"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a982565c7b44db5f68199ac77c7ceee24" id="r_a982565c7b44db5f68199ac77c7ceee24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a982565c7b44db5f68199ac77c7ceee24">Enqueue</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) override</td></tr>
-<tr class="memdesc:a982565c7b44db5f68199ac77c7ceee24"><td class="mdescLeft">&#160;</td><td class="mdescRight">将 idle 任务加入队列  <br /></td></tr>
-<tr class="separator:a982565c7b44db5f68199ac77c7ceee24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d83155018ef2570be229b7327de894c" id="r_a5d83155018ef2570be229b7327de894c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a5d83155018ef2570be229b7327de894c">Dequeue</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) override</td></tr>
-<tr class="memdesc:a5d83155018ef2570be229b7327de894c"><td class="mdescLeft">&#160;</td><td class="mdescRight">从队列中移除任务  <br /></td></tr>
-<tr class="separator:a5d83155018ef2570be229b7327de894c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a525a4976d3f83aa5f71c60a283ef5a00" id="r_a525a4976d3f83aa5f71c60a283ef5a00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a525a4976d3f83aa5f71c60a283ef5a00">PickNext</a> () override</td></tr>
-<tr class="memdesc:a525a4976d3f83aa5f71c60a283ef5a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">选择下一个要运行的任务（返回 idle 任务）  <br /></td></tr>
-<tr class="separator:a525a4976d3f83aa5f71c60a283ef5a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0acb51521e84b5d28b04282fd3000402" id="r_a0acb51521e84b5d28b04282fd3000402"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a0acb51521e84b5d28b04282fd3000402">Enqueue</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) -&gt; void override</td></tr>
+<tr class="memdesc:a0acb51521e84b5d28b04282fd3000402"><td class="mdescLeft">&#160;</td><td class="mdescRight">将 idle 任务加入队列  <br /></td></tr>
+<tr class="separator:a0acb51521e84b5d28b04282fd3000402"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02f75314f30c15b40ddb1259bde0e73d" id="r_a02f75314f30c15b40ddb1259bde0e73d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a02f75314f30c15b40ddb1259bde0e73d">Dequeue</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) -&gt; void override</td></tr>
+<tr class="memdesc:a02f75314f30c15b40ddb1259bde0e73d"><td class="mdescLeft">&#160;</td><td class="mdescRight">从队列中移除任务  <br /></td></tr>
+<tr class="separator:a02f75314f30c15b40ddb1259bde0e73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa916d7afb41b07784ec25c1e0df87a04" id="r_aa916d7afb41b07784ec25c1e0df87a04"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#aa916d7afb41b07784ec25c1e0df87a04">PickNext</a> () -&gt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *override</td></tr>
+<tr class="memdesc:aa916d7afb41b07784ec25c1e0df87a04"><td class="mdescLeft">&#160;</td><td class="mdescRight">选择下一个要运行的任务（返回 idle 任务）  <br /></td></tr>
+<tr class="separator:aa916d7afb41b07784ec25c1e0df87a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25f50e9115525ad167d53b12620adcad" id="r_a25f50e9115525ad167d53b12620adcad"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a25f50e9115525ad167d53b12620adcad">GetQueueSize</a> () const -&gt; size_t override</td></tr>
 <tr class="memdesc:a25f50e9115525ad167d53b12620adcad"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取队列大小  <br /></td></tr>
 <tr class="separator:a25f50e9115525ad167d53b12620adcad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,28 +197,38 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a358de458a80bd2dab5c3470797dba826" id="r_a358de458a80bd2dab5c3470797dba826"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a358de458a80bd2dab5c3470797dba826">OnTimeSliceExpired</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) -&gt; bool override</td></tr>
 <tr class="memdesc:a358de458a80bd2dab5c3470797dba826"><td class="mdescLeft">&#160;</td><td class="mdescRight">时间片耗尽处理（idle 任务不使用时间片）  <br /></td></tr>
 <tr class="separator:a358de458a80bd2dab5c3470797dba826"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76ed9271a83fd9d63c8391940621f584" id="r_a76ed9271a83fd9d63c8391940621f584"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a76ed9271a83fd9d63c8391940621f584">OnPreempted</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) override</td></tr>
-<tr class="memdesc:a76ed9271a83fd9d63c8391940621f584"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务被抢占时的处理（idle 任务不需要特殊处理）  <br /></td></tr>
-<tr class="separator:a76ed9271a83fd9d63c8391940621f584"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7962d53f194cd8d00a6757da40d88b3" id="r_aa7962d53f194cd8d00a6757da40d88b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#aa7962d53f194cd8d00a6757da40d88b3">OnScheduled</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) override</td></tr>
-<tr class="memdesc:aa7962d53f194cd8d00a6757da40d88b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务被调度时的处理（idle 任务不需要特殊处理）  <br /></td></tr>
-<tr class="separator:aa7962d53f194cd8d00a6757da40d88b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96fb071b46c6a79fd7b96f5a884774ae" id="r_a96fb071b46c6a79fd7b96f5a884774ae"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a96fb071b46c6a79fd7b96f5a884774ae">~IdleScheduler</a> ()=default</td></tr>
-<tr class="memdesc:a96fb071b46c6a79fd7b96f5a884774ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">析构函数  <br /></td></tr>
-<tr class="separator:a96fb071b46c6a79fd7b96f5a884774ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea4ff78e9e619403db4fe6d7bb67f501" id="r_aea4ff78e9e619403db4fe6d7bb67f501"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#aea4ff78e9e619403db4fe6d7bb67f501">OnPreempted</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) -&gt; void override</td></tr>
+<tr class="memdesc:aea4ff78e9e619403db4fe6d7bb67f501"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务被抢占时的处理（idle 任务不需要特殊处理）  <br /></td></tr>
+<tr class="separator:aea4ff78e9e619403db4fe6d7bb67f501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb8523380784bcf451575e8d82eaa37" id="r_abbb8523380784bcf451575e8d82eaa37"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#abbb8523380784bcf451575e8d82eaa37">OnScheduled</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) -&gt; void override</td></tr>
+<tr class="memdesc:abbb8523380784bcf451575e8d82eaa37"><td class="mdescLeft">&#160;</td><td class="mdescRight">任务被调度时的处理（idle 任务不需要特殊处理）  <br /></td></tr>
+<tr class="separator:abbb8523380784bcf451575e8d82eaa37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
+<tr class="memitem:aa64aaaa9867c5cba9ee16a773404e714" id="r_aa64aaaa9867c5cba9ee16a773404e714"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#aa64aaaa9867c5cba9ee16a773404e714">IdleScheduler</a> ()</td></tr>
+<tr class="separator:aa64aaaa9867c5cba9ee16a773404e714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf899305b3102fda91e797d7a4e5bd1c" id="r_adf899305b3102fda91e797d7a4e5bd1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#adf899305b3102fda91e797d7a4e5bd1c">IdleScheduler</a> (const <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;)=delete</td></tr>
+<tr class="separator:adf899305b3102fda91e797d7a4e5bd1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa42977461e03b28cbd8b3c5a32f95f6" id="r_afa42977461e03b28cbd8b3c5a32f95f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#afa42977461e03b28cbd8b3c5a32f95f6">IdleScheduler</a> (<a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;&amp;)=delete</td></tr>
+<tr class="separator:afa42977461e03b28cbd8b3c5a32f95f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dfda78ef00275ccf8637f87847d581f" id="r_a7dfda78ef00275ccf8637f87847d581f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a7dfda78ef00275ccf8637f87847d581f">operator=</a> (const <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;) -&gt; <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;=delete</td></tr>
+<tr class="separator:a7dfda78ef00275ccf8637f87847d581f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed8cfa6a70e6999631c575cf4f4c0741" id="r_aed8cfa6a70e6999631c575cf4f4c0741"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#aed8cfa6a70e6999631c575cf4f4c0741">operator=</a> (<a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;&amp;) -&gt; <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;=delete</td></tr>
+<tr class="separator:aed8cfa6a70e6999631c575cf4f4c0741"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f5d12413a879df04b26cda6e9ca18bc" id="r_a2f5d12413a879df04b26cda6e9ca18bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#a2f5d12413a879df04b26cda6e9ca18bc">~IdleScheduler</a> () override=default</td></tr>
+<tr class="separator:a2f5d12413a879df04b26cda6e9ca18bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSchedulerBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSchedulerBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSchedulerBase.html">SchedulerBase</a></td></tr>
-<tr class="memitem:ac3fd32fbc73b48fe5f959e05138eaae9 inherit pub_methods_classSchedulerBase" id="r_ac3fd32fbc73b48fe5f959e05138eaae9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#ac3fd32fbc73b48fe5f959e05138eaae9">BoostPriority</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task, int new_priority)</td></tr>
-<tr class="memdesc:ac3fd32fbc73b48fe5f959e05138eaae9 inherit pub_methods_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">优先级提升：当任务持有资源时被更高优先级任务等待，提升其优先级  <br /></td></tr>
-<tr class="separator:ac3fd32fbc73b48fe5f959e05138eaae9 inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacc92ea4aed8b0b643d7c8eef115c3da inherit pub_methods_classSchedulerBase" id="r_aacc92ea4aed8b0b643d7c8eef115c3da"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#aacc92ea4aed8b0b643d7c8eef115c3da">RestorePriority</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task)</td></tr>
-<tr class="memdesc:aacc92ea4aed8b0b643d7c8eef115c3da inherit pub_methods_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">优先级恢复：当任务释放资源后，恢复其原始优先级  <br /></td></tr>
-<tr class="separator:aacc92ea4aed8b0b643d7c8eef115c3da inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c3d0c855ae4eecccc4b0dbfe22b3b31 inherit pub_methods_classSchedulerBase" id="r_a2c3d0c855ae4eecccc4b0dbfe22b3b31"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#a2c3d0c855ae4eecccc4b0dbfe22b3b31">BoostPriority</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task, int new_priority) -&gt; void</td></tr>
+<tr class="memdesc:a2c3d0c855ae4eecccc4b0dbfe22b3b31 inherit pub_methods_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">优先级提升：当任务持有资源时被更高优先级任务等待，提升其优先级  <br /></td></tr>
+<tr class="separator:a2c3d0c855ae4eecccc4b0dbfe22b3b31 inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a64582db6e38f7006194623dd07cab6 inherit pub_methods_classSchedulerBase" id="r_a7a64582db6e38f7006194623dd07cab6"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#a7a64582db6e38f7006194623dd07cab6">RestorePriority</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *task) -&gt; void</td></tr>
+<tr class="memdesc:a7a64582db6e38f7006194623dd07cab6 inherit pub_methods_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">优先级恢复：当任务释放资源后，恢复其原始优先级  <br /></td></tr>
+<tr class="separator:a7a64582db6e38f7006194623dd07cab6 inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a914b45bb9c30d74dba59458826601d1e inherit pub_methods_classSchedulerBase" id="r_a914b45bb9c30d74dba59458826601d1e"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e">GetStats</a> () const -&gt; const <a class="el" href="structSchedulerBase_1_1Stats.html">Stats</a> &amp;</td></tr>
 <tr class="memdesc:a914b45bb9c30d74dba59458826601d1e inherit pub_methods_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取调度器统计信息  <br /></td></tr>
 <tr class="separator:a914b45bb9c30d74dba59458826601d1e inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84866e4ce79224c5eb2602e02fad5040 inherit pub_methods_classSchedulerBase" id="r_a84866e4ce79224c5eb2602e02fad5040"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#a84866e4ce79224c5eb2602e02fad5040">ResetStats</a> ()</td></tr>
-<tr class="memdesc:a84866e4ce79224c5eb2602e02fad5040 inherit pub_methods_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">重置统计信息  <br /></td></tr>
-<tr class="separator:a84866e4ce79224c5eb2602e02fad5040 inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae49df54bf03d2b6d302e052614ba3b2e inherit pub_methods_classSchedulerBase" id="r_ae49df54bf03d2b6d302e052614ba3b2e"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#ae49df54bf03d2b6d302e052614ba3b2e">ResetStats</a> () -&gt; void</td></tr>
+<tr class="memdesc:ae49df54bf03d2b6d302e052614ba3b2e inherit pub_methods_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">重置统计信息  <br /></td></tr>
+<tr class="separator:ae49df54bf03d2b6d302e052614ba3b2e inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f4fedd1189f28d904901937c249b439 inherit pub_methods_classSchedulerBase" id="r_a9f4fedd1189f28d904901937c249b439"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#a9f4fedd1189f28d904901937c249b439">SchedulerBase</a> ()=default</td></tr>
 <tr class="separator:a9f4fedd1189f28d904901937c249b439 inherit pub_methods_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeacb0b82fcde69ad7a52bf70b303fe94 inherit pub_methods_classSchedulerBase" id="r_aeacb0b82fcde69ad7a52bf70b303fe94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#aeacb0b82fcde69ad7a52bf70b303fe94">SchedulerBase</a> (const <a class="el" href="classSchedulerBase.html">SchedulerBase</a> &amp;)=default</td></tr>
@@ -200,18 +244,18 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:addb84129480def6f280ace77e9d648ae" id="r_addb84129480def6f280ace77e9d648ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> = nullptr</td></tr>
+<tr class="memitem:addb84129480def6f280ace77e9d648ae" id="r_addb84129480def6f280ace77e9d648ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> {nullptr}</td></tr>
 <tr class="memdesc:addb84129480def6f280ace77e9d648ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idle 任务指针（通常只有一个）  <br /></td></tr>
 <tr class="separator:addb84129480def6f280ace77e9d648ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classSchedulerBase"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classSchedulerBase')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classSchedulerBase.html">SchedulerBase</a></td></tr>
-<tr class="memitem:abbd29119b4aa4dfb73e363c8538fb456 inherit pub_attribs_classSchedulerBase" id="r_abbd29119b4aa4dfb73e363c8538fb456"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#abbd29119b4aa4dfb73e363c8538fb456">name</a> = &quot;Unnamed Scheduler&quot;</td></tr>
+<tr class="memitem:abbd29119b4aa4dfb73e363c8538fb456 inherit pub_attribs_classSchedulerBase" id="r_abbd29119b4aa4dfb73e363c8538fb456"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#abbd29119b4aa4dfb73e363c8538fb456">name</a> {&quot;Unnamed Scheduler&quot;}</td></tr>
 <tr class="memdesc:abbd29119b4aa4dfb73e363c8538fb456 inherit pub_attribs_classSchedulerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">调度器名称  <br /></td></tr>
 <tr class="separator:abbd29119b4aa4dfb73e363c8538fb456 inherit pub_attribs_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classSchedulerBase"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSchedulerBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSchedulerBase.html">SchedulerBase</a></td></tr>
-<tr class="memitem:ac24df137a9e613ca5c5de71345cf5f94 inherit pro_attribs_classSchedulerBase" id="r_ac24df137a9e613ca5c5de71345cf5f94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSchedulerBase_1_1Stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a></td></tr>
+<tr class="memitem:ac24df137a9e613ca5c5de71345cf5f94 inherit pro_attribs_classSchedulerBase" id="r_ac24df137a9e613ca5c5de71345cf5f94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSchedulerBase_1_1Stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a> {}</td></tr>
 <tr class="separator:ac24df137a9e613ca5c5de71345cf5f94 inherit pro_attribs_classSchedulerBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -224,10 +268,10 @@ Additional Inherited Members</h2></td></tr>
 <li>O(1) 时间复杂度 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00020">20</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00019">19</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa64aaaa9867c5cba9ee16a773404e714" name="aa64aaaa9867c5cba9ee16a773404e714"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa64aaaa9867c5cba9ee16a773404e714">&#9670;&#160;</a></span>IdleScheduler()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa64aaaa9867c5cba9ee16a773404e714">&#9670;&#160;</a></span>IdleScheduler() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -249,16 +293,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>构造函数 </p>
-
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00025">25</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>{ <a class="code hl_variable" href="classSchedulerBase.html#abbd29119b4aa4dfb73e363c8538fb456">name</a> = <span class="stringliteral">&quot;Idle&quot;</span>; }</div>
-<div class="ttc" id="aclassSchedulerBase_html_abbd29119b4aa4dfb73e363c8538fb456"><div class="ttname"><a href="classSchedulerBase.html#abbd29119b4aa4dfb73e363c8538fb456">SchedulerBase::name</a></div><div class="ttdeci">const char * name</div><div class="ttdoc">调度器名称</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00022">scheduler_base.hpp:22</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00108">108</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>{ <a class="code hl_variable" href="classSchedulerBase.html#abbd29119b4aa4dfb73e363c8538fb456">name</a> = <span class="stringliteral">&quot;Idle&quot;</span>; }</div>
+<div class="ttc" id="aclassSchedulerBase_html_abbd29119b4aa4dfb73e363c8538fb456"><div class="ttname"><a href="classSchedulerBase.html#abbd29119b4aa4dfb73e363c8538fb456">SchedulerBase::name</a></div><div class="ttdeci">const char * name</div><div class="ttdoc">调度器名称</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00021">scheduler_base.hpp:21</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a96fb071b46c6a79fd7b96f5a884774ae" name="a96fb071b46c6a79fd7b96f5a884774ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96fb071b46c6a79fd7b96f5a884774ae">&#9670;&#160;</a></span>~IdleScheduler()</h2>
+<a id="adf899305b3102fda91e797d7a4e5bd1c" name="adf899305b3102fda91e797d7a4e5bd1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf899305b3102fda91e797d7a4e5bd1c">&#9670;&#160;</a></span>IdleScheduler() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,7 +309,59 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual IdleScheduler::~IdleScheduler </td>
+          <td class="memname">IdleScheduler::IdleScheduler </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afa42977461e03b28cbd8b3c5a32f95f6" name="afa42977461e03b28cbd8b3c5a32f95f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa42977461e03b28cbd8b3c5a32f95f6">&#9670;&#160;</a></span>IdleScheduler() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IdleScheduler::IdleScheduler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2f5d12413a879df04b26cda6e9ca18bc" name="a2f5d12413a879df04b26cda6e9ca18bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f5d12413a879df04b26cda6e9ca18bc">&#9670;&#160;</a></span>~IdleScheduler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IdleScheduler::~IdleScheduler </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -275,18 +369,16 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>析构函数 </p>
-
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5d83155018ef2570be229b7327de894c" name="a5d83155018ef2570be229b7327de894c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d83155018ef2570be229b7327de894c">&#9670;&#160;</a></span>Dequeue()</h2>
+<a id="a02f75314f30c15b40ddb1259bde0e73d" name="a02f75314f30c15b40ddb1259bde0e73d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02f75314f30c15b40ddb1259bde0e73d">&#9670;&#160;</a></span>Dequeue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,11 +387,11 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void IdleScheduler::Dequeue </td>
+          <td class="memname">auto IdleScheduler::Dequeue </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; void</td>
         </tr>
       </table>
   </td>
@@ -317,23 +409,23 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSchedulerBase.html#a9a543ca832f2355aa552960cfab2a217">SchedulerBase</a>.</p>
+<p>Implements <a class="el" href="classSchedulerBase.html#a7ea40f166d2d463efee38c1eba07e0b6">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00040">40</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>                                                {</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> == task) {</div>
-<div class="line"><span class="lineno">   42</span>      <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   43</span>      <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#a2b77710183b8706262c53dc712f0ba0d">total_dequeues</a>++;</div>
-<div class="line"><span class="lineno">   44</span>    }</div>
-<div class="line"><span class="lineno">   45</span>  }</div>
-<div class="ttc" id="aclassIdleScheduler_html_addb84129480def6f280ace77e9d648ae"><div class="ttname"><a href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">IdleScheduler::idle_task_</a></div><div class="ttdeci">TaskControlBlock * idle_task_</div><div class="ttdoc">Idle 任务指针（通常只有一个）</div><div class="ttdef"><b>Definition</b> <a href="idle__scheduler_8hpp_source.html#l00114">idle_scheduler.hpp:114</a></div></div>
-<div class="ttc" id="aclassSchedulerBase_html_ac24df137a9e613ca5c5de71345cf5f94"><div class="ttname"><a href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">SchedulerBase::stats_</a></div><div class="ttdeci">Stats stats_</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00149">scheduler_base.hpp:149</a></div></div>
-<div class="ttc" id="astructSchedulerBase_1_1Stats_html_a2b77710183b8706262c53dc712f0ba0d"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#a2b77710183b8706262c53dc712f0ba0d">SchedulerBase::Stats::total_dequeues</a></div><div class="ttdeci">size_t total_dequeues</div><div class="ttdoc">总出队次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00031">scheduler_base.hpp:31</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00034">34</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>                                                        {</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> == task) {</div>
+<div class="line"><span class="lineno">   36</span>      <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   37</span>      <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#a2b77710183b8706262c53dc712f0ba0d">total_dequeues</a>++;</div>
+<div class="line"><span class="lineno">   38</span>    }</div>
+<div class="line"><span class="lineno">   39</span>  }</div>
+<div class="ttc" id="aclassIdleScheduler_html_addb84129480def6f280ace77e9d648ae"><div class="ttname"><a href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">IdleScheduler::idle_task_</a></div><div class="ttdeci">TaskControlBlock * idle_task_</div><div class="ttdoc">Idle 任务指针（通常只有一个）</div><div class="ttdef"><b>Definition</b> <a href="idle__scheduler_8hpp_source.html#l00118">idle_scheduler.hpp:118</a></div></div>
+<div class="ttc" id="aclassSchedulerBase_html_ac24df137a9e613ca5c5de71345cf5f94"><div class="ttname"><a href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">SchedulerBase::stats_</a></div><div class="ttdeci">Stats stats_</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00150">scheduler_base.hpp:150</a></div></div>
+<div class="ttc" id="astructSchedulerBase_1_1Stats_html_a2b77710183b8706262c53dc712f0ba0d"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#a2b77710183b8706262c53dc712f0ba0d">SchedulerBase::Stats::total_dequeues</a></div><div class="ttdeci">size_t total_dequeues</div><div class="ttdoc">总出队次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00030">scheduler_base.hpp:30</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a982565c7b44db5f68199ac77c7ceee24" name="a982565c7b44db5f68199ac77c7ceee24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a982565c7b44db5f68199ac77c7ceee24">&#9670;&#160;</a></span>Enqueue()</h2>
+<a id="a0acb51521e84b5d28b04282fd3000402" name="a0acb51521e84b5d28b04282fd3000402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0acb51521e84b5d28b04282fd3000402">&#9670;&#160;</a></span>Enqueue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -342,11 +434,11 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void IdleScheduler::Enqueue </td>
+          <td class="memname">auto IdleScheduler::Enqueue </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; void</td>
         </tr>
       </table>
   </td>
@@ -364,14 +456,14 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSchedulerBase.html#acdc1dcafd0bdb5e81c1a399b09a0ed14">SchedulerBase</a>.</p>
+<p>Implements <a class="el" href="classSchedulerBase.html#a5a7c83a9955309c0b43d26c59b59a79a">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00031">31</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>                                                {</div>
-<div class="line"><span class="lineno">   32</span>    <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> = task;</div>
-<div class="line"><span class="lineno">   33</span>    <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#ad5a40384c3c0c779491463433e2a311e">total_enqueues</a>++;</div>
-<div class="line"><span class="lineno">   34</span>  }</div>
-<div class="ttc" id="astructSchedulerBase_1_1Stats_html_ad5a40384c3c0c779491463433e2a311e"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#ad5a40384c3c0c779491463433e2a311e">SchedulerBase::Stats::total_enqueues</a></div><div class="ttdeci">size_t total_enqueues</div><div class="ttdoc">总入队次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00029">scheduler_base.hpp:29</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00025">25</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>                                                        {</div>
+<div class="line"><span class="lineno">   26</span>    <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> = task;</div>
+<div class="line"><span class="lineno">   27</span>    <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#ad5a40384c3c0c779491463433e2a311e">total_enqueues</a>++;</div>
+<div class="line"><span class="lineno">   28</span>  }</div>
+<div class="ttc" id="astructSchedulerBase_1_1Stats_html_ad5a40384c3c0c779491463433e2a311e"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#ad5a40384c3c0c779491463433e2a311e">SchedulerBase::Stats::total_enqueues</a></div><div class="ttdeci">size_t total_enqueues</div><div class="ttdoc">总入队次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00028">scheduler_base.hpp:28</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -403,8 +495,10 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classSchedulerBase.html#a720b3af97b9a475730f397ffd9811e08">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00063">63</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> ? 1 : 0; }</div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00057">57</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>                                                             {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> ? 1 : 0;</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -436,13 +530,15 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classSchedulerBase.html#a7d56ec3790b81a98841b72f1c83ebe5c">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00069">69</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> == <span class="keyword">nullptr</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00065">65</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>                                                      {</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a> == <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   67</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a76ed9271a83fd9d63c8391940621f584" name="a76ed9271a83fd9d63c8391940621f584"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76ed9271a83fd9d63c8391940621f584">&#9670;&#160;</a></span>OnPreempted()</h2>
+<a id="aea4ff78e9e619403db4fe6d7bb67f501" name="aea4ff78e9e619403db4fe6d7bb67f501"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea4ff78e9e619403db4fe6d7bb67f501">&#9670;&#160;</a></span>OnPreempted()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -451,11 +547,11 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void IdleScheduler::OnPreempted </td>
+          <td class="memname">auto IdleScheduler::OnPreempted </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; void</td>
         </tr>
       </table>
   </td>
@@ -473,19 +569,19 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classSchedulerBase.html#af65c2e1cb826459c0927b4997a1efbe3">SchedulerBase</a>.</p>
+<p>Reimplemented from <a class="el" href="classSchedulerBase.html#a48f6efd3729d68acbc622c71c929332c">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00094">94</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>                                                                     {</div>
-<div class="line"><span class="lineno">   95</span>    <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#a4e5165fd2356707d9c3cfa69b773a7f6">total_preemptions</a>++;</div>
-<div class="line"><span class="lineno">   96</span>    <span class="comment">// Idle 任务被抢占时不需要做任何事，它会一直保持在队列中</span></div>
-<div class="line"><span class="lineno">   97</span>  }</div>
-<div class="ttc" id="astructSchedulerBase_1_1Stats_html_a4e5165fd2356707d9c3cfa69b773a7f6"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#a4e5165fd2356707d9c3cfa69b773a7f6">SchedulerBase::Stats::total_preemptions</a></div><div class="ttdeci">size_t total_preemptions</div><div class="ttdoc">总抢占次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00035">scheduler_base.hpp:35</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00093">93</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>                                                                             {</div>
+<div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#a4e5165fd2356707d9c3cfa69b773a7f6">total_preemptions</a>++;</div>
+<div class="line"><span class="lineno">   95</span>    <span class="comment">// Idle 任务被抢占时不需要做任何事，它会一直保持在队列中</span></div>
+<div class="line"><span class="lineno">   96</span>  }</div>
+<div class="ttc" id="astructSchedulerBase_1_1Stats_html_a4e5165fd2356707d9c3cfa69b773a7f6"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#a4e5165fd2356707d9c3cfa69b773a7f6">SchedulerBase::Stats::total_preemptions</a></div><div class="ttdeci">size_t total_preemptions</div><div class="ttdoc">总抢占次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00034">scheduler_base.hpp:34</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aa7962d53f194cd8d00a6757da40d88b3" name="aa7962d53f194cd8d00a6757da40d88b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7962d53f194cd8d00a6757da40d88b3">&#9670;&#160;</a></span>OnScheduled()</h2>
+<a id="abbb8523380784bcf451575e8d82eaa37" name="abbb8523380784bcf451575e8d82eaa37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbb8523380784bcf451575e8d82eaa37">&#9670;&#160;</a></span>OnScheduled()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -494,11 +590,11 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void IdleScheduler::OnScheduled </td>
+          <td class="memname">auto IdleScheduler::OnScheduled </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; void</td>
         </tr>
       </table>
   </td>
@@ -516,12 +612,12 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classSchedulerBase.html#a5c891e21d4b1628ba4e59980f138142d">SchedulerBase</a>.</p>
+<p>Reimplemented from <a class="el" href="classSchedulerBase.html#abc638a97168078cc3cd949844b1ca714">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00103">103</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>                                                                     {</div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">// Idle 任务被调度时不需要做任何事</span></div>
-<div class="line"><span class="lineno">  105</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00102">102</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>                                                                             {</div>
+<div class="line"><span class="lineno">  103</span>    <span class="comment">// Idle 任务被调度时不需要做任何事</span></div>
+<div class="line"><span class="lineno">  104</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -560,10 +656,10 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classSchedulerBase.html#a11e1dbdb53df8c9a79c36f17ac29b1df">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00076">76</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>                                                                           {</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   78</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00074">74</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>                       {</div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -602,15 +698,15 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classSchedulerBase.html#ae74a11e45c08b3ada750983b848e8420">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00085">85</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>                       {</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00084">84</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>                       {</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   87</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a525a4976d3f83aa5f71c60a283ef5a00" name="a525a4976d3f83aa5f71c60a283ef5a00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a525a4976d3f83aa5f71c60a283ef5a00">&#9670;&#160;</a></span>PickNext()</h2>
+<a id="a7dfda78ef00275ccf8637f87847d581f" name="a7dfda78ef00275ccf8637f87847d581f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dfda78ef00275ccf8637f87847d581f">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -619,10 +715,62 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> * IdleScheduler::PickNext </td>
+          <td class="memname">auto IdleScheduler::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;=delete</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aed8cfa6a70e6999631c575cf4f4c0741" name="aed8cfa6a70e6999631c575cf4f4c0741"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed8cfa6a70e6999631c575cf4f4c0741">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto IdleScheduler::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="classIdleScheduler.html">IdleScheduler</a> &amp;=delete</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa916d7afb41b07784ec25c1e0df87a04" name="aa916d7afb41b07784ec25c1e0df87a04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa916d7afb41b07784ec25c1e0df87a04">&#9670;&#160;</a></span>PickNext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto IdleScheduler::PickNext </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>*</td>
         </tr>
       </table>
   </td>
@@ -635,17 +783,17 @@ Additional Inherited Members</h2></td></tr>
 <p>选择下一个要运行的任务（返回 idle 任务） </p>
 <dl class="section return"><dt>Returns</dt><dd>idle 任务，如果没有则返回 nullptr </dd></dl>
 
-<p>Implements <a class="el" href="classSchedulerBase.html#a9f12e642c119b4ffc8915c732d329c31">SchedulerBase</a>.</p>
+<p>Implements <a class="el" href="classSchedulerBase.html#a2081015103514d6ed4d2561261f5f956">SchedulerBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00051">51</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>                                        {</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a>) {</div>
-<div class="line"><span class="lineno">   53</span>      <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#a8659b427d166ead02a1cb2a6d44f14fa">total_picks</a>++;</div>
-<div class="line"><span class="lineno">   54</span>    }</div>
-<div class="line"><span class="lineno">   55</span>    <span class="comment">// 注意：idle 任务不从队列中移除，因为它应该一直保持可用</span></div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a>;</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="ttc" id="astructSchedulerBase_1_1Stats_html_a8659b427d166ead02a1cb2a6d44f14fa"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#a8659b427d166ead02a1cb2a6d44f14fa">SchedulerBase::Stats::total_picks</a></div><div class="ttdeci">size_t total_picks</div><div class="ttdoc">总选择次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00033">scheduler_base.hpp:33</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00045">45</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>                                                              {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a>) {</div>
+<div class="line"><span class="lineno">   47</span>      <a class="code hl_variable" href="classSchedulerBase.html#ac24df137a9e613ca5c5de71345cf5f94">stats_</a>.<a class="code hl_variable" href="structSchedulerBase_1_1Stats.html#a8659b427d166ead02a1cb2a6d44f14fa">total_picks</a>++;</div>
+<div class="line"><span class="lineno">   48</span>    }</div>
+<div class="line"><span class="lineno">   49</span>    <span class="comment">// 注意：idle 任务不从队列中移除，因为它应该一直保持可用</span></div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classIdleScheduler.html#addb84129480def6f280ace77e9d648ae">idle_task_</a>;</div>
+<div class="line"><span class="lineno">   51</span>  }</div>
+<div class="ttc" id="astructSchedulerBase_1_1Stats_html_a8659b427d166ead02a1cb2a6d44f14fa"><div class="ttname"><a href="structSchedulerBase_1_1Stats.html#a8659b427d166ead02a1cb2a6d44f14fa">SchedulerBase::Stats::total_picks</a></div><div class="ttdeci">size_t total_picks</div><div class="ttdoc">总选择次数</div><div class="ttdef"><b>Definition</b> <a href="scheduler__base_8hpp_source.html#l00032">scheduler_base.hpp:32</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -660,7 +808,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* IdleScheduler::idle_task_ = nullptr</td>
+          <td class="memname"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a>* IdleScheduler::idle_task_ {nullptr}</td>
         </tr>
       </table>
   </td>
@@ -672,12 +820,13 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Idle 任务指针（通常只有一个） </p>
 
-<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00114">114</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="idle__scheduler_8hpp_source.html#l00118">118</a> of file <a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>{<span class="keyword">nullptr</span>};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/root/src/task/include/<a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/task/include/<a class="el" href="idle__scheduler_8hpp_source.html">idle_scheduler.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,11 +1,13 @@
 <map id="TEST" name="TEST">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,80,60,105"/>
-<area shape="rect" id="Node000002" href="$classCfsScheduler.html#a01d33013d4c2c345cddd2173aee478b7" title="将任务加入就绪队列" alt="" coords="125,5,295,31"/>
+<area shape="rect" id="Node000002" href="$classCfsScheduler.html#a9de164228221ab5a8e15184998e17062" title="将任务加入就绪队列" alt="" coords="125,5,295,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="48,77,74,58,107,40,127,32,128,37,109,44,77,62,51,82"/>
-<area shape="rect" id="Node000003" href="$classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e" title="获取调度器统计信息" alt="" coords="119,55,301,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="60,86,107,79,108,85,61,92"/>
-<area shape="rect" id="Node000004" href="$classCfsScheduler.html#a879e8e243482bacddc588eab69eb5b61" title="任务被抢占时调用" alt="" coords="108,104,312,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="61,94,103,99,102,105,60,99"/>
-<area shape="rect" id="Node000005" href="$classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="130,153,290,179"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="52,103,78,121,109,138,133,147,131,152,107,143,75,126,49,108"/>
+<area shape="rect" id="Node000004" href="$classSchedulerBase.html#a914b45bb9c30d74dba59458826601d1e" title="获取调度器统计信息" alt="" coords="119,55,301,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="60,86,107,79,108,85,61,92"/>
+<area shape="rect" id="Node000005" href="$classCfsScheduler.html#ab51f62668696f5adbf4bee9db2507a13" title="任务被抢占时调用" alt="" coords="108,104,312,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="61,94,103,99,102,105,60,99"/>
+<area shape="rect" id="Node000006" href="$classCfsScheduler.html#a86995b6ca7b05f86740051d1a4464e61" title="每个 tick 更新任务的 vruntime" alt="" coords="130,153,290,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="52,103,78,121,109,138,133,147,131,152,107,143,75,126,49,108"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="360,5,436,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="296,15,346,15,346,21,296,21"/>
 </map>

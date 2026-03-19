@@ -1,0 +1,13 @@
+<map id="vfs::Init" name="vfs::Init">
+<area shape="rect" id="Node000001" title="VFS 全局初始化" alt="" coords="295,80,365,105"/>
+<area shape="rect" id="Node000002" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="108,5,247,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="298,75,245,44,218,33,220,28,248,40,300,70"/>
+<area shape="rect" id="Node000003" href="$filesystem_8cpp.html#a2b9f450648a51d217091f5923c64a449" title="文件系统子系统初始化入口" alt="" coords="120,55,235,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,87,234,79,235,74,282,82"/>
+<area shape="rect" id="Node000005" href="$classVfsTest.html#ae7fc211c7acf8d669061ae26936532b1" title=" " alt="" coords="119,104,235,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="282,103,236,110,235,105,281,98"/>
+<area shape="rect" id="Node000006" href="$vfs__test_8cpp.html#a4dc8b29eef13d7b173baa00381556445" title=" " alt="" coords="143,153,212,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="299,115,248,143,213,157,211,152,246,138,296,110"/>
+<area shape="rect" id="Node000004" href="$tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="106,70,60,70,60,65,106,65"/>
+</map>

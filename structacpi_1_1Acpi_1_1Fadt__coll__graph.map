@@ -1,0 +1,7 @@
+<map id="acpi::Acpi::Fadt" name="acpi::Acpi::Fadt">
+<area shape="rect" id="Node000001" title="Fixed ACPI Description Table (FADT)" alt="" coords="137,440,302,705"/>
+<area shape="rect" id="Node000002" href="$structacpi_1_1Acpi_1_1DescriptionHeader.html" title="System Description Table Header." alt="" coords="5,5,212,231"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,230,186,423,181,425,133,232"/>
+<area shape="rect" id="Node000003" href="$structacpi_1_1Acpi_1_1GenericAddressStructure.html" title="Generic Address Structure." alt="" coords="237,38,423,198"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="313,199,258,425,253,424,308,197"/>
+</map>

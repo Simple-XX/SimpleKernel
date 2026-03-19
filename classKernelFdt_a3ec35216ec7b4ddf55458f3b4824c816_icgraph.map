@@ -1,12 +1,12 @@
 <map id="KernelFdt::FindNode" name="KernelFdt::FindNode">
-<area shape="rect" id="Node000001" title=" " alt="" coords="417,179,571,204"/>
-<area shape="rect" id="Node000002" href="$classKernelFdt.html#afb5dc015fd1a90c3e6bd418108564867" title=" " alt="" coords="165,104,327,129"/>
+<area shape="rect" id="Node000001" title="按路径查找节点" alt="" coords="417,179,571,204"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html#afb5dc015fd1a90c3e6bd418108564867" title="判断 PSCI 信息" alt="" coords="165,104,327,129"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="452,175,369,143,323,132,325,127,370,138,454,170"/>
-<area shape="rect" id="Node000003" href="$classKernelFdt.html#adb753f2e7f17867bb5b0aafa4c97fa52" title=" " alt="" coords="161,153,331,179"/>
+<area shape="rect" id="Node000003" href="$classKernelFdt.html#adb753f2e7f17867bb5b0aafa4c97fa52" title="获取内存信息" alt="" coords="161,153,331,179"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="403,185,331,177,331,172,404,179"/>
-<area shape="rect" id="Node000009" href="$classKernelFdt.html#aa18ccbee4e542f3e9d853c2a1adf123c" title=" " alt="" coords="170,216,322,241"/>
+<area shape="rect" id="Node000009" href="$classKernelFdt.html#aa18ccbee4e542f3e9d853c2a1adf123c" title="获取串口信息" alt="" coords="170,216,322,241"/>
 <area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="404,208,323,220,322,215,403,202"/>
-<area shape="rect" id="Node000011" href="$classKernelFdt.html#a0ff356c5a0878abfa2192e8d1e086adf" title=" " alt="" coords="123,277,369,303"/>
+<area shape="rect" id="Node000011" href="$classKernelFdt.html#a0ff356c5a0878abfa2192e8d1e086adf" title="获取 CPU 时钟频率" alt="" coords="123,277,369,303"/>
 <area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="459,213,370,255,296,280,295,275,368,250,457,208"/>
 <area shape="rect" id="Node000004" href="$kernel__fdt__test_8cpp.html#a91683a9c8a9360ead4e91bc16fde3b9f" title=" " alt="" coords="5,5,75,31"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,157,121,143,101,119,93,95,88,70,73,44,61,33,64,29,77,40,92,68,99,93,106,117,124,139,149,153"/>

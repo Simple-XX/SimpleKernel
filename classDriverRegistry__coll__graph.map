@@ -1,0 +1,5 @@
+<map id="DriverRegistry" name="DriverRegistry">
+<area shape="rect" id="Node000001" title="驱动注册表 — 以 ETL vector 存储 DriverEntry，并附带 flat_map 兼容索引。" alt="" coords="19,513,181,899"/>
+<area shape="rect" id="Node000002" href="$classSpinLock.html" title="自旋锁" alt="" coords="5,5,195,451"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,451,103,497,97,497,97,451"/>
+</map>

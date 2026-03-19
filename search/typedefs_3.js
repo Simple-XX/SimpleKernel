@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mutex_5ftype_0',['mutex_type',['../classLockGuard.html#a2ca6faf65933dbe4a70f2cd235dd2b81',1,'LockGuard']]]
+  ['expected_0',['Expected',['../expected_8hpp.html#a87330dc74eb67e824914b8d343050757',1,'expected.hpp']]]
 ];

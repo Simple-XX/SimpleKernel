@@ -1,7 +1,7 @@
-<map id="/root/tests/integration_test/aarch64_minimal/main.cpp" name="/root/tests/integration_test/aarch64_minimal/main.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,176,60"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="9,108,79,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,61,59,97,54,95,74,59"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="104,108,171,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="107,59,127,95,122,97,103,61"/>
+<map id="/workspaces/SimpleKernel/tests/integration_test/aarch64_minimal/main.cpp" name="/workspaces/SimpleKernel/tests/integration_test/aarch64_minimal/main.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,208,60"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="25,108,95,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,61,75,97,70,95,90,59"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="120,108,187,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="123,59,143,95,138,97,119,61"/>
 </map>

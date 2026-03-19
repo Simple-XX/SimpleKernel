@@ -1,0 +1,5 @@
+<map id="Gic::Ppi" name="Gic::Ppi">
+<area shape="rect" id="Node000001" title="配置私有外设中断 (PPI)" alt="" coords="160,5,231,31"/>
+<area shape="rect" id="Node000002" href="$classInterrupt.html#a3a696d9ab85fd7ca861656d7a73d58f2" title="设置 PPI 中断" alt="" coords="5,5,112,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,21,112,21,112,15,146,15"/>
+</map>

@@ -1,17 +1,18 @@
 var indexSectionsWithContent =
 {
-  0: "0123456789_abcdefghijklmnopqrstuvwxy~⌨⏰⚡✨上下与中串为主交亲从代任优低使依免入全关典兼内切初功单参发可各启命和基处多字学安定实容寄密对层工已常序建开异当必快性总扩技抽拉接推支故文新早时易权构架栈核概模波注测添特环生电的目相硬第管类系线结编考职自规让许设访调贡超软辅运进远连通配重错键镜阅阶限除集面项驱验高？🌟🎛🎨🎯🏗🏛📂📄📊📋📖📚📝📦🔌🔍🔧🔴🚀🛠🟡🟢🤖🤝",
-  1: "abcdefghiklmnprstvwx",
-  2: "cikmpst",
-  3: "0123abcdefgiklmnprstuvw",
-  4: "_abcdefghijklmnoprstuvw~",
-  5: "_abcdefghiklmnoprstuvwxy",
-  6: "efimptw",
-  7: "celrst",
+  0: "0123456789_abcdefghijklmnopqrstuvwx~—⌨⏰⚡✨与中串为主交亲从代任优使依入关典兼内分初功参发可各启命基处多字学安定实寄对工常序开异当快性成扩接推支文新方早权构架栈核检概模波注测特环电的目相硬禁第管类系约结编要规让许设调贡软辅运通配错键阅阶附限集面项驱验？🌟🎛🎨🎯🏗🏛📂📄📊📋📖📚📝📦🔌🔍🔧🚀🛠🤖🤝",
+  1: "abcdefghiklmnprstuvwx",
+  2: "acefklmnprstv",
+  3: "0123abcdefgiklmnoprstuvw",
+  4: "_abcdefghijklmnopqrstuvw~",
+  5: "_abcdefghijklmnopqrstuvwx",
+  6: "bcdefikmnpstuvw",
+  7: "abdefilmoprstu",
   8: "k",
-  9: "o",
-  10: "aeimnst",
-  11: "acdgilnoprstu单多工开接模系规设调驱"
+  9: "fr",
+  10: "aefimst",
+  11: "acdfgilmoprstu—代多工开系规调驱",
+  12: "bv"
 };
 
 var indexSectionNames =
@@ -27,7 +28,8 @@ var indexSectionNames =
   8: "enumvalues",
   9: "related",
   10: "defines",
-  11: "pages"
+  11: "pages",
+  12: "concepts"
 };
 
 var indexSectionLabels =
@@ -43,6 +45,7 @@ var indexSectionLabels =
   8: "Enumerator",
   9: "Friends",
   10: "Macros",
-  11: "Pages"
+  11: "Pages",
+  12: "Concepts"
 };
 

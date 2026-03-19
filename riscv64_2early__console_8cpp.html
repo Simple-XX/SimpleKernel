@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/arch/riscv64/early_console.cpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/arch/riscv64/early_console.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,25 +89,57 @@ $(document).ready(function(){initNavTree('riscv64_2early__console_8cpp.html','')
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">early_console.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;opensbi_interface.h&gt;</code><br />
-<code>#include &quot;sk_cstdio&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for early_console.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="riscv64_2early__console_8cpp__incl.png" border="0" usemap="#a_2root_2src_2arch_2riscv64_2early__console_8cpp" alt=""/></div>
-<map name="a_2root_2src_2arch_2riscv64_2early__console_8cpp" id="a_2root_2src_2arch_2riscv64_2early__console_8cpp">
-<area shape="rect" title=" " alt="" coords="72,5,231,45"/>
-<area shape="rect" title=" " alt="" coords="5,93,156,119"/>
-<area shape="poly" title=" " alt="" coords="136,47,102,85,98,81,132,44"/>
-<area shape="rect" title=" " alt="" coords="181,93,263,119"/>
-<area shape="poly" title=" " alt="" coords="170,44,204,81,200,85,166,47"/>
+<div class="center"><img src="riscv64_2early__console_8cpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2early__console_8cpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2early__console_8cpp" id="a_2workspaces_2SimpleKernel_2src_2arch_2riscv64_2early__console_8cpp">
+<area shape="rect" title=" " alt="" coords="5,5,199,60"/>
+<area shape="rect" title=" " alt="" coords="27,108,177,133"/>
+<area shape="poly" title=" " alt="" coords="105,60,105,94,99,94,99,60"/>
 </map>
 </div>
 </div>
 <p><a href="riscv64_2early__console_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a00b66d463088c2b14f7766792ee8bc60" id="r_a00b66d463088c2b14f7766792ee8bc60"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="riscv64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60">etl_putchar</a> (int c) -&gt; void</td></tr>
+<tr class="memdesc:a00b66d463088c2b14f7766792ee8bc60"><td class="mdescLeft">&#160;</td><td class="mdescRight">早期控制台输出单字符，通过 SBI 调用实现  <br /></td></tr>
+<tr class="separator:a00b66d463088c2b14f7766792ee8bc60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a00b66d463088c2b14f7766792ee8bc60" name="a00b66d463088c2b14f7766792ee8bc60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00b66d463088c2b14f7766792ee8bc60">&#9670;&#160;</a></span>etl_putchar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto etl_putchar </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> -&gt; void </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>早期控制台输出单字符，通过 SBI 调用实现 </p>
+<p>早期控制台字符输出</p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright The SimpleKernel Contributors </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="riscv64_2early__console_8cpp_source.html#l00008">8</a> of file <a class="el" href="riscv64_2early__console_8cpp_source.html">early_console.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    8</span>{ sbi_debug_console_write_byte(c); }</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

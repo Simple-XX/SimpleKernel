@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classNs16550a.html" title=" " alt="" coords="5,5,92,31"/>
+<area shape="rect" id="Node000000" href="$classInterruptBase.html" title="中断子系统抽象基类" alt="" coords="5,5,116,31"/>
+<area shape="rect" id="Node000001" href="$classInterrupt.html" title="AArch64 中断控制器实现" alt="" coords="164,5,243,31"/>
+<area shape="poly" id="edge18_Node000000_Node000001" title=" " alt="" coords="130,15,164,15,164,21,130,21"/>
 </map>

@@ -1,0 +1,36 @@
+var classVirtioDriver =
+[
+    [ "DeviceId", "classVirtioDriver.html#a01fe5e020feec302c731afd7aedc8635", [
+      [ "kNet", "classVirtioDriver.html#a01fe5e020feec302c731afd7aedc8635a39cfb9ad762bb13ffa3b10efd01a398e", null ],
+      [ "kBlock", "classVirtioDriver.html#a01fe5e020feec302c731afd7aedc8635aaf937713a39275d7c02a4a08b982d81a", null ],
+      [ "kConsole", "classVirtioDriver.html#a01fe5e020feec302c731afd7aedc8635a43304ddfb71d2b81d087d532c6081997", null ],
+      [ "kEntropy", "classVirtioDriver.html#a01fe5e020feec302c731afd7aedc8635a02e268380a67009ab5ff19d8e009004c", null ],
+      [ "kGpu", "classVirtioDriver.html#a01fe5e020feec302c731afd7aedc8635a5aab2056af4caf3514c5daf56b4b366e", null ],
+      [ "kInput", "classVirtioDriver.html#a01fe5e020feec302c731afd7aedc8635ae22aedaa9915a19ef49578764f6dea64", null ]
+    ] ],
+    [ "VirtioDriver", "classVirtioDriver.html#a7b756d04289af177d1e52c2a14dbda3e", null ],
+    [ "VirtioDriver", "classVirtioDriver.html#a27aa4ef682fb08d2ecf3d176c954a5b3", null ],
+    [ "VirtioDriver", "classVirtioDriver.html#a4ae7e6e98f4bfb95645b0d34caf4cca7", null ],
+    [ "~VirtioDriver", "classVirtioDriver.html#ac16036501aa8daa5e197f6f5dea506e0", null ],
+    [ "GetBlkDevice", "classVirtioDriver.html#ae281cdac0501d71f051c2e05d78e0034", null ],
+    [ "GetEntry", "classVirtioDriver.html#a3cbbd67b9d07ab2974fb6d9f6c4db20f", null ],
+    [ "GetIrq", "classVirtioDriver.html#a540c2eb1774b3897df787d881ce4fb9f", null ],
+    [ "HandleInterrupt", "classVirtioDriver.html#a4ff0e3e8a53e726f144347ac2bed6e86", null ],
+    [ "MatchStatic", "classVirtioDriver.html#add6e98bca297afae9980fbb2f7a0a294", null ],
+    [ "operator=", "classVirtioDriver.html#af9cdc8073be83270c2d4a1c3f06b2bc6", null ],
+    [ "operator=", "classVirtioDriver.html#a914379f4bc64a3dea21270200bc1a6dc", null ],
+    [ "Probe", "classVirtioDriver.html#a87cc3f14f78089d301df1837f9df1c34", null ],
+    [ "Remove", "classVirtioDriver.html#a611b0c80f6b510346d13c0af2950cb83", null ],
+    [ "blk_adapter_count_", "classVirtioDriver.html#a0176fdfa4da1b30d97a34d01a34d2a20", null ],
+    [ "blk_adapters_", "classVirtioDriver.html#ac0a8b5841de5e187ce13994ae658c131", null ],
+    [ "blk_device_count_", "classVirtioDriver.html#ab4809b2ee8ba84d189be2de19a07487c", null ],
+    [ "blk_devices_", "classVirtioDriver.html#a907bc470e0b0df36efa4d5b10acf3783", null ],
+    [ "dma_buffers_", "classVirtioDriver.html#a728ad5017cf3fa91207f1dd1df35e06e", null ],
+    [ "irqs_", "classVirtioDriver.html#ad43a037c17b5221a6ff15f779f4b6625", null ],
+    [ "kDefaultQueueCount", "classVirtioDriver.html#a250fb7b8b0b4b80b2b52a49750c86fc5", null ],
+    [ "kDefaultQueueSize", "classVirtioDriver.html#a1cec3fc3e7e3a273baa29680d0db2f24", null ],
+    [ "kMatchTable", "classVirtioDriver.html#a8f97613a0784c7021accbd899a7e1086", null ],
+    [ "kMaxBlkDevices", "classVirtioDriver.html#a33f33b3d949900a720b113e2806b13a2", null ],
+    [ "kMinDmaBufferSize", "classVirtioDriver.html#a039786bf7522cb3bdde67b9cc356f107", null ],
+    [ "slot_buffers_", "classVirtioDriver.html#a89b2e0f88c478c42a42597b190fa0a04", null ]
+];

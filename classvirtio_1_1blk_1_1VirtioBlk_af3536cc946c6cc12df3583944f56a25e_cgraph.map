@@ -1,0 +1,5 @@
+<map id="virtio::blk::VirtioBlk::HandleInterrupt" name="virtio::blk::VirtioBlk::HandleInterrupt">
+<area shape="rect" id="Node000001" title="中断处理（简化版，无回调）" alt="" coords="5,5,153,45"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb" title=" " alt="" coords="201,13,308,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,23,188,23,188,28,153,28"/>
+</map>

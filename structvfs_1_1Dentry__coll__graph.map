@@ -1,0 +1,10 @@
+<map id="vfs::Dentry" name="vfs::Dentry">
+<area shape="rect" id="Node000001" title="Dentry — 目录项缓存（路径名 ↔ Inode 的映射）" alt="" coords="95,681,188,807"/>
+<area shape="poly" id="edge4_Node000001_Node000001" title=" " alt="" coords="189,724,207,729,215,744,212,753,206,759,202,755,208,750,209,744,203,734,187,729"/>
+<area shape="rect" id="Node000002" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="87,453,195,619"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,619,144,664,139,664,139,619"/>
+<area shape="rect" id="Node000003" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="5,95,133,301"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="94,300,123,437,118,438,89,301"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="158,5,269,391"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="175,392,165,437,160,436,170,390"/>
+</map>

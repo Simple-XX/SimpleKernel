@@ -1,0 +1,9 @@
+<map id="vfs::FileSystem" name="vfs::FileSystem">
+<area shape="rect" id="Node000001" title="文件系统类型基类" alt="" coords="192,5,320,211"/>
+<area shape="rect" id="Node000002" href="$classMockFs.html" title=" " alt="" coords="5,549,139,854"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,199,153,260,128,331,109,406,95,480,85,549,80,548,89,479,103,405,123,330,148,258,182,196"/>
+<area shape="rect" id="Node000003" href="$classfatfs_1_1FatFsFileSystem.html" title="FatFS VFS 适配器" alt="" coords="163,259,349,1144"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,224,259,259,253,259,253,224"/>
+<area shape="rect" id="Node000004" href="$classramfs_1_1RamFs.html" title="ramfs 文件系统实现" alt="" coords="374,269,559,1134"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="330,199,364,257,376,287,372,289,359,260,326,201"/>
+</map>

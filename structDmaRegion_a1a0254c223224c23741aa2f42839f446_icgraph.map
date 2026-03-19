@@ -1,0 +1,5 @@
+<map id="DmaRegion::Data" name="DmaRegion::Data">
+<area shape="rect" id="Node000001" title="获取虚拟基地址的类型化指针" alt="" coords="209,13,347,38"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1SplitVirtqueue.html#a9d18bdcc42dfacc313443a423a5e6b64" title="从预分配的 DMA 缓冲区构造 SplitVirtqueue" alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,28,162,28,162,23,195,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="LocalApic::Init" name="LocalApic::Init">
+<area shape="rect" id="Node000001" title="初始化 Local APIC" alt="" coords="5,5,119,31"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="167,5,243,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,15,153,15,153,21,119,21"/>
+</map>

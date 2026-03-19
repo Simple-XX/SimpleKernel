@@ -1,17 +1,21 @@
 <map id="KernelFdt::GetRegProperty" name="KernelFdt::GetRegProperty">
-<area shape="rect" id="Node000001" title=" " alt="" coords="340,129,535,155"/>
-<area shape="rect" id="Node000002" href="$classKernelFdt.html#adb753f2e7f17867bb5b0aafa4c97fa52" title=" " alt="" coords="123,104,292,129"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="326,132,292,129,293,123,327,127"/>
-<area shape="rect" id="Node000008" href="$classKernelFdt.html#a5653ed42d725a2db459a8a8b42b88e1e" title=" " alt="" coords="138,153,277,179"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="326,156,277,161,277,156,326,151"/>
+<area shape="rect" id="Node000001" title="获取 reg 属性（返回第一个 reg 条目）" alt="" coords="340,167,535,192"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html#adb753f2e7f17867bb5b0aafa4c97fa52" title="获取内存信息" alt="" coords="123,111,292,136"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="371,166,260,139,261,133,372,161"/>
+<area shape="rect" id="Node000008" href="$classKernelFdt.html#a5653ed42d725a2db459a8a8b42b88e1e" title="获取 PLIC 信息" alt="" coords="138,167,277,192"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="326,182,277,182,277,177,326,177"/>
+<area shape="rect" id="Node000009" href="$classKernelFdt.html#aa18ccbee4e542f3e9d853c2a1adf123c" title="获取串口信息" alt="" coords="131,228,283,253"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="376,198,256,231,255,225,375,193"/>
 <area shape="rect" id="Node000003" href="$kernel__fdt__test_8cpp.html#a91683a9c8a9360ead4e91bc16fde3b9f" title=" " alt="" coords="5,5,75,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="172,99,62,33,64,29,175,95"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="173,105,60,33,63,28,176,101"/>
 <area shape="rect" id="Node000004" href="$kernel__fdt__test_8cpp.html#a9190a3506035ef3df5e06fdd1405beb7" title=" " alt="" coords="5,55,75,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="150,103,74,80,76,75,151,97"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="155,109,74,81,76,76,157,104"/>
 <area shape="rect" id="Node000005" href="$kernel__fdt__test_8cpp.html#a8fe016514d6e87482fc37e6442a052eb" title=" " alt="" coords="5,104,75,129"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="109,119,75,119,75,114,109,114"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="109,122,75,121,75,115,109,117"/>
 <area shape="rect" id="Node000006" href="$kernel__fdt__test_8cpp.html#ab5a9b9a82cf3d717e39f264a52f3e957" title=" " alt="" coords="5,153,75,179"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="149,136,123,143,76,158,74,153,122,138,147,131"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="144,142,75,160,74,155,143,137"/>
 <area shape="rect" id="Node000007" href="$kernel__fdt__test_8cpp.html#a97226890d940da2ba211728d437e6c71" title=" " alt="" coords="5,203,75,228"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="136,137,124,143,109,154,99,165,77,192,61,205,57,201,73,188,95,162,105,150,121,138,133,132"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="152,143,124,156,60,205,57,200,121,152,150,139"/>
+<area shape="rect" id="Node000010" href="$kernel__fdt__test_8cpp.html#a4bf5be6b2db8b303657da890eb793755" title=" " alt="" coords="5,252,75,277"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="118,256,75,262,74,257,117,251"/>
 </map>

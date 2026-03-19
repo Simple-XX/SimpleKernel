@@ -1,0 +1,19 @@
+<map id="fatfs::FatFsFileSystem::FatFsFileOps" name="fatfs::FatFsFileSystem::FatFsFileOps">
+<area shape="rect" id="Node000001" title="FatFS 文件操作实现" alt="" coords="279,453,437,633"/>
+<area shape="rect" id="Node000003" href="$classfatfs_1_1FatFsFileSystem.html" title="FatFS VFS 适配器" alt="" coords="147,696,334,1521"/>
+<area shape="poly" id="edge10_Node000003_Node000001" title=" " alt="" coords="342,634,332,680,327,679,337,633"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1FileOps.html" title="File 操作接口" alt="" coords="305,5,411,391"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="361,404,361,453,355,453,355,404"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,695,293,657,296,648,301,650,298,658,287,696"/>
+<area shape="rect" id="Node000007" href="$classfatfs_1_1FatFsFileSystem_1_1FatFsInodeOps.html" title="FatFS inode 操作实现" alt="" coords="48,1584,207,1764"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="226,1522,214,1561,210,1570,205,1568,209,1559,221,1521"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="149,95,277,301"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="219,314,231,696,225,696,214,314"/>
+<area shape="rect" id="Node000005" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="95,461,203,626"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="196,301,170,445,164,444,191,300"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="139,626,139,672,147,728,142,729,134,672,133,626"/>
+<area shape="rect" id="Node000006" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="5,5,116,391"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="112,390,126,444,121,445,107,391"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="72,404,125,1560,126,1583,120,1584,119,1560,67,405"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="123,1584,126,1545,141,1454,147,1455,131,1546,128,1584"/>
+</map>

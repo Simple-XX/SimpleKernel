@@ -1,0 +1,9 @@
+<map id="TaskAuxData" name="TaskAuxData">
+<area shape="rect" id="Node000001" title="非调度热路径的任务辅助数据" alt="" coords="82,1116,234,1341"/>
+<area shape="rect" id="Node000002" href="$classResourceId.html" title="资源 ID" alt="" coords="5,521,156,1046"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,1046,119,1091,121,1100,116,1101,114,1093,105,1047"/>
+<area shape="rect" id="Node000003" href="$classfilesystem_1_1FileDescriptorTable.html" title="进程级文件描述符表" alt="" coords="180,513,360,1053"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="219,1054,209,1093,206,1101,201,1100,203,1091,214,1053"/>
+<area shape="rect" id="Node000004" href="$classSpinLock.html" title="自旋锁" alt="" coords="175,5,365,451"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="273,451,273,497,267,497,267,451"/>
+</map>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/arch/aarch64/backtrace.cpp Source File</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/arch/aarch64/backtrace.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,9 +107,9 @@ $(document).ready(function(){initNavTree('aarch64_2backtrace_8cpp_source.html','
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="arch_8h.html">arch.h</a>&quot;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="basic__info_8hpp.html">basic_info.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="kernel__elf_8hpp.html">kernel_elf.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="kernel__log_8hpp.html">kernel_log.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="singleton_8hpp.html">singleton.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="kernel_8h.html">kernel.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="kernel__elf_8hpp.html">kernel_elf.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="kernel__log_8hpp.html">kernel_log.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb">   18</a></span>__always_inline <span class="keyword">auto</span> <a class="code hl_function" href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb">backtrace</a>(std::array&lt;uint64_t, kMaxFrameCount&gt;&amp; buffer)</div>
@@ -125,12 +125,12 @@ $(document).ready(function(){initNavTree('aarch64_2backtrace_8cpp_source.html','
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    buffer[count++] = lr;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">return</span> int(count);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(count);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
 </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="aarch64_2backtrace_8cpp.html#a8446673829abff96859f4f7fef26c6fc">   34</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="aarch64_2backtrace_8cpp.html#a8446673829abff96859f4f7fef26c6fc">DumpStack</a>() {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="aarch64_2backtrace_8cpp.html#a393a5995bbd64c00f1902a4ae0110847">   34</a></span><span class="keyword">auto</span> <a class="code hl_function" href="aarch64_2backtrace_8cpp.html#a393a5995bbd64c00f1902a4ae0110847">DumpStack</a>() -&gt; <span class="keywordtype">void</span> {</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::array&lt;uint64_t, kMaxFrameCount&gt; buffer{};</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// 获取调用栈中的地址</span></div>
@@ -139,31 +139,30 @@ $(document).ready(function(){initNavTree('aarch64_2backtrace_8cpp_source.html','
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// 打印函数名</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> current_frame_idx = 0; current_frame_idx &lt; num_frames;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>       current_frame_idx++) {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> symtab : <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;KernelElf&gt;::GetInstance</a>().symtab_) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> symtab : KernelElfSingleton::instance().symtab) {</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="keywordflow">if</span> ((ELF64_ST_TYPE(symtab.st_info) == STT_FUNC) &amp;&amp;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>          (buffer[current_frame_idx] &gt;= symtab.st_value) &amp;&amp;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>          (buffer[current_frame_idx] &lt;= symtab.st_value + symtab.st_size)) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_struct" href="structklog_1_1Err.html">klog::Err</a>(<span class="stringliteral">&quot;[%s] 0x%p\n&quot;</span>,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                  <a class="code hl_class" href="classSingleton.html">Singleton&lt;KernelElf&gt;::GetInstance</a>().strtab_ + symtab.st_name,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                  buffer[current_frame_idx]);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;[{}] {:#x}&quot;</span>,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                  <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                      KernelElfSingleton::instance().strtab + symtab.st_name),</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                  buffer[current_frame_idx]);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
 </div>
+<div class="ttc" id="aaarch64_2backtrace_8cpp_html_a393a5995bbd64c00f1902a4ae0110847"><div class="ttname"><a href="aarch64_2backtrace_8cpp.html#a393a5995bbd64c00f1902a4ae0110847">DumpStack</a></div><div class="ttdeci">auto DumpStack() -&gt; void</div><div class="ttdoc">打印调用栈</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2backtrace_8cpp_source.html#l00034">backtrace.cpp:34</a></div></div>
 <div class="ttc" id="aaarch64_2backtrace_8cpp_html_a7986cc449f6e96ca1ee111a6ee7940bb"><div class="ttname"><a href="aarch64_2backtrace_8cpp.html#a7986cc449f6e96ca1ee111a6ee7940bb">backtrace</a></div><div class="ttdeci">__always_inline auto backtrace(std::array&lt; uint64_t, kMaxFrameCount &gt; &amp;buffer) -&gt; int</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2backtrace_8cpp_source.html#l00018">backtrace.cpp:18</a></div></div>
-<div class="ttc" id="aaarch64_2backtrace_8cpp_html_a8446673829abff96859f4f7fef26c6fc"><div class="ttname"><a href="aarch64_2backtrace_8cpp.html#a8446673829abff96859f4f7fef26c6fc">DumpStack</a></div><div class="ttdeci">void DumpStack()</div><div class="ttdef"><b>Definition</b> <a href="aarch64_2backtrace_8cpp_source.html#l00034">backtrace.cpp:34</a></div></div>
 <div class="ttc" id="aarch_8h_html"><div class="ttname"><a href="arch_8h.html">arch.h</a></div></div>
 <div class="ttc" id="abasic__info_8hpp_html"><div class="ttname"><a href="basic__info_8hpp.html">basic_info.hpp</a></div></div>
-<div class="ttc" id="abasic__info_8hpp_html_a4441c495b112f8419dfbf1e0cf2102fb"><div class="ttname"><a href="basic__info_8hpp.html#a4441c495b112f8419dfbf1e0cf2102fb">__etext</a></div><div class="ttdeci">void * __etext[]</div><div class="ttdoc">代码段结束</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00020">basic_info.hpp:20</a></div></div>
-<div class="ttc" id="abasic__info_8hpp_html_a9c6fbf9a57242794712975337a624b43"><div class="ttname"><a href="basic__info_8hpp.html#a9c6fbf9a57242794712975337a624b43">__executable_start</a></div><div class="ttdeci">void * __executable_start[]</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00018">basic_info.hpp:18</a></div></div>
-<div class="ttc" id="aclassSingleton_html"><div class="ttname"><a href="classSingleton.html">Singleton</a></div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00010">singleton.hpp:10</a></div></div>
-<div class="ttc" id="aclassSingleton_html_a68856b49e098eadba37b60366db33ebd"><div class="ttname"><a href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton::GetInstance</a></div><div class="ttdeci">static auto GetInstance() -&gt; T &amp;</div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00023">singleton.hpp:23</a></div></div>
+<div class="ttc" id="abasic__info_8hpp_html_a4441c495b112f8419dfbf1e0cf2102fb"><div class="ttname"><a href="basic__info_8hpp.html#a4441c495b112f8419dfbf1e0cf2102fb">__etext</a></div><div class="ttdeci">void * __etext[]</div><div class="ttdoc">代码段结束</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00019">basic_info.hpp:19</a></div></div>
+<div class="ttc" id="abasic__info_8hpp_html_a9c6fbf9a57242794712975337a624b43"><div class="ttname"><a href="basic__info_8hpp.html#a9c6fbf9a57242794712975337a624b43">__executable_start</a></div><div class="ttdeci">void * __executable_start[]</div><div class="ttdef"><b>Definition</b> <a href="basic__info_8hpp_source.html#l00017">basic_info.hpp:17</a></div></div>
 <div class="ttc" id="acpu__io_8h_html"><div class="ttname"><a href="cpu__io_8h.html">cpu_io.h</a></div></div>
+<div class="ttc" id="akernel_8h_html"><div class="ttname"><a href="kernel_8h.html">kernel.h</a></div></div>
 <div class="ttc" id="akernel__elf_8hpp_html"><div class="ttname"><a href="kernel__elf_8hpp.html">kernel_elf.hpp</a></div></div>
 <div class="ttc" id="akernel__log_8hpp_html"><div class="ttname"><a href="kernel__log_8hpp.html">kernel_log.hpp</a></div></div>
-<div class="ttc" id="asingleton_8hpp_html"><div class="ttname"><a href="singleton_8hpp.html">singleton.hpp</a></div></div>
-<div class="ttc" id="astructklog_1_1Err_html"><div class="ttname"><a href="structklog_1_1Err.html">klog::Err</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00188">kernel_log.hpp:188</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a16b493848cd618512fc9fb61d3980bd7"><div class="ttname"><a href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a></div><div class="ttdeci">auto Err(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 ERROR 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00200">kernel_log.hpp:200</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

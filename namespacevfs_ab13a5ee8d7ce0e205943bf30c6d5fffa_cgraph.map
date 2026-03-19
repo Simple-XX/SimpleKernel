@@ -1,0 +1,15 @@
+<map id="vfs::Lookup" name="vfs::Lookup">
+<area shape="rect" id="Node000001" title="路径解析，查找 dentry" alt="" coords="5,129,101,155"/>
+<area shape="rect" id="Node000002" href="$namespacevfs.html#a1f319700095b5c6a4308289a9f190aa7" title="添加子 dentry" alt="" coords="189,5,297,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="61,127,95,84,120,60,148,40,174,28,176,33,151,44,123,64,99,88,65,131"/>
+<area shape="rect" id="Node000003" href="$namespacevfs.html#aa856f00891a7489bb883b8501f25d703" title="复制路径组件到缓冲区" alt="" coords="149,55,336,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="74,127,108,108,148,89,170,81,172,86,150,94,110,112,76,132"/>
+<area shape="rect" id="Node000004" href="$namespacevfs.html#a1ff3d436875fc8c5da193242bf010442" title="在 dentry 的子节点中查找指定名称" alt="" coords="187,104,298,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="101,133,174,123,174,128,102,138"/>
+<area shape="rect" id="Node000005" href="$namespacevfs.html#aa5aeb25168763769b1d16de4f480c55a" title=" " alt="" coords="179,153,307,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="102,145,165,153,164,159,101,151"/>
+<area shape="rect" id="Node000006" href="$classvfs_1_1InodeOps.html#af27f0ad7fd502bb65eafa84e6e282306" title="在目录中查找指定名称的 inode" alt="" coords="160,203,325,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="78,152,150,188,176,196,174,201,148,192,75,157"/>
+<area shape="rect" id="Node000007" href="$namespacevfs.html#a490771ecf458352f6712396d6585358a" title="跳过路径中的前导斜杠" alt="" coords="153,252,332,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="66,153,100,195,124,218,151,237,166,245,164,249,148,242,120,222,96,198,62,157"/>
+</map>

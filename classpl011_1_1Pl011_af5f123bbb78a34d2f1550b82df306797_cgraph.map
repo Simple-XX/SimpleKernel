@@ -1,0 +1,5 @@
+<map id="pl011::Pl011::GetRawInterruptStatus" name="pl011::Pl011::GetRawInterruptStatus">
+<area shape="rect" id="Node000001" title="读取原始中断状态寄存器（RIS）" alt="" coords="5,5,223,45"/>
+<area shape="rect" id="Node000002" href="$structMmioAccessor.html#acbb27077fc125776a50c812e11712195" title="Read from MMIO register." alt="" coords="271,13,429,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,23,257,23,257,28,223,28"/>
+</map>

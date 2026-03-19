@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93
   <div class="headertitle"><div class="title">工具链</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> SimpleKernel 为了保证在各个平台上的可用性，选择了较为通用的工具链，主要分为四个部分：</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md10"></a> SimpleKernel 为了保证在各个平台上的可用性，选择了较为通用的工具链，主要分为四个部分：</p>
 <ol type="1">
 <li><p class="startli"><b>构建系统</b></p>
 <p class="startli">使用 CMake 对代码进行管理，同时控制编译选项。支持 CMake Presets 进行预配置管理。</p>
@@ -107,10 +107,10 @@ $(document).ready(function(){initNavTree('md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93
 <p class="startli">包括 Docker 容器化构建、自动化脚本、代码检查工具等。</p>
 </li>
 </ol>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 CMake</h1>
 <p>SimpleKernel 采用现代化的 CMake 构建系统，具有以下特点：</p>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 1. 主要 CMake 文件</h2>
 <ul>
 <li><p class="startli">**./CMakeLists.txt**</p>
@@ -129,7 +129,7 @@ CMake</h1>
 <p class="startli">各个模块（如驱动、架构相关代码等）的具体编译规则。</p>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 2. CMake Presets 配置</h2>
 <p>项目使用 <code>CMakePresets.json</code> 提供预定义的构建配置：</p>
 <ul>
@@ -137,7 +137,7 @@ CMake</h1>
 <li><b>build_riscv64</b>: RISC-V 64 架构构建配置</li>
 <li><b>build_aarch64</b>: AArch64 架构构建配置</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 3. 辅助 CMake 模块</h2>
 <p>位于 <code>./cmake/</code> 目录下的模块文件：</p>
 <ul>
@@ -149,7 +149,7 @@ CMake</h1>
 <li><b>replace_kv.cmake</b>: 模板替换功能</li>
 <li><b>clang.cmake</b>: Clang 编译器支持</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 4. 使用方法</h2>
 <div class="fragment"><div class="line"># 使用预设配置构建</div>
 <div class="line">cmake --preset build_x86_64</div>
@@ -159,19 +159,19 @@ CMake</h1>
 <div class="line"> </div>
 <div class="line"># 或者手动指定配置</div>
 <div class="line">cmake -B build_custom -DTARGET_ARCH=x86_64</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
 GCC 交叉编译工具链</h1>
 <p>SimpleKernel 支持多架构交叉编译，需要根据目标平台配置相应的 GCC 工具链。</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 支持的架构</h2>
 <ul>
 <li><b>x86_64</b>: 64位 x86 架构</li>
 <li><b>riscv64</b>: 64位 RISC-V 架构</li>
 <li><b>aarch64</b>: 64位 ARM 架构</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 工具链获取</h2>
-<h3><a class="anchor" id="autotoc_md9"></a>
+<h3><a class="anchor" id="autotoc_md19"></a>
 使用预编译工具链（推荐）</h3>
 <p><b>RISC-V 工具链</b>:</p><ul>
 <li>macOS: <code>brew install riscv64-elf-gcc</code> (通过 <a href="https://github.com/riscv/homebrew-riscv">homebrew-riscv</a>)</li>
@@ -184,7 +184,7 @@ GCC 交叉编译工具链</h1>
 <p><b>x86_64 工具链</b>:</p><ul>
 <li>通常使用系统自带的 GCC，或安装 <code>gcc-multilib</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 VS Code 任务集成</h2>
 <p>项目提供了预配置的 VS Code 任务，位于 <code>.vscode/tasks.json</code>：</p>
 <ul>
@@ -198,24 +198,24 @@ VS Code 任务集成</h2>
 <li><b>debug_riscv64</b>: 在 QEMU 中调试 RISC-V 64 内核</li>
 <li><b>debug_aarch64</b>: 在 QEMU 中调试 ARM 64 内核</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 QEMU 模拟器</h1>
 <p>QEMU 是 SimpleKernel 的主要运行环境，支持所有目标架构的模拟。</p>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 安装 QEMU</h2>
 <div class="fragment"><div class="line"># Ubuntu/Debian</div>
 <div class="line">sudo apt install qemu-system-x86 qemu-system-riscv64 qemu-system-aarch64</div>
 <div class="line"> </div>
 <div class="line"># macOS</div>
 <div class="line">brew install qemu</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md23"></a>
 架构支持</h2>
 <ul>
 <li><b>qemu-system-x86_64</b>: 运行 x86_64 内核</li>
 <li><b>qemu-system-riscv64</b>: 运行 RISC-V 64 内核</li>
 <li><b>qemu-system-aarch64</b>: 运行 AArch64 内核</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 运行方式</h2>
 <div class="fragment"><div class="line"># 构建并运行</div>
 <div class="line">cd build_x86_64</div>
@@ -223,7 +223,7 @@ QEMU 模拟器</h1>
 <div class="line"> </div>
 <div class="line"># 或者直接使用 VS Code 任务</div>
 <div class="line"># 按 Ctrl+Shift+P，选择 &quot;Tasks: Run Task&quot;，然后选择相应的运行任务</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md25"></a>
 调试支持</h2>
 <p>QEMU 支持 GDB 远程调试：</p>
 <div class="fragment"><div class="line"># 启动内核并等待 GDB 连接</div>
@@ -233,42 +233,41 @@ QEMU 模拟器</h1>
 <div class="line">gdb bin/kernel.elf</div>
 <div class="line">(gdb) target remote localhost:1234</div>
 <div class="line">(gdb) continue</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md26"></a>
 辅助工具</h1>
-<h2><a class="anchor" id="autotoc_md17"></a>
-Docker 容器化构建</h2>
-<p>项目提供 Docker 支持，确保构建环境的一致性：</p>
+<h2><a class="anchor" id="autotoc_md27"></a>
+Dev Container 开发环境</h2>
+<p>项目提供 <a href="https://containers.dev/">Dev Container</a> 支持，确保开发环境的一致性：</p>
 <ul>
-<li><b>Dockerfile</b>: 定义了包含所有必要工具链的构建镜像</li>
-<li>支持所有目标架构的交叉编译</li>
-<li>详细使用方法见 <a class="el" href="docker_8md.html">doc/docker.md</a></li>
+<li>基于 Ubuntu，包含 GCC 14 交叉编译工具链（x86_64 / riscv64 / aarch64）</li>
+<li>预装 QEMU、CMake、GDB 等全部构建和调试依赖</li>
+<li>支持 VS Code Dev Containers、GitHub Codespaces 和 devcontainer CLI</li>
+<li>详细使用方法见 <a class="el" href="md_docker.html">Dev Container 文档</a></li>
 </ul>
-<div class="fragment"><div class="line"># 使用预构建的 Docker 镜像</div>
-<div class="line">docker run -it simplekernel/dev</div>
+<div class="fragment"><div class="line"># VS Code: 安装 Dev Containers 扩展后，选择 &quot;Reopen in Container&quot;</div>
 <div class="line"> </div>
-<div class="line"># 或从源码构建镜像</div>
-<div class="line">docker build -t simplekernel-dev .</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
+<div class="line"># CLI 方式</div>
+<div class="line">npm install -g @devcontainers/cli</div>
+<div class="line">devcontainer up --workspace-folder .</div>
+<div class="line">devcontainer exec --workspace-folder . bash</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md28"></a>
 项目配置工具</h2>
 <ul>
 <li><p class="startli">**./tools/project_config.h.in**</p>
 <p class="startli">项目配置模板文件，用于生成编译时配置头文件。</p>
 </li>
-<li><p class="startli">**./tools/cppcheck-suppressions.xml**</p>
-<p class="startli">CPPCheck 静态代码分析工具的配置文件，定义了要忽略的警告类型。</p>
-</li>
 <li><p class="startli">**./tools/.pre-commit-config.yaml.in**</p>
 <p class="startli">Pre-commit 钩子配置模板，用于自动化代码质量检查。</p>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 架构特定工具</h2>
 <p>项目为每个支持的架构提供了专门的工具：</p>
 <ul>
 <li><b>启动配置</b>: <code>{arch}_boot_scr.txt</code> - 各架构的 U-Boot 启动脚本</li>
 <li><b>FIT 镜像模板</b>: <code>{arch}_qemu_virt.its.in</code> - 用于生成可启动镜像的设备树配置</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 VS Code 集成</h2>
 <p>项目完全集成了 VS Code 开发环境：</p>
 <ul>
@@ -276,20 +275,20 @@ VS Code 集成</h2>
 <li>**.vscode/launch.json**: 调试配置</li>
 <li>**.devcontainer/**: 开发容器配置，支持一键环境搭建</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 代码质量工具</h2>
 <ul>
 <li><b>Clang-format</b>: <code>.clang-format</code> 定义代码格式化规则</li>
 <li><b>Clang-tidy</b>: <code>.clang-tidy</code> 定义静态代码分析规则</li>
 <li><b>CMake-format</b>: <code>.cmake-format.json</code> 定义 CMake 文件格式化规则</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 相关文档</h1>
 <p>关于交叉编译的详细说明：https://wiki.osdev.org/GCC_Cross-Compiler</p>
 <p>ARM 工具链：https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads</p>
 <p>RISC-V 工具链：https://github.com/riscv/riscv-gnu-toolchain</p>
 <p>构建系统详细文档：doc/build_system.md</p>
-<p>Docker 使用说明：<a class="el" href="md_docker.html">doc/docker.md</a> </p>
+<p>Dev Container 使用说明：<a class="el" href="md_docker.html">docs/docker.md</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

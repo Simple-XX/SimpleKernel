@@ -1,0 +1,5 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,60,31"/>
+<area shape="rect" id="Node000002" href="$io__buffer_8hpp.html#a3116fc9c19dccfa18d7134aa02a930c6" title="恒等映射：物理地址 == 虚拟地址（早期启动 / 无 MMU 时的默认实现）" alt="" coords="108,5,248,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,15,94,15,94,21,60,21"/>
+</map>

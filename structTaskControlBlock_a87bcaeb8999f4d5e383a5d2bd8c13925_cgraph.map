@@ -1,0 +1,7 @@
+<map id="TaskControlBlock::TaskControlBlock" name="TaskControlBlock::TaskControlBlock">
+<area shape="rect" id="Node000001" title="构造函数 (用户线程)" alt="" coords="5,23,224,63"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="293,5,369,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,28,280,21,280,27,225,33"/>
+<area shape="rect" id="Node000003" href="$classTaskFsm.html#aa51051086374affc76f2d516d3531889" title="启动 FSM（在 TCB 完全构造后调用）" alt="" coords="272,55,391,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,53,259,57,258,62,224,58"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="TaskManager::AddTask" name="TaskManager::AddTask">
+<area shape="rect" id="Node000001" title="添加任务（接管所有权）" alt="" coords="5,55,176,80"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="277,5,353,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,52,263,27,264,32,150,57"/>
+<area shape="rect" id="Node000003" href="$namespaceper__cpu.html#ad9745465fefcd58504031bfcfcc1c13f" title="获取当前核心的 PerCpu 数据" alt="" coords="224,55,407,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,65,210,65,210,70,177,70"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="455,80,640,105"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="150,77,224,89,336,94,441,94,441,100,336,100,224,94,149,83"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="408,75,441,78,441,84,407,80"/>
+<area shape="rect" id="Node000005" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="688,73,951,113"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="640,90,674,90,674,95,640,95"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="virtio::blk::VirtioBlk::DoEnqueue" name="virtio::blk::VirtioBlk::DoEnqueue">
+<area shape="rect" id="Node000001" title="异步入队请求的内部实现" alt="" coords="5,69,153,109"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a3291dde37cac408e3d4730148219439b" title="从请求槽池中分配一个空闲槽（O(1) 位图算法）" alt="" coords="201,5,349,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,67,200,47,202,52,142,72"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a928f265d102c1e2fd68c653f504fed8e" title="释放请求槽" alt="" coords="201,69,349,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,87,187,87,187,92,154,92"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#a283d1476d4cb23b06b3325a092cb7fdb" title=" " alt="" coords="222,134,329,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,107,219,127,217,133,148,112"/>
+</map>

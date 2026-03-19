@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/arch/x86_64/interrupt_main.cpp File Reference</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/arch/x86_64/interrupt_main.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,82 +96,73 @@ $(document).ready(function(){initNavTree('x86__64_2interrupt__main_8cpp.html',''
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="cpu__io_8h_source.html">cpu_io.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="arch_8h_source.html">arch.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="basic__info_8hpp_source.html">basic_info.hpp</a>&quot;</code><br />
 <code>#include &quot;interrupt.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="kernel_8h_source.html">kernel.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel__log_8hpp_source.html">kernel_log.hpp</a>&quot;</code><br />
-<code>#include &quot;sk_cstdio&quot;</code><br />
-<code>#include &quot;sk_iostream&quot;</code><br />
+<code>#include &quot;kstd_cstdio&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for interrupt_main.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="x86__64_2interrupt__main_8cpp__incl.png" border="0" usemap="#a_2root_2src_2arch_2x86__64_2interrupt__main_8cpp" alt=""/></div>
-<map name="a_2root_2src_2arch_2x86__64_2interrupt__main_8cpp" id="a_2root_2src_2arch_2x86__64_2interrupt__main_8cpp">
-<area shape="rect" title=" " alt="" coords="782,5,954,45"/>
-<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="362,240,438,265"/>
-<area shape="poly" title=" " alt="" coords="819,48,702,96,627,131,553,169,433,235,430,231,551,164,625,126,700,91,817,43"/>
-<area shape="rect" href="arch_8h.html" title=" " alt="" coords="563,167,626,192"/>
-<area shape="poly" title=" " alt="" coords="835,48,629,162,626,157,833,43"/>
-<area shape="rect" title=" " alt="" coords="781,93,872,119"/>
-<area shape="poly" title=" " alt="" coords="860,47,842,82,837,80,856,44"/>
-<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="1103,93,1220,119"/>
-<area shape="poly" title=" " alt="" coords="939,43,1106,87,1104,92,938,48"/>
-<area shape="rect" title=" " alt="" coords="1147,240,1229,265"/>
-<area shape="poly" title=" " alt="" coords="876,45,903,125,920,165,938,190,1134,237,1133,242,934,194,916,168,898,127,871,47"/>
-<area shape="rect" title=" " alt="" coords="1509,167,1611,192"/>
-<area shape="poly" title=" " alt="" coords="954,38,1086,61,1233,91,1382,127,1507,160,1506,166,1381,132,1231,96,1085,66,954,43"/>
-<area shape="rect" title=" " alt="" coords="632,313,699,339"/>
-<area shape="poly" title=" " alt="" coords="439,262,620,310,618,315,437,267"/>
-<area shape="rect" title=" " alt="" coords="5,313,75,339"/>
-<area shape="poly" title=" " alt="" coords="362,264,94,316,89,317,88,312,93,311,361,259"/>
-<area shape="rect" title=" " alt="" coords="526,387,597,412"/>
-<area shape="poly" title=" " alt="" coords="415,264,470,311,541,375,537,379,466,315,412,268"/>
-<area shape="rect" title=" " alt="" coords="703,387,769,412"/>
-<area shape="poly" title=" " alt="" coords="428,263,698,379,696,384,426,268"/>
-<area shape="rect" title=" " alt="" coords="80,387,144,412"/>
-<area shape="poly" title=" " alt="" coords="362,263,288,282,247,297,208,316,166,346,133,378,129,374,163,342,205,311,245,292,287,277,361,258"/>
-<area shape="rect" title=" " alt="" coords="168,387,232,412"/>
-<area shape="poly" title=" " alt="" coords="362,260,330,266,295,276,260,292,230,315,213,343,205,374,200,372,208,341,226,312,257,288,293,271,329,261,361,255"/>
-<area shape="rect" title=" " alt="" coords="257,387,381,412"/>
-<area shape="poly" title=" " alt="" coords="362,259,331,264,297,274,266,290,241,315,237,323,236,332,245,349,262,364,283,378,280,383,259,369,241,352,231,333,232,322,236,312,263,286,295,269,330,259,361,253"/>
-<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="251,313,456,339"/>
-<area shape="poly" title=" " alt="" coords="395,267,371,303,366,300,390,264"/>
-<area shape="poly" title=" " alt="" coords="388,336,515,380,514,385,386,341"/>
-<area shape="poly" title=" " alt="" coords="415,336,690,387,689,392,414,341"/>
-<area shape="poly" title=" " alt="" coords="315,341,158,387,157,382,314,336"/>
-<area shape="poly" title=" " alt="" coords="330,341,238,383,236,378,328,336"/>
-<area shape="poly" title=" " alt="" coords="350,340,333,375,328,373,345,338"/>
-<area shape="rect" title=" " alt="" coords="405,387,467,412"/>
-<area shape="poly" title=" " alt="" coords="368,337,414,375,410,380,365,341"/>
-<area shape="poly" title=" " alt="" coords="564,195,445,238,444,233,562,190"/>
-<area shape="poly" title=" " alt="" coords="596,193,568,373,563,373,590,192"/>
-<area shape="poly" title=" " alt="" coords="610,190,660,240,688,274,713,312,726,343,734,372,729,374,721,344,708,315,684,277,656,243,606,194"/>
-<area shape="rect" title=" " alt="" coords="462,240,557,265"/>
-<area shape="poly" title=" " alt="" coords="583,194,535,233,532,229,579,190"/>
-<area shape="poly" title=" " alt="" coords="1221,115,1361,142,1419,155,1447,165,1453,179,1448,193,1428,214,1402,234,1330,270,1241,302,1140,329,938,371,784,395,783,389,937,365,1139,324,1239,296,1328,265,1399,230,1425,210,1443,191,1448,179,1443,169,1418,160,1360,147,1220,120"/>
-<area shape="rect" title=" " alt="" coords="1133,167,1189,192"/>
-<area shape="poly" title=" " alt="" coords="1164,119,1164,153,1159,153,1159,119"/>
-<area shape="rect" title=" " alt="" coords="1214,167,1285,192"/>
-<area shape="poly" title=" " alt="" coords="1177,117,1226,156,1223,160,1174,121"/>
-<area shape="rect" title=" " alt="" coords="1309,167,1433,192"/>
-<area shape="poly" title=" " alt="" coords="1196,116,1324,160,1323,165,1194,121"/>
-<area shape="rect" href="singleton_8hpp.html" title=" " alt="" coords="947,167,1058,192"/>
-<area shape="poly" title=" " alt="" coords="1137,121,1042,163,1040,159,1135,116"/>
-<area shape="poly" title=" " alt="" coords="1151,120,1127,153,1121,172,1124,191,1139,213,1158,230,1155,234,1135,216,1119,193,1116,171,1123,150,1147,117"/>
-<area shape="poly" title=" " alt="" coords="1221,115,1496,164,1495,169,1220,120"/>
-<area shape="rect" href="spinlock_8hpp.html" title=" " alt="" coords="768,167,872,192"/>
-<area shape="poly" title=" " alt="" coords="1107,121,886,167,885,162,1106,116"/>
-<area shape="poly" title=" " alt="" coords="768,191,630,212,452,243,451,237,629,206,767,185"/>
-<area shape="poly" title=" " alt="" coords="809,194,690,306,686,302,806,190"/>
-<area shape="poly" title=" " alt="" coords="817,194,780,262,750,304,712,341,662,370,611,389,609,384,660,366,709,337,746,300,776,259,813,191"/>
-<area shape="poly" title=" " alt="" coords="873,188,1133,237,1132,242,872,193"/>
-<area shape="rect" title=" " alt="" coords="1043,240,1123,265"/>
-<area shape="poly" title=" " alt="" coords="863,189,1030,234,1028,239,862,195"/>
-<area shape="rect" title=" " alt="" coords="824,240,883,265"/>
-<area shape="poly" title=" " alt="" coords="828,191,845,227,840,229,823,193"/>
-<area shape="rect" href="expected_8hpp.html" title=" " alt="" coords="907,240,1018,265"/>
-<area shape="poly" title=" " alt="" coords="844,190,928,231,926,236,842,194"/>
-<area shape="poly" title=" " alt="" coords="946,268,767,381,764,377,943,263"/>
-<area shape="rect" title=" " alt="" coords="921,313,1004,339"/>
-<area shape="poly" title=" " alt="" coords="965,266,965,300,960,300,960,266"/>
+<div class="center"><img src="x86__64_2interrupt__main_8cpp__incl.png" border="0" usemap="#a_2workspaces_2SimpleKernel_2src_2arch_2x86__64_2interrupt__main_8cpp" alt=""/></div>
+<map name="a_2workspaces_2SimpleKernel_2src_2arch_2x86__64_2interrupt__main_8cpp" id="a_2workspaces_2SimpleKernel_2src_2arch_2x86__64_2interrupt__main_8cpp">
+<area shape="rect" title=" " alt="" coords="855,5,1049,60"/>
+<area shape="rect" href="cpu__io_8h.html" title=" " alt="" coords="455,255,531,280"/>
+<area shape="poly" title=" " alt="" coords="856,53,784,72,704,98,625,135,587,158,552,183,526,213,507,244,502,241,521,209,549,179,584,153,622,131,702,94,782,67,854,48"/>
+<area shape="rect" href="arch_8h.html" title=" " alt="" coords="563,181,626,207"/>
+<area shape="poly" title=" " alt="" coords="893,62,784,110,634,178,632,173,782,106,891,58"/>
+<area shape="rect" href="basic__info_8hpp.html" title=" " alt="" coords="795,108,911,133"/>
+<area shape="poly" title=" " alt="" coords="924,62,879,101,875,97,920,58"/>
+<area shape="rect" href="kernel__log_8hpp.html" title=" " alt="" coords="893,181,1011,207"/>
+<area shape="poly" title=" " alt="" coords="955,60,955,168,949,168,949,60"/>
+<area shape="rect" title=" " alt="" coords="1272,255,1368,280"/>
+<area shape="poly" title=" " alt="" coords="982,58,1025,94,1075,131,1187,198,1284,246,1281,251,1185,202,1072,136,1022,98,979,62"/>
+<area shape="rect" title=" " alt="" coords="1085,108,1176,133"/>
+<area shape="poly" title=" " alt="" coords="1008,58,1096,100,1093,104,1005,62"/>
+<area shape="rect" href="kernel_8h.html" title=" " alt="" coords="1284,108,1359,133"/>
+<area shape="poly" title=" " alt="" coords="1050,54,1271,105,1270,110,1048,59"/>
+<area shape="rect" title=" " alt="" coords="697,328,764,353"/>
+<area shape="poly" title=" " alt="" coords="532,277,685,323,683,328,531,283"/>
+<area shape="rect" title=" " alt="" coords="5,328,75,353"/>
+<area shape="poly" title=" " alt="" coords="456,276,298,298,94,331,89,332,88,326,93,325,297,293,455,271"/>
+<area shape="rect" title=" " alt="" coords="531,401,602,427"/>
+<area shape="poly" title=" " alt="" coords="499,279,510,313,528,352,551,389,547,392,523,355,505,314,494,281"/>
+<area shape="rect" title=" " alt="" coords="639,401,705,427"/>
+<area shape="poly" title=" " alt="" coords="510,278,649,390,645,395,506,283"/>
+<area shape="rect" title=" " alt="" coords="80,401,144,427"/>
+<area shape="poly" title=" " alt="" coords="455,273,404,278,341,288,273,305,208,330,165,360,132,393,128,389,162,356,205,326,271,300,340,282,403,272,455,268"/>
+<area shape="rect" title=" " alt="" coords="168,401,232,427"/>
+<area shape="poly" title=" " alt="" coords="456,275,330,294,269,310,246,320,230,330,220,342,212,357,204,388,199,387,207,355,215,340,226,326,243,315,267,305,329,289,455,270"/>
+<area shape="rect" title=" " alt="" coords="257,401,381,427"/>
+<area shape="poly" title=" " alt="" coords="455,275,398,281,333,292,276,308,254,318,241,330,236,338,236,346,244,363,262,379,283,393,280,397,258,383,240,366,230,347,231,336,237,326,252,314,274,303,332,287,398,276,455,269"/>
+<area shape="rect" href="test__environment__state_8hpp.html" title=" " alt="" coords="251,328,456,353"/>
+<area shape="poly" title=" " alt="" coords="472,282,389,324,387,319,470,278"/>
+<area shape="poly" title=" " alt="" coords="388,351,520,394,518,399,387,356"/>
+<area shape="poly" title=" " alt="" coords="405,351,626,400,625,405,404,356"/>
+<area shape="poly" title=" " alt="" coords="315,356,158,402,157,397,314,351"/>
+<area shape="poly" title=" " alt="" coords="330,356,238,398,236,393,328,351"/>
+<area shape="poly" title=" " alt="" coords="350,355,333,390,328,388,345,352"/>
+<area shape="rect" title=" " alt="" coords="405,401,467,427"/>
+<area shape="poly" title=" " alt="" coords="368,351,414,390,410,394,365,355"/>
+<area shape="poly" title=" " alt="" coords="580,209,523,249,520,244,577,204"/>
+<area shape="poly" title=" " alt="" coords="596,207,573,388,567,387,591,207"/>
+<area shape="poly" title=" " alt="" coords="601,206,666,387,661,389,596,208"/>
+<area shape="rect" title=" " alt="" coords="670,255,765,280"/>
+<area shape="poly" title=" " alt="" coords="616,204,687,245,684,250,613,209"/>
+<area shape="poly" title=" " alt="" coords="856,134,852,175,841,235,818,299,800,329,778,355,755,366,714,379,616,404,615,399,712,374,753,361,774,351,796,326,813,297,836,233,847,175,850,133"/>
+<area shape="poly" title=" " alt="" coords="858,133,863,174,863,232,853,296,841,327,823,355,801,376,775,392,720,409,718,404,773,387,798,372,819,352,836,325,847,295,858,232,857,174,853,134"/>
+<area shape="rect" title=" " alt="" coords="651,181,765,207"/>
+<area shape="poly" title=" " alt="" coords="831,136,745,178,743,173,829,131"/>
+<area shape="poly" title=" " alt="" coords="871,131,926,171,923,175,868,136"/>
+<area shape="poly" title=" " alt="" coords="893,207,545,261,545,255,893,202"/>
+<area shape="poly" title=" " alt="" coords="936,209,761,323,758,318,933,205"/>
+<area shape="poly" title=" " alt="" coords="952,208,944,237,929,277,906,319,874,355,837,379,796,395,756,406,719,412,719,407,755,401,795,390,835,374,870,351,901,316,924,275,939,235,947,206"/>
+<area shape="rect" title=" " alt="" coords="992,255,1091,280"/>
+<area shape="poly" title=" " alt="" coords="968,205,1018,244,1014,248,965,209"/>
+<area shape="rect" title=" " alt="" coords="1115,255,1248,280"/>
+<area shape="poly" title=" " alt="" coords="990,204,1132,248,1130,253,988,209"/>
+<area shape="poly" title=" " alt="" coords="1011,204,1259,252,1258,257,1010,209"/>
+<area shape="poly" title=" " alt="" coords="1335,132,1359,160,1383,199,1391,220,1395,242,1392,263,1382,282,1362,300,1334,317,1262,345,1172,368,1072,385,872,406,719,414,719,409,871,400,1072,379,1171,362,1260,340,1332,312,1359,296,1378,278,1387,261,1390,242,1386,222,1378,201,1354,163,1331,135"/>
 </map>
 </div>
 </div>
@@ -179,20 +170,22 @@ Include dependency graph for interrupt_main.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a660e4785391d83bb3aa43f15ae53a530" id="r_a660e4785391d83bb3aa43f15ae53a530"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86__64_2interrupt__main_8cpp.html#a660e4785391d83bb3aa43f15ae53a530">InterruptInit</a> (int, const char **)</td></tr>
-<tr class="separator:a660e4785391d83bb3aa43f15ae53a530"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac31c690eba7c84c9327f9f813d4b3fea" id="r_ac31c690eba7c84c9327f9f813d4b3fea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86__64_2interrupt__main_8cpp.html#ac31c690eba7c84c9327f9f813d4b3fea">InterruptInitSMP</a> (int, const char **)</td></tr>
-<tr class="separator:ac31c690eba7c84c9327f9f813d4b3fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51f9c37118da7a1c32e70f272cc7b3e8" id="r_a51f9c37118da7a1c32e70f272cc7b3e8"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86__64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8">InterruptInit</a> (int, const char **) -&gt; void</td></tr>
+<tr class="memdesc:a51f9c37118da7a1c32e70f272cc7b3e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">体系结构相关中断初始化  <br /></td></tr>
+<tr class="separator:a51f9c37118da7a1c32e70f272cc7b3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad310aa2bb690e3d8b4e6a036aae3dd93" id="r_ad310aa2bb690e3d8b4e6a036aae3dd93"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86__64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93">InterruptInitSMP</a> (int, const char **) -&gt; void</td></tr>
+<tr class="memdesc:ad310aa2bb690e3d8b4e6a036aae3dd93"><td class="mdescLeft">&#160;</td><td class="mdescRight">从核的体系结构相关中断初始化  <br /></td></tr>
+<tr class="separator:ad310aa2bb690e3d8b4e6a036aae3dd93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a660e4785391d83bb3aa43f15ae53a530" name="a660e4785391d83bb3aa43f15ae53a530"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a660e4785391d83bb3aa43f15ae53a530">&#9670;&#160;</a></span>InterruptInit()</h2>
+<a id="a51f9c37118da7a1c32e70f272cc7b3e8" name="a51f9c37118da7a1c32e70f272cc7b3e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51f9c37118da7a1c32e70f272cc7b3e8">&#9670;&#160;</a></span>InterruptInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void InterruptInit </td>
+          <td class="memname">auto InterruptInit </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
@@ -206,64 +199,103 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt;  void</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>体系结构相关中断初始化 </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>体系结构相关中断初始化 </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argc</td><td>在不同体系结构有不同含义，同 _start </td></tr>
     <tr><td class="paramname">argv</td><td>在不同体系结构有不同含义，同 _start </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section pre"><dt>Precondition</dt><dd>ArchInit 已完成 </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>中断控制器已初始化，中断向量表已设置 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="x86__64_2interrupt__main_8cpp_source.html#l00106">106</a> of file <a class="el" href="x86__64_2interrupt__main_8cpp_source.html">interrupt_main.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>                                      {</div>
-<div class="line"><span class="lineno">  107</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SetUpIdtr();</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>  <span class="comment">// 注册中断处理函数</span></div>
-<div class="line"><span class="lineno">  110</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(kApicTimerVector,</div>
-<div class="line"><span class="lineno">  111</span>                                                            ApicTimerHandler);</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>  <span class="comment">// 注册键盘中断处理函数</span></div>
-<div class="line"><span class="lineno">  114</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().RegisterInterruptFunc(kKeyboardVector,</div>
-<div class="line"><span class="lineno">  115</span>                                                            KeyboardHandler);</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>  <span class="comment">// 启用键盘中断</span></div>
-<div class="line"><span class="lineno">  118</span>  EnableKeyboardInterrupt(kKeyboardVector);</div>
+<p class="definition">Definition at line <a class="el" href="x86__64_2interrupt__main_8cpp_source.html#l00082">82</a> of file <a class="el" href="x86__64_2interrupt__main_8cpp_source.html">interrupt_main.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>                                              {</div>
+<div class="line"><span class="lineno">   83</span>  InterruptSingleton::create();</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>  <span class="comment">// 初始化 APIC（从 ArchInit 移至此处）</span></div>
+<div class="line"><span class="lineno">   86</span>  InterruptSingleton::instance().InitApic(</div>
+<div class="line"><span class="lineno">   87</span>      BasicInfoSingleton::instance().core_count);</div>
+<div class="line"><span class="lineno">   88</span>  InterruptSingleton::instance().apic().InitCurrentCpuLocalApic().or_else(</div>
+<div class="line"><span class="lineno">   89</span>      [](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
+<div class="line"><span class="lineno">   90</span>        <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to initialize APIC: {}&quot;</span>, err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
+<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><span class="lineno">   92</span>          <a class="code hl_function" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a>();</div>
+<div class="line"><span class="lineno">   93</span>        }</div>
+<div class="line"><span class="lineno">   94</span>        <span class="keywordflow">return</span> std::unexpected(err);</div>
+<div class="line"><span class="lineno">   95</span>      });</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>  InterruptSingleton::instance().SetUpIdtr();</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>  <span class="comment">// 注册 APIC Timer 中断处理函数（Local APIC 内部中断，不走 IO APIC）</span></div>
+<div class="line"><span class="lineno">  100</span>  InterruptSingleton::instance().RegisterInterruptFunc(</div>
+<div class="line"><span class="lineno">  101</span>      kApicTimerVector, InterruptDelegate::create&lt;ApicTimerHandler&gt;());</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>  <span class="comment">// 通过统一接口注册键盘外部中断（IRQ 1 = PS/2 键盘，先注册 handler 再启用 IO</span></div>
+<div class="line"><span class="lineno">  104</span>  <span class="comment">// APIC）</span></div>
+<div class="line"><span class="lineno">  105</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t kKeyboardIrq = 1;</div>
+<div class="line"><span class="lineno">  106</span>  InterruptSingleton::instance()</div>
+<div class="line"><span class="lineno">  107</span>      .RegisterExternalInterrupt(kKeyboardIrq, <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>(), 0,</div>
+<div class="line"><span class="lineno">  108</span>                                 InterruptDelegate::create&lt;KeyboardHandler&gt;())</div>
+<div class="line"><span class="lineno">  109</span>      .or_else([](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
+<div class="line"><span class="lineno">  110</span>        <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to register keyboard IRQ: {}&quot;</span>, err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
+<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">return</span> std::unexpected(err);</div>
+<div class="line"><span class="lineno">  112</span>      });</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>  <span class="comment">// 启用 Local APIC 定时器</span></div>
+<div class="line"><span class="lineno">  115</span>  InterruptSingleton::instance().apic().SetupPeriodicTimer(</div>
+<div class="line"><span class="lineno">  116</span>      kApicTimerFrequencyHz, kApicTimerVector);</div>
+<div class="line"><span class="lineno">  117</span>  <span class="comment">// 开启中断</span></div>
+<div class="line"><span class="lineno">  118</span>  cpu_io::Rflags::If::Set();</div>
 <div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>  <span class="comment">// 启用 Local APIC 定时器</span></div>
-<div class="line"><span class="lineno">  121</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance</a>().SetupPeriodicTimer(kApicTimerFrequencyHz,</div>
-<div class="line"><span class="lineno">  122</span>                                                    kApicTimerVector);</div>
-<div class="line"><span class="lineno">  123</span>  <span class="comment">// 开启中断</span></div>
-<div class="line"><span class="lineno">  124</span>  cpu_io::Rflags::If::Set();</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>  <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Hello InterruptInit\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  127</span>}</div>
-<div class="ttc" id="aclassSingleton_html_a68856b49e098eadba37b60366db33ebd"><div class="ttname"><a href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton::GetInstance</a></div><div class="ttdeci">static auto GetInstance() -&gt; T &amp;</div><div class="ttdef"><b>Definition</b> <a href="singleton_8hpp_source.html#l00023">singleton.hpp:23</a></div></div>
-<div class="ttc" id="astructklog_1_1Info_html"><div class="ttname"><a href="structklog_1_1Info.html">klog::Info</a></div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00168">kernel_log.hpp:168</a></div></div>
+<div class="line"><span class="lineno">  120</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Hello InterruptInit&quot;</span>);</div>
+<div class="line"><span class="lineno">  121</span>}</div>
+<div class="ttc" id="aexpected_8hpp_html_a87330dc74eb67e824914b8d343050757"><div class="ttname"><a href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a></div><div class="ttdeci">std::expected&lt; T, Error &gt; Expected</div><div class="ttdoc">std::expected 别名模板</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00365">expected.hpp:365</a></div></div>
+<div class="ttc" id="anamespacecpu__io_html_a52b8a7263a31e6670ef4dec7922d9e72"><div class="ttname"><a href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a></div><div class="ttdeci">auto GetCurrentCoreId() -&gt; size_t</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00026">cpu_io.h:26</a></div></div>
+<div class="ttc" id="anamespacecpu__io_html_acf7d7c3a4a0720cfd4f57914b52c7e9b"><div class="ttname"><a href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a></div><div class="ttdeci">void Pause()</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00020">cpu_io.h:20</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a16b493848cd618512fc9fb61d3980bd7"><div class="ttname"><a href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a></div><div class="ttdeci">auto Err(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 ERROR 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00200">kernel_log.hpp:200</a></div></div>
+<div class="ttc" id="anamespaceklog_html_a1f6b347e95b475341e195f363a9f20a3"><div class="ttname"><a href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a></div><div class="ttdeci">auto Info(etl::format_string&lt; Args... &gt; fmt, Args &amp;&amp;... args) -&gt; void</div><div class="ttdoc">以 INFO 级别记录日志</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00182">kernel_log.hpp:182</a></div></div>
+<div class="ttc" id="astructError_html"><div class="ttname"><a href="structError.html">Error</a></div><div class="ttdoc">错误类型，用于 std::expected</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00343">expected.hpp:343</a></div></div>
+<div class="ttc" id="astructError_html_aa63ee10532d668f25a5147d7dc753749"><div class="ttname"><a href="structError.html#aa63ee10532d668f25a5147d7dc753749">Error::message</a></div><div class="ttdeci">constexpr auto message() const -&gt; const char *</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00358">expected.hpp:358</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="x86__64_2interrupt__main_8cpp_a660e4785391d83bb3aa43f15ae53a530_cgraph.png" border="0" usemap="#ax86__64_2interrupt__main_8cpp_a660e4785391d83bb3aa43f15ae53a530_cgraph" alt=""/></div>
-<map name="ax86__64_2interrupt__main_8cpp_a660e4785391d83bb3aa43f15ae53a530_cgraph" id="ax86__64_2interrupt__main_8cpp_a660e4785391d83bb3aa43f15ae53a530_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,104,31"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="152,5,321,31"/>
-<area shape="poly" title=" " alt="" coords="104,15,138,15,138,21,104,21"/>
+<div class="center"><img src="x86__64_2interrupt__main_8cpp_a51f9c37118da7a1c32e70f272cc7b3e8_cgraph.png" border="0" usemap="#ax86__64_2interrupt__main_8cpp_a51f9c37118da7a1c32e70f272cc7b3e8_cgraph" alt=""/></div>
+<map name="ax86__64_2interrupt__main_8cpp_a51f9c37118da7a1c32e70f272cc7b3e8_cgraph" id="ax86__64_2interrupt__main_8cpp_a51f9c37118da7a1c32e70f272cc7b3e8_cgraph">
+<area shape="rect" title="体系结构相关中断初始化" alt="" coords="5,104,104,129"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="207,5,283,31"/>
+<area shape="poly" title=" " alt="" coords="67,102,103,71,151,40,192,25,194,30,153,44,106,75,71,106"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="152,55,337,80"/>
+<area shape="poly" title=" " alt="" coords="104,101,151,89,181,81,183,86,153,94,105,106"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="203,104,286,129"/>
+<area shape="poly" title=" " alt="" coords="104,114,189,114,189,119,104,119"/>
+<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="185,153,305,179"/>
+<area shape="poly" title=" " alt="" coords="105,127,153,139,183,147,181,152,151,145,104,132"/>
+<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="189,203,300,228"/>
+<area shape="poly" title=" " alt="" coords="71,128,106,159,153,189,177,198,175,203,151,194,103,163,67,132"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="385,47,648,87"/>
+<area shape="poly" title=" " alt="" coords="338,65,371,65,371,70,338,70"/>
+<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="449,153,584,179"/>
+<area shape="poly" title=" " alt="" coords="305,163,435,163,435,169,305,169"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="ac31c690eba7c84c9327f9f813d4b3fea" name="ac31c690eba7c84c9327f9f813d4b3fea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac31c690eba7c84c9327f9f813d4b3fea">&#9670;&#160;</a></span>InterruptInitSMP()</h2>
+<a id="ad310aa2bb690e3d8b4e6a036aae3dd93" name="ad310aa2bb690e3d8b4e6a036aae3dd93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad310aa2bb690e3d8b4e6a036aae3dd93">&#9670;&#160;</a></span>InterruptInitSMP()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void InterruptInitSMP </td>
+          <td class="memname">auto InterruptInitSMP </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
@@ -277,28 +309,58 @@ Here is the call graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt;  void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="x86__64_2interrupt__main_8cpp_source.html#l00129">129</a> of file <a class="el" href="x86__64_2interrupt__main_8cpp_source.html">interrupt_main.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  129</span>                                         {</div>
-<div class="line"><span class="lineno">  130</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Interrupt&gt;::GetInstance</a>().SetUpIdtr();</div>
-<div class="line"><span class="lineno">  131</span>  <span class="comment">// 启用 Local APIC 定时器</span></div>
-<div class="line"><span class="lineno">  132</span>  <a class="code hl_function" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd">Singleton&lt;Apic&gt;::GetInstance</a>().SetupPeriodicTimer(kApicTimerFrequencyHz,</div>
-<div class="line"><span class="lineno">  133</span>                                                    kApicTimerVector);</div>
-<div class="line"><span class="lineno">  134</span>  cpu_io::Rflags::If::Set();</div>
-<div class="line"><span class="lineno">  135</span>  <a class="code hl_struct" href="structklog_1_1Info.html">klog::Info</a>(<span class="stringliteral">&quot;Hello InterruptInit SMP\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  136</span>}</div>
+<p>从核的体系结构相关中断初始化 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td>在不同体系结构有不同含义，同 _start </td></tr>
+    <tr><td class="paramname">argv</td><td>在不同体系结构有不同含义，同 _start </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd>主核已完成 InterruptInit </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>从核的中断控制器已初始化 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="x86__64_2interrupt__main_8cpp_source.html#l00123">123</a> of file <a class="el" href="x86__64_2interrupt__main_8cpp_source.html">interrupt_main.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>                                                 {</div>
+<div class="line"><span class="lineno">  124</span>  InterruptSingleton::instance().SetUpIdtr();</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span>  <span class="comment">// 初始化当前 AP 核的 Local APIC</span></div>
+<div class="line"><span class="lineno">  127</span>  InterruptSingleton::instance().apic().InitCurrentCpuLocalApic().or_else(</div>
+<div class="line"><span class="lineno">  128</span>      [](<a class="code hl_struct" href="structError.html">Error</a> err) -&gt; <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a> {</div>
+<div class="line"><span class="lineno">  129</span>        <a class="code hl_function" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7">klog::Err</a>(<span class="stringliteral">&quot;Failed to initialize APIC for AP: {}&quot;</span>, err.<a class="code hl_function" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a>());</div>
+<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><span class="lineno">  131</span>          <a class="code hl_function" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a>();</div>
+<div class="line"><span class="lineno">  132</span>        }</div>
+<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">return</span> std::unexpected(err);</div>
+<div class="line"><span class="lineno">  134</span>      });</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span>  <span class="comment">// 启用 Local APIC 定时器</span></div>
+<div class="line"><span class="lineno">  137</span>  InterruptSingleton::instance().apic().SetupPeriodicTimer(</div>
+<div class="line"><span class="lineno">  138</span>      kApicTimerFrequencyHz, kApicTimerVector);</div>
+<div class="line"><span class="lineno">  139</span>  cpu_io::Rflags::If::Set();</div>
+<div class="line"><span class="lineno">  140</span>  <a class="code hl_function" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3">klog::Info</a>(<span class="stringliteral">&quot;Hello InterruptInit SMP&quot;</span>);</div>
+<div class="line"><span class="lineno">  141</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="x86__64_2interrupt__main_8cpp_ac31c690eba7c84c9327f9f813d4b3fea_cgraph.png" border="0" usemap="#ax86__64_2interrupt__main_8cpp_ac31c690eba7c84c9327f9f813d4b3fea_cgraph" alt=""/></div>
-<map name="ax86__64_2interrupt__main_8cpp_ac31c690eba7c84c9327f9f813d4b3fea_cgraph" id="ax86__64_2interrupt__main_8cpp_ac31c690eba7c84c9327f9f813d4b3fea_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,132,31"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="180,5,349,31"/>
-<area shape="poly" title=" " alt="" coords="132,15,166,15,166,21,132,21"/>
+<div class="center"><img src="x86__64_2interrupt__main_8cpp_ad310aa2bb690e3d8b4e6a036aae3dd93_cgraph.png" border="0" usemap="#ax86__64_2interrupt__main_8cpp_ad310aa2bb690e3d8b4e6a036aae3dd93_cgraph" alt=""/></div>
+<map name="ax86__64_2interrupt__main_8cpp_ad310aa2bb690e3d8b4e6a036aae3dd93_cgraph" id="ax86__64_2interrupt__main_8cpp_ad310aa2bb690e3d8b4e6a036aae3dd93_cgraph">
+<area shape="rect" title="从核的体系结构相关中断初始化" alt="" coords="5,80,132,105"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="202,5,278,31"/>
+<area shape="poly" title=" " alt="" coords="96,77,179,40,193,33,195,38,181,44,98,82"/>
+<area shape="rect" href="namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="199,55,281,80"/>
+<area shape="poly" title=" " alt="" coords="132,81,185,73,185,78,133,86"/>
+<area shape="rect" href="structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="180,104,300,129"/>
+<area shape="poly" title=" " alt="" coords="133,99,167,104,166,109,132,104"/>
+<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="185,153,295,179"/>
+<area shape="poly" title=" " alt="" coords="100,103,181,138,197,145,195,150,179,143,98,108"/>
+<area shape="rect" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="348,104,483,129"/>
+<area shape="poly" title=" " alt="" coords="300,114,334,114,334,119,300,119"/>
 </map>
 </div>
 

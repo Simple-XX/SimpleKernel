@@ -1,10 +1,23 @@
 <map id="LockGuard::~LockGuard" name="LockGuard::~LockGuard">
-<area shape="rect" id="Node000001" title="析构函数，自动释放锁" alt="" coords="5,5,184,31"/>
-<area shape="rect" id="Node000002" href="$classMutex.html#abd80d453457fcf4f39a5a5c3f10fe5aa" title="释放锁" alt="" coords="232,5,351,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,15,218,15,218,21,184,21"/>
-<area shape="rect" id="Node000003" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="668,5,837,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="351,15,654,15,654,21,351,21"/>
-<area shape="rect" id="Node000004" href="$classMutex.html#a99d18d08046311956a9a69f1f8c9daaa" title="检查锁是否被当前线程持有" alt="" coords="399,31,620,56"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="351,22,387,26,386,32,351,28"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="620,29,654,26,655,31,620,34"/>
+<area shape="rect" id="Node000001" title="析构函数，自动释放锁" alt="" coords="5,87,184,113"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="232,13,417,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,85,231,47,258,39,259,44,233,52,128,90"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="269,62,380,87"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="184,87,255,80,256,85,185,93"/>
+<area shape="rect" id="Node000005" href="$namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e" title="绕过队列直接输出至串口（用于 panic 路径）" alt="" coords="271,111,378,137"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="185,107,257,114,257,120,184,112"/>
+<area shape="rect" id="Node000008" href="$classMutex.html#adb826acb26d01965e1467558275ffe03" title="释放锁" alt="" coords="265,165,384,190"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="131,110,233,147,268,158,266,163,231,152,129,115"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="465,5,728,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="418,23,451,23,451,28,418,28"/>
+<area shape="rect" id="Node000006" href="$namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="525,90,668,115"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="378,117,511,107,511,112,379,122"/>
+<area shape="rect" id="Node000007" href="$aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="776,90,871,115"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="668,100,762,100,762,105,668,105"/>
+<area shape="rect" id="Node000009" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="547,139,647,165"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="384,169,533,155,533,161,385,174"/>
+<area shape="rect" id="Node000010" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="559,189,635,214"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="385,180,545,194,545,200,384,185"/>
+<area shape="rect" id="Node000011" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="551,238,642,263"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="359,188,466,224,538,239,537,245,465,229,357,193"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="Ns16550aDriver::Probe" name="Ns16550aDriver::Probe">
+<area shape="rect" id="Node000001" title="初始化 NS16550A UART。" alt="" coords="245,5,417,31"/>
+<area shape="rect" id="Node000002" href="$classNs16550aDriver.html#a1870119f0ccd5fb0f029893f62467760" title="返回用于注册的 DriverEntry" alt="" coords="5,5,197,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,21,198,21,198,15,231,15"/>
+</map>

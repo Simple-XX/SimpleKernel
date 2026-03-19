@@ -1,0 +1,9 @@
+<map id="PlatformBus::Enumerate" name="PlatformBus::Enumerate">
+<area shape="rect" id="Node000001" title="枚举所有含 compatible 字符串的 FDT 设备节点。" alt="" coords="5,55,187,80"/>
+<area shape="rect" id="Node000002" href="$classKernelFdt.html#a0edcad81fb4dc87e674b3eeb43ca9c94" title="遍历 FDT 中所有&quot;叶设备&quot;节点，自动跳过基础设施节点。" alt="" coords="235,5,457,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,52,267,31,268,36,162,57"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="305,55,387,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="187,65,290,65,290,70,187,70"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="301,104,391,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="162,77,287,103,286,108,161,83"/>
+</map>

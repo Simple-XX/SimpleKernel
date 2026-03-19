@@ -1,6 +1,7 @@
 var per__cpu_8hpp =
 [
     [ "per_cpu::PerCpu", "structper__cpu_1_1PerCpu.html", "structper__cpu_1_1PerCpu" ],
+    [ "PerCpuArraySingleton", "per__cpu_8hpp.html#a2956cf2e0afed456ba355b57cc5965db", null ],
     [ "__attribute__", "per__cpu_8hpp.html#a3f116a6df9566ddec4351f08f26eab47", null ],
     [ "GetCurrentCore", "per__cpu_8hpp.html#ad9745465fefcd58504031bfcfcc1c13f", null ],
     [ "operator=", "per__cpu_8hpp.html#affe403512f414f6cfe2f8b48465d17a1", null ],

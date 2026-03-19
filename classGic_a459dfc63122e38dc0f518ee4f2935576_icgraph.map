@@ -1,0 +1,5 @@
+<map id="Gic::SetUp" name="Gic::SetUp">
+<area shape="rect" id="Node000001" title="初始化当前 CPU 的 GIC 配置" alt="" coords="179,5,269,31"/>
+<area shape="rect" id="Node000002" href="$classInterrupt.html#a1f7722f172ff28d1618f123bc815ec1d" title="设置 GIC" alt="" coords="5,5,131,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,21,131,21,131,15,165,15"/>
+</map>

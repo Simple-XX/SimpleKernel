@@ -1,0 +1,7 @@
+<map id="virtio::MmioTransport::GetQueueNumMax" name="virtio::MmioTransport::GetQueueNumMax">
+<area shape="rect" id="Node000001" title="获取队列最大容量" alt="" coords="5,23,167,63"/>
+<area shape="rect" id="Node000002" href="$structMmioAccessor.html#acbb27077fc125776a50c812e11712195" title="Read from MMIO register." alt="" coords="215,5,374,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,31,201,27,202,32,167,36"/>
+<area shape="rect" id="Node000003" href="$structMmioAccessor.html#aa9979ffd2deb9589687e8d2bc3518287" title="Write to MMIO register." alt="" coords="215,55,375,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,50,202,54,201,59,167,55"/>
+</map>

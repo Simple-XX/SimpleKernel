@@ -1,0 +1,11 @@
+<map id="virtio::blk::VirtioBlk::Create" name="virtio::blk::VirtioBlk::Create">
+<area shape="rect" id="Node000001" title="创建并初始化块设备" alt="" coords="5,101,153,141"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1DeviceInitializer.html#a152f516d005f2c89a0d1cff4587675c5" title="激活设备，开始正常运行" alt="" coords="201,5,372,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,99,200,55,216,48,218,53,202,60,117,103"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1DeviceInitializer.html#a4b04ddf221c72f7d9942fd0f6d06a547" title="执行 virtio 设备初始化序列" alt="" coords="201,69,372,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,107,187,102,188,107,154,113"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1DeviceInitializer.html#a163d39c87bdf2daa46df3e96da263650" title="配置并激活指定的 virtqueue" alt="" coords="201,133,372,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="154,130,188,135,187,141,153,135"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ac3a1f8b1fd22b8f3cd749d66505fb40e" title=" " alt="" coords="213,197,361,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="117,139,202,183,218,190,216,195,200,188,115,144"/>
+</map>

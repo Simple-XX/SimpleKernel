@@ -1,0 +1,7 @@
+<map id="sys_sched_setaffinity" name="sys_sched_setaffinity">
+<area shape="rect" id="Node000001" title="设置线程的CPU亲和性" alt="" coords="5,31,168,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="216,5,316,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,29,202,24,203,30,168,34"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="228,55,304,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,52,215,58,214,63,168,57"/>
+</map>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['目录结构_0',['目录结构',['../md__2root_2src_2arch_2README.html#autotoc_md368',1,'']]],
-  ['目录_1',['目录',['../md_docker.html#autotoc_md228',1,'目录'],['../md__2root_2README.html#autotoc_md292',1,'📖 目录']]],
-  ['目标_2',['1. 目标',['../md_task__unit__test__new__design.html#autotoc_md254',1,'']]]
+  ['辅助工具_0',['辅助工具',['../md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html#autotoc_md26',1,'']]],
+  ['辅助开发工作流_1',['🎯 AI 辅助开发工作流',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md302',1,'']]],
+  ['辅助_20cmake_20模块_2',['3. 辅助 CMake 模块',['../md_0___xE5_xB7_xA5_xE5_x85_xB7_xE9_x93_xBE.html#autotoc_md14',1,'']]]
 ];

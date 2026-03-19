@@ -1,0 +1,5 @@
+<map id="disk_initialize" name="disk_initialize">
+<area shape="rect" id="Node000001" title="初始化磁盘驱动器。" alt="" coords="5,13,117,38"/>
+<area shape="rect" id="Node000002" href="$classfatfs_1_1FatFsFileSystem.html#aa524b5d748c218d166ad7c6a6b78cd83" title="获取指定驱动器的块设备" alt="" coords="165,5,332,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,23,152,23,152,28,118,28"/>
+</map>

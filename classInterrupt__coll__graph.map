@@ -1,13 +1,21 @@
 <map id="Interrupt" name="Interrupt">
-<area shape="rect" id="Node000001" title="中断处理" alt="" coords="5,1401,184,2387"/>
-<area shape="rect" id="Node000002" href="$classInterruptBase.html" title=" " alt="" coords="5,903,184,1269"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,1283,80,1401,74,1401,76,1282"/>
-<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="97,1283,97,1401,92,1401,92,1283"/>
-<area shape="poly" id="edge3_Node000001_Node000002" title=" " alt="" coords="113,1282,115,1401,110,1401,108,1283"/>
-<area shape="rect" id="Node000003" href="$classGic.html" title="gic 中断控制器驱动" alt="" coords="209,833,359,1339"/>
-<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="227,1339,190,1497,185,1496,222,1338"/>
-<area shape="rect" id="Node000004" href="$classGic_1_1Gicd.html" title=" " alt="" coords="53,5,270,771"/>
-<area shape="poly" id="edge5_Node000003_Node000004" title=" " alt="" coords="231,771,239,817,234,818,226,772"/>
-<area shape="rect" id="Node000005" href="$classGic_1_1Gicr.html" title=" " alt="" coords="294,25,522,751"/>
-<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="346,751,334,818,329,817,341,750"/>
+<area shape="rect" id="Node000001" title="AArch64 中断控制器实现" alt="" coords="72,3281,275,4327"/>
+<area shape="rect" id="Node000002" href="$classInterruptBase.html" title="中断子系统抽象基类" alt="" coords="5,2603,208,2989"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,3002,123,3281,118,3281,103,3002"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="123,3002,141,3281,136,3281,118,3002"/>
+<area shape="poly" id="edge3_Node000001_Node000002" title=" " alt="" coords="138,3002,159,3281,154,3281,132,3002"/>
+<area shape="rect" id="Node000003" href="$classGic.html" title="GIC 中断控制器驱动" alt="" coords="233,2533,383,3059"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="276,3059,248,3265,243,3265,270,3058"/>
+<area shape="rect" id="Node000004" href="$classGic_1_1Gicd.html" title="GIC Distributor 接口" alt="" coords="19,705,221,1611"/>
+<area shape="poly" id="edge5_Node000003_Node000004" title=" " alt="" coords="161,1610,195,1954,236,2310,265,2517,260,2517,231,2311,190,1954,156,1611"/>
+<area shape="rect" id="Node000005" href="$classGic_1_1Gicr.html" title="GIC Redistributor 接口" alt="" coords="245,785,456,1531"/>
+<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="344,1531,318,2517,313,2517,338,1531"/>
+<area shape="rect" id="Node000006" href="$classPlic.html" title="Plic 驱动" alt="" coords="408,2373,595,3219"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="410,3176,397,3219,342,3382,283,3540,278,3538,337,3380,392,3218,405,3174"/>
+<area shape="rect" id="Node000007" href="$classApic.html" title="APIC 管理类，管理整个系统的 Local APIC 和 IO APIC." alt="" coords="619,2523,813,3069"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="664,3070,640,3146,609,3220,575,3285,537,3350,454,3475,368,3588,288,3683,284,3679,364,3584,450,3472,533,3347,571,3283,604,3218,635,3145,659,3068"/>
+<area shape="rect" id="Node000008" href="$classLocalApic.html" title="Local APIC 驱动类" alt="" coords="565,5,781,2311"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="706,2311,711,2506,706,2507,701,2311"/>
+<area shape="rect" id="Node000009" href="$classIoApic.html" title="IO APIC 驱动类" alt="" coords="805,445,1027,1871"/>
+<area shape="poly" id="edge10_Node000007_Node000009" title=" " alt="" coords="852,1871,795,2350,771,2508,765,2507,789,2349,847,1871"/>
 </map>

@@ -1,0 +1,31 @@
+<map id="vfs::InodeOps::Lookup" name="vfs::InodeOps::Lookup">
+<area shape="rect" id="Node000001" title="在目录中查找指定名称的 inode" alt="" coords="484,203,649,228"/>
+<area shape="rect" id="Node000002" href="$namespacevfs.html#ab13a5ee8d7ce0e205943bf30c6d5fffa" title="路径解析，查找 dentry" alt="" coords="340,128,436,153"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="521,200,418,156,420,151,524,195"/>
+<area shape="rect" id="Node000011" href="$ramfs__test_8cpp.html#a054aec12bce251e0828c79c897476a53" title=" " alt="" coords="353,177,423,203"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="470,204,423,197,423,192,470,199"/>
+<area shape="rect" id="Node000012" href="$ramfs__test_8cpp.html#ae3065eed1e62e3c753d07cedae489a2f" title=" " alt="" coords="353,227,423,252"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="470,231,423,237,423,232,470,226"/>
+<area shape="rect" id="Node000013" href="$ramfs__test_8cpp.html#a024daa7f887baa1f35ff764bfb4e618d" title=" " alt="" coords="353,276,423,301"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="523,236,421,278,419,273,521,231"/>
+<area shape="rect" id="Node000003" href="$namespacevfs.html#a628f118a94d2d7c9d5747cc63f76f155" title="创建目录" alt="" coords="201,5,291,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,119,332,82,290,44,273,33,276,29,294,40,336,78,370,115"/>
+<area shape="rect" id="Node000006" href="$namespacevfs.html#a3ff991d7efce0508dad20b97f2a2bda7" title="打开文件" alt="" coords="204,55,288,80"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="349,124,271,83,273,78,352,119"/>
+<area shape="rect" id="Node000007" href="$namespacevfs.html#a9a3d6b35240ad82e6eb2920d3a3d02fb" title="删除目录" alt="" coords="201,104,291,129"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="326,133,291,127,292,122,327,128"/>
+<area shape="rect" id="Node000008" href="$vfs__test_8cpp.html#afe660ce6dcd4aea6db3b011dc3ee73ef" title=" " alt="" coords="211,203,281,228"/>
+<area shape="poly" id="edge10_Node000002_Node000008" title=" " alt="" coords="351,162,341,167,272,205,269,200,339,162,348,157"/>
+<area shape="rect" id="Node000009" href="$vfs__test_8cpp.html#aed43bce1095065d3601462f609b1c850" title=" " alt="" coords="211,252,281,277"/>
+<area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="346,163,342,167,326,185,318,203,310,221,294,241,276,254,273,250,290,237,305,219,313,201,322,182,338,163,343,159"/>
+<area shape="rect" id="Node000010" href="$namespacevfs.html#a921acc95350b2eb0f731cba27d862892" title="删除文件" alt="" coords="200,153,292,179"/>
+<area shape="poly" id="edge12_Node000002_Node000010" title=" " alt="" coords="327,154,293,160,292,155,326,149"/>
+<area shape="rect" id="Node000004" href="$fatfs__system__test_8cpp.html#a9836048479097cd2cad3669eccc57389" title=" " alt="" coords="9,19,148,44"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="188,25,148,28,148,23,187,20"/>
+<area shape="rect" id="Node000005" href="$ramfs__system__test_8cpp.html#a0c73a2434a6f18c0fac51e32863e40e9" title=" " alt="" coords="5,80,152,105"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="205,39,109,82,107,78,203,34"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="190,58,138,47,139,41,191,53"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="191,78,153,84,152,79,190,73"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="187,111,152,106,153,101,188,106"/>
+<area shape="poly" id="edge13_Node000010_Node000005" title=" " alt="" coords="203,150,108,108,110,103,205,145"/>
+</map>

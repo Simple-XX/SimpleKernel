@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['故障排除_0',['故障排除',['../md_docker.html#autotoc_md249',1,'']]]
+  ['环境搭建_0',['🛠️ 环境搭建',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md300',1,'']]]
 ];

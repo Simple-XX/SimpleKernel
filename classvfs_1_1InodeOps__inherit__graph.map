@@ -1,0 +1,7 @@
+<map id="vfs::InodeOps" name="vfs::InodeOps">
+<area shape="rect" id="Node000001" title="Inode 操作接口" alt="" coords="136,5,247,391"/>
+<area shape="rect" id="Node000002" href="$classfatfs_1_1FatFsFileSystem_1_1FatFsInodeOps.html" title="FatFS inode 操作实现" alt="" coords="5,439,164,619"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,383,116,439,111,438,129,382"/>
+<area shape="rect" id="Node000003" href="$classramfs_1_1RamFs_1_1RamFsInodeOps.html" title="Inode 操作实现类" alt="" coords="189,446,407,611"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="253,382,274,445,269,447,248,383"/>
+</map>

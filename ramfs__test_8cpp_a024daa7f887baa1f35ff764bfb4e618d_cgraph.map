@@ -1,0 +1,9 @@
+<map id="TEST_F" name="TEST_F">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,75,80"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1InodeOps.html#a45b634889f988376eac511bd6215ddda" title="在目录中创建新文件" alt="" coords="124,5,287,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,54,122,39,147,32,148,37,123,45,76,59"/>
+<area shape="rect" id="Node000003" href="$classvfs_1_1InodeOps.html#af27f0ad7fd502bb65eafa84e6e282306" title="在目录中查找指定名称的 inode" alt="" coords="123,55,288,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="75,65,109,65,109,70,75,70"/>
+<area shape="rect" id="Node000004" href="$classvfs_1_1InodeOps.html#a1af54003e9a15445c4a4976e230cc5c2" title="删除文件（解除链接）" alt="" coords="125,104,286,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="76,75,150,97,148,102,74,80"/>
+</map>

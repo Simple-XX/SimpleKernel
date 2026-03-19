@@ -1,5 +1,7 @@
 <map id="exit_system_test" name="exit_system_test">
-<area shape="rect" id="Node000001" title="Exit 系统测试入口" alt="" coords="5,5,140,31"/>
-<area shape="rect" id="Node000002" href="$classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="188,5,357,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,15,174,15,174,21,140,21"/>
+<area shape="rect" id="Node000001" title="Exit 系统测试入口" alt="" coords="5,31,140,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="190,5,273,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,30,176,24,177,29,141,35"/>
+<area shape="rect" id="Node000003" href="$syscall_8cpp.html#a25c4acbedb0e92618dfb30e0e67827c7" title="休眠指定毫秒数" alt="" coords="188,55,275,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,51,175,56,174,61,140,56"/>
 </map>

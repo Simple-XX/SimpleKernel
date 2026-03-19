@@ -111,16 +111,17 @@ Collaboration diagram for TaskControlBlock::PriorityCompare:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae9a7f3b088cb054a0735d11241ecd377" id="r_ae9a7f3b088cb054a0735d11241ecd377"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock_1_1PriorityCompare.html#ae9a7f3b088cb054a0735d11241ecd377">operator()</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *a, <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *b)</td></tr>
-<tr class="separator:ae9a7f3b088cb054a0735d11241ecd377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa67e654ddfe6595813cc3a47a37f88f0" id="r_aa67e654ddfe6595813cc3a47a37f88f0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTaskControlBlock_1_1PriorityCompare.html#aa67e654ddfe6595813cc3a47a37f88f0">operator()</a> (<a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *a, <a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *b) -&gt; bool</td></tr>
+<tr class="memdesc:aa67e654ddfe6595813cc3a47a37f88f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">比较两个任务的优先级  <br /></td></tr>
+<tr class="separator:aa67e654ddfe6595813cc3a47a37f88f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>任务优先级比较函数，优先级数值越小，优先级越高 </p>
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00085">85</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00128">128</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae9a7f3b088cb054a0735d11241ecd377" name="ae9a7f3b088cb054a0735d11241ecd377"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9a7f3b088cb054a0735d11241ecd377">&#9670;&#160;</a></span>operator()()</h2>
+<a id="aa67e654ddfe6595813cc3a47a37f88f0" name="aa67e654ddfe6595813cc3a47a37f88f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa67e654ddfe6595813cc3a47a37f88f0">&#9670;&#160;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,7 +130,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool TaskControlBlock::PriorityCompare::operator() </td>
+          <td class="memname">auto TaskControlBlock::PriorityCompare::operator() </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTaskControlBlock.html">TaskControlBlock</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -143,7 +144,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt; bool </td>
         </tr>
       </table>
   </td>
@@ -153,17 +154,27 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00086">86</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>                                                              {</div>
-<div class="line"><span class="lineno">   87</span>      <span class="keywordflow">return</span> a-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a> &gt; b-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a>;</div>
-<div class="line"><span class="lineno">   88</span>    }</div>
-<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ac2111c5fb74dd8f8113f7734540caa00"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">TaskControlBlock::SchedInfo::priority</a></div><div class="ttdeci">int priority</div><div class="ttdoc">优先级 (数字越小优先级越高)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00134">task_control_block.hpp:134</a></div></div>
+<p>比较两个任务的优先级 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>第一个任务控制块指针 </td></tr>
+    <tr><td class="paramname">b</td><td>第二个任务控制块指针 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool 如果 a 的优先级低于 b 返回 true </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="task__control__block_8hpp_source.html#l00135">135</a> of file <a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>                                                                      {</div>
+<div class="line"><span class="lineno">  136</span>      <span class="keywordflow">return</span> a-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a> &gt; b-&gt;<a class="code hl_variable" href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">sched_info</a>.<a class="code hl_variable" href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">priority</a>;</div>
+<div class="line"><span class="lineno">  137</span>    }</div>
+<div class="ttc" id="astructTaskControlBlock_1_1SchedInfo_html_ac2111c5fb74dd8f8113f7734540caa00"><div class="ttname"><a href="structTaskControlBlock_1_1SchedInfo.html#ac2111c5fb74dd8f8113f7734540caa00">TaskControlBlock::SchedInfo::priority</a></div><div class="ttdeci">int priority</div><div class="ttdoc">优先级 (数字越小优先级越高)</div><div class="ttdef"><b>Definition</b> <a href="task__control__block_8hpp_source.html#l00172">task_control_block.hpp:172</a></div></div>
 <div class="ttc" id="astructTaskControlBlock_html_a3075e45ca454dbb5309161896e432ace"><div class="ttname"><a href="structTaskControlBlock.html#a3075e45ca454dbb5309161896e432ace">TaskControlBlock::sched_info</a></div><div class="ttdeci">struct TaskControlBlock::SchedInfo sched_info</div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/root/src/task/include/<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/task/include/<a class="el" href="task__control__block_8hpp_source.html">task_control_block.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

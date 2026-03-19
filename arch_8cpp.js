@@ -1,5 +1,6 @@
 var arch_8cpp =
 [
+    [ "etl_putchar", "arch_8cpp.html#a33267275ffa0d841201ac55a6d5283d2", null ],
     [ "InitTaskContext", "arch_8cpp.html#a68bd5f23f249b2c277d460dc2e2ee47a", null ],
     [ "InitTaskContext", "arch_8cpp.html#a13c92ba83f807779913f45bc9ac404b0", null ],
     [ "kernel_thread_entry", "arch_8cpp.html#a7241001f2323bd5690c3ee10606fb8c4", null ],

@@ -1,7 +1,26 @@
 var searchData=
 [
-  ['val_0',['val',['../classAbsClass.html#ae599747a037447fdccb73502f97f9458',1,'AbsClass']]],
-  ['value_5f_1',['value_',['../structResourceId.html#a01fa5a5fe7ecff2f7b8b2ea54102a1e0',1,'ResourceId']]],
-  ['variant_2',['variant',['../structGic_1_1Gicd_1_1GICD__IIDR.html#abcfe089ab2e78030cb3917be0a3818cc',1,'Gic::Gicd::GICD_IIDR']]],
-  ['vruntime_3',['vruntime',['../unionTaskControlBlock_1_1SchedData.html#ad7af8dac9a951e32073987b56ada9c4d',1,'TaskControlBlock::SchedData']]]
+  ['table_5f_0',['table_',['../classfilesystem_1_1FileDescriptorTable.html#ae9812d22e765fc7b9b13eb343480d5ef',1,'filesystem::FileDescriptorTable']]],
+  ['task_5fcontext_1',['task_context',['../structTaskControlBlock.html#af087bcb6f419c7484c1200719e0751a9',1,'TaskControlBlock']]],
+  ['task_5ftable_5f_2',['task_table_',['../classTaskManager.html#aaacd2d8cad02ed352e7d51e655f65fed',1,'TaskManager']]],
+  ['task_5ftable_5flock_5f_3',['task_table_lock_',['../classTaskManager.html#af14711655dcdd45271bfcd36d30c435d',1,'TaskManager']]],
+  ['tgid_4',['tgid',['../structTaskAuxData.html#a192120a29c0ba83e029ab7107982c49c',1,'TaskAuxData']]],
+  ['thread_5fid_5',['thread_id',['../structtest__env_1_1CoreEnvironment.html#a8702c87a8a13d96da7e064684e4b245a',1,'test_env::CoreEnvironment']]],
+  ['thread_5fto_5fcore_5fmap_5f_6',['thread_to_core_map_',['../classtest__env_1_1TestEnvironmentState.html#a315f768cc39201b72402233203f7f667',1,'test_env::TestEnvironmentState']]],
+  ['time_5fslice_5fdefault_7',['time_slice_default',['../structTaskControlBlock_1_1SchedInfo.html#a1285800eebf37bb44c68ebc43ccdbc86',1,'TaskControlBlock::SchedInfo']]],
+  ['time_5fslice_5fremaining_8',['time_slice_remaining',['../structTaskControlBlock_1_1SchedInfo.html#acbbd6ad7913e4f93e31eabd16c1691ee',1,'TaskControlBlock::SchedInfo']]],
+  ['timestamp_9',['timestamp',['../structTaskManager_1_1InterruptWork.html#a112fb416b1b1232162c26fc822cb986c',1,'TaskManager::InterruptWork::timestamp'],['../structtest__env_1_1CoreEnvironment_1_1SwitchEvent.html#ad717b7800f719fdae9bf8b5186b163fb',1,'test_env::CoreEnvironment::SwitchEvent::timestamp']]],
+  ['to_10',['to',['../structtest__env_1_1CoreEnvironment_1_1SwitchEvent.html#ae2772f846a7aee1df7d4d5a1740b58fe',1,'test_env::CoreEnvironment::SwitchEvent']]],
+  ['token_11',['token',['../structvirtio_1_1blk_1_1VirtioBlk_1_1RequestSlot.html#a85643fc0e847db0c91f1a00f9e901ece',1,'virtio::blk::VirtioBlk::RequestSlot']]],
+  ['topology_12',['topology',['../structvirtio_1_1blk_1_1BlkConfig.html#a9c2971c8d2a3443bdf1000d52d1af7c3',1,'virtio::blk::BlkConfig']]],
+  ['total_5fdequeues_13',['total_dequeues',['../structSchedulerBase_1_1Stats.html#a2b77710183b8706262c53dc712f0ba0d',1,'SchedulerBase::Stats']]],
+  ['total_5fenqueues_14',['total_enqueues',['../structSchedulerBase_1_1Stats.html#ad5a40384c3c0c779491463433e2a311e',1,'SchedulerBase::Stats']]],
+  ['total_5fpicks_15',['total_picks',['../structSchedulerBase_1_1Stats.html#a8659b427d166ead02a1cb2a6d44f14fa',1,'SchedulerBase::Stats']]],
+  ['total_5fpreemptions_16',['total_preemptions',['../structSchedulerBase_1_1Stats.html#a4e5165fd2356707d9c3cfa69b773a7f6',1,'SchedulerBase::Stats']]],
+  ['total_5fruntime_17',['total_runtime',['../structTaskControlBlock_1_1SchedInfo.html#aa3b63fccb72be5ed876174f421ca5fae',1,'TaskControlBlock::SchedInfo']]],
+  ['total_5fschedules_18',['total_schedules',['../structCpuSchedData.html#aa46c34b237397559af347e4f852fd75f',1,'CpuSchedData']]],
+  ['tp_19',['tp',['../structcpu__io_1_1TrapContext.html#ab43511ac1029a1ef02cf57fc8c878bef',1,'cpu_io::TrapContext']]],
+  ['transport_5f_20',['transport_',['../classvirtio_1_1blk_1_1VirtioBlk.html#ad0a822208a2197dd917c32116379b88f',1,'virtio::blk::VirtioBlk::transport_'],['../classvirtio_1_1DeviceInitializer.html#a82cf668a021d95155ec729bfbfd490e9',1,'virtio::DeviceInitializer::transport_']]],
+  ['trap_5fcontext_5fptr_21',['trap_context_ptr',['../structTaskControlBlock.html#af4dcf4dd6f3edffbf3e17d8ff4845226',1,'TaskControlBlock']]],
+  ['type_22',['type',['../structDeviceNode.html#ace6d44424d566b1a2252f7d2ca99e6a7',1,'DeviceNode::type'],['../structvirtio_1_1blk_1_1BlkReqHeader.html#a6b5a754bd0299847414a0897b583480c',1,'virtio::blk::BlkReqHeader::type'],['../structvfs_1_1Inode.html#a566928ca43a56f7a4d1ac18d3b56247f',1,'vfs::Inode::type'],['../structvfs_1_1DirEntry.html#aa1c4e3823a035a6a9b259a29f64b7d6f',1,'vfs::DirEntry::type']]]
 ];

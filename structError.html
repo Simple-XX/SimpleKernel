@@ -97,13 +97,16 @@ $(document).ready(function(){initNavTree('structError.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 
+<p>错误类型，用于 std::expected  
+ <a href="structError.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="expected_8hpp_source.html">expected.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for Error:</div>
 <div class="dyncontent">
 <div class="center"><img src="structError__coll__graph.png" border="0" usemap="#aError_coll__map" alt="Collaboration graph"/></div>
 <map name="aError_coll__map" id="aError_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,103,91"/>
+<area shape="rect" title="错误类型，用于 std::expected" alt="" coords="5,5,111,331"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -113,19 +116,32 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a832e3dca1adbf321f0616b2d7081e19d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa63ee10532d668f25a5147d7dc753749" id="r_aa63ee10532d668f25a5147d7dc753749"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#aa63ee10532d668f25a5147d7dc753749">message</a> () const -&gt; const char *</td></tr>
 <tr class="separator:aa63ee10532d668f25a5147d7dc753749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
+<tr class="memitem:af7272f57306a656ad4f8dbb6d7dd88d7" id="r_af7272f57306a656ad4f8dbb6d7dd88d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#af7272f57306a656ad4f8dbb6d7dd88d7">Error</a> ()=default</td></tr>
+<tr class="separator:af7272f57306a656ad4f8dbb6d7dd88d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d407e0ae233cb05e169968a64a38ee4" id="r_a8d407e0ae233cb05e169968a64a38ee4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#a8d407e0ae233cb05e169968a64a38ee4">Error</a> (const <a class="el" href="structError.html">Error</a> &amp;)=default</td></tr>
+<tr class="separator:a8d407e0ae233cb05e169968a64a38ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acadaef437d7bd0705b024bb4596088e1" id="r_acadaef437d7bd0705b024bb4596088e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#acadaef437d7bd0705b024bb4596088e1">Error</a> (<a class="el" href="structError.html">Error</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:acadaef437d7bd0705b024bb4596088e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebbc15b4dbc3e16fc415e106fe27b04c" id="r_aebbc15b4dbc3e16fc415e106fe27b04c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#aebbc15b4dbc3e16fc415e106fe27b04c">operator=</a> (const <a class="el" href="structError.html">Error</a> &amp;) -&gt; <a class="el" href="structError.html">Error</a> &amp;=default</td></tr>
+<tr class="separator:aebbc15b4dbc3e16fc415e106fe27b04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6ab699843e5b3a7547c8a0fdea2ce93" id="r_af6ab699843e5b3a7547c8a0fdea2ce93"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#af6ab699843e5b3a7547c8a0fdea2ce93">operator=</a> (<a class="el" href="structError.html">Error</a> &amp;&amp;) -&gt; <a class="el" href="structError.html">Error</a> &amp;=default</td></tr>
+<tr class="separator:af6ab699843e5b3a7547c8a0fdea2ce93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee7d800cc0eedf3a353730891803b6e0" id="r_aee7d800cc0eedf3a353730891803b6e0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#aee7d800cc0eedf3a353730891803b6e0">~Error</a> ()=default</td></tr>
+<tr class="separator:aee7d800cc0eedf3a353730891803b6e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a3fd10fc0be9fa90f230b46b0618e9df3" id="r_a3fd10fc0be9fa90f230b46b0618e9df3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895f">ErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">code</a></td></tr>
+<tr class="memitem:a3fd10fc0be9fa90f230b46b0618e9df3" id="r_a3fd10fc0be9fa90f230b46b0618e9df3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895f">ErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">code</a> {<a class="el" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa8c632159fa131f09d04f94e3cbcd8782">ErrorCode::kSuccess</a>}</td></tr>
 <tr class="separator:a3fd10fc0be9fa90f230b46b0618e9df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>错误类型，用于 std::expected </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>还需要传递一个具体错误信息的字符串 </dd></dl>
+<div class="textblock"><p>错误类型，用于 std::expected </p>
 
-<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00150">150</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00343">343</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a832e3dca1adbf321f0616b2d7081e19d" name="a832e3dca1adbf321f0616b2d7081e19d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a832e3dca1adbf321f0616b2d7081e19d">&#9670;&#160;</a></span>Error()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a832e3dca1adbf321f0616b2d7081e19d">&#9670;&#160;</a></span>Error() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,15 +159,117 @@ Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00153">153</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  153</span>: <a class="code hl_variable" href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">code</a>(c) {}</div>
-<div class="ttc" id="astructError_html_a3fd10fc0be9fa90f230b46b0618e9df3"><div class="ttname"><a href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">Error::code</a></div><div class="ttdeci">ErrorCode code</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00151">expected.hpp:151</a></div></div>
+<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00346">346</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  346</span>: <a class="code hl_variable" href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">code</a>(c) {}</div>
+<div class="ttc" id="astructError_html_a3fd10fc0be9fa90f230b46b0618e9df3"><div class="ttname"><a href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">Error::code</a></div><div class="ttdeci">ErrorCode code</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00344">expected.hpp:344</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="af7272f57306a656ad4f8dbb6d7dd88d7" name="af7272f57306a656ad4f8dbb6d7dd88d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7272f57306a656ad4f8dbb6d7dd88d7">&#9670;&#160;</a></span>Error() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Error::Error </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8d407e0ae233cb05e169968a64a38ee4" name="a8d407e0ae233cb05e169968a64a38ee4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d407e0ae233cb05e169968a64a38ee4">&#9670;&#160;</a></span>Error() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Error::Error </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structError.html">Error</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acadaef437d7bd0705b024bb4596088e1" name="acadaef437d7bd0705b024bb4596088e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acadaef437d7bd0705b024bb4596088e1">&#9670;&#160;</a></span>Error() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Error::Error </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structError.html">Error</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aee7d800cc0eedf3a353730891803b6e0" name="aee7d800cc0eedf3a353730891803b6e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee7d800cc0eedf3a353730891803b6e0">&#9670;&#160;</a></span>~Error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Error::~Error </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -178,11 +296,11 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00155">155</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  155</span>                                                              {</div>
-<div class="line"><span class="lineno">  156</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16">GetErrorMessage</a>(<a class="code hl_variable" href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">code</a>);</div>
-<div class="line"><span class="lineno">  157</span>  }</div>
-<div class="ttc" id="aexpected_8hpp_html_a707ff37b9c7f7c83cf7f984840fa7a16"><div class="ttname"><a href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16">GetErrorMessage</a></div><div class="ttdeci">constexpr auto GetErrorMessage(ErrorCode code) -&gt; const char *</div><div class="ttdoc">获取错误码对应的错误信息</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00063">expected.hpp:63</a></div></div>
+<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00358">358</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  358</span>                                                              {</div>
+<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16">GetErrorMessage</a>(<a class="code hl_variable" href="structError.html#a3fd10fc0be9fa90f230b46b0618e9df3">code</a>);</div>
+<div class="line"><span class="lineno">  360</span>  }</div>
+<div class="ttc" id="aexpected_8hpp_html_a707ff37b9c7f7c83cf7f984840fa7a16"><div class="ttname"><a href="expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16">GetErrorMessage</a></div><div class="ttdeci">constexpr auto GetErrorMessage(ErrorCode code) -&gt; const char *</div><div class="ttdoc">获取错误码对应的错误信息</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00141">expected.hpp:141</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -198,27 +316,85 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="structError_aa63ee10532d668f25a5147d7dc753749_icgraph.png" border="0" usemap="#astructError_aa63ee10532d668f25a5147d7dc753749_icgraph" alt=""/></div>
 <map name="astructError_aa63ee10532d668f25a5147d7dc753749_icgraph" id="astructError_aa63ee10532d668f25a5147d7dc753749_icgraph">
-<area shape="rect" title=" " alt="" coords="371,179,491,204"/>
-<area shape="rect" href="aarch64_2arch__main_8cpp.html#aa26c42c34bbb6c8c7cd4a8664dc7952f" title=" " alt="" coords="179,5,251,31"/>
-<area shape="poly" title=" " alt="" coords="416,168,380,105,353,72,321,44,287,29,251,22,252,17,288,24,324,40,357,68,384,102,421,165"/>
-<area shape="rect" href="x86__64_2arch__main_8cpp.html#aef7722ec22df90253efc0918932cc95c" title=" " alt="" coords="179,55,251,80"/>
-<area shape="poly" title=" " alt="" coords="409,170,371,130,347,110,321,94,286,80,251,73,252,68,288,75,324,89,350,106,375,126,413,166"/>
-<area shape="rect" href="x86__64_2arch__main_8cpp.html#a0eb8a6ba9bf6955a6c5a89ee62171f6e" title=" " alt="" coords="165,104,265,129"/>
-<area shape="poly" title=" " alt="" coords="393,175,322,143,265,128,267,123,324,138,395,170"/>
-<area shape="rect" href="structBasicInfo.html#a6ac16be61163567a93151ef9289daf66" title=" " alt="" coords="140,153,291,179"/>
-<area shape="poly" title=" " alt="" coords="357,185,290,177,291,172,357,180"/>
-<area shape="rect" href="classApic.html#a02c227a2528fb3a8c7b00a2dc3b516ff" title="初始化当前 CPU 的 Local APIC" alt="" coords="108,203,323,228"/>
-<area shape="poly" title=" " alt="" coords="358,202,323,206,323,201,357,197"/>
-<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title=" " alt="" coords="143,252,288,277"/>
-<area shape="poly" title=" " alt="" coords="393,213,324,242,280,254,278,249,322,237,391,208"/>
-<area shape="rect" href="classKernelFdt.html#a35c6fabd23230de5dee7763f2d1318ec" title=" " alt="" coords="138,301,293,327"/>
-<area shape="poly" title=" " alt="" coords="412,217,374,255,350,275,324,291,292,304,290,299,321,286,347,270,370,251,408,213"/>
-<area shape="rect" href="classApic.html#ade18168e69461b8ee4c8d34d91091b58" title="唤醒所有应用处理器 (AP)" alt="" coords="142,351,289,376"/>
-<area shape="poly" title=" " alt="" coords="420,218,384,280,357,313,324,340,290,356,288,351,321,336,353,309,379,277,416,215"/>
-<area shape="rect" href="tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,5,60,31"/>
-<area shape="poly" title=" " alt="" coords="166,21,60,21,60,15,166,15"/>
+<area shape="rect" title=" " alt="" coords="371,228,491,253"/>
+<area shape="rect" href="aarch64_2arch__main_8cpp.html#a6a670facdde513eab1f26f8a04e2efbd" title="体系结构相关初始化" alt="" coords="179,5,251,31"/>
+<area shape="poly" title=" " alt="" coords="420,215,408,176,388,130,359,83,341,62,321,44,287,28,251,21,252,16,289,23,324,40,345,58,363,80,392,127,413,174,425,213"/>
+<area shape="rect" href="x86__64_2arch__main_8cpp.html#af6a7df6e3d37dee1b7150666735bb379" title="从核的体系结构相关初始化" alt="" coords="165,55,265,80"/>
+<area shape="poly" title=" " alt="" coords="416,217,380,154,353,121,321,94,294,81,265,73,266,68,296,76,324,89,357,117,384,151,421,214"/>
+<area shape="rect" href="structBasicInfo.html#a6ac16be61163567a93151ef9289daf66" title=" " alt="" coords="140,104,291,129"/>
+<area shape="poly" title=" " alt="" coords="409,219,371,179,347,160,321,143,290,131,292,126,324,138,350,155,375,175,413,215"/>
+<area shape="rect" href="classApic.html#a02c227a2528fb3a8c7b00a2dc3b516ff" title="初始化当前 CPU 的 Local APIC" alt="" coords="108,153,323,179"/>
+<area shape="poly" title=" " alt="" coords="393,224,322,193,283,181,284,176,324,187,395,219"/>
+<area shape="rect" href="classInterrupt.html#a736dd658be198f3dc94db0f876fb2499" title=" " alt="" coords="144,203,287,228"/>
+<area shape="poly" title=" " alt="" coords="357,235,287,226,287,221,357,229"/>
+<area shape="rect" href="aarch64_2interrupt__main_8cpp.html#a51f9c37118da7a1c32e70f272cc7b3e8" title="体系结构相关中断初始化" alt="" coords="166,252,265,277"/>
+<area shape="poly" title=" " alt="" coords="357,251,265,262,264,257,357,246"/>
+<area shape="rect" href="x86__64_2interrupt__main_8cpp.html#ad310aa2bb690e3d8b4e6a036aae3dd93" title="从核的体系结构相关中断初始化" alt="" coords="152,301,279,327"/>
+<area shape="poly" title=" " alt="" coords="393,262,324,291,280,304,278,299,322,286,391,257"/>
+<area shape="rect" href="classKernelElf.html#af02f46849b67568666efd984ece31a67" title="构造函数" alt="" coords="143,351,288,376"/>
+<area shape="poly" title=" " alt="" coords="412,266,374,304,350,324,324,340,289,354,287,349,321,336,347,320,370,301,408,262"/>
+<area shape="rect" href="memory_8cpp.html#a97dad1f7048065936858b6302fb25eab" title="内存子系统初始化" alt="" coords="167,400,264,425"/>
+<area shape="poly" title=" " alt="" coords="420,267,384,329,357,362,324,390,295,403,265,411,264,406,293,398,321,385,353,358,379,326,416,264"/>
+<area shape="rect" href="classApic.html#a81b4abb694e982a05ce313053759b8d1" title="唤醒所有应用处理器 (AP)" alt="" coords="142,449,289,475"/>
+<area shape="poly" title=" " alt="" coords="425,268,412,306,392,352,363,399,324,439,290,456,288,451,321,435,359,396,387,350,407,304,420,266"/>
+<area shape="rect" href="tests_2system__test_2main_8cpp.html#ab85c3edfd2aada0e059dccf8d002924d" title="内核入口" alt="" coords="5,252,60,277"/>
+<area shape="poly" title=" " alt="" coords="166,21,136,29,110,44,89,68,72,95,50,155,40,211,37,252,31,252,35,211,45,154,67,93,84,64,106,40,134,24,165,16"/>
+<area shape="poly" title=" " alt="" coords="152,267,60,267,60,262,152,262"/>
+<area shape="poly" title=" " alt="" coords="152,409,129,402,106,389,80,363,59,332,35,278,40,276,64,330,84,360,110,385,131,397,154,404"/>
 </map>
 </div>
+
+</div>
+</div>
+<a id="aebbc15b4dbc3e16fc415e106fe27b04c" name="aebbc15b4dbc3e16fc415e106fe27b04c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebbc15b4dbc3e16fc415e106fe27b04c">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Error::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structError.html">Error</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="structError.html">Error</a> &amp;=default</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af6ab699843e5b3a7547c8a0fdea2ce93" name="af6ab699843e5b3a7547c8a0fdea2ce93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6ab699843e5b3a7547c8a0fdea2ce93">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Error::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structError.html">Error</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="structError.html">Error</a> &amp;=default</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -230,17 +406,19 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895f">ErrorCode</a> Error::code</td>
+          <td class="memname"><a class="el" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895f">ErrorCode</a> Error::code {<a class="el" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa8c632159fa131f09d04f94e3cbcd8782">ErrorCode::kSuccess</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00151">151</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
-
+<p class="definition">Definition at line <a class="el" href="expected_8hpp_source.html#l00344">344</a> of file <a class="el" href="expected_8hpp_source.html">expected.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  344</span>{<a class="code hl_enumvalue" href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa8c632159fa131f09d04f94e3cbcd8782">ErrorCode::kSuccess</a>};</div>
+<div class="ttc" id="aexpected_8hpp_html_a4d45a9675d1bf454764383179f3c895fa8c632159fa131f09d04f94e3cbcd8782"><div class="ttname"><a href="expected_8hpp.html#a4d45a9675d1bf454764383179f3c895fa8c632159fa131f09d04f94e3cbcd8782">ErrorCode::kSuccess</a></div><div class="ttdeci">@ kSuccess</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/root/src/include/<a class="el" href="expected_8hpp_source.html">expected.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/include/<a class="el" href="expected_8hpp_source.html">expected.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

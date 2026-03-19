@@ -1,0 +1,14 @@
+<map id="/workspaces/SimpleKernel/src/filesystem/vfs/include/vfs.hpp" name="/workspaces/SimpleKernel/src/filesystem/vfs/include/vfs.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="17,5,211,60"/>
+<area shape="rect" id="Node000002" href="$vfs__types_8hpp.html" title=" " alt="" coords="57,108,171,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,60,117,94,111,94,111,60"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,181,76,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,136,64,174,61,170,100,132"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="81,255,147,280"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="117,134,117,241,111,241,111,134"/>
+<area shape="rect" id="Node000005" href="$expected_8hpp.html" title=" " alt="" coords="152,181,263,207"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="131,131,183,171,180,175,127,135"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="194,209,142,248,138,244,191,205"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="171,255,254,280"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="211,207,213,241,208,241,206,207"/>
+</map>

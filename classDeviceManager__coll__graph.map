@@ -1,0 +1,12 @@
+<map id="DeviceManager" name="DeviceManager">
+<area shape="rect" id="Node000001" title="设备管理器 — 管理所有设备节点和驱动程序。" alt="" coords="115,961,280,1407"/>
+<area shape="rect" id="Node000002" href="$structDeviceNode.html" title="单个设备的硬件资源描述。" alt="" coords="15,583,145,829"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,828,115,937,117,945,111,946,109,938,90,829"/>
+<area shape="rect" id="Node000003" href="$classvfs_1_1BlockDevice.html" title="块设备抽象基类" alt="" coords="5,135,147,321"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="79,321,80,489,81,567,75,567,75,489,74,321"/>
+<area shape="rect" id="Node000004" href="$classDriverRegistry.html" title="驱动注册表 — 以 ETL vector 存储 DriverEntry，并附带 flat_map 兼容索引。" alt="" coords="266,513,427,899"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="289,900,274,946,269,945,284,898"/>
+<area shape="rect" id="Node000005" href="$classSpinLock.html" title="自旋锁" alt="" coords="211,5,400,451"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="227,452,213,514,199,623,190,734,187,843,187,945,182,945,182,843,185,734,193,622,208,513,222,450"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="327,451,331,497,326,498,322,451"/>
+</map>

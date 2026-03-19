@@ -1,11 +1,11 @@
 <map id="KernelFdt::KernelFdt" name="KernelFdt::KernelFdt">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,160,80"/>
-<area shape="rect" id="Node000002" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="255,5,375,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,52,241,31,242,36,144,57"/>
-<area shape="rect" id="Node000004" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="259,55,370,80"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="160,65,245,65,245,70,160,70"/>
-<area shape="rect" id="Node000005" href="$classKernelFdt.html#a8f5ffa0c639e590b60f8a00f60f13731" title=" " alt="" coords="208,104,421,129"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="144,77,241,98,240,104,142,83"/>
-<area shape="rect" id="Node000003" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="469,5,604,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,15,455,15,455,21,375,21"/>
+<area shape="rect" id="Node000001" title="构造函数" alt="" coords="5,80,160,105"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="265,5,365,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,77,207,39,251,28,252,33,209,45,113,82"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="277,55,353,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,82,263,70,263,76,161,87"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="259,104,370,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,98,246,107,245,112,160,103"/>
+<area shape="rect" id="Node000005" href="$classKernelFdt.html#a8f5ffa0c639e590b60f8a00f60f13731" title="验证 FDT header" alt="" coords="208,153,421,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="115,103,209,138,242,147,241,153,207,143,113,108"/>
 </map>

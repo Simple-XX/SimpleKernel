@@ -1,0 +1,13 @@
+<map id="vfs::SetRootDentry" name="vfs::SetRootDentry">
+<area shape="rect" id="Node000001" title=" " alt="" coords="364,31,509,56"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1MountTable.html#ada87c6a7b5a166ae713a10ab0eb1346f" title="挂载文件系统到指定路径" alt="" coords="132,5,307,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="350,36,306,31,307,26,351,31"/>
+<area shape="rect" id="Node000005" href="$classvfs_1_1MountTable.html#a12babf36adbecba4cf0a74084d132dc2" title="卸载指定路径的文件系统" alt="" coords="123,55,316,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="351,55,317,59,316,54,350,50"/>
+<area shape="rect" id="Node000003" href="$vfs__test_8cpp.html#ab53a00d5dd23462253a551ddc04553c0" title=" " alt="" coords="5,5,75,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,21,75,21,75,15,118,15"/>
+<area shape="rect" id="Node000004" href="$vfs__test_8cpp.html#adbacb70bf9d6e603429e82e9dff8d18c" title=" " alt="" coords="5,55,75,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="153,37,123,45,76,59,74,54,122,39,152,31"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="155,54,122,45,74,31,76,26,123,39,156,48"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="109,70,75,70,75,65,109,65"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="Mutex::Lock" name="Mutex::Lock">
+<area shape="rect" id="Node000001" title="获取锁（阻塞）" alt="" coords="5,55,107,80"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="155,5,255,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,52,152,33,154,38,96,57"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="167,55,243,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="107,65,153,65,153,70,107,70"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="159,104,250,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="96,78,154,97,152,102,94,83"/>
+</map>

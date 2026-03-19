@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SimpleKernel: /root/src/libc/sk_string.c Source File</title>
+<title>SimpleKernel: /workspaces/SimpleKernel/src/libc/sk_string.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -106,9 +106,9 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// 复制内存块</span></div>
 <div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="sk__string_8h.html#aba088e716bccbc96d42da97e96316df1">   12</a></span><span class="keywordtype">void</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#a30c75e139b07107ef1c8d3f8490aee7d">memcpy</a>(<span class="keywordtype">void</span> *dest, <span class="keyword">const</span> <span class="keywordtype">void</span> *src, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keywordtype">char</span> *d = (<span class="keywordtype">char</span> *)dest;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *s = (<span class="keyword">const</span> <span class="keywordtype">char</span> *)src;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="sk__string_8h.html#aba088e716bccbc96d42da97e96316df1">   12</a></span><span class="keywordtype">void</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#a30c75e139b07107ef1c8d3f8490aee7d">memcpy</a>(<span class="keywordtype">void</span>* dest, <span class="keyword">const</span> <span class="keywordtype">void</span>* src, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keywordtype">char</span>* d = (<span class="keywordtype">char</span>*)dest;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* s = (<span class="keyword">const</span> <span class="keywordtype">char</span>*)src;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordflow">while</span> (n--) {</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    *d++ = *s++;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  }</div>
@@ -118,16 +118,16 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// 复制内存块，可以处理重叠区域。</span></div>
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a340d11725e5c81a874f508fbcdf1c5ef">   22</a></span><span class="keywordtype">void</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#a7263e7ed2c459f2c42e067c30775ed41">memmove</a>(<span class="keywordtype">void</span> *dest, <span class="keyword">const</span> <span class="keywordtype">void</span> *src, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordtype">char</span> *d = (<span class="keywordtype">char</span> *)dest;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *s = (<span class="keyword">const</span> <span class="keywordtype">char</span> *)src;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a340d11725e5c81a874f508fbcdf1c5ef">   22</a></span><span class="keywordtype">void</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#a7263e7ed2c459f2c42e067c30775ed41">memmove</a>(<span class="keywordtype">void</span>* dest, <span class="keyword">const</span> <span class="keywordtype">void</span>* src, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordtype">char</span>* d = (<span class="keywordtype">char</span>*)dest;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* s = (<span class="keyword">const</span> <span class="keywordtype">char</span>*)src;</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordflow">if</span> (d &lt; s) {</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordflow">while</span> (n--) {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>      *d++ = *s++;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *lasts = s + (n - 1);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">char</span> *lastd = d + (n - 1);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* lasts = s + (n - 1);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">char</span>* lastd = d + (n - 1);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">while</span> (n--) {</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      *lastd-- = *lasts--;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
@@ -138,8 +138,8 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// 设置内存块</span></div>
 <div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a88e5d365ae422f80172d7d30cea7f2df">   40</a></span><span class="keywordtype">void</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#aac7987d1560131b4de61d23504cb3a0c">memset</a>(<span class="keywordtype">void</span> *dest, <span class="keywordtype">int</span> val, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *ptr = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)dest;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a88e5d365ae422f80172d7d30cea7f2df">   40</a></span><span class="keywordtype">void</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#aac7987d1560131b4de61d23504cb3a0c">memset</a>(<span class="keywordtype">void</span>* dest, <span class="keywordtype">int</span> val, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* ptr = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)dest;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">while</span> (n-- &gt; 0) {</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    *ptr++ = val;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
@@ -149,9 +149,9 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">// 比较内存块</span></div>
 <div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="sk__string_8h.html#ace6c4869ab3af01c6f27eac47773917a">   49</a></span><span class="keywordtype">int</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a7804c1bd203df33ebf99ffdd999bacb1">memcmp</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *str1, <span class="keyword">const</span> <span class="keywordtype">void</span> *str2, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *s1 = (<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)str1;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *s2 = (<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)str2;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="sk__string_8h.html#ace6c4869ab3af01c6f27eac47773917a">   49</a></span><span class="keywordtype">int</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a7804c1bd203df33ebf99ffdd999bacb1">memcmp</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* str1, <span class="keyword">const</span> <span class="keywordtype">void</span>* str2, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* s1 = (<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)str1;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* s2 = (<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)str2;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">while</span> (n-- &gt; 0) {</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> (*s1++ != *s2++) {</div>
@@ -164,13 +164,13 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">// 在内存块中查找字符</span></div>
 <div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="sk__string_8h.html#aa550844c07fbf72a9b486d0074e39163">   62</a></span><span class="keywordtype">void</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#ad44e0789846e8edde6892e3ff6d64d09">memchr</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *str, <span class="keywordtype">int</span> c, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *src = (<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)str;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="sk__string_8c.html#aeb39649333d99887efb1efd1920e2e9a">   62</a></span><span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#ad44e0789846e8edde6892e3ff6d64d09">memchr</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* str, <span class="keywordtype">int</span> c, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* src = (<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)str;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> uc = (<span class="keywordtype">unsigned</span> char)c;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">while</span> (n-- &gt; 0) {</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">if</span> (*src == uc) {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">return</span> (<span class="keywordtype">void</span> *)src;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">return</span> (<span class="keywordtype">void</span>*)src;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    src++;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
@@ -180,30 +180,30 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">// 复制字符串</span></div>
 <div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="sk__string_8h.html#ac5082c8ce4f0cddd88bf4d0d2e738308">   76</a></span><span class="keywordtype">char</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#a3c76c079d1e0dea93d871d02e407150e">strcpy</a>(<span class="keywordtype">char</span> *dest, <span class="keyword">const</span> <span class="keywordtype">char</span> *src) {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">char</span> *<a class="code hl_variable" href="acpi_8h.html#ab6b52376c1b9d81e6ea6f95a1225f832">address</a> = dest;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="sk__string_8h.html#ac5082c8ce4f0cddd88bf4d0d2e738308">   76</a></span><span class="keywordtype">char</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#a3c76c079d1e0dea93d871d02e407150e">strcpy</a>(<span class="keywordtype">char</span>* dest, <span class="keyword">const</span> <span class="keywordtype">char</span>* src) {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">char</span>* address = dest;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">while</span> ((*dest++ = *src++) != <span class="charliteral">&#39;\0&#39;</span>) {</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    ;</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="acpi_8h.html#ab6b52376c1b9d81e6ea6f95a1225f832">address</a>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">return</span> address;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>}</div>
 </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// 复制指定长度的字符串</span></div>
 <div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a9380f4a95b2c4e3d979b1634d3a8bcc9">   85</a></span><span class="keywordtype">char</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#a5ad0cad79c46e9a6e2bc4b77ac50e271">strncpy</a>(<span class="keywordtype">char</span> *dest, <span class="keyword">const</span> <span class="keywordtype">char</span> *src, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a9380f4a95b2c4e3d979b1634d3a8bcc9">   85</a></span><span class="keywordtype">char</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#a5ad0cad79c46e9a6e2bc4b77ac50e271">strncpy</a>(<span class="keywordtype">char</span>* dest, <span class="keyword">const</span> <span class="keywordtype">char</span>* src, <span class="keywordtype">size_t</span> n) {</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">size_t</span> size = <a class="code hl_define" href="sk__string__test_8cpp.html#a6bd766a5e6cefc1f45487ca1e870741f">strnlen</a>(src, n);</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">if</span> (size != n) {</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_define" href="sk__string__test_8cpp.html#aac7987d1560131b4de61d23504cb3a0c">memset</a>(dest + size, <span class="charliteral">&#39;\0&#39;</span>, n - size);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  }</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordflow">return</span> (<span class="keywordtype">char</span> *)<a class="code hl_define" href="sk__string__test_8cpp.html#a30c75e139b07107ef1c8d3f8490aee7d">memcpy</a>(dest, src, size);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordflow">return</span> (<span class="keywordtype">char</span>*)<a class="code hl_define" href="sk__string__test_8cpp.html#a30c75e139b07107ef1c8d3f8490aee7d">memcpy</a>(dest, src, size);</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
 </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">// 连接字符串</span></div>
 <div class="foldopen" id="foldopen00094" data-start="{" data-end="}">
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a19546e43db31c3095991b04023b422b2">   94</a></span><span class="keywordtype">char</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#ad140927f9ba5dc16bf8d64b9fb92c187">strcat</a>(<span class="keywordtype">char</span> *dest, <span class="keyword">const</span> <span class="keywordtype">char</span> *src) {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordtype">char</span> *add_d = dest;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a19546e43db31c3095991b04023b422b2">   94</a></span><span class="keywordtype">char</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#ad140927f9ba5dc16bf8d64b9fb92c187">strcat</a>(<span class="keywordtype">char</span>* dest, <span class="keyword">const</span> <span class="keywordtype">char</span>* src) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordtype">char</span>* add_d = dest;</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordflow">if</span> (dest != 0 &amp;&amp; src != 0) {</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">while</span> (*add_d) {</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      add_d++;</div>
@@ -219,24 +219,24 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">// 比较字符串</span></div>
 <div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a11bd144d7d44914099a3aeddf1c8567d">  109</a></span><span class="keywordtype">int</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a6b5d9a1031ac2602e31df1ba551bfafe">strcmp</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s1, <span class="keyword">const</span> <span class="keywordtype">char</span> *s2) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a11bd144d7d44914099a3aeddf1c8567d">  109</a></span><span class="keywordtype">int</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a6b5d9a1031ac2602e31df1ba551bfafe">strcmp</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s1, <span class="keyword">const</span> <span class="keywordtype">char</span>* s2) {</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordflow">while</span> (*s1 &amp;&amp; (*s1 == *s2)) {</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    s1++;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    s2++;</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  }</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">return</span> *(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)s1 - *(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)s2;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">return</span> *(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)s1 - *(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)s2;</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
 </div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">// 比较指定长度的字符串</span></div>
 <div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a07f4a84c11c106e95c32b6ab509346ef">  118</a></span><span class="keywordtype">int</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a7463baf5fb1b8c9bc859d5352d97313a">strncmp</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s1, <span class="keyword">const</span> <span class="keywordtype">char</span> *s2, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a07f4a84c11c106e95c32b6ab509346ef">  118</a></span><span class="keywordtype">int</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a7463baf5fb1b8c9bc859d5352d97313a">strncmp</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s1, <span class="keyword">const</span> <span class="keywordtype">char</span>* s2, <span class="keywordtype">size_t</span> n) {</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">if</span> (n == 0) {</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  }</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordflow">do</span> {</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">if</span> (*s1 != *s2++) {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <span class="keywordflow">return</span> (*(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)s1 - *(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *)(s2 - 1));</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <span class="keywordflow">return</span> (*(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)s1 - *(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)(s2 - 1));</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    }</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">if</span> (*s1++ == <span class="charliteral">&#39;\0&#39;</span>) {</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      <span class="keywordflow">break</span>;</div>
@@ -248,7 +248,7 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">// 获取字符串长度</span></div>
 <div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="sk__string_8h.html#aa383452fe445bfae989358c9d7d96f4f">  134</a></span><span class="keywordtype">size_t</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a417fef1b5cd577cfc9a2836bb40fa885">strlen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s) {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="sk__string_8h.html#aa383452fe445bfae989358c9d7d96f4f">  134</a></span><span class="keywordtype">size_t</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a417fef1b5cd577cfc9a2836bb40fa885">strlen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s) {</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordtype">size_t</span> len = 0;</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordflow">while</span> (s[len]) {</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    len++;</div>
@@ -259,8 +259,8 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">// 获取指定字符串长度</span></div>
 <div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a7bd978e4981a80586c5b3a0dac22f0f2">  143</a></span><span class="keywordtype">size_t</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a6bd766a5e6cefc1f45487ca1e870741f">strnlen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *p = s;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="sk__string_8h.html#a7bd978e4981a80586c5b3a0dac22f0f2">  143</a></span><span class="keywordtype">size_t</span> <a class="code hl_define" href="sk__string__test_8cpp.html#a6bd766a5e6cefc1f45487ca1e870741f">strnlen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="keyword">const</span> <span class="keywordtype">char</span>* p = s;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="keywordflow">while</span> (n-- &gt; 0 &amp;&amp; *p) {</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    p++;</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  }</div>
@@ -270,35 +270,35 @@ $(document).ready(function(){initNavTree('sk__string_8c_source.html',''); initRe
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">// 查找字符在字符串中的首次出现</span></div>
 <div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="sk__string_8h.html#ad7c16a2447154107d5ecd28434993443">  152</a></span><span class="keywordtype">char</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#a907b5e1042ad1a6bb4914ecc7d12f55c">strchr</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s, <span class="keywordtype">int</span> c) {</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="sk__string_8c.html#a032235412aaa1cf6fffe87004d034bb4">  152</a></span><span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#a907b5e1042ad1a6bb4914ecc7d12f55c">strchr</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s, <span class="keywordtype">int</span> c) {</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keywordtype">char</span> ch = (char)c;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">do</span> {</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">if</span> (*s == ch) {</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="keywordflow">return</span> (<span class="keywordtype">char</span> *)s;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="keywordflow">return</span> (<span class="keywordtype">char</span>*)s;</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  } <span class="keywordflow">while</span> (*s++);</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keywordflow">return</span> NULL;</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}</div>
 </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="sk__string_8h.html#af87bb1cdc3d71abcd9aa0bd6d36e50a8">  162</a></span><span class="keywordtype">char</span> *<a class="code hl_define" href="sk__string__test_8cpp.html#ab9fe116113ed7294c4cb842c31e3cc12">strrchr</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s, <span class="keywordtype">int</span> c) {</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="keywordtype">char</span> *rtnval = 0;</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordtype">char</span> ch = (char)c;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keywordflow">do</span> {</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keywordflow">if</span> (*s == ch) {</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      rtnval = (<span class="keywordtype">char</span> *)s;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  } <span class="keywordflow">while</span> (*s++);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keywordflow">return</span> (rtnval);</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>}</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">// 反向查找字符在字符串中的首次出现</span></div>
+<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="sk__string_8c.html#add3496cd810b346d871aeb4511cf63b9">  163</a></span><span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_define" href="sk__string__test_8cpp.html#ab9fe116113ed7294c4cb842c31e3cc12">strrchr</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s, <span class="keywordtype">int</span> c) {</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordtype">char</span>* rtnval = 0;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="keywordtype">char</span> ch = (char)c;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keywordflow">do</span> {</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">if</span> (*s == ch) {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      rtnval = (<span class="keywordtype">char</span>*)s;</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  } <span class="keywordflow">while</span> (*s++);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="keywordflow">return</span> (rtnval);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>}</div>
 </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>}</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aacpi_8h_html_ab6b52376c1b9d81e6ea6f95a1225f832"><div class="ttname"><a href="acpi_8h.html#ab6b52376c1b9d81e6ea6f95a1225f832">address</a></div><div class="ttdeci">uint64_t address</div><div class="ttdef"><b>Definition</b> <a href="acpi_8h_source.html#l00004">acpi.h:4</a></div></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>}</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="ask__string_8h_html"><div class="ttname"><a href="sk__string_8h.html">sk_string.h</a></div></div>
 <div class="ttc" id="ask__string__test_8cpp_html_a30c75e139b07107ef1c8d3f8490aee7d"><div class="ttname"><a href="sk__string__test_8cpp.html#a30c75e139b07107ef1c8d3f8490aee7d">memcpy</a></div><div class="ttdeci">#define memcpy</div><div class="ttdef"><b>Definition</b> <a href="sk__string__test_8cpp_source.html#l00008">sk_string_test.cpp:8</a></div></div>
 <div class="ttc" id="ask__string__test_8cpp_html_a3c76c079d1e0dea93d871d02e407150e"><div class="ttname"><a href="sk__string__test_8cpp.html#a3c76c079d1e0dea93d871d02e407150e">strcpy</a></div><div class="ttdeci">#define strcpy</div><div class="ttdef"><b>Definition</b> <a href="sk__string__test_8cpp_source.html#l00013">sk_string_test.cpp:13</a></div></div>

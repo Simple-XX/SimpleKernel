@@ -1,11 +1,11 @@
-<map id="/root/tests/unit_test/sk_string_test.cpp" name="/root/tests/unit_test/sk_string_test.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="63,5,212,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,109,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,47,81,85,77,82,116,44"/>
-<area shape="rect" id="Node000003" href="$sk__string_8c.html" title=" " alt="" coords="134,93,301,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,44,197,82,194,85,155,47"/>
-<area shape="rect" id="Node000004" href="$sk__string_8h.html" title=" " alt="" coords="171,167,264,192"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="220,119,220,153,215,153,215,119"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="180,240,255,265"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="220,192,220,226,215,226,215,192"/>
+<map id="/workspaces/SimpleKernel/tests/unit_test/sk_string_test.cpp" name="/workspaces/SimpleKernel/tests/unit_test/sk_string_test.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="41,5,234,60"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,108,109,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,62,80,99,76,96,111,58"/>
+<area shape="rect" id="Node000003" href="$sk__string_8c.html" title=" " alt="" coords="134,108,301,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,58,199,96,195,99,160,62"/>
+<area shape="rect" id="Node000004" href="$sk__string_8h.html" title=" " alt="" coords="171,181,264,207"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="220,134,220,168,215,168,215,134"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="180,255,255,280"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="220,207,220,241,215,241,215,207"/>
 </map>

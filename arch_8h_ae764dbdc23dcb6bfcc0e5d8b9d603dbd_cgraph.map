@@ -1,0 +1,24 @@
+<map id="InterruptInit" name="InterruptInit">
+<area shape="rect" id="Node000001" title="体系结构相关中断初始化" alt="" coords="5,179,104,204"/>
+<area shape="rect" id="Node000002" href="$namespacecpu__io.html#afe7f925ac3cb632ed212166712288451" title=" " alt="" coords="159,5,331,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="58,178,70,149,89,112,116,73,150,40,159,35,161,39,154,44,120,76,94,114,75,151,63,180"/>
+<area shape="rect" id="Node000004" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="207,55,283,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="63,177,98,134,122,110,151,89,192,73,194,78,153,94,126,114,101,137,67,180"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="152,104,337,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="75,176,110,157,151,138,173,131,174,136,153,143,113,162,78,181"/>
+<area shape="rect" id="Node000006" href="$namespaceklog.html#a1f6b347e95b475341e195f363a9f20a3" title="以 INFO 级别记录日志" alt="" coords="203,153,286,179"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="104,182,189,171,190,176,105,187"/>
+<area shape="rect" id="Node000007" href="$structError.html#aa63ee10532d668f25a5147d7dc753749" title=" " alt="" coords="185,203,305,228"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="105,195,171,203,171,209,104,200"/>
+<area shape="rect" id="Node000009" href="$namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="189,252,300,277"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="79,202,153,238,177,246,175,251,151,243,76,206"/>
+<area shape="rect" id="Node000010" href="$arch_8cpp.html#ac73d8c3647dca189d5c572ba9c48f471" title=" " alt="" coords="200,301,289,327"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="67,202,102,245,126,268,153,288,187,302,185,307,151,292,123,272,98,248,63,206"/>
+<area shape="rect" id="Node000011" href="$aarch64_2interrupt__main_8cpp.html#a2919dc0dfaf51370359170295f4c4b96" title="异常向量表入口" alt="" coords="193,351,296,376"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="63,203,94,268,120,305,154,337,181,351,179,356,150,342,116,309,90,271,58,205"/>
+<area shape="rect" id="Node000003" href="$classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="385,47,648,87"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="316,28,393,42,392,47,315,33"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="315,101,392,87,393,92,316,107"/>
+<area shape="rect" id="Node000008" href="$expected_8hpp.html#a707ff37b9c7f7c83cf7f984840fa7a16" title="获取错误码对应的错误信息" alt="" coords="449,203,584,228"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="305,213,435,213,435,218,305,218"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Mutex::TryLock" name="Mutex::TryLock">
+<area shape="rect" id="Node000001" title="尝试获取锁（非阻塞）" alt="" coords="5,31,125,56"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="173,5,273,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,31,160,25,161,31,126,36"/>
+<area shape="rect" id="Node000003" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="185,55,261,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,50,172,57,171,62,125,55"/>
+</map>

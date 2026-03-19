@@ -1,0 +1,5 @@
+<map id="VirtioDriver::MatchStatic" name="VirtioDriver::MatchStatic">
+<area shape="rect" id="Node000001" title="硬件检测：验证 VirtIO magic number" alt="" coords="108,5,291,31"/>
+<area shape="rect" id="Node000002" href="$virtio__driver__test_8cpp.html#aa31c5c7b93a67fc32976e38c742907f6" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="disk_write" name="disk_write">
+<area shape="rect" id="Node000001" title="向磁盘写入扇区。" alt="" coords="5,35,95,60"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="188,5,264,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,37,174,24,175,29,96,43"/>
+<area shape="rect" id="Node000003" href="$classfatfs_1_1FatFsFileSystem.html#aa524b5d748c218d166ad7c6a6b78cd83" title="获取指定驱动器的块设备" alt="" coords="143,55,309,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="95,52,129,57,129,63,95,57"/>
+</map>

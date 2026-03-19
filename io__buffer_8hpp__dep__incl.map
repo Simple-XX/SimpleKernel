@@ -1,0 +1,29 @@
+<map id="/workspaces/SimpleKernel/src/include/io_buffer.hpp" name="/workspaces/SimpleKernel/src/include/io_buffer.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="616,5,809,45"/>
+<area shape="rect" id="Node000002" href="$virtio__blk_8hpp.html" title=" " alt="" coords="361,196,555,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="603,40,546,49,492,61,447,76,420,95,414,106,411,118,414,145,425,171,439,194,435,197,420,173,409,146,405,118,409,104,416,92,445,71,491,56,545,43,602,35"/>
+<area shape="rect" id="Node000004" href="$virtio__driver_8hpp.html" title=" " alt="" coords="440,401,633,456"/>
+<area shape="poly" id="edge12_Node000001_Node000004" title=" " alt="" coords="702,59,575,354,552,402,547,400,570,352,697,57"/>
+<area shape="rect" id="Node000007" href="$virtio__driver_8cpp.html" title=" " alt="" coords="657,504,851,559"/>
+<area shape="poly" id="edge11_Node000001_Node000007" title=" " alt="" coords="715,59,715,222,715,327,719,376,727,425,748,503,742,504,722,426,713,377,710,327,710,222,710,59"/>
+<area shape="rect" id="Node000009" href="$split_8hpp.html" title=" " alt="" coords="431,93,624,148"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="664,54,581,96,578,91,662,49"/>
+<area shape="rect" id="Node000010" href="$io__buffer_8cpp.html" title=" " alt="" coords="751,101,944,141"/>
+<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="752,51,822,98,819,103,749,55"/>
+<area shape="rect" id="Node000011" href="$dma__region__test_8cpp.html" title=" " alt="" coords="969,93,1169,148"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="799,46,969,91,968,96,797,51"/>
+<area shape="rect" id="Node000012" href="$io__buffer__mock_8cpp.html" title=" " alt="" coords="1193,93,1387,148"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="824,37,992,60,1181,91,1193,93,1192,98,1180,96,992,65,823,42"/>
+<area shape="rect" id="Node000003" href="$virtio__blk__vfs__adapter_8hpp.html" title=" " alt="" coords="315,299,537,353"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="448,264,437,299,432,298,443,263"/>
+<area shape="poly" id="edge8_Node000002_Node000004" title=" " alt="" coords="518,257,536,275,551,298,559,324,559,352,549,402,544,401,554,352,554,325,546,300,532,279,514,261"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="467,361,510,399,506,403,463,365"/>
+<area shape="rect" id="Node000005" href="$riscv64_2interrupt__main_8cpp.html" title=" " alt="" coords="5,504,199,559"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="427,457,211,507,200,509,199,504,209,501,426,452"/>
+<area shape="rect" id="Node000006" href="$device_8cpp.html" title=" " alt="" coords="223,511,416,551"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="469,464,361,514,359,509,467,459"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="607,459,698,502,696,506,604,464"/>
+<area shape="rect" id="Node000008" href="$virtio__driver__test_8cpp.html" title=" " alt="" coords="440,504,633,559"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="539,470,539,504,534,504,534,470"/>
+<area shape="poly" id="edge10_Node000009_Node000002" title=" " alt="" coords="504,161,478,197,474,194,499,158"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="TaskControlBlock" name="TaskControlBlock">
+<area shape="rect" id="Node000001" title="任务控制块，管理进程/线程的核心数据结构" alt="" coords="5,119,195,824"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="37,5,163,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,85,103,118,97,118,97,85"/>
+</map>

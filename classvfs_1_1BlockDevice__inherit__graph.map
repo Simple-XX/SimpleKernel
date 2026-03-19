@@ -1,0 +1,5 @@
+<map id="vfs::BlockDevice" name="vfs::BlockDevice">
+<area shape="rect" id="Node000001" title="块设备抽象基类" alt="" coords="23,5,165,191"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlkVfsAdapter.html" title="Adapts VirtioBlk&lt;&gt; to vfs::BlockDevice." alt="" coords="5,239,183,719"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,204,97,239,91,239,91,204"/>
+</map>

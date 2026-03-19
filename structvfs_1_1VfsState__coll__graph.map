@@ -1,0 +1,23 @@
+<map id="vfs::VfsState" name="vfs::VfsState">
+<area shape="rect" id="Node000001" title="VFS 全局状态结构体" alt="" coords="483,1615,581,1680"/>
+<area shape="rect" id="Node000002" href="$classvfs_1_1MountTable.html" title="挂载表管理器" alt="" coords="303,1107,471,1552"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="398,1551,418,1589,441,1611,469,1626,466,1631,438,1615,414,1592,393,1554"/>
+<area shape="rect" id="Node000003" href="$structvfs_1_1MountPoint.html" title="挂载点" alt="" coords="258,944,374,1029"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="327,1029,340,1090,335,1091,322,1030"/>
+<area shape="rect" id="Node000004" href="$structvfs_1_1Dentry.html" title="Dentry — 目录项缓存（路径名 ↔ Inode 的映射）" alt="" coords="448,711,541,837"/>
+<area shape="poly" id="edge11_Node000001_Node000004" title=" " alt="" coords="509,836,516,890,530,1097,536,1300,536,1599,530,1599,531,1300,525,1097,511,891,504,837"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="461,838,438,869,408,893,367,934,363,930,405,889,434,865,457,835"/>
+<area shape="poly" id="edge7_Node000004_Node000004" title=" " alt="" coords="543,749,560,755,566,763,568,774,565,786,559,794,555,790,561,783,563,774,561,766,557,760,541,754"/>
+<area shape="rect" id="Node000005" href="$structvfs_1_1Inode.html" title="Inode — 文件元数据（独立于路径名）" alt="" coords="139,453,247,619"/>
+<area shape="poly" id="edge10_Node000003_Node000005" title=" " alt="" coords="175,619,167,676,164,739,169,804,177,835,188,865,213,905,247,937,243,941,209,908,183,868,172,837,164,805,158,739,161,675,170,619"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="249,558,342,608,392,641,438,679,453,696,449,700,434,683,389,645,339,612,247,563"/>
+<area shape="rect" id="Node000006" href="$classvfs_1_1FileSystem.html" title="文件系统类型基类" alt="" coords="5,95,133,301"/>
+<area shape="poly" id="edge8_Node000003_Node000006" title=" " alt="" coords="64,301,61,379,61,469,67,564,80,657,95,739,111,803,124,832,141,860,165,888,196,918,245,951,242,955,193,922,161,892,137,863,119,834,106,805,90,740,75,658,62,564,56,469,56,379,59,301"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="109,300,160,437,155,439,104,302"/>
+<area shape="rect" id="Node000007" href="$classvfs_1_1InodeOps.html" title="Inode 操作接口" alt="" coords="158,5,269,391"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="205,391,202,437,197,437,199,391"/>
+<area shape="rect" id="Node000008" href="$classvfs_1_1BlockDevice.html" title="块设备抽象基类" alt="" coords="283,681,424,867"/>
+<area shape="poly" id="edge9_Node000003_Node000008" title=" " alt="" coords="325,867,320,891,317,928,312,927,315,890,320,866"/>
+<area shape="rect" id="Node000009" href="$classSpinLock.html" title="自旋锁" alt="" coords="569,1107,759,1552"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="574,1553,554,1600,549,1598,569,1551"/>
+</map>

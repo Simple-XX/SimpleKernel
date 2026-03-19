@@ -1,0 +1,7 @@
+<map id="disk_read" name="disk_read">
+<area shape="rect" id="Node000001" title="从磁盘读取扇区。" alt="" coords="5,35,91,60"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="184,5,260,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,38,170,24,171,29,91,43"/>
+<area shape="rect" id="Node000003" href="$classfatfs_1_1FatFsFileSystem.html#aa524b5d748c218d166ad7c6a6b78cd83" title="获取指定驱动器的块设备" alt="" coords="139,55,305,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="91,51,126,57,125,62,90,57"/>
+</map>

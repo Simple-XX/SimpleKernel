@@ -1,3 +1,3 @@
 <map id="Error" name="Error">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,103,91"/>
+<area shape="rect" id="Node000001" title="错误类型，用于 std::expected" alt="" coords="5,5,111,331"/>
 </map>

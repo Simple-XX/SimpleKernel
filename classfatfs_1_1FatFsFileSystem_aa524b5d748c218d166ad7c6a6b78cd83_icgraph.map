@@ -1,0 +1,13 @@
+<map id="fatfs::FatFsFileSystem::GetBlockDevice" name="fatfs::FatFsFileSystem::GetBlockDevice">
+<area shape="rect" id="Node000001" title="获取指定驱动器的块设备" alt="" coords="165,97,332,137"/>
+<area shape="rect" id="Node000002" href="$diskio_8cpp.html#a1e8e1e10289eae9afc178f2f421f05b2" title="初始化磁盘驱动器。" alt="" coords="5,5,117,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,92,116,44,92,33,95,28,119,40,204,87"/>
+<area shape="rect" id="Node000003" href="$diskio_8cpp.html#a900be07f964aadaad306295eaf63ab16" title="执行磁盘 I/O 控制操作。" alt="" coords="19,55,103,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,96,103,81,105,76,160,90"/>
+<area shape="rect" id="Node000004" href="$diskio_8cpp.html#ae2d16de96b1dbc7903a9aa0ebc0acb80" title="从磁盘读取扇区。" alt="" coords="19,104,104,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,119,104,119,104,114,152,114"/>
+<area shape="rect" id="Node000005" href="$diskio_8cpp.html#afc06133dbd0ad528a3d50c002a4b76be" title="查询磁盘驱动器状态。" alt="" coords="13,153,109,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="160,143,110,156,109,151,159,138"/>
+<area shape="rect" id="Node000006" href="$diskio_8cpp.html#ae047d26de8f61b71e0ab718eb294b6d6" title="向磁盘写入扇区。" alt="" coords="17,203,106,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="203,146,119,192,92,205,90,200,116,188,201,141"/>
+</map>

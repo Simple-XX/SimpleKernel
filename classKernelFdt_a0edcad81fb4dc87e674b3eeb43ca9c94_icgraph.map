@@ -1,0 +1,5 @@
+<map id="KernelFdt::ForEachDeviceNode" name="KernelFdt::ForEachDeviceNode">
+<area shape="rect" id="Node000001" title="遍历 FDT 中所有&quot;叶设备&quot;节点，自动跳过基础设施节点。" alt="" coords="235,5,457,31"/>
+<area shape="rect" id="Node000002" href="$classPlatformBus.html#a312a2275ab715ceabd6aeb06228716c1" title="枚举所有含 compatible 字符串的 FDT 设备节点。" alt="" coords="5,5,187,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,21,187,21,187,15,221,15"/>
+</map>

@@ -91,7 +91,6 @@ $(document).ready(function(){initNavTree('classLockGuard.html',''); initResizabl
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classLockGuard-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LockGuard&lt; Mutex &gt; Class Template Reference</div></div>
@@ -107,11 +106,11 @@ Collaboration diagram for LockGuard&lt; Mutex &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classLockGuard__coll__graph.png" border="0" usemap="#aLockGuard_3_01Mutex_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aLockGuard_3_01Mutex_01_4_coll__map" id="aLockGuard_3_01Mutex_01_4_coll__map">
-<area shape="rect" title="RAII 风格的锁守卫模板类" alt="" coords="23,1061,177,1227"/>
-<area shape="rect" href="classMutex.html" title="互斥锁（Mutex）" alt="" coords="5,573,195,999"/>
-<area shape="poly" title=" " alt="" coords="103,999,103,1045,97,1045,97,999"/>
-<area shape="rect" href="structResourceId.html" title="资源 ID" alt="" coords="25,5,175,511"/>
-<area shape="poly" title=" " alt="" coords="103,511,103,557,97,557,97,511"/>
+<area shape="rect" title="RAII 风格的锁守卫模板类" alt="" coords="23,1101,177,1427"/>
+<area shape="rect" href="classMutex.html" title="互斥锁（Mutex）" alt="" coords="5,593,195,1039"/>
+<area shape="poly" title=" " alt="" coords="103,1039,103,1085,97,1085,97,1039"/>
+<area shape="rect" href="classResourceId.html" title="资源 ID" alt="" coords="25,5,175,531"/>
+<area shape="poly" title=" " alt="" coords="103,531,103,577,97,577,97,531"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -122,12 +121,15 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">构造/析构函数</div></td></tr>
 <tr class="memitem:aa283d6b19fddd2287f84dcf937b92e5b" id="r_aa283d6b19fddd2287f84dcf937b92e5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLockGuard.html#aa283d6b19fddd2287f84dcf937b92e5b">LockGuard</a> (<a class="el" href="classLockGuard.html#a2ca6faf65933dbe4a70f2cd235dd2b81">mutex_type</a> &amp;mutex)</td></tr>
 <tr class="memdesc:aa283d6b19fddd2287f84dcf937b92e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">构造函数，自动获取锁  <br /></td></tr>
 <tr class="separator:aa283d6b19fddd2287f84dcf937b92e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af889562d8ed81c2337c94d0c915d65ca" id="r_af889562d8ed81c2337c94d0c915d65ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLockGuard.html#af889562d8ed81c2337c94d0c915d65ca">~LockGuard</a> ()</td></tr>
 <tr class="memdesc:af889562d8ed81c2337c94d0c915d65ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">析构函数，自动释放锁  <br /></td></tr>
 <tr class="separator:af889562d8ed81c2337c94d0c915d65ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57fc5642ee94e6e804c834e52d60ec2d" id="r_a57fc5642ee94e6e804c834e52d60ec2d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLockGuard.html#a57fc5642ee94e6e804c834e52d60ec2d">LockGuard</a> ()=delete</td></tr>
+<tr class="separator:a57fc5642ee94e6e804c834e52d60ec2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a090b9f25d76b144d124b2caa2c4d1075" id="r_a090b9f25d76b144d124b2caa2c4d1075"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLockGuard.html#a090b9f25d76b144d124b2caa2c4d1075">LockGuard</a> (const <a class="el" href="classLockGuard.html">LockGuard</a> &amp;)=delete</td></tr>
 <tr class="separator:a090b9f25d76b144d124b2caa2c4d1075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9dddb7967ff5f0139a9b9ef7e09c6e1" id="r_ac9dddb7967ff5f0139a9b9ef7e09c6e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLockGuard.html#ac9dddb7967ff5f0139a9b9ef7e09c6e1">LockGuard</a> (<a class="el" href="classLockGuard.html">LockGuard</a> &amp;&amp;)=delete</td></tr>
@@ -153,7 +155,7 @@ class LockGuard&lt; Mutex &gt;</div><p>RAII 风格的锁守卫模板类 </p>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00127">127</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00131">131</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a2ca6faf65933dbe4a70f2cd235dd2b81" name="a2ca6faf65933dbe4a70f2cd235dd2b81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ca6faf65933dbe4a70f2cd235dd2b81">&#9670;&#160;</a></span>mutex_type</h2>
@@ -169,13 +171,13 @@ template&lt;typename <a class="el" href="classMutex.html">Mutex</a> &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00129">129</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00133">133</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa283d6b19fddd2287f84dcf937b92e5b" name="aa283d6b19fddd2287f84dcf937b92e5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa283d6b19fddd2287f84dcf937b92e5b">&#9670;&#160;</a></span>LockGuard() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa283d6b19fddd2287f84dcf937b92e5b">&#9670;&#160;</a></span>LockGuard() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,37 +210,73 @@ template&lt;typename <a class="el" href="classMutex.html">Mutex</a> &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00135">135</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>                                        : <a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>(mutex) {</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> result = <a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>.<a class="code hl_function" href="classMutex.html#a8e45acd6b7246a9ffb6cdbe928ae14a4">Lock</a>(); !result) {</div>
-<div class="line"><span class="lineno">  137</span>      <a class="code hl_function" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a>(<span class="stringliteral">&quot;LockGuard: Failed to acquire lock: %s\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  138</span>                result.error().message());</div>
-<div class="line"><span class="lineno">  139</span>      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><span class="lineno">  140</span>        <a class="code hl_function" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a>();</div>
-<div class="line"><span class="lineno">  141</span>      }</div>
-<div class="line"><span class="lineno">  142</span>    }</div>
-<div class="line"><span class="lineno">  143</span>  }</div>
-<div class="ttc" id="aclassLockGuard_html_a4ed8b2884a1c9e7a57b300343af21539"><div class="ttname"><a href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">LockGuard::mutex_</a></div><div class="ttdeci">mutex_type &amp; mutex_</div><div class="ttdef"><b>Definition</b> <a href="spinlock_8hpp_source.html#l00156">spinlock.hpp:156</a></div></div>
-<div class="ttc" id="aclassMutex_html_a8e45acd6b7246a9ffb6cdbe928ae14a4"><div class="ttname"><a href="classMutex.html#a8e45acd6b7246a9ffb6cdbe928ae14a4">Mutex::Lock</a></div><div class="ttdeci">auto Lock() -&gt; bool</div><div class="ttdoc">获取锁（阻塞）</div><div class="ttdef"><b>Definition</b> <a href="mutex_8hpp_source.html#l00047">mutex.hpp:47</a></div></div>
+<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00142">142</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>                                        : <a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>(mutex) {</div>
+<div class="line"><span class="lineno">  143</span>    <a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>.<a class="code hl_function" href="classMutex.html#a73f2d128f19570bd0000e57d8b6b8521">Lock</a>().or_else([&amp;](<span class="keyword">auto</span>&amp;&amp; err) {</div>
+<div class="line"><span class="lineno">  144</span>      <span class="keywordtype">char</span> core_buf[4] = {};</div>
+<div class="line"><span class="lineno">  145</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> = <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>();</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keywordtype">size_t</span> pos = 0;</div>
+<div class="line"><span class="lineno">  147</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> == 0) {</div>
+<div class="line"><span class="lineno">  148</span>        core_buf[pos++] = <span class="charliteral">&#39;0&#39;</span>;</div>
+<div class="line"><span class="lineno">  149</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  150</span>        <span class="keywordtype">char</span> tmp[4] = {};</div>
+<div class="line"><span class="lineno">  151</span>        <span class="keywordtype">size_t</span> tmp_pos = 0;</div>
+<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">while</span> (<a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> &gt; 0 &amp;&amp; tmp_pos &lt; <span class="keyword">sizeof</span>(tmp)) {</div>
+<div class="line"><span class="lineno">  153</span>          tmp[tmp_pos++] = <span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span><span class="keyword">&gt;</span>(<span class="charliteral">&#39;0&#39;</span> + (<a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> % 10));</div>
+<div class="line"><span class="lineno">  154</span>          <a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> /= 10;</div>
+<div class="line"><span class="lineno">  155</span>        }</div>
+<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">while</span> (tmp_pos &gt; 0) {</div>
+<div class="line"><span class="lineno">  157</span>          core_buf[pos++] = tmp[--tmp_pos];</div>
+<div class="line"><span class="lineno">  158</span>        }</div>
+<div class="line"><span class="lineno">  159</span>      }</div>
+<div class="line"><span class="lineno">  160</span>      core_buf[pos] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  161</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;PANIC: LockGuard failed to acquire lock &#39;&quot;</span>);</div>
+<div class="line"><span class="lineno">  162</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>.<a class="code hl_variable" href="classMutex.html#a1ed1ac62517dc17cfdc6f1144dabaac2">name</a>);</div>
+<div class="line"><span class="lineno">  163</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;&#39; on core &quot;</span>);</div>
+<div class="line"><span class="lineno">  164</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(core_buf);</div>
+<div class="line"><span class="lineno">  165</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;: &quot;</span>);</div>
+<div class="line"><span class="lineno">  166</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(err.message());</div>
+<div class="line"><span class="lineno">  167</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  168</span>      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><span class="lineno">  169</span>        <a class="code hl_function" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a>();</div>
+<div class="line"><span class="lineno">  170</span>      }</div>
+<div class="line"><span class="lineno">  171</span>      <span class="keywordflow">return</span> <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a>{};</div>
+<div class="line"><span class="lineno">  172</span>    });</div>
+<div class="line"><span class="lineno">  173</span>  }</div>
+<div class="ttc" id="aclassLockGuard_html_a4ed8b2884a1c9e7a57b300343af21539"><div class="ttname"><a href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">LockGuard::mutex_</a></div><div class="ttdeci">mutex_type &amp; mutex_</div><div class="ttdef"><b>Definition</b> <a href="spinlock_8hpp_source.html#l00219">spinlock.hpp:219</a></div></div>
+<div class="ttc" id="aclassMutex_html_a1ed1ac62517dc17cfdc6f1144dabaac2"><div class="ttname"><a href="classMutex.html#a1ed1ac62517dc17cfdc6f1144dabaac2">Mutex::name</a></div><div class="ttdeci">const char * name</div><div class="ttdoc">锁的名称</div><div class="ttdef"><b>Definition</b> <a href="mutex_8hpp_source.html#l00033">mutex.hpp:33</a></div></div>
+<div class="ttc" id="aclassMutex_html_a73f2d128f19570bd0000e57d8b6b8521"><div class="ttname"><a href="classMutex.html#a73f2d128f19570bd0000e57d8b6b8521">Mutex::Lock</a></div><div class="ttdeci">auto Lock() -&gt; Expected&lt; void &gt;</div><div class="ttdoc">获取锁（阻塞）</div><div class="ttdef"><b>Definition</b> <a href="mutex_8cpp_source.html#l00011">mutex.cpp:11</a></div></div>
+<div class="ttc" id="aexpected_8hpp_html_a87330dc74eb67e824914b8d343050757"><div class="ttname"><a href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected</a></div><div class="ttdeci">std::expected&lt; T, Error &gt; Expected</div><div class="ttdoc">std::expected 别名模板</div><div class="ttdef"><b>Definition</b> <a href="expected_8hpp_source.html#l00365">expected.hpp:365</a></div></div>
+<div class="ttc" id="anamespacecpu__io_html_a52b8a7263a31e6670ef4dec7922d9e72"><div class="ttname"><a href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a></div><div class="ttdeci">auto GetCurrentCoreId() -&gt; size_t</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00026">cpu_io.h:26</a></div></div>
 <div class="ttc" id="anamespacecpu__io_html_acf7d7c3a4a0720cfd4f57914b52c7e9b"><div class="ttname"><a href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a></div><div class="ttdeci">void Pause()</div><div class="ttdef"><b>Definition</b> <a href="cpu__io_8h_source.html#l00020">cpu_io.h:20</a></div></div>
-<div class="ttc" id="ask__stdio_8h_html_ad8142b94111a30f723c6c0a2301bae7f"><div class="ttname"><a href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f">sk_printf</a></div><div class="ttdeci">int sk_printf(const char *format,...) __attribute__((format(printf</div></div>
+<div class="ttc" id="anamespaceklog_html_a1f3394a52018d711b32b8c26e8ff429e"><div class="ttname"><a href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a></div><div class="ttdeci">__always_inline auto RawPut(const char *msg) -&gt; void</div><div class="ttdoc">绕过队列直接输出至串口（用于 panic 路径）</div><div class="ttdef"><b>Definition</b> <a href="kernel__log_8hpp_source.html#l00211">kernel_log.hpp:211</a></div></div>
+<div class="ttc" id="aper__cpu_8hpp_html_af349ef2aacd2314294eac3283d14e3ca"><div class="ttname"><a href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a></div><div class="ttdeci">size_t core_id</div><div class="ttdoc">核心 ID</div><div class="ttdef"><b>Definition</b> <a href="per__cpu_8hpp_source.html#l00001">per_cpu.hpp:1</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classLockGuard_aa283d6b19fddd2287f84dcf937b92e5b_cgraph.png" border="0" usemap="#aclassLockGuard_aa283d6b19fddd2287f84dcf937b92e5b_cgraph" alt=""/></div>
 <map name="aclassLockGuard_aa283d6b19fddd2287f84dcf937b92e5b_cgraph" id="aclassLockGuard_aa283d6b19fddd2287f84dcf937b92e5b_cgraph">
-<area shape="rect" title="构造函数，自动获取锁" alt="" coords="5,55,173,80"/>
-<area shape="rect" href="classMutex.html#a8e45acd6b7246a9ffb6cdbe928ae14a4" title="获取锁（阻塞）" alt="" coords="226,5,327,31"/>
-<area shape="poly" title=" " alt="" coords="138,52,214,32,215,37,139,57"/>
-<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="221,55,332,80"/>
-<area shape="poly" title=" " alt="" coords="174,65,208,65,208,70,174,70"/>
-<area shape="rect" href="sk__stdio_8h.html#ad8142b94111a30f723c6c0a2301bae7f" title=" " alt="" coords="237,104,316,129"/>
-<area shape="poly" title=" " alt="" coords="139,77,225,100,223,106,138,83"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="649,5,819,31"/>
-<area shape="poly" title=" " alt="" coords="328,15,635,15,635,21,328,21"/>
-<area shape="rect" href="classMutex.html#a99d18d08046311956a9a69f1f8c9daaa" title="检查锁是否被当前线程持有" alt="" coords="380,31,601,56"/>
-<area shape="poly" title=" " alt="" coords="328,21,370,26,369,32,327,27"/>
-<area shape="poly" title=" " alt="" coords="601,29,635,26,636,31,602,34"/>
+<area shape="rect" title="构造函数，自动获取锁" alt="" coords="5,145,173,170"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="221,42,407,67"/>
+<area shape="poly" title=" " alt="" coords="117,142,272,71,274,76,119,147"/>
+<area shape="rect" href="classMutex.html#a73f2d128f19570bd0000e57d8b6b8521" title="获取锁（阻塞）" alt="" coords="263,119,365,145"/>
+<area shape="poly" title=" " alt="" coords="174,145,249,137,250,142,174,150"/>
+<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="259,169,369,194"/>
+<area shape="poly" title=" " alt="" coords="174,164,245,171,245,177,174,169"/>
+<area shape="rect" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e" title="绕过队列直接输出至串口（用于 panic 路径）" alt="" coords="261,218,367,243"/>
+<area shape="poly" title=" " alt="" coords="122,168,222,204,248,212,246,217,220,209,121,173"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="455,5,717,45"/>
+<area shape="poly" title=" " alt="" coords="407,42,440,38,441,44,407,47"/>
+<area shape="rect" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="536,70,636,95"/>
+<area shape="poly" title=" " alt="" coords="364,120,521,92,522,97,365,126"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="548,119,624,145"/>
+<area shape="poly" title=" " alt="" coords="365,129,534,129,534,135,365,135"/>
+<area shape="rect" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="541,169,631,194"/>
+<area shape="poly" title=" " alt="" coords="365,138,527,168,526,173,364,144"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="515,218,657,243"/>
+<area shape="poly" title=" " alt="" coords="368,228,501,228,501,233,368,233"/>
+<area shape="rect" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="765,218,860,243"/>
+<area shape="poly" title=" " alt="" coords="658,228,751,228,751,233,658,233"/>
 </map>
 </div>
 
@@ -271,29 +309,100 @@ template&lt;typename <a class="el" href="classMutex.html">Mutex</a> &gt; </div>
 
 <p>析构函数，自动释放锁 </p>
 
-<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00148">148</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  148</span>{ <a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>.<a class="code hl_function" href="classMutex.html#abd80d453457fcf4f39a5a5c3f10fe5aa">UnLock</a>(); }</div>
-<div class="ttc" id="aclassMutex_html_abd80d453457fcf4f39a5a5c3f10fe5aa"><div class="ttname"><a href="classMutex.html#abd80d453457fcf4f39a5a5c3f10fe5aa">Mutex::UnLock</a></div><div class="ttdeci">auto UnLock() -&gt; bool</div><div class="ttdoc">释放锁</div><div class="ttdef"><b>Definition</b> <a href="mutex_8hpp_source.html#l00093">mutex.hpp:93</a></div></div>
+<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00178">178</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  178</span>               {</div>
+<div class="line"><span class="lineno">  179</span>    <a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>.<a class="code hl_function" href="classMutex.html#adb826acb26d01965e1467558275ffe03">UnLock</a>().or_else([&amp;](<span class="keyword">auto</span>&amp;&amp; err) {</div>
+<div class="line"><span class="lineno">  180</span>      <span class="keywordtype">char</span> core_buf[4] = {};</div>
+<div class="line"><span class="lineno">  181</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> = <a class="code hl_function" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72">cpu_io::GetCurrentCoreId</a>();</div>
+<div class="line"><span class="lineno">  182</span>      <span class="keywordtype">size_t</span> pos = 0;</div>
+<div class="line"><span class="lineno">  183</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> == 0) {</div>
+<div class="line"><span class="lineno">  184</span>        core_buf[pos++] = <span class="charliteral">&#39;0&#39;</span>;</div>
+<div class="line"><span class="lineno">  185</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  186</span>        <span class="keywordtype">char</span> tmp[4] = {};</div>
+<div class="line"><span class="lineno">  187</span>        <span class="keywordtype">size_t</span> tmp_pos = 0;</div>
+<div class="line"><span class="lineno">  188</span>        <span class="keywordflow">while</span> (<a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> &gt; 0 &amp;&amp; tmp_pos &lt; <span class="keyword">sizeof</span>(tmp)) {</div>
+<div class="line"><span class="lineno">  189</span>          tmp[tmp_pos++] = <span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span><span class="keyword">&gt;</span>(<span class="charliteral">&#39;0&#39;</span> + (<a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> % 10));</div>
+<div class="line"><span class="lineno">  190</span>          <a class="code hl_variable" href="per__cpu_8hpp.html#af349ef2aacd2314294eac3283d14e3ca">core_id</a> /= 10;</div>
+<div class="line"><span class="lineno">  191</span>        }</div>
+<div class="line"><span class="lineno">  192</span>        <span class="keywordflow">while</span> (tmp_pos &gt; 0) {</div>
+<div class="line"><span class="lineno">  193</span>          core_buf[pos++] = tmp[--tmp_pos];</div>
+<div class="line"><span class="lineno">  194</span>        }</div>
+<div class="line"><span class="lineno">  195</span>      }</div>
+<div class="line"><span class="lineno">  196</span>      core_buf[pos] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  197</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;PANIC: LockGuard failed to release lock &#39;&quot;</span>);</div>
+<div class="line"><span class="lineno">  198</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<a class="code hl_variable" href="classLockGuard.html#a4ed8b2884a1c9e7a57b300343af21539">mutex_</a>.<a class="code hl_variable" href="classMutex.html#a1ed1ac62517dc17cfdc6f1144dabaac2">name</a>);</div>
+<div class="line"><span class="lineno">  199</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;&#39; on core &quot;</span>);</div>
+<div class="line"><span class="lineno">  200</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(core_buf);</div>
+<div class="line"><span class="lineno">  201</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;: &quot;</span>);</div>
+<div class="line"><span class="lineno">  202</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(err.message());</div>
+<div class="line"><span class="lineno">  203</span>      <a class="code hl_function" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e">klog::RawPut</a>(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  204</span>      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><span class="lineno">  205</span>        <a class="code hl_function" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b">cpu_io::Pause</a>();</div>
+<div class="line"><span class="lineno">  206</span>      }</div>
+<div class="line"><span class="lineno">  207</span>      <span class="keywordflow">return</span> <a class="code hl_typedef" href="expected_8hpp.html#a87330dc74eb67e824914b8d343050757">Expected&lt;void&gt;</a>{};</div>
+<div class="line"><span class="lineno">  208</span>    });</div>
+<div class="line"><span class="lineno">  209</span>  }</div>
+<div class="ttc" id="aclassMutex_html_adb826acb26d01965e1467558275ffe03"><div class="ttname"><a href="classMutex.html#adb826acb26d01965e1467558275ffe03">Mutex::UnLock</a></div><div class="ttdeci">auto UnLock() -&gt; Expected&lt; void &gt;</div><div class="ttdoc">释放锁</div><div class="ttdef"><b>Definition</b> <a href="mutex_8cpp_source.html#l00041">mutex.cpp:41</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classLockGuard_af889562d8ed81c2337c94d0c915d65ca_cgraph.png" border="0" usemap="#aclassLockGuard_af889562d8ed81c2337c94d0c915d65ca_cgraph" alt=""/></div>
 <map name="aclassLockGuard_af889562d8ed81c2337c94d0c915d65ca_cgraph" id="aclassLockGuard_af889562d8ed81c2337c94d0c915d65ca_cgraph">
-<area shape="rect" title="析构函数，自动释放锁" alt="" coords="5,5,184,31"/>
-<area shape="rect" href="classMutex.html#abd80d453457fcf4f39a5a5c3f10fe5aa" title="释放锁" alt="" coords="232,5,351,31"/>
-<area shape="poly" title=" " alt="" coords="184,15,218,15,218,21,184,21"/>
-<area shape="rect" href="classSingleton.html#a68856b49e098eadba37b60366db33ebd" title=" " alt="" coords="668,5,837,31"/>
-<area shape="poly" title=" " alt="" coords="351,15,654,15,654,21,351,21"/>
-<area shape="rect" href="classMutex.html#a99d18d08046311956a9a69f1f8c9daaa" title="检查锁是否被当前线程持有" alt="" coords="399,31,620,56"/>
-<area shape="poly" title=" " alt="" coords="351,22,387,26,386,32,351,28"/>
-<area shape="poly" title=" " alt="" coords="620,29,654,26,655,31,620,34"/>
+<area shape="rect" title="析构函数，自动释放锁" alt="" coords="5,87,184,113"/>
+<area shape="rect" href="namespacecpu__io.html#a52b8a7263a31e6670ef4dec7922d9e72" title=" " alt="" coords="232,13,417,38"/>
+<area shape="poly" title=" " alt="" coords="127,85,231,47,258,39,259,44,233,52,128,90"/>
+<area shape="rect" href="namespacecpu__io.html#acf7d7c3a4a0720cfd4f57914b52c7e9b" title=" " alt="" coords="269,62,380,87"/>
+<area shape="poly" title=" " alt="" coords="184,87,255,80,256,85,185,93"/>
+<area shape="rect" href="namespaceklog.html#a1f3394a52018d711b32b8c26e8ff429e" title="绕过队列直接输出至串口（用于 panic 路径）" alt="" coords="271,111,378,137"/>
+<area shape="poly" title=" " alt="" coords="185,107,257,114,257,120,184,112"/>
+<area shape="rect" href="classMutex.html#adb826acb26d01965e1467558275ffe03" title="释放锁" alt="" coords="265,165,384,190"/>
+<area shape="poly" title=" " alt="" coords="131,110,233,147,268,158,266,163,231,152,129,115"/>
+<area shape="rect" href="classtest__env_1_1TestEnvironmentState.html#a562424679984595e70361b0dad2ef96d" title="获取当前线程的环境实例指针（供 Mock 层调用）" alt="" coords="465,5,728,45"/>
+<area shape="poly" title=" " alt="" coords="418,23,451,23,451,28,418,28"/>
+<area shape="rect" href="namespaceklog_1_1detail.html#af01b0252de3bdf62356b8f5905c0cb1a" title="通过 etl_putchar 输出字符串（空指针安全）" alt="" coords="525,90,668,115"/>
+<area shape="poly" title=" " alt="" coords="378,117,511,107,511,112,379,122"/>
+<area shape="rect" href="aarch64_2early__console_8cpp.html#a00b66d463088c2b14f7766792ee8bc60" title="早期控制台字符输出" alt="" coords="776,90,871,115"/>
+<area shape="poly" title=" " alt="" coords="668,100,762,100,762,105,668,105"/>
+<area shape="rect" href="namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="547,139,647,165"/>
+<area shape="poly" title=" " alt="" coords="384,169,533,155,533,161,385,174"/>
+<area shape="rect" href="namespaceklog.html#a16b493848cd618512fc9fb61d3980bd7" title="以 ERROR 级别记录日志" alt="" coords="559,189,635,214"/>
+<area shape="poly" title=" " alt="" coords="385,180,545,194,545,200,384,185"/>
+<area shape="rect" href="namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="551,238,642,263"/>
+<area shape="poly" title=" " alt="" coords="359,188,466,224,538,239,537,245,465,229,357,193"/>
 </map>
 </div>
 
 </div>
 </div>
+<a id="a57fc5642ee94e6e804c834e52d60ec2d" name="a57fc5642ee94e6e804c834e52d60ec2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57fc5642ee94e6e804c834e52d60ec2d">&#9670;&#160;</a></span>LockGuard() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename <a class="el" href="classMutex.html">Mutex</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLockGuard.html">LockGuard</a>&lt; <a class="el" href="classMutex.html">Mutex</a> &gt;<a class="el" href="classLockGuard.html">::LockGuard</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a090b9f25d76b144d124b2caa2c4d1075" name="a090b9f25d76b144d124b2caa2c4d1075"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a090b9f25d76b144d124b2caa2c4d1075">&#9670;&#160;</a></span>LockGuard() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a090b9f25d76b144d124b2caa2c4d1075">&#9670;&#160;</a></span>LockGuard() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,7 +430,7 @@ template&lt;typename <a class="el" href="classMutex.html">Mutex</a> &gt; </div>
 </div>
 </div>
 <a id="ac9dddb7967ff5f0139a9b9ef7e09c6e1" name="ac9dddb7967ff5f0139a9b9ef7e09c6e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9dddb7967ff5f0139a9b9ef7e09c6e1">&#9670;&#160;</a></span>LockGuard() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9dddb7967ff5f0139a9b9ef7e09c6e1">&#9670;&#160;</a></span>LockGuard() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -428,12 +537,12 @@ template&lt;typename <a class="el" href="classMutex.html">Mutex</a> &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00156">156</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="spinlock_8hpp_source.html#l00219">219</a> of file <a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/root/src/include/<a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a></li>
+<li>/workspaces/SimpleKernel/src/include/<a class="el" href="spinlock_8hpp_source.html">spinlock.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

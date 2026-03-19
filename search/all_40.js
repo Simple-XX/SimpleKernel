@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['切换事件记录_0',['切换事件记录',['../md__2root_2tests_2unit__test_2task_2IMPLEMENTATION__SUMMARY.html#autotoc_md474',1,'']]]
+  ['可失败操作优先使用_20tt_20expected_20t_20tt_0',['可失败操作优先使用 &lt;tt&gt;Expected&lt;T&gt;&lt;/tt&gt;',['../md_coding__standards.html#autotoc_md256',1,'']]]
 ];

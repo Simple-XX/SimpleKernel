@@ -1,22 +1,15 @@
 <map id="VirtualMemory::MapPage" name="VirtualMemory::MapPage">
-<area shape="rect" id="Node000001" title="映射单个页面" alt="" coords="5,255,191,280"/>
-<area shape="rect" id="Node000002" href="$classVirtualMemory.html#a7441d7b32e1941d347851bd3da1ad6fb" title="在页表中查找虚拟地址对应的页表项" alt="" coords="239,139,457,179"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,252,238,196,273,182,275,187,240,200,124,257"/>
-<area shape="rect" id="Node000006" href="$namespacecpu__io_1_1virtual__memory.html#a841eeee221133f726f9ac2e26577c475" title=" " alt="" coords="517,183,693,223"/>
-<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="190,252,238,246,504,213,504,218,239,251,191,258"/>
-<area shape="rect" id="Node000007" href="$namespacecpu__io_1_1virtual__memory.html#a5bc8f484f80076b5c3f5cf419fd24aec" title=" " alt="" coords="507,247,704,287"/>
-<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="191,265,493,265,493,270,191,270"/>
-<area shape="rect" id="Node000008" href="$namespacecpu__io_1_1virtual__memory.html#af3655e31d3c72e1c80b4348cc3e55a71" title=" " alt="" coords="507,311,704,351"/>
-<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="191,276,493,315,492,320,190,282"/>
-<area shape="rect" id="Node000009" href="$namespacecpu__io_1_1virtual__memory.html#aa6bfdb9103b2687ab313084d18a75e32" title=" " alt="" coords="260,355,436,395"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="124,278,240,334,275,348,273,353,238,339,122,283"/>
-<area shape="rect" id="Node000003" href="$memory_8cpp.html#a8006724372b77924155bd8618fe57516" title=" " alt="" coords="551,5,659,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="369,137,427,89,465,63,504,41,537,29,539,34,506,46,467,68,430,93,372,141"/>
-<area shape="rect" id="Node000004" href="$namespacecpu__io_1_1virtual__memory.html#a8746d12e9902e04e68ca29991a9d76cb" title=" " alt="" coords="505,55,705,95"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="408,137,504,105,528,97,529,102,506,110,410,142"/>
-<area shape="rect" id="Node000005" href="$namespacecpu__io_1_1virtual__memory.html#a4eeadf3e9e222bf2725743b69fe760b6" title=" " alt="" coords="516,119,695,159"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="457,148,502,145,503,150,458,154"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="458,175,504,183,503,189,457,181"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="388,177,506,233,526,240,524,245,504,238,386,182"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="368,178,426,236,465,269,507,297,519,303,517,308,504,302,462,273,423,240,365,181"/>
+<area shape="rect" id="Node000001" title="映射单个页面" alt="" coords="5,159,191,184"/>
+<area shape="rect" id="Node000002" href="$namespaceklog.html#a5303b815d2299fd2fa306bd4b43a3963" title="以 DEBUG 级别记录日志（SIMPLEKERNEL_MIN_LOG_LEVEL &gt; 0 时编译期消除）" alt="" coords="287,5,387,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,157,159,101,196,69,237,41,273,27,275,32,240,46,199,73,163,105,111,160"/>
+<area shape="rect" id="Node000003" href="$namespacecpu__io_1_1virtual__memory.html#aa6bfdb9103b2687ab313084d18a75e32" title=" " alt="" coords="249,55,425,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="124,156,238,105,257,97,259,102,240,110,126,161"/>
+<area shape="rect" id="Node000004" href="$namespacecpu__io_1_1virtual__memory.html#a841eeee221133f726f9ac2e26577c475" title=" " alt="" coords="249,119,425,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="190,156,235,150,236,156,191,162"/>
+<area shape="rect" id="Node000005" href="$namespacecpu__io_1_1virtual__memory.html#a5bc8f484f80076b5c3f5cf419fd24aec" title=" " alt="" coords="239,183,436,223"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="191,181,225,186,225,191,190,186"/>
+<area shape="rect" id="Node000006" href="$namespacecpu__io_1_1virtual__memory.html#af3655e31d3c72e1c80b4348cc3e55a71" title=" " alt="" coords="239,247,436,287"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="126,182,240,233,259,240,257,245,238,238,124,186"/>
+<area shape="rect" id="Node000007" href="$namespaceklog.html#a9e1498fdd041865e7e917ef040d186eb" title="以 WARN 级别记录日志" alt="" coords="292,312,383,337"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="111,182,163,238,199,270,240,297,279,312,277,317,237,302,196,274,159,242,107,186"/>
 </map>

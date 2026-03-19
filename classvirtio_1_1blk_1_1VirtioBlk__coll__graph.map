@@ -1,0 +1,29 @@
+<map id="virtio::blk::VirtioBlk&lt; TransportT, VirtqueueT &gt;" name="virtio::blk::VirtioBlk&lt; TransportT, VirtqueueT &gt;">
+<area shape="rect" id="Node000001" title="Virtio 块设备驱动" alt="" coords="828,1364,1033,2284"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1MmioTransport.html" title="Virtio MMIO 传输层" alt="" coords="203,716,365,1181"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="368,1058,820,1669,816,1672,363,1062"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1Transport.html" title="Virtio 传输层基类（零虚表开销，C++23 Deducing this）" alt="" coords="5,168,187,533"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="160,546,213,715,208,717,155,547"/>
+<area shape="rect" id="Node000004" href="$structMmioAccessor.html" title="通用 MMIO 寄存器访问器" alt="" coords="211,188,357,513"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="287,513,287,700,281,700,281,513"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1SplitVirtqueue.html" title="Split Virtqueue 管理类" alt="" coords="694,596,853,1301"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="839,1301,848,1347,842,1348,834,1302"/>
+<area shape="rect" id="Node000006" href="$classvirtio_1_1VirtqueueBase.html" title="Virtqueue 基类（C++23 Deducing this 编译期多态）" alt="" coords="381,188,589,513"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="572,525,696,782,692,784,567,527"/>
+<area shape="rect" id="Node000007" href="$structvirtio_1_1SplitVirtqueue_1_1Desc.html" title="Virtqueue 描述符表条目" alt="" coords="614,271,762,431"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="702,431,723,580,718,580,697,431"/>
+<area shape="rect" id="Node000008" href="$structvirtio_1_1SplitVirtqueue_1_1Avail.html" title="Virtqueue Available Ring." alt="" coords="786,271,934,431"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="851,431,829,580,824,580,846,431"/>
+<area shape="rect" id="Node000009" href="$structvirtio_1_1SplitVirtqueue_1_1Used.html" title="Virtqueue Used Ring." alt="" coords="958,281,1106,421"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="1010,422,984,479,947,535,926,555,905,566,885,577,866,598,863,602,859,599,862,594,882,573,902,561,923,551,943,532,979,477,1006,420"/>
+<area shape="rect" id="Node000010" href="$structvirtio_1_1SplitVirtqueue_1_1UsedElem.html" title="Virtqueue Used Ring 元素" alt="" coords="958,5,1106,105"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1035,106,1035,264,1029,264,1029,106"/>
+<area shape="rect" id="Node000011" href="$structDmaRegion.html" title="DMA 可访问内存区域的非拥有描述符" alt="" coords="877,876,985,1021"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="933,1021,933,1348,928,1348,928,1021"/>
+<area shape="rect" id="Node000012" href="$structvirtio_1_1blk_1_1VirtioBlk_1_1RequestSlot.html" title="异步请求上下文槽" alt="" coords="1009,881,1185,1016"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1087,1017,1024,1348,1019,1347,1082,1016"/>
+<area shape="rect" id="Node000013" href="$structvirtio_1_1blk_1_1BlkReqHeader.html" title="块设备请求头" alt="" coords="1130,298,1307,403"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="1211,404,1117,866,1111,865,1205,403"/>
+<area shape="rect" id="Node000014" href="$structvirtio_1_1blk_1_1VirtioStats.html" title="VirtIO 设备性能监控统计数据" alt="" coords="1209,886,1361,1011"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1277,1012,1247,1147,1226,1225,1200,1302,1165,1388,1126,1474,1044,1633,1039,1631,1121,1472,1160,1386,1195,1300,1220,1224,1242,1146,1272,1011"/>
+</map>

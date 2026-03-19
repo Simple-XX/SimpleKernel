@@ -1,0 +1,17 @@
+<map id="virtio::blk::VirtioBlk::FindSlotByDescHead" name="virtio::blk::VirtioBlk::FindSlotByDescHead">
+<area shape="rect" id="Node000001" title="根据描述符链头索引查找请求槽" alt="" coords="837,37,1003,77"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a2eba21cbbca77632e2e999fbfe52d967" title="处理 Used Ring 中已完成的请求" alt="" coords="627,37,789,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="823,60,790,60,790,55,823,55"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ad4cdea5b5a95384a5d379be0eb68ff4a" title="中断处理（带完成回调）" alt="" coords="425,5,573,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="612,45,572,39,573,34,613,40"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a92da81f8831b00ff61070050d3779e5b" title="同步提交请求的内部实现" alt="" coords="419,69,579,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="613,74,579,80,579,74,613,69"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ad68417f4f9c3dee20746038af378a94b" title="同步读取一个扇区" alt="" coords="223,37,371,77"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="405,77,371,72,371,66,406,72"/>
+<area shape="rect" id="Node000007" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a252d86443729721fb9e6722fadb63fef" title="同步写入一个扇区" alt="" coords="223,101,371,141"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="406,107,371,112,371,107,405,101"/>
+<area shape="rect" id="Node000006" href="$classvirtio_1_1blk_1_1VirtioBlkVfsAdapter.html#a388c8a17feb4fa44f7413befebffd98a" title="读取连续扇区" alt="" coords="5,37,175,77"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="209,60,175,60,175,55,209,55"/>
+<area shape="rect" id="Node000008" href="$classvirtio_1_1blk_1_1VirtioBlkVfsAdapter.html#a9079e223f63fc517a7ace31b0bfd5c82" title="写入连续扇区" alt="" coords="5,101,175,141"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="209,124,175,124,175,119,209,119"/>
+</map>

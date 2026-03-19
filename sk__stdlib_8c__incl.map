@@ -1,16 +1,16 @@
-<map id="/root/src/libc/sk_stdlib.c" name="/root/src/libc/sk_stdlib.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="172,5,347,31"/>
-<area shape="rect" id="Node000002" href="$sk__stdlib_8h.html" title=" " alt="" coords="5,79,97,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,33,99,77,97,72,225,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="55,152,130,177"/>
-<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="237,33,201,54,164,81,134,112,110,142,106,139,130,108,160,77,198,49,235,28"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="173,79,244,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="253,33,227,69,223,66,249,29"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="269,79,351,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="270,29,296,66,292,69,266,33"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="376,79,447,104"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="285,28,375,70,373,75,283,33"/>
-<area shape="rect" id="Node000007" href="$sk__ctype_8h.html" title=" " alt="" coords="471,79,563,104"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="301,28,463,72,461,78,300,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="60,103,81,139,77,141,56,106"/>
+<map id="/workspaces/SimpleKernel/src/libc/sk_stdlib.c" name="/workspaces/SimpleKernel/src/libc/sk_stdlib.c">
+<area shape="rect" id="Node000001" title=" " alt="" coords="163,5,356,45"/>
+<area shape="rect" id="Node000002" href="$sk__stdlib_8h.html" title=" " alt="" coords="5,93,97,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,48,96,91,94,86,209,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="55,167,130,192"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="228,48,196,69,164,95,135,126,111,157,107,153,131,123,160,91,193,65,225,43"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="173,93,244,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="249,47,226,83,221,80,245,44"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="269,93,351,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="274,44,297,80,293,83,269,47"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="376,93,447,119"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="297,43,378,84,375,89,295,48"/>
+<area shape="rect" id="Node000007" href="$sk__ctype_8h.html" title=" " alt="" coords="471,93,563,119"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="322,43,467,87,465,92,320,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="60,118,81,153,77,156,56,120"/>
 </map>

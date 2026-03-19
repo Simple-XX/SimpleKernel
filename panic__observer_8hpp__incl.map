@@ -1,0 +1,13 @@
+<map id="/workspaces/SimpleKernel/src/include/panic_observer.hpp" name="/workspaces/SimpleKernel/src/include/panic_observer.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="61,5,287,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,116,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,48,90,87,87,83,145,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="141,93,207,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,46,177,79,171,79,171,46"/>
+<area shape="rect" id="Node000004" href="$kernel__config_8hpp.html" title=" " alt="" coords="231,93,367,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="206,43,271,84,268,88,203,48"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="203,167,273,192"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="291,121,259,158,255,154,287,117"/>
+<area shape="rect" id="Node000006" href="$project__config_8h.html" title=" " alt="" coords="298,167,423,192"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="311,117,344,154,340,158,307,121"/>
+</map>

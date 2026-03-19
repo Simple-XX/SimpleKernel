@@ -1,5 +1,6 @@
 var riscv64_2timer_8cpp =
 [
-    [ "TimerInit", "riscv64_2timer_8cpp.html#a8febf243f0581d61474fd6b56cfdb544", null ],
-    [ "TimerInitSMP", "riscv64_2timer_8cpp.html#a85b082ebd75de9086c93c05ad124fc8c", null ]
+    [ "InterruptDelegate", "riscv64_2timer_8cpp.html#abe4c331dc3efca0cf6b367ec6cfe968f", null ],
+    [ "TimerInit", "riscv64_2timer_8cpp.html#aadcb63b822cced321aaf1cc58cfea3cc", null ],
+    [ "TimerInitSMP", "riscv64_2timer_8cpp.html#a1e59270c44fa60a8b1304ee3c56b2907", null ]
 ];

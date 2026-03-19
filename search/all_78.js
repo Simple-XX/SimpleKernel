@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['波特率设置_0',['2. 波特率设置',['../md_2___xE8_xB0_x83_xE8_xAF_x95_xE8_xBE_x93_xE5_x87_xBA.html#autotoc_md138',1,'']]]
+  ['编译与运行_0',['⚡ 编译与运行',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md301',1,'']]],
+  ['编译配置_1',['编译配置',['../md__2workspaces_2SimpleKernel_2src_2arch_2README.html#autotoc_md386',1,'']]]
 ];

@@ -1,7 +1,8 @@
 var resource__id_8hpp =
 [
-    [ "ResourceId", "structResourceId.html", "structResourceId" ],
+    [ "ResourceId", "classResourceId.html", "classResourceId" ],
     [ "std::hash< ResourceId >", "structstd_1_1hash_3_01ResourceId_01_4.html", "structstd_1_1hash_3_01ResourceId_01_4" ],
+    [ "etl::hash< ResourceId >", "structetl_1_1hash_3_01ResourceId_01_4.html", "structetl_1_1hash_3_01ResourceId_01_4" ],
     [ "ResourceType", "resource__id_8hpp.html#aeea667e01168927f6d83af2e203019bc", [
       [ "kNone", "resource__id_8hpp.html#aeea667e01168927f6d83af2e203019bca35c3ace1970663a16e5c65baa5941b13", null ],
       [ "kMutex", "resource__id_8hpp.html#aeea667e01168927f6d83af2e203019bcaa946b60b6c9b99a928da497d30020031", null ],
@@ -15,5 +16,5 @@ var resource__id_8hpp =
       [ "kInterrupt", "resource__id_8hpp.html#aeea667e01168927f6d83af2e203019bca5226558f5ccca12b5009c9e2f97d50ae", null ],
       [ "kResourceTypeCount", "resource__id_8hpp.html#aeea667e01168927f6d83af2e203019bcabe9eb75ac414df6a83071f053ab26b90", null ]
     ] ],
-    [ "GetResourceTypeName", "resource__id_8hpp.html#afd66b2606db93ecfaf8b3972a9b953ad", null ]
+    [ "GetResourceTypeName", "resource__id_8hpp.html#ad7ba74e6eb37cd2a81f8b9bdcb59965c", null ]
 ];

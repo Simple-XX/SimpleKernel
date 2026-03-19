@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['软件中断分发_0',['2. 软件中断分发',['../md_3___xE4_xB8_xAD_xE6_x96_xAD.html#autotoc_md155',1,'']]]
+  ['🏛️_20接口体系总览_0',['🏛️ 接口体系总览',['../md__2workspaces_2SimpleKernel_2README.html#autotoc_md295',1,'']]],
+  ['🏛️_20interface_20architecture_20overview_1',['🏛️ Interface Architecture Overview',['../md__2workspaces_2SimpleKernel_2README__ENG.html#autotoc_md333',1,'']]]
 ];

@@ -1,0 +1,5 @@
+<map id="MsgSchedule" name="MsgSchedule">
+<area shape="rect" id="Node000001" title="调度消息（无负载，用作事件）" alt="" coords="35,133,135,199"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,164,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,100,87,133,82,133,82,100"/>
+</map>

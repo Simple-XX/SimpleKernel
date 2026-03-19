@@ -1,9 +1,13 @@
 <map id="cpu_io::CalleeSavedContext::StackPointer" name="cpu_io::CalleeSavedContext::StackPointer">
-<area shape="rect" id="Node000001" title=" " alt="" coords="443,23,647,63"/>
-<area shape="rect" id="Node000002" href="$aarch64_2arch__main_8cpp.html#a68bd5f23f249b2c277d460dc2e2ee47a" title=" " alt="" coords="272,5,395,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="428,32,394,28,395,23,429,27"/>
-<area shape="rect" id="Node000003" href="$aarch64_2arch__main_8cpp.html#a13c92ba83f807779913f45bc9ac404b0" title=" " alt="" coords="272,55,395,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="429,59,395,63,394,58,428,54"/>
-<area shape="rect" id="Node000004" href="$structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42" title="构造函数 (内核线程)" alt="" coords="5,47,224,87"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="258,70,224,70,224,65,258,65"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="443,73,647,113"/>
+<area shape="rect" id="Node000002" href="$arch_8cpp.html#a68bd5f23f249b2c277d460dc2e2ee47a" title="初始化用户线程的任务上下文（重载2）" alt="" coords="272,5,395,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="474,71,369,33,371,28,475,65"/>
+<area shape="rect" id="Node000003" href="$aarch64_2arch__main_8cpp.html#a5b7c13f163ec871df440fc0c27bf8151" title="初始化用户线程的任务上下文（重载2）" alt="" coords="272,55,395,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="428,81,394,77,395,72,429,76"/>
+<area shape="rect" id="Node000004" href="$arch_8cpp.html#a13c92ba83f807779913f45bc9ac404b0" title="初始化内核线程的任务上下文（重载1）" alt="" coords="272,104,395,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="429,108,395,112,394,107,428,103"/>
+<area shape="rect" id="Node000005" href="$aarch64_2arch__main_8cpp.html#a51a1f934a70cf48db916c9c6c7bb5cad" title="初始化内核线程的任务上下文（重载1）" alt="" coords="272,153,395,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="474,120,372,156,370,151,473,115"/>
+<area shape="rect" id="Node000006" href="$structTaskControlBlock.html#a6e96afd7da4feb231b605e2b7cebfc42" title="构造函数 (内核线程)" alt="" coords="5,146,224,186"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="258,169,224,169,224,163,258,163"/>
 </map>

@@ -1,0 +1,36 @@
+<map id="cpu_io::Wmb" name="cpu_io::Wmb">
+<area shape="rect" id="Node000001" title=" " alt="" coords="861,237,968,262"/>
+<area shape="rect" id="Node000002" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a65c030d25edc331b47332bc808766451" title="异步入队请求的内部实现" alt="" coords="646,37,794,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="901,225,868,158,843,122,812,91,793,80,796,75,815,87,847,119,872,156,906,222"/>
+<area shape="rect" id="Node000010" href="$classvirtio_1_1blk_1_1VirtioBlk.html#af3536cc946c6cc12df3583944f56a25e" title="中断处理（简化版，无回调）" alt="" coords="646,101,794,141"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="892,228,857,191,812,156,788,144,791,139,815,151,861,187,896,224"/>
+<area shape="rect" id="Node000011" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a098b48ede00a55c5abcf9897ff278aab" title="批量触发硬件通知" alt="" coords="646,165,794,205"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="861,235,781,208,782,203,863,230"/>
+<area shape="rect" id="Node000012" href="$classvirtio_1_1SplitVirtqueue.html#ae21a0e671f4b0c144918876a632305fc" title="将描述符链提交到 Available Ring" alt="" coords="642,293,798,333"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="863,269,782,296,781,291,861,264"/>
+<area shape="rect" id="Node000013" href="$classvirtio_1_1SplitVirtqueue.html#a3a982c4137a3de9b5fced09221a8122b" title="提交 Scatter&#45;Gather 描述符链" alt="" coords="421,353,577,393"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="908,277,896,309,877,347,850,384,815,412,780,426,744,433,707,435,669,432,599,416,542,396,544,391,601,411,670,427,707,430,743,428,779,421,812,407,846,380,872,344,891,307,903,275"/>
+<area shape="rect" id="Node000014" href="$classvirtio_1_1VirtqueueBase.html#ae2fea1ef92b064a77bbc9a66a3d09217" title="提交 Scatter&#45;Gather 链并通知设备" alt="" coords="627,357,813,397"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="896,274,861,312,815,348,791,360,788,355,812,343,857,308,892,271"/>
+<area shape="rect" id="Node000015" href="$classvirtio_1_1blk_1_1VirtioBlk.html#acbd79b96538cd9e7b97954f57e399c09" title="更新 avail&#45;&gt;used_event 字段" alt="" coords="646,229,794,269"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="847,252,794,252,794,247,847,247"/>
+<area shape="rect" id="Node000003" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ae775ef70e641bba36551b2ac3100daf5" title="异步提交读请求（仅入队描述符，不触发硬件通知）" alt="" coords="425,69,573,109"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="633,73,573,81,572,76,632,67"/>
+<area shape="rect" id="Node000004" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a23290024b275de716245b5eb9889ac0c" title="异步提交写请求（仅入队描述符，不触发硬件通知）" alt="" coords="425,5,573,45"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="632,47,572,39,573,33,633,42"/>
+<area shape="rect" id="Node000005" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a92da81f8831b00ff61070050d3779e5b" title="同步提交请求的内部实现" alt="" coords="419,165,579,205"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="641,85,628,92,581,124,526,167,523,163,578,120,625,87,639,80"/>
+<area shape="rect" id="Node000006" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ad68417f4f9c3dee20746038af378a94b" title="同步读取一个扇区" alt="" coords="223,133,371,173"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="405,173,371,168,371,162,406,168"/>
+<area shape="rect" id="Node000008" href="$classvirtio_1_1blk_1_1VirtioBlk.html#a252d86443729721fb9e6722fadb63fef" title="同步写入一个扇区" alt="" coords="223,197,371,237"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="406,203,371,208,371,203,405,197"/>
+<area shape="rect" id="Node000007" href="$classvirtio_1_1blk_1_1VirtioBlkVfsAdapter.html#a388c8a17feb4fa44f7413befebffd98a" title="读取连续扇区" alt="" coords="5,133,175,173"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="209,156,175,156,175,151,209,151"/>
+<area shape="rect" id="Node000009" href="$classvirtio_1_1blk_1_1VirtioBlkVfsAdapter.html#a9079e223f63fc517a7ace31b0bfd5c82" title="写入连续扇区" alt="" coords="5,197,175,237"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="209,220,175,220,175,215,209,215"/>
+<area shape="poly" id="edge11_Node000011_Node000005" title=" " alt="" coords="632,188,579,188,579,183,632,183"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="633,340,574,356,573,351,631,335"/>
+<area shape="poly" id="edge18_Node000015_Node000005" title=" " alt="" coords="636,228,568,208,569,203,638,223"/>
+<area shape="rect" id="Node000016" href="$classvirtio_1_1blk_1_1VirtioBlk.html#ad4cdea5b5a95384a5d379be0eb68ff4a" title="中断处理（带完成回调）" alt="" coords="425,229,573,269"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="632,252,573,252,573,247,632,247"/>
+</map>
