@@ -40,7 +40,9 @@ auto TaskManager::SendSignal(Pid pid, int signum) -> Expected<void> {
       (signum == signal_number::kSigKill || signum == signal_number::kSigCont);
 
   // 如果信号未被屏蔽，也需要唤醒
-  if (!needs_wake && !(target->aux->signals.blocked & (1U << signum))) {
+  if (!needs_wake &&
+      !(target->aux->signals.blocked.load(std::memory_order_acquire) &
+        (1U << signum))) {
     auto status = target->GetStatus();
     if (status == TaskStatus::kBlocked || status == TaskStatus::kSleeping) {
       needs_wake = true;
@@ -58,7 +60,8 @@ auto TaskManager::SendSignal(Pid pid, int signum) -> Expected<void> {
                     SignalState::GetSignalName(signum));
       }
     } else if (status == TaskStatus::kSleeping) {
-      // 设置 wake_tick 为 0，下次 TickUpdate 会唤醒它
+      // Expedite wake: set wake_tick to 0 so next TickUpdate wakes it.
+      // Note: single aligned 64-bit store is atomic on 64-bit platforms.
       target->sched_info.wake_tick = 0;
       klog::Debug("SendSignal: expedited sleep wakeup for pid={}", pid);
     }
@@ -194,7 +197,7 @@ auto TaskManager::SetSignalMask(int how, uint32_t set, uint32_t* oldset)
   auto& signals = current->aux->signals;
 
   if (oldset) {
-    *oldset = signals.blocked;
+    *oldset = signals.blocked.load(std::memory_order_acquire);
   }
 
   // SIGKILL 和 SIGSTOP 不能被屏蔽
@@ -204,22 +207,22 @@ auto TaskManager::SetSignalMask(int how, uint32_t set, uint32_t* oldset)
 
   switch (how) {
     case signal_mask_op::kSigBlock:
-      signals.blocked |= set;
+      signals.blocked.fetch_or(set, std::memory_order_release);
       break;
     case signal_mask_op::kSigUnblock:
-      signals.blocked &= ~set;
+      signals.blocked.fetch_and(~set, std::memory_order_release);
       break;
     case signal_mask_op::kSigSetmask:
-      signals.blocked = set;
+      signals.blocked.store(set, std::memory_order_release);
       break;
     default:
       return std::unexpected(Error{ErrorCode::kInvalidArgument});
   }
 
-  signals.blocked &= ~uncatchable_mask;
+  signals.blocked.fetch_and(~uncatchable_mask, std::memory_order_release);
 
   klog::Debug("SetSignalMask: pid={} mask={:#x}", current->pid,
-              signals.blocked);
+              signals.blocked.load(std::memory_order_acquire));
 
   return {};
 }

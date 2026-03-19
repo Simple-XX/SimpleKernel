@@ -159,6 +159,13 @@ class TaskManager {
   auto Wakeup(ResourceId resource_id) -> void;
 
   /**
+   * @brief 唤醒等待指定资源的第一个任务（跨核搜索）
+   * @param resource_id 资源 ID
+   * @note 只唤醒一个任务，用于互斥锁等只需唤醒一个等待者的场景
+   */
+  auto WakeupOne(ResourceId resource_id) -> void;
+
+  /**
    * @brief 唤醒等待指定资源的所有任务（调用者已持有 cpu_sched.lock）
    * @param cpu_sched 当前核心的调度数据
    * @param resource_id 资源 ID

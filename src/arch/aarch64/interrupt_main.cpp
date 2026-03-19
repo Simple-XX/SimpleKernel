@@ -88,6 +88,11 @@ extern "C" auto sync_current_el_spx_handler(cpu_io::TrapContext* context)
 extern "C" auto irq_current_el_spx_handler(cpu_io::TrapContext* context)
     -> void {
   auto cause = cpu_io::ICC_IAR1_EL1::INTID::Get();
+  // GICv3: INTID 1020-1023 为特殊值（spurious），不应处理也不应写 EOI
+  if (cause >= 1020) {
+    klog::Warn("Spurious IRQ: INTID {}", cause);
+    return;
+  }
   InterruptSingleton::instance().Do(cause, context);
 }
 

@@ -64,9 +64,10 @@ void test_wait_basic(void* /*arg*/) {
                                                    reinterpret_cast<void*>(42));
   child->aux->parent_pid = current->pid;
   child->aux->pgid = current->aux->pgid;
-  Pid child_pid = child->pid;
+  auto* child_raw = child.get();
 
   task_mgr.AddTask(std::move(child));
+  Pid child_pid = child_raw->pid;
 
   klog::Info("Parent: created child with PID={}", child_pid);
 
@@ -121,8 +122,9 @@ void test_wait_any_child(void* /*arg*/) {
         "AnyChild", 10, child_work, reinterpret_cast<void*>(10 + i));
     child->aux->parent_pid = current->pid;
     child->aux->pgid = current->aux->pgid;
-    Pid child_pid = child->pid;
+    auto* child_raw = child.get();
     task_mgr.AddTask(std::move(child));
+    Pid child_pid = child_raw->pid;
     klog::Info("Parent: created child {} with PID={}", i, child_pid);
   }
 
@@ -187,8 +189,9 @@ void test_wait_no_hang(void* /*arg*/) {
       "SlowChild", 10, slow_child_work, reinterpret_cast<void*>(1));
   child->aux->parent_pid = current->pid;
   child->aux->pgid = current->aux->pgid;
-  Pid child_pid = child->pid;
+  auto* child_raw = child.get();
   task_mgr.AddTask(std::move(child));
+  Pid child_pid = child_raw->pid;
 
   klog::Info("Parent: created slow child with PID={}", child_pid);
 
@@ -233,17 +236,19 @@ void test_wait_process_group(void* /*arg*/) {
                                                     reinterpret_cast<void*>(1));
   child1->aux->parent_pid = current->pid;
   child1->aux->pgid = current->aux->pgid;  // 同一进程组
-  Pid child1_pid = child1->pid;
   Pid child1_pgid = child1->aux->pgid;
+  auto* child1_raw = child1.get();
   task_mgr.AddTask(std::move(child1));
+  Pid child1_pid = child1_raw->pid;
 
   auto child2 = kstd::make_unique<TaskControlBlock>("PgChild2", 10, child_work,
                                                     reinterpret_cast<void*>(2));
   child2->aux->parent_pid = current->pid;
   child2->aux->pgid = 9999;  // 不同进程组
-  Pid child2_pid = child2->pid;
   Pid child2_pgid = child2->aux->pgid;
+  auto* child2_raw = child2.get();
   task_mgr.AddTask(std::move(child2));
+  Pid child2_pid = child2_raw->pid;
 
   klog::Info("Parent: created child1 (pgid={}) and child2 (pgid={})",
              child1_pgid, child2_pgid);
@@ -295,8 +300,9 @@ void test_wait_zombie_reap(void* /*arg*/) {
       "ZombieChild", 10, zombie_child_work, reinterpret_cast<void*>(1));
   child->aux->parent_pid = current->pid;
   child->aux->pgid = current->aux->pgid;
-  Pid child_pid = child->pid;
+  auto* child_raw = child.get();
   task_mgr.AddTask(std::move(child));
+  Pid child_pid = child_raw->pid;
 
   klog::Info("Parent: created zombie child with PID={}", child_pid);
 

@@ -16,6 +16,9 @@ auto TaskManager::Exit(int exit_code) -> void {
   assert(current->GetStatus() == TaskStatus::kRunning &&
          "Exit: current task status must be kRunning");
 
+  ResourceId wait_resource_id{};
+  bool should_wake_parent = false;
+
   {
     LockGuard<SpinLock> lock_guard(cpu_sched.lock);
 
@@ -33,14 +36,12 @@ auto TaskManager::Exit(int exit_code) -> void {
 
     if (current->aux->parent_pid != 0) {
       current->fsm.Receive(MsgExit{exit_code, true});
-
-      auto wait_resource_id =
+      wait_resource_id =
           ResourceId(ResourceType::kChildExit, current->aux->parent_pid);
-      Wakeup(cpu_sched, wait_resource_id);
+      should_wake_parent = true;
 
-      klog::Debug("Exit: pid={} waking up parent={} on resource={}",
-                  current->pid, current->aux->parent_pid,
-                  wait_resource_id.GetTypeName());
+      klog::Debug("Exit: pid={} entering zombie, will wake parent={}",
+                  current->pid, current->aux->parent_pid);
     } else {
       current->fsm.Receive(MsgExit{exit_code, false});
     }
@@ -48,14 +49,14 @@ auto TaskManager::Exit(int exit_code) -> void {
     if (is_group_leader) {
       ReparentChildren(current);
     }
+  }
 
-    ReapTask(current);
+  if (should_wake_parent) {
+    Wakeup(wait_resource_id);
   }
 
   Schedule();
 
-  klog::Err("Exit: Task {} should not return from Schedule()", current->pid);
-
-  // UNREACHABLE: 任务退出后 Schedule() 不应返回
+  // UNREACHABLE
   __builtin_unreachable();
 }

@@ -67,8 +67,8 @@ trap_return:
     mv sp, a0
 
     // 恢复 Trap 上下文
-    // 检查 sstatus.SPP (offset 64) 判断返回到用户态还是内核态
-    ld t0, 64*8(sp)
+    // 检查 sstatus.SPP (offset 31) 判断返回到用户态还是内核态
+    ld t0, 31*8(sp)
     andi t0, t0, 0x100
     bnez t0, .Lret_to_kernel
 

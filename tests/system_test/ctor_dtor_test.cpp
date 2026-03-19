@@ -61,10 +61,6 @@ class InsClass : public AbsClass {
 };
 
 auto ctor_dtor_test() -> bool {
-#ifdef __aarch64__
-  cpu_io::SetupFpu();
-#endif
-
   klog::Info("Running C++ Runtime Tests...");
 
   // 1. Verify Global Initialization

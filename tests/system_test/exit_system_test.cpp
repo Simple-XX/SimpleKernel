@@ -28,6 +28,10 @@ std::atomic<int> g_exit_test_counter{0};
 std::atomic<int> g_tests_completed{0};
 std::atomic<int> g_tests_failed{0};
 
+/// Counter for locally-constructed TCBs not managed by TaskManager.
+/// Starts at SIZE_MAX/2 to avoid collision with the global PID allocator.
+std::atomic<Pid> local_pid_counter{SIZE_MAX / 2};
+
 // ---------------------------------------------------------------------------
 // test_exit_normal
 // 测试: 创建带工作函数的任务，让其运行完毕后，验证 TCB 状态字段的语义正确性。
@@ -50,8 +54,8 @@ void test_exit_normal(void* /*arg*/) {
 
   // 1. 创建 TCB 并检查初始状态不是终止态
   auto* task = new TaskControlBlock("ExitNormal", 10, nullptr, nullptr);
-  task->pid = 5000;
-  task->aux->tgid = 5000;
+  task->pid = local_pid_counter.fetch_add(1);
+  task->aux->tgid = task->pid;
   task->aux->parent_pid = 1;
 
   if (task->GetStatus() == TaskStatus::kExited ||
@@ -130,8 +134,8 @@ void test_exit_with_error(void* /*arg*/) {
 
   // 1. 创建 TCB，确认 exit_code 默认为 0
   auto* task = new TaskControlBlock("ExitError", 10, nullptr, nullptr);
-  task->pid = 5001;
-  task->aux->tgid = 5001;
+  task->pid = local_pid_counter.fetch_add(1);
+  task->aux->tgid = task->pid;
   task->aux->parent_pid = 1;
 
   if (task->aux->exit_code != 0) {
@@ -212,29 +216,25 @@ void test_thread_exit(void* /*arg*/) {
 
   g_exit_test_counter = 0;
 
-  // 创建线程组主线程
+  // 创建线程组主线程（不加入调度，entry 为 nullptr）
   auto leader_uptr =
       kstd::make_unique<TaskControlBlock>("ThreadLeader", 10, nullptr, nullptr);
-  leader_uptr->pid = 5100;
-  leader_uptr->aux->tgid = 5100;
-  leader_uptr->aux->parent_pid = 1;
   auto* leader = leader_uptr.get();
-
-  TaskManagerSingleton::instance().AddTask(std::move(leader_uptr));
+  leader->pid = local_pid_counter.fetch_add(1);
+  leader->aux->tgid = leader->pid;
+  leader->aux->parent_pid = 1;
 
   // 创建子线程
   auto thread1 = kstd::make_unique<TaskControlBlock>(
       "Thread1", 10, child_thread_exit_work, reinterpret_cast<void*>(1));
-  thread1->pid = 5101;
-  thread1->aux->tgid = 5100;
+  thread1->aux->tgid = leader->pid;
   thread1->JoinThreadGroup(leader);
 
   TaskManagerSingleton::instance().AddTask(std::move(thread1));
 
   auto thread2 = kstd::make_unique<TaskControlBlock>(
       "Thread2", 10, child_thread_exit_work, reinterpret_cast<void*>(2));
-  thread2->pid = 5102;
-  thread2->aux->tgid = 5100;
+  thread2->aux->tgid = leader->pid;
   thread2->JoinThreadGroup(leader);
 
   TaskManagerSingleton::instance().AddTask(std::move(thread2));
@@ -285,8 +285,8 @@ void test_orphan_exit(void* /*arg*/) {
 
   // 1. 创建孤儿 TCB，验证 parent_pid == 0 被正确存储
   auto* orphan = new TaskControlBlock("Orphan", 10, nullptr, nullptr);
-  orphan->pid = 5200;
-  orphan->aux->tgid = 5200;
+  orphan->pid = local_pid_counter.fetch_add(1);
+  orphan->aux->tgid = orphan->pid;
   orphan->aux->parent_pid = 0;  // 孤儿进程
 
   if (orphan->aux->parent_pid != 0) {
@@ -365,20 +365,18 @@ void test_zombie_process(void* /*arg*/) {
 
   bool passed = true;
 
-  // 1. 创建父子 TCB，验证 parent_pid 字段正确关联
+  // 1. 创建父 TCB（不加入调度，entry 为 nullptr），验证 parent_pid 字段正确关联
   auto parent_uptr =
       kstd::make_unique<TaskControlBlock>("Parent", 10, nullptr, nullptr);
-  parent_uptr->pid = 5300;
-  parent_uptr->aux->tgid = 5300;
-  parent_uptr->aux->parent_pid = 1;
   auto* parent = parent_uptr.get();
-
-  TaskManagerSingleton::instance().AddTask(std::move(parent_uptr));
+  parent->pid = local_pid_counter.fetch_add(1);
+  parent->aux->tgid = parent->pid;
+  parent->aux->parent_pid = 1;
 
   auto* local_child =
       new TaskControlBlock("ZombieFsmTest", 10, nullptr, nullptr);
-  local_child->pid = 5301;
-  local_child->aux->tgid = 5301;
+  local_child->pid = local_pid_counter.fetch_add(1);
+  local_child->aux->tgid = local_child->pid;
   local_child->aux->parent_pid = parent->pid;
 
   if (local_child->aux->parent_pid != parent->pid) {
@@ -417,7 +415,7 @@ void test_zombie_process(void* /*arg*/) {
   std::atomic<int> work_flag{0};
   auto real_child = kstd::make_unique<TaskControlBlock>(
       "RealChild", 10, child_work, reinterpret_cast<void*>(&work_flag));
-  real_child->aux->parent_pid = 5300;  // 指向 parent
+  real_child->aux->parent_pid = parent->pid;
   TaskManagerSingleton::instance().AddTask(std::move(real_child));
 
   int timeout = 10;

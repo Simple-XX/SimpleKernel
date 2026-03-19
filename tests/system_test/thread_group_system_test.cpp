@@ -27,6 +27,7 @@ std::atomic<int> g_thread_completed{0};
 
 std::atomic<int> g_tests_completed{0};
 std::atomic<int> g_tests_failed{0};
+std::atomic<Pid> g_local_pid_counter{SIZE_MAX / 2};
 /**
  * @brief 线程函数，增加计数器
  */
@@ -57,23 +58,23 @@ void test_thread_group_basic(void* /*arg*/) {
   auto leader_holder = kstd::make_unique<TaskControlBlock>(
       "ThreadGroupLeader", 10, nullptr, nullptr);
   auto* leader = leader_holder.get();
-  leader->pid = 90000;
-  leader->aux->tgid = 90000;
+  leader->pid = g_local_pid_counter.fetch_add(1);
+  leader->aux->tgid = leader->pid;
 
   // 创建并加入线程组的线程
   auto thread1 = kstd::make_unique<TaskControlBlock>(
       "Thread1", 10, thread_increment, reinterpret_cast<void*>(1));
-  thread1->pid = 90001;
+  auto* thread1_raw = thread1.get();
   thread1->JoinThreadGroup(leader);
 
   auto thread2 = kstd::make_unique<TaskControlBlock>(
       "Thread2", 10, thread_increment, reinterpret_cast<void*>(2));
-  thread2->pid = 90002;
+  auto* thread2_raw = thread2.get();
   thread2->JoinThreadGroup(leader);
 
   auto thread3 = kstd::make_unique<TaskControlBlock>(
       "Thread3", 10, thread_increment, reinterpret_cast<void*>(3));
-  thread3->pid = 90003;
+  auto* thread3_raw = thread3.get();
   thread3->JoinThreadGroup(leader);
 
   // 验证线程组大小
@@ -125,8 +126,8 @@ void test_thread_group_dynamic(void* /*arg*/) {
   auto leader_holder = kstd::make_unique<TaskControlBlock>("DynamicLeader", 10,
                                                            nullptr, nullptr);
   auto* leader = leader_holder.get();
-  leader->pid = 91000;
-  leader->aux->tgid = 91000;
+  leader->pid = g_local_pid_counter.fetch_add(1);
+  leader->aux->tgid = leader->pid;
 
   constexpr int kThreadCount = 5;
   etl::unique_ptr<TaskControlBlock> thread_holders[kThreadCount];
@@ -136,7 +137,7 @@ void test_thread_group_dynamic(void* /*arg*/) {
     thread_holders[i] = kstd::make_unique<TaskControlBlock>("DynamicThread", 10,
                                                             nullptr, nullptr);
     threads[i] = thread_holders[i].get();
-    threads[i]->pid = 91001 + i;
+    threads[i]->pid = g_local_pid_counter.fetch_add(1);
   }
 
   // 动态加入
@@ -199,8 +200,8 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
   auto leader_holder = kstd::make_unique<TaskControlBlock>(
       "ConcurrentLeader", 10, nullptr, nullptr);
   auto* leader = leader_holder.get();
-  leader->pid = 92000;
-  leader->aux->tgid = 92000;
+  leader->pid = g_local_pid_counter.fetch_add(1);
+  leader->aux->tgid = leader->pid;
 
   // 创建多个工作线程
   constexpr int kWorkerCount = 4;
@@ -208,7 +209,6 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
     auto worker = kstd::make_unique<TaskControlBlock>(
         "ConcurrentWorker", 10, concurrent_exit_worker,
         reinterpret_cast<void*>(i));
-    worker->pid = 92001 + i;
     worker->JoinThreadGroup(leader);
     TaskManagerSingleton::instance().AddTask(std::move(worker));
   }
@@ -246,31 +246,31 @@ auto thread_group_system_test() -> bool {
   g_tests_completed = 0;
   g_tests_failed = 0;
 
-  // 测试 1: 基本线程组功能
-  auto test1 = kstd::make_unique<TaskControlBlock>(
-      "TestThreadGroupBasic", 10, test_thread_group_basic, nullptr);
-  TaskManagerSingleton::instance().AddTask(std::move(test1));
+  struct SubTest {
+    const char* name;
+    void (*func)(void*);
+  };
 
-  // 测试 2: 动态加入和离开
-  auto test2 = kstd::make_unique<TaskControlBlock>(
-      "TestThreadGroupDynamic", 10, test_thread_group_dynamic, nullptr);
-  TaskManagerSingleton::instance().AddTask(std::move(test2));
+  SubTest sub_tests[] = {
+      {"TestThreadGroupBasic", test_thread_group_basic},
+      {"TestThreadGroupDynamic", test_thread_group_dynamic},
+      {"TestThreadGroupConcurrentExit", test_thread_group_concurrent_exit},
+  };
 
-  // 测试 3: 并发退出
-  auto test3 = kstd::make_unique<TaskControlBlock>(
-      "TestThreadGroupConcurrentExit", 10, test_thread_group_concurrent_exit,
-      nullptr);
-  TaskManagerSingleton::instance().AddTask(std::move(test3));
-
-  // 同步等待所有测试完成
   constexpr int kExpectedTests = 3;
-  int timeout = 400;
-  while (timeout > 0) {
-    (void)sys_sleep(50);
-    if (g_tests_completed >= kExpectedTests) {
-      break;
+
+  // 顺序执行：子测试共享 g_thread_completed，并行会导致交叉计数
+  for (int i = 0; i < kExpectedTests; ++i) {
+    auto task = kstd::make_unique<TaskControlBlock>(sub_tests[i].name, 10,
+                                                    sub_tests[i].func, nullptr);
+    TaskManagerSingleton::instance().AddTask(std::move(task));
+
+    // 等待当前子测试完成后再启动下一个
+    int timeout = 400;
+    while (timeout > 0 && g_tests_completed < i + 1) {
+      (void)sys_sleep(50);
+      timeout--;
     }
-    timeout--;
   }
 
   EXPECT_EQ(g_tests_completed.load(), kExpectedTests,

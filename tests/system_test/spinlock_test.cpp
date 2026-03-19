@@ -216,14 +216,16 @@ auto spinlock_smp_string_test() -> bool {
 
   constexpr int kBarrierSpinLimit = 100000000;
   int spins = 0;
-  while (str_test_start_barrier.load() < (int)core_count) {
+  while (str_test_start_barrier.load(std::memory_order_acquire) <
+         (int)core_count) {
+    cpu_io::Pause();
     if (++spins > kBarrierSpinLimit) {
       if (core_id == 0) {
         klog::Err(
             "SMP string test barrier timeout: {}/{} cores arrived, skipping",
             str_test_start_barrier.load(), (int)core_count);
       }
-      return true;
+      return false;
     }
   }
 

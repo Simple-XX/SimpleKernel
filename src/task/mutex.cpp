@@ -34,6 +34,9 @@ auto Mutex::Lock() -> Expected<void> {
   }
 
   // 慢路径：在调度器锁保护下进行 re-check + block，防止丢失唤醒
+  // @todo: 当前实现在高竞争下可能不公平——被唤醒的任务的 CAS 可能被快速路径
+  // 的新到达者抢占，导致被唤醒任务重新 Block。考虑实现 handoff 模式：
+  // UnLock 直接将 owner_ 转移给被唤醒任务，避免竞争。
   while (true) {
     {
       auto& cpu_sched = tm.GetCurrentCpuSched();
@@ -90,7 +93,7 @@ auto Mutex::UnLock() -> Expected<void> {
 
   klog::Debug("Mutex::UnLock: Task {} released mutex '{}'", current_pid, name);
 
-  TaskManagerSingleton::instance().Wakeup(resource_id_);
+  TaskManagerSingleton::instance().WakeupOne(resource_id_);
 
   return {};
 }

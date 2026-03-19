@@ -3,6 +3,7 @@
  */
 
 #include <MPMCQueue.hpp>
+#include <atomic>
 #include <cerrno>
 #include <cstdint>
 #include <new>
@@ -131,8 +132,10 @@ auto main_smp(int argc, const char** argv) -> int {
 
 }  // namespace
 
+std::atomic_flag primary_booted_ = ATOMIC_FLAG_INIT;
+
 auto _start(int argc, const char** argv) -> void {
-  if (argv != nullptr) {
+  if (!primary_booted_.test_and_set(std::memory_order_acquire)) {
     CppInit();
     main(argc, argv);
   } else {

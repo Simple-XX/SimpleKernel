@@ -50,7 +50,53 @@ auto TaskManager::Wakeup(CpuSchedData& cpu_sched, ResourceId resource_id)
 }
 
 auto TaskManager::Wakeup(ResourceId resource_id) -> void {
-  auto& cpu_sched = GetCurrentCpuSched();
-  LockGuard<SpinLock> lock_guard(cpu_sched.lock);
-  Wakeup(cpu_sched, resource_id);
+  for (size_t i = 0; i < SIMPLEKERNEL_MAX_CORE_COUNT; ++i) {
+    auto& cpu_sched = cpu_schedulers_[i];
+    LockGuard<SpinLock> lock_guard(cpu_sched.lock);
+    Wakeup(cpu_sched, resource_id);
+  }
+}
+
+auto TaskManager::WakeupOne(ResourceId resource_id) -> void {
+  for (size_t i = 0; i < SIMPLEKERNEL_MAX_CORE_COUNT; ++i) {
+    auto& cpu_sched = cpu_schedulers_[i];
+    LockGuard<SpinLock> lock_guard(cpu_sched.lock);
+
+    auto it = cpu_sched.blocked_tasks.find(resource_id);
+    if (it == cpu_sched.blocked_tasks.end()) {
+      continue;
+    }
+
+    auto& waiting_tasks = it->second;
+    if (waiting_tasks.empty()) {
+      continue;
+    }
+
+    auto* task = waiting_tasks.front();
+    waiting_tasks.pop_front();
+
+    assert(task->GetStatus() == TaskStatus::kBlocked &&
+           "WakeupOne: task status must be kBlocked");
+
+    task->fsm.Receive(MsgWakeup{});
+    task->aux->blocked_on = ResourceId{};
+
+    auto* scheduler =
+        cpu_sched.schedulers[static_cast<uint8_t>(task->policy)].get();
+    assert(scheduler != nullptr && "WakeupOne: scheduler must not be null");
+    scheduler->Enqueue(task);
+
+    if (waiting_tasks.empty()) {
+      cpu_sched.blocked_tasks.erase(resource_id);
+    }
+
+    klog::Debug("WakeupOne: Woke task pid={} from resource={}, data={:#x}",
+                task->pid, resource_id.GetTypeName(),
+                static_cast<uint64_t>(resource_id.GetData()));
+    return;  // Only wake one
+  }
+
+  klog::Debug("WakeupOne: No tasks waiting on resource={}, data={:#x}",
+              resource_id.GetTypeName(),
+              static_cast<uint64_t>(resource_id.GetData()));
 }

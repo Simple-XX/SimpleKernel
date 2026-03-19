@@ -14,12 +14,12 @@
 /**
  * @brief TrapContext 结构体大小
  */
-.equ kTrapContextSize, 896
+.equ kTrapContextSize, 320
 
 /**
  * @brief CalleeSavedContext 结构体大小
  */
-.equ kCalleeSavedContextSize, 176
+.equ kCalleeSavedContextSize, 112
 
 /**
  * @brief 保存中断/异常上下文 (TrapContext)
@@ -27,17 +27,16 @@
  * 保存所有寄存器到栈上
  * 偏移 0-247: x0-x30
  * 偏移 248-255: _padding0
- * 偏移 256-767: q0-q31
- * 偏移 768-783: fpsr, fpcr
- * 偏移 784-831: _padding1 (6 个 uint64_t)
- * 偏移 832-855: elr_el1, spsr_el1, esr_el1
- * 偏移 856-879: sp_el0, tpidr_el0, ttbr0_el1
- * 偏移 880-895: sp_el1, tpidr_el1
+ * 偏移 256-271: elr_el1, spsr_el1
+ * 偏移 272-279: esr_el1
+ * 偏移 280-295: sp_el0, tpidr_el0
+ * 偏移 296-303: ttbr0_el1
+ * 偏移 304-319: sp_el1, tpidr_el1
  *
- * @note 此宏会自动分配栈空间 (sub sp, sp, #896)。
+ * @note 此宏会自动分配栈空间 (sub sp, sp, #320)。
  */
 .macro SaveTrapContext
-    // 分配栈空间 (896 字节)
+    // 分配栈空间 (320 字节)
     sub sp, sp, #kTrapContextSize
 
     // 保存通用寄存器 x0-x30 (偏移 0-247)
@@ -59,49 +58,23 @@
     str x30, [sp, #240]
     // 偏移 248-255: _padding0 (不需要显式保存)
 
-    // 保存浮点/SIMD寄存器 q0-q31 (偏移 256-767)
-    stp q0, q1, [sp, #256]
-    stp q2, q3, [sp, #288]
-    stp q4, q5, [sp, #320]
-    stp q6, q7, [sp, #352]
-    stp q8, q9, [sp, #384]
-    stp q10, q11, [sp, #416]
-    stp q12, q13, [sp, #448]
-    stp q14, q15, [sp, #480]
-    stp q16, q17, [sp, #512]
-    stp q18, q19, [sp, #544]
-    stp q20, q21, [sp, #576]
-    stp q22, q23, [sp, #608]
-    stp q24, q25, [sp, #640]
-    stp q26, q27, [sp, #672]
-    stp q28, q29, [sp, #704]
-    stp q30, q31, [sp, #736]
-
-    // 保存浮点状态寄存器 (偏移 768-783) 和系统寄存器 (偏移 832-895)
-    // 使用临时基址避免偏移超出 stp/ldp 的范围 (-512 到 504)
-    add x28, sp, #768
-    mrs x9, fpsr
-    mrs x10, fpcr
-    stp x9, x10, [x28]
-    // 偏移 784-831: _padding1 (不需要显式保存)
-
-    // 保存系统寄存器 (偏移 832-895，相对 x28 偏移 64-127)
+    // 保存系统寄存器 (偏移 256-319)
     mrs x9, elr_el1
     mrs x10, spsr_el1
-    mrs x11, esr_el1
-    stp x9, x10, [x28, #64]
-    str x11, [x28, #80]
+    stp x9, x10, [sp, #256]
+    mrs x9, esr_el1
+    str x9, [sp, #272]
 
     mrs x9, sp_el0
     mrs x10, tpidr_el0
-    mrs x11, ttbr0_el1
-    stp x9, x10, [x28, #88]
-    str x11, [x28, #104]
+    stp x9, x10, [sp, #280]
+    mrs x9, ttbr0_el1
+    str x9, [sp, #296]
 
     // sp_el1: 保存分配前的栈指针
     add x9, sp, #kTrapContextSize
     mrs x10, tpidr_el1
-    stp x9, x10, [x28, #112]
+    stp x9, x10, [sp, #304]
 .endm
 
 /**
@@ -112,49 +85,21 @@
  * @note 此宏会恢复 sp，等于隐式释放栈空间。
  */
 .macro RestoreTrapContext
-    // 恢复系统寄存器 (偏移 832-895) 和浮点状态寄存器 (偏移 768-783)
-    // 使用临时基址避免偏移超出 ldp 的范围 (-512 到 504)
-    add x28, sp, #768
-
-    // 恢复系统寄存器 (偏移 832-895，相对 x28 偏移 64-127)
-    ldp x9, x10, [x28, #64]
-    ldr x11, [x28, #80]
+    // 恢复系统寄存器 (偏移 256-319)
+    ldp x9, x10, [sp, #256]
     msr elr_el1, x9
     msr spsr_el1, x10
     // 注意：不恢复 esr_el1，它是硬件在异常时自动设置的只读寄存器
 
-    ldp x9, x10, [x28, #88]
-    ldr x11, [x28, #104]
+    ldp x9, x10, [sp, #280]
+    ldr x11, [sp, #296]
     msr sp_el0, x9
     msr tpidr_el0, x10
     msr ttbr0_el1, x11
 
-    ldp x9, x10, [x28, #112]
+    ldp x9, x10, [sp, #304]
     // sp_el1 最后恢复
     msr tpidr_el1, x10
-
-    // 恢复浮点状态寄存器 (偏移 768-783，相对 x28 偏移 0)
-    ldp x9, x10, [x28]
-    msr fpsr, x9
-    msr fpcr, x10
-
-    // 恢复浮点/SIMD寄存器 q0-q31 (偏移 256-767)
-    ldp q0, q1, [sp, #256]
-    ldp q2, q3, [sp, #288]
-    ldp q4, q5, [sp, #320]
-    ldp q6, q7, [sp, #352]
-    ldp q8, q9, [sp, #384]
-    ldp q10, q11, [sp, #416]
-    ldp q12, q13, [sp, #448]
-    ldp q14, q15, [sp, #480]
-    ldp q16, q17, [sp, #512]
-    ldp q18, q19, [sp, #544]
-    ldp q20, q21, [sp, #576]
-    ldp q22, q23, [sp, #608]
-    ldp q24, q25, [sp, #640]
-    ldp q26, q27, [sp, #672]
-    ldp q28, q29, [sp, #704]
-    ldp q30, q31, [sp, #736]
 
     // 恢复通用寄存器 x0-x30 (偏移 0-247)
     ldp x0, x1, [sp, #16 * 0]
@@ -183,8 +128,7 @@
  *
  * 按照 context.hpp 中 CalleeSavedContext 的布局：
  * 偏移 0-95: x19-x30 (12 regs)
- * 偏移 96-159: d8-d15 (8 regs，注意是 64 位的 d 寄存器，不是 128 位的 q 寄存器)
- * 偏移 160-175: sp, pc (2 regs)
+ * 偏移 96-111: sp, pc (2 regs)
  *
  * @param base_reg 基地址寄存器 (保存的目标地址)
  */
@@ -197,16 +141,10 @@
     stp x27, x28, [\base_reg, #64]
     stp x29, x30, [\base_reg, #80]
 
-    // 保存 d8-d15 (偏移 96-159，64 位浮点寄存器)
-    stp d8, d9, [\base_reg, #96]
-    stp d10, d11, [\base_reg, #112]
-    stp d12, d13, [\base_reg, #128]
-    stp d14, d15, [\base_reg, #144]
-
-    // 保存 sp 和 pc (偏移 160-175)
+    // 保存 sp 和 pc (偏移 96-111)
     mov x9, sp
     mov x10, x30  // pc: 保存返回地址（Link Register）
-    stp x9, x10, [\base_reg, #160]
+    stp x9, x10, [\base_reg, #96]
 .endm
 
 /**
@@ -217,14 +155,8 @@
  * @param base_reg 基地址寄存器 (恢复的源地址)
  */
 .macro RestoreCalleeSavedContext base_reg
-    // 恢复 d8-d15 (偏移 96-159)
-    ldp d8, d9, [\base_reg, #96]
-    ldp d10, d11, [\base_reg, #112]
-    ldp d12, d13, [\base_reg, #128]
-    ldp d14, d15, [\base_reg, #144]
-
-    // 恢复 sp 和 pc (偏移 160-175)
-    ldp x9, x10, [\base_reg, #160]
+    // 恢复 sp 和 pc (偏移 96-111)
+    ldp x9, x10, [\base_reg, #96]
     mov sp, x9
 
     // 恢复 x19-x30 (偏移 0-95)

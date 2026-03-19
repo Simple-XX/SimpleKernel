@@ -14,26 +14,26 @@
 /**
  * @brief 中断/异常上下文切换所需保存的寄存器数量
  *
- * 31 个通用寄存器(x1-x31) + 4 个 CSR + 32 个浮点寄存器(f0-f31) + 1 个 fcsr
- * 总计: 31 + 4 + 32 + 1 = 68
+ * 31 个通用寄存器(x1-x31) + 4 个 CSR + 1 个 padding
+ * 总计: 31 + 4 + 1 = 36
  */
-.equ kTrapContextRegsCount, 68
+.equ kTrapContextRegsCount, 36
 
 /**
  * @brief 中断/异常上下文切换所需保存的寄存器大小
- * 68 个寄存器 * 8 字节 = 544 字节（已对齐到 16 字节）
+ * 36 个寄存器 * 8 字节 = 288 字节（已对齐到 16 字节）
  */
 .equ kTrapContextSize, ALIGN_16(kTrapContextRegsCount * kRegsBytes)
 
 /**
  * @brief 函数调用上下文切换所需保存的寄存器数量 (Callee-saved)
- * ra, sp, s0-s11 (13 regs) + fs0-fs11 (12 regs) = 26 regs
+ * ra, sp, s0-s11 = 14 regs
  */
-.equ kCalleeSavedContextRegsCount, 26
+.equ kCalleeSavedContextRegsCount, 14
 
 /**
  * @brief 函数调用上下文切换所需保存的寄存器大小 (Callee-saved)
- * 26 * 8 = 208 字节（已对齐到 16 字节）
+ * 14 * 8 = 112 字节（已对齐到 16 字节）
  */
 .equ kCalleeSavedContextSize, ALIGN_16(kCalleeSavedContextRegsCount * kRegsBytes)
 
@@ -55,26 +55,6 @@
  */
 .macro LdBase a, b, c
     ld \a, ((\b) * kRegsBytes)(\c)
-.endm
-
-/**
- * @brief 将 float 寄存器 a 保存在 c 偏移 b 的位置
- * @param a 源浮点寄存器
- * @param b 偏移量 (乘以 kRegsBytes)
- * @param c 基地址寄存器
- */
-.macro FsdBase a, b, c
-    fsd \a, ((\b) * kRegsBytes)(\c)
-.endm
-
-/**
- * @brief 从 c 的偏移 b 处获取数据并赋值给 float 寄存器 a
- * @param a 目标浮点寄存器
- * @param b 偏移量 (乘以 kRegsBytes)
- * @param c 基地址寄存器
- */
-.macro FldBase a, b, c
-    fld \a, ((\b) * kRegsBytes)(\c)
 .endm
 
 /**
@@ -126,53 +106,15 @@
     addi t0, sp, kTrapContextSize
     SdBase t0, 1, sp
 
-    // 保存浮点寄存器
-    FsdBase ft0, 31, sp
-    FsdBase ft1, 32, sp
-    FsdBase ft2, 33, sp
-    FsdBase ft3, 34, sp
-    FsdBase ft4, 35, sp
-    FsdBase ft5, 36, sp
-    FsdBase ft6, 37, sp
-    FsdBase ft7, 38, sp
-    FsdBase fs0, 39, sp
-    FsdBase fs1, 40, sp
-    FsdBase fa0, 41, sp
-    FsdBase fa1, 42, sp
-    FsdBase fa2, 43, sp
-    FsdBase fa3, 44, sp
-    FsdBase fa4, 45, sp
-    FsdBase fa5, 46, sp
-    FsdBase fa6, 47, sp
-    FsdBase fa7, 48, sp
-    FsdBase fs2, 49, sp
-    FsdBase fs3, 50, sp
-    FsdBase fs4, 51, sp
-    FsdBase fs5, 52, sp
-    FsdBase fs6, 53, sp
-    FsdBase fs7, 54, sp
-    FsdBase fs8, 55, sp
-    FsdBase fs9, 56, sp
-    FsdBase fs10, 57, sp
-    FsdBase fs11, 58, sp
-    FsdBase ft8, 59, sp
-    FsdBase ft9, 60, sp
-    FsdBase ft10, 61, sp
-    FsdBase ft11, 62, sp
-
-    // 保存 fcsr
-    frcsr t0
-    SdBase t0, 63, sp
-
     // 保存 CSRs (使用 t0 作为临时寄存器，t0 原值已 preservation at offset 4)
     csrr t0, sstatus
-    SdBase t0, 64, sp
+    SdBase t0, 31, sp
     csrr t0, sepc
-    SdBase t0, 65, sp
+    SdBase t0, 32, sp
     csrr t0, stval
-    SdBase t0, 66, sp
+    SdBase t0, 33, sp
     csrr t0, scause
-    SdBase t0, 67, sp
+    SdBase t0, 34, sp
 .endm
 
 /**
@@ -184,52 +126,14 @@
  */
 .macro RestoreTrapContext
     // 恢复 CSRs (使用 t0 作为临时寄存器)
-    LdBase t0, 64, sp
+    LdBase t0, 31, sp
     csrw sstatus, t0
-    LdBase t0, 65, sp
+    LdBase t0, 32, sp
     csrw sepc, t0
-    LdBase t0, 66, sp
+    LdBase t0, 33, sp
     csrw stval, t0
-    LdBase t0, 67, sp
+    LdBase t0, 34, sp
     csrw scause, t0
-
-    // 恢复 fcsr
-    LdBase t0, 63, sp
-    fscsr t0
-
-    // 恢复浮点寄存器
-    FldBase ft0, 31, sp
-    FldBase ft1, 32, sp
-    FldBase ft2, 33, sp
-    FldBase ft3, 34, sp
-    FldBase ft4, 35, sp
-    FldBase ft5, 36, sp
-    FldBase ft6, 37, sp
-    FldBase ft7, 38, sp
-    FldBase fs0, 39, sp
-    FldBase fs1, 40, sp
-    FldBase fa0, 41, sp
-    FldBase fa1, 42, sp
-    FldBase fa2, 43, sp
-    FldBase fa3, 44, sp
-    FldBase fa4, 45, sp
-    FldBase fa5, 46, sp
-    FldBase fa6, 47, sp
-    FldBase fa7, 48, sp
-    FldBase fs2, 49, sp
-    FldBase fs3, 50, sp
-    FldBase fs4, 51, sp
-    FldBase fs5, 52, sp
-    FldBase fs6, 53, sp
-    FldBase fs7, 54, sp
-    FldBase fs8, 55, sp
-    FldBase fs9, 56, sp
-    FldBase fs10, 57, sp
-    FldBase fs11, 58, sp
-    FldBase ft8, 59, sp
-    FldBase ft9, 60, sp
-    FldBase ft10, 61, sp
-    FldBase ft11, 62, sp
 
     // 恢复通用寄存器 (除了 sp 和 t0)
     LdBase ra, 0, sp
@@ -272,7 +176,7 @@
 
 /**
  * @brief 保存 Callee-saved 寄存器到指定地址
- * 保存 ra, sp, s0-s11, fs0-fs11
+ * 保存 ra, sp, s0-s11
  *
  * @param base_reg 基地址寄存器 (保存的目标地址)
  */
@@ -291,24 +195,11 @@
     SdBase s9, 11, \base_reg
     SdBase s10, 12, \base_reg
     SdBase s11, 13, \base_reg
-
-    FsdBase fs0, 14, \base_reg
-    FsdBase fs1, 15, \base_reg
-    FsdBase fs2, 16, \base_reg
-    FsdBase fs3, 17, \base_reg
-    FsdBase fs4, 18, \base_reg
-    FsdBase fs5, 19, \base_reg
-    FsdBase fs6, 20, \base_reg
-    FsdBase fs7, 21, \base_reg
-    FsdBase fs8, 22, \base_reg
-    FsdBase fs9, 23, \base_reg
-    FsdBase fs10, 24, \base_reg
-    FsdBase fs11, 25, \base_reg
 .endm
 
 /**
  * @brief 从指定地址恢复 Callee-saved 寄存器
- * 恢复 ra, sp, s0-s11, fs0-fs11
+ * 恢复 ra, sp, s0-s11
  *
  * @param base_reg 基地址寄存器 (恢复的源地址)
  */
@@ -327,17 +218,4 @@
     LdBase s9, 11, \base_reg
     LdBase s10, 12, \base_reg
     LdBase s11, 13, \base_reg
-
-    FldBase fs0, 14, \base_reg
-    FldBase fs1, 15, \base_reg
-    FldBase fs2, 16, \base_reg
-    FldBase fs3, 17, \base_reg
-    FldBase fs4, 18, \base_reg
-    FldBase fs5, 19, \base_reg
-    FldBase fs6, 20, \base_reg
-    FldBase fs7, 21, \base_reg
-    FldBase fs8, 22, \base_reg
-    FldBase fs9, 23, \base_reg
-    FldBase fs10, 24, \base_reg
-    FldBase fs11, 25, \base_reg
 .endm

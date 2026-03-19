@@ -106,18 +106,23 @@ void test_clone_process(void* /*arg*/) {
   g_child2_tgid = 0;
   g_child2_parent_pid = 0;
 
-  auto* self = TaskManagerSingleton::instance().GetCurrentTask();
+  auto& task_mgr = TaskManagerSingleton::instance();
+  auto* self = task_mgr.GetCurrentTask();
   Pid my_pid = self->pid;
 
   auto child1 = kstd::make_unique<TaskControlBlock>(
       "CloneChild1", 10, child_process_work, reinterpret_cast<void*>(1));
   child1->aux->parent_pid = my_pid;
-  TaskManagerSingleton::instance().AddTask(std::move(child1));
+  auto* child1_raw = child1.get();
+  task_mgr.AddTask(std::move(child1));
+  Pid child1_pid = child1_raw->pid;
 
   auto child2 = kstd::make_unique<TaskControlBlock>(
       "CloneChild2", 10, child_process_work, reinterpret_cast<void*>(2));
   child2->aux->parent_pid = my_pid;
-  TaskManagerSingleton::instance().AddTask(std::move(child2));
+  auto* child2_raw = child2.get();
+  task_mgr.AddTask(std::move(child2));
+  Pid child2_pid = child2_raw->pid;
 
   (void)sys_sleep(200);
 
@@ -147,6 +152,11 @@ void test_clone_process(void* /*arg*/) {
     klog::Err("Not all child processes completed");
     passed = false;
   }
+
+  // 回收子进程，避免僵尸被过继给 runner 导致 collected 计数错误
+  int status = 0;
+  (void)task_mgr.Wait(child1_pid, &status, false, false);
+  (void)task_mgr.Wait(child2_pid, &status, false, false);
 
   if (passed) {
     klog::Info("Clone Process Test: PASSED");

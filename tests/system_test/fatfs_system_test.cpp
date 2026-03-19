@@ -37,17 +37,19 @@ auto fatfs_system_test() -> bool {
   auto init_result = vfs::Init();
   EXPECT_TRUE(init_result.has_value(), "fatfs_system_test: vfs init failed");
 
+  // FileSystemInit() may have already mounted FatFS at /mnt/fat — tear it
+  // down so the test owns the full mount lifecycle.
+  if (vfs::GetMountTable().IsMountPoint("/mnt/fat")) {
+    (void)vfs::GetMountTable().Unmount("/mnt/fat");
+  }
+
   // Create /mnt and /mnt/fat directories in the VFS tree (in ramfs at /)
   // before mounting. MkDir is idempotent-ish — ignore errors if exists.
   (void)vfs::MkDir("/mnt");
   (void)vfs::MkDir("/mnt/fat");
 
+  // MountTable::Mount calls fs->Mount() internally — do not call it manually.
   static fatfs::FatFsFileSystem fat_fs(0);
-  auto fat_mount = fat_fs.Mount(blk);
-  EXPECT_TRUE(fat_mount.has_value(),
-              "fatfs_system_test: FatFsFileSystem::Mount failed");
-  klog::Info("fatfs_system_test: FatFsFileSystem::Mount ok");
-
   auto vfs_mount = vfs::GetMountTable().Mount("/mnt/fat", &fat_fs, blk);
   EXPECT_TRUE(vfs_mount.has_value(),
               "fatfs_system_test: vfs mount at /mnt/fat failed");
@@ -134,21 +136,15 @@ auto fatfs_system_test() -> bool {
 
   // T6: Unmount and remount — verify persistence
   {
-    auto unmount_result = fat_fs.Unmount();
+    auto unmount_result = vfs::GetMountTable().Unmount("/mnt/fat");
     EXPECT_TRUE(unmount_result.has_value(),
-                "fatfs_system_test: FatFsFileSystem::Unmount failed");
+                "fatfs_system_test: vfs unmount /mnt/fat failed");
     klog::Info("fatfs_system_test: unmounted ok");
 
-    // Remount
-    auto remount_result = fat_fs.Mount(blk);
-    EXPECT_TRUE(remount_result.has_value(),
-                "fatfs_system_test: remount failed");
-    klog::Info("fatfs_system_test: remounted ok");
-
-    // Re-wire VFS mount
     auto vfs_remount = vfs::GetMountTable().Mount("/mnt/fat", &fat_fs, blk);
     EXPECT_TRUE(vfs_remount.has_value(),
                 "fatfs_system_test: vfs remount failed");
+    klog::Info("fatfs_system_test: remounted ok");
 
     // Verify test.txt persisted
     auto file_result =

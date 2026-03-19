@@ -5,6 +5,8 @@
 #pragma once
 
 #include <array>
+#include <atomic>
+#include <cassert>
 #include <cstdint>
 
 /// 最大信号数
@@ -102,9 +104,9 @@ struct SignalAction {
  */
 struct SignalState {
   /// 待处理信号位掩码
-  uint32_t pending{0};
+  std::atomic<uint32_t> pending{0};
   /// 阻塞信号位掩码
-  uint32_t blocked{0};
+  std::atomic<uint32_t> blocked{0};
   /// 每个信号的处理动作
   std::array<SignalAction, kMaxSignals> actions{};
 
@@ -112,8 +114,9 @@ struct SignalState {
    * @brief 检查是否有可投递的信号
    * @return true 有未屏蔽的待处理信号
    */
-  [[nodiscard]] constexpr auto HasDeliverableSignal() const -> bool {
-    return (pending & ~blocked) != 0;
+  [[nodiscard]] auto HasDeliverableSignal() const -> bool {
+    return (pending.load(std::memory_order_acquire) &
+            ~blocked.load(std::memory_order_acquire)) != 0;
   }
 
   /**
@@ -121,8 +124,9 @@ struct SignalState {
    * @return int 信号编号，无可投递信号返回 0
    * @note 优先级从低编号到高编号
    */
-  [[nodiscard]] constexpr auto GetNextDeliverableSignal() const -> int {
-    uint32_t deliverable = pending & ~blocked;
+  [[nodiscard]] auto GetNextDeliverableSignal() const -> int {
+    uint32_t deliverable = pending.load(std::memory_order_acquire) &
+                           ~blocked.load(std::memory_order_acquire);
     if (deliverable == 0) {
       return signal_number::kSigNone;
     }
@@ -139,20 +143,18 @@ struct SignalState {
    * @brief 设置待处理信号
    * @param signum 信号编号
    */
-  constexpr auto SetPending(int signum) -> void {
-    if (signum > 0 && signum < kMaxSignals) {
-      pending |= (1U << signum);
-    }
+  auto SetPending(int signum) -> void {
+    assert(IsValid(signum) && "signum is invalid");
+    pending.fetch_or(1U << signum, std::memory_order_release);
   }
 
   /**
    * @brief 清除待处理信号
    * @param signum 信号编号
    */
-  constexpr auto ClearPending(int signum) -> void {
-    if (signum > 0 && signum < kMaxSignals) {
-      pending &= ~(1U << signum);
-    }
+  auto ClearPending(int signum) -> void {
+    assert(IsValid(signum) && "signum is invalid");
+    pending.fetch_and(~(1U << signum), std::memory_order_release);
   }
 
   /**
@@ -223,10 +225,10 @@ struct SignalState {
   /// @name 构造/析构函数
   /// @{
   SignalState() = default;
-  SignalState(const SignalState&) = default;
-  SignalState(SignalState&&) = default;
-  auto operator=(const SignalState&) -> SignalState& = default;
-  auto operator=(SignalState&&) -> SignalState& = default;
+  SignalState(const SignalState&) = delete;
+  SignalState(SignalState&&) = delete;
+  auto operator=(const SignalState&) -> SignalState& = delete;
+  auto operator=(SignalState&&) -> SignalState& = delete;
   ~SignalState() = default;
   /// @}
 };

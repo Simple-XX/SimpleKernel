@@ -26,6 +26,7 @@ ADD_EXECUTABLE (
     fatfs_system_test.cpp
     kernel_task_test.cpp
     user_task_test.cpp
+    cross_core_test.cpp
     ${CMAKE_SOURCE_DIR}/src/syscall.cpp
     ${CMAKE_SOURCE_DIR}/src/io_buffer.cpp)
 

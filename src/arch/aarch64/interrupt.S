@@ -172,18 +172,17 @@ trap_return:
     mov sp, x0
 
     // 恢复 Trap 上下文
-    // 检查 spsr_el1.M[0] (EL0t/EL1t=0b0000, EL1h=0b0101) 判断返回到用户态还是内核态
-    // 偏移 832-855: elr_el1, spsr_el1, esr_el1
-    add x28, sp, #768
-    ldr x9, [x28, #72]
+    // 检查 spsr_el1.M[3:0] 判断返回到用户态还是内核态
+    // spsr_el1 at offset 264
+    ldr x9, [sp, #264]
     // 提取 M[3:0]
     and x9, x9, #0xF
     cbnz x9, .Lret_to_kernel
 
 .Lret_to_user:
     // 返回用户态
-    // 恢复页表（如果有的话）
-    ldr x9, [x28, #104]
+    // ttbr0_el1 at offset 296
+    ldr x9, [sp, #296]
     msr ttbr0_el1, x9
     isb
 

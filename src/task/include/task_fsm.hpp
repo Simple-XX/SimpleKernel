@@ -6,6 +6,8 @@
 
 #include <etl/fsm.h>
 
+#include <atomic>
+
 #include "kernel_log.hpp"
 #include "task_messages.hpp"
 
@@ -154,20 +156,30 @@ class TaskFsm {
   /**
    * @brief 启动 FSM（在 TCB 完全构造后调用）
    */
-  auto Start() -> void { fsm_.start(); }
+  auto Start() -> void {
+    fsm_.start();
+    cached_state_.store(fsm_.get_state_id(), std::memory_order_release);
+  }
 
   /**
    * @brief 向 FSM 发送消息
    * @param msg 要发送的消息
+   * @pre 调用者持有保护此 TCB 的锁（如 cpu_sched.lock）
+   * @post cached_state_ 以 release 语义更新，跨核可见
    */
-  auto Receive(const etl::imessage& msg) -> void { fsm_.receive(msg); }
+  auto Receive(const etl::imessage& msg) -> void {
+    fsm_.receive(msg);
+    cached_state_.store(fsm_.get_state_id(), std::memory_order_release);
+  }
 
   /**
-   * @brief 获取当前状态 ID
+   * @brief 获取当前状态 ID（线程安全）
    * @return etl::fsm_state_id_t 当前状态 ID
+   * @note 使用 acquire 语义从 atomic 缓存读取，
+   *       无需持有与 Receive() 相同的锁即可安全调用
    */
   [[nodiscard]] auto GetStateId() const -> etl::fsm_state_id_t {
-    return fsm_.get_state_id();
+    return cached_state_.load(std::memory_order_acquire);
   }
 
   /// @name 构造/析构函数
@@ -202,4 +214,7 @@ class TaskFsm {
   etl::ifsm_state* state_list_[7];
 
   etl::fsm fsm_;
+
+  /// 跨核可见的状态缓存，解决 etl::fsm 非线程安全的问题
+  std::atomic<etl::fsm_state_id_t> cached_state_{TaskStatusId::kUnInit};
 };
