@@ -46,7 +46,7 @@ Unlike traditional OS teaching projects, SimpleKernel adopts an **Interface-Driv
 | 🌐 **Three-Architecture Support** | x86_64, RISC-V 64, AArch64 — one set of interfaces adapting to different hardware |
 | 🧪 **Test-Driven Verification** | GoogleTest test suites verify whether AI-generated implementations conform to interface contracts |
 | 📖 **Complete Doxygen Documentation** | Every interface has responsibility descriptions, preconditions, postconditions, and usage examples |
-| 🏗️ **Engineering Infrastructure** | CMake build, Docker environment, CI/CD, clang-format/clang-tidy |
+| 🏗️ **Engineering Infrastructure** | CMake build, Dev Container environment, CI/CD, clang-format/clang-tidy |
 
 ## 🤖 AI-Oriented Design Philosophy
 
@@ -204,28 +204,32 @@ SimpleKernel's interfaces are organized into the following layers:
 ### 📋 System Requirements
 
 - **Operating System**: Linux (Ubuntu 24.04 recommended) or macOS
-- **Container Engine**: Docker 20.10+
-- **Toolchain**: Included in Docker image (GCC cross-compilers, CMake, QEMU, etc.)
+- **Container Engine**: Docker or compatible container runtime
+- **Toolchain**: Included in Dev Container (GCC 14 cross-compilers, CMake, QEMU, etc.)
 - **AI Tools (recommended)**: GitHub Copilot / ChatGPT / Claude
 
 ### 🛠️ Environment Setup
 
-**Option 1: Using Docker (Recommended)**
+**Option 1: Using Dev Container (Recommended)**
 
 ```shell
 # 1. Clone the project
 git clone https://github.com/simple-xx/SimpleKernel.git
 cd SimpleKernel
-git submodule update --init --recursive
 
-# 2. Start development environment
-docker pull ptrnull233/simple_kernel:latest
-docker run --name SimpleKernel-dev -itd -p 233:22 \
-  -v $(pwd):/root/SimpleKernel ptrnull233/simple_kernel:latest
+# 2. Open in VS Code and reopen in container
+#    Install Dev Containers extension, click the >< icon at bottom-left
+#    Select "Reopen in Container"
 
-# 3. Enter development container
-docker exec -it SimpleKernel-dev /bin/zsh
+# Or use CLI
+npm install -g @devcontainers/cli
+devcontainer up --workspace-folder .
+devcontainer exec --workspace-folder . bash
 ```
+
+> Also supports **GitHub Codespaces**: Click Code → Codespaces → Create codespace on main
+>
+> See [Dev Container documentation](./docs/docker.md) for details.
 
 **Option 2: Local Environment**
 
@@ -411,7 +415,7 @@ subject: max 50 chars, no period
 - **System Boot**: [docs/1_系统启动.md](./docs/1_系统启动.md)
 - **Debug Output**: [docs/2_调试输出.md](./docs/2_调试输出.md)
 - **Interrupts**: [docs/3_中断.md](./docs/3_中断.md)
-- **Docker**: [docs/docker.md](./docs/docker.md)
+- **Dev Container**: [docs/docker.md](./docs/docker.md)
 - **Interface Refactoring Plan**: [docs/TODO_interface_refactor.md](./docs/TODO_interface_refactor.md)
 
 ## 🤝 Contributing
