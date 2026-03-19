@@ -42,7 +42,8 @@ RUN apt-get update && apt-get upgrade -y && \
     gcc-14-x86-64-linux-gnu g++-14-x86-64-linux-gnu && \
     update-alternatives \
       --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 \
-      --slave   /usr/bin/g++ g++ /usr/bin/g++-14 && \
+      --slave   /usr/bin/g++ g++ /usr/bin/g++-14 \
+      --slave   /usr/bin/gcov gcov /usr/bin/gcov-14 && \
     update-alternatives \
       --install /usr/bin/riscv64-linux-gnu-gcc riscv64-linux-gnu-gcc \
                 /usr/bin/riscv64-linux-gnu-gcc-14 100 \
