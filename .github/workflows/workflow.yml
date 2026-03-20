@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     permissions:
       contents: write
       packages: read
@@ -21,19 +21,12 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
-      - name: x86_64
-        uses: devcontainers/ci@v0.3
-        with:
-          runCmd: |
-            cmake --preset=build_x86_64
-            cmake --build build_x86_64 --target SimpleKernel unit-test coverage docs
-
       - name: riscv64
         uses: devcontainers/ci@v0.3
         with:
           runCmd: |
             cmake --preset=build_riscv64
-            cmake --build build_riscv64 --target SimpleKernel
+            cmake --build build_riscv64 --target SimpleKernel docs
 
       - name: riscv64 system test
         uses: devcontainers/ci@v0.3
@@ -53,7 +46,7 @@ jobs:
         with:
           runCmd: |
             cmake --preset=build_aarch64 -DQEMU_NORMAL_WORLD_DEV_PATH=null -DQEMU_SECURE_WORLD_DEV_PATH=null
-            cmake --build build_aarch64 --target SimpleKernel
+            cmake --build build_aarch64 --target SimpleKernel unit-test coverage
 
       - name: aarch64 system test
         uses: devcontainers/ci@v0.3
@@ -73,7 +66,7 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: ${{ github.workspace }}/build_x86_64/coverage/coverage.info
+          files: ${{ github.workspace }}/build_riscv64/coverage/coverage.info
           verbose: true
 
       - name: Publish

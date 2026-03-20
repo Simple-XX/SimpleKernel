@@ -33,7 +33,7 @@ integration_test/
 - **Adding system tests** → Create `tests/system_test/{module}_test.cpp`, register in main.cpp
 - **Mock data** → `unit_test/mocks/` for stub implementations needed by host-only tests
 - **Test fixtures** → `unit_test/task/` for `TaskTestHarness` scheduler test setup
-- **Run unit tests** → `cd build_x86_64 && make unit-test`
+- **Run unit tests** → `cd build_{arch} && make unit-test` (host architecture only)
 - **Run system tests** → `cd build_{arch} && make run` (system tests embedded in kernel)
 
 ## CONVENTIONS

@@ -119,7 +119,6 @@ ADD_CUSTOM_TARGET (
         make O=${u-boot_BINARY_DIR}
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:qemu_arm64_defconfig>
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:qemu-riscv64_spl_defconfig>
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:qemu-x86_64_defconfig>
         -j${CMAKE_BUILD_PARALLEL_LEVEL}
     COMMAND
         make CROSS_COMPILE=${TOOLCHAIN_PREFIX} O=${u-boot_BINARY_DIR}

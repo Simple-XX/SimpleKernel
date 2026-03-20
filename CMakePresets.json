@@ -106,43 +106,6 @@
       }
     },
     {
-      "name": "build_x86_64",
-      "hidden": false,
-      "inherits": [
-        "configurePresets_base"
-      ],
-      "displayName": "build x86_64 kernel",
-      "description": "build x86_64 kernel",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-gcc.cmake",
-      "binaryDir": "${sourceDir}/build_x86_64",
-      "cacheVariables": {
-        "CMAKE_SYSTEM_PROCESSOR": {
-          "type": "STRING",
-          "value": "x86_64"
-        },
-        "EXECUTABLE_OUTPUT_PATH": {
-          "type": "STRING",
-          "value": "${sourceDir}/build_x86_64/bin"
-        },
-        "LIBRARY_OUTPUT_PATH": {
-          "type": "STRING",
-          "value": "${sourceDir}/build_x86_64/lib"
-        },
-        "QEMU_MACHINE_FLAGS": {
-          "type": "STRING",
-          "value": "-drive;file=${sourceDir}/build_x86_64/bin/rootfs.img,if=none,format=raw,id=hd0;-device;virtio-blk-device,drive=hd0"
-        },
-        "SIMPLEKERNEL_EARLY_CONSOLE_BASE": {
-          "type": "STRING",
-          "value": "0"
-        },
-        "SIMPLEKERNEL_PER_CPU_ALIGN_SIZE": {
-          "type": "STRING",
-          "value": "128"
-        }
-      }
-    },
-    {
       "name": "build_riscv64",
       "hidden": false,
       "inherits": [

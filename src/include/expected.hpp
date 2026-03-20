@@ -41,14 +41,6 @@ enum class ErrorCode : uint64_t {
   // IPI 相关错误 (0x500 - 0x5FF)
   kIpiTargetOutOfRange = 0x500,
   kIpiSendFailed = 0x501,
-  // APIC 相关错误 (0x600 - 0x6FF)
-  kApicInitFailed = 0x600,
-  kApicInvalidIrq = 0x601,
-  kApicInvalidParameter = 0x602,
-  kApicCodeCopyFailed = 0x603,
-  kApicAddressNotAligned = 0x604,
-  kApicAddressOutOfRange = 0x605,
-  kApicIpiTimeout = 0x606,
   // Task 相关错误 (0x700 - 0x7FF)
   kTaskNoCurrentTask = 0x700,
   kTaskPidAllocationFailed = 0x701,
@@ -198,20 +190,6 @@ constexpr auto GetErrorMessage(ErrorCode code) -> const char* {
       return "IPI target CPU mask out of range";
     case ErrorCode::kIpiSendFailed:
       return "IPI send failed";
-    case ErrorCode::kApicInitFailed:
-      return "APIC initialization failed";
-    case ErrorCode::kApicInvalidIrq:
-      return "Invalid IRQ number";
-    case ErrorCode::kApicInvalidParameter:
-      return "Invalid APIC parameter";
-    case ErrorCode::kApicCodeCopyFailed:
-      return "AP code copy verification failed";
-    case ErrorCode::kApicAddressNotAligned:
-      return "Address not aligned to required boundary";
-    case ErrorCode::kApicAddressOutOfRange:
-      return "Address out of valid range";
-    case ErrorCode::kApicIpiTimeout:
-      return "IPI delivery timeout";
     case ErrorCode::kTaskNoCurrentTask:
       return "No current task";
     case ErrorCode::kTaskPidAllocationFailed:

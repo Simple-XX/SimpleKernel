@@ -22,10 +22,6 @@
 
   测试 riscv64/cpu.hpp 相关内容
 
-- x86_64_cpu_test.cpp
-
-  测试 x86_64/cpu.hpp 相关内容
-
 - aarch64_cpu_test.cpp
 
   测试 aarch64/cpu.hpp 相关内容

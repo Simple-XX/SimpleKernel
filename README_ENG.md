@@ -9,7 +9,7 @@
 
 # SimpleKernel
 
-**Interface-Driven OS Kernel for AI-Assisted Learning | Multi-Architecture: x86_64, RISC-V 64, AArch64**
+**Interface-Driven OS Kernel for AI-Assisted Learning | Multi-Architecture: RISC-V 64, AArch64**
 
 > 🤖 **Design Philosophy**: Define clear kernel interfaces, let AI generate the implementation — a new paradigm for learning operating systems
 
@@ -29,7 +29,7 @@
 
 ## ✨ Project Overview
 
-SimpleKernel is a **modern OS kernel project designed for AI-assisted learning**. Written in C++23, it supports x86_64, RISC-V 64, and AArch64 architectures.
+SimpleKernel is a **modern OS kernel project designed for AI-assisted learning**. Written in C++23, it supports RISC-V 64 and AArch64 architectures.
 
 Unlike traditional OS teaching projects, SimpleKernel adopts an **Interface-Driven** design:
 
@@ -43,7 +43,7 @@ Unlike traditional OS teaching projects, SimpleKernel adopts an **Interface-Driv
 |---------|-------------|
 | 🤖 **AI-First Design** | Interface docs serve as prompts — AI can generate complete implementations directly from header files |
 | 📐 **Interface-Implementation Separation** | Headers contain only declarations and contracts; implementations live in separate `.cpp` files |
-| 🌐 **Three-Architecture Support** | x86_64, RISC-V 64, AArch64 — one set of interfaces adapting to different hardware |
+| 🌐 **Two-Architecture Support** | RISC-V 64, AArch64 — one set of interfaces adapting to different hardware |
 | 🧪 **Test-Driven Verification** | GoogleTest test suites verify whether AI-generated implementations conform to interface contracts |
 | 📖 **Complete Doxygen Documentation** | Every interface has responsibility descriptions, preconditions, postconditions, and usage examples |
 | 🏗️ **Engineering Infrastructure** | CMake build, Dev Container environment, CI/CD, clang-format/clang-tidy |
@@ -93,7 +93,7 @@ Each module's header file contains complete interface documentation:
  * @pre  Hardware interrupt controller has been initialized
  * @post Can register interrupt handlers via RegisterInterruptFunc
  *
- * Known implementations: PLIC (RISC-V), GIC (AArch64), APIC (x86_64)
+ * Known implementations: PLIC (RISC-V), GIC (AArch64)
  */
 class InterruptBase {
 public:
@@ -168,7 +168,7 @@ SimpleKernel's interfaces are organized into the following layers:
 │  libcxx (kstd_vector, __cxa_*, ...)      │
 ├──────────────────────────────────────────┤
 │            Hardware / QEMU                │
-│  x86_64 · RISC-V 64 · AArch64           │
+│  RISC-V 64 · AArch64                    │
 └──────────────────────────────────────────┘
 ```
 
@@ -195,7 +195,6 @@ SimpleKernel's interfaces are organized into the following layers:
 
 | Architecture | Boot Chain | Serial | Interrupt Controller | Timer |
 |:---:|:---:|:---:|:---:|:---:|
-| **x86_64** | U-Boot | NS16550A | 8259A PIC | 8253/8254 |
 | **RISC-V 64** | U-Boot + OpenSBI | SBI Call | Direct Mode | SBI Timer |
 | **AArch64** | U-Boot + ATF + OP-TEE | PL011 | GICv3 | Generic Timer |
 
@@ -257,7 +256,6 @@ make unit-test
 **Supported Architecture Presets:**
 - `build_riscv64` - RISC-V 64-bit architecture
 - `build_aarch64` - ARM 64-bit architecture
-- `build_x86_64` - x86 64-bit architecture
 
 ### 🎯 AI-Assisted Development Workflow
 
@@ -294,8 +292,7 @@ SimpleKernel/
 │   ├── arch/                   # Architecture-specific code
 │   │   ├── arch.h              # 📐 Architecture-independent unified interface
 │   │   ├── aarch64/            #   AArch64 implementation
-│   │   ├── riscv64/            #   RISC-V 64 implementation
-│   │   └── x86_64/             #   x86_64 implementation
+│   │   └── riscv64/            #   RISC-V 64 implementation
 │   ├── device/                 # Device management framework
 │   │   ├── include/            # 📐 Device framework interfaces (DeviceManager, DriverRegistry, Bus, etc.)
 │   │   │   └── driver/         #   Concrete drivers (ns16550a_driver.hpp, virtio_blk_driver.hpp)
@@ -337,7 +334,7 @@ We recommend learning and implementing modules in the following order:
 | Module | Interface File | Difficulty | Description |
 |--------|---------------|:---:|-------------|
 | Interrupt Base | `interrupt_base.h` | ⭐⭐ | Understand unified interrupt abstraction |
-| Interrupt Controller | Per-arch driver headers | ⭐⭐⭐ | GIC/PLIC/PIC hardware programming |
+| Interrupt Controller | Per-arch driver headers | ⭐⭐⭐ | GIC/PLIC hardware programming |
 | Timer Interrupt | `arch.h → TimerInit` | ⭐⭐ | Timer configuration, tick-driven |
 
 ### Phase 3: Memory Management

@@ -29,15 +29,7 @@ repos:
       #     - -extra-arg=--std=c++2b
       #     - --fix
       #     - --header-filter=^(@CMAKE_BINARY_DIR@/src/).*
-      #     - --exclude-header-filter=^(?@CMAKE_BINARY_DIR@/src/arch/x86_64|@CMAKE_BINARY_DIR@/src/arch/aarch64).*
-      # - id: clang-tidy
-      #   args:
-      #     - --checks=.clang-tidy
-      #     - -p=@CMAKE_BINARY_DIR@/build_x86_64/compiler_commands.json
-      #     - -extra-arg=--std=c++2b
-      #     - --fix
-      #     - --header-filter=^(?@CMAKE_BINARY_DIR@/src/).*
-      #     - --exclude-header-filter=^(?@CMAKE_BINARY_DIR@/src/arch/riscv_64|@CMAKE_BINARY_DIR@/src/arch/aarch64).*
+      #     - --exclude-header-filter=^(?@CMAKE_BINARY_DIR@/src/arch/aarch64).*
       # - id: clang-tidy
       #   args:
       #     - --checks=.clang-tidy
@@ -45,7 +37,7 @@ repos:
       #     - -extra-arg=--std=c++2b
       #     - --fix
       #     - --header-filter=^(?@CMAKE_BINARY_DIR@/src/).*
-      #     - --exclude-header-filter=^(?@CMAKE_BINARY_DIR@/src/arch/riscv64|@CMAKE_BINARY_DIR@/src/arch/x86_64).*
+      #     - --exclude-header-filter=^(?@CMAKE_BINARY_DIR@/src/arch/riscv64).*
 
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.11.0

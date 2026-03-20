@@ -74,12 +74,6 @@ TARGET_COMPILE_OPTIONS (
               # 禁用 new 的异常支持
               -fcheck-new
               # 目标平台编译选项
-              $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-              # 仅使用通用寄存器
-              -mgeneral-regs-only
-              # 禁用 red-zone
-              -mno-red-zone
-              >
               $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
               # 严格对齐
               -mstrict-align
@@ -120,12 +114,6 @@ ADD_LIBRARY (kernel_compile_options INTERFACE)
 TARGET_COMPILE_OPTIONS (
     kernel_compile_options
     INTERFACE
-        $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-        # @todo 这里需要判断一下能不能都用 large
-        # 使用 large 内存模型
-        # https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html#index-mcmodel_003dlarge-4
-        -mcmodel=large
-        >
         $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
         # 使用 large 内存模型
         # https://gcc.gnu.org/onlinedocs/gcc/AArch64-Options.html#index-mcmodel_003dlarge
@@ -148,11 +136,6 @@ TARGET_LINK_OPTIONS (
     -static
     # 不链接标准库
     -nostdlib
-    $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-    # 设置最大页大小为 0x1000(4096) 字节
-    -z
-    max-page-size=0x1000
-    >
     $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},riscv64>:
     # 禁用 relax 优化
     $<$<BOOL:${USE_NO_RELAX}>:-mno-relax>

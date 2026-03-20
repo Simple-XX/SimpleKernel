@@ -215,12 +215,6 @@ inline void QemuExit([[maybe_unused]] bool success) {
   volatile auto* finisher =
       reinterpret_cast<volatile uint32_t*>(kSifiveTestAddr);
   *finisher = success ? 0x5555 : 0x3333;
-#elif defined(__x86_64__)
-  // isa-debug-exit device (需要 QEMU 参数:
-  //   -device isa-debug-exit,iobase=0xf4,iosize=0x04)
-  // QEMU 退出码 = (val << 1) | 1，所以 0 -> 1(pass), 1 -> 3(fail)
-  uint32_t code = success ? 0 : 1;
-  asm volatile("outl %0, %1" ::"a"(code), "Nd"(static_cast<uint16_t>(0xf4)));
 #elif defined(__aarch64__)
   // PSCI SYSTEM_OFF，通过 SMC 调用 ATF (EL3)
   cpu_io::SecureMonitorCall(cpu_io::psci::kSYSTEM_OFF, 0, 0, 0, 0, 0, 0, 0);

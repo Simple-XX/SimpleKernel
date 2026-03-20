@@ -38,11 +38,7 @@ SET_TARGET_PROPERTIES (${PROJECT_NAME} PROPERTIES OUTPUT_NAME
 LIST (APPEND ${PROJECT_NAME}_QEMU_BOOT_FLAGS
       "-D;${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_qemu.log")
 # 目标平台参数
-IF(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
-    LIST (APPEND ${PROJECT_NAME}_QEMU_BOOT_FLAGS -drive
-          file=fat:rw:${CMAKE_BINARY_DIR}/bin,format=raw,media=disk -bios
-          ${u-boot_BINARY_DIR}/u-boot.rom)
-ELSEIF(CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv64")
+IF(CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv64")
     LIST (APPEND ${PROJECT_NAME}_QEMU_BOOT_FLAGS -bios
           ${u-boot_BINARY_DIR}/spl/u-boot-spl.bin -device
           loader,file=${u-boot_BINARY_DIR}/u-boot.itb,addr=0x80200000)

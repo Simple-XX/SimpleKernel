@@ -28,22 +28,6 @@ inline constexpr uint64_t kSyscallSigaction = 134;
 inline constexpr uint64_t kSyscallSigprocmask = 135;
 inline constexpr uint64_t kSyscallSchedGetaffinity = 123;
 inline constexpr uint64_t kSyscallSchedSetaffinity = 122;
-#elif defined(__x86_64__)
-// x86_64 使用自己的编号
-inline constexpr uint64_t kSyscallWrite = 1;
-inline constexpr uint64_t kSyscallExit = 60;
-inline constexpr uint64_t kSyscallYield = 24;
-inline constexpr uint64_t kSyscallClone = 56;
-inline constexpr uint64_t kSyscallGettid = 186;
-inline constexpr uint64_t kSyscallFutex = 202;
-inline constexpr uint64_t kSyscallSetTidAddress = 218;
-inline constexpr uint64_t kSyscallFork = 57;
-inline constexpr uint64_t kSyscallSleep = 35;
-inline constexpr uint64_t kSyscallKill = 62;
-inline constexpr uint64_t kSyscallSigaction = 13;
-inline constexpr uint64_t kSyscallSigprocmask = 14;
-inline constexpr uint64_t kSyscallSchedGetaffinity = 204;
-inline constexpr uint64_t kSyscallSchedSetaffinity = 203;
 #else
 #error "Unsupported architecture for syscall numbers"
 #endif

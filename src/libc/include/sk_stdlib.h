@@ -53,8 +53,7 @@ long long int atoll(const char* nptr);
  */
 double strtod(const char* nptr, char** endptr);
 
-#if (defined(__x86_64__) && defined(__SSE__)) || \
-    (defined(__aarch64__) && defined(__ARM_FP)) || defined(__riscv)
+#if (defined(__aarch64__) && defined(__ARM_FP)) || defined(__riscv)
 /**
  * @brief 将字符串转换为单精度浮点数，并可以获取转换结束位置
  * @param nptr 指向要转换的字符串的指针

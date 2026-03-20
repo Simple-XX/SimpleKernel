@@ -35,15 +35,13 @@ RUN apt-get update && apt-get upgrade -y && \
     doxygen \
     graphviz \
     lcov \
-    qemu-system-x86 \
     qemu-system-arm \
     qemu-system-misc \
     gdb-multiarch \
     gcc-14 g++-14 \
     gcc-14-riscv64-linux-gnu g++-14-riscv64-linux-gnu \
     gcc-14-aarch64-linux-gnu g++-14-aarch64-linux-gnu \
-    gcc-14-arm-linux-gnueabihf g++-14-arm-linux-gnueabihf \
-    gcc-14-x86-64-linux-gnu g++-14-x86-64-linux-gnu && \
+    gcc-14-arm-linux-gnueabihf g++-14-arm-linux-gnueabihf && \
     update-alternatives \
       --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 \
       --slave   /usr/bin/g++ g++ /usr/bin/g++-14 \
@@ -65,11 +63,6 @@ RUN apt-get update && apt-get upgrade -y && \
                 /usr/bin/arm-linux-gnueabihf-gcc-14 100 \
       --slave   /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ \
                 /usr/bin/arm-linux-gnueabihf-g++-14 && \
-    update-alternatives \
-      --install /usr/bin/x86_64-linux-gnu-gcc x86_64-linux-gnu-gcc \
-                /usr/bin/x86_64-linux-gnu-gcc-14 100 \
-      --slave   /usr/bin/x86_64-linux-gnu-g++ x86_64-linux-gnu-g++ \
-                /usr/bin/x86_64-linux-gnu-g++-14 && \
     apt-get autoremove -y && apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /srv/tftp

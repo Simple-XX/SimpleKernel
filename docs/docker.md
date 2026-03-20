@@ -26,7 +26,7 @@ npm install -g @devcontainers/cli
 devcontainer up --workspace-folder .
 
 # 在容器内执行命令
-devcontainer exec --workspace-folder . cmake --preset=build_x86_64
+devcontainer exec --workspace-folder . cmake --preset=build_riscv64
 ```
 
 ## 验证环境
@@ -36,14 +36,13 @@ gcc --version                      # GCC 14
 aarch64-linux-gnu-gcc --version    # aarch64 交叉编译器
 riscv64-linux-gnu-gcc --version    # riscv64 交叉编译器
 cmake --version
-qemu-system-x86_64 --version
+qemu-system-riscv64 --version
 ```
 
 ## 构建与运行
 
 ```shell
-# 配置 + 编译（三选一）
-cmake --preset=build_x86_64  && cmake --build build_x86_64  --target SimpleKernel
+# 配置 + 编译（二选一）
 cmake --preset=build_riscv64 && cmake --build build_riscv64 --target SimpleKernel
 cmake --preset=build_aarch64 && cmake --build build_aarch64 --target SimpleKernel
 
@@ -53,6 +52,6 @@ make run
 # 调试
 make debug    # GDB 连接 localhost:1234
 
-# 单元测试 + 覆盖率（仅 host 架构）
-cmake --build build_x86_64 --target unit-test coverage
+# 单元测试 + 覆盖率
+cmake --build build_riscv64 --target unit-test coverage
 ```

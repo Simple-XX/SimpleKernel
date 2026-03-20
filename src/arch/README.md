@@ -1,10 +1,9 @@
 # arch
 
-架构相关代码目录，包含了不同 CPU 架构的特定实现，目前支持三种主流 64 位架构：
+架构相关代码目录，包含了不同 CPU 架构的特定实现，目前支持两种主流 64 位架构：
 
 - **aarch64** - ARM 64 位架构
 - **riscv64** - RISC-V 64 位架构
-- **x86_64** - x86 64 位架构
 
 ## 目录结构
 
@@ -19,20 +18,13 @@ arch/
 │   ├── boot.S         # 启动汇编代码
 │   ├── early_console.cpp # 早期调试输出
 │   └── link.ld        # 链接脚本
-├── riscv64/           # RISC-V 64 位架构实现
-│   ├── arch_main.cpp  # 架构初始化主函数
-│   ├── backtrace.cpp  # 调用栈回溯实现
-│   ├── boot.S         # 启动汇编代码
-│   ├── early_console.cpp # 早期调试输出
-│   ├── link.ld        # 链接脚本
-│   └── macro.S        # 汇编宏定义
-└── x86_64/            # x86 64 位架构实现
+└── riscv64/           # RISC-V 64 位架构实现
     ├── arch_main.cpp  # 架构初始化主函数
     ├── backtrace.cpp  # 调用栈回溯实现
     ├── boot.S         # 启动汇编代码
     ├── early_console.cpp # 早期调试输出
     ├── link.ld        # 链接脚本
-    └── sipi.h         # SMP 启动相关定义
+    └── macro.S        # 汇编宏定义
 ```
 
 ## 核心接口
@@ -94,14 +86,6 @@ void DumpStack();
 - **设备树**: 通过 FDT 获取硬件信息
 - **帧指针**: 使用 FP 寄存器进行栈回溯
 - **特殊文件**: `macro.S` 提供汇编宏定义，包括寄存器操作宏
-
-#### x86_64
-- **启动方式**: 通过 GRUB 或其他 Multiboot 兼容启动器
-- **多核启动**: 使用 APIC (Advanced Programmable Interrupt Controller) 和 SIPI (Startup Inter-Processor Interrupt)
-- **早期控制台**: 通过 cpu_io 预设支持早期调试输出 (COM1)
-- **硬件发现**: 通过 CPUID 指令获取处理器信息
-- **帧指针**: 使用 RBP 寄存器进行栈回溯
-- **特殊文件**: `sipi.h` 定义多核启动相关结构
 
 ## 编译配置
 

@@ -1,7 +1,7 @@
 # AGENTS.md — SimpleKernel
 
 ## OVERVIEW
-Interface-driven OS kernel for AI-assisted learning. C++23/C23, freestanding, no RTTI/exceptions. Three architectures: x86_64, riscv64, aarch64. Headers define contracts (Doxygen @pre/@post), AI generates .cpp implementations, tests verify compliance.
+Interface-driven OS kernel for AI-assisted learning. C++23/C23, freestanding, no RTTI/exceptions. Two architectures: riscv64, aarch64. Headers define contracts (Doxygen @pre/@post), AI generates .cpp implementations, tests verify compliance.
 
 ## STRUCTURE
 ```
@@ -72,7 +72,7 @@ cmake/                # Toolchain files, build helpers
 ## COMMANDS
 ```bash
 git submodule update --init --recursive   # First clone setup
-cmake --preset build_{riscv64|aarch64|x86_64}
+cmake --preset build_{riscv64|aarch64}
 cd build_{arch} && make SimpleKernel       # Build kernel (NOT 'make kernel')
 make run                                   # Run in QEMU
 make debug                                 # GDB on localhost:1234
@@ -83,7 +83,7 @@ pre-commit run --all-files                 # Format check
 
 ## NOTES
 - Interface-driven: headers are contracts, .cpp files are implementations AI generates
-- Boot chains differ: x86_64 (U-Boot), riscv64 (U-Boot SPL→OpenSBI→U-Boot), aarch64 (U-Boot→ATF→OP-TEE)
+- Boot chains differ: riscv64 (U-Boot SPL→OpenSBI→U-Boot), aarch64 (U-Boot→ATF→OP-TEE)
 - aarch64 needs two serial terminal tasks (::54320, ::54321) before `make run`
 - Unit tests only run on host arch (`build_{arch}` on {arch} host)
 - Git commits: `<type>(<scope>): <subject>` with `--signoff`

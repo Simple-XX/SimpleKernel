@@ -27,11 +27,3 @@
 - riscv64_qemu_virt.its.in
 
   riscv64 qemu FIT 模版
-
-- x86_64_boot_scr.txt
-
-  x86_64 uboot 启动命令
-
-- x86_64_qemu_virt.its.in
-
-  x86_64 qemu FIT 模版

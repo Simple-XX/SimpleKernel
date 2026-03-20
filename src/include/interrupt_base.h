@@ -15,7 +15,7 @@
  * @brief 中断子系统抽象基类
  *
  * 所有架构的中断处理必须实现此接口。
- * 已知实现：PLIC（RISC-V）、GIC（AArch64）、APIC（x86_64）
+ * 已知实现：PLIC（RISC-V）、GIC（AArch64）
  *
  * @pre  硬件中断控制器已初始化
  * @post 可通过 RegisterInterruptFunc 注册中断处理函数
@@ -71,7 +71,7 @@ class InterruptBase {
 
   /**
    * @brief 注册外部中断处理函数
-   * @param irq 外部中断号（平台相关: PLIC source_id / GIC INTID / APIC IRQ）
+   * @param irq 外部中断号（平台相关: PLIC source_id / GIC INTID）
    * @param cpu_id 目标 CPU 核心 ID，中断将路由到该核心
    * @param priority 中断优先级
    * @param handler 中断处理函数

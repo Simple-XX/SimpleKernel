@@ -12,10 +12,6 @@ aarch64/
 riscv64/
   plic/                 # PLIC interrupt controller (plic.cpp + include/plic.h)
   include/              # Arch-private headers
-x86_64/
-  apic/                 # APIC: local_apic.cpp, io_apic.cpp, apic.cpp + include/
-  include/              # Arch-private headers
-  sipi.h                # SMP startup IPI definitions
 ```
 
 ## WHERE TO LOOK
@@ -29,20 +25,19 @@ x86_64/
 
 ## CONVENTIONS
 - Each arch directory mirrors the same file set — 1:1 correspondence
-- Interrupt controllers live in subdirectories (gic/, plic/, apic/) with own CMakeLists.txt
-- Assembly files use `.S` (preprocessed), `macro.S` for shared macros (riscv64, x86_64)
+- Interrupt controllers live in subdirectories (gic/, plic/) with own CMakeLists.txt
+- Assembly files use `.S` (preprocessed), `macro.S` for shared macros (riscv64)
 - `include/` subdirs contain arch-private headers NOT exported to other modules
 - `early_console.cpp` provides pre-device-framework output via arch-specific MMIO/SBI
 
 ## ANTI-PATTERNS
 - **DO NOT** add arch-specific code outside `src/arch/{arch}/` — use `arch.h` abstraction
 - **DO NOT** include arch-private headers from outside the arch directory
-- x86_64 interrupt: template-heavy ISR registration can cause stack overflow — watch stack depth
 - `static_assert` guards on PerCpu alignment and GuardType ABI — do not remove
 - `#error` in syscall.hpp for unsupported arch — intentional, add new arch case instead
 
 ## NOTES
-- Boot chains: x86_64 (U-Boot), riscv64 (U-Boot SPL→OpenSBI→U-Boot), aarch64 (U-Boot→ATF→OP-TEE)
-- SMP: aarch64=PSCI, riscv64=SBI hart_start, x86_64=SIPI via APIC
-- Early console: aarch64=PL011 MMIO, riscv64=SBI call, x86_64=COM1 port I/O
+- Boot chains: riscv64 (U-Boot SPL→OpenSBI→U-Boot), aarch64 (U-Boot→ATF→OP-TEE)
+- SMP: aarch64=PSCI, riscv64=SBI hart_start
+- Early console: aarch64=PL011 MMIO, riscv64=SBI call
 - Backtrace uses ELF symbol table from `kernel_elf.hpp` for address→name resolution

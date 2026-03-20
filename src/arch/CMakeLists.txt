@@ -22,8 +22,6 @@ IF(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     ADD_SUBDIRECTORY (${CMAKE_SYSTEM_PROCESSOR}/plic)
 ELSEIF(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
     ADD_SUBDIRECTORY (${CMAKE_SYSTEM_PROCESSOR}/gic)
-ELSEIF(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-    ADD_SUBDIRECTORY (${CMAKE_SYSTEM_PROCESSOR}/apic)
 ENDIF()
 
 TARGET_LINK_LIBRARIES (
@@ -32,8 +30,6 @@ TARGET_LINK_LIBRARIES (
               plic>
               $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},aarch64>:
               gic>
-              $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:
-              apic>
               # Documented exception: arch code needs direct driver access
               # aarch64: pl011_driver (early_console, interrupt_main)
               # riscv64: ns16550a_driver, virtio_driver (interrupt_main)
