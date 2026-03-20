@@ -28,7 +28,7 @@ struct test_case {
   bool is_smp_test = false;
 };
 
-constexpr size_t kTestCount = 15;
+constexpr size_t kTestCount = 19;
 
 std::array<test_case, kTestCount> test_cases = {
     test_case{"ctor_dtor_test", ctor_dtor_test, false},
@@ -36,6 +36,8 @@ std::array<test_case, kTestCount> test_cases = {
     test_case{"memory_test", memory_test, false},
     test_case{"virtual_memory_test", virtual_memory_test, false},
     test_case{"interrupt_test", interrupt_test, false},
+    test_case{"kernel_task_test", kernel_task_test, false},
+    test_case{"user_task_test", user_task_test, false},
     test_case{"fifo_scheduler_test", fifo_scheduler_test, false},
     test_case{"rr_scheduler_test", rr_scheduler_test, false},
     test_case{"cfs_scheduler_test", cfs_scheduler_test, false},
@@ -44,12 +46,10 @@ std::array<test_case, kTestCount> test_cases = {
     test_case{"wait_system_test", wait_system_test, false},
     test_case{"clone_system_test", clone_system_test, false},
     test_case{"exit_system_test", exit_system_test, false},
+    test_case{"cross_core_test", cross_core_test, false},
+    test_case{"mutex_test", mutex_test, false},
     test_case{"ramfs_system_test", ramfs_system_test, false},
     test_case{"fatfs_system_test", fatfs_system_test, false},
-    // test_case{"mutex_test", mutex_test, false},
-    // test_case{"kernel_task_test", kernel_task_test, false},
-    // test_case{"user_task_test", user_task_test, false},
-    // test_case{"cross_core_test", cross_core_test, false}
 };
 
 std::array<TestResult, kTestCount> test_results{};

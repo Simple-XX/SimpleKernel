@@ -158,8 +158,11 @@ void exit_wait_parent(void* arg) {
   child->aux->pgid = current->aux->pgid;
   child->aux->cpu_affinity = (1UL << 1);
 
-  Pid child_pid = child->pid;
+  // Save raw pointer: pid is assigned inside AddTask() by AllocatePid(),
+  // so we must read it *after* the call (unique_ptr is moved).
+  auto* child_ptr = child.get();
   task_mgr.AddTask(std::move(child));
+  Pid child_pid = child_ptr->pid;
 
   klog::Info(
       "[CrossCore ExitWait] Parent: created child pid={}, calling "
