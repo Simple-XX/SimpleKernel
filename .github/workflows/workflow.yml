@@ -35,12 +35,40 @@ jobs:
             cmake --preset=build_riscv64
             cmake --build build_riscv64 --target SimpleKernel
 
+      - name: riscv64 system test
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: |
+            for i in $(seq 1 10); do
+              echo "=== riscv64 System Test Run $i/10 ==="
+              if ! timeout 300 cmake --build build_riscv64 --target system_test_run; then
+                echo "riscv64 system test run $i/10 FAILED"
+                exit 1
+              fi
+              echo "riscv64 system test run $i/10 passed"
+            done
+
       - name: aarch64
         uses: devcontainers/ci@v0.3
         with:
           runCmd: |
-            cmake --preset=build_aarch64
+            cmake --preset=build_aarch64 -DQEMU_NORMAL_WORLD_DEV_PATH=null -DQEMU_SECURE_WORLD_DEV_PATH=null
             cmake --build build_aarch64 --target SimpleKernel
+
+      - name: aarch64 system test
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: |
+            for i in $(seq 1 10); do
+              echo "=== aarch64 System Test Run $i/10 ==="
+              timeout 300 cmake --build build_aarch64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
+              cat /tmp/st_out_$i.txt
+              if ! grep -q "Failed: 0" /tmp/st_out_$i.txt; then
+                echo "aarch64 system test run $i/10 FAILED"
+                exit 1
+              fi
+              echo "aarch64 system test run $i/10 passed"
+            done
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
