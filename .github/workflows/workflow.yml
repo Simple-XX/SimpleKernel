@@ -3,75 +3,132 @@
 name: build
 
 on:
-  - push
-  - pull_request
-  - release
+  push:
+  pull_request:
+  release:
+    types: [published]
+
+# Cancel in-progress runs for the same branch/PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # PR: 3 runs for speed; push/release: 10 runs for stability
+  SYSTEM_TEST_RUNS: ${{ github.event_name == 'pull_request' && 3 || 10 }}
 
 jobs:
-  build:
+  build-riscv64:
     runs-on: ubuntu-24.04-arm
     permissions:
-      contents: write
+      contents: read
       packages: read
-      statuses: write
+    container:
+      image: ghcr.io/simple-xx/simplekernel-dev:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          submodules: recursive
+          fetch-depth: 1
 
-      - name: riscv64
-        uses: devcontainers/ci@v0.3
-        with:
-          runCmd: |
-            cmake --preset=build_riscv64
-            cmake --build build_riscv64 --target SimpleKernel docs
+      - name: Shallow submodule init
+        run: git submodule update --init --recursive --depth 1
 
-      - name: riscv64 system test
-        uses: devcontainers/ci@v0.3
+      - name: Cache CMake build (riscv64)
+        uses: actions/cache@v4
         with:
-          runCmd: |
-            for i in $(seq 1 10); do
-              echo "=== riscv64 System Test Run $i/10 ==="
-              if ! timeout 300 cmake --build build_riscv64 --target system_test_run; then
-                echo "riscv64 system test run $i/10 FAILED"
-                exit 1
-              fi
-              echo "riscv64 system test run $i/10 passed"
-            done
+          path: build_riscv64/
+          key: cmake-riscv64-${{ runner.arch }}-${{ hashFiles('CMakeLists.txt', 'cmake/**', 'src/**') }}
+          restore-keys: |
+            cmake-riscv64-${{ runner.arch }}-
 
-      - name: aarch64
-        uses: devcontainers/ci@v0.3
-        with:
-          runCmd: |
-            cmake --preset=build_aarch64 -DQEMU_NORMAL_WORLD_DEV_PATH=null -DQEMU_SECURE_WORLD_DEV_PATH=null
-            cmake --build build_aarch64 --target SimpleKernel unit-test coverage
+      - name: Configure & Build
+        run: |
+          cmake --preset=build_riscv64
+          cmake --build build_riscv64 --target SimpleKernel docs
 
-      - name: aarch64 system test
-        uses: devcontainers/ci@v0.3
+      - name: System Test
+        run: |
+          for i in $(seq 1 $SYSTEM_TEST_RUNS); do
+            echo "=== riscv64 System Test Run $i/$SYSTEM_TEST_RUNS ==="
+            if ! timeout 300 cmake --build build_riscv64 --target system_test_run; then
+              echo "riscv64 system test run $i/$SYSTEM_TEST_RUNS FAILED"
+              exit 1
+            fi
+            echo "riscv64 system test run $i/$SYSTEM_TEST_RUNS passed"
+          done
+
+      - name: Upload docs artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
         with:
-          runCmd: |
-            for i in $(seq 1 10); do
-              echo "=== aarch64 System Test Run $i/10 ==="
-              timeout 300 cmake --build build_aarch64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
-              cat /tmp/st_out_$i.txt
-              if ! grep -q "Failed: 0" /tmp/st_out_$i.txt; then
-                echo "aarch64 system test run $i/10 FAILED"
-                exit 1
-              fi
-              echo "aarch64 system test run $i/10 passed"
-            done
+          name: docs-html
+          path: docs/html/
+          retention-days: 1
+
+  build-aarch64:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: read
+    container:
+      image: ghcr.io/simple-xx/simplekernel-dev:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Shallow submodule init
+        run: git submodule update --init --recursive --depth 1
+
+      - name: Cache CMake build (aarch64)
+        uses: actions/cache@v4
+        with:
+          path: build_aarch64/
+          key: cmake-aarch64-${{ runner.arch }}-${{ hashFiles('CMakeLists.txt', 'cmake/**', 'src/**') }}
+          restore-keys: |
+            cmake-aarch64-${{ runner.arch }}-
+
+      - name: Configure & Build
+        run: |
+          cmake --preset=build_aarch64 -DQEMU_NORMAL_WORLD_DEV_PATH=null -DQEMU_SECURE_WORLD_DEV_PATH=null
+          cmake --build build_aarch64 --target SimpleKernel unit-test coverage
+
+      - name: System Test
+        run: |
+          for i in $(seq 1 $SYSTEM_TEST_RUNS); do
+            echo "=== aarch64 System Test Run $i/$SYSTEM_TEST_RUNS ==="
+            timeout 300 cmake --build build_aarch64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
+            cat /tmp/st_out_$i.txt
+            if ! grep -q "Failed: 0" /tmp/st_out_$i.txt; then
+              echo "aarch64 system test run $i/$SYSTEM_TEST_RUNS FAILED"
+              exit 1
+            fi
+            echo "aarch64 system test run $i/$SYSTEM_TEST_RUNS passed"
+          done
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ${{ github.workspace }}/build_aarch64/coverage/coverage.info
           verbose: true
 
-      - name: Publish
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
+  publish:
+    needs: [build-riscv64, build-aarch64]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-html
+          path: docs/html/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ github.workspace }}/docs/html
+          publish_dir: docs/html/
