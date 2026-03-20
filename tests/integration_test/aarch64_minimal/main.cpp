@@ -1,6 +1,6 @@
 /**
  * @copyright Copyright The SimpleKernel Contributors
- * @brief TODO: Add description
+ * @brief AArch64 minimal boot test
  */
 
 #include <cstdarg>
