@@ -20,11 +20,7 @@ namespace {
 std::atomic<int> g_tests_completed{0};
 std::atomic<int> g_tests_failed{0};
 
-// =========================================================================
-// test_tick_increments
-// =========================================================================
-
-void test_tick_increments(void* /*arg*/) {
+void test_tick_increments(void*) {
   klog::Info("=== Tick Increments Test ===");
 
   auto* sched_data = per_cpu::GetCurrentCore().sched_data;
@@ -49,11 +45,7 @@ void test_tick_increments(void* /*arg*/) {
   sys_exit(0);
 }
 
-// =========================================================================
-// test_sleep_timing
-// =========================================================================
-
-void test_sleep_timing(void* /*arg*/) {
+void test_sleep_timing(void*) {
   klog::Info("=== Sleep Timing Test ===");
 
   auto* sched_data = per_cpu::GetCurrentCore().sched_data;
@@ -79,11 +71,7 @@ void test_sleep_timing(void* /*arg*/) {
   sys_exit(0);
 }
 
-// =========================================================================
-// test_runtime_tracking
-// =========================================================================
-
-void test_runtime_tracking(void* /*arg*/) {
+void test_runtime_tracking(void*) {
   klog::Info("=== Runtime Tracking Test ===");
 
   auto* self = TaskManagerSingleton::instance().GetCurrentTask();
@@ -94,9 +82,18 @@ void test_runtime_tracking(void* /*arg*/) {
   auto* sched_data = per_cpu::GetCurrentCore().sched_data;
   uint64_t start_tick = sched_data->local_tick;
   volatile uint64_t sink = 0;
-  while (sched_data->local_tick - start_tick < 5) {
-    sink = sink + 1;
+  klog::Info("Start tick: {}", start_tick);
+  for (uint64_t aaa = 0; aaa < 10000; aaa++) {
+    if (sched_data->local_tick - start_tick < 5) {
+      sink = sink + 1;
+      klog::Info("Tick after busy-wait: {}", sched_data->local_tick);
+    }
+    klog::Info("aaa: {}", aaa);
   }
+
+  // while (sched_data->local_tick - start_tick < 5) {
+  //   sink = sink + 1;
+  // }
   (void)sink;
 
   uint64_t runtime_after = self->sched_info.total_runtime;
