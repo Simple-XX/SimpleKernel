@@ -241,13 +241,20 @@ auto TaskManager::Balance() -> void {
     return;
   }
 
-  // 窃取一个任务
   auto* stolen = source_scheduler->PickNext();
-  if (stolen) {
-    dest_scheduler->Enqueue(stolen);
-    klog::Debug("Balance: Stole task '{}' (pid={}) from core {} to core {}",
-                stolen->name, stolen->pid, max_core, current_core);
+  if (!stolen) {
+    return;
   }
+
+  if (stolen->aux && stolen->aux->cpu_affinity.value() != UINT64_MAX &&
+      !(stolen->aux->cpu_affinity.value() & (1UL << current_core))) {
+    source_scheduler->Enqueue(stolen);
+    return;
+  }
+
+  dest_scheduler->Enqueue(stolen);
+  klog::Debug("Balance: Stole task '{}' (pid={}) from core {} to core {}",
+              stolen->name, stolen->pid, max_core, current_core);
 }
 
 auto TaskManager::ReapTask(TaskControlBlock* task) -> void {

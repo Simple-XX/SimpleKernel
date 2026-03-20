@@ -198,6 +198,7 @@ auto affinity_test() -> bool;
 auto tick_test() -> bool;
 auto zombie_reap_test() -> bool;
 auto stress_test() -> bool;
+auto balance_test() -> bool;
 
 // ===========================================================================
 // QEMU exit

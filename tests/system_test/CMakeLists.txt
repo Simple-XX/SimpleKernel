@@ -34,6 +34,7 @@ ADD_EXECUTABLE (
     tick_test.cpp
     zombie_reap_test.cpp
     stress_test.cpp
+    balance_test.cpp
     ${CMAKE_SOURCE_DIR}/src/syscall.cpp
     ${CMAKE_SOURCE_DIR}/src/io_buffer.cpp)
 
