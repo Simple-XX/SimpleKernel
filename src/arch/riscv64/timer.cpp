@@ -18,7 +18,9 @@ uint64_t interval{0};
 auto TimerHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
     -> uint64_t {
   sbi_set_timer(cpu_io::Time::Read() + interval);
-  TaskManagerSingleton::instance().TickUpdate();
+  auto& tm = TaskManagerSingleton::instance();
+  tm.TickUpdate();
+  (void)tm.CheckPendingSignals();
   return 0;
 }
 }  // namespace

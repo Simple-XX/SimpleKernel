@@ -48,4 +48,6 @@ auto TaskManager::Sleep(uint64_t ms) -> void {
   Schedule();
 
   // 任务被唤醒后会从这里继续执行
+  // 检查是否有待处理的信号（可能是信号导致了提前唤醒）
+  (void)CheckPendingSignals();
 }

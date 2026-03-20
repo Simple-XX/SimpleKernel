@@ -20,6 +20,7 @@ auto TaskManager::Wait(Pid pid, int* status, bool no_hang, bool untraced)
   while (true) {
     TaskControlBlock* target = nullptr;
     bool did_block = false;
+    bool has_matching_child = false;
 
     {
       // 锁顺序: cpu_sched.lock → task_table_lock_（与 Exit 一致）
@@ -45,6 +46,8 @@ auto TaskManager::Wait(Pid pid, int* status, bool no_hang, bool untraced)
           continue;
         }
 
+        has_matching_child = true;
+
         if (task->GetStatus() == TaskStatus::kZombie ||
             task->GetStatus() == TaskStatus::kExited) {
           target = task.get();
@@ -57,6 +60,11 @@ auto TaskManager::Wait(Pid pid, int* status, bool no_hang, bool untraced)
           }
           return task->pid;
         }
+      }
+
+      // 没有匹配的子进程，返回错误（类似 POSIX ECHILD）
+      if (!has_matching_child) {
+        return std::unexpected(Error{ErrorCode::kTaskNoChildFound});
       }
 
       // 原子性：在持有两把锁的情况下检查并阻塞，防止丢失唤醒

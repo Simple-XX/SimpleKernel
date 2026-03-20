@@ -27,7 +27,9 @@ uint64_t timer_intid{0};
 auto TimerHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
     -> uint64_t {
   cpu_io::CNTV_TVAL_EL0::Write(interval);
-  TaskManagerSingleton::instance().TickUpdate();
+  auto& tm = TaskManagerSingleton::instance();
+  tm.TickUpdate();
+  (void)tm.CheckPendingSignals();
   return 0;
 }
 }  // namespace

@@ -89,16 +89,15 @@ void test_runtime_tracking(void* /*arg*/) {
   auto* self = TaskManagerSingleton::instance().GetCurrentTask();
   uint64_t runtime_before = self->sched_info.total_runtime;
 
-  // Busy loop to consume CPU time, yielding periodically
-  for (int i = 0; i < 50; ++i) {
-    // Burn some cycles
-    volatile uint64_t sink = 0;
-    for (int j = 0; j < 10000; ++j) {
-      sink += static_cast<uint64_t>(j);
-    }
-    (void)sink;
-    (void)sys_yield();
+  // Busy-wait for at least 5 tick intervals to ensure total_runtime
+  // is incremented (1ms per tick at SIMPLEKERNEL_TICK=1000)
+  auto* sched_data = per_cpu::GetCurrentCore().sched_data;
+  uint64_t start_tick = sched_data->local_tick;
+  volatile uint64_t sink = 0;
+  while (sched_data->local_tick - start_tick < 5) {
+    sink = sink + 1;
   }
+  (void)sink;
 
   uint64_t runtime_after = self->sched_info.total_runtime;
 
