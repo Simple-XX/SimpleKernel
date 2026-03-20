@@ -52,6 +52,28 @@ auto syscall_dispatcher(int64_t syscall_id, uint64_t args[6]) -> int {
     case kSyscallSleep:
       ret = sys_sleep(args[0]);
       break;
+    case kSyscallKill:
+      ret = sys_kill(static_cast<int>(args[0]), static_cast<int>(args[1]));
+      break;
+    case kSyscallSigaction:
+      ret = sys_sigaction(static_cast<int>(args[0]),
+                          reinterpret_cast<SignalHandler>(args[1]));
+      break;
+    case kSyscallSigprocmask:
+      ret = sys_sigprocmask(static_cast<int>(args[0]),
+                            static_cast<uint32_t>(args[1]),
+                            reinterpret_cast<uint32_t*>(args[2]));
+      break;
+    case kSyscallSchedGetaffinity:
+      ret = sys_sched_getaffinity(static_cast<int>(args[0]),
+                                  static_cast<size_t>(args[1]),
+                                  reinterpret_cast<uint64_t*>(args[2]));
+      break;
+    case kSyscallSchedSetaffinity:
+      ret = sys_sched_setaffinity(static_cast<int>(args[0]),
+                                  static_cast<size_t>(args[1]),
+                                  reinterpret_cast<const uint64_t*>(args[2]));
+      break;
     default:
       klog::Err("[Syscall] Unknown syscall id: {}", syscall_id);
       ret = -1;
@@ -304,5 +326,38 @@ auto sys_exit(int code) -> int {
 
   /// @todo 如果当前任务不在允许的 CPU 上运行，应该触发迁移
 
+  return 0;
+}
+
+[[nodiscard]] auto sys_kill(int pid, int sig) -> int {
+  auto result =
+      TaskManagerSingleton::instance().SendSignal(static_cast<Pid>(pid), sig);
+  if (!result.has_value()) {
+    klog::Err("[Syscall] sys_kill failed: {}", result.error().message());
+    return -1;
+  }
+  return 0;
+}
+
+[[nodiscard]] auto sys_sigaction(int signum, SignalHandler handler) -> int {
+  SignalAction action;
+  action.handler = handler;
+  auto result =
+      TaskManagerSingleton::instance().SetSignalAction(signum, action, nullptr);
+  if (!result.has_value()) {
+    klog::Err("[Syscall] sys_sigaction failed: {}", result.error().message());
+    return -1;
+  }
+  return 0;
+}
+
+[[nodiscard]] auto sys_sigprocmask(int how, uint32_t set, uint32_t* oldset)
+    -> int {
+  auto result =
+      TaskManagerSingleton::instance().SetSignalMask(how, set, oldset);
+  if (!result.has_value()) {
+    klog::Err("[Syscall] sys_sigprocmask failed: {}", result.error().message());
+    return -1;
+  }
   return 0;
 }
