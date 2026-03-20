@@ -192,6 +192,7 @@ auto user_task_test() -> bool;
 auto mutex_test() -> bool;
 auto cross_core_test() -> bool;
 auto yield_test() -> bool;
+auto fork_test() -> bool;
 
 // ===========================================================================
 // QEMU exit

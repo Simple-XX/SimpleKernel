@@ -28,7 +28,7 @@ struct test_case {
   bool is_smp_test = false;
 };
 
-constexpr size_t kTestCount = 20;
+constexpr size_t kTestCount = 21;
 
 std::array<test_case, kTestCount> test_cases = {
     test_case{"ctor_dtor_test", ctor_dtor_test, false},
@@ -51,6 +51,7 @@ std::array<test_case, kTestCount> test_cases = {
     test_case{"ramfs_test", ramfs_test, false},
     test_case{"fatfs_test", fatfs_test, false},
     test_case{"yield_test", yield_test, false},
+    test_case{"fork_test", fork_test, false},
 };
 
 std::array<TestResult, kTestCount> test_results{};
