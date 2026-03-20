@@ -29,6 +29,7 @@ RUN apt-get update && apt-get upgrade -y && \
     python3-setuptools \
     uuid-dev \
     libgnutls28-dev \
+    libssl-dev \
     swig \
     libgtest-dev \
     doxygen \
