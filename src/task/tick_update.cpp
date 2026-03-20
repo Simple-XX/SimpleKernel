@@ -67,6 +67,10 @@ auto TaskManager::TickUpdate() -> void {
     }
   }
 
+  if (cpu_sched.scheduler_started && (cpu_sched.local_tick % 64) == 0) {
+    Balance();
+  }
+
   if (need_preempt && cpu_sched.scheduler_started) {
     Schedule();
   }
