@@ -223,6 +223,10 @@ void test_runner_entry(void* /*arg*/) {
     }
   }
 
+  if (all_passed) {
+    klog::Info("RESULT: ALL TESTS PASSED");
+  }
+
   QemuExit(all_passed);
 }
 

@@ -55,7 +55,7 @@ jobs:
             echo "=== riscv64 System Test Run $i/$SYSTEM_TEST_RUNS ==="
             timeout 300 cmake --build build_riscv64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
             cat /tmp/st_out_$i.txt
-            if ! grep -q "Failed: 0" /tmp/st_out_$i.txt; then
+            if ! grep -q "RESULT: ALL TESTS PASSED" /tmp/st_out_$i.txt; then
               echo "riscv64 system test run $i/$SYSTEM_TEST_RUNS FAILED"
               exit 1
             fi
@@ -107,7 +107,7 @@ jobs:
             echo "=== aarch64 System Test Run $i/$SYSTEM_TEST_RUNS ==="
             timeout 300 cmake --build build_aarch64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
             cat /tmp/st_out_$i.txt
-            if ! grep -q "Failed: 0" /tmp/st_out_$i.txt; then
+            if ! grep -q "RESULT: ALL TESTS PASSED" /tmp/st_out_$i.txt; then
               echo "aarch64 system test run $i/$SYSTEM_TEST_RUNS FAILED"
               exit 1
             fi
