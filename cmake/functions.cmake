@@ -121,6 +121,7 @@ FUNCTION(add_run_target)
             mkimage -T script -d
             ${CMAKE_SOURCE_DIR}/tools/${CMAKE_SYSTEM_PROCESSOR}_boot_scr.txt
             $<TARGET_FILE_DIR:${ARG_TARGET}>/boot.scr.uimg
+        COMMAND ${CMAKE_COMMAND} -E make_directory /srv/tftp
         COMMAND ln -s -f $<TARGET_FILE_DIR:${ARG_TARGET}>/boot.scr.uimg
                 /srv/tftp/boot.scr.uimg
         COMMAND ln -s -f $<TARGET_FILE_DIR:${ARG_TARGET}> /srv/tftp)
