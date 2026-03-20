@@ -85,7 +85,7 @@
         },
         "QEMU_DEVICE_FLAGS": {
           "type": "STRING",
-          "value": "-global;virtio-mmio.force-legacy=false;-netdev;user,id=net0,tftp=/srv/tftp;-device;e1000,netdev=net0;-device;virtio-gpu-device"
+          "value": "-global;virtio-mmio.force-legacy=false;-netdev;user,id=net0,tftp=/srv/tftp;-device;virtio-net-device,netdev=net0;-device;virtio-gpu-device"
         },
         "KERNEL_ELF_OUTPUT_NAME": {
           "type": "STRING",
