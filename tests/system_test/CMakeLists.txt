@@ -29,6 +29,11 @@ ADD_EXECUTABLE (
     cross_core_test.cpp
     yield_test.cpp
     fork_test.cpp
+    signal_test.cpp
+    affinity_test.cpp
+    tick_test.cpp
+    zombie_reap_test.cpp
+    stress_test.cpp
     ${CMAKE_SOURCE_DIR}/src/syscall.cpp
     ${CMAKE_SOURCE_DIR}/src/io_buffer.cpp)
 
