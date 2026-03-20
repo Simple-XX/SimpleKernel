@@ -51,7 +51,9 @@ jobs:
         run: |
           for i in $(seq 1 $SYSTEM_TEST_RUNS); do
             echo "=== riscv64 System Test Run $i/$SYSTEM_TEST_RUNS ==="
-            if ! timeout 300 cmake --build build_riscv64 --target system_test_run; then
+            timeout 300 cmake --build build_riscv64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
+            cat /tmp/st_out_$i.txt
+            if ! grep -q "Failed: 0" /tmp/st_out_$i.txt; then
               echo "riscv64 system test run $i/$SYSTEM_TEST_RUNS FAILED"
               exit 1
             fi
