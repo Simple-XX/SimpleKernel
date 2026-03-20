@@ -68,4 +68,5 @@ RUN apt-get update && apt-get upgrade -y && \
       --slave   /usr/bin/x86_64-linux-gnu-g++ x86_64-linux-gnu-g++ \
                 /usr/bin/x86_64-linux-gnu-g++-14 && \
     apt-get autoremove -y && apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /srv/tftp
