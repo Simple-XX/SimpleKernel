@@ -27,6 +27,7 @@ ADD_EXECUTABLE (
     kernel_task_test.cpp
     user_task_test.cpp
     cross_core_test.cpp
+    yield_test.cpp
     ${CMAKE_SOURCE_DIR}/src/syscall.cpp
     ${CMAKE_SOURCE_DIR}/src/io_buffer.cpp)
 
