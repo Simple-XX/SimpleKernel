@@ -18,12 +18,12 @@ ADD_EXECUTABLE (
     rr_scheduler_test.cpp
     cfs_scheduler_test.cpp
     idle_scheduler_test.cpp
-    thread_group_system_test.cpp
-    wait_system_test.cpp
-    clone_system_test.cpp
-    exit_system_test.cpp
-    ramfs_system_test.cpp
-    fatfs_system_test.cpp
+    thread_group_test.cpp
+    wait_test.cpp
+    clone_test.cpp
+    exit_test.cpp
+    ramfs_test.cpp
+    fatfs_test.cpp
     kernel_task_test.cpp
     user_task_test.cpp
     cross_core_test.cpp

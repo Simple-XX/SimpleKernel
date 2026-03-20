@@ -447,7 +447,7 @@ void test_zombie_process(void* /*arg*/) {
 /**
  * @brief Exit 系统测试入口
  */
-auto exit_system_test() -> bool {
+auto exit_test() -> bool {
   klog::Info("===== Exit System Test Start =====");
 
   // 重置全局计数器

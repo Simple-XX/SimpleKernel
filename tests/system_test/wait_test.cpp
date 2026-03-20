@@ -329,7 +329,7 @@ void test_wait_zombie_reap(void* /*arg*/) {
 /**
  * @brief Wait 系统测试入口
  */
-auto wait_system_test() -> bool {
+auto wait_test() -> bool {
   klog::Info("=== Wait System Test Suite ===");
 
   g_tests_completed = 0;

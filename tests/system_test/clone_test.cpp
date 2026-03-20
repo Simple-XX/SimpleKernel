@@ -432,7 +432,7 @@ void test_clone_flags_auto_completion(void* /*arg*/) {
 
 }  // namespace
 
-auto clone_system_test() -> bool {
+auto clone_test() -> bool {
   klog::Info("===== Clone System Test Start =====");
 
   g_tests_completed = 0;

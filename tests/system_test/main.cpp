@@ -42,14 +42,14 @@ std::array<test_case, kTestCount> test_cases = {
     test_case{"rr_scheduler_test", rr_scheduler_test, false},
     test_case{"cfs_scheduler_test", cfs_scheduler_test, false},
     test_case{"idle_scheduler_test", idle_scheduler_test, false},
-    test_case{"thread_group_system_test", thread_group_system_test, false},
-    test_case{"wait_system_test", wait_system_test, false},
-    test_case{"clone_system_test", clone_system_test, false},
-    test_case{"exit_system_test", exit_system_test, false},
+    test_case{"thread_group_test", thread_group_test, false},
+    test_case{"wait_test", wait_test, false},
+    test_case{"clone_test", clone_test, false},
+    test_case{"exit_test", exit_test, false},
     test_case{"cross_core_test", cross_core_test, false},
     test_case{"mutex_test", mutex_test, false},
-    test_case{"ramfs_system_test", ramfs_system_test, false},
-    test_case{"fatfs_system_test", fatfs_system_test, false},
+    test_case{"ramfs_test", ramfs_test, false},
+    test_case{"fatfs_test", fatfs_test, false},
 };
 
 std::array<TestResult, kTestCount> test_results{};

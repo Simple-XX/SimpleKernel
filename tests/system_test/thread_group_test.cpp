@@ -240,7 +240,7 @@ void test_thread_group_concurrent_exit(void* /*arg*/) {
 /**
  * @brief 线程组系统测试入口
  */
-auto thread_group_system_test() -> bool {
+auto thread_group_test() -> bool {
   klog::Info("=== Thread Group System Test Suite ===");
 
   g_tests_completed = 0;
