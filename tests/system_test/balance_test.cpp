@@ -29,15 +29,19 @@ std::atomic<int> g_tests_failed{0};
 // every 64 ticks) should steal tasks to idle cores.
 //
 // Strategy:
-//   1. Spawn N long-lived unpinned workers (they sleep in a loop so Balance()
-//      has time to migrate them).
+//   1. Spawn N long-lived unpinned workers that yield in a loop.
 //   2. Each worker periodically records which core it runs on via atomic OR.
 //   3. After all workers complete, verify the combined core mask has >= 2 bits
 //      set — meaning at least one task was migrated by Balance().
 //
-// Workers must live long enough for multiple Balance() intervals (64 ticks
-// each). Using sys_sleep(50) in a loop ensures they remain in the scheduler
-// queues across multiple ticks.
+// IMPORTANT: Workers use sys_yield() instead of sys_sleep() because
+// sys_sleep() moves tasks to a separate sleeping_tasks queue that is
+// invisible to Balance(). Balance() only checks GetQueueSize() on the
+// scheduler's ready queue, so sleeping tasks appear as zero load and
+// never get migrated. sys_yield() keeps tasks in the ready queue.
+//
+// Workers need enough iterations to survive multiple Balance() intervals
+// (64 ticks each at SIMPLEKERNEL_TICK=1000 → 64ms per interval).
 // ===========================================================================
 
 constexpr int kImbalanceWorkerCount = 8;
@@ -46,12 +50,12 @@ std::atomic<uint64_t> g_cores_used_mask{0};
 
 void imbalance_worker(void* /*arg*/) {
   // Stay alive across multiple Balance() intervals.
-  // Record core ID on each wakeup — after migration we'll see a different
-  // core.
-  for (int i = 0; i < 20; ++i) {
+  // Use sys_yield() to stay in the scheduler's ready queue where Balance()
+  // can detect load imbalance and migrate us to idle cores.
+  for (int i = 0; i < 2000; ++i) {
     auto core_id = cpu_io::GetCurrentCoreId();
     g_cores_used_mask.fetch_or(1UL << core_id, std::memory_order_relaxed);
-    (void)sys_sleep(10);
+    (void)sys_yield();
   }
 
   g_imbalance_done.fetch_add(1, std::memory_order_release);
@@ -134,10 +138,10 @@ std::atomic<int> g_affinity_done{0};
 std::atomic<uint64_t> g_affinity_cores_mask{0};
 
 void affinity_pinned_worker(void* /*arg*/) {
-  for (int i = 0; i < 10; ++i) {
+  for (int i = 0; i < 1000; ++i) {
     auto core_id = cpu_io::GetCurrentCoreId();
     g_affinity_cores_mask.fetch_or(1UL << core_id, std::memory_order_relaxed);
-    (void)sys_sleep(10);
+    (void)sys_yield();
   }
 
   g_affinity_done.fetch_add(1, std::memory_order_release);
