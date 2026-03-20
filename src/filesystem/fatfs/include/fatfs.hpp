@@ -187,6 +187,13 @@ class FatFsFileSystem : public vfs::FileSystem {
     explicit FatFsFileOps(FatFsFileSystem* fs) : fs_(fs) {}
 
     /**
+     * @brief 打开文件，准备底层 FIL 句柄
+     * @param file 文件对象
+     * @return Expected<void> 成功或错误
+     */
+    auto Open(vfs::File* file) -> Expected<void> override;
+
+    /**
      * @brief 从文件读取数据
      * @param file  文件对象
      * @param buf   读取缓冲区

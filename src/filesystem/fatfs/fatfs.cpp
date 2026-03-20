@@ -343,7 +343,7 @@ auto FatFsFileSystem::FatFsInodeOps::Create(vfs::Inode* dir, const char* name,
 
   if (type == vfs::FileType::kDirectory) {
     FRESULT fr = f_mkdir(full_path.data());
-    if (fr != FR_OK) {
+    if (fr != FR_OK && fr != FR_EXIST) {
       return std::unexpected(Error{FresultToErrorCode(fr)});
     }
   } else {
@@ -391,6 +391,13 @@ auto FatFsFileSystem::FatFsInodeOps::Rmdir(vfs::Inode* dir, const char* name)
     -> Expected<void> {
   // f_unlink 同时处理文件和空目录
   return Unlink(dir, name);
+}
+
+auto FatFsFileSystem::FatFsFileOps::Open(vfs::File* file) -> Expected<void> {
+  if (file->inode->type == vfs::FileType::kDirectory) {
+    return {};
+  }
+  return fs_->OpenFil(file->inode, file->flags);
 }
 
 auto FatFsFileSystem::FatFsFileOps::Read(vfs::File* file, void* buf,

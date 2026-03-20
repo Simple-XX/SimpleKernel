@@ -127,6 +127,16 @@ auto Open(const char* path, OpenFlags flags) -> Expected<File*> {
     file->ops = file->inode->fs->GetFileOps();
   }
 
+  // 让文件系统准备底层 I/O 句柄（如 FatFS 的 FIL 对象）
+  if (file->ops != nullptr) {
+    auto open_result = file->ops->Open(file);
+    if (!open_result.has_value()) {
+      dentry->ref_count--;
+      delete file;
+      return std::unexpected(open_result.error());
+    }
+  }
+
   // 处理 O_TRUNC
   if ((flags & OpenFlags::kOTruncate) != 0U &&
       dentry->inode->type == FileType::kRegular) {

@@ -47,44 +47,44 @@ enum class OpenFlags : uint32_t {
   kODirectory = 0x010000,
 };
 
-/// @brief 按位或
+/// 按位或
 [[nodiscard]] inline constexpr auto operator|(OpenFlags lhs, OpenFlags rhs)
     -> OpenFlags {
   return static_cast<OpenFlags>(static_cast<uint32_t>(lhs) |
                                 static_cast<uint32_t>(rhs));
 }
 
-/// @brief 按位与
+/// 按位与
 [[nodiscard]] inline constexpr auto operator&(OpenFlags lhs, OpenFlags rhs)
     -> OpenFlags {
   return static_cast<OpenFlags>(static_cast<uint32_t>(lhs) &
                                 static_cast<uint32_t>(rhs));
 }
 
-/// @brief 按位取反
+/// 按位取反
 [[nodiscard]] inline constexpr auto operator~(OpenFlags flags) -> OpenFlags {
   return static_cast<OpenFlags>(~static_cast<uint32_t>(flags));
 }
 
-/// @brief 按位或赋值
+/// 按位或赋值
 inline constexpr auto operator|=(OpenFlags& lhs, OpenFlags rhs) -> OpenFlags& {
   lhs = lhs | rhs;
   return lhs;
 }
 
-/// @brief 按位与赋值
+/// 按位与赋值
 inline constexpr auto operator&=(OpenFlags& lhs, OpenFlags rhs) -> OpenFlags& {
   lhs = lhs & rhs;
   return lhs;
 }
 
-/// @brief 检查 OpenFlags 是否为零（无标志位设置）
+/// 检查 OpenFlags 是否为零（无标志位设置）
 [[nodiscard]] inline constexpr auto operator==(OpenFlags flags, uint32_t val)
     -> bool {
   return static_cast<uint32_t>(flags) == val;
 }
 
-/// @brief 检查 OpenFlags 是否不为零
+/// 检查 OpenFlags 是否不为零
 [[nodiscard]] inline constexpr auto operator!=(OpenFlags flags, uint32_t val)
     -> bool {
   return static_cast<uint32_t>(flags) != val;
@@ -100,7 +100,7 @@ enum class SeekWhence : int {
   kEnd = 2,
 };
 
-/// @brief Inode 操作接口
+/// Inode 操作接口
 class InodeOps {
  public:
   /**
@@ -167,7 +167,8 @@ class InodeOps {
   virtual ~InodeOps() = default;
   /// @}
 };
-/// @brief 目录项结构（用于 readdir）
+
+/// 目录项结构（用于 readdir）
 struct DirEntry {
   /// inode 编号
   uint64_t ino{0};
@@ -177,9 +178,18 @@ struct DirEntry {
   char name[256]{};
 };
 
-/// @brief File 操作接口
+/// File 操作接口
 class FileOps {
  public:
+  /**
+   * @brief 打开文件，准备底层 I/O 句柄
+   * @param file 文件对象
+   * @return Expected<void> 成功或错误
+   * @pre file != nullptr
+   * @note 默认实现为空操作，适用于不需要额外打开步骤的文件系统（如 ramfs）
+   */
+  virtual auto Open(File* /*file*/) -> Expected<void> { return {}; }
+
   /**
    * @brief 从文件读取数据
    * @param file 文件对象

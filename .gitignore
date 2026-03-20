@@ -16,3 +16,4 @@ Doxyfile
 *.elf
 .pre-commit-config.yaml
 .worktrees/
+.claude
