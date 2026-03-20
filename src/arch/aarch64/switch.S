@@ -27,18 +27,13 @@ switch_to:
 
 .global kernel_thread_entry
 .type kernel_thread_entry, @function
+.extern kernel_thread_bootstrap
 kernel_thread_entry:
     // 上下文恢复时：
     // x30 (lr) = kernel_thread_entry
     // x19 = 真正的入口函数 entry
     // x20 = 参数 arg
 
-    // 将参数移动到 x0
-    mov x0, x20
-
-    // 跳转到入口函数执行
-    blr x19
-
-    // 如果函数返回，应该调用 exit 或者类似的处理
-    // 目前暂时死循环，防止跑飞
-    b .
+    mov x0, x19
+    mov x1, x20
+    bl kernel_thread_bootstrap

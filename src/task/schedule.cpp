@@ -23,6 +23,16 @@
 #include "task_messages.hpp"
 #include "virtual_memory.hpp"
 
+extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
+                                                     void* arg) {
+  cpu_io::EnableInterrupt();
+  entry(arg);
+  assert(false && "kernel thread returned without calling sys_exit()");
+  while (true) {
+    cpu_io::Pause();
+  }
+}
+
 auto TaskManager::Schedule() -> void {
   auto& cpu_sched = GetCurrentCpuSched();
   cpu_sched.lock.Lock().or_else([](auto&& err) {

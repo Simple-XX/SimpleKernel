@@ -77,11 +77,11 @@
         },
         "QEMU_DEBUG_FLAGS": {
           "type": "STRING",
-          "value": "-S;-gdb;tcp::1234;-d;int,cpu_reset,guest_errors"
+          "value": "-S;-gdb;tcp::1234;-d;cpu_reset,guest_errors"
         },
         "QEMU_COMMON_FLAG": {
           "type": "STRING",
-          "value": "-nographic;-serial;stdio;-monitor;telnet::2333,server,nowait;-m;1024M;-smp;2;-d;guest_errors,int,cpu_reset"
+          "value": "-nographic;-serial;stdio;-monitor;telnet::2333,server,nowait;-m;1024M;-smp;2;-d;guest_errors,cpu_reset"
         },
         "QEMU_DEVICE_FLAGS": {
           "type": "STRING",

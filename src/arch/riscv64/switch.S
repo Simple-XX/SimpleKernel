@@ -12,6 +12,8 @@
 .global kernel_thread_entry
 .type kernel_thread_entry, @function
 
+.extern kernel_thread_bootstrap
+
 /**
  * @brief 线程上下文切换
  *
@@ -35,12 +37,6 @@ kernel_thread_entry:
     // s0 = 真正的入口函数 entry
     // s1 = 参数 arg
 
-    // 将参数移动到 a0
-    mv a0, s1
-
-    // 跳转到入口函数执行
-    jalr s0
-
-    // 如果函数返回，应该调用 exit 或者类似的处理
-    // 目前暂时死循环，防止跑飞
-    j .
+    mv a0, s0
+    mv a1, s1
+    call kernel_thread_bootstrap

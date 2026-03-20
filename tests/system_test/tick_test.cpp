@@ -82,18 +82,9 @@ void test_runtime_tracking(void*) {
   auto* sched_data = per_cpu::GetCurrentCore().sched_data;
   uint64_t start_tick = sched_data->local_tick;
   volatile uint64_t sink = 0;
-  klog::Info("Start tick: {}", start_tick);
-  for (uint64_t aaa = 0; aaa < 10000; aaa++) {
-    if (sched_data->local_tick - start_tick < 5) {
-      sink = sink + 1;
-      klog::Info("Tick after busy-wait: {}", sched_data->local_tick);
-    }
-    klog::Info("aaa: {}", aaa);
+  while (sched_data->local_tick - start_tick < 5) {
+    sink = sink + 1;
   }
-
-  // while (sched_data->local_tick - start_tick < 5) {
-  //   sink = sink + 1;
-  // }
   (void)sink;
 
   uint64_t runtime_after = self->sched_info.total_runtime;

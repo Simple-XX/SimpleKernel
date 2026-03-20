@@ -10,6 +10,18 @@
 #include "task_control_block.hpp"
 
 /**
+ * @brief 新任务首次执行时的引导函数 (由 kernel_thread_entry 汇编调用)
+ *
+ * @param entry 任务入口函数
+ * @param arg   传递给入口函数的参数
+ *
+ * @pre  由 kernel_thread_entry 汇编以 C 调用约定调用
+ * @post 中断已开启，任务入口函数已执行，进程已退出
+ */
+extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
+                                                     void* arg);
+
+/**
  * @brief 调度器基类接口
  *
  * 提供统一的调度器接口，支持多种调度策略 (FIFO, Round-Robin, CFS, MLFQ 等)
