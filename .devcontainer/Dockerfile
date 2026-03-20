@@ -57,7 +57,9 @@ RUN apt-get update && apt-get upgrade -y && \
       --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc \
                 /usr/bin/aarch64-linux-gnu-gcc-14 100 \
       --slave   /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ \
-                /usr/bin/aarch64-linux-gnu-g++-14 && \
+                /usr/bin/aarch64-linux-gnu-g++-14 \
+      --slave   /usr/bin/aarch64-linux-gnu-cpp aarch64-linux-gnu-cpp \
+                /usr/bin/aarch64-linux-gnu-cpp-14 && \
     update-alternatives \
       --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc \
                 /usr/bin/arm-linux-gnueabihf-gcc-14 100 \
