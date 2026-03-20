@@ -49,13 +49,17 @@ std::atomic<int> g_imbalance_done{0};
 std::atomic<uint64_t> g_cores_used_mask{0};
 
 void imbalance_worker(void* /*arg*/) {
-  // Stay alive across multiple Balance() intervals.
-  // Use sys_yield() to stay in the scheduler's ready queue where Balance()
-  // can detect load imbalance and migrate us to idle cores.
-  for (int i = 0; i < 2000; ++i) {
-    auto core_id = cpu_io::GetCurrentCoreId();
-    g_cores_used_mask.fetch_or(1UL << core_id, std::memory_order_relaxed);
-    (void)sys_yield();
+  // Batch yields keep the task visible in the ready queue for Balance(),
+  // while periodic sleeps reduce scheduling pressure to avoid overwhelming
+  // the scheduler lock (which can trigger recursive-lock panics under
+  // extreme contention).
+  for (int round = 0; round < 200; ++round) {
+    for (int j = 0; j < 10; ++j) {
+      auto core_id = cpu_io::GetCurrentCoreId();
+      g_cores_used_mask.fetch_or(1UL << core_id, std::memory_order_relaxed);
+      (void)sys_yield();
+    }
+    (void)sys_sleep(1);
   }
 
   g_imbalance_done.fetch_add(1, std::memory_order_release);
@@ -138,10 +142,13 @@ std::atomic<int> g_affinity_done{0};
 std::atomic<uint64_t> g_affinity_cores_mask{0};
 
 void affinity_pinned_worker(void* /*arg*/) {
-  for (int i = 0; i < 1000; ++i) {
-    auto core_id = cpu_io::GetCurrentCoreId();
-    g_affinity_cores_mask.fetch_or(1UL << core_id, std::memory_order_relaxed);
-    (void)sys_yield();
+  for (int round = 0; round < 100; ++round) {
+    for (int j = 0; j < 10; ++j) {
+      auto core_id = cpu_io::GetCurrentCoreId();
+      g_affinity_cores_mask.fetch_or(1UL << core_id, std::memory_order_relaxed);
+      (void)sys_yield();
+    }
+    (void)sys_sleep(1);
   }
 
   g_affinity_done.fetch_add(1, std::memory_order_release);
