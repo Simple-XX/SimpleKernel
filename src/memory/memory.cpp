@@ -13,6 +13,7 @@
 #include "kernel.h"
 #include "kernel_elf.hpp"
 #include "kernel_log.hpp"
+#include "spinlock.hpp"
 #include "virtual_memory.hpp"
 
 namespace {
@@ -25,7 +26,37 @@ struct BmallocLogger {
   }
 };
 
-bmalloc::Bmalloc<BmallocLogger>* allocator = nullptr;
+/**
+ * @brief bmalloc 线程安全锁（基于 SpinLock）
+ * @details 在 Lock() 时关中断 + 原子自旋，保证 malloc/free
+ *          在 timer 抢占和多核环境下的安全性。
+ */
+class BmallocLock : public bmalloc::LockBase {
+ public:
+  void Lock() override {
+    lock_.Lock().or_else([](auto&&) -> Expected<void> {
+      // 不应触发：bmalloc 内部不会递归加锁
+      while (true) {
+        cpu_io::Pause();
+      }
+      return {};
+    });
+  }
+
+  void Unlock() override {
+    lock_.UnLock().or_else([](auto&&) -> Expected<void> {
+      while (true) {
+        cpu_io::Pause();
+      }
+      return {};
+    });
+  }
+
+ private:
+  SpinLock lock_{"bmalloc"};
+};
+
+bmalloc::Bmalloc<BmallocLogger, BmallocLock>* allocator = nullptr;
 }  // namespace
 
 extern "C" auto malloc(size_t size) -> void* {
@@ -81,8 +112,8 @@ auto MemoryInit() -> void {
              static_cast<uint64_t>(reinterpret_cast<uintptr_t>(allocator_addr)),
              static_cast<uint64_t>(allocator_size));
 
-  static bmalloc::Bmalloc<BmallocLogger> bmallocator(allocator_addr,
-                                                     allocator_size);
+  static bmalloc::Bmalloc<BmallocLogger, BmallocLock> bmallocator(
+      allocator_addr, allocator_size);
   allocator = &bmallocator;
 
   // 初始化当前核心的虚拟内存
