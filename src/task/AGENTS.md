@@ -41,7 +41,7 @@ mutex.cpp                  # Mutex implementation (uses SpinLock internally)
 - Schedulers own their internal run queues — TaskManager dispatches to per-policy schedulers
 - `TaskManagerSingleton::instance()` (defined in `task_manager.hpp`) is the global entry point
 - TCB contains arch-specific context pointer — populated by `switch.S`
-- TODO in `task_manager.cpp`: task stealing across cores (not yet implemented)
+- `Balance()` in `task_manager.cpp`: cross-core work-stealing (steals kNormal tasks from most-loaded core, called every 64 ticks)
 
 ## ANTI-PATTERNS
 - **DO NOT** call Schedule() before TaskManager initialization in boot sequence
