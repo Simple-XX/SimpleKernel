@@ -61,8 +61,8 @@ Interrupt::Interrupt() {
 }
 
 auto Interrupt::Do(uint64_t cause, cpu_io::TrapContext* context) -> void {
-  interrupt_handlers_[cause](cause, context);
   cpu_io::ICC_EOIR1_EL1::Write(cause);
+  interrupt_handlers_[cause](cause, context);
 }
 
 auto Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptDelegate func)
