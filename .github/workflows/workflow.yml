@@ -32,7 +32,9 @@ jobs:
           fetch-depth: 1
 
       - name: Shallow submodule init
-        run: git submodule update --init --recursive --depth 1
+        run: |
+          git config --global --add safe.directory '*'
+          git submodule update --init --recursive --depth 1
 
       - name: Cache CMake build (riscv64)
         uses: actions/cache@v4
@@ -82,7 +84,9 @@ jobs:
           fetch-depth: 1
 
       - name: Shallow submodule init
-        run: git submodule update --init --recursive --depth 1
+        run: |
+          git config --global --add safe.directory '*'
+          git submodule update --init --recursive --depth 1
 
       - name: Cache CMake build (aarch64)
         uses: actions/cache@v4
