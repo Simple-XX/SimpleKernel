@@ -22,17 +22,17 @@ uint64_t timer_intid{0};
 auto TimerHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
   cpu_io::CNTV_TVAL_EL0::Write(interval);
 
-  auto core_id = cpu_io::GetCurrentCoreId();
-  if (per_cpu::in_timer_handler[core_id]) {
+  auto& preempt = per_cpu::GetCurrentCore().preempt;
+  if (preempt.InHardIrq()) {
     return 0;
   }
-  per_cpu::in_timer_handler[core_id] = true;
+  preempt.hardirq_count++;
 
   auto& tm = TaskManagerSingleton::instance();
   tm.TickUpdate();
   (void)tm.CheckPendingSignals();
 
-  per_cpu::in_timer_handler[core_id] = false;
+  preempt.hardirq_count--;
   return 0;
 }
 }  // namespace

@@ -23,16 +23,47 @@
 #include "task_messages.hpp"
 #include "virtual_memory.hpp"
 
-extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
-                                                     void* arg) {
+namespace {
+/**
+ * @brief 上下文切换完成后的统一收尾
+ *
+ * 所有从 switch_to 恢复的路径（旧任务恢复 / 新任务 bootstrap）
+ * 都通过此函数释放 sched_lock 并恢复中断。
+ * 对应 Linux 的 finish_task_switch()。
+ *
+ * @pre  当前 CPU 的 sched_lock 由 Schedule() 持有（lock handoff）
+ * @post sched_lock 已释放，中断已恢复
+ */
+void FinishSwitch() {
   per_cpu::GetCurrentCore().sched_data->lock.UnLock().or_else([](auto&& err) {
-    klog::Err("kernel_thread_bootstrap: Failed to release sched_lock: {}",
-              err.message());
+    klog::Err("FinishSwitch: Failed to release sched_lock: {}", err.message());
     while (true) {
       cpu_io::Pause();
     }
     return Expected<void>{};
   });
+}
+}  // namespace
+
+/**
+ * @brief 内核线程首次调度的入口蹦床
+ *
+ * 新建内核线程的上下文被初始化为跳转到此处（见 kernel_thread_entry）。
+ * 职责：
+ *   1. FinishSwitch() — 释放从 Schedule() 继承的 sched_lock（lock handoff）
+ *   2. 开中断 — 新线程以可抢占状态开始运行
+ *   3. 调用真正的线程入口 entry(arg)
+ *
+ * @pre  sched_lock 由 Schedule() 的 switch_to 持有（lock handoff）
+ * @pre  中断处于关闭状态（由 SpinLock 保证）
+ * @post sched_lock 已释放，中断已开启
+ *
+ * @param entry 线程入口函数
+ * @param arg   传递给 entry 的参数
+ */
+extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
+                                                     void* arg) {
+  FinishSwitch();
   cpu_io::EnableInterrupt();
   entry(arg);
   assert(false && "kernel thread returned without calling sys_exit()");
@@ -92,13 +123,7 @@ auto TaskManager::Schedule() -> void {
     } else {
       // 否则统计空闲时间并返回
       cpu_sched.idle_time++;
-      cpu_sched.lock.UnLock().or_else([](auto&& err) {
-        klog::Err("Schedule: Failed to release lock: {}", err.message());
-        while (true) {
-          cpu_io::Pause();
-        }
-        return Expected<void>{};
-      });
+      FinishSwitch();
       return;
     }
   }
@@ -129,11 +154,5 @@ auto TaskManager::Schedule() -> void {
     switch_to(&current->task_context, &next->task_context);
   }
 
-  GetCurrentCpuSched().lock.UnLock().or_else([](auto&& err) {
-    klog::Err("Schedule: Failed to release lock: {}", err.message());
-    while (true) {
-      cpu_io::Pause();
-    }
-    return Expected<void>{};
-  });
+  FinishSwitch();
 }
