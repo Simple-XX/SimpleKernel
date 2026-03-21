@@ -23,7 +23,7 @@ using Ns16550aSingleton = etl::singleton<ns16550a::Ns16550a>;
 using InterruptDelegate = InterruptBase::InterruptDelegate;
 
 // 外部中断分发器：CPU 外部中断 -> PLIC -> 设备 handler
-auto ExternalInterruptHandler(uint64_t /*cause*/, cpu_io::TrapContext* context)
+auto ExternalInterruptHandler(uint64_t, cpu_io::TrapContext* context)
     -> uint64_t {
   auto& plic = InterruptSingleton::instance().plic();
   auto source_id = plic.Which();
@@ -65,15 +65,13 @@ auto PageFaultHandler(uint64_t exception_code, cpu_io::TrapContext* context)
 }
 
 // 系统调用处理
-auto SyscallHandler(uint64_t /*cause*/, cpu_io::TrapContext* context)
-    -> uint64_t {
+auto SyscallHandler(uint64_t, cpu_io::TrapContext* context) -> uint64_t {
   Syscall(0, context);
   return 0;
 }
 
 // 软中断 (IPI) 处理
-auto IpiHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
-    -> uint64_t {
+auto IpiHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
   // 清软中断 pending 位
   cpu_io::Sip::Ssip::Clear();
   klog::Debug("Core {} received IPI", cpu_io::GetCurrentCoreId());
@@ -81,8 +79,7 @@ auto IpiHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
 }
 
 // 串口外部中断处理
-auto SerialIrqHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
-    -> uint64_t {
+auto SerialIrqHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
   while (Ns16550aSingleton::instance().HasData()) {
     uint8_t ch = Ns16550aSingleton::instance().GetChar();
     etl_putchar(ch);
@@ -91,8 +88,7 @@ auto SerialIrqHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
 }
 
 // VirtIO-blk 外部中断处理
-auto VirtioBlkIrqHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
-    -> uint64_t {
+auto VirtioBlkIrqHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
   VirtioDriverSingleton::instance().HandleInterrupt(
       [](void* /*token*/, ErrorCode status) {
         if (status != ErrorCode::kSuccess) {

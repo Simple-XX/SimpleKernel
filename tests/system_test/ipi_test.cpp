@@ -8,8 +8,8 @@
 #include <cstdint>
 
 #include "basic_info.hpp"
-#include "interrupt_base.h"
 #include "interrupt.h"
+#include "interrupt_base.h"
 #include "kernel.h"
 #include "kernel_log.hpp"
 #include "syscall.hpp"
@@ -27,8 +27,7 @@ using InterruptDelegate = InterruptBase::InterruptDelegate;
 // the shared counter so the test thread can observe receipt.
 // ===========================================================================
 
-auto TestIpiHandler(uint64_t /*cause*/,
-                    cpu_io::TrapContext* /*context*/) -> uint64_t {
+auto TestIpiHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
 #if defined(__riscv)
   cpu_io::Sip::Ssip::Clear();
 #endif
@@ -36,8 +35,7 @@ auto TestIpiHandler(uint64_t /*cause*/,
   return 0;
 }
 
-auto OriginalIpiHandler(uint64_t /*cause*/,
-                        cpu_io::TrapContext* /*context*/) -> uint64_t {
+auto OriginalIpiHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
 #if defined(__riscv)
   cpu_io::Sip::Ssip::Clear();
 #endif

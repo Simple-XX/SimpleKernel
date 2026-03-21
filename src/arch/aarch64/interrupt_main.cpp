@@ -14,6 +14,8 @@
 #include "pl011/pl011_driver.hpp"
 #include "pl011_singleton.h"
 
+/// @todo aarch64 的中断优先级处理、多核处理等
+
 using InterruptDelegate = InterruptBase::InterruptDelegate;
 namespace {
 /**
@@ -166,6 +168,12 @@ extern "C" auto error_lower_el_aarch32_handler(cpu_io::TrapContext* context)
   HandleException("Error Exception at Lower EL using AArch32", context);
 }
 
+// IPI (SGI 0) 处理
+auto IpiHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
+  klog::Debug("Core {} received IPI", cpu_io::GetCurrentCoreId());
+  return 0;
+}
+
 /**
  * @brief UART 中断处理函数
  * @param cause 中断号
@@ -188,6 +196,10 @@ auto InterruptInit(int, const char**) -> void {
 
   klog::Info("uart_intid: {}", uart_intid);
 
+  // 注册 IPI 处理（SGI 0）
+  InterruptSingleton::instance().RegisterInterruptFunc(
+      0, InterruptDelegate::create<IpiHandler>());
+
   // 通过统一接口注册 UART 外部中断（先注册 handler，再启用 GIC SPI）
   InterruptSingleton::instance()
       .RegisterExternalInterrupt(uart_intid, cpu_io::GetCurrentCoreId(), 0,
@@ -206,6 +218,9 @@ auto InterruptInitSMP(int, const char**) -> void {
   cpu_io::VBAR_EL1::Write(reinterpret_cast<uint64_t>(vector_table));
 
   InterruptSingleton::instance().SetUp();
+
+  // 为从核启用 SGI 0（IPI）
+  InterruptSingleton::instance().Sgi(0, cpu_io::GetCurrentCoreId());
 
   cpu_io::EnableInterrupt();
 
