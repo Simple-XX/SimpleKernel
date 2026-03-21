@@ -42,12 +42,9 @@ class SpinLock {
       // 在等待时检查是否是当前核心持有锁（递归锁检测）
       if (core_id_.load(std::memory_order_acquire) ==
           cpu_io::GetCurrentCoreId()) {
-        // 递归锁定，恢复中断状态并返回失败
         if (intr_enable) {
           cpu_io::EnableInterrupt();
         }
-        // klog::Err("spinlock {}: {} recursive lock detected.",
-        //           cpu_io::GetCurrentCoreId(), name);
         return std::unexpected(Error{ErrorCode::kSpinLockRecursiveLock});
       }
       cpu_io::Pause();
@@ -65,8 +62,6 @@ class SpinLock {
    */
   [[nodiscard]] __always_inline auto UnLock() -> Expected<void> {
     if (!IsLockedByCurrentCore()) {
-      // klog::Err("spinlock {}: {} unlock by non-owner detected.",
-      //           cpu_io::GetCurrentCoreId(), name);
       return std::unexpected(Error{ErrorCode::kSpinLockNotOwned});
     }
 

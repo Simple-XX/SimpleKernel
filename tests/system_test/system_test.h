@@ -176,6 +176,7 @@ auto ctor_dtor_test() -> bool;
 auto spinlock_test() -> bool;
 auto virtual_memory_test() -> bool;
 auto interrupt_test() -> bool;
+auto ipi_test() -> bool;
 auto fifo_scheduler_test() -> bool;
 auto rr_scheduler_test() -> bool;
 auto cfs_scheduler_test() -> bool;

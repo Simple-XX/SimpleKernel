@@ -29,6 +29,27 @@
 #include "task_control_block.hpp"
 
 /**
+ * @brief 内核线程启动入口 — 完成 Schedule() 的锁交接后执行任务函数
+ *
+ * 本函数是所有新建内核线程的第一个 C++ 入口。调用链：
+ *   InitTaskContext 设置 ra=kernel_thread_entry, s0/x19=entry, s1/x20=arg
+ *   → switch_to 恢复上下文 → ret 到 kernel_thread_entry (汇编)
+ *   → kernel_thread_entry 将 s0/x19→a0, s1/x20→a1 → call 本函数
+ *
+ * 锁交接 (Lock Handoff):
+ *   Schedule() 在持有 sched_lock 的状态下调用 switch_to，将锁的所有权
+ *   转移给被切入的任务。对于新任务，本函数负责释放该锁；对于已有任务，
+ *   Schedule() 中 switch_to 之后的 UnLock() 负责释放。
+ *
+ * @param entry 线程入口函数，任务结束时必须调用 sys_exit()
+ * @param arg   传递给 entry 的参数
+ * @pre  当前核心的 sched_lock 由调用 switch_to 的 Schedule() 持有
+ * @post sched_lock 已释放，中断已恢复，entry(arg) 开始执行
+ */
+extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
+                                                     void* arg);
+
+/**
  * @brief 每个核心的调度数据 (RunQueue)
  */
 struct CpuSchedData {
@@ -100,13 +121,21 @@ class TaskManager {
   auto AddTask(etl::unique_ptr<TaskControlBlock> task) -> void;
 
   /**
-   * @brief 调度函数
-   * 选择下一个任务并切换上下文
+   * @brief 核心调度函数 — 选择下一个任务并执行上下文切换
    *
-   * @note 被调用意味着需要调度决策，可能是
-   * 时间片耗尽（TickUpdate 检测到需要抢占）
-   * 主动让出 CPU (yield)
-   * 任务阻塞、睡眠或退出
+   * 锁交接协议 (Lock Handoff):
+   *   本函数在持有 sched_lock 的状态下调用 switch_to，确保上下文切换
+   *   期间不会被 timer 中断打断（SpinLock 关中断）。锁的释放有两条路径：
+   *   - 已有任务恢复: 从 switch_to 返回后调用
+   * GetCurrentCpuSched().lock.UnLock()
+   *   - 新任务首次运行: kernel_thread_bootstrap() 负责释放
+   *
+   *   使用 GetCurrentCpuSched()（而非函数开头捕获的 cpu_sched 引用）来释放锁，
+   *   因为任务可能在挂起期间被 Balance() 迁移到其他核心，恢复时需释放
+   *   当前核心的锁而非原始核心的锁。
+   *
+   * @pre  可从任意上下文调用（TickUpdate 抢占、sys_sleep、sys_exit 等）
+   * @post 切换到优先级最高的就绪任务，或在无任务时返回
    */
   auto Schedule() -> void;
 

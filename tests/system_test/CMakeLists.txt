@@ -14,6 +14,7 @@ ADD_EXECUTABLE (
     memory_test.cpp
     virtual_memory_test.cpp
     interrupt_test.cpp
+    ipi_test.cpp
     fifo_scheduler_test.cpp
     rr_scheduler_test.cpp
     cfs_scheduler_test.cpp

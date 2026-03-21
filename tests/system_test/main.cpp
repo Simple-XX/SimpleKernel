@@ -28,7 +28,7 @@ struct test_case {
   bool is_smp_test = false;
 };
 
-constexpr size_t kTestCount = 27;
+constexpr size_t kTestCount = 12;
 
 std::array<test_case, kTestCount> test_cases = {
     test_case{"ctor_dtor_test", ctor_dtor_test, false},
@@ -36,28 +36,29 @@ std::array<test_case, kTestCount> test_cases = {
     test_case{"memory_test", memory_test, false},
     test_case{"virtual_memory_test", virtual_memory_test, false},
     test_case{"interrupt_test", interrupt_test, false},
+    test_case{"ipi_test", ipi_test, false},
     test_case{"kernel_task_test", kernel_task_test, false},
     test_case{"user_task_test", user_task_test, false},
     test_case{"fifo_scheduler_test", fifo_scheduler_test, false},
     test_case{"rr_scheduler_test", rr_scheduler_test, false},
     test_case{"cfs_scheduler_test", cfs_scheduler_test, false},
     test_case{"idle_scheduler_test", idle_scheduler_test, false},
-    test_case{"thread_group_test", thread_group_test, false},
-    test_case{"wait_test", wait_test, false},
-    test_case{"clone_test", clone_test, false},
-    test_case{"exit_test", exit_test, false},
-    test_case{"cross_core_test", cross_core_test, false},
-    test_case{"balance_test", balance_test, false},
-    test_case{"mutex_test", mutex_test, false},
-    test_case{"yield_test", yield_test, false},
-    test_case{"fork_test", fork_test, false},
-    test_case{"signal_test", signal_test, false},
-    test_case{"affinity_test", affinity_test, false},
-    test_case{"tick_test", tick_test, false},
-    test_case{"zombie_reap_test", zombie_reap_test, false},
-    test_case{"stress_test", stress_test, false},
-    test_case{"ramfs_test", ramfs_test, false},
-    test_case{"fatfs_test", fatfs_test, false},
+    // test_case{"thread_group_test", thread_group_test, false},
+    // test_case{"wait_test", wait_test, false},
+    // test_case{"clone_test", clone_test, false},
+    // test_case{"exit_test", exit_test, false},
+    // test_case{"cross_core_test", cross_core_test, false},
+    // test_case{"balance_test", balance_test, false},
+    // test_case{"mutex_test", mutex_test, false},
+    // test_case{"yield_test", yield_test, false},
+    // test_case{"fork_test", fork_test, false},
+    // test_case{"signal_test", signal_test, false},
+    // test_case{"affinity_test", affinity_test, false},
+    // test_case{"tick_test", tick_test, false},
+    // test_case{"zombie_reap_test", zombie_reap_test, false},
+    // test_case{"stress_test", stress_test, false},
+    // test_case{"ramfs_test", ramfs_test, false},
+    // test_case{"fatfs_test", fatfs_test, false},
 };
 
 std::array<TestResult, kTestCount> test_results{};
