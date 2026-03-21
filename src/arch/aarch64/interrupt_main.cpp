@@ -28,10 +28,10 @@ auto HandleException(const char* exception_msg, cpu_io::TrapContext* context,
                      int print_regs = 0) -> void {
   klog::Err("{}", exception_msg);
   klog::Err(
-      "  ESR_EL1: {:#X}, ELR_EL1: {:#X}, SP_EL0: {:#X}, SP_EL1: {:#X}, "
-      "SPSR_EL1: {:#X}",
-      context->esr_el1, context->elr_el1, context->sp_el0, context->sp_el1,
-      context->spsr_el1);
+      "  ESR_EL1: {:#X}, ELR_EL1: {:#X}, FAR_EL1: {:#X}, SP_EL0: {:#X}, "
+      "SP_EL1: {:#X}, SPSR_EL1: {:#X}",
+      context->esr_el1, context->elr_el1, cpu_io::FAR_EL1::Read(),
+      context->sp_el0, context->sp_el1, context->spsr_el1);
 
   if (print_regs == 4) {
     klog::Err("  x0-x3: {:#X} {:#X} {:#X} {:#X}", context->x0, context->x1,
