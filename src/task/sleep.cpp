@@ -16,8 +16,6 @@ auto TaskManager::Sleep(uint64_t ms) -> void {
 
   auto* current = GetCurrentTask();
   assert(current != nullptr && "Sleep: No current task to sleep");
-  assert(current->GetStatus() == TaskStatus::kRunning &&
-         "Sleep: current task status must be kRunning");
 
   // 如果睡眠时间为 0，仅让出 CPU（相当于 yield）
   if (ms == 0) {
@@ -28,11 +26,12 @@ auto TaskManager::Sleep(uint64_t ms) -> void {
   {
     LockGuard<SpinLock> lock_guard(cpu_sched.lock);
 
+    assert(current->GetStatus() == TaskStatus::kRunning &&
+           "Sleep: current task status must be kRunning");
+
     // 计算唤醒时间 (当前 tick + 睡眠时间)
     uint64_t sleep_ticks = (ms * SIMPLEKERNEL_TICK) / kMillisecondsPerSecond;
     current->sched_info.wake_tick = cpu_sched.local_tick + sleep_ticks;
-
-    // Check capacity before transitioning FSM
 
     // 将任务加入睡眠队列（优先队列会自动按 wake_tick 排序）
     if (cpu_sched.sleeping_tasks.full()) {

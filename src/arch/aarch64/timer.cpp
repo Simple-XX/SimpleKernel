@@ -9,6 +9,7 @@
 #include "interrupt.h"
 #include "kernel.h"
 #include "kernel_fdt.hpp"
+#include "per_cpu.hpp"
 #include "task_manager.hpp"
 
 using InterruptDelegate = InterruptBase::InterruptDelegate;
@@ -18,18 +19,20 @@ uint64_t interval{0};
 /// 定时器中断号
 uint64_t timer_intid{0};
 
-/**
- * @brief 定时器中断处理函数
- * @param cause 中断号（未使用）
- * @param context 中断上下文（未使用）
- * @return 始终返回 0
- */
-auto TimerHandler(uint64_t /*cause*/, cpu_io::TrapContext* /*context*/)
-    -> uint64_t {
+auto TimerHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
   cpu_io::CNTV_TVAL_EL0::Write(interval);
+
+  auto core_id = cpu_io::GetCurrentCoreId();
+  if (per_cpu::in_timer_handler[core_id]) {
+    return 0;
+  }
+  per_cpu::in_timer_handler[core_id] = true;
+
   auto& tm = TaskManagerSingleton::instance();
   tm.TickUpdate();
   (void)tm.CheckPendingSignals();
+
+  per_cpu::in_timer_handler[core_id] = false;
   return 0;
 }
 }  // namespace

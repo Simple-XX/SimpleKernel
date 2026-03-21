@@ -19,6 +19,9 @@ struct CpuSchedData;
 
 namespace per_cpu {
 
+/// TimerHandler 重入保护（per-CPU，防止嵌套 timer 中断导致递归调度）
+inline bool in_timer_handler[SIMPLEKERNEL_MAX_CORE_COUNT]{};
+
 /// @brief 每个 CPU 核心的局部数据
 struct PerCpu {
   /// 核心 ID
