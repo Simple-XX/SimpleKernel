@@ -117,6 +117,7 @@ auto TaskManager::Schedule() -> void {
   // 更新 per-CPU running_task
   per_cpu::GetCurrentCore().running_task = next;
 
+  // 释放调度器锁（恢复中断状态）
   cpu_sched.lock.UnLock().or_else([](auto&& err) {
     klog::Err("Schedule: Failed to release lock: {}", err.message());
     while (true) {
@@ -125,8 +126,12 @@ auto TaskManager::Schedule() -> void {
     return Expected<void>{};
   });
 
-  // 上下文切换
+  // 关中断保护 switch_to，防止 timer 中断在上下文切换中间触发导致嵌套调度
+  // - 新任务：走 kernel_thread_bootstrap，其中 EnableInterrupt() 恢复中断
+  // - 旧任务恢复：从 switch_to 返回后由下方 EnableInterrupt() 恢复中断
   if (current != next) {
+    cpu_io::DisableInterrupt();
     switch_to(&current->task_context, &next->task_context);
+    cpu_io::EnableInterrupt();
   }
 }
