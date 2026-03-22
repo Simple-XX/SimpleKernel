@@ -75,3 +75,5 @@ void InitTaskContext(cpu_io::CalleeSavedContext* task_context,
 #include <stdio.h>
 
 extern "C" void etl_putchar(int c) { putchar(c); }
+
+auto RawDumpStack() -> void {}
