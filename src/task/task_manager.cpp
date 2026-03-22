@@ -30,6 +30,7 @@ namespace {
 /// idle 线程入口函数
 auto IdleThread(void*) -> void {
   while (true) {
+    per_cpu::GetCurrentCore().sched_data->idle_time++;
     cpu_io::Pause();
   }
 }

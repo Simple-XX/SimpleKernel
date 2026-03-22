@@ -87,31 +87,20 @@ auto TaskManager::Schedule() -> void {
 
   TaskControlBlock* next = nullptr;
   for (auto& scheduler : cpu_sched.schedulers) {
-    if (scheduler && !scheduler->IsEmpty()) {
-      next = scheduler->PickNext();
-      if (next) {
-        break;
-      }
+    if (!scheduler || scheduler->IsEmpty()) {
+      continue;
     }
+    next = scheduler->PickNext();
+    if (!next) {
+      continue;
+    }
+    break;
   }
 
-  if (!next) {
-    if (current->GetStatus() == TaskStatus::kReady) {
-      next = current;
-    } else {
-      cpu_sched.idle_time++;
-      FinishSwitch();
-      if (saved_intr) {
-        cpu_io::EnableInterrupt();
-      }
-      return;
-    }
-  }
-
-  assert(next != nullptr && "Schedule: next task must not be null");
-  assert((next->GetStatus() == TaskStatus::kReady ||
-          next->policy == SchedPolicy::kIdle) &&
-         "Schedule: next task must be kReady or kIdle policy");
+  assert(next != nullptr &&
+         "Schedule: no runnable task (idle task missing from scheduler)");
+  assert(next->GetStatus() == TaskStatus::kReady &&
+         "Schedule: picked task must be in kReady state");
 
   next->fsm.Receive(MsgSchedule{});
   next->sched_info.time_slice_remaining = next->sched_info.time_slice_default;
