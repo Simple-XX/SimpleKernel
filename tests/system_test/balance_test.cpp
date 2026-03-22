@@ -105,7 +105,13 @@ void test_balance_imbalanced_load(void* /*arg*/) {
   // With 8 workers all initially on one core and Balance() active,
   // tasks should have been migrated to run on more than one core.
   uint64_t mask = g_cores_used_mask.load(std::memory_order_acquire);
-  int cores_used = __builtin_popcountll(mask);
+  // NOTE: Do NOT use __builtin_popcountll() here. On aarch64, libgcc's
+  // __popcountdi2 uses NEON instructions (fmov/cnt/addv), which trap on
+  // secondary cores where CPACR_EL1.FPEN is not initialized.
+  int cores_used = 0;
+  for (uint64_t m = mask; m != 0; m &= m - 1) {
+    ++cores_used;
+  }
   if (cores_used < 2) {
     klog::Err(
         "test_balance_imbalanced_load: FAIL — tasks only used {} core(s), "
