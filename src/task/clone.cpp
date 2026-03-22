@@ -2,6 +2,7 @@
  * @copyright Copyright The SimpleKernel Contributors
  */
 
+#include "arch.h"
 #include "expected.hpp"
 #include "kernel.h"
 #include "kernel_log.hpp"
@@ -187,6 +188,13 @@ auto TaskManager::Clone(uint64_t flags, void* user_stack, int* parent_tid,
   if (tls) {
     child->trap_context_ptr->ThreadPointer() = reinterpret_cast<uint64_t>(tls);
   }
+
+  // 初始化 CalleeSavedContext，使 switch_to 恢复后经由
+  // kernel_thread_entry → kernel_thread_bootstrap → FinishSwitch → trap_return
+  auto child_stack_top = reinterpret_cast<uint64_t>(child->kernel_stack) +
+                         TaskControlBlock::kDefaultKernelStackSize;
+  InitTaskContext(&child->task_context, child->trap_context_ptr,
+                  child_stack_top);
 
   // 父进程返回子进程 PID
   parent_context.ReturnValue() = new_pid;

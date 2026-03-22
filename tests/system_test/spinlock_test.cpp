@@ -24,12 +24,14 @@ class TestSpinLock : public SpinLock {
 auto test_basic_lock() -> bool {
   klog::Info("Running test_basic_lock...");
   TestSpinLock lock("basic");
+  cpu_io::DisableInterrupt();
   EXPECT_TRUE(lock.Lock(), "Basic lock failed");
   EXPECT_TRUE(lock.IsLockedByCurrentCore(),
               "IsLockedByCurrentCore failed after lock");
   EXPECT_TRUE(lock.UnLock(), "Basic unlock failed");
   EXPECT_TRUE(!lock.IsLockedByCurrentCore(),
               "IsLockedByCurrentCore failed after unlock");
+  cpu_io::EnableInterrupt();
   klog::Info("test_basic_lock passed");
   return true;
 }
@@ -37,12 +39,14 @@ auto test_basic_lock() -> bool {
 auto test_recursive_lock() -> bool {
   klog::Info("Running test_recursive_lock...");
   TestSpinLock lock("recursive");
+  cpu_io::DisableInterrupt();
   EXPECT_TRUE(lock.Lock(), "Lock failed in recursive test");
   // Lock() 如果已经被当前核心锁定则返回 false
   if (lock.Lock()) {
     klog::Err("FAIL: Recursive lock should return false");
     (void)lock.UnLock();  // 尝试恢复
     (void)lock.UnLock();
+    cpu_io::EnableInterrupt();
     return false;
   }
 
@@ -50,8 +54,10 @@ auto test_recursive_lock() -> bool {
   // 再次解锁应该失败
   if (lock.UnLock()) {
     klog::Err("FAIL: Double unlock should return false");
+    cpu_io::EnableInterrupt();
     return false;
   }
+  cpu_io::EnableInterrupt();
   klog::Info("test_recursive_lock passed");
   return true;
 }
@@ -72,45 +78,44 @@ auto test_interrupt_restore() -> bool {
   klog::Info("Running test_interrupt_restore...");
   TestSpinLock lock("intr");
 
-  // Case 1: Interrupts enabled
+  // Case 1: Interrupts enabled before LockGuard → disabled inside → restored
   cpu_io::EnableInterrupt();
   if (!cpu_io::GetInterruptStatus()) {
     klog::Err("FAIL: Failed to enable interrupts");
     return false;
   }
 
-  (void)lock.Lock();
-  if (cpu_io::GetInterruptStatus()) {
-    klog::Err("FAIL: Lock didn't disable interrupts");
-    (void)lock.UnLock();
-    return false;
+  {
+    LockGuard<TestSpinLock> guard(lock);
+    if (cpu_io::GetInterruptStatus()) {
+      klog::Err("FAIL: LockGuard didn't disable interrupts");
+      return false;
+    }
   }
-  (void)lock.UnLock();
 
   if (!cpu_io::GetInterruptStatus()) {
-    klog::Err("FAIL: Unlock didn't restore interrupts (expected enabled)");
+    klog::Err("FAIL: LockGuard didn't restore interrupts (expected enabled)");
     return false;
   }
 
-  // Case 2: Interrupts disabled
+  // Case 2: Interrupts disabled before LockGuard → disabled inside → stays
+  // disabled
   cpu_io::DisableInterrupt();
-  // Ensure disabled
   if (cpu_io::GetInterruptStatus()) {
     klog::Err("FAIL: Failed to disable interrupts for test");
     return false;
   }
 
-  (void)lock.Lock();
-  if (cpu_io::GetInterruptStatus()) {
-    klog::Err("FAIL: Lock enabled interrupts unexpectedly");
-    (void)lock.UnLock();
-    cpu_io::EnableInterrupt();
-    return false;
+  {
+    LockGuard<TestSpinLock> guard(lock);
+    if (cpu_io::GetInterruptStatus()) {
+      klog::Err("FAIL: LockGuard enabled interrupts unexpectedly");
+      return false;
+    }
   }
-  (void)lock.UnLock();
 
   if (cpu_io::GetInterruptStatus()) {
-    klog::Err("FAIL: Unlock enabled interrupts (expected disabled)");
+    klog::Err("FAIL: LockGuard enabled interrupts (expected disabled)");
     cpu_io::EnableInterrupt();
     return false;
   }
@@ -126,9 +131,11 @@ std::atomic<int> finished_cores = 0;
 
 auto spinlock_smp_test() -> bool {
   for (int i = 0; i < 10000; ++i) {
+    cpu_io::DisableInterrupt();
     (void)smp_lock.Lock();
     shared_counter++;
     (void)smp_lock.UnLock();
+    cpu_io::EnableInterrupt();
   }
 
   int finished = finished_cores.fetch_add(1) + 1;
@@ -160,12 +167,13 @@ auto spinlock_smp_buffer_test() -> bool {
   int writes_per_core = 500;
 
   for (int i = 0; i < writes_per_core; ++i) {
+    cpu_io::DisableInterrupt();
     (void)buffer_lock.Lock();
     if (buffer_index < BUFFER_SIZE) {
-      // 写入 Core ID
       shared_buffer[buffer_index++] = cpu_io::GetCurrentCoreId();
     }
     (void)buffer_lock.UnLock();
+    cpu_io::EnableInterrupt();
   }
 
   int finished = buffer_test_finished_cores.fetch_add(1) + 1;
@@ -241,6 +249,7 @@ auto spinlock_smp_string_test() -> bool {
     *end = '\0';
     int len = static_cast<int>(end - local_buf);
 
+    cpu_io::DisableInterrupt();
     (void)str_lock.Lock();
     if (str_buffer_offset + len < STR_BUFFER_SIZE - 1) {
       for (int k = 0; k < len; ++k) {
@@ -250,6 +259,7 @@ auto spinlock_smp_string_test() -> bool {
       shared_str_buffer[str_buffer_offset] = '\0';
     }
     (void)str_lock.UnLock();
+    cpu_io::EnableInterrupt();
   }
 
   int finished = str_test_finished_cores.fetch_add(1) + 1;
