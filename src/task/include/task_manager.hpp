@@ -294,6 +294,11 @@ class TaskManager {
 
   /// @}
 
+  /**
+   * @brief 负载均衡 (空闲 core 窃取任务)
+   */
+  auto Balance() -> void;
+
   /// @name 构造/析构函数
   /// @{
   TaskManager() = default;
@@ -360,11 +365,6 @@ class TaskManager {
    * @return size_t 新的 PID
    */
   [[nodiscard]] auto AllocatePid() -> size_t;
-
-  /**
-   * @brief 负载均衡 (空闲 core 窃取任务)
-   */
-  auto Balance() -> void;
 
   /**
    * @brief 获取线程组的所有线程

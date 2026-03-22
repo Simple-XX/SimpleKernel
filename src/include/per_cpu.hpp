@@ -31,6 +31,14 @@ struct PreemptState {
   /// 显式抢占禁用深度
   uint32_t preempt_disable_count{0};
 
+  /// 延迟调度标志：由 TickUpdate 在中断上下文中设置，
+  /// 在 TimerHandler 退出硬中断后检查并调用 Schedule()
+  bool need_resched{false};
+
+  /// 延迟负载均衡标志：由 TickUpdate 在中断上下文中设置，
+  /// 在 TimerHandler 退出硬中断后检查并调用 Balance()
+  bool need_balance{false};
+
   /// 是否处于中断上下文（硬中断或软中断）
   [[nodiscard]] auto InInterrupt() const -> bool {
     return hardirq_count > 0 || softirq_count > 0;

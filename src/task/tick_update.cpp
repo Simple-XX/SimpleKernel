@@ -3,6 +3,7 @@
  */
 
 #include "kernel_log.hpp"
+#include "per_cpu.hpp"
 #include "task_manager.hpp"
 #include "task_messages.hpp"
 
@@ -68,10 +69,10 @@ auto TaskManager::TickUpdate() -> void {
   }
 
   if (cpu_sched.scheduler_started && (cpu_sched.local_tick % 64) == 0) {
-    Balance();
+    per_cpu::GetCurrentCore().preempt.need_balance = true;
   }
 
   if (need_preempt && cpu_sched.scheduler_started) {
-    Schedule();
+    per_cpu::GetCurrentCore().preempt.need_resched = true;
   }
 }

@@ -30,6 +30,17 @@ auto TimerHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
   (void)tm.CheckPendingSignals();
 
   preempt.hardirq_count--;
+
+  if (preempt.need_balance) {
+    preempt.need_balance = false;
+    tm.Balance();
+  }
+
+  if (preempt.need_resched) {
+    preempt.need_resched = false;
+    tm.Schedule();
+  }
+
   return 0;
 }
 }  // namespace
