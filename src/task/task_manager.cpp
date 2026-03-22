@@ -59,8 +59,8 @@ auto TaskManager::InitCurrentCore(bool is_primary) -> void {
     auto init_task_ptr =
         kstd::make_unique<TaskControlBlock>("init", 10, nullptr, nullptr);
     auto* init_task = init_task_ptr.get();
-    init_task->pid = 1;
-    init_task->aux->tgid = 1;
+    init_task->pid = kInitPid;
+    init_task->aux->tgid = kInitPid;
     init_task->policy = SchedPolicy::kNormal;
     init_task->fsm.Receive(MsgSchedule{});
     init_task->fsm.Receive(MsgSchedule{});
@@ -281,10 +281,6 @@ auto TaskManager::ReparentChildren(TaskControlBlock* parent) -> void {
     return;
   }
 
-  // init 进程的 PID 通常是 1
-  /// @todo 当前的 pid 是自增的，需要考虑多核情况
-  static constexpr Pid kInitPid = 1;
-
   LockGuard lock_guard{task_table_lock_};
 
   // 遍历所有任务，找到父进程是当前任务的子进程
@@ -294,8 +290,6 @@ auto TaskManager::ReparentChildren(TaskControlBlock* parent) -> void {
       task->aux->parent_pid = kInitPid;
       klog::Debug("ReparentChildren: Task {} reparented to init (PID {})",
                   task->pid, kInitPid);
-      // 如果子进程已经是僵尸状态，通知 init 进程回收
-      /// @todo 实现向 init 进程发送 SIGCHLD 信号
     }
   }
 }

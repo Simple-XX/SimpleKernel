@@ -87,6 +87,9 @@ struct CpuSchedData {
   /// Schedule() 是否已被显式调用
   bool scheduler_started{false};
 
+  /// switch_to 前记录的前一个任务，用于 deferred cleanup
+  TaskControlBlock* prev_task{nullptr};
+
   /// @name 构造/析构函数
   /// @{
   CpuSchedData() = default;
@@ -105,6 +108,8 @@ struct CpuSchedData {
  */
 class TaskManager {
  public:
+  static constexpr Pid kInitPid = 1;
+
   /**
    * @brief 初始化 per cpu 的调度数据，创建 idle 线程
    * @param is_primary true 时创建 init 进程 (pid 1)，否则创建丢弃式 boot 占位
@@ -348,7 +353,7 @@ class TaskManager {
       interrupt_work_queues_;
 
   /// PID 分配器
-  std::atomic<size_t> pid_allocator_{2};
+  std::atomic<size_t> pid_allocator_{kInitPid + 1};
 
   /**
    * @brief 分配新的 PID

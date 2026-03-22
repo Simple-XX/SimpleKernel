@@ -16,9 +16,6 @@ auto TaskManager::Exit(int exit_code) -> void {
   assert(current->GetStatus() == TaskStatus::kRunning &&
          "Exit: current task status must be kRunning");
 
-  ResourceId wait_resource_id{};
-  bool should_wake_parent = false;
-
   {
     LockGuard<SpinLock> lock_guard(cpu_sched.lock);
 
@@ -36,10 +33,6 @@ auto TaskManager::Exit(int exit_code) -> void {
 
     if (current->aux->parent_pid != 0) {
       current->fsm.Receive(MsgExit{exit_code, true});
-      wait_resource_id =
-          ResourceId(ResourceType::kChildExit, current->aux->parent_pid);
-      should_wake_parent = true;
-
       klog::Debug("Exit: pid={} entering zombie, will wake parent={}",
                   current->pid, current->aux->parent_pid);
     } else {
@@ -51,12 +44,7 @@ auto TaskManager::Exit(int exit_code) -> void {
     }
   }
 
-  if (should_wake_parent) {
-    Wakeup(wait_resource_id);
-  }
-
   Schedule();
 
-  // UNREACHABLE
   __builtin_unreachable();
 }

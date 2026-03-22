@@ -38,12 +38,26 @@ void FinishSwitch() {
     return Expected<void>{};
   });
 }
+
+void HandleDeferredCleanup() {
+  auto* sched_data = per_cpu::GetCurrentCore().sched_data;
+  auto* prev = sched_data->prev_task;
+  sched_data->prev_task = nullptr;
+
+  if (prev != nullptr && prev->GetStatus() == TaskStatus::kZombie &&
+      prev->aux != nullptr && prev->aux->parent_pid != 0) {
+    /// @todo 信号子系统就绪后，向 parent_pid 投递 SIGCHLD
+    TaskManagerSingleton::instance().Wakeup(
+        ResourceId(ResourceType::kChildExit, prev->aux->parent_pid));
+  }
+}
 }  // namespace
 
 extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
                                                      void* arg) {
   FinishSwitch();
   cpu_io::EnableInterrupt();
+  HandleDeferredCleanup();
   entry(arg);
   assert(false && "kernel thread returned without calling sys_exit()");
   while (true) {
@@ -113,6 +127,7 @@ auto TaskManager::Schedule() -> void {
     scheduler->OnScheduled(next);
   }
 
+  cpu_sched.prev_task = current;
   per_cpu::GetCurrentCore().running_task = next;
 
   if (current != next) {
@@ -124,4 +139,6 @@ auto TaskManager::Schedule() -> void {
   if (saved_intr) {
     cpu_io::EnableInterrupt();
   }
+
+  HandleDeferredCleanup();
 }
