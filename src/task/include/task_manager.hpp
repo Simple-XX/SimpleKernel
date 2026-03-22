@@ -107,8 +107,9 @@ class TaskManager {
  public:
   /**
    * @brief 初始化 per cpu 的调度数据，创建 idle 线程
+   * @param is_primary true 时创建 init 进程 (pid 1)，否则创建丢弃式 boot 占位
    */
-  auto InitCurrentCore() -> void;
+  auto InitCurrentCore(bool is_primary = false) -> void;
 
   /**
    * @brief 添加任务（接管所有权）
@@ -347,7 +348,7 @@ class TaskManager {
       interrupt_work_queues_;
 
   /// PID 分配器
-  std::atomic<size_t> pid_allocator_{1};
+  std::atomic<size_t> pid_allocator_{2};
 
   /**
    * @brief 分配新的 PID

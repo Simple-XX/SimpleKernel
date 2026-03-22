@@ -45,9 +45,7 @@ auto _start(int argc, const char** argv) -> void {
     main_smp(argc, argv);
   }
 
-  while (true) {
-    cpu_io::Pause();
-  }
+  assert(false && "_start should not return");
 }
 
 auto main(int argc, const char** argv) -> int {
@@ -65,9 +63,9 @@ auto main(int argc, const char** argv) -> int {
   DeviceInit();
   // 文件系统初始化
   FileSystemInit();
-  // 初始化任务管理器 (设置主线程)
+  // 初始化任务管理器，创建 init 进程 (pid 1) 和 idle 线程
   TaskManagerSingleton::create();
-  TaskManagerSingleton::instance().InitCurrentCore();
+  TaskManagerSingleton::instance().InitCurrentCore(true);
 
   TimerInit();
 
@@ -78,9 +76,12 @@ auto main(int argc, const char** argv) -> int {
 
   klog::Info("Hello SimpleKernel");
 
-  // 启动调度器，不再返回
-  TaskManagerSingleton::instance().Schedule();
-
-  // UNREACHABLE: Schedule() 不应返回
-  __builtin_unreachable();
+  // init 循环：非阻塞收割孤儿僵尸，然后让出 CPU
+  while (true) {
+    while (TaskManagerSingleton::instance()
+               .Wait(static_cast<Pid>(-1), nullptr, true, false)
+               .value_or(0) > 0) {
+    }
+    TaskManagerSingleton::instance().Schedule();
+  }
 }

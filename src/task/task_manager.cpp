@@ -37,7 +37,7 @@ auto IdleThread(void*) -> void {
 
 }  // namespace
 
-auto TaskManager::InitCurrentCore() -> void {
+auto TaskManager::InitCurrentCore(bool is_primary) -> void {
   auto core_id = cpu_io::GetCurrentCoreId();
   auto& cpu_sched = cpu_schedulers_[core_id];
 
@@ -52,38 +52,47 @@ auto TaskManager::InitCurrentCore() -> void {
         kstd::make_unique<IdleScheduler>();
   }
 
-  // 关联 PerCpu
   auto& cpu_data = per_cpu::GetCurrentCore();
   cpu_data.sched_data = &cpu_sched;
 
-  // 创建 boot 任务作为当前执行上下文的占位符
-  // 首次 Schedule():
-  // current(boot_task) != next(idle_task) -> switch_to -> idle_thread
-  auto boot_task_ptr = kstd::make_unique<TaskControlBlock>(
-      "Boot",
-      std::numeric_limits<
-          decltype(TaskControlBlock::SchedInfo::priority)>::max(),
-      nullptr, nullptr);
-  auto* boot_task = boot_task_ptr.release();
-  // kUnInit -> kReady
-  boot_task->fsm.Receive(MsgSchedule{});
-  // kReady -> kRunning
-  boot_task->fsm.Receive(MsgSchedule{});
-  boot_task->policy = SchedPolicy::kIdle;
-  cpu_data.running_task = boot_task;
+  if (is_primary) {
+    auto init_task_ptr =
+        kstd::make_unique<TaskControlBlock>("init", 10, nullptr, nullptr);
+    auto* init_task = init_task_ptr.get();
+    init_task->pid = 1;
+    init_task->aux->tgid = 1;
+    init_task->policy = SchedPolicy::kNormal;
+    init_task->fsm.Receive(MsgSchedule{});
+    init_task->fsm.Receive(MsgSchedule{});
 
-  // 创建独立的 Idle 线程
+    {
+      LockGuard<SpinLock> table_guard(task_table_lock_);
+      task_table_[init_task->pid] = std::move(init_task_ptr);
+    }
+
+    cpu_data.running_task = init_task;
+  } else {
+    auto boot_task_ptr = kstd::make_unique<TaskControlBlock>(
+        "boot",
+        std::numeric_limits<
+            decltype(TaskControlBlock::SchedInfo::priority)>::max(),
+        nullptr, nullptr);
+    auto* boot_task = boot_task_ptr.release();
+    boot_task->fsm.Receive(MsgSchedule{});
+    boot_task->fsm.Receive(MsgSchedule{});
+    boot_task->policy = SchedPolicy::kIdle;
+    cpu_data.running_task = boot_task;
+  }
+
   auto idle_task_ptr = kstd::make_unique<TaskControlBlock>(
-      "Idle",
+      "idle",
       std::numeric_limits<
           decltype(TaskControlBlock::SchedInfo::priority)>::max(),
       IdleThread, nullptr);
   auto* idle_task = idle_task_ptr.release();
-  // kUnInit -> kReady
   idle_task->fsm.Receive(MsgSchedule{});
   idle_task->policy = SchedPolicy::kIdle;
 
-  // 将 idle 任务加入 Idle 调度器
   if (cpu_sched.schedulers[static_cast<uint8_t>(SchedPolicy::kIdle)]) {
     cpu_sched.schedulers[static_cast<uint8_t>(SchedPolicy::kIdle)]->Enqueue(
         idle_task);
@@ -109,24 +118,8 @@ auto TaskManager::AddTask(etl::unique_ptr<TaskControlBlock> task) -> void {
   auto* task_ptr = task.get();
   Pid pid = task_ptr->pid;
 
-  // 加入全局任务表
-  {
-    LockGuard lock_guard{task_table_lock_};
-    if (task_table_.full()) {
-      klog::Err("AddTask: task_table_ full, cannot add task (pid={})", pid);
-      return;
-    }
-    task_table_[pid] = std::move(task);
-  }
-
-  // 设置任务状态为 kReady
-  // Transition: kUnInit -> kReady
-  task_ptr->fsm.Receive(MsgSchedule{});
-
-  // 简单的负载均衡：如果指定了亲和性，放入对应核心，否则放入当前核心
-  // 更复杂的逻辑可以是：寻找最空闲的核心
-  size_t target_core = cpu_io::GetCurrentCoreId();
-
+  // 确定目标核心
+  auto target_core = cpu_io::GetCurrentCoreId();
   if (task_ptr->aux->cpu_affinity.value() != UINT64_MAX) {
     // 寻找第一个允许的核心
     for (size_t core_id = 0; core_id < SIMPLEKERNEL_MAX_CORE_COUNT; ++core_id) {
@@ -137,28 +130,29 @@ auto TaskManager::AddTask(etl::unique_ptr<TaskControlBlock> task) -> void {
     }
   }
 
+  // 设置任务状态为 kReady（task 尚未对其他核心可见，无需锁）
+  // Transition: kUnInit -> kReady
+  task_ptr->fsm.Receive(MsgSchedule{});
+
   auto& cpu_sched = cpu_schedulers_[target_core];
 
+  // 锁序统一为 sched_lock → task_table_lock（与 Exit/Wait 一致，防止死锁）
   {
-    LockGuard<SpinLock> lock_guard(cpu_sched.lock);
-    if (task_ptr->policy < SchedPolicy::kPolicyCount) {
-      if (cpu_sched.schedulers[static_cast<uint8_t>(task_ptr->policy)]) {
-        cpu_sched.schedulers[static_cast<uint8_t>(task_ptr->policy)]->Enqueue(
-            task_ptr);
+    LockGuard<SpinLock> sched_guard(cpu_sched.lock);
+    {
+      LockGuard<SpinLock> table_guard(task_table_lock_);
+      if (task_table_.full()) {
+        klog::Err("AddTask: task_table_ full, cannot add task (pid={})", pid);
+        return;
       }
+      task_table_[pid] = std::move(task);
     }
-  }
 
-  // 如果是当前核心，且添加了比当前任务优先级更高的任务，触发抢占
-  if (target_core == cpu_io::GetCurrentCoreId()) {
-    auto& cpu_data = per_cpu::GetCurrentCore();
-    TaskControlBlock* current = cpu_data.running_task;
-    // 如果当前是 idle 任务，或新任务的策略优先级更高，触发调度
-    if (current == cpu_data.idle_task ||
-        (current && task_ptr->policy < current->policy)) {
-      // 注意：这里不能直接调用 Schedule()，因为可能在中断上下文中
-      // 实际应该设置一个 need_resched 标志，在中断返回前检查
-      // 为简化，这里暂时不做抢占，只在时间片耗尽时调度
+    assert(task_ptr->policy < SchedPolicy::kPolicyCount &&
+           "AddTask: invalid scheduling policy");
+    if (cpu_sched.schedulers[static_cast<uint8_t>(task_ptr->policy)]) {
+      cpu_sched.schedulers[static_cast<uint8_t>(task_ptr->policy)]->Enqueue(
+          task_ptr);
     }
   }
 }
