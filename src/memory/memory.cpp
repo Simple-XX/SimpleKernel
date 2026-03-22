@@ -34,8 +34,15 @@ struct BmallocLogger {
 class BmallocLock : public bmalloc::LockBase {
  public:
   void Lock() override {
-    lock_.Lock().or_else([](auto&&) -> Expected<void> {
+    saved_intr_ = cpu_io::GetInterruptStatus();
+    cpu_io::DisableInterrupt();
+
+    lock_.Lock().or_else([this](auto&&) -> Expected<void> {
       // 不应触发：bmalloc 内部不会递归加锁
+      // 恢复中断状态后再死循环，避免关中断挂死整个核心
+      if (saved_intr_) {
+        cpu_io::EnableInterrupt();
+      }
       while (true) {
         cpu_io::Pause();
       }
@@ -50,10 +57,15 @@ class BmallocLock : public bmalloc::LockBase {
       }
       return {};
     });
+
+    if (saved_intr_) {
+      cpu_io::EnableInterrupt();
+    }
   }
 
  private:
   SpinLock lock_{"bmalloc"};
+  bool saved_intr_{false};
 };
 
 bmalloc::Bmalloc<BmallocLogger, BmallocLock>* allocator = nullptr;
