@@ -135,10 +135,9 @@ auto TaskManager::Schedule() -> void {
   }
 
   FinishSwitch();
+  HandleDeferredCleanup();
 
   if (saved_intr) {
     cpu_io::EnableInterrupt();
   }
-
-  HandleDeferredCleanup();
 }
