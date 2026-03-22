@@ -18,7 +18,6 @@ ADD_EXECUTABLE (
     fifo_scheduler_test.cpp
     rr_scheduler_test.cpp
     cfs_scheduler_test.cpp
-    idle_scheduler_test.cpp
     thread_group_test.cpp
     wait_test.cpp
     clone_test.cpp

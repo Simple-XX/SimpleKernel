@@ -180,7 +180,6 @@ auto ipi_test() -> bool;
 auto fifo_scheduler_test() -> bool;
 auto rr_scheduler_test() -> bool;
 auto cfs_scheduler_test() -> bool;
-auto idle_scheduler_test() -> bool;
 auto thread_group_test() -> bool;
 auto wait_test() -> bool;
 auto clone_test() -> bool;

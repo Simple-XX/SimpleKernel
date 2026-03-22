@@ -15,7 +15,6 @@
 
 #include "basic_info.hpp"
 #include "fifo_scheduler.hpp"
-#include "idle_scheduler.hpp"
 #include "kernel_config.hpp"
 #include "kernel_elf.hpp"
 #include "kernel_log.hpp"
@@ -27,13 +26,22 @@
 
 namespace {
 
-/// idle 线程入口函数
 auto IdleThread(void*) -> void {
   while (true) {
     per_cpu::GetCurrentCore().sched_data->idle_time++;
     cpu_io::Pause();
   }
 }
+
+/// 内核启动时的静态 idle 任务资源（每核心一个）
+struct StaticIdleTask {
+  TaskControlBlock tcb;
+  TaskAuxData aux;
+  alignas(cpu_io::virtual_memory::kPageSize)
+      uint8_t stack[TaskControlBlock::kDefaultKernelStackSize];
+};
+
+std::array<StaticIdleTask, SIMPLEKERNEL_MAX_CORE_COUNT> idle_tasks{};
 
 }  // namespace
 
@@ -48,8 +56,6 @@ auto TaskManager::InitCurrentCore(bool is_primary) -> void {
         kstd::make_unique<FifoScheduler>();
     cpu_sched.schedulers[static_cast<uint8_t>(SchedPolicy::kNormal)] =
         kstd::make_unique<RoundRobinScheduler>();
-    cpu_sched.schedulers[static_cast<uint8_t>(SchedPolicy::kIdle)] =
-        kstd::make_unique<IdleScheduler>();
   }
 
   auto& cpu_data = per_cpu::GetCurrentCore();
@@ -84,19 +90,31 @@ auto TaskManager::InitCurrentCore(bool is_primary) -> void {
     cpu_data.running_task = boot_task;
   }
 
-  auto idle_task_ptr = kstd::make_unique<TaskControlBlock>(
-      "idle",
-      std::numeric_limits<
-          decltype(TaskControlBlock::SchedInfo::priority)>::max(),
-      IdleThread, nullptr);
-  auto* idle_task = idle_task_ptr.release();
-  idle_task->fsm.Receive(MsgSchedule{});
-  idle_task->policy = SchedPolicy::kIdle;
+  auto& idle_res = idle_tasks[core_id];
+  auto* idle_task = &idle_res.tcb;
 
-  if (cpu_sched.schedulers[static_cast<uint8_t>(SchedPolicy::kIdle)]) {
-    cpu_sched.schedulers[static_cast<uint8_t>(SchedPolicy::kIdle)]->Enqueue(
-        idle_task);
-  }
+  idle_task->name = "idle";
+  idle_task->pid = AllocatePid();
+  idle_task->policy = SchedPolicy::kIdle;
+  idle_task->owns_resources = false;
+
+  idle_task->aux = &idle_res.aux;
+  idle_task->kernel_stack = idle_res.stack;
+
+  idle_task->sched_info.priority = std::numeric_limits<
+      decltype(TaskControlBlock::SchedInfo::priority)>::max();
+  idle_task->sched_info.base_priority = idle_task->sched_info.priority;
+
+  idle_task->trap_context_ptr = reinterpret_cast<cpu_io::TrapContext*>(
+      idle_res.stack + TaskControlBlock::kDefaultKernelStackSize -
+      sizeof(cpu_io::TrapContext));
+
+  auto stack_top = reinterpret_cast<uint64_t>(idle_res.stack) +
+                   TaskControlBlock::kDefaultKernelStackSize;
+  InitTaskContext(&idle_task->task_context, IdleThread, nullptr, stack_top);
+
+  idle_task->fsm.Start();
+  idle_task->fsm.Receive(MsgSchedule{});
 
   cpu_data.idle_task = idle_task;
 }

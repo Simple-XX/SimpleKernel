@@ -105,14 +105,16 @@ auto TaskManager::Schedule() -> void {
       continue;
     }
     next = scheduler->PickNext();
-    if (!next) {
-      continue;
+    if (next) {
+      break;
     }
-    break;
   }
 
-  assert(next != nullptr &&
-         "Schedule: no runnable task (idle task missing from scheduler)");
+  if (!next) {
+    next = per_cpu::GetCurrentCore().idle_task;
+  }
+
+  assert(next != nullptr && "Schedule: no runnable task (idle task missing)");
   assert(next->GetStatus() == TaskStatus::kReady &&
          "Schedule: picked task must be in kReady state");
 

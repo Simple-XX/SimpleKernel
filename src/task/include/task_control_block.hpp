@@ -222,6 +222,9 @@ struct TaskControlBlock : public ThreadGroupLink {
   /// 非调度热路径的辅助数据
   TaskAuxData* aux{nullptr};
 
+  /// 是否拥有资源的所有权 (stack/aux)
+  bool owns_resources{true};
+
   /**
    * @brief 获取当前任务状态
    * @return etl::fsm_state_id_t 当前任务状态 ID

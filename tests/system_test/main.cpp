@@ -28,7 +28,7 @@ struct test_case {
   bool is_smp_test = false;
 };
 
-constexpr size_t kTestCount = 28;
+constexpr size_t kTestCount = 27;
 
 std::array<test_case, kTestCount> test_cases = {
     test_case{"ctor_dtor_test", ctor_dtor_test, false},
@@ -42,7 +42,6 @@ std::array<test_case, kTestCount> test_cases = {
     test_case{"fifo_scheduler_test", fifo_scheduler_test, false},
     test_case{"rr_scheduler_test", rr_scheduler_test, false},
     test_case{"cfs_scheduler_test", cfs_scheduler_test, false},
-    test_case{"idle_scheduler_test", idle_scheduler_test, false},
     test_case{"thread_group_test", thread_group_test, false},
     test_case{"wait_test", wait_test, false},
     test_case{"clone_test", clone_test, false},

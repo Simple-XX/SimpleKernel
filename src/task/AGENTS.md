@@ -1,7 +1,7 @@
 # AGENTS.md — src/task/
 
 ## OVERVIEW
-Task management subsystem: schedulers (CFS/FIFO/RR/Idle), TaskControlBlock, TaskManager singleton, sync primitives (mutex via spinlock), syscall-level task operations (clone, exit, sleep, wait, wakeup, block).
+Task management subsystem: schedulers (CFS/FIFO/RR), TaskControlBlock, TaskManager singleton, sync primitives (mutex via spinlock), syscall-level task operations (clone, exit, sleep, wait, wakeup, block). Idle tasks are statically allocated per-CPU and managed directly via per_cpu::idle_task (no dedicated scheduler).
 
 ## STRUCTURE
 ```
@@ -10,7 +10,6 @@ include/
   cfs_scheduler.hpp        # CFS (Completely Fair Scheduler) — vruntime-based
   fifo_scheduler.hpp       # FIFO — first-in first-out, no preemption
   rr_scheduler.hpp         # Round-Robin — time-slice based preemption
-  idle_scheduler.hpp       # Idle — runs when no other tasks ready
   task_control_block.hpp   # TCB — task state, context, priority, stack
   task_fsm.hpp             # Task state machine — valid state transitions
   task_manager.hpp         # TaskManagerSingleton (etl::singleton<TaskManager>) — owns schedulers, dispatches

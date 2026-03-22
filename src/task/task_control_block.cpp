@@ -193,24 +193,26 @@ TaskControlBlock::~TaskControlBlock() {
   // 从线程组中移除
   LeaveThreadGroup();
 
-  // 释放内核栈
-  if (kernel_stack) {
-    aligned_free(kernel_stack);
-    kernel_stack = nullptr;
-  }
+  if (owns_resources) {
+    // 释放内核栈
+    if (kernel_stack) {
+      aligned_free(kernel_stack);
+      kernel_stack = nullptr;
+    }
 
-  // 释放页表（如果有用户空间页表）
-  if (page_table) {
-    // 如果是私有页表（非共享），需要释放物理页
-    auto should_free_pages = !(aux->clone_flags & clone_flag::kVm);
-    VirtualMemorySingleton::instance().DestroyPageDirectory(page_table,
-                                                            should_free_pages);
-    page_table = nullptr;
-  }
+    // 释放页表（如果有用户空间页表）
+    if (page_table) {
+      // 如果是私有页表（非共享），需要释放物理页
+      auto should_free_pages = !(aux->clone_flags & clone_flag::kVm);
+      VirtualMemorySingleton::instance().DestroyPageDirectory(
+          page_table, should_free_pages);
+      page_table = nullptr;
+    }
 
-  // 释放辅助数据
-  if (aux) {
-    delete aux;
-    aux = nullptr;
+    // 释放辅助数据
+    if (aux) {
+      delete aux;
+      aux = nullptr;
+    }
   }
 }
