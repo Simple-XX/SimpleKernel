@@ -119,3 +119,10 @@ __always_inline auto backtrace(void** buffer, int size) -> int;
  * @note 调用 backtrace 获取调用栈并解析符号后输出到日志
  */
 auto DumpStack() -> void;
+
+/**
+ * @brief 打印调用栈（raw 版本，绕过日志队列）
+ * @note 使用 klog::RawPut 直接输出至串口，用于 assert/panic 等紧急路径
+ * @pre 可在中断禁用、队列不可用等极端环境下安全调用
+ */
+auto RawDumpStack() -> void;

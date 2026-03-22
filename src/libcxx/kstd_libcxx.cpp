@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <atomic>
 
+#include "arch.h"
 #include "kernel_log.hpp"
 
 /// 全局构造函数函数指针
@@ -210,6 +211,7 @@ extern "C" [[noreturn]] void __assert_fail(const char* assertion,
   klog::RawPut("\n Expression: ");
   klog::RawPut(assertion);
   etl_putchar('\n');
+  RawDumpStack();
   while (1) {
     cpu_io::Pause();
   }

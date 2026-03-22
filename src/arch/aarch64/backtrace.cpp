@@ -52,3 +52,41 @@ auto DumpStack() -> void {
     }
   }
 }
+
+auto RawDumpStack() -> void {
+  std::array<uint64_t, kMaxFrameCount> buffer{};
+  auto num_frames = backtrace(buffer);
+
+  klog::RawPut("\n--- Raw Stack Trace ---\n");
+
+  char line_buf[256];
+  for (auto i = 0; i < num_frames; i++) {
+    bool found = false;
+    for (auto symtab : KernelElfSingleton::instance().symtab) {
+      if ((ELF64_ST_TYPE(symtab.st_info) == STT_FUNC) &&
+          (buffer[i] >= symtab.st_value) &&
+          (buffer[i] <= symtab.st_value + symtab.st_size)) {
+        auto* end = etl::format_to_n(
+            line_buf, sizeof(line_buf) - 1, "  #{} {:#018x} [{}]+{:#x}", i,
+            buffer[i],
+            reinterpret_cast<const char*>(
+                KernelElfSingleton::instance().strtab + symtab.st_name),
+            buffer[i] - symtab.st_value);
+        *end = '\0';
+        klog::RawPut(line_buf);
+        etl_putchar('\n');
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      auto* end = etl::format_to_n(line_buf, sizeof(line_buf) - 1,
+                                   "  #{} {:#018x} [???]", i, buffer[i]);
+      *end = '\0';
+      klog::RawPut(line_buf);
+      etl_putchar('\n');
+    }
+  }
+
+  klog::RawPut("--- End Stack Trace ---\n");
+}

@@ -56,8 +56,8 @@ void HandleDeferredCleanup() {
 extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
                                                      void* arg) {
   FinishSwitch();
-  cpu_io::EnableInterrupt();
   HandleDeferredCleanup();
+  cpu_io::EnableInterrupt();
   entry(arg);
   assert(false && "kernel thread returned without calling sys_exit()");
   while (true) {

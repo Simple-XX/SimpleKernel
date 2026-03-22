@@ -12,6 +12,7 @@
 #include <limits>
 #include <type_traits>
 
+#include "arch.h"
 #include "expected.hpp"
 #include "kernel_log.hpp"
 #include "kstd_cstdio"
@@ -119,6 +120,9 @@ class LockGuard {
       klog::RawPut(": ");
       klog::RawPut(err.message());
       klog::RawPut("\n");
+
+      RawDumpStack();
+
       while (true) {
         cpu_io::Pause();
       }
@@ -152,6 +156,9 @@ class LockGuard {
       klog::RawPut(": ");
       klog::RawPut(err.message());
       klog::RawPut("\n");
+
+      RawDumpStack();
+
       while (true) {
         cpu_io::Pause();
       }

@@ -101,6 +101,9 @@ inline auto TryDrain() -> void {
     return;
   }
 
+  auto intr_status = cpu_io::GetInterruptStatus();
+  cpu_io::DisableInterrupt();
+
   // 若有丢弃条目则上报
   auto dropped = dropped_count.exchange(0, std::memory_order_relaxed);
   if (dropped > 0) {
@@ -131,6 +134,10 @@ inline auto TryDrain() -> void {
   }
 
   drain_flag.clear(std::memory_order_release);
+
+  if (intr_status) {
+    cpu_io::EnableInterrupt();
+  }
 }
 
 /**
