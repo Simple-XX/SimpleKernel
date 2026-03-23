@@ -522,6 +522,9 @@ void test_sigchld(void* /*arg*/) {
 
   self->aux->signals.ClearPending(signal_number::kSigChld);
 
+  uint32_t sigchld_set = 1U << signal_number::kSigChld;
+  (void)sys_sigprocmask(signal_mask_op::kSigBlock, sigchld_set, nullptr);
+
   auto child = kstd::make_unique<TaskControlBlock>("SigchldChild", 10,
                                                    sigchld_child, nullptr);
   child->aux->parent_pid = self->pid;
@@ -535,7 +538,7 @@ void test_sigchld(void* /*arg*/) {
   (void)sys_sleep(100);
 
   uint32_t pending = self->aux->signals.pending.load(std::memory_order_acquire);
-  bool sigchld_pending = (pending & (1U << signal_number::kSigChld)) != 0;
+  bool sigchld_pending = (pending & sigchld_set) != 0;
 
   if (!sigchld_pending) {
     klog::Err(
@@ -545,6 +548,7 @@ void test_sigchld(void* /*arg*/) {
   }
 
   self->aux->signals.ClearPending(signal_number::kSigChld);
+  (void)sys_sigprocmask(signal_mask_op::kSigUnblock, sigchld_set, nullptr);
 
   if (!passed) {
     g_tests_failed++;

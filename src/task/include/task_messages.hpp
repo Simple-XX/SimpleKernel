@@ -19,6 +19,32 @@ inline constexpr etl::message_id_t kExit = 6;
 inline constexpr etl::message_id_t kReap = 7;
 inline constexpr etl::message_id_t kStop = 8;
 inline constexpr etl::message_id_t kCont = 9;
+
+[[nodiscard]] constexpr auto GetName(etl::message_id_t id) -> const char* {
+  switch (id) {
+    case kSchedule:
+      return "MsgSchedule";
+    case kYield:
+      return "MsgYield";
+    case kSleep:
+      return "MsgSleep";
+    case kBlock:
+      return "MsgBlock";
+    case kWakeup:
+      return "MsgWakeup";
+    case kExit:
+      return "MsgExit";
+    case kReap:
+      return "MsgReap";
+    case kStop:
+      return "MsgStop";
+    case kCont:
+      return "MsgCont";
+    default:
+      return "Unknown";
+  }
+}
+
 }  // namespace task_msg_id
 
 /// 消息路由 ID

@@ -7,6 +7,7 @@
 #include <etl/fsm.h>
 
 #include <atomic>
+#include <cassert>
 
 #include "kernel_log.hpp"
 #include "task_messages.hpp"
@@ -42,8 +43,9 @@ struct StateUnInit : public etl::fsm_state<etl::fsm, StateUnInit,
     return TaskStatusId::kReady;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: UnInit received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: UnInit received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in UnInit");
     return STATE_ID;
   }
 };
@@ -57,8 +59,9 @@ struct StateReady : public etl::fsm_state<etl::fsm, StateReady,
     return TaskStatusId::kRunning;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: Ready received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: Ready received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in Ready");
     return STATE_ID;
   }
 };
@@ -88,8 +91,9 @@ struct StateRunning
     return TaskStatusId::kStopped;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: Running received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: Running received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in Running");
     return STATE_ID;
   }
 };
@@ -104,8 +108,9 @@ struct StateSleeping
     return TaskStatusId::kReady;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: Sleeping received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: Sleeping received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in Sleeping");
     return STATE_ID;
   }
 };
@@ -119,8 +124,9 @@ struct StateBlocked : public etl::fsm_state<etl::fsm, StateBlocked,
     return TaskStatusId::kReady;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: Blocked received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: Blocked received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in Blocked");
     return STATE_ID;
   }
 };
@@ -132,8 +138,9 @@ struct StateExited : public etl::fsm_state<etl::fsm, StateExited,
                                            TaskStatusId::kExited, MsgReap> {
   auto on_event(const MsgReap&) -> etl::fsm_state_id_t { return STATE_ID; }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: Exited received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: Exited received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in Exited");
     return STATE_ID;
   }
 };
@@ -147,8 +154,9 @@ struct StateZombie : public etl::fsm_state<etl::fsm, StateZombie,
     return TaskStatusId::kExited;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: Zombie received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: Zombie received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in Zombie");
     return STATE_ID;
   }
 };
@@ -169,8 +177,9 @@ struct StateStopped
     return TaskStatusId::kExited;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
-    klog::Warn("TaskFsm: Stopped received unexpected message id={}",
-               static_cast<int>(msg.get_message_id()));
+    klog::Err("TaskFsm: Stopped received unexpected message {}",
+              task_msg_id::GetName(msg.get_message_id()));
+    assert(false && "TaskFsm: unexpected message in Stopped");
     return STATE_ID;
   }
 };

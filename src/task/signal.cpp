@@ -16,6 +16,9 @@ auto TaskManager::SendSignal(Pid pid, int signum) -> Expected<void> {
   }
 
   bool needs_wake = false;
+  bool needs_enqueue = false;
+  TaskControlBlock* enqueue_task = nullptr;
+  SchedPolicy enqueue_policy = SchedPolicy::kNormal;
   auto target_status = TaskStatus::kUnInit;
   ResourceId blocked_resource{};
 
@@ -50,12 +53,28 @@ auto TaskManager::SendSignal(Pid pid, int signum) -> Expected<void> {
     }
 
     if (needs_wake) {
-      if (target_status == TaskStatus::kBlocked) {
+      if (target_status == TaskStatus::kStopped) {
+        target->fsm.Receive(MsgCont{});
+        needs_enqueue = true;
+        enqueue_task = target;
+        enqueue_policy = target->policy;
+      } else if (target_status == TaskStatus::kBlocked) {
         blocked_resource = target->aux->blocked_on;
       } else if (target_status == TaskStatus::kSleeping) {
         target->sched_info.wake_tick = 0;
       }
     }
+  }
+
+  if (needs_enqueue && enqueue_task) {
+    auto& cpu_sched = GetCurrentCpuSched();
+    LockGuard<SpinLock> lock_guard(cpu_sched.lock);
+    auto* scheduler =
+        cpu_sched.schedulers[static_cast<uint8_t>(enqueue_policy)].get();
+    if (scheduler) {
+      scheduler->Enqueue(enqueue_task);
+    }
+    klog::Debug("SendSignal: continued stopped task pid={}", pid);
   }
 
   if (needs_wake && target_status == TaskStatus::kBlocked &&
@@ -99,15 +118,15 @@ auto TaskManager::CheckPendingSignals() -> int {
   }
 
   // SIGSTOP: 强制停止，无法捕获
-  /// @todo 实现进程停止状态 (需要新的 FSM 状态 kStopped)
   if (signum == signal_number::kSigStop || signum == signal_number::kSigTstp) {
-    klog::Info(
-        "CheckPendingSignals: pid={} received stop signal {} (not implemented)",
-        current->pid, SignalState::GetSignalName(signum));
+    klog::Info("CheckPendingSignals: pid={} stopped by {}", current->pid,
+               SignalState::GetSignalName(signum));
+    current->fsm.Receive(MsgStop{});
+    Schedule();
     return signum;
   }
 
-  // SIGCONT: 继续（如果已停止）
+  // SIGCONT: 继续（如果已停止）— 当前任务不会处于 kStopped（它在运行）
   if (signum == signal_number::kSigCont) {
     klog::Debug("CheckPendingSignals: pid={} received SIGCONT", current->pid);
     return signum;
@@ -132,9 +151,11 @@ auto TaskManager::CheckPendingSignals() -> int {
       case 'I':
         break;
       case 'S':
-        klog::Debug("CheckPendingSignals: pid={} stop by {} (not implemented)",
-                    current->pid, SignalState::GetSignalName(signum));
-        break;
+        klog::Info("CheckPendingSignals: pid={} stopped by {} (default)",
+                   current->pid, SignalState::GetSignalName(signum));
+        current->fsm.Receive(MsgStop{});
+        Schedule();
+        return signum;
       case 'K':
         break;
       default:
