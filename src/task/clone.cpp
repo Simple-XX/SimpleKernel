@@ -95,7 +95,7 @@ auto TaskManager::Clone(uint64_t flags, void* user_stack, int* parent_tid,
   child->aux->clone_flags = CloneFlags(flags);
 
   // 处理文件描述符表 (kCloneFiles)
-  /// @todo 当前未实现文件系统，此标志暂时仅记录
+  /// @todo 实现文件描述符表的复制/共享（VFS 已就绪，FD 表 clone 逻辑待实现）
   if (flags & clone_flag::kFiles) {
     klog::Debug("Clone: sharing file descriptor table (not implemented)");
   } else {
@@ -111,7 +111,7 @@ auto TaskManager::Clone(uint64_t flags, void* user_stack, int* parent_tid,
   }
 
   // 处理文件系统信息 (kCloneFs)
-  /// @todo 当前未实现文件系统，此标志暂时仅记录
+  /// @todo 实现文件系统信息的复制/共享（VFS 已就绪，FS info clone 逻辑待实现）
   if (flags & clone_flag::kFs) {
     klog::Debug("Clone: sharing filesystem info (not implemented)");
   } else {

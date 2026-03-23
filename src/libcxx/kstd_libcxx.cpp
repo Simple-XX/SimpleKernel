@@ -89,7 +89,8 @@ extern "C" auto __cxa_finalize(void* destructor_func) -> void {
 }
 
 /// @name 保证静态局部变量线程安全
-/// @todo 确保正确
+/// @todo 验证 __cxa_guard 多核并发正确性（当前使用 atomic CAS，需测试 SMP
+/// 场景）
 /// @{
 /**
  * if ( obj_guard.first_byte == 0 ) {

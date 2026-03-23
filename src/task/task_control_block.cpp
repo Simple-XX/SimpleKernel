@@ -178,7 +178,7 @@ TaskControlBlock::TaskControlBlock(const char* _name, int priority,
   sched_info.priority = priority;
   sched_info.base_priority = priority;
 
-  /// @todo
+  /// @todo 实现用户任务 ELF 初始化：将 elf/argc/argv 传递给 LoadElf
   (void)_name;
   (void)priority;
   (void)elf;
