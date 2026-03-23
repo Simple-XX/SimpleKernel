@@ -73,7 +73,7 @@ auto Interrupt::RegisterInterruptFunc(uint64_t cause, InterruptDelegate func)
 }
 
 auto Interrupt::SendIpi(uint64_t target_cpu_mask) -> Expected<void> {
-  /// @todo 默认使用 SGI 0 作为 IPI 中断
+  /// @todo 使用 SGI 0 作为 IPI 中断合理吗？
   static constexpr uint64_t kIPISGI = 0;
 
   uint64_t sgi_value = 0;
@@ -91,7 +91,7 @@ auto Interrupt::SendIpi(uint64_t target_cpu_mask) -> Expected<void> {
 }
 
 auto Interrupt::BroadcastIpi() -> Expected<void> {
-  /// @todo 默认使用 SGI 0 作为 IPI 中断
+  /// @todo 使用 SGI 0 作为 IPI 中断合理吗？
   static constexpr uint64_t kIPISGI = 0;
 
   // 构造 ICC_SGI1R_EL1 寄存器的值

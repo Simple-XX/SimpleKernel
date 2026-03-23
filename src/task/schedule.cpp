@@ -59,7 +59,7 @@ extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
                                                      void* arg) {
   FinishSwitch();
   HandleDeferredCleanup();
-  (void)TaskManagerSingleton::instance().CheckPendingSignals();
+  TaskManagerSingleton::instance().CheckPendingSignals();
   cpu_io::EnableInterrupt();
   entry(arg);
   assert(false && "kernel thread returned without calling sys_exit()");
@@ -142,7 +142,7 @@ auto TaskManager::Schedule() -> void {
   FinishSwitch();
   HandleDeferredCleanup();
   // 信号投递安全点（同 kernel_thread_bootstrap 中的注释）
-  (void)CheckPendingSignals();
+  CheckPendingSignals();
 
   if (saved_intr) {
     cpu_io::EnableInterrupt();

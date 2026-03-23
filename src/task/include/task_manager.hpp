@@ -267,10 +267,8 @@ class TaskManager {
 
   /**
    * @brief 检查并处理当前任务的待处理信号
-   * @return int 处理的信号编号，无信号返回 0
-   * @todo 为什么不用 excepted<int>
    */
-  [[nodiscard]] auto CheckPendingSignals() -> int;
+  auto CheckPendingSignals() -> void;
 
   /**
    * @brief 设置信号处理函数
