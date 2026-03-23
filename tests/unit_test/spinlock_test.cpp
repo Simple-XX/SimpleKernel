@@ -20,10 +20,8 @@ namespace {
 static std::atomic<int> shared_counter{0};
 static std::atomic<int> thread_counter{0};
 
-// 测试辅助类：暴露 protected 成员用于测试验证
 class SpinLockTestable : public SpinLock {
  public:
-  using SpinLock::IsLockedByCurrentCore;
   explicit SpinLockTestable(const char* name) : SpinLock(name) {}
   SpinLockTestable() = default;
 };
@@ -35,7 +33,7 @@ class SpinLockTest : public ::testing::Test {
     thread_counter = 0;
 
     // 初始化环境层
-    env_state_.InitializeCores(8);  // 支持多核测试（最多 8 核）
+    env_state_.InitializeCores(SIMPLEKERNEL_MAX_CORE_COUNT);
     env_state_.SetCurrentThreadEnvironment();
     env_state_.BindThreadToCore(std::this_thread::get_id(), 0);
   }
@@ -184,18 +182,19 @@ TEST_F(SpinLockTest, NestedInterruptControl) {
 TEST_F(SpinLockTest, RecursiveLockDetection) {
   SpinLockTestable lock("recursive_test");
 
-  // 第一次加锁应该成功
   cpu_io::DisableInterrupt();
   EXPECT_TRUE(lock.Lock());
-  EXPECT_TRUE(lock.IsLockedByCurrentCore());
 
-  // 在同一线程（模拟同一核心）再次加锁应该失败
+  // 同核心再次加锁应该失败（重入检测）
   EXPECT_FALSE(lock.Lock());
 
-  // 解锁
   EXPECT_TRUE(lock.UnLock());
   cpu_io::EnableInterrupt();
-  EXPECT_FALSE(lock.IsLockedByCurrentCore());
+
+  // 解锁后再次 UnLock 应该失败
+  cpu_io::DisableInterrupt();
+  EXPECT_FALSE(lock.UnLock());
+  cpu_io::EnableInterrupt();
 }
 
 // 测试多个锁的独立性
@@ -263,7 +262,6 @@ TEST_F(SpinLockTest, InterruptDisabledDuringLock) {
 
     // 锁持有期间中断应该被禁用
     EXPECT_FALSE(cpu_io::GetInterruptStatus());
-    EXPECT_TRUE(lock.IsLockedByCurrentCore());
   }
 
   // 解锁后中断应该恢复

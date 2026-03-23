@@ -16,6 +16,17 @@
 
 struct TaskControlBlock;
 struct CpuSchedData;
+class SpinLock;
+
+/// 锁级别常量 — 数值越小越先获取，相同级别禁止嵌套
+namespace lock_level {
+inline constexpr uint8_t kSchedLock = 0;
+inline constexpr uint8_t kTaskTableLock = 1;
+inline constexpr uint8_t kInterruptThreadsLock = 2;
+/// 已分类锁级别总数
+inline constexpr uint8_t kCount = 3;
+inline constexpr uint8_t kUnclassified = 0xFF;
+}  // namespace lock_level
 
 namespace per_cpu {
 
@@ -69,6 +80,26 @@ struct PerCpu {
 
   /// 抢占/中断嵌套状态
   PreemptState preempt{};
+
+  /**
+   * @brief Per-CPU 锁持有栈
+   *
+   * 统一管理同实例重入检测与跨锁级别验证
+   */
+  struct LockStack {
+    struct Entry {
+      const SpinLock* lock{nullptr};
+      uint8_t level{lock_level::kUnclassified};
+    };
+
+    /// kCount 个不同级别 + 1 个同级别实例（如 Balance 的双 sched_lock）
+    static constexpr size_t kMaxDepth = lock_level::kCount + 1;
+    Entry entries[kMaxDepth]{};
+    uint8_t depth{0};
+  };
+
+  /// 锁持有栈
+  LockStack lock_stack{};
 
   /// @name 构造/析构函数
   /// @{

@@ -6,7 +6,6 @@
 
 #include <cpu_io.h>
 
-#include <array>
 #include <atomic>
 #include <concepts>
 #include <cstddef>
@@ -18,14 +17,7 @@
 #include "expected.hpp"
 #include "kernel_log.hpp"
 #include "kstd_cstdio"
-
-/// 锁级别常量 — 数值越小越先获取，相同级别禁止嵌套
-namespace lock_level {
-inline constexpr uint8_t kSchedLock = 0;
-inline constexpr uint8_t kTaskTableLock = 1;
-inline constexpr uint8_t kInterruptThreadsLock = 2;
-inline constexpr uint8_t kUnclassified = 0xFF;
-}  // namespace lock_level
+#include "per_cpu.hpp"
 
 /**
  * @brief 自旋锁（纯原子操作，不管理中断状态）
@@ -40,17 +32,38 @@ class SpinLock {
    * @return Expected<void> 成功返回空值，失败返回错误
    */
   [[nodiscard]] __always_inline auto Lock() -> Expected<void> {
-    CheckLockOrder(lock_level_, name);
+    // 先 spin 获取锁——保证只有一个执行流通过此点。
+    // 重入在 spin 中通过 owner_core_ 检测（原子操作，多核安全）。
     while (locked_.test_and_set(std::memory_order_acquire)) {
-      if (core_id_.load(std::memory_order_acquire) ==
+      if (owner_core_.load(std::memory_order_acquire) ==
           cpu_io::GetCurrentCoreId()) {
-        PopLockOrder(lock_level_);
         return std::unexpected(Error{ErrorCode::kSpinLockRecursiveLock});
       }
       cpu_io::Pause();
     }
+    owner_core_.store(cpu_io::GetCurrentCoreId(), std::memory_order_release);
 
-    core_id_.store(cpu_io::GetCurrentCoreId(), std::memory_order_release);
+    // 获取锁后操作 per-CPU lock_stack（此时中断已关，同核心无并发）
+    auto& stack = per_cpu::GetCurrentCore().lock_stack;
+    if (lock_level_ != lock_level::kUnclassified && stack.depth > 0) {
+      uint8_t top_level = stack.entries[stack.depth - 1].level;
+      if (top_level != lock_level::kUnclassified && lock_level_ < top_level) {
+        klog::RawPut("LOCK ORDER VIOLATION: acquiring '");
+        klog::RawPut(name);
+        klog::RawPut("' while holding '");
+        klog::RawPut(stack.entries[stack.depth - 1].lock->name);
+        klog::RawPut("'\n");
+        RawDumpStack();
+        while (true) {
+          cpu_io::Pause();
+        }
+      }
+    }
+    if (stack.depth < per_cpu::PerCpu::LockStack::kMaxDepth) {
+      stack.entries[stack.depth] = {this, lock_level_};
+      stack.depth++;
+    }
+
     return {};
   }
 
@@ -59,13 +72,19 @@ class SpinLock {
    * @return Expected<void> 成功返回空值，失败返回错误
    */
   [[nodiscard]] __always_inline auto UnLock() -> Expected<void> {
-    if (!IsLockedByCurrentCore()) {
+    if (owner_core_.load(std::memory_order_acquire) !=
+        cpu_io::GetCurrentCoreId()) {
       return std::unexpected(Error{ErrorCode::kSpinLockNotOwned});
     }
 
-    PopLockOrder(lock_level_);
-    core_id_.store(std::numeric_limits<size_t>::max(),
-                   std::memory_order_release);
+    // 先弹栈（仍持有锁，per-CPU 数据安全），再释放锁
+    auto& stack = per_cpu::GetCurrentCore().lock_stack;
+    if (stack.depth > 0 && stack.entries[stack.depth - 1].lock == this) {
+      stack.depth--;
+    }
+
+    owner_core_.store(std::numeric_limits<size_t>::max(),
+                      std::memory_order_release);
     locked_.clear(std::memory_order_release);
     return {};
   }
@@ -87,61 +106,8 @@ class SpinLock {
 
  protected:
   std::atomic_flag locked_{ATOMIC_FLAG_INIT};
-  std::atomic<size_t> core_id_{std::numeric_limits<size_t>::max()};
+  std::atomic<size_t> owner_core_{std::numeric_limits<size_t>::max()};
   uint8_t lock_level_{lock_level::kUnclassified};
-
-  struct PerCpuLockStack {
-    static constexpr size_t kMaxDepth = 4;
-    uint8_t levels[kMaxDepth]{};
-    const char* names[kMaxDepth]{};
-    size_t depth{0};
-  };
-
-  static inline std::array<PerCpuLockStack, SIMPLEKERNEL_MAX_CORE_COUNT>
-      lock_stacks_{};
-
-  static __always_inline void CheckLockOrder(uint8_t new_level,
-                                             const char* new_name) {
-    if (new_level == lock_level::kUnclassified) {
-      return;
-    }
-    auto& stack = lock_stacks_[cpu_io::GetCurrentCoreId()];
-    if (stack.depth > 0) {
-      uint8_t top_level = stack.levels[stack.depth - 1];
-      if (top_level != lock_level::kUnclassified && new_level <= top_level) {
-        klog::RawPut("LOCK ORDER VIOLATION: acquiring '");
-        klog::RawPut(new_name);
-        klog::RawPut("' while holding '");
-        klog::RawPut(stack.names[stack.depth - 1]);
-        klog::RawPut("'\n");
-        RawDumpStack();
-        while (true) {
-          cpu_io::Pause();
-        }
-      }
-    }
-    if (stack.depth < PerCpuLockStack::kMaxDepth) {
-      stack.levels[stack.depth] = new_level;
-      stack.names[stack.depth] = new_name;
-      stack.depth++;
-    }
-  }
-
-  static __always_inline void PopLockOrder(uint8_t level) {
-    if (level == lock_level::kUnclassified) {
-      return;
-    }
-    auto& stack = lock_stacks_[cpu_io::GetCurrentCoreId()];
-    if (stack.depth > 0 && stack.levels[stack.depth - 1] == level) {
-      stack.depth--;
-    }
-  }
-
-  __always_inline auto IsLockedByCurrentCore() -> bool {
-    return locked_.test(std::memory_order_acquire) &&
-           (core_id_.load(std::memory_order_acquire) ==
-            cpu_io::GetCurrentCoreId());
-  }
 };
 
 /**

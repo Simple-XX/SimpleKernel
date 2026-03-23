@@ -14,10 +14,8 @@
 #include "system_test.h"
 
 namespace {
-// 测试辅助类：暴露 protected 成员用于测试验证
 class TestSpinLock : public SpinLock {
  public:
-  using SpinLock::IsLockedByCurrentCore;
   using SpinLock::SpinLock;
 };
 
@@ -26,11 +24,9 @@ auto test_basic_lock() -> bool {
   TestSpinLock lock("basic");
   cpu_io::DisableInterrupt();
   EXPECT_TRUE(lock.Lock(), "Basic lock failed");
-  EXPECT_TRUE(lock.IsLockedByCurrentCore(),
-              "IsLockedByCurrentCore failed after lock");
   EXPECT_TRUE(lock.UnLock(), "Basic unlock failed");
-  EXPECT_TRUE(!lock.IsLockedByCurrentCore(),
-              "IsLockedByCurrentCore failed after unlock");
+  // 解锁后再次 UnLock 应该失败（验证不再持有）
+  EXPECT_TRUE(!lock.UnLock(), "Double unlock should fail");
   cpu_io::EnableInterrupt();
   klog::Info("test_basic_lock passed");
   return true;
@@ -67,9 +63,14 @@ auto test_lock_guard() -> bool {
   TestSpinLock lock("guard");
   {
     LockGuard<TestSpinLock> guard(lock);
-    EXPECT_TRUE(lock.IsLockedByCurrentCore(), "LockGuard failed to lock");
+    // guard 持有锁期间，再次 Lock 应该检测到重入
+    EXPECT_TRUE(!lock.Lock(), "LockGuard: recursive lock should fail");
   }
-  EXPECT_TRUE(!lock.IsLockedByCurrentCore(), "LockGuard failed to unlock");
+  // guard 释放后，应该能重新获取
+  cpu_io::DisableInterrupt();
+  EXPECT_TRUE(lock.Lock(), "LockGuard failed to release lock");
+  EXPECT_TRUE(lock.UnLock(), "Cleanup unlock failed");
+  cpu_io::EnableInterrupt();
   klog::Info("test_lock_guard passed");
   return true;
 }
