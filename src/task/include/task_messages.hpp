@@ -17,6 +17,8 @@ inline constexpr etl::message_id_t kBlock = 4;
 inline constexpr etl::message_id_t kWakeup = 5;
 inline constexpr etl::message_id_t kExit = 6;
 inline constexpr etl::message_id_t kReap = 7;
+inline constexpr etl::message_id_t kStop = 8;
+inline constexpr etl::message_id_t kCont = 9;
 }  // namespace task_msg_id
 
 /// 消息路由 ID
@@ -46,6 +48,16 @@ struct MsgWakeup : public etl::message<task_msg_id::kWakeup> {};
  * @brief 回收消息（无负载，用作事件）
  */
 struct MsgReap : public etl::message<task_msg_id::kReap> {};
+
+/**
+ * @brief 停止消息（SIGSTOP/SIGTSTP 触发）
+ */
+struct MsgStop : public etl::message<task_msg_id::kStop> {};
+
+/**
+ * @brief 继续消息（SIGCONT 触发）
+ */
+struct MsgCont : public etl::message<task_msg_id::kCont> {};
 
 /**
  * @brief 睡眠消息，携带唤醒时钟

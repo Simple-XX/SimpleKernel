@@ -250,15 +250,12 @@ auto TaskManager::GetThreadGroup(Pid tgid)
 }
 
 auto TaskManager::SignalThreadGroup(Pid tgid, int signal) -> void {
-  /// @todo 实现信号机制后，向线程组中的所有线程发送信号
-  klog::Debug("SignalThreadGroup: tgid={}, signal={} (not implemented)", tgid,
-              signal);
-
-  // 预期实现：
-  // auto threads = GetThreadGroup(tgid);
-  // for (auto* thread : threads) {
-  //   SendSignal(thread, signal);
-  // }
+  auto threads = GetThreadGroup(tgid);
+  for (auto* thread : threads) {
+    (void)SendSignal(thread->pid, signal);
+  }
+  klog::Debug("SignalThreadGroup: tgid={}, signal={}, count={}", tgid, signal,
+              threads.size());
 }
 
 TaskManager::~TaskManager() {

@@ -17,6 +17,7 @@
 #include "kernel_log.hpp"
 #include "kstd_cstring"
 #include "per_cpu.hpp"
+#include "signal.hpp"
 #include "sk_stdlib.h"
 #include "spinlock.hpp"
 #include "task_manager.hpp"
@@ -46,7 +47,8 @@ void HandleDeferredCleanup() {
 
   if (prev != nullptr && prev->GetStatus() == TaskStatus::kZombie &&
       prev->aux != nullptr && prev->aux->parent_pid != 0) {
-    /// @todo 信号子系统就绪后，向 parent_pid 投递 SIGCHLD
+    (void)TaskManagerSingleton::instance().SendSignal(prev->aux->parent_pid,
+                                                      signal_number::kSigChld);
     TaskManagerSingleton::instance().Wakeup(
         ResourceId(ResourceType::kChildExit, prev->aux->parent_pid));
   }

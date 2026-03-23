@@ -365,6 +365,195 @@ void test_kill_invalid_pid(void* /*arg*/) {
   sys_exit(passed ? 0 : 1);
 }
 
+// ---------------------------------------------------------------------------
+// test_sigstop_sigcont
+// Send SIGSTOP to a sleeping child, verify it stays alive, then SIGCONT,
+// verify it resumes and exits normally with 0
+// ---------------------------------------------------------------------------
+
+std::atomic<bool> g_stop_child_started{false};
+std::atomic<bool> g_stop_child_resumed{false};
+
+void sigstop_target(void* /*arg*/) {
+  g_stop_child_started.store(true);
+  (void)sys_sleep(500);
+  g_stop_child_resumed.store(true);
+  sys_exit(0);
+}
+
+void test_sigstop_sigcont(void* /*arg*/) {
+  klog::Info("=== Signal: SIGSTOP/SIGCONT Test ===");
+  bool passed = true;
+
+  auto& tm = TaskManagerSingleton::instance();
+  auto* self = tm.GetCurrentTask();
+
+  g_stop_child_started.store(false);
+  g_stop_child_resumed.store(false);
+
+  auto child = kstd::make_unique<TaskControlBlock>("SigstopTarget", 10,
+                                                   sigstop_target, nullptr);
+  child->aux->parent_pid = self->pid;
+  auto* child_raw = child.get();
+  tm.AddTask(std::move(child));
+  Pid child_pid = child_raw->pid;
+
+  int timeout = 100;
+  while (timeout-- > 0 && !g_stop_child_started.load()) {
+    (void)sys_sleep(10);
+  }
+  if (!g_stop_child_started.load()) {
+    klog::Err("test_sigstop_sigcont: child did not start");
+    passed = false;
+  }
+
+  int ret = sys_kill(static_cast<int>(child_pid), signal_number::kSigStop);
+  if (ret != 0) {
+    klog::Err("test_sigstop_sigcont: sys_kill(SIGSTOP) returned {}", ret);
+    passed = false;
+  }
+
+  (void)sys_sleep(300);
+
+  auto* child_task = tm.FindTask(child_pid);
+  if (passed && child_task && child_task->GetStatus() != TaskStatus::kStopped) {
+    klog::Err("test_sigstop_sigcont: child status is {} (expected kStopped)",
+              child_task->GetStatus());
+    passed = false;
+  }
+
+  ret = sys_kill(static_cast<int>(child_pid), signal_number::kSigCont);
+  if (ret != 0) {
+    klog::Err("test_sigstop_sigcont: sys_kill(SIGCONT) returned {}", ret);
+    passed = false;
+  }
+
+  int status = 0;
+  auto wait_result = tm.Wait(child_pid, &status, false, false);
+  if (!wait_result.has_value() || wait_result.value() != child_pid) {
+    klog::Err("test_sigstop_sigcont: Wait failed");
+    passed = false;
+  } else if (status != 0) {
+    klog::Err("test_sigstop_sigcont: exit code {} (expected 0)", status);
+    passed = false;
+  }
+
+  if (!passed) {
+    g_tests_failed++;
+  }
+  g_tests_completed++;
+  klog::Info("Signal SIGSTOP/SIGCONT Test: {}", passed ? "PASSED" : "FAILED");
+  sys_exit(passed ? 0 : 1);
+}
+
+// ---------------------------------------------------------------------------
+// test_sigkill_stopped
+// Send SIGSTOP then SIGKILL -- expect exit code 128+9=137
+// ---------------------------------------------------------------------------
+
+void sigkill_stopped_target(void* /*arg*/) {
+  (void)sys_sleep(60000);
+  sys_exit(0);
+}
+
+void test_sigkill_stopped(void* /*arg*/) {
+  klog::Info("=== Signal: SIGKILL Stopped Task Test ===");
+  bool passed = true;
+
+  auto& tm = TaskManagerSingleton::instance();
+  auto* self = tm.GetCurrentTask();
+
+  auto child = kstd::make_unique<TaskControlBlock>(
+      "SigkillStoppedTarget", 10, sigkill_stopped_target, nullptr);
+  child->aux->parent_pid = self->pid;
+  auto* child_raw = child.get();
+  tm.AddTask(std::move(child));
+  Pid child_pid = child_raw->pid;
+
+  (void)sys_sleep(100);
+
+  int ret = sys_kill(static_cast<int>(child_pid), signal_number::kSigStop);
+  if (ret != 0) {
+    klog::Err("test_sigkill_stopped: sys_kill(SIGSTOP) returned {}", ret);
+    passed = false;
+  }
+
+  (void)sys_sleep(100);
+
+  ret = sys_kill(static_cast<int>(child_pid), signal_number::kSigKill);
+  if (ret != 0) {
+    klog::Err("test_sigkill_stopped: sys_kill(SIGKILL) returned {}", ret);
+    passed = false;
+  }
+
+  int status = 0;
+  auto wait_result = tm.Wait(child_pid, &status, false, false);
+  if (!wait_result.has_value() || wait_result.value() != child_pid) {
+    klog::Err("test_sigkill_stopped: Wait failed");
+    passed = false;
+  } else if (status != 128 + signal_number::kSigKill) {
+    klog::Err("test_sigkill_stopped: exit code {} (expected {})", status,
+              128 + signal_number::kSigKill);
+    passed = false;
+  }
+
+  if (!passed) {
+    g_tests_failed++;
+  }
+  g_tests_completed++;
+  klog::Info("Signal SIGKILL Stopped Task Test: {}",
+             passed ? "PASSED" : "FAILED");
+  sys_exit(passed ? 0 : 1);
+}
+
+// ---------------------------------------------------------------------------
+// test_sigchld
+// Spawn a child that exits immediately, verify parent's SIGCHLD pending bit
+// ---------------------------------------------------------------------------
+
+void sigchld_child(void* /*arg*/) { sys_exit(42); }
+
+void test_sigchld(void* /*arg*/) {
+  klog::Info("=== Signal: SIGCHLD Delivery Test ===");
+  bool passed = true;
+
+  auto& tm = TaskManagerSingleton::instance();
+  auto* self = tm.GetCurrentTask();
+
+  self->aux->signals.ClearPending(signal_number::kSigChld);
+
+  auto child = kstd::make_unique<TaskControlBlock>("SigchldChild", 10,
+                                                   sigchld_child, nullptr);
+  child->aux->parent_pid = self->pid;
+  auto* child_raw = child.get();
+  tm.AddTask(std::move(child));
+  Pid child_pid = child_raw->pid;
+
+  int status = 0;
+  (void)tm.Wait(child_pid, &status, false, false);
+
+  (void)sys_sleep(100);
+
+  uint32_t pending = self->aux->signals.pending.load(std::memory_order_acquire);
+  bool sigchld_pending = (pending & (1U << signal_number::kSigChld)) != 0;
+
+  if (!sigchld_pending) {
+    klog::Err(
+        "test_sigchld: SIGCHLD not in parent's pending set (pending={:#x})",
+        pending);
+    passed = false;
+  }
+
+  self->aux->signals.ClearPending(signal_number::kSigChld);
+
+  if (!passed) {
+    g_tests_failed++;
+  }
+  g_tests_completed++;
+  klog::Info("Signal SIGCHLD Delivery Test: {}", passed ? "PASSED" : "FAILED");
+  sys_exit(passed ? 0 : 1);
+}
+
 }  // namespace
 
 /**
@@ -408,10 +597,25 @@ auto signal_test() -> bool {
                                                 test_kill_invalid_pid, nullptr);
   tm.AddTask(std::move(t6));
 
-  klog::Info("Waiting for all 6 signal sub-tests to complete...");
+  // Sub-test 7: SIGSTOP/SIGCONT
+  auto t7 = kstd::make_unique<TaskControlBlock>("TestSigstopSigcont", 10,
+                                                test_sigstop_sigcont, nullptr);
+  tm.AddTask(std::move(t7));
+
+  // Sub-test 8: SIGKILL on stopped task
+  auto t8 = kstd::make_unique<TaskControlBlock>("TestSigkillStopped", 10,
+                                                test_sigkill_stopped, nullptr);
+  tm.AddTask(std::move(t8));
+
+  // Sub-test 9: SIGCHLD delivery
+  auto t9 = kstd::make_unique<TaskControlBlock>("TestSigchld", 10, test_sigchld,
+                                                nullptr);
+  tm.AddTask(std::move(t9));
+
+  klog::Info("Waiting for all 9 signal sub-tests to complete...");
 
   // Wait for all sub-tests (timeout: 200 * 50ms = 10s)
-  constexpr int kExpectedTests = 6;
+  constexpr int kExpectedTests = 9;
   int timeout = 200;
   while (timeout-- > 0) {
     (void)sys_sleep(50);
@@ -424,7 +628,7 @@ auto signal_test() -> bool {
              g_tests_completed.load(), g_tests_failed.load());
 
   EXPECT_EQ(g_tests_completed.load(), kExpectedTests,
-            "All 6 signal sub-tests completed");
+            "All 9 signal sub-tests completed");
   EXPECT_EQ(g_tests_failed.load(), 0, "No signal sub-tests failed");
 
   klog::Info("===== Signal System Test End =====");

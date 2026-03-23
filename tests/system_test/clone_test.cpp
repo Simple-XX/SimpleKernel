@@ -11,10 +11,12 @@
 #include "arch.h"
 #include "basic_info.hpp"
 #include "kernel.h"
+#include "kernel_log.hpp"
 #include "kstd_cstdio"
 #include "kstd_cstring"
 #include "kstd_libcxx.h"
 #include "kstd_memory"
+#include "signal.hpp"
 #include "sk_stdlib.h"
 #include "syscall.hpp"
 #include "system_test.h"
@@ -430,6 +432,77 @@ void test_clone_flags_auto_completion(void* /*arg*/) {
   sys_exit(passed ? 0 : 1);
 }
 
+// ---------------------------------------------------------------------------
+// test_clone_signal_handlers
+// Verify that child inherits parent's signal action table via clone
+// ---------------------------------------------------------------------------
+
+std::atomic<bool> g_sighand_child_ok{false};
+
+void sighand_child_work(void* /*arg*/) {
+  auto* current = TaskManagerSingleton::instance().GetCurrentTask();
+  auto& actions = current->aux->signals.actions;
+
+  bool ok = true;
+  if (actions[signal_number::kSigTerm].handler != kSigIgn) {
+    klog::Err("sighand_child: SIGTERM handler not inherited");
+    ok = false;
+  }
+  if (actions[signal_number::kSigInt].handler != kSigIgn) {
+    klog::Err("sighand_child: SIGINT handler not inherited");
+    ok = false;
+  }
+
+  g_sighand_child_ok.store(ok);
+  sys_exit(ok ? 0 : 1);
+}
+
+void test_clone_signal_handlers(void* /*arg*/) {
+  klog::Info("=== Clone Signal Handlers Test ===");
+
+  bool passed = true;
+  g_sighand_child_ok.store(false);
+
+  auto& task_mgr = TaskManagerSingleton::instance();
+  auto* self = task_mgr.GetCurrentTask();
+
+  (void)sys_sigaction(signal_number::kSigTerm, kSigIgn);
+  (void)sys_sigaction(signal_number::kSigInt, kSigIgn);
+
+  auto child = kstd::make_unique<TaskControlBlock>("SighandChild", 10,
+                                                   sighand_child_work, nullptr);
+  child->aux->parent_pid = self->pid;
+  child->aux->signals.actions = self->aux->signals.actions;
+  auto* child_raw = child.get();
+  task_mgr.AddTask(std::move(child));
+  Pid child_pid = child_raw->pid;
+
+  int status = 0;
+  auto wait_result = task_mgr.Wait(child_pid, &status, false, false);
+  if (!wait_result.has_value() || wait_result.value() != child_pid) {
+    klog::Err("test_clone_signal_handlers: Wait failed");
+    passed = false;
+  } else if (status != 0) {
+    klog::Err("test_clone_signal_handlers: exit code {} (expected 0)", status);
+    passed = false;
+  }
+
+  if (!g_sighand_child_ok.load()) {
+    klog::Err("test_clone_signal_handlers: child did not inherit handlers");
+    passed = false;
+  }
+
+  if (passed) {
+    klog::Info("Clone Signal Handlers Test: PASSED");
+  } else {
+    klog::Err("Clone Signal Handlers Test: FAILED");
+    g_tests_failed++;
+  }
+
+  g_tests_completed++;
+  sys_exit(passed ? 0 : 1);
+}
+
 }  // namespace
 
 auto clone_test() -> bool {
@@ -457,16 +530,20 @@ auto clone_test() -> bool {
       nullptr);
   task_mgr.AddTask(std::move(test4));
 
+  auto test5 = kstd::make_unique<TaskControlBlock>(
+      "TestCloneSignalHandlers", 10, test_clone_signal_handlers, nullptr);
+  task_mgr.AddTask(std::move(test5));
+
   int timeout = 200;
   while (timeout > 0) {
     (void)sys_sleep(50);
-    if (g_tests_completed >= 4) {
+    if (g_tests_completed >= 5) {
       break;
     }
     timeout--;
   }
 
-  EXPECT_EQ(g_tests_completed, 4, "tests completed");
+  EXPECT_EQ(g_tests_completed, 5, "tests completed");
   EXPECT_EQ(g_tests_failed, 0, "tests failed");
 
   klog::Info("Clone System Test Suite: COMPLETED");

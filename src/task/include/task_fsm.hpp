@@ -20,6 +20,7 @@ inline constexpr etl::fsm_state_id_t kSleeping = 3;
 inline constexpr etl::fsm_state_id_t kBlocked = 4;
 inline constexpr etl::fsm_state_id_t kExited = 5;
 inline constexpr etl::fsm_state_id_t kZombie = 6;
+inline constexpr etl::fsm_state_id_t kStopped = 7;
 }  // namespace TaskStatusId
 
 // 前向声明所有状态类，以便在转换表中相互引用
@@ -30,6 +31,7 @@ struct StateSleeping;
 struct StateBlocked;
 struct StateExited;
 struct StateZombie;
+struct StateStopped;
 
 /**
  * @brief UnInit 状态 — 任务尚未初始化
@@ -66,7 +68,7 @@ struct StateReady : public etl::fsm_state<etl::fsm, StateReady,
  */
 struct StateRunning
     : public etl::fsm_state<etl::fsm, StateRunning, TaskStatusId::kRunning,
-                            MsgYield, MsgSleep, MsgBlock, MsgExit> {
+                            MsgYield, MsgSleep, MsgBlock, MsgExit, MsgStop> {
   auto on_event(const MsgYield&) -> etl::fsm_state_id_t {
     return TaskStatusId::kReady;
   }
@@ -81,6 +83,9 @@ struct StateRunning
       return TaskStatusId::kZombie;
     }
     return TaskStatusId::kExited;
+  }
+  auto on_event(const MsgStop&) -> etl::fsm_state_id_t {
+    return TaskStatusId::kStopped;
   }
   auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
     klog::Warn("TaskFsm: Running received unexpected message id={}",
@@ -149,6 +154,28 @@ struct StateZombie : public etl::fsm_state<etl::fsm, StateZombie,
 };
 
 /**
+ * @brief Stopped 状态 — 任务被 SIGSTOP/SIGTSTP 停止，等待 SIGCONT
+ */
+struct StateStopped
+    : public etl::fsm_state<etl::fsm, StateStopped, TaskStatusId::kStopped,
+                            MsgCont, MsgExit> {
+  auto on_event(const MsgCont&) -> etl::fsm_state_id_t {
+    return TaskStatusId::kReady;
+  }
+  auto on_event(const MsgExit& msg) -> etl::fsm_state_id_t {
+    if (msg.has_parent) {
+      return TaskStatusId::kZombie;
+    }
+    return TaskStatusId::kExited;
+  }
+  auto on_event_unknown(const etl::imessage& msg) -> etl::fsm_state_id_t {
+    klog::Warn("TaskFsm: Stopped received unexpected message id={}",
+               static_cast<int>(msg.get_message_id()));
+    return STATE_ID;
+  }
+};
+
+/**
  * @brief 任务有限状态机
  */
 class TaskFsm {
@@ -192,7 +219,8 @@ class TaskFsm {
     state_list_[4] = &state_blocked_;
     state_list_[5] = &state_exited_;
     state_list_[6] = &state_zombie_;
-    fsm_.set_states(state_list_, 7);
+    state_list_[7] = &state_stopped_;
+    fsm_.set_states(state_list_, 8);
   }
 
   TaskFsm(const TaskFsm&) = delete;
@@ -210,8 +238,9 @@ class TaskFsm {
   StateBlocked state_blocked_;
   StateExited state_exited_;
   StateZombie state_zombie_;
+  StateStopped state_stopped_;
 
-  etl::ifsm_state* state_list_[7];
+  etl::ifsm_state* state_list_[8];
 
   etl::fsm fsm_;
 

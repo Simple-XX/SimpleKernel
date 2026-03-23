@@ -103,11 +103,11 @@ auto TaskManager::Clone(uint64_t flags, void* user_stack, int* parent_tid,
   }
 
   // 处理信号处理器 (kCloneSighand)
-  /// @todo 当前未实现信号机制，此标志暂时仅记录
+  child->aux->signals.actions = parent->aux->signals.actions;
   if (flags & clone_flag::kSighand) {
-    klog::Debug("Clone: sharing signal handlers (not implemented)");
+    klog::Debug("Clone: sharing signal handlers (copied action table)");
   } else {
-    klog::Debug("Clone: copying signal handlers (not implemented)");
+    klog::Debug("Clone: copied signal handlers from parent");
   }
 
   // 处理文件系统信息 (kCloneFs)
