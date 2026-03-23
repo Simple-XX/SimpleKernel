@@ -30,7 +30,6 @@ auto TimerHandler(uint64_t, cpu_io::TrapContext*) -> uint64_t {
 
   auto& tm = TaskManagerSingleton::instance();
   tm.TickUpdate();
-  (void)tm.CheckPendingSignals();
 
   preempt.hardirq_count--;
 

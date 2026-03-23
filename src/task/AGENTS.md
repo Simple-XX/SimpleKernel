@@ -19,6 +19,7 @@ include/
 schedule.cpp               # Schedule() — main scheduling loop, context switch trigger
 task_control_block.cpp     # TCB construction, state transitions
 task_manager.cpp           # TaskManager — AddTask, InitCurrentCore, scheduler selection
+balance.cpp                # Balance() — cross-core work-stealing load balancer
 tick_update.cpp            # Timer tick handler — calls scheduler TickUpdate
 clone.cpp                  # sys_clone — task creation
 exit.cpp                   # sys_exit — task termination, cleanup
@@ -40,7 +41,7 @@ mutex.cpp                  # Mutex implementation (uses SpinLock internally)
 - Schedulers own their internal run queues — TaskManager dispatches to per-policy schedulers
 - `TaskManagerSingleton::instance()` (defined in `task_manager.hpp`) is the global entry point
 - TCB contains arch-specific context pointer — populated by `switch.S`
-- `Balance()` in `task_manager.cpp`: cross-core work-stealing (steals kNormal tasks from most-loaded core, called every 64 ticks)
+- `Balance()` in `balance.cpp`: cross-core work-stealing (steals kNormal tasks from most-loaded core, called every 64 ticks)
 
 ## ANTI-PATTERNS
 - **DO NOT** call Schedule() before TaskManager initialization in boot sequence

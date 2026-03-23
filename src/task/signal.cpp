@@ -15,56 +15,54 @@ auto TaskManager::SendSignal(Pid pid, int signum) -> Expected<void> {
     return std::unexpected(Error{ErrorCode::kSignalInvalidNumber});
   }
 
-  // 查找目标任务
-  TaskControlBlock* target = nullptr;
+  bool needs_wake = false;
+  auto target_status = TaskStatus::kUnInit;
+  ResourceId blocked_resource{};
+
   {
     LockGuard<SpinLock> lock_guard(task_table_lock_);
     auto it = task_table_.find(pid);
     if (it == task_table_.end()) {
       return std::unexpected(Error{ErrorCode::kSignalTaskNotFound});
     }
-    target = it->second.get();
-  }
+    auto* target = it->second.get();
 
-  if (!target || !target->aux) {
-    return std::unexpected(Error{ErrorCode::kSignalTaskNotFound});
-  }
-
-  target->aux->signals.SetPending(signum);
-
-  klog::Debug("SendSignal: signal {} ({}) sent to pid={}",
-              SignalState::GetSignalName(signum), signum, pid);
-
-  // SIGKILL 和 SIGCONT 需要立即唤醒阻塞/睡眠的任务
-  bool needs_wake =
-      (signum == signal_number::kSigKill || signum == signal_number::kSigCont);
-
-  // 如果信号未被屏蔽，也需要唤醒
-  if (!needs_wake &&
-      !(target->aux->signals.blocked.load(std::memory_order_acquire) &
-        (1U << signum))) {
-    auto status = target->GetStatus();
-    if (status == TaskStatus::kBlocked || status == TaskStatus::kSleeping) {
-      needs_wake = true;
+    if (!target || !target->aux) {
+      return std::unexpected(Error{ErrorCode::kSignalTaskNotFound});
     }
-  }
 
-  if (needs_wake) {
-    auto status = target->GetStatus();
+    target->aux->signals.SetPending(signum);
+    target_status = target->GetStatus();
 
-    if (status == TaskStatus::kBlocked) {
-      auto resource_id = target->aux->blocked_on;
-      if (static_cast<bool>(resource_id)) {
-        Wakeup(resource_id);
-        klog::Debug("SendSignal: woke blocked task pid={} for signal {}", pid,
-                    SignalState::GetSignalName(signum));
+    klog::Debug("SendSignal: signal {} ({}) sent to pid={}",
+                SignalState::GetSignalName(signum), signum, pid);
+
+    needs_wake = (signum == signal_number::kSigKill ||
+                  signum == signal_number::kSigCont);
+
+    if (!needs_wake &&
+        !(target->aux->signals.blocked.load(std::memory_order_acquire) &
+          (1U << signum))) {
+      if (target_status == TaskStatus::kBlocked ||
+          target_status == TaskStatus::kSleeping) {
+        needs_wake = true;
       }
-    } else if (status == TaskStatus::kSleeping) {
-      // Expedite wake: set wake_tick to 0 so next TickUpdate wakes it.
-      // Note: single aligned 64-bit store is atomic on 64-bit platforms.
-      target->sched_info.wake_tick = 0;
-      klog::Debug("SendSignal: expedited sleep wakeup for pid={}", pid);
     }
+
+    if (needs_wake) {
+      if (target_status == TaskStatus::kBlocked) {
+        blocked_resource = target->aux->blocked_on;
+      } else if (target_status == TaskStatus::kSleeping) {
+        target->sched_info.wake_tick = 0;
+      }
+    }
+  }
+
+  if (needs_wake && target_status == TaskStatus::kBlocked &&
+      static_cast<bool>(blocked_resource)) {
+    Wakeup(blocked_resource);
+    klog::Debug("SendSignal: woke blocked task pid={} for signal {}", pid,
+                SignalState::GetSignalName(signum));
   }
 
   return {};

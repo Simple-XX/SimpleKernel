@@ -53,7 +53,7 @@ extern "C" [[noreturn]] void kernel_thread_bootstrap(void (*entry)(void*),
  * @brief 每个核心的调度数据 (RunQueue)
  */
 struct CpuSchedData {
-  SpinLock lock{"sched_lock"};
+  SpinLock lock{"sched_lock", lock_level::kSchedLock};
 
   /// 调度器数组 (按策略索引)
   std::array<etl::unique_ptr<SchedulerBase>,
@@ -268,6 +268,7 @@ class TaskManager {
   /**
    * @brief 检查并处理当前任务的待处理信号
    * @return int 处理的信号编号，无信号返回 0
+   * @todo 为什么不用 excepted<int>
    */
   [[nodiscard]] auto CheckPendingSignals() -> int;
 
@@ -338,14 +339,15 @@ class TaskManager {
   std::array<CpuSchedData, SIMPLEKERNEL_MAX_CORE_COUNT> cpu_schedulers_{};
 
   /// 全局任务表 (PID -> TCB 映射)
-  SpinLock task_table_lock_{"task_table_lock"};
+  SpinLock task_table_lock_{"task_table_lock", lock_level::kTaskTableLock};
   etl::unordered_map<Pid, etl::unique_ptr<TaskControlBlock>,
                      kernel::config::kMaxTasks,
                      kernel::config::kMaxTasksBuckets>
       task_table_;
 
   /// 中断线程相关数据保护锁
-  SpinLock interrupt_threads_lock_{"interrupt_threads_lock"};
+  SpinLock interrupt_threads_lock_{"interrupt_threads_lock",
+                                   lock_level::kInterruptThreadsLock};
   /// 中断号 -> 中断线程映射
   etl::unordered_map<uint64_t, TaskControlBlock*,
                      kernel::config::kMaxInterruptThreads,
