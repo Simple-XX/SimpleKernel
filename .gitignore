@@ -21,6 +21,5 @@ target/
 *.rmeta
 *.pdb
 
-.pre-commit-config.yaml
 .worktrees/
 .claude
