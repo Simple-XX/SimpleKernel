@@ -2,6 +2,20 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use xshell::{Cmd, Shell, cmd};
 
+const ITS_TEMPLATE: &str = include_str!("boot.its.template");
+
+fn generate_its_content(arch: Arch, kernel_path: &str, dtb_path: &str) -> String {
+    let (fit_arch, load_addr) = match arch {
+        Arch::Riscv64 => ("riscv", "0x80200000"),
+        Arch::Aarch64 => ("arm64", "0x40100000"),
+    };
+    ITS_TEMPLATE
+        .replace("{KERNEL_PATH}", kernel_path)
+        .replace("{DTB_PATH}", dtb_path)
+        .replace("{FIT_ARCH}", fit_arch)
+        .replace("{LOAD_ADDR}", load_addr)
+}
+
 use crate::Result;
 use crate::arch::Arch;
 
@@ -63,22 +77,19 @@ pub fn dump_qemu_dtb(
 pub fn generate_fit_image(
     arch: Arch,
     sh: &Shell,
-    project_root: &Path,
     boot_dir: &Path,
     kernel_elf_path: &Path,
     dtb_path: &Path,
 ) -> Result<PathBuf> {
     println!("[xtask] Generating FIT image...");
 
-    let template_path = project_root.join("tools").join(arch.its_template());
-    let template = fs::read_to_string(&template_path)?;
     let kernel_abs = fs::canonicalize(kernel_elf_path)?;
     let dtb_abs = fs::canonicalize(dtb_path)?;
-
-    let content = template
-        .replace("@DESC@", "simplekernel")
-        .replace("@KERNEL_PATH@", &kernel_abs.display().to_string())
-        .replace("@DTB_PATH@", &dtb_abs.display().to_string());
+    let content = generate_its_content(
+        arch,
+        &kernel_abs.display().to_string(),
+        &dtb_abs.display().to_string(),
+    );
 
     let boot_its = boot_dir.join("boot.its");
     fs::write(&boot_its, content)?;

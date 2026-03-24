@@ -22,26 +22,25 @@ impl Arch {
         }
     }
 
-    pub fn qemu_binary(self) -> String {
-        format!("qemu-system-{}", self.as_str())
+    pub fn cross_compile(self) -> &'static str {
+        match self {
+            Self::Riscv64 => "riscv64-linux-gnu-",
+            Self::Aarch64 => "aarch64-linux-gnu-",
+        }
     }
 
-    pub fn its_template(self) -> String {
-        format!("{}_qemu_virt.its.in", self.as_str())
+    pub fn qemu_binary(self) -> String {
+        format!("qemu-system-{}", self.as_str())
     }
 
     pub fn boot_script_template(self) -> String {
         format!("{}_boot_scr.txt", self.as_str())
     }
 
-    pub fn cross_compile(self) -> String {
-        format!("{}-linux-gnu-", self.as_str())
-    }
-
     pub fn firmware_dir(self, project_root: &Path) -> PathBuf {
         project_root
             .join("target")
-            .join(self.as_str())
+            .join(self.target_triple())
             .join("firmware")
     }
 }

@@ -1,24 +1,19 @@
 /dts-v1/;
 
 / {
-    description = "SimpleKernel AARCH64 U-Boot FIT Image";
+    description = "SimpleKernel U-Boot FIT Image";
     #address-cells = <1>;
 
     images {
         kernel {
-            description = "@DESC@";
-			// 内核路径
-            data = /incbin/("@KERNEL_PATH@");
+            description = "simplekernel";
+            data = /incbin/("{KERNEL_PATH}");
             type = "kernel";
-			// 架构类型
-            arch = "arm64";
+            arch = "{FIT_ARCH}";
             os = "elf";
-			// 压缩方式
             compression = "none";
-			// 内核加载地址
-            load = <0x40100000>;
-			// 内核入口地址
-            entry = <0x40100000>;
+            load = <{LOAD_ADDR}>;
+            entry = <{LOAD_ADDR}>;
             hash-1 {
                 algo = "sha1";
             };
@@ -26,10 +21,9 @@
 
         fdt {
             description = "Device Tree Blob";
-			// dtb 路径
-            data = /incbin/("@DTB_PATH@");
+            data = /incbin/("{DTB_PATH}");
             type = "flat_dt";
-            arch = "arm64";
+            arch = "{FIT_ARCH}";
             compression = "none";
             hash-1 {
                 algo = "sha1";
