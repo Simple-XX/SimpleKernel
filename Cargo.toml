@@ -1,16 +1,16 @@
-# SimpleKernel — Rust 版本工作区根配置
+# SimpleKernel — Rust 版本
 #
 # 工作区包含两个 crate:
-#   - kernel: 内核主体 (#![no_std], 交叉编译到 riscv64/aarch64)
-#   - xtask:  构建辅助工具 (宿主机运行, 替代 CMake)
+#   - 根 crate: 内核主体 (#![no_std], 交叉编译到 riscv64/aarch64)
+#   - xtask:    构建辅助工具 (宿主机运行, 替代 CMake)
 #
 # 使用方法:
 #   cargo build --target targets/riscv64gc-simplekernel.json
 #   cargo xtask run --arch riscv64
 
 [workspace]
-members = ["kernel", "xtask"]
-default-members = ["kernel"]
+members = ["xtask"]
+default-members = ["."]
 resolver = "2"
 
 # 版权信息集中在 workspace 级别，各 crate 通过 `key.workspace = true` 继承
@@ -21,6 +21,54 @@ license = "MIT"
 repository = "https://github.com/Simple-XX/SimpleKernel"
 description = "Interface-driven OS kernel for AI-assisted learning (Rust edition)"
 edition = "2024"
+
+# --- 内核 crate（原 kernel/Cargo.toml） ---
+
+[package]
+name = "simplekernel"
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description.workspace = true
+edition.workspace = true
+build = "build.rs"                    # 编译汇编文件 (.S) 和链接脚本
+
+[dependencies]
+# --- 同步 ---
+# spin: 仅用于 Once<T> 单例初始化, 自定义 SpinLock 在 sync/spinlock.rs 中
+spin = { version = "0.9", default-features = false, features = ["once"] }
+
+# --- 位操作 ---
+bitflags = "2"                        # 类型安全的位标志 (寄存器字段、页表项)
+
+# --- 日志 ---
+log = { version = "0.4", default-features = false }  # 日志门面, 后端在 logging.rs
+
+# --- 集合 ---
+# 固定容量集合, 用于热路径 (调度队列等), 不依赖堆分配
+heapless = "0.8"
+
+# --- 内存 ---
+# buddy system 堆分配器, 实现 GlobalAlloc trait
+buddy_system_allocator = "0.11"
+
+# --- 设备树 ---
+fdt = "0.2.0-alpha1"                  # 纯 Rust FDT 解析器 (no_std)
+
+# --- RISC-V 架构专用 ---
+[target.'cfg(target_arch = "riscv64")'.dependencies]
+sbi-rt = { version = "0.0.3", features = ["legacy"] }   # SBI 运行时接口
+riscv = { version = "0.16", features = ["s-mode"] }  # CSR 访问、S-mode 支持 (inline-asm is built-in since 0.16)
+
+# --- AArch64 架构专用 ---
+[target.'cfg(target_arch = "aarch64")'.dependencies]
+aarch64-cpu = "9"                     # 系统寄存器访问
+tock-registers = "0.9"                # 类型安全的 MMIO 寄存器抽象
+
+# --- 构建依赖 ---
+[build-dependencies]
+cc = "1"                              # 编译由 GCC 预处理的汇编 (.S) 文件
 
 # 内核即使在 debug 模式下也需要一定的优化，否则生成的代码过大
 [profile.dev]
