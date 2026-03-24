@@ -1,2 +1,2 @@
 [alias]
-xtask = "run --package xtask --"      # 快捷方式: cargo xtask <subcommand>
+xtask = "run --package xtask --"
