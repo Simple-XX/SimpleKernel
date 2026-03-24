@@ -1,0 +1,50 @@
+# SimpleKernel 内核 crate
+#
+# 这是一个 #![no_std] 的裸机内核，交叉编译到自定义目标 (riscv64/aarch64)。
+# 所有依赖必须支持 no_std 环境。
+
+[package]
+name = "simplekernel"
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description.workspace = true
+edition.workspace = true
+build = "build.rs"                    # 编译汇编文件 (.S) 和链接脚本
+
+[dependencies]
+# --- 同步 ---
+# spin: 仅用于 Once<T> 单例初始化, 自定义 SpinLock 在 sync/spinlock.rs 中
+spin = { version = "0.9", default-features = false, features = ["once"] }
+
+# --- 位操作 ---
+bitflags = "2"                        # 类型安全的位标志 (寄存器字段、页表项)
+
+# --- 日志 ---
+log = { version = "0.4", default-features = false }  # 日志门面, 后端在 logging.rs
+
+# --- 集合 ---
+# 固定容量集合, 用于热路径 (调度队列等), 不依赖堆分配
+heapless = "0.8"
+
+# --- 内存 ---
+# buddy system 堆分配器, 实现 GlobalAlloc trait
+buddy_system_allocator = "0.11"
+
+# --- 设备树 ---
+fdt = "0.2.0-alpha1"                  # 纯 Rust FDT 解析器 (no_std)
+
+# --- RISC-V 架构专用 ---
+[target.'cfg(target_arch = "riscv64")'.dependencies]
+sbi-rt = { version = "0.0.3", features = ["legacy"] }   # SBI 运行时接口
+riscv = { version = "0.16", features = ["s-mode"] }  # CSR 访问、S-mode 支持 (inline-asm is built-in since 0.16)
+
+# --- AArch64 架构专用 ---
+[target.'cfg(target_arch = "aarch64")'.dependencies]
+aarch64-cpu = "9"                     # 系统寄存器访问
+tock-registers = "0.9"                # 类型安全的 MMIO 寄存器抽象
+
+# --- 构建依赖 ---
+[build-dependencies]
+cc = "1"                              # 编译由 GCC 预处理的汇编 (.S) 文件

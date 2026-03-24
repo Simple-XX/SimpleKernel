@@ -1,0 +1,20 @@
+# xtask — 构建辅助工具
+#
+# 宿主机上运行的标准 Rust 程序，替代 CMake 的 make run / make debug 等命令。
+# 不受 #![no_std] 限制，可以使用完整的标准库。
+#
+# 使用方法:
+#   cargo xtask build --arch riscv64
+#   cargo xtask run --arch riscv64
+#   cargo xtask debug --arch riscv64
+
+[package]
+name = "xtask"
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description.workspace = true
+edition.workspace = true
+
+[dependencies]

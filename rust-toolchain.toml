@@ -1,0 +1,11 @@
+# Rust 工具链配置
+#
+# 固定 nightly 版本以确保可复现构建。
+# 升级时先在单独分支上测试，确认所有 feature flag 仍然有效。
+#
+# rust-src 组件: build-std 需要，用于为自定义目标重编译 core/alloc。
+# rustfmt/clippy: 代码格式化和 lint 检查。
+
+[toolchain]
+channel = "nightly-2026-03-24"
+components = ["rust-src", "rustfmt", "clippy"]

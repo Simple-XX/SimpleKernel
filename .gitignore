@@ -1,19 +1,26 @@
 # Copyright The SimpleKernel Contributors
-# Git ignore rules
 
 .DS_Store
-build_aarch64
-build_riscv64
-build_x86_64
-docs/html
 .vscode/*
 !.vscode/tasks.json
 !.vscode/launch.json
 .idea
-Doxyfile
+
+build_aarch64
+build_riscv64
+build_x86_64
 *.o
 *.objdump
 *.elf
+Doxyfile
+docs/html
+
+target/
+*.d
+*.rlib
+*.rmeta
+*.pdb
+
 .pre-commit-config.yaml
 .worktrees/
 .claude
