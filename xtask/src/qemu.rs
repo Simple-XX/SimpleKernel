@@ -1,9 +1,42 @@
 use std::fs;
 use std::path::{Path, PathBuf};
-use xshell::{Shell, cmd};
+use xshell::{Cmd, Shell, cmd};
 
 use crate::Result;
 use crate::arch::Arch;
+
+/// 所有 QEMU 调用共享的基础参数：显示、内存、外设、存储、machine/cpu。
+fn base_qemu_cmd<'a>(sh: &'a Shell, arch: Arch, rootfs_drive: &str) -> Cmd<'a> {
+    let (machine, cpu) = match arch {
+        Arch::Riscv64 => ("virt", "max"),
+        Arch::Aarch64 => ("virt,secure=on,gic_version=3", "cortex-a72"),
+    };
+    sh.cmd(arch.qemu_binary()).args([
+        "-nographic",
+        "-monitor",
+        "telnet::2333,server,nowait",
+        "-m",
+        "1024M",
+        "-smp",
+        "2",
+        "-global",
+        "virtio-mmio.force-legacy=false",
+        "-netdev",
+        "user,id=net0,tftp=/srv/tftp",
+        "-device",
+        "virtio-net-device,netdev=net0",
+        "-device",
+        "virtio-gpu-device",
+        "-drive",
+        rootfs_drive,
+        "-device",
+        "virtio-blk-device,drive=hd0",
+        "-machine",
+        machine,
+        "-cpu",
+        cpu,
+    ])
+}
 
 pub fn dump_qemu_dtb(
     sh: &Shell,
@@ -14,25 +47,12 @@ pub fn dump_qemu_dtb(
     let dtb_path = boot_dir.join("qemu.dtb");
     println!("[xtask] Generating QEMU DTB at {}...", dtb_path.display());
 
-    let qemu = arch.qemu_binary();
     let rootfs_drive = format!("file={},if=none,format=raw,id=hd0", rootfs_path.display());
-    let dump_arg = format!("dumpdtb={}", dtb_path.display());
-    match arch {
-        Arch::Riscv64 => {
-            cmd!(
-                sh,
-                "{qemu} -nographic -serial stdio -monitor telnet::2333,server,nowait -m 1024M -smp 2 -global virtio-mmio.force-legacy=false -netdev user,id=net0,tftp=/srv/tftp -device virtio-net-device,netdev=net0 -device virtio-gpu-device -drive {rootfs_drive} -device virtio-blk-device,drive=hd0 -machine virt -cpu max -machine {dump_arg}"
-            )
-            .run()?;
-        }
-        Arch::Aarch64 => {
-            cmd!(
-                sh,
-                "{qemu} -nographic -serial stdio -monitor telnet::2333,server,nowait -m 1024M -smp 2 -global virtio-mmio.force-legacy=false -netdev user,id=net0,tftp=/srv/tftp -device virtio-net-device,netdev=net0 -device virtio-gpu-device -drive {rootfs_drive} -device virtio-blk-device,drive=hd0 -machine virt,secure=on,gic_version=3 -cpu cortex-a72 -machine {dump_arg}"
-            )
-            .run()?;
-        }
-    }
+    let dump_dtb = format!("dumpdtb={}", dtb_path.display());
+
+    base_qemu_cmd(sh, arch, &rootfs_drive)
+        .args(["-serial", "stdio", "-machine", &dump_dtb])
+        .run()?;
 
     if !dtb_path.exists() {
         return Err(format!("failed to generate DTB at {}", dtb_path.display()).into());
@@ -118,35 +138,50 @@ pub fn launch_qemu(
 ) -> Result<()> {
     println!("[xtask] Launching QEMU for {}...", arch.as_str());
 
-    let qemu = arch.qemu_binary();
-    let qemu_log_path = boot_dir.join("qemu.log");
     let rootfs_drive = format!("file={},if=none,format=raw,id=hd0", rootfs_path.display());
-
+    let qemu_log = boot_dir.join("qemu.log");
     let fw = arch.firmware_dir(project_root);
 
     match arch {
         Arch::Riscv64 => {
-            let bios_path = fw.join("u-boot/spl/u-boot-spl.bin");
-            let loader_path = fw.join("u-boot/u-boot.itb");
-            let loader_arg = format!("loader,file={},addr=0x80200000", loader_path.display());
-            cmd!(
-                sh,
-                "{qemu} -nographic -serial stdio -monitor telnet::2333,server,nowait -m 1024M -smp 2 -d guest_errors,cpu_reset -global virtio-mmio.force-legacy=false -netdev user,id=net0,tftp=/srv/tftp -device virtio-net-device,netdev=net0 -device virtio-gpu-device -machine virt -cpu max -drive {rootfs_drive} -device virtio-blk-device,drive=hd0 -D {qemu_log_path} -bios {bios_path} -device {loader_arg}"
-            )
-            .run()?;
+            let bios = fw.join("u-boot/spl/u-boot-spl.bin");
+            let loader = format!(
+                "loader,file={},addr=0x80200000",
+                fw.join("u-boot/u-boot.itb").display()
+            );
+            base_qemu_cmd(sh, arch, &rootfs_drive)
+                .args(["-serial", "stdio", "-d", "guest_errors,cpu_reset"])
+                .arg("-D")
+                .arg(&qemu_log)
+                .arg("-bios")
+                .arg(&bios)
+                .arg("-device")
+                .arg(&loader)
+                .run()?;
         }
         Arch::Aarch64 => {
             println!(
                 "[xtask] note: connect serial consoles with `nc 127.0.0.1 54320` and `nc 127.0.0.1 54321` in separate terminals."
             );
-            let bios_path = fw.join("arm-trusted-firmware/flash.bin");
-            let boot_fat_drive =
-                format!("file=fat:rw:{},format=raw,media=disk", boot_dir.display());
-            cmd!(
-                sh,
-                "{qemu} -nographic -monitor telnet::2333,server,nowait -m 1024M -smp 2 -d guest_errors,cpu_reset -global virtio-mmio.force-legacy=false -netdev user,id=net0,tftp=/srv/tftp -device virtio-net-device,netdev=net0 -device virtio-gpu-device -machine virt,secure=on,gic_version=3 -cpu cortex-a72 -drive {rootfs_drive} -device virtio-blk-device,drive=hd0 -D {qemu_log_path} -drive {boot_fat_drive} -serial tcp:127.0.0.1:54320 -serial tcp:127.0.0.1:54321 -bios {bios_path} -kernel {kernel_elf_path}"
-            )
-            .run()?;
+            let bios = fw.join("arm-trusted-firmware/flash.bin");
+            let fat_drive = format!("file=fat:rw:{},format=raw,media=disk", boot_dir.display());
+            base_qemu_cmd(sh, arch, &rootfs_drive)
+                .args(["-d", "guest_errors,cpu_reset"])
+                .arg("-D")
+                .arg(&qemu_log)
+                .arg("-drive")
+                .arg(&fat_drive)
+                .args([
+                    "-serial",
+                    "tcp:127.0.0.1:54320",
+                    "-serial",
+                    "tcp:127.0.0.1:54321",
+                ])
+                .arg("-bios")
+                .arg(&bios)
+                .arg("-kernel")
+                .arg(kernel_elf_path)
+                .run()?;
         }
     }
 
