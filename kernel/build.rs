@@ -4,11 +4,10 @@ fn main() {
     let arch = std::env::var("CARGO_CFG_TARGET_ARCH").unwrap();
     let arch_dir = PathBuf::from("src/arch").join(&arch);
 
-    let asm_files: Vec<&str> = match arch.as_str() {
-        "riscv64" => vec!["boot.S", "switch.S", "interrupt.S", "macro.S"],
-        "aarch64" => vec!["boot.S", "switch.S", "interrupt.S", "macro.S"],
-        _ => panic!("unsupported architecture: {arch}"),
-    };
+    if !matches!(arch.as_str(), "riscv64" | "aarch64") {
+        panic!("unsupported architecture: {arch}");
+    }
+    let asm_files = ["boot.S", "switch.S", "interrupt.S", "macro.S"];
 
     let compiler = match arch.as_str() {
         "riscv64" => "riscv64-linux-gnu-gcc",

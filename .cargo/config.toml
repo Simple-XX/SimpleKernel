@@ -6,9 +6,11 @@
 # 为自定义裸机目标重新编译 core/alloc/compiler_builtins
 # 参考: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
 [unstable]
-build-std = ["core", "compiler_builtins", "alloc"]
-build-std-features = ["compiler-builtins-mem"]  # 提供 memcpy/memset/memcmp 实现
 json-target-spec = true                          # 允许使用 JSON 自定义目标规范
+
+# build-std moved to per-command flags to avoid conflicts with host-target xtask deps.
+# Kernel builds use: cargo build -Z build-std=core,compiler_builtins,alloc --target ...
+# xtask build.rs passes these flags automatically.
 
 # 注意: 此处没有 [build] target 配置 — 构建时通过命令行指定目标:
 #   cargo build --target targets/riscv64gc-simplekernel.json

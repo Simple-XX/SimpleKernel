@@ -1,30 +1,33 @@
 #![no_std]
 #![no_main]
 #![feature(alloc_error_handler)]
-#![feature(custom_test_frameworks)]
+#![feature(sync_unsafe_cell)]
 
 mod arch;
+mod config;
+mod error;
+mod fdt;
 mod lang_items;
+mod logging;
+mod per_cpu;
+
+use core::sync::atomic::{AtomicU64, Ordering};
 
 #[used]
 static RODATA_SENTINEL: [u8; 1] = [0x42];
 
 #[used]
-static mut DATA_SENTINEL: u64 = 1;
+static DATA_SENTINEL: AtomicU64 = AtomicU64::new(1);
 
 #[used]
-static mut BSS_SENTINEL: u64 = 0;
+static BSS_SENTINEL: AtomicU64 = AtomicU64::new(0);
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start(argc: i32, argv: *const *const u8) -> ! {
-    let _ = argc;
-    let _ = argv;
+    DATA_SENTINEL.store(2, Ordering::Relaxed);
+    // SAFETY: verifies .rodata section loaded correctly; volatile prevents optimization
+    let _ = unsafe { core::ptr::read_volatile(&RODATA_SENTINEL[0]) };
+    let _ = BSS_SENTINEL.load(Ordering::Relaxed);
 
-    unsafe {
-        core::ptr::write_volatile(core::ptr::addr_of_mut!(DATA_SENTINEL), 2);
-        let _ = core::ptr::read_volatile(core::ptr::addr_of!(RODATA_SENTINEL));
-        let _ = core::ptr::read_volatile(core::ptr::addr_of!(BSS_SENTINEL));
-    }
-
-    arch::bootstrap();
+    arch::bootstrap(argc, argv);
 }

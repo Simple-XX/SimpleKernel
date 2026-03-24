@@ -18,3 +18,5 @@ description.workspace = true
 edition.workspace = true
 
 [dependencies]
+clap = { version = "4", default-features = false, features = ["derive", "std"] }
+xshell = "0.2"
