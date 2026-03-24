@@ -19,12 +19,6 @@
 [submodule "3rd/optee/optee_os"]
 	path = 3rd/optee/optee_os
 	url = https://github.com/OP-TEE/optee_os.git
-[submodule "3rd/optee/build"]
-	path = 3rd/optee/build
-	url = https://github.com/OP-TEE/build.git
-[submodule "3rd/optee/optee_client"]
-	path = 3rd/optee/optee_client
-	url = https://github.com/OP-TEE/optee_client.git
 [submodule "3rd/u-boot"]
 	path = 3rd/u-boot
 	url = https://github.com/u-boot/u-boot.git
@@ -40,6 +34,3 @@
 [submodule "3rd/etl"]
 	path = 3rd/etl
 	url = https://github.com/ETLCPP/etl.git
-[submodule "3rd/EasyLogger"]
-	path = 3rd/EasyLogger
-	url = https://github.com/armink/EasyLogger.git

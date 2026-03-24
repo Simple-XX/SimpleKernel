@@ -5,7 +5,7 @@
 #   - xtask:    构建辅助工具 (宿主机运行, 替代 CMake)
 #
 # 使用方法:
-#   cargo build --target targets/riscv64gc-simplekernel.json
+#   cargo build --target targets/riscv64-none.json
 #   cargo xtask run --arch riscv64
 
 [workspace]

@@ -13,8 +13,8 @@ json-target-spec = true                          # 允许使用 JSON 自定义�
 # xtask build.rs passes these flags automatically.
 
 # 注意: 此处没有 [build] target 配置 — 构建时通过命令行指定目标:
-#   cargo build --target targets/riscv64gc-simplekernel.json
-#   cargo build --target targets/aarch64-simplekernel.json
+#   cargo build --target targets/riscv64-none.json
+#   cargo build --target targets/aarch64-none.json
 #
 # 注意: 此处没有 "runner" 配置 — QEMU 启动需要 U-Boot FIT 镜像,
 # 这无法通过简单的运行器命令表达。请改用:
