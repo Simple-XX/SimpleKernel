@@ -1,7 +1,0 @@
-# Rust 代码格式化配置
-# 运行: cargo fmt
-# 检查: cargo fmt --check
-
-max_width = 100                       # 行宽上限
-use_field_init_shorthand = true       # 允许字段简写: Foo { x } 代替 Foo { x: x }
-edition = "2024"                      # 使用 2024 edition 的解析规则
