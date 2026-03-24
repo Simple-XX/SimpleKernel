@@ -206,7 +206,7 @@ boot.S (_start entry)
 | `etl` (Embedded Template Library) | `heapless` + `spin` | `heapless`, `spin` | Fixed-capacity collections + locks |
 | `bmalloc` | `buddy_system_allocator` | `buddy_system_allocator` | Better for page-granularity allocation; implement `GlobalAlloc` trait |
 | `MPMCQueue` | Custom `no_std` ring buffer (port current design) | — (custom) | `heapless::mpmc` is bounded to small sizes; current design uses 256-entry × 256-byte entries for logging. Write a minimal `StaticMpMcQueue<T, N>` matching current semantics. |
-| `fatfs` | Keep C `fatfs` library via FFI bindgen | `bindgen` (build-dep) | Pure Rust `fatfs` crate requires `std::io` traits; for no_std kernel, wrapping the existing C fatfs via FFI is more reliable. Alternative: port the `diskio` layer to Rust and keep fatfs C code. |
+| `fatfs` | `fatfs` crate (纯 Rust) | `fatfs` | v0.4 支持 `no_std`（`default-features = false, features = ["alloc", "lfn"]`），自定义 Read/Write/Seek trait，无需 C FFI。若 crates.io 版本滞后，可使用 git 依赖：`fatfs = { git = "https://github.com/rafalh/rust-fatfs", default-features = false, features = ["alloc", "lfn"] }` |
 | `EasyLogger` | `log` facade + custom `no_std` backend | `log` | Standard logging in Rust |
 | `dtc` / FDT parsing | `fdt` crate | `fdt` | Pure Rust FDT parser |
 
@@ -401,7 +401,7 @@ fdt = "0.2"
 # Architecture-specific
 [target.'cfg(target_arch = "riscv64")'.dependencies]
 sbi-rt = { version = "0.0.3", features = ["legacy"] }
-riscv = { version = "0.12", features = ["critical-section-single-hart"] }
+riscv = { version = "0.16", features = ["inline-asm", "s-mode"] }
 
 [target.'cfg(target_arch = "aarch64")'.dependencies]
 aarch64-cpu = "9"
@@ -817,13 +817,13 @@ cargo xtask run --arch riscv64
 - `kernel/src/sync/mod.rs`
 - `kernel/src/elf.rs` — ELF symbol table parser
 - `kernel/src/panic.rs` — Panic handler with backtrace + observer pattern
-- `kernel/src/io_buffer.rs` — RAII aligned I/O buffers
+
+> **注意**：`io_buffer.rs` (RAII 对齐 I/O 缓冲区) 需要堆分配，而堆在阶段 3 才初始化。因此 IoBuffer 移至阶段 6（设备驱动，其 DMA 缓冲区是主要使用场景）。
 
 **C++ reference files:**
 - `src/include/spinlock.hpp` → `kernel/src/sync/spinlock.rs`
 - `src/include/kernel_elf.hpp` → `kernel/src/elf.rs`
 - `src/include/panic_observer.hpp` → `kernel/src/panic.rs`
-- `src/include/io_buffer.hpp` → `kernel/src/io_buffer.rs`
 
 **Steps:**
 - [ ] Step 1: Implement `SpinLock` with interrupt disable/enable on lock/unlock
@@ -831,8 +831,7 @@ cargo xtask run --arch riscv64
 - [ ] Step 3: Implement ELF parser (parse symbol table, string table)
 - [ ] Step 4: Write unit tests for ELF parser (use test binary data)
 - [ ] Step 5: Implement panic handler with DumpStack support
-- [ ] Step 6: Implement IO buffer (aligned allocation wrapper)
-- [ ] Step 7: **TCB/Scheduler ownership prototype (MANDATORY GATE)**
+- [ ] Step 6: **TCB/Scheduler ownership prototype (MANDATORY GATE)**
 
     Before Phase 5 begins, validate the TCB ownership model. Create a minimal prototype:
     ```rust
@@ -855,7 +854,7 @@ cargo xtask run --arch riscv64
     // This prototype MUST pass before Phase 5 proceeds.
     ```
 
-- [ ] Step 8: Commit
+- [ ] Step 7: Commit
 
 **Expected QEMU Output (riscv64):**
 ```
@@ -889,7 +888,6 @@ cargo xtask run --arch riscv64
 - `spinlock.rs` — 锁策略、中断保存方式、锁级别层次
 - `elf.rs` — ELF 解析实现
 - `panic.rs` — panic 格式、调用栈输出格式
-- `io_buffer.rs` — 缓冲区对齐方式
 - TCB 所有权模型 — 可以选择不同的设计方案
 
 ---
@@ -1122,23 +1120,23 @@ pub struct SchedulerStats {
 - [ ] Step 2: Implement ResourceId and ResourceType (port from `resource_id.hpp`)
 - [ ] Step 3: Implement task messages as Rust enum (port from `task_messages.hpp` + `lifecycle_messages.hpp`)
 - [ ] Step 4: Implement TaskControlBlock (port from `task_control_block.hpp`)
-- [ ] Step 3: Implement Task FSM (state machine with valid transitions)
-- [ ] Step 4: Implement FIFO scheduler + unit tests
-- [ ] Step 5: Implement Round-Robin scheduler + unit tests
-- [ ] Step 6: Implement CFS scheduler + unit tests
-- [ ] Step 7: Implement TaskManager core (AddTask, Schedule, GetCurrentTask)
-- [ ] Step 8: Implement clone (task creation)
-- [ ] Step 9: Implement exit (task termination + zombie cleanup)
-- [ ] Step 10: Implement wait (wait for child process)
-- [ ] Step 11: Implement sleep (timed suspension)
-- [ ] Step 12: Implement block/wakeup (resource-based blocking)
-- [ ] Step 13: Implement signal subsystem
-- [ ] Step 14: Implement blocking Mutex
-- [ ] Step 15: Implement load balancing (cross-core work stealing)
-- [ ] Step 16: Wire TaskManager into boot sequence (InitCurrentCore, Schedule)
-- [ ] Step 17: Test in QEMU — verify task switching, idle task, timer preemption
-- [ ] Step 18: Run scheduler unit tests
-- [ ] Step 19: Commit
+- [ ] Step 5: Implement Task FSM (state machine with valid transitions)
+- [ ] Step 6: Implement FIFO scheduler + unit tests
+- [ ] Step 7: Implement Round-Robin scheduler + unit tests
+- [ ] Step 8: Implement CFS scheduler + unit tests
+- [ ] Step 9: Implement TaskManager core (AddTask, Schedule, GetCurrentTask)
+- [ ] Step 10: Implement clone (task creation)
+- [ ] Step 11: Implement exit (task termination + zombie cleanup)
+- [ ] Step 12: Implement wait (wait for child process)
+- [ ] Step 13: Implement sleep (timed suspension)
+- [ ] Step 14: Implement block/wakeup (resource-based blocking)
+- [ ] Step 15: Implement signal subsystem
+- [ ] Step 16: Implement blocking Mutex
+- [ ] Step 17: Implement load balancing (cross-core work stealing)
+- [ ] Step 18: Wire TaskManager into boot sequence (InitCurrentCore, Schedule)
+- [ ] Step 19: Test in QEMU — verify task switching, idle task, timer preemption
+- [ ] Step 20: Run scheduler unit tests
+- [ ] Step 21: Commit
 
 **Expected QEMU Output:**
 ```
@@ -1186,9 +1184,9 @@ cargo xtask run --arch riscv64  # 观察任务创建、切换、退出
 
 **Goal:** Device manager, driver registry, platform bus (FDT enumeration), UART drivers, VirtIO subsystem.
 
-**Depends on:** Phase 5
+**Depends on:** Phase 4 (device framework core, UART drivers) + Phase 5 (only for VirtIO blocking I/O)
 
-**Can parallelize with Phase 7.**
+**Optimization:** The device framework core (Steps 1-7: Driver trait, DeviceNode, DriverRegistry, PlatformBus, UART drivers) only requires memory management (Phase 3) and interrupts (Phase 4), and can start immediately after Phase 4. VirtIO transport/queues (Steps 8-10) also only need interrupts. Only VirtIO blocking I/O task-wait logic needs Phase 5's TaskManager. This phase can be parallelized with Phase 5 and Phase 7.
 
 **Files to create:**
 - `kernel/src/device/mod.rs`
@@ -1560,11 +1558,14 @@ The Rust rewrite maintains the same learning flow:
 ## Appendix C: Nightly Features Required
 
 ```rust
-#![feature(naked_functions)]         // For interrupt vector entry points
-#![feature(alloc_error_handler)]     // Custom OOM handler
-#![feature(custom_test_frameworks)]  // no_std testing
-#![feature(panic_info_message)]      // Panic message extraction
-#![feature(asm_const)]               // Constants in inline assembly
+#![feature(naked_functions)]         // 用于中断向量入口点 (tracking #32408)
+#![feature(alloc_error_handler)]     // 自定义 OOM 处理程序 (tracking #51941)
+#![feature(custom_test_frameworks)]  // no_std 测试 (tracking #50297)
+#![feature(asm_const)]               // 内联汇编中的常量 (tracking #93332)
 ```
 
-Note: Monitor stabilization progress. As features stabilize, remove `#![feature(...)]` flags.
+已稳定（无需 `#![feature(...)]`）：
+- `asm!` — 自 Rust 1.59 起稳定
+- `panic_info_message` — 自 Rust 1.94.0 起稳定（返回 `PanicMessage` 类型，带 `Display`/`Debug` 和 `as_str()`）
+
+备注：关注特性稳定进度。随着特性进入稳定版，移除相应的 `#![feature(...)]` 标记。当前信息基于 Rust 1.94.0（2026 年 3 月）。

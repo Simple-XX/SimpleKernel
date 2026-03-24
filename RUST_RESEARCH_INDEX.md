@@ -1,5 +1,7 @@
 # Rust OS Kernel Ecosystem Research: Complete Index
 
+> ⚠️ **已归档 (Archived)**：本文档为早期调研产物，与最终设计存在多处差异（crate 选择、时间线、阶段划分等）。最终设计请参见 [`docs/rust-rewrite/00-概述.md`](docs/rust-rewrite/00-概述.md)。
+
 **Research Completed**: March 23, 2026
 **Total Documentation**: 1,435 lines across 3 documents
 **Total Size**: 40KB of production-ready patterns and analysis

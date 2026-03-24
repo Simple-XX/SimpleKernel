@@ -1,5 +1,7 @@
 # Rust OS Kernel Ecosystem: Comprehensive Research Report
 
+> ⚠️ **已归档 (Archived)**：本文档为早期调研产物，与最终设计存在多处差异（crate 选择、时间线、阶段划分等）。最终设计请参见 [`docs/rust-rewrite/00-概述.md`](docs/rust-rewrite/00-概述.md)。
+
 **Date**: March 2026
 **Scope**: Production Rust kernel projects, crates, patterns, and migration strategies from C++23 to Rust
 
