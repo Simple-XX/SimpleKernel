@@ -1,27 +1,2 @@
-# Cargo 配置 — SimpleKernel Rust 版本
-#
-# 文档: https://doc.rust-lang.org/cargo/reference/config.html
-
-# build-std 是不稳定特性，必须放在 [unstable] 段下（不是 [build]）
-# 为自定义裸机目标重新编译 core/alloc/compiler_builtins
-# 参考: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
-[unstable]
-json-target-spec = true                          # 允许使用 JSON 自定义目标规范
-
-# build-std moved to per-command flags to avoid conflicts with host-target xtask deps.
-# Kernel builds use: cargo build -Z build-std=core,compiler_builtins,alloc --target ...
-# xtask build.rs passes these flags automatically.
-
-# 注意: 此处没有 [build] target 配置 — 构建时通过命令行指定目标:
-#   cargo build --target targets/riscv64-none.json
-#   cargo build --target targets/aarch64-none.json
-#
-# 注意: 此处没有 "runner" 配置 — QEMU 启动需要 U-Boot FIT 镜像,
-# 这无法通过简单的运行器命令表达。请改用:
-#   cargo xtask run --arch riscv64
-#
-# 注意: 链接脚本仅在 build.rs 中通过 cargo:rustc-link-arg 设置。
-# 不要在 rustflags 中重复设置 — 会导致双重链接错误。
-
 [alias]
 xtask = "run --package xtask --"      # 快捷方式: cargo xtask <subcommand>

@@ -3,9 +3,8 @@ mod build;
 mod firmware;
 mod qemu;
 
-use clap::{Parser, Subcommand};
-use std::fs;
-use std::path::{Path, PathBuf};
+use clap::{Args, Parser, Subcommand};
+use std::path::PathBuf;
 use std::process;
 
 pub use arch::Arch;
@@ -20,20 +19,17 @@ struct Cli {
     command: Commands,
 }
 
+#[derive(Args, Clone)]
+struct ArchArgs {
+    #[arg(long, value_enum, default_value = "riscv64")]
+    arch: Arch,
+}
+
 #[derive(Subcommand)]
 enum Commands {
-    Build {
-        #[arg(long, value_enum, default_value = "riscv64")]
-        arch: Arch,
-    },
-    Run {
-        #[arg(long, value_enum, default_value = "riscv64")]
-        arch: Arch,
-    },
-    Firmware {
-        #[arg(long, value_enum, default_value = "riscv64")]
-        arch: Arch,
-    },
+    Build(ArchArgs),
+    Run(ArchArgs),
+    Firmware(ArchArgs),
 }
 
 fn main() {
@@ -45,23 +41,24 @@ fn main() {
 
 fn run() -> Result<()> {
     let cli = Cli::parse();
-    let project_root = find_workspace_root(Path::new(env!("CARGO_MANIFEST_DIR")))?;
+    let project_root = project_root();
     let sh = xshell::Shell::new()?;
     sh.change_dir(&project_root);
 
     match cli.command {
-        Commands::Build { arch } => {
-            let _ = build::build_kernel(&sh, &project_root, arch)?;
+        Commands::Build(args) => {
+            build::build_kernel(&sh, &project_root, args.arch)?;
         }
-        Commands::Firmware { arch } => {
-            firmware::build_firmware(&sh, &project_root, arch)?;
+        Commands::Firmware(args) => {
+            firmware::build_firmware(&sh, &project_root, args.arch)?;
         }
-        Commands::Run { arch } => {
+        Commands::Run(args) => {
+            let arch = args.arch;
             let kernel_elf_path = build::build_kernel(&sh, &project_root, arch)?;
             let boot_dir = build::prepare_boot_directory(&project_root, arch)?;
             let rootfs_path = build::ensure_rootfs_image(&sh, &boot_dir)?;
             let dtb_path = qemu::dump_qemu_dtb(&sh, arch, &boot_dir, &rootfs_path)?;
-            let _ = qemu::generate_fit_image(
+            qemu::generate_fit_image(
                 arch,
                 &sh,
                 &project_root,
@@ -69,8 +66,8 @@ fn run() -> Result<()> {
                 &kernel_elf_path,
                 &dtb_path,
             )?;
-            let _ = qemu::generate_boot_script(arch, &sh, &project_root, &boot_dir)?;
-            qemu::setup_tftp(&sh, &boot_dir);
+            qemu::generate_boot_script(arch, &sh, &project_root, &boot_dir)?;
+            qemu::setup_tftp(&boot_dir);
             firmware::ensure_firmware_exists(&project_root, arch)?;
             qemu::launch_qemu(
                 &sh,
@@ -86,18 +83,9 @@ fn run() -> Result<()> {
     Ok(())
 }
 
-fn find_workspace_root(start: &Path) -> Result<PathBuf> {
-    for candidate in start.ancestors() {
-        let cargo_toml = candidate.join("Cargo.toml");
-        if !cargo_toml.exists() {
-            continue;
-        }
-
-        let content = fs::read_to_string(&cargo_toml)?;
-        if content.contains("[workspace]") {
-            return Ok(candidate.to_path_buf());
-        }
-    }
-
-    Err(format!("failed to find workspace root from {}", start.display()).into())
+fn project_root() -> PathBuf {
+    std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .expect("xtask must be a direct workspace member")
+        .to_path_buf()
 }

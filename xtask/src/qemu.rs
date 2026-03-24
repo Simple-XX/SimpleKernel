@@ -4,7 +4,6 @@ use xshell::{Shell, cmd};
 
 use crate::Result;
 use crate::arch::Arch;
-use crate::firmware::firmware_output_dir;
 
 pub fn dump_qemu_dtb(
     sh: &Shell,
@@ -87,24 +86,25 @@ pub fn generate_boot_script(
     Ok(boot_scr_uimg)
 }
 
-pub fn setup_tftp(sh: &Shell, boot_dir: &Path) {
+pub fn setup_tftp(boot_dir: &Path) {
     println!("[xtask] Setting up TFTP directory /srv/tftp...");
 
-    if let Err(error) = cmd!(sh, "mkdir -p /srv/tftp").run() {
+    if let Err(e) = fs::create_dir_all("/srv/tftp") {
         eprintln!(
-            "[xtask] warning: failed to create /srv/tftp: {error}. You may need to create it manually: sudo mkdir -p /srv/tftp"
+            "[xtask] warning: failed to create /srv/tftp: {e}. You may need to run: sudo mkdir -p /srv/tftp"
         );
+        return;
     }
 
     let boot_scr_uimg = boot_dir.join("boot.scr.uimg");
     let _ = fs::remove_file("/srv/tftp/boot.scr.uimg");
-    if let Err(error) = cmd!(sh, "ln -sf {boot_scr_uimg} /srv/tftp/boot.scr.uimg").run() {
-        eprintln!("[xtask] warning: failed to link /srv/tftp/boot.scr.uimg: {error}");
+    if let Err(e) = std::os::unix::fs::symlink(&boot_scr_uimg, "/srv/tftp/boot.scr.uimg") {
+        eprintln!("[xtask] warning: failed to link /srv/tftp/boot.scr.uimg: {e}");
     }
 
     let _ = fs::remove_file("/srv/tftp/bin");
-    if let Err(error) = cmd!(sh, "ln -sf {boot_dir} /srv/tftp/bin").run() {
-        eprintln!("[xtask] warning: failed to link /srv/tftp/bin: {error}");
+    if let Err(e) = std::os::unix::fs::symlink(boot_dir, "/srv/tftp/bin") {
+        eprintln!("[xtask] warning: failed to link /srv/tftp/bin: {e}");
     }
 }
 
@@ -122,7 +122,7 @@ pub fn launch_qemu(
     let qemu_log_path = boot_dir.join("qemu.log");
     let rootfs_drive = format!("file={},if=none,format=raw,id=hd0", rootfs_path.display());
 
-    let fw = firmware_output_dir(project_root, arch);
+    let fw = arch.firmware_dir(project_root);
 
     match arch {
         Arch::Riscv64 => {

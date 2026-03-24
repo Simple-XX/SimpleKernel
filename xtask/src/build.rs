@@ -7,10 +7,10 @@ use crate::arch::Arch;
 
 pub fn build_kernel(sh: &Shell, project_root: &Path, arch: Arch) -> Result<PathBuf> {
     println!("[xtask] Building kernel for {}...", arch.as_str());
-    let target_json = arch.target_json();
+    let target = arch.target_triple();
     cmd!(
         sh,
-        "cargo build -Z build-std=core,compiler_builtins,alloc -Z build-std-features=compiler-builtins-mem --target {target_json}"
+        "cargo build -Z build-std=core,compiler_builtins,alloc -Z build-std-features=compiler-builtins-mem --target {target}"
     )
     .run()?;
 

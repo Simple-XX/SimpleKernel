@@ -5,19 +5,14 @@ use xshell::{Shell, cmd};
 use crate::Result;
 use crate::arch::Arch;
 
-pub fn firmware_output_dir(project_root: &Path, arch: Arch) -> PathBuf {
-    project_root.join(arch.firmware_dir())
-}
-
 pub fn ensure_firmware_exists(project_root: &Path, arch: Arch) -> Result<()> {
+    let fw = arch.firmware_dir(project_root);
     let required_paths: Vec<PathBuf> = match arch {
         Arch::Riscv64 => vec![
-            firmware_output_dir(project_root, arch).join("u-boot/spl/u-boot-spl.bin"),
-            firmware_output_dir(project_root, arch).join("u-boot/u-boot.itb"),
+            fw.join("u-boot/spl/u-boot-spl.bin"),
+            fw.join("u-boot/u-boot.itb"),
         ],
-        Arch::Aarch64 => {
-            vec![firmware_output_dir(project_root, arch).join("arm-trusted-firmware/flash.bin")]
-        }
+        Arch::Aarch64 => vec![fw.join("arm-trusted-firmware/flash.bin")],
     };
 
     let missing: Vec<PathBuf> = required_paths
@@ -40,7 +35,7 @@ pub fn ensure_firmware_exists(project_root: &Path, arch: Arch) -> Result<()> {
 
 pub fn build_firmware(sh: &Shell, project_root: &Path, arch: Arch) -> Result<()> {
     let cross = arch.cross_compile();
-    let out_base = project_root.join(arch.firmware_dir());
+    let out_base = arch.firmware_dir(project_root);
     let jobs = std::thread::available_parallelism()
         .map(|n| n.get().to_string())
         .unwrap_or_else(|_| "4".into());

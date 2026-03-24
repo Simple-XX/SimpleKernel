@@ -1,4 +1,5 @@
 use clap::ValueEnum;
+use std::path::{Path, PathBuf};
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
 pub enum Arch {
@@ -14,12 +15,11 @@ impl Arch {
         }
     }
 
-    pub fn target_json(self) -> String {
-        format!("targets/{}-simplekernel.json", self.as_str())
-    }
-
-    pub fn target_triple(self) -> String {
-        format!("{}-simplekernel", self.as_str())
+    pub fn target_triple(self) -> &'static str {
+        match self {
+            Self::Riscv64 => "riscv64gc-unknown-none-elf",
+            Self::Aarch64 => "aarch64-unknown-none-softfloat",
+        }
     }
 
     pub fn qemu_binary(self) -> String {
@@ -38,7 +38,10 @@ impl Arch {
         format!("{}-linux-gnu-", self.as_str())
     }
 
-    pub fn firmware_dir(self) -> String {
-        format!("target/{}/firmware", self.target_triple())
+    pub fn firmware_dir(self, project_root: &Path) -> PathBuf {
+        project_root
+            .join("target")
+            .join(self.as_str())
+            .join("firmware")
     }
 }
