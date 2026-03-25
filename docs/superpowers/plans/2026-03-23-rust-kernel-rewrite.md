@@ -61,7 +61,7 @@ P0 ──→ P1 ──→ P2 ──→ P3 ──→ P4 ──┬──→ P5
 
 **每个阶段的验证流程：**
 ```bash
-cargo build --target targets/riscv64gc-simplekernel.json  # 编译
+cargo xtask build --arch riscv64                          # 编译
 cargo xtask run --arch riscv64                             # 运行
 # 观察串口输出，对照该阶段 P* 文档的 "QEMU 预期输出"
 # Ctrl+A, X 退出 QEMU
@@ -104,8 +104,8 @@ cargo xtask run --arch riscv64                             # 运行
 
 | 旧命令 (CMake) | 新命令 (Cargo) |
 |------------|-------------|
-| `cmake --preset build_riscv64` | `cargo build --target targets/riscv64gc-simplekernel.json` |
-| `cmake --preset build_aarch64` | `cargo build --target targets/aarch64-simplekernel.json` |
+| `cmake --preset build_riscv64` | `cargo xtask build --arch riscv64` |
+| `cmake --preset build_aarch64` | `cargo xtask build --arch aarch64` |
 | `make SimpleKernel` | `cargo build --release` |
 | `make run` | `cargo xtask run --arch riscv64` |
 | `make debug` | `cargo xtask debug --arch riscv64` |
