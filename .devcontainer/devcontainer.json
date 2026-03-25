@@ -3,17 +3,14 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	"postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && git submodule update --init --recursive",
+	"postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && git submodule update --init --recursive && rustup show",
 	"customizations": {
 		"vscode": {
 			"settings": {
-				"cmake.configureOnOpen": true,
-				"C_Cpp.default.cppStandard": "c++23",
-				"C_Cpp.default.cStandard": "c23"
+				"rust-analyzer.check.command": "clippy"
 			},
 			"extensions": [
-				"ms-vscode.cpptools",
-				"ms-vscode.cmake-tools",
+				"rust-lang.rust-analyzer",
 				"ms-vscode.hexeditor",
 				"plorefice.devicetree",
 				"zixuanwang.linkerscript",

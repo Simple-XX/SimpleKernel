@@ -18,7 +18,7 @@ env:
   SYSTEM_TEST_RUNS: ${{ github.event_name == 'pull_request' && 3 || 10 }}
 
 jobs:
-  build-riscv64:
+  check:
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: read
@@ -36,24 +36,70 @@ jobs:
           git config --global --add safe.directory '*'
           git submodule update --init --recursive --depth 1
 
-      - name: Cache CMake build (riscv64)
+      - name: Setup Rust toolchain
+        run: rustup show
+
+      - name: Cache Cargo
         uses: actions/cache@v4
         with:
-          path: build_riscv64/
-          key: cmake-riscv64-${{ runner.arch }}-${{ hashFiles('CMakeLists.txt', 'cmake/**', 'src/**') }}
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: cargo-check-${{ runner.arch }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
           restore-keys: |
-            cmake-riscv64-${{ runner.arch }}-
+            cargo-check-${{ runner.arch }}-
 
-      - name: Configure & Build
+      - name: Format check
+        run: cargo fmt --all -- --check
+
+      - name: Clippy (riscv64)
+        run: cargo clippy --target riscv64gc-unknown-none-elf -- -D warnings
+
+      - name: Clippy (aarch64)
+        run: cargo clippy --target aarch64-unknown-none -- -D warnings
+
+  build-riscv64:
+    needs: check
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: read
+    container:
+      image: ghcr.io/simple-xx/simplekernel-dev:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Shallow submodule init
         run: |
-          cmake --preset=build_riscv64
-          cmake --build build_riscv64 --target SimpleKernel docs
+          git config --global --add safe.directory '*'
+          git submodule update --init --recursive --depth 1
+
+      - name: Setup Rust toolchain
+        run: rustup show
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: cargo-riscv64-${{ runner.arch }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+          restore-keys: |
+            cargo-riscv64-${{ runner.arch }}-
+
+      - name: Build
+        run: cargo xtask build --arch riscv64
 
       - name: System Test
         run: |
           for i in $(seq 1 $SYSTEM_TEST_RUNS); do
             echo "=== riscv64 System Test Run $i/$SYSTEM_TEST_RUNS ==="
-            timeout 300 cmake --build build_riscv64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
+            timeout 300 cargo xtask run --arch riscv64 > /tmp/st_out_$i.txt 2>&1 || true
             cat /tmp/st_out_$i.txt
             if ! grep -q "RESULT: ALL TESTS PASSED" /tmp/st_out_$i.txt; then
               echo "riscv64 system test run $i/$SYSTEM_TEST_RUNS FAILED"
@@ -62,15 +108,8 @@ jobs:
             echo "riscv64 system test run $i/$SYSTEM_TEST_RUNS passed"
           done
 
-      - name: Upload docs artifact
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
-        with:
-          name: docs-html
-          path: docs/html/
-          retention-days: 1
-
   build-aarch64:
+    needs: check
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: read
@@ -88,24 +127,28 @@ jobs:
           git config --global --add safe.directory '*'
           git submodule update --init --recursive --depth 1
 
-      - name: Cache CMake build (aarch64)
+      - name: Setup Rust toolchain
+        run: rustup show
+
+      - name: Cache Cargo
         uses: actions/cache@v4
         with:
-          path: build_aarch64/
-          key: cmake-aarch64-${{ runner.arch }}-${{ hashFiles('CMakeLists.txt', 'cmake/**', 'src/**') }}
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: cargo-aarch64-${{ runner.arch }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
           restore-keys: |
-            cmake-aarch64-${{ runner.arch }}-
+            cargo-aarch64-${{ runner.arch }}-
 
-      - name: Configure & Build
-        run: |
-          cmake --preset=build_aarch64 -DQEMU_NORMAL_WORLD_DEV_PATH=null -DQEMU_SECURE_WORLD_DEV_PATH=null
-          cmake --build build_aarch64 --target SimpleKernel unit-test coverage
+      - name: Build
+        run: cargo xtask build --arch aarch64
 
       - name: System Test
         run: |
           for i in $(seq 1 $SYSTEM_TEST_RUNS); do
             echo "=== aarch64 System Test Run $i/$SYSTEM_TEST_RUNS ==="
-            timeout 300 cmake --build build_aarch64 --target system_test_run > /tmp/st_out_$i.txt 2>&1 || true
+            timeout 300 cargo xtask run --arch aarch64 > /tmp/st_out_$i.txt 2>&1 || true
             cat /tmp/st_out_$i.txt
             if ! grep -q "RESULT: ALL TESTS PASSED" /tmp/st_out_$i.txt; then
               echo "aarch64 system test run $i/$SYSTEM_TEST_RUNS FAILED"
@@ -113,28 +156,3 @@ jobs:
             fi
             echo "aarch64 system test run $i/$SYSTEM_TEST_RUNS passed"
           done
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: ${{ github.workspace }}/build_aarch64/coverage/coverage.info
-          verbose: true
-
-  publish:
-    needs: [build-riscv64, build-aarch64]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download docs artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: docs-html
-          path: docs/html/
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/html/
