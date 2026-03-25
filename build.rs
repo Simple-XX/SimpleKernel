@@ -1,45 +1,80 @@
 use std::path::PathBuf;
 
-fn main() {
-    let arch = std::env::var("CARGO_CFG_TARGET_ARCH").unwrap();
-    let arch_dir = PathBuf::from("src/arch").join(&arch);
+// 内核编译期常量
+const MAX_CORE_COUNT: u32 = 4;
+const DEFAULT_STACK_SIZE: u32 = 16384;
+const PER_CPU_ALIGN_SIZE: u32 = 128;
 
-    if !matches!(arch.as_str(), "riscv64" | "aarch64") {
-        panic!("unsupported architecture: {arch}");
+/// 架构相关配置。
+struct ArchConfig {
+    compiler: &'static str,
+    early_console_base: &'static str,
+    extra_flags: &'static [&'static str],
+}
+
+fn arch_config(arch: &str) -> ArchConfig {
+    match arch {
+        "riscv64" => ArchConfig {
+            compiler: "riscv64-linux-gnu-gcc",
+            early_console_base: "0x10000000",
+            extra_flags: &["-march=rv64gc", "-mabi=lp64d"],
+        },
+        "aarch64" => ArchConfig {
+            compiler: "aarch64-linux-gnu-gcc",
+            early_console_base: "0x9000000",
+            extra_flags: &[],
+        },
+        _ => unreachable!("unsupported architecture: {arch}"),
     }
-    let asm_files = ["boot.S", "switch.S", "interrupt.S", "macro.S"];
+}
 
-    let compiler = match arch.as_str() {
-        "riscv64" => "riscv64-linux-gnu-gcc",
-        "aarch64" => "aarch64-linux-gnu-gcc",
-        _ => unreachable!(),
-    };
+fn main() {
+    let arch = std::env::var("CARGO_CFG_TARGET_ARCH").expect("CARGO_CFG_TARGET_ARCH not set");
+    let os = std::env::var("CARGO_CFG_TARGET_OS").unwrap_or_default();
 
+    if !matches!(arch.as_str(), "riscv64" | "aarch64") || os != "none" {
+        return;
+    }
+
+    let arch_dir = PathBuf::from("src/arch").join(&arch);
+    let cfg = arch_config(&arch);
+
+    // ── 编译汇编文件 ──────────────────────────────────────────────────
     let mut build = cc::Build::new();
-    build.compiler(compiler);
+    build.compiler(cfg.compiler);
 
-    // Preprocessor defines expected by assembly files
-    // (must match CMakePresets.json cache variables)
-    build.define("SIMPLEKERNEL_MAX_CORE_COUNT", "4");
-    build.define("SIMPLEKERNEL_DEFAULT_STACK_SIZE", "16384");
-    if arch == "riscv64" {
-        build.define("SIMPLEKERNEL_EARLY_CONSOLE_BASE", "0x10000000");
-        build.define("SIMPLEKERNEL_PER_CPU_ALIGN_SIZE", "128");
-        build.flag("-march=rv64gc");
-        build.flag("-mabi=lp64d");
-    } else {
-        build.define("SIMPLEKERNEL_EARLY_CONSOLE_BASE", "0x9000000");
-        build.define("SIMPLEKERNEL_PER_CPU_ALIGN_SIZE", "128");
+    build.define("SIMPLEKERNEL_MAX_CORE_COUNT", &*MAX_CORE_COUNT.to_string());
+    build.define(
+        "SIMPLEKERNEL_DEFAULT_STACK_SIZE",
+        &*DEFAULT_STACK_SIZE.to_string(),
+    );
+    build.define("SIMPLEKERNEL_EARLY_CONSOLE_BASE", cfg.early_console_base);
+    build.define(
+        "SIMPLEKERNEL_PER_CPU_ALIGN_SIZE",
+        &*PER_CPU_ALIGN_SIZE.to_string(),
+    );
+
+    for flag in cfg.extra_flags {
+        build.flag(flag);
     }
 
     build.include(&arch_dir);
 
-    for file in &asm_files {
-        build.file(arch_dir.join(file));
+    // 自动发现 .S 文件，新增汇编源文件无需手动注册。
+    for entry in std::fs::read_dir(&arch_dir)
+        .unwrap_or_else(|e| panic!("cannot read {}: {e}", arch_dir.display()))
+    {
+        let path = entry
+            .unwrap_or_else(|e| panic!("cannot read entry in {}: {e}", arch_dir.display()))
+            .path();
+        if path.extension().is_some_and(|ext| ext == "S") {
+            build.file(&path);
+        }
     }
+
     build.compile("asm");
 
-    // Linker arguments: disable RELRO (not applicable to bare-metal) and set linker script
+    // ── 链接器参数 ───────────────────────────────────────────────────
     println!("cargo:rustc-link-arg=-z");
     println!("cargo:rustc-link-arg=norelro");
     println!(
@@ -47,9 +82,6 @@ fn main() {
         arch_dir.join("link.ld").display()
     );
 
-    // Rebuild triggers
-    println!("cargo:rerun-if-changed=src/arch/{}/link.ld", arch);
-    for file in &asm_files {
-        println!("cargo:rerun-if-changed=src/arch/{}/{}", arch, file);
-    }
+    // 监视整个架构目录，头文件/链接脚本/新增 .S 的变更都会触发重建。
+    println!("cargo:rerun-if-changed={}", arch_dir.display());
 }

@@ -9,7 +9,7 @@ pub struct KernelFdt<'a> {
 
 macro_rules! parse_fdt {
     ($addr:expr) => {{
-        // SAFETY: fdt_addr was validated in KernelFdt::new()
+        // SAFETY: fdt_addr 已在 KernelFdt::new() 中校验
         unsafe { fdt::Fdt::from_ptr_unaligned_fallible($addr as *const u8) }
             .map_err(|_| ErrorCode::FdtInvalidHeader)
     }};
@@ -17,7 +17,7 @@ macro_rules! parse_fdt {
 
 impl<'a> KernelFdt<'a> {
     pub fn new(fdt_addr: usize) -> KResult<Self> {
-        // SAFETY: fdt_addr is validated by the caller (passed from bootloader via DTB)
+        // SAFETY: fdt_addr 由调用方校验（引导加载程序通过 DTB 传入）
         unsafe { fdt::Fdt::from_ptr_unaligned(fdt_addr as *const u8) }
             .map_err(|_| ErrorCode::FdtInvalidHeader)?;
         Ok(Self {

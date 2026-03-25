@@ -75,7 +75,11 @@ SECTIONS
   .rodata         : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
   .rodata1        : { *(.rodata1) }
   .eh_frame_hdr   : { *(.eh_frame_hdr) *(.eh_frame_entry .eh_frame_entry.*) }
-  .eh_frame       : ONLY_IF_RO { KEEP (*(.eh_frame)) *(.eh_frame.*) }
+  .eh_frame       : ONLY_IF_RO {
+      __eh_frame = .;
+      KEEP (*(.eh_frame)) *(.eh_frame.*)
+      __eh_frame_end = .;
+  }
   .sframe         : ONLY_IF_RO { *(.sframe) *(.sframe.*) }
   .gcc_except_table   : ONLY_IF_RO { *(.gcc_except_table .gcc_except_table.*) }
   .gnu_extab   : ONLY_IF_RO { *(.gnu_extab*) }

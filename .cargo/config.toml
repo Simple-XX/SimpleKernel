@@ -1,2 +1,8 @@
 [alias]
 xtask = "run --package xtask --"
+
+[target.riscv64gc-unknown-none-elf]
+rustflags = ["-C", "force-unwind-tables=yes"]
+
+[target.aarch64-unknown-none-softfloat]
+rustflags = ["-C", "force-unwind-tables=yes"]

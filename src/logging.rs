@@ -1,4 +1,3 @@
-use core::fmt;
 use core::fmt::Write;
 use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 
@@ -9,8 +8,7 @@ const ANSI_RED: &str = "\x1b[31m";
 const ANSI_GREEN: &str = "\x1b[32m";
 const ANSI_YELLOW: &str = "\x1b[33m";
 const ANSI_CYAN: &str = "\x1b[36m";
-
-const FMT_BUF_SIZE: usize = 256;
+const ANSI_GRAY: &str = "\x1b[90m";
 
 static CONSOLE_LOCK: Mutex<()> = Mutex::new(());
 static LOG_SEQ: AtomicU64 = AtomicU64::new(0);
@@ -18,15 +16,20 @@ static LOGGER_INIT: AtomicBool = AtomicBool::new(false);
 static LOGGER: KernelLogger = KernelLogger;
 
 fn put_str(s: &str) {
-    #[cfg(target_arch = "riscv64")]
+    #[cfg(all(target_arch = "riscv64", not(test)))]
     crate::arch::riscv64::console::puts(s);
-    #[cfg(target_arch = "aarch64")]
+    #[cfg(all(target_arch = "aarch64", not(test)))]
     crate::arch::aarch64::console::puts(s);
+    #[cfg(any(test, not(any(target_arch = "riscv64", target_arch = "aarch64"))))]
+    {
+        let _ = s;
+    }
 }
 
 fn level_color(level: log::Level) -> &'static str {
     match level {
-        log::Level::Debug | log::Level::Trace => ANSI_GREEN,
+        log::Level::Trace => ANSI_GRAY,
+        log::Level::Debug => ANSI_GREEN,
         log::Level::Info => ANSI_CYAN,
         log::Level::Warn => ANSI_YELLOW,
         log::Level::Error => ANSI_RED,
@@ -35,49 +38,21 @@ fn level_color(level: log::Level) -> &'static str {
 
 fn level_label(level: log::Level) -> &'static str {
     match level {
-        log::Level::Debug | log::Level::Trace => "DEBUG",
+        log::Level::Trace => "TRACE",
+        log::Level::Debug => "DEBUG",
         log::Level::Info => "INFO ",
         log::Level::Warn => "WARN ",
         log::Level::Error => "ERROR",
     }
 }
 
-struct FmtBuf {
-    buf: [u8; FMT_BUF_SIZE],
-    pos: usize,
-}
-
-impl FmtBuf {
-    const fn new() -> Self {
-        Self {
-            buf: [0; FMT_BUF_SIZE],
-            pos: 0,
-        }
-    }
-
-    fn as_str(&self) -> &str {
-        core::str::from_utf8(&self.buf[..self.pos]).unwrap_or("")
-    }
-}
-
-impl fmt::Write for FmtBuf {
-    fn write_str(&mut self, s: &str) -> fmt::Result {
-        let bytes = s.as_bytes();
-        let available = FMT_BUF_SIZE.saturating_sub(self.pos);
-        let to_copy = available.min(bytes.len());
-        if to_copy > 0 {
-            self.buf[self.pos..self.pos + to_copy].copy_from_slice(&bytes[..to_copy]);
-            self.pos += to_copy;
-        }
-        Ok(())
-    }
-}
+use crate::fmt_buf::FmtBuf;
 
 struct KernelLogger;
 
 impl log::Log for KernelLogger {
-    fn enabled(&self, _metadata: &log::Metadata<'_>) -> bool {
-        true
+    fn enabled(&self, metadata: &log::Metadata<'_>) -> bool {
+        metadata.level() <= log::max_level()
     }
 
     fn log(&self, record: &log::Record<'_>) {
@@ -92,12 +67,22 @@ impl log::Log for KernelLogger {
         let mut buf = FmtBuf::new();
         let _ = write!(&mut buf, "{}", record.args());
 
-        let _guard = CONSOLE_LOCK.lock();
-        put_str(level_color(level));
         let mut hdr = FmtBuf::new();
-        let _ = write!(&mut hdr, "[{}][{} {}] ", seq, core_id, level_label(level));
+        let _ = write!(
+            &mut hdr,
+            "{}[{}][{} {}] ",
+            level_color(level),
+            seq,
+            core_id,
+            level_label(level)
+        );
+
+        let _guard = CONSOLE_LOCK.lock();
         put_str(hdr.as_str());
         put_str(buf.as_str());
+        if buf.is_truncated() {
+            put_str("...[truncated]");
+        }
         put_str(ANSI_RESET);
         put_str("\n");
     }

@@ -4,7 +4,7 @@ const UARTFR_TXFF: u32 = 1 << 5;
 const PL011_BASE: usize = 0x0900_0000;
 
 pub fn putchar(c: u8) {
-    // SAFETY: PL011_BASE + offsets are valid MMIO registers on QEMU virt aarch64
+    // SAFETY: PL011_BASE + 偏移量是 QEMU virt aarch64 上有效的 MMIO 寄存器地址
     unsafe {
         let fr = (PL011_BASE + UARTFR) as *const u32;
         while core::ptr::read_volatile(fr) & UARTFR_TXFF != 0 {

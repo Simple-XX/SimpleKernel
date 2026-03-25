@@ -19,8 +19,8 @@ macro_rules! fatal {
 pub fn arch_init(_argc: i32, argv: *const *const u8) {
     logging::init();
 
-    // On riscv64, OpenSBI passes: a0 = hart ID, a1 = DTB address.
-    // boot.S forwards a1 as the second C argument (argv).
+    // riscv64 上 OpenSBI 传递：a0 = hart ID，a1 = DTB 地址。
+    // boot.S 将 a1 作为第二个 C 参数（argv）转发。
     let dtb_addr = argv as usize;
 
     let fdt = match KernelFdt::new(dtb_addr) {
@@ -36,9 +36,7 @@ pub fn arch_init(_argc: i32, argv: *const *const u8) {
         Err(_) => fatal!("Failed to get memory info from FDT"),
     };
 
-    let timebase = fdt.timebase_frequency().unwrap_or(0);
-
-    // SAFETY: linker-defined symbols, addresses valid throughout kernel lifetime
+    // SAFETY: 链接器定义的符号，地址在内核生命周期内有效
     let kernel_start = unsafe { &__executable_start as *const u8 as u64 };
     let kernel_end = unsafe { &_end as *const u8 as u64 };
 
@@ -50,7 +48,6 @@ pub fn arch_init(_argc: i32, argv: *const *const u8) {
         elf_addr: kernel_start,
         fdt_addr: dtb_addr as u64,
         core_count,
-        interval: timebase as usize,
     });
 
     log::info!("FDT: found {} nodes, {} CPUs", node_count, core_count);

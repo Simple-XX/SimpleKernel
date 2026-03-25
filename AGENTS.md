@@ -62,7 +62,8 @@ docs/rust-rewrite/    # Design docs, phase plans (P0-P7)
 - **Naming**: `snake_case` functions/methods, `PascalCase` types/traits/enums, `SCREAMING_SNAKE_CASE` constants
 - **Formatting**: `rustfmt.toml` (100 char width), enforce via `cargo fmt`
 - **Linting**: `cargo clippy -- -D warnings`
-- **Doc comments**: `///` with `# Safety`, `# Errors`, `# Panics` sections for public APIs
+- **Doc comments**: `///` with `# Safety`, `# Errors`, `# Panics` sections for public APIs（节标题保留英文，内容用中文）
+- **注释语言**: 所有注释和文档注释使用中文；`// SAFETY:` 前缀保留英文（Rust 社区惯例），其后说明用中文
 - **Error handling**: `Result<T, ErrorCode>` + `?` operator; `.expect("reason")` not `.unwrap()`
 - **Unsafe**: Every `unsafe` block MUST have `// SAFETY:` comment explaining invariants; minimize scope
 - **Singletons**: `spin::Once<T>` with `call_once()` / `get()`

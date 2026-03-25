@@ -53,6 +53,20 @@ heapless = "0.8"
 # buddy system 堆分配器, 实现 GlobalAlloc trait
 buddy_system_allocator = "0.11"
 
+# --- ELF 解析 ---
+elf = { version = "0.7", default-features = false }  # 零拷贝 ELF 解析 (no_std)
+
+# --- 符号解码 ---
+rustc-demangle = { version = "0.1", default-features = false }
+
+# --- DWARF 回溯 ---
+unwinding = { version = "0.2", default-features = false, features = [
+    "unwinder",
+    "fde-static",
+    "dwarf-expr",
+    "hide-trace",
+] }
+
 # --- 设备树 ---
 fdt = "0.2.0-alpha1"                  # 纯 Rust FDT 解析器 (no_std)
 

@@ -21,7 +21,7 @@ unsafe fn get_dtb_addr_from_argv(argv: *const *const u8) -> u64 {
         return 0;
     }
 
-    // SAFETY: U-Boot bootm passes argv with at least 3 elements
+    // SAFETY: U-Boot bootm 传入的 argv 至少包含 3 个元素
     let argv2 = unsafe { *argv.add(2) };
     if argv2.is_null() {
         return 0;
@@ -30,7 +30,7 @@ unsafe fn get_dtb_addr_from_argv(argv: *const *const u8) -> u64 {
     let mut buf = [0u8; 32];
     let mut len = 0;
     for i in 0..buf.len() {
-        // SAFETY: reading within null-terminated C string, bounded by buf size
+        // SAFETY: 在 null 终止的 C 字符串范围内读取，受 buf 大小限制
         let c = unsafe { *argv2.add(i) };
         if c == 0 {
             break;
@@ -50,7 +50,7 @@ unsafe fn get_dtb_addr_from_argv(argv: *const *const u8) -> u64 {
 pub fn arch_init(_argc: i32, argv: *const *const u8) {
     logging::init();
 
-    // SAFETY: argv is passed from _start which receives it from U-Boot via boot.S
+    // SAFETY: argv 由 _start 传入，_start 通过 boot.S 从 U-Boot 接收
     let dtb_addr = unsafe { get_dtb_addr_from_argv(argv) } as usize;
 
     let fdt = match KernelFdt::new(dtb_addr) {
@@ -66,15 +66,9 @@ pub fn arch_init(_argc: i32, argv: *const *const u8) {
         Err(_) => fatal!("Failed to get memory info from FDT"),
     };
 
-    // SAFETY: linker-defined symbols, addresses valid throughout kernel lifetime
+    // SAFETY: 链接器定义的符号，地址在内核生命周期内有效
     let kernel_start = unsafe { &__executable_start as *const u8 as u64 };
     let kernel_end = unsafe { &_end as *const u8 as u64 };
-
-    let interval: u64;
-    // SAFETY: CNTFRQ_EL0 is always readable at EL1
-    unsafe {
-        core::arch::asm!("mrs {interval}, cntfrq_el0", interval = out(reg) interval);
-    }
 
     BASIC_INFO.call_once(|| BasicInfo {
         physical_memory_addr: mem_addr,
@@ -84,7 +78,6 @@ pub fn arch_init(_argc: i32, argv: *const *const u8) {
         elf_addr: kernel_start,
         fdt_addr: dtb_addr as u64,
         core_count,
-        interval: interval as usize,
     });
 
     log::info!("FDT: found {} nodes, {} CPUs", node_count, core_count);
