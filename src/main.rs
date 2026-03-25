@@ -7,6 +7,9 @@
 #![cfg_attr(test, allow(dead_code))]
 
 #[cfg(not(test))]
+extern crate alloc;
+
+#[cfg(not(test))]
 mod arch;
 mod config;
 mod elf;
