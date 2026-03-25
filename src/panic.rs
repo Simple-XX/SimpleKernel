@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use crate::elf::KernelElf;
+use crate::memory::address::VirtAddr;
 use crate::sync::SpinLock;
 use core::fmt::Write;
 use spin::Once;
@@ -14,7 +15,7 @@ pub struct PanicEvent<'a> {
     pub reason: &'a str,
     pub file: &'a str,
     pub line: u32,
-    pub pc: u64,
+    pub pc: VirtAddr,
 }
 
 /// 希望在内核 panic 时收到通知的组件所实现的 trait。
@@ -105,7 +106,7 @@ pub fn handle_panic(info: &core::panic::PanicInfo<'_>) -> ! {
         reason: msg_buf.as_str(),
         file,
         line,
-        pc: 0,
+        pc: VirtAddr::new(0),
     };
     notify_observers(&event);
 
@@ -192,7 +193,7 @@ mod tests {
             reason: "test panic",
             file: "src/main.rs",
             line: 42,
-            pc: 0x8020_0000,
+            pc: VirtAddr::new(0x8020_0000),
         };
         assert_eq!(event.reason, "test panic");
         assert_eq!(event.line, 42);

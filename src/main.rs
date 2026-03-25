@@ -75,7 +75,8 @@ pub fn phase2_smoke_test() {
     let elf_addr = per_cpu::BASIC_INFO
         .get()
         .expect("BASIC_INFO not initialized")
-        .elf_addr;
+        .elf_addr
+        .as_usize() as u64;
     // SAFETY: elf_addr 是内核自身的 ELF 基地址，在内核生命周期内有效
     unsafe { panic::init_elf(elf_addr) };
     log::info!("ELF parser OK");

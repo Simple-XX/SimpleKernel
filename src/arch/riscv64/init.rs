@@ -1,5 +1,6 @@
 use crate::fdt::KernelFdt;
 use crate::logging;
+use crate::memory::address::PhysAddr;
 use crate::per_cpu::{BASIC_INFO, BasicInfo};
 
 unsafe extern "C" {
@@ -41,12 +42,12 @@ pub fn arch_init(_argc: i32, argv: *const *const u8) {
     let kernel_end = unsafe { &_end as *const u8 as u64 };
 
     BASIC_INFO.call_once(|| BasicInfo {
-        physical_memory_addr: mem_addr,
+        physical_memory_addr: PhysAddr::new(mem_addr as usize),
         physical_memory_size: mem_size,
-        kernel_addr: kernel_start,
+        kernel_addr: PhysAddr::new(kernel_start as usize),
         kernel_size: (kernel_end - kernel_start) as usize,
-        elf_addr: kernel_start,
-        fdt_addr: dtb_addr as u64,
+        elf_addr: PhysAddr::new(kernel_start as usize),
+        fdt_addr: PhysAddr::new(dtb_addr),
         core_count,
     });
 
