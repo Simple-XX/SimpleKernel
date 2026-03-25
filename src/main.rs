@@ -18,6 +18,7 @@ mod halt;
 #[cfg(not(test))]
 mod lang_items;
 mod logging;
+mod memory;
 mod panic;
 mod per_cpu;
 mod scope_guard;
