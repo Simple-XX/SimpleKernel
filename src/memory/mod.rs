@@ -85,9 +85,11 @@ pub fn memory_init() {
         mem_start + mem_size
     );
 
-    // Step 4: Enable paging
-    unsafe { page_table::activate_page_table(&pt) };
-    log::info!("MemoryInit: paging enabled");
+    // Step 4: Paging activation deferred to P4 (requires trap handler to debug page faults).
+    // The page table structure is fully built and ready.
+    // TODO(P4): after setting up stvec trap handler, call:
+    //   unsafe { page_table::activate_page_table(&pt) };
+    log::info!("MemoryInit: page table ready (activation deferred to P4)");
 
     // Leak the kernel page table — it must live forever
     core::mem::forget(pt);

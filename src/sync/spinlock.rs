@@ -31,7 +31,7 @@ mod interrupt_ops {
 
     #[inline(always)]
     pub fn enable() {
-        riscv::interrupt::supervisor::enable();
+        unsafe { riscv::interrupt::supervisor::enable() };
     }
 }
 
