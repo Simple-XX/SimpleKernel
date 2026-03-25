@@ -5,6 +5,13 @@ use xshell::{Shell, cmd};
 use crate::Result;
 use crate::arch::Arch;
 
+/// OP-TEE 32-bit Trusted Application 的编译工具链前缀。
+///
+/// OP-TEE 的 64-bit core 使用主工具链（`Arch::cross_compile()`），
+/// 32-bit TA 需要单独的 Arm32 工具链。
+const CROSS_COMPILE_ARM32: &str = "arm-linux-gnueabihf-";
+
+/// 检查运行所需的固件文件是否就绪，缺失时返回带路径列表的错误。
 pub fn ensure_firmware_exists(project_root: &Path, arch: Arch) -> Result<()> {
     let fw = arch.firmware_dir(project_root);
     let required_paths: Vec<PathBuf> = match arch {
@@ -33,6 +40,10 @@ pub fn ensure_firmware_exists(project_root: &Path, arch: Arch) -> Result<()> {
     Err(message.into())
 }
 
+/// 编译指定架构所需的全部固件。
+///
+/// - `riscv64`: OpenSBI → U-Boot（U-Boot 依赖 OpenSBI 的 `fw_dynamic.bin`）
+/// - `aarch64`: U-Boot → OP-TEE → ATF（ATF 打包 OP-TEE 和 U-Boot 为 `flash.bin`）
 pub fn build_firmware(sh: &Shell, project_root: &Path, arch: Arch) -> Result<()> {
     let cross = arch.cross_compile();
     let out_base = arch.firmware_dir(project_root);
@@ -42,13 +53,13 @@ pub fn build_firmware(sh: &Shell, project_root: &Path, arch: Arch) -> Result<()>
 
     match arch {
         Arch::Riscv64 => {
-            build_opensbi(sh, project_root, &out_base, &cross, &jobs)?;
-            build_uboot_riscv64(sh, project_root, &out_base, &cross, &jobs)?;
+            build_opensbi(sh, project_root, &out_base, cross, &jobs)?;
+            build_uboot_riscv64(sh, project_root, &out_base, cross, &jobs)?;
         }
         Arch::Aarch64 => {
-            build_uboot_aarch64(sh, project_root, &out_base, &cross, &jobs)?;
-            build_optee(sh, project_root, &out_base, &cross, &jobs)?;
-            build_atf(sh, project_root, &out_base, &cross, &jobs)?;
+            build_uboot_aarch64(sh, project_root, &out_base, cross, &jobs)?;
+            build_optee(sh, project_root, &out_base, cross, &jobs)?;
+            build_atf(sh, project_root, &out_base, cross, &jobs)?;
         }
     }
 
@@ -89,6 +100,7 @@ fn build_uboot_riscv64(
     let out = out_base.join("u-boot");
     fs::create_dir_all(&out)?;
 
+    // U-Boot SPL 在运行时加载 OpenSBI 作为 M-mode firmware。
     let opensbi_fw = out_base.join("opensbi/platform/generic/firmware/fw_dynamic.bin");
     if !opensbi_fw.exists() {
         return Err(format!(
@@ -138,8 +150,7 @@ fn build_optee(
     let out = out_base.join("optee/optee_os");
     fs::create_dir_all(&out)?;
 
-    let cross32 = "arm-linux-gnueabihf-";
-
+    let cross32 = CROSS_COMPILE_ARM32;
     let _dir = sh.push_dir(&src);
     cmd!(
         sh,
@@ -180,6 +191,7 @@ fn build_atf(
     )
     .run()?;
 
+    // ATF 构建产物 bl1.bin 和 fip.bin 合并为单个 flash.bin 供 QEMU 加载。
     let flash_bin = atf_out.join("flash.bin");
     let bl1 = atf_out.join("qemu/release/bl1.bin");
     let fip = atf_out.join("qemu/release/fip.bin");
