@@ -53,6 +53,8 @@ impl<'a> KernelFdt<'a> {
         Ok((region.address, region.len))
     }
 
+    /// TODO(P4): 定时器初始化时读取此值
+    #[allow(dead_code)]
     pub fn timebase_frequency(&self) -> KResult<u32> {
         let fdt = parse_fdt!(self.fdt_addr)?;
         let cpus = fdt

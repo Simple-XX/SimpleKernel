@@ -2,6 +2,8 @@ use crate::config;
 use core::cell::SyncUnsafeCell;
 use spin::Once;
 
+// P3 将字段类型升级为 PhysAddr，P4+ 读取这些字段
+#[allow(dead_code)]
 pub struct BasicInfo {
     pub physical_memory_addr: u64,
     pub physical_memory_size: usize,
@@ -14,6 +16,7 @@ pub struct BasicInfo {
 
 impl BasicInfo {
     #[must_use]
+    #[allow(dead_code)] // P1 init.rs 中通过 BASIC_INFO.call_once() 使用
     pub const fn new() -> Self {
         Self {
             physical_memory_addr: 0,

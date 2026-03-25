@@ -26,12 +26,12 @@ mod interrupt_ops {
 
     #[inline(always)]
     pub fn disable() {
-        unsafe { riscv::interrupt::supervisor::disable() };
+        riscv::interrupt::supervisor::disable();
     }
 
     #[inline(always)]
     pub fn enable() {
-        unsafe { riscv::interrupt::supervisor::enable() };
+        riscv::interrupt::supervisor::enable();
     }
 }
 

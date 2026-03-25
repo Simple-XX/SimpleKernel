@@ -56,4 +56,6 @@ pub fn arch_init(_argc: i32, argv: *const *const u8) {
     logging::flush();
 }
 
+/// TODO(P4): 从核架构初始化（当前为空）
+#[allow(dead_code)]
 pub fn arch_init_smp(_argc: i32, _argv: *const *const u8) {}
