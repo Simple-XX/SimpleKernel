@@ -12,7 +12,7 @@ static mut HEAP_SPACE: [u8; KERNEL_HEAP_SIZE] = [0; KERNEL_HEAP_SIZE];
 /// # Safety
 /// Must be called exactly once, before any heap allocation.
 pub unsafe fn heap_init() {
-    let heap_start = unsafe { HEAP_SPACE.as_ptr() as usize };
+    let heap_start = core::ptr::addr_of_mut!(HEAP_SPACE) as usize;
     unsafe {
         HEAP_ALLOCATOR.lock().init(heap_start, KERNEL_HEAP_SIZE);
     }
