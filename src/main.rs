@@ -20,6 +20,7 @@ mod lang_items;
 mod logging;
 mod panic;
 mod per_cpu;
+mod scope_guard;
 mod sync;
 
 #[cfg(not(test))]
