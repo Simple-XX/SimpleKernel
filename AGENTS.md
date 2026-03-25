@@ -58,6 +58,12 @@ docs/rust-rewrite/    # Design docs, phase plans (P0-P7)
 
 > Full Rust coding conventions: `docs/rust-rewrite/00-概述.md` §9
 
+### Git
+- **Commit 格式**: `<type>(<scope>): <subject>` — type: feat/fix/refactor/test/docs/chore
+- **Sign-off 必须**: 每条 commit 必须使用 `git commit --signoff`（DCO 签署），**不可省略**
+- **Subagent 派发时**：给 subagent 的 commit 指令中也必须包含 `--signoff`
+
+### Rust
 - **Language**: Rust nightly, `#![no_std]`, `#![no_main]`, edition 2024
 - **Naming**: `snake_case` functions/methods, `PascalCase` types/traits/enums, `SCREAMING_SNAKE_CASE` constants
 - **Formatting**: `rustfmt.toml` (100 char width), enforce via `cargo fmt`
@@ -117,7 +123,6 @@ cargo doc --no-deps
 - Boot chains differ: riscv64 (U-Boot SPL→OpenSBI→U-Boot), aarch64 (U-Boot→ATF→OP-TEE)
 - aarch64 needs two serial terminal tasks (::54320, ::54321) before `cargo xtask run --arch aarch64`
 - Unit tests run on x86_64 host only (`cargo test`) — system tests use QEMU (`cargo xtask run`)
-- Git commits: `<type>(<scope>): <subject>` with `--signoff`
 - Debug: use `cargo xtask debug` + GDB, QEMU logs in build output
 - Design docs: `docs/rust-rewrite/00-概述.md` is the master reference for all design decisions
 - Phase plans: `docs/rust-rewrite/P0-P7` for step-by-step implementation guides
