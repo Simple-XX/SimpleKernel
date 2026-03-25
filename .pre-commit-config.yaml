@@ -20,8 +20,6 @@ repos:
     rev: v1.0
     hooks:
       - id: fmt
-      # clippy 需要交叉编译自定义 target，不适合在 pre-commit 中运行
-      # 请在 CI 中通过 cargo clippy 检查
 
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.11.0
