@@ -83,9 +83,17 @@ pub fn phase2_smoke_test() {
 
     log::info!("TCB ownership prototype validated (host-only unit tests)");
     log::info!("Phase 2 complete");
+}
 
-    log::info!("Testing panic handler (will halt)...");
-    panic!("test panic");
+#[cfg(not(test))]
+pub fn phase3_smoke_test() {
+    use alloc::boxed::Box;
+
+    let val = Box::new(42u64);
+    log::info!("HeapTest: Box::new(42) = {}", *val);
+    assert_eq!(*val, 42);
+
+    log::info!("Phase 3 complete");
 }
 
 #[cfg(test)]
