@@ -33,14 +33,17 @@ impl Arch {
         format!("qemu-system-{}", self.as_str())
     }
 
-    pub fn boot_script_template(self) -> String {
-        format!("{}_boot_scr.txt", self.as_str())
+    pub fn boot_script_content(self) -> &'static str {
+        match self {
+            Self::Riscv64 => include_str!("riscv64_boot_scr.txt"),
+            Self::Aarch64 => include_str!("aarch64_boot_scr.txt"),
+        }
     }
 
     pub fn firmware_dir(self, project_root: &Path) -> PathBuf {
         project_root
             .join("target")
-            .join(self.target_triple())
             .join("firmware")
+            .join(self.as_str())
     }
 }

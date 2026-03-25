@@ -47,7 +47,8 @@ fn run() -> Result<()> {
 
     match cli.command {
         Commands::Build(args) => {
-            build::build_kernel(&sh, &project_root, args.arch)?;
+            let kernel_elf_path = build::build_kernel(&sh, &project_root, args.arch)?;
+            build::generate_debug_files(&sh, args.arch, &kernel_elf_path)?;
         }
         Commands::Firmware(args) => {
             firmware::build_firmware(&sh, &project_root, args.arch)?;
@@ -55,11 +56,12 @@ fn run() -> Result<()> {
         Commands::Run(args) => {
             let arch = args.arch;
             let kernel_elf_path = build::build_kernel(&sh, &project_root, arch)?;
+            build::generate_debug_files(&sh, arch, &kernel_elf_path)?;
             let boot_dir = build::prepare_boot_directory(&project_root, arch)?;
             let rootfs_path = build::ensure_rootfs_image(&sh, &boot_dir)?;
             let dtb_path = qemu::dump_qemu_dtb(&sh, arch, &boot_dir, &rootfs_path)?;
             qemu::generate_fit_image(arch, &sh, &boot_dir, &kernel_elf_path, &dtb_path)?;
-            qemu::generate_boot_script(arch, &sh, &project_root, &boot_dir)?;
+            qemu::generate_boot_script(arch, &sh, &boot_dir)?;
             qemu::setup_tftp(&boot_dir);
             firmware::ensure_firmware_exists(&project_root, arch)?;
             qemu::launch_qemu(

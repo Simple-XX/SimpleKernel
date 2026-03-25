@@ -99,18 +99,11 @@ pub fn generate_fit_image(
     Ok(boot_fit)
 }
 
-pub fn generate_boot_script(
-    arch: Arch,
-    sh: &Shell,
-    project_root: &Path,
-    boot_dir: &Path,
-) -> Result<PathBuf> {
+pub fn generate_boot_script(arch: Arch, sh: &Shell, boot_dir: &Path) -> Result<PathBuf> {
     println!("[xtask] Creating boot script image...");
 
-    let source_script = project_root.join("tools").join(arch.boot_script_template());
-    if !source_script.exists() {
-        return Err(format!("boot script not found at {}", source_script.display()).into());
-    }
+    let source_script = boot_dir.join("boot_src.txt");
+    fs::write(&source_script, arch.boot_script_content())?;
 
     let boot_scr_uimg = boot_dir.join("boot.scr.uimg");
     cmd!(sh, "mkimage -T script -d {source_script} {boot_scr_uimg}").run()?;
