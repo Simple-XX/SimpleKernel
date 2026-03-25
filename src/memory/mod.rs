@@ -70,12 +70,12 @@ pub fn memory_init() {
     // Step 3: Create kernel page table with identity mapping
     let mut pt = PageTable::new().expect("failed to create kernel page table");
 
-    // Identity-map the entire physical memory region
+    // Identity-map the entire physical memory region (RWX，初期不区分代码/数据段)
     identity_map_range(
         &mut pt,
         mem_start,
         mem_start + mem_size,
-        PageFlags::kernel_rw(),
+        PageFlags::kernel_rwx(),
     )
     .expect("failed to identity-map memory");
 

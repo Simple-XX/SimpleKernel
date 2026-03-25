@@ -35,22 +35,36 @@ bitflags! {
 }
 
 impl PageFlags {
-    /// Kernel read-write data mapping (V | R | W | A | D).
+    /// 内核读写数据映射 (V | R | W | G | A | D)。
     #[inline]
     pub fn kernel_rw() -> Self {
-        Self::VALID | Self::READ | Self::WRITE | Self::ACCESSED | Self::DIRTY
+        Self::VALID | Self::READ | Self::WRITE | Self::GLOBAL | Self::ACCESSED | Self::DIRTY
     }
 
-    /// Kernel read-execute mapping (V | R | X | A).
+    /// 内核读-执行映射 (V | R | X | G | A)。
     #[inline]
     pub fn kernel_rx() -> Self {
-        Self::VALID | Self::READ | Self::EXECUTE | Self::ACCESSED
+        Self::VALID | Self::READ | Self::EXECUTE | Self::GLOBAL | Self::ACCESSED
     }
 
-    /// Kernel read-only mapping (V | R | A).
+    /// 内核只读映射 (V | R | G | A)。
     #[inline]
     pub fn kernel_ro() -> Self {
-        Self::VALID | Self::READ | Self::ACCESSED
+        Self::VALID | Self::READ | Self::GLOBAL | Self::ACCESSED
+    }
+
+    /// 内核读写执行映射 (V | R | W | X | G | A | D)。
+    ///
+    /// 用于初期 identity mapping，后续可细化为 text=RX, data=RW。
+    #[inline]
+    pub fn kernel_rwx() -> Self {
+        Self::VALID
+            | Self::READ
+            | Self::WRITE
+            | Self::EXECUTE
+            | Self::GLOBAL
+            | Self::ACCESSED
+            | Self::DIRTY
     }
 }
 
@@ -245,7 +259,7 @@ impl PageTableEntry {
 
 #[cfg(not(test))]
 mod inner {
-    use super::{PPN_MASK, PageFlags, PageTableEntry};
+    use super::{PageFlags, PageTableEntry};
     use crate::config::PAGE_SIZE;
     use crate::error::{ErrorCode, KResult};
     use crate::memory::address::{PhysAddr, VirtAddr};
@@ -407,7 +421,7 @@ mod inner {
 }
 
 #[cfg(not(test))]
-pub use inner::{ENTRIES_PER_PAGE, PT_LEVELS, PageTable};
+pub use inner::PageTable;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // activate_page_table
@@ -517,6 +531,7 @@ mod tests {
         assert!(rw.contains(PageFlags::VALID));
         assert!(rw.contains(PageFlags::READ));
         assert!(rw.contains(PageFlags::WRITE));
+        assert!(rw.contains(PageFlags::GLOBAL));
         assert!(rw.contains(PageFlags::ACCESSED));
         assert!(rw.contains(PageFlags::DIRTY));
         assert!(!rw.contains(PageFlags::EXECUTE));
@@ -525,15 +540,26 @@ mod tests {
         assert!(rx.contains(PageFlags::VALID));
         assert!(rx.contains(PageFlags::READ));
         assert!(rx.contains(PageFlags::EXECUTE));
+        assert!(rx.contains(PageFlags::GLOBAL));
         assert!(rx.contains(PageFlags::ACCESSED));
         assert!(!rx.contains(PageFlags::WRITE));
 
         let ro = PageFlags::kernel_ro();
         assert!(ro.contains(PageFlags::VALID));
         assert!(ro.contains(PageFlags::READ));
+        assert!(ro.contains(PageFlags::GLOBAL));
         assert!(ro.contains(PageFlags::ACCESSED));
         assert!(!ro.contains(PageFlags::WRITE));
         assert!(!ro.contains(PageFlags::EXECUTE));
+
+        let rwx = PageFlags::kernel_rwx();
+        assert!(rwx.contains(PageFlags::VALID));
+        assert!(rwx.contains(PageFlags::READ));
+        assert!(rwx.contains(PageFlags::WRITE));
+        assert!(rwx.contains(PageFlags::EXECUTE));
+        assert!(rwx.contains(PageFlags::GLOBAL));
+        assert!(rwx.contains(PageFlags::ACCESSED));
+        assert!(rwx.contains(PageFlags::DIRTY));
     }
 
     #[test]
